@@ -1,0 +1,14 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": ["./src/index.ts"],
+  "exclude": ["**/*.test.ts"],
+  "plugin": ["typedoc-plugin-markdown"],
+  "out": "docs",
+  "hideBreadcrumbs": false,
+  "hideInPageTOC": false,
+  "excludePrivate": true,
+  "excludeProtected": true,
+  "excludeExternals": true,
+  "excludeInternal": true,
+  "entryDocument": "readme.md"
+}

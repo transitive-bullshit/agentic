@@ -1,0 +1,78 @@
+{
+  "name": "chatgpt",
+  "version": "0.0.1",
+  "description": "Node.js wrapper around ChatGPT. Uses headless Chrome as a temporary solution until the official API is released.",
+  "author": "Travis Fischer <travis@transitivebullsh.it>",
+  "repository": "transitive-bullshit/chatgpt-api",
+  "license": "MIT",
+  "type": "module",
+  "source": "./src/index.ts",
+  "exports": {
+    "import": "./build/index.js",
+    "default": "./build/index.js",
+    "types": "./build/index.d.ts"
+  },
+  "files": [
+    "build"
+  ],
+  "engines": {
+    "node": ">=14"
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "clean": "del build",
+    "prebuild": "run-s clean",
+    "predev": "run-s clean",
+    "pretest": "run-s build",
+    "docs": "typedoc",
+    "prepare": "husky install",
+    "pre-commit": "lint-staged",
+    "test": "run-p test:*",
+    "test:prettier": "prettier '**/*.{js,jsx,ts,tsx}' --check"
+  },
+  "dependencies": {
+    "html-to-md": "npm:@fisch0920/html-to-md@^0.8.1",
+    "joplin-turndown": "^4.0.30",
+    "node-html-markdown": "^1.2.2",
+    "playwright": "^1.28.1",
+    "turndown": "^7.1.1"
+  },
+  "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^4.0.0",
+    "@types/node": "^18.11.9",
+    "del-cli": "^5.0.0",
+    "delay": "^5.0.0",
+    "husky": "^8.0.2",
+    "lint-staged": "^13.0.3",
+    "npm-run-all": "^4.1.5",
+    "openapi-types": "^12.0.2",
+    "ora": "^6.1.2",
+    "prettier": "^2.8.0",
+    "tsup": "^6.5.0",
+    "tsx": "^3.12.1",
+    "typedoc": "^0.23.21",
+    "typedoc-plugin-markdown": "^3.13.6",
+    "typescript": "^4.9.3"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "prettier --write"
+    ]
+  },
+  "keywords": [
+    "openai",
+    "chatgpt",
+    "gpt",
+    "gpt3",
+    "gpt4",
+    "chatbot",
+    "chat",
+    "machine learning",
+    "conversation",
+    "conversational ai",
+    "ai",
+    "ml",
+    "bot"
+  ]
+}
