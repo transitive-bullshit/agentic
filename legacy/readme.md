@@ -39,39 +39,9 @@ async function example() {
   )
   console.log(response)
 }
-
-// which outputs:
-
-/*
-Here is an implementation of bubble sort in Python:
-
-\`\`\`python
-def bubble_sort(lst):
-  # Set the initial flag to True to start the loop
-  swapped = True
-
-  # Keep looping until there are no more swaps
-  while swapped:
-    # Set the flag to False initially
-    swapped = False
-
-    # Loop through the list
-    for i in range(len(lst) - 1):
-      # If the current element is greater than the next element,
-      # swap them and set the flag to True
-      if lst[i] > lst[i + 1]:
-        lst[i], lst[i + 1] = lst[i + 1], lst[i]
-        swapped = True
-
-  # Return the sorted list
-  return lst
-\`\`\`
-*/
 ```
 
-Here's the same response rendered as markdown:
-
-Here is an implementation of bubble sort in Python:
+Which outputs:
 
 ```python
 def bubble_sort(lst):
