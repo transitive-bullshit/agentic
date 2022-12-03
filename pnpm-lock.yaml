@@ -5,7 +5,6 @@ specifiers:
   '@types/node': ^18.11.9
   del-cli: ^5.0.0
   delay: ^5.0.0
-  dotenv-safe: ^8.2.0
   html-to-md: npm:@fisch0920/html-to-md@^0.8.1
   husky: ^8.0.2
   joplin-turndown: ^4.0.30
@@ -35,7 +34,6 @@ devDependencies:
   '@types/node': 18.11.10
   del-cli: 5.0.0
   delay: 5.0.0
-  dotenv-safe: 8.2.0
   husky: 8.0.2
   lint-staged: 13.0.4
   npm-run-all: 4.1.5
@@ -1035,17 +1033,6 @@ packages:
       domelementtype: 2.3.0
       domhandler: 5.0.3
     dev: false
-
-  /dotenv-safe/8.2.0:
-    resolution: {integrity: sha512-uWwWWdUQkSs5a3mySDB22UtNwyEYi0JtEQu+vDzIqr9OjbDdC2Ip13PnSpi/fctqlYmzkxCeabiyCAOROuAIaA==}
-    dependencies:
-      dotenv: 8.6.0
-    dev: true
-
-  /dotenv/8.6.0:
-    resolution: {integrity: sha512-IrPdXQsk2BbzvCBGBOTmmSH5SodmqZNt4ERAZDmW4CT+tL8VtvinqywuANaFu4bOMWki16nqf0e4oC0QIaDr/g==}
-    engines: {node: '>=10'}
-    dev: true
 
   /eastasianwidth/0.2.0:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
