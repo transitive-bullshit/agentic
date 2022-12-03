@@ -21,7 +21,7 @@ This package is a Node.js wrapper around [ChatGPT](https://openai.com/blog/chatg
 You can use it to start experimenting with ChatGPT by integrating it into websites, chatbots, etc...
 
 > **Note**
-> This package will be replaced to use the official API once it is released by OpenAI.
+> This package will be replaced to use the official API once it's released by OpenAI.
 
 ## Auth
 
