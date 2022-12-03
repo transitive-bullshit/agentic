@@ -8,9 +8,7 @@
 - [Auth](#auth)
 - [Install](#install)
 - [Usage](#usage)
-- [Example](#example)
 - [Docs](#docs)
-- [Todo](#todo)
 - [Related](#related)
 - [License](#license)
 
@@ -47,10 +45,10 @@ import { ChatGPTAPI } from 'chatgpt'
 async function example() {
   const api = new ChatGPTAPI()
 
-  // open chromium and wait until the user has logged in
+  // open chromium and wait until you've logged in
   await api.init({ auth: 'blocking' })
 
-  // send a message and wait for a complete response, then parse it as markdown
+  // send a message and wait for the response
   const response = await api.sendMessage(
     'Write a python version of bubble sort. Do not include example usage.'
   )
@@ -82,13 +80,11 @@ def bubble_sort(lst):
   return lst
 ```
 
-The default functionality is to parse ChatGPT responses as markdown using [html-to-md](https://github.com/stonehank/html-to-md). I've found the markdown parsing to work really well during my testing, but if you'd rather output plaintext, you can use:
+The default functionality parses ChatGPT responses as markdown using [html-to-md](https://github.com/stonehank/html-to-md). I've found that this works really well during my testing, but if you'd rather output plaintext, you can use:
 
 ```ts
 const api = new ChatGPTAPI({ markdown: false })
 ```
-
-## Example
 
 A full [example](./src/example.ts) is included for testing purposes:
 
@@ -99,12 +95,6 @@ npx tsx src/example.ts
 ## Docs
 
 See the [auto-generated docs](./docs/classes/ChatGPTAPI.md) for more info on methods parameters.
-
-## Todo
-
-- [ ] Add message and conversation IDs
-- [ ] Add support for streaming responses
-- [ ] Add basic unit tests
 
 ## Related
 
