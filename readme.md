@@ -1,11 +1,11 @@
 # ChatGPT API <!-- omit in toc -->
 
-> Node.js TS wrapper around [ChatGPT](https://openai.com/blog/chatgpt/). Uses headless Chrome until the official API is released.
+> Node.js wrapper around [ChatGPT](https://openai.com/blog/chatgpt/). Uses headless Chrome until the official API is released.
 
 [![NPM](https://img.shields.io/npm/v/chatgpt.svg)](https://www.npmjs.com/package/chatgpt) [![Build Status](https://github.com/transitive-bullshit/chatgpt-api/actions/workflows/test.yml/badge.svg)](https://github.com/transitive-bullshit/chatgpt-api/actions/workflows/test.yml) [![MIT License](https://img.shields.io/badge/license-MIT-blue)](https://github.com/transitive-bullshit/chatgpt-api/blob/main/license) [![Prettier Code Formatting](https://img.shields.io/badge/code_style-prettier-brightgreen.svg)](https://prettier.io)
 
 - [Intro](#intro)
-- [Auth](#auth)
+- [How it works](#how-it-works)
 - [Install](#install)
 - [Usage](#usage)
 - [Docs](#docs)
@@ -16,16 +16,16 @@
 
 This package is a Node.js wrapper around [ChatGPT](https://openai.com/blog/chatgpt) by [OpenAI](https://openai.com). TS batteries included. ✨
 
-You can use it to start experimenting with ChatGPT by integrating it into websites, chatbots, etc...
+You can use it to start building projects powered by ChatGPT like chatbots, websites, etc...
 
-> **Note**
-> This package will be replaced to use the official API once it's released by OpenAI.
+## How it works
 
-## Auth
-
-We use headless Chromium via [Playwright](https://playwright.dev), so **you still need to have access to ChatGPT** — it just makes things much easier to access programatically.
+We use headless Chromium via [Playwright](https://playwright.dev) to automate the webapp, so **you still need to have access to ChatGPT**. It just makes building API-like integrations much easier.
 
 Chromium will be opened in non-headless mode by default, which is important because the first time you run `ChatGPTAPI.init()`, you'll need to log in manually. We launch Chromium with a persistent context, however, so you shouldn't need to keep re-logging in after the first time.
+
+> **Note**
+> We'll replace headless chrome with the official API once it's released.
 
 ## Install
 
