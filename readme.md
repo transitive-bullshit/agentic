@@ -24,6 +24,9 @@ We use headless Chromium via [Playwright](https://playwright.dev) to automate th
 
 Chromium will be opened in non-headless mode by default, which is important because the first time you run `ChatGPTAPI.init()`, you'll need to log in manually. We launch Chromium with a persistent context, however, so you shouldn't need to keep re-logging in after the first time. When you log in the first time, _make sure that you also dismiss the welcome modal_.
 
+- [Demo video](https://www.loom.com/share/0c44525b07354d679f30c45d8eec6271) showing how the initial auth flow works (29 seconds)
+- [Demo video](https://www.loom.com/share/98e712dbddf843289e2b6615095bbdd7) showing how it works if you're already authed (13 seconds)
+
 > **Note**
 > We'll replace headless chrome with the official API once it's released.
 
