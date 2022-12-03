@@ -43,7 +43,7 @@ async function example() {
 }
 ```
 
-Which outputs a similar reponse to the following (as a markdown string, including the _\`\`\`python_ code prefix):
+Which outputs a similar reponse to the following (as a markdown string, including the _\`\`\`python_ code block prefix):
 
 ```python
 def bubble_sort(lst):
