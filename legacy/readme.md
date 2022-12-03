@@ -43,7 +43,7 @@ async function example() {
 }
 ```
 
-Which outputs the following (as a markdown string):
+Which outputs a similar reponse to the following (as a markdown string, including the `\`\`\`python` code prefix):
 
 ```python
 def bubble_sort(lst):
@@ -67,7 +67,11 @@ def bubble_sort(lst):
   return lst
 ```
 
-Note that the default functionality is to parse ChatGPT responses as markdown using [html-to-md](https://github.com/stonehank/html-to-md). I've found the markdown quality to be excellent in my testing, but if you'd rather output plaintext, just pass `{ markdown: false }` to the `ChatGPTAPI` constructor.
+Note that the default functionality is to parse ChatGPT responses as markdown using [html-to-md](https://github.com/stonehank/html-to-md). I've found the markdown quality to work really well in my testing, but if you'd rather output plaintext, you can use:
+
+```ts
+const api = new ChatGPTAPI({ markdown: false })
+```
 
 ## Docs
 
