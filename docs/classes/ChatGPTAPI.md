@@ -36,7 +36,7 @@
 
 #### Defined in
 
-[chatgpt-api.ts:20](https://github.com/transitive-bullshit/chatgpt-api/blob/82a5232/src/chatgpt-api.ts#L20)
+[chatgpt-api.ts:20](https://github.com/transitive-bullshit/chatgpt-api/blob/ddd9545/src/chatgpt-api.ts#L20)
 
 ## Methods
 
@@ -50,7 +50,7 @@
 
 #### Defined in
 
-[chatgpt-api.ts:175](https://github.com/transitive-bullshit/chatgpt-api/blob/82a5232/src/chatgpt-api.ts#L175)
+[chatgpt-api.ts:186](https://github.com/transitive-bullshit/chatgpt-api/blob/ddd9545/src/chatgpt-api.ts#L186)
 
 ___
 
@@ -64,7 +64,7 @@ ___
 
 #### Defined in
 
-[chatgpt-api.ts:88](https://github.com/transitive-bullshit/chatgpt-api/blob/82a5232/src/chatgpt-api.ts#L88)
+[chatgpt-api.ts:94](https://github.com/transitive-bullshit/chatgpt-api/blob/ddd9545/src/chatgpt-api.ts#L94)
 
 ___
 
@@ -78,7 +78,7 @@ ___
 
 #### Defined in
 
-[chatgpt-api.ts:93](https://github.com/transitive-bullshit/chatgpt-api/blob/82a5232/src/chatgpt-api.ts#L93)
+[chatgpt-api.ts:104](https://github.com/transitive-bullshit/chatgpt-api/blob/ddd9545/src/chatgpt-api.ts#L104)
 
 ___
 
@@ -92,7 +92,7 @@ ___
 
 #### Defined in
 
-[chatgpt-api.ts:113](https://github.com/transitive-bullshit/chatgpt-api/blob/82a5232/src/chatgpt-api.ts#L113)
+[chatgpt-api.ts:124](https://github.com/transitive-bullshit/chatgpt-api/blob/ddd9545/src/chatgpt-api.ts#L124)
 
 ___
 
@@ -106,7 +106,7 @@ ___
 
 #### Defined in
 
-[chatgpt-api.ts:103](https://github.com/transitive-bullshit/chatgpt-api/blob/82a5232/src/chatgpt-api.ts#L103)
+[chatgpt-api.ts:114](https://github.com/transitive-bullshit/chatgpt-api/blob/ddd9545/src/chatgpt-api.ts#L114)
 
 ___
 
@@ -127,7 +127,7 @@ ___
 
 #### Defined in
 
-[chatgpt-api.ts:48](https://github.com/transitive-bullshit/chatgpt-api/blob/82a5232/src/chatgpt-api.ts#L48)
+[chatgpt-api.ts:48](https://github.com/transitive-bullshit/chatgpt-api/blob/ddd9545/src/chatgpt-api.ts#L48)
 
 ___
 
@@ -147,4 +147,4 @@ ___
 
 #### Defined in
 
-[chatgpt-api.ts:151](https://github.com/transitive-bullshit/chatgpt-api/blob/82a5232/src/chatgpt-api.ts#L151)
+[chatgpt-api.ts:162](https://github.com/transitive-bullshit/chatgpt-api/blob/ddd9545/src/chatgpt-api.ts#L162)
