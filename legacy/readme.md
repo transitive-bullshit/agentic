@@ -80,7 +80,7 @@ npx tsx src/example.ts
 
 ## Docs
 
-See the [auto-generated docs](./docs/classes/ChatGPTAPI.md) for more info on methods parameters.
+See the [auto-generated docs](./docs/classes/ChatGPTAPI.md) for more info on methods and parameters.
 
 ## Related
 
