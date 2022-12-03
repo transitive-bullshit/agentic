@@ -76,7 +76,7 @@ const api = new ChatGPTAPI({ markdown: false })
 
 ## Example
 
-A full example is included for testing purposes:
+A full [example](./src/example.ts) is included for testing purposes:
 
 ```
 npx tsx src/example.ts
