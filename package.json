@@ -1,6 +1,6 @@
 {
   "name": "chatgpt",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Node.js wrapper around ChatGPT. Uses headless Chrome until the official API is released.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "repository": "transitive-bullshit/chatgpt-api",
