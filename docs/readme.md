@@ -1,3 +1,5 @@
+chatgpt / [Exports](modules.md)
+
 # ChatGPT API <!-- omit in toc -->
 
 > Node.js wrapper around [ChatGPT](https://openai.com/blog/chatgpt/). Uses headless Chrome as a temporary solution until the official API is released.
@@ -16,33 +18,27 @@
 
 This package is a Node.js TypeScript wrapper around [ChatGPT](https://openai.com/blog/chatgpt) by [OpenAI](https://openai.com).
 
-You can use it to start experimenting with ChatGPT by integrating it into websites, chatbots, etc...
-
 ## Auth
 
-It uses headless Chromium via [Playwright](https://playwright.dev) under the hood, so **you still need to have access to ChatGPT**, but it makes it much easier to access programatically.
+It uses headless Chromium via [Playwright](https://playwright.dev) under the hood, so **you still need to have access to ChatGPT**, but it makes it much easier to build experiments with until OpenAPI's official API for ChatGPT is released.
 
-Chromium is opened in non-headless mode by default, which is important because the first time you run `ChatGPTAPI`.init, you'll need to log in manually. Chromium is launched with a persistent context, so you shouldn't need to keep re-logging in after the first time.
+The first time you run `ChatGPTAPI`.init, Chromium will be opened in non-headless mode so you can log in manually. After the first time, Chromium is launched with a persistent context, so you shouldn't need to keep re-logging in.
 
 ## Usage
 
 ```ts
 async function example() {
-  const api = new ChatGPTAPI()
+const api = new ChatGPTAPI()
 
-  // open chromium and wait until the user has logged in
-  await api.init({ auth: 'blocking' })
+// open chromium and wait until the user has logged in
+await api.init({ auth: 'blocking' })
 
-  // send a message and wait for a complete response, then parse it as markdown
-  const response = await api.sendMessage(
-    'Write a python version of bubble sort. Do not include example usage.'
-  )
-  console.log(response)
-}
+// send a message and wait for a complete response, then parse it as markdown
+const response = await api.sendMessage(
+  'Write a python version of bubble sort. Do not include example usage.'
+)
 
-// which outputs:
-
-/*
+/* // response
 Here is an implementation of bubble sort in Python:
 
 \`\`\`python
@@ -99,13 +95,12 @@ Note that the default functionality is to parse ChatGPT responses as markdown us
 
 ## Docs
 
-See the [auto-generated docs](./docs/classes/ChatGPTAPI.md) for more info on methods parameters.
+See the [auto-generated docs](./docs/modules.md).
 
 ## Todo
 
 - [ ] Add message and conversation IDs
 - [ ] Add support for streaming responses
-- [ ] Add basic unit tests
 
 ## Related
 
