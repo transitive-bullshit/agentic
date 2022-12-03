@@ -80,7 +80,7 @@ def bubble_sort(lst):
   return lst
 ```
 
-The default functionality parses ChatGPT responses as markdown using [html-to-md](https://github.com/stonehank/html-to-md). I've found that this works really well during my testing, but if you'd rather output plaintext, you can use:
+By default, ChatGPT responses are parsed as markdown using [html-to-md](https://github.com/stonehank/html-to-md). I've found that this works really well during my testing, but if you'd rather output plaintext, you can use:
 
 ```ts
 const api = new ChatGPTAPI({ markdown: false })
@@ -88,7 +88,10 @@ const api = new ChatGPTAPI({ markdown: false })
 
 A full [example](./src/example.ts) is included for testing purposes:
 
-```
+```bash
+# clone repo
+# install node deps
+# then run
 npx tsx src/example.ts
 ```
 
