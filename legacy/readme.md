@@ -21,9 +21,9 @@ You can use it to start experimenting with ChatGPT by integrating it into websit
 
 ## Auth
 
-It uses headless Chromium via [Playwright](https://playwright.dev) under the hood, so **you still need to have access to ChatGPT**, but it makes it much easier to access programatically.
+It uses headless Chromium via [Playwright](https://playwright.dev), so **you still need to have access to ChatGPT**, but it makes it much easier to access programatically.
 
-Chromium is opened in non-headless mode by default, which is important because the first time you run `ChatGPTAPI`.init, you'll need to log in manually. Chromium is launched with a persistent context, so you shouldn't need to keep re-logging in after the first time.
+Chromium is opened in non-headless mode by default, which is important because the first time you run `ChatGPTAPI.init()`, you'll need to log in manually. We launch Chromium with a persistent context, so you shouldn't need to keep re-logging in after the first time.
 
 ## Usage
 
