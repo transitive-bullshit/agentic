@@ -45,7 +45,9 @@ export class ChatGPTAPI {
     this._markdown = !!markdown
   }
 
-  async init() {
+  async init(opts: { auth?: 'blocking' | 'eager' } = {}) {
+    const { auth = 'eager' } = opts
+
     this._browser = await chromium.launchPersistentContext(this._userDataDir, {
       headless: this._headless
     })
@@ -67,6 +69,18 @@ export class ChatGPTAPI {
         break
       }
     } while (true)
+
+    if (auth === 'blocking') {
+      do {
+        const isSignedIn = await this.getIsSignedIn()
+        if (isSignedIn) {
+          break
+        }
+
+        console.log('Please sign in to ChatGPT')
+        await delay(1000)
+      } while (true)
+    }
 
     return this._page
   }
