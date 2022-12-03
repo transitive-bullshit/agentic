@@ -16,15 +16,18 @@
 
 ## Intro
 
-This package is a Node.js TypeScript wrapper around [ChatGPT](https://openai.com/blog/chatgpt) by [OpenAI](https://openai.com).
+This package is a Node.js wrapper around [ChatGPT](https://openai.com/blog/chatgpt) by [OpenAI](https://openai.com). TS batteries included. ✨
 
 You can use it to start experimenting with ChatGPT by integrating it into websites, chatbots, etc...
 
+> **Note**
+> This package will be replaced to use the official API once it is released by OpenAI.
+
 ## Auth
 
-It uses headless Chromium via [Playwright](https://playwright.dev), so **you still need to have access to ChatGPT**, but it makes it much easier to access programatically.
+We use headless Chromium via [Playwright](https://playwright.dev), so **you still need to have access to ChatGPT** — it just makes things much easier to access programatically.
 
-Chromium is opened in non-headless mode by default, which is important because the first time you run `ChatGPTAPI.init()`, you'll need to log in manually. We launch Chromium with a persistent context, so you shouldn't need to keep re-logging in after the first time.
+Chromium will be opened in non-headless mode by default, which is important because the first time you run `ChatGPTAPI.init()`, you'll need to log in manually. We launch Chromium with a persistent context, however, so you shouldn't need to keep re-logging in after the first time.
 
 ## Install
 
