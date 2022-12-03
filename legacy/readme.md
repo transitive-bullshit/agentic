@@ -95,6 +95,7 @@ See the [auto-generated docs](./docs/classes/ChatGPTAPI.md) for more info on met
 ## Related
 
 - Inspired by this [Go module](https://github.com/danielgross/whatsapp-gpt) by [Daniel Gross](https://github.com/danielgross)
+- [Python port](https://github.com/taranjeet/chatgpt-api)
 
 ## License
 
