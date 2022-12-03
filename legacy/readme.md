@@ -61,30 +61,6 @@ async function example() {
 }
 ```
 
-Which outputs a similar reponse to this (as a markdown string, including the _\`\`\`python_ code block prefix):
-
-```python
-def bubble_sort(lst):
-  # Set the initial flag to True to start the loop
-  swapped = True
-
-  # Keep looping until there are no more swaps
-  while swapped:
-    # Set the flag to False initially
-    swapped = False
-
-    # Loop through the list
-    for i in range(len(lst) - 1):
-      # If the current element is greater than the next element,
-      # swap them and set the flag to True
-      if lst[i] > lst[i + 1]:
-        lst[i], lst[i + 1] = lst[i + 1], lst[i]
-        swapped = True
-
-  # Return the sorted list
-  return lst
-```
-
 By default, ChatGPT responses are parsed as markdown using [html-to-md](https://github.com/stonehank/html-to-md). I've found that this works really well during my testing, but if you'd rather output plaintext, you can use:
 
 ```ts
