@@ -27,6 +27,8 @@ Chromium is opened in non-headless mode by default, which is important because t
 ## Usage
 
 ```ts
+import { ChatGPTAPI } from 'chatgpt'
+
 async function example() {
   const api = new ChatGPTAPI()
 
