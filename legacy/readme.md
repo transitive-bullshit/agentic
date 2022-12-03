@@ -1,6 +1,6 @@
 # ChatGPT API <!-- omit in toc -->
 
-> Node.js wrapper around [ChatGPT](https://openai.com/blog/chatgpt/). Uses headless Chrome as a temporary solution until the official API is released.
+> Node.js TS wrapper around [ChatGPT](https://openai.com/blog/chatgpt/). Uses headless Chrome until the official API is released.
 
 [![NPM](https://img.shields.io/npm/v/chatgpt.svg)](https://www.npmjs.com/package/chatgpt) [![Build Status](https://github.com/transitive-bullshit/chatgpt-api/actions/workflows/test.yml/badge.svg)](https://github.com/transitive-bullshit/chatgpt-api/actions/workflows/test.yml) [![MIT License](https://img.shields.io/badge/license-MIT-blue)](https://github.com/transitive-bullshit/chatgpt-api/blob/main/license) [![Prettier Code Formatting](https://img.shields.io/badge/code_style-prettier-brightgreen.svg)](https://prettier.io)
 
@@ -109,7 +109,7 @@ See the [auto-generated docs](./docs/classes/ChatGPTAPI.md) for more info on met
 
 ## Related
 
-- Inspired by the [Go module](https://github.com/danielgross/whatsapp-gpt) by [Daniel Gross](https://github.com/danielgross)
+- Inspired by this [Go module](https://github.com/danielgross/whatsapp-gpt) by [Daniel Gross](https://github.com/danielgross)
 
 ## License
 

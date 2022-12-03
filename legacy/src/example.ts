@@ -34,12 +34,13 @@ async function main() {
     // 'Write a TypeScript function for conway sort.'
     'Write a python version of bubble sort. Do not include example usage.'
   )
+
   // const prompts = await api.getPrompts()
   // const messages = await api.getMessages()
   // console.log('prompts', prompts)
   // console.log('messages', messages)
 
-  // Wait forever; useful for debugging chromium session
+  // Wait forever; useful for debugging chromium sessions
   // await new Promise(() => {})
 
   await api.close()
