@@ -41,7 +41,7 @@ async function example() {
 }
 ```
 
-Which outputs:
+Which outputs the following (as a markdown string):
 
 ```python
 def bubble_sort(lst):
