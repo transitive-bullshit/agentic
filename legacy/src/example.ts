@@ -16,17 +16,21 @@ async function main() {
     // Wait until the user signs in via the chromium browser
     await oraPromise(
       new Promise<void>(async (resolve, reject) => {
-        try {
-          await delay(1000)
-          const isSignedIn = await api.getIsSignedIn()
-          if (isSignedIn) {
-            return resolve()
+        do {
+          try {
+            await delay(1000)
+
+            const isSignedIn = await api.getIsSignedIn()
+
+            if (isSignedIn) {
+              return resolve()
+            }
+          } catch (err) {
+            return reject(err)
           }
-        } catch (err) {
-          return reject(err)
-        }
+        } while (true)
       }),
-      'Please sign in to ChatGPT'
+      'Please sign in to ChatGPT and dismiss the welcome modal'
     )
   }
 

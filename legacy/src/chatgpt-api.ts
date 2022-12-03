@@ -58,14 +58,17 @@ export class ChatGPTAPI {
     // dismiss welcome modal
     do {
       const modalSelector = '[data-headlessui-state="open"]'
-      if (!(await this._page.isVisible(modalSelector, { timeout: 500 }))) {
+
+      if (!(await this._page.$(modalSelector))) {
         break
       }
 
-      const modal = await this._page.locator(modalSelector)
-      if (modal) {
-        await modal.locator('button').last().click()
-      } else {
+      try {
+        await this._page.click(`${modalSelector} button:last-child`, {
+          timeout: 1000
+        })
+      } catch (err) {
+        // "next" button not found in welcome modal
         break
       }
     } while (true)
@@ -77,7 +80,10 @@ export class ChatGPTAPI {
           break
         }
 
-        console.log('Please sign in to ChatGPT')
+        console.log(
+          'Please sign in to ChatGPT using the Chromium browser window and dismiss the welcome modal...'
+        )
+
         await delay(1000)
       } while (true)
     }
@@ -86,8 +92,13 @@ export class ChatGPTAPI {
   }
 
   async getIsSignedIn() {
-    const inputBox = await this._getInputBox()
-    return !!inputBox
+    try {
+      const inputBox = await this._getInputBox()
+      return !!inputBox
+    } catch (err) {
+      // can happen when navigating during login
+      return false
+    }
   }
 
   async getLastMessage(): Promise<string | null> {
@@ -154,8 +165,8 @@ export class ChatGPTAPI {
 
     const lastMessage = await this.getLastMessage()
 
-    await inputBox.click()
-    await inputBox.fill(message)
+    await inputBox.click({ force: true })
+    await inputBox.fill(message, { force: true })
     await inputBox.press('Enter')
 
     do {

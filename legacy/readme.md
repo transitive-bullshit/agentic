@@ -22,7 +22,7 @@ You can use it to start building projects powered by ChatGPT like chatbots, webs
 
 We use headless Chromium via [Playwright](https://playwright.dev) to automate the webapp, so **you still need to have access to ChatGPT**. It just makes building API-like integrations much easier.
 
-Chromium will be opened in non-headless mode by default, which is important because the first time you run `ChatGPTAPI.init()`, you'll need to log in manually. We launch Chromium with a persistent context, however, so you shouldn't need to keep re-logging in after the first time.
+Chromium will be opened in non-headless mode by default, which is important because the first time you run `ChatGPTAPI.init()`, you'll need to log in manually. We launch Chromium with a persistent context, however, so you shouldn't need to keep re-logging in after the first time. When you log in the first time, _make sure that you also dismiss the welcome modal_.
 
 > **Note**
 > We'll replace headless chrome with the official API once it's released.
