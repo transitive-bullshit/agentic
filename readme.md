@@ -6,6 +6,7 @@
 
 - [Intro](#intro)
 - [Auth](#auth)
+- [Install](#install)
 - [Usage](#usage)
 - [Example](#example)
 - [Docs](#docs)
@@ -24,6 +25,16 @@ You can use it to start experimenting with ChatGPT by integrating it into websit
 It uses headless Chromium via [Playwright](https://playwright.dev), so **you still need to have access to ChatGPT**, but it makes it much easier to access programatically.
 
 Chromium is opened in non-headless mode by default, which is important because the first time you run `ChatGPTAPI.init()`, you'll need to log in manually. We launch Chromium with a persistent context, so you shouldn't need to keep re-logging in after the first time.
+
+## Install
+
+```bash
+npm install --save chatgpt
+# or
+yarn add chatgpt
+# or
+pnpm add chatgpt
+```
 
 ## Usage
 
