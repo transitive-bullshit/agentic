@@ -48,6 +48,10 @@ export class ChatGPTAPI {
   async init(opts: { auth?: 'blocking' | 'eager' } = {}) {
     const { auth = 'eager' } = opts
 
+    if (this._browser) {
+      await this.close()
+    }
+
     this._browser = await chromium.launchPersistentContext(this._userDataDir, {
       headless: this._headless
     })
@@ -184,7 +188,9 @@ export class ChatGPTAPI {
   }
 
   async close() {
-    return await this._browser.close()
+    await this._browser.close()
+    this._page = null
+    this._browser = null
   }
 
   protected async _getInputBox(): Promise<any> {
