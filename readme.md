@@ -85,10 +85,14 @@ See the [auto-generated docs](./docs/classes/ChatGPTAPI.md) for more info on met
 
 ## Examples
 
-- [Twitter Bot](https://github.com/transitive-bullshit/chatgpt-twitter-bot) - Twitter bot powered by this package.
+All of these awesome projects use the `chatgpt` package. 🤯
+
+- [Twitter Bot](https://github.com/transitive-bullshit/chatgpt-twitter-bot) powered by ChatGPT ✨
   - Mention [@ChatGPTBot](https://twitter.com/ChatGPTBot) on Twitter with your prompt to try it out
 - [VSCode extension](https://github.com/mpociot/chatgpt-vscode) ([demo](https://twitter.com/marcelpociot/status/1599180144551526400))
 - [Go Telegram bot](https://github.com/m1guelpf/chatgpt-telegram)
+
+If you create a cool integration, feel free to open a PR and add it to the list.
 
 ## Related
 
