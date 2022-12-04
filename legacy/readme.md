@@ -87,6 +87,7 @@ See the [auto-generated docs](./docs/classes/ChatGPTAPI.md) for more info on met
 
 All of these awesome projects use the `chatgpt` package. 🤯
 
+- [Chrome extension](https://github.com/gragland/chatgpt-everywhere)
 - [Twitter Bot](https://github.com/transitive-bullshit/chatgpt-twitter-bot) powered by ChatGPT ✨
   - Mention [@ChatGPTBot](https://twitter.com/ChatGPTBot) on Twitter with your prompt to try it out
 - [VSCode Extension](https://github.com/mpociot/chatgpt-vscode) ([demo](https://twitter.com/marcelpociot/status/1599180144551526400))
