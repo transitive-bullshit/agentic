@@ -86,6 +86,7 @@ See the [auto-generated docs](./docs/classes/ChatGPTAPI.md) for more info on met
 
 - [ChatGPT Twitter Bot](https://github.com/transitive-bullshit/chatgpt-twitter-bot) - Twitter bot powered by this package. [@ChatGPTBot](https://twitter.com/ChatGPTBot)
 - Inspired by this [Go module](https://github.com/danielgross/whatsapp-gpt) by [Daniel Gross](https://github.com/danielgross)
+- [Go Telegram bot](https://github.com/m1guelpf/chatgpt-telegram)
 - [Python port](https://github.com/taranjeet/chatgpt-api)
 
 ## License
