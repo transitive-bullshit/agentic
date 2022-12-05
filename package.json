@@ -5,13 +5,14 @@
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "repository": "transitive-bullshit/chatgpt-api",
   "license": "MIT",
-  "type": "module",
-  "source": "./src/index.ts",
   "types": "./build/index.d.ts",
+  "module": "./build/index.mjs",
   "exports": {
-    "import": "./build/index.js",
-    "default": "./build/index.js",
-    "types": "./build/index.d.ts"
+    ".": {
+      "require": "./build/index.js",
+      "import": "./build/index.mjs",
+      "types": "./build/index.d.ts"      
+    }
   },
   "files": [
     "build"
