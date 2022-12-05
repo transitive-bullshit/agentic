@@ -32,14 +32,15 @@
     "prepare": "husky install",
     "pre-commit": "lint-staged",
     "test": "run-p test:*",
+    "test:unit": "ava",
     "test:prettier": "prettier '**/*.{js,jsx,ts,tsx}' --check"
   },
   "dependencies": {
     "eventsource-parser": "^0.0.5",
     "expiry-map": "^2.0.0",
-    "node-fetch": "2",
     "remark": "^14.0.2",
     "strip-markdown": "^5.0.0",
+    "undici": "^5.13.0",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
@@ -47,6 +48,7 @@
     "@types/node": "^18.11.9",
     "@types/node-fetch": "2",
     "@types/uuid": "^9.0.0",
+    "ava": "^5.1.0",
     "del-cli": "^5.0.0",
     "dotenv-safe": "^8.2.0",
     "husky": "^8.0.2",
@@ -63,6 +65,14 @@
   "lint-staged": {
     "*.{ts,tsx}": [
       "prettier --write"
+    ]
+  },
+  "ava": {
+    "extensions": {
+      "ts": "module"
+    },
+    "nodeArguments": [
+      "--loader=tsx"
     ]
   },
   "keywords": [
