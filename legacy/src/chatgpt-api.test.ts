@@ -23,25 +23,6 @@ test('ChatGPTAPI invalid session token', async (t) => {
   )
 })
 
-test('ChatGPTAPI expired session token', async (t) => {
-  if (isCI) {
-    return
-  }
-
-  const expiredSessionToken = process.env.TEST_EXPIRED_SESSION_TOKEN
-
-  await t.throwsAsync(
-    async () => {
-      const chatgpt = new ChatGPTAPI({ sessionToken: expiredSessionToken })
-      await chatgpt.ensureAuth()
-    },
-    {
-      message:
-        'ChatGPT failed to refresh auth token. Error: session token has expired'
-    }
-  )
-})
-
 test('ChatGPTAPI valid session token', async (t) => {
   if (!isCI) {
     t.timeout(2 * 60 * 1000) // 2 minutes
@@ -67,3 +48,20 @@ test('ChatGPTAPI valid session token', async (t) => {
     })()
   )
 })
+
+if (!isCI) {
+  test('ChatGPTAPI expired session token', async (t) => {
+    const expiredSessionToken = process.env.TEST_EXPIRED_SESSION_TOKEN
+
+    await t.throwsAsync(
+      async () => {
+        const chatgpt = new ChatGPTAPI({ sessionToken: expiredSessionToken })
+        await chatgpt.ensureAuth()
+      },
+      {
+        message:
+          'ChatGPT failed to refresh auth token. Error: session token has expired'
+      }
+    )
+  })
+}
