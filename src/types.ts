@@ -1,3 +1,7 @@
+export type ContentType = 'text'
+
+export type Role = 'user' | 'assistant'
+
 /**
  * https://chat.openapi.com/api/auth/session
  */
@@ -5,7 +9,7 @@ export type SessionResult = {
   /**
    * Object of the current user
    */
-  user: APIUser
+  user: User
 
   /**
    * ISO date of the expiration date of the access token
@@ -18,7 +22,7 @@ export type SessionResult = {
   accessToken: string
 }
 
-export type APIUser = {
+export type User = {
   /**
    * ID of the user
    */
@@ -62,10 +66,10 @@ export type ModelsResult = {
   /**
    * Array of models
    */
-  models: APIModel[]
+  models: Model[]
 }
 
-export type APIModel = {
+export type Model = {
   /**
    * Name of the model
    */
@@ -136,7 +140,7 @@ export type ConversationJSONBody = {
   /**
    * Prompts to provide
    */
-  messages: APIPrompt[]
+  messages: Prompt[]
 
   /**
    * The model to use
@@ -149,11 +153,11 @@ export type ConversationJSONBody = {
   parent_message_id: string
 }
 
-export type APIPrompt = {
+export type Prompt = {
   /**
    * The content of the prompt
    */
-  content: APIPromptContent
+  content: PromptContent
 
   /**
    * The ID of the prompt
@@ -163,24 +167,20 @@ export type APIPrompt = {
   /**
    * The role played in the prompt
    */
-  role: APIPromptRole
+  role: Role
 }
 
-export type APIPromptContent = {
+export type PromptContent = {
   /**
    * The content type of the prompt
    */
-  content_type: APIPromptContentType
+  content_type: ContentType
 
   /**
    * The parts to the prompt
    */
   parts: string[]
 }
-
-export type APIPromptContentType = 'text'
-
-export type APIPromptRole = 'user'
 
 /**
  * https://chat.openapi.com/backend-api/conversation/message_feedback
@@ -199,12 +199,12 @@ export type MessageFeedbackJSONBody = {
   /**
    * The rating
    */
-  rating: APIMessageFeedbackRating
+  rating: MessageFeedbackRating
 
   /**
    * Tags to give the rating
    */
-  tags?: APIMessageFeedbackTags[]
+  tags?: MessageFeedbackTags[]
 
   /**
    * The text to include
@@ -212,7 +212,7 @@ export type MessageFeedbackJSONBody = {
   text?: string
 }
 
-export type APIMessageFeedbackTags = 'harmful' | 'false' | 'not-helpful'
+export type MessageFeedbackTags = 'harmful' | 'false' | 'not-helpful'
 
 export type MessageFeedbackResult = {
   /**
@@ -233,7 +233,7 @@ export type MessageFeedbackResult = {
   /**
    * The rating
    */
-  rating: APIMessageFeedbackRating
+  rating: MessageFeedbackRating
 
   /**
    * The text the server received, including tags
@@ -241,4 +241,30 @@ export type MessageFeedbackResult = {
   text?: string
 }
 
-export type APIMessageFeedbackRating = 'thumbsUp' | 'thumbsDown'
+export type MessageFeedbackRating = 'thumbsUp' | 'thumbsDown'
+
+export type ConversationResponseEvent = {
+  message?: Message
+  conversation_id?: string
+  error?: string | null
+}
+
+export type Message = {
+  id: string
+  content: MessageContent
+  role: string
+  user: string | null
+  create_time: string | null
+  update_time: string | null
+  end_turn: null
+  weight: number
+  recipient: string
+  metadata: MessageMetadata
+}
+
+export type MessageContent = {
+  content_type: string
+  parts: string[]
+}
+
+export type MessageMetadata = any
