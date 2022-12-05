@@ -16,6 +16,8 @@ export class ChatGPTAPI {
   protected _apiBaseUrl: string
   protected _backendApiBaseUrl: string
   protected _userAgent: string
+
+  // stores access tokens for up to 10 seconds before needing to refresh
   protected _accessTokenCache = new ExpiryMap<string, string>(10 * 1000)
 
   /**
@@ -133,7 +135,7 @@ export class ChatGPTAPI {
           try {
             const parsedData: types.ConversationResponseEvent = JSON.parse(data)
             const message = parsedData.message
-            console.log('event', JSON.stringify(parsedData, null, 2))
+            // console.log('event', JSON.stringify(parsedData, null, 2))
 
             if (message) {
               let text = message?.content?.parts?.[0]
@@ -144,11 +146,11 @@ export class ChatGPTAPI {
                 }
 
                 response = text
+                // fullResponse = message
 
                 if (onProgress) {
                   onProgress(text)
                 }
-                // fullResponse = message
               }
             }
           } catch (err) {

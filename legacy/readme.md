@@ -21,21 +21,23 @@ You can use it to start building projects powered by ChatGPT like chatbots, webs
 
 ## How it works
 
-This package requires a valid session token from OpenAI's ChatGPT webapp to access it's unofficial REST API.
+This package requires a valid session token from ChatGPT to access it's unofficial REST API.
 
-1. Go to https://chat.openai.com/chat and log in or sign up
-2. Open the dev tools console
-3. Open `Application` > `Cookies`
-   ![ChatGPT cookies](./media/cookies.png)
+To get a session token:
+
+1. Go to https://chat.openai.com/chat and log in or sign up.
+2. Open dev tools.
+3. Open `Application` > `Cookies`.
+   ![ChatGPT cookies](./media/session-token.png)
 4. Copy the value for `__Secure-next-auth.session-token` and save it to your environment.
 
-If you want to run the built-in demo,
+If you want to run the built-in demo, store this value as `SESSION_TOKEN` in a local `.env` file.
 
 > **Note**
 > This package will switch to using the official API once it's released.
 
 > **Note**
-> Prior to v1.0.0, this package used headless Chromium via [Playwright](https://playwright.dev/) to automate the web UI. Here are the [docs for the initial browser version](https://github.com/transitive-bullshit/chatgpt-api/tree/v0.4.2).
+> Prior to v1.0.0, this package used a headless browser via [Playwright](https://playwright.dev/) to automate the web UI. Here are the [docs for the initial browser version](https://github.com/transitive-bullshit/chatgpt-api/tree/v0.4.2).
 
 ## Install
 
@@ -53,7 +55,7 @@ pnpm add chatgpt
 import { ChatGPTAPI } from 'chatgpt'
 
 async function example() {
-  const api = new ChatGPTAPI()
+  const api = new ChatGPTAPI({ sessionToken: process.env.SESSION_TOKEN })
 
   // ensure the API is properly authenticated (optional)
   await api.ensureAuth()
@@ -66,6 +68,15 @@ async function example() {
   // response is a markdown-formatted string
   console.log(response)
 }
+```
+
+By default, the response will be formatted as markdown. If you want to work with plaintext only, you can use:
+
+```ts
+const api = new ChatGPTAPI({
+  sessionToken: process.env.SESSION_TOKEN,
+  markdown: false
+})
 ```
 
 A full [example](./src/example.ts) is included for testing purposes:
@@ -98,7 +109,8 @@ If you create a cool integration, feel free to open a PR and add it to the list.
 
 ## Credit
 
-- Inspired by this [Go module](https://github.com/danielgross/whatsapp-gpt) by [Daniel Gross](https://github.com/danielgross)
+- Huge thanks to [@RomanHotsiy](https://github.com/RomanHotsiy), [@ElijahPepe](https://github.com/ElijahPepe), [@wong2](https://github.com/wong2), and all the other contributors 💪
+- The original browser version was inspired by this [Go module](https://github.com/danielgross/whatsapp-gpt) by [Daniel Gross](https://github.com/danielgross)
 
 ## License
 
