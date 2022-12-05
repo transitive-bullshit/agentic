@@ -1,208 +1,212 @@
-import delay from 'delay'
-import html2md from 'html-to-md'
-import { type ChromiumBrowserContext, type Page, chromium } from 'playwright'
+import { createParser } from 'eventsource-parser'
+import ExpiryMap from 'expiry-map'
+import fetch from 'node-fetch'
+import { v4 as uuidv4 } from 'uuid'
+
+import * as types from './types'
+import { markdownToText } from './utils'
+
+const KEY_ACCESS_TOKEN = 'accessToken'
+const USER_AGENT =
+  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36'
 
 export class ChatGPTAPI {
-  protected _userDataDir: string
-  protected _headless: boolean
+  protected _sessionToken: string
   protected _markdown: boolean
-  protected _chatUrl: string
+  protected _apiBaseUrl: string
+  protected _backendApiBaseUrl: string
+  protected _userAgent: string
 
-  protected _browser: ChromiumBrowserContext
-  protected _page: Page
+  // stores access tokens for up to 10 seconds before needing to refresh
+  protected _accessTokenCache = new ExpiryMap<string, string>(10 * 1000)
 
   /**
-   * @param opts.userDataDir — Path to a directory for storing persistent chromium session data
-   * @param opts.chatUrl — OpenAI chat URL
-   * @param opts.headless - Whether or not to use headless mode
-   * @param opts.markdown — Whether or not to parse chat messages as markdown
+   * Creates a new client wrapper around the unofficial ChatGPT REST API.
+   *
+   * @param opts.sessionToken = **Required** OpenAI session token which can be found in a valid session's cookies (see readme for instructions)
+   * @param apiBaseUrl - Optional override; the base URL for ChatGPT webapp's API (`/api`)
+   * @param backendApiBaseUrl - Optional override; the base URL for the ChatGPT backend API (`/backend-api`)
+   * @param userAgent - Optional override; the `user-agent` header to use with ChatGPT requests
    */
-  constructor(
-    opts: {
-      /** @defaultValue `'/tmp/chatgpt'` **/
-      userDataDir?: string
+  constructor(opts: {
+    sessionToken: string
 
-      /** @defaultValue `'https://chat.openai.com/'` **/
-      chatUrl?: string
+    /** @defaultValue `true` **/
+    markdown?: boolean
 
-      /** @defaultValue `false` **/
-      headless?: boolean
+    /** @defaultValue `'https://chat.openai.com/api'` **/
+    apiBaseUrl?: string
 
-      /** @defaultValue `true` **/
-      markdown?: boolean
-    } = {}
-  ) {
+    /** @defaultValue `'https://chat.openai.com/backend-api'` **/
+    backendApiBaseUrl?: string
+
+    /** @defaultValue `'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36'` **/
+    userAgent?: string
+  }) {
     const {
-      userDataDir = '/tmp/chatgpt',
-      chatUrl = 'https://chat.openai.com/',
-      headless = false,
-      markdown = true
+      sessionToken,
+      markdown = true,
+      apiBaseUrl = 'https://chat.openai.com/api',
+      backendApiBaseUrl = 'https://chat.openai.com/backend-api',
+      userAgent = USER_AGENT
     } = opts
 
-    this._userDataDir = userDataDir
-    this._headless = !!headless
-    this._chatUrl = chatUrl
+    this._sessionToken = sessionToken
     this._markdown = !!markdown
+    this._apiBaseUrl = apiBaseUrl
+    this._backendApiBaseUrl = backendApiBaseUrl
+    this._userAgent = userAgent
+
+    if (!this._sessionToken) {
+      throw new Error('ChatGPT invalid session token')
+    }
   }
 
-  async init(opts: { auth?: 'blocking' | 'eager' } = {}) {
-    const { auth = 'eager' } = opts
-
-    if (this._browser) {
-      await this.close()
-    }
-
-    this._browser = await chromium.launchPersistentContext(this._userDataDir, {
-      headless: this._headless
-    })
-
-    this._page = await this._browser.newPage()
-    await this._page.goto(this._chatUrl)
-
-    // dismiss welcome modal
-    do {
-      const modalSelector = '[data-headlessui-state="open"]'
-
-      if (!(await this._page.$(modalSelector))) {
-        break
-      }
-
-      try {
-        await this._page.click(`${modalSelector} button:last-child`, {
-          timeout: 1000
-        })
-      } catch (err) {
-        // "next" button not found in welcome modal
-        break
-      }
-    } while (true)
-
-    if (auth === 'blocking') {
-      do {
-        const isSignedIn = await this.getIsSignedIn()
-        if (isSignedIn) {
-          break
-        }
-
-        console.log(
-          'Please sign in to ChatGPT using the Chromium browser window and dismiss the welcome modal...'
-        )
-
-        await delay(1000)
-      } while (true)
-    }
-
-    return this._page
-  }
-
-  async getIsSignedIn() {
+  async getIsAuthenticated() {
     try {
-      const inputBox = await this._getInputBox()
-      return !!inputBox
+      void (await this.refreshAccessToken())
+      return true
     } catch (err) {
-      // can happen when navigating during login
       return false
     }
   }
 
-  async getLastMessage(): Promise<string | null> {
-    const messages = await this.getMessages()
+  async ensureAuth() {
+    return await this.refreshAccessToken()
+  }
 
-    if (messages) {
-      return messages[messages.length - 1]
-    } else {
-      return null
+  /**
+   * Sends a message to ChatGPT, waits for the response to resolve, and returns
+   * the response.
+   *
+   * @param message - The plaintext message to send.
+   * @param opts.conversationId - Optional ID of the previous message in a conversation
+   * @param opts.onProgress - Optional listener which will be called every time the partial response is updated
+   */
+  async sendMessage(
+    message: string,
+    opts: {
+      converstationId?: string
+      onProgress?: (partialResponse: string) => void
+    } = {}
+  ): Promise<string> {
+    const { converstationId = uuidv4(), onProgress } = opts
+
+    const accessToken = await this.refreshAccessToken()
+
+    const body: types.ConversationJSONBody = {
+      action: 'next',
+      messages: [
+        {
+          id: uuidv4(),
+          role: 'user',
+          content: {
+            content_type: 'text',
+            parts: [message]
+          }
+        }
+      ],
+      model: 'text-davinci-002-render',
+      parent_message_id: converstationId
     }
+
+    const url = `${this._backendApiBaseUrl}/conversation`
+
+    // TODO: What's the best way to differentiate btwn wanting just the response text
+    // versus wanting the full response message, so you can extract the ID and other
+    // metadata?
+    // let fullResponse: types.Message = null
+    let response = ''
+
+    return new Promise((resolve, reject) => {
+      this._fetchSSE(url, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+          'user-agent': this._userAgent
+        },
+        body: JSON.stringify(body),
+        onMessage: (data: string) => {
+          if (data === '[DONE]') {
+            return resolve(response)
+          }
+
+          try {
+            const parsedData: types.ConversationResponseEvent = JSON.parse(data)
+            const message = parsedData.message
+            // console.log('event', JSON.stringify(parsedData, null, 2))
+
+            if (message) {
+              let text = message?.content?.parts?.[0]
+
+              if (text) {
+                if (!this._markdown) {
+                  text = markdownToText(text)
+                }
+
+                response = text
+                // fullResponse = message
+
+                if (onProgress) {
+                  onProgress(text)
+                }
+              }
+            }
+          } catch (err) {
+            console.warn('fetchSSE onMessage unexpected error', err)
+            reject(err)
+          }
+        }
+      }).catch(reject)
+    })
   }
 
-  async getPrompts(): Promise<string[]> {
-    // Get all prompts
-    const messages = await this._page.$$(
-      '[class*="ConversationItem__Message"]:has([class*="ConversationItem__ActionButtons"]):has([class*="ConversationItem__Role"] [class*="Avatar__Wrapper"])'
-    )
-
-    // prompts are always plaintext
-    return Promise.all(messages.map((a) => a.innerText()))
-  }
-
-  async getMessages(): Promise<string[]> {
-    // Get all complete messages
-    // (in-progress messages that are being streamed back don't contain action buttons)
-    const messages = await this._page.$$(
-      '[class*="ConversationItem__Message"]:has([class*="ConversationItem__ActionButtons"]):not(:has([class*="ConversationItem__Role"] [class*="Avatar__Wrapper"]))'
-    )
-
-    if (this._markdown) {
-      const htmlMessages = await Promise.all(messages.map((a) => a.innerHTML()))
-
-      const markdownMessages = htmlMessages.map((messageHtml) => {
-        // parse markdown from message HTML
-        messageHtml = messageHtml.replace('Copy code</button>', '</button>')
-        return html2md(messageHtml, {
-          ignoreTags: [
-            'button',
-            'svg',
-            'style',
-            'form',
-            'noscript',
-            'script',
-            'meta',
-            'head'
-          ],
-          skipTags: ['button', 'svg']
-        })
-      })
-
-      return markdownMessages
-    } else {
-      // plaintext
-      const plaintextMessages = await Promise.all(
-        messages.map((a) => a.innerText())
-      )
-      return plaintextMessages
+  async refreshAccessToken(): Promise<string> {
+    const cachedAccessToken = this._accessTokenCache.get(KEY_ACCESS_TOKEN)
+    if (cachedAccessToken) {
+      return cachedAccessToken
     }
-  }
 
-  async sendMessage(message: string): Promise<string> {
-    const inputBox = await this._getInputBox()
-    if (!inputBox) throw new Error('not signed in')
+    try {
+      const res = await fetch('https://chat.openai.com/api/auth/session', {
+        headers: {
+          cookie: `__Secure-next-auth.session-token=${this._sessionToken}`,
+          'user-agent': this._userAgent
+        }
+      }).then((r) => r.json() as any as types.SessionResult)
 
-    const lastMessage = await this.getLastMessage()
+      const accessToken = res?.accessToken
 
-    await inputBox.click({ force: true })
-    await inputBox.fill(message, { force: true })
-    await inputBox.press('Enter')
-
-    do {
-      await delay(1000)
-
-      // TODO: this logic needs some work because we can have repeat messages...
-      const newLastMessage = await this.getLastMessage()
-      if (
-        newLastMessage &&
-        lastMessage?.toLowerCase() !== newLastMessage?.toLowerCase()
-      ) {
-        return newLastMessage
+      if (!accessToken) {
+        console.warn('no auth token', res)
+        throw new Error('Unauthorized')
       }
-    } while (true)
+
+      this._accessTokenCache.set(KEY_ACCESS_TOKEN, accessToken)
+      return accessToken
+    } catch (err: any) {
+      throw new Error(`ChatGPT failed to refresh auth token: ${err.toString()}`)
+    }
   }
 
-  async resetThread() {
-    const resetButton = await this._page.$('nav > a:nth-child(1)')
-    if (!resetButton) throw new Error('not signed in')
+  protected async _fetchSSE(
+    url: string,
+    options: Parameters<typeof fetch>[1] & { onMessage: (data: string) => void }
+  ) {
+    const { onMessage, ...fetchOptions } = options
+    const resp = await fetch(url, fetchOptions)
+    const parser = createParser((event) => {
+      if (event.type === 'event') {
+        onMessage(event.data)
+      }
+    })
 
-    await resetButton.click()
-  }
-
-  async close() {
-    await this._browser.close()
-    this._page = null
-    this._browser = null
-  }
-
-  protected async _getInputBox(): Promise<any> {
-    return this._page.$(
-      'div[class*="PromptTextarea__TextareaWrapper"] textarea'
-    )
+    resp.body.on('readable', () => {
+      let chunk: string | Buffer
+      while (null !== (chunk = resp.body.read())) {
+        parser.feed(chunk.toString())
+      }
+    })
   }
 }
