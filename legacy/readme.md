@@ -1,6 +1,10 @@
+<p align="center">
+  <img alt="Example usage" src="/media/demo.gif">
+</p>
+
 # ChatGPT API <!-- omit in toc -->
 
-> Node.js wrapper around [ChatGPT](https://openai.com/blog/chatgpt/). Uses headless Chrome until the official API is released.
+> Node.js client for the unofficial [ChatGPT](https://openai.com/blog/chatgpt/) API.
 
 [![NPM](https://img.shields.io/npm/v/chatgpt.svg)](https://www.npmjs.com/package/chatgpt) [![Build Status](https://github.com/transitive-bullshit/chatgpt-api/actions/workflows/test.yml/badge.svg)](https://github.com/transitive-bullshit/chatgpt-api/actions/workflows/test.yml) [![MIT License](https://img.shields.io/badge/license-MIT-blue)](https://github.com/transitive-bullshit/chatgpt-api/blob/main/license) [![Prettier Code Formatting](https://img.shields.io/badge/code_style-prettier-brightgreen.svg)](https://prettier.io)
 
@@ -10,7 +14,7 @@
 - [Usage](#usage)
 - [Docs](#docs)
 - [Examples](#examples)
-- [Related](#related)
+- [Credit](#credit)
 - [License](#license)
 
 ## Intro
@@ -21,17 +25,23 @@ You can use it to start building projects powered by ChatGPT like chatbots, webs
 
 ## How it works
 
-It uses headless Chromium via [Playwright](https://playwright.dev) to automate the webapp, so **you still need to have access to ChatGPT**. It just makes building API-like integrations much easier.
+This package requires a valid session token from ChatGPT to access it's unofficial REST API.
 
-Chromium will be opened in non-headless mode by default, which is important because the first time you run `ChatGPTAPI.init()`, you'll need to log in manually. We launch Chromium with a persistent session, however, so you shouldn't need to keep re-logging in after the first time.
+To get a session token:
 
-When you log in the first time, we recommend dismissing the welcome modal so you can watch the progress. This isn't strictly necessary, but it helps to understand what's going on.
+1. Go to https://chat.openai.com/chat and log in or sign up.
+2. Open dev tools.
+3. Open `Application` > `Cookies`.
+   ![ChatGPT cookies](./media/session-token.png)
+4. Copy the value for `__Secure-next-auth.session-token` and save it to your environment.
 
-- [Demo video](https://www.loom.com/share/0c44525b07354d679f30c45d8eec6271) showing how the initial auth flow works (29 seconds)
-- [Demo video](https://www.loom.com/share/98e712dbddf843289e2b6615095bbdd7) showing how it works if you're already authed (13 seconds)
+If you want to run the built-in demo, store this value as `SESSION_TOKEN` in a local `.env` file.
 
 > **Note**
-> We'll replace headless chrome with the official API once it's released.
+> This package will switch to using the official API once it's released.
+
+> **Note**
+> Prior to v1.0.0, this package used a headless browser via [Playwright](https://playwright.dev/) to automate the web UI. Here are the [docs for the initial browser version](https://github.com/transitive-bullshit/chatgpt-api/tree/v0.4.2).
 
 ## Install
 
@@ -49,10 +59,10 @@ pnpm add chatgpt
 import { ChatGPTAPI } from 'chatgpt'
 
 async function example() {
-  const api = new ChatGPTAPI()
+  const api = new ChatGPTAPI({ sessionToken: process.env.SESSION_TOKEN })
 
-  // open chromium and wait until you've logged in
-  await api.init({ auth: 'blocking' })
+  // ensure the API is properly authenticated (optional)
+  await api.ensureAuth()
 
   // send a message and wait for the response
   const response = await api.sendMessage(
@@ -64,18 +74,22 @@ async function example() {
 }
 ```
 
-By default, ChatGPT responses are parsed as markdown using [html-to-md](https://github.com/stonehank/html-to-md). I've found that this works really well during my testing, but if you'd rather output plaintext, you can use:
+By default, the response will be formatted as markdown. If you want to work with plaintext only, you can use:
 
 ```ts
-const api = new ChatGPTAPI({ markdown: false })
+const api = new ChatGPTAPI({
+  sessionToken: process.env.SESSION_TOKEN,
+  markdown: false
+})
 ```
 
 A full [example](./src/example.ts) is included for testing purposes:
 
 ```bash
-# clone repo
-# install node deps
-# then run
+# 1. clone repo
+# 2. install node deps
+# 3. set `SESSION_TOKEN` in .env
+# 4. run:
 npx tsx src/example.ts
 ```
 
@@ -97,10 +111,10 @@ All of these awesome projects use the `chatgpt` package. 🤯
 
 If you create a cool integration, feel free to open a PR and add it to the list.
 
-## Related
+## Credit
 
-- Inspired by this [Go module](https://github.com/danielgross/whatsapp-gpt) by [Daniel Gross](https://github.com/danielgross)
-- [Python port](https://github.com/taranjeet/chatgpt-api)
+- Huge thanks to [@RomanHotsiy](https://github.com/RomanHotsiy), [@ElijahPepe](https://github.com/ElijahPepe), [@wong2](https://github.com/wong2), and all the other contributors 💪
+- The original browser version was inspired by this [Go module](https://github.com/danielgross/whatsapp-gpt) by [Daniel Gross](https://github.com/danielgross)
 
 ## License
 

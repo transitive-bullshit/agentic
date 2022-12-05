@@ -10,53 +10,53 @@
 
 ### Methods
 
-- [close](ChatGPTAPI.md#close)
-- [getIsSignedIn](ChatGPTAPI.md#getissignedin)
-- [getLastMessage](ChatGPTAPI.md#getlastmessage)
-- [getMessages](ChatGPTAPI.md#getmessages)
-- [getPrompts](ChatGPTAPI.md#getprompts)
-- [init](ChatGPTAPI.md#init)
+- [ensureAuth](ChatGPTAPI.md#ensureauth)
+- [getIsAuthenticated](ChatGPTAPI.md#getisauthenticated)
+- [refreshAccessToken](ChatGPTAPI.md#refreshaccesstoken)
 - [sendMessage](ChatGPTAPI.md#sendmessage)
 
 ## Constructors
 
 ### constructor
 
-• **new ChatGPTAPI**(`opts?`)
+• **new ChatGPTAPI**(`opts`)
+
+Creates a new client wrapper around the unofficial ChatGPT REST API.
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `opts` | `Object` | - |
-| `opts.chatUrl?` | `string` | **`Default Value`**  `'https://chat.openai.com/'` * |
-| `opts.headless?` | `boolean` | **`Default Value`**  `false` * |
+| `opts.apiBaseUrl?` | `string` | **`Default Value`**  `'https://chat.openai.com/api'` * |
+| `opts.backendApiBaseUrl?` | `string` | **`Default Value`**  `'https://chat.openai.com/backend-api'` * |
 | `opts.markdown?` | `boolean` | **`Default Value`**  `true` * |
-| `opts.userDataDir?` | `string` | **`Default Value`**  `'/tmp/chatgpt'` * |
+| `opts.sessionToken` | `string` | = **Required** OpenAI session token which can be found in a valid session's cookies (see readme for instructions) |
+| `opts.userAgent?` | `string` | **`Default Value`**  `'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36'` * |
 
 #### Defined in
 
-[chatgpt-api.ts:20](https://github.com/transitive-bullshit/chatgpt-api/blob/ddd9545/src/chatgpt-api.ts#L20)
+[chatgpt-api.ts:31](https://github.com/transitive-bullshit/chatgpt-api/blob/c9cef79/src/chatgpt-api.ts#L31)
 
 ## Methods
 
-### close
+### ensureAuth
 
-▸ **close**(): `Promise`<`void`\>
+▸ **ensureAuth**(): `Promise`<`string`\>
 
 #### Returns
 
-`Promise`<`void`\>
+`Promise`<`string`\>
 
 #### Defined in
 
-[chatgpt-api.ts:186](https://github.com/transitive-bullshit/chatgpt-api/blob/ddd9545/src/chatgpt-api.ts#L186)
+[chatgpt-api.ts:74](https://github.com/transitive-bullshit/chatgpt-api/blob/c9cef79/src/chatgpt-api.ts#L74)
 
 ___
 
-### getIsSignedIn
+### getIsAuthenticated
 
-▸ **getIsSignedIn**(): `Promise`<`boolean`\>
+▸ **getIsAuthenticated**(): `Promise`<`boolean`\>
 
 #### Returns
 
@@ -64,13 +64,13 @@ ___
 
 #### Defined in
 
-[chatgpt-api.ts:94](https://github.com/transitive-bullshit/chatgpt-api/blob/ddd9545/src/chatgpt-api.ts#L94)
+[chatgpt-api.ts:65](https://github.com/transitive-bullshit/chatgpt-api/blob/c9cef79/src/chatgpt-api.ts#L65)
 
 ___
 
-### getLastMessage
+### refreshAccessToken
 
-▸ **getLastMessage**(): `Promise`<`string`\>
+▸ **refreshAccessToken**(): `Promise`<`string`\>
 
 #### Returns
 
@@ -78,68 +78,25 @@ ___
 
 #### Defined in
 
-[chatgpt-api.ts:104](https://github.com/transitive-bullshit/chatgpt-api/blob/ddd9545/src/chatgpt-api.ts#L104)
-
-___
-
-### getMessages
-
-▸ **getMessages**(): `Promise`<`string`[]\>
-
-#### Returns
-
-`Promise`<`string`[]\>
-
-#### Defined in
-
-[chatgpt-api.ts:124](https://github.com/transitive-bullshit/chatgpt-api/blob/ddd9545/src/chatgpt-api.ts#L124)
-
-___
-
-### getPrompts
-
-▸ **getPrompts**(): `Promise`<`string`[]\>
-
-#### Returns
-
-`Promise`<`string`[]\>
-
-#### Defined in
-
-[chatgpt-api.ts:114](https://github.com/transitive-bullshit/chatgpt-api/blob/ddd9545/src/chatgpt-api.ts#L114)
-
-___
-
-### init
-
-▸ **init**(`opts?`): `Promise`<`Page`\>
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `opts` | `Object` |
-| `opts.auth?` | ``"blocking"`` \| ``"eager"`` |
-
-#### Returns
-
-`Promise`<`Page`\>
-
-#### Defined in
-
-[chatgpt-api.ts:48](https://github.com/transitive-bullshit/chatgpt-api/blob/ddd9545/src/chatgpt-api.ts#L48)
+[chatgpt-api.ts:165](https://github.com/transitive-bullshit/chatgpt-api/blob/c9cef79/src/chatgpt-api.ts#L165)
 
 ___
 
 ### sendMessage
 
-▸ **sendMessage**(`message`): `Promise`<`string`\>
+▸ **sendMessage**(`message`, `opts?`): `Promise`<`string`\>
+
+Sends a message to ChatGPT, waits for the response to resolve, and returns
+the response.
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `message` | `string` |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `message` | `string` | The plaintext message to send. |
+| `opts` | `Object` | - |
+| `opts.converstationId?` | `string` | - |
+| `opts.onProgress?` | (`partialResponse`: `string`) => `void` | - |
 
 #### Returns
 
@@ -147,4 +104,4 @@ ___
 
 #### Defined in
 
-[chatgpt-api.ts:162](https://github.com/transitive-bullshit/chatgpt-api/blob/ddd9545/src/chatgpt-api.ts#L162)
+[chatgpt-api.ts:86](https://github.com/transitive-bullshit/chatgpt-api/blob/c9cef79/src/chatgpt-api.ts#L86)

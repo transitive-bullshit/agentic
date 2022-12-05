@@ -1,2 +1,3 @@
 export * from './chatgpt-api'
-export * from './chatgpt-api-types'
+export * from './types'
+export * from './utils'

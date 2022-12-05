@@ -1,7 +1,7 @@
 {
   "name": "chatgpt",
   "version": "0.4.2",
-  "description": "Node.js wrapper around ChatGPT. Uses headless Chrome until the official API is released.",
+  "description": "Node.js client for the unofficial ChatGPT API.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "repository": "transitive-bullshit/chatgpt-api",
   "license": "MIT",
@@ -11,7 +11,7 @@
     ".": {
       "require": "./build/index.js",
       "import": "./build/index.mjs",
-      "types": "./build/index.d.ts"      
+      "types": "./build/index.d.ts"
     }
   },
   "files": [
@@ -34,14 +34,19 @@
     "test:prettier": "prettier '**/*.{js,jsx,ts,tsx}' --check"
   },
   "dependencies": {
-    "html-to-md": "npm:@fisch0920/html-to-md@^0.8.1",
-    "playwright": "^1.28.1"
+    "eventsource-parser": "^0.0.5",
+    "expiry-map": "^2.0.0",
+    "node-fetch": "^3.3.0",
+    "remark": "^14.0.2",
+    "strip-markdown": "^5.0.0",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^4.0.0",
     "@types/node": "^18.11.9",
+    "@types/uuid": "^9.0.0",
     "del-cli": "^5.0.0",
-    "delay": "^5.0.0",
+    "dotenv-safe": "^8.2.0",
     "husky": "^8.0.2",
     "lint-staged": "^13.0.3",
     "npm-run-all": "^4.1.5",
