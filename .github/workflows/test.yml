@@ -48,4 +48,6 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Run test
+        env:
+          SESSION_TOKEN: 'fake-session-token-for-CI'
         run: pnpm run test
