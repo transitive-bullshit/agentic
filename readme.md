@@ -60,14 +60,14 @@ const api = new ChatGPTAPI({
 })
 ```
 
-A full [demo](./demo.ts) is included for testing purposes:
+A full [demo](./src/demo.ts) is included for testing purposes:
 
 ```bash
 # 1. clone repo
 # 2. install node deps
 # 3. set `SESSION_TOKEN` in .env
 # 4. run:
-npx tsx demo.ts
+npx tsx src/demo.ts
 ```
 
 ## Docs
