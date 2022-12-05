@@ -108,6 +108,7 @@ All of these awesome projects use the `chatgpt` package. 🤯
 - [Go Telegram Bot](https://github.com/m1guelpf/chatgpt-telegram)
 - [GitHub ProBot](https://github.com/oceanlvr/ChatGPTBot)
 - [Lovelines.xyz](https://lovelines.xyz)
+- [Discord Bot](https://github.com/onury5506/Discord-ChatGPT-Bot)
 - [EXM smart contracts `molecule`](https://github.com/decentldotland/molecule)
 
 If you create a cool integration, feel free to open a PR and add it to the list.
