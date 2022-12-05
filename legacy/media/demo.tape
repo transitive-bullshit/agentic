@@ -72,5 +72,5 @@ Sleep 500ms
 Enter
 Show
 
-Sleep 8s
+Sleep 7s
 Sleep 8s
