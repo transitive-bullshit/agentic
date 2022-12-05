@@ -1,3 +1,7 @@
+<p align="center">
+  <img alt="Example usage" src="/media/demo.gif">
+</p>
+
 # ChatGPT API <!-- omit in toc -->
 
 > Node.js client for the unofficial [ChatGPT](https://openai.com/blog/chatgpt/) API.
