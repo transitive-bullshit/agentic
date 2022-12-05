@@ -11,7 +11,7 @@
     ".": {
       "require": "./build/index.js",
       "import": "./build/index.mjs",
-      "types": "./build/index.d.ts"      
+      "types": "./build/index.d.ts"
     }
   },
   "files": [
