@@ -47,9 +47,16 @@ async function main() {
   // Wait forever; useful for debugging chromium sessions
   // await new Promise(() => {})
 
+  await api.resetThread()
+
+  const newResponse = await api.sendMessage(
+    // 'Write a TypeScript function for conway sort.'
+    'Write a javascript version of bubble sort. Do not include example usage.'
+  )
+
   await api.close()
 
-  return response
+  return newResponse
 }
 
 main().then((res) => {
