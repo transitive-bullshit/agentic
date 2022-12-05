@@ -76,7 +76,7 @@ See the [auto-generated docs](./docs/classes/ChatGPTAPI.md) for more info on met
 
 ## How it works
 
-This package requires a valid session token from ChatGPT to access it's unofficial REST API.
+**This package requires a valid session token from ChatGPT to access it's unofficial REST API.**
 
 To get a session token:
 
