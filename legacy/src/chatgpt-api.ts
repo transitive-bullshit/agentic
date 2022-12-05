@@ -1,9 +1,9 @@
-import { createParser } from 'eventsource-parser'
 import ExpiryMap from 'expiry-map'
-import fetch from 'node-fetch'
 import { v4 as uuidv4 } from 'uuid'
 
 import * as types from './types'
+import { fetch } from './fetch'
+import { fetchSSE } from './fetch-sse'
 import { markdownToText } from './utils'
 
 const KEY_ACCESS_TOKEN = 'accessToken'
@@ -119,7 +119,7 @@ export class ChatGPTAPI {
     let response = ''
 
     return new Promise((resolve, reject) => {
-      this._fetchSSE(url, {
+      fetchSSE(url, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -179,34 +179,22 @@ export class ChatGPTAPI {
       const accessToken = res?.accessToken
 
       if (!accessToken) {
-        console.warn('no auth token', res)
         throw new Error('Unauthorized')
+      }
+
+      const error = res?.error
+      if (error) {
+        if (error === 'RefreshAccessTokenError') {
+          throw new Error('session token has expired')
+        } else {
+          throw new Error(error)
+        }
       }
 
       this._accessTokenCache.set(KEY_ACCESS_TOKEN, accessToken)
       return accessToken
     } catch (err: any) {
-      throw new Error(`ChatGPT failed to refresh auth token: ${err.toString()}`)
+      throw new Error(`ChatGPT failed to refresh auth token. ${err.toString()}`)
     }
-  }
-
-  protected async _fetchSSE(
-    url: string,
-    options: Parameters<typeof fetch>[1] & { onMessage: (data: string) => void }
-  ) {
-    const { onMessage, ...fetchOptions } = options
-    const resp = await fetch(url, fetchOptions)
-    const parser = createParser((event) => {
-      if (event.type === 'event') {
-        onMessage(event.data)
-      }
-    })
-
-    resp.body.on('readable', () => {
-      let chunk: string | Buffer
-      while (null !== (chunk = resp.body.read())) {
-        parser.feed(chunk.toString())
-      }
-    })
   }
 }

@@ -7,7 +7,7 @@ export type Role = 'user' | 'assistant'
  */
 export type SessionResult = {
   /**
-   * Object of the current user
+   * Authenticated user
    */
   user: User
 
@@ -20,6 +20,11 @@ export type SessionResult = {
    * The access token
    */
   accessToken: string
+
+  /**
+   * If there was an error associated with this request
+   */
+  error?: string | null
 }
 
 export type User = {

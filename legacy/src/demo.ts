@@ -1,12 +1,16 @@
 import dotenv from 'dotenv-safe'
 import { oraPromise } from 'ora'
 
-import { ChatGPTAPI } from './chatgpt-api'
+import { ChatGPTAPI } from '.'
 
 dotenv.config()
 
 /**
  * Example CLI for testing functionality.
+ *
+ * ```
+ * npx tsx src/demo.ts
+ * ```
  */
 async function main() {
   const api = new ChatGPTAPI({ sessionToken: process.env.SESSION_TOKEN })
