@@ -36,7 +36,7 @@ Creates a new client wrapper around the unofficial ChatGPT REST API.
 
 #### Defined in
 
-[chatgpt-api.ts:29](https://github.com/transitive-bullshit/chatgpt-api/blob/549e9b4/src/chatgpt-api.ts#L29)
+[chatgpt-api.ts:31](https://github.com/transitive-bullshit/chatgpt-api/blob/c9cef79/src/chatgpt-api.ts#L31)
 
 ## Methods
 
@@ -50,7 +50,7 @@ Creates a new client wrapper around the unofficial ChatGPT REST API.
 
 #### Defined in
 
-[chatgpt-api.ts:72](https://github.com/transitive-bullshit/chatgpt-api/blob/549e9b4/src/chatgpt-api.ts#L72)
+[chatgpt-api.ts:74](https://github.com/transitive-bullshit/chatgpt-api/blob/c9cef79/src/chatgpt-api.ts#L74)
 
 ___
 
@@ -64,7 +64,7 @@ ___
 
 #### Defined in
 
-[chatgpt-api.ts:63](https://github.com/transitive-bullshit/chatgpt-api/blob/549e9b4/src/chatgpt-api.ts#L63)
+[chatgpt-api.ts:65](https://github.com/transitive-bullshit/chatgpt-api/blob/c9cef79/src/chatgpt-api.ts#L65)
 
 ___
 
@@ -78,7 +78,7 @@ ___
 
 #### Defined in
 
-[chatgpt-api.ts:163](https://github.com/transitive-bullshit/chatgpt-api/blob/549e9b4/src/chatgpt-api.ts#L163)
+[chatgpt-api.ts:165](https://github.com/transitive-bullshit/chatgpt-api/blob/c9cef79/src/chatgpt-api.ts#L165)
 
 ___
 
@@ -104,4 +104,4 @@ the response.
 
 #### Defined in
 
-[chatgpt-api.ts:84](https://github.com/transitive-bullshit/chatgpt-api/blob/549e9b4/src/chatgpt-api.ts#L84)
+[chatgpt-api.ts:86](https://github.com/transitive-bullshit/chatgpt-api/blob/c9cef79/src/chatgpt-api.ts#L86)
