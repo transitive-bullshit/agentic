@@ -1,7 +1,7 @@
 import dotenv from 'dotenv-safe'
 import { oraPromise } from 'ora'
 
-import { ChatGPTAPI } from './src'
+import { ChatGPTAPI } from '.'
 
 dotenv.config()
 
