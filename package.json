@@ -37,7 +37,7 @@
   "dependencies": {
     "eventsource-parser": "^0.0.5",
     "expiry-map": "^2.0.0",
-    "node-fetch": "^3.3.0",
+    "node-fetch": "2",
     "remark": "^14.0.2",
     "strip-markdown": "^5.0.0",
     "uuid": "^9.0.0"
