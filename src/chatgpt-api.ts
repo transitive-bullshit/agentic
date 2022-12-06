@@ -10,19 +10,35 @@ const KEY_ACCESS_TOKEN = 'accessToken'
 const USER_AGENT =
   'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36'
 
+/**
+ * A conversation wrapper around the ChatGPT API. This allows you to send
+ * multiple messages to ChatGPT and receive responses, without having to
+ * manually pass the conversation ID and parent message ID for each message.
+ */
 class Conversation {
   protected _api: ChatGPTAPI
   protected _conversationId: string = undefined
   protected _parentMessageId: string = undefined
 
+  /**
+   * Creates a new conversation wrapper around the ChatGPT API.
+   * @param api - The ChatGPT API instance to use.
+   */
   constructor(api: ChatGPTAPI) {
     this._api = api
   }
 
   /**
    * Sends a message to ChatGPT, waits for the response to resolve, and returns
-   * the response. If the conversation has not yet been started, this will
-   * automatically start the conversation.
+   * the response.
+   * If this is the first message in the conversation, the conversation ID and
+   * parent message ID will be automatically set.
+   * This allows you to send multiple messages to ChatGPT and receive responses,
+   * without having to manually pass the conversation ID and parent message ID
+   * for each message.
+   * If you want to manually pass the conversation ID and parent message ID,
+   * use `api.sendMessage` instead.
+   *
    * @param message - The plaintext message to send.
    * @param opts.onProgress - Optional listener which will be called every time the partial response is updated
    * @param opts.onConversationResponse - Optional listener which will be called every time a conversation response is received
