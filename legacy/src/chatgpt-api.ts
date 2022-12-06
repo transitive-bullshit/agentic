@@ -75,6 +75,7 @@ class Conversation {
       parentMessageId: this.parentMessageId,
       onProgress,
       onConversationResponse: (response) => {
+        this.conversationId = response.conversation_id
         this.parentMessageId = response.message.id
         onConversationResponse?.(response)
       }
