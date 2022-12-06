@@ -109,6 +109,7 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [WeChat Bot](https://github.com/AutumnWhj/ChatGPT-wechat-bot)
 - [Lovelines.xyz](https://lovelines.xyz)
 - [EXM smart contracts](https://github.com/decentldotland/molecule)
+- [Flutter ChatGPT API](https://github.com/coskuncay/flutter_chatgpt_api)
 
 If you create a cool integration, feel free to open a PR and add it to the list.
 
