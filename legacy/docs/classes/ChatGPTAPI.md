@@ -95,7 +95,7 @@ the response.
 | :------ | :------ | :------ |
 | `message` | `string` | The plaintext message to send. |
 | `opts` | `Object` | - |
-| `opts.converstationId?` | `string` | - |
+| `opts.conversationId?` | `string` | - |
 | `opts.onProgress?` | (`partialResponse`: `string`) => `void` | - |
 
 #### Returns
