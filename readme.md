@@ -103,6 +103,7 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [Chrome Extension](https://github.com/gragland/chatgpt-everywhere) ([demo](https://twitter.com/gabe_ragland/status/1599466486422470656))
 - [VSCode Extension #1](https://github.com/mpociot/chatgpt-vscode) ([demo](https://twitter.com/marcelpociot/status/1599180144551526400))
 - [VSCode Extension #2](https://github.com/barnesoir/chatgpt-vscode-plugin)
+- [Raycast Extension](https://github.com/abielzulio/chatgpt-raycast) ([demo](https://twitter.com/abielzulio/status/1600176002042191875))
 - [Go Telegram Bot](https://github.com/m1guelpf/chatgpt-telegram)
 - [GitHub ProBot](https://github.com/oceanlvr/ChatGPTBot)
 - [Discord Bot](https://github.com/onury5506/Discord-ChatGPT-Bot)
