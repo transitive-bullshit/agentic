@@ -107,6 +107,8 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [Discord Bot](https://github.com/onury5506/Discord-ChatGPT-Bot)
 - [Lovelines.xyz](https://lovelines.xyz)
 - [EXM smart contracts](https://github.com/decentldotland/molecule)
+- [Wechat Bot](https://github.com/AutumnWhj/ChatGPT-wechat-bot)
+  - ChatGPT webchart bot is a WeChat assistant based on NodeJS and webchaty
 
 If you create a cool integration, feel free to open a PR and add it to the list.
 
