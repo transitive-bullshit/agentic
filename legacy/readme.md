@@ -105,6 +105,7 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [Go Telegram Bot](https://github.com/m1guelpf/chatgpt-telegram)
 - [GitHub ProBot](https://github.com/oceanlvr/ChatGPTBot)
 - [Discord Bot](https://github.com/onury5506/Discord-ChatGPT-Bot)
+- [WeChat Bot](https://github.com/AutumnWhj/ChatGPT-wechat-bot)
 - [Lovelines.xyz](https://lovelines.xyz)
 - [EXM smart contracts](https://github.com/decentldotland/molecule)
 
