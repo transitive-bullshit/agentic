@@ -10,6 +10,79 @@ const KEY_ACCESS_TOKEN = 'accessToken'
 const USER_AGENT =
   'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36'
 
+/**
+ * A conversation wrapper around the ChatGPT API. This allows you to send
+ * multiple messages to ChatGPT and receive responses, without having to
+ * manually pass the conversation ID and parent message ID for each message.
+ */
+class Conversation {
+  api: ChatGPTAPI
+  conversationId: string = undefined
+  parentMessageId: string = undefined
+
+  /**
+   * Creates a new conversation wrapper around the ChatGPT API.
+   * @param api - The ChatGPT API instance to use.
+   */
+  constructor(
+    api: ChatGPTAPI,
+    opts: { conversationId?: string; parentMessageId?: string } = {}
+  ) {
+    this.api = api
+    this.conversationId = opts.conversationId
+    this.parentMessageId = opts.parentMessageId
+  }
+
+  /**
+   * Sends a message to ChatGPT, waits for the response to resolve, and returns
+   * the response.
+   * If this is the first message in the conversation, the conversation ID and
+   * parent message ID will be automatically set.
+   * This allows you to send multiple messages to ChatGPT and receive responses,
+   * without having to manually pass the conversation ID and parent message ID
+   * for each message.
+   * If you want to manually pass the conversation ID and parent message ID,
+   * use `api.sendMessage` instead.
+   *
+   * @param message - The plaintext message to send.
+   * @param opts.onProgress - Optional listener which will be called every time the partial response is updated
+   * @param opts.onConversationResponse - Optional listener which will be called every time a conversation response is received
+   * @returns The plaintext response from ChatGPT.
+   */
+  async sendMessage(
+    message: string,
+    opts: {
+      onProgress?: (partialResponse: string) => void
+      onConversationResponse?: (
+        response: types.ConversationResponseEvent
+      ) => void
+    } = {}
+  ) {
+    const { onProgress, onConversationResponse } = opts
+    if (!this.conversationId) {
+      return this.api.sendMessage(message, {
+        onProgress,
+        onConversationResponse: (response) => {
+          this.conversationId = response.conversation_id
+          this.parentMessageId = response.message.id
+          onConversationResponse?.(response)
+        }
+      })
+    }
+
+    return this.api.sendMessage(message, {
+      conversationId: this.conversationId,
+      parentMessageId: this.parentMessageId,
+      onProgress,
+      onConversationResponse: (response) => {
+        this.conversationId = response.conversation_id
+        this.parentMessageId = response.message.id
+        onConversationResponse?.(response)
+      }
+    })
+  }
+}
+
 export class ChatGPTAPI {
   protected _sessionToken: string
   protected _markdown: boolean
@@ -82,15 +155,25 @@ export class ChatGPTAPI {
    * @param message - The plaintext message to send.
    * @param opts.conversationId - Optional ID of the previous message in a conversation
    * @param opts.onProgress - Optional listener which will be called every time the partial response is updated
+   * @param opts.onConversationResponse - Optional listener which will be called every time the partial response is updated with the full conversation response
    */
   async sendMessage(
     message: string,
     opts: {
       conversationId?: string
+      parentMessageId?: string
       onProgress?: (partialResponse: string) => void
+      onConversationResponse?: (
+        response: types.ConversationResponseEvent
+      ) => void
     } = {}
   ): Promise<string> {
-    const { conversationId = uuidv4(), onProgress } = opts
+    const {
+      conversationId,
+      parentMessageId = uuidv4(),
+      onProgress,
+      onConversationResponse
+    } = opts
 
     const accessToken = await this.refreshAccessToken()
 
@@ -107,7 +190,11 @@ export class ChatGPTAPI {
         }
       ],
       model: 'text-davinci-002-render',
-      parent_message_id: conversationId
+      parent_message_id: parentMessageId
+    }
+
+    if (conversationId) {
+      body.conversation_id = conversationId
     }
 
     const url = `${this._backendApiBaseUrl}/conversation`
@@ -134,6 +221,9 @@ export class ChatGPTAPI {
 
           try {
             const parsedData: types.ConversationResponseEvent = JSON.parse(data)
+            if (onConversationResponse) {
+              onConversationResponse(parsedData)
+            }
             const message = parsedData.message
             // console.log('event', JSON.stringify(parsedData, null, 2))
 
@@ -196,5 +286,18 @@ export class ChatGPTAPI {
     } catch (err: any) {
       throw new Error(`ChatGPT failed to refresh auth token. ${err.toString()}`)
     }
+  }
+
+  /**
+   * Get a new Conversation instance, which can be used to send multiple messages as part of a single conversation.
+   *
+   * @param opts.conversationId - Optional Data of the previous message in a conversation
+   * @param opts.parentMessageId - Optional Data of the previous message in a conversation
+   * @returns a new Conversation instance
+   */
+  getConversation(
+    opts: { conversationId?: string; parentMessageId?: string } = {}
+  ) {
+    return new Conversation(this, opts)
   }
 }
