@@ -1,4 +1,4 @@
-import { remark } from 'remark'
+import remark from 'remark'
 import stripMarkdown from 'strip-markdown'
 
 export function markdownToText(markdown?: string): string {
