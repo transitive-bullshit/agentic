@@ -8,6 +8,8 @@ dotenv.config()
 const isCI = !!process.env.CI
 
 test('ChatGPTAPI invalid session token', async (t) => {
+  t.timeout(30 * 1000) // 30 seconds
+
   t.throws(() => new ChatGPTAPI({ sessionToken: null }), {
     message: 'ChatGPT invalid session token'
   })
@@ -51,6 +53,7 @@ test('ChatGPTAPI valid session token', async (t) => {
 
 if (!isCI) {
   test('ChatGPTAPI expired session token', async (t) => {
+    t.timeout(30 * 1000) // 30 seconds
     const expiredSessionToken = process.env.TEST_EXPIRED_SESSION_TOKEN
 
     await t.throwsAsync(
