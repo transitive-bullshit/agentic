@@ -56,7 +56,7 @@ Hide
 Require npx
 
 #Set Shell bash
-Set FontSize 17
+Set FontSize 22
 Set Width 1200
 Set Height 600
 Set Padding 24
@@ -67,7 +67,7 @@ Type " "
 Sleep 980ms
 Backspace 1
 Show
-Type "npx tsx src/example.ts"
+Type "npx tsx src/demo.ts"
 Sleep 500ms
 Enter
 Show
