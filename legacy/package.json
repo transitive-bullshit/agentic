@@ -19,13 +19,14 @@
     "build"
   ],
   "engines": {
-    "node": ">=14"
+    "node": ">=16.8"
   },
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
     "clean": "del build",
     "prebuild": "run-s clean",
+    "postbuild": "sed -i 's/ *\\?\\? *(await import(\"undici\")).fetch//' build/browser/index.js",
     "predev": "run-s clean",
     "pretest": "run-s build",
     "docs": "typedoc",
@@ -38,7 +39,6 @@
   "dependencies": {
     "eventsource-parser": "^0.0.5",
     "expiry-map": "^2.0.0",
-    "node-fetch": "2",
     "remark": "^14.0.2",
     "strip-markdown": "^5.0.0",
     "uuid": "^9.0.0"
@@ -46,7 +46,6 @@
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^4.0.0",
     "@types/node": "^18.11.9",
-    "@types/node-fetch": "2",
     "@types/uuid": "^9.0.0",
     "ava": "^5.1.0",
     "del-cli": "^5.0.0",
@@ -89,5 +88,8 @@
     "ai",
     "ml",
     "bot"
-  ]
+  ],
+  "optionalDependencies": {
+    "undici": "^5.13.0"
+  }
 }

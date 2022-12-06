@@ -63,7 +63,7 @@ if (!isCI) {
       },
       {
         message:
-          'ChatGPT failed to refresh auth token. Error: session token has expired'
+          'ChatGPT failed to refresh auth token. Error: session token may have expired'
       }
     )
   })

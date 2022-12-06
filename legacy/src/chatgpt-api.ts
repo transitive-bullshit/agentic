@@ -2,6 +2,7 @@ import ExpiryMap from 'expiry-map'
 import { v4 as uuidv4 } from 'uuid'
 
 import * as types from './types'
+import { ChatGPTConversation } from './chatgpt-conversation'
 import { fetch } from './fetch'
 import { fetchSSE } from './fetch-sse'
 import { markdownToText } from './utils'
@@ -10,80 +11,10 @@ const KEY_ACCESS_TOKEN = 'accessToken'
 const USER_AGENT =
   'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36'
 
-/**
- * A conversation wrapper around the ChatGPT API. This allows you to send
- * multiple messages to ChatGPT and receive responses, without having to
- * manually pass the conversation ID and parent message ID for each message.
- */
-class Conversation {
-  api: ChatGPTAPI
-  conversationId: string = undefined
-  parentMessageId: string = undefined
-
-  /**
-   * Creates a new conversation wrapper around the ChatGPT API.
-   * @param api - The ChatGPT API instance to use.
-   */
-  constructor(
-    api: ChatGPTAPI,
-    opts: { conversationId?: string; parentMessageId?: string } = {}
-  ) {
-    this.api = api
-    this.conversationId = opts.conversationId
-    this.parentMessageId = opts.parentMessageId
-  }
-
-  /**
-   * Sends a message to ChatGPT, waits for the response to resolve, and returns
-   * the response.
-   * If this is the first message in the conversation, the conversation ID and
-   * parent message ID will be automatically set.
-   * This allows you to send multiple messages to ChatGPT and receive responses,
-   * without having to manually pass the conversation ID and parent message ID
-   * for each message.
-   * If you want to manually pass the conversation ID and parent message ID,
-   * use `api.sendMessage` instead.
-   *
-   * @param message - The plaintext message to send.
-   * @param opts.onProgress - Optional listener which will be called every time the partial response is updated
-   * @param opts.onConversationResponse - Optional listener which will be called every time a conversation response is received
-   * @returns The plaintext response from ChatGPT.
-   */
-  async sendMessage(
-    message: string,
-    opts: {
-      onProgress?: (partialResponse: string) => void
-      onConversationResponse?: (
-        response: types.ConversationResponseEvent
-      ) => void
-    } = {}
-  ) {
-    const { onProgress, onConversationResponse } = opts
-    if (!this.conversationId) {
-      return this.api.sendMessage(message, {
-        onProgress,
-        onConversationResponse: (response) => {
-          this.conversationId = response.conversation_id
-          this.parentMessageId = response.message.id
-          onConversationResponse?.(response)
-        }
-      })
-    }
-
-    return this.api.sendMessage(message, {
-      conversationId: this.conversationId,
-      parentMessageId: this.parentMessageId,
-      onProgress,
-      onConversationResponse: (response) => {
-        this.conversationId = response.conversation_id
-        this.parentMessageId = response.message.id
-        onConversationResponse?.(response)
-      }
-    })
-  }
-}
-
 export class ChatGPTAPI {
+  public conversationId: string = undefined
+  public parentMessageId: string = undefined
+
   protected _sessionToken: string
   protected _markdown: boolean
   protected _apiBaseUrl: string
@@ -152,10 +83,13 @@ export class ChatGPTAPI {
    * Sends a message to ChatGPT, waits for the response to resolve, and returns
    * the response.
    *
-   * @param message - The plaintext message to send.
-   * @param opts.conversationId - Optional ID of the previous message in a conversation
-   * @param opts.onProgress - Optional listener which will be called every time the partial response is updated
-   * @param opts.onConversationResponse - Optional listener which will be called every time the partial response is updated with the full conversation response
+   * @param message - The prompt message to send
+   * @param opts.conversationId - Optional ID of a conversation to continue
+   * @param opts.parentMessageId - Optional ID of the previous message in the conversation
+   * @param opts.onProgress - Optional function which will be called every time the partial response is updated
+   * @param opts.onConversationResponse - Optional function which will be called every time the partial response is updated with the full conversation response
+   * @param opts.abortSignal - Optional function used to abort the underlying `fetch` call using an [AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController)
+   * @returns The response from ChatGPT
    */
   async sendMessage(
     message: string,
@@ -166,13 +100,15 @@ export class ChatGPTAPI {
       onConversationResponse?: (
         response: types.ConversationResponseEvent
       ) => void
+      abortSignal?: AbortSignal
     } = {}
   ): Promise<string> {
     const {
       conversationId,
       parentMessageId = uuidv4(),
       onProgress,
-      onConversationResponse
+      onConversationResponse,
+      abortSignal
     } = opts
 
     const accessToken = await this.refreshAccessToken()
@@ -214,6 +150,7 @@ export class ChatGPTAPI {
           'user-agent': this._userAgent
         },
         body: JSON.stringify(body),
+        signal: abortSignal,
         onMessage: (data: string) => {
           if (data === '[DONE]') {
             return resolve(response)
@@ -275,7 +212,7 @@ export class ChatGPTAPI {
       const error = res?.error
       if (error) {
         if (error === 'RefreshAccessTokenError') {
-          throw new Error('session token has expired')
+          throw new Error('session token may have expired')
         } else {
           throw new Error(error)
         }
@@ -289,15 +226,16 @@ export class ChatGPTAPI {
   }
 
   /**
-   * Get a new Conversation instance, which can be used to send multiple messages as part of a single conversation.
+   * Gets a new ChatGPTConversation instance, which can be used to send multiple
+   * messages as part of a single conversation.
    *
-   * @param opts.conversationId - Optional Data of the previous message in a conversation
-   * @param opts.parentMessageId - Optional Data of the previous message in a conversation
-   * @returns a new Conversation instance
+   * @param opts.conversationId - Optional ID of the previous message in a conversation
+   * @param opts.parentMessageId - Optional ID of the previous message in a conversation
+   * @returns The new conversation instance
    */
   getConversation(
     opts: { conversationId?: string; parentMessageId?: string } = {}
   ) {
-    return new Conversation(this, opts)
+    return new ChatGPTConversation(this, opts)
   }
 }

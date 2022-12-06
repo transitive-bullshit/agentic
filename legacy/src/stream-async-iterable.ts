@@ -1,6 +1,4 @@
-import { type ReadableStream } from 'stream/web'
-
-export async function* streamAsyncIterable(stream: ReadableStream) {
+export async function* streamAsyncIterable<T>(stream: ReadableStream<T>) {
   const reader = stream.getReader()
   try {
     while (true) {
