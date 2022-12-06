@@ -86,11 +86,11 @@ export class ChatGPTAPI {
   async sendMessage(
     message: string,
     opts: {
-      converstationId?: string
+      conversationId?: string
       onProgress?: (partialResponse: string) => void
     } = {}
   ): Promise<string> {
-    const { converstationId = uuidv4(), onProgress } = opts
+    const { conversationId = uuidv4(), onProgress } = opts
 
     const accessToken = await this.refreshAccessToken()
 
@@ -107,7 +107,7 @@ export class ChatGPTAPI {
         }
       ],
       model: 'text-davinci-002-render',
-      parent_message_id: converstationId
+      parent_message_id: conversationId
     }
 
     const url = `${this._backendApiBaseUrl}/conversation`
