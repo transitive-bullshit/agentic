@@ -36,7 +36,7 @@ Creates a new client wrapper around the unofficial ChatGPT REST API.
 
 #### Defined in
 
-[chatgpt-api.ts:31](https://github.com/transitive-bullshit/chatgpt-api/blob/c9cef79/src/chatgpt-api.ts#L31)
+[chatgpt-api.ts:31](https://github.com/transitive-bullshit/chatgpt-api/blob/cf5e775/src/chatgpt-api.ts#L31)
 
 ## Methods
 
@@ -50,7 +50,7 @@ Creates a new client wrapper around the unofficial ChatGPT REST API.
 
 #### Defined in
 
-[chatgpt-api.ts:74](https://github.com/transitive-bullshit/chatgpt-api/blob/c9cef79/src/chatgpt-api.ts#L74)
+[chatgpt-api.ts:74](https://github.com/transitive-bullshit/chatgpt-api/blob/cf5e775/src/chatgpt-api.ts#L74)
 
 ___
 
@@ -64,7 +64,7 @@ ___
 
 #### Defined in
 
-[chatgpt-api.ts:65](https://github.com/transitive-bullshit/chatgpt-api/blob/c9cef79/src/chatgpt-api.ts#L65)
+[chatgpt-api.ts:65](https://github.com/transitive-bullshit/chatgpt-api/blob/cf5e775/src/chatgpt-api.ts#L65)
 
 ___
 
@@ -78,7 +78,7 @@ ___
 
 #### Defined in
 
-[chatgpt-api.ts:165](https://github.com/transitive-bullshit/chatgpt-api/blob/c9cef79/src/chatgpt-api.ts#L165)
+[chatgpt-api.ts:165](https://github.com/transitive-bullshit/chatgpt-api/blob/cf5e775/src/chatgpt-api.ts#L165)
 
 ___
 
@@ -95,7 +95,7 @@ the response.
 | :------ | :------ | :------ |
 | `message` | `string` | The plaintext message to send. |
 | `opts` | `Object` | - |
-| `opts.conversationId?` | `string` | - |
+| `opts.conversationId?` | `string` | Optional ID of the previous message in a conversation |
 | `opts.onProgress?` | (`partialResponse`: `string`) => `void` | - |
 
 #### Returns
@@ -104,4 +104,4 @@ the response.
 
 #### Defined in
 
-[chatgpt-api.ts:86](https://github.com/transitive-bullshit/chatgpt-api/blob/c9cef79/src/chatgpt-api.ts#L86)
+[chatgpt-api.ts:86](https://github.com/transitive-bullshit/chatgpt-api/blob/cf5e775/src/chatgpt-api.ts#L86)
