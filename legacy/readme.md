@@ -101,6 +101,7 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [Twitter Bot](https://github.com/transitive-bullshit/chatgpt-twitter-bot) powered by ChatGPT ✨
   - Mention [@ChatGPTBot](https://twitter.com/ChatGPTBot) on Twitter with your prompt to try it out
 - [Chrome Extension](https://github.com/gragland/chatgpt-everywhere) ([demo](https://twitter.com/gabe_ragland/status/1599466486422470656))
+- [VSCode Extension built using ChatGPT](https://github.com/barnesoir/chatgpt-vscode-plugin) 
 - [VSCode Extension](https://github.com/mpociot/chatgpt-vscode) ([demo](https://twitter.com/marcelpociot/status/1599180144551526400))
 - [Go Telegram Bot](https://github.com/m1guelpf/chatgpt-telegram)
 - [GitHub ProBot](https://github.com/oceanlvr/ChatGPTBot)
