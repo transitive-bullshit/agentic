@@ -10,6 +10,57 @@ const KEY_ACCESS_TOKEN = 'accessToken'
 const USER_AGENT =
   'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36'
 
+class Conversation {
+  protected _api: ChatGPTAPI
+  protected _conversationId: string = undefined
+  protected _parentMessageId: string = undefined
+
+  constructor(api: ChatGPTAPI) {
+    this._api = api
+  }
+
+  /**
+   * Sends a message to ChatGPT, waits for the response to resolve, and returns
+   * the response. If the conversation has not yet been started, this will
+   * automatically start the conversation.
+   * @param message - The plaintext message to send.
+   * @param opts.onProgress - Optional listener which will be called every time the partial response is updated
+   * @param opts.onConversationResponse - Optional listener which will be called every time a conversation response is received
+   * @returns The plaintext response from ChatGPT.
+   */
+  async sendMessage(
+    message: string,
+    opts: {
+      onProgress?: (partialResponse: string) => void
+      onConversationResponse?: (
+        response: types.ConversationResponseEvent
+      ) => void
+    } = {}
+  ) {
+    const { onProgress, onConversationResponse } = opts
+    if (!this._conversationId) {
+      return this._api.sendMessage(message, {
+        onProgress,
+        onConversationResponse: (response) => {
+          this._conversationId = response.conversation_id
+          this._parentMessageId = response.message.id
+          onConversationResponse?.(response)
+        }
+      })
+    }
+
+    return this._api.sendMessage(message, {
+      conversationId: this._conversationId,
+      parentMessageId: this._parentMessageId,
+      onProgress,
+      onConversationResponse: (response) => {
+        this._parentMessageId = response.message.id
+        onConversationResponse?.(response)
+      }
+    })
+  }
+}
+
 export class ChatGPTAPI {
   protected _sessionToken: string
   protected _markdown: boolean
@@ -82,15 +133,25 @@ export class ChatGPTAPI {
    * @param message - The plaintext message to send.
    * @param opts.conversationId - Optional ID of the previous message in a conversation
    * @param opts.onProgress - Optional listener which will be called every time the partial response is updated
+   * @param opts.onConversationResponse - Optional listener which will be called every time the partial response is updated with the full conversation response
    */
   async sendMessage(
     message: string,
     opts: {
       conversationId?: string
+      parentMessageId?: string
       onProgress?: (partialResponse: string) => void
+      onConversationResponse?: (
+        response: types.ConversationResponseEvent
+      ) => void
     } = {}
   ): Promise<string> {
-    const { conversationId = uuidv4(), onProgress } = opts
+    const {
+      conversationId,
+      parentMessageId = uuidv4(),
+      onProgress,
+      onConversationResponse
+    } = opts
 
     const accessToken = await this.refreshAccessToken()
 
@@ -107,7 +168,11 @@ export class ChatGPTAPI {
         }
       ],
       model: 'text-davinci-002-render',
-      parent_message_id: conversationId
+      parent_message_id: parentMessageId
+    }
+
+    if (conversationId) {
+      body.conversation_id = conversationId
     }
 
     const url = `${this._backendApiBaseUrl}/conversation`
@@ -134,6 +199,9 @@ export class ChatGPTAPI {
 
           try {
             const parsedData: types.ConversationResponseEvent = JSON.parse(data)
+            if (onConversationResponse) {
+              onConversationResponse(parsedData)
+            }
             const message = parsedData.message
             // console.log('event', JSON.stringify(parsedData, null, 2))
 
@@ -196,5 +264,14 @@ export class ChatGPTAPI {
     } catch (err: any) {
       throw new Error(`ChatGPT failed to refresh auth token. ${err.toString()}`)
     }
+  }
+
+  /**
+   * Get a new Conversation instance, which can be used to send multiple messages as part of a single conversation.
+   *
+   * @returns a new Conversation instance
+   */
+  getConversation() {
+    return new Conversation(this)
   }
 }
