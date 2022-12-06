@@ -16,16 +16,21 @@ const USER_AGENT =
  * manually pass the conversation ID and parent message ID for each message.
  */
 class Conversation {
-  protected _api: ChatGPTAPI
-  protected _conversationId: string = undefined
-  protected _parentMessageId: string = undefined
+  api: ChatGPTAPI
+  conversationId: string = undefined
+  parentMessageId: string = undefined
 
   /**
    * Creates a new conversation wrapper around the ChatGPT API.
    * @param api - The ChatGPT API instance to use.
    */
-  constructor(api: ChatGPTAPI) {
-    this._api = api
+  constructor(
+    api: ChatGPTAPI,
+    opts: { conversationId?: string; parentMessageId?: string } = {}
+  ) {
+    this.api = api
+    this.conversationId = opts.conversationId
+    this.parentMessageId = opts.parentMessageId
   }
 
   /**
@@ -54,23 +59,23 @@ class Conversation {
     } = {}
   ) {
     const { onProgress, onConversationResponse } = opts
-    if (!this._conversationId) {
-      return this._api.sendMessage(message, {
+    if (!this.conversationId) {
+      return this.api.sendMessage(message, {
         onProgress,
         onConversationResponse: (response) => {
-          this._conversationId = response.conversation_id
-          this._parentMessageId = response.message.id
+          this.conversationId = response.conversation_id
+          this.parentMessageId = response.message.id
           onConversationResponse?.(response)
         }
       })
     }
 
-    return this._api.sendMessage(message, {
-      conversationId: this._conversationId,
-      parentMessageId: this._parentMessageId,
+    return this.api.sendMessage(message, {
+      conversationId: this.conversationId,
+      parentMessageId: this.parentMessageId,
       onProgress,
       onConversationResponse: (response) => {
-        this._parentMessageId = response.message.id
+        this.parentMessageId = response.message.id
         onConversationResponse?.(response)
       }
     })
@@ -285,9 +290,13 @@ export class ChatGPTAPI {
   /**
    * Get a new Conversation instance, which can be used to send multiple messages as part of a single conversation.
    *
+   * @param opts.conversationId - Optional Data of the previous message in a conversation
+   * @param opts.parentMessageId - Optional Data of the previous message in a conversation
    * @returns a new Conversation instance
    */
-  getConversation() {
-    return new Conversation(this)
+  getConversation(
+    opts: { conversationId?: string; parentMessageId?: string } = {}
+  ) {
+    return new Conversation(this, opts)
   }
 }
