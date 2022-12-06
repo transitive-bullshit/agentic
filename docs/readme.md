@@ -107,6 +107,7 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [Go Telegram Bot](https://github.com/m1guelpf/chatgpt-telegram)
 - [GitHub ProBot](https://github.com/oceanlvr/ChatGPTBot)
 - [Discord Bot](https://github.com/onury5506/Discord-ChatGPT-Bot)
+- [WeChat Bot](https://github.com/AutumnWhj/ChatGPT-wechat-bot)
 - [Lovelines.xyz](https://lovelines.xyz)
 - [EXM smart contracts](https://github.com/decentldotland/molecule)
 
@@ -114,8 +115,9 @@ If you create a cool integration, feel free to open a PR and add it to the list.
 
 ## Credit
 
-- Huge thanks to [@RomanHotsiy](https://github.com/RomanHotsiy), [@ElijahPepe](https://github.com/ElijahPepe), [@wong2](https://github.com/wong2), and all the other contributors 💪
+- Huge thanks to [@RomanHotsiy](https://github.com/RomanHotsiy), [@ElijahPepe](https://github.com/ElijahPepe), and all the other contributors 💪
 - The original browser version was inspired by this [Go module](https://github.com/danielgross/whatsapp-gpt) by [Daniel Gross](https://github.com/danielgross)
+- The original REST version was inspired by [chat-gpt-google-extension](https://github.com/wong2/chat-gpt-google-extension) by [@wong2](https://github.com/wong2)
 
 ## License
 
