@@ -1,6 +1,6 @@
 {
   "name": "chatgpt",
-  "version": "1.2.0",
+  "version": "1.2.2",
   "description": "Node.js client for the unofficial ChatGPT API.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "repository": "transitive-bullshit/chatgpt-api",
@@ -12,7 +12,8 @@
     ".": {
       "import": "./build/index.mjs",
       "require": "./build/index.js",
-      "types": "./build/index.d.ts"
+      "types": "./build/index.d.ts",
+      "default": "./build/index.mjs"
     }
   },
   "files": [
