@@ -85,7 +85,7 @@ const response2 = await conversation.sendMessage('Oh cool; thank you')
 
 Sometimes, ChatGPT will hang for an extended period of time before beginning to respond. This may be due to rate limiting or it may be due to OpenAI's servers being overloaded.
 
-To mitigate this issues, you can add a timeout like this:
+To mitigate these issues, you can add a timeout like this:
 
 ```ts
 // timeout after 2 minutes (which will also abort the underlying HTTP request)
