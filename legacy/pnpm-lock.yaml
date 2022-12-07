@@ -13,6 +13,7 @@ specifiers:
   lint-staged: ^13.0.3
   npm-run-all: ^4.1.5
   ora: ^6.1.2
+  p-timeout: ^6.0.0
   prettier: ^2.8.0
   remark: ^14.0.2
   strip-markdown: ^5.0.0
@@ -27,6 +28,7 @@ specifiers:
 dependencies:
   eventsource-parser: 0.0.5
   expiry-map: 2.0.0
+  p-timeout: 6.0.0
   remark: 14.0.2
   strip-markdown: 5.0.0
   uuid: 9.0.0
@@ -2650,6 +2652,11 @@ packages:
     resolution: {integrity: sha512-auFDyzzzGZZZdHz3BtET9VEz0SE/uMEAx7uWfGPucfzEwwe/xH0iVeZibQmANYE/hp9T2+UUZT5m+BKyrDp3Ew==}
     engines: {node: '>=12'}
     dev: true
+
+  /p-timeout/6.0.0:
+    resolution: {integrity: sha512-5iS61MOdUMemWH9CORQRxVXTp9g5K8rPnI9uQpo97aWgsH3vVXKjkIhDi+OgIDmN3Ly9+AZ2fZV01Wut1yzfKA==}
+    engines: {node: '>=14.16'}
+    dev: false
 
   /parse-json/4.0.0:
     resolution: {integrity: sha512-aOIos8bujGN93/8Ox/jPLh7RwVnPEysynVFE+fQZyg6jKELEHwzgKdLRFHUgXJL6kylijVSBC4BvN9OmsB48Rw==}
