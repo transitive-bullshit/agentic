@@ -38,7 +38,7 @@ Creates a new client wrapper around the unofficial ChatGPT REST API.
 
 #### Defined in
 
-[chatgpt-api.ts:35](https://github.com/transitive-bullshit/chatgpt-api/blob/042b2fe/src/chatgpt-api.ts#L35)
+[chatgpt-api.ts:35](https://github.com/transitive-bullshit/chatgpt-api/blob/20c376e/src/chatgpt-api.ts#L35)
 
 ## Methods
 
@@ -55,7 +55,7 @@ is still valid.
 
 #### Defined in
 
-[chatgpt-api.ts:221](https://github.com/transitive-bullshit/chatgpt-api/blob/042b2fe/src/chatgpt-api.ts#L221)
+[chatgpt-api.ts:221](https://github.com/transitive-bullshit/chatgpt-api/blob/20c376e/src/chatgpt-api.ts#L221)
 
 ___
 
@@ -82,7 +82,7 @@ The new conversation instance
 
 #### Defined in
 
-[chatgpt-api.ts:285](https://github.com/transitive-bullshit/chatgpt-api/blob/042b2fe/src/chatgpt-api.ts#L285)
+[chatgpt-api.ts:285](https://github.com/transitive-bullshit/chatgpt-api/blob/20c376e/src/chatgpt-api.ts#L285)
 
 ___
 
@@ -99,7 +99,7 @@ the token fails.
 
 #### Defined in
 
-[chatgpt-api.ts:208](https://github.com/transitive-bullshit/chatgpt-api/blob/042b2fe/src/chatgpt-api.ts#L208)
+[chatgpt-api.ts:208](https://github.com/transitive-bullshit/chatgpt-api/blob/20c376e/src/chatgpt-api.ts#L208)
 
 ___
 
@@ -125,7 +125,7 @@ A valid access token
 
 #### Defined in
 
-[chatgpt-api.ts:235](https://github.com/transitive-bullshit/chatgpt-api/blob/042b2fe/src/chatgpt-api.ts#L235)
+[chatgpt-api.ts:235](https://github.com/transitive-bullshit/chatgpt-api/blob/20c376e/src/chatgpt-api.ts#L235)
 
 ___
 
@@ -156,4 +156,4 @@ The response from ChatGPT
 
 #### Defined in
 
-[chatgpt-api.ts:94](https://github.com/transitive-bullshit/chatgpt-api/blob/042b2fe/src/chatgpt-api.ts#L94)
+[chatgpt-api.ts:94](https://github.com/transitive-bullshit/chatgpt-api/blob/20c376e/src/chatgpt-api.ts#L94)
