@@ -25,6 +25,9 @@ This package is a Node.js wrapper around [ChatGPT](https://openai.com/blog/chatg
 
 You can use it to start building projects powered by ChatGPT like chatbots, websites, etc...
 
+> **Note**
+> As of December 7th, 2022, the ChatGPT servers are currently experiencing "exceptionally high demand," so some requests may respond with [HTTP 503 errors](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503). (according to the official OpenAI discord)
+
 ## Install
 
 ```bash
@@ -200,6 +203,7 @@ This package is ESM-only. It supports:
 - Huge thanks to [@simon300000](https://github.com/simon300000), [@RomanHotsiy](https://github.com/RomanHotsiy), [@ElijahPepe](https://github.com/ElijahPepe), and all the other contributors 💪
 - The original browser version was inspired by this [Go module](https://github.com/danielgross/whatsapp-gpt) by [Daniel Gross](https://github.com/danielgross)
 - The original REST version was inspired by [chat-gpt-google-extension](https://github.com/wong2/chat-gpt-google-extension) by [@wong2](https://github.com/wong2)
+- [OpenAI](https://openai.com) for creating [ChatGPT](https://openai.com/blog/chatgpt/) 🔥
 
 ## License
 
