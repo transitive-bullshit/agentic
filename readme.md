@@ -47,7 +47,7 @@ async function example() {
 
   // send a message and wait for the response
   const response = await api.sendMessage(
-    'Write a python version of bubble sort. Do not include example usage.'
+    'Write a python version of bubble sort.
   )
 
   // response is a markdown-formatted string
@@ -55,7 +55,7 @@ async function example() {
 }
 ```
 
-The default ChatGPT responses are formatted as markdown. If you want to work with plaintext only, you can use:
+ChatGPT responses are formatted as markdown by default. If you want to work with plaintext instead, you can use:
 
 ```ts
 const api = new ChatGPTAPI({
@@ -83,7 +83,7 @@ const response1 = await conversation.sendMessage('Can you expand on that?')
 const response2 = await conversation.sendMessage('Oh cool; thank you')
 ```
 
-Sometimes, ChatGPT will hang for an extended period of time before sending it's response. This may be due to rate limiting or it may be due to OpenAI's servers being overloaded.
+Sometimes, ChatGPT will hang for an extended period of time before beginning to respond. This may be due to rate limiting or it may be due to OpenAI's servers being overloaded.
 
 To mitigate this issues, you can add a timeout like this:
 
