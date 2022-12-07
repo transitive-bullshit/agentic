@@ -11,8 +11,9 @@
 - [Intro](#intro)
 - [Install](#install)
 - [Usage](#usage)
-- [Docs](#docs)
-- [How it works](#how-it-works)
+  - [Docs](#docs)
+  - [Demos](#demos)
+  - [Session Tokens](#session-tokens)
 - [Compatibility](#compatibility)
 - [Examples](#examples)
 - [Credit](#credit)
@@ -37,7 +38,9 @@ import { ChatGPTAPI } from 'chatgpt'
 
 async function example() {
   // sessionToken is required; see below for details
-  const api = new ChatGPTAPI({ sessionToken: process.env.SESSION_TOKEN })
+  const api = new ChatGPTAPI({
+    sessionToken: process.env.SESSION_TOKEN
+  })
 
   // ensure the API is properly authenticated
   await api.ensureAuth()
@@ -52,13 +55,32 @@ async function example() {
 }
 ```
 
-By default, the response will be formatted as markdown. If you want to work with plaintext only, you can use:
+The default ChatGPT responses are formatted as markdown. If you want to work with plaintext only, you can use:
 
 ```ts
 const api = new ChatGPTAPI({
   sessionToken: process.env.SESSION_TOKEN,
   markdown: false
 })
+```
+
+If you want to automatically track the conversation, you can use `ChatGPTAPI.getConversation()`:
+
+```ts
+const api = new ChatGPTAPI({
+  sessionToken: process.env.SESSION_TOKEN
+})
+
+const conversation = api.getConversation()
+
+// send a message and wait for the response
+const response0 = await conversation.sendMessage('What is OpenAI?')
+
+// send a follow-up prompt to the previous message and wait for the response
+const response1 = await conversation.sendMessage('Can you expand on that?')
+
+// send another follow-up to the same conversation
+const response2 = await conversation.sendMessage('Oh cool; thank you')
 ```
 
 <details>
@@ -81,7 +103,13 @@ async function example() {
 
 </details>
 
-A full [demo](./src/demo.ts) is included for testing purposes:
+### Docs
+
+See the [auto-generated docs](./docs/classes/ChatGPTAPI.md) for more info on methods and parameters.
+
+### Demos
+
+A [basic demo](./src/demo.ts) is included for testing purposes:
 
 ```bash
 # 1. clone repo
@@ -91,11 +119,17 @@ A full [demo](./src/demo.ts) is included for testing purposes:
 npx tsx src/demo.ts
 ```
 
-## Docs
+A [conversation demo](./src/demo-conversation.ts) is also included:
 
-See the [auto-generated docs](./docs/classes/ChatGPTAPI.md) for more info on methods and parameters.
+```bash
+# 1. clone repo
+# 2. install node deps
+# 3. set `SESSION_TOKEN` in .env
+# 4. run:
+npx tsx src/demo-conversation.ts
+```
 
-## How it works
+### Session Tokens
 
 **This package requires a valid session token from ChatGPT to access it's unofficial REST API.**
 
