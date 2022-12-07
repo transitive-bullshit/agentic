@@ -60,6 +60,29 @@ const api = new ChatGPTAPI({
 })
 ```
 
+Usage in CommonJS (Dynamic import):
+
+```js
+async function example() {
+  // use ESM in CommonJS, dynamic import
+  const { ChatGPTAPI } = await import('chatgpt')
+
+  // sessionToken is required; see below for details
+  const api = new ChatGPTAPI({ sessionToken: process.env.SESSION_TOKEN })
+
+  // ensure the API is properly authenticated
+  await api.ensureAuth()
+
+  // send a message and wait for the response
+  const response = await api.sendMessage(
+    'Write a python version of bubble sort. Do not include example usage.'
+  )
+
+  // response is a markdown-formatted string
+  console.log(response)
+}
+```
+
 A full [demo](./src/demo.ts) is included for testing purposes:
 
 ```bash
