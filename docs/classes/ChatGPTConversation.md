@@ -41,7 +41,7 @@ Creates a new conversation wrapper around the ChatGPT API.
 
 #### Defined in
 
-[chatgpt-conversation.ts:21](https://github.com/transitive-bullshit/chatgpt-api/blob/8e045b2/src/chatgpt-conversation.ts#L21)
+[chatgpt-conversation.ts:21](https://github.com/transitive-bullshit/chatgpt-api/blob/042b2fe/src/chatgpt-conversation.ts#L21)
 
 ## Properties
 
@@ -51,7 +51,7 @@ Creates a new conversation wrapper around the ChatGPT API.
 
 #### Defined in
 
-[chatgpt-conversation.ts:10](https://github.com/transitive-bullshit/chatgpt-api/blob/8e045b2/src/chatgpt-conversation.ts#L10)
+[chatgpt-conversation.ts:10](https://github.com/transitive-bullshit/chatgpt-api/blob/042b2fe/src/chatgpt-conversation.ts#L10)
 
 ___
 
@@ -61,7 +61,7 @@ ___
 
 #### Defined in
 
-[chatgpt-conversation.ts:11](https://github.com/transitive-bullshit/chatgpt-api/blob/8e045b2/src/chatgpt-conversation.ts#L11)
+[chatgpt-conversation.ts:11](https://github.com/transitive-bullshit/chatgpt-api/blob/042b2fe/src/chatgpt-conversation.ts#L11)
 
 ___
 
@@ -71,7 +71,7 @@ ___
 
 #### Defined in
 
-[chatgpt-conversation.ts:12](https://github.com/transitive-bullshit/chatgpt-api/blob/8e045b2/src/chatgpt-conversation.ts#L12)
+[chatgpt-conversation.ts:12](https://github.com/transitive-bullshit/chatgpt-api/blob/042b2fe/src/chatgpt-conversation.ts#L12)
 
 ## Methods
 
@@ -104,4 +104,4 @@ The response from ChatGPT
 
 #### Defined in
 
-[chatgpt-conversation.ts:48](https://github.com/transitive-bullshit/chatgpt-api/blob/8e045b2/src/chatgpt-conversation.ts#L48)
+[chatgpt-conversation.ts:48](https://github.com/transitive-bullshit/chatgpt-api/blob/042b2fe/src/chatgpt-conversation.ts#L48)
