@@ -24,7 +24,7 @@ export async function fetchSSE(
     // web standards, so this is a workaround...
     const body: NodeJS.ReadableStream = res.body as any
 
-    if (body.on || !body.read) {
+    if (!body.on || !body.read) {
       throw new Error('unsupported "fetch" implementation')
     }
 
