@@ -1,4 +1,5 @@
 import ExpiryMap from 'expiry-map'
+import pTimeout, { TimeoutError } from 'p-timeout'
 import { v4 as uuidv4 } from 'uuid'
 
 import * as types from './types'
@@ -18,8 +19,9 @@ export class ChatGPTAPI {
   protected _backendApiBaseUrl: string
   protected _userAgent: string
 
-  // stores access tokens for up to 10 seconds before needing to refresh
-  protected _accessTokenCache = new ExpiryMap<string, string>(10 * 1000)
+  // Stores access tokens for `accessTokenTTL` milliseconds before needing to refresh
+  // (defaults to 60 seconds)
+  protected _accessTokenCache: ExpiryMap<string, string>
 
   /**
    * Creates a new client wrapper around the unofficial ChatGPT REST API.
@@ -28,6 +30,7 @@ export class ChatGPTAPI {
    * @param apiBaseUrl - Optional override; the base URL for ChatGPT webapp's API (`/api`)
    * @param backendApiBaseUrl - Optional override; the base URL for the ChatGPT backend API (`/backend-api`)
    * @param userAgent - Optional override; the `user-agent` header to use with ChatGPT requests
+   * @param accessTokenTTL - Optional override; how long in milliseconds access tokens should last before being forcefully refreshed
    */
   constructor(opts: {
     sessionToken: string
@@ -43,13 +46,17 @@ export class ChatGPTAPI {
 
     /** @defaultValue `'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36'` **/
     userAgent?: string
+
+    /** @defaultValue 60000 (60 seconds) */
+    accessTokenTTL?: number
   }) {
     const {
       sessionToken,
       markdown = true,
       apiBaseUrl = 'https://chat.openai.com/api',
       backendApiBaseUrl = 'https://chat.openai.com/backend-api',
-      userAgent = USER_AGENT
+      userAgent = USER_AGENT,
+      accessTokenTTL = 60000 // 60 seconds
     } = opts
 
     this._sessionToken = sessionToken
@@ -58,31 +65,26 @@ export class ChatGPTAPI {
     this._backendApiBaseUrl = backendApiBaseUrl
     this._userAgent = userAgent
 
+    this._accessTokenCache = new ExpiryMap<string, string>(accessTokenTTL)
+
     if (!this._sessionToken) {
       throw new Error('ChatGPT invalid session token')
     }
-  }
-
-  async getIsAuthenticated() {
-    try {
-      void (await this.refreshAccessToken())
-      return true
-    } catch (err) {
-      return false
-    }
-  }
-
-  async ensureAuth() {
-    return await this.refreshAccessToken()
   }
 
   /**
    * Sends a message to ChatGPT, waits for the response to resolve, and returns
    * the response.
    *
+   * If you want to receive a stream of partial responses, use `opts.onProgress`.
+   * If you want to receive the full response, including message and conversation IDs,
+   * you can use `opts.onConversationResponse` or use the `ChatGPTAPI.getConversation`
+   * helper.
+   *
    * @param message - The prompt message to send
    * @param opts.conversationId - Optional ID of a conversation to continue
    * @param opts.parentMessageId - Optional ID of the previous message in the conversation
+   * @param opts.timeoutMs - Optional timeout in milliseconds (defaults to no timeout)
    * @param opts.onProgress - Optional callback which will be invoked every time the partial response is updated
    * @param opts.onConversationResponse - Optional callback which will be invoked every time the partial response is updated with the full conversation response
    * @param opts.abortSignal - Optional callback used to abort the underlying `fetch` call using an [AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController)
@@ -96,10 +98,18 @@ export class ChatGPTAPI {
     const {
       conversationId,
       parentMessageId = uuidv4(),
+      timeoutMs,
       onProgress,
-      onConversationResponse,
-      abortSignal
+      onConversationResponse
     } = opts
+
+    let { abortSignal } = opts
+
+    let abortController: AbortController = null
+    if (timeoutMs && !abortSignal) {
+      abortController = new AbortController()
+      abortSignal = abortController.signal
+    }
 
     const accessToken = await this.refreshAccessToken()
 
@@ -124,14 +134,9 @@ export class ChatGPTAPI {
     }
 
     const url = `${this._backendApiBaseUrl}/conversation`
-
-    // TODO: What's the best way to differentiate btwn wanting just the response text
-    // versus wanting the full response message, so you can extract the ID and other
-    // metadata?
-    // let fullResponse: types.Message = null
     let response = ''
 
-    return new Promise((resolve, reject) => {
+    const responseP = new Promise<string>((resolve, reject) => {
       fetchSSE(url, {
         method: 'POST',
         headers: {
@@ -164,7 +169,6 @@ export class ChatGPTAPI {
                 }
 
                 response = text
-                // fullResponse = message
 
                 if (onProgress) {
                   onProgress(text)
@@ -178,8 +182,56 @@ export class ChatGPTAPI {
         }
       }).catch(reject)
     })
+
+    if (timeoutMs) {
+      if (abortController) {
+        // This will be called when a timeout occurs in order for us to forcibly
+        // ensure that the underlying HTTP request is aborted.
+        ;(responseP as any).cancel = () => {
+          abortController.abort()
+        }
+      }
+
+      return pTimeout(responseP, {
+        milliseconds: timeoutMs,
+        message: 'ChatGPT timed out waiting for response'
+      })
+    } else {
+      return responseP
+    }
   }
 
+  /**
+   * @returns `true` if the client has a valid acces token or `false` if refreshing
+   * the token fails.
+   */
+  async getIsAuthenticated() {
+    try {
+      void (await this.refreshAccessToken())
+      return true
+    } catch (err) {
+      return false
+    }
+  }
+
+  /**
+   * Refreshes the client's access token which will succeed only if the session
+   * is still valid.
+   */
+  async ensureAuth() {
+    return await this.refreshAccessToken()
+  }
+
+  /**
+   * Attempts to refresh the current access token using the ChatGPT
+   * `sessionToken` cookie.
+   *
+   * Access tokens will be cached for up to `accessTokenTTL` milliseconds to
+   * prevent refreshing access tokens too frequently.
+   *
+   * @returns A valid access token
+   * @throws An error if refreshing the access token fails.
+   */
   async refreshAccessToken(): Promise<string> {
     const cachedAccessToken = this._accessTokenCache.get(KEY_ACCESS_TOKEN)
     if (cachedAccessToken) {
