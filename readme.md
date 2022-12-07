@@ -14,9 +14,9 @@
   - [Docs](#docs)
   - [Demos](#demos)
   - [Session Tokens](#session-tokens)
+- [Projects](#projects)
 - [Compatibility](#compatibility)
-- [Examples](#examples)
-- [Credit](#credit)
+- [Credits](#credits)
 - [License](#license)
 
 ## Intro
@@ -81,6 +81,17 @@ const response1 = await conversation.sendMessage('Can you expand on that?')
 
 // send another follow-up to the same conversation
 const response2 = await conversation.sendMessage('Oh cool; thank you')
+```
+
+Sometimes, ChatGPT will hang for an extended period of time before sending it's response. This may be due to rate limiting or it may be due to OpenAI's servers being overloaded.
+
+To mitigate this issues, you can add a timeout like this:
+
+```ts
+// timeout after 2 minutes (which will also abort the underlying HTTP request)
+const response = await api.sendMessage('this is a timeout test', {
+  timeoutMs: 2 * 60 * 1000
+})
 ```
 
 <details>
@@ -149,20 +160,7 @@ If you want to run the built-in demo, store this value as `SESSION_TOKEN` in a l
 > **Note**
 > Prior to v1.0.0, this package used a headless browser via [Playwright](https://playwright.dev/) to automate the web UI. Here are the [docs for the initial browser version](https://github.com/transitive-bullshit/chatgpt-api/tree/v0.4.2).
 
-## Compatibility
-
-This package is ESM-only. It supports:
-
-- Node.js >= 16.8
-  - If you need Node.js 14 support, use [`v1.4.0`](https://github.com/transitive-bullshit/chatgpt-api/releases/tag/v1.4.0)
-  - If you need CommonJS support, use [`v1.3.0`](https://github.com/transitive-bullshit/chatgpt-api/releases/tag/v1.3.0)
-- Edge runtimes like CF workers and Vercel edge functions
-- Modern browsers
-  - This is mainly intended for chrome extensions where your code is protected to a degree
-  - **We do not recommend using `chatgpt` from client-side browser code** because it would expose your private session token
-  - If you want to build a website with `chatgpt`, we recommend using it only from your backend API
-
-## Examples
+## Projects
 
 All of these awesome projects are built using the `chatgpt` package. 🤯
 
@@ -183,7 +181,19 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 
 If you create a cool integration, feel free to open a PR and add it to the list.
 
-## Credit
+## Compatibility
+
+This package is ESM-only. It supports:
+
+- Node.js >= 16.8
+  - If you need Node.js 14 support, use [`v1.4.0`](https://github.com/transitive-bullshit/chatgpt-api/releases/tag/v1.4.0)
+- Edge runtimes like CF workers and Vercel edge functions
+- Modern browsers
+  - Mainly chrome extensions where your code is protected to a degree
+  - **We do not recommend using `chatgpt` from client-side browser code** because it would expose your private session token
+  - If you want to build a website using `chatgpt`, we recommend using it only from your backend API
+
+## Credits
 
 - Huge thanks to [@RomanHotsiy](https://github.com/RomanHotsiy), [@ElijahPepe](https://github.com/ElijahPepe), and all the other contributors 💪
 - The original browser version was inspired by this [Go module](https://github.com/danielgross/whatsapp-gpt) by [Daniel Gross](https://github.com/danielgross)
@@ -193,4 +203,4 @@ If you create a cool integration, feel free to open a PR and add it to the list.
 
 MIT © [Travis Fischer](https://transitivebullsh.it)
 
-If you found this project interesting, please consider supporting my open source work by [sponsoring me](https://github.com/sponsors/transitive-bullshit) or <a href="https://twitter.com/transitive_bs">following me on twitter <img src="https://storage.googleapis.com/saasify-assets/twitter-logo.svg" alt="twitter" height="24px" align="center"></a>
+If you found this project interesting, please consider [sponsoring me](https://github.com/sponsors/transitive-bullshit) or <a href="https://twitter.com/transitive_bs">following me on twitter <img src="https://storage.googleapis.com/saasify-assets/twitter-logo.svg" alt="twitter" height="24px" align="center"></a>
