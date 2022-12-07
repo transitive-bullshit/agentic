@@ -19,8 +19,25 @@ export async function fetchSSE(
     }
   })
 
-  for await (const chunk of streamAsyncIterable(res.body)) {
-    const str = new TextDecoder().decode(chunk)
-    parser.feed(str)
+  if (!res.body.getReader) {
+    // Vercel polyfills `fetch` with `node-fetch`, which doesn't conform to
+    // web standards, so this is a workaround...
+    const body: NodeJS.ReadableStream = res.body as any
+
+    if (body.on || !body.read) {
+      throw new Error('unsupported "fetch" implementation')
+    }
+
+    body.on('readable', () => {
+      let chunk: string | Buffer
+      while (null !== (chunk = body.read())) {
+        parser.feed(chunk.toString())
+      }
+    })
+  } else {
+    for await (const chunk of streamAsyncIterable(res.body)) {
+      const str = new TextDecoder().decode(chunk)
+      parser.feed(str)
+    }
   }
 }
