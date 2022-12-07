@@ -39,28 +39,30 @@ export class ChatGPTConversation {
    * for each message.
    *
    * @param message - The prompt message to send
-   * @param opts.onProgress - Optional listener which will be called every time the partial response is updated
-   * @param opts.onConversationResponse - Optional listener which will be called every time a conversation response is received
+   * @param opts.onProgress - Optional callback which will be invoked every time the partial response is updated
+   * @param opts.onConversationResponse - Optional callback which will be invoked every time the partial response is updated with the full conversation response
+   * @param opts.abortSignal - Optional callback used to abort the underlying `fetch` call using an [AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController)
+   *
    * @returns The response from ChatGPT
    */
   async sendMessage(
     message: string,
-    opts: {
-      onProgress?: (partialResponse: string) => void
-      onConversationResponse?: (
-        response: types.ConversationResponseEvent
-      ) => void
-    } = {}
+    opts: types.SendConversationMessageOptions = {}
   ): Promise<string> {
-    const { onProgress, onConversationResponse } = opts
+    const { onConversationResponse, ...rest } = opts
 
     return this.api.sendMessage(message, {
+      ...rest,
       conversationId: this.conversationId,
       parentMessageId: this.parentMessageId,
-      onProgress,
       onConversationResponse: (response) => {
-        this.conversationId = response.conversation_id
-        this.parentMessageId = response.message.id
+        if (response.conversation_id) {
+          this.conversationId = response.conversation_id
+        }
+
+        if (response.message?.id) {
+          this.parentMessageId = response.message.id
+        }
 
         if (onConversationResponse) {
           return onConversationResponse(response)

@@ -12,9 +12,6 @@ const USER_AGENT =
   'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36'
 
 export class ChatGPTAPI {
-  public conversationId: string = undefined
-  public parentMessageId: string = undefined
-
   protected _sessionToken: string
   protected _markdown: boolean
   protected _apiBaseUrl: string
@@ -86,22 +83,15 @@ export class ChatGPTAPI {
    * @param message - The prompt message to send
    * @param opts.conversationId - Optional ID of a conversation to continue
    * @param opts.parentMessageId - Optional ID of the previous message in the conversation
-   * @param opts.onProgress - Optional function which will be called every time the partial response is updated
-   * @param opts.onConversationResponse - Optional function which will be called every time the partial response is updated with the full conversation response
-   * @param opts.abortSignal - Optional function used to abort the underlying `fetch` call using an [AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController)
+   * @param opts.onProgress - Optional callback which will be invoked every time the partial response is updated
+   * @param opts.onConversationResponse - Optional callback which will be invoked every time the partial response is updated with the full conversation response
+   * @param opts.abortSignal - Optional callback used to abort the underlying `fetch` call using an [AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController)
+   *
    * @returns The response from ChatGPT
    */
   async sendMessage(
     message: string,
-    opts: {
-      conversationId?: string
-      parentMessageId?: string
-      onProgress?: (partialResponse: string) => void
-      onConversationResponse?: (
-        response: types.ConversationResponseEvent
-      ) => void
-      abortSignal?: AbortSignal
-    } = {}
+    opts: types.SendMessageOptions = {}
   ): Promise<string> {
     const {
       conversationId,
@@ -161,6 +151,7 @@ export class ChatGPTAPI {
             if (onConversationResponse) {
               onConversationResponse(parsedData)
             }
+
             const message = parsedData.message
             // console.log('event', JSON.stringify(parsedData, null, 2))
 
@@ -201,7 +192,13 @@ export class ChatGPTAPI {
           cookie: `__Secure-next-auth.session-token=${this._sessionToken}`,
           'user-agent': this._userAgent
         }
-      }).then((r) => r.json() as any as types.SessionResult)
+      }).then((r) => {
+        if (!r.ok) {
+          throw new Error(`${r.status} ${r.statusText}`)
+        }
+
+        return r.json() as any as types.SessionResult
+      })
 
       const accessToken = res?.accessToken
 

@@ -10,6 +10,7 @@
   "types": "./build/index.d.ts",
   "exports": {
     ".": {
+      "browser": "./build/browser/index.js",
       "import": "./build/index.js",
       "types": "./build/index.d.ts",
       "default": "./build/index.js"
@@ -26,7 +27,7 @@
     "dev": "tsup --watch",
     "clean": "del build",
     "prebuild": "run-s clean",
-    "postbuild": "sed -i 's/ *\\?\\? *(await import(\"undici\")).fetch//' build/browser/index.js",
+    "postbuild": "[ -n CI ] && sed -i '' 's/ *\\?\\? *(await import(\"undici\")).fetch//' build/browser/index.js || echo 'skipping postbuild on CI'",
     "predev": "run-s clean",
     "pretest": "run-s build",
     "docs": "typedoc",
