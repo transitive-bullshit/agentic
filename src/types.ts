@@ -273,3 +273,16 @@ export type MessageContent = {
 }
 
 export type MessageMetadata = any
+
+export type SendMessageOptions = {
+  conversationId?: string
+  parentMessageId?: string
+  onProgress?: (partialResponse: string) => void
+  onConversationResponse?: (response: ConversationResponseEvent) => void
+  abortSignal?: AbortSignal
+}
+
+export type SendConversationMessageOptions = Omit<
+  SendMessageOptions,
+  'conversationId' | 'parentMessageId'
+>
