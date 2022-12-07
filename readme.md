@@ -25,9 +25,6 @@ This package is a Node.js wrapper around [ChatGPT](https://openai.com/blog/chatg
 
 You can use it to start building projects powered by ChatGPT like chatbots, websites, etc...
 
-> **Note**
-> As of December 7th, 2022, the ChatGPT servers are currently experiencing "exceptionally high demand," so some requests may respond with [HTTP 503 errors](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503). (according to the official OpenAI discord)
-
 ## Install
 
 ```bash
@@ -35,6 +32,9 @@ npm install chatgpt
 ```
 
 ## Usage
+
+> **Note**
+> Per the official OpenAI Discord on December 7th, 2022: The ChatGPT servers are currently experiencing "exceptionally high demand," so some requests may respond with [HTTP 503 errors](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503).
 
 ```ts
 import { ChatGPTAPI } from 'chatgpt'
