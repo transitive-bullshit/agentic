@@ -1,5 +1,7 @@
 /// <reference lib="dom" />
 
+let _undici: any
+
 // Use `undici` for node.js 16 and 17
 // Use `fetch` for node.js >= 18
 // Use `fetch` for all other environments, including browsers
@@ -7,6 +9,14 @@
 // browser build
 const fetch =
   globalThis.fetch ??
-  ((await import('undici')).fetch as unknown as typeof globalThis.fetch)
+  async function undiciFetchWrapper(
+    ...args: Parameters<typeof globalThis.fetch>
+  ): Promise<Response> {
+    if (!_undici) {
+      _undici = await import('undici')
+    }
+
+    return _undici.fetch(...args)
+  }
 
 export { fetch }
