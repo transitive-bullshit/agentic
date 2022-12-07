@@ -189,8 +189,8 @@ This package is ESM-only. It supports:
   - If you need Node.js 14 support, use [`v1.4.0`](https://github.com/transitive-bullshit/chatgpt-api/releases/tag/v1.4.0)
 - Edge runtimes like CF workers and Vercel edge functions
 - Modern browsers
-  - Mainly chrome extensions where your code is protected to a degree
-  - **We do not recommend using `chatgpt` from client-side browser code** because it would expose your private session token
+  - Mainly meant for chrome extensions where your code is protected to a degree
+  - We recommend against using `chatgpt` from client-side browser code because it would expose your private session token
   - If you want to build a website using `chatgpt`, we recommend using it only from your backend API
 
 ## Credits
