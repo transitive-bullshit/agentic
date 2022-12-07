@@ -11,6 +11,7 @@
 ### Methods
 
 - [ensureAuth](ChatGPTAPI.md#ensureauth)
+- [getConversation](ChatGPTAPI.md#getconversation)
 - [getIsAuthenticated](ChatGPTAPI.md#getisauthenticated)
 - [refreshAccessToken](ChatGPTAPI.md#refreshaccesstoken)
 - [sendMessage](ChatGPTAPI.md#sendmessage)
@@ -36,7 +37,7 @@ Creates a new client wrapper around the unofficial ChatGPT REST API.
 
 #### Defined in
 
-[chatgpt-api.ts:31](https://github.com/transitive-bullshit/chatgpt-api/blob/80d77a3/src/chatgpt-api.ts#L31)
+[chatgpt-api.ts:32](https://github.com/transitive-bullshit/chatgpt-api/blob/8e045b2/src/chatgpt-api.ts#L32)
 
 ## Methods
 
@@ -50,7 +51,34 @@ Creates a new client wrapper around the unofficial ChatGPT REST API.
 
 #### Defined in
 
-[chatgpt-api.ts:74](https://github.com/transitive-bullshit/chatgpt-api/blob/80d77a3/src/chatgpt-api.ts#L74)
+[chatgpt-api.ts:75](https://github.com/transitive-bullshit/chatgpt-api/blob/8e045b2/src/chatgpt-api.ts#L75)
+
+___
+
+### getConversation
+
+▸ **getConversation**(`opts?`): [`ChatGPTConversation`](ChatGPTConversation.md)
+
+Gets a new ChatGPTConversation instance, which can be used to send multiple
+messages as part of a single conversation.
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `opts` | `Object` | - |
+| `opts.conversationId?` | `string` | Optional ID of the previous message in a conversation |
+| `opts.parentMessageId?` | `string` | Optional ID of the previous message in a conversation |
+
+#### Returns
+
+[`ChatGPTConversation`](ChatGPTConversation.md)
+
+The new conversation instance
+
+#### Defined in
+
+[chatgpt-api.ts:233](https://github.com/transitive-bullshit/chatgpt-api/blob/8e045b2/src/chatgpt-api.ts#L233)
 
 ___
 
@@ -64,7 +92,7 @@ ___
 
 #### Defined in
 
-[chatgpt-api.ts:65](https://github.com/transitive-bullshit/chatgpt-api/blob/80d77a3/src/chatgpt-api.ts#L65)
+[chatgpt-api.ts:66](https://github.com/transitive-bullshit/chatgpt-api/blob/8e045b2/src/chatgpt-api.ts#L66)
 
 ___
 
@@ -78,7 +106,7 @@ ___
 
 #### Defined in
 
-[chatgpt-api.ts:165](https://github.com/transitive-bullshit/chatgpt-api/blob/80d77a3/src/chatgpt-api.ts#L165)
+[chatgpt-api.ts:183](https://github.com/transitive-bullshit/chatgpt-api/blob/8e045b2/src/chatgpt-api.ts#L183)
 
 ___
 
@@ -93,15 +121,15 @@ the response.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `message` | `string` | The plaintext message to send. |
-| `opts` | `Object` | - |
-| `opts.conversationId?` | `string` | Optional ID of the previous message in a conversation |
-| `opts.onProgress?` | (`partialResponse`: `string`) => `void` | - |
+| `message` | `string` | The prompt message to send |
+| `opts` | [`SendMessageOptions`](../modules.md#sendmessageoptions) | - |
 
 #### Returns
 
 `Promise`<`string`\>
 
+The response from ChatGPT
+
 #### Defined in
 
-[chatgpt-api.ts:86](https://github.com/transitive-bullshit/chatgpt-api/blob/80d77a3/src/chatgpt-api.ts#L86)
+[chatgpt-api.ts:92](https://github.com/transitive-bullshit/chatgpt-api/blob/8e045b2/src/chatgpt-api.ts#L92)
