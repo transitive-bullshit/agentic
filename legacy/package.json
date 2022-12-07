@@ -27,7 +27,7 @@
     "dev": "tsup --watch",
     "clean": "del build",
     "prebuild": "run-s clean",
-    "postbuild": "[ -n CI ] && sed -i '' 's/ *\\?\\? *(await import(\"undici\")).fetch//' build/browser/index.js || echo 'skipping postbuild on CI'",
+    "postbuild": "[ -n CI ] && sed -i '' 's/await import(\"undici\")/null/' build/browser/index.js || echo 'skipping postbuild on CI'",
     "predev": "run-s clean",
     "pretest": "run-s build",
     "docs": "typedoc",
