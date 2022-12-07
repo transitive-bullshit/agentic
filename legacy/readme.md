@@ -47,7 +47,7 @@ async function example() {
 
   // send a message and wait for the response
   const response = await api.sendMessage(
-    'Write a python version of bubble sort.
+    'Write a python version of bubble sort.'
   )
 
   // response is a markdown-formatted string
