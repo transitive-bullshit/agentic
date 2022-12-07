@@ -6,10 +6,10 @@ import { ChatGPTAPI } from '.'
 dotenv.config()
 
 /**
- * Example CLI for testing functionality.
+ * Demo CLI for testing conversation support.
  *
  * ```
- * npx tsx src/demo.ts
+ * npx tsx src/demo-conversation.ts
  * ```
  */
 async function main() {

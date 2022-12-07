@@ -36,12 +36,14 @@ test('ChatGPTAPI valid session token', async (t) => {
 
   await t.notThrowsAsync(
     (async () => {
-      const api = new ChatGPTAPI({ sessionToken: process.env.SESSION_TOKEN })
+      const chatgpt = new ChatGPTAPI({
+        sessionToken: process.env.SESSION_TOKEN
+      })
 
       // Don't make any real API calls using our session token if we're running on CI
       if (!isCI) {
-        await api.ensureAuth()
-        const response = await api.sendMessage('test')
+        await chatgpt.ensureAuth()
+        const response = await chatgpt.sendMessage('test')
         console.log('chatgpt response', response)
 
         t.truthy(response)
@@ -63,7 +65,50 @@ if (!isCI) {
       },
       {
         message:
-          'ChatGPT failed to refresh auth token. Error: session token has expired'
+          'ChatGPT failed to refresh auth token. Error: session token may have expired'
+      }
+    )
+  })
+}
+
+if (!isCI) {
+  test('ChatGPTAPI timeout', async (t) => {
+    t.timeout(30 * 1000) // 30 seconds
+
+    await t.throwsAsync(
+      async () => {
+        const chatgpt = new ChatGPTAPI({
+          sessionToken: process.env.SESSION_TOKEN
+        })
+
+        await chatgpt.sendMessage('test', {
+          timeoutMs: 1
+        })
+      },
+      {
+        message: 'ChatGPT timed out waiting for response'
+      }
+    )
+  })
+
+  test('ChatGPTAPI abort', async (t) => {
+    t.timeout(30 * 1000) // 30 seconds
+
+    await t.throwsAsync(
+      async () => {
+        const chatgpt = new ChatGPTAPI({
+          sessionToken: process.env.SESSION_TOKEN
+        })
+
+        const abortController = new AbortController()
+        setTimeout(() => abortController.abort(new Error('testing abort')), 10)
+
+        await chatgpt.sendMessage('test', {
+          abortSignal: abortController.signal
+        })
+      },
+      {
+        message: 'testing abort'
       }
     )
   })
