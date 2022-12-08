@@ -97,6 +97,8 @@ const response = await api.sendMessage('this is a timeout test', {
 })
 ```
 
+You can stream responses using the `onProgress` or `onConversationResponse` callbacks. See the [docs](./docs/classes/ChatGPTAPI.md) for more details.
+
 <details>
 <summary>Usage in CommonJS (Dynamic import)</summary>
 
@@ -180,10 +182,12 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [Discord Bot #2](https://github.com/Nageld/ChatGPT-Bot)
 - [WeChat Bot #1](https://github.com/AutumnWhj/ChatGPT-wechat-bot)
 - [WeChat Bot #2](https://github.com/fuergaosi233/wechat-chatgpt)
+- [QQ Bot (plugin for Yunzai-bot)](https://github.com/ikechan8370/chatgpt-plugin)
 - [Lovelines.xyz](https://lovelines.xyz)
 - [EXM smart contracts](https://github.com/decentldotland/molecule)
 - [Flutter ChatGPT API](https://github.com/coskuncay/flutter_chatgpt_api)
 - [Carik Bot](https://github.com/luridarmawan/Carik)
+- [Github Action for reviewing PRs](https://github.com/kxxt/chatgpt-action/)
 
 If you create a cool integration, feel free to open a PR and add it to the list.
 

@@ -142,7 +142,7 @@ export class ChatGPTAPI {
         headers: {
           Authorization: `Bearer ${accessToken}`,
           'Content-Type': 'application/json',
-          'user-agent': this._userAgent
+          'User-Agent': this._userAgent
         },
         body: JSON.stringify(body),
         signal: abortSignal,
