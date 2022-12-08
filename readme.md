@@ -97,6 +97,8 @@ const response = await api.sendMessage('this is a timeout test', {
 })
 ```
 
+You can stream responses using the `onProgress` or `onConversationResponse` callbacks. See the [docs](./docs/classes/ChatGPTAPI.md) for more details.
+
 <details>
 <summary>Usage in CommonJS (Dynamic import)</summary>
 
