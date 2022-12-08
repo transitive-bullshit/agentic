@@ -179,6 +179,7 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [Raycast Extension #2](https://github.com/domnantas/raycast-chatgpt)
 - [Telegram Bot](https://github.com/realies/chatgpt-telegram-bot)
 - [Go Telegram Bot](https://github.com/m1guelpf/chatgpt-telegram)
+- [Node.js Telegram Bot](https://github.com/dawangraoming/chatgpt-telegram-bot)
 - [GitHub ProBot](https://github.com/oceanlvr/ChatGPTBot)
 - [Discord Bot #1](https://github.com/onury5506/Discord-ChatGPT-Bot)
 - [Discord Bot #2](https://github.com/Nageld/ChatGPT-Bot)
