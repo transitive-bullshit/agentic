@@ -16,6 +16,12 @@ const fetch =
       _undici = await import('undici')
     }
 
+    if (typeof _undici?.fetch !== 'function') {
+      throw new Error(
+        'Invalid undici installation; please make sure undici is installed correctly in your node_modules. Note that this package requires Node.js >= 16.8'
+      )
+    }
+
     return _undici.fetch(...args)
   }
 
