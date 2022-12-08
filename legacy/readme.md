@@ -193,7 +193,7 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [Flutter ChatGPT API](https://github.com/coskuncay/flutter_chatgpt_api)
 - [Carik Bot](https://github.com/luridarmawan/Carik)
 - [Github Action for reviewing PRs](https://github.com/kxxt/chatgpt-action/)
-- [Whatsapp Bot](https://github.com/amosayomide05/chatgpt-whatsapp-bot)
+- [WhatsApp Bot](https://github.com/amosayomide05/chatgpt-whatsapp-bot)
 
 If you create a cool integration, feel free to open a PR and add it to the list.
 
