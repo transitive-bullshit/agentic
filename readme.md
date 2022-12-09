@@ -197,6 +197,7 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [Carik Bot](https://github.com/luridarmawan/Carik)
 - [Github Action for reviewing PRs](https://github.com/kxxt/chatgpt-action/)
 - [WhatsApp Bot](https://github.com/amosayomide05/chatgpt-whatsapp-bot)
+- [Matrix Bot](https://github.com/jakecoppinger/matrix-chatgpt-bot)
 
 If you create a cool integration, feel free to open a PR and add it to the list.
 
