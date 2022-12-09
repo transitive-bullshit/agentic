@@ -187,6 +187,7 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [WeChat Bot #1](https://github.com/AutumnWhj/ChatGPT-wechat-bot)
 - [WeChat Bot #2](https://github.com/fuergaosi233/wechat-chatgpt)
 - [WeChat Bot #3](https://github.com/wangrongding/wechat-bot)
+- [WeChat Bot #4](https://github.com/darknightlab/wechat-bot)
 - [QQ Bot (plugin for Yunzai-bot)](https://github.com/ikechan8370/chatgpt-plugin)
 - [Lovelines.xyz](https://lovelines.xyz)
 - [EXM smart contracts](https://github.com/decentldotland/molecule)
