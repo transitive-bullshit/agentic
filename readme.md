@@ -192,6 +192,7 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [WeChat Bot #5](https://github.com/sunshanpeng/wechaty-chatgpt)
 - [QQ Bot (plugin for Yunzai-bot)](https://github.com/ikechan8370/chatgpt-plugin)
 - [QQ Bot (plugin for KiviBot)](https://github.com/KiviBotLab/kivibot-plugin-chatgpt)
+- [QQ Bot #1](https://github.com/easydu2002/chat_gpt_oicq)
 - [Lovelines.xyz](https://lovelines.xyz)
 - [EXM smart contracts](https://github.com/decentldotland/molecule)
 - [Flutter ChatGPT API](https://github.com/coskuncay/flutter_chatgpt_api)
@@ -199,7 +200,6 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [Github Action for reviewing PRs](https://github.com/kxxt/chatgpt-action/)
 - [WhatsApp Bot](https://github.com/amosayomide05/chatgpt-whatsapp-bot)
 - [Matrix Bot](https://github.com/jakecoppinger/matrix-chatgpt-bot)
-- [QQ Bot #1](https://github.com/easydu2002/chat_gpt_oicq)
 
 If you create a cool integration, feel free to open a PR and add it to the list.
 
