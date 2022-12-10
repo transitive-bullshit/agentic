@@ -1,6 +1,7 @@
 import test from 'ava'
 import dotenv from 'dotenv-safe'
 
+import * as types from './types'
 import { ChatGPTAPI } from './chatgpt-api'
 
 dotenv.config()
@@ -20,6 +21,7 @@ test('ChatGPTAPI invalid session token', async (t) => {
       await chatgpt.ensureAuth()
     },
     {
+      instanceOf: types.ChatGPTError,
       message: 'ChatGPT failed to refresh auth token. Error: Unauthorized'
     }
   )
@@ -64,6 +66,7 @@ if (!isCI) {
         await chatgpt.ensureAuth()
       },
       {
+        instanceOf: types.ChatGPTError,
         message:
           'ChatGPT failed to refresh auth token. Error: session token may have expired'
       }

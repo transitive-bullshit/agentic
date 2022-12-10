@@ -287,3 +287,10 @@ export type SendConversationMessageOptions = Omit<
   SendMessageOptions,
   'conversationId' | 'parentMessageId'
 >
+
+export class ChatGPTError extends Error {
+  statusCode?: number
+  statusText?: string
+  response?: Response
+  originalError?: Error
+}

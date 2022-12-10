@@ -1,5 +1,5 @@
 import ExpiryMap from 'expiry-map'
-import pTimeout, { TimeoutError } from 'p-timeout'
+import pTimeout from 'p-timeout'
 import { v4 as uuidv4 } from 'uuid'
 
 import * as types from './types'
@@ -68,7 +68,7 @@ export class ChatGPTAPI {
     this._accessTokenCache = new ExpiryMap<string, string>(accessTokenTTL)
 
     if (!this._sessionToken) {
-      throw new Error('ChatGPT invalid session token')
+      throw new types.ChatGPTError('ChatGPT invalid session token')
     }
   }
 
@@ -238,6 +238,7 @@ export class ChatGPTAPI {
       return cachedAccessToken
     }
 
+    let response: Response
     try {
       const res = await fetch('https://chat.openai.com/api/auth/session', {
         headers: {
@@ -245,8 +246,14 @@ export class ChatGPTAPI {
           'user-agent': this._userAgent
         }
       }).then((r) => {
+        response = r
+
         if (!r.ok) {
-          throw new Error(`${r.status} ${r.statusText}`)
+          const error = new types.ChatGPTError(`${r.status} ${r.statusText}`)
+          error.response = r
+          error.statusCode = r.status
+          error.statusText = r.statusText
+          throw error
         }
 
         return r.json() as any as types.SessionResult
@@ -255,22 +262,41 @@ export class ChatGPTAPI {
       const accessToken = res?.accessToken
 
       if (!accessToken) {
-        throw new Error('Unauthorized')
+        const error = new types.ChatGPTError('Unauthorized')
+        error.response = response
+        error.statusCode = response?.status
+        error.statusText = response?.statusText
+        throw error
       }
 
-      const error = res?.error
-      if (error) {
-        if (error === 'RefreshAccessTokenError') {
-          throw new Error('session token may have expired')
+      const appError = res?.error
+      if (appError) {
+        if (appError === 'RefreshAccessTokenError') {
+          const error = new types.ChatGPTError('session token may have expired')
+          error.response = response
+          error.statusCode = response?.status
+          error.statusText = response?.statusText
+          throw error
         } else {
-          throw new Error(error)
+          const error = new types.ChatGPTError(appError)
+          error.response = response
+          error.statusCode = response?.status
+          error.statusText = response?.statusText
+          throw error
         }
       }
 
       this._accessTokenCache.set(KEY_ACCESS_TOKEN, accessToken)
       return accessToken
     } catch (err: any) {
-      throw new Error(`ChatGPT failed to refresh auth token. ${err.toString()}`)
+      const error = new types.ChatGPTError(
+        `ChatGPT failed to refresh auth token. ${err.toString()}`
+      )
+      error.response = response
+      error.statusCode = response?.status
+      error.statusText = response?.statusText
+      error.originalError = err
+      throw error
     }
   }
 

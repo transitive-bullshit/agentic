@@ -1,5 +1,6 @@
 import { createParser } from 'eventsource-parser'
 
+import * as types from './types'
 import { fetch } from './fetch'
 import { streamAsyncIterable } from './stream-async-iterable'
 
@@ -10,7 +11,12 @@ export async function fetchSSE(
   const { onMessage, ...fetchOptions } = options
   const res = await fetch(url, fetchOptions)
   if (!res.ok) {
-    throw new Error(`ChatGPTAPI error ${res.status || res.statusText}`)
+    const msg = `ChatGPTAPI error ${res.status || res.statusText}`
+    const error = new types.ChatGPTError(msg)
+    error.statusCode = res.status
+    error.statusText = res.statusText
+    error.response = res
+    throw error
   }
 
   const parser = createParser((event) => {
@@ -25,7 +31,7 @@ export async function fetchSSE(
     const body: NodeJS.ReadableStream = res.body as any
 
     if (!body.on || !body.read) {
-      throw new Error('unsupported "fetch" implementation')
+      throw new types.ChatGPTError('unsupported "fetch" implementation')
     }
 
     body.on('readable', () => {
