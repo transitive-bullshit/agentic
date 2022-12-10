@@ -182,6 +182,7 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [Discord Bot #1](https://github.com/onury5506/Discord-ChatGPT-Bot)
 - [Discord Bot #2](https://github.com/Nageld/ChatGPT-Bot)
 - [Discord Bot #3](https://github.com/leinstay/gptbot)
+- [Discord bot #4 (selfbot)](https://github.com/0x7030676e31/cumsocket)
 - [WeChat Bot #1](https://github.com/AutumnWhj/ChatGPT-wechat-bot)
 - [WeChat Bot #2](https://github.com/fuergaosi233/wechat-chatgpt)
 - [WeChat Bot #3](https://github.com/wangrongding/wechat-bot)
