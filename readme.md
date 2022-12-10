@@ -159,6 +159,9 @@ To get a session token:
 
 If you want to run the built-in demo, store this value as `SESSION_TOKEN` in a local `.env` file.
 
+> **Note""
+> Your can try [chatgpt-session-server](https://github.com/Mereithhh/chatgpt-session-server) to get session token automatedly.
+
 > **Note**
 > This package will switch to using the official API once it's released.
 
