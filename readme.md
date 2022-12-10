@@ -67,6 +67,14 @@ const api = new ChatGPTAPI({
 })
 ```
 
+ChatGPT requests directly to the ChatGPT official API by default. If you want to request with proxy support like `http://localhost:1080`, you can use:
+```ts
+const api = new ChatGPTAPI({
+  sessionToken: process.env.SESSION_TOKEN,
+  proxyUrl: process.env.PROXY_URL
+})
+```
+
 If you want to automatically track the conversation, you can use `ChatGPTAPI.getConversation()`:
 
 ```ts

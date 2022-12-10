@@ -1,5 +1,6 @@
 import ExpiryMap from 'expiry-map'
 import pTimeout, { TimeoutError } from 'p-timeout'
+import { ProxyAgent, setGlobalDispatcher } from 'undici'
 import { v4 as uuidv4 } from 'uuid'
 
 import * as types from './types'
@@ -23,6 +24,8 @@ export class ChatGPTAPI {
   // (defaults to 60 seconds)
   protected _accessTokenCache: ExpiryMap<string, string>
 
+  protected _proxyAgent: ProxyAgent
+
   /**
    * Creates a new client wrapper around the unofficial ChatGPT REST API.
    *
@@ -31,6 +34,7 @@ export class ChatGPTAPI {
    * @param backendApiBaseUrl - Optional override; the base URL for the ChatGPT backend API (`/backend-api`)
    * @param userAgent - Optional override; the `user-agent` header to use with ChatGPT requests
    * @param accessTokenTTL - Optional override; how long in milliseconds access tokens should last before being forcefully refreshed
+   * @param proxyUrl - Optional override; the proxy url for ChatGPT (`http://localhost:1080` or `http://user:pass@localhost:1080`)
    */
   constructor(opts: {
     sessionToken: string
@@ -49,6 +53,9 @@ export class ChatGPTAPI {
 
     /** @defaultValue 60000 (60 seconds) */
     accessTokenTTL?: number
+
+    /** @defaultValue `''` */
+    proxyUrl?: string
   }) {
     const {
       sessionToken,
@@ -56,7 +63,8 @@ export class ChatGPTAPI {
       apiBaseUrl = 'https://chat.openai.com/api',
       backendApiBaseUrl = 'https://chat.openai.com/backend-api',
       userAgent = USER_AGENT,
-      accessTokenTTL = 60000 // 60 seconds
+      accessTokenTTL = 60000, // 60 seconds
+      proxyUrl = ''
     } = opts
 
     this._sessionToken = sessionToken
@@ -66,6 +74,11 @@ export class ChatGPTAPI {
     this._userAgent = userAgent
 
     this._accessTokenCache = new ExpiryMap<string, string>(accessTokenTTL)
+
+    if (proxyUrl) {
+      this._proxyAgent = new ProxyAgent(proxyUrl)
+      setGlobalDispatcher(this._proxyAgent)
+    }
 
     if (!this._sessionToken) {
       throw new Error('ChatGPT invalid session token')
