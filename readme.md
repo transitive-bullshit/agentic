@@ -33,9 +33,6 @@ npm install chatgpt
 
 ## Usage
 
-> **Note**
-> Per the official OpenAI Discord on December 7th, 2022: The ChatGPT servers are currently experiencing "exceptionally high demand," so some requests may respond with [HTTP 503 errors](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503).
-
 ```ts
 import { ChatGPTAPI } from 'chatgpt'
 
@@ -204,6 +201,7 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [Github Action for reviewing PRs](https://github.com/kxxt/chatgpt-action/)
 - [WhatsApp Bot](https://github.com/amosayomide05/chatgpt-whatsapp-bot)
 - [Matrix Bot](https://github.com/jakecoppinger/matrix-chatgpt-bot)
+- [Rental Cover Letter Generator](https://sharehouse.app/ai)
 
 If you create a cool integration, feel free to open a PR and add it to the list.
 
