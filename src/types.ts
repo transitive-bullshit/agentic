@@ -41,7 +41,7 @@ export type User = {
   /**
    * Email of the user
    */
-  email: string
+  email?: string
 
   /**
    * Image of the user
@@ -56,12 +56,12 @@ export type User = {
   /**
    * Groups the user is in
    */
-  groups: string[] | []
+  groups: string[]
 
   /**
    * Features the user is in
    */
-  features: string[] | []
+  features: string[]
 }
 
 /**

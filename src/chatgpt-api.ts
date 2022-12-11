@@ -18,10 +18,13 @@ export class ChatGPTAPI {
   protected _apiBaseUrl: string
   protected _backendApiBaseUrl: string
   protected _userAgent: string
+  protected _headers: Record<string, string>
 
   // Stores access tokens for `accessTokenTTL` milliseconds before needing to refresh
   // (defaults to 60 seconds)
   protected _accessTokenCache: ExpiryMap<string, string>
+
+  protected _user: types.User | null = null
 
   /**
    * Creates a new client wrapper around the unofficial ChatGPT REST API.
@@ -64,12 +67,26 @@ export class ChatGPTAPI {
     this._apiBaseUrl = apiBaseUrl
     this._backendApiBaseUrl = backendApiBaseUrl
     this._userAgent = userAgent
+    this._headers = {
+      'User-Agent': this._userAgent,
+      'x-openai-assistant-app-id': '',
+      'accept-language': 'en-US,en;q=0.9',
+      origin: 'https://chat.openai.com',
+      referer: 'https://chat.openai.com/chat'
+    }
 
     this._accessTokenCache = new ExpiryMap<string, string>(accessTokenTTL)
 
     if (!this._sessionToken) {
       throw new types.ChatGPTError('ChatGPT invalid session token')
     }
+  }
+
+  /**
+   * Gets the currently signed-in user, if authenticated, `null` otherwise.
+   */
+  get user() {
+    return this._user
   }
 
   /**
@@ -140,9 +157,10 @@ export class ChatGPTAPI {
       fetchSSE(url, {
         method: 'POST',
         headers: {
+          ...this._headers,
           Authorization: `Bearer ${accessToken}`,
-          'Content-Type': 'application/json',
-          'User-Agent': this._userAgent
+          Accept: 'text/event-stream',
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify(body),
         signal: abortSignal,
@@ -240,10 +258,10 @@ export class ChatGPTAPI {
 
     let response: Response
     try {
-      const res = await fetch('https://chat.openai.com/api/auth/session', {
+      const res = await fetch(`${this._apiBaseUrl}/auth/session`, {
         headers: {
-          cookie: `__Secure-next-auth.session-token=${this._sessionToken}`,
-          'user-agent': this._userAgent
+          ...this._headers,
+          cookie: `__Secure-next-auth.session-token=${this._sessionToken}`
         }
       }).then((r) => {
         response = r
@@ -284,6 +302,10 @@ export class ChatGPTAPI {
           error.statusText = response?.statusText
           throw error
         }
+      }
+
+      if (res.user) {
+        this._user = res.user
       }
 
       this._accessTokenCache.set(KEY_ACCESS_TOKEN, accessToken)
