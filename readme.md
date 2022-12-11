@@ -1,3 +1,6 @@
+> **Note**
+> As of December 11, 2022 ~2pm CST, OpenAI has enabled additional Cloudflare restrictions that are currently preventing us from refreshing access tokens. This is affecting _all_ ChatGPT API wrappers at the moment, including the Python ones. See [this issue](https://github.com/transitive-bullshit/chatgpt-api/issues/96) for an ongoing discussion until I release a viable workaround.
+
 <p align="center">
   <img alt="Example usage" src="/media/demo.gif">
 </p>
