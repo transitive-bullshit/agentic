@@ -14,6 +14,7 @@ const USER_AGENT =
 
 export class ChatGPTAPI {
   protected _sessionToken: string
+  protected _clearanceToken: string
   protected _markdown: boolean
   protected _apiBaseUrl: string
   protected _backendApiBaseUrl: string
@@ -37,6 +38,7 @@ export class ChatGPTAPI {
    */
   constructor(opts: {
     sessionToken: string
+    clearanceToken: string
 
     /** @defaultValue `true` **/
     markdown?: boolean
@@ -57,6 +59,7 @@ export class ChatGPTAPI {
   }) {
     const {
       sessionToken,
+      clearanceToken,
       markdown = true,
       apiBaseUrl = 'https://chat.openai.com/api',
       backendApiBaseUrl = 'https://chat.openai.com/backend-api',
@@ -66,6 +69,7 @@ export class ChatGPTAPI {
     } = opts
 
     this._sessionToken = sessionToken
+    this._clearanceToken = clearanceToken
     this._markdown = !!markdown
     this._apiBaseUrl = apiBaseUrl
     this._backendApiBaseUrl = backendApiBaseUrl
@@ -79,7 +83,9 @@ export class ChatGPTAPI {
     }
 
     this._accessTokenCache = new ExpiryMap<string, string>(accessTokenTTL)
-    this._accessTokenCache.set(KEY_ACCESS_TOKEN, accessToken ?? '')
+    if (accessToken) {
+      this._accessTokenCache.set(KEY_ACCESS_TOKEN, accessToken)
+    }
 
     if (!this._sessionToken) {
       throw new types.ChatGPTError('ChatGPT invalid session token')
@@ -164,7 +170,8 @@ export class ChatGPTAPI {
           ...this._headers,
           Authorization: `Bearer ${accessToken}`,
           Accept: 'text/event-stream',
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          Cookie: `cf_clearance=${this._clearanceToken}`
         },
         body: JSON.stringify(body),
         signal: abortSignal,
@@ -265,7 +272,7 @@ export class ChatGPTAPI {
       const res = await fetch(`${this._apiBaseUrl}/auth/session`, {
         headers: {
           ...this._headers,
-          cookie: `__Secure-next-auth.session-token=${this._sessionToken}`
+          cookie: `cf_clearance=${this._clearanceToken}; __Secure-next-auth.session-token=${this._sessionToken}`
         }
       }).then((r) => {
         response = r
