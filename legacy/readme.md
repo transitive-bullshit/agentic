@@ -197,6 +197,7 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [Flutter ChatGPT API](https://github.com/coskuncay/flutter_chatgpt_api)
 - [Carik Bot](https://github.com/luridarmawan/Carik)
 - [Github Action for reviewing PRs](https://github.com/kxxt/chatgpt-action/)
+- [WhatsGPT WhatsApp Bot with MultiUser support](https://github.com/pascalroget/whatsgpt)
 - [WhatsApp Bot](https://github.com/amosayomide05/chatgpt-whatsapp-bot)
 - [Matrix Bot](https://github.com/jakecoppinger/matrix-chatgpt-bot)
 - [Rental Cover Letter Generator](https://sharehouse.app/ai)
