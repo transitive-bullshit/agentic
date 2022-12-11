@@ -52,6 +52,8 @@ export class ChatGPTAPI {
 
     /** @defaultValue 60000 (60 seconds) */
     accessTokenTTL?: number
+
+    accessToken?: string
   }) {
     const {
       sessionToken,
@@ -59,7 +61,8 @@ export class ChatGPTAPI {
       apiBaseUrl = 'https://chat.openai.com/api',
       backendApiBaseUrl = 'https://chat.openai.com/backend-api',
       userAgent = USER_AGENT,
-      accessTokenTTL = 60000 // 60 seconds
+      accessTokenTTL = 60000, // 60 seconds
+      accessToken
     } = opts
 
     this._sessionToken = sessionToken
@@ -76,6 +79,7 @@ export class ChatGPTAPI {
     }
 
     this._accessTokenCache = new ExpiryMap<string, string>(accessTokenTTL)
+    this._accessTokenCache.set(KEY_ACCESS_TOKEN, accessToken ?? '')
 
     if (!this._sessionToken) {
       throw new types.ChatGPTError('ChatGPT invalid session token')
