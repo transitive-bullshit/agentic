@@ -1,6 +1,6 @@
 {
   "name": "chatgpt",
-  "version": "2.0.6",
+  "version": "2.0.7",
   "description": "Node.js client for the unofficial ChatGPT API.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "repository": "transitive-bullshit/chatgpt-api",
