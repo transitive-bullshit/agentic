@@ -67,6 +67,11 @@ export async function getOpenAIAuth2Captcha({
     // NOTE: this is where you may encounter a CAPTCHA
     await page.solveRecaptchas()
 
+    var capacityLimit = await page.$('[role="alert"]')
+    if (capacityLimit) {
+      throw `ChatGPT is at capacity right now`
+    }
+
     await page.waitForSelector('#__next .btn-primary', { timeout: timeoutMs })
 
     // once we get to this point, the Cloudflare cookies are available
@@ -91,10 +96,6 @@ export async function getOpenAIAuth2Captcha({
           waitUntil: 'networkidle0'
         })
       ])
-      /*var capacityLimit = await page.$('')
-      if (capacityLimit) {
-        throw `ChatGPT is at capacity right now`
-      }*/
     }
 
     const pageCookies = await page.cookies()
