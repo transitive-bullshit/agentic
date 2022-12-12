@@ -58,8 +58,7 @@ npm install chatgpt puppeteer
 import { ChatGPTAPI, getOpenAIAuth } from 'chatgpt'
 
 async function example() {
-  // uses puppeteer to bypass cloudflare (headful because you may have to solve
-  // a captcha)
+  // use puppeteer to bypass cloudflare (headful because of captchas)
   const openAIAuth = await getOpenAIAuth({
     email: process.env.EMAIL,
     password: process.env.EMAIL
@@ -174,7 +173,7 @@ You can also get these tokens manually, but keep in mind that the `clearanceToke
 <details>
 <summary>Getting tokens manually</summary>
 
-To get a session token manually:
+To get session token manually:
 
 1. Go to https://chat.openai.com/chat and log in or sign up.
 2. Open dev tools.
@@ -182,11 +181,14 @@ To get a session token manually:
    ![ChatGPT cookies](./media/session-token.png)
 4. Copy the value for `__Secure-next-auth.session-token` and save it to your environment. This will be your `sessionToken`.
 5. Copy the value for `cf_clearance` and save it to your environment. This will be your `clearanceToken`.
+6. Copy the value of the `user-agent` header from any request in your `Network` tab. This will be your `userAgent`.
+
+Pass `sessionToken`, `clearanceToken`, and `userAgent` to the `ChatGPTAPI` constructor.
 
 </details>
 
 > **Note**
-> This package will switch to using the official API once it's released.
+> This package will switch to using the official API once it's released, which will make this process much simpler.
 
 #### Restrictions
 
@@ -254,15 +256,14 @@ If you create a cool integration, feel free to open a PR and add it to the list.
 This package is ESM-only. It supports:
 
 - Node.js >= 18
-  - Node.js 17, 16, and 14 were supported in earlier versions, but OpenAI's Cloudflare update caused a bug with `undici` on v17 and v16 that we need to debug. So for now, use `node >= 18`
-  - We recommend against using `chatgpt` from client-side browser code because it would expose your private session token
-  - If you want to build a website using `chatgpt`, we recommend using it only from your backend API
+  - Node.js 17, 16, and 14 were supported in earlier versions, but OpenAI's Cloudflare update caused a bug with `undici` on v17 and v16 that needs investigation. So for now, use `node >= 18`
+- We recommend against using `chatgpt` from client-side browser code because it would expose your private session token
+- If you want to build a website using `chatgpt`, we recommend using it only from your backend API
 
 ## Credits
 
-- Huge thanks to [@simon300000](https://github.com/simon300000), [@RomanHotsiy](https://github.com/RomanHotsiy), [@ElijahPepe](https://github.com/ElijahPepe), and all the other contributors 💪
+- Huge thanks to [@wong2](https://github.com/wong2), [@simon300000](https://github.com/simon300000), [@RomanHotsiy](https://github.com/RomanHotsiy), [@ElijahPepe](https://github.com/ElijahPepe), and all the other contributors 💪
 - The original browser version was inspired by this [Go module](https://github.com/danielgross/whatsapp-gpt) by [Daniel Gross](https://github.com/danielgross)
-- The original REST version was inspired by [chat-gpt-google-extension](https://github.com/wong2/chat-gpt-google-extension) by [@wong2](https://github.com/wong2)
 - [OpenAI](https://openai.com) for creating [ChatGPT](https://openai.com/blog/chatgpt/) 🔥
 
 ## License
