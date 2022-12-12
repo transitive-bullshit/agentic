@@ -28,6 +28,7 @@ Restrictions on this method:
 - Your `user-agent` and `IP address` **must match** from the real browser window you're logged in with to the one you're using for `ChatGPTAPI`.
   - This means that you currently can't log in with your laptop and then run the bot on a server or proxy somewhere.
 - You must use `node >= 18`. I'm using `v19.2.0` in my testing, but for some reason, all `fetch` requests using Node.js `v16` and `v17` fail at the moment (these use `undici` under the hood, whereas Node.js v18 and above use a built-in `fetch` based on `undici`).
+- You should not be using this account while the bot is using it, because that browser window may refresh one of your tokens and invalidate the bot's session.
 
 We're working hard in [this issue](https://github.com/transitive-bullshit/chatgpt-api/issues/96) to make this process easier and more automated.
 
