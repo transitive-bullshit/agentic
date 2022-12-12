@@ -162,23 +162,21 @@ See the [auto-generated docs](./docs/classes/ChatGPTAPI.md) for more info on met
 
 ### Demos
 
-A [basic demo](./src/demo.ts) is included for testing purposes:
+To run the included demos:
+
+1. clone repo
+2. install node deps
+3. set `EMAIL` and `PASSWORD` in .env
+
+A [basic demo](./demos/demo.ts) is included for testing purposes:
 
 ```bash
-# 1. clone repo
-# 2. install node deps
-# 3. set `SESSION_TOKEN` in .env
-# 4. run:
 npx tsx src/demo.ts
 ```
 
-A [conversation demo](./src/demo-conversation.ts) is also included:
+A [conversation demo](./demos/demo-conversation.ts) is also included:
 
 ```bash
-# 1. clone repo
-# 2. install node deps
-# 3. set `SESSION_TOKEN` in .env
-# 4. run:
 npx tsx src/demo-conversation.ts
 ```
 
@@ -186,15 +184,18 @@ npx tsx src/demo-conversation.ts
 
 **This package requires a valid session token from ChatGPT to access it's unofficial REST API.**
 
-To get a session token:
+As of December 11, 2021, it also requires a valid Cloudflare clearance token.
+
+There are two options to get these; either manually, or automated. For the automated way, see the `demos/` folder using Puppeteer.
+
+To get a session token manually:
 
 1. Go to https://chat.openai.com/chat and log in or sign up.
 2. Open dev tools.
 3. Open `Application` > `Cookies`.
    ![ChatGPT cookies](./media/session-token.png)
 4. Copy the value for `__Secure-next-auth.session-token` and save it to your environment.
-
-If you want to run the built-in demo, store this value as `SESSION_TOKEN` in a local `.env` file.
+5. Copy the value for `cf_clearance` and save it to your environment.
 
 > **Note**
 > This package will switch to using the official API once it's released.
