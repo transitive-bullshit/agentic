@@ -1,4 +1,4 @@
-# Update December 12, 2022
+# Update December 12, 2022 <!-- omit in toc -->
 
 Yesterday, OpenAI added additional Cloudflare protections that make it more difficult to access the unofficial API.
 
@@ -25,18 +25,17 @@ Travis
 
 [![NPM](https://img.shields.io/npm/v/chatgpt.svg)](https://www.npmjs.com/package/chatgpt) [![Build Status](https://github.com/transitive-bullshit/chatgpt-api/actions/workflows/test.yml/badge.svg)](https://github.com/transitive-bullshit/chatgpt-api/actions/workflows/test.yml) [![MIT License](https://img.shields.io/badge/license-MIT-blue)](https://github.com/transitive-bullshit/chatgpt-api/blob/main/license) [![Prettier Code Formatting](https://img.shields.io/badge/code_style-prettier-brightgreen.svg)](https://prettier.io)
 
-- [Update December 12, 2022](#update-december-12-2022)
-  - [Intro](#intro)
-  - [Install](#install)
-  - [Usage](#usage)
-    - [Docs](#docs)
-    - [Demos](#demos)
-    - [Authentication](#authentication)
-      - [Restrictions](#restrictions)
-  - [Projects](#projects)
-  - [Compatibility](#compatibility)
-  - [Credits](#credits)
-  - [License](#license)
+- [Intro](#intro)
+- [Install](#install)
+- [Usage](#usage)
+  - [Docs](#docs)
+  - [Demos](#demos)
+  - [Authentication](#authentication)
+    - [Restrictions](#restrictions)
+- [Projects](#projects)
+- [Compatibility](#compatibility)
+- [Credits](#credits)
+- [License](#license)
 
 ## Intro
 
