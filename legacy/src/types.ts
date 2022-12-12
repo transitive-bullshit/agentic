@@ -273,10 +273,13 @@ export type MessageContent = {
 }
 
 export type MessageMetadata = any
+export type MessageActionType = 'next' | 'variant'
 
 export type SendMessageOptions = {
   conversationId?: string
   parentMessageId?: string
+  messageId?: string
+  action?: MessageActionType
   timeoutMs?: number
   onProgress?: (partialResponse: string) => void
   onConversationResponse?: (response: ConversationResponseEvent) => void
