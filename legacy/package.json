@@ -36,15 +36,16 @@
     "test:prettier": "prettier '**/*.{js,jsx,ts,tsx}' --check"
   },
   "dependencies": {
+    "delay": "^5.0.0",
     "eventsource-parser": "^0.0.5",
     "expiry-map": "^2.0.0",
     "p-timeout": "^6.0.0",
+    "puppeteer-extra": "^3.3.4",
+    "puppeteer-extra-plugin-recaptcha": "^3.6.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.1",
     "remark": "^14.0.2",
     "strip-markdown": "^5.0.0",
-    "delay": "^5.0.0",
-    "uuid": "^9.0.0",
-    "puppeteer-extra": "^3.3.4",
-    "puppeteer-extra-plugin-stealth": "^2.11.1"
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^4.0.0",
