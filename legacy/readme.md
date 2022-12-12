@@ -13,7 +13,7 @@ Today, OpenAI added additional Cloudflare protections that make it more difficul
 4. Use both tokens when creating the API wrapper:
 
 ```ts
-const api = new ChatGPTApI({
+const api = new ChatGPTAPI({
   sessionToken: process.env.SESSION_TOKEN,
   clearanceToken: process.env.CLEARANCE_TOKEN,
   userAgent: '' // replace to match your real browser's user agent
