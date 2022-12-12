@@ -16,27 +16,32 @@ export class ChatGPTAPI {
   protected _sessionToken: string
   protected _clearanceToken: string
   protected _markdown: boolean
+  protected _debug: boolean
   protected _apiBaseUrl: string
   protected _backendApiBaseUrl: string
   protected _userAgent: string
   protected _headers: Record<string, string>
+  protected _user: types.User | null = null
 
   // Stores access tokens for `accessTokenTTL` milliseconds before needing to refresh
   protected _accessTokenCache: ExpiryMap<string, string>
-
-  protected _user: types.User | null = null
 
   /**
    * Creates a new client wrapper around the unofficial ChatGPT REST API.
    *
    * @param opts.sessionToken = **Required** OpenAI session token which can be found in a valid session's cookies (see readme for instructions)
+   * @param opts.clearanceToken = **Required** Cloudflare `cf_clearance` cookie value (see readme for instructions)
    * @param apiBaseUrl - Optional override; the base URL for ChatGPT webapp's API (`/api`)
    * @param backendApiBaseUrl - Optional override; the base URL for the ChatGPT backend API (`/backend-api`)
    * @param userAgent - Optional override; the `user-agent` header to use with ChatGPT requests
    * @param accessTokenTTL - Optional override; how long in milliseconds access tokens should last before being forcefully refreshed
+   * @param accessToken - Optional default access token if you already have a valid one generated
+   * @param heaaders - Optional additional HTTP headers to be added to each `fetch` request
+   * @param debug - Optional enables logging debugging into to stdout
    */
   constructor(opts: {
     sessionToken: string
+
     clearanceToken: string
 
     /** @defaultValue `true` **/
@@ -48,15 +53,20 @@ export class ChatGPTAPI {
     /** @defaultValue `'https://chat.openai.com/backend-api'` **/
     backendApiBaseUrl?: string
 
-    /** @defaultValue `'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36'` **/
+    /** @defaultValue `Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36'` **/
     userAgent?: string
 
-    /** @defaultValue 1 hour */
+    /** @defaultValue 1 hour **/
     accessTokenTTL?: number
 
+    /** @defaultValue `undefined` **/
     accessToken?: string
 
+    /** @defaultValue `undefined` **/
     headers?: Record<string, string>
+
+    /** @defaultValue `false` **/
+    debug?: boolean
   }) {
     const {
       sessionToken,
@@ -67,12 +77,14 @@ export class ChatGPTAPI {
       userAgent = USER_AGENT,
       accessTokenTTL = 60 * 60000, // 1 hour
       accessToken,
-      headers
+      headers,
+      debug = false
     } = opts
 
     this._sessionToken = sessionToken
     this._clearanceToken = clearanceToken
     this._markdown = !!markdown
+    this._debug = !!debug
     this._apiBaseUrl = apiBaseUrl
     this._backendApiBaseUrl = backendApiBaseUrl
     this._userAgent = userAgent
@@ -124,6 +136,8 @@ export class ChatGPTAPI {
    * @param message - The prompt message to send
    * @param opts.conversationId - Optional ID of a conversation to continue
    * @param opts.parentMessageId - Optional ID of the previous message in the conversation
+   * @param opts.messageId - Optional ID of the message to send (defaults to a random UUID)
+   * @param opts.action - Optional ChatGPT `action` (either `next` or `variant`)
    * @param opts.timeoutMs - Optional timeout in milliseconds (defaults to no timeout)
    * @param opts.onProgress - Optional callback which will be invoked every time the partial response is updated
    * @param opts.onConversationResponse - Optional callback which will be invoked every time the partial response is updated with the full conversation response
@@ -138,6 +152,8 @@ export class ChatGPTAPI {
     const {
       conversationId,
       parentMessageId = uuidv4(),
+      messageId = uuidv4(),
+      action = 'next',
       timeoutMs,
       onProgress,
       onConversationResponse
@@ -154,10 +170,10 @@ export class ChatGPTAPI {
     const accessToken = await this.refreshAccessToken()
 
     const body: types.ConversationJSONBody = {
-      action: 'next',
+      action,
       messages: [
         {
-          id: uuidv4(),
+          id: messageId,
           role: 'user',
           content: {
             content_type: 'text',
@@ -173,19 +189,25 @@ export class ChatGPTAPI {
       body.conversation_id = conversationId
     }
 
-    const url = `${this._backendApiBaseUrl}/conversation`
     let response = ''
 
     const responseP = new Promise<string>((resolve, reject) => {
+      const url = `${this._backendApiBaseUrl}/conversation`
+      const headers = {
+        ...this._headers,
+        Authorization: `Bearer ${accessToken}`,
+        Accept: 'text/event-stream',
+        'Content-Type': 'application/json',
+        Cookie: `cf_clearance=${this._clearanceToken}`
+      }
+
+      if (this._debug) {
+        console.log('POST', url, { body, headers })
+      }
+
       fetchSSE(url, {
         method: 'POST',
-        headers: {
-          ...this._headers,
-          Authorization: `Bearer ${accessToken}`,
-          Accept: 'text/event-stream',
-          'Content-Type': 'application/json',
-          Cookie: `cf_clearance=${this._clearanceToken}`
-        },
+        headers,
         body: JSON.stringify(body),
         signal: abortSignal,
         onMessage: (data: string) => {
@@ -282,14 +304,18 @@ export class ChatGPTAPI {
 
     let response: Response
     try {
+      const url = `${this._apiBaseUrl}/auth/session`
       const headers = {
         ...this._headers,
         cookie: `cf_clearance=${this._clearanceToken}; __Secure-next-auth.session-token=${this._sessionToken}`,
         accept: '*/*'
       }
-      console.log(`${this._apiBaseUrl}/auth/session`, headers)
 
-      const res = await fetch(`${this._apiBaseUrl}/auth/session`, {
+      if (this._debug) {
+        console.log('GET', url, headers)
+      }
+
+      const res = await fetch(url, {
         headers
       }).then((r) => {
         response = r
@@ -339,6 +365,10 @@ export class ChatGPTAPI {
       this._accessTokenCache.set(KEY_ACCESS_TOKEN, accessToken)
       return accessToken
     } catch (err: any) {
+      if (this._debug) {
+        console.error(err)
+      }
+
       const error = new types.ChatGPTError(
         `ChatGPT failed to refresh auth token. ${err.toString()}`
       )
