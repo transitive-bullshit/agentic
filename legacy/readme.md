@@ -8,7 +8,7 @@ To use the updated version, **make sure you're using the latest version of this 
 
 We're working hard to improve this process (especially CAPTCHA automation). Keep in mind that this package will be updated to use the official API as soon as it's released, so things should get much easier over time. 💪
 
-Lastly, please star this repo and <a href="https://twitter.com/transitive_bs">follow me on twitter <img src="https://storage.googleapis.com/saasify-assets/twitter-logo.svg" alt="twitter" height="24px" align="center"></a> to help support the project.
+Lastly, please consider starring this repo and <a href="https://twitter.com/transitive_bs">following me on twitter <img src="https://storage.googleapis.com/saasify-assets/twitter-logo.svg" alt="twitter" height="24px" align="center"></a> to help support the project.
 
 Thanks && cheers,
 Travis
