@@ -4,28 +4,9 @@ Yesterday, OpenAI added additional Cloudflare protections that make it more diff
 
 The demos have been updated to use Puppeteer to log in to ChatGPT and extract the Cloudflare `cf_clearance` cookie and OpenAI session token. 🔥
 
-To use the updated version, first make sure you're using the latest version of this package and Node.js >= 18:
+To use the updated version, make sure you're using the latest version of this package and Node.js >= 18. Then update your code to use the examples below, paying special attention to the sections on [Authentication](#authentication) and [Restrictions](#restrictions).
 
-```ts
-const api = new ChatGPTAPI({
-  sessionToken: process.env.SESSION_TOKEN,
-  clearanceToken: process.env.CLEARANCE_TOKEN,
-  userAgent: '' // needs to match your browser's user agent
-})
-
-await api.ensureAuth()
-```
-
-Restrictions on this method:
-
-- Cloudflare `cf_clearance` **tokens expire after 2 hours**, so right now we recommend that you refresh your `cf_clearance` token every ~45 minutes or so.
-- Your `user-agent` and `IP address` **must match** from the real browser window you're logged in with to the one you're using for `ChatGPTAPI`.
-  - This means that you currently can't log in with your laptop and then run the bot on a server or proxy somewhere.
-- Cloudflare will still sometimes ask you to complete a CAPTCHA, so you may need to keep an eye on it and manually resolve the CAPTCHA. Automated CAPTCHA bypass is a WIP.
-- You must use `node >= 18`. I'm using `v19.2.0` in my testing, but for some reason, all `fetch` requests using Node.js `v16` and `v17` fail at the moment (these use `undici` under the hood, whereas Node.js v18 and above use a built-in `fetch` based on `undici`).
-- You should not be using this account while the bot is using it, because that browser window may refresh one of your tokens and invalidate the bot's session.
-
-We're working hard in [this issue](https://github.com/transitive-bullshit/chatgpt-api/issues/96) to make this process easier and more automated.
+We're working hard in [this issue](https://github.com/transitive-bullshit/chatgpt-api/issues/96) to improve this process. Keep in mind that this package will be updated to use the official API as soon as it's released. 💪
 
 Cheers,
 Travis
@@ -48,7 +29,8 @@ Travis
   - [Usage](#usage)
     - [Docs](#docs)
     - [Demos](#demos)
-    - [Session Tokens](#session-tokens)
+    - [Authentication](#authentication)
+      - [Restrictions](#restrictions)
   - [Projects](#projects)
   - [Compatibility](#compatibility)
   - [Credits](#credits)
@@ -69,15 +51,17 @@ npm install chatgpt
 ## Usage
 
 ```ts
-import { ChatGPTAPI } from 'chatgpt'
+import { ChatGPTAPI, getOpenAIAuth } from 'chatgpt'
 
 async function example() {
-  const api = new ChatGPTAPI({
-    sessionToken: process.env.SESSION_TOKEN,
-    clearanceToken: process.env.CLEARANCE_TOKEN,
-    userAgent: 'TODO'
+  // uses puppeteer to bypass cloudflare (headful because you may have to solve
+  // a captcha)
+  const openAIAuth = await getOpenAIAuth({
+    email: process.env.EMAIL,
+    password: process.env.EMAIL
   })
 
+  const api = new ChatGPTAPI({ ...openAIAuth })
   await api.ensureAuth()
 
   // send a message and wait for the response
@@ -93,32 +77,23 @@ async function example() {
 ChatGPT responses are formatted as markdown by default. If you want to work with plaintext instead, you can use:
 
 ```ts
-const api = new ChatGPTAPI({
-  sessionToken: process.env.SESSION_TOKEN,
-  clearanceToken: process.env.CLEARANCE_TOKEN,
-  userAgent: 'TODO',
-  markdown: false
-})
+const api = new ChatGPTAPI({ ...openAIAuth, markdown: false })
 ```
 
 If you want to automatically track the conversation, you can use `ChatGPTAPI.getConversation()`:
 
 ```ts
-const api = new ChatGPTAPI({
-  sessionToken: process.env.SESSION_TOKEN,
-  clearanceToken: process.env.CLEARANCE_TOKEN,
-  userAgent: 'TODO'
-})
+const api = new ChatGPTAPI({ ...openAIAuth, markdown: false })
 
 const conversation = api.getConversation()
 
 // send a message and wait for the response
 const response0 = await conversation.sendMessage('What is OpenAI?')
 
-// send a follow-up prompt to the previous message and wait for the response
+// send a follow-up
 const response1 = await conversation.sendMessage('Can you expand on that?')
 
-// send another follow-up to the same conversation
+// send another follow-up
 const response2 = await conversation.sendMessage('Oh cool; thank you')
 ```
 
@@ -141,13 +116,14 @@ You can stream responses using the `onProgress` or `onConversationResponse` call
 ```js
 async function example() {
   // To use ESM in CommonJS, you can use a dynamic import
-  const { ChatGPTAPI } = await import('chatgpt')
+  const { ChatGPTAPI, getOpenAIAuth } = await import('chatgpt')
 
-  const api = new ChatGPTAPI({
-    sessionToken: process.env.SESSION_TOKEN,
-    clearanceToken: process.env.CLEARANCE_TOKEN,
-    userAgent: 'TODO'
+  const openAIAuth = await getOpenAIAuth({
+    email: process.env.EMAIL,
+    password: process.env.EMAIL
   })
+
+  const api = new ChatGPTAPI({ ...openAIAuth })
   await api.ensureAuth()
 
   const response = await api.sendMessage('Hello World!')
@@ -181,13 +157,21 @@ A [conversation demo](./demos/demo-conversation.ts) is also included:
 npx tsx src/demo-conversation.ts
 ```
 
-### Session Tokens
+### Authentication
 
-**This package requires a valid session token from ChatGPT to access it's unofficial REST API.**
+#### Restrictions
 
-As of December 11, 2021, it also requires a valid Cloudflare clearance token.
+**Please read carefully**
 
-There are two options to get these; either manually, or automated. For the automated way, see the `demos/` folder using Puppeteer.
+- You must use `node >= 18`. I'm using `v19.2.0` in my testing, but for some reason, all `fetch` requests using Node.js `v16` and `v17` fail at the moment (these use `undici` under the hood, whereas Node.js v18 and above use a built-in `fetch` based on `undici`).
+- Cloudflare `cf_clearance` **tokens expire after 2 hours**, so right now we recommend that you refresh your `cf_clearance` token every hour or so.
+- Your `user-agent` and `IP address` **must match** from the real browser window you're logged in with to the one you're using for `ChatGPTAPI`.
+  - This means that you currently can't log in with your laptop and then run the bot on a server or proxy somewhere.
+- Cloudflare will still sometimes ask you to complete a CAPTCHA, so you may need to keep an eye on it and manually resolve the CAPTCHA. Automated CAPTCHA bypass is coming soon.
+- You should not be using this account while the bot is using it, because that browser window may refresh one of your tokens and invalidate the bot's session.
+
+<details>
+<summary>Getting tokens manually</summary>
 
 To get a session token manually:
 
@@ -195,8 +179,10 @@ To get a session token manually:
 2. Open dev tools.
 3. Open `Application` > `Cookies`.
    ![ChatGPT cookies](./media/session-token.png)
-4. Copy the value for `__Secure-next-auth.session-token` and save it to your environment.
-5. Copy the value for `cf_clearance` and save it to your environment.
+4. Copy the value for `__Secure-next-auth.session-token` and save it to your environment. This will be your `sessionToken`.
+5. Copy the value for `cf_clearance` and save it to your environment. This will be your `clearanceToken`.
+
+</details>
 
 > **Note**
 > This package will switch to using the official API once it's released.
@@ -255,11 +241,8 @@ If you create a cool integration, feel free to open a PR and add it to the list.
 
 This package is ESM-only. It supports:
 
-- Node.js >= 16.8
-  - If you need Node.js 14 support, use [`v1.4.0`](https://github.com/transitive-bullshit/chatgpt-api/releases/tag/v1.4.0)
-- Edge runtimes like CF workers and Vercel edge functions
-- Modern browsers
-  - Mainly meant for chrome extensions where your code is protected to a degree
+- Node.js >= 18
+  - Node.js 17, 16, and 14 were supported in earlier versions, but OpenAI's Cloudflare update caused a bug with `undici` on v17 and v16 that we need to debug. So for now, use `node >= 18`
   - We recommend against using `chatgpt` from client-side browser code because it would expose your private session token
   - If you want to build a website using `chatgpt`, we recommend using it only from your backend API
 

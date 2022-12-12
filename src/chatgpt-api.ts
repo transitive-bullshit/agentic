@@ -29,6 +29,9 @@ export class ChatGPTAPI {
   /**
    * Creates a new client wrapper around the unofficial ChatGPT REST API.
    *
+   * Note that your IP address and `userAgent` must match the same values that you used
+   * to obtain your `clearanceToken`.
+   *
    * @param opts.sessionToken = **Required** OpenAI session token which can be found in a valid session's cookies (see readme for instructions)
    * @param opts.clearanceToken = **Required** Cloudflare `cf_clearance` cookie value (see readme for instructions)
    * @param apiBaseUrl - Optional override; the base URL for ChatGPT webapp's API (`/api`)
@@ -122,6 +125,21 @@ export class ChatGPTAPI {
    */
   get user() {
     return this._user
+  }
+
+  /** Gets the current session token. */
+  get sessionToken() {
+    return this._sessionToken
+  }
+
+  /** Gets the current Cloudflare clearance token (`cf_clearance` cookie value). */
+  get clearanceToken() {
+    return this._clearanceToken
+  }
+
+  /** Gets the current user agent. */
+  get userAgent() {
+    return this._userAgent
   }
 
   /**
@@ -244,7 +262,23 @@ export class ChatGPTAPI {
             reject(err)
           }
         }
-      }).catch(reject)
+      }).catch((err) => {
+        const errMessageL = err.toString().toLowerCase()
+
+        if (
+          response &&
+          (errMessageL === 'error: typeerror: terminated' ||
+            errMessageL === 'typeerror: terminated')
+        ) {
+          // OpenAI sometimes forcefully terminates the socket from their end before
+          // the HTTP request has resolved cleanly. In my testing, these cases tend to
+          // happen when OpenAI has already send the last `response`, so we can ignore
+          // the `fetch` error in this case.
+          return resolve(response)
+        } else {
+          return reject(err)
+        }
+      })
     })
 
     if (timeoutMs) {
