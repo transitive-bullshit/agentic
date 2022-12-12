@@ -59,8 +59,8 @@ import { ChatGPTAPI, getOpenAIAuth } from 'chatgpt'
 async function example() {
   // use puppeteer to bypass cloudflare (headful because of captchas)
   const openAIAuth = await getOpenAIAuth({
-    email: process.env.EMAIL,
-    password: process.env.EMAIL
+    email: process.env.OPENAI_EMAIL,
+    password: process.env.OPENAI_PASSWORD
   })
 
   const api = new ChatGPTAPI({ ...openAIAuth })
@@ -121,8 +121,8 @@ async function example() {
   const { ChatGPTAPI, getOpenAIAuth } = await import('chatgpt')
 
   const openAIAuth = await getOpenAIAuth({
-    email: process.env.EMAIL,
-    password: process.env.EMAIL
+    email: process.env.OPENAI_EMAIL,
+    password: process.env.OPENAI_PASSWORD
   })
 
   const api = new ChatGPTAPI({ ...openAIAuth })
