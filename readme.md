@@ -72,12 +72,12 @@ npm install chatgpt
 import { ChatGPTAPI } from 'chatgpt'
 
 async function example() {
-  // sessionToken is required; see below for details
   const api = new ChatGPTAPI({
-    sessionToken: process.env.SESSION_TOKEN
+    sessionToken: process.env.SESSION_TOKEN,
+    clearanceToken: process.env.CLEARANCE_TOKEN,
+    userAgent: 'TODO'
   })
 
-  // ensure the API is properly authenticated
   await api.ensureAuth()
 
   // send a message and wait for the response
@@ -95,6 +95,8 @@ ChatGPT responses are formatted as markdown by default. If you want to work with
 ```ts
 const api = new ChatGPTAPI({
   sessionToken: process.env.SESSION_TOKEN,
+  clearanceToken: process.env.CLEARANCE_TOKEN,
+  userAgent: 'TODO',
   markdown: false
 })
 ```
@@ -103,7 +105,9 @@ If you want to automatically track the conversation, you can use `ChatGPTAPI.get
 
 ```ts
 const api = new ChatGPTAPI({
-  sessionToken: process.env.SESSION_TOKEN
+  sessionToken: process.env.SESSION_TOKEN,
+  clearanceToken: process.env.CLEARANCE_TOKEN,
+  userAgent: 'TODO'
 })
 
 const conversation = api.getConversation()
@@ -140,7 +144,9 @@ async function example() {
   const { ChatGPTAPI } = await import('chatgpt')
 
   const api = new ChatGPTAPI({
-    sessionToken: process.env.SESSION_TOKEN
+    sessionToken: process.env.SESSION_TOKEN,
+    clearanceToken: process.env.CLEARANCE_TOKEN,
+    userAgent: 'TODO'
   })
   await api.ensureAuth()
 
