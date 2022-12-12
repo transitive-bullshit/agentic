@@ -4,13 +4,15 @@ chatgpt / [Exports](modules.md)
 
 Yesterday, OpenAI added additional Cloudflare protections that make it more difficult to access the unofficial API.
 
-The demos have been updated to use Puppeteer to log in to ChatGPT and extract the Cloudflare `cf_clearance` cookie and OpenAI session token. 🔥
+This package has been updated to use Puppeteer to automatically log in to ChatGPT and extract the necessary auth credentials. 🔥
 
-To use the updated version, make sure you're using the latest version of this package and Node.js >= 18. Then update your code to use the examples below, paying special attention to the sections on [Authentication](#authentication) and [Restrictions](#restrictions).
+To use the updated version, **make sure you're using the latest version of this package and Node.js >= 18**. Then update your code following the examples below, paying special attention to the sections on [Authentication](#authentication) and [Restrictions](#restrictions).
 
-We're working hard in [this issue](https://github.com/transitive-bullshit/chatgpt-api/issues/96) to improve this process. Keep in mind that this package will be updated to use the official API as soon as it's released. 💪
+We're working hard to improve this process (especially CAPTCHA automation). Keep in mind that this package will be updated to use the official API as soon as it's released, so things should get much easier over time. 💪
 
-Cheers,
+Lastly, please star this repo and <a href="https://twitter.com/transitive_bs">follow me on twitter <img src="https://storage.googleapis.com/saasify-assets/twitter-logo.svg" alt="twitter" height="24px" align="center"></a> to help support the project.
+
+Thanks && cheers,
 Travis
 
 ---
@@ -47,8 +49,10 @@ You can use it to start building projects powered by ChatGPT like chatbots, webs
 ## Install
 
 ```bash
-npm install chatgpt
+npm install chatgpt puppeteer
 ```
+
+`puppeteer` is an optional peer dependency used to automate bypassing the Cloudflare protections via `getOpenAIAuth`. The main API wrapper uses `fetch` directly.
 
 ## Usage
 
@@ -161,16 +165,13 @@ npx tsx src/demo-conversation.ts
 
 ### Authentication
 
-#### Restrictions
+On December 11, 2022, OpenAI added some additional Cloudflare protections which make it more difficult to access the unofficial API.
 
-**Please read carefully**
+You'll need a valid OpenAI "session token" and Cloudflare "clearance token" in order to use the API.
 
-- You must use `node >= 18`. I'm using `v19.2.0` in my testing, but for some reason, all `fetch` requests using Node.js `v16` and `v17` fail at the moment (these use `undici` under the hood, whereas Node.js v18 and above use a built-in `fetch` based on `undici`).
-- Cloudflare `cf_clearance` **tokens expire after 2 hours**, so right now we recommend that you refresh your `cf_clearance` token every hour or so.
-- Your `user-agent` and `IP address` **must match** from the real browser window you're logged in with to the one you're using for `ChatGPTAPI`.
-  - This means that you currently can't log in with your laptop and then run the bot on a server or proxy somewhere.
-- Cloudflare will still sometimes ask you to complete a CAPTCHA, so you may need to keep an eye on it and manually resolve the CAPTCHA. Automated CAPTCHA bypass is coming soon.
-- You should not be using this account while the bot is using it, because that browser window may refresh one of your tokens and invalidate the bot's session.
+We've provided an automated, Puppeteer-based solution `getOpenAIAuth` to fetch these for you, but you may still run into cases where you have to manually pass the CAPTCHA. We're working on a solution to automate this further.
+
+You can also get these tokens manually, but keep in mind that the `clearanceToken` only lasts for max 2 hours.
 
 <details>
 <summary>Getting tokens manually</summary>
@@ -188,6 +189,17 @@ To get a session token manually:
 
 > **Note**
 > This package will switch to using the official API once it's released.
+
+#### Restrictions
+
+**Please read these carefully**
+
+- You must use `node >= 18` at the moment. I'm using `v19.2.0` in my testing.
+- Cloudflare `cf_clearance` **tokens expire after 2 hours**, so right now we recommend that you refresh your `cf_clearance` token every hour or so.
+- Your `user-agent` and `IP address` **must match** from the real browser window you're logged in with to the one you're using for `ChatGPTAPI`.
+  - This means that you currently can't log in with your laptop and then run the bot on a server or proxy somewhere.
+- Cloudflare will still sometimes ask you to complete a CAPTCHA, so you may need to keep an eye on it and manually resolve the CAPTCHA. Automated CAPTCHA bypass is coming soon.
+- You should not be using this account while the bot is using it, because that browser window may refresh one of your tokens and invalidate the bot's session.
 
 > **Note**
 > Prior to v1.0.0, this package used a headless browser via [Playwright](https://playwright.dev/) to automate the web UI. Here are the [docs for the initial browser version](https://github.com/transitive-bullshit/chatgpt-api/tree/v0.4.2).
