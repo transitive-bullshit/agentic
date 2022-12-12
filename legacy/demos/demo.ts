@@ -13,8 +13,8 @@ dotenv.config()
  * ```
  */
 async function main() {
-  const email = process.env.EMAIL
-  const password = process.env.PASSWORD
+  const email = process.env.OPENAI_EMAIL
+  const password = process.env.OPENAI_PASSWORD
 
   const authInfo = await getOpenAIAuth({
     email,
