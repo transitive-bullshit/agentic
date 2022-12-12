@@ -10,7 +10,7 @@ import { markdownToText } from './utils'
 
 const KEY_ACCESS_TOKEN = 'accessToken'
 const USER_AGENT =
-  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36'
+  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36'
 
 export class ChatGPTAPI {
   protected _sessionToken: string
@@ -22,7 +22,6 @@ export class ChatGPTAPI {
   protected _headers: Record<string, string>
 
   // Stores access tokens for `accessTokenTTL` milliseconds before needing to refresh
-  // (defaults to 60 seconds)
   protected _accessTokenCache: ExpiryMap<string, string>
 
   protected _user: types.User | null = null
@@ -52,7 +51,7 @@ export class ChatGPTAPI {
     /** @defaultValue `'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36'` **/
     userAgent?: string
 
-    /** @defaultValue 60000 (60 seconds) */
+    /** @defaultValue 1 hour */
     accessTokenTTL?: number
 
     accessToken?: string
@@ -64,7 +63,7 @@ export class ChatGPTAPI {
       apiBaseUrl = 'https://chat.openai.com/api',
       backendApiBaseUrl = 'https://chat.openai.com/backend-api',
       userAgent = USER_AGENT,
-      accessTokenTTL = 60000, // 60 seconds
+      accessTokenTTL = 60 * 60000, // 1 hour
       accessToken
     } = opts
 
@@ -79,7 +78,13 @@ export class ChatGPTAPI {
       'x-openai-assistant-app-id': '',
       'accept-language': 'en-US,en;q=0.9',
       origin: 'https://chat.openai.com',
-      referer: 'https://chat.openai.com/chat'
+      referer: 'https://chat.openai.com/chat',
+      'sec-ch-ua':
+        '"Not?A_Brand";v="8", "Chromium";v="108", "Google Chrome";v="108"',
+      'sec-ch-ua-platform': '"macOS"',
+      'sec-fetch-dest': 'empty',
+      'sec-fetch-mode': 'cors',
+      'sec-fetch-site': 'same-origin'
     }
 
     this._accessTokenCache = new ExpiryMap<string, string>(accessTokenTTL)
@@ -269,11 +274,15 @@ export class ChatGPTAPI {
 
     let response: Response
     try {
+      const headers = {
+        ...this._headers,
+        cookie: `cf_clearance=${this._clearanceToken}; __Secure-next-auth.session-token=${this._sessionToken}`,
+        accept: '*/*'
+      }
+      console.log(`${this._apiBaseUrl}/auth/session`, headers)
+
       const res = await fetch(`${this._apiBaseUrl}/auth/session`, {
-        headers: {
-          ...this._headers,
-          cookie: `cf_clearance=${this._clearanceToken}; __Secure-next-auth.session-token=${this._sessionToken}`
-        }
+        headers
       }).then((r) => {
         response = r
 
