@@ -1,7 +1,8 @@
 import dotenv from 'dotenv-safe'
 import { oraPromise } from 'ora'
 
-import { ChatGPTAPI } from '.'
+import { ChatGPTAPI } from '../src'
+import { getOpenAIAuthInfo } from './openai-auth-puppeteer'
 
 dotenv.config()
 
@@ -13,7 +14,15 @@ dotenv.config()
  * ```
  */
 async function main() {
-  const api = new ChatGPTAPI({ sessionToken: process.env.SESSION_TOKEN })
+  const email = process.env.EMAIL
+  const password = process.env.PASSWORD
+
+  const authInfo = await getOpenAIAuthInfo({
+    email,
+    password
+  })
+
+  const api = new ChatGPTAPI({ ...authInfo })
   await api.ensureAuth()
 
   const prompt =
