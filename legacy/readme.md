@@ -1,22 +1,16 @@
-# Update December 11, 2022
+# Update December 12, 2022
 
-Today, OpenAI added additional Cloudflare protections that make it more difficult to access the unofficial API. _This is affecting all ChatGPT API wrappers at the moment_, including the Python ones. See [this issue](https://github.com/transitive-bullshit/chatgpt-api/issues/96).
+Yesterday, OpenAI added additional Cloudflare protections that make it more difficult to access the unofficial API.
 
-**As a temporary workaround**, make sure you're using the latest version of this package and Node.js >= 18:
+The demos have been updated to use Puppeteer to log in to ChatGPT and extract the Cloudflare `cf_clearance` cookie and OpenAI session token. 🔥
 
-1. Log into https://chat.openai.com/chat and copy a fresh session token (same instructions as below).
-
-2. Copy the value of the `cf_clearance` cookie and store it in a `CLEARANCE_TOKEN` environment variable in addition to your `SESSION_TOKEN`.
-
-3. Copy your browser's `user-agent` header from any request in your browser's network tab.
-
-4. Use both tokens when creating the API wrapper:
+To use the updated version, first make sure you're using the latest version of this package and Node.js >= 18:
 
 ```ts
 const api = new ChatGPTAPI({
   sessionToken: process.env.SESSION_TOKEN,
   clearanceToken: process.env.CLEARANCE_TOKEN,
-  userAgent: '' // replace to match your real browser's user agent
+  userAgent: '' // needs to match your browser's user agent
 })
 
 await api.ensureAuth()
@@ -24,9 +18,10 @@ await api.ensureAuth()
 
 Restrictions on this method:
 
-- Cloudflare `cf_clearance` **tokens expire after 2 hours**, so right now you'll have to manually log in and extract it by hand every so often
+- Cloudflare `cf_clearance` **tokens expire after 2 hours**, so right now we recommend that you refresh your `cf_clearance` token every ~45 minutes or so.
 - Your `user-agent` and `IP address` **must match** from the real browser window you're logged in with to the one you're using for `ChatGPTAPI`.
   - This means that you currently can't log in with your laptop and then run the bot on a server or proxy somewhere.
+- Cloudflare will still sometimes ask you to complete a CAPTCHA, so you may need to keep an eye on it and manually resolve the CAPTCHA. Automated CAPTCHA bypass is a WIP.
 - You must use `node >= 18`. I'm using `v19.2.0` in my testing, but for some reason, all `fetch` requests using Node.js `v16` and `v17` fail at the moment (these use `undici` under the hood, whereas Node.js v18 and above use a built-in `fetch` based on `undici`).
 - You should not be using this account while the bot is using it, because that browser window may refresh one of your tokens and invalidate the bot's session.
 
@@ -47,7 +42,7 @@ Travis
 
 [![NPM](https://img.shields.io/npm/v/chatgpt.svg)](https://www.npmjs.com/package/chatgpt) [![Build Status](https://github.com/transitive-bullshit/chatgpt-api/actions/workflows/test.yml/badge.svg)](https://github.com/transitive-bullshit/chatgpt-api/actions/workflows/test.yml) [![MIT License](https://img.shields.io/badge/license-MIT-blue)](https://github.com/transitive-bullshit/chatgpt-api/blob/main/license) [![Prettier Code Formatting](https://img.shields.io/badge/code_style-prettier-brightgreen.svg)](https://prettier.io)
 
-- [Update December 11, 2022](#update-december-11-2022)
+- [Update December 12, 2022](#update-december-12-2022)
   - [Intro](#intro)
   - [Install](#install)
   - [Usage](#usage)
@@ -77,12 +72,12 @@ npm install chatgpt
 import { ChatGPTAPI } from 'chatgpt'
 
 async function example() {
-  // sessionToken is required; see below for details
   const api = new ChatGPTAPI({
-    sessionToken: process.env.SESSION_TOKEN
+    sessionToken: process.env.SESSION_TOKEN,
+    clearanceToken: process.env.CLEARANCE_TOKEN,
+    userAgent: 'TODO'
   })
 
-  // ensure the API is properly authenticated
   await api.ensureAuth()
 
   // send a message and wait for the response
@@ -100,6 +95,8 @@ ChatGPT responses are formatted as markdown by default. If you want to work with
 ```ts
 const api = new ChatGPTAPI({
   sessionToken: process.env.SESSION_TOKEN,
+  clearanceToken: process.env.CLEARANCE_TOKEN,
+  userAgent: 'TODO',
   markdown: false
 })
 ```
@@ -108,7 +105,9 @@ If you want to automatically track the conversation, you can use `ChatGPTAPI.get
 
 ```ts
 const api = new ChatGPTAPI({
-  sessionToken: process.env.SESSION_TOKEN
+  sessionToken: process.env.SESSION_TOKEN,
+  clearanceToken: process.env.CLEARANCE_TOKEN,
+  userAgent: 'TODO'
 })
 
 const conversation = api.getConversation()
@@ -145,7 +144,9 @@ async function example() {
   const { ChatGPTAPI } = await import('chatgpt')
 
   const api = new ChatGPTAPI({
-    sessionToken: process.env.SESSION_TOKEN
+    sessionToken: process.env.SESSION_TOKEN,
+    clearanceToken: process.env.CLEARANCE_TOKEN,
+    userAgent: 'TODO'
   })
   await api.ensureAuth()
 
@@ -162,23 +163,21 @@ See the [auto-generated docs](./docs/classes/ChatGPTAPI.md) for more info on met
 
 ### Demos
 
-A [basic demo](./src/demo.ts) is included for testing purposes:
+To run the included demos:
+
+1. clone repo
+2. install node deps
+3. set `EMAIL` and `PASSWORD` in .env
+
+A [basic demo](./demos/demo.ts) is included for testing purposes:
 
 ```bash
-# 1. clone repo
-# 2. install node deps
-# 3. set `SESSION_TOKEN` in .env
-# 4. run:
 npx tsx src/demo.ts
 ```
 
-A [conversation demo](./src/demo-conversation.ts) is also included:
+A [conversation demo](./demos/demo-conversation.ts) is also included:
 
 ```bash
-# 1. clone repo
-# 2. install node deps
-# 3. set `SESSION_TOKEN` in .env
-# 4. run:
 npx tsx src/demo-conversation.ts
 ```
 
@@ -186,15 +185,18 @@ npx tsx src/demo-conversation.ts
 
 **This package requires a valid session token from ChatGPT to access it's unofficial REST API.**
 
-To get a session token:
+As of December 11, 2021, it also requires a valid Cloudflare clearance token.
+
+There are two options to get these; either manually, or automated. For the automated way, see the `demos/` folder using Puppeteer.
+
+To get a session token manually:
 
 1. Go to https://chat.openai.com/chat and log in or sign up.
 2. Open dev tools.
 3. Open `Application` > `Cookies`.
    ![ChatGPT cookies](./media/session-token.png)
 4. Copy the value for `__Secure-next-auth.session-token` and save it to your environment.
-
-If you want to run the built-in demo, store this value as `SESSION_TOKEN` in a local `.env` file.
+5. Copy the value for `cf_clearance` and save it to your environment.
 
 > **Note**
 > This package will switch to using the official API once it's released.
