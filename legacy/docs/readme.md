@@ -1,5 +1,8 @@
 chatgpt / [Exports](modules.md)
 
+> **Note**
+> As of December 11, 2022 ~2pm CST, OpenAI has enabled additional Cloudflare restrictions that are currently preventing us from refreshing access tokens. This is affecting _all_ ChatGPT API wrappers at the moment, including the Python ones. See [this issue](https://github.com/transitive-bullshit/chatgpt-api/issues/96) for an ongoing discussion until I release a viable workaround.
+
 <p align="center">
   <img alt="Example usage" src="/media/demo.gif">
 </p>
@@ -49,7 +52,7 @@ async function example() {
 
   // send a message and wait for the response
   const response = await api.sendMessage(
-    'Write a python version of bubble sort. Do not include example usage.'
+    'Write a python version of bubble sort.'
   )
 
   // response is a markdown-formatted string
@@ -57,7 +60,7 @@ async function example() {
 }
 ```
 
-The default ChatGPT responses are formatted as markdown. If you want to work with plaintext only, you can use:
+ChatGPT responses are formatted as markdown by default. If you want to work with plaintext instead, you can use:
 
 ```ts
 const api = new ChatGPTAPI({
@@ -85,9 +88,9 @@ const response1 = await conversation.sendMessage('Can you expand on that?')
 const response2 = await conversation.sendMessage('Oh cool; thank you')
 ```
 
-Sometimes, ChatGPT will hang for an extended period of time before sending it's response. This may be due to rate limiting or it may be due to OpenAI's servers being overloaded.
+Sometimes, ChatGPT will hang for an extended period of time before beginning to respond. This may be due to rate limiting or it may be due to OpenAI's servers being overloaded.
 
-To mitigate this issues, you can add a timeout like this:
+To mitigate these issues, you can add a timeout like this:
 
 ```ts
 // timeout after 2 minutes (which will also abort the underlying HTTP request)
@@ -95,6 +98,8 @@ const response = await api.sendMessage('this is a timeout test', {
   timeoutMs: 2 * 60 * 1000
 })
 ```
+
+You can stream responses using the `onProgress` or `onConversationResponse` callbacks. See the [docs](./docs/classes/ChatGPTAPI.md) for more details.
 
 <details>
 <summary>Usage in CommonJS (Dynamic import)</summary>
@@ -169,17 +174,40 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [Twitter Bot](https://github.com/transitive-bullshit/chatgpt-twitter-bot) powered by ChatGPT ✨
   - Mention [@ChatGPTBot](https://twitter.com/ChatGPTBot) on Twitter with your prompt to try it out
 - [Chrome Extension](https://github.com/gragland/chatgpt-everywhere) ([demo](https://twitter.com/gabe_ragland/status/1599466486422470656))
-- [VSCode Extension #1](https://github.com/mpociot/chatgpt-vscode) ([demo](https://twitter.com/marcelpociot/status/1599180144551526400))
+- [VSCode Extension #1](https://github.com/mpociot/chatgpt-vscode) ([demo](https://twitter.com/marcelpociot/status/1599180144551526400), [updated version](https://github.com/timkmecl/chatgpt-vscode), [marketplace](https://marketplace.visualstudio.com/items?itemName=timkmecl.chatgpt))
 - [VSCode Extension #2](https://github.com/barnesoir/chatgpt-vscode-plugin) ([marketplace](https://marketplace.visualstudio.com/items?itemName=JayBarnes.chatgpt-vscode-plugin))
 - [VSCode Extension #3](https://github.com/gencay/vscode-chatgpt) ([marketplace](https://marketplace.visualstudio.com/items?itemName=gencay.vscode-chatgpt))
-- [Raycast Extension](https://github.com/abielzulio/chatgpt-raycast) ([demo](https://twitter.com/abielzulio/status/1600176002042191875))
+- [Raycast Extension #1](https://github.com/abielzulio/chatgpt-raycast) ([demo](https://twitter.com/abielzulio/status/1600176002042191875))
+- [Raycast Extension #2](https://github.com/domnantas/raycast-chatgpt)
+- [Telegram Bot #1](https://github.com/realies/chatgpt-telegram-bot)
+- [Telegram Bot #2](https://github.com/dawangraoming/chatgpt-telegram-bot)
+- [Deno Telegram Bot](https://github.com/Ciyou/chatbot-telegram)
 - [Go Telegram Bot](https://github.com/m1guelpf/chatgpt-telegram)
 - [GitHub ProBot](https://github.com/oceanlvr/ChatGPTBot)
-- [Discord Bot](https://github.com/onury5506/Discord-ChatGPT-Bot)
-- [WeChat Bot](https://github.com/AutumnWhj/ChatGPT-wechat-bot)
+- [Discord Bot #1](https://github.com/onury5506/Discord-ChatGPT-Bot)
+- [Discord Bot #2](https://github.com/Nageld/ChatGPT-Bot)
+- [Discord Bot #3](https://github.com/leinstay/gptbot)
+- [Discord Bot #4 (selfbot)](https://github.com/0x7030676e31/cumsocket)
+- [WeChat Bot #1](https://github.com/AutumnWhj/ChatGPT-wechat-bot)
+- [WeChat Bot #2](https://github.com/fuergaosi233/wechat-chatgpt)
+- [WeChat Bot #3](https://github.com/wangrongding/wechat-bot)
+- [WeChat Bot #4](https://github.com/darknightlab/wechat-bot)
+- [WeChat Bot #5](https://github.com/sunshanpeng/wechaty-chatgpt)
+- [QQ Bot (plugin for Yunzai-bot)](https://github.com/ikechan8370/chatgpt-plugin)
+- [QQ Bot (plugin for KiviBot)](https://github.com/KiviBotLab/kivibot-plugin-chatgpt)
+- [QQ Bot (oicq)](https://github.com/easydu2002/chat_gpt_oicq)
+- [QQ Bot (oicq + RabbitMQ)](https://github.com/linsyking/ChatGPT-QQBot)
 - [Lovelines.xyz](https://lovelines.xyz)
 - [EXM smart contracts](https://github.com/decentldotland/molecule)
 - [Flutter ChatGPT API](https://github.com/coskuncay/flutter_chatgpt_api)
+- [Carik Bot](https://github.com/luridarmawan/Carik)
+- [Github Action for reviewing PRs](https://github.com/kxxt/chatgpt-action/)
+- [WhatsApp Bot #1](https://github.com/pascalroget/whatsgpt) (multi-user support)
+- [WhatsApp Bot #2](https://github.com/amosayomide05/chatgpt-whatsapp-bot)
+- [Matrix Bot](https://github.com/jakecoppinger/matrix-chatgpt-bot)
+- [Rental Cover Letter Generator](https://sharehouse.app/ai)
+- [Assistant CLI](https://github.com/diciaup/assistant-cli)
+- [Teams Bot](https://github.com/formulahendry/chatgpt-teams-bot)
 
 If you create a cool integration, feel free to open a PR and add it to the list.
 
@@ -191,15 +219,16 @@ This package is ESM-only. It supports:
   - If you need Node.js 14 support, use [`v1.4.0`](https://github.com/transitive-bullshit/chatgpt-api/releases/tag/v1.4.0)
 - Edge runtimes like CF workers and Vercel edge functions
 - Modern browsers
-  - Mainly chrome extensions where your code is protected to a degree
-  - **We do not recommend using `chatgpt` from client-side browser code** because it would expose your private session token
+  - Mainly meant for chrome extensions where your code is protected to a degree
+  - We recommend against using `chatgpt` from client-side browser code because it would expose your private session token
   - If you want to build a website using `chatgpt`, we recommend using it only from your backend API
 
 ## Credits
 
-- Huge thanks to [@RomanHotsiy](https://github.com/RomanHotsiy), [@ElijahPepe](https://github.com/ElijahPepe), and all the other contributors 💪
+- Huge thanks to [@simon300000](https://github.com/simon300000), [@RomanHotsiy](https://github.com/RomanHotsiy), [@ElijahPepe](https://github.com/ElijahPepe), and all the other contributors 💪
 - The original browser version was inspired by this [Go module](https://github.com/danielgross/whatsapp-gpt) by [Daniel Gross](https://github.com/danielgross)
 - The original REST version was inspired by [chat-gpt-google-extension](https://github.com/wong2/chat-gpt-google-extension) by [@wong2](https://github.com/wong2)
+- [OpenAI](https://openai.com) for creating [ChatGPT](https://openai.com/blog/chatgpt/) 🔥
 
 ## License
 
