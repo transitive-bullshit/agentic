@@ -99,6 +99,10 @@ export class ChatGPTAPI {
     if (!this._sessionToken) {
       throw new types.ChatGPTError('ChatGPT invalid session token')
     }
+
+    if (!this._clearanceToken) {
+      throw new types.ChatGPTError('ChatGPT invalid clearance token')
+    }
   }
 
   /**
