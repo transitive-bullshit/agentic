@@ -10,7 +10,11 @@ import StealthPlugin from 'puppeteer-extra-plugin-stealth'
 
 puppeteer.use(StealthPlugin())
 
-export type OpenAIAuthInfo = {
+/**
+ * Represents everything that's required to pass into `ChatGPTAPI` in order
+ * to authenticate with the unofficial ChatGPT API.
+ */
+export type OpenAIAuth = {
   userAgent: string
   clearanceToken: string
   sessionToken: string
@@ -20,18 +24,29 @@ export type OpenAIAuthInfo = {
 /**
  * Bypasses OpenAI's use of Cloudflare to get the cookies required to use
  * ChatGPT. Uses Puppeteer with a stealth plugin under the hood.
+ *
+ * If you pass `email` and `password`, then it will log into the account and
+ * include a `sessionToken` in the response.
+ *
+ * If you don't pass `email` and `password`, then it will just return a valid
+ * `clearanceToken`.
+ *
+ * This can be useful because `clearanceToken` expires after ~2 hours, whereas
+ * `sessionToken` generally lasts much longer. We recommend renewing your
+ * `clearanceToken` every hour or so and creating a new instance of `ChatGPTAPI`
+ * with your updated credentials.
  */
-export async function getOpenAIAuthInfo({
+export async function getOpenAIAuth({
   email,
   password,
-  timeout = 2 * 60 * 1000,
+  timeoutMs = 2 * 60 * 1000,
   browser
 }: {
-  email: string
-  password: string
-  timeout?: number
+  email?: string
+  password?: string
+  timeoutMs?: number
   browser?: Browser
-}): Promise<OpenAIAuthInfo> {
+}): Promise<OpenAIAuth> {
   let page: Page
   let origBrowser = browser
 
@@ -42,12 +57,18 @@ export async function getOpenAIAuthInfo({
 
     const userAgent = await browser.userAgent()
     page = (await browser.pages())[0] || (await browser.newPage())
-    page.setDefaultTimeout(timeout)
+    page.setDefaultTimeout(timeoutMs)
 
     await page.goto('https://chat.openai.com/auth/login')
-    await page.waitForSelector('#__next .btn-primary', { timeout })
+
+    // NOTE: this is where you may encounter a CAPTCHA
+
+    await page.waitForSelector('#__next .btn-primary', { timeout: timeoutMs })
+
+    // once we get to this point, the Cloudflare cookies are available
     await delay(1000)
 
+    // login as well (optional)
     if (email && password) {
       await Promise.all([
         page.click('#__next .btn-primary'),
@@ -73,7 +94,7 @@ export async function getOpenAIAuthInfo({
       {}
     )
 
-    const authInfo: OpenAIAuthInfo = {
+    const authInfo: OpenAIAuth = {
       userAgent,
       clearanceToken: cookies['cf_clearance']?.value,
       sessionToken: cookies['__Secure-next-auth.session-token']?.value,
@@ -83,7 +104,7 @@ export async function getOpenAIAuthInfo({
     return authInfo
   } catch (err) {
     console.error(err)
-    throw null
+    throw err
   } finally {
     if (origBrowser) {
       if (page) {
@@ -98,6 +119,11 @@ export async function getOpenAIAuthInfo({
   }
 }
 
+/**
+ * Launches a non-puppeteer instance of Chrome. Note that in my testing, I wasn't
+ * able to use the built-in `puppeteer` version of Chromium because Cloudflare
+ * recognizes it and blocks access.
+ */
 export async function getBrowser(launchOptions?: PuppeteerLaunchOptions) {
   const macChromePath =
     '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
