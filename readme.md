@@ -145,7 +145,7 @@ To run the included demos:
 
 1. clone repo
 2. install node deps
-3. set `EMAIL` and `PASSWORD` in .env
+3. set `OPENAI_EMAIL` and `OPENAI_PASSWORD` in .env
 
 A [basic demo](./demos/demo.ts) is included for testing purposes:
 
