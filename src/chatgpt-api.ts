@@ -55,6 +55,8 @@ export class ChatGPTAPI {
     accessTokenTTL?: number
 
     accessToken?: string
+
+    headers?: Record<string, string>
   }) {
     const {
       sessionToken,
@@ -64,7 +66,8 @@ export class ChatGPTAPI {
       backendApiBaseUrl = 'https://chat.openai.com/backend-api',
       userAgent = USER_AGENT,
       accessTokenTTL = 60 * 60000, // 1 hour
-      accessToken
+      accessToken,
+      headers
     } = opts
 
     this._sessionToken = sessionToken
@@ -74,7 +77,7 @@ export class ChatGPTAPI {
     this._backendApiBaseUrl = backendApiBaseUrl
     this._userAgent = userAgent
     this._headers = {
-      'User-Agent': this._userAgent,
+      'user-agent': this._userAgent,
       'x-openai-assistant-app-id': '',
       'accept-language': 'en-US,en;q=0.9',
       origin: 'https://chat.openai.com',
@@ -84,7 +87,8 @@ export class ChatGPTAPI {
       'sec-ch-ua-platform': '"macOS"',
       'sec-fetch-dest': 'empty',
       'sec-fetch-mode': 'cors',
-      'sec-fetch-site': 'same-origin'
+      'sec-fetch-site': 'same-origin',
+      ...headers
     }
 
     this._accessTokenCache = new ExpiryMap<string, string>(accessTokenTTL)
