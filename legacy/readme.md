@@ -31,7 +31,7 @@ Travis
   - [Docs](#docs)
   - [Demos](#demos)
   - [Authentication](#authentication)
-    - [Restrictions](#restrictions)
+  - [Restrictions](#restrictions)
 - [Projects](#projects)
 - [Compatibility](#compatibility)
 - [Credits](#credits)
@@ -59,8 +59,8 @@ import { ChatGPTAPI, getOpenAIAuth } from 'chatgpt'
 async function example() {
   // use puppeteer to bypass cloudflare (headful because of captchas)
   const openAIAuth = await getOpenAIAuth({
-    email: process.env.EMAIL,
-    password: process.env.EMAIL
+    email: process.env.OPENAI_EMAIL,
+    password: process.env.OPENAI_PASSWORD
   })
 
   const api = new ChatGPTAPI({ ...openAIAuth })
@@ -121,8 +121,8 @@ async function example() {
   const { ChatGPTAPI, getOpenAIAuth } = await import('chatgpt')
 
   const openAIAuth = await getOpenAIAuth({
-    email: process.env.EMAIL,
-    password: process.env.EMAIL
+    email: process.env.OPENAI_EMAIL,
+    password: process.env.OPENAI_PASSWORD
   })
 
   const api = new ChatGPTAPI({ ...openAIAuth })
@@ -145,18 +145,18 @@ To run the included demos:
 
 1. clone repo
 2. install node deps
-3. set `EMAIL` and `PASSWORD` in .env
+3. set `OPENAI_EMAIL` and `OPENAI_PASSWORD` in .env
 
 A [basic demo](./demos/demo.ts) is included for testing purposes:
 
 ```bash
-npx tsx src/demo.ts
+npx tsx demos/demo.ts
 ```
 
 A [conversation demo](./demos/demo-conversation.ts) is also included:
 
 ```bash
-npx tsx src/demo-conversation.ts
+npx tsx demos/demo-conversation.ts
 ```
 
 ### Authentication
@@ -189,9 +189,9 @@ Pass `sessionToken`, `clearanceToken`, and `userAgent` to the `ChatGPTAPI` const
 > **Note**
 > This package will switch to using the official API once it's released, which will make this process much simpler.
 
-#### Restrictions
+### Restrictions
 
-**Please read these carefully**
+**Please read carefully**
 
 - You must use `node >= 18` at the moment. I'm using `v19.2.0` in my testing.
 - Cloudflare `cf_clearance` **tokens expire after 2 hours**, so right now we recommend that you refresh your `cf_clearance` token every hour or so.

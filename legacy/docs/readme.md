@@ -1,6 +1,6 @@
 chatgpt / [Exports](modules.md)
 
-# Update December 12, 2022
+# Update December 12, 2022 <!-- omit in toc -->
 
 Yesterday, OpenAI added additional Cloudflare protections that make it more difficult to access the unofficial API.
 
@@ -10,7 +10,7 @@ To use the updated version, **make sure you're using the latest version of this 
 
 We're working hard to improve this process (especially CAPTCHA automation). Keep in mind that this package will be updated to use the official API as soon as it's released, so things should get much easier over time. 💪
 
-Lastly, please star this repo and <a href="https://twitter.com/transitive_bs">follow me on twitter <img src="https://storage.googleapis.com/saasify-assets/twitter-logo.svg" alt="twitter" height="24px" align="center"></a> to help support the project.
+Lastly, please consider starring this repo and <a href="https://twitter.com/transitive_bs">following me on twitter <img src="https://storage.googleapis.com/saasify-assets/twitter-logo.svg" alt="twitter" height="24px" align="center"></a> to help support the project.
 
 Thanks && cheers,
 Travis
@@ -27,18 +27,17 @@ Travis
 
 [![NPM](https://img.shields.io/npm/v/chatgpt.svg)](https://www.npmjs.com/package/chatgpt) [![Build Status](https://github.com/transitive-bullshit/chatgpt-api/actions/workflows/test.yml/badge.svg)](https://github.com/transitive-bullshit/chatgpt-api/actions/workflows/test.yml) [![MIT License](https://img.shields.io/badge/license-MIT-blue)](https://github.com/transitive-bullshit/chatgpt-api/blob/main/license) [![Prettier Code Formatting](https://img.shields.io/badge/code_style-prettier-brightgreen.svg)](https://prettier.io)
 
-- [Update December 12, 2022](#update-december-12-2022)
-  - [Intro](#intro)
-  - [Install](#install)
-  - [Usage](#usage)
-    - [Docs](#docs)
-    - [Demos](#demos)
-    - [Authentication](#authentication)
-      - [Restrictions](#restrictions)
-  - [Projects](#projects)
-  - [Compatibility](#compatibility)
-  - [Credits](#credits)
-  - [License](#license)
+- [Intro](#intro)
+- [Install](#install)
+- [Usage](#usage)
+  - [Docs](#docs)
+  - [Demos](#demos)
+  - [Authentication](#authentication)
+    - [Restrictions](#restrictions)
+- [Projects](#projects)
+- [Compatibility](#compatibility)
+- [Credits](#credits)
+- [License](#license)
 
 ## Intro
 
@@ -60,11 +59,10 @@ npm install chatgpt puppeteer
 import { ChatGPTAPI, getOpenAIAuth } from 'chatgpt'
 
 async function example() {
-  // uses puppeteer to bypass cloudflare (headful because you may have to solve
-  // a captcha)
+  // use puppeteer to bypass cloudflare (headful because of captchas)
   const openAIAuth = await getOpenAIAuth({
-    email: process.env.EMAIL,
-    password: process.env.EMAIL
+    email: process.env.OPENAI_EMAIL,
+    password: process.env.OPENAI_PASSWORD
   })
 
   const api = new ChatGPTAPI({ ...openAIAuth })
@@ -125,8 +123,8 @@ async function example() {
   const { ChatGPTAPI, getOpenAIAuth } = await import('chatgpt')
 
   const openAIAuth = await getOpenAIAuth({
-    email: process.env.EMAIL,
-    password: process.env.EMAIL
+    email: process.env.OPENAI_EMAIL,
+    password: process.env.OPENAI_PASSWORD
   })
 
   const api = new ChatGPTAPI({ ...openAIAuth })
@@ -149,18 +147,18 @@ To run the included demos:
 
 1. clone repo
 2. install node deps
-3. set `EMAIL` and `PASSWORD` in .env
+3. set `OPENAI_EMAIL` and `OPENAI_PASSWORD` in .env
 
 A [basic demo](./demos/demo.ts) is included for testing purposes:
 
 ```bash
-npx tsx src/demo.ts
+npx tsx demos/demo.ts
 ```
 
 A [conversation demo](./demos/demo-conversation.ts) is also included:
 
 ```bash
-npx tsx src/demo-conversation.ts
+npx tsx demos/demo-conversation.ts
 ```
 
 ### Authentication
@@ -176,7 +174,7 @@ You can also get these tokens manually, but keep in mind that the `clearanceToke
 <details>
 <summary>Getting tokens manually</summary>
 
-To get a session token manually:
+To get session token manually:
 
 1. Go to https://chat.openai.com/chat and log in or sign up.
 2. Open dev tools.
@@ -184,11 +182,14 @@ To get a session token manually:
    ![ChatGPT cookies](./media/session-token.png)
 4. Copy the value for `__Secure-next-auth.session-token` and save it to your environment. This will be your `sessionToken`.
 5. Copy the value for `cf_clearance` and save it to your environment. This will be your `clearanceToken`.
+6. Copy the value of the `user-agent` header from any request in your `Network` tab. This will be your `userAgent`.
+
+Pass `sessionToken`, `clearanceToken`, and `userAgent` to the `ChatGPTAPI` constructor.
 
 </details>
 
 > **Note**
-> This package will switch to using the official API once it's released.
+> This package will switch to using the official API once it's released, which will make this process much simpler.
 
 #### Restrictions
 
@@ -256,15 +257,14 @@ If you create a cool integration, feel free to open a PR and add it to the list.
 This package is ESM-only. It supports:
 
 - Node.js >= 18
-  - Node.js 17, 16, and 14 were supported in earlier versions, but OpenAI's Cloudflare update caused a bug with `undici` on v17 and v16 that we need to debug. So for now, use `node >= 18`
-  - We recommend against using `chatgpt` from client-side browser code because it would expose your private session token
-  - If you want to build a website using `chatgpt`, we recommend using it only from your backend API
+  - Node.js 17, 16, and 14 were supported in earlier versions, but OpenAI's Cloudflare update caused a bug with `undici` on v17 and v16 that needs investigation. So for now, use `node >= 18`
+- We recommend against using `chatgpt` from client-side browser code because it would expose your private session token
+- If you want to build a website using `chatgpt`, we recommend using it only from your backend API
 
 ## Credits
 
-- Huge thanks to [@simon300000](https://github.com/simon300000), [@RomanHotsiy](https://github.com/RomanHotsiy), [@ElijahPepe](https://github.com/ElijahPepe), and all the other contributors 💪
+- Huge thanks to [@wong2](https://github.com/wong2), [@simon300000](https://github.com/simon300000), [@RomanHotsiy](https://github.com/RomanHotsiy), [@ElijahPepe](https://github.com/ElijahPepe), and all the other contributors 💪
 - The original browser version was inspired by this [Go module](https://github.com/danielgross/whatsapp-gpt) by [Daniel Gross](https://github.com/danielgross)
-- The original REST version was inspired by [chat-gpt-google-extension](https://github.com/wong2/chat-gpt-google-extension) by [@wong2](https://github.com/wong2)
 - [OpenAI](https://openai.com) for creating [ChatGPT](https://openai.com/blog/chatgpt/) 🔥
 
 ## License
