@@ -76,6 +76,7 @@ export async function getOpenAIAuth({
           waitUntil: 'networkidle0'
         })
       ])
+      await page.waitForSelector('#username')
       await page.type('#username', email, { delay: 10 })
       await page.click('button[type="submit"]')
       await page.waitForSelector('#password')
