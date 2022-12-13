@@ -40,19 +40,21 @@ export async function getOpenAIAuth({
   email,
   password,
   timeoutMs = 2 * 60 * 1000,
-  browser
+  browser,
+  launchOptions
 }: {
   email?: string
   password?: string
   timeoutMs?: number
-  browser?: Browser
+  browser?: Browser,
+  launchOptions?: PuppeteerLaunchOptions
 }): Promise<OpenAIAuth> {
   let page: Page
   let origBrowser = browser
 
   try {
     if (!browser) {
-      browser = await getBrowser()
+      browser = await getBrowser(launchOptions)
     }
 
     const userAgent = await browser.userAgent()
@@ -128,8 +130,13 @@ export async function getBrowser(launchOptions?: PuppeteerLaunchOptions) {
   const macChromePath =
     '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
 
+
+  let headless = false
+  if (launchOptions?.headless)
+    headless = launchOptions.headless
+
   return puppeteer.launch({
-    headless: false,
+    headless: headless,
     args: ['--no-sandbox', '--exclude-switches', 'enable-automation'],
     ignoreHTTPSErrors: true,
     // executablePath: executablePath()
