@@ -191,7 +191,7 @@ Pass `sessionToken`, `clearanceToken`, and `userAgent` to the `ChatGPTAPI` const
 
 ### Restrictions
 
-**Please read these carefully**
+**Please read carefully**
 
 - You must use `node >= 18` at the moment. I'm using `v19.2.0` in my testing.
 - Cloudflare `cf_clearance` **tokens expire after 2 hours**, so right now we recommend that you refresh your `cf_clearance` token every hour or so.
