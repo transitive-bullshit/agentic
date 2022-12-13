@@ -248,6 +248,7 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [Assistant CLI](https://github.com/diciaup/assistant-cli)
 - [Teams Bot](https://github.com/formulahendry/chatgpt-teams-bot)
 - [Askai](https://github.com/yudax42/askai)
+- [TalkGPT](https://github.com/ShadovvBeast/TalkGPT)
 - [iOS Shortcut](https://github.com/leecobaby/shortcuts/blob/master/other/ChatGPT_EN.md)
 
 If you create a cool integration, feel free to open a PR and add it to the list.
