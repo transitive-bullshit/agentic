@@ -1,5 +1,6 @@
+import * as fs from 'fs'
+import * as os from 'os'
 import delay from 'delay'
-import { platform } from 'os'
 import {
   type Browser,
   type Page,
@@ -137,15 +138,22 @@ export async function getBrowser(launchOptions?: PuppeteerLaunchOptions) {
 
 /**
  * Get the correct path to chrome's executable
- * defaults to the path for macOs
  */
 const executablePath = (): string => {
-  switch (platform()) {
+  switch (os.platform()) {
     case 'win32':
       return 'C:\\ProgramFiles\\Google\\Chrome\\Application\\chrome.exe'
-    case 'linux':
-      return '/usr/bin/google-chrome-stable'
-    default:
+    case 'darwin':
       return '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+    default:
+      /**
+       * Since two (2) separate chrome releases exists on linux
+       * we first do a check to ensure we're executing the right one.
+       */
+      const chromeExists = fs.existsSync('/usr/bin/google-chrome')
+
+      return chromeExists
+        ? '/usr/bin/google-chrome'
+        : '/usr/bin/google-chrome-stable'
   }
 }
