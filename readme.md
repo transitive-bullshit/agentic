@@ -31,7 +31,7 @@ Travis
   - [Docs](#docs)
   - [Demos](#demos)
   - [Authentication](#authentication)
-    - [Restrictions](#restrictions)
+  - [Restrictions](#restrictions)
 - [Projects](#projects)
 - [Compatibility](#compatibility)
 - [Credits](#credits)
@@ -189,7 +189,7 @@ Pass `sessionToken`, `clearanceToken`, and `userAgent` to the `ChatGPTAPI` const
 > **Note**
 > This package will switch to using the official API once it's released, which will make this process much simpler.
 
-#### Restrictions
+### Restrictions
 
 **Please read these carefully**
 
