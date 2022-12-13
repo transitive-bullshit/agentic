@@ -1,4 +1,5 @@
 import delay from 'delay'
+import { platform } from 'os'
 import {
   type Browser,
   type Page,
@@ -125,15 +126,26 @@ export async function getOpenAIAuth({
  * recognizes it and blocks access.
  */
 export async function getBrowser(launchOptions?: PuppeteerLaunchOptions) {
-  const macChromePath =
-    '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
-
   return puppeteer.launch({
     headless: false,
     args: ['--no-sandbox', '--exclude-switches', 'enable-automation'],
     ignoreHTTPSErrors: true,
-    // executablePath: executablePath()
-    executablePath: macChromePath,
+    executablePath: executablePath(),
     ...launchOptions
   })
+}
+
+/**
+ * Get the correct path to chrome's executable
+ * defaults to the path for macOs
+ */
+const executablePath = (): string => {
+  switch (platform()) {
+    case 'win32':
+      return 'C:\\ProgramFiles\\Google\\Chrome\\Application\\chrome.exe'
+    case 'linux':
+      return '/usr/bin/google-chrome-stable'
+    default:
+      return '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+  }
 }
