@@ -130,7 +130,7 @@ export async function getBrowser(launchOptions?: PuppeteerLaunchOptions) {
   let executablePath
 
   if (/^win/i.test(osPlatform)) {
-    executablePath = 'C:UsersUserAppDataLocalChromiumApplicationchrome.exe'
+    executablePath = ' C:\\ProgramFiles\\Google\Chrome\\Application\\chrome.exe'
   } else if (/^darwin/i.test(osPlatform)) {
     executablePath =
       '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
