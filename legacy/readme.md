@@ -150,13 +150,13 @@ To run the included demos:
 A [basic demo](./demos/demo.ts) is included for testing purposes:
 
 ```bash
-npx tsx src/demo.ts
+npx tsx demos/demo.ts
 ```
 
 A [conversation demo](./demos/demo-conversation.ts) is also included:
 
 ```bash
-npx tsx src/demo-conversation.ts
+npx tsx demos/demo-conversation.ts
 ```
 
 ### Authentication
