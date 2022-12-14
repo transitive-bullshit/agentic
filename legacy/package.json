@@ -1,6 +1,6 @@
 {
   "name": "chatgpt",
-  "version": "2.0.5",
+  "version": "2.3.2",
   "description": "Node.js client for the unofficial ChatGPT API.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "repository": "transitive-bullshit/chatgpt-api",
@@ -10,7 +10,6 @@
   "types": "./build/index.d.ts",
   "exports": {
     ".": {
-      "browser": "./build/browser/index.js",
       "import": "./build/index.js",
       "types": "./build/index.d.ts",
       "default": "./build/index.js"
@@ -20,21 +19,19 @@
     "build"
   ],
   "engines": {
-    "node": ">=16.8"
+    "node": ">=18"
   },
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
     "clean": "del build",
     "prebuild": "run-s clean",
-    "postbuild": "[ -n CI ] && sed -i '' 's/await import(\"undici\")/null/' build/browser/index.js || echo 'skipping postbuild on CI'",
     "predev": "run-s clean",
     "pretest": "run-s build",
     "docs": "typedoc",
     "prepare": "husky install",
     "pre-commit": "lint-staged",
     "test": "run-p test:*",
-    "test:unit": "ava",
     "test:prettier": "prettier '**/*.{js,jsx,ts,tsx}' --check"
   },
   "dependencies": {
@@ -43,7 +40,10 @@
     "p-timeout": "^6.0.0",
     "remark": "^14.0.2",
     "strip-markdown": "^5.0.0",
-    "uuid": "^9.0.0"
+    "delay": "^5.0.0",
+    "uuid": "^9.0.0",
+    "puppeteer-extra": "^3.3.4",
+    "puppeteer-extra-plugin-stealth": "^2.11.1"
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^4.0.0",
@@ -57,14 +57,15 @@
     "npm-run-all": "^4.1.5",
     "ora": "^6.1.2",
     "prettier": "^2.8.0",
+    "puppeteer": "^19.4.0",
     "tsup": "^6.5.0",
     "tsx": "^3.12.1",
     "typedoc": "^0.23.21",
     "typedoc-plugin-markdown": "^3.13.6",
     "typescript": "^4.9.3"
   },
-  "optionalDependencies": {
-    "undici": "^5.13.0"
+  "peerDependencies": {
+    "puppeteer": "*"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
