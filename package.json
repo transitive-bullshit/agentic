@@ -10,7 +10,6 @@
   "types": "./build/index.d.ts",
   "exports": {
     ".": {
-      "browser": "./build/browser/index.js",
       "import": "./build/index.js",
       "types": "./build/index.d.ts",
       "default": "./build/index.js"

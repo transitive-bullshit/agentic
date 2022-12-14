@@ -11,20 +11,6 @@ export default defineConfig([
     sourcemap: true,
     minify: false,
     shims: true,
-    dts: true,
-    external: ['undici']
-  },
-  {
-    entry: ['src/index.ts'],
-    outDir: 'build/browser',
-    target: 'chrome89',
-    platform: 'browser',
-    format: ['esm'],
-    splitting: false,
-    sourcemap: true,
-    minify: false,
-    shims: true,
-    dts: true,
-    external: ['undici']
+    dts: true
   }
 ])
