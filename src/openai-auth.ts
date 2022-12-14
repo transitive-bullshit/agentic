@@ -40,12 +40,14 @@ export async function getOpenAIAuth({
   email,
   password,
   timeoutMs = 2 * 60 * 1000,
-  browser
+  browser,
+  isGoogleLogin
 }: {
   email?: string
   password?: string
   timeoutMs?: number
   browser?: Browser
+  isGoogleLogin?: boolean
 }): Promise<OpenAIAuth> {
   let page: Page
   let origBrowser = browser
@@ -76,17 +78,34 @@ export async function getOpenAIAuth({
           waitUntil: 'networkidle0'
         })
       ])
-      await page.waitForSelector('#username')
-      await page.type('#username', email, { delay: 10 })
-      await page.click('button[type="submit"]')
-      await page.waitForSelector('#password')
-      await page.type('#password', password, { delay: 10 })
-      await Promise.all([
-        page.click('button[type="submit"]'),
-        page.waitForNavigation({
-          waitUntil: 'networkidle0'
-        })
-      ])
+      if (isGoogleLogin) {
+        await page.click('button[data-provider="google"]')
+        await page.waitForSelector('input[type="email"]')
+        await page.type('input[type="email"]', email, { delay: 10 })
+        await Promise.all([
+          page.waitForNavigation(),
+          await page.keyboard.press('Enter')
+        ])
+        await page.waitForSelector('input[type="password"]', { visible: true })
+        await page.type('input[type="password"]', password, { delay: 10 })
+        await page.keyboard.press('Enter')
+        await Promise.all([
+          page.waitForNavigation({
+            waitUntil: 'networkidle0'
+          })
+        ])
+      } else {
+        await page.type('#username', email, { delay: 10 })
+        await page.click('button[type="submit"]')
+        await page.waitForSelector('#password')
+        await page.type('#password', password, { delay: 10 })
+        await Promise.all([
+          page.click('button[type="submit"]'),
+          page.waitForNavigation({
+            waitUntil: 'networkidle0'
+          })
+        ])
+      }
     }
 
     const pageCookies = await page.cookies()
