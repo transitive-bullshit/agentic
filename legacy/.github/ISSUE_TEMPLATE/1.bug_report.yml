@@ -35,3 +35,15 @@ body:
       options:
         - label: I verify that I've double-checked all of the restrictions.
           required: true
+ - type: textarea
+    attributes:
+      label: Provide environment information
+      description: Please enter `node --version`, `Chrome` version, OS, OS version.
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Link to the code that reproduces this issue
+      description: A link to a GitHub repository you own with a minimal reproduction. Minimal reproductions should be forked from this repo and should include only changes that contribute to the issue.
+    validations:
+      required: true
