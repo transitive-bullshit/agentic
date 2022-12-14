@@ -28,3 +28,10 @@ body:
       options:
         - label: I verify that the ChatGPT webapp is working properly for this account.
           required: true
+  - type: checkboxes
+    attributes:
+      label: Verify resrictions
+      description: Verify that you've double-checked all of the [restrictions](https://github.com/transitive-bullshit/chatgpt-api#restrictions) listed in the readme.
+      options:
+        - label: I verify that I've double-checked all of the restrictions.
+          required: true
