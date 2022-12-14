@@ -72,6 +72,10 @@ export async function getOpenAIAuth({
     await checkForChatGPTAtCapacity(page)
 
     // NOTE: this is where you may encounter a CAPTCHA
+    var capacityLimit = await page.$('[role="alert"]')
+    if (capacityLimit) {
+      throw `ChatGPT is at capacity right now`
+    }
 
     await page.waitForSelector('#__next .btn-primary', { timeout: timeoutMs })
 
