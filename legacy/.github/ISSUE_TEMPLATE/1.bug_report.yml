@@ -4,10 +4,12 @@ labels: ['template: bug']
 body:
   - type: markdown
       attributes:
-        value: 'If you follow all of the instructions carefully, and your account / IP hasn\'t been permanently flagged by Cloudflare / OpenAI, then you shouldn\'t ever get a 403 at this point.'
+        value: |
+            If you follow all of the instructions carefully, and your account / IP hasn't been permanently flagged by Cloudflare / OpenAI, then you shouldn't ever get a 403 at this point.
   - type: markdown
       attributes:
-        value: 'My Twitter bot has been running for the past 2 days without a single 403, and others have been able to get it working on Discord. Although it can take a bit of effort to get working, once you have it working, you\'re set.'
+        value: |
+          My Twitter bot has been running for the past 2 days without a single 403, and others have been able to get it working on Discord. Although it can take a bit of effort to get working, once you have it working, you're set.
   - type: checkboxes
     attributes:
       label: Verify latest release
