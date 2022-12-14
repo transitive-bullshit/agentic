@@ -35,6 +35,12 @@ body:
       options:
         - label: I verify that I've double-checked all of the restrictions.
           required: true
+ - type: textarea
+    attributes:
+      label: Provide environment information
+      description: Please enter Node.js version, browser version, OS, and OS version.
+    validations:
+      required: true
   - type: input
     attributes:
       label: Link to the code that reproduces this issue
