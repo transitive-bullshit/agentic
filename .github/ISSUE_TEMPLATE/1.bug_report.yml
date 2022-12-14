@@ -41,9 +41,3 @@ body:
       description: Please enter `node --version`, `Chrome` version, OS, OS version.
     validations:
       required: true
-  - type: input
-    attributes:
-      label: Link to the code that reproduces this issue
-      description: A link to a GitHub repository you own with a minimal reproduction. Minimal reproductions should be forked from this repo and should include only changes that contribute to the issue.
-    validations:
-      required: true
