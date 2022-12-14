@@ -1,14 +1,18 @@
-import * as fs from 'fs'
-import * as os from 'os'
+import fs from 'node:fs'
+import os from 'node:os'
+
 import delay from 'delay'
 import {
   type Browser,
+  type ElementHandle,
   type Page,
   type Protocol,
   type PuppeteerLaunchOptions
 } from 'puppeteer'
 import puppeteer from 'puppeteer-extra'
 import StealthPlugin from 'puppeteer-extra-plugin-stealth'
+
+import * as types from './types'
 
 puppeteer.use(StealthPlugin())
 
@@ -41,14 +45,14 @@ export type OpenAIAuth = {
 export async function getOpenAIAuth({
   email,
   password,
-  timeoutMs = 2 * 60 * 1000,
   browser,
-  isGoogleLogin
+  timeoutMs = 2 * 60 * 1000,
+  isGoogleLogin = false
 }: {
   email?: string
   password?: string
-  timeoutMs?: number
   browser?: Browser
+  timeoutMs?: number
   isGoogleLogin?: boolean
 }): Promise<OpenAIAuth> {
   let page: Page
@@ -65,6 +69,8 @@ export async function getOpenAIAuth({
 
     await page.goto('https://chat.openai.com/auth/login')
 
+    await checkForChatGPTAtCapacity(page)
+
     // NOTE: this is where you may encounter a CAPTCHA
 
     await page.waitForSelector('#__next .btn-primary', { timeout: timeoutMs })
@@ -80,6 +86,9 @@ export async function getOpenAIAuth({
           waitUntil: 'networkidle0'
         })
       ])
+
+      let submitP: Promise<void>
+
       if (isGoogleLogin) {
         await page.click('button[data-provider="google"]')
         await page.waitForSelector('input[type="email"]')
@@ -90,24 +99,61 @@ export async function getOpenAIAuth({
         ])
         await page.waitForSelector('input[type="password"]', { visible: true })
         await page.type('input[type="password"]', password, { delay: 10 })
-        await page.keyboard.press('Enter')
-        await Promise.all([
-          page.waitForNavigation({
-            waitUntil: 'networkidle0'
-          })
-        ])
+        submitP = page.keyboard.press('Enter')
       } else {
+        await page.waitForSelector('#username')
         await page.type('#username', email, { delay: 10 })
         await page.click('button[type="submit"]')
         await page.waitForSelector('#password')
         await page.type('#password', password, { delay: 10 })
-        await Promise.all([
-          page.click('button[type="submit"]'),
-          page.waitForNavigation({
-            waitUntil: 'networkidle0'
-          })
-        ])
+        submitP = page.click('button[type="submit"]')
       }
+
+      await Promise.all([
+        submitP,
+
+        new Promise<void>((resolve, reject) => {
+          let resolved = false
+
+          async function waitForCapacityText() {
+            if (resolved) {
+              return
+            }
+
+            try {
+              await checkForChatGPTAtCapacity(page)
+
+              if (!resolved) {
+                setTimeout(waitForCapacityText, 500)
+              }
+            } catch (err) {
+              if (!resolved) {
+                resolved = true
+                return reject(err)
+              }
+            }
+          }
+
+          page
+            .waitForNavigation({
+              waitUntil: 'networkidle0'
+            })
+            .then(() => {
+              if (!resolved) {
+                resolved = true
+                resolve()
+              }
+            })
+            .catch((err) => {
+              if (!resolved) {
+                resolved = true
+                reject(err)
+              }
+            })
+
+          setTimeout(waitForCapacityText, 500)
+        })
+      ])
     }
 
     const pageCookies = await page.cookies()
@@ -151,20 +197,22 @@ export async function getBrowser(launchOptions?: PuppeteerLaunchOptions) {
     headless: false,
     args: ['--no-sandbox', '--exclude-switches', 'enable-automation'],
     ignoreHTTPSErrors: true,
-    executablePath: executablePath(),
+    executablePath: defaultChromeExecutablePath(),
     ...launchOptions
   })
 }
 
 /**
- * Get the correct path to chrome's executable
+ * Gets the default path to chrome's executable for the current platform.
  */
-const executablePath = (): string => {
+export const defaultChromeExecutablePath = (): string => {
   switch (os.platform()) {
     case 'win32':
       return 'C:\\ProgramFiles\\Google\\Chrome\\Application\\chrome.exe'
+
     case 'darwin':
       return '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+
     default:
       /**
        * Since two (2) separate chrome releases exists on linux
@@ -175,5 +223,23 @@ const executablePath = (): string => {
       return chromeExists
         ? '/usr/bin/google-chrome'
         : '/usr/bin/google-chrome-stable'
+  }
+}
+
+async function checkForChatGPTAtCapacity(page: Page) {
+  let res: ElementHandle<Node>[]
+
+  try {
+    res = await page.$x("//div[contains(., 'ChatGPT is at capacity')]")
+    console.log('capacity text', res)
+  } catch (err) {
+    // ignore errors likely due to navigation
+    console.warn(err.toString())
+  }
+
+  if (res?.length) {
+    const error = new types.ChatGPTError('ChatGPT is at capacity')
+    error.statusCode = 503
+    throw error
   }
 }
