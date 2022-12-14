@@ -30,8 +30,8 @@ body:
           required: true
   - type: checkboxes
     attributes:
-      label: Verify [restrictions](https://github.com/transitive-bullshit/chatgpt-api#restrictions)
-      description: 'Verify that you\'ve double-checked all of the restrictions listed in the readme.'
+      label: Verify resrictions
+      description: 'Verify that you\'ve double-checked all of the [restrictions](https://github.com/transitive-bullshit/chatgpt-api#restrictions) listed in the readme.'
       options:
         - label: I verify that I've double-checked all of the restrictions.
           required: true
