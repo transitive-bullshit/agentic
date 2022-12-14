@@ -1,6 +1,7 @@
 import test from 'ava'
 import dotenv from 'dotenv-safe'
 
+import * as types from './types'
 import { ChatGPTAPI } from './chatgpt-api'
 
 dotenv.config()
@@ -10,16 +11,20 @@ const isCI = !!process.env.CI
 test('ChatGPTAPI invalid session token', async (t) => {
   t.timeout(30 * 1000) // 30 seconds
 
-  t.throws(() => new ChatGPTAPI({ sessionToken: null }), {
+  t.throws(() => new ChatGPTAPI({ sessionToken: null, clearanceToken: null }), {
     message: 'ChatGPT invalid session token'
   })
 
   await t.throwsAsync(
     async () => {
-      const chatgpt = new ChatGPTAPI({ sessionToken: 'invalid' })
+      const chatgpt = new ChatGPTAPI({
+        sessionToken: 'invalid',
+        clearanceToken: 'invalid'
+      })
       await chatgpt.ensureAuth()
     },
     {
+      instanceOf: types.ChatGPTError,
       message: 'ChatGPT failed to refresh auth token. Error: Unauthorized'
     }
   )
@@ -31,13 +36,18 @@ test('ChatGPTAPI valid session token', async (t) => {
   }
 
   t.notThrows(
-    () => new ChatGPTAPI({ sessionToken: 'fake valid session token' })
+    () =>
+      new ChatGPTAPI({
+        sessionToken: 'fake valid session token',
+        clearanceToken: 'invalid'
+      })
   )
 
   await t.notThrowsAsync(
     (async () => {
       const chatgpt = new ChatGPTAPI({
-        sessionToken: process.env.SESSION_TOKEN
+        sessionToken: process.env.SESSION_TOKEN,
+        clearanceToken: process.env.CLEARANCE_TOKEN
       })
 
       // Don't make any real API calls using our session token if we're running on CI
@@ -60,10 +70,14 @@ if (!isCI) {
 
     await t.throwsAsync(
       async () => {
-        const chatgpt = new ChatGPTAPI({ sessionToken: expiredSessionToken })
+        const chatgpt = new ChatGPTAPI({
+          sessionToken: expiredSessionToken,
+          clearanceToken: 'invalid'
+        })
         await chatgpt.ensureAuth()
       },
       {
+        instanceOf: types.ChatGPTError,
         message:
           'ChatGPT failed to refresh auth token. Error: session token may have expired'
       }
@@ -78,7 +92,8 @@ if (!isCI) {
     await t.throwsAsync(
       async () => {
         const chatgpt = new ChatGPTAPI({
-          sessionToken: process.env.SESSION_TOKEN
+          sessionToken: process.env.SESSION_TOKEN,
+          clearanceToken: process.env.CLEARANCE_TOKEN
         })
 
         await chatgpt.sendMessage('test', {
@@ -97,7 +112,8 @@ if (!isCI) {
     await t.throwsAsync(
       async () => {
         const chatgpt = new ChatGPTAPI({
-          sessionToken: process.env.SESSION_TOKEN
+          sessionToken: process.env.SESSION_TOKEN,
+          clearanceToken: process.env.CLEARANCE_TOKEN
         })
 
         const abortController = new AbortController()

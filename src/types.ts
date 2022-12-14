@@ -41,7 +41,7 @@ export type User = {
   /**
    * Email of the user
    */
-  email: string
+  email?: string
 
   /**
    * Image of the user
@@ -56,12 +56,12 @@ export type User = {
   /**
    * Groups the user is in
    */
-  groups: string[] | []
+  groups: string[]
 
   /**
    * Features the user is in
    */
-  features: string[] | []
+  features: string[]
 }
 
 /**
@@ -273,10 +273,13 @@ export type MessageContent = {
 }
 
 export type MessageMetadata = any
+export type MessageActionType = 'next' | 'variant'
 
 export type SendMessageOptions = {
   conversationId?: string
   parentMessageId?: string
+  messageId?: string
+  action?: MessageActionType
   timeoutMs?: number
   onProgress?: (partialResponse: string) => void
   onConversationResponse?: (response: ConversationResponseEvent) => void
@@ -287,3 +290,10 @@ export type SendConversationMessageOptions = Omit<
   SendMessageOptions,
   'conversationId' | 'parentMessageId'
 >
+
+export class ChatGPTError extends Error {
+  statusCode?: number
+  statusText?: string
+  response?: Response
+  originalError?: Error
+}

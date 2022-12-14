@@ -8,6 +8,13 @@
 
 - [constructor](ChatGPTAPI.md#constructor)
 
+### Accessors
+
+- [clearanceToken](ChatGPTAPI.md#clearancetoken)
+- [sessionToken](ChatGPTAPI.md#sessiontoken)
+- [user](ChatGPTAPI.md#user)
+- [userAgent](ChatGPTAPI.md#useragent)
+
 ### Methods
 
 - [ensureAuth](ChatGPTAPI.md#ensureauth)
@@ -24,21 +31,92 @@
 
 Creates a new client wrapper around the unofficial ChatGPT REST API.
 
+Note that your IP address and `userAgent` must match the same values that you used
+to obtain your `clearanceToken`.
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `opts` | `Object` | - |
-| `opts.accessTokenTTL?` | `number` | **`Default Value`**  60000 (60 seconds) |
+| `opts.accessToken?` | `string` | **`Default Value`**  `undefined` * |
+| `opts.accessTokenTTL?` | `number` | **`Default Value`**  1 hour * |
 | `opts.apiBaseUrl?` | `string` | **`Default Value`**  `'https://chat.openai.com/api'` * |
 | `opts.backendApiBaseUrl?` | `string` | **`Default Value`**  `'https://chat.openai.com/backend-api'` * |
+| `opts.clearanceToken` | `string` | = **Required** Cloudflare `cf_clearance` cookie value (see readme for instructions) |
+| `opts.debug?` | `boolean` | **`Default Value`**  `false` * |
+| `opts.headers?` | `Record`<`string`, `string`\> | **`Default Value`**  `undefined` * |
 | `opts.markdown?` | `boolean` | **`Default Value`**  `true` * |
 | `opts.sessionToken` | `string` | = **Required** OpenAI session token which can be found in a valid session's cookies (see readme for instructions) |
-| `opts.userAgent?` | `string` | **`Default Value`**  `'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36'` * |
+| `opts.userAgent?` | `string` | **`Default Value`**  `Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36'` * |
 
 #### Defined in
 
-[chatgpt-api.ts:35](https://github.com/transitive-bullshit/chatgpt-api/blob/20c376e/src/chatgpt-api.ts#L35)
+[src/chatgpt-api.ts:45](https://github.com/transitive-bullshit/chatgpt-api/blob/c257286/src/chatgpt-api.ts#L45)
+
+## Accessors
+
+### clearanceToken
+
+• `get` **clearanceToken**(): `string`
+
+Gets the current Cloudflare clearance token (`cf_clearance` cookie value).
+
+#### Returns
+
+`string`
+
+#### Defined in
+
+[src/chatgpt-api.ts:136](https://github.com/transitive-bullshit/chatgpt-api/blob/c257286/src/chatgpt-api.ts#L136)
+
+___
+
+### sessionToken
+
+• `get` **sessionToken**(): `string`
+
+Gets the current session token.
+
+#### Returns
+
+`string`
+
+#### Defined in
+
+[src/chatgpt-api.ts:131](https://github.com/transitive-bullshit/chatgpt-api/blob/c257286/src/chatgpt-api.ts#L131)
+
+___
+
+### user
+
+• `get` **user**(): [`User`](../modules.md#user)
+
+Gets the currently signed-in user, if authenticated, `null` otherwise.
+
+#### Returns
+
+[`User`](../modules.md#user)
+
+#### Defined in
+
+[src/chatgpt-api.ts:126](https://github.com/transitive-bullshit/chatgpt-api/blob/c257286/src/chatgpt-api.ts#L126)
+
+___
+
+### userAgent
+
+• `get` **userAgent**(): `string`
+
+Gets the current user agent.
+
+#### Returns
+
+`string`
+
+#### Defined in
+
+[src/chatgpt-api.ts:141](https://github.com/transitive-bullshit/chatgpt-api/blob/c257286/src/chatgpt-api.ts#L141)
 
 ## Methods
 
@@ -55,7 +133,7 @@ is still valid.
 
 #### Defined in
 
-[chatgpt-api.ts:221](https://github.com/transitive-bullshit/chatgpt-api/blob/20c376e/src/chatgpt-api.ts#L221)
+[src/chatgpt-api.ts:319](https://github.com/transitive-bullshit/chatgpt-api/blob/c257286/src/chatgpt-api.ts#L319)
 
 ___
 
@@ -82,7 +160,7 @@ The new conversation instance
 
 #### Defined in
 
-[chatgpt-api.ts:285](https://github.com/transitive-bullshit/chatgpt-api/blob/20c376e/src/chatgpt-api.ts#L285)
+[src/chatgpt-api.ts:425](https://github.com/transitive-bullshit/chatgpt-api/blob/c257286/src/chatgpt-api.ts#L425)
 
 ___
 
@@ -99,7 +177,7 @@ the token fails.
 
 #### Defined in
 
-[chatgpt-api.ts:208](https://github.com/transitive-bullshit/chatgpt-api/blob/20c376e/src/chatgpt-api.ts#L208)
+[src/chatgpt-api.ts:306](https://github.com/transitive-bullshit/chatgpt-api/blob/c257286/src/chatgpt-api.ts#L306)
 
 ___
 
@@ -125,7 +203,7 @@ A valid access token
 
 #### Defined in
 
-[chatgpt-api.ts:235](https://github.com/transitive-bullshit/chatgpt-api/blob/20c376e/src/chatgpt-api.ts#L235)
+[src/chatgpt-api.ts:333](https://github.com/transitive-bullshit/chatgpt-api/blob/c257286/src/chatgpt-api.ts#L333)
 
 ___
 
@@ -156,4 +234,4 @@ The response from ChatGPT
 
 #### Defined in
 
-[chatgpt-api.ts:94](https://github.com/transitive-bullshit/chatgpt-api/blob/20c376e/src/chatgpt-api.ts#L94)
+[src/chatgpt-api.ts:166](https://github.com/transitive-bullshit/chatgpt-api/blob/c257286/src/chatgpt-api.ts#L166)
