@@ -227,17 +227,17 @@ export const defaultChromeExecutablePath = (): string => {
 }
 
 async function checkForChatGPTAtCapacity(page: Page) {
-  let res: ElementHandle<Node>[]
+  let res: ElementHandle<Element> | null
 
   try {
-    res = await page.$x("//div[contains(., 'ChatGPT is at capacity')]")
+    res = await page.$('[role="alert"]')
     console.log('capacity text', res)
   } catch (err) {
     // ignore errors likely due to navigation
     console.warn(err.toString())
   }
 
-  if (res?.length) {
+  if (res) {
     const error = new types.ChatGPTError('ChatGPT is at capacity')
     error.statusCode = 503
     throw error
