@@ -1,3 +1,5 @@
+import * as fs from 'fs'
+import * as os from 'os'
 import delay from 'delay'
 import {
   type Browser,
@@ -145,15 +147,33 @@ export async function getOpenAIAuth({
  * recognizes it and blocks access.
  */
 export async function getBrowser(launchOptions?: PuppeteerLaunchOptions) {
-  const macChromePath =
-    '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
-
   return puppeteer.launch({
     headless: false,
     args: ['--no-sandbox', '--exclude-switches', 'enable-automation'],
     ignoreHTTPSErrors: true,
-    // executablePath: executablePath()
-    executablePath: macChromePath,
+    executablePath: executablePath(),
     ...launchOptions
   })
+}
+
+/**
+ * Get the correct path to chrome's executable
+ */
+const executablePath = (): string => {
+  switch (os.platform()) {
+    case 'win32':
+      return 'C:\\ProgramFiles\\Google\\Chrome\\Application\\chrome.exe'
+    case 'darwin':
+      return '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+    default:
+      /**
+       * Since two (2) separate chrome releases exists on linux
+       * we first do a check to ensure we're executing the right one.
+       */
+      const chromeExists = fs.existsSync('/usr/bin/google-chrome')
+
+      return chromeExists
+        ? '/usr/bin/google-chrome'
+        : '/usr/bin/google-chrome-stable'
+  }
 }
