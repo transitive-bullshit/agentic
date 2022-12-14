@@ -1,5 +1,5 @@
-blank_issues_enabled: true
+blank_issues_enabled: false
 contact_links:
-  - name: Ask a question
-    url: https://github.com/vercel/next.js/discussions
+  - name: Join the Discord
+    url: https://discord.gg/HW3EFG6p
     about: Ask questions and discuss with other community members
