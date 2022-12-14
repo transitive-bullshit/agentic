@@ -229,13 +229,14 @@ async function checkForChatGPTAtCapacity(page: Page) {
   let res: ElementHandle<Node>[]
 
   try {
+    // res = await page.$('[role="alert"]')
     res = await page.$x("//div[contains(., 'ChatGPT is at capacity')]")
   } catch (err) {
     // ignore errors likely due to navigation
   }
 
   if (res?.length) {
-    const error = new types.ChatGPTError(`ChatGPT is at capacity: ${res}`)
+    const error = new types.ChatGPTError('ChatGPT is at capacity')
     error.statusCode = 503
     throw error
   }
