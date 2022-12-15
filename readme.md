@@ -179,7 +179,7 @@ async function example() {
 
 ### Docs
 
-See the [auto-generated docs](./docs/classes/ChatGPTAPI.md) for more info on methods and parameters.
+See the [auto-generated docs](./docs/classes/ChatGPTAPI.md) for more info on methods and parameters. Here are the [docs](./docs/classes/ChatGPTAPIBrowser.md) for the browser-based version.
 
 ### Demos
 
