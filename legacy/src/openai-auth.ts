@@ -2,12 +2,12 @@ import * as fs from 'node:fs'
 import * as os from 'node:os'
 
 import delay from 'delay'
-import {
-  type Browser,
-  type ElementHandle,
-  type Page,
-  type Protocol,
-  type PuppeteerLaunchOptions
+import type {
+  Browser,
+  ElementHandle,
+  Page,
+  Protocol,
+  PuppeteerLaunchOptions
 } from 'puppeteer'
 import puppeteer from 'puppeteer-extra'
 import RecaptchaPlugin from 'puppeteer-extra-plugin-recaptcha'
