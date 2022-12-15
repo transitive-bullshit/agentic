@@ -1,5 +1,6 @@
 import delay from 'delay'
 import html2md from 'html-to-md'
+import pTimeout from 'p-timeout'
 import type { Browser, HTTPRequest, HTTPResponse, Page } from 'puppeteer'
 
 import { getBrowser, getOpenAIAuth } from './openai-auth'
@@ -275,7 +276,14 @@ export class ChatGPTAPIBrowser {
     }
   }
 
-  async sendMessage(message: string): Promise<string> {
+  async sendMessage(
+    message: string,
+    opts: {
+      timeoutMs?: number
+    } = {}
+  ): Promise<string> {
+    const { timeoutMs } = opts
+
     const inputBox = await this._getInputBox()
     if (!inputBox) throw new Error('not signed in')
 
@@ -294,19 +302,32 @@ export class ChatGPTAPIBrowser {
       }
     }
 
-    do {
-      await delay(1000)
+    const responseP = new Promise<string>(async (resolve, reject) => {
+      try {
+        do {
+          await delay(1000)
 
-      // TODO: this logic needs some work because we can have repeat messages...
-      const newLastMessage = await this.getLastMessage()
-      if (
-        newLastMessage &&
-        lastMessage?.toLowerCase() !== newLastMessage?.toLowerCase()
-      ) {
-        await delay(5000)
-        return newLastMessage
+          // TODO: this logic needs some work because we can have repeat messages...
+          const newLastMessage = await this.getLastMessage()
+          if (
+            newLastMessage &&
+            lastMessage?.toLowerCase() !== newLastMessage?.toLowerCase()
+          ) {
+            return resolve(newLastMessage)
+          }
+        } while (true)
+      } catch (err) {
+        return reject(err)
       }
-    } while (true)
+    })
+
+    if (timeoutMs) {
+      return pTimeout(responseP, {
+        milliseconds: timeoutMs
+      })
+    } else {
+      return responseP
+    }
   }
 
   async resetThread() {
