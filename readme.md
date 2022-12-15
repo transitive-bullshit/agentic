@@ -4,9 +4,9 @@ On December 11th, OpenAI added Cloudflare protections that make it more difficul
 
 This package has been updated to use Puppeteer to automatically log in to ChatGPT and extract the necessary auth credentials. 🔥
 
-Even with this in place, however, it's not uncommon to run into 429 / 403 errors at the moment using the `getOpenAIAuth` + `ChatGPTAPI` approach.
+Even with this in place, however, it's common to run into 429 / 403 errors at the moment using the `getOpenAIAuth` + `ChatGPTAPI` approach.
 
-To circumvent these issues, we've also added a full browser-based solution, which uses Puppeteer to log into the webapp and fully automate the web UI.
+To circumvent these issues, we've also added a full browser-based solution, which uses Puppeteer to login and automate the webapp.
 
 The full browser version is working consistently and can be used via:
 
