@@ -41,16 +41,22 @@ export type OpenAIAuth = {
  * `sessionToken` generally lasts much longer. We recommend renewing your
  * `clearanceToken` every hour or so and creating a new instance of `ChatGPTAPI`
  * with your updated credentials.
+ *
+ * You can also pass `executablePath` indicating the path of the Browser to use with
+ * Puppeteer. If you don't pass this value, a path to Google Chrome will
+ * automatically be chosen based on your operating system.
  */
 export async function getOpenAIAuth({
   email,
   password,
+  executablePath,
   browser,
   timeoutMs = 2 * 60 * 1000,
   isGoogleLogin = false
 }: {
   email?: string
   password?: string
+  executablePath?: string
   browser?: Browser
   timeoutMs?: number
   isGoogleLogin?: boolean
@@ -60,7 +66,7 @@ export async function getOpenAIAuth({
 
   try {
     if (!browser) {
-      browser = await getBrowser()
+      browser = await getBrowser(executablePath || defaultChromeExecutablePath())
     }
 
     const userAgent = await browser.userAgent()
@@ -191,12 +197,12 @@ export async function getOpenAIAuth({
  * able to use the built-in `puppeteer` version of Chromium because Cloudflare
  * recognizes it and blocks access.
  */
-export async function getBrowser(launchOptions?: PuppeteerLaunchOptions) {
+export async function getBrowser(executablePath?: string, launchOptions?: PuppeteerLaunchOptions) {
   return puppeteer.launch({
     headless: false,
     args: ['--no-sandbox', '--exclude-switches', 'enable-automation'],
     ignoreHTTPSErrors: true,
-    executablePath: defaultChromeExecutablePath(),
+    executablePath: executablePath,
     ...launchOptions
   })
 }
