@@ -17,8 +17,7 @@ async function main() {
   const password = process.env.OPENAI_PASSWORD
 
   const api = new ChatGPTAPIBrowser({ email, password, debug: true })
-  const res = await api.init()
-  console.log('init result', res)
+  await api.init()
 
   const prompt =
     'Write a python version of bubble sort. Do not include example usage.'

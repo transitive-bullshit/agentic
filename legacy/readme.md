@@ -201,6 +201,12 @@ A [conversation demo](./demos/demo-conversation.ts) is also included:
 npx tsx demos/demo-conversation.ts
 ```
 
+A [browser-based conversation demo](./demos/demo-conversation-browser.ts) is also included:
+
+```bash
+npx tsx demos/demo-conversation-browser.ts
+```
+
 ### Authentication
 
 On December 11, 2022, OpenAI added some additional Cloudflare protections which make it more difficult to access the unofficial API.
@@ -310,7 +316,7 @@ This package is ESM-only. It supports:
 
 ## Credits
 
-- Huge thanks to [@wong2](https://github.com/wong2), [@simon300000](https://github.com/simon300000), [@RomanHotsiy](https://github.com/RomanHotsiy), [@ElijahPepe](https://github.com/ElijahPepe), and all the other contributors 💪
+- Huge thanks to [@waylaidwanderer](https://github.com/waylaidwanderer), [@wong2](https://github.com/wong2), [@simon300000](https://github.com/simon300000), [@RomanHotsiy](https://github.com/RomanHotsiy), [@ElijahPepe](https://github.com/ElijahPepe), and all the other contributors 💪
 - The original browser version was inspired by this [Go module](https://github.com/danielgross/whatsapp-gpt) by [Daniel Gross](https://github.com/danielgross)
 - [OpenAI](https://openai.com) for creating [ChatGPT](https://openai.com/blog/chatgpt/) 🔥
 
