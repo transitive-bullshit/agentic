@@ -267,10 +267,18 @@ export class ChatGPTAPIBrowser {
 
     const lastMessage = await this.getLastMessage()
 
-    message = message.replace('\n', '\t')
     await inputBox.focus()
-    await inputBox.type(message, { delay: 0 })
-    await inputBox.press('Enter')
+    const paragraphs = message.split('\n')
+    for (let i = 0; i < paragraphs.length; i++) {
+      await inputBox.type(paragraphs[i], { delay: 0 })
+      if (i < paragraphs.length - 1) {
+        await this._page.keyboard.down('Shift')
+        await inputBox.press('Enter')
+        await this._page.keyboard.up('Shift')
+      } else {
+        await inputBox.press('Enter')
+      }
+    }
 
     do {
       await delay(1000)
