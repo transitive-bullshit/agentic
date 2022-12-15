@@ -10,11 +10,14 @@ import {
   type PuppeteerLaunchOptions
 } from 'puppeteer'
 import puppeteer from 'puppeteer-extra'
+import RecaptchaPlugin from 'puppeteer-extra-plugin-recaptcha'
 import StealthPlugin from 'puppeteer-extra-plugin-stealth'
 
 import * as types from './types'
 
 puppeteer.use(StealthPlugin())
+
+let hasRecaptchaPlugin = false
 
 /**
  * Represents everything that's required to pass into `ChatGPTAPI` in order
@@ -46,47 +49,64 @@ export async function getOpenAIAuth({
   email,
   password,
   browser,
+  page,
   timeoutMs = 2 * 60 * 1000,
-  isGoogleLogin = false
+  // TODO: temporary for testing...
+  // timeoutMs = 60 * 60 * 1000,
+  isGoogleLogin = false,
+  captchaToken = process.env.CAPTCHA_TOKEN
 }: {
   email?: string
   password?: string
   browser?: Browser
+  page?: Page
   timeoutMs?: number
   isGoogleLogin?: boolean
+  captchaToken?: string
 }): Promise<OpenAIAuth> {
-  let page: Page
-  let origBrowser = browser
+  const origBrowser = browser
+  const origPage = page
 
   try {
     if (!browser) {
-      browser = await getBrowser()
+      browser = await getBrowser({ captchaToken })
     }
 
     const userAgent = await browser.userAgent()
-    page = (await browser.pages())[0] || (await browser.newPage())
-    page.setDefaultTimeout(timeoutMs)
+    if (!page) {
+      page = (await browser.pages())[0] || (await browser.newPage())
+      page.setDefaultTimeout(timeoutMs)
+    }
 
-    await page.goto('https://chat.openai.com/auth/login')
+    await page.goto('https://chat.openai.com/auth/login', {
+      waitUntil: 'networkidle0'
+    })
 
     // NOTE: this is where you may encounter a CAPTCHA
+    if (hasRecaptchaPlugin) {
+      await page.solveRecaptchas()
+    }
+
     await checkForChatGPTAtCapacity(page)
 
-    await page.waitForSelector('#__next .btn-primary', { timeout: timeoutMs })
-
-    // once we get to this point, the Cloudflare cookies are available
-    await delay(1000)
+    // once we get to this point, the Cloudflare cookies should be available
 
     // login as well (optional)
     if (email && password) {
+      await page.waitForSelector('#__next .btn-primary', { timeout: timeoutMs })
+      await delay(500)
+
       await Promise.all([
+        // click login button
         page.click('#__next .btn-primary'),
         page.waitForNavigation({
           waitUntil: 'networkidle0'
         })
       ])
 
-      let submitP: Promise<void>
+      await checkForChatGPTAtCapacity(page)
+
+      let submitP: () => Promise<void>
 
       if (isGoogleLogin) {
         await page.click('button[data-provider="google"]')
@@ -98,19 +118,25 @@ export async function getOpenAIAuth({
         ])
         await page.waitForSelector('input[type="password"]', { visible: true })
         await page.type('input[type="password"]', password, { delay: 10 })
-        submitP = page.keyboard.press('Enter')
+        submitP = () => page.keyboard.press('Enter')
       } else {
         await page.waitForSelector('#username')
-        await page.type('#username', email, { delay: 10 })
+        await page.type('#username', email, { delay: 20 })
+        await delay(100)
+
+        if (hasRecaptchaPlugin) {
+          console.log('solveRecaptchas()')
+          const res = await page.solveRecaptchas()
+          console.log('solveRecaptchas result', res)
+        }
+
         await page.click('button[type="submit"]')
         await page.waitForSelector('#password')
         await page.type('#password', password, { delay: 10 })
-        submitP = page.click('button[type="submit"]')
+        submitP = () => page.click('button[type="submit"]')
       }
 
       await Promise.all([
-        submitP,
-
         new Promise<void>((resolve, reject) => {
           let resolved = false
 
@@ -151,7 +177,9 @@ export async function getOpenAIAuth({
             })
 
           setTimeout(waitForCapacityText, 500)
-        })
+        }),
+
+        submitP()
       ])
     }
 
@@ -170,11 +198,10 @@ export async function getOpenAIAuth({
 
     return authInfo
   } catch (err) {
-    console.error(err)
     throw err
   } finally {
     if (origBrowser) {
-      if (page) {
+      if (page && page !== origPage) {
         await page.close()
       }
     } else if (browser) {
@@ -191,7 +218,28 @@ export async function getOpenAIAuth({
  * able to use the built-in `puppeteer` version of Chromium because Cloudflare
  * recognizes it and blocks access.
  */
-export async function getBrowser(launchOptions?: PuppeteerLaunchOptions) {
+export async function getBrowser(
+  opts: PuppeteerLaunchOptions & {
+    captchaToken?: string
+  } = {}
+) {
+  const { captchaToken = process.env.CAPTCHA_TOKEN, ...launchOptions } = opts
+
+  if (captchaToken && !hasRecaptchaPlugin) {
+    hasRecaptchaPlugin = true
+    console.log('use captcha', captchaToken)
+
+    puppeteer.use(
+      RecaptchaPlugin({
+        provider: {
+          id: '2captcha',
+          token: captchaToken
+        },
+        visualFeedback: true // colorize reCAPTCHAs (violet = detected, green = solved)
+      })
+    )
+  }
+
   return puppeteer.launch({
     headless: false,
     args: ['--no-sandbox', '--exclude-switches', 'enable-automation'],
@@ -212,16 +260,17 @@ export const defaultChromeExecutablePath = (): string => {
     case 'darwin':
       return '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
 
-    default:
+    default: {
       /**
-       * Since two (2) separate chrome releases exists on linux
-       * we first do a check to ensure we're executing the right one.
+       * Since two (2) separate chrome releases exist on linux, we first do a
+       * check to ensure we're executing the right one.
        */
       const chromeExists = fs.existsSync('/usr/bin/google-chrome')
 
       return chromeExists
         ? '/usr/bin/google-chrome'
         : '/usr/bin/google-chrome-stable'
+    }
   }
 }
 
@@ -231,6 +280,12 @@ async function checkForChatGPTAtCapacity(page: Page) {
   try {
     // res = await page.$('[role="alert"]')
     res = await page.$x("//div[contains(., 'ChatGPT is at capacity')]")
+    console.log('capacity', res)
+
+    if (!res?.length) {
+      res = await page.$x("//div[contains(., 'at capacity right now')]")
+      console.log('capacity2', res)
+    }
   } catch (err) {
     // ignore errors likely due to navigation
   }

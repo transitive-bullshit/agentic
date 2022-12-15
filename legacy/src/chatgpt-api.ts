@@ -95,6 +95,7 @@ export class ChatGPTAPI {
       'user-agent': this._userAgent,
       'x-openai-assistant-app-id': '',
       'accept-language': 'en-US,en;q=0.9',
+      'accept-encoding': 'gzip, deflate, br',
       origin: 'https://chat.openai.com',
       referer: 'https://chat.openai.com/chat',
       'sec-ch-ua':
@@ -297,6 +298,45 @@ export class ChatGPTAPI {
     } else {
       return responseP
     }
+  }
+
+  async sendModeration(input: string) {
+    const accessToken = await this.refreshAccessToken()
+    const url = `${this._backendApiBaseUrl}/moderations`
+    const headers = {
+      ...this._headers,
+      Authorization: `Bearer ${accessToken}`,
+      Accept: '*/*',
+      'Content-Type': 'application/json',
+      Cookie: `cf_clearance=${this._clearanceToken}`
+    }
+
+    const body: types.ModerationsJSONBody = {
+      input,
+      model: 'text-moderation-playground'
+    }
+
+    if (this._debug) {
+      console.log('POST', url, headers, body)
+    }
+
+    const res = await fetch(url, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify(body)
+    }).then((r) => {
+      if (!r.ok) {
+        const error = new types.ChatGPTError(`${r.status} ${r.statusText}`)
+        error.response = r
+        error.statusCode = r.status
+        error.statusText = r.statusText
+        throw error
+      }
+
+      return r.json() as any as types.ModerationsJSONResult
+    })
+
+    return res
   }
 
   /**
