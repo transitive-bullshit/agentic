@@ -2,9 +2,8 @@ import delay from 'delay'
 import html2md from 'html-to-md'
 import type { Browser, HTTPRequest, HTTPResponse, Page } from 'puppeteer'
 
-import * as types from './types'
 import { getBrowser, getOpenAIAuth } from './openai-auth'
-import { isRelevantRequest, minimizePage } from './utils'
+import { isRelevantRequest, maximizePage, minimizePage } from './utils'
 
 export class ChatGPTAPIBrowser {
   protected _markdown: boolean
@@ -103,7 +102,7 @@ export class ChatGPTAPIBrowser {
       return false
     }
 
-    // await minimizePage(this._page)
+    await minimizePage(this._page)
 
     this._page.on('request', this._onRequest.bind(this))
     this._page.on('response', this._onResponse.bind(this))
@@ -112,8 +111,6 @@ export class ChatGPTAPIBrowser {
   }
 
   _onRequest = (request: HTTPRequest) => {
-    if (!this._debug) return
-
     const url = request.url()
     if (!isRelevantRequest(url)) {
       return
@@ -140,17 +137,17 @@ export class ChatGPTAPIBrowser {
       // }
     }
 
-    console.log('\nrequest', {
-      url,
-      method,
-      headers: request.headers(),
-      body
-    })
+    if (this._debug) {
+      console.log('\nrequest', {
+        url,
+        method,
+        headers: request.headers(),
+        body
+      })
+    }
   }
 
   _onResponse = async (response: HTTPResponse) => {
-    if (!this._debug) return
-
     const request = response.request()
 
     const url = response.url()
@@ -158,37 +155,54 @@ export class ChatGPTAPIBrowser {
       return
     }
 
+    const status = response.status()
+
     let body: any
     try {
       body = await response.json()
     } catch (_) {}
 
-    if (url.endsWith('/conversation')) {
-      // const parser = createParser((event) => {
-      //   if (event.type === 'event') {
-      //     onMessage(event.data)
-      //   }
-      // })
-      // await response.buffer()
-      // for await (const chunk of streamAsyncIterable(response.body)) {
-      //   const str = new TextDecoder().decode(chunk)
-      //   parser.feed(str)
-      // }
+    if (this._debug) {
+      console.log('\nresponse', {
+        url,
+        ok: response.ok(),
+        status,
+        statusText: response.statusText(),
+        headers: response.headers(),
+        body,
+        request: {
+          method: request.method(),
+          headers: request.headers(),
+          body: request.postData()
+        }
+      })
     }
 
-    console.log('\nresponse', {
-      url,
-      ok: response.ok(),
-      status: response.status(),
-      statusText: response.statusText(),
-      headers: response.headers(),
-      body,
-      request: {
-        method: request.method(),
-        headers: request.headers(),
-        body: request.postData()
+    if (url.endsWith('/conversation')) {
+      if (status === 403) {
+        await this.handle403Error()
       }
-    })
+    } else if (url.endsWith('api/auth/session')) {
+      if (status === 403) {
+        await this.handle403Error()
+      }
+    }
+  }
+
+  async handle403Error() {
+    console.log(`ChatGPT "${this._email}" session expired; refreshing...`)
+    try {
+      await maximizePage(this._page)
+      await this._page.reload({
+        waitUntil: 'networkidle0'
+      })
+      await minimizePage(this._page)
+    } catch (err) {
+      console.error(
+        `ChatGPT "${this._email}" error refreshing session`,
+        err.toString()
+      )
+    }
   }
 
   async getIsAuthenticated() {
