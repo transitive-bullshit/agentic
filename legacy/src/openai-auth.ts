@@ -2,13 +2,7 @@ import * as fs from 'node:fs'
 import * as os from 'node:os'
 
 import delay from 'delay'
-import type {
-  Browser,
-  ElementHandle,
-  Page,
-  Protocol,
-  PuppeteerLaunchOptions
-} from 'puppeteer'
+import type { Browser, Page, Protocol, PuppeteerLaunchOptions } from 'puppeteer'
 import puppeteer from 'puppeteer-extra'
 import RecaptchaPlugin from 'puppeteer-extra-plugin-recaptcha'
 import StealthPlugin from 'puppeteer-extra-plugin-stealth'
@@ -51,8 +45,6 @@ export async function getOpenAIAuth({
   browser,
   page,
   timeoutMs = 2 * 60 * 1000,
-  // TODO: temporary for testing...
-  // timeoutMs = 60 * 60 * 1000,
   isGoogleLogin = false,
   captchaToken = process.env.CAPTCHA_TOKEN
 }: {
@@ -93,15 +85,18 @@ export async function getOpenAIAuth({
 
     // login as well (optional)
     if (email && password) {
-      await page.waitForSelector('#__next .btn-primary', { timeout: timeoutMs })
+      await waitForConditionOrAtCapacity(page, () =>
+        page.waitForSelector('#__next .btn-primary', { timeout: timeoutMs })
+      )
       await delay(500)
 
+      // click login button and wait for navigation to finish
       await Promise.all([
-        // click login button
-        page.click('#__next .btn-primary'),
         page.waitForNavigation({
           waitUntil: 'networkidle0'
-        })
+        }),
+
+        page.click('#__next .btn-primary')
       ])
 
       await checkForChatGPTAtCapacity(page)
@@ -125,9 +120,9 @@ export async function getOpenAIAuth({
         await delay(100)
 
         if (hasRecaptchaPlugin) {
-          console.log('solveRecaptchas()')
+          // console.log('solveRecaptchas()')
           const res = await page.solveRecaptchas()
-          console.log('solveRecaptchas result', res)
+          // console.log('solveRecaptchas result', res)
         }
 
         await page.click('button[type="submit"]')
@@ -137,50 +132,16 @@ export async function getOpenAIAuth({
       }
 
       await Promise.all([
-        new Promise<void>((resolve, reject) => {
-          let resolved = false
-
-          async function waitForCapacityText() {
-            if (resolved) {
-              return
-            }
-
-            try {
-              await checkForChatGPTAtCapacity(page)
-
-              if (!resolved) {
-                setTimeout(waitForCapacityText, 500)
-              }
-            } catch (err) {
-              if (!resolved) {
-                resolved = true
-                return reject(err)
-              }
-            }
-          }
-
-          page
-            .waitForNavigation({
-              waitUntil: 'networkidle0'
-            })
-            .then(() => {
-              if (!resolved) {
-                resolved = true
-                resolve()
-              }
-            })
-            .catch((err) => {
-              if (!resolved) {
-                resolved = true
-                reject(err)
-              }
-            })
-
-          setTimeout(waitForCapacityText, 500)
-        }),
-
+        waitForConditionOrAtCapacity(page, () =>
+          page.waitForNavigation({
+            waitUntil: 'networkidle0'
+          })
+        ),
         submitP()
       ])
+    } else {
+      await delay(2000)
+      await checkForChatGPTAtCapacity(page)
     }
 
     const pageCookies = await page.cookies()
@@ -227,7 +188,7 @@ export async function getBrowser(
 
   if (captchaToken && !hasRecaptchaPlugin) {
     hasRecaptchaPlugin = true
-    console.log('use captcha', captchaToken)
+    // console.log('use captcha', captchaToken)
 
     puppeteer.use(
       RecaptchaPlugin({
@@ -275,17 +236,18 @@ export const defaultChromeExecutablePath = (): string => {
 }
 
 async function checkForChatGPTAtCapacity(page: Page) {
-  let res: ElementHandle<Node>[]
+  // console.log('checkForChatGPTAtCapacity', page.url())
+  let res: any[]
 
   try {
-    // res = await page.$('[role="alert"]')
     res = await page.$x("//div[contains(., 'ChatGPT is at capacity')]")
-    console.log('capacity', res)
-
-    if (!res?.length) {
-      res = await page.$x("//div[contains(., 'at capacity right now')]")
-      console.log('capacity2', res)
-    }
+    // console.log('capacity1', els)
+    // if (els?.length) {
+    //   res = await Promise.all(
+    //     els.map((a) => a.evaluate((el) => el.textContent))
+    //   )
+    //   console.log('capacity2', res)
+    // }
   } catch (err) {
     // ignore errors likely due to navigation
   }
@@ -295,4 +257,53 @@ async function checkForChatGPTAtCapacity(page: Page) {
     error.statusCode = 503
     throw error
   }
+}
+
+async function waitForConditionOrAtCapacity(
+  page: Page,
+  condition: () => Promise<any>,
+  opts: {
+    pollingIntervalMs?: number
+  } = {}
+) {
+  const { pollingIntervalMs = 500 } = opts
+
+  return new Promise<void>((resolve, reject) => {
+    let resolved = false
+
+    async function waitForCapacityText() {
+      if (resolved) {
+        return
+      }
+
+      try {
+        await checkForChatGPTAtCapacity(page)
+
+        if (!resolved) {
+          setTimeout(waitForCapacityText, pollingIntervalMs)
+        }
+      } catch (err) {
+        if (!resolved) {
+          resolved = true
+          return reject(err)
+        }
+      }
+    }
+
+    condition()
+      .then(() => {
+        if (!resolved) {
+          resolved = true
+          resolve()
+        }
+      })
+      .catch((err) => {
+        if (!resolved) {
+          resolved = true
+          reject(err)
+        }
+      })
+
+    setTimeout(waitForCapacityText, pollingIntervalMs)
+  })
 }
