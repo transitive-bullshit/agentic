@@ -33,7 +33,6 @@ We're working hard to improve this process (especially CAPTCHA automation). Keep
 Lastly, please consider starring this repo and <a href="https://twitter.com/transitive_bs">following me on twitter <img src="https://storage.googleapis.com/saasify-assets/twitter-logo.svg" alt="twitter" height="24px" align="center"></a> to help support the project.
 
 Thanks && cheers,
-
 [Travis](https://twitter.com/transitive_bs)
 
 ---
