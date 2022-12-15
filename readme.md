@@ -1,8 +1,30 @@
-# Update December 12, 2022 <!-- omit in toc -->
+# Update December 15, 2022 <!-- omit in toc -->
 
-Yesterday, OpenAI added additional Cloudflare protections that make it more difficult to access the unofficial API.
+On December 11th, OpenAI added Cloudflare protections that make it more difficult to access the unofficial API.
 
 This package has been updated to use Puppeteer to automatically log in to ChatGPT and extract the necessary auth credentials. 🔥
+
+Even with this in place, however, it's not uncommon to run into 429 / 403 errors at the moment using the `getOpenAIAuth` + `ChatGPTAPI` approach.
+
+To circumvent these issues, we've also added a full browser-based solution, which uses Puppeteer to log into the webapp and fully automate the web UI.
+
+The full browser version is working consistently and can be used via:
+
+```ts
+import { ChatGPTAPIBrowser } from 'chatgpt'
+
+const api = new ChatGPTAPIBrowser({
+  email: process.env.OPENAI_EMAIL,
+  password: process.env.OPENAI_PASSWORD
+})
+await api.init()
+
+const response = await api.sendMessage('Hello World!')
+```
+
+Note that this solution is not lightweight, but it does work a lot more consistently than the REST API-based versions. I'm currently using this solution to power 10 OpenAI accounts concurrently across 10 minimized Chrome windows for my [Twitter bot](https://github.com/transitive-bullshit/chatgpt-twitter-bot). 😂
+
+If you get a "ChatGPT is at capacity" error when logging in, note that this is also happening quite frequently on the official webapp. Their servers are overloaded, and we're all trying our best to offer access to this amazing technology.
 
 To use the updated version, **make sure you're using the latest version of this package and Node.js >= 18**. Then update your code following the examples below, paying special attention to the sections on [Authentication](#authentication) and [Restrictions](#restrictions).
 
@@ -11,7 +33,8 @@ We're working hard to improve this process (especially CAPTCHA automation). Keep
 Lastly, please consider starring this repo and <a href="https://twitter.com/transitive_bs">following me on twitter <img src="https://storage.googleapis.com/saasify-assets/twitter-logo.svg" alt="twitter" height="24px" align="center"></a> to help support the project.
 
 Thanks && cheers,
-Travis
+
+[Travis](https://twitter.com/transitive_bs)
 
 ---
 
@@ -72,6 +95,25 @@ async function example() {
   )
 
   // response is a markdown-formatted string
+  console.log(response)
+}
+```
+
+Or, if you want to try the full browser-based solution:
+
+```ts
+import { ChatGPTAPIBrowser } from 'chatgpt'
+
+async function example() {
+  // use puppeteer to bypass cloudflare (headful because of captchas)
+  const api = new ChatGPTAPIBrowser({
+    email: process.env.OPENAI_EMAIL,
+    password: process.env.OPENAI_PASSWORD
+  })
+
+  await api.init()
+
+  const response = await api.sendMessage('Hello World!')
   console.log(response)
 }
 ```
@@ -137,7 +179,7 @@ async function example() {
 
 ### Docs
 
-See the [auto-generated docs](./docs/classes/ChatGPTAPI.md) for more info on methods and parameters.
+See the [auto-generated docs](./docs/classes/ChatGPTAPI.md) for more info on methods and parameters. Here are the [docs](./docs/classes/ChatGPTAPIBrowser.md) for the browser-based version.
 
 ### Demos
 
@@ -190,6 +232,10 @@ Pass `sessionToken`, `clearanceToken`, and `userAgent` to the `ChatGPTAPI` const
 > This package will switch to using the official API once it's released, which will make this process much simpler.
 
 ### Restrictions
+
+These restrictions are for the `getOpenAIAuth` + `ChatGPTAPI` solution, which uses the unofficial API. The browser-based solution, `ChatGPTAPIBrowser`, doesn't have many of these restrictions, though you'll still have to manually bypass CAPTCHAs by hand.
+
+Note: currently `ChatGPTAPIBrowser` doesn't support continuing arbitrary conversations based on `conversationId`. You can only continue conversations in the current tab or start new conversations using the `resetThread()` function.
 
 **Please read carefully**
 
