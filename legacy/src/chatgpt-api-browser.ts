@@ -59,18 +59,29 @@ export class ChatGPTAPIBrowser {
       this._browser = null
     }
 
-    this._browser = await getBrowser({ captchaToken: this._captchaToken })
-    this._page =
-      (await this._browser.pages())[0] || (await this._browser.newPage())
+    try {
+      this._browser = await getBrowser({ captchaToken: this._captchaToken })
+      this._page =
+        (await this._browser.pages())[0] || (await this._browser.newPage())
 
-    // bypass cloudflare and login
-    await getOpenAIAuth({
-      email: this._email,
-      password: this._password,
-      browser: this._browser,
-      page: this._page,
-      isGoogleLogin: this._isGoogleLogin
-    })
+      // bypass cloudflare and login
+      await getOpenAIAuth({
+        email: this._email,
+        password: this._password,
+        browser: this._browser,
+        page: this._page,
+        isGoogleLogin: this._isGoogleLogin
+      })
+    } catch (err) {
+      if (this._browser) {
+        await this._browser.close()
+      }
+
+      this._browser = null
+      this._page = null
+
+      throw err
+    }
 
     const chatUrl = 'https://chat.openai.com/chat'
     const url = this._page.url().replace(/\/$/, '')
