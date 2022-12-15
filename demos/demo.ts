@@ -16,7 +16,7 @@ async function main() {
   const email = process.env.OPENAI_EMAIL
   const password = process.env.OPENAI_PASSWORD
 
-  const api = new ChatGPTAPIBrowser({ email, password })
+  const api = new ChatGPTAPIBrowser({ email, password, debug: true })
   const res = await api.init()
   console.log('init result', res)
 
