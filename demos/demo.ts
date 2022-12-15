@@ -1,7 +1,7 @@
 import dotenv from 'dotenv-safe'
 import { oraPromise } from 'ora'
 
-import { ChatGPTAPI, getOpenAIAuth } from '../src'
+import { ChatGPTAPIBrowser } from '../src'
 
 dotenv.config()
 
@@ -16,13 +16,9 @@ async function main() {
   const email = process.env.OPENAI_EMAIL
   const password = process.env.OPENAI_PASSWORD
 
-  const authInfo = await getOpenAIAuth({
-    email,
-    password
-  })
-
-  const api = new ChatGPTAPI({ ...authInfo })
-  await api.ensureAuth()
+  const api = new ChatGPTAPIBrowser({ email, password })
+  const res = await api.init()
+  console.log('init result', res)
 
   const prompt =
     'Write a python version of bubble sort. Do not include example usage.'
@@ -31,6 +27,7 @@ async function main() {
     text: prompt
   })
 
+  await api.close()
   return response
 }
 

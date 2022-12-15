@@ -1,4 +1,5 @@
 export * from './chatgpt-api'
+export * from './chatgpt-api-browser'
 export * from './chatgpt-conversation'
 export * from './types'
 export * from './utils'
