@@ -18,7 +18,6 @@ specifiers:
   prettier: ^2.8.0
   puppeteer: ^19.4.0
   puppeteer-extra: ^3.3.4
-  puppeteer-extra-plugin-recaptcha: ^3.6.6
   puppeteer-extra-plugin-stealth: ^2.11.1
   remark: ^14.0.2
   strip-markdown: ^5.0.0
@@ -35,7 +34,6 @@ dependencies:
   expiry-map: 2.0.0
   p-timeout: 6.0.0
   puppeteer-extra: 3.3.4_puppeteer@19.4.0
-  puppeteer-extra-plugin-recaptcha: 3.6.6_puppeteer-extra@3.3.4
   puppeteer-extra-plugin-stealth: 2.11.1_puppeteer-extra@3.3.4
   remark: 14.0.2
   strip-markdown: 5.0.0
@@ -3066,26 +3064,6 @@ packages:
       - encoding
       - supports-color
       - utf-8-validate
-
-  /puppeteer-extra-plugin-recaptcha/3.6.6_puppeteer-extra@3.3.4:
-    resolution: {integrity: sha512-SVbmL+igGX8m0Qg9dn85trWDghbfUCTG/QUHYscYx5XgMZVVb0/v0a6MqbPdHoKmBx5BS2kLd6rorMlncMcXdw==}
-    engines: {node: '>=9.11.2'}
-    peerDependencies:
-      playwright-extra: '*'
-      puppeteer-extra: '*'
-    peerDependenciesMeta:
-      playwright-extra:
-        optional: true
-      puppeteer-extra:
-        optional: true
-    dependencies:
-      debug: 4.3.4
-      merge-deep: 3.0.3
-      puppeteer-extra: 3.3.4_puppeteer@19.4.0
-      puppeteer-extra-plugin: 3.2.2_puppeteer-extra@3.3.4
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
 
   /puppeteer-extra-plugin-stealth/2.11.1_puppeteer-extra@3.3.4:
     resolution: {integrity: sha512-n0wdC0Ilc9tk5L6FWLyd0P2gT8b2fp+2NuB+KB0oTSw3wXaZ0D6WNakjJsayJ4waGzIJFCUHkmK9zgx5NKMoFw==}
