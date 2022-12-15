@@ -1,10 +1,32 @@
 chatgpt / [Exports](modules.md)
 
-# Update December 12, 2022 <!-- omit in toc -->
+# Update December 15, 2022 <!-- omit in toc -->
 
-Yesterday, OpenAI added additional Cloudflare protections that make it more difficult to access the unofficial API.
+On December 11th, OpenAI added Cloudflare protections that make it more difficult to access the unofficial API.
 
 This package has been updated to use Puppeteer to automatically log in to ChatGPT and extract the necessary auth credentials. 🔥
+
+Even with this in place, however, it's not uncommon to run into 429 / 403 errors at the moment using the `getOpenAIAuth` + `ChatGPTAPI` approach.
+
+To circumvent these issues, we've also added a full browser-based solution, which uses Puppeteer to log into the webapp and fully automate the web UI.
+
+The full browser version is working consistently and can be used via:
+
+```ts
+import { ChatGPTAPIBrowser } from 'chatgpt'
+
+const api = new ChatGPTAPIBrowser({
+  email: process.env.OPENAI_EMAIL,
+  password: process.env.OPENAI_PASSWORD
+})
+await api.init()
+
+const response = await api.sendMessage('Hello World!')
+```
+
+Note that this solution is not lightweight, but it does work a lot more consistently than the REST API-based versions. I'm currently using this solution to power 10 OpenAI accounts concurrently across 10 minimized Chrome windows for my [Twitter bot](https://github.com/transitive-bullshit/chatgpt-twitter-bot). 😂
+
+If you get a "ChatGPT is at capacity" error when logging in, note that this is also happening quite frequently on the official webapp. Their servers are overloaded, and we're all trying our best to offer access to this amazing technology.
 
 To use the updated version, **make sure you're using the latest version of this package and Node.js >= 18**. Then update your code following the examples below, paying special attention to the sections on [Authentication](#authentication) and [Restrictions](#restrictions).
 
@@ -13,7 +35,8 @@ We're working hard to improve this process (especially CAPTCHA automation). Keep
 Lastly, please consider starring this repo and <a href="https://twitter.com/transitive_bs">following me on twitter <img src="https://storage.googleapis.com/saasify-assets/twitter-logo.svg" alt="twitter" height="24px" align="center"></a> to help support the project.
 
 Thanks && cheers,
-Travis
+
+[Travis](https://twitter.com/transitive_bs)
 
 ---
 
@@ -33,7 +56,7 @@ Travis
   - [Docs](#docs)
   - [Demos](#demos)
   - [Authentication](#authentication)
-    - [Restrictions](#restrictions)
+  - [Restrictions](#restrictions)
 - [Projects](#projects)
 - [Compatibility](#compatibility)
 - [Credits](#credits)
@@ -74,6 +97,25 @@ async function example() {
   )
 
   // response is a markdown-formatted string
+  console.log(response)
+}
+```
+
+Or, if you want to try the full browser-based solution:
+
+```ts
+import { ChatGPTAPIBrowser } from 'chatgpt'
+
+async function example() {
+  // use puppeteer to bypass cloudflare (headful because of captchas)
+  const api = new ChatGPTAPIBrowser({
+    email: process.env.OPENAI_EMAIL,
+    password: process.env.OPENAI_PASSWORD
+  })
+
+  await api.init()
+
+  const response = await api.sendMessage('Hello World!')
   console.log(response)
 }
 ```
@@ -191,9 +233,11 @@ Pass `sessionToken`, `clearanceToken`, and `userAgent` to the `ChatGPTAPI` const
 > **Note**
 > This package will switch to using the official API once it's released, which will make this process much simpler.
 
-#### Restrictions
+### Restrictions
 
-**Please read these carefully**
+These restrictions are for the `getOpenAIAuth` + `ChatGPTAPI` solution, which uses the unofficial API. The browser-based solution, `ChatGPTAPIBrowser`, doesn't have many of these restrictions, though you'll still have to manually bypass CAPTCHAs by hand.
+
+**Please read carefully**
 
 - You must use `node >= 18` at the moment. I'm using `v19.2.0` in my testing.
 - Cloudflare `cf_clearance` **tokens expire after 2 hours**, so right now we recommend that you refresh your `cf_clearance` token every hour or so.
@@ -211,10 +255,12 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 
 - [Twitter Bot](https://github.com/transitive-bullshit/chatgpt-twitter-bot) powered by ChatGPT ✨
   - Mention [@ChatGPTBot](https://twitter.com/ChatGPTBot) on Twitter with your prompt to try it out
+- [Lovelines.xyz](https://lovelines.xyz?ref=chatgpt-api)
 - [Chrome Extension](https://github.com/gragland/chatgpt-everywhere) ([demo](https://twitter.com/gabe_ragland/status/1599466486422470656))
 - [VSCode Extension #1](https://github.com/mpociot/chatgpt-vscode) ([demo](https://twitter.com/marcelpociot/status/1599180144551526400), [updated version](https://github.com/timkmecl/chatgpt-vscode), [marketplace](https://marketplace.visualstudio.com/items?itemName=timkmecl.chatgpt))
 - [VSCode Extension #2](https://github.com/barnesoir/chatgpt-vscode-plugin) ([marketplace](https://marketplace.visualstudio.com/items?itemName=JayBarnes.chatgpt-vscode-plugin))
 - [VSCode Extension #3](https://github.com/gencay/vscode-chatgpt) ([marketplace](https://marketplace.visualstudio.com/items?itemName=gencay.vscode-chatgpt))
+- [VSCode Extension #4](https://github.com/dogukanakkaya/chatgpt-code-vscode-extension) ([marketplace](https://marketplace.visualstudio.com/items?itemName=dogukanakkaya.chatgpt-code))
 - [Raycast Extension #1](https://github.com/abielzulio/chatgpt-raycast) ([demo](https://twitter.com/abielzulio/status/1600176002042191875))
 - [Raycast Extension #2](https://github.com/domnantas/raycast-chatgpt)
 - [Telegram Bot #1](https://github.com/realies/chatgpt-telegram-bot)
@@ -236,7 +282,6 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [QQ Bot (oicq)](https://github.com/easydu2002/chat_gpt_oicq)
 - [QQ Bot (oicq + RabbitMQ)](https://github.com/linsyking/ChatGPT-QQBot)
 - [QQ Bot (go-cqhttp)](https://github.com/PairZhu/ChatGPT-QQRobot)
-- [Lovelines.xyz](https://lovelines.xyz)
 - [EXM smart contracts](https://github.com/decentldotland/molecule)
 - [Flutter ChatGPT API](https://github.com/coskuncay/flutter_chatgpt_api)
 - [Carik Bot](https://github.com/luridarmawan/Carik)
@@ -249,6 +294,8 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [Assistant CLI](https://github.com/diciaup/assistant-cli)
 - [Teams Bot](https://github.com/formulahendry/chatgpt-teams-bot)
 - [Askai](https://github.com/yudax42/askai)
+- [TalkGPT](https://github.com/ShadovvBeast/TalkGPT)
+- [iOS Shortcut](https://github.com/leecobaby/shortcuts/blob/master/other/ChatGPT_EN.md)
 
 If you create a cool integration, feel free to open a PR and add it to the list.
 

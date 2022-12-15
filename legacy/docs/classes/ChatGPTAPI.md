@@ -22,6 +22,7 @@
 - [getIsAuthenticated](ChatGPTAPI.md#getisauthenticated)
 - [refreshAccessToken](ChatGPTAPI.md#refreshaccesstoken)
 - [sendMessage](ChatGPTAPI.md#sendmessage)
+- [sendModeration](ChatGPTAPI.md#sendmoderation)
 
 ## Constructors
 
@@ -52,7 +53,7 @@ to obtain your `clearanceToken`.
 
 #### Defined in
 
-[src/chatgpt-api.ts:45](https://github.com/transitive-bullshit/chatgpt-api/blob/c257286/src/chatgpt-api.ts#L45)
+[src/chatgpt-api.ts:45](https://github.com/transitive-bullshit/chatgpt-api/blob/16d1699/src/chatgpt-api.ts#L45)
 
 ## Accessors
 
@@ -68,7 +69,7 @@ Gets the current Cloudflare clearance token (`cf_clearance` cookie value).
 
 #### Defined in
 
-[src/chatgpt-api.ts:136](https://github.com/transitive-bullshit/chatgpt-api/blob/c257286/src/chatgpt-api.ts#L136)
+[src/chatgpt-api.ts:137](https://github.com/transitive-bullshit/chatgpt-api/blob/16d1699/src/chatgpt-api.ts#L137)
 
 ___
 
@@ -84,7 +85,7 @@ Gets the current session token.
 
 #### Defined in
 
-[src/chatgpt-api.ts:131](https://github.com/transitive-bullshit/chatgpt-api/blob/c257286/src/chatgpt-api.ts#L131)
+[src/chatgpt-api.ts:132](https://github.com/transitive-bullshit/chatgpt-api/blob/16d1699/src/chatgpt-api.ts#L132)
 
 ___
 
@@ -100,7 +101,7 @@ Gets the currently signed-in user, if authenticated, `null` otherwise.
 
 #### Defined in
 
-[src/chatgpt-api.ts:126](https://github.com/transitive-bullshit/chatgpt-api/blob/c257286/src/chatgpt-api.ts#L126)
+[src/chatgpt-api.ts:127](https://github.com/transitive-bullshit/chatgpt-api/blob/16d1699/src/chatgpt-api.ts#L127)
 
 ___
 
@@ -116,7 +117,7 @@ Gets the current user agent.
 
 #### Defined in
 
-[src/chatgpt-api.ts:141](https://github.com/transitive-bullshit/chatgpt-api/blob/c257286/src/chatgpt-api.ts#L141)
+[src/chatgpt-api.ts:142](https://github.com/transitive-bullshit/chatgpt-api/blob/16d1699/src/chatgpt-api.ts#L142)
 
 ## Methods
 
@@ -133,7 +134,7 @@ is still valid.
 
 #### Defined in
 
-[src/chatgpt-api.ts:319](https://github.com/transitive-bullshit/chatgpt-api/blob/c257286/src/chatgpt-api.ts#L319)
+[src/chatgpt-api.ts:359](https://github.com/transitive-bullshit/chatgpt-api/blob/16d1699/src/chatgpt-api.ts#L359)
 
 ___
 
@@ -160,7 +161,7 @@ The new conversation instance
 
 #### Defined in
 
-[src/chatgpt-api.ts:425](https://github.com/transitive-bullshit/chatgpt-api/blob/c257286/src/chatgpt-api.ts#L425)
+[src/chatgpt-api.ts:465](https://github.com/transitive-bullshit/chatgpt-api/blob/16d1699/src/chatgpt-api.ts#L465)
 
 ___
 
@@ -177,7 +178,7 @@ the token fails.
 
 #### Defined in
 
-[src/chatgpt-api.ts:306](https://github.com/transitive-bullshit/chatgpt-api/blob/c257286/src/chatgpt-api.ts#L306)
+[src/chatgpt-api.ts:346](https://github.com/transitive-bullshit/chatgpt-api/blob/16d1699/src/chatgpt-api.ts#L346)
 
 ___
 
@@ -203,7 +204,7 @@ A valid access token
 
 #### Defined in
 
-[src/chatgpt-api.ts:333](https://github.com/transitive-bullshit/chatgpt-api/blob/c257286/src/chatgpt-api.ts#L333)
+[src/chatgpt-api.ts:373](https://github.com/transitive-bullshit/chatgpt-api/blob/16d1699/src/chatgpt-api.ts#L373)
 
 ___
 
@@ -234,4 +235,24 @@ The response from ChatGPT
 
 #### Defined in
 
-[src/chatgpt-api.ts:166](https://github.com/transitive-bullshit/chatgpt-api/blob/c257286/src/chatgpt-api.ts#L166)
+[src/chatgpt-api.ts:167](https://github.com/transitive-bullshit/chatgpt-api/blob/16d1699/src/chatgpt-api.ts#L167)
+
+___
+
+### sendModeration
+
+▸ **sendModeration**(`input`): `Promise`<[`ModerationsJSONResult`](../modules.md#moderationsjsonresult)\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `input` | `string` |
+
+#### Returns
+
+`Promise`<[`ModerationsJSONResult`](../modules.md#moderationsjsonresult)\>
+
+#### Defined in
+
+[src/chatgpt-api.ts:303](https://github.com/transitive-bullshit/chatgpt-api/blob/16d1699/src/chatgpt-api.ts#L303)
