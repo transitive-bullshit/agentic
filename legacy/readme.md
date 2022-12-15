@@ -235,6 +235,8 @@ Pass `sessionToken`, `clearanceToken`, and `userAgent` to the `ChatGPTAPI` const
 
 These restrictions are for the `getOpenAIAuth` + `ChatGPTAPI` solution, which uses the unofficial API. The browser-based solution, `ChatGPTAPIBrowser`, doesn't have many of these restrictions, though you'll still have to manually bypass CAPTCHAs by hand.
 
+Note: currently `ChatGPTAPIBrowser` doesn't support continuing arbitrary conversations based on `conversationId`. You can only continue conversations in the current tab or start new conversations using the `resetThread()` function.
+
 **Please read carefully**
 
 - You must use `node >= 18` at the moment. I'm using `v19.2.0` in my testing.
