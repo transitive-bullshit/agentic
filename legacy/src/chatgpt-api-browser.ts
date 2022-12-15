@@ -195,7 +195,8 @@ export class ChatGPTAPIBrowser {
     try {
       await maximizePage(this._page)
       await this._page.reload({
-        waitUntil: 'networkidle0'
+        waitUntil: 'networkidle0',
+        timeout: 2 * 60 * 1000 // 2 minutes
       })
       await minimizePage(this._page)
     } catch (err) {
