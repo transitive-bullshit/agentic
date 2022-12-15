@@ -9,7 +9,7 @@ dotenv.config()
  * Demo CLI for testing conversation support.
  *
  * ```
- * npx tsx src/demo-conversation.ts
+ * npx tsx demos/demo-conversation.ts
  * ```
  */
 async function main() {
