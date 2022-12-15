@@ -209,6 +209,7 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 
 - [Twitter Bot](https://github.com/transitive-bullshit/chatgpt-twitter-bot) powered by ChatGPT ✨
   - Mention [@ChatGPTBot](https://twitter.com/ChatGPTBot) on Twitter with your prompt to try it out
+- [Lovelines.xyz](https://lovelines.xyz?ref=chatgpt-api)
 - [Chrome Extension](https://github.com/gragland/chatgpt-everywhere) ([demo](https://twitter.com/gabe_ragland/status/1599466486422470656))
 - [VSCode Extension #1](https://github.com/mpociot/chatgpt-vscode) ([demo](https://twitter.com/marcelpociot/status/1599180144551526400), [updated version](https://github.com/timkmecl/chatgpt-vscode), [marketplace](https://marketplace.visualstudio.com/items?itemName=timkmecl.chatgpt))
 - [VSCode Extension #2](https://github.com/barnesoir/chatgpt-vscode-plugin) ([marketplace](https://marketplace.visualstudio.com/items?itemName=JayBarnes.chatgpt-vscode-plugin))
@@ -235,7 +236,6 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [QQ Bot (oicq)](https://github.com/easydu2002/chat_gpt_oicq)
 - [QQ Bot (oicq + RabbitMQ)](https://github.com/linsyking/ChatGPT-QQBot)
 - [QQ Bot (go-cqhttp)](https://github.com/PairZhu/ChatGPT-QQRobot)
-- [Lovelines.xyz](https://lovelines.xyz)
 - [EXM smart contracts](https://github.com/decentldotland/molecule)
 - [Flutter ChatGPT API](https://github.com/coskuncay/flutter_chatgpt_api)
 - [Carik Bot](https://github.com/luridarmawan/Carik)

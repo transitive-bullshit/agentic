@@ -72,6 +72,10 @@ export async function getOpenAIAuth({
     await checkForChatGPTAtCapacity(page)
 
     // NOTE: this is where you may encounter a CAPTCHA
+    var capacityLimit = await page.$('[role="alert"]')
+    if (capacityLimit) {
+      throw `ChatGPT is at capacity right now`
+    }
 
     await page.waitForSelector('#__next .btn-primary', { timeout: timeoutMs })
 
@@ -208,7 +212,7 @@ export async function getBrowser(launchOptions?: PuppeteerLaunchOptions) {
 export const defaultChromeExecutablePath = (): string => {
   switch (os.platform()) {
     case 'win32':
-      return 'C:\\ProgramFiles\\Google\\Chrome\\Application\\chrome.exe'
+      return 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'
 
     case 'darwin':
       return '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
@@ -227,18 +231,16 @@ export const defaultChromeExecutablePath = (): string => {
 }
 
 async function checkForChatGPTAtCapacity(page: Page) {
-  let res: ElementHandle<Node>[]
+  let res: ElementHandle<Element> | null
 
   try {
-    res = await page.$x("//div[contains(., 'ChatGPT is at capacity')]")
-    console.log('capacity text', res)
+    res = await page.$('[role="alert"]')
   } catch (err) {
     // ignore errors likely due to navigation
-    console.warn(err.toString())
   }
 
-  if (res?.length) {
-    const error = new types.ChatGPTError('ChatGPT is at capacity')
+  if (res) {
+    const error = new types.ChatGPTError(`ChatGPT is at capacity: ${res}`)
     error.statusCode = 503
     throw error
   }
