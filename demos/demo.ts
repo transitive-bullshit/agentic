@@ -9,7 +9,7 @@ dotenv.config()
  * Demo CLI for testing basic functionality.
  *
  * ```
- * npx tsx src/demo.ts
+ * npx tsx demos/demo.ts
  * ```
  */
 async function main() {
