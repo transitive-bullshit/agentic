@@ -69,13 +69,8 @@ export async function getOpenAIAuth({
 
     await page.goto('https://chat.openai.com/auth/login')
 
-    await checkForChatGPTAtCapacity(page)
-
     // NOTE: this is where you may encounter a CAPTCHA
-    var capacityLimit = await page.$('[role="alert"]')
-    if (capacityLimit) {
-      throw `ChatGPT is at capacity right now`
-    }
+    await checkForChatGPTAtCapacity(page)
 
     await page.waitForSelector('#__next .btn-primary', { timeout: timeoutMs })
 
@@ -231,15 +226,15 @@ export const defaultChromeExecutablePath = (): string => {
 }
 
 async function checkForChatGPTAtCapacity(page: Page) {
-  let res: ElementHandle<Element> | null
+  let res: ElementHandle<Node>[]
 
   try {
-    res = await page.$('[role="alert"]')
+    res = await page.$x("//div[contains(., 'ChatGPT is at capacity')]")
   } catch (err) {
     // ignore errors likely due to navigation
   }
 
-  if (res) {
+  if (res?.length) {
     const error = new types.ChatGPTError(`ChatGPT is at capacity: ${res}`)
     error.statusCode = 503
     throw error
