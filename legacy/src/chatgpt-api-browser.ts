@@ -1,9 +1,10 @@
 import delay from 'delay'
 import html2md from 'html-to-md'
-import { type Browser, type HTTPResponse, type Page } from 'puppeteer'
+import type { Browser, HTTPRequest, HTTPResponse, Page } from 'puppeteer'
 
 import * as types from './types'
 import { getBrowser, getOpenAIAuth } from './openai-auth'
+import { isRelevantRequest, minimizePage } from './utils'
 
 export class ChatGPTAPIBrowser {
   protected _markdown: boolean
@@ -102,25 +103,93 @@ export class ChatGPTAPIBrowser {
       return false
     }
 
-    // this._page.on('response', this._onResponse.bind(this))
+    // await minimizePage(this._page)
+
+    this._page.on('request', this._onRequest.bind(this))
+    this._page.on('response', this._onResponse.bind(this))
+
     return true
   }
 
-  // _onResponse = (response: HTTPResponse) => {
-  //   const request = response.request()
+  _onRequest = (request: HTTPRequest) => {
+    if (!this._debug) return
 
-  //   console.log('response', {
-  //     url: response.url(),
-  //     ok: response.ok(),
-  //     status: response.status(),
-  //     statusText: response.statusText(),
-  //     headers: response.headers(),
-  //     request: {
-  //       method: request.method(),
-  //       headers: request.headers()
-  //     }
-  //   })
-  // }
+    const url = request.url()
+    if (!isRelevantRequest(url)) {
+      return
+    }
+
+    const method = request.method()
+    let body: any
+
+    if (method === 'POST') {
+      body = request.postData()
+
+      try {
+        body = JSON.parse(body)
+      } catch (_) {}
+
+      // if (url.endsWith('/conversation') && typeof body === 'object') {
+      //   const conversationBody: types.ConversationJSONBody = body
+      //   const conversationId = conversationBody.conversation_id
+      //   const parentMessageId = conversationBody.parent_message_id
+      //   const messageId = conversationBody.messages?.[0]?.id
+      //   const prompt = conversationBody.messages?.[0]?.content?.parts?.[0]
+
+      //   // TODO: store this info for the current sendMessage request
+      // }
+    }
+
+    console.log('\nrequest', {
+      url,
+      method,
+      headers: request.headers(),
+      body
+    })
+  }
+
+  _onResponse = async (response: HTTPResponse) => {
+    if (!this._debug) return
+
+    const request = response.request()
+
+    const url = response.url()
+    if (!isRelevantRequest(url)) {
+      return
+    }
+
+    let body: any
+    try {
+      body = await response.json()
+    } catch (_) {}
+
+    if (url.endsWith('/conversation')) {
+      // const parser = createParser((event) => {
+      //   if (event.type === 'event') {
+      //     onMessage(event.data)
+      //   }
+      // })
+      // await response.buffer()
+      // for await (const chunk of streamAsyncIterable(response.body)) {
+      //   const str = new TextDecoder().decode(chunk)
+      //   parser.feed(str)
+      // }
+    }
+
+    console.log('\nresponse', {
+      url,
+      ok: response.ok(),
+      status: response.status(),
+      statusText: response.statusText(),
+      headers: response.headers(),
+      body,
+      request: {
+        method: request.method(),
+        headers: request.headers(),
+        body: request.postData()
+      }
+    })
+  }
 
   async getIsAuthenticated() {
     try {
@@ -198,7 +267,7 @@ export class ChatGPTAPIBrowser {
 
     const lastMessage = await this.getLastMessage()
 
-    await inputBox.click()
+    await inputBox.focus()
     const paragraphs = message.split('\n')
     for (let i = 0; i < paragraphs.length; i++) {
       await inputBox.type(paragraphs[i], { delay: 0 })
@@ -220,6 +289,7 @@ export class ChatGPTAPIBrowser {
         newLastMessage &&
         lastMessage?.toLowerCase() !== newLastMessage?.toLowerCase()
       ) {
+        await delay(5000)
         return newLastMessage
       }
     } while (true)
