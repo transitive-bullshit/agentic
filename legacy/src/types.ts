@@ -297,3 +297,19 @@ export class ChatGPTError extends Error {
   response?: Response
   originalError?: Error
 }
+
+export type ChatError = {
+  error: { message: string; statusCode?: number; statusText?: string }
+  response: null
+  conversationId?: string
+  messageId?: string
+  conversationResponse?: ConversationResponseEvent
+}
+
+export type ChatResponse = {
+  error: null
+  response: string
+  conversationId: string
+  messageId: string
+  conversationResponse?: ConversationResponseEvent
+}
