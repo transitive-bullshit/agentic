@@ -88,11 +88,11 @@ export class ChatGPTAPIBrowser {
 
     if (url !== chatUrl) {
       await this._page.goto(chatUrl, {
-        waitUntil: 'networkidle0'
+        waitUntil: 'networkidle2'
       })
     }
 
-    // dismiss welcome modal
+    // dismiss welcome modal (and other modals)
     do {
       const modalSelector = '[data-headlessui-state="open"]'
 
@@ -107,7 +107,7 @@ export class ChatGPTAPIBrowser {
         break
       }
 
-      await delay(500)
+      await delay(300)
     } while (true)
 
     if (!this.getIsAuthenticated()) {
@@ -206,7 +206,7 @@ export class ChatGPTAPIBrowser {
     try {
       await maximizePage(this._page)
       await this._page.reload({
-        waitUntil: 'networkidle0',
+        waitUntil: 'networkidle2',
         timeout: 2 * 60 * 1000 // 2 minutes
       })
       await minimizePage(this._page)

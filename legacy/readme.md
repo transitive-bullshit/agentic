@@ -315,7 +315,7 @@ This package is ESM-only. It supports:
 
 ## Credits
 
-- Huge thanks to [@waylaidwanderer](https://github.com/waylaidwanderer), [@wong2](https://github.com/wong2), [@simon300000](https://github.com/simon300000), [@RomanHotsiy](https://github.com/RomanHotsiy), [@ElijahPepe](https://github.com/ElijahPepe), and all the other contributors 💪
+- Huge thanks to [@abacaj](https://github.com/abacaj), [@waylaidwanderer](https://github.com/waylaidwanderer), [@wong2](https://github.com/wong2), [@simon300000](https://github.com/simon300000), [@RomanHotsiy](https://github.com/RomanHotsiy), [@ElijahPepe](https://github.com/ElijahPepe), and all the other contributors 💪
 - The original browser version was inspired by this [Go module](https://github.com/danielgross/whatsapp-gpt) by [Daniel Gross](https://github.com/danielgross)
 - [OpenAI](https://openai.com) for creating [ChatGPT](https://openai.com/blog/chatgpt/) 🔥
 
