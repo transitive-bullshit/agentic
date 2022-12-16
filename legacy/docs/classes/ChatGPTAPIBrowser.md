@@ -14,9 +14,6 @@
 - [\_onResponse](ChatGPTAPIBrowser.md#_onresponse)
 - [close](ChatGPTAPIBrowser.md#close)
 - [getIsAuthenticated](ChatGPTAPIBrowser.md#getisauthenticated)
-- [getLastMessage](ChatGPTAPIBrowser.md#getlastmessage)
-- [getMessages](ChatGPTAPIBrowser.md#getmessages)
-- [getPrompts](ChatGPTAPIBrowser.md#getprompts)
 - [handle403Error](ChatGPTAPIBrowser.md#handle403error)
 - [init](ChatGPTAPIBrowser.md#init)
 - [resetThread](ChatGPTAPIBrowser.md#resetthread)
@@ -35,16 +32,17 @@ Creates a new client wrapper for automating the ChatGPT webapp.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `opts` | `Object` | - |
-| `opts.captchaToken?` | `string` | - |
+| `opts.captchaToken?` | `string` | **`Default Value`**  `undefined` * |
 | `opts.debug?` | `boolean` | **`Default Value`**  `false` * |
 | `opts.email` | `string` | - |
-| `opts.isGoogleLogin?` | `boolean` | - |
+| `opts.isGoogleLogin?` | `boolean` | **`Default Value`**  `false` * |
 | `opts.markdown?` | `boolean` | **`Default Value`**  `true` * |
+| `opts.minimize?` | `boolean` | **`Default Value`**  `true` * |
 | `opts.password` | `string` | - |
 
 #### Defined in
 
-[src/chatgpt-api-browser.ts:24](https://github.com/transitive-bullshit/chatgpt-api/blob/16d1699/src/chatgpt-api-browser.ts#L24)
+[src/chatgpt-api-browser.ts:31](https://github.com/transitive-bullshit/chatgpt-api/blob/d27238c/src/chatgpt-api-browser.ts#L31)
 
 ## Methods
 
@@ -64,7 +62,7 @@ Creates a new client wrapper for automating the ChatGPT webapp.
 
 #### Defined in
 
-[src/chatgpt-api-browser.ts:125](https://github.com/transitive-bullshit/chatgpt-api/blob/16d1699/src/chatgpt-api-browser.ts#L125)
+[src/chatgpt-api-browser.ts:142](https://github.com/transitive-bullshit/chatgpt-api/blob/d27238c/src/chatgpt-api-browser.ts#L142)
 
 ___
 
@@ -84,7 +82,7 @@ ___
 
 #### Defined in
 
-[src/chatgpt-api-browser.ts:162](https://github.com/transitive-bullshit/chatgpt-api/blob/16d1699/src/chatgpt-api-browser.ts#L162)
+[src/chatgpt-api-browser.ts:179](https://github.com/transitive-bullshit/chatgpt-api/blob/d27238c/src/chatgpt-api-browser.ts#L179)
 
 ___
 
@@ -98,7 +96,7 @@ ___
 
 #### Defined in
 
-[src/chatgpt-api-browser.ts:352](https://github.com/transitive-bullshit/chatgpt-api/blob/16d1699/src/chatgpt-api-browser.ts#L352)
+[src/chatgpt-api-browser.ts:441](https://github.com/transitive-bullshit/chatgpt-api/blob/d27238c/src/chatgpt-api-browser.ts#L441)
 
 ___
 
@@ -112,49 +110,7 @@ ___
 
 #### Defined in
 
-[src/chatgpt-api-browser.ts:221](https://github.com/transitive-bullshit/chatgpt-api/blob/16d1699/src/chatgpt-api-browser.ts#L221)
-
-___
-
-### getLastMessage
-
-▸ **getLastMessage**(): `Promise`<`string`\>
-
-#### Returns
-
-`Promise`<`string`\>
-
-#### Defined in
-
-[src/chatgpt-api-browser.ts:231](https://github.com/transitive-bullshit/chatgpt-api/blob/16d1699/src/chatgpt-api-browser.ts#L231)
-
-___
-
-### getMessages
-
-▸ **getMessages**(): `Promise`<`string`[]\>
-
-#### Returns
-
-`Promise`<`string`[]\>
-
-#### Defined in
-
-[src/chatgpt-api-browser.ts:251](https://github.com/transitive-bullshit/chatgpt-api/blob/16d1699/src/chatgpt-api-browser.ts#L251)
-
-___
-
-### getPrompts
-
-▸ **getPrompts**(): `Promise`<`string`[]\>
-
-#### Returns
-
-`Promise`<`string`[]\>
-
-#### Defined in
-
-[src/chatgpt-api-browser.ts:241](https://github.com/transitive-bullshit/chatgpt-api/blob/16d1699/src/chatgpt-api-browser.ts#L241)
+[src/chatgpt-api-browser.ts:246](https://github.com/transitive-bullshit/chatgpt-api/blob/d27238c/src/chatgpt-api-browser.ts#L246)
 
 ___
 
@@ -168,7 +124,7 @@ ___
 
 #### Defined in
 
-[src/chatgpt-api-browser.ts:204](https://github.com/transitive-bullshit/chatgpt-api/blob/16d1699/src/chatgpt-api-browser.ts#L204)
+[src/chatgpt-api-browser.ts:227](https://github.com/transitive-bullshit/chatgpt-api/blob/d27238c/src/chatgpt-api-browser.ts#L227)
 
 ___
 
@@ -182,7 +138,7 @@ ___
 
 #### Defined in
 
-[src/chatgpt-api-browser.ts:55](https://github.com/transitive-bullshit/chatgpt-api/blob/16d1699/src/chatgpt-api-browser.ts#L55)
+[src/chatgpt-api-browser.ts:70](https://github.com/transitive-bullshit/chatgpt-api/blob/d27238c/src/chatgpt-api-browser.ts#L70)
 
 ___
 
@@ -196,7 +152,7 @@ ___
 
 #### Defined in
 
-[src/chatgpt-api-browser.ts:345](https://github.com/transitive-bullshit/chatgpt-api/blob/16d1699/src/chatgpt-api-browser.ts#L345)
+[src/chatgpt-api-browser.ts:434](https://github.com/transitive-bullshit/chatgpt-api/blob/d27238c/src/chatgpt-api-browser.ts#L434)
 
 ___
 
@@ -209,8 +165,7 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `message` | `string` |
-| `opts` | `Object` |
-| `opts.timeoutMs?` | `number` |
+| `opts` | [`SendMessageOptions`](../modules.md#sendmessageoptions) |
 
 #### Returns
 
@@ -218,4 +173,4 @@ ___
 
 #### Defined in
 
-[src/chatgpt-api-browser.ts:291](https://github.com/transitive-bullshit/chatgpt-api/blob/16d1699/src/chatgpt-api-browser.ts#L291)
+[src/chatgpt-api-browser.ts:319](https://github.com/transitive-bullshit/chatgpt-api/blob/d27238c/src/chatgpt-api-browser.ts#L319)

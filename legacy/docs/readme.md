@@ -6,9 +6,9 @@ On December 11th, OpenAI added Cloudflare protections that make it more difficul
 
 This package has been updated to use Puppeteer to automatically log in to ChatGPT and extract the necessary auth credentials. 🔥
 
-Even with this in place, however, it's not uncommon to run into 429 / 403 errors at the moment using the `getOpenAIAuth` + `ChatGPTAPI` approach.
+Even with this in place, however, it's common to run into 429 / 403 errors at the moment using the `getOpenAIAuth` + `ChatGPTAPI` approach.
 
-To circumvent these issues, we've also added a full browser-based solution, which uses Puppeteer to log into the webapp and fully automate the web UI.
+To circumvent these issues, we've also added a full browser-based solution, which uses Puppeteer to login and automate the webapp.
 
 The full browser version is working consistently and can be used via:
 
@@ -26,7 +26,7 @@ const response = await api.sendMessage('Hello World!')
 
 Note that this solution is not lightweight, but it does work a lot more consistently than the REST API-based versions. I'm currently using this solution to power 10 OpenAI accounts concurrently across 10 minimized Chrome windows for my [Twitter bot](https://github.com/transitive-bullshit/chatgpt-twitter-bot). 😂
 
-If you get a "ChatGPT is at capacity" error when logging in, note that this is also happening quite frequently on the official webapp. Their servers are overloaded, and we're all trying our best to offer access to this amazing technology.
+If you get a "ChatGPT is at capacity" error when logging in, note that this can also happen on the official webapp as well. Their servers get overloaded at times, and we're all trying our best to offer access to this amazing technology.
 
 To use the updated version, **make sure you're using the latest version of this package and Node.js >= 18**. Then update your code following the examples below, paying special attention to the sections on [Authentication](#authentication) and [Restrictions](#restrictions).
 
@@ -35,7 +35,6 @@ We're working hard to improve this process (especially CAPTCHA automation). Keep
 Lastly, please consider starring this repo and <a href="https://twitter.com/transitive_bs">following me on twitter <img src="https://storage.googleapis.com/saasify-assets/twitter-logo.svg" alt="twitter" height="24px" align="center"></a> to help support the project.
 
 Thanks && cheers,
-
 [Travis](https://twitter.com/transitive_bs)
 
 ---
@@ -181,7 +180,7 @@ async function example() {
 
 ### Docs
 
-See the [auto-generated docs](./docs/classes/ChatGPTAPI.md) for more info on methods and parameters.
+See the [auto-generated docs](./docs/classes/ChatGPTAPI.md) for more info on methods and parameters. Here are the [docs](./docs/classes/ChatGPTAPIBrowser.md) for the browser-based version.
 
 ### Demos
 
@@ -201,6 +200,12 @@ A [conversation demo](./demos/demo-conversation.ts) is also included:
 
 ```bash
 npx tsx demos/demo-conversation.ts
+```
+
+A [browser-based conversation demo](./demos/demo-conversation-browser.ts) is also included:
+
+```bash
+npx tsx demos/demo-conversation-browser.ts
 ```
 
 ### Authentication
@@ -310,7 +315,7 @@ This package is ESM-only. It supports:
 
 ## Credits
 
-- Huge thanks to [@wong2](https://github.com/wong2), [@simon300000](https://github.com/simon300000), [@RomanHotsiy](https://github.com/RomanHotsiy), [@ElijahPepe](https://github.com/ElijahPepe), and all the other contributors 💪
+- Huge thanks to [@abacaj](https://github.com/abacaj), [@waylaidwanderer](https://github.com/waylaidwanderer), [@wong2](https://github.com/wong2), [@simon300000](https://github.com/simon300000), [@RomanHotsiy](https://github.com/RomanHotsiy), [@ElijahPepe](https://github.com/ElijahPepe), and all the other contributors 💪
 - The original browser version was inspired by this [Go module](https://github.com/danielgross/whatsapp-gpt) by [Daniel Gross](https://github.com/danielgross)
 - [OpenAI](https://openai.com) for creating [ChatGPT](https://openai.com/blog/chatgpt/) 🔥
 
