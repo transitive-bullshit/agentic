@@ -3,6 +3,7 @@ import * as os from 'node:os'
 
 import delay from 'delay'
 import type { Browser, Page, Protocol, PuppeteerLaunchOptions } from 'puppeteer'
+import { executablePath } from 'puppeteer'
 import puppeteer from 'puppeteer-extra'
 import RecaptchaPlugin from 'puppeteer-extra-plugin-recaptcha'
 import StealthPlugin from 'puppeteer-extra-plugin-stealth'
@@ -216,6 +217,12 @@ export async function getBrowser(
  * Gets the default path to chrome's executable for the current platform.
  */
 export const defaultChromeExecutablePath = (): string => {
+  // if we alreary know the path - let's use it
+  const path = executablePath()
+  if (path) {
+    return path
+  }
+
   switch (os.platform()) {
     case 'win32':
       return 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'
