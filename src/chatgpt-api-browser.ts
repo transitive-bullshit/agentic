@@ -38,8 +38,13 @@ export class ChatGPTAPIBrowser {
     /** @defaultValue `false` **/
     debug?: boolean
 
+    /** @defaultValue `false` **/
     isGoogleLogin?: boolean
+
+    /** @defaultValue `true` **/
     minimize?: boolean
+
+    /** @defaultValue `undefined` **/
     captchaToken?: string
   }) {
     const {
@@ -212,7 +217,6 @@ export class ChatGPTAPIBrowser {
       } else {
         const session: types.SessionResult = body
 
-        console.log('ACCESS TOKEN', session.accessToken)
         if (session?.accessToken) {
           this._accessToken = session.accessToken
         }
@@ -322,7 +326,7 @@ export class ChatGPTAPIBrowser {
       messageId = uuidv4(),
       action = 'next',
       // TODO
-      // timeoutMs,
+      timeoutMs,
       // onProgress,
       onConversationResponse
     } = opts
@@ -360,7 +364,8 @@ export class ChatGPTAPIBrowser {
       browserPostEventStream,
       url,
       this._accessToken,
-      body
+      body,
+      timeoutMs
     )
     // console.log('<<< EVALUATE', result)
 
