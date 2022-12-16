@@ -201,6 +201,7 @@ export async function browserPostEventStream(
     }
   }
 
+  // @see https://github.com/rexxars/eventsource-parser
   function createParser(onParse: EventSourceParseCallback): EventSourceParser {
     // Processing state
     let isFirstChunk: boolean
