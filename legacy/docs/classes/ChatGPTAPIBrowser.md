@@ -32,6 +32,7 @@ Creates a new client wrapper for automating the ChatGPT webapp.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `opts` | `Object` | - |
+| `opts.browserPath?` | `string` | **`Default Value`**  `undefined` * |
 | `opts.captchaToken?` | `string` | **`Default Value`**  `undefined` * |
 | `opts.debug?` | `boolean` | **`Default Value`**  `false` * |
 | `opts.email` | `string` | - |
@@ -42,7 +43,7 @@ Creates a new client wrapper for automating the ChatGPT webapp.
 
 #### Defined in
 
-[src/chatgpt-api-browser.ts:31](https://github.com/transitive-bullshit/chatgpt-api/blob/d27238c/src/chatgpt-api-browser.ts#L31)
+[src/chatgpt-api-browser.ts:32](https://github.com/transitive-bullshit/chatgpt-api/blob/d685b78/src/chatgpt-api-browser.ts#L32)
 
 ## Methods
 
@@ -62,7 +63,7 @@ Creates a new client wrapper for automating the ChatGPT webapp.
 
 #### Defined in
 
-[src/chatgpt-api-browser.ts:142](https://github.com/transitive-bullshit/chatgpt-api/blob/d27238c/src/chatgpt-api-browser.ts#L142)
+[src/chatgpt-api-browser.ts:153](https://github.com/transitive-bullshit/chatgpt-api/blob/d685b78/src/chatgpt-api-browser.ts#L153)
 
 ___
 
@@ -82,7 +83,7 @@ ___
 
 #### Defined in
 
-[src/chatgpt-api-browser.ts:179](https://github.com/transitive-bullshit/chatgpt-api/blob/d27238c/src/chatgpt-api-browser.ts#L179)
+[src/chatgpt-api-browser.ts:190](https://github.com/transitive-bullshit/chatgpt-api/blob/d685b78/src/chatgpt-api-browser.ts#L190)
 
 ___
 
@@ -96,7 +97,7 @@ ___
 
 #### Defined in
 
-[src/chatgpt-api-browser.ts:441](https://github.com/transitive-bullshit/chatgpt-api/blob/d27238c/src/chatgpt-api-browser.ts#L441)
+[src/chatgpt-api-browser.ts:453](https://github.com/transitive-bullshit/chatgpt-api/blob/d685b78/src/chatgpt-api-browser.ts#L453)
 
 ___
 
@@ -110,7 +111,7 @@ ___
 
 #### Defined in
 
-[src/chatgpt-api-browser.ts:246](https://github.com/transitive-bullshit/chatgpt-api/blob/d27238c/src/chatgpt-api-browser.ts#L246)
+[src/chatgpt-api-browser.ts:257](https://github.com/transitive-bullshit/chatgpt-api/blob/d685b78/src/chatgpt-api-browser.ts#L257)
 
 ___
 
@@ -124,7 +125,7 @@ ___
 
 #### Defined in
 
-[src/chatgpt-api-browser.ts:227](https://github.com/transitive-bullshit/chatgpt-api/blob/d27238c/src/chatgpt-api-browser.ts#L227)
+[src/chatgpt-api-browser.ts:238](https://github.com/transitive-bullshit/chatgpt-api/blob/d685b78/src/chatgpt-api-browser.ts#L238)
 
 ___
 
@@ -138,7 +139,7 @@ ___
 
 #### Defined in
 
-[src/chatgpt-api-browser.ts:70](https://github.com/transitive-bullshit/chatgpt-api/blob/d27238c/src/chatgpt-api-browser.ts#L70)
+[src/chatgpt-api-browser.ts:76](https://github.com/transitive-bullshit/chatgpt-api/blob/d685b78/src/chatgpt-api-browser.ts#L76)
 
 ___
 
@@ -152,7 +153,7 @@ ___
 
 #### Defined in
 
-[src/chatgpt-api-browser.ts:434](https://github.com/transitive-bullshit/chatgpt-api/blob/d27238c/src/chatgpt-api-browser.ts#L434)
+[src/chatgpt-api-browser.ts:445](https://github.com/transitive-bullshit/chatgpt-api/blob/d685b78/src/chatgpt-api-browser.ts#L445)
 
 ___
 
@@ -173,4 +174,4 @@ ___
 
 #### Defined in
 
-[src/chatgpt-api-browser.ts:319](https://github.com/transitive-bullshit/chatgpt-api/blob/d27238c/src/chatgpt-api-browser.ts#L319)
+[src/chatgpt-api-browser.ts:330](https://github.com/transitive-bullshit/chatgpt-api/blob/d685b78/src/chatgpt-api-browser.ts#L330)
