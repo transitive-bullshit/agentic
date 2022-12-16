@@ -3,7 +3,11 @@ import type { Browser, HTTPRequest, HTTPResponse, Page } from 'puppeteer'
 import { v4 as uuidv4 } from 'uuid'
 
 import * as types from './types'
-import { getBrowser, getOpenAIAuth } from './openai-auth'
+import {
+  defaultChromeExecutablePath,
+  getBrowser,
+  getOpenAIAuth
+} from './openai-auth'
 import {
   browserPostEventStream,
   isRelevantRequest,
@@ -22,6 +26,7 @@ export class ChatGPTAPIBrowser {
   protected _email: string
   protected _password: string
 
+  protected _browserPath: string
   protected _browser: Browser
   protected _page: Page
 
@@ -46,6 +51,9 @@ export class ChatGPTAPIBrowser {
 
     /** @defaultValue `undefined` **/
     captchaToken?: string
+
+    /** @defaultValue `undefined` **/
+    browserPath?: string
   }) {
     const {
       email,
@@ -54,7 +62,8 @@ export class ChatGPTAPIBrowser {
       debug = false,
       isGoogleLogin = false,
       minimize = true,
-      captchaToken
+      captchaToken,
+      browserPath = defaultChromeExecutablePath()
     } = opts
 
     this._email = email
@@ -65,6 +74,7 @@ export class ChatGPTAPIBrowser {
     this._isGoogleLogin = !!isGoogleLogin
     this._minimize = !!minimize
     this._captchaToken = captchaToken
+    this._browserPath = browserPath
   }
 
   async init() {
@@ -75,7 +85,10 @@ export class ChatGPTAPIBrowser {
     }
 
     try {
-      this._browser = await getBrowser({ captchaToken: this._captchaToken })
+      this._browser = await getBrowser({
+        captchaToken: this._captchaToken,
+        executablePath: this._browserPath
+      })
       this._page =
         (await this._browser.pages())[0] || (await this._browser.newPage())
 
