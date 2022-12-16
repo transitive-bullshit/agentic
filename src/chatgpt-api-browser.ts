@@ -1,7 +1,7 @@
 import delay from 'delay'
 import html2md from 'html-to-md'
 import pTimeout from 'p-timeout'
-import type { Browser, HTTPRequest, HTTPResponse, Page } from 'puppeteer'
+import type { Browser, HTTPRequest, HTTPResponse, Page , PuppeteerLaunchOptions } from 'puppeteer'
 
 import { getBrowser, getOpenAIAuth } from './openai-auth'
 import { isRelevantRequest, maximizePage, minimizePage } from './utils'
@@ -17,6 +17,7 @@ export class ChatGPTAPIBrowser {
 
   protected _browser: Browser
   protected _page: Page
+  protected _opts: PuppeteerLaunchOptions
 
   /**
    * Creates a new client wrapper for automating the ChatGPT webapp.
@@ -60,7 +61,7 @@ export class ChatGPTAPIBrowser {
     }
 
     try {
-      this._browser = await getBrowser({ captchaToken: this._captchaToken })
+      this._browser = await getBrowser({ opts:this._opts,captchaToken: this._captchaToken })
       this._page =
         (await this._browser.pages())[0] || (await this._browser.newPage())
 
