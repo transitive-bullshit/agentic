@@ -186,7 +186,11 @@ export async function getBrowser(
     captchaToken?: string
   } = {}
 ) {
-  const { captchaToken = process.env.CAPTCHA_TOKEN, ...launchOptions } = opts
+  const {
+    captchaToken = process.env.CAPTCHA_TOKEN,
+    executablePath = defaultChromeExecutablePath(),
+    ...launchOptions
+  } = opts
 
   if (captchaToken && !hasRecaptchaPlugin) {
     hasRecaptchaPlugin = true
@@ -207,7 +211,7 @@ export async function getBrowser(
     headless: false,
     args: ['--no-sandbox', '--exclude-switches', 'enable-automation'],
     ignoreHTTPSErrors: true,
-    executablePath: defaultChromeExecutablePath(),
+    executablePath,
     ...launchOptions
   })
 }
