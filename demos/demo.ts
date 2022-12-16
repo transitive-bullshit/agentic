@@ -1,3 +1,4 @@
+import delay from 'delay'
 import dotenv from 'dotenv-safe'
 import { oraPromise } from 'ora'
 
@@ -16,7 +17,12 @@ async function main() {
   const email = process.env.OPENAI_EMAIL
   const password = process.env.OPENAI_PASSWORD
 
-  const api = new ChatGPTAPIBrowser({ email, password, debug: true })
+  const api = new ChatGPTAPIBrowser({
+    email,
+    password,
+    debug: false,
+    minimize: true
+  })
   await api.init()
 
   const prompt =

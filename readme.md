@@ -24,7 +24,7 @@ const response = await api.sendMessage('Hello World!')
 
 Note that this solution is not lightweight, but it does work a lot more consistently than the REST API-based versions. I'm currently using this solution to power 10 OpenAI accounts concurrently across 10 minimized Chrome windows for my [Twitter bot](https://github.com/transitive-bullshit/chatgpt-twitter-bot). 😂
 
-If you get a "ChatGPT is at capacity" error when logging in, note that this is also happening quite frequently on the official webapp. Their servers are overloaded, and we're all trying our best to offer access to this amazing technology.
+If you get a "ChatGPT is at capacity" error when logging in, note that this can also happen on the official webapp as well. Their servers can get overloaded at times, and we're all trying our best to offer access to this amazing technology.
 
 To use the updated version, **make sure you're using the latest version of this package and Node.js >= 18**. Then update your code following the examples below, paying special attention to the sections on [Authentication](#authentication) and [Restrictions](#restrictions).
 
