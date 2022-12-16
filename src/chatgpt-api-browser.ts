@@ -1,16 +1,23 @@
 import delay from 'delay'
-import html2md from 'html-to-md'
-import pTimeout from 'p-timeout'
 import type { Browser, HTTPRequest, HTTPResponse, Page } from 'puppeteer'
+import { v4 as uuidv4 } from 'uuid'
 
+import * as types from './types'
 import { getBrowser, getOpenAIAuth } from './openai-auth'
-import { isRelevantRequest, maximizePage, minimizePage } from './utils'
+import {
+  browserPostEventStream,
+  isRelevantRequest,
+  maximizePage,
+  minimizePage
+} from './utils'
 
 export class ChatGPTAPIBrowser {
   protected _markdown: boolean
   protected _debug: boolean
+  protected _minimize: boolean
   protected _isGoogleLogin: boolean
   protected _captchaToken: string
+  protected _accessToken: string
 
   protected _email: string
   protected _password: string
@@ -31,7 +38,13 @@ export class ChatGPTAPIBrowser {
     /** @defaultValue `false` **/
     debug?: boolean
 
+    /** @defaultValue `false` **/
     isGoogleLogin?: boolean
+
+    /** @defaultValue `true` **/
+    minimize?: boolean
+
+    /** @defaultValue `undefined` **/
     captchaToken?: string
   }) {
     const {
@@ -40,6 +53,7 @@ export class ChatGPTAPIBrowser {
       markdown = true,
       debug = false,
       isGoogleLogin = false,
+      minimize = true,
       captchaToken
     } = opts
 
@@ -49,6 +63,7 @@ export class ChatGPTAPIBrowser {
     this._markdown = !!markdown
     this._debug = !!debug
     this._isGoogleLogin = !!isGoogleLogin
+    this._minimize = !!minimize
     this._captchaToken = captchaToken
   }
 
@@ -63,6 +78,9 @@ export class ChatGPTAPIBrowser {
       this._browser = await getBrowser({ captchaToken: this._captchaToken })
       this._page =
         (await this._browser.pages())[0] || (await this._browser.newPage())
+
+      this._page.on('request', this._onRequest.bind(this))
+      this._page.on('response', this._onResponse.bind(this))
 
       // bypass cloudflare and login
       await getOpenAIAuth({
@@ -114,10 +132,9 @@ export class ChatGPTAPIBrowser {
       return false
     }
 
-    await minimizePage(this._page)
-
-    this._page.on('request', this._onRequest.bind(this))
-    this._page.on('response', this._onResponse.bind(this))
+    if (this._minimize) {
+      await minimizePage(this._page)
+    }
 
     return true
   }
@@ -197,6 +214,12 @@ export class ChatGPTAPIBrowser {
     } else if (url.endsWith('api/auth/session')) {
       if (status === 403) {
         await this.handle403Error()
+      } else {
+        const session: types.SessionResult = body
+
+        if (session?.accessToken) {
+          this._accessToken = session.accessToken
+        }
       }
     }
   }
@@ -209,7 +232,9 @@ export class ChatGPTAPIBrowser {
         waitUntil: 'networkidle2',
         timeout: 2 * 60 * 1000 // 2 minutes
       })
-      await minimizePage(this._page)
+      if (this._minimize) {
+        await minimizePage(this._page)
+      }
     } catch (err) {
       console.error(
         `ChatGPT "${this._email}" error refreshing session`,
@@ -228,121 +253,182 @@ export class ChatGPTAPIBrowser {
     }
   }
 
-  async getLastMessage(): Promise<string | null> {
-    const messages = await this.getMessages()
+  // async getLastMessage(): Promise<string | null> {
+  //   const messages = await this.getMessages()
 
-    if (messages) {
-      return messages[messages.length - 1]
-    } else {
-      return null
-    }
-  }
+  //   if (messages) {
+  //     return messages[messages.length - 1]
+  //   } else {
+  //     return null
+  //   }
+  // }
 
-  async getPrompts(): Promise<string[]> {
-    // Get all prompts
-    const messages = await this._page.$$(
-      '.text-base:has(.whitespace-pre-wrap):not(:has(button:nth-child(2))) .whitespace-pre-wrap'
-    )
+  // async getPrompts(): Promise<string[]> {
+  //   // Get all prompts
+  //   const messages = await this._page.$$(
+  //     '.text-base:has(.whitespace-pre-wrap):not(:has(button:nth-child(2))) .whitespace-pre-wrap'
+  //   )
 
-    // Prompts are always plaintext
-    return Promise.all(messages.map((a) => a.evaluate((el) => el.textContent)))
-  }
+  //   // Prompts are always plaintext
+  //   return Promise.all(messages.map((a) => a.evaluate((el) => el.textContent)))
+  // }
 
-  async getMessages(): Promise<string[]> {
-    // Get all complete messages
-    // (in-progress messages that are being streamed back don't contain action buttons)
-    const messages = await this._page.$$(
-      '.text-base:has(.whitespace-pre-wrap):has(button:nth-child(2)) .whitespace-pre-wrap'
-    )
+  // async getMessages(): Promise<string[]> {
+  //   // Get all complete messages
+  //   // (in-progress messages that are being streamed back don't contain action buttons)
+  //   const messages = await this._page.$$(
+  //     '.text-base:has(.whitespace-pre-wrap):has(button:nth-child(2)) .whitespace-pre-wrap'
+  //   )
 
-    if (this._markdown) {
-      const htmlMessages = await Promise.all(
-        messages.map((a) => a.evaluate((el) => el.innerHTML))
-      )
+  //   if (this._markdown) {
+  //     const htmlMessages = await Promise.all(
+  //       messages.map((a) => a.evaluate((el) => el.innerHTML))
+  //     )
 
-      const markdownMessages = htmlMessages.map((messageHtml) => {
-        // parse markdown from message HTML
-        messageHtml = messageHtml
-          .replaceAll('Copy code</button>', '</button>')
-          .replace(/Copy code\s*<\/button>/gim, '</button>')
+  //     const markdownMessages = htmlMessages.map((messageHtml) => {
+  //       // parse markdown from message HTML
+  //       messageHtml = messageHtml
+  //         .replaceAll('Copy code</button>', '</button>')
+  //         .replace(/Copy code\s*<\/button>/gim, '</button>')
 
-        return html2md(messageHtml, {
-          ignoreTags: [
-            'button',
-            'svg',
-            'style',
-            'form',
-            'noscript',
-            'script',
-            'meta',
-            'head'
-          ],
-          skipTags: ['button', 'svg']
-        })
-      })
+  //       return html2md(messageHtml, {
+  //         ignoreTags: [
+  //           'button',
+  //           'svg',
+  //           'style',
+  //           'form',
+  //           'noscript',
+  //           'script',
+  //           'meta',
+  //           'head'
+  //         ],
+  //         skipTags: ['button', 'svg']
+  //       })
+  //     })
 
-      return markdownMessages
-    } else {
-      // plaintext
-      const plaintextMessages = await Promise.all(
-        messages.map((a) => a.evaluate((el) => el.textContent))
-      )
-      return plaintextMessages
-    }
-  }
+  //     return markdownMessages
+  //   } else {
+  //     // plaintext
+  //     const plaintextMessages = await Promise.all(
+  //       messages.map((a) => a.evaluate((el) => el.textContent))
+  //     )
+  //     return plaintextMessages
+  //   }
+  // }
 
   async sendMessage(
     message: string,
-    opts: {
-      timeoutMs?: number
-    } = {}
+    opts: types.SendMessageOptions = {}
   ): Promise<string> {
-    const { timeoutMs } = opts
+    const {
+      conversationId,
+      parentMessageId = uuidv4(),
+      messageId = uuidv4(),
+      action = 'next',
+      // TODO
+      timeoutMs,
+      // onProgress,
+      onConversationResponse
+    } = opts
 
     const inputBox = await this._getInputBox()
-    if (!inputBox) throw new Error('not signed in')
-
-    const lastMessage = await this.getLastMessage()
-
-    await inputBox.focus()
-    const paragraphs = message.split('\n')
-    for (let i = 0; i < paragraphs.length; i++) {
-      await inputBox.type(paragraphs[i], { delay: 0 })
-      if (i < paragraphs.length - 1) {
-        await this._page.keyboard.down('Shift')
-        await inputBox.press('Enter')
-        await this._page.keyboard.up('Shift')
-      } else {
-        await inputBox.press('Enter')
-      }
+    if (!inputBox || !this._accessToken) {
+      const error = new types.ChatGPTError('Not signed in')
+      error.statusCode = 401
+      throw error
     }
 
-    const responseP = new Promise<string>(async (resolve, reject) => {
-      try {
-        do {
-          await delay(1000)
-
-          // TODO: this logic needs some work because we can have repeat messages...
-          const newLastMessage = await this.getLastMessage()
-          if (
-            newLastMessage &&
-            lastMessage?.toLowerCase() !== newLastMessage?.toLowerCase()
-          ) {
-            return resolve(newLastMessage)
+    const url = `https://chat.openai.com/backend-api/conversation`
+    const body: types.ConversationJSONBody = {
+      action,
+      messages: [
+        {
+          id: messageId,
+          role: 'user',
+          content: {
+            content_type: 'text',
+            parts: [message]
           }
-        } while (true)
-      } catch (err) {
-        return reject(err)
-      }
-    })
-
-    if (timeoutMs) {
-      return pTimeout(responseP, {
-        milliseconds: timeoutMs
-      })
-    } else {
-      return responseP
+        }
+      ],
+      model: 'text-davinci-002-render',
+      parent_message_id: parentMessageId
     }
+
+    if (conversationId) {
+      body.conversation_id = conversationId
+    }
+
+    // console.log('>>> EVALUATE', url, this._accessToken, body)
+    const result = await this._page.evaluate(
+      browserPostEventStream,
+      url,
+      this._accessToken,
+      body,
+      timeoutMs
+    )
+    // console.log('<<< EVALUATE', result)
+
+    if (result.error) {
+      const error = new types.ChatGPTError(result.error.message)
+      error.statusCode = result.error.statusCode
+      error.statusText = result.error.statusText
+
+      if (error.statusCode === 403) {
+        await this.handle403Error()
+      }
+
+      throw error
+    }
+
+    // TODO: support sending partial response events
+    if (onConversationResponse) {
+      onConversationResponse(result.conversationResponse)
+    }
+
+    return result.response
+
+    // const lastMessage = await this.getLastMessage()
+
+    // await inputBox.focus()
+    // const paragraphs = message.split('\n')
+    // for (let i = 0; i < paragraphs.length; i++) {
+    //   await inputBox.type(paragraphs[i], { delay: 0 })
+    //   if (i < paragraphs.length - 1) {
+    //     await this._page.keyboard.down('Shift')
+    //     await inputBox.press('Enter')
+    //     await this._page.keyboard.up('Shift')
+    //   } else {
+    //     await inputBox.press('Enter')
+    //   }
+    // }
+
+    // const responseP = new Promise<string>(async (resolve, reject) => {
+    //   try {
+    //     do {
+    //       await delay(1000)
+
+    //       // TODO: this logic needs some work because we can have repeat messages...
+    //       const newLastMessage = await this.getLastMessage()
+    //       if (
+    //         newLastMessage &&
+    //         lastMessage?.toLowerCase() !== newLastMessage?.toLowerCase()
+    //       ) {
+    //         return resolve(newLastMessage)
+    //       }
+    //     } while (true)
+    //   } catch (err) {
+    //     return reject(err)
+    //   }
+    // })
+
+    // if (timeoutMs) {
+    //   return pTimeout(responseP, {
+    //     milliseconds: timeoutMs
+    //   })
+    // } else {
+    //   return responseP
+    // }
   }
 
   async resetThread() {
