@@ -262,7 +262,10 @@ export class ChatGPTAPIBrowser {
 
       const markdownMessages = htmlMessages.map((messageHtml) => {
         // parse markdown from message HTML
-        messageHtml = messageHtml.replace('Copy code</button>', '</button>')
+        messageHtml = messageHtml
+          .replaceAll('Copy code</button>', '</button>')
+          .replace(/Copy code\s*<\/button>/gim, '</button>')
+
         return html2md(messageHtml, {
           ignoreTags: [
             'button',

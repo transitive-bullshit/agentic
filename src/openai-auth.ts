@@ -71,7 +71,7 @@ export async function getOpenAIAuth({
     }
 
     await page.goto('https://chat.openai.com/auth/login', {
-      waitUntil: 'networkidle0'
+      waitUntil: 'networkidle2'
     })
 
     // NOTE: this is where you may encounter a CAPTCHA
@@ -93,7 +93,8 @@ export async function getOpenAIAuth({
       // click login button and wait for navigation to finish
       await Promise.all([
         page.waitForNavigation({
-          waitUntil: 'networkidle0'
+          waitUntil: 'networkidle2',
+          timeout: timeoutMs
         }),
 
         page.click('#__next .btn-primary')
@@ -134,7 +135,8 @@ export async function getOpenAIAuth({
       await Promise.all([
         waitForConditionOrAtCapacity(page, () =>
           page.waitForNavigation({
-            waitUntil: 'networkidle0'
+            waitUntil: 'networkidle2',
+            timeout: timeoutMs
           })
         ),
         submitP()
