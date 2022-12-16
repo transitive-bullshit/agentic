@@ -1,3 +1,4 @@
+import type * as PTimeoutTypes from 'p-timeout'
 import type {
   EventSourceParseCallback,
   EventSourceParser
@@ -72,12 +73,34 @@ export function isRelevantRequest(url: string): boolean {
 export async function browserPostEventStream(
   url: string,
   accessToken: string,
-  body: types.ConversationJSONBody
+  body: types.ConversationJSONBody,
+  timeoutMs?: number
 ): Promise<types.ChatError | types.ChatResponse> {
-  const BOM = [239, 187, 191]
-
   // Workaround for https://github.com/esbuild-kit/tsx/issues/113
   globalThis.__name = () => undefined
+
+  class TimeoutError extends Error {
+    readonly name: 'TimeoutError'
+
+    constructor(message) {
+      super(message)
+      this.name = 'TimeoutError'
+    }
+  }
+
+  /**
+    An error to be thrown when the request is aborted by AbortController.
+    DOMException is thrown instead of this Error when DOMException is available.
+  */
+  class AbortError extends Error {
+    constructor(message) {
+      super()
+      this.name = 'AbortError'
+      this.message = message
+    }
+  }
+
+  const BOM = [239, 187, 191]
 
   let conversationId: string = body?.conversation_id
   let messageId: string = body?.messages?.[0]?.id
@@ -86,9 +109,15 @@ export async function browserPostEventStream(
   try {
     console.log('browserPostEventStream', url, accessToken, body)
 
+    let abortController: AbortController = null
+    if (timeoutMs) {
+      abortController = new AbortController()
+    }
+
     const res = await fetch(url, {
       method: 'POST',
       body: JSON.stringify(body),
+      signal: abortController?.signal,
       headers: {
         accept: 'text/event-stream',
         'x-openai-assistant-app-id': '',
@@ -97,7 +126,7 @@ export async function browserPostEventStream(
       }
     })
 
-    console.log('EVENT', res)
+    console.log('browserPostEventStream response', res)
 
     if (!res.ok) {
       return {
@@ -112,48 +141,67 @@ export async function browserPostEventStream(
       }
     }
 
-    return await new Promise<types.ChatResponse>(async (resolve, reject) => {
-      function onMessage(data: string) {
-        if (data === '[DONE]') {
-          return resolve({
-            error: null,
-            response,
-            conversationId,
-            messageId
-          })
+    const responseP = new Promise<types.ChatResponse>(
+      async (resolve, reject) => {
+        function onMessage(data: string) {
+          if (data === '[DONE]') {
+            return resolve({
+              error: null,
+              response,
+              conversationId,
+              messageId
+            })
+          }
+
+          try {
+            const parsedData: types.ConversationResponseEvent = JSON.parse(data)
+            if (parsedData.conversation_id) {
+              conversationId = parsedData.conversation_id
+            }
+
+            if (parsedData.message?.id) {
+              messageId = parsedData.message.id
+            }
+
+            const partialResponse = parsedData.message?.content?.parts?.[0]
+            if (partialResponse) {
+              response = partialResponse
+            }
+          } catch (err) {
+            console.warn('fetchSSE onMessage unexpected error', err)
+            reject(err)
+          }
         }
 
-        try {
-          const parsedData: types.ConversationResponseEvent = JSON.parse(data)
-          if (parsedData.conversation_id) {
-            conversationId = parsedData.conversation_id
+        const parser = createParser((event) => {
+          if (event.type === 'event') {
+            onMessage(event.data)
           }
+        })
 
-          if (parsedData.message?.id) {
-            messageId = parsedData.message.id
-          }
+        for await (const chunk of streamAsyncIterable(res.body)) {
+          const str = new TextDecoder().decode(chunk)
+          parser.feed(str)
+        }
+      }
+    )
 
-          const partialResponse = parsedData.message?.content?.parts?.[0]
-          if (partialResponse) {
-            response = partialResponse
-          }
-        } catch (err) {
-          console.warn('fetchSSE onMessage unexpected error', err)
-          reject(err)
+    if (timeoutMs) {
+      if (abortController) {
+        // This will be called when a timeout occurs in order for us to forcibly
+        // ensure that the underlying HTTP request is aborted.
+        ;(responseP as any).cancel = () => {
+          abortController.abort()
         }
       }
 
-      const parser = createParser((event) => {
-        if (event.type === 'event') {
-          onMessage(event.data)
-        }
+      return await pTimeout(responseP, {
+        milliseconds: timeoutMs,
+        message: 'ChatGPT timed out waiting for response'
       })
-
-      for await (const chunk of streamAsyncIterable(res.body)) {
-        const str = new TextDecoder().decode(chunk)
-        parser.feed(str)
-      }
-    })
+    } else {
+      return await responseP
+    }
   } catch (err) {
     const errMessageL = err.toString().toLowerCase()
 
@@ -366,5 +414,110 @@ export async function browserPostEventStream(
     return BOM.every(
       (charCode: number, index: number) => buffer.charCodeAt(index) === charCode
     )
+  }
+
+  /**
+    TODO: Remove AbortError and just throw DOMException when targeting Node 18.
+   */
+  function getDOMException(errorMessage) {
+    return globalThis.DOMException === undefined
+      ? new AbortError(errorMessage)
+      : new DOMException(errorMessage)
+  }
+
+  /**
+    TODO: Remove below function and just 'reject(signal.reason)' when targeting Node 18.
+   */
+  function getAbortedReason(signal) {
+    const reason =
+      signal.reason === undefined
+        ? getDOMException('This operation was aborted.')
+        : signal.reason
+
+    return reason instanceof Error ? reason : getDOMException(reason)
+  }
+
+  // @see https://github.com/sindresorhus/p-timeout
+  function pTimeout<ValueType, ReturnType = ValueType>(
+    promise: PromiseLike<ValueType>,
+    options: PTimeoutTypes.Options<ReturnType>
+  ): PTimeoutTypes.ClearablePromise<ValueType | ReturnType> {
+    const {
+      milliseconds,
+      fallback,
+      message,
+      customTimers = { setTimeout, clearTimeout }
+    } = options
+
+    let timer
+
+    const cancelablePromise = new Promise((resolve, reject) => {
+      if (typeof milliseconds !== 'number' || Math.sign(milliseconds) !== 1) {
+        throw new TypeError(
+          `Expected \`milliseconds\` to be a positive number, got \`${milliseconds}\``
+        )
+      }
+
+      if (milliseconds === Number.POSITIVE_INFINITY) {
+        resolve(promise)
+        return
+      }
+
+      if (options.signal) {
+        const { signal } = options
+        if (signal.aborted) {
+          reject(getAbortedReason(signal))
+        }
+
+        signal.addEventListener('abort', () => {
+          reject(getAbortedReason(signal))
+        })
+      }
+
+      timer = customTimers.setTimeout.call(
+        undefined,
+        () => {
+          if (fallback) {
+            try {
+              resolve(fallback())
+            } catch (error) {
+              reject(error)
+            }
+
+            return
+          }
+
+          const errorMessage =
+            typeof message === 'string'
+              ? message
+              : `Promise timed out after ${milliseconds} milliseconds`
+          const timeoutError =
+            message instanceof Error ? message : new TimeoutError(errorMessage)
+
+          if (typeof (promise as any).cancel === 'function') {
+            ;(promise as any).cancel()
+          }
+
+          reject(timeoutError)
+        },
+        milliseconds
+      )
+      ;(async () => {
+        try {
+          resolve(await promise)
+        } catch (error) {
+          reject(error)
+        } finally {
+          customTimers.clearTimeout.call(undefined, timer)
+        }
+      })()
+    })
+
+    ;(cancelablePromise as any).clear = () => {
+      customTimers.clearTimeout.call(undefined, timer)
+      timer = undefined
+    }
+
+    return cancelablePromise as any
   }
 }

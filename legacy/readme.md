@@ -24,7 +24,7 @@ const response = await api.sendMessage('Hello World!')
 
 Note that this solution is not lightweight, but it does work a lot more consistently than the REST API-based versions. I'm currently using this solution to power 10 OpenAI accounts concurrently across 10 minimized Chrome windows for my [Twitter bot](https://github.com/transitive-bullshit/chatgpt-twitter-bot). 😂
 
-If you get a "ChatGPT is at capacity" error when logging in, note that this can also happen on the official webapp as well. Their servers can get overloaded at times, and we're all trying our best to offer access to this amazing technology.
+If you get a "ChatGPT is at capacity" error when logging in, note that this can also happen on the official webapp as well. Their servers get overloaded at times, and we're all trying our best to offer access to this amazing technology.
 
 To use the updated version, **make sure you're using the latest version of this package and Node.js >= 18**. Then update your code following the examples below, paying special attention to the sections on [Authentication](#authentication) and [Restrictions](#restrictions).
 
@@ -239,8 +239,6 @@ Pass `sessionToken`, `clearanceToken`, and `userAgent` to the `ChatGPTAPI` const
 ### Restrictions
 
 These restrictions are for the `getOpenAIAuth` + `ChatGPTAPI` solution, which uses the unofficial API. The browser-based solution, `ChatGPTAPIBrowser`, doesn't have many of these restrictions, though you'll still have to manually bypass CAPTCHAs by hand.
-
-Note: currently `ChatGPTAPIBrowser` doesn't support continuing arbitrary conversations based on `conversationId`. You can only continue conversations in the current tab or start new conversations using the `resetThread()` function.
 
 **Please read carefully**
 
