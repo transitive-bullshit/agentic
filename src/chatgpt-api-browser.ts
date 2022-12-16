@@ -445,10 +445,11 @@ export class ChatGPTAPIBrowser {
   }
 
   async resetThread() {
-    const resetButton = await this._page.$('nav > a:nth-child(1)')
-    if (!resetButton) throw new Error('not signed in')
-
-    await resetButton.click()
+    try {
+      await this._page.click('nav > a:nth-child(1)')
+    } catch (err) {
+      // ignore for now
+    }
   }
 
   async close() {
