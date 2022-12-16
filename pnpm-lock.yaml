@@ -12,6 +12,7 @@ specifiers:
   expiry-map: ^2.0.0
   html-to-md: ^0.8.3
   husky: ^8.0.2
+  kind-of: ^3.2.2
   lint-staged: ^13.0.3
   npm-run-all: ^4.1.5
   ora: ^6.1.2
@@ -51,6 +52,7 @@ devDependencies:
   del-cli: 5.0.0
   dotenv-safe: 8.2.0
   husky: 8.0.2
+  kind-of: 3.2.2
   lint-staged: 13.0.4
   npm-run-all: 4.1.5
   ora: 6.1.2
