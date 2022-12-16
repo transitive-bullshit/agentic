@@ -46,7 +46,8 @@ export async function getOpenAIAuth({
   page,
   timeoutMs = 2 * 60 * 1000,
   isGoogleLogin = false,
-  captchaToken = process.env.CAPTCHA_TOKEN
+  captchaToken = process.env.CAPTCHA_TOKEN,
+  executablePath
 }: {
   email?: string
   password?: string
@@ -55,13 +56,14 @@ export async function getOpenAIAuth({
   timeoutMs?: number
   isGoogleLogin?: boolean
   captchaToken?: string
+  executablePath?: string
 }): Promise<OpenAIAuth> {
   const origBrowser = browser
   const origPage = page
 
   try {
     if (!browser) {
-      browser = await getBrowser({ captchaToken })
+      browser = await getBrowser({ captchaToken, executablePath })
     }
 
     const userAgent = await browser.userAgent()
