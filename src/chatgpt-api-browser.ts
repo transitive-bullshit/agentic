@@ -3,11 +3,7 @@ import type { Browser, HTTPRequest, HTTPResponse, Page } from 'puppeteer'
 import { v4 as uuidv4 } from 'uuid'
 
 import * as types from './types'
-import {
-  defaultChromeExecutablePath,
-  getBrowser,
-  getOpenAIAuth
-} from './openai-auth'
+import { getBrowser, getOpenAIAuth } from './openai-auth'
 import {
   browserPostEventStream,
   isRelevantRequest,
@@ -63,7 +59,7 @@ export class ChatGPTAPIBrowser {
       isGoogleLogin = false,
       minimize = true,
       captchaToken,
-      browserPath = defaultChromeExecutablePath()
+      browserPath
     } = opts
 
     this._email = email
@@ -94,6 +90,8 @@ export class ChatGPTAPIBrowser {
 
       this._page.on('request', this._onRequest.bind(this))
       this._page.on('response', this._onResponse.bind(this))
+
+      maximizePage(this._page)
 
       // bypass cloudflare and login
       await getOpenAIAuth({
