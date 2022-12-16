@@ -102,6 +102,7 @@ export async function browserPostEventStream(
 
   const BOM = [239, 187, 191]
 
+  let conversationResponse: types.ConversationResponseEvent
   let conversationId: string = body?.conversation_id
   let messageId: string = body?.messages?.[0]?.id
   let response = ''
@@ -149,21 +150,25 @@ export async function browserPostEventStream(
               error: null,
               response,
               conversationId,
-              messageId
+              messageId,
+              conversationResponse
             })
           }
 
           try {
-            const parsedData: types.ConversationResponseEvent = JSON.parse(data)
-            if (parsedData.conversation_id) {
-              conversationId = parsedData.conversation_id
+            const convoResponseEvent: types.ConversationResponseEvent =
+              JSON.parse(data)
+            conversationResponse = convoResponseEvent
+            if (convoResponseEvent.conversation_id) {
+              conversationId = convoResponseEvent.conversation_id
             }
 
-            if (parsedData.message?.id) {
-              messageId = parsedData.message.id
+            if (convoResponseEvent.message?.id) {
+              messageId = convoResponseEvent.message.id
             }
 
-            const partialResponse = parsedData.message?.content?.parts?.[0]
+            const partialResponse =
+              convoResponseEvent.message?.content?.parts?.[0]
             if (partialResponse) {
               response = partialResponse
             }
@@ -218,7 +223,8 @@ export async function browserPostEventStream(
         error: null,
         response,
         conversationId,
-        messageId
+        messageId,
+        conversationResponse
       }
     }
 
@@ -230,7 +236,8 @@ export async function browserPostEventStream(
       },
       response: null,
       conversationId,
-      messageId
+      messageId,
+      conversationResponse
     }
   }
 
