@@ -22,7 +22,7 @@ export class ChatGPTAPIBrowser {
   protected _email: string
   protected _password: string
 
-  protected _browserPath: string
+  protected _executablePath: string
   protected _browser: Browser
   protected _page: Page
 
@@ -49,7 +49,7 @@ export class ChatGPTAPIBrowser {
     captchaToken?: string
 
     /** @defaultValue `undefined` **/
-    browserPath?: string
+    executablePath?: string
   }) {
     const {
       email,
@@ -59,7 +59,7 @@ export class ChatGPTAPIBrowser {
       isGoogleLogin = false,
       minimize = true,
       captchaToken,
-      browserPath
+      executablePath
     } = opts
 
     this._email = email
@@ -70,7 +70,7 @@ export class ChatGPTAPIBrowser {
     this._isGoogleLogin = !!isGoogleLogin
     this._minimize = !!minimize
     this._captchaToken = captchaToken
-    this._browserPath = browserPath
+    this._executablePath = executablePath
   }
 
   async init() {
@@ -78,20 +78,21 @@ export class ChatGPTAPIBrowser {
       await this._browser.close()
       this._page = null
       this._browser = null
+      this._accessToken = null
     }
 
     try {
       this._browser = await getBrowser({
         captchaToken: this._captchaToken,
-        executablePath: this._browserPath
+        executablePath: this._executablePath
       })
       this._page =
         (await this._browser.pages())[0] || (await this._browser.newPage())
 
+      await maximizePage(this._page)
+
       this._page.on('request', this._onRequest.bind(this))
       this._page.on('response', this._onResponse.bind(this))
-
-      maximizePage(this._page)
 
       // bypass cloudflare and login
       await getOpenAIAuth({
@@ -344,9 +345,23 @@ export class ChatGPTAPIBrowser {
 
     const inputBox = await this._getInputBox()
     if (!inputBox || !this._accessToken) {
-      const error = new types.ChatGPTError('Not signed in')
-      error.statusCode = 401
-      throw error
+      console.log(`chatgpt re-authenticating ${this._email}`)
+      let isAuthenticated = false
+
+      try {
+        isAuthenticated = await this.init()
+      } catch (err) {
+        console.warn(
+          `chatgpt error re-authenticating ${this._email}`,
+          err.toString()
+        )
+      }
+
+      if (!isAuthenticated || !this._accessToken) {
+        const error = new types.ChatGPTError('Not signed in')
+        error.statusCode = 401
+        throw error
+      }
     }
 
     const url = `https://chat.openai.com/backend-api/conversation`
