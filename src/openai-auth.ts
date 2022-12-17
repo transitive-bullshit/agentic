@@ -269,26 +269,54 @@ export async function getBrowser(
     const page = (await browser.pages())[0] || (await browser.newPage())
     await page.goto(`https://nopecha.com/setup#${nopechaKey}`)
     await delay(1000)
-    const page3 = await browser.newPage()
-    await page.close()
 
-    const extensionId = 'npgnhlnhpphdlkfdnggbdpbhoopefaai'
-    const extensionUrl = `chrome-extension://${extensionId}/popup.html`
-    await page3.goto(extensionUrl, { waitUntil: 'networkidle2' })
-    await delay(500)
+    try {
+      const page3 = await browser.newPage()
+      await page.close()
 
-    const editKey = await page3.waitForSelector('#edit_key .clickable')
-    await editKey.click()
+      // find the nopecha extension ID
+      const targets = browser.targets()
+      const extensionIds = (
+        await Promise.all(
+          targets.map(async (target) => {
+            if (target.type() !== 'service_worker') {
+              return
+            }
 
-    const settingsInput = await page3.$('input.settings_text')
-    await settingsInput.type(nopechaKey)
-    await settingsInput.evaluate((el, value) => {
-      el.value = value
-    }, nopechaKey)
-    await settingsInput.press('Enter')
-    await delay(500)
-    await editKey.click()
-    await delay(2000)
+            // const titleL = title?.toLowerCase()
+            // if (titleL?.includes('nopecha'))
+            const url = new URL(target.url())
+            return url.hostname
+          })
+        )
+      ).filter(Boolean)
+      const extensionId = extensionIds[0]
+
+      if (extensionId) {
+        const extensionUrl = `chrome-extension://${extensionId}/popup.html`
+        await page3.goto(extensionUrl, { waitUntil: 'networkidle2' })
+        await delay(500)
+
+        const editKey = await page3.waitForSelector('#edit_key .clickable')
+        await editKey.click()
+
+        const settingsInput = await page3.$('input.settings_text')
+        await settingsInput.type(nopechaKey)
+        await settingsInput.evaluate((el, value) => {
+          el.value = value
+        }, nopechaKey)
+        await settingsInput.press('Enter')
+        await delay(500)
+        await editKey.click()
+        await delay(2000)
+      } else {
+        console.error(
+          "error initializing nopecha extension; couldn't determine extension ID"
+        )
+      }
+    } catch (err) {
+      console.error('error initializing nopecha extension', err)
+    }
   }
 
   return browser
