@@ -310,6 +310,7 @@ export async function getBrowser(
         await delay(500)
         await editKey.click()
         await delay(2000)
+        console.log('initialized nopecha extension with key', nopechaKey)
       } else {
         console.error(
           "error initializing nopecha extension; couldn't determine extension ID"
