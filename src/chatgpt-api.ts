@@ -3,7 +3,7 @@ import pTimeout from 'p-timeout'
 import { v4 as uuidv4 } from 'uuid'
 
 import * as types from './types'
-import { ChatGPTConversation } from './chatgpt-conversation'
+import { AChatGPTAPI } from './abstract-chatgpt-api'
 import { fetch } from './fetch'
 import { fetchSSE } from './fetch-sse'
 import { markdownToText } from './utils'
@@ -12,7 +12,7 @@ const KEY_ACCESS_TOKEN = 'accessToken'
 const USER_AGENT =
   'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36'
 
-export class ChatGPTAPI {
+export class ChatGPTAPI extends AChatGPTAPI {
   protected _sessionToken: string
   protected _clearanceToken: string
   protected _markdown: boolean
@@ -71,6 +71,8 @@ export class ChatGPTAPI {
     /** @defaultValue `false` **/
     debug?: boolean
   }) {
+    super()
+
     const {
       sessionToken,
       clearanceToken,
@@ -113,11 +115,15 @@ export class ChatGPTAPI {
     }
 
     if (!this._sessionToken) {
-      throw new types.ChatGPTError('ChatGPT invalid session token')
+      const error = new types.ChatGPTError('ChatGPT invalid session token')
+      error.statusCode = 401
+      throw error
     }
 
     if (!this._clearanceToken) {
-      throw new types.ChatGPTError('ChatGPT invalid clearance token')
+      const error = new types.ChatGPTError('ChatGPT invalid clearance token')
+      error.statusCode = 401
+      throw error
     }
   }
 
@@ -144,6 +150,14 @@ export class ChatGPTAPI {
   }
 
   /**
+   * Refreshes the client's access token which will succeed only if the session
+   * is valid.
+   */
+  override async initSession() {
+    await this.refreshSession()
+  }
+
+  /**
    * Sends a message to ChatGPT, waits for the response to resolve, and returns
    * the response.
    *
@@ -159,23 +173,21 @@ export class ChatGPTAPI {
    * @param opts.action - Optional ChatGPT `action` (either `next` or `variant`)
    * @param opts.timeoutMs - Optional timeout in milliseconds (defaults to no timeout)
    * @param opts.onProgress - Optional callback which will be invoked every time the partial response is updated
-   * @param opts.onConversationResponse - Optional callback which will be invoked every time the partial response is updated with the full conversation response
    * @param opts.abortSignal - Optional callback used to abort the underlying `fetch` call using an [AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController)
    *
    * @returns The response from ChatGPT
    */
-  async sendMessage(
+  override async sendMessage(
     message: string,
     opts: types.SendMessageOptions = {}
-  ): Promise<string> {
+  ): Promise<types.ChatResponse> {
     const {
       conversationId,
       parentMessageId = uuidv4(),
       messageId = uuidv4(),
       action = 'next',
       timeoutMs,
-      onProgress,
-      onConversationResponse
+      onProgress
     } = opts
 
     let { abortSignal } = opts
@@ -186,7 +198,7 @@ export class ChatGPTAPI {
       abortSignal = abortController.signal
     }
 
-    const accessToken = await this.refreshAccessToken()
+    const accessToken = await this.refreshSession()
 
     const body: types.ConversationJSONBody = {
       action,
@@ -208,9 +220,13 @@ export class ChatGPTAPI {
       body.conversation_id = conversationId
     }
 
-    let response = ''
+    const result: types.ChatResponse = {
+      conversationId,
+      messageId,
+      response: ''
+    }
 
-    const responseP = new Promise<string>((resolve, reject) => {
+    const responseP = new Promise<types.ChatResponse>((resolve, reject) => {
       const url = `${this._backendApiBaseUrl}/conversation`
       const headers = {
         ...this._headers,
@@ -231,17 +247,22 @@ export class ChatGPTAPI {
         signal: abortSignal,
         onMessage: (data: string) => {
           if (data === '[DONE]') {
-            return resolve(response)
+            return resolve(result)
           }
 
           try {
-            const parsedData: types.ConversationResponseEvent = JSON.parse(data)
-            if (onConversationResponse) {
-              onConversationResponse(parsedData)
+            const convoResponseEvent: types.ConversationResponseEvent =
+              JSON.parse(data)
+            if (convoResponseEvent.conversation_id) {
+              result.conversationId = convoResponseEvent.conversation_id
             }
 
-            const message = parsedData.message
-            // console.log('event', JSON.stringify(parsedData, null, 2))
+            if (convoResponseEvent.message?.id) {
+              result.messageId = convoResponseEvent.message.id
+            }
+
+            const message = convoResponseEvent.message
+            // console.log('event', JSON.stringify(convoResponseEvent, null, 2))
 
             if (message) {
               let text = message?.content?.parts?.[0]
@@ -251,10 +272,10 @@ export class ChatGPTAPI {
                   text = markdownToText(text)
                 }
 
-                response = text
+                result.response = text
 
                 if (onProgress) {
-                  onProgress(text)
+                  onProgress(result)
                 }
               }
             }
@@ -267,7 +288,7 @@ export class ChatGPTAPI {
         const errMessageL = err.toString().toLowerCase()
 
         if (
-          response &&
+          result.response &&
           (errMessageL === 'error: typeerror: terminated' ||
             errMessageL === 'typeerror: terminated')
         ) {
@@ -275,7 +296,7 @@ export class ChatGPTAPI {
           // the HTTP request has resolved cleanly. In my testing, these cases tend to
           // happen when OpenAI has already send the last `response`, so we can ignore
           // the `fetch` error in this case.
-          return resolve(response)
+          return resolve(result)
         } else {
           return reject(err)
         }
@@ -301,7 +322,7 @@ export class ChatGPTAPI {
   }
 
   async sendModeration(input: string) {
-    const accessToken = await this.refreshAccessToken()
+    const accessToken = await this.refreshSession()
     const url = `${this._backendApiBaseUrl}/moderations`
     const headers = {
       ...this._headers,
@@ -343,21 +364,13 @@ export class ChatGPTAPI {
    * @returns `true` if the client has a valid acces token or `false` if refreshing
    * the token fails.
    */
-  async getIsAuthenticated() {
+  override async getIsAuthenticated() {
     try {
-      void (await this.refreshAccessToken())
+      void (await this.refreshSession())
       return true
     } catch (err) {
       return false
     }
-  }
-
-  /**
-   * Refreshes the client's access token which will succeed only if the session
-   * is still valid.
-   */
-  async ensureAuth() {
-    return await this.refreshAccessToken()
   }
 
   /**
@@ -370,7 +383,7 @@ export class ChatGPTAPI {
    * @returns A valid access token
    * @throws An error if refreshing the access token fails.
    */
-  async refreshAccessToken(): Promise<string> {
+  override async refreshSession(): Promise<string> {
     const cachedAccessToken = this._accessTokenCache.get(KEY_ACCESS_TOKEN)
     if (cachedAccessToken) {
       return cachedAccessToken
@@ -454,17 +467,7 @@ export class ChatGPTAPI {
     }
   }
 
-  /**
-   * Gets a new ChatGPTConversation instance, which can be used to send multiple
-   * messages as part of a single conversation.
-   *
-   * @param opts.conversationId - Optional ID of the previous message in a conversation
-   * @param opts.parentMessageId - Optional ID of the previous message in a conversation
-   * @returns The new conversation instance
-   */
-  getConversation(
-    opts: { conversationId?: string; parentMessageId?: string } = {}
-  ) {
-    return new ChatGPTConversation(this, opts)
+  override async closeSession(): Promise<void> {
+    this._accessTokenCache.delete(KEY_ACCESS_TOKEN)
   }
 }
