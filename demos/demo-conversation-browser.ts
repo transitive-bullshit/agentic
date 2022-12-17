@@ -1,7 +1,7 @@
 import dotenv from 'dotenv-safe'
 import { oraPromise } from 'ora'
 
-import { ChatGPTAPIBrowser } from '../src'
+import { ChatGPTAPIBrowser, ChatGPTConversation } from '../src'
 
 dotenv.config()
 
@@ -18,10 +18,12 @@ async function main() {
 
   const api = new ChatGPTAPIBrowser({ email, password, debug: true })
   await api.init()
+  
+  const conversation = new ChatGPTConversation(api)
 
   const prompt = 'What is OpenAI?'
 
-  const response = await oraPromise(api.sendMessage(prompt), {
+  const response = await oraPromise(conversation.sendMessage(prompt), {
     text: prompt
   })
 
@@ -30,7 +32,7 @@ async function main() {
   const prompt2 = 'Did they made OpenGPT?'
 
   console.log(
-    await oraPromise(api.sendMessage(prompt2), {
+    await oraPromise(conversation.sendMessage(prompt2), {
       text: prompt2
     })
   )
@@ -38,7 +40,7 @@ async function main() {
   const prompt3 = 'Who founded this institute?'
 
   console.log(
-    await oraPromise(api.sendMessage(prompt3), {
+    await oraPromise(conversation.sendMessage(prompt3), {
       text: prompt3
     })
   )
@@ -46,7 +48,7 @@ async function main() {
   const prompt4 = 'Who is that?'
 
   console.log(
-    await oraPromise(api.sendMessage(prompt4), {
+    await oraPromise(conversation.sendMessage(prompt4), {
       text: prompt4
     })
   )
