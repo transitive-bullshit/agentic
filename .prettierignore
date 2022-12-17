@@ -4,3 +4,4 @@ dist/
 node_modules/
 .next/
 .vercel/
+third-party/

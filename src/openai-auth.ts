@@ -1,7 +1,10 @@
 import * as fs from 'node:fs'
 import * as os from 'node:os'
+import * as path from 'node:path'
+import * as url from 'node:url'
 
 import delay from 'delay'
+import { TimeoutError } from 'p-timeout'
 import type { Browser, Page, Protocol, PuppeteerLaunchOptions } from 'puppeteer'
 import puppeteer from 'puppeteer-extra'
 import RecaptchaPlugin from 'puppeteer-extra-plugin-recaptcha'
@@ -12,6 +15,10 @@ import * as types from './types'
 puppeteer.use(StealthPlugin())
 
 let hasRecaptchaPlugin = false
+let hasNopechaExtension = false
+
+const __filename = url.fileURLToPath(import.meta.url)
+const __dirname = url.fileURLToPath(new URL('.', import.meta.url))
 
 /**
  * Represents everything that's required to pass into `ChatGPTAPI` in order
@@ -122,13 +129,21 @@ export async function getOpenAIAuth({
         await page.type('#username', email, { delay: 20 })
         await delay(100)
 
-        if (hasRecaptchaPlugin) {
-          // console.log('solveRecaptchas()')
+        if (hasNopechaExtension) {
+          await waitForRecaptcha(page, { timeoutMs })
+        } else if (hasRecaptchaPlugin) {
           const res = await page.solveRecaptchas()
-          // console.log('solveRecaptchas result', res)
+          console.log('solveRecaptchas result', res)
         }
 
-        await page.click('button[type="submit"]')
+        await delay(1200)
+        const frame = page.mainFrame()
+        const submit = await page.waitForSelector('button[type="submit"]', {
+          timeout: timeoutMs
+        })
+        frame.focus('button[type="submit"]')
+        await submit.focus()
+        await submit.click()
         await page.waitForSelector('#password', { timeout: timeoutMs })
         await page.type('#password', password, { delay: 10 })
         submitP = () => page.click('button[type="submit"]')
@@ -186,10 +201,12 @@ export async function getOpenAIAuth({
 export async function getBrowser(
   opts: PuppeteerLaunchOptions & {
     captchaToken?: string
+    nopechaKey?: string
   } = {}
 ) {
   const {
     captchaToken = process.env.CAPTCHA_TOKEN,
+    nopechaKey = process.env.NOPECHA_KEY,
     executablePath = defaultChromeExecutablePath(),
     ...launchOptions
   } = opts
@@ -209,24 +226,71 @@ export async function getBrowser(
     )
   }
 
-  return puppeteer.launch({
+  const puppeteerArgs = [
+    '--no-sandbox',
+    '--disable-infobars',
+    '--disable-dev-shm-usage',
+    '--disable-blink-features=AutomationControlled',
+    '--no-first-run',
+    '--no-service-autorun',
+    '--password-store=basic',
+    '--system-developer-mode'
+  ]
+
+  if (nopechaKey) {
+    const nopechaPath = path.join(
+      __dirname,
+      '..',
+      'third-party',
+      'nopecha-chrome-extension'
+    )
+    puppeteerArgs.push(`--disable-extensions-except=${nopechaPath}`)
+    puppeteerArgs.push(`--load-extension=${nopechaPath}`)
+    hasNopechaExtension = true
+  }
+
+  const browser = await puppeteer.launch({
     headless: false,
     // https://peter.sh/experiments/chromium-command-line-switches/
-    args: [
-      '--no-sandbox',
-      '--exclude-switches',
-      'enable-automation',
-      '--disable-infobars',
-      '--disable-dev-shm-usage',
-      '--disable-blink-features=AutomationControlled',
-      '--no-first-run',
-      '--no-service-autorun',
-      '--password-store=basic'
+    args: puppeteerArgs,
+    ignoreDefaultArgs: [
+      '--disable-extensions',
+      '--enable-automation',
+      '--disable-component-extensions-with-background-pages'
     ],
     ignoreHTTPSErrors: true,
     executablePath,
     ...launchOptions
   })
+
+  // TOdO: this is a really hackity hack way of setting the API key...
+  if (hasNopechaExtension) {
+    const page = (await browser.pages())[0] || (await browser.newPage())
+    await page.goto(`https://nopecha.com/setup#${nopechaKey}`)
+    await delay(1000)
+    const page3 = await browser.newPage()
+    await page.close()
+
+    const extensionId = 'npgnhlnhpphdlkfdnggbdpbhoopefaai'
+    const extensionUrl = `chrome-extension://${extensionId}/popup.html`
+    await page3.goto(extensionUrl, { waitUntil: 'networkidle2' })
+    await delay(500)
+
+    const editKey = await page3.waitForSelector('#edit_key .clickable')
+    await editKey.click()
+
+    const settingsInput = await page3.$('input.settings_text')
+    await settingsInput.type(nopechaKey)
+    await settingsInput.evaluate((el, value) => {
+      el.value = value
+    }, nopechaKey)
+    await settingsInput.press('Enter')
+    await delay(500)
+    await editKey.click()
+    await delay(2000)
+  }
+
+  return browser
 }
 
 /**
@@ -260,13 +324,6 @@ async function checkForChatGPTAtCapacity(page: Page) {
 
   try {
     res = await page.$x("//div[contains(., 'ChatGPT is at capacity')]")
-    // console.log('capacity1', els)
-    // if (els?.length) {
-    //   res = await Promise.all(
-    //     els.map((a) => a.evaluate((el) => el.textContent))
-    //   )
-    //   console.log('capacity2', res)
-    // }
   } catch (err) {
     // ignore errors likely due to navigation
   }
@@ -325,4 +382,41 @@ async function waitForConditionOrAtCapacity(
 
     setTimeout(waitForCapacityText, pollingIntervalMs)
   })
+}
+
+async function waitForRecaptcha(
+  page: Page,
+  opts: {
+    pollingIntervalMs?: number
+    timeoutMs?: number
+  } = {}
+) {
+  if (!hasNopechaExtension) {
+    return
+  }
+
+  const { pollingIntervalMs = 100, timeoutMs } = opts
+  const captcha = await page.$('textarea#g-recaptcha-response')
+  const startTime = Date.now()
+
+  if (captcha) {
+    console.log('waiting to solve recaptcha...')
+
+    do {
+      const value = (await captcha.evaluate((el) => el.value))?.trim()
+      if (value?.length) {
+        // recaptcha has been solved!
+        break
+      }
+
+      if (timeoutMs) {
+        const now = Date.now()
+        if (now - startTime >= timeoutMs) {
+          throw new TimeoutError('Timed out waiting to solve Recaptcha')
+        }
+      }
+
+      await delay(pollingIntervalMs)
+    } while (true)
+  }
 }
