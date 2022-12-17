@@ -8,9 +8,12 @@ import { getBrowser, getOpenAIAuth } from './openai-auth'
 import {
   browserPostEventStream,
   isRelevantRequest,
+  markdownToText,
   maximizePage,
   minimizePage
 } from './utils'
+
+const CHAT_PAGE_URL = 'https://chat.openai.com/chat'
 
 export class ChatGPTAPIBrowser extends AChatGPTAPI {
   protected _markdown: boolean
@@ -134,11 +137,8 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
       throw err
     }
 
-    const chatUrl = 'https://chat.openai.com/chat'
-    const url = this._page.url().replace(/\/$/, '')
-
-    if (url !== chatUrl) {
-      await this._page.goto(chatUrl, {
+    if (!this.isChatPage) {
+      await this._page.goto(CHAT_PAGE_URL, {
         waitUntil: 'networkidle2'
       })
     }
@@ -287,7 +287,7 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
         waitUntil: 'networkidle2',
         timeout: 2 * 60 * 1000 // 2 minutes
       })
-      if (this._minimize) {
+      if (this._minimize && this.isChatPage) {
         await minimizePage(this._page)
       }
       console.log(`ChatGPT "${this._email}" refreshed session successfully`)
@@ -451,6 +451,10 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
 
       throw error
     } else {
+      if (!this._markdown) {
+        result.response = markdownToText(result.response)
+      }
+
       return result
     }
 
@@ -515,5 +519,14 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
   protected async _getInputBox() {
     // [data-id="root"]
     return this._page.$('textarea')
+  }
+
+  get isChatPage(): boolean {
+    try {
+      const url = this._page?.url().replace(/\/$/, '')
+      return url === CHAT_PAGE_URL
+    } catch (err) {
+      return false
+    }
   }
 }
