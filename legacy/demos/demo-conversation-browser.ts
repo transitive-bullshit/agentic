@@ -16,40 +16,63 @@ async function main() {
   const email = process.env.OPENAI_EMAIL
   const password = process.env.OPENAI_PASSWORD
 
-  const api = new ChatGPTAPIBrowser({ email, password, debug: true })
-  await api.init()
+  const api = new ChatGPTAPIBrowser({
+    email,
+    password,
+    debug: false,
+    minimize: true
+  })
+  await api.initSession()
 
-  const prompt = 'What is OpenAI?'
+  const prompt = 'Write a poem about cats.'
 
-  const response = await oraPromise(api.sendMessage(prompt), {
+  let res = await oraPromise(api.sendMessage(prompt), {
     text: prompt
   })
 
-  console.log(response)
+  console.log('\n' + res.response + '\n')
 
-  const prompt2 = 'Did they made OpenGPT?'
+  const prompt2 = 'Can you make it cuter and shorter?'
 
-  console.log(
-    await oraPromise(api.sendMessage(prompt2), {
+  res = await oraPromise(
+    api.sendMessage(prompt2, {
+      conversationId: res.conversationId,
+      parentMessageId: res.messageId
+    }),
+    {
       text: prompt2
-    })
+    }
   )
+  console.log('\n' + res.response + '\n')
 
-  const prompt3 = 'Who founded this institute?'
+  const prompt3 = 'Now write it in French.'
 
-  console.log(
-    await oraPromise(api.sendMessage(prompt3), {
+  res = await oraPromise(
+    api.sendMessage(prompt3, {
+      conversationId: res.conversationId,
+      parentMessageId: res.messageId
+    }),
+    {
       text: prompt3
-    })
+    }
   )
+  console.log('\n' + res.response + '\n')
 
-  const prompt4 = 'Who is that?'
+  const prompt4 = 'What were we talking about again?'
 
-  console.log(
-    await oraPromise(api.sendMessage(prompt4), {
+  res = await oraPromise(
+    api.sendMessage(prompt4, {
+      conversationId: res.conversationId,
+      parentMessageId: res.messageId
+    }),
+    {
       text: prompt4
-    })
+    }
   )
+  console.log('\n' + res.response + '\n')
+
+  // close the browser at the end
+  await api.closeSession()
 }
 
 main().catch((err) => {

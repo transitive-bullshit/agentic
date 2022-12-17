@@ -37,7 +37,7 @@ export async function maximizePage(page: Page) {
 }
 
 export function isRelevantRequest(url: string): boolean {
-  let pathname
+  let pathname: string
 
   try {
     const parsedUrl = new URL(url)
@@ -102,7 +102,6 @@ export async function browserPostEventStream(
 
   const BOM = [239, 187, 191]
 
-  let conversationResponse: types.ConversationResponseEvent
   let conversationId: string = body?.conversation_id
   let messageId: string = body?.messages?.[0]?.id
   let response = ''
@@ -136,7 +135,6 @@ export async function browserPostEventStream(
           statusCode: res.status,
           statusText: res.statusText
         },
-        response: null,
         conversationId,
         messageId
       }
@@ -147,18 +145,15 @@ export async function browserPostEventStream(
         function onMessage(data: string) {
           if (data === '[DONE]') {
             return resolve({
-              error: null,
               response,
               conversationId,
-              messageId,
-              conversationResponse
+              messageId
             })
           }
 
           try {
             const convoResponseEvent: types.ConversationResponseEvent =
               JSON.parse(data)
-            conversationResponse = convoResponseEvent
             if (convoResponseEvent.conversation_id) {
               conversationId = convoResponseEvent.conversation_id
             }
@@ -220,11 +215,9 @@ export async function browserPostEventStream(
       // happen when OpenAI has already send the last `response`, so we can ignore
       // the `fetch` error in this case.
       return {
-        error: null,
         response,
         conversationId,
-        messageId,
-        conversationResponse
+        messageId
       }
     }
 
@@ -234,10 +227,8 @@ export async function browserPostEventStream(
         statusCode: err.statusCode || err.status || err.response?.statusCode,
         statusText: err.statusText || err.response?.statusText
       },
-      response: null,
       conversationId,
-      messageId,
-      conversationResponse
+      messageId
     }
   }
 
@@ -456,7 +447,7 @@ export async function browserPostEventStream(
       customTimers = { setTimeout, clearTimeout }
     } = options
 
-    let timer
+    let timer: number
 
     const cancelablePromise = new Promise((resolve, reject) => {
       if (typeof milliseconds !== 'number' || Math.sign(milliseconds) !== 1) {

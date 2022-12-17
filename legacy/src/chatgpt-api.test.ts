@@ -21,7 +21,7 @@ test('ChatGPTAPI invalid session token', async (t) => {
         sessionToken: 'invalid',
         clearanceToken: 'invalid'
       })
-      await chatgpt.ensureAuth()
+      await chatgpt.initSession()
     },
     {
       instanceOf: types.ChatGPTError,
@@ -52,7 +52,7 @@ test('ChatGPTAPI valid session token', async (t) => {
 
       // Don't make any real API calls using our session token if we're running on CI
       if (!isCI) {
-        await chatgpt.ensureAuth()
+        await chatgpt.initSession()
         const response = await chatgpt.sendMessage('test')
         console.log('chatgpt response', response)
 
@@ -74,7 +74,7 @@ if (!isCI) {
           sessionToken: expiredSessionToken,
           clearanceToken: 'invalid'
         })
-        await chatgpt.ensureAuth()
+        await chatgpt.initSession()
       },
       {
         instanceOf: types.ChatGPTError,
