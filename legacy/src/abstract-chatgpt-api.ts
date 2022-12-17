@@ -41,6 +41,8 @@ export abstract class AChatGPTAPI {
   /**
    * Refreshes the current ChatGPT session.
    *
+   * Useful for bypassing 403 errors when Cloudflare clearance tokens expire.
+   *
    * @returns Access credentials for the new session.
    * @throws An error if it fails.
    */
@@ -48,6 +50,8 @@ export abstract class AChatGPTAPI {
 
   /**
    * Closes the current ChatGPT session and starts a new one.
+   *
+   * Useful for bypassing 401 errors when sessions expire.
    *
    * @returns Access credentials for the new session.
    * @throws An error if it fails.
