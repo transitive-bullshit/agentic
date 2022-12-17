@@ -351,13 +351,16 @@ async function checkForChatGPTAtCapacity(
   page: Page,
   opts: {
     timeoutMs?: number
+    pollingIntervalMs?: number
     retries?: number
   } = {}
 ) {
   const {
     timeoutMs = 2 * 60 * 1000, // 2 minutes
+    pollingIntervalMs = 3000,
     retries = 10
   } = opts
+
   // console.log('checkForChatGPTAtCapacity', page.url())
   let isAtCapacity = false
   let numTries = 0
@@ -378,7 +381,7 @@ async function checkForChatGPTAtCapacity(
           timeout: timeoutMs
         })
 
-        await delay(2000)
+        await delay(pollingIntervalMs)
       }
     } catch (err) {
       // ignore errors likely due to navigation
