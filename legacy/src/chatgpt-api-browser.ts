@@ -3,6 +3,7 @@ import type { Browser, HTTPRequest, HTTPResponse, Page } from 'puppeteer'
 import { v4 as uuidv4 } from 'uuid'
 
 import * as types from './types'
+import { AChatGPTAPI } from './abstract-chatgpt-api'
 import { getBrowser, getOpenAIAuth } from './openai-auth'
 import {
   browserPostEventStream,
@@ -11,7 +12,7 @@ import {
   minimizePage
 } from './utils'
 
-export class ChatGPTAPIBrowser {
+export class ChatGPTAPIBrowser extends AChatGPTAPI {
   protected _markdown: boolean
   protected _debug: boolean
   protected _minimize: boolean
@@ -27,7 +28,7 @@ export class ChatGPTAPIBrowser {
   protected _page: Page
 
   /**
-   * Creates a new client wrapper for automating the ChatGPT webapp.
+   * Creates a new client for automating the ChatGPT webapp.
    */
   constructor(opts: {
     email: string
@@ -51,6 +52,8 @@ export class ChatGPTAPIBrowser {
     /** @defaultValue `undefined` **/
     executablePath?: string
   }) {
+    super()
+
     const {
       email,
       password,
@@ -71,14 +74,23 @@ export class ChatGPTAPIBrowser {
     this._minimize = !!minimize
     this._captchaToken = captchaToken
     this._executablePath = executablePath
+
+    if (!this._email) {
+      const error = new types.ChatGPTError('ChatGPT invalid email')
+      error.statusCode = 401
+      throw error
+    }
+
+    if (!this._password) {
+      const error = new types.ChatGPTError('ChatGPT invalid password')
+      error.statusCode = 401
+      throw error
+    }
   }
 
-  async init() {
+  override async initSession() {
     if (this._browser) {
-      await this._browser.close()
-      this._page = null
-      this._browser = null
-      this._accessToken = null
+      await this.closeSession()
     }
 
     try {
@@ -88,6 +100,15 @@ export class ChatGPTAPIBrowser {
       })
       this._page =
         (await this._browser.pages())[0] || (await this._browser.newPage())
+
+      // bypass annoying popup modals
+      this._page.evaluateOnNewDocument(() => {
+        window.localStorage.setItem('oai/apps/hasSeenOnboarding/chat', 'true')
+        window.localStorage.setItem(
+          'oai/apps/hasSeenReleaseAnnouncement/2022-12-15',
+          'true'
+        )
+      })
 
       await maximizePage(this._page)
 
@@ -140,15 +161,13 @@ export class ChatGPTAPIBrowser {
       await delay(300)
     } while (true)
 
-    if (!this.getIsAuthenticated()) {
-      return false
+    if (!(await this.getIsAuthenticated())) {
+      throw new types.ChatGPTError('Failed to authenticate session')
     }
 
     if (this._minimize) {
-      await minimizePage(this._page)
+      return minimizePage(this._page)
     }
-
-    return true
   }
 
   _onRequest = (request: HTTPRequest) => {
@@ -221,11 +240,13 @@ export class ChatGPTAPIBrowser {
 
     if (url.endsWith('/conversation')) {
       if (status === 403) {
-        await this.handle403Error()
+        await this.refreshSession()
       }
     } else if (url.endsWith('api/auth/session')) {
-      if (status === 403) {
-        await this.handle403Error()
+      if (status === 401) {
+        await this.resetSession()
+      } else if (status === 403) {
+        await this.refreshSession()
       } else {
         const session: types.SessionResult = body
 
@@ -236,8 +257,30 @@ export class ChatGPTAPIBrowser {
     }
   }
 
-  async handle403Error() {
-    console.log(`ChatGPT "${this._email}" session expired; refreshing...`)
+  /**
+   * Attempts to handle 401 errors by re-authenticating.
+   */
+  async resetSession() {
+    console.log(
+      `ChatGPT "${this._email}" session expired; re-authenticating...`
+    )
+    try {
+      await this.closeSession()
+      await this.initSession()
+      console.log(`ChatGPT "${this._email}" re-authenticated successfully`)
+    } catch (err) {
+      console.error(
+        `ChatGPT "${this._email}" error re-authenticating`,
+        err.toString()
+      )
+    }
+  }
+
+  /**
+   * Attempts to handle 403 errors by refreshing the page.
+   */
+  async refreshSession() {
+    console.log(`ChatGPT "${this._email}" session expired (403); refreshing...`)
     try {
       await maximizePage(this._page)
       await this._page.reload({
@@ -247,6 +290,7 @@ export class ChatGPTAPIBrowser {
       if (this._minimize) {
         await minimizePage(this._page)
       }
+      console.log(`ChatGPT "${this._email}" refreshed session successfully`)
     } catch (err) {
       console.error(
         `ChatGPT "${this._email}" error refreshing session`,
@@ -257,6 +301,10 @@ export class ChatGPTAPIBrowser {
 
   async getIsAuthenticated() {
     try {
+      if (!this._accessToken) {
+        return false
+      }
+
       const inputBox = await this._getInputBox()
       return !!inputBox
     } catch (err) {
@@ -328,28 +376,25 @@ export class ChatGPTAPIBrowser {
   //   }
   // }
 
-  async sendMessage(
+  override async sendMessage(
     message: string,
     opts: types.SendMessageOptions = {}
-  ): Promise<string> {
+  ): Promise<types.ChatResponse> {
     const {
       conversationId,
       parentMessageId = uuidv4(),
       messageId = uuidv4(),
       action = 'next',
+      timeoutMs
       // TODO
-      timeoutMs,
-      // onProgress,
-      onConversationResponse
+      // onProgress
     } = opts
 
-    const inputBox = await this._getInputBox()
-    if (!inputBox || !this._accessToken) {
+    if (!(await this.getIsAuthenticated())) {
       console.log(`chatgpt re-authenticating ${this._email}`)
-      let isAuthenticated = false
 
       try {
-        isAuthenticated = await this.init()
+        await this.resetSession()
       } catch (err) {
         console.warn(
           `chatgpt error re-authenticating ${this._email}`,
@@ -357,7 +402,7 @@ export class ChatGPTAPIBrowser {
         )
       }
 
-      if (!isAuthenticated || !this._accessToken) {
+      if (!(await this.getIsAuthenticated())) {
         const error = new types.ChatGPTError('Not signed in')
         error.statusCode = 401
         throw error
@@ -395,24 +440,19 @@ export class ChatGPTAPIBrowser {
     )
     // console.log('<<< EVALUATE', result)
 
-    if (result.error) {
+    if ('error' in result) {
       const error = new types.ChatGPTError(result.error.message)
       error.statusCode = result.error.statusCode
       error.statusText = result.error.statusText
 
       if (error.statusCode === 403) {
-        await this.handle403Error()
+        await this.refreshSession()
       }
 
       throw error
+    } else {
+      return result
     }
-
-    // TODO: support sending partial response events
-    if (onConversationResponse) {
-      onConversationResponse(result.conversationResponse)
-    }
-
-    return result.response
 
     // const lastMessage = await this.getLastMessage()
 
@@ -465,10 +505,11 @@ export class ChatGPTAPIBrowser {
     }
   }
 
-  async close() {
+  override async closeSession() {
     await this._browser.close()
     this._page = null
     this._browser = null
+    this._accessToken = null
   }
 
   protected async _getInputBox() {
