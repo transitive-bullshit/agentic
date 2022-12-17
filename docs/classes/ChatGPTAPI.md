@@ -2,6 +2,12 @@
 
 # Class: ChatGPTAPI
 
+## Hierarchy
+
+- [`AChatGPTAPI`](AChatGPTAPI.md)
+
+  ↳ **`ChatGPTAPI`**
+
 ## Table of contents
 
 ### Constructors
@@ -17,10 +23,11 @@
 
 ### Methods
 
-- [ensureAuth](ChatGPTAPI.md#ensureauth)
-- [getConversation](ChatGPTAPI.md#getconversation)
+- [closeSession](ChatGPTAPI.md#closesession)
 - [getIsAuthenticated](ChatGPTAPI.md#getisauthenticated)
-- [refreshAccessToken](ChatGPTAPI.md#refreshaccesstoken)
+- [initSession](ChatGPTAPI.md#initsession)
+- [refreshSession](ChatGPTAPI.md#refreshsession)
+- [resetSession](ChatGPTAPI.md#resetsession)
 - [sendMessage](ChatGPTAPI.md#sendmessage)
 - [sendModeration](ChatGPTAPI.md#sendmoderation)
 
@@ -51,9 +58,13 @@ to obtain your `clearanceToken`.
 | `opts.sessionToken` | `string` | = **Required** OpenAI session token which can be found in a valid session's cookies (see readme for instructions) |
 | `opts.userAgent?` | `string` | **`Default Value`**  `Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36'` * |
 
+#### Overrides
+
+[AChatGPTAPI](AChatGPTAPI.md).[constructor](AChatGPTAPI.md#constructor)
+
 #### Defined in
 
-[src/chatgpt-api.ts:45](https://github.com/transitive-bullshit/chatgpt-api/blob/d685b78/src/chatgpt-api.ts#L45)
+[src/chatgpt-api.ts:45](https://github.com/transitive-bullshit/chatgpt-api/blob/2937409/src/chatgpt-api.ts#L45)
 
 ## Accessors
 
@@ -69,7 +80,7 @@ Gets the current Cloudflare clearance token (`cf_clearance` cookie value).
 
 #### Defined in
 
-[src/chatgpt-api.ts:137](https://github.com/transitive-bullshit/chatgpt-api/blob/d685b78/src/chatgpt-api.ts#L137)
+[src/chatgpt-api.ts:143](https://github.com/transitive-bullshit/chatgpt-api/blob/2937409/src/chatgpt-api.ts#L143)
 
 ___
 
@@ -85,7 +96,7 @@ Gets the current session token.
 
 #### Defined in
 
-[src/chatgpt-api.ts:132](https://github.com/transitive-bullshit/chatgpt-api/blob/d685b78/src/chatgpt-api.ts#L132)
+[src/chatgpt-api.ts:138](https://github.com/transitive-bullshit/chatgpt-api/blob/2937409/src/chatgpt-api.ts#L138)
 
 ___
 
@@ -101,7 +112,7 @@ Gets the currently signed-in user, if authenticated, `null` otherwise.
 
 #### Defined in
 
-[src/chatgpt-api.ts:127](https://github.com/transitive-bullshit/chatgpt-api/blob/d685b78/src/chatgpt-api.ts#L127)
+[src/chatgpt-api.ts:133](https://github.com/transitive-bullshit/chatgpt-api/blob/2937409/src/chatgpt-api.ts#L133)
 
 ___
 
@@ -117,51 +128,31 @@ Gets the current user agent.
 
 #### Defined in
 
-[src/chatgpt-api.ts:142](https://github.com/transitive-bullshit/chatgpt-api/blob/d685b78/src/chatgpt-api.ts#L142)
+[src/chatgpt-api.ts:148](https://github.com/transitive-bullshit/chatgpt-api/blob/2937409/src/chatgpt-api.ts#L148)
 
 ## Methods
 
-### ensureAuth
+### closeSession
 
-▸ **ensureAuth**(): `Promise`<`string`\>
+▸ **closeSession**(): `Promise`<`void`\>
 
-Refreshes the client's access token which will succeed only if the session
-is still valid.
+Closes the active session.
 
-#### Returns
+**`Throws`**
 
-`Promise`<`string`\>
-
-#### Defined in
-
-[src/chatgpt-api.ts:359](https://github.com/transitive-bullshit/chatgpt-api/blob/d685b78/src/chatgpt-api.ts#L359)
-
-___
-
-### getConversation
-
-▸ **getConversation**(`opts?`): [`ChatGPTConversation`](ChatGPTConversation.md)
-
-Gets a new ChatGPTConversation instance, which can be used to send multiple
-messages as part of a single conversation.
-
-#### Parameters
-
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `opts` | `Object` | - |
-| `opts.conversationId?` | `string` | Optional ID of the previous message in a conversation |
-| `opts.parentMessageId?` | `string` | Optional ID of the previous message in a conversation |
+An error if it fails.
 
 #### Returns
 
-[`ChatGPTConversation`](ChatGPTConversation.md)
+`Promise`<`void`\>
 
-The new conversation instance
+#### Overrides
+
+[AChatGPTAPI](AChatGPTAPI.md).[closeSession](AChatGPTAPI.md#closesession)
 
 #### Defined in
 
-[src/chatgpt-api.ts:465](https://github.com/transitive-bullshit/chatgpt-api/blob/d685b78/src/chatgpt-api.ts#L465)
+[src/chatgpt-api.ts:470](https://github.com/transitive-bullshit/chatgpt-api/blob/2937409/src/chatgpt-api.ts#L470)
 
 ___
 
@@ -176,15 +167,40 @@ ___
 `true` if the client has a valid acces token or `false` if refreshing
 the token fails.
 
+#### Overrides
+
+[AChatGPTAPI](AChatGPTAPI.md).[getIsAuthenticated](AChatGPTAPI.md#getisauthenticated)
+
 #### Defined in
 
-[src/chatgpt-api.ts:346](https://github.com/transitive-bullshit/chatgpt-api/blob/d685b78/src/chatgpt-api.ts#L346)
+[src/chatgpt-api.ts:367](https://github.com/transitive-bullshit/chatgpt-api/blob/2937409/src/chatgpt-api.ts#L367)
 
 ___
 
-### refreshAccessToken
+### initSession
 
-▸ **refreshAccessToken**(): `Promise`<`string`\>
+▸ **initSession**(): `Promise`<`void`\>
+
+Refreshes the client's access token which will succeed only if the session
+is valid.
+
+#### Returns
+
+`Promise`<`void`\>
+
+#### Overrides
+
+[AChatGPTAPI](AChatGPTAPI.md).[initSession](AChatGPTAPI.md#initsession)
+
+#### Defined in
+
+[src/chatgpt-api.ts:156](https://github.com/transitive-bullshit/chatgpt-api/blob/2937409/src/chatgpt-api.ts#L156)
+
+___
+
+### refreshSession
+
+▸ **refreshSession**(): `Promise`<`string`\>
 
 Attempts to refresh the current access token using the ChatGPT
 `sessionToken` cookie.
@@ -202,15 +218,47 @@ An error if refreshing the access token fails.
 
 A valid access token
 
+#### Overrides
+
+[AChatGPTAPI](AChatGPTAPI.md).[refreshSession](AChatGPTAPI.md#refreshsession)
+
 #### Defined in
 
-[src/chatgpt-api.ts:373](https://github.com/transitive-bullshit/chatgpt-api/blob/d685b78/src/chatgpt-api.ts#L373)
+[src/chatgpt-api.ts:386](https://github.com/transitive-bullshit/chatgpt-api/blob/2937409/src/chatgpt-api.ts#L386)
+
+___
+
+### resetSession
+
+▸ **resetSession**(): `Promise`<`any`\>
+
+Closes the current ChatGPT session and starts a new one.
+
+Useful for bypassing 401 errors when sessions expire.
+
+**`Throws`**
+
+An error if it fails.
+
+#### Returns
+
+`Promise`<`any`\>
+
+Access credentials for the new session.
+
+#### Inherited from
+
+[AChatGPTAPI](AChatGPTAPI.md).[resetSession](AChatGPTAPI.md#resetsession)
+
+#### Defined in
+
+[src/abstract-chatgpt-api.ts:59](https://github.com/transitive-bullshit/chatgpt-api/blob/2937409/src/abstract-chatgpt-api.ts#L59)
 
 ___
 
 ### sendMessage
 
-▸ **sendMessage**(`message`, `opts?`): `Promise`<`string`\>
+▸ **sendMessage**(`message`, `opts?`): `Promise`<[`ChatResponse`](../modules.md#chatresponse)\>
 
 Sends a message to ChatGPT, waits for the response to resolve, and returns
 the response.
@@ -229,13 +277,17 @@ helper.
 
 #### Returns
 
-`Promise`<`string`\>
+`Promise`<[`ChatResponse`](../modules.md#chatresponse)\>
 
 The response from ChatGPT
 
+#### Overrides
+
+[AChatGPTAPI](AChatGPTAPI.md).[sendMessage](AChatGPTAPI.md#sendmessage)
+
 #### Defined in
 
-[src/chatgpt-api.ts:167](https://github.com/transitive-bullshit/chatgpt-api/blob/d685b78/src/chatgpt-api.ts#L167)
+[src/chatgpt-api.ts:180](https://github.com/transitive-bullshit/chatgpt-api/blob/2937409/src/chatgpt-api.ts#L180)
 
 ___
 
@@ -255,4 +307,4 @@ ___
 
 #### Defined in
 
-[src/chatgpt-api.ts:303](https://github.com/transitive-bullshit/chatgpt-api/blob/d685b78/src/chatgpt-api.ts#L303)
+[src/chatgpt-api.ts:324](https://github.com/transitive-bullshit/chatgpt-api/blob/2937409/src/chatgpt-api.ts#L324)
