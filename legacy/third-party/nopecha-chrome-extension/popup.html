@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="popup.css">
+    </head>
+
+    <body>
+        <div id="loading_overlay">
+            <a href="https://nopecha.com/discord" target="_blank"></a>
+                <button class="nav_icon hover_glow static">
+                    <img src="/icon/32.png" alt="NopeCHA">
+                </button>
+            </a>
+            <div class='loading_text'>Loading</div>
+            <div class='loading_text timeout'>
+                <div>This is taking longer than usual.</div>
+                <div>Please close this window and try again.</div>
+                <div>If the problem persists, contact us on <a style="color: #fff;" href="https://nopecha.com/discord" target="_blank">Discord</a></div>
+            </div>
+        </div>
+
+        <div id="template" class="hidden">
+            <div id="disabled_hosts_item" class="settings_item_container list_item">
+                <div class="list_item_row">
+                    <input type="text" autocomplete="off" spellcheck="false" placeholder="Enter hostname" value="" class="settings_text text_input list_input hostname">
+                    <button class="list_item_button remove">
+                        <svg width="16" height="16" fill="#ffffff">
+                            <path d="M9 2H7v12h2V2zm2.75 0l-1.5 12h1.98l1.5-12h-1.98zm-7.5 0H2.27l1.5 12h1.98L4.25 2zM0 0h16l-2 16H2L0 0z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="app_frame">
+
+            <!-- HCAPTCHA TAB -->
+            <div class="tab hidden" data-tab="hcaptcha">
+                <div class="header">
+                    <button class="nav_icon back" data-tabtarget="main">
+                        <svg width="12" height="12" viewBox="0 0 9 16"><path d="M2.684 8l6.038-6.308c.37-.387.37-1.015 0-1.402a.92.92 0 00-1.342 0L0 8l7.38 7.71a.92.92 0 001.342 0c.37-.387.37-1.015 0-1.402L2.684 8z"></path></svg>
+                    </button>
+
+                    <div class="header_label_container">
+                        <div class="header_label">hCaptcha</div>
+                    </div>
+
+                    <a href="https://nopecha.com/demo/hcaptcha" target="_blank">
+                        <button class="nav_icon">
+                            <svg width="16" height="16" viewBox="20 20 560 560"><path d="m374.48 524.29h74.9v74.89h-74.9z" fill="#0074bf" opacity=".502"/><path d="m299.59 524.29h74.89v74.89h-74.89zm-74.89 0h74.89v74.89h-74.89z" fill="#0074bf" opacity=".702"/><path d="m149.8 524.29h74.9v74.89h-74.9z" fill="#0074bf" opacity=".502"/><g fill="#0082bf"><path d="m449.39 449.39h74.9v74.9h-74.9z" opacity=".702"/><path d="m374.48 449.39h74.9v74.9h-74.9z" opacity=".8"/><path d="m299.59 449.39h74.89v74.9h-74.89zm-74.89 0h74.89v74.9h-74.89z"/><path d="m149.8 449.39h74.9v74.9h-74.9z" opacity=".8"/><path d="m74.89 449.39h74.9v74.9h-74.9z" opacity=".702"/></g><g fill="#008fbf"><path d="m524.29 374.48h74.89v74.9h-74.89z" opacity=".502"/><path d="m449.39 374.48h74.9v74.9h-74.9z" opacity=".8"/><path d="m374.48 374.48h74.9v74.9h-74.9zm-74.89 0h74.89v74.9h-74.89zm-74.89 0h74.89v74.9h-74.89z"/><path d="m149.8 374.48h74.9v74.9h-74.9z"/><path d="m74.89 374.48h74.9v74.9h-74.9z" opacity=".8"/><path d="m0 374.48h74.89v74.9h-74.89z" opacity=".502"/></g><path d="m524.29 299.59h74.89v74.89h-74.89z" fill="#009dbf" opacity=".702"/><path d="m449.39 299.59h74.9v74.89h-74.9zm-74.91 0h74.9v74.89h-74.9zm-74.89 0h74.89v74.89h-74.89zm-74.89 0h74.89v74.89h-74.89z" fill="#009dbf"/><path d="m149.8 299.59h74.9v74.89h-74.9zm-74.91 0h74.9v74.89h-74.9z" fill="#009dbf"/><path d="m0 299.59h74.89v74.89h-74.89z" fill="#009dbf" opacity=".702"/><path d="m524.29 224.7h74.89v74.89h-74.89z" fill="#00abbf" opacity=".702"/><path d="m449.39 224.7h74.9v74.89h-74.9zm-74.91 0h74.9v74.89h-74.9zm-74.89 0h74.89v74.89h-74.89zm-74.89 0h74.89v74.89h-74.89z" fill="#00abbf"/><path d="m149.8 224.7h74.9v74.89h-74.9zm-74.91 0h74.9v74.89h-74.9z" fill="#00abbf"/><path d="m0 224.7h74.89v74.89h-74.89z" fill="#00abbf" opacity=".702"/><g fill="#00b9bf"><path d="m524.29 149.8h74.89v74.9h-74.89z" opacity=".502"/><path d="m449.39 149.8h74.9v74.9h-74.9z" opacity=".8"/><path d="m374.48 149.8h74.9v74.9h-74.9zm-74.89 0h74.89v74.9h-74.89zm-74.89 0h74.89v74.9h-74.89z"/><path d="m149.8 149.8h74.9v74.9h-74.9z"/><path d="m74.89 149.8h74.9v74.9h-74.9z" opacity=".8"/><path d="m0 149.8h74.89v74.9h-74.89z" opacity=".502"/></g><g fill="#00c6bf"><path d="m449.39 74.89h74.9v74.9h-74.9z" opacity=".702"/><path d="m374.48 74.89h74.9v74.9h-74.9z" opacity=".8"/><path d="m299.59 74.89h74.89v74.9h-74.89zm-74.89 0h74.89v74.9h-74.89z"/><path d="m149.8 74.89h74.9v74.9h-74.9z" opacity=".8"/><path d="m74.89 74.89h74.9v74.9h-74.9z" opacity=".702"/></g><path d="m374.48 0h74.9v74.89h-74.9z" fill="#00d4bf" opacity=".502"/><path d="m299.59 0h74.89v74.89h-74.89zm-74.89 0h74.89v74.89h-74.89z" fill="#00d4bf" opacity=".702"/><path d="m149.8 0h74.9v74.89h-74.9z" fill="#00d4bf" opacity=".502"/><path d="m197.2 275.96 20.87-46.71c7.61-11.97 6.6-26.64-1.72-34.96-.28-.28-.56-.55-.86-.81-.29-.26-.59-.52-.89-.76a21.043 21.043 0 0 0 -1.92-1.37 22.68 22.68 0 0 0 -4.51-2.13c-1.58-.55-3.21-.92-4.87-1.12-1.66-.19-3.34-.2-5-.03s-3.3.51-4.88 1.04c-1.79.55-3.53 1.27-5.19 2.13a32.32 32.32 0 0 0 -4.72 3.02 32.38 32.38 0 0 0 -4.12 3.82 32 32 0 0 0 -3.37 4.48c-.98 1.59-28.57 66.66-39.2 96.62s-6.39 84.91 34.61 125.99c43.48 43.48 106.43 53.41 146.58 23.28.42-.21.84-.44 1.24-.67.41-.23.81-.48 1.2-.74.4-.25.78-.52 1.16-.8.38-.27.75-.56 1.11-.86l123.73-103.32c6.01-4.97 14.9-15.2 6.92-26.88-7.79-11.39-22.55-3.64-28.57.21l-71.21 51.78c-.33.27-.72.48-1.13.6-.42.12-.85.16-1.28.11s-.85-.19-1.22-.4c-.38-.21-.71-.5-.97-.85-1.81-2.22-2.13-8.11.71-10.44l109.16-92.64c9.43-8.49 10.74-20.84 3.1-29.3-7.45-8.29-19.29-8.04-28.8.53l-98.28 76.83c-.46.38-.99.66-1.56.82s-1.17.21-1.76.13-1.15-.27-1.66-.58c-.51-.3-.96-.7-1.3-1.18-1.94-2.18-2.69-5.89-.5-8.07l111.3-108.01c2.09-1.95 3.78-4.29 4.96-6.88 1.18-2.6 1.85-5.41 1.95-8.26s-.36-5.7-1.36-8.37c-1-2.68-2.51-5.13-4.45-7.22-.97-1.03-2.05-1.95-3.2-2.75a21.14 21.14 0 0 0 -3.69-2.05c-1.3-.55-2.65-.97-4.03-1.26-1.38-.28-2.79-.42-4.2-.41-1.44-.02-2.88.1-4.29.37a21.906 21.906 0 0 0 -7.96 3.16c-1.21.78-2.34 1.68-3.38 2.68l-113.73 106.83c-2.72 2.72-8.04 0-8.69-3.18-.06-.28-.08-.57-.07-.86s.06-.58.15-.85c.08-.28.2-.55.35-.79.15-.25.33-.48.54-.68l87.05-99.12a21.38 21.38 0 0 0 6.82-15.3c.11-5.81-2.15-11.42-6.25-15.53-4.11-4.12-9.71-6.4-15.52-6.31s-11.34 2.53-15.32 6.77l-132.01 145.95c-4.73 4.73-11.7 4.97-15.02 2.22-.51-.4-.93-.9-1.24-1.46-.32-.56-.52-1.18-.6-1.82-.08-.65-.03-1.3.14-1.92s.46-1.21.85-1.72z" fill="#fff"/></svg>
+                        </button>
+                    </a>
+                </div>
+
+                <div style="position: relative; overflow: hidden; width: 100%; height: auto; min-height: 0px; max-height: 402px;">
+                    <div style="position: relative; overflow: auto; margin-bottom: -15px; min-height: 15px; max-height: 417px;">
+                        <div class="scrolling_container">
+
+                            <div class="settings_item_container">
+                                <div class="settings_item">
+                                    <div class="bbflex">
+                                        <div class="bbflex">
+                                            <svg width="16" height="16" fill="#ffffff"><path d="M8 0A8 8 0 11.582 11.001h2.221a6 6 0 100-6L.582 4.999A8.003 8.003 0 018 0zM7 5l4 3-4 3-.001-2H0V7h6.999L7 5z"></path></svg>
+                                            <div class="settings_item_label bbflex">Auto-Open</div>
+                                        </div>
+                                        <div class="bbflex">
+                                            <div class="settings_toggle off" data-settings="hcaptcha_auto_open">
+                                                <div></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="settings_description_container bbflex">
+                                    <div class="settings_description">Automatically opens captcha challenges.</div>
+                                </div>
+                            </div>
+
+                            <div class="settings_item_container">
+                                <div class="settings_item">
+                                    <div class="bbflex">
+                                        <div class="bbflex">
+                                            <svg width="16" height="16" fill="#ffffff"><path d="M13.336 9.007l.044.085 2.58 6.193a.516.516 0 01-.91.48l-.043-.083-.728-1.747h-2.753l-.727 1.747a.516.516 0 01-.586.306l-.089-.028a.516.516 0 01-.306-.586l.028-.089 2.58-6.193a.517.517 0 01.91-.085zM4.128 1.728V4.13a5.161 5.161 0 004.13 9.187v2.095A7.226 7.226 0 014.128 1.73zm8.775 8.904l-.947 2.271h1.893l-.946-2.27zM8.258 0v8.258H6.193V0h2.065zm2.065 1.728a7.233 7.233 0 014.055 5.498h-2.094a5.162 5.162 0 00-1.962-3.097V1.728z"></path></svg>
+                                            <div class="settings_item_label bbflex">Auto-Solve</div>
+                                        </div>
+                                        <div class="bbflex">
+                                            <div class="settings_toggle off" data-settings="hcaptcha_auto_solve">
+                                                <div></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="settings_description_container bbflex">
+                                    <div class="settings_description">Automatically solves captcha challenges.</div>
+                                </div>
+                            </div>
+
+                            <div class="settings_item_container">
+                                <div class="settings_item">
+                                    <div class="bbflex">
+                                        <div class="bbflex">
+                                            <svg width="16" height="16" fill="#ffffff"><path d="M12.214 10l.964 3H14.5a1.5 1.5 0 010 3h-13a1.5 1.5 0 010-3h1.322l.964-3h8.428zm-1.607-5l.964 3H4.429l.964-3h5.214zM9 0l.964 3H6.036L7 0h2z"></path></svg>
+                                            <div class="settings_item_label bbflex">Delay solving</div>
+                                        </div>
+                                        <div class="bbflex">
+                                            <div class="settings_toggle off" data-settings="hcaptcha_solve_delay">
+                                                <div></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="settings_description_container bbflex">
+                                    <div class="settings_description">Adds a delay to avoid detection.</div>
+                                </div>
+                            </div>
+
+                            <div class="settings_item_container">
+                                <div class="settings_item">
+                                    <div class="bbflex">
+                                        <div class="bbflex">
+                                            <svg width="16" height="16" fill="#ffffff"><path d="M16 8a8 8 0 01-8 8v-1a7 7 0 007-7h1zm-4.667 3.536l.667.707C10.976 13.33 9.562 14 8 14c-1.562 0-2.976-.671-4-1.757l.667-.707C5.52 12.441 6.698 13 8 13s2.48-.56 3.333-1.464zM7 4.5a.5.5 0 01.492.41L7.5 5v3.5H10a.5.5 0 01.492.41L10.5 9a.5.5 0 01-.41.492L10 9.5H6.5V5a.5.5 0 01.5-.5zM8 0v1a7 7 0 00-7 7H0a8 8 0 018-8zm0 2c1.562 0 2.977.672 4 1.758l-.666.707C10.48 3.56 9.302 3 8 3s-2.48.56-3.334 1.465L4 3.758C5.023 2.672 6.438 2 8 2z"></path></svg>
+                                            <div class="settings_item_label bbflex">Delay Timer</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="settings_description_container bbflex">
+                                    <div class="settings_description">Milliseconds to delay solving.</div>
+                                    <input type="number" autocomplete="off" spellcheck="false" placeholder="Delay" value="" class="settings_text text_input text_right small" data-settings="hcaptcha_solve_delay_time">
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- RECAPTCHA TAB -->
+            <div class="tab hidden" data-tab="recaptcha">
+                <div class="header">
+                    <button class="nav_icon back" data-tabtarget="main">
+                        <svg width="12" height="12" viewBox="0 0 9 16"><path d="M2.684 8l6.038-6.308c.37-.387.37-1.015 0-1.402a.92.92 0 00-1.342 0L0 8l7.38 7.71a.92.92 0 001.342 0c.37-.387.37-1.015 0-1.402L2.684 8z"></path></svg>
+                    </button>
+
+                    <div class="header_label_container">
+                        <div class="header_label">reCAPTCHA</div>
+                    </div>
+
+                    <a href="https://nopecha.com/demo/recaptcha" target="_blank">
+                        <button class="nav_icon">
+                            <svg width="16" height="16" viewBox="0 0 64 64"><path d="M64 31.955l-.033-1.37V4.687l-7.16 7.16C50.948 4.674 42.033.093 32.05.093c-10.4 0-19.622 4.96-25.458 12.64l11.736 11.86a15.55 15.55 0 0 1 4.754-5.334c2.05-1.6 4.952-2.906 8.968-2.906.485 0 .86.057 1.135.163 4.976.393 9.288 3.14 11.828 7.124l-8.307 8.307L64 31.953" fill="#1c3aa9"/><path d="M31.862.094l-1.37.033H4.594l7.16 7.16C4.58 13.147 0 22.06 0 32.046c0 10.4 4.96 19.622 12.64 25.458L24.5 45.768a15.55 15.55 0 0 1-5.334-4.754c-1.6-2.05-2.906-4.952-2.906-8.968 0-.485.057-.86.163-1.135.393-4.976 3.14-9.288 7.124-11.828l8.307 8.307L31.86.095" fill="#4285f4"/><path d="M.001 32.045l.033 1.37v25.898l7.16-7.16c5.86 7.173 14.774 11.754 24.76 11.754 10.4 0 19.622-4.96 25.458-12.64l-11.736-11.86a15.55 15.55 0 0 1-4.754 5.334c-2.05 1.6-4.952 2.906-8.968 2.906-.485 0-.86-.057-1.135-.163-4.976-.393-9.288-3.14-11.828-7.124l8.307-8.307c-10.522.04-22.4.066-27.295-.005" fill="#ababab"/></svg>
+                        </button>
+                    </a>
+                </div>
+
+                <div style="position: relative; overflow: hidden; width: 100%; height: auto; min-height: 0px; max-height: 402px;">
+                    <div style="position: relative; overflow: auto; margin-bottom: -15px; min-height: 15px; max-height: 417px;">
+                        <div class="scrolling_container">
+
+                            <div class="settings_item_container">
+                                <div class="settings_item">
+                                    <div class="bbflex">
+                                        <div class="bbflex">
+                                            <svg width="16" height="16" fill="#ffffff"><path d="M8 0A8 8 0 11.582 11.001h2.221a6 6 0 100-6L.582 4.999A8.003 8.003 0 018 0zM7 5l4 3-4 3-.001-2H0V7h6.999L7 5z"></path></svg>
+                                            <div class="settings_item_label bbflex">Auto-Open</div>
+                                        </div>
+                                        <div class="bbflex">
+                                            <div class="settings_toggle off" data-settings="recaptcha_auto_open">
+                                                <div></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="settings_description_container bbflex">
+                                    <div class="settings_description">Automatically opens captcha challenges.</div>
+                                </div>
+                            </div>
+
+                            <div class="settings_item_container">
+                                <div class="settings_item">
+                                    <div class="bbflex">
+                                        <div class="bbflex">
+                                            <svg width="16" height="16" fill="#ffffff"><path d="M13.336 9.007l.044.085 2.58 6.193a.516.516 0 01-.91.48l-.043-.083-.728-1.747h-2.753l-.727 1.747a.516.516 0 01-.586.306l-.089-.028a.516.516 0 01-.306-.586l.028-.089 2.58-6.193a.517.517 0 01.91-.085zM4.128 1.728V4.13a5.161 5.161 0 004.13 9.187v2.095A7.226 7.226 0 014.128 1.73zm8.775 8.904l-.947 2.271h1.893l-.946-2.27zM8.258 0v8.258H6.193V0h2.065zm2.065 1.728a7.233 7.233 0 014.055 5.498h-2.094a5.162 5.162 0 00-1.962-3.097V1.728z"></path></svg>
+                                            <div class="settings_item_label bbflex">Auto-Solve</div>
+                                        </div>
+                                        <div class="bbflex">
+                                            <div class="settings_toggle off" data-settings="recaptcha_auto_solve">
+                                                <div></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="settings_description_container bbflex">
+                                    <div class="settings_description">Automatically solves captcha challenges.</div>
+                                </div>
+                            </div>
+
+                            <div class="settings_item_container">
+                                <div class="settings_item">
+                                    <div class="bbflex">
+                                        <div class="bbflex">
+                                            <svg width="16" height="16" fill="#ffffff"><path d="M12.214 10l.964 3H14.5a1.5 1.5 0 010 3h-13a1.5 1.5 0 010-3h1.322l.964-3h8.428zm-1.607-5l.964 3H4.429l.964-3h5.214zM9 0l.964 3H6.036L7 0h2z"></path></svg>
+                                            <div class="settings_item_label bbflex">Delay solving</div>
+                                        </div>
+                                        <div class="bbflex">
+                                            <div class="settings_toggle off" data-settings="recaptcha_solve_delay">
+                                                <div></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="settings_description_container bbflex">
+                                    <div class="settings_description">Adds a delay to avoid detection.</div>
+                                </div>
+                            </div>
+
+                            <div class="settings_item_container">
+                                <div class="settings_item">
+                                    <div class="bbflex">
+                                        <div class="bbflex">
+                                            <svg width="16" height="16" fill="#ffffff"><path d="M16 8a8 8 0 01-8 8v-1a7 7 0 007-7h1zm-4.667 3.536l.667.707C10.976 13.33 9.562 14 8 14c-1.562 0-2.976-.671-4-1.757l.667-.707C5.52 12.441 6.698 13 8 13s2.48-.56 3.333-1.464zM7 4.5a.5.5 0 01.492.41L7.5 5v3.5H10a.5.5 0 01.492.41L10.5 9a.5.5 0 01-.41.492L10 9.5H6.5V5a.5.5 0 01.5-.5zM8 0v1a7 7 0 00-7 7H0a8 8 0 018-8zm0 2c1.562 0 2.977.672 4 1.758l-.666.707C10.48 3.56 9.302 3 8 3s-2.48.56-3.334 1.465L4 3.758C5.023 2.672 6.438 2 8 2z"></path></svg>
+                                            <div class="settings_item_label bbflex">Delay Timer</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="settings_description_container bbflex">
+                                    <div class="settings_description">Milliseconds to delay solving.</div>
+                                    <input type="number" autocomplete="off" spellcheck="false" placeholder="Delay" value="" class="settings_text text_input text_right small" data-settings="recaptcha_solve_delay_time">
+                                </div>
+                            </div>
+
+                            <div class="settings_item_container">
+                                <div class="settings_item">
+                                    <div class="bbflex">
+                                        <div class="bbflex">
+                                            <svg width="16" height="16" fill="#ffffff"><path d="M10.833 0C12.03 0 13 .895 13 2v2h-2V2H2v12h2v2H2.167C.97 16 0 15.105 0 14V2C0 .895.97 0 2.167 0h8.666zM9.5 5a4.5 4.5 0 013.81 6.895l2.397 2.398a1 1 0 01-1.32 1.497l-.094-.083-2.398-2.396A4.5 4.5 0 119.5 5zm0 2a2.5 2.5 0 100 5 2.5 2.5 0 000-5z"></path></svg>
+                                            <div class="settings_item_label bbflex">Solve Method</div>
+                                        </div>
+                                        <div class="bbflex">
+                                            <div class="settings_dropdown_selected bbflex">
+                                                <div id="recaptcha_solve_method">Image</div>
+                                                <div class="settings_dropdown_options" style="box-sizing: border-box;">
+                                                    <div>
+                                                        <div data-displays="#recaptcha_solve_method" data-value="Image" class="settings_dropdown bbflex" data-settings="recaptcha_solve_method">Image</div>
+                                                        <div data-displays="#recaptcha_solve_method" data-value="Speech" class="settings_dropdown bbflex" data-settings="recaptcha_solve_method">Speech</div>
+                                                    </div>
+                                                </div>
+                                                <svg width="16" height="16" fill="rgba(255, 255, 255, 0.5)"><path d="M5.302 9.225L8 11.878l2.7-2.653a.77.77 0 011.079 0 .744.744 0 010 1.06L8 14l-3.778-3.714a.744.744 0 010-1.061.77.77 0 011.08 0zM7.999 2l3.783 3.715.009.009a.744.744 0 01-.01 1.051.77.77 0 01-1.078 0L8.004 4.122 5.306 6.775a.77.77 0 01-1.088-.008.745.745 0 01.008-1.053L7.999 2z" fill-rule="evenodd"></path></svg>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="settings_description_container bbflex">
+                                    <div class="settings_description">Method used to solve the captcha.</div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- FUNCAPTCHA TAB -->
+            <div class="tab hidden" data-tab="funcaptcha">
+                <div class="header">
+                    <button class="nav_icon back" data-tabtarget="main">
+                        <svg width="12" height="12" viewBox="0 0 9 16"><path d="M2.684 8l6.038-6.308c.37-.387.37-1.015 0-1.402a.92.92 0 00-1.342 0L0 8l7.38 7.71a.92.92 0 001.342 0c.37-.387.37-1.015 0-1.402L2.684 8z"></path></svg>
+                    </button>
+
+                    <div class="header_label_container">
+                        <div class="header_label">FunCAPTCHA</div>
+                    </div>
+
+                    <a href="https://nopecha.com/demo/funcaptcha" target="_blank">
+                        <button class="nav_icon">
+                            <svg width="16" height="16" viewBox="18 30 37 34"><path d="M52.107,37.991,38.249,30a3.992,3.992,0,0,0-1.919-.533A3.606,3.606,0,0,0,34.412,30L20.555,37.991a3.829,3.829,0,0,0-1.919,3.3V57.338a3.9,3.9,0,0,0,1.919,3.3l.959.533,4.423,2.558V56.326l10.393-5.969,10.393,5.969v7.355l4.423-2.558.959-.586a3.829,3.829,0,0,0,1.919-3.3V41.243A3.857,3.857,0,0,0,52.107,37.991ZM46.617,47.9,38.2,43a3.99,3.99,0,0,0-1.918-.533A3.607,3.607,0,0,0,34.359,43l-8.474,4.9V43.268l8.688-5.01a3.425,3.425,0,0,1,3.358,0l8.688,5.01Z" fill="#50b95d"/></svg>
+                        </button>
+                    </a>
+                </div>
+
+                <div style="position: relative; overflow: hidden; width: 100%; height: auto; min-height: 0px; max-height: 402px;">
+                    <div style="position: relative; overflow: auto; margin-bottom: -15px; min-height: 15px; max-height: 417px;">
+                        <div class="scrolling_container">
+
+                            <div class="settings_item_container">
+                                <div class="settings_item">
+                                    <div class="bbflex">
+                                        <div class="bbflex">
+                                            <svg width="16" height="16" fill="#ffffff"><path d="M8 0A8 8 0 11.582 11.001h2.221a6 6 0 100-6L.582 4.999A8.003 8.003 0 018 0zM7 5l4 3-4 3-.001-2H0V7h6.999L7 5z"></path></svg>
+                                            <div class="settings_item_label bbflex">Auto-Open</div>
+                                        </div>
+                                        <div class="bbflex">
+                                            <div class="settings_toggle off" data-settings="funcaptcha_auto_open">
+                                                <div></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="settings_description_container bbflex">
+                                    <div class="settings_description">Automatically opens captcha challenges.</div>
+                                </div>
+                            </div>
+
+                            <div class="settings_item_container">
+                                <div class="settings_item">
+                                    <div class="bbflex">
+                                        <div class="bbflex">
+                                            <svg width="16" height="16" fill="#ffffff"><path d="M13.336 9.007l.044.085 2.58 6.193a.516.516 0 01-.91.48l-.043-.083-.728-1.747h-2.753l-.727 1.747a.516.516 0 01-.586.306l-.089-.028a.516.516 0 01-.306-.586l.028-.089 2.58-6.193a.517.517 0 01.91-.085zM4.128 1.728V4.13a5.161 5.161 0 004.13 9.187v2.095A7.226 7.226 0 014.128 1.73zm8.775 8.904l-.947 2.271h1.893l-.946-2.27zM8.258 0v8.258H6.193V0h2.065zm2.065 1.728a7.233 7.233 0 014.055 5.498h-2.094a5.162 5.162 0 00-1.962-3.097V1.728z"></path></svg>
+                                            <div class="settings_item_label bbflex">Auto-Solve</div>
+                                        </div>
+                                        <div class="bbflex">
+                                            <div class="settings_toggle off" data-settings="funcaptcha_auto_solve">
+                                                <div></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="settings_description_container bbflex">
+                                    <div class="settings_description">Automatically solves captcha challenges.</div>
+                                </div>
+                            </div>
+
+                            <div class="settings_item_container">
+                                <div class="settings_item">
+                                    <div class="bbflex">
+                                        <div class="bbflex">
+                                            <svg width="16" height="16" fill="#ffffff"><path d="M12.214 10l.964 3H14.5a1.5 1.5 0 010 3h-13a1.5 1.5 0 010-3h1.322l.964-3h8.428zm-1.607-5l.964 3H4.429l.964-3h5.214zM9 0l.964 3H6.036L7 0h2z"></path></svg>
+                                            <div class="settings_item_label bbflex">Delay solving</div>
+                                        </div>
+                                        <div class="bbflex">
+                                            <div class="settings_toggle off" data-settings="funcaptcha_solve_delay">
+                                                <div></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="settings_description_container bbflex">
+                                    <div class="settings_description">Adds a delay to avoid detection.</div>
+                                </div>
+                            </div>
+
+                            <div class="settings_item_container">
+                                <div class="settings_item">
+                                    <div class="bbflex">
+                                        <div class="bbflex">
+                                            <svg width="16" height="16" fill="#ffffff"><path d="M16 8a8 8 0 01-8 8v-1a7 7 0 007-7h1zm-4.667 3.536l.667.707C10.976 13.33 9.562 14 8 14c-1.562 0-2.976-.671-4-1.757l.667-.707C5.52 12.441 6.698 13 8 13s2.48-.56 3.333-1.464zM7 4.5a.5.5 0 01.492.41L7.5 5v3.5H10a.5.5 0 01.492.41L10.5 9a.5.5 0 01-.41.492L10 9.5H6.5V5a.5.5 0 01.5-.5zM8 0v1a7 7 0 00-7 7H0a8 8 0 018-8zm0 2c1.562 0 2.977.672 4 1.758l-.666.707C10.48 3.56 9.302 3 8 3s-2.48.56-3.334 1.465L4 3.758C5.023 2.672 6.438 2 8 2z"></path></svg>
+                                            <div class="settings_item_label bbflex">Delay Timer</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="settings_description_container bbflex">
+                                    <div class="settings_description">Milliseconds to delay solving.</div>
+                                    <input type="number" autocomplete="off" spellcheck="false" placeholder="Delay" value="" class="settings_text text_input text_right small" data-settings="funcaptcha_solve_delay_time">
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- AWSCAPTCHA TAB -->
+            <div class="tab hidden" data-tab="awscaptcha">
+                <div class="header">
+                    <button class="nav_icon back" data-tabtarget="main">
+                        <svg width="12" height="12" viewBox="0 0 9 16"><path d="M2.684 8l6.038-6.308c.37-.387.37-1.015 0-1.402a.92.92 0 00-1.342 0L0 8l7.38 7.71a.92.92 0 001.342 0c.37-.387.37-1.015 0-1.402L2.684 8z"></path></svg>
+                    </button>
+
+                    <div class="header_label_container">
+                        <div class="header_label">AWS CAPTCHA</div>
+                    </div>
+
+                    <a href="https://nopecha.com/demo/awscaptcha" target="_blank">
+                        <button class="nav_icon">
+                            <svg width="16" height="16" viewBox="0 0 256 310"><path d="M0 173.367l.985.52 15.49 1.762 19.455-1.082.856-.45-17.267-1.501-19.519.75z" fill="#B6C99C"/><path d="M128 .698L73.948 27.724V201.23L128 211.148l1.85-2.5V5.148L128 .699z" fill="#4C612C"/><path d="M128 .698v217.7l54.053-16.141V27.724L128 .698z" fill="#769B3F"/><path d="M219.214 174.117l.922.623 19.339 1.074 15.656-1.779.869-.669-19.52-.75-17.266 1.501z" fill="#B6C99C"/><path d="M219.214 210.153l20.27 2.627.543-.998v-35.397l-.543-1.141-20.27-1.126v36.035z" fill="#4C612C"/><path d="M36.786 210.153l-20.27 2.627-.342-.925v-36.001l.342-.61 20.27-1.126v36.035z" fill="#769B3F"/><path d="M125.748 208.651l-89.713-15.765-19.52 1.876.889.891 85.223 17.265.974-.513 22.147-3.754z" fill="#B6C99C"/><path d="M0 191.385v54.428L89.713 290.8v.055L128 310l1.6-3.002v-118.85l-1.6-3.746-38.287-3.753v28.888l-73.197-14.81v-19.483L0 173.367v18.018z" fill="#4C612C"/><path d="M128 209.026l21.771 3.754 2.804.118 85.285-17.129 1.624-1.007-19.144-1.877L128 209.026z" fill="#B6C99C"/><path d="M239.484 175.243v19.483l-73.196 14.811v-30.165L128 183.126V310l128-64.188v-72.446l-16.516 1.877z" fill="#769B3F"/><path d="M166.287 182.375L128 179.372l-38.288 3.003L128 186.13l38.287-3.754z" fill="#B6C99C"/></svg>
+                        </button>
+                    </a>
+                </div>
+
+                <div style="position: relative; overflow: hidden; width: 100%; height: auto; min-height: 0px; max-height: 402px;">
+                    <div style="position: relative; overflow: auto; margin-bottom: -15px; min-height: 15px; max-height: 417px;">
+                        <div class="scrolling_container">
+
+                            <div class="settings_item_container">
+                                <div class="settings_item">
+                                    <div class="bbflex">
+                                        <div class="bbflex">
+                                            <svg width="16" height="16" fill="#ffffff"><path d="M8 0A8 8 0 11.582 11.001h2.221a6 6 0 100-6L.582 4.999A8.003 8.003 0 018 0zM7 5l4 3-4 3-.001-2H0V7h6.999L7 5z"></path></svg>
+                                            <div class="settings_item_label bbflex">Auto-Open</div>
+                                        </div>
+                                        <div class="bbflex">
+                                            <div class="settings_toggle off" data-settings="awscaptcha_auto_open">
+                                                <div></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="settings_description_container bbflex">
+                                    <div class="settings_description">Automatically opens captcha challenges.</div>
+                                </div>
+                            </div>
+
+                            <div class="settings_item_container">
+                                <div class="settings_item">
+                                    <div class="bbflex">
+                                        <div class="bbflex">
+                                            <svg width="16" height="16" fill="#ffffff"><path d="M13.336 9.007l.044.085 2.58 6.193a.516.516 0 01-.91.48l-.043-.083-.728-1.747h-2.753l-.727 1.747a.516.516 0 01-.586.306l-.089-.028a.516.516 0 01-.306-.586l.028-.089 2.58-6.193a.517.517 0 01.91-.085zM4.128 1.728V4.13a5.161 5.161 0 004.13 9.187v2.095A7.226 7.226 0 014.128 1.73zm8.775 8.904l-.947 2.271h1.893l-.946-2.27zM8.258 0v8.258H6.193V0h2.065zm2.065 1.728a7.233 7.233 0 014.055 5.498h-2.094a5.162 5.162 0 00-1.962-3.097V1.728z"></path></svg>
+                                            <div class="settings_item_label bbflex">Auto-Solve</div>
+                                        </div>
+                                        <div class="bbflex">
+                                            <div class="settings_toggle off" data-settings="awscaptcha_auto_solve">
+                                                <div></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="settings_description_container bbflex">
+                                    <div class="settings_description">Automatically solves captcha challenges.</div>
+                                </div>
+                            </div>
+
+                            <div class="settings_item_container">
+                                <div class="settings_item">
+                                    <div class="bbflex">
+                                        <div class="bbflex">
+                                            <svg width="16" height="16" fill="#ffffff"><path d="M12.214 10l.964 3H14.5a1.5 1.5 0 010 3h-13a1.5 1.5 0 010-3h1.322l.964-3h8.428zm-1.607-5l.964 3H4.429l.964-3h5.214zM9 0l.964 3H6.036L7 0h2z"></path></svg>
+                                            <div class="settings_item_label bbflex">Delay solving</div>
+                                        </div>
+                                        <div class="bbflex">
+                                            <div class="settings_toggle off" data-settings="awscaptcha_solve_delay">
+                                                <div></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="settings_description_container bbflex">
+                                    <div class="settings_description">Adds a delay to avoid detection.</div>
+                                </div>
+                            </div>
+
+                            <div class="settings_item_container">
+                                <div class="settings_item">
+                                    <div class="bbflex">
+                                        <div class="bbflex">
+                                            <svg width="16" height="16" fill="#ffffff"><path d="M16 8a8 8 0 01-8 8v-1a7 7 0 007-7h1zm-4.667 3.536l.667.707C10.976 13.33 9.562 14 8 14c-1.562 0-2.976-.671-4-1.757l.667-.707C5.52 12.441 6.698 13 8 13s2.48-.56 3.333-1.464zM7 4.5a.5.5 0 01.492.41L7.5 5v3.5H10a.5.5 0 01.492.41L10.5 9a.5.5 0 01-.41.492L10 9.5H6.5V5a.5.5 0 01.5-.5zM8 0v1a7 7 0 00-7 7H0a8 8 0 018-8zm0 2c1.562 0 2.977.672 4 1.758l-.666.707C10.48 3.56 9.302 3 8 3s-2.48.56-3.334 1.465L4 3.758C5.023 2.672 6.438 2 8 2z"></path></svg>
+                                            <div class="settings_item_label bbflex">Delay Timer</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="settings_description_container bbflex">
+                                    <div class="settings_description">Milliseconds to delay solving.</div>
+                                    <input type="number" autocomplete="off" spellcheck="false" placeholder="Delay" value="" class="settings_text text_input text_right small" data-settings="awscaptcha_solve_delay_time">
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- TEXTCAPTCHA TAB -->
+            <div class="tab hidden" data-tab="textcaptcha">
+                <div class="header">
+                    <button class="nav_icon back" data-tabtarget="main">
+                        <svg width="12" height="12" viewBox="0 0 9 16"><path d="M2.684 8l6.038-6.308c.37-.387.37-1.015 0-1.402a.92.92 0 00-1.342 0L0 8l7.38 7.71a.92.92 0 001.342 0c.37-.387.37-1.015 0-1.402L2.684 8z"></path></svg>
+                    </button>
+
+                    <div class="header_label_container">
+                        <div class="header_label">Text CAPTCHA</div>
+                    </div>
+
+                    <a href="https://nopecha.com/demo/textcaptcha" target="_blank">
+                        <button class="nav_icon">
+                            <svg width="16" height="16" viewBox="0 0 100 100"><g transform="translate(0,51) scale(0.01,-0.01)"><path fill="#ffffff" d="M7287.1,5007c-697.7-46.8-1170-242.5-1467.8-608.4c-227.6-285.1-274.4-463.7-170.2-655.2c89.3-159.5,185.1-202.1,574.4-259.5c234-34,310.6-14.9,425.4,114.9c331.8,370.1,385,399.9,757.3,414.8c393.6,19.1,689.2-59.6,804.1-212.7c72.3-95.7,119.1-274.4,119.1-451v-151l-174.5-55.3c-251-80.8-461.6-131.9-989.2-240.4c-908.3-185.1-1240.2-321.2-1516.7-619c-231.9-251-340.4-551-340.4-933.9C5308.8,661,5713,148.3,6404.3-34.6c119.1-31.9,223.4-40.4,521.2-38.3c342.5,0,387.2,6.4,559.5,57.4c310.6,95.7,604.1,261.7,838.1,470.1l110.6,100l44.7-144.7c59.6-193.6,125.5-289.3,238.3-344.6c80.8-38.3,131.9-44.7,363.7-44.7c363.8,0,472.3,46.8,572.2,242.5c48.9,95.7,44.7,202.1-17,502c-34.1,161.7-38.3,321.2-40.4,1531.6c-2.1,1159.4-6.4,1378.5-38.3,1552.9c-57.4,338.2-112.7,459.5-287.2,642.4c-259.5,272.3-597.8,423.3-1089.2,482.9C7974.2,4998.5,7459.4,5017.6,7287.1,5007z M8325.2,1962.9c-10.6-346.7-17-416.9-59.6-523.3c-97.9-255.3-353.1-482.9-642.4-570.1c-202.1-61.7-489.3-51.1-644.5,23.4c-134,65.9-263.8,195.7-329.7,329.7c-76.6,159.5-74.5,389.3,6.4,525.4c117,200,302.1,282.9,950.9,429.7c240.4,55.3,493.5,117,563.7,138.3c70.2,23.4,136.2,42.5,146.8,42.5C8327.4,2360.7,8329.5,2186.3,8325.2,1962.9z"/><path fill="#ffffff" d="M2909.2,1996.9c-38.3-12.8-104.2-57.4-148.9-100c-72.3-72.3-187.2-359.5-1248.7-3097.3C869.2-2861.7,333.1-4252.9,322.5-4295.5c-40.4-161.7,68.1-378.7,229.7-451c74.5-34,140.4-40.4,448.9-40.4c410.6,0,491.4,21.3,591.4,153.2c34,44.7,148.9,342.5,299.9,772.2l242.5,702h1346.6h1348.7l217-585c119.1-321.2,236.1-640.3,261.6-706.2c55.3-153.2,131.9-244.6,244.7-295.7c117-53.2,776.4-59.6,899.8-8.5c157.4,65.9,259.5,217,259.5,380.8c0,76.6-244.6,708.4-1216.8,3144.1c-1327.4,3331.3-1257.2,3171.7-1452.9,3227C3938.8,2024.6,3009.2,2024.6,2909.2,1996.9z M3945.2-851.5l444.6-1201.9l-906.2-6.4c-497.8-2.1-908.3,0-912.6,4.3c-6.4,6.4,782.8,2216.6,878.6,2459.1C3466.6,446.2,3441.1,514.2,3945.2-851.5z"/></g></svg>
+                        </button>
+                    </a>
+                </div>
+
+                <div style="position: relative; overflow: hidden; width: 100%; height: auto; min-height: 0px; max-height: 402px;">
+                    <div style="position: relative; overflow: auto; margin-bottom: -15px; min-height: 15px; max-height: 417px;">
+                        <div class="scrolling_container">
+
+                            <div class="settings_item_container">
+                                <div class="settings_item">
+                                    <div class="bbflex">
+                                        <div class="bbflex">
+                                            <svg width="16" height="16" fill="#ffffff"><path d="M13.336 9.007l.044.085 2.58 6.193a.516.516 0 01-.91.48l-.043-.083-.728-1.747h-2.753l-.727 1.747a.516.516 0 01-.586.306l-.089-.028a.516.516 0 01-.306-.586l.028-.089 2.58-6.193a.517.517 0 01.91-.085zM4.128 1.728V4.13a5.161 5.161 0 004.13 9.187v2.095A7.226 7.226 0 014.128 1.73zm8.775 8.904l-.947 2.271h1.893l-.946-2.27zM8.258 0v8.258H6.193V0h2.065zm2.065 1.728a7.233 7.233 0 014.055 5.498h-2.094a5.162 5.162 0 00-1.962-3.097V1.728z"></path></svg>
+                                            <div class="settings_item_label bbflex">Auto-Solve</div>
+                                        </div>
+                                        <div class="bbflex">
+                                            <div class="settings_toggle off" data-settings="textcaptcha_auto_solve">
+                                                <div></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="settings_description_container bbflex">
+                                    <div class="settings_description">Automatically solves captcha challenges.</div>
+                                </div>
+                            </div>
+
+                            <div class="settings_item_container">
+                                <div class="settings_item">
+                                    <div class="bbflex">
+                                        <div class="bbflex">
+                                            <svg width="16" height="16" fill="#ffffff"><path d="M12.214 10l.964 3H14.5a1.5 1.5 0 010 3h-13a1.5 1.5 0 010-3h1.322l.964-3h8.428zm-1.607-5l.964 3H4.429l.964-3h5.214zM9 0l.964 3H6.036L7 0h2z"></path></svg>
+                                            <div class="settings_item_label bbflex">Delay solving</div>
+                                        </div>
+                                        <div class="bbflex">
+                                            <div class="settings_toggle off" data-settings="textcaptcha_solve_delay">
+                                                <div></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="settings_description_container bbflex">
+                                    <div class="settings_description">Adds a delay to avoid detection.</div>
+                                </div>
+                            </div>
+
+                            <div class="settings_item_container">
+                                <div class="settings_item">
+                                    <div class="bbflex">
+                                        <div class="bbflex">
+                                            <svg width="16" height="16" fill="#ffffff"><path d="M16 8a8 8 0 01-8 8v-1a7 7 0 007-7h1zm-4.667 3.536l.667.707C10.976 13.33 9.562 14 8 14c-1.562 0-2.976-.671-4-1.757l.667-.707C5.52 12.441 6.698 13 8 13s2.48-.56 3.333-1.464zM7 4.5a.5.5 0 01.492.41L7.5 5v3.5H10a.5.5 0 01.492.41L10.5 9a.5.5 0 01-.41.492L10 9.5H6.5V5a.5.5 0 01.5-.5zM8 0v1a7 7 0 00-7 7H0a8 8 0 018-8zm0 2c1.562 0 2.977.672 4 1.758l-.666.707C10.48 3.56 9.302 3 8 3s-2.48.56-3.334 1.465L4 3.758C5.023 2.672 6.438 2 8 2z"></path></svg>
+                                            <div class="settings_item_label bbflex">Delay Timer</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="settings_description_container bbflex">
+                                    <div class="settings_description">Milliseconds to delay solving.</div>
+                                    <input type="number" autocomplete="off" spellcheck="false" placeholder="Delay" value="" class="settings_text text_input text_right small" data-settings="textcaptcha_solve_delay_time">
+                                </div>
+                            </div>
+
+                            <div class="settings_item_container">
+                                <div class="settings_item">
+                                    <div class="bbflex">
+                                        <div class="bbflex">
+                                            <svg width="16" height="16" fill="#ffffff"><path d="M10.833 0C12.03 0 13 .895 13 2v2h-2V2H2v12h2v2H2.167C.97 16 0 15.105 0 14V2C0 .895.97 0 2.167 0h8.666zM9.5 5a4.5 4.5 0 013.81 6.895l2.397 2.398a1 1 0 01-1.32 1.497l-.094-.083-2.398-2.396A4.5 4.5 0 119.5 5zm0 2a2.5 2.5 0 100 5 2.5 2.5 0 000-5z"></path></svg>
+                                            <div class="settings_item_label bbflex">Image Element</div>
+                                        </div>
+                                        <div class="bbflex">
+                                            <div class="settings_button bbflex">
+                                                <div class="locate" data-key="textcaptcha_image_selector">Locate</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="settings_description_container bbflex">
+                                    <div class="settings_description">CSS selector for the captcha image.</div>
+                                    <input type="text" autocomplete="off" spellcheck="false" placeholder="Enter CSS selector" value="" class="settings_text text_input text_right" data-settings="textcaptcha_image_selector">
+                                </div>
+                            </div>
+
+                            <div class="settings_item_container">
+                                <div class="settings_item">
+                                    <div class="bbflex">
+                                        <div class="bbflex">
+                                            <svg width="16" height="16" fill="#ffffff"><path d="M10.833 0C12.03 0 13 .895 13 2v2h-2V2H2v12h2v2H2.167C.97 16 0 15.105 0 14V2C0 .895.97 0 2.167 0h8.666zM9.5 5a4.5 4.5 0 013.81 6.895l2.397 2.398a1 1 0 01-1.32 1.497l-.094-.083-2.398-2.396A4.5 4.5 0 119.5 5zm0 2a2.5 2.5 0 100 5 2.5 2.5 0 000-5z"></path></svg>
+                                            <div class="settings_item_label bbflex">Input Element</div>
+                                        </div>
+                                        <div class="bbflex">
+                                            <div class="settings_button bbflex">
+                                                <div class="locate" data-key="textcaptcha_input_selector">Locate</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="settings_description_container bbflex">
+                                    <div class="settings_description">CSS selector for the captcha input.</div>
+                                    <input type="text" autocomplete="off" spellcheck="false" placeholder="Enter CSS selector" value="" class="settings_text text_input text_right" data-settings="textcaptcha_input_selector">
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- MAIN TAB -->
+            <div class="tab" data-tab="main">
+                <div class="header">
+                    <!-- <a href="https://nopecha.com/discord" target="_blank">
+                        <button class="nav_icon hover_glow">
+                            <svg width="18" height="18" viewBox="0 0 71 55"><path d="M60.1045 4.8978C55.5792 2.8214 50.7265 1.2916 45.6527 0.41542C45.5603 0.39851 45.468 0.440769 45.4204 0.525289C44.7963 1.6353 44.105 3.0834 43.6209 4.2216C38.1637 3.4046 32.7345 3.4046 27.3892 4.2216C26.905 3.0581 26.1886 1.6353 25.5617 0.525289C25.5141 0.443589 25.4218 0.40133 25.3294 0.41542C20.2584 1.2888 15.4057 2.8186 10.8776 4.8978C10.8384 4.9147 10.8048 4.9429 10.7825 4.9795C1.57795 18.7309 -0.943561 32.1443 0.293408 45.3914C0.299005 45.4562 0.335386 45.5182 0.385761 45.5576C6.45866 50.0174 12.3413 52.7249 18.1147 54.5195C18.2071 54.5477 18.305 54.5139 18.3638 54.4378C19.7295 52.5728 20.9469 50.6063 21.9907 48.5383C22.0523 48.4172 21.9935 48.2735 21.8676 48.2256C19.9366 47.4931 18.0979 46.6 16.3292 45.5858C16.1893 45.5041 16.1781 45.304 16.3068 45.2082C16.679 44.9293 17.0513 44.6391 17.4067 44.3461C17.471 44.2926 17.5606 44.2813 17.6362 44.3151C29.2558 49.6202 41.8354 49.6202 53.3179 44.3151C53.3935 44.2785 53.4831 44.2898 53.5502 44.3433C53.9057 44.6363 54.2779 44.9293 54.6529 45.2082C54.7816 45.304 54.7732 45.5041 54.6333 45.5858C52.8646 46.6197 51.0259 47.4931 49.0921 48.2228C48.9662 48.2707 48.9102 48.4172 48.9718 48.5383C50.038 50.6034 51.2554 52.5699 52.5959 54.435C52.6519 54.5139 52.7526 54.5477 52.845 54.5195C58.6464 52.7249 64.529 50.0174 70.6019 45.5576C70.6551 45.5182 70.6887 45.459 70.6943 45.3942C72.1747 30.0791 68.2147 16.7757 60.1968 4.9823C60.1772 4.9429 60.1437 4.9147 60.1045 4.8978ZM23.7259 37.3253C20.2276 37.3253 17.3451 34.1136 17.3451 30.1693C17.3451 26.225 20.1717 23.0133 23.7259 23.0133C27.308 23.0133 30.1626 26.2532 30.1066 30.1693C30.1066 34.1136 27.28 37.3253 23.7259 37.3253ZM47.3178 37.3253C43.8196 37.3253 40.9371 34.1136 40.9371 30.1693C40.9371 26.225 43.7636 23.0133 47.3178 23.0133C50.9 23.0133 53.7545 26.2532 53.6986 30.1693C53.6986 34.1136 50.9 37.3253 47.3178 37.3253Z"/></svg>
+                        </button>
+                    </a> -->
+
+                    <div data-tabtarget="settings">
+                        <button class="nav_icon">
+                            <svg width="12" height="12" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1 0h14a1 1 0 010 2H1a1 1 0 110-2zm0 6h14a1 1 0 010 2H1a1 1 0 110-2zm0 6h14a1 1 0 010 2H1a1 1 0 010-2z" opacity="0.603"></path></svg>
+                        </button>
+                    </div>
+
+                    <div class="header_label_container">
+                        <a href="https://nopecha.com" target="_blank">
+                            <div class="header_label">NopeCHA</div>
+                        </a>
+                    </div>
+
+                    <button id='power' class="nav_icon">
+                        <div style="width: 32px; height: 32px;">
+                            <div class="btn">
+                                <svg width="32" height="32" viewBox="0 0 72 72"><path d="M31.5 18.57a18 18 0 109-.01v3.13a15 15 0 11-9 0v-3.12zm3-5.07v22a1.5 1.5 0 003 0v-22a1.5 1.5 0 00-3 0zM36 66a30 30 0 110-60 30 30 0 010 60z" fill="#ffffff"></path></svg>
+                            </div>
+                        </div>
+                        <div class="btn_outline spinning hidden">
+                            <svg width="32" height="32" viewBox="0 0 72 72"><path fill="#A0FEDA" fill-rule="evenodd" d="M.055 38H3.06C4.093 55.294 18.446 69 36 69s31.907-13.706 32.94-31h3.005C70.908 56.952 55.211 72 36 72S1.092 56.952.055 38zm0-4C1.092 15.048 16.789 0 36 0s34.908 15.048 35.945 34H68.94C67.907 16.706 53.554 3 36 3S4.093 16.706 3.06 34H.055z"></path></svg>
+                        </div>
+                        <div class="btn_outline static hidden">
+                            <svg width="32" height="32" viewBox="0 0 72 72" fill="#55ff8a"><path d="M36 72C16.118 72 0 55.882 0 36S16.118 0 36 0s36 16.118 36 36-16.118 36-36 36zm0-3c18.225 0 33-14.775 33-33S54.225 3 36 3 3 17.775 3 36s14.775 33 33 33z"></path></svg>
+                        </div>
+                    </button>
+                </div>
+
+                <div class="plan_info_container" style="border-bottom: 1px solid rgba(255, 255, 255, 0.4);">
+                    <input type="text" autocomplete="off" spellcheck="false" placeholder="Enter subscription key" value="" class="settings_text text_input plan_info hiddenleft" data-settings="key" style="padding: 2px 8px 2px 16px">
+                    <div id="edit_key" class="plan_info">
+                        <div class="plan_label clickable key_label">
+                            <div>Subscription Key</div>
+                            <div class="instructions">(Click to enter)</div>
+                        </div>
+                        <div class="plan_value">
+                            <button class="plan_button edit_icon hidden clickable">
+                                <!-- <div class="edit_key"></div> -->
+                                <svg width="16" height="16" fill="#ffffff"><path fill-rule="evenodd" d="M11 0l.217.005a5 5 0 014.778 4.772L16 5 5 16H0v-5L11 0zM2 11.828V14h2.172l9.737-9.737a3.009 3.009 0 00-1.983-2.125l-.184-.052L2 11.828z"></path></svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <br>
+
+                <div class="plan_info_box">
+                    <div id="ipbanned_warning" class="warning_box hidden">
+                        <div>Your IP is ineligible for free credits.</div>
+                        <div><a href="https://nopecha.com/pricing" target="_blank">Purchase a key</a> to use with VPN/proxy.</div>
+                    </div>
+
+                    <div class="plan_info_container">
+                        <div class="plan_info">
+                            <div id="plan" class="plan_label">Free Plan</div>
+                            <div class="plan_value">
+                                <a href="https://nopecha.com/manage" target="_blank">
+                                    <button class="plan_button link">
+                                        <div class="plan_button_label clickable">Upgrade</div>
+                                    </button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="plan_info_container">
+                        <div class="plan_info">
+                            <div class="plan_label">Credits</div>
+                            <div class="plan_value">
+                                <a href="https://nopecha.com/manage" target="_blank">
+                                    <button class="plan_button link">
+                                        <div id="credit" class="plan_button_label clickable">0 / 0</div>
+                                    </button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="plan_info_container">
+                        <div class="plan_info">
+                            <div class="plan_label">Refills</div>
+                            <div class="plan_value">
+                                <a href="https://nopecha.com/manage" target="_blank">
+                                    <button class="plan_button link">
+                                        <div id="refills" class="plan_button_label clickable">00:00:00</div>
+                                    </button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu">
+                    <button class="menu_item_container" data-tabtarget="hcaptcha">
+                        <div class="button_label_container">
+                            <svg width="16" height="16" viewBox="20 20 560 560"><path d="m374.48 524.29h74.9v74.89h-74.9z" fill="#0074bf" opacity=".502"/><path d="m299.59 524.29h74.89v74.89h-74.89zm-74.89 0h74.89v74.89h-74.89z" fill="#0074bf" opacity=".702"/><path d="m149.8 524.29h74.9v74.89h-74.9z" fill="#0074bf" opacity=".502"/><g fill="#0082bf"><path d="m449.39 449.39h74.9v74.9h-74.9z" opacity=".702"/><path d="m374.48 449.39h74.9v74.9h-74.9z" opacity=".8"/><path d="m299.59 449.39h74.89v74.9h-74.89zm-74.89 0h74.89v74.9h-74.89z"/><path d="m149.8 449.39h74.9v74.9h-74.9z" opacity=".8"/><path d="m74.89 449.39h74.9v74.9h-74.9z" opacity=".702"/></g><g fill="#008fbf"><path d="m524.29 374.48h74.89v74.9h-74.89z" opacity=".502"/><path d="m449.39 374.48h74.9v74.9h-74.9z" opacity=".8"/><path d="m374.48 374.48h74.9v74.9h-74.9zm-74.89 0h74.89v74.9h-74.89zm-74.89 0h74.89v74.9h-74.89z"/><path d="m149.8 374.48h74.9v74.9h-74.9z"/><path d="m74.89 374.48h74.9v74.9h-74.9z" opacity=".8"/><path d="m0 374.48h74.89v74.9h-74.89z" opacity=".502"/></g><path d="m524.29 299.59h74.89v74.89h-74.89z" fill="#009dbf" opacity=".702"/><path d="m449.39 299.59h74.9v74.89h-74.9zm-74.91 0h74.9v74.89h-74.9zm-74.89 0h74.89v74.89h-74.89zm-74.89 0h74.89v74.89h-74.89z" fill="#009dbf"/><path d="m149.8 299.59h74.9v74.89h-74.9zm-74.91 0h74.9v74.89h-74.9z" fill="#009dbf"/><path d="m0 299.59h74.89v74.89h-74.89z" fill="#009dbf" opacity=".702"/><path d="m524.29 224.7h74.89v74.89h-74.89z" fill="#00abbf" opacity=".702"/><path d="m449.39 224.7h74.9v74.89h-74.9zm-74.91 0h74.9v74.89h-74.9zm-74.89 0h74.89v74.89h-74.89zm-74.89 0h74.89v74.89h-74.89z" fill="#00abbf"/><path d="m149.8 224.7h74.9v74.89h-74.9zm-74.91 0h74.9v74.89h-74.9z" fill="#00abbf"/><path d="m0 224.7h74.89v74.89h-74.89z" fill="#00abbf" opacity=".702"/><g fill="#00b9bf"><path d="m524.29 149.8h74.89v74.9h-74.89z" opacity=".502"/><path d="m449.39 149.8h74.9v74.9h-74.9z" opacity=".8"/><path d="m374.48 149.8h74.9v74.9h-74.9zm-74.89 0h74.89v74.9h-74.89zm-74.89 0h74.89v74.9h-74.89z"/><path d="m149.8 149.8h74.9v74.9h-74.9z"/><path d="m74.89 149.8h74.9v74.9h-74.9z" opacity=".8"/><path d="m0 149.8h74.89v74.9h-74.89z" opacity=".502"/></g><g fill="#00c6bf"><path d="m449.39 74.89h74.9v74.9h-74.9z" opacity=".702"/><path d="m374.48 74.89h74.9v74.9h-74.9z" opacity=".8"/><path d="m299.59 74.89h74.89v74.9h-74.89zm-74.89 0h74.89v74.9h-74.89z"/><path d="m149.8 74.89h74.9v74.9h-74.9z" opacity=".8"/><path d="m74.89 74.89h74.9v74.9h-74.9z" opacity=".702"/></g><path d="m374.48 0h74.9v74.89h-74.9z" fill="#00d4bf" opacity=".502"/><path d="m299.59 0h74.89v74.89h-74.89zm-74.89 0h74.89v74.89h-74.89z" fill="#00d4bf" opacity=".702"/><path d="m149.8 0h74.9v74.89h-74.9z" fill="#00d4bf" opacity=".502"/><path d="m197.2 275.96 20.87-46.71c7.61-11.97 6.6-26.64-1.72-34.96-.28-.28-.56-.55-.86-.81-.29-.26-.59-.52-.89-.76a21.043 21.043 0 0 0 -1.92-1.37 22.68 22.68 0 0 0 -4.51-2.13c-1.58-.55-3.21-.92-4.87-1.12-1.66-.19-3.34-.2-5-.03s-3.3.51-4.88 1.04c-1.79.55-3.53 1.27-5.19 2.13a32.32 32.32 0 0 0 -4.72 3.02 32.38 32.38 0 0 0 -4.12 3.82 32 32 0 0 0 -3.37 4.48c-.98 1.59-28.57 66.66-39.2 96.62s-6.39 84.91 34.61 125.99c43.48 43.48 106.43 53.41 146.58 23.28.42-.21.84-.44 1.24-.67.41-.23.81-.48 1.2-.74.4-.25.78-.52 1.16-.8.38-.27.75-.56 1.11-.86l123.73-103.32c6.01-4.97 14.9-15.2 6.92-26.88-7.79-11.39-22.55-3.64-28.57.21l-71.21 51.78c-.33.27-.72.48-1.13.6-.42.12-.85.16-1.28.11s-.85-.19-1.22-.4c-.38-.21-.71-.5-.97-.85-1.81-2.22-2.13-8.11.71-10.44l109.16-92.64c9.43-8.49 10.74-20.84 3.1-29.3-7.45-8.29-19.29-8.04-28.8.53l-98.28 76.83c-.46.38-.99.66-1.56.82s-1.17.21-1.76.13-1.15-.27-1.66-.58c-.51-.3-.96-.7-1.3-1.18-1.94-2.18-2.69-5.89-.5-8.07l111.3-108.01c2.09-1.95 3.78-4.29 4.96-6.88 1.18-2.6 1.85-5.41 1.95-8.26s-.36-5.7-1.36-8.37c-1-2.68-2.51-5.13-4.45-7.22-.97-1.03-2.05-1.95-3.2-2.75a21.14 21.14 0 0 0 -3.69-2.05c-1.3-.55-2.65-.97-4.03-1.26-1.38-.28-2.79-.42-4.2-.41-1.44-.02-2.88.1-4.29.37a21.906 21.906 0 0 0 -7.96 3.16c-1.21.78-2.34 1.68-3.38 2.68l-113.73 106.83c-2.72 2.72-8.04 0-8.69-3.18-.06-.28-.08-.57-.07-.86s.06-.58.15-.85c.08-.28.2-.55.35-.79.15-.25.33-.48.54-.68l87.05-99.12a21.38 21.38 0 0 0 6.82-15.3c.11-5.81-2.15-11.42-6.25-15.53-4.11-4.12-9.71-6.4-15.52-6.31s-11.34 2.53-15.32 6.77l-132.01 145.95c-4.73 4.73-11.7 4.97-15.02 2.22-.51-.4-.93-.9-1.24-1.46-.32-.56-.52-1.18-.6-1.82-.08-.65-.03-1.3.14-1.92s.46-1.21.85-1.72z" fill="#fff"/></svg>
+                            <div class="button_label">hCaptcha</div>
+                        </div>
+                        <div class="icon-container">
+                            <svg viewBox="0 0 16 16" class="menu_item_arrow"><path fill-rule="evenodd" d="M10.3 8l-6-6.3a1 1 0 010-1.4 1 1 0 011.3 0L13 8l-7.4 7.7a1 1 0 01-1.3 0 1 1 0 010-1.4l6-6.3z"></path></svg>
+                        </div>
+                    </button>
+
+                    <button class="menu_item_container" data-tabtarget="recaptcha">
+                        <div class="button_label_container">
+                            <svg width="16" height="16" viewBox="0 0 70 70"><path d="M64 31.955l-.033-1.37V4.687l-7.16 7.16C50.948 4.674 42.033.093 32.05.093c-10.4 0-19.622 4.96-25.458 12.64l11.736 11.86a15.55 15.55 0 0 1 4.754-5.334c2.05-1.6 4.952-2.906 8.968-2.906.485 0 .86.057 1.135.163 4.976.393 9.288 3.14 11.828 7.124l-8.307 8.307L64 31.953" fill="#1c3aa9"/><path d="M31.862.094l-1.37.033H4.594l7.16 7.16C4.58 13.147 0 22.06 0 32.046c0 10.4 4.96 19.622 12.64 25.458L24.5 45.768a15.55 15.55 0 0 1-5.334-4.754c-1.6-2.05-2.906-4.952-2.906-8.968 0-.485.057-.86.163-1.135.393-4.976 3.14-9.288 7.124-11.828l8.307 8.307L31.86.095" fill="#4285f4"/><path d="M.001 32.045l.033 1.37v25.898l7.16-7.16c5.86 7.173 14.774 11.754 24.76 11.754 10.4 0 19.622-4.96 25.458-12.64l-11.736-11.86a15.55 15.55 0 0 1-4.754 5.334c-2.05 1.6-4.952 2.906-8.968 2.906-.485 0-.86-.057-1.135-.163-4.976-.393-9.288-3.14-11.828-7.124l8.307-8.307c-10.522.04-22.4.066-27.295-.005" fill="#ababab"/></svg>
+                            <div class="button_label">reCAPTCHA</div>
+                        </div>
+                        <div class="icon-container">
+                            <svg viewBox="0 0 16 16" class="menu_item_arrow"><path fill-rule="evenodd" d="M10.3 8l-6-6.3a1 1 0 010-1.4 1 1 0 011.3 0L13 8l-7.4 7.7a1 1 0 01-1.3 0 1 1 0 010-1.4l6-6.3z"></path></svg>
+                        </div>
+                    </button>
+
+                    <button class="menu_item_container" data-tabtarget="funcaptcha">
+                        <div class="button_label_container">
+                            <svg width="16" height="16" viewBox="18 30 37 34"><path d="M52.107,37.991,38.249,30a3.992,3.992,0,0,0-1.919-.533A3.606,3.606,0,0,0,34.412,30L20.555,37.991a3.829,3.829,0,0,0-1.919,3.3V57.338a3.9,3.9,0,0,0,1.919,3.3l.959.533,4.423,2.558V56.326l10.393-5.969,10.393,5.969v7.355l4.423-2.558.959-.586a3.829,3.829,0,0,0,1.919-3.3V41.243A3.857,3.857,0,0,0,52.107,37.991ZM46.617,47.9,38.2,43a3.99,3.99,0,0,0-1.918-.533A3.607,3.607,0,0,0,34.359,43l-8.474,4.9V43.268l8.688-5.01a3.425,3.425,0,0,1,3.358,0l8.688,5.01Z" fill="#50b95d"/></svg>
+                            <div class="button_label">FunCAPTCHA</div>
+                        </div>
+                        <div class="icon-container">
+                            <svg viewBox="0 0 16 16" class="menu_item_arrow"><path fill-rule="evenodd" d="M10.3 8l-6-6.3a1 1 0 010-1.4 1 1 0 011.3 0L13 8l-7.4 7.7a1 1 0 01-1.3 0 1 1 0 010-1.4l6-6.3z"></path></svg>
+                        </div>
+                    </button>
+
+                    <button class="menu_item_container" data-tabtarget="awscaptcha">
+                        <div class="button_label_container">
+                            <svg width="16" height="16" viewBox="0 0 256 310"><path d="M0 173.367l.985.52 15.49 1.762 19.455-1.082.856-.45-17.267-1.501-19.519.75z" fill="#B6C99C"/><path d="M128 .698L73.948 27.724V201.23L128 211.148l1.85-2.5V5.148L128 .699z" fill="#4C612C"/><path d="M128 .698v217.7l54.053-16.141V27.724L128 .698z" fill="#769B3F"/><path d="M219.214 174.117l.922.623 19.339 1.074 15.656-1.779.869-.669-19.52-.75-17.266 1.501z" fill="#B6C99C"/><path d="M219.214 210.153l20.27 2.627.543-.998v-35.397l-.543-1.141-20.27-1.126v36.035z" fill="#4C612C"/><path d="M36.786 210.153l-20.27 2.627-.342-.925v-36.001l.342-.61 20.27-1.126v36.035z" fill="#769B3F"/><path d="M125.748 208.651l-89.713-15.765-19.52 1.876.889.891 85.223 17.265.974-.513 22.147-3.754z" fill="#B6C99C"/><path d="M0 191.385v54.428L89.713 290.8v.055L128 310l1.6-3.002v-118.85l-1.6-3.746-38.287-3.753v28.888l-73.197-14.81v-19.483L0 173.367v18.018z" fill="#4C612C"/><path d="M128 209.026l21.771 3.754 2.804.118 85.285-17.129 1.624-1.007-19.144-1.877L128 209.026z" fill="#B6C99C"/><path d="M239.484 175.243v19.483l-73.196 14.811v-30.165L128 183.126V310l128-64.188v-72.446l-16.516 1.877z" fill="#769B3F"/><path d="M166.287 182.375L128 179.372l-38.288 3.003L128 186.13l38.287-3.754z" fill="#B6C99C"/></svg>
+                            <div class="button_label">AWS CAPTCHA</div>
+                        </div>
+                        <div class="icon-container">
+                            <svg viewBox="0 0 16 16" class="menu_item_arrow"><path fill-rule="evenodd" d="M10.3 8l-6-6.3a1 1 0 010-1.4 1 1 0 011.3 0L13 8l-7.4 7.7a1 1 0 01-1.3 0 1 1 0 010-1.4l6-6.3z"></path></svg>
+                        </div>
+                    </button>
+
+                    <button class="menu_item_container" data-tabtarget="textcaptcha">
+                        <div class="button_label_container">
+                            <svg width="16" height="16" viewBox="0 0 100 100"><g transform="translate(0,51) scale(0.01,-0.01)"><path fill="#ffffff" d="M7287.1,5007c-697.7-46.8-1170-242.5-1467.8-608.4c-227.6-285.1-274.4-463.7-170.2-655.2c89.3-159.5,185.1-202.1,574.4-259.5c234-34,310.6-14.9,425.4,114.9c331.8,370.1,385,399.9,757.3,414.8c393.6,19.1,689.2-59.6,804.1-212.7c72.3-95.7,119.1-274.4,119.1-451v-151l-174.5-55.3c-251-80.8-461.6-131.9-989.2-240.4c-908.3-185.1-1240.2-321.2-1516.7-619c-231.9-251-340.4-551-340.4-933.9C5308.8,661,5713,148.3,6404.3-34.6c119.1-31.9,223.4-40.4,521.2-38.3c342.5,0,387.2,6.4,559.5,57.4c310.6,95.7,604.1,261.7,838.1,470.1l110.6,100l44.7-144.7c59.6-193.6,125.5-289.3,238.3-344.6c80.8-38.3,131.9-44.7,363.7-44.7c363.8,0,472.3,46.8,572.2,242.5c48.9,95.7,44.7,202.1-17,502c-34.1,161.7-38.3,321.2-40.4,1531.6c-2.1,1159.4-6.4,1378.5-38.3,1552.9c-57.4,338.2-112.7,459.5-287.2,642.4c-259.5,272.3-597.8,423.3-1089.2,482.9C7974.2,4998.5,7459.4,5017.6,7287.1,5007z M8325.2,1962.9c-10.6-346.7-17-416.9-59.6-523.3c-97.9-255.3-353.1-482.9-642.4-570.1c-202.1-61.7-489.3-51.1-644.5,23.4c-134,65.9-263.8,195.7-329.7,329.7c-76.6,159.5-74.5,389.3,6.4,525.4c117,200,302.1,282.9,950.9,429.7c240.4,55.3,493.5,117,563.7,138.3c70.2,23.4,136.2,42.5,146.8,42.5C8327.4,2360.7,8329.5,2186.3,8325.2,1962.9z"/><path fill="#ffffff" d="M2909.2,1996.9c-38.3-12.8-104.2-57.4-148.9-100c-72.3-72.3-187.2-359.5-1248.7-3097.3C869.2-2861.7,333.1-4252.9,322.5-4295.5c-40.4-161.7,68.1-378.7,229.7-451c74.5-34,140.4-40.4,448.9-40.4c410.6,0,491.4,21.3,591.4,153.2c34,44.7,148.9,342.5,299.9,772.2l242.5,702h1346.6h1348.7l217-585c119.1-321.2,236.1-640.3,261.6-706.2c55.3-153.2,131.9-244.6,244.7-295.7c117-53.2,776.4-59.6,899.8-8.5c157.4,65.9,259.5,217,259.5,380.8c0,76.6-244.6,708.4-1216.8,3144.1c-1327.4,3331.3-1257.2,3171.7-1452.9,3227C3938.8,2024.6,3009.2,2024.6,2909.2,1996.9z M3945.2-851.5l444.6-1201.9l-906.2-6.4c-497.8-2.1-908.3,0-912.6,4.3c-6.4,6.4,782.8,2216.6,878.6,2459.1C3466.6,446.2,3441.1,514.2,3945.2-851.5z"/></g></svg>
+                            <div class="button_label">Text CAPTCHA</div>
+                        </div>
+                        <div class="icon-container">
+                            <svg viewBox="0 0 16 16" class="menu_item_arrow"><path fill-rule="evenodd" d="M10.3 8l-6-6.3a1 1 0 010-1.4 1 1 0 011.3 0L13 8l-7.4 7.7a1 1 0 01-1.3 0 1 1 0 010-1.4l6-6.3z"></path></svg>
+                        </div>
+                    </button>
+                </div>
+
+                <div class='footer'>
+                    <!-- <div>Join us on <a href="https://nopecha.com/discord">Discord</a> for more credits!</div>
+                    <div id="export" class="hidden">Export Settings</div> -->
+                </div>
+            </div>
+
+            <!-- SETTINGS TAB -->
+            <div class="tab hidden" data-tab="settings">
+                <div class="header">
+                    <button class="nav_icon back" data-tabtarget="main">
+                        <svg width="12" height="12" viewBox="0 0 9 16"><path d="M2.684 8l6.038-6.308c.37-.387.37-1.015 0-1.402a.92.92 0 00-1.342 0L0 8l7.38 7.71a.92.92 0 001.342 0c.37-.387.37-1.015 0-1.402L2.684 8z"></path></svg>
+                    </button>
+
+                    <div class="header_label_container">
+                        <div class="header_label">Settings</div>
+                    </div>
+
+                    <button class="nav_icon" disabled></button>
+                </div>
+
+                <div class="menu">
+                    <button class="menu_item_container" data-tabtarget="disabled_hosts">
+                        <div class="button_label_container">
+                            <svg width="16" height="16"><path fill-rule="evenodd" d="M3 2v12h10V2H3zm0-2h10a2 2 0 012 2v12a2 2 0 01-2 2H3a2 2 0 01-2-2V2a2 2 0 012-2zm2 4h6v2H5V4zm0 4h3v2H5V8z"></path></svg>
+                            <div class="button_label">Disabled Hosts</div>
+                        </div>
+                        <div class="icon-container">
+                            <svg viewBox="0 0 16 16" class="menu_item_arrow"><path fill-rule="evenodd" d="M10.3 8l-6-6.3a1 1 0 010-1.4 1 1 0 011.3 0L13 8l-7.4 7.7a1 1 0 01-1.3 0 1 1 0 010-1.4l6-6.3z"></path></svg>
+                        </div>
+                    </button>
+
+                    <button id="export" class="menu_item_container hidden">
+                        <div class="button_label_container">
+                            <svg width="16" height="16" fill="#ffffff"><path d="M8 0A8 8 0 11.582 11.001h2.221a6 6 0 100-6L.582 4.999A8.003 8.003 0 018 0zM7 5l4 3-4 3-.001-2H0V7h6.999L7 5z"></path></svg>
+                            <div class="button_label">Export Settings</div>
+                        </div>
+                        <div class="icon-container">
+                            <svg viewBox="0 0 16 16" class="menu_item_arrow"><path fill-rule="evenodd" d="M10.3 8l-6-6.3a1 1 0 010-1.4 1 1 0 011.3 0L13 8l-7.4 7.7a1 1 0 01-1.3 0 1 1 0 010-1.4l6-6.3z"></path></svg>
+                        </div>
+                    </button>
+                </div>
+
+                <!-- LINKS -->
+                <div style="position: relative; overflow: hidden; width: 100%; height: auto; min-height: 0px; max-height: 402px;">
+                    <div style="position: relative; overflow: auto; margin-bottom: -15px; min-height: 15px; max-height: 417px;">
+                        <div class="scrolling_container">
+                            <div style="margin-top: 16px; margin-bottom: 8px; padding-bottom: 4px; font-size: 14px; font-weight: bold; border-bottom: 1px solid rgba(255, 255, 255, 0.5);">
+                                Links
+                            </div>
+
+                            <div class="settings_item_container">
+                                <a href="https://developers.nopecha.com" target="_blank">
+                                    <div class="settings_description_container bbflex">
+                                        <svg width="16" height="16" fill="#ffffff"><path d="M14 2.894a3.898 3.898 0 00-4.808-.126L8 3.653l-1.192-.885A3.898 3.898 0 002 2.894v9.716a7.676 7.676 0 016.006.864A7.705 7.705 0 0114 12.621V2.894zm2 10.584v1.687l-.66.275a5.652 5.652 0 00-1.34-.72V12.62c.695.187 1.37.472 2 .857zM0 2.027l.403-.387A5.898 5.898 0 018 1.162a5.898 5.898 0 017.597.478l.403.387V16a5.692 5.692 0 00-8 0 5.663 5.663 0 00-8 0V2.027zm7-.019h2v12H7v-12z"></path></svg>
+                                        <div class="settings_description">Documentation</div>
+                                    </div>
+                                </a>
+                            </div>
+
+                            <div class="settings_item_container">
+                                <a href="https://nopecha.com" target="_blank">
+                                    <div class="settings_description_container bbflex">
+                                        <svg width="16" height="16" viewBox="2 2 22 22" fill="#ffffff"><path d="M 12 2.0996094 L 1 12 L 4 12 L 4 21 L 11 21 L 11 15 L 13 15 L 13 21 L 20 21 L 20 12 L 23 12 L 12 2.0996094 z M 12 4.7910156 L 18 10.191406 L 18 11 L 18 19 L 15 19 L 15 13 L 9 13 L 9 19 L 6 19 L 6 10.191406 L 12 4.7910156 z"/></svg>
+                                        <div class="settings_description">Homepage</div>
+                                    </div>
+                                </a>
+                            </div>
+
+                            <div class="settings_item_container">
+                                <a href="https://nopecha.com/discord" target="_blank">
+                                    <div class="settings_description_container bbflex">
+                                        <svg width="16" height="16" viewBox="0 0 71 55" fill="#ffffff"><path d="M60.1045 4.8978C55.5792 2.8214 50.7265 1.2916 45.6527 0.41542C45.5603 0.39851 45.468 0.440769 45.4204 0.525289C44.7963 1.6353 44.105 3.0834 43.6209 4.2216C38.1637 3.4046 32.7345 3.4046 27.3892 4.2216C26.905 3.0581 26.1886 1.6353 25.5617 0.525289C25.5141 0.443589 25.4218 0.40133 25.3294 0.41542C20.2584 1.2888 15.4057 2.8186 10.8776 4.8978C10.8384 4.9147 10.8048 4.9429 10.7825 4.9795C1.57795 18.7309 -0.943561 32.1443 0.293408 45.3914C0.299005 45.4562 0.335386 45.5182 0.385761 45.5576C6.45866 50.0174 12.3413 52.7249 18.1147 54.5195C18.2071 54.5477 18.305 54.5139 18.3638 54.4378C19.7295 52.5728 20.9469 50.6063 21.9907 48.5383C22.0523 48.4172 21.9935 48.2735 21.8676 48.2256C19.9366 47.4931 18.0979 46.6 16.3292 45.5858C16.1893 45.5041 16.1781 45.304 16.3068 45.2082C16.679 44.9293 17.0513 44.6391 17.4067 44.3461C17.471 44.2926 17.5606 44.2813 17.6362 44.3151C29.2558 49.6202 41.8354 49.6202 53.3179 44.3151C53.3935 44.2785 53.4831 44.2898 53.5502 44.3433C53.9057 44.6363 54.2779 44.9293 54.6529 45.2082C54.7816 45.304 54.7732 45.5041 54.6333 45.5858C52.8646 46.6197 51.0259 47.4931 49.0921 48.2228C48.9662 48.2707 48.9102 48.4172 48.9718 48.5383C50.038 50.6034 51.2554 52.5699 52.5959 54.435C52.6519 54.5139 52.7526 54.5477 52.845 54.5195C58.6464 52.7249 64.529 50.0174 70.6019 45.5576C70.6551 45.5182 70.6887 45.459 70.6943 45.3942C72.1747 30.0791 68.2147 16.7757 60.1968 4.9823C60.1772 4.9429 60.1437 4.9147 60.1045 4.8978ZM23.7259 37.3253C20.2276 37.3253 17.3451 34.1136 17.3451 30.1693C17.3451 26.225 20.1717 23.0133 23.7259 23.0133C27.308 23.0133 30.1626 26.2532 30.1066 30.1693C30.1066 34.1136 27.28 37.3253 23.7259 37.3253ZM47.3178 37.3253C43.8196 37.3253 40.9371 34.1136 40.9371 30.1693C40.9371 26.225 43.7636 23.0133 47.3178 23.0133C50.9 23.0133 53.7545 26.2532 53.6986 30.1693C53.6986 34.1136 50.9 37.3253 47.3178 37.3253Z"/></svg>
+                                        <div class="settings_description">Discord</div>
+                                    </div>
+                                </a>
+                            </div>
+
+                            <div class="settings_item_container">
+                                <a href="https://nopecha.com/github" target="_blank">
+                                    <div class="settings_description_container bbflex">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#ffffff"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                                        <div class="settings_description">GitHub</div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class='footer'></div>
+            </div>
+
+            <!-- DISABLED HOSTS TAB -->
+            <div class="tab hidden" data-tab="disabled_hosts">
+                <div class="header">
+                    <button class="nav_icon back" data-tabtarget="settings">
+                        <svg width="12" height="12" viewBox="0 0 9 16"><path d="M2.684 8l6.038-6.308c.37-.387.37-1.015 0-1.402a.92.92 0 00-1.342 0L0 8l7.38 7.71a.92.92 0 001.342 0c.37-.387.37-1.015 0-1.402L2.684 8z"></path></svg>
+                    </button>
+
+                    <div class="header_label_container">
+                        <div class="header_label">Disabled Hosts</div>
+                    </div>
+
+                    <button class="nav_icon" disabled></button>
+                </div>
+
+                <div style="position: relative; overflow: hidden; width: 100%; height: auto; min-height: 0px; max-height: 402px;">
+                    <div style="position: relative; overflow: auto; margin-bottom: -15px; min-height: 15px; max-height: 417px;">
+                        <div class="scrolling_container">
+                            <div class="css-rghnfo">
+                                <div class="settings_item_header">Current Page</div>
+                                <div class="settings_item_container list_item">
+                                    <div class="list_item_row">
+                                        <div id="current_page_host">-</div>
+                                        <button id="add_current_page_host" class="list_item_button">
+                                            <svg width="16" height="16"><path fill="rgb(0, 106, 255)" fill-rule="evenodd" d="M9 7h6a1 1 0 110 2H9v6a1 1 0 11-2 0V9H1a1 1 0 110-2h6V1a1 1 0 112 0v6z"></path></svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="settings_item_header">Disabled Hosts</div>
+                                <div id="disabled_hosts"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <script src="utils.js"></script>
+        <script src="content.js"></script>
+        <script src="popup.js"></script>
+    </body>
+
+</html>

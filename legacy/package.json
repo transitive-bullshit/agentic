@@ -16,7 +16,8 @@
     }
   },
   "files": [
-    "build"
+    "build",
+    "third-party"
   ],
   "engines": {
     "node": ">=18"
