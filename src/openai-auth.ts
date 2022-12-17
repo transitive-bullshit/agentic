@@ -9,6 +9,7 @@ import type { Browser, Page, Protocol, PuppeteerLaunchOptions } from 'puppeteer'
 import puppeteer from 'puppeteer-extra'
 import RecaptchaPlugin from 'puppeteer-extra-plugin-recaptcha'
 import StealthPlugin from 'puppeteer-extra-plugin-stealth'
+import random from 'random'
 
 import * as types from './types'
 
@@ -17,7 +18,6 @@ puppeteer.use(StealthPlugin())
 let hasRecaptchaPlugin = false
 let hasNopechaExtension = false
 
-const __filename = url.fileURLToPath(import.meta.url)
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url))
 
 /**
@@ -129,6 +129,7 @@ export async function getOpenAIAuth({
         await page.type('#username', email, { delay: 20 })
         await delay(100)
 
+        // NOTE: this is where you may encounter a CAPTCHA
         if (hasNopechaExtension) {
           await waitForRecaptcha(page, { timeoutMs })
         } else if (hasRecaptchaPlugin) {
@@ -367,6 +368,8 @@ async function checkForChatGPTAtCapacity(
 
   do {
     try {
+      await solveSimpleCaptchas(page)
+
       const res = await page.$x("//div[contains(., 'ChatGPT is at capacity')]")
       isAtCapacity = !!res?.length
 
@@ -446,6 +449,30 @@ async function waitForConditionOrAtCapacity(
   })
 }
 
+async function solveSimpleCaptchas(page: Page) {
+  try {
+    const verifyYouAreHuman = await page.$('text=Verify you are human')
+    if (verifyYouAreHuman) {
+      await delay(2000)
+      await verifyYouAreHuman.click({
+        delay: random.int(5, 25)
+      })
+      await delay(1000)
+    }
+
+    const cloudflareButton = await page.$('.hcaptcha-box')
+    if (cloudflareButton) {
+      await delay(2000)
+      await cloudflareButton.click({
+        delay: random.int(5, 25)
+      })
+      await delay(1000)
+    }
+  } catch (err) {
+    // ignore errors
+  }
+}
+
 async function waitForRecaptcha(
   page: Page,
   opts: {
@@ -453,6 +480,8 @@ async function waitForRecaptcha(
     timeoutMs?: number
   } = {}
 ) {
+  await solveSimpleCaptchas(page)
+
   if (!hasNopechaExtension) {
     return
   }

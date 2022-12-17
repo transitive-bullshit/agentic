@@ -44,6 +44,7 @@
     "puppeteer-extra": "^3.3.4",
     "puppeteer-extra-plugin-recaptcha": "^3.6.6",
     "puppeteer-extra-plugin-stealth": "^2.11.1",
+    "random": "^4.1.0",
     "remark": "^14.0.2",
     "strip-markdown": "^5.0.0",
     "uuid": "^9.0.0"

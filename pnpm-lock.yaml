@@ -21,6 +21,7 @@ specifiers:
   puppeteer-extra: ^3.3.4
   puppeteer-extra-plugin-recaptcha: ^3.6.6
   puppeteer-extra-plugin-stealth: ^2.11.1
+  random: ^4.1.0
   remark: ^14.0.2
   strip-markdown: ^5.0.0
   tsup: ^6.5.0
@@ -39,6 +40,7 @@ dependencies:
   puppeteer-extra: 3.3.4_puppeteer@19.4.0
   puppeteer-extra-plugin-recaptcha: 3.6.6_puppeteer-extra@3.3.4
   puppeteer-extra-plugin-stealth: 2.11.1_puppeteer-extra@3.3.4
+  random: 4.1.0
   remark: 14.0.2
   strip-markdown: 5.0.0
   uuid: 9.0.0
@@ -3224,6 +3226,13 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
+  /random/4.1.0:
+    resolution: {integrity: sha512-6Ajb7XmMSE9EFAMGC3kg9mvE7fGlBip25mYYuSMzw/uUSrmGilvZo2qwX3RnTRjwXkwkS+4swse9otZ92VjAtQ==}
+    engines: {node: '>=14'}
+    dependencies:
+      seedrandom: 3.0.5
+    dev: false
+
   /read-pkg-up/8.0.0:
     resolution: {integrity: sha512-snVCqPczksT0HS2EC+SxUndvSzn6LRCwpfSvLrIfR5BKDQQZMaI6jPRC9dYvYFDRAuFEAnkwww8kBBNE/3VvzQ==}
     engines: {node: '>=12'}
@@ -3411,6 +3420,10 @@ packages:
       get-intrinsic: 1.1.3
       is-regex: 1.1.4
     dev: true
+
+  /seedrandom/3.0.5:
+    resolution: {integrity: sha512-8OwmbklUNzwezjGInmZ+2clQmExQPvomqjL7LFqOYqtmuxRgQYqOD3mHaU+MvZn5FLUeVxVfQjwLZW/n/JFuqg==}
+    dev: false
 
   /semver/5.7.1:
     resolution: {integrity: sha512-sauaDf/PZdVgrLTNYHRtpXa1iRiKcaebiKQ1BJdpQlWH2lCvexQdX55snPFyK7QzpudqbCI0qXFfOasHdyNDGQ==}
