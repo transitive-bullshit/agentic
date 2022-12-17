@@ -19,9 +19,10 @@ const api = new ChatGPTAPIBrowser({
   email: process.env.OPENAI_EMAIL,
   password: process.env.OPENAI_PASSWORD
 })
-await api.init()
+await api.initSession()
 
-const response = await api.sendMessage('Hello World!')
+const result = await api.sendMessage('Hello World!')
+console.log(result.response)
 ```
 
 Note that this solution is not lightweight, but it does work a lot more consistently than the REST API-based versions. I'm currently using this solution to power 10 OpenAI accounts concurrently across 10 minimized Chrome windows for my [Twitter bot](https://github.com/transitive-bullshit/chatgpt-twitter-bot). 😂
@@ -88,15 +89,13 @@ async function example() {
   })
 
   const api = new ChatGPTAPI({ ...openAIAuth })
-  await api.ensureAuth()
+  await api.initSession()
 
   // send a message and wait for the response
-  const response = await api.sendMessage(
-    'Write a python version of bubble sort.'
-  )
+  const result = await api.sendMessage('Write a python version of bubble sort.')
 
-  // response is a markdown-formatted string
-  console.log(response)
+  // result.response is a markdown-formatted string
+  console.log(result.response)
 }
 ```
 
@@ -112,10 +111,10 @@ async function example() {
     password: process.env.OPENAI_PASSWORD
   })
 
-  await api.init()
+  await api.initSession()
 
-  const response = await api.sendMessage('Hello World!')
-  console.log(response)
+  const result = await api.sendMessage('Hello World!')
+  console.log(result.response)
 }
 ```
 
@@ -125,21 +124,30 @@ ChatGPT responses are formatted as markdown by default. If you want to work with
 const api = new ChatGPTAPI({ ...openAIAuth, markdown: false })
 ```
 
-If you want to automatically track the conversation, you can use `ChatGPTAPI.getConversation()`:
+If you want to track the conversation, use the `conversationId` and `messageId` in the result object, and pass them to `sendMessage` as `conversationId` and `parentMessageId` respectively.
 
 ```ts
 const api = new ChatGPTAPI({ ...openAIAuth, markdown: false })
-
-const conversation = api.getConversation()
+await api.initSession()
 
 // send a message and wait for the response
-const response0 = await conversation.sendMessage('What is OpenAI?')
+let res = await conversation.sendMessage('What is OpenAI?')
+console.log(res.response)
 
 // send a follow-up
-const response1 = await conversation.sendMessage('Can you expand on that?')
+res = await conversation.sendMessage('Can you expand on that?', {
+  conversationId: res.conversationId,
+  parentMessageId: res.messageId
+})
+console.log(res.response)
 
 // send another follow-up
-const response2 = await conversation.sendMessage('Oh cool; thank you')
+// send a follow-up
+res = await conversation.sendMessage('What were we talking about?', {
+  conversationId: res.conversationId,
+  parentMessageId: res.messageId
+})
+console.log(res.response)
 ```
 
 Sometimes, ChatGPT will hang for an extended period of time before beginning to respond. This may be due to rate limiting or it may be due to OpenAI's servers being overloaded.
@@ -152,8 +160,6 @@ const response = await api.sendMessage('this is a timeout test', {
   timeoutMs: 2 * 60 * 1000
 })
 ```
-
-You can stream responses using the `onProgress` or `onConversationResponse` callbacks. See the [docs](./docs/classes/ChatGPTAPI.md) for more details.
 
 <details>
 <summary>Usage in CommonJS (Dynamic import)</summary>
@@ -169,10 +175,10 @@ async function example() {
   })
 
   const api = new ChatGPTAPI({ ...openAIAuth })
-  await api.ensureAuth()
+  await api.initSession()
 
-  const response = await api.sendMessage('Hello World!')
-  console.log(response)
+  const result = await api.sendMessage('Hello World!')
+  console.log(result)
 }
 ```
 
