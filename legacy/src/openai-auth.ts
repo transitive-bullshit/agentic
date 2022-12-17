@@ -88,7 +88,7 @@ export async function getOpenAIAuth({
       await page.solveRecaptchas()
     }
 
-    await checkForChatGPTAtCapacity(page)
+    await checkForChatGPTAtCapacity(page, { timeoutMs })
 
     // once we get to this point, the Cloudflare cookies should be available
 
@@ -109,7 +109,7 @@ export async function getOpenAIAuth({
         page.click('#__next .btn-primary')
       ])
 
-      await checkForChatGPTAtCapacity(page)
+      await checkForChatGPTAtCapacity(page, { timeoutMs })
 
       let submitP: () => Promise<void>
 
@@ -160,7 +160,7 @@ export async function getOpenAIAuth({
       ])
     } else {
       await delay(2000)
-      await checkForChatGPTAtCapacity(page)
+      await checkForChatGPTAtCapacity(page, { timeoutMs })
     }
 
     const pageCookies = await page.cookies()
@@ -347,17 +347,47 @@ export const defaultChromeExecutablePath = (): string => {
   }
 }
 
-async function checkForChatGPTAtCapacity(page: Page) {
+async function checkForChatGPTAtCapacity(
+  page: Page,
+  opts: {
+    timeoutMs?: number
+    retries?: number
+  } = {}
+) {
+  const {
+    timeoutMs = 2 * 60 * 1000, // 2 minutes
+    retries = 10
+  } = opts
   // console.log('checkForChatGPTAtCapacity', page.url())
-  let res: any[]
+  let isAtCapacity = false
+  let numTries = 0
 
-  try {
-    res = await page.$x("//div[contains(., 'ChatGPT is at capacity')]")
-  } catch (err) {
-    // ignore errors likely due to navigation
-  }
+  do {
+    try {
+      const res = await page.$x("//div[contains(., 'ChatGPT is at capacity')]")
+      isAtCapacity = !!res?.length
 
-  if (res?.length) {
+      if (isAtCapacity) {
+        if (++numTries >= retries) {
+          break
+        }
+
+        // try refreshing the page if chatgpt is at capacity
+        await page.reload({
+          waitUntil: 'networkidle2',
+          timeout: timeoutMs
+        })
+
+        await delay(2000)
+      }
+    } catch (err) {
+      // ignore errors likely due to navigation
+      ++numTries
+      break
+    }
+  } while (isAtCapacity)
+
+  if (isAtCapacity) {
     const error = new types.ChatGPTError('ChatGPT is at capacity')
     error.statusCode = 503
     throw error
