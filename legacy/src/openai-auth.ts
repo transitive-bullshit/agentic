@@ -211,7 +211,18 @@ export async function getBrowser(
 
   return puppeteer.launch({
     headless: false,
-    args: ['--no-sandbox', '--exclude-switches', 'enable-automation'],
+    // https://peter.sh/experiments/chromium-command-line-switches/
+    args: [
+      '--no-sandbox',
+      '--exclude-switches',
+      'enable-automation',
+      '--disable-infobars',
+      '--disable-dev-shm-usage',
+      '--disable-blink-features=AutomationControlled',
+      '--no-first-run',
+      '--no-service-autorun',
+      '--password-store=basic'
+    ],
     ignoreHTTPSErrors: true,
     executablePath,
     ...launchOptions
