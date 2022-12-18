@@ -84,11 +84,17 @@ export async function getOpenAIAuth({
     })
 
     // NOTE: this is where you may encounter a CAPTCHA
-    if (hasRecaptchaPlugin) {
-      await page.solveRecaptchas()
-    }
-
     await checkForChatGPTAtCapacity(page, { timeoutMs })
+
+    if (hasRecaptchaPlugin) {
+      const captchas = await page.findRecaptchas()
+
+      if (captchas?.filtered?.length) {
+        console.log('solving captchas using 2captcha...')
+        const res = await page.solveRecaptchas()
+        console.log('captcha result', res)
+      }
+    }
 
     // once we get to this point, the Cloudflare cookies should be available
 
@@ -133,8 +139,13 @@ export async function getOpenAIAuth({
         if (hasNopechaExtension) {
           await waitForRecaptcha(page, { timeoutMs })
         } else if (hasRecaptchaPlugin) {
+          console.log('solving captchas using 2captcha...')
           const res = await page.solveRecaptchas()
-          console.log('solveRecaptchas result', res)
+          if (res.captchas?.length) {
+            console.log('captchas result', res)
+          } else {
+            console.log('no captchas found')
+          }
         }
 
         await delay(1200)

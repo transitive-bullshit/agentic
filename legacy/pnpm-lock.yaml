@@ -19,7 +19,7 @@ specifiers:
   prettier: ^2.8.0
   puppeteer: ^19.4.0
   puppeteer-extra: ^3.3.4
-  puppeteer-extra-plugin-recaptcha: ^3.6.6
+  puppeteer-extra-plugin-recaptcha: npm:@fisch0920/puppeteer-extra-plugin-recaptcha@^3.6.6
   puppeteer-extra-plugin-stealth: ^2.11.1
   random: ^4.1.0
   remark: ^14.0.2
@@ -38,7 +38,7 @@ dependencies:
   html-to-md: 0.8.3
   p-timeout: 6.0.0
   puppeteer-extra: 3.3.4_puppeteer@19.4.0
-  puppeteer-extra-plugin-recaptcha: 3.6.6_puppeteer-extra@3.3.4
+  puppeteer-extra-plugin-recaptcha: /@fisch0920/puppeteer-extra-plugin-recaptcha/3.6.6_puppeteer-extra@3.3.4
   puppeteer-extra-plugin-stealth: 2.11.1_puppeteer-extra@3.3.4
   random: 4.1.0
   remark: 14.0.2
@@ -345,6 +345,26 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
+
+  /@fisch0920/puppeteer-extra-plugin-recaptcha/3.6.6_puppeteer-extra@3.3.4:
+    resolution: {integrity: sha512-KI12BbqOupDm8+R21IS645L9/SzdYMVvMFdvGy2zIePJ5qPYNcqUIqBSA86hdk0vM2WJ1G5q1t7AUQoemGwbeQ==}
+    engines: {node: '>=9.11.2'}
+    peerDependencies:
+      playwright-extra: '*'
+      puppeteer-extra: '*'
+    peerDependenciesMeta:
+      playwright-extra:
+        optional: true
+      puppeteer-extra:
+        optional: true
+    dependencies:
+      debug: 4.3.4
+      merge-deep: 3.0.3
+      puppeteer-extra: 3.3.4_puppeteer@19.4.0
+      puppeteer-extra-plugin: 3.2.2_puppeteer-extra@3.3.4
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
 
   /@jridgewell/gen-mapping/0.1.1:
     resolution: {integrity: sha512-sQXCasFk+U8lWYEe66WxRDOE9PjVz4vSM51fTu3Hw+ClTpUSQb718772vH3pyS5pShp6lvQM7SxgIDXXXmOX7w==}
@@ -3074,26 +3094,6 @@ packages:
       - encoding
       - supports-color
       - utf-8-validate
-
-  /puppeteer-extra-plugin-recaptcha/3.6.6_puppeteer-extra@3.3.4:
-    resolution: {integrity: sha512-SVbmL+igGX8m0Qg9dn85trWDghbfUCTG/QUHYscYx5XgMZVVb0/v0a6MqbPdHoKmBx5BS2kLd6rorMlncMcXdw==}
-    engines: {node: '>=9.11.2'}
-    peerDependencies:
-      playwright-extra: '*'
-      puppeteer-extra: '*'
-    peerDependenciesMeta:
-      playwright-extra:
-        optional: true
-      puppeteer-extra:
-        optional: true
-    dependencies:
-      debug: 4.3.4
-      merge-deep: 3.0.3
-      puppeteer-extra: 3.3.4_puppeteer@19.4.0
-      puppeteer-extra-plugin: 3.2.2_puppeteer-extra@3.3.4
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
 
   /puppeteer-extra-plugin-stealth/2.11.1_puppeteer-extra@3.3.4:
     resolution: {integrity: sha512-n0wdC0Ilc9tk5L6FWLyd0P2gT8b2fp+2NuB+KB0oTSw3wXaZ0D6WNakjJsayJ4waGzIJFCUHkmK9zgx5NKMoFw==}
