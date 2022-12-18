@@ -17,7 +17,7 @@ const result = await api.sendMessage('Hello World!')
 console.log(result.response)
 ```
 
-This solution is not lightweight, but it does work a lot more consistently than the previous REST API-based solutions. I'm currently using the browser approach to power 10 OpenAI accounts concurrently for my [Twitter bot](https://github.com/transitive-bullshit/chatgpt-twitter-bot). 😂
+This solution is not lightweight, but it does work a lot more consistently than the previous REST API-based approach. I'm currently using the browser approach to power 10 OpenAI accounts concurrently for my [Twitter bot](https://github.com/transitive-bullshit/chatgpt-twitter-bot). 😂
 
 To use the updated version, **make sure you're using the latest version of this package and Node.js >= 18**. Then update your code following the examples below, paying special attention to the sections on [Authentication](#authentication), [Restrictions](#restrictions), and [CAPTCHAs](#captchas).
 
