@@ -281,7 +281,7 @@ export type SendMessageOptions = {
   messageId?: string
   action?: MessageActionType
   timeoutMs?: number
-  onProgress?: (partialResponse: ChatResponse) => void
+  onProgress?: (partialResponse: ChatResponse | ProgressResponse) => void
   abortSignal?: AbortSignal
 }
 
@@ -307,4 +307,9 @@ export type ChatResponse = {
   response: string
   conversationId: string
   messageId: string
+}
+
+export type ProgressResponse = {
+  partialResponse: string
+  newData: string
 }

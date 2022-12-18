@@ -1,7 +1,7 @@
 import dotenv from 'dotenv-safe'
 import { oraPromise } from 'ora'
 
-import { ChatGPTAPIBrowser } from '../src'
+import { ChatGPTAPIBrowser, ProgressResponse } from '../src'
 
 dotenv.config()
 
@@ -37,7 +37,12 @@ async function main() {
   res = await oraPromise(
     api.sendMessage(prompt2, {
       conversationId: res.conversationId,
-      parentMessageId: res.messageId
+      parentMessageId: res.messageId,
+      // trigger when new data arrive
+      onProgress: (res: ProgressResponse) => {
+        console.log('\n recv new data ' + res.newData + '\n')
+        console.log('\n current partial response ' + res.partialResponse + '\n')
+      }
     }),
     {
       text: prompt2

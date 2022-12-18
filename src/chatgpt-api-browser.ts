@@ -1,6 +1,7 @@
 import delay from 'delay'
 import type { Browser, HTTPRequest, HTTPResponse, Page } from 'puppeteer'
 import { v4 as uuidv4 } from 'uuid'
+import WebSocket from 'ws'
 
 import * as types from './types'
 import { AChatGPTAPI } from './abstract-chatgpt-api'
@@ -385,9 +386,8 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
       parentMessageId = uuidv4(),
       messageId = uuidv4(),
       action = 'next',
-      timeoutMs
-      // TODO
-      // onProgress
+      timeoutMs,
+      onProgress
     } = opts
 
     if (!(await this.getIsAuthenticated())) {
@@ -430,15 +430,41 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
       body.conversation_id = conversationId
     }
 
+    let serverPort: number
+    let webSocketServer: WebSocket
+    if (onProgress) {
+      webSocketServer = new WebSocket.Server({ port: 0 })
+      serverPort = webSocketServer.address().port
+      webSocketServer.on('listening', () => {
+        console.log(` WebSocket server is listening on port ${serverPort}`)
+      })
+
+      let response = ''
+      webSocketServer.on('connection', (clientSocket: WebSocket) => {
+        clientSocket.on('message', (chunk: string) => {
+          response += chunk
+          onProgress({
+            partialResponse: response,
+            newData: chunk
+          })
+        })
+      })
+    }
+
     // console.log('>>> EVALUATE', url, this._accessToken, body)
     const result = await this._page.evaluate(
       browserPostEventStream,
       url,
       this._accessToken,
       body,
-      timeoutMs
+      timeoutMs,
+      serverPort
     )
     // console.log('<<< EVALUATE', result)
+
+    if (webSocketServer) {
+      webSocketServer.close()
+    }
 
     if ('error' in result) {
       const error = new types.ChatGPTError(result.error.message)

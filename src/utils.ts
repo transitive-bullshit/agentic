@@ -74,7 +74,8 @@ export async function browserPostEventStream(
   url: string,
   accessToken: string,
   body: types.ConversationJSONBody,
-  timeoutMs?: number
+  timeoutMs?: number,
+  serverPort?: number
 ): Promise<types.ChatError | types.ChatResponse> {
   // Workaround for https://github.com/esbuild-kit/tsx/issues/113
   globalThis.__name = () => undefined
@@ -105,6 +106,7 @@ export async function browserPostEventStream(
   let conversationId: string = body?.conversation_id
   let messageId: string = body?.messages?.[0]?.id
   let response = ''
+  let webSocket: WebSocket
 
   try {
     console.log('browserPostEventStream', url, accessToken, body)
@@ -140,6 +142,25 @@ export async function browserPostEventStream(
       }
     }
 
+    if (serverPort) {
+      try {
+        webSocket = (await webSocketCreate()) as WebSocket
+        console.log('WebSocket connection established')
+      } catch (err) {
+        console.log('WebSocket error: ', err)
+        return {
+          error: {
+            message: `ChatGPTAPI error, WebSocket connect failed`,
+            statusCode: webSocket.readyState,
+            statusText: err
+          },
+          conversationId,
+          messageId
+        }
+      }
+    }
+
+    let lastResponse = ''
     const responseP = new Promise<types.ChatResponse>(
       async (resolve, reject) => {
         function onMessage(data: string) {
@@ -166,6 +187,14 @@ export async function browserPostEventStream(
               convoResponseEvent.message?.content?.parts?.[0]
             if (partialResponse) {
               response = partialResponse
+              if (webSocket) {
+                const newData = response.substring(
+                  lastResponse.length,
+                  response.length
+                )
+                webSocket.send(newData)
+                lastResponse = response.slice()
+              }
             }
           } catch (err) {
             console.warn('fetchSSE onMessage unexpected error', err)
@@ -195,14 +224,27 @@ export async function browserPostEventStream(
         }
       }
 
-      return await pTimeout(responseP, {
+      const ret = await pTimeout(responseP, {
         milliseconds: timeoutMs,
         message: 'ChatGPT timed out waiting for response'
       })
+
+      if (webSocket) {
+        webSocket.close()
+      }
+      return ret
     } else {
-      return await responseP
+      const ret = await responseP
+      if (webSocket) {
+        webSocket.close()
+      }
+      return ret
     }
   } catch (err) {
+    if (webSocket) {
+      webSocket.close()
+    }
+
     const errMessageL = err.toString().toLowerCase()
 
     if (
@@ -517,5 +559,18 @@ export async function browserPostEventStream(
     }
 
     return cancelablePromise as any
+  }
+
+  function webSocketCreate() {
+    return new Promise(function (resolve, reject) {
+      const ws = new WebSocket(`ws://localhost:${serverPort}`)
+      ws.onopen = function () {
+        resolve(ws)
+      }
+
+      ws.onerror = function (error) {
+        reject(error)
+      }
+    })
   }
 }
