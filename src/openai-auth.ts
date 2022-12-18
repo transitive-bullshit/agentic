@@ -55,7 +55,8 @@ export async function getOpenAIAuth({
   isGoogleLogin = false,
   captchaToken = process.env.CAPTCHA_TOKEN,
   nopechaKey = process.env.NOPECHA_KEY,
-  executablePath
+  executablePath,
+  proxyServer = process.env.PROXY_SERVER,
 }: {
   email?: string
   password?: string
@@ -65,14 +66,15 @@ export async function getOpenAIAuth({
   isGoogleLogin?: boolean
   captchaToken?: string
   nopechaKey?: string
-  executablePath?: string
+  executablePath?: string,
+  proxyServer?: string
 }): Promise<OpenAIAuth> {
   const origBrowser = browser
   const origPage = page
 
   try {
     if (!browser) {
-      browser = await getBrowser({ captchaToken, nopechaKey, executablePath })
+      browser = await getBrowser({ captchaToken, nopechaKey, executablePath, proxyServer })
     }
 
     const userAgent = await browser.userAgent()
@@ -216,12 +218,14 @@ export async function getBrowser(
   opts: PuppeteerLaunchOptions & {
     captchaToken?: string
     nopechaKey?: string
+    proxyServer?: string
   } = {}
 ) {
   const {
     captchaToken = process.env.CAPTCHA_TOKEN,
     nopechaKey = process.env.NOPECHA_KEY,
     executablePath = defaultChromeExecutablePath(),
+    proxyServer = process.env.PROXY_SERVER,
     ...launchOptions
   } = opts
 
@@ -274,6 +278,10 @@ export async function getBrowser(
     hasNopechaExtension = true
   }
 
+  if (proxyServer) {
+    puppeteerArgs.push(`--proxy-server=${proxyServer}`)
+  }
+
   const browser = await puppeteer.launch({
     headless: false,
     // https://peter.sh/experiments/chromium-command-line-switches/
@@ -287,6 +295,26 @@ export async function getBrowser(
     executablePath,
     ...launchOptions
   })
+
+  if (process.env.PROXY_VALIDATE_IP) {
+    const page = (await browser.pages())[0] || (await browser.newPage())
+    // send a fetch request to https://ifconfig.co using page.evaluate() and verify the IP matches
+    let ip;
+    try {
+      ({ ip } = await page.evaluate(() => {
+        return fetch('https://ifconfig.co', {
+          headers: {
+            'Accept': 'application/json'
+          }
+        }).then((res) => res.json())
+      }));
+    } catch (err) {
+      throw new Error(`Proxy IP validation failed: ${err.message}`)
+    }
+    if (ip !== process.env.PROXY_VALIDATE_IP) {
+      throw new Error(`Proxy IP mismatch: ${ip} !== ${process.env.PROXY_VALIDATE_IP}`)
+    }
+  }
 
   // TOdO: this is a really hackity hack way of setting the API key...
   if (hasNopechaExtension) {
