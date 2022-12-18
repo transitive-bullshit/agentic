@@ -254,14 +254,13 @@ Basic Cloudflare CAPTCHAs are handled by default, but if you want to automate th
   - More well-known solution that's been around longer
   - Set the `CAPTCHA_TOKEN` env var to your 2captcha API token
 
-Alternatively, if your OpenAI account uses Google Auth and Microsoft, you shouldn't encounter any of the more complicated Recaptchas — and can avoid using these third-party providers. To use Google auth, make sure your OpenAI account is using Google or Microsoft and then set either `isGoogleLogin` or `isWindowsLogin` to `true` whenever you're passing your `email` and `password`. For example:
+Alternatively, if your OpenAI account uses Google Auth, you shouldn't encounter any of the more complicated Recaptchas — and can avoid using these third-party providers. To use Google auth, make sure your OpenAI account is using Google and then set `isGoogleLogin` to `true` whenever you're passing your `email` and `password`. For example:
 
 ```ts
 const api = new ChatGPTAPIBrowser({
   email: process.env.OPENAI_EMAIL,
   password: process.env.OPENAI_PASSWORD,
   isGoogleLogin: true
-  isWindowsLogin: true // use only one of this options.
 })
 ```
 
