@@ -137,7 +137,7 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
       throw err
     }
 
-    if (!this.isChatPage) {
+    if (!this.isChatPage || this._isGoogleLogin) {
       await this._page.goto(CHAT_PAGE_URL, {
         waitUntil: 'networkidle2'
       })
@@ -147,11 +147,11 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
     do {
       const modalSelector = '[data-headlessui-state="open"]'
 
-      if (!(await this._page.$(modalSelector))) {
-        break
-      }
-
       try {
+        if (!(await this._page.$(modalSelector))) {
+          break
+        }
+
         await this._page.click(`${modalSelector} button:last-child`)
       } catch (err) {
         // "next" button not found in welcome modal
@@ -517,8 +517,11 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
   }
 
   protected async _getInputBox() {
-    // [data-id="root"]
-    return this._page.$('textarea')
+    try {
+      return await this._page.$('textarea')
+    } catch (err) {
+      return null
+    }
   }
 
   get isChatPage(): boolean {
