@@ -329,7 +329,8 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [iOS Shortcut](https://github.com/leecobaby/shortcuts/blob/master/other/ChatGPT_EN.md)
 - [Slack Bot](https://github.com/trietphm/chatgpt-slackbot/)
 - [Electron Bot](https://github.com/ShiranAbir/chaty)
-- [Kodyfire CLI](https://github.com/nooqta/chatgpt-kodyfire) 
+- [Kodyfire CLI](https://github.com/nooqta/chatgpt-kodyfire)
+- [Twitch Bot](https://github.com/BennyDeeDev/chatgpt-twitch-bot)
 
 If you create a cool integration, feel free to open a PR and add it to the list.
 
