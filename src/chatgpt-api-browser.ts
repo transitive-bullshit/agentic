@@ -29,6 +29,7 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
   protected _executablePath: string
   protected _browser: Browser
   protected _page: Page
+  protected _proxyServer: string
 
   /**
    * Creates a new client for automating the ChatGPT webapp.
@@ -54,6 +55,9 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
 
     /** @defaultValue `undefined` **/
     executablePath?: string
+
+    /** @defaultValue `undefined` **/
+    proxyServer?: string
   }) {
     super()
 
@@ -65,7 +69,8 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
       isGoogleLogin = false,
       minimize = true,
       captchaToken,
-      executablePath
+      executablePath,
+      proxyServer
     } = opts
 
     this._email = email
@@ -77,6 +82,7 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
     this._minimize = !!minimize
     this._captchaToken = captchaToken
     this._executablePath = executablePath
+    this._proxyServer = proxyServer
 
     if (!this._email) {
       const error = new types.ChatGPTError('ChatGPT invalid email')
@@ -99,7 +105,8 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
     try {
       this._browser = await getBrowser({
         captchaToken: this._captchaToken,
-        executablePath: this._executablePath
+        executablePath: this._executablePath,
+        proxyServer: this._proxyServer
       })
       this._page =
         (await this._browser.pages())[0] || (await this._browser.newPage())
