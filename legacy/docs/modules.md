@@ -588,6 +588,7 @@ with your updated credentials.
 | `__namedParameters.email?` | `string` |
 | `__namedParameters.executablePath?` | `string` |
 | `__namedParameters.isGoogleLogin?` | `boolean` |
+| `__namedParameters.isWindowsLogin?` | `boolean` |
 | `__namedParameters.nopechaKey?` | `string` |
 | `__namedParameters.page?` | `Page` |
 | `__namedParameters.password?` | `string` |
