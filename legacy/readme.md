@@ -47,6 +47,7 @@ Thanks && cheers,
   - [Demos](#demos)
   - [Authentication](#authentication)
   - [CAPTCHAs](#captchas)
+  - [Using Proxies](#using-proxies)
   - [Restrictions](#restrictions)
 - [Projects](#projects)
 - [Compatibility](#compatibility)
@@ -263,6 +264,22 @@ const api = new ChatGPTAPIBrowser({
   isGoogleLogin: true
 })
 ```
+
+### Using Proxies
+
+The browser implementation supports setting a proxy server. This is useful if you're running into rate limiting issues or if you want to use a proxy to hide your IP address.
+
+To use a proxy, pass the `proxyServer` option to the `ChatGPTAPIBrowser` constructor, or simply set the `PROXY_SERVER` env var. For more information on the format, see [here](https://www.chromium.org/developers/design-documents/network-settings).
+
+```ts
+const api = new ChatGPTAPIBrowser({
+  email: process.env.OPENAI_EMAIL,
+  password: process.env.OPENAI_PASSWORD,
+  proxyServer: '<ip>:<port>'
+})
+```
+
+You can also set the `PROXY_VALIDATE_IP` env var to your proxy's IP address. This will be used to validate that the proxy is working correctly, and will throw an error if it's not.
 
 ### Restrictions
 
