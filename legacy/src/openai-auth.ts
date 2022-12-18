@@ -146,10 +146,10 @@ export async function getOpenAIAuth({
         await page.waitForSelector('input[type="password"]', { visible: true })
         await page.type('input[type="password"]', password, { delay: 10 })
         submitP = () => page.keyboard.press('Enter')
-        // await Promise.all([
-        //   page.waitForNavigation(),
-        //   await page.keyboard.press('Enter')
-        // ])
+        await Promise.all([
+          page.waitForNavigation(),
+          await page.keyboard.press('Enter')
+        ])
         await delay(1000)
       } else {
         await page.waitForSelector('#username')
