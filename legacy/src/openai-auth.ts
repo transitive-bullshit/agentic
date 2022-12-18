@@ -233,10 +233,20 @@ export async function getBrowser(
     '--disable-infobars',
     '--disable-dev-shm-usage',
     '--disable-blink-features=AutomationControlled',
+    '--ignore-certificate-errors',
     '--no-first-run',
     '--no-service-autorun',
     '--password-store=basic',
-    '--system-developer-mode'
+    '--system-developer-mode',
+    // the following flags all try to reduce memory
+    // '--single-process',
+    '--mute-audio',
+    '--disable-default-apps',
+    '--no-zygote',
+    '--disable-accelerated-2d-canvas',
+    '--disable-web-security',
+    '--disable-gpu'
+    // '--js-flags="--max-old-space-size=1024"'
   ]
 
   if (nopechaKey) {
@@ -301,11 +311,20 @@ export async function getBrowser(
         const editKey = await page3.waitForSelector('#edit_key .clickable')
         await editKey.click()
 
-        const settingsInput = await page3.$('input.settings_text')
+        const settingsInput = await page3.waitForSelector('input.settings_text')
+        // console.log('value1', await settingsInput.evaluate((el) => el.value))
+
+        await settingsInput.evaluate((el) => {
+          el.value = ''
+        })
         await settingsInput.type(nopechaKey)
+
+        // console.log('value2', await settingsInput.evaluate((el) => el.value))
         await settingsInput.evaluate((el, value) => {
           el.value = value
         }, nopechaKey)
+
+        // console.log('value3', await settingsInput.evaluate((el) => el.value))
         await settingsInput.press('Enter')
         await delay(500)
         await editKey.click()
