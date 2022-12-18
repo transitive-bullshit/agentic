@@ -2,13 +2,7 @@
 
 On December 11th, OpenAI added Cloudflare protections that make it more difficult to access the unofficial API.
 
-This package has been updated to use Puppeteer to automatically log in to ChatGPT and extract the necessary auth credentials. 🔥
-
-Even with this in place, however, it's common to run into 429 / 403 errors at the moment using the `getOpenAIAuth` + `ChatGPTAPI` approach.
-
-To circumvent these issues, we've also added a **full browser-based solution**, which uses Puppeteer to login and automate the webapp.
-
-The full browser version is working consistently and can be used via:
+To circumvent these protections, we've added a **fully automated browser-based solution**, which uses Puppeteer and CAPTCHA solvers under the hood. 🔥
 
 ```ts
 import { ChatGPTAPIBrowser } from 'chatgpt'
@@ -23,13 +17,11 @@ const result = await api.sendMessage('Hello World!')
 console.log(result.response)
 ```
 
-Note that this solution is not lightweight, but it does work a lot more consistently than the REST API-based versions. I'm currently using this solution to power 10 OpenAI accounts concurrently across 10 minimized Chrome windows for my [Twitter bot](https://github.com/transitive-bullshit/chatgpt-twitter-bot). 😂
-
-If you get a "ChatGPT is at capacity" error when logging in, note that this can also happen on the official webapp as well. Their servers get overloaded at times, and we're all trying our best to offer access to this amazing technology.
+Note that this solution is not lightweight, but it does work a lot more consistently than the REST API-based approach. I'm currently using this solution to power 10 OpenAI accounts concurrently across 10 minimized Chrome windows for my [Twitter bot](https://github.com/transitive-bullshit/chatgpt-twitter-bot). 😂
 
 To use the updated version, **make sure you're using the latest version of this package and Node.js >= 18**. Then update your code following the examples below, paying special attention to the sections on [Authentication](#authentication), [Restrictions](#restrictions), and [CAPTCHAs](#captchas).
 
-We recently released support for CAPTCHA automation using either [nopecha](https://nopecha.com/) or [2captcha](https://2captcha.com). Keep in mind that this package will be updated to use the official API as soon as it's released, so things should get much easier over time. 💪
+We recently added support for CAPTCHA automation using either [nopecha](https://nopecha.com/) or [2captcha](https://2captcha.com). Keep in mind that this package will be updated to use the official API as soon as it's released, so things should get much easier over time. 💪
 
 Lastly, please consider starring this repo and <a href="https://twitter.com/transitive_bs">following me on twitter <img src="https://storage.googleapis.com/saasify-assets/twitter-logo.svg" alt="twitter" height="24px" align="center"></a> to help support the project.
 
