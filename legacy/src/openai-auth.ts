@@ -360,6 +360,10 @@ export async function getBrowser(
  * Gets the default path to chrome's executable for the current platform.
  */
 export const defaultChromeExecutablePath = (): string => {
+  if (process.env.PUPPETEER_EXECUTABLE_PATH) {
+    return process.env.PUPPETEER_EXECUTABLE_PATH
+  }
+
   switch (os.platform()) {
     case 'win32':
       return 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'
