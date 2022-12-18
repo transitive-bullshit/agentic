@@ -17,7 +17,7 @@ const result = await api.sendMessage('Hello World!')
 console.log(result.response)
 ```
 
-Note that this solution is not lightweight, but it does work a lot more consistently than the REST API-based approach. I'm currently using this solution to power 10 OpenAI accounts concurrently across 10 minimized Chrome windows for my [Twitter bot](https://github.com/transitive-bullshit/chatgpt-twitter-bot). 😂
+Note that this solution is not lightweight, but it does work a lot more consistently than the REST API-based approach. I'm currently using this solution to power 10 OpenAI accounts concurrently for my [Twitter bot](https://github.com/transitive-bullshit/chatgpt-twitter-bot). 😂
 
 To use the updated version, **make sure you're using the latest version of this package and Node.js >= 18**. Then update your code following the examples below, paying special attention to the sections on [Authentication](#authentication), [Restrictions](#restrictions), and [CAPTCHAs](#captchas).
 
@@ -210,6 +210,8 @@ npx tsx demos/demo-conversation-browser.ts
 
 ### Authentication
 
+The authentication section relates to the REST-based version (using `getOpenAIAuth` + `ChatGPTAPI`). The browser-based solution, `ChatGPTAPIBrowser`, takes care of all the authentication for you.
+
 On December 11, 2022, OpenAI added some additional Cloudflare protections which make it more difficult to access the unofficial API.
 
 You'll need a valid OpenAI "session token" and Cloudflare "clearance token" in order to use the API.
@@ -240,7 +242,7 @@ Pass `sessionToken`, `clearanceToken`, and `userAgent` to the `ChatGPTAPI` const
 
 ### CAPTCHAs
 
-The browser portions of this package use Puppeteer to automate as much as possible, including all CAPTCHAs. 🔥
+The browser portions of this package use Puppeteer to automate as much as possible, including solving all CAPTCHAs. 🔥
 
 Basic Cloudflare CAPTCHAs are handled by default, but if you want to automate the email + password Recaptchas, you'll need to sign up for one of these paid providers:
 
