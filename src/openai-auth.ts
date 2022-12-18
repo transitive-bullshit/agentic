@@ -56,7 +56,7 @@ export async function getOpenAIAuth({
   captchaToken = process.env.CAPTCHA_TOKEN,
   nopechaKey = process.env.NOPECHA_KEY,
   executablePath,
-  proxyServer = process.env.PROXY_SERVER,
+  proxyServer = process.env.PROXY_SERVER
 }: {
   email?: string
   password?: string
@@ -66,7 +66,7 @@ export async function getOpenAIAuth({
   isGoogleLogin?: boolean
   captchaToken?: string
   nopechaKey?: string
-  executablePath?: string,
+  executablePath?: string
   proxyServer?: string
 }): Promise<OpenAIAuth> {
   const origBrowser = browser
@@ -74,7 +74,12 @@ export async function getOpenAIAuth({
 
   try {
     if (!browser) {
-      browser = await getBrowser({ captchaToken, nopechaKey, executablePath, proxyServer })
+      browser = await getBrowser({
+        captchaToken,
+        nopechaKey,
+        executablePath,
+        proxyServer
+      })
     }
 
     const userAgent = await browser.userAgent()
@@ -299,20 +304,22 @@ export async function getBrowser(
   if (process.env.PROXY_VALIDATE_IP) {
     const page = (await browser.pages())[0] || (await browser.newPage())
     // send a fetch request to https://ifconfig.co using page.evaluate() and verify the IP matches
-    let ip;
+    let ip
     try {
-      ({ ip } = await page.evaluate(() => {
+      ;({ ip } = await page.evaluate(() => {
         return fetch('https://ifconfig.co', {
           headers: {
-            'Accept': 'application/json'
+            Accept: 'application/json'
           }
         }).then((res) => res.json())
-      }));
+      }))
     } catch (err) {
       throw new Error(`Proxy IP validation failed: ${err.message}`)
     }
     if (ip !== process.env.PROXY_VALIDATE_IP) {
-      throw new Error(`Proxy IP mismatch: ${ip} !== ${process.env.PROXY_VALIDATE_IP}`)
+      throw new Error(
+        `Proxy IP mismatch: ${ip} !== ${process.env.PROXY_VALIDATE_IP}`
+      )
     }
   }
 
