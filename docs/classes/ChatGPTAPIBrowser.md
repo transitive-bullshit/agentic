@@ -48,6 +48,7 @@ Creates a new client for automating the ChatGPT webapp.
 | `opts.email` | `string` | - |
 | `opts.executablePath?` | `string` | **`Default Value`**  `undefined` * |
 | `opts.isGoogleLogin?` | `boolean` | **`Default Value`**  `false` * |
+| `opts.isWindowsLogin?` | `boolean` | **`Default Value`**  `false` * |
 | `opts.markdown?` | `boolean` | **`Default Value`**  `true` * |
 | `opts.minimize?` | `boolean` | **`Default Value`**  `true` * |
 | `opts.password` | `string` | - |
