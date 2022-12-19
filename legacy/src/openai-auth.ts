@@ -53,6 +53,7 @@ export async function getOpenAIAuth({
   page,
   timeoutMs = 2 * 60 * 1000,
   isGoogleLogin = false,
+  isMicrosoftLogin = false,
   captchaToken = process.env.CAPTCHA_TOKEN,
   nopechaKey = process.env.NOPECHA_KEY,
   executablePath,
@@ -64,6 +65,7 @@ export async function getOpenAIAuth({
   page?: Page
   timeoutMs?: number
   isGoogleLogin?: boolean
+  isMicrosoftLogin?: boolean
   captchaToken?: string
   nopechaKey?: string
   executablePath?: string
@@ -139,6 +141,23 @@ export async function getOpenAIAuth({
         await page.waitForSelector('input[type="password"]', { visible: true })
         await page.type('input[type="password"]', password, { delay: 10 })
         submitP = () => page.keyboard.press('Enter')
+      } else if (isMicrosoftLogin) {
+        await page.click('button[data-provider="windowslive"]')
+        await page.waitForSelector('input[type="email"]')
+        await page.type('input[type="email"]', email, { delay: 10 })
+        await Promise.all([
+          page.waitForNavigation(),
+          await page.keyboard.press('Enter')
+        ])
+        await delay(1500)
+        await page.waitForSelector('input[type="password"]', { visible: true })
+        await page.type('input[type="password"]', password, { delay: 10 })
+        submitP = () => page.keyboard.press('Enter')
+        await Promise.all([
+          page.waitForNavigation(),
+          await page.keyboard.press('Enter')
+        ])
+        await delay(1000)
       } else {
         await page.waitForSelector('#username')
         await page.type('#username', email, { delay: 20 })
@@ -328,7 +347,6 @@ export async function getBrowser(
     const page = (await browser.pages())[0] || (await browser.newPage())
     await page.goto(`https://nopecha.com/setup#${nopechaKey}`)
     await delay(1000)
-
     try {
       const page3 = await browser.newPage()
       await page.close()
