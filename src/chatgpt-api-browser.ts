@@ -20,6 +20,7 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
   protected _debug: boolean
   protected _minimize: boolean
   protected _isGoogleLogin: boolean
+  protected _isMicrosoftLogin: boolean
   protected _captchaToken: string
   protected _accessToken: string
 
@@ -47,6 +48,9 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
     /** @defaultValue `false` **/
     isGoogleLogin?: boolean
 
+    /** @defaultValue `false` **/
+    isMicrosoftLogin?: boolean
+
     /** @defaultValue `true` **/
     minimize?: boolean
 
@@ -67,6 +71,7 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
       markdown = true,
       debug = false,
       isGoogleLogin = false,
+      isMicrosoftLogin = false,
       minimize = true,
       captchaToken,
       executablePath,
@@ -79,6 +84,7 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
     this._markdown = !!markdown
     this._debug = !!debug
     this._isGoogleLogin = !!isGoogleLogin
+    this._isMicrosoftLogin = !!isMicrosoftLogin
     this._minimize = !!minimize
     this._captchaToken = captchaToken
     this._executablePath = executablePath
@@ -131,7 +137,8 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
         password: this._password,
         browser: this._browser,
         page: this._page,
-        isGoogleLogin: this._isGoogleLogin
+        isGoogleLogin: this._isGoogleLogin,
+        isMicrosoftLogin: this._isMicrosoftLogin
       })
     } catch (err) {
       if (this._browser) {
@@ -144,7 +151,7 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
       throw err
     }
 
-    if (!this.isChatPage || this._isGoogleLogin) {
+    if (!this.isChatPage || this._isGoogleLogin || this._isMicrosoftLogin) {
       await this._page.goto(CHAT_PAGE_URL, {
         waitUntil: 'networkidle2'
       })
