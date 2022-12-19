@@ -55,13 +55,13 @@
 
 ### AvailableModerationModels
 
-Ƭ **AvailableModerationModels**: `"text-moderation-playground"`
+Ƭ **AvailableModerationModels**: ``"text-moderation-playground"``
 
 #### Defined in
 
 [src/types.ts:109](https://github.com/transitive-bullshit/chatgpt-api/blob/d87ae67/src/types.ts#L109)
 
----
+___
 
 ### ChatError
 
@@ -69,20 +69,20 @@
 
 #### Type declaration
 
-| Name                | Type                                                                        |
-| :------------------ | :-------------------------------------------------------------------------- |
-| `conversationId?`   | `string`                                                                    |
-| `error`             | { `message`: `string` ; `statusCode?`: `number` ; `statusText?`: `string` } |
-| `error.message`     | `string`                                                                    |
-| `error.statusCode?` | `number`                                                                    |
-| `error.statusText?` | `string`                                                                    |
-| `messageId?`        | `string`                                                                    |
+| Name | Type |
+| :------ | :------ |
+| `conversationId?` | `string` |
+| `error` | { `message`: `string` ; `statusCode?`: `number` ; `statusText?`: `string`  } |
+| `error.message` | `string` |
+| `error.statusCode?` | `number` |
+| `error.statusText?` | `string` |
+| `messageId?` | `string` |
 
 #### Defined in
 
 [src/types.ts:300](https://github.com/transitive-bullshit/chatgpt-api/blob/d87ae67/src/types.ts#L300)
 
----
+___
 
 ### ChatResponse
 
@@ -90,27 +90,27 @@
 
 #### Type declaration
 
-| Name             | Type     |
-| :--------------- | :------- |
+| Name | Type |
+| :------ | :------ |
 | `conversationId` | `string` |
-| `messageId`      | `string` |
-| `response`       | `string` |
+| `messageId` | `string` |
+| `response` | `string` |
 
 #### Defined in
 
 [src/types.ts:306](https://github.com/transitive-bullshit/chatgpt-api/blob/d87ae67/src/types.ts#L306)
 
----
+___
 
 ### ContentType
 
-Ƭ **ContentType**: `"text"`
+Ƭ **ContentType**: ``"text"``
 
 #### Defined in
 
 [src/types.ts:1](https://github.com/transitive-bullshit/chatgpt-api/blob/d87ae67/src/types.ts#L1)
 
----
+___
 
 ### ConversationJSONBody
 
@@ -120,19 +120,19 @@ https://chat.openapi.com/backend-api/conversation
 
 #### Type declaration
 
-| Name                | Type                            | Description                |
-| :------------------ | :------------------------------ | :------------------------- |
-| `action`            | `string`                        | The action to take         |
-| `conversation_id?`  | `string`                        | The ID of the conversation |
-| `messages`          | [`Prompt`](modules.md#prompt)[] | Prompts to provide         |
-| `model`             | `string`                        | The model to use           |
-| `parent_message_id` | `string`                        | The parent message ID      |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `action` | `string` | The action to take |
+| `conversation_id?` | `string` | The ID of the conversation |
+| `messages` | [`Prompt`](modules.md#prompt)[] | Prompts to provide |
+| `model` | `string` | The model to use |
+| `parent_message_id` | `string` | The parent message ID |
 
 #### Defined in
 
 [src/types.ts:134](https://github.com/transitive-bullshit/chatgpt-api/blob/d87ae67/src/types.ts#L134)
 
----
+___
 
 ### ConversationResponseEvent
 
@@ -140,17 +140,17 @@ https://chat.openapi.com/backend-api/conversation
 
 #### Type declaration
 
-| Name               | Type                            |
-| :----------------- | :------------------------------ |
-| `conversation_id?` | `string`                        |
-| `error?`           | `string` \| `null`              |
-| `message?`         | [`Message`](modules.md#message) |
+| Name | Type |
+| :------ | :------ |
+| `conversation_id?` | `string` |
+| `error?` | `string` \| ``null`` |
+| `message?` | [`Message`](modules.md#message) |
 
 #### Defined in
 
 [src/types.ts:251](https://github.com/transitive-bullshit/chatgpt-api/blob/d87ae67/src/types.ts#L251)
 
----
+___
 
 ### Message
 
@@ -158,34 +158,34 @@ https://chat.openapi.com/backend-api/conversation
 
 #### Type declaration
 
-| Name          | Type                                            |
-| :------------ | :---------------------------------------------- |
-| `content`     | [`MessageContent`](modules.md#messagecontent)   |
-| `create_time` | `string` \| `null`                              |
-| `end_turn`    | `null`                                          |
-| `id`          | `string`                                        |
-| `metadata`    | [`MessageMetadata`](modules.md#messagemetadata) |
-| `recipient`   | `string`                                        |
-| `role`        | `string`                                        |
-| `update_time` | `string` \| `null`                              |
-| `user`        | `string` \| `null`                              |
-| `weight`      | `number`                                        |
+| Name | Type |
+| :------ | :------ |
+| `content` | [`MessageContent`](modules.md#messagecontent) |
+| `create_time` | `string` \| ``null`` |
+| `end_turn` | ``null`` |
+| `id` | `string` |
+| `metadata` | [`MessageMetadata`](modules.md#messagemetadata) |
+| `recipient` | `string` |
+| `role` | `string` |
+| `update_time` | `string` \| ``null`` |
+| `user` | `string` \| ``null`` |
+| `weight` | `number` |
 
 #### Defined in
 
 [src/types.ts:257](https://github.com/transitive-bullshit/chatgpt-api/blob/d87ae67/src/types.ts#L257)
 
----
+___
 
 ### MessageActionType
 
-Ƭ **MessageActionType**: `"next"` \| `"variant"`
+Ƭ **MessageActionType**: ``"next"`` \| ``"variant"``
 
 #### Defined in
 
 [src/types.ts:276](https://github.com/transitive-bullshit/chatgpt-api/blob/d87ae67/src/types.ts#L276)
 
----
+___
 
 ### MessageContent
 
@@ -193,16 +193,16 @@ https://chat.openapi.com/backend-api/conversation
 
 #### Type declaration
 
-| Name           | Type       |
-| :------------- | :--------- |
-| `content_type` | `string`   |
-| `parts`        | `string`[] |
+| Name | Type |
+| :------ | :------ |
+| `content_type` | `string` |
+| `parts` | `string`[] |
 
 #### Defined in
 
 [src/types.ts:270](https://github.com/transitive-bullshit/chatgpt-api/blob/d87ae67/src/types.ts#L270)
 
----
+___
 
 ### MessageFeedbackJSONBody
 
@@ -212,29 +212,29 @@ https://chat.openapi.com/backend-api/conversation/message_feedback
 
 #### Type declaration
 
-| Name              | Type                                                        | Description                |
-| :---------------- | :---------------------------------------------------------- | :------------------------- |
-| `conversation_id` | `string`                                                    | The ID of the conversation |
-| `message_id`      | `string`                                                    | The message ID             |
-| `rating`          | [`MessageFeedbackRating`](modules.md#messagefeedbackrating) | The rating                 |
-| `tags?`           | [`MessageFeedbackTags`](modules.md#messagefeedbacktags)[]   | Tags to give the rating    |
-| `text?`           | `string`                                                    | The text to include        |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `conversation_id` | `string` | The ID of the conversation |
+| `message_id` | `string` | The message ID |
+| `rating` | [`MessageFeedbackRating`](modules.md#messagefeedbackrating) | The rating |
+| `tags?` | [`MessageFeedbackTags`](modules.md#messagefeedbacktags)[] | Tags to give the rating |
+| `text?` | `string` | The text to include |
 
 #### Defined in
 
 [src/types.ts:193](https://github.com/transitive-bullshit/chatgpt-api/blob/d87ae67/src/types.ts#L193)
 
----
+___
 
 ### MessageFeedbackRating
 
-Ƭ **MessageFeedbackRating**: `"thumbsUp"` \| `"thumbsDown"`
+Ƭ **MessageFeedbackRating**: ``"thumbsUp"`` \| ``"thumbsDown"``
 
 #### Defined in
 
 [src/types.ts:249](https://github.com/transitive-bullshit/chatgpt-api/blob/d87ae67/src/types.ts#L249)
 
----
+___
 
 ### MessageFeedbackResult
 
@@ -242,29 +242,29 @@ https://chat.openapi.com/backend-api/conversation/message_feedback
 
 #### Type declaration
 
-| Name              | Type                                                        | Description                                  |
-| :---------------- | :---------------------------------------------------------- | :------------------------------------------- |
-| `conversation_id` | `string`                                                    | The ID of the conversation                   |
-| `message_id`      | `string`                                                    | The message ID                               |
-| `rating`          | [`MessageFeedbackRating`](modules.md#messagefeedbackrating) | The rating                                   |
-| `text?`           | `string`                                                    | The text the server received, including tags |
-| `user_id`         | `string`                                                    | The ID of the user                           |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `conversation_id` | `string` | The ID of the conversation |
+| `message_id` | `string` | The message ID |
+| `rating` | [`MessageFeedbackRating`](modules.md#messagefeedbackrating) | The rating |
+| `text?` | `string` | The text the server received, including tags |
+| `user_id` | `string` | The ID of the user |
 
 #### Defined in
 
 [src/types.ts:222](https://github.com/transitive-bullshit/chatgpt-api/blob/d87ae67/src/types.ts#L222)
 
----
+___
 
 ### MessageFeedbackTags
 
-Ƭ **MessageFeedbackTags**: `"harmful"` \| `"false"` \| `"not-helpful"`
+Ƭ **MessageFeedbackTags**: ``"harmful"`` \| ``"false"`` \| ``"not-helpful"``
 
 #### Defined in
 
 [src/types.ts:220](https://github.com/transitive-bullshit/chatgpt-api/blob/d87ae67/src/types.ts#L220)
 
----
+___
 
 ### MessageMetadata
 
@@ -274,7 +274,7 @@ https://chat.openapi.com/backend-api/conversation/message_feedback
 
 [src/types.ts:275](https://github.com/transitive-bullshit/chatgpt-api/blob/d87ae67/src/types.ts#L275)
 
----
+___
 
 ### Model
 
@@ -282,17 +282,17 @@ https://chat.openapi.com/backend-api/conversation/message_feedback
 
 #### Type declaration
 
-| Name         | Type      | Description                         |
-| :----------- | :-------- | :---------------------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `is_special` | `boolean` | Whether or not the model is special |
-| `max_tokens` | `number`  | Max tokens of the model             |
-| `slug`       | `string`  | Name of the model                   |
+| `max_tokens` | `number` | Max tokens of the model |
+| `slug` | `string` | Name of the model |
 
 #### Defined in
 
 [src/types.ts:77](https://github.com/transitive-bullshit/chatgpt-api/blob/d87ae67/src/types.ts#L77)
 
----
+___
 
 ### ModelsResult
 
@@ -302,15 +302,15 @@ https://chat.openapi.com/backend-api/models
 
 #### Type declaration
 
-| Name     | Type                          | Description     |
-| :------- | :---------------------------- | :-------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `models` | [`Model`](modules.md#model)[] | Array of models |
 
 #### Defined in
 
 [src/types.ts:70](https://github.com/transitive-bullshit/chatgpt-api/blob/d87ae67/src/types.ts#L70)
 
----
+___
 
 ### ModerationsJSONBody
 
@@ -320,16 +320,16 @@ https://chat.openapi.com/backend-api/moderations
 
 #### Type declaration
 
-| Name    | Type                                                                | Description                       |
-| :------ | :------------------------------------------------------------------ | :-------------------------------- |
-| `input` | `string`                                                            | Input for the moderation decision |
-| `model` | [`AvailableModerationModels`](modules.md#availablemoderationmodels) | The model to use in the decision  |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `input` | `string` | Input for the moderation decision |
+| `model` | [`AvailableModerationModels`](modules.md#availablemoderationmodels) | The model to use in the decision |
 
 #### Defined in
 
 [src/types.ts:97](https://github.com/transitive-bullshit/chatgpt-api/blob/d87ae67/src/types.ts#L97)
 
----
+___
 
 ### ModerationsJSONResult
 
@@ -339,17 +339,17 @@ https://chat.openapi.com/backend-api/moderations
 
 #### Type declaration
 
-| Name            | Type      | Description                         |
-| :-------------- | :-------- | :---------------------------------- |
-| `blocked`       | `boolean` | Whether or not the input is blocked |
-| `flagged`       | `boolean` | Whether or not the input is flagged |
-| `moderation_id` | `string`  | The ID of the decision              |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `blocked` | `boolean` | Whether or not the input is blocked |
+| `flagged` | `boolean` | Whether or not the input is flagged |
+| `moderation_id` | `string` | The ID of the decision |
 
 #### Defined in
 
 [src/types.ts:114](https://github.com/transitive-bullshit/chatgpt-api/blob/d87ae67/src/types.ts#L114)
 
----
+___
 
 ### OpenAIAuth
 
@@ -360,18 +360,18 @@ to authenticate with the unofficial ChatGPT API.
 
 #### Type declaration
 
-| Name             | Type                                           |
-| :--------------- | :--------------------------------------------- |
-| `clearanceToken` | `string`                                       |
-| `cookies?`       | `Record`<`string`, `Protocol.Network.Cookie`\> |
-| `sessionToken`   | `string`                                       |
-| `userAgent`      | `string`                                       |
+| Name | Type |
+| :------ | :------ |
+| `clearanceToken` | `string` |
+| `cookies?` | `Record`<`string`, `Protocol.Network.Cookie`\> |
+| `sessionToken` | `string` |
+| `userAgent` | `string` |
 
 #### Defined in
 
 [src/openai-auth.ts:27](https://github.com/transitive-bullshit/chatgpt-api/blob/d87ae67/src/openai-auth.ts#L27)
 
----
+___
 
 ### Prompt
 
@@ -379,17 +379,17 @@ to authenticate with the unofficial ChatGPT API.
 
 #### Type declaration
 
-| Name      | Type                                        | Description                   |
-| :-------- | :------------------------------------------ | :---------------------------- |
-| `content` | [`PromptContent`](modules.md#promptcontent) | The content of the prompt     |
-| `id`      | `string`                                    | The ID of the prompt          |
-| `role`    | [`Role`](modules.md#role)                   | The role played in the prompt |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `content` | [`PromptContent`](modules.md#promptcontent) | The content of the prompt |
+| `id` | `string` | The ID of the prompt |
+| `role` | [`Role`](modules.md#role) | The role played in the prompt |
 
 #### Defined in
 
 [src/types.ts:161](https://github.com/transitive-bullshit/chatgpt-api/blob/d87ae67/src/types.ts#L161)
 
----
+___
 
 ### PromptContent
 
@@ -397,36 +397,36 @@ to authenticate with the unofficial ChatGPT API.
 
 #### Type declaration
 
-| Name           | Type                                    | Description                    |
-| :------------- | :-------------------------------------- | :----------------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `content_type` | [`ContentType`](modules.md#contenttype) | The content type of the prompt |
-| `parts`        | `string`[]                              | The parts to the prompt        |
+| `parts` | `string`[] | The parts to the prompt |
 
 #### Defined in
 
 [src/types.ts:178](https://github.com/transitive-bullshit/chatgpt-api/blob/d87ae67/src/types.ts#L178)
 
----
+___
 
 ### Role
 
-Ƭ **Role**: `"user"` \| `"assistant"`
+Ƭ **Role**: ``"user"`` \| ``"assistant"``
 
 #### Defined in
 
 [src/types.ts:3](https://github.com/transitive-bullshit/chatgpt-api/blob/d87ae67/src/types.ts#L3)
 
----
+___
 
 ### SendConversationMessageOptions
 
-Ƭ **SendConversationMessageOptions**: `Omit`<[`SendMessageOptions`](modules.md#sendmessageoptions), `"conversationId"` \| `"parentMessageId"`\>
+Ƭ **SendConversationMessageOptions**: `Omit`<[`SendMessageOptions`](modules.md#sendmessageoptions), ``"conversationId"`` \| ``"parentMessageId"``\>
 
 #### Defined in
 
 [src/types.ts:288](https://github.com/transitive-bullshit/chatgpt-api/blob/d87ae67/src/types.ts#L288)
 
----
+___
 
 ### SendMessageOptions
 
@@ -434,21 +434,21 @@ to authenticate with the unofficial ChatGPT API.
 
 #### Type declaration
 
-| Name               | Type                                                                     |
-| :----------------- | :----------------------------------------------------------------------- |
-| `abortSignal?`     | `AbortSignal`                                                            |
-| `action?`          | [`MessageActionType`](modules.md#messageactiontype)                      |
-| `conversationId?`  | `string`                                                                 |
-| `messageId?`       | `string`                                                                 |
-| `onProgress?`      | (`partialResponse`: [`ChatResponse`](modules.md#chatresponse)) => `void` |
-| `parentMessageId?` | `string`                                                                 |
-| `timeoutMs?`       | `number`                                                                 |
+| Name | Type |
+| :------ | :------ |
+| `abortSignal?` | `AbortSignal` |
+| `action?` | [`MessageActionType`](modules.md#messageactiontype) |
+| `conversationId?` | `string` |
+| `messageId?` | `string` |
+| `onProgress?` | (`partialResponse`: [`ChatResponse`](modules.md#chatresponse)) => `void` |
+| `parentMessageId?` | `string` |
+| `timeoutMs?` | `number` |
 
 #### Defined in
 
 [src/types.ts:278](https://github.com/transitive-bullshit/chatgpt-api/blob/d87ae67/src/types.ts#L278)
 
----
+___
 
 ### SessionResult
 
@@ -458,18 +458,18 @@ https://chat.openapi.com/api/auth/session
 
 #### Type declaration
 
-| Name          | Type                      | Description                                         |
-| :------------ | :------------------------ | :-------------------------------------------------- |
-| `accessToken` | `string`                  | The access token                                    |
-| `error?`      | `string` \| `null`        | If there was an error associated with this request  |
-| `expires`     | `string`                  | ISO date of the expiration date of the access token |
-| `user`        | [`User`](modules.md#user) | Authenticated user                                  |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `accessToken` | `string` | The access token |
+| `error?` | `string` \| ``null`` | If there was an error associated with this request |
+| `expires` | `string` | ISO date of the expiration date of the access token |
+| `user` | [`User`](modules.md#user) | Authenticated user |
 
 #### Defined in
 
 [src/types.ts:8](https://github.com/transitive-bullshit/chatgpt-api/blob/d87ae67/src/types.ts#L8)
 
----
+___
 
 ### User
 
@@ -477,15 +477,15 @@ https://chat.openapi.com/api/auth/session
 
 #### Type declaration
 
-| Name       | Type       | Description             |
-| :--------- | :--------- | :---------------------- |
-| `email?`   | `string`   | Email of the user       |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `email?` | `string` | Email of the user |
 | `features` | `string`[] | Features the user is in |
-| `groups`   | `string`[] | Groups the user is in   |
-| `id`       | `string`   | ID of the user          |
-| `image`    | `string`   | Image of the user       |
-| `name`     | `string`   | Name of the user        |
-| `picture`  | `string`   | Picture of the user     |
+| `groups` | `string`[] | Groups the user is in |
+| `id` | `string` | ID of the user |
+| `image` | `string` | Image of the user |
+| `name` | `string` | Name of the user |
+| `picture` | `string` | Picture of the user |
 
 #### Defined in
 
@@ -503,12 +503,12 @@ included them in here.
 
 #### Parameters
 
-| Name          | Type                                                      |
-| :------------ | :-------------------------------------------------------- |
-| `url`         | `string`                                                  |
-| `accessToken` | `string`                                                  |
-| `body`        | [`ConversationJSONBody`](modules.md#conversationjsonbody) |
-| `timeoutMs?`  | `number`                                                  |
+| Name | Type |
+| :------ | :------ |
+| `url` | `string` |
+| `accessToken` | `string` |
+| `body` | [`ConversationJSONBody`](modules.md#conversationjsonbody) |
+| `timeoutMs?` | `number` |
 
 #### Returns
 
@@ -518,7 +518,7 @@ included them in here.
 
 [src/utils.ts:73](https://github.com/transitive-bullshit/chatgpt-api/blob/d87ae67/src/utils.ts#L73)
 
----
+___
 
 ### defaultChromeExecutablePath
 
@@ -534,7 +534,7 @@ Gets the default path to chrome's executable for the current platform.
 
 [src/openai-auth.ts:362](https://github.com/transitive-bullshit/chatgpt-api/blob/d87ae67/src/openai-auth.ts#L362)
 
----
+___
 
 ### getBrowser
 
@@ -546,9 +546,9 @@ recognizes it and blocks access.
 
 #### Parameters
 
-| Name   | Type                                                                               |
-| :----- | :--------------------------------------------------------------------------------- |
-| `opts` | `PuppeteerLaunchOptions` & { `captchaToken?`: `string` ; `nopechaKey?`: `string` } |
+| Name | Type |
+| :------ | :------ |
+| `opts` | `PuppeteerLaunchOptions` & { `captchaToken?`: `string` ; `nopechaKey?`: `string`  } |
 
 #### Returns
 
@@ -558,7 +558,7 @@ recognizes it and blocks access.
 
 [src/openai-auth.ts:215](https://github.com/transitive-bullshit/chatgpt-api/blob/d87ae67/src/openai-auth.ts#L215)
 
----
+___
 
 ### getOpenAIAuth
 
@@ -580,18 +580,18 @@ with your updated credentials.
 
 #### Parameters
 
-| Name                                | Type      |
-| :---------------------------------- | :-------- |
-| `__namedParameters`                 | `Object`  |
-| `__namedParameters.browser?`        | `Browser` |
-| `__namedParameters.captchaToken?`   | `string`  |
-| `__namedParameters.email?`          | `string`  |
-| `__namedParameters.executablePath?` | `string`  |
-| `__namedParameters.isGoogleLogin?`  | `boolean` |
-| `__namedParameters.nopechaKey?`     | `string`  |
-| `__namedParameters.page?`           | `Page`    |
-| `__namedParameters.password?`       | `string`  |
-| `__namedParameters.timeoutMs?`      | `number`  |
+| Name | Type |
+| :------ | :------ |
+| `__namedParameters` | `Object` |
+| `__namedParameters.browser?` | `Browser` |
+| `__namedParameters.captchaToken?` | `string` |
+| `__namedParameters.email?` | `string` |
+| `__namedParameters.executablePath?` | `string` |
+| `__namedParameters.isGoogleLogin?` | `boolean` |
+| `__namedParameters.nopechaKey?` | `string` |
+| `__namedParameters.page?` | `Page` |
+| `__namedParameters.password?` | `string` |
+| `__namedParameters.timeoutMs?` | `number` |
 
 #### Returns
 
@@ -601,7 +601,7 @@ with your updated credentials.
 
 [src/openai-auth.ts:49](https://github.com/transitive-bullshit/chatgpt-api/blob/d87ae67/src/openai-auth.ts#L49)
 
----
+___
 
 ### isRelevantRequest
 
@@ -609,8 +609,8 @@ with your updated credentials.
 
 #### Parameters
 
-| Name  | Type     |
-| :---- | :------- |
+| Name | Type |
+| :------ | :------ |
 | `url` | `string` |
 
 #### Returns
@@ -621,7 +621,7 @@ with your updated credentials.
 
 [src/utils.ts:39](https://github.com/transitive-bullshit/chatgpt-api/blob/d87ae67/src/utils.ts#L39)
 
----
+___
 
 ### markdownToText
 
@@ -629,8 +629,8 @@ with your updated credentials.
 
 #### Parameters
 
-| Name        | Type     |
-| :---------- | :------- |
+| Name | Type |
+| :------ | :------ |
 | `markdown?` | `string` |
 
 #### Returns
@@ -641,7 +641,7 @@ with your updated credentials.
 
 [src/utils.ts:12](https://github.com/transitive-bullshit/chatgpt-api/blob/d87ae67/src/utils.ts#L12)
 
----
+___
 
 ### maximizePage
 
@@ -649,8 +649,8 @@ with your updated credentials.
 
 #### Parameters
 
-| Name   | Type   |
-| :----- | :----- |
+| Name | Type |
+| :------ | :------ |
 | `page` | `Page` |
 
 #### Returns
@@ -661,7 +661,7 @@ with your updated credentials.
 
 [src/utils.ts:29](https://github.com/transitive-bullshit/chatgpt-api/blob/d87ae67/src/utils.ts#L29)
 
----
+___
 
 ### minimizePage
 
@@ -669,8 +669,8 @@ with your updated credentials.
 
 #### Parameters
 
-| Name   | Type   |
-| :----- | :----- |
+| Name | Type |
+| :------ | :------ |
 | `page` | `Page` |
 
 #### Returns
