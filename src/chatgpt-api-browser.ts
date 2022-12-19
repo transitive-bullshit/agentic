@@ -296,7 +296,9 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
   async refreshSession() {
     console.log(`ChatGPT "${this._email}" session expired (403); refreshing...`)
     try {
-      await maximizePage(this._page)
+      if (!this._minimize) {
+        await maximizePage(this._page)
+      }
       await this._page.reload({
         waitUntil: 'networkidle2',
         timeout: 2 * 60 * 1000 // 2 minutes
@@ -404,25 +406,6 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
       // onProgress
     } = opts
 
-    if (!(await this.getIsAuthenticated())) {
-      console.log(`chatgpt re-authenticating ${this._email}`)
-
-      try {
-        await this.resetSession()
-      } catch (err) {
-        console.warn(
-          `chatgpt error re-authenticating ${this._email}`,
-          err.toString()
-        )
-      }
-
-      if (!(await this.getIsAuthenticated())) {
-        const error = new types.ChatGPTError('Not signed in')
-        error.statusCode = 401
-        throw error
-      }
-    }
-
     const url = `https://chat.openai.com/backend-api/conversation`
     const body: types.ConversationJSONBody = {
       action,
@@ -444,14 +427,56 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
       body.conversation_id = conversationId
     }
 
-    // console.log('>>> EVALUATE', url, this._accessToken, body)
-    const result = await this._page.evaluate(
-      browserPostEventStream,
-      url,
-      this._accessToken,
-      body,
-      timeoutMs
-    )
+    let result: types.ChatResponse | types.ChatError
+    let numTries = 0
+
+    do {
+      if (!(await this.getIsAuthenticated())) {
+        console.log(`chatgpt re-authenticating ${this._email}`)
+
+        try {
+          await this.resetSession()
+        } catch (err) {
+          console.warn(
+            `chatgpt error re-authenticating ${this._email}`,
+            err.toString()
+          )
+        }
+
+        if (!(await this.getIsAuthenticated())) {
+          const error = new types.ChatGPTError('Not signed in')
+          error.statusCode = 401
+          throw error
+        }
+      }
+
+      try {
+        // console.log('>>> EVALUATE', url, this._accessToken, body)
+        result = await this._page.evaluate(
+          browserPostEventStream,
+          url,
+          this._accessToken,
+          body,
+          timeoutMs
+        )
+      } catch (err) {
+        // We catch all errors in `browserPostEventStream`, so this should really
+        // only happen if the page is refreshed or closed during its invocation.
+        // This may happen if we encounter a 401/403 and refresh the page in it's
+        // response handler or if the user has closed the page manually.
+
+        if (++numTries >= 2) {
+          const error = new types.ChatGPTError(err.toString())
+          error.statusCode = err.response?.statusCode
+          error.statusText = err.response?.statusText
+          throw error
+        }
+
+        console.warn('chatgpt sendMessage error; retrying...', err.toString())
+        await delay(5000)
+      }
+    } while (!result)
+
     // console.log('<<< EVALUATE', result)
 
     if ('error' in result) {
