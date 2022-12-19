@@ -6,15 +6,7 @@ body:
     attributes:
       value: |
         Thanks for taking the time to fill out this bug report!
-  - type: markdown
-    attributes:
-      value: |
-        If you follow all of the instructions carefully, and your account / IP hasn't been permanently flagged by Cloudflare / OpenAI, then you shouldn't ever get a 403 at this point.
-  - type: markdown
-    attributes:
-      value: |
-        My Twitter bot has been running for the past 2 days without a single 403, and others have been able to get it working on Discord. Although it can take a bit of effort to get working, once you have it working, you're set.
-  - type: checkboxes
+ - type: checkboxes
     attributes:
       label: Verify latest release
       description: '`chatgpt@latest` is the latest version of `chatgpt`. Some issues may already be fixed in the latest version, so please verify that your issue reproduces before opening a new issue.'
@@ -28,49 +20,15 @@ body:
       options:
         - label: I verify that the ChatGPT webapp is working properly for this account.
           required: true
-  - type: checkboxes
-    attributes:
-      label: Verify resrictions
-      description: Verify that you've double-checked all of the [restrictions](https://github.com/transitive-bullshit/chatgpt-api#restrictions) listed in the readme.
-      options:
-        - label: I verify that I've double-checked all of the restrictions.
-          required: true
-  - type: textarea
+ - type: textarea
     attributes:
       label: Environment details
       description: Please enter Node.js version, browser version, OS, and OS version.
     validations:
       required: true
-  - type: input
-    attributes:
-      label: Link to the code that reproduces this issue
-      description: A link to a GitHub repository you own with a minimal reproduction. Minimal reproductions should be forked from this repo and should include only changes that contribute to the issue.
-    validations:
-      required: true
-  - type: textarea
+ - type: textarea
     attributes:
       label: Describe the Bug
-      description: A clear and concise description of what the bug is.
+      description: A clear and concise description of what the bug is and as much detail as possible on how to reproduce it.
     validations:
       required: true
-  - type: textarea
-    attributes:
-      label: To Reproduce
-      description: Steps to reproduce the behavior, please provide a clear description of how to reproduce the issue, based on the linked minimal reproduction. Screenshots can be provided in the issue body below. If using code blocks, make sure that [syntax highlighting is correct](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/creating-and-highlighting-code-blocks#syntax-highlighting) and double check that the rendered preview is not broken. **Is `getOpenAIAuth` returning successfully? If so, please print out its values.** If not, please describe what happens in the browser when trying to auth.
-    validations:
-      required: true
-  - type: textarea
-    attributes:
-      label: Expected Behavior
-      description: A clear and concise description of what you expected to happen.
-    validations:
-      required: true
-  - type: markdown
-    attributes:
-      value: Before posting the issue go through the steps you've written down to make sure the steps provided are detailed and clear.
-  - type: markdown
-    attributes:
-      value: Contributors should be able to follow the steps provided in order to reproduce the bug.
-  - type: markdown
-    attributes:
-      value: These steps are used to improve the docs to ensure the same issue does not happen again. Thanks in advance!
