@@ -4,13 +4,7 @@ chatgpt / [Exports](modules.md)
 
 On December 11th, OpenAI added Cloudflare protections that make it more difficult to access the unofficial API.
 
-This package has been updated to use Puppeteer to automatically log in to ChatGPT and extract the necessary auth credentials. 🔥
-
-Even with this in place, however, it's common to run into 429 / 403 errors at the moment using the `getOpenAIAuth` + `ChatGPTAPI` approach.
-
-To circumvent these issues, we've also added a **full browser-based solution**, which uses Puppeteer to login and automate the webapp.
-
-The full browser version is working consistently and can be used via:
+To circumvent these protections, we've added a **fully automated browser-based solution**, which uses Puppeteer and CAPTCHA solvers under the hood. 🔥
 
 ```ts
 import { ChatGPTAPIBrowser } from 'chatgpt'
@@ -25,13 +19,11 @@ const result = await api.sendMessage('Hello World!')
 console.log(result.response)
 ```
 
-Note that this solution is not lightweight, but it does work a lot more consistently than the REST API-based versions. I'm currently using this solution to power 10 OpenAI accounts concurrently across 10 minimized Chrome windows for my [Twitter bot](https://github.com/transitive-bullshit/chatgpt-twitter-bot). 😂
-
-If you get a "ChatGPT is at capacity" error when logging in, note that this can also happen on the official webapp as well. Their servers get overloaded at times, and we're all trying our best to offer access to this amazing technology.
+This solution is not lightweight, but it does work a lot more consistently than the previous REST API-based approach. For example, I'm currently using this approach to automate 10 concurrent OpenAI accounts for my [Twitter bot](https://github.com/transitive-bullshit/chatgpt-twitter-bot). 😂
 
 To use the updated version, **make sure you're using the latest version of this package and Node.js >= 18**. Then update your code following the examples below, paying special attention to the sections on [Authentication](#authentication), [Restrictions](#restrictions), and [CAPTCHAs](#captchas).
 
-We recently released support for CAPTCHA automation using either [nopecha](https://nopecha.com/) or [2captcha](https://2captcha.com). Keep in mind that this package will be updated to use the official API as soon as it's released, so things should get much easier over time. 💪
+We recently added support for CAPTCHA automation using either [nopecha](https://nopecha.com/) or [2captcha](https://2captcha.com). Keep in mind that this package will be updated to use the official API as soon as it's released, so things should get much easier over time. 💪
 
 Lastly, please consider starring this repo and <a href="https://twitter.com/transitive_bs">following me on twitter <img src="https://storage.googleapis.com/saasify-assets/twitter-logo.svg" alt="twitter" height="24px" align="center"></a> to help support the project.
 
@@ -57,6 +49,7 @@ Thanks && cheers,
   - [Demos](#demos)
   - [Authentication](#authentication)
   - [CAPTCHAs](#captchas)
+  - [Using Proxies](#using-proxies)
   - [Restrictions](#restrictions)
 - [Projects](#projects)
 - [Compatibility](#compatibility)
@@ -220,6 +213,8 @@ npx tsx demos/demo-conversation-browser.ts
 
 ### Authentication
 
+The authentication section relates to the REST-based version (using `getOpenAIAuth` + `ChatGPTAPI`). The browser-based solution, `ChatGPTAPIBrowser`, takes care of all the authentication for you.
+
 On December 11, 2022, OpenAI added some additional Cloudflare protections which make it more difficult to access the unofficial API.
 
 You'll need a valid OpenAI "session token" and Cloudflare "clearance token" in order to use the API.
@@ -250,7 +245,7 @@ Pass `sessionToken`, `clearanceToken`, and `userAgent` to the `ChatGPTAPI` const
 
 ### CAPTCHAs
 
-The browser portions of this package use Puppeteer to automate as much as possible, including all CAPTCHAs. 🔥
+The browser portions of this package use Puppeteer to automate as much as possible, including solving all CAPTCHAs. 🔥
 
 Basic Cloudflare CAPTCHAs are handled by default, but if you want to automate the email + password Recaptchas, you'll need to sign up for one of these paid providers:
 
@@ -271,6 +266,22 @@ const api = new ChatGPTAPIBrowser({
   isGoogleLogin: true
 })
 ```
+
+### Using Proxies
+
+The browser implementation supports setting a proxy server. This is useful if you're running into rate limiting issues or if you want to use a proxy to hide your IP address.
+
+To use a proxy, pass the `proxyServer` option to the `ChatGPTAPIBrowser` constructor, or simply set the `PROXY_SERVER` env var. For more information on the format, see [here](https://www.chromium.org/developers/design-documents/network-settings).
+
+```ts
+const api = new ChatGPTAPIBrowser({
+  email: process.env.OPENAI_EMAIL,
+  password: process.env.OPENAI_PASSWORD,
+  proxyServer: '<ip>:<port>'
+})
+```
+
+You can also set the `PROXY_VALIDATE_IP` env var to your proxy's IP address. This will be used to validate that the proxy is working correctly, and will throw an error if it's not.
 
 ### Restrictions
 
@@ -337,6 +348,8 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [iOS Shortcut](https://github.com/leecobaby/shortcuts/blob/master/other/ChatGPT_EN.md)
 - [Slack Bot](https://github.com/trietphm/chatgpt-slackbot/)
 - [Electron Bot](https://github.com/ShiranAbir/chaty)
+- [Kodyfire CLI](https://github.com/nooqta/chatgpt-kodyfire)
+- [Twitch Bot](https://github.com/BennyDeeDev/chatgpt-twitch-bot)
 
 If you create a cool integration, feel free to open a PR and add it to the list.
 
