@@ -6,7 +6,7 @@ body:
     attributes:
       value: |
         Thanks for taking the time to fill out this bug report!
- - type: checkboxes
+  - type: checkboxes
     attributes:
       label: Verify latest release
       description: '`chatgpt@latest` is the latest version of `chatgpt`. Some issues may already be fixed in the latest version, so please verify that your issue reproduces before opening a new issue.'
@@ -20,13 +20,13 @@ body:
       options:
         - label: I verify that the ChatGPT webapp is working properly for this account.
           required: true
- - type: textarea
+  - type: textarea
     attributes:
       label: Environment details
       description: Please enter Node.js version, browser version, OS, and OS version.
     validations:
       required: true
- - type: textarea
+  - type: textarea
     attributes:
       label: Describe the Bug
       description: A clear and concise description of what the bug is and as much detail as possible on how to reproduce it.
