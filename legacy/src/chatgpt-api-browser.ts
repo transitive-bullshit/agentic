@@ -112,7 +112,8 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
       this._browser = await getBrowser({
         captchaToken: this._captchaToken,
         executablePath: this._executablePath,
-        proxyServer: this._proxyServer
+        proxyServer: this._proxyServer,
+        minimize: this._minimize
       })
       this._page =
         (await this._browser.pages())[0] || (await this._browser.newPage())
@@ -474,28 +475,34 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
 
         console.warn('chatgpt sendMessage error; retrying...', err.toString())
         await delay(5000)
+        continue
+      }
+
+      if ('error' in result) {
+        const error = new types.ChatGPTError(result.error.message)
+        error.statusCode = result.error.statusCode
+        error.statusText = result.error.statusText
+
+        if (error.statusCode !== 403) {
+          throw error
+        } else if (++numTries >= 2) {
+          await this.refreshSession()
+          throw error
+        } else {
+          await this.refreshSession()
+          await delay(1000)
+          continue
+        }
+      } else {
+        if (!this._markdown) {
+          result.response = markdownToText(result.response)
+        }
+
+        return result
       }
     } while (!result)
 
     // console.log('<<< EVALUATE', result)
-
-    if ('error' in result) {
-      const error = new types.ChatGPTError(result.error.message)
-      error.statusCode = result.error.statusCode
-      error.statusText = result.error.statusText
-
-      if (error.statusCode === 403) {
-        await this.refreshSession()
-      }
-
-      throw error
-    } else {
-      if (!this._markdown) {
-        result.response = markdownToText(result.response)
-      }
-
-      return result
-    }
 
     // const lastMessage = await this.getLastMessage()
 
@@ -549,7 +556,17 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
   }
 
   override async closeSession() {
-    await this._browser.close()
+    try {
+      if (this._page) {
+        this._page.off('request', this._onRequest.bind(this))
+        this._page.off('response', this._onResponse.bind(this))
+      }
+    } catch (_) {}
+
+    if (this._browser) {
+      await this._browser.close()
+    }
+
     this._page = null
     this._browser = null
     this._accessToken = null
