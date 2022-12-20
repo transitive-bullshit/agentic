@@ -5,13 +5,14 @@ import * as url from 'node:url'
 
 import delay from 'delay'
 import { TimeoutError } from 'p-timeout'
-import type { Browser, Page, Protocol, PuppeteerLaunchOptions } from 'puppeteer'
+import { Browser, Page, Protocol, PuppeteerLaunchOptions } from 'puppeteer'
 import puppeteer from 'puppeteer-extra'
 import RecaptchaPlugin from 'puppeteer-extra-plugin-recaptcha'
 import StealthPlugin from 'puppeteer-extra-plugin-stealth'
 import random from 'random'
 
 import * as types from './types'
+import { minimizePage } from './utils'
 
 puppeteer.use(StealthPlugin())
 
@@ -57,7 +58,8 @@ export async function getOpenAIAuth({
   captchaToken = process.env.CAPTCHA_TOKEN,
   nopechaKey = process.env.NOPECHA_KEY,
   executablePath,
-  proxyServer = process.env.PROXY_SERVER
+  proxyServer = process.env.PROXY_SERVER,
+  minimize = false
 }: {
   email?: string
   password?: string
@@ -66,6 +68,7 @@ export async function getOpenAIAuth({
   timeoutMs?: number
   isGoogleLogin?: boolean
   isMicrosoftLogin?: boolean
+  minimize?: boolean
   captchaToken?: string
   nopechaKey?: string
   executablePath?: string
@@ -88,6 +91,10 @@ export async function getOpenAIAuth({
     if (!page) {
       page = (await browser.pages())[0] || (await browser.newPage())
       page.setDefaultTimeout(timeoutMs)
+
+      if (minimize) {
+        await minimizePage(page)
+      }
     }
 
     await page.goto('https://chat.openai.com/auth/login', {
@@ -243,6 +250,7 @@ export async function getBrowser(
     captchaToken?: string
     nopechaKey?: string
     proxyServer?: string
+    minimize?: boolean
   } = {}
 ) {
   const {
@@ -250,6 +258,7 @@ export async function getBrowser(
     nopechaKey = process.env.NOPECHA_KEY,
     executablePath = defaultChromeExecutablePath(),
     proxyServer = process.env.PROXY_SERVER,
+    minimize = false,
     ...launchOptions
   } = opts
 
@@ -268,6 +277,7 @@ export async function getBrowser(
     )
   }
 
+  // https://peter.sh/experiments/chromium-command-line-switches/
   const puppeteerArgs = [
     '--no-sandbox',
     '--disable-setuid-sandbox',
@@ -285,8 +295,8 @@ export async function getBrowser(
     '--disable-default-apps',
     '--no-zygote',
     '--disable-accelerated-2d-canvas',
-    '--disable-web-security',
-    '--disable-gpu'
+    '--disable-web-security'
+    // '--disable-gpu'
     // '--js-flags="--max-old-space-size=1024"'
   ]
 
@@ -308,7 +318,6 @@ export async function getBrowser(
 
   const browser = await puppeteer.launch({
     headless: false,
-    // https://peter.sh/experiments/chromium-command-line-switches/
     args: puppeteerArgs,
     ignoreDefaultArgs: [
       '--disable-extensions',
@@ -322,40 +331,74 @@ export async function getBrowser(
 
   if (process.env.PROXY_VALIDATE_IP) {
     const page = (await browser.pages())[0] || (await browser.newPage())
-    // send a fetch request to https://ifconfig.co using page.evaluate() and verify the IP matches
-    let ip
+    if (minimize) {
+      await minimizePage(page)
+    }
+
+    // Send a fetch request to https://ifconfig.co using page.evaluate() and
+    // verify that the IP matches
+    let ip: string
     try {
-      ;({ ip } = await page.evaluate(() => {
+      const res = await page.evaluate(() => {
         return fetch('https://ifconfig.co', {
           headers: {
             Accept: 'application/json'
           }
         }).then((res) => res.json())
-      }))
+      })
+
+      ip = res?.ip
     } catch (err) {
-      throw new Error(`Proxy IP validation failed: ${err.message}`)
+      throw new Error(`Proxy IP validation failed: ${err.toString()}`)
     }
-    if (ip !== process.env.PROXY_VALIDATE_IP) {
+
+    if (!ip || ip !== process.env.PROXY_VALIDATE_IP) {
       throw new Error(
         `Proxy IP mismatch: ${ip} !== ${process.env.PROXY_VALIDATE_IP}`
       )
     }
   }
 
-  // TOdO: this is a really hackity hack way of setting the API key...
+  await initializeNopechaExtension(browser, {
+    minimize,
+    nopechaKey
+  })
+
+  return browser
+}
+
+export async function initializeNopechaExtension(
+  browser: Browser,
+  opts: {
+    minimize?: boolean
+    nopechaKey?: string
+  }
+) {
+  const { minimize = false, nopechaKey } = opts
+
+  // TODO: this is a really hackity hack way of setting the API key...
   if (hasNopechaExtension) {
     const page = (await browser.pages())[0] || (await browser.newPage())
+    if (minimize) {
+      await minimizePage(page)
+    }
+
     await page.goto(`https://nopecha.com/setup#${nopechaKey}`)
     await delay(1000)
     try {
       const page3 = await browser.newPage()
-      await page.close()
+      if (minimize) {
+        await minimizePage(page3)
+      }
 
+      await page.close()
       // find the nopecha extension ID
       const targets = browser.targets()
       const extensionIds = (
         await Promise.all(
           targets.map(async (target) => {
+            // console.log(target.type(), target.url())
+
             if (target.type() !== 'service_worker') {
               return
             }
@@ -378,23 +421,27 @@ export async function getBrowser(
         await editKey.click()
 
         const settingsInput = await page3.waitForSelector('input.settings_text')
-        // console.log('value1', await settingsInput.evaluate((el) => el.value))
+        // console.log('value1', )
 
-        await settingsInput.evaluate((el) => {
-          el.value = ''
-        })
-        await settingsInput.type(nopechaKey)
+        const value = await settingsInput.evaluate((el) => el.value)
+        if (value !== nopechaKey) {
+          await settingsInput.evaluate((el) => {
+            el.value = ''
+          })
+          await settingsInput.type(nopechaKey)
 
-        // console.log('value2', await settingsInput.evaluate((el) => el.value))
-        await settingsInput.evaluate((el, value) => {
-          el.value = value
-        }, nopechaKey)
+          // console.log('value2', await settingsInput.evaluate((el) => el.value))
+          await settingsInput.evaluate((el, value) => {
+            el.value = value
+          }, nopechaKey)
 
-        // console.log('value3', await settingsInput.evaluate((el) => el.value))
-        await settingsInput.press('Enter')
-        await delay(500)
-        await editKey.click()
-        await delay(2000)
+          // console.log('value3', await settingsInput.evaluate((el) => el.value))
+          await settingsInput.press('Enter')
+          await delay(500)
+          await editKey.click()
+          await delay(2000)
+        }
+
         console.log('initialized nopecha extension with key', nopechaKey)
       } else {
         console.error(
@@ -405,14 +452,14 @@ export async function getBrowser(
       console.error('error initializing nopecha extension', err)
     }
   }
-
-  return browser
 }
 
 /**
  * Gets the default path to chrome's executable for the current platform.
  */
 export const defaultChromeExecutablePath = (): string => {
+  // return executablePath()
+
   if (process.env.PUPPETEER_EXECUTABLE_PATH) {
     return process.env.PUPPETEER_EXECUTABLE_PATH
   }
