@@ -33,6 +33,50 @@ export abstract class AChatGPTAPI {
   ): Promise<types.ChatResponse>
 
   /**
+   * Get the list of currently-active conversations in ChatGPT.
+   *
+   * @param opts.limit - Amount of conversations to fetch
+   * @param opts.offset - By how many conversations to offset the result by
+   *
+   * @returns The list of currently-active ChatGPT conversations, including the total amount
+   */
+  abstract getConversations(
+    opts?: types.GetConversationsOptions
+  ): Promise<types.ConversationsData>
+
+  /**
+   * Generate a fitting title for the specified conversation & message, using the ChatGPT API.
+   *
+   * @param conversationId Conversation ID, where the message was sent
+   * @param messageId Message to use to generate the summarized title
+   *
+   * @throws An error, in case something went wrong
+   * @returns The generated conversation title
+   */
+  abstract generateConversationTitle(
+    conversationId: string,
+    messageId: string
+  ): Promise<string>
+
+  /**
+   * Delete the specified conversation from the conversation history.
+   *
+   * @param id ID of the conversation to delete
+   *
+   * @throws An error, in case something went wrong
+   * @returns Whether the conversation was successfully deleted
+   */
+  abstract deleteConversation(id?: string): Promise<boolean>
+
+  /**
+   * Delete all conversations in the conversation history.
+   *
+   * @throws An error, in case something went wrong
+   * @returns Whether all conversations were successfully deleted
+   */
+  abstract deleteAllConversations(): Promise<boolean>
+
+  /**
    * @returns `true` if the client is authenticated with a valid session or `false`
    * otherwise.
    */

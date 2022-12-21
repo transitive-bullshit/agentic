@@ -308,3 +308,38 @@ export type ChatResponse = {
   conversationId: string
   messageId: string
 }
+
+export type Conversation = {
+  id: string
+  title: string
+  create_time: string
+}
+
+export type ConversationsJSONBody = {
+  items: Conversation[]
+
+  total: number
+  limit: number
+  offset: number
+}
+
+export type ConversationsData = {
+  items: Conversation[]
+  total: number
+}
+
+export type GetConversationsOptions = {
+  limit: number
+  offset?: number
+}
+
+export type GenerateConversationTitleJSONBody = {
+  message_id: string
+  model: string
+}
+
+export type FetchOptions = {
+  url: string
+  method?: string
+  body?: any
+}

@@ -360,6 +360,27 @@ export class ChatGPTAPI extends AChatGPTAPI {
     return res
   }
 
+  override async getConversations(
+    opts?: types.GetConversationsOptions
+  ): Promise<types.ConversationsData> {
+    throw new types.ChatGPTError('Not implemented yet')
+  }
+
+  override async generateConversationTitle(
+    conversationId: string,
+    messageId: string
+  ): Promise<string> {
+    throw new types.ChatGPTError('Not implemented yet')
+  }
+
+  override async deleteConversation(id?: string): Promise<boolean> {
+    throw new types.ChatGPTError('Not implemented yet')
+  }
+
+  override async deleteAllConversations(): Promise<boolean> {
+    throw new types.ChatGPTError('Not implemented yet')
+  }
+
   /**
    * @returns `true` if the client has a valid acces token or `false` if refreshing
    * the token fails.

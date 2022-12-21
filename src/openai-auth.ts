@@ -428,8 +428,11 @@ export async function initializeNopechaExtension(
           await settingsInput.evaluate((el) => {
             el.value = ''
           })
-          await settingsInput.type(nopechaKey)
 
+          // ??? Types the API key twice in the input box
+          //await settingsInput.type(nopechaKey)
+
+          // ^ the code below already does the trick
           // console.log('value2', await settingsInput.evaluate((el) => el.value))
           await settingsInput.evaluate((el, value) => {
             el.value = value

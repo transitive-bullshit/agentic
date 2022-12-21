@@ -547,6 +547,123 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
     // }
   }
 
+  /**
+   * Fetch the specified URL using the browser instance, in order to not get detected.
+   *
+   * @param opts.url URL to fetch
+   * @param opts.method Method to use for the fetch() request
+   * @param opts.body Body to use for the request
+   *
+   * @throws An error, if the request failed
+   * @returns The response body, as JSON
+   */
+  protected async _fetch(opts: types.FetchOptions) {
+    const data = await this._page.evaluate(
+      async (opts, accessToken) => {
+        try {
+          const res = await fetch(opts.url, {
+            method: opts.method ?? 'GET',
+            body: JSON.stringify(opts.body),
+
+            headers: {
+              'x-openai-assistant-app-id': '',
+              authorization: `Bearer ${accessToken}`,
+              'content-type': 'application/json'
+            }
+          })
+
+          if (!res.ok) {
+            return {
+              error: {
+                message: `ChatGPTAPI fetch error ${
+                  res.status || res.statusText
+                }`
+              },
+              body: await res.json()
+            }
+          }
+
+          return res.json()
+        } catch (err) {
+          return {
+            error: { message: err.message }
+          }
+        }
+      },
+      opts,
+      this._accessToken
+    )
+
+    if (data.error) throw new types.ChatGPTError(`${data.error.message}`)
+    else return data
+  }
+
+  async getConversations(
+    opts?: types.GetConversationsOptions
+  ): Promise<types.ConversationsData> {
+    const url = `https://chat.openai.com/backend-api/conversations?limit=${
+      opts?.limit ?? 20
+    }&offset=${opts?.offset ?? 0}`
+    const data: types.ConversationsJSONBody = await this._fetch({ url })
+
+    return {
+      items: data.items,
+      total: data.total
+    }
+  }
+
+  async generateConversationTitle(
+    conversationId: string,
+    messageId: string
+  ): Promise<string> {
+    const url = `https://chat.openai.com/backend-api/conversation/gen_title/${conversationId}`
+
+    const body: types.GenerateConversationTitleJSONBody = {
+      message_id: messageId,
+      model: 'text-davinci-002-render'
+    }
+
+    const data = await this._fetch({
+      url,
+      body,
+      method: 'POST'
+    })
+
+    if (!data.title) {
+      throw new types.ChatGPTError('Failed to generate title for conversation')
+    }
+
+    return data.title
+  }
+
+  async deleteConversation(id?: string): Promise<boolean> {
+    /* This allows us to simply call deleteConversation() without arguments, to delete all conversations. */
+    const url = `https://chat.openai.com/backend-api/conversation${
+      !id ? 's' : '/'
+    }${id || ''}`
+
+    const data = await this._fetch({
+      url,
+
+      method: 'PATCH',
+      body: { is_visible: false }
+    })
+
+    if (!data.success) {
+      throw new types.ChatGPTError(
+        id
+          ? 'Failed to delete conversation'
+          : 'Failed to delete all conversations'
+      )
+    }
+
+    return !!data.success
+  }
+
+  async deleteAllConversations(): Promise<boolean> {
+    return this.deleteConversation()
+  }
+
   async resetThread() {
     try {
       await this._page.click('nav > a:nth-child(1)')
