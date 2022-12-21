@@ -118,6 +118,22 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
       this._page =
         (await this._browser.pages())[0] || (await this._browser.newPage())
 
+      if (this._proxyServer && this._proxyServer.includes('@')) {
+        const proxyUsername = this._proxyServer.split('@')[0].split(':')[0]
+        const proxyPassword = this._proxyServer.split('@')[0].split(':')[1]
+        try {
+          await this._page.authenticate({
+            username: proxyUsername,
+            password: proxyPassword
+          })
+        } catch (err) {
+          console.error(
+            `Proxy "${this._proxyServer}" throws an error at authenticating`,
+            err.toString()
+          )
+        }
+      }
+
       // bypass annoying popup modals
       this._page.evaluateOnNewDocument(() => {
         window.localStorage.setItem('oai/apps/hasSeenOnboarding/chat', 'true')

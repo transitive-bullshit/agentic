@@ -240,6 +240,135 @@ export async function getOpenAIAuth({
   }
 }
 
+export async function signUp({
+  email,
+  password,
+  browser,
+  page,
+  timeoutMs = 2 * 60 * 1000,
+  isGoogleLogin = false,
+  captchaToken = process.env.CAPTCHA_TOKEN
+}: {
+  email?: string
+  password?: string
+  browser?: Browser
+  page?: Page
+  timeoutMs?: number
+  isGoogleLogin?: boolean
+  captchaToken?: string
+}): Promise<boolean> {
+  const origBrowser = browser
+  const origPage = page
+
+  try {
+    if (!browser) {
+      browser = await getBrowser({ captchaToken })
+    }
+
+    const userAgent = await browser.userAgent()
+    if (!page) {
+      page = (await browser.pages())[0] || (await browser.newPage())
+      page.setDefaultTimeout(timeoutMs)
+    }
+
+    await page.goto('https://chat.openai.com/auth/login', {
+      waitUntil: 'networkidle2'
+    })
+
+    // NOTE: this is where you may encounter a CAPTCHA
+    if (hasRecaptchaPlugin) {
+      await page.solveRecaptchas()
+    }
+
+    await checkForChatGPTAtCapacity(page)
+
+    // once we get to this point, the Cloudflare cookies should be available
+
+    // login as well (optional)
+    if (email && password) {
+      await waitForConditionOrAtCapacity(page, () =>
+        page.waitForSelector(
+          '#__next > div > div > div.flex.flex-row.gap-3 > button:nth-child(2)',
+          { timeout: timeoutMs }
+        )
+      )
+      await delay(500)
+
+      // click login button and wait for navigation to finish
+      await Promise.all([
+        page.waitForNavigation({
+          waitUntil: 'networkidle2',
+          timeout: timeoutMs
+        }),
+
+        page.click(
+          '#__next > div > div > div.flex.flex-row.gap-3 > button:nth-child(2)'
+        )
+      ])
+
+      await checkForChatGPTAtCapacity(page)
+
+      let submitP: () => Promise<void>
+
+      if (isGoogleLogin) {
+        await page.click('button[data-provider="google"]')
+        await page.waitForSelector('input[type="email"]')
+        await page.type('input[type="email"]', email, { delay: 10 })
+        await Promise.all([
+          page.waitForNavigation(),
+          await page.keyboard.press('Enter')
+        ])
+        await page.waitForSelector('input[type="password"]', { visible: true })
+        await page.type('input[type="password"]', password, { delay: 10 })
+        submitP = () => page.keyboard.press('Enter')
+      } else {
+        await page.waitForSelector('#email')
+        await page.type('#email', email, { delay: 20 })
+        await delay(100)
+
+        if (hasRecaptchaPlugin) {
+          console.log('solveRecaptchas()')
+          const res = await page.solveRecaptchas()
+          // console.log('solveRecaptchas result', res)
+        }
+
+        await page.click('button[type="submit"]')
+        await page.waitForSelector('#password', { timeout: timeoutMs })
+        await page.type('#password', password, { delay: 10 })
+        submitP = () => page.click('button[type="submit"]')
+      }
+
+      await Promise.all([
+        waitForConditionOrAtCapacity(page, () =>
+          page.waitForNavigation({
+            waitUntil: 'networkidle2',
+            timeout: timeoutMs
+          })
+        ),
+        submitP()
+      ])
+    } else {
+      await delay(2000)
+      await checkForChatGPTAtCapacity(page)
+    }
+
+    return true
+  } catch (err) {
+    throw err
+  } finally {
+    if (origBrowser) {
+      if (page && page !== origPage) {
+        await page.close()
+      }
+    } else if (browser) {
+      await browser.close()
+    }
+
+    page = null
+    browser = null
+  }
+}
+
 /**
  * Launches a non-puppeteer instance of Chrome. Note that in my testing, I wasn't
  * able to use the built-in `puppeteer` version of Chromium because Cloudflare
@@ -313,7 +442,10 @@ export async function getBrowser(
   }
 
   if (proxyServer) {
-    puppeteerArgs.push(`--proxy-server=${proxyServer}`)
+    const ipPort = proxyServer.includes('@')
+      ? proxyServer.split('@')[1]
+      : proxyServer
+    puppeteerArgs.push(`--proxy-server=${ipPort}`)
   }
 
   const browser = await puppeteer.launch({
