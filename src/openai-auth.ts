@@ -313,7 +313,10 @@ export async function getBrowser(
   }
 
   if (proxyServer) {
-    puppeteerArgs.push(`--proxy-server=${proxyServer}`)
+    const ipPort = proxyServer.includes('@')
+      ? proxyServer.split('@')[1]
+      : proxyServer
+    puppeteerArgs.push(`--proxy-server=${ipPort}`)
   }
 
   const browser = await puppeteer.launch({
