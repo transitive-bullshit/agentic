@@ -167,8 +167,7 @@ export async function getOpenAIAuth({
         await delay(1000)
       } else {
         await page.waitForSelector('#username')
-        await page.type('#username', email, { delay: 20 })
-        await delay(100)
+        await page.type('#username', email)
 
         // NOTE: this is where you may encounter a CAPTCHA
         if (hasNopechaExtension) {
