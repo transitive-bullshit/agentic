@@ -49,7 +49,7 @@ An error if it fails.
 
 #### Defined in
 
-[src/abstract-chatgpt-api.ts:69](https://github.com/transitive-bullshit/chatgpt-api/blob/7222b7f/src/abstract-chatgpt-api.ts#L69)
+[src/abstract-chatgpt-api.ts:69](https://github.com/transitive-bullshit/chatgpt-api/blob/d1b74a8/src/abstract-chatgpt-api.ts#L69)
 
 ___
 
@@ -66,7 +66,7 @@ otherwise.
 
 #### Defined in
 
-[src/abstract-chatgpt-api.ts:39](https://github.com/transitive-bullshit/chatgpt-api/blob/7222b7f/src/abstract-chatgpt-api.ts#L39)
+[src/abstract-chatgpt-api.ts:39](https://github.com/transitive-bullshit/chatgpt-api/blob/d1b74a8/src/abstract-chatgpt-api.ts#L39)
 
 ___
 
@@ -87,7 +87,7 @@ An error if the session failed to initialize properly.
 
 #### Defined in
 
-[src/abstract-chatgpt-api.ts:10](https://github.com/transitive-bullshit/chatgpt-api/blob/7222b7f/src/abstract-chatgpt-api.ts#L10)
+[src/abstract-chatgpt-api.ts:10](https://github.com/transitive-bullshit/chatgpt-api/blob/d1b74a8/src/abstract-chatgpt-api.ts#L10)
 
 ___
 
@@ -111,7 +111,7 @@ Access credentials for the new session.
 
 #### Defined in
 
-[src/abstract-chatgpt-api.ts:49](https://github.com/transitive-bullshit/chatgpt-api/blob/7222b7f/src/abstract-chatgpt-api.ts#L49)
+[src/abstract-chatgpt-api.ts:49](https://github.com/transitive-bullshit/chatgpt-api/blob/d1b74a8/src/abstract-chatgpt-api.ts#L49)
 
 ___
 
@@ -135,7 +135,7 @@ Access credentials for the new session.
 
 #### Defined in
 
-[src/abstract-chatgpt-api.ts:59](https://github.com/transitive-bullshit/chatgpt-api/blob/7222b7f/src/abstract-chatgpt-api.ts#L59)
+[src/abstract-chatgpt-api.ts:59](https://github.com/transitive-bullshit/chatgpt-api/blob/d1b74a8/src/abstract-chatgpt-api.ts#L59)
 
 ___
 
@@ -164,4 +164,4 @@ the `response` text.
 
 #### Defined in
 
-[src/abstract-chatgpt-api.ts:30](https://github.com/transitive-bullshit/chatgpt-api/blob/7222b7f/src/abstract-chatgpt-api.ts#L30)
+[src/abstract-chatgpt-api.ts:30](https://github.com/transitive-bullshit/chatgpt-api/blob/d1b74a8/src/abstract-chatgpt-api.ts#L30)
