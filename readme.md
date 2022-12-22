@@ -249,11 +249,13 @@ Basic Cloudflare CAPTCHAs are handled by default, but if you want to automate th
 
 - [nopecha](https://nopecha.com/) - Uses AI to solve CAPTCHAS
   - Faster and cheaper
-  - Set the `NOPECHA_KEY` env var to your nopecha API key
+  - Set the `NOPECHA_KEY` .env var to your nopecha API key
   - [Demo video](https://user-images.githubusercontent.com/552829/208235991-de4890f2-e7ba-4b42-bf55-4fcd792d4b19.mp4) of nopecha solving the login Recaptcha (41 seconds)
 - [2captcha](https://2captcha.com) - Uses real people to solve CAPTCHAS
   - More well-known solution that's been around longer
   - Set the `CAPTCHA_TOKEN` env var to your 2captcha API token
+  
+First run `npm install dotenv --save` to your project, add `import dotenv from "dotenv"` and `dotenv.config()` at top of script.
 
 Alternatively, if your OpenAI account uses Google Auth, you shouldn't encounter any of the more complicated Recaptchas — and can avoid using these third-party providers. To use Google auth, make sure your OpenAI account is using Google and then set `isGoogleLogin` to `true` whenever you're passing your `email` and `password`. For example:
 
