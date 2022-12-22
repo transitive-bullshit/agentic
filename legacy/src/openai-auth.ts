@@ -3,6 +3,7 @@ import * as os from 'node:os'
 import * as path from 'node:path'
 import * as url from 'node:url'
 
+import delay from 'delay'
 import { TimeoutError } from 'p-timeout'
 import { Browser, Page, Protocol, PuppeteerLaunchOptions } from 'puppeteer'
 import puppeteer from 'puppeteer-extra'
@@ -11,7 +12,7 @@ import StealthPlugin from 'puppeteer-extra-plugin-stealth'
 import random from 'random'
 
 import * as types from './types'
-import { delay, minimizePage } from './utils'
+import { minimizePage } from './utils'
 
 puppeteer.use(StealthPlugin())
 
@@ -420,14 +421,14 @@ export async function initializeNopechaExtension(
         const editKey = await page3.waitForSelector('#edit_key .clickable')
         await editKey.click()
 
-        for (let i = 1; i <= 20; i++) {
+        for (let i = 0; i <= 30; i++) {
           await page3.keyboard.press('Backspace')
         }
 
         await page3.keyboard.type(nopechaKey)
-        await delay(1_000)
+        await delay(1000)
         await page3.keyboard.press('Enter')
-        await delay(1_000)
+        await delay(1000)
         console.log('initialized nopecha extension with key', nopechaKey)
       } else {
         console.error(
