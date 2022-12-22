@@ -3,7 +3,6 @@ import * as os from 'node:os'
 import * as path from 'node:path'
 import * as url from 'node:url'
 
-import delay from 'delay'
 import { TimeoutError } from 'p-timeout'
 import { Browser, Page, Protocol, PuppeteerLaunchOptions } from 'puppeteer'
 import puppeteer from 'puppeteer-extra'
@@ -12,7 +11,7 @@ import StealthPlugin from 'puppeteer-extra-plugin-stealth'
 import random from 'random'
 
 import * as types from './types'
-import { minimizePage } from './utils'
+import { delay, minimizePage } from './utils'
 
 puppeteer.use(StealthPlugin())
 
@@ -417,33 +416,17 @@ export async function initializeNopechaExtension(
       if (extensionId) {
         const extensionUrl = `chrome-extension://${extensionId}/popup.html`
         await page3.goto(extensionUrl, { waitUntil: 'networkidle2' })
-        await delay(500)
-
         const editKey = await page3.waitForSelector('#edit_key .clickable')
         await editKey.click()
 
-        const settingsInput = await page3.waitForSelector('input.settings_text')
-        // console.log('value1', )
-
-        const value = await settingsInput.evaluate((el) => el.value)
-        if (value !== nopechaKey) {
-          await settingsInput.evaluate((el) => {
-            el.value = ''
-          })
-          await settingsInput.type(nopechaKey)
-
-          // console.log('value2', await settingsInput.evaluate((el) => el.value))
-          await settingsInput.evaluate((el, value) => {
-            el.value = value
-          }, nopechaKey)
-
-          // console.log('value3', await settingsInput.evaluate((el) => el.value))
-          await settingsInput.press('Enter')
-          await delay(500)
-          await editKey.click()
-          await delay(2000)
+        for (let i = 1; i <= 20; i++) {
+          await page3.keyboard.press('Backspace')
         }
 
+        await page3.keyboard.type(nopechaKey)
+        await delay(1_000)
+        await page3.keyboard.press('Enter')
+        await delay(1_000)
         console.log('initialized nopecha extension with key', nopechaKey)
       } else {
         console.error(
