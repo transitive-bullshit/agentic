@@ -57,7 +57,7 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
 
     /** @defaultValue `undefined` **/
     captchaToken?: string
-    
+
     /** @defaultValue `undefined` **/
     nopechaKey?: string
 
