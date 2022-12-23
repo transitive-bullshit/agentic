@@ -420,15 +420,16 @@ export async function initializeNopechaExtension(
         await page3.goto(extensionUrl, { waitUntil: 'networkidle2' })
         const editKey = await page3.waitForSelector('#edit_key .clickable')
         await editKey.click()
+        await delay(100)
 
         for (let i = 0; i <= 30; i++) {
-          await page3.keyboard.press('Backspace')
+          await editKey.press('Backspace')
         }
 
-        await page3.keyboard.type(nopechaKey)
-        await delay(1000)
-        await page3.keyboard.press('Enter')
-        await delay(1000)
+        await editKey.type(nopechaKey)
+        await delay(500)
+        await editKey.press('Enter')
+        await delay(2500)
         console.log('initialized nopecha extension with key', nopechaKey)
       } else {
         console.error(
