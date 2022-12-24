@@ -167,7 +167,7 @@ export async function getOpenAIAuth({
         await delay(1000)
       } else {
         await page.waitForSelector('#username')
-        await page.type('#username', email, { delay: 20 })
+        await page.type('#username', email)
         await delay(100)
 
         // NOTE: this is where you may encounter a CAPTCHA
@@ -313,7 +313,10 @@ export async function getBrowser(
   }
 
   if (proxyServer) {
-    puppeteerArgs.push(`--proxy-server=${proxyServer}`)
+    const ipPort = proxyServer.includes('@')
+      ? proxyServer.split('@')[1]
+      : proxyServer
+    puppeteerArgs.push(`--proxy-server=${ipPort}`)
   }
 
   const browser = await puppeteer.launch({
@@ -386,12 +389,6 @@ export async function initializeNopechaExtension(
     await page.goto(`https://nopecha.com/setup#${nopechaKey}`)
     await delay(1000)
     try {
-      const page3 = await browser.newPage()
-      if (minimize) {
-        await minimizePage(page3)
-      }
-
-      await page.close()
       // find the nopecha extension ID
       const targets = browser.targets()
       const extensionIds = (
@@ -414,31 +411,19 @@ export async function initializeNopechaExtension(
 
       if (extensionId) {
         const extensionUrl = `chrome-extension://${extensionId}/popup.html`
-        await page3.goto(extensionUrl, { waitUntil: 'networkidle2' })
-        await delay(500)
-
-        const editKey = await page3.waitForSelector('#edit_key .clickable')
+        await page.goto(extensionUrl, { waitUntil: 'networkidle2' })
+        const editKey = await page.waitForSelector('#edit_key .clickable')
         await editKey.click()
 
-        const settingsInput = await page3.waitForSelector('input.settings_text')
-        // console.log('value1', )
-
+        const settingsInput = await page.waitForSelector('input.settings_text')
         const value = await settingsInput.evaluate((el) => el.value)
+        
         if (value !== nopechaKey) {
-          await settingsInput.evaluate((el) => {
-            el.value = ''
-          })
+          for (let i = 0; i <= 30; i++) {
+            await settingsInput.press('Backspace')
+          }
 
-          // ??? Types the API key twice in the input box
-          //await settingsInput.type(nopechaKey)
-
-          // ^ the code below already does the trick
-          // console.log('value2', await settingsInput.evaluate((el) => el.value))
-          await settingsInput.evaluate((el, value) => {
-            el.value = value
-          }, nopechaKey)
-
-          // console.log('value3', await settingsInput.evaluate((el) => el.value))
+          await settingsInput.type(nopechaKey)
           await settingsInput.press('Enter')
           await delay(500)
           await editKey.click()

@@ -22,6 +22,7 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
   protected _isGoogleLogin: boolean
   protected _isMicrosoftLogin: boolean
   protected _captchaToken: string
+  protected _nopechaKey: string
   protected _accessToken: string
 
   protected _email: string
@@ -58,6 +59,9 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
     captchaToken?: string
 
     /** @defaultValue `undefined` **/
+    nopechaKey?: string
+
+    /** @defaultValue `undefined` **/
     executablePath?: string
 
     /** @defaultValue `undefined` **/
@@ -74,6 +78,7 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
       isMicrosoftLogin = false,
       minimize = true,
       captchaToken,
+      nopechaKey,
       executablePath,
       proxyServer
     } = opts
@@ -87,6 +92,7 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
     this._isMicrosoftLogin = !!isMicrosoftLogin
     this._minimize = !!minimize
     this._captchaToken = captchaToken
+    this._nopechaKey = nopechaKey
     this._executablePath = executablePath
     this._proxyServer = proxyServer
 
@@ -111,12 +117,29 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
     try {
       this._browser = await getBrowser({
         captchaToken: this._captchaToken,
+        nopechaKey: this._nopechaKey,
         executablePath: this._executablePath,
         proxyServer: this._proxyServer,
         minimize: this._minimize
       })
       this._page =
         (await this._browser.pages())[0] || (await this._browser.newPage())
+
+      if (this._proxyServer && this._proxyServer.includes('@')) {
+        const proxyUsername = this._proxyServer.split('@')[0].split(':')[0]
+        const proxyPassword = this._proxyServer.split('@')[0].split(':')[1]
+        try {
+          await this._page.authenticate({
+            username: proxyUsername,
+            password: proxyPassword
+          })
+        } catch (err) {
+          console.error(
+            `Proxy "${this._proxyServer}" throws an error at authenticating`,
+            err.toString()
+          )
+        }
+      }
 
       // bypass annoying popup modals
       this._page.evaluateOnNewDocument(() => {
