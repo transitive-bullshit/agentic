@@ -126,9 +126,10 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
         (await this._browser.pages())[0] || (await this._browser.newPage())
 
       if (this._proxyServer && this._proxyServer.includes('@')) {
-        const proxyUsername = this._proxyServer.split('@')[0].split(':')[0]
-        const proxyPassword = this._proxyServer.split('@')[0].split(':')[1]
         try {
+          const proxyUsername = this._proxyServer.split('@')[0].split(':')[0]
+          const proxyPassword = this._proxyServer.split('@')[0].split(':')[1]
+
           await this._page.authenticate({
             username: proxyUsername,
             password: proxyPassword
@@ -150,7 +151,7 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
         )
       })
 
-      await maximizePage(this._page)
+      // await maximizePage(this._page)
 
       this._page.on('request', this._onRequest.bind(this))
       this._page.on('response', this._onResponse.bind(this))
@@ -282,9 +283,13 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
       }
     } else if (url.endsWith('api/auth/session')) {
       if (status === 401) {
-        await this.resetSession()
+        console.log(`ChatGPT "${this._email}" error 401...`)
+        // this will be handled in the sendMessage error handler
+        // await this.resetSession()
       } else if (status === 403) {
-        await this.refreshSession()
+        console.log(`ChatGPT "${this._email}" error 403...`)
+        // this will be handled in the sendMessage error handler
+        // await this.refreshSession()
       } else {
         const session: types.SessionResult = body
 
@@ -303,7 +308,9 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
       `ChatGPT "${this._email}" session expired; re-authenticating...`
     )
     try {
+      console.log('>>> closing session', this._email)
       await this.closeSession()
+      console.log('<<< closing session', this._email)
       await this.initSession()
       console.log(`ChatGPT "${this._email}" re-authenticated successfully`)
     } catch (err) {
@@ -453,9 +460,10 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
 
     let result: types.ChatResponse | types.ChatError
     let numTries = 0
+    let is401 = false
 
     do {
-      if (!(await this.getIsAuthenticated())) {
+      if (is401 || !(await this.getIsAuthenticated())) {
         console.log(`chatgpt re-authenticating ${this._email}`)
 
         try {
@@ -506,9 +514,19 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
         error.statusCode = result.error.statusCode
         error.statusText = result.error.statusText
 
-        if (error.statusCode !== 403) {
+        ++numTries
+
+        if (error.statusCode === 401) {
+          is401 = true
+
+          if (numTries >= 2) {
+            throw error
+          } else {
+            continue
+          }
+        } else if (error.statusCode !== 403) {
           throw error
-        } else if (++numTries >= 2) {
+        } else if (numTries >= 2) {
           await this.refreshSession()
           throw error
         } else {
@@ -583,11 +601,35 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
       if (this._page) {
         this._page.off('request', this._onRequest.bind(this))
         this._page.off('response', this._onResponse.bind(this))
+
+        await this._page.deleteCookie({
+          name: 'cf_clearance',
+          domain: '.chat.openai.com'
+        })
+
+        // TODO; test this
+        // const client = await this._page.target().createCDPSession()
+        // await client.send('Network.clearBrowserCookies')
+        // await client.send('Network.clearBrowserCache')
+
+        await this._page.close()
       }
-    } catch (_) {}
+    } catch (err) {
+      console.warn('closeSession error', err)
+    }
 
     if (this._browser) {
+      const pages = await this._browser.pages()
+      for (const page of pages) {
+        await page.close()
+      }
+
       await this._browser.close()
+
+      // Rule number 1 of zombie process hunting: double-tap
+      if (this._browser.process()) {
+        this._browser.process().kill('SIGINT')
+      }
     }
 
     this._page = null
