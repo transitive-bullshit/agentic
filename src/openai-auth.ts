@@ -389,12 +389,6 @@ export async function initializeNopechaExtension(
     await page.goto(`https://nopecha.com/setup#${nopechaKey}`)
     await delay(1000)
     try {
-      const page3 = await browser.newPage()
-      if (minimize) {
-        await minimizePage(page3)
-      }
-
-      await page.close()
       // find the nopecha extension ID
       const targets = browser.targets()
       const extensionIds = (
@@ -417,19 +411,25 @@ export async function initializeNopechaExtension(
 
       if (extensionId) {
         const extensionUrl = `chrome-extension://${extensionId}/popup.html`
-        await page3.goto(extensionUrl, { waitUntil: 'networkidle2' })
-        const editKey = await page3.waitForSelector('#edit_key .clickable')
+        await page.goto(extensionUrl, { waitUntil: 'networkidle2' })
+        const editKey = await page.waitForSelector('#edit_key .clickable')
         await editKey.click()
-        await delay(100)
 
-        for (let i = 0; i <= 30; i++) {
-          await editKey.press('Backspace')
+        const settingsInput = await page.waitForSelector('input.settings_text')
+        const value = await settingsInput.evaluate((el) => el.value)
+
+        if (value !== nopechaKey) {
+          for (let i = 0; i <= 30; i++) {
+            await settingsInput.press('Backspace')
+          }
+
+          await settingsInput.type(nopechaKey)
+          await settingsInput.press('Enter')
+          await delay(500)
+          await editKey.click()
+          await delay(2000)
         }
 
-        await editKey.type(nopechaKey)
-        await delay(500)
-        await editKey.press('Enter')
-        await delay(2500)
         console.log('initialized nopecha extension with key', nopechaKey)
       } else {
         console.error(
