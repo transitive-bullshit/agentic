@@ -551,6 +551,7 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
         } else {
           await this.refreshSession()
           await delay(1000)
+          result = null
           continue
         }
       } else {
