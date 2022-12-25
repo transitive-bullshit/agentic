@@ -32,6 +32,7 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
   protected _browser: Browser
   protected _page: Page
   protected _proxyServer: string
+  protected _isRefreshing: boolean
 
   /**
    * Creates a new client for automating the ChatGPT webapp.
@@ -95,6 +96,7 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
     this._nopechaKey = nopechaKey
     this._executablePath = executablePath
     this._proxyServer = proxyServer
+    this._isRefreshing = false
 
     if (!this._email) {
       const error = new types.ChatGPTError('ChatGPT invalid email')
@@ -280,7 +282,7 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
     }
 
     if (url.endsWith('/conversation')) {
-      if (status === 403) {
+      if (status === 403 && !this._isRefreshing) {
         await this.refreshSession()
       }
     } else if (url.endsWith('api/auth/session')) {
@@ -327,6 +329,7 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
    * Attempts to handle 403 errors by refreshing the page.
    */
   async refreshSession() {
+    this._isRefreshing = true
     console.log(`ChatGPT "${this._email}" session expired (403); refreshing...`)
     try {
       if (!this._minimize) {
@@ -372,6 +375,8 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
         `ChatGPT "${this._email}" error refreshing session`,
         err.toString()
       )
+    } finally {
+      this._isRefreshing = false
     }
   }
 
