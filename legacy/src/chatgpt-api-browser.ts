@@ -157,7 +157,7 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
       this._page.on('response', this._onResponse.bind(this))
 
       // bypass cloudflare and login
-      await getOpenAIAuth({
+      var authInfo = await getOpenAIAuth({
         email: this._email,
         password: this._password,
         browser: this._browser,
@@ -165,6 +165,8 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
         isGoogleLogin: this._isGoogleLogin,
         isMicrosoftLogin: this._isMicrosoftLogin
       })
+      console.log('Cloudflare Cookie: ', authInfo.clearanceToken)
+      console.log('Useragent: ', authInfo.userAgent)
     } catch (err) {
       if (this._browser) {
         await this._browser.close()
