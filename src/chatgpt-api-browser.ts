@@ -332,10 +332,27 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
       if (!this._minimize) {
         await maximizePage(this._page)
       }
-      await this._page.reload({
-        waitUntil: 'networkidle2',
-        timeout: 2 * 60 * 1000 // 2 minutes
-      })
+      await this._page.reload()
+      // Wait for a response that includes the 'cf_clearance' cookie
+      const timeout = 30000 // 30 seconds in milliseconds
+      const response = await this._page.waitForResponse(
+        (response) => {
+          // Check if the `set-cookie` header exists in the response headers
+          const setCookie = response.headers()['set-cookie']
+          if (setCookie) {
+            // Check if the `set-cookie` value contains the `cf_clearance=` string
+            return setCookie.includes('cf_clearance=')
+          }
+          return false
+        },
+        { timeout }
+      )
+
+      if (response) {
+        console.log('Found cf_clearance in set-cookie header')
+      } else {
+        throw new types.ChatGPTError('Failed to refresh session')
+      }
       if (this._minimize && this.isChatPage) {
         await minimizePage(this._page)
       }
