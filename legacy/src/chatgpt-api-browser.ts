@@ -357,6 +357,16 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
         await minimizePage(this._page)
       }
       console.log(`ChatGPT "${this._email}" refreshed session successfully`)
+      const pageCookies = await this._page.cookies()
+      const cookies = pageCookies.reduce(
+        (map, cookie) => ({ ...map, [cookie.name]: cookie }),
+        {}
+      )
+      try {
+        console.log('Cloudflare Cookie: ', cookies['cf_clearance'].value)
+      } catch (error) {
+        console.log('Cloudflare Cookie: ', 'Not Found')
+      }
     } catch (err) {
       console.error(
         `ChatGPT "${this._email}" error refreshing session`,
