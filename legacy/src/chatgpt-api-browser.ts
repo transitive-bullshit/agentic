@@ -336,40 +336,42 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
         await maximizePage(this._page)
       }
       await this._page.reload()
+      let response
+      const timeout = 120000 // 2 minutes in milliseconds
       // Wait for a response that includes the 'cf_clearance' cookie
-      const timeout = 30000 // 30 seconds in milliseconds
-      const response = await this._page.waitForResponse(
-        (response) => {
-          // Check if the `set-cookie` header exists in the response headers
-          const setCookie = response.headers()['set-cookie']
-          if (setCookie) {
-            // Check if the `set-cookie` value contains the `cf_clearance=` string
-            return setCookie.includes('cf_clearance=')
-          }
-          return false
-        },
-        { timeout }
-      )
-
-      if (response) {
-        console.log('Found cf_clearance in set-cookie header')
-      } else {
-        throw new types.ChatGPTError('Failed to refresh session')
+      try {
+        response = await this._page.waitForResponse(
+          (response) => {
+            // Check if the `set-cookie` header exists in the response headers
+            const setCookie = response.headers()['set-cookie']
+            if (setCookie) {
+              // Check if the `set-cookie` value contains the `cf_clearance=` string
+              let check = setCookie.includes('cf_clearance=')
+              if (check) {
+                console.log('Found cf_clearance in set-cookie header')
+                // split setCookie at cf-clearance= and get the second part, then remove the semicolon at the end
+                let cf_clearance = setCookie
+                  .split('cf_clearance=')[1]
+                  .split(';')[0]
+                console.log('Cloudflare Cookie:', cf_clearance)
+              }
+              return check
+            }
+            return false
+          },
+          { timeout }
+        )
+      } catch (err) {
+        // useful for when cloudflare cookie is still valid, to catch TimeoutError
+        response = !!(await this._getInputBox())
+      }
+      if (!response) {
+        throw new types.ChatGPTError('Could not fetch cf_clearance cookie')
       }
       if (this._minimize && this.isChatPage) {
         await minimizePage(this._page)
       }
       console.log(`ChatGPT "${this._email}" refreshed session successfully`)
-      const pageCookies = await this._page.cookies()
-      const cookies = pageCookies.reduce(
-        (map, cookie) => ({ ...map, [cookie.name]: cookie }),
-        {}
-      )
-      try {
-        console.log('Cloudflare Cookie: ', cookies['cf_clearance'].value)
-      } catch (error) {
-        console.log('Cloudflare Cookie: ', 'Not Found')
-      }
     } catch (err) {
       console.error(
         `ChatGPT "${this._email}" error refreshing session`,
