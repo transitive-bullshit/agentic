@@ -315,6 +315,7 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [Telegram Bot #2](https://github.com/dawangraoming/chatgpt-telegram-bot)
 - [Deno Telegram Bot](https://github.com/Ciyou/chatbot-telegram)
 - [Go Telegram Bot](https://github.com/m1guelpf/chatgpt-telegram)
+- [Telegram Bot #5](https://github.com/RainEggplant/chatgpt-telegram-bot) (group privacy mode, ID-based auth)
 - [GitHub ProBot](https://github.com/oceanlvr/ChatGPTBot)
 - [Discord Bot #1](https://github.com/onury5506/Discord-ChatGPT-Bot)
 - [Discord Bot #2](https://github.com/Nageld/ChatGPT-Bot)
