@@ -313,6 +313,7 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [Raycast Extension #2](https://github.com/domnantas/raycast-chatgpt)
 - [Telegram Bot #1](https://github.com/realies/chatgpt-telegram-bot)
 - [Telegram Bot #2](https://github.com/dawangraoming/chatgpt-telegram-bot)
+- [Telegram Bot #3](https://github.com/RainEggplant/chatgpt-telegram-bot) (group privacy mode, ID-based auth)
 - [Deno Telegram Bot](https://github.com/Ciyou/chatbot-telegram)
 - [Go Telegram Bot](https://github.com/m1guelpf/chatgpt-telegram)
 - [GitHub ProBot](https://github.com/oceanlvr/ChatGPTBot)
