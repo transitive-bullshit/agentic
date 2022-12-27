@@ -52,7 +52,7 @@ export async function getOpenAIAuth({
   password,
   browser,
   page,
-  timeoutMs = 2 * 60 * 1000,
+  timeoutMs = 3 * 60 * 1000,
   isGoogleLogin = false,
   isMicrosoftLogin = false,
   captchaToken = process.env.CAPTCHA_TOKEN,
@@ -619,6 +619,12 @@ async function waitForRecaptcha(
     console.log('waiting to solve recaptcha...')
 
     do {
+      const captcha = await page.$('textarea#g-recaptcha-response')
+      if (!captcha) {
+        // the user may have gone past the page manually
+        break
+      }
+
       const value = (await captcha.evaluate((el) => el.value))?.trim()
       if (value?.length) {
         // recaptcha has been solved!
