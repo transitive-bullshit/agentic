@@ -159,7 +159,7 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
       this._page.on('response', this._onResponse.bind(this))
 
       // bypass cloudflare and login
-      var authInfo = await getOpenAIAuth({
+      const authInfo = await getOpenAIAuth({
         email: this._email,
         password: this._password,
         browser: this._browser,
@@ -167,8 +167,10 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
         isGoogleLogin: this._isGoogleLogin,
         isMicrosoftLogin: this._isMicrosoftLogin
       })
-      console.log('Cloudflare Cookie: ', authInfo.clearanceToken)
-      console.log('Useragent: ', authInfo.userAgent)
+
+      if (this._debug) {
+        console.log('chatgpt', this._email, 'auth', authInfo)
+      }
     } catch (err) {
       if (this._browser) {
         await this._browser.close()
@@ -282,8 +284,10 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
     }
 
     if (url.endsWith('/conversation')) {
-      if (status === 403 && !this._isRefreshing) {
-        await this.refreshSession()
+      if (status === 403) {
+        console.log(`ChatGPT "${this._email}" error 403...`)
+        // this will be handled in the sendMessage error handler
+        // await this.refreshSession()
       }
     } else if (url.endsWith('api/auth/session')) {
       if (status === 401) {
@@ -308,18 +312,16 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
    * Attempts to handle 401 errors by re-authenticating.
    */
   async resetSession() {
-    console.log(
-      `ChatGPT "${this._email}" session expired; re-authenticating...`
-    )
+    console.log(`ChatGPT "${this._email}" resetSession...`)
     try {
       console.log('>>> closing session', this._email)
       await this.closeSession()
       console.log('<<< closing session', this._email)
       await this.initSession()
-      console.log(`ChatGPT "${this._email}" re-authenticated successfully`)
+      console.log(`ChatGPT "${this._email}" refreshSession success`)
     } catch (err) {
       console.error(
-        `ChatGPT "${this._email}" error re-authenticating`,
+        `ChatGPT "${this._email}" resetSession error`,
         err.toString()
       )
     }
@@ -329,49 +331,53 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
    * Attempts to handle 403 errors by refreshing the page.
    */
   async refreshSession() {
+    if (this._isRefreshing) {
+      return
+    }
+
     this._isRefreshing = true
-    console.log(`ChatGPT "${this._email}" session expired (403); refreshing...`)
+    console.log(`ChatGPT "${this._email}" refreshSession...`)
+
     try {
       if (!this._minimize) {
         await maximizePage(this._page)
       }
+
       await this._page.reload()
+
       let response
       const timeout = 120000 // 2 minutes in milliseconds
-      // Wait for a response that includes the 'cf_clearance' cookie
+
       try {
+        // Wait for a response that includes the 'cf_clearance' cookie
         response = await this._page.waitForResponse(
           (response) => {
-            // Check if the `set-cookie` header exists in the response headers
-            const setCookie = response.headers()['set-cookie']
-            if (setCookie) {
-              // Check if the `set-cookie` value contains the `cf_clearance=` string
-              let check = setCookie.includes('cf_clearance=')
-              if (check) {
-                console.log('Found cf_clearance in set-cookie header')
-                // split setCookie at cf-clearance= and get the second part, then remove the semicolon at the end
-                let cf_clearance = setCookie
-                  .split('cf_clearance=')[1]
-                  .split(';')[0]
-                console.log('Cloudflare Cookie:', cf_clearance)
-              }
-              return check
+            const cookie = response.headers()['set-cookie']
+            if (cookie?.includes('cf_clearance=')) {
+              const cfClearance = cookie
+                .split('cf_clearance=')?.[1]
+                ?.split(';')?.[0]
+              // console.log('Cloudflare Cookie:', cfClearance)
+              return true
             }
             return false
           },
           { timeout }
         )
       } catch (err) {
-        // useful for when cloudflare cookie is still valid, to catch TimeoutError
+        // Useful for when cloudflare cookie is still valid, to catch TimeoutError
         response = !!(await this._getInputBox())
       }
+
       if (!response) {
         throw new types.ChatGPTError('Could not fetch cf_clearance cookie')
       }
+
       if (this._minimize && this.isChatPage) {
         await minimizePage(this._page)
       }
-      console.log(`ChatGPT "${this._email}" refreshed session successfully`)
+
+      console.log(`ChatGPT "${this._email}" refreshSession success`)
     } catch (err) {
       console.error(
         `ChatGPT "${this._email}" error refreshing session`,
