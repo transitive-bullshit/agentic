@@ -386,7 +386,9 @@ export async function initializeNopechaExtension(
       await minimizePage(page)
     }
 
-    await page.goto(`https://nopecha.com/setup#${nopechaKey}`)
+    await page.goto(`https://nopecha.com/setup#${nopechaKey}`, {
+      waitUntil: 'networkidle0'
+    })
     await delay(1000)
     try {
       // find the nopecha extension ID
@@ -411,7 +413,7 @@ export async function initializeNopechaExtension(
 
       if (extensionId) {
         const extensionUrl = `chrome-extension://${extensionId}/popup.html`
-        await page.goto(extensionUrl, { waitUntil: 'networkidle2' })
+        await page.goto(extensionUrl, { waitUntil: 'networkidle0' })
         const editKey = await page.waitForSelector('#edit_key .clickable')
         await editKey.click()
 
