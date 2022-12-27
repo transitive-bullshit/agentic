@@ -138,6 +138,9 @@ export async function getOpenAIAuth({
       let submitP: () => Promise<void>
 
       if (isGoogleLogin) {
+        await page.waitForSelector('button[data-provider="google"]', {
+          timeout: timeoutMs
+        })
         await page.click('button[data-provider="google"]')
         await page.waitForSelector('input[type="email"]')
         await page.type('input[type="email"]', email, { delay: 10 })
