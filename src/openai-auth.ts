@@ -20,6 +20,7 @@ let hasRecaptchaPlugin = false
 let hasNopechaExtension = false
 
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url))
+const DEFAULT_TIMEOUT_MS = 3 * 60 * 1000 // 3 minutes
 
 /**
  * Represents everything that's required to pass into `ChatGPTAPI` in order
@@ -52,7 +53,7 @@ export async function getOpenAIAuth({
   password,
   browser,
   page,
-  timeoutMs = 3 * 60 * 1000,
+  timeoutMs = DEFAULT_TIMEOUT_MS,
   isGoogleLogin = false,
   isMicrosoftLogin = false,
   captchaToken = process.env.CAPTCHA_TOKEN,
@@ -83,7 +84,8 @@ export async function getOpenAIAuth({
         captchaToken,
         nopechaKey,
         executablePath,
-        proxyServer
+        proxyServer,
+        timeoutMs
       })
     }
 
@@ -254,6 +256,7 @@ export async function getBrowser(
     nopechaKey?: string
     proxyServer?: string
     minimize?: boolean
+    timeoutMs?: number
   } = {}
 ) {
   const {
@@ -262,6 +265,7 @@ export async function getBrowser(
     executablePath = defaultChromeExecutablePath(),
     proxyServer = process.env.PROXY_SERVER,
     minimize = false,
+    timeoutMs = DEFAULT_TIMEOUT_MS,
     ...launchOptions
   } = opts
 
@@ -324,6 +328,7 @@ export async function getBrowser(
 
   const browser = await puppeteer.launch({
     headless: false,
+    // devtools: true,
     args: puppeteerArgs,
     ignoreDefaultArgs: [
       '--disable-extensions',
@@ -367,7 +372,8 @@ export async function getBrowser(
 
   await initializeNopechaExtension(browser, {
     minimize,
-    nopechaKey
+    nopechaKey,
+    timeoutMs
   })
 
   return browser
@@ -378,71 +384,25 @@ export async function initializeNopechaExtension(
   opts: {
     minimize?: boolean
     nopechaKey?: string
+    timeoutMs?: number
   }
 ) {
   const { minimize = false, nopechaKey } = opts
 
-  // TODO: this is a really hackity hack way of setting the API key...
   if (hasNopechaExtension) {
     const page = (await browser.pages())[0] || (await browser.newPage())
     if (minimize) {
       await minimizePage(page)
     }
 
-    await page.goto(`https://nopecha.com/setup#${nopechaKey}`, {
-      waitUntil: 'networkidle0'
-    })
-    await delay(1000)
-    try {
-      // find the nopecha extension ID
-      const targets = browser.targets()
-      const extensionIds = (
-        await Promise.all(
-          targets.map(async (target) => {
-            // console.log(target.type(), target.url())
+    console.log('initializing nopecha extension with key', nopechaKey, '...')
 
-            if (target.type() !== 'service_worker') {
-              return
-            }
-
-            // const titleL = title?.toLowerCase()
-            // if (titleL?.includes('nopecha'))
-            const url = new URL(target.url())
-            return url.hostname
-          })
-        )
-      ).filter(Boolean)
-      const extensionId = extensionIds[0]
-
-      if (extensionId) {
-        const extensionUrl = `chrome-extension://${extensionId}/popup.html`
-        await page.goto(extensionUrl, { waitUntil: 'networkidle0' })
-        const editKey = await page.waitForSelector('#edit_key .clickable')
-        await editKey.click()
-
-        const settingsInput = await page.waitForSelector('input.settings_text')
-        const value = await settingsInput.evaluate((el) => el.value)
-
-        if (value !== nopechaKey) {
-          for (let i = 0; i <= 30; i++) {
-            await settingsInput.press('Backspace')
-          }
-
-          await settingsInput.type(nopechaKey)
-          await settingsInput.press('Enter')
-          await delay(500)
-          await editKey.click()
-          await delay(2000)
-        }
-
-        console.log('initialized nopecha extension with key', nopechaKey)
-      } else {
-        console.error(
-          "error initializing nopecha extension; couldn't determine extension ID"
-        )
-      }
-    } catch (err) {
-      console.error('error initializing nopecha extension', err)
+    // TODO: setting the nopecha extension key is really, really error prone...
+    for (let i = 0; i < 5; ++i) {
+      await page.goto(`https://nopecha.com/setup#${nopechaKey}`, {
+        waitUntil: 'networkidle0'
+      })
+      await delay(500)
     }
   }
 }
@@ -624,16 +584,20 @@ async function waitForRecaptcha(
     console.log('waiting to solve recaptcha...')
 
     do {
-      const captcha = await page.$('textarea#g-recaptcha-response')
-      if (!captcha) {
-        // the user may have gone past the page manually
-        break
-      }
+      try {
+        const captcha = await page.$('textarea#g-recaptcha-response')
+        if (!captcha) {
+          // the user may have gone past the page manually
+          break
+        }
 
-      const value = (await captcha.evaluate((el) => el.value))?.trim()
-      if (value?.length) {
-        // recaptcha has been solved!
-        break
+        const value = (await captcha.evaluate((el) => el.value))?.trim()
+        if (value?.length) {
+          // recaptcha has been solved!
+          break
+        }
+      } catch (err) {
+        // catch navigation-related page context errors
       }
 
       if (timeoutMs) {
