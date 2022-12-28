@@ -188,12 +188,12 @@ export async function getOpenAIAuth({
           }
         }
 
-        await delay(1200)
+        await delay(2000)
         const frame = page.mainFrame()
         const submit = await page.waitForSelector('button[type="submit"]', {
           timeout: timeoutMs
         })
-        frame.focus('button[type="submit"]')
+        await frame.focus('button[type="submit"]')
         await submit.focus()
         await submit.click()
         await page.waitForSelector('#password', { timeout: timeoutMs })
@@ -588,12 +588,14 @@ async function waitForRecaptcha(
         const captcha = await page.$('textarea#g-recaptcha-response')
         if (!captcha) {
           // the user may have gone past the page manually
+          console.log('captcha no longer found; continuing')
           break
         }
 
         const value = (await captcha.evaluate((el) => el.value))?.trim()
         if (value?.length) {
           // recaptcha has been solved!
+          console.log('captcha solved; continuin')
           break
         }
       } catch (err) {
