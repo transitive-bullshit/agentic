@@ -662,16 +662,21 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
     }
 
     if (this._browser) {
-      const pages = await this._browser.pages()
-      for (const page of pages) {
-        await page.close()
+      try {
+        const pages = await this._browser.pages()
+        for (const page of pages) {
+          await page.close()
+        }
+      } catch (err) {
+        console.warn('closeSession error', err)
       }
 
       await this._browser.close()
 
+      const browserProcess = this._browser.process()
       // Rule number 1 of zombie process hunting: double-tap
-      if (this._browser.process()) {
-        this._browser.process().kill('SIGINT')
+      if (browserProcess) {
+        browserProcess.kill('SIGKILL')
       }
     }
 
