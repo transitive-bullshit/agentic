@@ -34,6 +34,8 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
   protected _proxyServer: string
   protected _isRefreshing: boolean
 
+  protected _launchOptions: object
+
   /**
    * Creates a new client for automating the ChatGPT webapp.
    */
@@ -81,7 +83,8 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
       captchaToken,
       nopechaKey,
       executablePath,
-      proxyServer
+      proxyServer,
+      ...launchOptions
     } = opts
 
     this._email = email
@@ -96,6 +99,7 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
     this._nopechaKey = nopechaKey
     this._executablePath = executablePath
     this._proxyServer = proxyServer
+    this._launchOptions = launchOptions
     this._isRefreshing = false
 
     if (!this._email) {
@@ -122,7 +126,8 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
         nopechaKey: this._nopechaKey,
         executablePath: this._executablePath,
         proxyServer: this._proxyServer,
-        minimize: this._minimize
+        minimize: this._minimize,
+        ...this._launchOptions
       })
       this._page =
         (await this._browser.pages())[0] || (await this._browser.newPage())
