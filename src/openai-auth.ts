@@ -595,7 +595,7 @@ async function waitForRecaptcha(
         const value = (await captcha.evaluate((el) => el.value))?.trim()
         if (value?.length) {
           // recaptcha has been solved!
-          console.log('captcha solved; continuin')
+          console.log('captcha solved; continuing')
           break
         }
       } catch (err) {
