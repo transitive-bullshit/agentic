@@ -32,6 +32,7 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
   protected _browser: Browser
   protected _page: Page
   protected _proxyServer: string
+  protected _headless: boolean
   protected _isRefreshing: boolean
 
   /**
@@ -67,6 +68,9 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
 
     /** @defaultValue `undefined` **/
     proxyServer?: string
+
+    /** @defaultValue `false` **/
+    headless?: boolean
   }) {
     super()
 
@@ -81,7 +85,8 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
       captchaToken,
       nopechaKey,
       executablePath,
-      proxyServer
+      proxyServer,
+      headless
     } = opts
 
     this._email = email
@@ -96,6 +101,7 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
     this._nopechaKey = nopechaKey
     this._executablePath = executablePath
     this._proxyServer = proxyServer
+    this._headless = headless
     this._isRefreshing = false
 
     if (!this._email) {
@@ -122,7 +128,8 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
         nopechaKey: this._nopechaKey,
         executablePath: this._executablePath,
         proxyServer: this._proxyServer,
-        minimize: this._minimize
+        minimize: this._minimize,
+        headless: this._headless
       })
       this._page =
         (await this._browser.pages())[0] || (await this._browser.newPage())

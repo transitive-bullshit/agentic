@@ -257,6 +257,7 @@ export async function getBrowser(
     proxyServer?: string
     minimize?: boolean
     timeoutMs?: number
+    headless?: boolean
   } = {}
 ) {
   const {
@@ -266,6 +267,7 @@ export async function getBrowser(
     proxyServer = process.env.PROXY_SERVER,
     minimize = false,
     timeoutMs = DEFAULT_TIMEOUT_MS,
+    headless = false,
     ...launchOptions
   } = opts
 
@@ -327,7 +329,7 @@ export async function getBrowser(
   }
 
   const browser = await puppeteer.launch({
-    headless: false,
+    headless: headless,
     // devtools: true,
     args: puppeteerArgs,
     ignoreDefaultArgs: [
