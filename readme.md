@@ -353,6 +353,7 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [Twitch Bot](https://github.com/BennyDeeDev/chatgpt-twitch-bot)
 - [Continuous Conversation](https://github.com/DanielTerletzkiy/chat-gtp-assistant)
 - [Figma plugin](https://github.com/frederickk/chatgpt-figma-plugin)
+- [Simple NestJs ChatGPT Server](https://github.com/RusDyn/chatgpt_nestjs_server)
 
 If you create a cool integration, feel free to open a PR and add it to the list.
 
