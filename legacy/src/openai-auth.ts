@@ -126,7 +126,7 @@ export async function getOpenAIAuth({
       await delay(500)
 
       // click login button and wait for navigation to finish
-      while (page.url().endsWith('/auth/login')) {
+      do {
         await Promise.all([
           page.waitForNavigation({
             waitUntil: 'networkidle2',
@@ -134,8 +134,8 @@ export async function getOpenAIAuth({
           }),
           page.click('#__next .btn-primary')
         ])
-        delay(500)
-      }
+        await delay(500)
+      } while (page.url().endsWith('/auth/login'))
 
       await checkForChatGPTAtCapacity(page, { timeoutMs })
 
@@ -181,8 +181,9 @@ export async function getOpenAIAuth({
         if (hasNopechaExtension) {
           await waitForRecaptcha(page, { timeoutMs })
         } else if (hasRecaptchaPlugin) {
-          // Add retry for network unstable
           console.log('solving captchas using 2captcha...')
+
+          // Add retries in case network is unstable
           const retries = 3
           for (let i = 0; i < retries; i++) {
             try {
@@ -192,7 +193,7 @@ export async function getOpenAIAuth({
                 break
               } else {
                 console.log('no captchas found')
-                delay(500)
+                await delay(500)
               }
             } catch (e) {
               console.log('captcha error', e)
