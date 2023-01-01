@@ -232,7 +232,7 @@ To get session token manually:
    ![ChatGPT cookies](./media/session-token.png)
 4. Copy the value for `__Secure-next-auth.session-token` and save it to your environment. This will be your `sessionToken`.
 5. Copy the value for `cf_clearance` and save it to your environment. This will be your `clearanceToken`.
-6. Copy the value of the `user-agent` header from any request in your `Network` tab. This will be your `userAgent`.
+6. Copy the value of the `user-agent` header from any request in your `Network` tab, or copy the result of `navigator.userAgent` command on `Console` tab. This will be your `userAgent`.
 
 Pass `sessionToken`, `clearanceToken`, and `userAgent` to the `ChatGPTAPI` constructor.
 
