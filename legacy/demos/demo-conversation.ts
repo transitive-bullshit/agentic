@@ -1,7 +1,7 @@
 import dotenv from 'dotenv-safe'
 import { oraPromise } from 'ora'
 
-import { ChatGPTAPI, getOpenAIAuth } from '../src'
+import { ChatGPTAPIBrowser } from '../src'
 
 dotenv.config()
 
@@ -16,12 +16,12 @@ async function main() {
   const email = process.env.OPENAI_EMAIL
   const password = process.env.OPENAI_PASSWORD
 
-  const authInfo = await getOpenAIAuth({
+  const api = new ChatGPTAPIBrowser({
     email,
-    password
+    password,
+    debug: false,
+    minimize: true
   })
-
-  const api = new ChatGPTAPI({ ...authInfo })
   await api.initSession()
 
   const prompt = 'Write a poem about cats.'
