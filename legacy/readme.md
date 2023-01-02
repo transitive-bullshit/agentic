@@ -203,12 +203,6 @@ A [conversation demo](./demos/demo-conversation.ts) is also included:
 npx tsx demos/demo-conversation.ts
 ```
 
-A [browser-based conversation demo](./demos/demo-conversation-browser.ts) is also included:
-
-```bash
-npx tsx demos/demo-conversation-browser.ts
-```
-
 ### Authentication
 
 The authentication section relates to the REST-based version (using `getOpenAIAuth` + `ChatGPTAPI`). The browser-based solution, `ChatGPTAPIBrowser`, takes care of all the authentication for you.
