@@ -71,6 +71,7 @@ async function main() {
   )
   console.log('\n' + res.response + '\n')
 
+  // close the browser at the end
   await api.closeSession()
 }
 
