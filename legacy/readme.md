@@ -334,7 +334,7 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [WhatsApp Bot #1](https://github.com/pascalroget/whatsgpt) (multi-user support)
 - [WhatsApp Bot #2](https://github.com/amosayomide05/chatgpt-whatsapp-bot)
 - [WhatsApp Bot #3](https://github.com/navopw/whatsapp-chatgpt)
-- [Matrix Bot](https://github.com/jakecoppinger/matrix-chatgpt-bot)
+- [Matrix Bot](https://github.com/matrixgpt/matrix-chatgpt-bot)
 - [Rental Cover Letter Generator](https://sharehouse.app/ai)
 - [Assistant CLI](https://github.com/diciaup/assistant-cli)
 - [Teams Bot](https://github.com/formulahendry/chatgpt-teams-bot)
