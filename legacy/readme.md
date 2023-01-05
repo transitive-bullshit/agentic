@@ -203,12 +203,6 @@ A [conversation demo](./demos/demo-conversation.ts) is also included:
 npx tsx demos/demo-conversation.ts
 ```
 
-A [browser-based conversation demo](./demos/demo-conversation-browser.ts) is also included:
-
-```bash
-npx tsx demos/demo-conversation-browser.ts
-```
-
 ### Authentication
 
 The authentication section relates to the REST-based version (using `getOpenAIAuth` + `ChatGPTAPI`). The browser-based solution, `ChatGPTAPIBrowser`, takes care of all the authentication for you.
@@ -232,7 +226,7 @@ To get session token manually:
    ![ChatGPT cookies](./media/session-token.png)
 4. Copy the value for `__Secure-next-auth.session-token` and save it to your environment. This will be your `sessionToken`.
 5. Copy the value for `cf_clearance` and save it to your environment. This will be your `clearanceToken`.
-6. Copy the value of the `user-agent` header from any request in your `Network` tab. This will be your `userAgent`.
+6. Copy the value of the `user-agent` header from any request in your `Network` tab, or copy the result of `navigator.userAgent` command on `Console` tab. This will be your `userAgent`.
 
 Pass `sessionToken`, `clearanceToken`, and `userAgent` to the `ChatGPTAPI` constructor.
 
@@ -314,6 +308,7 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [Telegram Bot #1](https://github.com/realies/chatgpt-telegram-bot)
 - [Telegram Bot #2](https://github.com/dawangraoming/chatgpt-telegram-bot)
 - [Telegram Bot #3](https://github.com/RainEggplant/chatgpt-telegram-bot) (group privacy mode, ID-based auth)
+- [Telegram Bot #4](https://github.com/ArdaGnsrn/chatgpt-telegram) (queue system, ID-based chat thread)
 - [Deno Telegram Bot](https://github.com/Ciyou/chatbot-telegram)
 - [Go Telegram Bot](https://github.com/m1guelpf/chatgpt-telegram)
 - [Telegram Bot for YouTube Summaries](https://github.com/codextde/youtube-summary)
@@ -339,7 +334,7 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [WhatsApp Bot #1](https://github.com/pascalroget/whatsgpt) (multi-user support)
 - [WhatsApp Bot #2](https://github.com/amosayomide05/chatgpt-whatsapp-bot)
 - [WhatsApp Bot #3](https://github.com/navopw/whatsapp-chatgpt)
-- [Matrix Bot](https://github.com/jakecoppinger/matrix-chatgpt-bot)
+- [Matrix Bot](https://github.com/matrixgpt/matrix-chatgpt-bot)
 - [Rental Cover Letter Generator](https://sharehouse.app/ai)
 - [Assistant CLI](https://github.com/diciaup/assistant-cli)
 - [Teams Bot](https://github.com/formulahendry/chatgpt-teams-bot)
@@ -353,6 +348,7 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [Twitch Bot](https://github.com/BennyDeeDev/chatgpt-twitch-bot)
 - [Continuous Conversation](https://github.com/DanielTerletzkiy/chat-gtp-assistant)
 - [Figma plugin](https://github.com/frederickk/chatgpt-figma-plugin)
+- [NestJS server](https://github.com/RusDyn/chatgpt_nestjs_server)
 - [Wordsmith: Add-in for Microsoft Word](https://github.com/xtremehpx/Wordsmith)
 
 
