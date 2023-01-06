@@ -351,7 +351,6 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [NestJS server](https://github.com/RusDyn/chatgpt_nestjs_server)
 - [Wordsmith: Add-in for Microsoft Word](https://github.com/xtremehpx/Wordsmith)
 
-
 If you create a cool integration, feel free to open a PR and add it to the list.
 
 ## Compatibility
