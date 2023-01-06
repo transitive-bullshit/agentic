@@ -147,25 +147,27 @@ export async function getOpenAIAuth({
         })
         await page.click('button[data-provider="google"]')
         await page.waitForSelector('input[type="email"]')
-        await page.type('input[type="email"]', email, { delay: 10 })
+        await page.type('input[type="email"]', email)
         await Promise.all([
           page.waitForNavigation(),
           await page.keyboard.press('Enter')
         ])
         await page.waitForSelector('input[type="password"]', { visible: true })
-        await page.type('input[type="password"]', password, { delay: 10 })
+        await page.type('input[type="password"]', password)
+        await delay(50)
         submitP = () => page.keyboard.press('Enter')
       } else if (isMicrosoftLogin) {
         await page.click('button[data-provider="windowslive"]')
         await page.waitForSelector('input[type="email"]')
-        await page.type('input[type="email"]', email, { delay: 10 })
+        await page.type('input[type="email"]', email)
         await Promise.all([
           page.waitForNavigation(),
           await page.keyboard.press('Enter')
         ])
         await delay(1500)
         await page.waitForSelector('input[type="password"]', { visible: true })
-        await page.type('input[type="password"]', password, { delay: 10 })
+        await page.type('input[type="password"]', password)
+        await delay(50)
         submitP = () => page.keyboard.press('Enter')
         await Promise.all([
           page.waitForNavigation(),
@@ -210,7 +212,8 @@ export async function getOpenAIAuth({
         await submit.focus()
         await submit.click()
         await page.waitForSelector('#password', { timeout: timeoutMs })
-        await page.type('#password', password, { delay: 10 })
+        await page.type('#password', password)
+        await delay(50)
         submitP = () => page.click('button[type="submit"]')
       }
 
