@@ -60,7 +60,7 @@
 
 #### Defined in
 
-[src/types.ts:109](https://github.com/transitive-bullshit/chatgpt-api/blob/025e7e3/src/types.ts#L109)
+[src/types.ts:109](https://github.com/transitive-bullshit/chatgpt-api/blob/4a0f780/src/types.ts#L109)
 
 ___
 
@@ -81,7 +81,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:300](https://github.com/transitive-bullshit/chatgpt-api/blob/025e7e3/src/types.ts#L300)
+[src/types.ts:300](https://github.com/transitive-bullshit/chatgpt-api/blob/4a0f780/src/types.ts#L300)
 
 ___
 
@@ -99,7 +99,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:306](https://github.com/transitive-bullshit/chatgpt-api/blob/025e7e3/src/types.ts#L306)
+[src/types.ts:306](https://github.com/transitive-bullshit/chatgpt-api/blob/4a0f780/src/types.ts#L306)
 
 ___
 
@@ -109,7 +109,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:1](https://github.com/transitive-bullshit/chatgpt-api/blob/025e7e3/src/types.ts#L1)
+[src/types.ts:1](https://github.com/transitive-bullshit/chatgpt-api/blob/4a0f780/src/types.ts#L1)
 
 ___
 
@@ -131,7 +131,7 @@ https://chat.openapi.com/backend-api/conversation
 
 #### Defined in
 
-[src/types.ts:134](https://github.com/transitive-bullshit/chatgpt-api/blob/025e7e3/src/types.ts#L134)
+[src/types.ts:134](https://github.com/transitive-bullshit/chatgpt-api/blob/4a0f780/src/types.ts#L134)
 
 ___
 
@@ -149,7 +149,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:251](https://github.com/transitive-bullshit/chatgpt-api/blob/025e7e3/src/types.ts#L251)
+[src/types.ts:251](https://github.com/transitive-bullshit/chatgpt-api/blob/4a0f780/src/types.ts#L251)
 
 ___
 
@@ -174,7 +174,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:257](https://github.com/transitive-bullshit/chatgpt-api/blob/025e7e3/src/types.ts#L257)
+[src/types.ts:257](https://github.com/transitive-bullshit/chatgpt-api/blob/4a0f780/src/types.ts#L257)
 
 ___
 
@@ -184,7 +184,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:276](https://github.com/transitive-bullshit/chatgpt-api/blob/025e7e3/src/types.ts#L276)
+[src/types.ts:276](https://github.com/transitive-bullshit/chatgpt-api/blob/4a0f780/src/types.ts#L276)
 
 ___
 
@@ -201,7 +201,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:270](https://github.com/transitive-bullshit/chatgpt-api/blob/025e7e3/src/types.ts#L270)
+[src/types.ts:270](https://github.com/transitive-bullshit/chatgpt-api/blob/4a0f780/src/types.ts#L270)
 
 ___
 
@@ -223,7 +223,7 @@ https://chat.openapi.com/backend-api/conversation/message_feedback
 
 #### Defined in
 
-[src/types.ts:193](https://github.com/transitive-bullshit/chatgpt-api/blob/025e7e3/src/types.ts#L193)
+[src/types.ts:193](https://github.com/transitive-bullshit/chatgpt-api/blob/4a0f780/src/types.ts#L193)
 
 ___
 
@@ -233,7 +233,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:249](https://github.com/transitive-bullshit/chatgpt-api/blob/025e7e3/src/types.ts#L249)
+[src/types.ts:249](https://github.com/transitive-bullshit/chatgpt-api/blob/4a0f780/src/types.ts#L249)
 
 ___
 
@@ -253,7 +253,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:222](https://github.com/transitive-bullshit/chatgpt-api/blob/025e7e3/src/types.ts#L222)
+[src/types.ts:222](https://github.com/transitive-bullshit/chatgpt-api/blob/4a0f780/src/types.ts#L222)
 
 ___
 
@@ -263,7 +263,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:220](https://github.com/transitive-bullshit/chatgpt-api/blob/025e7e3/src/types.ts#L220)
+[src/types.ts:220](https://github.com/transitive-bullshit/chatgpt-api/blob/4a0f780/src/types.ts#L220)
 
 ___
 
@@ -273,7 +273,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:275](https://github.com/transitive-bullshit/chatgpt-api/blob/025e7e3/src/types.ts#L275)
+[src/types.ts:275](https://github.com/transitive-bullshit/chatgpt-api/blob/4a0f780/src/types.ts#L275)
 
 ___
 
@@ -291,7 +291,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:77](https://github.com/transitive-bullshit/chatgpt-api/blob/025e7e3/src/types.ts#L77)
+[src/types.ts:77](https://github.com/transitive-bullshit/chatgpt-api/blob/4a0f780/src/types.ts#L77)
 
 ___
 
@@ -309,7 +309,7 @@ https://chat.openapi.com/backend-api/models
 
 #### Defined in
 
-[src/types.ts:70](https://github.com/transitive-bullshit/chatgpt-api/blob/025e7e3/src/types.ts#L70)
+[src/types.ts:70](https://github.com/transitive-bullshit/chatgpt-api/blob/4a0f780/src/types.ts#L70)
 
 ___
 
@@ -328,7 +328,7 @@ https://chat.openapi.com/backend-api/moderations
 
 #### Defined in
 
-[src/types.ts:97](https://github.com/transitive-bullshit/chatgpt-api/blob/025e7e3/src/types.ts#L97)
+[src/types.ts:97](https://github.com/transitive-bullshit/chatgpt-api/blob/4a0f780/src/types.ts#L97)
 
 ___
 
@@ -348,7 +348,7 @@ https://chat.openapi.com/backend-api/moderations
 
 #### Defined in
 
-[src/types.ts:114](https://github.com/transitive-bullshit/chatgpt-api/blob/025e7e3/src/types.ts#L114)
+[src/types.ts:114](https://github.com/transitive-bullshit/chatgpt-api/blob/4a0f780/src/types.ts#L114)
 
 ___
 
@@ -370,7 +370,7 @@ to authenticate with the unofficial ChatGPT API.
 
 #### Defined in
 
-[src/openai-auth.ts:29](https://github.com/transitive-bullshit/chatgpt-api/blob/025e7e3/src/openai-auth.ts#L29)
+[src/openai-auth.ts:29](https://github.com/transitive-bullshit/chatgpt-api/blob/4a0f780/src/openai-auth.ts#L29)
 
 ___
 
@@ -388,7 +388,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:161](https://github.com/transitive-bullshit/chatgpt-api/blob/025e7e3/src/types.ts#L161)
+[src/types.ts:161](https://github.com/transitive-bullshit/chatgpt-api/blob/4a0f780/src/types.ts#L161)
 
 ___
 
@@ -405,7 +405,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:178](https://github.com/transitive-bullshit/chatgpt-api/blob/025e7e3/src/types.ts#L178)
+[src/types.ts:178](https://github.com/transitive-bullshit/chatgpt-api/blob/4a0f780/src/types.ts#L178)
 
 ___
 
@@ -415,7 +415,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:3](https://github.com/transitive-bullshit/chatgpt-api/blob/025e7e3/src/types.ts#L3)
+[src/types.ts:3](https://github.com/transitive-bullshit/chatgpt-api/blob/4a0f780/src/types.ts#L3)
 
 ___
 
@@ -425,7 +425,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:288](https://github.com/transitive-bullshit/chatgpt-api/blob/025e7e3/src/types.ts#L288)
+[src/types.ts:288](https://github.com/transitive-bullshit/chatgpt-api/blob/4a0f780/src/types.ts#L288)
 
 ___
 
@@ -447,7 +447,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:278](https://github.com/transitive-bullshit/chatgpt-api/blob/025e7e3/src/types.ts#L278)
+[src/types.ts:278](https://github.com/transitive-bullshit/chatgpt-api/blob/4a0f780/src/types.ts#L278)
 
 ___
 
@@ -468,7 +468,7 @@ https://chat.openapi.com/api/auth/session
 
 #### Defined in
 
-[src/types.ts:8](https://github.com/transitive-bullshit/chatgpt-api/blob/025e7e3/src/types.ts#L8)
+[src/types.ts:8](https://github.com/transitive-bullshit/chatgpt-api/blob/4a0f780/src/types.ts#L8)
 
 ___
 
@@ -490,7 +490,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:30](https://github.com/transitive-bullshit/chatgpt-api/blob/025e7e3/src/types.ts#L30)
+[src/types.ts:30](https://github.com/transitive-bullshit/chatgpt-api/blob/4a0f780/src/types.ts#L30)
 
 ## Functions
 
@@ -517,7 +517,7 @@ included them in here.
 
 #### Defined in
 
-[src/utils.ts:73](https://github.com/transitive-bullshit/chatgpt-api/blob/025e7e3/src/utils.ts#L73)
+[src/utils.ts:79](https://github.com/transitive-bullshit/chatgpt-api/blob/4a0f780/src/utils.ts#L79)
 
 ___
 
@@ -533,7 +533,7 @@ Gets the default path to chrome's executable for the current platform.
 
 #### Defined in
 
-[src/openai-auth.ts:426](https://github.com/transitive-bullshit/chatgpt-api/blob/025e7e3/src/openai-auth.ts#L426)
+[src/openai-auth.ts:435](https://github.com/transitive-bullshit/chatgpt-api/blob/4a0f780/src/openai-auth.ts#L435)
 
 ___
 
@@ -549,7 +549,7 @@ recognizes it and blocks access.
 
 | Name | Type |
 | :------ | :------ |
-| `opts` | `PuppeteerLaunchOptions` & { `captchaToken?`: `string` ; `minimize?`: `boolean` ; `nopechaKey?`: `string` ; `proxyServer?`: `string` ; `timeoutMs?`: `number`  } |
+| `opts` | `PuppeteerLaunchOptions` & { `captchaToken?`: `string` ; `debug?`: `boolean` ; `minimize?`: `boolean` ; `nopechaKey?`: `string` ; `proxyServer?`: `string` ; `timeoutMs?`: `number`  } |
 
 #### Returns
 
@@ -557,7 +557,7 @@ recognizes it and blocks access.
 
 #### Defined in
 
-[src/openai-auth.ts:266](https://github.com/transitive-bullshit/chatgpt-api/blob/025e7e3/src/openai-auth.ts#L266)
+[src/openai-auth.ts:269](https://github.com/transitive-bullshit/chatgpt-api/blob/4a0f780/src/openai-auth.ts#L269)
 
 ___
 
@@ -603,7 +603,7 @@ with your updated credentials.
 
 #### Defined in
 
-[src/openai-auth.ts:51](https://github.com/transitive-bullshit/chatgpt-api/blob/025e7e3/src/openai-auth.ts#L51)
+[src/openai-auth.ts:51](https://github.com/transitive-bullshit/chatgpt-api/blob/4a0f780/src/openai-auth.ts#L51)
 
 ___
 
@@ -617,6 +617,7 @@ ___
 | :------ | :------ |
 | `browser` | `Browser` |
 | `opts` | `Object` |
+| `opts.debug?` | `boolean` |
 | `opts.minimize?` | `boolean` |
 | `opts.nopechaKey?` | `string` |
 | `opts.timeoutMs?` | `number` |
@@ -627,7 +628,7 @@ ___
 
 #### Defined in
 
-[src/openai-auth.ts:395](https://github.com/transitive-bullshit/chatgpt-api/blob/025e7e3/src/openai-auth.ts#L395)
+[src/openai-auth.ts:401](https://github.com/transitive-bullshit/chatgpt-api/blob/4a0f780/src/openai-auth.ts#L401)
 
 ___
 
@@ -647,7 +648,7 @@ ___
 
 #### Defined in
 
-[src/utils.ts:39](https://github.com/transitive-bullshit/chatgpt-api/blob/025e7e3/src/utils.ts#L39)
+[src/utils.ts:45](https://github.com/transitive-bullshit/chatgpt-api/blob/4a0f780/src/utils.ts#L45)
 
 ___
 
@@ -667,7 +668,7 @@ ___
 
 #### Defined in
 
-[src/utils.ts:12](https://github.com/transitive-bullshit/chatgpt-api/blob/025e7e3/src/utils.ts#L12)
+[src/utils.ts:18](https://github.com/transitive-bullshit/chatgpt-api/blob/4a0f780/src/utils.ts#L18)
 
 ___
 
@@ -687,7 +688,7 @@ ___
 
 #### Defined in
 
-[src/utils.ts:29](https://github.com/transitive-bullshit/chatgpt-api/blob/025e7e3/src/utils.ts#L29)
+[src/utils.ts:35](https://github.com/transitive-bullshit/chatgpt-api/blob/4a0f780/src/utils.ts#L35)
 
 ___
 
@@ -707,4 +708,4 @@ ___
 
 #### Defined in
 
-[src/utils.ts:19](https://github.com/transitive-bullshit/chatgpt-api/blob/025e7e3/src/utils.ts#L19)
+[src/utils.ts:25](https://github.com/transitive-bullshit/chatgpt-api/blob/4a0f780/src/utils.ts#L25)
