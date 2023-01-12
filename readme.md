@@ -1,8 +1,6 @@
-# Update December 18, 2022 <!-- omit in toc -->
+# Update January 12, 2023 <!-- omit in toc -->
 
-On December 11th, OpenAI added Cloudflare protections that make it more difficult to access the unofficial API.
-
-To circumvent these protections, we've added a **fully automated browser-based solution**, which uses Puppeteer and CAPTCHA solvers under the hood. 🔥
+This package works to access ChatGPT pretty consistently, even after OpenAI added Cloudflare protections. To circumvent these protections, we've added a **fully automated browser-based solution**, which uses Puppeteer and CAPTCHA solvers under the hood. 🔥
 
 ```ts
 import { ChatGPTAPIBrowser } from 'chatgpt'
@@ -17,11 +15,17 @@ const result = await api.sendMessage('Hello World!')
 console.log(result.response)
 ```
 
-This solution is not lightweight, but it does work a lot more consistently than the previous REST API-based approach. For example, I'm currently using this approach to automate 10 concurrent OpenAI accounts for my [Twitter bot](https://github.com/transitive-bullshit/chatgpt-twitter-bot). 😂
-
-To use the updated version, **make sure you're using the latest version of this package and Node.js >= 18**. Then update your code following the examples below, paying special attention to the sections on [Authentication](#authentication), [Restrictions](#restrictions), and [CAPTCHAs](#captchas).
+This solution is not lightweight, but it does work a lot more consistently than the previous REST API-based approach. For example, I'm currently using this approach to automate N concurrent OpenAI accounts for my [Twitter bot](https://github.com/transitive-bullshit/chatgpt-twitter-bot). 😂
 
 We recently added support for CAPTCHA automation using either [nopecha](https://nopecha.com/) or [2captcha](https://2captcha.com). Keep in mind that this package will be updated to use the official API as soon as it's released, so things should get much easier over time. 💪
+
+There are some restrictions to be aware of, however:
+
+- Cloudflare doesn't like requests coming from data center IPs, so you'll either have to run it locally or use a residential IP proxy.
+- You should only have one `sendMessage` request at a time per browser instance and OpenAI account.
+- It can be difficult to reliably process `sendMessage` requests after awhile. My best advice for handling this is to wrap your usage in some basic retry logic as well as a daemon which restarts your Node.js process every hour or so. This is unfortunately a byproduct of there not being an official API, so keep that in mind before using this in production.
+
+If you run into any issues, we do have a pretty active [Discord](https://discord.gg/v9gERj825w) with a bunch of ChatGPT hackers from the Node.js & Python communities.
 
 Lastly, please consider starring this repo and <a href="https://twitter.com/transitive_bs">following me on twitter <img src="https://storage.googleapis.com/saasify-assets/twitter-logo.svg" alt="twitter" height="24px" align="center"></a> to help support the project.
 
@@ -88,7 +92,7 @@ async function example() {
 ```
 
 <details>
-<summary>Or, if you want to use the REST-based version:</summary>
+<summary>Or, if you want to use the REST-based version: (not advised at this time)</summary>
 
 ```ts
 import { ChatGPTAPI, getOpenAIAuth } from 'chatgpt'
@@ -208,6 +212,8 @@ A [demo showing on progress handler](./demos/demo-on-progress.ts):
 ```bash
 npx tsx demos/demo-on-progress.ts
 ```
+
+The on progress demo uses the optional `onProgress` parameter to `sendMessage` to receive intermediary results as ChatGPT is "typing".
 
 A [conversation demo](./demos/demo-conversation.ts):
 
