@@ -9,6 +9,12 @@ import stripMarkdown from 'strip-markdown'
 
 import * as types from './types'
 
+declare global {
+  function ChatGPTAPIBrowserOnProgress(
+    partialChatResponse: types.ChatResponse
+  ): Promise<void>
+}
+
 export function markdownToText(markdown?: string): string {
   return remark()
     .use(stripMarkdown)
@@ -103,6 +109,7 @@ export async function browserPostEventStream(
   const BOM = [239, 187, 191]
 
   let conversationId: string = body?.conversation_id
+  const origMessageId = body?.messages?.[0]?.id
   let messageId: string = body?.messages?.[0]?.id
   let response = ''
 
@@ -142,7 +149,7 @@ export async function browserPostEventStream(
 
     const responseP = new Promise<types.ChatResponse>(
       async (resolve, reject) => {
-        function onMessage(data: string) {
+        async function onMessage(data: string) {
           if (data === '[DONE]') {
             return resolve({
               response,
@@ -150,16 +157,24 @@ export async function browserPostEventStream(
               messageId
             })
           }
-          try {
-            const checkJson = JSON.parse(data)
-          } catch (error) {
-            console.log('warning: parse error.')
 
+          let convoResponseEvent: types.ConversationResponseEvent
+          try {
+            convoResponseEvent = JSON.parse(data)
+          } catch (err) {
+            console.warn(
+              'warning: chatgpt even stream parse error',
+              err.toString(),
+              data
+            )
             return
           }
+
+          if (!convoResponseEvent) {
+            return
+          }
+
           try {
-            const convoResponseEvent: types.ConversationResponseEvent =
-              JSON.parse(data)
             if (convoResponseEvent.conversation_id) {
               conversationId = convoResponseEvent.conversation_id
             }
@@ -172,6 +187,17 @@ export async function browserPostEventStream(
               convoResponseEvent.message?.content?.parts?.[0]
             if (partialResponse) {
               response = partialResponse
+
+              if (window.ChatGPTAPIBrowserOnProgress) {
+                const partialChatResponse = {
+                  origMessageId,
+                  response,
+                  conversationId,
+                  messageId
+                }
+
+                await window.ChatGPTAPIBrowserOnProgress(partialChatResponse)
+              }
             }
           } catch (err) {
             console.warn('fetchSSE onMessage unexpected error', err)

@@ -272,6 +272,7 @@ export async function getBrowser(
     nopechaKey?: string
     proxyServer?: string
     minimize?: boolean
+    debug?: boolean
     timeoutMs?: number
   } = {}
 ) {
@@ -281,6 +282,7 @@ export async function getBrowser(
     executablePath = defaultChromeExecutablePath(),
     proxyServer = process.env.PROXY_SERVER,
     minimize = false,
+    debug = false,
     timeoutMs = DEFAULT_TIMEOUT_MS,
     ...launchOptions
   } = opts
@@ -387,8 +389,9 @@ export async function getBrowser(
   }
 
   await initializeNopechaExtension(browser, {
-    minimize,
     nopechaKey,
+    minimize,
+    debug,
     timeoutMs
   })
 
@@ -398,12 +401,13 @@ export async function getBrowser(
 export async function initializeNopechaExtension(
   browser: Browser,
   opts: {
-    minimize?: boolean
     nopechaKey?: string
+    minimize?: boolean
+    debug?: boolean
     timeoutMs?: number
   }
 ) {
-  const { minimize = false, nopechaKey } = opts
+  const { minimize = false, debug = false, nopechaKey } = opts
 
   if (hasNopechaExtension) {
     const page = (await browser.pages())[0] || (await browser.newPage())
@@ -411,7 +415,9 @@ export async function initializeNopechaExtension(
       await minimizePage(page)
     }
 
-    console.log('initializing nopecha extension with key', nopechaKey, '...')
+    if (debug) {
+      console.log('initializing nopecha extension with key', nopechaKey, '...')
+    }
 
     // TODO: setting the nopecha extension key is really, really error prone...
     for (let i = 0; i < 5; ++i) {
