@@ -21,9 +21,9 @@ We recently added support for CAPTCHA automation using either [nopecha](https://
 
 There are some restrictions to be aware of, however:
 
-- Cloudflare doesn't like requests coming from data center IPs, so you'll either have to run it locally or use a residential IP proxy.
+- Cloudflare doesn't like requests coming from data center IPs, so you'll likely either need to run it locally or use a residential IP proxy.
 - You should only have one `sendMessage` request at a time per browser instance and OpenAI account.
-- It can be difficult to reliably process `sendMessage` requests after awhile. My best advice for handling this is to wrap your usage in some basic retry logic as well as a daemon which restarts your Node.js process every hour or so. This is unfortunately a byproduct of there not being an official API, so keep that in mind before using this in production.
+- It can be difficult to reliably process `sendMessage` requests after awhile. My best advice for handling this is to wrap your usage in some basic retry logic as well as a daemon which restarts your Node.js process every hour or so. This is unfortunately a by-product of there not being an official API, so keep that in mind before using this in production.
 
 If you run into any issues, we do have a pretty active [Discord](https://discord.gg/v9gERj825w) with a bunch of ChatGPT hackers from the Node.js & Python communities.
 
