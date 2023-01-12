@@ -1,6 +1,6 @@
 # Update January 12, 2023 <!-- omit in toc -->
 
-This package allows you to access ChatGPT – even after OpenAI added Cloudflare protections. It uses a **fully automated browser-based solution**, which uses Puppeteer and CAPTCHA solvers under the hood. 🔥
+This package allows you to access ChatGPT from Node.js – even with OpenAI's Cloudflare protections. It uses a **fully automated browser-based solution**, which uses Puppeteer and CAPTCHA solvers under the hood. 🔥
 
 ```ts
 import { ChatGPTAPIBrowser } from 'chatgpt'
