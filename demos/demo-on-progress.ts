@@ -1,5 +1,4 @@
 import dotenv from 'dotenv-safe'
-import { oraPromise } from 'ora'
 
 import { ChatGPTAPIBrowser } from '../src'
 
@@ -28,7 +27,6 @@ async function main() {
     'Write a python version of bubble sort. Do not include example usage.'
 
   console.log(prompt)
-
   const res = await api.sendMessage(prompt, {
     onProgress: (partialResponse) => {
       console.log('p')
