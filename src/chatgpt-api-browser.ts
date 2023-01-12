@@ -33,6 +33,10 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
   protected _page: Page
   protected _proxyServer: string
   protected _isRefreshing: boolean
+  protected _messageOnProgressHandlers: Record<
+    string,
+    (partialResponse: types.ChatResponse) => void
+  >
 
   /**
    * Creates a new client for automating the ChatGPT webapp.
@@ -97,6 +101,7 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
     this._executablePath = executablePath
     this._proxyServer = proxyServer
     this._isRefreshing = false
+    this._messageOnProgressHandlers = {}
 
     if (!this._email) {
       const error = new types.ChatGPTError('ChatGPT invalid email')
@@ -195,6 +200,24 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
         waitUntil: 'networkidle2'
       })
     }
+
+    // TODO: will this exist after page reload and navigation?
+    await this._page.exposeFunction(
+      'ChatGPTAPIBrowserOnProgress',
+      (partialResponse: types.ChatResponse) => {
+        if ((partialResponse as any)?.origMessageId) {
+          const onProgress =
+            this._messageOnProgressHandlers[
+              (partialResponse as any).origMessageId
+            ]
+
+          if (onProgress) {
+            onProgress(partialResponse)
+            return
+          }
+        }
+      }
+    )
 
     // dismiss welcome modal (and other modals)
     do {
@@ -482,9 +505,8 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
       parentMessageId = uuidv4(),
       messageId = uuidv4(),
       action = 'next',
-      timeoutMs
-      // TODO
-      // onProgress
+      timeoutMs,
+      onProgress
     } = opts
 
     const url = `https://chat.openai.com/backend-api/conversation`
@@ -508,6 +530,16 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
       body.conversation_id = conversationId
     }
 
+    if (onProgress) {
+      this._messageOnProgressHandlers[messageId] = onProgress
+    }
+
+    const cleanup = () => {
+      if (this._messageOnProgressHandlers[messageId]) {
+        delete this._messageOnProgressHandlers[messageId]
+      }
+    }
+
     let result: types.ChatResponse | types.ChatError
     let numTries = 0
     let is401 = false
@@ -528,6 +560,7 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
         if (!(await this.getIsAuthenticated())) {
           const error = new types.ChatGPTError('Not signed in')
           error.statusCode = 401
+          cleanup()
           throw error
         }
       }
@@ -551,6 +584,7 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
           const error = new types.ChatGPTError(err.toString())
           error.statusCode = err.response?.statusCode
           error.statusText = err.response?.statusText
+          cleanup()
           throw error
         }
 
@@ -570,6 +604,7 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
           is401 = true
 
           if (numTries >= 2) {
+            cleanup()
             throw error
           } else {
             continue
@@ -590,10 +625,12 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
           result.response = markdownToText(result.response)
         }
 
+        cleanup()
         return result
       }
     } while (!result)
 
+    cleanup()
     // console.log('<<< EVALUATE', result)
 
     // const lastMessage = await this.getLastMessage()

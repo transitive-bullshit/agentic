@@ -197,7 +197,19 @@ A [basic demo](./demos/demo.ts) is included for testing purposes:
 npx tsx demos/demo.ts
 ```
 
-A [conversation demo](./demos/demo-conversation.ts) is also included:
+A [google auth demo](./demos/demo-google-auth.ts):
+
+```bash
+npx tsx demos/demo-google-auth.ts
+```
+
+A [demo showing on progress handler](./demos/demo-on-progress.ts):
+
+```bash
+npx tsx demos/demo-on-progress.ts
+```
+
+A [conversation demo](./demos/demo-conversation.ts):
 
 ```bash
 npx tsx demos/demo-conversation.ts
