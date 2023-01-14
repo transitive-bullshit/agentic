@@ -360,6 +360,7 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [Teams Bot](https://github.com/formulahendry/chatgpt-teams-bot)
 - [Askai](https://github.com/yudax42/askai)
 - [TalkGPT](https://github.com/ShadovvBeast/TalkGPT)
+- [ChatGPT With Voice](https://github.com/thanhsonng/chatgpt-voice)
 - [iOS Shortcut](https://github.com/leecobaby/shortcuts/blob/master/other/ChatGPT_EN.md)
 - [Slack Bot #1](https://github.com/trietphm/chatgpt-slackbot/)
 - [Slack Bot #2](https://github.com/lokwkin/chatgpt-slackbot-node/) (with queueing mechanism)
