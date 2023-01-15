@@ -30,7 +30,6 @@ export type OpenAIAuth = {
   userAgent: string
   clearanceToken: string
   sessionToken: string
-  cookies?: Record<string, Protocol.Network.Cookie>
 }
 
 /**
@@ -91,7 +90,7 @@ export async function getOpenAIAuth({
 
     const userAgent = await browser.userAgent()
     if (!page) {
-      page = (await browser.pages())[0] || (await browser.newPage())
+      page = await getPage(browser, { proxyServer })
       page.setDefaultTimeout(timeoutMs)
 
       if (minimize) {
@@ -240,8 +239,7 @@ export async function getOpenAIAuth({
     const authInfo: OpenAIAuth = {
       userAgent,
       clearanceToken: cookies['cf_clearance']?.value,
-      sessionToken: cookies['__Secure-next-auth.session-token']?.value,
-      cookies
+      sessionToken: cookies['__Secure-next-auth.session-token']?.value
     }
 
     return authInfo
@@ -259,6 +257,38 @@ export async function getOpenAIAuth({
     page = null
     browser = null
   }
+}
+
+export async function getPage(
+  browser: Browser,
+  opts: {
+    proxyServer?: string
+  }
+) {
+  const { proxyServer = process.env.PROXY_SERVER } = opts
+  const page = (await browser.pages())[0] || (await browser.newPage())
+
+  if (proxyServer && proxyServer.includes('@')) {
+    const proxyAuth = proxyServer.split('@')[0].split(':')
+    const proxyUsername = proxyAuth[0]
+    const proxyPassword = proxyAuth[1]
+
+    try {
+      await page.authenticate({
+        username: proxyUsername,
+        password: proxyPassword
+      })
+    } catch (err) {
+      console.error(
+        `ChatGPT "${this._email}" error authenticating proxy "${this._proxyServer}"`,
+        err.toString()
+      )
+
+      throw err
+    }
+  }
+
+  return page
 }
 
 /**
@@ -359,7 +389,7 @@ export async function getBrowser(
   })
 
   if (process.env.PROXY_VALIDATE_IP) {
-    const page = (await browser.pages())[0] || (await browser.newPage())
+    const page = await getPage(browser, { proxyServer })
     if (minimize) {
       await minimizePage(page)
     }
@@ -378,7 +408,9 @@ export async function getBrowser(
 
       ip = res?.ip
     } catch (err) {
-      throw new Error(`Proxy IP validation failed: ${err.toString()}`)
+      throw new Error(`Proxy IP validation failed: ${err.toString()}`, {
+        cause: err
+      })
     }
 
     if (!ip || ip !== process.env.PROXY_VALIDATE_IP) {
@@ -392,7 +424,8 @@ export async function getBrowser(
     nopechaKey,
     minimize,
     debug,
-    timeoutMs
+    timeoutMs,
+    proxyServer
   })
 
   return browser
@@ -401,16 +434,17 @@ export async function getBrowser(
 export async function initializeNopechaExtension(
   browser: Browser,
   opts: {
+    proxyServer?: string
     nopechaKey?: string
     minimize?: boolean
     debug?: boolean
     timeoutMs?: number
   }
 ) {
-  const { minimize = false, debug = false, nopechaKey } = opts
+  const { minimize = false, debug = false, nopechaKey, proxyServer } = opts
 
   if (hasNopechaExtension) {
-    const page = (await browser.pages())[0] || (await browser.newPage())
+    const page = await getPage(browser, { proxyServer })
     if (minimize) {
       await minimizePage(page)
     }
