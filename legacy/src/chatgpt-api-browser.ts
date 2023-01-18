@@ -421,69 +421,6 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
     }
   }
 
-  // async getLastMessage(): Promise<string | null> {
-  //   const messages = await this.getMessages()
-
-  //   if (messages) {
-  //     return messages[messages.length - 1]
-  //   } else {
-  //     return null
-  //   }
-  // }
-
-  // async getPrompts(): Promise<string[]> {
-  //   // Get all prompts
-  //   const messages = await this._page.$$(
-  //     '.text-base:has(.whitespace-pre-wrap):not(:has(button:nth-child(2))) .whitespace-pre-wrap'
-  //   )
-
-  //   // Prompts are always plaintext
-  //   return Promise.all(messages.map((a) => a.evaluate((el) => el.textContent)))
-  // }
-
-  // async getMessages(): Promise<string[]> {
-  //   // Get all complete messages
-  //   // (in-progress messages that are being streamed back don't contain action buttons)
-  //   const messages = await this._page.$$(
-  //     '.text-base:has(.whitespace-pre-wrap):has(button:nth-child(2)) .whitespace-pre-wrap'
-  //   )
-
-  //   if (this._markdown) {
-  //     const htmlMessages = await Promise.all(
-  //       messages.map((a) => a.evaluate((el) => el.innerHTML))
-  //     )
-
-  //     const markdownMessages = htmlMessages.map((messageHtml) => {
-  //       // parse markdown from message HTML
-  //       messageHtml = messageHtml
-  //         .replaceAll('Copy code</button>', '</button>')
-  //         .replace(/Copy code\s*<\/button>/gim, '</button>')
-
-  //       return html2md(messageHtml, {
-  //         ignoreTags: [
-  //           'button',
-  //           'svg',
-  //           'style',
-  //           'form',
-  //           'noscript',
-  //           'script',
-  //           'meta',
-  //           'head'
-  //         ],
-  //         skipTags: ['button', 'svg']
-  //       })
-  //     })
-
-  //     return markdownMessages
-  //   } else {
-  //     // plaintext
-  //     const plaintextMessages = await Promise.all(
-  //       messages.map((a) => a.evaluate((el) => el.textContent))
-  //     )
-  //     return plaintextMessages
-  //   }
-  // }
-
   override async sendMessage(
     message: string,
     opts: types.SendMessageOptions = {}
@@ -619,49 +556,6 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
     } while (!result)
 
     cleanup()
-    // console.log('<<< EVALUATE', result)
-
-    // const lastMessage = await this.getLastMessage()
-
-    // await inputBox.focus()
-    // const paragraphs = message.split('\n')
-    // for (let i = 0; i < paragraphs.length; i++) {
-    //   await inputBox.type(paragraphs[i], { delay: 0 })
-    //   if (i < paragraphs.length - 1) {
-    //     await this._page.keyboard.down('Shift')
-    //     await inputBox.press('Enter')
-    //     await this._page.keyboard.up('Shift')
-    //   } else {
-    //     await inputBox.press('Enter')
-    //   }
-    // }
-
-    // const responseP = new Promise<string>(async (resolve, reject) => {
-    //   try {
-    //     do {
-    //       await delay(1000)
-
-    //       // TODO: this logic needs some work because we can have repeat messages...
-    //       const newLastMessage = await this.getLastMessage()
-    //       if (
-    //         newLastMessage &&
-    //         lastMessage?.toLowerCase() !== newLastMessage?.toLowerCase()
-    //       ) {
-    //         return resolve(newLastMessage)
-    //       }
-    //     } while (true)
-    //   } catch (err) {
-    //     return reject(err)
-    //   }
-    // })
-
-    // if (timeoutMs) {
-    //   return pTimeout(responseP, {
-    //     milliseconds: timeoutMs
-    //   })
-    // } else {
-    //   return responseP
-    // }
   }
 
   async resetThread() {
