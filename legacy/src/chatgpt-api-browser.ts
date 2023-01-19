@@ -1,5 +1,6 @@
 import delay from 'delay'
 import type { Browser, HTTPRequest, HTTPResponse, Page } from 'puppeteer'
+import { temporaryDirectory } from 'tempy'
 import { v4 as uuidv4 } from 'uuid'
 
 import * as types from './types'
@@ -37,6 +38,7 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
     string,
     (partialResponse: types.ChatResponse) => void
   >
+  protected _userDataDir: string
 
   /**
    * Creates a new client for automating the ChatGPT webapp.
@@ -71,6 +73,9 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
 
     /** @defaultValue `undefined` **/
     proxyServer?: string
+
+    /** @defaultValue `random directory with email as prefix` **/
+    userDataDir?: string
   }) {
     super()
 
@@ -85,7 +90,8 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
       captchaToken,
       nopechaKey,
       executablePath,
-      proxyServer
+      proxyServer,
+      userDataDir
     } = opts
 
     this._email = email
@@ -102,6 +108,8 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
     this._proxyServer = proxyServer
     this._isRefreshing = false
     this._messageOnProgressHandlers = {}
+    this._userDataDir =
+      userDataDir ?? temporaryDirectory({ prefix: this._email })
 
     if (!this._email) {
       const error = new types.ChatGPTError('ChatGPT invalid email')
@@ -127,7 +135,8 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
         nopechaKey: this._nopechaKey,
         executablePath: this._executablePath,
         proxyServer: this._proxyServer,
-        minimize: this._minimize
+        minimize: this._minimize,
+        userDataDir: this._userDataDir
       })
 
       this._page = await getPage(this._browser, {
