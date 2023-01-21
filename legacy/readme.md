@@ -336,6 +336,7 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [Discord Bot #2](https://github.com/Nageld/ChatGPT-Bot)
 - [Discord Bot #3](https://github.com/leinstay/gptbot)
 - [Discord Bot #4 (selfbot)](https://github.com/0x7030676e31/cumsocket)
+- [Discord Bot #5](https://github.com/itskdhere/ChatGPT-Discord-BOT)
 - [WeChat Bot #1](https://github.com/AutumnWhj/ChatGPT-wechat-bot)
 - [WeChat Bot #2](https://github.com/fuergaosi233/wechat-chatgpt)
 - [WeChat Bot #3](https://github.com/wangrongding/wechat-bot)
@@ -373,7 +374,6 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [NestJS ChatGPT Starter Boilerplate](https://github.com/mitkodkn/nestjs-chatgpt-starter)
 - [Wordsmith: Add-in for Microsoft Word](https://github.com/xtremehpx/Wordsmith)
 - [QuizGPT: Create Kahoot quizzes with ChatGPT](https://github.com/Kladdy/quizgpt)
-- [ChatGPT-Discord-BOT : A Simple Discord Bot Powered By OpenAI's ChatGPT](https://github.com/itskdhere/ChatGPT-Discord-BOT)
 
 If you create a cool integration, feel free to open a PR and add it to the list.
 
