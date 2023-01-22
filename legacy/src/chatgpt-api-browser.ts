@@ -50,7 +50,7 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
     password: string
 
     /** @defaultValue `false` **/
-    isProAccount: boolean
+    isProAccount?: boolean
 
     /** @defaultValue `true` **/
     markdown?: boolean
