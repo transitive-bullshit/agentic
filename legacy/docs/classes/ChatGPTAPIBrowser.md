@@ -49,11 +49,13 @@ Creates a new client for automating the ChatGPT webapp.
 | `opts.executablePath?` | `string` | **`Default Value`**  `undefined` * |
 | `opts.isGoogleLogin?` | `boolean` | **`Default Value`**  `false` * |
 | `opts.isMicrosoftLogin?` | `boolean` | **`Default Value`**  `false` * |
+| `opts.isProAccount?` | `boolean` | **`Default Value`**  `false` * |
 | `opts.markdown?` | `boolean` | **`Default Value`**  `true` * |
 | `opts.minimize?` | `boolean` | **`Default Value`**  `true` * |
 | `opts.nopechaKey?` | `string` | **`Default Value`**  `undefined` * |
 | `opts.password` | `string` | - |
 | `opts.proxyServer?` | `string` | **`Default Value`**  `undefined` * |
+| `opts.userDataDir?` | `string` | **`Default Value`**  `random directory with email as prefix` * |
 
 #### Overrides
 
@@ -61,7 +63,7 @@ Creates a new client for automating the ChatGPT webapp.
 
 #### Defined in
 
-[src/chatgpt-api-browser.ts:44](https://github.com/transitive-bullshit/chatgpt-api/blob/4a0f780/src/chatgpt-api-browser.ts#L44)
+[src/chatgpt-api-browser.ts:48](https://github.com/transitive-bullshit/chatgpt-api/blob/83bb9cf/src/chatgpt-api-browser.ts#L48)
 
 ## Accessors
 
@@ -75,7 +77,7 @@ Creates a new client for automating the ChatGPT webapp.
 
 #### Defined in
 
-[src/chatgpt-api-browser.ts:741](https://github.com/transitive-bullshit/chatgpt-api/blob/4a0f780/src/chatgpt-api-browser.ts#L741)
+[src/chatgpt-api-browser.ts:640](https://github.com/transitive-bullshit/chatgpt-api/blob/83bb9cf/src/chatgpt-api-browser.ts#L640)
 
 ## Methods
 
@@ -95,7 +97,7 @@ Creates a new client for automating the ChatGPT webapp.
 
 #### Defined in
 
-[src/chatgpt-api-browser.ts:249](https://github.com/transitive-bullshit/chatgpt-api/blob/4a0f780/src/chatgpt-api-browser.ts#L249)
+[src/chatgpt-api-browser.ts:255](https://github.com/transitive-bullshit/chatgpt-api/blob/83bb9cf/src/chatgpt-api-browser.ts#L255)
 
 ___
 
@@ -115,7 +117,7 @@ ___
 
 #### Defined in
 
-[src/chatgpt-api-browser.ts:286](https://github.com/transitive-bullshit/chatgpt-api/blob/4a0f780/src/chatgpt-api-browser.ts#L286)
+[src/chatgpt-api-browser.ts:292](https://github.com/transitive-bullshit/chatgpt-api/blob/83bb9cf/src/chatgpt-api-browser.ts#L292)
 
 ___
 
@@ -139,7 +141,7 @@ An error if it fails.
 
 #### Defined in
 
-[src/chatgpt-api-browser.ts:687](https://github.com/transitive-bullshit/chatgpt-api/blob/4a0f780/src/chatgpt-api-browser.ts#L687)
+[src/chatgpt-api-browser.ts:586](https://github.com/transitive-bullshit/chatgpt-api/blob/83bb9cf/src/chatgpt-api-browser.ts#L586)
 
 ___
 
@@ -160,7 +162,7 @@ otherwise.
 
 #### Defined in
 
-[src/chatgpt-api-browser.ts:422](https://github.com/transitive-bullshit/chatgpt-api/blob/4a0f780/src/chatgpt-api-browser.ts#L422)
+[src/chatgpt-api-browser.ts:425](https://github.com/transitive-bullshit/chatgpt-api/blob/83bb9cf/src/chatgpt-api-browser.ts#L425)
 
 ___
 
@@ -185,7 +187,7 @@ An error if the session failed to initialize properly.
 
 #### Defined in
 
-[src/chatgpt-api-browser.ts:119](https://github.com/transitive-bullshit/chatgpt-api/blob/4a0f780/src/chatgpt-api-browser.ts#L119)
+[src/chatgpt-api-browser.ts:133](https://github.com/transitive-bullshit/chatgpt-api/blob/83bb9cf/src/chatgpt-api-browser.ts#L133)
 
 ___
 
@@ -205,7 +207,7 @@ Attempts to handle 403 errors by refreshing the page.
 
 #### Defined in
 
-[src/chatgpt-api-browser.ts:364](https://github.com/transitive-bullshit/chatgpt-api/blob/4a0f780/src/chatgpt-api-browser.ts#L364)
+[src/chatgpt-api-browser.ts:367](https://github.com/transitive-bullshit/chatgpt-api/blob/83bb9cf/src/chatgpt-api-browser.ts#L367)
 
 ___
 
@@ -225,7 +227,7 @@ Attempts to handle 401 errors by re-authenticating.
 
 #### Defined in
 
-[src/chatgpt-api-browser.ts:345](https://github.com/transitive-bullshit/chatgpt-api/blob/4a0f780/src/chatgpt-api-browser.ts#L345)
+[src/chatgpt-api-browser.ts:348](https://github.com/transitive-bullshit/chatgpt-api/blob/83bb9cf/src/chatgpt-api-browser.ts#L348)
 
 ___
 
@@ -239,7 +241,7 @@ ___
 
 #### Defined in
 
-[src/chatgpt-api-browser.ts:679](https://github.com/transitive-bullshit/chatgpt-api/blob/4a0f780/src/chatgpt-api-browser.ts#L679)
+[src/chatgpt-api-browser.ts:578](https://github.com/transitive-bullshit/chatgpt-api/blob/83bb9cf/src/chatgpt-api-browser.ts#L578)
 
 ___
 
@@ -272,4 +274,4 @@ the `response` text.
 
 #### Defined in
 
-[src/chatgpt-api-browser.ts:499](https://github.com/transitive-bullshit/chatgpt-api/blob/4a0f780/src/chatgpt-api-browser.ts#L499)
+[src/chatgpt-api-browser.ts:439](https://github.com/transitive-bullshit/chatgpt-api/blob/83bb9cf/src/chatgpt-api-browser.ts#L439)

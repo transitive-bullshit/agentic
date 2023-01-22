@@ -2,7 +2,7 @@ chatgpt / [Exports](modules.md)
 
 # Update January 12, 2023 <!-- omit in toc -->
 
-This package works to access ChatGPT pretty consistently, even after OpenAI added Cloudflare protections. To circumvent these protections, we've added a **fully automated browser-based solution**, which uses Puppeteer and CAPTCHA solvers under the hood. 🔥
+This package allows you to access ChatGPT from Node.js – even with OpenAI's Cloudflare protections. It uses a **fully automated browser-based solution**, which uses Puppeteer and CAPTCHA solvers under the hood. 🔥
 
 ```ts
 import { ChatGPTAPIBrowser } from 'chatgpt'
@@ -23,9 +23,9 @@ We recently added support for CAPTCHA automation using either [nopecha](https://
 
 There are some restrictions to be aware of, however:
 
-- Cloudflare doesn't like requests coming from data center IPs, so you'll either have to run it locally or use a residential IP proxy.
+- Cloudflare doesn't like requests coming from data center IPs, so you'll likely either need to run it locally or use a residential IP proxy.
 - You should only have one `sendMessage` request at a time per browser instance and OpenAI account.
-- It can be difficult to reliably process `sendMessage` requests after awhile. My best advice for handling this is to wrap your usage in some basic retry logic as well as a daemon which restarts your Node.js process every hour or so. This is unfortunately a byproduct of there not being an official API, so keep that in mind before using this in production.
+- It can be difficult to reliably process `sendMessage` requests after awhile. My best advice for handling this is to wrap your usage in some basic retry logic as well as a daemon which restarts your Node.js process every hour or so. This is unfortunately a by-product of there not being an official API, so keep that in mind before using this in production.
 
 If you run into any issues, we do have a pretty active [Discord](https://discord.gg/v9gERj825w) with a bunch of ChatGPT hackers from the Node.js & Python communities.
 
@@ -338,6 +338,8 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [Discord Bot #2](https://github.com/Nageld/ChatGPT-Bot)
 - [Discord Bot #3](https://github.com/leinstay/gptbot)
 - [Discord Bot #4 (selfbot)](https://github.com/0x7030676e31/cumsocket)
+- [Discord Bot #5](https://github.com/itskdhere/ChatGPT-Discord-BOT)
+- [Discord Bot #6 (Shakespeare bot)](https://gist.github.com/TheBrokenRail/4b37e7c44e8f721d8bd845050d034c16)
 - [WeChat Bot #1](https://github.com/AutumnWhj/ChatGPT-wechat-bot)
 - [WeChat Bot #2](https://github.com/fuergaosi233/wechat-chatgpt)
 - [WeChat Bot #3](https://github.com/wangrongding/wechat-bot)
@@ -362,6 +364,7 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [Teams Bot](https://github.com/formulahendry/chatgpt-teams-bot)
 - [Askai](https://github.com/yudax42/askai)
 - [TalkGPT](https://github.com/ShadovvBeast/TalkGPT)
+- [ChatGPT With Voice](https://github.com/thanhsonng/chatgpt-voice)
 - [iOS Shortcut](https://github.com/leecobaby/shortcuts/blob/master/other/ChatGPT_EN.md)
 - [Slack Bot #1](https://github.com/trietphm/chatgpt-slackbot/)
 - [Slack Bot #2](https://github.com/lokwkin/chatgpt-slackbot-node/) (with queueing mechanism)
@@ -373,6 +376,7 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [NestJS server](https://github.com/RusDyn/chatgpt_nestjs_server)
 - [NestJS ChatGPT Starter Boilerplate](https://github.com/mitkodkn/nestjs-chatgpt-starter)
 - [Wordsmith: Add-in for Microsoft Word](https://github.com/xtremehpx/Wordsmith)
+- [QuizGPT: Create Kahoot quizzes with ChatGPT](https://github.com/Kladdy/quizgpt)
 
 If you create a cool integration, feel free to open a PR and add it to the list.
 
