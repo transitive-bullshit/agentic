@@ -29,6 +29,8 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
   protected _email: string
   protected _password: string
 
+  protected _isProAccount: boolean
+
   protected _executablePath: string
   protected _browser: Browser
   protected _page: Page
@@ -46,6 +48,9 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
   constructor(opts: {
     email: string
     password: string
+
+    /** @defaultValue `false` **/
+    isProAccount: boolean
 
     /** @defaultValue `true` **/
     markdown?: boolean
@@ -82,6 +87,7 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
     const {
       email,
       password,
+      isProAccount = false,
       markdown = true,
       debug = false,
       isGoogleLogin = false,
@@ -96,7 +102,7 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
 
     this._email = email
     this._password = password
-
+    this._isProAccount = isProAccount
     this._markdown = !!markdown
     this._debug = !!debug
     this._isGoogleLogin = !!isGoogleLogin
@@ -456,7 +462,9 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
           }
         }
       ],
-      model: 'text-davinci-002-render',
+      model: this._isProAccount
+        ? 'text-davinci-002-render-paid'
+        : 'text-davinci-002-render',
       parent_message_id: parentMessageId
     }
 
