@@ -1,7 +1,7 @@
 import dotenv from 'dotenv-safe'
 import { oraPromise } from 'ora'
 
-import { ChatGPTAPIBrowser } from '../src'
+import { ChatGPTAPI } from '../src'
 
 dotenv.config()
 
@@ -13,16 +13,10 @@ dotenv.config()
  * ```
  */
 async function main() {
-  const email = process.env.OPENAI_EMAIL
-  const password = process.env.OPENAI_PASSWORD
-
-  const api = new ChatGPTAPIBrowser({
-    email,
-    password,
-    debug: false,
-    minimize: true
+  const api = new ChatGPTAPI({
+    apiKey: process.env.OPENAI_API_KEY,
+    debug: false
   })
-  await api.initSession()
 
   const prompt = 'Write a poem about cats.'
 
@@ -30,49 +24,46 @@ async function main() {
     text: prompt
   })
 
-  console.log('\n' + res.response + '\n')
+  console.log('\n' + res.text + '\n')
 
   const prompt2 = 'Can you make it cuter and shorter?'
 
   res = await oraPromise(
     api.sendMessage(prompt2, {
       conversationId: res.conversationId,
-      parentMessageId: res.messageId
+      parentMessageId: res.id
     }),
     {
       text: prompt2
     }
   )
-  console.log('\n' + res.response + '\n')
+  console.log('\n' + res.text + '\n')
 
   const prompt3 = 'Now write it in French.'
 
   res = await oraPromise(
     api.sendMessage(prompt3, {
       conversationId: res.conversationId,
-      parentMessageId: res.messageId
+      parentMessageId: res.id
     }),
     {
       text: prompt3
     }
   )
-  console.log('\n' + res.response + '\n')
+  console.log('\n' + res.text + '\n')
 
   const prompt4 = 'What were we talking about again?'
 
   res = await oraPromise(
     api.sendMessage(prompt4, {
       conversationId: res.conversationId,
-      parentMessageId: res.messageId
+      parentMessageId: res.id
     }),
     {
       text: prompt4
     }
   )
-  console.log('\n' + res.response + '\n')
-
-  // close the browser at the end
-  await api.closeSession()
+  console.log('\n' + res.text + '\n')
 }
 
 main().catch((err) => {

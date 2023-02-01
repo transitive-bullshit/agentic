@@ -1,6 +1,6 @@
 import dotenv from 'dotenv-safe'
 
-import { ChatGPTAPIBrowser } from '../src'
+import { ChatGPTAPI } from '../src'
 
 dotenv.config()
 
@@ -12,16 +12,7 @@ dotenv.config()
  * ```
  */
 async function main() {
-  const email = process.env.OPENAI_EMAIL
-  const password = process.env.OPENAI_PASSWORD
-
-  const api = new ChatGPTAPIBrowser({
-    email,
-    password,
-    debug: false,
-    minimize: true
-  })
-  await api.initSession()
+  const api = new ChatGPTAPI({ apiKey: process.env.OPENAI_API_KEY })
 
   const prompt =
     'Write a python version of bubble sort. Do not include example usage.'
@@ -29,14 +20,10 @@ async function main() {
   console.log(prompt)
   const res = await api.sendMessage(prompt, {
     onProgress: (partialResponse) => {
-      console.log('p')
-      console.log('progress', partialResponse?.response)
+      console.log(partialResponse.text)
     }
   })
-  console.log(res.response)
-
-  // close the browser at the end
-  await api.closeSession()
+  console.log(res.text)
 }
 
 main().catch((err) => {
