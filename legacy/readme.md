@@ -1,6 +1,6 @@
 # Update February 1, 2023 <!-- omit in toc -->
 
-This package no longer requires any browser hacks – **it is now using the official OpenAI API** with a leaked, unofficial ChatGPT model. 🔥
+This package no longer requires any browser hacks – **it is now using the official OpenAI completions API** with a leaked model that ChatGPT uses under the hood. 🔥
 
 ```ts
 import { ChatGPTAPI } from 'chatgpt'
