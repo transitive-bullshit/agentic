@@ -58,6 +58,8 @@ You can use it to start building projects powered by ChatGPT like chatbots, webs
 npm install chatgpt
 ```
 
+Make sure you're using `node >= 18` so `fetch` is available (or `node >= 14` if you install a [fetch polyfill](https://github.com/developit/unfetch#usage-as-a-polyfill)).
+
 ## Usage
 
 Sign up for an [OpenAI API key](https://platform.openai.com/overview) and store it in your environment.
