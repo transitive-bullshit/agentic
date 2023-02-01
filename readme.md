@@ -13,7 +13,7 @@ const res = await api.sendMessage('Hello World!')
 console.log(res.text)
 ```
 
-The updated solution is significantly more lightweight and robust compared with previous versions.
+The updated solution is significantly more lightweight and robust compared with previous versions. You also don't have to worry about IP issues or rate limiting!
 
 If you run into any issues, we do have a pretty active [Discord](https://discord.gg/v9gERj825w) with a bunch of ChatGPT hackers from the Node.js & Python communities.
 
