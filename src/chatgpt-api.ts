@@ -1,4 +1,5 @@
 import { encode as gptEncode } from 'gpt-3-encoder'
+import Keyv from 'keyv'
 import pTimeout from 'p-timeout'
 import QuickLRU from 'quick-lru'
 import { v4 as uuidv4 } from 'uuid'
@@ -7,26 +8,30 @@ import * as types from './types'
 import { fetch } from './fetch'
 import { fetchSSE } from './fetch-sse'
 
+// NOTE: this is not a public model, but it was leaked by the ChatGPT webapp.
 const CHATGPT_MODEL = 'text-chat-davinci-002-20230126'
+
 const USER_LABEL = 'User'
 const ASSISTANT_LABEL = 'ChatGPT'
 
 export class ChatGPTAPI {
   protected _apiKey: string
   protected _apiBaseUrl: string
-  protected _model: string
-  protected _temperature: number
-  protected _presencePenalty: number
-  protected _stop: string[]
+  protected _completionParams: types.openai.CompletionParams
   protected _debug: boolean
+
   protected _getMessageById: types.GetMessageByIdFunction
-  protected _messageCache: QuickLRU<string, types.ChatMessage>
+  protected _upsertMessage: types.UpsertMessageFunction
+
+  protected _messageStore: Keyv<types.ChatMessage>
 
   /**
    * Creates a new client wrapper around OpenAI's completion API using the
    * unofficial ChatGPT model.
    *
-   * @param debug - Optional enables logging debugging into to stdout
+   * @param apiKey - OpenAI API key (required).
+   * @param debug - Optional enables logging debugging info to stdout.
+   * @param stop - Up to 4 sequences where the API will stop generating further tokens. The returned text will not contain the stop sequence.
    */
   constructor(opts: {
     apiKey: string
@@ -34,44 +39,48 @@ export class ChatGPTAPI {
     /** @defaultValue `'https://api.openai.com'` **/
     apiBaseUrl?: string
 
-    /** @defaultValue `'text-chat-davinci-002-20230126'` **/
-    model?: string
-
-    /** @defaultValue 0.7 **/
-    temperature?: number
-
-    /** @defaultValue 0.6 **/
-    presencePenalty?: number
-
-    stop?: string[]
+    completionParams?: types.openai.CompletionParams
 
     /** @defaultValue `false` **/
     debug?: boolean
 
+    messageStore?: Keyv
+
     getMessageById?: types.GetMessageByIdFunction
+    upsertMessage?: types.UpsertMessageFunction
   }) {
     const {
       apiKey,
       apiBaseUrl = 'https://api.openai.com',
-      model = CHATGPT_MODEL,
-      temperature = 0.7,
-      presencePenalty = 0.6,
-      stop = ['<|im_end|>'],
       debug = false,
-      getMessageById = this._defaultGetMessageById
+      messageStore,
+      getMessageById = this._defaultGetMessageById,
+      upsertMessage = this._defaultUpsertMessage,
+      completionParams
     } = opts
 
     this._apiKey = apiKey
     this._apiBaseUrl = apiBaseUrl
-    this._model = model
-    this._temperature = temperature
-    this._presencePenalty = presencePenalty
-    this._stop = stop
     this._debug = !!debug
-    this._getMessageById = getMessageById
 
-    // override `getMessageById` if you want persistence
-    this._messageCache = new QuickLRU({ maxSize: 10000 })
+    this._completionParams = {
+      model: CHATGPT_MODEL,
+      temperature: 0.7,
+      presence_penalty: 0.6,
+      stop: ['<|im_end|>'],
+      ...completionParams
+    }
+
+    this._getMessageById = getMessageById
+    this._upsertMessage = upsertMessage
+
+    if (messageStore) {
+      this._messageStore = messageStore
+    } else {
+      this._messageStore = new Keyv<types.ChatMessage, any>({
+        store: new QuickLRU<string, types.ChatMessage>({ maxSize: 10000 })
+      })
+    }
 
     if (!this._apiKey) {
       throw new Error('ChatGPT invalid apiKey')
@@ -91,7 +100,6 @@ export class ChatGPTAPI {
    * @param opts.conversationId - Optional ID of a conversation to continue
    * @param opts.parentMessageId - Optional ID of the previous message in the conversation
    * @param opts.messageId - Optional ID of the message to send (defaults to a random UUID)
-   * @param opts.action - Optional ChatGPT `action` (either `next` or `variant`)
    * @param opts.timeoutMs - Optional timeout in milliseconds (defaults to no timeout)
    * @param opts.onProgress - Optional callback which will be invoked every time the partial response is updated
    * @param opts.abortSignal - Optional callback used to abort the underlying `fetch` call using an [AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController)
@@ -119,15 +127,15 @@ export class ChatGPTAPI {
       abortSignal = abortController.signal
     }
 
-    const input: types.ChatMessage = {
+    const message: types.ChatMessage = {
       role: 'user',
       id: messageId,
       parentMessageId,
       conversationId,
       text
     }
+    await this._upsertMessage(message)
 
-    this._messageCache.set(input.id, input)
     const { prompt, maxTokens } = await this._buildPrompt(text, opts)
 
     const result: types.ChatMessage = {
@@ -146,13 +154,10 @@ export class ChatGPTAPI {
           Authorization: `Bearer ${this._apiKey}`
         }
         const body = {
+          max_tokens: maxTokens,
+          ...this._completionParams,
           prompt,
-          stream,
-          model: this._model,
-          temperature: this._temperature,
-          presence_penalty: this._presencePenalty,
-          stop: this._stop,
-          max_tokens: maxTokens
+          stream
         }
 
         if (this._debug) {
@@ -173,7 +178,8 @@ export class ChatGPTAPI {
               }
 
               try {
-                const response = JSON.parse(data)
+                const response: types.openai.CompletionResponse =
+                  JSON.parse(data)
 
                 if (response?.id && response?.choices?.length) {
                   result.id = response.id
@@ -207,7 +213,7 @@ export class ChatGPTAPI {
               return reject(error)
             }
 
-            const response = await res.json()
+            const response: types.openai.CompletionResponse = await res.json()
             if (this._debug) {
               console.log(response)
             }
@@ -221,10 +227,8 @@ export class ChatGPTAPI {
           }
         }
       }
-    )
-
-    responseP.then((message) => {
-      this._messageCache.set(message.id, message)
+    ).then((message) => {
+      return this._upsertMessage(message).then(() => message)
     })
 
     if (timeoutMs) {
@@ -266,7 +270,7 @@ Current date: ${currentDate}\n\n`
 
     const maxNumTokens = 3097
     let { parentMessageId } = opts
-    let nextPromptBody = `${USER_LABEL}:\n\n${message}`
+    let nextPromptBody = `${USER_LABEL}:\n\n${message}<|im_end|>`
     let promptBody = ''
     let prompt: string
     let numTokens: number
@@ -315,7 +319,7 @@ Current date: ${currentDate}\n\n`
   }
 
   protected async _getTokenCount(text: string) {
-    if (this._model === CHATGPT_MODEL) {
+    if (this._completionParams.model === CHATGPT_MODEL) {
       // With this model, "<|im_end|>" is 1 token, but tokenizers aren't aware of it yet.
       // Replace it with "<|endoftext|>" (which it does know about) so that the tokenizer can count it as 1 token.
       text = text.replace(/<\|im_end\|>/g, '<|endoftext|>')
@@ -327,6 +331,12 @@ Current date: ${currentDate}\n\n`
   protected async _defaultGetMessageById(
     id: string
   ): Promise<types.ChatMessage> {
-    return this._messageCache.get(id)
+    return this._messageStore.get(id)
+  }
+
+  protected async _defaultUpsertMessage(
+    message: types.ChatMessage
+  ): Promise<void> {
+    this._messageStore.set(message.id, message)
   }
 }
