@@ -16,8 +16,6 @@
 
 ### Properties
 
-- [originalError](ChatGPTError.md#originalerror)
-- [response](ChatGPTError.md#response)
 - [statusCode](ChatGPTError.md#statuscode)
 - [statusText](ChatGPTError.md#statustext)
 
@@ -39,7 +37,7 @@ Error.constructor
 
 #### Defined in
 
-node_modules/.pnpm/typescript@4.9.3/node_modules/typescript/lib/lib.es5.d.ts:1059
+node_modules/.pnpm/typescript@4.9.5/node_modules/typescript/lib/lib.es5.d.ts:1059
 
 • **new ChatGPTError**(`message?`, `options?`)
 
@@ -56,29 +54,9 @@ Error.constructor
 
 #### Defined in
 
-node_modules/.pnpm/typescript@4.9.3/node_modules/typescript/lib/lib.es2022.error.d.ts:30
+node_modules/.pnpm/typescript@4.9.5/node_modules/typescript/lib/lib.es2022.error.d.ts:30
 
 ## Properties
-
-### originalError
-
-• `Optional` **originalError**: `Error`
-
-#### Defined in
-
-[src/types.ts:297](https://github.com/transitive-bullshit/chatgpt-api/blob/83bb9cf/src/types.ts#L297)
-
-___
-
-### response
-
-• `Optional` **response**: `Response`
-
-#### Defined in
-
-[src/types.ts:296](https://github.com/transitive-bullshit/chatgpt-api/blob/83bb9cf/src/types.ts#L296)
-
-___
 
 ### statusCode
 
@@ -86,7 +64,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:294](https://github.com/transitive-bullshit/chatgpt-api/blob/83bb9cf/src/types.ts#L294)
+[src/types.ts:24](https://github.com/transitive-bullshit/chatgpt-api/blob/531e180/src/types.ts#L24)
 
 ___
 
@@ -96,4 +74,4 @@ ___
 
 #### Defined in
 
-[src/types.ts:295](https://github.com/transitive-bullshit/chatgpt-api/blob/83bb9cf/src/types.ts#L295)
+[src/types.ts:25](https://github.com/transitive-bullshit/chatgpt-api/blob/531e180/src/types.ts#L25)
