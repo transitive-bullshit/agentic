@@ -11,11 +11,10 @@ export async function fetchSSE(
   const { onMessage, ...fetchOptions } = options
   const res = await fetch(url, fetchOptions)
   if (!res.ok) {
-    const msg = `ChatGPTAPI error ${res.status || res.statusText}`
-    const error = new types.ChatGPTError(msg)
+    const msg = `ChatGPT error ${res.status || res.statusText}`
+    const error = new types.ChatGPTError(msg, { cause: res })
     error.statusCode = res.status
     error.statusText = res.statusText
-    error.response = res
     throw error
   }
 

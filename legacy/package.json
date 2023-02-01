@@ -16,8 +16,7 @@
     }
   },
   "files": [
-    "build",
-    "third-party"
+    "build"
   ],
   "engines": {
     "node": ">=18"
@@ -36,18 +35,10 @@
     "test:prettier": "prettier '**/*.{js,jsx,ts,tsx}' --check"
   },
   "dependencies": {
-    "delay": "^5.0.0",
     "eventsource-parser": "^0.0.5",
-    "expiry-map": "^2.0.0",
-    "html-to-md": "^0.8.3",
+    "gpt-3-encoder": "^1.1.4",
     "p-timeout": "^6.0.0",
-    "puppeteer-extra": "^3.3.4",
-    "puppeteer-extra-plugin-recaptcha": "npm:@fisch0920/puppeteer-extra-plugin-recaptcha@^3.6.6",
-    "puppeteer-extra-plugin-stealth": "^2.11.1",
-    "random": "^4.1.0",
-    "remark": "^14.0.2",
-    "strip-markdown": "^5.0.0",
-    "tempy": "^3.0.0",
+    "quick-lru": "^6.1.1",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
@@ -62,15 +53,11 @@
     "npm-run-all": "^4.1.5",
     "ora": "^6.1.2",
     "prettier": "^2.8.0",
-    "puppeteer": "^19.4.0",
     "tsup": "^6.5.0",
     "tsx": "^3.12.1",
     "typedoc": "^0.23.21",
     "typedoc-plugin-markdown": "^3.13.6",
     "typescript": "^4.9.3"
-  },
-  "peerDependencies": {
-    "puppeteer": "*"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
@@ -88,11 +75,12 @@
   "keywords": [
     "openai",
     "chatgpt",
+    "chat",
     "gpt",
+    "gpt-3",
     "gpt3",
     "gpt4",
     "chatbot",
-    "chat",
     "machine learning",
     "conversation",
     "conversational ai",
