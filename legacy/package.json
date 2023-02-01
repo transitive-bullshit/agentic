@@ -37,15 +37,16 @@
   "dependencies": {
     "eventsource-parser": "^0.0.5",
     "gpt-3-encoder": "^1.1.4",
+    "keyv": "^4.5.2",
     "p-timeout": "^6.0.0",
     "quick-lru": "^6.1.1",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "@keyv/redis": "^2.5.4",
     "@trivago/prettier-plugin-sort-imports": "^4.0.0",
     "@types/node": "^18.11.9",
     "@types/uuid": "^9.0.0",
-    "ava": "^5.1.0",
     "del-cli": "^5.0.0",
     "dotenv-safe": "^8.2.0",
     "husky": "^8.0.2",
@@ -62,14 +63,6 @@
   "lint-staged": {
     "*.{ts,tsx}": [
       "prettier --write"
-    ]
-  },
-  "ava": {
-    "extensions": {
-      "ts": "module"
-    },
-    "nodeArguments": [
-      "--loader=tsx"
     ]
   },
   "keywords": [

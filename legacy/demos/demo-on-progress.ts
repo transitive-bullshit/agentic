@@ -5,7 +5,7 @@ import { ChatGPTAPI } from '../src'
 dotenv.config()
 
 /**
- * Demo CLI for testing the `onProgress` handler.
+ * Demo CLI for testing the `onProgress` streaming support.
  *
  * ```
  * npx tsx demos/demo-on-progress.ts
