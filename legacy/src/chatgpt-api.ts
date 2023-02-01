@@ -111,7 +111,7 @@ export class ChatGPTAPI {
     opts: types.SendMessageOptions = {}
   ): Promise<types.ChatMessage> {
     const {
-      conversationId,
+      conversationId = uuidv4(),
       parentMessageId,
       messageId = uuidv4(),
       timeoutMs,
