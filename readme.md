@@ -203,7 +203,7 @@ npx tsx demos/demo-conversation.ts
 
 Any [keyv adaptor](https://github.com/jaredwray/keyv) is supported for persistence, and there are overrides if you'd like to use a different way of storing / retrieving messages.
 
-Note that persisting message is very important for remembering the context of previous conversations.
+Note that persisting message is required for remembering the context of previous conversations.
 
 ## Projects
 
