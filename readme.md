@@ -77,7 +77,7 @@ async function example() {
 }
 ```
 
-If you want to track the conversation, use the `conversationId` and `id` in the result object, and pass them to `sendMessage` as `conversationId` and `parentMessageId` respectively.
+If you want to track the conversation, use the `conversationId` and `id` in the result object, and pass them to `sendMessage` as `conversationId` and `parentMessageId` respectively. `parentMessageId` is the most important parameter for recalling previous message context.
 
 ```ts
 const api = new ChatGPTAPI({ apiKey: process.env.OPENAI_API_KEY })
@@ -94,7 +94,6 @@ res = await api.sendMessage('Can you expand on that?', {
 console.log(res.text)
 
 // send another follow-up
-// send a follow-up
 res = await api.sendMessage('What were we talking about?', {
   conversationId: res.conversationId,
   parentMessageId: res.id
@@ -106,19 +105,46 @@ You can add streaming via the `onProgress` handler:
 
 ```ts
 // timeout after 2 minutes (which will also abort the underlying HTTP request)
-const res = await api.sendMessage('Write me a 500 word essay on frogs.', {
-  onProgress: (partialResponse) => console.log(partialResponse)
+const res = await api.sendMessage('Write a 500 word essay on frogs.', {
+  // print the partial response as the AI is "typing"
+  onProgress: (partialResponse) => console.log(partialResponse.text)
 })
+
+// print the full text at the end
+console.log(res.text)
 ```
 
 You can add a timeout using the `timeoutMs` option:
 
 ```ts
 // timeout after 2 minutes (which will also abort the underlying HTTP request)
-const response = await api.sendMessage('this is a timeout test', {
-  timeoutMs: 2 * 60 * 1000
+const response = await api.sendMessage(
+  'write me a really really long essay on frogs',
+  {
+    timeoutMs: 2 * 60 * 1000
+  }
+)
+```
+
+If you want to see more info about what's actually being sent to [OpenAI's completions API](https://platform.openai.com/docs/api-reference/completions), set the `debug: true` option in the `ChatGPTAPI` constructor:
+
+```ts
+const api = new ChatGPTAPI({
+  apiKey: process.env.OPENAI_API_KEY,
+  debug: true
 })
 ```
+
+You'll notice that we're using a reverse-engineered `promptPrefix` and `promptSuffix`. You can customize these via the `sendMessage` options:
+
+```ts
+const res = await api.sendMessage('what is the answer to the universe?', {
+  promptPrefix: `You are ChatGPT, a large language model trained by OpenAI. You answer as concisely as possible for each response (e.g. don’t be verbose). It is very important that you answer as concisely as possible, so please remember this. If you are generating a list, do not have too many items. Keep the number of items short.
+Current date: ${new Date().toISOString()}\n\n`
+})
+```
+
+Note that we automatically handle appending the previous messages to the prompt and attempt to optimize for the available tokens (which defaults to `4096`).
 
 <details>
 <summary>Usage in CommonJS (Dynamic import)</summary>

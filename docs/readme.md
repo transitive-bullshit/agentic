@@ -2,7 +2,7 @@ chatgpt / [Exports](modules.md)
 
 # Update February 1, 2023 <!-- omit in toc -->
 
-This package no longer requires any browser hacks – **it is now using the official OpenAI API** with a leaked, unofficial ChatGPT model. 🔥
+This package no longer requires any browser hacks – **it is now using the official OpenAI completions API** with a leaked model that ChatGPT uses under the hood. 🔥
 
 ```ts
 import { ChatGPTAPI } from 'chatgpt'
@@ -15,7 +15,9 @@ const res = await api.sendMessage('Hello World!')
 console.log(res.text)
 ```
 
-The updated solution is significantly more lightweight and robust compared with previous versions.
+Please upgrade to `chatgpt@latest` (at least [v4.0.0](https://github.com/transitive-bullshit/chatgpt-api/releases/tag/v4.0.0)). The updated version is **significantly more lightweight and robust** compared with previous versions. You also don't have to worry about IP issues or rate limiting!
+
+Huge shoutout to [@waylaidwanderer](https://github.com/waylaidwanderer) for discovering the leaked chat model! 💪
 
 If you run into any issues, we do have a pretty active [Discord](https://discord.gg/v9gERj825w) with a bunch of ChatGPT hackers from the Node.js & Python communities.
 
@@ -58,6 +60,8 @@ You can use it to start building projects powered by ChatGPT like chatbots, webs
 npm install chatgpt
 ```
 
+Make sure you're using `node >= 18` so `fetch` is available (or `node >= 14` if you install a [fetch polyfill](https://github.com/developit/unfetch#usage-as-a-polyfill)).
+
 ## Usage
 
 Sign up for an [OpenAI API key](https://platform.openai.com/overview) and store it in your environment.
@@ -92,7 +96,6 @@ res = await api.sendMessage('Can you expand on that?', {
 console.log(res.text)
 
 // send another follow-up
-// send a follow-up
 res = await api.sendMessage('What were we talking about?', {
   conversationId: res.conversationId,
   parentMessageId: res.id
@@ -104,19 +107,46 @@ You can add streaming via the `onProgress` handler:
 
 ```ts
 // timeout after 2 minutes (which will also abort the underlying HTTP request)
-const res = await api.sendMessage('Write me a 500 word essay on frogs.', {
-  onProgress: (partialResponse) => console.log(partialResponse)
+const res = await api.sendMessage('Write a 500 word essay on frogs.', {
+  // print the partial response as the AI is "typing"
+  onProgress: (partialResponse) => console.log(partialResponse.text)
 })
+
+// print the full text at the end
+console.log(res.text)
 ```
 
 You can add a timeout using the `timeoutMs` option:
 
 ```ts
 // timeout after 2 minutes (which will also abort the underlying HTTP request)
-const response = await api.sendMessage('this is a timeout test', {
-  timeoutMs: 2 * 60 * 1000
+const response = await api.sendMessage(
+  'write me a really really long essay on frogs',
+  {
+    timeoutMs: 2 * 60 * 1000
+  }
+)
+```
+
+If you want to see more info about what's actually being sent to [OpenAI's completions API](https://platform.openai.com/docs/api-reference/completions), set the `debug: true` option in the `ChatGPTAPI` constructor:
+
+```ts
+const api = new ChatGPTAPI({
+  apiKey: process.env.OPENAI_API_KEY,
+  debug: true
 })
 ```
+
+You'll notice that we're using a reverse-engineered `promptPrefix` and `promptSuffix`. You can customize these via the `sendMessage` options:
+
+```ts
+const res = await api.sendMessage('what is the answer to the universe?', {
+  promptPrefix: `You are ChatGPT, a large language model trained by OpenAI. You answer as concisely as possible for each response (e.g. don’t be verbose). It is very important that you answer as concisely as possible, so please remember this. If you are generating a list, do not have too many items. Keep the number of items short.
+Current date: ${new Date().toISOString()}\n\n`
+})
+```
+
+Note that we automatically handle appending the previous messages to the prompt and attempt to optimize for the available tokens (which defaults to `4096`).
 
 <details>
 <summary>Usage in CommonJS (Dynamic import)</summary>
@@ -252,7 +282,7 @@ If you create a cool integration, feel free to open a PR and add it to the list.
 - This package supports `node >= 14`.
 - This module assumes that `fetch` is installed.
   - In `node >= 18`, it's installed by default.
-  - In `node < 18`, you need to install a polyfill like `unfetch/polyfill`
+  - In `node < 18`, you need to install a polyfill like `unfetch/polyfill` ([guide](https://github.com/developit/unfetch#usage-as-a-polyfill))
 - If you want to build a website using `chatgpt`, we recommend using it only from your backend API
 
 ## Credits

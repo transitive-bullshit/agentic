@@ -48,7 +48,7 @@ Returns a chat message from a store by it's ID (or null if not found).
 
 #### Defined in
 
-[src/types.ts:29](https://github.com/transitive-bullshit/chatgpt-api/blob/531e180/src/types.ts#L29)
+[src/types.ts:29](https://github.com/transitive-bullshit/chatgpt-api/blob/9d49e78/src/types.ts#L29)
 
 ___
 
@@ -58,7 +58,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:1](https://github.com/transitive-bullshit/chatgpt-api/blob/531e180/src/types.ts#L1)
+[src/types.ts:1](https://github.com/transitive-bullshit/chatgpt-api/blob/9d49e78/src/types.ts#L1)
 
 ___
 
@@ -82,7 +82,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:3](https://github.com/transitive-bullshit/chatgpt-api/blob/531e180/src/types.ts#L3)
+[src/types.ts:3](https://github.com/transitive-bullshit/chatgpt-api/blob/9d49e78/src/types.ts#L3)
 
 ___
 
@@ -108,4 +108,4 @@ Upserts a chat message to a store.
 
 #### Defined in
 
-[src/types.ts:32](https://github.com/transitive-bullshit/chatgpt-api/blob/531e180/src/types.ts#L32)
+[src/types.ts:32](https://github.com/transitive-bullshit/chatgpt-api/blob/9d49e78/src/types.ts#L32)
