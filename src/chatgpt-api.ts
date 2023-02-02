@@ -11,14 +11,19 @@ import { fetchSSE } from './fetch-sse'
 // NOTE: this is not a public model, but it was leaked by the ChatGPT webapp.
 const CHATGPT_MODEL = 'text-chat-davinci-002-20230126'
 
-const USER_LABEL = 'User'
-const ASSISTANT_LABEL = 'ChatGPT'
+const USER_LABEL_DEFAULT = 'User'
+const ASSISTANT_LABEL_DEFAULT = 'ChatGPT'
 
 export class ChatGPTAPI {
   protected _apiKey: string
   protected _apiBaseUrl: string
-  protected _completionParams: types.openai.CompletionParams
   protected _debug: boolean
+
+  protected _completionParams: types.openai.CompletionParams
+  protected _maxModelTokens: number
+  protected _maxResponseTokens: number
+  protected _userLabel: string
+  protected _assistantLabel: string
 
   protected _getMessageById: types.GetMessageByIdFunction
   protected _upsertMessage: types.UpsertMessageFunction
@@ -30,8 +35,14 @@ export class ChatGPTAPI {
    * unofficial ChatGPT model.
    *
    * @param apiKey - OpenAI API key (required).
+   * @param apiBaseUrl - Optional override for the OpenAI API base URL.
    * @param debug - Optional enables logging debugging info to stdout.
-   * @param stop - Up to 4 sequences where the API will stop generating further tokens. The returned text will not contain the stop sequence.
+   * @param completionParams - Param overrides to send to the [OpenAI completion API](https://platform.openai.com/docs/api-reference/completions/create). Options like `temperature` and `presence_penalty` can be tweaked to change the personality of the assistant.
+   * @param maxModelTokens - Optional override for the maximum number of tokens allowed by the model's context. Defaults to 4096 for the `text-chat-davinci-002-20230126` model.
+   * @param maxResponseTokens - Optional override for the minimum number of tokens allowed for the model's response. Defaults to 1000 for the `text-chat-davinci-002-20230126` model.
+   * @param messageStore - Optional [Keyv](https://github.com/jaredwray/keyv) store to persist chat messages to. If not provided, messages will be lost when the process exits.
+   * @param getMessageById - Optional function to retrieve a message by its ID. If not provided, the default implementation will be used (using an in-memory `messageStore`).
+   * @param upsertMessage - Optional function to insert or update a message. If not provided, the default implementation will be used (using an in-memory `messageStore`).
    */
   constructor(opts: {
     apiKey: string
@@ -39,13 +50,24 @@ export class ChatGPTAPI {
     /** @defaultValue `'https://api.openai.com'` **/
     apiBaseUrl?: string
 
-    completionParams?: types.openai.CompletionParams
-
     /** @defaultValue `false` **/
     debug?: boolean
 
-    messageStore?: Keyv
+    completionParams?: types.openai.CompletionParams
 
+    /** @defaultValue `4096` **/
+    maxModelTokens?: number
+
+    /** @defaultValue `1000` **/
+    maxResponseTokens?: number
+
+    /** @defaultValue `'User'` **/
+    userLabel?: string
+
+    /** @defaultValue `'ChatGPT'` **/
+    assistantLabel?: string
+
+    messageStore?: Keyv
     getMessageById?: types.GetMessageByIdFunction
     upsertMessage?: types.UpsertMessageFunction
   }) {
@@ -54,9 +76,13 @@ export class ChatGPTAPI {
       apiBaseUrl = 'https://api.openai.com',
       debug = false,
       messageStore,
+      completionParams,
+      maxModelTokens = 4096,
+      maxResponseTokens = 1000,
+      userLabel = USER_LABEL_DEFAULT,
+      assistantLabel = ASSISTANT_LABEL_DEFAULT,
       getMessageById = this._defaultGetMessageById,
-      upsertMessage = this._defaultUpsertMessage,
-      completionParams
+      upsertMessage = this._defaultUpsertMessage
     } = opts
 
     this._apiKey = apiKey
@@ -70,6 +96,10 @@ export class ChatGPTAPI {
       stop: ['<|im_end|>'],
       ...completionParams
     }
+    this._maxModelTokens = maxModelTokens
+    this._maxResponseTokens = maxResponseTokens
+    this._userLabel = userLabel
+    this._assistantLabel = assistantLabel
 
     this._getMessageById = getMessageById
     this._upsertMessage = upsertMessage
@@ -91,15 +121,21 @@ export class ChatGPTAPI {
    * Sends a message to ChatGPT, waits for the response to resolve, and returns
    * the response.
    *
+   * If you want your response to have historical context, you must provide a valid `parentMessageId`.
+   *
    * If you want to receive a stream of partial responses, use `opts.onProgress`.
    * If you want to receive the full response, including message and conversation IDs,
    * you can use `opts.onConversationResponse` or use the `ChatGPTAPI.getConversation`
    * helper.
    *
+   * Set `debug: true` in the `ChatGPTAPI` constructor to log more info on the full prompt sent to the OpenAI completions API. You can override the `promptPrefix` and `promptSuffix` in `opts` to customize the prompt.
+   *
    * @param message - The prompt message to send
-   * @param opts.conversationId - Optional ID of a conversation to continue
-   * @param opts.parentMessageId - Optional ID of the previous message in the conversation
+   * @param opts.conversationId - Optional ID of a conversation to continue (defaults to a random UUID)
+   * @param opts.parentMessageId - Optional ID of the previous message in the conversation (defaults to `undefined`)
    * @param opts.messageId - Optional ID of the message to send (defaults to a random UUID)
+   * @param opts.promptPrefix - Optional override for the prompt prefix to send to the OpenAI completions endpoint
+   * @param opts.promptSuffix - Optional override for the prompt suffix to send to the OpenAI completions endpoint
    * @param opts.timeoutMs - Optional timeout in milliseconds (defaults to no timeout)
    * @param opts.onProgress - Optional callback which will be invoked every time the partial response is updated
    * @param opts.abortSignal - Optional callback used to abort the underlying `fetch` call using an [AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController)
@@ -264,13 +300,13 @@ export class ChatGPTAPI {
 
     const promptPrefix =
       opts.promptPrefix ||
-      `You are ${ASSISTANT_LABEL}, a large language model trained by OpenAI. You answer as concisely as possible for each response (e.g. don’t be verbose). It is very important that you answer as concisely as possible, so please remember this. If you are generating a list, do not have too many items. Keep the number of items short.
+      `You are ${this._assistantLabel}, a large language model trained by OpenAI. You answer as concisely as possible for each response (e.g. don’t be verbose). It is very important that you answer as concisely as possible, so please remember this. If you are generating a list, do not have too many items. Keep the number of items short.
 Current date: ${currentDate}\n\n`
-    const promptSuffix = opts.promptSuffix || `\n\n${ASSISTANT_LABEL}:\n`
+    const promptSuffix = opts.promptSuffix || `\n\n${this._assistantLabel}:\n`
 
-    const maxNumTokens = 3097
+    const maxNumTokens = this._maxModelTokens - this._maxResponseTokens
     let { parentMessageId } = opts
-    let nextPromptBody = `${USER_LABEL}:\n\n${message}<|im_end|>`
+    let nextPromptBody = `${this._userLabel}:\n\n${message}<|im_end|>`
     let promptBody = ''
     let prompt: string
     let numTokens: number
@@ -303,7 +339,7 @@ Current date: ${currentDate}\n\n`
 
       const parentMessageRole = parentMessage.role || 'user'
       const parentMessageRoleDesc =
-        parentMessageRole === 'user' ? USER_LABEL : ASSISTANT_LABEL
+        parentMessageRole === 'user' ? this._userLabel : this._assistantLabel
 
       // TODO: differentiate between assistant and user messages
       const parentMessageString = `${parentMessageRoleDesc}:\n\n${parentMessage.text}<|im_end|>\n\n`
@@ -311,9 +347,12 @@ Current date: ${currentDate}\n\n`
       parentMessageId = parentMessage.parentMessageId
     } while (true)
 
-    // Use up to 4097 tokens (prompt + response), but try to leave 1000 tokens
+    // Use up to 4096 tokens (prompt + response), but try to leave 1000 tokens
     // for the response.
-    const maxTokens = Math.max(1, Math.min(4097 - numTokens, 1000))
+    const maxTokens = Math.max(
+      1,
+      Math.min(this._maxModelTokens - numTokens, this._maxResponseTokens)
+    )
 
     return { prompt, maxTokens }
   }
