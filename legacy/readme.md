@@ -195,7 +195,7 @@ A [conversation demo](./demos/demo-conversation.ts):
 npx tsx demos/demo-conversation.ts
 ```
 
-Lastly, a [persitence demo](./demos/demo-persistence.ts) shows how to store messages in Redis for persistence:
+A [persitence demo](./demos/demo-persistence.ts) shows how to store messages in Redis for persistence:
 
 ```bash
 npx tsx demos/demo-conversation.ts
