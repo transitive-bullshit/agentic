@@ -77,7 +77,7 @@ async function example() {
 }
 ```
 
-If you want to track the conversation, you'll need to pass the `parentMessageid` and `conversationid` along as well:
+If you want to track the conversation, you'll need to pass the `parentMessageid` and `conversationid`:
 
 ```ts
 const api = new ChatGPTAPI({ apiKey: process.env.OPENAI_API_KEY })
