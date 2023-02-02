@@ -53,7 +53,7 @@ export class ChatGPTAPI {
     /** @defaultValue `false` **/
     debug?: boolean
 
-    completionParams?: types.openai.CompletionParams
+    completionParams?: Partial<types.openai.CompletionParams>
 
     /** @defaultValue `4096` **/
     maxModelTokens?: number
