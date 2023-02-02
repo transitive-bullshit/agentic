@@ -19,7 +19,7 @@ export class ChatGPTAPI {
   protected _apiBaseUrl: string
   protected _debug: boolean
 
-  protected _completionParams: types.openai.CompletionParams
+  protected _completionParams: Omit<types.openai.CompletionParams, 'prompt'>
   protected _maxModelTokens: number
   protected _maxResponseTokens: number
   protected _userLabel: string
