@@ -77,7 +77,7 @@ async function example() {
 }
 ```
 
-If you want to track the conversation, use the `conversationId` and `id` in the result object, and pass them to `sendMessage` as `conversationId` and `parentMessageId` respectively. `parentMessageId` is the most important parameter for recalling previous message context.
+If you want to track the conversation, you'll need to pass the `parentMessageid` and `conversationid` along as well:
 
 ```ts
 const api = new ChatGPTAPI({ apiKey: process.env.OPENAI_API_KEY })
