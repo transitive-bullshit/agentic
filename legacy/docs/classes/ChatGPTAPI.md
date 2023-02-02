@@ -40,7 +40,7 @@ unofficial ChatGPT model.
 
 #### Defined in
 
-[src/chatgpt-api.ts:47](https://github.com/transitive-bullshit/chatgpt-api/blob/9d49e78/src/chatgpt-api.ts#L47)
+[src/chatgpt-api.ts:47](https://github.com/transitive-bullshit/chatgpt-api/blob/2dd0ca9/src/chatgpt-api.ts#L47)
 
 ## Methods
 
@@ -75,4 +75,4 @@ The response from ChatGPT
 
 #### Defined in
 
-[src/chatgpt-api.ts:145](https://github.com/transitive-bullshit/chatgpt-api/blob/9d49e78/src/chatgpt-api.ts#L145)
+[src/chatgpt-api.ts:145](https://github.com/transitive-bullshit/chatgpt-api/blob/2dd0ca9/src/chatgpt-api.ts#L145)
