@@ -8,7 +8,7 @@
 
 - [constructor](ChatGPTAPI.md#constructor)
 
-### Methods
+### Method
 
 - [sendMessage](ChatGPTAPI.md#sendmessage)
 
