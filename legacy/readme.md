@@ -262,6 +262,7 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [iOS Shortcut](https://github.com/leecobaby/shortcuts/blob/master/other/ChatGPT_EN.md)
 - [Slack Bot #1](https://github.com/trietphm/chatgpt-slackbot/)
 - [Slack Bot #2](https://github.com/lokwkin/chatgpt-slackbot-node/) (with queueing mechanism)
+- [Slack Bot #3](https://github.com/NessunKim/slack-chatgpt/)
 - [Electron Bot](https://github.com/ShiranAbir/chaty)
 - [Kodyfire CLI](https://github.com/nooqta/chatgpt-kodyfire)
 - [Twitch Bot](https://github.com/BennyDeeDev/chatgpt-twitch-bot)
