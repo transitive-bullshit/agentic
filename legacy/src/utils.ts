@@ -3,6 +3,7 @@ import type {
   EventSourceParseCallback,
   EventSourceParser
 } from 'eventsource-parser'
+import fs from 'fs'
 import type { Page } from 'puppeteer'
 import { remark } from 'remark'
 import stripMarkdown from 'strip-markdown'
@@ -30,6 +31,20 @@ export async function minimizePage(page: Page) {
     windowId,
     bounds: { windowState: 'minimized' }
   })
+}
+
+export async function deleteFolderRecursive(path: string) {
+  if (fs.existsSync(path)) {
+    fs.readdirSync(path).forEach(function (file, index) {
+      var curPath = path + '/' + file
+      if (fs.lstatSync(curPath).isDirectory()) {
+        deleteFolderRecursive(curPath)
+      } else {
+        fs.unlinkSync(curPath)
+      }
+    })
+    fs.rmdirSync(path)
+  }
 }
 
 export async function maximizePage(page: Page) {
