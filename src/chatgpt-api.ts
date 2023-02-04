@@ -198,6 +198,7 @@ export class ChatGPTAPI {
         }
 
         if (this._debug) {
+          //if debug flag turned on then we log to tokens 
           const numTokens = await this._getTokenCount(body.prompt)
           console.log(`sendMessage (${numTokens} tokens)`, body)
         }
