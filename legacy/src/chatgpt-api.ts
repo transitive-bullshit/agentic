@@ -307,7 +307,7 @@ Current date: ${currentDate}\n\n`
 
     const maxNumTokens = this._maxModelTokens - this._maxResponseTokens
     let { parentMessageId } = opts
-    let nextPromptBody = `${this._userLabel}:\n\n${message}${this._completionParams.stop}`
+    let nextPromptBody = `${this._userLabel}:\n\n${message}${this._completionParams.stop[0]}`
     let promptBody = ''
     let prompt: string
     let numTokens: number
@@ -343,7 +343,7 @@ Current date: ${currentDate}\n\n`
         parentMessageRole === 'user' ? this._userLabel : this._assistantLabel
 
       // TODO: differentiate between assistant and user messages
-      const parentMessageString = `${parentMessageRoleDesc}:\n\n${parentMessage.text}${this._completionParams.stop}\n\n`
+      const parentMessageString = `${parentMessageRoleDesc}:\n\n${parentMessage.text}${this._completionParams.stop[0]}\n\n`
       nextPromptBody = `${parentMessageString}${promptBody}`
       parentMessageId = parentMessage.parentMessageId
     } while (true)
