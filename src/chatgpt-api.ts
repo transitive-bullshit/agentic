@@ -5,15 +5,18 @@ import QuickLRU from 'quick-lru'
 import { v4 as uuidv4 } from 'uuid'
 
 import * as types from './types'
+import {
+  API_BASE_URL,
+  API_SEE_DONE_MESSAGE,
+  ASSISTANT_LABEL_DEFAULT,
+  ASSISTANT_ROLE,
+  CHATGPT_MODEL,
+  COMPLETION_PARAMS_DEFAULT,
+  USER_LABEL_DEFAULT,
+  USER_ROLE
+} from './constants'
 import { fetch } from './fetch'
 import { fetchSSE } from './fetch-sse'
-
-// NOTE: this is not a public model, but it was leaked by the ChatGPT webapp.
-// const CHATGPT_MODEL = 'text-chat-davinci-002-20230126'
-const CHATGPT_MODEL = 'text-chat-davinci-002-20221122'
-
-const USER_LABEL_DEFAULT = 'User'
-const ASSISTANT_LABEL_DEFAULT = 'ChatGPT'
 
 export class ChatGPTAPI {
   protected _apiKey: string
@@ -74,7 +77,7 @@ export class ChatGPTAPI {
   }) {
     const {
       apiKey,
-      apiBaseUrl = 'https://api.openai.com',
+      apiBaseUrl = API_BASE_URL,
       debug = false,
       messageStore,
       completionParams,
@@ -91,10 +94,7 @@ export class ChatGPTAPI {
     this._debug = !!debug
 
     this._completionParams = {
-      model: CHATGPT_MODEL,
-      temperature: 0.7,
-      presence_penalty: 0.6,
-      stop: ['<|im_end|>'],
+      ...COMPLETION_PARAMS_DEFAULT,
       ...completionParams
     }
     this._maxModelTokens = maxModelTokens
@@ -165,7 +165,7 @@ export class ChatGPTAPI {
     }
 
     const message: types.ChatMessage = {
-      role: 'user',
+      role: USER_ROLE,
       id: messageId,
       parentMessageId,
       conversationId,
@@ -176,7 +176,7 @@ export class ChatGPTAPI {
     const { prompt, maxTokens } = await this._buildPrompt(text, opts)
 
     const result: types.ChatMessage = {
-      role: 'assistant',
+      role: ASSISTANT_ROLE,
       id: uuidv4(),
       parentMessageId: messageId,
       conversationId,
@@ -209,7 +209,7 @@ export class ChatGPTAPI {
             body: JSON.stringify(body),
             signal: abortSignal,
             onMessage: (data: string) => {
-              if (data === '[DONE]') {
+              if (data === API_SEE_DONE_MESSAGE) {
                 result.text = result.text.trim()
                 return resolve(result)
               }
@@ -338,9 +338,9 @@ Current date: ${currentDate}\n\n`
         break
       }
 
-      const parentMessageRole = parentMessage.role || 'user'
+      const parentMessageRole = parentMessage.role || USER_ROLE
       const parentMessageRoleDesc =
-        parentMessageRole === 'user' ? this._userLabel : this._assistantLabel
+        parentMessageRole === USER_ROLE ? this._userLabel : this._assistantLabel
 
       // TODO: differentiate between assistant and user messages
       const parentMessageString = `${parentMessageRoleDesc}:\n\n${parentMessage.text}<|im_end|>\n\n`
