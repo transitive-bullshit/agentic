@@ -283,7 +283,7 @@ If you create a cool integration, feel free to open a PR and add it to the list.
 - This package supports `node >= 14`.
 - This module assumes that `fetch` is installed.
   - In `node >= 18`, it's installed by default.
-  - In `node < 18`, you need to install a polyfill like `unfetch/polyfill` ([guide](https://github.com/developit/unfetch#usage-as-a-polyfill))
+  - In `node < 18`, you need to install a polyfill like `unfetch/polyfill` ([guide](https://github.com/developit/unfetch#usage-as-a-polyfill)) or `isomorphic-fetch` ([guide](https://github.com/matthew-andrews/isomorphic-fetch#readme)). 
 - If you want to build a website using `chatgpt`, we recommend using it only from your backend API
 
 ## Credits
