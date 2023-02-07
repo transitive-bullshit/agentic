@@ -29,7 +29,7 @@ unofficial ChatGPT model.
 | `opts.apiBaseUrl?` | `string` | **`Default Value`** `'https://api.openai.com'` * |
 | `opts.apiKey` | `string` | - |
 | `opts.assistantLabel?` | `string` | **`Default Value`** `'ChatGPT'` * |
-| `opts.completionParams?` | [`CompletionParams`](../modules/openai.md#completionparams) | - |
+| `opts.completionParams?` | `Partial`<[`CompletionParams`](../modules/openai.md#completionparams)\> | - |
 | `opts.debug?` | `boolean` | **`Default Value`** `false` * |
 | `opts.getMessageById?` | [`GetMessageByIdFunction`](../modules.md#getmessagebyidfunction) | - |
 | `opts.maxModelTokens?` | `number` | **`Default Value`** `4096` * |
@@ -40,7 +40,7 @@ unofficial ChatGPT model.
 
 #### Defined in
 
-[src/chatgpt-api.ts:47](https://github.com/transitive-bullshit/chatgpt-api/blob/2dd0ca9/src/chatgpt-api.ts#L47)
+[src/chatgpt-api.ts:48](https://github.com/transitive-bullshit/chatgpt-api/blob/aefae23/src/chatgpt-api.ts#L48)
 
 ## Methods
 
@@ -75,4 +75,4 @@ The response from ChatGPT
 
 #### Defined in
 
-[src/chatgpt-api.ts:145](https://github.com/transitive-bullshit/chatgpt-api/blob/2dd0ca9/src/chatgpt-api.ts#L145)
+[src/chatgpt-api.ts:146](https://github.com/transitive-bullshit/chatgpt-api/blob/aefae23/src/chatgpt-api.ts#L146)
