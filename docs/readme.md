@@ -15,9 +15,9 @@ const res = await api.sendMessage('Hello World!')
 console.log(res.text)
 ```
 
-Please upgrade to `chatgpt@latest` (at least [v4.0.0](https://github.com/transitive-bullshit/chatgpt-api/releases/tag/v4.0.0)). The updated version is **significantly more lightweight and robust** compared with previous versions. You also don't have to worry about IP issues or rate limiting!
+Please upgrade to `chatgpt@latest` (at least [v4.0.0](https://github.com/transitive-bullshit/chatgpt-api/releases/tag/v4.0.0)). The updated version is **significantly more lightweight and robust** compared with previous versions. You also don't have to worry about IP issues or rate limiting.
 
-Huge shoutout to [@waylaidwanderer](https://github.com/waylaidwanderer) for discovering the leaked chat model! 💪
+Huge shoutout to [@waylaidwanderer](https://github.com/waylaidwanderer) for discovering the leaked chat model!
 
 If you run into any issues, we do have a pretty active [Discord](https://discord.gg/v9gERj825w) with a bunch of ChatGPT hackers from the Node.js & Python communities.
 
@@ -79,7 +79,7 @@ async function example() {
 }
 ```
 
-If you want to track the conversation, use the `conversationId` and `id` in the result object, and pass them to `sendMessage` as `conversationId` and `parentMessageId` respectively. `parentMessageId` is the most important parameter for recalling previous message context.
+If you want to track the conversation, you'll need to pass the `parentMessageid` and `conversationid`:
 
 ```ts
 const api = new ChatGPTAPI({ apiKey: process.env.OPENAI_API_KEY })
@@ -197,7 +197,7 @@ A [conversation demo](./demos/demo-conversation.ts):
 npx tsx demos/demo-conversation.ts
 ```
 
-Lastly, a [persitence demo](./demos/demo-persistence.ts) shows how to store messages in Redis for persistence:
+A [persistence demo](./demos/demo-persistence.ts) shows how to store messages in Redis for persistence:
 
 ```bash
 npx tsx demos/demo-conversation.ts
@@ -205,7 +205,7 @@ npx tsx demos/demo-conversation.ts
 
 Any [keyv adaptor](https://github.com/jaredwray/keyv) is supported for persistence, and there are overrides if you'd like to use a different way of storing / retrieving messages.
 
-Note that persisting message is very important for remembering the context of previous conversations.
+Note that persisting message is required for remembering the context of previous conversations beyond the scope of the current Node.js process, since by default, we only store messages in memory.
 
 ## Projects
 
@@ -214,6 +214,7 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [Twitter Bot](https://github.com/transitive-bullshit/chatgpt-twitter-bot) powered by ChatGPT ✨
   - Mention [@ChatGPTBot](https://twitter.com/ChatGPTBot) on Twitter with your prompt to try it out
 - [ChatGPT API Server](https://github.com/waylaidwanderer/node-chatgpt-api) - API server for this package with support for multiple OpenAI accounts, proxies, and load-balancing requests between accounts.
+- [ChatGPT Prompts](https://github.com/pacholoamit/chatgpt-prompts) - A collection of 140+ of the best ChatGPT prompts from the community.
 - [Lovelines.xyz](https://lovelines.xyz?ref=chatgpt-api)
 - [Chrome Extension](https://github.com/gragland/chatgpt-everywhere) ([demo](https://twitter.com/gabe_ragland/status/1599466486422470656))
 - [VSCode Extension #1](https://github.com/mpociot/chatgpt-vscode) ([demo](https://twitter.com/marcelpociot/status/1599180144551526400), [updated version](https://github.com/timkmecl/chatgpt-vscode), [marketplace](https://marketplace.visualstudio.com/items?itemName=timkmecl.chatgpt))
@@ -264,6 +265,8 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [iOS Shortcut](https://github.com/leecobaby/shortcuts/blob/master/other/ChatGPT_EN.md)
 - [Slack Bot #1](https://github.com/trietphm/chatgpt-slackbot/)
 - [Slack Bot #2](https://github.com/lokwkin/chatgpt-slackbot-node/) (with queueing mechanism)
+- [Slack Bot #3](https://github.com/NessunKim/slack-chatgpt/)
+- [Slack Bot #4](https://github.com/MarkusGalant/chatgpt-slackbot-serverless/) ( Serverless AWS Lambda )
 - [Electron Bot](https://github.com/ShiranAbir/chaty)
 - [Kodyfire CLI](https://github.com/nooqta/chatgpt-kodyfire)
 - [Twitch Bot](https://github.com/BennyDeeDev/chatgpt-twitch-bot)
@@ -273,6 +276,8 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [NestJS ChatGPT Starter Boilerplate](https://github.com/mitkodkn/nestjs-chatgpt-starter)
 - [Wordsmith: Add-in for Microsoft Word](https://github.com/xtremehpx/Wordsmith)
 - [QuizGPT: Create Kahoot quizzes with ChatGPT](https://github.com/Kladdy/quizgpt)
+- [openai-chatgpt: Talk to ChatGPT from the terminal](https://github.com/gmpetrov/openai-chatgpt)
+- [Clippy the Saleforce chatbot](https://github.com/sebas00/chatgptclippy) ClippyJS joke bot
 
 If you create a cool integration, feel free to open a PR and add it to the list.
 
@@ -282,7 +287,7 @@ If you create a cool integration, feel free to open a PR and add it to the list.
 - This package supports `node >= 14`.
 - This module assumes that `fetch` is installed.
   - In `node >= 18`, it's installed by default.
-  - In `node < 18`, you need to install a polyfill like `unfetch/polyfill` ([guide](https://github.com/developit/unfetch#usage-as-a-polyfill))
+  - In `node < 18`, you need to install a polyfill like `unfetch/polyfill` ([guide](https://github.com/developit/unfetch#usage-as-a-polyfill)) or `isomorphic-fetch` ([guide](https://github.com/matthew-andrews/isomorphic-fetch#readme)). 
 - If you want to build a website using `chatgpt`, we recommend using it only from your backend API
 
 ## Credits
