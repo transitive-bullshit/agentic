@@ -229,7 +229,7 @@ export class ChatGPTAPI {
                 return reject(err)
               }
             }
-          })
+          }).catch(reject)
         } else {
           try {
             const res = await fetch(url, {
