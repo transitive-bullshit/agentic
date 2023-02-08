@@ -10,8 +10,10 @@ import { fetchSSE } from './fetch-sse'
 
 // NOTE: this is not a public model, but it was leaked by the ChatGPT webapp.
 // const CHATGPT_MODEL = 'text-chat-davinci-002-20230126'
-// const CHATGPT_MODEL = 'text-chat-davinci-002-20221122'
-const CHATGPT_MODEL = 'text-davinci-003'
+const CHATGPT_MODEL = 'text-chat-davinci-002-20221122'
+
+// Official model (costs money and is not fine-tuned for chat)
+// const CHATGPT_MODEL = 'text-davinci-003'
 
 const USER_LABEL_DEFAULT = 'User'
 const ASSISTANT_LABEL_DEFAULT = 'ChatGPT'
