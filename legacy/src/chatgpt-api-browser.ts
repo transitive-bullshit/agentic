@@ -8,6 +8,7 @@ import { AChatGPTAPI } from './abstract-chatgpt-api'
 import { getBrowser, getOpenAIAuth, getPage } from './openai-auth'
 import {
   browserPostEventStream,
+  deleteFolderRecursive,
   isRelevantRequest,
   markdownToText,
   maximizePage,
@@ -351,6 +352,7 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
       console.log('>>> closing session', this._email)
       await this.closeSession()
       console.log('<<< closing session', this._email)
+      await deleteFolderRecursive(this._userDataDir)
       await this.initSession()
       console.log(`ChatGPT "${this._email}" refreshSession success`)
     } catch (err) {
@@ -464,7 +466,7 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
       ],
       model: this._isProAccount
         ? 'text-davinci-002-render-paid'
-        : 'text-davinci-002-render-next',
+        : 'text-davinci-002-render',
       parent_message_id: parentMessageId
     }
 
