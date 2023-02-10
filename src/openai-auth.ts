@@ -212,7 +212,7 @@ export async function getOpenAIAuth({
         await submit.click()
         await page.waitForSelector('#password', { timeout: timeoutMs })
         await page.type('#password', password)
-        await delay(50)
+        await delay(200)
         submitP = () => page.click('button[type="submit"]')
       }
 
