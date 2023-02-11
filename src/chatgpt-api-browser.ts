@@ -31,6 +31,7 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
   protected _password: string
 
   protected _isProAccount: boolean
+  protected _turboModel: boolean
 
   protected _executablePath: string
   protected _browser: Browser
@@ -52,6 +53,9 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
 
     /** @defaultValue `false` **/
     isProAccount?: boolean
+
+    /** @defaultValue `false` **/
+    turboModel?: boolean
 
     /** @defaultValue `true` **/
     markdown?: boolean
@@ -89,6 +93,7 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
       email,
       password,
       isProAccount = false,
+      turboModel = false,
       markdown = true,
       debug = false,
       isGoogleLogin = false,
@@ -104,6 +109,7 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
     this._email = email
     this._password = password
     this._isProAccount = isProAccount
+    this._turboModel = turboModel
     this._markdown = !!markdown
     this._debug = !!debug
     this._isGoogleLogin = !!isGoogleLogin
@@ -451,6 +457,10 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
       onProgress
     } = opts
 
+    const paidModel = this._turboModel
+      ? 'text-davinci-002-render-sha'
+      : 'text-davinci-002-render-paid'
+
     const url = `https://chat.openai.com/backend-api/conversation`
     const body: types.ConversationJSONBody = {
       action,
@@ -464,9 +474,8 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
           }
         }
       ],
-      model: this._isProAccount
-        ? 'text-davinci-002-render-paid'
-        : 'text-davinci-002-render',
+
+      model: this._isProAccount ? paidModel : 'text-davinci-002-render',
       parent_message_id: parentMessageId
     }
 

@@ -17,6 +17,8 @@ async function main() {
   const password = process.env.OPENAI_PASSWORD
 
   const api = new ChatGPTAPIBrowser({
+    isProAccount: true,
+    turboModel: false,
     email,
     password,
     debug: false,
