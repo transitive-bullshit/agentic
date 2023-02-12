@@ -276,7 +276,7 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [QuizGPT: Create Kahoot quizzes with ChatGPT](https://github.com/Kladdy/quizgpt)
 - [openai-chatgpt: Talk to ChatGPT from the terminal](https://github.com/gmpetrov/openai-chatgpt)
 - [Clippy the Saleforce chatbot](https://github.com/sebas00/chatgptclippy) ClippyJS joke bot
-- [ai-assistant: A chat assistant with multiple built-in prompts and support for multiple OpenAI API Keys](https://github.com/youking-lib/ai-assistant)
+- [ai-assistant: A chat assistant with multiple built-in prompts](https://github.com/youking-lib/ai-assistant)(support multiple OpenAI API Keys)
 
 If you create a cool integration, feel free to open a PR and add it to the list.
 
