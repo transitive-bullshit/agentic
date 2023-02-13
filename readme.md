@@ -104,7 +104,6 @@ console.log(res.text)
 You can add streaming via the `onProgress` handler:
 
 ```ts
-// timeout after 2 minutes (which will also abort the underlying HTTP request)
 const res = await api.sendMessage('Write a 500 word essay on frogs.', {
   // print the partial response as the AI is "typing"
   onProgress: (partialResponse) => console.log(partialResponse.text)
