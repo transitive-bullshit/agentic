@@ -291,16 +291,17 @@ export class ChatGPTAPI {
               console.log(response)
             }
 
-            if (response.id) {
+            if (response?.id) {
               result.id = response.id
             }
             if (response?.choices?.length) {
               result.text = response.choices[0].text.trim()
             } else {
+              const res = response as any
               return reject(
                 new Error(
                   `ChatGPT error: ${
-                    (response as any).detail || response || 'unknown'
+                    res?.detail?.message || res?.detail || 'unknown'
                   }`
                 )
               )
