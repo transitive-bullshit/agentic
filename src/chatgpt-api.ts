@@ -294,6 +294,7 @@ export class ChatGPTAPI {
             if (response?.id) {
               result.id = response.id
             }
+
             if (response?.choices?.length) {
               result.text = response.choices[0].text.trim()
             } else {
@@ -335,6 +336,14 @@ export class ChatGPTAPI {
     } else {
       return responseP
     }
+  }
+
+  get apiKey(): string {
+    return this._apiKey
+  }
+
+  set apiKey(apiKey: string) {
+    this._apiKey = apiKey
   }
 
   protected async _buildPrompt(
