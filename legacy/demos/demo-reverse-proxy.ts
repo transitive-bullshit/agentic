@@ -15,6 +15,7 @@ dotenv.config()
  */
 async function main() {
   const api = new ChatGPTAPI({
+    // rate limit of 15 requests per 15 seconds
     apiReverseProxyUrl: 'https://chatgpt.pawan.krd/api/completions',
     // change this to an `accessToken` extracted from the ChatGPT site's `https://chat.openai.com/api/auth/session` response
     apiKey: process.env.OPENAI_ACCESS_TOKEN,
