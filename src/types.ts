@@ -18,6 +18,7 @@ export interface ChatMessage {
   role: Role
   parentMessageId?: string
   conversationId?: string
+  detail?: any
 }
 
 export class ChatGPTError extends Error {
