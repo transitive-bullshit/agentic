@@ -1,5 +1,7 @@
 export type Role = 'user' | 'assistant'
 
+export type FetchFn = typeof fetch
+
 export type SendMessageOptions = {
   conversationId?: string
   parentMessageId?: string
