@@ -106,7 +106,6 @@ console.log(res.text)
 You can add streaming via the `onProgress` handler:
 
 ```ts
-// timeout after 2 minutes (which will also abort the underlying HTTP request)
 const res = await api.sendMessage('Write a 500 word essay on frogs.', {
   // print the partial response as the AI is "typing"
   onProgress: (partialResponse) => console.log(partialResponse.text)
@@ -255,6 +254,7 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [WhatsApp Bot #2](https://github.com/amosayomide05/chatgpt-whatsapp-bot)
 - [WhatsApp Bot #3](https://github.com/navopw/whatsapp-chatgpt)
 - [WhatsApp Bot #4](https://github.com/noelzappy/chatgpt-whatsapp) (schedule periodic messages)
+- [WhatsApp Bot #5](https://github.com/hujanais/bs-chat-gpt3-api) (RaspberryPi + ngrok + Twilio)
 - [Matrix Bot](https://github.com/matrixgpt/matrix-chatgpt-bot)
 - [Rental Cover Letter Generator](https://sharehouse.app/ai)
 - [Assistant CLI](https://github.com/diciaup/assistant-cli)
@@ -278,6 +278,7 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [QuizGPT: Create Kahoot quizzes with ChatGPT](https://github.com/Kladdy/quizgpt)
 - [openai-chatgpt: Talk to ChatGPT from the terminal](https://github.com/gmpetrov/openai-chatgpt)
 - [Clippy the Saleforce chatbot](https://github.com/sebas00/chatgptclippy) ClippyJS joke bot
+- [ai-assistant](https://github.com/youking-lib/ai-assistant) Chat assistant
 
 If you create a cool integration, feel free to open a PR and add it to the list.
 
