@@ -5,7 +5,7 @@ import QuickLRU from 'quick-lru'
 import { v4 as uuidv4 } from 'uuid'
 
 import * as types from './types'
-import { fetch } from './fetch'
+import { fetch as nativeFetch } from './fetch'
 import { fetchSSE } from './fetch-sse'
 
 // Official model (costs money and is not fine-tuned for chat)
@@ -13,6 +13,40 @@ const CHATGPT_MODEL = 'text-davinci-003'
 
 const USER_LABEL_DEFAULT = 'User'
 const ASSISTANT_LABEL_DEFAULT = 'ChatGPT'
+
+export interface ChatGPTAPIInit {
+  apiKey: string
+
+  /** @defaultValue `'https://api.openai.com'` **/
+  apiBaseUrl?: string
+
+  /** @defaultValue `undefined` **/
+  apiReverseProxyUrl?: string
+
+  /** @defaultValue `false` **/
+  debug?: boolean
+
+  completionParams?: Partial<types.openai.CompletionParams>
+
+  /** @defaultValue `4096` **/
+  maxModelTokens?: number
+
+  /** @defaultValue `1000` **/
+  maxResponseTokens?: number
+
+  /** @defaultValue `'User'` **/
+  userLabel?: string
+
+  /** @defaultValue `'ChatGPT'` **/
+  assistantLabel?: string
+
+  messageStore?: Keyv
+  getMessageById?: types.GetMessageByIdFunction
+  upsertMessage?: types.UpsertMessageFunction
+
+  /** @defaultValue Global fetch function */
+  fetch?: typeof nativeFetch
+}
 
 export class ChatGPTAPI {
   protected _apiKey: string
@@ -48,36 +82,7 @@ export class ChatGPTAPI {
    * @param getMessageById - Optional function to retrieve a message by its ID. If not provided, the default implementation will be used (using an in-memory `messageStore`).
    * @param upsertMessage - Optional function to insert or update a message. If not provided, the default implementation will be used (using an in-memory `messageStore`).
    */
-  constructor(opts: {
-    apiKey: string
-
-    /** @defaultValue `'https://api.openai.com'` **/
-    apiBaseUrl?: string
-
-    /** @defaultValue `undefined` **/
-    apiReverseProxyUrl?: string
-
-    /** @defaultValue `false` **/
-    debug?: boolean
-
-    completionParams?: Partial<types.openai.CompletionParams>
-
-    /** @defaultValue `4096` **/
-    maxModelTokens?: number
-
-    /** @defaultValue `1000` **/
-    maxResponseTokens?: number
-
-    /** @defaultValue `'User'` **/
-    userLabel?: string
-
-    /** @defaultValue `'ChatGPT'` **/
-    assistantLabel?: string
-
-    messageStore?: Keyv
-    getMessageById?: types.GetMessageByIdFunction
-    upsertMessage?: types.UpsertMessageFunction
-  }) {
+  constructor(opts: ChatGPTAPIInit) {
     const {
       apiKey,
       apiBaseUrl = 'https://api.openai.com',
@@ -90,7 +95,8 @@ export class ChatGPTAPI {
       userLabel = USER_LABEL_DEFAULT,
       assistantLabel = ASSISTANT_LABEL_DEFAULT,
       getMessageById = this._defaultGetMessageById,
-      upsertMessage = this._defaultUpsertMessage
+      upsertMessage = this._defaultUpsertMessage,
+      fetch = nativeFetch
     } = opts
 
     this._apiKey = apiKey
@@ -229,37 +235,41 @@ export class ChatGPTAPI {
         }
 
         if (stream) {
-          fetchSSE(url, {
-            method: 'POST',
-            headers,
-            body: JSON.stringify(body),
-            signal: abortSignal,
-            onMessage: (data: string) => {
-              if (data === '[DONE]') {
-                result.text = result.text.trim()
-                return resolve(result)
-              }
-
-              try {
-                const response: types.openai.CompletionResponse =
-                  JSON.parse(data)
-
-                if (response.id) {
-                  result.id = response.id
+          fetchSSE(
+            url,
+            {
+              method: 'POST',
+              headers,
+              body: JSON.stringify(body),
+              signal: abortSignal,
+              onMessage: (data: string) => {
+                if (data === '[DONE]') {
+                  result.text = result.text.trim()
+                  return resolve(result)
                 }
 
-                if (response?.choices?.length) {
-                  result.text += response.choices[0].text
-                  result.detail = response
+                try {
+                  const response: types.openai.CompletionResponse =
+                    JSON.parse(data)
 
-                  onProgress?.(result)
+                  if (response.id) {
+                    result.id = response.id
+                  }
+
+                  if (response?.choices?.length) {
+                    result.text += response.choices[0].text
+                    result.detail = response
+
+                    onProgress?.(result)
+                  }
+                } catch (err) {
+                  console.warn('ChatGPT stream SEE event unexpected error', err)
+                  return reject(err)
                 }
-              } catch (err) {
-                console.warn('ChatGPT stream SEE event unexpected error', err)
-                return reject(err)
               }
-            }
-          }).catch(reject)
+            },
+            fetch
+          ).catch(reject)
         } else {
           try {
             const res = await fetch(url, {
