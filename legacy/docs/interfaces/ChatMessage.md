@@ -7,6 +7,7 @@
 ### Properties
 
 - [conversationId](ChatMessage.md#conversationid)
+- [detail](ChatMessage.md#detail)
 - [id](ChatMessage.md#id)
 - [parentMessageId](ChatMessage.md#parentmessageid)
 - [role](ChatMessage.md#role)
@@ -20,7 +21,17 @@
 
 #### Defined in
 
-[src/types.ts:20](https://github.com/transitive-bullshit/chatgpt-api/blob/aefae23/src/types.ts#L20)
+[src/types.ts:22](https://github.com/transitive-bullshit/chatgpt-api/blob/4379d52/src/types.ts#L22)
+
+___
+
+### detail
+
+• `Optional` **detail**: `any`
+
+#### Defined in
+
+[src/types.ts:23](https://github.com/transitive-bullshit/chatgpt-api/blob/4379d52/src/types.ts#L23)
 
 ___
 
@@ -30,7 +41,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:16](https://github.com/transitive-bullshit/chatgpt-api/blob/aefae23/src/types.ts#L16)
+[src/types.ts:18](https://github.com/transitive-bullshit/chatgpt-api/blob/4379d52/src/types.ts#L18)
 
 ___
 
@@ -40,7 +51,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:19](https://github.com/transitive-bullshit/chatgpt-api/blob/aefae23/src/types.ts#L19)
+[src/types.ts:21](https://github.com/transitive-bullshit/chatgpt-api/blob/4379d52/src/types.ts#L21)
 
 ___
 
@@ -50,7 +61,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:18](https://github.com/transitive-bullshit/chatgpt-api/blob/aefae23/src/types.ts#L18)
+[src/types.ts:20](https://github.com/transitive-bullshit/chatgpt-api/blob/4379d52/src/types.ts#L20)
 
 ___
 
@@ -60,4 +71,4 @@ ___
 
 #### Defined in
 
-[src/types.ts:17](https://github.com/transitive-bullshit/chatgpt-api/blob/aefae23/src/types.ts#L17)
+[src/types.ts:19](https://github.com/transitive-bullshit/chatgpt-api/blob/4379d52/src/types.ts#L19)

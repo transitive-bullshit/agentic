@@ -19,12 +19,23 @@
 
 ### Type Aliases
 
+- [FetchFn](modules.md#fetchfn)
 - [GetMessageByIdFunction](modules.md#getmessagebyidfunction)
 - [Role](modules.md#role)
 - [SendMessageOptions](modules.md#sendmessageoptions)
 - [UpsertMessageFunction](modules.md#upsertmessagefunction)
 
 ## Type Aliases
+
+### FetchFn
+
+Ƭ **FetchFn**: typeof `fetch`
+
+#### Defined in
+
+[src/types.ts:3](https://github.com/transitive-bullshit/chatgpt-api/blob/4379d52/src/types.ts#L3)
+
+___
 
 ### GetMessageByIdFunction
 
@@ -48,7 +59,7 @@ Returns a chat message from a store by it's ID (or null if not found).
 
 #### Defined in
 
-[src/types.ts:29](https://github.com/transitive-bullshit/chatgpt-api/blob/aefae23/src/types.ts#L29)
+[src/types.ts:32](https://github.com/transitive-bullshit/chatgpt-api/blob/4379d52/src/types.ts#L32)
 
 ___
 
@@ -58,7 +69,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:1](https://github.com/transitive-bullshit/chatgpt-api/blob/aefae23/src/types.ts#L1)
+[src/types.ts:1](https://github.com/transitive-bullshit/chatgpt-api/blob/4379d52/src/types.ts#L1)
 
 ___
 
@@ -82,7 +93,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:3](https://github.com/transitive-bullshit/chatgpt-api/blob/aefae23/src/types.ts#L3)
+[src/types.ts:5](https://github.com/transitive-bullshit/chatgpt-api/blob/4379d52/src/types.ts#L5)
 
 ___
 
@@ -108,4 +119,4 @@ Upserts a chat message to a store.
 
 #### Defined in
 
-[src/types.ts:32](https://github.com/transitive-bullshit/chatgpt-api/blob/aefae23/src/types.ts#L32)
+[src/types.ts:35](https://github.com/transitive-bullshit/chatgpt-api/blob/4379d52/src/types.ts#L35)

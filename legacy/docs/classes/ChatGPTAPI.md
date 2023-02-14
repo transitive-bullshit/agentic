@@ -8,6 +8,10 @@
 
 - [constructor](ChatGPTAPI.md#constructor)
 
+### Accessors
+
+- [apiKey](ChatGPTAPI.md#apikey)
+
 ### Methods
 
 - [sendMessage](ChatGPTAPI.md#sendmessage)
@@ -28,9 +32,11 @@ unofficial ChatGPT model.
 | `opts` | `Object` | - |
 | `opts.apiBaseUrl?` | `string` | **`Default Value`** `'https://api.openai.com'` * |
 | `opts.apiKey` | `string` | - |
+| `opts.apiReverseProxyUrl?` | `string` | **`Default Value`** `undefined` * |
 | `opts.assistantLabel?` | `string` | **`Default Value`** `'ChatGPT'` * |
 | `opts.completionParams?` | `Partial`<[`CompletionParams`](../modules/openai.md#completionparams)\> | - |
 | `opts.debug?` | `boolean` | **`Default Value`** `false` * |
+| `opts.fetch?` | (`input`: `RequestInfo` \| `URL`, `init?`: `RequestInit`) => `Promise`<`Response`\> | - |
 | `opts.getMessageById?` | [`GetMessageByIdFunction`](../modules.md#getmessagebyidfunction) | - |
 | `opts.maxModelTokens?` | `number` | **`Default Value`** `4096` * |
 | `opts.maxResponseTokens?` | `number` | **`Default Value`** `1000` * |
@@ -40,7 +46,37 @@ unofficial ChatGPT model.
 
 #### Defined in
 
-[src/chatgpt-api.ts:48](https://github.com/transitive-bullshit/chatgpt-api/blob/aefae23/src/chatgpt-api.ts#L48)
+[src/chatgpt-api.ts:53](https://github.com/transitive-bullshit/chatgpt-api/blob/4379d52/src/chatgpt-api.ts#L53)
+
+## Accessors
+
+### apiKey
+
+• `get` **apiKey**(): `string`
+
+#### Returns
+
+`string`
+
+#### Defined in
+
+[src/chatgpt-api.ts:353](https://github.com/transitive-bullshit/chatgpt-api/blob/4379d52/src/chatgpt-api.ts#L353)
+
+• `set` **apiKey**(`apiKey`): `void`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `apiKey` | `string` |
+
+#### Returns
+
+`void`
+
+#### Defined in
+
+[src/chatgpt-api.ts:357](https://github.com/transitive-bullshit/chatgpt-api/blob/4379d52/src/chatgpt-api.ts#L357)
 
 ## Methods
 
@@ -75,4 +111,4 @@ The response from ChatGPT
 
 #### Defined in
 
-[src/chatgpt-api.ts:146](https://github.com/transitive-bullshit/chatgpt-api/blob/aefae23/src/chatgpt-api.ts#L146)
+[src/chatgpt-api.ts:185](https://github.com/transitive-bullshit/chatgpt-api/blob/4379d52/src/chatgpt-api.ts#L185)
