@@ -452,14 +452,18 @@ Current date: ${currentDate}${this._sepToken}\n\n`
     id: string
   ): Promise<types.ChatMessage> {
     const res = await this._messageStore.get(id)
-    console.log('getMessageById', id, res)
+    if (this._debug) {
+      console.log('getMessageById', id, res)
+    }
     return res
   }
 
   protected async _defaultUpsertMessage(
     message: types.ChatMessage
   ): Promise<void> {
-    console.log('upsertMessage', message.id, message)
+    if (this._debug) {
+      console.log('upsertMessage', message.id, message)
+    }
     await this._messageStore.set(message.id, message)
   }
 }
