@@ -197,7 +197,7 @@ npx tsx demos/demo-conversation.ts
 A [persistence demo](./demos/demo-persistence.ts) shows how to store messages in Redis for persistence:
 
 ```bash
-npx tsx demos/demo-conversation.ts
+npx tsx demos/demo-persistence.ts
 ```
 
 Any [keyv adaptor](https://github.com/jaredwray/keyv) is supported for persistence, and there are overrides if you'd like to use a different way of storing / retrieving messages.
