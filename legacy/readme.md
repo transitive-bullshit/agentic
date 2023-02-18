@@ -277,6 +277,7 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [openai-chatgpt: Talk to ChatGPT from the terminal](https://github.com/gmpetrov/openai-chatgpt)
 - [Clippy the Saleforce chatbot](https://github.com/sebas00/chatgptclippy) ClippyJS joke bot
 - [ai-assistant](https://github.com/youking-lib/ai-assistant) Chat assistant
+- [Feishu Bot](https://github.com/linjungz/feishu-chatgpt-bot) 
 
 If you create a cool integration, feel free to open a PR and add it to the list.
 
