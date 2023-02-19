@@ -5,6 +5,7 @@
 [![NPM](https://img.shields.io/npm/v/chatgpt.svg)](https://www.npmjs.com/package/chatgpt) [![Build Status](https://github.com/transitive-bullshit/chatgpt-api/actions/workflows/test.yml/badge.svg)](https://github.com/transitive-bullshit/chatgpt-api/actions/workflows/test.yml) [![MIT License](https://img.shields.io/badge/license-MIT-blue)](https://github.com/transitive-bullshit/chatgpt-api/blob/main/license) [![Prettier Code Formatting](https://img.shields.io/badge/code_style-prettier-brightgreen.svg)](https://prettier.io)
 
 - [Intro](#intro)
+- [Updates](#updates)
 - [CLI](#cli)
 - [Install](#install)
 - [Usage](#usage)
@@ -27,7 +28,7 @@ This package is a Node.js wrapper around [ChatGPT](https://openai.com/blog/chatg
   <img alt="Example usage" src="/media/demo.gif">
 </p>
 
-## Updates <!-- omit in toc -->
+## Updates
 
 <details open>
 <summary><strong>Feb 19, 2023</strong></summary>
@@ -44,7 +45,7 @@ We now provide three ways of accessing the unofficial ChatGPT API, all of which 
 
 1. `ChatGPTAPI` - Uses `text-davinci-003` to mimic ChatGPT via the official OpenAI completions API (most robust approach, but it's not free and doesn't use a model fine-tuned for chat)
 2. `ChatGPTUnofficialProxyAPI` - Uses an unofficial proxy server to access ChatGPT's backend API in a way that circumvents Cloudflare (uses the real ChatGPT and is pretty lightweight, but relies on a third-party server and is rate-limited)
-3. `ChatGPTAPIBrowser` - (v3.5.1 of this package) Uses Puppeteer to access the official ChatGPT webapp (uses the real ChatGPT, but very flaky, heavyweight, and error prone)
+3. `ChatGPTAPIBrowser` - (_deprecated_; v3.5.1 of this package) Uses Puppeteer to access the official ChatGPT webapp (uses the real ChatGPT, but very flaky, heavyweight, and error prone)
 
 </details>
 
