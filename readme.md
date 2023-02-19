@@ -75,10 +75,11 @@ Thanks && cheers,
 
 - [Intro](#intro)
 - [Install](#install)
-- [Usage (ChatGPTAPI)](#usage-chatgptapi)
-- [Usage (ChatGPTUnofficialProxyAPI)](#usage-chatgptunofficialproxyapi)
-  - [Reverse Proxies](#reverse-proxies)
-  - [Access Tokens](#access-tokens)
+- [Usage](#usage)
+  - [Usage - ChatGPTAPI](#usage---chatgptapi)
+  - [Usage - ChatGPTUnofficialProxyAPI](#usage---chatgptunofficialproxyapi)
+    - [Reverse Proxies](#reverse-proxies)
+    - [Access Tokens](#access-tokens)
 - [Docs](#docs)
 - [Demos](#demos)
 - [Projects](#projects)
@@ -100,7 +101,20 @@ npm install chatgpt
 
 Make sure you're using `node >= 18` so `fetch` is available (or `node >= 14` if you install a [fetch polyfill](https://github.com/developit/unfetch#usage-as-a-polyfill)).
 
-## Usage (ChatGPTAPI)
+## Usage
+
+You need to pick between two methods:
+
+| Method                      | Free?  | Robust?  | Quality?          |
+| --------------------------- | ------ | -------- | ----------------- |
+| `ChatGPTAPI`                | ❌ No  | ✅ Yes   | ☑️ Mimics ChatGPT |
+| `ChatGPTUnofficialProxyAPI` | ✅ Yes | ☑️ Maybe | ✅ Real ChatGPT   |
+
+1. `ChatGPTAPI` - Uses `text-davinci-003` to mimic ChatGPT via the official OpenAI completions API (most robust approach, but it's not free and doesn't use a model fine-tuned for chat). You can override the model, completion params, and prompt to fully customize your bot.
+
+2. `ChatGPTUnofficialProxyAPI` - Uses an unofficial proxy server to access ChatGPT's backend API in a way that circumvents Cloudflare (uses the real ChatGPT and is pretty lightweight, but relies on a third-party server and is rate-limited)
+
+### Usage - ChatGPTAPI
 
 Sign up for an [OpenAI API key](https://platform.openai.com/overview) and store it in your environment.
 
@@ -214,7 +228,7 @@ async function example() {
 
 </details>
 
-## Usage (ChatGPTUnofficialProxyAPI)
+### Usage - ChatGPTUnofficialProxyAPI
 
 The API is almost exactly the same for the `ChatGPTUnofficialProxyAPI`; you just need to provide a ChatGPT `accessToken` instead of an OpenAI API key.
 
@@ -237,7 +251,7 @@ See [demos/demo-reverse-proxy](./demos/demo-reverse-proxy.ts) for a full example
 npx tsx demos/demo-reverse-proxy.ts
 ```
 
-### Reverse Proxies
+#### Reverse Proxies
 
 You can override the reverse proxy by passing `apiReverseProxyUrl` to `ChatGPTUnofficialProxyAPI`:
 
@@ -255,7 +269,7 @@ Known reverse proxies run by community members include:
 | `https://chat.duti.tech/api/conversation`        | [@acheong08](https://github.com/acheong08)   | 50 req/min  | 2/19/2023    |
 | `https://gpt.pawan.krd/backend-api/conversation` | [@PawanOsman](https://github.com/PawanOsman) | ?           | 2/19/2023    |
 
-### Access Tokens
+#### Access Tokens
 
 To use `ChatGPTUnofficialProxyAPI`, you'll need a ChatGPT access token. You can either:
 
