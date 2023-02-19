@@ -414,7 +414,7 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [Flutter ChatGPT API](https://github.com/coskuncay/flutter_chatgpt_api)
 - [Carik Bot](https://github.com/luridarmawan/Carik)
 - [Github Action for reviewing PRs](https://github.com/kxxt/chatgpt-action/)
-- [WhatsApp Bot #1](https://github.com/askrella/whatsapp-chatgpt) (DALL-E + Whisper support 🔥)
+- [WhatsApp Bot #1](https://github.com/askrella/whatsapp-chatgpt) (DALL-E + Whisper support 💪)
 - [WhatsApp Bot #2](https://github.com/amosayomide05/chatgpt-whatsapp-bot)
 - [WhatsApp Bot #3](https://github.com/pascalroget/whatsgpt) (multi-user support)
 - [WhatsApp Bot #4](https://github.com/noelzappy/chatgpt-whatsapp) (schedule periodic messages)
