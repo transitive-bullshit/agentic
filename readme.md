@@ -102,9 +102,9 @@ export OPENAI_API_KEY="sk-TODO"
 npx chatgpt "your prompt here"
 ```
 
-By default, the response is streamed to stdout, and the results are stored in a local config file. You can use `-c` to continue the previous conversation and `--no-stream` to disable streaming.
+By default, the response is streamed to stdout, the results are stored in a local config file, and every invocation starts a new conversation. You can use `-c` to continue the previous conversation and `--no-stream` to disable streaming.
 
-The CLI uses `ChatGPTAPI` with `text-davinci-003` under the hood to mimic ChatGPT.
+Under the hood, the CLI uses `ChatGPTAPI` with `text-davinci-003` to mimic ChatGPT.
 
 ```
 Usage:
