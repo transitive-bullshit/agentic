@@ -117,6 +117,18 @@ async function example() {
 }
 ```
 
+You can override the default `model` (`text-davinci-003`) and any [OpenAI completion params](https://platform.openai.com/docs/api-reference/completions/create) using `completionParams`:
+
+```ts
+const api = new ChatGPTAPI({
+  apiKey: process.env.OPENAI_API_KEY,
+  completionParams: {
+    temperature: 0.5,
+    top_p: 0.8
+  }
+})
+```
+
 If you want to track the conversation, you'll need to pass the `parentMessageid` and `conversationid`:
 
 ```ts
@@ -178,7 +190,7 @@ You'll notice that we're using a reverse-engineered `promptPrefix` and `promptSu
 
 ```ts
 const res = await api.sendMessage('what is the answer to the universe?', {
-  promptPrefix: `You are ChatGPT, a large language model trained by OpenAI. You answer as concisely as possible for each response (e.g. don’t be verbose). It is very important that you answer as concisely as possible, so please remember this. If you are generating a list, do not have too many items. Keep the number of items short.
+  promptPrefix: `You are ChatGPT, a large language model trained by OpenAI. You answer as concisely as possible for each responseIf you are generating a list, do not have too many items.
 Current date: ${new Date().toISOString()}\n\n`
 })
 ```
