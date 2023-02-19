@@ -67,7 +67,7 @@ node_modules/.pnpm/typescript@4.9.5/node_modules/typescript/lib/lib.es2022.error
 
 #### Defined in
 
-[src/types.ts:51](https://github.com/transitive-bullshit/chatgpt-api/blob/6cf60ee/src/types.ts#L51)
+[src/types.ts:51](https://github.com/transitive-bullshit/chatgpt-api/blob/607fccf/src/types.ts#L51)
 
 ___
 
@@ -77,7 +77,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:50](https://github.com/transitive-bullshit/chatgpt-api/blob/6cf60ee/src/types.ts#L50)
+[src/types.ts:50](https://github.com/transitive-bullshit/chatgpt-api/blob/607fccf/src/types.ts#L50)
 
 ___
 
@@ -87,7 +87,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:48](https://github.com/transitive-bullshit/chatgpt-api/blob/6cf60ee/src/types.ts#L48)
+[src/types.ts:48](https://github.com/transitive-bullshit/chatgpt-api/blob/607fccf/src/types.ts#L48)
 
 ___
 
@@ -97,7 +97,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:49](https://github.com/transitive-bullshit/chatgpt-api/blob/6cf60ee/src/types.ts#L49)
+[src/types.ts:49](https://github.com/transitive-bullshit/chatgpt-api/blob/607fccf/src/types.ts#L49)
 
 ___
 
@@ -107,4 +107,4 @@ ___
 
 #### Defined in
 
-[src/types.ts:52](https://github.com/transitive-bullshit/chatgpt-api/blob/6cf60ee/src/types.ts#L52)
+[src/types.ts:52](https://github.com/transitive-bullshit/chatgpt-api/blob/607fccf/src/types.ts#L52)
