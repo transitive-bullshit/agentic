@@ -249,7 +249,7 @@ To use `ChatGPTUnofficialProxyAPI`, you'll need a ChatGPT access token. You can 
 
 1. Use [acheong08/OpenAIAuth](https://github.com/acheong08/OpenAIAuth), which is a python script to login and get an access token automatically. This works with email + password accounts (e.g., it does not support accounts where you auth using Microsoft / Google).
 
-2. You can manually get an `accessToken` by logging in to the ChatGPT webapp, opening up the Network tab of devtools, refreshing the page, and then looking at the JSON response to `https://chat.openai.com/api/auth/session`, which will have your `accessToken` string.
+2. You can manually get an `accessToken` by logging in to the ChatGPT webapp and then opening `https://chat.openai.com/api/auth/session`, which will return a JSON object containing your `accessToken` string.
 
 **Note**: using a reverse proxy will expose your access token to a third-party. There shouldn't be any adverse effects possible from this, but please consider the risks before using this method.
 
