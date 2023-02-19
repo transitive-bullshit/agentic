@@ -1,9 +1,9 @@
-import { encode as gptEncode } from 'gpt-3-encoder'
 import Keyv from 'keyv'
 import pTimeout from 'p-timeout'
 import QuickLRU from 'quick-lru'
 import { v4 as uuidv4 } from 'uuid'
 
+import * as tokenizer from './tokenizer'
 import * as types from './types'
 import { fetch as globalFetch } from './fetch'
 import { fetchSSE } from './fetch-sse'
@@ -438,7 +438,7 @@ Current date: ${currentDate}${this._sepToken}\n\n`
       text = text.replace(/<\|im_sep\|>/g, '<|endoftext|>')
     }
 
-    return gptEncode(text).length
+    return tokenizer.encode(text).length
   }
 
   protected get _isChatGPTModel() {

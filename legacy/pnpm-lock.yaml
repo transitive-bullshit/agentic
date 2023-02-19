@@ -8,7 +8,7 @@ specifiers:
   del-cli: ^5.0.0
   dotenv-safe: ^8.2.0
   eventsource-parser: ^0.0.5
-  gpt-3-encoder: ^1.1.4
+  gpt3-tokenizer: ^1.1.5
   husky: ^8.0.2
   keyv: ^4.5.2
   lint-staged: ^13.0.3
@@ -26,7 +26,7 @@ specifiers:
 
 dependencies:
   eventsource-parser: 0.0.5
-  gpt-3-encoder: 1.1.4
+  gpt3-tokenizer: 1.1.5
   keyv: 4.5.2
   p-timeout: 6.1.0
   quick-lru: 6.1.1
@@ -505,6 +505,10 @@ packages:
       normalize-path: 3.0.0
       picomatch: 2.3.1
     dev: true
+
+  /array-keyed-map/2.1.3:
+    resolution: {integrity: sha512-JIUwuFakO+jHjxyp4YgSiKXSZeC0U+R1jR94bXWBcVlFRBycqXlb+kH9JHxBGcxnVuSqx5bnn0Qz9xtSeKOjiA==}
+    dev: false
 
   /array-union/2.1.0:
     resolution: {integrity: sha512-HGyxoOTYUyCM6stUe6EJgnd4EoewAI7zMdfqO+kGjnlZmBDz/cR5pf8r/cR4Wq60sL/p0IkcjUEEPwS3GFrIyw==}
@@ -1376,8 +1380,11 @@ packages:
       get-intrinsic: 1.2.0
     dev: true
 
-  /gpt-3-encoder/1.1.4:
-    resolution: {integrity: sha512-fSQRePV+HUAhCn7+7HL7lNIXNm6eaFWFbNLOOGtmSJ0qJycyQvj60OvRlH7mee8xAMjBDNRdMXlMwjAbMTDjkg==}
+  /gpt3-tokenizer/1.1.5:
+    resolution: {integrity: sha512-O9iCL8MqGR0Oe9wTh0YftzIbysypNQmS5a5JG3cB3M4LMYjlAVvNnf8LUzVY9MrI7tj+YLY356uHtO2lLX2HpA==}
+    engines: {node: '>=12'}
+    dependencies:
+      array-keyed-map: 2.1.3
     dev: false
 
   /graceful-fs/4.2.10:
