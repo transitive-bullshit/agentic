@@ -297,6 +297,8 @@ Any [keyv adaptor](https://github.com/jaredwray/keyv) is supported for persisten
 
 Note that persisting message is required for remembering the context of previous conversations beyond the scope of the current Node.js process, since by default, we only store messages in memory.
 
+Persistence is handled automatically when using `ChatGPTUnofficialProxyAPI` because it is connecting indirectly to ChatGPT.
+
 ## Projects
 
 All of these awesome projects are built using the `chatgpt` package. 🤯
