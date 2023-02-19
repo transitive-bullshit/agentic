@@ -23,8 +23,6 @@
 
 This package is a Node.js wrapper around [ChatGPT](https://openai.com/blog/chatgpt) by [OpenAI](https://openai.com). TS batteries included. ✨
 
-You can use it to start building projects powered by ChatGPT like chatbots, websites, etc...
-
 <p align="center">
   <img alt="Example usage" src="/media/demo.gif">
 </p>
