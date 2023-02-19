@@ -1,13 +1,13 @@
 import dotenv from 'dotenv-safe'
 import { oraPromise } from 'ora'
 
-import { ChatGPTAPI } from '../src'
+import { ChatGPTUnofficialProxyAPI } from '../src'
 
 dotenv.config()
 
 /**
- * Demo CLI for testing conversation support using a reverse proxy that mimic's.
- * OpenAI's completions API ChatGPT's unofficial API.
+ * Demo for testing conversation support using a reverse proxy which provides
+ * access to the unofficial ChatGPT API.
  *
  * ```
  * npx tsx demos/demo-reverse-proxy.ts
@@ -16,21 +16,19 @@ dotenv.config()
 async function main() {
   // WARNING: this method will expose your access token to a third-party. Please be
   // aware of the risks before using this method.
-  const api = new ChatGPTAPI({
-    // TODO: this is a placeholder URL; there are several available reverse proxies,
-    // but we're not including them here out of an abundance of caution.
-    // More info on proxy servers in Discord: https://discord.gg/v9gERj825w
-    apiReverseProxyUrl: 'https://your-secret-proxy-url.com/completions',
+  const api = new ChatGPTUnofficialProxyAPI({
+    // optionally override the default reverse proxy URL (or use one of your own...)
+    // apiReverseProxyUrl: 'https://chat.duti.tech/api/conversation',
+    // apiReverseProxyUrl: 'https://gpt.pawan.krd/backend-api/conversation',
 
     // change this to an `accessToken` extracted from the ChatGPT site's `https://chat.openai.com/api/auth/session` response
-    apiKey: process.env.OPENAI_ACCESS_TOKEN,
-    completionParams: {
-      // override this depending on the ChatGPT model you want to use
-      // NOTE: if you are on a paid plan, you can't use the free model and vice-versa
-      // model: 'text-davinci-002-render' // free, default model
-      model: 'text-davinci-002-render-sha' // paid, default model (turbo)
-      // model: 'text-davinci-002-render-paid' // paid, legacy model
-    },
+    // or use https://github.com/acheong08/OpenAIAuth to get the token programatically (python)
+    accessToken: process.env.OPENAI_ACCESS_TOKEN,
+
+    // optionally override the default model (this must be a chatgpt model; not an OpenAI model)
+    // model: 'text-davinci-002-render-sha' // default model for free and paid users (used to be called turbo in the UI)
+    // model: 'text-davinci-002-render-paid' // legacy paid model
+
     debug: false
   })
 
