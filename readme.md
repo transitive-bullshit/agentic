@@ -62,7 +62,7 @@ Please upgrade to `chatgpt@latest` (at least [v4.0.0](https://github.com/transit
 Huge shoutout to [@waylaidwanderer](https://github.com/waylaidwanderer) for discovering the leaked chat model!
 
 </details>
-<details>
+</details>
 
 If you run into any issues, we do have a pretty active [Discord](https://discord.gg/v9gERj825w) with a bunch of ChatGPT hackers from the Node.js & Python communities.
 
