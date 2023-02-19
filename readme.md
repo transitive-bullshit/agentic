@@ -77,7 +77,8 @@ Thanks && cheers,
 - [Install](#install)
 - [Usage (ChatGPTAPI)](#usage-chatgptapi)
 - [Usage (ChatGPTUnofficialProxyAPI)](#usage-chatgptunofficialproxyapi)
-  - [Access Token](#access-token)
+  - [Reverse Proxies](#reverse-proxies)
+  - [Access Tokens](#access-tokens)
 - [Docs](#docs)
 - [Demos](#demos)
 - [Projects](#projects)
@@ -224,6 +225,8 @@ See [demos/demo-reverse-proxy](./demos/demo-reverse-proxy.ts) for a full example
 npx tsx demos/demo-reverse-proxy.ts
 ```
 
+### Reverse Proxies
+
 Known reverse proxies include:
 
 | Reverse Proxy URL                                | Author                                       | Rate Limits | Last Checked |
@@ -231,15 +234,15 @@ Known reverse proxies include:
 | `https://chat.duti.tech/api/conversation`        | [@acheong08](https://github.com/acheong08)   | 50 req/min  | 2/19/2023    |
 | `https://gpt.pawan.krd/backend-api/conversation` | [@PawanOsman](https://github.com/PawanOsman) | ?           | 2/19/2023    |
 
-**Note**: using a reverse proxy will expose your access token to a third-party. There shouldn't be any adverse effects possible from this, but please be aware of the risks before using this method.
-
-### Access Token
+### Access Tokens
 
 To use `ChatGPTUnofficialProxyAPI`, you'll need a ChatGPT access token. You can either:
 
 1. Use [acheong08/OpenAIAuth](https://github.com/acheong08/OpenAIAuth), which is a python script to login and get an access token automatically. This works with email + password accounts (e.g., it does not support accounts where you auth using Microsoft / Google).
 
 2. You can manually get an `accessToken` by logging in to the ChatGPT webapp, opening up the Network tab of devtools, refreshing the page, and then looking at the JSON response to `https://chat.openai.com/api/auth/session`, which will have your `accessToken` string.
+
+**Note**: using a reverse proxy will expose your access token to a third-party. There shouldn't be any adverse effects possible from this, but please consider the risks before using this method.
 
 ## Docs
 
