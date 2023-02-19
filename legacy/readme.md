@@ -295,9 +295,9 @@ npx tsx demos/demo-persistence.ts
 
 Any [keyv adaptor](https://github.com/jaredwray/keyv) is supported for persistence, and there are overrides if you'd like to use a different way of storing / retrieving messages.
 
-Note that persisting message is required for remembering the context of previous conversations beyond the scope of the current Node.js process, since by default, we only store messages in memory.
+Note that persisting message is required for remembering the context of previous conversations beyond the scope of the current Node.js process, since by default, we only store messages in memory. Here's an [external demo](https://github.com/transitive-bullshit/chatgpt-twitter-bot/blob/main/src/index.ts#L86-L95) of using a completely custom database solution to persist messages.
 
-Persistence is handled automatically when using `ChatGPTUnofficialProxyAPI` because it is connecting indirectly to ChatGPT.
+**Note**: Persistence is handled automatically when using `ChatGPTUnofficialProxyAPI` because it is connecting indirectly to ChatGPT.
 
 ## Projects
 
