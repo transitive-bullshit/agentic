@@ -46,7 +46,7 @@ unofficial ChatGPT model.
 
 #### Defined in
 
-[src/chatgpt-api.ts:53](https://github.com/transitive-bullshit/chatgpt-api/blob/4379d52/src/chatgpt-api.ts#L53)
+[src/chatgpt-api.ts:53](https://github.com/transitive-bullshit/chatgpt-api/blob/6cf60ee/src/chatgpt-api.ts#L53)
 
 ## Accessors
 
@@ -60,7 +60,7 @@ unofficial ChatGPT model.
 
 #### Defined in
 
-[src/chatgpt-api.ts:353](https://github.com/transitive-bullshit/chatgpt-api/blob/4379d52/src/chatgpt-api.ts#L353)
+[src/chatgpt-api.ts:353](https://github.com/transitive-bullshit/chatgpt-api/blob/6cf60ee/src/chatgpt-api.ts#L353)
 
 • `set` **apiKey**(`apiKey`): `void`
 
@@ -76,7 +76,7 @@ unofficial ChatGPT model.
 
 #### Defined in
 
-[src/chatgpt-api.ts:357](https://github.com/transitive-bullshit/chatgpt-api/blob/4379d52/src/chatgpt-api.ts#L357)
+[src/chatgpt-api.ts:357](https://github.com/transitive-bullshit/chatgpt-api/blob/6cf60ee/src/chatgpt-api.ts#L357)
 
 ## Methods
 
@@ -111,4 +111,4 @@ The response from ChatGPT
 
 #### Defined in
 
-[src/chatgpt-api.ts:185](https://github.com/transitive-bullshit/chatgpt-api/blob/4379d52/src/chatgpt-api.ts#L185)
+[src/chatgpt-api.ts:185](https://github.com/transitive-bullshit/chatgpt-api/blob/6cf60ee/src/chatgpt-api.ts#L185)

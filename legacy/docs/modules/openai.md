@@ -10,6 +10,7 @@
 - [CompletionResponse](openai.md#completionresponse)
 - [CompletionResponseChoices](openai.md#completionresponsechoices)
 - [CompletionResponseUsage](openai.md#completionresponseusage)
+- [ReverseProxyCompletionParams](openai.md#reverseproxycompletionparams)
 
 ## Type Aliases
 
@@ -38,7 +39,7 @@
 
 #### Defined in
 
-[src/types.ts:38](https://github.com/transitive-bullshit/chatgpt-api/blob/4379d52/src/types.ts#L38)
+[src/types.ts:62](https://github.com/transitive-bullshit/chatgpt-api/blob/6cf60ee/src/types.ts#L62)
 
 ___
 
@@ -59,7 +60,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:120](https://github.com/transitive-bullshit/chatgpt-api/blob/4379d52/src/types.ts#L120)
+[src/types.ts:148](https://github.com/transitive-bullshit/chatgpt-api/blob/6cf60ee/src/types.ts#L148)
 
 ___
 
@@ -69,7 +70,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:129](https://github.com/transitive-bullshit/chatgpt-api/blob/4379d52/src/types.ts#L129)
+[src/types.ts:157](https://github.com/transitive-bullshit/chatgpt-api/blob/6cf60ee/src/types.ts#L157)
 
 ___
 
@@ -87,4 +88,14 @@ ___
 
 #### Defined in
 
-[src/types.ts:141](https://github.com/transitive-bullshit/chatgpt-api/blob/4379d52/src/types.ts#L141)
+[src/types.ts:169](https://github.com/transitive-bullshit/chatgpt-api/blob/6cf60ee/src/types.ts#L169)
+
+___
+
+### ReverseProxyCompletionParams
+
+Ƭ **ReverseProxyCompletionParams**: [`CompletionParams`](openai.md#completionparams) & { `paid?`: `boolean`  }
+
+#### Defined in
+
+[src/types.ts:144](https://github.com/transitive-bullshit/chatgpt-api/blob/6cf60ee/src/types.ts#L144)
