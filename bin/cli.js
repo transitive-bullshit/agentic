@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import crypto from 'node:crypto'
 
+import * as url from 'url'
 import { cac } from 'cac'
 import Conf from 'conf'
 import { readPackageUp } from 'read-pkg-up'
@@ -8,7 +9,9 @@ import { readPackageUp } from 'read-pkg-up'
 import { ChatGPTAPI } from '../build/index.js'
 
 async function main() {
-  const pkg = (await readPackageUp()).packageJson
+  const dirname = url.fileURLToPath(new URL('.', import.meta.url))
+  const pkg = await readPackageUp({ cwd: dirname })
+  const version = (pkg && pkg.packageJson && pkg.packageJson.version) || '4'
   const config = new Conf({ projectName: 'chatgpt' })
 
   const cli = cac('chatgpt')
@@ -107,7 +110,7 @@ async function main() {
   })
 
   cli.help()
-  cli.version(pkg.version)
+  cli.version(version)
 
   try {
     cli.parse()
