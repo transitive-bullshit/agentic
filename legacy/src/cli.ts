@@ -1,6 +1,5 @@
 #!/usr/bin/env node
-
-import { ChatGPTAPI } from './build/index.js'
+import { ChatGPTAPI } from '.'
 
 const input = process.argv[2]
 
