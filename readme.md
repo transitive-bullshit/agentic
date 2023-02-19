@@ -78,8 +78,8 @@ Thanks && cheers,
 - [Usage (ChatGPTAPI)](#usage-chatgptapi)
 - [Usage (ChatGPTUnofficialProxyAPI)](#usage-chatgptunofficialproxyapi)
   - [Access Token](#access-token)
-  - [Docs](#docs)
-  - [Demos](#demos)
+- [Docs](#docs)
+- [Demos](#demos)
 - [Projects](#projects)
 - [Compatibility](#compatibility)
 - [Credits](#credits)
@@ -241,11 +241,13 @@ To use `ChatGPTUnofficialProxyAPI`, you'll need a ChatGPT access token. You can 
 
 2. You can manually get an `accessToken` by logging in to the ChatGPT webapp, opening up the Network tab of devtools, refreshing the page, and then looking at the JSON response to `https://chat.openai.com/api/auth/session`, which will have your `accessToken` string.
 
-### Docs
+## Docs
 
 See the [auto-generated docs](./docs/classes/ChatGPTAPI.md) for more info on methods and parameters.
 
-### Demos
+## Demos
+
+Most of the demos use `ChatGPTAPI`. It should be pretty easy to convert them to use `ChatGPTUnofficialProxyAPI` if you'd rather use that approach. The only thing that needs to change is how you initialize the api with an `accessToken` instead of an `apiKey`.
 
 To run the included demos:
 
