@@ -27,6 +27,7 @@ _Note_: I do not plan on continuing support for the browser-based version, becau
 
 </details>
 
+<details>
 <summary><strong>Previous Updates</strong></summary>
 
 <br/>
