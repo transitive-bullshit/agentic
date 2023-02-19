@@ -16,12 +16,13 @@
     }
   },
   "files": [
-    "build"
+    "build",
+    "bin"
   ],
+  "bin": "./bin/cli.js",
   "engines": {
     "node": ">=14"
   },
-  "bin": "./build/cli.js",
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
@@ -36,11 +37,14 @@
     "test:prettier": "prettier '**/*.{js,jsx,ts,tsx}' --check"
   },
   "dependencies": {
+    "cac": "^6.7.14",
+    "conf": "^11.0.1",
     "eventsource-parser": "^0.0.5",
     "gpt3-tokenizer": "^1.1.5",
     "keyv": "^4.5.2",
     "p-timeout": "^6.0.0",
     "quick-lru": "^6.1.1",
+    "read-pkg-up": "^9.1.0",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
