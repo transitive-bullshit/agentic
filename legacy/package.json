@@ -19,7 +19,7 @@
     "build"
   ],
   "engines": {
-    "node": ">=18"
+    "node": ">=14"
   },
   "scripts": {
     "build": "tsup",

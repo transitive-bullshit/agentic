@@ -1,4 +1,44 @@
-# Update February 1, 2023 <!-- omit in toc -->
+<p align="center">
+  <img alt="Example usage" src="/media/demo.gif">
+</p>
+
+## Updates <!-- omit in toc -->
+
+<details open>
+<summary><strong>Feb 19, 2023</strong></summary>
+
+We now provide three ways of accessing the unofficial ChatGPT API, all of which have tradeoffs:
+
+| Method                      | Free?  | Robust?  | Quality?          |
+| --------------------------- | ------ | -------- | ----------------- |
+| `ChatGPTAPI`                | ❌ No  | ✅ Yes   | ☑️ Mimics ChatGPT |
+| `ChatGPTUnofficialProxyAPI` | ✅ Yes | ☑️ Maybe | ✅ Real ChatGPT   |
+| `ChatGPAPIBrowser` (v3)     | ✅ Yes | ❌ No    | ✅ Real ChatGPT   |
+
+**Note**: I recommend that you use either `ChatGPTAPI` or `ChatGPTUnofficialProxyAPI`.
+
+1. `ChatGPTAPI` - Uses `text-davinci-003` to mimic ChatGPT via the official OpenAI completions API (most robust approach, but it's not free and doesn't use a model fine-tuned for chat)
+2. `ChatGPTUnofficialProxyAPI` - Uses an unofficial proxy server to access ChatGPT's backend API in a way that circumvents Cloudflare (uses the real ChatGPT and is pretty lightweight, but relies on a third-party server and is rate-limited)
+3. `ChatGPTAPIBrowser` - (v3.5.1 of this package) Uses Puppeteer to access the official ChatGPT webapp (uses the real ChatGPT, but very flaky, heavyweight, and error prone)
+
+</details>
+
+<details>
+<summary><strong>Previous Updates</strong></summary>
+
+<br/>
+
+<details>
+<summary><strong>Feb 5, 2023</strong></summary>
+
+OpenAI has disabled the leaked chat model we were previously using, so we're now defaulting to `text-davinci-003`, which is not free.
+
+We've found several other hidden, fine-tuned chat models, but OpenAI keeps disabling them, so we're searching for alternative workarounds.
+
+</details>
+
+<details>
+<summary><strong>Feb 1, 2023</strong></summary>
 
 This package no longer requires any browser hacks – **it is now using the official OpenAI completions API** with a leaked model that ChatGPT uses under the hood. 🔥
 
@@ -17,18 +57,15 @@ Please upgrade to `chatgpt@latest` (at least [v4.0.0](https://github.com/transit
 
 Huge shoutout to [@waylaidwanderer](https://github.com/waylaidwanderer) for discovering the leaked chat model!
 
+</details>
+</details>
+
 If you run into any issues, we do have a pretty active [Discord](https://discord.gg/v9gERj825w) with a bunch of ChatGPT hackers from the Node.js & Python communities.
 
 Lastly, please consider starring this repo and <a href="https://twitter.com/transitive_bs">following me on twitter <img src="https://storage.googleapis.com/saasify-assets/twitter-logo.svg" alt="twitter" height="24px" align="center"></a> to help support the project.
 
 Thanks && cheers,
 [Travis](https://twitter.com/transitive_bs)
-
----
-
-<p align="center">
-  <img alt="Example usage" src="/media/demo.gif">
-</p>
 
 # ChatGPT API <!-- omit in toc -->
 
@@ -38,9 +75,12 @@ Thanks && cheers,
 
 - [Intro](#intro)
 - [Install](#install)
-- [Usage](#usage)
-  - [Docs](#docs)
-  - [Demos](#demos)
+- [Usage (ChatGPTAPI)](#usage-chatgptapi)
+- [Usage (ChatGPTUnofficialProxyAPI)](#usage-chatgptunofficialproxyapi)
+  - [Reverse Proxies](#reverse-proxies)
+  - [Access Tokens](#access-tokens)
+- [Docs](#docs)
+- [Demos](#demos)
 - [Projects](#projects)
 - [Compatibility](#compatibility)
 - [Credits](#credits)
@@ -60,7 +100,7 @@ npm install chatgpt
 
 Make sure you're using `node >= 18` so `fetch` is available (or `node >= 14` if you install a [fetch polyfill](https://github.com/developit/unfetch#usage-as-a-polyfill)).
 
-## Usage
+## Usage (ChatGPTAPI)
 
 Sign up for an [OpenAI API key](https://platform.openai.com/overview) and store it in your environment.
 
@@ -162,11 +202,64 @@ async function example() {
 
 </details>
 
-### Docs
+## Usage (ChatGPTUnofficialProxyAPI)
+
+The API is almost exactly the same for the `ChatGPTUnofficialProxyAPI`; you just need to provide a ChatGPT `accessToken` instead of an OpenAI API key.
+
+```ts
+import { ChatGPTUnofficialProxyAPI } from 'chatgpt'
+
+async function example() {
+  const api = new ChatGPTUnofficialProxyAPI({
+    accessToken: process.env.OPENAI_ACCESS_TOKEN
+  })
+
+  const res = await api.sendMessage('Hello World!')
+  console.log(res.text)
+}
+```
+
+See [demos/demo-reverse-proxy](./demos/demo-reverse-proxy.ts) for a full example:
+
+```bash
+npx tsx demos/demo-reverse-proxy.ts
+```
+
+### Reverse Proxies
+
+You can override the reverse proxy by passing `apiReverseProxyUrl` to `ChatGPTUnofficialProxyAPI`:
+
+```ts
+const api = new ChatGPTUnofficialProxyAPI({
+  accessToken: process.env.OPENAI_ACCESS_TOKEN,
+  apiReverseProxyUrl: 'https://your-example-server.com/api/conversation'
+})
+```
+
+Known reverse proxies run by community members include:
+
+| Reverse Proxy URL                                | Author                                       | Rate Limits | Last Checked |
+| ------------------------------------------------ | -------------------------------------------- | ----------- | ------------ |
+| `https://chat.duti.tech/api/conversation`        | [@acheong08](https://github.com/acheong08)   | 50 req/min  | 2/19/2023    |
+| `https://gpt.pawan.krd/backend-api/conversation` | [@PawanOsman](https://github.com/PawanOsman) | ?           | 2/19/2023    |
+
+### Access Tokens
+
+To use `ChatGPTUnofficialProxyAPI`, you'll need a ChatGPT access token. You can either:
+
+1. Use [acheong08/OpenAIAuth](https://github.com/acheong08/OpenAIAuth), which is a python script to login and get an access token automatically. This works with email + password accounts (e.g., it does not support accounts where you auth using Microsoft / Google).
+
+2. You can manually get an `accessToken` by logging in to the ChatGPT webapp, opening up the Network tab of devtools, refreshing the page, and then looking at the JSON response to `https://chat.openai.com/api/auth/session`, which will have your `accessToken` string.
+
+**Note**: using a reverse proxy will expose your access token to a third-party. There shouldn't be any adverse effects possible from this, but please consider the risks before using this method.
+
+## Docs
 
 See the [auto-generated docs](./docs/classes/ChatGPTAPI.md) for more info on methods and parameters.
 
-### Demos
+## Demos
+
+Most of the demos use `ChatGPTAPI`. It should be pretty easy to convert them to use `ChatGPTUnofficialProxyAPI` if you'd rather use that approach. The only thing that needs to change is how you initialize the api with an `accessToken` instead of an `apiKey`.
 
 To run the included demos:
 
@@ -286,7 +379,7 @@ If you create a cool integration, feel free to open a PR and add it to the list.
 - This package supports `node >= 14`.
 - This module assumes that `fetch` is installed.
   - In `node >= 18`, it's installed by default.
-  - In `node < 18`, you need to install a polyfill like `unfetch/polyfill` ([guide](https://github.com/developit/unfetch#usage-as-a-polyfill)) or `isomorphic-fetch` ([guide](https://github.com/matthew-andrews/isomorphic-fetch#readme)). 
+  - In `node < 18`, you need to install a polyfill like `unfetch/polyfill` ([guide](https://github.com/developit/unfetch#usage-as-a-polyfill)) or `isomorphic-fetch` ([guide](https://github.com/matthew-andrews/isomorphic-fetch#readme)).
 - If you want to build a website using `chatgpt`, we recommend using it only from your backend API
 
 ## Credits
