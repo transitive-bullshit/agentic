@@ -227,7 +227,16 @@ npx tsx demos/demo-reverse-proxy.ts
 
 ### Reverse Proxies
 
-Known reverse proxies include:
+You can override the reverse proxy by passing `apiReverseProxyUrl` to `ChatGPTUnofficialProxyAPI`:
+
+```ts
+const api = new ChatGPTUnofficialProxyAPI({
+  accessToken: process.env.OPENAI_ACCESS_TOKEN,
+  apiReverseProxyUrl: 'https://your-example-server.com/api/conversation'
+})
+```
+
+Known reverse proxies run by community members include:
 
 | Reverse Proxy URL                                | Author                                       | Rate Limits | Last Checked |
 | ------------------------------------------------ | -------------------------------------------- | ----------- | ------------ |
