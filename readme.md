@@ -13,11 +13,13 @@ We now provide three ways of accessing the unofficial ChatGPT API, all of which 
 2. `ChatGPTUnofficialProxyAPI` - Uses an unofficial proxy server to access ChatGPT's backend API in a way that circumvents Cloudflare (uses the real ChatGPT and is pretty lightweight, but can be less robust and is pretty rate-limited)
 3. `ChatGPTAPIBrowser` - (v3.5.1 of this package) Uses Puppeteer to access the official ChatGPT webapp (uses the real ChatGPT, but very flaky, heavyweight, and error prone)
 
-| Method                      | Free?  | Robust?  | Lightweight? | Quality?          |
-| --------------------------- | ------ | -------- | ------------ | ----------------- |
-| `ChatGPTAPI`                | ❌ No  | ✅ Yes   | ✅ Yes       | ☑️ Mimics ChatGPT |
-| `ChatGPTUnofficialProxyAPI` | ✅ Yes | ☑️ Maybe | ✅ Yes       | ✅ Real ChatGPT   |
-| `ChatGPAPIBrowser` (v3)     | ✅ Yes | ❌ No    | ❌ No        | ✅ Real ChatGPT   |
+| Method                      | Free?  | Robust?  | Quality?          |
+| --------------------------- | ------ | -------- | ----------------- |
+| `ChatGPTAPI`                | ❌ No  | ✅ Yes   | ☑️ Mimics ChatGPT |
+| `ChatGPTUnofficialProxyAPI` | ✅ Yes | ☑️ Maybe | ✅ Real ChatGPT   |
+| `ChatGPAPIBrowser` (v3)     | ✅ Yes | ❌ No    | ✅ Real ChatGPT   |
+
+**Note**: I recommend that you use either `ChatGPTAPI` or `ChatGPTUnofficialProxyAPI`.
 
 _Note_: all three methods share a very similar API that is designed to mimic the upcoming official ChatGPT API once it's released.
 
