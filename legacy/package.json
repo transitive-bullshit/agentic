@@ -21,6 +21,7 @@
   "engines": {
     "node": ">=18"
   },
+  "bin": "cli.js",
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
