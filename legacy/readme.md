@@ -1,3 +1,30 @@
+# ChatGPT API <!-- omit in toc -->
+
+> Node.js client for the unofficial [ChatGPT](https://openai.com/blog/chatgpt/) API.
+
+[![NPM](https://img.shields.io/npm/v/chatgpt.svg)](https://www.npmjs.com/package/chatgpt) [![Build Status](https://github.com/transitive-bullshit/chatgpt-api/actions/workflows/test.yml/badge.svg)](https://github.com/transitive-bullshit/chatgpt-api/actions/workflows/test.yml) [![MIT License](https://img.shields.io/badge/license-MIT-blue)](https://github.com/transitive-bullshit/chatgpt-api/blob/main/license) [![Prettier Code Formatting](https://img.shields.io/badge/code_style-prettier-brightgreen.svg)](https://prettier.io)
+
+- [Intro](#intro)
+- [CLI](#cli)
+- [Install](#install)
+- [Usage](#usage)
+  - [Usage - ChatGPTAPI](#usage---chatgptapi)
+  - [Usage - ChatGPTUnofficialProxyAPI](#usage---chatgptunofficialproxyapi)
+    - [Reverse Proxy](#reverse-proxy)
+    - [Access Token](#access-token)
+- [Docs](#docs)
+- [Demos](#demos)
+- [Projects](#projects)
+- [Compatibility](#compatibility)
+- [Credits](#credits)
+- [License](#license)
+
+## Intro
+
+This package is a Node.js wrapper around [ChatGPT](https://openai.com/blog/chatgpt) by [OpenAI](https://openai.com). TS batteries included. ✨
+
+You can use it to start building projects powered by ChatGPT like chatbots, websites, etc...
+
 <p align="center">
   <img alt="Example usage" src="/media/demo.gif">
 </p>
@@ -67,33 +94,6 @@ Lastly, please consider starring this repo and <a href="https://twitter.com/tran
 Thanks && cheers,
 [Travis](https://twitter.com/transitive_bs)
 
-# ChatGPT API <!-- omit in toc -->
-
-> Node.js client for the unofficial [ChatGPT](https://openai.com/blog/chatgpt/) API.
-
-[![NPM](https://img.shields.io/npm/v/chatgpt.svg)](https://www.npmjs.com/package/chatgpt) [![Build Status](https://github.com/transitive-bullshit/chatgpt-api/actions/workflows/test.yml/badge.svg)](https://github.com/transitive-bullshit/chatgpt-api/actions/workflows/test.yml) [![MIT License](https://img.shields.io/badge/license-MIT-blue)](https://github.com/transitive-bullshit/chatgpt-api/blob/main/license) [![Prettier Code Formatting](https://img.shields.io/badge/code_style-prettier-brightgreen.svg)](https://prettier.io)
-
-- [Intro](#intro)
-- [CLI](#cli)
-- [Install](#install)
-- [Usage](#usage)
-  - [Usage - ChatGPTAPI](#usage---chatgptapi)
-  - [Usage - ChatGPTUnofficialProxyAPI](#usage---chatgptunofficialproxyapi)
-    - [Reverse Proxies](#reverse-proxies)
-    - [Access Tokens](#access-tokens)
-- [Docs](#docs)
-- [Demos](#demos)
-- [Projects](#projects)
-- [Compatibility](#compatibility)
-- [Credits](#credits)
-- [License](#license)
-
-## Intro
-
-This package is a Node.js wrapper around [ChatGPT](https://openai.com/blog/chatgpt) by [OpenAI](https://openai.com). TS batteries included. ✨
-
-You can use it to start building projects powered by ChatGPT like chatbots, websites, etc...
-
 ## CLI
 
 To run the CLI, you'll need an [OpenAI API key](https://platform.openai.com/overview):
@@ -153,6 +153,8 @@ To use this module from Node.js, you need to pick between two methods:
 1. `ChatGPTAPI` - Uses `text-davinci-003` to mimic ChatGPT via the official OpenAI completions API (most robust approach, but it's not free and doesn't use a model fine-tuned for chat). You can override the model, completion params, and prompt to fully customize your bot.
 
 2. `ChatGPTUnofficialProxyAPI` - Uses an unofficial proxy server to access ChatGPT's backend API in a way that circumvents Cloudflare (uses the real ChatGPT and is pretty lightweight, but relies on a third-party server and is rate-limited)
+
+Both approaches have very similar APIs, so it should be simple to swap between them.
 
 ### Usage - ChatGPTAPI
 
@@ -291,9 +293,9 @@ See [demos/demo-reverse-proxy](./demos/demo-reverse-proxy.ts) for a full example
 npx tsx demos/demo-reverse-proxy.ts
 ```
 
-#### Reverse Proxies
+#### Reverse Proxy
 
-You can override the reverse proxy by passing `apiReverseProxyUrl` to `ChatGPTUnofficialProxyAPI`:
+You can override the reverse proxy by passing `apiReverseProxyUrl`:
 
 ```ts
 const api = new ChatGPTUnofficialProxyAPI({
@@ -309,13 +311,17 @@ Known reverse proxies run by community members include:
 | `https://chat.duti.tech/api/conversation`        | [@acheong08](https://github.com/acheong08)   | 50 req/min  | 2/19/2023    |
 | `https://gpt.pawan.krd/backend-api/conversation` | [@PawanOsman](https://github.com/PawanOsman) | ?           | 2/19/2023    |
 
-#### Access Tokens
+Note: info on how the reverse proxies work is not being published at this time in order to prevent OpenAI from disabling access.
+
+#### Access Token
 
 To use `ChatGPTUnofficialProxyAPI`, you'll need a ChatGPT access token. You can either:
 
-1. Use [acheong08/OpenAIAuth](https://github.com/acheong08/OpenAIAuth), which is a python script to login and get an access token automatically. This works with email + password accounts (e.g., it does not support accounts where you auth using Microsoft / Google).
+1. Use [acheong08/OpenAIAuth](https://github.com/acheong08/OpenAIAuth), which is a python script to login and get an access token automatically. This works with email + password accounts (e.g., it does not support accounts where you auth via Microsoft / Google).
 
 2. You can manually get an `accessToken` by logging in to the ChatGPT webapp and then opening `https://chat.openai.com/api/auth/session`, which will return a JSON object containing your `accessToken` string.
+
+Access tokens last for ~8 hours (TODO: need to verify the exact TTL).
 
 **Note**: using a reverse proxy will expose your access token to a third-party. There shouldn't be any adverse effects possible from this, but please consider the risks before using this method.
 
