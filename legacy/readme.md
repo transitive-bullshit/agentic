@@ -74,6 +74,7 @@ Thanks && cheers,
 [![NPM](https://img.shields.io/npm/v/chatgpt.svg)](https://www.npmjs.com/package/chatgpt) [![Build Status](https://github.com/transitive-bullshit/chatgpt-api/actions/workflows/test.yml/badge.svg)](https://github.com/transitive-bullshit/chatgpt-api/actions/workflows/test.yml) [![MIT License](https://img.shields.io/badge/license-MIT-blue)](https://github.com/transitive-bullshit/chatgpt-api/blob/main/license) [![Prettier Code Formatting](https://img.shields.io/badge/code_style-prettier-brightgreen.svg)](https://prettier.io)
 
 - [Intro](#intro)
+- [CLI](#cli)
 - [Install](#install)
 - [Usage](#usage)
   - [Usage - ChatGPTAPI](#usage---chatgptapi)
@@ -93,6 +94,45 @@ This package is a Node.js wrapper around [ChatGPT](https://openai.com/blog/chatg
 
 You can use it to start building projects powered by ChatGPT like chatbots, websites, etc...
 
+## CLI
+
+To run the CLI, you'll need an [OpenAI API key](https://platform.openai.com/overview):
+
+```bash
+export OPENAI_API_KEY="sk-TODO"
+npx chatgpt "your prompt here"
+```
+
+By default, the response is streamed to stdout, and the results are stored in a local config file. You can use `-c` to continue the previous conversation and `--no-stream` to disable streaming.
+
+The CLI uses `ChatGPTAPI` with `text-davinci-003` under the hood to mimic ChatGPT.
+
+```
+Usage:
+  $ chatgpt <prompt>
+
+Commands:
+  <prompt>  Ask ChatGPT a question
+  rm-cache  Clears the local message cache
+  ls-cache  Prints the local message cache path
+
+For more info, run any command with the `--help` flag:
+  $ chatgpt --help
+  $ chatgpt rm-cache --help
+  $ chatgpt ls-cache --help
+
+Options:
+  -c, --continue          Continue last conversation (default: false)
+  -d, --debug             Enables debug logging (default: false)
+  -s, --stream            Streams the response (default: true)
+  -s, --store             Enables the local message cache (default: true)
+  -t, --timeout           Timeout in milliseconds
+  -k, --apiKey            OpenAI API key
+  -n, --conversationName  Unique name for the conversation
+  -h, --help              Display this message
+  -v, --version           Display version number
+```
+
 ## Install
 
 ```bash
@@ -103,7 +143,7 @@ Make sure you're using `node >= 18` so `fetch` is available (or `node >= 14` if 
 
 ## Usage
 
-You need to pick between two methods:
+To use this module from Node.js, you need to pick between two methods:
 
 | Method                      | Free?  | Robust?  | Quality?          |
 | --------------------------- | ------ | -------- | ----------------- |
@@ -398,7 +438,7 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [openai-chatgpt: Talk to ChatGPT from the terminal](https://github.com/gmpetrov/openai-chatgpt)
 - [Clippy the Saleforce chatbot](https://github.com/sebas00/chatgptclippy) ClippyJS joke bot
 - [ai-assistant](https://github.com/youking-lib/ai-assistant) Chat assistant
-- [Feishu Bot](https://github.com/linjungz/feishu-chatgpt-bot) 
+- [Feishu Bot](https://github.com/linjungz/feishu-chatgpt-bot)
 
 If you create a cool integration, feel free to open a PR and add it to the list.
 
