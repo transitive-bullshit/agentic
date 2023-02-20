@@ -155,47 +155,51 @@ export class ChatGPTUnofficialProxyAPI {
         console.log('POST', url, { body, headers })
       }
 
-      fetchSSE(url, {
-        method: 'POST',
-        headers,
-        body: JSON.stringify(body),
-        signal: abortSignal,
-        onMessage: (data: string) => {
-          if (data === '[DONE]') {
-            return resolve(result)
-          }
-
-          try {
-            const convoResponseEvent: types.ConversationResponseEvent =
-              JSON.parse(data)
-            if (convoResponseEvent.conversation_id) {
-              result.conversationId = convoResponseEvent.conversation_id
+      fetchSSE(
+        url,
+        {
+          method: 'POST',
+          headers,
+          body: JSON.stringify(body),
+          signal: abortSignal,
+          onMessage: (data: string) => {
+            if (data === '[DONE]') {
+              return resolve(result)
             }
 
-            if (convoResponseEvent.message?.id) {
-              result.id = convoResponseEvent.message.id
-            }
+            try {
+              const convoResponseEvent: types.ConversationResponseEvent =
+                JSON.parse(data)
+              if (convoResponseEvent.conversation_id) {
+                result.conversationId = convoResponseEvent.conversation_id
+              }
 
-            const message = convoResponseEvent.message
-            // console.log('event', JSON.stringify(convoResponseEvent, null, 2))
+              if (convoResponseEvent.message?.id) {
+                result.id = convoResponseEvent.message.id
+              }
 
-            if (message) {
-              let text = message?.content?.parts?.[0]
+              const message = convoResponseEvent.message
+              // console.log('event', JSON.stringify(convoResponseEvent, null, 2))
 
-              if (text) {
-                result.text = text
+              if (message) {
+                let text = message?.content?.parts?.[0]
 
-                if (onProgress) {
-                  onProgress(result)
+                if (text) {
+                  result.text = text
+
+                  if (onProgress) {
+                    onProgress(result)
+                  }
                 }
               }
+            } catch (err) {
+              // ignore for now; there seem to be some non-json messages
+              // console.warn('fetchSSE onMessage unexpected error', err)
             }
-          } catch (err) {
-            // ignore for now; there seem to be some non-json messages
-            // console.warn('fetchSSE onMessage unexpected error', err)
           }
-        }
-      }).catch((err) => {
+        },
+        this._fetch
+      ).catch((err) => {
         const errMessageL = err.toString().toLowerCase()
 
         if (
