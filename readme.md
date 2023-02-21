@@ -444,7 +444,7 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [Clippy the Saleforce chatbot](https://github.com/sebas00/chatgptclippy) ClippyJS joke bot
 - [ai-assistant](https://github.com/youking-lib/ai-assistant) Chat assistant
 - [Feishu Bot](https://github.com/linjungz/feishu-chatgpt-bot)
-- [DomainGPT: Discover available domain names using your product description](https://github.com/billylo1/DomainGPT)
+- [DomainGPT: Discover available domain names](https://github.com/billylo1/DomainGPT)
 
 If you create a cool integration, feel free to open a PR and add it to the list.
 
