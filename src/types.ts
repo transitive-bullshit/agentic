@@ -12,6 +12,7 @@ export type SendMessageOptions = {
   timeoutMs?: number
   onProgress?: (partialResponse: ChatMessage) => void
   abortSignal?: AbortSignal
+  queueWithCompletion?: string
 }
 
 export type MessageActionType = 'next' | 'variant'

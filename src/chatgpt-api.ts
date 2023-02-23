@@ -179,7 +179,7 @@ export class ChatGPTAPI {
    * @param opts.timeoutMs - Optional timeout in milliseconds (defaults to no timeout)
    * @param opts.onProgress - Optional callback which will be invoked every time the partial response is updated
    * @param opts.abortSignal - Optional callback used to abort the underlying `fetch` call using an [AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController)
-   *
+   * @param opts.queueWithCompletion {string} - Optional string used as flag to only upsert message and itself as completion. Background: do not use turns for messages that are instructive
    * @returns The response from ChatGPT
    */
   async sendMessage(
@@ -191,6 +191,7 @@ export class ChatGPTAPI {
       parentMessageId,
       messageId = uuidv4(),
       timeoutMs,
+      queueWithCompletion,
       onProgress,
       stream = onProgress ? true : false
     } = opts
@@ -222,8 +223,15 @@ export class ChatGPTAPI {
       text: ''
     }
 
-    const responseP = new Promise<types.ChatMessage>(
-      async (resolve, reject) => {
+    let responseP = null
+
+    if (queueWithCompletion?.length > 0) {
+      responseP = new Promise<types.ChatMessage>(async (resolve, reject) => {
+        result.text = queueWithCompletion
+        resolve(result)
+      })
+    } else {
+      responseP = new Promise<types.ChatMessage>(async (resolve, reject) => {
         const url =
           this._apiReverseProxyUrl || `${this._apiBaseUrl}/v1/completions`
         const headers = {
@@ -327,8 +335,10 @@ export class ChatGPTAPI {
             return reject(err)
           }
         }
-      }
-    ).then((message) => {
+      })
+    }
+
+    responseP.then((message) => {
       return this._upsertMessage(message).then(() => message)
     })
 
