@@ -318,7 +318,11 @@ To use `ChatGPTUnofficialProxyAPI`, you'll need an OpenAI access token from the 
 
 1. Use [acheong08/OpenAIAuth](https://github.com/acheong08/OpenAIAuth), which is a python script to login and get an access token automatically. This works with email + password accounts (e.g., it does not support accounts where you auth via Microsoft / Google).
 
-2. You can manually get an `accessToken` by logging in to the ChatGPT webapp and then opening `https://chat.openai.com/api/auth/session`, which will return a JSON object containing your `accessToken` string.
+2. or if you prefer to work with Node JS, use [AllanOricil/chat-gpt-authenticator](https://github.com/AllanOricil/chat-gpt-authenticator) to get an access token.
+
+3. You can manually get an `accessToken` by logging in to the ChatGPT webapp and then opening `https://chat.openai.com/api/auth/session`, which will return a JSON object containing your `accessToken` string.
+
+
 
 Access tokens last for ~8 hours.
 
