@@ -39,7 +39,7 @@ We now provide three ways of accessing the unofficial ChatGPT API, all of which 
 | --------------------------- | ------ | -------- | ----------------- |
 | `ChatGPTAPI`                | ❌ No  | ✅ Yes   | ☑️ Mimics ChatGPT |
 | `ChatGPTUnofficialProxyAPI` | ✅ Yes | ☑️ Maybe | ✅ Real ChatGPT   |
-| `ChatGPAPIBrowser` (v3)     | ✅ Yes | ❌ No    | ✅ Real ChatGPT   |
+| `ChatGPTAPIBrowser` (v3)     | ✅ Yes | ❌ No    | ✅ Real ChatGPT   |
 
 **Note**: I recommend that you use either `ChatGPTAPI` or `ChatGPTUnofficialProxyAPI`.
 
@@ -184,7 +184,7 @@ const api = new ChatGPTAPI({
 })
 ```
 
-If you want to track the conversation, you'll need to pass the `parentMessageid` and `conversationid`:
+If you want to track the conversation, you'll need to pass the `parentMessageId` and `conversationId` like this:
 
 ```ts
 const api = new ChatGPTAPI({ apiKey: process.env.OPENAI_API_KEY })
