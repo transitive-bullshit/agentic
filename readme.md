@@ -184,7 +184,7 @@ const api = new ChatGPTAPI({
 })
 ```
 
-If you want to track the conversation, you'll need to pass the `parentMessageid` and `conversationid` like this:
+If you want to track the conversation, you'll need to pass the `parentMessageId` and `conversationId` like this:
 
 ```ts
 const api = new ChatGPTAPI({ apiKey: process.env.OPENAI_API_KEY })
