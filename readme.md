@@ -307,7 +307,7 @@ Known reverse proxies run by community members include:
 
 | Reverse Proxy URL                                | Author                                       | Rate Limits      | Last Checked |
 | ------------------------------------------------ | -------------------------------------------- | ---------------- | ------------ |
-| `https://chat.duti.tech/api/conversation`        | [@acheong08](https://github.com/acheong08)   | 40 req/min by IP | 2/19/2023    |
+| `https://chat.duti.tech/api/conversation`        | [@acheong08](https://github.com/acheong08)   | 120 req/min by IP | 2/19/2023    |
 | `https://gpt.pawan.krd/backend-api/conversation` | [@PawanOsman](https://github.com/PawanOsman) | ?                | 2/19/2023    |
 
 Note: info on how the reverse proxies work is not being published at this time in order to prevent OpenAI from disabling access.
