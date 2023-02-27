@@ -358,6 +358,13 @@ A [conversation demo](./demos/demo-conversation.ts):
 npx tsx demos/demo-conversation.ts
 ```
 
+```bash
+npx tsx demos/demo-chatbot.ts
+```
+
+The chatbot demo enables real-time conversation between the user and the ChatGPT model. The user can enter text into the command-line interface as a question, and the program returns a response to the question. 
+
+
 A [persistence demo](./demos/demo-persistence.ts) shows how to store messages in Redis for persistence:
 
 ```bash
