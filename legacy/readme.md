@@ -327,7 +327,7 @@ These libraries work with email + password accounts (e.g., they do not support a
 
 Alternatively, you can manually get an `accessToken` by logging in to the ChatGPT webapp and then opening `https://chat.openai.com/api/auth/session`, which will return a JSON object containing your `accessToken` string.
 
-Access tokens last for ~8 hours.
+Access tokens last for days.
 
 **Note**: using a reverse proxy will expose your access token to a third-party. There shouldn't be any adverse effects possible from this, but please consider the risks before using this method.
 

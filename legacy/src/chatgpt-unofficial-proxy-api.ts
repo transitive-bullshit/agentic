@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid'
 import * as types from './types'
 import { fetch as globalFetch } from './fetch'
 import { fetchSSE } from './fetch-sse'
+import { isValidUUIDv4 } from './utils'
 
 export class ChatGPTUnofficialProxyAPI {
   protected _accessToken: string
@@ -97,6 +98,30 @@ export class ChatGPTUnofficialProxyAPI {
     text: string,
     opts: types.SendMessageBrowserOptions = {}
   ): Promise<types.ChatMessage> {
+    if (!!opts.conversationId !== !!opts.parentMessageId) {
+      throw new Error(
+        'ChatGPTUnofficialProxyAPI.sendMessage: conversationId and parentMessageId must both be set or both be undefined'
+      )
+    }
+
+    if (opts.conversationId && !isValidUUIDv4(opts.conversationId)) {
+      throw new Error(
+        'ChatGPTUnofficialProxyAPI.sendMessage: conversationId is not a valid v4 UUID'
+      )
+    }
+
+    if (opts.parentMessageId && !isValidUUIDv4(opts.parentMessageId)) {
+      throw new Error(
+        'ChatGPTUnofficialProxyAPI.sendMessage: parentMessageId is not a valid v4 UUID'
+      )
+    }
+
+    if (opts.messageId && !isValidUUIDv4(opts.messageId)) {
+      throw new Error(
+        'ChatGPTUnofficialProxyAPI.sendMessage: messageId is not a valid v4 UUID'
+      )
+    }
+
     const {
       conversationId,
       parentMessageId = uuidv4(),
