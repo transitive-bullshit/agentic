@@ -39,7 +39,7 @@ We now provide three ways of accessing the unofficial ChatGPT API, all of which 
 | --------------------------- | ------ | -------- | ----------------- |
 | `ChatGPTAPI`                | ❌ No  | ✅ Yes   | ☑️ Mimics ChatGPT |
 | `ChatGPTUnofficialProxyAPI` | ✅ Yes | ☑️ Maybe | ✅ Real ChatGPT   |
-| `ChatGPTAPIBrowser` (v3)     | ✅ Yes | ❌ No    | ✅ Real ChatGPT   |
+| `ChatGPTAPIBrowser` (v3)    | ✅ Yes | ❌ No    | ✅ Real ChatGPT   |
 
 **Note**: I recommend that you use either `ChatGPTAPI` or `ChatGPTUnofficialProxyAPI`.
 
@@ -305,24 +305,27 @@ const api = new ChatGPTUnofficialProxyAPI({
 
 Known reverse proxies run by community members include:
 
-| Reverse Proxy URL                                | Author                                       | Rate Limits      | Last Checked |
-| ------------------------------------------------ | -------------------------------------------- | ---------------- | ------------ |
+| Reverse Proxy URL                                | Author                                       | Rate Limits       | Last Checked |
+| ------------------------------------------------ | -------------------------------------------- | ----------------- | ------------ |
 | `https://chat.duti.tech/api/conversation`        | [@acheong08](https://github.com/acheong08)   | 120 req/min by IP | 2/19/2023    |
-| `https://gpt.pawan.krd/backend-api/conversation` | [@PawanOsman](https://github.com/PawanOsman) | ?                | 2/19/2023    |
+| `https://gpt.pawan.krd/backend-api/conversation` | [@PawanOsman](https://github.com/PawanOsman) | ?                 | 2/19/2023    |
 
 Note: info on how the reverse proxies work is not being published at this time in order to prevent OpenAI from disabling access.
 
 #### Access Token
 
-To use `ChatGPTUnofficialProxyAPI`, you'll need an OpenAI access token from the ChatGPT webapp. You can either:
+To use `ChatGPTUnofficialProxyAPI`, you'll need an OpenAI access token from the ChatGPT webapp. To do this, you can use any of the following methods:
 
-1. Use [acheong08/OpenAIAuth](https://github.com/acheong08/OpenAIAuth), which is a python script to login and get an access token automatically. This works with email + password accounts (e.g., it does not support accounts where you auth via Microsoft / Google).
+- Node.js libs
+  - [ericlewis/openai-authenticator](https://github.com/ericlewis/openai-authenticator)
+  - [michael-dm/openai-token](https://github.com/michael-dm/openai-token)
+  - [allanoricil/chat-gpt-authenticator](https://github.com/AllanOricil/chat-gpt-authenticator)
+- Python libs
+  - [acheong08/OpenAIAuth](https://github.com/acheong08/OpenAIAuth)
 
-2. or if you prefer to work with Node JS, use [AllanOricil/chat-gpt-authenticator](https://github.com/AllanOricil/chat-gpt-authenticator) to get an access token.
+These libraries work with email + password accounts (e.g., they do not support accounts where you auth via Microsoft / Google).
 
-3. You can manually get an `accessToken` by logging in to the ChatGPT webapp and then opening `https://chat.openai.com/api/auth/session`, which will return a JSON object containing your `accessToken` string.
-
-
+Alternatively, you can manually get an `accessToken` by logging in to the ChatGPT webapp and then opening `https://chat.openai.com/api/auth/session`, which will return a JSON object containing your `accessToken` string.
 
 Access tokens last for ~8 hours.
 
