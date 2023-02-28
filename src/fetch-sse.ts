@@ -12,8 +12,15 @@ export async function fetchSSE(
   const { onMessage, ...fetchOptions } = options
   const res = await fetch(url, fetchOptions)
   if (!res.ok) {
-    const reason = await res.text()
-    const msg = `ChatGPT error ${res.status || res.statusText}: ${reason}`
+    let reason: string
+
+    try {
+      reason = await res.text()
+    } catch (err) {
+      reason = res.statusText
+    }
+
+    const msg = `ChatGPT error ${res.status}: ${reason}`
     const error = new types.ChatGPTError(msg, { cause: res })
     error.statusCode = res.status
     error.statusText = res.statusText
