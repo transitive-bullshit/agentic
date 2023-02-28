@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@dqbd/tiktoken': ^0.2.1
   '@keyv/redis': ^2.5.4
   '@trivago/prettier-plugin-sort-imports': ^4.0.0
   '@types/node': ^18.11.9
@@ -10,7 +11,6 @@ specifiers:
   del-cli: ^5.0.0
   dotenv-safe: ^8.2.0
   eventsource-parser: ^0.0.5
-  gpt3-tokenizer: ^1.1.5
   husky: ^8.0.2
   keyv: ^4.5.2
   lint-staged: ^13.0.3
@@ -28,10 +28,10 @@ specifiers:
   uuid: ^9.0.0
 
 dependencies:
+  '@dqbd/tiktoken': 0.2.1
   cac: 6.7.14
   conf: 11.0.1
   eventsource-parser: 0.0.5
-  gpt3-tokenizer: 1.1.5
   keyv: 4.5.2
   p-timeout: 6.1.0
   quick-lru: 6.1.1
@@ -300,6 +300,10 @@ packages:
       to-fast-properties: 2.0.0
     dev: true
 
+  /@dqbd/tiktoken/0.2.1:
+    resolution: {integrity: sha512-Nw9Swn37xZLAvz64qA3tTxy4yJLMhYDj7dWS6uSoHkUJxTn+BcYA+r06O36Q3Jya52b3SvK/LDXzl1dVeHqrew==}
+    dev: false
+
   /@esbuild-kit/cjs-loader/2.4.1:
     resolution: {integrity: sha512-lhc/XLith28QdW0HpHZvZKkorWgmCNT7sVelMHDj3HFdTfdqkwEKvT+aXVQtNAmCC39VJhunDkWhONWB7335mg==}
     dependencies:
@@ -524,10 +528,6 @@ packages:
       normalize-path: 3.0.0
       picomatch: 2.3.1
     dev: true
-
-  /array-keyed-map/2.1.3:
-    resolution: {integrity: sha512-JIUwuFakO+jHjxyp4YgSiKXSZeC0U+R1jR94bXWBcVlFRBycqXlb+kH9JHxBGcxnVuSqx5bnn0Qz9xtSeKOjiA==}
-    dev: false
 
   /array-union/2.1.0:
     resolution: {integrity: sha512-HGyxoOTYUyCM6stUe6EJgnd4EoewAI7zMdfqO+kGjnlZmBDz/cR5pf8r/cR4Wq60sL/p0IkcjUEEPwS3GFrIyw==}
@@ -1443,13 +1443,6 @@ packages:
     dependencies:
       get-intrinsic: 1.2.0
     dev: true
-
-  /gpt3-tokenizer/1.1.5:
-    resolution: {integrity: sha512-O9iCL8MqGR0Oe9wTh0YftzIbysypNQmS5a5JG3cB3M4LMYjlAVvNnf8LUzVY9MrI7tj+YLY356uHtO2lLX2HpA==}
-    engines: {node: '>=12'}
-    dependencies:
-      array-keyed-map: 2.1.3
-    dev: false
 
   /graceful-fs/4.2.10:
     resolution: {integrity: sha512-9ByhssR2fPVsNZj478qUUbKfmL0+t5BDVyjShtyZZLiK7ZDAArFFfopyOTj0M05wE2tJPisA4iTnnXl2YoPvOA==}

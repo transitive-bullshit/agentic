@@ -1,12 +1,8 @@
-import GPT3TokenizerImport from 'gpt3-tokenizer'
+import { encoding_for_model } from '@dqbd/tiktoken'
 
-const GPT3Tokenizer: typeof GPT3TokenizerImport =
-  typeof GPT3TokenizerImport === 'function'
-    ? GPT3TokenizerImport
-    : (GPT3TokenizerImport as any).default
+// TODO: make this configurable
+const tokenizer = encoding_for_model('text-davinci-003')
 
-export const tokenizer = new GPT3Tokenizer({ type: 'gpt3' })
-
-export function encode(input: string): number[] {
-  return tokenizer.encode(input).bpe
+export function encode(input: string): Uint32Array {
+  return tokenizer.encode(input)
 }
