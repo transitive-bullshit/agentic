@@ -37,7 +37,7 @@
     "test:prettier": "prettier '**/*.{js,jsx,ts,tsx}' --check"
   },
   "dependencies": {
-    "@dqbd/tiktoken": "^0.2.1",
+    "@dqbd/tiktoken": "^0.4.0",
     "cac": "^6.7.14",
     "conf": "^11.0.1",
     "eventsource-parser": "^0.0.5",
