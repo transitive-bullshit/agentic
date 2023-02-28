@@ -314,7 +314,7 @@ Note: info on how the reverse proxies work is not being published at this time i
 
 #### Access Token
 
-To use `ChatGPTUnofficialProxyAPI`, you'll need an OpenAI access token from the ChatGPT webapp. To do this, you can use any of the following methods:
+To use `ChatGPTUnofficialProxyAPI`, you'll need an OpenAI access token from the ChatGPT webapp. To do this, you can use any of the following methods which take an `email` and `password` and return an access token:
 
 - Node.js libs
   - [ericlewis/openai-authenticator](https://github.com/ericlewis/openai-authenticator)
