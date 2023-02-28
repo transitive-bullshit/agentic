@@ -452,6 +452,7 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [ai-assistant](https://github.com/youking-lib/ai-assistant) Chat assistant
 - [Feishu Bot](https://github.com/linjungz/feishu-chatgpt-bot)
 - [DomainGPT: Discover available domain names](https://github.com/billylo1/DomainGPT)
+- [AI Poem Generator](https://aipoemgenerator.com/)
 
 If you create a cool integration, feel free to open a PR and add it to the list.
 
