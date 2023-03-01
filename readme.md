@@ -271,7 +271,7 @@ async function example() {
 
 ### Usage - ChatGPTUnofficialProxyAPI
 
-The API is almost exactly the same for the `ChatGPTUnofficialProxyAPI`; you just need to provide a ChatGPT `accessToken` instead of an OpenAI API key.
+The API is almost exactly the same for the `ChatGPTAPI`; you just need to provide a ChatGPT `accessToken` instead of an OpenAI API key.
 
 ```ts
 import { ChatGPTUnofficialProxyAPI } from 'chatgpt'
