@@ -438,7 +438,9 @@ Current date: ${currentDate}${this._sepToken}\n\n`
       // text = text.replace(/<\|im_sep\|>/g, '<|endoftext|>')
     }
 
+    // TODO: this seems hacky and should be fixed in the tokenizer
     text = text.replace(/<\|endoftext\|>/g, '')
+
     return tokenizer.encode(text).length
   }
 
