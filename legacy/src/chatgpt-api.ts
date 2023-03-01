@@ -434,10 +434,11 @@ Current date: ${currentDate}${this._sepToken}\n\n`
     if (this._isChatGPTModel) {
       // With this model, "<|im_end|>" is 1 token, but tokenizers aren't aware of it yet.
       // Replace it with "<|endoftext|>" (which it does know about) so that the tokenizer can count it as 1 token.
-      text = text.replace(/<\|im_end\|>/g, '<|endoftext|>')
-      text = text.replace(/<\|im_sep\|>/g, '<|endoftext|>')
+      // text = text.replace(/<\|im_end\|>/g, '<|endoftext|>')
+      // text = text.replace(/<\|im_sep\|>/g, '<|endoftext|>')
     }
 
+    text = text.replace(/<\|endoftext\|>/g, '')
     return tokenizer.encode(text).length
   }
 
