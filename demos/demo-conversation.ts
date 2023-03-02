@@ -30,7 +30,6 @@ async function main() {
 
   res = await oraPromise(
     api.sendMessage(prompt2, {
-      conversationId: res.conversationId,
       parentMessageId: res.id
     }),
     {
@@ -43,7 +42,6 @@ async function main() {
 
   res = await oraPromise(
     api.sendMessage(prompt3, {
-      conversationId: res.conversationId,
       parentMessageId: res.id
     }),
     {
@@ -56,7 +54,6 @@ async function main() {
 
   res = await oraPromise(
     api.sendMessage(prompt4, {
-      conversationId: res.conversationId,
       parentMessageId: res.id
     }),
     {
