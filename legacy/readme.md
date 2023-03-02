@@ -454,7 +454,7 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [Feishu Bot](https://github.com/linjungz/feishu-chatgpt-bot)
 - [DomainGPT: Discover available domain names](https://github.com/billylo1/DomainGPT)
 - [AI Poem Generator](https://aipoemgenerator.com/)
-- [NextJS ChatGPT With Firebase](https://github.com/youngle316/chatgpt)
+- [Next.js ChatGPT With Firebase](https://github.com/youngle316/chatgpt)
 
 If you create a cool integration, feel free to open a PR and add it to the list.
 
