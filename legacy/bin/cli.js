@@ -87,8 +87,9 @@ async function main() {
         timeoutMs: options.timeout || undefined,
         onProgress: options.stream
           ? (progress) => {
-              const { text } = progress.detail.choices[0]
-              process.stdout.write(text)
+              if (progress.delta) {
+                process.stdout.write(progress.delta)
+              }
             }
           : undefined
       })
