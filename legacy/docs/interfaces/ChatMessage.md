@@ -7,8 +7,10 @@
 ### Properties
 
 - [conversationId](ChatMessage.md#conversationid)
+- [delta](ChatMessage.md#delta)
 - [detail](ChatMessage.md#detail)
 - [id](ChatMessage.md#id)
+- [name](ChatMessage.md#name)
 - [parentMessageId](ChatMessage.md#parentmessageid)
 - [role](ChatMessage.md#role)
 - [text](ChatMessage.md#text)
@@ -21,7 +23,17 @@
 
 #### Defined in
 
-[src/types.ts:34](https://github.com/transitive-bullshit/chatgpt-api/blob/607fccf/src/types.ts#L34)
+[src/types.ts:40](https://github.com/transitive-bullshit/chatgpt-api/blob/1e4ddd6/src/types.ts#L40)
+
+___
+
+### delta
+
+• `Optional` **delta**: `string`
+
+#### Defined in
+
+[src/types.ts:34](https://github.com/transitive-bullshit/chatgpt-api/blob/1e4ddd6/src/types.ts#L34)
 
 ___
 
@@ -31,7 +43,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:35](https://github.com/transitive-bullshit/chatgpt-api/blob/607fccf/src/types.ts#L35)
+[src/types.ts:35](https://github.com/transitive-bullshit/chatgpt-api/blob/1e4ddd6/src/types.ts#L35)
 
 ___
 
@@ -41,7 +53,17 @@ ___
 
 #### Defined in
 
-[src/types.ts:30](https://github.com/transitive-bullshit/chatgpt-api/blob/607fccf/src/types.ts#L30)
+[src/types.ts:30](https://github.com/transitive-bullshit/chatgpt-api/blob/1e4ddd6/src/types.ts#L30)
+
+___
+
+### name
+
+• `Optional` **name**: `string`
+
+#### Defined in
+
+[src/types.ts:33](https://github.com/transitive-bullshit/chatgpt-api/blob/1e4ddd6/src/types.ts#L33)
 
 ___
 
@@ -51,7 +73,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:33](https://github.com/transitive-bullshit/chatgpt-api/blob/607fccf/src/types.ts#L33)
+[src/types.ts:38](https://github.com/transitive-bullshit/chatgpt-api/blob/1e4ddd6/src/types.ts#L38)
 
 ___
 
@@ -61,7 +83,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:32](https://github.com/transitive-bullshit/chatgpt-api/blob/607fccf/src/types.ts#L32)
+[src/types.ts:32](https://github.com/transitive-bullshit/chatgpt-api/blob/1e4ddd6/src/types.ts#L32)
 
 ___
 
@@ -71,4 +93,4 @@ ___
 
 #### Defined in
 
-[src/types.ts:31](https://github.com/transitive-bullshit/chatgpt-api/blob/607fccf/src/types.ts#L31)
+[src/types.ts:31](https://github.com/transitive-bullshit/chatgpt-api/blob/1e4ddd6/src/types.ts#L31)
