@@ -47,7 +47,6 @@ async function main() {
 
     res = await oraPromise(
       api.sendMessage(prompt, {
-        conversationId: res.conversationId,
         parentMessageId: res.id
       }),
       {
