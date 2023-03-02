@@ -40,12 +40,17 @@ The [official OpenAI chat completions API](https://platform.openai.com/docs/guid
 | `ChatGPTAPI`                | ❌ No  | ✅ Yes   | ✅️ Real ChatGPT models |
 | `ChatGPTUnofficialProxyAPI` | ✅ Yes | ☑️ Maybe | ✅ Real ChatGPT         |
 
-**Note**: We strongly recommend using the official `ChatGPTAPI` since it uses officially supported APIs from OpenAI. We may remove support for `ChatGPTUnofficialProxyAPI` in a future release.
+**Note**: We strongly recommend using `ChatGPTAPI` since it uses the officially supported API from OpenAI. We may remove support for `ChatGPTUnofficialProxyAPI` in a future release.
 
 1. `ChatGPTAPI` - Uses the `gpt-3.5-turbo-0301` model with the official OpenAI chat completions API (official, robust approach, but it's not free)
 2. `ChatGPTUnofficialProxyAPI` - Uses an unofficial proxy server to access ChatGPT's backend API in a way that circumvents Cloudflare (uses the real ChatGPT and is pretty lightweight, but relies on a third-party server and is rate-limited)
 
 </details>
+
+<details>
+<summary><strong>Previous Updates</strong></summary>
+
+<br/>
 
 <details>
 <summary><strong>Feb 19, 2023</strong></summary>
@@ -65,11 +70,6 @@ We now provide three ways of accessing the unofficial ChatGPT API, all of which 
 3. `ChatGPTAPIBrowser` - (_deprecated_; v3.5.1 of this package) Uses Puppeteer to access the official ChatGPT webapp (uses the real ChatGPT, but very flaky, heavyweight, and error prone)
 
 </details>
-
-<details>
-<summary><strong>Previous Updates</strong></summary>
-
-<br/>
 
 <details>
 <summary><strong>Feb 5, 2023</strong></summary>
