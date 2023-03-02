@@ -33,6 +33,8 @@ This package is a Node.js wrapper around [ChatGPT](https://openai.com/blog/chatg
 <details open>
 <summary><strong>March 1, 2023</strong></summary>
 
+<br/>
+
 The [official OpenAI chat completions API](https://platform.openai.com/docs/guides/chat) has been released, and it is now the default for this package! 🔥
 
 | Method                      | Free?  | Robust?  | Quality?                |
