@@ -15,7 +15,6 @@ specifiers:
   keyv: ^4.5.2
   lint-staged: ^13.1.2
   npm-run-all: ^4.1.5
-  openai: ^3.2.1
   ora: ^6.1.2
   p-timeout: ^6.1.1
   prettier: ^2.8.4
@@ -49,7 +48,6 @@ devDependencies:
   husky: 8.0.3
   lint-staged: 13.1.2
   npm-run-all: 4.1.5
-  openai: 3.2.1
   ora: 6.1.2
   prettier: 2.8.4
   tsup: 6.6.3_typescript@4.9.5
@@ -563,10 +561,6 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /asynckit/0.4.0:
-    resolution: {integrity: sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==}
-    dev: true
-
   /atomically/2.0.1:
     resolution: {integrity: sha512-sxBhVZUFBFhqSAsYMM3X2oaUi2NVDJ8U026FsIusM8gYXls9AYs/eXzgGrufs1Qjpkxi9zunds+75QUFz+m7UQ==}
     dependencies:
@@ -577,14 +571,6 @@ packages:
   /available-typed-arrays/1.0.5:
     resolution: {integrity: sha512-DMD0KiN46eipeziST1LPP/STfDU0sufISXmjSgvVsoU2tqxctQeASejWcfNtxYKqETM1UxQ8sp2OrSBWpHY6sw==}
     engines: {node: '>= 0.4'}
-    dev: true
-
-  /axios/0.26.1:
-    resolution: {integrity: sha512-fPwcX4EvnSHuInCMItEhAGnaSEXRBjtzh9fOtsE6E1G6p7vl7edEeZe11QHf18+6+9gR5PbKV/sGKNaD8YaMeA==}
-    dependencies:
-      follow-redirects: 1.15.2
-    transitivePeerDependencies:
-      - debug
     dev: true
 
   /balanced-match/1.0.2:
@@ -783,13 +769,6 @@ packages:
     resolution: {integrity: sha512-3tlv/dIP7FWvj3BsbHrGLJ6l/oKh1O3TcgBqMn+yyCagOxc23fyzDS6HypQbgxWbkpDnf52p1LuR4eWDQ/K9WQ==}
     dev: true
 
-  /combined-stream/1.0.8:
-    resolution: {integrity: sha512-FQN4MRfuJeHf7cBbBMJFXhKSDq+2kAArBlmRBvcvFE5BB1HZKXtSFASDhdlz9zOYwxh8lDdnvmMOe/+5cdoEdg==}
-    engines: {node: '>= 0.8'}
-    dependencies:
-      delayed-stream: 1.0.0
-    dev: true
-
   /commander/4.1.1:
     resolution: {integrity: sha512-NOKm8xhkzAjzFx8B2v5OAHT+u5pRQc2UCa2Vq9jYL/31o2wi9mxBA7LIFs3sV5VSC49z6pEhfbMULvShKj26WA==}
     engines: {node: '>= 6'}
@@ -910,11 +889,6 @@ packages:
       p-map: 5.5.0
       rimraf: 3.0.2
       slash: 4.0.0
-    dev: true
-
-  /delayed-stream/1.0.0:
-    resolution: {integrity: sha512-ZySD7Nf91aLB0RxL4KGrKHBXl7Eds1DAmEdcoVawXnLD7SDhpNgtuII2aAkg7a7QS41jxPSZ17p4VdGnMHk3MQ==}
-    engines: {node: '>=0.4.0'}
     dev: true
 
   /denque/2.1.0:
@@ -1144,29 +1118,10 @@ packages:
       path-exists: 5.0.0
     dev: false
 
-  /follow-redirects/1.15.2:
-    resolution: {integrity: sha512-VQLG33o04KaQ8uYi2tVNbdrWp1QWxNNea+nmIB4EVM28v0hmP17z7aG1+wAkNzVq4KeXTq3221ye5qTJP91JwA==}
-    engines: {node: '>=4.0'}
-    peerDependencies:
-      debug: '*'
-    peerDependenciesMeta:
-      debug:
-        optional: true
-    dev: true
-
   /for-each/0.3.3:
     resolution: {integrity: sha512-jqYfLp7mo9vIyQf8ykW2v7A+2N4QjeCeI5+Dz9XraiO1ign81wjiH7Fb9vSOWvQfNtmSa4H2RoQTrrXivdUZmw==}
     dependencies:
       is-callable: 1.2.7
-    dev: true
-
-  /form-data/4.0.0:
-    resolution: {integrity: sha512-ETEklSGi5t0QMZuiXoA/Q6vcnxcLQP5vdugSpuAyi6SVGi2clPPp+xgEhuMaHC+zGgn31Kd235W35f7Hykkaww==}
-    engines: {node: '>= 6'}
-    dependencies:
-      asynckit: 0.4.0
-      combined-stream: 1.0.8
-      mime-types: 2.1.35
     dev: true
 
   /fs.realpath/1.0.0:
@@ -1837,18 +1792,6 @@ packages:
       picomatch: 2.3.1
     dev: true
 
-  /mime-db/1.52.0:
-    resolution: {integrity: sha512-sPU4uV7dYlvtWJxwwxHD0PuihVNiE7TyAbQ5SWxDCB9mUYvOgroQOwYQQOKPJ8CIbE+1ETVlOoK1UC2nU3gYvg==}
-    engines: {node: '>= 0.6'}
-    dev: true
-
-  /mime-types/2.1.35:
-    resolution: {integrity: sha512-ZDY+bPm5zTTF+YpCrAU9nK0UgICYPT0QtT1NZWFv4s++TNkcgVaT0g6+4R2uI4MjQjzysHB1zxuWL50hzaeXiw==}
-    engines: {node: '>= 0.6'}
-    dependencies:
-      mime-db: 1.52.0
-    dev: true
-
   /mimic-fn/2.1.0:
     resolution: {integrity: sha512-OqbOk5oEQeAZ8WXWydlu9HJjz9WVdEIvamMCcXmuqUYjTknH/sqsWvhQ3vgwKFRR1HpjvNBKQ37nbJgYzGqGcg==}
     engines: {node: '>=6'}
@@ -2004,15 +1947,6 @@ packages:
     engines: {node: '>=12'}
     dependencies:
       mimic-fn: 4.0.0
-    dev: true
-
-  /openai/3.2.1:
-    resolution: {integrity: sha512-762C9BNlJPbjjlWZi4WYK9iM2tAVAv0uUp1UmI34vb0CN5T2mjB/qM6RYBmNKMh/dN9fC+bxqPwWJZUTWW052A==}
-    dependencies:
-      axios: 0.26.1
-      form-data: 4.0.0
-    transitivePeerDependencies:
-      - debug
     dev: true
 
   /ora/6.1.2:
