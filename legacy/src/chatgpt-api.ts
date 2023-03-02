@@ -7,7 +7,6 @@ import * as tokenizer from './tokenizer'
 import * as types from './types'
 import { fetch as globalFetch } from './fetch'
 import { fetchSSE } from './fetch-sse'
-import { ChatGPTAPIOptions } from './types'
 
 const CHATGPT_MODEL = 'gpt-3.5-turbo'
 
@@ -47,19 +46,21 @@ export class ChatGPTAPI {
    * @param upsertMessage - Optional function to insert or update a message. If not provided, the default implementation will be used (using an in-memory `messageStore`).
    * @param fetch - Optional override for the `fetch` implementation to use. Defaults to the global `fetch` function.
    */
-  constructor({
-    apiKey,
-    apiBaseUrl = 'https://api.openai.com',
-    debug = false,
-    messageStore,
-    completionParams,
-    systemMessage,
-    maxModelTokens = 4096,
-    maxResponseTokens = 1000,
-    getMessageById,
-    upsertMessage,
-    fetch = globalFetch
-  }: ChatGPTAPIOptions) {
+  constructor(opts: types.ChatGPTAPIOptions) {
+    const {
+      apiKey,
+      apiBaseUrl = 'https://api.openai.com',
+      debug = false,
+      messageStore,
+      completionParams,
+      systemMessage,
+      maxModelTokens = 4096,
+      maxResponseTokens = 1000,
+      getMessageById,
+      upsertMessage,
+      fetch = globalFetch
+    } = opts
+
     this._apiKey = apiKey
     this._apiBaseUrl = apiBaseUrl
     this._debug = !!debug
