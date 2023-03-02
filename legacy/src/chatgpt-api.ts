@@ -227,7 +227,7 @@ export class ChatGPTAPI {
                 }
 
                 try {
-                  const response: types.CreateChatCompletionDeltaResponse =
+                  const response: types.openai.CreateChatCompletionDeltaResponse =
                     JSON.parse(data)
 
                   if (response.id) {
