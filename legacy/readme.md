@@ -479,6 +479,7 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [Feishu Bot](https://github.com/linjungz/feishu-chatgpt-bot)
 - [DomainGPT: Discover available domain names](https://github.com/billylo1/DomainGPT)
 - [AI Poem Generator](https://aipoemgenerator.com/)
+- [ai-commit – GPT-3 Commit Message Generator](https://github.com/insulineru/ai-commit)
 
 If you create a cool integration, feel free to open a PR and add it to the list.
 
