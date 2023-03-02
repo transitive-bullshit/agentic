@@ -178,7 +178,7 @@ To use this module from Node.js, you need to pick between two methods:
 
 Both approaches have very similar APIs, so it should be simple to swap between them.
 
-**Note**: We strongly recommend using the official `ChatGPTAPI` since it uses officially supported APIs from OpenAI. We may remove support for `ChatGPTUnofficialProxyAPI` in a future release.
+**Note**: We strongly recommend using `ChatGPTAPI` since it uses the officially supported API from OpenAI. We may remove support for `ChatGPTUnofficialProxyAPI` in a future release.
 
 ### Usage - ChatGPTAPI
 
