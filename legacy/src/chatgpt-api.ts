@@ -145,7 +145,6 @@ export class ChatGPTAPI {
    * Set `debug: true` in the `ChatGPTAPI` constructor to log more info on the full prompt sent to the OpenAI chat completions API. You can override the `systemMessage` in `opts` to customize the assistant's instructions.
    *
    * @param message - The prompt message to send
-   * @param opts.conversationId - Optional ID of a conversation to continue (defaults to a random UUID)
    * @param opts.parentMessageId - Optional ID of the previous message in the conversation (defaults to `undefined`)
    * @param opts.messageId - Optional ID of the message to send (defaults to a random UUID)
    * @param opts.systemMessage - Optional override for the chat "system message" which acts as instructions to the model (defaults to the ChatGPT system message)
@@ -160,7 +159,6 @@ export class ChatGPTAPI {
     opts: types.SendMessageOptions = {}
   ): Promise<types.ChatMessage> {
     const {
-      conversationId = uuidv4(),
       parentMessageId,
       messageId = uuidv4(),
       timeoutMs,
@@ -180,7 +178,6 @@ export class ChatGPTAPI {
       role: 'user',
       id: messageId,
       parentMessageId,
-      conversationId,
       text
     }
     await this._upsertMessage(message)
@@ -194,7 +191,6 @@ export class ChatGPTAPI {
       role: 'assistant',
       id: uuidv4(),
       parentMessageId: messageId,
-      conversationId,
       text: ''
     }
 
