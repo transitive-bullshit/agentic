@@ -21,14 +21,7 @@ async function main() {
     // apiReverseProxyUrl: 'https://chat.duti.tech/api/conversation',
     // apiReverseProxyUrl: 'https://gpt.pawan.krd/backend-api/conversation',
 
-    // change this to an `accessToken` extracted from the ChatGPT site's `https://chat.openai.com/api/auth/session` response
-    // or use https://github.com/acheong08/OpenAIAuth to get the token programatically (python)
     accessToken: process.env.OPENAI_ACCESS_TOKEN,
-
-    // optionally override the default model (this must be a chatgpt model; not an OpenAI model)
-    // model: 'text-davinci-002-render-sha' // default model for free and paid users (used to be called turbo in the UI)
-    // model: 'text-davinci-002-render-paid' // legacy paid model
-
     debug: false
   })
 
