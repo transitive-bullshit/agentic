@@ -13,7 +13,10 @@ dotenv.config()
  * ```
  */
 async function main() {
-  const api = new ChatGPTAPI({ apiKey: process.env.OPENAI_API_KEY })
+  const api = new ChatGPTAPI({
+    apiKey: process.env.OPENAI_API_KEY,
+    debug: false
+  })
 
   const prompt =
     'Write a python version of bubble sort. Do not include example usage.'
@@ -21,7 +24,7 @@ async function main() {
   const res = await oraPromise(api.sendMessage(prompt), {
     text: prompt
   })
-  console.log(res)
+  console.log(res.text)
 }
 
 main().catch((err) => {

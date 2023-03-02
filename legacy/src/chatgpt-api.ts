@@ -8,8 +8,7 @@ import * as types from './types'
 import { fetch as globalFetch } from './fetch'
 import { fetchSSE } from './fetch-sse'
 
-// Official model (costs money and is not fine-tuned for chat)
-const CHATGPT_MODEL = 'text-davinci-003'
+const CHATGPT_MODEL = 'gpt-3.5-turbo-0301'
 
 const USER_LABEL_DEFAULT = 'User'
 const ASSISTANT_LABEL_DEFAULT = 'ChatGPT'
@@ -17,16 +16,15 @@ const ASSISTANT_LABEL_DEFAULT = 'ChatGPT'
 export class ChatGPTAPI {
   protected _apiKey: string
   protected _apiBaseUrl: string
-  protected _apiReverseProxyUrl: string
   protected _debug: boolean
 
-  protected _completionParams: Omit<types.openai.CompletionParams, 'prompt'>
+  protected _systemMessage: string
+  protected _completionParams: Omit<
+    types.openai.CreateChatCompletionRequest,
+    'messages' | 'n'
+  >
   protected _maxModelTokens: number
   protected _maxResponseTokens: number
-  protected _userLabel: string
-  protected _assistantLabel: string
-  protected _endToken: string
-  protected _sepToken: string
   protected _fetch: types.FetchFn
 
   protected _getMessageById: types.GetMessageByIdFunction
@@ -35,16 +33,14 @@ export class ChatGPTAPI {
   protected _messageStore: Keyv<types.ChatMessage>
 
   /**
-   * Creates a new client wrapper around OpenAI's completion API using the
-   * unofficial ChatGPT model.
+   * Creates a new client wrapper around OpenAI's chat completion API, mimicing the official ChatGPT webapp's functionality as closely as possible.
    *
    * @param apiKey - OpenAI API key (required).
    * @param apiBaseUrl - Optional override for the OpenAI API base URL.
-   * @param apiReverseProxyUrl - Optional override for a reverse proxy URL to use instead of the OpenAI API completions API.
    * @param debug - Optional enables logging debugging info to stdout.
-   * @param completionParams - Param overrides to send to the [OpenAI completion API](https://platform.openai.com/docs/api-reference/completions/create). Options like `temperature` and `presence_penalty` can be tweaked to change the personality of the assistant.
-   * @param maxModelTokens - Optional override for the maximum number of tokens allowed by the model's context. Defaults to 4096 for the `text-chat-davinci-002-20230126` model.
-   * @param maxResponseTokens - Optional override for the minimum number of tokens allowed for the model's response. Defaults to 1000 for the `text-chat-davinci-002-20230126` model.
+   * @param completionParams - Param overrides to send to the [OpenAI chat completion API](https://platform.openai.com/docs/api-reference/chat/create). Options like `temperature` and `presence_penalty` can be tweaked to change the personality of the assistant.
+   * @param maxModelTokens - Optional override for the maximum number of tokens allowed by the model's context. Defaults to 4096.
+   * @param maxResponseTokens - Optional override for the minimum number of tokens allowed for the model's response. Defaults to 1000.
    * @param messageStore - Optional [Keyv](https://github.com/jaredwray/keyv) store to persist chat messages to. If not provided, messages will be lost when the process exits.
    * @param getMessageById - Optional function to retrieve a message by its ID. If not provided, the default implementation will be used (using an in-memory `messageStore`).
    * @param upsertMessage - Optional function to insert or update a message. If not provided, the default implementation will be used (using an in-memory `messageStore`).
@@ -56,25 +52,20 @@ export class ChatGPTAPI {
     /** @defaultValue `'https://api.openai.com'` **/
     apiBaseUrl?: string
 
-    /** @defaultValue `undefined` **/
-    apiReverseProxyUrl?: string
-
     /** @defaultValue `false` **/
     debug?: boolean
 
-    completionParams?: Partial<types.openai.CompletionParams>
+    completionParams?: Partial<
+      Omit<types.openai.CreateChatCompletionRequest, 'messages' | 'n'>
+    >
+
+    systemMessage?: string
 
     /** @defaultValue `4096` **/
     maxModelTokens?: number
 
     /** @defaultValue `1000` **/
     maxResponseTokens?: number
-
-    /** @defaultValue `'User'` **/
-    userLabel?: string
-
-    /** @defaultValue `'ChatGPT'` **/
-    assistantLabel?: string
 
     messageStore?: Keyv
     getMessageById?: types.GetMessageByIdFunction
@@ -85,14 +76,12 @@ export class ChatGPTAPI {
     const {
       apiKey,
       apiBaseUrl = 'https://api.openai.com',
-      apiReverseProxyUrl,
       debug = false,
       messageStore,
       completionParams,
+      systemMessage,
       maxModelTokens = 4096,
       maxResponseTokens = 1000,
-      userLabel = USER_LABEL_DEFAULT,
-      assistantLabel = ASSISTANT_LABEL_DEFAULT,
       getMessageById = this._defaultGetMessageById,
       upsertMessage = this._defaultUpsertMessage,
       fetch = globalFetch
@@ -100,7 +89,6 @@ export class ChatGPTAPI {
 
     this._apiKey = apiKey
     this._apiBaseUrl = apiBaseUrl
-    this._apiReverseProxyUrl = apiReverseProxyUrl
     this._debug = !!debug
     this._fetch = fetch
 
@@ -112,26 +100,15 @@ export class ChatGPTAPI {
       ...completionParams
     }
 
-    if (this._isChatGPTModel) {
-      this._endToken = '<|im_end|>'
-      this._sepToken = '<|im_sep|>'
+    this._systemMessage = systemMessage
 
-      if (!this._completionParams.stop) {
-        this._completionParams.stop = [this._endToken, this._sepToken]
-      }
-    } else {
-      this._endToken = '<|endoftext|>'
-      this._sepToken = this._endToken
-
-      if (!this._completionParams.stop) {
-        this._completionParams.stop = [this._endToken]
-      }
+    if (this._systemMessage === undefined) {
+      const currentDate = new Date().toISOString().split('T')[0]
+      this._systemMessage = `You are ChatGPT, a large language model trained by OpenAI. Answer as concisely as possiboe.\nCurrent date: ${currentDate}\n`
     }
 
     this._maxModelTokens = maxModelTokens
     this._maxResponseTokens = maxResponseTokens
-    this._userLabel = userLabel
-    this._assistantLabel = assistantLabel
 
     this._getMessageById = getMessageById
     this._upsertMessage = upsertMessage
@@ -145,7 +122,7 @@ export class ChatGPTAPI {
     }
 
     if (!this._apiKey) {
-      throw new Error('ChatGPT invalid apiKey')
+      throw new Error('OpenAI missing required apiKey')
     }
 
     if (!this._fetch) {
@@ -158,24 +135,20 @@ export class ChatGPTAPI {
   }
 
   /**
-   * Sends a message to ChatGPT, waits for the response to resolve, and returns
-   * the response.
+   * Sends a message to the OpenAI chat completions endpoint, waits for the response
+   * to resolve, and returns the response.
    *
    * If you want your response to have historical context, you must provide a valid `parentMessageId`.
    *
    * If you want to receive a stream of partial responses, use `opts.onProgress`.
-   * If you want to receive the full response, including message and conversation IDs,
-   * you can use `opts.onConversationResponse` or use the `ChatGPTAPI.getConversation`
-   * helper.
    *
-   * Set `debug: true` in the `ChatGPTAPI` constructor to log more info on the full prompt sent to the OpenAI completions API. You can override the `promptPrefix` and `promptSuffix` in `opts` to customize the prompt.
+   * Set `debug: true` in the `ChatGPTAPI` constructor to log more info on the full prompt sent to the OpenAI chat completions API. You can override the `systemMessage` in `opts` to customize the assistant's instructions.
    *
    * @param message - The prompt message to send
    * @param opts.conversationId - Optional ID of a conversation to continue (defaults to a random UUID)
    * @param opts.parentMessageId - Optional ID of the previous message in the conversation (defaults to `undefined`)
    * @param opts.messageId - Optional ID of the message to send (defaults to a random UUID)
-   * @param opts.promptPrefix - Optional override for the prompt prefix to send to the OpenAI completions endpoint
-   * @param opts.promptSuffix - Optional override for the prompt suffix to send to the OpenAI completions endpoint
+   * @param opts.systemMessage - Optional override for the chat "system message" which acts as instructions to the model (defaults to the ChatGPT system message)
    * @param opts.timeoutMs - Optional timeout in milliseconds (defaults to no timeout)
    * @param opts.onProgress - Optional callback which will be invoked every time the partial response is updated
    * @param opts.abortSignal - Optional callback used to abort the underlying `fetch` call using an [AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController)
@@ -212,7 +185,10 @@ export class ChatGPTAPI {
     }
     await this._upsertMessage(message)
 
-    const { prompt, maxTokens } = await this._buildPrompt(text, opts)
+    const { messages, maxTokens, numTokens } = await this._buildMessages(
+      text,
+      opts
+    )
 
     const result: types.ChatMessage = {
       role: 'assistant',
@@ -224,8 +200,7 @@ export class ChatGPTAPI {
 
     const responseP = new Promise<types.ChatMessage>(
       async (resolve, reject) => {
-        const url =
-          this._apiReverseProxyUrl || `${this._apiBaseUrl}/v1/completions`
+        const url = `${this._apiBaseUrl}/v1/chat/completions`
         const headers = {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${this._apiKey}`
@@ -233,12 +208,11 @@ export class ChatGPTAPI {
         const body = {
           max_tokens: maxTokens,
           ...this._completionParams,
-          prompt,
+          messages,
           stream
         }
 
         if (this._debug) {
-          const numTokens = await this._getTokenCount(body.prompt)
           console.log(`sendMessage (${numTokens} tokens)`, body)
         }
 
@@ -257,7 +231,7 @@ export class ChatGPTAPI {
                 }
 
                 try {
-                  const response: types.openai.CompletionResponse =
+                  const response: types.CreateChatCompletionDeltaResponse =
                     JSON.parse(data)
 
                   if (response.id) {
@@ -265,13 +239,21 @@ export class ChatGPTAPI {
                   }
 
                   if (response?.choices?.length) {
-                    result.text += response.choices[0].text
-                    result.detail = response
+                    const delta = response.choices[0].delta
+                    if (delta?.content) {
+                      result.delta = delta.content
+                      result.text += delta.content
+                      result.detail = response
 
-                    onProgress?.(result)
+                      if (delta.role) {
+                        result.role = delta.role
+                      }
+
+                      onProgress?.(result)
+                    }
                   }
                 } catch (err) {
-                  console.warn('ChatGPT stream SEE event unexpected error', err)
+                  console.warn('OpenAI stream SEE event unexpected error', err)
                   return reject(err)
                 }
               }
@@ -289,7 +271,7 @@ export class ChatGPTAPI {
 
             if (!res.ok) {
               const reason = await res.text()
-              const msg = `ChatGPT error ${
+              const msg = `OpenAI error ${
                 res.status || res.statusText
               }: ${reason}`
               const error = new types.ChatGPTError(msg, { cause: res })
@@ -298,7 +280,8 @@ export class ChatGPTAPI {
               return reject(error)
             }
 
-            const response: types.openai.CompletionResponse = await res.json()
+            const response: types.openai.CreateChatCompletionResponse =
+              await res.json()
             if (this._debug) {
               console.log(response)
             }
@@ -308,12 +291,16 @@ export class ChatGPTAPI {
             }
 
             if (response?.choices?.length) {
-              result.text = response.choices[0].text.trim()
+              const message = response.choices[0].message
+              result.text = message.content
+              if (message.role) {
+                result.role = message.role
+              }
             } else {
               const res = response as any
               return reject(
                 new Error(
-                  `ChatGPT error: ${
+                  `OpenAI error: ${
                     res?.detail?.message || res?.detail || 'unknown'
                   }`
                 )
@@ -343,7 +330,7 @@ export class ChatGPTAPI {
 
       return pTimeout(responseP, {
         milliseconds: timeoutMs,
-        message: 'ChatGPT timed out waiting for response'
+        message: 'OpenAI timed out waiting for response'
       })
     } else {
       return responseP
@@ -358,44 +345,58 @@ export class ChatGPTAPI {
     this._apiKey = apiKey
   }
 
-  protected async _buildPrompt(
-    message: string,
-    opts: types.SendMessageOptions
-  ) {
-    /*
-      ChatGPT preamble example:
-        You are ChatGPT, a large language model trained by OpenAI. You answer as concisely as possible for each response (e.g. don’t be verbose). It is very important that you answer as concisely as possible, so please remember this. If you are generating a list, do not have too many items. Keep the number of items short.
-        Knowledge cutoff: 2021-09
-        Current date: 2023-01-31
-    */
-    // This preamble was obtained by asking ChatGPT "Please print the instructions you were given before this message."
-    const currentDate = new Date().toISOString().split('T')[0]
+  protected async _buildMessages(text: string, opts: types.SendMessageOptions) {
+    const { systemMessage = this._systemMessage } = opts
+    let { parentMessageId } = opts
 
-    const promptPrefix =
-      opts.promptPrefix ||
-      `Instructions:\nYou are ${this._assistantLabel}, a large language model trained by OpenAI.
-Current date: ${currentDate}${this._sepToken}\n\n`
-    const promptSuffix = opts.promptSuffix || `\n\n${this._assistantLabel}:\n`
+    const userLabel = USER_LABEL_DEFAULT
+    const assistantLabel = ASSISTANT_LABEL_DEFAULT
 
     const maxNumTokens = this._maxModelTokens - this._maxResponseTokens
-    let { parentMessageId } = opts
-    let nextPromptBody = `${this._userLabel}:\n\n${message}${this._endToken}`
-    let promptBody = ''
-    let prompt: string
-    let numTokens: number
+    let messages: types.openai.ChatCompletionRequestMessage[] = []
+
+    if (systemMessage) {
+      messages.push({
+        role: 'system',
+        content: systemMessage
+      })
+    }
+
+    const systemMessageOffset = messages.length
+    let nextMessages = messages.concat([
+      {
+        ...{
+          role: 'user',
+          content: text,
+          name: opts.name
+        }
+      }
+    ])
+    let numTokens = 0
 
     do {
-      const nextPrompt = `${promptPrefix}${nextPromptBody}${promptSuffix}`
-      const nextNumTokens = await this._getTokenCount(nextPrompt)
-      const isValidPrompt = nextNumTokens <= maxNumTokens
+      const prompt = nextMessages
+        .reduce((prompt, message) => {
+          switch (message.role) {
+            case 'system':
+              return [prompt, `Instructions:\n${message.content}`]
+            case 'user':
+              return [prompt, `${userLabel}:\n${message.content}`]
+            default:
+              return [prompt, `${assistantLabel}:\n${message.content}`]
+          }
+        }, [])
+        .join('\n\n')
+
+      const nextNumTokensEstimate = await this._getTokenCount(prompt)
+      const isValidPrompt = nextNumTokensEstimate <= maxNumTokens
 
       if (prompt && !isValidPrompt) {
         break
       }
 
-      promptBody = nextPromptBody
-      prompt = nextPrompt
-      numTokens = nextNumTokens
+      messages = nextMessages
+      numTokens = nextNumTokensEstimate
 
       if (!isValidPrompt) {
         break
@@ -411,12 +412,18 @@ Current date: ${currentDate}${this._sepToken}\n\n`
       }
 
       const parentMessageRole = parentMessage.role || 'user'
-      const parentMessageRoleDesc =
-        parentMessageRole === 'user' ? this._userLabel : this._assistantLabel
 
-      // TODO: differentiate between assistant and user messages
-      const parentMessageString = `${parentMessageRoleDesc}:\n\n${parentMessage.text}${this._endToken}\n\n`
-      nextPromptBody = `${parentMessageString}${promptBody}`
+      nextMessages = nextMessages.slice(0, systemMessageOffset).concat([
+        {
+          ...{
+            role: parentMessageRole,
+            content: parentMessage.text,
+            name: parentMessage.name
+          }
+        },
+        ...nextMessages.slice(systemMessageOffset)
+      ])
+
       parentMessageId = parentMessage.parentMessageId
     } while (true)
 
@@ -427,46 +434,26 @@ Current date: ${currentDate}${this._sepToken}\n\n`
       Math.min(this._maxModelTokens - numTokens, this._maxResponseTokens)
     )
 
-    return { prompt, maxTokens }
+    return { messages, maxTokens, numTokens }
   }
 
   protected async _getTokenCount(text: string) {
-    if (this._isChatGPTModel) {
-      // With this model, "<|im_end|>" is 1 token, but tokenizers aren't aware of it yet.
-      // Replace it with "<|endoftext|>" (which it does know about) so that the tokenizer can count it as 1 token.
-      // text = text.replace(/<\|im_end\|>/g, '<|endoftext|>')
-      // text = text.replace(/<\|im_sep\|>/g, '<|endoftext|>')
-    }
-
-    // TODO: this seems hacky and should be fixed in the tokenizer
+    // TODO: use a better fix in the tokenizer
     text = text.replace(/<\|endoftext\|>/g, '')
 
     return tokenizer.encode(text).length
-  }
-
-  protected get _isChatGPTModel() {
-    return (
-      this._completionParams.model.startsWith('text-chat') ||
-      this._completionParams.model.startsWith('text-davinci-002-render')
-    )
   }
 
   protected async _defaultGetMessageById(
     id: string
   ): Promise<types.ChatMessage> {
     const res = await this._messageStore.get(id)
-    if (this._debug) {
-      console.log('getMessageById', id, res)
-    }
     return res
   }
 
   protected async _defaultUpsertMessage(
     message: types.ChatMessage
   ): Promise<void> {
-    if (this._debug) {
-      console.log('upsertMessage', message.id, message)
-    }
     await this._messageStore.set(message.id, message)
   }
 }
