@@ -2,7 +2,7 @@ chatgpt / [Exports](modules.md)
 
 # ChatGPT API <!-- omit in toc -->
 
-> Node.js client for the unofficial [ChatGPT](https://openai.com/blog/chatgpt/) API.
+> Node.js client for the official [ChatGPT](https://openai.com/blog/chatgpt/) API.
 
 [![NPM](https://img.shields.io/npm/v/chatgpt.svg)](https://www.npmjs.com/package/chatgpt) [![Build Status](https://github.com/transitive-bullshit/chatgpt-api/actions/workflows/test.yml/badge.svg)](https://github.com/transitive-bullshit/chatgpt-api/actions/workflows/test.yml) [![MIT License](https://img.shields.io/badge/license-MIT-blue)](https://github.com/transitive-bullshit/chatgpt-api/blob/main/license) [![Prettier Code Formatting](https://img.shields.io/badge/code_style-prettier-brightgreen.svg)](https://prettier.io)
 
@@ -33,7 +33,33 @@ This package is a Node.js wrapper around [ChatGPT](https://openai.com/blog/chatg
 ## Updates
 
 <details open>
+<summary><strong>March 1, 2023</strong></summary>
+
+<br/>
+
+The [official OpenAI chat completions API](https://platform.openai.com/docs/guides/chat) has been released, and it is now the default for this package! 🔥
+
+| Method                      | Free?  | Robust?  | Quality?                |
+| --------------------------- | ------ | -------- | ----------------------- |
+| `ChatGPTAPI`                | ❌ No  | ✅ Yes   | ✅️ Real ChatGPT models |
+| `ChatGPTUnofficialProxyAPI` | ✅ Yes | ☑️ Maybe | ✅ Real ChatGPT         |
+
+**Note**: We strongly recommend using `ChatGPTAPI` since it uses the officially supported API from OpenAI. We may remove support for `ChatGPTUnofficialProxyAPI` in a future release.
+
+1. `ChatGPTAPI` - Uses the `gpt-3.5-turbo-0301` model with the official OpenAI chat completions API (official, robust approach, but it's not free)
+2. `ChatGPTUnofficialProxyAPI` - Uses an unofficial proxy server to access ChatGPT's backend API in a way that circumvents Cloudflare (uses the real ChatGPT and is pretty lightweight, but relies on a third-party server and is rate-limited)
+
+</details>
+
+<details>
+<summary><strong>Previous Updates</strong></summary>
+
+<br/>
+
+<details>
 <summary><strong>Feb 19, 2023</strong></summary>
+
+<br/>
 
 We now provide three ways of accessing the unofficial ChatGPT API, all of which have tradeoffs:
 
@@ -41,7 +67,7 @@ We now provide three ways of accessing the unofficial ChatGPT API, all of which 
 | --------------------------- | ------ | -------- | ----------------- |
 | `ChatGPTAPI`                | ❌ No  | ✅ Yes   | ☑️ Mimics ChatGPT |
 | `ChatGPTUnofficialProxyAPI` | ✅ Yes | ☑️ Maybe | ✅ Real ChatGPT   |
-| `ChatGPAPIBrowser` (v3)     | ✅ Yes | ❌ No    | ✅ Real ChatGPT   |
+| `ChatGPTAPIBrowser` (v3)    | ✅ Yes | ❌ No    | ✅ Real ChatGPT   |
 
 **Note**: I recommend that you use either `ChatGPTAPI` or `ChatGPTUnofficialProxyAPI`.
 
@@ -52,12 +78,9 @@ We now provide three ways of accessing the unofficial ChatGPT API, all of which 
 </details>
 
 <details>
-<summary><strong>Previous Updates</strong></summary>
+<summary><strong>Feb 5, 2023</strong></summary>
 
 <br/>
-
-<details>
-<summary><strong>Feb 5, 2023</strong></summary>
 
 OpenAI has disabled the leaked chat model we were previously using, so we're now defaulting to `text-davinci-003`, which is not free.
 
@@ -67,6 +90,8 @@ We've found several other hidden, fine-tuned chat models, but OpenAI keeps disab
 
 <details>
 <summary><strong>Feb 1, 2023</strong></summary>
+
+<br/>
 
 This package no longer requires any browser hacks – **it is now using the official OpenAI completions API** with a leaked model that ChatGPT uses under the hood. 🔥
 
@@ -146,16 +171,18 @@ Make sure you're using `node >= 18` so `fetch` is available (or `node >= 14` if 
 
 To use this module from Node.js, you need to pick between two methods:
 
-| Method                      | Free?  | Robust?  | Quality?          |
-| --------------------------- | ------ | -------- | ----------------- |
-| `ChatGPTAPI`                | ❌ No  | ✅ Yes   | ☑️ Mimics ChatGPT |
-| `ChatGPTUnofficialProxyAPI` | ✅ Yes | ☑️ Maybe | ✅ Real ChatGPT   |
+| Method                      | Free?  | Robust?  | Quality?                |
+| --------------------------- | ------ | -------- | ----------------------- |
+| `ChatGPTAPI`                | ❌ No  | ✅ Yes   | ✅️ Real ChatGPT models |
+| `ChatGPTUnofficialProxyAPI` | ✅ Yes | ☑️ Maybe | ✅ Real ChatGPT         |
 
-1. `ChatGPTAPI` - Uses `text-davinci-003` to mimic ChatGPT via the official OpenAI completions API (most robust approach, but it's not free and doesn't use a model fine-tuned for chat). You can override the model, completion params, and prompt to fully customize your bot.
+1. `ChatGPTAPI` - Uses the `gpt-3.5-turbo-0301` model with the official OpenAI chat completions API (official, robust approach, but it's not free). You can override the model, completion params, and system message to fully customize your assistant.
 
 2. `ChatGPTUnofficialProxyAPI` - Uses an unofficial proxy server to access ChatGPT's backend API in a way that circumvents Cloudflare (uses the real ChatGPT and is pretty lightweight, but relies on a third-party server and is rate-limited)
 
 Both approaches have very similar APIs, so it should be simple to swap between them.
+
+**Note**: We strongly recommend using `ChatGPTAPI` since it uses the officially supported API from OpenAI. We may remove support for `ChatGPTUnofficialProxyAPI` in a future release.
 
 ### Usage - ChatGPTAPI
 
@@ -174,7 +201,7 @@ async function example() {
 }
 ```
 
-You can override the default `model` (`text-davinci-003`) and any [OpenAI completion params](https://platform.openai.com/docs/api-reference/completions/create) using `completionParams`:
+You can override the default `model` (`gpt-3.5-turbo-0301`) and any [OpenAI chat completion params](https://platform.openai.com/docs/api-reference/chat/create) using `completionParams`:
 
 ```ts
 const api = new ChatGPTAPI({
@@ -186,7 +213,7 @@ const api = new ChatGPTAPI({
 })
 ```
 
-If you want to track the conversation, you'll need to pass the `parentMessageid` and `conversationid`:
+If you want to track the conversation, you'll need to pass the `parentMessageId` like this:
 
 ```ts
 const api = new ChatGPTAPI({ apiKey: process.env.OPENAI_API_KEY })
@@ -197,14 +224,12 @@ console.log(res.text)
 
 // send a follow-up
 res = await api.sendMessage('Can you expand on that?', {
-  conversationId: res.conversationId,
   parentMessageId: res.id
 })
 console.log(res.text)
 
 // send another follow-up
 res = await api.sendMessage('What were we talking about?', {
-  conversationId: res.conversationId,
   parentMessageId: res.id
 })
 console.log(res.text)
@@ -234,7 +259,7 @@ const response = await api.sendMessage(
 )
 ```
 
-If you want to see more info about what's actually being sent to [OpenAI's completions API](https://platform.openai.com/docs/api-reference/completions), set the `debug: true` option in the `ChatGPTAPI` constructor:
+If you want to see more info about what's actually being sent to [OpenAI's chat completions API](https://platform.openai.com/docs/api-reference/chat/create), set the `debug: true` option in the `ChatGPTAPI` constructor:
 
 ```ts
 const api = new ChatGPTAPI({
@@ -243,11 +268,11 @@ const api = new ChatGPTAPI({
 })
 ```
 
-You'll notice that we're using a reverse-engineered `promptPrefix` and `promptSuffix`. You can customize these via the `sendMessage` options:
+We default to a basic `systemMessage`. You can override this in either the `ChatGPTAPI` constructor or `sendMessage`:
 
 ```ts
 const res = await api.sendMessage('what is the answer to the universe?', {
-  promptPrefix: `You are ChatGPT, a large language model trained by OpenAI. You answer as concisely as possible for each responseIf you are generating a list, do not have too many items.
+  systemMessage: `You are ChatGPT, a large language model trained by OpenAI. You answer as concisely as possible for each responseIf you are generating a list, do not have too many items.
 Current date: ${new Date().toISOString()}\n\n`
 })
 ```
@@ -273,7 +298,7 @@ async function example() {
 
 ### Usage - ChatGPTUnofficialProxyAPI
 
-The API is almost exactly the same for the `ChatGPTUnofficialProxyAPI`; you just need to provide a ChatGPT `accessToken` instead of an OpenAI API key.
+The API for `ChatGPTUnofficialProxyAPI` is almost exactly the same. You just need to provide a ChatGPT `accessToken` instead of an OpenAI API key.
 
 ```ts
 import { ChatGPTUnofficialProxyAPI } from 'chatgpt'
@@ -294,6 +319,8 @@ See [demos/demo-reverse-proxy](./demos/demo-reverse-proxy.ts) for a full example
 npx tsx demos/demo-reverse-proxy.ts
 ```
 
+`ChatGPTUnofficialProxyAPI` messages also contain a `conversationid` in addition to `parentMessageId`, since the ChatGPT webapp can't reference messages across
+
 #### Reverse Proxy
 
 You can override the reverse proxy by passing `apiReverseProxyUrl`:
@@ -307,22 +334,29 @@ const api = new ChatGPTUnofficialProxyAPI({
 
 Known reverse proxies run by community members include:
 
-| Reverse Proxy URL                                | Author                                       | Rate Limits | Last Checked |
-| ------------------------------------------------ | -------------------------------------------- | ----------- | ------------ |
-| `https://chat.duti.tech/api/conversation`        | [@acheong08](https://github.com/acheong08)   | 50 req/min  | 2/19/2023    |
-| `https://gpt.pawan.krd/backend-api/conversation` | [@PawanOsman](https://github.com/PawanOsman) | ?           | 2/19/2023    |
+| Reverse Proxy URL                                | Author                                       | Rate Limits       | Last Checked |
+| ------------------------------------------------ | -------------------------------------------- | ----------------- | ------------ |
+| `https://chat.duti.tech/api/conversation`        | [@acheong08](https://github.com/acheong08)   | 120 req/min by IP | 2/19/2023    |
+| `https://gpt.pawan.krd/backend-api/conversation` | [@PawanOsman](https://github.com/PawanOsman) | ?                 | 2/19/2023    |
 
 Note: info on how the reverse proxies work is not being published at this time in order to prevent OpenAI from disabling access.
 
 #### Access Token
 
-To use `ChatGPTUnofficialProxyAPI`, you'll need a ChatGPT access token. You can either:
+To use `ChatGPTUnofficialProxyAPI`, you'll need an OpenAI access token from the ChatGPT webapp. To do this, you can use any of the following methods which take an `email` and `password` and return an access token:
 
-1. Use [acheong08/OpenAIAuth](https://github.com/acheong08/OpenAIAuth), which is a python script to login and get an access token automatically. This works with email + password accounts (e.g., it does not support accounts where you auth via Microsoft / Google).
+- Node.js libs
+  - [ericlewis/openai-authenticator](https://github.com/ericlewis/openai-authenticator)
+  - [michael-dm/openai-token](https://github.com/michael-dm/openai-token)
+  - [allanoricil/chat-gpt-authenticator](https://github.com/AllanOricil/chat-gpt-authenticator)
+- Python libs
+  - [acheong08/OpenAIAuth](https://github.com/acheong08/OpenAIAuth)
 
-2. You can manually get an `accessToken` by logging in to the ChatGPT webapp and then opening `https://chat.openai.com/api/auth/session`, which will return a JSON object containing your `accessToken` string.
+These libraries work with email + password accounts (e.g., they do not support accounts where you auth via Microsoft / Google).
 
-Access tokens last for ~8 hours (TODO: need to verify the exact TTL).
+Alternatively, you can manually get an `accessToken` by logging in to the ChatGPT webapp and then opening `https://chat.openai.com/api/auth/session`, which will return a JSON object containing your `accessToken` string.
+
+Access tokens last for days.
 
 **Note**: using a reverse proxy will expose your access token to a third-party. There shouldn't be any adverse effects possible from this, but please consider the risks before using this method.
 
@@ -404,7 +438,7 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [Discord Bot #6 (Shakespeare bot)](https://gist.github.com/TheBrokenRail/4b37e7c44e8f721d8bd845050d034c16)
 - [WeChat Bot #1](https://github.com/AutumnWhj/ChatGPT-wechat-bot)
 - [WeChat Bot #2](https://github.com/fuergaosi233/wechat-chatgpt)
-- [WeChat Bot #3](https://github.com/wangrongding/wechat-bot)
+- [WeChat Bot #3](https://github.com/wangrongding/wechat-bot) (
 - [WeChat Bot #4](https://github.com/darknightlab/wechat-bot)
 - [WeChat Bot #5](https://github.com/sunshanpeng/wechaty-chatgpt)
 - [QQ Bot (plugin for Yunzai-bot)](https://github.com/ikechan8370/chatgpt-plugin)
@@ -416,11 +450,12 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [Flutter ChatGPT API](https://github.com/coskuncay/flutter_chatgpt_api)
 - [Carik Bot](https://github.com/luridarmawan/Carik)
 - [Github Action for reviewing PRs](https://github.com/kxxt/chatgpt-action/)
-- [WhatsApp Bot #1](https://github.com/pascalroget/whatsgpt) (multi-user support)
+- [WhatsApp Bot #1](https://github.com/askrella/whatsapp-chatgpt) (DALL-E + Whisper support 💪)
 - [WhatsApp Bot #2](https://github.com/amosayomide05/chatgpt-whatsapp-bot)
-- [WhatsApp Bot #3](https://github.com/navopw/whatsapp-chatgpt)
+- [WhatsApp Bot #3](https://github.com/pascalroget/whatsgpt) (multi-user support)
 - [WhatsApp Bot #4](https://github.com/noelzappy/chatgpt-whatsapp) (schedule periodic messages)
 - [WhatsApp Bot #5](https://github.com/hujanais/bs-chat-gpt3-api) (RaspberryPi + ngrok + Twilio)
+- [WhatsApp Bot #6](https://github.com/dannysantino/whatsgpt) (Session and chat history storage with MongoStore)
 - [Matrix Bot](https://github.com/matrixgpt/matrix-chatgpt-bot)
 - [Rental Cover Letter Generator](https://sharehouse.app/ai)
 - [Assistant CLI](https://github.com/diciaup/assistant-cli)
@@ -446,6 +481,10 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [Clippy the Saleforce chatbot](https://github.com/sebas00/chatgptclippy) ClippyJS joke bot
 - [ai-assistant](https://github.com/youking-lib/ai-assistant) Chat assistant
 - [Feishu Bot](https://github.com/linjungz/feishu-chatgpt-bot)
+- [DomainGPT: Discover available domain names](https://github.com/billylo1/DomainGPT)
+- [AI Poem Generator](https://aipoemgenerator.com/)
+- [Next.js ChatGPT With Firebase](https://github.com/youngle316/chatgpt)
+- [ai-commit – GPT-3 Commit Message Generator](https://github.com/insulineru/ai-commit)
 
 If you create a cool integration, feel free to open a PR and add it to the list.
 
