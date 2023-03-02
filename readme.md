@@ -55,6 +55,8 @@ The [official OpenAI chat completions API](https://platform.openai.com/docs/guid
 <details>
 <summary><strong>Feb 19, 2023</strong></summary>
 
+<br/>
+
 We now provide three ways of accessing the unofficial ChatGPT API, all of which have tradeoffs:
 
 | Method                      | Free?  | Robust?  | Quality?          |
@@ -74,6 +76,8 @@ We now provide three ways of accessing the unofficial ChatGPT API, all of which 
 <details>
 <summary><strong>Feb 5, 2023</strong></summary>
 
+<br/>
+
 OpenAI has disabled the leaked chat model we were previously using, so we're now defaulting to `text-davinci-003`, which is not free.
 
 We've found several other hidden, fine-tuned chat models, but OpenAI keeps disabling them, so we're searching for alternative workarounds.
@@ -82,6 +86,8 @@ We've found several other hidden, fine-tuned chat models, but OpenAI keeps disab
 
 <details>
 <summary><strong>Feb 1, 2023</strong></summary>
+
+<br/>
 
 This package no longer requires any browser hacks – **it is now using the official OpenAI completions API** with a leaked model that ChatGPT uses under the hood. 🔥
 
@@ -191,7 +197,7 @@ async function example() {
 }
 ```
 
-You can override the default `model` (`gpt-3.5-turbo-0301`) and any [OpenAI completion params](https://platform.openai.com/docs/api-reference/chat/create) using `completionParams`:
+You can override the default `model` (`gpt-3.5-turbo-0301`) and any [OpenAI chat completion params](https://platform.openai.com/docs/api-reference/chat/create) using `completionParams`:
 
 ```ts
 const api = new ChatGPTAPI({
