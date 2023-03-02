@@ -32,7 +32,7 @@ ChatCompletionRequestMessage
 
 #### Defined in
 
-[src/types.ts:178](https://github.com/transitive-bullshit/chatgpt-api/blob/1e4ddd6/src/types.ts#L178)
+[src/types.ts:208](https://github.com/transitive-bullshit/chatgpt-api/blob/48cb944/src/types.ts#L208)
 
 ___
 
@@ -48,7 +48,7 @@ ChatCompletionRequestMessage
 
 #### Defined in
 
-[src/types.ts:184](https://github.com/transitive-bullshit/chatgpt-api/blob/1e4ddd6/src/types.ts#L184)
+[src/types.ts:214](https://github.com/transitive-bullshit/chatgpt-api/blob/48cb944/src/types.ts#L214)
 
 ___
 
@@ -64,4 +64,4 @@ ChatCompletionRequestMessage
 
 #### Defined in
 
-[src/types.ts:172](https://github.com/transitive-bullshit/chatgpt-api/blob/1e4ddd6/src/types.ts#L172)
+[src/types.ts:202](https://github.com/transitive-bullshit/chatgpt-api/blob/48cb944/src/types.ts#L202)

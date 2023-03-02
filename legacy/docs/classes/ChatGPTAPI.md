@@ -26,24 +26,13 @@ Creates a new client wrapper around OpenAI's chat completion API, mimicing the o
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `opts` | `Object` | - |
-| `opts.apiBaseUrl?` | `string` | **`Default Value`** `'https://api.openai.com'` * |
-| `opts.apiKey` | `string` | - |
-| `opts.completionParams?` | `Partial`<`Omit`<[`CreateChatCompletionRequest`](../interfaces/openai.CreateChatCompletionRequest.md), ``"messages"`` \| ``"n"``\>\> | - |
-| `opts.debug?` | `boolean` | **`Default Value`** `false` * |
-| `opts.fetch?` | (`input`: `RequestInfo` \| `URL`, `init?`: `RequestInit`) => `Promise`<`Response`\> | - |
-| `opts.getMessageById?` | [`GetMessageByIdFunction`](../modules.md#getmessagebyidfunction) | - |
-| `opts.maxModelTokens?` | `number` | **`Default Value`** `4096` * |
-| `opts.maxResponseTokens?` | `number` | **`Default Value`** `1000` * |
-| `opts.messageStore?` | `Keyv`<`any`, `Record`<`string`, `unknown`\>\> | - |
-| `opts.systemMessage?` | `string` | - |
-| `opts.upsertMessage?` | [`UpsertMessageFunction`](../modules.md#upsertmessagefunction) | - |
+| Name | Type |
+| :------ | :------ |
+| `opts` | [`ChatGPTAPIOptions`](../modules.md#chatgptapioptions) |
 
 #### Defined in
 
-[src/chatgpt-api.ts:49](https://github.com/transitive-bullshit/chatgpt-api/blob/1e4ddd6/src/chatgpt-api.ts#L49)
+[src/chatgpt-api.ts:49](https://github.com/transitive-bullshit/chatgpt-api/blob/48cb944/src/chatgpt-api.ts#L49)
 
 ## Accessors
 
@@ -57,7 +46,7 @@ Creates a new client wrapper around OpenAI's chat completion API, mimicing the o
 
 #### Defined in
 
-[src/chatgpt-api.ts:336](https://github.com/transitive-bullshit/chatgpt-api/blob/1e4ddd6/src/chatgpt-api.ts#L336)
+[src/chatgpt-api.ts:310](https://github.com/transitive-bullshit/chatgpt-api/blob/48cb944/src/chatgpt-api.ts#L310)
 
 • `set` **apiKey**(`apiKey`): `void`
 
@@ -73,7 +62,7 @@ Creates a new client wrapper around OpenAI's chat completion API, mimicing the o
 
 #### Defined in
 
-[src/chatgpt-api.ts:340](https://github.com/transitive-bullshit/chatgpt-api/blob/1e4ddd6/src/chatgpt-api.ts#L340)
+[src/chatgpt-api.ts:314](https://github.com/transitive-bullshit/chatgpt-api/blob/48cb944/src/chatgpt-api.ts#L314)
 
 ## Methods
 
@@ -105,4 +94,4 @@ The response from ChatGPT
 
 #### Defined in
 
-[src/chatgpt-api.ts:157](https://github.com/transitive-bullshit/chatgpt-api/blob/1e4ddd6/src/chatgpt-api.ts#L157)
+[src/chatgpt-api.ts:131](https://github.com/transitive-bullshit/chatgpt-api/blob/48cb944/src/chatgpt-api.ts#L131)
