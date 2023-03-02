@@ -40,7 +40,7 @@ The [official OpenAI chat completions API](https://platform.openai.com/docs/guid
 | `ChatGPTAPI`                | ❌ No  | ✅ Yes   | ✅️ Real ChatGPT models |
 | `ChatGPTUnofficialProxyAPI` | ✅ Yes | ☑️ Maybe | ✅ Real ChatGPT         |
 
-**Note**: We strongly recommendd using the official `ChatGPTAPI` since it uses officially supported APIs from OpenAI. We may remove support for `ChatGPTUnofficialProxyAPI` in a future release.
+**Note**: We strongly recommend using the official `ChatGPTAPI` since it uses officially supported APIs from OpenAI. We may remove support for `ChatGPTUnofficialProxyAPI` in a future release.
 
 1. `ChatGPTAPI` - Uses the `gpt-3.5-turbo-0301` model with the official OpenAI chat completions API (official, robust approach, but it's not free)
 2. `ChatGPTUnofficialProxyAPI` - Uses an unofficial proxy server to access ChatGPT's backend API in a way that circumvents Cloudflare (uses the real ChatGPT and is pretty lightweight, but relies on a third-party server and is rate-limited)
@@ -172,7 +172,7 @@ To use this module from Node.js, you need to pick between two methods:
 
 Both approaches have very similar APIs, so it should be simple to swap between them.
 
-**Note**: We strongly recommendd using the official `ChatGPTAPI` since it uses officially supported APIs from OpenAI. We may remove support for `ChatGPTUnofficialProxyAPI` in a future release.
+**Note**: We strongly recommend using the official `ChatGPTAPI` since it uses officially supported APIs from OpenAI. We may remove support for `ChatGPTUnofficialProxyAPI` in a future release.
 
 ### Usage - ChatGPTAPI
 
