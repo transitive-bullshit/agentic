@@ -7,6 +7,7 @@ import * as tokenizer from './tokenizer'
 import * as types from './types'
 import { fetch as globalFetch } from './fetch'
 import { fetchSSE } from './fetch-sse'
+import { ChatGPTAPIOptions } from './types'
 
 const CHATGPT_MODEL = 'gpt-3.5-turbo'
 
@@ -46,47 +47,19 @@ export class ChatGPTAPI {
    * @param upsertMessage - Optional function to insert or update a message. If not provided, the default implementation will be used (using an in-memory `messageStore`).
    * @param fetch - Optional override for the `fetch` implementation to use. Defaults to the global `fetch` function.
    */
-  constructor(opts: {
-    apiKey: string
-
-    /** @defaultValue `'https://api.openai.com'` **/
-    apiBaseUrl?: string
-
-    /** @defaultValue `false` **/
-    debug?: boolean
-
-    completionParams?: Partial<
-      Omit<types.openai.CreateChatCompletionRequest, 'messages' | 'n'>
-    >
-
-    systemMessage?: string
-
-    /** @defaultValue `4096` **/
-    maxModelTokens?: number
-
-    /** @defaultValue `1000` **/
-    maxResponseTokens?: number
-
-    messageStore?: Keyv
-    getMessageById?: types.GetMessageByIdFunction
-    upsertMessage?: types.UpsertMessageFunction
-
-    fetch?: types.FetchFn
-  }) {
-    const {
-      apiKey,
-      apiBaseUrl = 'https://api.openai.com',
-      debug = false,
-      messageStore,
-      completionParams,
-      systemMessage,
-      maxModelTokens = 4096,
-      maxResponseTokens = 1000,
-      getMessageById = this._defaultGetMessageById,
-      upsertMessage = this._defaultUpsertMessage,
-      fetch = globalFetch
-    } = opts
-
+  constructor({
+    apiKey,
+    apiBaseUrl = 'https://api.openai.com',
+    debug = false,
+    messageStore,
+    completionParams,
+    systemMessage,
+    maxModelTokens = 4096,
+    maxResponseTokens = 1000,
+    getMessageById,
+    upsertMessage,
+    fetch = globalFetch
+  }: ChatGPTAPIOptions) {
     this._apiKey = apiKey
     this._apiBaseUrl = apiBaseUrl
     this._debug = !!debug
@@ -110,8 +83,8 @@ export class ChatGPTAPI {
     this._maxModelTokens = maxModelTokens
     this._maxResponseTokens = maxResponseTokens
 
-    this._getMessageById = getMessageById
-    this._upsertMessage = upsertMessage
+    this._getMessageById = getMessageById ?? this._defaultGetMessageById
+    this._upsertMessage = upsertMessage ?? this._defaultUpsertMessage
 
     if (messageStore) {
       this._messageStore = messageStore
