@@ -20,6 +20,7 @@
 
 ### Type Aliases
 
+- [ChatGPTAPIOptions](modules.md#chatgptapioptions)
 - [ContentType](modules.md#contenttype)
 - [ConversationJSONBody](modules.md#conversationjsonbody)
 - [ConversationResponseEvent](modules.md#conversationresponseevent)
@@ -38,13 +39,39 @@
 
 ## Type Aliases
 
+### ChatGPTAPIOptions
+
+Ƭ **ChatGPTAPIOptions**: `Object`
+
+#### Type declaration
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `apiBaseUrl?` | `string` | **`Default Value`** `'https://api.openai.com'` * |
+| `apiKey` | `string` | - |
+| `completionParams?` | `Partial`<`Omit`<[`CreateChatCompletionRequest`](interfaces/openai.CreateChatCompletionRequest.md), ``"messages"`` \| ``"n"``\>\> | - |
+| `debug?` | `boolean` | **`Default Value`** `false` * |
+| `fetch?` | [`FetchFn`](modules.md#fetchfn) | - |
+| `getMessageById?` | [`GetMessageByIdFunction`](modules.md#getmessagebyidfunction) | - |
+| `maxModelTokens?` | `number` | **`Default Value`** `4096` * |
+| `maxResponseTokens?` | `number` | **`Default Value`** `1000` * |
+| `messageStore?` | `Keyv` | - |
+| `systemMessage?` | `string` | - |
+| `upsertMessage?` | [`UpsertMessageFunction`](modules.md#upsertmessagefunction) | - |
+
+#### Defined in
+
+[src/types.ts:7](https://github.com/transitive-bullshit/chatgpt-api/blob/48cb944/src/types.ts#L7)
+
+___
+
 ### ContentType
 
 Ƭ **ContentType**: ``"text"``
 
 #### Defined in
 
-[src/types.ts:103](https://github.com/transitive-bullshit/chatgpt-api/blob/1e4ddd6/src/types.ts#L103)
+[src/types.ts:133](https://github.com/transitive-bullshit/chatgpt-api/blob/48cb944/src/types.ts#L133)
 
 ___
 
@@ -66,7 +93,7 @@ https://chat.openapi.com/backend-api/conversation
 
 #### Defined in
 
-[src/types.ts:59](https://github.com/transitive-bullshit/chatgpt-api/blob/1e4ddd6/src/types.ts#L59)
+[src/types.ts:89](https://github.com/transitive-bullshit/chatgpt-api/blob/48cb944/src/types.ts#L89)
 
 ___
 
@@ -84,7 +111,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:117](https://github.com/transitive-bullshit/chatgpt-api/blob/1e4ddd6/src/types.ts#L117)
+[src/types.ts:147](https://github.com/transitive-bullshit/chatgpt-api/blob/48cb944/src/types.ts#L147)
 
 ___
 
@@ -94,7 +121,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:3](https://github.com/transitive-bullshit/chatgpt-api/blob/1e4ddd6/src/types.ts#L3)
+[src/types.ts:5](https://github.com/transitive-bullshit/chatgpt-api/blob/48cb944/src/types.ts#L5)
 
 ___
 
@@ -120,7 +147,7 @@ Returns a chat message from a store by it's ID (or null if not found).
 
 #### Defined in
 
-[src/types.ts:51](https://github.com/transitive-bullshit/chatgpt-api/blob/1e4ddd6/src/types.ts#L51)
+[src/types.ts:81](https://github.com/transitive-bullshit/chatgpt-api/blob/48cb944/src/types.ts#L81)
 
 ___
 
@@ -145,7 +172,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:123](https://github.com/transitive-bullshit/chatgpt-api/blob/1e4ddd6/src/types.ts#L123)
+[src/types.ts:153](https://github.com/transitive-bullshit/chatgpt-api/blob/48cb944/src/types.ts#L153)
 
 ___
 
@@ -155,7 +182,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:17](https://github.com/transitive-bullshit/chatgpt-api/blob/1e4ddd6/src/types.ts#L17)
+[src/types.ts:47](https://github.com/transitive-bullshit/chatgpt-api/blob/48cb944/src/types.ts#L47)
 
 ___
 
@@ -172,7 +199,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:136](https://github.com/transitive-bullshit/chatgpt-api/blob/1e4ddd6/src/types.ts#L136)
+[src/types.ts:166](https://github.com/transitive-bullshit/chatgpt-api/blob/48cb944/src/types.ts#L166)
 
 ___
 
@@ -182,7 +209,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:141](https://github.com/transitive-bullshit/chatgpt-api/blob/1e4ddd6/src/types.ts#L141)
+[src/types.ts:171](https://github.com/transitive-bullshit/chatgpt-api/blob/48cb944/src/types.ts#L171)
 
 ___
 
@@ -200,7 +227,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:86](https://github.com/transitive-bullshit/chatgpt-api/blob/1e4ddd6/src/types.ts#L86)
+[src/types.ts:116](https://github.com/transitive-bullshit/chatgpt-api/blob/48cb944/src/types.ts#L116)
 
 ___
 
@@ -217,7 +244,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:105](https://github.com/transitive-bullshit/chatgpt-api/blob/1e4ddd6/src/types.ts#L105)
+[src/types.ts:135](https://github.com/transitive-bullshit/chatgpt-api/blob/48cb944/src/types.ts#L135)
 
 ___
 
@@ -227,7 +254,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:1](https://github.com/transitive-bullshit/chatgpt-api/blob/1e4ddd6/src/types.ts#L1)
+[src/types.ts:3](https://github.com/transitive-bullshit/chatgpt-api/blob/48cb944/src/types.ts#L3)
 
 ___
 
@@ -249,7 +276,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:19](https://github.com/transitive-bullshit/chatgpt-api/blob/1e4ddd6/src/types.ts#L19)
+[src/types.ts:49](https://github.com/transitive-bullshit/chatgpt-api/blob/48cb944/src/types.ts#L49)
 
 ___
 
@@ -272,7 +299,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:5](https://github.com/transitive-bullshit/chatgpt-api/blob/1e4ddd6/src/types.ts#L5)
+[src/types.ts:35](https://github.com/transitive-bullshit/chatgpt-api/blob/48cb944/src/types.ts#L35)
 
 ___
 
@@ -298,4 +325,4 @@ Upserts a chat message to a store.
 
 #### Defined in
 
-[src/types.ts:54](https://github.com/transitive-bullshit/chatgpt-api/blob/1e4ddd6/src/types.ts#L54)
+[src/types.ts:84](https://github.com/transitive-bullshit/chatgpt-api/blob/48cb944/src/types.ts#L84)

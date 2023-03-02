@@ -33,7 +33,7 @@ CreateChatCompletionResponse
 
 #### Defined in
 
-[src/types.ts:339](https://github.com/transitive-bullshit/chatgpt-api/blob/1e4ddd6/src/types.ts#L339)
+[src/types.ts:369](https://github.com/transitive-bullshit/chatgpt-api/blob/48cb944/src/types.ts#L369)
 
 ___
 
@@ -47,7 +47,7 @@ CreateChatCompletionResponse
 
 #### Defined in
 
-[src/types.ts:327](https://github.com/transitive-bullshit/chatgpt-api/blob/1e4ddd6/src/types.ts#L327)
+[src/types.ts:357](https://github.com/transitive-bullshit/chatgpt-api/blob/48cb944/src/types.ts#L357)
 
 ___
 
@@ -61,7 +61,7 @@ CreateChatCompletionResponse
 
 #### Defined in
 
-[src/types.ts:315](https://github.com/transitive-bullshit/chatgpt-api/blob/1e4ddd6/src/types.ts#L315)
+[src/types.ts:345](https://github.com/transitive-bullshit/chatgpt-api/blob/48cb944/src/types.ts#L345)
 
 ___
 
@@ -75,7 +75,7 @@ CreateChatCompletionResponse
 
 #### Defined in
 
-[src/types.ts:333](https://github.com/transitive-bullshit/chatgpt-api/blob/1e4ddd6/src/types.ts#L333)
+[src/types.ts:363](https://github.com/transitive-bullshit/chatgpt-api/blob/48cb944/src/types.ts#L363)
 
 ___
 
@@ -89,7 +89,7 @@ CreateChatCompletionResponse
 
 #### Defined in
 
-[src/types.ts:321](https://github.com/transitive-bullshit/chatgpt-api/blob/1e4ddd6/src/types.ts#L321)
+[src/types.ts:351](https://github.com/transitive-bullshit/chatgpt-api/blob/48cb944/src/types.ts#L351)
 
 ___
 
@@ -103,4 +103,4 @@ CreateChatCompletionResponse
 
 #### Defined in
 
-[src/types.ts:345](https://github.com/transitive-bullshit/chatgpt-api/blob/1e4ddd6/src/types.ts#L345)
+[src/types.ts:375](https://github.com/transitive-bullshit/chatgpt-api/blob/48cb944/src/types.ts#L375)
