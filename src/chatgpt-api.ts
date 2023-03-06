@@ -137,7 +137,8 @@ export class ChatGPTAPI {
       messageId = uuidv4(),
       timeoutMs,
       onProgress,
-      stream = onProgress ? true : false
+      stream = onProgress ? true : false,
+      progressTimeoutMs
     } = opts
 
     let { abortSignal } = opts
@@ -187,49 +188,68 @@ export class ChatGPTAPI {
         }
 
         if (stream) {
-          fetchSSE(
-            url,
-            {
-              method: 'POST',
-              headers,
-              body: JSON.stringify(body),
-              signal: abortSignal,
-              onMessage: (data: string) => {
-                if (data === '[DONE]') {
-                  result.text = result.text.trim()
-                  return resolve(result)
-                }
-
-                try {
-                  const response: types.openai.CreateChatCompletionDeltaResponse =
-                    JSON.parse(data)
-
-                  if (response.id) {
-                    result.id = response.id
+          const onProgressPromise = new Promise<void>((res) => {
+            fetchSSE(
+              url,
+              {
+                method: 'POST',
+                headers,
+                body: JSON.stringify(body),
+                signal: abortSignal,
+                onMessage: (data: string) => {
+                  if (data === '[DONE]') {
+                    result.text = result.text.trim()
+                    return resolve(result)
                   }
 
-                  if (response?.choices?.length) {
-                    const delta = response.choices[0].delta
-                    if (delta?.content) {
-                      result.delta = delta.content
-                      result.text += delta.content
-                      result.detail = response
+                  try {
+                    const response: types.openai.CreateChatCompletionDeltaResponse =
+                      JSON.parse(data)
 
-                      if (delta.role) {
-                        result.role = delta.role
-                      }
-
-                      onProgress?.(result)
+                    if (response.id) {
+                      result.id = response.id
                     }
+
+                    if (response?.choices?.length) {
+                      const delta = response.choices[0].delta
+                      if (delta?.content) {
+                        result.delta = delta.content
+                        result.text += delta.content
+                        result.detail = response
+
+                        if (delta.role) {
+                          result.role = delta.role
+                        }
+
+                        res(onProgress?.(result))
+                      }
+                    }
+                  } catch (err) {
+                    console.warn(
+                      'OpenAI stream SEE event unexpected error',
+                      err
+                    )
+                    return reject(err)
                   }
-                } catch (err) {
-                  console.warn('OpenAI stream SEE event unexpected error', err)
-                  return reject(err)
                 }
+              },
+              this._fetch
+            ).catch(reject)
+          })
+          if (progressTimeoutMs) {
+            if (abortController) {
+              ;(onProgressPromise as any).cancel = () => {
+                abortController.abort()
               }
-            },
-            this._fetch
-          ).catch(reject)
+            }
+
+            return pTimeout(onProgressPromise, {
+              milliseconds: progressTimeoutMs,
+              message: 'Caught onProgress timeout'
+            }).catch((e) => reject(e))
+          } else {
+            return onProgressPromise
+          }
         } else {
           try {
             const res = await this._fetch(url, {
