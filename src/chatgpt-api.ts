@@ -10,9 +10,6 @@ import { fetchSSE } from './fetch-sse'
 
 const CHATGPT_MODEL = 'gpt-3.5-turbo'
 
-const USER_LABEL_DEFAULT = 'User'
-const ASSISTANT_LABEL_DEFAULT = 'ChatGPT'
-
 export class ChatGPTAPI {
   protected _apiKey: string
   protected _apiBaseUrl: string
@@ -29,6 +26,7 @@ export class ChatGPTAPI {
 
   protected _getMessageById: types.GetMessageByIdFunction
   protected _upsertMessage: types.UpsertMessageFunction
+  protected _normalizeMessage: types.NormalizeMessageFunction
 
   protected _messageStore: Keyv<types.ChatMessage>
 
@@ -45,6 +43,7 @@ export class ChatGPTAPI {
    * @param getMessageById - Optional function to retrieve a message by its ID. If not provided, the default implementation will be used (using an in-memory `messageStore`).
    * @param upsertMessage - Optional function to insert or update a message. If not provided, the default implementation will be used (using an in-memory `messageStore`).
    * @param fetch - Optional override for the `fetch` implementation to use. Defaults to the global `fetch` function.
+   * @param normalizeMessage - Optional function to normalize a message and calculate the final token usage. If not provided, the default implementation will concatenate message.role and message.content, and return the length of the resulting string as the token usage. The default message format is role: ${message.role}\ncontent: ${message.content}.
    */
   constructor(opts: types.ChatGPTAPIOptions) {
     const {
@@ -58,7 +57,8 @@ export class ChatGPTAPI {
       maxResponseTokens = 1000,
       getMessageById,
       upsertMessage,
-      fetch = globalFetch
+      fetch = globalFetch,
+      normalizeMessage
     } = opts
 
     this._apiKey = apiKey
@@ -86,6 +86,7 @@ export class ChatGPTAPI {
 
     this._getMessageById = getMessageById ?? this._defaultGetMessageById
     this._upsertMessage = upsertMessage ?? this._defaultUpsertMessage
+    this._normalizeMessage = normalizeMessage ?? this._defaultNormalizeMessage
 
     if (messageStore) {
       this._messageStore = messageStore
@@ -319,9 +320,6 @@ export class ChatGPTAPI {
     const { systemMessage = this._systemMessage } = opts
     let { parentMessageId } = opts
 
-    const userLabel = USER_LABEL_DEFAULT
-    const assistantLabel = ASSISTANT_LABEL_DEFAULT
-
     const maxNumTokens = this._maxModelTokens - this._maxResponseTokens
     let messages: types.openai.ChatCompletionRequestMessage[] = []
 
@@ -345,18 +343,10 @@ export class ChatGPTAPI {
     let numTokens = 0
 
     do {
-      const prompt = nextMessages
-        .reduce((prompt, message) => {
-          switch (message.role) {
-            case 'system':
-              return [prompt, `Instructions:\n${message.content}`]
-            case 'user':
-              return [prompt, `${userLabel}:\n${message.content}`]
-            default:
-              return [prompt, `${assistantLabel}:\n${message.content}`]
-          }
-        }, [])
-        .join('\n\n')
+      const normalizedPrompts = await Promise.all(
+        messages.map(this._normalizeMessage)
+      )
+      const prompt = normalizedPrompts.join('\n\n')
 
       const nextNumTokensEstimate = await this._getTokenCount(prompt)
       const isValidPrompt = nextNumTokensEstimate <= maxNumTokens
@@ -425,5 +415,11 @@ export class ChatGPTAPI {
     message: types.ChatMessage
   ): Promise<void> {
     await this._messageStore.set(message.id, message)
+  }
+
+  protected async _defaultNormalizeMessage(
+    message: types.openai.ChatCompletionRequestMessage
+  ) {
+    return `role: ${message.role}\ncontent: ${message.content}`
   }
 }

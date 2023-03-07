@@ -4,6 +4,10 @@ export type Role = 'user' | 'assistant' | 'system'
 
 export type FetchFn = typeof fetch
 
+export type NormalizeMessageFunction = (
+  current: openai.ChatCompletionRequestMessage
+) => string | Promise<string>
+
 export type ChatGPTAPIOptions = {
   apiKey: string
 
@@ -30,6 +34,8 @@ export type ChatGPTAPIOptions = {
   upsertMessage?: UpsertMessageFunction
 
   fetch?: FetchFn
+
+  normalizeMessage?: NormalizeMessageFunction
 }
 
 export type SendMessageOptions = {
