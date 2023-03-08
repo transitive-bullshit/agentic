@@ -481,6 +481,7 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [AI Poem Generator](https://aipoemgenerator.com/)
 - [Next.js ChatGPT With Firebase](https://github.com/youngle316/chatgpt)
 - [ai-commit – GPT-3 Commit Message Generator](https://github.com/insulineru/ai-commit)
+- [AItinerary – ChatGPT itinerary Generator](https://aitinerary.ai)
 
 If you create a cool integration, feel free to open a PR and add it to the list.
 
