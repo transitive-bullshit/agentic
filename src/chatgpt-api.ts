@@ -210,17 +210,15 @@ export class ChatGPTAPI {
 
                   if (response?.choices?.length) {
                     const delta = response.choices[0].delta
-                    if (delta?.content) {
-                      result.delta = delta.content
-                      result.text += delta.content
-                      result.detail = response
+                    result.delta = delta.content
+                    if (delta?.content) result.text += delta.content
+                    result.detail = response
 
-                      if (delta.role) {
-                        result.role = delta.role
-                      }
-
-                      onProgress?.(result)
+                    if (delta.role) {
+                      result.role = delta.role
                     }
+
+                    onProgress?.(result)
                   }
                 } catch (err) {
                   console.warn('OpenAI stream SEE event unexpected error', err)
