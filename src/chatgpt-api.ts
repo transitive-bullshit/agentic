@@ -54,7 +54,7 @@ export class ChatGPTAPI {
       messageStore,
       completionParams,
       systemMessage,
-      maxModelTokens = 4096,
+      maxModelTokens = 4000,
       maxResponseTokens = 1000,
       getMessageById,
       upsertMessage,
@@ -78,7 +78,7 @@ export class ChatGPTAPI {
 
     if (this._systemMessage === undefined) {
       const currentDate = new Date().toISOString().split('T')[0]
-      this._systemMessage = `You are ChatGPT, a large language model trained by OpenAI. Answer as concisely as possiboe.\nCurrent date: ${currentDate}\n`
+      this._systemMessage = `You are ChatGPT, a large language model trained by OpenAI. Answer as concisely as possible.\nKnowledge cutoff: 2021-09-01\nCurrent date: ${currentDate}`
     }
 
     this._maxModelTokens = maxModelTokens
@@ -212,17 +212,15 @@ export class ChatGPTAPI {
 
                     if (response?.choices?.length) {
                       const delta = response.choices[0].delta
-                      if (delta?.content) {
-                        result.delta = delta.content
-                        result.text += delta.content
-                        result.detail = response
+                      result.delta = delta.content
+                      if (delta?.content) result.text += delta.content
+                      result.detail = response
 
-                        if (delta.role) {
-                          result.role = delta.role
-                        }
-
-                        res(onProgress?.(result))
+                      if (delta.role) {
+                        result.role = delta.role
                       }
+
+                      res(onProgress?.(result))
                     }
                   } catch (err) {
                     console.warn(
@@ -353,15 +351,15 @@ export class ChatGPTAPI {
     }
 
     const systemMessageOffset = messages.length
-    let nextMessages = messages.concat([
-      {
-        ...{
-          role: 'user',
-          content: text,
-          name: opts.name
-        }
-      }
-    ])
+    let nextMessages = text
+      ? messages.concat([
+          {
+            role: 'user',
+            content: text,
+            name: opts.name
+          }
+        ])
+      : messages
     let numTokens = 0
 
     do {
@@ -369,13 +367,13 @@ export class ChatGPTAPI {
         .reduce((prompt, message) => {
           switch (message.role) {
             case 'system':
-              return [prompt, `Instructions:\n${message.content}`]
+              return prompt.concat([`Instructions:\n${message.content}`])
             case 'user':
-              return [prompt, `${userLabel}:\n${message.content}`]
+              return prompt.concat([`${userLabel}:\n${message.content}`])
             default:
-              return [prompt, `${assistantLabel}:\n${message.content}`]
+              return prompt.concat([`${assistantLabel}:\n${message.content}`])
           }
-        }, [])
+        }, [] as string[])
         .join('\n\n')
 
       const nextNumTokensEstimate = await this._getTokenCount(prompt)
@@ -405,11 +403,9 @@ export class ChatGPTAPI {
 
       nextMessages = nextMessages.slice(0, systemMessageOffset).concat([
         {
-          ...{
-            role: parentMessageRole,
-            content: parentMessage.text,
-            name: parentMessage.name
-          }
+          role: parentMessageRole,
+          content: parentMessage.text,
+          name: parentMessage.name
         },
         ...nextMessages.slice(systemMessageOffset)
       ])
