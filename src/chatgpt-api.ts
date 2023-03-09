@@ -334,11 +334,9 @@ export class ChatGPTAPI {
     let nextMessages = text
       ? messages.concat([
           {
-            ...{
-              role: 'user',
-              content: text,
-              name: opts.name
-            }
+            role: 'user',
+            content: text,
+            name: opts.name
           }
         ])
       : messages
@@ -349,11 +347,11 @@ export class ChatGPTAPI {
         .reduce((prompt, message) => {
           switch (message.role) {
             case 'system':
-              return [...prompt, `Instructions:\n${message.content}`]
+              return prompt.concat([`Instructions:\n${message.content}`])
             case 'user':
-              return [...prompt, `${userLabel}:\n${message.content}`]
+              return prompt.concat([`${userLabel}:\n${message.content}`])
             default:
-              return [...prompt, `${assistantLabel}:\n${message.content}`]
+              return prompt.concat([`${assistantLabel}:\n${message.content}`])
           }
         }, [] as string[])
         .join('\n\n')
@@ -385,11 +383,9 @@ export class ChatGPTAPI {
 
       nextMessages = nextMessages.slice(0, systemMessageOffset).concat([
         {
-          ...{
-            role: parentMessageRole,
-            content: parentMessage.text,
-            name: parentMessage.name
-          }
+          role: parentMessageRole,
+          content: parentMessage.text,
+          name: parentMessage.name
         },
         ...nextMessages.slice(systemMessageOffset)
       ])
