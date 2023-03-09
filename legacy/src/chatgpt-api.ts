@@ -335,11 +335,9 @@ export class ChatGPTAPI {
     const systemMessageOffset = messages.length
     let nextMessages = messages.concat([
       {
-        ...{
-          role: 'user',
-          content: text,
-          name: opts.name
-        }
+        role: 'user',
+        content: text,
+        name: opts.name
       }
     ])
     let numTokens = 0
@@ -349,13 +347,13 @@ export class ChatGPTAPI {
         .reduce((prompt, message) => {
           switch (message.role) {
             case 'system':
-              return [prompt, `Instructions:\n${message.content}`]
+              return [...prompt, `Instructions:\n${message.content}`]
             case 'user':
-              return [prompt, `${userLabel}:\n${message.content}`]
+              return [...prompt, `${userLabel}:\n${message.content}`]
             default:
-              return [prompt, `${assistantLabel}:\n${message.content}`]
+              return [...prompt, `${assistantLabel}:\n${message.content}`]
           }
-        }, [])
+        }, [] as string[])
         .join('\n\n')
 
       const nextNumTokensEstimate = await this._getTokenCount(prompt)
