@@ -331,15 +331,17 @@ export class ChatGPTAPI {
     }
 
     const systemMessageOffset = messages.length
-    let nextMessages = messages.concat([
-      {
-        ...{
-          role: 'user',
-          content: text,
-          name: opts.name
-        }
-      }
-    ])
+    let nextMessages = text
+      ? messages.concat([
+          {
+            ...{
+              role: 'user',
+              content: text,
+              name: opts.name
+            }
+          }
+        ])
+      : messages
     let numTokens = 0
 
     do {
