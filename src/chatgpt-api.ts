@@ -49,7 +49,7 @@ export class ChatGPTAPI {
   constructor(opts: types.ChatGPTAPIOptions) {
     const {
       apiKey,
-      apiBaseUrl = 'https://api.openai.com',
+      apiBaseUrl = 'https://api.openai.com/v1',
       debug = false,
       messageStore,
       completionParams,
@@ -170,7 +170,7 @@ export class ChatGPTAPI {
 
     const responseP = new Promise<types.ChatMessage>(
       async (resolve, reject) => {
-        const url = `${this._apiBaseUrl}/v1/chat/completions`
+        const url = `${this._apiBaseUrl}/chat/completions`
         const headers = {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${this._apiKey}`
