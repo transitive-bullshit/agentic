@@ -20,7 +20,7 @@ export class ChatGPTUnofficialProxyAPI {
   constructor(opts: {
     accessToken: string
 
-    /** @defaultValue `https://chat.openai.com/backend-api/conversation` **/
+    /** @defaultValue `https://bypass.duti.tech/api/conversation` **/
     apiReverseProxyUrl?: string
 
     /** @defaultValue `text-davinci-002-render-sha` **/
@@ -36,7 +36,7 @@ export class ChatGPTUnofficialProxyAPI {
   }) {
     const {
       accessToken,
-      apiReverseProxyUrl = 'https://chat.duti.tech/api/conversation',
+      apiReverseProxyUrl = 'https://bypass.duti.tech/api/conversation',
       model = 'text-davinci-002-render-sha',
       debug = false,
       headers,
