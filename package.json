@@ -1,10 +1,14 @@
 {
-  "name": "chatgpt",
-  "version": "5.0.10",
+  "name": "@swordjs/chatgpt",
+  "version": "5.0.18",
   "description": "Node.js client for the official ChatGPT API.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "repository": "transitive-bullshit/chatgpt-api",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "source": "./src/index.ts",
   "types": "./build/index.d.ts",
   "exports": {
@@ -42,9 +46,9 @@
     "conf": "^11.0.1",
     "eventsource-parser": "^0.0.5",
     "keyv": "^4.5.2",
-    "p-timeout": "^6.1.1",
-    "quick-lru": "^6.1.1",
-    "read-pkg-up": "^9.1.0",
+    "@swordjs/p-timeout": "^6.1.2",
+    "@swordjs/quick-lru": "^6.1.3",
+    "@swordjs/read-pkg-up": "^9.1.1",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
