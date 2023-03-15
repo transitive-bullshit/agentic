@@ -155,7 +155,7 @@ export async function browserPostEventStream(
         error: {
           message: `ChatGPTAPI error ${res.status || res.statusText}`,
           statusCode: res.status,
-          statusText: res.statusText
+          statusText: res.statusText || (await res.text())
         },
         conversationId,
         messageId
