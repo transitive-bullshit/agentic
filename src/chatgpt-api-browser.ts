@@ -50,7 +50,7 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
   constructor(opts: {
     email: string
     password: string
-    model: string
+    model?: string
 
     /** @defaultValue `false` **/
     isProAccount?: boolean
