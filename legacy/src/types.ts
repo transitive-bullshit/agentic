@@ -283,6 +283,7 @@ export type SendMessageOptions = {
   timeoutMs?: number
   onProgress?: (partialResponse: ChatResponse) => void
   abortSignal?: AbortSignal
+  model?: string
 }
 
 export type SendConversationMessageOptions = Omit<

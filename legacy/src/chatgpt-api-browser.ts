@@ -49,6 +49,7 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
   constructor(opts: {
     email: string
     password: string
+    model?: string
 
     /** @defaultValue `false` **/
     isProAccount?: boolean
@@ -88,6 +89,7 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
     const {
       email,
       password,
+      model,
       isProAccount = false,
       markdown = true,
       debug = false,
@@ -443,6 +445,7 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
     opts: types.SendMessageOptions = {}
   ): Promise<types.ChatResponse> {
     const {
+      model,
       conversationId,
       parentMessageId = uuidv4(),
       messageId = uuidv4(),
@@ -464,9 +467,11 @@ export class ChatGPTAPIBrowser extends AChatGPTAPI {
           }
         }
       ],
-      model: this._isProAccount
+      model: model
+        ? model
+        : this._isProAccount
         ? 'text-davinci-002-render-paid'
-        : 'text-davinci-002-render',
+        : 'text-davinci-002-render-sha',
       parent_message_id: parentMessageId
     }
 
