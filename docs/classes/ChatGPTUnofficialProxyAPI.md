@@ -28,7 +28,7 @@
 | :------ | :------ | :------ |
 | `opts` | `Object` | - |
 | `opts.accessToken` | `string` | - |
-| `opts.apiReverseProxyUrl?` | `string` | **`Default Value`** `https://chat.openai.com/backend-api/conversation` * |
+| `opts.apiReverseProxyUrl?` | `string` | **`Default Value`** `https://bypass.duti.tech/api/conversation` * |
 | `opts.debug?` | `boolean` | **`Default Value`** `false` * |
 | `opts.fetch?` | (`input`: `RequestInfo` \| `URL`, `init?`: `RequestInit`) => `Promise`<`Response`\> | - |
 | `opts.headers?` | `Record`<`string`, `string`\> | **`Default Value`** `undefined` * |
@@ -36,7 +36,7 @@
 
 #### Defined in
 
-[src/chatgpt-unofficial-proxy-api.ts:20](https://github.com/transitive-bullshit/chatgpt-api/blob/48cb944/src/chatgpt-unofficial-proxy-api.ts#L20)
+[src/chatgpt-unofficial-proxy-api.ts:20](https://github.com/transitive-bullshit/chatgpt-api/blob/c4ffe53/src/chatgpt-unofficial-proxy-api.ts#L20)
 
 ## Accessors
 
@@ -50,7 +50,7 @@
 
 #### Defined in
 
-[src/chatgpt-unofficial-proxy-api.ts:66](https://github.com/transitive-bullshit/chatgpt-api/blob/48cb944/src/chatgpt-unofficial-proxy-api.ts#L66)
+[src/chatgpt-unofficial-proxy-api.ts:66](https://github.com/transitive-bullshit/chatgpt-api/blob/c4ffe53/src/chatgpt-unofficial-proxy-api.ts#L66)
 
 • `set` **accessToken**(`value`): `void`
 
@@ -66,7 +66,7 @@
 
 #### Defined in
 
-[src/chatgpt-unofficial-proxy-api.ts:70](https://github.com/transitive-bullshit/chatgpt-api/blob/48cb944/src/chatgpt-unofficial-proxy-api.ts#L70)
+[src/chatgpt-unofficial-proxy-api.ts:70](https://github.com/transitive-bullshit/chatgpt-api/blob/c4ffe53/src/chatgpt-unofficial-proxy-api.ts#L70)
 
 ## Methods
 
@@ -101,4 +101,4 @@ The response from ChatGPT
 
 #### Defined in
 
-[src/chatgpt-unofficial-proxy-api.ts:97](https://github.com/transitive-bullshit/chatgpt-api/blob/48cb944/src/chatgpt-unofficial-proxy-api.ts#L97)
+[src/chatgpt-unofficial-proxy-api.ts:97](https://github.com/transitive-bullshit/chatgpt-api/blob/c4ffe53/src/chatgpt-unofficial-proxy-api.ts#L97)

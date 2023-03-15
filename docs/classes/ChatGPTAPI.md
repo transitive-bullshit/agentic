@@ -32,7 +32,7 @@ Creates a new client wrapper around OpenAI's chat completion API, mimicing the o
 
 #### Defined in
 
-[src/chatgpt-api.ts:49](https://github.com/transitive-bullshit/chatgpt-api/blob/48cb944/src/chatgpt-api.ts#L49)
+[src/chatgpt-api.ts:49](https://github.com/transitive-bullshit/chatgpt-api/blob/c4ffe53/src/chatgpt-api.ts#L49)
 
 ## Accessors
 
@@ -46,7 +46,7 @@ Creates a new client wrapper around OpenAI's chat completion API, mimicing the o
 
 #### Defined in
 
-[src/chatgpt-api.ts:310](https://github.com/transitive-bullshit/chatgpt-api/blob/48cb944/src/chatgpt-api.ts#L310)
+[src/chatgpt-api.ts:308](https://github.com/transitive-bullshit/chatgpt-api/blob/c4ffe53/src/chatgpt-api.ts#L308)
 
 • `set` **apiKey**(`apiKey`): `void`
 
@@ -62,7 +62,7 @@ Creates a new client wrapper around OpenAI's chat completion API, mimicing the o
 
 #### Defined in
 
-[src/chatgpt-api.ts:314](https://github.com/transitive-bullshit/chatgpt-api/blob/48cb944/src/chatgpt-api.ts#L314)
+[src/chatgpt-api.ts:312](https://github.com/transitive-bullshit/chatgpt-api/blob/c4ffe53/src/chatgpt-api.ts#L312)
 
 ## Methods
 
@@ -94,4 +94,4 @@ The response from ChatGPT
 
 #### Defined in
 
-[src/chatgpt-api.ts:131](https://github.com/transitive-bullshit/chatgpt-api/blob/48cb944/src/chatgpt-api.ts#L131)
+[src/chatgpt-api.ts:131](https://github.com/transitive-bullshit/chatgpt-api/blob/c4ffe53/src/chatgpt-api.ts#L131)
