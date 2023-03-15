@@ -212,7 +212,7 @@ export class ChatGPTAPI extends AChatGPTAPI {
           }
         }
       ],
-      model: 'text-davinci-002-render',
+      model: 'text-davinci-002-render-sha',
       parent_message_id: parentMessageId
     }
 
