@@ -14,7 +14,7 @@ export type ChatGPTAPIOptions = {
   debug?: boolean
 
   completionParams?: Partial<
-    Omit<openai.CreateChatCompletionRequest, 'messages' | 'n'>
+    Omit<openai.CreateChatCompletionRequest, 'messages' | 'n' | 'stream'>
   >
 
   systemMessage?: string
@@ -42,6 +42,9 @@ export type SendMessageOptions = {
   timeoutMs?: number
   onProgress?: (partialResponse: ChatMessage) => void
   abortSignal?: AbortSignal
+  completionParams?: Partial<
+    Omit<openai.CreateChatCompletionRequest, 'messages' | 'n' | 'stream'>
+  >
 }
 
 export type MessageActionType = 'next' | 'variant'
