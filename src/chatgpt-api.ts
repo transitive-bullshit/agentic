@@ -125,6 +125,7 @@ export class ChatGPTAPI {
    * @param opts.timeoutMs - Optional timeout in milliseconds (defaults to no timeout)
    * @param opts.onProgress - Optional callback which will be invoked every time the partial response is updated
    * @param opts.abortSignal - Optional callback used to abort the underlying `fetch` call using an [AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController)
+   * @param completionParams - Optional overrides to send to the [OpenAI chat completion API](https://platform.openai.com/docs/api-reference/chat/create). Options like `temperature` and `presence_penalty` can be tweaked to change the personality of the assistant.
    *
    * @returns The response from ChatGPT
    */
@@ -138,7 +139,8 @@ export class ChatGPTAPI {
       timeoutMs,
       onProgress,
       stream = onProgress ? true : false,
-      progressTimeoutMs
+      progressTimeoutMs,
+      completionParams
     } = opts
 
     let { abortSignal } = opts
@@ -179,6 +181,7 @@ export class ChatGPTAPI {
         const body = {
           max_tokens: maxTokens,
           ...this._completionParams,
+          ...completionParams,
           messages,
           stream
         }
