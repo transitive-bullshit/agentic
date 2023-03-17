@@ -32,6 +32,7 @@
     "pretest": "run-s build",
     "docs": "typedoc",
     "prepare": "husky install",
+    "build:vercel": "OUTPUT=vercel astro build",
     "pre-commit": "lint-staged",
     "test": "run-p test:*",
     "test:prettier": "prettier '**/*.{js,jsx,ts,tsx}' --check"

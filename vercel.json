@@ -1,0 +1,3 @@
+{
+  "buildCommand": "OUTPUT=vercel astro build"
+}
