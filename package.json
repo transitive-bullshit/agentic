@@ -24,7 +24,7 @@
     "node": ">=14"
   },
   "scripts": {
-    "build": "tsup build public -y",
+    "build": "tsup build",
     "dev": "tsup --watch",
     "clean": "del build",
     "prebuild": "run-s clean",
