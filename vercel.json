@@ -1,3 +1,0 @@
-{
-  "buildCommand": "OUTPUT=vercel tsup"
-}
