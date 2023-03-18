@@ -422,6 +422,7 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [Telegram Bot #2](https://github.com/dawangraoming/chatgpt-telegram-bot)
 - [Telegram Bot #3](https://github.com/RainEggplant/chatgpt-telegram-bot) (group privacy mode, ID-based auth)
 - [Telegram Bot #4](https://github.com/ArdaGnsrn/chatgpt-telegram) (queue system, ID-based chat thread)
+- [Telegram Bot #5](https://github.com/azoway/chatgpt-telegram-bot) (group privacy mode, ID-based chat thread)
 - [Deno Telegram Bot](https://github.com/Ciyou/chatbot-telegram)
 - [Go Telegram Bot](https://github.com/m1guelpf/chatgpt-telegram)
 - [Telegram Bot for YouTube Summaries](https://github.com/codextde/youtube-summary)
