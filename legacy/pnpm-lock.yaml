@@ -1,7 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@dqbd/tiktoken': ^0.4.0
+  '@dqbd/tiktoken': ^1.0.2
   '@keyv/redis': ^2.5.6
   '@trivago/prettier-plugin-sort-imports': ^4.1.1
   '@types/node': ^18.15.3
@@ -28,7 +28,7 @@ specifiers:
   uuid: ^9.0.0
 
 dependencies:
-  '@dqbd/tiktoken': 0.4.0
+  '@dqbd/tiktoken': 1.0.2
   cac: 6.7.14
   conf: 11.0.1
   eventsource-parser: 0.0.5
@@ -169,8 +169,8 @@ packages:
       to-fast-properties: 2.0.0
     dev: true
 
-  /@dqbd/tiktoken/0.4.0:
-    resolution: {integrity: sha512-iaHgmwKAOqowBFZKxelyszoeGLoNw62eOULcmyme1aA1Ymr3JgYl0V7jwpuUm7fksalycZajx3loFn9TRUaviw==}
+  /@dqbd/tiktoken/1.0.2:
+    resolution: {integrity: sha512-AjGTBRWsMoVmVeN55NLyupyM8TNamOUBl6tj5t/leLDVup3CFGO9tVagNL1jf3GyZLkWZSTmYVbPQ/M2LEcNzw==}
     dev: false
 
   /@esbuild-kit/cjs-loader/2.4.2:
