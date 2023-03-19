@@ -1,6 +1,6 @@
 {
   "name": "chatgpt",
-  "version": "5.1.1",
+  "version": "5.1.2",
   "description": "Node.js client for the official ChatGPT API.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "repository": "transitive-bullshit/chatgpt-api",
@@ -37,7 +37,7 @@
     "test:prettier": "prettier '**/*.{js,jsx,ts,tsx}' --check"
   },
   "dependencies": {
-    "@dqbd/tiktoken": "^0.4.0",
+    "@dqbd/tiktoken": "^1.0.2",
     "cac": "^6.7.14",
     "conf": "^11.0.1",
     "eventsource-parser": "^0.0.5",
@@ -50,7 +50,7 @@
   "devDependencies": {
     "@keyv/redis": "^2.5.6",
     "@trivago/prettier-plugin-sort-imports": "^4.1.1",
-    "@types/node": "^18.15.0",
+    "@types/node": "^18.15.3",
     "@types/uuid": "^9.0.1",
     "del-cli": "^5.0.0",
     "dotenv-safe": "^8.2.0",
@@ -60,10 +60,10 @@
     "ora": "^6.1.2",
     "prettier": "^2.8.4",
     "tsup": "^6.6.3",
-    "tsx": "^3.12.3",
-    "typedoc": "^0.23.26",
+    "tsx": "^3.12.5",
+    "typedoc": "^0.23.27",
     "typedoc-plugin-markdown": "^3.13.6",
-    "typescript": "^4.9.3"
+    "typescript": "^4.9.5"
   },
   "lint-staged": {
     "*.{ts,tsx}": [

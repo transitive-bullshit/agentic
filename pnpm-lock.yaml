@@ -1,10 +1,10 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@dqbd/tiktoken': ^0.4.0
+  '@dqbd/tiktoken': ^1.0.2
   '@keyv/redis': ^2.5.6
   '@trivago/prettier-plugin-sort-imports': ^4.1.1
-  '@types/node': ^18.15.0
+  '@types/node': ^18.15.3
   '@types/uuid': ^9.0.1
   cac: ^6.7.14
   conf: ^11.0.1
@@ -21,14 +21,14 @@ specifiers:
   quick-lru: ^6.1.1
   read-pkg-up: ^9.1.0
   tsup: ^6.6.3
-  tsx: ^3.12.3
-  typedoc: ^0.23.26
+  tsx: ^3.12.5
+  typedoc: ^0.23.27
   typedoc-plugin-markdown: ^3.13.6
-  typescript: ^4.9.3
+  typescript: ^4.9.5
   uuid: ^9.0.0
 
 dependencies:
-  '@dqbd/tiktoken': 0.4.0
+  '@dqbd/tiktoken': 1.0.2
   cac: 6.7.14
   conf: 11.0.1
   eventsource-parser: 0.0.5
@@ -41,7 +41,7 @@ dependencies:
 devDependencies:
   '@keyv/redis': 2.5.6
   '@trivago/prettier-plugin-sort-imports': 4.1.1_prettier@2.8.4
-  '@types/node': 18.15.0
+  '@types/node': 18.15.3
   '@types/uuid': 9.0.1
   del-cli: 5.0.0
   dotenv-safe: 8.2.0
@@ -51,9 +51,9 @@ devDependencies:
   ora: 6.1.2
   prettier: 2.8.4
   tsup: 6.6.3_typescript@4.9.5
-  tsx: 3.12.3
-  typedoc: 0.23.26_typescript@4.9.5
-  typedoc-plugin-markdown: 3.14.0_typedoc@0.23.26
+  tsx: 3.12.5
+  typedoc: 0.23.27_typescript@4.9.5
+  typedoc-plugin-markdown: 3.14.0_typedoc@0.23.27
   typescript: 4.9.5
 
 packages:
@@ -169,8 +169,8 @@ packages:
       to-fast-properties: 2.0.0
     dev: true
 
-  /@dqbd/tiktoken/0.4.0:
-    resolution: {integrity: sha512-iaHgmwKAOqowBFZKxelyszoeGLoNw62eOULcmyme1aA1Ymr3JgYl0V7jwpuUm7fksalycZajx3loFn9TRUaviw==}
+  /@dqbd/tiktoken/1.0.2:
+    resolution: {integrity: sha512-AjGTBRWsMoVmVeN55NLyupyM8TNamOUBl6tj5t/leLDVup3CFGO9tVagNL1jf3GyZLkWZSTmYVbPQ/M2LEcNzw==}
     dev: false
 
   /@esbuild-kit/cjs-loader/2.4.2:
@@ -450,8 +450,8 @@ packages:
     resolution: {integrity: sha512-jhuKLIRrhvCPLqwPcx6INqmKeiA5EWrsCOPhrlFSrbrmU4ZMPjj5Ul/oLCMDO98XRUIwVm78xICz4EPCektzeQ==}
     dev: true
 
-  /@types/node/18.15.0:
-    resolution: {integrity: sha512-z6nr0TTEOBGkzLGmbypWOGnpSpSIBorEhC4L+4HeQ2iezKCi4f77kyslRwvHeNitymGQ+oFyIWGP96l/DPSV9w==}
+  /@types/node/18.15.3:
+    resolution: {integrity: sha512-p6ua9zBxz5otCmbpb5D3U4B5Nanw6Pk3PPyX05xnxbB/fRv71N7CPmORg7uAD5P70T0xmx1pzAx/FUfa5X+3cw==}
     dev: true
 
   /@types/normalize-package-data/2.4.1:
@@ -2666,8 +2666,8 @@ packages:
       - ts-node
     dev: true
 
-  /tsx/3.12.3:
-    resolution: {integrity: sha512-Wc5BFH1xccYTXaQob+lEcimkcb/Pq+0en2s+ruiX0VEIC80nV7/0s7XRahx8NnsoCnpCVUPz8wrqVSPi760LkA==}
+  /tsx/3.12.5:
+    resolution: {integrity: sha512-/TLj30xF1zcN9JkoFCyROtIQUi8cRQG+AFchsg5YkWou3+RXxTZS/ffWB3nCxyZPoBqF2+8ohs07N815dNb1wQ==}
     hasBin: true
     dependencies:
       '@esbuild-kit/cjs-loader': 2.4.2
@@ -2700,17 +2700,17 @@ packages:
       is-typed-array: 1.1.10
     dev: true
 
-  /typedoc-plugin-markdown/3.14.0_typedoc@0.23.26:
+  /typedoc-plugin-markdown/3.14.0_typedoc@0.23.27:
     resolution: {integrity: sha512-UyQLkLRkfTFhLdhSf3RRpA3nNInGn+k6sll2vRXjflaMNwQAAiB61SYbisNZTg16t4K1dt1bPQMMGLrxS0GZ0Q==}
     peerDependencies:
       typedoc: '>=0.23.0'
     dependencies:
       handlebars: 4.7.7
-      typedoc: 0.23.26_typescript@4.9.5
+      typedoc: 0.23.27_typescript@4.9.5
     dev: true
 
-  /typedoc/0.23.26_typescript@4.9.5:
-    resolution: {integrity: sha512-5m4KwR5tOLnk0OtMaRn9IdbeRM32uPemN9kur7YK9wFqx8U0CYrvO9aVq6ysdZSV1c824BTm+BuQl2Ze/k1HtA==}
+  /typedoc/0.23.27_typescript@4.9.5:
+    resolution: {integrity: sha512-YKjlxX3LEhYbMCkemjlpNh1OKDiFa+ynqP0VRPsH28bEugrMTGI6l8DC6oX5kzFcUKKlYWKpZDSGWszuO/FR3g==}
     engines: {node: '>= 14.14'}
     hasBin: true
     peerDependencies:
