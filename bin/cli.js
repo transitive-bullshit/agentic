@@ -32,8 +32,8 @@ async function main() {
     .option('-t, --timeout', 'Timeout in milliseconds')
     .option('-k, --apiKey <apiKey>', 'OpenAI API key')
     .option(
-        '-n, --conversationName <conversationName>',
-        'Unique name for the conversation'
+      '-n, --conversationName <conversationName>',
+      'Unique name for the conversation'
     )
     .action(async (prompt, options) => {
       const apiKey = options.apiKey || process.env.OPENAI_API_KEY
