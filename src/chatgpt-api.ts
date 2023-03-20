@@ -158,10 +158,15 @@ export class ChatGPTAPI {
     }
     await this._upsertMessage(message)
 
-    const { messages, maxTokens, numTokens } = await this._buildMessages(
-      text,
-      opts
-    )
+    let msgRes = null
+
+    if (!opts.messages) {
+      msgRes = await this._buildMessages(text, opts)
+    } else {
+      msgRes = { messages: opts.messages }
+    }
+
+    const { messages, numTokens, maxTokens } = msgRes
 
     const result: types.ChatMessage = {
       role: 'assistant',

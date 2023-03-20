@@ -39,6 +39,7 @@ export type SendMessageOptions = {
   messageId?: string
   stream?: boolean
   systemMessage?: string
+  messages?: { role: string; content: string }[]
   timeoutMs?: number
   onProgress?: (partialResponse: ChatMessage) => void
   abortSignal?: AbortSignal
