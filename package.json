@@ -1,6 +1,6 @@
 {
   "name": "@catalystclan/chatgpt",
-  "version": "5.0.10-beta.1",
+  "version": "5.0.10-beta.2",
   "description": "Node.js client for the official ChatGPT API.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "repository": "transitive-bullshit/chatgpt-api",
@@ -47,8 +47,8 @@
     "eventsource-parser": "^0.0.5",
     "keyv": "^4.5.2",
     "p-timeout": "npm:@esm2cjs/p-timeout@^6.0.0",
-    "quick-lru": "^6.1.1",
-    "read-pkg-up": "^9.1.0",
+    "quick-lru": "^5.1.1",
+    "read-pkg-up": "^7.0.1",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
