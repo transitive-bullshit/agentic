@@ -333,7 +333,7 @@ Known reverse proxies run by community members include:
 | Reverse Proxy URL                                | Author                                       | Rate Limits       | Last Checked |
 | ------------------------------------------------ | -------------------------------------------- | ----------------- | ------------ |
 | `https://bypass.duti.tech/api/conversation`        | [@acheong08](https://github.com/acheong08)   | 5 req / 10 seconds by IP | 3/11/2023    |
-| `https://gpt.pawan.krd/backend-api/conversation` | [@PawanOsman](https://github.com/PawanOsman) | ?                 | 2/19/2023    |
+| `https://api.pawan.krd/backend-api/conversation` | [@PawanOsman](https://github.com/PawanOsman) | 50 req / 15 seconds (~3 r/s)                 | 3/23/2023    |
 
 Note: info on how the reverse proxies work is not being published at this time in order to prevent OpenAI from disabling access.
 
