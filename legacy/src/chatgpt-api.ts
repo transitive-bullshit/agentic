@@ -120,6 +120,7 @@ export class ChatGPTAPI {
    *
    * @param message - The prompt message to send
    * @param opts.parentMessageId - Optional ID of the previous message in the conversation (defaults to `undefined`)
+   * @param opts.conversationId - Optional ID of the conversation (defaults to `undefined`)
    * @param opts.messageId - Optional ID of the message to send (defaults to a random UUID)
    * @param opts.systemMessage - Optional override for the chat "system message" which acts as instructions to the model (defaults to the ChatGPT system message)
    * @param opts.timeoutMs - Optional timeout in milliseconds (defaults to no timeout)
@@ -139,7 +140,8 @@ export class ChatGPTAPI {
       timeoutMs,
       onProgress,
       stream = onProgress ? true : false,
-      completionParams
+      completionParams,
+      conversationId = ''
     } = opts
 
     let { abortSignal } = opts
@@ -154,7 +156,8 @@ export class ChatGPTAPI {
       role: 'user',
       id: messageId,
       parentMessageId,
-      text
+      text,
+      conversationId
     }
     await this._upsertMessage(message)
 
@@ -167,7 +170,8 @@ export class ChatGPTAPI {
       role: 'assistant',
       id: uuidv4(),
       parentMessageId: messageId,
-      text: ''
+      text: '',
+      conversationId
     }
 
     const responseP = new Promise<types.ChatMessage>(
