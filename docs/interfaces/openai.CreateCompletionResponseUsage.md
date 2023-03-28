@@ -30,7 +30,7 @@ CreateCompletionResponseUsage
 
 #### Defined in
 
-[src/types.ts:419](https://github.com/transitive-bullshit/chatgpt-api/blob/c4ffe53/src/types.ts#L419)
+[src/types.ts:422](https://github.com/transitive-bullshit/chatgpt-api/blob/9eac18f/src/types.ts#L422)
 
 ___
 
@@ -44,7 +44,7 @@ CreateCompletionResponseUsage
 
 #### Defined in
 
-[src/types.ts:413](https://github.com/transitive-bullshit/chatgpt-api/blob/c4ffe53/src/types.ts#L413)
+[src/types.ts:416](https://github.com/transitive-bullshit/chatgpt-api/blob/9eac18f/src/types.ts#L416)
 
 ___
 
@@ -58,4 +58,4 @@ CreateCompletionResponseUsage
 
 #### Defined in
 
-[src/types.ts:425](https://github.com/transitive-bullshit/chatgpt-api/blob/c4ffe53/src/types.ts#L425)
+[src/types.ts:428](https://github.com/transitive-bullshit/chatgpt-api/blob/9eac18f/src/types.ts#L428)
