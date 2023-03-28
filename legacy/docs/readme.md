@@ -334,8 +334,8 @@ Known reverse proxies run by community members include:
 
 | Reverse Proxy URL                                | Author                                       | Rate Limits       | Last Checked |
 | ------------------------------------------------ | -------------------------------------------- | ----------------- | ------------ |
-| `https://bypass.duti.tech/api/conversation`        | [@acheong08](https://github.com/acheong08)   | 5 req / 10 seconds by IP | 3/11/2023    |
-| `https://gpt.pawan.krd/backend-api/conversation` | [@PawanOsman](https://github.com/PawanOsman) | ?                 | 2/19/2023    |
+| `https://bypass.churchless.tech/api/conversation`        | [@acheong08](https://github.com/acheong08)   | 5 req / 10 seconds by IP | 3/24/2023    |
+| `https://api.pawan.krd/backend-api/conversation` | [@PawanOsman](https://github.com/PawanOsman) | 50 req / 15 seconds (~3 r/s)                 | 3/23/2023    |
 
 Note: info on how the reverse proxies work is not being published at this time in order to prevent OpenAI from disabling access.
 
@@ -424,6 +424,7 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [Telegram Bot #2](https://github.com/dawangraoming/chatgpt-telegram-bot)
 - [Telegram Bot #3](https://github.com/RainEggplant/chatgpt-telegram-bot) (group privacy mode, ID-based auth)
 - [Telegram Bot #4](https://github.com/ArdaGnsrn/chatgpt-telegram) (queue system, ID-based chat thread)
+- [Telegram Bot #5](https://github.com/azoway/chatgpt-telegram-bot) (group privacy mode, ID-based chat thread)
 - [Deno Telegram Bot](https://github.com/Ciyou/chatbot-telegram)
 - [Go Telegram Bot](https://github.com/m1guelpf/chatgpt-telegram)
 - [Telegram Bot for YouTube Summaries](https://github.com/codextde/youtube-summary)
@@ -434,11 +435,14 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [Discord Bot #4 (selfbot)](https://github.com/0x7030676e31/cumsocket)
 - [Discord Bot #5](https://github.com/itskdhere/ChatGPT-Discord-BOT)
 - [Discord Bot #6 (Shakespeare bot)](https://gist.github.com/TheBrokenRail/4b37e7c44e8f721d8bd845050d034c16)
+- [Discord Bot #7](https://github.com/Elitezen/discordjs-chatgpt)
+- [Zoom Chat](https://github.com/shixin-guo/my-bot)
 - [WeChat Bot #1](https://github.com/AutumnWhj/ChatGPT-wechat-bot)
 - [WeChat Bot #2](https://github.com/fuergaosi233/wechat-chatgpt)
 - [WeChat Bot #3](https://github.com/wangrongding/wechat-bot) (
 - [WeChat Bot #4](https://github.com/darknightlab/wechat-bot)
 - [WeChat Bot #5](https://github.com/sunshanpeng/wechaty-chatgpt)
+- [WeChat Bot #6](https://github.com/formulahendry/chatgpt-wechat-bot)
 - [QQ Bot (plugin for Yunzai-bot)](https://github.com/ikechan8370/chatgpt-plugin)
 - [QQ Bot (plugin for KiviBot)](https://github.com/KiviBotLab/kivibot-plugin-chatgpt)
 - [QQ Bot (oicq)](https://github.com/easydu2002/chat_gpt_oicq)
@@ -484,6 +488,8 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [Next.js ChatGPT With Firebase](https://github.com/youngle316/chatgpt)
 - [ai-commit – GPT-3 Commit Message Generator](https://github.com/insulineru/ai-commit)
 - [AItinerary – ChatGPT itinerary Generator](https://aitinerary.ai)
+- [wechaty-chatgpt - A chatbot based on Wechaty & ChatGPT](https://github.com/zhengxs2018/wechaty-chatgpt)
+- [Julius GPT](https://github.com/christophebe/julius-gpt) : Generate and publish your content from the command line with the help of AI (GPT).
 
 If you create a cool integration, feel free to open a PR and add it to the list.
 
