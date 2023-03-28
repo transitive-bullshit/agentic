@@ -433,6 +433,7 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [Discord Bot #4 (selfbot)](https://github.com/0x7030676e31/cumsocket)
 - [Discord Bot #5](https://github.com/itskdhere/ChatGPT-Discord-BOT)
 - [Discord Bot #6 (Shakespeare bot)](https://gist.github.com/TheBrokenRail/4b37e7c44e8f721d8bd845050d034c16)
+- [Discord Bot #7](https://github.com/Elitezen/discordjs-chatgpt)
 - [Zoom Chat](https://github.com/shixin-guo/my-bot)
 - [WeChat Bot #1](https://github.com/AutumnWhj/ChatGPT-wechat-bot)
 - [WeChat Bot #2](https://github.com/fuergaosi233/wechat-chatgpt)
@@ -484,7 +485,6 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [Next.js ChatGPT With Firebase](https://github.com/youngle316/chatgpt)
 - [ai-commit – GPT-3 Commit Message Generator](https://github.com/insulineru/ai-commit)
 - [AItinerary – ChatGPT itinerary Generator](https://aitinerary.ai)
-- [discordjs-chatgpt](https://github.com/Elitezen/discordjs-chatgpt) Discord.JS ChatGPT command plugin
 
 If you create a cool integration, feel free to open a PR and add it to the list.
 
