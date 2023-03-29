@@ -294,7 +294,8 @@ export class ChatGPTAPI {
         message.detail.usage = {
           prompt_tokens: promptTokens,
           completion_tokens: completionTokens,
-          total_tokens: promptTokens + completionTokens
+          total_tokens: promptTokens + completionTokens,
+          estimated: true
         }
       }
       return this._upsertMessage(message).then(() => message)
