@@ -280,8 +280,11 @@ Note that we automatically handle appending the previous messages to the prompt 
 
 ```js
 async function example() {
-  // To use ESM in CommonJS, you can use a dynamic import
+  // To use ESM in CommonJS, you can use a dynamic import like this:
   const { ChatGPTAPI } = await import('chatgpt')
+  // You can also try dynamic importing like this:
+  // const importDynamic = new Function('modulePath', 'return import(modulePath)')
+  // const { ChatGPTAPI } = await importDynamic('chatgpt')
 
   const api = new ChatGPTAPI({ apiKey: process.env.OPENAI_API_KEY })
 
