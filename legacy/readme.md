@@ -471,6 +471,8 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [Slack Bot #2](https://github.com/lokwkin/chatgpt-slackbot-node/) (with queueing mechanism)
 - [Slack Bot #3](https://github.com/NessunKim/slack-chatgpt/)
 - [Slack Bot #4](https://github.com/MarkusGalant/chatgpt-slackbot-serverless/) ( Serverless AWS Lambda )
+- [Slack Bot #5](https://github.com/benjiJanssens/SlackGPT) (Hosted)
+  - [Add to Slack](https://slackgpt.benji.sh/slack/install)
 - [Electron Bot](https://github.com/ShiranAbir/chaty)
 - [Kodyfire CLI](https://github.com/nooqta/chatgpt-kodyfire)
 - [Twitch Bot](https://github.com/BennyDeeDev/chatgpt-twitch-bot)
