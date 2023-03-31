@@ -31,11 +31,13 @@ async function main() {
     })
     .option('-t, --timeout', 'Timeout in milliseconds')
     .option('-k, --apiKey <apiKey>', 'OpenAI API key')
+    .option('-o, --apiOrg <apiOrg>', 'OpenAI API key')
     .option(
       '-n, --conversationName <conversationName>',
       'Unique name for the conversation'
     )
     .action(async (prompt, options) => {
+      const apiOrg = options.apiOrg|| process.env.OPENAI_API_ORG
       const apiKey = options.apiKey || process.env.OPENAI_API_KEY
       if (!apiKey) {
         console.error('error: either set OPENAI_API_KEY or use --apiKey\n')
@@ -67,6 +69,7 @@ async function main() {
 
       const api = new ChatGPTAPI({
         apiKey,
+        apiOrg,
         debug: options.debug,
         getMessageById: async (id) => {
           if (options.store) {
