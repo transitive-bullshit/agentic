@@ -37,7 +37,7 @@ async function main() {
       'Unique name for the conversation'
     )
     .action(async (prompt, options) => {
-      const apiOrg = options.apiOrg|| process.env.OPENAI_API_ORG
+      const apiOrg = options.apiOrg || process.env.OPENAI_API_ORG
       const apiKey = options.apiKey || process.env.OPENAI_API_KEY
       if (!apiKey) {
         console.error('error: either set OPENAI_API_KEY or use --apiKey\n')
