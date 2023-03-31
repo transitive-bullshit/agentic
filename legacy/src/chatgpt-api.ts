@@ -190,7 +190,7 @@ export class ChatGPTAPI {
         }
 
         // Support multiple organizations
-        // See https://platform.openai.com/account/api-keys
+        // See https://platform.openai.com/docs/api-reference/authentication
         if (this._apiOrg) {
           headers['OpenAI-Organization'] = this._apiOrg
         }
