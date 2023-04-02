@@ -61,13 +61,25 @@ export type SendMessageBrowserOptions = {
   abortSignal?: AbortSignal
 }
 
+interface CreateChatCompletionStreamResponse
+  extends openai.CreateChatCompletionDeltaResponse {
+  usage: CreateCompletionStreamResponseUsage
+}
+
+interface CreateCompletionStreamResponseUsage
+  extends openai.CreateCompletionResponseUsage {
+  estimated: true
+}
+
 export interface ChatMessage {
   id: string
   text: string
   role: Role
   name?: string
   delta?: string
-  detail?: any
+  detail?:
+    | openai.CreateChatCompletionResponse
+    | CreateChatCompletionStreamResponse
 
   // relevant for both ChatGPTAPI and ChatGPTUnofficialProxyAPI
   parentMessageId?: string

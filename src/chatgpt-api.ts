@@ -221,15 +221,16 @@ export class ChatGPTAPI {
                     result.id = response.id
                   }
 
-                  if (response?.choices?.length) {
+                  if (response.choices?.length) {
                     const delta = response.choices[0].delta
                     result.delta = delta.content
                     if (delta?.content) result.text += delta.content
-                    result.detail = response
 
                     if (delta.role) {
                       result.role = delta.role
                     }
+
+                    result.detail = response
 
                     onProgress?.(result)
                   }
@@ -296,7 +297,17 @@ export class ChatGPTAPI {
           }
         }
       }
-    ).then((message) => {
+    ).then(async (message) => {
+      if (message.detail && !message.detail.usage) {
+        const promptTokens = numTokens
+        const completionTokens = await this._getTokenCount(message.text)
+        message.detail.usage = {
+          prompt_tokens: promptTokens,
+          completion_tokens: completionTokens,
+          total_tokens: promptTokens + completionTokens,
+          estimated: true
+        }
+      }
       return this._upsertMessage(message).then(() => message)
     })
 
