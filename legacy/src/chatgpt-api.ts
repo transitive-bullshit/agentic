@@ -160,7 +160,8 @@ export class ChatGPTAPI {
       parentMessageId,
       text
     }
-    await this._upsertMessage(message)
+
+    const latestQuestion = message
 
     const { messages, maxTokens, numTokens } = await this._buildMessages(
       text,
@@ -313,7 +314,7 @@ export class ChatGPTAPI {
         }
       }
 
-      return this._upsertMessage(message).then(() => message)
+      return Promise.all([ this._upsertMessage(latestQuestion), this._upsertMessage(message) ]).then(() => message)
     })
 
     if (timeoutMs) {
