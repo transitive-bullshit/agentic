@@ -219,8 +219,11 @@ export class ChatGPTUnofficialProxyAPI {
               }
             } catch (err) {
               // ignore for now; there seem to be some non-json messages
-              // console.warn('fetchSSE onMessage unexpected error', err)
+              reject(err)
             }
+          },
+          onError: (err) => {
+            reject(err)
           }
         },
         this._fetch
