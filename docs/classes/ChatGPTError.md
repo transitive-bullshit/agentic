@@ -39,7 +39,7 @@ Error.constructor
 
 #### Defined in
 
-node_modules/.pnpm/typescript@4.9.5/node_modules/typescript/lib/lib.es5.d.ts:1059
+node_modules/.pnpm/typescript@5.0.3/node_modules/typescript/lib/lib.es5.d.ts:1060
 
 • **new ChatGPTError**(`message?`, `options?`)
 
@@ -56,7 +56,7 @@ Error.constructor
 
 #### Defined in
 
-node_modules/.pnpm/typescript@4.9.5/node_modules/typescript/lib/lib.es2022.error.d.ts:30
+node_modules/.pnpm/typescript@5.0.3/node_modules/typescript/lib/lib.es2022.error.d.ts:28
 
 ## Properties
 
@@ -66,7 +66,7 @@ node_modules/.pnpm/typescript@4.9.5/node_modules/typescript/lib/lib.es2022.error
 
 #### Defined in
 
-[src/types.ts:80](https://github.com/transitive-bullshit/chatgpt-api/blob/9eac18f/src/types.ts#L80)
+[src/types.ts:86](https://github.com/transitive-bullshit/chatgpt-api/blob/bf66500/src/types.ts#L86)
 
 ___
 
@@ -76,7 +76,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:79](https://github.com/transitive-bullshit/chatgpt-api/blob/9eac18f/src/types.ts#L79)
+[src/types.ts:85](https://github.com/transitive-bullshit/chatgpt-api/blob/bf66500/src/types.ts#L85)
 
 ___
 
@@ -86,7 +86,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:77](https://github.com/transitive-bullshit/chatgpt-api/blob/9eac18f/src/types.ts#L77)
+[src/types.ts:83](https://github.com/transitive-bullshit/chatgpt-api/blob/bf66500/src/types.ts#L83)
 
 ___
 
@@ -96,4 +96,4 @@ ___
 
 #### Defined in
 
-[src/types.ts:78](https://github.com/transitive-bullshit/chatgpt-api/blob/9eac18f/src/types.ts#L78)
+[src/types.ts:84](https://github.com/transitive-bullshit/chatgpt-api/blob/bf66500/src/types.ts#L84)

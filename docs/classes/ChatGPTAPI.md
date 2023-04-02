@@ -11,6 +11,7 @@
 ### Accessors
 
 - [apiKey](ChatGPTAPI.md#apikey)
+- [apiOrg](ChatGPTAPI.md#apiorg)
 
 ### Methods
 
@@ -32,7 +33,7 @@ Creates a new client wrapper around OpenAI's chat completion API, mimicing the o
 
 #### Defined in
 
-[src/chatgpt-api.ts:49](https://github.com/transitive-bullshit/chatgpt-api/blob/9eac18f/src/chatgpt-api.ts#L49)
+[src/chatgpt-api.ts:51](https://github.com/transitive-bullshit/chatgpt-api/blob/bf66500/src/chatgpt-api.ts#L51)
 
 ## Accessors
 
@@ -46,7 +47,7 @@ Creates a new client wrapper around OpenAI's chat completion API, mimicing the o
 
 #### Defined in
 
-[src/chatgpt-api.ts:311](https://github.com/transitive-bullshit/chatgpt-api/blob/9eac18f/src/chatgpt-api.ts#L311)
+[src/chatgpt-api.ts:345](https://github.com/transitive-bullshit/chatgpt-api/blob/bf66500/src/chatgpt-api.ts#L345)
 
 • `set` **apiKey**(`apiKey`): `void`
 
@@ -62,7 +63,37 @@ Creates a new client wrapper around OpenAI's chat completion API, mimicing the o
 
 #### Defined in
 
-[src/chatgpt-api.ts:315](https://github.com/transitive-bullshit/chatgpt-api/blob/9eac18f/src/chatgpt-api.ts#L315)
+[src/chatgpt-api.ts:349](https://github.com/transitive-bullshit/chatgpt-api/blob/bf66500/src/chatgpt-api.ts#L349)
+
+___
+
+### apiOrg
+
+• `get` **apiOrg**(): `string`
+
+#### Returns
+
+`string`
+
+#### Defined in
+
+[src/chatgpt-api.ts:353](https://github.com/transitive-bullshit/chatgpt-api/blob/bf66500/src/chatgpt-api.ts#L353)
+
+• `set` **apiOrg**(`apiOrg`): `void`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `apiOrg` | `string` |
+
+#### Returns
+
+`void`
+
+#### Defined in
+
+[src/chatgpt-api.ts:357](https://github.com/transitive-bullshit/chatgpt-api/blob/bf66500/src/chatgpt-api.ts#L357)
 
 ## Methods
 
@@ -94,4 +125,4 @@ The response from ChatGPT
 
 #### Defined in
 
-[src/chatgpt-api.ts:132](https://github.com/transitive-bullshit/chatgpt-api/blob/9eac18f/src/chatgpt-api.ts#L132)
+[src/chatgpt-api.ts:137](https://github.com/transitive-bullshit/chatgpt-api/blob/bf66500/src/chatgpt-api.ts#L137)

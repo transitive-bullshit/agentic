@@ -36,7 +36,7 @@
 
 #### Defined in
 
-[src/chatgpt-unofficial-proxy-api.ts:20](https://github.com/transitive-bullshit/chatgpt-api/blob/9eac18f/src/chatgpt-unofficial-proxy-api.ts#L20)
+[src/chatgpt-unofficial-proxy-api.ts:20](https://github.com/transitive-bullshit/chatgpt-api/blob/bf66500/src/chatgpt-unofficial-proxy-api.ts#L20)
 
 ## Accessors
 
@@ -50,7 +50,7 @@
 
 #### Defined in
 
-[src/chatgpt-unofficial-proxy-api.ts:66](https://github.com/transitive-bullshit/chatgpt-api/blob/9eac18f/src/chatgpt-unofficial-proxy-api.ts#L66)
+[src/chatgpt-unofficial-proxy-api.ts:66](https://github.com/transitive-bullshit/chatgpt-api/blob/bf66500/src/chatgpt-unofficial-proxy-api.ts#L66)
 
 • `set` **accessToken**(`value`): `void`
 
@@ -66,7 +66,7 @@
 
 #### Defined in
 
-[src/chatgpt-unofficial-proxy-api.ts:70](https://github.com/transitive-bullshit/chatgpt-api/blob/9eac18f/src/chatgpt-unofficial-proxy-api.ts#L70)
+[src/chatgpt-unofficial-proxy-api.ts:70](https://github.com/transitive-bullshit/chatgpt-api/blob/bf66500/src/chatgpt-unofficial-proxy-api.ts#L70)
 
 ## Methods
 
@@ -101,4 +101,4 @@ The response from ChatGPT
 
 #### Defined in
 
-[src/chatgpt-unofficial-proxy-api.ts:97](https://github.com/transitive-bullshit/chatgpt-api/blob/9eac18f/src/chatgpt-unofficial-proxy-api.ts#L97)
+[src/chatgpt-unofficial-proxy-api.ts:97](https://github.com/transitive-bullshit/chatgpt-api/blob/bf66500/src/chatgpt-unofficial-proxy-api.ts#L97)
