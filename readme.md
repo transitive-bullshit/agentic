@@ -445,6 +445,7 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [WeChat Bot #4](https://github.com/darknightlab/wechat-bot)
 - [WeChat Bot #5](https://github.com/sunshanpeng/wechaty-chatgpt)
 - [WeChat Bot #6](https://github.com/formulahendry/chatgpt-wechat-bot)
+- [WeChat Bot #7](https://github.com/gfl94/Chatbot004)
 - [QQ Bot (plugin for Yunzai-bot)](https://github.com/ikechan8370/chatgpt-plugin)
 - [QQ Bot (plugin for KiviBot)](https://github.com/KiviBotLab/kivibot-plugin-chatgpt)
 - [QQ Bot (oicq)](https://github.com/easydu2002/chat_gpt_oicq)
@@ -472,6 +473,8 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [Slack Bot #2](https://github.com/lokwkin/chatgpt-slackbot-node/) (with queueing mechanism)
 - [Slack Bot #3](https://github.com/NessunKim/slack-chatgpt/)
 - [Slack Bot #4](https://github.com/MarkusGalant/chatgpt-slackbot-serverless/) ( Serverless AWS Lambda )
+- [Slack Bot #5](https://github.com/benjiJanssens/SlackGPT) (Hosted)
+  - [Add to Slack](https://slackgpt.benji.sh/slack/install)
 - [Electron Bot](https://github.com/ShiranAbir/chaty)
 - [Kodyfire CLI](https://github.com/nooqta/chatgpt-kodyfire)
 - [Twitch Bot](https://github.com/BennyDeeDev/chatgpt-twitch-bot)
@@ -491,7 +494,8 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [ai-commit – GPT-3 Commit Message Generator](https://github.com/insulineru/ai-commit)
 - [AItinerary – ChatGPT itinerary Generator](https://aitinerary.ai)
 - [wechaty-chatgpt - A chatbot based on Wechaty & ChatGPT](https://github.com/zhengxs2018/wechaty-chatgpt)
-- [Julius GPT](https://github.com/christophebe/julius-gpt) : Generate and publish your content from the command line with the help of AI (GPT).
+- [Julius GPT](https://github.com/christophebe/julius-gpt) - Generate and publish your content from the CLI
+- [OpenAI-API-Service](https://github.com/Jarvan-via/api-service) - Provides OpenAI related APIs for businesses
 
 If you create a cool integration, feel free to open a PR and add it to the list.
 
