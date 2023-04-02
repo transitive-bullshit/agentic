@@ -36,28 +36,32 @@ export async function fetchSSE(
     }
   })
 
-  // check if the response is an error, if so, throw it
+  // handle special response errors
   const feed = (chunk: string) => {
     let response = null
+
     try {
       response = JSON.parse(chunk)
     } catch {
-      /// ignore
+      // ignore
     }
-    if (response?.detail) {
-      if (response.detail.type === 'invalid_request_error') {
-        const msg = `ChatGPT error ${response.detail.message}: ${response.detail.code} (${response.detail.type})`
-        const error = new types.ChatGPTError(msg, { cause: response })
-        error.statusCode = response.detail.code
-        error.statusText = response.detail.message
-        if (onError) {
-          onError(error)
-        } else {
-          console.error(error)
-        }
-        return // don't feed to event parser
+
+    if (response?.detail?.type === 'invalid_request_error') {
+      const msg = `ChatGPT error ${response.detail.message}: ${response.detail.code} (${response.detail.type})`
+      const error = new types.ChatGPTError(msg, { cause: response })
+      error.statusCode = response.detail.code
+      error.statusText = response.detail.message
+
+      if (onError) {
+        onError(error)
+      } else {
+        console.error(error)
       }
+
+      // don't feed to the event parser
+      return
     }
+
     parser.feed(chunk)
   }
 
