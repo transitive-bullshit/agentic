@@ -444,6 +444,7 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [WeChat Bot #4](https://github.com/darknightlab/wechat-bot)
 - [WeChat Bot #5](https://github.com/sunshanpeng/wechaty-chatgpt)
 - [WeChat Bot #6](https://github.com/formulahendry/chatgpt-wechat-bot)
+- [WeChat Bot #7](https://github.com/gfl94/Chatbot004)
 - [QQ Bot (plugin for Yunzai-bot)](https://github.com/ikechan8370/chatgpt-plugin)
 - [QQ Bot (plugin for KiviBot)](https://github.com/KiviBotLab/kivibot-plugin-chatgpt)
 - [QQ Bot (oicq)](https://github.com/easydu2002/chat_gpt_oicq)
