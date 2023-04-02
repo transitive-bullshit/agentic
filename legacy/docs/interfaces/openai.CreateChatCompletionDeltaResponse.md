@@ -4,6 +4,12 @@
 
 [openai](../modules/openai.md).CreateChatCompletionDeltaResponse
 
+## Hierarchy
+
+- **`CreateChatCompletionDeltaResponse`**
+
+  ↳ [`CreateChatCompletionStreamResponse`](CreateChatCompletionStreamResponse.md)
+
 ## Table of contents
 
 ### Properties
@@ -22,7 +28,7 @@
 
 #### Defined in
 
-[src/types.ts:182](https://github.com/transitive-bullshit/chatgpt-api/blob/9eac18f/src/types.ts#L182)
+[src/types.ts:198](https://github.com/transitive-bullshit/chatgpt-api/blob/bf66500/src/types.ts#L198)
 
 ___
 
@@ -32,7 +38,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:180](https://github.com/transitive-bullshit/chatgpt-api/blob/9eac18f/src/types.ts#L180)
+[src/types.ts:196](https://github.com/transitive-bullshit/chatgpt-api/blob/bf66500/src/types.ts#L196)
 
 ___
 
@@ -42,7 +48,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:178](https://github.com/transitive-bullshit/chatgpt-api/blob/9eac18f/src/types.ts#L178)
+[src/types.ts:194](https://github.com/transitive-bullshit/chatgpt-api/blob/bf66500/src/types.ts#L194)
 
 ___
 
@@ -52,7 +58,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:181](https://github.com/transitive-bullshit/chatgpt-api/blob/9eac18f/src/types.ts#L181)
+[src/types.ts:197](https://github.com/transitive-bullshit/chatgpt-api/blob/bf66500/src/types.ts#L197)
 
 ___
 
@@ -62,4 +68,4 @@ ___
 
 #### Defined in
 
-[src/types.ts:179](https://github.com/transitive-bullshit/chatgpt-api/blob/9eac18f/src/types.ts#L179)
+[src/types.ts:195](https://github.com/transitive-bullshit/chatgpt-api/blob/bf66500/src/types.ts#L195)
