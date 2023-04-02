@@ -314,7 +314,10 @@ export class ChatGPTAPI {
         }
       }
 
-      return Promise.all([ this._upsertMessage(latestQuestion), this._upsertMessage(message) ]).then(() => message)
+      return Promise.all([
+        this._upsertMessage(latestQuestion),
+        this._upsertMessage(message)
+      ]).then(() => message)
     })
 
     if (timeoutMs) {
