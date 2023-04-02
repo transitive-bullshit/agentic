@@ -74,7 +74,8 @@ export interface ChatMessage {
 
   // relevant for both ChatGPTAPI and ChatGPTUnofficialProxyAPI
   parentMessageId?: string
-  // only relevant for ChatGPTUnofficialProxyAPI
+
+  // only relevant for ChatGPTUnofficialProxyAPI (optional for ChatGPTAPI)
   conversationId?: string
 }
 

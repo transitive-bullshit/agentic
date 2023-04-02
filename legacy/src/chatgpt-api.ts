@@ -145,7 +145,7 @@ export class ChatGPTAPI {
       onProgress,
       stream = onProgress ? true : false,
       completionParams,
-      conversationId = ''
+      conversationId
     } = opts
 
     let { abortSignal } = opts
@@ -159,9 +159,9 @@ export class ChatGPTAPI {
     const message: types.ChatMessage = {
       role: 'user',
       id: messageId,
+      conversationId,
       parentMessageId,
-      text,
-      conversationId
+      text
     }
 
     const latestQuestion = message
@@ -174,9 +174,9 @@ export class ChatGPTAPI {
     const result: types.ChatMessage = {
       role: 'assistant',
       id: uuidv4(),
+      conversationId,
       parentMessageId: messageId,
-      text: '',
-      conversationId
+      text: ''
     }
 
     const responseP = new Promise<types.ChatMessage>(
