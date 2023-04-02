@@ -37,7 +37,7 @@ export class ChatGPTAPI {
    * Creates a new client wrapper around OpenAI's chat completion API, mimicing the official ChatGPT webapp's functionality as closely as possible.
    *
    * @param apiKey - OpenAI API key (required).
-   * @param apiOrg - OpenAI API organization (optional).
+   * @param apiOrg - Optional OpenAI API organization (optional).
    * @param apiBaseUrl - Optional override for the OpenAI API base URL.
    * @param debug - Optional enables logging debugging info to stdout.
    * @param completionParams - Param overrides to send to the [OpenAI chat completion API](https://platform.openai.com/docs/api-reference/chat/create). Options like `temperature` and `presence_penalty` can be tweaked to change the personality of the assistant.

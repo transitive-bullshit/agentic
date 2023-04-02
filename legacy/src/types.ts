@@ -10,7 +10,7 @@ export type ChatGPTAPIOptions = {
   /** @defaultValue `'https://api.openai.com'` **/
   apiBaseUrl?: string
 
-  apiOrg: string
+  apiOrg?: string
 
   /** @defaultValue `false` **/
   debug?: boolean
