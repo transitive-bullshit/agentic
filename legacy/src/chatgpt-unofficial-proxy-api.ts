@@ -218,7 +218,6 @@ export class ChatGPTUnofficialProxyAPI {
                 }
               }
             } catch (err) {
-              // ignore for now; there seem to be some non-json messages
               reject(err)
             }
           },
