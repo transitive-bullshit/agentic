@@ -150,6 +150,7 @@ Options:
   -s, --store             Enables the local message cache (default: true)
   -t, --timeout           Timeout in milliseconds
   -k, --apiKey            OpenAI API key
+  -o, --apiOrg            OpenAI API organization
   -n, --conversationName  Unique name for the conversation
   -h, --help              Display this message
   -v, --version           Display version number

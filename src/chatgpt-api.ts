@@ -16,6 +16,7 @@ const ASSISTANT_LABEL_DEFAULT = 'ChatGPT'
 export class ChatGPTAPI {
   protected _apiKey: string
   protected _apiBaseUrl: string
+  protected _apiOrg?: string
   protected _debug: boolean
 
   protected _systemMessage: string
@@ -36,6 +37,7 @@ export class ChatGPTAPI {
    * Creates a new client wrapper around OpenAI's chat completion API, mimicing the official ChatGPT webapp's functionality as closely as possible.
    *
    * @param apiKey - OpenAI API key (required).
+   * @param apiOrg - OpenAI API organization (optional).
    * @param apiBaseUrl - Optional override for the OpenAI API base URL.
    * @param debug - Optional enables logging debugging info to stdout.
    * @param completionParams - Param overrides to send to the [OpenAI chat completion API](https://platform.openai.com/docs/api-reference/chat/create). Options like `temperature` and `presence_penalty` can be tweaked to change the personality of the assistant.
@@ -49,6 +51,7 @@ export class ChatGPTAPI {
   constructor(opts: types.ChatGPTAPIOptions) {
     const {
       apiKey,
+      apiOrg,
       apiBaseUrl = 'https://api.openai.com/v1',
       debug = false,
       messageStore,
@@ -62,6 +65,7 @@ export class ChatGPTAPI {
     } = opts
 
     this._apiKey = apiKey
+    this._apiOrg = apiOrg
     this._apiBaseUrl = apiBaseUrl
     this._debug = !!debug
     this._fetch = fetch
@@ -183,6 +187,12 @@ export class ChatGPTAPI {
           ...completionParams,
           messages,
           stream
+        }
+
+        // Support multiple organizations
+        // See https://platform.openai.com/docs/api-reference/authentication
+        if (this._apiOrg) {
+          headers['OpenAI-Organization'] = this._apiOrg
         }
 
         if (this._debug) {
@@ -314,6 +324,14 @@ export class ChatGPTAPI {
 
   set apiKey(apiKey: string) {
     this._apiKey = apiKey
+  }
+
+  get apiOrg(): string {
+    return this._apiOrg
+  }
+
+  set apiOrg(apiOrg: string) {
+    this._apiOrg = apiOrg
   }
 
   protected async _buildMessages(text: string, opts: types.SendMessageOptions) {
