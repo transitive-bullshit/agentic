@@ -33,9 +33,9 @@
 
 #### Defined in
 
-[src/types.ts:216](https://github.com/transitive-bullshit/chatgpt-api/blob/c4ffe53/src/types.ts#L216)
+[src/types.ts:219](https://github.com/transitive-bullshit/chatgpt-api/blob/9eac18f/src/types.ts#L219)
 
-[src/types.ts:221](https://github.com/transitive-bullshit/chatgpt-api/blob/c4ffe53/src/types.ts#L221)
+[src/types.ts:224](https://github.com/transitive-bullshit/chatgpt-api/blob/9eac18f/src/types.ts#L224)
 
 ___
 
@@ -45,9 +45,9 @@ ___
 
 #### Defined in
 
-[src/types.ts:242](https://github.com/transitive-bullshit/chatgpt-api/blob/c4ffe53/src/types.ts#L242)
+[src/types.ts:245](https://github.com/transitive-bullshit/chatgpt-api/blob/9eac18f/src/types.ts#L245)
 
-[src/types.ts:247](https://github.com/transitive-bullshit/chatgpt-api/blob/c4ffe53/src/types.ts#L247)
+[src/types.ts:250](https://github.com/transitive-bullshit/chatgpt-api/blob/9eac18f/src/types.ts#L250)
 
 ___
 
@@ -59,7 +59,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:333](https://github.com/transitive-bullshit/chatgpt-api/blob/c4ffe53/src/types.ts#L333)
+[src/types.ts:336](https://github.com/transitive-bullshit/chatgpt-api/blob/9eac18f/src/types.ts#L336)
 
 ## Variables
 
@@ -77,9 +77,9 @@ ___
 
 #### Defined in
 
-[src/types.ts:216](https://github.com/transitive-bullshit/chatgpt-api/blob/c4ffe53/src/types.ts#L216)
+[src/types.ts:219](https://github.com/transitive-bullshit/chatgpt-api/blob/9eac18f/src/types.ts#L219)
 
-[src/types.ts:221](https://github.com/transitive-bullshit/chatgpt-api/blob/c4ffe53/src/types.ts#L221)
+[src/types.ts:224](https://github.com/transitive-bullshit/chatgpt-api/blob/9eac18f/src/types.ts#L224)
 
 ___
 
@@ -97,6 +97,6 @@ ___
 
 #### Defined in
 
-[src/types.ts:242](https://github.com/transitive-bullshit/chatgpt-api/blob/c4ffe53/src/types.ts#L242)
+[src/types.ts:245](https://github.com/transitive-bullshit/chatgpt-api/blob/9eac18f/src/types.ts#L245)
 
-[src/types.ts:247](https://github.com/transitive-bullshit/chatgpt-api/blob/c4ffe53/src/types.ts#L247)
+[src/types.ts:250](https://github.com/transitive-bullshit/chatgpt-api/blob/9eac18f/src/types.ts#L250)

@@ -150,6 +150,7 @@ Options:
   -s, --store             Enables the local message cache (default: true)
   -t, --timeout           Timeout in milliseconds
   -k, --apiKey            OpenAI API key
+  -o, --apiOrg            OpenAI API organization
   -n, --conversationName  Unique name for the conversation
   -h, --help              Display this message
   -v, --version           Display version number
@@ -280,8 +281,11 @@ Note that we automatically handle appending the previous messages to the prompt 
 
 ```js
 async function example() {
-  // To use ESM in CommonJS, you can use a dynamic import
+  // To use ESM in CommonJS, you can use a dynamic import like this:
   const { ChatGPTAPI } = await import('chatgpt')
+  // You can also try dynamic importing like this:
+  // const importDynamic = new Function('modulePath', 'return import(modulePath)')
+  // const { ChatGPTAPI } = await importDynamic('chatgpt')
 
   const api = new ChatGPTAPI({ apiKey: process.env.OPENAI_API_KEY })
 
@@ -433,12 +437,15 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [Discord Bot #4 (selfbot)](https://github.com/0x7030676e31/cumsocket)
 - [Discord Bot #5](https://github.com/itskdhere/ChatGPT-Discord-BOT)
 - [Discord Bot #6 (Shakespeare bot)](https://gist.github.com/TheBrokenRail/4b37e7c44e8f721d8bd845050d034c16)
+- [Discord Bot #7](https://github.com/Elitezen/discordjs-chatgpt)
 - [Zoom Chat](https://github.com/shixin-guo/my-bot)
 - [WeChat Bot #1](https://github.com/AutumnWhj/ChatGPT-wechat-bot)
 - [WeChat Bot #2](https://github.com/fuergaosi233/wechat-chatgpt)
 - [WeChat Bot #3](https://github.com/wangrongding/wechat-bot) (
 - [WeChat Bot #4](https://github.com/darknightlab/wechat-bot)
 - [WeChat Bot #5](https://github.com/sunshanpeng/wechaty-chatgpt)
+- [WeChat Bot #6](https://github.com/formulahendry/chatgpt-wechat-bot)
+- [WeChat Bot #7](https://github.com/gfl94/Chatbot004)
 - [QQ Bot (plugin for Yunzai-bot)](https://github.com/ikechan8370/chatgpt-plugin)
 - [QQ Bot (plugin for KiviBot)](https://github.com/KiviBotLab/kivibot-plugin-chatgpt)
 - [QQ Bot (oicq)](https://github.com/easydu2002/chat_gpt_oicq)
@@ -466,6 +473,8 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [Slack Bot #2](https://github.com/lokwkin/chatgpt-slackbot-node/) (with queueing mechanism)
 - [Slack Bot #3](https://github.com/NessunKim/slack-chatgpt/)
 - [Slack Bot #4](https://github.com/MarkusGalant/chatgpt-slackbot-serverless/) ( Serverless AWS Lambda )
+- [Slack Bot #5](https://github.com/benjiJanssens/SlackGPT) (Hosted)
+  - [Add to Slack](https://slackgpt.benji.sh/slack/install)
 - [Electron Bot](https://github.com/ShiranAbir/chaty)
 - [Kodyfire CLI](https://github.com/nooqta/chatgpt-kodyfire)
 - [Twitch Bot](https://github.com/BennyDeeDev/chatgpt-twitch-bot)
@@ -484,6 +493,9 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [Next.js ChatGPT With Firebase](https://github.com/youngle316/chatgpt)
 - [ai-commit – GPT-3 Commit Message Generator](https://github.com/insulineru/ai-commit)
 - [AItinerary – ChatGPT itinerary Generator](https://aitinerary.ai)
+- [wechaty-chatgpt - A chatbot based on Wechaty & ChatGPT](https://github.com/zhengxs2018/wechaty-chatgpt)
+- [Julius GPT](https://github.com/christophebe/julius-gpt) - Generate and publish your content from the CLI
+- [OpenAI-API-Service](https://github.com/Jarvan-via/api-service) - Provides OpenAI related APIs for businesses
 
 If you create a cool integration, feel free to open a PR and add it to the list.
 
