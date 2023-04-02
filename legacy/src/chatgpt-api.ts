@@ -231,7 +231,6 @@ export class ChatGPTAPI {
                     }
 
                     result.detail = response
-
                     onProgress?.(result)
                   }
                 } catch (err) {
@@ -299,15 +298,21 @@ export class ChatGPTAPI {
       }
     ).then(async (message) => {
       if (message.detail && !message.detail.usage) {
-        const promptTokens = numTokens
-        const completionTokens = await this._getTokenCount(message.text)
-        message.detail.usage = {
-          prompt_tokens: promptTokens,
-          completion_tokens: completionTokens,
-          total_tokens: promptTokens + completionTokens,
-          estimated: true
+        try {
+          const promptTokens = numTokens
+          const completionTokens = await this._getTokenCount(message.text)
+          message.detail.usage = {
+            prompt_tokens: promptTokens,
+            completion_tokens: completionTokens,
+            total_tokens: promptTokens + completionTokens,
+            estimated: true
+          }
+        } catch (err) {
+          // TODO: this should really never happen, but if it does,
+          // we should handle notify the user gracefully
         }
       }
+
       return this._upsertMessage(message).then(() => message)
     })
 
