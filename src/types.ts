@@ -61,16 +61,6 @@ export type SendMessageBrowserOptions = {
   abortSignal?: AbortSignal
 }
 
-interface CreateChatCompletionStreamResponse
-  extends openai.CreateChatCompletionDeltaResponse {
-  usage: CreateCompletionStreamResponseUsage
-}
-
-interface CreateCompletionStreamResponseUsage
-  extends openai.CreateCompletionResponseUsage {
-  estimated: true
-}
-
 export interface ChatMessage {
   id: string
   text: string
@@ -99,6 +89,16 @@ export type GetMessageByIdFunction = (id: string) => Promise<ChatMessage>
 
 /** Upserts a chat message to a store. */
 export type UpsertMessageFunction = (message: ChatMessage) => Promise<void>
+
+export interface CreateChatCompletionStreamResponse
+  extends openai.CreateChatCompletionDeltaResponse {
+  usage: CreateCompletionStreamResponseUsage
+}
+
+export interface CreateCompletionStreamResponseUsage
+  extends openai.CreateCompletionResponseUsage {
+  estimated: true
+}
 
 /**
  * https://chat.openapi.com/backend-api/conversation
