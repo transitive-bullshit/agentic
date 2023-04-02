@@ -400,7 +400,7 @@ export class ChatGPTAPI {
           }
         }, [] as string[])
         .join('\n\n')
-      const nextNumTokensEstimate = (await this._getTokenCount(prompt)) + 8 // TODO: find out where this 8 tokens diff comes from
+      const nextNumTokensEstimate = await this._getTokenCount(prompt)
       const validatingRequiredMessages =
         nextMessages.length <= requiredMessagesAmount
       const promptLimit = validatingRequiredMessages
