@@ -66,7 +66,7 @@ node_modules/.pnpm/typescript@4.9.5/node_modules/typescript/lib/lib.es2022.error
 
 #### Defined in
 
-[src/types.ts:77](https://github.com/transitive-bullshit/chatgpt-api/blob/c4ffe53/src/types.ts#L77)
+[src/types.ts:80](https://github.com/transitive-bullshit/chatgpt-api/blob/9eac18f/src/types.ts#L80)
 
 ___
 
@@ -76,7 +76,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:76](https://github.com/transitive-bullshit/chatgpt-api/blob/c4ffe53/src/types.ts#L76)
+[src/types.ts:79](https://github.com/transitive-bullshit/chatgpt-api/blob/9eac18f/src/types.ts#L79)
 
 ___
 
@@ -86,7 +86,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:74](https://github.com/transitive-bullshit/chatgpt-api/blob/c4ffe53/src/types.ts#L74)
+[src/types.ts:77](https://github.com/transitive-bullshit/chatgpt-api/blob/9eac18f/src/types.ts#L77)
 
 ___
 
@@ -96,4 +96,4 @@ ___
 
 #### Defined in
 
-[src/types.ts:75](https://github.com/transitive-bullshit/chatgpt-api/blob/c4ffe53/src/types.ts#L75)
+[src/types.ts:78](https://github.com/transitive-bullshit/chatgpt-api/blob/9eac18f/src/types.ts#L78)

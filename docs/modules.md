@@ -49,7 +49,7 @@
 | :------ | :------ | :------ |
 | `apiBaseUrl?` | `string` | **`Default Value`** `'https://api.openai.com'` * |
 | `apiKey` | `string` | - |
-| `completionParams?` | `Partial`<`Omit`<[`CreateChatCompletionRequest`](interfaces/openai.CreateChatCompletionRequest.md), ``"messages"`` \| ``"n"``\>\> | - |
+| `completionParams?` | `Partial`<`Omit`<[`CreateChatCompletionRequest`](interfaces/openai.CreateChatCompletionRequest.md), ``"messages"`` \| ``"n"`` \| ``"stream"``\>\> | - |
 | `debug?` | `boolean` | **`Default Value`** `false` * |
 | `fetch?` | [`FetchFn`](modules.md#fetchfn) | - |
 | `getMessageById?` | [`GetMessageByIdFunction`](modules.md#getmessagebyidfunction) | - |
@@ -61,7 +61,7 @@
 
 #### Defined in
 
-[src/types.ts:7](https://github.com/transitive-bullshit/chatgpt-api/blob/c4ffe53/src/types.ts#L7)
+[src/types.ts:7](https://github.com/transitive-bullshit/chatgpt-api/blob/9eac18f/src/types.ts#L7)
 
 ___
 
@@ -71,7 +71,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:133](https://github.com/transitive-bullshit/chatgpt-api/blob/c4ffe53/src/types.ts#L133)
+[src/types.ts:136](https://github.com/transitive-bullshit/chatgpt-api/blob/9eac18f/src/types.ts#L136)
 
 ___
 
@@ -93,7 +93,7 @@ https://chat.openapi.com/backend-api/conversation
 
 #### Defined in
 
-[src/types.ts:89](https://github.com/transitive-bullshit/chatgpt-api/blob/c4ffe53/src/types.ts#L89)
+[src/types.ts:92](https://github.com/transitive-bullshit/chatgpt-api/blob/9eac18f/src/types.ts#L92)
 
 ___
 
@@ -111,7 +111,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:147](https://github.com/transitive-bullshit/chatgpt-api/blob/c4ffe53/src/types.ts#L147)
+[src/types.ts:150](https://github.com/transitive-bullshit/chatgpt-api/blob/9eac18f/src/types.ts#L150)
 
 ___
 
@@ -121,7 +121,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:5](https://github.com/transitive-bullshit/chatgpt-api/blob/c4ffe53/src/types.ts#L5)
+[src/types.ts:5](https://github.com/transitive-bullshit/chatgpt-api/blob/9eac18f/src/types.ts#L5)
 
 ___
 
@@ -147,7 +147,7 @@ Returns a chat message from a store by it's ID (or null if not found).
 
 #### Defined in
 
-[src/types.ts:81](https://github.com/transitive-bullshit/chatgpt-api/blob/c4ffe53/src/types.ts#L81)
+[src/types.ts:84](https://github.com/transitive-bullshit/chatgpt-api/blob/9eac18f/src/types.ts#L84)
 
 ___
 
@@ -172,7 +172,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:153](https://github.com/transitive-bullshit/chatgpt-api/blob/c4ffe53/src/types.ts#L153)
+[src/types.ts:156](https://github.com/transitive-bullshit/chatgpt-api/blob/9eac18f/src/types.ts#L156)
 
 ___
 
@@ -182,7 +182,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:47](https://github.com/transitive-bullshit/chatgpt-api/blob/c4ffe53/src/types.ts#L47)
+[src/types.ts:50](https://github.com/transitive-bullshit/chatgpt-api/blob/9eac18f/src/types.ts#L50)
 
 ___
 
@@ -199,7 +199,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:166](https://github.com/transitive-bullshit/chatgpt-api/blob/c4ffe53/src/types.ts#L166)
+[src/types.ts:169](https://github.com/transitive-bullshit/chatgpt-api/blob/9eac18f/src/types.ts#L169)
 
 ___
 
@@ -209,7 +209,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:171](https://github.com/transitive-bullshit/chatgpt-api/blob/c4ffe53/src/types.ts#L171)
+[src/types.ts:174](https://github.com/transitive-bullshit/chatgpt-api/blob/9eac18f/src/types.ts#L174)
 
 ___
 
@@ -227,7 +227,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:116](https://github.com/transitive-bullshit/chatgpt-api/blob/c4ffe53/src/types.ts#L116)
+[src/types.ts:119](https://github.com/transitive-bullshit/chatgpt-api/blob/9eac18f/src/types.ts#L119)
 
 ___
 
@@ -244,7 +244,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:135](https://github.com/transitive-bullshit/chatgpt-api/blob/c4ffe53/src/types.ts#L135)
+[src/types.ts:138](https://github.com/transitive-bullshit/chatgpt-api/blob/9eac18f/src/types.ts#L138)
 
 ___
 
@@ -254,7 +254,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:3](https://github.com/transitive-bullshit/chatgpt-api/blob/c4ffe53/src/types.ts#L3)
+[src/types.ts:3](https://github.com/transitive-bullshit/chatgpt-api/blob/9eac18f/src/types.ts#L3)
 
 ___
 
@@ -276,7 +276,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:49](https://github.com/transitive-bullshit/chatgpt-api/blob/c4ffe53/src/types.ts#L49)
+[src/types.ts:52](https://github.com/transitive-bullshit/chatgpt-api/blob/9eac18f/src/types.ts#L52)
 
 ___
 
@@ -289,6 +289,7 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `abortSignal?` | `AbortSignal` | - |
+| `completionParams?` | `Partial`<`Omit`<[`CreateChatCompletionRequest`](interfaces/openai.CreateChatCompletionRequest.md), ``"messages"`` \| ``"n"`` \| ``"stream"``\>\> | - |
 | `messageId?` | `string` | - |
 | `name?` | `string` | The name of a user in a multi-user chat. |
 | `onProgress?` | (`partialResponse`: [`ChatMessage`](interfaces/ChatMessage.md)) => `void` | - |
@@ -299,7 +300,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:35](https://github.com/transitive-bullshit/chatgpt-api/blob/c4ffe53/src/types.ts#L35)
+[src/types.ts:35](https://github.com/transitive-bullshit/chatgpt-api/blob/9eac18f/src/types.ts#L35)
 
 ___
 
@@ -325,4 +326,4 @@ Upserts a chat message to a store.
 
 #### Defined in
 
-[src/types.ts:84](https://github.com/transitive-bullshit/chatgpt-api/blob/c4ffe53/src/types.ts#L84)
+[src/types.ts:87](https://github.com/transitive-bullshit/chatgpt-api/blob/9eac18f/src/types.ts#L87)

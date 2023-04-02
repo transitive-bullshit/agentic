@@ -29,13 +29,18 @@ async function main() {
     .option('-s, --store', 'Enables the local message cache', {
       default: true
     })
-    .option('-t, --timeout', 'Timeout in milliseconds')
+    .option('-t, --timeout <timeout>', 'Timeout in milliseconds')
     .option('-k, --apiKey <apiKey>', 'OpenAI API key')
+    .option('-o, --apiOrg <apiOrg>', 'OpenAI API key')
+    .option('-m, --model <model>', 'Model (gpt-3.5-turbo, gpt-4)', {
+      default: 'gpt-3.5-turbo'
+    })
     .option(
       '-n, --conversationName <conversationName>',
       'Unique name for the conversation'
     )
     .action(async (prompt, options) => {
+      const apiOrg = options.apiOrg || process.env.OPENAI_API_ORG
       const apiKey = options.apiKey || process.env.OPENAI_API_KEY
       if (!apiKey) {
         console.error('error: either set OPENAI_API_KEY or use --apiKey\n')
@@ -50,6 +55,7 @@ async function main() {
         options.continue && options.store
           ? config.get(conversationKey, {}) || {}
           : {}
+      const model = options.model
       let conversationId = undefined
       let parentMessageId = undefined
 
@@ -67,7 +73,11 @@ async function main() {
 
       const api = new ChatGPTAPI({
         apiKey,
+        apiOrg,
         debug: options.debug,
+        completionParams: {
+          model
+        },
         getMessageById: async (id) => {
           if (options.store) {
             return conversation[id]
