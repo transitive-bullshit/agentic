@@ -181,7 +181,8 @@ export class ChatGPTAPI {
 
     const responseP = new Promise<types.ChatMessage>(
       async (resolve, reject) => {
-        const url = `${this._apiBaseUrl}/chat/completions`
+        const model = completionParams.model
+        let url = `${this._apiBaseUrl}/chat/completions`
         const headers = {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${this._apiKey}`
@@ -192,6 +193,20 @@ export class ChatGPTAPI {
           ...completionParams,
           messages,
           stream
+        }
+        const isGpt = [
+          'gpt-4',
+          'gpt-4-0314',
+          'gpt-4-32k',
+          'gpt-4-32k-0314',
+          'gpt-3.5-turbo',
+          'gpt-3.5-turbo-0301'
+        ].includes(model)
+        if (!isGpt) {
+          url = `${this._apiBaseUrl}/completions`
+          // @ts-ignore
+          body.prompt = messages[messages.length - 1].content
+          delete body.messages
         }
 
         // Support multiple organizations
@@ -227,12 +242,18 @@ export class ChatGPTAPI {
                   }
 
                   if (response.choices?.length) {
-                    const delta = response.choices[0].delta
-                    result.delta = delta.content
-                    if (delta?.content) result.text += delta.content
+                    if (isGpt) {
+                      const delta = response.choices[0].delta
+                      result.delta = delta.content
+                      if (delta?.content) result.text += delta.content
 
-                    if (delta.role) {
-                      result.role = delta.role
+                      if (delta.role) {
+                        result.role = delta.role
+                      }
+                    } else {
+                      // @ts-ignore
+                      const text = response.choices[0].text
+                      result.text += text
                     }
 
                     result.detail = response
