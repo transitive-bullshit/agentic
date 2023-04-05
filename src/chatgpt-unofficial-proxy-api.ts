@@ -91,6 +91,7 @@ export class ChatGPTUnofficialProxyAPI {
    * @param opts.timeoutMs - Optional timeout in milliseconds (defaults to no timeout)
    * @param opts.onProgress - Optional callback which will be invoked every time the partial response is updated
    * @param opts.abortSignal - Optional callback used to abort the underlying `fetch` call using an [AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController)
+   * @param opts.waitTimeMsBeforeThrow - Optional the amount of time to wait before throwing an error(defaults to 0,means immediately)
    *
    * @returns The response from ChatGPT
    */
@@ -128,7 +129,8 @@ export class ChatGPTUnofficialProxyAPI {
       messageId = uuidv4(),
       action = 'next',
       timeoutMs,
-      onProgress
+      onProgress,
+      waitTimeMsBeforeThrow = 0
     } = opts
 
     let { abortSignal } = opts
@@ -180,6 +182,7 @@ export class ChatGPTUnofficialProxyAPI {
         console.log('POST', url, { body, headers })
       }
 
+      let waitTimeMsBeforeThrowId: NodeJS.Timeout | null = null
       fetchSSE(
         url,
         {
@@ -188,6 +191,11 @@ export class ChatGPTUnofficialProxyAPI {
           body: JSON.stringify(body),
           signal: abortSignal,
           onMessage: (data: string) => {
+            if (waitTimeMsBeforeThrowId) {
+              clearTimeout(waitTimeMsBeforeThrowId)
+              waitTimeMsBeforeThrowId = null
+            }
+
             if (data === '[DONE]') {
               return resolve(result)
             }
@@ -218,7 +226,9 @@ export class ChatGPTUnofficialProxyAPI {
                 }
               }
             } catch (err) {
-              reject(err)
+              waitTimeMsBeforeThrowId = setTimeout(() => {
+                reject(err)
+              }, waitTimeMsBeforeThrow)
             }
           },
           onError: (err) => {

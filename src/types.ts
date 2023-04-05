@@ -45,6 +45,7 @@ export type SendMessageOptions = {
   timeoutMs?: number
   onProgress?: (partialResponse: ChatMessage) => void
   abortSignal?: AbortSignal
+  waitTimeMsBeforeThrow?: number
   completionParams?: Partial<
     Omit<openai.CreateChatCompletionRequest, 'messages' | 'n' | 'stream'>
   >
@@ -60,6 +61,7 @@ export type SendMessageBrowserOptions = {
   timeoutMs?: number
   onProgress?: (partialResponse: ChatMessage) => void
   abortSignal?: AbortSignal
+  waitTimeMsBeforeThrow?: number
 }
 
 export interface ChatMessage {

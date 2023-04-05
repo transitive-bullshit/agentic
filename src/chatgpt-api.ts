@@ -130,6 +130,7 @@ export class ChatGPTAPI {
    * @param opts.timeoutMs - Optional timeout in milliseconds (defaults to no timeout)
    * @param opts.onProgress - Optional callback which will be invoked every time the partial response is updated
    * @param opts.abortSignal - Optional callback used to abort the underlying `fetch` call using an [AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController)
+   * @param opts.waitTimeMsBeforeThrow - Optional the amount of time to wait before throwing an error(defaults to 0,means immediately)
    * @param completionParams - Optional overrides to send to the [OpenAI chat completion API](https://platform.openai.com/docs/api-reference/chat/create). Options like `temperature` and `presence_penalty` can be tweaked to change the personality of the assistant.
    *
    * @returns The response from ChatGPT
@@ -145,7 +146,8 @@ export class ChatGPTAPI {
       onProgress,
       stream = onProgress ? true : false,
       completionParams,
-      conversationId
+      conversationId,
+      waitTimeMsBeforeThrow = 0
     } = opts
 
     let { abortSignal } = opts
@@ -205,6 +207,7 @@ export class ChatGPTAPI {
         }
 
         if (stream) {
+          let waitTimeMsBeforeThrowId: NodeJS.Timeout | null = null
           fetchSSE(
             url,
             {
@@ -213,6 +216,11 @@ export class ChatGPTAPI {
               body: JSON.stringify(body),
               signal: abortSignal,
               onMessage: (data: string) => {
+                if (waitTimeMsBeforeThrowId) {
+                  clearTimeout(waitTimeMsBeforeThrowId)
+                  waitTimeMsBeforeThrowId = null
+                }
+
                 if (data === '[DONE]') {
                   result.text = result.text.trim()
                   return resolve(result)
@@ -239,8 +247,13 @@ export class ChatGPTAPI {
                     onProgress?.(result)
                   }
                 } catch (err) {
-                  console.warn('OpenAI stream SEE event unexpected error', err)
-                  return reject(err)
+                  waitTimeMsBeforeThrowId = setTimeout(() => {
+                    console.warn(
+                      'OpenAI stream SEE event unexpected error',
+                      err
+                    )
+                    return reject(err)
+                  }, waitTimeMsBeforeThrow)
                 }
               }
             },
