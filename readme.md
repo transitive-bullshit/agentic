@@ -496,6 +496,7 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [wechaty-chatgpt - A chatbot based on Wechaty & ChatGPT](https://github.com/zhengxs2018/wechaty-chatgpt)
 - [Julius GPT](https://github.com/christophebe/julius-gpt) - Generate and publish your content from the CLI
 - [OpenAI-API-Service](https://github.com/Jarvan-via/api-service) - Provides OpenAI related APIs for businesses
+- [Discord Daily News Bot](https://github.com/ZirionNeft/chatgpt-discord-daily-news-bot) - Discord bot that generate funny daily news
 
 If you create a cool integration, feel free to open a PR and add it to the list.
 
