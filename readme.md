@@ -144,7 +144,7 @@ Huge shoutout to [@waylaidwanderer](https://github.com/waylaidwanderer) for disc
 </details>
 </details>
 
-If you run into any issues, we do have a pretty active [Discord](https://discord.gg/v9gERj825w) with a bunch of ChatGPT hackers from the Node.js & Python communities.
+If you run into any issues, we do have a pretty active [ChatGPT Hackers Discord](https://www.chatgpthackers.dev/) with over 8k developers from the Node.js & Python communities.
 
 Lastly, please consider starring this repo and <a href="https://twitter.com/transitive_bs">following me on twitter <img src="https://storage.googleapis.com/saasify-assets/twitter-logo.svg" alt="twitter" height="24px" align="center"></a> to help support the project.
 
