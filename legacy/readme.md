@@ -46,7 +46,7 @@ npx chatgpt@latest --model gpt-4 "Hello world"
 ```
 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/552829/229368245-d22fbac7-4b56-4a5e-810b-5ac5793b6ac3.png" width="500px" alt="Using the chatgpt CLI with gpt-4">
+  <img src="https://user-images.githubusercontent.com/552829/229368245-d22fbac7-4b56-4a5e-810b-5ac5793b6ac3.png" width="600px" alt="Using the chatgpt CLI with gpt-4">
 </p>
 
 We still support both the official ChatGPT API and the unofficial proxy API, but we now recommend using the official API since it's significantly more robust and supports **GPT-4**.
@@ -192,7 +192,7 @@ Options:
 If you have access to the `gpt-4` model, you can run the following to test out the CLI with GPT-4:
 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/552829/229368245-d22fbac7-4b56-4a5e-810b-5ac5793b6ac3.png" width="500px" alt="Using the chatgpt CLI with gpt-4">
+  <img src="https://user-images.githubusercontent.com/552829/229368245-d22fbac7-4b56-4a5e-810b-5ac5793b6ac3.png" width="600px" alt="Using the chatgpt CLI with gpt-4">
 </p>
 
 ## Install
