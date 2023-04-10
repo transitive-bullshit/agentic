@@ -31,6 +31,44 @@ This package is a Node.js wrapper around [ChatGPT](https://openai.com/blog/chatg
 ## Updates
 
 <details open>
+<summary><strong>April 10, 2023</strong></summary>
+
+<br/>
+
+This package now **fully supports GPT-4**! 🔥
+
+We also just released a [TypeScript chatgpt-plugin package](https://github.com/transitive-bullshit/chatgpt-plugin-ts) which contains helpers and examples to make it as easy as possible to start building your own ChatGPT Plugins in JS/TS. Even if you don't have developer access to ChatGPT Plugins yet, you can still use the [chatgpt-plugin](https://github.com/transitive-bullshit/chatgpt-plugin-ts) repo to get a head start on building your own plugins locally.
+
+If you have access to the `gpt-4` model, you can run the following to test out the CLI with GPT-4:
+
+```bash
+npx chatgpt@latest --model gpt-4 "Hello world"
+```
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/552829/229368245-d22fbac7-4b56-4a5e-810b-5ac5793b6ac3.png" width="500px" alt="Using the chatgpt CLI with gpt-4">
+</p>
+
+We still support both the official ChatGPT API and the unofficial proxy API, but we now recommend using the official API since it's significantly more robust and supports **GPT-4**.
+
+| Method                      | Free?  | Robust? | Quality?                        |
+| --------------------------- | ------ | ------- | ------------------------------- |
+| `ChatGPTAPI`                | ❌ No  | ✅ Yes  | ✅️ Real ChatGPT models + GPT-4 |
+| `ChatGPTUnofficialProxyAPI` | ✅ Yes | ❌ No️  | ✅ ChatGPT webapp               |
+
+**Note**: We strongly recommend using `ChatGPTAPI` since it uses the officially supported API from OpenAI. We will likely remove support for `ChatGPTUnofficialProxyAPI` in a future release.
+
+1. `ChatGPTAPI` - Uses the `gpt-3.5-turbo` model with the official OpenAI chat completions API (official, robust approach, but it's not free)
+2. `ChatGPTUnofficialProxyAPI` - Uses an unofficial proxy server to access ChatGPT's backend API in a way that circumvents Cloudflare (uses the real ChatGPT and is pretty lightweight, but relies on a third-party server and is rate-limited)
+
+</details>
+
+<details>
+<summary><strong>Previous Updates</strong></summary>
+
+<br/>
+
+<details>
 <summary><strong>March 1, 2023</strong></summary>
 
 <br/>
@@ -44,15 +82,10 @@ The [official OpenAI chat completions API](https://platform.openai.com/docs/guid
 
 **Note**: We strongly recommend using `ChatGPTAPI` since it uses the officially supported API from OpenAI. We may remove support for `ChatGPTUnofficialProxyAPI` in a future release.
 
-1. `ChatGPTAPI` - Uses the `gpt-3.5-turbo-0301` model with the official OpenAI chat completions API (official, robust approach, but it's not free)
+1. `ChatGPTAPI` - Uses the `gpt-3.5-turbo` model with the official OpenAI chat completions API (official, robust approach, but it's not free)
 2. `ChatGPTUnofficialProxyAPI` - Uses an unofficial proxy server to access ChatGPT's backend API in a way that circumvents Cloudflare (uses the real ChatGPT and is pretty lightweight, but relies on a third-party server and is rate-limited)
 
 </details>
-
-<details>
-<summary><strong>Previous Updates</strong></summary>
-
-<br/>
 
 <details>
 <summary><strong>Feb 19, 2023</strong></summary>
@@ -156,6 +189,12 @@ Options:
   -v, --version           Display version number
 ```
 
+If you have access to the `gpt-4` model, you can run the following to test out the CLI with GPT-4:
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/552829/229368245-d22fbac7-4b56-4a5e-810b-5ac5793b6ac3.png" width="500px" alt="Using the chatgpt CLI with gpt-4">
+</p>
+
 ## Install
 
 ```bash
@@ -168,18 +207,18 @@ Make sure you're using `node >= 18` so `fetch` is available (or `node >= 14` if 
 
 To use this module from Node.js, you need to pick between two methods:
 
-| Method                      | Free?  | Robust?  | Quality?                |
-| --------------------------- | ------ | -------- | ----------------------- |
-| `ChatGPTAPI`                | ❌ No  | ✅ Yes   | ✅️ Real ChatGPT models |
-| `ChatGPTUnofficialProxyAPI` | ✅ Yes | ☑️ Maybe | ✅ Real ChatGPT         |
+| Method                      | Free?  | Robust? | Quality?                        |
+| --------------------------- | ------ | ------- | ------------------------------- |
+| `ChatGPTAPI`                | ❌ No  | ✅ Yes  | ✅️ Real ChatGPT models + GPT-4 |
+| `ChatGPTUnofficialProxyAPI` | ✅ Yes | ❌ No️  | ✅ Real ChatGPT webapp          |
 
-1. `ChatGPTAPI` - Uses the `gpt-3.5-turbo-0301` model with the official OpenAI chat completions API (official, robust approach, but it's not free). You can override the model, completion params, and system message to fully customize your assistant.
+1. `ChatGPTAPI` - Uses the `gpt-3.5-turbo` model with the official OpenAI chat completions API (official, robust approach, but it's not free). You can override the model, completion params, and system message to fully customize your assistant.
 
 2. `ChatGPTUnofficialProxyAPI` - Uses an unofficial proxy server to access ChatGPT's backend API in a way that circumvents Cloudflare (uses the real ChatGPT and is pretty lightweight, but relies on a third-party server and is rate-limited)
 
 Both approaches have very similar APIs, so it should be simple to swap between them.
 
-**Note**: We strongly recommend using `ChatGPTAPI` since it uses the officially supported API from OpenAI. We may remove support for `ChatGPTUnofficialProxyAPI` in a future release.
+**Note**: We strongly recommend using `ChatGPTAPI` since it uses the officially supported API from OpenAI and it also supports `gpt-4`. We will likely remove support for `ChatGPTUnofficialProxyAPI` in a future release.
 
 ### Usage - ChatGPTAPI
 
@@ -198,12 +237,13 @@ async function example() {
 }
 ```
 
-You can override the default `model` (`gpt-3.5-turbo-0301`) and any [OpenAI chat completion params](https://platform.openai.com/docs/api-reference/chat/create) using `completionParams`:
+You can override the default `model` (`gpt-3.5-turbo`) and any [OpenAI chat completion params](https://platform.openai.com/docs/api-reference/chat/create) using `completionParams`:
 
 ```ts
 const api = new ChatGPTAPI({
   apiKey: process.env.OPENAI_API_KEY,
   completionParams: {
+    model: 'gpt-4',
     temperature: 0.5,
     top_p: 0.8
   }
@@ -334,10 +374,10 @@ const api = new ChatGPTUnofficialProxyAPI({
 
 Known reverse proxies run by community members include:
 
-| Reverse Proxy URL                                | Author                                       | Rate Limits       | Last Checked |
-| ------------------------------------------------ | -------------------------------------------- | ----------------- | ------------ |
-| `https://bypass.churchless.tech/api/conversation`        | [@acheong08](https://github.com/acheong08)   | 5 req / 10 seconds by IP | 3/24/2023    |
-| `https://api.pawan.krd/backend-api/conversation` | [@PawanOsman](https://github.com/PawanOsman) | 50 req / 15 seconds (~3 r/s)                 | 3/23/2023    |
+| Reverse Proxy URL                                 | Author                                       | Rate Limits                  | Last Checked |
+| ------------------------------------------------- | -------------------------------------------- | ---------------------------- | ------------ |
+| `https://bypass.churchless.tech/api/conversation` | [@acheong08](https://github.com/acheong08)   | 5 req / 10 seconds by IP     | 3/24/2023    |
+| `https://api.pawan.krd/backend-api/conversation`  | [@PawanOsman](https://github.com/PawanOsman) | 50 req / 15 seconds (~3 r/s) | 3/23/2023    |
 
 Note: info on how the reverse proxies work is not being published at this time in order to prevent OpenAI from disabling access.
 
@@ -512,8 +552,8 @@ If you create a cool integration, feel free to open a PR and add it to the list.
 ## Credits
 
 - Huge thanks to [@waylaidwanderer](https://github.com/waylaidwanderer), [@abacaj](https://github.com/abacaj), [@wong2](https://github.com/wong2), [@simon300000](https://github.com/simon300000), [@RomanHotsiy](https://github.com/RomanHotsiy), [@ElijahPepe](https://github.com/ElijahPepe), and all the other contributors 💪
-- The original browser version was inspired by this [Go module](https://github.com/danielgross/whatsapp-gpt) by [Daniel Gross](https://github.com/danielgross)
 - [OpenAI](https://openai.com) for creating [ChatGPT](https://openai.com/blog/chatgpt/) 🔥
+- I run the [ChatGPT Hackers Discord](https://www.chatgpthackers.dev/) with over 8k developers – come join us!
 
 ## License
 
