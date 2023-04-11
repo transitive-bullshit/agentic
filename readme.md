@@ -491,6 +491,7 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [QQ Bot (oicq)](https://github.com/easydu2002/chat_gpt_oicq)
 - [QQ Bot (oicq + RabbitMQ)](https://github.com/linsyking/ChatGPT-QQBot)
 - [QQ Bot (go-cqhttp)](https://github.com/PairZhu/ChatGPT-QQRobot)
+- [QQ Bot (plugin for Yunzai-Bot + Bull)](https://github.com/Micuks/chatGPT-yunzai) (Lightweight, Google Bard support 💪)
 - [EXM smart contracts](https://github.com/decentldotland/molecule)
 - [Flutter ChatGPT API](https://github.com/coskuncay/flutter_chatgpt_api)
 - [Carik Bot](https://github.com/luridarmawan/Carik)
