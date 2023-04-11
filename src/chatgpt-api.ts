@@ -359,7 +359,7 @@ export class ChatGPTAPI {
   }
 
   protected async _buildMessages(text: string, opts: types.SendMessageOptions) {
-    const { systemMessage = this._systemMessage } = opts
+    let { systemMessage = this._systemMessage, messageCount } = opts
     let { parentMessageId } = opts
 
     const userLabel = USER_LABEL_DEFAULT
@@ -373,6 +373,7 @@ export class ChatGPTAPI {
         role: 'system',
         content: systemMessage
       })
+      if (typeof messageCount === 'number') messageCount++
     }
 
     const systemMessageOffset = messages.length
@@ -412,6 +413,10 @@ export class ChatGPTAPI {
       numTokens = nextNumTokensEstimate
 
       if (!isValidPrompt) {
+        break
+      }
+
+      if (typeof messageCount === 'number' && messages.length >= messageCount) {
         break
       }
 
