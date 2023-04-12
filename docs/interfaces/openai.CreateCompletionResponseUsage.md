@@ -10,6 +10,12 @@
 
 CreateCompletionResponseUsage
 
+## Hierarchy
+
+- **`CreateCompletionResponseUsage`**
+
+  ↳ [`CreateCompletionStreamResponseUsage`](CreateCompletionStreamResponseUsage.md)
+
 ## Table of contents
 
 ### Properties
@@ -30,7 +36,7 @@ CreateCompletionResponseUsage
 
 #### Defined in
 
-[src/types.ts:419](https://github.com/transitive-bullshit/chatgpt-api/blob/48cb944/src/types.ts#L419)
+[src/types.ts:438](https://github.com/transitive-bullshit/chatgpt-api/blob/bf66500/src/types.ts#L438)
 
 ___
 
@@ -44,7 +50,7 @@ CreateCompletionResponseUsage
 
 #### Defined in
 
-[src/types.ts:413](https://github.com/transitive-bullshit/chatgpt-api/blob/48cb944/src/types.ts#L413)
+[src/types.ts:432](https://github.com/transitive-bullshit/chatgpt-api/blob/bf66500/src/types.ts#L432)
 
 ___
 
@@ -58,4 +64,4 @@ CreateCompletionResponseUsage
 
 #### Defined in
 
-[src/types.ts:425](https://github.com/transitive-bullshit/chatgpt-api/blob/48cb944/src/types.ts#L425)
+[src/types.ts:444](https://github.com/transitive-bullshit/chatgpt-api/blob/bf66500/src/types.ts#L444)

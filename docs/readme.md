@@ -71,7 +71,7 @@ We now provide three ways of accessing the unofficial ChatGPT API, all of which 
 
 **Note**: I recommend that you use either `ChatGPTAPI` or `ChatGPTUnofficialProxyAPI`.
 
-1. `ChatGPTAPI` - Uses `text-davinci-003` to mimic ChatGPT via the official OpenAI completions API (most robust approach, but it's not free and doesn't use a model fine-tuned for chat)
+1. `ChatGPTAPI` - (Used to use) `text-davinci-003` to mimic ChatGPT via the official OpenAI completions API (most robust approach, but it's not free and doesn't use a model fine-tuned for chat)
 2. `ChatGPTUnofficialProxyAPI` - Uses an unofficial proxy server to access ChatGPT's backend API in a way that circumvents Cloudflare (uses the real ChatGPT and is pretty lightweight, but relies on a third-party server and is rate-limited)
 3. `ChatGPTAPIBrowser` - (_deprecated_; v3.5.1 of this package) Uses Puppeteer to access the official ChatGPT webapp (uses the real ChatGPT, but very flaky, heavyweight, and error prone)
 
@@ -131,8 +131,6 @@ npx chatgpt "your prompt here"
 
 By default, the response is streamed to stdout, the results are stored in a local config file, and every invocation starts a new conversation. You can use `-c` to continue the previous conversation and `--no-stream` to disable streaming.
 
-Under the hood, the CLI uses `ChatGPTAPI` with `text-davinci-003` to mimic ChatGPT.
-
 ```
 Usage:
   $ chatgpt <prompt>
@@ -154,6 +152,7 @@ Options:
   -s, --store             Enables the local message cache (default: true)
   -t, --timeout           Timeout in milliseconds
   -k, --apiKey            OpenAI API key
+  -o, --apiOrg            OpenAI API organization
   -n, --conversationName  Unique name for the conversation
   -h, --help              Display this message
   -v, --version           Display version number
@@ -284,8 +283,11 @@ Note that we automatically handle appending the previous messages to the prompt 
 
 ```js
 async function example() {
-  // To use ESM in CommonJS, you can use a dynamic import
+  // To use ESM in CommonJS, you can use a dynamic import like this:
   const { ChatGPTAPI } = await import('chatgpt')
+  // You can also try dynamic importing like this:
+  // const importDynamic = new Function('modulePath', 'return import(modulePath)')
+  // const { ChatGPTAPI } = await importDynamic('chatgpt')
 
   const api = new ChatGPTAPI({ apiKey: process.env.OPENAI_API_KEY })
 
@@ -319,7 +321,7 @@ See [demos/demo-reverse-proxy](./demos/demo-reverse-proxy.ts) for a full example
 npx tsx demos/demo-reverse-proxy.ts
 ```
 
-`ChatGPTUnofficialProxyAPI` messages also contain a `conversationid` in addition to `parentMessageId`, since the ChatGPT webapp can't reference messages across
+`ChatGPTUnofficialProxyAPI` messages also contain a `conversationid` in addition to `parentMessageId`, since the ChatGPT webapp can't reference messages across different accounts & conversations.
 
 #### Reverse Proxy
 
@@ -336,8 +338,8 @@ Known reverse proxies run by community members include:
 
 | Reverse Proxy URL                                | Author                                       | Rate Limits       | Last Checked |
 | ------------------------------------------------ | -------------------------------------------- | ----------------- | ------------ |
-| `https://chat.duti.tech/api/conversation`        | [@acheong08](https://github.com/acheong08)   | 120 req/min by IP | 2/19/2023    |
-| `https://gpt.pawan.krd/backend-api/conversation` | [@PawanOsman](https://github.com/PawanOsman) | ?                 | 2/19/2023    |
+| `https://bypass.churchless.tech/api/conversation`        | [@acheong08](https://github.com/acheong08)   | 5 req / 10 seconds by IP | 3/24/2023    |
+| `https://api.pawan.krd/backend-api/conversation` | [@PawanOsman](https://github.com/PawanOsman) | 50 req / 15 seconds (~3 r/s)                 | 3/23/2023    |
 
 Note: info on how the reverse proxies work is not being published at this time in order to prevent OpenAI from disabling access.
 
@@ -426,6 +428,7 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [Telegram Bot #2](https://github.com/dawangraoming/chatgpt-telegram-bot)
 - [Telegram Bot #3](https://github.com/RainEggplant/chatgpt-telegram-bot) (group privacy mode, ID-based auth)
 - [Telegram Bot #4](https://github.com/ArdaGnsrn/chatgpt-telegram) (queue system, ID-based chat thread)
+- [Telegram Bot #5](https://github.com/azoway/chatgpt-telegram-bot) (group privacy mode, ID-based chat thread)
 - [Deno Telegram Bot](https://github.com/Ciyou/chatbot-telegram)
 - [Go Telegram Bot](https://github.com/m1guelpf/chatgpt-telegram)
 - [Telegram Bot for YouTube Summaries](https://github.com/codextde/youtube-summary)
@@ -436,11 +439,15 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [Discord Bot #4 (selfbot)](https://github.com/0x7030676e31/cumsocket)
 - [Discord Bot #5](https://github.com/itskdhere/ChatGPT-Discord-BOT)
 - [Discord Bot #6 (Shakespeare bot)](https://gist.github.com/TheBrokenRail/4b37e7c44e8f721d8bd845050d034c16)
+- [Discord Bot #7](https://github.com/Elitezen/discordjs-chatgpt)
+- [Zoom Chat](https://github.com/shixin-guo/my-bot)
 - [WeChat Bot #1](https://github.com/AutumnWhj/ChatGPT-wechat-bot)
 - [WeChat Bot #2](https://github.com/fuergaosi233/wechat-chatgpt)
 - [WeChat Bot #3](https://github.com/wangrongding/wechat-bot) (
 - [WeChat Bot #4](https://github.com/darknightlab/wechat-bot)
 - [WeChat Bot #5](https://github.com/sunshanpeng/wechaty-chatgpt)
+- [WeChat Bot #6](https://github.com/formulahendry/chatgpt-wechat-bot)
+- [WeChat Bot #7](https://github.com/gfl94/Chatbot004)
 - [QQ Bot (plugin for Yunzai-bot)](https://github.com/ikechan8370/chatgpt-plugin)
 - [QQ Bot (plugin for KiviBot)](https://github.com/KiviBotLab/kivibot-plugin-chatgpt)
 - [QQ Bot (oicq)](https://github.com/easydu2002/chat_gpt_oicq)
@@ -468,6 +475,8 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [Slack Bot #2](https://github.com/lokwkin/chatgpt-slackbot-node/) (with queueing mechanism)
 - [Slack Bot #3](https://github.com/NessunKim/slack-chatgpt/)
 - [Slack Bot #4](https://github.com/MarkusGalant/chatgpt-slackbot-serverless/) ( Serverless AWS Lambda )
+- [Slack Bot #5](https://github.com/benjiJanssens/SlackGPT) (Hosted)
+  - [Add to Slack](https://slackgpt.benji.sh/slack/install)
 - [Electron Bot](https://github.com/ShiranAbir/chaty)
 - [Kodyfire CLI](https://github.com/nooqta/chatgpt-kodyfire)
 - [Twitch Bot](https://github.com/BennyDeeDev/chatgpt-twitch-bot)
@@ -485,6 +494,10 @@ All of these awesome projects are built using the `chatgpt` package. 🤯
 - [AI Poem Generator](https://aipoemgenerator.com/)
 - [Next.js ChatGPT With Firebase](https://github.com/youngle316/chatgpt)
 - [ai-commit – GPT-3 Commit Message Generator](https://github.com/insulineru/ai-commit)
+- [AItinerary – ChatGPT itinerary Generator](https://aitinerary.ai)
+- [wechaty-chatgpt - A chatbot based on Wechaty & ChatGPT](https://github.com/zhengxs2018/wechaty-chatgpt)
+- [Julius GPT](https://github.com/christophebe/julius-gpt) - Generate and publish your content from the CLI
+- [OpenAI-API-Service](https://github.com/Jarvan-via/api-service) - Provides OpenAI related APIs for businesses
 
 If you create a cool integration, feel free to open a PR and add it to the list.
 
