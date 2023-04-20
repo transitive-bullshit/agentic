@@ -361,6 +361,7 @@ export class ChatGPTAPI {
   protected async _buildMessages(text: string, opts: types.SendMessageOptions) {
     const { systemMessage = this._systemMessage } = opts
     let { parentMessageId } = opts
+    const { model } = opts.completionParams
 
     const userLabel = USER_LABEL_DEFAULT
     const assistantLabel = ASSISTANT_LABEL_DEFAULT
@@ -401,7 +402,10 @@ export class ChatGPTAPI {
         }, [] as string[])
         .join('\n\n')
 
-      const nextNumTokensEstimate = await this._getTokenCount(prompt)
+      const nextNumTokensEstimate = await this._getMessagesTokenCount(
+        nextMessages,
+        model
+      )
       const isValidPrompt = nextNumTokensEstimate <= maxNumTokens
 
       if (prompt && !isValidPrompt) {
@@ -453,6 +457,32 @@ export class ChatGPTAPI {
     text = text.replace(/<\|endoftext\|>/g, '')
 
     return tokenizer.encode(text).length
+  }
+
+  protected async _getMessagesTokenCount(
+    messages: types.openai.ChatCompletionRequestMessage[],
+    model: string
+  ) {
+    // https://github.com/openai/openai-cookbook/blob/main/examples/How_to_count_tokens_with_tiktoken.ipynb#6.-Counting-tokens-for-chat-API-calls
+    let tokens_per_message = 0
+    switch (model) {
+      case 'gpt-3.5-turbo':
+      case 'gpt-3.5-turbo-0301':
+        // every message follows <|start|>{role/name}\n{content}<|end|>\n
+        // if there's a name, the role is omitted
+        tokens_per_message = 4 - 1
+        break
+      case 'gpt-4':
+      case 'gpt-4-0314':
+        tokens_per_message = 3 + 1
+        break
+    }
+
+    return (
+      messages.reduce((sum, message) => {
+        return tokens_per_message + tokenizer.encode(message.content).length
+      }, 0) + 3 // every reply is primed with <|start|>assistant<|message|>
+    )
   }
 
   protected async _defaultGetMessageById(
