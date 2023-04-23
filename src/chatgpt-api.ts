@@ -10,9 +10,6 @@ import { fetchSSE } from './fetch-sse'
 
 const CHATGPT_MODEL = 'gpt-3.5-turbo'
 
-const USER_LABEL_DEFAULT = 'User'
-const ASSISTANT_LABEL_DEFAULT = 'ChatGPT'
-
 export class ChatGPTAPI {
   protected _apiKey: string
   protected _apiBaseUrl: string
@@ -363,9 +360,6 @@ export class ChatGPTAPI {
     let { parentMessageId } = opts
     const { model } = opts.completionParams
 
-    const userLabel = USER_LABEL_DEFAULT
-    const assistantLabel = ASSISTANT_LABEL_DEFAULT
-
     const maxNumTokens = this._maxModelTokens - this._maxResponseTokens
     let messages: types.openai.ChatCompletionRequestMessage[] = []
 
@@ -389,35 +383,18 @@ export class ChatGPTAPI {
     let numTokens = 0
 
     do {
-      const prompt = nextMessages
-        .reduce((prompt, message) => {
-          switch (message.role) {
-            case 'system':
-              return prompt.concat([`Instructions:\n${message.content}`])
-            case 'user':
-              return prompt.concat([`${userLabel}:\n${message.content}`])
-            default:
-              return prompt.concat([`${assistantLabel}:\n${message.content}`])
-          }
-        }, [] as string[])
-        .join('\n\n')
-
       const nextNumTokensEstimate = await this._getMessagesTokenCount(
         nextMessages,
         model
       )
       const isValidPrompt = nextNumTokensEstimate <= maxNumTokens
 
-      if (prompt && !isValidPrompt) {
+      if (!isValidPrompt) {
         break
       }
 
       messages = nextMessages
       numTokens = nextNumTokensEstimate
-
-      if (!isValidPrompt) {
-        break
-      }
 
       if (!parentMessageId) {
         break
