@@ -446,7 +446,7 @@ export class ChatGPTAPI {
     switch (model) {
       case 'gpt-3.5-turbo':
       case 'gpt-3.5-turbo-0301':
-        tokens_per_message = 4 // every message follows <|start|>{role/name}\n{content}<|end|>\n
+        tokens_per_message = 5 // every message follows <|start|>{role/name}\n{content}<|end|>\n
         tokens_per_name = -1 // if there's a name, the role is omitted
         break
       case 'gpt-4':
