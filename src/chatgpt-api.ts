@@ -442,22 +442,26 @@ export class ChatGPTAPI {
   ) {
     // https://github.com/openai/openai-cookbook/blob/main/examples/How_to_count_tokens_with_tiktoken.ipynb#6.-Counting-tokens-for-chat-API-calls
     let tokens_per_message = 0
+    let tokens_per_name = 0
     switch (model) {
       case 'gpt-3.5-turbo':
       case 'gpt-3.5-turbo-0301':
-        // every message follows <|start|>{role/name}\n{content}<|end|>\n
-        // if there's a name, the role is omitted
-        tokens_per_message = 4 - 1
+        tokens_per_message = 4 // every message follows <|start|>{role/name}\n{content}<|end|>\n
+        tokens_per_name = -1 // if there's a name, the role is omitted
         break
       case 'gpt-4':
       case 'gpt-4-0314':
-        tokens_per_message = 3 + 1
+        tokens_per_message = 3
+        tokens_per_name = 1
         break
     }
 
     return (
       messages.reduce((sum, message) => {
-        return tokens_per_message + tokenizer.encode(message.content).length
+        return sum
+            + tokens_per_message
+            + (message.name ? tokens_per_name : 0)
+            + tokenizer.encode(message.content).length
       }, 0) + 3 // every reply is primed with <|start|>assistant<|message|>
     )
   }
