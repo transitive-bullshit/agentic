@@ -19,7 +19,7 @@ export class ChatGPTAPI {
   protected _apiOrg?: string
   protected _debug: boolean
 
-  protected _systemMessage: string
+  protected _systemMessage: string | string[]
   protected _completionParams: Omit<
     types.openai.CreateChatCompletionRequest,
     'messages' | 'n'
@@ -368,11 +368,20 @@ export class ChatGPTAPI {
     const maxNumTokens = this._maxModelTokens - this._maxResponseTokens
     let messages: types.openai.ChatCompletionRequestMessage[] = []
 
-    if (systemMessage) {
+    if (typeof systemMessage === 'string') {
       messages.push({
         role: 'system',
         content: systemMessage
       })
+    }
+
+    if (Array.isArray(systemMessage)) {
+      messages = messages.concat(
+        systemMessage.map((content) => ({
+          role: 'system',
+          content
+        }))
+      )
     }
 
     const systemMessageOffset = messages.length

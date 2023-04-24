@@ -19,7 +19,7 @@ export type ChatGPTAPIOptions = {
     Omit<openai.CreateChatCompletionRequest, 'messages' | 'n' | 'stream'>
   >
 
-  systemMessage?: string
+  systemMessage?: string | string[]
 
   /** @defaultValue `4096` **/
   maxModelTokens?: number
@@ -41,7 +41,7 @@ export type SendMessageOptions = {
   conversationId?: string
   messageId?: string
   stream?: boolean
-  systemMessage?: string
+  systemMessage?: string | string[]
   timeoutMs?: number
   onProgress?: (partialResponse: ChatMessage) => void
   abortSignal?: AbortSignal
