@@ -458,10 +458,12 @@ export class ChatGPTAPI {
 
     return (
       messages.reduce((sum, message) => {
-        return sum
-            + tokens_per_message
-            + (message.name ? tokens_per_name : 0)
-            + tokenizer.encode(message.content).length
+        return (
+          sum +
+          tokens_per_message +
+          (message.name ? tokens_per_name : 0) +
+          tokenizer.encode(message.content).length
+        )
       }, 0) + 3 // every reply is primed with <|start|>assistant<|message|>
     )
   }
