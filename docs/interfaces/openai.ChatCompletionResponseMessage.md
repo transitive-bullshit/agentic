@@ -6,8 +6,6 @@
 
 **`Export`**
 
-**`Interface`**
-
 ChatCompletionResponseMessage
 
 ## Table of contents
@@ -31,7 +29,7 @@ ChatCompletionResponseMessage
 
 #### Defined in
 
-[src/types.ts:259](https://github.com/transitive-bullshit/chatgpt-api/blob/bf66500/src/types.ts#L259)
+[src/types.ts:259](https://github.com/transitive-bullshit/chatgpt-api/blob/fb06beb/src/types.ts#L259)
 
 ___
 
@@ -47,4 +45,4 @@ ChatCompletionResponseMessage
 
 #### Defined in
 
-[src/types.ts:253](https://github.com/transitive-bullshit/chatgpt-api/blob/bf66500/src/types.ts#L253)
+[src/types.ts:253](https://github.com/transitive-bullshit/chatgpt-api/blob/fb06beb/src/types.ts#L253)

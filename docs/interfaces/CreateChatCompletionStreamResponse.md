@@ -31,7 +31,7 @@
 
 #### Defined in
 
-[src/types.ts:198](https://github.com/transitive-bullshit/chatgpt-api/blob/bf66500/src/types.ts#L198)
+[src/types.ts:198](https://github.com/transitive-bullshit/chatgpt-api/blob/fb06beb/src/types.ts#L198)
 
 ___
 
@@ -45,7 +45,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:196](https://github.com/transitive-bullshit/chatgpt-api/blob/bf66500/src/types.ts#L196)
+[src/types.ts:196](https://github.com/transitive-bullshit/chatgpt-api/blob/fb06beb/src/types.ts#L196)
 
 ___
 
@@ -59,7 +59,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:194](https://github.com/transitive-bullshit/chatgpt-api/blob/bf66500/src/types.ts#L194)
+[src/types.ts:194](https://github.com/transitive-bullshit/chatgpt-api/blob/fb06beb/src/types.ts#L194)
 
 ___
 
@@ -73,7 +73,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:197](https://github.com/transitive-bullshit/chatgpt-api/blob/bf66500/src/types.ts#L197)
+[src/types.ts:197](https://github.com/transitive-bullshit/chatgpt-api/blob/fb06beb/src/types.ts#L197)
 
 ___
 
@@ -87,7 +87,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:195](https://github.com/transitive-bullshit/chatgpt-api/blob/bf66500/src/types.ts#L195)
+[src/types.ts:195](https://github.com/transitive-bullshit/chatgpt-api/blob/fb06beb/src/types.ts#L195)
 
 ___
 
@@ -97,4 +97,4 @@ ___
 
 #### Defined in
 
-[src/types.ts:97](https://github.com/transitive-bullshit/chatgpt-api/blob/bf66500/src/types.ts#L97)
+[src/types.ts:97](https://github.com/transitive-bullshit/chatgpt-api/blob/fb06beb/src/types.ts#L97)

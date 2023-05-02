@@ -6,8 +6,6 @@
 
 **`Export`**
 
-**`Interface`**
-
 CreateChatCompletionResponseChoicesInner
 
 ## Table of contents
@@ -30,7 +28,7 @@ CreateChatCompletionResponseChoicesInner
 
 #### Defined in
 
-[src/types.ts:419](https://github.com/transitive-bullshit/chatgpt-api/blob/bf66500/src/types.ts#L419)
+[src/types.ts:419](https://github.com/transitive-bullshit/chatgpt-api/blob/fb06beb/src/types.ts#L419)
 
 ___
 
@@ -44,7 +42,7 @@ CreateChatCompletionResponseChoicesInner
 
 #### Defined in
 
-[src/types.ts:407](https://github.com/transitive-bullshit/chatgpt-api/blob/bf66500/src/types.ts#L407)
+[src/types.ts:407](https://github.com/transitive-bullshit/chatgpt-api/blob/fb06beb/src/types.ts#L407)
 
 ___
 
@@ -58,4 +56,4 @@ CreateChatCompletionResponseChoicesInner
 
 #### Defined in
 
-[src/types.ts:413](https://github.com/transitive-bullshit/chatgpt-api/blob/bf66500/src/types.ts#L413)
+[src/types.ts:413](https://github.com/transitive-bullshit/chatgpt-api/blob/fb06beb/src/types.ts#L413)
