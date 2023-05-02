@@ -15,6 +15,43 @@
 
 TODO
 
+## Use Cases
+
+https://platform.openai.com/examples
+
+- text completion
+  - text generation
+  - text classification
+    - https://platform.openai.com/docs/guides/completion/classification
+    - https://docs.cohere.com/docs/text-classification-with-classify
+    - special cases
+      - content moderation
+        - https://platform.openai.com/docs/guides/moderation/overview
+      - language detection
+  - conversation
+  - transformation
+    - translation
+    - conversion
+    - summarization
+  - completion
+  - factual responses
+- chat completion
+- entity extraction
+- reranking
+
+// take in a query and a list of texts and produces an ordered array with each text assigned a relevance score.
+// generate JSON conforming to a zod schema
+// generate a string conforming to a zod schema
+// generate TS code and ensure it is valid syntax + valid exports
+// generate HTML and ensure it parses correctly
+// primitives (boolean, number, z.coerce.date, string)
+// classifier (enum)
+// CSV
+
+// retry strategies
+
+// separate the prompt formatting from the inference call?
+
 ## License
 
 MIT © [Travis Fischer](https://transitivebullsh.it)
