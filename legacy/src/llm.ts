@@ -94,6 +94,14 @@ export abstract class BaseLLMCallBuilder<TInput, TOutput, TModelParams> {
   }
 
   abstract call(input?: TInput): Promise<TOutput>
+
+  // TODO
+  // abstract stream(
+  //   input: TInput,
+  //   onProgress: types.ProgressFunction
+  // ): Promise<TOutput>
+
+  // abstract stream(onProgress: types.ProgressFunction): Promise<TOutput>
 }
 
 export abstract class ChatModelBuilder<

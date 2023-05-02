@@ -15,9 +15,9 @@ async function main() {
   // given an output as a boolean.
   // true/false
 
-  const ex1 = await $.gpt4(
-    'give me a list of character names from star wars'
-  ).output(z.array(z.string().nonempty()))
+  const ex1 = await $.gpt4('give me a list of character names from star wars')
+    .output(z.array(z.string().nonempty()))
+    .stream()
 
   const ex2 = await $.gpt4(`Summarize the following text: {{text}}`)
     .output(z.string().nonempty())
