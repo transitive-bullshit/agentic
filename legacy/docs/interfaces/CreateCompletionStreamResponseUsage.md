@@ -4,8 +4,6 @@
 
 **`Export`**
 
-**`Interface`**
-
 CreateCompletionResponseUsage
 
 ## Hierarchy
@@ -39,7 +37,7 @@ CreateCompletionResponseUsage
 
 #### Defined in
 
-[src/types.ts:438](https://github.com/transitive-bullshit/chatgpt-api/blob/bf66500/src/types.ts#L438)
+[src/types.ts:438](https://github.com/transitive-bullshit/chatgpt-api/blob/fb06beb/src/types.ts#L438)
 
 ___
 
@@ -49,7 +47,7 @@ ___
 
 #### Defined in
 
-[src/types.ts:102](https://github.com/transitive-bullshit/chatgpt-api/blob/bf66500/src/types.ts#L102)
+[src/types.ts:102](https://github.com/transitive-bullshit/chatgpt-api/blob/fb06beb/src/types.ts#L102)
 
 ___
 
@@ -67,7 +65,7 @@ CreateCompletionResponseUsage
 
 #### Defined in
 
-[src/types.ts:432](https://github.com/transitive-bullshit/chatgpt-api/blob/bf66500/src/types.ts#L432)
+[src/types.ts:432](https://github.com/transitive-bullshit/chatgpt-api/blob/fb06beb/src/types.ts#L432)
 
 ___
 
@@ -85,4 +83,4 @@ CreateCompletionResponseUsage
 
 #### Defined in
 
-[src/types.ts:444](https://github.com/transitive-bullshit/chatgpt-api/blob/bf66500/src/types.ts#L444)
+[src/types.ts:444](https://github.com/transitive-bullshit/chatgpt-api/blob/fb06beb/src/types.ts#L444)
