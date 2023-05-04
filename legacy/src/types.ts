@@ -3,7 +3,6 @@ import {
   SafeParseReturnType,
   ZodObject,
   ZodRawShape,
-  ZodSchema,
   ZodTypeAny,
   output,
   z
@@ -27,7 +26,7 @@ export type SafeParsedData<T extends ZodRawShape | ZodTypeAny> =
 
 export interface BaseLLMOptions<
   TInput extends ZodRawShape | ZodTypeAny = ZodTypeAny,
-  TOutput extends ZodRawShape | ZodTypeAny = ZodTypeAny,
+  TOutput extends ZodRawShape | ZodTypeAny = z.ZodType<string>,
   TModelParams extends Record<string, any> = Record<string, any>
 > {
   provider?: string
@@ -43,7 +42,7 @@ export interface BaseLLMOptions<
 
 export interface LLMOptions<
   TInput extends ZodRawShape | ZodTypeAny = ZodTypeAny,
-  TOutput extends ZodRawShape | ZodTypeAny = ZodTypeAny,
+  TOutput extends ZodRawShape | ZodTypeAny = z.ZodType<string>,
   TModelParams extends Record<string, any> = Record<string, any>
 > extends BaseLLMOptions<TInput, TOutput, TModelParams> {
   promptTemplate?: string
@@ -51,7 +50,7 @@ export interface LLMOptions<
   promptSuffix?: string
 }
 
-export type ChatMessageRole = 'user' | 'system' | 'assistant' | 'tool'
+export type ChatMessageRole = 'user' | 'system' | 'assistant'
 
 export interface ChatMessage {
   role: ChatMessageRole
@@ -60,7 +59,7 @@ export interface ChatMessage {
 
 export interface ChatModelOptions<
   TInput extends ZodRawShape | ZodTypeAny = ZodTypeAny,
-  TOutput extends ZodRawShape | ZodTypeAny = ZodTypeAny,
+  TOutput extends ZodRawShape | ZodTypeAny = z.ZodType<string>,
   TModelParams extends Record<string, any> = Record<string, any>
 > extends BaseLLMOptions<TInput, TOutput, TModelParams> {
   messages: ChatMessage[]

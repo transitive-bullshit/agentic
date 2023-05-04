@@ -1,6 +1,9 @@
+import type { SetRequired } from 'type-fest'
 import { ZodRawShape, ZodTypeAny, z } from 'zod'
 
 import * as types from './types'
+
+const defaultOpenAIModel = 'gpt-3.5-turbo'
 
 export class Agentic {
   _client: types.openai.OpenAIClient
@@ -10,21 +13,19 @@ export class Agentic {
     'provider' | 'model' | 'modelParams' | 'timeoutMs' | 'retryConfig'
   >
 
-  constructor(
-    client: types.openai.OpenAIClient,
-    opts: {
-      verbosity?: number
-      defaults?: Pick<
-        types.BaseLLMOptions,
-        'provider' | 'model' | 'modelParams' | 'timeoutMs' | 'retryConfig'
-      >
-    } = {}
-  ) {
-    this._client = client
+  constructor(opts: {
+    openai: types.openai.OpenAIClient
+    verbosity?: number
+    defaults?: Pick<
+      types.BaseLLMOptions,
+      'provider' | 'model' | 'modelParams' | 'timeoutMs' | 'retryConfig'
+    >
+  }) {
+    this._client = opts.openai
     this._verbosity = opts.verbosity ?? 0
     this._defaults = {
       provider: 'openai',
-      model: 'gpt-3.5-turbo',
+      model: defaultOpenAIModel,
       modelParams: {},
       timeoutMs: 30000,
       retryConfig: {
@@ -54,7 +55,7 @@ export class Agentic {
       options = promptOrChatCompletionParams
 
       if (!options.messages) {
-        throw new Error()
+        throw new Error('messages must be provided')
       }
     }
 
@@ -68,7 +69,7 @@ export class Agentic {
 
 export abstract class BaseLLMCallBuilder<
   TInput extends ZodRawShape | ZodTypeAny = ZodTypeAny,
-  TOutput extends ZodRawShape | ZodTypeAny = ZodTypeAny,
+  TOutput extends ZodRawShape | ZodTypeAny = z.ZodType<string>,
   TModelParams extends Record<string, any> = Record<string, any>
 > {
   _options: types.BaseLLMOptions<TInput, TOutput, TModelParams>
@@ -118,7 +119,7 @@ export abstract class BaseLLMCallBuilder<
 
 export abstract class ChatModelBuilder<
   TInput extends ZodRawShape | ZodTypeAny = ZodTypeAny,
-  TOutput extends ZodRawShape | ZodTypeAny = ZodTypeAny,
+  TOutput extends ZodRawShape | ZodTypeAny = z.ZodType<string>,
   TModelParams extends Record<string, any> = Record<string, any>
 > extends BaseLLMCallBuilder<TInput, TOutput, TModelParams> {
   _messages: types.ChatMessage[]
@@ -132,11 +133,11 @@ export abstract class ChatModelBuilder<
 
 export class OpenAIChatModelBuilder<
   TInput extends ZodRawShape | ZodTypeAny = ZodTypeAny,
-  TOutput extends ZodRawShape | ZodTypeAny = ZodTypeAny
+  TOutput extends ZodRawShape | ZodTypeAny = z.ZodType<string>
 > extends ChatModelBuilder<
   TInput,
   TOutput,
-  Omit<types.openai.ChatCompletionParams, 'messages'>
+  SetRequired<Omit<types.openai.ChatCompletionParams, 'messages'>, 'model'>
 > {
   _client: types.openai.OpenAIClient
 
@@ -150,6 +151,7 @@ export class OpenAIChatModelBuilder<
   ) {
     super({
       provider: 'openai',
+      model: defaultOpenAIModel,
       ...options
     })
 
@@ -159,8 +161,26 @@ export class OpenAIChatModelBuilder<
   override async call(
     input?: types.ParsedData<TInput>
   ): Promise<types.ParsedData<TOutput>> {
-    // this._options.output?.describe
-    // TODO
-    return true as types.ParsedData<TOutput>
+    // TODO: construct messages
+
+    const completion = await this._client.createChatCompletion({
+      model: defaultOpenAIModel, // TODO: this shouldn't be necessary
+      ...this._options.modelParams,
+      messages: this._messages
+    })
+
+    if (this._options.output) {
+      const schema =
+        this._options.output instanceof z.ZodType
+          ? this._options.output
+          : z.object(this._options.output)
+
+      // TODO: convert string => object if necessary
+      // TODO: handle errors, retry logic, and self-healing
+
+      return schema.parse(completion.message.content)
+    } else {
+      return completion.message.content as any
+    }
   }
 }
