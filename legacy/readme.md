@@ -15,6 +15,10 @@
 
 TODO
 
+## TODO
+
+https://github.com/colinhacks/zod#writing-generic-functions
+
 ## Use Cases
 
 https://platform.openai.com/examples

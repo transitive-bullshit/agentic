@@ -1,4 +1,4 @@
-import type { ZodType } from 'zod'
+import { ZodRawShape, ZodTypeAny, z } from 'zod'
 
 import * as types from './types'
 
@@ -66,21 +66,33 @@ export class Agentic {
   }
 }
 
-export abstract class BaseLLMCallBuilder<TInput, TOutput, TModelParams> {
+export abstract class BaseLLMCallBuilder<
+  TInput extends ZodRawShape | ZodTypeAny = ZodTypeAny,
+  TOutput extends ZodRawShape | ZodTypeAny = ZodTypeAny,
+  TModelParams extends Record<string, any> = Record<string, any>
+> {
   _options: types.BaseLLMOptions<TInput, TOutput, TModelParams>
 
   constructor(options: types.BaseLLMOptions<TInput, TOutput, TModelParams>) {
     this._options = options
   }
 
-  input(inputSchema: ZodType<TInput>) {
-    this._options.input = inputSchema
-    return this
+  input<U extends ZodRawShape | ZodTypeAny = TInput>(
+    inputSchema: U
+  ): BaseLLMCallBuilder<U, TOutput, TModelParams> {
+    ;(
+      this as unknown as BaseLLMCallBuilder<U, TOutput, TModelParams>
+    )._options.input = inputSchema
+    return this as unknown as BaseLLMCallBuilder<U, TOutput, TModelParams>
   }
 
-  output(outputSchema: ZodType<TOutput>) {
-    this._options.output = outputSchema
-    return this
+  output<U extends ZodRawShape | ZodTypeAny = TOutput>(
+    outputSchema: U
+  ): BaseLLMCallBuilder<TInput, U, TModelParams> {
+    ;(
+      this as unknown as BaseLLMCallBuilder<TInput, U, TModelParams>
+    )._options.output = outputSchema
+    return this as unknown as BaseLLMCallBuilder<TInput, U, TModelParams>
   }
 
   examples(examples: types.LLMExample[]) {
@@ -93,21 +105,21 @@ export abstract class BaseLLMCallBuilder<TInput, TOutput, TModelParams> {
     return this
   }
 
-  abstract call(input?: TInput): Promise<TOutput>
+  abstract call(
+    input?: types.ParsedData<TInput>
+  ): Promise<types.ParsedData<TOutput>>
 
   // TODO
-  // abstract stream(
+  // abstract stream({
   //   input: TInput,
   //   onProgress: types.ProgressFunction
-  // ): Promise<TOutput>
-
-  // abstract stream(onProgress: types.ProgressFunction): Promise<TOutput>
+  // }): Promise<TOutput>
 }
 
 export abstract class ChatModelBuilder<
-  TInput,
-  TOutput,
-  TModelParams
+  TInput extends ZodRawShape | ZodTypeAny = ZodTypeAny,
+  TOutput extends ZodRawShape | ZodTypeAny = ZodTypeAny,
+  TModelParams extends Record<string, any> = Record<string, any>
 > extends BaseLLMCallBuilder<TInput, TOutput, TModelParams> {
   _messages: types.ChatMessage[]
 
@@ -118,7 +130,10 @@ export abstract class ChatModelBuilder<
   }
 }
 
-export class OpenAIChatModelBuilder<TInput, TOutput> extends ChatModelBuilder<
+export class OpenAIChatModelBuilder<
+  TInput extends ZodRawShape | ZodTypeAny = ZodTypeAny,
+  TOutput extends ZodRawShape | ZodTypeAny = ZodTypeAny
+> extends ChatModelBuilder<
   TInput,
   TOutput,
   Omit<types.openai.ChatCompletionParams, 'messages'>
@@ -141,7 +156,11 @@ export class OpenAIChatModelBuilder<TInput, TOutput> extends ChatModelBuilder<
     this._client = client
   }
 
-  override async call(input?: TInput): Promise<TOutput> {
+  override async call(
+    input?: types.ParsedData<TInput>
+  ): Promise<types.ParsedData<TOutput>> {
+    // this._options.output?.describe
     // TODO
+    return true as types.ParsedData<TOutput>
   }
 }
