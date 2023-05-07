@@ -358,6 +358,10 @@ export class ChatGPTAPI {
     this._apiOrg = apiOrg
   }
 
+  async buildMessages(text: string, opts: types.SendMessageOptions) {
+    return this._buildMessages(text, opts)
+  }
+
   protected async _buildMessages(text: string, opts: types.SendMessageOptions) {
     const { systemMessage = this._systemMessage } = opts
     let { parentMessageId } = opts
