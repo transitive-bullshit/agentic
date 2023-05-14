@@ -1,3 +1,5 @@
 export * from './chatgpt-api'
 export * from './chatgpt-unofficial-proxy-api'
 export * from './types'
+export * from './fetch-sse'
+export * from './fetch'

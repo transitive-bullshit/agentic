@@ -46,6 +46,7 @@ export type SendMessageOptions = {
   completionParams?: Partial<
     Omit<openai.CreateChatCompletionRequest, 'messages' | 'n' | 'stream'>
   >
+  isFineTune?: boolean
 }
 
 export type MessageActionType = 'next' | 'variant'
@@ -328,6 +329,8 @@ export namespace openai {
      * @memberof CreateChatCompletionRequest
      */
     user?: string
+
+    isFineTune?: boolean
   }
   /**
    * @type CreateChatCompletionRequestStop

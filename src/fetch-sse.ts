@@ -26,7 +26,6 @@ export async function fetchSSE(
     error.statusText = res.statusText
     throw error
   }
-
   const parser = createParser((event) => {
     if (event.type === 'event') {
       onMessage(event.data)
@@ -43,10 +42,15 @@ export async function fetchSSE(
     }
 
     body.on('readable', () => {
+      console.log('readable 123:', body.read())
       let chunk: string | Buffer
       while (null !== (chunk = body.read())) {
         parser.feed(chunk.toString())
       }
+    })
+
+    body.on('end', () => {
+      console.log('endddddd')
     })
   } else {
     for await (const chunk of streamAsyncIterable(res.body)) {

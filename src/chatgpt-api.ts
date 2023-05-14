@@ -8,7 +8,7 @@ import * as types from './types'
 import { fetch as globalFetch } from './fetch'
 import { fetchSSE } from './fetch-sse'
 
-const CHATGPT_MODEL = 'gpt-3.5-turbo'
+const CHATGPT_MODEL = 'gpt-4'
 
 const USER_LABEL_DEFAULT = 'User'
 const ASSISTANT_LABEL_DEFAULT = 'ChatGPT'
@@ -139,7 +139,8 @@ export class ChatGPTAPI {
       timeoutMs,
       onProgress,
       stream = onProgress ? true : false,
-      completionParams
+      completionParams,
+      isFineTune
     } = opts
 
     let { abortSignal } = opts
@@ -177,18 +178,28 @@ export class ChatGPTAPI {
 
     const responseP = new Promise<types.ChatMessage>(
       async (resolve, reject) => {
-        const url = `${this._apiBaseUrl}/chat/completions`
+        const url = isFineTune
+          ? `${this._apiBaseUrl}/completions`
+          : `${this._apiBaseUrl}/chat/completions`
         const headers = {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${this._apiKey}`
         }
+
         const body = {
           max_tokens: maxTokens,
           ...this._completionParams,
           ...completionParams,
-          messages,
           stream
+        } as any
+
+        if (isFineTune) {
+          body.prompt = messages.map((cur) => cur.content)
+        } else {
+          body.messages = messages
         }
+
+        console.log('body:', url, body, isFineTune)
 
         if (this._debug) {
           console.log(`sendMessage (${numTokens} tokens)`, body)
@@ -217,7 +228,14 @@ export class ChatGPTAPI {
                   }
 
                   if (response?.choices?.length) {
-                    const delta = response.choices[0].delta
+                    const delta = isFineTune
+                      ? {
+                          content: (response.choices[0] as any).text,
+                          role: 'assistant' as any
+                        }
+                      : response.choices[0].delta
+
+                    console.log('response:', delta.content)
                     result.delta = delta.content
                     if (delta?.content) result.text += delta.content
                     result.detail = response
