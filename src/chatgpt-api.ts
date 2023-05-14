@@ -234,8 +234,6 @@ export class ChatGPTAPI {
                           role: 'assistant' as any
                         }
                       : response.choices[0].delta
-
-                    console.log('response:', delta.content)
                     result.delta = delta.content
                     if (delta?.content) result.text += delta.content
                     result.detail = response
