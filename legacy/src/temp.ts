@@ -4,6 +4,8 @@ import { z } from 'zod'
 
 import { Agentic } from './llm'
 
+// import { LLMQuery } from '@agentic/llm-query'
+
 dotenv.config()
 
 async function main() {
