@@ -199,7 +199,14 @@ export class OpenAIChatModelBuilder<
           : z.object(this._options.output)
 
       const { node } = zodToTs(outputSchema)
-      const tsTypeString = printNode(node)
+      const tsTypeString = printNode(node, {
+        removeComments: true,
+        // TODO: this doesn't seem to actually work, so we're doing it manually below
+        omitTrailingSemicolon: true,
+        noEmitHelpers: true
+      })
+        .replace(/^    /gm, '  ')
+        .replace(/;$/gm, '')
 
       messages.push({
         role: 'system',
