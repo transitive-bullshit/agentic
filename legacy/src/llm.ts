@@ -212,6 +212,8 @@ export class OpenAIChatModelBuilder<
 
     // TODO: filter/compress messages based on token counts
 
+    console.log('>>>')
+    console.log(messages)
     const completion = await this._client.createChatCompletion({
       model: defaultOpenAIModel, // TODO: this shouldn't be necessary but TS is complaining
       ...this._options.modelParams,
@@ -225,10 +227,14 @@ export class OpenAIChatModelBuilder<
           : z.object(this._options.output)
 
       let output: any = completion.message.content
+      console.log('===')
+      console.log(output)
+      console.log('<<<')
+
       if (outputSchema instanceof z.ZodArray) {
         try {
           const trimmedOutput = extractJSONArrayFromString(output)
-          output = jsonrepair(trimmedOutput ?? output)
+          output = JSON.parse(jsonrepair(trimmedOutput ?? output))
         } catch (err) {
           // TODO
           throw err
@@ -236,7 +242,7 @@ export class OpenAIChatModelBuilder<
       } else if (outputSchema instanceof z.ZodObject) {
         try {
           const trimmedOutput = extractJSONObjectFromString(output)
-          output = jsonrepair(trimmedOutput ?? output)
+          output = JSON.parse(jsonrepair(trimmedOutput ?? output))
         } catch (err) {
           // TODO
           throw err
