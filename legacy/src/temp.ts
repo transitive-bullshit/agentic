@@ -19,10 +19,20 @@ async function main() {
 
   console.log(ex0)
 
-  const ex1 = await $.gpt4(`give me fake data conforming to this schema`)
-    .output(z.object({ foo: z.string(), bar: z.number() }))
-    // .retry({ attempts: 3 })
-    .call()
+  const ex1 = await $.gpt4(
+    `give me fake data conforming to this schema`
+  ).output(z.object({ foo: z.string(), bar: z.number() }))
+  // .retry({ attempts: 3 })
+  // .call()
+
+  const getBoolean = $.gpt4(`give me a single boolean value {{foo}}`)
+    .input(z.object({ foo: z.string() }))
+    .output(z.boolean())
+
+  await Promise.all([
+    getBoolean.call({ foo: 'foo' }),
+    getBoolean.call({ foo: 'bar' })
+  ])
 
   console.log(ex1)
 }
