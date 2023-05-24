@@ -25,6 +25,7 @@
   "dependencies": {
     "@dqbd/tiktoken": "^1.0.7",
     "dotenv-safe": "^8.2.0",
+    "jsonrepair": "^3.1.0",
     "mustache": "^4.2.0",
     "openai-fetch": "^1.2.1",
     "p-map": "^6.0.0",

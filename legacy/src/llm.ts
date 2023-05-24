@@ -1,3 +1,4 @@
+import { jsonrepair } from 'jsonrepair'
 import Mustache from 'mustache'
 import { dedent } from 'ts-dedent'
 import type { SetRequired } from 'type-fest'
@@ -5,6 +6,10 @@ import { ZodRawShape, ZodTypeAny, z } from 'zod'
 import { printNode, zodToTs } from 'zod-to-ts'
 
 import * as types from './types'
+import {
+  extractJSONArrayFromString,
+  extractJSONObjectFromString
+} from './utils'
 
 const defaultOpenAIModel = 'gpt-3.5-turbo'
 
@@ -174,6 +179,8 @@ export class OpenAIChatModelBuilder<
       input = inputSchema.parse(input)
     }
 
+    // TODO: validate input message variables against input schema
+
     const messages = this._messages
       .map((message) => {
         return {
@@ -184,6 +191,24 @@ export class OpenAIChatModelBuilder<
         }
       })
       .filter((message) => message.content)
+
+    if (this._options.output) {
+      const outputSchema =
+        this._options.output instanceof z.ZodType
+          ? this._options.output
+          : z.object(this._options.output)
+
+      const { node } = zodToTs(outputSchema)
+      const tsTypeString = printNode(node)
+
+      messages.push({
+        role: 'system',
+        content: dedent`Output JSON only in the following format:
+          \`\`\`ts
+          ${tsTypeString}
+          \`\`\``
+      })
+    }
 
     // TODO: filter/compress messages based on token counts
 
@@ -199,10 +224,28 @@ export class OpenAIChatModelBuilder<
           ? this._options.output
           : z.object(this._options.output)
 
-      // TODO: convert string => object if necessary
+      let output: any = completion.message.content
+      if (outputSchema instanceof z.ZodArray) {
+        try {
+          const trimmedOutput = extractJSONArrayFromString(output)
+          output = jsonrepair(trimmedOutput ?? output)
+        } catch (err) {
+          // TODO
+          throw err
+        }
+      } else if (outputSchema instanceof z.ZodObject) {
+        try {
+          const trimmedOutput = extractJSONObjectFromString(output)
+          output = jsonrepair(trimmedOutput ?? output)
+        } catch (err) {
+          // TODO
+          throw err
+        }
+      }
+
       // TODO: handle errors, retry logic, and self-healing
 
-      return outputSchema.parse(completion.message.content)
+      return outputSchema.parse(output)
     } else {
       return completion.message.content as any
     }

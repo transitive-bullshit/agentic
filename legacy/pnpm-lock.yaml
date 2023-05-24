@@ -7,6 +7,9 @@ dependencies:
   dotenv-safe:
     specifier: ^8.2.0
     version: 8.2.0
+  jsonrepair:
+    specifier: ^3.1.0
+    version: 3.1.0
   mustache:
     specifier: ^4.2.0
     version: 4.2.0
@@ -1459,6 +1462,11 @@ packages:
   /json-parse-even-better-errors@3.0.0:
     resolution: {integrity: sha512-iZbGHafX/59r39gPwVPRBGw0QQKnA7tte5pSMrhWOW7swGsVvVTjmfyAV9pNqk8YGT7tRCdxRu8uzcgZwoDooA==}
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
+    dev: false
+
+  /jsonrepair@3.1.0:
+    resolution: {integrity: sha512-idqReg23J0PVRAADmZMc5xQM3xeOX5bTB6OTyMnzq33IXJXmn9iJuWIEvGmrN80rQf4d7uLTMEDwpzujNcI0Rg==}
+    hasBin: true
     dev: false
 
   /kind-of@6.0.3:
