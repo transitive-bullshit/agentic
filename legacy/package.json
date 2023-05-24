@@ -29,6 +29,7 @@
     "openai-fetch": "^1.2.1",
     "p-map": "^6.0.0",
     "parse-json": "^7.0.0",
+    "ts-dedent": "^2.2.0",
     "type-fest": "^3.10.0",
     "zod": "^3.21.4",
     "zod-to-ts": "^1.1.4",
