@@ -109,6 +109,16 @@ export abstract class BaseLLMCallBuilder<
     return this
   }
 
+  modelParams(params: Partial<TModelParams>) {
+    // We assume that modelParams does not include nested objects; if it did, we would need to do a deep merge...
+    this._options.modelParams = Object.assign(
+      {},
+      this._options.modelParams,
+      params
+    )
+    return this
+  }
+
   retry(retryConfig: types.LLMRetryConfig) {
     this._options.retryConfig = retryConfig
     return this
