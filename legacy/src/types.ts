@@ -28,8 +28,8 @@ export interface BaseTaskOptions<
   TInput extends ZodRawShape | ZodTypeAny = ZodTypeAny,
   TOutput extends ZodRawShape | ZodTypeAny = z.ZodType<string>
 > {
-  input?: TInput
-  output?: TOutput
+  inputSchema?: TInput
+  outputSchema?: TOutput
 
   timeoutMs?: number
   retryConfig?: RetryConfig
@@ -37,6 +37,7 @@ export interface BaseTaskOptions<
   // TODO
   // caching config
   // logging config
+  // reference to agentic context
 }
 
 export interface BaseLLMOptions<

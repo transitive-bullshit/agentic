@@ -43,11 +43,11 @@ export class OpenAIChatModelBuilder<
   override async call(
     input?: types.ParsedData<TInput>
   ): Promise<types.ParsedData<TOutput>> {
-    if (this._options.input) {
+    if (this._inputSchema) {
       const inputSchema =
-        this._options.input instanceof z.ZodType
-          ? this._options.input
-          : z.object(this._options.input)
+        this._inputSchema instanceof z.ZodType
+          ? this._inputSchema
+          : z.object(this._inputSchema)
 
       // TODO: handle errors gracefully
       input = inputSchema.parse(input)
@@ -66,9 +66,9 @@ export class OpenAIChatModelBuilder<
       })
       .filter((message) => message.content)
 
-    if (this._options.examples?.length) {
+    if (this._examples?.length) {
       // TODO: smarter example selection
-      for (const example of this._options.examples) {
+      for (const example of this._examples) {
         messages.push({
           role: 'system',
           content: `Example input: ${example.input}\n\nExample output: ${example.output}`
@@ -76,11 +76,11 @@ export class OpenAIChatModelBuilder<
       }
     }
 
-    if (this._options.output) {
+    if (this._outputSchema) {
       const outputSchema =
-        this._options.output instanceof z.ZodType
-          ? this._options.output
-          : z.object(this._options.output)
+        this._outputSchema instanceof z.ZodType
+          ? this._outputSchema
+          : z.object(this._outputSchema)
 
       const { node } = zodToTs(outputSchema)
 
@@ -116,15 +116,15 @@ export class OpenAIChatModelBuilder<
     console.log(messages)
     const completion = await this._client.createChatCompletion({
       model: defaultOpenAIModel, // TODO: this shouldn't be necessary but TS is complaining
-      ...this._options.modelParams,
+      ...this._outputSchema,
       messages
     })
 
-    if (this._options.output) {
+    if (this._outputSchema) {
       const outputSchema =
-        this._options.output instanceof z.ZodType
-          ? this._options.output
-          : z.object(this._options.output)
+        this._outputSchema instanceof z.ZodType
+          ? this._outputSchema
+          : z.object(this._outputSchema)
 
       let output: any = completion.message.content
       console.log('===')

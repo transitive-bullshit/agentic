@@ -6,16 +6,22 @@ export abstract class BaseTaskCallBuilder<
   TInput extends ZodRawShape | ZodTypeAny = ZodTypeAny,
   TOutput extends ZodRawShape | ZodTypeAny = z.ZodTypeAny
 > {
-  protected _options: types.BaseTaskOptions<TInput, TOutput>
+  protected _inputSchema: TInput
+  protected _outputSchema: TOutput
+  protected _timeoutMs: number
+  protected _retryConfig: types.RetryConfig
 
   constructor(options: types.BaseTaskOptions<TInput, TOutput>) {
-    this._options = options
+    this._inputSchema = options.inputSchema
+    this._outputSchema = options.outputSchema
+    this._timeoutMs = options.timeoutMs
+    this._retryConfig = options.retryConfig
   }
 
   input<U extends ZodRawShape | ZodTypeAny = TInput>(
     inputSchema: U
   ): BaseTaskCallBuilder<U, TOutput> {
-    ;(this as unknown as BaseTaskCallBuilder<U, TOutput>)._options.input =
+    ;(this as unknown as BaseTaskCallBuilder<U, TOutput>)._inputSchema =
       inputSchema
     return this as unknown as BaseTaskCallBuilder<U, TOutput>
   }
@@ -23,13 +29,13 @@ export abstract class BaseTaskCallBuilder<
   output<U extends ZodRawShape | ZodTypeAny = TOutput>(
     outputSchema: U
   ): BaseTaskCallBuilder<TInput, U> {
-    ;(this as unknown as BaseTaskCallBuilder<TInput, U>)._options.output =
+    ;(this as unknown as BaseTaskCallBuilder<TInput, U>)._outputSchema =
       outputSchema
     return this as unknown as BaseTaskCallBuilder<TInput, U>
   }
 
   retry(retryConfig: types.RetryConfig) {
-    this._options.retryConfig = retryConfig
+    this._retryConfig = retryConfig
     return this
   }
 
