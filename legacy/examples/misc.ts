@@ -1,13 +1,18 @@
+import dotenv from 'dotenv-safe'
+import { OpenAIClient } from 'openai-fetch'
 import { z } from 'zod'
 
-async function main() {
-  const $ = {} as any
+import { Agentic } from '../src'
 
-  // work with a single input or an array of inputs using p-map under the hood
+dotenv.config()
+
+async function main() {
+  const openai = new OpenAIClient({ apiKey: process.env.OPENAI_API_KEY! })
+  const $ = new Agentic({ openai })
 
   const ex0 = await $.gpt4(`give me a single boolean value: `)
     .output(z.boolean())
-    .retry({ attempts: 3 })
+    // .retry({ attempts: 3 })
     .call()
 
   // LLM
@@ -17,7 +22,8 @@ async function main() {
 
   const ex1 = await $.gpt4('give me a list of character names from star wars')
     .output(z.array(z.string().nonempty()))
-    .stream()
+    // .stream()
+    .call()
 
   const ex2 = await $.gpt4(`Summarize the following text: {{text}}`)
     .output(z.string().nonempty())
@@ -26,11 +32,11 @@ async function main() {
       text: 'The quick brown fox jumps over the lazy dog.'
     })
 
-  const ext22 = await $.gpt4({ temperature: 0 }).call({
-    messages: [
-      // TEST
-    ]
-  })
+  // const ext22 = await $.gpt4({ temperature: 0 }).call({
+  //   messages: [
+  //     // TEST
+  //   ]
+  // })
 
   const ex3 = await $.gpt4({
     temperature: 0,
@@ -75,3 +81,5 @@ async function main() {
     .output(z.string().nonempty())
     .call()
 }
+
+main()

@@ -20,6 +20,7 @@
     "pre-commit": "lint-staged",
     "pretest": "run-s build",
     "test": "run-p test:*",
+    "test:unit": "ava",
     "test:prettier": "prettier '**/*.{js,jsx,ts,tsx}' --check"
   },
   "dependencies": {
@@ -29,7 +30,6 @@
     "mustache": "^4.2.0",
     "openai-fetch": "^1.2.1",
     "p-map": "^6.0.0",
-    "parse-json": "^7.0.0",
     "ts-dedent": "^2.2.0",
     "type-fest": "^3.10.0",
     "zod": "^3.21.4",
@@ -40,6 +40,7 @@
     "@trivago/prettier-plugin-sort-imports": "^4.1.1",
     "@types/mustache": "^4.2.2",
     "@types/node": "^20.2.0",
+    "ava": "^5.3.0",
     "del-cli": "^5.0.0",
     "husky": "^8.0.3",
     "lint-staged": "^13.2.2",
@@ -52,6 +53,14 @@
   "lint-staged": {
     "*.{ts,tsx}": [
       "prettier --write"
+    ]
+  },
+  "ava": {
+    "extensions": {
+      "ts": "module"
+    },
+    "nodeArguments": [
+      "--loader=tsx"
     ]
   },
   "keywords": [
