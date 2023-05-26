@@ -18,8 +18,9 @@ async function main() {
   //   .call()
   // console.log(ex0)
 
-  const ex1 = await $.gpt4(`give me fake data conforming to this schema`)
+  const ex1 = await $.gpt4(`give me fake data`)
     .output(z.object({ foo: z.string(), bar: z.number() }))
+    // .output(z.string())
     // .retry({ attempts: 3 })
     .call()
   console.log(ex1)

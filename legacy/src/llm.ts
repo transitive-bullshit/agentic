@@ -209,22 +209,31 @@ export class OpenAIChatModelBuilder<
           : z.object(this._options.output)
 
       const { node } = zodToTs(outputSchema)
-      const tsTypeString = printNode(node, {
-        removeComments: true,
-        // TODO: this doesn't seem to actually work, so we're doing it manually below
-        omitTrailingSemicolon: true,
-        noEmitHelpers: true
-      })
-        .replace(/^    /gm, '  ')
-        .replace(/;$/gm, '')
 
-      messages.push({
-        role: 'system',
-        content: dedent`Output JSON only in the following format:
+      if (node.kind === 152) {
+        // ignore raw strings
+        messages.push({
+          role: 'system',
+          content: dedent`Output a string`
+        })
+      } else {
+        const tsTypeString = printNode(node, {
+          removeComments: false,
+          // TODO: this doesn't seem to actually work, so we're doing it manually below
+          omitTrailingSemicolon: true,
+          noEmitHelpers: true
+        })
+          .replace(/^    /gm, '  ')
+          .replace(/;$/gm, '')
+
+        messages.push({
+          role: 'system',
+          content: dedent`Output JSON only in the following format:
           \`\`\`ts
           ${tsTypeString}
           \`\`\``
-      })
+        })
+      }
     }
 
     // TODO: filter/compress messages based on token counts
