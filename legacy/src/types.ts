@@ -24,20 +24,30 @@ export type SafeParsedData<T extends ZodRawShape | ZodTypeAny> =
     ? SafeParseReturnType<ZodObject<T>, ParsedData<T>>
     : never
 
+export interface BaseTaskOptions<
+  TInput extends ZodRawShape | ZodTypeAny = ZodTypeAny,
+  TOutput extends ZodRawShape | ZodTypeAny = z.ZodType<string>
+> {
+  input?: TInput
+  output?: TOutput
+
+  timeoutMs?: number
+  retryConfig?: RetryConfig
+
+  // TODO
+  // caching config
+  // logging config
+}
+
 export interface BaseLLMOptions<
   TInput extends ZodRawShape | ZodTypeAny = ZodTypeAny,
   TOutput extends ZodRawShape | ZodTypeAny = z.ZodType<string>,
   TModelParams extends Record<string, any> = Record<string, any>
-> {
+> extends BaseTaskOptions<TInput, TOutput> {
   provider?: string
   model?: string
   modelParams?: TModelParams
-  timeoutMs?: number
-
-  input?: TInput
-  output?: TOutput
   examples?: LLMExample[]
-  retryConfig?: LLMRetryConfig
 }
 
 export interface LLMOptions<
@@ -70,7 +80,7 @@ export interface LLMExample {
   output: string
 }
 
-export interface LLMRetryConfig {
+export interface RetryConfig {
   attempts: number
   strategy: string
 }

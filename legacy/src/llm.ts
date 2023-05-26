@@ -1,19 +1,22 @@
 import { ZodRawShape, ZodTypeAny, z } from 'zod'
 
 import * as types from './types'
+import { BaseTaskCallBuilder } from './task'
 
 export abstract class BaseLLMCallBuilder<
   TInput extends ZodRawShape | ZodTypeAny = ZodTypeAny,
   TOutput extends ZodRawShape | ZodTypeAny = z.ZodType<string>,
   TModelParams extends Record<string, any> = Record<string, any>
-> {
-  _options: types.BaseLLMOptions<TInput, TOutput, TModelParams>
+> extends BaseTaskCallBuilder<TInput, TOutput> {
+  protected _options: types.BaseLLMOptions<TInput, TOutput, TModelParams>
 
   constructor(options: types.BaseLLMOptions<TInput, TOutput, TModelParams>) {
+    super(options)
+
     this._options = options
   }
 
-  input<U extends ZodRawShape | ZodTypeAny = TInput>(
+  override input<U extends ZodRawShape | ZodTypeAny = TInput>(
     inputSchema: U
   ): BaseLLMCallBuilder<U, TOutput, TModelParams> {
     ;(
@@ -22,7 +25,7 @@ export abstract class BaseLLMCallBuilder<
     return this as unknown as BaseLLMCallBuilder<U, TOutput, TModelParams>
   }
 
-  output<U extends ZodRawShape | ZodTypeAny = TOutput>(
+  override output<U extends ZodRawShape | ZodTypeAny = TOutput>(
     outputSchema: U
   ): BaseLLMCallBuilder<TInput, U, TModelParams> {
     ;(
@@ -45,15 +48,6 @@ export abstract class BaseLLMCallBuilder<
     )
     return this
   }
-
-  retry(retryConfig: types.LLMRetryConfig) {
-    this._options.retryConfig = retryConfig
-    return this
-  }
-
-  abstract call(
-    input?: types.ParsedData<TInput>
-  ): Promise<types.ParsedData<TOutput>>
 
   // TODO
   // abstract stream({

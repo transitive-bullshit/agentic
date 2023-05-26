@@ -102,7 +102,7 @@ export class OpenAIChatModelBuilder<
 
         messages.push({
           role: 'system',
-          content: dedent`Output JSON only in the following format:
+          content: dedent`Output JSON only in the following TypeScript format:
           \`\`\`ts
           ${tsTypeString}
           \`\`\``
@@ -162,6 +162,7 @@ export class OpenAIChatModelBuilder<
         if (booleanOutput !== undefined) {
           output = booleanOutput
         } else {
+          // TODO
           throw new Error(`invalid boolean output: ${output}`)
         }
       } else if (outputSchema instanceof z.ZodNumber) {
@@ -172,6 +173,7 @@ export class OpenAIChatModelBuilder<
           : parseFloat(output)
 
         if (isNaN(numberOutput)) {
+          // TODO
           throw new Error(`invalid number output: ${output}`)
         } else {
           output = numberOutput
