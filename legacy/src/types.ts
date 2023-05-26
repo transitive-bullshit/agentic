@@ -61,7 +61,13 @@ export interface LLMOptions<
   promptSuffix?: string
 }
 
-export type ChatMessageRole = 'user' | 'system' | 'assistant'
+// export type ChatMessageRole = 'user' | 'system' | 'assistant'
+export const ChatMessageRoleSchema = z.union([
+  z.literal('user'),
+  z.literal('system'),
+  z.literal('assistant')
+])
+export type ChatMessageRole = z.infer<typeof ChatMessageRoleSchema>
 
 export interface ChatMessage {
   role: ChatMessageRole
@@ -74,6 +80,16 @@ export interface ChatModelOptions<
   TModelParams extends Record<string, any> = Record<string, any>
 > extends BaseLLMOptions<TInput, TOutput, TModelParams> {
   messages: ChatMessage[]
+}
+
+export interface BaseChatCompletionResponse<
+  TChatCompletionResponse extends Record<string, any> = Record<string, any>
+> {
+  /** The completion message. */
+  message: ChatMessage
+
+  /** The raw response from the LLM provider. */
+  response: TChatCompletionResponse
 }
 
 export interface LLMExample {
