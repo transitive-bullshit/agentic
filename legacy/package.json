@@ -6,21 +6,32 @@
   "repository": "transitive-bullshit/agentic",
   "license": "MIT",
   "type": "module",
+  "source": "./src/index.ts",
+  "types": "./build/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./build/index.js",
+      "require": "./build/index.cjs",
+      "types": "./build/index.d.ts",
+      "default": "./build/index.js"
+    }
+  },
+  "files": [
+    "build"
+  ],
   "engines": {
     "node": ">=14"
   },
   "scripts": {
-    "build": "run-s build:*",
-    "build:tsup": "lerna run build --no-private",
-    "build:tsc": "tsc --build",
-    "deploy": "lerna run deploy",
-    "clean": "del packages/*/build",
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "clean": "del build",
     "prebuild": "run-s clean",
+    "predev": "run-s clean",
+    "pretest": "run-s build",
     "prepare": "husky install",
     "pre-commit": "lint-staged",
-    "pretest": "run-s build",
     "test": "run-p test:*",
-    "test:unit": "ava",
     "test:prettier": "prettier '**/*.{js,jsx,ts,tsx}' --check"
   },
   "dependencies": {
