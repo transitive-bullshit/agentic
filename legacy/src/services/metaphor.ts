@@ -23,6 +23,10 @@ export class MetaphorClient {
     apiKey?: string
     baseUrl?: string
   } = {}) {
+    if (!apiKey) {
+      throw new Error(`Error MetaphorClient missing required "apiKey"`)
+    }
+
     this.apiKey = apiKey
     this.baseUrl = baseUrl
   }

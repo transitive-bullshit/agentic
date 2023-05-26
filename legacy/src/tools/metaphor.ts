@@ -19,7 +19,7 @@ export const MetaphorSearchToolOutputSchema = z.object({
       dateCreated: z.string().optional(),
       score: z.number(),
       title: z.string(),
-      URL: z.string()
+      url: z.string()
     })
   )
 })
