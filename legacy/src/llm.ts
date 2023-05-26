@@ -30,7 +30,7 @@ export abstract class BaseLLMCallBuilder<
     this._examples = options.examples
   }
 
-  override input<U extends ZodRawShape | ZodTypeAny = TInput>(
+  input<U extends ZodRawShape | ZodTypeAny = TInput>(
     inputSchema: U
   ): BaseLLMCallBuilder<U, TOutput, TModelParams> {
     ;(
@@ -39,7 +39,7 @@ export abstract class BaseLLMCallBuilder<
     return this as unknown as BaseLLMCallBuilder<U, TOutput, TModelParams>
   }
 
-  override output<U extends ZodRawShape | ZodTypeAny = TOutput>(
+  output<U extends ZodRawShape | ZodTypeAny = TOutput>(
     outputSchema: U
   ): BaseLLMCallBuilder<TInput, U, TModelParams> {
     ;(

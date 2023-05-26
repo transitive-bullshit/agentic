@@ -38,15 +38,10 @@ export class OpenAIChatModelBuilder<
   ): Promise<
     types.BaseChatCompletionResponse<types.openai.ChatCompletionResponse>
   > {
-    const response = await this._client.createChatCompletion({
+    return this._client.createChatCompletion({
       model: this._model,
       ...this._modelParams,
       messages
     })
-
-    return {
-      message: response.message,
-      response: response.response
-    }
   }
 }

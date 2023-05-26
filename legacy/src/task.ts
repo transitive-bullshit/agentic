@@ -18,20 +18,12 @@ export abstract class BaseTaskCallBuilder<
     this._retryConfig = options.retryConfig
   }
 
-  input<U extends ZodRawShape | ZodTypeAny = TInput>(
-    inputSchema: U
-  ): BaseTaskCallBuilder<U, TOutput> {
-    ;(this as unknown as BaseTaskCallBuilder<U, TOutput>)._inputSchema =
-      inputSchema
-    return this as unknown as BaseTaskCallBuilder<U, TOutput>
+  public get inputSchema(): TInput {
+    return this._inputSchema
   }
 
-  output<U extends ZodRawShape | ZodTypeAny = TOutput>(
-    outputSchema: U
-  ): BaseTaskCallBuilder<TInput, U> {
-    ;(this as unknown as BaseTaskCallBuilder<TInput, U>)._outputSchema =
-      outputSchema
-    return this as unknown as BaseTaskCallBuilder<TInput, U>
+  public get outputSchema(): TOutput {
+    return this._outputSchema
   }
 
   retry(retryConfig: types.RetryConfig) {
