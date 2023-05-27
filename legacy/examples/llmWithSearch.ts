@@ -2,11 +2,7 @@ import dotenv from 'dotenv-safe'
 import { OpenAIClient } from 'openai-fetch'
 import { z } from 'zod'
 
-import {
-  Agentic,
-  MetaphorSearchTool,
-  MetaphorSearchToolOutputSchema
-} from '../src'
+import { Agentic, MetaphorSearchTool } from '../src'
 
 dotenv.config()
 
