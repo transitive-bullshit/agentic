@@ -34,6 +34,36 @@ export class Agentic {
     }
   }
 
+  llm(
+    promptOrChatCompletionParams:
+      | string
+      | Partial<types.openai.ChatCompletionParams> // TODO: make more strict
+  ) {
+    let options: Partial<types.openai.ChatCompletionParams>
+
+    if (typeof promptOrChatCompletionParams === 'string') {
+      options = {
+        messages: [
+          {
+            role: 'user',
+            content: promptOrChatCompletionParams
+          }
+        ]
+      }
+    } else {
+      options = promptOrChatCompletionParams
+
+      if (!options.messages) {
+        throw new Error('messages must be provided')
+      }
+    }
+
+    return new OpenAIChatModelBuilder(this._client, {
+      ...(this._defaults as any), // TODO
+      ...options
+    })
+  }
+
   gpt4(
     promptOrChatCompletionParams:
       | string

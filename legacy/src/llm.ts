@@ -147,7 +147,7 @@ export abstract class BaseChatModelBuilder<
 
         messages.push({
           role: 'system',
-          content: dedent`Output JSON only in the following TypeScript format:
+          content: dedent`Do not output code. Output JSON only in the following TypeScript format:
           \`\`\`ts
           ${tsTypeString}
           \`\`\``
