@@ -11,9 +11,11 @@ async function main() {
   const ai = new Agentic({ openai })
 
   const out = await ai
-    .gpt4(`Give me random facts about {{topic}}`)
-    .output(z.array(z.string()))
-    .input(z.object({ topic: z.string() }))
+    .gpt3(`Give me {{numFacts}} random facts about {{topic}}`)
+    .input(
+      z.object({ topic: z.string(), numFacts: z.number().int().default(5) })
+    )
+    .output(z.object({ facts: z.array(z.string()) }))
     .modelParams({ temperature: 0.9 })
     .call({ topic: 'cats' })
 
