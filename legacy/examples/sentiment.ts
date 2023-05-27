@@ -6,7 +6,7 @@ import { Agentic } from '../src'
 
 dotenv.config()
 
-export async function sentimentAgent() {
+export async function main() {
   const openai = new OpenAIClient({ apiKey: process.env.OPENAI_API_KEY! })
   const $ = new Agentic({ openai })
 
@@ -14,6 +14,7 @@ export async function sentimentAgent() {
     `You are an expert sentiment-labelling assistant. Label the following texts as positive or negative: \n{{#texts}}- {{.}}\n{{/texts}}`
   )
     .input(z.object({ texts: z.string().array() }))
+    // TODO: label should be a union of literals
     .output(z.array(z.object({ text: z.string(), label: z.string() })))
     .examples([
       { input: 'The food was digusting', output: 'negative' },
@@ -37,4 +38,4 @@ export async function sentimentAgent() {
   console.log('example', example)
 }
 
-sentimentAgent()
+main()

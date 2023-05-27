@@ -28,7 +28,7 @@ export async function equationProducer() {
     'Carla is downloading a 200 GB file. She can download 2 GB/minute, but 40% of the way through the download, the download fails. Then Carla has to restart the download from the beginning. How long did it take her to download the file in minutes?'
 
   const example = await $.gpt4(
-    `Give me the equation for the following math problem: {{question}}`
+    `You are an expert math teacher. Think step by step, and give me the equation for the following math problem: \n\n{{question}}`
   )
     .input(z.object({ question: z.string() }))
     .output({
