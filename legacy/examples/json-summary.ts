@@ -6,17 +6,15 @@ import { Agentic } from '../src'
 
 dotenv.config()
 
-export async function sentimentAgent() {
+export async function main() {
   const openai = new OpenAIClient({ apiKey: process.env.OPENAI_API_KEY! })
   const $ = new Agentic({ openai })
 
-  const article = await $.gpt4(
-    'I want an article that seems like it was on Wikipedia. It should be 500 characters long.'
+  const article = await $.gpt3(
+    'Generate a fake, short Wikipedia article.'
   ).call()
 
-  console.log('got an article', article)
-
-  const example = await $.gpt4(
+  const example = await $.gpt3(
     `You are a wikipedia article summarizer. However, 
     you return a bunch of important information about the article in JSON format.
     You're really good at coming up with semantic labels for the information you find.
@@ -27,10 +25,10 @@ export async function sentimentAgent() {
     .output(
       z.object({
         title: z.string(),
-        serializedJsonSummary: z.string()
+        summary: z.string()
       })
     )
-    // .assert((output) => JSON.parse(output.serializedJsonSummary))
+    // .assert((output) => JSON.parse(output.summary))
     .call({
       article
     })
@@ -38,4 +36,4 @@ export async function sentimentAgent() {
   console.log('example', example)
 }
 
-sentimentAgent()
+main()
