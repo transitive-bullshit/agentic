@@ -11,7 +11,7 @@ export async function sentimentAgent() {
   const $ = new Agentic({ openai })
 
   const example = await $.gpt4(
-    `You are an expert sentiment-labelling assistant. Label the following texts as positive or negative: {{texts}}`
+    `You are an expert sentiment-labelling assistant. Label the following texts as positive or negative: \n{{#texts}}- {{.}}\n{{/texts}}`
   )
     .input(z.object({ texts: z.string().array() }))
     .output(z.array(z.object({ text: z.string(), label: z.string() })))
