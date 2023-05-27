@@ -1,10 +1,10 @@
 import ky from 'ky'
 
 export type MetaphorSearchResult = {
-  author?: string | null
-  dateCreated?: string
+  author: string | null
+  dateCreated: string | null
+  title: string | null
   score: number
-  title: string
   url: string
 }
 

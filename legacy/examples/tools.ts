@@ -11,7 +11,10 @@ async function main() {
   const $ = new Agentic({ openai })
 
   const metaphorSearch = new MetaphorSearchTool()
-  const results = await metaphorSearch.call({ query: 'kittens', numResults: 5 })
+  const results = await metaphorSearch.call({
+    query: 'probability of AI doom:',
+    numResults: 5
+  })
   console.log(results)
 }
 

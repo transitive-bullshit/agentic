@@ -17,8 +17,8 @@ export const MetaphorSearchToolOutputSchema = z.object({
     z.object({
       author: z.string().nullable(),
       dateCreated: z.string().nullable(),
+      title: z.string().nullable(),
       score: z.number(),
-      title: z.string(),
       url: z.string()
     })
   )

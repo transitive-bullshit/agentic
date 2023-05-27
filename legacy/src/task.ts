@@ -2,6 +2,15 @@ import { ZodRawShape, ZodTypeAny, z } from 'zod'
 
 import * as types from './types'
 
+/**
+ * A `Task` is a typed, async function call that may be non-deterministic.
+ *
+ * Examples of tasks include:
+ *    - LLM calls with structured input and output
+ *    - API calls
+ *    - Native function execution
+ *    - Invoking sub-agents
+ */
 export abstract class BaseTaskCallBuilder<
   TInput extends ZodRawShape | ZodTypeAny = ZodTypeAny,
   TOutput extends ZodRawShape | ZodTypeAny = z.ZodTypeAny
