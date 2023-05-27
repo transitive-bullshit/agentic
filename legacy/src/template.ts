@@ -11,7 +11,9 @@ export function getCompiledTemplate(template: string) {
   }
 
   compiledTemplate = Handlebars.compile(template, {
-    noEscape: true
+    noEscape: true,
+    knownHelpers: {},
+    knownHelpersOnly: true
   })
 
   lru.set(template, compiledTemplate)
