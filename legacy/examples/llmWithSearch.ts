@@ -17,29 +17,26 @@ async function main() {
 
   const $ = new Agentic({ openai })
 
-  const searchResults = await metaphorSearch
-    .call({
-      query: 'news from today',
-      numResults: 5
-    })
-    .map((r) => r.result.title)
+  const { results: searchResults } = await metaphorSearch.call({
+    query: 'news from today, 2023',
+    numResults: 5
+  })
 
   console.log('searchResults', searchResults)
 
   const foodAgent = await $.gpt4(
-    `Give me a summary of today's news. Here is what I got back from a search engine: {{searchResults.results}}`
+    `Give me a summary of today's news. Here is what I got back from a search engine: \n{{#searchResults}}{{title}}\n{{/searchResults}}`
   )
     .input(
       z.object({
-        searchResults: MetaphorSearchToolOutputSchema,
-        afaf: z.string()
+        searchResults: z.any() // TODO
       })
     )
     .output(
       z.object({
         summary: z.string(),
         linkToLearnMore: z.string(),
-        metaData: z.object({
+        metadata: z.object({
           title: z.string(),
           keyTopics: z.string().array(),
           datePublished: z.string()
