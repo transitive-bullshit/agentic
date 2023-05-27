@@ -1,11 +1,11 @@
 import { jsonrepair } from 'jsonrepair'
-import Mustache from 'mustache'
 import { dedent } from 'ts-dedent'
 import { ZodRawShape, ZodTypeAny, z } from 'zod'
 import { printNode, zodToTs } from 'zod-to-ts'
 
 import * as types from './types'
 import { BaseTaskCallBuilder } from './task'
+import { getCompiledTemplate } from './template'
 import {
   extractJSONArrayFromString,
   extractJSONObjectFromString
@@ -105,7 +105,7 @@ export abstract class BaseChatModelBuilder<
         return {
           ...message,
           content: message.content
-            ? Mustache.render(dedent(message.content), input).trim()
+            ? getCompiledTemplate(dedent(message.content))(input).trim()
             : ''
         }
       })
