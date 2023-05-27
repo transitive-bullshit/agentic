@@ -32,8 +32,6 @@ export async function main() {
     .call({
       article
     })
-
-  console.log('example', example)
 }
 
 main()
