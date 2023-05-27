@@ -20,7 +20,7 @@ async function main() {
 
   console.log('searchResults', searchResults)
 
-  const foodAgent = await $.gpt4(
+  const res = await $.gpt4(
     `Give me a summary of today's news. Here is what I got back from a search engine: \n{{#searchResults}}{{title}}\n{{/searchResults}}`
   )
     .input(
