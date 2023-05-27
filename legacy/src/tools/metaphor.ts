@@ -15,8 +15,8 @@ export type MetaphorSearchToolInput = z.infer<
 export const MetaphorSearchToolOutputSchema = z.object({
   results: z.array(
     z.object({
-      author: z.string().optional(),
-      dateCreated: z.string().optional(),
+      author: z.string().nullable(),
+      dateCreated: z.string().nullable(),
       score: z.number(),
       title: z.string(),
       url: z.string()

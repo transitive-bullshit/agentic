@@ -64,6 +64,37 @@ export class Agentic {
     })
   }
 
+  gpt3(
+    promptOrChatCompletionParams:
+      | string
+      | Omit<types.openai.ChatCompletionParams, 'model'>
+  ) {
+    let options: Omit<types.openai.ChatCompletionParams, 'model'>
+
+    if (typeof promptOrChatCompletionParams === 'string') {
+      options = {
+        messages: [
+          {
+            role: 'user',
+            content: promptOrChatCompletionParams
+          }
+        ]
+      }
+    } else {
+      options = promptOrChatCompletionParams
+
+      if (!options.messages) {
+        throw new Error('messages must be provided')
+      }
+    }
+
+    return new OpenAIChatModelBuilder(this._client, {
+      ...(this._defaults as any), // TODO
+      model: 'gpt-3.5-turbo',
+      ...options
+    })
+  }
+
   gpt4(
     promptOrChatCompletionParams:
       | string
