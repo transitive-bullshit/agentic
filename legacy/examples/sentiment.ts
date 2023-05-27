@@ -10,19 +10,17 @@ export async function sentimentAgent() {
   const openai = new OpenAIClient({ apiKey: process.env.OPENAI_API_KEY! })
   const $ = new Agentic({ openai })
 
-  const examples = [
-    { input: 'The food was digusting', output: 'negative' },
-    { input: 'We had a fantastic night', output: 'positive' },
-    { input: 'Recommended', output: 'positive' },
-    { input: 'The waiter was rude', output: 'negative' }
-  ]
-
   const example = await $.gpt4(
-    `You are a sentiment-labelling assistant. Label the following texts as positive or negative: {{texts}}`
+    `You are an expert sentiment-labelling assistant. Label the following texts as positive or negative: {{texts}}`
   )
     .input(z.object({ texts: z.string().array() }))
     .output(z.array(z.object({ text: z.string(), label: z.string() })))
-    .examples(examples)
+    .examples([
+      { input: 'The food was digusting', output: 'negative' },
+      { input: 'We had a fantastic night', output: 'positive' },
+      { input: 'Recommended', output: 'positive' },
+      { input: 'The waiter was rude', output: 'negative' }
+    ])
     // .assert((output) => output.filter(({ label }) =>
     //     !['positive', 'negative'].includes(label)
     //   ).length === 0
@@ -32,7 +30,7 @@ export async function sentimentAgent() {
         'I went to this place and it was just so awful.',
         'I had a great time.',
         'I had a terrible time.',
-        'I had a good time.'
+        'Food poisoning...'
       ]
     })
 
