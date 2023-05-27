@@ -14,7 +14,6 @@ export async function main() {
     `You are an expert sentiment-labelling assistant. Label the following texts as positive or negative: \n{{#texts}}- {{.}}\n{{/texts}}`
   )
     .input(z.object({ texts: z.string().array() }))
-    // TODO: label should be a union of literals
     .output(z.array(z.object({ text: z.string(), label: z.string() })))
     .examples([
       { input: 'The food was digusting', output: 'negative' },
@@ -22,10 +21,6 @@ export async function main() {
       { input: 'Recommended', output: 'positive' },
       { input: 'The waiter was rude', output: 'negative' }
     ])
-    // .assert((output) => output.filter(({ label }) =>
-    //     !['positive', 'negative'].includes(label)
-    //   ).length === 0
-    // })
     .call({
       texts: [
         'I went to this place and it was just so awful.',
