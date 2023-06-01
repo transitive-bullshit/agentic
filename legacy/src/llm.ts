@@ -176,7 +176,7 @@ export abstract class BaseChatModelBuilder<
           omitTrailingSemicolon: true,
           noEmitHelpers: true
         })
-          .replace(/^    /gm, '  ')
+          .replace(/^ {4}/gm, '  ')
           .replace(/;$/gm, '')
 
         messages.push({
