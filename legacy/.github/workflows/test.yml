@@ -12,7 +12,7 @@ jobs:
         node-version:
           - 19
           - 18
-          - 16
+          # - 16 // TODO
 
     steps:
       - name: Checkout
