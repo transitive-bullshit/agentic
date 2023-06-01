@@ -30,7 +30,9 @@ keyv.has = async (key, ...rest) => {
     return undefined
   }
 
+  // console.log('<<< keyv.has', key)
   const res = await keyvHas(key, ...rest)
+  // console.log('>>> keyv.has', key, res)
   return res
 }
 
