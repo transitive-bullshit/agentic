@@ -34,7 +34,7 @@
     "pre-commit": "lint-staged",
     "test": "run-p test:*",
     "test:unit": "ava",
-    "test:prettier": "prettier '**/*.{js,jsx,ts,tsx}' --check",
+    "test:prettier": "prettier **/*.{js,jsx,ts,tsx} --check",
     "test:eslint": "eslint --ext .{js,jsx,ts,tsx} examples src test"
   },
   "dependencies": {
