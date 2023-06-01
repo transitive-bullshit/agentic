@@ -11,7 +11,10 @@ async function main() {
   const out = await ai
     .gpt3(`Give me {{numFacts}} random facts about {{topic}}`)
     .input(
-      z.object({ topic: z.string(), numFacts: z.number().int().default(5) })
+      z.object({
+        topic: z.string(),
+        numFacts: z.number().int().default(5).optional()
+      })
     )
     .output(z.object({ facts: z.array(z.string()) }))
     .modelParams({ temperature: 0.9 })

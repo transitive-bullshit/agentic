@@ -3,7 +3,8 @@ import { OpenAIClient } from 'openai-fetch'
 import { z } from 'zod'
 
 import { Agentic } from '../src'
-import { summaryAgent } from './summary'
+
+// import { summaryAgent } from './summary'
 
 async function main() {
   const openai = new OpenAIClient({ apiKey: process.env.OPENAI_API_KEY! })
@@ -45,17 +46,18 @@ async function main() {
       dietaryRestrictions: ['vegan', 'vegetarian', 'gluten-free']
     })
 
-  const article = await $.browse(foodAgent.linkToLearnMore)
-  const summary = await summaryAgent.call({ article })
+  // TODO
+  // const article = await $.browse(foodAgent.linkToLearnMore)
+  // const summary = await summaryAgent.call({ article })
 
-  const email = await $.gpt4(
-    `Here is a summary of an article about food: {{summary}}.
-    Here is some more information about the food: {{foodInfo}}.
-    Write a nice email that I can send to myself that includes the summary and the food info.
-    Make it fun and interesting.`
-  )
-    .input(z.object({ summary: z.string(), foodInfo: foodSchema }))
-    .output(z.string())
+  // const email = await $.gpt4(
+  //   `Here is a summary of an article about food: {{summary}}.
+  //   Here is some more information about the food: {{foodInfo}}.
+  //   Write a nice email that I can send to myself that includes the summary and the food info.
+  //   Make it fun and interesting.`
+  // )
+  //   .input(z.object({ summary: z.string(), foodInfo: foodSchema }))
+  //   .output(z.string())
 
   // sendEmail(email)
 }
