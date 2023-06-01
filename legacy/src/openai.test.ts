@@ -1,4 +1,5 @@
 import test from 'ava'
+import { expectTypeOf } from 'expect-type'
 import { OpenAIClient } from 'openai-fetch'
 import { z } from 'zod'
 
@@ -17,22 +18,10 @@ test('OpenAIChatModel ⇒ json output', async (t) => {
   }).output(z.object({ foo: z.string(), bar: z.number() }))
 
   const result = await builder.call()
-  type verify = Expect<
-    Equal<
-      typeof result,
-      {
-        foo: string
-        bar: number
-      }
-    >
-  >
-})
+  t.truthy(result)
+  t.truthy(typeof result.foo === 'string')
+  t.truthy(typeof result.bar === 'number')
+  t.is(Object.keys(result).length, 2)
 
-// Ensure parsed results are typed correctly
-// https://github.com/total-typescript/zod-tutorial/blob/main/src/helpers/type-utils.ts
-type Expect<T extends true> = T
-type Equal<X, Y> = (<T>() => T extends X ? 1 : 2) extends <T>() => T extends Y
-  ? 1
-  : 2
-  ? true
-  : false
+  expectTypeOf(result).toMatchTypeOf<{ foo: string; bar: number }>()
+})
