@@ -63,7 +63,7 @@ test('OpenAIChatModel ⇒ json output', async (t) => {
   expectTypeOf(result).toMatchTypeOf<{ foo: string; bar: number }>()
 })
 
-test.only('OpenAIChatModel ⇒ boolean output', async (t) => {
+test('OpenAIChatModel ⇒ boolean output', async (t) => {
   t.timeout(2 * 60 * 1000)
   const client = createOpenAITestClient()
 
