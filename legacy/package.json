@@ -36,6 +36,7 @@
     "test:prettier": "prettier '**/*.{js,jsx,ts,tsx}' --check"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.4.3",
     "handlebars": "^4.7.7",
     "js-tiktoken": "^1.0.6",
     "jsonrepair": "^3.1.0",

@@ -2,6 +2,7 @@ export * from './agentic'
 export * from './task'
 export * from './llm'
 export * from './openai'
+export * from './anthropic'
 export * from './tokenizer'
 
 export * from './services/metaphor'

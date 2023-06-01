@@ -1,3 +1,4 @@
+import * as anthropic from '@anthropic-ai/sdk'
 import KeyvRedis from '@keyv/redis'
 import 'dotenv/config'
 import hashObject from 'hash-obj'
@@ -7,6 +8,8 @@ import { OpenAIClient } from 'openai-fetch'
 import pMemoize from 'p-memoize'
 
 export const fakeOpenAIAPIKey = 'fake-openai-api-key'
+export const fakeAnthropicAPIKey = 'fake-anthropic-api-key'
+
 export const env = process.env.NODE_ENV || 'development'
 export const isTest = env === 'test'
 export const isCI = process.env.CI === 'true'
@@ -38,6 +41,13 @@ export class OpenAITestClient extends OpenAIClient {
   })
 }
 
+export class AnthropicTestClient extends anthropic.Client {
+  complete = pMemoize(super.complete, {
+    cacheKey: (params) => getCacheKey('anthropic:complete', params),
+    cache: keyv
+  })
+}
+
 export function getCacheKey(label: string, params: any): string {
   const hash = hashObject(params, { algorithm: 'sha256' })
   return `${label}:${hash}`
@@ -56,6 +66,21 @@ export function createOpenAITestClient() {
     }
   }
 
-  const client = new OpenAITestClient({ apiKey })
-  return client
+  return new OpenAITestClient({ apiKey })
+}
+
+export function createAnthropicTestClient() {
+  const apiKey = isCI
+    ? fakeAnthropicAPIKey
+    : process.env.ANTHROPIC_API_KEY ?? fakeAnthropicAPIKey
+
+  if (refreshTestCache) {
+    if (!process.env.ANTHROPIC_API_KEY) {
+      throw new Error(
+        'Cannot refresh test cache without ANTHROPIC_API_KEY environment variable.'
+      )
+    }
+  }
+
+  return new AnthropicTestClient(apiKey)
 }
