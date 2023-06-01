@@ -1,4 +1,4 @@
-import { type SetRequired } from 'type-fest'
+import { type SetOptional } from 'type-fest'
 import { ZodTypeAny, z } from 'zod'
 
 import * as types from './types'
@@ -11,7 +11,7 @@ export class OpenAIChatModelBuilder<
 > extends BaseChatModelBuilder<
   TInput,
   TOutput,
-  SetRequired<Omit<types.openai.ChatCompletionParams, 'messages'>, 'model'>,
+  SetOptional<Omit<types.openai.ChatCompletionParams, 'messages'>, 'model'>,
   types.openai.ChatCompletionResponse
 > {
   _client: types.openai.OpenAIClient
@@ -21,12 +21,12 @@ export class OpenAIChatModelBuilder<
     options: types.ChatModelOptions<
       TInput,
       TOutput,
-      Omit<types.openai.ChatCompletionParams, 'messages'>
+      SetOptional<Omit<types.openai.ChatCompletionParams, 'messages'>, 'model'>
     >
   ) {
     super({
       provider: 'openai',
-      model: defaultOpenAIModel,
+      model: options.modelParams?.model || defaultOpenAIModel,
       ...options
     })
 

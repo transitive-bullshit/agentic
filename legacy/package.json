@@ -32,6 +32,7 @@
     "prepare": "husky install",
     "pre-commit": "lint-staged",
     "test": "run-p test:*",
+    "test:unit": "ava",
     "test:prettier": "prettier '**/*.{js,jsx,ts,tsx}' --check"
   },
   "dependencies": {
@@ -48,16 +49,23 @@
     "zod-validation-error": "^1.3.0"
   },
   "devDependencies": {
+    "@keyv/redis": "^2.5.8",
     "@trivago/prettier-plugin-sort-imports": "^4.1.1",
     "@types/node": "^20.2.5",
+    "@types/sinon": "^10.0.15",
     "ava": "^5.3.0",
     "del-cli": "^5.0.0",
     "dotenv": "^16.1.3",
     "expect-type": "^0.16.0",
+    "hash-obj": "^4.0.0",
     "husky": "^8.0.3",
+    "ioredis": "^5.3.2",
+    "keyv": "^4.5.2",
     "lint-staged": "^13.2.2",
     "npm-run-all": "^4.1.5",
+    "p-memoize": "^7.1.1",
     "prettier": "^2.8.8",
+    "sinon": "^15.1.0",
     "tsup": "^6.7.0",
     "tsx": "^3.12.7",
     "type-fest": "^3.11.1",
@@ -69,6 +77,7 @@
     ]
   },
   "ava": {
+    "snapshotDir": ".snapshots",
     "extensions": {
       "ts": "module"
     },
@@ -78,13 +87,14 @@
   },
   "keywords": [
     "ai",
+    "openai",
+    "autonomous",
     "agent",
-    "autogpt",
     "agi",
+    "autogpt",
     "babyagi",
     "llms",
     "chatgpt",
-    "openai",
     "openapi",
     "guardrails",
     "plugins"

@@ -1,14 +1,19 @@
 import test from 'ava'
+// import 'dotenv/config'
 import { expectTypeOf } from 'expect-type'
-import { OpenAIClient } from 'openai-fetch'
 import { z } from 'zod'
 
-import { OpenAIChatModelBuilder } from './openai'
-
-const client = new OpenAIClient({ apiKey: process.env.OPENAI_API_KEY! })
+import { OpenAIChatModelBuilder } from '../src/openai'
+import { createOpenAITestClient } from './_utils'
 
 test('OpenAIChatModel ⇒ json output', async (t) => {
+  t.timeout(2 * 60 * 1000)
+  const client = createOpenAITestClient()
+
   const builder = new OpenAIChatModelBuilder(client, {
+    modelParams: {
+      temperature: 0.5
+    },
     messages: [
       {
         role: 'user',

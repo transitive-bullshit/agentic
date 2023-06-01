@@ -1,4 +1,3 @@
-import { type SetRequired } from 'type-fest'
 import { ZodRawShape, ZodTypeAny, z } from 'zod'
 
 import * as types from './types'
@@ -9,7 +8,7 @@ import * as types from './types'
  * Examples of tasks include:
  *    - LLM calls with structured input and output
  *    - API calls
- *    - Native function execution
+ *    - Native function calls
  *    - Invoking sub-agents
  */
 export abstract class BaseTaskCallBuilder<
@@ -19,7 +18,7 @@ export abstract class BaseTaskCallBuilder<
   protected _timeoutMs: number | undefined
   protected _retryConfig: types.RetryConfig | undefined
 
-  constructor(options: types.BaseTaskOptions) {
+  constructor(options: types.BaseTaskOptions = {}) {
     this._timeoutMs = options.timeoutMs
     this._retryConfig = options.retryConfig
   }
