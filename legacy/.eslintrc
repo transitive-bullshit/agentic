@@ -24,7 +24,9 @@
       "warn",
       { "vars": "all", "args": "after-used", "ignoreRestSiblings": true }
     ],
-    "no-useless-catch": "warn"
+    "no-useless-catch": "warn",
+    "@typescript-eslint/no-extra-semi": "off",
+    "@typescript-eslint/no-non-null-assertion": "off"
   },
   "settings": {},
   "globals": {
