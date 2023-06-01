@@ -1,5 +1,6 @@
 import { jsonrepair } from 'jsonrepair'
 import { dedent } from 'ts-dedent'
+import { type SetRequired } from 'type-fest'
 import { ZodRawShape, ZodTypeAny, z } from 'zod'
 import { printNode, zodToTs } from 'zod-to-ts'
 
@@ -12,17 +13,28 @@ import {
 } from './utils'
 
 export abstract class BaseLLMCallBuilder<
-  TInput extends ZodRawShape | ZodTypeAny = ZodTypeAny,
+  TInput extends ZodRawShape | ZodTypeAny = z.ZodVoid,
   TOutput extends ZodRawShape | ZodTypeAny = z.ZodType<string>,
   TModelParams extends Record<string, any> = Record<string, any>
 > extends BaseTaskCallBuilder<TInput, TOutput> {
+  protected _inputSchema: TInput | undefined
+  protected _outputSchema: TOutput | undefined
+
   protected _provider: string
   protected _model: string
-  protected _modelParams: TModelParams
-  protected _examples: types.LLMExample[]
+  protected _modelParams: TModelParams | undefined
+  protected _examples: types.LLMExample[] | undefined
 
-  constructor(options: types.BaseLLMOptions<TInput, TOutput, TModelParams>) {
+  constructor(
+    options: SetRequired<
+      types.BaseLLMOptions<TInput, TOutput, TModelParams>,
+      'provider' | 'model'
+    >
+  ) {
     super(options)
+
+    this._inputSchema = options.inputSchema
+    this._outputSchema = options.outputSchema
 
     this._provider = options.provider
     this._model = options.model
@@ -48,6 +60,23 @@ export abstract class BaseLLMCallBuilder<
     return this as unknown as BaseLLMCallBuilder<TInput, U, TModelParams>
   }
 
+  public override get inputSchema(): TInput {
+    if (this._inputSchema) {
+      return this._inputSchema
+    } else {
+      return z.void() as TInput
+    }
+  }
+
+  public override get outputSchema(): TOutput {
+    if (this._outputSchema) {
+      return this._outputSchema
+    } else {
+      // TODO: improve typing
+      return z.string() as unknown as TOutput
+    }
+  }
+
   examples(examples: types.LLMExample[]) {
     this._examples = examples
     return this
@@ -56,7 +85,7 @@ export abstract class BaseLLMCallBuilder<
   modelParams(params: Partial<TModelParams>) {
     // We assume that modelParams does not include nested objects.
     // If it did, we would need to do a deep merge.
-    this._modelParams = Object.assign({}, this._modelParams, params)
+    this._modelParams = { ...this._modelParams, ...params } as TModelParams
     return this
   }
 
@@ -75,7 +104,12 @@ export abstract class BaseChatModelBuilder<
 > extends BaseLLMCallBuilder<TInput, TOutput, TModelParams> {
   _messages: types.ChatMessage[]
 
-  constructor(options: types.ChatModelOptions<TInput, TOutput, TModelParams>) {
+  constructor(
+    options: SetRequired<
+      types.ChatModelOptions<TInput, TOutput, TModelParams>,
+      'provider' | 'model' | 'messages'
+    >
+  ) {
     super(options)
 
     this._messages = options.messages

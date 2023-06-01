@@ -1,11 +1,9 @@
-import dotenv from 'dotenv-safe'
+import 'dotenv/config'
 import { OpenAIClient } from 'openai-fetch'
 import { z } from 'zod'
 
 import { Agentic } from '../src'
 import { summaryAgent } from './summary'
-
-dotenv.config()
 
 async function main() {
   const openai = new OpenAIClient({ apiKey: process.env.OPENAI_API_KEY! })

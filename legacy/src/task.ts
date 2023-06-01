@@ -1,3 +1,4 @@
+import { type SetRequired } from 'type-fest'
 import { ZodRawShape, ZodTypeAny, z } from 'zod'
 
 import * as types from './types'
@@ -15,32 +16,24 @@ export abstract class BaseTaskCallBuilder<
   TInput extends ZodRawShape | ZodTypeAny = ZodTypeAny,
   TOutput extends ZodRawShape | ZodTypeAny = z.ZodTypeAny
 > {
-  protected _inputSchema: TInput
-  protected _outputSchema: TOutput
-  protected _timeoutMs: number
-  protected _retryConfig: types.RetryConfig
+  protected _timeoutMs: number | undefined
+  protected _retryConfig: types.RetryConfig | undefined
 
-  constructor(options: types.BaseTaskOptions<TInput, TOutput>) {
-    this._inputSchema = options.inputSchema
-    this._outputSchema = options.outputSchema
+  constructor(options: types.BaseTaskOptions) {
     this._timeoutMs = options.timeoutMs
     this._retryConfig = options.retryConfig
   }
 
-  public get inputSchema(): TInput {
-    return this._inputSchema
-  }
+  public abstract get inputSchema(): TInput
 
-  public get outputSchema(): TOutput {
-    return this._outputSchema
-  }
+  public abstract get outputSchema(): TOutput
 
-  retry(retryConfig: types.RetryConfig) {
+  public retryConfig(retryConfig: types.RetryConfig) {
     this._retryConfig = retryConfig
     return this
   }
 
-  abstract call(
+  public abstract call(
     input?: types.ParsedData<TInput>
   ): Promise<types.ParsedData<TOutput>>
 

@@ -1,11 +1,9 @@
-import dotenv from 'dotenv-safe'
+import 'dotenv/config'
 import { OpenAIClient } from 'openai-fetch'
 import { z } from 'zod'
 
-import { Agentic } from '../src/llm'
+import { Agentic } from '../src'
 import { getProblems } from './fixtures/calc'
-
-dotenv.config()
 
 export async function calcEval() {
   const openai = new OpenAIClient({ apiKey: process.env.OPENAI_API_KEY! })

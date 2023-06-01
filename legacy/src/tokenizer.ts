@@ -1,5 +1,6 @@
-import { encoding_for_model } from '@dqbd/tiktoken'
+import { getEncoding, getEncodingNameForModel } from 'js-tiktoken'
 
 export function getTokenizerForModel(model: string) {
-  return encoding_for_model(model as any)
+  const encodingName = getEncodingNameForModel(model as any)
+  return getEncoding(encodingName)
 }

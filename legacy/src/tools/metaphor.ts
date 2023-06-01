@@ -40,18 +40,25 @@ export class MetaphorSearchTool extends BaseTaskCallBuilder<
     metaphorClient?: MetaphorClient
   } = {}) {
     super({
-      inputSchema: MetaphorSearchToolInputSchema,
-      outputSchema: MetaphorSearchToolOutputSchema
+      // TODO
     })
 
     this._metaphorClient = metaphorClient
+  }
+
+  public override get inputSchema() {
+    return MetaphorSearchToolInputSchema
+  }
+
+  public override get outputSchema() {
+    return MetaphorSearchToolOutputSchema
   }
 
   override async call(
     input: MetaphorSearchToolInput
   ): Promise<MetaphorSearchToolOutput> {
     // TODO: handle errors gracefully
-    input = this._inputSchema.parse(input)
+    input = this.inputSchema.parse(input)
 
     return this._metaphorClient.search({
       query: input.query,

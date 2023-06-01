@@ -24,13 +24,7 @@ export type SafeParsedData<T extends ZodRawShape | ZodTypeAny> =
     ? SafeParseReturnType<ZodObject<T>, ParsedData<T>>
     : never
 
-export interface BaseTaskOptions<
-  TInput extends ZodRawShape | ZodTypeAny = ZodTypeAny,
-  TOutput extends ZodRawShape | ZodTypeAny = z.ZodType<string>
-> {
-  inputSchema?: TInput
-  outputSchema?: TOutput
-
+export interface BaseTaskOptions {
   timeoutMs?: number
   retryConfig?: RetryConfig
 
@@ -44,7 +38,10 @@ export interface BaseLLMOptions<
   TInput extends ZodRawShape | ZodTypeAny = ZodTypeAny,
   TOutput extends ZodRawShape | ZodTypeAny = z.ZodType<string>,
   TModelParams extends Record<string, any> = Record<string, any>
-> extends BaseTaskOptions<TInput, TOutput> {
+> extends BaseTaskOptions {
+  inputSchema?: TInput
+  outputSchema?: TOutput
+
   provider?: string
   model?: string
   modelParams?: TModelParams

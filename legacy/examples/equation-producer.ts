@@ -1,10 +1,8 @@
-import dotenv from 'dotenv-safe'
+import 'dotenv/config'
 import { OpenAIClient } from 'openai-fetch'
 import { z } from 'zod'
 
 import { Agentic } from '../src'
-
-dotenv.config()
 
 export async function equationProducer() {
   const openai = new OpenAIClient({ apiKey: process.env.OPENAI_API_KEY! })
@@ -31,11 +29,13 @@ export async function equationProducer() {
     `You are an expert math teacher. Think step by step, and give me the equation for the following math problem: \n\n{{question}}`
   )
     .input(z.object({ question: z.string() }))
-    .output({
-      question: z.string(),
-      equation: z.string(),
-      predictedAnswer: z.number()
-    })
+    .output(
+      z.object({
+        question: z.string(),
+        equation: z.string(),
+        predictedAnswer: z.number()
+      })
+    )
     .examples(examples)
     // .assert(
     //   (output) =>

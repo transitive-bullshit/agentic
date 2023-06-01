@@ -1,10 +1,8 @@
-import dotenv from 'dotenv-safe'
+import 'dotenv/config'
 import { OpenAIClient } from 'openai-fetch'
 import { z } from 'zod'
 
 import { Agentic, MetaphorSearchTool } from '../src'
-
-dotenv.config()
 
 async function main() {
   const metaphorSearch = new MetaphorSearchTool()
