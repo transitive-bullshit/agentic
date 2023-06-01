@@ -20,7 +20,7 @@ const redis = new Redis(process.env.REDIS_URL_TEST!)
 const keyvRedis = new KeyvRedis(redis)
 const keyv = new Keyv({ store: keyvRedis, namespace: 'agentic-test' })
 
-// TODO: this is pretty hacky
+// TODO: this is a lil hacky
 const keyvHas = (keyv.has as any).bind(keyv)
 keyv.has = async (key, ...rest) => {
   if (refreshTestCache) {
