@@ -1,0 +1,4 @@
+# Ignore in GitHub Languages:
+# See https://github.com/github/linguist#vendored-code
+examples/* linguist-vendored
+test/* linguist-vendored
