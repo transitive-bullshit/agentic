@@ -44,7 +44,7 @@ cp .env.example .env
 **Optional**
 
 - `ANTHROPIC_API_KEY` - [Anthropic](https://www.anthropic.com) API key ([docs](https://console.anthropic.com/docs))
-- `SERP_API_KEY` - [SerpApi](https://serpapi.com) API key ([docs](https://serpapi.com/search-api))
+- `SERPAPI_API_KEY` - [SerpApi](https://serpapi.com) API key ([docs](https://serpapi.com/search-api))
 - `METAPHOR_API_KEY` - [Metaphor](https://metaphor.systems) API key ([docs](https://metaphorapi.readme.io/))
 
 ### Local Testing
