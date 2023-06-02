@@ -13,6 +13,8 @@ export interface SerpAPIClientOptions extends Partial<SerpAPIParams> {
 
 /**
  * Lightweight wrapper around SerpAPI that only supports Google search.
+ *
+ * @see https://serpapi.com/search-api
  */
 export class SerpAPIClient {
   apiKey: string
