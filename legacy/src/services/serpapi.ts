@@ -1,4 +1,6 @@
 import ky from 'ky'
+// TODO: will these types be transpiled correctly, or will we need `serpapi` defined?
+// TODO: pretty sure this won't work, and we really don't want `serpapi` as a dep
 import type { BaseResponse, GoogleParameters } from 'serpapi'
 
 export type SerpAPIParams = Omit<GoogleParameters, 'q'>
