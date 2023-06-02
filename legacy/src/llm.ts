@@ -5,18 +5,18 @@ import { ZodRawShape, ZodTypeAny, z } from 'zod'
 import { printNode, zodToTs } from 'zod-to-ts'
 
 import * as types from './types'
-import { BaseTaskCallBuilder } from './task'
+import { BaseTask } from './task'
 import { getCompiledTemplate } from './template'
 import {
   extractJSONArrayFromString,
   extractJSONObjectFromString
 } from './utils'
 
-export abstract class BaseLLMCallBuilder<
+export abstract class BaseLLM<
   TInput extends ZodRawShape | ZodTypeAny = z.ZodVoid,
   TOutput extends ZodRawShape | ZodTypeAny = z.ZodType<string>,
   TModelParams extends Record<string, any> = Record<string, any>
-> extends BaseTaskCallBuilder<TInput, TOutput> {
+> extends BaseTask<TInput, TOutput> {
   protected _inputSchema: TInput | undefined
   protected _outputSchema: TOutput | undefined
 
@@ -44,20 +44,18 @@ export abstract class BaseLLMCallBuilder<
 
   input<U extends ZodRawShape | ZodTypeAny = TInput>(
     inputSchema: U
-  ): BaseLLMCallBuilder<U, TOutput, TModelParams> {
-    ;(
-      this as unknown as BaseLLMCallBuilder<U, TOutput, TModelParams>
-    )._inputSchema = inputSchema
-    return this as unknown as BaseLLMCallBuilder<U, TOutput, TModelParams>
+  ): BaseLLM<U, TOutput, TModelParams> {
+    ;(this as unknown as BaseLLM<U, TOutput, TModelParams>)._inputSchema =
+      inputSchema
+    return this as unknown as BaseLLM<U, TOutput, TModelParams>
   }
 
   output<U extends ZodRawShape | ZodTypeAny = TOutput>(
     outputSchema: U
-  ): BaseLLMCallBuilder<TInput, U, TModelParams> {
-    ;(
-      this as unknown as BaseLLMCallBuilder<TInput, U, TModelParams>
-    )._outputSchema = outputSchema
-    return this as unknown as BaseLLMCallBuilder<TInput, U, TModelParams>
+  ): BaseLLM<TInput, U, TModelParams> {
+    ;(this as unknown as BaseLLM<TInput, U, TModelParams>)._outputSchema =
+      outputSchema
+    return this as unknown as BaseLLM<TInput, U, TModelParams>
   }
 
   public override get inputSchema(): TInput {
@@ -96,12 +94,12 @@ export abstract class BaseLLMCallBuilder<
   // }): Promise<TOutput>
 }
 
-export abstract class BaseChatModelBuilder<
+export abstract class BaseChatModel<
   TInput extends ZodRawShape | ZodTypeAny = ZodTypeAny,
   TOutput extends ZodRawShape | ZodTypeAny = z.ZodType<string>,
   TModelParams extends Record<string, any> = Record<string, any>,
   TChatCompletionResponse extends Record<string, any> = Record<string, any>
-> extends BaseLLMCallBuilder<TInput, TOutput, TModelParams> {
+> extends BaseLLM<TInput, TOutput, TModelParams> {
   _messages: types.ChatMessage[]
 
   constructor(
@@ -208,21 +206,13 @@ export abstract class BaseChatModelBuilder<
           : z.object(this._outputSchema)
 
       if (outputSchema instanceof z.ZodArray) {
-        try {
-          const trimmedOutput = extractJSONArrayFromString(output)
-          output = JSON.parse(jsonrepair(trimmedOutput ?? output))
-        } catch (err) {
-          // TODO
-          throw err
-        }
+        // TODO: gracefully handle parse errors
+        const trimmedOutput = extractJSONArrayFromString(output)
+        output = JSON.parse(jsonrepair(trimmedOutput ?? output))
       } else if (outputSchema instanceof z.ZodObject) {
-        try {
-          const trimmedOutput = extractJSONObjectFromString(output)
-          output = JSON.parse(jsonrepair(trimmedOutput ?? output))
-        } catch (err) {
-          // TODO
-          throw err
-        }
+        // TODO: gracefully handle parse errors
+        const trimmedOutput = extractJSONObjectFromString(output)
+        output = JSON.parse(jsonrepair(trimmedOutput ?? output))
       } else if (outputSchema instanceof z.ZodBoolean) {
         output = output.toLowerCase().trim()
         const booleanOutputs = {

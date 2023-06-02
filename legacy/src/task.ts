@@ -6,12 +6,12 @@ import * as types from './types'
  * A `Task` is a typed, async function call that may be non-deterministic.
  *
  * Examples of tasks include:
- *    - LLM calls with structured input and output
+ *    - LLM calls
  *    - API calls
  *    - Native function calls
  *    - Invoking sub-agents
  */
-export abstract class BaseTaskCallBuilder<
+export abstract class BaseTask<
   TInput extends ZodRawShape | ZodTypeAny = ZodTypeAny,
   TOutput extends ZodRawShape | ZodTypeAny = z.ZodTypeAny
 > {
@@ -24,8 +24,14 @@ export abstract class BaseTaskCallBuilder<
   }
 
   public abstract get inputSchema(): TInput
-
   public abstract get outputSchema(): TOutput
+
+  // TODO
+  // public abstract get nameForModel(): string
+  // public abstract get nameForHuman(): string
+
+  // public abstract get descForModel(): string
+  // public abstract get descForHuman(): string
 
   public retryConfig(retryConfig: types.RetryConfig) {
     this._retryConfig = retryConfig

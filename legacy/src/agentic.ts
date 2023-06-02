@@ -1,6 +1,6 @@
 import * as types from './types'
 import { defaultOpenAIModel } from './constants'
-import { OpenAIChatModelBuilder } from './openai'
+import { OpenAIChatModel } from './openai'
 
 export class Agentic {
   _client: types.openai.OpenAIClient
@@ -58,7 +58,7 @@ export class Agentic {
       }
     }
 
-    return new OpenAIChatModelBuilder(this._client, {
+    return new OpenAIChatModel(this._client, {
       ...(this._defaults as any), // TODO
       ...options
     })
@@ -88,7 +88,7 @@ export class Agentic {
       }
     }
 
-    return new OpenAIChatModelBuilder(this._client, {
+    return new OpenAIChatModel(this._client, {
       ...(this._defaults as any), // TODO
       model: 'gpt-3.5-turbo',
       ...options
@@ -119,7 +119,7 @@ export class Agentic {
       }
     }
 
-    return new OpenAIChatModelBuilder(this._client, {
+    return new OpenAIChatModel(this._client, {
       ...(this._defaults as any), // TODO
       model: 'gpt-4',
       ...options

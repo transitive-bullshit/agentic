@@ -3,12 +3,12 @@ import { ZodTypeAny, z } from 'zod'
 
 import * as types from './types'
 import { defaultOpenAIModel } from './constants'
-import { BaseChatModelBuilder } from './llm'
+import { BaseChatModel } from './llm'
 
-export class OpenAIChatModelBuilder<
+export class OpenAIChatModel<
   TInput extends ZodTypeAny = ZodTypeAny,
   TOutput extends ZodTypeAny = z.ZodType<string>
-> extends BaseChatModelBuilder<
+> extends BaseChatModel<
   TInput,
   TOutput,
   SetOptional<Omit<types.openai.ChatCompletionParams, 'messages'>, 'model'>,

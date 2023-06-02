@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 import { MetaphorClient } from '../services/metaphor'
-import { BaseTaskCallBuilder } from '../task'
+import { BaseTask } from '../task'
 
 export const MetaphorSearchToolInputSchema = z.object({
   query: z.string(),
@@ -28,7 +28,7 @@ export type MetaphorSearchToolOutput = z.infer<
   typeof MetaphorSearchToolOutputSchema
 >
 
-export class MetaphorSearchTool extends BaseTaskCallBuilder<
+export class MetaphorSearchTool extends BaseTask<
   typeof MetaphorSearchToolInputSchema,
   typeof MetaphorSearchToolOutputSchema
 > {

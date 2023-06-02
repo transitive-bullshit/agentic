@@ -2,14 +2,14 @@ import test from 'ava'
 import { expectTypeOf } from 'expect-type'
 import { z } from 'zod'
 
-import { OpenAIChatModelBuilder } from '../src/openai'
+import { OpenAIChatModel } from '../src/openai'
 import { createOpenAITestClient } from './_utils'
 
 test('OpenAIChatModel ⇒ string output', async (t) => {
   t.timeout(2 * 60 * 1000)
   const client = createOpenAITestClient()
 
-  const builder = new OpenAIChatModelBuilder(client, {
+  const builder = new OpenAIChatModel(client, {
     modelParams: {
       temperature: 0,
       max_tokens: 30
@@ -42,7 +42,7 @@ test('OpenAIChatModel ⇒ json output', async (t) => {
   t.timeout(2 * 60 * 1000)
   const client = createOpenAITestClient()
 
-  const builder = new OpenAIChatModelBuilder(client, {
+  const builder = new OpenAIChatModel(client, {
     modelParams: {
       temperature: 0.5
     },
@@ -67,7 +67,7 @@ test('OpenAIChatModel ⇒ boolean output', async (t) => {
   t.timeout(2 * 60 * 1000)
   const client = createOpenAITestClient()
 
-  const builder = new OpenAIChatModelBuilder(client, {
+  const builder = new OpenAIChatModel(client, {
     modelParams: {
       temperature: 0,
       max_tokens: 30

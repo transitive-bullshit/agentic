@@ -4,14 +4,14 @@ import { ZodTypeAny, z } from 'zod'
 
 import * as types from './types'
 import { defaultAnthropicModel } from './constants'
-import { BaseChatModelBuilder } from './llm'
+import { BaseChatModel } from './llm'
 
 const defaultStopSequences = [anthropic.HUMAN_PROMPT]
 
-export class AnthropicChatModelBuilder<
+export class AnthropicChatModel<
   TInput extends ZodTypeAny = ZodTypeAny,
   TOutput extends ZodTypeAny = z.ZodType<string>
-> extends BaseChatModelBuilder<
+> extends BaseChatModel<
   TInput,
   TOutput,
   SetOptional<
