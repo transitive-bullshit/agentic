@@ -26,7 +26,7 @@
     "build": "tsup",
     "dev": "tsup --watch",
     "clean": "del build",
-    "lint": "eslint '**/*.ts' --fix",
+    "lint": "eslint \"**/*.ts\" --fix",
     "prebuild": "run-s clean",
     "predev": "run-s clean",
     "pretest": "run-s build",
@@ -34,8 +34,8 @@
     "pre-commit": "lint-staged",
     "test": "run-p test:*",
     "test:unit": "ava",
-    "test:prettier": "prettier '**/*.{js,jsx,ts,tsx}' --check",
-    "test:eslint": "eslint '**/*.ts'"
+    "test:prettier": "prettier \"**/*.{js,jsx,ts,tsx}\" --check",
+    "test:eslint": "eslint \"**/*.ts\""
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.4.3",
