@@ -26,7 +26,7 @@
     "build": "tsup",
     "dev": "tsup --watch",
     "clean": "del build",
-    "lint": "eslint --ext .{js,jsx,ts,tsx} examples src test --fix",
+    "lint": "eslint '**/*.ts' --fix",
     "prebuild": "run-s clean",
     "predev": "run-s clean",
     "pretest": "run-s build",
@@ -35,7 +35,7 @@
     "test": "run-p test:*",
     "test:unit": "ava",
     "test:prettier": "prettier **/*.{js,jsx,ts,tsx} --check",
-    "test:eslint": "eslint --ext .{js,jsx,ts,tsx} examples src test"
+    "test:eslint": "eslint '**/*.ts'"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.4.3",
