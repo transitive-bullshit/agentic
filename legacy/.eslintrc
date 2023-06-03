@@ -8,7 +8,7 @@
   },
   "parserOptions": {
     "ecmaFeatures": {
-      "jsx": false
+      "jsx": true
     },
     "ecmaVersion": "latest",
     "sourceType": "module",
@@ -24,6 +24,14 @@
     "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/no-explicit-any": "off"
   },
+  "overrides": [
+    {
+      "files": ["*.tsx"],
+      "rules": {
+        "no-undef": "off"
+      }
+    }
+  ],
   "settings": {},
   "globals": {
     "__DEV__": true

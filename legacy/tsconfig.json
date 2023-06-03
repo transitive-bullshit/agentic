@@ -12,10 +12,11 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
+    "jsx": "preserve",
     "baseUrl": ".",
     "outDir": "build",
     "noEmit": true
   },
   "exclude": ["node_modules", "build"],
-  "include": ["**/*.ts"]
+  "include": ["**/*.ts", "**/*.tsx"]
 }
