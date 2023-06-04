@@ -2,33 +2,35 @@ import logger from 'debug'
 import { v4 as uuidv4 } from 'uuid'
 
 /**
- * Type of events that can occur within the library.
+ * List of events that can occur within the library.
  */
-export enum EventType {
-  LLM_CALL = 'LLM_CALL',
-  LLM_COMPLETION = 'LLM_COMPLETION'
-}
+export const Events = {
+  LLM_CALL: 'LLM_CALL',
+  LLM_COMPLETION: 'LLM_COMPLETION'
+} as const
+export type EventType = (typeof Events)[keyof typeof Events]
 
 /**
  * Severity levels of an event.
  */
-export enum EventSeverity {
-  DEBUG,
-  INFO,
-  WARNING,
-  ERROR,
-  CRITICAL
-}
+export const Severity = {
+  DEBUG: 0,
+  INFO: 1,
+  WARNING: 2,
+  ERROR: 3,
+  CRITICAL: 4
+} as const
+type SeverityType = (typeof Severity)[keyof typeof Severity]
 
 /*
- * Define minimum LOG_LEVEL, defaulting to EventSeverity.INFO if not provided or if an invalid value is provided. Any events below that level won't be logged to the console.
+ * Define minimum LOG_LEVEL, defaulting to Severity.INFO if not provided or if an invalid value is provided. Any events below that level won't be logged to the console.
  */
-let LOG_LEVEL: EventSeverity = EventSeverity.INFO
+let LOG_LEVEL: SeverityType = Severity.INFO
 if (
   process.env.DEBUG_LOG_LEVEL &&
-  EventSeverity[process.env.DEBUG_LOG_LEVEL.toUpperCase()] !== undefined
+  Severity[process.env.DEBUG_LOG_LEVEL.toUpperCase()] !== undefined
 ) {
-  LOG_LEVEL = EventSeverity[process.env.DEBUG_LOG_LEVEL.toUpperCase()]
+  LOG_LEVEL = Severity[process.env.DEBUG_LOG_LEVEL.toUpperCase()]
 } else if (process.env.DEBUG_LOG_LEVEL) {
   throw new Error(`Invalid value for LOG_LEVEL: ${process.env.DEBUG_LOG_LEVEL}`)
 }
@@ -36,12 +38,12 @@ if (
 /**
  * Define loggers for each severity level such that logs can be filtered by severity.
  */
-const LOGGERS: Record<EventSeverity, ReturnType<typeof logger>> = {
-  [EventSeverity.CRITICAL]: logger('agentic:events:critical'),
-  [EventSeverity.ERROR]: logger('agentic:events:error'),
-  [EventSeverity.WARNING]: logger('agentic:events:warning'),
-  [EventSeverity.INFO]: logger('agentic:events:info'),
-  [EventSeverity.DEBUG]: logger('agentic:events:debug')
+const LOGGERS: Record<SeverityType, ReturnType<typeof logger>> = {
+  [Severity.CRITICAL]: logger('agentic:events:critical'),
+  [Severity.ERROR]: logger('agentic:events:error'),
+  [Severity.WARNING]: logger('agentic:events:warning'),
+  [Severity.INFO]: logger('agentic:events:info'),
+  [Severity.DEBUG]: logger('agentic:events:debug')
 }
 
 /**
@@ -59,7 +61,7 @@ interface EventData {
   id?: string
   timestamp?: Date
   payload?: EventPayload
-  severity?: EventSeverity
+  severity?: SeverityType
   version?: number
 }
 
@@ -72,16 +74,16 @@ export class Event {
   public readonly id: string
   public readonly timestamp: Date
   public readonly payload?: EventPayload
-  public readonly severity?: EventSeverity
+  public readonly severity: SeverityType
   public readonly version: number
 
   constructor(type: EventType, data: EventData = {}) {
     this.type = type
-    this.parentId = data.parentId ?? null
+    this.parentId = data.parentId
     this.id = data.id ?? uuidv4()
     this.timestamp = data.timestamp ?? new Date()
     this.payload = data.payload ? { ...data.payload } : {} // Only doing a shallow instead of a deep copy for performance reasons..
-    this.severity = data.severity ?? EventSeverity.INFO
+    this.severity = data.severity ?? Severity.INFO
     this.version = data.version ?? 1 // Default to version 1 if not provided...
   }
 
