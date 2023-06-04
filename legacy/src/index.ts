@@ -7,3 +7,4 @@ export * from './tokenizer'
 
 export * from './services/metaphor'
 export * from './tools/metaphor'
+export * from './tools/feedback'
