@@ -39,8 +39,10 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.4.3",
+    "@inquirer/checkbox": "^1.3.0",
+    "@inquirer/editor": "^1.1.0",
+    "@inquirer/select": "^1.2.0",
     "handlebars": "^4.7.7",
-    "inquirer": "^9.2.6",
     "js-tiktoken": "^1.0.6",
     "jsonrepair": "^3.1.0",
     "ky": "^0.33.3",

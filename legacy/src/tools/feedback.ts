@@ -1,36 +1,65 @@
-import { checkbox, editor, select } from '@inquirer/prompts'
+import checkbox from '@inquirer/checkbox'
+import editor from '@inquirer/editor'
+import select from '@inquirer/select'
 import { ZodTypeAny, z } from 'zod'
 
 import * as types from './../types'
 import { BaseTaskCallBuilder } from './../task'
 
-enum UserActions {
-  Accept = 'accept',
-  Edit = 'edit',
-  Decline = 'decline',
-  Select = 'select'
-}
+/**
+ * Actions the user can take in the feedback selection prompt.
+ */
+const UserActions = {
+  Accept: 'accept',
+  Edit: 'edit',
+  Decline: 'decline',
+  Select: 'select',
+  Exit: 'exit'
+} as const
 
-const UserActionMessages = {
+type UserActions = (typeof UserActions)[keyof typeof UserActions]
+
+/**
+ * Messages to display to the user for each action.
+ */
+const UserActionMessages: Record<UserActions, string> = {
   [UserActions.Accept]: 'Accept inputs',
   [UserActions.Edit]: 'Edit (open in editor)',
   [UserActions.Decline]: 'Decline',
-  [UserActions.Select]: 'Select inputs to keep'
+  [UserActions.Select]: 'Select inputs to keep',
+  [UserActions.Exit]: 'Exit'
 }
 
-export const FeedbackSingleInputSchema = <T extends ZodTypeAny>(choice: T) =>
-  z.object({
-    choice
+/**
+ * Prompt the user to select one of a list of options.
+ */
+async function askUser(
+  message: string,
+  choices: UserActions[]
+): Promise<UserActions> {
+  return await select({
+    message,
+    choices: choices.map((choice) => ({
+      name: UserActionMessages[choice],
+      value: choice
+    }))
   })
+}
 
+/**
+ * Output schema when prompting the user to accept, edit, or decline a single input.
+ */
 export const FeedbackSingleOutputSchema = <T extends ZodTypeAny>(result: T) =>
   z.object({
     result: result,
     accepted: z.boolean()
   })
 
+/**
+ * Prompt the user to accept, edit, or decline a single input.
+ */
 export class HumanFeedbackSingle<
-  T extends ZodTypeAny = ZodTypeAny
+  T extends ZodTypeAny
 > extends BaseTaskCallBuilder<ZodTypeAny, ZodTypeAny> {
   private choiceSchema: T
 
@@ -40,64 +69,59 @@ export class HumanFeedbackSingle<
   }
 
   public get inputSchema() {
-    return FeedbackSingleInputSchema(this.choiceSchema)
+    return this.choiceSchema
   }
 
   public get outputSchema() {
     return FeedbackSingleOutputSchema(this.choiceSchema)
   }
 
-  private async handleChoice(
-    input: types.ParsedData<typeof this.inputSchema>
-  ): Promise<types.ParsedData<typeof this.outputSchema>> {
-    const feedback = await select({
-      message: [
-        'The following input was generated:',
-        JSON.stringify(input.choice, null, 2),
-        'What would you like to do?'
-      ].join('\n'),
-      choices: [
-        {
-          name: UserActionMessages[UserActions.Accept],
-          value: UserActions.Accept
-        },
-        {
-          name: UserActionMessages[UserActions.Edit],
-          value: UserActions.Edit
-        },
-        {
-          name: UserActionMessages[UserActions.Decline],
-          value: UserActions.Decline
-        }
-      ]
-    })
-    switch (feedback) {
-      case UserActions.Edit: {
-        // Open the completion in the user's default editor
-        const editedInput = await editor({
-          message: 'Edit the input:',
-          default: JSON.stringify(input.choice)
-        })
-        return {
-          result: this.choiceSchema.parse(JSON.parse(editedInput)),
-          accepted: true
-        }
-      }
-      case UserActions.Decline:
-        return { result: null, accepted: false }
-      case UserActions.Accept:
-        return { result: input, accepted: true }
-      default:
-        throw new Error('Invalid feedback choice')
+  private actionHandlers = {
+    [UserActions.Accept]: (
+      input: types.ParsedData<typeof this.inputSchema>
+    ) => ({ result: input, accepted: true }),
+    [UserActions.Edit]: async (
+      input: types.ParsedData<typeof this.inputSchema>
+    ) => {
+      const editedInput = await editor({
+        message: 'Edit the input:',
+        default: JSON.stringify(input)
+      })
+      return this.outputSchema.parse({
+        result: JSON.parse(editedInput),
+        accepted: true
+      })
+    },
+    [UserActions.Decline]: () => ({ result: null, accepted: false }),
+    [UserActions.Exit]: () => {
+      throw new Error('Exiting...')
     }
   }
 
+  /**
+   * Prompts the user to give feedback for the given input and handles their response.
+   */
   public async call(
     input: types.ParsedData<typeof this.inputSchema>
   ): Promise<types.ParsedData<typeof this.outputSchema>> {
     try {
       input = this.inputSchema.parse(input)
-      return this.handleChoice(input)
+      const msg = [
+        'The following input was generated:',
+        JSON.stringify(input, null, 2),
+        'What would you like to do?'
+      ].join('\n')
+      const feedback = await askUser(msg, [
+        UserActions.Accept,
+        UserActions.Edit,
+        UserActions.Decline,
+        UserActions.Exit
+      ])
+      const handler = this.actionHandlers[feedback]
+      if (!handler) {
+        throw new Error(`Unexpected feedback: ${feedback}`)
+      }
+      return handler(input)
     } catch (err) {
       console.error('Error parsing input:', err)
       throw err
@@ -105,19 +129,20 @@ export class HumanFeedbackSingle<
   }
 }
 
-export const FeedbackSelectInputSchema = <T extends ZodTypeAny>(choice: T) =>
-  z.object({
-    choices: z.array(choice)
-  })
-
+/**
+ * Output schema when prompting the user to accept, select from, edit, or decline a list of inputs.
+ */
 export const FeedbackSelectOutputSchema = <T extends ZodTypeAny>(result: T) =>
   z.object({
     results: z.array(result),
     accepted: z.boolean()
   })
 
+/**
+ * Prompt the user to accept, select from, edit, or decline a list of inputs.
+ */
 export class HumanFeedbackSelect<
-  T extends ZodTypeAny = ZodTypeAny
+  T extends ZodTypeAny
 > extends BaseTaskCallBuilder<ZodTypeAny, ZodTypeAny> {
   private choiceSchema: T
 
@@ -127,81 +152,76 @@ export class HumanFeedbackSelect<
   }
 
   public get inputSchema() {
-    return FeedbackSelectInputSchema(this.choiceSchema)
+    return z.array(this.choiceSchema)
   }
 
   public get outputSchema() {
     return FeedbackSelectOutputSchema(this.choiceSchema)
   }
 
-  private async handleChoices(
-    input: types.ParsedData<typeof this.inputSchema>
-  ): Promise<types.ParsedData<typeof this.outputSchema>> {
-    // Case: input is an array of strings
-    const feedback = await select({
-      message: [
-        'The following inputs were generated:',
-        ...input.choices.map(
-          (choice, index) => `${index + 1}. ${JSON.stringify(choice, null, 2)}`
-        ),
-        'What would you like to do?'
-      ].join('\n'),
-      choices: [
-        {
-          name: UserActionMessages[UserActions.Accept],
-          value: UserActions.Accept
-        },
-        {
-          name: UserActionMessages[UserActions.Edit],
-          value: UserActions.Edit
-        },
-        {
-          name: UserActionMessages[UserActions.Decline],
-          value: UserActions.Decline
-        },
-        {
-          name: UserActionMessages[UserActions.Select],
-          value: UserActions.Select
-        }
-      ]
-    })
-    switch (feedback) {
-      case UserActions.Edit: {
-        const edited = await editor({
-          message: 'Edit the input:',
-          default: JSON.stringify(input.choices, null, 2)
-        })
-        return { results: JSON.parse(edited), accepted: true }
-      }
-      case UserActions.Select: {
-        const choices = input.choices.map((completion) => ({
-          name: completion,
-          value: completion
-        }))
-        const chosen = await checkbox({
-          message: 'Pick items to keep:',
-          choices: [...choices]
-        })
-        if (chosen.length === 0) {
-          return { results: [], accepted: false }
-        }
-        return { results: chosen, accepted: true }
-      }
-      case UserActions.Decline:
-        return { results: [], accepted: false }
-      case UserActions.Accept:
-        return { results: input.choices, accepted: true }
-      default:
-        throw new Error('Invalid feedback choice')
+  private actionHandlers = {
+    [UserActions.Accept]: (
+      input: types.ParsedData<typeof this.inputSchema>
+    ) => ({ results: input, accepted: true }),
+    [UserActions.Edit]: async (
+      input: types.ParsedData<typeof this.inputSchema>
+    ) => {
+      const editedInput = await editor({
+        message: 'Edit the input:',
+        default: JSON.stringify(input, null, 2)
+      })
+      return this.outputSchema.parse({
+        results: JSON.parse(editedInput),
+        accepted: true
+      })
+    },
+    [UserActions.Select]: async (
+      input: types.ParsedData<typeof this.inputSchema>
+    ) => {
+      const choices = input.map((completion) => ({
+        name: completion,
+        value: completion
+      }))
+      const chosen = await checkbox({
+        message: 'Pick items to keep:',
+        choices,
+        pageSize: choices.length
+      })
+      return { results: chosen.length === 0 ? [] : chosen, accepted: true }
+    },
+    [UserActions.Decline]: () => ({ results: [], accepted: false }),
+    [UserActions.Exit]: () => {
+      throw new Error('Exiting...')
     }
   }
 
+  /**
+   * Prompts the user to give feedback for the given list of inputs and handles their response.
+   */
   public async call(
     input: types.ParsedData<typeof this.inputSchema>
   ): Promise<types.ParsedData<typeof this.outputSchema>> {
     try {
       input = this.inputSchema.parse(input)
-      return this.handleChoices(input)
+      const message = [
+        'The following inputs were generated:',
+        ...input.map(
+          (choice, index) => `${index + 1}. ${JSON.stringify(choice, null, 2)}`
+        ),
+        'What would you like to do?'
+      ].join('\n')
+      const feedback = await askUser(message, [
+        UserActions.Accept,
+        UserActions.Select,
+        UserActions.Edit,
+        UserActions.Decline,
+        UserActions.Exit
+      ])
+      const handler = this.actionHandlers[feedback]
+      if (!handler) {
+        throw new Error(`Unexpected feedback: ${feedback}`)
+      }
+      return handler(input)
     } catch (err) {
       console.error('Error parsing input:', err)
       throw err
