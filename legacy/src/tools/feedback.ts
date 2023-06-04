@@ -4,7 +4,7 @@ import select from '@inquirer/select'
 import { ZodTypeAny, z } from 'zod'
 
 import * as types from '../types'
-import { BaseTaskCallBuilder } from '../task'
+import { BaseTask } from '../task'
 
 /**
  * Actions the user can take in the feedback selection prompt.
@@ -58,9 +58,10 @@ export const FeedbackSingleOutputSchema = <T extends ZodTypeAny>(result: T) =>
 /**
  * Prompt the user to accept, edit, or decline a single input.
  */
-export class HumanFeedbackSingle<
-  T extends ZodTypeAny
-> extends BaseTaskCallBuilder<ZodTypeAny, ZodTypeAny> {
+export class HumanFeedbackSingle<T extends ZodTypeAny> extends BaseTask<
+  ZodTypeAny,
+  ZodTypeAny
+> {
   private choiceSchema: T
 
   constructor(choiceSchema: T) {
@@ -141,9 +142,10 @@ export const FeedbackSelectOutputSchema = <T extends ZodTypeAny>(result: T) =>
 /**
  * Prompt the user to accept, select from, edit, or decline a list of inputs.
  */
-export class HumanFeedbackSelect<
-  T extends ZodTypeAny
-> extends BaseTaskCallBuilder<ZodTypeAny, ZodTypeAny> {
+export class HumanFeedbackSelect<T extends ZodTypeAny> extends BaseTask<
+  ZodTypeAny,
+  ZodTypeAny
+> {
   private choiceSchema: T
 
   constructor(choiceSchema: T) {
