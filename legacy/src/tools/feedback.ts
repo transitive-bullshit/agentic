@@ -3,8 +3,8 @@ import editor from '@inquirer/editor'
 import select from '@inquirer/select'
 import { ZodTypeAny, z } from 'zod'
 
-import * as types from './../types'
-import { BaseTaskCallBuilder } from './../task'
+import * as types from '../types'
+import { BaseTaskCallBuilder } from '../task'
 
 /**
  * Actions the user can take in the feedback selection prompt.
