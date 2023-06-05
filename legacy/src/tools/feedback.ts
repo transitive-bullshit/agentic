@@ -9,7 +9,7 @@ import { BaseTask } from '../task'
 /**
  * Actions the user can take in the feedback selection prompt.
  */
-const UserActions = {
+export const UserActions = {
   Accept: 'accept',
   Edit: 'edit',
   Decline: 'decline',
@@ -17,7 +17,7 @@ const UserActions = {
   Exit: 'exit'
 } as const
 
-type UserActions = (typeof UserActions)[keyof typeof UserActions]
+export type UserActions = (typeof UserActions)[keyof typeof UserActions]
 
 /**
  * Messages to display to the user for each action.
@@ -37,7 +37,7 @@ async function askUser(
   message: string,
   choices: UserActions[]
 ): Promise<UserActions> {
-  return await select({
+  return select({
     message,
     choices: choices.map((choice) => ({
       name: UserActionMessages[choice],
@@ -62,7 +62,7 @@ export class HumanFeedbackSingle<T extends ZodTypeAny> extends BaseTask<
   ZodTypeAny,
   ZodTypeAny
 > {
-  private choiceSchema: T
+  protected choiceSchema: T
 
   constructor(choiceSchema: T) {
     super()
@@ -77,7 +77,7 @@ export class HumanFeedbackSingle<T extends ZodTypeAny> extends BaseTask<
     return FeedbackSingleOutputSchema(this.choiceSchema)
   }
 
-  private actionHandlers = {
+  protected actionHandlers = {
     [UserActions.Accept]: (
       input: types.ParsedData<typeof this.inputSchema>
     ) => ({ result: input, accepted: true }),
@@ -146,7 +146,7 @@ export class HumanFeedbackSelect<T extends ZodTypeAny> extends BaseTask<
   ZodTypeAny,
   ZodTypeAny
 > {
-  private choiceSchema: T
+  protected choiceSchema: T
 
   constructor(choiceSchema: T) {
     super()
@@ -161,7 +161,7 @@ export class HumanFeedbackSelect<T extends ZodTypeAny> extends BaseTask<
     return FeedbackSelectOutputSchema(this.choiceSchema)
   }
 
-  private actionHandlers = {
+  protected actionHandlers = {
     [UserActions.Accept]: (
       input: types.ParsedData<typeof this.inputSchema>
     ) => ({ results: input, accepted: true }),
