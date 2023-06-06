@@ -6,8 +6,12 @@ import { Agentic } from './agentic'
 /**
  * A `Task` is a typed, async function call that may be non-deterministic.
  *
+ * Invoking a task is equivalent to sampling from a probability distribution.
+ *
  * Examples of tasks include:
  *    - LLM calls
+ *    - Chain of LLM calls
+ *    - Retrieval task
  *    - API calls
  *    - Native function calls
  *    - Invoking sub-agents
@@ -17,8 +21,9 @@ export abstract class BaseTask<
   TOutput extends ZodRawShape | ZodTypeAny = ZodTypeAny
 > {
   protected _agentic: Agentic
-  protected _timeoutMs: number | undefined
-  protected _retryConfig: types.RetryConfig | undefined
+
+  protected _timeoutMs?: number
+  protected _retryConfig?: types.RetryConfig
 
   constructor(options: types.BaseTaskOptions) {
     this._agentic = options.agentic
@@ -45,9 +50,21 @@ export abstract class BaseTask<
     return this
   }
 
-  public abstract call(
+  public async call(
     input?: types.ParsedData<TInput>
-  ): Promise<types.ParsedData<TOutput>>
+  ): Promise<types.ParsedData<TOutput>> {
+    return this._call(input).then((response) => response.result)
+  }
+
+  public async callWithMetadata(
+    input?: types.ParsedData<TInput>
+  ): Promise<types.TaskResponse<TOutput>> {
+    return this._call(input)
+  }
+
+  protected abstract _call(
+    input?: types.ParsedData<TInput>
+  ): Promise<types.TaskResponse<TOutput>>
 
   // TODO
   // abstract stream({

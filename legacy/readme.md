@@ -15,6 +15,7 @@
 - [Development](#development)
   - [Environment](#environment)
   - [Local Testing](#local-testing)
+  - [Scratch](#scratch)
 - [License](#license)
 
 ## Intro
@@ -54,6 +55,27 @@ Ensure you have `REDIS_URL_TEST` set to a valid redis connection URL.
 ```bash
 pnpm test
 ```
+
+### Scratch
+
+- `@agentic/core`
+  - Task, Agentic, logging, caching, types, constants
+- `@agentic/human-feedback`
+- `@agentic/human-feedback-cli`
+- `@agentic/human-feedback-sms`
+- `@agentic/human-feedback-slack`
+- `@agentic/experimenation`
+- `@agentic/tools`
+- `@agentic/tools-serpapi`
+- `@agentic/tools-metaphor`
+- `@agentic/tools-browser`
+- `@agentic/tools-multion`
+- `@agentic/llms`
+- `@agentic/llms-openai`
+- `@agentic/llms-anthropic`
+- `@agentic/llms-huggingface`
+- `@agentic/agents`
+- `@agentic/cli`
 
 ## License
 

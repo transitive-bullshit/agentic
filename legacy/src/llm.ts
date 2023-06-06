@@ -86,12 +86,6 @@ export abstract class BaseLLM<
     this._modelParams = { ...this._modelParams, ...params } as TModelParams
     return this
   }
-
-  // TODO
-  // abstract stream({
-  //   input: TInput,
-  //   onProgress: types.ProgressFunction
-  // }): Promise<TOutput>
 }
 
 export abstract class BaseChatModel<
@@ -117,9 +111,9 @@ export abstract class BaseChatModel<
     messages: types.ChatMessage[]
   ): Promise<types.BaseChatCompletionResponse<TChatCompletionResponse>>
 
-  override async call(
+  protected override async _call(
     input?: types.ParsedData<TInput>
-  ): Promise<types.ParsedData<TOutput>> {
+  ): Promise<types.TaskResponse<TOutput>> {
     if (this._inputSchema) {
       const inputSchema =
         this._inputSchema instanceof z.ZodType
@@ -248,9 +242,15 @@ export abstract class BaseChatModel<
 
       // TODO: handle errors, retry logic, and self-healing
 
-      return outputSchema.parse(output)
+      return {
+        result: outputSchema.parse(output),
+        metadata: {}
+      }
     } else {
-      return output
+      return {
+        result: output,
+        metadata: {}
+      }
     }
   }
 }
