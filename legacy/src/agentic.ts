@@ -24,7 +24,7 @@ export class Agentic {
     openai?: types.openai.OpenAIClient
     anthropic?: types.anthropic.Client
     verbosity?: number
-    defaults?: Pick<
+    openaiModelDefaults?: Pick<
       types.BaseLLMOptions,
       'provider' | 'model' | 'modelParams' | 'timeoutMs' | 'retryConfig'
     >
@@ -43,9 +43,9 @@ export class Agentic {
       retryConfig: {
         attempts: 3,
         strategy: 'heal',
-        ...opts.defaults?.retryConfig
+        ...opts.openaiModelDefaults?.retryConfig
       },
-      ...opts.defaults
+      ...opts.openaiModelDefaults
     }
 
     // TODO
