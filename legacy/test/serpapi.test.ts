@@ -12,6 +12,6 @@ test('SerpAPIClient.search', async (t) => {
   const client = new SerpAPIClient()
 
   const result = await client.search('coffee')
-  console.log(result)
+  // console.log(result)
   t.truthy(result)
 })

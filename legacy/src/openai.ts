@@ -17,7 +17,6 @@ export class OpenAIChatModel<
   _client: types.openai.OpenAIClient
 
   constructor(
-    client: types.openai.OpenAIClient,
     options: types.ChatModelOptions<
       TInput,
       TOutput,
@@ -30,7 +29,7 @@ export class OpenAIChatModel<
       ...options
     })
 
-    this._client = client
+    this._client = this._agentic.openai
   }
 
   protected override async _createChatCompletion(

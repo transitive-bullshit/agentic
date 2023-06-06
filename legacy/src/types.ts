@@ -1,3 +1,4 @@
+import * as anthropic from '@anthropic-ai/sdk'
 import * as openai from 'openai-fetch'
 import {
   SafeParseReturnType,
@@ -8,7 +9,10 @@ import {
   z
 } from 'zod'
 
+import type { Agentic } from './agentic'
+
 export { openai }
+export { anthropic }
 
 export type ParsedData<T extends ZodRawShape | ZodTypeAny> =
   T extends ZodTypeAny
@@ -25,13 +29,15 @@ export type SafeParsedData<T extends ZodRawShape | ZodTypeAny> =
     : never
 
 export interface BaseTaskOptions {
+  agentic: Agentic
+
   timeoutMs?: number
   retryConfig?: RetryConfig
 
   // TODO
   // caching config
   // logging config
-  // reference to agentic context
+  // human feedback config
 }
 
 export interface BaseLLMOptions<

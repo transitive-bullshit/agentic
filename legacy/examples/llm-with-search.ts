@@ -5,11 +5,9 @@ import { z } from 'zod'
 import { Agentic, MetaphorSearchTool } from '../src'
 
 async function main() {
-  const metaphorSearch = new MetaphorSearchTool()
-
   const openai = new OpenAIClient({ apiKey: process.env.OPENAI_API_KEY! })
-
   const $ = new Agentic({ openai })
+  const metaphorSearch = new MetaphorSearchTool({ agentic: $ })
 
   const { results: searchResults } = await metaphorSearch.call({
     query: 'news from today, 2023',

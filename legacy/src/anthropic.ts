@@ -23,7 +23,6 @@ export class AnthropicChatModel<
   _client: anthropic.Client
 
   constructor(
-    client: anthropic.Client,
     options: types.ChatModelOptions<
       TInput,
       TOutput,
@@ -39,7 +38,7 @@ export class AnthropicChatModel<
       ...options
     })
 
-    this._client = client
+    this._client = this._agentic.anthropic
   }
 
   protected override async _createChatCompletion(
