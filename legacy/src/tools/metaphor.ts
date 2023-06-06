@@ -1,5 +1,6 @@
 import { z } from 'zod'
 
+import { Agentic } from '../agentic'
 import { MetaphorClient } from '../services/metaphor'
 import { BaseTask } from '../task'
 
@@ -35,12 +36,14 @@ export class MetaphorSearchTool extends BaseTask<
   _metaphorClient: MetaphorClient
 
   constructor({
+    agentic,
     metaphorClient = new MetaphorClient()
   }: {
+    agentic: Agentic
     metaphorClient?: MetaphorClient
-  } = {}) {
+  }) {
     super({
-      // TODO
+      agentic
     })
 
     this._metaphorClient = metaphorClient

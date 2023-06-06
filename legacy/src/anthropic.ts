@@ -23,7 +23,6 @@ export class AnthropicChatModel<
   _client: anthropic.Client
 
   constructor(
-    client: anthropic.Client,
     options: types.ChatModelOptions<
       TInput,
       TOutput,
@@ -39,7 +38,13 @@ export class AnthropicChatModel<
       ...options
     })
 
-    this._client = client
+    if (this._agentic.anthropic) {
+      this._client = this._agentic.anthropic
+    } else {
+      throw new Error(
+        'AnthropicChatModel requires an Anthropic client to be configured on the Agentic runtime'
+      )
+    }
   }
 
   protected override async _createChatCompletion(

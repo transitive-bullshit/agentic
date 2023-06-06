@@ -1,26 +1,41 @@
 import * as types from './types'
 import { defaultOpenAIModel } from './constants'
+// import { BaseTask } from './task'
+import {
+  HumanFeedbackMechanism,
+  HumanFeedbackMechanismCLI
+} from './human-feedback'
 import { OpenAIChatModel } from './openai'
 
 export class Agentic {
-  _client: types.openai.OpenAIClient
-  _verbosity: number
-  _defaults: Pick<
+  // _taskMap: WeakMap<string, BaseTask<any, any>>
+
+  protected _openai?: types.openai.OpenAIClient
+  protected _anthropic?: types.anthropic.Client
+
+  protected _verbosity: number
+  protected _openaiModelDefaults: Pick<
     types.BaseLLMOptions,
     'provider' | 'model' | 'modelParams' | 'timeoutMs' | 'retryConfig'
   >
+  protected _defaultHumanFeedbackMechamism?: HumanFeedbackMechanism
 
   constructor(opts: {
-    openai: types.openai.OpenAIClient
+    openai?: types.openai.OpenAIClient
+    anthropic?: types.anthropic.Client
     verbosity?: number
-    defaults?: Pick<
+    openaiModelDefaults?: Pick<
       types.BaseLLMOptions,
       'provider' | 'model' | 'modelParams' | 'timeoutMs' | 'retryConfig'
     >
+    defaultHumanFeedbackMechanism?: HumanFeedbackMechanism
   }) {
-    this._client = opts.openai
+    this._openai = opts.openai
+    this._anthropic = opts.anthropic
+
     this._verbosity = opts.verbosity ?? 0
-    this._defaults = {
+
+    this._openaiModelDefaults = {
       provider: 'openai',
       model: defaultOpenAIModel,
       modelParams: {},
@@ -28,10 +43,29 @@ export class Agentic {
       retryConfig: {
         attempts: 3,
         strategy: 'heal',
-        ...opts.defaults?.retryConfig
+        ...opts.openaiModelDefaults?.retryConfig
       },
-      ...opts.defaults
+      ...opts.openaiModelDefaults
     }
+
+    // TODO
+    // this._anthropicModelDefaults = {}
+
+    this._defaultHumanFeedbackMechamism =
+      opts.defaultHumanFeedbackMechanism ??
+      new HumanFeedbackMechanismCLI({ agentic: this })
+  }
+
+  public get openai(): types.openai.OpenAIClient | undefined {
+    return this._openai
+  }
+
+  public get anthropic(): types.anthropic.Client | undefined {
+    return this._anthropic
+  }
+
+  public get defaultHumanFeedbackMechamism() {
+    return this._defaultHumanFeedbackMechamism
   }
 
   llm(
@@ -58,8 +92,9 @@ export class Agentic {
       }
     }
 
-    return new OpenAIChatModel(this._client, {
-      ...(this._defaults as any), // TODO
+    return new OpenAIChatModel({
+      agentic: this,
+      ...(this._openaiModelDefaults as any), // TODO
       ...options
     })
   }
@@ -88,8 +123,9 @@ export class Agentic {
       }
     }
 
-    return new OpenAIChatModel(this._client, {
-      ...(this._defaults as any), // TODO
+    return new OpenAIChatModel({
+      agentic: this,
+      ...(this._openaiModelDefaults as any), // TODO
       model: 'gpt-3.5-turbo',
       ...options
     })
@@ -119,8 +155,9 @@ export class Agentic {
       }
     }
 
-    return new OpenAIChatModel(this._client, {
-      ...(this._defaults as any), // TODO
+    return new OpenAIChatModel({
+      agentic: this,
+      ...(this._openaiModelDefaults as any), // TODO
       model: 'gpt-4',
       ...options
     })

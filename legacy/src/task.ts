@@ -1,6 +1,7 @@
-import { ZodRawShape, ZodTypeAny, z } from 'zod'
+import { ZodRawShape, ZodTypeAny } from 'zod'
 
 import * as types from './types'
+import { Agentic } from './agentic'
 
 /**
  * A `Task` is a typed, async function call that may be non-deterministic.
@@ -13,14 +14,20 @@ import * as types from './types'
  */
 export abstract class BaseTask<
   TInput extends ZodRawShape | ZodTypeAny = ZodTypeAny,
-  TOutput extends ZodRawShape | ZodTypeAny = z.ZodTypeAny
+  TOutput extends ZodRawShape | ZodTypeAny = ZodTypeAny
 > {
+  protected _agentic: Agentic
   protected _timeoutMs: number | undefined
   protected _retryConfig: types.RetryConfig | undefined
 
-  constructor(options: types.BaseTaskOptions = {}) {
+  constructor(options: types.BaseTaskOptions) {
+    this._agentic = options.agentic
     this._timeoutMs = options.timeoutMs
     this._retryConfig = options.retryConfig
+  }
+
+  public get agentic(): Agentic {
+    return this._agentic
   }
 
   public abstract get inputSchema(): TInput

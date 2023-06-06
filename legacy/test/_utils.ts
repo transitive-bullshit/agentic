@@ -7,6 +7,8 @@ import Keyv from 'keyv'
 import { OpenAIClient } from 'openai-fetch'
 import pMemoize from 'p-memoize'
 
+import { Agentic } from '../src'
+
 export const fakeOpenAIAPIKey = 'fake-openai-api-key'
 export const fakeAnthropicAPIKey = 'fake-anthropic-api-key'
 
@@ -85,4 +87,12 @@ export function createAnthropicTestClient() {
   }
 
   return new AnthropicTestClient(apiKey)
+}
+
+export function createTestAgenticRuntime() {
+  const openai = createOpenAITestClient()
+  const anthropic = createAnthropicTestClient()
+
+  const agentic = new Agentic({ openai, anthropic })
+  return agentic
 }
