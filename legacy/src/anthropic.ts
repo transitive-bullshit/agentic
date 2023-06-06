@@ -38,7 +38,13 @@ export class AnthropicChatModel<
       ...options
     })
 
-    this._client = this._agentic.anthropic
+    if (this._agentic.anthropic) {
+      this._client = this._agentic.anthropic
+    } else {
+      throw new Error(
+        'AnthropicChatModel requires an Anthropic client to be configured on the Agentic runtime'
+      )
+    }
   }
 
   protected override async _createChatCompletion(

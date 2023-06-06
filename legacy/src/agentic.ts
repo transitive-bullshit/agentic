@@ -56,12 +56,12 @@ export class Agentic {
       new HumanFeedbackMechanismCLI({ agentic: this })
   }
 
-  public get openai(): types.openai.OpenAIClient {
-    return this._openai!
+  public get openai(): types.openai.OpenAIClient | undefined {
+    return this._openai
   }
 
-  public get anthropic(): types.anthropic.Client {
-    return this._anthropic!
+  public get anthropic(): types.anthropic.Client | undefined {
+    return this._anthropic
   }
 
   public get defaultHumanFeedbackMechamism() {

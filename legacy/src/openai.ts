@@ -29,7 +29,13 @@ export class OpenAIChatModel<
       ...options
     })
 
-    this._client = this._agentic.openai
+    if (this._agentic.openai) {
+      this._client = this._agentic.openai
+    } else {
+      throw new Error(
+        'OpenAIChatModel requires an OpenAI client to be configured on the Agentic runtime'
+      )
+    }
   }
 
   protected override async _createChatCompletion(
