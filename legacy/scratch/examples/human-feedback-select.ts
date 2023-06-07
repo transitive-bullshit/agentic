@@ -2,7 +2,7 @@ import 'dotenv/config'
 import { OpenAIClient } from 'openai-fetch'
 import { z } from 'zod'
 
-import { Agentic, HumanFeedbackSelect } from '../src'
+import { Agentic, HumanFeedbackSelect } from '@/index'
 
 async function main() {
   const openai = new OpenAIClient({ apiKey: process.env.OPENAI_API_KEY! })

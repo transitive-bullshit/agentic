@@ -2,7 +2,7 @@ import 'dotenv/config'
 import { OpenAIClient } from 'openai-fetch'
 import { z } from 'zod'
 
-import { Agentic } from '../src'
+import { Agentic } from '@/agentic'
 
 // import { summaryAgent } from './summary'
 
