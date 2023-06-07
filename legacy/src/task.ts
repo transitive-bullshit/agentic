@@ -53,7 +53,8 @@ export abstract class BaseTask<
   public async call(
     input?: types.ParsedData<TInput>
   ): Promise<types.ParsedData<TOutput>> {
-    return this._call(input).then((response) => response.result)
+    const res = await this.callWithMetadata(input)
+    return res.result
   }
 
   public async callWithMetadata(

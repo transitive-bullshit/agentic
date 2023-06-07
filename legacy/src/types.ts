@@ -75,6 +75,7 @@ export type ChatMessageRole = z.infer<typeof ChatMessageRoleSchema>
 export interface ChatMessage {
   role: ChatMessageRole
   content: string
+  name?: string
 }
 
 export interface ChatModelOptions<

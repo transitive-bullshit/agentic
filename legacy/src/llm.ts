@@ -1,4 +1,5 @@
 import { jsonrepair } from 'jsonrepair'
+import pMap from 'p-map'
 import { dedent } from 'ts-dedent'
 import { type SetRequired } from 'type-fest'
 import { ZodRawShape, ZodTypeAny, z } from 'zod'
@@ -7,6 +8,11 @@ import { printNode, zodToTs } from 'zod-to-ts'
 import * as types from './types'
 import { BaseTask } from './task'
 import { getCompiledTemplate } from './template'
+import {
+  Tokenizer,
+  getModelNameForTiktoken,
+  getTokenizerForModel
+} from './tokenizer'
 import {
   extractJSONArrayFromString,
   extractJSONObjectFromString
@@ -24,6 +30,7 @@ export abstract class BaseLLM<
   protected _model: string
   protected _modelParams: TModelParams | undefined
   protected _examples: types.LLMExample[] | undefined
+  protected _tokenizer?: Tokenizer | null
 
   constructor(
     options: SetRequired<
@@ -86,6 +93,30 @@ export abstract class BaseLLM<
     this._modelParams = { ...this._modelParams, ...params } as TModelParams
     return this
   }
+
+  async getNumTokens(text: string): Promise<number> {
+    if (this._tokenizer === undefined) {
+      const model = this._model || 'gpt2'
+
+      try {
+        this._tokenizer = await getTokenizerForModel(model)
+      } catch (err) {
+        this._tokenizer = null
+
+        console.warn(
+          `Failed to initialize tokenizer for model "${model}", falling back to approximate count`,
+          err
+        )
+      }
+    }
+
+    if (this._tokenizer) {
+      return this._tokenizer.encode(text).length
+    }
+
+    // fallback to approximate calculation if tokenizer is not available
+    return Math.ceil(text.length / 4)
+  }
 }
 
 export abstract class BaseChatModel<
@@ -111,9 +142,7 @@ export abstract class BaseChatModel<
     messages: types.ChatMessage[]
   ): Promise<types.BaseChatCompletionResponse<TChatCompletionResponse>>
 
-  protected override async _call(
-    input?: types.ParsedData<TInput>
-  ): Promise<types.TaskResponse<TOutput>> {
+  public async buildMessages(input?: types.ParsedData<TInput>) {
     if (this._inputSchema) {
       const inputSchema =
         this._inputSchema instanceof z.ZodType
@@ -183,6 +212,14 @@ export abstract class BaseChatModel<
 
     // TODO: filter/compress messages based on token counts
 
+    return messages
+  }
+
+  protected override async _call(
+    input?: types.ParsedData<TInput>
+  ): Promise<types.TaskResponse<TOutput>> {
+    const messages = await this.buildMessages(input)
+
     console.log('>>>')
     console.log(messages)
 
@@ -244,13 +281,69 @@ export abstract class BaseChatModel<
 
       return {
         result: outputSchema.parse(output),
-        metadata: {}
+        metadata: {
+          input,
+          messages,
+          completion
+        }
       }
     } else {
       return {
         result: output,
-        metadata: {}
+        metadata: {
+          input,
+          messages,
+          completion
+        }
       }
     }
+  }
+
+  async getNumTokensForMessages(messages: types.ChatMessage[]): Promise<{
+    numTokensTotal: number
+    numTokensPerMessage: number[]
+  }> {
+    let numTokensTotal = 0
+    let tokensPerMessage = 0
+    let tokensPerName = 0
+
+    const modelName = getModelNameForTiktoken(this._model)
+
+    if (modelName === 'gpt-3.5-turbo') {
+      tokensPerMessage = 4
+      tokensPerName = -1
+    } else if (modelName.startsWith('gpt-4')) {
+      tokensPerMessage = 3
+      tokensPerName = 1
+    } else {
+      // TODO
+    }
+
+    const numTokensPerMessage = await pMap(
+      messages,
+      async (message) => {
+        const [numTokensContent, numTokensRole, numTokensName] =
+          await Promise.all([
+            this.getNumTokens(message.content),
+            this.getNumTokens(message.role),
+            message.name
+              ? this.getNumTokens(message.name).then((n) => n + tokensPerName)
+              : Promise.resolve(0)
+          ])
+
+        const numTokens =
+          tokensPerMessage + numTokensContent + numTokensRole + numTokensName
+
+        numTokensTotal += numTokens
+        return numTokens
+      },
+      {
+        concurrency: 8
+      }
+    )
+
+    numTokensTotal += 3 // every reply is primed with <|start|>assistant<|message|>
+
+    return { numTokensTotal, numTokensPerMessage }
   }
 }
