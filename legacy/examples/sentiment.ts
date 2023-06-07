@@ -13,12 +13,12 @@ export async function main() {
   )
     .input(z.object({ texts: z.string().array() }))
     .output(z.array(z.object({ text: z.string(), label: z.string() })))
-    .examples([
-      { input: 'The food was digusting', output: 'negative' },
-      { input: 'We had a fantastic night', output: 'positive' },
-      { input: 'Recommended', output: 'positive' },
-      { input: 'The waiter was rude', output: 'negative' }
-    ])
+    // .examples([
+    //   { input: 'The food was digusting', output: 'negative' },
+    //   { input: 'We had a fantastic night', output: 'positive' },
+    //   { input: 'Recommended', output: 'positive' },
+    //   { input: 'The waiter was rude', output: 'negative' }
+    // ])
     .call({
       texts: [
         'I went to this place and it was just so awful.',

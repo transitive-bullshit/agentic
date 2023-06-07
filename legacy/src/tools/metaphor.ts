@@ -1,5 +1,6 @@
 import { z } from 'zod'
 
+import * as types from '../types'
 import { Agentic } from '../agentic'
 import { MetaphorClient } from '../services/metaphor'
 import { BaseTask } from '../task'
@@ -57,15 +58,20 @@ export class MetaphorSearchTool extends BaseTask<
     return MetaphorSearchToolOutputSchema
   }
 
-  override async call(
+  protected override async _call(
     input: MetaphorSearchToolInput
-  ): Promise<MetaphorSearchToolOutput> {
+  ): Promise<types.TaskResponse<typeof MetaphorSearchToolOutputSchema>> {
     // TODO: handle errors gracefully
     input = this.inputSchema.parse(input)
 
-    return this._metaphorClient.search({
+    const result = await this._metaphorClient.search({
       query: input.query,
       numResults: input.numResults
     })
+
+    return {
+      result,
+      metadata: {}
+    }
   }
 }

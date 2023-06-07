@@ -105,4 +105,12 @@ export interface RetryConfig {
   strategy: string
 }
 
+export interface TaskResponse<
+  TOutput extends ZodRawShape | ZodTypeAny = z.ZodType<string>,
+  TMetadata extends Record<string, any> = Record<string, any>
+> {
+  result: ParsedData<TOutput>
+  metadata: TMetadata
+}
+
 // export type ProgressFunction = (partialResponse: ChatMessage) => void

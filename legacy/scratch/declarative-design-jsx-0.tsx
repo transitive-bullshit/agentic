@@ -30,6 +30,9 @@ async function ExampleLLMQuery({ texts }: { texts: string[] }) {
     >
       <System>You are an expert sentiment-labelling assistant</System>
 
+      {/* <ConversationHistory /> */}
+      {/* <PineconeMemory /> */}
+
       <User>
         Label the following texts as positive or negative:
         {/* {texts.map((text) => `- ${text}\n`)} */}
