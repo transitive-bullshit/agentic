@@ -3,6 +3,12 @@
 *.swp
 .idea
 
+# ignore editor workspace files
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
 # dependencies
 node_modules/
 .pnp/
