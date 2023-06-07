@@ -5,18 +5,18 @@ import { type SetRequired } from 'type-fest'
 import { ZodRawShape, ZodTypeAny, z } from 'zod'
 import { printNode, zodToTs } from 'zod-to-ts'
 
-import * as types from './types'
-import { BaseTask } from './task'
-import { getCompiledTemplate } from './template'
+import * as types from '@/types'
+import { BaseTask } from '@/task'
+import { getCompiledTemplate } from '@/template'
 import {
   Tokenizer,
   getModelNameForTiktoken,
   getTokenizerForModel
-} from './tokenizer'
+} from '@/tokenizer'
 import {
   extractJSONArrayFromString,
   extractJSONObjectFromString
-} from './utils'
+} from '@/utils'
 
 export abstract class BaseLLM<
   TInput extends ZodRawShape | ZodTypeAny = z.ZodVoid,
@@ -317,6 +317,8 @@ export abstract class BaseChatModel<
       tokensPerName = 1
     } else {
       // TODO
+      tokensPerMessage = 4
+      tokensPerName = -1
     }
 
     const numTokensPerMessage = await pMap(
@@ -342,6 +344,7 @@ export abstract class BaseChatModel<
       }
     )
 
+    // TODO
     numTokensTotal += 3 // every reply is primed with <|start|>assistant<|message|>
 
     return { numTokensTotal, numTokensPerMessage }

@@ -1,6 +1,7 @@
 import test from 'ava'
 
-import { SerpAPIClient } from '../src/services/serpapi'
+import { SerpAPIClient } from '@/services/serpapi'
+
 import './_utils'
 
 test('SerpAPIClient.search', async (t) => {

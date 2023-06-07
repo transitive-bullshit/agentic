@@ -1,9 +1,9 @@
 import { z } from 'zod'
 
-import * as types from '../types'
-import { Agentic } from '../agentic'
-import { MetaphorClient } from '../services/metaphor'
-import { BaseTask } from '../task'
+import * as types from '@/types'
+import { Agentic } from '@/agentic'
+import { MetaphorClient } from '@/services/metaphor'
+import { BaseTask } from '@/task'
 
 export const MetaphorSearchToolInputSchema = z.object({
   query: z.string(),

@@ -2,7 +2,8 @@ import test from 'ava'
 import { expectTypeOf } from 'expect-type'
 import { z } from 'zod'
 
-import { OpenAIChatModel } from '../src'
+import { OpenAIChatModel } from '@/llms/openai'
+
 import { createTestAgenticRuntime } from './_utils'
 
 test('OpenAIChatModel ⇒ string output', async (t) => {

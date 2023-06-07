@@ -1,7 +1,8 @@
 import test from 'ava'
 import { expectTypeOf } from 'expect-type'
 
-import { AnthropicChatModel } from '../src'
+import { AnthropicChatModel } from '@/llms/anthropic'
+
 import { createTestAgenticRuntime } from './_utils'
 
 test('AnthropicChatModel ⇒ string output', async (t) => {

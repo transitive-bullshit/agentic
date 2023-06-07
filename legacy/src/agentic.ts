@@ -1,11 +1,10 @@
 import * as types from './types'
 import { defaultOpenAIModel } from './constants'
-// import { BaseTask } from './task'
 import {
   HumanFeedbackMechanism,
   HumanFeedbackMechanismCLI
 } from './human-feedback'
-import { OpenAIChatModel } from './openai'
+import { OpenAIChatModel } from './llms/openai'
 
 export class Agentic {
   // _taskMap: WeakMap<string, BaseTask<any, any>>

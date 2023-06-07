@@ -15,7 +15,10 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "outDir": "build",
-    "noEmit": true
+    "noEmit": true,
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
   "exclude": ["node_modules", "build"],
   "include": ["**/*.ts", "**/*.tsx"]

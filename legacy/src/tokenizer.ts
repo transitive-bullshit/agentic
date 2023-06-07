@@ -68,8 +68,8 @@ export async function getTokenizerForEncoding(
   encoding: TiktokenEncoding,
   options?: {
     signal?: AbortSignal
-    extendedSpecialTokens?: Record<string, number>
     timeoutMs?: number
+    extendedSpecialTokens?: Record<string, number>
   }
 ) {
   const tiktokenBPE = await getTiktokenBPE(encoding, options)
@@ -81,8 +81,8 @@ export async function getTokenizerForModel(
   model: string,
   options?: {
     signal?: AbortSignal
-    extendedSpecialTokens?: Record<string, number>
     timeoutMs?: number
+    extendedSpecialTokens?: Record<string, number>
   }
 ) {
   const modelName = getModelNameForTiktoken(model)

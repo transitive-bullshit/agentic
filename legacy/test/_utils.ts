@@ -7,7 +7,7 @@ import Keyv from 'keyv'
 import { OpenAIClient } from 'openai-fetch'
 import pMemoize from 'p-memoize'
 
-import { Agentic } from '../src'
+import { Agentic } from '@/agentic'
 
 export const fakeOpenAIAPIKey = 'fake-openai-api-key'
 export const fakeAnthropicAPIKey = 'fake-anthropic-api-key'

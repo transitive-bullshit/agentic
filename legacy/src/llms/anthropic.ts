@@ -2,8 +2,9 @@ import * as anthropic from '@anthropic-ai/sdk'
 import { type SetOptional } from 'type-fest'
 import { ZodTypeAny, z } from 'zod'
 
-import * as types from './types'
-import { defaultAnthropicModel } from './constants'
+import * as types from '@/types'
+import { defaultAnthropicModel } from '@/constants'
+
 import { BaseChatModel } from './llm'
 
 const defaultStopSequences = [anthropic.HUMAN_PROMPT]
