@@ -30,7 +30,7 @@ export abstract class BaseLLM<
   protected _model: string
   protected _modelParams: TModelParams | undefined
   protected _examples: types.LLMExample[] | undefined
-  protected _tokenizer?: Tokenizer | null
+  protected _tokenizerP?: Promise<Tokenizer | null>
 
   constructor(
     options: SetRequired<
@@ -95,23 +95,22 @@ export abstract class BaseLLM<
   }
 
   async getNumTokens(text: string): Promise<number> {
-    if (this._tokenizer === undefined) {
+    if (!this._tokenizerP) {
       const model = this._model || 'gpt2'
 
-      try {
-        this._tokenizer = await getTokenizerForModel(model)
-      } catch (err) {
-        this._tokenizer = null
-
+      this._tokenizerP = getTokenizerForModel(model).catch((err) => {
         console.warn(
           `Failed to initialize tokenizer for model "${model}", falling back to approximate count`,
           err
         )
-      }
+
+        return null
+      })
     }
 
-    if (this._tokenizer) {
-      return this._tokenizer.encode(text).length
+    const tokenizer = await this._tokenizerP
+    if (tokenizer) {
+      return tokenizer.encode(text).length
     }
 
     // fallback to approximate calculation if tokenizer is not available
