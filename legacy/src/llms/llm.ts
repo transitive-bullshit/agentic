@@ -94,7 +94,7 @@ export abstract class BaseLLM<
     return this
   }
 
-  async getNumTokens(text: string): Promise<number> {
+  public async getNumTokens(text: string): Promise<number> {
     if (!this._tokenizerP) {
       const model = this._model || 'gpt2'
 
@@ -298,7 +298,9 @@ export abstract class BaseChatModel<
     }
   }
 
-  async getNumTokensForMessages(messages: types.ChatMessage[]): Promise<{
+  // TODO: this needs work + testing
+  // TODO: move to isolated file and/or module
+  public async getNumTokensForMessages(messages: types.ChatMessage[]): Promise<{
     numTokensTotal: number
     numTokensPerMessage: number[]
   }> {
