@@ -34,24 +34,27 @@ export class NovuClient {
     this.baseUrl = baseUrl
   }
 
-  async triggerEvent(
-    name: string,
-    payload: Record<string, unknown>,
+  async triggerEvent({
+    name,
+    payload,
+    to
+  }: {
+    name: string
+    payload: Record<string, unknown>
     to: NovuSubscriber[]
-  ) {
+  }) {
     const url = `${this.baseUrl}/events/trigger`
     const headers = {
       Authorization: `ApiKey ${this.apiKey}`,
       'Content-Type': 'application/json'
     }
-    const body = JSON.stringify({
-      name,
-      payload,
-      to
-    })
     const response = await ky.post(url, {
       headers,
-      body
+      json: {
+        name,
+        payload,
+        to
+      }
     })
     return response.json<NovuTriggerEventResponse>()
   }

@@ -69,11 +69,7 @@ export class NovuNotificationTool extends BaseTask<
     // TODO: handle errors gracefully
     input = this.inputSchema.parse(input)
 
-    const result = await this._novuClient.triggerEvent(
-      input.name,
-      input.payload,
-      input.to
-    )
+    const result = await this._novuClient.triggerEvent(input)
     return {
       result,
       metadata: {}
