@@ -28,8 +28,6 @@ Otherwise, you can pass it in as an argument to the `Novu` constructor.
 
 ![](https://ajeuwbhvhr.cloudimg.io/colony-recorder.s3.amazonaws.com/files/2023-06-08/43c0f398-5896-46dd-aa63-7c4418dc0ea1/user_cropped_screenshot.jpeg?tl_px=461,47&br_px=1581,677&sharp=0.8&width=560&wat_scale=50&wat=1&wat_opacity=0.7&wat_gravity=northwest&wat_url=https://colony-labs-public.s3.us-east-2.amazonaws.com/images/watermarks/watermark_default.png&wat_pad=452,199)
 
-[novu]: https://novu.co/
-
 ### Create a Notification Template
 
 For each notification type you want to send, you need to create a template in Novu. This is a one-time setup step that you can do on the Novu web interface. 
@@ -55,7 +53,7 @@ To create a template, follow these steps:
 
 ![](https://ajeuwbhvhr.cloudimg.io/colony-recorder.s3.amazonaws.com/files/2023-06-08/07362d5c-1823-46ee-a6b2-17a363da74d9/user_cropped_screenshot.jpeg?tl_px=317,0&br_px=1437,404&sharp=0.8&width=560&wat_scale=50&wat=1&wat_opacity=0.7&wat_gravity=northwest&wat_url=https://colony-labs-public.s3.us-east-2.amazonaws.com/images/watermarks/watermark_default.png&wat_pad=415,82)
 
-4. Double-click the "notification name" field and enter the name of the template. This is the event name with which the respective notification may be triggered from the API.
+4. Double-click the "notification name" field and enter the name of the template. For this example, we choose the name `send-sms`. This is the event name with which the respective notification may be triggered from the API.
 
 ![](https://ajeuwbhvhr.cloudimg.io/colony-recorder.s3.amazonaws.com/files/2023-06-08/ec09f2f6-b79d-4b51-a00e-fa7314fbc62b/ascreenshot.jpeg?tl_px=64,0&br_px=1184,630&sharp=0.8&width=560&wat_scale=50&wat=1&wat_opacity=0.7&wat_gravity=northwest&wat_url=https://colony-labs-public.s3.us-east-2.amazonaws.com/images/watermarks/watermark_default.png&wat_pad=262,84)
 
@@ -66,3 +64,23 @@ To create a template, follow these steps:
 6. Click inside the "SMS message content" text field on the right and enter the content of your SMS, e.g. a handlebars placeholder such as `{{content}}`.
 
 ![](https://ajeuwbhvhr.cloudimg.io/colony-recorder.s3.amazonaws.com/files/2023-06-08/8cf3d995-5ef4-465c-9a25-43c680e67f8c/ascreenshot.jpeg?tl_px=745,177&br_px=1865,807&sharp=0.8&width=560&wat_scale=50&wat=1&wat_opacity=0.7&wat_gravity=northwest&wat_url=https://colony-labs-public.s3.us-east-2.amazonaws.com/images/watermarks/watermark_default.png&wat_pad=262,139)
+
+7. When you're done, click "Update" on the top-right. You are now ready to send SMS notifications via the API. For example, to manually trigger a notification via the Agentic Novu Service client:
+
+```ts
+import { NovuClient } from '@agentic/core'
+
+const client = new NovuClient()
+
+client.triggerEvent('send-sms', { content: 'Hello World!' }, [{
+  subscriberId: '1',
+  name: 'Jane Doe',
+  email: 'jane.doe-123@hotmail.com'
+  phone: '+11234567890'
+}])
+```
+
+The `subscriberId` is a required field with the ID of the subscriber in Novu. If a subscriber with a provided `subscriberId` does not exist yet in Novu, a new subscriber will be created before the trigger will be executed synchronously. You can find more information about subscribers [in the official Novu documentation][novu-subscribers].
+
+[novu]: https://novu.co/
+[novu-subscribers]: https://docs.novu.co/platform/subscribers
