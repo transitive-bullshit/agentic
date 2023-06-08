@@ -22,9 +22,10 @@ Otherwise, you can pass it in as an argument to the `Novu` constructor.
 
 3. Click "API Keys"
 
-![](https://ajeuwbhvhr.cloudimg.io/colony-recorder.s3.amazonaws.com/files/2023-06-08/281e025b-9e96-4973-b5eb-caf64fe659ba/ascreenshot.jpeg?tl_px=164,13&br_px=1284,643&sharp=0.8&width=560&wat_scale=50&wat=1&wat_opacity=0.7&wat_gravity=northwest&wat_url=https://colony-labs-public.s3.us-east-2.amazonaws.com/images/watermarks/watermark_default.png&wat_pad=262,139)
+![](https://ajeuwbhvhr.cloudimg.io/colony-recorder.s3.amazonaws.com/files/2023-06-08/b1036717-015e-491a-8e98-ad959c3d1e4e/user_cropped_screenshot.jpeg?tl_px=164,0&br_px=1284,630&sharp=0.8&width=560&wat_scale=50&wat=1&wat_opacity=0.7&wat_gravity=northwest&wat_url=https://colony-labs-public.s3.us-east-2.amazonaws.com/images/watermarks/watermark_default.png&wat_pad=262,83)
 
 4. Click here to copy your API key to your clipboard 
+
 ![](https://ajeuwbhvhr.cloudimg.io/colony-recorder.s3.amazonaws.com/files/2023-06-08/43c0f398-5896-46dd-aa63-7c4418dc0ea1/user_cropped_screenshot.jpeg?tl_px=461,47&br_px=1581,677&sharp=0.8&width=560&wat_scale=50&wat=1&wat_opacity=0.7&wat_gravity=northwest&wat_url=https://colony-labs-public.s3.us-east-2.amazonaws.com/images/watermarks/watermark_default.png&wat_pad=452,199)
 
 [novu]: https://novu.co/
