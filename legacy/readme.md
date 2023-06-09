@@ -56,6 +56,18 @@ Ensure you have `REDIS_URL_TEST` set to a valid redis connection URL.
 pnpm test
 ```
 
+Agentic uses [ava][ava] as its test runner. To just execute unit tests, run:
+
+```bash
+pnpm test:unit
+```
+
+To run a specific test, use the `--match` flag like so:
+
+```bash
+pnpm test:unit --match='name of the test'
+```
+
 ### Scratch
 
 - `@agentic/core`
@@ -80,3 +92,5 @@ pnpm test
 ## License
 
 MIT © [Travis Fischer](https://transitivebullsh.it)
+
+[ava]: https://github.com/avajs/ava
