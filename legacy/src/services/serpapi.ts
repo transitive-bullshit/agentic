@@ -11,6 +11,8 @@ export interface SerpAPIClientOptions extends Partial<SerpAPIParams> {
   baseUrl?: string
 }
 
+export const SERPAPI_BASE_URL = 'https://serpapi.com'
+
 /**
  * Lightweight wrapper around SerpAPI that only supports Google search.
  *
@@ -23,7 +25,7 @@ export class SerpAPIClient {
 
   constructor({
     apiKey = process.env.SERPAPI_API_KEY ?? process.env.SERP_API_KEY,
-    baseUrl = 'https://serpapi.com',
+    baseUrl = SERPAPI_BASE_URL,
     ...params
   }: SerpAPIClientOptions = {}) {
     if (!apiKey) {

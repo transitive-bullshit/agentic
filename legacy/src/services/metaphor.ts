@@ -1,5 +1,7 @@
 import ky from 'ky'
 
+export const METAPHOR_BASE_URL = 'https://api.metaphor.systems'
+
 export type MetaphorSearchResult = {
   author: string | null
   dateCreated: string | null
@@ -18,7 +20,7 @@ export class MetaphorClient {
 
   constructor({
     apiKey = process.env.METAPHOR_API_KEY,
-    baseUrl = 'https://api.metaphor.systems'
+    baseUrl = METAPHOR_BASE_URL
   }: {
     apiKey?: string
     baseUrl?: string

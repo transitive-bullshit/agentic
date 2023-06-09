@@ -1,5 +1,7 @@
 import ky from 'ky'
 
+export const NOVU_BASE_URL = 'https://api.novu.co/v1'
+
 export type NovuSubscriber = {
   subscriberId: string
   email?: string
@@ -22,7 +24,7 @@ export class NovuClient {
 
   constructor({
     apiKey = process.env.NOVU_API_KEY,
-    baseUrl = 'https://api.novu.co/v1'
+    baseUrl = NOVU_BASE_URL
   }: {
     apiKey?: string
     baseUrl?: string
