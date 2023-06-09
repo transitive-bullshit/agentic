@@ -118,6 +118,11 @@ export type TwilioSendAndWaitOptions = {
   validate?: (message: TwilioConversationMessage) => boolean
 }
 
+/**
+ * A client for interacting with the Twilio Conversations API to send automated messages and wait for replies.
+ *
+ * @see {@link https://www.twilio.com/docs/conversations/api}
+ */
 export class TwilioConversationClient {
   api: typeof ky
   phoneNumber: string
