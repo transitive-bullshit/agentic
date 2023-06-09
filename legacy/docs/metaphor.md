@@ -2,7 +2,7 @@
 
 ## Intro
 
-[Metaphor][metaphoer] is an AI-driven search engine platform engineered from the ground up to offer revolutionary internet search experiences. 
+[Metaphor][metaphor] is an AI-driven search engine platform engineered from the ground up to offer revolutionary internet search experiences. 
 
 Through the Metaphor Service, you can interface with Metaphor's powerful AI-enhanced search capabilities, bringing the potential of an intelligent and instant internet search to any Agentic workflow.
 
