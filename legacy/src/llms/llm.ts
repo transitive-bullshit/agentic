@@ -1,10 +1,11 @@
-import { jsonrepair } from 'jsonrepair'
+import { JSONRepairError, jsonrepair } from 'jsonrepair'
 import pMap from 'p-map'
 import { dedent } from 'ts-dedent'
 import { type SetRequired } from 'type-fest'
 import { ZodRawShape, ZodTypeAny, z } from 'zod'
 import { printNode, zodToTs } from 'zod-to-ts'
 
+import * as errors from '@/errors'
 import * as types from '@/types'
 import { BaseTask } from '@/task'
 import { getCompiledTemplate } from '@/template'
@@ -237,13 +238,37 @@ export abstract class BaseChatModel<
           : z.object(this._outputSchema)
 
       if (outputSchema instanceof z.ZodArray) {
-        // TODO: gracefully handle parse errors
-        const trimmedOutput = extractJSONArrayFromString(output)
-        output = JSON.parse(jsonrepair(trimmedOutput ?? output))
+        try {
+          const trimmedOutput = extractJSONArrayFromString(output)
+          output = JSON.parse(jsonrepair(trimmedOutput ?? output))
+        } catch (err: any) {
+          if (err instanceof JSONRepairError) {
+            throw new errors.OutputValidationError(err.message, { cause: err })
+          } else if (err instanceof SyntaxError) {
+            throw new errors.OutputValidationError(
+              `Invalid JSON: ${err.message}`,
+              { cause: err }
+            )
+          } else {
+            throw err
+          }
+        }
       } else if (outputSchema instanceof z.ZodObject) {
-        // TODO: gracefully handle parse errors
-        const trimmedOutput = extractJSONObjectFromString(output)
-        output = JSON.parse(jsonrepair(trimmedOutput ?? output))
+        try {
+          const trimmedOutput = extractJSONObjectFromString(output)
+          output = JSON.parse(jsonrepair(trimmedOutput ?? output))
+        } catch (err: any) {
+          if (err instanceof JSONRepairError) {
+            throw new errors.OutputValidationError(err.message, { cause: err })
+          } else if (err instanceof SyntaxError) {
+            throw new errors.OutputValidationError(
+              `Invalid JSON: ${err.message}`,
+              { cause: err }
+            )
+          } else {
+            throw err
+          }
+        }
       } else if (outputSchema instanceof z.ZodBoolean) {
         output = output.toLowerCase().trim()
         const booleanOutputs = {
@@ -260,8 +285,9 @@ export abstract class BaseChatModel<
         if (booleanOutput !== undefined) {
           output = booleanOutput
         } else {
-          // TODO
-          throw new Error(`invalid boolean output: ${output}`)
+          throw new errors.OutputValidationError(
+            `Invalid boolean output: ${output}`
+          )
         }
       } else if (outputSchema instanceof z.ZodNumber) {
         output = output.trim()
@@ -271,17 +297,21 @@ export abstract class BaseChatModel<
           : parseFloat(output)
 
         if (isNaN(numberOutput)) {
-          // TODO
-          throw new Error(`invalid number output: ${output}`)
+          throw new errors.OutputValidationError(
+            `Invalid number output: ${output}`
+          )
         } else {
           output = numberOutput
         }
       }
 
-      // TODO: handle errors, retry logic, and self-healing
+      const safeResult = outputSchema.safeParse(output)
+      if (!safeResult.success) {
+        throw new errors.ZodOutputValidationError(safeResult.error)
+      }
 
       return {
-        result: outputSchema.parse(output),
+        result: safeResult.data,
         metadata: {
           input,
           messages,
@@ -312,6 +342,7 @@ export abstract class BaseChatModel<
 
     const modelName = getModelNameForTiktoken(this._model)
 
+    // https://github.com/openai/openai-cookbook/blob/main/examples/How_to_format_inputs_to_ChatGPT_models.ipynb
     if (modelName === 'gpt-3.5-turbo') {
       tokensPerMessage = 4
       tokensPerName = -1

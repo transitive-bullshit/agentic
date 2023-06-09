@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "es2020",
-    "lib": ["esnext"],
+    "lib": ["esnext", "es2022.error"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,

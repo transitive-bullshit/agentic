@@ -52,7 +52,7 @@ async function ExampleLLMQuery({ texts }: { texts: string[] }) {
   )
 }
 
-ExampleLLMQuery({
+const example = await ExampleLLMQuery({
   texts: [
     'I went to this place and it was just so awful.',
     'I had a great time.',

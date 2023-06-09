@@ -1,5 +1,7 @@
+import pRetry from 'p-retry'
 import { ZodRawShape, ZodTypeAny } from 'zod'
 
+import * as errors from '@/errors'
 import * as types from '@/types'
 import { Agentic } from '@/agentic'
 
@@ -23,12 +25,15 @@ export abstract class BaseTask<
   protected _agentic: Agentic
 
   protected _timeoutMs?: number
-  protected _retryConfig?: types.RetryConfig
+  protected _retryConfig: types.RetryConfig
 
   constructor(options: types.BaseTaskOptions) {
     this._agentic = options.agentic
     this._timeoutMs = options.timeoutMs
-    this._retryConfig = options.retryConfig
+    this._retryConfig = options.retryConfig ?? {
+      retries: 3,
+      strategy: 'default'
+    }
   }
 
   public get agentic(): Agentic {
@@ -60,7 +65,30 @@ export abstract class BaseTask<
   public async callWithMetadata(
     input?: types.ParsedData<TInput>
   ): Promise<types.TaskResponse<TOutput>> {
-    return this._call(input)
+    const metadata: types.TaskResponseMetadata = {
+      input,
+      numRetries: 0
+    }
+
+    do {
+      try {
+        const response = await this._call(input)
+        return response
+      } catch (err: any) {
+        if (err instanceof errors.ZodOutputValidationError) {
+          // TODO
+        } else {
+          throw err
+        }
+      }
+
+      // TODO: handle errors, retry logic, and self-healing
+      metadata.numRetries = (metadata.numRetries ?? 0) + 1
+      if (metadata.numRetries > this._retryConfig.retries) {
+      }
+
+      // eslint-disable-next-line no-constant-condition
+    } while (true)
   }
 
   protected abstract _call(

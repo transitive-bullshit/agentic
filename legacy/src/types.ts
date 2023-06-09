@@ -102,8 +102,37 @@ export interface LLMExample {
 }
 
 export interface RetryConfig {
-  attempts: number
+  retries: number
   strategy: string
+}
+
+export type TaskError =
+  | 'timeout'
+  | 'provider'
+  | 'validation'
+  | 'unknown'
+  | string
+
+export interface TaskResponseMetadata extends Record<string, any> {
+  // task info
+  // - task name
+  // - task id
+
+  // config
+  input?: any
+  stream?: boolean
+
+  // execution info
+  success?: boolean
+  numRetries?: number
+  errorType?: TaskError
+  error?: Error
+}
+
+export interface LLMTaskResponseMetadata<
+  TChatCompletionResponse extends Record<string, any> = Record<string, any>
+> extends TaskResponseMetadata {
+  completion?: TChatCompletionResponse
 }
 
 export interface TaskResponse<
