@@ -1,7 +1,7 @@
 import { ZodRawShape, ZodTypeAny } from 'zod'
 
-import { Agentic } from './agentic'
-import { BaseTask } from './task'
+import { Agentic } from '@/agentic'
+import { BaseTask } from '@/task'
 
 export type HumanFeedbackType = 'confirm' | 'selectOne' | 'selectN'
 

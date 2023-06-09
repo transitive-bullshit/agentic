@@ -1,7 +1,7 @@
 import { ZodRawShape, ZodTypeAny } from 'zod'
 
-import * as types from './types'
-import { Agentic } from './agentic'
+import * as types from '@/types'
+import { Agentic } from '@/agentic'
 
 /**
  * A `Task` is a typed, async function call that may be non-deterministic.

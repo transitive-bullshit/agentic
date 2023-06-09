@@ -1,9 +1,9 @@
 import { z } from 'zod'
 
-import * as types from '../types'
-import { Agentic } from '../agentic'
-import { NovuClient } from '../services/novu'
-import { BaseTask } from '../task'
+import * as types from '@/types'
+import { Agentic } from '@/agentic'
+import { NovuClient } from '@/services/novu'
+import { BaseTask } from '@/task'
 
 export const NovuNotificationToolInputSchema = z.object({
   name: z.string(),

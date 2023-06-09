@@ -1,6 +1,7 @@
 import test from 'ava'
 
-import { NovuClient } from '../src/services/novu'
+import { NovuClient } from '@/services/novu'
+
 import './_utils'
 
 test('NovuClient.triggerEvent', async (t) => {
