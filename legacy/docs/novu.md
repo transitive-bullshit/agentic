@@ -12,19 +12,19 @@ Ensure the following environment variable is set:
 
 Otherwise, you can pass it in as an argument to the `Novu` constructor.
 
-### How to Retrieve API Key on Novu.co
+### How to Retrieve API Key
 
-1. Open https://web.novu.co and sign in with your existing Novu account credentials (create a new account with your email address and a password or sign in with GitHub if you don't have an account yet)
+1. Open https://web.novu.co and sign in with your existing Novu account credentials (create a new account with your email address and a password or sign in with GitHub if you don't have an account yet.)
 
-2. Navigate to "Settings"
+2. Navigate to "Settings":
 
 ![](https://ajeuwbhvhr.cloudimg.io/colony-recorder.s3.amazonaws.com/files/2023-06-08/bc87f12a-6f3b-48ef-af7f-b8f876baf912/ascreenshot.jpeg?tl_px=0,588&br_px=1120,1218&sharp=0.8&width=560&wat_scale=50&wat=1&wat_opacity=0.7&wat_gravity=northwest&wat_url=https://colony-labs-public.s3.us-east-2.amazonaws.com/images/watermarks/watermark_default.png&wat_pad=82,139)
 
-3. Click "API Keys"
+3. Click "API Keys":
 
 ![](https://ajeuwbhvhr.cloudimg.io/colony-recorder.s3.amazonaws.com/files/2023-06-08/b1036717-015e-491a-8e98-ad959c3d1e4e/user_cropped_screenshot.jpeg?tl_px=164,0&br_px=1284,630&sharp=0.8&width=560&wat_scale=50&wat=1&wat_opacity=0.7&wat_gravity=northwest&wat_url=https://colony-labs-public.s3.us-east-2.amazonaws.com/images/watermarks/watermark_default.png&wat_pad=262,83)
 
-4. Click here to copy your API key to your clipboard 
+4. Click here to copy your API key to your clipboard:
 
 ![](https://ajeuwbhvhr.cloudimg.io/colony-recorder.s3.amazonaws.com/files/2023-06-08/43c0f398-5896-46dd-aa63-7c4418dc0ea1/user_cropped_screenshot.jpeg?tl_px=461,47&br_px=1581,677&sharp=0.8&width=560&wat_scale=50&wat=1&wat_opacity=0.7&wat_gravity=northwest&wat_url=https://colony-labs-public.s3.us-east-2.amazonaws.com/images/watermarks/watermark_default.png&wat_pad=452,199)
 
@@ -43,13 +43,13 @@ The placeholders will be replaced with the actual values of the `payload` object
 
 To create a template, follow these steps:
 
-1. Open https://web.novu.co and sign in with your Novu account credentials
+1. Open https://web.novu.co and sign in with your Novu account credentials.
 
-2. Click "Notifications"
+2. Click "Notifications":
 
 ![](https://ajeuwbhvhr.cloudimg.io/colony-recorder.s3.amazonaws.com/files/2023-06-08/18f9a014-9f47-473f-9ef9-acc25d15ee29/ascreenshot.jpeg?tl_px=0,87&br_px=1120,717&sharp=0.8&width=560&wat_scale=50&wat=1&wat_opacity=0.7&wat_gravity=northwest&wat_url=https://colony-labs-public.s3.us-east-2.amazonaws.com/images/watermarks/watermark_default.png&wat_pad=61,139)
 
-3. Click "Create Workflow" on the top-right
+3. Click "Create Workflow" on the top-right:
 
 ![](https://ajeuwbhvhr.cloudimg.io/colony-recorder.s3.amazonaws.com/files/2023-06-08/07362d5c-1823-46ee-a6b2-17a363da74d9/user_cropped_screenshot.jpeg?tl_px=317,0&br_px=1437,404&sharp=0.8&width=560&wat_scale=50&wat=1&wat_opacity=0.7&wat_gravity=northwest&wat_url=https://colony-labs-public.s3.us-east-2.amazonaws.com/images/watermarks/watermark_default.png&wat_pad=415,82)
 
