@@ -1,5 +1,6 @@
 import * as anthropic from '@anthropic-ai/sdk'
 import * as openai from 'openai-fetch'
+import type { Options as RetryOptions } from 'p-retry'
 import {
   SafeParseReturnType,
   ZodObject,
@@ -101,8 +102,7 @@ export interface LLMExample {
   output: string
 }
 
-export interface RetryConfig {
-  retries: number
+export interface RetryConfig extends RetryOptions {
   strategy: string
 }
 
@@ -132,15 +132,28 @@ export interface TaskResponseMetadata extends Record<string, any> {
 export interface LLMTaskResponseMetadata<
   TChatCompletionResponse extends Record<string, any> = Record<string, any>
 > extends TaskResponseMetadata {
+  messages?: ChatMessage[]
   completion?: TChatCompletionResponse
 }
 
 export interface TaskResponse<
   TOutput extends ZodRawShape | ZodTypeAny = z.ZodType<string>,
-  TMetadata extends Record<string, any> = Record<string, any>
+  TMetadata extends TaskResponseMetadata = TaskResponseMetadata
 > {
   result: ParsedData<TOutput>
   metadata: TMetadata
+}
+
+export interface TaskCallContext<
+  TInput extends ZodRawShape | ZodTypeAny = ZodTypeAny,
+  TOutput extends ZodRawShape | ZodTypeAny = z.ZodType<string>,
+  TMetadata extends TaskResponseMetadata = TaskResponseMetadata
+> {
+  input?: ParsedData<TInput>
+  retryMessage?: string
+
+  attemptNumber: number
+  metadata: Partial<TMetadata>
 }
 
 // export type ProgressFunction = (partialResponse: ChatMessage) => void

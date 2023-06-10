@@ -1,4 +1,4 @@
-import pRetry from 'p-retry'
+import pRetry, { FailedAttemptError } from 'p-retry'
 import { ZodRawShape, ZodTypeAny } from 'zod'
 
 import * as errors from '@/errors'
@@ -65,35 +65,40 @@ export abstract class BaseTask<
   public async callWithMetadata(
     input?: types.ParsedData<TInput>
   ): Promise<types.TaskResponse<TOutput>> {
-    const metadata: types.TaskResponseMetadata = {
+    const ctx: types.TaskCallContext<TInput, TOutput> = {
       input,
-      numRetries: 0
+      attemptNumber: 0,
+      metadata: {}
     }
 
-    do {
-      try {
-        const response = await this._call(input)
-        return response
-      } catch (err: any) {
+    const result = await pRetry(() => this._call(ctx), {
+      ...this._retryConfig,
+      onFailedAttempt: async (err: FailedAttemptError) => {
+        if (this._retryConfig.onFailedAttempt) {
+          await Promise.resolve(this._retryConfig.onFailedAttempt(err))
+        }
+
+        ctx.attemptNumber = err.attemptNumber + 1
+
         if (err instanceof errors.ZodOutputValidationError) {
-          // TODO
+          ctx.retryMessage = err.message
+        } else if (err instanceof errors.OutputValidationError) {
+          ctx.retryMessage = err.message
         } else {
           throw err
         }
       }
+    })
 
-      // TODO: handle errors, retry logic, and self-healing
-      metadata.numRetries = (metadata.numRetries ?? 0) + 1
-      if (metadata.numRetries > this._retryConfig.retries) {
-      }
-
-      // eslint-disable-next-line no-constant-condition
-    } while (true)
+    return {
+      result,
+      metadata: ctx.metadata
+    }
   }
 
   protected abstract _call(
-    input?: types.ParsedData<TInput>
-  ): Promise<types.TaskResponse<TOutput>>
+    ctx: types.TaskCallContext<TInput, TOutput>
+  ): Promise<types.ParsedData<TOutput>>
 
   // TODO
   // abstract stream({

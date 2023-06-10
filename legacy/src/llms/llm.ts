@@ -143,7 +143,10 @@ export abstract class BaseChatModel<
     messages: types.ChatMessage[]
   ): Promise<types.BaseChatCompletionResponse<TChatCompletionResponse>>
 
-  public async buildMessages(input?: types.ParsedData<TInput>) {
+  public async buildMessages(
+    input?: types.ParsedData<TInput>,
+    ctx?: types.TaskCallContext
+  ) {
     if (this._inputSchema) {
       const inputSchema =
         this._inputSchema instanceof z.ZodType
@@ -211,20 +214,29 @@ export abstract class BaseChatModel<
       }
     }
 
+    if (ctx?.retryMessage) {
+      messages.push({
+        role: 'system',
+        content: ctx.retryMessage
+      })
+    }
+
     // TODO: filter/compress messages based on token counts
 
     return messages
   }
 
   protected override async _call(
-    input?: types.ParsedData<TInput>
-  ): Promise<types.TaskResponse<TOutput>> {
-    const messages = await this.buildMessages(input)
+    ctx: types.TaskCallContext<TInput, TOutput, types.LLMTaskResponseMetadata>
+  ): Promise<types.ParsedData<TOutput>> {
+    const messages = await this.buildMessages(ctx.input, ctx)
 
     console.log('>>>')
     console.log(messages)
 
     const completion = await this._createChatCompletion(messages)
+    ctx.metadata.completion = completion
+
     let output: any = completion.message.content
 
     console.log('===')
@@ -246,7 +258,7 @@ export abstract class BaseChatModel<
             throw new errors.OutputValidationError(err.message, { cause: err })
           } else if (err instanceof SyntaxError) {
             throw new errors.OutputValidationError(
-              `Invalid JSON: ${err.message}`,
+              `Invalid JSON array: ${err.message}`,
               { cause: err }
             )
           } else {
@@ -262,7 +274,7 @@ export abstract class BaseChatModel<
             throw new errors.OutputValidationError(err.message, { cause: err })
           } else if (err instanceof SyntaxError) {
             throw new errors.OutputValidationError(
-              `Invalid JSON: ${err.message}`,
+              `Invalid JSON object: ${err.message}`,
               { cause: err }
             )
           } else {
@@ -310,23 +322,9 @@ export abstract class BaseChatModel<
         throw new errors.ZodOutputValidationError(safeResult.error)
       }
 
-      return {
-        result: safeResult.data,
-        metadata: {
-          input,
-          messages,
-          completion
-        }
-      }
+      return safeResult.data
     } else {
-      return {
-        result: output,
-        metadata: {
-          input,
-          messages,
-          completion
-        }
-      }
+      return output
     }
   }
 
