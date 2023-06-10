@@ -227,7 +227,7 @@ export abstract class BaseChatModel<
   }
 
   protected override async _call(
-    ctx: types.TaskCallContext<TInput, TOutput, types.LLMTaskResponseMetadata>
+    ctx: types.TaskCallContext<TInput, types.LLMTaskResponseMetadata>
   ): Promise<types.ParsedData<TOutput>> {
     const messages = await this.buildMessages(ctx.input, ctx)
 

@@ -59,19 +59,14 @@ export class MetaphorSearchTool extends BaseTask<
   }
 
   protected override async _call(
-    input: MetaphorSearchToolInput
-  ): Promise<types.TaskResponse<typeof MetaphorSearchToolOutputSchema>> {
-    // TODO: handle errors gracefully
-    input = this.inputSchema.parse(input)
-
+    ctx: types.TaskCallContext<typeof MetaphorSearchToolInputSchema>
+  ): Promise<MetaphorSearchToolOutput> {
+    // TODO: test required inputs
     const result = await this._metaphorClient.search({
-      query: input.query,
-      numResults: input.numResults
+      query: ctx.input!.query,
+      numResults: ctx.input!.numResults
     })
 
-    return {
-      result,
-      metadata: {}
-    }
+    return result
   }
 }

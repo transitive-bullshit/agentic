@@ -146,7 +146,6 @@ export interface TaskResponse<
 
 export interface TaskCallContext<
   TInput extends ZodRawShape | ZodTypeAny = ZodTypeAny,
-  TOutput extends ZodRawShape | ZodTypeAny = z.ZodType<string>,
   TMetadata extends TaskResponseMetadata = TaskResponseMetadata
 > {
   input?: ParsedData<TInput>

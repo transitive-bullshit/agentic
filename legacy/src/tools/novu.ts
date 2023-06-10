@@ -64,15 +64,8 @@ export class NovuNotificationTool extends BaseTask<
   }
 
   protected override async _call(
-    input: NovuNotificationToolInput
-  ): Promise<types.TaskResponse<typeof NovuNotificationToolOutputSchema>> {
-    // TODO: handle errors gracefully
-    input = this.inputSchema.parse(input)
-
-    const result = await this._novuClient.triggerEvent(input)
-    return {
-      result,
-      metadata: {}
-    }
+    ctx: types.TaskCallContext<typeof NovuNotificationToolInputSchema>
+  ): Promise<NovuNotificationToolOutput> {
+    return this._novuClient.triggerEvent(ctx.input!)
   }
 }

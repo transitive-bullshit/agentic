@@ -1,5 +1,5 @@
 import pRetry, { FailedAttemptError } from 'p-retry'
-import { ZodRawShape, ZodTypeAny } from 'zod'
+import { ZodRawShape, ZodTypeAny, z } from 'zod'
 
 import * as errors from '@/errors'
 import * as types from '@/types'
@@ -65,7 +65,21 @@ export abstract class BaseTask<
   public async callWithMetadata(
     input?: types.ParsedData<TInput>
   ): Promise<types.TaskResponse<TOutput>> {
-    const ctx: types.TaskCallContext<TInput, TOutput> = {
+    if (this.inputSchema) {
+      const inputSchema =
+        this.inputSchema instanceof z.ZodType
+          ? this.inputSchema
+          : z.object(this.inputSchema)
+
+      const safeInput = inputSchema.safeParse(input)
+      if (!safeInput.success) {
+        throw new Error(`Invalid input: ${safeInput.error.message}`)
+      }
+
+      input = safeInput.data
+    }
+
+    const ctx: types.TaskCallContext<TInput> = {
       input,
       attemptNumber: 0,
       metadata: {}
@@ -97,7 +111,7 @@ export abstract class BaseTask<
   }
 
   protected abstract _call(
-    ctx: types.TaskCallContext<TInput, TOutput>
+    ctx: types.TaskCallContext<TInput>
   ): Promise<types.ParsedData<TOutput>>
 
   // TODO

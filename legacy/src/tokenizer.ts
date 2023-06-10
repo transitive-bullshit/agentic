@@ -151,13 +151,13 @@ export function getContextSizeForModel(model: string): number {
   }
 }
 
-export const calculateMaxTokens = async ({
+export async function calculateMaxTokens({
   prompt,
   modelName
 }: {
   prompt: string
   modelName: string
-}) => {
+}) {
   // fallback to approximate calculation if tiktoken is not available
   let numTokens = Math.ceil(prompt.length / 4)
 
