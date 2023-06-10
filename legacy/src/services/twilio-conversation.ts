@@ -116,6 +116,11 @@ export type TwilioSendAndWaitOptions = {
    * A function to validate the reply message. If the function returns `true`, the reply is considered valid and the function will return the message. If the function returns `false`, the reply is considered invalid and the function will continue to wait for a reply until the timeout is reached.
    */
   validate?: (message: TwilioConversationMessage) => boolean
+
+  /**
+   * A stop signal from an [`AbortController`](https://developer.mozilla.org/en-US/docs/Web/API/AbortController), which can be used to abort retrying. More specifically, when `AbortController.abort(reason)` is called, the function will throw an error with the `reason` argument as the error message.
+   */
+  stopSignal?: AbortSignal
 }
 
 /**
@@ -242,14 +247,28 @@ export class TwilioConversationClient {
     recipientPhoneNumber,
     timeoutMs = DEFAULT_TWILIO_TIMEOUT_MS,
     intervalMs = DEFAULT_TWILIO_INTERVAL_MS,
-    validate = () => true
+    validate = () => true,
+    stopSignal
   }: TwilioSendAndWaitOptions) {
+    let aborted = false
+    stopSignal?.addEventListener(
+      'abort',
+      () => {
+        aborted = true
+      },
+      { once: true }
+    )
+
     const { sid: conversationSid } = await this.createConversation(name)
     await this.addParticipant({ conversationSid, recipientPhoneNumber })
     await this.sendMessage({ conversationSid, text })
     const start = Date.now()
     let nUserMessages = 0
-    while (Date.now() - start < timeoutMs) {
+    do {
+      if (aborted) {
+        await this.deleteConversation(conversationSid)
+        throw new Error('Aborted waiting for reply')
+      }
       const response = await this.fetchMessages(conversationSid)
       if (response.messages.length > 1) {
         const candidates = response.messages.filter(
@@ -269,7 +288,8 @@ export class TwilioConversationClient {
         nUserMessages = candidates.length
       }
       await sleep(intervalMs)
-    }
+    } while (Date.now() - start < timeoutMs)
+
     await this.deleteConversation(conversationSid)
     throw new Error('Reached timeout waiting for reply')
   }

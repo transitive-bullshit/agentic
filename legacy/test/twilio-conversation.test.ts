@@ -101,3 +101,38 @@ test('TwilioConversationClient.sendAndWaitForReply', async (t) => {
     }
   )
 })
+
+test('TwilioConversationClient.sendAndWaitForReply.stopSignal', async (t) => {
+  if (
+    !process.env.TWILIO_ACCOUNT_SID ||
+    !process.env.TWILIO_AUTH_TOKEN ||
+    !process.env.TWILIO_TEST_PHONE_NUMBER
+  ) {
+    return t.pass()
+  }
+
+  t.timeout(2 * 60 * 1000)
+  const client = new TwilioConversationClient()
+
+  await t.throwsAsync(
+    async () => {
+      const controller = new AbortController()
+      const promise = client.sendAndWaitForReply({
+        recipientPhoneNumber: process.env.TWILIO_TEST_PHONE_NUMBER as string,
+        text: 'Please confirm by replying with "yes" or "no".',
+        name: 'wait-for-reply-test',
+        validate: (message) =>
+          ['yes', 'no'].includes(message.body.toLowerCase()),
+        timeoutMs: 10000, // 10 seconds
+        intervalMs: 5000, // 5 seconds
+        stopSignal: controller.signal
+      })
+      controller.abort()
+      return promise
+    },
+    {
+      instanceOf: Error,
+      message: 'Aborted waiting for reply'
+    }
+  )
+})
