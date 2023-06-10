@@ -57,14 +57,14 @@ export type SlackBlock = {
 
 export type SlackPostMessageParams = {
   /**
-   * The ID of the channel to send the message to.
-   */
-  channel: string
-
-  /**
    * The text of the message to send.
    */
   text: string
+
+  /**
+   * The ID of the channel to send the message to.
+   */
+  channel?: string
 
   /**
    * The timestamp of a parent message to send the message as a reply to.
@@ -165,8 +165,14 @@ export class SlackClient {
    * Sends a message to a channel.
    */
   public async sendMessage(options: SlackPostMessageParams) {
+    if (!options.channel && !this.defaultChannel) {
+      throw new Error('Error: No channel specified')
+    }
     const res = await this.api.post('chat.postMessage', {
-      json: options
+      json: {
+        channel: this.defaultChannel,
+        ...options
+      }
     })
     return res.json<SlackMessage>()
   }

@@ -5,7 +5,7 @@ import { SlackClient } from '@/services/slack'
 import './_utils'
 
 test('SlackClient.sendMessage', async (t) => {
-  if (!process.env.SLACK_API_KEY) {
+  if (!process.env.SLACK_API_KEY || !process.env.SLACK_DEFAULT_CHANNEL) {
     return t.pass()
   }
 
@@ -13,14 +13,13 @@ test('SlackClient.sendMessage', async (t) => {
   const client = new SlackClient()
 
   const result = await client.sendMessage({
-    text: 'Hello World!',
-    channelId: 'D05B1AHA55L'
+    text: 'Hello World!'
   })
   t.truthy(result)
 })
 
 test('SlackClient.sendAndWaitForReply', async (t) => {
-  if (!process.env.SLACK_API_KEY) {
+  if (!process.env.SLACK_API_KEY || !process.env.SLACK_DEFAULT_CHANNEL) {
     return t.pass()
   }
 
@@ -31,7 +30,6 @@ test('SlackClient.sendAndWaitForReply', async (t) => {
     async () => {
       await client.sendAndWaitForReply({
         text: 'Please reply to this message with "yes" or "no"',
-        channelId: 'D05B1AHA55L',
         validate: () => false, // never validate so we timeout
         timeoutMs: 1000,
         intervalMs: 100
