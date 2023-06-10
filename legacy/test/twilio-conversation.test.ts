@@ -127,12 +127,12 @@ test('TwilioConversationClient.sendAndWaitForReply.stopSignal', async (t) => {
         intervalMs: 5000, // 5 seconds
         stopSignal: controller.signal
       })
-      controller.abort()
+      controller.abort('Aborted')
       return promise
     },
     {
       instanceOf: Error,
-      message: 'Aborted waiting for reply'
+      message: 'Aborted'
     }
   )
 })

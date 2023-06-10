@@ -267,7 +267,12 @@ export class TwilioConversationClient {
     do {
       if (aborted) {
         await this.deleteConversation(conversationSid)
-        throw new Error('Aborted waiting for reply')
+        const reason = stopSignal?.reason || 'Aborted waiting for reply'
+        if (reason instanceof Error) {
+          throw reason
+        } else {
+          throw new Error(reason)
+        }
       }
       const response = await this.fetchMessages(conversationSid)
       if (response.messages.length > 1) {
