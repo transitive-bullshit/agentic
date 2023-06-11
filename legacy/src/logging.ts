@@ -26,6 +26,7 @@ type SeverityType = (typeof Severity)[keyof typeof Severity]
  * Define minimum LOG_LEVEL, defaulting to Severity.INFO if not provided or if an invalid value is provided. Any events below that level won't be logged to the console.
  */
 let LOG_LEVEL: SeverityType = Severity.INFO
+
 if (
   process.env.DEBUG_LOG_LEVEL &&
   Severity[process.env.DEBUG_LOG_LEVEL.toUpperCase()] !== undefined

@@ -32,6 +32,7 @@ export class NovuClient {
     if (!apiKey) {
       throw new Error(`Error NovuClient missing required "apiKey"`)
     }
+
     this.apiKey = apiKey
     this.baseUrl = baseUrl
   }

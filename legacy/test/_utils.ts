@@ -27,6 +27,7 @@ const keyv = new Keyv({ store: keyvRedis, namespace: 'agentic-test' })
 
 // TODO: this is a lil hacky
 const keyvHas = (keyv.has as any).bind(keyv)
+
 keyv.has = async (key, ...rest) => {
   if (refreshTestCache) {
     return undefined

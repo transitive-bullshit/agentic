@@ -8,6 +8,7 @@ test('TwilioConversationClient.createConversation', async (t) => {
   if (!process.env.TWILIO_ACCOUNT_SID || !process.env.TWILIO_AUTH_TOKEN) {
     return t.pass()
   }
+
   const client = new TwilioConversationClient()
 
   const friendlyName = 'create-conversation-test'
@@ -25,6 +26,7 @@ test('TwilioConversationClient.addParticipant', async (t) => {
   ) {
     return t.pass()
   }
+
   const client = new TwilioConversationClient()
 
   const { sid: conversationSid } = await client.createConversation(
@@ -43,6 +45,7 @@ test('TwilioConversationClient.sendMessage', async (t) => {
   if (!process.env.TWILIO_ACCOUNT_SID || !process.env.TWILIO_AUTH_TOKEN) {
     return t.pass()
   }
+
   const client = new TwilioConversationClient()
 
   const text = 'Hello, world!'
@@ -59,6 +62,7 @@ test('TwilioConversationClient.fetchMessages', async (t) => {
   if (!process.env.TWILIO_ACCOUNT_SID || !process.env.TWILIO_AUTH_TOKEN) {
     return t.pass()
   }
+
   const client = new TwilioConversationClient()
 
   const { sid: conversationSid } = await client.createConversation(

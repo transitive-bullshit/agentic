@@ -148,11 +148,13 @@ export class TwilioConversationClient {
         `Error TwilioConversationClient missing required "accountSid" and/or "authToken"`
       )
     }
+
     if (!phoneNumber) {
       throw new Error(
         `Error TwilioConversationClient missing required "phoneNumber"`
       )
     }
+
     this.phoneNumber = phoneNumber
     this.api = ky.create({
       prefixUrl: baseUrl,
@@ -239,7 +241,7 @@ export class TwilioConversationClient {
    *
    * ### Notes
    *
-   * -   The implementation will poll for replies to the message until the timeout is reached. This is not ideal, but it is the only way to retrieve replies without spinning up a local server to receive webhook events.
+   * - The implementation will poll for replies to the message until the timeout is reached. This is not ideal, but it is the only way to retrieve replies without spinning up a local server to receive webhook events.
    */
   public async sendAndWaitForReply({
     text,
@@ -262,36 +264,45 @@ export class TwilioConversationClient {
     const { sid: conversationSid } = await this.createConversation(name)
     await this.addParticipant({ conversationSid, recipientPhoneNumber })
     await this.sendMessage({ conversationSid, text })
+
     const start = Date.now()
     let nUserMessages = 0
+
     do {
       if (aborted) {
         await this.deleteConversation(conversationSid)
         const reason = stopSignal?.reason || 'Aborted waiting for reply'
+
         if (reason instanceof Error) {
           throw reason
         } else {
           throw new Error(reason)
         }
       }
+
       const response = await this.fetchMessages(conversationSid)
+
       if (response.messages.length > 1) {
         const candidates = response.messages.filter(
           (message) => message.author !== BOT_NAME
         )
         const candidate = candidates[candidates.length - 1]
+
         if (validate(candidate)) {
           await this.deleteConversation(conversationSid)
           return candidate
         }
+
         if (nUserMessages !== candidates.length) {
           await this.sendMessage({
             text: `Invalid response: ${candidate.body}. Please try again with a valid response format.`,
             conversationSid
           })
         }
+
         nUserMessages = candidates.length
       }
+
       await sleep(intervalMs)
     } while (Date.now() - start < timeoutMs)
 

@@ -109,6 +109,7 @@ export abstract class BaseLLM<
     }
 
     const tokenizer = await this._tokenizerP
+
     if (tokenizer) {
       return tokenizer.encode(text).length
     }
@@ -255,6 +256,7 @@ export abstract class BaseChatModel<
         }
 
         const booleanOutput = booleanOutputs[output]
+
         if (booleanOutput !== undefined) {
           output = booleanOutput
         } else {
