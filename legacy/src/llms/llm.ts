@@ -318,6 +318,7 @@ export abstract class BaseChatModel<
       }
 
       const safeResult = outputSchema.safeParse(output)
+
       if (!safeResult.success) {
         throw new errors.ZodOutputValidationError(safeResult.error)
       }

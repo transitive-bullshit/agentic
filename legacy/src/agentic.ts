@@ -41,7 +41,7 @@ export class Agentic {
       modelParams: {},
       timeoutMs: 2 * 60000,
       retryConfig: {
-        attempts: 3,
+        retries: 3,
         strategy: 'heal',
         ...opts.openaiModelDefaults?.retryConfig
       },

@@ -72,6 +72,7 @@ export abstract class BaseTask<
           : z.object(this.inputSchema)
 
       const safeInput = inputSchema.safeParse(input)
+
       if (!safeInput.success) {
         throw new Error(`Invalid input: ${safeInput.error.message}`)
       }
