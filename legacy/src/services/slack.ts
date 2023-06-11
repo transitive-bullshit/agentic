@@ -290,13 +290,14 @@ export class SlackClient {
       throw new Error('Error: No channel specified')
     }
 
-    const res = await this.api.post('chat.postMessage', {
-      json: {
-        channel: this.defaultChannel,
-        ...options
-      }
-    })
-    return res.json<SlackMessage>()
+    return this.api
+      .post('chat.postMessage', {
+        json: {
+          channel: this.defaultChannel,
+          ...options
+        }
+      })
+      .json<SlackMessage>()
   }
 
   /**
@@ -305,20 +306,22 @@ export class SlackClient {
   public async fetchConversationHistory(
     options: SlackConversationHistoryParams
   ) {
-    const response = await this.api.get('conversations.history', {
-      searchParams: options
-    })
-    return response.json<SlackReplies>()
+    return this.api
+      .get('conversations.history', {
+        searchParams: options
+      })
+      .json<SlackReplies>()
   }
 
   /**
    * Fetches replies to a message in a channel.
    */
   protected async fetchReplies(options: SlackConversationRepliesParams) {
-    const response = await this.api.get('conversations.replies', {
-      searchParams: options
-    })
-    return response.json<SlackReplies>()
+    return this.api
+      .get('conversations.replies', {
+        searchParams: options
+      })
+      .json<SlackReplies>()
   }
 
   /**
