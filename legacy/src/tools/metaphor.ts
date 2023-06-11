@@ -38,13 +38,15 @@ export class MetaphorSearchTool extends BaseTask<
 
   constructor({
     agentic,
-    metaphorClient = new MetaphorClient()
+    metaphorClient = new MetaphorClient(),
+    ...rest
   }: {
     agentic: Agentic
     metaphorClient?: MetaphorClient
-  }) {
+  } & types.BaseTaskOptions) {
     super({
-      agentic
+      agentic,
+      ...rest
     })
 
     this._metaphorClient = metaphorClient
@@ -66,11 +68,9 @@ export class MetaphorSearchTool extends BaseTask<
     ctx: types.TaskCallContext<typeof MetaphorSearchToolInputSchema>
   ): Promise<MetaphorSearchToolOutput> {
     // TODO: test required inputs
-    const result = await this._metaphorClient.search({
+    return this._metaphorClient.search({
       query: ctx.input!.query,
       numResults: ctx.input!.numResults
     })
-
-    return result
   }
 }

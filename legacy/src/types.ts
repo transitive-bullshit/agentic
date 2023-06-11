@@ -1,33 +1,21 @@
 import * as anthropic from '@anthropic-ai/sdk'
 import * as openai from 'openai-fetch'
 import type { Options as RetryOptions } from 'p-retry'
-import {
-  SafeParseReturnType,
-  ZodObject,
-  ZodRawShape,
-  ZodTypeAny,
-  output,
-  z
-} from 'zod'
+import type { JsonObject } from 'type-fest'
+import { SafeParseReturnType, ZodTypeAny, output, z } from 'zod'
 
 import type { Agentic } from './agentic'
 
 export { openai }
 export { anthropic }
 
-export type ParsedData<T extends ZodRawShape | ZodTypeAny> =
-  T extends ZodTypeAny
-    ? output<T>
-    : T extends ZodRawShape
-    ? output<ZodObject<T>>
-    : never
+export type ParsedData<T extends ZodTypeAny> = T extends ZodTypeAny
+  ? output<T>
+  : never
 
-export type SafeParsedData<T extends ZodRawShape | ZodTypeAny> =
-  T extends ZodTypeAny
-    ? SafeParseReturnType<z.infer<T>, ParsedData<T>>
-    : T extends ZodRawShape
-    ? SafeParseReturnType<ZodObject<T>, ParsedData<T>>
-    : never
+export type SafeParsedData<T extends ZodTypeAny> = T extends ZodTypeAny
+  ? SafeParseReturnType<z.infer<T>, ParsedData<T>>
+  : never
 
 export interface BaseTaskOptions {
   agentic: Agentic
@@ -43,8 +31,8 @@ export interface BaseTaskOptions {
 }
 
 export interface BaseLLMOptions<
-  TInput extends ZodRawShape | ZodTypeAny = ZodTypeAny,
-  TOutput extends ZodRawShape | ZodTypeAny = z.ZodType<string>,
+  TInput extends ZodTypeAny = ZodTypeAny,
+  TOutput extends ZodTypeAny = z.ZodType<string>,
   TModelParams extends Record<string, any> = Record<string, any>
 > extends BaseTaskOptions {
   inputSchema?: TInput
@@ -57,8 +45,8 @@ export interface BaseLLMOptions<
 }
 
 export interface LLMOptions<
-  TInput extends ZodRawShape | ZodTypeAny = ZodTypeAny,
-  TOutput extends ZodRawShape | ZodTypeAny = z.ZodType<string>,
+  TInput extends ZodTypeAny = ZodTypeAny,
+  TOutput extends ZodTypeAny = z.ZodType<string>,
   TModelParams extends Record<string, any> = Record<string, any>
 > extends BaseLLMOptions<TInput, TOutput, TModelParams> {
   promptTemplate?: string
@@ -81,8 +69,8 @@ export interface ChatMessage {
 }
 
 export interface ChatModelOptions<
-  TInput extends ZodRawShape | ZodTypeAny = ZodTypeAny,
-  TOutput extends ZodRawShape | ZodTypeAny = z.ZodType<string>,
+  TInput extends ZodTypeAny = ZodTypeAny,
+  TOutput extends ZodTypeAny = z.ZodType<string>,
   TModelParams extends Record<string, any> = Record<string, any>
 > extends BaseLLMOptions<TInput, TOutput, TModelParams> {
   messages: ChatMessage[]
@@ -132,7 +120,7 @@ export interface LLMTaskResponseMetadata<
 }
 
 export interface TaskResponse<
-  TOutput extends ZodRawShape | ZodTypeAny = z.ZodType<string>,
+  TOutput extends ZodTypeAny = z.ZodType<string>,
   TMetadata extends TaskResponseMetadata = TaskResponseMetadata
 > {
   result: ParsedData<TOutput>
@@ -140,7 +128,7 @@ export interface TaskResponse<
 }
 
 export interface TaskCallContext<
-  TInput extends ZodRawShape | ZodTypeAny = ZodTypeAny,
+  TInput extends ZodTypeAny = ZodTypeAny,
   TMetadata extends TaskResponseMetadata = TaskResponseMetadata
 > {
   input?: ParsedData<TInput>
@@ -151,5 +139,9 @@ export interface TaskCallContext<
 }
 
 export type IDGeneratorFunction = () => string
+
+export interface SerializedTask extends JsonObject {
+  _taskName: string
+}
 
 // export type ProgressFunction = (partialResponse: ChatMessage) => void

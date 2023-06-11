@@ -1,4 +1,4 @@
-import { ZodRawShape, ZodTypeAny } from 'zod'
+import { ZodTypeAny } from 'zod'
 
 import { Agentic } from '@/agentic'
 import { BaseTask } from '@/task'
@@ -37,8 +37,8 @@ export class HumanFeedbackMechanismCLI extends HumanFeedbackMechanism {
 }
 
 export function withHumanFeedback<
-  TInput extends ZodRawShape | ZodTypeAny = ZodTypeAny,
-  TOutput extends ZodRawShape | ZodTypeAny = ZodTypeAny
+  TInput extends ZodTypeAny = ZodTypeAny,
+  TOutput extends ZodTypeAny = ZodTypeAny
 >(
   task: BaseTask<TInput, TOutput>,
   options: HumanFeedbackOptions = {

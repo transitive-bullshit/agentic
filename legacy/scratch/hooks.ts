@@ -4,8 +4,8 @@ export type Metadata = Record<string, unknown>;
 
 
 export abstract class BaseTask<
-  TInput extends ZodRawShape | ZodTypeAny = ZodTypeAny,
-  TOutput extends ZodRawShape | ZodTypeAny = ZodTypeAny
+  TInput extends ZodTypeAny = ZodTypeAny,
+  TOutput extends ZodTypeAny = ZodTypeAny
 > {
 
 // ...

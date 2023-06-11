@@ -2,7 +2,7 @@ import { JSONRepairError, jsonrepair } from 'jsonrepair'
 import pMap from 'p-map'
 import { dedent } from 'ts-dedent'
 import { type SetRequired } from 'type-fest'
-import { ZodRawShape, ZodTypeAny, z } from 'zod'
+import { ZodTypeAny, z } from 'zod'
 import { printNode, zodToTs } from 'zod-to-ts'
 
 import * as errors from '@/errors'
@@ -20,8 +20,8 @@ import {
 } from '@/utils'
 
 export abstract class BaseLLM<
-  TInput extends ZodRawShape | ZodTypeAny = z.ZodVoid,
-  TOutput extends ZodRawShape | ZodTypeAny = z.ZodType<string>,
+  TInput extends ZodTypeAny = z.ZodVoid,
+  TOutput extends ZodTypeAny = z.ZodType<string>,
   TModelParams extends Record<string, any> = Record<string, any>
 > extends BaseTask<TInput, TOutput> {
   protected _inputSchema: TInput | undefined
@@ -50,7 +50,7 @@ export abstract class BaseLLM<
     this._examples = options.examples
   }
 
-  input<U extends ZodRawShape | ZodTypeAny = TInput>(
+  input<U extends ZodTypeAny = TInput>(
     inputSchema: U
   ): BaseLLM<U, TOutput, TModelParams> {
     ;(this as unknown as BaseLLM<U, TOutput, TModelParams>)._inputSchema =
@@ -58,7 +58,7 @@ export abstract class BaseLLM<
     return this as unknown as BaseLLM<U, TOutput, TModelParams>
   }
 
-  output<U extends ZodRawShape | ZodTypeAny = TOutput>(
+  output<U extends ZodTypeAny = TOutput>(
     outputSchema: U
   ): BaseLLM<TInput, U, TModelParams> {
     ;(this as unknown as BaseLLM<TInput, U, TModelParams>)._outputSchema =
@@ -125,8 +125,8 @@ export abstract class BaseLLM<
 }
 
 export abstract class BaseChatModel<
-  TInput extends ZodRawShape | ZodTypeAny = ZodTypeAny,
-  TOutput extends ZodRawShape | ZodTypeAny = z.ZodType<string>,
+  TInput extends ZodTypeAny = ZodTypeAny,
+  TOutput extends ZodTypeAny = z.ZodType<string>,
   TModelParams extends Record<string, any> = Record<string, any>,
   TChatCompletionResponse extends Record<string, any> = Record<string, any>
 > extends BaseLLM<TInput, TOutput, TModelParams> {
@@ -152,13 +152,8 @@ export abstract class BaseChatModel<
     ctx?: types.TaskCallContext
   ) {
     if (this._inputSchema) {
-      const inputSchema =
-        this._inputSchema instanceof z.ZodType
-          ? this._inputSchema
-          : z.object(this._inputSchema)
-
       // TODO: handle errors gracefully
-      input = inputSchema.parse(input)
+      input = this.inputSchema.parse(input)
     }
 
     // TODO: validate input message variables against input schema
@@ -185,12 +180,7 @@ export abstract class BaseChatModel<
     }
 
     if (this._outputSchema) {
-      const outputSchema =
-        this._outputSchema instanceof z.ZodType
-          ? this._outputSchema
-          : z.object(this._outputSchema)
-
-      const { node } = zodToTs(outputSchema)
+      const { node } = zodToTs(this._outputSchema)
 
       if (node.kind === 152) {
         // handle raw strings differently
@@ -248,10 +238,7 @@ export abstract class BaseChatModel<
     console.log('<<<')
 
     if (this._outputSchema) {
-      const outputSchema =
-        this._outputSchema instanceof z.ZodType
-          ? this._outputSchema
-          : z.object(this._outputSchema)
+      const outputSchema = this._outputSchema
 
       if (outputSchema instanceof z.ZodArray) {
         try {

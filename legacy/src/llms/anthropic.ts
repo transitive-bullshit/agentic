@@ -86,4 +86,19 @@ export class AnthropicChatModel<
       response
     }
   }
+
+  public override clone(): AnthropicChatModel<TInput, TOutput> {
+    return new AnthropicChatModel<TInput, TOutput>({
+      agentic: this._agentic,
+      timeoutMs: this._timeoutMs,
+      retryConfig: this._retryConfig,
+      inputSchema: this._inputSchema,
+      outputSchema: this._outputSchema,
+      provider: this._provider,
+      model: this._model,
+      examples: this._examples,
+      messages: this._messages,
+      ...this._modelParams
+    })
+  }
 }

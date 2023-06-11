@@ -1,5 +1,5 @@
 import pRetry, { FailedAttemptError } from 'p-retry'
-import { ZodRawShape, ZodTypeAny, z } from 'zod'
+import { ZodTypeAny } from 'zod'
 
 import * as errors from '@/errors'
 import * as types from '@/types'
@@ -19,8 +19,8 @@ import { Agentic } from '@/agentic'
  *    - Invoking sub-agents
  */
 export abstract class BaseTask<
-  TInput extends ZodRawShape | ZodTypeAny = ZodTypeAny,
-  TOutput extends ZodRawShape | ZodTypeAny = ZodTypeAny
+  TInput extends ZodTypeAny = ZodTypeAny,
+  TOutput extends ZodTypeAny = ZodTypeAny
 > {
   protected _agentic: Agentic
   protected _id: string
@@ -51,6 +51,24 @@ export abstract class BaseTask<
 
   public abstract get name(): string
 
+  public serialize(): types.SerializedTask {
+    return {
+      _taskName: this.name
+      // inputSchema: this.inputSchema.serialize()
+    }
+  }
+
+  // public abstract deserialize<
+  //   TInput extends ZodTypeAny = ZodTypeAny,
+  //   TOutput extends ZodTypeAny = ZodTypeAny
+  // >(data: types.SerializedTask): BaseTask<TInput, TOutput>
+
+  // TODO: is this really necessary?
+  public clone(): BaseTask<TInput, TOutput> {
+    // TODO: override in subclass if needed
+    throw new Error(`clone not implemented for task "${this.name}"`)
+  }
+
   public retryConfig(retryConfig: types.RetryConfig) {
     this._retryConfig = retryConfig
     return this
@@ -67,12 +85,7 @@ export abstract class BaseTask<
     input?: types.ParsedData<TInput>
   ): Promise<types.TaskResponse<TOutput>> {
     if (this.inputSchema) {
-      const inputSchema =
-        this.inputSchema instanceof z.ZodType
-          ? this.inputSchema
-          : z.object(this.inputSchema)
-
-      const safeInput = inputSchema.safeParse(input)
+      const safeInput = this.inputSchema.safeParse(input)
 
       if (!safeInput.success) {
         throw new Error(`Invalid input: ${safeInput.error.message}`)

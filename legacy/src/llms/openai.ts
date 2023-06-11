@@ -50,4 +50,19 @@ export class OpenAIChatModel<
       messages
     })
   }
+
+  public override clone(): OpenAIChatModel<TInput, TOutput> {
+    return new OpenAIChatModel<TInput, TOutput>({
+      agentic: this._agentic,
+      timeoutMs: this._timeoutMs,
+      retryConfig: this._retryConfig,
+      inputSchema: this._inputSchema,
+      outputSchema: this._outputSchema,
+      provider: this._provider,
+      model: this._model,
+      examples: this._examples,
+      messages: this._messages,
+      ...this._modelParams
+    })
+  }
 }
