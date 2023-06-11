@@ -47,6 +47,7 @@
     "js-tiktoken": "^1.0.6",
     "jsonrepair": "^3.1.0",
     "ky": "^0.33.3",
+    "nanoid": "^4.0.2",
     "openai-fetch": "^1.5.1",
     "p-map": "^6.0.0",
     "p-retry": "^5.1.2",

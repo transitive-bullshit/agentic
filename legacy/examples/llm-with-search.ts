@@ -39,6 +39,7 @@ async function main() {
     .call({
       searchResults
     })
+  console.log(res)
 }
 
 main()

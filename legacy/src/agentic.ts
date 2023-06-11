@@ -6,6 +6,7 @@ import {
   HumanFeedbackMechanism,
   HumanFeedbackMechanismCLI
 } from './human-feedback'
+import { defaultIDGeneratorFn } from './utils'
 
 export class Agentic {
   // _taskMap: WeakMap<string, BaseTask<any, any>>
@@ -20,6 +21,8 @@ export class Agentic {
   >
   protected _defaultHumanFeedbackMechamism?: HumanFeedbackMechanism
 
+  protected _idGeneratorFn: types.IDGeneratorFunction
+
   constructor(opts: {
     openai?: types.openai.OpenAIClient
     anthropic?: types.anthropic.Client
@@ -29,6 +32,7 @@ export class Agentic {
       'provider' | 'model' | 'modelParams' | 'timeoutMs' | 'retryConfig'
     >
     defaultHumanFeedbackMechanism?: HumanFeedbackMechanism
+    idGeneratorFn?: types.IDGeneratorFunction
   }) {
     this._openai = opts.openai
     this._anthropic = opts.anthropic
@@ -54,6 +58,8 @@ export class Agentic {
     this._defaultHumanFeedbackMechamism =
       opts.defaultHumanFeedbackMechanism ??
       new HumanFeedbackMechanismCLI({ agentic: this })
+
+    this._idGeneratorFn = opts.idGeneratorFn ?? defaultIDGeneratorFn
   }
 
   public get openai(): types.openai.OpenAIClient | undefined {
@@ -66,6 +72,10 @@ export class Agentic {
 
   public get defaultHumanFeedbackMechamism() {
     return this._defaultHumanFeedbackMechamism
+  }
+
+  public get idGeneratorFn(): types.IDGeneratorFunction {
+    return this._idGeneratorFn
   }
 
   llm(

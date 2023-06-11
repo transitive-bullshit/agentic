@@ -58,6 +58,10 @@ export class MetaphorSearchTool extends BaseTask<
     return MetaphorSearchToolOutputSchema
   }
 
+  public override get name(): string {
+    return 'metaphor-search'
+  }
+
   protected override async _call(
     ctx: types.TaskCallContext<typeof MetaphorSearchToolInputSchema>
   ): Promise<MetaphorSearchToolOutput> {

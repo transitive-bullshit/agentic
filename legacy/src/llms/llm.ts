@@ -83,6 +83,10 @@ export abstract class BaseLLM<
     }
   }
 
+  public override get name(): string {
+    return `${this._provider}:chat:${this._model}`
+  }
+
   examples(examples: types.LLMExample[]) {
     this._examples = examples
     return this

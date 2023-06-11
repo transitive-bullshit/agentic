@@ -6,9 +6,9 @@ import * as types from '@/types'
 import { Agentic } from '@/agentic'
 
 /**
- * A `Task` is a typed, async function call that may be non-deterministic.
- *
- * Invoking a task is equivalent to sampling from a probability distribution.
+ * A `Task` is an async function call that may be non-deterministic. It has
+ * structured input and structured output. Invoking a task is equivalent to
+ * sampling from a probability distribution.
  *
  * Examples of tasks include:
  *    - LLM calls
@@ -23,6 +23,7 @@ export abstract class BaseTask<
   TOutput extends ZodRawShape | ZodTypeAny = ZodTypeAny
 > {
   protected _agentic: Agentic
+  protected _id: string
 
   protected _timeoutMs?: number
   protected _retryConfig: types.RetryConfig
@@ -34,21 +35,21 @@ export abstract class BaseTask<
       retries: 3,
       strategy: 'default'
     }
+    this._id = options.id ?? this._agentic.idGeneratorFn()
   }
 
   public get agentic(): Agentic {
     return this._agentic
   }
 
+  public get id(): string {
+    return this._id
+  }
+
   public abstract get inputSchema(): TInput
   public abstract get outputSchema(): TOutput
 
-  // TODO
-  // public abstract get nameForModel(): string
-  // public abstract get nameForHuman(): string
-
-  // public abstract get descForModel(): string
-  // public abstract get descForHuman(): string
+  public abstract get name(): string
 
   public retryConfig(retryConfig: types.RetryConfig) {
     this._retryConfig = retryConfig
@@ -83,7 +84,10 @@ export abstract class BaseTask<
     const ctx: types.TaskCallContext<TInput> = {
       input,
       attemptNumber: 0,
-      metadata: {}
+      metadata: {
+        taskName: this.name,
+        taskId: this.id
+      }
     }
 
     const result = await pRetry(() => this._call(ctx), {
@@ -93,6 +97,7 @@ export abstract class BaseTask<
           await Promise.resolve(this._retryConfig.onFailedAttempt(err))
         }
 
+        // TODO: log this task error
         ctx.attemptNumber = err.attemptNumber + 1
         ctx.metadata.error = err
 

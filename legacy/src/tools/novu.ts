@@ -63,6 +63,10 @@ export class NovuNotificationTool extends BaseTask<
     return NovuNotificationToolOutputSchema
   }
 
+  public override get name(): string {
+    return 'novu'
+  }
+
   protected override async _call(
     ctx: types.TaskCallContext<typeof NovuNotificationToolInputSchema>
   ): Promise<NovuNotificationToolOutput> {

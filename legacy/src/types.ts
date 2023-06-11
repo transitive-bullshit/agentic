@@ -34,6 +34,7 @@ export interface BaseTaskOptions {
 
   timeoutMs?: number
   retryConfig?: RetryConfig
+  id?: string
 
   // TODO
   // caching config
@@ -115,8 +116,8 @@ export type TaskError =
 
 export interface TaskResponseMetadata extends Record<string, any> {
   // task info
-  // - task name
-  // - task id
+  taskName: string
+  taskId: string
 
   // execution info
   success?: boolean
@@ -146,7 +147,9 @@ export interface TaskCallContext<
   retryMessage?: string
 
   attemptNumber: number
-  metadata: Partial<TMetadata>
+  metadata: TMetadata
 }
+
+export type IDGeneratorFunction = () => string
 
 // export type ProgressFunction = (partialResponse: ChatMessage) => void
