@@ -2,7 +2,7 @@ import { JSONRepairError, jsonrepair } from 'jsonrepair'
 import pMap from 'p-map'
 import { dedent } from 'ts-dedent'
 import { type SetRequired } from 'type-fest'
-import { ZodTypeAny, z } from 'zod'
+import { ZodType, z } from 'zod'
 import { printNode, zodToTs } from 'zod-to-ts'
 
 import * as errors from '@/errors'
@@ -20,12 +20,12 @@ import {
 } from '@/utils'
 
 export abstract class BaseLLM<
-  TInput extends ZodTypeAny = z.ZodVoid,
-  TOutput extends ZodTypeAny = z.ZodType<string>,
+  TInput = void,
+  TOutput = string,
   TModelParams extends Record<string, any> = Record<string, any>
 > extends BaseTask<TInput, TOutput> {
-  protected _inputSchema: TInput | undefined
-  protected _outputSchema: TOutput | undefined
+  protected _inputSchema: ZodType<TInput> | undefined
+  protected _outputSchema: ZodType<TOutput> | undefined
 
   protected _provider: string
   protected _model: string
@@ -50,36 +50,33 @@ export abstract class BaseLLM<
     this._examples = options.examples
   }
 
-  input<U extends ZodTypeAny = TInput>(
-    inputSchema: U
-  ): BaseLLM<U, TOutput, TModelParams> {
-    ;(this as unknown as BaseLLM<U, TOutput, TModelParams>)._inputSchema =
-      inputSchema
-    return this as unknown as BaseLLM<U, TOutput, TModelParams>
+  input<U>(inputSchema: ZodType<U>): BaseLLM<U, TOutput, TModelParams> {
+    const refinedInstance = this as unknown as BaseLLM<U, TOutput, TModelParams>
+    refinedInstance._inputSchema = inputSchema
+    return refinedInstance
   }
 
-  output<U extends ZodTypeAny = TOutput>(
-    outputSchema: U
-  ): BaseLLM<TInput, U, TModelParams> {
-    ;(this as unknown as BaseLLM<TInput, U, TModelParams>)._outputSchema =
-      outputSchema
-    return this as unknown as BaseLLM<TInput, U, TModelParams>
+  output<U>(outputSchema: ZodType<U>): BaseLLM<TInput, U, TModelParams> {
+    const refinedInstance = this as unknown as BaseLLM<TInput, U, TModelParams>
+    refinedInstance._outputSchema = outputSchema
+    return refinedInstance
   }
 
-  public override get inputSchema(): TInput {
+  public override get inputSchema(): ZodType<TInput> {
     if (this._inputSchema) {
       return this._inputSchema
     } else {
-      return z.void() as TInput
+      // TODO: improve typing
+      return z.void() as unknown as ZodType<TInput>
     }
   }
 
-  public override get outputSchema(): TOutput {
+  public override get outputSchema(): ZodType<TOutput> {
     if (this._outputSchema) {
       return this._outputSchema
     } else {
       // TODO: improve typing
-      return z.string() as unknown as TOutput
+      return z.string() as unknown as ZodType<TOutput>
     }
   }
 
@@ -125,8 +122,8 @@ export abstract class BaseLLM<
 }
 
 export abstract class BaseChatModel<
-  TInput extends ZodTypeAny = ZodTypeAny,
-  TOutput extends ZodTypeAny = z.ZodType<string>,
+  TInput = void,
+  TOutput = string,
   TModelParams extends Record<string, any> = Record<string, any>,
   TChatCompletionResponse extends Record<string, any> = Record<string, any>
 > extends BaseLLM<TInput, TOutput, TModelParams> {
@@ -148,8 +145,8 @@ export abstract class BaseChatModel<
   ): Promise<types.BaseChatCompletionResponse<TChatCompletionResponse>>
 
   public async buildMessages(
-    input?: types.ParsedData<TInput>,
-    ctx?: types.TaskCallContext
+    input?: TInput,
+    ctx?: types.TaskCallContext<TInput>
   ) {
     if (this._inputSchema) {
       // TODO: handle errors gracefully
@@ -222,7 +219,7 @@ export abstract class BaseChatModel<
 
   protected override async _call(
     ctx: types.TaskCallContext<TInput, types.LLMTaskResponseMetadata>
-  ): Promise<types.ParsedData<TOutput>> {
+  ): Promise<TOutput> {
     const messages = await this.buildMessages(ctx.input, ctx)
 
     console.log('>>>')

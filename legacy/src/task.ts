@@ -1,5 +1,5 @@
 import pRetry, { FailedAttemptError } from 'p-retry'
-import { ZodTypeAny } from 'zod'
+import { ZodType } from 'zod'
 
 import * as errors from '@/errors'
 import * as types from '@/types'
@@ -18,10 +18,7 @@ import { Agentic } from '@/agentic'
  *    - Native function calls
  *    - Invoking sub-agents
  */
-export abstract class BaseTask<
-  TInput extends ZodTypeAny = ZodTypeAny,
-  TOutput extends ZodTypeAny = ZodTypeAny
-> {
+export abstract class BaseTask<TInput = void, TOutput = string> {
   protected _agentic: Agentic
   protected _id: string
 
@@ -46,8 +43,8 @@ export abstract class BaseTask<
     return this._id
   }
 
-  public abstract get inputSchema(): TInput
-  public abstract get outputSchema(): TOutput
+  public abstract get inputSchema(): ZodType<TInput>
+  public abstract get outputSchema(): ZodType<TOutput>
 
   public abstract get name(): string
 
@@ -74,15 +71,13 @@ export abstract class BaseTask<
     return this
   }
 
-  public async call(
-    input?: types.ParsedData<TInput>
-  ): Promise<types.ParsedData<TOutput>> {
+  public async call(input?: TInput): Promise<TOutput> {
     const res = await this.callWithMetadata(input)
     return res.result
   }
 
   public async callWithMetadata(
-    input?: types.ParsedData<TInput>
+    input?: TInput
   ): Promise<types.TaskResponse<TOutput>> {
     if (this.inputSchema) {
       const safeInput = this.inputSchema.safeParse(input)
@@ -134,9 +129,7 @@ export abstract class BaseTask<
     }
   }
 
-  protected abstract _call(
-    ctx: types.TaskCallContext<TInput>
-  ): Promise<types.ParsedData<TOutput>>
+  protected abstract _call(ctx: types.TaskCallContext<TInput>): Promise<TOutput>
 
   // TODO
   // abstract stream({

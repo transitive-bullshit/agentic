@@ -36,8 +36,8 @@ export type NovuNotificationToolOutput = z.infer<
 >
 
 export class NovuNotificationTool extends BaseTask<
-  typeof NovuNotificationToolInputSchema,
-  typeof NovuNotificationToolOutputSchema
+  NovuNotificationToolInput,
+  NovuNotificationToolOutput
 > {
   _novuClient: NovuClient
 
@@ -68,7 +68,7 @@ export class NovuNotificationTool extends BaseTask<
   }
 
   protected override async _call(
-    ctx: types.TaskCallContext<typeof NovuNotificationToolInputSchema>
+    ctx: types.TaskCallContext<NovuNotificationToolInput>
   ): Promise<NovuNotificationToolOutput> {
     return this._novuClient.triggerEvent(ctx.input!)
   }

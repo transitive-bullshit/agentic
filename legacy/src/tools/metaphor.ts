@@ -31,8 +31,8 @@ export type MetaphorSearchToolOutput = z.infer<
 >
 
 export class MetaphorSearchTool extends BaseTask<
-  typeof MetaphorSearchToolInputSchema,
-  typeof MetaphorSearchToolOutputSchema
+  MetaphorSearchToolInput,
+  MetaphorSearchToolOutput
 > {
   _metaphorClient: MetaphorClient
 
@@ -65,7 +65,7 @@ export class MetaphorSearchTool extends BaseTask<
   }
 
   protected override async _call(
-    ctx: types.TaskCallContext<typeof MetaphorSearchToolInputSchema>
+    ctx: types.TaskCallContext<MetaphorSearchToolInput>
   ): Promise<MetaphorSearchToolOutput> {
     // TODO: test required inputs
     return this._metaphorClient.search({

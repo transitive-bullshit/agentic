@@ -2,7 +2,7 @@ import * as anthropic from '@anthropic-ai/sdk'
 import * as openai from 'openai-fetch'
 import type { Options as RetryOptions } from 'p-retry'
 import type { JsonObject } from 'type-fest'
-import { SafeParseReturnType, ZodTypeAny, output, z } from 'zod'
+import { SafeParseReturnType, ZodType, ZodTypeAny, output, z } from 'zod'
 
 import type { Agentic } from './agentic'
 
@@ -31,12 +31,12 @@ export interface BaseTaskOptions {
 }
 
 export interface BaseLLMOptions<
-  TInput extends ZodTypeAny = ZodTypeAny,
-  TOutput extends ZodTypeAny = z.ZodType<string>,
+  TInput = void,
+  TOutput = string,
   TModelParams extends Record<string, any> = Record<string, any>
 > extends BaseTaskOptions {
-  inputSchema?: TInput
-  outputSchema?: TOutput
+  inputSchema?: ZodType<TInput>
+  outputSchema?: ZodType<TOutput>
 
   provider?: string
   model?: string
@@ -45,8 +45,8 @@ export interface BaseLLMOptions<
 }
 
 export interface LLMOptions<
-  TInput extends ZodTypeAny = ZodTypeAny,
-  TOutput extends ZodTypeAny = z.ZodType<string>,
+  TInput = void,
+  TOutput = string,
   TModelParams extends Record<string, any> = Record<string, any>
 > extends BaseLLMOptions<TInput, TOutput, TModelParams> {
   promptTemplate?: string
@@ -69,8 +69,8 @@ export interface ChatMessage {
 }
 
 export interface ChatModelOptions<
-  TInput extends ZodTypeAny = ZodTypeAny,
-  TOutput extends ZodTypeAny = z.ZodType<string>,
+  TInput = void,
+  TOutput = string,
   TModelParams extends Record<string, any> = Record<string, any>
 > extends BaseLLMOptions<TInput, TOutput, TModelParams> {
   messages: ChatMessage[]
@@ -120,18 +120,18 @@ export interface LLMTaskResponseMetadata<
 }
 
 export interface TaskResponse<
-  TOutput extends ZodTypeAny = z.ZodType<string>,
+  TOutput = string,
   TMetadata extends TaskResponseMetadata = TaskResponseMetadata
 > {
-  result: ParsedData<TOutput>
+  result: TOutput
   metadata: TMetadata
 }
 
 export interface TaskCallContext<
-  TInput extends ZodTypeAny = ZodTypeAny,
+  TInput = void,
   TMetadata extends TaskResponseMetadata = TaskResponseMetadata
 > {
-  input?: ParsedData<TInput>
+  input?: TInput
   retryMessage?: string
 
   attemptNumber: number
