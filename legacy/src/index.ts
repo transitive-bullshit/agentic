@@ -1,6 +1,7 @@
 export * from './agentic'
 export * from './task'
 export * from './llms'
+export * from './errors'
 export * from './tokenizer'
 export * from './human-feedback'
 

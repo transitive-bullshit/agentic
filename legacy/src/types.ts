@@ -103,7 +103,7 @@ export interface LLMExample {
 }
 
 export interface RetryConfig extends RetryOptions {
-  strategy: string
+  strategy?: string
 }
 
 export type TaskError =
@@ -118,21 +118,15 @@ export interface TaskResponseMetadata extends Record<string, any> {
   // - task name
   // - task id
 
-  // config
-  input?: any
-  stream?: boolean
-
   // execution info
   success?: boolean
-  numRetries?: number
-  errorType?: TaskError
   error?: Error
+  numRetries?: number
 }
 
 export interface LLMTaskResponseMetadata<
   TChatCompletionResponse extends Record<string, any> = Record<string, any>
 > extends TaskResponseMetadata {
-  messages?: ChatMessage[]
   completion?: TChatCompletionResponse
 }
 

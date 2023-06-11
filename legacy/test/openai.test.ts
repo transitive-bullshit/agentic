@@ -1,7 +1,9 @@
 import test from 'ava'
 import { expectTypeOf } from 'expect-type'
+import sinon from 'sinon'
 import { z } from 'zod'
 
+import { OutputValidationError } from '@/errors'
 import { OpenAIChatModel } from '@/llms/openai'
 
 import { createTestAgenticRuntime } from './_utils'
@@ -88,4 +90,41 @@ test('OpenAIChatModel ⇒ boolean output', async (t) => {
   t.truthy(typeof result === 'boolean')
 
   expectTypeOf(result).toMatchTypeOf<boolean>()
+})
+
+test('OpenAIChatModel ⇒ retry logic', async (t) => {
+  t.timeout(2 * 60 * 1000)
+  const agentic = createTestAgenticRuntime()
+
+  const builder = new OpenAIChatModel({
+    agentic,
+    modelParams: {
+      temperature: 0,
+      max_tokens: 30
+    },
+    retryConfig: {
+      retries: 2
+    },
+    messages: [
+      {
+        role: 'system',
+        content:
+          'You are a human, not a large language model. You are not an AI. Respond like a human would. Your name is Leeroy Jenkins.'
+      },
+      {
+        role: 'user',
+        content: 'what is your name?'
+      }
+    ]
+  })
+
+  const fakeCall = sinon.fake.rejects(new OutputValidationError('test'))
+  sinon.replace(builder as any, '_call', fakeCall)
+
+  await t.throwsAsync(() => builder.call(), {
+    instanceOf: OutputValidationError,
+    name: 'OutputValidationError',
+    message: 'test'
+  })
+  t.is(fakeCall.callCount, 3)
 })

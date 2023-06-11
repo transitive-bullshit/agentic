@@ -94,6 +94,7 @@ export abstract class BaseTask<
         }
 
         ctx.attemptNumber = err.attemptNumber + 1
+        ctx.metadata.error = err
 
         if (err instanceof errors.ZodOutputValidationError) {
           ctx.retryMessage = err.message
@@ -104,6 +105,10 @@ export abstract class BaseTask<
         }
       }
     })
+
+    ctx.metadata.success = true
+    ctx.metadata.numRetries = ctx.attemptNumber
+    ctx.metadata.error = undefined
 
     return {
       result,
