@@ -272,6 +272,7 @@ export class SlackClient {
     if (!apiKey) {
       throw new Error(`Error SlackClient missing required "apiKey"`)
     }
+
     this.api = ky.create({
       prefixUrl: baseUrl,
       headers: {
@@ -288,6 +289,7 @@ export class SlackClient {
     if (!options.channel && !this.defaultChannel) {
       throw new Error('Error: No channel specified')
     }
+
     const res = await this.api.post('chat.postMessage', {
       json: {
         channel: this.defaultChannel,
@@ -326,12 +328,15 @@ export class SlackClient {
     let candidates: SlackMessage[] = []
     const history = await this.fetchConversationHistory({ channel })
     const directReplies = await this.fetchReplies({ channel, ts })
+
     if (directReplies.ok) {
       candidates = candidates.concat(directReplies.messages)
     }
+
     if (history.ok) {
       candidates = candidates.concat(history.messages)
     }
+
     // Filter out older messages before the message was sent and drop bot messages:
     candidates = candidates.filter(
       (message) => message.ts > ts && !message.bot_id
@@ -362,6 +367,7 @@ export class SlackClient {
     if (!channel) {
       throw new Error(`Error SlackClient missing required "channel"`)
     }
+
     let aborted = false
     stopSignal?.addEventListener(
       'abort',
@@ -372,26 +378,34 @@ export class SlackClient {
     )
 
     const res = await this.sendMessage({ text, channel })
+
     if (!res.ts) {
       throw new Error('Missing ts in response')
     }
+
     const start = Date.now()
     let nUserMessages = 0
+
     do {
       if (aborted) {
         const reason = stopSignal?.reason || 'Aborted waiting for reply'
+
         if (reason instanceof Error) {
           throw reason
         } else {
           throw new Error(reason)
         }
       }
+
       const candidates = await this.fetchCandidates(channel, res.ts)
+
       if (candidates.length > 0) {
         const candidate = candidates[0]
+
         if (validate(candidate)) {
           return candidate
         }
+
         if (nUserMessages !== candidates.length) {
           await this.sendMessage({
             text: `Invalid response: ${candidate.text}. Please try again following the instructions.`,
@@ -399,10 +413,13 @@ export class SlackClient {
             thread_ts: candidate.ts
           })
         }
+
         nUserMessages = candidates.length
       }
+
       await sleep(intervalMs)
     } while (Date.now() - start < timeoutMs)
+
     throw new Error('Reached timeout waiting for reply')
   }
 }
