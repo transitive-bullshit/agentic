@@ -2,6 +2,7 @@
   "parser": "@typescript-eslint/parser",
   "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
   "plugins": ["@typescript-eslint"],
+  "root": true,
   "env": {
     "browser": false,
     "es6": true
