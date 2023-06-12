@@ -4,7 +4,7 @@ import { TwilioConversationClient } from '@/services/twilio-conversation'
 
 import './_utils'
 
-test('TwilioConversationClient.createConversation', async (t) => {
+test.serial('TwilioConversationClient.createConversation', async (t) => {
   if (!process.env.TWILIO_ACCOUNT_SID || !process.env.TWILIO_AUTH_TOKEN) {
     return t.pass()
   }
@@ -18,7 +18,7 @@ test('TwilioConversationClient.createConversation', async (t) => {
   await client.deleteConversation(conversation.sid)
 })
 
-test('TwilioConversationClient.addParticipant', async (t) => {
+test.serial('TwilioConversationClient.addParticipant', async (t) => {
   if (
     !process.env.TWILIO_ACCOUNT_SID ||
     !process.env.TWILIO_AUTH_TOKEN ||
@@ -41,7 +41,7 @@ test('TwilioConversationClient.addParticipant', async (t) => {
   await client.deleteConversation(conversationSid)
 })
 
-test('TwilioConversationClient.sendMessage', async (t) => {
+test.serial('TwilioConversationClient.sendMessage', async (t) => {
   if (!process.env.TWILIO_ACCOUNT_SID || !process.env.TWILIO_AUTH_TOKEN) {
     return t.pass()
   }
@@ -58,7 +58,7 @@ test('TwilioConversationClient.sendMessage', async (t) => {
   await client.deleteConversation(conversationSid)
 })
 
-test('TwilioConversationClient.fetchMessages', async (t) => {
+test.serial('TwilioConversationClient.fetchMessages', async (t) => {
   if (!process.env.TWILIO_ACCOUNT_SID || !process.env.TWILIO_AUTH_TOKEN) {
     return t.pass()
   }
@@ -75,7 +75,7 @@ test('TwilioConversationClient.fetchMessages', async (t) => {
   await client.deleteConversation(conversationSid)
 })
 
-test('TwilioConversationClient.sendAndWaitForReply', async (t) => {
+test.serial('TwilioConversationClient.sendAndWaitForReply', async (t) => {
   if (
     !process.env.TWILIO_ACCOUNT_SID ||
     !process.env.TWILIO_AUTH_TOKEN ||
@@ -101,42 +101,45 @@ test('TwilioConversationClient.sendAndWaitForReply', async (t) => {
     },
     {
       instanceOf: Error,
-      message: 'Reached timeout waiting for reply'
+      message: 'Twilio timeout waiting for reply'
     }
   )
 })
 
-test('TwilioConversationClient.sendAndWaitForReply.stopSignal', async (t) => {
-  if (
-    !process.env.TWILIO_ACCOUNT_SID ||
-    !process.env.TWILIO_AUTH_TOKEN ||
-    !process.env.TWILIO_TEST_PHONE_NUMBER
-  ) {
-    return t.pass()
+test.serial(
+  'TwilioConversationClient.sendAndWaitForReply.stopSignal',
+  async (t) => {
+    if (
+      !process.env.TWILIO_ACCOUNT_SID ||
+      !process.env.TWILIO_AUTH_TOKEN ||
+      !process.env.TWILIO_TEST_PHONE_NUMBER
+    ) {
+      return t.pass()
+    }
+
+    t.timeout(2 * 60 * 1000)
+    const client = new TwilioConversationClient()
+
+    await t.throwsAsync(
+      async () => {
+        const controller = new AbortController()
+        const promise = client.sendAndWaitForReply({
+          recipientPhoneNumber: process.env.TWILIO_TEST_PHONE_NUMBER!,
+          text: 'Please confirm by replying with "yes" or "no".',
+          name: 'wait-for-reply-test',
+          validate: (message) =>
+            ['yes', 'no'].includes(message.body.toLowerCase()),
+          timeoutMs: 10000, // 10 seconds
+          intervalMs: 5000, // 5 seconds
+          stopSignal: controller.signal
+        })
+        controller.abort('Aborted')
+        return promise
+      },
+      {
+        instanceOf: Error,
+        message: 'Aborted'
+      }
+    )
   }
-
-  t.timeout(2 * 60 * 1000)
-  const client = new TwilioConversationClient()
-
-  await t.throwsAsync(
-    async () => {
-      const controller = new AbortController()
-      const promise = client.sendAndWaitForReply({
-        recipientPhoneNumber: process.env.TWILIO_TEST_PHONE_NUMBER!,
-        text: 'Please confirm by replying with "yes" or "no".',
-        name: 'wait-for-reply-test',
-        validate: (message) =>
-          ['yes', 'no'].includes(message.body.toLowerCase()),
-        timeoutMs: 10000, // 10 seconds
-        intervalMs: 5000, // 5 seconds
-        stopSignal: controller.signal
-      })
-      controller.abort('Aborted')
-      return promise
-    },
-    {
-      instanceOf: Error,
-      message: 'Aborted'
-    }
-  )
-})
+)
