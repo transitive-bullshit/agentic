@@ -19,6 +19,7 @@ import {
   extractJSONObjectFromString
 } from '@/utils'
 
+// TODO: TInput should only be allowed to be an object
 export abstract class BaseLLM<
   TInput = void,
   TOutput = string,
@@ -140,6 +141,28 @@ export abstract class BaseChatModel<
     super(options)
 
     this._messages = options.messages
+  }
+
+  // TODO: use polymorphic `this` type to return correct BaseLLM subclass type
+  input<U>(inputSchema: ZodType<U>): BaseChatModel<U, TOutput, TModelParams> {
+    const refinedInstance = this as unknown as BaseChatModel<
+      U,
+      TOutput,
+      TModelParams
+    >
+    refinedInstance._inputSchema = inputSchema
+    return refinedInstance
+  }
+
+  // TODO: use polymorphic `this` type to return correct BaseLLM subclass type
+  output<U>(outputSchema: ZodType<U>): BaseChatModel<TInput, U, TModelParams> {
+    const refinedInstance = this as unknown as BaseChatModel<
+      TInput,
+      U,
+      TModelParams
+    >
+    refinedInstance._outputSchema = outputSchema
+    return refinedInstance
   }
 
   protected abstract _createChatCompletion(

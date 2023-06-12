@@ -15,7 +15,7 @@ test('TwilioConversationClient.createConversation', async (t) => {
   const conversation = await client.createConversation(friendlyName)
   t.is(conversation.friendly_name, friendlyName)
 
-  client.deleteConversation(conversation.sid)
+  await client.deleteConversation(conversation.sid)
 })
 
 test('TwilioConversationClient.addParticipant', async (t) => {
@@ -90,7 +90,7 @@ test('TwilioConversationClient.sendAndWaitForReply', async (t) => {
   await t.throwsAsync(
     async () => {
       await client.sendAndWaitForReply({
-        recipientPhoneNumber: process.env.TWILIO_TEST_PHONE_NUMBER as string,
+        recipientPhoneNumber: process.env.TWILIO_TEST_PHONE_NUMBER!,
         text: 'Please confirm by replying with "yes" or "no".',
         name: 'wait-for-reply-test',
         validate: (message) =>
@@ -122,7 +122,7 @@ test('TwilioConversationClient.sendAndWaitForReply.stopSignal', async (t) => {
     async () => {
       const controller = new AbortController()
       const promise = client.sendAndWaitForReply({
-        recipientPhoneNumber: process.env.TWILIO_TEST_PHONE_NUMBER as string,
+        recipientPhoneNumber: process.env.TWILIO_TEST_PHONE_NUMBER!,
         text: 'Please confirm by replying with "yes" or "no".',
         name: 'wait-for-reply-test',
         validate: (message) =>

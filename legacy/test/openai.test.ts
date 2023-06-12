@@ -4,9 +4,47 @@ import sinon from 'sinon'
 import { z } from 'zod'
 
 import { OutputValidationError, TemplateValidationError } from '@/errors'
-import { OpenAIChatModel } from '@/llms/openai'
+import { BaseChatModel, OpenAIChatModel } from '@/llms'
 
 import { createTestAgenticRuntime } from './_utils'
+
+test('OpenAIChatModel ⇒ types', async (t) => {
+  const agentic = createTestAgenticRuntime()
+  const b = agentic.gpt4('test')
+  t.pass()
+
+  expectTypeOf(b).toMatchTypeOf<OpenAIChatModel<any, string>>()
+
+  expectTypeOf(
+    b.input(
+      z.object({
+        foo: z.string()
+      })
+    )
+  ).toMatchTypeOf<
+    BaseChatModel<
+      {
+        foo: string
+      },
+      string
+    >
+  >()
+
+  expectTypeOf(
+    b.output(
+      z.object({
+        bar: z.string().optional()
+      })
+    )
+  ).toMatchTypeOf<
+    BaseChatModel<
+      any,
+      {
+        bar?: string
+      }
+    >
+  >()
+})
 
 test('OpenAIChatModel ⇒ string output', async (t) => {
   t.timeout(2 * 60 * 1000)
@@ -165,7 +203,7 @@ test('OpenAIChatModel ⇒ template variables', async (t) => {
   }
 })
 
-test.only('OpenAIChatModel ⇒ missing template variable', async (t) => {
+test('OpenAIChatModel ⇒ missing template variable', async (t) => {
   t.timeout(2 * 60 * 1000)
   const agentic = createTestAgenticRuntime()
 
