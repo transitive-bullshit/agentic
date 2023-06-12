@@ -3,7 +3,7 @@ import { type SetOptional } from 'type-fest'
 import * as types from '@/types'
 import { DEFAULT_OPENAI_MODEL } from '@/constants'
 
-import { BaseChatModel } from './llm'
+import { BaseChatModel } from './chat'
 
 export class OpenAIChatModel<
   TInput = any,

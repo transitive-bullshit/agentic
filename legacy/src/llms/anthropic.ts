@@ -4,7 +4,7 @@ import { type SetOptional } from 'type-fest'
 import * as types from '@/types'
 import { DEFAULT_ANTHROPIC_MODEL } from '@/constants'
 
-import { BaseChatModel } from './llm'
+import { BaseChatModel } from './chat'
 
 const defaultStopSequences = [anthropic.HUMAN_PROMPT]
 

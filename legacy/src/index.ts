@@ -8,5 +8,7 @@ export * from './human-feedback'
 export * from './services/metaphor'
 export * from './services/serpapi'
 export * from './services/novu'
+
+export * from './tools/calculator'
 export * from './tools/metaphor'
 export * from './tools/novu'
