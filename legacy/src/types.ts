@@ -95,13 +95,6 @@ export interface RetryConfig extends RetryOptions {
   strategy?: string
 }
 
-export type TaskError =
-  | 'timeout'
-  | 'provider'
-  | 'validation'
-  | 'unknown'
-  | string
-
 export interface TaskResponseMetadata extends Record<string, any> {
   // task info
   taskName: string

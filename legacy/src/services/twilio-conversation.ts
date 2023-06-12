@@ -1,6 +1,6 @@
-import ky, { KyResponse } from 'ky'
+import ky, { type KyResponse } from 'ky'
 
-import { BOT_NAME } from '@/constants'
+import { DEFAULT_BOT_NAME } from '@/constants'
 import { sleep } from '@/utils'
 
 export const TWILIO_CONVERSATION_BASE_URL =
@@ -131,17 +131,20 @@ export type TwilioSendAndWaitOptions = {
 export class TwilioConversationClient {
   api: typeof ky
   phoneNumber: string
+  botName: string
 
   constructor({
     accountSid = process.env.TWILIO_ACCOUNT_SID,
     authToken = process.env.TWILIO_AUTH_TOKEN,
     phoneNumber = process.env.TWILIO_PHONE_NUMBER,
-    baseUrl = TWILIO_CONVERSATION_BASE_URL
+    baseUrl = TWILIO_CONVERSATION_BASE_URL,
+    botName = DEFAULT_BOT_NAME
   }: {
     accountSid?: string
     authToken?: string
     phoneNumber?: string
     baseUrl?: string
+    botName?: string
   } = {}) {
     if (!accountSid || !authToken) {
       throw new Error(
@@ -155,7 +158,9 @@ export class TwilioConversationClient {
       )
     }
 
+    this.botName = botName
     this.phoneNumber = phoneNumber
+
     this.api = ky.create({
       prefixUrl: baseUrl,
       headers: {
@@ -219,7 +224,7 @@ export class TwilioConversationClient {
   }) {
     const params = new URLSearchParams()
     params.set('Body', text)
-    params.set('Author', BOT_NAME)
+    params.set('Author', this.botName)
     return this.api
       .post(`Conversations/${conversationSid}/Messages`, {
         body: params
@@ -284,7 +289,7 @@ export class TwilioConversationClient {
 
       if (response.messages.length > 1) {
         const candidates = response.messages.filter(
-          (message) => message.author !== BOT_NAME
+          (message) => message.author !== this.botName
         )
         const candidate = candidates[candidates.length - 1]
 
@@ -307,6 +312,6 @@ export class TwilioConversationClient {
     } while (Date.now() - start < timeoutMs)
 
     await this.deleteConversation(conversationSid)
-    throw new Error('Reached timeout waiting for reply')
+    throw new Error('Twilio timeout waiting for reply')
   }
 }

@@ -1,48 +1,21 @@
-import { z } from 'zod'
-
+import * as metaphor from '@/services/metaphor'
 import * as types from '@/types'
 import { Agentic } from '@/agentic'
-import { MetaphorClient } from '@/services/metaphor'
 import { BaseTask } from '@/task'
 
-export const MetaphorSearchToolInputSchema = z.object({
-  query: z.string(),
-  numResults: z.number().optional()
-})
-
-export type MetaphorSearchToolInput = z.infer<
-  typeof MetaphorSearchToolInputSchema
->
-
-export const MetaphorSearchToolOutputSchema = z.object({
-  results: z.array(
-    z.object({
-      author: z.string().nullable(),
-      dateCreated: z.string().nullable(),
-      title: z.string().nullable(),
-      score: z.number(),
-      url: z.string()
-    })
-  )
-})
-
-export type MetaphorSearchToolOutput = z.infer<
-  typeof MetaphorSearchToolOutputSchema
->
-
 export class MetaphorSearchTool extends BaseTask<
-  MetaphorSearchToolInput,
-  MetaphorSearchToolOutput
+  metaphor.MetaphorSearchInput,
+  metaphor.MetaphorSearchOutput
 > {
-  _metaphorClient: MetaphorClient
+  _metaphorClient: metaphor.MetaphorClient
 
   constructor({
     agentic,
-    metaphorClient = new MetaphorClient(),
+    metaphorClient = new metaphor.MetaphorClient(),
     ...rest
   }: {
     agentic: Agentic
-    metaphorClient?: MetaphorClient
+    metaphorClient?: metaphor.MetaphorClient
   } & types.BaseTaskOptions) {
     super({
       agentic,
@@ -53,11 +26,11 @@ export class MetaphorSearchTool extends BaseTask<
   }
 
   public override get inputSchema() {
-    return MetaphorSearchToolInputSchema
+    return metaphor.MetaphorSearchInputSchema
   }
 
   public override get outputSchema() {
-    return MetaphorSearchToolOutputSchema
+    return metaphor.MetaphorSearchOutputSchema
   }
 
   public override get name(): string {
@@ -65,12 +38,9 @@ export class MetaphorSearchTool extends BaseTask<
   }
 
   protected override async _call(
-    ctx: types.TaskCallContext<MetaphorSearchToolInput>
-  ): Promise<MetaphorSearchToolOutput> {
+    ctx: types.TaskCallContext<metaphor.MetaphorSearchInput>
+  ): Promise<metaphor.MetaphorSearchOutput> {
     // TODO: test required inputs
-    return this._metaphorClient.search({
-      query: ctx.input!.query,
-      numResults: ctx.input!.numResults
-    })
+    return this._metaphorClient.search(ctx.input!)
   }
 }

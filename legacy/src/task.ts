@@ -48,18 +48,6 @@ export abstract class BaseTask<TInput = void, TOutput = string> {
 
   public abstract get name(): string
 
-  public serialize(): types.SerializedTask {
-    return {
-      _taskName: this.name
-      // inputSchema: this.inputSchema.serialize()
-    }
-  }
-
-  // public abstract deserialize<
-  //   TInput extends ZodTypeAny = ZodTypeAny,
-  //   TOutput extends ZodTypeAny = ZodTypeAny
-  // >(data: types.SerializedTask): BaseTask<TInput, TOutput>
-
   // TODO: is this really necessary?
   public clone(): BaseTask<TInput, TOutput> {
     // TODO: override in subclass if needed

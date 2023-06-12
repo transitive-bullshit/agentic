@@ -1,7 +1,7 @@
 import { type SetOptional } from 'type-fest'
 
 import * as types from '@/types'
-import { defaultOpenAIModel } from '@/constants'
+import { DEFAULT_OPENAI_MODEL } from '@/constants'
 
 import { BaseChatModel } from './llm'
 
@@ -25,7 +25,7 @@ export class OpenAIChatModel<
   ) {
     super({
       provider: 'openai',
-      model: options.modelParams?.model || defaultOpenAIModel,
+      model: options.modelParams?.model || DEFAULT_OPENAI_MODEL,
       ...options
     })
 

@@ -1,18 +1,36 @@
 import ky from 'ky'
+import { z } from 'zod'
 
 export const METAPHOR_BASE_URL = 'https://api.metaphor.systems'
 
-export type MetaphorSearchResult = {
-  author: string | null
-  dateCreated: string | null
-  title: string | null
-  score: number
-  url: string
-}
+// https://metaphorapi.readme.io/reference/search
+export const MetaphorSearchInputSchema = z.object({
+  query: z.string(),
+  numResults: z.number().optional(),
+  useQueryExpansion: z.boolean().optional(),
+  includeDomains: z.array(z.string()).optional(),
+  excludeDomains: z.array(z.string()).optional(),
+  startCrawlDate: z.string().optional(),
+  endCrawlDate: z.string().optional(),
+  startPublishedDate: z.string().optional(),
+  endPublishedDate: z.string().optional()
+})
 
-export type MetaphorSearchResponse = {
-  results: MetaphorSearchResult[]
-}
+export type MetaphorSearchInput = z.infer<typeof MetaphorSearchInputSchema>
+
+export const MetaphorSearchOutputSchema = z.object({
+  results: z.array(
+    z.object({
+      author: z.string().nullable(),
+      publishedDate: z.string().nullable(),
+      title: z.string().nullable(),
+      score: z.number(),
+      url: z.string()
+    })
+  )
+})
+
+export type MetaphorSearchOutput = z.infer<typeof MetaphorSearchOutputSchema>
 
 export class MetaphorClient {
   apiKey: string
@@ -33,23 +51,14 @@ export class MetaphorClient {
     this.baseUrl = baseUrl
   }
 
-  async search({
-    query,
-    numResults = 10
-  }: {
-    query: string
-    numResults?: number
-  }) {
+  async search(params: MetaphorSearchInput) {
     return ky
       .post(`${this.baseUrl}/search`, {
         headers: {
           'x-api-key': this.apiKey
         },
-        json: {
-          query,
-          numResults
-        }
+        json: params
       })
-      .json<MetaphorSearchResponse>()
+      .json<MetaphorSearchOutput>()
   }
 }

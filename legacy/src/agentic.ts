@@ -1,5 +1,5 @@
 import * as types from '@/types'
-import { defaultOpenAIModel } from '@/constants'
+import { DEFAULT_OPENAI_MODEL } from '@/constants'
 import { OpenAIChatModel } from '@/llms/openai'
 
 import {
@@ -20,7 +20,6 @@ export class Agentic {
     'provider' | 'model' | 'modelParams' | 'timeoutMs' | 'retryConfig'
   >
   protected _defaultHumanFeedbackMechamism?: HumanFeedbackMechanism
-
   protected _idGeneratorFn: types.IDGeneratorFunction
 
   constructor(opts: {
@@ -41,7 +40,7 @@ export class Agentic {
 
     this._openaiModelDefaults = {
       provider: 'openai',
-      model: defaultOpenAIModel,
+      model: DEFAULT_OPENAI_MODEL,
       modelParams: {},
       timeoutMs: 2 * 60000,
       retryConfig: {

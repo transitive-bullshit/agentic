@@ -2,7 +2,7 @@ import * as anthropic from '@anthropic-ai/sdk'
 import { type SetOptional } from 'type-fest'
 
 import * as types from '@/types'
-import { defaultAnthropicModel } from '@/constants'
+import { DEFAULT_ANTHROPIC_MODEL } from '@/constants'
 
 import { BaseChatModel } from './llm'
 
@@ -34,7 +34,7 @@ export class AnthropicChatModel<
   ) {
     super({
       provider: 'anthropic',
-      model: options.modelParams?.model || defaultAnthropicModel,
+      model: options.modelParams?.model || DEFAULT_ANTHROPIC_MODEL,
       ...options
     })
 
