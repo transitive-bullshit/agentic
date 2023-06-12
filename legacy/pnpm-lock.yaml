@@ -20,6 +20,9 @@ dependencies:
   debug:
     specifier: ^4.3.4
     version: 4.3.4
+  expr-eval:
+    specifier: ^2.0.2
+    version: 2.0.2
   handlebars:
     specifier: ^4.7.7
     version: 4.7.7
@@ -1792,6 +1795,10 @@ packages:
     resolution: {integrity: sha512-wCpFeVBiAPGiYkQZzaqvGuuBnNCHbtnowMOBpBGY8a27XbG8VAit3lklWph1r8VmgsH61mOZqI3NuGm8bZnUlw==}
     engines: {node: '>=12.0.0'}
     dev: true
+
+  /expr-eval@2.0.2:
+    resolution: {integrity: sha512-4EMSHGOPSwAfBiibw3ndnP0AvjDWLsMvGOvWEZ2F96IGk0bIVdjQisOHxReSkE13mHcfbuCiXw+G4y0zv6N8Eg==}
+    dev: false
 
   /external-editor@3.1.0:
     resolution: {integrity: sha512-hMQ4CX1p1izmuLYyZqLMO/qGNw10wSv9QDCPfzXfyFrOaCSSoRfqE1Kf1s5an66J5JZC62NewG+mK49jOCtQew==}

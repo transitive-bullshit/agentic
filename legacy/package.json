@@ -43,6 +43,7 @@
     "@inquirer/editor": "^1.2.0",
     "@inquirer/select": "^1.2.1",
     "debug": "^4.3.4",
+    "expr-eval": "^2.0.2",
     "handlebars": "^4.7.7",
     "js-tiktoken": "^1.0.6",
     "jsonrepair": "^3.1.0",
