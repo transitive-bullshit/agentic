@@ -74,3 +74,11 @@ export class OutputValidationError extends BaseError {
     Error.captureStackTrace?.(this, this.constructor)
   }
 }
+
+export class TemplateValidationError extends BaseError {
+  constructor(message: string, opts: ErrorOptions = {}) {
+    super(message, opts)
+
+    Error.captureStackTrace?.(this, this.constructor)
+  }
+}

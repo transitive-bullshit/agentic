@@ -50,12 +50,14 @@ export abstract class BaseLLM<
     this._examples = options.examples
   }
 
+  // TODO: use polymorphic `this` type to return correct BaseLLM subclass type
   input<U>(inputSchema: ZodType<U>): BaseLLM<U, TOutput, TModelParams> {
     const refinedInstance = this as unknown as BaseLLM<U, TOutput, TModelParams>
     refinedInstance._inputSchema = inputSchema
     return refinedInstance
   }
 
+  // TODO: use polymorphic `this` type to return correct BaseLLM subclass type
   output<U>(outputSchema: ZodType<U>): BaseLLM<TInput, U, TModelParams> {
     const refinedInstance = this as unknown as BaseLLM<TInput, U, TModelParams>
     refinedInstance._outputSchema = outputSchema
@@ -84,12 +86,12 @@ export abstract class BaseLLM<
     return `${this._provider}:chat:${this._model}`
   }
 
-  examples(examples: types.LLMExample[]) {
+  examples(examples: types.LLMExample[]): this {
     this._examples = examples
     return this
   }
 
-  modelParams(params: Partial<TModelParams>) {
+  modelParams(params: Partial<TModelParams>): this {
     // We assume that modelParams does not include nested objects.
     // If it did, we would need to do a deep merge.
     this._modelParams = { ...this._modelParams, ...params } as TModelParams
@@ -154,6 +156,7 @@ export abstract class BaseChatModel<
     }
 
     // TODO: validate input message variables against input schema
+    console.log({ input })
 
     const messages = this._messages
       .map((message) => {

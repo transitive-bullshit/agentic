@@ -13,7 +13,7 @@ async function main() {
     .input(
       z.object({
         topic: z.string(),
-        numFacts: z.number().int().default(5).optional()
+        numFacts: z.number().int().default(5)
       })
     )
     .output(z.object({ facts: z.array(z.string()) }))

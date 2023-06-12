@@ -3,7 +3,7 @@ import { expectTypeOf } from 'expect-type'
 import sinon from 'sinon'
 import { z } from 'zod'
 
-import { OutputValidationError } from '@/errors'
+import { OutputValidationError, TemplateValidationError } from '@/errors'
 import { OpenAIChatModel } from '@/llms/openai'
 
 import { createTestAgenticRuntime } from './_utils'
@@ -127,4 +127,62 @@ test('OpenAIChatModel ⇒ retry logic', async (t) => {
     message: 'test'
   })
   t.is(fakeCall.callCount, 3)
+})
+
+test('OpenAIChatModel ⇒ template variables', async (t) => {
+  t.timeout(2 * 60 * 1000)
+  const agentic = createTestAgenticRuntime()
+
+  const query = agentic
+    .gpt3(`Give me {{numFacts}} random facts about {{topic}}`)
+    .input(
+      z.object({
+        topic: z.string(),
+        numFacts: z.number().int().default(5)
+      })
+    )
+    .output(z.object({ facts: z.array(z.string()) }))
+    .modelParams({ temperature: 0.5 })
+
+  const res0 = await query.call({ topic: 'cats' })
+
+  t.true(Array.isArray(res0.facts))
+  t.is(res0.facts.length, 5)
+  expectTypeOf(res0).toMatchTypeOf<{ facts: string[] }>()
+
+  for (const fact of res0.facts) {
+    t.true(typeof fact === 'string')
+  }
+
+  const res1 = await query.call({ topic: 'dogs', numFacts: 2 })
+
+  t.true(Array.isArray(res1.facts))
+  t.is(res1.facts.length, 2)
+  expectTypeOf(res1).toMatchTypeOf<{ facts: string[] }>()
+
+  for (const fact of res1.facts) {
+    t.true(typeof fact === 'string')
+  }
+})
+
+test.only('OpenAIChatModel ⇒ missing template variable', async (t) => {
+  t.timeout(2 * 60 * 1000)
+  const agentic = createTestAgenticRuntime()
+
+  const builder = agentic
+    .gpt3(`Give me {{numFacts}} random facts about {{topic}}`)
+    .input(
+      z.object({
+        topic: z.string(),
+        numFacts: z.number().int().default(5).optional()
+      })
+    )
+    .output(z.object({ facts: z.array(z.string()) }))
+    .modelParams({ temperature: 0.5 })
+
+  await t.throwsAsync(() => builder.call({ topic: 'cats' }), {
+    instanceOf: TemplateValidationError,
+    name: 'TemplateValidationError',
+    message: 'Template error: "numFacts" not defined in input - 1:10'
+  })
 })
