@@ -51,7 +51,7 @@ export class HumanFeedbackMechanismTwilio extends HumanFeedbackMechanism {
   ): Promise<UserActions> {
     message += '\n\n'
     message += choices
-      .map((choice, idx) => `*${idx}* - ${UserActionMessages[choice]}`)
+      .map((choice, idx) => `${idx} - ${UserActionMessages[choice]}`)
       .join('\n')
     message += '\n\n'
     message += 'Reply with the number of your choice.'
