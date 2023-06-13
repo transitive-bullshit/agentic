@@ -12,7 +12,8 @@ Ensure the following environment variables are set:
 
 -   `TWILIO_ACCOUNT_SID`: Your Twilio account SID
 -   `TWILIO_AUTH_TOKEN`: Your Twilio auth token
--   `TWILIO_PHONE_NUMBER`: Your Twilio phone number
+-   `TWILIO_PHONE_NUMBER`: Your Twilio phone number from which the Agentic service will send text messages
+-   `TWILIO_DEFAULT_RECIPIENT_PHONE_NUMBER`: The default recipient phone number to use if none is specified in the workflow
 
 Otherwise, these can be passed directly to the `TwilioConversationClient` constructor.
 

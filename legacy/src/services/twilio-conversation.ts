@@ -90,7 +90,7 @@ export type TwilioSendAndWaitOptions = {
   /**
    * The recipient's phone number in E.164 format (e.g. +14565551234).
    */
-  recipientPhoneNumber: string
+  recipientPhoneNumber?: string
 
   /**
    * The text of the message to send.
@@ -133,11 +133,14 @@ export class TwilioConversationClient {
 
   phoneNumber: string
   botName: string
+  defaultRecipientPhoneNumber?: string
 
   constructor({
     accountSid = process.env.TWILIO_ACCOUNT_SID,
     authToken = process.env.TWILIO_AUTH_TOKEN,
     phoneNumber = process.env.TWILIO_PHONE_NUMBER,
+    defaultRecipientPhoneNumber = process.env
+      .TWILIO_DEFAULT_RECIPIENT_PHONE_NUMBER,
     apiBaseUrl = TWILIO_CONVERSATION_API_BASE_URL,
     botName = DEFAULT_BOT_NAME,
     ky = defaultKy
@@ -145,6 +148,7 @@ export class TwilioConversationClient {
     accountSid?: string
     authToken?: string
     phoneNumber?: string
+    defaultRecipientPhoneNumber?: string
     apiBaseUrl?: string
     botName?: string
     ky?: typeof defaultKy
@@ -165,6 +169,10 @@ export class TwilioConversationClient {
       throw new Error(
         `Error TwilioConversationClient missing required "phoneNumber"`
       )
+    }
+
+    if (defaultRecipientPhoneNumber) {
+      this.defaultRecipientPhoneNumber = defaultRecipientPhoneNumber
     }
 
     this.botName = botName
@@ -260,12 +268,18 @@ export class TwilioConversationClient {
   public async sendAndWaitForReply({
     text,
     name,
-    recipientPhoneNumber,
+    recipientPhoneNumber = this.defaultRecipientPhoneNumber,
     timeoutMs = DEFAULT_TWILIO_TIMEOUT_MS,
     intervalMs = DEFAULT_TWILIO_INTERVAL_MS,
     validate = () => true,
     stopSignal
   }: TwilioSendAndWaitOptions) {
+    if (!recipientPhoneNumber) {
+      throw new Error(
+        `Error TwilioConversationClient missing required "recipientPhoneNumber"`
+      )
+    }
+
     let aborted = false
     stopSignal?.addEventListener(
       'abort',
