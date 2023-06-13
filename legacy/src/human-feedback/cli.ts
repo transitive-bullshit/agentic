@@ -6,28 +6,12 @@ import select from '@inquirer/select'
 import { Agentic } from '@/agentic'
 import { TaskResponseMetadata } from '@/types'
 
-import { HumanFeedbackMechanism, HumanFeedbackOptions } from './index'
-
-/**
- * Actions the user can take in the feedback selection prompt.
- */
-export const UserActions = {
-  Accept: 'accept',
-  Edit: 'edit',
-  Decline: 'decline',
-  Select: 'select',
-  Exit: 'exit'
-} as const
-
-export type UserActions = (typeof UserActions)[keyof typeof UserActions]
-
-const UserActionMessages: Record<UserActions, string> = {
-  [UserActions.Accept]: 'Accept the output',
-  [UserActions.Edit]: 'Edit the output (open in editor)',
-  [UserActions.Decline]: 'Decline the output',
-  [UserActions.Select]: 'Select outputs to keep',
-  [UserActions.Exit]: 'Exit'
-}
+import {
+  HumanFeedbackMechanism,
+  HumanFeedbackOptions,
+  UserActionMessages,
+  UserActions
+} from './feedback'
 
 /**
  * Prompt the user to select one of a list of options.
