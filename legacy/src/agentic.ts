@@ -2,10 +2,8 @@ import defaultKy from 'ky'
 
 import * as types from './types'
 import { DEFAULT_OPENAI_MODEL } from './constants'
-import {
-  HumanFeedbackMechanismCLI,
-  HumanFeedbackOptions
-} from './human-feedback'
+import { HumanFeedbackOptions } from './human-feedback'
+import { HumanFeedbackMechanismCLI } from './human-feedback/cli'
 import { OpenAIChatCompletion } from './llms/openai'
 import { defaultLogger } from './logger'
 import { defaultIDGeneratorFn } from './utils'
