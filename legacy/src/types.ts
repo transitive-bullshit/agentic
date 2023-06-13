@@ -104,6 +104,7 @@ export interface TaskResponseMetadata extends Record<string, any> {
   success?: boolean
   error?: Error
   numRetries?: number
+  callId?: string
 }
 
 export interface LLMTaskResponseMetadata<

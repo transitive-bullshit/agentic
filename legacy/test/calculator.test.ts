@@ -17,8 +17,9 @@ test('CalculatorTool', async (t) => {
   t.is(res2.result, 1)
   expectTypeOf(res2.result).toMatchTypeOf<number>()
 
-  const { taskId, ...metadata } = res2.metadata
+  const { taskId, callId, ...metadata } = res2.metadata
   t.true(typeof taskId === 'string')
+  t.true(typeof callId === 'string')
   t.deepEqual(metadata, {
     success: true,
     taskName: 'calculator',

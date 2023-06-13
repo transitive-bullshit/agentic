@@ -54,7 +54,7 @@ export abstract class BaseTask<TInput = void, TOutput = string> {
     throw new Error(`clone not implemented for task "${this.name}"`)
   }
 
-  public retryConfig(retryConfig: types.RetryConfig) {
+  public retryConfig(retryConfig: types.RetryConfig): this {
     this._retryConfig = retryConfig
     return this
   }
@@ -82,7 +82,8 @@ export abstract class BaseTask<TInput = void, TOutput = string> {
       attemptNumber: 0,
       metadata: {
         taskName: this.name,
-        taskId: this.id
+        taskId: this.id,
+        callId: this._agentic.idGeneratorFn()
       }
     }
 
