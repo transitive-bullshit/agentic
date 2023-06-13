@@ -3,8 +3,8 @@ import defaultKy from 'ky'
 import * as types from './types'
 import { DEFAULT_OPENAI_MODEL } from './constants'
 import {
-  HumanFeedbackMechanism,
-  HumanFeedbackMechanismCLI
+  HumanFeedbackMechanismCLI,
+  HumanFeedbackOptions
 } from './human-feedback'
 import { OpenAIChatCompletion } from './llms/openai'
 import { defaultLogger } from './logger'
@@ -22,8 +22,7 @@ export class Agentic {
     types.BaseLLMOptions,
     'provider' | 'model' | 'modelParams' | 'timeoutMs' | 'retryConfig'
   >
-  protected _defaultHumanFeedbackMechamism?: HumanFeedbackMechanism
-
+  protected _humanFeedbackDefaults: HumanFeedbackOptions
   protected _idGeneratorFn: types.IDGeneratorFunction
   protected _id: string
 
@@ -34,7 +33,7 @@ export class Agentic {
       types.BaseLLMOptions,
       'provider' | 'model' | 'modelParams' | 'timeoutMs' | 'retryConfig'
     >
-    defaultHumanFeedbackMechanism?: HumanFeedbackMechanism
+    humanFeedbackDefaults?: HumanFeedbackOptions
     idGeneratorFn?: types.IDGeneratorFunction
     logger?: types.Logger
     ky?: types.KyInstance
@@ -68,9 +67,14 @@ export class Agentic {
     // TODO
     // this._anthropicModelDefaults = {}
 
-    this._defaultHumanFeedbackMechamism =
-      opts.defaultHumanFeedbackMechanism ??
-      new HumanFeedbackMechanismCLI({ agentic: this })
+    this._humanFeedbackDefaults = {
+      type: 'confirm',
+      bail: false,
+      editing: false,
+      annotations: false,
+      mechanism: HumanFeedbackMechanismCLI,
+      ...opts.humanFeedbackDefaults
+    }
 
     this._idGeneratorFn = opts.idGeneratorFn ?? defaultIDGeneratorFn
     this._id = this._idGeneratorFn()
@@ -92,8 +96,8 @@ export class Agentic {
     return this._logger
   }
 
-  public get defaultHumanFeedbackMechamism() {
-    return this._defaultHumanFeedbackMechamism
+  public get humanFeedbackDefaults() {
+    return this._humanFeedbackDefaults
   }
 
   public get idGeneratorFn(): types.IDGeneratorFunction {
