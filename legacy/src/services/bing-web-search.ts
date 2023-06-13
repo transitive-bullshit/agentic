@@ -1,6 +1,6 @@
-import ky from 'ky'
+import defaultKy from 'ky'
 
-export const BING_BASE_URL = 'https://api.bing.microsoft.com'
+export const BING_API_BASE_URL = 'https://api.bing.microsoft.com'
 
 export interface BingWebSearchQuery {
   q: string
@@ -235,22 +235,30 @@ interface FluffyContractualRule {
 }
 
 export class BingWebSearchClient {
+  api: typeof defaultKy
+
   apiKey: string
-  baseUrl: string
+  apiBaseUrl: string
 
   constructor({
     apiKey = process.env.BING_API_KEY,
-    baseUrl = BING_BASE_URL
+    apiBaseUrl = BING_API_BASE_URL,
+    ky = defaultKy
   }: {
     apiKey?: string
-    baseUrl?: string
+    apiBaseUrl?: string
+    ky?: typeof defaultKy
   } = {}) {
     if (!apiKey) {
       throw new Error(`Error BingWebSearchClient missing required "apiKey"`)
     }
 
     this.apiKey = apiKey
-    this.baseUrl = baseUrl
+    this.apiBaseUrl = apiBaseUrl
+
+    this.api = ky.extend({
+      prefixUrl: this.apiBaseUrl
+    })
   }
 
   async search(queryOrOpts: string | BingWebSearchQuery) {
@@ -269,9 +277,9 @@ export class BingWebSearchClient {
             ...queryOrOpts
           }
 
-    console.log(searchParams)
-    return ky
-      .get(`${this.baseUrl}/v7.0/search`, {
+    // console.log(searchParams)
+    return this.api
+      .get('v7.0/search', {
         headers: {
           'Ocp-Apim-Subscription-Key': this.apiKey
         },

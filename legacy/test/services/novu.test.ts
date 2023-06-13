@@ -2,7 +2,7 @@ import test from 'ava'
 
 import { NovuClient } from '@/services/novu'
 
-import './_utils'
+import { ky } from '../_utils'
 
 test('NovuClient.triggerEvent', async (t) => {
   if (!process.env.NOVU_API_KEY) {
@@ -10,7 +10,7 @@ test('NovuClient.triggerEvent', async (t) => {
   }
 
   t.timeout(2 * 60 * 1000)
-  const client = new NovuClient()
+  const client = new NovuClient({ ky })
 
   const result = await client.triggerEvent({
     name: 'send-email',

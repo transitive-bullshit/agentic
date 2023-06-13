@@ -2,7 +2,7 @@ import test from 'ava'
 
 import { TwilioConversationClient } from '@/services/twilio-conversation'
 
-import './_utils'
+import '../_utils'
 
 test.serial('TwilioConversationClient.createConversation', async (t) => {
   if (!process.env.TWILIO_ACCOUNT_SID || !process.env.TWILIO_AUTH_TOKEN) {

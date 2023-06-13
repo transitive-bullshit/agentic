@@ -2,7 +2,7 @@ import test from 'ava'
 
 import { SerpAPIClient } from '@/services/serpapi'
 
-import './_utils'
+import { ky } from '../_utils'
 
 test('SerpAPIClient.search', async (t) => {
   if (!process.env.SERPAPI_API_KEY) {
@@ -10,7 +10,7 @@ test('SerpAPIClient.search', async (t) => {
   }
 
   t.timeout(2 * 60 * 1000)
-  const client = new SerpAPIClient()
+  const client = new SerpAPIClient({ ky })
 
   const result = await client.search('coffee')
   // console.log(result)

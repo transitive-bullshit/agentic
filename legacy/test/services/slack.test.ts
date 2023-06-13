@@ -2,7 +2,7 @@ import test from 'ava'
 
 import { SlackClient } from '@/services/slack'
 
-import './_utils'
+import '../_utils'
 
 test('SlackClient.sendMessage', async (t) => {
   if (!process.env.SLACK_API_KEY || !process.env.SLACK_DEFAULT_CHANNEL) {

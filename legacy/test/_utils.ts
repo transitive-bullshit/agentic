@@ -4,10 +4,12 @@ import 'dotenv/config'
 import hashObject from 'hash-obj'
 import Redis from 'ioredis'
 import Keyv from 'keyv'
+import defaultKy from 'ky'
 import { OpenAIClient } from 'openai-fetch'
 import pMemoize from 'p-memoize'
 
 import { Agentic } from '@/agentic'
+import { normalizeUrl } from '@/url-utils'
 
 export const fakeOpenAIAPIKey = 'fake-openai-api-key'
 export const fakeAnthropicAPIKey = 'fake-anthropic-api-key'
@@ -38,6 +40,97 @@ keyv.has = async (key, ...rest) => {
   // console.log('>>> keyv.has', key, res)
   return res
 }
+
+function getCacheKeyForRequest(request: Request): string | null {
+  const method = request.method.toLowerCase()
+
+  if (method === 'get') {
+    const url = normalizeUrl(request.url)
+
+    if (url) {
+      const cacheParams = {
+        // TODO: request.headers isn't a normal JS object...
+        headers: { ...request.headers }
+      }
+
+      // console.log('getCacheKeyForRequest', { url, cacheParams })
+      const cacheKey = getCacheKey(`http:${method} ${url}`, cacheParams)
+      return cacheKey
+    }
+  }
+
+  return null
+}
+
+/**
+ * Custom `ky` instance that caches GET JSON requests.
+ *
+ * TODO:
+ *  - support non-GET requests
+ *  - support non-JSON responses
+ */
+export const ky = defaultKy.extend({
+  hooks: {
+    beforeRequest: [
+      async (request) => {
+        try {
+          // console.log(`beforeRequest ${request.method} ${request.url}`)
+
+          const cacheKey = getCacheKeyForRequest(request)
+          // console.log({ cacheKey })
+          if (!cacheKey) {
+            return
+          }
+
+          if (!(await keyv.has(cacheKey))) {
+            return
+          }
+
+          const cachedResponse = await keyv.get(cacheKey)
+          // console.log({ cachedResponse })
+
+          if (!cachedResponse) {
+            return
+          }
+
+          return new Response(JSON.stringify(cachedResponse), {
+            status: 200,
+            headers: { 'Content-Type': 'application/json' }
+          })
+        } catch (err) {
+          console.error('ky beforeResponse cache error', err)
+        }
+      }
+    ],
+
+    afterResponse: [
+      async (request, _options, response) => {
+        try {
+          // console.log(
+          //   `afterRequest ${request.method} ${request.url} ⇒ ${response.status}`
+          // )
+
+          if (response.status < 200 || response.status >= 300) {
+            return
+          }
+
+          const cacheKey = getCacheKeyForRequest(request)
+          // console.log({ cacheKey })
+          if (!cacheKey) {
+            return
+          }
+
+          const responseBody = await response.json()
+          // console.log({ responseBody })
+
+          await keyv.set(cacheKey, responseBody)
+        } catch (err) {
+          console.error('ky afterResponse cache error', err)
+        }
+      }
+    ]
+  }
+})
 
 export class OpenAITestClient extends OpenAIClient {
   createChatCompletion = pMemoize(super.createChatCompletion, {

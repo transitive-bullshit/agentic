@@ -1,9 +1,9 @@
-import ky, { type KyResponse } from 'ky'
+import defaultKy from 'ky'
 
 import { DEFAULT_BOT_NAME } from '@/constants'
 import { sleep } from '@/utils'
 
-export const TWILIO_CONVERSATION_BASE_URL =
+export const TWILIO_CONVERSATION_API_BASE_URL =
   'https://conversations.twilio.com/v1'
 
 export const DEFAULT_TWILIO_TIMEOUT_MS = 120_000
@@ -129,7 +129,8 @@ export type TwilioSendAndWaitOptions = {
  * @see {@link https://www.twilio.com/docs/conversations/api}
  */
 export class TwilioConversationClient {
-  api: typeof ky
+  api: typeof defaultKy
+
   phoneNumber: string
   botName: string
 
@@ -137,18 +138,26 @@ export class TwilioConversationClient {
     accountSid = process.env.TWILIO_ACCOUNT_SID,
     authToken = process.env.TWILIO_AUTH_TOKEN,
     phoneNumber = process.env.TWILIO_PHONE_NUMBER,
-    baseUrl = TWILIO_CONVERSATION_BASE_URL,
-    botName = DEFAULT_BOT_NAME
+    apiBaseUrl = TWILIO_CONVERSATION_API_BASE_URL,
+    botName = DEFAULT_BOT_NAME,
+    ky = defaultKy
   }: {
     accountSid?: string
     authToken?: string
     phoneNumber?: string
-    baseUrl?: string
+    apiBaseUrl?: string
     botName?: string
+    ky?: typeof defaultKy
   } = {}) {
-    if (!accountSid || !authToken) {
+    if (!accountSid) {
       throw new Error(
-        `Error TwilioConversationClient missing required "accountSid" and/or "authToken"`
+        `Error TwilioConversationClient missing required "accountSid"`
+      )
+    }
+
+    if (!authToken) {
+      throw new Error(
+        `Error TwilioConversationClient missing required "authToken"`
       )
     }
 
@@ -161,8 +170,8 @@ export class TwilioConversationClient {
     this.botName = botName
     this.phoneNumber = phoneNumber
 
-    this.api = ky.create({
-      prefixUrl: baseUrl,
+    this.api = ky.extend({
+      prefixUrl: apiBaseUrl,
       headers: {
         Authorization:
           'Basic ' +
@@ -175,7 +184,7 @@ export class TwilioConversationClient {
   /**
    * Deletes a conversation and all its messages.
    */
-  async deleteConversation(conversationSid: string): Promise<KyResponse> {
+  async deleteConversation(conversationSid: string) {
     return this.api.delete(`Conversations/${conversationSid}`)
   }
 

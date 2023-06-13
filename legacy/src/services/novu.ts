@@ -1,6 +1,6 @@
-import ky from 'ky'
+import defaultKy from 'ky'
 
-export const NOVU_BASE_URL = 'https://api.novu.co/v1'
+export const NOVU_API_BASE_URL = 'https://api.novu.co/v1'
 
 export type NovuSubscriber = {
   subscriberId: string
@@ -19,22 +19,30 @@ export type NovuTriggerEventResponse = {
 }
 
 export class NovuClient {
+  api: typeof defaultKy
+
   apiKey: string
-  baseUrl: string
+  apiBaseUrl: string
 
   constructor({
     apiKey = process.env.NOVU_API_KEY,
-    baseUrl = NOVU_BASE_URL
+    apiBaseUrl = NOVU_API_BASE_URL,
+    ky = defaultKy
   }: {
     apiKey?: string
-    baseUrl?: string
+    apiBaseUrl?: string
+    ky?: typeof defaultKy
   } = {}) {
     if (!apiKey) {
       throw new Error(`Error NovuClient missing required "apiKey"`)
     }
 
     this.apiKey = apiKey
-    this.baseUrl = baseUrl
+    this.apiBaseUrl = apiBaseUrl
+
+    this.api = ky.extend({
+      prefixUrl: this.apiBaseUrl
+    })
   }
 
   async triggerEvent({
@@ -46,19 +54,18 @@ export class NovuClient {
     payload: Record<string, unknown>
     to: NovuSubscriber[]
   }) {
-    const url = `${this.baseUrl}/events/trigger`
-    const headers = {
-      Authorization: `ApiKey ${this.apiKey}`,
-      'Content-Type': 'application/json'
-    }
-    const response = await ky.post(url, {
-      headers,
-      json: {
-        name,
-        payload,
-        to
-      }
-    })
-    return response.json<NovuTriggerEventResponse>()
+    return this.api
+      .post('events/trigger', {
+        headers: {
+          Authorization: `ApiKey ${this.apiKey}`,
+          'Content-Type': 'application/json'
+        },
+        json: {
+          name,
+          payload,
+          to
+        }
+      })
+      .json<NovuTriggerEventResponse>()
   }
 }

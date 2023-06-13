@@ -1,4 +1,4 @@
-import ky from 'ky'
+import defaultKy from 'ky'
 
 import { sleep } from '@/utils'
 
@@ -256,30 +256,33 @@ export type SlackSendAndWaitOptions = {
 }
 
 export class SlackClient {
-  private api: typeof ky
+  protected api: typeof defaultKy
 
   protected defaultChannel?: string
 
   constructor({
     apiKey = process.env.SLACK_API_KEY,
     baseUrl = SLACK_API_BASE_URL,
-    defaultChannel = process.env.SLACK_DEFAULT_CHANNEL
+    defaultChannel = process.env.SLACK_DEFAULT_CHANNEL,
+    ky = defaultKy
   }: {
     apiKey?: string
     baseUrl?: string
     defaultChannel?: string
+    ky?: typeof defaultKy
   } = {}) {
     if (!apiKey) {
       throw new Error(`Error SlackClient missing required "apiKey"`)
     }
 
-    this.api = ky.create({
+    this.defaultChannel = defaultChannel
+
+    this.api = ky.extend({
       prefixUrl: baseUrl,
       headers: {
         Authorization: `Bearer ${apiKey}`
       }
     })
-    this.defaultChannel = defaultChannel
   }
 
   /**
@@ -328,9 +331,10 @@ export class SlackClient {
    * Returns a list of messages that were sent in a channel after a given timestamp both directly and in threads.
    */
   private async fetchCandidates(channel: string, ts: string) {
-    let candidates: SlackMessage[] = []
     const history = await this.fetchConversationHistory({ channel })
     const directReplies = await this.fetchReplies({ channel, ts })
+
+    let candidates: SlackMessage[] = []
 
     if (directReplies.ok) {
       candidates = candidates.concat(directReplies.messages)
@@ -349,6 +353,7 @@ export class SlackClient {
     candidates.sort((a, b) => {
       return parseFloat(b.ts) - parseFloat(a.ts)
     })
+
     return candidates
   }
 
@@ -357,7 +362,7 @@ export class SlackClient {
    *
    * ### Notes
    *
-   * -   The implementation will poll for replies to the message until the timeout is reached. This is not ideal, but it is the only way to retrieve replies to a message in Slack without spinning up a local server to receive webhook events.
+   * - The implementation will poll for replies to the message until the timeout is reached. This is not ideal, but it is the only way to retrieve replies to a message in Slack without spinning up a local server to receive webhook events.
    */
   public async sendAndWaitForReply({
     text,

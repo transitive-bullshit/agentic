@@ -1,7 +1,7 @@
-import ky from 'ky'
+import defaultKy from 'ky'
 import { z } from 'zod'
 
-export const METAPHOR_BASE_URL = 'https://api.metaphor.systems'
+export const METAPHOR_API_BASE_URL = 'https://api.metaphor.systems'
 
 // https://metaphorapi.readme.io/reference/search
 export const MetaphorSearchInputSchema = z.object({
@@ -33,27 +33,35 @@ export const MetaphorSearchOutputSchema = z.object({
 export type MetaphorSearchOutput = z.infer<typeof MetaphorSearchOutputSchema>
 
 export class MetaphorClient {
+  api: typeof defaultKy
+
   apiKey: string
-  baseUrl: string
+  apiBaseUrl: string
 
   constructor({
     apiKey = process.env.METAPHOR_API_KEY,
-    baseUrl = METAPHOR_BASE_URL
+    apiBaseUrl = METAPHOR_API_BASE_URL,
+    ky = defaultKy
   }: {
     apiKey?: string
-    baseUrl?: string
+    apiBaseUrl?: string
+    ky?: typeof defaultKy
   } = {}) {
     if (!apiKey) {
       throw new Error(`Error MetaphorClient missing required "apiKey"`)
     }
 
     this.apiKey = apiKey
-    this.baseUrl = baseUrl
+    this.apiBaseUrl = apiBaseUrl
+
+    this.api = ky.extend({
+      prefixUrl: this.apiBaseUrl
+    })
   }
 
   async search(params: MetaphorSearchInput) {
-    return ky
-      .post(`${this.baseUrl}/search`, {
+    return this.api
+      .post('search', {
         headers: {
           'x-api-key': this.apiKey
         },

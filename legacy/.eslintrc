@@ -27,7 +27,12 @@
     "padding-line-between-statements": [
       "error",
       { "blankLine": "always", "prev": ["block", "block-like"], "next": "*" },
-      { "blankLine": "always", "prev": "*", "next": ["block", "block-like"] }
+      { "blankLine": "always", "prev": "*", "next": ["block", "block-like"] },
+      {
+        "blankLine": "any",
+        "prev": ["singleline-const", "singleline-let", "expression"],
+        "next": ["block", "block-like"]
+      }
     ]
   },
   "overrides": [

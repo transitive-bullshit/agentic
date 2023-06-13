@@ -1,4 +1,4 @@
-import ky from 'ky'
+import defaultKy from 'ky'
 
 /**
  * All types have been exported from the `serpapi` package, which we're
@@ -350,7 +350,8 @@ export type SerpAPISearchResponse = BaseResponse<GoogleParameters>
 
 export interface SerpAPIClientOptions extends Partial<SerpAPIParams> {
   apiKey?: string
-  baseUrl?: string
+  apiBaseUrl?: string
+  ky?: typeof defaultKy
 }
 
 export const SERPAPI_BASE_URL = 'https://serpapi.com'
@@ -361,13 +362,16 @@ export const SERPAPI_BASE_URL = 'https://serpapi.com'
  * @see https://serpapi.com/search-api
  */
 export class SerpAPIClient {
+  api: typeof defaultKy
+
   apiKey: string
-  baseUrl: string
+  apiBaseUrl: string
   params: Partial<SerpAPIParams>
 
   constructor({
     apiKey = process.env.SERPAPI_API_KEY ?? process.env.SERP_API_KEY,
-    baseUrl = SERPAPI_BASE_URL,
+    apiBaseUrl = SERPAPI_BASE_URL,
+    ky = defaultKy,
     ...params
   }: SerpAPIClientOptions = {}) {
     if (!apiKey) {
@@ -375,8 +379,12 @@ export class SerpAPIClient {
     }
 
     this.apiKey = apiKey
-    this.baseUrl = baseUrl
+    this.apiBaseUrl = apiBaseUrl
     this.params = params
+
+    this.api = ky.extend({
+      prefixUrl: this.apiBaseUrl
+    })
   }
 
   async search(queryOrOpts: string | { query: string }) {
@@ -384,8 +392,8 @@ export class SerpAPIClient {
       typeof queryOrOpts === 'string' ? queryOrOpts : queryOrOpts.query
     const { timeout, ...rest } = this.params
 
-    return ky
-      .get(`${this.baseUrl}/search`, {
+    return this.api
+      .get('search', {
         searchParams: {
           ...rest,
           engine: 'google',

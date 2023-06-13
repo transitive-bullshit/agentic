@@ -1,0 +1,303 @@
+import defaultKy from 'ky'
+
+export const DIFFBOT_API_BASE_URL = 'https://api.diffbot.com'
+export const DIFFBOT_KNOWLEDGE_GRAPH_API_BASE_URL = 'https://kg.diffbot.com'
+
+export interface DiffbotExtractOptions {
+  /** Specify optional fields to be returned from any fully-extracted pages, e.g.: &fields=querystring,links. See available fields within each API's individual documentation pages.
+   * @see https://docs.diffbot.com/reference/extract-optional-fields
+   */
+  fields?: string[]
+
+  /** (*Undocumented*) Pass paging=false to disable automatic concatenation of multiple-page articles. (By default, Diffbot will concatenate up to 20 pages of a single article.) */
+  paging?: boolean
+
+  /** Pass discussion=false to disable automatic extraction of comments or reviews from pages identified as articles or products. This will not affect pages identified as discussions. */
+  discussion?: boolean
+
+  /** Sets a value in milliseconds to wait for the retrieval/fetch of content from the requested URL. The default timeout for the third-party response is 30 seconds (30000). */
+  timeout?: number
+
+  /** Used to specify the IP address of a custom proxy that will be used to fetch the target page, instead of Diffbot's default IPs/proxies. (Ex: &proxy=168.212.226.204) */
+  proxy?: string
+
+  /** Used to specify the authentication parameters that will be used with the proxy specified in the &proxy parameter. (Ex: &proxyAuth=username:password) */
+  proxyAuth?: string
+
+  /** `none` will instruct Extract to not use proxies, even if proxies have been enabled for this particular URL globally. */
+  useProxy?: string
+
+  /** @see https://docs.diffbot.com/reference/extract-custom-javascript */
+  customJs?: string
+
+  /** @see https://docs.diffbot.com/reference/extract-custom-headers */
+  customHeaders?: Record<string, string>
+}
+
+export interface DiffbotExtractAnalyzeOptions extends DiffbotExtractOptions {
+  /** Web page URL of the analyze to process */
+  url: string
+
+  /** By default the Analyze API will fully extract all pages that match an existing Automatic API -- articles, products or image pages. Set mode to a specific page-type (e.g., mode=article) to extract content only from that specific page-type. All other pages will simply return the default Analyze fields. */
+  mode?: string
+
+  /** Force any non-extracted pages (those with a type of "other") through a specific API. For example, to route all "other" pages through the Article API, pass &fallback=article. Pages that utilize this functionality will return a fallbackType field at the top-level of the response and a originalType field within each extracted object, both of which will indicate the fallback API used. */
+  fallback?: string
+}
+
+export interface DiffbotExtractArticleOptions extends DiffbotExtractOptions {
+  /** Web page URL of the analyze to process */
+  url: string
+
+  /** Set the maximum number of automatically-generated tags to return. By default a maximum of ten tags will be returned. */
+  maxTags?: number
+
+  /** Set the minimum relevance score of tags to return, between 0.0 and 1.0. By default only tags with a score equal to or above 0.5 will be returned. */
+  tagConfidence?: number
+
+  /** Used to request the output of the Diffbot Natural Language API in the field naturalLanguage. Example: &naturalLanguage=entities,facts,categories,sentiment. */
+  naturalLanguage?: string[]
+}
+
+export interface DiffbotExtractResponse {
+  request: DiffbotRequest
+  objects: DiffbotObject[]
+}
+
+export type DiffbotExtractArticleResponse = DiffbotExtractResponse
+
+export interface DiffbotExtractAnalyzeResponse extends DiffbotExtractResponse {
+  type: string
+  title: string
+  humanLanguage: string
+}
+
+export interface DiffbotObject {
+  date: string
+  sentiment: number
+  images: DiffbotImage[]
+  author: string
+  estimatedDate: string
+  publisherRegion: string
+  icon: string
+  diffbotUri: string
+  siteName: string
+  type: string
+  title: string
+  tags: DiffbotTag[]
+  publisherCountry: string
+  humanLanguage: string
+  authorUrl: string
+  pageUrl: string
+  html: string
+  text: string
+  categories?: DiffbotCategory[]
+  authors: DiffbotAuthor[]
+  breadcrumb?: DiffbotBreadcrumb[]
+  meta?: any
+}
+
+interface DiffbotAuthor {
+  name: string
+  link: string
+}
+
+interface DiffbotCategory {
+  score: number
+  name: string
+  id: string
+}
+
+export interface DiffbotBreadcrumb {
+  link: string
+  name: string
+}
+
+interface DiffbotImage {
+  url: string
+  diffbotUri: string
+
+  naturalWidth: number
+  naturalHeight: number
+  width: number
+  height: number
+
+  isCached?: boolean
+  primary?: boolean
+}
+
+interface DiffbotTag {
+  score: number
+  sentiment: number
+  count: number
+  label: string
+  uri: string
+  rdfTypes: string[]
+}
+
+interface DiffbotRequest {
+  pageUrl: string
+  api: string
+  version: number
+}
+
+export interface Image {
+  naturalHeight: number
+  diffbotUri: string
+  url: string
+  naturalWidth: number
+  primary: boolean
+}
+
+export interface Tag {
+  score: number
+  sentiment: number
+  count: number
+  label: string
+  uri: string
+  rdfTypes: string[]
+}
+
+export interface Request {
+  pageUrl: string
+  api: string
+  version: number
+}
+
+export interface DiffbotSearchKnowledgeGraphOptions {
+  type?: 'query' | 'text' | 'queryTextFallback' | 'crawl'
+  query: string
+  col?: string
+  from?: number
+  size?: number
+
+  // NOTE: we only support `json`, so these options are not needed
+  // We can always convert from json to another format if needed.
+  // format?: 'json' | 'jsonl' | 'csv' | 'xls' | 'xlsx'
+  // exportspec?: string
+  // exportseparator?: string
+  // exportfile?: string
+
+  filter?: string
+  jsonmode?: 'extended' | 'id'
+  nonCanonicalFacts?: boolean
+  noDedupArticles?: boolean
+  cluster?: 'all' | 'best' | 'dedupe'
+  report?: boolean
+}
+
+export interface DiffbotSearchKnowledgeGraphResponse {
+  version: number
+  hits: number
+  results: number
+  kgversion: string
+  diffbot_type: string
+  facet: boolean
+  data: DiffbotKnowledgeGraphNode[]
+}
+
+export interface DiffbotKnowledgeGraphNode {
+  score: number
+  entity: DiffbotKnowledgeGraphEntity
+  entity_ctx: any
+  errors: string[]
+  callbackQuery: string
+  upperBound: number
+  lowerBound: number
+  count: number
+  value: string
+  uri: string
+}
+
+export interface DiffbotKnowledgeGraphEntity {
+  id: string
+  images: DiffbotImage[]
+  diffbotUri: string
+  name: string
+  origins: string[]
+}
+
+export class DiffbotClient {
+  api: typeof defaultKy
+  apiKnowledgeGraph: typeof defaultKy
+
+  apiKey: string
+  apiBaseUrl: string
+  apiKnowledgeGraphBaseUrl: string
+
+  constructor({
+    apiKey = process.env.DIFFBOT_API_KEY,
+    apiBaseUrl = DIFFBOT_API_BASE_URL,
+    apiKnowledgeGraphBaseUrl = DIFFBOT_KNOWLEDGE_GRAPH_API_BASE_URL,
+    timeoutMs = 60_000,
+    ky = defaultKy
+  }: {
+    apiKey?: string
+    apiBaseUrl?: string
+    apiKnowledgeGraphBaseUrl?: string
+    timeoutMs?: number
+    ky?: typeof defaultKy
+  } = {}) {
+    if (!apiKey) {
+      throw new Error(`Error DiffbotClient missing required "apiKey"`)
+    }
+
+    this.apiKey = apiKey
+    this.apiBaseUrl = apiBaseUrl
+    this.apiKnowledgeGraphBaseUrl = apiKnowledgeGraphBaseUrl
+
+    this.api = ky.extend({ prefixUrl: apiBaseUrl, timeout: timeoutMs })
+    this.apiKnowledgeGraph = ky.extend({
+      prefixUrl: apiKnowledgeGraphBaseUrl,
+      timeout: timeoutMs
+    })
+  }
+
+  protected async _extract<
+    T extends DiffbotExtractResponse = DiffbotExtractResponse
+  >(endpoint: string, options: DiffbotExtractOptions): Promise<T> {
+    const { customJs, customHeaders, ...rest } = options
+    const searchParams: Record<string, any> = {
+      ...rest,
+      token: this.apiKey
+    }
+    const headers = {
+      ...Object.fromEntries(
+        [['X-Forward-X-Evaluate', customJs]].filter(([, value]) => value)
+      ),
+      ...customHeaders
+    }
+
+    for (const [key, value] of Object.entries(rest)) {
+      if (Array.isArray(value)) {
+        searchParams[key] = value.join(',')
+      }
+    }
+
+    return this.api
+      .get(endpoint, {
+        searchParams,
+        headers
+      })
+      .json<T>()
+  }
+
+  async extractAnalyze(options: DiffbotExtractAnalyzeOptions) {
+    return this._extract<DiffbotExtractAnalyzeResponse>('v3/analyze', options)
+  }
+
+  async extractArticle(options: DiffbotExtractArticleOptions) {
+    return this._extract<DiffbotExtractArticleResponse>('v3/article', options)
+  }
+
+  async searchKnowledgeGraph(options: DiffbotSearchKnowledgeGraphOptions) {
+    return this.apiKnowledgeGraph
+      .get('kg/v3/dql', {
+        searchParams: {
+          ...options,
+          token: this.apiKey
+        }
+      })
+      .json<DiffbotSearchKnowledgeGraphResponse>()
+  }
+}
