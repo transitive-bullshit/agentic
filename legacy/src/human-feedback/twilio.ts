@@ -4,11 +4,14 @@ import { TwilioConversationClient } from '@/services/twilio-conversation'
 import {
   HumanFeedbackMechanism,
   HumanFeedbackOptions,
+  HumanFeedbackType,
   UserActionMessages,
   UserActions
 } from './feedback'
 
-export class HumanFeedbackMechanismTwilio extends HumanFeedbackMechanism {
+export class HumanFeedbackMechanismTwilio<
+  T extends HumanFeedbackType
+> extends HumanFeedbackMechanism<T> {
   private twilioClient: TwilioConversationClient
 
   constructor({
@@ -16,7 +19,7 @@ export class HumanFeedbackMechanismTwilio extends HumanFeedbackMechanism {
     options
   }: {
     agentic: Agentic
-    options: HumanFeedbackOptions
+    options: Required<HumanFeedbackOptions<T>>
   }) {
     super({ agentic, options })
     this.twilioClient = new TwilioConversationClient()

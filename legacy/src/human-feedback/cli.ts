@@ -3,28 +3,16 @@ import editor from '@inquirer/editor'
 import input from '@inquirer/input'
 import select from '@inquirer/select'
 
-import { Agentic } from '@/agentic'
-
 import {
   HumanFeedbackMechanism,
-  HumanFeedbackOptions,
+  HumanFeedbackType,
   UserActionMessages,
   UserActions
 } from './feedback'
 
-export class HumanFeedbackMechanismCLI extends HumanFeedbackMechanism {
-  constructor({
-    agentic,
-    options
-  }: {
-    agentic: Agentic
-    options: HumanFeedbackOptions
-  }) {
-    super({ agentic, options })
-    this._agentic = agentic
-    this._options = options
-  }
-
+export class HumanFeedbackMechanismCLI<
+  T extends HumanFeedbackType
+> extends HumanFeedbackMechanism<T> {
   /**
    * Prompt the user to select one of a list of options.
    */

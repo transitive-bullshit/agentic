@@ -4,11 +4,14 @@ import { SlackClient } from '@/services/slack'
 import {
   HumanFeedbackMechanism,
   HumanFeedbackOptions,
+  HumanFeedbackType,
   UserActionMessages,
   UserActions
 } from './feedback'
 
-export class HumanFeedbackMechanismSlack extends HumanFeedbackMechanism {
+export class HumanFeedbackMechanismSlack<
+  T extends HumanFeedbackType
+> extends HumanFeedbackMechanism<T> {
   private slackClient: SlackClient
 
   constructor({
@@ -16,7 +19,7 @@ export class HumanFeedbackMechanismSlack extends HumanFeedbackMechanism {
     options
   }: {
     agentic: Agentic
-    options: HumanFeedbackOptions
+    options: Required<HumanFeedbackOptions<T>>
   }) {
     super({ agentic, options })
     this.slackClient = new SlackClient()

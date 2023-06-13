@@ -1,6 +1,5 @@
 import { Agentic } from '@/agentic'
 import { BaseTask } from '@/task'
-import { TaskResponseMetadata } from '@/types'
 
 import { HumanFeedbackMechanismCLI } from './cli'
 
@@ -30,20 +29,18 @@ export const UserActionMessages: Record<UserActions, string> = {
  */
 export type HumanFeedbackType = 'confirm' | 'selectOne' | 'selectN'
 
-type HumanFeedbackMechanismConstructor<T extends HumanFeedbackMechanism> = new (
+type HumanFeedbackMechanismConstructor<T extends HumanFeedbackType> = new (
   ...args: any[]
-) => T
+) => HumanFeedbackMechanism<T>
 
 /**
  * Options for human feedback.
  */
-export type HumanFeedbackOptions<
-  T extends HumanFeedbackMechanism = HumanFeedbackMechanism
-> = {
+export type HumanFeedbackOptions<T extends HumanFeedbackType> = {
   /**
    * What type of feedback to request.
    */
-  type?: HumanFeedbackType
+  type?: T
 
   /**
    * Whether the user can bail out of the feedback loop.
@@ -66,17 +63,75 @@ export type HumanFeedbackOptions<
   mechanism?: HumanFeedbackMechanismConstructor<T>
 }
 
-export abstract class HumanFeedbackMechanism {
+export interface BaseHumanFeedbackMetadata {
+  /**
+   * Edited output by the user (if applicable).
+   */
+  editedOutput?: string
+
+  /**
+   * Annotation left by the user (if applicable).
+   */
+  annotation?: string
+}
+
+export interface HumanFeedbackConfirmMetadata
+  extends BaseHumanFeedbackMetadata {
+  /**
+   * The type of feedback requested.
+   */
+  type: 'confirm'
+
+  /**
+   * Whether the user accepted the output.
+   */
+  accepted: boolean
+}
+
+export interface HumanFeedbackSelectOneMetadata
+  extends BaseHumanFeedbackMetadata {
+  /**
+   * The type of feedback requested.
+   */
+  type: 'selectOne'
+
+  /**
+   * The selected output.
+   */
+  chosen: any
+}
+
+export interface HumanFeedbackSelectNMetadata
+  extends BaseHumanFeedbackMetadata {
+  /**
+   * The type of feedback requested.
+   */
+  type: 'selectN'
+
+  /**
+   * The selected outputs.
+   */
+  selected: any[]
+}
+
+export type FeedbackTypeToMetadata<T extends HumanFeedbackType> =
+  T extends 'confirm'
+    ? HumanFeedbackConfirmMetadata
+    : T extends 'selectOne'
+    ? HumanFeedbackSelectOneMetadata
+    : HumanFeedbackSelectNMetadata
+
+export abstract class HumanFeedbackMechanism<T extends HumanFeedbackType> {
   protected _agentic: Agentic
 
-  protected _options: HumanFeedbackOptions
+  protected _options: Required<HumanFeedbackOptions<T>>
 
   constructor({
     agentic,
     options
   }: {
     agentic: Agentic
-    options: HumanFeedbackOptions
+    options: Required<HumanFeedbackOptions<T>>
   }) {
     this._agentic = agentic
     this._options = options
@@ -95,7 +150,7 @@ export abstract class HumanFeedbackMechanism {
     choices: UserActions[]
   ): Promise<UserActions>
 
-  public async interact(response: any, metadata: TaskResponseMetadata) {
+  public async interact(response: any): Promise<FeedbackTypeToMetadata<T>> {
     const stringified = JSON.stringify(response, null, 2)
     const msg = [
       'The following output was generated:',
@@ -125,33 +180,33 @@ export abstract class HumanFeedbackMechanism {
       choices.push(UserActions.Exit)
     }
 
-    const feedback =
+    const choice =
       choices.length === 1
         ? UserActions.Select
         : await this.askUser(msg, choices)
 
-    metadata.feedback = {}
+    const feedback: Record<string, any> = {}
 
-    switch (feedback) {
+    switch (choice) {
       case UserActions.Accept:
-        metadata.feedback.accepted = true
+        feedback.accepted = true
         break
 
       case UserActions.Edit: {
         const editedOutput = await this.edit(stringified)
-        metadata.feedback.editedOutput = editedOutput
+        feedback.editedOutput = editedOutput
         break
       }
 
       case UserActions.Decline:
-        metadata.feedback.accepted = false
+        feedback.accepted = false
         break
 
       case UserActions.Select:
         if (this._options.type === 'selectN') {
-          metadata.feedback.selected = await this.selectN(response)
+          feedback.selected = await this.selectN(response)
         } else if (this._options.type === 'selectOne') {
-          metadata.feedback.chosen = await this.selectOne(response)
+          feedback.chosen = await this.selectOne(response)
         }
 
         break
@@ -160,21 +215,23 @@ export abstract class HumanFeedbackMechanism {
         throw new Error('Exiting...')
 
       default:
-        throw new Error(`Unexpected feedback: ${feedback}`)
+        throw new Error(`Unexpected choice: ${choice}`)
     }
 
     if (this._options.annotations) {
       const annotation = await this.annotate()
       if (annotation) {
-        metadata.feedback.annotation = annotation
+        feedback.annotation = annotation
       }
     }
+
+    return feedback as FeedbackTypeToMetadata<T>
   }
 }
 
-export function withHumanFeedback<T, U>(
+export function withHumanFeedback<T, U, V extends HumanFeedbackType>(
   task: BaseTask<T, U>,
-  options: HumanFeedbackOptions = {}
+  options: HumanFeedbackOptions<V> = {}
 ) {
   task = task.clone()
 
@@ -182,7 +239,7 @@ export function withHumanFeedback<T, U>(
   const instanceDefaults = task.agentic.humanFeedbackDefaults
 
   // Use Object.assign to merge the options, instance defaults, and hard-coded defaults
-  const finalOptions: HumanFeedbackOptions = Object.assign(
+  const finalOptions: HumanFeedbackOptions<V> = Object.assign(
     {
       type: 'confirm',
       bail: false,
@@ -212,8 +269,9 @@ export function withHumanFeedback<T, U>(
   task.callWithMetadata = async function (input?: T) {
     const response = await originalCall(input)
 
-    // Process the response and add feedback to metadata
-    await feedbackMechanism.interact(response.result, response.metadata)
+    const feedback = await feedbackMechanism.interact(response.result)
+
+    response.metadata = { ...response.metadata, feedback }
 
     return response
   }
