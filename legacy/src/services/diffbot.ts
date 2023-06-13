@@ -164,7 +164,7 @@ export interface Request {
   version: number
 }
 
-export interface DiffbotSearchKnowledgeGraphOptions {
+export interface DiffbotKnowledgeGraphSearchOptions {
   type?: 'query' | 'text' | 'queryTextFallback' | 'crawl'
   query: string
   col?: string
@@ -186,18 +186,47 @@ export interface DiffbotSearchKnowledgeGraphOptions {
   report?: boolean
 }
 
-export interface DiffbotSearchKnowledgeGraphResponse {
+export interface DiffbotKnowledgeGraphEnhanceOptions {
+  type: 'Person' | 'Organization'
+
+  id?: string
+  name?: string
+  url?: string
+  phone?: string
+  email?: string
+  employer?: string
+  title?: string
+  school?: string
+  location?: string
+  ip?: string
+  customId?: string
+
+  size?: number
+  threshold?: number
+
+  refresh?: boolean
+  search?: boolean
+  useCache?: boolean
+
+  filter?: string
+  jsonmode?: 'extended' | 'id'
+  nonCanonicalFacts?: boolean
+}
+
+export interface DiffbotKnowledgeGraphSearchResponse {
+  data: DiffbotKnowledgeGraphNode[]
   version: number
   hits: number
   results: number
   kgversion: string
   diffbot_type: string
-  facet: boolean
-  data: DiffbotKnowledgeGraphNode[]
+  facet?: boolean
+  errors?: any[]
 }
 
 export interface DiffbotKnowledgeGraphNode {
   score: number
+  esscore?: number
   entity: DiffbotKnowledgeGraphEntity
   entity_ctx: any
   errors: string[]
@@ -211,10 +240,71 @@ export interface DiffbotKnowledgeGraphNode {
 
 export interface DiffbotKnowledgeGraphEntity {
   id: string
-  images: DiffbotImage[]
   diffbotUri: string
+  type?: string
   name: string
+  images: DiffbotImage[]
   origins: string[]
+  nbOrigins?: number
+
+  gender?: DiffbotGender
+  githubUri?: string
+  importance?: number
+  description?: string
+  homepageUri?: string
+  allNames?: string[]
+  skills?: DiffbotSkill[]
+  crawlTimestamp?: number
+  summary?: string
+  image?: string
+  types?: string[]
+  nbIncomingEdges?: number
+  allUris?: string[]
+  employments?: DiffbotEmployment[]
+  locations?: DiffbotLocation[]
+  location?: DiffbotLocation
+  allOriginHashes?: string[]
+  nameDetail?: DiffbotNameDetail
+}
+
+interface DiffbotEmployment {
+  employer: Entity
+}
+
+interface Entity {
+  image?: string
+  types?: string[]
+  name: string
+  diffbotUri?: string
+  type: EntityType
+  summary?: string
+}
+
+type EntityType = 'Organization' | 'Place'
+
+interface DiffbotGender {
+  normalizedValue: string
+}
+
+interface DiffbotLocation {
+  country: Entity
+  isCurrent: boolean
+  address: string
+  latitude: number
+  precision: number
+  surfaceForm: string
+  region: Entity
+  longitude: number
+}
+
+interface DiffbotNameDetail {
+  firstName: string
+  lastName: string
+}
+
+interface DiffbotSkill {
+  name: string
+  diffbotUri: string
 }
 
 export class DiffbotClient {
@@ -290,7 +380,7 @@ export class DiffbotClient {
     return this._extract<DiffbotExtractArticleResponse>('v3/article', options)
   }
 
-  async searchKnowledgeGraph(options: DiffbotSearchKnowledgeGraphOptions) {
+  async knowledgeGraphSearch(options: DiffbotKnowledgeGraphSearchOptions) {
     return this.apiKnowledgeGraph
       .get('kg/v3/dql', {
         searchParams: {
@@ -298,6 +388,17 @@ export class DiffbotClient {
           token: this.apiKey
         }
       })
-      .json<DiffbotSearchKnowledgeGraphResponse>()
+      .json<DiffbotKnowledgeGraphSearchResponse>()
+  }
+
+  async knowledgeGraphEnhance(options: DiffbotKnowledgeGraphEnhanceOptions) {
+    return this.apiKnowledgeGraph
+      .get('kg/v3/enhance', {
+        searchParams: {
+          ...options,
+          token: this.apiKey
+        }
+      })
+      .json<DiffbotKnowledgeGraphSearchResponse>()
   }
 }
