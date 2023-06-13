@@ -1,5 +1,5 @@
-import { Agentic } from '@/agentic'
 import { TwilioConversationClient } from '@/services/twilio-conversation'
+import { BaseTask } from '@/task'
 
 import {
   HumanFeedbackMechanism,
@@ -15,13 +15,13 @@ export class HumanFeedbackMechanismTwilio<
   private twilioClient: TwilioConversationClient
 
   constructor({
-    agentic,
+    task,
     options
   }: {
-    agentic: Agentic
+    task: BaseTask
     options: Required<HumanFeedbackOptions<T>>
   }) {
-    super({ agentic, options })
+    super({ task, options })
     this.twilioClient = new TwilioConversationClient()
   }
 

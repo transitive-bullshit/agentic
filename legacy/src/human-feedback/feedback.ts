@@ -71,7 +71,7 @@ export interface BaseHumanFeedbackMetadata {
   /**
    * Edited output by the user (if applicable).
    */
-  editedOutput?: string
+  editedOutput?: any
 
   /**
    * Annotation left by the user (if applicable).
@@ -128,16 +128,19 @@ export type FeedbackTypeToMetadata<T extends HumanFeedbackType> =
 export abstract class HumanFeedbackMechanism<T extends HumanFeedbackType> {
   protected _agentic: Agentic
 
+  protected _task: BaseTask
+
   protected _options: Required<HumanFeedbackOptions<T>>
 
   constructor({
-    agentic,
+    task,
     options
   }: {
-    agentic: Agentic
+    task: BaseTask
     options: Required<HumanFeedbackOptions<T>>
   }) {
-    this._agentic = agentic
+    this._agentic = task.agentic
+    this._task = task
     this._options = options
   }
 
@@ -153,6 +156,11 @@ export abstract class HumanFeedbackMechanism<T extends HumanFeedbackType> {
     message: string,
     choices: HumanFeedbackUserActions[]
   ): Promise<HumanFeedbackUserActions>
+
+  protected parseEditedOutput(editedOutput: string): any {
+    const parsedOutput = JSON.parse(editedOutput)
+    return this._task.outputSchema.parse(parsedOutput)
+  }
 
   public async interact(response: any): Promise<FeedbackTypeToMetadata<T>> {
     const stringified = JSON.stringify(response, null, 2)
@@ -198,7 +206,7 @@ export abstract class HumanFeedbackMechanism<T extends HumanFeedbackType> {
 
       case HumanFeedbackUserActions.Edit: {
         const editedOutput = await this.edit(stringified)
-        feedback.editedOutput = editedOutput
+        feedback.editedOutput = await this.parseEditedOutput(editedOutput)
         break
       }
 
@@ -264,7 +272,7 @@ export function withHumanFeedback<T, U, V extends HumanFeedbackType>(
   }
 
   const feedbackMechanism = new finalOptions.mechanism({
-    agentic: task.agentic,
+    task: task,
     options: finalOptions
   })
 

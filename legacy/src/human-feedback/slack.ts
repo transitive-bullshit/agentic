@@ -1,5 +1,5 @@
-import { Agentic } from '@/agentic'
 import { SlackClient } from '@/services/slack'
+import { BaseTask } from '@/task'
 
 import {
   HumanFeedbackMechanism,
@@ -15,13 +15,13 @@ export class HumanFeedbackMechanismSlack<
   private slackClient: SlackClient
 
   constructor({
-    agentic,
+    task,
     options
   }: {
-    agentic: Agentic
+    task: BaseTask
     options: Required<HumanFeedbackOptions<T>>
   }) {
-    super({ agentic, options })
+    super({ task, options })
     this.slackClient = new SlackClient()
   }
 
