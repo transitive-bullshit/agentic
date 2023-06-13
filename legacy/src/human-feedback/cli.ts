@@ -42,7 +42,21 @@ export class HumanFeedbackMechanismCLI extends HumanFeedbackMechanism {
     this._options = options
   }
 
-  public async confirm(
+  protected async annotate(
+    response: any,
+    metadata: TaskResponseMetadata
+  ): Promise<void> {
+    const annotation = await input({
+      message:
+        'Please leave an annotation (leave blank to skip; press enter to submit):'
+    })
+
+    if (annotation) {
+      metadata.feedback.annotation = annotation
+    }
+  }
+
+  protected async confirm(
     response: any,
     metadata: TaskResponseMetadata
   ): Promise<void> {
@@ -90,20 +104,9 @@ export class HumanFeedbackMechanismCLI extends HumanFeedbackMechanism {
       default:
         throw new Error(`Unexpected feedback: ${feedback}`)
     }
-
-    if (this._options.annotations) {
-      const annotation = await input({
-        message:
-          'Please leave an annotation (leave blank to skip; press enter to submit):'
-      })
-
-      if (annotation) {
-        metadata.feedback.annotation = annotation
-      }
-    }
   }
 
-  public async selectOne(
+  protected async selectOne(
     response: any[],
     metadata: TaskResponseMetadata
   ): Promise<void> {
@@ -155,7 +158,7 @@ export class HumanFeedbackMechanismCLI extends HumanFeedbackMechanism {
     }
   }
 
-  public async selectN(
+  protected async selectN(
     response: any[],
     metadata: TaskResponseMetadata
   ): Promise<void> {

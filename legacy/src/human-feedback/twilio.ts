@@ -23,6 +23,24 @@ export class HumanFeedbackMechanismTwilio extends HumanFeedbackMechanism {
     this.twilioClient = new TwilioConversationClient()
   }
 
+  protected async annotate(
+    response: any,
+    metadata: TaskResponseMetadata
+  ): Promise<void> {
+    try {
+      const annotation = await this.twilioClient.sendAndWaitForReply({
+        name: 'human-feedback-annotation',
+        text: 'Please leave an annotation (optional):'
+      })
+
+      if (annotation) {
+        metadata.feedback.annotation = annotation.body
+      }
+    } catch (e) {
+      // Deliberately swallow the error here as the user is not required to leave an annotation
+    }
+  }
+
   private async askUser(
     message: string,
     choices: UserActions[]
@@ -98,21 +116,6 @@ export class HumanFeedbackMechanismTwilio extends HumanFeedbackMechanism {
       default:
         throw new Error(`Unexpected feedback: ${feedback}`)
     }
-
-    if (this._options.annotations) {
-      try {
-        const annotation = await this.twilioClient.sendAndWaitForReply({
-          name: 'human-feedback-annotation',
-          text: 'Please leave an annotation (optional):'
-        })
-
-        if (annotation) {
-          metadata.feedback.annotation = annotation.body
-        }
-      } catch (e) {
-        // Deliberately swallow the error here as the user is not required to leave an annotation
-      }
-    }
   }
 
   public async selectOne(
@@ -180,21 +183,6 @@ export class HumanFeedbackMechanismTwilio extends HumanFeedbackMechanism {
 
       default:
         throw new Error(`Unexpected feedback: ${feedback}`)
-    }
-
-    if (this._options.annotations) {
-      try {
-        const annotation = await this.twilioClient.sendAndWaitForReply({
-          text: 'Please leave an annotation (optional):',
-          name: 'human-feedback-annotation'
-        })
-
-        if (annotation) {
-          metadata.feedback.annotation = annotation.body
-        }
-      } catch (e) {
-        // Deliberately swallow the error here as the user is not required to leave an annotation
-      }
     }
   }
 
@@ -274,21 +262,6 @@ export class HumanFeedbackMechanismTwilio extends HumanFeedbackMechanism {
 
       default:
         throw new Error(`Unexpected feedback: ${feedback}`)
-    }
-
-    if (this._options.annotations) {
-      try {
-        const annotation = await this.twilioClient.sendAndWaitForReply({
-          text: 'Please leave an annotation (optional):',
-          name: 'human-feedback-annotation'
-        })
-
-        if (annotation) {
-          metadata.feedback.annotation = annotation.body
-        }
-      } catch (e) {
-        // Deliberately swallow the error here as the user is not required to leave an annotation
-      }
     }
   }
 }

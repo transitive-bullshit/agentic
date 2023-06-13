@@ -82,15 +82,20 @@ export abstract class HumanFeedbackMechanism {
     this._options = options
   }
 
-  public abstract confirm(
+  protected abstract confirm(
     response: any,
     metadata: TaskResponseMetadata
   ): Promise<void>
-  public abstract selectOne(
+  protected abstract selectOne(
     response: any,
     metadata: TaskResponseMetadata
   ): Promise<void>
-  public abstract selectN(
+  protected abstract selectN(
+    response: any,
+    metadata: TaskResponseMetadata
+  ): Promise<void>
+
+  protected abstract annotate(
     response: any,
     metadata: TaskResponseMetadata
   ): Promise<void>
@@ -102,6 +107,10 @@ export abstract class HumanFeedbackMechanism {
       await this.confirm(response, metadata)
     } else if (this._options.type === 'selectOne') {
       await this.selectOne(response, metadata)
+    }
+
+    if (this._options.annotations) {
+      await this.annotate(response, metadata)
     }
   }
 }

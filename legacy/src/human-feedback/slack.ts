@@ -23,6 +23,23 @@ export class HumanFeedbackMechanismSlack extends HumanFeedbackMechanism {
     this.slackClient = new SlackClient()
   }
 
+  protected async annotate(
+    response: any,
+    metadata: TaskResponseMetadata
+  ): Promise<void> {
+    try {
+      const annotation = await this.slackClient.sendAndWaitForReply({
+        text: 'Please leave an annotation (optional):'
+      })
+
+      if (annotation) {
+        metadata.feedback.annotation = annotation.text
+      }
+    } catch (e) {
+      // Deliberately swallow the error here as the user is not required to leave an annotation
+    }
+  }
+
   private async askUser(
     message: string,
     choices: UserActions[]
@@ -97,20 +114,6 @@ export class HumanFeedbackMechanismSlack extends HumanFeedbackMechanism {
       default:
         throw new Error(`Unexpected feedback: ${feedback}`)
     }
-
-    if (this._options.annotations) {
-      try {
-        const annotation = await this.slackClient.sendAndWaitForReply({
-          text: 'Please leave an annotation (optional):'
-        })
-
-        if (annotation) {
-          metadata.feedback.annotation = annotation.text
-        }
-      } catch (e) {
-        // Deliberately swallow the error here as the user is not required to leave an annotation
-      }
-    }
   }
 
   public async selectOne(
@@ -177,20 +180,6 @@ export class HumanFeedbackMechanismSlack extends HumanFeedbackMechanism {
 
       default:
         throw new Error(`Unexpected feedback: ${feedback}`)
-    }
-
-    if (this._options.annotations) {
-      try {
-        const annotation = await this.slackClient.sendAndWaitForReply({
-          text: 'Please leave an annotation (optional):'
-        })
-
-        if (annotation) {
-          metadata.feedback.annotation = annotation.text
-        }
-      } catch (e) {
-        // Deliberately swallow the error here as the user is not required to leave an annotation
-      }
     }
   }
 
@@ -267,20 +256,6 @@ export class HumanFeedbackMechanismSlack extends HumanFeedbackMechanism {
 
       default:
         throw new Error(`Unexpected feedback: ${feedback}`)
-    }
-
-    if (this._options.annotations) {
-      try {
-        const annotation = await this.slackClient.sendAndWaitForReply({
-          text: 'Please leave an annotation (optional):'
-        })
-
-        if (annotation) {
-          metadata.feedback.annotation = annotation.text
-        }
-      } catch (e) {
-        // Deliberately swallow the error here as the user is not required to leave an annotation
-      }
     }
   }
 }
