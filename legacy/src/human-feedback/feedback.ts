@@ -6,7 +6,7 @@ import { HumanFeedbackMechanismCLI } from './cli'
 /**
  * Actions the user can take in the feedback selection prompt.
  */
-export const UserActions = {
+export const HumanFeedbackUserActions = {
   Accept: 'accept',
   Edit: 'edit',
   Decline: 'decline',
@@ -14,14 +14,18 @@ export const UserActions = {
   Exit: 'exit'
 } as const
 
-export type UserActions = (typeof UserActions)[keyof typeof UserActions]
+export type HumanFeedbackUserActions =
+  (typeof HumanFeedbackUserActions)[keyof typeof HumanFeedbackUserActions]
 
-export const UserActionMessages: Record<UserActions, string> = {
-  [UserActions.Accept]: 'Accept the output',
-  [UserActions.Edit]: 'Edit the output',
-  [UserActions.Decline]: 'Decline the output',
-  [UserActions.Select]: 'Select outputs to keep',
-  [UserActions.Exit]: 'Exit'
+export const HumanFeedbackUserActionMessages: Record<
+  HumanFeedbackUserActions,
+  string
+> = {
+  [HumanFeedbackUserActions.Accept]: 'Accept the output',
+  [HumanFeedbackUserActions.Edit]: 'Edit the output',
+  [HumanFeedbackUserActions.Decline]: 'Decline the output',
+  [HumanFeedbackUserActions.Select]: 'Select outputs to keep',
+  [HumanFeedbackUserActions.Exit]: 'Exit'
 }
 
 /**
@@ -147,8 +151,8 @@ export abstract class HumanFeedbackMechanism<T extends HumanFeedbackType> {
 
   protected abstract askUser(
     message: string,
-    choices: UserActions[]
-  ): Promise<UserActions>
+    choices: HumanFeedbackUserActions[]
+  ): Promise<HumanFeedbackUserActions>
 
   public async interact(response: any): Promise<FeedbackTypeToMetadata<T>> {
     const stringified = JSON.stringify(response, null, 2)
@@ -160,49 +164,49 @@ export abstract class HumanFeedbackMechanism<T extends HumanFeedbackType> {
       'What would you like to do?'
     ].join('\n')
 
-    const choices: UserActions[] = []
+    const choices: HumanFeedbackUserActions[] = []
     if (
       this._options.type === 'selectN' ||
       this._options.type === 'selectOne'
     ) {
-      choices.push(UserActions.Select)
+      choices.push(HumanFeedbackUserActions.Select)
     } else {
       // Case: confirm
-      choices.push(UserActions.Accept)
-      choices.push(UserActions.Decline)
+      choices.push(HumanFeedbackUserActions.Accept)
+      choices.push(HumanFeedbackUserActions.Decline)
     }
 
     if (this._options.editing) {
-      choices.push(UserActions.Edit)
+      choices.push(HumanFeedbackUserActions.Edit)
     }
 
     if (this._options.bail) {
-      choices.push(UserActions.Exit)
+      choices.push(HumanFeedbackUserActions.Exit)
     }
 
     const choice =
       choices.length === 1
-        ? UserActions.Select
+        ? HumanFeedbackUserActions.Select
         : await this.askUser(msg, choices)
 
     const feedback: Record<string, any> = {}
 
     switch (choice) {
-      case UserActions.Accept:
+      case HumanFeedbackUserActions.Accept:
         feedback.accepted = true
         break
 
-      case UserActions.Edit: {
+      case HumanFeedbackUserActions.Edit: {
         const editedOutput = await this.edit(stringified)
         feedback.editedOutput = editedOutput
         break
       }
 
-      case UserActions.Decline:
+      case HumanFeedbackUserActions.Decline:
         feedback.accepted = false
         break
 
-      case UserActions.Select:
+      case HumanFeedbackUserActions.Select:
         if (this._options.type === 'selectN') {
           feedback.selected = await this.selectN(response)
         } else if (this._options.type === 'selectOne') {
@@ -211,7 +215,7 @@ export abstract class HumanFeedbackMechanism<T extends HumanFeedbackType> {
 
         break
 
-      case UserActions.Exit:
+      case HumanFeedbackUserActions.Exit:
         throw new Error('Exiting...')
 
       default:

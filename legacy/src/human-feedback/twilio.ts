@@ -5,8 +5,8 @@ import {
   HumanFeedbackMechanism,
   HumanFeedbackOptions,
   HumanFeedbackType,
-  UserActionMessages,
-  UserActions
+  HumanFeedbackUserActionMessages,
+  HumanFeedbackUserActions
 } from './feedback'
 
 export class HumanFeedbackMechanismTwilio<
@@ -50,11 +50,13 @@ export class HumanFeedbackMechanismTwilio<
 
   protected async askUser(
     message: string,
-    choices: UserActions[]
-  ): Promise<UserActions> {
+    choices: HumanFeedbackUserActions[]
+  ): Promise<HumanFeedbackUserActions> {
     message += '\n\n'
     message += choices
-      .map((choice, idx) => `${idx} - ${UserActionMessages[choice]}`)
+      .map(
+        (choice, idx) => `${idx} - ${HumanFeedbackUserActionMessages[choice]}`
+      )
       .join('\n')
     message += '\n\n'
     message += 'Reply with the number of your choice.'

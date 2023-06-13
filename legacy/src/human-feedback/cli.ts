@@ -6,8 +6,8 @@ import select from '@inquirer/select'
 import {
   HumanFeedbackMechanism,
   HumanFeedbackType,
-  UserActionMessages,
-  UserActions
+  HumanFeedbackUserActionMessages,
+  HumanFeedbackUserActions
 } from './feedback'
 
 export class HumanFeedbackMechanismCLI<
@@ -18,12 +18,12 @@ export class HumanFeedbackMechanismCLI<
    */
   protected async askUser(
     message: string,
-    choices: UserActions[]
-  ): Promise<UserActions> {
+    choices: HumanFeedbackUserActions[]
+  ): Promise<HumanFeedbackUserActions> {
     return select({
       message,
       choices: choices.map((choice) => ({
-        name: UserActionMessages[choice],
+        name: HumanFeedbackUserActionMessages[choice],
         value: choice
       }))
     })
