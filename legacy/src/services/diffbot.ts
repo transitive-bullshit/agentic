@@ -213,7 +213,7 @@ export interface DiffbotKnowledgeGraphEnhanceOptions {
   nonCanonicalFacts?: boolean
 }
 
-export interface DiffbotKnowledgeGraphSearchResponse {
+export interface DiffbotKnowledgeGraphResponse {
   data: DiffbotKnowledgeGraphNode[]
   version: number
   hits: number
@@ -388,7 +388,7 @@ export class DiffbotClient {
           token: this.apiKey
         }
       })
-      .json<DiffbotKnowledgeGraphSearchResponse>()
+      .json<DiffbotKnowledgeGraphResponse>()
   }
 
   async knowledgeGraphEnhance(options: DiffbotKnowledgeGraphEnhanceOptions) {
@@ -399,6 +399,6 @@ export class DiffbotClient {
           token: this.apiKey
         }
       })
-      .json<DiffbotKnowledgeGraphSearchResponse>()
+      .json<DiffbotKnowledgeGraphResponse>()
   }
 }
