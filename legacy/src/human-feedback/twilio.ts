@@ -1,6 +1,5 @@
 import { Agentic } from '@/agentic'
 import { TwilioConversationClient } from '@/services/twilio-conversation'
-import { TaskResponseMetadata } from '@/types'
 
 import {
   HumanFeedbackMechanism,
@@ -23,25 +22,30 @@ export class HumanFeedbackMechanismTwilio extends HumanFeedbackMechanism {
     this.twilioClient = new TwilioConversationClient()
   }
 
-  protected async annotate(
-    response: any,
-    metadata: TaskResponseMetadata
-  ): Promise<void> {
+  protected async annotate(): Promise<string> {
     try {
       const annotation = await this.twilioClient.sendAndWaitForReply({
         name: 'human-feedback-annotation',
         text: 'Please leave an annotation (optional):'
       })
-
-      if (annotation) {
-        metadata.feedback.annotation = annotation.body
-      }
+      return annotation.body
     } catch (e) {
       // Deliberately swallow the error here as the user is not required to leave an annotation
+      return ''
     }
   }
 
-  private async askUser(
+  protected async edit(): Promise<string> {
+    let { body: editedOutput } = await this.twilioClient.sendAndWaitForReply({
+      text: 'Copy and edit the output:',
+      name: 'human-feedback-edit'
+    })
+    editedOutput = editedOutput.replace(/```$/g, '')
+    editedOutput = editedOutput.replace(/^```/g, '')
+    return editedOutput
+  }
+
+  protected async askUser(
     message: string,
     choices: UserActions[]
   ): Promise<UserActions> {
@@ -62,206 +66,45 @@ export class HumanFeedbackMechanismTwilio extends HumanFeedbackMechanism {
     return choices[parseInt(response.body)]
   }
 
-  public async confirm(
-    response: any,
-    metadata: TaskResponseMetadata
-  ): Promise<void> {
-    const stringified = JSON.stringify(response, null, 2)
-    const msg = [
-      'The following output was generated:',
-      '',
-      stringified,
-      '',
-      'What would you like to do?'
-    ].join('\n')
-
-    const choices: UserActions[] = [UserActions.Accept, UserActions.Decline]
-
-    if (this._options.editing) {
-      choices.push(UserActions.Edit)
-    }
-
-    if (this._options.bail) {
-      choices.push(UserActions.Exit)
-    }
-
-    const feedback = await this.askUser(msg, choices)
-
-    metadata.feedback = {}
-
-    switch (feedback) {
-      case UserActions.Accept:
-        metadata.feedback.accepted = true
-        break
-
-      case UserActions.Edit: {
-        let { body: editedOutput } =
-          await this.twilioClient.sendAndWaitForReply({
-            name: 'human-feedback-edit',
-            text: 'Copy and edit the output:'
-          })
-        editedOutput = editedOutput.replace(/```$/g, '')
-        editedOutput = editedOutput.replace(/^```/g, '')
-        metadata.feedback.editedOutput = editedOutput
-        break
-      }
-
-      case UserActions.Decline:
-        metadata.feedback.accepted = false
-        break
-
-      case UserActions.Exit:
-        throw new Error('Exiting...')
-
-      default:
-        throw new Error(`Unexpected feedback: ${feedback}`)
-    }
+  public async selectOne(response: any[]): Promise<any> {
+    const { body: selectedOutput } =
+      await this.twilioClient.sendAndWaitForReply({
+        name: 'human-feedback-select',
+        text:
+          'Pick one output:' +
+          response.map((r, idx) => `\n${idx} - ${r}`).join('') +
+          '\n\nReply with the number of your choice.',
+        validate: (message) => {
+          const choice = parseInt(message.body)
+          return !isNaN(choice) && choice >= 0 && choice < response.length
+        }
+      })
+    return response[parseInt(selectedOutput)]
   }
 
-  public async selectOne(
-    response: any[],
-    metadata: TaskResponseMetadata
-  ): Promise<void> {
-    const stringified = JSON.stringify(response, null, 2)
-    const msg = [
-      'The following output was generated:',
-      '',
-      stringified,
-      '',
-      'What would you like to do?'
-    ].join('\n')
-
-    const choices: UserActions[] = [UserActions.Select]
-
-    if (this._options.editing) {
-      choices.push(UserActions.Edit)
-    }
-
-    if (this._options.bail) {
-      choices.push(UserActions.Exit)
-    }
-
-    const feedback =
-      choices.length === 1
-        ? UserActions.Select
-        : await this.askUser(msg, choices)
-
-    metadata.feedback = {}
-
-    switch (feedback) {
-      case UserActions.Edit: {
-        let { body: editedOutput } =
-          await this.twilioClient.sendAndWaitForReply({
-            text: 'Copy and edit the output:',
-            name: 'human-feedback-edit'
+  public async selectN(response: any[]): Promise<any[]> {
+    const { body: selectedOutput } =
+      await this.twilioClient.sendAndWaitForReply({
+        name: 'human-feedback-select',
+        text:
+          'Select outputs:' +
+          response.map((r, idx) => `\n${idx} - ${r}`).join('') +
+          '\n\nReply with a comma-separated list of the output numbers of your choice.',
+        validate: (message) => {
+          const choices = message.body.split(',')
+          return choices.every((choice) => {
+            const choiceInt = parseInt(choice)
+            return (
+              !isNaN(choiceInt) && choiceInt >= 0 && choiceInt < response.length
+            )
           })
-        editedOutput = editedOutput.replace(/```$/g, '')
-        editedOutput = editedOutput.replace(/^```/g, '')
-        metadata.feedback.editedOutput = editedOutput
-        break
-      }
-
-      case UserActions.Select: {
-        const { body: selectedOutput } =
-          await this.twilioClient.sendAndWaitForReply({
-            name: 'human-feedback-select',
-            text:
-              'Pick one output:' +
-              response.map((r, idx) => `\n${idx} - ${r}`).join('') +
-              '\n\nReply with the number of your choice.',
-            validate: (message) => {
-              const choice = parseInt(message.body)
-              return !isNaN(choice) && choice >= 0 && choice < response.length
-            }
-          })
-        metadata.feedback.chosen = response[parseInt(selectedOutput)]
-        break
-      }
-
-      case UserActions.Exit:
-        throw new Error('Exiting...')
-
-      default:
-        throw new Error(`Unexpected feedback: ${feedback}`)
-    }
-  }
-
-  public async selectN(
-    response: any[],
-    metadata: TaskResponseMetadata
-  ): Promise<void> {
-    const stringified = JSON.stringify(response, null, 2)
-    const msg = [
-      'The following output was generated:',
-      '',
-      stringified,
-      '',
-      'What would you like to do?'
-    ].join('\n')
-    const choices: UserActions[] = [UserActions.Select]
-
-    if (this._options.editing) {
-      choices.push(UserActions.Edit)
-    }
-
-    if (this._options.bail) {
-      choices.push(UserActions.Exit)
-    }
-
-    const feedback =
-      choices.length === 1
-        ? UserActions.Select
-        : await this.askUser(msg, choices)
-
-    metadata.feedback = {}
-
-    switch (feedback) {
-      case UserActions.Edit: {
-        let { body: editedOutput } =
-          await this.twilioClient.sendAndWaitForReply({
-            text: 'Copy and edit the output:',
-            name: 'human-feedback-edit'
-          })
-        editedOutput = editedOutput.replace(/```$/g, '')
-        editedOutput = editedOutput.replace(/^```/g, '')
-        metadata.feedback.editedOutput = editedOutput
-        break
-      }
-
-      case UserActions.Select: {
-        const { body: selectedOutput } =
-          await this.twilioClient.sendAndWaitForReply({
-            name: 'human-feedback-select',
-            text:
-              'Select outputs:' +
-              response.map((r, idx) => `\n${idx} - ${r}`).join('') +
-              '\n\nReply with a comma-separated list of the output numbers of your choice.',
-            validate: (message) => {
-              const choices = message.body.split(',')
-              return choices.every((choice) => {
-                const choiceInt = parseInt(choice)
-                return (
-                  !isNaN(choiceInt) &&
-                  choiceInt >= 0 &&
-                  choiceInt < response.length
-                )
-              })
-            }
-          })
-        const chosenOutputs = selectedOutput
-          .split(',')
-          .map((choice) => parseInt(choice))
-        metadata.feedback.selected = response.filter((_, idx) => {
-          return chosenOutputs.includes(idx)
-        })
-        break
-      }
-
-      case UserActions.Exit:
-        throw new Error('Exiting...')
-
-      default:
-        throw new Error(`Unexpected feedback: ${feedback}`)
-    }
+        }
+      })
+    const chosenOutputs = selectedOutput
+      .split(',')
+      .map((choice) => parseInt(choice))
+    return response.filter((_, idx) => {
+      return chosenOutputs.includes(idx)
+    })
   }
 }
