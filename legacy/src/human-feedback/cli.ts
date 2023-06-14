@@ -11,8 +11,9 @@ import {
 } from './feedback'
 
 export class HumanFeedbackMechanismCLI<
-  T extends HumanFeedbackType
-> extends HumanFeedbackMechanism<T> {
+  T extends HumanFeedbackType,
+  TOutput = any
+> extends HumanFeedbackMechanism<T, TOutput> {
   /**
    * Prompt the user to select one of a list of options.
    */
@@ -43,19 +44,31 @@ export class HumanFeedbackMechanismCLI<
     })
   }
 
-  protected async selectOne(response: any[]): Promise<void> {
+  protected async selectOne(
+    response: TOutput
+  ): Promise<TOutput extends (infer U)[] ? U : never> {
+    if (!Array.isArray(response)) {
+      throw new Error('selectOne called on non-array response')
+    }
+
     const choices = response.map((option) => ({
-      name: option,
+      name: String(option),
       value: option
     }))
     return select({ message: 'Pick one output:', choices })
   }
 
-  protected async selectN(response: any[]): Promise<any[]> {
+  protected async selectN(
+    response: TOutput
+  ): Promise<TOutput extends any[] ? TOutput : never> {
+    if (!Array.isArray(response)) {
+      throw new Error('selectN called on non-array response')
+    }
+
     const choices = response.map((option) => ({
-      name: option,
+      name: String(option),
       value: option
     }))
-    return checkbox({ message: 'Select outputs:', choices })
+    return checkbox({ message: 'Select outputs:', choices }) as any
   }
 }

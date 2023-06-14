@@ -10,8 +10,9 @@ import {
 } from './feedback'
 
 export class HumanFeedbackMechanismTwilio<
-  T extends HumanFeedbackType
-> extends HumanFeedbackMechanism<T> {
+  T extends HumanFeedbackType,
+  TOutput = any
+> extends HumanFeedbackMechanism<T, TOutput> {
   private twilioClient: TwilioConversationClient
 
   constructor({
@@ -19,7 +20,7 @@ export class HumanFeedbackMechanismTwilio<
     options
   }: {
     task: BaseTask
-    options: Required<HumanFeedbackOptions<T>>
+    options: Required<HumanFeedbackOptions<T, TOutput>>
   }) {
     super({ task, options })
     this.twilioClient = new TwilioConversationClient()
@@ -71,7 +72,13 @@ export class HumanFeedbackMechanismTwilio<
     return choices[parseInt(response.body)]
   }
 
-  public async selectOne(response: any[]): Promise<any> {
+  protected async selectOne(
+    response: TOutput
+  ): Promise<TOutput extends (infer U)[] ? U : never> {
+    if (!Array.isArray(response)) {
+      throw new Error('selectOne called on non-array response')
+    }
+
     const { body: selectedOutput } =
       await this.twilioClient.sendAndWaitForReply({
         name: 'human-feedback-select',
@@ -87,7 +94,13 @@ export class HumanFeedbackMechanismTwilio<
     return response[parseInt(selectedOutput)]
   }
 
-  public async selectN(response: any[]): Promise<any[]> {
+  protected async selectN(
+    response: TOutput
+  ): Promise<TOutput extends any[] ? TOutput : never> {
+    if (!Array.isArray(response)) {
+      throw new Error('selectN called on non-array response')
+    }
+
     const { body: selectedOutput } =
       await this.twilioClient.sendAndWaitForReply({
         name: 'human-feedback-select',
@@ -110,6 +123,6 @@ export class HumanFeedbackMechanismTwilio<
       .map((choice) => parseInt(choice))
     return response.filter((_, idx) => {
       return chosenOutputs.includes(idx)
-    })
+    }) as any
   }
 }

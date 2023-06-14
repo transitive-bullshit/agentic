@@ -33,14 +33,15 @@ export const HumanFeedbackUserActionMessages: Record<
  */
 export type HumanFeedbackType = 'confirm' | 'selectOne' | 'selectN'
 
-type HumanFeedbackMechanismConstructor<T extends HumanFeedbackType> = new (
-  ...args: any[]
-) => HumanFeedbackMechanism<T>
+type HumanFeedbackMechanismConstructor<
+  T extends HumanFeedbackType,
+  TOutput = any
+> = new (...args: any[]) => HumanFeedbackMechanism<T, TOutput>
 
 /**
  * Options for human feedback.
  */
-export type HumanFeedbackOptions<T extends HumanFeedbackType> = {
+export type HumanFeedbackOptions<T extends HumanFeedbackType, TOutput> = {
   /**
    * What type of feedback to request.
    */
@@ -64,7 +65,7 @@ export type HumanFeedbackOptions<T extends HumanFeedbackType> = {
   /**
    * The human feedback mechanism to use for this task.
    */
-  mechanism?: HumanFeedbackMechanismConstructor<T>
+  mechanism?: HumanFeedbackMechanismConstructor<T, TOutput>
 }
 
 export interface BaseHumanFeedbackMetadata {
@@ -125,28 +126,35 @@ export type FeedbackTypeToMetadata<T extends HumanFeedbackType> =
     ? HumanFeedbackSelectOneMetadata
     : HumanFeedbackSelectNMetadata
 
-export abstract class HumanFeedbackMechanism<T extends HumanFeedbackType> {
+export abstract class HumanFeedbackMechanism<
+  T extends HumanFeedbackType,
+  TOutput
+> {
   protected _agentic: Agentic
 
   protected _task: BaseTask
 
-  protected _options: Required<HumanFeedbackOptions<T>>
+  protected _options: Required<HumanFeedbackOptions<T, TOutput>>
 
   constructor({
     task,
     options
   }: {
     task: BaseTask
-    options: Required<HumanFeedbackOptions<T>>
+    options: Required<HumanFeedbackOptions<T, TOutput>>
   }) {
     this._agentic = task.agentic
     this._task = task
     this._options = options
   }
 
-  protected abstract selectOne(response: any): Promise<any>
+  protected abstract selectOne(
+    output: TOutput
+  ): Promise<TOutput extends any[] ? TOutput[0] : never>
 
-  protected abstract selectN(response: any): Promise<any>
+  protected abstract selectN(
+    response: TOutput
+  ): Promise<TOutput extends any[] ? TOutput : never>
 
   protected abstract annotate(): Promise<string>
 
@@ -162,8 +170,8 @@ export abstract class HumanFeedbackMechanism<T extends HumanFeedbackType> {
     return this._task.outputSchema.parse(parsedOutput)
   }
 
-  public async interact(response: any): Promise<FeedbackTypeToMetadata<T>> {
-    const stringified = JSON.stringify(response, null, 2)
+  public async interact(output: TOutput): Promise<FeedbackTypeToMetadata<T>> {
+    const stringified = JSON.stringify(output, null, 2)
     const msg = [
       'The following output was generated:',
       '```',
@@ -216,9 +224,17 @@ export abstract class HumanFeedbackMechanism<T extends HumanFeedbackType> {
 
       case HumanFeedbackUserActions.Select:
         if (this._options.type === 'selectN') {
-          feedback.selected = await this.selectN(response)
+          if (!Array.isArray(output)) {
+            throw new Error('Expected output to be an array')
+          }
+
+          feedback.selected = await this.selectN(output)
         } else if (this._options.type === 'selectOne') {
-          feedback.chosen = await this.selectOne(response)
+          if (!Array.isArray(output)) {
+            throw new Error('Expected output to be an array')
+          }
+
+          feedback.chosen = await this.selectOne(output)
         }
 
         break
@@ -241,9 +257,9 @@ export abstract class HumanFeedbackMechanism<T extends HumanFeedbackType> {
   }
 }
 
-export function withHumanFeedback<T, U, V extends HumanFeedbackType>(
-  task: BaseTask<T, U>,
-  options: HumanFeedbackOptions<V> = {}
+export function withHumanFeedback<TInput, TOutput, V extends HumanFeedbackType>(
+  task: BaseTask<TInput, TOutput>,
+  options: HumanFeedbackOptions<V, TOutput> = {}
 ) {
   task = task.clone()
 
@@ -251,7 +267,7 @@ export function withHumanFeedback<T, U, V extends HumanFeedbackType>(
   const instanceDefaults = task.agentic.humanFeedbackDefaults
 
   // Use Object.assign to merge the options, instance defaults, and hard-coded defaults
-  const finalOptions: HumanFeedbackOptions<V> = Object.assign(
+  const finalOptions: HumanFeedbackOptions<V, TOutput> = Object.assign(
     {
       type: 'confirm',
       bail: false,
@@ -278,7 +294,7 @@ export function withHumanFeedback<T, U, V extends HumanFeedbackType>(
 
   const originalCall = task.callWithMetadata.bind(task)
 
-  task.callWithMetadata = async function (input?: T) {
+  task.callWithMetadata = async function (input?: TInput) {
     const response = await originalCall(input)
 
     const feedback = await feedbackMechanism.interact(response.result)

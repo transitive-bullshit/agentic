@@ -10,8 +10,9 @@ import {
 } from './feedback'
 
 export class HumanFeedbackMechanismSlack<
-  T extends HumanFeedbackType
-> extends HumanFeedbackMechanism<T> {
+  T extends HumanFeedbackType,
+  TOutput = any
+> extends HumanFeedbackMechanism<T, TOutput> {
   private slackClient: SlackClient
 
   constructor({
@@ -19,7 +20,7 @@ export class HumanFeedbackMechanismSlack<
     options
   }: {
     task: BaseTask
-    options: Required<HumanFeedbackOptions<T>>
+    options: Required<HumanFeedbackOptions<T, TOutput>>
   }) {
     super({ task, options })
     this.slackClient = new SlackClient()
@@ -68,7 +69,13 @@ export class HumanFeedbackMechanismSlack<
     return choices[parseInt(response.text)]
   }
 
-  public async selectOne(response: any[]): Promise<any> {
+  protected async selectOne(
+    response: TOutput
+  ): Promise<TOutput extends (infer U)[] ? U : never> {
+    if (!Array.isArray(response)) {
+      throw new Error('selectOne called on non-array response')
+    }
+
     const { text: selectedOutput } = await this.slackClient.sendAndWaitForReply(
       {
         text:
@@ -84,7 +91,13 @@ export class HumanFeedbackMechanismSlack<
     return response[parseInt(selectedOutput)]
   }
 
-  public async selectN(response: any[]): Promise<any[]> {
+  protected async selectN(
+    response: TOutput
+  ): Promise<TOutput extends any[] ? TOutput : never> {
+    if (!Array.isArray(response)) {
+      throw new Error('selectN called on non-array response')
+    }
+
     const { text: selectedOutput } = await this.slackClient.sendAndWaitForReply(
       {
         text:
@@ -107,6 +120,6 @@ export class HumanFeedbackMechanismSlack<
       .map((choice) => parseInt(choice))
     return response.filter((_, idx) => {
       return chosenOutputs.includes(idx)
-    })
+    }) as any
   }
 }
