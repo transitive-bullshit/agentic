@@ -223,7 +223,8 @@ export abstract class BaseChatModel<
           1
         ).replaceAll(/\n ?/gm, ' ')
 
-        messages.push(completion.message)
+        // TODO: remove `any` cast once openai-fetch is updated
+        messages.push(completion.message as any)
         messages.push({
           role: 'function',
           name: functionCall.name,
