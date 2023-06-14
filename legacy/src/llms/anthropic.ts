@@ -48,11 +48,7 @@ export class AnthropicChatModel<
   }
 
   public override get nameForModel(): string {
-    return 'anthropic_chat'
-  }
-
-  public override get nameForHuman(): string {
-    return 'AnthropicChatModel'
+    return 'anthropicChatCompletion'
   }
 
   protected override async _createChatCompletion(

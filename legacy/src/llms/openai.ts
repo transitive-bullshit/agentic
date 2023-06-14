@@ -1,4 +1,4 @@
-import { type SetOptional } from 'type-fest'
+import type { SetOptional } from 'type-fest'
 
 import * as types from '@/types'
 import { DEFAULT_OPENAI_MODEL } from '@/constants'
@@ -61,11 +61,11 @@ export class OpenAIChatModel<
   }
 
   public override get nameForModel(): string {
-    return 'openai_chat'
+    return 'openaiChatCompletion'
   }
 
   public override get nameForHuman(): string {
-    return 'OpenAIChatModel'
+    return `OpenAIChatModel ${this._model}`
   }
 
   public override get supportsTools(): boolean {
@@ -73,14 +73,16 @@ export class OpenAIChatModel<
   }
 
   protected override async _createChatCompletion(
-    messages: types.ChatMessage[]
+    messages: types.ChatMessage[],
+    functions?: types.openai.ChatMessageFunction[]
   ): Promise<
     types.BaseChatCompletionResponse<types.openai.ChatCompletionResponse>
   > {
     const res = await this._client.createChatCompletion({
       ...this._modelParams,
       model: this._model,
-      messages
+      messages,
+      functions
     })
 
     return res

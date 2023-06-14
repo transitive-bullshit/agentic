@@ -78,7 +78,7 @@ export abstract class BaseLLM<
   }
 
   public override get nameForHuman(): string {
-    return `${this._provider}:chat:${this._model}`
+    return `${this.constructor.name} ${this._model}`
   }
 
   examples(examples: types.LLMExample[]): this {
