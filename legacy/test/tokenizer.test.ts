@@ -7,6 +7,7 @@ import './_utils'
 const models = [
   'gpt-3.5-turbo',
   'gpt-4',
+  'gpt-4-0613',
   'text-davinci-003',
   'code-davinci-002'
 ]

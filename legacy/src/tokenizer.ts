@@ -91,6 +91,11 @@ export async function getTokenizerForModel(
 }
 
 export function getModelNameForTiktoken(modelName: string): TiktokenModel {
+  if (modelName.startsWith('gpt-3.5-turbo-16k-')) {
+    // TODO: remove this once the model is added to tiktoken
+    return 'gpt-3.5-turbo-16k' as TiktokenModel
+  }
+
   if (modelName.startsWith('gpt-3.5-turbo-')) {
     return 'gpt-3.5-turbo'
   }
@@ -119,6 +124,9 @@ export function getContextSizeForModel(model: string): number {
   const modelName = getModelNameForTiktoken(model)
 
   switch (modelName) {
+    case 'gpt-3.5-turbo-16k' as TiktokenModel:
+      return 16384
+
     case 'gpt-3.5-turbo':
       return 4096
 

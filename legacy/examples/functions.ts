@@ -2,14 +2,16 @@ import { OpenAIClient } from '@agentic/openai-fetch'
 import 'dotenv/config'
 import { z } from 'zod'
 
-import { Agentic } from '@/agentic'
+import { Agentic, CalculatorTool } from '@/index'
 
 async function main() {
   const openai = new OpenAIClient({ apiKey: process.env.OPENAI_API_KEY! })
-  const $ = new Agentic({ openai })
+  const agentic = new Agentic({ openai })
 
-  const example = await $.gpt4(`generate fake data`)
-    .output(z.object({ foo: z.string(), bar: z.number() }))
+  const example = await agentic
+    .gpt4('What is 5 * 50?')
+    .tools([new CalculatorTool({ agentic })])
+    .output(z.object({ answer: z.number() }))
     .call()
   console.log(example)
 }

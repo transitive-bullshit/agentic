@@ -3,6 +3,7 @@ import pMap from 'p-map'
 import { dedent } from 'ts-dedent'
 import { type SetRequired } from 'type-fest'
 import { ZodType, z } from 'zod'
+import { zodToJsonSchema } from 'zod-to-json-schema'
 import { printNode, zodToTs } from 'zod-to-ts'
 
 import * as errors from '@/errors'
@@ -14,6 +15,7 @@ import {
   extractJSONObjectFromString
 } from '@/utils'
 
+import { BaseTask } from '../task'
 import { BaseLLM } from './llm'
 
 export abstract class BaseChatModel<
@@ -22,7 +24,8 @@ export abstract class BaseChatModel<
   TModelParams extends Record<string, any> = Record<string, any>,
   TChatCompletionResponse extends Record<string, any> = Record<string, any>
 > extends BaseLLM<TInput, TOutput, TModelParams> {
-  _messages: types.ChatMessage[]
+  protected _messages: types.ChatMessage[]
+  protected _tools?: BaseTask<any, any>[]
 
   constructor(
     options: SetRequired<
@@ -33,6 +36,7 @@ export abstract class BaseChatModel<
     super(options)
 
     this._messages = options.messages
+    this._tools = options.tools
   }
 
   // TODO: use polymorphic `this` type to return correct BaseLLM subclass type
@@ -57,6 +61,11 @@ export abstract class BaseChatModel<
     return refinedInstance
   }
 
+  tools(tools: BaseTask<any, any>[]): this {
+    this._tools = tools
+    return this
+  }
+
   protected abstract _createChatCompletion(
     messages: types.ChatMessage[]
   ): Promise<types.BaseChatCompletionResponse<TChatCompletionResponse>>
@@ -69,9 +78,6 @@ export abstract class BaseChatModel<
       // TODO: handle errors gracefully
       input = this.inputSchema.parse(input)
     }
-
-    // TODO: validate input message variables against input schema
-    console.log({ input })
 
     const messages = this._messages
       .map((message) => {
@@ -263,9 +269,15 @@ export abstract class BaseChatModel<
     const numTokensPerMessage = await pMap(
       messages,
       async (message) => {
+        let content = message.content || ''
+        if (message.function_call) {
+          // TODO: this case needs testing
+          content = message.function_call.arguments
+        }
+
         const [numTokensContent, numTokensRole, numTokensName] =
           await Promise.all([
-            this.getNumTokens(message.content),
+            this.getNumTokens(content),
             this.getNumTokens(message.role),
             message.name
               ? this.getNumTokens(message.name).then((n) => n + tokensPerName)

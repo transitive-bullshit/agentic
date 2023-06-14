@@ -1,11 +1,11 @@
 import * as anthropic from '@anthropic-ai/sdk'
+import { OpenAIClient } from '@agentic/openai-fetch'
 import KeyvRedis from '@keyv/redis'
 import 'dotenv/config'
 import hashObject from 'hash-obj'
 import Redis from 'ioredis'
 import Keyv from 'keyv'
 import defaultKy from 'ky'
-import { OpenAIClient } from 'openai-fetch'
 import pMemoize from 'p-memoize'
 
 import { Agentic } from '@/agentic'

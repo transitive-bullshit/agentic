@@ -1,10 +1,11 @@
+import * as openai from '@agentic/openai-fetch'
 import * as anthropic from '@anthropic-ai/sdk'
-import * as openai from 'openai-fetch'
 import type { Options as RetryOptions } from 'p-retry'
 import type { JsonObject } from 'type-fest'
 import { SafeParseReturnType, ZodType, ZodTypeAny, output, z } from 'zod'
 
 import type { Agentic } from './agentic'
+import type { BaseTask } from './task'
 
 export { openai }
 export { anthropic }
@@ -54,19 +55,8 @@ export interface LLMOptions<
   promptSuffix?: string
 }
 
-// export type ChatMessageRole = 'user' | 'system' | 'assistant'
-export const ChatMessageRoleSchema = z.union([
-  z.literal('user'),
-  z.literal('system'),
-  z.literal('assistant')
-])
-export type ChatMessageRole = z.infer<typeof ChatMessageRoleSchema>
-
-export interface ChatMessage {
-  role: ChatMessageRole
-  content: string
-  name?: string
-}
+export type ChatMessage = openai.ChatMessage
+export type ChatMessageRole = openai.ChatMessageRole
 
 export interface ChatModelOptions<
   TInput = void,
@@ -74,6 +64,7 @@ export interface ChatModelOptions<
   TModelParams extends Record<string, any> = Record<string, any>
 > extends BaseLLMOptions<TInput, TOutput, TModelParams> {
   messages: ChatMessage[]
+  tools?: BaseTask<any, any>[]
 }
 
 export interface BaseChatCompletionResponse<

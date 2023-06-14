@@ -29,11 +29,15 @@ export class CalculatorTool extends BaseTask<
     return CalculatorOutputSchema
   }
 
-  public override get name(): string {
+  public override get nameForModel(): string {
     return 'calculator'
   }
 
-  public get descriptionForModel(): string {
+  public override get nameForHuman(): string {
+    return 'Calculator'
+  }
+
+  public override get descForModel(): string {
     return 'Useful for getting the result of a math expression. The input to this tool should be a valid mathematical expression that could be executed by a simple calculator.'
   }
 

@@ -33,8 +33,8 @@ export class MetaphorSearchTool extends BaseTask<
     return metaphor.MetaphorSearchOutputSchema
   }
 
-  public override get name(): string {
-    return 'metaphor-search'
+  public override get nameForModel(): string {
+    return 'metaphor_web_search'
   }
 
   protected override async _call(

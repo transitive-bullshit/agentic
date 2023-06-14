@@ -63,8 +63,8 @@ export class NovuNotificationTool extends BaseTask<
     return NovuNotificationToolOutputSchema
   }
 
-  public override get name(): string {
-    return 'novu'
+  public override get nameForModel(): string {
+    return 'novu_send_notification'
   }
 
   protected override async _call(

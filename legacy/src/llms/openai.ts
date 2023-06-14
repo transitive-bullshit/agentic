@@ -38,16 +38,26 @@ export class OpenAIChatModel<
     }
   }
 
+  public override get nameForModel(): string {
+    return 'openai_chat'
+  }
+
+  public override get nameForHuman(): string {
+    return 'OpenAIChatModel'
+  }
+
   protected override async _createChatCompletion(
     messages: types.ChatMessage[]
   ): Promise<
     types.BaseChatCompletionResponse<types.openai.ChatCompletionResponse>
   > {
-    return this._client.createChatCompletion({
+    const res = await this._client.createChatCompletion({
       ...this._modelParams,
       model: this._model,
       messages
     })
+
+    return res
   }
 
   public override clone(): OpenAIChatModel<TInput, TOutput> {
@@ -61,6 +71,7 @@ export class OpenAIChatModel<
       model: this._model,
       examples: this._examples,
       messages: this._messages,
+      tools: this._tools,
       ...this._modelParams
     })
   }

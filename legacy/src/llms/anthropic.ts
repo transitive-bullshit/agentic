@@ -47,6 +47,14 @@ export class AnthropicChatModel<
     }
   }
 
+  public override get nameForModel(): string {
+    return 'anthropic_chat'
+  }
+
+  public override get nameForHuman(): string {
+    return 'AnthropicChatModel'
+  }
+
   protected override async _createChatCompletion(
     messages: types.ChatMessage[]
   ): Promise<types.BaseChatCompletionResponse<anthropic.CompletionResponse>> {
@@ -62,6 +70,7 @@ export class AnthropicChatModel<
               return message.content
           }
         })
+        .filter(Boolean)
         .join('') + anthropic.AI_PROMPT
 
     // TODO: support streaming

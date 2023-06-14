@@ -46,12 +46,20 @@ export abstract class BaseTask<TInput = void, TOutput = string> {
   public abstract get inputSchema(): ZodType<TInput>
   public abstract get outputSchema(): ZodType<TOutput>
 
-  public abstract get name(): string
+  public abstract get nameForModel(): string
+
+  public get nameForHuman(): string {
+    return this.nameForModel
+  }
+
+  public get descForModel(): string {
+    return ''
+  }
 
   // TODO: is this really necessary?
   public clone(): BaseTask<TInput, TOutput> {
     // TODO: override in subclass if needed
-    throw new Error(`clone not implemented for task "${this.name}"`)
+    throw new Error(`clone not implemented for task "${this.nameForModel}"`)
   }
 
   public retryConfig(retryConfig: types.RetryConfig): this {
@@ -81,7 +89,7 @@ export abstract class BaseTask<TInput = void, TOutput = string> {
       input,
       attemptNumber: 0,
       metadata: {
-        taskName: this.name,
+        taskName: this.nameForModel,
         taskId: this.id,
         callId: this._agentic.idGeneratorFn()
       }
