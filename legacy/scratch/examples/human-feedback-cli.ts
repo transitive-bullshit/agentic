@@ -9,7 +9,7 @@ async function main() {
   const openai = new OpenAIClient({ apiKey: process.env.OPENAI_API_KEY! })
   const ai = new Agentic({ openai })
 
-  const topicFacts = ai
+  const topicJokes = ai
     .gpt3(`Tell me {{num}} jokes about {{topic}}`)
     .input(
       z.object({
@@ -20,7 +20,7 @@ async function main() {
     .output(z.array(z.string()))
     .modelParams({ temperature: 0.9 })
 
-  const topicFactsFeedback = withHumanFeedback(topicFacts, {
+  const topicJokesFeedback = withHumanFeedback(topicJokes, {
     type: 'selectN',
     annotations: false,
     bail: false,
@@ -28,7 +28,7 @@ async function main() {
     mechanism: HumanFeedbackMechanismCLI
   })
 
-  const out = await topicFactsFeedback.callWithMetadata({
+  const out = await topicJokesFeedback.callWithMetadata({
     topic: 'politicians',
     num: 5
   })
