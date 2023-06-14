@@ -18,7 +18,10 @@ import { Agentic } from '@/agentic'
  *    - Native function calls
  *    - Invoking sub-agents
  */
-export abstract class BaseTask<TInput = void, TOutput = string> {
+export abstract class BaseTask<
+  TInput extends void | types.JsonObject = void,
+  TOutput extends types.JsonValue = string
+> {
   protected _agentic: Agentic
   protected _id: string
 
@@ -26,6 +29,10 @@ export abstract class BaseTask<TInput = void, TOutput = string> {
   protected _retryConfig: types.RetryConfig
 
   constructor(options: types.BaseTaskOptions) {
+    if (!options.agentic) {
+      throw new Error('Passing "agentic" is required when creating a Task')
+    }
+
     this._agentic = options.agentic
     this._timeoutMs = options.timeoutMs
     this._retryConfig = options.retryConfig ?? {
@@ -49,7 +56,7 @@ export abstract class BaseTask<TInput = void, TOutput = string> {
   public abstract get nameForModel(): string
 
   public get nameForHuman(): string {
-    return this.nameForModel
+    return this.constructor.name
   }
 
   public get descForModel(): string {
@@ -67,11 +74,17 @@ export abstract class BaseTask<TInput = void, TOutput = string> {
     return this
   }
 
+  /**
+   * Calls this task with the given `input` and returns the result only.
+   */
   public async call(input?: TInput): Promise<TOutput> {
     const res = await this.callWithMetadata(input)
     return res.result
   }
 
+  /**
+   * Calls this task with the given `input` and returns the result along with metadata.
+   */
   public async callWithMetadata(
     input?: TInput
   ): Promise<types.TaskResponse<TOutput>> {
@@ -126,6 +139,9 @@ export abstract class BaseTask<TInput = void, TOutput = string> {
     }
   }
 
+  /**
+   * Subclasses must implement the core `_call` logic for this task.
+   */
   protected abstract _call(ctx: types.TaskCallContext<TInput>): Promise<TOutput>
 
   // TODO

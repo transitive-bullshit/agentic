@@ -7,7 +7,7 @@ import { BaseTask } from '@/task'
 
 export const NovuNotificationToolInputSchema = z.object({
   name: z.string(),
-  payload: z.record(z.unknown()),
+  payload: z.record(z.any()),
   to: z.array(
     z.object({
       subscriberId: z.string(),

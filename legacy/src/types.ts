@@ -1,7 +1,7 @@
 import * as openai from '@agentic/openai-fetch'
 import * as anthropic from '@anthropic-ai/sdk'
 import type { Options as RetryOptions } from 'p-retry'
-import type { JsonObject } from 'type-fest'
+import type { JsonObject, JsonValue } from 'type-fest'
 import { SafeParseReturnType, ZodType, ZodTypeAny, output, z } from 'zod'
 
 import type { Agentic } from './agentic'
@@ -9,6 +9,7 @@ import type { BaseTask } from './task'
 
 export { openai }
 export { anthropic }
+export type { JsonObject, JsonValue }
 
 export type ParsedData<T extends ZodTypeAny> = T extends ZodTypeAny
   ? output<T>
@@ -32,8 +33,8 @@ export interface BaseTaskOptions {
 }
 
 export interface BaseLLMOptions<
-  TInput = void,
-  TOutput = string,
+  TInput extends void | JsonObject = void,
+  TOutput extends JsonValue = string,
   TModelParams extends Record<string, any> = Record<string, any>
 > extends BaseTaskOptions {
   inputSchema?: ZodType<TInput>
@@ -46,8 +47,8 @@ export interface BaseLLMOptions<
 }
 
 export interface LLMOptions<
-  TInput = void,
-  TOutput = string,
+  TInput extends void | JsonObject = void,
+  TOutput extends JsonValue = string,
   TModelParams extends Record<string, any> = Record<string, any>
 > extends BaseLLMOptions<TInput, TOutput, TModelParams> {
   promptTemplate?: string
@@ -59,8 +60,8 @@ export type ChatMessage = openai.ChatMessage
 export type ChatMessageRole = openai.ChatMessageRole
 
 export interface ChatModelOptions<
-  TInput = void,
-  TOutput = string,
+  TInput extends void | JsonObject = void,
+  TOutput extends JsonValue = string,
   TModelParams extends Record<string, any> = Record<string, any>
 > extends BaseLLMOptions<TInput, TOutput, TModelParams> {
   messages: ChatMessage[]
@@ -105,7 +106,7 @@ export interface LLMTaskResponseMetadata<
 }
 
 export interface TaskResponse<
-  TOutput = string,
+  TOutput extends JsonValue = string,
   TMetadata extends TaskResponseMetadata = TaskResponseMetadata
 > {
   result: TOutput
@@ -113,7 +114,7 @@ export interface TaskResponse<
 }
 
 export interface TaskCallContext<
-  TInput = void,
+  TInput extends void | JsonObject = void,
   TMetadata extends TaskResponseMetadata = TaskResponseMetadata
 > {
   input?: TInput

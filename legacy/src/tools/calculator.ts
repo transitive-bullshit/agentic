@@ -4,7 +4,9 @@ import { z } from 'zod'
 import * as types from '@/types'
 import { BaseTask } from '@/task'
 
-export const CalculatorInputSchema = z.string().describe('expression')
+export const CalculatorInputSchema = z.object({
+  expression: z.string().describe('mathematical expression to evaluate')
+})
 export const CalculatorOutputSchema = z
   .number()
   .describe('result of calculating the expression')
@@ -44,7 +46,7 @@ export class CalculatorTool extends BaseTask<
   protected override async _call(
     ctx: types.TaskCallContext<CalculatorInput>
   ): Promise<CalculatorOutput> {
-    const result = Parser.evaluate(ctx.input!)
+    const result = Parser.evaluate(ctx.input!.expression)
     return result
   }
 }

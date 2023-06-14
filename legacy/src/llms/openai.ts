@@ -13,8 +13,8 @@ const openaiModelsSupportingFunctions = new Set([
 ])
 
 export class OpenAIChatModel<
-  TInput = any,
-  TOutput = string
+  TInput extends void | types.JsonObject = any,
+  TOutput extends types.JsonValue = string
 > extends BaseChatModel<
   TInput,
   TOutput,

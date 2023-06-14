@@ -3,7 +3,7 @@ import { expectTypeOf } from 'expect-type'
 
 import { AnthropicChatModel } from '@/llms/anthropic'
 
-import { createTestAgenticRuntime } from './_utils'
+import { createTestAgenticRuntime } from '../_utils'
 
 test('AnthropicChatModel ⇒ string output', async (t) => {
   t.timeout(2 * 60 * 1000)

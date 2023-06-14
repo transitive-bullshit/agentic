@@ -9,11 +9,11 @@ test('CalculatorTool', async (t) => {
   const agentic = createTestAgenticRuntime()
   const tool = new CalculatorTool({ agentic })
 
-  const res = await tool.call('1 + 1')
+  const res = await tool.call({ expression: '1 + 1' })
   t.is(res, 2)
   expectTypeOf(res).toMatchTypeOf<number>()
 
-  const res2 = await tool.callWithMetadata('cos(0)')
+  const res2 = await tool.callWithMetadata({ expression: 'cos(0)' })
   t.is(res2.result, 1)
   expectTypeOf(res2.result).toMatchTypeOf<number>()
 

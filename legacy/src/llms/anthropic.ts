@@ -9,8 +9,8 @@ import { BaseChatModel } from './chat'
 const defaultStopSequences = [anthropic.HUMAN_PROMPT]
 
 export class AnthropicChatModel<
-  TInput = any,
-  TOutput = string
+  TInput extends void | types.JsonObject = any,
+  TOutput extends types.JsonValue = string
 > extends BaseChatModel<
   TInput,
   TOutput,

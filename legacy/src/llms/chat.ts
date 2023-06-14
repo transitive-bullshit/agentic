@@ -3,7 +3,6 @@ import pMap from 'p-map'
 import { dedent } from 'ts-dedent'
 import { type SetRequired } from 'type-fest'
 import { ZodType, z } from 'zod'
-import { zodToJsonSchema } from 'zod-to-json-schema'
 import { printNode, zodToTs } from 'zod-to-ts'
 
 import * as errors from '@/errors'
@@ -19,8 +18,8 @@ import { BaseTask } from '../task'
 import { BaseLLM } from './llm'
 
 export abstract class BaseChatModel<
-  TInput = void,
-  TOutput = string,
+  TInput extends void | types.JsonObject = void,
+  TOutput extends types.JsonValue = string,
   TModelParams extends Record<string, any> = Record<string, any>,
   TChatCompletionResponse extends Record<string, any> = Record<string, any>
 > extends BaseLLM<TInput, TOutput, TModelParams> {
@@ -40,7 +39,9 @@ export abstract class BaseChatModel<
   }
 
   // TODO: use polymorphic `this` type to return correct BaseLLM subclass type
-  input<U>(inputSchema: ZodType<U>): BaseChatModel<U, TOutput, TModelParams> {
+  input<U extends void | types.JsonObject>(
+    inputSchema: ZodType<U>
+  ): BaseChatModel<U, TOutput, TModelParams> {
     const refinedInstance = this as unknown as BaseChatModel<
       U,
       TOutput,
@@ -51,7 +52,9 @@ export abstract class BaseChatModel<
   }
 
   // TODO: use polymorphic `this` type to return correct BaseLLM subclass type
-  output<U>(outputSchema: ZodType<U>): BaseChatModel<TInput, U, TModelParams> {
+  output<U extends types.JsonValue>(
+    outputSchema: ZodType<U>
+  ): BaseChatModel<TInput, U, TModelParams> {
     const refinedInstance = this as unknown as BaseChatModel<
       TInput,
       U,
@@ -72,13 +75,13 @@ export abstract class BaseChatModel<
     return this
   }
 
-  protected abstract _createChatCompletion(
-    messages: types.ChatMessage[]
-  ): Promise<types.BaseChatCompletionResponse<TChatCompletionResponse>>
-
   public get supportsTools(): boolean {
     return false
   }
+
+  protected abstract _createChatCompletion(
+    messages: types.ChatMessage[]
+  ): Promise<types.BaseChatCompletionResponse<TChatCompletionResponse>>
 
   public async buildMessages(
     input?: TInput,
@@ -239,7 +242,8 @@ export abstract class BaseChatModel<
         }
       }
 
-      const safeResult = outputSchema.safeParse(output)
+      // TODO: this doesn't bode well, batman...
+      const safeResult = (outputSchema.safeParse as any)(output)
 
       if (!safeResult.success) {
         throw new errors.ZodOutputValidationError(safeResult.error)

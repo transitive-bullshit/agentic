@@ -6,7 +6,7 @@ import { z } from 'zod'
 import { OutputValidationError, TemplateValidationError } from '@/errors'
 import { BaseChatModel, OpenAIChatModel } from '@/llms'
 
-import { createTestAgenticRuntime } from './_utils'
+import { createTestAgenticRuntime } from '../_utils'
 
 test('OpenAIChatModel ⇒ types', async (t) => {
   const agentic = createTestAgenticRuntime()
