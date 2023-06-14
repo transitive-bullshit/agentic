@@ -78,14 +78,12 @@ export class OpenAIChatModel<
   ): Promise<
     types.BaseChatCompletionResponse<types.openai.ChatCompletionResponse>
   > {
-    const res = await this._client.createChatCompletion({
+    return this._client.createChatCompletion({
       ...this._modelParams,
       model: this._model,
       messages,
       functions
     })
-
-    return res
   }
 
   public override clone(): OpenAIChatModel<TInput, TOutput> {

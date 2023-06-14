@@ -1,6 +1,6 @@
 import defaultKy from 'ky'
 
-export const WEATHER_API_BASE_URL = 'http://api.weatherapi.com/v1'
+export const WEATHER_API_BASE_URL = 'https://api.weatherapi.com/v1'
 
 interface CurrentWeatherResponse {
   current: CurrentWeather
