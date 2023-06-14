@@ -4,16 +4,16 @@ import sinon from 'sinon'
 import { z } from 'zod'
 
 import { OutputValidationError, TemplateValidationError } from '@/errors'
-import { BaseChatModel, OpenAIChatModel } from '@/llms'
+import { BaseChatCompletion, OpenAIChatCompletion } from '@/llms'
 
 import { createTestAgenticRuntime } from '../_utils'
 
-test('OpenAIChatModel ⇒ types', async (t) => {
+test('OpenAIChatCompletion ⇒ types', async (t) => {
   const agentic = createTestAgenticRuntime()
   const b = agentic.gpt4('test')
   t.pass()
 
-  expectTypeOf(b).toMatchTypeOf<OpenAIChatModel<any, string>>()
+  expectTypeOf(b).toMatchTypeOf<OpenAIChatCompletion<any, string>>()
 
   expectTypeOf(
     b.input(
@@ -22,7 +22,7 @@ test('OpenAIChatModel ⇒ types', async (t) => {
       })
     )
   ).toMatchTypeOf<
-    BaseChatModel<
+    BaseChatCompletion<
       {
         foo: string
       },
@@ -37,7 +37,7 @@ test('OpenAIChatModel ⇒ types', async (t) => {
       })
     )
   ).toMatchTypeOf<
-    BaseChatModel<
+    BaseChatCompletion<
       any,
       {
         bar?: string
@@ -46,11 +46,11 @@ test('OpenAIChatModel ⇒ types', async (t) => {
   >()
 })
 
-test('OpenAIChatModel ⇒ string output', async (t) => {
+test('OpenAIChatCompletion ⇒ string output', async (t) => {
   t.timeout(2 * 60 * 1000)
   const agentic = createTestAgenticRuntime()
 
-  const builder = new OpenAIChatModel({
+  const builder = new OpenAIChatCompletion({
     agentic,
     modelParams: {
       temperature: 0,
@@ -80,11 +80,11 @@ test('OpenAIChatModel ⇒ string output', async (t) => {
   expectTypeOf(result2).toMatchTypeOf<string>()
 })
 
-test('OpenAIChatModel ⇒ json output', async (t) => {
+test('OpenAIChatCompletion ⇒ json output', async (t) => {
   t.timeout(2 * 60 * 1000)
   const agentic = createTestAgenticRuntime()
 
-  const builder = new OpenAIChatModel({
+  const builder = new OpenAIChatCompletion({
     agentic,
     modelParams: {
       temperature: 0.5
@@ -106,11 +106,11 @@ test('OpenAIChatModel ⇒ json output', async (t) => {
   expectTypeOf(result).toMatchTypeOf<{ foo: string; bar: number }>()
 })
 
-test('OpenAIChatModel ⇒ boolean output', async (t) => {
+test('OpenAIChatCompletion ⇒ boolean output', async (t) => {
   t.timeout(2 * 60 * 1000)
   const agentic = createTestAgenticRuntime()
 
-  const builder = new OpenAIChatModel({
+  const builder = new OpenAIChatCompletion({
     agentic,
     modelParams: {
       temperature: 0,
@@ -130,11 +130,11 @@ test('OpenAIChatModel ⇒ boolean output', async (t) => {
   expectTypeOf(result).toMatchTypeOf<boolean>()
 })
 
-test('OpenAIChatModel ⇒ retry logic', async (t) => {
+test('OpenAIChatCompletion ⇒ retry logic', async (t) => {
   t.timeout(2 * 60 * 1000)
   const agentic = createTestAgenticRuntime()
 
-  const builder = new OpenAIChatModel({
+  const builder = new OpenAIChatCompletion({
     agentic,
     modelParams: {
       temperature: 0,
@@ -167,7 +167,7 @@ test('OpenAIChatModel ⇒ retry logic', async (t) => {
   t.is(fakeCall.callCount, 3)
 })
 
-test('OpenAIChatModel ⇒ template variables', async (t) => {
+test('OpenAIChatCompletion ⇒ template variables', async (t) => {
   t.timeout(2 * 60 * 1000)
   const agentic = createTestAgenticRuntime()
 
@@ -203,7 +203,7 @@ test('OpenAIChatModel ⇒ template variables', async (t) => {
   }
 })
 
-test('OpenAIChatModel ⇒ missing template variable', async (t) => {
+test('OpenAIChatCompletion ⇒ missing template variable', async (t) => {
   t.timeout(2 * 60 * 1000)
   const agentic = createTestAgenticRuntime()
 

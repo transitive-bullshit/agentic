@@ -1,6 +1,6 @@
 import * as types from '@/types'
 import { DEFAULT_OPENAI_MODEL } from '@/constants'
-import { OpenAIChatModel } from '@/llms/openai'
+import { OpenAIChatCompletion } from '@/llms/openai'
 
 import {
   HumanFeedbackMechanism,
@@ -77,7 +77,7 @@ export class Agentic {
     return this._idGeneratorFn
   }
 
-  llm(
+  openaiChatCompletion(
     promptOrChatCompletionParams:
       | string
       | Partial<types.openai.ChatCompletionParams> // TODO: make more strict
@@ -101,13 +101,16 @@ export class Agentic {
       }
     }
 
-    return new OpenAIChatModel({
+    return new OpenAIChatCompletion({
       agentic: this,
       ...(this._openaiModelDefaults as any), // TODO
       ...options
     })
   }
 
+  /**
+   * Shortcut for creating an OpenAI chat completion call with the `gpt-3.5-turbo` model.
+   */
   gpt3(
     promptOrChatCompletionParams:
       | string
@@ -132,7 +135,7 @@ export class Agentic {
       }
     }
 
-    return new OpenAIChatModel({
+    return new OpenAIChatCompletion({
       agentic: this,
       ...(this._openaiModelDefaults as any), // TODO
       model: 'gpt-3.5-turbo',
@@ -140,6 +143,9 @@ export class Agentic {
     })
   }
 
+  /**
+   * Shortcut for creating an OpenAI chat completion call with the `gpt-4` model.
+   */
   gpt4(
     promptOrChatCompletionParams:
       | string
@@ -164,7 +170,7 @@ export class Agentic {
       }
     }
 
-    return new OpenAIChatModel({
+    return new OpenAIChatCompletion({
       agentic: this,
       ...(this._openaiModelDefaults as any), // TODO
       model: 'gpt-4',

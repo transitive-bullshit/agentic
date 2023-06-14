@@ -1,15 +1,15 @@
 import test from 'ava'
 import { expectTypeOf } from 'expect-type'
 
-import { AnthropicChatModel } from '@/llms/anthropic'
+import { AnthropicChatCompletion } from '@/llms/anthropic'
 
 import { createTestAgenticRuntime } from '../_utils'
 
-test('AnthropicChatModel ⇒ string output', async (t) => {
+test('AnthropicChatCompletion ⇒ string output', async (t) => {
   t.timeout(2 * 60 * 1000)
   const agentic = createTestAgenticRuntime()
 
-  const builder = new AnthropicChatModel({
+  const builder = new AnthropicChatCompletion({
     agentic,
     modelParams: {
       temperature: 0,

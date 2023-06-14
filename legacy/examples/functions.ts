@@ -9,7 +9,7 @@ async function main() {
   const agentic = new Agentic({ openai })
 
   const example = await agentic
-    .gpt4('What is 5 * 50?')
+    .gpt3('What is 5 * 50?')
     .tools([new CalculatorTool({ agentic })])
     .output(z.object({ answer: z.number() }))
     .call()

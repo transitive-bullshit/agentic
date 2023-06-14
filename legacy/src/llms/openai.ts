@@ -2,8 +2,9 @@ import type { SetOptional } from 'type-fest'
 
 import * as types from '@/types'
 import { DEFAULT_OPENAI_MODEL } from '@/constants'
+import { BaseTask } from '@/task'
 
-import { BaseChatModel } from './chat'
+import { BaseChatCompletion } from './chat'
 
 const openaiModelsSupportingFunctions = new Set([
   'gpt-4-0613',
@@ -12,10 +13,10 @@ const openaiModelsSupportingFunctions = new Set([
   'gpt-3.5-turbo-16k'
 ])
 
-export class OpenAIChatModel<
+export class OpenAIChatCompletion<
   TInput extends void | types.JsonObject = any,
   TOutput extends types.JsonValue = string
-> extends BaseChatModel<
+> extends BaseChatCompletion<
   TInput,
   TOutput,
   SetOptional<Omit<types.openai.ChatCompletionParams, 'messages'>, 'model'>,
@@ -41,7 +42,7 @@ export class OpenAIChatModel<
       this._client = this._agentic.openai
     } else {
       throw new Error(
-        'OpenAIChatModel requires an OpenAI client to be configured on the Agentic runtime'
+        'OpenAIChatCompletion requires an OpenAI client to be configured on the Agentic runtime'
       )
     }
 
@@ -65,7 +66,27 @@ export class OpenAIChatModel<
   }
 
   public override get nameForHuman(): string {
-    return `OpenAIChatModel ${this._model}`
+    return `OpenAIChatCompletion ${this._model}`
+  }
+
+  public override tools(tools: BaseTask<any, any>[]): this {
+    if (!this.supportsTools) {
+      switch (this._model) {
+        case 'gpt-4':
+          this._model = 'gpt-4-0613'
+          break
+
+        case 'gpt-4-32k':
+          this._model = 'gpt-4-32k-0613'
+          break
+
+        case 'gpt-3.5-turbo':
+          this._model = 'gpt-3.5-turbo-0613'
+          break
+      }
+    }
+
+    return super.tools(tools)
   }
 
   public override get supportsTools(): boolean {
@@ -86,8 +107,8 @@ export class OpenAIChatModel<
     })
   }
 
-  public override clone(): OpenAIChatModel<TInput, TOutput> {
-    return new OpenAIChatModel<TInput, TOutput>({
+  public override clone(): OpenAIChatCompletion<TInput, TOutput> {
+    return new OpenAIChatCompletion<TInput, TOutput>({
       agentic: this._agentic,
       timeoutMs: this._timeoutMs,
       retryConfig: this._retryConfig,

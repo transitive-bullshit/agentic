@@ -4,14 +4,14 @@ import { type SetOptional } from 'type-fest'
 import * as types from '@/types'
 import { DEFAULT_ANTHROPIC_MODEL } from '@/constants'
 
-import { BaseChatModel } from './chat'
+import { BaseChatCompletion } from './chat'
 
 const defaultStopSequences = [anthropic.HUMAN_PROMPT]
 
-export class AnthropicChatModel<
+export class AnthropicChatCompletion<
   TInput extends void | types.JsonObject = any,
   TOutput extends types.JsonValue = string
-> extends BaseChatModel<
+> extends BaseChatCompletion<
   TInput,
   TOutput,
   SetOptional<
@@ -42,7 +42,7 @@ export class AnthropicChatModel<
       this._client = this._agentic.anthropic
     } else {
       throw new Error(
-        'AnthropicChatModel requires an Anthropic client to be configured on the Agentic runtime'
+        'AnthropicChatCompletion requires an Anthropic client to be configured on the Agentic runtime'
       )
     }
   }
@@ -91,8 +91,8 @@ export class AnthropicChatModel<
     }
   }
 
-  public override clone(): AnthropicChatModel<TInput, TOutput> {
-    return new AnthropicChatModel<TInput, TOutput>({
+  public override clone(): AnthropicChatCompletion<TInput, TOutput> {
+    return new AnthropicChatCompletion<TInput, TOutput>({
       agentic: this._agentic,
       timeoutMs: this._timeoutMs,
       retryConfig: this._retryConfig,

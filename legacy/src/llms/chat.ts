@@ -19,7 +19,7 @@ import {
   getNumTokensForChatMessages
 } from './llm-utils'
 
-export abstract class BaseChatModel<
+export abstract class BaseChatCompletion<
   TInput extends void | types.JsonObject = void,
   TOutput extends types.JsonValue = string,
   TModelParams extends Record<string, any> = Record<string, any>,
@@ -43,8 +43,8 @@ export abstract class BaseChatModel<
   // TODO: use polymorphic `this` type to return correct BaseLLM subclass type
   input<U extends void | types.JsonObject>(
     inputSchema: ZodType<U>
-  ): BaseChatModel<U, TOutput, TModelParams> {
-    const refinedInstance = this as unknown as BaseChatModel<
+  ): BaseChatCompletion<U, TOutput, TModelParams> {
+    const refinedInstance = this as unknown as BaseChatCompletion<
       U,
       TOutput,
       TModelParams
@@ -56,8 +56,8 @@ export abstract class BaseChatModel<
   // TODO: use polymorphic `this` type to return correct BaseLLM subclass type
   output<U extends types.JsonValue>(
     outputSchema: ZodType<U>
-  ): BaseChatModel<TInput, U, TModelParams> {
-    const refinedInstance = this as unknown as BaseChatModel<
+  ): BaseChatCompletion<TInput, U, TModelParams> {
+    const refinedInstance = this as unknown as BaseChatCompletion<
       TInput,
       U,
       TModelParams
@@ -66,11 +66,9 @@ export abstract class BaseChatModel<
     return refinedInstance
   }
 
-  tools(tools: BaseTask<any, any>[]): this {
+  public tools(tools: BaseTask<any, any>[]): this {
     if (!this.supportsTools) {
-      throw new Error(
-        `This Chat model "${this.nameForHuman}" does not support tools`
-      )
+      throw new Error(`This LLM "${this.nameForHuman}" does not support tools`)
     }
 
     this._tools = tools
@@ -179,20 +177,30 @@ export abstract class BaseChatModel<
       }
     }
 
-    const completion = await this._createChatCompletion(messages, functions)
-    ctx.metadata.completion = completion
+    let output: any
 
-    if (completion.message.function_call) {
-      const functionCall = completion.message.function_call
+    do {
+      console.log('<<< completion', { messages, functions })
+      const completion = await this._createChatCompletion(messages, functions)
+      console.log('>>> completion', completion.message)
+      ctx.metadata.completion = completion
 
-      if (isUsingTools) {
+      if (completion.message.function_call) {
+        const functionCall = completion.message.function_call
+
+        if (!isUsingTools) {
+          // TODO: not sure what we should do in this case...
+          output = functionCall
+          break
+        }
+
         const tool = this._tools!.find(
           (tool) => tool.nameForModel === functionCall.name
         )
 
         if (!tool) {
           throw new errors.OutputValidationError(
-            `Unrecognized function call "${functionCall.name}"`
+            `Function not found "${functionCall.name}"`
           )
         }
 
@@ -201,7 +209,9 @@ export abstract class BaseChatModel<
           functionArguments = JSON.parse(jsonrepair(functionCall.arguments))
         } catch (err: any) {
           if (err instanceof JSONRepairError) {
-            throw new errors.OutputValidationError(err.message, { cause: err })
+            throw new errors.OutputValidationError(err.message, {
+              cause: err
+            })
           } else if (err instanceof SyntaxError) {
             throw new errors.OutputValidationError(
               `Invalid JSON object: ${err.message}`,
@@ -212,11 +222,22 @@ export abstract class BaseChatModel<
           }
         }
 
+        console.log('>>> sub-task', {
+          task: functionCall.name,
+          input: functionArguments
+        })
+
         // TODO: handle sub-task errors gracefully
         const toolCallResponse = await tool.callWithMetadata(functionArguments)
 
+        console.log('<<< sub-task', {
+          task: functionCall.name,
+          input: functionArguments,
+          output: toolCallResponse.result
+        })
+
         // TODO: handle result as string or JSON
-        // TODO:
+        // TODO: better support for JSON spacing
         const taskCallContent = JSON.stringify(
           toolCallResponse.result,
           null,
@@ -231,12 +252,11 @@ export abstract class BaseChatModel<
           content: taskCallContent
         })
 
-        // TODO: re-invoke completion with new messages
-        throw new Error('TODO')
+        continue
       }
-    }
 
-    let output: any = completion.message.content
+      output = completion.message.content
+    } while (output === undefined)
 
     console.log('===')
     console.log(output)
