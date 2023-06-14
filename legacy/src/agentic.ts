@@ -2,7 +2,7 @@ import defaultKy from 'ky'
 
 import * as types from './types'
 import { DEFAULT_OPENAI_MODEL } from './constants'
-import { HumanFeedbackOptions } from './human-feedback'
+import { HumanFeedbackOptions, HumanFeedbackType } from './human-feedback'
 import { HumanFeedbackMechanismCLI } from './human-feedback/cli'
 import { OpenAIChatCompletion } from './llms/openai'
 import { defaultLogger } from './logger'
@@ -20,7 +20,7 @@ export class Agentic {
     types.BaseLLMOptions,
     'provider' | 'model' | 'modelParams' | 'timeoutMs' | 'retryConfig'
   >
-  protected _humanFeedbackDefaults: HumanFeedbackOptions
+  protected _humanFeedbackDefaults: HumanFeedbackOptions<HumanFeedbackType>
   protected _idGeneratorFn: types.IDGeneratorFunction
   protected _id: string
 
@@ -31,7 +31,7 @@ export class Agentic {
       types.BaseLLMOptions,
       'provider' | 'model' | 'modelParams' | 'timeoutMs' | 'retryConfig'
     >
-    humanFeedbackDefaults?: HumanFeedbackOptions
+    humanFeedbackDefaults?: HumanFeedbackOptions<HumanFeedbackType>
     idGeneratorFn?: types.IDGeneratorFunction
     logger?: types.Logger
     ky?: types.KyInstance
