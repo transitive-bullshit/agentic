@@ -8,6 +8,7 @@ test('OpenAIClient - createChatCompletion - functions', async (t) => {
   const openai = createOpenAITestClient()
 
   const model = 'gpt-3.5-turbo-0613'
+  // const model = 'gpt-3.5-turbo-16k'
   const messages: types.ChatMessage[] = [
     {
       role: 'user',
@@ -47,7 +48,8 @@ test('OpenAIClient - createChatCompletion - functions', async (t) => {
   t.is(res0.message.function_call!.name, 'get_current_weather')
 
   const args = JSON.parse(res0.message.function_call!.arguments)
-  t.deepEqual(args, { location: 'Boston' })
+  t.is(typeof args.location, 'string')
+  t.true(args.location.toLowerCase().includes('boston'))
 
   const weatherMock = { temperature: 22, unit: 'celsius', description: 'Sunny' }
 

@@ -62,6 +62,12 @@ export abstract class BaseChatModel<
   }
 
   tools(tools: BaseTask<any, any>[]): this {
+    if (!this.supportsTools) {
+      throw new Error(
+        `This Chat model "${this.nameForHuman}" does not support tools`
+      )
+    }
+
     this._tools = tools
     return this
   }
@@ -69,6 +75,10 @@ export abstract class BaseChatModel<
   protected abstract _createChatCompletion(
     messages: types.ChatMessage[]
   ): Promise<types.BaseChatCompletionResponse<TChatCompletionResponse>>
+
+  public get supportsTools(): boolean {
+    return false
+  }
 
   public async buildMessages(
     input?: TInput,

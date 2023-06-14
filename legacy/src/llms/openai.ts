@@ -5,6 +5,13 @@ import { DEFAULT_OPENAI_MODEL } from '@/constants'
 
 import { BaseChatModel } from './chat'
 
+const openaiModelsSupportingFunctions = new Set([
+  'gpt-4-0613',
+  'gpt-4-32k-0613',
+  'gpt-3.5-turbo-0613',
+  'gpt-3.5-turbo-16k'
+])
+
 export class OpenAIChatModel<
   TInput = any,
   TOutput = string
@@ -23,9 +30,10 @@ export class OpenAIChatModel<
       SetOptional<Omit<types.openai.ChatCompletionParams, 'messages'>, 'model'>
     >
   ) {
+    const model = options.modelParams?.model || DEFAULT_OPENAI_MODEL
     super({
       provider: 'openai',
-      model: options.modelParams?.model || DEFAULT_OPENAI_MODEL,
+      model,
       ...options
     })
 
@@ -36,6 +44,20 @@ export class OpenAIChatModel<
         'OpenAIChatModel requires an OpenAI client to be configured on the Agentic runtime'
       )
     }
+
+    if (!this.supportsTools) {
+      if (this._tools) {
+        throw new Error(
+          `This OpenAI chat model "${this.nameForHuman}" does not support tools`
+        )
+      }
+
+      if (this._modelParams?.functions) {
+        throw new Error(
+          `This OpenAI chat model "${this.nameForHuman}" does not support functions`
+        )
+      }
+    }
   }
 
   public override get nameForModel(): string {
@@ -44,6 +66,10 @@ export class OpenAIChatModel<
 
   public override get nameForHuman(): string {
     return 'OpenAIChatModel'
+  }
+
+  public override get supportsTools(): boolean {
+    return openaiModelsSupportingFunctions.has(this._model)
   }
 
   protected override async _createChatCompletion(
