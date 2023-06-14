@@ -8,6 +8,7 @@ import { isValidTaskIdentifier } from '@/utils'
 
 // TODO: this needs work + testing
 // TODO: move to isolated module
+// TODO compare with https://gist.github.com/rileytomasek/4811b5fdd9c82c4730c191317ea76411
 export async function getNumTokensForChatMessages({
   messages,
   model,
