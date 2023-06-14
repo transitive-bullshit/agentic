@@ -20,7 +20,7 @@ export class Agentic {
     types.BaseLLMOptions,
     'provider' | 'model' | 'modelParams' | 'timeoutMs' | 'retryConfig'
   >
-  protected _humanFeedbackDefaults: HumanFeedbackOptions<HumanFeedbackType>
+  protected _humanFeedbackDefaults: HumanFeedbackOptions<HumanFeedbackType, any>
   protected _idGeneratorFn: types.IDGeneratorFunction
   protected _id: string
 
@@ -31,7 +31,7 @@ export class Agentic {
       types.BaseLLMOptions,
       'provider' | 'model' | 'modelParams' | 'timeoutMs' | 'retryConfig'
     >
-    humanFeedbackDefaults?: HumanFeedbackOptions<HumanFeedbackType>
+    humanFeedbackDefaults?: HumanFeedbackOptions<HumanFeedbackType, any>
     idGeneratorFn?: types.IDGeneratorFunction
     logger?: types.Logger
     ky?: types.KyInstance
