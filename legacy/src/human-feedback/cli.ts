@@ -52,7 +52,7 @@ export class HumanFeedbackMechanismCLI<
     }
 
     const choices = response.map((option) => ({
-      name: String(option),
+      name: JSON.stringify(option),
       value: option
     }))
     return select({ message: 'Pick one output:', choices })
@@ -66,7 +66,7 @@ export class HumanFeedbackMechanismCLI<
     }
 
     const choices = response.map((option) => ({
-      name: String(option),
+      name: JSON.stringify(option),
       value: option
     }))
     return checkbox({ message: 'Select outputs:', choices }) as any

@@ -86,7 +86,7 @@ export class HumanFeedbackMechanismTwilio<
         name: 'human-feedback-select',
         text:
           'Pick one output:' +
-          response.map((r, idx) => `\n${idx} - ${r}`).join('') +
+          response.map((r, idx) => `\n${idx} - ${JSON.stringify(r)}`).join('') +
           '\n\nReply with the number of your choice.',
         validate: (message) => {
           const choice = parseInt(message.body)
@@ -108,7 +108,7 @@ export class HumanFeedbackMechanismTwilio<
         name: 'human-feedback-select',
         text:
           'Select outputs:' +
-          response.map((r, idx) => `\n${idx} - ${r}`).join('') +
+          response.map((r, idx) => `\n${idx} - ${JSON.stringify(r)}`).join('') +
           '\n\nReply with a comma-separated list of the output numbers of your choice.',
         validate: (message) => {
           const choices = message.body.split(',')

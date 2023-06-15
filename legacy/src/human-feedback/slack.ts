@@ -82,7 +82,9 @@ export class HumanFeedbackMechanismSlack<
       await this._slackClient.sendAndWaitForReply({
         text:
           'Pick one output:' +
-          response.map((r, idx) => `\n*${idx}* - ${r}`).join('') +
+          response
+            .map((r, idx) => `\n*${idx}* - ${JSON.stringify(r)}`)
+            .join('') +
           '\n\nReply with the number of your choice.',
         validate: (slackMessage) => {
           const choice = parseInt(slackMessage.text)
@@ -103,7 +105,9 @@ export class HumanFeedbackMechanismSlack<
       await this._slackClient.sendAndWaitForReply({
         text:
           'Select outputs:' +
-          response.map((r, idx) => `\n*${idx}* - ${r}`).join('') +
+          response
+            .map((r, idx) => `\n*${idx}* - ${JSON.stringify(r)}`)
+            .join('') +
           '\n\nReply with a comma-separated list of the output numbers of your choice.',
         validate: (slackMessage) => {
           const choices = slackMessage.text.split(',')
