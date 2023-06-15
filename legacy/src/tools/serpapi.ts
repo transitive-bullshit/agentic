@@ -82,6 +82,8 @@ export class SerpAPITool extends BaseTask<SerpAPIInput, SerpAPIOutput> {
       num: ctx.input!.numResults
     })
 
+    this._logger.debug(res, `SerpAPI response for query "${ctx.input!.query}"`)
+
     return this.outputSchema.parse({
       knowledgeGraph: res.knowledge_graph,
       answerBox: res.answer_box,
