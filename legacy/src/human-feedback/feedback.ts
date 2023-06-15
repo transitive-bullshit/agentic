@@ -263,10 +263,7 @@ export function withHumanFeedback<TInput, TOutput, V extends HumanFeedbackType>(
 ) {
   task = task.clone()
 
-  // Default options defined at the instance level
-  const instanceDefaults = task.agentic.humanFeedbackDefaults
-
-  // Use Object.assign to merge the options, instance defaults, and hard-coded defaults
+  // Use Object.assign to merge the options, instance defaults, and hard-coded defaults:
   const finalOptions: HumanFeedbackOptions<V, TOutput> = Object.assign(
     {
       type: 'confirm',
@@ -275,8 +272,8 @@ export function withHumanFeedback<TInput, TOutput, V extends HumanFeedbackType>(
       annotations: false,
       mechanism: HumanFeedbackMechanismCLI
     },
-    // Defaults from the instance:
-    instanceDefaults,
+    // Default options from the instance:
+    task.agentic.humanFeedbackDefaults,
     // User-provided options (override instance defaults):
     options
   )

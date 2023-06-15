@@ -23,7 +23,7 @@ async function main() {
   const topicJokesFeedback = withHumanFeedback(topicJokes, {
     type: 'selectN',
     annotations: false,
-    bail: false,
+    abort: false,
     editing: true,
     mechanism: HumanFeedbackMechanismTwilio
   })
