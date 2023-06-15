@@ -3,23 +3,23 @@ import { customAlphabet, urlAlphabet } from 'nanoid'
 import * as types from './types'
 
 /**
- * Extracts the first JSON object string from a given string.
+ * Extracts a JSON object string from a given string.
  *
  * @param text - string from which to extract the JSON object
  * @returns extracted JSON object string, or `undefined` if no JSON object is found
  */
 export function extractJSONObjectFromString(text: string): string | undefined {
-  return text.match(/\{([^}]|\n)*\}/gm)?.[0]
+  return text.match(/\{(.|\n)*\}/gm)?.[0] // FIXME: This breaks if there are multiple JSON objects in the string
 }
 
 /**
- * Extracts the first JSON array string from a given string.
+ * Extracts a JSON array string from a given string.
  *
  * @param text - string from which to extract the JSON array
  * @returns extracted JSON array string, or `undefined` if no JSON array is found
  */
 export function extractJSONArrayFromString(text: string): string | undefined {
-  return text.match(/\[([^\]]|\n)*\]/gm)?.[0]
+  return text.match(/\[(.|\n)*\]/gm)?.[0] // FIXME: This breaks if there are multiple JSON arrays in the string
 }
 
 /**

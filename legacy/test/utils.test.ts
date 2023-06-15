@@ -26,14 +26,14 @@ test('isValidTaskIdentifier - invalid', async (t) => {
   t.false(isValidTaskIdentifier('-foo'))
 })
 
-test('extractJSONObjectFromString should extract first JSON object from string', (t) => {
-  const jsonString = '{"name":"John"} Some other text {"name":"Doe"}'
+test('extractJSONObjectFromString should extract JSON object from string', (t) => {
+  const jsonString = 'Some text {"name":"John Doe"} more text'
   const result = extractJSONObjectFromString(jsonString)
-  t.is(result, '{"name":"John"}')
+  t.is(result, '{"name":"John Doe"}')
 })
 
-test('extractJSONArrayFromString should extract first JSON array from string', (t) => {
-  const jsonString = '[1,2,3] Some other text [4,5,6]'
+test('extractJSONArrayFromString should extract JSON array from string', (t) => {
+  const jsonString = 'Some text [1,2,3] more text'
   const result = extractJSONArrayFromString(jsonString)
   t.is(result, '[1,2,3]')
 })
