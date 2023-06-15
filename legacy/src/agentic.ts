@@ -67,7 +67,7 @@ export class Agentic {
 
     this._humanFeedbackDefaults = {
       type: 'confirm',
-      bail: false,
+      abort: false,
       editing: false,
       annotations: false,
       mechanism: HumanFeedbackMechanismCLI,
