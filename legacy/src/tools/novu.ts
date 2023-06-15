@@ -40,15 +40,15 @@ export class NovuNotificationTool extends BaseTask<
 > {
   protected _novuClient: NovuClient
 
-  constructor({
-    novuClient = new NovuClient(),
-    ...opts
-  }: {
-    novuClient?: NovuClient
-  } & types.BaseTaskOptions = {}) {
+  constructor(
+    opts: {
+      novuClient?: NovuClient
+    } & types.BaseTaskOptions = {}
+  ) {
     super(opts)
 
-    this._novuClient = novuClient
+    this._novuClient =
+      opts.novuClient ?? new NovuClient({ ky: opts.agentic?.ky })
   }
 
   public override get inputSchema() {

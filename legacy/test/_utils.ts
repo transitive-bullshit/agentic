@@ -187,6 +187,6 @@ export function createTestAgenticRuntime() {
   const openai = createOpenAITestClient()
   const anthropic = createAnthropicTestClient()
 
-  const agentic = new Agentic({ openai, anthropic })
+  const agentic = new Agentic({ openai, anthropic, ky })
   return agentic
 }

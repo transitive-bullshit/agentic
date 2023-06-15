@@ -1,3 +1,5 @@
+import defaultKy from 'ky'
+
 import * as types from './types'
 import { DEFAULT_OPENAI_MODEL } from './constants'
 import {
@@ -9,6 +11,7 @@ import { defaultIDGeneratorFn } from './utils'
 
 export class Agentic {
   // _taskMap: WeakMap<string, BaseTask<any, any>>
+  protected _ky: types.KyInstance
 
   protected _openai?: types.openai.OpenAIClient
   protected _anthropic?: types.anthropic.Client
@@ -33,13 +36,18 @@ export class Agentic {
     >
     defaultHumanFeedbackMechanism?: HumanFeedbackMechanism
     idGeneratorFn?: types.IDGeneratorFunction
+    ky?: types.KyInstance
   }) {
+    // TODO: This is a bit hacky, but we're doing it to have a slightly nicer API
+    // for the end developer when creating subclasses of `BaseTask` to use as
+    // tools.
     if (!globalThis.__agentic?.deref()) {
       globalThis.__agentic = new WeakRef(this)
     }
 
     this._openai = opts.openai
     this._anthropic = opts.anthropic
+    this._ky = opts.ky ?? defaultKy
 
     this._verbosity = opts.verbosity ?? 0
 
@@ -73,6 +81,10 @@ export class Agentic {
 
   public get anthropic(): types.anthropic.Client | undefined {
     return this._anthropic
+  }
+
+  public get ky(): types.KyInstance {
+    return this._ky
   }
 
   public get defaultHumanFeedbackMechamism() {

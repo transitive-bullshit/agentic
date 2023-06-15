@@ -8,15 +8,16 @@ export class MetaphorSearchTool extends BaseTask<
 > {
   protected _metaphorClient: metaphor.MetaphorClient
 
-  constructor({
-    metaphorClient = new metaphor.MetaphorClient(),
-    ...opts
-  }: {
-    metaphorClient?: metaphor.MetaphorClient
-  } & types.BaseTaskOptions = {}) {
+  constructor(
+    opts: {
+      metaphorClient?: metaphor.MetaphorClient
+    } & types.BaseTaskOptions = {}
+  ) {
     super(opts)
 
-    this._metaphorClient = metaphorClient
+    this._metaphorClient =
+      opts.metaphorClient ??
+      new metaphor.MetaphorClient({ ky: opts.agentic?.ky })
   }
 
   public override get inputSchema() {

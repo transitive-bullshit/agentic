@@ -4,7 +4,7 @@ import * as types from '@/types'
 import { WeatherClient } from '@/services/weather'
 import { BaseTask } from '@/task'
 
-export const WeatherInputSchema = z.object({
+const WeatherInputSchema = z.object({
   query: z
     .string()
     .describe(
@@ -16,7 +16,7 @@ export const WeatherInputSchema = z.object({
     .default('imperial')
     .optional()
 })
-export type WeatherInput = z.infer<typeof WeatherInputSchema>
+type WeatherInput = z.infer<typeof WeatherInputSchema>
 
 const LocationSchema = z.object({
   name: z.string(),
@@ -61,28 +61,23 @@ const CurrentSchema = z.object({
   gust_kph: z.number()
 })
 
-export const WeatherOutputSchema = z.object({
+const WeatherOutputSchema = z.object({
   location: LocationSchema,
   current: CurrentSchema
 })
-export type WeatherOutput = z.infer<typeof WeatherOutputSchema>
+type WeatherOutput = z.infer<typeof WeatherOutputSchema>
 
 export class WeatherTool extends BaseTask<WeatherInput, WeatherOutput> {
   client: WeatherClient
 
-  constructor({
-    weather = new WeatherClient({ apiKey: process.env.WEATHER_API_KEY }),
-    ...opts
-  }: {
-    weather?: WeatherClient
-  } & types.BaseTaskOptions = {}) {
+  constructor(
+    opts: {
+      weather?: WeatherClient
+    } & types.BaseTaskOptions = {}
+  ) {
     super(opts)
 
-    if (!weather) {
-      throw new Error(`Error WeatherTool missing required "weather" client`)
-    }
-
-    this.client = weather
+    this.client = opts.weather ?? new WeatherClient({ ky: opts.agentic?.ky })
   }
 
   public override get inputSchema() {

@@ -1,5 +1,6 @@
 import pMap from 'p-map'
-import { zodToJsonSchema } from 'zod-to-json-schema'
+import { ZodTypeAny } from 'zod'
+import { zodToJsonSchema as zodToJsonSchemaImpl } from 'zod-to-json-schema'
 
 import * as types from '@/types'
 import { BaseTask } from '@/task'
@@ -80,15 +81,14 @@ export async function getNumTokensForChatMessages({
   return { numTokensTotal, numTokensPerMessage }
 }
 
-export function getChatMessageFunctionDefinitionFromTask(
-  task: BaseTask<any, any>
-): types.openai.ChatMessageFunction {
-  const name = task.nameForModel
-  if (!isValidTaskIdentifier(name)) {
-    throw new Error(`Invalid task name "${name}"`)
-  }
-
-  const jsonSchema = zodToJsonSchema(task.inputSchema, {
+export function zodToJsonSchema({
+  zodSchema,
+  name
+}: {
+  zodSchema: ZodTypeAny
+  name: string
+}): any {
+  const jsonSchema = zodToJsonSchemaImpl(zodSchema, {
     name,
     $refStrategy: 'none'
   })
@@ -99,6 +99,19 @@ export function getChatMessageFunctionDefinitionFromTask(
       delete parameters['additionalProperties']
     }
   }
+
+  return parameters
+}
+
+export function getChatMessageFunctionDefinitionFromTask(
+  task: BaseTask<any, any>
+): types.openai.ChatMessageFunction {
+  const name = task.nameForModel
+  if (!isValidTaskIdentifier(name)) {
+    throw new Error(`Invalid task name "${name}"`)
+  }
+
+  const parameters = zodToJsonSchema({ zodSchema: task.inputSchema, name })
 
   return {
     name,
