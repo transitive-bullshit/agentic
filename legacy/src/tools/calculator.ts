@@ -7,12 +7,11 @@ import { BaseTask } from '@/task'
 export const CalculatorInputSchema = z.object({
   expression: z.string().describe('mathematical expression to evaluate')
 })
+export type CalculatorInput = z.infer<typeof CalculatorInputSchema>
+
 export const CalculatorOutputSchema = z
   .number()
   .describe('result of calculating the expression')
-
-export type CalculatorInput = z.infer<typeof CalculatorInputSchema>
-
 export type CalculatorOutput = z.infer<typeof CalculatorOutputSchema>
 
 export class CalculatorTool extends BaseTask<

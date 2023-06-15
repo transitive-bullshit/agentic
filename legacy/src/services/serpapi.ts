@@ -8,7 +8,7 @@ import defaultKy from 'ky'
 export type BaseResponse<P = Record<string | number | symbol, never>> = {
   search_metadata: {
     id: string
-    status: 'Queued' | 'Processing' | 'Success'
+    status: string | 'Queued' | 'Processing' | 'Success'
     json_endpoint: string
     created_at: string
     processed_at: string
@@ -24,9 +24,6 @@ export type BaseResponse<P = Record<string | number | symbol, never>> = {
   pagination?: {
     next: string
   }
-  next?: (
-    callback?: (json: BaseResponse<P>) => void
-  ) => Promise<BaseResponse<P>>
   [key: string]: any
 }
 
@@ -333,7 +330,7 @@ export type GoogleParameters = BaseParameters & {
    * Parameter defines the maximum number of results to return. (e.g., `10` (default)
    * returns 10 results, `40` returns 40 results, and `100` returns 100 results).
    */
-  num?: string
+  num?: number
 
   /**
    * Page Number (images)
@@ -345,8 +342,270 @@ export type GoogleParameters = BaseParameters & {
   ijn?: string
 }
 
+interface SearchResult extends BaseResponse<GoogleParameters> {
+  search_metadata: SearchMetadata
+  search_parameters: SearchParameters
+  search_information: SearchInformation
+  local_map?: LocalMap
+  local_results?: LocalResults
+  answer_box?: AnswerBox
+  knowledge_graph?: KnowledgeGraph
+  inline_images?: InlineImage[]
+  inline_people_also_search_for?: InlinePeopleAlsoSearchFor[]
+  related_questions?: SearchResultRelatedQuestion[]
+  organic_results: OrganicResult[]
+  related_searches?: RelatedSearch[]
+  pagination: Pagination
+  serpapi_pagination: Pagination
+}
+
+interface AnswerBox {
+  type: string
+  title: string
+  link: string
+  displayed_link: string
+  snippet: string
+  snippet_highlighted_words: string[]
+  images: string[]
+  about_this_result: AboutThisResult
+  about_page_link: string
+  cached_page_link: string
+}
+
+interface InlineImage {
+  link: string
+  source: string
+  thumbnail: string
+  original: string
+  source_name: string
+  title?: string
+}
+
+interface InlinePeopleAlsoSearchFor {
+  title: string
+  items: SearchItem[]
+  see_more_link: string
+  see_more_serpapi_link: string
+}
+
+interface SearchItem {
+  name: string
+  image: string
+  link: string
+  serpapi_link: string
+}
+
+interface KnowledgeGraph {
+  type: string
+  kgmid: string
+  knowledge_graph_search_link: string
+  serpapi_knowledge_graph_search_link: string
+  header_images: HeaderImage[]
+  description: string
+  source: Source
+  buttons: Button[]
+  people_also_search_for: SearchItem[]
+  people_also_search_for_link: string
+  people_also_search_for_stick: string
+  list: { [key: string]: string[] }
+}
+
+interface Button {
+  text: string
+  subtitle: string
+  title: string
+  link: string
+  displayed_link: string
+  snippet?: string
+  snippet_highlighted_words?: string[]
+  answer?: string
+  thumbnail: string
+  search_link: string
+  serpapi_search_link: string
+  date?: string
+  list?: string[]
+}
+
+interface HeaderImage {
+  image: string
+  source: string
+}
+
+interface Source {
+  name: string
+  link: string
+}
+
+interface LocalMap {
+  link: string
+  image: string
+  gps_coordinates: LocalMapGpsCoordinates
+}
+
+interface LocalMapGpsCoordinates {
+  latitude: number
+  longitude: number
+  altitude: number
+}
+
+interface LocalResults {
+  places: Place[]
+  more_locations_link: string
+}
+
+interface Place {
+  position: number
+  title: string
+  rating?: number
+  reviews_original?: string
+  reviews?: number
+  place_id: string
+  place_id_search: string
+  lsig: string
+  thumbnail: string
+  gps_coordinates: PlaceGpsCoordinates
+  service_options: ServiceOptions
+  address?: string
+  type?: string
+  hours?: string
+}
+
+interface PlaceGpsCoordinates {
+  latitude: number
+  longitude: number
+}
+
+interface ServiceOptions {
+  dine_in?: boolean
+  takeout: boolean
+  no_delivery?: boolean
+}
+
+interface OrganicResult {
+  position: number
+  title: string
+  link: string
+  displayed_link: string
+  thumbnail?: string
+  favicon?: string
+  snippet: string
+  snippet_highlighted_words: string[]
+  sitelinks?: Sitelinks
+  rich_snippet?: RichSnippet
+  about_this_result: AboutThisResult
+  cached_page_link: string
+  related_pages_link?: string
+  source: string
+  related_results?: RelatedResult[]
+  date?: string
+  related_questions?: OrganicResultRelatedQuestion[]
+}
+
+interface AboutThisResult {
+  keywords: string[]
+  languages: string[]
+  regions: string[]
+}
+
+interface OrganicResultRelatedQuestion {
+  question: string
+  snippet: string
+  snippet_links: SnippetLink[]
+}
+
+interface SnippetLink {
+  text: string
+  link: string
+}
+
+interface RelatedResult {
+  position: number
+  title: string
+  link: string
+  displayed_link: string
+  snippet: string
+  snippet_highlighted_words: string[]
+  about_this_result: AboutThisResult
+  cached_page_link: string
+}
+
+interface RichSnippet {
+  bottom: Bottom
+}
+
+interface Bottom {
+  extensions?: string[]
+  questions?: string[]
+}
+
+interface Sitelinks {
+  inline: Inline[]
+}
+
+interface Inline {
+  title: string
+  link: string
+}
+
+interface Pagination {
+  current: number
+  next: string
+  other_pages: { [key: string]: string }
+  next_link?: string
+}
+
+interface SearchResultRelatedQuestion {
+  question: string
+  snippet: string
+  title: string
+  link: string
+  displayed_link: string
+  thumbnail: string
+  next_page_token: string
+  serpapi_link: string
+  date?: string
+}
+
+interface RelatedSearch {
+  query: string
+  link: string
+}
+
+interface SearchInformation {
+  organic_results_state: string
+  query_displayed: string
+  total_results: number
+  time_taken_displayed: number
+  menu_items: MenuItem[]
+}
+
+interface MenuItem {
+  position: number
+  title: string
+  link: string
+  serpapi_link?: string
+}
+
+interface SearchMetadata {
+  id: string
+  status: string
+  json_endpoint: string
+  created_at: string
+  processed_at: string
+  google_url: string
+  raw_html_file: string
+  total_time_taken: number
+}
+
+interface SearchParameters {
+  engine: string
+  q: string
+  google_domain: string
+  device?: 'desktop' | 'tablet' | 'mobile'
+}
+
 export type SerpAPIParams = Omit<GoogleParameters, 'q'>
-export type SerpAPISearchResponse = BaseResponse<GoogleParameters>
+export type SerpAPISearchResponse = SearchResult
 
 export interface SerpAPIClientOptions extends Partial<SerpAPIParams> {
   apiKey?: string
@@ -387,9 +646,14 @@ export class SerpAPIClient {
     })
   }
 
-  async search(queryOrOpts: string | { query: string }) {
-    const query =
-      typeof queryOrOpts === 'string' ? queryOrOpts : queryOrOpts.query
+  async search(queryOrOpts: string | GoogleParameters) {
+    const defaultGoogleParams: Partial<GoogleParameters> = {
+      num: 10
+    }
+    const options: GoogleParameters =
+      typeof queryOrOpts === 'string'
+        ? { ...defaultGoogleParams, q: queryOrOpts }
+        : queryOrOpts
     const { timeout, ...rest } = this.params
 
     return this.api
@@ -398,7 +662,7 @@ export class SerpAPIClient {
           ...rest,
           engine: 'google',
           api_key: this.apiKey,
-          q: query
+          ...(options as any) // TODO
         },
         timeout
       })
