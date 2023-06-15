@@ -58,6 +58,29 @@ test.serial('TwilioConversationClient.sendMessage', async (t) => {
   await client.deleteConversation(conversationSid)
 })
 
+test.serial('TwilioConversationClient.sendTextWithChunking', async (t) => {
+  if (!process.env.TWILIO_ACCOUNT_SID || !process.env.TWILIO_AUTH_TOKEN) {
+    return t.pass()
+  }
+
+  const client = new TwilioConversationClient()
+
+  const { sid: conversationSid } = await client.createConversation(
+    'send-message-test'
+  )
+
+  const text =
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
+
+  const messages = await client.sendTextWithChunking({ conversationSid, text })
+
+  // Text should be sent in two messages:
+  t.true(text.startsWith(messages[0].body))
+  t.true(text.endsWith(messages[1].body))
+
+  await client.deleteConversation(conversationSid)
+})
+
 test.serial('TwilioConversationClient.fetchMessages', async (t) => {
   if (!process.env.TWILIO_ACCOUNT_SID || !process.env.TWILIO_AUTH_TOKEN) {
     return t.pass()
