@@ -144,7 +144,7 @@ export abstract class BaseTask<
           err,
           `Task error "${this.nameForHuman}" failed attempt ${
             err.attemptNumber
-          }: ${JSON.stringify(input)}`
+          }${input ? ': ' + JSON.stringify(input) : ''}`
         )
 
         if (this._retryConfig.onFailedAttempt) {
