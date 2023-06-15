@@ -2,6 +2,7 @@ import * as openai from '@agentic/openai-fetch'
 import * as anthropic from '@anthropic-ai/sdk'
 import ky from 'ky'
 import type { Options as RetryOptions } from 'p-retry'
+import type { Logger } from 'pino'
 import type { JsonObject, JsonValue } from 'type-fest'
 import { SafeParseReturnType, ZodType, ZodTypeAny, output, z } from 'zod'
 
@@ -11,6 +12,7 @@ import type { BaseTask } from './task'
 export { openai }
 export { anthropic }
 
+export type { Logger }
 export type { JsonObject, JsonValue }
 export type KyInstance = typeof ky
 

@@ -18,6 +18,7 @@ async function main() {
       })
     )
     .call()
+
   console.log(example)
 }
 

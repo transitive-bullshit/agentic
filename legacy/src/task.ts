@@ -4,6 +4,7 @@ import { ZodType } from 'zod'
 import * as errors from './errors'
 import * as types from './types'
 import type { Agentic } from './agentic'
+import { defaultLogger } from './logger'
 import { defaultIDGeneratorFn, isValidTaskIdentifier } from './utils'
 
 /**
@@ -52,6 +53,10 @@ export abstract class BaseTask<
 
   public get id(): string {
     return this._id
+  }
+
+  protected get _logger(): types.Logger {
+    return this._agentic.logger
   }
 
   public abstract get inputSchema(): ZodType<TInput>
@@ -110,6 +115,8 @@ export abstract class BaseTask<
   ): Promise<types.TaskResponse<TOutput>> {
     this.validate()
 
+    this._logger.info({ input }, `Task call "${this.nameForHuman}"`)
+
     if (this.inputSchema) {
       const safeInput = this.inputSchema.safeParse(input)
 
@@ -133,6 +140,10 @@ export abstract class BaseTask<
     const result = await pRetry(() => this._call(ctx), {
       ...this._retryConfig,
       onFailedAttempt: async (err: FailedAttemptError) => {
+        this._logger.warn(
+          `Task "${this.nameForModel}" failed attempt ${err.attemptNumber}: ${err.message}`
+        )
+
         if (this._retryConfig.onFailedAttempt) {
           await Promise.resolve(this._retryConfig.onFailedAttempt(err))
         }

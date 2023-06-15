@@ -140,6 +140,7 @@ export abstract class BaseChatCompletion<
     }
 
     if (this._outputSchema) {
+      // TODO: replace zod-to-ts with zod-to-json-schema?
       const { node } = zodToTs(this._outputSchema)
 
       if (node.kind === 152) {
@@ -198,8 +199,8 @@ export abstract class BaseChatCompletion<
   ): Promise<TOutput> {
     const messages = await this.buildMessages(ctx.input, ctx)
 
-    console.log('>>>')
-    console.log(messages)
+    // console.log('>>>')
+    // console.log(messages)
 
     let functions = this._modelParams?.functions
     let isUsingTools = false
@@ -218,9 +219,23 @@ export abstract class BaseChatCompletion<
     let output: any
 
     do {
-      console.log('<<< completion', { messages, functions })
+      this._logger.info(
+        {
+          ...this._modelParams,
+          messages,
+          functions: functions.map((f) => f.name)
+        },
+        `>>> Task createChatCompletion "${this.nameForHuman}"`
+      )
+
+      // console.log('<<< completion', { messages, functions })
       const completion = await this._createChatCompletion(messages, functions)
-      console.log('>>> completion', completion.message)
+      // console.log('>>> completion', completion.message)
+
+      this._logger.info(
+        completion.message,
+        `<<< Task createChatCompletion "${this.nameForHuman}"`
+      )
       ctx.metadata.completion = completion
 
       if (completion.message.function_call) {
@@ -260,19 +275,34 @@ export abstract class BaseChatCompletion<
           }
         }
 
-        console.log('>>> sub-task', {
-          task: functionCall.name,
-          input: functionArguments
-        })
+        // console.log('>>> sub-task', {
+        //   task: functionCall.name,
+        //   input: functionArguments
+        // })
+        this._logger.info(
+          {
+            task: functionCall.name,
+            input: functionArguments
+          },
+          `>>> Sub-Task "${tool.nameForHuman}"`
+        )
 
         // TODO: handle sub-task errors gracefully
         const toolCallResponse = await tool.callWithMetadata(functionArguments)
 
-        console.log('<<< sub-task', {
-          task: functionCall.name,
-          input: functionArguments,
-          output: toolCallResponse.result
-        })
+        this._logger.info(
+          {
+            task: functionCall.name,
+            input: functionArguments,
+            output: toolCallResponse.result
+          },
+          `<<< Sub-Task "${tool.nameForHuman}"`
+        )
+        // console.log('<<< sub-task', {
+        //   task: functionCall.name,
+        //   input: functionArguments,
+        //   output: toolCallResponse.result
+        // })
 
         // TODO: handle result as string or JSON
         // TODO: better support for JSON spacing
@@ -296,9 +326,9 @@ export abstract class BaseChatCompletion<
       output = completion.message.content
     } while (output === undefined)
 
-    console.log('===')
-    console.log(output)
-    console.log('<<<')
+    // console.log('===')
+    // console.log(output)
+    // console.log('<<<')
 
     if (this._outputSchema) {
       const outputSchema = this._outputSchema

@@ -73,10 +73,6 @@ export abstract class BaseLLM<
     }
   }
 
-  public override get nameForModel(): string {
-    return `${this._provider}_chat`
-  }
-
   public override get nameForHuman(): string {
     return `${this.constructor.name} ${this._model}`
   }

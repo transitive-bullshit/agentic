@@ -7,16 +7,17 @@ import {
   HumanFeedbackMechanismCLI
 } from './human-feedback'
 import { OpenAIChatCompletion } from './llms/openai'
+import { defaultLogger } from './logger'
 import { defaultIDGeneratorFn } from './utils'
 
 export class Agentic {
   // _taskMap: WeakMap<string, BaseTask<any, any>>
   protected _ky: types.KyInstance
+  protected _logger: types.Logger
 
   protected _openai?: types.openai.OpenAIClient
   protected _anthropic?: types.anthropic.Client
 
-  protected _verbosity: number
   protected _openaiModelDefaults: Pick<
     types.BaseLLMOptions,
     'provider' | 'model' | 'modelParams' | 'timeoutMs' | 'retryConfig'
@@ -29,13 +30,13 @@ export class Agentic {
   constructor(opts: {
     openai?: types.openai.OpenAIClient
     anthropic?: types.anthropic.Client
-    verbosity?: number
     openaiModelDefaults?: Pick<
       types.BaseLLMOptions,
       'provider' | 'model' | 'modelParams' | 'timeoutMs' | 'retryConfig'
     >
     defaultHumanFeedbackMechanism?: HumanFeedbackMechanism
     idGeneratorFn?: types.IDGeneratorFunction
+    logger?: types.Logger
     ky?: types.KyInstance
   }) {
     // TODO: This is a bit hacky, but we're doing it to have a slightly nicer API
@@ -47,9 +48,9 @@ export class Agentic {
 
     this._openai = opts.openai
     this._anthropic = opts.anthropic
-    this._ky = opts.ky ?? defaultKy
 
-    this._verbosity = opts.verbosity ?? 0
+    this._ky = opts.ky ?? defaultKy
+    this._logger = opts.logger ?? defaultLogger
 
     this._openaiModelDefaults = {
       provider: 'openai',
@@ -85,6 +86,10 @@ export class Agentic {
 
   public get ky(): types.KyInstance {
     return this._ky
+  }
+
+  public get logger(): types.Logger {
+    return this._logger
   }
 
   public get defaultHumanFeedbackMechamism() {
