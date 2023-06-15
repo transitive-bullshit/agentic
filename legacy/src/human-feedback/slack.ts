@@ -13,22 +13,24 @@ export class HumanFeedbackMechanismSlack<
   T extends HumanFeedbackType,
   TOutput = any
 > extends HumanFeedbackMechanism<T, TOutput> {
-  private slackClient: SlackClient
+  protected _slackClient: SlackClient
 
   constructor({
     task,
-    options
+    options,
+    slackClient = new SlackClient()
   }: {
     task: BaseTask
     options: Required<HumanFeedbackOptions<T, TOutput>>
+    slackClient: SlackClient
   }) {
     super({ task, options })
-    this.slackClient = new SlackClient()
+    this._slackClient = slackClient
   }
 
-  protected async annotate(): Promise<string> {
+  protected async _annotate(): Promise<string> {
     try {
-      const annotation = await this.slackClient.sendAndWaitForReply({
+      const annotation = await this._slackClient.sendAndWaitForReply({
         text: 'Please leave an annotation (optional):'
       })
       return annotation.text
@@ -38,8 +40,8 @@ export class HumanFeedbackMechanismSlack<
     }
   }
 
-  protected async edit(): Promise<string> {
-    let { text: editedOutput } = await this.slackClient.sendAndWaitForReply({
+  protected async _edit(): Promise<string> {
+    let { text: editedOutput } = await this._slackClient.sendAndWaitForReply({
       text: 'Copy and edit the output:'
     })
     editedOutput = editedOutput.replace(/```$/g, '')
@@ -47,7 +49,7 @@ export class HumanFeedbackMechanismSlack<
     return editedOutput
   }
 
-  protected async askUser(
+  protected async _askUser(
     message: string,
     choices: HumanFeedbackUserActions[]
   ): Promise<HumanFeedbackUserActions> {
@@ -59,7 +61,7 @@ export class HumanFeedbackMechanismSlack<
       .join('\n')
     message += '\n\n'
     message += 'Reply with the number of your choice.'
-    const response = await this.slackClient.sendAndWaitForReply({
+    const response = await this._slackClient.sendAndWaitForReply({
       text: message,
       validate: (slackMessage) => {
         const choice = parseInt(slackMessage.text)
@@ -69,15 +71,15 @@ export class HumanFeedbackMechanismSlack<
     return choices[parseInt(response.text)]
   }
 
-  protected async selectOne(
+  protected async _selectOne(
     response: TOutput
   ): Promise<TOutput extends (infer U)[] ? U : never> {
     if (!Array.isArray(response)) {
       throw new Error('selectOne called on non-array response')
     }
 
-    const { text: selectedOutput } = await this.slackClient.sendAndWaitForReply(
-      {
+    const { text: selectedOutput } =
+      await this._slackClient.sendAndWaitForReply({
         text:
           'Pick one output:' +
           response.map((r, idx) => `\n*${idx}* - ${r}`).join('') +
@@ -86,20 +88,19 @@ export class HumanFeedbackMechanismSlack<
           const choice = parseInt(slackMessage.text)
           return !isNaN(choice) && choice >= 0 && choice < response.length
         }
-      }
-    )
+      })
     return response[parseInt(selectedOutput)]
   }
 
-  protected async selectN(
+  protected async _selectN(
     response: TOutput
   ): Promise<TOutput extends any[] ? TOutput : never> {
     if (!Array.isArray(response)) {
       throw new Error('selectN called on non-array response')
     }
 
-    const { text: selectedOutput } = await this.slackClient.sendAndWaitForReply(
-      {
+    const { text: selectedOutput } =
+      await this._slackClient.sendAndWaitForReply({
         text:
           'Select outputs:' +
           response.map((r, idx) => `\n*${idx}* - ${r}`).join('') +
@@ -113,8 +114,7 @@ export class HumanFeedbackMechanismSlack<
             )
           })
         }
-      }
-    )
+      })
     const chosenOutputs = selectedOutput
       .split(',')
       .map((choice) => parseInt(choice))

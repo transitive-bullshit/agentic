@@ -13,22 +13,24 @@ export class HumanFeedbackMechanismTwilio<
   T extends HumanFeedbackType,
   TOutput = any
 > extends HumanFeedbackMechanism<T, TOutput> {
-  private twilioClient: TwilioConversationClient
+  protected _twilioClient: TwilioConversationClient
 
   constructor({
     task,
-    options
+    options,
+    twilioClient = new TwilioConversationClient()
   }: {
     task: BaseTask
     options: Required<HumanFeedbackOptions<T, TOutput>>
+    twilioClient: TwilioConversationClient
   }) {
     super({ task, options })
-    this.twilioClient = new TwilioConversationClient()
+    this._twilioClient = twilioClient
   }
 
-  protected async annotate(): Promise<string> {
+  protected async _annotate(): Promise<string> {
     try {
-      const annotation = await this.twilioClient.sendAndWaitForReply({
+      const annotation = await this._twilioClient.sendAndWaitForReply({
         name: 'human-feedback-annotation',
         text: 'Please leave an annotation (optional):'
       })
@@ -39,8 +41,8 @@ export class HumanFeedbackMechanismTwilio<
     }
   }
 
-  protected async edit(): Promise<string> {
-    let { body: editedOutput } = await this.twilioClient.sendAndWaitForReply({
+  protected async _edit(): Promise<string> {
+    let { body: editedOutput } = await this._twilioClient.sendAndWaitForReply({
       text: 'Copy and edit the output:',
       name: 'human-feedback-edit'
     })
@@ -49,7 +51,7 @@ export class HumanFeedbackMechanismTwilio<
     return editedOutput
   }
 
-  protected async askUser(
+  protected async _askUser(
     message: string,
     choices: HumanFeedbackUserActions[]
   ): Promise<HumanFeedbackUserActions> {
@@ -61,7 +63,7 @@ export class HumanFeedbackMechanismTwilio<
       .join('\n')
     message += '\n\n'
     message += 'Reply with the number of your choice.'
-    const response = await this.twilioClient.sendAndWaitForReply({
+    const response = await this._twilioClient.sendAndWaitForReply({
       name: 'human-feedback-ask',
       text: message,
       validate: (message) => {
@@ -72,7 +74,7 @@ export class HumanFeedbackMechanismTwilio<
     return choices[parseInt(response.body)]
   }
 
-  protected async selectOne(
+  protected async _selectOne(
     response: TOutput
   ): Promise<TOutput extends (infer U)[] ? U : never> {
     if (!Array.isArray(response)) {
@@ -80,7 +82,7 @@ export class HumanFeedbackMechanismTwilio<
     }
 
     const { body: selectedOutput } =
-      await this.twilioClient.sendAndWaitForReply({
+      await this._twilioClient.sendAndWaitForReply({
         name: 'human-feedback-select',
         text:
           'Pick one output:' +
@@ -94,7 +96,7 @@ export class HumanFeedbackMechanismTwilio<
     return response[parseInt(selectedOutput)]
   }
 
-  protected async selectN(
+  protected async _selectN(
     response: TOutput
   ): Promise<TOutput extends any[] ? TOutput : never> {
     if (!Array.isArray(response)) {
@@ -102,7 +104,7 @@ export class HumanFeedbackMechanismTwilio<
     }
 
     const { body: selectedOutput } =
-      await this.twilioClient.sendAndWaitForReply({
+      await this._twilioClient.sendAndWaitForReply({
         name: 'human-feedback-select',
         text:
           'Select outputs:' +

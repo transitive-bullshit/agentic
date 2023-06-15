@@ -11,7 +11,7 @@ export const HumanFeedbackUserActions = {
   Edit: 'edit',
   Decline: 'decline',
   Select: 'select',
-  Exit: 'exit'
+  Abort: 'abort'
 } as const
 
 export type HumanFeedbackUserActions =
@@ -25,7 +25,7 @@ export const HumanFeedbackUserActionMessages: Record<
   [HumanFeedbackUserActions.Edit]: 'Edit the output',
   [HumanFeedbackUserActions.Decline]: 'Decline the output',
   [HumanFeedbackUserActions.Select]: 'Select outputs to keep',
-  [HumanFeedbackUserActions.Exit]: 'Exit'
+  [HumanFeedbackUserActions.Abort]: 'Abort'
 }
 
 /**
@@ -48,9 +48,9 @@ export type HumanFeedbackOptions<T extends HumanFeedbackType, TOutput> = {
   type?: T
 
   /**
-   * Whether the user can bail out of the feedback loop.
+   * Whether the user can abort the process.
    */
-  bail?: boolean
+  abort?: boolean
 
   /**
    * Whether the user can edit the output.
@@ -148,24 +148,24 @@ export abstract class HumanFeedbackMechanism<
     this._options = options
   }
 
-  protected abstract selectOne(
+  protected abstract _selectOne(
     output: TOutput
   ): Promise<TOutput extends any[] ? TOutput[0] : never>
 
-  protected abstract selectN(
+  protected abstract _selectN(
     response: TOutput
   ): Promise<TOutput extends any[] ? TOutput : never>
 
-  protected abstract annotate(): Promise<string>
+  protected abstract _annotate(): Promise<string>
 
-  protected abstract edit(output: string): Promise<string>
+  protected abstract _edit(output: string): Promise<string>
 
-  protected abstract askUser(
+  protected abstract _askUser(
     message: string,
     choices: HumanFeedbackUserActions[]
   ): Promise<HumanFeedbackUserActions>
 
-  protected parseEditedOutput(editedOutput: string): any {
+  protected _parseEditedOutput(editedOutput: string): any {
     const parsedOutput = JSON.parse(editedOutput)
     return this._task.outputSchema.parse(parsedOutput)
   }
@@ -196,14 +196,14 @@ export abstract class HumanFeedbackMechanism<
       choices.push(HumanFeedbackUserActions.Edit)
     }
 
-    if (this._options.bail) {
-      choices.push(HumanFeedbackUserActions.Exit)
+    if (this._options.abort) {
+      choices.push(HumanFeedbackUserActions.Abort)
     }
 
     const choice =
       choices.length === 1
         ? HumanFeedbackUserActions.Select
-        : await this.askUser(msg, choices)
+        : await this._askUser(msg, choices)
 
     const feedback: Record<string, any> = {}
 
@@ -213,8 +213,8 @@ export abstract class HumanFeedbackMechanism<
         break
 
       case HumanFeedbackUserActions.Edit: {
-        const editedOutput = await this.edit(stringified)
-        feedback.editedOutput = await this.parseEditedOutput(editedOutput)
+        const editedOutput = await this._edit(stringified)
+        feedback.editedOutput = await this._parseEditedOutput(editedOutput)
         break
       }
 
@@ -228,26 +228,26 @@ export abstract class HumanFeedbackMechanism<
             throw new Error('Expected output to be an array')
           }
 
-          feedback.selected = await this.selectN(output)
+          feedback.selected = await this._selectN(output)
         } else if (this._options.type === 'selectOne') {
           if (!Array.isArray(output)) {
             throw new Error('Expected output to be an array')
           }
 
-          feedback.chosen = await this.selectOne(output)
+          feedback.chosen = await this._selectOne(output)
         }
 
         break
 
-      case HumanFeedbackUserActions.Exit:
-        throw new Error('Exiting...')
+      case HumanFeedbackUserActions.Abort:
+        throw new Error('Aborting...')
 
       default:
         throw new Error(`Unexpected choice: ${choice}`)
     }
 
     if (this._options.annotations) {
-      const annotation = await this.annotate()
+      const annotation = await this._annotate()
       if (annotation) {
         feedback.annotation = annotation
       }
@@ -270,7 +270,7 @@ export function withHumanFeedback<TInput, TOutput, V extends HumanFeedbackType>(
   const finalOptions: HumanFeedbackOptions<V, TOutput> = Object.assign(
     {
       type: 'confirm',
-      bail: false,
+      abort: false,
       editing: false,
       annotations: false,
       mechanism: HumanFeedbackMechanismCLI

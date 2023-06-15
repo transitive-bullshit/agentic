@@ -17,7 +17,7 @@ export class HumanFeedbackMechanismCLI<
   /**
    * Prompt the user to select one of a list of options.
    */
-  protected async askUser(
+  protected async _askUser(
     message: string,
     choices: HumanFeedbackUserActions[]
   ): Promise<HumanFeedbackUserActions> {
@@ -30,21 +30,21 @@ export class HumanFeedbackMechanismCLI<
     })
   }
 
-  protected async edit(output: string): Promise<string> {
+  protected async _edit(output: string): Promise<string> {
     return editor({
       message: 'Edit the output:',
       default: output
     })
   }
 
-  protected async annotate(): Promise<string> {
+  protected async _annotate(): Promise<string> {
     return input({
       message:
         'Please leave an annotation (leave blank to skip; press enter to submit):'
     })
   }
 
-  protected async selectOne(
+  protected async _selectOne(
     response: TOutput
   ): Promise<TOutput extends (infer U)[] ? U : never> {
     if (!Array.isArray(response)) {
@@ -58,7 +58,7 @@ export class HumanFeedbackMechanismCLI<
     return select({ message: 'Pick one output:', choices })
   }
 
-  protected async selectN(
+  protected async _selectN(
     response: TOutput
   ): Promise<TOutput extends any[] ? TOutput : never> {
     if (!Array.isArray(response)) {
