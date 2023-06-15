@@ -72,11 +72,36 @@ export abstract class BaseChatCompletion<
     }
 
     this._tools = tools
+    for (const tool of tools) {
+      tool.agentic = this.agentic
+    }
+
     return this
   }
 
+  /**
+   * Whether or not this chat completion model directly supports the use of tools.
+   */
   public get supportsTools(): boolean {
     return false
+  }
+
+  public override validate() {
+    super.validate()
+
+    if (this._tools) {
+      for (const tool of this._tools) {
+        if (!tool.agentic) {
+          tool.agentic = this.agentic
+        } else if (tool.agentic !== this.agentic) {
+          throw new Error(
+            `Task "${this.nameForHuman}" has a different Agentic runtime instance than the tool "${tool.nameForHuman}"`
+          )
+        }
+
+        tool.validate()
+      }
+    }
   }
 
   protected abstract _createChatCompletion(
@@ -133,9 +158,22 @@ export abstract class BaseChatCompletion<
           .replace(/^ {4}/gm, '  ')
           .replace(/;$/gm, '')
 
+        const label =
+          this._outputSchema instanceof z.ZodArray
+            ? 'JSON array'
+            : this._outputSchema instanceof z.ZodObject
+            ? 'JSON object'
+            : this._outputSchema instanceof z.ZodNumber
+            ? 'number'
+            : this._outputSchema instanceof z.ZodString
+            ? 'string'
+            : this._outputSchema instanceof z.ZodBoolean
+            ? 'boolean'
+            : 'JSON value'
+
         messages.push({
           role: 'system',
-          content: dedent`Do not output code. Output JSON only in the following TypeScript format:
+          content: dedent`Do not output code. Output a single ${label} in the following TypeScript format:
           \`\`\`ts
           ${tsTypeString}
           \`\`\``
@@ -285,6 +323,11 @@ export abstract class BaseChatCompletion<
         try {
           const trimmedOutput = extractJSONObjectFromString(output)
           output = JSON.parse(jsonrepair(trimmedOutput ?? output))
+
+          if (Array.isArray(output)) {
+            // TODO
+            output = output[0]
+          }
         } catch (err: any) {
           if (err instanceof JSONRepairError) {
             throw new errors.OutputValidationError(err.message, { cause: err })

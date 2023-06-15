@@ -20,7 +20,7 @@ export type SafeParsedData<T extends ZodTypeAny> = T extends ZodTypeAny
   : never
 
 export interface BaseTaskOptions {
-  agentic: Agentic
+  agentic?: Agentic
 
   timeoutMs?: number
   retryConfig?: RetryConfig

@@ -1,26 +1,20 @@
 import * as metaphor from '@/services/metaphor'
 import * as types from '@/types'
-import { Agentic } from '@/agentic'
 import { BaseTask } from '@/task'
 
 export class MetaphorSearchTool extends BaseTask<
   metaphor.MetaphorSearchInput,
   metaphor.MetaphorSearchOutput
 > {
-  _metaphorClient: metaphor.MetaphorClient
+  protected _metaphorClient: metaphor.MetaphorClient
 
   constructor({
-    agentic,
     metaphorClient = new metaphor.MetaphorClient(),
-    ...rest
+    ...opts
   }: {
-    agentic: Agentic
     metaphorClient?: metaphor.MetaphorClient
-  } & types.BaseTaskOptions) {
-    super({
-      agentic,
-      ...rest
-    })
+  } & types.BaseTaskOptions = {}) {
+    super(opts)
 
     this._metaphorClient = metaphorClient
   }
@@ -34,7 +28,7 @@ export class MetaphorSearchTool extends BaseTask<
   }
 
   public override get nameForModel(): string {
-    return 'metaphor_web_search'
+    return 'metaphorWebSearch'
   }
 
   protected override async _call(

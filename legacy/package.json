@@ -101,7 +101,7 @@
     ]
   },
   "ava": {
-    "snapshotDir": ".snapshots",
+    "snapshotDir": "test/.snapshots",
     "extensions": {
       "ts": "module"
     },

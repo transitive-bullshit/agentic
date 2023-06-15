@@ -38,7 +38,7 @@ export class AnthropicChatCompletion<
       ...options
     })
 
-    if (this._agentic.anthropic) {
+    if (this._agentic?.anthropic) {
       this._client = this._agentic.anthropic
     } else {
       throw new Error(

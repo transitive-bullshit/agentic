@@ -19,7 +19,7 @@ export class CalculatorTool extends BaseTask<
   CalculatorInput,
   CalculatorOutput
 > {
-  constructor(opts: types.BaseTaskOptions) {
+  constructor(opts: types.BaseTaskOptions = {}) {
     super(opts)
   }
 

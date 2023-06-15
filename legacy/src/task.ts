@@ -1,9 +1,10 @@
 import pRetry, { FailedAttemptError } from 'p-retry'
 import { ZodType } from 'zod'
 
-import * as errors from '@/errors'
-import * as types from '@/types'
-import { Agentic } from '@/agentic'
+import * as errors from './errors'
+import * as types from './types'
+import type { Agentic } from './agentic'
+import { defaultIDGeneratorFn, isValidTaskIdentifier } from './utils'
 
 /**
  * A `Task` is an async function call that may be non-deterministic. It has
@@ -28,22 +29,25 @@ export abstract class BaseTask<
   protected _timeoutMs?: number
   protected _retryConfig: types.RetryConfig
 
-  constructor(options: types.BaseTaskOptions) {
-    if (!options.agentic) {
-      throw new Error('Passing "agentic" is required when creating a Task')
-    }
+  constructor(options: types.BaseTaskOptions = {}) {
+    this._agentic = options.agentic ?? globalThis.__agentic?.deref()
 
-    this._agentic = options.agentic
     this._timeoutMs = options.timeoutMs
     this._retryConfig = options.retryConfig ?? {
       retries: 3,
       strategy: 'default'
     }
-    this._id = options.id ?? this._agentic.idGeneratorFn()
+
+    this._id =
+      options.id ?? this._agentic?.idGeneratorFn() ?? defaultIDGeneratorFn()
   }
 
   public get agentic(): Agentic {
     return this._agentic
+  }
+
+  public set agentic(agentic: Agentic) {
+    this._agentic = agentic
   }
 
   public get id(): string {
@@ -53,7 +57,10 @@ export abstract class BaseTask<
   public abstract get inputSchema(): ZodType<TInput>
   public abstract get outputSchema(): ZodType<TOutput>
 
-  public abstract get nameForModel(): string
+  public get nameForModel(): string {
+    const name = this.constructor.name
+    return name[0].toLowerCase() + name.slice(1)
+  }
 
   public get nameForHuman(): string {
     return this.constructor.name
@@ -61,6 +68,19 @@ export abstract class BaseTask<
 
   public get descForModel(): string {
     return ''
+  }
+
+  public validate() {
+    if (!this._agentic) {
+      throw new Error(
+        `Task "${this.nameForHuman}" is missing a required "agentic" instance`
+      )
+    }
+
+    const nameForModel = this.nameForModel
+    if (!isValidTaskIdentifier(nameForModel)) {
+      throw new Error(`Task field nameForModel "${nameForModel}" is invalid`)
+    }
   }
 
   // TODO: is this really necessary?
@@ -88,6 +108,8 @@ export abstract class BaseTask<
   public async callWithMetadata(
     input?: TInput
   ): Promise<types.TaskResponse<TOutput>> {
+    this.validate()
+
     if (this.inputSchema) {
       const safeInput = this.inputSchema.safeParse(input)
 
@@ -104,7 +126,7 @@ export abstract class BaseTask<
       metadata: {
         taskName: this.nameForModel,
         taskId: this.id,
-        callId: this._agentic.idGeneratorFn()
+        callId: this._agentic!.idGeneratorFn()
       }
     }
 

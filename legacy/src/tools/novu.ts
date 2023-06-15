@@ -1,7 +1,6 @@
 import { z } from 'zod'
 
 import * as types from '@/types'
-import { Agentic } from '@/agentic'
 import { NovuClient } from '@/services/novu'
 import { BaseTask } from '@/task'
 
@@ -39,18 +38,15 @@ export class NovuNotificationTool extends BaseTask<
   NovuNotificationToolInput,
   NovuNotificationToolOutput
 > {
-  _novuClient: NovuClient
+  protected _novuClient: NovuClient
 
   constructor({
-    agentic,
-    novuClient = new NovuClient()
+    novuClient = new NovuClient(),
+    ...opts
   }: {
-    agentic: Agentic
     novuClient?: NovuClient
-  }) {
-    super({
-      agentic
-    })
+  } & types.BaseTaskOptions = {}) {
+    super(opts)
 
     this._novuClient = novuClient
   }
@@ -64,7 +60,7 @@ export class NovuNotificationTool extends BaseTask<
   }
 
   public override get nameForModel(): string {
-    return 'novu_send_notification'
+    return 'novuSendNotification'
   }
 
   protected override async _call(

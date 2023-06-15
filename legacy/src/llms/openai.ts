@@ -38,7 +38,7 @@ export class OpenAIChatCompletion<
       ...options
     })
 
-    if (this._agentic.openai) {
+    if (this._agentic?.openai) {
       this._client = this._agentic.openai
     } else {
       throw new Error(
@@ -91,6 +91,30 @@ export class OpenAIChatCompletion<
 
   public override get supportsTools(): boolean {
     return openaiModelsSupportingFunctions.has(this._model)
+  }
+
+  public override validate() {
+    super.validate()
+
+    if (!this._client) {
+      throw new Error(
+        'OpenAIChatCompletion requires an OpenAI client to be configured on the Agentic runtime'
+      )
+    }
+
+    if (!this.supportsTools) {
+      if (this._tools) {
+        throw new Error(
+          `This OpenAI chat model "${this.nameForHuman}" does not support tools`
+        )
+      }
+
+      if (this._modelParams?.functions) {
+        throw new Error(
+          `This OpenAI chat model "${this.nameForHuman}" does not support functions`
+        )
+      }
+    }
   }
 
   protected override async _createChatCompletion(

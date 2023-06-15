@@ -1,11 +1,10 @@
-import * as types from '@/types'
-import { DEFAULT_OPENAI_MODEL } from '@/constants'
-import { OpenAIChatCompletion } from '@/llms/openai'
-
+import * as types from './types'
+import { DEFAULT_OPENAI_MODEL } from './constants'
 import {
   HumanFeedbackMechanism,
   HumanFeedbackMechanismCLI
 } from './human-feedback'
+import { OpenAIChatCompletion } from './llms/openai'
 import { defaultIDGeneratorFn } from './utils'
 
 export class Agentic {
@@ -20,7 +19,9 @@ export class Agentic {
     'provider' | 'model' | 'modelParams' | 'timeoutMs' | 'retryConfig'
   >
   protected _defaultHumanFeedbackMechamism?: HumanFeedbackMechanism
+
   protected _idGeneratorFn: types.IDGeneratorFunction
+  protected _id: string
 
   constructor(opts: {
     openai?: types.openai.OpenAIClient
@@ -33,6 +34,10 @@ export class Agentic {
     defaultHumanFeedbackMechanism?: HumanFeedbackMechanism
     idGeneratorFn?: types.IDGeneratorFunction
   }) {
+    if (!globalThis.__agentic?.deref()) {
+      globalThis.__agentic = new WeakRef(this)
+    }
+
     this._openai = opts.openai
     this._anthropic = opts.anthropic
 
@@ -59,6 +64,7 @@ export class Agentic {
       new HumanFeedbackMechanismCLI({ agentic: this })
 
     this._idGeneratorFn = opts.idGeneratorFn ?? defaultIDGeneratorFn
+    this._id = this._idGeneratorFn()
   }
 
   public get openai(): types.openai.OpenAIClient | undefined {

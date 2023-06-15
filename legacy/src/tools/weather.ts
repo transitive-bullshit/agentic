@@ -9,7 +9,12 @@ export const WeatherInputSchema = z.object({
     .string()
     .describe(
       'Location to get the weather for. Can be a city name like "Paris", a zipcode like "53121", an international postal code like "SW1", or a latitude and longitude like "48.8567,2.3508"'
-    )
+    ),
+
+  units: z
+    .union([z.literal('imperial'), z.literal('metric')])
+    .default('imperial')
+    .optional()
 })
 export type WeatherInput = z.infer<typeof WeatherInputSchema>
 
@@ -33,8 +38,8 @@ const ConditionSchema = z.object({
 const CurrentSchema = z.object({
   last_updated_epoch: z.number(),
   last_updated: z.string(),
-  temp_c: z.number(),
-  temp_f: z.number(),
+  temp_c: z.number().describe('temperature in celsius'),
+  temp_f: z.number().describe('temperature in fahrenheit'),
   is_day: z.number(),
   condition: ConditionSchema,
   wind_mph: z.number(),
@@ -65,14 +70,19 @@ export type WeatherOutput = z.infer<typeof WeatherOutputSchema>
 export class WeatherTool extends BaseTask<WeatherInput, WeatherOutput> {
   client: WeatherClient
 
-  constructor(
-    opts: {
-      weather: WeatherClient
-    } & types.BaseTaskOptions
-  ) {
+  constructor({
+    weather = new WeatherClient({ apiKey: process.env.WEATHER_API_KEY }),
+    ...opts
+  }: {
+    weather?: WeatherClient
+  } & types.BaseTaskOptions = {}) {
     super(opts)
 
-    this.client = opts.weather
+    if (!weather) {
+      throw new Error(`Error WeatherTool missing required "weather" client`)
+    }
+
+    this.client = weather
   }
 
   public override get inputSchema() {
@@ -92,7 +102,7 @@ export class WeatherTool extends BaseTask<WeatherInput, WeatherOutput> {
   }
 
   public override get descForModel(): string {
-    return 'Useful for getting the current weather at a location'
+    return 'Useful for getting the current weather at a location.'
   }
 
   protected override async _call(

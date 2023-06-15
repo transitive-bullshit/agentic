@@ -1,6 +1,6 @@
-import * as types from '@/types'
-import { Agentic } from '@/agentic'
-import { BaseTask } from '@/task'
+import * as types from './types'
+import { Agentic } from './agentic'
+import { BaseTask } from './task'
 
 export type HumanFeedbackType = 'confirm' | 'selectOne' | 'selectN'
 
