@@ -249,9 +249,16 @@ export class TwilioConversationClient {
     maxChunkLength?: number
   }) {
     const chunks = chunkString(text, TWILIO_SMS_LENGTH_SOFT_LIMIT)
-    return Promise.all(
-      chunks.map((chunk) => this.sendMessage({ conversationSid, text: chunk }))
-    )
+    const out: TwilioConversationMessage[] = []
+    for (const chunk of chunks) {
+      const sent = await this.sendMessage({
+        conversationSid,
+        text: chunk
+      })
+      out.push(sent)
+    }
+
+    return out
   }
 
   /**
@@ -339,11 +346,11 @@ export class TwilioConversationClient {
       }
 
       const response = await this.fetchMessages(conversationSid)
+      const candidates = response.messages.filter(
+        (message) => message.author !== this.botName
+      )
 
-      if (response.messages.length > 1) {
-        const candidates = response.messages.filter(
-          (message) => message.author !== this.botName
-        )
+      if (candidates.length > 0) {
         const candidate = candidates[candidates.length - 1]
 
         if (validate(candidate)) {
