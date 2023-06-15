@@ -260,7 +260,7 @@ export abstract class HumanFeedbackMechanism<
 
 export function withHumanFeedback<
   TInput extends void | types.JsonObject,
-  TOutput extends types.JsonObject,
+  TOutput extends types.JsonValue,
   V extends HumanFeedbackType
 >(
   task: BaseTask<TInput, TOutput>,
