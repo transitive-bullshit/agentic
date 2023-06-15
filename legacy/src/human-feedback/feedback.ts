@@ -67,6 +67,11 @@ export type HumanFeedbackOptions<T extends HumanFeedbackType, TOutput> = {
    * The human feedback mechanism to use for this task.
    */
   mechanism?: HumanFeedbackMechanismConstructor<T, TOutput>
+
+  /**
+   * Custom label to be displayed along with the output when requesting feedback.
+   */
+  outputLabel?: string
 }
 
 export interface BaseHumanFeedbackMetadata {
@@ -173,8 +178,12 @@ export abstract class HumanFeedbackMechanism<
 
   public async interact(output: TOutput): Promise<FeedbackTypeToMetadata<T>> {
     const stringified = JSON.stringify(output, null, 2)
+    const taskDetails = `${this._task.nameForHuman} (ID: ${this._task.id})`
+    const outputLabel =
+      this._options.outputLabel || 'The following output was generated:'
     const msg = [
-      'The following output was generated:',
+      taskDetails,
+      outputLabel,
       '```',
       stringified,
       '```',
