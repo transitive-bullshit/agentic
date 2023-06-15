@@ -219,12 +219,17 @@ export abstract class BaseChatCompletion<
     let output: any
 
     do {
+      const debugInfo: any = {
+        ...this._modelParams,
+        messages
+      }
+
+      if (functions) {
+        debugInfo.functions = functions.map((f: any) => f?.name).filter(Boolean)
+      }
+
       this._logger.info(
-        {
-          ...this._modelParams,
-          messages,
-          functions: functions.map((f) => f.name)
-        },
+        debugInfo,
         `>>> Task createChatCompletion "${this.nameForHuman}"`
       )
 

@@ -32,6 +32,10 @@ test('OpenAIChatCompletion - tools - calculator', async (t) => {
 })
 
 test('OpenAIChatCompletion - tools - weather', async (t) => {
+  if (!process.env.WEATHER_API_KEY) {
+    return t.pass()
+  }
+
   t.timeout(2 * 60 * 1000)
   const agentic = createTestAgenticRuntime()
 
