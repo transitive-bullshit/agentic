@@ -9,7 +9,7 @@ import * as types from './types'
  * @returns extracted JSON object string, or `undefined` if no JSON object is found
  */
 export function extractJSONObjectFromString(text: string): string | undefined {
-  return text.match(/\{(.|\n)*\}/gm)?.[0]
+  return text.match(/\{([^}]|\n)*\}/gm)?.[0]
 }
 
 /**
@@ -19,7 +19,7 @@ export function extractJSONObjectFromString(text: string): string | undefined {
  * @returns extracted JSON array string, or `undefined` if no JSON array is found
  */
 export function extractJSONArrayFromString(text: string): string | undefined {
-  return text.match(/\[(.|\n)*\]/gm)?.[0]
+  return text.match(/\[([^\]]|\n)*\]/gm)?.[0]
 }
 
 /**

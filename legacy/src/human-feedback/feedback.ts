@@ -1,3 +1,4 @@
+import * as types from '@/types'
 import { Agentic } from '@/agentic'
 import { BaseTask } from '@/task'
 
@@ -257,7 +258,11 @@ export abstract class HumanFeedbackMechanism<
   }
 }
 
-export function withHumanFeedback<TInput, TOutput, V extends HumanFeedbackType>(
+export function withHumanFeedback<
+  TInput extends void | types.JsonObject,
+  TOutput extends types.JsonObject,
+  V extends HumanFeedbackType
+>(
   task: BaseTask<TInput, TOutput>,
   options: HumanFeedbackOptions<V, TOutput> = {}
 ) {
