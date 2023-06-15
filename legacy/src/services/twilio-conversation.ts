@@ -1,13 +1,21 @@
 import defaultKy from 'ky'
 
 import { DEFAULT_BOT_NAME } from '@/constants'
-import { sleep } from '@/utils'
+import { chunkString, sleep } from '@/utils'
 
 export const TWILIO_CONVERSATION_API_BASE_URL =
   'https://conversations.twilio.com/v1'
 
 export const DEFAULT_TWILIO_TIMEOUT_MS = 120_000
 export const DEFAULT_TWILIO_INTERVAL_MS = 5_000
+
+/**
+ * Twilio recommends keeping SMS messages to a length of 320 characters or less, so we'll use that as the maximum.
+ *
+ * @see {@link https://support.twilio.com/hc/en-us/articles/360033806753-Maximum-Message-Length-with-Twilio-Programmable-Messaging}
+ */
+const TWILIO_SMS_LENGTH_SOFT_LIMIT = 320
+const TWILIO_SMS_LENGTH_HARD_LIMIT = 1600
 
 export interface TwilioConversation {
   unique_name?: string
@@ -230,6 +238,23 @@ export class TwilioConversationClient {
   }
 
   /**
+   * Chunks a long text message into smaller parts and sends them as separate messages.
+   */
+  async sendTextWithChunking({
+    conversationSid,
+    text
+  }: {
+    conversationSid: string
+    text: string
+    maxChunkLength?: number
+  }) {
+    const chunks = chunkString(text, TWILIO_SMS_LENGTH_SOFT_LIMIT)
+    return Promise.all(
+      chunks.map((chunk) => this.sendMessage({ conversationSid, text: chunk }))
+    )
+  }
+
+  /**
    * Posts a message to a conversation.
    */
   async sendMessage({
@@ -239,6 +264,11 @@ export class TwilioConversationClient {
     conversationSid: string
     text: string
   }) {
+    // Truncate the text if it exceeds the hard limit and add an ellipsis:
+    if (text.length > TWILIO_SMS_LENGTH_HARD_LIMIT) {
+      text = text.substring(0, TWILIO_SMS_LENGTH_HARD_LIMIT - 3) + '...'
+    }
+
     const params = new URLSearchParams()
     params.set('Body', text)
     params.set('Author', this.botName)
@@ -291,7 +321,7 @@ export class TwilioConversationClient {
 
     const { sid: conversationSid } = await this.createConversation(name)
     await this.addParticipant({ conversationSid, recipientPhoneNumber })
-    await this.sendMessage({ conversationSid, text })
+    await this.sendTextWithChunking({ conversationSid, text })
 
     const start = Date.now()
     let nUserMessages = 0

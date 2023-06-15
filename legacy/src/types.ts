@@ -6,11 +6,14 @@ import type { JsonObject, JsonValue } from 'type-fest'
 import { SafeParseReturnType, ZodType, ZodTypeAny, output, z } from 'zod'
 
 import type { Agentic } from './agentic'
+import type {
+  FeedbackTypeToMetadata,
+  HumanFeedbackType
+} from './human-feedback'
 import type { Logger } from './logger'
 import type { BaseTask } from './task'
 
-export { openai }
-export { anthropic }
+export { anthropic, openai }
 
 export type { Logger }
 export type { JsonObject, JsonValue }
@@ -102,6 +105,9 @@ export interface TaskResponseMetadata extends Record<string, any> {
   error?: Error
   numRetries?: number
   callId?: string
+
+  // human feedback info
+  feedback?: FeedbackTypeToMetadata<HumanFeedbackType>
 }
 
 export interface LLMTaskResponseMetadata<

@@ -4,7 +4,6 @@ import { ZodType } from 'zod'
 import * as errors from './errors'
 import * as types from './types'
 import type { Agentic } from './agentic'
-import { defaultLogger } from './logger'
 import { defaultIDGeneratorFn, isValidTaskIdentifier } from './utils'
 
 /**
