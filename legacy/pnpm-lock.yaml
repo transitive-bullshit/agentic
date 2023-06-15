@@ -1,4 +1,4 @@
-lockfileVersion: '6.0'
+lockfileVersion: '6.1'
 
 settings:
   autoInstallPeers: true
@@ -39,8 +39,8 @@ dependencies:
     specifier: ^4.0.0
     version: 4.0.0
   js-tiktoken:
-    specifier: ^1.0.6
-    version: 1.0.6
+    specifier: ^1.0.7
+    version: 1.0.7
   jsonrepair:
     specifier: ^3.2.0
     version: 3.2.0
@@ -167,8 +167,8 @@ devDependencies:
     specifier: ^3.12.7
     version: 3.12.7
   type-fest:
-    specifier: ^3.11.1
-    version: 3.11.1
+    specifier: ^3.12.0
+    version: 3.12.0
   typescript:
     specifier: ^5.1.3
     version: 5.1.3
@@ -2579,8 +2579,8 @@ packages:
     engines: {node: '>= 0.8'}
     dev: true
 
-  /js-tiktoken@1.0.6:
-    resolution: {integrity: sha512-lxHntEupgjWvSh37WxpAW4XN6UBXBtFJOpZZq5HN5oNjDfN7L/iJhHOKjyL/DFtuYXUwn5jfTciLtOWpgQmHjQ==}
+  /js-tiktoken@1.0.7:
+    resolution: {integrity: sha512-biba8u/clw7iesNEWLOLwrNGoBP2lA+hTaBLs/D45pJdUPFXyxD6nhcDVtADChghv4GgyAiMKYMiRx7x6h7Biw==}
     dependencies:
       base64-js: 1.5.1
     dev: false
@@ -3172,7 +3172,7 @@ packages:
     engines: {node: '>=14.16'}
     dependencies:
       mimic-fn: 4.0.0
-      type-fest: 3.11.1
+      type-fest: 3.12.0
     dev: true
 
   /p-retry@5.1.2:
@@ -4161,8 +4161,8 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /type-fest@3.11.1:
-    resolution: {integrity: sha512-aCuRNRERRVh33lgQaJRlUxZqzfhzwTrsE98Mc3o3VXqmiaQdHacgUtJ0esp+7MvZ92qhtzKPeusaX6vIEcoreA==}
+  /type-fest@3.12.0:
+    resolution: {integrity: sha512-qj9wWsnFvVEMUDbESiilKeXeHL7FwwiFcogfhfyjmvT968RXSvnl23f1JOClTHYItsi7o501C/7qVllscUP3oA==}
     engines: {node: '>=14.16'}
     dev: true
 
