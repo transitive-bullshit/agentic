@@ -2,43 +2,32 @@ import { OpenAIClient } from '@agentic/openai-fetch'
 import 'dotenv/config'
 import { z } from 'zod'
 
-import { Agentic, MetaphorSearchTool } from '@/index'
+import { Agentic, SerpAPITool } from '@/index'
 
 async function main() {
   const openai = new OpenAIClient({ apiKey: process.env.OPENAI_API_KEY! })
-  const $ = new Agentic({ openai })
-  const metaphorSearch = new MetaphorSearchTool({ agentic: $ })
+  const agentic = new Agentic({ openai })
 
-  const { results: searchResults } = await metaphorSearch.call({
-    query: 'news from today, 2023',
-    numResults: 5
-  })
-
-  console.log('searchResults', searchResults)
-
-  const res = await $.gpt4(
-    `Give me a summary of today's news. Here is what I got back from a search engine: \n{{#searchResults}}{{title}}\n{{/searchResults}}`
-  )
+  const res = await agentic
+    .gpt4(
+      `Can you summarize the top {{numResults}} results for today's news about {{topic}}?`
+    )
+    .tools([new SerpAPITool()])
     .input(
       z.object({
-        searchResults: z.any() // TODO
+        topic: z.string(),
+        numResults: z.number().default(3)
       })
     )
     .output(
       z.object({
-        summary: z.string(),
-        linkToLearnMore: z.string(),
-        metadata: z.object({
-          title: z.string(),
-          keyTopics: z.string().array(),
-          datePublished: z.string()
-        }),
-        isWorthFollowingUp: z.boolean()
+        summary: z.string()
       })
     )
     .call({
-      searchResults
+      topic: 'OpenAI'
     })
+
   console.log(res)
 }
 
