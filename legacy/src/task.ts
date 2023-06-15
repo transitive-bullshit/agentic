@@ -141,7 +141,10 @@ export abstract class BaseTask<
       ...this._retryConfig,
       onFailedAttempt: async (err: FailedAttemptError) => {
         this._logger.warn(
-          `Task "${this.nameForModel}" failed attempt ${err.attemptNumber}: ${err.message}`
+          err,
+          `Task error "${this.nameForHuman}" failed attempt ${
+            err.attemptNumber
+          }: ${JSON.stringify(input)}`
         )
 
         if (this._retryConfig.onFailedAttempt) {
