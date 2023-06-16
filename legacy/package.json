@@ -32,7 +32,7 @@
     "pretest": "run-s build",
     "prepare": "husky install",
     "pre-commit": "lint-staged",
-    "test": "run-p test:*",
+    "test": "run-s test:*",
     "test:unit": "ava",
     "test:prettier": "prettier \"**/*.{js,jsx,ts,tsx}\" --check",
     "test:eslint": "eslint \"**/*.ts\""
