@@ -2,7 +2,12 @@ import { OpenAIClient } from '@agentic/openai-fetch'
 import 'dotenv/config'
 import { z } from 'zod'
 
-import { Agentic, SerpAPITool, withHumanFeedback } from '@/index'
+import {
+  Agentic,
+  NovuNotificationTool,
+  SerpAPITool,
+  withHumanFeedback
+} from '@/index'
 
 async function main() {
   const openai = new OpenAIClient({ apiKey: process.env.OPENAI_API_KEY! })
@@ -43,7 +48,7 @@ async function main() {
     metadata.feedback.type === 'selectN' &&
     metadata.feedback.selected
   ) {
-    const answer = agentic
+    const answer = await agentic
       .gpt4(
         `Generate an answer to the following question: "{{question}}" from each of the following experts: {{#each experts}}
       - {{this.name}}: {{this.bio}}
@@ -67,7 +72,21 @@ async function main() {
         question,
         experts: metadata.feedback.selected
       })
-    console.log(answer)
+
+    const message = answer.reduce((acc, { expert, answer }) => {
+      return `${acc}
+
+      ${expert}: ${answer}`
+    }, '')
+    const notifier = new NovuNotificationTool()
+    await notifier.call({
+      name: 'send-email',
+      payload: {
+        subject: 'Experts have answered your question: ' + question,
+        message
+      },
+      to: [{ subscriberId: '123' }]
+    })
   }
 }
 
