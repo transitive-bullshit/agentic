@@ -6,7 +6,8 @@ import {
   extractJSONArrayFromString,
   extractJSONObjectFromString,
   isValidTaskIdentifier,
-  sleep
+  sleep,
+  stringifyForModel
 } from '@/utils'
 
 test('isValidTaskIdentifier - valid', async (t) => {
@@ -74,4 +75,52 @@ test('chunkString should split string into chunks', (t) => {
     'chunkString',
     'function.'
   ])
+})
+
+test('stringifyForModel should stringify JSON values correctly', (t) => {
+  const input = { a: 1, b: 2 }
+  const expectedOutput = '{a:1,b:2}'
+  const actualOutput = stringifyForModel(input)
+  t.is(actualOutput, expectedOutput)
+})
+
+test('stringifyForModel should stringify primitive values correctly', (t) => {
+  const input = true
+  const expectedOutput = 'true'
+  const actualOutput = stringifyForModel(input)
+  t.is(actualOutput, expectedOutput)
+
+  const input2 = 1
+  const expectedOutput2 = '1'
+  const actualOutput2 = stringifyForModel(input2)
+  t.is(actualOutput2, expectedOutput2)
+
+  const input3 = 'foo'
+  const expectedOutput3 = '"foo"'
+  const actualOutput3 = stringifyForModel(input3)
+  t.is(actualOutput3, expectedOutput3)
+})
+
+test('stringifyForModel should stringify nested objects correctly', (t) => {
+  const input = { a: 1, b: { c: 3, d: 4 } }
+  const expectedOutput = '{a:1,b:{c:3,d:4}}'
+  const actualOutput = stringifyForModel(input)
+
+  t.is(actualOutput, expectedOutput)
+})
+
+test('stringifyForModel should stringify arrays correctly', (t) => {
+  const input = { a: 'Hello World!', b: [2, 3] }
+  const expectedOutput = '{a:"Hello World!",b:[2,3]}'
+  const actualOutput = stringifyForModel(input)
+
+  t.is(actualOutput, expectedOutput)
+})
+
+test('stringifyForModel should stringify objects with null values correctly', (t) => {
+  const input = { a: 'baz', b: null }
+  const expectedOutput = '{a:"baz",b:null}'
+  const actualOutput = stringifyForModel(input)
+
+  t.is(actualOutput, expectedOutput)
 })

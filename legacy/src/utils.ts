@@ -50,7 +50,7 @@ export function isValidTaskIdentifier(id: string): boolean {
  * @param maxLength - maximum length of each chunk
  * @returns array of chunks
  */
-export const chunkString = (text: string, maxLength: number) => {
+export function chunkString(text: string, maxLength: number): string[] {
   const words = text.split(' ')
   const chunks: string[] = []
   let chunk = ''
@@ -73,4 +73,42 @@ export const chunkString = (text: string, maxLength: number) => {
   }
 
   return chunks
+}
+
+/**
+ * Stringifies a JSON value for use in an LLM prompt.
+ *
+ * @param json - JSON value to stringify
+ * @returns stringified value with all double quotes around object keys removed
+ */
+export function stringifyForModel(json: types.JsonValue): string {
+  const UNIQUE_PREFIX = defaultIDGeneratorFn()
+  return (
+    JSON.stringify(json, replacer)
+      // Remove all double quotes around keys:
+      .replace(new RegExp('"' + UNIQUE_PREFIX + '(.*?)"', 'g'), '$1')
+  )
+
+  /**
+   * Replacer function prefixing all keys with a unique identifier.
+   */
+  function replacer(_: string, value: any) {
+    if (value && typeof value === 'object') {
+      if (Array.isArray(value)) {
+        return value
+      }
+
+      const replacement = {}
+
+      for (const k in value) {
+        if (Object.hasOwnProperty.call(value, k)) {
+          replacement[UNIQUE_PREFIX + k] = value[k]
+        }
+      }
+
+      return replacement
+    }
+
+    return value
+  }
 }
