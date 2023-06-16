@@ -72,6 +72,11 @@ export type HumanFeedbackOptions<T extends HumanFeedbackType, TOutput> = {
    * Custom label to be displayed along with the output when requesting feedback.
    */
   outputLabel?: string
+
+  /**
+   * Timeout in milliseconds after which waiting for any user input is aborted (default: +Infinity, i.e. no timeout.)
+   */
+  timeoutMs?: number
 }
 
 export interface BaseHumanFeedbackMetadata {
@@ -284,6 +289,7 @@ export function withHumanFeedback<
       abort: false,
       editing: false,
       annotations: false,
+      timeoutMs: Number.POSITIVE_INFINITY,
       mechanism: HumanFeedbackMechanismCLI
     },
     // Default options from the instance:

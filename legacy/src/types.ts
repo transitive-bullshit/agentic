@@ -15,8 +15,7 @@ import type { BaseTask } from './task'
 
 export { anthropic, openai }
 
-export type { Logger }
-export type { JsonObject, JsonValue }
+export type { JsonObject, JsonValue, Logger }
 export type KyInstance = typeof ky
 
 export type ParsedData<T extends ZodTypeAny> = T extends ZodTypeAny
@@ -139,6 +138,10 @@ export type IDGeneratorFunction = () => string
 
 export interface SerializedTask extends JsonObject {
   _taskName: string
+}
+
+export declare class CancelablePromise<T> extends Promise<T> {
+  cancel: () => void
 }
 
 // export type ProgressFunction = (partialResponse: ChatMessage) => void

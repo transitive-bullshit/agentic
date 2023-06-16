@@ -31,7 +31,8 @@ export class HumanFeedbackMechanismSlack<
   protected async _annotate(): Promise<string> {
     try {
       const annotation = await this._slackClient.sendAndWaitForReply({
-        text: 'Please leave an annotation (optional):'
+        text: 'Please leave an annotation (optional):',
+        timeoutMs: this._options.timeoutMs
       })
       return annotation.text
     } catch (e) {
@@ -42,7 +43,8 @@ export class HumanFeedbackMechanismSlack<
 
   protected async _edit(): Promise<string> {
     let { text: editedOutput } = await this._slackClient.sendAndWaitForReply({
-      text: 'Copy and edit the output:'
+      text: 'Copy and edit the output:',
+      timeoutMs: this._options.timeoutMs
     })
     editedOutput = editedOutput.replace(/```$/g, '')
     editedOutput = editedOutput.replace(/^```/g, '')
@@ -63,6 +65,7 @@ export class HumanFeedbackMechanismSlack<
     message += 'Reply with the number of your choice.'
     const response = await this._slackClient.sendAndWaitForReply({
       text: message,
+      timeoutMs: this._options.timeoutMs,
       validate: (slackMessage) => {
         const choice = parseInt(slackMessage.text)
         return !isNaN(choice) && choice >= 0 && choice < choices.length
@@ -86,6 +89,7 @@ export class HumanFeedbackMechanismSlack<
             .map((r, idx) => `\n*${idx}* - ${JSON.stringify(r)}`)
             .join('') +
           '\n\nReply with the number of your choice.',
+        timeoutMs: this._options.timeoutMs,
         validate: (slackMessage) => {
           const choice = parseInt(slackMessage.text)
           return !isNaN(choice) && choice >= 0 && choice < response.length
@@ -109,6 +113,7 @@ export class HumanFeedbackMechanismSlack<
             .map((r, idx) => `\n*${idx}* - ${JSON.stringify(r)}`)
             .join('') +
           '\n\nReply with a comma-separated list of the output numbers of your choice.',
+        timeoutMs: this._options.timeoutMs,
         validate: (slackMessage) => {
           const choices = slackMessage.text.split(',')
           return choices.every((choice) => {

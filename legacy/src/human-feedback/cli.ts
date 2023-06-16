@@ -2,6 +2,9 @@ import checkbox from '@inquirer/checkbox'
 import editor from '@inquirer/editor'
 import input from '@inquirer/input'
 import select from '@inquirer/select'
+import { setTimeout } from 'timers/promises'
+
+import { CancelablePromise } from '@/types'
 
 import {
   HumanFeedbackMechanism,
@@ -21,27 +24,62 @@ export class HumanFeedbackMechanismCLI<
     message: string,
     choices: HumanFeedbackUserActions[]
   ): Promise<HumanFeedbackUserActions> {
-    return select({
-      message,
-      choices: choices.map((choice) => ({
-        name: HumanFeedbackUserActionMessages[choice],
-        value: choice
-      }))
+    return this._errorAfterTimeout(
+      select({
+        message,
+        choices: choices.map((choice) => ({
+          name: HumanFeedbackUserActionMessages[choice],
+          value: choice
+        }))
+      })
+    )
+  }
+
+  protected _defaultAfterTimeout(
+    promise: CancelablePromise<any>,
+    defaultValue: any
+  ) {
+    if (!isFinite(this._options.timeoutMs)) {
+      return promise
+    }
+
+    const resolveDefault = setTimeout(this._options.timeoutMs).then(() => {
+      promise.cancel()
+      return defaultValue
     })
+    return Promise.race([resolveDefault, promise])
+  }
+
+  protected async _errorAfterTimeout(promise: CancelablePromise<any>) {
+    if (!isFinite(this._options.timeoutMs)) {
+      return promise
+    }
+
+    const rejectError = setTimeout(this._options.timeoutMs).then(() => {
+      promise.cancel()
+      throw new Error('Timeout waiting for user input')
+    })
+    return Promise.race([rejectError, promise])
   }
 
   protected async _edit(output: string): Promise<string> {
-    return editor({
-      message: 'Edit the output:',
-      default: output
-    })
+    return this._defaultAfterTimeout(
+      editor({
+        message: 'Edit the output:',
+        default: output
+      }),
+      output
+    )
   }
 
   protected async _annotate(): Promise<string> {
-    return input({
-      message:
-        'Please leave an annotation (leave blank to skip; press enter to submit):'
-    })
+    return this._defaultAfterTimeout(
+      input({
+        message:
+          'Please leave an annotation (leave blank to skip; press enter to submit):'
+      }),
+      ''
+    )
   }
 
   protected async _selectOne(
@@ -55,7 +93,9 @@ export class HumanFeedbackMechanismCLI<
       name: JSON.stringify(option),
       value: option
     }))
-    return select({ message: 'Pick one output:', choices })
+    return this._errorAfterTimeout(
+      select({ message: 'Pick one output:', choices })
+    )
   }
 
   protected async _selectN(
@@ -69,6 +109,8 @@ export class HumanFeedbackMechanismCLI<
       name: JSON.stringify(option),
       value: option
     }))
-    return checkbox({ message: 'Select outputs:', choices }) as any
+    return this._errorAfterTimeout(
+      checkbox({ message: 'Select outputs:', choices })
+    )
   }
 }

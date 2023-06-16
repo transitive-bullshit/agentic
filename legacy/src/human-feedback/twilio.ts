@@ -32,7 +32,8 @@ export class HumanFeedbackMechanismTwilio<
     try {
       const annotation = await this._twilioClient.sendAndWaitForReply({
         name: 'human-feedback-annotation',
-        text: 'Please leave an annotation (optional):'
+        text: 'Please leave an annotation (optional):',
+        timeoutMs: this._options.timeoutMs
       })
       return annotation.body
     } catch (e) {
@@ -44,7 +45,8 @@ export class HumanFeedbackMechanismTwilio<
   protected async _edit(): Promise<string> {
     let { body: editedOutput } = await this._twilioClient.sendAndWaitForReply({
       text: 'Copy and edit the output:',
-      name: 'human-feedback-edit'
+      name: 'human-feedback-edit',
+      timeoutMs: this._options.timeoutMs
     })
     editedOutput = editedOutput.replace(/```$/g, '')
     editedOutput = editedOutput.replace(/^```/g, '')
@@ -66,6 +68,7 @@ export class HumanFeedbackMechanismTwilio<
     const response = await this._twilioClient.sendAndWaitForReply({
       name: 'human-feedback-ask',
       text: message,
+      timeoutMs: this._options.timeoutMs,
       validate: (message) => {
         const choice = parseInt(message.body)
         return !isNaN(choice) && choice >= 0 && choice < choices.length
@@ -88,6 +91,7 @@ export class HumanFeedbackMechanismTwilio<
           'Pick one output:' +
           response.map((r, idx) => `\n${idx} - ${JSON.stringify(r)}`).join('') +
           '\n\nReply with the number of your choice.',
+        timeoutMs: this._options.timeoutMs,
         validate: (message) => {
           const choice = parseInt(message.body)
           return !isNaN(choice) && choice >= 0 && choice < response.length
@@ -110,6 +114,7 @@ export class HumanFeedbackMechanismTwilio<
           'Select outputs:' +
           response.map((r, idx) => `\n${idx} - ${JSON.stringify(r)}`).join('') +
           '\n\nReply with a comma-separated list of the output numbers of your choice.',
+        timeoutMs: this._options.timeoutMs,
         validate: (message) => {
           const choices = message.body.split(',')
           return choices.every((choice) => {

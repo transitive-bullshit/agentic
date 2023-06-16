@@ -6,7 +6,7 @@ import { chunkString, sleep } from '@/utils'
 export const TWILIO_CONVERSATION_API_BASE_URL =
   'https://conversations.twilio.com/v1'
 
-export const DEFAULT_TWILIO_TIMEOUT_MS = 120_000
+export const DEFAULT_TWILIO_TIMEOUT_MS = 1_800_000
 export const DEFAULT_TWILIO_INTERVAL_MS = 5_000
 
 /**
