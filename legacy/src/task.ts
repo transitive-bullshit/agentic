@@ -29,10 +29,8 @@ export abstract class BaseTask<
   protected _timeoutMs?: number
   protected _retryConfig: types.RetryConfig
 
-  private _preHooks: Array<(ctx: types.TaskCallContext<TInput>) => void> = []
-  private _postHooks: Array<
-    (output: TOutput, ctx: types.TaskCallContext<TInput>) => void
-  > = []
+  private _preHooks: Array<types.BeforeCallHook<TInput>> = []
+  private _postHooks: Array<types.AfterCallHook<TInput, TOutput>> = []
 
   constructor(options: types.BaseTaskOptions = {}) {
     this._agentic = options.agentic ?? globalThis.__agentic?.deref()
@@ -79,16 +77,12 @@ export abstract class BaseTask<
     return ''
   }
 
-  public addBeforeCallHook(
-    hook: (ctx: types.TaskCallContext<TInput>) => Promise<void>
-  ): this {
+  public addBeforeCallHook(hook: types.BeforeCallHook<TInput>): this {
     this._preHooks.push(hook)
     return this
   }
 
-  public addAfterCallHook(
-    hook: (output: TOutput, ctx: types.TaskCallContext<TInput>) => Promise<void>
-  ): this {
+  public addAfterCallHook(hook: types.AfterCallHook<TInput, TOutput>): this {
     this._postHooks.push(hook)
     return this
   }
