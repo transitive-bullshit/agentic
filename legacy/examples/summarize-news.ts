@@ -2,7 +2,7 @@ import { OpenAIClient } from '@agentic/openai-fetch'
 import 'dotenv/config'
 import { z } from 'zod'
 
-import { Agentic, DiffbotTool, SerpAPITool } from '@/index'
+import { Agentic, SerpAPITool } from '@/index'
 
 async function main() {
   const openai = new OpenAIClient({ apiKey: process.env.OPENAI_API_KEY! })
@@ -23,7 +23,7 @@ async function main() {
       })
     )
     .call({
-      topic: 'OpenAI'
+      topic: 'HF0 accelerator'
     })
 
   console.log(res)
