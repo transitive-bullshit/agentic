@@ -138,18 +138,47 @@ export function stringifyForModel(json: types.Jsonifiable): string {
   }
 }
 
-export function pick<T extends object, U = T>(obj: T, ...keys: string[]): U {
-  return Object.fromEntries(
-    keys.filter((key) => key in obj).map((key) => [key, obj[key]])
-  ) as U
+/**
+ * Picks keys from an object.
+ *
+ * @param obj - object to pick keys from
+ * @param keys - keys to pick from the object
+ * @returns new object with only the picked keys
+ */
+export function pick<T extends object, K extends keyof T>(
+  obj: T,
+  ...keys: K[]
+) {
+  return keys.reduce((result, key) => {
+    result[key] = obj[key]
+    return result
+  }, {} as Pick<T, K>)
 }
 
-export function omit<T extends object, U = T>(obj: T, ...keys: string[]): U {
-  return Object.fromEntries<T>(
-    Object.entries(obj).filter(([key]) => !keys.includes(key))
-  ) as U
+/**
+ * Omits keys from an object.
+ *
+ * @param obj - object to omit keys from
+ * @param keys - keys to omit from the object
+ * @returns new object without the omitted keys
+ */
+export function omit<T extends object, K extends keyof T>(
+  obj: T,
+  ...keys: K[]
+) {
+  const keySet = new Set(keys)
+  return Object.keys(obj).reduce((result, key) => {
+    if (!keySet.has(key as K)) {
+      result[key] = obj[key as keyof T]
+    }
+
+    return result
+  }, {} as Omit<T, K>)
 }
 
+/**
+ * Function that does nothing.
+ */
 const noop = () => undefined
 
 /**
