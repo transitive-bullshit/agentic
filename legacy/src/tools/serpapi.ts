@@ -7,7 +7,7 @@ import { normalizeUrl } from '@/url-utils'
 
 export const SerpAPIInputSchema = z.object({
   query: z.string().describe('search query'),
-  numResults: z.number().int().positive().default(10).optional()
+  numResults: z.number().int().positive().default(5).optional()
 })
 export type SerpAPIInput = z.infer<typeof SerpAPIInputSchema>
 
@@ -15,7 +15,7 @@ export const SerpAPIOrganicSearchResult = z.object({
   position: z.number().optional(),
   title: z.string().optional(),
   link: z.string().optional(),
-  displayed_link: z.string().optional(),
+  // displayed_link: z.string().optional(),
   snippet: z.string().optional(),
   source: z.string().optional(),
   date: z.string().optional()
@@ -25,7 +25,7 @@ export const SerpAPIAnswerBox = z.object({
   type: z.string().optional(),
   title: z.string().optional(),
   link: z.string().optional(),
-  displayed_link: z.string().optional(),
+  // displayed_link: z.string().optional(),
   snippet: z.string().optional()
 })
 
@@ -42,7 +42,7 @@ export const SerpAPITweet = z.object({
 
 export const SerpAPITwitterResults = z.object({
   title: z.string().optional(),
-  displayed_link: z.string().optional(),
+  // displayed_link: z.string().optional(),
   tweets: z.array(SerpAPITweet).optional()
 })
 
@@ -91,10 +91,14 @@ export class SerpAPITool extends BaseTask<SerpAPIInput, SerpAPIOutput> {
   protected override async _call(
     ctx: types.TaskCallContext<SerpAPIInput>
   ): Promise<SerpAPIOutput> {
-    const { query, numResults = 10 } = ctx.input!
+    const { query, numResults = 5 } = ctx.input!
 
     const res = await this._serpapiClient.search({
       q: query
+
+      // TODO: the `num` parameter doesn't seem to work consistently to SerpAPI and
+      // instead only returns a subset of results, so we instead just `slice` the
+      // results manuall
     })
 
     this._logger.debug(

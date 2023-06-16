@@ -9,10 +9,8 @@ async function main() {
   const agentic = new Agentic({ openai })
 
   const res = await agentic
-    .gpt4(
-      `Can you summarize the top {{numResults}} results for today's news about {{topic}}?`
-    )
-    .tools([new SerpAPITool(), new DiffbotTool()])
+    .gpt4(`Summarize latest news about {{topic}} using markdown.`)
+    .tools([new SerpAPITool()])
     .input(
       z.object({
         topic: z.string(),
