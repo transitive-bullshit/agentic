@@ -152,3 +152,12 @@ export declare class CancelablePromise<T> extends Promise<T> {
 }
 
 // export type ProgressFunction = (partialResponse: ChatMessage) => void
+
+export type BeforeCallHook<TInput extends TaskInput = void> = (
+  ctx: TaskCallContext<TInput>
+) => void | Promise<void>
+
+export type AfterCallHook<
+  TInput extends TaskInput = void,
+  TOutput extends TaskOutput = string
+> = (output: TOutput, ctx: TaskCallContext<TInput>) => void | Promise<void>

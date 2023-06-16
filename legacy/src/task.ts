@@ -29,6 +29,9 @@ export abstract class BaseTask<
   protected _timeoutMs?: number
   protected _retryConfig: types.RetryConfig
 
+  private _preHooks: Array<types.BeforeCallHook<TInput>> = []
+  private _postHooks: Array<types.AfterCallHook<TInput, TOutput>> = []
+
   constructor(options: types.BaseTaskOptions = {}) {
     this._agentic = options.agentic ?? globalThis.__agentic?.deref()
 
@@ -72,6 +75,16 @@ export abstract class BaseTask<
 
   public get descForModel(): string {
     return ''
+  }
+
+  public addBeforeCallHook(hook: types.BeforeCallHook<TInput>): this {
+    this._preHooks.push(hook)
+    return this
+  }
+
+  public addAfterCallHook(hook: types.AfterCallHook<TInput, TOutput>): this {
+    this._postHooks.push(hook)
+    return this
   }
 
   public validate() {
@@ -136,33 +149,49 @@ export abstract class BaseTask<
       }
     }
 
-    const result = await pRetry(() => this._call(ctx), {
-      ...this._retryConfig,
-      onFailedAttempt: async (err: FailedAttemptError) => {
-        this._logger.warn(
-          err,
-          `Task error "${this.nameForHuman}" failed attempt ${
-            err.attemptNumber
-          }${input ? ': ' + JSON.stringify(input) : ''}`
-        )
+    for (const hook of this._preHooks) {
+      await hook(ctx)
+    }
 
-        if (this._retryConfig.onFailedAttempt) {
-          await Promise.resolve(this._retryConfig.onFailedAttempt(err))
+    const result = await pRetry(
+      async () => {
+        const result = await this._call(ctx)
+        for (const hook of this._postHooks) {
+          await hook(result, ctx)
         }
 
-        // TODO: log this task error
-        ctx.attemptNumber = err.attemptNumber + 1
-        ctx.metadata.error = err
+        return result
+      },
+      {
+        ...this._retryConfig,
+        onFailedAttempt: async (err: FailedAttemptError) => {
+          this._logger.warn(
+            err,
+            `Task error "${this.nameForHuman}" failed attempt ${
+              err.attemptNumber
+            }${input ? ': ' + JSON.stringify(input) : ''}`
+          )
 
-        if (err instanceof errors.ZodOutputValidationError) {
-          ctx.retryMessage = err.message
-        } else if (err instanceof errors.OutputValidationError) {
-          ctx.retryMessage = err.message
-        } else {
-          throw err
+          if (this._retryConfig.onFailedAttempt) {
+            await Promise.resolve(this._retryConfig.onFailedAttempt(err))
+          }
+
+          // TODO: log this task error
+          ctx.attemptNumber = err.attemptNumber + 1
+          ctx.metadata.error = err
+
+          if (err instanceof errors.ZodOutputValidationError) {
+            ctx.retryMessage = err.message
+          } else if (err instanceof errors.OutputValidationError) {
+            ctx.retryMessage = err.message
+          } else if (err instanceof errors.HumanFeedbackDeclineError) {
+            ctx.retryMessage = err.message
+          } else {
+            throw err
+          }
         }
       }
-    })
+    )
 
     ctx.metadata.success = true
     ctx.metadata.numRetries = ctx.attemptNumber

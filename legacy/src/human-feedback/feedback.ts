@@ -1,5 +1,6 @@
 import * as types from '@/types'
 import { Agentic } from '@/agentic'
+import { HumanFeedbackDeclineError } from '@/errors'
 import { BaseTask } from '@/task'
 
 import { HumanFeedbackMechanismCLI } from './cli'
@@ -220,7 +221,9 @@ export abstract class HumanFeedbackMechanism<
         ? HumanFeedbackUserActions.Select
         : await this._askUser(msg, choices)
 
-    const feedback: Record<string, any> = {}
+    const feedback: Record<string, any> = {
+      type: this._options.type
+    }
 
     switch (choice) {
       case HumanFeedbackUserActions.Accept:
@@ -268,6 +271,26 @@ export abstract class HumanFeedbackMechanism<
       }
     }
 
+    if (
+      (Object.hasOwnProperty.call(feedback, 'accepted') &&
+        feedback.accepted === false) ||
+      (Object.hasOwnProperty.call(feedback, 'selected') &&
+        feedback.selected.length === 0)
+    ) {
+      const errorMsg = [
+        'The output was declined by the human reviewer.',
+        'Output:',
+        '```',
+        stringified,
+        '```',
+        '',
+        'Please try again and return different output.'
+      ].join('\n')
+      throw new HumanFeedbackDeclineError(errorMsg, {
+        context: feedback
+      })
+    }
+
     return feedback as FeedbackTypeToMetadata<T>
   }
 }
@@ -309,17 +332,10 @@ export function withHumanFeedback<
     options: finalOptions
   })
 
-  const originalCall = task.callWithMetadata.bind(task)
-
-  task.callWithMetadata = async function (input?: TInput) {
-    const response = await originalCall(input)
-
-    const feedback = await feedbackMechanism.interact(response.result)
-
-    response.metadata = { ...response.metadata, feedback }
-
-    return response
-  }
+  task.addAfterCallHook(async function onCall(output, ctx) {
+    const feedback = await feedbackMechanism.interact(output)
+    ctx.metadata = { ...ctx.metadata, feedback }
+  })
 
   return task
 }

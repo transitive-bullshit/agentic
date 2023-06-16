@@ -82,3 +82,14 @@ export class TemplateValidationError extends BaseError {
     Error.captureStackTrace?.(this, this.constructor)
   }
 }
+
+/**
+ * An error caused by the user declining an output.
+ */
+export class HumanFeedbackDeclineError extends BaseError {
+  constructor(message: string, opts: ErrorOptions = {}) {
+    super(message, opts)
+
+    Error.captureStackTrace?.(this, this.constructor)
+  }
+}
