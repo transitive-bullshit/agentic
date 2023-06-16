@@ -104,9 +104,9 @@ export class DiffbotTool extends BaseTask<DiffbotInput, DiffbotOutput> {
       url: ctx.input!.url
     })
 
-    this._logger.info(res, `Diffbot response for url "${ctx.input!.url}"`)
+    // this._logger.info(res, `Diffbot response for url "${ctx.input!.url}"`)
 
-    const pickedRes = {
+    const output = this.outputSchema.parse({
       type: res.type,
       title: res.title,
       objects: res.objects.map((obj) => ({
@@ -126,12 +126,9 @@ export class DiffbotTool extends BaseTask<DiffbotInput, DiffbotOutput> {
         // tags: obj.tags?.map((tag) => tag.label)
         // images: obj.images?.map((image) => omit(image, 'diffbotUri'))
       }))
-    }
+    })
 
-    this._logger.info(
-      pickedRes,
-      `Diffbot picked response for url "${ctx.input!.url}"`
-    )
-    return this.outputSchema.parse(pickedRes)
+    this._logger.info(output, `Diffbot response for url "${ctx.input!.url}"`)
+    return output
   }
 }

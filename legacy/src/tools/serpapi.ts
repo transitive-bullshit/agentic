@@ -103,11 +103,6 @@ export class SerpAPITool extends BaseTask<SerpAPIInput, SerpAPIOutput> {
       // results manuall
     })
 
-    this._logger.info(
-      res,
-      `SerpAPI response for query ${JSON.stringify(ctx.input, null, 2)}"`
-    )
-
     const twitterResults = res.twitter_results
       ? {
           ...res.twitter_results,
@@ -120,11 +115,15 @@ export class SerpAPITool extends BaseTask<SerpAPIInput, SerpAPIOutput> {
         }
       : undefined
 
-    return this.outputSchema.parse({
+    const output = this.outputSchema.parse({
       knowledge_graph: res.knowledge_graph,
       answer_box: res.answer_box,
       organic_results: res.organic_results?.slice(0, numResults),
       twitter_results: twitterResults
     })
+
+    this._logger.info(output, `SerpAPI response for query "${query}"`)
+
+    return output
   }
 }

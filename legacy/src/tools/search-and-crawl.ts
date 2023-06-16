@@ -166,13 +166,12 @@ export class SearchAndCrawlTool extends BaseTask<
       )
     ).flat()
 
-    const result = {
+    const output = this.outputSchema.parse({
       ...omit(search.result, 'organic_results'),
       scrape_results: scrapeResults
-    }
+    })
 
-    this._logger.info(result, `SearchAndCrawl response for query "${query}"`)
-
-    return this.outputSchema.parse(result)
+    this._logger.info(output, `SearchAndCrawl response for query "${query}"`)
+    return output
   }
 }
