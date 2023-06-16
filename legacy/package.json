@@ -79,7 +79,7 @@
     "@typescript-eslint/parser": "^5.59.11",
     "ava": "^5.3.0",
     "del-cli": "^5.0.0",
-    "dotenv": "^16.1.4",
+    "dotenv": "^16.2.0",
     "eslint": "^8.42.0",
     "expect-type": "^0.16.0",
     "hash-obj": "^4.0.0",
