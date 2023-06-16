@@ -9,7 +9,7 @@ async function main() {
   const agentic = new Agentic({ openai })
 
   const res = await agentic
-    .gpt4(`Summarize latest news about {{topic}} using markdown.`)
+    .gpt4(`Summarize the latest news on {{topic}} using markdown.`)
     .tools([new SerpAPITool()])
     .input(
       z.object({
