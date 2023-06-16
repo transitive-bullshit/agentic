@@ -1,5 +1,6 @@
 import defaultKy from 'ky'
 import pThrottle from 'p-throttle'
+import { P } from 'pino'
 
 import { throttleKy } from '@/utils'
 

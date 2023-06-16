@@ -15,7 +15,7 @@ test('Diffbot.extractAnalyze', async (t) => {
   const result = await client.extractAnalyze({
     url: 'https://transitivebullsh.it'
   })
-  // console.log(result)
+  // console.log(JSON.stringify(result, null, 2))
   t.is(result.type, 'list')
   t.is(result.objects?.length, 1)
 })

@@ -11,43 +11,56 @@ export const DiffbotInputSchema = z.object({
 export type DiffbotInput = z.infer<typeof DiffbotInputSchema>
 
 export const DiffbotImageSchema = z.object({
-  url: z.string().optional(),
-  naturalWidth: z.number().optional(),
-  naturalHeight: z.number().optional(),
-  width: z.number().optional(),
-  height: z.number().optional(),
-  isCached: z.boolean().optional(),
-  primary: z.boolean().optional()
+  url: z.string(),
+  naturalWidth: z.number(),
+  naturalHeight: z.number(),
+  width: z.number(),
+  height: z.number(),
+  isCached: z.boolean(),
+  primary: z.boolean()
 })
 
 export const DiffbotListItemSchema = z.object({
-  title: z.string().optional(),
-  link: z.string().optional(),
-  summary: z.string().optional(),
-  image: z.string().optional()
+  title: z.string(),
+  link: z.string(),
+  summary: z.string(),
+  image: z.string()
 })
+
+export const DiffbotObjectTypeSchema = z.union([
+  z.literal('article'),
+  z.literal('product'),
+  z.literal('discussion'),
+  z.literal('image'),
+  z.literal('video'),
+  z.literal('list'),
+  z.literal('event'),
+  z.string()
+])
 
 export const DiffbotObjectSchema = z.object({
-  type: z.string().optional(),
-  title: z.string().optional(),
-  siteName: z.string().optional(),
-  author: z.string().optional(),
-  authorUrl: z.string().optional(),
-  pageUrl: z.string().optional(),
-  date: z.string().optional(),
-  estimatedDate: z.string().optional(),
-  humanLanguage: z.string().optional(),
-  text: z.string().describe('core text content of the page').optional(),
-  tags: z.array(z.string()).optional(),
-  images: z.array(DiffbotImageSchema).optional(),
-  items: z.array(DiffbotListItemSchema).optional()
+  type: DiffbotObjectTypeSchema,
+  title: z.string(),
+  siteName: z.string(),
+  author: z.string(),
+  authorUrl: z.string(),
+  pageUrl: z.string(),
+  date: z.string(),
+  estimatedDate: z.string(),
+  humanLanguage: z.string(),
+  text: z.string().describe('main text content of the page'),
+  tags: z.array(z.string()),
+  images: z.array(DiffbotImageSchema),
+  items: z.array(DiffbotListItemSchema)
 })
 
-export const DiffbotOutputSchema = z.object({
-  type: z.string().optional(),
-  title: z.string().optional(),
-  objects: z.array(DiffbotObjectSchema).optional()
-})
+export const DiffbotOutputSchema = z
+  .object({
+    type: DiffbotObjectTypeSchema,
+    title: z.string(),
+    objects: z.array(DiffbotObjectSchema)
+  })
+  .deepPartial()
 export type DiffbotOutput = z.infer<typeof DiffbotOutputSchema>
 
 export class DiffbotTool extends BaseTask<DiffbotInput, DiffbotOutput> {

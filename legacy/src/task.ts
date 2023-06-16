@@ -123,7 +123,8 @@ export abstract class BaseTask<
    * Calls this task with the given `input` and returns the result along with metadata.
    */
   public async callWithMetadata(
-    input?: TInput
+    input?: TInput,
+    parentCtx?: types.TaskCallContext<any>
   ): Promise<types.TaskResponse<TOutput>> {
     this.validate()
 
@@ -145,7 +146,9 @@ export abstract class BaseTask<
       metadata: {
         taskName: this.nameForModel,
         taskId: this.id,
-        callId: this._agentic!.idGeneratorFn()
+        callId: this._agentic!.idGeneratorFn(),
+        parentTaskId: parentCtx?.metadata.taskId,
+        parentCallId: parentCtx?.metadata.callId
       }
     }
 
@@ -182,10 +185,19 @@ export abstract class BaseTask<
 
           if (err instanceof errors.ZodOutputValidationError) {
             ctx.retryMessage = err.message
+            return
           } else if (err instanceof errors.OutputValidationError) {
             ctx.retryMessage = err.message
+            return
           } else if (err instanceof errors.HumanFeedbackDeclineError) {
             ctx.retryMessage = err.message
+            return
+          } else if ((err.cause as any)?.code === 'UND_ERR_HEADERS_TIMEOUT') {
+            // TODO: This is a pretty common OpenAI error, and I think it either has
+            // to do with OpenAI's servers being flaky or the combination of Node.js
+            // `undici` and OpenAI's HTTP requests. Either way, let's just retry the
+            // task for now.
+            return
           } else {
             throw err
           }

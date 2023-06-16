@@ -105,12 +105,14 @@ export interface TaskResponseMetadata extends Record<string, any> {
   // task info
   taskName: string
   taskId: string
+  parentTaskId?: string
 
   // execution info
   success?: boolean
   error?: Error
   numRetries?: number
   callId?: string
+  parentCallId?: string
 
   // human feedback info
   feedback?: FeedbackTypeToMetadata<HumanFeedbackType>

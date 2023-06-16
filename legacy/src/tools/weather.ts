@@ -61,10 +61,12 @@ const CurrentSchema = z.object({
   gust_kph: z.number()
 })
 
-const WeatherOutputSchema = z.object({
-  location: LocationSchema,
-  current: CurrentSchema
-})
+const WeatherOutputSchema = z
+  .object({
+    location: LocationSchema,
+    current: CurrentSchema
+  })
+  .deepPartial()
 type WeatherOutput = z.infer<typeof WeatherOutputSchema>
 
 export class WeatherTool extends BaseTask<WeatherInput, WeatherOutput> {

@@ -339,6 +339,8 @@ export abstract class BaseChatCompletion<
           content: taskCallContent
         })
 
+        // TODO: Add a guard for the maximum number of function calls. We should use the
+        // `function_call` parameter to disable function calls if we hit this point.
         continue
       }
 

@@ -12,46 +12,48 @@ export const SerpAPIInputSchema = z.object({
 export type SerpAPIInput = z.infer<typeof SerpAPIInputSchema>
 
 export const SerpAPIOrganicSearchResult = z.object({
-  position: z.number().optional(),
-  title: z.string().optional(),
-  link: z.string().optional(),
-  // displayed_link: z.string().optional(),
-  snippet: z.string().optional(),
-  source: z.string().optional(),
-  date: z.string().optional()
+  position: z.number(),
+  title: z.string(),
+  link: z.string(),
+  // displayed_link: z.string(),
+  snippet: z.string(),
+  source: z.string(),
+  date: z.string()
 })
 
 export const SerpAPIAnswerBox = z.object({
-  type: z.string().optional(),
-  title: z.string().optional(),
-  link: z.string().optional(),
-  // displayed_link: z.string().optional(),
-  snippet: z.string().optional()
+  type: z.string(),
+  title: z.string(),
+  link: z.string(),
+  // displayed_link: z.string(),
+  snippet: z.string()
 })
 
 export const SerpAPIKnowledgeGraph = z.object({
-  type: z.string().optional(),
-  description: z.string().optional()
+  type: z.string(),
+  description: z.string()
 })
 
 export const SerpAPITweet = z.object({
-  link: z.string().optional(),
-  snippet: z.string().optional(),
-  published_date: z.string().optional()
+  link: z.string(),
+  snippet: z.string(),
+  published_date: z.string()
 })
 
 export const SerpAPITwitterResults = z.object({
-  title: z.string().optional(),
-  // displayed_link: z.string().optional(),
-  tweets: z.array(SerpAPITweet).optional()
+  title: z.string(),
+  // displayed_link: z.string(),
+  tweets: z.array(SerpAPITweet)
 })
 
-export const SerpAPIOutputSchema = z.object({
-  knowledge_graph: SerpAPIKnowledgeGraph.optional(),
-  answer_box: SerpAPIAnswerBox.optional(),
-  organic_results: z.array(SerpAPIOrganicSearchResult).optional(),
-  twitter_results: SerpAPITwitterResults.optional()
-})
+export const SerpAPIOutputSchema = z
+  .object({
+    knowledge_graph: SerpAPIKnowledgeGraph,
+    answer_box: SerpAPIAnswerBox,
+    organic_results: z.array(SerpAPIOrganicSearchResult),
+    twitter_results: SerpAPITwitterResults
+  })
+  .deepPartial()
 export type SerpAPIOutput = z.infer<typeof SerpAPIOutputSchema>
 
 export class SerpAPITool extends BaseTask<SerpAPIInput, SerpAPIOutput> {
