@@ -11,7 +11,8 @@ import { getCompiledTemplate } from '@/template'
 import {
   extractFunctionIdentifierFromString,
   extractJSONArrayFromString,
-  extractJSONObjectFromString
+  extractJSONObjectFromString,
+  stringifyForModel
 } from '@/utils'
 
 import { BaseLLM } from './llm'
@@ -328,11 +329,7 @@ export abstract class BaseChatCompletion<
 
         // TODO: handle result as string or JSON
         // TODO: better support for JSON spacing
-        const taskCallContent = JSON.stringify(
-          toolCallResponse.result,
-          null,
-          1
-        ).replaceAll(/\n ?/gm, ' ')
+        const taskCallContent = stringifyForModel(toolCallResponse.result)
 
         // TODO: remove `any` cast once openai-fetch is updated
         messages.push(completion.message as any)
