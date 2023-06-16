@@ -90,10 +90,15 @@ export async function getTokenizerForModel(
   return getTokenizerForEncoding(encoding, options)
 }
 
+/**
+ * Returns the Tiktoken model name for a OpenAI model name.
+ *
+ * @param modelName - full OpenAI model name
+ * @returns Tiktoken model name
+ */
 export function getModelNameForTiktoken(modelName: string): TiktokenModel {
   if (modelName.startsWith('gpt-3.5-turbo-16k-')) {
-    // TODO: remove this once the model is added to tiktoken
-    return 'gpt-3.5-turbo-16k' as TiktokenModel
+    return 'gpt-3.5-turbo-16k'
   }
 
   if (modelName.startsWith('gpt-3.5-turbo-')) {
@@ -111,6 +116,12 @@ export function getModelNameForTiktoken(modelName: string): TiktokenModel {
   return modelName as TiktokenModel
 }
 
+/**
+ * Returns the context size for a given embedding model.
+ *
+ * @param modelName - optional name of the embedding model. If not provided, returns a default context size.
+ * @returns context size for the given embedding model
+ */
 export function getContextSizeForEmbedding(modelName?: string): number {
   switch (modelName) {
     case 'text-embedding-ada-002':
@@ -120,6 +131,12 @@ export function getContextSizeForEmbedding(modelName?: string): number {
   }
 }
 
+/**
+ * Returns the context size for a given large language model (LLM).
+ *
+ * @param model - name of the model
+ * @returns context size for the model
+ */
 export function getContextSizeForModel(model: string): number {
   const modelName = getModelNameForTiktoken(model)
 
@@ -159,6 +176,13 @@ export function getContextSizeForModel(model: string): number {
   }
 }
 
+/**
+ * Calculates the maximum number of tokens that can be added to a prompt for a given LLM without exceeding the context size limit.
+ *
+ * @param prompt - prompt string
+ * @param modelName - name of the model
+ * @returns maximum number of tokens that can be added to the prompt
+ */
 export async function calculateMaxTokens({
   prompt,
   modelName
@@ -166,9 +190,7 @@ export async function calculateMaxTokens({
   prompt: string
   modelName: string
 }) {
-  // fallback to approximate calculation if tiktoken is not available
-  let numTokens = Math.ceil(prompt.length / 4)
-
+  let numTokens: number
   try {
     const tokenizer = await getTokenizerForModel(modelName)
     numTokens = tokenizer.encode(prompt).length
@@ -177,6 +199,8 @@ export async function calculateMaxTokens({
       `calculateMaxTokens error for model "${modelName}", falling back to approximate count`,
       err.toString()
     )
+    // Fallback to approximate calculation if tiktoken is not available:
+    numTokens = Math.ceil(prompt.length / 4)
   }
 
   const maxTokens = getContextSizeForModel(modelName)

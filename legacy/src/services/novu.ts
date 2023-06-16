@@ -18,6 +18,23 @@ export type NovuTriggerEventResponse = {
   }
 }
 
+export type NovuTriggerOptions = {
+  /**
+   * Name of the event to trigger. This should match the name of an existing notification template in Novu.
+   */
+  name: string
+
+  /**
+   * Payload to use for the event. This will be used to populate any handlebars placeholders in the notification template.
+   */
+  payload: Record<string, unknown>
+
+  /**
+   * List of subscribers to send the notification to
+   */
+  to: NovuSubscriber[]
+}
+
 export class NovuClient {
   api: typeof defaultKy
 
@@ -45,15 +62,12 @@ export class NovuClient {
     })
   }
 
-  async triggerEvent({
-    name,
-    payload,
-    to
-  }: {
-    name: string
-    payload: Record<string, unknown>
-    to: NovuSubscriber[]
-  }) {
+  /**
+   * Triggers an event in Novu.
+   *
+   * @returns response from the Novu API containing details about the triggered event.
+   */
+  async triggerEvent({ name, payload, to }: NovuTriggerOptions) {
     return this.api
       .post('events/trigger', {
         headers: {
