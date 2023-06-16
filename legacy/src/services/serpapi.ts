@@ -656,6 +656,7 @@ export class SerpAPIClient {
         : queryOrOpts
     const { timeout, ...rest } = this.params
 
+    // console.log(options)
     return this.api
       .get('search', {
         searchParams: {

@@ -1,4 +1,4 @@
-import type { JsonObject } from 'type-fest'
+import type { Jsonifiable } from 'type-fest'
 import type { ZodError } from 'zod'
 import { ValidationError, fromZodError } from 'zod-validation-error'
 
@@ -10,12 +10,12 @@ export type ErrorOptions = {
   cause?: unknown
 
   /** Additional context to be added to the error. */
-  context?: JsonObject
+  context?: Jsonifiable
 }
 
 export class BaseError extends Error {
   status?: number
-  context?: JsonObject
+  context?: Jsonifiable
 
   constructor(message: string, opts: ErrorOptions = {}) {
     if (opts.cause) {

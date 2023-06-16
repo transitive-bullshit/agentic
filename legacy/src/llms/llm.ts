@@ -7,8 +7,8 @@ import { Tokenizer, getTokenizerForModel } from '@/tokenizer'
 
 // TODO: TInput should only be allowed to be void or an object
 export abstract class BaseLLM<
-  TInput extends void | types.JsonObject = void,
-  TOutput extends types.JsonValue = string,
+  TInput extends types.TaskInput = void,
+  TOutput extends types.TaskOutput = string,
   TModelParams extends Record<string, any> = Record<string, any>
 > extends BaseTask<TInput, TOutput> {
   protected _inputSchema: ZodType<TInput> | undefined
@@ -38,7 +38,7 @@ export abstract class BaseLLM<
   }
 
   // TODO: use polymorphic `this` type to return correct BaseLLM subclass type
-  input<U extends void | types.JsonObject>(
+  input<U extends types.TaskInput>(
     inputSchema: ZodType<U>
   ): BaseLLM<U, TOutput, TModelParams> {
     const refinedInstance = this as unknown as BaseLLM<U, TOutput, TModelParams>
@@ -47,7 +47,7 @@ export abstract class BaseLLM<
   }
 
   // TODO: use polymorphic `this` type to return correct BaseLLM subclass type
-  output<U extends types.JsonValue>(
+  output<U extends types.TaskOutput>(
     outputSchema: ZodType<U>
   ): BaseLLM<TInput, U, TModelParams> {
     const refinedInstance = this as unknown as BaseLLM<TInput, U, TModelParams>

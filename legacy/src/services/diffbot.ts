@@ -1,4 +1,7 @@
 import defaultKy from 'ky'
+import pThrottle from 'p-throttle'
+
+import { throttleKy } from '@/utils'
 
 export const DIFFBOT_API_BASE_URL = 'https://api.diffbot.com'
 export const DIFFBOT_KNOWLEDGE_GRAPH_API_BASE_URL = 'https://kg.diffbot.com'
@@ -94,7 +97,15 @@ export interface DiffbotObject {
   categories?: DiffbotCategory[]
   authors: DiffbotAuthor[]
   breadcrumb?: DiffbotBreadcrumb[]
+  items?: DiffbotListItem[]
   meta?: any
+}
+
+interface DiffbotListItem {
+  title: string
+  link: string
+  summary: string
+  image?: string
 }
 
 interface DiffbotAuthor {
@@ -307,6 +318,12 @@ interface DiffbotSkill {
   diffbotUri: string
 }
 
+const throttle = pThrottle({
+  limit: 5,
+  interval: 1000,
+  strict: true
+})
+
 export class DiffbotClient {
   api: typeof defaultKy
   apiKnowledgeGraph: typeof defaultKy
@@ -336,8 +353,14 @@ export class DiffbotClient {
     this.apiBaseUrl = apiBaseUrl
     this.apiKnowledgeGraphBaseUrl = apiKnowledgeGraphBaseUrl
 
-    this.api = ky.extend({ prefixUrl: apiBaseUrl, timeout: timeoutMs })
-    this.apiKnowledgeGraph = ky.extend({
+    const throttledKy = throttleKy(ky, throttle)
+
+    this.api = throttledKy.extend({
+      prefixUrl: apiBaseUrl,
+      timeout: timeoutMs
+    })
+
+    this.apiKnowledgeGraph = throttledKy.extend({
       prefixUrl: apiKnowledgeGraphBaseUrl,
       timeout: timeoutMs
     })
@@ -364,10 +387,13 @@ export class DiffbotClient {
       }
     }
 
+    console.log(`DiffbotClient._extract: ${endpoint}`, searchParams)
+
     return this.api
       .get(endpoint, {
         searchParams,
-        headers
+        headers,
+        retry: 2
       })
       .json<T>()
   }

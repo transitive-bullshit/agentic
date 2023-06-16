@@ -1,4 +1,4 @@
-lockfileVersion: '6.1'
+lockfileVersion: '6.0'
 
 settings:
   autoInstallPeers: true
@@ -59,6 +59,9 @@ dependencies:
   p-retry:
     specifier: ^5.1.2
     version: 5.1.2
+  p-throttle:
+    specifier: ^5.1.0
+    version: 5.1.0
   p-timeout:
     specifier: ^6.1.2
     version: 6.1.2
@@ -3181,6 +3184,11 @@ packages:
     dependencies:
       '@types/retry': 0.12.1
       retry: 0.13.1
+    dev: false
+
+  /p-throttle@5.1.0:
+    resolution: {integrity: sha512-+N+s2g01w1Zch4D0K3OpnPDqLOKmLcQ4BvIFq3JC0K29R28vUOjWpO+OJZBNt8X9i3pFCksZJZ0YXkUGjaFE6g==}
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
     dev: false
 
   /p-timeout@5.1.0:

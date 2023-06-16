@@ -20,8 +20,8 @@ import { defaultIDGeneratorFn, isValidTaskIdentifier } from './utils'
  *    - Invoking sub-agents
  */
 export abstract class BaseTask<
-  TInput extends void | types.JsonObject = void,
-  TOutput extends types.JsonValue = string
+  TInput extends types.TaskInput = void,
+  TOutput extends types.TaskOutput = string
 > {
   protected _agentic: Agentic
   protected _id: string

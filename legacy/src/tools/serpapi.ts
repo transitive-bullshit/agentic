@@ -11,32 +11,32 @@ export const SerpAPIInputSchema = z.object({
 export type SerpAPIInput = z.infer<typeof SerpAPIInputSchema>
 
 export const SerpAPIOrganicSearchResult = z.object({
-  position: z.number(),
-  title: z.string(),
-  link: z.string(),
-  displayed_link: z.string(),
-  snippet: z.string(),
+  position: z.number().optional(),
+  title: z.string().optional(),
+  link: z.string().optional(),
+  displayed_link: z.string().optional(),
+  snippet: z.string().optional(),
   source: z.string().optional(),
   date: z.string().optional()
 })
 
 export const SerpAPIAnswerBox = z.object({
-  type: z.string(),
-  title: z.string(),
-  link: z.string(),
-  displayed_link: z.string(),
-  snippet: z.string()
+  type: z.string().optional(),
+  title: z.string().optional(),
+  link: z.string().optional(),
+  displayed_link: z.string().optional(),
+  snippet: z.string().optional()
 })
 
 export const SerpAPIKnowledgeGraph = z.object({
-  type: z.string(),
-  description: z.string()
+  type: z.string().optional(),
+  description: z.string().optional()
 })
 
 export const SerpAPIOutputSchema = z.object({
   knowledgeGraph: SerpAPIKnowledgeGraph.optional(),
   answerBox: SerpAPIAnswerBox.optional(),
-  organicResults: z.array(SerpAPIOrganicSearchResult)
+  organicResults: z.array(SerpAPIOrganicSearchResult).optional()
 })
 export type SerpAPIOutput = z.infer<typeof SerpAPIOutputSchema>
 
@@ -82,7 +82,10 @@ export class SerpAPITool extends BaseTask<SerpAPIInput, SerpAPIOutput> {
       num: ctx.input!.numResults
     })
 
-    this._logger.debug(res, `SerpAPI response for query "${ctx.input!.query}"`)
+    this._logger.debug(
+      res,
+      `SerpAPI response for query ${JSON.stringify(ctx.input, null, 2)}"`
+    )
 
     return this.outputSchema.parse({
       knowledgeGraph: res.knowledge_graph,

@@ -2,7 +2,7 @@ import * as openai from '@agentic/openai-fetch'
 import * as anthropic from '@anthropic-ai/sdk'
 import ky from 'ky'
 import type { Options as RetryOptions } from 'p-retry'
-import type { JsonObject, JsonValue } from 'type-fest'
+import type { JsonObject, Jsonifiable } from 'type-fest'
 import { SafeParseReturnType, ZodType, ZodTypeAny, output, z } from 'zod'
 
 import type { Agentic } from './agentic'
@@ -15,8 +15,15 @@ import type { BaseTask } from './task'
 
 export { anthropic, openai }
 
-export type { JsonObject, JsonValue, Logger }
+export type { Jsonifiable, Logger }
 export type KyInstance = typeof ky
+
+export type JsonifiableObject =
+  | { [Key in string]?: Jsonifiable }
+  | { toJSON: () => Jsonifiable }
+
+export type TaskInput = void | JsonifiableObject
+export type TaskOutput = Jsonifiable
 
 export type ParsedData<T extends ZodTypeAny> = T extends ZodTypeAny
   ? output<T>
@@ -40,8 +47,8 @@ export interface BaseTaskOptions {
 }
 
 export interface BaseLLMOptions<
-  TInput extends void | JsonObject = void,
-  TOutput extends JsonValue = string,
+  TInput extends TaskInput = void,
+  TOutput extends TaskOutput = string,
   TModelParams extends Record<string, any> = Record<string, any>
 > extends BaseTaskOptions {
   inputSchema?: ZodType<TInput>
@@ -54,8 +61,8 @@ export interface BaseLLMOptions<
 }
 
 export interface LLMOptions<
-  TInput extends void | JsonObject = void,
-  TOutput extends JsonValue = string,
+  TInput extends TaskInput = void,
+  TOutput extends TaskOutput = string,
   TModelParams extends Record<string, any> = Record<string, any>
 > extends BaseLLMOptions<TInput, TOutput, TModelParams> {
   promptTemplate?: string
@@ -67,8 +74,8 @@ export type ChatMessage = openai.ChatMessage
 export type ChatMessageRole = openai.ChatMessageRole
 
 export interface ChatModelOptions<
-  TInput extends void | JsonObject = void,
-  TOutput extends JsonValue = string,
+  TInput extends TaskInput = void,
+  TOutput extends TaskOutput = string,
   TModelParams extends Record<string, any> = Record<string, any>
 > extends BaseLLMOptions<TInput, TOutput, TModelParams> {
   messages: ChatMessage[]
@@ -116,7 +123,7 @@ export interface LLMTaskResponseMetadata<
 }
 
 export interface TaskResponse<
-  TOutput extends JsonValue = string,
+  TOutput extends TaskOutput = string,
   TMetadata extends TaskResponseMetadata = TaskResponseMetadata
 > {
   result: TOutput
@@ -124,7 +131,7 @@ export interface TaskResponse<
 }
 
 export interface TaskCallContext<
-  TInput extends void | JsonObject = void,
+  TInput extends TaskInput = void,
   TMetadata extends TaskResponseMetadata = TaskResponseMetadata
 > {
   input?: TInput

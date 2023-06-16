@@ -5,9 +5,10 @@ import 'dotenv/config'
 import hashObject from 'hash-obj'
 import Redis from 'ioredis'
 import Keyv from 'keyv'
-import defaultKy from 'ky'
+import defaultKy, { AfterResponseHook, BeforeRequestHook } from 'ky'
 import pMemoize from 'p-memoize'
 
+import * as types from '@/types'
 import { Agentic } from '@/agentic'
 import { normalizeUrl } from '@/url-utils'
 
@@ -62,6 +63,9 @@ function getCacheKeyForRequest(request: Request): string | null {
   return null
 }
 
+const AGENTIC_TEST_CACHE_HEADER = 'x-agentic-test-cache'
+const AGENTIC_TEST_MOCK_HEADER = 'x-agentic-test-mock'
+
 /**
  * Custom `ky` instance that caches GET JSON requests.
  *
@@ -69,68 +73,148 @@ function getCacheKeyForRequest(request: Request): string | null {
  *  - support non-GET requests
  *  - support non-JSON responses
  */
-export const ky = defaultKy.extend({
-  hooks: {
-    beforeRequest: [
-      async (request) => {
-        try {
-          // console.log(`beforeRequest ${request.method} ${request.url}`)
+export function createTestKyInstance(
+  ky: types.KyInstance = defaultKy
+): types.KyInstance {
+  return ky.extend({
+    hooks: {
+      beforeRequest: [
+        async (request) => {
+          try {
+            const cacheKey = getCacheKeyForRequest(request)
+            // console.log(
+            //   `beforeRequest ${request.method} ${request.url} ⇒ ${cacheKey}`
+            // )
 
-          const cacheKey = getCacheKeyForRequest(request)
-          // console.log({ cacheKey })
-          if (!cacheKey) {
-            return
+            // console.log({ cacheKey })
+            if (!cacheKey) {
+              return
+            }
+
+            if (!(await keyv.has(cacheKey))) {
+              return
+            }
+
+            const cachedResponse = await keyv.get(cacheKey)
+            // console.log({ cachedResponse })
+
+            if (!cachedResponse) {
+              return
+            }
+
+            return new Response(JSON.stringify(cachedResponse), {
+              status: 200,
+              headers: {
+                'Content-Type': 'application/json',
+                [AGENTIC_TEST_CACHE_HEADER]: '1'
+              }
+            })
+          } catch (err) {
+            console.error('ky beforeResponse cache error', err)
           }
-
-          if (!(await keyv.has(cacheKey))) {
-            return
-          }
-
-          const cachedResponse = await keyv.get(cacheKey)
-          // console.log({ cachedResponse })
-
-          if (!cachedResponse) {
-            return
-          }
-
-          return new Response(JSON.stringify(cachedResponse), {
-            status: 200,
-            headers: { 'Content-Type': 'application/json' }
-          })
-        } catch (err) {
-          console.error('ky beforeResponse cache error', err)
         }
-      }
-    ],
+      ],
 
-    afterResponse: [
-      async (request, _options, response) => {
-        try {
-          // console.log(
-          //   `afterRequest ${request.method} ${request.url} ⇒ ${response.status}`
-          // )
+      afterResponse: [
+        async (request, _options, response) => {
+          try {
+            if (response.headers.get(AGENTIC_TEST_CACHE_HEADER)) {
+              // console.log('cached')
+              return
+            }
 
-          if (response.status < 200 || response.status >= 300) {
-            return
+            if (response.headers.get(AGENTIC_TEST_MOCK_HEADER)) {
+              // console.log('mocked')
+              return
+            }
+
+            const contentType = response.headers.get('content-type')
+            // console.log(
+            //   `afterRequest ${request.method} ${request.url} ⇒ ${response.status} ${contentType}`
+            // )
+
+            if (response.status < 200 || response.status >= 300) {
+              return
+            }
+
+            if (contentType !== 'application/json') {
+              return
+            }
+
+            const cacheKey = getCacheKeyForRequest(request)
+            // console.log({ cacheKey })
+            if (!cacheKey) {
+              console.log('222')
+              return
+            }
+
+            const responseBody = await response.json()
+            // console.log({ responseBody })
+
+            await keyv.set(cacheKey, responseBody)
+          } catch (err) {
+            console.error('ky afterResponse cache error', err)
           }
-
-          const cacheKey = getCacheKeyForRequest(request)
-          // console.log({ cacheKey })
-          if (!cacheKey) {
-            return
-          }
-
-          const responseBody = await response.json()
-          // console.log({ responseBody })
-
-          await keyv.set(cacheKey, responseBody)
-        } catch (err) {
-          console.error('ky afterResponse cache error', err)
         }
+      ]
+    }
+  })
+}
+
+function defaultBeforeRequest(request: Request): Response {
+  return new Response(
+    JSON.stringify({
+      url: request.url,
+      normalizedUrl: normalizeUrl(request.url),
+      method: request.method,
+      headers: request.headers
+    }),
+    {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json',
+        [AGENTIC_TEST_MOCK_HEADER]: '1'
       }
-    ]
-  }
-})
+    }
+  )
+}
+
+export function mockKyInstance(
+  ky: types.KyInstance = defaultKy,
+  {
+    beforeRequest = defaultBeforeRequest,
+    afterResponse = null
+  }: {
+    beforeRequest?: BeforeRequestHook | null
+    afterResponse?: AfterResponseHook | null
+  } = {}
+): types.KyInstance {
+  return ky.extend({
+    hooks: {
+      beforeRequest: beforeRequest === null ? [] : [beforeRequest],
+      afterResponse: afterResponse === null ? [] : [afterResponse]
+    }
+  })
+}
+
+/*
+ * NOTE: ky hooks are appended when doing `ky.extend`, so if you already have a
+ * beforeRequest hook, it will be called before any passed to `ky.extend`.
+ *
+ * For example:
+ *
+ * ```ts
+ * // runs caching first, then mocking
+ * const ky0 = mockKyInstance(createTestKyInstance(ky))
+ *
+ * // runs mocking first, then caching
+ * const ky1 = createTestKyInstance(mockKyInstance(ky))
+ *
+ * // runs throttling first, then mocking
+ * const ky2 = mockKyInstance(throttleKy(ky, throttle))
+ * ```
+ */
+export const ky = createTestKyInstance()
 
 export class OpenAITestClient extends OpenAIClient {
   createChatCompletion = pMemoize(super.createChatCompletion, {

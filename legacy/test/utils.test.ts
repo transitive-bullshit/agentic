@@ -1,14 +1,20 @@
 import test from 'ava'
+import ky from 'ky'
+import pThrottle from 'p-throttle'
 
 import {
   chunkString,
   defaultIDGeneratorFn,
+  extractFunctionIdentifierFromString,
   extractJSONArrayFromString,
   extractJSONObjectFromString,
   isValidTaskIdentifier,
   sleep,
-  stringifyForModel
+  stringifyForModel,
+  throttleKy
 } from '@/utils'
+
+import { mockKyInstance } from './_utils'
 
 test('isValidTaskIdentifier - valid', async (t) => {
   t.true(isValidTaskIdentifier('foo'))
@@ -123,4 +129,50 @@ test('stringifyForModel should stringify objects with null values correctly', (t
   const actualOutput = stringifyForModel(input)
 
   t.is(actualOutput, expectedOutput)
+})
+
+test('extractFunctionIdentifierFromString valid', (t) => {
+  t.is(extractFunctionIdentifierFromString('foo'), 'foo')
+  t.is(extractFunctionIdentifierFromString('fooBar_BAZ'), 'fooBar_BAZ')
+  t.is(extractFunctionIdentifierFromString('functions.fooBar'), 'fooBar')
+  t.is(
+    extractFunctionIdentifierFromString('function fooBar1234_'),
+    'fooBar1234_'
+  )
+})
+
+test('extractFunctionIdentifierFromString invalid', (t) => {
+  t.is(extractFunctionIdentifierFromString(''), undefined)
+  t.is(extractFunctionIdentifierFromString('  '), undefined)
+  t.is(extractFunctionIdentifierFromString('.-'), undefined)
+})
+
+test('throttleKy should rate-limit requests to ky properly', async (t) => {
+  t.timeout(30_1000)
+
+  const interval = 1000
+  const throttle = pThrottle({
+    limit: 1,
+    interval,
+    strict: true
+  })
+
+  const ky2 = mockKyInstance(throttleKy(ky, throttle))
+
+  const url = 'https://httpbin.org/get'
+
+  for (let i = 0; i < 10; i++) {
+    const before = Date.now()
+    const res = await ky2.get(url)
+    const after = Date.now()
+
+    const duration = after - before
+    // console.log(duration, res.status)
+    t.is(res.status, 200)
+
+    // leave a bit of wiggle room for the interval
+    if (i > 0) {
+      t.true(duration >= interval - interval / 5)
+    }
+  }
 })

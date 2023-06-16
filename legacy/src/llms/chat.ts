@@ -9,6 +9,7 @@ import * as types from '@/types'
 import { BaseTask } from '@/task'
 import { getCompiledTemplate } from '@/template'
 import {
+  extractFunctionIdentifierFromString,
   extractJSONArrayFromString,
   extractJSONObjectFromString
 } from '@/utils'
@@ -20,8 +21,8 @@ import {
 } from './llm-utils'
 
 export abstract class BaseChatCompletion<
-  TInput extends void | types.JsonObject = void,
-  TOutput extends types.JsonValue = string,
+  TInput extends types.TaskInput = void,
+  TOutput extends types.TaskOutput = string,
   TModelParams extends Record<string, any> = Record<string, any>,
   TChatCompletionResponse extends Record<string, any> = Record<string, any>
 > extends BaseLLM<TInput, TOutput, TModelParams> {
@@ -41,7 +42,7 @@ export abstract class BaseChatCompletion<
   }
 
   // TODO: use polymorphic `this` type to return correct BaseLLM subclass type
-  input<U extends void | types.JsonObject>(
+  input<U extends types.TaskInput>(
     inputSchema: ZodType<U>
   ): BaseChatCompletion<U, TOutput, TModelParams> {
     const refinedInstance = this as unknown as BaseChatCompletion<
@@ -54,7 +55,7 @@ export abstract class BaseChatCompletion<
   }
 
   // TODO: use polymorphic `this` type to return correct BaseLLM subclass type
-  output<U extends types.JsonValue>(
+  output<U extends types.TaskOutput>(
     outputSchema: ZodType<U>
   ): BaseChatCompletion<TInput, U, TModelParams> {
     const refinedInstance = this as unknown as BaseChatCompletion<
@@ -242,9 +243,10 @@ export abstract class BaseChatCompletion<
         `<<< Task createChatCompletion "${this.nameForHuman}"`
       )
       ctx.metadata.completion = completion
+      const message = completion.message
 
-      if (completion.message.function_call) {
-        const functionCall = completion.message.function_call
+      if (message.function_call) {
+        const functionCall = message.function_call
 
         if (!isUsingTools) {
           // TODO: not sure what we should do in this case...
@@ -252,14 +254,29 @@ export abstract class BaseChatCompletion<
           break
         }
 
+        const functionName = extractFunctionIdentifierFromString(
+          functionCall.name
+        )
+
+        if (!functionName) {
+          throw new errors.OutputValidationError(
+            `Unrecognized function call "${functionCall.name}"`
+          )
+        }
+
         const tool = this._tools!.find(
-          (tool) => tool.nameForModel === functionCall.name
+          (tool) => tool.nameForModel === functionName
         )
 
         if (!tool) {
           throw new errors.OutputValidationError(
-            `Function not found "${functionCall.name}"`
+            `Function not found "${functionName}"`
           )
+        }
+
+        if (functionName !== functionCall.name) {
+          // fix function name hallucinations
+          functionCall.name = functionName
         }
 
         let functionArguments: any
@@ -281,12 +298,12 @@ export abstract class BaseChatCompletion<
         }
 
         // console.log('>>> sub-task', {
-        //   task: functionCall.name,
+        //   task: functionName,
         //   input: functionArguments
         // })
         this._logger.info(
           {
-            task: functionCall.name,
+            task: functionName,
             input: functionArguments
           },
           `>>> Sub-Task "${tool.nameForHuman}"`
@@ -297,14 +314,14 @@ export abstract class BaseChatCompletion<
 
         this._logger.info(
           {
-            task: functionCall.name,
+            task: functionName,
             input: functionArguments,
             output: toolCallResponse.result
           },
           `<<< Sub-Task "${tool.nameForHuman}"`
         )
         // console.log('<<< sub-task', {
-        //   task: functionCall.name,
+        //   task: functionName,
         //   input: functionArguments,
         //   output: toolCallResponse.result
         // })
@@ -321,7 +338,7 @@ export abstract class BaseChatCompletion<
         messages.push(completion.message as any)
         messages.push({
           role: 'function',
-          name: functionCall.name,
+          name: functionName,
           content: taskCallContent
         })
 

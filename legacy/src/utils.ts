@@ -1,4 +1,5 @@
 import { customAlphabet, urlAlphabet } from 'nanoid'
+import type { ThrottledFunction } from 'p-throttle'
 
 import * as types from './types'
 
@@ -43,6 +44,30 @@ export function isValidTaskIdentifier(id: string): boolean {
   return !!id && taskNameRegex.test(id)
 }
 
+export function extractFunctionIdentifierFromString(
+  text: string
+): string | undefined {
+  text = text?.trim()
+
+  if (!text) {
+    return
+  }
+
+  if (isValidTaskIdentifier(text)) {
+    return text
+  }
+
+  const splits = text
+    .split(/[^a-zA-Z0-9_-]/)
+    .map((s) => {
+      s = s.trim()
+      return isValidTaskIdentifier(s) ? s : undefined
+    })
+    .filter(Boolean)
+
+  return splits[splits.length - 1]
+}
+
 /**
  * Chunks a string into an array of chunks.
  *
@@ -81,7 +106,7 @@ export function chunkString(text: string, maxLength: number): string[] {
  * @param json - JSON value to stringify
  * @returns stringified value with all double quotes around object keys removed
  */
-export function stringifyForModel(json: types.JsonValue): string {
+export function stringifyForModel(json: types.TaskOutput): string {
   const UNIQUE_PREFIX = defaultIDGeneratorFn()
   return (
     JSON.stringify(json, replacer)
@@ -111,4 +136,34 @@ export function stringifyForModel(json: types.JsonValue): string {
 
     return value
   }
+}
+
+export function pick<T extends object, U = T>(obj: T, ...keys: string[]): U {
+  return Object.fromEntries(
+    keys.filter((key) => key in obj).map((key) => [key, obj[key]])
+  ) as U
+}
+
+export function omit<T extends object, U = T>(obj: T, ...keys: string[]): U {
+  return Object.fromEntries<T>(
+    Object.entries(obj).filter(([key]) => !keys.includes(key))
+  ) as U
+}
+
+const noop = () => undefined
+
+/**
+ * Throttles HTTP requests made by a ky instance. Very useful for enforcing rate limits.
+ */
+export function throttleKy(
+  ky: types.KyInstance,
+  throttleFn: <Argument extends readonly unknown[], ReturnValue>(
+    function_: (...args: Argument) => ReturnValue
+  ) => ThrottledFunction<Argument, ReturnValue>
+) {
+  return ky.extend({
+    hooks: {
+      beforeRequest: [throttleFn(noop)]
+    }
+  })
 }

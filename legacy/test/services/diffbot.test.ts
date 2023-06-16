@@ -36,7 +36,7 @@ test('Diffbot.extractArticle', async (t) => {
   t.is(result.objects[0].type, 'article')
 })
 
-test.only('Diffbot.knowledgeGraphSearch', async (t) => {
+test('Diffbot.knowledgeGraphSearch', async (t) => {
   if (!process.env.DIFFBOT_API_KEY || isCI) {
     return t.pass()
   }

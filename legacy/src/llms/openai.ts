@@ -14,8 +14,8 @@ const openaiModelsSupportingFunctions = new Set([
 ])
 
 export class OpenAIChatCompletion<
-  TInput extends void | types.JsonObject = any,
-  TOutput extends types.JsonValue = string
+  TInput extends types.TaskInput = any,
+  TOutput extends types.TaskOutput = string
 > extends BaseChatCompletion<
   TInput,
   TOutput,
