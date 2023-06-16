@@ -3,6 +3,7 @@ import { z } from 'zod'
 import * as types from '@/types'
 import { SerpAPIClient } from '@/services/serpapi'
 import { BaseTask } from '@/task'
+import { normalizeUrl } from '@/url-utils'
 
 export const SerpAPIInputSchema = z.object({
   query: z.string().describe('search query'),
@@ -33,10 +34,23 @@ export const SerpAPIKnowledgeGraph = z.object({
   description: z.string().optional()
 })
 
+export const SerpAPITweet = z.object({
+  link: z.string().optional(),
+  snippet: z.string().optional(),
+  published_date: z.string().optional()
+})
+
+export const SerpAPITwitterResults = z.object({
+  title: z.string().optional(),
+  displayed_link: z.string().optional(),
+  tweets: z.array(SerpAPITweet).optional()
+})
+
 export const SerpAPIOutputSchema = z.object({
-  knowledgeGraph: SerpAPIKnowledgeGraph.optional(),
-  answerBox: SerpAPIAnswerBox.optional(),
-  organicResults: z.array(SerpAPIOrganicSearchResult).optional()
+  knowledge_graph: SerpAPIKnowledgeGraph.optional(),
+  answer_box: SerpAPIAnswerBox.optional(),
+  organic_results: z.array(SerpAPIOrganicSearchResult).optional(),
+  twitter_results: SerpAPITwitterResults.optional()
 })
 export type SerpAPIOutput = z.infer<typeof SerpAPIOutputSchema>
 
@@ -77,9 +91,10 @@ export class SerpAPITool extends BaseTask<SerpAPIInput, SerpAPIOutput> {
   protected override async _call(
     ctx: types.TaskCallContext<SerpAPIInput>
   ): Promise<SerpAPIOutput> {
+    const { query, numResults = 10 } = ctx.input!
+
     const res = await this._serpapiClient.search({
-      q: ctx.input!.query,
-      num: ctx.input!.numResults
+      q: query
     })
 
     this._logger.debug(
@@ -87,10 +102,23 @@ export class SerpAPITool extends BaseTask<SerpAPIInput, SerpAPIOutput> {
       `SerpAPI response for query ${JSON.stringify(ctx.input, null, 2)}"`
     )
 
+    const twitterResults = res.twitter_results
+      ? {
+          ...res.twitter_results,
+          tweets: res.twitter_results.tweets?.map((tweet) => ({
+            ...tweet,
+            link: normalizeUrl(tweet.link, {
+              removeQueryParameters: true
+            })
+          }))
+        }
+      : undefined
+
     return this.outputSchema.parse({
-      knowledgeGraph: res.knowledge_graph,
-      answerBox: res.answer_box,
-      organicResults: res.organic_results
+      knowledge_graph: res.knowledge_graph,
+      answer_box: res.answer_box,
+      organic_results: res.organic_results?.slice(0, numResults),
+      twitter_results: twitterResults
     })
   }
 }

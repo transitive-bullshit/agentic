@@ -92,7 +92,6 @@ export class DiffbotTool extends BaseTask<DiffbotInput, DiffbotOutput> {
     })
 
     this._logger.info(res, `Diffbot response for url "${ctx.input!.url}"`)
-    console.log(res)
 
     const pickedRes = {
       type: res.type,

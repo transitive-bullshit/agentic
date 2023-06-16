@@ -106,7 +106,7 @@ export function chunkString(text: string, maxLength: number): string[] {
  * @param json - JSON value to stringify
  * @returns stringified value with all double quotes around object keys removed
  */
-export function stringifyForModel(json: types.TaskOutput): string {
+export function stringifyForModel(json: types.Jsonifiable): string {
   const UNIQUE_PREFIX = defaultIDGeneratorFn()
   return (
     JSON.stringify(json, replacer)

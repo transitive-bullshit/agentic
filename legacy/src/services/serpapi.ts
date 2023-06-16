@@ -353,10 +353,24 @@ interface SearchResult extends BaseResponse<GoogleParameters> {
   inline_images?: InlineImage[]
   inline_people_also_search_for?: InlinePeopleAlsoSearchFor[]
   related_questions?: SearchResultRelatedQuestion[]
-  organic_results: OrganicResult[]
+  organic_results?: OrganicResult[]
   related_searches?: RelatedSearch[]
   pagination: Pagination
   serpapi_pagination: Pagination
+  twitter_results?: TwitterResults
+}
+
+interface TwitterResults {
+  title: string
+  link: string
+  displayed_link: string
+  tweets: Tweet[]
+}
+
+interface Tweet {
+  link: string
+  snippet: string
+  published_date: string
 }
 
 interface AnswerBox {
@@ -647,16 +661,14 @@ export class SerpAPIClient {
   }
 
   async search(queryOrOpts: string | GoogleParameters) {
-    const defaultGoogleParams: Partial<GoogleParameters> = {
-      num: 10
-    }
+    const defaultGoogleParams: Partial<GoogleParameters> = {}
     const options: GoogleParameters =
       typeof queryOrOpts === 'string'
         ? { ...defaultGoogleParams, q: queryOrOpts }
         : queryOrOpts
     const { timeout, ...rest } = this.params
 
-    // console.log(options)
+    // console.log('SerpAPIClient.search', options)
     return this.api
       .get('search', {
         searchParams: {
