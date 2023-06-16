@@ -221,7 +221,9 @@ export abstract class HumanFeedbackMechanism<
         ? HumanFeedbackUserActions.Select
         : await this._askUser(msg, choices)
 
-    const feedback: Record<string, any> = {}
+    const feedback: Record<string, any> = {
+      type: this._options.type
+    }
 
     switch (choice) {
       case HumanFeedbackUserActions.Accept:
