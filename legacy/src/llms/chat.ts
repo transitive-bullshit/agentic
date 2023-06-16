@@ -237,16 +237,16 @@ export abstract class BaseChatCompletion<
 
       // console.log('<<< completion', { messages, functions })
       const completion = await this._createChatCompletion(messages, functions)
+      const message = completion.message
       // console.log('>>> completion', completion.message)
 
       this._logger.info(
-        completion.message,
+        message,
         `<<< Task createChatCompletion "${this.nameForHuman}"`
       )
       ctx.metadata.completion = completion
-      const message = completion.message
 
-      if (message.function_call) {
+      if (message.function_call && !message.content) {
         const functionCall = message.function_call
 
         if (!isUsingTools) {
