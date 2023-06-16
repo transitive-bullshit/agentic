@@ -2,10 +2,32 @@ import isRelativeUrl from 'is-relative-url'
 import normalizeUrlImpl, { type Options } from 'normalize-url'
 import QuickLRU from 'quick-lru'
 
-// const protocolAllowList = new Set(['https:', 'http:'])
+const protocolAllowList = new Set(['https:', 'http:'])
 const normalizedUrlCache = new QuickLRU<string, string | null>({
   maxSize: 4000
 })
+
+export function isValidCrawlableUrl(url: string): boolean {
+  try {
+    if (!url || (isRelativeUrl(url) && !url.startsWith('//'))) {
+      return false
+    }
+
+    const parsedUrl = new URL(url)
+    if (!protocolAllowList.has(parsedUrl.protocol)) {
+      return false
+    }
+
+    const normalizedUrl = normalizeUrl(url)
+    if (!normalizedUrl) {
+      return false
+    }
+
+    return true
+  } catch (err) {
+    return false
+  }
+}
 
 /**
  * Generates a hash string from normalization options.

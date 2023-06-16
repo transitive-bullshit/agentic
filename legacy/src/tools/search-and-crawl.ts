@@ -3,7 +3,7 @@ import { z } from 'zod'
 
 import * as types from '@/types'
 import { BaseTask } from '@/task'
-import { normalizeUrl } from '@/url-utils'
+import { isValidCrawlableUrl, normalizeUrl } from '@/url-utils'
 import { omit } from '@/utils'
 
 import { DiffbotOutput, DiffbotOutputSchema, DiffbotTool } from './diffbot'
@@ -88,6 +88,7 @@ export class SearchAndCrawlTool extends BaseTask<
     ): Promise<Array<DiffbotOutput>> {
       try {
         if (!url) return []
+        if (!isValidCrawlableUrl(url)) return []
         if (crawledUrls.has(url)) return []
 
         const normalizedUrl = normalizeUrl(url)
@@ -136,18 +137,21 @@ export class SearchAndCrawlTool extends BaseTask<
           )
         ).flat()
 
-        return [scrapeResult, ...innerScrapeResults]
+        return innerScrapeResults
       } catch (err) {
         console.warn('crawlAndScrape error', url, err)
         return []
       }
     }
 
-    const search = await this._serpapiTool.callWithMetadata({ query }, ctx)
+    const search = await this._serpapiTool.callWithMetadata(
+      { query, numResults: 3 },
+      ctx
+    )
 
     const scrapeResults = (
       await pMap(
-        search.result.organic_results || [],
+        (search.result.organic_results || []).slice(0, 3),
         async (searchResult) => {
           return crawlAndScrape(searchResult.link, {
             diffbotTool: this._diffbotTool,

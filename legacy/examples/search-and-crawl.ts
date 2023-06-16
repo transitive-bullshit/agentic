@@ -10,6 +10,9 @@ async function main() {
 
   const res = await agentic
     .gpt4(`Summarize the latest news on {{topic}} using markdown.`)
+    .modelParams({
+      model: 'gpt-4-32k'
+    })
     .tools([new SearchAndCrawlTool()])
     .input(
       z.object({

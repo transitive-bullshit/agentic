@@ -43,14 +43,14 @@ export const DiffbotObjectSchema = z.object({
   title: z.string(),
   siteName: z.string(),
   author: z.string(),
-  authorUrl: z.string(),
+  // authorUrl: z.string(),
   pageUrl: z.string(),
   date: z.string(),
-  estimatedDate: z.string(),
-  humanLanguage: z.string(),
+  // estimatedDate: z.string(),
+  // humanLanguage: z.string(),
   text: z.string().describe('main text content of the page'),
-  tags: z.array(z.string()),
-  images: z.array(DiffbotImageSchema),
+  // tags: z.array(z.string()),
+  // images: z.array(DiffbotImageSchema),
   items: z.array(DiffbotListItemSchema)
 })
 
@@ -115,16 +115,16 @@ export class DiffbotTool extends BaseTask<DiffbotInput, DiffbotOutput> {
           'type',
           'siteName',
           'author',
-          'authorUrl',
+          // 'authorUrl',
           'pageUrl',
           'date',
-          'estimatedDate',
-          'humanLanguage',
+          // 'estimatedDate',
+          // 'humanLanguage',
           'items',
           'text'
-        ),
-        tags: obj.tags?.map((tag) => tag.label),
-        images: obj.images?.map((image) => omit(image, 'diffbotUri'))
+        )
+        // tags: obj.tags?.map((tag) => tag.label)
+        // images: obj.images?.map((image) => omit(image, 'diffbotUri'))
       }))
     }
 

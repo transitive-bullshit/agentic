@@ -103,7 +103,7 @@ export class SerpAPITool extends BaseTask<SerpAPIInput, SerpAPIOutput> {
       // results manuall
     })
 
-    this._logger.debug(
+    this._logger.info(
       res,
       `SerpAPI response for query ${JSON.stringify(ctx.input, null, 2)}"`
     )
