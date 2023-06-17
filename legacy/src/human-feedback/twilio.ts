@@ -57,17 +57,18 @@ export class HumanFeedbackMechanismTwilio<
     message: string,
     choices: HumanFeedbackUserActions[]
   ): Promise<HumanFeedbackUserActions> {
-    message += '\n\n'
-    message += choices
-      .map(
-        (choice, idx) => `${idx} - ${HumanFeedbackUserActionMessages[choice]}`
-      )
-      .join('\n')
-    message += '\n\n'
-    message += 'Reply with the number of your choice.'
     const response = await this._twilioClient.sendAndWaitForReply({
       name: 'human-feedback-ask',
-      text: message,
+      text: [
+        message,
+        choices
+          .map(
+            (choice, idx) =>
+              `${idx} - ${HumanFeedbackUserActionMessages[choice]}`
+          )
+          .join('\n'),
+        'Reply with the number of your choice.'
+      ],
       timeoutMs: this._options.timeoutMs,
       validate: (message) => {
         const choice = parseInt(message.body)
@@ -87,10 +88,11 @@ export class HumanFeedbackMechanismTwilio<
     const { body: selectedOutput } =
       await this._twilioClient.sendAndWaitForReply({
         name: 'human-feedback-select',
-        text:
-          'Pick one output:' +
-          response.map((r, idx) => `\n${idx} - ${JSON.stringify(r)}`).join('') +
-          '\n\nReply with the number of your choice.',
+        text: [
+          'Pick one output:',
+          response.map((r, idx) => `\n${idx} - ${JSON.stringify(r)}`).join(''),
+          'Reply with the number of your choice.'
+        ],
         timeoutMs: this._options.timeoutMs,
         validate: (message) => {
           const choice = parseInt(message.body)
@@ -110,10 +112,11 @@ export class HumanFeedbackMechanismTwilio<
     const { body: selectedOutput } =
       await this._twilioClient.sendAndWaitForReply({
         name: 'human-feedback-select',
-        text:
-          'Select outputs:' +
-          response.map((r, idx) => `\n${idx} - ${JSON.stringify(r)}`).join('') +
-          '\n\nReply with a comma-separated list of the output numbers of your choice.',
+        text: [
+          'Select outputs:',
+          response.map((r, idx) => `\n${idx} - ${JSON.stringify(r)}`).join(''),
+          'Reply with a comma-separated list of the output numbers of your choice.'
+        ],
         timeoutMs: this._options.timeoutMs,
         validate: (message) => {
           const choices = message.body.split(',')

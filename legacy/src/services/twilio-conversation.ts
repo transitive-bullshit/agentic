@@ -1,7 +1,7 @@
 import defaultKy from 'ky'
 
 import { DEFAULT_BOT_NAME } from '@/constants'
-import { chunkString, sleep } from '@/utils'
+import { chunkMultipleStrings, chunkString, sleep } from '@/utils'
 
 export const TWILIO_CONVERSATION_API_BASE_URL =
   'https://conversations.twilio.com/v1'
@@ -101,9 +101,9 @@ export type TwilioSendAndWaitOptions = {
   recipientPhoneNumber?: string
 
   /**
-   * The text of the message to send.
+   * The text of the message to send (or an array of strings to send as separate messages).
    */
-  text: string
+  text: string | string[]
 
   /**
    * Friendly name of the conversation.
@@ -245,10 +245,16 @@ export class TwilioConversationClient {
     text
   }: {
     conversationSid: string
-    text: string
+    text: string | string[]
     maxChunkLength?: number
   }) {
-    const chunks = chunkString(text, TWILIO_SMS_LENGTH_SOFT_LIMIT)
+    let chunks
+    if (Array.isArray(text)) {
+      chunks = chunkMultipleStrings(text, TWILIO_SMS_LENGTH_SOFT_LIMIT)
+    } else {
+      chunks = chunkString(text, TWILIO_SMS_LENGTH_SOFT_LIMIT)
+    }
+
     const out: TwilioConversationMessage[] = []
     for (const chunk of chunks) {
       const sent = await this.sendMessage({

@@ -84,8 +84,7 @@ export function chunkString(text: string, maxLength: number): string[] {
     if (word.length > maxLength) {
       // Truncate the word if it's too long and indicate that it was truncated:
       chunks.push(word.substring(0, maxLength - 3) + '...')
-    } else if ((chunk + word + 1).length > maxLength) {
-      // +1 accounts for the space between words
+    } else if ((chunk + ' ' + word).length > maxLength) {
       chunks.push(chunk.trim())
       chunk = word
     } else {
@@ -98,6 +97,20 @@ export function chunkString(text: string, maxLength: number): string[] {
   }
 
   return chunks
+}
+
+/**
+ * Chunks an array of strings into an array of chunks while preserving existing sections.
+ *
+ * @param textSections - array of strings to chunk
+ * @param maxLength - maximum length of each chunk
+ * @returns array of chunks
+ */
+export function chunkMultipleStrings(
+  textSections: string[],
+  maxLength: number
+): string[] {
+  return textSections.map((section) => chunkString(section, maxLength)).flat()
 }
 
 /**
