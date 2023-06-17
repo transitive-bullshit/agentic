@@ -1,4 +1,5 @@
 import defaultKy from 'ky'
+import { AbortError } from 'p-retry'
 import pThrottle from 'p-throttle'
 import { P } from 'pino'
 
@@ -337,7 +338,7 @@ export class DiffbotClient {
     apiKey = process.env.DIFFBOT_API_KEY,
     apiBaseUrl = DIFFBOT_API_BASE_URL,
     apiKnowledgeGraphBaseUrl = DIFFBOT_KNOWLEDGE_GRAPH_API_BASE_URL,
-    timeoutMs = 60_000,
+    timeoutMs = 30_000,
     ky = defaultKy
   }: {
     apiKey?: string
@@ -388,13 +389,24 @@ export class DiffbotClient {
       }
     }
 
-    console.log(`DiffbotClient._extract: ${endpoint}`, searchParams)
+    // TODO
+    const { url } = searchParams
+    if (url) {
+      const parsedUrl = new URL(url)
+      if (parsedUrl.hostname.includes('theguardian.com')) {
+        throw new AbortError(
+          `Diffbot does not support URLs from domain "${parsedUrl.hostname}"`
+        )
+      }
+    }
+
+    // console.log(`DiffbotClient._extract: ${endpoint}`, searchParams)
 
     return this.api
       .get(endpoint, {
         searchParams,
         headers,
-        retry: 2
+        retry: 1
       })
       .json<T>()
   }

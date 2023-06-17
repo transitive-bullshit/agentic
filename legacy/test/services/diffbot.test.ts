@@ -4,7 +4,7 @@ import { DiffbotClient } from '@/services'
 
 import { isCI, ky } from '../_utils'
 
-test('Diffbot.extractAnalyze', async (t) => {
+test('Diffbot.extractAnalyze - transitivebullsh.it', async (t) => {
   if (!process.env.DIFFBOT_API_KEY || isCI) {
     return t.pass()
   }
@@ -19,6 +19,23 @@ test('Diffbot.extractAnalyze', async (t) => {
   t.is(result.type, 'list')
   t.is(result.objects?.length, 1)
 })
+
+// TODO
+// test.only('Diffbot.extractAnalyze - theguardian.com/world/ukraine', async (t) => {
+//   if (!process.env.DIFFBOT_API_KEY || isCI) {
+//     return t.pass()
+//   }
+
+//   t.timeout(2 * 60 * 1000)
+//   const client = new DiffbotClient({ ky })
+
+//   const result = await client.extractAnalyze({
+//     url: 'https://www.theguardian.com/world/ukraine'
+//   })
+//   console.log(JSON.stringify(result, null, 2))
+//   t.is(result.type, 'list')
+//   t.is(result.objects?.length, 1)
+// })
 
 test('Diffbot.extractArticle', async (t) => {
   if (!process.env.DIFFBOT_API_KEY || isCI) {

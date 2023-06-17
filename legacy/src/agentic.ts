@@ -1,4 +1,5 @@
 import defaultKy from 'ky'
+import { SetOptional } from 'type-fest'
 
 import * as types from './types'
 import { DEFAULT_OPENAI_MODEL } from './constants'
@@ -55,7 +56,7 @@ export class Agentic {
       modelParams: {},
       timeoutMs: 2 * 60000,
       retryConfig: {
-        retries: 3,
+        retries: 2,
         strategy: 'heal',
         ...opts.openaiModelDefaults?.retryConfig
       },
@@ -103,14 +104,17 @@ export class Agentic {
   }
 
   openaiChatCompletion(
-    promptOrChatCompletionParams:
-      | string
-      | Partial<types.openai.ChatCompletionParams> // TODO: make more strict
+    promptOrChatCompletionParams: string | types.openai.ChatCompletionParams, // TODO: make more strict?
+    modelParams?: SetOptional<
+      types.openai.ChatCompletionParams,
+      'model' | 'messages'
+    >
   ) {
     let options: Partial<types.openai.ChatCompletionParams>
 
     if (typeof promptOrChatCompletionParams === 'string') {
       options = {
+        ...modelParams,
         messages: [
           {
             role: 'user',
@@ -119,7 +123,7 @@ export class Agentic {
         ]
       }
     } else {
-      options = promptOrChatCompletionParams
+      options = { ...promptOrChatCompletionParams, ...modelParams }
 
       if (!options.messages) {
         throw new Error('messages must be provided')
@@ -139,12 +143,17 @@ export class Agentic {
   gpt3(
     promptOrChatCompletionParams:
       | string
-      | Omit<types.openai.ChatCompletionParams, 'model'>
+      | SetOptional<types.openai.ChatCompletionParams, 'model'>,
+    modelParams?: SetOptional<
+      types.openai.ChatCompletionParams,
+      'model' | 'messages'
+    >
   ) {
-    let options: Omit<types.openai.ChatCompletionParams, 'model'>
+    let options: SetOptional<types.openai.ChatCompletionParams, 'model'>
 
     if (typeof promptOrChatCompletionParams === 'string') {
       options = {
+        ...modelParams,
         messages: [
           {
             role: 'user',
@@ -153,7 +162,7 @@ export class Agentic {
         ]
       }
     } else {
-      options = promptOrChatCompletionParams
+      options = { ...promptOrChatCompletionParams, ...modelParams }
 
       if (!options.messages) {
         throw new Error('messages must be provided')
@@ -174,12 +183,17 @@ export class Agentic {
   gpt4(
     promptOrChatCompletionParams:
       | string
-      | Omit<types.openai.ChatCompletionParams, 'model'>
+      | SetOptional<types.openai.ChatCompletionParams, 'model'>,
+    modelParams?: SetOptional<
+      types.openai.ChatCompletionParams,
+      'model' | 'messages'
+    >
   ) {
-    let options: Omit<types.openai.ChatCompletionParams, 'model'>
+    let options: SetOptional<types.openai.ChatCompletionParams, 'model'>
 
     if (typeof promptOrChatCompletionParams === 'string') {
       options = {
+        ...modelParams,
         messages: [
           {
             role: 'user',
@@ -188,7 +202,7 @@ export class Agentic {
         ]
       }
     } else {
-      options = promptOrChatCompletionParams
+      options = { ...promptOrChatCompletionParams, ...modelParams }
 
       if (!options.messages) {
         throw new Error('messages must be provided')
