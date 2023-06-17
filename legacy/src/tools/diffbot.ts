@@ -3,7 +3,7 @@ import { z } from 'zod'
 import * as types from '@/types'
 import { DiffbotClient } from '@/services/diffbot'
 import { BaseTask } from '@/task'
-import { omit, pick } from '@/utils'
+import { pick } from '@/utils'
 
 export const DiffbotInputSchema = z.object({
   url: z.string().describe('URL of page to scrape')

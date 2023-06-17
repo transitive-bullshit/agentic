@@ -1,7 +1,6 @@
 import defaultKy from 'ky'
 import { AbortError } from 'p-retry'
 import pThrottle from 'p-throttle'
-import { P } from 'pino'
 
 import { throttleKy } from '@/utils'
 

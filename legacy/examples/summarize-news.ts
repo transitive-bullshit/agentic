@@ -2,7 +2,7 @@ import { OpenAIClient } from '@agentic/openai-fetch'
 import 'dotenv/config'
 import { z } from 'zod'
 
-import { Agentic, DiffbotTool, SerpAPITool } from '@/index'
+import { Agentic, SerpAPITool } from '@/index'
 
 async function main() {
   const openai = new OpenAIClient({ apiKey: process.env.OPENAI_API_KEY! })
@@ -10,7 +10,7 @@ async function main() {
 
   const res = await agentic
     .gpt4(`Summarize the latest news on {{topic}} using markdown.`)
-    .tools([new SerpAPITool(), new DiffbotTool()])
+    .tools([new SerpAPITool()])
     .input(
       z.object({
         topic: z.string()
@@ -25,7 +25,7 @@ async function main() {
       topic: 'HF0 accelerator'
     })
 
-  console.log(res)
+  console.log('\n\n\n' + res)
 }
 
 main()
