@@ -140,7 +140,9 @@ export class ChatGPTAPI {
       onProgress,
       stream = onProgress ? true : false,
       completionParams,
-      isFineTune
+      isFineTune,
+      functions,
+      function_call
     } = opts
 
     let { abortSignal } = opts
@@ -173,7 +175,8 @@ export class ChatGPTAPI {
       role: 'assistant',
       id: uuidv4(),
       parentMessageId: messageId,
-      text: ''
+      text: '',
+      finish_reason: ''
     }
 
     const responseP = new Promise<types.ChatMessage>(
@@ -190,6 +193,8 @@ export class ChatGPTAPI {
           max_tokens: maxTokens,
           ...this._completionParams,
           ...completionParams,
+          functions,
+          function_call,
           stream
         } as any
 
@@ -228,12 +233,14 @@ export class ChatGPTAPI {
                   }
 
                   if (response?.choices?.length) {
+                    const choice = response?.choices[0]
                     const delta = isFineTune
                       ? {
                           content: (response.choices[0] as any).text,
                           role: 'assistant' as any
                         }
                       : response.choices[0].delta
+
                     result.delta = delta.content
                     if (delta?.content) result.text += delta.content
                     result.detail = response
@@ -241,6 +248,26 @@ export class ChatGPTAPI {
                     if (delta.role) {
                       result.role = delta.role
                     }
+
+                    const functionCall = (delta as any)
+                      ?.function_call as types.FunctionCall
+                    if (functionCall) {
+                      if (!result.functionCall) {
+                        result.functionCall = {
+                          arguments: '',
+                          name: ''
+                        }
+                      }
+
+                      if (functionCall.arguments) {
+                        result.functionCall.arguments += functionCall.arguments
+                      }
+
+                      if (functionCall.name) {
+                        result.functionCall.name = functionCall.name
+                      }
+                    }
+                    result.finish_reason = choice?.finish_reason
 
                     onProgress?.(result)
                   }
