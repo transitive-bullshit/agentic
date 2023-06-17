@@ -11,6 +11,10 @@ export default defineConfig([
     sourcemap: true,
     minify: false,
     shims: true,
-    dts: true
+    dts: true,
+    esbuildOptions(options, context) {
+      options.target = 'es2020'
+      options.jsx = 'preserve'
+    }
   }
 ])
