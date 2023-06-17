@@ -15,7 +15,7 @@ async function main() {
       messages: [
         {
           role: 'system',
-          content: `You are a MckInsey analyst who is an expert at writing executive summaries. Always respond using markdown unless instructed to respond using JSON.`
+          content: `You are a McKinsey analyst who is an expert at writing executive summaries. Always respond using markdown.`
         },
         {
           role: 'user',

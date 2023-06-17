@@ -8,6 +8,8 @@ async function main() {
   const openai = new OpenAIClient({ apiKey: process.env.OPENAI_API_KEY! })
   const agentic = new Agentic({ openai })
 
+  const topic = process.argv[2] || 'HF0 accelerator'
+
   const res = await agentic
     .gpt4(`Summarize the latest news on {{topic}} using markdown.`)
     .tools([new SerpAPITool()])
@@ -16,13 +18,8 @@ async function main() {
         topic: z.string()
       })
     )
-    .output(
-      z.object({
-        summary: z.string()
-      })
-    )
     .call({
-      topic: 'HF0 accelerator'
+      topic
     })
 
   console.log('\n\n\n' + res)

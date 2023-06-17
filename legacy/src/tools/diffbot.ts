@@ -109,23 +109,26 @@ export class DiffbotTool extends BaseTask<DiffbotInput, DiffbotOutput> {
     const output = this.outputSchema.parse({
       type: res.type,
       title: res.title,
-      objects: res.objects.map((obj) => ({
-        ...pick(
-          obj,
-          'type',
-          'siteName',
-          'author',
-          // 'authorUrl',
-          'pageUrl',
-          'date',
-          // 'estimatedDate',
-          // 'humanLanguage',
-          'items',
-          'text'
-        )
-        // tags: obj.tags?.map((tag) => tag.label)
-        // images: obj.images?.map((image) => omit(image, 'diffbotUri'))
-      }))
+      objects: res.objects?.map(
+        (obj) =>
+          ({
+            ...pick(
+              obj,
+              'type',
+              'siteName',
+              'author',
+              // 'authorUrl',
+              'pageUrl',
+              'date',
+              // 'estimatedDate',
+              // 'humanLanguage',
+              'items',
+              'text'
+            )
+            // tags: obj.tags?.map((tag) => tag.label)
+            // images: obj.images?.map((image) => omit(image, 'diffbotUri'))
+          } || [])
+      )
     })
 
     this._logger.info(output, `Diffbot response for url "${ctx.input!.url}"`)

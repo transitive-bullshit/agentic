@@ -22,7 +22,7 @@ async function main() {
         messages: [
           {
             role: 'system',
-            content: `You are a MckInsey analyst who is an expert at writing executive summaries.`
+            content: `You are a McKinsey analyst who is an expert at writing executive summaries.`
           },
           {
             role: 'user',
@@ -57,7 +57,7 @@ async function main() {
       messages: [
         {
           role: 'system',
-          content: `You are a MckInsey analyst who is an expert at writing executive summaries.`
+          content: `You are a McKinsey analyst who is an expert at writing executive summaries.`
         },
         {
           role: 'user',

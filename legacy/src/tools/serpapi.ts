@@ -123,7 +123,6 @@ export class SerpAPITool extends BaseTask<SerpAPIInput, SerpAPIOutput> {
     })
 
     this._logger.info(output, `SerpAPI response for query "${query}"`)
-
     return output
   }
 }
