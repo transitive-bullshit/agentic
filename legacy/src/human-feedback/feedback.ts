@@ -216,6 +216,11 @@ export abstract class HumanFeedbackMechanism<
       choices.push(HumanFeedbackUserActions.Abort)
     }
 
+    this._agentic.logger.info(
+      choices,
+      `>>> Human feedback ${this.constructor.name} ${msg}`
+    )
+
     const choice =
       choices.length === 1
         ? HumanFeedbackUserActions.Select
@@ -291,6 +296,10 @@ export abstract class HumanFeedbackMechanism<
       })
     }
 
+    this._agentic.logger.info(
+      feedback,
+      `<<< Human feedback ${this.constructor.name} ${msg}`
+    )
     return feedback as FeedbackTypeToMetadata<T>
   }
 }

@@ -1,6 +1,10 @@
+import { TimeoutError as KyTimeoutError } from 'ky'
+import { TimeoutError } from 'p-timeout'
 import type { Jsonifiable } from 'type-fest'
 import type { ZodError } from 'zod'
 import { ValidationError, fromZodError } from 'zod-validation-error'
+
+export { TimeoutError, KyTimeoutError }
 
 export type ErrorOptions = {
   /** HTTP status code for the error. */

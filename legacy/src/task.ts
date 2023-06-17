@@ -192,6 +192,12 @@ export abstract class BaseTask<
           } else if (err instanceof errors.HumanFeedbackDeclineError) {
             ctx.retryMessage = err.message
             return
+          } else if (
+            err instanceof errors.KyTimeoutError ||
+            err instanceof errors.TimeoutError ||
+            (err as any).name === 'TimeoutError'
+          ) {
+            // TODO
           } else if ((err.cause as any)?.code === 'UND_ERR_HEADERS_TIMEOUT') {
             // TODO: This is a pretty common OpenAI error, and I think it either has
             // to do with OpenAI's servers being flaky or the combination of Node.js
