@@ -280,21 +280,25 @@ export abstract class BaseChatCompletion<
           functionCall.name = functionName
         }
 
+        const rawFunctionCallArguments = functionCall.arguments?.trim()
         let functionArguments: any
-        try {
-          functionArguments = JSON.parse(jsonrepair(functionCall.arguments))
-        } catch (err: any) {
-          if (err instanceof JSONRepairError) {
-            throw new errors.OutputValidationError(err.message, {
-              cause: err
-            })
-          } else if (err instanceof SyntaxError) {
-            throw new errors.OutputValidationError(
-              `Invalid JSON object: ${err.message}`,
-              { cause: err }
-            )
-          } else {
-            throw err
+
+        if (rawFunctionCallArguments) {
+          try {
+            functionArguments = JSON.parse(jsonrepair(rawFunctionCallArguments))
+          } catch (err: any) {
+            if (err instanceof JSONRepairError) {
+              throw new errors.OutputValidationError(err.message, {
+                cause: err
+              })
+            } else if (err instanceof SyntaxError) {
+              throw new errors.OutputValidationError(
+                `Invalid JSON object: ${err.message}`,
+                { cause: err }
+              )
+            } else {
+              throw err
+            }
           }
         }
 

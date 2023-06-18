@@ -1,5 +1,5 @@
-import { OpenAIClient } from '@agentic/openai-fetch'
 import 'dotenv/config'
+import { OpenAIClient } from 'openai-fetch'
 import { z } from 'zod'
 
 import { Agentic, SearchAndCrawlTool, WeatherTool } from '@/index'
@@ -30,7 +30,7 @@ async function main() {
         topic: z.string()
       })
     )
-    .call({ topic })
+    .callWithMetadata({ topic })
 
   console.log('\n\n\n')
   console.log(res)

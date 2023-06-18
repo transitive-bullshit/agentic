@@ -1,5 +1,5 @@
-import { OpenAIClient } from '@agentic/openai-fetch'
 import 'dotenv/config'
+import { OpenAIClient } from 'openai-fetch'
 import { z } from 'zod'
 
 import { HumanFeedbackMechanismSlack } from '@/human-feedback'

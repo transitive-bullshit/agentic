@@ -1,5 +1,5 @@
-import * as openai from '@agentic/openai-fetch'
 import * as anthropic from '@anthropic-ai/sdk'
+import * as openai from 'openai-fetch'
 import ky from 'ky'
 import type { Options as RetryOptions } from 'p-retry'
 import type { JsonObject, Jsonifiable } from 'type-fest'

@@ -49,7 +49,7 @@ export async function getNumTokensForChatMessages({
       let content = message.content || ''
       if (message.function_call) {
         // TODO: this case needs testing
-        content = message.function_call.arguments
+        content = message.function_call.arguments || ''
       }
 
       const [numTokensContent, numTokensRole, numTokensName] =
