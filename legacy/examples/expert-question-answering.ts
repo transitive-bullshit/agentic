@@ -2,12 +2,7 @@ import 'dotenv/config'
 import { OpenAIClient } from 'openai-fetch'
 import { z } from 'zod'
 
-import {
-  Agentic,
-  NovuNotificationTool,
-  SerpAPITool,
-  withHumanFeedback
-} from '@/index'
+import { Agentic, NovuNotificationTool, SerpAPITool } from '@/index'
 
 async function main() {
   const openai = new OpenAIClient({ apiKey: process.env.OPENAI_API_KEY! })
@@ -15,33 +10,31 @@ async function main() {
 
   const question = 'How do I build a product that people will love?'
 
-  const task = withHumanFeedback(
-    agentic
-      .gpt4(
-        `Generate a list of {n} prominent experts that can answer the following question: {{question}}.`
-      )
-      .tools([new SerpAPITool()])
-      .output(
-        z.array(
-          z.object({
-            name: z.string(),
-            bio: z.string()
-          })
-        )
-      )
-      .input(
+  const { metadata } = await agentic
+    .gpt4(
+      `Generate a list of {n} prominent experts that can answer the following question: {{question}}.`
+    )
+    .tools([new SerpAPITool()])
+    .output(
+      z.array(
         z.object({
-          question: z.string(),
-          n: z.number().int().default(5)
+          name: z.string(),
+          bio: z.string()
         })
-      ),
-    {
+      )
+    )
+    .input(
+      z.object({
+        question: z.string(),
+        n: z.number().int().default(5)
+      })
+    )
+    .withHumanFeedback({
       type: 'selectN'
-    }
-  )
-  const { metadata } = await task.callWithMetadata({
-    question
-  })
+    })
+    .callWithMetadata({
+      question
+    })
 
   if (
     metadata.feedback &&
@@ -78,6 +71,7 @@ async function main() {
 
       ${expert}: ${answer}`
     }, '')
+
     const notifier = new NovuNotificationTool()
     await notifier.call({
       name: 'send-email',

@@ -4,6 +4,11 @@ import { ZodType } from 'zod'
 import * as errors from './errors'
 import * as types from './types'
 import type { Agentic } from './agentic'
+import {
+  HumanFeedbackMechanismCLI,
+  HumanFeedbackOptions,
+  HumanFeedbackType
+} from './human-feedback'
 import { defaultIDGeneratorFn, isValidTaskIdentifier } from './utils'
 
 /**
@@ -29,8 +34,8 @@ export abstract class BaseTask<
   protected _timeoutMs?: number
   protected _retryConfig: types.RetryConfig
 
-  private _preHooks: Array<types.BeforeCallHook<TInput>> = []
-  private _postHooks: Array<types.AfterCallHook<TInput, TOutput>> = []
+  private _preHooks: Array<types.TaskBeforeCallHook<TInput>> = []
+  private _postHooks: Array<types.TaskAfterCallHook<TInput, TOutput>> = []
 
   constructor(options: types.BaseTaskOptions = {}) {
     this._agentic = options.agentic ?? globalThis.__agentic?.deref()
@@ -77,12 +82,14 @@ export abstract class BaseTask<
     return ''
   }
 
-  public addBeforeCallHook(hook: types.BeforeCallHook<TInput>): this {
+  public addBeforeCallHook(hook: types.TaskBeforeCallHook<TInput>): this {
     this._preHooks.push(hook)
     return this
   }
 
-  public addAfterCallHook(hook: types.AfterCallHook<TInput, TOutput>): this {
+  public addAfterCallHook(
+    hook: types.TaskAfterCallHook<TInput, TOutput>
+  ): this {
     this._postHooks.push(hook)
     return this
   }
@@ -104,6 +111,41 @@ export abstract class BaseTask<
   public clone(): BaseTask<TInput, TOutput> {
     // TODO: override in subclass if needed
     throw new Error(`clone not implemented for task "${this.nameForModel}"`)
+  }
+
+  public withHumanFeedback<V extends HumanFeedbackType>(
+    options: HumanFeedbackOptions<V, TOutput> = {}
+  ): this {
+    options = Object.assign(
+      {
+        type: 'confirm',
+        abort: false,
+        editing: false,
+        annotations: false,
+        timeoutMs: Number.POSITIVE_INFINITY,
+        mechanism: HumanFeedbackMechanismCLI
+      },
+      this.agentic.humanFeedbackDefaults,
+      options
+    )
+
+    if (!options.mechanism) {
+      throw new Error(
+        'No feedback mechanism provided. Please provide a feedback mechanism to use.'
+      )
+    }
+
+    const feedbackMechanism = new options.mechanism({
+      task: this,
+      options
+    })
+
+    this.addAfterCallHook(async (output, ctx) => {
+      const feedback = await feedbackMechanism.interact(output)
+      ctx.metadata = { ...ctx.metadata, feedback }
+    })
+
+    return this
   }
 
   public retryConfig(retryConfig: types.RetryConfig): this {
@@ -152,15 +194,16 @@ export abstract class BaseTask<
       }
     }
 
-    for (const hook of this._preHooks) {
-      await hook(ctx)
+    for (const preHook of this._preHooks) {
+      await preHook(ctx)
     }
 
     const result = await pRetry(
       async () => {
         const result = await this._call(ctx)
-        for (const hook of this._postHooks) {
-          await hook(result, ctx)
+
+        for (const postHook of this._postHooks) {
+          await postHook(result, ctx)
         }
 
         return result

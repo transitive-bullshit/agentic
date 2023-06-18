@@ -1,9 +1,6 @@
-import * as types from '@/types'
 import { Agentic } from '@/agentic'
 import { HumanFeedbackDeclineError } from '@/errors'
 import { BaseTask } from '@/task'
-
-import { HumanFeedbackMechanismCLI } from './cli'
 
 /**
  * Actions the user can take in the feedback selection prompt.
@@ -302,49 +299,4 @@ export abstract class HumanFeedbackMechanism<
     )
     return feedback as FeedbackTypeToMetadata<T>
   }
-}
-
-export function withHumanFeedback<
-  TInput extends types.TaskInput,
-  TOutput extends types.TaskOutput,
-  V extends HumanFeedbackType
->(
-  task: BaseTask<TInput, TOutput>,
-  options: HumanFeedbackOptions<V, TOutput> = {}
-) {
-  task = task.clone()
-
-  // Use Object.assign to merge the options, instance defaults, and hard-coded defaults:
-  const finalOptions: HumanFeedbackOptions<V, TOutput> = Object.assign(
-    {
-      type: 'confirm',
-      abort: false,
-      editing: false,
-      annotations: false,
-      timeoutMs: Number.POSITIVE_INFINITY,
-      mechanism: HumanFeedbackMechanismCLI
-    },
-    // Default options from the instance:
-    task.agentic.humanFeedbackDefaults,
-    // User-provided options (override instance defaults):
-    options
-  )
-
-  if (!finalOptions.mechanism) {
-    throw new Error(
-      'No feedback mechanism provided. Please provide a feedback mechanism to use.'
-    )
-  }
-
-  const feedbackMechanism = new finalOptions.mechanism({
-    task: task,
-    options: finalOptions
-  })
-
-  task.addAfterCallHook(async function onCall(output, ctx) {
-    const feedback = await feedbackMechanism.interact(output)
-    ctx.metadata = { ...ctx.metadata, feedback }
-  })
-
-  return task
 }

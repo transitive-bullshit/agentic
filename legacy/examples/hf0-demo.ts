@@ -6,43 +6,43 @@ import {
   Agentic,
   HumanFeedbackMechanismTwilio,
   SearchAndCrawlTool,
-  WeatherTool,
-  withHumanFeedback
+  WeatherTool
 } from '@/index'
 
 async function main() {
   const openai = new OpenAIClient({ apiKey: process.env.OPENAI_API_KEY! })
-  const agentic = new Agentic({ openai })
+  const agentic = new Agentic({
+    openai,
+    humanFeedbackDefaults: {
+      mechanism: HumanFeedbackMechanismTwilio
+    }
+  })
 
   const topic = process.argv[2] || 'OpenAI'
 
-  const res0 = await withHumanFeedback(
-    agentic
-      .gpt4({
-        messages: [
-          {
-            role: 'system',
-            content: `You are a McKinsey analyst who is an expert at writing executive summaries.`
-          },
-          {
-            role: 'user',
-            content: `What are the 3 most important questions we would need to answer in order to have a thorough understanding of this topic: {{topic}}? Be concise but creative in your questions, and make sure to capture the true essence of the topic.`
-          }
-        ],
-        model: 'gpt-4',
-        temperature: 1.0
+  const res0 = await agentic
+    .gpt4({
+      messages: [
+        {
+          role: 'system',
+          content: `You are a McKinsey analyst who is an expert at writing executive summaries.`
+        },
+        {
+          role: 'user',
+          content: `What are the 3 most important questions we would need to answer in order to have a thorough understanding of this topic: {{topic}}? Be concise but creative in your questions, and make sure to capture the true essence of the topic.`
+        }
+      ],
+      model: 'gpt-4',
+      temperature: 1.0
+    })
+    .input(
+      z.object({
+        topic: z.string()
       })
-      .input(
-        z.object({
-          topic: z.string()
-        })
-      )
-      .output(z.array(z.string()).describe('question')),
-    {
-      type: 'selectN',
-      mechanism: HumanFeedbackMechanismTwilio
-    }
-  ).callWithMetadata({ topic })
+    )
+    .output(z.array(z.string()).describe('question'))
+    .withHumanFeedback({ type: 'selectN' })
+    .callWithMetadata({ topic })
 
   console.log()
   console.log()
