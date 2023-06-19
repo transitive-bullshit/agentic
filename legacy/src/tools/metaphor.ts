@@ -1,6 +1,32 @@
+import { z } from 'zod'
+
 import * as metaphor from '@/services/metaphor'
 import * as types from '@/types'
 import { BaseTask } from '@/task'
+
+export const MetaphorInputSchema = z.object({
+  query: z.string(),
+  numResults: z.number().optional(),
+  useQueryExpansion: z.boolean().optional(),
+  includeDomains: z.array(z.string()).optional(),
+  excludeDomains: z.array(z.string()).optional(),
+  startCrawlDate: z.string().optional(),
+  endCrawlDate: z.string().optional(),
+  startPublishedDate: z.string().optional(),
+  endPublishedDate: z.string().optional()
+})
+
+export const MetaphorOutputSchema = z.object({
+  results: z.array(
+    z.object({
+      author: z.string().nullable(),
+      publishedDate: z.string().nullable(),
+      title: z.string().nullable(),
+      score: z.number(),
+      url: z.string()
+    })
+  )
+})
 
 export class MetaphorSearchTool extends BaseTask<
   metaphor.MetaphorSearchInput,
@@ -21,11 +47,11 @@ export class MetaphorSearchTool extends BaseTask<
   }
 
   public override get inputSchema() {
-    return metaphor.MetaphorSearchInputSchema
+    return MetaphorInputSchema
   }
 
   public override get outputSchema() {
-    return metaphor.MetaphorSearchOutputSchema
+    return MetaphorOutputSchema
   }
 
   public override get nameForModel(): string {
