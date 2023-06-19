@@ -94,6 +94,70 @@ export interface TwilioConversationMessages {
   }
 }
 
+/**
+ * Participant Conversation Resource.
+ *
+ * This interface represents a participant in a conversation, along with the conversation details.
+ */
+interface ParticipantConversation {
+  /** The unique ID of the Account responsible for this conversation. */
+  account_sid: string
+
+  /** The unique ID of the Conversation Service this conversation belongs to. */
+  chat_service_sid: string
+
+  /** The unique ID of the Participant. */
+  participant_sid: string
+
+  /** The unique string that identifies the conversation participant as Conversation User. */
+  participant_user_sid: string
+
+  /**
+   * A unique string identifier for the conversation participant as Conversation User.
+   * This parameter is non-null if (and only if) the participant is using the Conversations SDK to communicate.
+   */
+  participant_identity: string
+
+  /**
+   * Information about how this participant exchanges messages with the conversation.
+   * A JSON parameter consisting of type and address fields of the participant.
+   */
+  participant_messaging_binding: object
+
+  /** The unique ID of the Conversation this Participant belongs to. */
+  conversation_sid: string
+
+  /** An application-defined string that uniquely identifies the Conversation resource. */
+  conversation_unique_name: string
+
+  /** The human-readable name of this conversation, limited to 256 characters. */
+  conversation_friendly_name: string
+
+  /**
+   * An optional string metadata field you can use to store any data you wish.
+   * The string value must contain structurally valid JSON if specified.
+   */
+  conversation_attributes: string
+
+  /** The date that this conversation was created, given in ISO 8601 format. */
+  conversation_date_created: string
+
+  /** The date that this conversation was last updated, given in ISO 8601 format. */
+  conversation_date_updated: string
+
+  /** Identity of the creator of this Conversation. */
+  conversation_created_by: string
+
+  /** The current state of this User Conversation. One of inactive, active or closed. */
+  conversation_state: 'inactive' | 'active' | 'closed'
+
+  /** Timer date values representing state update for this conversation. */
+  conversation_timers: object
+
+  /** Contains absolute URLs to access the participant and conversation of this conversation. */
+  links: { participant: string; conversation: string }
+}
+
 export type TwilioSendAndWaitOptions = {
   /**
    * The recipient's phone number in E.164 format (e.g. +14565551234).
@@ -202,6 +266,31 @@ export class TwilioConversationClient {
    */
   async deleteConversation(conversationSid: string) {
     return this.api.delete(`Conversations/${conversationSid}`)
+  }
+
+  /**
+   * Removes a participant from a conversation.
+   */
+  async removeParticipant({
+    conversationSid,
+    participantSid
+  }: {
+    conversationSid: string
+    participantSid: string
+  }) {
+    return this.api.delete(
+      `Conversations/${conversationSid}/Participants/${participantSid}`
+    )
+  }
+
+  /**
+   * Fetches all conversations a participant as identified by their phone number is a part of.
+   */
+  async findParticipantConversations(participantPhoneNumber: string) {
+    const encodedPhoneNumber = encodeURIComponent(participantPhoneNumber)
+    return this.api
+      .get(`ParticipantConversations?Address=${encodedPhoneNumber}`)
+      .json<{ conversations: ParticipantConversation[] }>()
   }
 
   /**
@@ -333,7 +422,22 @@ export class TwilioConversationClient {
     )
 
     const { sid: conversationSid } = await this.createConversation(name)
-    await this.addParticipant({ conversationSid, recipientPhoneNumber })
+
+    // Find and remove participant from conversation they are currently in, if any:
+    const { conversations } = await this.findParticipantConversations(
+      recipientPhoneNumber
+    )
+    for (const conversation of conversations) {
+      await this.removeParticipant({
+        conversationSid: conversation.conversation_sid,
+        participantSid: conversation.participant_sid
+      })
+    }
+
+    const { sid: participantSid } = await this.addParticipant({
+      conversationSid,
+      recipientPhoneNumber
+    })
     await this.sendTextWithChunking({ conversationSid, text })
 
     const start = Date.now()
@@ -341,7 +445,7 @@ export class TwilioConversationClient {
 
     do {
       if (aborted) {
-        await this.deleteConversation(conversationSid)
+        await this.removeParticipant({ conversationSid, participantSid })
         const reason = stopSignal?.reason || 'Aborted waiting for reply'
 
         if (reason instanceof Error) {
@@ -360,7 +464,7 @@ export class TwilioConversationClient {
         const candidate = candidates[candidates.length - 1]
 
         if (validate(candidate)) {
-          await this.deleteConversation(conversationSid)
+          await this.removeParticipant({ conversationSid, participantSid })
           return candidate
         }
 
@@ -377,7 +481,7 @@ export class TwilioConversationClient {
       await sleep(intervalMs)
     } while (Date.now() - start < timeoutMs)
 
-    await this.deleteConversation(conversationSid)
+    await this.removeParticipant({ conversationSid, participantSid })
     throw new Error('Twilio timeout waiting for reply')
   }
 }
