@@ -39,11 +39,24 @@ export function sleep(ms: number) {
 export const defaultIDGeneratorFn: types.IDGeneratorFunction =
   customAlphabet(urlAlphabet)
 
-const taskNameRegex = /^[a-zA-Z_][a-zA-Z0-9_-]{0,63}$/
+const TASK_NAME_REGEX = /^[a-zA-Z_][a-zA-Z0-9_-]{0,63}$/
+
+/**
+ * Checks if a string is a valid task identifier.
+ *
+ * @param id - identifier to check
+ * @returns whether the identifier is valid
+ */
 export function isValidTaskIdentifier(id: string): boolean {
-  return !!id && taskNameRegex.test(id)
+  return !!id && TASK_NAME_REGEX.test(id)
 }
 
+/**
+ * Extracts a valid function task identifier from the input text string.
+ *
+ * @param text - input text string to extract the identifier from
+ * @returns extracted task identifier if one is found, `undefined` otherwise
+ */
 export function extractFunctionIdentifierFromString(
   text: string
 ): string | undefined {
