@@ -1,7 +1,13 @@
 {
   "parser": "@typescript-eslint/parser",
-  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
-  "plugins": ["@typescript-eslint"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "plugins": [
+    "@typescript-eslint",
+    "eslint-plugin-tsdoc"
+  ],
   "root": true,
   "env": {
     "browser": false,
@@ -18,7 +24,11 @@
   "rules": {
     "@typescript-eslint/no-unused-vars": [
       "warn",
-      { "vars": "all", "args": "after-used", "ignoreRestSiblings": true }
+      {
+        "vars": "all",
+        "args": "after-used",
+        "ignoreRestSiblings": true
+      }
     ],
     "no-useless-catch": "warn",
     "@typescript-eslint/no-extra-semi": "off",
@@ -26,18 +36,42 @@
     "@typescript-eslint/no-explicit-any": "off",
     "padding-line-between-statements": [
       "error",
-      { "blankLine": "always", "prev": ["block", "block-like"], "next": "*" },
-      { "blankLine": "always", "prev": "*", "next": ["block", "block-like"] },
+      {
+        "blankLine": "always",
+        "prev": [
+          "block",
+          "block-like"
+        ],
+        "next": "*"
+      },
+      {
+        "blankLine": "always",
+        "prev": "*",
+        "next": [
+          "block",
+          "block-like"
+        ]
+      },
       {
         "blankLine": "any",
-        "prev": ["singleline-const", "singleline-let", "expression"],
-        "next": ["block", "block-like"]
-      }
-    ]
+        "prev": [
+          "singleline-const",
+          "singleline-let",
+          "expression"
+        ],
+        "next": [
+          "block",
+          "block-like"
+        ]
+      },
+    ],
+    "tsdoc/syntax": "warn"
   },
   "overrides": [
     {
-      "files": ["*.tsx"],
+      "files": [
+        "*.tsx"
+      ],
       "rules": {
         "no-undef": "off"
       }
