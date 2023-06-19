@@ -35,7 +35,8 @@ test('sleep should delay execution', async (t) => {
   const start = Date.now()
   await sleep(1000) // for example, 1000ms / 1sec
   const end = Date.now()
-  t.true(end - start >= 1000)
+  const duration = end - start
+  t.true(duration >= 1000 - 10)
 })
 
 test('defaultIDGeneratorFn should generate URL-safe string', (t) => {

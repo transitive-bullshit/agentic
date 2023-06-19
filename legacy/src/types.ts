@@ -73,10 +73,14 @@ export interface LLMOptions<
 export type ChatMessage = openai.ChatMessage
 export type ChatMessageRole = openai.ChatMessageRole
 
+export type ChatMessageContent<TInput extends TaskInput = void> =
+  | string
+  | ((input: TInput | any) => string)
+
 export type ChatMessageInput<TInput extends TaskInput = void> =
   | ChatMessage
   | {
-      content: (input: TInput | any) => string
+      content: ChatMessageContent<TInput>
     }
 
 export interface ChatModelOptions<
