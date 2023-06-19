@@ -156,7 +156,7 @@ export abstract class BaseTask<
   /**
    * Calls this task with the given `input` and returns the result only.
    */
-  public async call(input?: TInput): Promise<TOutput> {
+  public async call(input: TInput): Promise<TOutput> {
     const res = await this.callWithMetadata(input)
     return res.result
   }
@@ -165,7 +165,7 @@ export abstract class BaseTask<
    * Calls this task with the given `input` and returns the result along with metadata.
    */
   public async callWithMetadata(
-    input?: TInput,
+    input: TInput,
     parentCtx?: types.TaskCallContext<any>
   ): Promise<types.TaskResponse<TOutput>> {
     this.validate()

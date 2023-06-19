@@ -73,12 +73,18 @@ export interface LLMOptions<
 export type ChatMessage = openai.ChatMessage
 export type ChatMessageRole = openai.ChatMessageRole
 
+export type ChatMessageInput<TInput extends TaskInput = void> =
+  | ChatMessage
+  | {
+      content: (input: TInput | any) => string
+    }
+
 export interface ChatModelOptions<
   TInput extends TaskInput = void,
   TOutput extends TaskOutput = string,
   TModelParams extends Record<string, any> = Record<string, any>
 > extends BaseLLMOptions<TInput, TOutput, TModelParams> {
-  messages: ChatMessage[]
+  messages: ChatMessageInput<TInput>[]
   tools?: BaseTask<any, any>[]
 }
 
@@ -136,7 +142,7 @@ export interface TaskCallContext<
   TInput extends TaskInput = void,
   TMetadata extends TaskResponseMetadata = TaskResponseMetadata
 > {
-  input?: TInput
+  input: TInput
   retryMessage?: string
 
   attemptNumber: number

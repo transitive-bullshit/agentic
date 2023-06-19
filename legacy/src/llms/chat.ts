@@ -9,7 +9,11 @@ import * as types from '@/types'
 import { parseOutput } from '@/llms/parse-output'
 import { BaseTask } from '@/task'
 import { getCompiledTemplate } from '@/template'
-import { extractFunctionIdentifierFromString, stringifyForModel } from '@/utils'
+import {
+  extractFunctionIdentifierFromString,
+  isFunction,
+  stringifyForModel
+} from '@/utils'
 
 import { BaseLLM } from './llm'
 import {
@@ -23,7 +27,7 @@ export abstract class BaseChatCompletion<
   TModelParams extends Record<string, any> = Record<string, any>,
   TChatCompletionResponse extends Record<string, any> = Record<string, any>
 > extends BaseLLM<TInput, TOutput, TModelParams> {
-  protected _messages: types.ChatMessage[]
+  protected _messages: types.ChatMessageInput<TInput>[]
   protected _tools?: BaseTask<any, any>[]
 
   constructor(
@@ -116,14 +120,17 @@ export abstract class BaseChatCompletion<
       input = this.inputSchema.parse(input)
     }
 
-    const messages = this._messages
+    const messages: types.ChatMessage[] = this._messages
       .map((message) => {
         return {
           ...message,
           content: message.content
-            ? getCompiledTemplate(dedent(message.content))(input).trim()
+            ? // support functions which return a string
+              isFunction(message.content)
+              ? message.content(input!)
+              : getCompiledTemplate(dedent(message.content))(input).trim()
             : ''
-        }
+        } as types.ChatMessage
       })
       .filter((message) => message.content || message.function_call)
 
@@ -170,6 +177,7 @@ export abstract class BaseChatCompletion<
       'additionalProperties',
       '$schema'
     ])
+
     let label: string
     if (outputSchema instanceof z.ZodArray) {
       label = 'JSON array (minified)'

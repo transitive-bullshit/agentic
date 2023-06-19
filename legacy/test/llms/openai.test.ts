@@ -224,3 +224,29 @@ test('OpenAIChatCompletion ⇒ missing template variable', async (t) => {
     message: 'Template error: "numFacts" not defined in input - 1:10'
   })
 })
+
+test('OpenAIChatCompletion ⇒ function inputs', async (t) => {
+  t.timeout(2 * 60 * 1000)
+  const agentic = createTestAgenticRuntime()
+
+  const builder = new OpenAIChatCompletion({
+    agentic,
+    modelParams: {
+      temperature: 0,
+      max_tokens: 30
+    },
+    messages: [
+      {
+        role: 'user',
+        content: (input) => `tell me about ${input.topic}`
+      }
+    ]
+  })
+    .input(z.object({ topic: z.string() }))
+    .output(z.string())
+
+  const result = await builder.call({ topic: 'cats' })
+  t.truthy(typeof result === 'string')
+
+  expectTypeOf(result).toMatchTypeOf<string>()
+})
