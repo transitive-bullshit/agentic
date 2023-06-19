@@ -63,7 +63,7 @@
           "block",
           "block-like"
         ]
-      },
+      }
     ],
     "tsdoc/syntax": "warn"
   },

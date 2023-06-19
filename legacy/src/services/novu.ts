@@ -5,6 +5,9 @@ import defaultKy from 'ky'
  */
 export const NOVU_API_BASE_URL = 'https://api.novu.co/v1'
 
+/**
+ * Novu subscriber object.
+ */
 export type NovuSubscriber = {
   /**
    * Unique identifier for the subscriber. This can be any value that is meaningful to your application such as a user ID stored in your database or a unique email address.
@@ -34,6 +37,8 @@ export type NovuSubscriber = {
 
 /**
  * Response from the Novu API when triggering an event.
+ *
+ * @see {@link https://docs.novu.co/api/client-libraries#trigger-event}
  */
 export type NovuTriggerEventResponse = {
   /**
@@ -87,7 +92,7 @@ export type NovuTriggerOptions = {
  */
 export class NovuClient {
   /**
-   * Instance of ky for making requests to the Novu API.
+   * HTTP client for interacting with the Novu API.
    */
   api: typeof defaultKy
 

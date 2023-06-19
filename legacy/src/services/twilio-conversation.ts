@@ -427,6 +427,7 @@ export class TwilioConversationClient {
     const { conversations } = await this.findParticipantConversations(
       recipientPhoneNumber
     )
+
     for (const conversation of conversations) {
       await this.removeParticipant({
         conversationSid: conversation.conversation_sid,
