@@ -5,7 +5,8 @@ import {
   parseArrayOutput,
   parseBooleanOutput,
   parseNumberOutput,
-  parseObjectOutput
+  parseObjectOutput,
+  parseOutput
 } from '@/llms/parse-output'
 
 test('parseArrayOutput - handles valid arrays correctly', (t) => {
@@ -185,6 +186,55 @@ test('parseNumberOutput - throws error for invalid outputs', (t) => {
   const error = t.throws(
     () => {
       parseNumberOutput('NotANumber', z.number())
+    },
+    { instanceOf: Error }
+  )
+
+  t.snapshot(error?.message)
+})
+
+test('parseOutput - handles arrays correctly', (t) => {
+  const arraySchema = z.array(z.number())
+  const output = '[1, 2, 3]'
+  const result = parseOutput(output, arraySchema)
+
+  t.snapshot(result, 'should parse and return [1, 2, 3] for "[1, 2, 3]"')
+})
+
+test('parseOutput - handles objects correctly', (t) => {
+  const objectSchema = z.object({ a: z.number(), b: z.string() })
+  const output = '{"a": 1, "b": "two"}'
+  const result = parseOutput(output, objectSchema)
+
+  t.snapshot(
+    result,
+    'should parse and return {"a": 1, "b": "two"} for "{"a": 1, "b": "two"}"'
+  )
+})
+
+test('parseOutput - handles booleans correctly', (t) => {
+  const booleanSchema = z.boolean()
+  const output = 'True'
+  const result = parseOutput(output, booleanSchema)
+
+  t.snapshot(result, 'should parse and return true for "True"')
+})
+
+test('parseOutput - handles numbers correctly', (t) => {
+  const numberSchema = z.number()
+  const output = '123.45'
+  const result = parseOutput(output, numberSchema)
+
+  t.snapshot(result, 'should parse and return 123.45 for "123.45"')
+})
+
+test('parseOutput - throws error for invalid data', (t) => {
+  const numberSchema = z.number()
+  const output = 'not a number'
+
+  const error = t.throws(
+    () => {
+      parseOutput(output, numberSchema)
     },
     { instanceOf: Error }
   )
