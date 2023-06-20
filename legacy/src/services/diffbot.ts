@@ -2,6 +2,7 @@ import defaultKy from 'ky'
 import { AbortError } from 'p-retry'
 import pThrottle from 'p-throttle'
 
+import { getEnv } from '@/env'
 import { throttleKy } from '@/utils'
 
 export const DIFFBOT_API_BASE_URL = 'https://api.diffbot.com'
@@ -334,7 +335,7 @@ export class DiffbotClient {
   apiKnowledgeGraphBaseUrl: string
 
   constructor({
-    apiKey = process.env.DIFFBOT_API_KEY,
+    apiKey = getEnv('DIFFBOT_API_KEY'),
     apiBaseUrl = DIFFBOT_API_BASE_URL,
     apiKnowledgeGraphBaseUrl = DIFFBOT_KNOWLEDGE_GRAPH_API_BASE_URL,
     timeoutMs = 30_000,

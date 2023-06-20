@@ -1,6 +1,8 @@
 import { pino } from 'pino'
 import pinoPretty from 'pino-pretty'
 
+import { getEnv } from './env'
+
 export type Level = 'fatal' | 'error' | 'warn' | 'info' | 'debug' | 'trace'
 export type LevelWithSilent = Level | 'silent'
 
@@ -103,7 +105,7 @@ export interface Logger {
 
 export const defaultLogger: Logger = pino(
   {
-    level: process.env.LOG_LEVEL || 'info'
+    level: getEnv('LOG_LEVEL', 'info')
   },
   pinoPretty({
     sync: true,

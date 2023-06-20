@@ -1,6 +1,7 @@
 import defaultKy from 'ky'
 
 import { DEFAULT_BOT_NAME } from '@/constants'
+import { getEnv } from '@/env'
 import { chunkMultipleStrings, chunkString, sleep } from '@/utils'
 
 export const TWILIO_CONVERSATION_API_BASE_URL =
@@ -208,11 +209,12 @@ export class TwilioConversationClient {
   defaultRecipientPhoneNumber?: string
 
   constructor({
-    accountSid = process.env.TWILIO_ACCOUNT_SID,
-    authToken = process.env.TWILIO_AUTH_TOKEN,
-    phoneNumber = process.env.TWILIO_PHONE_NUMBER,
-    defaultRecipientPhoneNumber = process.env
-      .TWILIO_DEFAULT_RECIPIENT_PHONE_NUMBER,
+    accountSid = getEnv('TWILIO_ACCOUNT_SID'),
+    authToken = getEnv('TWILIO_AUTH_TOKEN'),
+    phoneNumber = getEnv('TWILIO_PHONE_NUMBER'),
+    defaultRecipientPhoneNumber = getEnv(
+      'TWILIO_DEFAULT_RECIPIENT_PHONE_NUMBER'
+    ),
     apiBaseUrl = TWILIO_CONVERSATION_API_BASE_URL,
     botName = DEFAULT_BOT_NAME,
     ky = defaultKy

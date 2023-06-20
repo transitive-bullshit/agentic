@@ -1,5 +1,7 @@
 import defaultKy from 'ky'
 
+import { getEnv } from '@/env'
+
 export const BING_API_BASE_URL = 'https://api.bing.microsoft.com'
 
 export interface BingWebSearchQuery {
@@ -241,7 +243,7 @@ export class BingWebSearchClient {
   apiBaseUrl: string
 
   constructor({
-    apiKey = process.env.BING_API_KEY,
+    apiKey = getEnv('BING_API_KEY'),
     apiBaseUrl = BING_API_BASE_URL,
     ky = defaultKy
   }: {

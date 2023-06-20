@@ -1,5 +1,7 @@
 import defaultKy from 'ky'
 
+import { getEnv } from '@/env'
+
 /**
  * All types have been exported from the `serpapi` package, which we're
  * not using directly because it is bloated and has compatibility issues.
@@ -642,7 +644,7 @@ export class SerpAPIClient {
   params: Partial<SerpAPIParams>
 
   constructor({
-    apiKey = process.env.SERPAPI_API_KEY ?? process.env.SERP_API_KEY,
+    apiKey = getEnv('SERPAPI_API_KEY') ?? getEnv('SERP_API_KEY'),
     apiBaseUrl = SERPAPI_BASE_URL,
     ky = defaultKy,
     ...params

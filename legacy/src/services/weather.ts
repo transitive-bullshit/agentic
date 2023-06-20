@@ -1,5 +1,7 @@
 import defaultKy from 'ky'
 
+import { getEnv } from '@/env'
+
 export const WEATHER_API_BASE_URL = 'https://api.weatherapi.com/v1'
 
 interface CurrentWeatherResponse {
@@ -75,7 +77,7 @@ export class WeatherClient {
   apiBaseUrl: string
 
   constructor({
-    apiKey = process.env.WEATHER_API_KEY,
+    apiKey = getEnv('WEATHER_API_KEY'),
     apiBaseUrl = WEATHER_API_BASE_URL,
     ky = defaultKy
   }: {

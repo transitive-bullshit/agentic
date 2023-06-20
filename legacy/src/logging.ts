@@ -1,6 +1,8 @@
 import logger from 'debug'
 import { v4 as uuidv4 } from 'uuid'
 
+import { getEnv } from './env'
+
 /**
  * List of events that can occur within the library.
  */
@@ -26,14 +28,12 @@ type SeverityType = (typeof Severity)[keyof typeof Severity]
  * Define minimum LOG_LEVEL, defaulting to Severity.INFO if not provided or if an invalid value is provided. Any events below that level won't be logged to the console.
  */
 let LOG_LEVEL: SeverityType = Severity.INFO
+const logLevelEnv = getEnv('DEBUG_LOG_LEVEL')
 
-if (
-  process.env.DEBUG_LOG_LEVEL &&
-  Severity[process.env.DEBUG_LOG_LEVEL.toUpperCase()] !== undefined
-) {
-  LOG_LEVEL = Severity[process.env.DEBUG_LOG_LEVEL.toUpperCase()]
-} else if (process.env.DEBUG_LOG_LEVEL) {
-  throw new Error(`Invalid value for LOG_LEVEL: ${process.env.DEBUG_LOG_LEVEL}`)
+if (logLevelEnv && Severity[logLevelEnv.toUpperCase()] !== undefined) {
+  LOG_LEVEL = Severity[logLevelEnv.toUpperCase()]
+} else if (logLevelEnv) {
+  throw new Error(`Invalid value for LOG_LEVEL: ${logLevelEnv}`)
 }
 
 /**

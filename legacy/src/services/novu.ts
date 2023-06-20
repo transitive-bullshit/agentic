@@ -1,5 +1,7 @@
 import defaultKy from 'ky'
 
+import { getEnv } from '@/env'
+
 /**
  * Base URL endpoint for the Novu API.
  */
@@ -110,7 +112,7 @@ export class NovuClient {
    * Novu API client constructor.
    */
   constructor({
-    apiKey = process.env.NOVU_API_KEY,
+    apiKey = getEnv('NOVU_API_KEY'),
     apiBaseUrl = NOVU_API_BASE_URL,
     ky = defaultKy
   }: {

@@ -18,8 +18,8 @@ import { defaultIDGeneratorFn, isValidTaskIdentifier } from './utils'
  *
  * Examples of tasks include:
  *    - LLM calls
- *    - Chain of LLM calls
- *    - Retrieval task
+ *    - Chains of LLM calls
+ *    - Retrieval tasks
  *    - API calls
  *    - Native function calls
  *    - Invoking sub-agents
@@ -94,6 +94,10 @@ export abstract class BaseTask<
     return this
   }
 
+  /**
+   * Ensures that this task is configured correctly. `validate` will be called
+   * automatically before `task.call` or `task.callWithMetadata` are invoked.
+   */
   public validate() {
     if (!this._agentic) {
       throw new Error(
@@ -241,6 +245,7 @@ export abstract class BaseTask<
             (err as any).name === 'TimeoutError'
           ) {
             // TODO
+            return
           } else if ((err.cause as any)?.code === 'UND_ERR_HEADERS_TIMEOUT') {
             // TODO: This is a pretty common OpenAI error, and I think it either has
             // to do with OpenAI's servers being flaky or the combination of Node.js

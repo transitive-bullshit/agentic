@@ -1,5 +1,6 @@
 import defaultKy from 'ky'
 
+import { getEnv } from '@/env'
 import { sleep } from '@/utils'
 
 export const SLACK_API_BASE_URL = 'https://slack.com/api'
@@ -261,9 +262,9 @@ export class SlackClient {
   protected defaultChannel?: string
 
   constructor({
-    apiKey = process.env.SLACK_API_KEY,
+    apiKey = getEnv('SLACK_API_KEY'),
     baseUrl = SLACK_API_BASE_URL,
-    defaultChannel = process.env.SLACK_DEFAULT_CHANNEL,
+    defaultChannel = getEnv('SLACK_DEFAULT_CHANNEL'),
     ky = defaultKy
   }: {
     apiKey?: string

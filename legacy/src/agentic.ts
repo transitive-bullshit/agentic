@@ -10,7 +10,6 @@ import { defaultLogger } from './logger'
 import { defaultIDGeneratorFn, isFunction, isString } from './utils'
 
 export class Agentic {
-  // _taskMap: WeakMap<string, BaseTask<any, any>>
   protected _ky: types.KyInstance
   protected _logger: types.Logger
 
@@ -103,7 +102,7 @@ export class Agentic {
     return this._idGeneratorFn
   }
 
-  openaiChatCompletion<TInput extends types.TaskInput = any>(
+  openaiChatCompletion<TInput extends types.TaskInput = void>(
     promptOrChatCompletionParams:
       | types.ChatMessageContent<TInput>
       | SetOptional<types.OpenAIChatCompletionParamsInput<TInput>, 'model'>,
@@ -148,7 +147,7 @@ export class Agentic {
   /**
    * Shortcut for creating an OpenAI chat completion call with the `gpt-3.5-turbo` model.
    */
-  gpt3<TInput extends types.TaskInput = any>(
+  gpt3<TInput extends types.TaskInput = void>(
     promptOrChatCompletionParams:
       | types.ChatMessageContent<TInput>
       | SetOptional<types.OpenAIChatCompletionParamsInput<TInput>, 'model'>,
@@ -194,7 +193,7 @@ export class Agentic {
   /**
    * Shortcut for creating an OpenAI chat completion call with the `gpt-4` model.
    */
-  gpt4<TInput extends types.TaskInput = any>(
+  gpt4<TInput extends types.TaskInput = void>(
     promptOrChatCompletionParams:
       | types.ChatMessageContent<TInput>
       | SetOptional<types.OpenAIChatCompletionParamsInput<TInput>, 'model'>,

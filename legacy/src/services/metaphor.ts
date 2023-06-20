@@ -1,5 +1,7 @@
 import defaultKy from 'ky'
 
+import { getEnv } from '@/env'
+
 export const METAPHOR_API_BASE_URL = 'https://api.metaphor.systems'
 
 /**
@@ -119,7 +121,7 @@ export class MetaphorClient {
   readonly apiBaseUrl: string
 
   constructor({
-    apiKey = process.env.METAPHOR_API_KEY,
+    apiKey = getEnv('METAPHOR_API_KEY'),
     apiBaseUrl = METAPHOR_API_BASE_URL,
     ky = defaultKy
   }: {
