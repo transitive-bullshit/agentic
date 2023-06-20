@@ -22,7 +22,7 @@ async function main() {
       topic
     })
 
-  console.log('\n\n\n' + res)
+  console.log(`\n\n\n${res}\n\n\n`)
 }
 
 main()

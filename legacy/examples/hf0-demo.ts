@@ -78,8 +78,7 @@ async function main() {
     )
     .call({ topic, questions })
 
-  console.log('\n\n\n')
-  console.log(res)
+  console.log(`\n\n\n${res}\n\n\n`)
 }
 
 main()

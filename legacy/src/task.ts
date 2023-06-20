@@ -9,7 +9,11 @@ import {
   HumanFeedbackOptions,
   HumanFeedbackType
 } from './human-feedback'
-import { defaultIDGeneratorFn, isValidTaskIdentifier } from './utils'
+import {
+  defaultIDGeneratorFn,
+  isValidTaskIdentifier,
+  stringifyForDebugging
+} from './utils'
 
 /**
  * A `Task` is an async function call that may be non-deterministic. It has
@@ -174,6 +178,31 @@ export abstract class BaseTask<
   ): Promise<types.TaskResponse<TOutput>> {
     this.validate()
 
+    let _resolve: (value: unknown) => void | undefined
+    let _reject: (err: Error) => void | undefined
+    let _taskInnerAPI: types.TaskTrackerInnerAPI | undefined
+
+    const taskP = new Promise((resolve, reject) => {
+      _resolve = resolve
+      _reject = reject
+    })
+
+    const title = `${this.nameForModel}(${stringifyForDebugging(input, {
+      maxLength: 120
+    })})`
+
+    if (parentCtx?.tracker) {
+      parentCtx.tracker.task(title, (taskInnerAPI) => {
+        _taskInnerAPI = taskInnerAPI
+        return taskP
+      })
+    } else {
+      this._agentic!.taskTracker(title, (taskInnerAPI) => {
+        _taskInnerAPI = taskInnerAPI
+        return taskP
+      })
+    }
+
     this._logger.info({ input }, `Task call "${this.nameForHuman}"`)
 
     if (this.inputSchema) {
@@ -189,6 +218,7 @@ export abstract class BaseTask<
     const ctx: types.TaskCallContext<TInput> = {
       input,
       attemptNumber: 0,
+      tracker: _taskInnerAPI!,
       metadata: {
         taskName: this.nameForModel,
         taskId: this.id,
@@ -198,74 +228,91 @@ export abstract class BaseTask<
       }
     }
 
-    for (const preHook of this._preHooks) {
-      await preHook(ctx)
-    }
-
-    const result = await pRetry(
-      async () => {
-        const result = await this._call(ctx)
-
-        for (const postHook of this._postHooks) {
-          await postHook(result, ctx)
-        }
-
-        return result
-      },
-      {
-        ...this._retryConfig,
-        onFailedAttempt: async (err: FailedAttemptError) => {
-          this._logger.warn(
-            err,
-            `Task error "${this.nameForHuman}" failed attempt ${
-              err.attemptNumber
-            }${input ? ': ' + JSON.stringify(input) : ''}`
-          )
-
-          if (this._retryConfig.onFailedAttempt) {
-            await Promise.resolve(this._retryConfig.onFailedAttempt(err))
-          }
-
-          // TODO: log this task error
-          ctx.attemptNumber = err.attemptNumber + 1
-          ctx.metadata.error = err
-
-          if (err instanceof errors.ZodOutputValidationError) {
-            ctx.retryMessage = err.message
-            return
-          } else if (err instanceof errors.OutputValidationError) {
-            ctx.retryMessage = err.message
-            return
-          } else if (err instanceof errors.HumanFeedbackDeclineError) {
-            ctx.retryMessage = err.message
-            return
-          } else if (
-            err instanceof errors.KyTimeoutError ||
-            err instanceof errors.TimeoutError ||
-            (err as any).name === 'TimeoutError'
-          ) {
-            // TODO
-            return
-          } else if ((err.cause as any)?.code === 'UND_ERR_HEADERS_TIMEOUT') {
-            // TODO: This is a pretty common OpenAI error, and I think it either has
-            // to do with OpenAI's servers being flaky or the combination of Node.js
-            // `undici` and OpenAI's HTTP requests. Either way, let's just retry the
-            // task for now.
-            return
-          } else {
-            throw err
-          }
-        }
+    try {
+      for (const preHook of this._preHooks) {
+        await preHook(ctx)
       }
-    )
 
-    ctx.metadata.success = true
-    ctx.metadata.numRetries = ctx.attemptNumber
-    ctx.metadata.error = undefined
+      const result = await pRetry(
+        async () => {
+          const result = await this._call(ctx)
 
-    return {
-      result,
-      metadata: ctx.metadata
+          for (const postHook of this._postHooks) {
+            await postHook(result, ctx)
+          }
+
+          return result
+        },
+        {
+          ...this._retryConfig,
+          onFailedAttempt: async (err: FailedAttemptError) => {
+            this._logger.warn(
+              err,
+              `Task error "${this.nameForHuman}" failed attempt ${
+                err.attemptNumber
+              }${input ? ': ' + JSON.stringify(input) : ''}`
+            )
+
+            // const error = `error ${err.attemptNumber}: ${err.message}`
+            // const errorAsString =
+            //   error.length > 80 ? error.slice(0, 80 - 3) + '...' : error
+            // ctx.tracker.setStatus(errorAsString)
+
+            if (this._retryConfig.onFailedAttempt) {
+              await Promise.resolve(this._retryConfig.onFailedAttempt(err))
+            }
+
+            // TODO: log this task error
+            ctx.attemptNumber = err.attemptNumber + 1
+            ctx.metadata.error = err
+
+            if (err instanceof errors.ZodOutputValidationError) {
+              ctx.retryMessage = err.message
+              return
+            } else if (err instanceof errors.OutputValidationError) {
+              ctx.retryMessage = err.message
+              return
+            } else if (err instanceof errors.HumanFeedbackDeclineError) {
+              ctx.retryMessage = err.message
+              return
+            } else if (
+              err instanceof errors.KyTimeoutError ||
+              err instanceof errors.TimeoutError ||
+              (err as any).name === 'TimeoutError'
+            ) {
+              // TODO
+              return
+            } else if ((err.cause as any)?.code === 'UND_ERR_HEADERS_TIMEOUT') {
+              // TODO: This is a pretty common OpenAI error, and I think it either has
+              // to do with OpenAI's servers being flaky or the combination of Node.js
+              // `undici` and OpenAI's HTTP requests. Either way, let's just retry the
+              // task for now.
+              return
+            } else {
+              throw err
+            }
+          }
+        }
+      )
+
+      ctx.metadata.success = true
+      ctx.metadata.numRetries = ctx.attemptNumber
+      ctx.metadata.error = undefined
+
+      ctx.tracker.setOutput(stringifyForDebugging(result, { maxLength: 100 }))
+
+      // @ts-expect-error "_resolve" should be defined above
+      _resolve(result)
+
+      return {
+        result,
+        metadata: ctx.metadata
+      }
+    } catch (err: any) {
+      // @ts-expect-error "_reject" should be defined above
+      _reject(err)
+
+      throw err
     }
   }
 

@@ -107,6 +107,29 @@ export function chunkMultipleStrings(
   return textSections.map((section) => chunkString(section, maxLength)).flat()
 }
 
+export function stringifyForDebugging(
+  json?: types.Jsonifiable | void,
+  {
+    maxLength
+  }: {
+    maxLength?: number
+  } = {}
+): string {
+  if (json === undefined) {
+    return ''
+  }
+
+  const out = stringifyForModel(json)
+
+  if (maxLength) {
+    return out.length > maxLength
+      ? out.substring(0, Math.max(0, maxLength - 1)) + '…'
+      : out
+  } else {
+    return out
+  }
+}
+
 /**
  * Stringifies a JSON value for use in an LLM prompt.
  *
@@ -114,9 +137,13 @@ export function chunkMultipleStrings(
  * @returns stringified value with all double quotes around object keys removed
  */
 export function stringifyForModel(
-  json: types.Jsonifiable,
+  json: types.Jsonifiable | void,
   omit: string[] = []
 ): string {
+  if (json === undefined) {
+    return ''
+  }
+
   const UNIQUE_PREFIX = defaultIDGeneratorFn()
   return (
     JSON.stringify(json, replacer)

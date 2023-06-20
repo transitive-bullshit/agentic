@@ -2,6 +2,10 @@ import * as anthropic from '@anthropic-ai/sdk'
 import * as openai from 'openai-fetch'
 import ky from 'ky'
 import type { Options as RetryOptions } from 'p-retry'
+import type {
+  Task as TaskTracker,
+  TaskInnerAPI as TaskTrackerInnerAPI
+} from 'tasuku'
 import type { JsonObject, Jsonifiable } from 'type-fest'
 import { SafeParseReturnType, ZodType, ZodTypeAny, output, z } from 'zod'
 
@@ -15,6 +19,7 @@ import type { BaseTask } from './task'
 
 export { anthropic, openai }
 
+export type { TaskTracker, TaskTrackerInnerAPI }
 export type { Jsonifiable, Logger }
 export type KyInstance = typeof ky
 
@@ -39,6 +44,8 @@ export interface BaseTaskOptions {
   timeoutMs?: number
   retryConfig?: RetryConfig
   id?: string
+
+  taskTracker?: TaskTracker
 
   // TODO
   // caching config
@@ -156,6 +163,7 @@ export interface TaskCallContext<
 > {
   input: TInput
   retryMessage?: string
+  tracker: TaskTrackerInnerAPI
 
   attemptNumber: number
   metadata: TMetadata

@@ -15,7 +15,7 @@ async function main() {
       messages: [
         {
           role: 'system',
-          content: `You are a McKinsey analyst who is an expert at writing executive summaries. Always respond using markdown.`
+          content: `You are a McKinsey analyst who is an expert at writing executive summaries. Always cite your sources and respond using markdown.`
         },
         {
           role: 'user',
@@ -32,8 +32,7 @@ async function main() {
     )
     .call({ topic })
 
-  console.log('\n\n\n')
-  console.log(res)
+  console.log(`\n\n\n${res}\n\n\n`)
 }
 
 main()

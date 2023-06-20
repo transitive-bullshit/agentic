@@ -318,7 +318,10 @@ export abstract class BaseChatCompletion<
         )
 
         // TODO: handle sub-task errors gracefully
-        const toolCallResponse = await tool.callWithMetadata(functionArguments)
+        const toolCallResponse = await tool.callWithMetadata(
+          functionArguments,
+          ctx
+        )
 
         this._logger.info(
           {
