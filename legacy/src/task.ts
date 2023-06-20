@@ -9,11 +9,7 @@ import {
   HumanFeedbackOptions,
   HumanFeedbackType
 } from './human-feedback'
-import {
-  defaultIDGeneratorFn,
-  isValidTaskIdentifier,
-  stringifyForDebugging
-} from './utils'
+import { defaultIDGeneratorFn, isValidTaskIdentifier } from './utils'
 
 /**
  * A `Task` is an async function call that may be non-deterministic. It has
