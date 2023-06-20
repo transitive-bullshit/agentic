@@ -148,6 +148,8 @@ export function parseOutput(output: string, outputSchema: ZodType<any>) {
     result = parseBooleanOutput(output)
   } else if (outputSchema instanceof z.ZodNumber) {
     result = parseNumberOutput(output, outputSchema)
+  } else {
+    result = output
   }
 
   // TODO: fix typescript issue here with recursive types
