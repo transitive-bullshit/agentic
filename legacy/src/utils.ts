@@ -1,5 +1,6 @@
 import { customAlphabet, urlAlphabet } from 'nanoid'
 import type { ThrottledFunction } from 'p-throttle'
+import { JsonValue } from 'type-fest'
 
 import * as types from './types'
 
@@ -132,7 +133,10 @@ export function chunkMultipleStrings(
  * @param json - JSON value to stringify
  * @returns stringified value with all double quotes around object keys removed
  */
-export function stringifyForModel(json: types.Jsonifiable): string {
+export function stringifyForModel(
+  json: types.Jsonifiable,
+  omit: string[] = []
+): string {
   const UNIQUE_PREFIX = defaultIDGeneratorFn()
   return (
     JSON.stringify(json, replacer)
@@ -143,7 +147,11 @@ export function stringifyForModel(json: types.Jsonifiable): string {
   /**
    * Replacer function prefixing all keys with a unique identifier.
    */
-  function replacer(_: string, value: any) {
+  function replacer(key: string, value: JsonValue) {
+    if (omit.includes(key)) {
+      return undefined
+    }
+
     if (value && typeof value === 'object') {
       if (Array.isArray(value)) {
         return value
@@ -152,7 +160,7 @@ export function stringifyForModel(json: types.Jsonifiable): string {
       const replacement = {}
 
       for (const k in value) {
-        if (Object.hasOwnProperty.call(value, k)) {
+        if (Object.hasOwnProperty.call(value, k) && !omit.includes(k)) {
           replacement[UNIQUE_PREFIX + k] = value[k]
         }
       }

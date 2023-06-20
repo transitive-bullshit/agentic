@@ -2,7 +2,7 @@ import { JSONRepairError, jsonrepair } from 'jsonrepair'
 import { dedent } from 'ts-dedent'
 import { type SetRequired } from 'type-fest'
 import { ZodType, z } from 'zod'
-import { printNode, zodToTs } from 'zod-to-ts'
+import { zodToJsonSchema } from 'zod-to-json-schema'
 
 import * as errors from '@/errors'
 import * as types from '@/types'
@@ -275,22 +275,12 @@ export abstract class BaseChatCompletion<
       return null
     }
 
-    // TODO: replace zod-to-ts with zod-to-json-schema?
-    const { node } = zodToTs(outputSchema)
-
-    if (node.kind === 152) {
-      // Handle raw strings differently:
-      return dedent`Output a raw string only, without any additional text.`
-    }
-
-    const tsTypeString = printNode(node, {
-      removeComments: false,
-      // TODO: this doesn't seem to actually work, so we're doing it manually below
-      omitTrailingSemicolon: true,
-      noEmitHelpers: true
-    })
-      .replace(/^ {4}/gm, '  ')
-      .replace(/;$/gm, '')
+    const schema = zodToJsonSchema(outputSchema) as types.Jsonifiable
+    const schemaStr = stringifyForModel(schema, [
+      'default',
+      'additionalProperties',
+      '$schema'
+    ])
     let label: string
     if (outputSchema instanceof z.ZodArray) {
       label = 'JSON array (minified)'
@@ -306,9 +296,9 @@ export abstract class BaseChatCompletion<
       label = 'JSON value'
     }
 
-    return dedent`Do not output code. Output a single ${label} in the following TypeScript format:
-        \`\`\`ts
-        ${tsTypeString}
+    return dedent`Do not output code. Output a single ${label} according to the following JSON Schema:
+        \`\`\`json
+        ${schemaStr}
         \`\`\``
   }
 
