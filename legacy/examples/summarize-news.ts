@@ -11,7 +11,7 @@ async function main() {
   const topic = process.argv[2] || 'HF0 accelerator'
 
   const res = await agentic
-    .gpt4(`Summarize the latest news on {{topic}} using markdown.`)
+    .gpt3(`Summarize the latest news on {{topic}} using markdown.`)
     .tools([new SerpAPITool()])
     .input(
       z.object({

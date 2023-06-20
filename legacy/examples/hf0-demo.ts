@@ -57,12 +57,14 @@ async function main() {
       messages: [
         {
           role: 'system',
-          content: `You are a McKinsey analyst who is an expert at writing executive summaries.`
+          content: `You are a McKinsey analyst who is an expert at writing executive summaries. Be srue to cite your sources using markdown.`
         },
         {
           role: 'user',
-          content: `Write a thorough executive summary on this topic: {{topic}}.
-          In order to do this, you will need to answer the following questions: \n{{#questions}}- {{.}}\n{{/questions}}`
+          content: (input) =>
+            `Write a thorough executive summary on this topic: ${topic}. In order to do this, you will need to answer the following questions: \n${input.questions
+              .map((q) => `- ${q}`)
+              .join('\n')}`
         }
       ],
       model: 'gpt-4-32k'

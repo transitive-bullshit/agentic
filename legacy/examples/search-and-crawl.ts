@@ -30,7 +30,7 @@ async function main() {
         topic: z.string()
       })
     )
-    .callWithMetadata({ topic })
+    .call({ topic })
 
   console.log('\n\n\n')
   console.log(res)

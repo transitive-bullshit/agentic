@@ -7,7 +7,7 @@ import { HumanFeedbackOptions, HumanFeedbackType } from './human-feedback'
 import { HumanFeedbackMechanismCLI } from './human-feedback/cli'
 import { OpenAIChatCompletion } from './llms/openai'
 import { defaultLogger } from './logger'
-import { defaultIDGeneratorFn } from './utils'
+import { defaultIDGeneratorFn, isFunction, isString } from './utils'
 
 export class Agentic {
   // _taskMap: WeakMap<string, BaseTask<any, any>>
@@ -103,16 +103,24 @@ export class Agentic {
     return this._idGeneratorFn
   }
 
-  openaiChatCompletion(
-    promptOrChatCompletionParams: string | types.openai.ChatCompletionParams, // TODO: make more strict?
+  openaiChatCompletion<TInput extends types.TaskInput = any>(
+    promptOrChatCompletionParams:
+      | types.ChatMessageContent<TInput>
+      | SetOptional<types.OpenAIChatCompletionParamsInput<TInput>, 'model'>,
     modelParams?: SetOptional<
-      types.openai.ChatCompletionParams,
+      types.OpenAIChatCompletionParamsInput,
       'model' | 'messages'
     >
   ) {
-    let options: Partial<types.openai.ChatCompletionParams>
+    let options: SetOptional<
+      types.OpenAIChatCompletionParamsInput<TInput>,
+      'model'
+    >
 
-    if (typeof promptOrChatCompletionParams === 'string') {
+    if (
+      isString(promptOrChatCompletionParams) ||
+      isFunction(promptOrChatCompletionParams)
+    ) {
       options = {
         ...modelParams,
         messages: [
@@ -130,9 +138,9 @@ export class Agentic {
       }
     }
 
-    return new OpenAIChatCompletion({
+    return new OpenAIChatCompletion<TInput>({
+      ...this._openaiModelDefaults,
       agentic: this,
-      ...(this._openaiModelDefaults as any), // TODO
       ...options
     })
   }
@@ -140,18 +148,24 @@ export class Agentic {
   /**
    * Shortcut for creating an OpenAI chat completion call with the `gpt-3.5-turbo` model.
    */
-  gpt3(
+  gpt3<TInput extends types.TaskInput = any>(
     promptOrChatCompletionParams:
-      | string
-      | SetOptional<types.openai.ChatCompletionParams, 'model'>,
+      | types.ChatMessageContent<TInput>
+      | SetOptional<types.OpenAIChatCompletionParamsInput<TInput>, 'model'>,
     modelParams?: SetOptional<
-      types.openai.ChatCompletionParams,
+      types.OpenAIChatCompletionParamsInput,
       'model' | 'messages'
     >
   ) {
-    let options: SetOptional<types.openai.ChatCompletionParams, 'model'>
+    let options: SetOptional<
+      types.OpenAIChatCompletionParamsInput<TInput>,
+      'model'
+    >
 
-    if (typeof promptOrChatCompletionParams === 'string') {
+    if (
+      isString(promptOrChatCompletionParams) ||
+      isFunction(promptOrChatCompletionParams)
+    ) {
       options = {
         ...modelParams,
         messages: [
@@ -169,9 +183,9 @@ export class Agentic {
       }
     }
 
-    return new OpenAIChatCompletion({
+    return new OpenAIChatCompletion<TInput>({
+      ...this._openaiModelDefaults,
       agentic: this,
-      ...(this._openaiModelDefaults as any), // TODO
       model: 'gpt-3.5-turbo',
       ...options
     })
@@ -180,18 +194,24 @@ export class Agentic {
   /**
    * Shortcut for creating an OpenAI chat completion call with the `gpt-4` model.
    */
-  gpt4(
+  gpt4<TInput extends types.TaskInput = any>(
     promptOrChatCompletionParams:
-      | string
-      | SetOptional<types.openai.ChatCompletionParams, 'model'>,
+      | types.ChatMessageContent<TInput>
+      | SetOptional<types.OpenAIChatCompletionParamsInput<TInput>, 'model'>,
     modelParams?: SetOptional<
-      types.openai.ChatCompletionParams,
+      types.OpenAIChatCompletionParamsInput,
       'model' | 'messages'
     >
   ) {
-    let options: SetOptional<types.openai.ChatCompletionParams, 'model'>
+    let options: SetOptional<
+      types.OpenAIChatCompletionParamsInput<TInput>,
+      'model'
+    >
 
-    if (typeof promptOrChatCompletionParams === 'string') {
+    if (
+      isString(promptOrChatCompletionParams) ||
+      isFunction(promptOrChatCompletionParams)
+    ) {
       options = {
         ...modelParams,
         messages: [
@@ -209,9 +229,9 @@ export class Agentic {
       }
     }
 
-    return new OpenAIChatCompletion({
+    return new OpenAIChatCompletion<TInput>({
+      ...this._openaiModelDefaults,
       agentic: this,
-      ...(this._openaiModelDefaults as any), // TODO
       model: 'gpt-4',
       ...options
     })

@@ -80,8 +80,16 @@ export type ChatMessageContent<TInput extends TaskInput = void> =
 export type ChatMessageInput<TInput extends TaskInput = void> =
   | ChatMessage
   | {
+      role: ChatMessageRole
+      name?: string
+      function_call?: any
       content: ChatMessageContent<TInput>
     }
+
+export type OpenAIChatCompletionParamsInput<TInput extends TaskInput = void> =
+  Omit<openai.ChatCompletionParams, 'messages'> & {
+    messages: ChatMessageInput<TInput>[]
+  }
 
 export interface ChatModelOptions<
   TInput extends TaskInput = void,
