@@ -159,24 +159,27 @@ export abstract class BaseTask<
   ): this {
     const hooks = hookType === 'before' ? this._preHooks : this._postHooks
 
+    let found = false
     if (typeof hookOrName === 'string') {
-      const hookObj = hooks.find((h) => h.name === hookOrName)
-      if (!hookObj) {
-        throw new Error(
-          `Could not find a ${hookType}-call hook named "${hookOrName}" to change its priority`
-        )
+      for (const hookObj of hooks) {
+        if (hookObj.name === hookOrName) {
+          found = true
+          hookObj.priority = newPriority
+        }
       }
-
-      hookObj.priority = newPriority
     } else {
-      const hookObj = hooks.find((h) => h.hook === hookOrName)
-      if (!hookObj) {
-        throw new Error(
-          `Could not find the provided ${hookType}-call hook to change its priority`
-        )
+      for (const hookObj of hooks) {
+        if (hookObj.hook === hookOrName) {
+          found = true
+          hookObj.priority = newPriority
+        }
       }
+    }
 
-      hookObj.priority = newPriority
+    if (!found) {
+      throw new Error(
+        `Could not find the provided ${hookType}-call hook to change its priority`
+      )
     }
 
     hooks.sort((a, b) => b.priority - a.priority)
