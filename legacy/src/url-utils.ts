@@ -7,6 +7,12 @@ const normalizedUrlCache = new QuickLRU<string, string | null>({
   maxSize: 4000
 })
 
+/**
+ * Checks if a URL is crawlable.
+ *
+ * @param url - URL string to check
+ * @returns whether the URL is crawlable
+ */
 export function isValidCrawlableUrl(url: string): boolean {
   try {
     if (!url || (isRelativeUrl(url) && !url.startsWith('//'))) {

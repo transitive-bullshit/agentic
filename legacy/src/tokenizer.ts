@@ -48,6 +48,13 @@ export class TiktokenTokenizer implements Tokenizer {
 
 export const getTiktokenBPE = pMemoize(getTiktokenBPEImpl)
 
+/**
+ * Asynchronously retrieves the Byte Pair Encoding (BPE) for a specified Tiktoken encoding.
+ *
+ * @param encoding - Tiktoken encoding
+ * @param options - optional settings for the request
+ * @returns promise that resolves to the BPE for the specified encoding
+ */
 async function getTiktokenBPEImpl(
   encoding: TiktokenEncoding,
   {
@@ -64,6 +71,13 @@ async function getTiktokenBPEImpl(
   }).json<TiktokenBPE>()
 }
 
+/**
+ * Asynchronously creates and retrieves a tokenizer for a specified Tiktoken encoding.
+ *
+ * @param encoding - Tiktoken encoding
+ * @param options - optional settings for the request
+ * @returns promise resolving to a tokenizer for the specified encoding
+ */
 export async function getTokenizerForEncoding(
   encoding: TiktokenEncoding,
   options?: {
@@ -77,6 +91,13 @@ export async function getTokenizerForEncoding(
   return new TiktokenTokenizer(tiktoken)
 }
 
+/**
+ * Asynchronously creates and retrieves a tokenizer for a specified Tiktoken model.
+ *
+ * @param model - name of the Tiktoken model
+ * @param options - optional settings for the request
+ * @returns promise resolving to a tokenizer for the specified model
+ */
 export async function getTokenizerForModel(
   model: string,
   options?: {

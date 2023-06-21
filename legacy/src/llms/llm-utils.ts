@@ -81,16 +81,24 @@ export async function getNumTokensForChatMessages({
   return { numTokensTotal, numTokensPerMessage }
 }
 
+/**
+ * Converts a Zod schema to a JSON schema.
+ *
+ * @param options - object containing the `zodSchema` and `name`
+ * @returns JSON schema derived from the provided Zod schema
+ */
 export function zodToJsonSchema({
   zodSchema,
   name
 }: {
+  /** Zod schema */
   zodSchema: ZodTypeAny
+  /** Name of the schema */
   name: string
 }): any {
   const jsonSchema = zodToJsonSchemaImpl(zodSchema, {
     name,
-    $refStrategy: 'none'
+    $refStrategy: 'none' // ignores referencing
   })
 
   const parameters: any = jsonSchema.definitions?.[name]
@@ -103,6 +111,13 @@ export function zodToJsonSchema({
   return parameters
 }
 
+/**
+ * Generates a chat message function definition from a given task.
+ *
+ * @param task - task to generate a function definition from
+ * @returns function definition for a chat message
+ * @throws if the task name is invalid
+ */
 export function getChatMessageFunctionDefinitionFromTask(
   task: BaseTask<any, any>
 ): types.openai.ChatMessageFunction {
@@ -120,6 +135,12 @@ export function getChatMessageFunctionDefinitionFromTask(
   }
 }
 
+/**
+ * Generates an array of chat message function definitions from an array of tasks.
+ *
+ * @param tasks - array of tasks to generate function definitions from
+ * @returns array of function definitions for chat messages
+ */
 export function getChatMessageFunctionDefinitionsFromTasks(
   tasks: BaseTask<any, any>[]
 ): types.openai.ChatMessageFunction[] {
