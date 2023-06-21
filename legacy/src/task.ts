@@ -299,6 +299,10 @@ export abstract class BaseTask<
           throw new Error(`Invalid preHook output: ${output?.error.message}`)
         }
 
+        ctx.metadata.success = true
+        ctx.metadata.numRetries = ctx.attemptNumber
+        ctx.metadata.error = undefined
+
         return {
           result: output.data,
           metadata: ctx.metadata
