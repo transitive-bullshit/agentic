@@ -103,7 +103,7 @@ export abstract class BaseTask<
   ): this {
     const hookName = name ?? `preHook_${this._preHooks.length}`
     this._preHooks.push({ hook, priority, name: hookName })
-    this._preHooks.sort((a, b) => b.priority - a.priority)
+    this._preHooks.sort((a, b) => b.priority - a.priority) // two elements that compare equal will remain in their original order (>= ECMAScript 2019)
     return this
   }
 
@@ -119,7 +119,7 @@ export abstract class BaseTask<
   ): this {
     const hookName = name ?? `postHook_${this._postHooks.length}`
     this._postHooks.push({ hook, priority, name: hookName })
-    this._postHooks.sort((a, b) => b.priority - a.priority)
+    this._postHooks.sort((a, b) => b.priority - a.priority) // two elements that compare equal will remain in their original order (>= ECMAScript 2019)
     return this
   }
 
