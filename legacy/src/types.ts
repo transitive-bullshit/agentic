@@ -6,6 +6,7 @@ import type { JsonObject, Jsonifiable } from 'type-fest'
 import { SafeParseReturnType, ZodType, ZodTypeAny, output, z } from 'zod'
 
 import type { Agentic } from './agentic'
+import { SKIP_HOOKS } from './constants'
 import type {
   FeedbackTypeToMetadata,
   HumanFeedbackType
@@ -155,11 +156,21 @@ export declare class CancelablePromise<T> extends Promise<T> {
 
 // export type ProgressFunction = (partialResponse: ChatMessage) => void
 
-export type TaskBeforeCallHook<TInput extends TaskInput = void> = (
+export type TaskBeforeCallHook<
+  TInput extends TaskInput = void,
+  TOutput extends TaskOutput = string
+> = (
   ctx: TaskCallContext<TInput>
-) => void | Promise<void>
+) =>
+  | void
+  | TOutput
+  | typeof SKIP_HOOKS
+  | Promise<void | TOutput | typeof SKIP_HOOKS>
 
 export type TaskAfterCallHook<
   TInput extends TaskInput = void,
   TOutput extends TaskOutput = string
-> = (output: TOutput, ctx: TaskCallContext<TInput>) => void | Promise<void>
+> = (
+  output: TOutput,
+  ctx: TaskCallContext<TInput>
+) => void | typeof SKIP_HOOKS | Promise<void | typeof SKIP_HOOKS>
