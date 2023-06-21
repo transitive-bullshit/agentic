@@ -5,26 +5,6 @@ import { JsonValue } from 'type-fest'
 import * as types from './types'
 
 /**
- * Extracts a JSON object string from a given string.
- *
- * @param text - string from which to extract the JSON object
- * @returns extracted JSON object string, or `undefined` if no JSON object is found
- */
-export function extractJSONObjectFromString(text: string): string | undefined {
-  return text.match(/\{(.|\n)*\}/gm)?.[0] // FIXME: This breaks if there are multiple JSON objects in the string
-}
-
-/**
- * Extracts a JSON array string from a given string.
- *
- * @param text - string from which to extract the JSON array
- * @returns extracted JSON array string, or `undefined` if no JSON array is found
- */
-export function extractJSONArrayFromString(text: string): string | undefined {
-  return text.match(/\[(.|\n)*\]/gm)?.[0] // FIXME: This breaks if there are multiple JSON arrays in the string
-}
-
-/**
  * Pauses the execution of a function for a specified time.
  *
  * @param ms - number of milliseconds to pause

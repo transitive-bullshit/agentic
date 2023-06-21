@@ -2,12 +2,102 @@ import test from 'ava'
 import { z } from 'zod'
 
 import {
+  extractJSONFromString,
   parseArrayOutput,
   parseBooleanOutput,
   parseNumberOutput,
   parseObjectOutput,
   parseOutput
 } from '@/llms/parse-output'
+
+test('extractJSONFromString should extract JSON object from string', (t) => {
+  let jsonStr = 'Some text {"name":"John Doe"} more text'
+  let result = extractJSONFromString(jsonStr, 'object')
+  t.deepEqual(result[0], { name: 'John Doe' })
+
+  jsonStr =
+    'Some text {"name":"John Doe","age":42,"address":{"street":"Main Street","number":42}} more text'
+  result = extractJSONFromString(jsonStr, 'object')
+  t.deepEqual(result[0], {
+    name: 'John Doe',
+    age: 42,
+    address: { street: 'Main Street', number: 42 }
+  })
+
+  jsonStr = 'foo {"name":"John Doe","school":"St. John\'s"} bar'
+  result = extractJSONFromString(jsonStr, 'object')
+  t.deepEqual(result[0], { name: 'John Doe', school: "St. John's" })
+})
+
+test('extractJSONFromString should extract an invalid JSON object from string', (t) => {
+  let jsonStr = 'Some text {"name":\'John Doe\'} more text'
+  let result = extractJSONFromString(jsonStr, 'object')
+  t.deepEqual(result[0], { name: 'John Doe' })
+
+  jsonStr = 'Some text {"name":"John Doe","age":42,} more text'
+  result = extractJSONFromString(jsonStr, 'object')
+  t.deepEqual(result[0], { name: 'John Doe', age: 42 })
+})
+
+test('extractJSONFromString should extract multiple JSON objects from string', (t) => {
+  let jsonStr = 'Some text {"name":"John Doe"} more text {"name":"Jane Doe"}'
+  let result = extractJSONFromString(jsonStr, 'object')
+  t.deepEqual(result[0], { name: 'John Doe' })
+  t.deepEqual(result[1], { name: 'Jane Doe' })
+
+  jsonStr =
+    'Some text {"name":"John Doe","age":42,"address":{"street":"Main Street","number":42}} more text {"name":"Jane Doe","age":42,"address":{"street":"Main Street","number":42}}'
+  result = extractJSONFromString(jsonStr, 'object')
+  t.deepEqual(result[0], {
+    name: 'John Doe',
+    age: 42,
+    address: { street: 'Main Street', number: 42 }
+  })
+  t.deepEqual(result[1], {
+    name: 'Jane Doe',
+    age: 42,
+    address: { street: 'Main Street', number: 42 }
+  })
+})
+
+test('extractJSONFromString should extract JSON array from string', (t) => {
+  let jsonString = 'Some text [1,2,3] more text'
+  let result = extractJSONFromString(jsonString, 'array')
+  t.deepEqual(result[0], [1, 2, 3])
+
+  jsonString = 'Some text ["foo","bar","\'quoted\'"] more text'
+  result = extractJSONFromString(jsonString, 'array')
+  t.deepEqual(result[0], ['foo', 'bar', "'quoted'"])
+})
+
+test('extractJSONFromString should extract an invalid JSON array from string', (t) => {
+  let jsonString = 'Some text [1,2,3,] more text'
+  let result = extractJSONFromString(jsonString, 'array')
+  t.deepEqual(result[0], [1, 2, 3])
+
+  jsonString = "Some text ['foo','bar'] more text"
+  result = extractJSONFromString(jsonString, 'array')
+  t.deepEqual(result[0], ['foo', 'bar'])
+})
+
+test('extractJSONFromString should extract multiple JSON arrays from string', (t) => {
+  const jsonString = 'Some text [1,2,3] more text [4,5,6]'
+  const result = extractJSONFromString(jsonString, 'array')
+  t.deepEqual(result[0], [1, 2, 3])
+  t.deepEqual(result[1], [4, 5, 6])
+})
+
+test('extractJSONFromString should return an empty array if no JSON object is found', (t) => {
+  const jsonString = 'Some text'
+  const result = extractJSONFromString(jsonString, 'object')
+  t.deepEqual(result, [])
+})
+
+test('extractJSONFromString should return an empty array if no JSON array is found', (t) => {
+  const jsonString = 'Some text'
+  const result = extractJSONFromString(jsonString, 'array')
+  t.deepEqual(result, [])
+})
 
 test('parseArrayOutput - handles valid arrays correctly', (t) => {
   const output1 = parseArrayOutput('[1,2,3]')
@@ -37,22 +127,6 @@ test('parseArrayOutput - handles arrays surrounded by text correctly', (t) => {
   t.snapshot(
     output3,
     'should return [{"a": 1}, {"b": 2}] for "This is the array [{"a": 1}, {"b": 2}] in the text"'
-  )
-})
-
-test('parseArrayOutput - handles and repairs broken JSON arrays correctly', (t) => {
-  const output1 = parseArrayOutput('[1, "two, 3]')
-  const output2 = parseArrayOutput('Array: ["a, "b", "c"]. Error here!')
-  const output3 = parseArrayOutput('Array in text {"arr": ["value1, "value2"]}')
-
-  t.snapshot(output1, 'should repair and return [1, "two", 3] for [1, "two, 3]')
-  t.snapshot(
-    output2,
-    'should repair and return ["a", "b", "c"] for Array: ["a, "b", "c"]. Error here!'
-  )
-  t.snapshot(
-    output3,
-    'should repair and return {"arr": ["value1", "value2"]} for Array in text {"arr": ["value1, "value2"]}'
   )
 })
 
@@ -96,22 +170,6 @@ test('parseObjectOutput - handles objects surrounded by text correctly', (t) => 
   t.snapshot(
     output2,
     'should return {"name":"John","age":30,"city":"New York"} for "Object: {"name":"John","age":30,"city":"New York"}. That\'s all!"'
-  )
-})
-
-test('parseObjectOutput - handles and repairs broken JSON objects correctly', (t) => {
-  const output1 = parseObjectOutput('{"a":1, "b":2, "c":3')
-  const output2 = parseObjectOutput(
-    'Object: {"name":"John,"age":30,"city":"New York"}. Error here!'
-  )
-
-  t.snapshot(
-    output1,
-    'should repair and return {"a":1, "b":2, "c":3} for {"a":1, "b":2, "c":3'
-  )
-  t.snapshot(
-    output2,
-    'should repair and return {"name":"John","age":30,"city":"New York"} for Object: {"name":"John,"age":30,"city":"New York"}. Error here!'
   )
 })
 

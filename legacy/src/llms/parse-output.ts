@@ -1,11 +1,87 @@
 import { JSONRepairError, jsonrepair } from 'jsonrepair'
+import { JsonValue } from 'type-fest'
 import { ZodType, z } from 'zod'
 
 import * as errors from '@/errors'
-import {
-  extractJSONArrayFromString,
-  extractJSONObjectFromString
-} from '@/utils'
+
+/**
+ * Checks if character at the specified index in a string is escaped.
+ *
+ * @param str - string to check
+ * @param i - index of the character to check
+ * @returns whether the character is escaped
+ */
+function isEscaped(str: string, i: number): boolean {
+  return i > 0 && str[i - 1] === '\\' && !(i > 1 && str[i - 2] === '\\')
+}
+
+/**
+ * Extracts JSON objects or arrays from a string.
+ *
+ * @param input - string to extract JSON from
+ * @param jsonStructureType - type of JSON structure to extract
+ * @returns array of extracted JSON objects or arrays
+ */
+export function extractJSONFromString(
+  input: string,
+  jsonStructureType: 'object' | 'array'
+) {
+  const startChar = jsonStructureType === 'object' ? '{' : '['
+  const endChar = jsonStructureType === 'object' ? '}' : ']'
+  const extractedJSONValues: JsonValue[] = []
+  let nestingLevel = 0
+  let startIndex = 0
+  const isInsideQuoted = { '"': false, "'": false }
+
+  for (let i = 0; i < input.length; i++) {
+    const ch = input.charAt(i)
+    switch (ch) {
+      case '"':
+      case "'":
+        if (!isInsideQuoted[ch === '"' ? "'" : '"'] && !isEscaped(input, i)) {
+          isInsideQuoted[ch] = !isInsideQuoted[ch]
+        }
+
+        break
+
+      default:
+        if (!isInsideQuoted['"'] && !isInsideQuoted["'"]) {
+          switch (ch) {
+            case startChar:
+              if (nestingLevel === 0) {
+                startIndex = i
+              }
+
+              nestingLevel += 1
+
+              break
+
+            case endChar:
+              nestingLevel -= 1
+              if (nestingLevel === 0) {
+                const candidate = input.slice(startIndex, i + 1)
+                const parsed = JSON.parse(jsonrepair(candidate))
+                if (parsed && typeof parsed === 'object') {
+                  extractedJSONValues.push(parsed)
+                }
+              } else if (nestingLevel < 0) {
+                throw new Error(
+                  `Invalid JSON string: unexpected ${endChar} at position ${i}`
+                )
+              }
+          }
+        }
+    }
+  }
+
+  if (nestingLevel !== 0) {
+    throw new Error(
+      'Invalid JSON string: unmatched ' + startChar + ' or ' + endChar
+    )
+  }
+
+  return extractedJSONValues
+}
 
 const BOOLEAN_OUTPUTS = {
   true: true,
@@ -28,8 +104,12 @@ const BOOLEAN_OUTPUTS = {
  */
 export function parseArrayOutput(output: string): Array<any> {
   try {
-    const trimmedOutput = extractJSONArrayFromString(output)
-    const parsedOutput = JSON.parse(jsonrepair(trimmedOutput ?? output))
+    const arr = extractJSONFromString(output, 'array')
+    if (arr.length === 0) {
+      throw new errors.OutputValidationError(`Invalid JSON array: ${output}`)
+    }
+
+    const parsedOutput = arr[0]
     if (!Array.isArray(parsedOutput)) {
       throw new errors.OutputValidationError(
         `Invalid JSON array: ${JSON.stringify(parsedOutput)}`
@@ -59,19 +139,22 @@ export function parseArrayOutput(output: string): Array<any> {
  */
 export function parseObjectOutput(output: string) {
   try {
-    const trimmedOutput = extractJSONObjectFromString(output)
-    output = JSON.parse(jsonrepair(trimmedOutput ?? output))
+    const arr = extractJSONFromString(output, 'object')
+    if (arr.length === 0) {
+      throw new errors.OutputValidationError(`Invalid JSON object: ${output}`)
+    }
 
-    if (Array.isArray(output)) {
+    let parsedOutput = arr[0]
+    if (Array.isArray(parsedOutput)) {
       // TODO
-      output = output[0]
-    } else if (typeof output !== 'object') {
+      parsedOutput = parsedOutput[0]
+    } else if (typeof parsedOutput !== 'object') {
       throw new errors.OutputValidationError(
-        `Invalid JSON object: ${JSON.stringify(output)}`
+        `Invalid JSON object: ${JSON.stringify(parsedOutput)}`
       )
     }
 
-    return output
+    return parsedOutput
   } catch (err: any) {
     if (err instanceof JSONRepairError) {
       throw new errors.OutputValidationError(err.message, { cause: err })
@@ -149,6 +232,7 @@ export function parseOutput(output: string, outputSchema: ZodType<any>) {
   } else if (outputSchema instanceof z.ZodNumber) {
     result = parseNumberOutput(output, outputSchema)
   } else {
+    // Default to string output...
     result = output
   }
 
