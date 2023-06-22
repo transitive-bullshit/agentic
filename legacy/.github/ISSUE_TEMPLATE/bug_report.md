@@ -1,0 +1,72 @@
+name: 🐛 Bug Report
+description: Report an issue or possible bug with Agentic
+labels: [bug]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for taking the time to file a bug report! Please fill out this form as completely as possible.
+  - type: input
+    id: version
+    attributes:
+      label: What version of `Agentic` are you using?
+      placeholder: 0.0.0
+    validations:
+      required: true
+  - type: input
+    id: node-version
+    attributes:
+      label: What Node.js / npm version(s) are you using?
+    validations:
+      required: true
+  - type: input
+    id: platform
+    attributes:
+      label: Platform
+      description: What operating system are you on?
+      placeholder: Windows 10, macOS 11.5.2, Ubuntu 20.04, etc.
+      validations:
+        required: true
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: Describe the Bug
+      description: A clear and concise description of what the bug is.
+    validations:
+      required: true
+  - type: textarea
+    id: expected-results
+    attributes:
+      label: Expected Results
+      description: What are the expected results?
+      placeholder: Insert expected results here
+    validations:
+      required: true
+  - type: textarea
+    id: actual-results
+    attributes:
+      label: Actual Results
+      description: What are the actual results?
+      placeholder: Insert actual results here
+    validations:
+      required: true
+  - type: input
+    id: bug-reproduction
+    attributes:
+      label: Link to Minimal Reproducible Example
+      description: 'If relevant, provide a link to a minimal reproduction of the problem. You may use a code playground like [Replit](https://replit.com) or [CodeSandbox](https://codesandbox.io). If you are unable to provide a link, please provide a code snippet or a detailed description of the steps necessary to reproduce the problem.'
+    validations:
+      required: true
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      description: Please ensure the following tasks are completed before filing a bug report.
+      options:
+        - label: Read and understood the Code of Conduct.
+          required: true
+        - label:  Searched for existing issues and pull requests.
+          required: true
+        - label:  I am willing to submit a pull request for this issue.
+          required: false
