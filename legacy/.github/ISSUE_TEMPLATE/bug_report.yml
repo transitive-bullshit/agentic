@@ -1,7 +1,6 @@
 name: 🐛 Bug Report
 description: Report an issue or possible bug with Agentic
 labels: [bug]
-assignees: []
 body:
   - type: markdown
     attributes:
@@ -10,14 +9,16 @@ body:
   - type: input
     id: version
     attributes:
-      label: What version of `Agentic` are you using?
+      label: Agentic Version
+      description: What version of agentic are you using?
       placeholder: 0.0.0
     validations:
       required: true
   - type: input
     id: node-version
     attributes:
-      label: What Node.js / npm version(s) are you using?
+      label: Node.js / npm Version
+      description: What Node.js / npm version(s) are you using?
     validations:
       required: true
   - type: input
