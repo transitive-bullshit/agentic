@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: ❓Question
+    url: https://github.com/transitive-bullshit/agentic/discussions/new?category=Q%26A
+    about: Got a (non-bug related) question? Ask the community for help!
+  - name: 💡Feature Request
+    url: https://github.com/transitive-bullshit/agentic/discussions/new?category=Ideas
+    about: Share ideas for new features with the community.
+  - name: 🐛Bug Report
+    url: https://github.com/transitive-bullshit/agentic/issues/new?&template=bug_report.md
+    about: Create an issue with a bug report.
