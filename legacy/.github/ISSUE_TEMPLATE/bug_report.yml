@@ -26,7 +26,7 @@ body:
       label: Platform
       description: What operating system are you on?
       placeholder: Windows 10, macOS 11.5.2, Ubuntu 20.04, etc.
-      validations:
+    validations:
         required: true
   - type: textarea
     id: bug-description
