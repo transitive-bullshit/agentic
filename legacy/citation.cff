@@ -1,0 +1,30 @@
+cff-version: 1.2.0
+title: Agentic
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+
+type: software
+
+authors:
+  - given-names: Travis
+    family-names: Fischer
+    email: travis@transitivebullsh.it
+  - given-names: Philipp
+    family-names: Burckhardt
+    email: pburckhardt@outlook.com
+
+repository-code: https://github.com/transitive-bullshit/agentic
+url: https://github.com/transitive-bullshit/agentic
+
+abstract: |
+  Build reliable AI Agents with TypeScript.
+
+keywords:
+- AI
+- Agents
+- TypeScript
+
+license: MIT
+
+date-released: 2023
