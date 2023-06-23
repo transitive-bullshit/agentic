@@ -1,6 +1,7 @@
 export * from './calculator'
 export * from './diffbot'
 export * from './metaphor'
+export * from './midjourney'
 export * from './novu'
 export * from './search-and-crawl'
 export * from './serpapi'

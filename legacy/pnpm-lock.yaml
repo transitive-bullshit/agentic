@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@agentic/midjourney-fetch':
+    specifier: ^1.0.1
+    version: link:../../temp/midjourney-fetch
   '@anthropic-ai/sdk':
     specifier: ^0.4.4
     version: 0.4.4

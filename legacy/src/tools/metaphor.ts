@@ -6,14 +6,7 @@ import { BaseTask } from '@/task'
 
 export const MetaphorInputSchema = z.object({
   query: z.string(),
-  numResults: z.number().optional(),
-  useQueryExpansion: z.boolean().optional(),
-  includeDomains: z.array(z.string()).optional(),
-  excludeDomains: z.array(z.string()).optional(),
-  startCrawlDate: z.string().optional(),
-  endCrawlDate: z.string().optional(),
-  startPublishedDate: z.string().optional(),
-  endPublishedDate: z.string().optional()
+  numResults: z.number().optional()
 })
 
 export const MetaphorOutputSchema = z.object({
