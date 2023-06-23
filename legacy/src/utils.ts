@@ -1,27 +1,8 @@
 import { customAlphabet, urlAlphabet } from 'nanoid'
 import type { ThrottledFunction } from 'p-throttle'
+import { JsonValue } from 'type-fest'
 
 import * as types from './types'
-
-/**
- * Extracts a JSON object string from a given string.
- *
- * @param text - string from which to extract the JSON object
- * @returns extracted JSON object string, or `undefined` if no JSON object is found
- */
-export function extractJSONObjectFromString(text: string): string | undefined {
-  return text.match(/\{(.|\n)*\}/gm)?.[0] // FIXME: This breaks if there are multiple JSON objects in the string
-}
-
-/**
- * Extracts a JSON array string from a given string.
- *
- * @param text - string from which to extract the JSON array
- * @returns extracted JSON array string, or `undefined` if no JSON array is found
- */
-export function extractJSONArrayFromString(text: string): string | undefined {
-  return text.match(/\[(.|\n)*\]/gm)?.[0] // FIXME: This breaks if there are multiple JSON arrays in the string
-}
 
 /**
  * Pauses the execution of a function for a specified time.
@@ -132,7 +113,10 @@ export function chunkMultipleStrings(
  * @param json - JSON value to stringify
  * @returns stringified value with all double quotes around object keys removed
  */
-export function stringifyForModel(json: types.Jsonifiable): string {
+export function stringifyForModel(
+  json: types.Jsonifiable,
+  omit: string[] = []
+): string {
   const UNIQUE_PREFIX = defaultIDGeneratorFn()
   return (
     JSON.stringify(json, replacer)
@@ -143,7 +127,11 @@ export function stringifyForModel(json: types.Jsonifiable): string {
   /**
    * Replacer function prefixing all keys with a unique identifier.
    */
-  function replacer(_: string, value: any) {
+  function replacer(key: string, value: JsonValue) {
+    if (omit.includes(key)) {
+      return undefined
+    }
+
     if (value && typeof value === 'object') {
       if (Array.isArray(value)) {
         return value
@@ -152,7 +140,7 @@ export function stringifyForModel(json: types.Jsonifiable): string {
       const replacement = {}
 
       for (const k in value) {
-        if (Object.hasOwnProperty.call(value, k)) {
+        if (Object.hasOwnProperty.call(value, k) && !omit.includes(k)) {
           replacement[UNIQUE_PREFIX + k] = value[k]
         }
       }

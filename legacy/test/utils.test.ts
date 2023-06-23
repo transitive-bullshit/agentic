@@ -6,8 +6,6 @@ import {
   chunkString,
   defaultIDGeneratorFn,
   extractFunctionIdentifierFromString,
-  extractJSONArrayFromString,
-  extractJSONObjectFromString,
   isValidTaskIdentifier,
   sleep,
   stringifyForModel,
@@ -31,30 +29,6 @@ test('isValidTaskIdentifier - invalid', async (t) => {
   t.false(isValidTaskIdentifier('-'))
   t.false(isValidTaskIdentifier('x'.repeat(65)))
   t.false(isValidTaskIdentifier('-foo'))
-})
-
-test('extractJSONObjectFromString should extract JSON object from string', (t) => {
-  const jsonString = 'Some text {"name":"John Doe"} more text'
-  const result = extractJSONObjectFromString(jsonString)
-  t.is(result, '{"name":"John Doe"}')
-})
-
-test('extractJSONArrayFromString should extract JSON array from string', (t) => {
-  const jsonString = 'Some text [1,2,3] more text'
-  const result = extractJSONArrayFromString(jsonString)
-  t.is(result, '[1,2,3]')
-})
-
-test('extractJSONObjectFromString should return undefined if no JSON object is found', (t) => {
-  const jsonString = 'Some text'
-  const result = extractJSONObjectFromString(jsonString)
-  t.is(result, undefined)
-})
-
-test('extractJSONArrayFromString should return undefined if no JSON array is found', (t) => {
-  const jsonString = 'Some text'
-  const result = extractJSONArrayFromString(jsonString)
-  t.is(result, undefined)
 })
 
 test('sleep should delay execution', async (t) => {
