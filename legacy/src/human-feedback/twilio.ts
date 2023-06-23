@@ -78,11 +78,11 @@ export class HumanFeedbackMechanismTwilio<
     return choices[parseInt(response.body)]
   }
 
-  protected async _selectOne(
+  protected async _select(
     response: TOutput
   ): Promise<TOutput extends (infer U)[] ? U : never> {
     if (!Array.isArray(response)) {
-      throw new Error('selectOne called on non-array response')
+      throw new Error('select called on non-array response')
     }
 
     const { body: selectedOutput } =
@@ -102,11 +102,11 @@ export class HumanFeedbackMechanismTwilio<
     return response[parseInt(selectedOutput)]
   }
 
-  protected async _selectN(
+  protected async _multiselect(
     response: TOutput
   ): Promise<TOutput extends any[] ? TOutput : never> {
     if (!Array.isArray(response)) {
-      throw new Error('selectN called on non-array response')
+      throw new Error('multiselect called on non-array response')
     }
 
     const { body: selectedOutput } =

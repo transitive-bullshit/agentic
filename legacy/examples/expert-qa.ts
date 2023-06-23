@@ -30,7 +30,7 @@ async function main() {
       })
     )
     .withHumanFeedback({
-      type: 'selectN'
+      type: 'multiselect'
     })
     .callWithMetadata({
       question
@@ -38,7 +38,7 @@ async function main() {
 
   if (
     metadata.feedback &&
-    metadata.feedback.type === 'selectN' &&
+    metadata.feedback.type === 'multiselect' &&
     metadata.feedback.selected
   ) {
     const answer = await agentic

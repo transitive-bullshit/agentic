@@ -41,7 +41,7 @@ async function main() {
       })
     )
     .output(z.array(z.string()).describe('question'))
-    .withHumanFeedback({ type: 'selectN' })
+    .withHumanFeedback({ type: 'multiselect' })
     .callWithMetadata({ topic })
 
   console.log()

@@ -19,7 +19,7 @@ async function main() {
     .output(z.array(z.string()))
     .modelParams({ temperature: 0.9 })
     .withHumanFeedback({
-      type: 'selectN',
+      type: 'multiselect',
       annotations: false,
       abort: false,
       editing: true,

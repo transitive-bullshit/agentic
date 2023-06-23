@@ -30,7 +30,7 @@ export const HumanFeedbackUserActionMessages: Record<
 /**
  * Available types of human feedback.
  */
-export type HumanFeedbackType = 'confirm' | 'selectOne' | 'selectN'
+export type HumanFeedbackType = 'confirm' | 'select' | 'multiselect'
 
 type HumanFeedbackMechanismConstructor<
   T extends HumanFeedbackType,
@@ -102,12 +102,11 @@ export interface HumanFeedbackConfirmMetadata
   accepted: boolean
 }
 
-export interface HumanFeedbackSelectOneMetadata
-  extends BaseHumanFeedbackMetadata {
+export interface HumanFeedbackSelectMetadata extends BaseHumanFeedbackMetadata {
   /**
    * The type of feedback requested.
    */
-  type: 'selectOne'
+  type: 'select'
 
   /**
    * The selected output.
@@ -115,12 +114,12 @@ export interface HumanFeedbackSelectOneMetadata
   chosen: any
 }
 
-export interface HumanFeedbackSelectNMetadata
+export interface HumanFeedbackMultiselectMetadata
   extends BaseHumanFeedbackMetadata {
   /**
    * The type of feedback requested.
    */
-  type: 'selectN'
+  type: 'multiselect'
 
   /**
    * The selected outputs.
@@ -131,9 +130,9 @@ export interface HumanFeedbackSelectNMetadata
 export type FeedbackTypeToMetadata<T extends HumanFeedbackType> =
   T extends 'confirm'
     ? HumanFeedbackConfirmMetadata
-    : T extends 'selectOne'
-    ? HumanFeedbackSelectOneMetadata
-    : HumanFeedbackSelectNMetadata
+    : T extends 'select'
+    ? HumanFeedbackSelectMetadata
+    : HumanFeedbackMultiselectMetadata
 
 export abstract class HumanFeedbackMechanism<
   T extends HumanFeedbackType,
@@ -157,11 +156,11 @@ export abstract class HumanFeedbackMechanism<
     this._options = options
   }
 
-  protected abstract _selectOne(
+  protected abstract _select(
     output: TOutput
   ): Promise<TOutput extends any[] ? TOutput[0] : never>
 
-  protected abstract _selectN(
+  protected abstract _multiselect(
     response: TOutput
   ): Promise<TOutput extends any[] ? TOutput : never>
 
@@ -195,8 +194,8 @@ export abstract class HumanFeedbackMechanism<
 
     const choices: HumanFeedbackUserActions[] = []
     if (
-      this._options.type === 'selectN' ||
-      this._options.type === 'selectOne'
+      this._options.type === 'multiselect' ||
+      this._options.type === 'select'
     ) {
       choices.push(HumanFeedbackUserActions.Select)
     } else {
@@ -243,18 +242,18 @@ export abstract class HumanFeedbackMechanism<
         break
 
       case HumanFeedbackUserActions.Select:
-        if (this._options.type === 'selectN') {
+        if (this._options.type === 'multiselect') {
           if (!Array.isArray(output)) {
             throw new Error('Expected output to be an array')
           }
 
-          feedback.selected = await this._selectN(output)
-        } else if (this._options.type === 'selectOne') {
+          feedback.selected = await this._multiselect(output)
+        } else if (this._options.type === 'select') {
           if (!Array.isArray(output)) {
             throw new Error('Expected output to be an array')
           }
 
-          feedback.chosen = await this._selectOne(output)
+          feedback.chosen = await this._select(output)
         }
 
         break
