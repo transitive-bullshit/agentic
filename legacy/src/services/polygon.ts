@@ -4,47 +4,33 @@ export const POLYGON_API_BASE_URL = 'https://api.polygon.io'
 
 /**
  * Ticker Details v3 input parameters.
- *
- * @see {@link https://polygon.io/docs/stocks/get_v3_reference_tickers__ticker}
  */
-export type TickerDetailsInput = {
-  /**
-   * The ticker symbol of the asset.
-   */
+export type PolygonTickerDetailsInput = {
+  /** The ticker symbol of the asset. */
   ticker: string
 
-  /**
-   * Specify a point in time to get information about the ticker available on that date (formatted as YYYY-MM-DD).
-   */
+  /** Specify a point in time to get information about the ticker available on that date (formatted as YYYY-MM-DD). */
   date?: string
 }
 
 /**
  * Daily Open/Close input parameters.
- *
- * @see {@link https://polygon.io/docs/stocks/get_v1_open-close__stocksticker___date}
  */
-export type DailyOpenCloseInput = {
-  /**
-   * The ticker symbol of the stock/equity.
-   */
+export type PolygonDailyOpenCloseInput = {
+  /** The ticker symbol */
   ticker: string
 
-  /**
-   * The date of the requested open/close in the format YYYY-MM-DD.
-   */
+  /** The date of the requested open/close in the format YYYY-MM-DD. */
   date: string
 
-  /**
-   * Whether or not the results are adjusted for splits. By default, results are adjusted.
-   */
+  /** Whether or not the results are adjusted for splits. By default, results are adjusted. */
   adjusted?: boolean
 }
 
 /**
  * Result returned by the Daily Open/Close API.
  */
-export interface DailyOpenCloseOutput {
+export interface PolygonDailyOpenCloseOutput {
   /** The close price of the ticker symbol in after-hours trading. */
   afterHours: number
 
@@ -79,7 +65,7 @@ export interface DailyOpenCloseOutput {
 /**
  * Result returned by the Previous Close API.
  */
-export interface PreviousCloseOutput {
+export interface PolygonPreviousCloseOutput {
   /** Whether or not this response was adjusted for splits. */
   adjusted: boolean
 
@@ -129,7 +115,7 @@ export interface PreviousCloseOutput {
 /**
  * Result returned by the Ticker Details v3 API.
  */
-export interface TickerDetailsOutput {
+export interface PolygonTickerDetailsOutput {
   /** A request id assigned by the server. */
   requestId: string
 
@@ -239,6 +225,410 @@ export interface TickerDetailsOutput {
   status: string
 }
 
+/**
+ * Input parameters for technical indicators.
+ */
+export type PolygonIndicatorInput = {
+  /** The ticker symbol for which to get data. */
+  ticker: string
+
+  /** Query by timestamp. Either a date with the format YYYY-MM-DD or a millisecond timestamp. */
+  timestamp?: string
+
+  /** The size of the aggregate time window. */
+  timespan?: string
+
+  /** Whether or not the aggregates are adjusted for splits. By default, aggregates are adjusted. Set this to false to get results that are NOT adjusted for splits. */
+  adjusted?: boolean
+
+  /** The window size used to calculate the indicator. i.e. a window size of 10 with daily aggregates would result in a 10 day moving average. */
+  window?: number
+
+  /** The price in the aggregate which will be used to calculate the indicator. */
+  series_type?: string
+
+  /** Whether or not to include the aggregates used to calculate this indicator in the response. */
+  expand_underlying?: boolean
+
+  /** The order in which to return the results, ordered by timestamp. */
+  order?: string
+
+  /** Limit the number of results returned, default is 10 and max is 5000 */
+  limit?: number
+}
+
+/**
+ * Represents an aggregate, which includes data for a given time period.
+ */
+interface PolygonIndicatorAggregate {
+  /** The close price for the symbol in the given time period. */
+  c: number
+
+  /** The highest price for the symbol in the given time period. */
+  h: number
+
+  /** The lowest price for the symbol in the given time period. */
+  l: number
+
+  /** The number of transactions in the aggregate window. */
+  n: number
+
+  /** The open price for the symbol in the given time period. */
+  o: number
+
+  /** The Unix Msec timestamp for the start of the aggregate window. */
+  t: number
+
+  /** The trading volume of the symbol in the given time period. */
+  v: number
+
+  /** The volume weighted average price. */
+  vw: number
+}
+
+/**
+ * Represents a value of the indicator, which includes timestamp and value itself.
+ */
+interface PolygonIndicatorValue {
+  /** The Unix Msec timestamp from the last aggregate used in this calculation. */
+  timestamp: number
+
+  /** The indicator value for this period. */
+  value: number
+}
+
+/**
+ * The output response from the technical indicator API.
+ */
+interface PolygonIndicatorOutput {
+  /** If present, this value can be used to fetch the next page of data. */
+  next_url: string
+
+  /** A request id assigned by the server. */
+  request_id: string
+
+  /** Results object containing underlying aggregates and values array. */
+  results: {
+    /** Underlying object containing aggregates and a URL to fetch underlying data. */
+    underlying: {
+      /** Array of aggregates used for calculation. */
+      aggregates: PolygonIndicatorAggregate[]
+
+      /** The URL which can be used to request the underlying aggregates used in this request. */
+      url: string
+    }
+
+    /** Array of calculated indicator values. */
+    values: PolygonIndicatorValue[]
+  }
+
+  /** The status of this request's response. */
+  status: string
+}
+
+/**
+ * Input parameters for the /v3/reference/tickers API.
+ */
+export type PolygonTickerInput = {
+  /** Specify a ticker symbol. Defaults to empty string which queries all tickers. */
+  ticker?: string
+
+  /** Specify the type of the tickers. */
+  type?: string
+
+  /** Filter by market type. */
+  market?: 'crypto'
+
+  /** Specify the primary exchange of the asset in the ISO code format. */
+  exchange?: string
+
+  /** Specify the CUSIP code of the asset you want to search for. */
+  cusip?: string
+
+  /** Specify the CIK of the asset you want to search for. */
+  cik?: string
+
+  /** Specify a point in time to retrieve tickers available on that date. */
+  date?: string
+
+  /** Search for terms within the ticker and/or company name. */
+  search?: string
+
+  /** Specify if the tickers returned should be actively traded on the queried date. */
+  active?: boolean
+
+  /** Order results based on the sort field. */
+  order?: string
+
+  /** Limit the number of results returned. */
+  limit?: number
+
+  /** Sort field used for ordering. */
+  sort?: string
+}
+
+/**
+ * Represents a ticker that matches the query.
+ */
+interface PolygonTicker {
+  /** Whether or not the asset is actively traded. */
+  active: boolean
+
+  /** The CIK number for this ticker. */
+  cik: string
+
+  /** The composite OpenFIGI number for this ticker. */
+  composite_figi: string
+
+  /** The name of the currency that this asset is traded with. */
+  currency_name: string
+
+  /** The last date that the asset was traded. */
+  delisted_utc: string
+
+  /** The information is accurate up to this time. */
+  last_updated_utc: string
+
+  /** The locale of the asset. */
+  locale: 'us' | 'global'
+
+  /** The market type of the asset. */
+  market: 'stocks' | 'crypto' | 'fx' | 'otc' | 'indices'
+
+  /** The name of the asset. */
+  name: string
+
+  /** The ISO code of the primary listing exchange for this asset. */
+  primary_exchange: string
+
+  /** The share Class OpenFIGI number for this ticker. */
+  share_class_figi: string
+
+  /** The exchange symbol that this item is traded under. */
+  ticker: string
+
+  /** The type of the asset. */
+  type: string
+}
+
+/**
+ * The output response from the /v3/reference/tickers API.
+ */
+interface PolygonTickerOutput {
+  /** The total number of results for this request. */
+  count: number
+
+  /** If present, this value can be used to fetch the next page of data. */
+  next_url: string
+
+  /** A request id assigned by the server. */
+  request_id: string
+
+  /** An array of tickers that match your query. */
+  results: PolygonTicker[]
+
+  /** The status of this request's response. */
+  status: string
+}
+
+/**
+ * Output parameters for the market status API.
+ */
+export interface PolygonMarketStatusOutput {
+  /** Whether or not the market is in post-market hours. */
+  afterHours: boolean
+
+  /** The status of the crypto and forex markets. */
+  currencies: {
+    /** The status of the crypto market. */
+    crypto: string
+    /** The status of the forex market. */
+    fx: string
+  }
+
+  /** Whether or not the market is in pre-market hours. */
+  earlyHours: boolean
+
+  /** The status of the Nasdaq, NYSE and OTC markets. */
+  exchanges: {
+    /** The status of the Nasdaq market. */
+    nasdaq: string
+    /** The status of the NYSE market. */
+    nyse: string
+    /** The status of the OTC market. */
+    otc: string
+  }
+
+  /** The status of the market as a whole. */
+  market: string
+
+  /** The current time of the server. */
+  serverTime: string
+}
+
+/**
+ * Output parameters for the market holidays API.
+ */
+export interface PolygonMarketHolidayOutput {
+  /** The market close time on the holiday (if it's not closed). */
+  close?: string
+
+  /** The date of the holiday. */
+  date: string
+
+  /** Which market the record is for. */
+  exchange: string
+
+  /** The name of the holiday. */
+  name: string
+
+  /** The market open time on the holiday (if it's not closed). */
+  open?: string
+
+  /** The status of the market on the holiday. */
+  status: string
+}
+
+/**
+ * Input parameters for the ticker types API.
+ */
+export type PolygonTickerTypesInput = {
+  /** Filter by asset class. */
+  asset_class?: string
+
+  /** Filter by locale. */
+  locale?: string
+}
+
+/**
+ * Output parameters for the ticker types API.
+ */
+export interface PolygonTickerTypesOutput {
+  /** The total number of results for this request. */
+  count: number
+
+  /** A request ID assigned by the server. */
+  request_id: string
+
+  /** The results of the query. */
+  results: PolygonTickerType[]
+
+  /** The status of this request's response. */
+  status: string
+}
+
+/**
+ * Ticker type parameters.
+ */
+export interface PolygonTickerType {
+  /** An identifier for a group of similar financial instruments. */
+  asset_class: string
+
+  /** A code used by Polygon.io to refer to this ticker type. */
+  code: string
+
+  /** A short description of this ticker type. */
+  description: string
+
+  /** An identifier for a geographical location. */
+  locale: string
+}
+
+/**
+ * Input parameters for the ticker news API.
+ */
+export type PolygonTickerNewsInput = {
+  /** Ticker symbol to return results for. */
+  ticker: string
+
+  /** Date to return results published on, before, or after. */
+  published_utc?: string
+
+  /** Order results based on the sort field. */
+  order?: string
+
+  /** Limit the number of results returned, default is 10 and max is 1000. */
+  limit?: number
+
+  /** Sort field used for ordering. */
+  sort?: string
+}
+
+/**
+ * Output parameters for the ticker news API.
+ */
+export interface PolygonTickerNewsOutput {
+  /** The total number of results for this request. */
+  count: number
+
+  /** If present, this value can be used to fetch the next page of data. */
+  next_url: string
+
+  /** A request id assigned by the server. */
+  request_id: string
+
+  /** The results of the query. */
+  results: PolygonTickerNews[]
+
+  /** The status of this request's response. */
+  status: string
+}
+
+/**
+ * Ticker news parameters.
+ */
+export interface PolygonTickerNews {
+  /** The mobile friendly Accelerated Mobile Page (AMP) URL. */
+  amp_url?: string
+
+  /** A link to the news article. */
+  article_url: string
+
+  /** The article's author. */
+  author: string
+
+  /** A description of the article. */
+  description?: string
+
+  /** Unique identifier for the article. */
+  id: string
+
+  /** The article's image URL. */
+  image_url?: string
+
+  /** The keywords associated with the article (which will vary depending on the publishing source). */
+  keywords?: string[]
+
+  /** The date the article was published on. */
+  published_utc: string
+
+  /** The publisher's details. */
+  publisher: PolygonPublisher
+
+  /** The ticker symbols associated with the article. */
+  tickers: string[]
+
+  /** The title of the news article. */
+  title: string
+}
+
+/**
+ * Publisher parameters.
+ */
+export interface PolygonPublisher {
+  /** The publisher's homepage favicon URL. */
+  favicon_url?: string
+
+  /** The publisher's homepage URL. */
+  homepage_url: string
+
+  /** The publisher's logo URL. */
+  logo_url: string
+
+  /** The publisher's name. */
+  name: string
+}
+
 export class PolygonClient {
   /**
    * HTTP client for the Polygon API.
@@ -285,7 +675,7 @@ export class PolygonClient {
    * @param params - input parameters (`ticker` symbol and optional `date`)
    * @returns promise that resolves to detailed information about a single ticker
    */
-  async getTickerDetails(params: TickerDetailsInput) {
+  async getTickerDetails(params: PolygonTickerDetailsInput) {
     let searchParams
     if (params.date) {
       searchParams = {
@@ -297,7 +687,7 @@ export class PolygonClient {
       .get(`v3/reference/tickers/${params.ticker}`, {
         searchParams
       })
-      .json<TickerDetailsOutput>()
+      .json<PolygonTickerDetailsOutput>()
   }
 
   /**
@@ -306,14 +696,14 @@ export class PolygonClient {
    * @param params - input parameters (`ticker` symbol and `date`)
    * @returns promise that resolves to the open, close and after hours prices of a stock symbol on a certain date
    */
-  async getDailyOpenClose(params: DailyOpenCloseInput) {
+  async getDailyOpenClose(params: PolygonDailyOpenCloseInput) {
     return this.api
       .get(`v1/open-close/${params.ticker}/${params.date}`, {
         searchParams: {
           adjusted: params.adjusted ?? true
         }
       })
-      .json<DailyOpenCloseOutput>()
+      .json<PolygonDailyOpenCloseOutput>()
   }
 
   /**
@@ -332,6 +722,118 @@ export class PolygonClient {
           adjusted
         }
       })
-      .json<PreviousCloseOutput>()
+      .json<PolygonPreviousCloseOutput>()
+  }
+
+  /**
+   * Get the simple moving average (SMA) for a ticker symbol over a given time range.
+   *
+   * @param params - input parameters
+   * @returns promise that resolves to the simple moving average (SMA) for a ticker symbol over a given time range
+   */
+  async sma(params: PolygonIndicatorInput) {
+    return this.api
+      .get(`v1/indicators/sma/${params.ticker}`, {
+        searchParams: params
+      })
+      .json<PolygonIndicatorOutput>()
+  }
+
+  /**
+   * Get the exponential moving average (EMA) for a ticker symbol over a given time range.
+   *
+   * @param params - input parameters
+   * @returns promise that resolves to the exponential moving average (EMA) for a ticker symbol over a given time range
+   */
+  async ema(params: PolygonIndicatorInput) {
+    return this.api
+      .get(`v1/indicators/ema/${params.ticker}`, {
+        searchParams: params
+      })
+      .json<PolygonIndicatorOutput>()
+  }
+
+  /**
+   * Get moving average convergence/divergence (MACD) for a ticker symbol over a given time range.
+   *
+   * @param params - input parameters
+   * @returns promise that resolves to the moving average convergence/divergence (MACD) for a ticker symbol over a given time range
+   */
+  async macd(params: PolygonIndicatorInput) {
+    return this.api
+      .get(`v1/indicators/ema/${params.ticker}`, {
+        searchParams: params
+      })
+      .json<PolygonIndicatorOutput>()
+  }
+
+  /**
+   * Get the relative strength index (RSI) for a ticker symbol over a given time range.
+   *
+   * @param params - input parameters
+   * @returns promise that resolves to the relative strength index (RSI) for a ticker symbol over a given time range
+   */
+  async rsi(params: PolygonIndicatorInput) {
+    return this.api
+      .get(`v1/indicators/rsi/${params.ticker}`, {
+        searchParams: params
+      })
+      .json<PolygonIndicatorOutput>()
+  }
+
+  /**
+   * Query all ticker symbols which are supported by Polygon.io. Currently includes Stocks/Equities, Indices, Forex, and Crypto.
+   *
+   * @param params - input parameters to filter the list of ticker symbols
+   * @returns promise that resolves to a list of ticker symbols and their details
+   */
+  async getTickers(params: PolygonTickerInput): Promise<PolygonTickerOutput> {
+    return this.api
+      .get('v3/reference/tickers', { searchParams: params })
+      .json<PolygonTickerOutput>()
+  }
+
+  /**
+   * List all ticker types that Polygon.io has.
+   *
+   * @param params - input parameters (`asset_class` and `locale`)
+   * @returns promise that resolves to ticker types
+   */
+  async getTickerTypes(params: PolygonTickerTypesInput) {
+    return this.api
+      .get('v3/reference/tickers/types', { searchParams: params })
+      .json<PolygonTickerTypesOutput>()
+  }
+
+  /**
+   * Get the most recent news articles relating to a stock ticker symbol.
+   *
+   * @param params - input parameters (`ticker`, `published_utc`, `order`, `limit`, `sort`)
+   * @returns promise that resolves to ticker news
+   */
+  async getTickerNews(params: PolygonTickerNewsInput) {
+    return this.api
+      .get('v2/reference/news', { searchParams: params })
+      .json<PolygonTickerNewsOutput>()
+  }
+
+  /**
+   * Returns the current trading status of the exchanges and overall financial markets.
+   *
+   * @returns promise that resolves to the market status
+   */
+  async getMarketStatus() {
+    return this.api.get('v1/marketstatus/now').json<PolygonMarketStatusOutput>()
+  }
+
+  /**
+   * Gets upcoming market holidays and their open/close times.
+   *
+   * @returns promise that resolves to an array of market holidays
+   */
+  async getMarketHolidays(): Promise<PolygonMarketHolidayOutput[]> {
+    return this.api
+      .get('v1/marketstatus/upcoming')
+      .json<PolygonMarketHolidayOutput[]>()
   }
 }
