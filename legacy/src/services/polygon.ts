@@ -629,6 +629,69 @@ export interface PolygonPublisher {
   name: string
 }
 
+/**
+ * Input parameters for the exchanges API.
+ */
+export type PolygonExchangesInput = {
+  /** Filter by asset class. */
+  asset_class?: string
+
+  /** Filter by locale. */
+  locale?: string
+}
+
+/**
+ * Output parameters for the exchanges API.
+ */
+export interface PolygonExchangesOutput {
+  /** The total number of results for this request. */
+  count: number
+
+  /** A request ID assigned by the server. */
+  request_id: string
+
+  /** The results of the query. */
+  results: PolygonExchange[]
+
+  /** The status of this request's response. */
+  status: string
+}
+
+/**
+ * Exchange parameters.
+ */
+export interface PolygonExchange {
+  /** A commonly used abbreviation for this exchange. */
+  acronym?: string
+
+  /** An identifier for a group of similar financial instruments. */
+  asset_class: 'stocks' | 'options' | 'crypto' | 'fx'
+
+  /** A unique identifier used by Polygon.io for this exchange. */
+  id: number
+
+  /** An identifier for a geographical location. */
+  locale: 'us' | 'global'
+
+  /** The Market Identifer Code of this exchange (see ISO 10383). */
+  mic: string
+
+  /** Name of this exchange. */
+  name: string
+
+  /** The MIC of the entity that operates this exchange. */
+  operating_mic: string
+
+  /** The ID used by SIP's to represent this exchange. */
+  participant_id?: string
+
+  /** Represents the type of exchange. */
+  type: 'exchange' | 'TRF' | 'SIP'
+
+  /** A link to this exchange's website, if one exists. */
+  url?: string
+}
+
 export class PolygonClient {
   /**
    * HTTP client for the Polygon API.
@@ -835,5 +898,17 @@ export class PolygonClient {
     return this.api
       .get('v1/marketstatus/upcoming')
       .json<PolygonMarketHolidayOutput[]>()
+  }
+
+  /**
+   * List all exchanges that Polygon.io knows about.
+   *
+   * @param params - input parameters (`asset_class`, `locale`)
+   * @returns promise that resolves to list of exchanges
+   */
+  async getExchanges(params: PolygonExchangesInput) {
+    return this.api
+      .get('v3/reference/exchanges', { searchParams: params })
+      .json<PolygonExchangesOutput>()
   }
 }
