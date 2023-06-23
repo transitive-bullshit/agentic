@@ -92,6 +92,7 @@ export function createTestKyInstance(
             }
 
             if (!(await keyv.has(cacheKey))) {
+              // console.log('cache miss', cacheKey)
               return
             }
 
@@ -137,19 +138,18 @@ export function createTestKyInstance(
               return
             }
 
-            if (contentType !== 'application/json') {
+            if (!contentType?.includes('application/json')) {
               return
             }
 
             const cacheKey = getCacheKeyForRequest(request)
             // console.log({ cacheKey })
             if (!cacheKey) {
-              console.log('222')
               return
             }
 
             const responseBody = await response.json()
-            // console.log({ responseBody })
+            // console.log({ cacheKey, responseBody })
 
             await keyv.set(cacheKey, responseBody)
           } catch (err) {
