@@ -4,7 +4,7 @@ import { PolygonClient } from '@/services/polygon'
 
 import { ky } from '../_utils'
 
-test('PolygonClient.getTickerDetails', async (t) => {
+test('PolygonClient.tickerDetails', async (t) => {
   if (!process.env.POLYGON_API_KEY) {
     return t.pass()
   }
@@ -12,12 +12,12 @@ test('PolygonClient.getTickerDetails', async (t) => {
   t.timeout(2 * 60 * 1000)
   const client = new PolygonClient({ ky })
 
-  const result = await client.getTickerDetails({ ticker: 'AAPL' })
+  const result = await client.tickerDetails({ ticker: 'AAPL' })
   t.truthy(result.results)
   t.is(result.results.ticker, 'AAPL')
 })
 
-test('PolygonClient.getDailyOpenClose', async (t) => {
+test('PolygonClient.dailyOpenClose', async (t) => {
   if (!process.env.POLYGON_API_KEY) {
     return t.pass()
   }
@@ -25,7 +25,7 @@ test('PolygonClient.getDailyOpenClose', async (t) => {
   t.timeout(2 * 60 * 1000)
   const client = new PolygonClient({ ky })
 
-  const result = await client.getDailyOpenClose({
+  const result = await client.dailyOpenClose({
     ticker: 'AAPL',
     date: '2023-06-21'
   })
@@ -33,7 +33,7 @@ test('PolygonClient.getDailyOpenClose', async (t) => {
   t.is(result.symbol, 'AAPL')
 })
 
-test('PolygonClient.getPreviousClose', async (t) => {
+test('PolygonClient.previousClose', async (t) => {
   if (!process.env.POLYGON_API_KEY) {
     return t.pass()
   }
@@ -41,7 +41,7 @@ test('PolygonClient.getPreviousClose', async (t) => {
   t.timeout(2 * 60 * 1000)
   const client = new PolygonClient({ ky })
 
-  const result = await client.getPreviousClose('AAPL')
+  const result = await client.previousClose('AAPL')
   t.truthy(result.ticker)
   t.is(result.ticker, 'AAPL')
 })

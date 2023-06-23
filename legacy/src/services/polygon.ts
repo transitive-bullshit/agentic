@@ -3,6 +3,142 @@ import defaultKy from 'ky'
 export const POLYGON_API_BASE_URL = 'https://api.polygon.io'
 
 /**
+ * Asset classes available on Polygon.
+ */
+export type POLYGON_ASSET_CLASS = 'stocks' | 'options' | 'crypto' | 'fx'
+
+/**
+ * Supported time spans for Polygon's indicator APIs.
+ */
+export type POLYGON_TIMESPAN =
+  | 'minute'
+  | 'hour'
+  | 'day'
+  | 'week'
+  | 'month'
+  | 'quarter'
+  | 'year'
+
+/**
+ * Supported series types for Polygon's indicator APIs.
+ */
+export type POLYGON_SERIES_TYPE = 'close' | 'open' | 'high' | 'low'
+
+/**
+ * Order types available on Polygon.
+ */
+export type POLYGON_ORDER_TYPE = 'asc' | 'desc'
+
+/**
+ * Input parameters for the aggregates API.
+ */
+export interface PolygonAggregatesInput {
+  /** The ticker symbol of the stock/equity. */
+  stocksTicker: string
+
+  /** The size of the timespan multiplier. */
+  multiplier: number
+
+  /** The size of the time window. */
+  timespan: POLYGON_TIMESPAN
+
+  /** The start of the aggregate time window. Either a date with the format YYYY-MM-DD or a millisecond timestamp. */
+  from: string | number
+
+  /** The end of the aggregate time window. Either a date with the format YYYY-MM-DD or a millisecond timestamp. */
+  to: string | number
+
+  /** Whether or not the results are adjusted for splits. By default, results are adjusted. Set this to false to get results that are NOT adjusted for splits. */
+  adjusted?: boolean
+
+  /** Sort the results by timestamp. "asc" will return results in ascending order (oldest at the top), "desc" will return results in descending order (newest at the top). */
+  sort?: POLYGON_ORDER_TYPE
+
+  /** Limits the number of base aggregates queried to create the aggregate results. Max 50000 and Default 5000. */
+  limit?: number
+}
+
+/**
+ * Output parameters for the aggregates API.
+ */
+export interface PolygonAggregatesOutput {
+  /** The exchange symbol that this item is traded under. */
+  ticker: string
+
+  /** Whether or not this response was adjusted for splits. */
+  adjusted: boolean
+
+  /** The number of aggregates (minute or day) used to generate the response. */
+  queryCount: number
+
+  /** A request id assigned by the server. */
+  request_id: string
+
+  /** The total number of results for this request. */
+  resultsCount: number
+
+  /** The status of this request's response. */
+  status: string
+
+  /** The results of the query. */
+  results: PolygonAggregate[]
+
+  /** If present, this value can be used to fetch the next page of data. */
+  next_url?: string
+}
+
+/**
+ * Input parameters for the grouped daily API.
+ */
+export type PolygonGroupedDailyInput = {
+  /** The beginning date for the aggregate window. */
+  date: string
+
+  /** Whether or not the results are adjusted for splits. By default, results are adjusted. Set this to false to get results that are NOT adjusted for splits. */
+  adjusted?: boolean
+}
+
+/**
+ * Input parameters for the grouped daily API for stocks.
+ */
+export interface PolygonGroupedDailyInputStocks
+  extends PolygonGroupedDailyInput {
+  /** Include OTC securities in the response. Default is false (don't include OTC securities). */
+  include_otc?: boolean
+}
+
+/**
+ * Output parameters for the grouped daily API.
+ */
+export interface PolygonGroupedDailyOutput {
+  /** Whether or not this response was adjusted for splits. */
+  adjusted: boolean
+
+  /** The number of aggregates (minute or day) used to generate the response. */
+  queryCount: number
+
+  /** A request id assigned by the server. */
+  request_id: string
+
+  /** The total number of results for this request. */
+  resultsCount: number
+
+  /** The status of this request's response. */
+  status: string
+
+  /** The results of the query. */
+  results: PolygonAggregateDaily[]
+}
+
+/**
+ * AggregateDaily parameters.
+ */
+export interface PolygonAggregateDaily extends PolygonAggregate {
+  /** The exchange symbol that this item is traded under. */
+  T: string
+}
+
+/**
  * Ticker Details v3 input parameters.
  */
 export type PolygonTickerDetailsInput = {
@@ -236,7 +372,7 @@ export type PolygonIndicatorInput = {
   timestamp?: string
 
   /** The size of the aggregate time window. */
-  timespan?: string
+  timespan?: POLYGON_TIMESPAN
 
   /** Whether or not the aggregates are adjusted for splits. By default, aggregates are adjusted. Set this to false to get results that are NOT adjusted for splits. */
   adjusted?: boolean
@@ -245,13 +381,13 @@ export type PolygonIndicatorInput = {
   window?: number
 
   /** The price in the aggregate which will be used to calculate the indicator. */
-  series_type?: string
+  series_type?: POLYGON_SERIES_TYPE
 
   /** Whether or not to include the aggregates used to calculate this indicator in the response. */
   expand_underlying?: boolean
 
   /** The order in which to return the results, ordered by timestamp. */
-  order?: string
+  order?: POLYGON_ORDER_TYPE
 
   /** Limit the number of results returned, default is 10 and max is 5000 */
   limit?: number
@@ -260,7 +396,7 @@ export type PolygonIndicatorInput = {
 /**
  * Represents an aggregate, which includes data for a given time period.
  */
-interface PolygonIndicatorAggregate {
+interface PolygonAggregate {
   /** The close price for the symbol in the given time period. */
   c: number
 
@@ -276,6 +412,9 @@ interface PolygonIndicatorAggregate {
   /** The open price for the symbol in the given time period. */
   o: number
 
+  /** Whether or not this aggregate is for an OTC ticker. This field will be left off if false. */
+  otc?: boolean
+
   /** The Unix Msec timestamp for the start of the aggregate window. */
   t: number
 
@@ -283,7 +422,7 @@ interface PolygonIndicatorAggregate {
   v: number
 
   /** The volume weighted average price. */
-  vw: number
+  vw?: number
 }
 
 /**
@@ -312,7 +451,7 @@ interface PolygonIndicatorOutput {
     /** Underlying object containing aggregates and a URL to fetch underlying data. */
     underlying: {
       /** Array of aggregates used for calculation. */
-      aggregates: PolygonIndicatorAggregate[]
+      aggregates: PolygonAggregate[]
 
       /** The URL which can be used to request the underlying aggregates used in this request. */
       url: string
@@ -358,7 +497,7 @@ export type PolygonTickerInput = {
   active?: boolean
 
   /** Order results based on the sort field. */
-  order?: string
+  order?: POLYGON_ORDER_TYPE
 
   /** Limit the number of results returned. */
   limit?: number
@@ -494,7 +633,7 @@ export interface PolygonMarketHolidayOutput {
  */
 export type PolygonTickerTypesInput = {
   /** Filter by asset class. */
-  asset_class?: string
+  asset_class?: POLYGON_ASSET_CLASS
 
   /** Filter by locale. */
   locale?: string
@@ -522,7 +661,7 @@ export interface PolygonTickerTypesOutput {
  */
 export interface PolygonTickerType {
   /** An identifier for a group of similar financial instruments. */
-  asset_class: string
+  asset_class: POLYGON_ASSET_CLASS
 
   /** A code used by Polygon.io to refer to this ticker type. */
   code: string
@@ -545,7 +684,7 @@ export type PolygonTickerNewsInput = {
   published_utc?: string
 
   /** Order results based on the sort field. */
-  order?: string
+  order?: POLYGON_ORDER_TYPE
 
   /** Limit the number of results returned, default is 10 and max is 1000. */
   limit?: number
@@ -634,7 +773,7 @@ export interface PolygonPublisher {
  */
 export type PolygonExchangesInput = {
   /** Filter by asset class. */
-  asset_class?: string
+  asset_class?: POLYGON_ASSET_CLASS
 
   /** Filter by locale. */
   locale?: string
@@ -665,7 +804,7 @@ export interface PolygonExchange {
   acronym?: string
 
   /** An identifier for a group of similar financial instruments. */
-  asset_class: 'stocks' | 'options' | 'crypto' | 'fx'
+  asset_class: POLYGON_ASSET_CLASS
 
   /** A unique identifier used by Polygon.io for this exchange. */
   id: number
@@ -738,7 +877,7 @@ export class PolygonClient {
    * @param params - input parameters (`ticker` symbol and optional `date`)
    * @returns promise that resolves to detailed information about a single ticker
    */
-  async getTickerDetails(params: PolygonTickerDetailsInput) {
+  async tickerDetails(params: PolygonTickerDetailsInput) {
     let searchParams
     if (params.date) {
       searchParams = {
@@ -759,7 +898,7 @@ export class PolygonClient {
    * @param params - input parameters (`ticker` symbol and `date`)
    * @returns promise that resolves to the open, close and after hours prices of a stock symbol on a certain date
    */
-  async getDailyOpenClose(params: PolygonDailyOpenCloseInput) {
+  async dailyOpenClose(params: PolygonDailyOpenCloseInput) {
     return this.api
       .get(`v1/open-close/${params.ticker}/${params.date}`, {
         searchParams: {
@@ -778,7 +917,7 @@ export class PolygonClient {
    * @param adjusted - whether or not the results are adjusted for splits
    * @returns promise that resolves to the previous day's open, high, low, and close (OHLC) for the specified stock ticker
    */
-  async getPreviousClose(ticker: string, adjusted = true) {
+  async previousClose(ticker: string, adjusted = true) {
     return this.api
       .get(`v2/aggs/ticker/${ticker}/prev`, {
         searchParams: {
@@ -850,7 +989,7 @@ export class PolygonClient {
    * @param params - input parameters to filter the list of ticker symbols
    * @returns promise that resolves to a list of ticker symbols and their details
    */
-  async getTickers(params: PolygonTickerInput): Promise<PolygonTickerOutput> {
+  async tickers(params: PolygonTickerInput): Promise<PolygonTickerOutput> {
     return this.api
       .get('v3/reference/tickers', { searchParams: params })
       .json<PolygonTickerOutput>()
@@ -862,7 +1001,7 @@ export class PolygonClient {
    * @param params - input parameters (`asset_class` and `locale`)
    * @returns promise that resolves to ticker types
    */
-  async getTickerTypes(params: PolygonTickerTypesInput) {
+  async tickerTypes(params: PolygonTickerTypesInput) {
     return this.api
       .get('v3/reference/tickers/types', { searchParams: params })
       .json<PolygonTickerTypesOutput>()
@@ -874,7 +1013,7 @@ export class PolygonClient {
    * @param params - input parameters (`ticker`, `published_utc`, `order`, `limit`, `sort`)
    * @returns promise that resolves to ticker news
    */
-  async getTickerNews(params: PolygonTickerNewsInput) {
+  async tickerNews(params: PolygonTickerNewsInput) {
     return this.api
       .get('v2/reference/news', { searchParams: params })
       .json<PolygonTickerNewsOutput>()
@@ -885,7 +1024,7 @@ export class PolygonClient {
    *
    * @returns promise that resolves to the market status
    */
-  async getMarketStatus() {
+  async marketStatus() {
     return this.api.get('v1/marketstatus/now').json<PolygonMarketStatusOutput>()
   }
 
@@ -894,7 +1033,7 @@ export class PolygonClient {
    *
    * @returns promise that resolves to an array of market holidays
    */
-  async getMarketHolidays(): Promise<PolygonMarketHolidayOutput[]> {
+  async marketHolidays(): Promise<PolygonMarketHolidayOutput[]> {
     return this.api
       .get('v1/marketstatus/upcoming')
       .json<PolygonMarketHolidayOutput[]>()
@@ -906,9 +1045,59 @@ export class PolygonClient {
    * @param params - input parameters (`asset_class`, `locale`)
    * @returns promise that resolves to list of exchanges
    */
-  async getExchanges(params: PolygonExchangesInput) {
+  async exchanges(params: PolygonExchangesInput) {
     return this.api
       .get('v3/reference/exchanges', { searchParams: params })
       .json<PolygonExchangesOutput>()
+  }
+
+  /**
+   * Get aggregate bars for a stock over a given date range in custom time window sizes.
+   *
+   * @param params - input parameters
+   * @returns promise that resolves to list of aggregates
+   */
+  async aggregates(params: PolygonAggregatesInput) {
+    const { stocksTicker, multiplier, timespan, from, to, ...otherParams } =
+      params
+    const endpoint = `v2/aggs/ticker/${stocksTicker}/range/${multiplier}/${timespan}/${from}/${to}`
+    return this.api
+      .get(endpoint, { searchParams: otherParams })
+      .json<PolygonAggregatesOutput>()
+  }
+
+  /**
+   * Get the daily open, high, low, and close (OHLC) for the entire markets.
+   *
+   * @param assetClass - the asset class to get data for
+   * @param params - input parameters (`date`, `adjusted`, `include_otc`)
+   * @returns promise that resolves to list of aggregates
+   */
+  async groupedDaily(
+    assetClass: 'stocks',
+    params: PolygonGroupedDailyInputStocks
+  ): Promise<PolygonGroupedDailyOutput>
+
+  /**
+   * Get the daily open, high, low, and close (OHLC) for the entire markets.
+   *
+   * @param assetClass - the asset class to get data for
+   * @param params - input parameters (`date`, `adjusted`)
+   * @returns promise that resolves to list of aggregates
+   */
+  async groupedDaily(
+    assetClass: 'options' | 'crypto' | 'fx',
+    params: PolygonGroupedDailyInput
+  ): Promise<PolygonGroupedDailyOutput>
+
+  async groupedDaily(
+    assetClass: POLYGON_ASSET_CLASS,
+    params: PolygonGroupedDailyInput
+  ) {
+    const { date, ...otherParams } = params
+    const endpoint = `v2/aggs/grouped/locale/us/market/${assetClass}/${date}`
+    return this.api
+      .get(endpoint, { searchParams: otherParams })
+      .json<PolygonGroupedDailyOutput>()
   }
 }
