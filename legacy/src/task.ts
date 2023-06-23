@@ -38,12 +38,10 @@ export abstract class BaseTask<
   private _preHooks: Array<{
     hook: types.TaskBeforeCallHook<TInput>
     priority: number
-    name: string
   }> = []
   private _postHooks: Array<{
     hook: types.TaskAfterCallHook<TInput, TOutput>
     priority: number
-    name: string
   }> = []
 
   constructor(options: types.BaseTaskOptions = {}) {
@@ -95,14 +93,13 @@ export abstract class BaseTask<
    * Adds a hook to be called before the task is invoked.
    *
    * @param hook - function to be called before the task is invoked
-   * @param options - options for the hook; `priority` is used to determine the order in which hooks are called, with higher priority hooks being called first, and `name` is used to identify the hook
+   * @param priority - priority of the hook; higher priority hooks are called first
    */
   public addBeforeCallHook(
     hook: types.TaskBeforeCallHook<TInput>,
-    { priority = 0, name }: { priority?: number; name?: string } = {}
+    priority = 0
   ): this {
-    const hookName = name ?? `preHook_${this._preHooks.length}`
-    this._preHooks.push({ hook, priority, name: hookName })
+    this._preHooks.push({ hook, priority })
     this._preHooks.sort((a, b) => b.priority - a.priority) // two elements that compare equal will remain in their original order (>= ECMAScript 2019)
     return this
   }
@@ -111,78 +108,14 @@ export abstract class BaseTask<
    * Adds a hook to be called after the task is invoked.
    *
    * @param hook - function to be called after the task is invoked
-   * @param options - options for the hook; `priority` is used to determine the order in which hooks are called, with higher priority hooks being called first, and `name` is used to identify the hook
+   * @param priority - priority of the hook; higher priority hooks are called first
    */
   public addAfterCallHook(
     hook: types.TaskAfterCallHook<TInput, TOutput>,
-    { priority = 0, name }: { priority?: number; name?: string } = {}
+    priority = 0
   ): this {
-    const hookName = name ?? `postHook_${this._postHooks.length}`
-    this._postHooks.push({ hook, priority, name: hookName })
+    this._postHooks.push({ hook, priority })
     this._postHooks.sort((a, b) => b.priority - a.priority) // two elements that compare equal will remain in their original order (>= ECMAScript 2019)
-    return this
-  }
-
-  /**
-   * Changes the priority of a before call hook.
-   *
-   * @param hookType - `before`
-   * @param hookOrName - hook or the name of the hook to change the priority of
-   * @param newPriority - new priority of the hook
-   */
-  public changeHookPriority(
-    hookType: 'before',
-    hookOrName: types.TaskBeforeCallHook<TInput> | string,
-    newPriority: number
-  ): this
-
-  /**
-   * Changes the priority of a after call hook.
-   *
-   * @param hookType - `after`
-   * @param hookOrName - hook or the name of the hook to change the priority of
-   * @param newPriority - new priority of the hook
-   */
-  public changeHookPriority(
-    hookType: 'after',
-    hookOrName: types.TaskAfterCallHook<TInput, TOutput> | string,
-    newPriority: number
-  ): this
-
-  public changeHookPriority(
-    hookType: 'before' | 'after',
-    hookOrName:
-      | types.TaskBeforeCallHook<TInput>
-      | types.TaskAfterCallHook<TInput, TOutput>
-      | string,
-    newPriority: number
-  ): this {
-    const hooks = hookType === 'before' ? this._preHooks : this._postHooks
-
-    let found = false
-    if (typeof hookOrName === 'string') {
-      for (const hookObj of hooks) {
-        if (hookObj.name === hookOrName) {
-          found = true
-          hookObj.priority = newPriority
-        }
-      }
-    } else {
-      for (const hookObj of hooks) {
-        if (hookObj.hook === hookOrName) {
-          found = true
-          hookObj.priority = newPriority
-        }
-      }
-    }
-
-    if (!found) {
-      throw new Error(
-        `Could not find the provided ${hookType}-call hook to change its priority`
-      )
-    }
-
-    hooks.sort((a, b) => b.priority - a.priority)
     return this
   }
 
@@ -232,13 +165,10 @@ export abstract class BaseTask<
       options
     })
 
-    this.addAfterCallHook(
-      async (output, ctx) => {
-        const feedback = await feedbackMechanism.interact(output)
-        ctx.metadata = { ...ctx.metadata, feedback }
-      },
-      { name: 'humanFeedback' }
-    )
+    this.addAfterCallHook(async (output, ctx) => {
+      const feedback = await feedbackMechanism.interact(output)
+      ctx.metadata = { ...ctx.metadata, feedback }
+    })
 
     return this
   }
