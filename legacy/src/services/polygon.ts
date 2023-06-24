@@ -34,7 +34,7 @@ export type POLYGON_ORDER_TYPE = 'asc' | 'desc'
  */
 export interface PolygonAggregatesInput {
   /** The ticker symbol of the stock/equity. */
-  stocksTicker: string
+  ticker: string
 
   /** The size of the timespan multiplier. */
   multiplier: number
@@ -916,8 +916,6 @@ export class PolygonClient {
   /**
    * Returns the previous day's open, high, low, and close (OHLC) for the specified stock ticker.
    *
-   * @see {@link https://polygon.io/docs/stocks/get_v2_aggs_ticker__stocksticker__prev}
-   *
    * @param ticker - ticker symbol of the stock/equity
    * @param adjusted - whether or not the results are adjusted for splits
    * @returns promise that resolves to the previous day's open, high, low, and close (OHLC) for the specified stock ticker
@@ -1006,7 +1004,7 @@ export class PolygonClient {
    * @param params - input parameters (`asset_class` and `locale`)
    * @returns promise that resolves to ticker types
    */
-  async tickerTypes(params: PolygonTickerTypesInput) {
+  async tickerTypes(params: PolygonTickerTypesInput = {}) {
     return this.api
       .get('v3/reference/tickers/types', { searchParams: params })
       .json<PolygonTickerTypesOutput>()
@@ -1050,7 +1048,7 @@ export class PolygonClient {
    * @param params - input parameters (`asset_class`, `locale`)
    * @returns promise that resolves to list of exchanges
    */
-  async exchanges(params: PolygonExchangesInput) {
+  async exchanges(params: PolygonExchangesInput = {}) {
     return this.api
       .get('v3/reference/exchanges', { searchParams: params })
       .json<PolygonExchangesOutput>()
@@ -1063,9 +1061,8 @@ export class PolygonClient {
    * @returns promise that resolves to list of aggregates
    */
   async aggregates(params: PolygonAggregatesInput) {
-    const { stocksTicker, multiplier, timespan, from, to, ...otherParams } =
-      params
-    const endpoint = `v2/aggs/ticker/${stocksTicker}/range/${multiplier}/${timespan}/${from}/${to}`
+    const { ticker, multiplier, timespan, from, to, ...otherParams } = params
+    const endpoint = `v2/aggs/ticker/${ticker}/range/${multiplier}/${timespan}/${from}/${to}`
     return this.api
       .get(endpoint, { searchParams: otherParams })
       .json<PolygonAggregatesOutput>()
