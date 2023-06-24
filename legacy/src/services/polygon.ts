@@ -1,5 +1,7 @@
 import defaultKy from 'ky'
 
+import { getEnv } from '@/env'
+
 export const POLYGON_API_BASE_URL = 'https://api.polygon.io'
 
 /**
@@ -853,7 +855,7 @@ export class PolygonClient {
   readonly apiBaseUrl: string
 
   constructor({
-    apiKey = process.env.POLYGON_API_KEY,
+    apiKey = getEnv('POLYGON_API_KEY'),
     apiBaseUrl = POLYGON_API_BASE_URL,
     ky = defaultKy
   }: {
