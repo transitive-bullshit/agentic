@@ -50,6 +50,7 @@ test('OpenAIChatCompletion - tools - weather', async (t) => {
     )
     .call()
 
+  // console.log(JSON.stringify(result, null, 2))
   t.truthy(typeof result === 'object')
   t.truthy(typeof result.answer === 'number')
   t.truthy(typeof result.units === 'string')

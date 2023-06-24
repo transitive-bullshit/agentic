@@ -33,7 +33,7 @@
     "prepare": "husky install",
     "pre-commit": "lint-staged",
     "test": "run-s test:*",
-    "test:unit": "ava",
+    "test:unit": "NODE_OPTIONS='--loader=tsx --no-warnings' ava",
     "test:prettier": "prettier \"**/*.{js,jsx,ts,tsx}\" --check",
     "test:eslint": "eslint \"**/*.ts\"",
     "test-cov": "c8 ava"

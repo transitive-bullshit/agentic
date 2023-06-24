@@ -241,6 +241,7 @@ export abstract class BaseChatCompletion<
       // console.log('<<< completion', { messages, functions })
       const completion = await this._createChatCompletion(messages, functions)
       const message = completion.message
+      const functionCall = message.function_call
       // console.log('>>> completion', completion.message)
 
       this._logger.info(
@@ -249,9 +250,7 @@ export abstract class BaseChatCompletion<
       )
       ctx.metadata.completion = completion
 
-      if (message.function_call && !message.content) {
-        const functionCall = message.function_call
-
+      if (functionCall) {
         if (!isUsingTools) {
           // TODO: not sure what we should do in this case...
           output = functionCall
