@@ -831,6 +831,11 @@ export interface PolygonExchange {
   url?: string
 }
 
+/**
+ * Client for the Polygon.io REST API.
+ *
+ * @see {@link https://polygon.io/docs}
+ */
 export class PolygonClient {
   /**
    * HTTP client for the Polygon API.
