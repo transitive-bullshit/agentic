@@ -39,10 +39,10 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.4.4",
-    "@inquirer/checkbox": "^1.3.1",
-    "@inquirer/editor": "^1.2.0",
-    "@inquirer/input": "^1.2.1",
-    "@inquirer/select": "^1.2.1",
+    "@inquirer/checkbox": "^1.3.2",
+    "@inquirer/editor": "^1.2.1",
+    "@inquirer/input": "^1.2.2",
+    "@inquirer/select": "^1.2.2",
     "@types/json-schema": "^7.0.12",
     "debug": "^4.3.4",
     "expr-eval": "^2.0.2",
@@ -65,7 +65,7 @@
     "uuid": "^9.0.0",
     "zod": "^3.21.4",
     "zod-to-json-schema": "^3.21.2",
-    "zod-validation-error": "^1.3.0"
+    "zod-validation-error": "^1.3.1"
   },
   "devDependencies": {
     "@keyv/redis": "^2.6.1",
@@ -74,8 +74,8 @@
     "@types/node": "^20.3.1",
     "@types/sinon": "^10.0.15",
     "@types/uuid": "^9.0.2",
-    "@typescript-eslint/eslint-plugin": "^5.59.11",
-    "@typescript-eslint/parser": "^5.59.11",
+    "@typescript-eslint/eslint-plugin": "^5.60.0",
+    "@typescript-eslint/parser": "^5.60.0",
     "ava": "^5.3.1",
     "del-cli": "^5.0.0",
     "dotenv": "^16.3.1",
@@ -91,7 +91,7 @@
     "p-memoize": "^7.1.1",
     "prettier": "^2.8.8",
     "react": "^18.2.0",
-    "sinon": "^15.1.2",
+    "sinon": "^15.2.0",
     "tsup": "7.0.0",
     "tsx": "^3.12.7",
     "type-fest": "^3.12.0",

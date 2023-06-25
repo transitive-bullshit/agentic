@@ -1,0 +1,25 @@
+{
+  "name": "agentic-docs",
+  "version": "0.0.0",
+  "private": true,
+  "description": "agentic docs website.",
+  "repository": "transitive-bullshit/agentic",
+  "homepage": "https://agentic.so/docs",
+  "license": "MIT",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "13.4.7",
+    "nextra": "^2.8.0",
+    "nextra-theme-docs": "^2.8.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.3.1",
+    "typescript": "^5.1.3"
+  }
+}
