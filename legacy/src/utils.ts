@@ -246,3 +246,7 @@ export function isFunction(value: any): value is Function {
 export function isString(value: any): value is string {
   return typeof value === 'string'
 }
+
+export function isArray(value: any): value is any[] {
+  return Array.isArray(value)
+}

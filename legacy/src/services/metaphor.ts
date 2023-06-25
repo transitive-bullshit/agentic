@@ -105,19 +105,10 @@ export type MetaphorSearchOutput = {
 }
 
 export class MetaphorClient {
-  /**
-   * HTTP client for the Metaphor API.
-   */
   readonly api: typeof defaultKy
 
-  /**
-   * Metaphor API key.
-   */
   readonly apiKey: string
 
-  /**
-   * Metaphor API base URL.
-   */
   readonly apiBaseUrl: string
 
   constructor({

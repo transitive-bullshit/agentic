@@ -45,12 +45,12 @@ keyv.has = async (key, ...rest) => {
 function getCacheKeyForRequest(request: Request): string | null {
   const method = request.method.toLowerCase()
 
-  if (method === 'get') {
+  if (method === 'get' || method === 'head' || method === 'options') {
     const url = normalizeUrl(request.url)
 
     if (url) {
       const cacheParams = {
-        // TODO: request.headers isn't a normal JS object...
+        // TODO: request.headers isn't a normal JS object
         headers: { ...request.headers }
       }
 
