@@ -14,7 +14,7 @@ export async function main() {
     .input(z.object({ texts: z.string().array() }))
     .output(z.array(z.object({ text: z.string(), label: z.string() })))
     .examples([
-      { input: 'The food was digusting', output: 'negative' },
+      { input: 'The food was disgusting', output: 'negative' },
       { input: 'We had a fantastic night', output: 'positive' },
       { input: 'Recommended', output: 'positive' },
       { input: 'The waiter was rude', output: 'negative' }
