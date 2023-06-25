@@ -35,7 +35,8 @@
     "test": "run-s test:*",
     "test:unit": "ava",
     "test:prettier": "prettier \"**/*.{js,jsx,ts,tsx}\" --check",
-    "test:eslint": "eslint \"**/*.ts\""
+    "test:eslint": "eslint \"**/*.ts\"",
+    "test-cov": "c8 ava"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.4.4",
@@ -77,6 +78,7 @@
     "@typescript-eslint/eslint-plugin": "^5.60.0",
     "@typescript-eslint/parser": "^5.60.0",
     "ava": "^5.3.1",
+    "c8": "^8.0.0",
     "del-cli": "^5.0.0",
     "dotenv": "^16.3.1",
     "eslint": "^8.43.0",
