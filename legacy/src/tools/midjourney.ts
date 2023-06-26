@@ -100,7 +100,7 @@ export class MidjourneyImagineTool extends BaseTask<
               components: message.components
             }
           } catch (err) {
-            this._logger.error(err, 'Midjourney API error')
+            this._logger.error('Midjourney API error', err)
             return null
           }
         },

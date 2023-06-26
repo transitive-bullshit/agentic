@@ -62,8 +62,6 @@
     "p-retry": "^5.1.2",
     "p-throttle": "^5.1.0",
     "p-timeout": "^6.1.2",
-    "pino": "^8.14.1",
-    "pino-pretty": "^10.0.0",
     "quick-lru": "^6.1.1",
     "replicate": "^0.12.3",
     "ts-dedent": "^2.2.0",

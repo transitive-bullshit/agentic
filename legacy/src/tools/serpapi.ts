@@ -122,7 +122,7 @@ export class SerpAPITool extends BaseTask<SerpAPIInput, SerpAPIOutput> {
       twitter_results: twitterResults
     })
 
-    this._logger.info(output, `SerpAPI response for query "${query}"`)
+    this._logger.info(`SerpAPI response for query "${query}"`, output)
     return output
   }
 }

@@ -203,7 +203,7 @@ export abstract class BaseTask<
     //   maxLength: 120
     // })})`
 
-    this._logger.info({ input }, `Task call "${this.nameForHuman}"`)
+    this._logger.info(`Task call "${this.nameForHuman}"`, { input })
 
     if (this.inputSchema) {
       const safeInput = this.inputSchema.safeParse(input)
@@ -265,10 +265,10 @@ export abstract class BaseTask<
         ...this._retryConfig,
         onFailedAttempt: async (err: FailedAttemptError) => {
           this._logger.warn(
-            err,
             `Task error "${this.nameForHuman}" failed attempt ${
               err.attemptNumber
-            }${input ? ': ' + JSON.stringify(input) : ''}`
+            }${input ? ': ' + JSON.stringify(input) : ''}`,
+            err
           )
 
           if (this._retryConfig.onFailedAttempt) {

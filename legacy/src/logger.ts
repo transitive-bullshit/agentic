@@ -1,114 +1,89 @@
-import { pino } from 'pino'
-import pinoPretty from 'pino-pretty'
+import { cyan, green, magenta, red, yellow } from 'colorette'
+import logger from 'debug'
+
+import { identity } from '@/utils'
 
 import { getEnv } from './env'
 
-export type Level = 'fatal' | 'error' | 'warn' | 'info' | 'debug' | 'trace'
-export type LevelWithSilent = Level | 'silent'
-
-interface LogFn {
-  <T extends object>(obj: T, msg?: string, ...args: any[]): void
-  (obj: unknown, msg?: string, ...args: any[]): void
-  (msg: string, ...args: any[]): void
+/**
+ * Severity levels of an event.
+ */
+export enum Severity {
+  DEBUG = 0,
+  INFO = 1,
+  WARNING = 2,
+  ERROR = 3,
+  CRITICAL = 4
 }
 
-// these types are taken from `pino`
-export interface Logger {
-  /**
-   * Set this property to the desired logging level. In order of priority, available levels are:
-   *
-   * - 'fatal'
-   * - 'error'
-   * - 'warn'
-   * - 'info'
-   * - 'debug'
-   * - 'trace'
-   *
-   * The logging level is a __minimum__ level. For instance if `logger.level` is `'info'` then all `'fatal'`, `'error'`, `'warn'`,
-   * and `'info'` logs will be enabled.
-   *
-   * You can pass `'silent'` to disable logging.
-   */
-  level: LevelWithSilent | string
-
-  /**
-   * Log at `'fatal'` level the given msg. If the first argument is an object, all its properties will be included in the JSON line.
-   * If more args follows `msg`, these will be used to format `msg` using `util.format`.
-   *
-   * @typeParam T - the interface of the object being serialized. Default is object.
-   * @param obj - object to be serialized
-   * @param msg - the log message to write
-   * @param args - format string values when `msg` is a format string
-   */
-  fatal: LogFn
-
-  /**
-   * Log at `'error'` level the given msg. If the first argument is an object, all its properties will be included in the JSON line.
-   * If more args follows `msg`, these will be used to format `msg` using `util.format`.
-   *
-   * @typeParam T - the interface of the object being serialized. Default is object.
-   * @param obj - object to be serialized
-   * @param msg - the log message to write
-   * @param args - format string values when `msg` is a format string
-   */
-  error: LogFn
-
-  /**
-   * Log at `'warn'` level the given msg. If the first argument is an object, all its properties will be included in the JSON line.
-   * If more args follows `msg`, these will be used to format `msg` using `util.format`.
-   *
-   * @typeParam T - the interface of the object being serialized. Default is object.
-   * @param obj - object to be serialized
-   * @param msg -  the log message to write
-   * @param args - format string values when `msg` is a format string
-   */
-  warn: LogFn
-
-  /**
-   * Log at `'info'` level the given msg. If the first argument is an object, all its properties will be included in the JSON line.
-   * If more args follows `msg`, these will be used to format `msg` using `util.format`.
-   *
-   * @typeParam T - the interface of the object being serialized. Default is object.
-   * @param obj - object to be serialized
-   * @param msg - the log message to write
-   * @param args - format string values when `msg` is a format string
-   */
-  info: LogFn
-
-  /**
-   * Log at `'debug'` level the given msg. If the first argument is an object, all its properties will be included in the JSON line.
-   * If more args follows `msg`, these will be used to format `msg` using `util.format`.
-   *
-   * @typeParam T - the interface of the object being serialized. Default is object.
-   * @param obj - object to be serialized
-   * @param msg - the log message to write
-   * @param args - format string values when `msg` is a format string
-   */
-  debug: LogFn
-
-  /**
-   * Log at `'trace'` level the given msg. If the first argument is an object, all its properties will be included in the JSON line.
-   * If more args follows `msg`, these will be used to format `msg` using `util.format`.
-   *
-   * @typeParam T - the interface of the object being serialized. Default is object.
-   * @param obj - object to be serialized
-   * @param msg - the log message to write
-   * @param args - format string values when `msg` is a format string
-   */
-  trace: LogFn
-
-  /**
-   * Noop function.
-   */
-  silent: LogFn
+/**
+ * Functions to colorize text based on severity level.
+ */
+const SEVERITY_COLORS: Record<Severity, (text: string) => string> = {
+  [Severity.DEBUG]: cyan,
+  [Severity.INFO]: green,
+  [Severity.WARNING]: yellow,
+  [Severity.ERROR]: red,
+  [Severity.CRITICAL]: magenta
 }
 
-export const defaultLogger: Logger = pino(
-  {
-    level: getEnv('LOG_LEVEL', 'info')
+/*
+ * Define minimum LOG_LEVEL, defaulting to Severity.INFO if not provided or if an invalid value is provided. Any events below that level won't be logged to the console.
+ */
+let LOG_LEVEL = Severity.INFO
+
+const logLevelEnv =
+  Severity[getEnv('LOG_LEVEL')?.toUpperCase() as keyof typeof Severity]
+const showDateTime = getEnv('LOG_SHOW_DATE') === 'true'
+
+if (logLevelEnv !== undefined) {
+  LOG_LEVEL = logLevelEnv
+} else if (getEnv('LOG_LEVEL')) {
+  console.error(
+    `Invalid value for LOG_LEVEL: ${getEnv(
+      'LOG_LEVEL'
+    )}. Falling back to default level: INFO`
+  )
+}
+
+const debug = logger('agentic')
+
+const SPACE = ' '
+const INDENT = SPACE.repeat(23)
+
+// Override the default logger to add a timestamp and severity level to the logged arguments:
+logger.formatArgs = function formatArgs(args) {
+  const severity = args[args.length - 1]
+  const name = this.namespace
+  const dateTime = showDateTime ? new Date().toISOString() : ''
+  const colorFn = SEVERITY_COLORS[severity] || identity
+  const prefix = colorFn(SPACE + name + SPACE)
+  args[0] = dateTime + prefix + args[0].split('\n').join('\n' + INDENT + prefix)
+  // args.push('+' + logger.humanize(this.diff));
+
+  // Remove the severity level from the logged arguments:
+  args.pop()
+}
+
+export const defaultLogger = {
+  debug: (message: string, ...args: any[]) => {
+    if (LOG_LEVEL > Severity.DEBUG) return
+    debug(message, ...args, Severity.DEBUG)
   },
-  pinoPretty({
-    sync: true,
-    colorize: true
-  })
-)
+  info: (message: string, ...args: any[]) => {
+    if (LOG_LEVEL > Severity.INFO) return
+    debug(message, ...args, Severity.INFO)
+  },
+  warning: (message: string, ...args: any[]) => {
+    if (LOG_LEVEL > Severity.WARNING) return
+    debug(message, ...args, Severity.WARNING)
+  },
+  error: (message: string, ...args: any[]) => {
+    if (LOG_LEVEL > Severity.ERROR) return
+    debug(message, ...args, Severity.ERROR)
+  },
+  critical: (message: string, ...args: any[]) => {
+    if (LOG_LEVEL > Severity.CRITICAL) return
+    debug(message, ...args, Severity.CRITICAL)
+  }
+}

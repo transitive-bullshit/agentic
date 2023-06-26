@@ -234,8 +234,8 @@ export abstract class BaseChatCompletion<
       }
 
       this._logger.info(
-        debugInfo,
-        `>>> Task createChatCompletion "${this.nameForHuman}"`
+        `>>> Task createChatCompletion "${this.nameForHuman}"`,
+        debugInfo
       )
 
       // console.log('<<< completion', { messages, functions })
@@ -245,8 +245,8 @@ export abstract class BaseChatCompletion<
       // console.log('>>> completion', completion.message)
 
       this._logger.info(
-        message,
-        `<<< Task createChatCompletion "${this.nameForHuman}"`
+        `<<< Task createChatCompletion "${this.nameForHuman}"`,
+        message
       )
       ctx.metadata.completion = completion
 
@@ -308,13 +308,10 @@ export abstract class BaseChatCompletion<
         //   task: functionName,
         //   input: functionArguments
         // })
-        this._logger.info(
-          {
-            task: functionName,
-            input: functionArguments
-          },
-          `>>> Sub-Task "${tool.nameForHuman}"`
-        )
+        this._logger.info(`>>> Sub-Task "${tool.nameForHuman}"`, {
+          task: functionName,
+          input: functionArguments
+        })
 
         // TODO: handle sub-task errors gracefully
         const toolCallResponse = await tool.callWithMetadata(
@@ -322,14 +319,11 @@ export abstract class BaseChatCompletion<
           ctx
         )
 
-        this._logger.info(
-          {
-            task: functionName,
-            input: functionArguments,
-            output: toolCallResponse.result
-          },
-          `<<< Sub-Task "${tool.nameForHuman}"`
-        )
+        this._logger.info(`<<< Sub-Task "${tool.nameForHuman}"`, {
+          task: functionName,
+          input: functionArguments,
+          output: toolCallResponse.result
+        })
         // console.log('<<< sub-task', {
         //   task: functionName,
         //   input: functionArguments,

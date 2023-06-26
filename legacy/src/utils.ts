@@ -250,3 +250,7 @@ export function isString(value: any): value is string {
 export function isArray(value: any): value is any[] {
   return Array.isArray(value)
 }
+
+export function identity<T>(x: T): T {
+  return x
+}

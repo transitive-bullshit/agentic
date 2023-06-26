@@ -104,7 +104,7 @@ export class DiffbotTool extends BaseTask<DiffbotInput, DiffbotOutput> {
       url: ctx.input!.url
     })
 
-    // this._logger.info(res, `Diffbot response for url "${ctx.input!.url}"`)
+    // this._logger.info(`Diffbot response for url "${ctx.input!.url}"`,res)
 
     const output = this.outputSchema.parse({
       type: res.type,
@@ -131,7 +131,7 @@ export class DiffbotTool extends BaseTask<DiffbotInput, DiffbotOutput> {
       )
     })
 
-    this._logger.info(output, `Diffbot response for url "${ctx.input!.url}"`)
+    this._logger.info(`Diffbot response for url "${ctx.input!.url}"`, output)
     return output
   }
 }
