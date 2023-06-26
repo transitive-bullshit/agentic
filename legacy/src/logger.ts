@@ -22,7 +22,7 @@ export enum Severity {
 const SEVERITY_STRINGS: Record<Severity, string> = {
   [Severity.DEBUG]: 'DEBUG',
   [Severity.INFO]: 'INFO',
-  [Severity.WARNING]: 'WARNING',
+  [Severity.WARNING]: 'WARN',
   [Severity.ERROR]: 'ERROR',
   [Severity.CRITICAL]: 'CRITICAL'
 }
@@ -85,7 +85,7 @@ export const defaultLogger = {
     if (LOG_LEVEL > Severity.INFO) return
     debug(message, ...args, Severity.INFO)
   },
-  warning: (message: string, ...args: any[]) => {
+  warn: (message: string, ...args: any[]) => {
     if (LOG_LEVEL > Severity.WARNING) return
     debug(message, ...args, Severity.WARNING)
   },
