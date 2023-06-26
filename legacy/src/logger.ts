@@ -17,6 +17,17 @@ export enum Severity {
 }
 
 /**
+ * Strings to represent severity levels.
+ */
+const SEVERITY_STRINGS: Record<Severity, string> = {
+  [Severity.DEBUG]: 'DEBUG',
+  [Severity.INFO]: 'INFO',
+  [Severity.WARNING]: 'WARNING',
+  [Severity.ERROR]: 'ERROR',
+  [Severity.CRITICAL]: 'CRITICAL'
+}
+
+/**
  * Functions to colorize text based on severity level.
  */
 const SEVERITY_COLORS: Record<Severity, (text: string) => string> = {
@@ -57,9 +68,9 @@ logger.formatArgs = function formatArgs(args) {
   const name = this.namespace
   const dateTime = showDateTime ? new Date().toISOString() : ''
   const colorFn = SEVERITY_COLORS[severity] || identity
-  const prefix = colorFn(SPACE + name + SPACE)
-  args[0] = dateTime + prefix + args[0].split('\n').join('\n' + INDENT + prefix)
-  // args.push('+' + logger.humanize(this.diff));
+  const prefix = colorFn(SPACE + SEVERITY_STRINGS[severity] + SPACE)
+  args[0] =
+    dateTime + name + prefix + args[0].split('\n').join('\n' + INDENT + prefix)
 
   // Remove the severity level from the logged arguments:
   args.pop()
