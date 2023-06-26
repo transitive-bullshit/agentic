@@ -87,3 +87,5 @@ export const defaultLogger = {
     debug(message, ...args, Severity.CRITICAL)
   }
 }
+
+export type Logger = typeof defaultLogger
