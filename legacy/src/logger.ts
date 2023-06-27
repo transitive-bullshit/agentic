@@ -41,20 +41,18 @@ const SEVERITY_COLORS: Record<Severity, (text: string) => string> = {
 /*
  * Define minimum LOG_LEVEL, defaulting to Severity.INFO if not provided or if an invalid value is provided. Any events below that level won't be logged to the console.
  */
-let LOG_LEVEL = Severity.INFO
-
-const logLevelEnv =
-  Severity[getEnv('LOG_LEVEL')?.toUpperCase() as keyof typeof Severity]
+const logLevelEnv = getEnv(
+  'LOG_LEVEL',
+  'info'
+)?.toUpperCase() as keyof typeof Severity
+let LOG_LEVEL = Severity[logLevelEnv]
 const showDateTime = getEnv('LOG_SHOW_DATE') === 'true'
 
-if (logLevelEnv !== undefined) {
-  LOG_LEVEL = logLevelEnv
-} else if (getEnv('LOG_LEVEL')) {
+if (LOG_LEVEL === undefined) {
   console.error(
-    `Invalid value for LOG_LEVEL: ${getEnv(
-      'LOG_LEVEL'
-    )}. Falling back to default level: INFO`
+    `Invalid value for LOG_LEVEL: ${logLevelEnv}. Falling back to default level: INFO`
   )
+  LOG_LEVEL = Severity.INFO
 }
 
 const debug = logger('agentic')
@@ -76,6 +74,9 @@ logger.formatArgs = function formatArgs(args) {
   args.pop()
 }
 
+/**
+ * Default `debug` logger with methods that log to the console with the respective severity level.
+ */
 export const defaultLogger = {
   debug: (formatter: any, ...args: any[]) => {
     if (LOG_LEVEL > Severity.DEBUG) return
