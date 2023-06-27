@@ -1,6 +1,7 @@
 import { cyan, green, magenta, red, yellow } from 'colorette'
 import logger from 'debug'
 
+import { SPACE } from '@/constants'
 import { identity } from '@/utils'
 
 import { getEnv } from './env'
@@ -57,7 +58,6 @@ if (LOG_LEVEL === undefined) {
 
 const debug = logger('agentic')
 
-const SPACE = ' '
 const INDENT = SPACE.repeat(23)
 
 // Override the default logger to add a timestamp and severity level to the logged arguments:

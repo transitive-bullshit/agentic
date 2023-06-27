@@ -6,6 +6,7 @@ import * as errors from './errors'
 import * as types from './types'
 import type { Agentic } from './agentic'
 import { SKIP_HOOKS } from './constants'
+import { TaskEvent, TaskStatus } from './events'
 import {
   HumanFeedbackMechanismCLI,
   HumanFeedbackOptions,
@@ -272,6 +273,15 @@ export abstract class BaseTask<
       }
     }
 
+    const taskEvent = new TaskEvent({
+      payload: {
+        taskStatus: TaskStatus.RUNNING,
+        taskInputs: input,
+        ...ctx.metadata
+      }
+    })
+    this._agentic.taskTracker.addEvent(taskEvent)
+
     for (const { hook: preHook } of this._preHooks) {
       const preHookResult = await preHook(ctx)
       if (preHookResult === SKIP_HOOKS) {
@@ -380,6 +390,16 @@ export abstract class BaseTask<
     }
 
     // ctx.tracker.setOutput(stringifyForDebugging(result, { maxLength: 100 }))
+
+    const taskEvent2 = new TaskEvent({
+      payload: {
+        taskInputs: input,
+        taskStatus: TaskStatus.SUCCEEDED,
+        taskOutput: result,
+        ...ctx.metadata
+      }
+    })
+    this._agentic.taskTracker.addEvent(taskEvent2)
 
     return {
       result,

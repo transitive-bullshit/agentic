@@ -3,6 +3,7 @@ import { SetOptional } from 'type-fest'
 
 import * as types from './types'
 import { DEFAULT_OPENAI_MODEL } from './constants'
+import { TerminalTaskTracker, defaultTaskTracker } from './events'
 import { HumanFeedbackOptions, HumanFeedbackType } from './human-feedback'
 import { HumanFeedbackMechanismCLI } from './human-feedback/cli'
 import { OpenAIChatCompletion } from './llms/openai'
@@ -12,6 +13,7 @@ import { defaultIDGeneratorFn, isFunction, isString } from './utils'
 export class Agentic {
   protected _ky: types.KyInstance
   protected _logger: types.Logger
+  protected _taskTracker: TerminalTaskTracker
 
   protected _openai?: types.openai.OpenAIClient
   protected _anthropic?: types.anthropic.Client
@@ -35,6 +37,7 @@ export class Agentic {
     idGeneratorFn?: types.IDGeneratorFunction
     logger?: types.Logger
     ky?: types.KyInstance
+    taskTracker?: TerminalTaskTracker
   }) {
     // TODO: This is a bit hacky, but we're doing it to have a slightly nicer API
     // for the end developer when creating subclasses of `BaseTask` to use as
@@ -48,6 +51,7 @@ export class Agentic {
 
     this._ky = opts.ky ?? defaultKy
     this._logger = opts.logger ?? defaultLogger
+    this._taskTracker = opts.taskTracker ?? defaultTaskTracker
 
     this._openaiModelDefaults = {
       provider: 'openai',
@@ -96,6 +100,10 @@ export class Agentic {
 
   public get humanFeedbackDefaults() {
     return this._humanFeedbackDefaults
+  }
+
+  public get taskTracker(): TerminalTaskTracker {
+    return this._taskTracker
   }
 
   public get idGeneratorFn(): types.IDGeneratorFunction {
