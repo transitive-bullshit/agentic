@@ -97,7 +97,7 @@ export class ReplicateStableDiffusionTool extends BaseTask<
             console.log('<<< replicate', image, output)
             return output
           } catch (err) {
-            this._logger.error(err, 'Replicate API error')
+            this._logger.error('Replicate API error', err)
             return []
           }
         },

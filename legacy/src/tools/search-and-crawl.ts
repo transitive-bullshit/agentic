@@ -171,7 +171,7 @@ export class SearchAndCrawlTool extends BaseTask<
       scrape_results: scrapeResults
     })
 
-    this._logger.info(output, `SearchAndCrawl response for query "${query}"`)
+    this._logger.info(`SearchAndCrawl response for query "${query}"`, output)
     return output
   }
 }
