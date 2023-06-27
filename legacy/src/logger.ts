@@ -77,25 +77,25 @@ logger.formatArgs = function formatArgs(args) {
 }
 
 export const defaultLogger = {
-  debug: (message: string, ...args: any[]) => {
+  debug: (formatter: any, ...args: any[]) => {
     if (LOG_LEVEL > Severity.DEBUG) return
-    debug(message, ...args, Severity.DEBUG)
+    debug(formatter, ...args, Severity.DEBUG)
   },
-  info: (message: string, ...args: any[]) => {
+  info: (formatter: any, ...args: any[]) => {
     if (LOG_LEVEL > Severity.INFO) return
-    debug(message, ...args, Severity.INFO)
+    debug(formatter, ...args, Severity.INFO)
   },
-  warn: (message: string, ...args: any[]) => {
+  warn: (formatter: any, ...args: any[]) => {
     if (LOG_LEVEL > Severity.WARNING) return
-    debug(message, ...args, Severity.WARNING)
+    debug(formatter, ...args, Severity.WARNING)
   },
-  error: (message: string, ...args: any[]) => {
+  error: (formatter: any, ...args: any[]) => {
     if (LOG_LEVEL > Severity.ERROR) return
-    debug(message, ...args, Severity.ERROR)
+    debug(formatter, ...args, Severity.ERROR)
   },
-  critical: (message: string, ...args: any[]) => {
+  critical: (formatter: any, ...args: any[]) => {
     if (LOG_LEVEL > Severity.CRITICAL) return
-    debug(message, ...args, Severity.CRITICAL)
+    debug(formatter, ...args, Severity.CRITICAL)
   }
 }
 
