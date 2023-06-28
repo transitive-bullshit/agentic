@@ -34,6 +34,10 @@ export class TaskEventEmitter<
       }
     })
     this._agentic.taskTracker.addEvent(event)
+
+    const name = `${this._task.nameForModel}:${String(taskStatus)}`
+    this._agentic.eventEmitter.emit(name, event)
+
     return super.emit(taskStatus, event)
   }
 }

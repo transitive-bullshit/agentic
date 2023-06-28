@@ -1,3 +1,4 @@
+import { EventEmitter } from 'eventemitter3'
 import defaultKy from 'ky'
 import { SetOptional } from 'type-fest'
 
@@ -14,6 +15,7 @@ export class Agentic {
   protected _ky: types.KyInstance
   protected _logger: types.Logger
   protected _taskTracker: TerminalTaskTracker
+  protected _eventEmitter: EventEmitter
 
   protected _openai?: types.openai.OpenAIClient
   protected _anthropic?: types.anthropic.Client
@@ -52,6 +54,7 @@ export class Agentic {
     this._ky = opts.ky ?? defaultKy
     this._logger = opts.logger ?? defaultLogger
     this._taskTracker = opts.taskTracker ?? defaultTaskTracker
+    this._eventEmitter = new EventEmitter()
 
     this._openaiModelDefaults = {
       provider: 'openai',
@@ -104,6 +107,10 @@ export class Agentic {
 
   public get taskTracker(): TerminalTaskTracker {
     return this._taskTracker
+  }
+
+  public get eventEmitter(): EventEmitter {
+    return this._eventEmitter
   }
 
   public get idGeneratorFn(): types.IDGeneratorFunction {
