@@ -6,7 +6,7 @@ import { ZodType } from 'zod'
 import type { Agentic } from './agentic'
 import { SKIP_HOOKS } from './constants'
 import * as errors from './errors'
-import { TaskEvent, TaskEventEmitter, TaskStatus } from './events'
+import { TaskEventEmitter, TaskStatus } from './events'
 import {
   HumanFeedbackMechanismCLI,
   HumanFeedbackOptions,
@@ -75,7 +75,10 @@ export abstract class BaseTask<
     this._id =
       options.id ?? this._agentic?.idGeneratorFn() ?? defaultIDGeneratorFn()
 
-    this._eventEmitter = new TaskEventEmitter<TInput, TOutput>(this)
+    this._eventEmitter = new TaskEventEmitter<TInput, TOutput>(
+      this,
+      this._agentic
+    )
   }
 
   public get agentic(): Agentic {
@@ -281,14 +284,10 @@ export abstract class BaseTask<
       }
     }
 
-    const taskEvent = new TaskEvent({
-      payload: {
-        taskStatus: TaskStatus.RUNNING,
-        taskInputs: input,
-        ...ctx.metadata
-      }
+    this._eventEmitter.emit(TaskStatus.RUNNING, {
+      taskInputs: input,
+      ...ctx.metadata
     })
-    this._agentic.taskTracker.addEvent(taskEvent)
 
     for (const { hook: preHook } of this._preHooks) {
       const preHookResult = await preHook(ctx)
@@ -398,15 +397,11 @@ export abstract class BaseTask<
 
     // ctx.tracker.setOutput(stringifyForDebugging(result, { maxLength: 100 }))
 
-    const taskEvent2 = new TaskEvent({
-      payload: {
-        taskInputs: input,
-        taskStatus: TaskStatus.SUCCEEDED,
-        taskOutput: result,
-        ...ctx.metadata
-      }
+    this._eventEmitter.emit(TaskStatus.SUCCEEDED, {
+      taskInputs: input,
+      taskOutput: result,
+      ...ctx.metadata
     })
-    this._agentic.taskTracker.addEvent(taskEvent2)
 
     return {
       result,
