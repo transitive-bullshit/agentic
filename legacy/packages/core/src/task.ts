@@ -1,17 +1,18 @@
+import { EventEmitter } from 'eventemitter3'
 import pRetry, { FailedAttemptError } from 'p-retry'
 import QuickLRU from 'quick-lru'
 import { ZodType } from 'zod'
 
-import * as errors from './errors'
-import * as types from './types'
 import type { Agentic } from './agentic'
 import { SKIP_HOOKS } from './constants'
-import { TaskEvent, TaskStatus } from './events'
+import * as errors from './errors'
+import { TaskEvent, TaskEventEmitter, TaskStatus } from './events'
 import {
   HumanFeedbackMechanismCLI,
   HumanFeedbackOptions,
   HumanFeedbackType
 } from './human-feedback'
+import * as types from './types'
 import { defaultIDGeneratorFn, isValidTaskIdentifier } from './utils'
 
 /**
@@ -37,6 +38,7 @@ export abstract class BaseTask<
   protected _timeoutMs?: number
   protected _retryConfig: types.RetryConfig
   protected _cacheConfig: types.CacheConfig<TInput, TOutput>
+  protected _eventEmitter: TaskEventEmitter<TInput, TOutput>
 
   protected _preHooks: Array<{
     hook: types.TaskBeforeCallHook<TInput>
@@ -72,6 +74,8 @@ export abstract class BaseTask<
 
     this._id =
       options.id ?? this._agentic?.idGeneratorFn() ?? defaultIDGeneratorFn()
+
+    this._eventEmitter = new TaskEventEmitter<TInput, TOutput>(this)
   }
 
   public get agentic(): Agentic {
@@ -88,6 +92,10 @@ export abstract class BaseTask<
 
   protected get _logger(): types.Logger {
     return this._agentic.logger
+  }
+
+  public get eventEmitter(): EventEmitter {
+    return this._eventEmitter
   }
 
   public abstract get inputSchema(): ZodType<TInput>
@@ -338,8 +346,7 @@ export abstract class BaseTask<
         ...this._retryConfig,
         onFailedAttempt: async (err: FailedAttemptError) => {
           this._logger.warn(
-            `Task error "${this.nameForHuman}" failed attempt ${
-              err.attemptNumber
+            `Task error "${this.nameForHuman}" failed attempt ${err.attemptNumber
             }${input ? ': ' + JSON.stringify(input) : ''}`,
             err
           )
