@@ -191,4 +191,8 @@ export type TaskAfterCallHook<
 > = (
   output: TOutput,
   ctx: TaskCallContext<TInput>
-) => void | typeof SKIP_HOOKS | Promise<void | typeof SKIP_HOOKS>
+) =>
+  | void
+  | TOutput
+  | typeof SKIP_HOOKS
+  | Promise<void | typeof SKIP_HOOKS | TOutput>

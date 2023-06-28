@@ -253,7 +253,7 @@ export abstract class HumanFeedbackMechanism<
             throw new Error('Expected output to be an array')
           }
 
-          feedback.chosen = await this._select(output)
+          feedback.chosen = [await this._select(output)]
         }
 
         break
