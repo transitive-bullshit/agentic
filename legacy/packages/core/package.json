@@ -1,7 +1,11 @@
 {
   "name": "@agentic/core",
   "description": "Reliable building blocks for TypeScript AI agents.",
-  "repository": "transitive-bullshit/agentic",
+  "repository": {
+    "type": "git",
+    "url": "transitive-bullshit/agentic",
+    "directory": "packages/core"
+  },
   "license": "MIT",
   "type": "module",
   "sideEffects": false,

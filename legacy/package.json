@@ -3,7 +3,10 @@
   "private": true,
   "description": "Everything you need to build reliable AI agents with TypeScript.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
-  "repository": "transitive-bullshit/agentic",
+  "repository": {
+    "type": "git",
+    "url": "transitive-bullshit/agentic"
+  },
   "license": "MIT",
   "type": "module",
   "packageManager": "pnpm@8.6.2",
