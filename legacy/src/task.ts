@@ -172,6 +172,18 @@ export abstract class BaseTask<
     this.addAfterCallHook(async (output, ctx) => {
       const feedback = await feedbackMechanism.interact(output)
       ctx.metadata = { ...ctx.metadata, feedback }
+      if (feedback.editedOutput) {
+        return feedback.editedOutput
+      }
+
+      switch (feedback.type) {
+        case 'confirm':
+          return output
+        case 'select':
+          return feedback.chosen
+        case 'multiselect':
+          return feedback.selected
+      }
     })
 
     return this
@@ -250,12 +262,14 @@ export abstract class BaseTask<
 
     const result = await pRetry(
       async () => {
-        const result = await this._call(ctx)
+        let result = await this._call(ctx)
 
         for (const { hook: postHook } of this._postHooks) {
           const postHookResult = await postHook(result, ctx)
           if (postHookResult === SKIP_HOOKS) {
             break
+          } else if (postHookResult !== undefined) {
+            result = postHookResult
           }
         }
 

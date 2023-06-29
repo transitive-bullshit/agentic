@@ -16,8 +16,12 @@ async function main() {
         numFacts: z.number().int().default(5)
       })
     )
-    .output(z.object({ facts: z.array(z.string()) }))
+    .output(z.array(z.string()))
     .modelParams({ temperature: 0.9 })
+    .withHumanFeedback({
+      type: 'confirm',
+      editing: true
+    })
     .call({ topic: 'cats' })
 
   console.log(out)
