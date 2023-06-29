@@ -12,7 +12,6 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve",
     "baseUrl": ".",
     "outDir": "build",
     "noEmit": true,
@@ -20,6 +19,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "exclude": ["node_modules", "build"],
-  "include": ["**/*.ts", "**/*.tsx"]
+  "exclude": ["build", "node_modules"],
+  "include": ["."]
 }

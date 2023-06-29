@@ -30,7 +30,7 @@ Otherwise, you can pass it in as an argument to the `NovuClient` constructor.
 
 ### Create a Notification Template
 
-For each notification type you want to send, you need to create a template in Novu. This is a one-time setup step that you can do on the Novu web interface. 
+For each notification type you want to send, you need to create a template in Novu. This is a one-time setup step that you can do on the Novu web interface.
 
 It is possible to customize the notification content at each invocation via handlebars-style placeholders. For example, you can create a template for an email notification that looks like this:
 
@@ -65,7 +65,7 @@ To create a template, follow these steps:
 
    ![](https://ajeuwbhvhr.cloudimg.io/colony-recorder.s3.amazonaws.com/files/2023-06-08/8cf3d995-5ef4-465c-9a25-43c680e67f8c/ascreenshot.jpeg?tl_px=745,177&br_px=1865,807&sharp=0.8&width=560&wat_scale=50&wat=1&wat_opacity=0.7&wat_gravity=northwest&wat_url=https://colony-labs-public.s3.us-east-2.amazonaws.com/images/watermarks/watermark_default.png&wat_pad=262,139)
 
-7. When you're done, click "Update" on the top-right.  
+7. When you're done, click "Update" on the top-right.
 
 You are now ready to send SMS notifications via the API! For example, to manually trigger a notification via the Agentic Novu Service client:
 

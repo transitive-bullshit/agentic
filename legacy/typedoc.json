@@ -1,13 +1,9 @@
 {
   "$schema": "https://typedoc.org/schema.json",
-  "entryPoints": [
-    "./src/index.ts"
-  ],
+  "entryPoints": ["./packages/core/src/index.ts"],
   "tsconfig": "./tsconfig.json",
   "readme": "./readme.md",
-  "plugin": [
-    "typedoc-plugin-markdown"
-  ],
+  "plugin": ["typedoc-plugin-markdown"],
   "out": "./docs/api",
   "hideGenerator": true,
   "excludePrivate": true,

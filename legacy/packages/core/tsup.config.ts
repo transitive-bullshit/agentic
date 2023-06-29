@@ -14,7 +14,6 @@ export default defineConfig([
     dts: true,
     esbuildOptions(options) {
       options.target = 'es2020'
-      options.jsx = 'preserve'
     }
   }
 ])

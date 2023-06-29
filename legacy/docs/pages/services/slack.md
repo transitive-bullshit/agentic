@@ -55,21 +55,21 @@ You may provide these alternatively when instantiating the service via the `apiK
 
    ![](https://ajeuwbhvhr.cloudimg.io/colony-recorder.s3.amazonaws.com/files/2023-06-10/fc6a2439-6961-45a2-8059-3df1b923f17a/ascreenshot.jpeg?tl_px=817,445&br_px=1937,1075&force_format=png&width=560&wat_scale=50&wat=1&wat_opacity=0.7&wat_gravity=northwest&wat_url=https://colony-recorder.s3.us-west-1.amazonaws.com/images/watermarks/FB923C_standard.png&wat_pad=262,139)
 
-7. Review the OAuth scopes and enabled features and proceed by clicking "Create"
+6. Review the OAuth scopes and enabled features and proceed by clicking "Create"
 
    ![](https://ajeuwbhvhr.cloudimg.io/colony-recorder.s3.amazonaws.com/files/2023-06-10/94d883e4-9059-423a-88ad-a447353edd76/ascreenshot.jpeg?tl_px=922,531&br_px=2042,1161&force_format=png&width=560&wat_scale=50&wat=1&wat_opacity=0.7&wat_gravity=northwest&wat_url=https://colony-recorder.s3.us-west-1.amazonaws.com/images/watermarks/FB923C_standard.png&wat_pad=262,139)
 
-8. Click "Install to Workspace" to install your application to your workspace:
+7. Click "Install to Workspace" to install your application to your workspace:
 
    ![](https://ajeuwbhvhr.cloudimg.io/colony-recorder.s3.amazonaws.com/files/2023-06-10/8daf26cc-d412-4a4e-9b3e-81e38a81f5c6/ascreenshot.jpeg?tl_px=278,553&br_px=1398,1183&force_format=png&width=560&wat_scale=50&wat=1&wat_opacity=0.7&wat_gravity=northwest&wat_url=https://colony-recorder.s3.us-west-1.amazonaws.com/images/watermarks/FB923C_standard.png&wat_pad=262,139)
-   
-9. Almost there! To obtain the API key for the Agentic Service, click "OAuth & Permissions" in the left navigation menu of the Slack Dashboard of your application and scroll down to the "OAuth Tokens for Your Workspace" section.
+
+8. Almost there! To obtain the API key for the Agentic Service, click "OAuth & Permissions" in the left navigation menu of the Slack Dashboard of your application and scroll down to the "OAuth Tokens for Your Workspace" section.
 
    ![](https://ajeuwbhvhr.cloudimg.io/colony-recorder.s3.amazonaws.com/files/2023-06-10/c34e3efc-02cd-4aa8-a4d3-9a9fe2395118/user_cropped_screenshot.jpeg?tl_px=0,254&br_px=1120,884&force_format=png&width=560&wat_scale=50&wat=1&wat_opacity=0.7&wat_gravity=northwest&wat_url=https://colony-recorder.s3.us-west-1.amazonaws.com/images/watermarks/FB923C_standard.png&wat_pad=66,162)
 
-10. Click "Copy" to copy the Bot User OAuth API Key to your clipboard.
+9. Click "Copy" to copy the Bot User OAuth API Key to your clipboard.
 
-   ![](https://ajeuwbhvhr.cloudimg.io/colony-recorder.s3.amazonaws.com/files/2023-06-10/6ee4a836-2e62-4eb9-adbf-6d17b2fc5184/user_cropped_screenshot.jpeg?tl_px=0,0&br_px=1086,517&force_format=png&width=560&wat_scale=50&wat=1&wat_opacity=0.7&wat_gravity=northwest&wat_url=https://colony-recorder.s3.us-west-1.amazonaws.com/images/watermarks/FB923C_standard.png&wat_pad=487,134)
+![](https://ajeuwbhvhr.cloudimg.io/colony-recorder.s3.amazonaws.com/files/2023-06-10/6ee4a836-2e62-4eb9-adbf-6d17b2fc5184/user_cropped_screenshot.jpeg?tl_px=0,0&br_px=1086,517&force_format=png&width=560&wat_scale=50&wat=1&wat_opacity=0.7&wat_gravity=northwest&wat_url=https://colony-recorder.s3.us-west-1.amazonaws.com/images/watermarks/FB923C_standard.png&wat_pad=487,134)
 
 ### How to Retrieve Channel ID
 

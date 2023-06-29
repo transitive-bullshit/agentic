@@ -13,7 +13,7 @@
     },
     "ecmaVersion": "latest",
     "sourceType": "module",
-    "project": "./tsconfig.json"
+    "project": "./packages/core/tsconfig.json"
   },
   "rules": {
     "@typescript-eslint/no-unused-vars": [
@@ -57,7 +57,7 @@
     },
     {
       // disable process.env for framework source files
-      "files": "src/**/*.ts",
+      "files": "packages/**/src/*.ts",
       "rules": {
         "no-process-env": "error"
       }

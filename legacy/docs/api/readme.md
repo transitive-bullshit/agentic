@@ -4,4 +4,4 @@
 
 ## Notes
 
--   This directory contains auto-generated documentation created by TypeDoc. It is not intended to be edited manually.
+- This directory contains auto-generated documentation created by TypeDoc. It is not intended to be edited manually.
