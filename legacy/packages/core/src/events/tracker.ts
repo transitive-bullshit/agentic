@@ -8,12 +8,30 @@ import { SPACE } from '@/constants'
 import { TaskEvent, TaskStatus } from './event'
 import { SYMBOLS } from './symbols'
 
-const consoleBuffer: any[] = []
+const MAGIC_STRING = '__INSIDE_TRACKER__' // Define a unique "magic" string
 
-const originalWrite = process.stdout.write
+const stdoutBuffer: any[] = []
+const stderrBuffer: any[] = []
+
+const originalStdoutWrite = process.stdout.write
 process.stdout.write = function (str: any) {
-  consoleBuffer.push(str)
-  return originalWrite.call(process.stdout, str)
+  stdoutBuffer.push(str)
+  return originalStdoutWrite.call(process.stdout, str)
+}
+
+const originalStderrWrite = process.stderr.write
+process.stderr.write = function (str: any) {
+  if (str.startsWith(MAGIC_STRING)) {
+    // This write is from inside the tracker, remove the magic string and write to stderr:
+    return originalStderrWrite.call(
+      process.stderr,
+      str.replace(MAGIC_STRING, '')
+    )
+  } else {
+    // This write is from outside the tracker, add it to stderrBuffer and write to stderr:
+    stderrBuffer.push(str)
+    return originalStderrWrite.call(process.stderr, str)
+  }
 }
 
 const SPINNER_INTERVAL = 100
@@ -89,16 +107,27 @@ export class TerminalTaskTracker {
     // Remove the keypress listener:
     process.stdin.off('keypress', this.handleKeyPress)
 
-    process.stderr.write('\n')
-    process.stderr.write('\n')
-    process.stderr.write('Completed all tasks.\n')
-    process.stderr.write('\n')
-    process.stderr.write('stdout:\n')
-    process.stderr.write('\n')
-    process.stderr.write(consoleBuffer.join(''))
+    const finalLines = [
+      '',
+      '',
+      'Completed all tasks.',
+      '',
+      'stdout:',
+      '',
+      stdoutBuffer.join(''),
+      '',
+      '',
+      'stderr:',
+      '',
+      stderrBuffer.join(''),
+      '',
+      ''
+    ]
+    this.writeWithMagicString(finalLines)
 
-    // Restore the original `process.stdout.write()` function:
-    process.stdout.write = originalWrite
+    // Restore the original `process.stdout.write()` and `process.stderr.write()` functions:
+    process.stdout.write = originalStdoutWrite
+    process.stderr.write = originalStderrWrite
 
     // Pause the reading of stdin so that the Node.js process will exit once done:
     process.stdin.pause()
@@ -240,10 +269,19 @@ export class TerminalTaskTracker {
     }
   }
 
-  writeToConsole(lines: string[]) {
-    if (lines.length > 0) {
-      process.stderr.write(lines.join('\n'))
+  private writeWithMagicString(content: string | string[]) {
+    let output
+    if (Array.isArray(content)) {
+      if (content.length === 0) {
+        return
+      }
+
+      output = content.join('\n')
+    } else {
+      output = content
     }
+
+    process.stderr.write(MAGIC_STRING + output)
   }
 
   render() {
@@ -251,10 +289,10 @@ export class TerminalTaskTracker {
     const lines = this.renderTree('root')
     if (this.renderTasks) {
       this.clearPreviousRender(lines.length + 1)
-      this.writeToConsole(lines)
+      this.writeWithMagicString(lines)
     } else {
       this.clearPreviousRender(lines.length + 1)
-      this.writeToConsole(consoleBuffer)
+      this.writeWithMagicString(stdoutBuffer)
     }
   }
 }
