@@ -13,8 +13,7 @@
     },
     "ecmaVersion": "latest",
     "sourceType": "module",
-    // TODO: move to ./packages/tsconfig/tsconfig.json
-    "project": "./packages/core/tsconfig.json"
+    "project": "tsconfig.json"
   },
   "rules": {
     "@typescript-eslint/no-unused-vars": [

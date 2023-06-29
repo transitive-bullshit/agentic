@@ -13,15 +13,19 @@
     },
     "test": {
       "dependsOn": [
-        "^build",
+        "^test",
         "prettier-check",
         "eslint-check",
         "build",
         "unit-test"
       ]
     },
-    "prettier-check": {},
-    "eslint-check": {},
+    "prettier-check": {
+      "dependsOn": ["^build", "build"]
+    },
+    "eslint-check": {
+      "dependsOn": ["^build", "build"]
+    },
     "unit-test": {
       "dotEnv": [".env"],
       "outputs": ["test/.snapshots"]
@@ -30,8 +34,7 @@
       "dependsOn": ["^build", "build"]
     },
     "clean": {
-      "dependsOn": ["^clean"],
-      "outputs": ["build/**"]
+      "cache": false
     },
     "dev": {
       "cache": false,

@@ -26,7 +26,10 @@
     "build-lib": "tsup",
     "dev": "tsup --watch",
     "clean": "del build",
-    "test": "NODE_OPTIONS='--loader=tsx --no-warnings' ava"
+    "unit-test": "ava",
+    "eslint-check": "eslint \"**/*.{ts,tsx}\"",
+    "prettier-check": "prettier --check \"**/*.{js,ts,tsx,md,mdx}\"",
+    "prettier-write": "prettier --write \"**/*.{js,ts,tsx,md,mdx}\""
   },
   "dependencies": {
     "@agentic/midjourney-fetch": "^1.0.1",
@@ -64,23 +67,11 @@
   "devDependencies": {
     "@keyv/redis": "^2.6.1",
     "@types/debug": "^4.1.8",
-    "@types/node": "^20.3.2",
     "@types/sinon": "^10.0.15",
     "expect-type": "^0.16.0",
     "hash-obj": "^4.0.0",
     "ioredis": "^5.3.2",
     "keyv": "^4.5.2"
-  },
-  "ava": {
-    "snapshotDir": "test/.snapshots",
-    "failFast": true,
-    "extensions": {
-      "ts": "module"
-    },
-    "nodeArguments": [
-      "--loader=tsx",
-      "--no-warnings"
-    ]
   },
   "keywords": [
     "ai",

@@ -7,7 +7,10 @@
   "scripts": {
     "dev": "next dev",
     "build-web": "next build",
-    "start": "next start"
+    "start": "next start",
+    "eslint-check": "eslint \"**/*.{ts,tsx}\"",
+    "prettier-check": "prettier --check \"**/*.{js,ts,tsx,md,mdx}\"",
+    "prettier-write": "prettier --write \"**/*.{js,ts,tsx,md,mdx}\""
   },
   "dependencies": {
     "next": "13.4.7",

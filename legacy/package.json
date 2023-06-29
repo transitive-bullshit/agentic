@@ -1,4 +1,5 @@
 {
+  "name": "agentic",
   "private": true,
   "description": "Everything you need to build reliable AI agents with TypeScript.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
@@ -19,9 +20,6 @@
     "release": "turbo clean && turbo build && changeset publish",
     "test": "turbo test",
     "pre-commit": "lint-staged",
-    "eslint-check": "eslint \"**/*.{ts,tsx}\"",
-    "prettier-check": "prettier --check \"**/*.{js,ts,tsx,md,mdx}\"",
-    "prettier-write": "prettier --write \"**/*.{js,ts,tsx,md,mdx}\"",
     "version-packages": "changeset version"
   },
   "devDependencies": {
