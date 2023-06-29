@@ -136,7 +136,7 @@ export class TerminalTaskTracker {
     }, INACTIVITY_THRESHOLD)
   }
 
-  addEvent(event: TaskEvent) {
+  addEvent<TInput, TOutput>(event: TaskEvent<TInput, TOutput>) {
     const { parent = 'root', taskId, name, status, inputs, output } = event
     if (!this.events[parent]) {
       this.events[parent] = []

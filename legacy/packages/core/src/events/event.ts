@@ -45,7 +45,7 @@ export class Event<T extends EventPayload> {
     let Type
     switch (data.type) {
       case 'TaskEvent':
-        Type = TaskEvent
+        Type = TaskEvent<any, any>
         break
       case 'Event':
         Type = Event
