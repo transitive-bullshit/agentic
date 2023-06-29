@@ -1,12 +1,10 @@
 import {
   Tiktoken,
-  TiktokenBPE,
   TiktokenEncoding,
   TiktokenModel,
+  getEncoding,
   getEncodingNameForModel
-} from 'js-tiktoken/lite'
-import ky from 'ky'
-import pMemoize from 'p-memoize'
+} from 'js-tiktoken'
 
 export interface Tokenizer {
   encode(
@@ -46,31 +44,6 @@ export class TiktokenTokenizer implements Tokenizer {
   }
 }
 
-export const getTiktokenBPE = pMemoize(getTiktokenBPEImpl)
-
-/**
- * Asynchronously retrieves the Byte Pair Encoding (BPE) for a specified Tiktoken encoding.
- *
- * @param encoding - Tiktoken encoding
- * @param options - optional settings for the request
- * @returns promise that resolves to the BPE for the specified encoding
- */
-async function getTiktokenBPEImpl(
-  encoding: TiktokenEncoding,
-  {
-    signal,
-    timeoutMs = 30000
-  }: {
-    signal?: AbortSignal
-    timeoutMs?: number
-  } = {}
-) {
-  return ky(`https://tiktoken.pages.dev/js/${encoding}.json`, {
-    signal,
-    timeout: timeoutMs
-  }).json<TiktokenBPE>()
-}
-
 /**
  * Asynchronously creates and retrieves a tokenizer for a specified Tiktoken encoding.
  *
@@ -86,8 +59,7 @@ export async function getTokenizerForEncoding(
     extendedSpecialTokens?: Record<string, number>
   }
 ) {
-  const tiktokenBPE = await getTiktokenBPE(encoding, options)
-  const tiktoken = new Tiktoken(tiktokenBPE, options?.extendedSpecialTokens)
+  const tiktoken = getEncoding(encoding, options?.extendedSpecialTokens)
   return new TiktokenTokenizer(tiktoken)
 }
 
