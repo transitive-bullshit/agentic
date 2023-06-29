@@ -10,9 +10,9 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
+      "types": "./build/index.d.ts",
       "import": "./build/index.js",
       "require": "./build/index.cjs",
-      "types": "./build/index.d.ts",
       "default": "./build/index.js"
     }
   },
@@ -23,7 +23,7 @@
     "node": ">=14"
   },
   "scripts": {
-    "build-lib": "tsup",
+    "build": "tsup",
     "dev": "tsup --watch",
     "clean": "del build",
     "unit-test": "ava",
