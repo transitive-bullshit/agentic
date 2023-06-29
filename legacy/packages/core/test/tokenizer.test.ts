@@ -2,8 +2,6 @@ import test from 'ava'
 
 import * as tokenizers from '@/tokenizer'
 
-import './_utils'
-
 const models = [
   'gpt-3.5-turbo',
   'gpt-4',
