@@ -198,9 +198,6 @@ importers:
       '@types/debug':
         specifier: ^4.1.8
         version: 4.1.8
-      '@types/node':
-        specifier: ^20.3.2
-        version: 20.3.2
       '@types/sinon':
         specifier: ^10.0.15
         version: 10.0.15
