@@ -20,23 +20,31 @@ export class TaskEventEmitter<
     this._agentic = agentic
   }
 
+  on<T extends string | symbol>(
+    takStatus: T,
+    fn: (event: TaskEvent<TInput, TOutput>) => void,
+    context?: any
+  ): this {
+    return super.on(takStatus, fn, context)
+  }
+
   emit(taskStatus: string | symbol, payload: object = {}): boolean {
     if (!Object.values(TaskStatus).includes(taskStatus as TaskStatus)) {
-      return false
+      throw new Error(`Invalid task status: ${String(taskStatus)}`)
     }
 
-    const event = new TaskEvent({
+    const { id, nameForModel } = this._task
+    const event = new TaskEvent<TInput, TOutput>({
       payload: {
         taskStatus: taskStatus as TaskStatus,
-        taskId: this._task.id,
-        taskName: this._task.nameForModel,
+        taskId: id,
+        taskName: nameForModel,
         ...payload
       }
     })
     this._agentic.taskTracker.addEvent(event)
 
-    const name = `${this._task.nameForModel}:${String(taskStatus)}`
-    this._agentic.eventEmitter.emit(name, event)
+    this._agentic.eventEmitter.emit(taskStatus, event)
 
     return super.emit(taskStatus, event)
   }

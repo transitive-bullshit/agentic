@@ -160,7 +160,7 @@ export class TerminalTaskTracker {
     status: TaskStatus
   ): [string, (text: string) => string] {
     switch (status) {
-      case TaskStatus.SUCCEEDED:
+      case TaskStatus.COMPLETED:
         return [SYMBOLS.CIRCLE, green]
       case TaskStatus.FAILED:
         return [SYMBOLS.CROSS, red]
@@ -206,7 +206,7 @@ export class TerminalTaskTracker {
         }
 
         if (output) {
-          if (status === TaskStatus.SUCCEEDED) {
+          if (status === TaskStatus.COMPLETED) {
             const formattedOutput = this.stringify(output)
             line +=
               indent +

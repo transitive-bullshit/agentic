@@ -1,4 +1,3 @@
-import { EventEmitter } from 'eventemitter3'
 import pRetry, { FailedAttemptError } from 'p-retry'
 import QuickLRU from 'quick-lru'
 import { ZodType } from 'zod'
@@ -97,7 +96,7 @@ export abstract class BaseTask<
     return this._agentic.logger
   }
 
-  public get eventEmitter(): EventEmitter {
+  public get eventEmitter(): TaskEventEmitter<TInput, TOutput> {
     return this._eventEmitter
   }
 
@@ -397,7 +396,7 @@ export abstract class BaseTask<
 
     // ctx.tracker.setOutput(stringifyForDebugging(result, { maxLength: 100 }))
 
-    this._eventEmitter.emit(TaskStatus.SUCCEEDED, {
+    this._eventEmitter.emit(TaskStatus.COMPLETED, {
       taskInputs: input,
       taskOutput: result,
       ...ctx.metadata

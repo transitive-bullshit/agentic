@@ -3,14 +3,14 @@ import { defaultIDGeneratorFn } from '@/utils'
 /**
  * Payload of an event.
  */
-interface EventPayload {
+export interface EventPayload {
   [key: string]: unknown
 }
 
 /**
  * Data required to create a new Event object.
  */
-interface EventData<T extends EventPayload> {
+export interface EventData<T extends EventPayload> {
   id?: string
   timestamp?: Date
   payload?: T
@@ -79,12 +79,12 @@ export class Event<T extends EventPayload> {
 /**
  * Payload of a task event.
  */
-interface TaskEventPayload extends EventPayload {
+export interface TaskEventPayload<TInput, TOutput> extends EventPayload {
   taskName: string
   taskId: string
   taskStatus: TaskStatus
-  taskInputs?: any // Consider replacing 'any' with the actual task data type if possible.,
-  taskOutput?: any // Consider replacing 'any' with the actual task data type if possible.,
+  taskInputs?: TInput
+  taskOutput?: TOutput
   taskParent?: string
 }
 
@@ -92,7 +92,7 @@ interface TaskEventPayload extends EventPayload {
  * Status of a task.
  */
 export enum TaskStatus {
-  SUCCEEDED = 'SUCCEEDED',
+  COMPLETED = 'COMPLETED',
   FAILED = 'FAILED',
   RETRYING = 'RETRYING',
   SKIPPED = 'SKIPPED',
@@ -103,7 +103,9 @@ export enum TaskStatus {
 /**
  * Events that occur within the library related to tasks.
  */
-export class TaskEvent extends Event<TaskEventPayload> {
+export class TaskEvent<TInput, TOutput> extends Event<
+  TaskEventPayload<TInput, TOutput>
+> {
   get name(): string {
     return this.payload?.taskName ?? ''
   }
