@@ -149,6 +149,15 @@ export function createTestKyInstance(
             }
 
             const responseBody = await response.json()
+            const resopnseBodyAsBuffer = Buffer.from(
+              JSON.stringify(responseBody),
+              'utf8'
+            )
+
+            if (resopnseBodyAsBuffer.byteLength >= 1_000_000) {
+              // ignore response bodies which are too large
+              return
+            }
             // console.log({ cacheKey, responseBody })
 
             await keyv.set(cacheKey, responseBody)
