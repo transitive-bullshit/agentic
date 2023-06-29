@@ -24,7 +24,22 @@ test('CalculatorTool', async (t) => {
   t.deepEqual(metadata, {
     success: true,
     taskName: 'calculator',
+    cacheStatus: 'miss',
     numRetries: 0,
     error: undefined
   })
+})
+
+test.only('CalculatorTool - caching', async (t) => {
+  const agentic = createTestAgenticRuntime()
+  const tool = new CalculatorTool({ agentic })
+
+  const res = await tool.callWithMetadata({ expression: '2 * 3' })
+  t.is(res.result, 6)
+  t.is(res.metadata.cacheStatus, 'miss')
+  expectTypeOf(res.result).toMatchTypeOf<number>()
+
+  const res2 = await tool.callWithMetadata({ expression: '2 * 3' })
+  t.is(res2.result, 6)
+  t.is(res2.metadata.cacheStatus, 'hit')
 })

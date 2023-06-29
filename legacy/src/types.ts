@@ -1,6 +1,7 @@
 import * as anthropic from '@anthropic-ai/sdk'
 import * as openai from 'openai-fetch'
 import ky from 'ky'
+import type { CacheStorage } from 'p-memoize'
 import type { Options as RetryOptions } from 'p-retry'
 import type { JsonObject, Jsonifiable } from 'type-fest'
 import { SafeParseReturnType, ZodType, ZodTypeAny, output, z } from 'zod'
@@ -39,6 +40,7 @@ export interface BaseTaskOptions {
 
   timeoutMs?: number
   retryConfig?: RetryConfig
+  cacheConfig?: CacheConfig<any, any>
   id?: string
 
   // TODO
@@ -54,6 +56,8 @@ export interface BaseLLMOptions<
 > extends BaseTaskOptions {
   inputSchema?: ZodType<TInput>
   outputSchema?: ZodType<TOutput>
+
+  cacheConfig?: CacheConfig<TInput, TOutput>
 
   provider?: string
   model?: string
@@ -120,6 +124,20 @@ export interface RetryConfig extends RetryOptions {
   strategy?: string
 }
 
+export type MaybePromise<T> = T | Promise<T>
+export type CacheStatus = 'miss' | 'hit'
+export type CacheStrategy = 'default' | 'none'
+
+export interface CacheConfig<
+  TInput extends TaskInput,
+  TOutput extends TaskOutput,
+  TCacheKey = any
+> {
+  cacheStrategy?: CacheStrategy
+  cacheKey?: (input: TInput) => MaybePromise<TCacheKey | undefined>
+  cache?: CacheStorage<TCacheKey, TOutput> | false
+}
+
 export interface TaskResponseMetadata extends Record<string, any> {
   // task info
   taskName: string
@@ -132,6 +150,7 @@ export interface TaskResponseMetadata extends Record<string, any> {
   numRetries?: number
   callId?: string
   parentCallId?: string
+  cacheStatus?: CacheStatus
 
   // human feedback info
   feedback?: FeedbackTypeToMetadata<HumanFeedbackType>

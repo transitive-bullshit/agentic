@@ -1,4 +1,5 @@
 import pRetry, { FailedAttemptError } from 'p-retry'
+import QuickLRU from 'quick-lru'
 import { ZodType } from 'zod'
 
 import * as errors from './errors'
@@ -34,12 +35,14 @@ export abstract class BaseTask<
 
   protected _timeoutMs?: number
   protected _retryConfig: types.RetryConfig
+  protected _cacheConfig: types.CacheConfig<TInput, TOutput>
 
-  private _preHooks: Array<{
+  protected _preHooks: Array<{
     hook: types.TaskBeforeCallHook<TInput>
     priority: number
   }> = []
-  private _postHooks: Array<{
+
+  protected _postHooks: Array<{
     hook: types.TaskAfterCallHook<TInput, TOutput>
     priority: number
   }> = []
@@ -51,6 +54,19 @@ export abstract class BaseTask<
     this._retryConfig = options.retryConfig ?? {
       retries: 3,
       strategy: 'default'
+    }
+
+    this._cacheConfig = {
+      cacheStrategy: 'default',
+      cacheKey: (input: TInput) => JSON.stringify(input),
+      ...options.cacheConfig
+    }
+
+    if (
+      this._cacheConfig.cacheStrategy === 'default' &&
+      !this._cacheConfig.cache
+    ) {
+      this._cacheConfig.cache = new QuickLRU<string, TOutput>({ maxSize: 1000 })
     }
 
     this._id =
@@ -115,7 +131,7 @@ export abstract class BaseTask<
     priority = 0
   ): this {
     this._postHooks.push({ hook, priority })
-    this._postHooks.sort((a, b) => b.priority - a.priority) // two elements that compare equal will remain in their original order (>= ECMAScript 2019)
+    this._postHooks.sort((a, b) => b.priority - a.priority)
     return this
   }
 
@@ -142,6 +158,10 @@ export abstract class BaseTask<
     throw new Error(`clone not implemented for task "${this.nameForModel}"`)
   }
 
+  /**
+   * Adds an after call hook to confirm or refine the output of this task with
+   * human feedback.
+   */
   public withHumanFeedback<V extends HumanFeedbackType>(
     options: HumanFeedbackOptions<V, TOutput> = {}
   ): this {
@@ -194,6 +214,11 @@ export abstract class BaseTask<
     return this
   }
 
+  public cacheConfig(cacheConfig: types.CacheConfig<TInput, TOutput>): this {
+    this._cacheConfig = cacheConfig
+    return this
+  }
+
   /**
    * Calls this task with the given `input` and returns the result only.
    */
@@ -227,6 +252,13 @@ export abstract class BaseTask<
       input = safeInput.data
     }
 
+    const maybeCacheKey = this._cacheConfig.cache
+      ? this._cacheConfig.cacheKey?.(input)
+      : undefined
+    const cacheKey = maybeCacheKey
+      ? await Promise.resolve(maybeCacheKey)
+      : undefined
+
     const ctx: types.TaskCallContext<TInput> = {
       input,
       attemptNumber: 0,
@@ -235,7 +267,8 @@ export abstract class BaseTask<
         taskId: this.id,
         callId: this._agentic!.idGeneratorFn(),
         parentTaskId: parentCtx?.metadata.taskId,
-        parentCallId: parentCtx?.metadata.callId
+        parentCallId: parentCtx?.metadata.callId,
+        cacheStatus: 'miss'
       }
     }
 
@@ -255,6 +288,22 @@ export abstract class BaseTask<
 
         return {
           result: output.data,
+          metadata: ctx.metadata
+        }
+      }
+    }
+
+    if (cacheKey && this._cacheConfig.cache) {
+      const cachedValue = await Promise.resolve(
+        this._cacheConfig.cache.get(cacheKey)
+      )
+
+      if (cachedValue) {
+        ctx.metadata.success = true
+        ctx.metadata.cacheStatus = 'hit'
+
+        return {
+          result: cachedValue,
           metadata: ctx.metadata
         }
       }
@@ -325,6 +374,10 @@ export abstract class BaseTask<
     ctx.metadata.success = true
     ctx.metadata.numRetries = ctx.attemptNumber
     ctx.metadata.error = undefined
+
+    if (cacheKey && this._cacheConfig.cache) {
+      await Promise.resolve(this._cacheConfig.cache.set(cacheKey, result))
+    }
 
     // ctx.tracker.setOutput(stringifyForDebugging(result, { maxLength: 100 }))
 
