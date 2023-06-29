@@ -23,7 +23,7 @@
     "node": ">=14"
   },
   "scripts": {
-    "build": "tsup",
+    "build-lib": "tsup",
     "dev": "tsup --watch",
     "clean": "del build",
     "test": "NODE_OPTIONS='--loader=tsx --no-warnings' ava"

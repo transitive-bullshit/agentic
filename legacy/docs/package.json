@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build-web": "next build",
     "start": "next start"
   },
   "dependencies": {

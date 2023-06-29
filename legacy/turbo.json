@@ -14,15 +14,16 @@
     "test": {
       "dependsOn": [
         "^build",
-        "build",
-        "unit-test",
         "prettier-check",
-        "eslint-check"
+        "eslint-check",
+        "build",
+        "unit-test"
       ]
     },
     "prettier-check": {},
     "eslint-check": {},
     "unit-test": {
+      "dotEnv": [".env"],
       "outputs": ["test/.snapshots"]
     },
     "publint": {
@@ -30,7 +31,7 @@
     },
     "clean": {
       "dependsOn": ["^clean"],
-      "outputs": ["build/**", "dist/**"]
+      "outputs": ["build/**"]
     },
     "dev": {
       "cache": false,
