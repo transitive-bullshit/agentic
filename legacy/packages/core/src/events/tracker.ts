@@ -10,31 +10,7 @@ import { SYMBOLS } from './symbols'
 
 const MAGIC_STRING = '__INSIDE_TRACKER__' // Define a unique "magic" string
 
-const stdoutBuffer: any[] = []
-const stderrBuffer: any[] = []
-
-const originalStdoutWrite = process.stdout.write
-process.stdout.write = function (str: any) {
-  stdoutBuffer.push(str)
-  return originalStdoutWrite.call(process.stdout, str)
-}
-
-const originalStderrWrite = process.stderr.write
-process.stderr.write = function (str: any) {
-  if (str.startsWith(MAGIC_STRING)) {
-    // This write is from inside the tracker, remove the magic string and write to stderr:
-    return originalStderrWrite.call(
-      process.stderr,
-      str.replace(MAGIC_STRING, '')
-    )
-  } else {
-    // This write is from outside the tracker, add it to stderrBuffer and write to stderr:
-    stderrBuffer.push(str)
-    return originalStderrWrite.call(process.stderr, str)
-  }
-}
-
-const SPINNER_INTERVAL = 100
+const SPINNER_INTERVAL = 1000
 const INACTIVITY_THRESHOLD = 2000 // 2 seconds
 
 function getSpinnerSymbol() {
@@ -44,17 +20,41 @@ function getSpinnerSymbol() {
 }
 
 export class TerminalTaskTracker {
-  private events: Record<string, any[]> = { root: [] }
-  private interval: NodeJS.Timeout | null = null
-  private inactivityTimeout: NodeJS.Timeout | null = null
-  private truncateOutput = false
-  private renderTasks = true
-  private outputs: Array<string | Uint8Array> = []
+  protected events: Record<string, any[]> = { root: [] }
+  protected interval: NodeJS.Timeout | null = null
+  protected inactivityTimeout: NodeJS.Timeout | null = null
+  protected truncateOutput = false
+  protected renderTasks = true
+  protected outputs: Array<string | Uint8Array> = []
+
+  private stdoutBuffer: any[] = []
+  private stderrBuffer: any[] = []
+  private originalStdoutWrite = process.stdout.write
+  private originalStderrWrite = process.stderr.write
 
   constructor() {
     if (!process.stderr.isTTY) {
       // If stderr is not a TTY, don't render any dynamic output...
       return
+    }
+
+    process.stdout.write = (str: any) => {
+      this.stdoutBuffer.push(str)
+      return this.originalStdoutWrite.call(process.stdout, str)
+    }
+
+    process.stderr.write = (str: any) => {
+      if (str.startsWith(MAGIC_STRING)) {
+        // This write is from inside the tracker, remove the magic string and write to stderr:
+        return this.originalStderrWrite.call(
+          process.stderr,
+          str.replace(MAGIC_STRING, '')
+        )
+      } else {
+        // This write is from outside the tracker, add it to stderrBuffer and write to stderr:
+        this.stderrBuffer.push(str)
+        return this.originalStderrWrite.call(process.stderr, str)
+      }
     }
 
     this.start()
@@ -114,20 +114,20 @@ export class TerminalTaskTracker {
       '',
       'stdout:',
       '',
-      stdoutBuffer.join(''),
+      this.stdoutBuffer.join(''),
       '',
       '',
       'stderr:',
       '',
-      stderrBuffer.join(''),
+      this.stderrBuffer.join(''),
       '',
       ''
     ]
     this.writeWithMagicString(finalLines)
 
     // Restore the original `process.stdout.write()` and `process.stderr.write()` functions:
-    process.stdout.write = originalStdoutWrite
-    process.stderr.write = originalStderrWrite
+    process.stdout.write = this.originalStdoutWrite
+    process.stderr.write = this.originalStderrWrite
 
     // Pause the reading of stdin so that the Node.js process will exit once done:
     process.stdin.pause()
@@ -292,9 +292,7 @@ export class TerminalTaskTracker {
       this.writeWithMagicString(lines)
     } else {
       this.clearPreviousRender(lines.length + 1)
-      this.writeWithMagicString(stdoutBuffer)
+      this.writeWithMagicString(this.stdoutBuffer)
     }
   }
 }
-
-export const defaultTaskTracker = new TerminalTaskTracker()

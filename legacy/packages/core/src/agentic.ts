@@ -4,7 +4,7 @@ import { SetOptional } from 'type-fest'
 
 import * as types from './types'
 import { DEFAULT_OPENAI_MODEL } from './constants'
-import { TerminalTaskTracker, defaultTaskTracker } from './events'
+import { TerminalTaskTracker } from './events'
 import { HumanFeedbackOptions, HumanFeedbackType } from './human-feedback'
 import { HumanFeedbackMechanismCLI } from './human-feedback/cli'
 import { OpenAIChatCompletion } from './llms/openai'
@@ -53,7 +53,7 @@ export class Agentic {
 
     this._ky = opts.ky ?? defaultKy
     this._logger = opts.logger ?? defaultLogger
-    this._taskTracker = opts.taskTracker ?? defaultTaskTracker
+    this._taskTracker = opts.taskTracker ?? new TerminalTaskTracker()
     this._eventEmitter = new EventEmitter()
 
     this._openaiModelDefaults = {
