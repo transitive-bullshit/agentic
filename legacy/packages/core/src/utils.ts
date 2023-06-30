@@ -254,3 +254,7 @@ export function isArray(value: any): value is any[] {
 export function identity<T>(x: T): T {
   return x
 }
+
+export function capitalize(str: string): string {
+  return str.charAt(0).toUpperCase() + str.slice(1)
+}

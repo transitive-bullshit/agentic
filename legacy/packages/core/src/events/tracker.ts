@@ -4,34 +4,43 @@ import readline from 'node:readline'
 import { bgWhite, black, bold, cyan, gray, green, red, yellow } from 'colorette'
 
 import { SPACE } from '@/constants'
+import { capitalize } from '@/utils'
 
 import { TaskEvent, TaskStatus } from './event'
 import { SYMBOLS } from './symbols'
 
-const MAGIC_STRING = '__INSIDE_TRACKER__' // Define a unique "magic" string
+export const MAGIC_STRING = '__INSIDE_TRACKER__' // a unique "magic" string that used to identify the output of the tracker
 
 // eslint-disable-next-line no-control-regex
-const RE_ANSI_ESCAPES = /\x1b\[[0-9;]*[A-Za-z]/ // cursor movement, screen clearing, etc.
+const RE_ANSI_ESCAPES = /^(\x1b\[[0-9;]*[ABCDHJK]|[\r\n])+$/ // cursor movement, screen clearing, etc.
 
 const originalStdoutWrite = process.stdout.write
 const originalStderrWrite = process.stderr.write
 
+export interface TerminalTaskTrackerOptions {
+  spinnerInterval?: number
+  inactivityThreshold?: number
+}
+
 export class TerminalTaskTracker {
-  protected events: Record<string, any[]> = { root: [] }
-  protected interval: NodeJS.Timeout | null = null
-  protected inactivityTimeout: NodeJS.Timeout | null = null
-  protected truncateOutput = false
-  protected viewMode = 'tasks'
-  protected outputs: Array<string | Uint8Array> = []
-  protected renderingPaused = false
+  protected _events: Record<string, any[]> = { root: [] }
+  protected _interval: NodeJS.Timeout | null = null
+  protected _inactivityTimeout: NodeJS.Timeout | null = null
+  protected _truncateOutput = false
+  protected _viewMode = 'tasks'
+  protected _outputs: Array<string | Uint8Array> = []
+  protected _renderingPaused = false
 
   protected _spinnerInterval: number
   protected _inactivityThreshold: number
 
-  private stdoutBuffer: string[] = []
-  private stderrBuffer: string[] = []
+  private _stdoutBuffer: string[] = []
+  private _stderrBuffer: string[] = []
 
-  constructor({ spinnerInterval = 100, inactivityThreshold = 2000 } = {}) {
+  constructor({
+    spinnerInterval = 100,
+    inactivityThreshold = 2_000
+  }: TerminalTaskTrackerOptions = {}) {
     this._spinnerInterval = spinnerInterval
     this._inactivityThreshold = inactivityThreshold
 
@@ -45,7 +54,10 @@ export class TerminalTaskTracker {
         buffer = Buffer.from(buffer).toString('utf-8')
       }
 
-      this.stdoutBuffer.push(buffer)
+      if (!this._renderingPaused) {
+        this._stdoutBuffer.push(buffer)
+      }
+
       return originalStdoutWrite.call(process.stdout, buffer)
     }
 
@@ -61,10 +73,10 @@ export class TerminalTaskTracker {
           buffer.replace(MAGIC_STRING, '')
         )
       } else {
-        if (!RE_ANSI_ESCAPES.test(buffer)) {
+        if (!this._renderingPaused && !RE_ANSI_ESCAPES.test(buffer)) {
           // If an ANSI escape sequence is written to stderr, it will mess up the output, so we need to write it to stdout instead:
           // This write is from outside the tracker, add it to stderrBuffer and write to stderr:
-          this.stderrBuffer.push(buffer)
+          this._stderrBuffer.push(buffer)
         }
 
         return originalStderrWrite.call(process.stderr, buffer)
@@ -93,7 +105,7 @@ export class TerminalTaskTracker {
   }
 
   start() {
-    this.interval = setInterval(() => {
+    this._interval = setInterval(() => {
       this.render()
     }, this._spinnerInterval)
 
@@ -107,12 +119,12 @@ export class TerminalTaskTracker {
   }
 
   close() {
-    if (this.interval) {
-      clearInterval(this.interval)
+    if (this._interval) {
+      clearInterval(this._interval)
     }
 
-    if (this.inactivityTimeout) {
-      clearTimeout(this.inactivityTimeout)
+    if (this._inactivityTimeout) {
+      clearTimeout(this._inactivityTimeout)
     }
 
     process.stdin.setRawMode(false)
@@ -129,15 +141,14 @@ export class TerminalTaskTracker {
       '',
       bgWhite(black(' Completed all tasks. ')),
       '',
-      bgWhite(black(' stdout: ')),
-      '',
-      this.stdoutBuffer.join(''),
-      '',
       '',
       bgWhite(black(' stderr: ')),
       '',
-      this.stderrBuffer.join(''),
+      this._stderrBuffer.join(''),
       '',
+      bgWhite(black(' stdout: ')),
+      '',
+      this._stdoutBuffer.join(''),
       ''
     ]
 
@@ -148,16 +159,17 @@ export class TerminalTaskTracker {
   }
 
   pause() {
-    this.renderingPaused = true
+    this.clearAndSetCursorPosition()
+    this._renderingPaused = true
   }
 
   resume() {
-    this.renderingPaused = false
+    this._renderingPaused = false
     this.render()
   }
 
-  stringify(value: any) {
-    if (this.truncateOutput) {
+  stringify(value: any): string {
+    if (this._truncateOutput) {
       const json = JSON.stringify(value)
       if (json.length < 40) {
         return json
@@ -170,14 +182,13 @@ export class TerminalTaskTracker {
   }
 
   toggleOutputTruncation() {
-    this.truncateOutput = !this.truncateOutput
+    this._truncateOutput = !this._truncateOutput
   }
 
   startInactivityTimeout() {
-    this.inactivityTimeout = setTimeout(() => {
-      // Check if all tasks are completed:
-      const allTasksCompleted = Object.values(this.events).every((events) =>
-        events.every((event) => event.status !== TaskStatus.RUNNING)
+    this._inactivityTimeout = setTimeout(() => {
+      const allTasksCompleted = Object.values(this._events).every((events) =>
+        events.every((event) => event.status === TaskStatus.COMPLETED)
       )
 
       if (allTasksCompleted) {
@@ -190,21 +201,21 @@ export class TerminalTaskTracker {
 
   addEvent<TInput, TOutput>(event: TaskEvent<TInput, TOutput>) {
     const { parent = 'root', taskId, name, status, inputs, output } = event
-    if (!this.events[parent]) {
-      this.events[parent] = []
+    if (!this._events[parent]) {
+      this._events[parent] = []
     }
 
-    const existingEventIndex = this.events[parent].findIndex(
+    const existingEventIndex = this._events[parent].findIndex(
       (e) => e.taskId === taskId
     )
 
     if (existingEventIndex !== -1) {
       // If the event already exists, update its status and output:
-      this.events[parent][existingEventIndex].status = status
-      this.events[parent][existingEventIndex].output = output
+      this._events[parent][existingEventIndex].status = status
+      this._events[parent][existingEventIndex].output = output
     } else {
       // If the event does not exist, add it to the array:
-      this.events[parent].push({ taskId, name, status, inputs })
+      this._events[parent].push({ taskId, name, status, inputs })
     }
   }
 
@@ -224,12 +235,12 @@ export class TerminalTaskTracker {
     }
   }
 
-  renderTree(node: string, level = 0) {
+  renderTree(node: string, level = 0): string[] {
     const indent = SPACE.repeat(level * 2)
     let lines: string[] = []
 
-    if (this.events[node]) {
-      this.events[node].forEach(({ name, status, output, inputs }) => {
+    if (this._events[node]) {
+      this._events[node].forEach(({ name, status, output, inputs }) => {
         const [statusSymbol, color] = this.getStatusSymbolColor(status)
 
         lines.push(
@@ -240,7 +251,7 @@ export class TerminalTaskTracker {
             gray('(' + this.stringify(inputs) + ')')
         )
 
-        if (this.events[name]) {
+        if (this._events[name]) {
           lines = lines.concat(
             this.renderTree(name, level + 1).map((line, index, arr) => {
               if (index === arr.length - 1) {
@@ -253,7 +264,7 @@ export class TerminalTaskTracker {
         }
 
         let line = ''
-        if (this.events[name]) {
+        if (this._events[name]) {
           line = indent + gray(SYMBOLS.BAR_END)
         }
 
@@ -308,57 +319,61 @@ export class TerminalTaskTracker {
     process.stderr.write(MAGIC_STRING + output)
   }
 
-  toggleView(direction) {
+  toggleView(direction: string) {
     const viewModes = ['tasks', 'stdout', 'stderr']
-    const currentIdx = viewModes.indexOf(this.viewMode)
+    const currentIdx = viewModes.indexOf(this._viewMode)
 
     if (direction === 'next') {
-      this.viewMode = viewModes[(currentIdx + 1) % viewModes.length]
+      this._viewMode = viewModes[(currentIdx + 1) % viewModes.length]
     } else if (direction === 'prev') {
-      this.viewMode =
+      this._viewMode =
         viewModes[(currentIdx - 1 + viewModes.length) % viewModes.length]
     }
 
     this.render()
   }
 
-  getSpinnerSymbol() {
+  getSpinnerSymbol(): string {
     return SYMBOLS.SPINNER[
       Math.floor(Date.now() / this._spinnerInterval) % SYMBOLS.SPINNER.length
     ]
   }
 
   renderHeader() {
-    const legend = [
-      'commands',
-      'ctrl+c exit',
+    const commands = [
+      'ctrl+c: exit',
       'ctrl+e: truncate output',
       'ctrl+left/right: switch view'
     ].join(' | ')
 
-    const header = [` Agentic: ${this.viewMode} `, ` ${legend} `, ''].join('\n')
+    const header = [
+      ` Agentic - ${capitalize(this._viewMode)} View`,
+      ' ' + commands + ' ',
+      '',
+      ''
+    ].join('\n')
     this.writeWithMagicString(bgWhite(black(header)))
   }
 
   render() {
-    if (this.renderingPaused) {
+    if (this._renderingPaused) {
       return // Do not render if paused
     }
 
     this.clearAndSetCursorPosition()
-    if (this.viewMode === 'tasks') {
+    if (this._viewMode === 'tasks') {
       const lines = this.renderTree('root')
-      this.clearPreviousRender(lines.length + 2)
+      this.clearPreviousRender(lines.length)
       this.renderHeader()
       this.writeWithMagicString(lines)
-    } else if (this.viewMode === 'stdout') {
-      this.clearPreviousRender(this.stdoutBuffer.length + 2)
+    } else if (this._viewMode === 'stdout') {
+      this.clearPreviousRender(this._stdoutBuffer.length)
       this.renderHeader()
-      this.writeWithMagicString(this.stdoutBuffer)
-    } else if (this.viewMode === 'stderr') {
-      this.clearPreviousRender(this.stderrBuffer.length + 2)
+      this.writeWithMagicString(this._stdoutBuffer)
+    } else if (this._viewMode === 'stderr') {
+      this.clearPreviousRender(this._stderrBuffer.length)
       this.renderHeader()
-      this.writeWithMagicString(this.stderrBuffer)
+      this.writeWithMagicString(this._stderrBuffer)
     }
   }
 }
