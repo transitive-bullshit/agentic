@@ -2,16 +2,16 @@ import pRetry, { FailedAttemptError } from 'p-retry'
 import QuickLRU from 'quick-lru'
 import { ZodType } from 'zod'
 
+import * as errors from './errors'
+import * as types from './types'
 import type { Agentic } from './agentic'
 import { SKIP_HOOKS } from './constants'
-import * as errors from './errors'
 import { TaskEventEmitter, TaskStatus } from './events'
 import {
   HumanFeedbackMechanismCLI,
   HumanFeedbackOptions,
   HumanFeedbackType
 } from './human-feedback'
-import * as types from './types'
 import { defaultIDGeneratorFn, isValidTaskIdentifier } from './utils'
 
 /**
@@ -201,7 +201,9 @@ export abstract class BaseTask<
     })
 
     this.addAfterCallHook(async (output, ctx) => {
+      this._agentic.taskTracker.pause()
       const feedback = await feedbackMechanism.interact(output)
+      this._agentic.taskTracker.resume()
       ctx.metadata = { ...ctx.metadata, feedback }
       if (feedback.editedOutput) {
         return feedback.editedOutput
@@ -344,7 +346,8 @@ export abstract class BaseTask<
         ...this._retryConfig,
         onFailedAttempt: async (err: FailedAttemptError) => {
           this._logger.warn(
-            `Task error "${this.nameForHuman}" failed attempt ${err.attemptNumber
+            `Task error "${this.nameForHuman}" failed attempt ${
+              err.attemptNumber
             }${input ? ': ' + JSON.stringify(input) : ''}`,
             err
           )

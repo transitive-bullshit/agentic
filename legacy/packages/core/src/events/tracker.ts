@@ -10,7 +10,10 @@ import { SYMBOLS } from './symbols'
 
 const MAGIC_STRING = '__INSIDE_TRACKER__' // Define a unique "magic" string
 
-const SPINNER_INTERVAL = 1000
+// eslint-disable-next-line no-control-regex
+const RE_ANSI_ESCAPES = /\x1b\[[0-9;]*[A-Za-z]/ // cursor movement, screen clearing, etc.
+
+const SPINNER_INTERVAL = 100 // 100ms
 const INACTIVITY_THRESHOLD = 2000 // 2 seconds
 
 function getSpinnerSymbol() {
@@ -19,6 +22,9 @@ function getSpinnerSymbol() {
   ]
 }
 
+const originalStdoutWrite = process.stdout.write
+const originalStderrWrite = process.stderr.write
+
 export class TerminalTaskTracker {
   protected events: Record<string, any[]> = { root: [] }
   protected interval: NodeJS.Timeout | null = null
@@ -26,11 +32,10 @@ export class TerminalTaskTracker {
   protected truncateOutput = false
   protected renderTasks = true
   protected outputs: Array<string | Uint8Array> = []
+  protected renderingPaused = false
 
-  private stdoutBuffer: any[] = []
-  private stderrBuffer: any[] = []
-  private originalStdoutWrite = process.stdout.write
-  private originalStderrWrite = process.stderr.write
+  private stdoutBuffer: string[] = []
+  private stderrBuffer: string[] = []
 
   constructor() {
     if (!process.stderr.isTTY) {
@@ -38,31 +43,38 @@ export class TerminalTaskTracker {
       return
     }
 
-    process.stdout.write = (str: any) => {
-      this.stdoutBuffer.push(str)
-      return this.originalStdoutWrite.call(process.stdout, str)
+    process.stdout.write = (buffer: string | Uint8Array) => {
+      if (buffer instanceof Uint8Array) {
+        buffer = Buffer.from(buffer).toString('utf-8')
+      }
+
+      this.stdoutBuffer.push(buffer)
+      return originalStdoutWrite.call(process.stdout, buffer)
     }
 
-    process.stderr.write = (str: any) => {
-      if (str.startsWith(MAGIC_STRING)) {
+    process.stderr.write = (buffer: string | Uint8Array) => {
+      if (buffer instanceof Uint8Array) {
+        buffer = Buffer.from(buffer).toString('utf-8')
+      }
+
+      if (typeof buffer === 'string' && buffer.startsWith(MAGIC_STRING)) {
         // This write is from inside the tracker, remove the magic string and write to stderr:
-        return this.originalStderrWrite.call(
+        return originalStderrWrite.call(
           process.stderr,
-          str.replace(MAGIC_STRING, '')
+          buffer.replace(MAGIC_STRING, '')
         )
       } else {
-        // This write is from outside the tracker, add it to stderrBuffer and write to stderr:
-        this.stderrBuffer.push(str)
-        return this.originalStderrWrite.call(process.stderr, str)
+        if (!RE_ANSI_ESCAPES.test(buffer)) {
+          // If an ANSI escape sequence is written to stderr, it will mess up the output, so we need to write it to stdout instead:
+          // This write is from outside the tracker, add it to stderrBuffer and write to stderr:
+          this.stderrBuffer.push(buffer)
+        }
+
+        return originalStderrWrite.call(process.stderr, buffer)
       }
     }
 
     this.start()
-  }
-
-  renderOutput() {
-    const output = this.outputs.join('')
-    process.stderr.write(output)
   }
 
   handleKeyPress = (str, key) => {
@@ -107,6 +119,10 @@ export class TerminalTaskTracker {
     // Remove the keypress listener:
     process.stdin.off('keypress', this.handleKeyPress)
 
+    // Restore the original `process.stdout.write()` and `process.stderr.write()` functions:
+    process.stdout.write = originalStdoutWrite
+    process.stderr.write = originalStderrWrite
+
     const finalLines = [
       '',
       '',
@@ -123,14 +139,20 @@ export class TerminalTaskTracker {
       '',
       ''
     ]
-    this.writeWithMagicString(finalLines)
 
-    // Restore the original `process.stdout.write()` and `process.stderr.write()` functions:
-    process.stdout.write = this.originalStdoutWrite
-    process.stderr.write = this.originalStderrWrite
+    process.stderr.write(finalLines.join('\n'))
 
     // Pause the reading of stdin so that the Node.js process will exit once done:
     process.stdin.pause()
+  }
+
+  pause() {
+    this.renderingPaused = true
+  }
+
+  resume() {
+    this.renderingPaused = false
+    this.render()
   }
 
   stringify(value: any) {
@@ -271,6 +293,7 @@ export class TerminalTaskTracker {
 
   private writeWithMagicString(content: string | string[]) {
     let output
+
     if (Array.isArray(content)) {
       if (content.length === 0) {
         return
@@ -285,6 +308,10 @@ export class TerminalTaskTracker {
   }
 
   render() {
+    if (this.renderingPaused) {
+      return // Do not render if paused
+    }
+
     this.clearAndSetCursorPosition()
     const lines = this.renderTree('root')
     if (this.renderTasks) {
