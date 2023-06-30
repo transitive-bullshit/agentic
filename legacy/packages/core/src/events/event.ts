@@ -11,10 +11,29 @@ export interface EventPayload {
  * Data required to create a new Event object.
  */
 export interface EventData<T extends EventPayload> {
+  /**
+   * Event identifier
+   */
   id?: string
+
+  /**
+   * Event timestamp
+   */
   timestamp?: Date
+
+  /**
+   * Key-value pairs holding event data.
+   */
   payload?: T
+
+  /**
+   * Version of the event.
+   */
   version?: number
+
+  /**
+   * Event type.
+   */
   type?: string
 }
 
@@ -57,6 +76,9 @@ export class Event<T extends EventPayload> {
     return new Type(data)
   }
 
+  /**
+   * Serializes an event into a JSON string.
+   */
   toJSON(): string {
     return JSON.stringify({
       id: this.id,
@@ -67,6 +89,9 @@ export class Event<T extends EventPayload> {
     })
   }
 
+  /**
+   * Returns a human-readable string representation of an event.
+   */
   toString(): string {
     return `Event { id: ${
       this.id
@@ -85,7 +110,7 @@ export interface TaskEventPayload<TInput, TOutput> extends EventPayload {
   taskStatus: TaskStatus
   taskInputs?: TInput
   taskOutput?: TOutput
-  taskParent?: string
+  parentTaskId?: string
 }
 
 /**
@@ -126,7 +151,7 @@ export class TaskEvent<TInput, TOutput> extends Event<
     return this.payload?.taskOutput ?? ''
   }
 
-  get parent(): string {
-    return this.payload?.taskParent ?? 'root'
+  get parentTaskId(): string {
+    return this.payload?.parentTaskId ?? 'root'
   }
 }

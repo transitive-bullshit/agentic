@@ -6,6 +6,9 @@ import { BaseTask } from '@/task'
 
 import { TaskEvent, TaskStatus } from './event'
 
+/**
+ * Event emitter for task events.
+ */
 export class TaskEventEmitter<
   TInput extends types.TaskInput = void,
   TOutput extends types.TaskOutput = string
