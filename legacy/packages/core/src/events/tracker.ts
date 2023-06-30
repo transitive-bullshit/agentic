@@ -12,6 +12,8 @@ import { SYMBOLS } from './symbols'
 
 export const MAGIC_STRING = '__INSIDE_TRACKER__' // a unique "magic" string that used to identify the output of the tracker
 
+const TWO_SPACES = `${SPACE}${SPACE}`
+
 // eslint-disable-next-line no-control-regex
 const RE_ANSI_ESCAPES = /^(\x1b\[[0-9;]*[ABCDHJK]|[\r\n])+$/ // cursor movement, screen clearing, etc.
 
@@ -20,7 +22,7 @@ const originalStderrWrite = process.stderr.write
 
 export interface TerminalTaskTrackerOptions {
   spinnerInterval?: number
-  inactivityThreshold?: number
+  inactivityInterval?: number
 }
 
 export class TerminalTaskTracker {
@@ -34,17 +36,17 @@ export class TerminalTaskTracker {
   protected _renderingPaused = false
 
   protected _spinnerInterval: number
-  protected _inactivityThreshold: number
+  protected _inactivityInterval: number
 
   private _stdoutBuffer: string[] = []
   private _stderrBuffer: string[] = []
 
   constructor({
     spinnerInterval = 100,
-    inactivityThreshold = 3_000
+    inactivityInterval = 2_000
   }: TerminalTaskTrackerOptions = {}) {
     this._spinnerInterval = spinnerInterval
-    this._inactivityThreshold = inactivityThreshold
+    this._inactivityInterval = inactivityInterval
 
     if (!process.stderr.isTTY) {
       // If stderr is not a TTY, don't render any dynamic output...
@@ -189,19 +191,20 @@ export class TerminalTaskTracker {
 
   startInactivityTimeout() {
     this._inactivityTimeout = setTimeout(() => {
-      const allTasksCompleted = this._root.all((node) => {
+      const unfinishedTasks = this._root.all((node) => {
         return (
-          node.model.status === TaskStatus.COMPLETED ||
-          node.model.status === TaskStatus.FAILED
+          node.model.status == TaskStatus.RUNNING ||
+          node.model.status == TaskStatus.RETRYING ||
+          node.model.status == TaskStatus.PENDING
         )
       })
 
-      if (allTasksCompleted) {
+      if (unfinishedTasks.length === 0) {
         this.close()
       } else {
         this.startInactivityTimeout()
       }
-    }, this._inactivityThreshold)
+    }, this._inactivityInterval)
   }
 
   addEvent<TInput, TOutput>(event: TaskEvent<TInput, TOutput>) {
@@ -222,11 +225,9 @@ export class TerminalTaskTracker {
       : null
 
     if (existingEventNode) {
-      // If the event already exists, update its status and output:
       existingEventNode.model.status = status
       existingEventNode.model.output = output
     } else {
-      // If the event does not exist, add it to the array:
       const node = this._tree.parse({ id, name, status, inputs, output: null })
       if (parentNode) {
         parentNode.addChild(node)
@@ -373,7 +374,9 @@ export class TerminalTaskTracker {
   renderHeader() {
     const commands = [
       'ctrl+c: exit',
-      'ctrl+e: truncate output',
+      `ctrl+e: ${
+        this._truncateOutput ? TWO_SPACES + 'expand' : 'truncate'
+      } output`,
       'ctrl+left/right: switch view'
     ].join(' | ')
 

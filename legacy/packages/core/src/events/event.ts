@@ -119,6 +119,7 @@ export interface TaskEventPayload<TInput, TOutput> extends EventPayload {
 export enum TaskStatus {
   COMPLETED = 'COMPLETED',
   FAILED = 'FAILED',
+  PENDING = 'PENDING',
   RETRYING = 'RETRYING',
   SKIPPED = 'SKIPPED',
   RUNNING = 'RUNNING',
