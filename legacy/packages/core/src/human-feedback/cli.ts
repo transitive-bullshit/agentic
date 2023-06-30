@@ -4,19 +4,41 @@ import input from '@inquirer/input'
 import select from '@inquirer/select'
 import { setTimeout } from 'timers/promises'
 
+import { BaseTask } from '@/task'
 import { CancelablePromise } from '@/types'
 
 import {
   HumanFeedbackMechanism,
+  HumanFeedbackOptions,
   HumanFeedbackType,
   HumanFeedbackUserActionMessages,
   HumanFeedbackUserActions
 } from './feedback'
 
+const INQUIRER_CONTEXT = {
+  output: process.stderr
+}
+
 export class HumanFeedbackMechanismCLI<
   T extends HumanFeedbackType,
   TOutput = any
 > extends HumanFeedbackMechanism<T, TOutput> {
+  constructor({
+    task,
+    options
+  }: {
+    task: BaseTask
+    options: Required<HumanFeedbackOptions<T, TOutput>>
+  }) {
+    if (!process.stderr.isTTY) {
+      throw new Error(
+        'The CLI feedback requires an interactive terminal for error messages, but one is not available. This can occur if stderr is redirected. Run the script in a standard terminal without stderr redirection. If this is not possible, consider using an alternative feedback mechanism suitable for your environment.'
+      )
+    }
+
+    super({ task, options })
+  }
+
   /**
    * Prompt the user to select one of a list of options.
    */
@@ -25,13 +47,16 @@ export class HumanFeedbackMechanismCLI<
     choices: HumanFeedbackUserActions[]
   ): Promise<HumanFeedbackUserActions> {
     return this._errorAfterTimeout(
-      select({
-        message,
-        choices: choices.map((choice) => ({
-          name: HumanFeedbackUserActionMessages[choice],
-          value: choice
-        }))
-      })
+      select(
+        {
+          message,
+          choices: choices.map((choice) => ({
+            name: HumanFeedbackUserActionMessages[choice],
+            value: choice
+          }))
+        },
+        INQUIRER_CONTEXT
+      )
     )
   }
 
@@ -64,20 +89,26 @@ export class HumanFeedbackMechanismCLI<
 
   protected async _edit(output: string): Promise<string> {
     return this._defaultAfterTimeout(
-      editor({
-        message: 'Edit the output:',
-        default: output
-      }),
+      editor(
+        {
+          message: 'Edit the output:',
+          default: output
+        },
+        INQUIRER_CONTEXT
+      ),
       output
     )
   }
 
   protected async _annotate(): Promise<string> {
     return this._defaultAfterTimeout(
-      input({
-        message:
-          'Please leave an annotation (leave blank to skip; press enter to submit):'
-      }),
+      input(
+        {
+          message:
+            'Please leave an annotation (leave blank to skip; press enter to submit):'
+        },
+        INQUIRER_CONTEXT
+      ),
       ''
     )
   }
@@ -94,7 +125,7 @@ export class HumanFeedbackMechanismCLI<
       value: option
     }))
     return this._errorAfterTimeout(
-      select({ message: 'Pick one output:', choices })
+      select({ message: 'Pick one output:', choices }, INQUIRER_CONTEXT)
     )
   }
 
@@ -110,7 +141,7 @@ export class HumanFeedbackMechanismCLI<
       value: option
     }))
     return this._errorAfterTimeout(
-      checkbox({ message: 'Select outputs:', choices })
+      checkbox({ message: 'Select outputs:', choices }, INQUIRER_CONTEXT)
     )
   }
 }
