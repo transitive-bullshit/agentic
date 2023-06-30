@@ -228,7 +228,7 @@ export class TerminalTaskTracker {
       case TaskStatus.FAILED:
         return [SYMBOLS.CROSS, red]
       case TaskStatus.RETRYING:
-        return [SYMBOLS.WARNING, yellow]
+        return [this.getSpinnerSymbol(), yellow]
       case TaskStatus.RUNNING:
       default:
         return [this.getSpinnerSymbol(), cyan]
@@ -268,20 +268,24 @@ export class TerminalTaskTracker {
           line = indent + gray(SYMBOLS.BAR_END)
         }
 
-        if (output) {
-          if (status === TaskStatus.COMPLETED) {
-            const formattedOutput = this.stringify(output)
-            line +=
-              indent +
-              '  ' +
-              gray(SYMBOLS.RIGHT_ARROW + SPACE + formattedOutput)
-          } else if (status === TaskStatus.FAILED) {
-            line +=
-              indent + '  ' + gray(SYMBOLS.RIGHT_ARROW + SPACE + red(output))
-          } else if (status === TaskStatus.RETRYING) {
-            line +=
-              indent + '  ' + gray(SYMBOLS.RIGHT_ARROW + SPACE + yellow(output))
-          }
+        const formattedOutput = this.stringify(output || '')
+        if (status === TaskStatus.COMPLETED) {
+          line +=
+            indent + '  ' + gray(SYMBOLS.RIGHT_ARROW + SPACE + formattedOutput)
+        } else if (status === TaskStatus.FAILED) {
+          line +=
+            indent +
+            '  ' +
+            gray(SYMBOLS.RIGHT_ARROW) +
+            SPACE +
+            red(formattedOutput)
+        } else if (status === TaskStatus.RETRYING) {
+          line +=
+            indent +
+            '  ' +
+            yellow(SYMBOLS.WARNING) +
+            SPACE +
+            gray(formattedOutput)
         }
 
         lines.push(line)

@@ -360,6 +360,12 @@ export abstract class BaseTask<
           ctx.attemptNumber = err.attemptNumber + 1
           ctx.metadata.error = err
 
+          this._eventEmitter.emit(TaskStatus.RETRYING, {
+            taskInputs: input,
+            taskOutput: err,
+            ...ctx.metadata
+          })
+
           if (err instanceof errors.ZodOutputValidationError) {
             ctx.retryMessage = err.message
             return
@@ -383,6 +389,12 @@ export abstract class BaseTask<
             // task for now.
             return
           } else {
+            this._eventEmitter.emit(TaskStatus.FAILED, {
+              taskInputs: input,
+              taskOutput: err,
+              ...ctx.metadata
+            })
+
             throw err
           }
         }
