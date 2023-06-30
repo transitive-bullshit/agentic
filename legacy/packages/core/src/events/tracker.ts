@@ -2,6 +2,7 @@ import process from 'node:process'
 import readline from 'node:readline'
 
 import { bgWhite, black, bold, cyan, gray, green, red, yellow } from 'colorette'
+import TreeModel from 'tree-model'
 
 import { SPACE } from '@/constants'
 import { capitalize } from '@/utils'
@@ -23,7 +24,8 @@ export interface TerminalTaskTrackerOptions {
 }
 
 export class TerminalTaskTracker {
-  protected _events: Record<string, any[]> = { root: [] }
+  protected _tree = new TreeModel()
+  protected _root = this._tree.parse({ id: 'root' })
   protected _interval: NodeJS.Timeout | null = null
   protected _inactivityTimeout: NodeJS.Timeout | null = null
   protected _truncateOutput = false
@@ -39,7 +41,7 @@ export class TerminalTaskTracker {
 
   constructor({
     spinnerInterval = 100,
-    inactivityThreshold = 2_000
+    inactivityThreshold = 3_000
   }: TerminalTaskTrackerOptions = {}) {
     this._spinnerInterval = spinnerInterval
     this._inactivityThreshold = inactivityThreshold
@@ -187,9 +189,12 @@ export class TerminalTaskTracker {
 
   startInactivityTimeout() {
     this._inactivityTimeout = setTimeout(() => {
-      const allTasksCompleted = Object.values(this._events).every((events) =>
-        events.every((event) => event.status === TaskStatus.COMPLETED)
-      )
+      const allTasksCompleted = this._root.all((node) => {
+        return (
+          node.model.status === TaskStatus.COMPLETED ||
+          node.model.status === TaskStatus.FAILED
+        )
+      })
 
       if (allTasksCompleted) {
         this.close()
@@ -200,22 +205,34 @@ export class TerminalTaskTracker {
   }
 
   addEvent<TInput, TOutput>(event: TaskEvent<TInput, TOutput>) {
-    const { parent = 'root', taskId, name, status, inputs, output } = event
-    if (!this._events[parent]) {
-      this._events[parent] = []
-    }
-
-    const existingEventIndex = this._events[parent].findIndex(
-      (e) => e.taskId === taskId
+    const {
+      parentTaskId = 'root',
+      taskId: id,
+      name,
+      status,
+      inputs,
+      output
+    } = event
+    const parentNode = this._root.first(
+      (node) => node.model.id === parentTaskId
     )
 
-    if (existingEventIndex !== -1) {
+    const existingEventNode = parentNode
+      ? parentNode.first((node) => node.model.id === id)
+      : null
+
+    if (existingEventNode) {
       // If the event already exists, update its status and output:
-      this._events[parent][existingEventIndex].status = status
-      this._events[parent][existingEventIndex].output = output
+      existingEventNode.model.status = status
+      existingEventNode.model.output = output
     } else {
       // If the event does not exist, add it to the array:
-      this._events[parent].push({ taskId, name, status, inputs })
+      const node = this._tree.parse({ id, name, status, inputs, output: null })
+      if (parentNode) {
+        parentNode.addChild(node)
+      } else {
+        this._root.addChild(node)
+      }
     }
   }
 
@@ -235,61 +252,71 @@ export class TerminalTaskTracker {
     }
   }
 
-  renderTree(node: string, level = 0): string[] {
+  renderTree(id?: string, level = 0): string[] {
     const indent = SPACE.repeat(level * 2)
     let lines: string[] = []
 
-    if (this._events[node]) {
-      this._events[node].forEach(({ name, status, output, inputs }) => {
-        const [statusSymbol, color] = this.getStatusSymbolColor(status)
+    const root = id
+      ? this._root.first((node) => node.model.id === id)
+      : this._root
 
-        lines.push(
-          indent +
-            color(statusSymbol) +
-            SPACE +
-            bold(name) +
-            gray('(' + this.stringify(inputs) + ')')
-        )
+    if (root?.children) {
+      root.children.forEach(
+        ({ model: { id, name, status, output, inputs } }) => {
+          const [statusSymbol, color] = this.getStatusSymbolColor(status)
 
-        if (this._events[name]) {
-          lines = lines.concat(
-            this.renderTree(name, level + 1).map((line, index, arr) => {
-              if (index === arr.length - 1) {
-                return indent + gray(SYMBOLS.BAR) + line
-              }
-
-              return indent + gray(SYMBOLS.BAR) + line
-            })
+          lines.push(
+            indent +
+              color(statusSymbol) +
+              SPACE +
+              bold(name) +
+              gray('(' + this.stringify(inputs) + ')')
           )
-        }
 
-        let line = ''
-        if (this._events[name]) {
-          line = indent + gray(SYMBOLS.BAR_END)
-        }
+          const hasChildren = root.hasChildren()
 
-        const formattedOutput = this.stringify(output || '')
-        if (status === TaskStatus.COMPLETED) {
-          line +=
-            indent + '  ' + gray(SYMBOLS.RIGHT_ARROW + SPACE + formattedOutput)
-        } else if (status === TaskStatus.FAILED) {
-          line +=
-            indent +
-            '  ' +
-            gray(SYMBOLS.RIGHT_ARROW) +
-            SPACE +
-            red(formattedOutput)
-        } else if (status === TaskStatus.RETRYING) {
-          line +=
-            indent +
-            '  ' +
-            yellow(SYMBOLS.WARNING) +
-            SPACE +
-            gray(formattedOutput)
-        }
+          if (hasChildren) {
+            lines = lines.concat(
+              this.renderTree(id, level + 1).map((line, index, arr) => {
+                if (index === arr.length - 1) {
+                  return indent + gray(SYMBOLS.BAR) + line
+                }
 
-        lines.push(line)
-      })
+                return indent + gray(SYMBOLS.BAR) + line
+              })
+            )
+          }
+
+          let line = ''
+          if (hasChildren) {
+            line = indent + gray(SYMBOLS.BAR_END)
+          }
+
+          const formattedOutput = this.stringify(output || '')
+          if (status === TaskStatus.COMPLETED) {
+            line +=
+              indent +
+              '  ' +
+              gray(SYMBOLS.RIGHT_ARROW + SPACE + formattedOutput)
+          } else if (status === TaskStatus.FAILED) {
+            line +=
+              indent +
+              '  ' +
+              gray(SYMBOLS.RIGHT_ARROW) +
+              SPACE +
+              red(formattedOutput)
+          } else if (status === TaskStatus.RETRYING) {
+            line +=
+              indent +
+              '  ' +
+              yellow(SYMBOLS.WARNING) +
+              SPACE +
+              gray(formattedOutput)
+          }
+
+          lines.push(line)
+        }
+      )
     }
 
     return lines

@@ -62,6 +62,7 @@
     "p-timeout": "^6.1.2",
     "quick-lru": "^6.1.1",
     "replicate": "^0.12.3",
+    "tree-model": "^1.0.7",
     "ts-dedent": "^2.2.0",
     "type-fest": "^3.12.0",
     "zod": "^3.21.4",
