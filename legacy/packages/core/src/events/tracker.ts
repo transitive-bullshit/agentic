@@ -1,7 +1,7 @@
 import process from 'node:process'
 import readline from 'node:readline'
 
-import { bold, cyan, gray, green, red, yellow } from 'colorette'
+import { bgWhite, black, bold, cyan, gray, green, red, yellow } from 'colorette'
 
 import { SPACE } from '@/constants'
 
@@ -13,15 +13,6 @@ const MAGIC_STRING = '__INSIDE_TRACKER__' // Define a unique "magic" string
 // eslint-disable-next-line no-control-regex
 const RE_ANSI_ESCAPES = /\x1b\[[0-9;]*[A-Za-z]/ // cursor movement, screen clearing, etc.
 
-const SPINNER_INTERVAL = 100 // 100ms
-const INACTIVITY_THRESHOLD = 2000 // 2 seconds
-
-function getSpinnerSymbol() {
-  return SYMBOLS.SPINNER[
-    Math.floor(Date.now() / SPINNER_INTERVAL) % SYMBOLS.SPINNER.length
-  ]
-}
-
 const originalStdoutWrite = process.stdout.write
 const originalStderrWrite = process.stderr.write
 
@@ -30,14 +21,20 @@ export class TerminalTaskTracker {
   protected interval: NodeJS.Timeout | null = null
   protected inactivityTimeout: NodeJS.Timeout | null = null
   protected truncateOutput = false
-  protected renderTasks = true
+  protected viewMode = 'tasks'
   protected outputs: Array<string | Uint8Array> = []
   protected renderingPaused = false
+
+  protected _spinnerInterval: number
+  protected _inactivityThreshold: number
 
   private stdoutBuffer: string[] = []
   private stderrBuffer: string[] = []
 
-  constructor() {
+  constructor({ spinnerInterval = 100, inactivityThreshold = 2000 } = {}) {
+    this._spinnerInterval = spinnerInterval
+    this._inactivityThreshold = inactivityThreshold
+
     if (!process.stderr.isTTY) {
       // If stderr is not a TTY, don't render any dynamic output...
       return
@@ -86,15 +83,19 @@ export class TerminalTaskTracker {
       this.toggleOutputTruncation()
     }
 
-    if (key.ctrl && key.name === 'o') {
-      this.renderTasks = !this.renderTasks
+    if (key.ctrl && key.name === 'right') {
+      this.toggleView('next')
+    }
+
+    if (key.ctrl && key.name === 'left') {
+      this.toggleView('prev')
     }
   }
 
   start() {
     this.interval = setInterval(() => {
       this.render()
-    }, SPINNER_INTERVAL)
+    }, this._spinnerInterval)
 
     readline.emitKeypressEvents(process.stdin)
 
@@ -126,14 +127,14 @@ export class TerminalTaskTracker {
     const finalLines = [
       '',
       '',
-      'Completed all tasks.',
+      bgWhite(black(' Completed all tasks. ')),
       '',
-      'stdout:',
+      bgWhite(black(' stdout: ')),
       '',
       this.stdoutBuffer.join(''),
       '',
       '',
-      'stderr:',
+      bgWhite(black(' stderr: ')),
       '',
       this.stderrBuffer.join(''),
       '',
@@ -184,7 +185,7 @@ export class TerminalTaskTracker {
       } else {
         this.startInactivityTimeout()
       }
-    }, INACTIVITY_THRESHOLD)
+    }, this._inactivityThreshold)
   }
 
   addEvent<TInput, TOutput>(event: TaskEvent<TInput, TOutput>) {
@@ -219,7 +220,7 @@ export class TerminalTaskTracker {
         return [SYMBOLS.WARNING, yellow]
       case TaskStatus.RUNNING:
       default:
-        return [getSpinnerSymbol(), cyan]
+        return [this.getSpinnerSymbol(), cyan]
     }
   }
 
@@ -307,19 +308,57 @@ export class TerminalTaskTracker {
     process.stderr.write(MAGIC_STRING + output)
   }
 
+  toggleView(direction) {
+    const viewModes = ['tasks', 'stdout', 'stderr']
+    const currentIdx = viewModes.indexOf(this.viewMode)
+
+    if (direction === 'next') {
+      this.viewMode = viewModes[(currentIdx + 1) % viewModes.length]
+    } else if (direction === 'prev') {
+      this.viewMode =
+        viewModes[(currentIdx - 1 + viewModes.length) % viewModes.length]
+    }
+
+    this.render()
+  }
+
+  getSpinnerSymbol() {
+    return SYMBOLS.SPINNER[
+      Math.floor(Date.now() / this._spinnerInterval) % SYMBOLS.SPINNER.length
+    ]
+  }
+
+  renderHeader() {
+    const legend = [
+      'commands',
+      'ctrl+c exit',
+      'ctrl+e: truncate output',
+      'ctrl+left/right: switch view'
+    ].join(' | ')
+
+    const header = [` Agentic: ${this.viewMode} `, ` ${legend} `, ''].join('\n')
+    this.writeWithMagicString(bgWhite(black(header)))
+  }
+
   render() {
     if (this.renderingPaused) {
       return // Do not render if paused
     }
 
     this.clearAndSetCursorPosition()
-    const lines = this.renderTree('root')
-    if (this.renderTasks) {
-      this.clearPreviousRender(lines.length + 1)
+    if (this.viewMode === 'tasks') {
+      const lines = this.renderTree('root')
+      this.clearPreviousRender(lines.length + 2)
+      this.renderHeader()
       this.writeWithMagicString(lines)
-    } else {
-      this.clearPreviousRender(lines.length + 1)
+    } else if (this.viewMode === 'stdout') {
+      this.clearPreviousRender(this.stdoutBuffer.length + 2)
+      this.renderHeader()
       this.writeWithMagicString(this.stdoutBuffer)
+    } else if (this.viewMode === 'stderr') {
+      this.clearPreviousRender(this.stderrBuffer.length + 2)
+      this.renderHeader()
+      this.writeWithMagicString(this.stderrBuffer)
     }
   }
 }
