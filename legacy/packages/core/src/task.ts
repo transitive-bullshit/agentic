@@ -1,3 +1,4 @@
+import EventEmitter from 'eventemitter3'
 import pRetry, { FailedAttemptError } from 'p-retry'
 import QuickLRU from 'quick-lru'
 import { ZodType } from 'zod'
@@ -6,6 +7,7 @@ import * as errors from './errors'
 import * as types from './types'
 import type { Agentic } from './agentic'
 import { SKIP_HOOKS } from './constants'
+import { TaskEvent, TaskStatus } from './events'
 import {
   HumanFeedbackMechanismCLI,
   HumanFeedbackOptions,
@@ -29,7 +31,7 @@ import { defaultIDGeneratorFn, isValidTaskIdentifier } from './utils'
 export abstract class BaseTask<
   TInput extends types.TaskInput = void,
   TOutput extends types.TaskOutput = string
-> {
+> extends EventEmitter {
   protected _agentic: Agentic
   protected _id: string
 
@@ -48,6 +50,8 @@ export abstract class BaseTask<
   }> = []
 
   constructor(options: types.BaseTaskOptions = {}) {
+    super()
+
     this._agentic = options.agentic ?? globalThis.__agentic?.deref()
 
     this._timeoutMs = options.timeoutMs
@@ -190,7 +194,9 @@ export abstract class BaseTask<
     })
 
     this.addAfterCallHook(async (output, ctx) => {
+      this._agentic.taskTracker.pause()
       const feedback = await feedbackMechanism.interact(output)
+      this._agentic.taskTracker.resume()
       ctx.metadata = { ...ctx.metadata, feedback }
       if (feedback.editedOutput) {
         return feedback.editedOutput
@@ -272,6 +278,11 @@ export abstract class BaseTask<
       }
     }
 
+    this.emit(TaskStatus.RUNNING, {
+      taskInputs: input,
+      ...ctx.metadata
+    })
+
     for (const { hook: preHook } of this._preHooks) {
       const preHookResult = await preHook(ctx)
       if (preHookResult === SKIP_HOOKS) {
@@ -342,6 +353,12 @@ export abstract class BaseTask<
           ctx.attemptNumber = err.attemptNumber + 1
           ctx.metadata.error = err
 
+          this.emit(TaskStatus.RETRYING, {
+            taskInputs: input,
+            taskOutput: err,
+            ...ctx.metadata
+          })
+
           if (err instanceof errors.ZodOutputValidationError) {
             ctx.retryMessage = err.message
             return
@@ -365,6 +382,12 @@ export abstract class BaseTask<
             // task for now.
             return
           } else {
+            this.emit(TaskStatus.FAILED, {
+              taskInputs: input,
+              taskOutput: err,
+              ...ctx.metadata
+            })
+
             throw err
           }
         }
@@ -380,6 +403,12 @@ export abstract class BaseTask<
     }
 
     // ctx.tracker.setOutput(stringifyForDebugging(result, { maxLength: 100 }))
+
+    this.emit(TaskStatus.COMPLETED, {
+      taskInputs: input,
+      taskOutput: result,
+      ...ctx.metadata
+    })
 
     return {
       result,
@@ -397,4 +426,33 @@ export abstract class BaseTask<
   //   input: TInput,
   //   onProgress: types.ProgressFunction
   // }): Promise<TOutput>
+
+  on<T extends string | symbol>(
+    takStatus: T,
+    fn: (event: TaskEvent<TInput, TOutput>) => void,
+    context?: any
+  ): this {
+    return super.on(takStatus, fn, context)
+  }
+
+  emit(taskStatus: string | symbol, payload: object = {}): boolean {
+    if (!Object.values(TaskStatus).includes(taskStatus as TaskStatus)) {
+      throw new Error(`Invalid task status: ${String(taskStatus)}`)
+    }
+
+    const { id, nameForModel } = this
+    const event = new TaskEvent<TInput, TOutput>({
+      payload: {
+        taskStatus: taskStatus as TaskStatus,
+        taskId: id,
+        taskName: nameForModel,
+        ...payload
+      }
+    })
+    this._agentic.taskTracker.addEvent(event)
+
+    this._agentic.emit(taskStatus, event)
+
+    return super.emit(taskStatus, event)
+  }
 }
