@@ -34,6 +34,7 @@ export class TerminalTaskTracker {
   protected _viewMode = 'tasks'
   protected _outputs: Array<string | Uint8Array> = []
   protected _renderingPaused = false
+  protected _isClosed = false
 
   protected _spinnerInterval: number
   protected _inactivityInterval: number
@@ -120,9 +121,15 @@ export class TerminalTaskTracker {
     process.stdin.on('keypress', this.handleKeyPress)
 
     this.startInactivityTimeout()
+
+    this._isClosed = false
   }
 
   close() {
+    if (this._isClosed) {
+      return
+    }
+
     if (this._interval) {
       clearInterval(this._interval)
     }
@@ -160,6 +167,8 @@ export class TerminalTaskTracker {
 
     // Pause the reading of stdin so that the Node.js process will exit once done:
     process.stdin.pause()
+
+    this._isClosed = true
   }
 
   pause() {
