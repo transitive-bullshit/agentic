@@ -45,6 +45,7 @@
     "@types/json-schema": "^7.0.12",
     "colorette": "^2.0.20",
     "debug": "^4.3.4",
+    "eventemitter3": "^5.0.1",
     "expr-eval": "^2.0.2",
     "handlebars": "^4.7.7",
     "is-relative-url": "^4.0.0",
