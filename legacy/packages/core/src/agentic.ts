@@ -11,11 +11,10 @@ import { OpenAIChatCompletion } from './llms/openai'
 import { defaultLogger } from './logger'
 import { defaultIDGeneratorFn, isFunction, isString } from './utils'
 
-export class Agentic {
+export class Agentic extends EventEmitter {
   protected _ky: types.KyInstance
   protected _logger: types.Logger
   protected _taskTracker: TerminalTaskTracker
-  protected _eventEmitter: EventEmitter
 
   protected _openai?: types.openai.OpenAIClient
   protected _anthropic?: types.anthropic.Client
@@ -41,6 +40,8 @@ export class Agentic {
     ky?: types.KyInstance
     taskTracker?: TerminalTaskTracker
   }) {
+    super()
+
     // TODO: This is a bit hacky, but we're doing it to have a slightly nicer API
     // for the end developer when creating subclasses of `BaseTask` to use as
     // tools.
@@ -54,7 +55,6 @@ export class Agentic {
     this._ky = opts.ky ?? defaultKy
     this._logger = opts.logger ?? defaultLogger
     this._taskTracker = opts.taskTracker ?? new TerminalTaskTracker()
-    this._eventEmitter = new EventEmitter()
 
     this._openaiModelDefaults = {
       provider: 'openai',
@@ -107,10 +107,6 @@ export class Agentic {
 
   public get taskTracker(): TerminalTaskTracker {
     return this._taskTracker
-  }
-
-  public get eventEmitter(): EventEmitter {
-    return this._eventEmitter
   }
 
   public get idGeneratorFn(): types.IDGeneratorFunction {

@@ -1,3 +1,4 @@
+import EventEmitter from 'eventemitter3'
 import pRetry, { FailedAttemptError } from 'p-retry'
 import QuickLRU from 'quick-lru'
 import { ZodType } from 'zod'
@@ -6,7 +7,7 @@ import * as errors from './errors'
 import * as types from './types'
 import type { Agentic } from './agentic'
 import { SKIP_HOOKS } from './constants'
-import { TaskEventEmitter, TaskStatus } from './events'
+import { TaskEvent, TaskStatus } from './events'
 import {
   HumanFeedbackMechanismCLI,
   HumanFeedbackOptions,
@@ -30,14 +31,13 @@ import { defaultIDGeneratorFn, isValidTaskIdentifier } from './utils'
 export abstract class BaseTask<
   TInput extends types.TaskInput = void,
   TOutput extends types.TaskOutput = string
-> {
+> extends EventEmitter {
   protected _agentic: Agentic
   protected _id: string
 
   protected _timeoutMs?: number
   protected _retryConfig: types.RetryConfig
   protected _cacheConfig: types.CacheConfig<TInput, TOutput>
-  protected _eventEmitter: TaskEventEmitter<TInput, TOutput>
 
   protected _preHooks: Array<{
     hook: types.TaskBeforeCallHook<TInput>
@@ -50,6 +50,8 @@ export abstract class BaseTask<
   }> = []
 
   constructor(options: types.BaseTaskOptions = {}) {
+    super()
+
     this._agentic = options.agentic ?? globalThis.__agentic?.deref()
 
     this._timeoutMs = options.timeoutMs
@@ -73,11 +75,6 @@ export abstract class BaseTask<
 
     this._id =
       options.id ?? this._agentic?.idGeneratorFn() ?? defaultIDGeneratorFn()
-
-    this._eventEmitter = new TaskEventEmitter<TInput, TOutput>(
-      this,
-      this._agentic
-    )
   }
 
   public get agentic(): Agentic {
@@ -94,10 +91,6 @@ export abstract class BaseTask<
 
   protected get _logger(): types.Logger {
     return this._agentic.logger
-  }
-
-  public get eventEmitter(): TaskEventEmitter<TInput, TOutput> {
-    return this._eventEmitter
   }
 
   public abstract get inputSchema(): ZodType<TInput>
@@ -285,7 +278,7 @@ export abstract class BaseTask<
       }
     }
 
-    this._eventEmitter.emit(TaskStatus.RUNNING, {
+    this.emit(TaskStatus.RUNNING, {
       taskInputs: input,
       ...ctx.metadata
     })
@@ -360,7 +353,7 @@ export abstract class BaseTask<
           ctx.attemptNumber = err.attemptNumber + 1
           ctx.metadata.error = err
 
-          this._eventEmitter.emit(TaskStatus.RETRYING, {
+          this.emit(TaskStatus.RETRYING, {
             taskInputs: input,
             taskOutput: err,
             ...ctx.metadata
@@ -389,7 +382,7 @@ export abstract class BaseTask<
             // task for now.
             return
           } else {
-            this._eventEmitter.emit(TaskStatus.FAILED, {
+            this.emit(TaskStatus.FAILED, {
               taskInputs: input,
               taskOutput: err,
               ...ctx.metadata
@@ -411,7 +404,7 @@ export abstract class BaseTask<
 
     // ctx.tracker.setOutput(stringifyForDebugging(result, { maxLength: 100 }))
 
-    this._eventEmitter.emit(TaskStatus.COMPLETED, {
+    this.emit(TaskStatus.COMPLETED, {
       taskInputs: input,
       taskOutput: result,
       ...ctx.metadata
@@ -433,4 +426,33 @@ export abstract class BaseTask<
   //   input: TInput,
   //   onProgress: types.ProgressFunction
   // }): Promise<TOutput>
+
+  on<T extends string | symbol>(
+    takStatus: T,
+    fn: (event: TaskEvent<TInput, TOutput>) => void,
+    context?: any
+  ): this {
+    return super.on(takStatus, fn, context)
+  }
+
+  emit(taskStatus: string | symbol, payload: object = {}): boolean {
+    if (!Object.values(TaskStatus).includes(taskStatus as TaskStatus)) {
+      throw new Error(`Invalid task status: ${String(taskStatus)}`)
+    }
+
+    const { id, nameForModel } = this
+    const event = new TaskEvent<TInput, TOutput>({
+      payload: {
+        taskStatus: taskStatus as TaskStatus,
+        taskId: id,
+        taskName: nameForModel,
+        ...payload
+      }
+    })
+    this._agentic.taskTracker.addEvent(event)
+
+    this._agentic.emit(taskStatus, event)
+
+    return super.emit(taskStatus, event)
+  }
 }
