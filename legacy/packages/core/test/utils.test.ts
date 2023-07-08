@@ -52,10 +52,11 @@ test('chunkString should split string into chunks', (t) => {
   const text = 'Hello, this is a test string for chunkString function.'
   const chunks = chunkString(text, 12)
   t.deepEqual(chunks, [
-    'Hello, this',
-    'is a test',
-    'string for',
-    'chunkString',
+    'Hello, ',
+    'this is a ',
+    'test ',
+    'string for ',
+    'chunkString ',
     'function.'
   ])
 })

@@ -67,28 +67,36 @@ export function extractFunctionIdentifierFromString(
  *
  * @param text - string to chunk
  * @param maxLength - maximum length of each chunk
+ * @param separator - character to split on (will be included in each previous chunk)
  * @returns array of chunks
  */
-export function chunkString(text: string, maxLength: number): string[] {
-  const words = text.split(' ')
+export function chunkString(
+  text: string,
+  maxLength: number,
+  separator = ' '
+): string[] {
+  const words = text.split(new RegExp(`(?<=${separator})`))
   const chunks: string[] = []
   let chunk = ''
 
   for (const word of words) {
+    // If the word length is more than maxLength, push the current chunk and the truncated word
     if (word.length > maxLength) {
-      // Truncate the word if it's too long and indicate that it was truncated:
+      if (chunk) {
+        chunks.push(chunk)
+        chunk = ''
+      }
+
       chunks.push(word.substring(0, maxLength - 3) + '...')
-    } else if ((chunk + ' ' + word).length > maxLength) {
-      chunks.push(chunk.trim())
+    } else if ((chunk && chunk + separator + word).length > maxLength) {
+      chunks.push(chunk)
       chunk = word
     } else {
-      chunk += (chunk ? ' ' : '') + word
+      chunk += word
     }
   }
 
-  if (chunk) {
-    chunks.push(chunk.trim())
-  }
+  if (chunk) chunks.push(chunk)
 
   return chunks
 }
