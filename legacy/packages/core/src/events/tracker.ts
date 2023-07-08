@@ -43,7 +43,7 @@ export class TerminalTaskTracker {
   private _stderrBuffer: string[] = []
 
   constructor({
-    spinnerInterval = 100,
+    spinnerInterval = 150,
     inactivityInterval = 2_000
   }: TerminalTaskTrackerOptions = {}) {
     this._spinnerInterval = spinnerInterval
@@ -88,7 +88,23 @@ export class TerminalTaskTracker {
       }
     }
 
+    process.on('uncaughtException', () => {
+      this.showCursor()
+    })
+
+    process.on('unhandledRejection', () => {
+      this.showCursor()
+    })
+
     this.start()
+  }
+
+  hideCursor() {
+    process.stderr.write('\x1B[?25l')
+  }
+
+  showCursor() {
+    process.stderr.write('\x1B[?25h')
   }
 
   handleKeyPress = (str, key) => {
@@ -110,6 +126,8 @@ export class TerminalTaskTracker {
   }
 
   start() {
+    this.hideCursor()
+
     this._interval = setInterval(() => {
       this.render()
     }, this._spinnerInterval)
@@ -139,8 +157,6 @@ export class TerminalTaskTracker {
     }
 
     process.stdin.setRawMode(false)
-
-    // Remove the keypress listener:
     process.stdin.off('keypress', this.handleKeyPress)
 
     // Restore the original `process.stdout.write()` and `process.stderr.write()` functions:
@@ -168,21 +184,28 @@ export class TerminalTaskTracker {
     // Pause the reading of stdin so that the Node.js process will exit once done:
     process.stdin.pause()
 
+    this.showCursor()
+
     this._isClosed = true
   }
 
   pause() {
     this.clearAndSetCursorPosition()
     this._renderingPaused = true
+    process.stdin.setRawMode(false)
+    process.stdin.off('keypress', this.handleKeyPress)
   }
 
   resume() {
     this._renderingPaused = false
+    process.stdin.resume()
+    process.stdin.setRawMode(true)
+    process.stdin.on('keypress', this.handleKeyPress)
     this.render()
   }
 
-  stringify(value: any, indent: string): string[] {
-    const availableChars = process.stderr.columns - indent.length
+  stringify(value: any, indent: number): string[] {
+    const availableChars = process.stderr.columns - indent
     if (this._truncateOutput) {
       const json = JSON.stringify(value)
       if (json.length < availableChars) {
@@ -279,7 +302,7 @@ export class TerminalTaskTracker {
         ({ model: { id, name, status, output, inputs } }) => {
           const [statusSymbol, color] = this.getStatusSymbolColor(status)
 
-          const chunked = this.stringify(inputs, indent5)
+          const chunked = this.stringify(inputs, level * 4 + 6)
           const start = indent + color(statusSymbol) + SPACE + bold(name)
           if (chunked.length === 1) {
             lines.push(start + gray('(' + chunked + ')'))
@@ -309,7 +332,7 @@ export class TerminalTaskTracker {
             line = indent + gray(SYMBOLS.BAR_END)
           }
 
-          const [first, ...rest] = this.stringify(output || '', indent5)
+          const [first, ...rest] = this.stringify(output || '', level * 4 + 6)
           if (status === TaskStatus.COMPLETED) {
             line += '  ' + gray(SYMBOLS.RIGHT_ARROW + SPACE + first)
           } else if (status === TaskStatus.FAILED) {
@@ -333,10 +356,9 @@ export class TerminalTaskTracker {
   }
 
   clearPreviousRender(linesCount: number) {
-    for (let i = 0; i < linesCount; i++) {
-      process.stderr.moveCursor(0, -1)
-      process.stderr.clearLine(1)
-    }
+    process.stderr.moveCursor(0, -linesCount)
+    process.stderr.clearScreenDown()
+    this.clearAndSetCursorPosition()
   }
 
   private writeWithMagicString(content: string | string[]) {
@@ -398,9 +420,12 @@ export class TerminalTaskTracker {
       return // Do not render if paused
     }
 
-    this.clearAndSetCursorPosition()
+    const terminalRows = process.stdout.rows || 0
+    const availableRows = terminalRows - 4 // four rows for header
+
     if (this._viewMode === 'tasks') {
-      const lines = this.renderTree('root')
+      let lines = this.renderTree('root')
+      lines = lines.slice(-availableRows)
       this.clearPreviousRender(lines.length)
       this.renderHeader()
       this.writeWithMagicString(lines)
