@@ -178,6 +178,8 @@ export abstract class HumanFeedbackMechanism<
     return this._task.outputSchema.parse(parsedOutput)
   }
 
+  protected abstract _formatOutput(output: string): string
+
   public async interact(output: TOutput): Promise<FeedbackTypeToMetadata<T>> {
     const stringified = JSON.stringify(output, null, 2)
     const taskDetails = `${this._task.nameForHuman} (ID: ${this._task.id})`
@@ -186,9 +188,7 @@ export abstract class HumanFeedbackMechanism<
     const msg = [
       taskDetails,
       outputLabel,
-      '```',
-      stringified,
-      '```',
+      this._formatOutput(stringified),
       'What would you like to do?'
     ].join('\n')
 
@@ -200,8 +200,8 @@ export abstract class HumanFeedbackMechanism<
       choices.push(HumanFeedbackUserActions.Select)
     } else {
       // Case: confirm
-      choices.push(HumanFeedbackUserActions.Accept)
       choices.push(HumanFeedbackUserActions.Decline)
+      choices.push(HumanFeedbackUserActions.Accept)
     }
 
     if (this._options.editing) {

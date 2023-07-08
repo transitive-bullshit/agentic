@@ -2,6 +2,7 @@ import checkbox from '@inquirer/checkbox'
 import editor from '@inquirer/editor'
 import input from '@inquirer/input'
 import select from '@inquirer/select'
+import { gray } from 'colorette'
 import { setTimeout } from 'timers/promises'
 
 import { BaseTask } from '@/task'
@@ -87,17 +88,8 @@ export class HumanFeedbackMechanismCLI<
     return Promise.race([rejectError, promise])
   }
 
-  protected async _edit(output: string): Promise<string> {
-    return this._defaultAfterTimeout(
-      editor(
-        {
-          message: 'Edit the output:',
-          default: output
-        },
-        INQUIRER_CONTEXT
-      ),
-      output
-    )
+  protected _formatOutput(output: string): string {
+    return gray(output)
   }
 
   protected async _annotate(): Promise<string> {
@@ -110,6 +102,19 @@ export class HumanFeedbackMechanismCLI<
         INQUIRER_CONTEXT
       ),
       ''
+    )
+  }
+
+  protected async _edit(output: string): Promise<string> {
+    return this._defaultAfterTimeout(
+      editor(
+        {
+          message: 'Edit the output:',
+          default: output
+        },
+        INQUIRER_CONTEXT
+      ),
+      output
     )
   }
 

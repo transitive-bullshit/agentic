@@ -28,6 +28,10 @@ export class HumanFeedbackMechanismSlack<
     this._slackClient = slackClient
   }
 
+  protected _formatOutput(output: string): string {
+    return ['```', output, '```'].join('\n')
+  }
+
   protected async _annotate(): Promise<string> {
     try {
       const annotation = await this._slackClient.sendAndWaitForReply({

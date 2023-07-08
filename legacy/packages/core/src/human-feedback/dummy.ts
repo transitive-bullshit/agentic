@@ -14,6 +14,10 @@ export class HumanFeedbackMechanismDummy<
     return output[0] as any
   }
 
+  protected _formatOutput() {
+    return ''
+  }
+
   protected async _multiselect(
     output: TOutput
   ): Promise<TOutput extends any[] ? TOutput : never> {

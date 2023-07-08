@@ -28,6 +28,10 @@ export class HumanFeedbackMechanismTwilio<
     this._twilioClient = twilioClient
   }
 
+  protected _formatOutput(output: string): string {
+    return output
+  }
+
   protected async _annotate(): Promise<string> {
     try {
       const annotation = await this._twilioClient.sendAndWaitForReply({
