@@ -5,7 +5,7 @@ import { bgWhite, black, bold, cyan, gray, green, red, yellow } from 'colorette'
 import TreeModel from 'tree-model'
 
 import { SPACE } from '@/constants'
-import { capitalize } from '@/utils'
+import { capitalize, chunkString } from '@/utils'
 
 import { TaskEvent, TaskStatus } from './event'
 import { SYMBOLS } from './symbols'
@@ -181,17 +181,20 @@ export class TerminalTaskTracker {
     this.render()
   }
 
-  stringify(value: any): string {
+  stringify(value: any, indent: string): string[] {
+    const availableChars = process.stderr.columns - indent.length
     if (this._truncateOutput) {
       const json = JSON.stringify(value)
-      if (json.length < 40) {
-        return json
+      if (json.length < availableChars) {
+        return [json]
       }
 
-      return json.slice(0, 20) + '...' + json.slice(-20)
+      const sliceIndex = Math.floor(availableChars / 2) - 2
+      return [json.slice(0, sliceIndex) + '...' + json.slice(-sliceIndex)]
     }
 
-    return JSON.stringify(value)
+    const stringified = JSON.stringify(value)
+    return chunkString(stringified, availableChars, ',')
   }
 
   toggleOutputTruncation() {
@@ -264,6 +267,7 @@ export class TerminalTaskTracker {
 
   renderTree(id?: string, level = 0): string[] {
     const indent = SPACE.repeat(level * 2)
+    const indent5 = SPACE.repeat(level * 2 + 5)
     let lines: string[] = []
 
     const root = id
@@ -275,24 +279,27 @@ export class TerminalTaskTracker {
         ({ model: { id, name, status, output, inputs } }) => {
           const [statusSymbol, color] = this.getStatusSymbolColor(status)
 
-          lines.push(
-            indent +
-              color(statusSymbol) +
-              SPACE +
-              bold(name) +
-              gray('(' + this.stringify(inputs) + ')')
-          )
+          const chunked = this.stringify(inputs, indent5)
+          const start = indent + color(statusSymbol) + SPACE + bold(name)
+          if (chunked.length === 1) {
+            lines.push(start + gray('(' + chunked + ')'))
+          } else {
+            const [first, ...rest] = chunked
+            lines.push(start + gray('(' + first))
+            rest.forEach((line) => lines.push(indent5 + gray(line)))
+            lines.push(indent5 + gray(')'))
+          }
 
           const hasChildren = root.hasChildren()
 
           if (hasChildren) {
             lines = lines.concat(
-              this.renderTree(id, level + 1).map((line, index, arr) => {
-                if (index === arr.length - 1) {
+              this.renderTree(id, level + 1).map((line, index) => {
+                if (index <= 1) {
                   return indent + gray(SYMBOLS.BAR) + line
                 }
 
-                return indent + gray(SYMBOLS.BAR) + line
+                return indent + ' ' + line
               })
             )
           }
@@ -302,29 +309,17 @@ export class TerminalTaskTracker {
             line = indent + gray(SYMBOLS.BAR_END)
           }
 
-          const formattedOutput = this.stringify(output || '')
+          const [first, ...rest] = this.stringify(output || '', indent5)
           if (status === TaskStatus.COMPLETED) {
-            line +=
-              indent +
-              '  ' +
-              gray(SYMBOLS.RIGHT_ARROW + SPACE + formattedOutput)
+            line += '  ' + gray(SYMBOLS.RIGHT_ARROW + SPACE + first)
           } else if (status === TaskStatus.FAILED) {
-            line +=
-              indent +
-              '  ' +
-              gray(SYMBOLS.RIGHT_ARROW) +
-              SPACE +
-              red(formattedOutput)
+            line += '  ' + gray(SYMBOLS.RIGHT_ARROW) + SPACE + red(first)
           } else if (status === TaskStatus.RETRYING) {
-            line +=
-              indent +
-              '  ' +
-              yellow(SYMBOLS.WARNING) +
-              SPACE +
-              gray(formattedOutput)
+            line += '  ' + yellow(SYMBOLS.WARNING) + SPACE + gray(first)
           }
 
           lines.push(line)
+          rest.forEach((line) => lines.push(indent5 + gray(line)))
         }
       )
     }
