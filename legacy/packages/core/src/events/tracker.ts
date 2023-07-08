@@ -189,11 +189,13 @@ export class TerminalTaskTracker {
     this._isClosed = true
   }
 
-  pause() {
+  pause(message = 'Tracking paused.') {
     this.clearAndSetCursorPosition()
     this._renderingPaused = true
     process.stdin.setRawMode(false)
     process.stdin.off('keypress', this.handleKeyPress)
+    process.stderr.write(bgWhite(black(` ${message} `)))
+    process.stderr.write('\n')
   }
 
   resume() {

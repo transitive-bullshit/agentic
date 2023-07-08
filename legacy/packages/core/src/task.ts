@@ -194,7 +194,9 @@ export abstract class BaseTask<
     })
 
     this.addAfterCallHook(async (output, ctx) => {
-      this._agentic.taskTracker.pause()
+      this._agentic.taskTracker.pause(
+        'Tracking paused. Waiting for human feedback to resume.'
+      )
       const feedback = await feedbackMechanism.interact(output)
       this._agentic.taskTracker.resume()
       ctx.metadata = { ...ctx.metadata, feedback }
