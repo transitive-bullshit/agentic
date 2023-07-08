@@ -75,24 +75,31 @@ export function chunkString(
   maxLength: number,
   separator = ' '
 ): string[] {
-  const words = text.split(new RegExp(`(?<=${separator})`))
+  const segments = text.split(new RegExp(`(?<=${separator})`))
   const chunks: string[] = []
   let chunk = ''
 
-  for (const word of words) {
-    // If the word length is more than maxLength, push the current chunk and the truncated word
-    if (word.length > maxLength) {
+  for (const segment of segments) {
+    if (segment.length > maxLength) {
       if (chunk) {
         chunks.push(chunk)
         chunk = ''
       }
 
-      chunks.push(word.substring(0, maxLength - 3) + '...')
-    } else if ((chunk && chunk + separator + word).length > maxLength) {
+      let start = 0
+      while (start < segment.length) {
+        const end =
+          start + maxLength < segment.length
+            ? start + maxLength
+            : segment.length
+        chunks.push(segment.substring(start, end))
+        start = end
+      }
+    } else if ((chunk && chunk + separator + segment).length > maxLength) {
       chunks.push(chunk)
-      chunk = word
+      chunk = segment
     } else {
-      chunk += word
+      chunk += segment
     }
   }
 
