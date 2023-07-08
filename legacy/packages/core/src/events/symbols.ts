@@ -1,7 +1,6 @@
 import isUnicodeSupported from 'is-unicode-supported'
 
 const UNICODE_SYMBOLS = {
-  ARROW_RIGHT: '→',
   CIRCLE: '●',
   WARNING: '▲',
   CROSS: '⨯',
@@ -15,7 +14,6 @@ const UNICODE_SYMBOLS = {
   RIGHT_ARROW: '→'
 }
 const ASCII_SYMBOLS = {
-  ARROW_RIGHT: '→',
   CIRCLE: '•',
   WARNING: '‼',
   CROSS: '×',
