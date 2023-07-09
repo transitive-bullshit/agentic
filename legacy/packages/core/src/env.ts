@@ -1,7 +1,7 @@
-export function getEnv(
-  name: string,
-  defaultValue?: string
-): string | undefined {
+export function getEnv(name: string, defaultValue: string): string
+export function getEnv(name: string, defaultValue?: string): string | undefined
+
+export function getEnv(name: string, defaultValue?: string) {
   try {
     return (
       (typeof process !== 'undefined'
