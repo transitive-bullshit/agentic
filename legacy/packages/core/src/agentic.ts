@@ -29,19 +29,21 @@ export class Agentic extends EventEmitter {
   protected _idGeneratorFn: types.IDGeneratorFunction
   protected _id: string
 
-  constructor(opts: {
-    openai?: types.openai.OpenAIClient
-    anthropic?: types.anthropic.Anthropic
-    modelDefaults?: Pick<
-      types.BaseLLMOptions,
-      'provider' | 'model' | 'modelParams' | 'timeoutMs' | 'retryConfig'
-    >
-    humanFeedbackDefaults?: HumanFeedbackOptions<HumanFeedbackType, any>
-    idGeneratorFn?: types.IDGeneratorFunction
-    logger?: types.Logger
-    ky?: types.KyInstance
-    taskTracker?: TerminalTaskTracker
-  }) {
+  constructor(
+    opts: {
+      openai?: types.openai.OpenAIClient
+      anthropic?: types.anthropic.Anthropic
+      modelDefaults?: Pick<
+        types.BaseLLMOptions,
+        'provider' | 'model' | 'modelParams' | 'timeoutMs' | 'retryConfig'
+      >
+      humanFeedbackDefaults?: HumanFeedbackOptions<HumanFeedbackType, any>
+      idGeneratorFn?: types.IDGeneratorFunction
+      logger?: types.Logger
+      ky?: types.KyInstance
+      taskTracker?: TerminalTaskTracker
+    } = {}
+  ) {
     super()
 
     // TODO: This is a bit hacky, but we're doing it to have a slightly nicer API
