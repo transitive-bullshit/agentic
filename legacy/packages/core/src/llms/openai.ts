@@ -1,6 +1,7 @@
 import type { SetOptional } from 'type-fest'
 
 import * as types from '@/types'
+import { DEFAULT_OPENAI_MODEL } from '@/constants'
 import { getEnv } from '@/env'
 import { BaseTask } from '@/task'
 
@@ -34,7 +35,7 @@ export class OpenAIChatCompletion<
     const model =
       options.modelParams?.model ??
       getEnv('OPENAI_MODEL') ??
-      getEnv('OPENAI_DEFAULT_MODEL', 'gpt-3.5-turbo')
+      getEnv('OPENAI_DEFAULT_MODEL', DEFAULT_OPENAI_MODEL)
     super({
       provider: 'openai',
       model,

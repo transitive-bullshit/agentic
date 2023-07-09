@@ -1,5 +1,7 @@
+import { Anthropic } from '@anthropic-ai/sdk'
 import { EventEmitter } from 'eventemitter3'
 import defaultKy from 'ky'
+import { OpenAIClient } from 'openai-fetch'
 import { SetOptional } from 'type-fest'
 
 import * as types from './types'
@@ -49,8 +51,8 @@ export class Agentic extends EventEmitter {
       globalThis.__agentic = new WeakRef(this)
     }
 
-    this._openai = opts.openai
-    this._anthropic = opts.anthropic
+    this._openai = opts.openai || new OpenAIClient()
+    this._anthropic = opts.anthropic || new Anthropic()
 
     this._ky = opts.ky ?? defaultKy
     this._logger = opts.logger ?? defaultLogger

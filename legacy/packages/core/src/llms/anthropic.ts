@@ -3,6 +3,7 @@ import { type SetOptional } from 'type-fest'
 
 import * as types from '@/types'
 import { DEFAULT_ANTHROPIC_MODEL } from '@/constants'
+import { getEnv } from '@/env'
 
 import { BaseChatCompletion } from './chat'
 
@@ -34,7 +35,10 @@ export class AnthropicChatCompletion<
   ) {
     super({
       provider: 'anthropic',
-      model: options.modelParams?.model || DEFAULT_ANTHROPIC_MODEL,
+      model:
+        options.modelParams?.model ??
+        getEnv('ANTHROPIC_MODEL') ??
+        getEnv('ANTHROPIC_DEFAULT_MODEL', DEFAULT_ANTHROPIC_MODEL),
       ...options
     })
 
