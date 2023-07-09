@@ -1,4 +1,4 @@
-import * as anthropic from '@anthropic-ai/sdk'
+import { Anthropic } from '@anthropic-ai/sdk'
 import { type SetOptional } from 'type-fest'
 
 import * as types from '@/types'
@@ -6,7 +6,7 @@ import { DEFAULT_ANTHROPIC_MODEL } from '@/constants'
 
 import { BaseChatCompletion } from './chat'
 
-const defaultStopSequences = [anthropic.HUMAN_PROMPT]
+const defaultStopSequences = [Anthropic.HUMAN_PROMPT]
 
 export class AnthropicChatCompletion<
   TInput extends types.TaskInput = any,
@@ -15,19 +15,19 @@ export class AnthropicChatCompletion<
   TInput,
   TOutput,
   SetOptional<
-    Omit<anthropic.SamplingParameters, 'prompt'>,
+    Omit<Anthropic.CompletionCreateParams, 'prompt'>,
     'model' | 'max_tokens_to_sample' | 'stop_sequences'
   >,
-  anthropic.CompletionResponse
+  Anthropic.Completion
 > {
-  _client: anthropic.Client
+  _client: Anthropic
 
   constructor(
     options: types.ChatModelOptions<
       TInput,
       TOutput,
       SetOptional<
-        Omit<anthropic.SamplingParameters, 'prompt'>,
+        Omit<Anthropic.CompletionCreateParams, 'prompt'>,
         'model' | 'max_tokens_to_sample' | 'stop_sequences'
       >
     >
@@ -53,33 +53,34 @@ export class AnthropicChatCompletion<
 
   protected override async _createChatCompletion(
     messages: types.ChatMessage[]
-  ): Promise<types.BaseChatCompletionResponse<anthropic.CompletionResponse>> {
+  ): Promise<types.BaseChatCompletionResponse<Anthropic.Completion>> {
     const prompt =
       messages
         .map((message) => {
           switch (message.role) {
             case 'user':
-              return `${anthropic.HUMAN_PROMPT} ${message.content}`
+              return `${Anthropic.HUMAN_PROMPT} ${message.content}`
             case 'assistant':
-              return `${anthropic.AI_PROMPT} ${message.content}`
+              return `${Anthropic.AI_PROMPT} ${message.content}`
             default:
               return message.content
           }
         })
         .filter(Boolean)
-        .join('') + anthropic.AI_PROMPT
+        .join('') + Anthropic.AI_PROMPT
 
     // TODO: support streaming
     // TODO: support max_tokens_to_sample
     // TODO: support stop_sequences correctly
     // TODO: handle errors gracefully
 
-    const response = await this._client.complete({
+    const response = await this._client.completions.create({
       stop_sequences: defaultStopSequences,
       max_tokens_to_sample: 200, // TODO
       ...this._modelParams,
       model: this._model,
-      prompt
+      prompt,
+      stream: false
     })
 
     return {

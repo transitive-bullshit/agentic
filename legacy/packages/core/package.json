@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "@agentic/midjourney-fetch": "^1.0.1",
-    "@anthropic-ai/sdk": "^0.4.4",
+    "@anthropic-ai/sdk": "^0.5.2",
     "@inquirer/checkbox": "^1.3.3",
     "@inquirer/editor": "^1.2.2",
     "@inquirer/input": "^1.2.3",

@@ -17,7 +17,7 @@ export class Agentic extends EventEmitter {
   protected _taskTracker: TerminalTaskTracker
 
   protected _openai?: types.openai.OpenAIClient
-  protected _anthropic?: types.anthropic.Client
+  protected _anthropic?: types.anthropic.Anthropic
 
   protected _openaiModelDefaults: Pick<
     types.BaseLLMOptions,
@@ -29,7 +29,7 @@ export class Agentic extends EventEmitter {
 
   constructor(opts: {
     openai?: types.openai.OpenAIClient
-    anthropic?: types.anthropic.Client
+    anthropic?: types.anthropic.Anthropic
     modelDefaults?: Pick<
       types.BaseLLMOptions,
       'provider' | 'model' | 'modelParams' | 'timeoutMs' | 'retryConfig'
@@ -78,7 +78,7 @@ export class Agentic extends EventEmitter {
     return this._openai
   }
 
-  public get anthropic(): types.anthropic.Client | undefined {
+  public get anthropic(): types.anthropic.Anthropic | undefined {
     return this._anthropic
   }
 

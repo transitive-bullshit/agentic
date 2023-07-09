@@ -1,4 +1,4 @@
-import * as anthropic from '@anthropic-ai/sdk'
+import { Anthropic } from '@anthropic-ai/sdk'
 import KeyvRedis from '@keyv/redis'
 import 'dotenv/config'
 import hashObject from 'hash-obj'
@@ -232,11 +232,29 @@ export class OpenAITestClient extends OpenAIClient {
   })
 }
 
-export class AnthropicTestClient extends anthropic.Client {
-  complete = pMemoize(super.complete, {
-    cacheKey: (params) => getCacheKey('anthropic:complete', params),
-    cache: keyv
-  })
+export class AnthropicTestClient extends Anthropic {
+  constructor(config) {
+    super(config)
+
+    const memoizedCreate = pMemoize(
+      this.completions.create.bind(this.completions),
+      {
+        cacheKey: (params) =>
+          getCacheKey('anthropic:completions.create', params),
+        cache: keyv
+      }
+    )
+
+    this.completions = new Proxy(this.completions, {
+      get: function (target, prop) {
+        if (prop === 'create') {
+          return memoizedCreate
+        } else {
+          return target[prop]
+        }
+      }
+    })
+  }
 }
 
 export function getCacheKey(label: string, params: any): string {
@@ -273,7 +291,7 @@ export function createAnthropicTestClient() {
     }
   }
 
-  return new AnthropicTestClient(apiKey)
+  return new AnthropicTestClient({ apiKey })
 }
 
 export function createTestAgenticRuntime() {
