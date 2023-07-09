@@ -3,12 +3,12 @@ import defaultKy from 'ky'
 import { SetOptional } from 'type-fest'
 
 import * as types from './types'
-import { DEFAULT_OPENAI_MODEL } from './constants'
 import { TerminalTaskTracker } from './events'
 import { HumanFeedbackOptions, HumanFeedbackType } from './human-feedback'
 import { HumanFeedbackMechanismCLI } from './human-feedback/cli'
 import { OpenAIChatCompletion } from './llms/openai'
 import { defaultLogger } from './logger'
+import { openaiModelDefaults } from './model_defaults'
 import { defaultIDGeneratorFn, isFunction, isString } from './utils'
 
 export class Agentic extends EventEmitter {
@@ -30,7 +30,7 @@ export class Agentic extends EventEmitter {
   constructor(opts: {
     openai?: types.openai.OpenAIClient
     anthropic?: types.anthropic.Client
-    openaiModelDefaults?: Pick<
+    modelDefaults?: Pick<
       types.BaseLLMOptions,
       'provider' | 'model' | 'modelParams' | 'timeoutMs' | 'retryConfig'
     >
@@ -56,18 +56,7 @@ export class Agentic extends EventEmitter {
     this._logger = opts.logger ?? defaultLogger
     this._taskTracker = opts.taskTracker ?? new TerminalTaskTracker()
 
-    this._openaiModelDefaults = {
-      provider: 'openai',
-      model: DEFAULT_OPENAI_MODEL,
-      modelParams: {},
-      timeoutMs: 2 * 60000,
-      retryConfig: {
-        retries: 2,
-        strategy: 'heal',
-        ...opts.openaiModelDefaults?.retryConfig
-      },
-      ...opts.openaiModelDefaults
-    }
+    this._openaiModelDefaults = openaiModelDefaults(opts.modelDefaults || {})
 
     // TODO
     // this._anthropicModelDefaults = {}
