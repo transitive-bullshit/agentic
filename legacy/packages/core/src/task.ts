@@ -85,6 +85,9 @@ export abstract class BaseTask<
     this._agentic = agentic
   }
 
+  /**
+   * Unique identifier for the task.
+   */
   public get id(): string {
     return this._id
   }
@@ -93,18 +96,34 @@ export abstract class BaseTask<
     return this._agentic.logger
   }
 
+  /**
+   * Zod schema for the task's input.
+   */
   public abstract get inputSchema(): ZodType<TInput>
+
+  /**
+   * Zod schema for the task's output.
+   */
   public abstract get outputSchema(): ZodType<TOutput>
 
+  /**
+   * Name of the task for use by language model.
+   */
   public get nameForModel(): string {
     const name = this.constructor.name
     return name[0].toLowerCase() + name.slice(1)
   }
 
+  /**
+   * Human-readable name of the task.
+   */
   public get nameForHuman(): string {
     return this.constructor.name
   }
 
+  /**
+   * Task description for use by language model.
+   */
   public get descForModel(): string {
     return ''
   }
@@ -217,11 +236,17 @@ export abstract class BaseTask<
     return this
   }
 
+  /**
+   * Sets retry configuration for this task.
+   */
   public retryConfig(retryConfig: types.RetryConfig): this {
     this._retryConfig = retryConfig
     return this
   }
 
+  /**
+   * Sets cache configuration for this task.
+   */
   public cacheConfig(cacheConfig: types.CacheConfig<TInput, TOutput>): this {
     this._cacheConfig = cacheConfig
     return this

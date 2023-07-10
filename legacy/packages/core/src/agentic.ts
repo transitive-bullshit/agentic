@@ -70,7 +70,7 @@ export class Agentic extends EventEmitter {
       ky?: types.KyInstance
 
       /**
-       * A task tracker or `false` to disable. By default, tasks will be tracked via the terminal.
+       * A task tracker or `false` to disable. By default, tasks will be tracked via the terminal (assuming `stderr` is a TTY).
        */
       taskTracker?: TaskTracker | false
     } = {}

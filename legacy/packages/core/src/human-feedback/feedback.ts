@@ -42,27 +42,33 @@ type HumanFeedbackMechanismConstructor<
  */
 export type HumanFeedbackOptions<T extends HumanFeedbackType, TOutput> = {
   /**
-   * What type of feedback to request.
+   * What type of feedback to request. Default: `'confirm'`.
+   *
+   * Possible values:
+   *
+   * - `'confirm'`: The user is asked to confirm the generated output of the task.
+   * - `'select'`: The user is asked to select exactly one of the outputs to keep (assumes output is an array).
+   * - `'multiselect'`: The user is asked to select any number of outputs to keep (assumes output is an array).
    */
   type?: T
 
   /**
-   * Whether the user can abort the process.
+   * Whether the user can abort the process. Default: `false`.
    */
   abort?: boolean
 
   /**
-   * Whether the user can edit the output.
+   * Whether the user can edit the output. Default: `false`.
    */
   editing?: boolean
 
   /**
-   * Whether the user can add free-form text annotations.
+   * Whether the user can add free-form text annotations. Default: `false`.
    */
   annotations?: boolean
 
   /**
-   * The human feedback mechanism to use for this task.
+   * The human feedback mechanism to use for this task. By default, human feedback is requested via the CLI.
    */
   mechanism?: HumanFeedbackMechanismConstructor<T, TOutput>
 
@@ -72,7 +78,7 @@ export type HumanFeedbackOptions<T extends HumanFeedbackType, TOutput> = {
   outputLabel?: string
 
   /**
-   * Timeout in milliseconds after which waiting for any user input is aborted (default: +Infinity, i.e. no timeout.)
+   * Timeout in milliseconds after which waiting for any user input is aborted. Default: `+Infinity`, i.e., no timeout.
    */
   timeoutMs?: number
 }

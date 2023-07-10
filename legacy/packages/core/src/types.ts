@@ -36,11 +36,29 @@ export type SafeParsedData<T extends ZodTypeAny> = T extends ZodTypeAny
   : never
 
 export interface BaseTaskOptions {
+  /**
+   * Agentic instance
+   */
   agentic?: Agentic
 
+  /**
+   * Number of milliseconds to wait before timing out.
+   */
   timeoutMs?: number
+
+  /**
+   * Configuration for retrying failed requests.
+   */
   retryConfig?: RetryConfig
+
+  /**
+   * Cache storage configuration for memoization / storage of task results.
+   */
   cacheConfig?: CacheConfig<any, any>
+
+  /**
+   * Task identifier
+   */
   id?: string
 
   // TODO
@@ -54,14 +72,36 @@ export interface BaseLLMOptions<
   TOutput extends TaskOutput = string,
   TModelParams extends Record<string, any> = Record<string, any>
 > extends BaseTaskOptions {
+  /**
+   * Zod schema for validating LLM input.
+   */
   inputSchema?: ZodType<TInput>
+
+  /**
+   * Zod schema for validating LLM output.
+   */
   outputSchema?: ZodType<TOutput>
 
   cacheConfig?: CacheConfig<TInput, TOutput>
 
+  /**
+   * LLM provider to use.
+   */
   provider?: string
+
+  /**
+   * Name of the model to use.
+   */
   model?: string
+
+  /**
+   * Model parameters to use.
+   */
   modelParams?: TModelParams
+
+  /**
+   * Input / output pairs to include in the prompt.
+   */
   examples?: LLMExample[]
 }
 
@@ -121,6 +161,9 @@ export interface LLMExample {
 }
 
 export interface RetryConfig extends RetryOptions {
+  /**
+   * Retry strategy to use (default: `'heal'`).
+   */
   strategy?: string
 }
 
