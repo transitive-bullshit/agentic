@@ -21,12 +21,30 @@ const originalStdoutWrite = process.stdout.write
 const originalStderrWrite = process.stderr.write
 
 export abstract class TaskTracker {
+  /**
+   * Starts the task tracker.
+   */
   abstract start(): void
+
+  /**
+   * Closes the task tracker and cleans up any resources.
+   */
   abstract close(): void
+
+  /**
+   * Pauses the task tracker temporarily.
+   */
   abstract pause(message?: string): void
+
+  /**
+   * Resumes the task tracker after it has been paused.
+   */
   abstract resume(): void
+
+  /**
+   * Registers a new task event with the tracker.
+   */
   abstract addEvent<TInput, TOutput>(event: TaskEvent<TInput, TOutput>): void
-  abstract render(): void
 }
 
 export class DummyTaskTracker extends TaskTracker {
@@ -43,9 +61,6 @@ export class DummyTaskTracker extends TaskTracker {
     // Does nothing
   }
   addEvent(): void {
-    // Does nothing
-  }
-  render(): void {
     // Does nothing
   }
 }

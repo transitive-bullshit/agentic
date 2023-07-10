@@ -78,26 +78,63 @@ logger.formatArgs = function formatArgs(args) {
  * Default `debug` logger with methods that log to the console with the respective severity level.
  */
 export const defaultLogger = {
+  /**
+   * Debug-level logs, providing detailed information for development and debugging.
+   *
+   * @param formatter - formatter to structure the log message
+   * @param args - arguments to be logged
+   */
   debug: (formatter: any, ...args: any[]) => {
     if (LOG_LEVEL > Severity.DEBUG) return
     debug(formatter, ...args, Severity.DEBUG)
   },
+
+  /**
+   * Info-level logs, indicating that the system is functioning normally.
+   *
+   * @param formatter - formatter to structure the log message
+   * @param args - arguments to be logged
+   */
   info: (formatter: any, ...args: any[]) => {
     if (LOG_LEVEL > Severity.INFO) return
     debug(formatter, ...args, Severity.INFO)
   },
+
+  /**
+   * Warning-level logs, indicating that the system encountered unexpected events or behavior.
+   *
+   * @param formatter - formatter to structure the log message
+   * @param args - arguments to be logged
+   */
   warn: (formatter: any, ...args: any[]) => {
     if (LOG_LEVEL > Severity.WARNING) return
     debug(formatter, ...args, Severity.WARNING)
   },
+
+  /**
+   * Error-level logs, indicating that the system encountered errors.
+   *
+   * @param formatter - formatter to structure the log message
+   * @param args - arguments to be logged
+   */
   error: (formatter: any, ...args: any[]) => {
     if (LOG_LEVEL > Severity.ERROR) return
     debug(formatter, ...args, Severity.ERROR)
   },
+
+  /**
+   * Critical-level logs, indicating that the system encountered errors and might not be able to function properly.
+   *
+   * @param formatter - formatter to structure the log message
+   * @param args - arguments to be logged
+   */
   critical: (formatter: any, ...args: any[]) => {
     if (LOG_LEVEL > Severity.CRITICAL) return
     debug(formatter, ...args, Severity.CRITICAL)
   }
 }
 
+/**
+ * Logger type with methods for logging at various levels of severity.
+ */
 export type Logger = typeof defaultLogger

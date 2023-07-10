@@ -13,6 +13,12 @@ import { defaultLogger } from './logger'
 import { openaiModelDefaults } from './model_defaults'
 import { defaultIDGeneratorFn, isFunction, isString } from './utils'
 
+/**
+ * Main entrypoint for using Agentic to build AI-powered applications.
+ *
+ * -   It provides a set of common functionality and configuration defaults, which are shared across all tools and tasks.
+ * -   You will usually want to create a single Agentic instance and use it throughout your application.
+ */
 export class Agentic extends EventEmitter {
   protected _ky: types.KyInstance
   protected _logger: types.Logger
@@ -71,6 +77,8 @@ export class Agentic extends EventEmitter {
 
       /**
        * A task tracker or `false` to disable. By default, tasks will be tracked via the terminal (assuming `stderr` is a TTY).
+       *
+       * You can also pass in a custom tracker to track tasks in a different way (e.g. via a database or web UI) by extending the `TaskTracker` class.
        */
       taskTracker?: TaskTracker | false
     } = {}
@@ -115,34 +123,62 @@ export class Agentic extends EventEmitter {
     this._id = this._idGeneratorFn()
   }
 
+  /**
+   * OpenAI client used for making requests to the OpenAI API.
+   */
   public get openai(): types.openai.OpenAIClient | undefined {
     return this._openai
   }
 
+  /**
+   * Anthropic client used for making requests to the Anthropic API.
+   */
   public get anthropic(): types.anthropic.Anthropic | undefined {
     return this._anthropic
   }
 
+  /**
+   * Ky instance used for making HTTP requests.
+   */
   public get ky(): types.KyInstance {
     return this._ky
   }
 
+  /**
+   * Logger used for logging events of various severities.
+   */
   public get logger(): types.Logger {
     return this._logger
   }
 
+  /**
+   * Default option values when requesting human feedback in tasks.
+   */
   public get humanFeedbackDefaults() {
     return this._humanFeedbackDefaults
   }
 
+  /**
+   * Task tracker used for tracking tasks.
+   */
   public get taskTracker(): TaskTracker {
     return this._taskTracker
   }
 
+  /**
+   * Function used to generate a unique identifier for each task.
+   */
   public get idGeneratorFn(): types.IDGeneratorFunction {
     return this._idGeneratorFn
   }
 
+  /**
+   * Creates an OpenAI chat completion.
+   *
+   * @param promptOrChatCompletionParams - prompt to send to the OpenAI API or an object containing the chat completion parameters
+   * @param modelParams - additional parameters to pass to the OpenAI API
+   * @returns chat completion
+   */
   openaiChatCompletion<TInput extends types.TaskInput = void>(
     promptOrChatCompletionParams:
       | types.ChatMessageContent<TInput>

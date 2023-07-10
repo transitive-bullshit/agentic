@@ -46,9 +46,9 @@ export type HumanFeedbackOptions<T extends HumanFeedbackType, TOutput> = {
    *
    * Possible values:
    *
-   * - `'confirm'`: The user is asked to confirm the generated output of the task.
-   * - `'select'`: The user is asked to select exactly one of the outputs to keep (assumes output is an array).
-   * - `'multiselect'`: The user is asked to select any number of outputs to keep (assumes output is an array).
+   * -   `'confirm'`: The user is asked to confirm the generated output of the task.
+   * -   `'select'`: The user is asked to select exactly one of the outputs to keep (assumes output is an array).
+   * -   `'multiselect'`: The user is asked to select any number of outputs to keep (assumes output is an array).
    */
   type?: T
 
@@ -69,6 +69,15 @@ export type HumanFeedbackOptions<T extends HumanFeedbackType, TOutput> = {
 
   /**
    * The human feedback mechanism to use for this task. By default, human feedback is requested via the CLI.
+   *
+   * Possible feedback mechanisms to provide include:
+   *
+   * -   `HumanFeedbackMechanismCLI`: Requests feedback via the CLI.
+   * -   `HumanFeedbackMechanismSlack`: Requests feedback via Slack.
+   * -   `HumanFeedbackMechanismTwilio`: Requests feedback via SMS.
+   * -   `HumanFeedbackMechanismDummy`: Requests feedback via a dummy mechanism that does nothing.
+   *
+   * You can also provide your own custom feedback mechanism by extending the `HumanFeedbackMechanism` class and implementing the required methods.
    */
   mechanism?: HumanFeedbackMechanismConstructor<T, TOutput>
 

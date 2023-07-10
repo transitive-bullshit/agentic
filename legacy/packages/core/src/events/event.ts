@@ -132,26 +132,44 @@ export enum TaskStatus {
 export class TaskEvent<TInput, TOutput> extends Event<
   TaskEventPayload<TInput, TOutput>
 > {
+  /**
+   * Task name.
+   */
   get name(): string {
     return this.payload?.taskName ?? ''
   }
 
+  /**
+   * Unique task identifier.
+   */
   get taskId(): string {
     return this.payload?.taskId ?? ''
   }
 
+  /**
+   * Task status.
+   */
   get status(): TaskStatus {
     return this.payload?.taskStatus ?? TaskStatus.RUNNING
   }
 
+  /**
+   * Task inputs.
+   */
   get inputs(): any {
     return this.payload?.taskInputs ?? ''
   }
 
+  /**
+   * Task output.
+   */
   get output(): any {
     return this.payload?.taskOutput ?? ''
   }
 
+  /**
+   * Unique identifier of the parent task (or `'root'` if it is a top-level task).
+   */
   get parentTaskId(): string {
     return this.payload?.parentTaskId ?? 'root'
   }

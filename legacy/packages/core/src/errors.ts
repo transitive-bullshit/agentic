@@ -4,8 +4,11 @@ import type { Jsonifiable } from 'type-fest'
 import type { ZodError } from 'zod'
 import { ValidationError, fromZodError } from 'zod-validation-error'
 
-export { TimeoutError, KyTimeoutError }
+export { KyTimeoutError, TimeoutError }
 
+/**
+ * Options for creating an error.
+ */
 export type ErrorOptions = {
   /** HTTP status code for the error. */
   status?: number
@@ -58,6 +61,9 @@ export class OpenAIApiError extends BaseError {
   }
 }
 
+/**
+ * An error thrown when an output fails to validate against its Zod schema.
+ */
 export class ZodOutputValidationError extends BaseError {
   validationError: ValidationError
 
@@ -71,6 +77,9 @@ export class ZodOutputValidationError extends BaseError {
   }
 }
 
+/**
+ * An error thrown when an output fails validation (e.g., by not being valid JSON).
+ */
 export class OutputValidationError extends BaseError {
   constructor(message: string, opts: ErrorOptions = {}) {
     super(message, opts)
@@ -79,6 +88,9 @@ export class OutputValidationError extends BaseError {
   }
 }
 
+/**
+ * An error thrown when a handlebars template fails to compile.
+ */
 export class TemplateValidationError extends BaseError {
   constructor(message: string, opts: ErrorOptions = {}) {
     super(message, opts)
