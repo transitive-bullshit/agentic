@@ -20,12 +20,42 @@ const RE_ANSI_ESCAPES = /^(\x1b\[[0-9;]*[ABCDHJK]|[\r\n])+$/ // cursor movement,
 const originalStdoutWrite = process.stdout.write
 const originalStderrWrite = process.stderr.write
 
+export abstract class TaskTracker {
+  abstract start(): void
+  abstract close(): void
+  abstract pause(message?: string): void
+  abstract resume(): void
+  abstract addEvent<TInput, TOutput>(event: TaskEvent<TInput, TOutput>): void
+  abstract render(): void
+}
+
+export class DummyTaskTracker extends TaskTracker {
+  start(): void {
+    // Does nothing
+  }
+  close(): void {
+    // Does nothing
+  }
+  pause(): void {
+    // Does nothing
+  }
+  resume(): void {
+    // Does nothing
+  }
+  addEvent(): void {
+    // Does nothing
+  }
+  render(): void {
+    // Does nothing
+  }
+}
+
 export interface TerminalTaskTrackerOptions {
   spinnerInterval?: number
   inactivityInterval?: number
 }
 
-export class TerminalTaskTracker {
+export class TerminalTaskTracker extends TaskTracker {
   protected _tree = new TreeModel()
   protected _root = this._tree.parse({ id: 'root' })
   protected _interval: NodeJS.Timeout | null = null
@@ -46,6 +76,7 @@ export class TerminalTaskTracker {
     spinnerInterval = 150,
     inactivityInterval = 2_000
   }: TerminalTaskTrackerOptions = {}) {
+    super()
     this._spinnerInterval = spinnerInterval
     this._inactivityInterval = inactivityInterval
 

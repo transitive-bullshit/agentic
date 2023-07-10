@@ -5,7 +5,7 @@ import { OpenAIClient } from 'openai-fetch'
 import { SetOptional } from 'type-fest'
 
 import * as types from './types'
-import { TerminalTaskTracker } from './events'
+import { DummyTaskTracker, TaskTracker, TerminalTaskTracker } from './events'
 import { HumanFeedbackOptions, HumanFeedbackType } from './human-feedback'
 import { HumanFeedbackMechanismCLI } from './human-feedback/cli'
 import { OpenAIChatCompletion } from './llms/openai'
@@ -16,7 +16,7 @@ import { defaultIDGeneratorFn, isFunction, isString } from './utils'
 export class Agentic extends EventEmitter {
   protected _ky: types.KyInstance
   protected _logger: types.Logger
-  protected _taskTracker: TerminalTaskTracker
+  protected _taskTracker: TaskTracker
 
   protected _openai?: types.openai.OpenAIClient
   protected _anthropic?: types.anthropic.Anthropic
@@ -31,17 +31,48 @@ export class Agentic extends EventEmitter {
 
   constructor(
     opts: {
+      /**
+       * OpenAI client instance to use (by default, a new `openai-fetch` client will be created.)
+       */
       openai?: types.openai.OpenAIClient
+
+      /**
+       * Anthropic client instance to use (by default, a new `@anthropic-ai/sdk` client will be created.)
+       */
       anthropic?: types.anthropic.Anthropic
+
+      /**
+       * Default values for LLM calls.
+       */
       modelDefaults?: Pick<
         types.BaseLLMOptions,
         'provider' | 'model' | 'modelParams' | 'timeoutMs' | 'retryConfig'
       >
+
+      /**
+       * Default option values for when requesting human feedback.
+       */
       humanFeedbackDefaults?: HumanFeedbackOptions<HumanFeedbackType, any>
+
+      /**
+       * Function to generate a unique identifier for each task.
+       */
       idGeneratorFn?: types.IDGeneratorFunction
+
+      /**
+       * Logger instance to use for logging events of various severities.
+       */
       logger?: types.Logger
+
+      /**
+       * Ky instance to use for HTTP requests.
+       */
       ky?: types.KyInstance
-      taskTracker?: TerminalTaskTracker
+
+      /**
+       * A task tracker or `false` to disable. By default, tasks will be tracked via the terminal.
+       */
+      taskTracker?: TaskTracker | false
     } = {}
   ) {
     super()
@@ -58,7 +89,13 @@ export class Agentic extends EventEmitter {
 
     this._ky = opts.ky ?? defaultKy
     this._logger = opts.logger ?? defaultLogger
-    this._taskTracker = opts.taskTracker ?? new TerminalTaskTracker()
+    if (opts.taskTracker) {
+      this._taskTracker = opts.taskTracker
+    } else if (opts.taskTracker === false) {
+      this._taskTracker = new DummyTaskTracker()
+    } else {
+      this._taskTracker = new TerminalTaskTracker()
+    }
 
     this._openaiModelDefaults = openaiModelDefaults(opts.modelDefaults || {})
 
@@ -98,7 +135,7 @@ export class Agentic extends EventEmitter {
     return this._humanFeedbackDefaults
   }
 
-  public get taskTracker(): TerminalTaskTracker {
+  public get taskTracker(): TaskTracker {
     return this._taskTracker
   }
 
