@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "@agentic/midjourney-fetch": "^1.0.1",
-    "@anthropic-ai/sdk": "^0.5.2",
+    "@anthropic-ai/sdk": "^0.5.4",
     "@inquirer/checkbox": "^1.3.3",
     "@inquirer/editor": "^1.2.2",
     "@inquirer/input": "^1.2.3",
@@ -67,7 +67,7 @@
     "ts-dedent": "^2.2.0",
     "type-fest": "^3.13.0",
     "zod": "^3.21.4",
-    "zod-to-json-schema": "^3.21.3",
+    "zod-to-json-schema": "^3.21.4",
     "zod-validation-error": "^1.3.1"
   },
   "devDependencies": {

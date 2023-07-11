@@ -1,4 +1,4 @@
-lockfileVersion: '6.1'
+lockfileVersion: '6.0'
 
 settings:
   autoInstallPeers: true
@@ -102,8 +102,8 @@ importers:
         specifier: ^1.0.1
         version: 1.0.1
       '@anthropic-ai/sdk':
-        specifier: ^0.5.2
-        version: 0.5.2
+        specifier: ^0.5.4
+        version: 0.5.4
       '@inquirer/checkbox':
         specifier: ^1.3.3
         version: 1.3.3
@@ -192,8 +192,8 @@ importers:
         specifier: ^3.21.4
         version: 3.21.4
       zod-to-json-schema:
-        specifier: ^3.21.3
-        version: 3.21.3(zod@3.21.4)
+        specifier: ^3.21.4
+        version: 3.21.4(zod@3.21.4)
       zod-validation-error:
         specifier: ^1.3.1
         version: 1.3.1(zod@3.21.4)
@@ -235,8 +235,8 @@ packages:
       dayjs: 1.11.8
     dev: false
 
-  /@anthropic-ai/sdk@0.5.2:
-    resolution: {integrity: sha512-OGYE2uIp4ncfGRvqegfPN1bBYXxGkVu2INiCTfCMYJvztZs86GFffrJ9cT+HZh3/HAphTQiEQPJYwvyHRbuq6g==}
+  /@anthropic-ai/sdk@0.5.4:
+    resolution: {integrity: sha512-XgBPW1VNwIh3u6rIsY3+cio6Z5kw2nIFxodrM8Y4bQG+nTFaGVX56kTyZkBzDzNkrBl9xnux+iflWCVTebBhBw==}
     dependencies:
       '@types/node': 18.16.19
       '@types/node-fetch': 2.6.4
@@ -7723,8 +7723,8 @@ packages:
     engines: {node: '>=12.20'}
     dev: true
 
-  /zod-to-json-schema@3.21.3(zod@3.21.4):
-    resolution: {integrity: sha512-09W/9oyxeF1/wWnzCb6MursW+lOzgKi91QwE7eTBbC+t/qgfuLsUVDai3lHemSQnQu/UONAcT/fv3ZnDvbTeKg==}
+  /zod-to-json-schema@3.21.4(zod@3.21.4):
+    resolution: {integrity: sha512-fjUZh4nQ1s6HMccgIeE0VP4QG/YRGPmyjO9sAh890aQKPEk3nqbfUXhMFaC+Dr5KvYBm8BCyvfpZf2jY9aGSsw==}
     peerDependencies:
       zod: ^3.21.4
     dependencies:
