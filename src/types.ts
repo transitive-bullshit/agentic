@@ -50,6 +50,13 @@ export type SendMessageOptions = {
   >
 }
 
+export interface DeleteConversation = {
+  success?: boolean
+  detail?:
+    | openai.CreateChatCompletionResponse
+    | CreateChatCompletionStreamResponse
+} 
+
 export type MessageActionType = 'next' | 'variant'
 
 export type SendMessageBrowserOptions = {
@@ -130,6 +137,10 @@ export type ConversationJSONBody = {
    * The parent message ID
    */
   parent_message_id: string
+}
+
+export type DeleteConversationJSONBody = {
+  is_visible: boolean
 }
 
 export type Prompt = {
