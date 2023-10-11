@@ -72,6 +72,68 @@ export class ChatGPTUnofficialProxyAPI {
   }
 
   /**
+   * Delete Conversation
+  */
+  async deleteConversation(
+    text: string
+  ): Promise<types.DeleteConversation> {
+    
+    const body: types.DeleteConversationJSONBody = {
+      is_visible: true
+    }
+
+    const responseP = new Promise<types.DeleteConversation>((resolve, reject) => {
+      const url = this._apiReverseProxyUrl
+      const headers = {
+        ...this._headers,
+        Authorization: `Bearer ${this._accessToken}`,
+        Accept: 'text/event-stream',
+        'Content-Type': 'application/json'
+      }
+
+      if (this._debug) {
+        console.log('POST', url, { body, headers })
+      }
+
+      fetchSSE(
+        url,
+        {
+          method: 'PATCH',
+          headers,
+          body: JSON.stringify(body),
+          onMessage: (data: string) => {
+            if (data) {
+              return resolve(result)
+            }
+          },
+          onError: (err) => {
+            reject(err)
+          }
+        },
+        this._fetch
+      ).catch((err) => {
+        const errMessageL = err.toString().toLowerCase()
+
+        if (
+          result.text &&
+          (errMessageL === 'error: typeerror: terminated' ||
+            errMessageL === 'typeerror: terminated')
+        ) {
+          // OpenAI sometimes forcefully terminates the socket from their end before
+          // the HTTP request has resolved cleanly. In my testing, these cases tend to
+          // happen when OpenAI has already send the last `response`, so we can ignore
+          // the `fetch` error in this case.
+          return resolve(result)
+        } else {
+          return reject(err)
+        }
+      })
+    });
+    
+    return responseP
+  }
+
+  /**
    * Sends a message to ChatGPT, waits for the response to resolve, and returns
    * the response.
    *
