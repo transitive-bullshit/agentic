@@ -396,7 +396,7 @@ export class ChatGPTAPI {
         .reduce((prompt, message) => {
           switch (message.role) {
             case 'system':
-              return prompt.concat([`Instructions:\n${message.content}`])
+            // return prompt.concat([`Instructions:\n${message.content}`])
             case 'user':
               return prompt.concat([`${userLabel}:\n${message.content}`])
             default:
