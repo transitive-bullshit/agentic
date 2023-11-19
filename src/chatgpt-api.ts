@@ -139,6 +139,7 @@ export class ChatGPTAPI {
     opts: types.SendMessageOptions = {}
   ): Promise<types.ChatMessage> {
     const {
+      image,
       parentMessageId,
       messageId = uuidv4(),
       timeoutMs,
@@ -161,7 +162,8 @@ export class ChatGPTAPI {
       id: messageId,
       conversationId,
       parentMessageId,
-      text
+      text,
+      image
     }
 
     const latestQuestion = message
@@ -358,12 +360,30 @@ export class ChatGPTAPI {
     this._apiOrg = apiOrg
   }
 
+  protected getContentString(
+    content: types.ChatCompletionRequestMessageContent
+  ) {
+    if (Array.isArray(content)) {
+      return content
+        .map((item) => {
+          if (item.type === 'text') {
+            return item.text
+          } else if (item.type === 'image_url') {
+            return item.image_url
+          }
+        })
+        .join('\n')
+    }
+
+    return content
+  }
+
   async buildMessages(text: string, opts: types.SendMessageOptions) {
     return this._buildMessages(text, opts)
   }
 
   protected async _buildMessages(text: string, opts: types.SendMessageOptions) {
-    const { systemMessage = this._systemMessage } = opts
+    const { systemMessage = this._systemMessage, image } = opts
     let { parentMessageId } = opts
 
     const userLabel = USER_LABEL_DEFAULT
@@ -379,12 +399,32 @@ export class ChatGPTAPI {
       })
     }
 
+    let userContent: types.ChatCompletionRequestMessageContent = text
+    let imageTokens = 0
+
+    if (image?.url) {
+      userContent = [
+        {
+          type: 'text',
+          text: text
+        },
+        {
+          type: 'image_url',
+          image_url: {
+            url: image.url,
+            detail: 'high'
+          }
+        }
+      ]
+      imageTokens = tokenizer.getTokensImage(image.width, image.height, 'high')
+    }
+
     const systemMessageOffset = messages.length
     let nextMessages = text
       ? messages.concat([
           {
             role: 'user',
-            content: text,
+            content: userContent,
             name: opts.name
           }
         ])
@@ -399,15 +439,19 @@ export class ChatGPTAPI {
               return prompt
             // return prompt.concat([`Instructions:\n${message.content}`])
             case 'user':
-              return prompt.concat([`${userLabel}:\n${message.content}`])
+              return prompt.concat([
+                `${userLabel}:\n${this.getContentString(message.content)}`
+              ])
             default:
-              return prompt.concat([`${assistantLabel}:\n${message.content}`])
+              return prompt.concat([
+                `${assistantLabel}:\n${this.getContentString(message.content)}`
+              ])
           }
         }, [] as string[])
         .join('\n\n')
 
       const nextNumTokensEstimate = await this._getTokenCount(prompt)
-      const isValidPrompt = nextNumTokensEstimate <= maxNumTokens
+      const isValidPrompt = nextNumTokensEstimate + imageTokens <= maxNumTokens
 
       if (prompt && !isValidPrompt) {
         break
@@ -431,10 +475,35 @@ export class ChatGPTAPI {
 
       const parentMessageRole = parentMessage.role || 'user'
 
+      let content: types.ChatCompletionRequestMessageContent =
+        parentMessage.text
+
+      if (parentMessage.image?.url) {
+        content = [
+          {
+            type: 'text',
+            text: parentMessage.text
+          },
+          {
+            type: 'image_url',
+            image_url: {
+              url: parentMessage.image.url,
+              detail: 'high'
+            }
+          }
+        ]
+
+        imageTokens += tokenizer.getTokensImage(
+          parentMessage.image.width,
+          parentMessage.image.height,
+          'high'
+        )
+      }
+
       nextMessages = nextMessages.slice(0, systemMessageOffset).concat([
         {
           role: parentMessageRole,
-          content: parentMessage.text,
+          content,
           name: parentMessage.name
         },
         ...nextMessages.slice(systemMessageOffset)
@@ -447,10 +516,13 @@ export class ChatGPTAPI {
     // for the response.
     const maxTokens = Math.max(
       1,
-      Math.min(this._maxModelTokens - numTokens, this._maxResponseTokens)
+      Math.min(
+        this._maxModelTokens - numTokens - imageTokens,
+        this._maxResponseTokens
+      )
     )
 
-    return { messages, maxTokens, numTokens }
+    return { messages, maxTokens, numTokens, imageTokens }
   }
 
   protected async _getTokenCount(text: string) {

@@ -34,9 +34,16 @@ export type ChatGPTAPIOptions = {
   fetch?: FetchFn
 }
 
+export type SendMessageImage = {
+  url: string
+  width: number
+  height: number
+}
+
 export type SendMessageOptions = {
   /** The name of a user in a multi-user chat. */
   name?: string
+  image?: SendMessageImage
   parentMessageId?: string
   conversationId?: string
   messageId?: string
@@ -49,6 +56,24 @@ export type SendMessageOptions = {
     Omit<openai.CreateChatCompletionRequest, 'messages' | 'n' | 'stream'>
   >
 }
+
+export type ChatCompletionRequestMessageContentImageDetail = 'low' | 'high'
+
+export type ChatCompletionRequestMessageContent =
+  | string
+  | [
+      {
+        type: 'text'
+        text: string
+      },
+      {
+        type: 'image_url'
+        image_url: {
+          url: string
+          detail: ChatCompletionRequestMessageContentImageDetail
+        }
+      }
+    ]
 
 export type MessageActionType = 'next' | 'variant'
 
@@ -65,6 +90,7 @@ export type SendMessageBrowserOptions = {
 export interface ChatMessage {
   id: string
   text: string
+  image?: SendMessageImage
   role: Role
   name?: string
   delta?: string
@@ -224,7 +250,7 @@ export namespace openai {
      * @type {string}
      * @memberof ChatCompletionRequestMessage
      */
-    content: string
+    content: ChatCompletionRequestMessageContent
     /**
      * The name of the user in a multi-user chat
      * @type {string}
