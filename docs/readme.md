@@ -27,7 +27,7 @@ chatgpt / [Exports](modules.md)
 This package is a Node.js wrapper around [ChatGPT](https://openai.com/blog/chatgpt) by [OpenAI](https://openai.com). TS batteries included. ✨
 
 <p align="center">
-  <img alt="Example usage" src="/media/demo.gif">
+  <img alt="Example usage" src="./media/demo.gif">
 </p>
 
 ## Updates
