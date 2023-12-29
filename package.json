@@ -1,6 +1,6 @@
 {
   "name": "chatgpt-better",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Node.js client for the official ChatGPT API.",
   "author": "LiYang <cctv1005s@gmail.com>",
   "repository": "cctv1005s/chatgpt-api",
@@ -35,7 +35,8 @@
     "prepare": "husky install",
     "pre-commit": "lint-staged",
     "test": "run-p test:*",
-    "test:prettier": "prettier '**/*.{js,jsx,ts,tsx}' --check"
+    "test:prettier": "prettier '**/*.{js,jsx,ts,tsx}' --check",
+    "prepublishOnly": "yarn build"
   },
   "dependencies": {
     "cac": "^6.7.14",
