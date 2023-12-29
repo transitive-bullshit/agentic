@@ -1,6 +1,6 @@
 {
   "name": "chatgpt-better",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Node.js client for the official ChatGPT API.",
   "author": "LiYang <cctv1005s@gmail.com>",
   "repository": "cctv1005s/chatgpt-api",
