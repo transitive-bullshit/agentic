@@ -333,10 +333,11 @@ export class ChatGPTAPI {
         }
       }
 
-      return pTimeout(responseP, {
-        milliseconds: timeoutMs,
-        message: 'OpenAI timed out waiting for response'
-      })
+      return pTimeout(
+        responseP,
+        timeoutMs,
+        'OpenAI timed out waiting for response'
+      )
     } else {
       return responseP
     }

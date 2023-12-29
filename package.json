@@ -1,13 +1,14 @@
 {
-  "name": "chatgpt",
-  "version": "5.2.5",
+  "name": "chatgpt-better",
+  "version": "1.0.0",
   "description": "Node.js client for the official ChatGPT API.",
-  "author": "Travis Fischer <travis@transitivebullsh.it>",
-  "repository": "transitive-bullshit/chatgpt-api",
+  "author": "LiYang <cctv1005s@gmail.com>",
+  "repository": "cctv1005s/chatgpt-api",
   "license": "MIT",
-  "type": "module",
   "source": "./src/index.ts",
   "types": "./build/index.d.ts",
+  "main": "./build/index.js",
+  "module": "./build/index.mjs",
   "exports": {
     ".": {
       "types": "./build/index.d.ts",
@@ -42,8 +43,8 @@
     "eventsource-parser": "^1.0.0",
     "js-tiktoken": "^1.0.5",
     "keyv": "^4.5.2",
-    "p-timeout": "^6.1.1",
-    "quick-lru": "^6.1.1",
+    "p-timeout": "^4.1.0",
+    "quick-lru": "^5.1.1",
     "read-pkg-up": "^9.1.0",
     "uuid": "^9.0.0"
   },

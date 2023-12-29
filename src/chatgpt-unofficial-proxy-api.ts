@@ -257,10 +257,11 @@ export class ChatGPTUnofficialProxyAPI {
         }
       }
 
-      return pTimeout(responseP, {
-        milliseconds: timeoutMs,
-        message: 'ChatGPT timed out waiting for response'
-      })
+      return pTimeout(
+        responseP,
+        timeoutMs,
+        'ChatGPT timed out waiting for response'
+      )
     } else {
       return responseP
     }
