@@ -35,6 +35,7 @@ async function main() {
     .option('-m, --model <model>', 'Model (gpt-3.5-turbo, gpt-4)', {
       default: 'gpt-3.5-turbo'
     })
+    .option('--host <host>', 'API host base')
     .option(
       '-n, --conversationName <conversationName>',
       'Unique name for the conversation'
@@ -42,6 +43,7 @@ async function main() {
     .action(async (prompt, options) => {
       const apiOrg = options.apiOrg || process.env.OPENAI_API_ORG
       const apiKey = options.apiKey || process.env.OPENAI_API_KEY
+      const apiBaseUrl = options.host || process.env.OPENAI_API_BASE_URL
       if (!apiKey) {
         console.error('error: either set OPENAI_API_KEY or use --apiKey\n')
         cli.outputHelp()
@@ -74,6 +76,7 @@ async function main() {
       const api = new ChatGPTAPI({
         apiKey,
         apiOrg,
+        apiBaseUrl,
         debug: options.debug,
         completionParams: {
           model
