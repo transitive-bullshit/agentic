@@ -1,8 +1,8 @@
 import defaultKy, { type KyInstance } from 'ky'
 import { z } from 'zod'
 
-import { getEnv } from '../../utils/helpers.js'
 import { aiFunction, AIToolsProvider } from '../fns.js'
+import { assert, getEnv } from '../utils.js'
 
 export namespace weatherapi {
   export const BASE_URL = 'https://api.weatherapi.com/v1'
@@ -88,10 +88,7 @@ export class WeatherClient extends AIToolsProvider {
     apiBaseUrl?: string
     ky?: KyInstance
   } = {}) {
-    if (!apiKey) {
-      throw new Error(`Error WeatherClient missing required "apiKey"`)
-    }
-
+    assert(apiKey, 'WEATHER_API_KEY is required')
     super()
 
     this.apiKey = apiKey

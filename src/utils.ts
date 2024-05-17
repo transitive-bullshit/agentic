@@ -1,3 +1,6 @@
+import type * as types from './types.js'
+
+export { default as delay } from 'delay'
 export { default as assert } from 'tiny-invariant'
 
 /**
@@ -59,4 +62,27 @@ export function getEnv(name: string): string | undefined {
   } catch {
     return undefined
   }
+}
+
+/**
+ * Function that does nothing.
+ */
+export const noop = () => undefined
+
+/**
+ * Throttles HTTP requests made by a ky instance.
+ *
+ * Very useful for enforcing rate limits.
+ */
+export function throttleKy(
+  ky: types.KyInstance,
+  throttleFn: <Arguments extends readonly unknown[], ReturnValue>(
+    function_: (...args_: Arguments) => ReturnValue
+  ) => types.ThrottledFunction<(...args_: Arguments) => ReturnValue>
+) {
+  return ky.extend({
+    hooks: {
+      beforeRequest: [throttleFn(noop)]
+    }
+  })
 }

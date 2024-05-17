@@ -1,2 +1,2 @@
-// TODO
-export type TODO = 'TODO'
+export type { KyInstance } from 'ky'
+export type { ThrottledFunction } from 'p-throttle'
