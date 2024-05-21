@@ -1,368 +1,372 @@
 import defaultKy from 'ky'
 import pThrottle from 'p-throttle'
 
-import type * as types from '../types.js'
+import type { DeepNullable } from '../types.js'
 import { assert, delay, getEnv, throttleKy } from '../utils.js'
 
+// Only allow 20 clearbit API requests per 60s
 const clearbitAPIThrottle = pThrottle({
   limit: 20,
   interval: 60 * 1000,
   strict: true
 })
 
-export interface CompanyEnrichmentOptions {
-  domain: string
-  webhook_url?: string
-  company_name?: string
-  linkedin?: string
-  twitter?: string
-  facebook?: string
-}
+export namespace clearbit {
+  export interface CompanyEnrichmentOptions {
+    domain: string
+    webhook_url?: string
+    company_name?: string
+    linkedin?: string
+    twitter?: string
+    facebook?: string
+  }
 
-type CompanyNullableProps = {
-  name: string
-  legalName: string
-  domain: string
-  domainAliases: string[]
-  site: {
-    phoneNumbers: string[]
-    emailAddresses: string[]
-  }
-  category: {
-    sector: string
-    industryGroup: string
-    industry: string
-    subIndustry: string
-    gicsCode: string
-    sicCode: string
-    sic4Codes: string[]
-    naicsCode: string
-    naics6Codes: string[]
-    naics6Codes2022: string[]
-  }
-  tags: string[]
-  description: string
-  foundedYear: number
-  location: string
-  timeZone: string
-  utcOffset: number
-  geo: {
-    streetNumber: string
-    streetName: string
-    subPremise: string
-    streetAddress: string
-    city: string
-    postalCode: string
-    state: string
-    stateCode: string
-    country: string
-    countryCode: string
-    lat: number
-    lng: number
-  }
-  logo: string
-  facebook: {
-    handle: string
-    likes: number
-  }
-  linkedin: {
-    handle: string
-  }
-  twitter: {
-    handle: string
-    id: string
-    bio: string
-    followers: number
-    following: number
+  export type CompanyNullableProps = {
+    name: string
+    legalName: string
+    domain: string
+    domainAliases: string[]
+    site: {
+      phoneNumbers: string[]
+      emailAddresses: string[]
+    }
+    category: {
+      sector: string
+      industryGroup: string
+      industry: string
+      subIndustry: string
+      gicsCode: string
+      sicCode: string
+      sic4Codes: string[]
+      naicsCode: string
+      naics6Codes: string[]
+      naics6Codes2022: string[]
+    }
+    tags: string[]
+    description: string
+    foundedYear: number
     location: string
+    timeZone: string
+    utcOffset: number
+    geo: {
+      streetNumber: string
+      streetName: string
+      subPremise: string
+      streetAddress: string
+      city: string
+      postalCode: string
+      state: string
+      stateCode: string
+      country: string
+      countryCode: string
+      lat: number
+      lng: number
+    }
+    logo: string
+    facebook: {
+      handle: string
+      likes: number
+    }
+    linkedin: {
+      handle: string
+    }
+    twitter: {
+      handle: string
+      id: string
+      bio: string
+      followers: number
+      following: number
+      location: string
+      site: string
+      avatar: string
+    }
+    crunchbase: {
+      handle: string
+    }
+    emailProvider: boolean
+    type: string
+    ticker: string
+    identifiers: {
+      usEIN: string
+      usCIK: string
+    }
+    phone: string
+    metrics: {
+      alexaUsRank: number
+      alexaGlobalRank: number
+      trafficRank: string
+      employees: number
+      employeesRange: string
+      marketCap: string
+      raised: number
+      annualRevenue: string
+      estimatedAnnualRevenue: string
+      fiscalYearEnd: string
+    }
+    indexedAt: string
+    tech: string[]
+    techCategories: string[]
+    parent: {
+      domain: string
+    }
+    ultimateParent: {
+      domain: string
+    }
+  }
+
+  export type EmailLookupResponse = DeepNullable<{
+    id: string
+    name: {
+      fullName: string
+      givenName: string
+      familyName: string
+    }
+    email: string
+    location: string
+    timeZone: string
+    utcOffset: number
+    geo: {
+      city: string
+      state: string
+      stateCode: string
+      country: string
+      countryCode: string
+      lat: number
+      lng: number
+    }
+    bio: string
     site: string
     avatar: string
-  }
-  crunchbase: {
-    handle: string
-  }
-  emailProvider: boolean
-  type: string
-  ticker: string
-  identifiers: {
-    usEIN: string
-    usCIK: string
-  }
-  phone: string
-  metrics: {
-    alexaUsRank: number
-    alexaGlobalRank: number
-    trafficRank: string
-    employees: number
-    employeesRange: string
-    marketCap: string
-    raised: number
-    annualRevenue: string
-    estimatedAnnualRevenue: string
-    fiscalYearEnd: string
-  }
-  indexedAt: string
-  tech: string[]
-  techCategories: string[]
-  parent: {
-    domain: string
-  }
-  ultimateParent: {
-    domain: string
-  }
-}
+    employment: {
+      domain: string
+      name: string
+      title: string
+      role: string
+      subRole: string
+      seniority: string
+    }
+    facebook: {
+      handle: string
+    }
+    github: {
+      handle: string
+      id: string
+      avatar: string
+      company: string
+      blog: string
+      followers: number
+      following: number
+    }
+    twitter: {
+      handle: string
+      id: string
+      bio: string
+      followers: number
+      following: number
+      statuses: number
+      favorites: number
+      location: string
+      site: string
+      avatar: string
+    }
+    linkedin: {
+      handle: string
+    }
+    googleplus: {
+      handle: null
+    }
+    gravatar: {
+      handle: string
+      urls: {
+        value: string
+        title: string
+      }[]
+      avatar: string
+      avatars: {
+        url: string
+        type: string
+      }[]
+    }
+    fuzzy: boolean
+    emailProvider: boolean
+    indexedAt: string
+    phone: string
+    activeAt: string
+    inactiveAt: string
+  }>
 
-type EmailLookupResponse = DeepNullable<{
-  id: string
-  name: {
-    fullName: string
-    givenName: string
-    familyName: string
+  export type CompanyResponse = {
+    id: string
+  } & DeepNullable<CompanyNullableProps>
+
+  export interface CompanySearchOptions {
+    /**
+     * See clearbit docs: https://dashboard.clearbit.com/docs?shell#discovery-api-tech-queries
+     * Examples:
+     * tech:google_apps
+     * or:(twitter_followers:10000~ type:nonprofit)
+     */
+    query: string
+    page?: number
+    page_size?: number
+    limit?: number
+    sort?: string
   }
-  email: string
-  location: string
-  timeZone: string
-  utcOffset: number
-  geo: {
-    city: string
-    state: string
-    stateCode: string
-    country: string
-    countryCode: string
-    lat: number
-    lng: number
+
+  export interface CompanySearchResponse {
+    total: number
+    page: number
+    results: CompanyResponse[]
   }
-  bio: string
-  site: string
-  avatar: string
-  employment: {
+
+  export interface BasicCompanyResponse {
     domain: string
+    logo: string
     name: string
+  }
+
+  export interface PeopleSearchOptionsV2 {
+    domains?: string[]
+    names?: string[]
+    roles?: string[]
+    seniorities?: string[]
+    titles?: string[]
+    locations?: string[]
+    employees_ranges?: string[]
+    company_tags?: string[]
+    company_tech?: string[]
+    company_types?: string[]
+    industries?: string[]
+    revenue_ranges?: string[]
+    linkedin_profile_handles?: string[]
+    page?: number
+    page_size?: number
+    suppression?: string
+  }
+
+  // Prospector types
+  export interface ProspectorResponseV2 {
+    page: number
+    page_size: number
+    total: number
+    results: PersonAttributesV2[]
+  }
+
+  export interface EmploymentAttributes {
+    company: string
+    domain: string
+    linkedin: string
     title: string
     role: string
     subRole: string
     seniority: string
+    startDate: string
+    endDate: string
+    present: boolean
+    highlight: boolean
   }
-  facebook: {
-    handle: string
+
+  export interface EmailAttributes {
+    address: string
+    type: string
   }
-  github: {
-    handle: string
+
+  export interface PhoneAttributes {
+    number: string
+    type: string
+  }
+
+  interface Name {
+    givenName: string
+    familyName: string
+    fullName: string
+  }
+
+  export type PersonAttributesV2 = {
     id: string
+  } & DeepNullable<{
+    name: Name
     avatar: string
-    company: string
-    blog: string
-    followers: number
-    following: number
-  }
-  twitter: {
-    handle: string
-    id: string
-    bio: string
-    followers: number
-    following: number
-    statuses: number
-    favorites: number
     location: string
-    site: string
-    avatar: string
+    linkedin: string
+    employments: EmploymentAttributes[]
+    emails: EmailAttributes[]
+    phones: PhoneAttributes[]
+  }>
+
+  export type PeopleSearchOptionsV1 = {
+    domain: string
+    role?: string
+    roles?: string[]
+    seniority?: string
+    seniorities?: string[]
+    title?: string
+    titles?: string[]
+    city?: string
+    cities?: string[]
+    state?: string
+    states?: string[]
+    country?: string
+    countries?: string[]
+    name?: string
+    query?: string
+    page?: number
+    page_size?: number
+    suppression?: string
+    email?: boolean
   }
-  linkedin: {
-    handle: string
+
+  export interface Company {
+    name: string
   }
-  googleplus: {
-    handle: null
+
+  export interface PeopleSearchResponseV1 {
+    id: string
+    name: Name
+    title: string
+    role: string
+    subRole: string
+    seniority: string
+    company: Company
+    email: string
+    verified: boolean
+    phone: string
   }
-  gravatar: {
-    handle: string
-    urls: {
-      value: string
-      title: string
-    }[]
-    avatar: string
-    avatars: {
-      url: string
-      type: string
-    }[]
+
+  export interface ProspectorResponseV1 {
+    page: number
+    page_size: number
+    total: number
+    results: PeopleSearchResponseV1[]
   }
-  fuzzy: boolean
-  emailProvider: boolean
-  indexedAt: string
-  phone: string
-  activeAt: string
-  inactiveAt: string
-}>
 
-export type CompanyResponse = {
-  id: string
-} & DeepNullable<CompanyNullableProps>
+  export interface GeoIP {
+    city: string
+    state: string
+    stateCode: string
+    country: string
+    countryCode: string
+  }
 
-export interface CompanySearchOptions {
-  /**
-   * See clearbit docs: https://dashboard.clearbit.com/docs?shell#discovery-api-tech-queries
-   * Examples:
-   * tech:google_apps
-   * or:(twitter_followers:10000~ type:nonprofit)
-   */
-  query: string
-  page?: number
-  page_size?: number
-  limit?: number
-  sort?: string
-}
-
-export interface CompanySearchResponse {
-  total: number
-  page: number
-  results: CompanyResponse[]
-}
-
-export interface BasicCompanyResponse {
-  domain: string
-  logo: string
-  name: string
-}
-
-export interface PeopleSearchOptionsV2 {
-  domains?: string[]
-  names?: string[]
-  roles?: string[]
-  seniorities?: string[]
-  titles?: string[]
-  locations?: string[]
-  employees_ranges?: string[]
-  company_tags?: string[]
-  company_tech?: string[]
-  company_types?: string[]
-  industries?: string[]
-  revenue_ranges?: string[]
-  linkedin_profile_handles?: string[]
-  page?: number
-  page_size?: number
-  suppression?: string
-}
-
-// Prospector types
-export interface ProspectorResponseV2 {
-  page: number
-  page_size: number
-  total: number
-  results: PersonAttributesV2[]
-}
-
-export interface EmploymentAttributes {
-  company: string
-  domain: string
-  linkedin: string
-  title: string
-  role: string
-  subRole: string
-  seniority: string
-  startDate: string
-  endDate: string
-  present: boolean
-  highlight: boolean
-}
-
-export interface EmailAttributes {
-  address: string
-  type: string
-}
-
-export interface PhoneAttributes {
-  number: string
-  type: string
-}
-
-interface Name {
-  givenName: string
-  familyName: string
-  fullName: string
-}
-
-export type PersonAttributesV2 = {
-  id: string
-} & DeepNullable<{
-  name: Name
-  avatar: string
-  location: string
-  linkedin: string
-  employments: EmploymentAttributes[]
-  emails: EmailAttributes[]
-  phones: PhoneAttributes[]
-}>
-
-type PeopleSearchOptionsV1 = {
-  domain: string
-  role?: string
-  roles?: string[]
-  seniority?: string
-  seniorities?: string[]
-  title?: string
-  titles?: string[]
-  city?: string
-  cities?: string[]
-  state?: string
-  states?: string[]
-  country?: string
-  countries?: string[]
-  name?: string
-  query?: string
-  page?: number
-  page_size?: number
-  suppression?: string
-}
-
-interface Company {
-  name: string
-}
-
-interface PeopleSearchResponseV1 {
-  id: string
-  name: Name
-  title: string
-  role: string
-  subRole: string
-  seniority: string
-  company: Company
-  email: string
-  verified: boolean
-  phone: string
-}
-
-export interface ProspectorResponseV1 {
-  page: number
-  page_size: number
-  total: number
-  results: PeopleSearchResponseV1[]
-}
-
-interface GeoIP {
-  city: string
-  state: string
-  stateCode: string
-  country: string
-  countryCode: string
-}
-
-interface CompanyRevealResponse {
-  ip: string
-  fuzzy: boolean
-  domain: string
-  type: string
-  company?: CompanyResponse
-  geoIP: GeoIP
-  confidenceScore: 'very_high' | 'high' | 'medium' | 'low'
-  role: string
-  seniority: string
+  export interface CompanyRevealResponse {
+    ip: string
+    fuzzy: boolean
+    domain: string
+    type: string
+    company?: CompanyResponse
+    geoIP: GeoIP
+    confidenceScore: 'very_high' | 'high' | 'medium' | 'low'
+    role: string
+    seniority: string
+  }
 }
 
 export class ClearbitClient {
-  api: typeof defaultKy
-  apiKey: string
-  _maxPageSize = 100
+  readonly ky: typeof defaultKy
+  readonly apiKey: string
+  readonly _maxPageSize = 100
 
-  static PersonRoles = [
+  static readonly PersonRoles = [
     'communications',
     'customer_service',
     'education',
@@ -383,7 +387,7 @@ export class ClearbitClient {
     'sales'
   ]
 
-  static SenioritiesV2 = [
+  static readonly SenioritiesV2 = [
     'Executive',
     'VP',
     'Owner',
@@ -394,9 +398,9 @@ export class ClearbitClient {
     'Entry'
   ]
 
-  static Seniorities = ['executive', 'director', 'manager']
+  static readonly Seniorities = ['executive', 'director', 'manager']
 
-  static SubIndustries: string[] = [
+  static readonly SubIndustries = [
     'Automotive',
     'Consumer Discretionary',
     'Consumer Goods',
@@ -510,12 +514,11 @@ export class ClearbitClient {
   ]
 
   constructor({
-    apiKey = getEnv('CLEARBIT_KEY'),
+    apiKey = getEnv('CLEARBIT_API_KEY'),
     timeoutMs = 30_000,
     ky = defaultKy
   }: {
     apiKey?: string
-    apiBaseUrl?: string
     timeoutMs?: number
     ky?: typeof defaultKy
   } = {}) {
@@ -525,7 +528,7 @@ export class ClearbitClient {
 
     const throttledKy = throttleKy(ky, clearbitAPIThrottle)
 
-    this.api = throttledKy.extend({
+    this.ky = throttledKy.extend({
       timeout: timeoutMs,
       headers: {
         Authorization: `Basic ${Buffer.from(`${apiKey}:`).toString('base64')}`
@@ -533,33 +536,33 @@ export class ClearbitClient {
     })
   }
 
-  async companyEnrichment(options: CompanyEnrichmentOptions) {
-    return this.api
+  async companyEnrichment(options: clearbit.CompanyEnrichmentOptions) {
+    return this.ky
       .get('https://company-stream.clearbit.com/v2/companies/find', {
         searchParams: { ...options }
       })
-      .json<CompanyResponse>()
+      .json<clearbit.CompanyResponse>()
       .catch((_) => undefined)
   }
 
-  async companySearch(options: CompanySearchOptions) {
-    return this.api
+  async companySearch(options: clearbit.CompanySearchOptions) {
+    return this.ky
       .get('https://discovery.clearbit.com/v1/companies/search', {
         searchParams: { ...options }
       })
-      .json<CompanySearchResponse>()
+      .json<clearbit.CompanySearchResponse>()
   }
 
   async companyAutocomplete(name: string) {
-    return this.api
+    return this.ky
       .get('https://autocomplete.clearbit.com/v1/companies/suggest', {
         searchParams: { query: name }
       })
-      .json<BasicCompanyResponse[]>()
+      .json<clearbit.BasicCompanyResponse[]>()
   }
 
-  async prospectorPeopleV2(options: PeopleSearchOptionsV2) {
-    return this.api
+  async prospectorPeopleV2(options: clearbit.PeopleSearchOptionsV2) {
+    return this.ky
       .get('https://prospector.clearbit.com/v2/people/search', {
         // @ts-expect-error location is a string[] and searchparams shows a TS error heres
         searchParams: {
@@ -570,42 +573,42 @@ export class ClearbitClient {
           )
         }
       })
-      .json<ProspectorResponseV2>()
+      .json<clearbit.ProspectorResponseV2>()
   }
 
-  async prospectorPeopleV1(options: PeopleSearchOptionsV1, loadEmail = false) {
-    return this.api
+  async prospectorPeopleV1(options: clearbit.PeopleSearchOptionsV1) {
+    return this.ky
       .get('https://prospector.clearbit.com/v1/people/search', {
         // @ts-expect-error location is a string[] and searchparams shows a TS error heres
         searchParams: {
+          email: false,
           ...options,
           page_size: Math.min(
             this._maxPageSize,
             options.page_size || this._maxPageSize
-          ),
-          email: loadEmail
+          )
         }
       })
-      .json<ProspectorResponseV1>()
+      .json<clearbit.ProspectorResponseV1>()
   }
 
   // TODO Status code = 202 means the response was queued.
-  // Implement webhook when needed. The polling works well, in most cases we need to try
-  // again once to get a 200 response.
+  // Implement webhook when needed. The polling works well, in most cases we need
+  // to try again once to get a 200 response.
   async emailLookup({
     email,
-    maxRetries
+    maxRetries = 2
   }: {
     email: string
     maxRetries?: number
-  }) {
+  }): Promise<clearbit.EmailLookupResponse> {
     const url = 'https://person.clearbit.com/v2/people/find'
-    let response = await this.api.get(url, {
+    let response = await this.ky.get(url, {
       searchParams: { email }
     })
 
     if (response.status !== 202 || !maxRetries) {
-      return response.json<EmailLookupResponse>()
+      return response.json<clearbit.EmailLookupResponse>()
     }
 
     if (maxRetries && response.status === 202) {
@@ -614,37 +617,39 @@ export class ClearbitClient {
       while (running && count < maxRetries) {
         console.log(`Email Lookup was queued, retry ${count + 1}.`)
         await delay(1000)
-        response = await this.api.get(url, {
+        response = await this.ky.get(url, {
           searchParams: { email }
         })
         count++
         running = response.status === 202
       }
-      return response.json<EmailLookupResponse>()
+      return response.json<clearbit.EmailLookupResponse>()
     }
+
+    throw new Error('clearbit email lookup error 202', { cause: response })
   }
 
   async nameToDomain(name: string) {
-    return this.api
+    return this.ky
       .get('https://company.clearbit.com/v1/domains/find', {
         searchParams: { name }
       })
-      .json<BasicCompanyResponse>()
+      .json<clearbit.BasicCompanyResponse>()
       .catch((_) => undefined)
   }
 
   async revealCompanyFromIp(ip: string) {
-    return this.api
+    return this.ky
       .get('https://reveal.clearbit.com/v1/companies/find', {
         searchParams: { ip }
       })
-      .json<CompanyRevealResponse>()
+      .json<clearbit.CompanyRevealResponse>()
       .catch((_) => undefined)
   }
 
   static filterEmploymentProspectorV2(
     companyName: string,
-    employments: Array<DeepNullable<EmploymentAttributes> | null> | null
+    employments: Array<DeepNullable<clearbit.EmploymentAttributes> | null> | null
   ) {
     if (employments && employments.length > 0) {
       // We filter by employment endDate because some people could have multiple jobs at the same time.

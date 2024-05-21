@@ -1,8 +1,7 @@
 import { Nango } from '@nangohq/node'
 import { auth, Client as TwitterClient } from 'twitter-api-sdk'
 
-import * as config from '../config.js'
-import { assert } from '../utils.js'
+import { assert, getEnv } from '../utils.js'
 
 // The Twitter+Nango client auth connection key
 const nangoTwitterProviderConfigKey = 'twitter-v2'
@@ -23,7 +22,7 @@ let _nango: Nango | null = null
 
 function getNango(): Nango {
   if (!_nango) {
-    const secretKey = process.env.NANGO_SECRET_KEY?.trim()
+    const secretKey = getEnv('NANGO_SECRET_KEY')?.trim()
     if (!secretKey) {
       throw new Error(`Missing required "NANGO_SECRET_KEY"`)
     }
@@ -35,12 +34,18 @@ function getNango(): Nango {
 }
 
 async function getTwitterAuth({
-  scopes = defaultRequiredTwitterOAuthScopes
-}: { scopes?: Set<string> } = {}): Promise<auth.OAuth2User> {
+  scopes,
+  nangoConnectionId,
+  nangoCallbackUrl
+}: {
+  scopes: Set<string>
+  nangoConnectionId: string
+  nangoCallbackUrl: string
+}): Promise<auth.OAuth2User> {
   const nango = getNango()
   const connection = await nango.getConnection(
     nangoTwitterProviderConfigKey,
-    config.nangoConnectionId
+    nangoConnectionId
   )
 
   // console.debug('nango twitter connection', connection)
@@ -65,11 +70,9 @@ async function getTwitterAuth({
 
   if (missingScopes.size > 0) {
     throw new Error(
-      `Nango connection ${
-        config.nangoConnectionId
-      } is missing required OAuth scopes: ${[...missingScopes.values()].join(
-        ', '
-      )}`
+      `Nango connection ${nangoConnectionId} is missing required OAuth scopes: ${[
+        ...missingScopes.values()
+      ].join(', ')}`
     )
   }
 
@@ -78,17 +81,30 @@ async function getTwitterAuth({
 
   return new auth.OAuth2User({
     client_id: twitterClientId,
-    callback: config.nangoCallbackUrl,
+    callback: nangoCallbackUrl,
     scopes: [...scopes.values()] as any,
     token
   })
 }
 
 export async function getTwitterClient({
-  scopes = defaultRequiredTwitterOAuthScopes
-}: { scopes?: Set<string> } = {}): Promise<TwitterClient> {
+  scopes = defaultRequiredTwitterOAuthScopes,
+  nangoConnectionId = getEnv('NANGO_CONNECTION_ID'),
+  nangoCallbackUrl = getEnv('NANGO_CALLBACK_URL')
+}: {
+  scopes?: Set<string>
+  nangoConnectionId?: string
+  nangoCallbackUrl?: string
+} = {}): Promise<TwitterClient> {
+  assert(nangoConnectionId, 'twitter client missing nangoConnectionId')
+  assert(nangoCallbackUrl, 'twitter client missing nangoCallbackUrl')
+
   // NOTE: Nango handles refreshing the oauth access token for us
-  const twitterAuth = await getTwitterAuth({ scopes })
+  const twitterAuth = await getTwitterAuth({
+    scopes,
+    nangoConnectionId,
+    nangoCallbackUrl
+  })
 
   // Twitter API v2 using OAuth 2.0
   return new TwitterClient(twitterAuth)

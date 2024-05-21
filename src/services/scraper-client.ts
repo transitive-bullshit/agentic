@@ -1,5 +1,7 @@
 import defaultKy, { type KyInstance } from 'ky'
 
+import { assert, getEnv } from '../utils.js'
+
 export type ScrapeResult = {
   author: string
   byline: string
@@ -34,16 +36,14 @@ export class ScraperClient {
   readonly ky: KyInstance
 
   constructor({
-    apiBaseUrl = process.env.SCRAPER_API_BASE_URL,
+    apiBaseUrl = getEnv('SCRAPER_API_BASE_URL'),
     ky = defaultKy
   }: {
     apiKey?: string
     apiBaseUrl?: string
     ky?: KyInstance
   } = {}) {
-    if (!apiBaseUrl) {
-      throw new Error('SCRAPER_API_BASE_URL is required')
-    }
+    assert(apiBaseUrl, 'SCRAPER_API_BASE_URL is required')
 
     this.apiBaseUrl = apiBaseUrl
     this.ky = ky.extend({ prefixUrl: this.apiBaseUrl })
