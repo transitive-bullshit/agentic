@@ -75,9 +75,9 @@ export namespace weatherapi {
 }
 
 export class WeatherClient extends AIToolsProvider {
-  protected api: KyInstance
-  protected apiKey: string
-  protected apiBaseUrl: string
+  readonly ky: KyInstance
+  readonly apiKey: string
+  readonly apiBaseUrl: string
 
   constructor({
     apiKey = getEnv('WEATHER_API_KEY'),
@@ -94,13 +94,13 @@ export class WeatherClient extends AIToolsProvider {
     this.apiKey = apiKey
     this.apiBaseUrl = apiBaseUrl
 
-    this.api = ky.extend({ prefixUrl: apiBaseUrl })
+    this.ky = ky.extend({ prefixUrl: apiBaseUrl })
   }
 
   @aiFunction({
     name: 'getCurrentWeather',
     description: 'Gets info about the current weather at a given location.',
-    schema: z.object({
+    inputSchema: z.object({
       q: z
         .string()
         .describe(
@@ -114,7 +114,7 @@ export class WeatherClient extends AIToolsProvider {
         ? { q: queryOrOptions }
         : queryOrOptions
 
-    return this.api
+    return this.ky
       .get('current.json', {
         searchParams: {
           key: this.apiKey,
@@ -128,7 +128,7 @@ export class WeatherClient extends AIToolsProvider {
     const options =
       typeof ipOrOptions === 'string' ? { q: ipOrOptions } : ipOrOptions
 
-    return this.api
+    return this.ky
       .get('ip.json', {
         searchParams: {
           key: this.apiKey,

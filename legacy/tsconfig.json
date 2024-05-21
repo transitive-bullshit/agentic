@@ -12,6 +12,9 @@
     "useDefineForClassFields": true,
     "jsx": "preserve",
 
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "forceConsistentCasingInFileNames": true,

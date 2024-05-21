@@ -2,7 +2,7 @@ import defaultKy, { type KyInstance } from 'ky'
 import { z } from 'zod'
 
 import { aiFunction, AIToolsProvider } from '../fns.js'
-import { getEnv } from '../utils.js'
+import { assert, getEnv } from '../utils.js'
 
 export namespace serper {
   export const BASE_URL = 'https://google.serper.dev'
@@ -199,10 +199,10 @@ export namespace serper {
  * @see https://serper.dev
  */
 export class SerperClient extends AIToolsProvider {
-  protected api: KyInstance
-  protected apiKey: string
-  protected apiBaseUrl: string
-  protected params: Omit<Partial<serper.SearchParams>, 'q'>
+  readonly ky: KyInstance
+  readonly apiKey: string
+  readonly apiBaseUrl: string
+  readonly params: Omit<Partial<serper.SearchParams>, 'q'>
 
   constructor({
     apiKey = getEnv('SERPER_API_KEY'),
@@ -210,11 +210,10 @@ export class SerperClient extends AIToolsProvider {
     ky = defaultKy,
     ...params
   }: serper.ClientOptions = {}) {
-    if (!apiKey) {
-      throw new Error(
-        `SerperClient missing required "apiKey" (defaults to "SERPER_API_KEY" env var)`
-      )
-    }
+    assert(
+      apiKey,
+      `SerperClient missing required "apiKey" (defaults to "SERPER_API_KEY" env var)`
+    )
 
     super()
 
@@ -222,7 +221,7 @@ export class SerperClient extends AIToolsProvider {
     this.apiBaseUrl = apiBaseUrl
     this.params = params
 
-    this.api = ky.extend({
+    this.ky = ky.extend({
       prefixUrl: this.apiBaseUrl,
       headers: {
         'X-API-KEY': this.apiKey
@@ -234,7 +233,7 @@ export class SerperClient extends AIToolsProvider {
     name: 'serperGoogleSearch',
     description:
       'Uses Google Search to return the most relevant web pages for a given query. Can also be used to find up-to-date news and information about many topics.',
-    schema: serper.SearchParamsSchema
+    inputSchema: serper.SearchParamsSchema
   })
   async search(queryOrOpts: string | serper.SearchParams) {
     return this._fetch<serper.SearchResponse>('search', queryOrOpts)
@@ -263,12 +262,12 @@ export class SerperClient extends AIToolsProvider {
   protected async _fetch<T extends serper.Response>(
     endpoint: string,
     queryOrOpts: string | serper.SearchParams
-  ) {
+  ): Promise<T> {
     const params = {
       ...this.params,
       ...(typeof queryOrOpts === 'string' ? { q: queryOrOpts } : queryOrOpts)
     }
 
-    return this.api.post(endpoint, { json: params }).json<T>()
+    return this.ky.post(endpoint, { json: params }).json<T>()
   }
 }

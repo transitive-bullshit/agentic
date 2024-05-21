@@ -10,6 +10,8 @@ import { getEnv } from '../utils.js'
  */
 
 export namespace serpapi {
+  export const BASE_URL = 'https://serpapi.com'
+
   export type BaseResponse<P = Record<string | number | symbol, never>> = {
     search_metadata: {
       id: string
@@ -365,20 +367,20 @@ export namespace serpapi {
     twitter_results?: TwitterResults
   }
 
-  interface TwitterResults {
+  export interface TwitterResults {
     title: string
     link: string
     displayed_link: string
     tweets: Tweet[]
   }
 
-  interface Tweet {
+  export interface Tweet {
     link: string
     snippet: string
     published_date: string
   }
 
-  interface AnswerBox {
+  export interface AnswerBox {
     type: string
     title: string
     link: string
@@ -391,7 +393,7 @@ export namespace serpapi {
     cached_page_link: string
   }
 
-  interface InlineImage {
+  export interface InlineImage {
     link: string
     source: string
     thumbnail: string
@@ -400,21 +402,21 @@ export namespace serpapi {
     title?: string
   }
 
-  interface InlinePeopleAlsoSearchFor {
+  export interface InlinePeopleAlsoSearchFor {
     title: string
     items: SearchItem[]
     see_more_link: string
     see_more_serpapi_link: string
   }
 
-  interface SearchItem {
+  export interface SearchItem {
     name: string
     image: string
     link: string
     serpapi_link: string
   }
 
-  interface KnowledgeGraph {
+  export interface KnowledgeGraph {
     type: string
     kgmid: string
     knowledge_graph_search_link: string
@@ -429,7 +431,7 @@ export namespace serpapi {
     list: { [key: string]: string[] }
   }
 
-  interface Button {
+  export interface Button {
     text: string
     subtitle: string
     title: string
@@ -445,34 +447,34 @@ export namespace serpapi {
     list?: string[]
   }
 
-  interface HeaderImage {
+  export interface HeaderImage {
     image: string
     source: string
   }
 
-  interface Source {
+  export interface Source {
     name: string
     link: string
   }
 
-  interface LocalMap {
+  export interface LocalMap {
     link: string
     image: string
     gps_coordinates: LocalMapGpsCoordinates
   }
 
-  interface LocalMapGpsCoordinates {
+  export interface LocalMapGpsCoordinates {
     latitude: number
     longitude: number
     altitude: number
   }
 
-  interface LocalResults {
+  export interface LocalResults {
     places: Place[]
     more_locations_link: string
   }
 
-  interface Place {
+  export interface Place {
     position: number
     title: string
     rating?: number
@@ -489,18 +491,18 @@ export namespace serpapi {
     hours?: string
   }
 
-  interface PlaceGpsCoordinates {
+  export interface PlaceGpsCoordinates {
     latitude: number
     longitude: number
   }
 
-  interface ServiceOptions {
+  export interface ServiceOptions {
     dine_in?: boolean
     takeout: boolean
     no_delivery?: boolean
   }
 
-  interface OrganicResult {
+  export interface OrganicResult {
     position: number
     title: string
     link: string
@@ -520,24 +522,24 @@ export namespace serpapi {
     related_questions?: OrganicResultRelatedQuestion[]
   }
 
-  interface AboutThisResult {
+  export interface AboutThisResult {
     keywords: string[]
     languages: string[]
     regions: string[]
   }
 
-  interface OrganicResultRelatedQuestion {
+  export interface OrganicResultRelatedQuestion {
     question: string
     snippet: string
     snippet_links: SnippetLink[]
   }
 
-  interface SnippetLink {
+  export interface SnippetLink {
     text: string
     link: string
   }
 
-  interface RelatedResult {
+  export interface RelatedResult {
     position: number
     title: string
     link: string
@@ -548,32 +550,32 @@ export namespace serpapi {
     cached_page_link: string
   }
 
-  interface RichSnippet {
+  export interface RichSnippet {
     bottom: Bottom
   }
 
-  interface Bottom {
+  export interface Bottom {
     extensions?: string[]
     questions?: string[]
   }
 
-  interface Sitelinks {
+  export interface Sitelinks {
     inline: Inline[]
   }
 
-  interface Inline {
+  export interface Inline {
     title: string
     link: string
   }
 
-  interface Pagination {
+  export interface Pagination {
     current: number
     next: string
     other_pages: { [key: string]: string }
     next_link?: string
   }
 
-  interface SearchResultRelatedQuestion {
+  export interface SearchResultRelatedQuestion {
     question: string
     snippet: string
     title: string
@@ -585,12 +587,12 @@ export namespace serpapi {
     date?: string
   }
 
-  interface RelatedSearch {
+  export interface RelatedSearch {
     query: string
     link: string
   }
 
-  interface SearchInformation {
+  export interface SearchInformation {
     organic_results_state: string
     query_displayed: string
     total_results: number
@@ -598,14 +600,14 @@ export namespace serpapi {
     menu_items: MenuItem[]
   }
 
-  interface MenuItem {
+  export interface MenuItem {
     position: number
     title: string
     link: string
     serpapi_link?: string
   }
 
-  interface SearchMetadata {
+  export interface SearchMetadata {
     id: string
     status: string
     json_endpoint: string
@@ -616,7 +618,7 @@ export namespace serpapi {
     total_time_taken: number
   }
 
-  interface SearchParameters {
+  export interface SearchParameters {
     engine: string
     q: string
     google_domain: string
@@ -630,8 +632,6 @@ export namespace serpapi {
     apiBaseUrl?: string
     ky?: KyInstance
   }
-
-  export const BASE_URL = 'https://serpapi.com'
 }
 
 /**
@@ -670,7 +670,7 @@ export class SerpAPIClient extends AIToolsProvider {
     name: 'serpapiGoogleSearch',
     description:
       'Uses Google Search to return the most relevant web pages for a given query. Can also be used to find up-to-date news and information about many topics.',
-    schema: z.object({
+    inputSchema: z.object({
       q: z.string().describe('search query'),
       num: z.number().int().positive().default(5).optional()
     })
