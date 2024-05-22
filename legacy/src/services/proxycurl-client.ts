@@ -3,6 +3,7 @@ import * as z from 'zod'
 
 import { assert, getEnv } from '../utils.js'
 
+// All proxycurl types are auto-generated from their openapi spec
 export namespace proxycurl {
   export const CompanyTypeSchema = z.enum([
     'EDUCATIONAL',
