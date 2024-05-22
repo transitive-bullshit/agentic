@@ -4,13 +4,27 @@ import 'dotenv/config'
 import { gracefulExit } from 'exit-hook'
 import restoreCursor from 'restore-cursor'
 
-import type * as types from '@/types.js'
+// import { ClearbitClient } from '../src/index.js'
+import { ProxycurlClient } from '../src/services/proxycurl-client.js'
 
 /**
  * Scratch for quick testing.
  */
 async function main() {
   restoreCursor()
+
+  // const clearbit = new ClearbitClient()
+  // const res = await clearbit.companyEnrichment({
+  //   domain: 'https://clay.com'
+  // })
+  // console.log(JSON.stringify(res, null, 2))
+
+  const proxycurl = new ProxycurlClient()
+  const res = await proxycurl.getLinkedInPerson({
+    linkedin_profile_url: 'https://linkedin.com/in/fisch2'
+    // personal_email: 'fisch0920@gmail.com'
+  })
+  console.log(JSON.stringify(res, null, 2))
 
   return gracefulExit(0)
 }

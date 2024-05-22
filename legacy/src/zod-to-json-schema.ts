@@ -11,7 +11,6 @@ export function zodToJsonSchema(schema: z.ZodType): Record<string, unknown> {
     'default',
     'definitions',
     'description',
-    'markdownDescription',
-    'additionalProperties'
+    'markdownDescription'
   )
 }

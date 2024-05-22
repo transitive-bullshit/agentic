@@ -24,7 +24,7 @@ export class DexaClient {
     this.ky = ky.extend({ prefixUrl: this.apiBaseUrl, timeout: 60_000 })
   }
 
-  async generateResponse({ messages }: { messages: Prompt.Msg[] }) {
+  async askDexa({ messages }: { messages: Prompt.Msg[] }) {
     return this.ky
       .post('api/ask-dexa', {
         json: {
