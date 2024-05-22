@@ -8,7 +8,7 @@ import restoreCursor from 'restore-cursor'
 import { ProxycurlClient } from '../src/services/proxycurl-client.js'
 
 /**
- * Scratch for quick testing.
+ * Scratch pad for testing.
  */
 async function main() {
   restoreCursor()
