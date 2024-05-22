@@ -9,13 +9,6 @@ import { zodToJsonSchema } from './zod-to-json-schema.js'
 
 export const invocableMetadataKey = Symbol('invocable')
 
-export interface Invocable {
-  name: string
-  description?: string
-  inputSchema?: z.AnyZodObject
-  callback: (args: Record<string, any>) => Promise<any>
-}
-
 export abstract class AIToolsProvider {
   private _tools?: ToolSet
   private _functions?: FunctionSet
@@ -34,7 +27,16 @@ export abstract class AIToolsProvider {
 
   get functions(): FunctionSet {
     if (!this._functions) {
-      const invocables = getInvocables(this)
+      const metadata = this.constructor[Symbol.metadata]
+      const invocables = (metadata?.invocables as Invocable[]) ?? []
+      const namespace = this.namespace
+
+      const functions = invocables.map((invocable) => ({
+        ...invocable,
+        name: invocable.name ?? `${namespace}_${invocable.propertyKey}`,
+        callback: (target as any)[invocable.propertyKey].bind(target)
+      }))
+
       const functions = invocables.map(getFunctionSpec)
       this._functions = new FunctionSet(functions)
     }
@@ -43,7 +45,14 @@ export abstract class AIToolsProvider {
   }
 }
 
-export function getFunctionSpec(invocable: Invocable): types.AIFunctionSpec {
+export interface Invocable {
+  name: string
+  description?: string
+  inputSchema?: z.AnyZodObject
+  callback: (args: Record<string, any>) => Promise<any>
+}
+
+function getFunctionSpec(invocable: Invocable): types.AIFunctionSpec {
   const { name, description, inputSchema } = invocable
 
   return {
@@ -58,14 +67,11 @@ export function getFunctionSpec(invocable: Invocable): types.AIFunctionSpec {
   }
 }
 
-/**
- * Constraints:
- *   - params must be an object, so the underlying function should only expect a
- *     single parameter
- *   - for the return value type `T | MaybePromise<T>`, `T` must be serializable
- *     to JSON
- */
-export function aiFunction({
+export function aiFunction<
+  This,
+  Args extends any[],
+  Return extends Promise<any>
+>({
   name,
   description,
   inputSchema
@@ -77,48 +83,38 @@ export function aiFunction({
   // single parameter
   inputSchema?: z.AnyZodObject
 }) {
-  return function (
-    target: object,
-    propertyKey: string,
-    descriptor: PropertyDescriptor
-  ) {
-    const existingInvocables = getPrivateInvocables(target)
+  return (
+    targetMethod: (this: This, ...args: Args) => Return,
+    context: ClassMethodDecoratorContext<
+      This,
+      (this: This, ...args: Args) => Return
+    > & {
+      readonly metadata: {
+        invocables: Invocable[]
+      }
+    }
+  ) => {
+    const methodName = String(context.name)
+    if (!context.metadata.invocables) {
+      context.metadata.invocables = []
+    }
 
-    existingInvocables.push({
-      propertyKey,
+    context.metadata.invocables.push({
+      name: name ?? methodName,
       description,
-      name,
-      inputSchema
+      inputSchema,
+      callback: targetMethod
     })
 
-    setPrivateInvocables(target, existingInvocables)
+    return targetMethod
 
-    return descriptor.get ?? descriptor.value
+    // function replacementMethod(this: This, ...args: Args): Return {
+    //   console.log(`LOG: Entering method '${methodName}'.`)
+    //   const result = targetMethod.call(this, ...args)
+    //   console.log(`LOG: Exiting method '${methodName}'.`)
+    //   return result
+    // }
+
+    // return replacementMethod
   }
-}
-
-export function getInvocables(target: object): Invocable[] {
-  const invocables = getPrivateInvocables(target)
-  const namespace = target.constructor.name
-
-  return invocables.map((invocable) => ({
-    ...invocable,
-    name: invocable.name ?? `${namespace}_${invocable.propertyKey}`,
-    callback: (target as any)[invocable.propertyKey].bind(target)
-  }))
-}
-
-interface PrivateInvocable {
-  propertyKey: string
-  name?: string
-  description?: string
-  inputSchema?: z.AnyZodObject
-}
-
-function getPrivateInvocables(target: object): PrivateInvocable[] {
-  return Reflect.getMetadata(invocableMetadataKey, target) ?? []
-}
-
-function setPrivateInvocables(target: object, invocables: PrivateInvocable[]) {
-  Reflect.defineMetadata(invocableMetadataKey, invocables, target)
 }

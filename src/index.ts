@@ -1,4 +1,3 @@
-export * from './fns.js'
 export * from './function-set.js'
 export * from './parse-structured-output.js'
 export * from './services/index.js'

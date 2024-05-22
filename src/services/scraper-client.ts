@@ -2,25 +2,27 @@ import defaultKy, { type KyInstance } from 'ky'
 
 import { assert, getEnv } from '../utils.js'
 
-export type ScrapeResult = {
-  author: string
-  byline: string
-  /** The HTML for the main content of the page. */
-  content: string
-  description: string
-  imageUrl: string
-  lang: string
-  length: number
-  logoUrl: string
-  /** The text for the main content of the page in markdown format. */
-  markdownContent: string
-  publishedTime: string
-  /** The raw HTML response from the server. */
-  rawHtml: string
-  siteName: string
-  /** The text for the main content of the page. */
-  textContent: string
-  title: string
+export namespace scraper {
+  export type ScrapeResult = {
+    author: string
+    byline: string
+    /** The HTML for the main content of the page. */
+    content: string
+    description: string
+    imageUrl: string
+    lang: string
+    length: number
+    logoUrl: string
+    /** The text for the main content of the page in markdown format. */
+    markdownContent: string
+    publishedTime: string
+    /** The raw HTML response from the server. */
+    rawHtml: string
+    siteName: string
+    /** The text for the main content of the page. */
+    textContent: string
+    title: string
+  }
 }
 
 /**
@@ -56,7 +58,7 @@ export class ScraperClient {
     }: {
       timeout?: number
     } = {}
-  ): Promise<ScrapeResult> {
+  ): Promise<scraper.ScrapeResult> {
     return this.ky
       .post('scrape', {
         json: { url },
