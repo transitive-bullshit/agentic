@@ -17,6 +17,34 @@
 
 **Coming soon**
 
+## Services
+
+- Clearbit
+- Dexa
+- Diffbot
+- Proxycurl
+- SerpAPI
+- Serper
+- Twitter
+- WeatherAPI
+
+## TODO
+
+- core
+  - company schema
+  - person schema
+  - database
+  - move out to a separate project
+    - agentic
+    - walter
+- services
+  - Exa
+  - Firecrawl
+  - Unstructured
+  - pull from [langchain](https://github.com/langchain-ai/langchainjs/tree/main/langchain)
+  - pull from other libs
+  - pull from [nango](https://docs.nango.dev/integrations/overview)
+
 ## License
 
 PROPRIETARY © [Travis Fischer](https://twitter.com/transitive_bs)

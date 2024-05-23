@@ -98,7 +98,7 @@ export class WeatherClient extends AIToolsProvider {
   }
 
   @aiFunction({
-    name: 'getCurrentWeather',
+    name: 'get_current_weather',
     description: 'Gets info about the current weather at a given location.',
     inputSchema: z.object({
       q: z

@@ -45,7 +45,7 @@ export class ScraperClient {
     apiBaseUrl?: string
     ky?: KyInstance
   } = {}) {
-    assert(apiBaseUrl, 'SCRAPER_API_BASE_URL is required')
+    assert(apiBaseUrl, 'ScraperClient apiBaseUrl is required')
 
     this.apiBaseUrl = apiBaseUrl
     this.ky = ky.extend({ prefixUrl: this.apiBaseUrl })

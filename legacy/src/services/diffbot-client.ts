@@ -330,7 +330,7 @@ export namespace diffbot {
 
 export class DiffbotClient {
   readonly ky: KyInstance
-  readonly kyKnowledgeGraph: typeof defaultKy
+  readonly kyKnowledgeGraph: KyInstance
 
   readonly apiKey: string
   readonly apiBaseUrl: string
@@ -341,21 +341,23 @@ export class DiffbotClient {
     apiBaseUrl = diffbot.API_BASE_URL,
     apiKnowledgeGraphBaseUrl = diffbot.KNOWLEDGE_GRAPH_API_BASE_URL,
     timeoutMs = 30_000,
+    throttle = true,
     ky = defaultKy
   }: {
     apiKey?: string
     apiBaseUrl?: string
     apiKnowledgeGraphBaseUrl?: string
     timeoutMs?: number
+    throttle?: boolean
     ky?: KyInstance
   } = {}) {
-    assert(apiKey, `Error DiffbotClient missing required "apiKey"`)
+    assert(apiKey, `DiffbotClient missing required "apiKey"`)
 
     this.apiKey = apiKey
     this.apiBaseUrl = apiBaseUrl
     this.apiKnowledgeGraphBaseUrl = apiKnowledgeGraphBaseUrl
 
-    const throttledKy = throttleKy(ky, diffbotAPIThrottle)
+    const throttledKy = throttle ? throttleKy(ky, diffbotAPIThrottle) : ky
 
     this.ky = throttledKy.extend({
       prefixUrl: apiBaseUrl,
