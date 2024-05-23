@@ -12,8 +12,8 @@
     "useDefineForClassFields": true,
     "jsx": "preserve",
 
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
+    // "experimentalDecorators": true,
+    // "emitDecoratorMetadata": true,
 
     "strict": true,
     "noUncheckedIndexedAccess": true,

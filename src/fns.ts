@@ -1,4 +1,4 @@
-import 'reflect-metadata'
+import './symbol-polyfill.js'
 
 import type { z } from 'zod'
 
@@ -34,7 +34,7 @@ export abstract class AIToolsProvider {
       const functions = invocables.map((invocable) => ({
         ...invocable,
         name: invocable.name ?? `${namespace}_${invocable.propertyKey}`,
-        callback: (target as any)[invocable.propertyKey].bind(target)
+        callback: (this as any)[invocable.propertyKey].bind(target)
       }))
 
       const functions = invocables.map(getFunctionSpec)
@@ -88,18 +88,14 @@ export function aiFunction<
     context: ClassMethodDecoratorContext<
       This,
       (this: This, ...args: Args) => Return
-    > & {
-      readonly metadata: {
-        invocables: Invocable[]
-      }
-    }
+    >
   ) => {
     const methodName = String(context.name)
     if (!context.metadata.invocables) {
       context.metadata.invocables = []
     }
 
-    context.metadata.invocables.push({
+    ;(context.metadata.invocables as Invocable[]).push({
       name: name ?? methodName,
       description,
       inputSchema,

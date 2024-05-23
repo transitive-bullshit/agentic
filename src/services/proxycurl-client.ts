@@ -2003,6 +2003,7 @@ export namespace proxycurl {
 export class ProxycurlClient {
   readonly ky: KyInstance
   readonly apiKey: string
+  readonly apiBaseUrl: string
 
   constructor({
     apiKey = getEnv('PROXYCURL_API_KEY'),
@@ -2014,9 +2015,11 @@ export class ProxycurlClient {
     apiBaseUrl?: string
     ky?: KyInstance
   } = {}) {
-    assert(apiKey, 'Error ProxycurlClient missing required "apiKey"')
+    assert(apiKey, 'ProxycurlClient missing required "apiKey"')
+    assert(apiBaseUrl, 'ProxycurlClient missing required "apiBaseUrl"')
 
     this.apiKey = apiKey
+    this.apiBaseUrl = apiBaseUrl
 
     this.ky = ky.extend({
       prefixUrl: apiBaseUrl,

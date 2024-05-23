@@ -1,7 +1,7 @@
 import defaultKy from 'ky'
 import pThrottle from 'p-throttle'
 
-import type { DeepNullable } from '../types.js'
+import type { DeepNullable, KyInstance } from '../types.js'
 import { assert, delay, getEnv, throttleKy } from '../utils.js'
 
 // Only allow 20 clearbit API requests per 60s
@@ -362,7 +362,7 @@ export namespace clearbit {
 }
 
 export class ClearbitClient {
-  readonly ky: typeof defaultKy
+  readonly ky: KyInstance
   readonly apiKey: string
   readonly _maxPageSize = 100
 
@@ -516,17 +516,19 @@ export class ClearbitClient {
   constructor({
     apiKey = getEnv('CLEARBIT_API_KEY'),
     timeoutMs = 30_000,
+    throttle = true,
     ky = defaultKy
   }: {
     apiKey?: string
     timeoutMs?: number
-    ky?: typeof defaultKy
+    throttle?: boolean
+    ky?: KyInstance
   } = {}) {
     assert(apiKey, 'Error clearbit client missing required "apiKey"')
 
     this.apiKey = apiKey
 
-    const throttledKy = throttleKy(ky, clearbitAPIThrottle)
+    const throttledKy = throttle ? throttleKy(ky, clearbitAPIThrottle) : ky
 
     this.ky = throttledKy.extend({
       timeout: timeoutMs,
@@ -652,7 +654,8 @@ export class ClearbitClient {
     employments: Array<DeepNullable<clearbit.EmploymentAttributes> | null> | null
   ) {
     if (employments && employments.length > 0) {
-      // We filter by employment endDate because some people could have multiple jobs at the same time.
+      // We filter by employment endDate because some people could have multiple
+      // jobs at the same time.
       // Here we want to filter by people that actively works at a specific company.
       return employments
         .filter((item) => !item?.endDate)
@@ -660,6 +663,7 @@ export class ClearbitClient {
           item?.company?.toLowerCase().includes(companyName.toLowerCase())
         )
     }
+
     return false
   }
 }

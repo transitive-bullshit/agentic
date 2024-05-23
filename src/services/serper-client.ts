@@ -230,10 +230,12 @@ export class SerperClient extends AIToolsProvider {
   }
 
   @aiFunction({
-    name: 'serperGoogleSearch',
+    name: 'serper_google_search',
     description:
       'Uses Google Search to return the most relevant web pages for a given query. Can also be used to find up-to-date news and information about many topics.',
-    inputSchema: serper.SearchParamsSchema
+    inputSchema: serper.SearchParamsSchema.pick({
+      q: true
+    })
   })
   async search(queryOrOpts: string | serper.SearchParams) {
     return this._fetch<serper.SearchResponse>('search', queryOrOpts)
