@@ -29,6 +29,7 @@
     "dist"
   ],
   "scripts": {
+    "preinstall": "npx only-allow pnpm",
     "build": "tsup",
     "dev": "tsup --watch",
     "clean": "del dist",
@@ -71,6 +72,7 @@
     "lint-staged": "^15.2.4",
     "np": "^10.0.5",
     "npm-run-all2": "^6.2.0",
+    "only-allow": "^1.2.1",
     "prettier": "^3.2.5",
     "tsup": "^8.0.2",
     "tsx": "^4.10.5",

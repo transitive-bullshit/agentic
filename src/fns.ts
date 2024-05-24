@@ -1,44 +1,40 @@
 import './symbol-polyfill.js'
 
-import type { z } from 'zod'
+import type * as z from 'zod'
 
 import type * as types from './types.js'
-import { FunctionSet } from './function-set.js'
-import { ToolSet } from './tool-set.js'
-import { zodToJsonSchema } from './zod-to-json-schema.js'
+import { createAIFunction } from './ai-function.js'
+import { AIFunctionSet } from './ai-function-set.js'
+import { AIToolSet } from './ai-tool-set.js'
+import { assert } from './utils.js'
 
 export const invocableMetadataKey = Symbol('invocable')
 
 export abstract class AIToolsProvider {
-  private _tools?: ToolSet
-  private _functions?: FunctionSet
+  private _tools?: AIToolSet
+  private _functions?: AIFunctionSet
 
-  get namespace() {
-    return this.constructor.name
-  }
-
-  get tools(): ToolSet {
+  get tools(): AIToolSet {
     if (!this._tools) {
-      this._tools = ToolSet.fromFunctionSet(this.functions)
+      this._tools = AIToolSet.fromAIFunctionSet(this.functions)
     }
 
     return this._tools
   }
 
-  get functions(): FunctionSet {
+  get functions(): AIFunctionSet {
     if (!this._functions) {
       const metadata = this.constructor[Symbol.metadata]
       const invocables = (metadata?.invocables as Invocable[]) ?? []
-      const namespace = this.namespace
 
-      const functions = invocables.map((invocable) => ({
-        ...invocable,
-        name: invocable.name ?? `${namespace}_${invocable.propertyKey}`,
-        callback: (this as any)[invocable.propertyKey].bind(target)
-      }))
+      const aiFunctions = invocables.map((invocable) => {
+        const impl = (this as any)[invocable.methodName]?.bind(this)
+        assert(impl)
 
-      const functions = invocables.map(getFunctionSpec)
-      this._functions = new FunctionSet(functions)
+        return createAIFunction(invocable, impl)
+      })
+
+      this._functions = new AIFunctionSet(aiFunctions)
     }
 
     return this._functions
@@ -48,29 +44,15 @@ export abstract class AIToolsProvider {
 export interface Invocable {
   name: string
   description?: string
-  inputSchema?: z.AnyZodObject
-  callback: (args: Record<string, any>) => Promise<any>
-}
-
-function getFunctionSpec(invocable: Invocable): types.AIFunctionSpec {
-  const { name, description, inputSchema } = invocable
-
-  return {
-    name,
-    description,
-    parameters: inputSchema
-      ? zodToJsonSchema(inputSchema)
-      : {
-          type: 'object',
-          properties: {}
-        }
-  }
+  inputSchema: z.AnyZodObject
+  methodName: string
 }
 
 export function aiFunction<
   This,
-  Args extends any[],
-  Return extends Promise<any>
+  InputSchema extends z.SomeZodObject,
+  OptionalArgs extends Array<undefined>,
+  Return extends types.MaybePromise<any>
 >({
   name,
   description,
@@ -78,16 +60,21 @@ export function aiFunction<
 }: {
   name?: string
   description?: string
-
-  // params must be an object, so the underlying function should only expect a
-  // single parameter
-  inputSchema?: z.AnyZodObject
+  inputSchema: InputSchema
 }) {
   return (
-    targetMethod: (this: This, ...args: Args) => Return,
+    _targetMethod: (
+      this: This,
+      input: z.infer<InputSchema>,
+      ...optionalArgs: OptionalArgs
+    ) => Return,
     context: ClassMethodDecoratorContext<
       This,
-      (this: This, ...args: Args) => Return
+      (
+        this: This,
+        input: z.infer<InputSchema>,
+        ...optionalArgs: OptionalArgs
+      ) => Return
     >
   ) => {
     const methodName = String(context.name)
@@ -99,18 +86,11 @@ export function aiFunction<
       name: name ?? methodName,
       description,
       inputSchema,
-      callback: targetMethod
+      methodName
     })
 
-    return targetMethod
-
-    // function replacementMethod(this: This, ...args: Args): Return {
-    //   console.log(`LOG: Entering method '${methodName}'.`)
-    //   const result = targetMethod.call(this, ...args)
-    //   console.log(`LOG: Exiting method '${methodName}'.`)
-    //   return result
-    // }
-
-    // return replacementMethod
+    // context.addInitializer(function () {
+    //   ;(this as any)[methodName] = (this as any)[methodName].bind(this)
+    // })
   }
 }
