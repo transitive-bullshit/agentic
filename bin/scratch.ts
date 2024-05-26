@@ -5,7 +5,8 @@ import { gracefulExit } from 'exit-hook'
 import restoreCursor from 'restore-cursor'
 
 // import { ClearbitClient } from '../src/index.js'
-import { ProxycurlClient } from '../src/services/proxycurl-client.js'
+// import { ProxycurlClient } from '../src/services/proxycurl-client.js'
+import { WikipediaClient } from '../src/services/wikipedia-client.js'
 
 /**
  * Scratch pad for testing.
@@ -19,10 +20,16 @@ async function main() {
   // })
   // console.log(JSON.stringify(res, null, 2))
 
-  const proxycurl = new ProxycurlClient()
-  const res = await proxycurl.getLinkedInPerson({
-    linkedin_profile_url: 'https://linkedin.com/in/fisch2'
-    // personal_email: 'fisch0920@gmail.com'
+  // const proxycurl = new ProxycurlClient()
+  // const res = await proxycurl.getLinkedInPerson({
+  //   linkedin_profile_url: 'https://linkedin.com/in/fisch2'
+  //   // personal_email: 'fisch0920@gmail.com'
+  // })
+  // console.log(JSON.stringify(res, null, 2))
+
+  const wikipedia = new WikipediaClient()
+  const res = await wikipedia.getPageSummary({
+    title: 'Naruto_(TV_series)'
   })
   console.log(JSON.stringify(res, null, 2))
 

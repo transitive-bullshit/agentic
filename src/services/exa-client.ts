@@ -160,7 +160,7 @@ export class ExaClient {
    * Performs an Exa search for the given query.
    */
   async search(opts: { query: string } & exa.RegularSearchOptions) {
-    return this.ky.post('search', { json: opts }).json<exa.SearchResponse>()
+    return this.ky.get('search', { json: opts }).json<exa.SearchResponse>()
   }
 
   /**
@@ -202,8 +202,6 @@ export class ExaClient {
   /**
    * Finds similar links to the provided URL and returns the contents of the
    * documents.
-   *
-   * @param {string} url - The URL for which to find similar links.
    */
   async findSimilarAndContents<
     T extends exa.ContentsOptions = exa.ContentsOptions
@@ -232,8 +230,6 @@ export class ExaClient {
 
   /**
    * Retrieves contents of documents based on a list of document IDs.
-   *
-   * @param {string | string[] | SearchResult[]} ids - An array of document IDs.
    */
   async getContents<T extends exa.ContentsOptions = exa.ContentsOptions>({
     ids,
