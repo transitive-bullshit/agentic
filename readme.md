@@ -19,14 +19,18 @@
 
 ## Services
 
-- Clearbit
-- Dexa
-- Diffbot
-- Proxycurl
-- SerpAPI
-- Serper
-- Twitter
-- WeatherAPI
+- clearbit
+- dexa
+- diffbot
+- exa
+- people data labs
+- perigon
+- predict leads
+- proxycurl
+- serpapi
+- serper
+- twitter
+- weatherapi
 
 ## TODO
 
@@ -38,9 +42,12 @@
     - agentic
     - walter
 - services
-  - Exa
-  - Firecrawl
-  - Unstructured
+  - exa - need to update to correct format
+  - searxng
+  - wikipedia
+  - midjourney
+  - firecrawl
+  - unstructured
   - pull from [langchain](https://github.com/langchain-ai/langchainjs/tree/main/langchain)
   - pull from other libs
   - pull from [nango](https://docs.nango.dev/integrations/overview)
