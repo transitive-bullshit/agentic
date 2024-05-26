@@ -16,6 +16,7 @@
     // "emitDecoratorMetadata": true,
 
     "strict": true,
+    "strictNullChecks": true,
     "noUncheckedIndexedAccess": true,
     "forceConsistentCasingInFileNames": true,
 

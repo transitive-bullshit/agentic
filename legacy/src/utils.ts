@@ -12,7 +12,7 @@ export { default as assert } from 'tiny-invariant'
  * ```
  */
 export const omit = <
-  T extends Record<any, unknown>,
+  T extends Record<any, unknown> | object,
   K extends keyof T = keyof T
 >(
   inputObj: T,
@@ -33,7 +33,7 @@ export const omit = <
  * ```
  */
 export const pick = <
-  T extends Record<any, unknown>,
+  T extends Record<any, unknown> | object,
   K extends keyof T = keyof T
 >(
   inputObj: T,
@@ -47,7 +47,7 @@ export const pick = <
 
 export function pruneUndefined<T extends Record<string, any>>(
   obj: T
-): NonNullable<T> {
+): NonNullable<{ [K in keyof T]: Exclude<T[K], undefined> }> {
   return Object.fromEntries(
     Object.entries(obj).filter(([, value]) => value !== undefined)
   ) as NonNullable<T>

@@ -27,6 +27,7 @@
 - perigon
 - predict leads
 - proxycurl
+- searxng
 - serpapi
 - serper
 - twitter
@@ -43,7 +44,7 @@
     - walter
 - services
   - exa - need to update to correct format
-  - searxng
+  - wolfram alpha
   - wikipedia
   - midjourney
   - firecrawl
