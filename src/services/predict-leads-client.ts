@@ -4,13 +4,13 @@ import pThrottle from 'p-throttle'
 import type { DeepNullable } from '../types.js'
 import { assert, getEnv, throttleKy } from '../utils.js'
 
-const predictionLeadsAPIThrottle = pThrottle({
-  limit: 20,
-  interval: 60 * 1000,
-  strict: true
-})
-
 export namespace predictleads {
+  export const throttle = pThrottle({
+    limit: 20,
+    interval: 60 * 1000,
+    strict: true
+  })
+
   export type Meta = DeepNullable<{
     count: number
     message?: string | null
@@ -210,9 +210,7 @@ export class PredictLeadsClient {
     this.apiKey = apiKey
     this.apiToken = apiToken
 
-    const throttledKy = throttle
-      ? throttleKy(ky, predictionLeadsAPIThrottle)
-      : ky
+    const throttledKy = throttle ? throttleKy(ky, predictleads.throttle) : ky
 
     this.ky = throttledKy.extend({
       timeout: timeoutMs,

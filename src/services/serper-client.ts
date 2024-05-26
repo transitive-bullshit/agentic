@@ -186,11 +186,7 @@ export namespace serper {
     position: number
   }
 
-  export interface ClientOptions extends Omit<Partial<SearchParams>, 'q'> {
-    apiKey?: string
-    apiBaseUrl?: string
-    ky?: KyInstance
-  }
+  export type ClientParams = Partial<Omit<SearchParams, 'q'>>
 }
 
 /**
@@ -202,14 +198,18 @@ export class SerperClient extends AIToolsProvider {
   readonly ky: KyInstance
   readonly apiKey: string
   readonly apiBaseUrl: string
-  readonly params: Omit<Partial<serper.SearchParams>, 'q'>
+  readonly params: serper.ClientParams
 
   constructor({
     apiKey = getEnv('SERPER_API_KEY'),
     apiBaseUrl = serper.BASE_URL,
     ky = defaultKy,
     ...params
-  }: serper.ClientOptions = {}) {
+  }: {
+    apiKey?: string
+    apiBaseUrl?: string
+    ky?: KyInstance
+  } & serper.ClientParams = {}) {
     assert(
       apiKey,
       `SerperClient missing required "apiKey" (defaults to "SERPER_API_KEY" env var)`
