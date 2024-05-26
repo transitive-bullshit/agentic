@@ -156,24 +156,23 @@ export class ExaClient {
     })
   }
 
-  async search(query: string, options?: exa.RegularSearchOptions) {
-    return this.ky
-      .post('search', { json: { ...options, query } })
-      .json<exa.SearchResponse>()
+  /**
+   * Performs an Exa search for the given query.
+   */
+  async search(opts: { query: string } & exa.RegularSearchOptions) {
+    return this.ky.post('search', { json: opts }).json<exa.SearchResponse>()
   }
 
   /**
    * Performs a search with a Exa prompt-engineered query and returns the
    * contents of the documents.
-   *
-   * @param {string} query - The query string.
    */
-  async searchAndContents<T extends exa.ContentsOptions = exa.ContentsOptions>(
-    query: string,
-    options?: exa.RegularSearchOptions & T
-  ) {
-    const { text, highlights, ...rest } = options || {}
-
+  async searchAndContents<T extends exa.ContentsOptions = exa.ContentsOptions>({
+    query,
+    text,
+    highlights,
+    ...rest
+  }: { query: string } & exa.RegularSearchOptions & T) {
     return this.ky
       .post('search', {
         json: {
@@ -193,12 +192,10 @@ export class ExaClient {
 
   /**
    * Finds similar links to the provided URL.
-   *
-   * @param {string} url - The URL for which to find similar links.
    */
-  async findSimilar(url: string, options?: exa.FindSimilarOptions) {
+  async findSimilar(opts: { url: string } & exa.FindSimilarOptions) {
     return this.ky
-      .post('findSimilar', { json: { url, ...options } })
+      .post('findSimilar', { json: opts })
       .json<exa.SearchResponse>()
   }
 
@@ -210,9 +207,12 @@ export class ExaClient {
    */
   async findSimilarAndContents<
     T extends exa.ContentsOptions = exa.ContentsOptions
-  >(url: string, options?: exa.FindSimilarOptions & T) {
-    const { text, highlights, ...rest } = options || {}
-
+  >({
+    url,
+    text,
+    highlights,
+    ...rest
+  }: { url: string } & exa.FindSimilarOptions & T) {
     return this.ky
       .post('findSimilar', {
         json: {
@@ -235,10 +235,10 @@ export class ExaClient {
    *
    * @param {string | string[] | SearchResult[]} ids - An array of document IDs.
    */
-  async getContents<T extends exa.ContentsOptions>(
-    ids: string | string[] | exa.SearchResult[],
-    options?: T
-  ) {
+  async getContents<T extends exa.ContentsOptions = exa.ContentsOptions>({
+    ids,
+    ...opts
+  }: { ids: string | string[] | exa.SearchResult[] } & T) {
     let requestIds: string[]
 
     if (typeof ids === 'string') {
@@ -256,8 +256,8 @@ export class ExaClient {
     return this.ky
       .post('contents', {
         json: {
-          ids: requestIds,
-          ...options
+          ...opts,
+          ids: requestIds
         }
       })
       .json<exa.SearchResponse<T>>()
