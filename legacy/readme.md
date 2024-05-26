@@ -23,6 +23,7 @@
 - dexa
 - diffbot
 - exa
+- firecrawl
 - people data labs
 - perigon
 - predict leads
@@ -43,11 +44,9 @@
     - agentic
     - walter
 - services
-  - exa - need to update to correct format
   - wolfram alpha
   - wikipedia
   - midjourney
-  - firecrawl
   - unstructured
   - pull from [langchain](https://github.com/langchain-ai/langchainjs/tree/main/langchain)
   - pull from other libs
