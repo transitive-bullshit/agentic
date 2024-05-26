@@ -33,6 +33,7 @@
 - serper
 - twitter
 - weatherapi
+- wikipedia
 
 ## TODO
 
@@ -45,7 +46,6 @@
     - walter
 - services
   - wolfram alpha
-  - wikipedia
   - midjourney
   - unstructured
   - pull from [langchain](https://github.com/langchain-ai/langchainjs/tree/main/langchain)
