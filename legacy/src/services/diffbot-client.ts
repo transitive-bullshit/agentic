@@ -4,15 +4,15 @@ import pThrottle from 'p-throttle'
 
 import { assert, getEnv, throttleKy } from '../utils.js'
 
-const diffbotAPIThrottle = pThrottle({
-  limit: 5,
-  interval: 1000,
-  strict: true
-})
-
 export namespace diffbot {
   export const API_BASE_URL = 'https://api.diffbot.com'
   export const KNOWLEDGE_GRAPH_API_BASE_URL = 'https://kg.diffbot.com'
+
+  export const throttle = pThrottle({
+    limit: 5,
+    interval: 1000,
+    strict: true
+  })
 
   export interface DiffbotExtractOptions {
     /** Specify optional fields to be returned from any fully-extracted pages, e.g.: &fields=querystring,links. See available fields within each API's individual documentation pages.
@@ -357,7 +357,7 @@ export class DiffbotClient {
     this.apiBaseUrl = apiBaseUrl
     this.apiKnowledgeGraphBaseUrl = apiKnowledgeGraphBaseUrl
 
-    const throttledKy = throttle ? throttleKy(ky, diffbotAPIThrottle) : ky
+    const throttledKy = throttle ? throttleKy(ky, diffbot.throttle) : ky
 
     this.ky = throttledKy.extend({
       prefixUrl: apiBaseUrl,

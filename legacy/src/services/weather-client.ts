@@ -88,7 +88,10 @@ export class WeatherClient extends AIToolsProvider {
     apiBaseUrl?: string
     ky?: KyInstance
   } = {}) {
-    assert(apiKey, 'WEATHER_API_KEY is required')
+    assert(
+      apiKey,
+      'WeatherClient missing required "apiKey" (defaults to "WEATHER_API_KEY")'
+    )
     super()
 
     this.apiKey = apiKey

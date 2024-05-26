@@ -3,13 +3,13 @@ import pThrottle from 'p-throttle'
 
 import { assert, getEnv, throttleKy } from '../utils.js'
 
-const perigonAPIThrottle = pThrottle({
-  limit: 20,
-  interval: 60 * 1000,
-  strict: true
-})
-
 export namespace perigon {
+  export const throttle = pThrottle({
+    limit: 20,
+    interval: 60 * 1000,
+    strict: true
+  })
+
   export type ArticleLabel =
     | 'Opinion'
     | 'Non-news'
@@ -268,7 +268,7 @@ export class PerigonClient {
 
     this.apiKey = apiKey
 
-    const throttledKy = throttle ? throttleKy(ky, perigonAPIThrottle) : ky
+    const throttledKy = throttle ? throttleKy(ky, perigon.throttle) : ky
 
     this.ky = throttledKy.extend({
       prefixUrl: 'https://api.goperigon.com/v1/',

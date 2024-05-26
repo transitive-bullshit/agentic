@@ -147,6 +147,7 @@ export class ExaClient {
 
     this.apiKey = apiKey
     this.apiBaseUrl = apiBaseUrl
+
     this.ky = ky.extend({
       prefixUrl: this.apiBaseUrl,
       headers: {

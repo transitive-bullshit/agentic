@@ -4,14 +4,14 @@ import pThrottle from 'p-throttle'
 import type { DeepNullable, KyInstance } from '../types.js'
 import { assert, delay, getEnv, throttleKy } from '../utils.js'
 
-// Only allow 20 clearbit API requests per 60s
-const clearbitAPIThrottle = pThrottle({
-  limit: 20,
-  interval: 60 * 1000,
-  strict: true
-})
-
 export namespace clearbit {
+  // Only allow 20 clearbit API requests per 60s
+  export const throttle = pThrottle({
+    limit: 20,
+    interval: 60 * 1000,
+    strict: true
+  })
+
   export interface CompanyEnrichmentOptions {
     domain: string
     webhook_url?: string
@@ -528,7 +528,7 @@ export class ClearbitClient {
 
     this.apiKey = apiKey
 
-    const throttledKy = throttle ? throttleKy(ky, clearbitAPIThrottle) : ky
+    const throttledKy = throttle ? throttleKy(ky, clearbit.throttle) : ky
 
     this.ky = throttledKy.extend({
       timeout: timeoutMs,

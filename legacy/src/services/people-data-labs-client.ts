@@ -3,14 +3,14 @@ import pThrottle from 'p-throttle'
 
 import { assert, getEnv, throttleKy } from '../utils.js'
 
-const peopleDataLabsAPIThrottle = pThrottle({
-  limit: 20,
-  interval: 60 * 1000,
-  strict: true
-})
-
 export namespace peopledatalabs {
   export const BASE_URL = 'https://api.peopledatalabs.com/v5/'
+
+  export const throttle = pThrottle({
+    limit: 20,
+    interval: 60 * 1000,
+    strict: true
+  })
 
   export const JobTitleLevels = [
     'cxo',
@@ -453,9 +453,7 @@ export class PeopleDataLabsClient {
     this.apiKey = apiKey
     this.apiBaseUrl = apiBaseUrl
 
-    const throttledKy = throttle
-      ? throttleKy(ky, peopleDataLabsAPIThrottle)
-      : ky
+    const throttledKy = throttle ? throttleKy(ky, peopledatalabs.throttle) : ky
 
     this.ky = throttledKy.extend({
       prefixUrl: apiBaseUrl,

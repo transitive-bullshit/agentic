@@ -2,7 +2,7 @@ import defaultKy, { type KyInstance } from 'ky'
 import { z } from 'zod'
 
 import { aiFunction, AIToolsProvider } from '../fns.js'
-import { getEnv } from '../utils.js'
+import { assert, getEnv } from '../utils.js'
 
 /**
  * All types have been exported from the `serpapi` package, which we're
@@ -625,13 +625,7 @@ export namespace serpapi {
     device?: 'desktop' | 'tablet' | 'mobile'
   }
 
-  export type Params = Omit<GoogleParameters, 'q'>
-
-  export interface ClientOptions extends Partial<Params> {
-    apiKey?: string
-    apiBaseUrl?: string
-    ky?: KyInstance
-  }
+  export type ClientParams = Partial<Omit<GoogleParameters, 'q'>>
 }
 
 /**
@@ -640,28 +634,29 @@ export namespace serpapi {
  * @see https://serpapi.com/search-api
  */
 export class SerpAPIClient extends AIToolsProvider {
-  protected api: KyInstance
+  protected ky: KyInstance
   protected apiKey: string
   protected apiBaseUrl: string
-  protected params: Partial<serpapi.Params>
+  protected params: serpapi.ClientParams
 
   constructor({
     apiKey = getEnv('SERPAPI_API_KEY') ?? getEnv('SERP_API_KEY'),
     apiBaseUrl = serpapi.BASE_URL,
     ky = defaultKy,
     ...params
-  }: serpapi.ClientOptions = {}) {
-    if (!apiKey) {
-      throw new Error(`Error SerpAPIClient missing required "apiKey"`)
-    }
-
+  }: {
+    apiKey?: string
+    apiBaseUrl?: string
+    ky?: KyInstance
+  } & serpapi.ClientParams = {}) {
+    assert(apiKey, `Error SerpAPIClient missing required "apiKey"`)
     super()
 
     this.apiKey = apiKey
     this.apiBaseUrl = apiBaseUrl
     this.params = params
 
-    this.api = ky.extend({
+    this.ky = ky.extend({
       prefixUrl: this.apiBaseUrl
     })
   }
@@ -684,7 +679,7 @@ export class SerpAPIClient extends AIToolsProvider {
     const { timeout, ...rest } = this.params
 
     // console.log('SerpAPIClient.search', options)
-    return this.api
+    return this.ky
       .get('search', {
         searchParams: {
           ...rest,
