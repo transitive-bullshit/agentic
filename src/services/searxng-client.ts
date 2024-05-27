@@ -241,6 +241,10 @@ export namespace searxng {
 
 /**
  * @see https://docs.searxng.org
+ *
+ * NOTE: You'll need to run a local instance of Searxng to use this client.
+ *
+ * See [perplexica](https://github.com/ItzCrazyKns/Perplexica/blob/master/docker-compose.yaml) for an example.
  */
 export class SearxngClient {
   readonly ky: KyInstance
