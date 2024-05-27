@@ -271,8 +271,8 @@ export class SearxngClient {
     const res = await this.ky
       .get('search', {
         searchParams: pruneUndefined({
-          q: query,
           ...opts,
+          q: query,
           categories: opts.categories?.join(','),
           engines: opts.engines?.join(','),
           format: 'json'
