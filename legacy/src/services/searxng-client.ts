@@ -227,11 +227,15 @@ export namespace searxng {
     content?: string
     author?: string
     iframe_src?: string
+    category?: SearchCategory
+    engine?: SearchEngine
+    publishedDate?: string
   }
 
   export interface SearchResponse {
     results: SearchResult[]
     suggestions: string[]
+    query: string
   }
 }
 
@@ -240,11 +244,9 @@ export namespace searxng {
  */
 export class SearxngClient {
   readonly ky: KyInstance
-  readonly apiKey: string
   readonly apiBaseUrl: string
 
   constructor({
-    apiKey = getEnv('SEARXNG_API_KEY'),
     apiBaseUrl = getEnv('SEARXNG_API_BASE_URL'),
     ky = defaultKy
   }: {
@@ -253,32 +255,42 @@ export class SearxngClient {
     ky?: KyInstance
   } = {}) {
     assert(
-      apiKey,
-      'SearxngClient missing required "apiKey" (defaults to "SEARXNG_API_KEY")'
-    )
-    assert(
       apiBaseUrl,
       'SearxngClient missing required "apiBaseUrl" (defaults to "SEARXNG_API_BASE_URL")'
     )
 
-    this.apiKey = apiKey
     this.apiBaseUrl = apiBaseUrl
 
     this.ky = ky.extend({ prefixUrl: apiBaseUrl })
   }
 
-  async search(opts: searxng.SearchOptions): Promise<searxng.SearchResponse> {
+  async search({
+    query,
+    ...opts
+  }: searxng.SearchOptions): Promise<searxng.SearchResponse> {
     const res = await this.ky
       .get('search', {
         searchParams: pruneUndefined({
-          ...omit(opts, 'categories', 'engines'),
+          q: query,
+          ...opts,
           categories: opts.categories?.join(','),
-          engines: opts.categories?.join(','),
+          engines: opts.engines?.join(','),
           format: 'json'
         })
       })
       .json<searxng.SearchResponse>()
 
-    return pick(res, 'results', 'suggestions')
+    res.results = res.results?.map(
+      (result: any) =>
+        omit(
+          result,
+          'parsed_url',
+          'engines',
+          'positions',
+          'template'
+        ) as searxng.SearchResult
+    )
+
+    return pick(res, 'results', 'suggestions', 'query')
   }
 }
