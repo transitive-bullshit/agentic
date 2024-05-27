@@ -101,63 +101,66 @@ export namespace perigon {
   export type ArticlesResponse = {
     status: number
     numResults: number
-    articles: {
-      url: string
-      authorsByline: string
-      articleId: string
-      clusterId: string
-      source: {
-        domain: string
-      }
-      imageUrl: string
-      country: string
-      language: string
-      pubDate: string
-      addDate: string
-      refreshDate: string
-      score: number
-      title: string
-      description: string
-      content: string
-      medium: string
-      links: string[]
-      labels: string[]
-      matchedAuthors: string[]
-      claim: string
-      verdict: string
-      keywords: {
-        name: string
-        weight: number
-      }[]
-      topics: {
-        name: string
-      }[]
-      categories: {
-        name: string
-      }[]
-      entities: {
-        data: string
-        type: string
-        mentions: number
-      }[]
-      sentiment: {
-        positive: number
-        negative: number
-        neutral: number
-      }
-      summary: string
-      translation: string
-      locations: string[]
-      reprint: boolean
-      reprintGroupId: string
-      places: null
+    articles: Article[]
+  }
+
+  export type Article = {
+    url: string
+    authorsByline: string
+    articleId: string
+    clusterId: string
+    source: {
+      domain: string
+    }
+    imageUrl: string
+    country: string
+    language: string
+    pubDate: string
+    addDate: string
+    refreshDate: string
+    score: number
+    title: string
+    description: string
+    content: string
+    medium: string
+    links: string[]
+    labels: string[]
+    matchedAuthors: string[]
+    claim: string
+    verdict: string
+    keywords: {
+      name: string
+      weight: number
     }[]
+    topics: {
+      name: string
+    }[]
+    categories: {
+      name: string
+    }[]
+    entities: {
+      data: string
+      type: string
+      mentions: number
+    }[]
+    sentiment: {
+      positive: number
+      negative: number
+      neutral: number
+    }
+    summary: string
+    translation: string
+    locations: string[]
+    reprint: boolean
+    reprintGroupId: string
+    places: null
   }
 
   export type StoriesOptions = {
     clusterId?: string
     topic?: string
     category?: Categories
+    q?: string
     name?: string
     nameExists?: boolean
     from?: string
@@ -180,73 +183,78 @@ export namespace perigon {
   export type StoriesResponse = {
     status: number
     numResults: number
-    results: Array<{
-      createdAt: string
-      updatedAt: string
-      initializedAt: string
+    results: Story[]
+  }
+
+  export type Story = {
+    createdAt: string
+    updatedAt: string
+    initializedAt: string
+    id: string
+    name: string
+    summary: string
+    summaryReferences: Array<any>
+    keyPoints: Array<{
+      point: string
+      references: Array<string>
+    }>
+    sentiment: {
+      positive: number
+      negative: number
+      neutral: number
+    }
+    uniqueCount: number
+    reprintCount: number
+    totalCount: number
+    countries: Array<{
+      name: string
+      count: number
+    }>
+    topCountries: Array<string>
+    topics: Array<{
+      name: string
+      count: number
+    }>
+    topTopics: Array<{ name: string }>
+    categories: Array<{
+      name: string
+      count: number
+    }>
+    topCategories: Array<{ name: string }>
+    people: Array<{ wikidataId: string; name: string; count: number }>
+    topPeople: Array<{ wikidataId: string; name: string }>
+    companies: Array<{
       id: string
       name: string
-      summary: string
-      summaryReferences: Array<any>
-      keyPoints: Array<{
-        point: string
-        references: Array<string>
-      }>
-      sentiment: {
-        positive: number
-        negative: number
-        neutral: number
-      }
-      uniqueCount: number
-      reprintCount: number
-      totalCount: number
-      countries: Array<{
-        name: string
-        count: number
-      }>
-      topCountries: Array<string>
-      topics: Array<{
-        name: string
-        count: number
-      }>
-      topTopics: Array<{ name: string }>
-      categories: Array<{
-        name: string
-        count: number
-      }>
-      topCategories: Array<{ name: string }>
-      people: Array<{ wikidataId: string; name: string; count: number }>
-      topPeople: Array<{ wikidataId: string; name: string }>
-      companies: Array<{
-        id: string
-        name: string
-        domains: Array<string>
-        symbols: Array<string>
-        count: number
-      }>
-      topCompanies: Array<{
-        id: string
-        name: string
-        domains: Array<string>
-        symbols: Array<string>
-      }>
-      locations: Array<{
-        state: string
-        city?: string
-        area?: string
-        county?: string
-        count: number
-      }>
-      topLocations: Array<{
-        state: string
-        city?: string
-        area?: string
-        county?: string
-      }>
+      domains: Array<string>
+      symbols: Array<string>
+      count: number
+    }>
+    topCompanies: Array<{
+      id: string
+      name: string
+      domains: Array<string>
+      symbols: Array<string>
+    }>
+    locations: Array<{
+      state: string
+      city?: string
+      area?: string
+      county?: string
+      count: number
+    }>
+    topLocations: Array<{
+      state: string
+      city?: string
+      area?: string
+      county?: string
     }>
   }
 }
 
+/**
+ * @see https://www.goperigon.com
+ */
 export class PerigonClient {
   readonly ky: KyInstance
   readonly apiKey: string
@@ -264,7 +272,7 @@ export class PerigonClient {
     timeoutMs?: number
     ky?: KyInstance
   } = {}) {
-    assert(apiKey, 'Error perigon client missing required "apiKey"')
+    assert(apiKey, 'Error PerigonClient missing required "apiKey"')
 
     this.apiKey = apiKey
 
