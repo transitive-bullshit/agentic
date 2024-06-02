@@ -7,7 +7,7 @@ import { AIToolsProvider } from '../fns.js'
  * Converts a set of Agentic stdlib AI functions to an array of Dexter-
  * compatible AI functions.
  */
-export function functions(input: AIToolsProvider | AIFunctionSet) {
+export function createDexterFunctions(input: AIToolsProvider | AIFunctionSet) {
   const fns = input instanceof AIToolsProvider ? input.functions : input
 
   return fns.map((fn) =>

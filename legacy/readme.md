@@ -35,6 +35,13 @@
 - weatherapi
 - wikipedia
 
+## SDKs
+
+- vercel ai sdk
+- dexa dexter
+- firebase genkit
+- langchain
+
 ## TODO
 
 - core
@@ -45,16 +52,13 @@
     - agentic
     - walter
 - sdks
-  - ai sdk
-  - dexter
-  - genkit
-  - langchain
   - instructor-js
 - services
   - wolfram alpha
   - midjourney
   - unstructured
   - pull from [langchain](https://github.com/langchain-ai/langchainjs/tree/main/langchain)
+    - provide a converter for langchain `DynamicStructuredTool`
   - pull from other libs
   - pull from [nango](https://docs.nango.dev/integrations/overview)
 
