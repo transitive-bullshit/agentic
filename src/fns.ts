@@ -4,7 +4,6 @@ import type { z } from 'zod'
 
 import type * as types from './types.js'
 import { AIFunctionSet } from './ai-function-set.js'
-import { AIToolSet } from './ai-tool-set.js'
 import { createAIFunction } from './create-ai-function.js'
 import { assert } from './utils.js'
 
@@ -15,17 +14,8 @@ export interface Invocable {
   methodName: string
 }
 
-export abstract class AIToolsProvider {
-  private _tools?: AIToolSet
+export abstract class AIFunctionsProvider {
   private _functions?: AIFunctionSet
-
-  get tools(): AIToolSet {
-    if (!this._tools) {
-      this._tools = AIToolSet.fromAIFunctionSet(this.functions)
-    }
-
-    return this._tools
-  }
 
   get functions(): AIFunctionSet {
     if (!this._functions) {

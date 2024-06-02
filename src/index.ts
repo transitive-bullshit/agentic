@@ -1,5 +1,5 @@
 export * from './ai-function-set.js'
-export * from './ai-tool-set.js'
+export * from './create-ai-function.js'
 export * from './create-ai-function.js'
 export * from './errors.js'
 export * from './fns.js'

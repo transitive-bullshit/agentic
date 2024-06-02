@@ -1,14 +1,16 @@
 import { createAIFunction } from '@dexaai/dexter'
 
-import type { AIFunctionSet } from '../ai-function-set.js'
-import { AIToolsProvider } from '../fns.js'
+import type { AIFunctionLike } from '../types.js'
+import { AIFunctionSet } from '../ai-function-set.js'
 
 /**
  * Converts a set of Agentic stdlib AI functions to an array of Dexter-
  * compatible AI functions.
  */
-export function createDexterFunctions(input: AIToolsProvider | AIFunctionSet) {
-  const fns = input instanceof AIToolsProvider ? input.functions : input
+export function createDexterFunctions(
+  ...aiFunctionLikeTools: AIFunctionLike[]
+) {
+  const fns = new AIFunctionSet(aiFunctionLikeTools)
 
   return fns.map((fn) =>
     createAIFunction(

@@ -18,22 +18,20 @@ async function main() {
     { role: 'user', content: 'What is the weather in San Francisco?' }
   ]
 
-  const tools = weather.tools
-
   {
     // First call to OpenAI to invoke the weather tool
     const res = await openai.chat.completions.create({
       messages,
       model: 'gpt-4o',
       temperature: 0,
-      tools: tools.specs,
+      tools: weather.functions.toolSpecs,
       tool_choice: 'required'
     })
     const message = res.choices[0]?.message!
     console.log(JSON.stringify(message, null, 2))
     assert(message.tool_calls?.[0]?.function?.name === 'get_current_weather')
 
-    const fn = tools.get('get_current_weather')!.function
+    const fn = weather.functions.get('get_current_weather')!
     assert(fn)
 
     const toolParams = message.tool_calls[0].function.arguments
@@ -53,7 +51,7 @@ async function main() {
       messages,
       model: 'gpt-4o',
       temperature: 0,
-      tools: tools.specs
+      tools: weather.functions.toolSpecs
     })
     const message = res.choices[0].message
     console.log(JSON.stringify(message, null, 2))
