@@ -1,5 +1,4 @@
 import defaultKy, { type KyInstance } from 'ky'
-import { AbortError } from 'p-retry'
 import pThrottle from 'p-throttle'
 
 import { assert, getEnv, throttleKy } from '../utils.js'
@@ -388,17 +387,6 @@ export class DiffbotClient {
     for (const [key, value] of Object.entries(rest)) {
       if (Array.isArray(value)) {
         searchParams[key] = value.join(',')
-      }
-    }
-
-    // TODO
-    const { url } = searchParams
-    if (url) {
-      const parsedUrl = new URL(url)
-      if (parsedUrl.hostname.includes('theguardian.com')) {
-        throw new AbortError(
-          `Diffbot does not support URLs from domain "${parsedUrl.hostname}"`
-        )
       }
     }
 

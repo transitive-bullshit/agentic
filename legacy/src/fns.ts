@@ -1,6 +1,6 @@
 import './symbol-polyfill.js'
 
-import type * as z from 'zod'
+import type { z } from 'zod'
 
 import type * as types from './types.js'
 import { createAIFunction } from './ai-function.js'
