@@ -11,11 +11,12 @@ async function main() {
   const weather = new WeatherClient()
 
   const result = await generateText({
-    model: openai('gpt-4-turbo'),
+    model: openai('gpt-4o'),
     tools: createAISDKTools(weather),
     toolChoice: 'required',
-    prompt:
-      'What is the weather in San Francisco and what attractions should I visit?'
+    temperature: 0,
+    system: 'You are a weather assistant. Be as concise as possible.',
+    prompt: 'What is the weather in San Francisco?'
   })
 
   console.log(result.toolResults[0])
