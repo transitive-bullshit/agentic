@@ -8,7 +8,7 @@ import { AIToolsProvider } from '../fns.js'
  * Converts a set of Agentic stdlib AI functions to an array of Genkit-
  * compatible tools.
  */
-export function tools(input: AIToolsProvider | AIFunctionSet) {
+export function createGenkitTools(input: AIToolsProvider | AIFunctionSet) {
   const fns = input instanceof AIToolsProvider ? input.functions : input
 
   return fns.map((fn) =>

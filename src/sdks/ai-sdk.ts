@@ -7,7 +7,7 @@ import { AIToolsProvider } from '../fns.js'
  * Converts a set of Agentic stdlib AI functions to an object compatible with
  * the Vercel AI SDK's `tools` parameter.
  */
-export function tools(tools: AIToolsProvider | AIFunctionSet) {
+export function createAISDKTools(tools: AIToolsProvider | AIFunctionSet) {
   const fns = tools instanceof AIToolsProvider ? tools.functions : tools
 
   return Object.fromEntries(

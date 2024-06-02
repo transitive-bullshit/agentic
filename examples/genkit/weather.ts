@@ -6,7 +6,7 @@ import { configureGenkit } from '@genkit-ai/core'
 import { gpt4o, openAI } from 'genkitx-openai'
 
 import { WeatherClient } from '../../src/index.js'
-import { tools } from '../../src/sdks/genkit.js'
+import { createGenkitTools } from '../../src/sdks/genkit.js'
 
 async function main() {
   const weather = new WeatherClient()
@@ -17,7 +17,7 @@ async function main() {
 
   const result = await generate({
     model: gpt4o,
-    tools: tools(weather),
+    tools: createGenkitTools(weather),
     history: [
       {
         role: 'system',
@@ -28,7 +28,7 @@ async function main() {
         ]
       }
     ],
-    prompt: [{ text: 'What is the weather in San Francisco?' }]
+    prompt: 'What is the weather in San Francisco?'
   })
 
   console.log(result)

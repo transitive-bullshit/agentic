@@ -10,7 +10,7 @@ import {
 import { z } from 'zod'
 
 import { WeatherClient } from '../../src/index.js'
-import { functions } from '../../src/sdks/dexter.js'
+import { createDexterFunctions } from '../../src/sdks/dexter.js'
 
 /** Get the capital city for a given state. */
 const getCapitalCity = createAIFunction(
@@ -48,7 +48,7 @@ const weather = new WeatherClient()
 /** A runner that uses the weather and capital city functions. */
 const weatherCapitalRunner = createAIRunner({
   chatModel: new ChatModel({ params: { model: 'gpt-4-1106-preview' } }),
-  functions: [...functions(weather), getCapitalCity],
+  functions: [...createDexterFunctions(weather), getCapitalCity],
   systemMessage: `You use functions to answer questions about the weather and capital cities.`
 })
 
