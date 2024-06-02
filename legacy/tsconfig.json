@@ -25,5 +25,8 @@
     "outDir": "dist",
     "sourceMap": true
   },
-  "include": ["src"]
+  "include": ["src"],
+  "ts-node": {
+    "transpileOnly": true
+  }
 }

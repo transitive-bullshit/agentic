@@ -15,7 +15,7 @@ async function main() {
     tools: createAISDKTools(weather),
     toolChoice: 'required',
     temperature: 0,
-    system: 'You are a weather assistant. Be as concise as possible.',
+    system: 'You are a helpful assistant. Be as concise as possible.',
     prompt: 'What is the weather in San Francisco?'
   })
 

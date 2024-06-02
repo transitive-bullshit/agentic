@@ -13,7 +13,7 @@
   <a href="https://twitter.com/transitive_bs"><img alt="Discuss on Twitter" src="https://img.shields.io/badge/twitter-discussion-blue" /></a>
 </p>
 
-# Walter <!-- omit from toc -->
+# Agentic <!-- omit from toc -->
 
 **Coming soon**
 
@@ -44,15 +44,11 @@
 
 ## TODO
 
-- core
-  - company schema
-  - person schema
-  - database
-  - move out to a separate project
-    - agentic
-    - walter
+- rename this repo to agentic
+- change license to MIT
 - sdks
   - instructor-js
+  - TODO
 - services
   - wolfram alpha
   - midjourney

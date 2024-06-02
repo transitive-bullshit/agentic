@@ -12,7 +12,7 @@ async function main() {
   const runner = createAIRunner({
     chatModel: new ChatModel({ params: { model: 'gpt-4o', temperature: 0 } }),
     functions: createDexterFunctions(weather),
-    systemMessage: 'You are a weather assistant. Be as concise as possible.'
+    systemMessage: 'You are a helpful assistant. Be as concise as possible.'
   })
 
   const result = await runner('What is the weather in San Francisco?')
