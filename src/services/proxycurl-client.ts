@@ -1,5 +1,5 @@
 import defaultKy, { type KyInstance } from 'ky'
-import * as z from 'zod'
+import { z } from 'zod'
 
 import { assert, getEnv } from '../utils.js'
 

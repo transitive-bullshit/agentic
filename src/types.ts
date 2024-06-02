@@ -22,16 +22,19 @@ export interface AIToolSpec {
   function: AIFunctionSpec
 }
 
+/** The implementation of the function, with arg parsing and validation. */
+export type AIFunctionImpl<Return> = Omit<
+  (input: string | Msg) => MaybePromise<Return>,
+  'name' | 'toString' | 'arguments' | 'caller' | 'prototype' | 'length'
+>
+
 /**
  * A function meant to be used with LLM function calling.
  */
 export interface AIFunction<
   InputSchema extends z.ZodObject<any> = z.ZodObject<any>,
   Return = any
-> {
-  /** The implementation of the function, with arg parsing and validation. */
-  (input: string | Msg): MaybePromise<Return>
-
+> extends AIFunctionImpl<Return> {
   /** The Zod schema for the arguments string. */
   inputSchema: InputSchema
 
@@ -41,6 +44,7 @@ export interface AIFunction<
   /** The function spec for the OpenAI API `functions` property. */
   spec: AIFunctionSpec
 
+  /** The underlying function implementation without any arg parsing or validation. */
   impl: (params: z.infer<InputSchema>) => MaybePromise<Return>
 }
 

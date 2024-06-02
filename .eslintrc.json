@@ -1,4 +1,4 @@
 {
   "root": true,
-  "extends": ["@fisch0920/eslint-config", "@fisch0920/eslint-config/node"]
+  "extends": ["@fisch0920/eslint-config/node"]
 }

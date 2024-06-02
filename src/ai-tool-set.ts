@@ -58,6 +58,10 @@ export class AIToolSet implements Iterable<types.AITool> {
     )
   }
 
+  map<T>(fn: (fn: types.AITool) => T): T[] {
+    return [...this.entries].map(fn)
+  }
+
   get entries(): IterableIterator<types.AITool> {
     return this._map.values()
   }

@@ -1,28 +1,32 @@
 {
-  "name": "gptlint",
+  "name": "@agentic/stdlib",
   "private": true,
   "version": "0.1.0",
   "description": "TODO",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
-  "license": "PROPRIETARY",
-  "homepage": "https://trywalter.ai",
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "transitive-bullshit/walter"
+    "url": "transitive-bullshit/agentic"
   },
-  "packageManager": "pnpm@8.15.7",
+  "packageManager": "pnpm@9.1.4",
   "engines": {
     "node": ">=18"
   },
   "type": "module",
-  "source": "./src/gptlint.ts",
+  "source": "./src/index.ts",
   "types": "./dist/index.d.ts",
   "sideEffects": false,
   "exports": {
     ".": {
-      "types": "./dist/src/index.d.ts",
-      "import": "./dist/src/index.js",
-      "default": "./dist/src/index.js"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./ai-sdk": {
+      "types": "./dist/sdks/ai-sdk.d.ts",
+      "import": "./dist/sdks/ai-sdk.js",
+      "default": "./dist/sdks/ai-sdk.js"
     }
   },
   "files": [
@@ -67,6 +71,7 @@
     "@fisch0920/eslint-config": "^1.3.1",
     "@total-typescript/ts-reset": "^0.5.1",
     "@types/node": "^20.12.7",
+    "ai": "^3.1.22",
     "del-cli": "^5.1.0",
     "eslint": "^8.57.0",
     "husky": "^9.0.11",
@@ -80,6 +85,10 @@
     "tsx": "^4.11.0",
     "typescript": "^5.4.5",
     "vitest": "2.0.0-beta.3"
+  },
+  "optionalDependencies": {
+    "@dexaai/dexter": "^2.0.3",
+    "ai": "^3.1.22"
   },
   "lint-staged": {
     "*.{ts,tsx}": [

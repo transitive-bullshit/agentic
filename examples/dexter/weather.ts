@@ -7,11 +7,10 @@ import {
   createAIRunner,
   Msg
 } from '@dexaai/dexter'
-import { gracefulExit } from 'exit-hook'
-import restoreCursor from 'restore-cursor'
 import { z } from 'zod'
 
-import { WeatherClient } from '../src/index.js'
+import { WeatherClient } from '../../src/index.js'
+import { functions } from '../../src/sdks/dexter.js'
 
 /** Get the capital city for a given state. */
 const getCapitalCity = createAIFunction(
@@ -46,31 +45,14 @@ const getCapitalCity = createAIFunction(
 
 const weather = new WeatherClient()
 
-const fns = [...weather.functions]
-console.log('fns', fns)
-
-const getCurrentWeather = weather.functions.get('get_current_weather')!
-console.log('get_current_weather', getCurrentWeather)
-
 /** A runner that uses the weather and capital city functions. */
 const weatherCapitalRunner = createAIRunner({
   chatModel: new ChatModel({ params: { model: 'gpt-4-1106-preview' } }),
-  functions: [
-    createAIFunction(
-      {
-        ...getCurrentWeather.spec,
-        argsSchema: getCurrentWeather.inputSchema
-      },
-      getCurrentWeather.impl
-    ),
-    getCapitalCity
-  ],
+  functions: [...functions(weather), getCapitalCity],
   systemMessage: `You use functions to answer questions about the weather and capital cities.`
 })
 
 async function main() {
-  restoreCursor()
-
   // Run with a string input
   const rString = await weatherCapitalRunner(
     `Whats the capital of California and NY and the weather for both?`
@@ -88,9 +70,4 @@ async function main() {
   console.log('rMessage', rMessage)
 }
 
-try {
-  await main()
-} catch (err) {
-  console.error('unexpected error', err)
-  gracefulExit(1)
-}
+await main()

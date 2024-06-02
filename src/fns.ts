@@ -8,6 +8,13 @@ import { AIFunctionSet } from './ai-function-set.js'
 import { AIToolSet } from './ai-tool-set.js'
 import { assert } from './utils.js'
 
+export interface Invocable {
+  name: string
+  description?: string
+  inputSchema: z.AnyZodObject
+  methodName: string
+}
+
 export abstract class AIToolsProvider {
   private _tools?: AIToolSet
   private _functions?: AIFunctionSet
@@ -25,7 +32,7 @@ export abstract class AIToolsProvider {
       const metadata = this.constructor[Symbol.metadata]
       assert(metadata)
       const invocables = (metadata?.invocables as Invocable[]) ?? []
-      console.log({ metadata, invocables })
+      // console.log({ metadata, invocables })
 
       const aiFunctions = invocables.map((invocable) => {
         const impl = (this as any)[invocable.methodName]?.bind(this)
@@ -39,13 +46,6 @@ export abstract class AIToolsProvider {
 
     return this._functions
   }
-}
-
-export interface Invocable {
-  name: string
-  description?: string
-  inputSchema: z.AnyZodObject
-  methodName: string
 }
 
 export function aiFunction<
@@ -87,11 +87,11 @@ export function aiFunction<
       inputSchema,
       methodName
     })
-    console.log({
-      name,
-      methodName,
-      context
-    })
+    // console.log({
+    //   name,
+    //   methodName,
+    //   context
+    // })
 
     // context.addInitializer(function () {
     //   ;(this as any)[methodName] = (this as any)[methodName].bind(this)
