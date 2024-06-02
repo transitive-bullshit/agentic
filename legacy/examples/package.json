@@ -1,0 +1,33 @@
+{
+  "name": "agentic-examples",
+  "private": true,
+  "version": "0.1.0",
+  "description": "TODO",
+  "author": "Travis Fischer <travis@transitivebullsh.it>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "transitive-bullshit/agentic"
+  },
+  "packageManager": "pnpm@9.1.4",
+  "engines": {
+    "node": ">=18"
+  },
+  "type": "module",
+  "scripts": {
+    "preinstall": "npx only-allow pnpm",
+    "build": "tsc",
+    "clean": "del dist",
+    "prebuild": "run-s clean",
+    "pretest": "run-s build",
+    "test": "run-s test:*",
+    "test:typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "ai": "^3.1.22",
+    "@ai-sdk/openai": "^0.0.18",
+    "@dexaai/dexter": "^2.0.3",
+    "dotenv": "^16.4.5",
+    "zod": "^3.23.3"
+  }
+}

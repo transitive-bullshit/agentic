@@ -15,7 +15,7 @@ export class AIFunctionSet implements Iterable<types.AIFunction> {
   }
 
   add(fn: types.AIFunction): this {
-    this._map.set(fn.name, fn)
+    this._map.set(fn.spec.name, fn)
     return this
   }
 
@@ -52,6 +52,10 @@ export class AIFunctionSet implements Iterable<types.AIFunction> {
     return new AIFunctionSet(
       Array.from(this).filter((fn) => !keysToExcludeSet.has(fn.spec.name))
     )
+  }
+
+  map<T>(fn: (fn: types.AIFunction) => T): T[] {
+    return [...this.entries].map(fn)
   }
 
   get entries(): IterableIterator<types.AIFunction> {

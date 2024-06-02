@@ -126,18 +126,4 @@ export class WeatherClient extends AIToolsProvider {
       })
       .json<weatherapi.CurrentWeatherResponse>()
   }
-
-  async ipInfo(ipOrOptions: string | { q: string }) {
-    const options =
-      typeof ipOrOptions === 'string' ? { q: ipOrOptions } : ipOrOptions
-
-    return this.ky
-      .get('ip.json', {
-        searchParams: {
-          key: this.apiKey,
-          ...options
-        }
-      })
-      .json<weatherapi.WeatherIPInfoResponse>()
-  }
 }
