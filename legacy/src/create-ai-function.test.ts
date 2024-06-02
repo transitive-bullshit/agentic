@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { z } from 'zod'
 
-import { createAIFunction } from './ai-function.js'
+import { createAIFunction } from './create-ai-function.js'
 
 const fullName = createAIFunction(
   {

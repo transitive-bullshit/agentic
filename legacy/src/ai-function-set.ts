@@ -1,13 +1,19 @@
-import type { AIToolSet } from './ai-tool-set.js'
 import type * as types from './types.ts'
+import { AIFunctionsProvider } from './fns.js'
 
 export class AIFunctionSet implements Iterable<types.AIFunction> {
   protected readonly _map: Map<string, types.AIFunction>
 
-  constructor(functions?: readonly types.AIFunction[]) {
-    this._map = new Map(
-      functions ? functions.map((fn) => [fn.spec.name, fn]) : null
+  constructor(aiFunctionLikeObjects?: types.AIFunctionLike[]) {
+    const fns = aiFunctionLikeObjects?.flatMap((fn) =>
+      fn instanceof AIFunctionsProvider
+        ? [...fn.functions]
+        : fn instanceof AIFunctionSet
+          ? [...fn]
+          : [fn]
     )
+
+    this._map = new Map(fns ? fns.map((fn) => [fn.spec.name, fn]) : null)
   }
 
   get size(): number {
@@ -75,13 +81,5 @@ export class AIFunctionSet implements Iterable<types.AIFunction> {
 
   [Symbol.iterator](): Iterator<types.AIFunction> {
     return this.entries
-  }
-
-  static fromAIToolSet(tools: AIToolSet): AIFunctionSet {
-    return new AIFunctionSet(
-      Array.from(tools)
-        .filter((tool) => tool.spec.type === 'function')
-        .map((tool) => tool.function)
-    )
   }
 }

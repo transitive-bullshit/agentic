@@ -1,6 +1,9 @@
 import type { Jsonifiable } from 'type-fest'
 import type { z } from 'zod'
 
+import type { AIFunctionSet } from './ai-function-set.js'
+import type { AIFunctionsProvider } from './fns.js'
+
 export type { KyInstance } from 'ky'
 export type { ThrottledFunction } from 'p-throttle'
 
@@ -27,6 +30,8 @@ export type AIFunctionImpl<Return> = Omit<
   (input: string | Msg) => MaybePromise<Return>,
   'name' | 'toString' | 'arguments' | 'caller' | 'prototype' | 'length'
 >
+
+export type AIFunctionLike = AIFunctionsProvider | AIFunction | AIFunctionSet
 
 /**
  * A function meant to be used with LLM function calling.

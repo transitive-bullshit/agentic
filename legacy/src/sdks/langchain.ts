@@ -1,15 +1,15 @@
 import { DynamicStructuredTool } from '@langchain/core/tools'
 
-import type { AIFunctionSet } from '../ai-function-set.js'
-import { AIToolsProvider } from '../fns.js'
+import type { AIFunctionLike } from '../types.js'
+import { AIFunctionSet } from '../ai-function-set.js'
 import { stringifyForModel } from '../stringify-for-model.js'
 
 /**
  * Converts a set of Agentic stdlib AI functions to an array of LangChain-
  * compatible tools.
  */
-export function createLangChainTools(input: AIToolsProvider | AIFunctionSet) {
-  const fns = input instanceof AIToolsProvider ? input.functions : input
+export function createLangChainTools(...aiFunctionLikeTools: AIFunctionLike[]) {
+  const fns = new AIFunctionSet(aiFunctionLikeTools)
 
   return fns.map(
     (fn) =>

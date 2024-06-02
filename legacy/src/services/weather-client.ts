@@ -1,7 +1,7 @@
 import defaultKy, { type KyInstance } from 'ky'
 import { z } from 'zod'
 
-import { aiFunction, AIToolsProvider } from '../fns.js'
+import { aiFunction, AIFunctionsProvider } from '../fns.js'
 import { assert, getEnv } from '../utils.js'
 
 export namespace weatherapi {
@@ -74,7 +74,7 @@ export namespace weatherapi {
   }
 }
 
-export class WeatherClient extends AIToolsProvider {
+export class WeatherClient extends AIFunctionsProvider {
   readonly ky: KyInstance
   readonly apiKey: string
   readonly apiBaseUrl: string
