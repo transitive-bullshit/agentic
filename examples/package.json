@@ -24,10 +24,13 @@
     "test:typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "ai": "^3.1.22",
     "@ai-sdk/openai": "^0.0.18",
     "@dexaai/dexter": "^2.0.3",
+    "@genkit-ai/ai": "^0.5.2",
+    "@genkit-ai/core": "^0.5.2",
+    "ai": "^3.1.22",
     "dotenv": "^16.4.5",
+    "genkitx-openai": "^0.9.0",
     "zod": "^3.23.3"
   }
 }

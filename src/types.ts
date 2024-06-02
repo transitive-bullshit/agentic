@@ -13,7 +13,7 @@ export type RelaxedJsonifiable = Jsonifiable | Record<string, Jsonifiable>
 
 export interface AIFunctionSpec {
   name: string
-  description?: string
+  description: string
   parameters: Record<string, unknown>
 }
 

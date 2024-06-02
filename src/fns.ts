@@ -10,7 +10,7 @@ import { assert } from './utils.js'
 
 export interface Invocable {
   name: string
-  description?: string
+  description: string
   inputSchema: z.AnyZodObject
   methodName: string
 }
@@ -59,7 +59,7 @@ export function aiFunction<
   inputSchema
 }: {
   name?: string
-  description?: string
+  description: string
   inputSchema: InputSchema
 }) {
   return (

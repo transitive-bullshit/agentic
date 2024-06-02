@@ -44,6 +44,12 @@
   - move out to a separate project
     - agentic
     - walter
+- sdks
+  - ai sdk
+  - dexter
+  - genkit
+  - langchain
+  - instructor-js
 - services
   - wolfram alpha
   - midjourney
