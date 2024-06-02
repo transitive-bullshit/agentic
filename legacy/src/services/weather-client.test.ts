@@ -7,8 +7,5 @@ test('WeatherClient.functions', () => {
     apiKey: 'sk-test'
   })
 
-  const fns = [...weather.functions]
-  console.log(fns)
-
-  expect(weather.functions.get('getCurrentWeather')).toBeTruthy()
+  expect(weather.functions.get('get_current_weather')).toBeTruthy()
 })

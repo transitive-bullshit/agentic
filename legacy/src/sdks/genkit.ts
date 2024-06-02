@@ -1,21 +1,23 @@
-import { createAIFunction } from '@dexaai/dexter'
+import { defineTool } from '@genkit-ai/ai'
+import { z } from 'zod'
 
 import type { AIFunctionSet } from '../ai-function-set.js'
 import { AIToolsProvider } from '../fns.js'
 
 /**
- * Converts a set of Agentic stdlib AI functions to an array of Dexter-
- * compatible AI functions.
+ * Converts a set of Agentic stdlib AI functions to an array of Genkit-
+ * compatible tools.
  */
-export function functions(input: AIToolsProvider | AIFunctionSet) {
+export function tools(input: AIToolsProvider | AIFunctionSet) {
   const fns = input instanceof AIToolsProvider ? input.functions : input
 
   return fns.map((fn) =>
-    createAIFunction(
+    defineTool(
       {
         name: fn.spec.name,
         description: fn.spec.description,
-        argsSchema: fn.inputSchema
+        inputSchema: fn.inputSchema,
+        outputSchema: z.any()
       },
       fn.impl
     )

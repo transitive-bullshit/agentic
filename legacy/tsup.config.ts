@@ -2,7 +2,12 @@ import { defineConfig } from 'tsup'
 
 export default defineConfig([
   {
-    entry: ['src/index.ts', 'src/sdks/ai-sdk.ts', 'src/sdks/dexter.ts'],
+    entry: [
+      'src/index.ts',
+      'src/sdks/ai-sdk.ts',
+      'src/sdks/dexter.ts',
+      'src/sdks/genkit.ts'
+    ],
     outDir: 'dist',
     target: 'node18',
     platform: 'node',
