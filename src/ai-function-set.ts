@@ -58,6 +58,17 @@ export class AIFunctionSet implements Iterable<types.AIFunction> {
     return [...this.entries].map(fn)
   }
 
+  get specs(): types.AIFunctionSpec[] {
+    return this.map((fn) => fn.spec)
+  }
+
+  get toolSpecs(): types.AIToolSpec[] {
+    return this.map((fn) => ({
+      type: 'function' as const,
+      function: fn.spec
+    }))
+  }
+
   get entries(): IterableIterator<types.AIFunction> {
     return this._map.values()
   }

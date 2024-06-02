@@ -16,7 +16,7 @@ async function main() {
     llm: new ChatOpenAI({ model: 'gpt-4o', temperature: 0 }),
     tools,
     prompt: ChatPromptTemplate.fromMessages([
-      ['system', 'You are a weather assistant. Be as concise as possible.'],
+      ['system', 'You are a helpful assistant. Be as concise as possible.'],
       ['placeholder', '{chat_history}'],
       ['human', '{input}'],
       ['placeholder', '{agent_scratchpad}']

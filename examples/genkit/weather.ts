@@ -23,7 +23,7 @@ async function main() {
         role: 'system',
         content: [
           {
-            text: 'You are a weather assistant. Be as concise as possible.'
+            text: 'You are a helpful assistant. Be as concise as possible.'
           }
         ]
       }

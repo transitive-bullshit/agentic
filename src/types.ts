@@ -34,7 +34,9 @@ export type AIFunctionImpl<Return> = Omit<
 export interface AIFunction<
   InputSchema extends z.ZodObject<any> = z.ZodObject<any>,
   Return = any
-> extends AIFunctionImpl<Return> {
+> {
+  (input: string | Msg): MaybePromise<Return>
+
   /** The Zod schema for the arguments string. */
   inputSchema: InputSchema
 
