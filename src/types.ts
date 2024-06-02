@@ -40,6 +40,8 @@ export interface AIFunction<
 
   /** The function spec for the OpenAI API `functions` property. */
   spec: AIFunctionSpec
+
+  impl: (params: z.infer<InputSchema>) => MaybePromise<Return>
 }
 
 /**

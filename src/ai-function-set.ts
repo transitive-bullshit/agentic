@@ -5,7 +5,9 @@ export class AIFunctionSet implements Iterable<types.AIFunction> {
   protected readonly _map: Map<string, types.AIFunction>
 
   constructor(functions?: readonly types.AIFunction[]) {
-    this._map = new Map(functions ? functions.map((fn) => [fn.name, fn]) : null)
+    this._map = new Map(
+      functions ? functions.map((fn) => [fn.spec.name, fn]) : null
+    )
   }
 
   get size(): number {

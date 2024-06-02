@@ -12,6 +12,7 @@
     "useDefineForClassFields": true,
     "jsx": "preserve",
 
+    // NOTE: these are deprecated
     // "experimentalDecorators": true,
     // "emitDecoratorMetadata": true,
 
