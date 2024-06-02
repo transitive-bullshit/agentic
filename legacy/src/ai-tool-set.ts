@@ -6,7 +6,7 @@ export class AIToolSet implements Iterable<types.AITool> {
 
   constructor(tools?: readonly types.AITool[]) {
     this._map = new Map(
-      tools ? tools.map((tool) => [tool.function.name, tool]) : []
+      tools ? tools.map((tool) => [tool.spec.function.name, tool]) : []
     )
   }
 
@@ -15,7 +15,7 @@ export class AIToolSet implements Iterable<types.AITool> {
   }
 
   add(tool: types.AITool): this {
-    this._map.set(tool.function.name, tool)
+    this._map.set(tool.spec.function.name, tool)
     return this
   }
 
@@ -44,7 +44,7 @@ export class AIToolSet implements Iterable<types.AITool> {
     const keysToIncludeSet = new Set(keys)
     return new AIToolSet(
       Array.from(this).filter((tool) =>
-        keysToIncludeSet.has(tool.function.name)
+        keysToIncludeSet.has(tool.spec.function.name)
       )
     )
   }
@@ -53,7 +53,7 @@ export class AIToolSet implements Iterable<types.AITool> {
     const keysToExcludeSet = new Set(keys)
     return new AIToolSet(
       Array.from(this).filter(
-        (tool) => !keysToExcludeSet.has(tool.function.name)
+        (tool) => !keysToExcludeSet.has(tool.spec.function.name)
       )
     )
   }

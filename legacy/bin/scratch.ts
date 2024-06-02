@@ -7,7 +7,7 @@ import restoreCursor from 'restore-cursor'
 // import { SearxngClient } from '../src/services/searxng-client.js'
 // import { ClearbitClient } from '../src/index.js'
 // import { ProxycurlClient } from '../src/services/proxycurl-client.js'
-// import { WikipediaClient } from '../src/services/wikipedia-client.js'
+import { WikipediaClient } from '../src/index.js'
 
 /**
  * Scratch pad for testing.
@@ -27,11 +27,11 @@ async function main() {
   // })
   // console.log(JSON.stringify(res, null, 2))
 
-  // const wikipedia = new WikipediaClient()
-  // const res = await wikipedia.getPageSummary({
-  //   title: 'Naruto_(TV_series)'
-  // })
-  // console.log(JSON.stringify(res, null, 2))
+  const wikipedia = new WikipediaClient()
+  const res = await wikipedia.getPageSummary({
+    title: 'Naruto_(TV_series)'
+  })
+  console.log(JSON.stringify(res, null, 2))
 
   // const searxng = new SearxngClient()
   // const res = await searxng.search({

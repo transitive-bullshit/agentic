@@ -8,8 +8,6 @@ import { AIFunctionSet } from './ai-function-set.js'
 import { AIToolSet } from './ai-tool-set.js'
 import { assert } from './utils.js'
 
-export const invocableMetadataKey = Symbol('invocable')
-
 export abstract class AIToolsProvider {
   private _tools?: AIToolSet
   private _functions?: AIFunctionSet
@@ -25,7 +23,9 @@ export abstract class AIToolsProvider {
   get functions(): AIFunctionSet {
     if (!this._functions) {
       const metadata = this.constructor[Symbol.metadata]
+      assert(metadata)
       const invocables = (metadata?.invocables as Invocable[]) ?? []
+      console.log({ metadata, invocables })
 
       const aiFunctions = invocables.map((invocable) => {
         const impl = (this as any)[invocable.methodName]?.bind(this)
@@ -81,12 +81,16 @@ export function aiFunction<
     if (!context.metadata.invocables) {
       context.metadata.invocables = []
     }
-
     ;(context.metadata.invocables as Invocable[]).push({
       name: name ?? methodName,
       description,
       inputSchema,
       methodName
+    })
+    console.log({
+      name,
+      methodName,
+      context
     })
 
     // context.addInitializer(function () {
