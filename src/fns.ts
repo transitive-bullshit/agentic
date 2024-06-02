@@ -3,9 +3,9 @@ import './symbol-polyfill.js'
 import type { z } from 'zod'
 
 import type * as types from './types.js'
-import { createAIFunction } from './ai-function.js'
 import { AIFunctionSet } from './ai-function-set.js'
 import { AIToolSet } from './ai-tool-set.js'
+import { createAIFunction } from './create-ai-function.js'
 import { assert } from './utils.js'
 
 export interface Invocable {
@@ -35,7 +35,7 @@ export abstract class AIToolsProvider {
       // console.log({ metadata, invocables })
 
       const aiFunctions = invocables.map((invocable) => {
-        const impl = (this as any)[invocable.methodName]?.bind(this)
+        const impl = (this as any)[invocable.methodName]
         assert(impl)
 
         return createAIFunction(invocable, impl)
@@ -87,14 +87,15 @@ export function aiFunction<
       inputSchema,
       methodName
     })
+
     // console.log({
     //   name,
     //   methodName,
     //   context
     // })
 
-    // context.addInitializer(function () {
-    //   ;(this as any)[methodName] = (this as any)[methodName].bind(this)
-    // })
+    context.addInitializer(function () {
+      ;(this as any)[methodName] = (this as any)[methodName].bind(this)
+    })
   }
 }

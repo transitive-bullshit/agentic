@@ -18,40 +18,46 @@ async function main() {
     { role: 'user', content: 'What is the weather in San Francisco?' }
   ]
 
-  const res0 = await openai.chat.completions.create({
-    messages,
-    model: 'gpt-4o',
-    temperature: 0,
-    tools: weather.tools.specs,
-    tool_choice: 'required'
-  })
-  const message0 = res0.choices[0]?.message!
-  console.log(JSON.stringify(message0, null, 2))
-  assert(message0.role === 'assistant')
-  assert(message0.tool_calls?.[0]?.function?.name === 'get_current_weather')
+  const tools = weather.tools
 
-  const getCurrentWeather = weather.tools.get('get_current_weather')!.function
-  assert(getCurrentWeather)
+  {
+    // First call to OpenAI to invoke the weather tool
+    const res = await openai.chat.completions.create({
+      messages,
+      model: 'gpt-4o',
+      temperature: 0,
+      tools: tools.specs,
+      tool_choice: 'required'
+    })
+    const message = res.choices[0]?.message!
+    console.log(JSON.stringify(message, null, 2))
+    assert(message.tool_calls?.[0]?.function?.name === 'get_current_weather')
 
-  const toolParams = message0.tool_calls[0].function.arguments
-  assert(typeof toolParams === 'string')
-  const toolResult = await getCurrentWeather(toolParams)
+    const fn = tools.get('get_current_weather')!.function
+    assert(fn)
 
-  messages.push(message0)
-  messages.push({
-    role: 'tool',
-    tool_call_id: message0.tool_calls[0].id,
-    content: JSON.stringify(toolResult)
-  })
+    const toolParams = message.tool_calls[0].function.arguments
+    const toolResult = await fn(toolParams)
 
-  const res1 = await openai.chat.completions.create({
-    messages,
-    model: 'gpt-4o',
-    temperature: 0,
-    tools: weather.tools.specs
-  })
-  const message1 = res1.choices[0].message
-  console.log(JSON.stringify(message1, null, 2))
+    messages.push(message)
+    messages.push({
+      role: 'tool',
+      tool_call_id: message.tool_calls[0].id,
+      content: JSON.stringify(toolResult)
+    })
+  }
+
+  {
+    // Second call to OpenAI to generate a text response
+    const res = await openai.chat.completions.create({
+      messages,
+      model: 'gpt-4o',
+      temperature: 0,
+      tools: tools.specs
+    })
+    const message = res.choices[0].message
+    console.log(JSON.stringify(message, null, 2))
+  }
 }
 
 await main()

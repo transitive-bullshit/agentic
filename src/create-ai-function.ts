@@ -26,12 +26,15 @@ export function createAIFunction<InputSchema extends z.ZodObject<any>, Return>(
   /** Implementation of the function to call with the parsed arguments. */
   implementation: (params: z.infer<InputSchema>) => types.MaybePromise<Return>
 ): types.AIFunction<InputSchema, Return> {
-  assert(spec.name, 'Missing required AIFunction "spec.name"')
-  assert(spec.inputSchema, 'Missing required AIFunction "spec.inputSchema"')
-  assert(implementation, 'Missing required AIFunction "implementation"')
+  assert(spec.name, 'createAIFunction missing required "spec.name"')
+  assert(
+    spec.inputSchema,
+    'createAIFunction missing required "spec.inputSchema"'
+  )
+  assert(implementation, 'createAIFunction missing required "implementation"')
   assert(
     typeof implementation === 'function',
-    'Required AIFunction "implementation" must be a function'
+    'createAIFunction "implementation" must be a function'
   )
 
   /** Parse the arguments string, optionally reading from a message. */
