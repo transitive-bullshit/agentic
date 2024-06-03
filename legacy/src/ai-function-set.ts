@@ -101,5 +101,6 @@ export class AIFunctionSet implements Iterable<types.AIFunction> {
 }
 
 function transformName(name: string): string {
+  // TODO: decamalize?
   return name.toLowerCase()
 }
