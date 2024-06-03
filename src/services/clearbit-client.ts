@@ -5,9 +5,9 @@ import type { DeepNullable, KyInstance } from '../types.js'
 import { assert, delay, getEnv, throttleKy } from '../utils.js'
 
 export namespace clearbit {
-  // Allow up to 20 requests per minute by default.
+  // Allow up to 600 requests per minute by default.
   export const throttle = pThrottle({
-    limit: 20,
+    limit: 600,
     interval: 60 * 1000
   })
 
@@ -535,7 +535,8 @@ export class ClearbitClient {
     this.ky = throttledKy.extend({
       timeout: timeoutMs,
       headers: {
-        Authorization: `Basic ${Buffer.from(`${apiKey}:`).toString('base64')}`
+        // Authorization: `Basic ${Buffer.from(`${apiKey}:`).toString('base64')}`
+        Authorization: `Bearer ${apiKey}`
       }
     })
   }
@@ -546,7 +547,6 @@ export class ClearbitClient {
         searchParams: { ...options }
       })
       .json<clearbit.CompanyResponse>()
-      .catch((_) => undefined)
   }
 
   async companySearch(options: clearbit.CompanySearchOptions) {
@@ -642,7 +642,7 @@ export class ClearbitClient {
       .catch((_) => undefined)
   }
 
-  async revealCompanyFromIp(ip: string) {
+  async revealCompanyFromIP(ip: string) {
     return this.ky
       .get('https://reveal.clearbit.com/v1/companies/find', {
         searchParams: { ip }

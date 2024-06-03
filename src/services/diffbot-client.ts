@@ -351,7 +351,10 @@ export class DiffbotClient {
     throttle?: boolean
     ky?: KyInstance
   } = {}) {
-    assert(apiKey, `DiffbotClient missing required "apiKey"`)
+    assert(
+      apiKey,
+      `DiffbotClient missing required "apiKey" (defaults to "DIFFBOT_API_KEY")`
+    )
 
     this.apiKey = apiKey
     this.apiBaseUrl = apiBaseUrl
