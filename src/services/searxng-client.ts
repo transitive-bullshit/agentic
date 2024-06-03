@@ -218,8 +218,16 @@ export namespace searxng {
 
   export const SearchOptionsSchema = z.object({
     query: z.string().describe('search query'),
-    categories: z.array(SearchCategorySchema).optional(),
-    engines: z.array(SearchEngineSchema).optional(),
+    categories: z
+      .array(SearchCategorySchema)
+      .optional()
+      .describe(
+        'narrows the search to only use search engines in specific categories'
+      ),
+    engines: z
+      .array(SearchEngineSchema)
+      .optional()
+      .describe('narrows the search to only use specific search engines'),
     language: z.string().optional(),
     pageno: z.number().int().optional()
   })
