@@ -1,0 +1,133 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`parseArrayOutput - handles arrays surrounded by text correctly > should return ["a", "b", "c"] for "Array: ["a", "b", "c"]. That's all!" 1`] = `
+[
+  "a",
+  "b",
+  "c",
+]
+`;
+
+exports[`parseArrayOutput - handles arrays surrounded by text correctly > should return [{"a": 1}, {"b": 2}] for "This is the array [{"a": 1}, {"b": 2}] in the text" 1`] = `
+[
+  {
+    "a": 1,
+  },
+  {
+    "b": 2,
+  },
+]
+`;
+
+exports[`parseArrayOutput - handles arrays surrounded by text correctly > should return [1, 2, 3] for "The array is [1,2,3]" 1`] = `
+[
+  1,
+  2,
+  3,
+]
+`;
+
+exports[`parseArrayOutput - handles valid arrays correctly > should return ["a", "b", "c"] for "["a", "b", "c"] 1`] = `
+[
+  "a",
+  "b",
+  "c",
+]
+`;
+
+exports[`parseArrayOutput - handles valid arrays correctly > should return [{"a": 1}, {"b": 2}] for [{"a": 1}, {"b": 2}] 1`] = `
+[
+  {
+    "a": 1,
+  },
+  {
+    "b": 2,
+  },
+]
+`;
+
+exports[`parseArrayOutput - handles valid arrays correctly > should return [1, 2, 3] for "[1,2,3]" 1`] = `
+[
+  1,
+  2,
+  3,
+]
+`;
+
+exports[`parseBooleanOutput - handles \`false\` outputs correctly > should return false for "FALSE" 1`] = `false`;
+
+exports[`parseBooleanOutput - handles \`false\` outputs correctly > should return false for "False" 1`] = `false`;
+
+exports[`parseBooleanOutput - handles \`false\` outputs correctly > should return false for "false!" 1`] = `false`;
+
+exports[`parseBooleanOutput - handles \`true\` outputs correctly > should return true for "TRUE" 1`] = `true`;
+
+exports[`parseBooleanOutput - handles \`true\` outputs correctly > should return true for "True" 1`] = `true`;
+
+exports[`parseBooleanOutput - handles \`true\` outputs correctly > should return true for "true." 1`] = `true`;
+
+exports[`parseNumberOutput - handles float outputs correctly > should return -5.5 for "   -5.5 " 1`] = `-5.5`;
+
+exports[`parseNumberOutput - handles float outputs correctly > should return 42.42 for "42.42" 1`] = `42.42`;
+
+exports[`parseNumberOutput - handles integer outputs correctly > should return -5 for "  -5 " 1`] = `-5`;
+
+exports[`parseNumberOutput - handles integer outputs correctly > should return 42 for "42" 1`] = `42`;
+
+exports[`parseObjectOutput - handles JSON array of objects > should return first object {"a":1,"b":2} for [{"a":1,"b":2},{"c":3,"d":4}] 1`] = `
+{
+  "a": 1,
+  "b": 2,
+}
+`;
+
+exports[`parseObjectOutput - handles objects surrounded by text correctly > should return {"a":1,"b":2,"c":3} for "The object is {"a":1,"b":2,"c":3}" 1`] = `
+{
+  "a": 1,
+  "b": 2,
+  "c": 3,
+}
+`;
+
+exports[`parseObjectOutput - handles objects surrounded by text correctly > should return {"name":"John","age":30,"city":"New York"} for "Object: {"name":"John","age":30,"city":"New York"}. That's all!" 1`] = `
+{
+  "age": 30,
+  "city": "New York",
+  "name": "John",
+}
+`;
+
+exports[`parseObjectOutput - handles valid objects correctly > should return {"a":1,"b":2,"c":3} for {"a":1,"b":2,"c":3} 1`] = `
+{
+  "a": 1,
+  "b": 2,
+  "c": 3,
+}
+`;
+
+exports[`parseObjectOutput - handles valid objects correctly > should return {"name":"John","age":30,"city":"New York"} for {"name":"John","age":30,"city":"New York"} 1`] = `
+{
+  "age": 30,
+  "city": "New York",
+  "name": "John",
+}
+`;
+
+exports[`parseStructuredOutput - handles arrays correctly > should parse and return [1, 2, 3] for "[1, 2, 3]" 1`] = `
+[
+  1,
+  2,
+  3,
+]
+`;
+
+exports[`parseStructuredOutput - handles booleans correctly > should parse and return true for "True" 1`] = `true`;
+
+exports[`parseStructuredOutput - handles numbers correctly > should parse and return 123.45 for "123.45" 1`] = `123.45`;
+
+exports[`parseStructuredOutput - handles objects correctly > should parse and return {"a": 1, "b": "two"} for "{"a": 1, "b": "two"}" 1`] = `
+{
+  "a": 1,
+  "b": "two",
+}
+`;

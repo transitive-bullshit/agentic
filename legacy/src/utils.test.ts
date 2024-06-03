@@ -19,32 +19,36 @@ test('omit', () => {
   ).toEqual({ a: { b: 'foo' }, d: -1 })
 })
 
-test('throttleKy should rate-limit requests to ky properly', async () => {
-  // TODO: set timeout
+test(
+  'throttleKy should rate-limit requests to ky properly',
+  async () => {
+    const interval = 1000
+    const throttle = pThrottle({
+      limit: 1,
+      interval,
+      strict: true
+    })
 
-  const interval = 1000
-  const throttle = pThrottle({
-    limit: 1,
-    interval,
-    strict: true
-  })
+    const ky2 = mockKyInstance(throttleKy(ky, throttle))
 
-  const ky2 = mockKyInstance(throttleKy(ky, throttle))
+    const url = 'https://httpbin.org/get'
 
-  const url = 'https://httpbin.org/get'
+    for (let i = 0; i < 10; i++) {
+      const before = Date.now()
+      const res = await ky2.get(url)
+      const after = Date.now()
 
-  for (let i = 0; i < 10; i++) {
-    const before = Date.now()
-    const res = await ky2.get(url)
-    const after = Date.now()
+      const duration = after - before
+      // console.log(duration, res.status)
+      expect(res.status).toBe(200)
 
-    const duration = after - before
-    // console.log(duration, res.status)
-    expect(res.status).toBe(200)
-
-    // leave a bit of wiggle room for the interval
-    if (i > 0) {
-      expect(duration >= interval - interval / 5).toBeTruthy()
+      // leave a bit of wiggle room for the interval
+      if (i > 0) {
+        expect(duration >= interval - interval / 5).toBeTruthy()
+      }
     }
+  },
+  {
+    timeout: 60_000
   }
-})
+)
