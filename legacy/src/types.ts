@@ -7,8 +7,11 @@ import type { AIFunctionsProvider } from './fns.js'
 export type { KyInstance } from 'ky'
 export type { ThrottledFunction } from 'p-throttle'
 
-// TODO
-export type DeepNullable<T> = T | null
+export type Nullable<T> = T | null
+
+export type DeepNullable<T> = T extends object
+  ? { [K in keyof T]: DeepNullable<T[K]> }
+  : Nullable<T>
 
 export type MaybePromise<T> = T | Promise<T>
 
