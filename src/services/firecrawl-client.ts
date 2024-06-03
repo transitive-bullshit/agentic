@@ -5,7 +5,8 @@ import { aiFunction, AIFunctionsProvider } from '../fns.js'
 import { assert, delay, getEnv } from '../utils.js'
 import { zodToJsonSchema } from '../zod-to-json-schema.js'
 
-// TODO: Deprioritizing this client for now because the API doesn't seem to be stable.
+// TODO: Deprioritizing this client for now because the API doesn't seem to be
+// stable.
 
 export namespace firecrawl {
   /**
