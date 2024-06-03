@@ -10,7 +10,10 @@ async function main() {
   const weather = new WeatherClient()
 
   const runner = createAIRunner({
-    chatModel: new ChatModel({ params: { model: 'gpt-4o', temperature: 0 } }),
+    chatModel: new ChatModel({
+      params: { model: 'gpt-4o', temperature: 0 }
+      // debug: true
+    }),
     functions: createDexterFunctions(weather),
     systemMessage: 'You are a helpful assistant. Be as concise as possible.'
   })
