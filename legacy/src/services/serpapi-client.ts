@@ -649,7 +649,7 @@ export class SerpAPIClient extends AIFunctionsProvider {
     apiBaseUrl?: string
     ky?: KyInstance
   } & serpapi.ClientParams = {}) {
-    assert(apiKey, `Error SerpAPIClient missing required "apiKey"`)
+    assert(apiKey, 'Error SerpAPIClient missing required "apiKey"')
     super()
 
     this.apiKey = apiKey
@@ -667,7 +667,13 @@ export class SerpAPIClient extends AIFunctionsProvider {
       'Uses Google Search to return the most relevant web pages for a given query. Can also be used to find up-to-date news and information about many topics.',
     inputSchema: z.object({
       q: z.string().describe('search query'),
-      num: z.number().int().positive().default(5).optional()
+      num: z
+        .number()
+        .int()
+        .positive()
+        .default(5)
+        .optional()
+        .describe('number of results to return')
     })
   })
   async search(queryOrOpts: string | serpapi.GoogleParameters) {
@@ -685,7 +691,7 @@ export class SerpAPIClient extends AIFunctionsProvider {
           ...rest,
           engine: 'google',
           api_key: this.apiKey,
-          ...(options as any) // TODO
+          ...(options as any)
         },
         timeout
       })
