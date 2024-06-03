@@ -7,7 +7,7 @@ import { AIFunctionSet } from './ai-function-set.js'
 import { createAIFunction } from './create-ai-function.js'
 import { assert } from './utils.js'
 
-export interface Invocable {
+export interface PrivateAIFunctionMetadata {
   name: string
   description: string
   inputSchema: z.AnyZodObject
@@ -21,7 +21,8 @@ export abstract class AIFunctionsProvider {
     if (!this._functions) {
       const metadata = this.constructor[Symbol.metadata]
       assert(metadata)
-      const invocables = (metadata?.invocables as Invocable[]) ?? []
+      const invocables =
+        (metadata?.invocables as PrivateAIFunctionMetadata[]) ?? []
       // console.log({ metadata, invocables })
 
       const aiFunctions = invocables.map((invocable) => {
@@ -71,7 +72,7 @@ export function aiFunction<
     if (!context.metadata.invocables) {
       context.metadata.invocables = []
     }
-    ;(context.metadata.invocables as Invocable[]).push({
+    ;(context.metadata.invocables as PrivateAIFunctionMetadata[]).push({
       name: name ?? methodName,
       description,
       inputSchema,

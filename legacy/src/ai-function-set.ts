@@ -1,6 +1,13 @@
 import type * as types from './types.ts'
 import { AIFunctionsProvider } from './fns.js'
 
+/**
+ * A set of AI functions intended to make it easier to work with large sets of
+ * AI functions across different clients.
+ *
+ * This class mimics a built-in `Set<AIFunction>`, but with additional utility
+ * methods like `pick`, `omit`, and `map`.
+ */
 export class AIFunctionSet implements Iterable<types.AIFunction> {
   protected readonly _map: Map<string, types.AIFunction>
 

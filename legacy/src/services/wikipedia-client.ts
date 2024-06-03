@@ -1,10 +1,12 @@
 import defaultKy, { type KyInstance } from 'ky'
 import pThrottle from 'p-throttle'
+import { z } from 'zod'
 
+import { aiFunction, AIFunctionsProvider } from '../fns.js'
 import { assert, getEnv, throttleKy } from '../utils.js'
 
 export namespace wikipedia {
-  // Only allow 200 requests per second
+  // Only allow 200 requests per second by default.
   export const throttle = pThrottle({
     limit: 200,
     interval: 1000
@@ -94,7 +96,7 @@ export namespace wikipedia {
   }
 }
 
-export class WikipediaClient {
+export class WikipediaClient extends AIFunctionsProvider {
   readonly apiBaseUrl: string
   readonly apiUserAgent: string
   readonly ky: KyInstance
@@ -114,6 +116,7 @@ export class WikipediaClient {
   } = {}) {
     assert(apiBaseUrl, 'WikipediaClient missing required "apiBaseUrl"')
     assert(apiUserAgent, 'WikipediaClient missing required "apiUserAgent"')
+    super()
 
     this.apiBaseUrl = apiBaseUrl
     this.apiUserAgent = apiUserAgent
@@ -127,6 +130,13 @@ export class WikipediaClient {
     })
   }
 
+  @aiFunction({
+    name: 'wikipedia_search',
+    description: 'Searches Wikipedia for pages matching the given query.',
+    inputSchema: z.object({
+      query: z.string().describe('Search query')
+    })
+  })
   async search({ query, ...opts }: wikipedia.SearchOptions) {
     return (
       // https://www.mediawiki.org/wiki/API:REST_API
@@ -138,12 +148,26 @@ export class WikipediaClient {
     )
   }
 
+  @aiFunction({
+    name: 'wikipedia_get_page_summary',
+    description: 'Gets a summary of the given Wikipedia page.',
+    inputSchema: z.object({
+      title: z.string().describe('Wikipedia page title'),
+      acceptLanguage: z
+        .string()
+        .optional()
+        .default('en-us')
+        .describe('Locale code for the language to use.')
+    })
+  })
   async getPageSummary({
     title,
     acceptLanguage = 'en-us',
     redirect = true,
     ...opts
   }: wikipedia.PageSummaryOptions) {
+    title = title.trim().replaceAll(' ', '_')
+
     // https://en.wikipedia.org/api/rest_v1/
     return this.ky
       .get(`page/summary/${title}`, {

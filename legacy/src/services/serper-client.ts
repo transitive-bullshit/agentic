@@ -2,7 +2,7 @@ import defaultKy, { type KyInstance } from 'ky'
 import { z } from 'zod'
 
 import { aiFunction, AIFunctionsProvider } from '../fns.js'
-import { assert, getEnv } from '../utils.js'
+import { assert, getEnv, omit } from '../utils.js'
 
 export namespace serper {
   export const BASE_URL = 'https://google.serper.dev'
@@ -13,9 +13,24 @@ export namespace serper {
     gl: z.string().default('us').optional(),
     hl: z.string().default('en').optional(),
     page: z.number().int().positive().default(1).optional(),
-    num: z.number().int().positive().default(10).optional()
+    num: z
+      .number()
+      .int()
+      .positive()
+      .default(10)
+      .optional()
+      .describe('number of results to return')
   })
   export type SearchParams = z.infer<typeof SearchParamsSchema>
+
+  export const GeneralSearchSchema = SearchParamsSchema.extend({
+    type: z
+      .enum(['search', 'images', 'videos', 'places', 'news', 'shopping'])
+      .default('search')
+      .optional()
+      .describe('Type of Google search to perform')
+  })
+  export type GeneralSearchParams = z.infer<typeof GeneralSearchSchema>
 
   export interface SearchResponse {
     searchParameters: SearchParameters & { type: 'search' }
@@ -233,12 +248,19 @@ export class SerperClient extends AIFunctionsProvider {
     name: 'serper_google_search',
     description:
       'Uses Google Search to return the most relevant web pages for a given query. Can also be used to find up-to-date news and information about many topics.',
-    inputSchema: serper.SearchParamsSchema.pick({
-      q: true
+    inputSchema: serper.GeneralSearchSchema.pick({
+      q: true,
+      num: true,
+      type: true
     })
   })
-  async search(queryOrOpts: string | serper.SearchParams) {
-    return this._fetch<serper.SearchResponse>('search', queryOrOpts)
+  async search(queryOrOpts: string | serper.GeneralSearchParams) {
+    const searchType =
+      typeof queryOrOpts === 'string' ? 'search' : queryOrOpts.type || 'search'
+    return this._fetch<serper.SearchResponse>(
+      searchType,
+      typeof queryOrOpts === 'string' ? queryOrOpts : omit(queryOrOpts, 'type')
+    )
   }
 
   async searchImages(queryOrOpts: string | serper.SearchParams) {
