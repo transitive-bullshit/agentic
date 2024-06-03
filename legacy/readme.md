@@ -50,6 +50,11 @@
   - instructor-js
   - TODO
 - services
+  - calculator
+  - e2b
+  - search-and-scrape
+  - replicate
+  - huggingface
   - wolfram alpha
   - midjourney
   - unstructured
