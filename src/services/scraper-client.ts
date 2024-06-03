@@ -1,27 +1,33 @@
 import defaultKy, { type KyInstance } from 'ky'
+import { z } from 'zod'
 
-import { assert, getEnv } from '../utils.js'
+import { aiFunction, AIFunctionsProvider } from '../fns.js'
+import { assert, getEnv, omit } from '../utils.js'
 
 export namespace scraper {
   export type ScrapeResult = {
     author: string
     byline: string
-    /** The HTML for the main content of the page. */
-    content: string
     description: string
     imageUrl: string
     lang: string
     length: number
     logoUrl: string
-    /** The text for the main content of the page in markdown format. */
-    markdownContent: string
     publishedTime: string
+    siteName: string
+    title: string
+
+    /** The HTML for the main content of the page. */
+    content: string
+
     /** The raw HTML response from the server. */
     rawHtml: string
-    siteName: string
+
+    /** The text for the main content of the page in markdown format. */
+    markdownContent: string
+
     /** The text for the main content of the page. */
     textContent: string
-    title: string
   }
 }
 
@@ -33,7 +39,7 @@ export namespace scraper {
  * It tries the simplest and fastest methods first, and falls back to slower
  * proxies and JavaScript rendering if needed.
  */
-export class ScraperClient {
+export class ScraperClient extends AIFunctionsProvider {
   readonly apiBaseUrl: string
   readonly ky: KyInstance
 
@@ -45,25 +51,64 @@ export class ScraperClient {
     apiBaseUrl?: string
     ky?: KyInstance
   } = {}) {
-    assert(apiBaseUrl, 'ScraperClient apiBaseUrl is required')
+    assert(
+      apiBaseUrl,
+      'ScraperClient missing required "apiBaseUrl" (defaults to "SCRAPER_API_BASE_URL")'
+    )
+    super()
 
     this.apiBaseUrl = apiBaseUrl
     this.ky = ky.extend({ prefixUrl: this.apiBaseUrl })
   }
 
+  @aiFunction({
+    name: 'scrape_url',
+    description: 'Scrapes the content of a single URL.',
+    inputSchema: z.object({
+      url: z.string().url().describe('The URL of the web page to scrape'),
+      format: z
+        .enum(['html', 'markdown', 'plaintext'])
+        .default('markdown')
+        .optional()
+        .describe(
+          'Whether to return the content as HTML, markdown, or plaintext.'
+        )
+    })
+  })
   async scrapeUrl(
-    url: string,
-    {
-      timeout = 60_000
-    }: {
-      timeout?: number
-    } = {}
-  ): Promise<scraper.ScrapeResult> {
-    return this.ky
+    urlOrOpts:
+      | string
+      | {
+          url: string
+          format?: 'html' | 'markdown' | 'plaintext'
+          timeoutMs?: number
+        }
+  ): Promise<Partial<scraper.ScrapeResult>> {
+    const {
+      timeoutMs = 60_000,
+      format = 'markdown',
+      ...opts
+    } = typeof urlOrOpts === 'string' ? { url: urlOrOpts } : urlOrOpts
+
+    const res = await this.ky
       .post('scrape', {
-        json: { url },
-        timeout
+        json: opts,
+        timeout: timeoutMs
       })
-      .json()
+      .json<scraper.ScrapeResult>()
+
+    switch (format) {
+      case 'html':
+        return omit(res, 'markdownContent', 'textContent', 'rawHtml')
+
+      case 'markdown':
+        return omit(res, 'textContent', 'rawHtml', 'content')
+
+      case 'plaintext':
+        return omit(res, 'markdownContent', 'rawHtml', 'content')
+
+      default:
+        return res
+    }
   }
 }
