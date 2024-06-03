@@ -1,3 +1,6 @@
+import type { Jsonifiable } from 'type-fest'
+import dedent from 'dedent'
+
 import type * as types from './types.js'
 
 export { assert } from './assert.js'
@@ -110,4 +113,30 @@ export function sanitizeSearchParams(
       return [[key, String(value)]]
     })
   )
+}
+
+/**
+ * Stringifies a JSON value in a way that's optimized for use with LLM prompts.
+ */
+export function stringifyForModel(jsonObject?: Jsonifiable): string {
+  if (jsonObject === undefined) {
+    return ''
+  }
+
+  if (typeof jsonObject === 'string') {
+    return jsonObject
+  }
+
+  return JSON.stringify(jsonObject, null, 0)
+}
+
+const dedenter = dedent.withOptions({ escapeSpecialCharacters: true })
+
+/**
+ * Clean a string by removing extra newlines and indentation.
+ *
+ * @see: https://github.com/dmnd/dedent
+ */
+export function cleanStringForModel(text: string): string {
+  return dedenter(text).trim()
 }

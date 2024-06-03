@@ -1,9 +1,18 @@
 import defaultKy, { type KyInstance } from 'ky'
+import { z } from 'zod'
 
-import type * as types from '../types.js'
+import { aiFunction, AIFunctionsProvider } from '../fns.js'
+import { Msg } from '../message.js'
 import { assert, getEnv } from '../utils.js'
 
-export class DexaClient {
+export namespace dexa {
+  export const AskDexaOptionsSchema = z.object({
+    question: z.string().describe('The question to ask Dexa.')
+  })
+  export type AskDexaOptions = z.infer<typeof AskDexaOptionsSchema>
+}
+
+export class DexaClient extends AIFunctionsProvider {
   readonly apiKey: string
   readonly apiBaseUrl: string
   readonly ky: KyInstance
@@ -23,6 +32,7 @@ export class DexaClient {
       apiKey,
       'DexaClient missing required "apiKey" (defaults to "DEXA_API_KEY")'
     )
+    super()
 
     this.apiKey = apiKey
     this.apiBaseUrl = apiBaseUrl
@@ -30,12 +40,18 @@ export class DexaClient {
     this.ky = ky.extend({ prefixUrl: this.apiBaseUrl, timeout: timeoutMs })
   }
 
-  async askDexa({ messages }: { messages: types.Msg[] }) {
+  @aiFunction({
+    name: 'ask_dexa',
+    description:
+      'Answers questions based on knowledge of trusted experts and podcasters. Example experts include: Andrew Huberman, Tim Ferriss, Lex Fridman, Peter Attia, Seth Godin, Rhonda Patrick, Rick Rubin, and more.',
+    inputSchema: dexa.AskDexaOptionsSchema
+  })
+  async askDexa(opts: dexa.AskDexaOptions) {
     return this.ky
       .post('api/ask-dexa', {
         json: {
           secret: this.apiKey,
-          messages
+          messages: [Msg.user(opts.question)]
         }
       })
       .json<string>()

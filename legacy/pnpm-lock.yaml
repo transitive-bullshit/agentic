@@ -14,6 +14,9 @@ importers:
       '@nangohq/node':
         specifier: ^0.39.32
         version: 0.39.32
+      dedent:
+        specifier: ^1.5.3
+        version: 1.5.3
       delay:
         specifier: ^6.0.0
         version: 6.0.0
@@ -87,6 +90,9 @@ importers:
       only-allow:
         specifier: ^1.2.1
         version: 1.2.1
+      openai-fetch:
+        specifier: ^2.0.3
+        version: 2.0.3
       prettier:
         specifier: ^3.2.5
         version: 3.3.0
