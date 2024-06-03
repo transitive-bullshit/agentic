@@ -19,7 +19,10 @@ export class DexaClient {
     timeoutMs?: number
     ky?: KyInstance
   } = {}) {
-    assert(apiKey, 'DexaClient missing required "apiKey"')
+    assert(
+      apiKey,
+      'DexaClient missing required "apiKey" (defaults to "DEXA_API_KEY")'
+    )
 
     this.apiKey = apiKey
     this.apiBaseUrl = apiBaseUrl

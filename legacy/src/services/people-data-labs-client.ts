@@ -449,7 +449,10 @@ export class PeopleDataLabsClient {
     throttle?: boolean
     ky?: KyInstance
   } = {}) {
-    assert(apiKey, 'PeopleDataLabsClient missing required "apiKey"')
+    assert(
+      apiKey,
+      'PeopleDataLabsClient missing required "apiKey" (defaults to "PEOPLE_DATA_LABS_API_KEY")'
+    )
 
     this.apiKey = apiKey
     this.apiBaseUrl = apiBaseUrl

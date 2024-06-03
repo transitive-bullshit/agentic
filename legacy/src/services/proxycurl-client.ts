@@ -7,7 +7,7 @@ import { assert, getEnv, throttleKy } from '../utils.js'
 
 // All proxycurl types are auto-generated from their openapi spec
 export namespace proxycurl {
-  // Allow up to 1500 requests per minute by default.
+  // Allow up to 300 requests per minute by default (enforced at 5 minute intervals).
   export const throttle = pThrottle({
     limit: 1500,
     interval: 5 * 60 * 1000

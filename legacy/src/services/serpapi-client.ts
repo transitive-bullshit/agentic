@@ -649,7 +649,10 @@ export class SerpAPIClient extends AIFunctionsProvider {
     apiBaseUrl?: string
     ky?: KyInstance
   } & serpapi.ClientParams = {}) {
-    assert(apiKey, 'Error SerpAPIClient missing required "apiKey"')
+    assert(
+      apiKey,
+      'SerpAPIClient missing required "apiKey" (defaults to "SERPAPI_API_KEY")'
+    )
     super()
 
     this.apiKey = apiKey

@@ -273,7 +273,10 @@ export class PerigonClient {
     timeoutMs?: number
     ky?: KyInstance
   } = {}) {
-    assert(apiKey, 'Error PerigonClient missing required "apiKey"')
+    assert(
+      apiKey,
+      'PerigonClient missing required "apiKey" (defaults to "PERIGON_API_KEY")'
+    )
 
     this.apiKey = apiKey
 

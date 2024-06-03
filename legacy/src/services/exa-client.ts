@@ -143,7 +143,10 @@ export class ExaClient {
     apiBaseUrl?: string
     ky?: KyInstance
   } = {}) {
-    assert(apiKey, 'ExaClient missing required "apiKey"')
+    assert(
+      apiKey,
+      'ExaClient missing required "apiKey" (defaults to "EXA_API_KEY")'
+    )
 
     this.apiKey = apiKey
     this.apiBaseUrl = apiBaseUrl
