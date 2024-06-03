@@ -37,3 +37,5 @@ yarn-error.log*
 next-env.d.ts
 
 .env
+
+old/
