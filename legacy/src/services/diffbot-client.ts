@@ -364,7 +364,15 @@ export namespace diffbot {
     githubUri?: string
     crunchbaseUri?: string
     googlePlusUri?: string
+    facebookUri?: string
+    angellistUri?: string
+    wikipediaUri?: string
     diffbotUri?: string
+    origin?: string
+    origins?: string[]
+    allUris?: string[]
+
+    // extra metadata
     educations?: Education[]
     nationalities?: Nationality[]
     allNames?: string[]
@@ -381,8 +389,6 @@ export namespace diffbot {
     parents?: Parent[]
     gender?: Gender
     importance?: number
-    origin?: string
-    wikipediaUri: string
     wikipediaPageviewsLastQuarterGrowth?: number
     wikipediaPageviewsLastYear?: number
     wikipediaPageviewsLastYearGrowth?: number
@@ -390,12 +396,9 @@ export namespace diffbot {
     wikipediaPageviewsLastQuarter?: number
     wikipediaPageviewsGrowth?: number
     birthPlace?: BirthPlace
-    origins: string[]
-    crawlTimestamp: number
     types?: string[]
     unions?: Union[]
     languages?: Language[]
-    allUris?: string[]
     employments?: Employment[]
     birthDate?: DateTime
     religion?: Religion
@@ -406,6 +409,7 @@ export namespace diffbot {
     location?: Location
     interests?: Interest[]
     age?: number
+    crawlTimestamp?: number
   }
 
   export interface Education {
