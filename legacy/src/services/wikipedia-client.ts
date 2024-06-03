@@ -6,7 +6,7 @@ import { aiFunction, AIFunctionsProvider } from '../fns.js'
 import { assert, getEnv, throttleKy } from '../utils.js'
 
 export namespace wikipedia {
-  // Only allow 200 requests per second by default.
+  // Allow up to 200 requests per second by default.
   export const throttle = pThrottle({
     limit: 200,
     interval: 1000

@@ -1,11 +1,18 @@
 import defaultKy, { type KyInstance } from 'ky'
+import pThrottle from 'p-throttle'
 import { z } from 'zod'
 
 import { aiFunction, AIFunctionsProvider } from '../fns.js'
-import { assert, getEnv } from '../utils.js'
+import { assert, getEnv, throttleKy } from '../utils.js'
 
 // All proxycurl types are auto-generated from their openapi spec
 export namespace proxycurl {
+  // Allow up to 1500 requests per minute by default.
+  export const throttle = pThrottle({
+    limit: 1500,
+    interval: 5 * 60 * 1000
+  })
+
   export const CompanyTypeSchema = z.enum([
     'EDUCATIONAL',
     'GOVERNMENT_AGENCY',
@@ -2012,10 +2019,12 @@ export class ProxycurlClient extends AIFunctionsProvider {
     apiKey = getEnv('PROXYCURL_API_KEY'),
     apiBaseUrl = getEnv('PROXYCURL_API_BASE_URL') ??
       'https://nubela.co/proxycurl',
+    throttle = true,
     ky = defaultKy
   }: {
     apiKey?: string
     apiBaseUrl?: string
+    throttle?: boolean
     ky?: KyInstance
   } = {}) {
     assert(
@@ -2031,7 +2040,9 @@ export class ProxycurlClient extends AIFunctionsProvider {
     this.apiKey = apiKey
     this.apiBaseUrl = apiBaseUrl
 
-    this.ky = ky.extend({
+    const throttledKy = throttle ? throttleKy(ky, proxycurl.throttle) : ky
+
+    this.ky = throttledKy.extend({
       prefixUrl: apiBaseUrl,
       headers: {
         Authorization: `Bearer ${apiKey}`

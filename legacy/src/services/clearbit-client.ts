@@ -5,11 +5,10 @@ import type { DeepNullable, KyInstance } from '../types.js'
 import { assert, delay, getEnv, throttleKy } from '../utils.js'
 
 export namespace clearbit {
-  // Only allow 20 clearbit API requests per 60s
+  // Allow up to 20 requests per minute by default.
   export const throttle = pThrottle({
     limit: 20,
-    interval: 60 * 1000,
-    strict: true
+    interval: 60 * 1000
   })
 
   export interface CompanyEnrichmentOptions {
@@ -524,7 +523,10 @@ export class ClearbitClient {
     throttle?: boolean
     ky?: KyInstance
   } = {}) {
-    assert(apiKey, 'Error clearbit client missing required "apiKey"')
+    assert(
+      apiKey,
+      'ClearbitClient missing required "apiKey" (defaults to "CLEARBIT_API_KEY")'
+    )
 
     this.apiKey = apiKey
 

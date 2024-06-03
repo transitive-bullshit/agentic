@@ -7,6 +7,7 @@ export namespace diffbot {
   export const API_BASE_URL = 'https://api.diffbot.com'
   export const KNOWLEDGE_GRAPH_API_BASE_URL = 'https://kg.diffbot.com'
 
+  // Allow up to 5 requests per second by default.
   export const throttle = pThrottle({
     limit: 5,
     interval: 1000,

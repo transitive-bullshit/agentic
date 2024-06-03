@@ -4,6 +4,7 @@ import pThrottle from 'p-throttle'
 import { assert, getEnv, throttleKy } from '../utils.js'
 
 export namespace perigon {
+  // Allow up to 20 requests per minute by default.
   export const throttle = pThrottle({
     limit: 20,
     interval: 60 * 1000,

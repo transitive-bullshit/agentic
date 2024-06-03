@@ -6,6 +6,7 @@ import { assert, getEnv, throttleKy } from '../utils.js'
 export namespace peopledatalabs {
   export const BASE_URL = 'https://api.peopledatalabs.com/v5/'
 
+  // Allow up to 20 requests per minute by default.
   export const throttle = pThrottle({
     limit: 20,
     interval: 60 * 1000,
