@@ -5,6 +5,10 @@ import { z } from 'zod'
 import { aiFunction, AIFunctionsProvider } from '../fns.js'
 import { assert, getEnv, pruneUndefined, throttleKy } from '../utils.js'
 
+// TODO: https://docs.goperigon.com/docs/searching-sources
+// TODO: https://docs.goperigon.com/docs/journalist-data
+// TODO: https://docs.goperigon.com/docs/topics
+
 export namespace perigon {
   // Allow up to 2 requests per second by default.
   export const throttle = pThrottle({
@@ -656,6 +660,7 @@ export class PerigonClient extends AIFunctionsProvider {
   }
 
   /**
+   * @see https://docs.goperigon.com/docs/overview
    * @see https://docs.goperigon.com/reference/all-news
    */
   @aiFunction({
@@ -714,6 +719,7 @@ export class PerigonClient extends AIFunctionsProvider {
   }
 
   /**
+   * @see https://docs.goperigon.com/docs/stories-overview
    * @see https://docs.goperigon.com/reference/stories-1
    */
   @aiFunction({
