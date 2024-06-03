@@ -1,15 +1,17 @@
 import defaultKy, { type KyInstance } from 'ky'
 import z from 'zod'
 
+import { aiFunction, AIFunctionsProvider } from '../fns.js'
 import { assert, delay, getEnv } from '../utils.js'
 import { zodToJsonSchema } from '../zod-to-json-schema.js'
+
+// TODO: Deprioritizing this client for now because the API doesn't seem to be stable.
 
 export namespace firecrawl {
   /**
    * Generic parameter interface.
    */
   export interface Params {
-    [key: string]: any
     extractorOptions?: {
       extractionSchema: z.ZodSchema | any
       mode?: 'llm-extraction'
@@ -59,8 +61,9 @@ export namespace firecrawl {
 
 /**
  * @see https://www.firecrawl.dev
+ * @see https://github.com/mendableai/firecrawl
  */
-export class FirecrawlClient {
+export class FirecrawlClient extends AIFunctionsProvider {
   readonly ky: KyInstance
   readonly apiKey: string
   readonly apiBaseUrl: string
@@ -69,10 +72,12 @@ export class FirecrawlClient {
     apiKey = getEnv('FIRECRAWL_API_KEY'),
     apiBaseUrl = getEnv('FIRECRAWL_API_BASE_URL') ??
       'https://api.firecrawl.dev',
+    timeoutMs = 60_000,
     ky = defaultKy
   }: {
     apiKey?: string
     apiBaseUrl?: string
+    timeoutMs?: number
     ky?: KyInstance
   } = {}) {
     assert(
@@ -83,18 +88,27 @@ export class FirecrawlClient {
       apiBaseUrl,
       'FirecrawlClient missing required "apiBaseUrl" (defaults to "FIRECRAWL_API_BASE_URL")'
     )
+    super()
 
     this.apiKey = apiKey
     this.apiBaseUrl = apiBaseUrl
 
     this.ky = ky.extend({
       prefixUrl: apiBaseUrl,
+      timeout: timeoutMs,
       headers: {
         Authorization: `Bearer ${this.apiKey}`
       }
     })
   }
 
+  @aiFunction({
+    name: 'firecrawl_scrape_url',
+    description: 'Scrape the contents of a URL.',
+    inputSchema: z.object({
+      url: z.string().url().describe('The URL to scrape.')
+    })
+  })
   async scrapeUrl(
     opts: {
       url: string
@@ -173,7 +187,7 @@ export class FirecrawlClient {
 
   async waitForCrawlJob({
     jobId,
-    timeoutMs = 30_000
+    timeoutMs = 60_000
   }: {
     jobId: string
     timeoutMs?: number

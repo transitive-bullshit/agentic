@@ -2,9 +2,8 @@
 import 'dotenv/config'
 
 import OpenAI from 'openai'
-import { default as assert } from 'tiny-invariant'
 
-import { WeatherClient } from '../../src/index.js'
+import { assert, WeatherClient } from '../../src/index.js'
 
 async function main() {
   const weather = new WeatherClient()

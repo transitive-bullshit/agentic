@@ -26,9 +26,6 @@ importers:
       p-throttle:
         specifier: ^6.1.0
         version: 6.1.0
-      tiny-invariant:
-        specifier: ^1.3.3
-        version: 1.3.3
       twitter-api-sdk:
         specifier: ^1.2.1
         version: 1.2.1
@@ -75,9 +72,6 @@ importers:
       eslint:
         specifier: ^8.57.0
         version: 8.57.0
-      exit-hook:
-        specifier: ^4.0.0
-        version: 4.0.0
       husky:
         specifier: ^9.0.11
         version: 9.0.11
@@ -4059,9 +4053,6 @@ packages:
 
   tiktoken@1.0.15:
     resolution: {integrity: sha512-sCsrq/vMWUSEW29CJLNmPvWxlVp7yh2tlkAjpJltIKqp5CKf98ZNpdeHRmAlPVFlGEbswDc6SmI8vz64W/qErw==}
-
-  tiny-invariant@1.3.3:
-    resolution: {integrity: sha512-+FbBPE1o9QAYvviau/qC5SE3caw21q3xkvWKBtja5vgqOWIHHJ3ioaq1VPfn/Szqctz2bU/oYeKd9/z5BL+PVg==}
 
   tinybench@2.8.0:
     resolution: {integrity: sha512-1/eK7zUnIklz4JUUlL+658n58XO2hHLQfSk1Zf2LKieUjxidN16eKFEoDEfjHc3ohofSSqK3X5yO6VGb6iW8Lw==}
@@ -8680,8 +8671,6 @@ snapshots:
   through@2.3.8: {}
 
   tiktoken@1.0.15: {}
-
-  tiny-invariant@1.3.3: {}
 
   tinybench@2.8.0: {}
 

@@ -3,12 +3,25 @@ import pThrottle from 'p-throttle'
 
 import { assert, getEnv, throttleKy } from '../utils.js'
 
+/**
+ * TODO: I'm holding off on converting this client to an `AIFunctionsProvider`
+ * because it seems to be significantly more expensive than other data sources,
+ * and I'm not sure if it's worth the cost.
+ */
+
 export namespace peopledatalabs {
   export const BASE_URL = 'https://api.peopledatalabs.com/v5/'
 
-  // Allow up to 20 requests per minute by default.
-  export const throttle = pThrottle({
-    limit: 20,
+  // Allow up to 10 requests per minute.
+  export const throttle10PerMin = pThrottle({
+    limit: 10,
+    interval: 60 * 1000,
+    strict: true
+  })
+
+  // Allow up to 100 requests per minute.
+  export const throttle100PerMin = pThrottle({
+    limit: 100,
     interval: 60 * 1000,
     strict: true
   })
@@ -431,6 +444,11 @@ export namespace peopledatalabs {
   }
 }
 
+/**
+ * People & Company Data
+ *
+ * @see https://www.peopledatalabs.com
+ */
 export class PeopleDataLabsClient {
   readonly ky: KyInstance
   readonly apiKey: string
@@ -457,13 +475,15 @@ export class PeopleDataLabsClient {
     this.apiKey = apiKey
     this.apiBaseUrl = apiBaseUrl
 
-    const throttledKy = throttle ? throttleKy(ky, peopledatalabs.throttle) : ky
+    const throttledKy = throttle
+      ? throttleKy(ky, peopledatalabs.throttle10PerMin)
+      : ky
 
     this.ky = throttledKy.extend({
       prefixUrl: apiBaseUrl,
       timeout: timeoutMs,
       headers: {
-        'X-Api-Key': `${this.apiKey}`
+        'x-api-key': `${this.apiKey}`
       }
     })
   }

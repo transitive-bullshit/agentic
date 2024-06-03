@@ -1,7 +1,7 @@
 import type * as types from './types.js'
 
+export { assert } from './assert.js'
 export { default as delay } from 'delay'
-export { default as assert } from 'tiny-invariant'
 
 /**
  * From `inputObj`, create a new object that does not include `keys`.

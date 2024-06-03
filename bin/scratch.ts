@@ -7,7 +7,8 @@ import restoreCursor from 'restore-cursor'
 // import { ClearbitClient } from '../src/index.js'
 // import { ProxycurlClient } from '../src/services/proxycurl-client.js'
 // import { WikipediaClient } from '../src/index.js'
-import { PerigonClient } from '../src/index.js'
+// import { PerigonClient } from '../src/index.js'
+import { FirecrawlClient } from '../src/index.js'
 
 /**
  * Scratch pad for testing.
@@ -41,18 +42,24 @@ async function main() {
   // })
   // console.log(JSON.stringify(res, null, 2))
 
-  const perigon = new PerigonClient()
-  const res = await perigon.searchArticles({
-    q: 'AI agents AND startup',
-    sourceGroup: 'top50tech'
-  })
+  // const perigon = new PerigonClient()
+  // const res = await perigon.searchArticles({
+  //   q: 'AI agents AND startup',
+  //   sourceGroup: 'top50tech'
+  // })
+  // console.log(JSON.stringify(res, null, 2))
 
+  const firecrawl = new FirecrawlClient()
+  const res = await firecrawl.scrapeUrl({
+    // url: 'https://www.bbc.com/news/articles/cp4475gwny1o'
+    url: 'https://www.firecrawl.dev'
+  })
   console.log(JSON.stringify(res, null, 2))
 }
 
 try {
   await main()
 } catch (err) {
-  console.error('unexpected error', err)
+  console.error('error', err)
   process.exit(1)
 }
