@@ -7,10 +7,10 @@ import { aiFunction, AIFunctionsProvider } from '../fns.js'
 import { assert, getEnv, pruneUndefined, throttleKy } from '../utils.js'
 
 export namespace predictleads {
+  // Allow up to 20 requests per minute by default.
   export const throttle = pThrottle({
     limit: 20,
-    interval: 60 * 1000,
-    strict: true
+    interval: 60 * 1000
   })
 
   export const DEFAULT_PAGE_SIZE = 100
