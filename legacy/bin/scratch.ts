@@ -8,7 +8,8 @@ import restoreCursor from 'restore-cursor'
 // import { ProxycurlClient } from '../src/services/proxycurl-client.js'
 // import { WikipediaClient } from '../src/index.js'
 // import { PerigonClient } from '../src/index.js'
-import { FirecrawlClient } from '../src/index.js'
+// import { FirecrawlClient } from '../src/index.js'
+import { ExaClient } from '../src/index.js'
 
 /**
  * Scratch pad for testing.
@@ -49,10 +50,19 @@ async function main() {
   // })
   // console.log(JSON.stringify(res, null, 2))
 
-  const firecrawl = new FirecrawlClient()
-  const res = await firecrawl.scrapeUrl({
-    // url: 'https://www.bbc.com/news/articles/cp4475gwny1o'
-    url: 'https://www.firecrawl.dev'
+  // const firecrawl = new FirecrawlClient()
+  // const res = await firecrawl.scrapeUrl({
+  //   // url: 'https://www.bbc.com/news/articles/cp4475gwny1o'
+  //   url: 'https://www.firecrawl.dev'
+  // })
+  // console.log(JSON.stringify(res, null, 2))
+
+  const exa = new ExaClient()
+  const res = await exa.search({
+    query: 'OpenAI',
+    contents: {
+      text: true
+    }
   })
   console.log(JSON.stringify(res, null, 2))
 }

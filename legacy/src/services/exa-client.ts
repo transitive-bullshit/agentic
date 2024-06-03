@@ -2,7 +2,7 @@ import defaultKy, { type KyInstance } from 'ky'
 import { z } from 'zod'
 
 import { aiFunction, AIFunctionsProvider } from '../fns.js'
-import { assert, getEnv } from '../utils.js'
+import { assert, getEnv, pruneUndefined } from '../utils.js'
 
 export namespace exa {
   export const TextContentsOptionsSchema = z.object({
@@ -151,6 +151,9 @@ export namespace exa {
 
     /** The autoprompt string, if applicable. */
     autopromptString?: string
+
+    /** Internal ID of this request. */
+    requestId?: string
   }
 }
 
@@ -209,8 +212,18 @@ export class ExaClient extends AIFunctionsProvider {
     inputSchema: exa.FindSimilarOptionsSchema
   })
   async findSimilar(opts: exa.FindSimilarOptions) {
+    const { excludeSourceDomain, ...rest } = opts
+    const excludeDomains = (opts.excludeDomains ?? []).concat(
+      excludeSourceDomain ? [new URL(opts.url).hostname] : []
+    )
+
     return this.ky
-      .post('findSimilar', { json: opts })
+      .post('findSimilar', {
+        json: pruneUndefined({
+          ...rest,
+          excludeDomains: excludeDomains.length ? excludeDomains : undefined
+        })
+      })
       .json<exa.SearchResponse>()
   }
 
