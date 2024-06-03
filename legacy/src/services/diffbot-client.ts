@@ -3,7 +3,13 @@ import pThrottle from 'p-throttle'
 import { z } from 'zod'
 
 import { aiFunction, AIFunctionsProvider } from '../fns.js'
-import { assert, getEnv, throttleKy } from '../utils.js'
+import {
+  assert,
+  getEnv,
+  omit,
+  sanitizeSearchParams,
+  throttleKy
+} from '../utils.js'
 
 export namespace diffbot {
   export const API_BASE_URL = 'https://api.diffbot.com'
@@ -373,17 +379,17 @@ export namespace diffbot {
     allUris?: string[]
 
     // extra metadata
+    nbOrigins?: number
+    nbIncomingEdges?: number
+    nbFollowers?: number
     educations?: Education[]
     nationalities?: Nationality[]
     allNames?: string[]
     skills?: Skill[]
     children?: Children[]
-    nbOrigins?: number
     height?: number
     image?: string
     images?: Image[]
-    nbIncomingEdges?: number
-    nbFollowers?: number
     allOriginHashes?: string[]
     nameDetail?: NameDetail
     parents?: Parent[]
@@ -638,6 +644,18 @@ export namespace diffbot {
     name: string
     type: string
   }
+
+  export function pruneEntity(entity: diffbot.Entity) {
+    return omit(
+      entity,
+      'allOriginHashes',
+      'locations',
+      'images',
+      'nationalities',
+      'awards',
+      'interests'
+    )
+  }
 }
 
 export class DiffbotClient extends AIFunctionsProvider {
@@ -713,7 +731,7 @@ export class DiffbotClient extends AIFunctionsProvider {
   @aiFunction({
     name: 'diffbot_enhance_entity',
     description:
-      'Enriches a person or organization entity given partial data. Enhance is an enrichment API to find a person or organization using partial data as input. Enhance scores several candidates against the submitted query and returns the best match. More information in the query helps Enhance models estimate with more confidence and will typically result in better matches and a higher score for the matches.',
+      'Resolves and enriches a partial person or organization entity.',
     inputSchema: diffbot.EnhanceEntityOptionsSchema.omit({
       refresh: true,
       search: true,
@@ -722,25 +740,16 @@ export class DiffbotClient extends AIFunctionsProvider {
     })
   })
   async enhanceEntity(opts: diffbot.EnhanceEntityOptions) {
-    const { name, url, ...params } = opts
-
-    // TODO: clean this array handling up...
-    const arraySearchParams = [
-      name ? (Array.isArray(name) ? name : [name]).map((v) => ['name', v]) : [],
-      url?.map((v) => ['url', v])
-    ]
-      .filter(Boolean)
-      .flat()
-
-    return this.kyKnowledgeGraph
+    const res = await this.kyKnowledgeGraph
       .get('kg/v3/enhance', {
-        searchParams: new URLSearchParams([
-          ...arraySearchParams,
-          ...Object.entries(params).map(([key, value]) => [key, String(value)]),
-          ['token', this.apiKey]
-        ])
+        searchParams: sanitizeSearchParams({
+          ...opts,
+          token: this.apiKey
+        })
       })
       .json<diffbot.EnhanceEntityResponse>()
+
+    return res.data.map((datum) => diffbot.pruneEntity(datum.entity))
   }
 
   async searchKnowledgeGraph(options: diffbot.KnowledgeGraphSearchOptions) {
@@ -769,21 +778,15 @@ export class DiffbotClient extends AIFunctionsProvider {
     T extends diffbot.ExtractResponse = diffbot.ExtractResponse
   >(endpoint: string, options: diffbot.ExtractOptions): Promise<T> {
     const { customJs, customHeaders, ...rest } = options
-    const searchParams: Record<string, any> = {
+    const searchParams = sanitizeSearchParams({
       ...rest,
       token: this.apiKey
-    }
+    })
     const headers = {
       ...Object.fromEntries(
         [['X-Forward-X-Evaluate', customJs]].filter(([, value]) => value)
       ),
       ...customHeaders
-    }
-
-    for (const [key, value] of Object.entries(rest)) {
-      if (Array.isArray(value)) {
-        searchParams[key] = value.join(',')
-      }
     }
 
     // console.log(`DiffbotClient._extract: ${endpoint}`, searchParams)

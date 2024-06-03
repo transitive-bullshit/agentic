@@ -86,3 +86,28 @@ export function throttleKy(
     }
   })
 }
+
+/**
+ * Creates a new `URLSearchParams` object with all values coerced to strings
+ * that correctly handles arrays of values as repeated keys.
+ */
+export function sanitizeSearchParams(
+  searchParams: Record<
+    string,
+    string | number | boolean | string[] | number[] | boolean[] | undefined
+  >
+): URLSearchParams {
+  return new URLSearchParams(
+    Object.entries(searchParams).flatMap(([key, value]) => {
+      if (key === undefined || value === undefined) {
+        return []
+      }
+
+      if (Array.isArray(value)) {
+        return value.map((v) => [key, String(v)])
+      }
+
+      return [[key, String(value)]]
+    })
+  )
+}

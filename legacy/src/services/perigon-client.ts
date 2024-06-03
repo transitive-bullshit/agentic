@@ -3,7 +3,7 @@ import pThrottle from 'p-throttle'
 import { z } from 'zod'
 
 import { aiFunction, AIFunctionsProvider } from '../fns.js'
-import { assert, getEnv, pruneUndefined, throttleKy } from '../utils.js'
+import { assert, getEnv, sanitizeSearchParams, throttleKy } from '../utils.js'
 
 // TODO: https://docs.goperigon.com/docs/searching-sources
 // TODO: https://docs.goperigon.com/docs/journalist-data
@@ -683,28 +683,10 @@ export class PerigonClient extends AIFunctionsProvider {
     })
   })
   async searchArticles(opts: perigon.ArticlesSearchOptions) {
-    const {
-      personWikidataId,
-      personName,
-      companyId,
-      companyDomain,
-      companySymbol,
-      ...params
-    } = opts
-
-    const arrayParams = pruneUndefined({
-      personWikidataId: personWikidataId?.join(','),
-      personName: personName?.join(','),
-      companyId: companyId?.join(','),
-      companyDomain: companyDomain?.join(','),
-      companySymbol: companySymbol?.join(',')
-    })
-
     return this.ky
       .get('all', {
-        searchParams: {
-          ...arrayParams,
-          ...params,
+        searchParams: sanitizeSearchParams({
+          ...opts,
           apiKey: this.apiKey,
           size: Math.max(
             1,
@@ -713,7 +695,7 @@ export class PerigonClient extends AIFunctionsProvider {
               opts.size || perigon.DEFAULT_PAGE_SIZE
             )
           )
-        }
+        })
       })
       .json<perigon.ArticlesSearchResponse>()
   }
@@ -740,28 +722,10 @@ export class PerigonClient extends AIFunctionsProvider {
     })
   })
   async searchStories(opts: perigon.StoriesSearchOptions) {
-    const {
-      personWikidataId,
-      personName,
-      companyId,
-      companyDomain,
-      companySymbol,
-      ...params
-    } = opts
-
-    const arrayParams = pruneUndefined({
-      personWikidataId: personWikidataId?.join(','),
-      personName: personName?.join(','),
-      companyId: companyId?.join(','),
-      companyDomain: companyDomain?.join(','),
-      companySymbol: companySymbol?.join(',')
-    })
-
     return this.ky
       .get('stories/all', {
-        searchParams: {
-          ...arrayParams,
-          ...params,
+        searchParams: sanitizeSearchParams({
+          ...opts,
           apiKey: this.apiKey,
           size: Math.max(
             1,
@@ -770,7 +734,7 @@ export class PerigonClient extends AIFunctionsProvider {
               opts.size || perigon.DEFAULT_PAGE_SIZE
             )
           )
-        }
+        })
       })
       .json<perigon.StoriesSearchResponse>()
   }
@@ -785,18 +749,10 @@ export class PerigonClient extends AIFunctionsProvider {
     inputSchema: perigon.PeopleSearchOptionsSchema
   })
   async searchPeople(opts: perigon.PeopleSearchOptions) {
-    const { wikidataId, occupationId, ...params } = opts
-
-    const arrayParams = pruneUndefined({
-      wikidataId: wikidataId?.join(','),
-      occupationId: occupationId?.join(',')
-    })
-
     return this.ky
       .get('people/all', {
-        searchParams: {
-          ...arrayParams,
-          ...params,
+        searchParams: sanitizeSearchParams({
+          ...opts,
           apiKey: this.apiKey,
           size: Math.max(
             1,
@@ -805,7 +761,7 @@ export class PerigonClient extends AIFunctionsProvider {
               opts.size || perigon.DEFAULT_PAGE_SIZE
             )
           )
-        }
+        })
       })
       .json<perigon.PeopleSearchResponse>()
   }
@@ -821,19 +777,10 @@ export class PerigonClient extends AIFunctionsProvider {
     inputSchema: perigon.CompanySearchOptionsSchema
   })
   async searchCompanies(opts: perigon.CompanySearchOptions) {
-    const { id, symbol, domain, ...params } = opts
-
-    const arrayParams = pruneUndefined({
-      id: id?.join(','),
-      domain: domain?.join(','),
-      symbol: symbol?.join(',')
-    })
-
     return this.ky
       .get('companies/all', {
-        searchParams: {
-          ...arrayParams,
-          ...params,
+        searchParams: sanitizeSearchParams({
+          ...opts,
           apiKey: this.apiKey,
           size: Math.max(
             1,
@@ -842,7 +789,7 @@ export class PerigonClient extends AIFunctionsProvider {
               opts.size || perigon.DEFAULT_PAGE_SIZE
             )
           )
-        }
+        })
       })
       .json<perigon.CompanySearchResponse>()
   }
