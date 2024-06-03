@@ -62,6 +62,7 @@
     - provide a converter for langchain `DynamicStructuredTool`
   - pull from other libs
   - pull from [nango](https://docs.nango.dev/integrations/overview)
+- https://github.com/causaly/zod-validation-error
 
 ## License
 

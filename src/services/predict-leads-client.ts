@@ -4,7 +4,15 @@ import { z } from 'zod'
 
 import type { DeepNullable } from '../types.js'
 import { aiFunction, AIFunctionsProvider } from '../fns.js'
-import { assert, getEnv, pruneUndefined, throttleKy } from '../utils.js'
+import {
+  assert,
+  getEnv,
+  pruneUndefined,
+  sanitizeSearchParams,
+  throttleKy
+} from '../utils.js'
+
+// TODO: improve `domain` validation for fast-fail
 
 export namespace predictleads {
   // Allow up to 20 requests per minute by default.
@@ -188,118 +196,124 @@ export namespace predictleads {
 
   export type JobOpeningByIdResponse = Omit<JobOpeningResponse, 'meta'>
 
-  export const EventCategorySchema = z.union([
-    z
-      .literal('hires')
-      .describe(
-        'Company hired new executive or senior personnel. (leadership)'
-      ),
-    z
-      .literal('promotes')
-      .describe(
-        'Company promoted existing executive or senior personnel. (leadership)'
-      ),
-    z
-      .literal('leaves')
-      .describe('Executive or senior personnel left the company. (leadership)'),
-    z
-      .literal('retires')
-      .describe(
-        'Executive or senior personnel retires from the company. (leadership)'
-      ),
-    z
-      .literal('acquires')
-      .describe('Company acquired other company. (acquisition)'),
-    z
-      .literal('merges_with')
-      .describe('Company merges with other company. (acquisition)'),
-    z
-      .literal('sells_assets_to')
-      .describe(
-        'Company sells assets (like properties or warehouses) to other company. (acquisition)'
-      ),
-    z
-      .literal('expands_offices_to')
-      .describe(
-        'Company opens new offices in another town, state, country or continent. (expansion)'
-      ),
-    z
-      .literal('expands_offices_in')
-      .describe('Company expands existing offices. (expansion)'),
-    z
-      .literal('expands_facilities')
-      .describe(
-        'Company opens new or expands existing facilities like warehouses, data centers, manufacturing plants etc. (expansion)'
-      ),
-    z
-      .literal('opens_new_location')
-      .describe(
-        'Company opens new service location like hotels, restaurants, bars, hospitals etc. (expansion)'
-      ),
-    z
-      .literal('increases_headcount_by')
-      .describe('Company offers new job vacancies. (expansion)'),
-    z
-      .literal('launches')
-      .describe('Company launches new offering. (new_offering)'),
-    z
-      .literal('integrates_with')
-      .describe('Company integrates with other company. (new_offering)'),
-    z
-      .literal('is_developing')
-      .describe('Company begins development of a new offering. (new_offering)'),
-    z
-      .literal('receives_financing')
-      .describe(
-        'Company receives investment like venture funding, loan, grant etc. (investment)'
-      ),
-    z
-      .literal('invests_into')
-      .describe('Company invests into other company. (investment)'),
-    z
-      .literal('invests_into_assets')
-      .describe(
-        'Company invests into assets like property, trucks, facilities etc. (investment)'
-      ),
-    z
-      .literal('goes_public')
-      .describe(
-        'Company issues shares to the public for the first time. (investment)'
-      ),
-    z
-      .literal('closes_offices_in')
-      .describe('Company closes existing offices. (cost_cutting)'),
-    z
-      .literal('decreases_headcount_by')
-      .describe('Company lays off employees. (cost_cutting)'),
-    z
-      .literal('partners_with')
-      .describe('Company partners with other company. (partnership)'),
-    z
-      .literal('receives_award')
-      .describe(
-        'Company or person at the company receives an award. (recognition)'
-      ),
-    z
-      .literal('recognized_as')
-      .describe(
-        'Company or person at the company receives recognition. (recognition)'
-      ),
-    z
-      .literal('signs_new_client')
-      .describe('Company signs new client. (contract)'),
-    z
-      .literal('files_suit_against')
-      .describe(
-        'Company files suit against other company. (corporate_challenges)'
-      ),
-    z
-      .literal('has_issues_with')
-      .describe('Company has vulnerability problems. (corporate_challenges)'),
-    z
-      .literal('identified_as_competitor_of')
-      .describe('New or existing competitor was identified. (relational)')
-  ])
+  export const EventCategorySchema = z
+    .union([
+      z
+        .literal('hires')
+        .describe(
+          'Company hired new executive or senior personnel. (leadership)'
+        ),
+      z
+        .literal('promotes')
+        .describe(
+          'Company promoted existing executive or senior personnel. (leadership)'
+        ),
+      z
+        .literal('leaves')
+        .describe(
+          'Executive or senior personnel left the company. (leadership)'
+        ),
+      z
+        .literal('retires')
+        .describe(
+          'Executive or senior personnel retires from the company. (leadership)'
+        ),
+      z
+        .literal('acquires')
+        .describe('Company acquired other company. (acquisition)'),
+      z
+        .literal('merges_with')
+        .describe('Company merges with other company. (acquisition)'),
+      z
+        .literal('sells_assets_to')
+        .describe(
+          'Company sells assets (like properties or warehouses) to other company. (acquisition)'
+        ),
+      z
+        .literal('expands_offices_to')
+        .describe(
+          'Company opens new offices in another town, state, country or continent. (expansion)'
+        ),
+      z
+        .literal('expands_offices_in')
+        .describe('Company expands existing offices. (expansion)'),
+      z
+        .literal('expands_facilities')
+        .describe(
+          'Company opens new or expands existing facilities like warehouses, data centers, manufacturing plants etc. (expansion)'
+        ),
+      z
+        .literal('opens_new_location')
+        .describe(
+          'Company opens new service location like hotels, restaurants, bars, hospitals etc. (expansion)'
+        ),
+      z
+        .literal('increases_headcount_by')
+        .describe('Company offers new job vacancies. (expansion)'),
+      z
+        .literal('launches')
+        .describe('Company launches new offering. (new_offering)'),
+      z
+        .literal('integrates_with')
+        .describe('Company integrates with other company. (new_offering)'),
+      z
+        .literal('is_developing')
+        .describe(
+          'Company begins development of a new offering. (new_offering)'
+        ),
+      z
+        .literal('receives_financing')
+        .describe(
+          'Company receives investment like venture funding, loan, grant etc. (investment)'
+        ),
+      z
+        .literal('invests_into')
+        .describe('Company invests into other company. (investment)'),
+      z
+        .literal('invests_into_assets')
+        .describe(
+          'Company invests into assets like property, trucks, facilities etc. (investment)'
+        ),
+      z
+        .literal('goes_public')
+        .describe(
+          'Company issues shares to the public for the first time. (investment)'
+        ),
+      z
+        .literal('closes_offices_in')
+        .describe('Company closes existing offices. (cost_cutting)'),
+      z
+        .literal('decreases_headcount_by')
+        .describe('Company lays off employees. (cost_cutting)'),
+      z
+        .literal('partners_with')
+        .describe('Company partners with other company. (partnership)'),
+      z
+        .literal('receives_award')
+        .describe(
+          'Company or person at the company receives an award. (recognition)'
+        ),
+      z
+        .literal('recognized_as')
+        .describe(
+          'Company or person at the company receives recognition. (recognition)'
+        ),
+      z
+        .literal('signs_new_client')
+        .describe('Company signs new client. (contract)'),
+      z
+        .literal('files_suit_against')
+        .describe(
+          'Company files suit against other company. (corporate_challenges)'
+        ),
+      z
+        .literal('has_issues_with')
+        .describe('Company has vulnerability problems. (corporate_challenges)'),
+      z
+        .literal('identified_as_competitor_of')
+        .describe('New or existing competitor was identified. (relational)')
+    ])
+    .describe('Event category')
   export type EventCategory = z.infer<typeof EventCategorySchema>
 
   export const CompanyParamsSchema = z.object({
@@ -535,17 +549,15 @@ export class PredictLeadsClient extends AIFunctionsProvider {
       domain,
       page = 1,
       limit = predictleads.DEFAULT_PAGE_SIZE,
-      categories,
       ...params
     } = opts
     assert(domain, 'Missing required company "domain"')
 
     return this.ky
       .get(`v2/companies/${domain}/events`, {
-        searchParams: pruneUndefined({
+        searchParams: sanitizeSearchParams({
           page,
-          limit: String(limit),
-          categories: categories?.join(','),
+          limit,
           ...params
         })
       })
@@ -586,19 +598,13 @@ export class PredictLeadsClient extends AIFunctionsProvider {
   ) {
     const opts =
       typeof domainOrOpts === 'string' ? { domain: domainOrOpts } : domainOrOpts
-    const {
-      domain,
-      limit = predictleads.DEFAULT_PAGE_SIZE,
-      categories,
-      ...params
-    } = opts
+    const { domain, limit = predictleads.DEFAULT_PAGE_SIZE, ...params } = opts
     assert(domain, 'Missing required company "domain"')
 
     return this.ky
       .get(`v2/companies/${domain}/job_openings`, {
-        searchParams: pruneUndefined({
-          limit: String(limit),
-          categories: categories?.join(','),
+        searchParams: sanitizeSearchParams({
+          limit,
           ...params
         })
       })
@@ -621,19 +627,13 @@ export class PredictLeadsClient extends AIFunctionsProvider {
   ) {
     const opts =
       typeof domainOrOpts === 'string' ? { domain: domainOrOpts } : domainOrOpts
-    const {
-      domain,
-      limit = predictleads.DEFAULT_PAGE_SIZE,
-      categories,
-      ...params
-    } = opts
+    const { domain, limit = predictleads.DEFAULT_PAGE_SIZE, ...params } = opts
     assert(domain, 'Missing required company "domain"')
 
     return this.ky
       .get(`v2/companies/${domain}/technologies`, {
-        searchParams: pruneUndefined({
-          limit: String(limit),
-          categories: categories?.join(','),
+        searchParams: sanitizeSearchParams({
+          limit,
           ...params
         })
       })
@@ -651,19 +651,13 @@ export class PredictLeadsClient extends AIFunctionsProvider {
   ) {
     const opts =
       typeof domainOrOpts === 'string' ? { domain: domainOrOpts } : domainOrOpts
-    const {
-      domain,
-      limit = predictleads.DEFAULT_PAGE_SIZE,
-      categories,
-      ...params
-    } = opts
+    const { domain, limit = predictleads.DEFAULT_PAGE_SIZE, ...params } = opts
     assert(domain, 'Missing required company "domain"')
 
     return this.ky
       .get(`v2/companies/${domain}/connections`, {
-        searchParams: pruneUndefined({
-          limit: String(limit),
-          categories: categories?.join(','),
+        searchParams: sanitizeSearchParams({
+          limit,
           ...params
         })
       })
@@ -686,7 +680,7 @@ export class PredictLeadsClient extends AIFunctionsProvider {
 
     return this.ky
       .get(`v2/companies/${domain}/website_evolution`, {
-        searchParams: pruneUndefined({ limit: String(limit), ...params })
+        searchParams: sanitizeSearchParams({ limit, ...params })
       })
       .json<predictleads.Response>()
   }
@@ -707,7 +701,7 @@ export class PredictLeadsClient extends AIFunctionsProvider {
 
     return this.ky
       .get(`v2/companies/${domain}/github_repositories`, {
-        searchParams: pruneUndefined({ limit: String(limit), ...params })
+        searchParams: sanitizeSearchParams({ limit, ...params })
       })
       .json<predictleads.Response>()
   }
@@ -723,19 +717,13 @@ export class PredictLeadsClient extends AIFunctionsProvider {
   ) {
     const opts =
       typeof domainOrOpts === 'string' ? { domain: domainOrOpts } : domainOrOpts
-    const {
-      domain,
-      sources,
-      limit = predictleads.DEFAULT_PAGE_SIZE,
-      ...params
-    } = opts
+    const { domain, limit = predictleads.DEFAULT_PAGE_SIZE, ...params } = opts
     assert(domain, 'Missing required company "domain"')
 
     return this.ky
       .get(`v2/companies/${domain}/products`, {
-        searchParams: pruneUndefined({
-          limit: String(limit),
-          sources: sources?.join(','),
+        searchParams: sanitizeSearchParams({
+          limit,
           ...params
         })
       })
@@ -783,7 +771,7 @@ export class PredictLeadsClient extends AIFunctionsProvider {
   async getFollowingCompanies(limit: number = predictleads.DEFAULT_PAGE_SIZE) {
     return this.ky
       .get(`v2/followings`, {
-        searchParams: { limit: String(limit) }
+        searchParams: sanitizeSearchParams({ limit })
       })
       .json<predictleads.FollowedCompaniesResponse>()
   }

@@ -3,7 +3,7 @@ import pThrottle from 'p-throttle'
 import { expect, test } from 'vitest'
 
 import { mockKyInstance } from './_utils.js'
-import { omit, pick, throttleKy } from './utils.js'
+import { omit, pick, sanitizeSearchParams, throttleKy } from './utils.js'
 
 test('pick', () => {
   expect(pick({ a: 1, b: 2, c: 3 }, 'a', 'c')).toEqual({ a: 1, c: 3 })
@@ -17,6 +17,33 @@ test('omit', () => {
   expect(
     omit({ a: { b: 'foo' }, d: -1, foo: null } as any, 'b', 'foo')
   ).toEqual({ a: { b: 'foo' }, d: -1 })
+})
+
+test('sanitizeSearchParams', () => {
+  expect(
+    sanitizeSearchParams({ a: 1, b: undefined, c: 13 }).toString()
+  ).toMatchSnapshot()
+
+  expect(sanitizeSearchParams({ a: [1, 2, 3] }).toString()).toMatchSnapshot()
+
+  expect(
+    sanitizeSearchParams({ b: ['a', 'b'], foo: true }).toString()
+  ).toMatchSnapshot()
+
+  expect(
+    sanitizeSearchParams({ b: [false, true, false] }).toString()
+  ).toMatchSnapshot()
+
+  expect(
+    sanitizeSearchParams({
+      flag: ['foo', 'bar', 'baz'],
+      token: 'test'
+    }).toString()
+  ).toMatchSnapshot()
+
+  expect(sanitizeSearchParams({}).toString()).toMatchSnapshot()
+
+  expect(sanitizeSearchParams({ a: [] }).toString()).toMatchSnapshot()
 })
 
 test(

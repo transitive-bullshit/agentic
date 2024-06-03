@@ -12,9 +12,6 @@ export interface PrivateAIFunctionMetadata {
   description: string
   inputSchema: z.AnyZodObject
   methodName: string
-
-  // TODO
-  // pre and post
 }
 
 export abstract class AIFunctionsProvider {
