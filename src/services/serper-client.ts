@@ -227,7 +227,7 @@ export class SerperClient extends AIFunctionsProvider {
   } & serper.ClientParams = {}) {
     assert(
       apiKey,
-      `SerperClient missing required "apiKey" (defaults to "SERPER_API_KEY" env var)`
+      'SerperClient missing required "apiKey" (defaults to "SERPER_API_KEY" env var)'
     )
 
     super()
@@ -239,7 +239,7 @@ export class SerperClient extends AIFunctionsProvider {
     this.ky = ky.extend({
       prefixUrl: this.apiBaseUrl,
       headers: {
-        'X-API-KEY': this.apiKey
+        'x-api-key': this.apiKey
       }
     })
   }
