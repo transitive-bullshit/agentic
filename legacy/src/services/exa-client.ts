@@ -59,19 +59,25 @@ export namespace exa {
     startCrawlDate: z
       .string()
       .optional()
-      .describe('Start date for results based on crawl date.'),
+      .describe(
+        'Start date for results based on crawl date (ISO 8601 format).'
+      ),
     endCrawlDate: z
       .string()
       .optional()
-      .describe('End date for results based on crawl date.'),
+      .describe('End date for results based on crawl date (ISO 8601 format).'),
     startPublishedDate: z
       .string()
       .optional()
-      .describe('Start date for results based on published date.'),
+      .describe(
+        'Start date for results based on published date (ISO 8601 format).'
+      ),
     endPublishedDate: z
       .string()
       .optional()
-      .describe('End date for results based on published date.'),
+      .describe(
+        'End date for results based on published date (ISO 8601 format).'
+      ),
     category: z
       .string()
       .optional()
@@ -120,7 +126,7 @@ export namespace exa {
     /** The URL of the search result. */
     url: string
 
-    /** The estimated creation date of the content. */
+    /** The estimated creation date of the content (ISO 8601 format). */
     publishedDate?: string
 
     /** The author of the content, if available. */
