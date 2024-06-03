@@ -71,7 +71,7 @@ async function main() {
   // })
   const res = await diffbot.enhanceEntity({
     type: 'Person',
-    name: 'Travis Fischer'
+    name: 'Kevin Raheja'
   })
   console.log(JSON.stringify(res, null, 2))
 }

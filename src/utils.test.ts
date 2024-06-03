@@ -1,9 +1,15 @@
 import ky from 'ky'
 import pThrottle from 'p-throttle'
-import { expect, test } from 'vitest'
+import { describe, expect, test } from 'vitest'
 
 import { mockKyInstance } from './_utils.js'
-import { omit, pick, sanitizeSearchParams, throttleKy } from './utils.js'
+import {
+  omit,
+  pick,
+  sanitizeSearchParams,
+  stringifyForModel,
+  throttleKy
+} from './utils.js'
 
 test('pick', () => {
   expect(pick({ a: 1, b: 2, c: 3 }, 'a', 'c')).toEqual({ a: 1, c: 3 })
@@ -79,3 +85,22 @@ test(
     timeout: 60_000
   }
 )
+
+describe('stringifyForModel', () => {
+  test('handles basic objects', () => {
+    const input = {
+      foo: 'bar',
+      nala: ['is', 'cute'],
+      kittens: null,
+      cats: undefined,
+      paws: 4.3
+    }
+    const result = stringifyForModel(input)
+    expect(result).toEqual(JSON.stringify(input, null))
+  })
+
+  test('handles empty input', () => {
+    const result = stringifyForModel()
+    expect(result).toEqual('')
+  })
+})

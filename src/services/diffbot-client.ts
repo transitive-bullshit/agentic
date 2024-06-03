@@ -414,6 +414,7 @@ export namespace diffbot {
     locations?: Location[]
     location?: Location
     interests?: Interest[]
+    emailAddresses?: any
     age?: number
     crawlTimestamp?: number
   }
