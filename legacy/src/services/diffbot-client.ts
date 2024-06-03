@@ -1,6 +1,8 @@
 import defaultKy, { type KyInstance } from 'ky'
 import pThrottle from 'p-throttle'
+import { z } from 'zod'
 
+import { aiFunction, AIFunctionsProvider } from '../fns.js'
 import { assert, getEnv, throttleKy } from '../utils.js'
 
 export namespace diffbot {
@@ -8,13 +10,14 @@ export namespace diffbot {
   export const KNOWLEDGE_GRAPH_API_BASE_URL = 'https://kg.diffbot.com'
 
   // Allow up to 5 requests per second by default.
+  // https://docs.diffbot.com/reference/rate-limits
   export const throttle = pThrottle({
     limit: 5,
     interval: 1000,
     strict: true
   })
 
-  export interface DiffbotExtractOptions {
+  export interface ExtractOptions {
     /** Specify optional fields to be returned from any fully-extracted pages, e.g.: &fields=querystring,links. See available fields within each API's individual documentation pages.
      * @see https://docs.diffbot.com/reference/extract-optional-fields
      */
@@ -45,8 +48,8 @@ export namespace diffbot {
     customHeaders?: Record<string, string>
   }
 
-  export interface DiffbotExtractAnalyzeOptions extends DiffbotExtractOptions {
-    /** Web page URL of the analyze to process */
+  export interface ExtractAnalyzeOptions extends ExtractOptions {
+    /** URL of the web page to process */
     url: string
 
     /** By default the Analyze API will fully extract all pages that match an existing Automatic API -- articles, products or image pages. Set mode to a specific page-type (e.g., mode=article) to extract content only from that specific page-type. All other pages will simply return the default Analyze fields. */
@@ -56,8 +59,8 @@ export namespace diffbot {
     fallback?: string
   }
 
-  export interface DiffbotExtractArticleOptions extends DiffbotExtractOptions {
-    /** Web page URL of the analyze to process */
+  export interface ExtractArticleOptions extends ExtractOptions {
+    /** URL of the web page to process */
     url: string
 
     /** Set the maximum number of automatically-generated tags to return. By default a maximum of ten tags will be returned. */
@@ -70,15 +73,14 @@ export namespace diffbot {
     naturalLanguage?: string[]
   }
 
-  export interface DiffbotExtractResponse {
+  export interface ExtractResponse {
     request: DiffbotRequest
     objects: DiffbotObject[]
   }
 
-  export type DiffbotExtractArticleResponse = DiffbotExtractResponse
+  export type ExtractArticleResponse = ExtractResponse
 
-  export interface DiffbotExtractAnalyzeResponse
-    extends DiffbotExtractResponse {
+  export interface ExtractAnalyzeResponse extends ExtractResponse {
     type: string
     title: string
     humanLanguage: string
@@ -87,7 +89,7 @@ export namespace diffbot {
   export interface DiffbotObject {
     date: string
     sentiment: number
-    images: DiffbotImage[]
+    images: Image[]
     author: string
     estimatedDate: string
     publisherRegion: string
@@ -96,44 +98,44 @@ export namespace diffbot {
     siteName: string
     type: string
     title: string
-    tags: DiffbotTag[]
+    tags: Tag[]
     publisherCountry: string
     humanLanguage: string
     authorUrl: string
     pageUrl: string
     html: string
     text: string
-    categories?: DiffbotCategory[]
-    authors: DiffbotAuthor[]
-    breadcrumb?: DiffbotBreadcrumb[]
-    items?: DiffbotListItem[]
+    categories?: ObjectCategory[]
+    authors: Author[]
+    breadcrumb?: Breadcrumb[]
+    items?: ListItem[]
     meta?: any
   }
 
-  interface DiffbotListItem {
+  export interface ListItem {
     title: string
     link: string
     summary: string
     image?: string
   }
 
-  interface DiffbotAuthor {
+  export interface Author {
     name: string
     link: string
   }
 
-  interface DiffbotCategory {
+  export interface ObjectCategory {
     score: number
     name: string
     id: string
   }
 
-  export interface DiffbotBreadcrumb {
+  export interface Breadcrumb {
     link: string
     name: string
   }
 
-  interface DiffbotImage {
+  export interface Image {
     url: string
     diffbotUri: string
 
@@ -146,29 +148,6 @@ export namespace diffbot {
     primary?: boolean
   }
 
-  interface DiffbotTag {
-    score: number
-    sentiment: number
-    count: number
-    label: string
-    uri: string
-    rdfTypes: string[]
-  }
-
-  interface DiffbotRequest {
-    pageUrl: string
-    api: string
-    version: number
-  }
-
-  export interface Image {
-    naturalHeight: number
-    diffbotUri: string
-    url: string
-    naturalWidth: number
-    primary: boolean
-  }
-
   export interface Tag {
     score: number
     sentiment: number
@@ -178,13 +157,13 @@ export namespace diffbot {
     rdfTypes: string[]
   }
 
-  export interface Request {
+  export interface DiffbotRequest {
     pageUrl: string
     api: string
     version: number
   }
 
-  export interface DiffbotKnowledgeGraphSearchOptions {
+  export interface KnowledgeGraphSearchOptions {
     type?: 'query' | 'text' | 'queryTextFallback' | 'crawl'
     query: string
     col?: string
@@ -206,8 +185,8 @@ export namespace diffbot {
     report?: boolean
   }
 
-  export interface DiffbotKnowledgeGraphEnhanceOptions {
-    type: 'Person' | 'Organization'
+  export interface KnowledgeGraphEnhanceOptions {
+    type: EntityType
 
     id?: string
     name?: string
@@ -233,8 +212,8 @@ export namespace diffbot {
     nonCanonicalFacts?: boolean
   }
 
-  export interface DiffbotKnowledgeGraphResponse {
-    data: DiffbotKnowledgeGraphNode[]
+  export interface KnowledgeGraphResponse {
+    data: KnowledgeGraphNode[]
     version: number
     hits: number
     results: number
@@ -244,10 +223,10 @@ export namespace diffbot {
     errors?: any[]
   }
 
-  export interface DiffbotKnowledgeGraphNode {
+  export interface KnowledgeGraphNode {
     score: number
     esscore?: number
-    entity: DiffbotKnowledgeGraphEntity
+    entity: KnowledgeGraphEntity
     entity_ctx: any
     errors: string[]
     callbackQuery: string
@@ -258,77 +237,406 @@ export namespace diffbot {
     uri: string
   }
 
-  export interface DiffbotKnowledgeGraphEntity {
+  export interface KnowledgeGraphEntity {
     id: string
     diffbotUri: string
     type?: string
     name: string
-    images: DiffbotImage[]
+    images: Image[]
     origins: string[]
     nbOrigins?: number
 
-    gender?: DiffbotGender
+    gender?: Gender
     githubUri?: string
     importance?: number
     description?: string
     homepageUri?: string
     allNames?: string[]
-    skills?: DiffbotSkill[]
+    skills?: Skill[]
     crawlTimestamp?: number
     summary?: string
     image?: string
     types?: string[]
     nbIncomingEdges?: number
     allUris?: string[]
-    employments?: DiffbotEmployment[]
-    locations?: DiffbotLocation[]
-    location?: DiffbotLocation
+    employments?: Employment[]
+    locations?: Location[]
+    location?: Location
     allOriginHashes?: string[]
-    nameDetail?: DiffbotNameDetail
+    nameDetail?: NameDetail
   }
 
-  interface DiffbotEmployment {
-    employer: Entity
+  export type EntityType = 'Organization' | 'Place'
+
+  export const EnhanceEntityOptionsSchema = z.object({
+    type: z.enum(['Person', 'Organization']),
+    id: z
+      .string()
+      .optional()
+      .describe('Diffbot ID of the entity to enhance if known'),
+    name: z
+      .union([z.string(), z.array(z.string())])
+      .optional()
+      .describe('Name of the entity'),
+    url: z
+      .array(z.string())
+      .optional()
+      .describe('Origin or homepage URL of the entity'),
+    phone: z.string().optional().describe('Phone number of the entity'),
+    email: z.string().optional().describe('Email of the entity'),
+    employer: z
+      .string()
+      .optional()
+      .describe("Name of the entity's employer (for Person entities)"),
+    title: z
+      .string()
+      .optional()
+      .describe('Title of the entity (for Person entities)'),
+    school: z
+      .string()
+      .optional()
+      .describe('School of the entity (for Person entities)'),
+    location: z.string().optional().describe('Location of the entity'),
+    ip: z.string().optional().describe('IP address of the entity'),
+    customId: z.string().optional().describe('User-defined ID for correlation'),
+    threshold: z.number().optional().describe('Similarity threshold'),
+    refresh: z
+      .boolean()
+      .optional()
+      .describe(
+        'If set, will attempt to refresh the entity data by recrawling the source URLs.'
+      ),
+    search: z
+      .boolean()
+      .optional()
+      .describe(
+        'If set, will attempt to search the web for the entity and merge the results into its knowledge base.'
+      ),
+    size: z
+      .number()
+      .int()
+      .positive()
+      .max(100)
+      .optional()
+      .describe('Number of results to return')
+  })
+  export type EnhanceEntityOptions = z.infer<typeof EnhanceEntityOptionsSchema>
+
+  export interface EnhanceEntityResponse {
+    version: number
+    hits: number
+    kgversion: string
+    request_ctx: RequestCtx
+    data: EnhanceEntityResponseDatum[]
+    errors: any[]
   }
 
-  interface Entity {
+  export interface RequestCtx {
+    query: Query
+    query_ctx: QueryCtx
+  }
+
+  export interface Query {
+    type: string
+    name: string[]
+  }
+
+  export interface QueryCtx {
+    search: string
+  }
+
+  export interface EnhanceEntityResponseDatum {
+    score: number
+    esscore: number
+    entity: Entity
+    errors: any[]
+  }
+
+  export interface Entity {
+    name: string
+    type: EntityType
+    id: string
+    summary?: string
+    description?: string
+    homepageUri?: string
+    twitterUri?: string
+    linkedInUri?: string
+    githubUri?: string
+    crunchbaseUri?: string
+    googlePlusUri?: string
+    diffbotUri?: string
+    educations?: Education[]
+    nationalities?: Nationality[]
+    allNames?: string[]
+    skills?: Skill[]
+    children?: Children[]
+    nbOrigins?: number
+    height?: number
+    image?: string
+    images?: Image[]
+    nbIncomingEdges?: number
+    nbFollowers?: number
+    allOriginHashes?: string[]
+    nameDetail?: NameDetail
+    parents?: Parent[]
+    gender?: Gender
+    importance?: number
+    origin?: string
+    wikipediaUri: string
+    wikipediaPageviewsLastQuarterGrowth?: number
+    wikipediaPageviewsLastYear?: number
+    wikipediaPageviewsLastYearGrowth?: number
+    wikipediaPageviews?: number
+    wikipediaPageviewsLastQuarter?: number
+    wikipediaPageviewsGrowth?: number
+    birthPlace?: BirthPlace
+    origins: string[]
+    crawlTimestamp: number
+    types?: string[]
+    unions?: Union[]
+    languages?: Language[]
+    allUris?: string[]
+    employments?: Employment[]
+    birthDate?: DateTime
+    religion?: Religion
+    awards?: Award[]
+    netWorth?: NetWorth
+    allDescriptions?: string[]
+    locations?: Location[]
+    location?: Location
+    interests?: Interest[]
+    age?: number
+  }
+
+  export interface Education {
+    institution: Institution
+    isCurrent?: boolean
+    major?: Major
+    degree?: Degree
+    from?: DateTime
+    to?: DateTime
+  }
+
+  export interface Institution {
+    summary: string
+    image: string
+    types: string[]
+    name: string
+    diffbotUri: string
+    targetDiffbotId: string
+    type: string
+  }
+
+  export interface Major {}
+
+  export interface Degree {
+    types: string[]
+    name: string
+    diffbotUri: string
+    targetDiffbotId: string
+    type: string
+  }
+
+  export interface DateTime {
+    str: string
+    precision: number
+    timestamp: number
+  }
+
+  export interface Nationality {
+    name: string
+    type: string
+  }
+
+  export interface Skill {
+    name: string
+    diffbotUri?: string
+    targetDiffbotId?: string
+  }
+
+  export interface Children {
+    summary: string
+    types: string[]
+    name: string
+    diffbotUri: string
+    targetDiffbotId: string
+    type: string
+  }
+
+  export interface Image {
+    url: string
+    primary?: boolean
+  }
+
+  export interface NameDetail {
+    firstName: string
+    lastName: string
+    middleName?: string[]
+  }
+
+  export interface Parent {
+    summary: string
+    types: string[]
+    name: string
+    diffbotUri: string
+    targetDiffbotId: string
+    type: string
+    image?: string
+  }
+
+  export interface Gender {
+    normalizedValue: string
+  }
+
+  export interface BirthPlace {
+    country: Country
+    isCurrent: boolean
+    address: string
+    city: City
+    subregion: Subregion
+    latitude: number
+    precision: number
+    surfaceForm: string
+    region: Region
+    longitude: number
+  }
+
+  export interface Country {
+    summary: string
+    image: string
+    types: string[]
+    name: string
+    diffbotUri: string
+    targetDiffbotId: string
+    type: string
+  }
+
+  export interface City {
+    summary: string
+    image: string
+    types: string[]
+    name: string
+    diffbotUri: string
+    targetDiffbotId: string
+    type: string
+  }
+
+  export interface Subregion {
+    summary: string
+    image: string
+    types: string[]
+    name: string
+    diffbotUri: string
+    targetDiffbotId: string
+    type: string
+  }
+
+  export interface Region {
+    summary: string
+    image: string
+    types: string[]
+    name: string
+    diffbotUri: string
+    targetDiffbotId: string
+    type: string
+  }
+
+  export interface Union {
+    person: Person
+    from?: DateTime
+    to?: DateTime
+    type?: string
+  }
+
+  export interface Person {
+    summary: string
+    image: string
+    types: string[]
+    name: string
+    diffbotUri: string
+    targetDiffbotId: string
+    type: string
+  }
+
+  export interface Language {
+    str: string
+    normalizedValue: string
+  }
+
+  export interface Employment {
+    isCurrent?: boolean
+    employer?: Employer
+    from?: DateTime
+    categories?: EmploymentCategory[]
+    title?: string
+    to?: DateTime
+    location?: Location
+  }
+
+  export interface Employer {
+    summary?: string
     image?: string
     types?: string[]
     name: string
     diffbotUri?: string
-    type: EntityType
-    summary?: string
+    targetDiffbotId?: string
+    type: string
   }
 
-  type EntityType = 'Organization' | 'Place'
-
-  interface DiffbotGender {
-    normalizedValue: string
+  export interface EmploymentCategory {
+    types: string[]
+    name: string
+    diffbotUri: string
+    targetDiffbotId: string
+    type: string
   }
 
-  interface DiffbotLocation {
-    country: Entity
+  export interface Location {
+    country?: Country
     isCurrent: boolean
     address: string
+    city: City
+    street: string
+    metroArea: MetroArea
+    subregion: Subregion
     latitude: number
     precision: number
-    surfaceForm: string
-    region: Entity
+    postalCode: string
+    region?: Region
     longitude: number
   }
 
-  interface DiffbotNameDetail {
-    firstName: string
-    lastName: string
-  }
-
-  interface DiffbotSkill {
+  export interface MetroArea {
+    summary: string
+    image: string
+    types: string[]
     name: string
     diffbotUri: string
+    targetDiffbotId: string
+    type: string
+  }
+
+  export interface Religion {
+    str: string
+  }
+
+  export interface Award {
+    title: string
+    date?: DateTime
+  }
+
+  export interface NetWorth {
+    currency: string
+    value: number
+  }
+
+  export interface Interest {
+    name: string
+    type: string
   }
 }
 
-export class DiffbotClient {
+export class DiffbotClient extends AIFunctionsProvider {
   readonly ky: KyInstance
   readonly kyKnowledgeGraph: KyInstance
 
@@ -355,6 +663,7 @@ export class DiffbotClient {
       apiKey,
       `DiffbotClient missing required "apiKey" (defaults to "DIFFBOT_API_KEY")`
     )
+    super()
 
     this.apiKey = apiKey
     this.apiBaseUrl = apiBaseUrl
@@ -373,9 +682,88 @@ export class DiffbotClient {
     })
   }
 
+  @aiFunction({
+    name: 'diffbot_analyze_url',
+    description:
+      'Scrapes and extracts structured data from a web page. Also classifies the web page as one of several types (article, product, discussion, job, image, video, list, event, or other).',
+    inputSchema: z.object({
+      url: z.string().url().describe('The URL to process.')
+    })
+  })
+  async analyzeUrl(options: diffbot.ExtractAnalyzeOptions) {
+    return this._extract<diffbot.ExtractAnalyzeResponse>('v3/analyze', options)
+  }
+
+  @aiFunction({
+    name: 'diffbot_extract_article_from_url',
+    description:
+      'Scrapes and extracts clean article text from news articles, blog posts, and other text-heavy web pages.',
+    inputSchema: z.object({
+      url: z.string().url().describe('The URL to process.')
+    })
+  })
+  async extractArticleFromUrl(options: diffbot.ExtractArticleOptions) {
+    return this._extract<diffbot.ExtractArticleResponse>('v3/article', options)
+  }
+
+  @aiFunction({
+    name: 'diffbot_enhance_entity',
+    description:
+      'Enriches a person or organization entity given partial data. Enhance is an enrichment API to find a person or organization using partial data as input. Enhance scores several candidates against the submitted query and returns the best match. More information in the query helps Enhance models estimate with more confidence and will typically result in better matches and a higher score for the matches.',
+    inputSchema: diffbot.EnhanceEntityOptionsSchema.omit({
+      refresh: true,
+      search: true,
+      customId: true,
+      threshold: true
+    })
+  })
+  async enhanceEntity(opts: diffbot.EnhanceEntityOptions) {
+    const { name, url, ...params } = opts
+
+    // TODO: clean this array handling up...
+    const arraySearchParams = [
+      name ? (Array.isArray(name) ? name : [name]).map((v) => ['name', v]) : [],
+      url?.map((v) => ['url', v])
+    ]
+      .filter(Boolean)
+      .flat()
+
+    return this.kyKnowledgeGraph
+      .get('kg/v3/enhance', {
+        searchParams: new URLSearchParams([
+          ...arraySearchParams,
+          ...Object.entries(params).map(([key, value]) => [key, String(value)]),
+          ['token', this.apiKey]
+        ])
+      })
+      .json<diffbot.EnhanceEntityResponse>()
+  }
+
+  async searchKnowledgeGraph(options: diffbot.KnowledgeGraphSearchOptions) {
+    return this.kyKnowledgeGraph
+      .get('kg/v3/dql', {
+        searchParams: {
+          ...options,
+          token: this.apiKey
+        }
+      })
+      .json<diffbot.KnowledgeGraphResponse>()
+  }
+
+  async enhanceKnowledgeGraph(options: diffbot.KnowledgeGraphEnhanceOptions) {
+    return this.kyKnowledgeGraph
+      .get('kg/v3/enhance', {
+        searchParams: {
+          ...options,
+          token: this.apiKey
+        }
+      })
+      .json<diffbot.KnowledgeGraphResponse>()
+  }
+
   protected async _extract<
-    T extends diffbot.DiffbotExtractResponse = diffbot.DiffbotExtractResponse
-  >(endpoint: string, options: diffbot.DiffbotExtractOptions): Promise<T> {
+    T extends diffbot.ExtractResponse = diffbot.ExtractResponse
+  >(endpoint: string, options: diffbot.ExtractOptions): Promise<T> {
     const { customJs, customHeaders, ...rest } = options
     const searchParams: Record<string, any> = {
       ...rest,
@@ -403,45 +791,5 @@ export class DiffbotClient {
         retry: 1
       })
       .json<T>()
-  }
-
-  async extractAnalyze(options: diffbot.DiffbotExtractAnalyzeOptions) {
-    return this._extract<diffbot.DiffbotExtractAnalyzeResponse>(
-      'v3/analyze',
-      options
-    )
-  }
-
-  async extractArticle(options: diffbot.DiffbotExtractArticleOptions) {
-    return this._extract<diffbot.DiffbotExtractArticleResponse>(
-      'v3/article',
-      options
-    )
-  }
-
-  async knowledgeGraphSearch(
-    options: diffbot.DiffbotKnowledgeGraphSearchOptions
-  ) {
-    return this.kyKnowledgeGraph
-      .get('kg/v3/dql', {
-        searchParams: {
-          ...options,
-          token: this.apiKey
-        }
-      })
-      .json<diffbot.DiffbotKnowledgeGraphResponse>()
-  }
-
-  async knowledgeGraphEnhance(
-    options: diffbot.DiffbotKnowledgeGraphEnhanceOptions
-  ) {
-    return this.kyKnowledgeGraph
-      .get('kg/v3/enhance', {
-        searchParams: {
-          ...options,
-          token: this.apiKey
-        }
-      })
-      .json<diffbot.DiffbotKnowledgeGraphResponse>()
   }
 }

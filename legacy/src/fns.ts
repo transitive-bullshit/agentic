@@ -40,7 +40,7 @@ export abstract class AIFunctionsProvider {
 }
 
 export function aiFunction<
-  This,
+  This extends AIFunctionsProvider,
   InputSchema extends z.SomeZodObject,
   OptionalArgs extends Array<undefined>,
   Return extends types.MaybePromise<any>

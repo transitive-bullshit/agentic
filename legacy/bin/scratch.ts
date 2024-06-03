@@ -9,7 +9,8 @@ import restoreCursor from 'restore-cursor'
 // import { WikipediaClient } from '../src/index.js'
 // import { PerigonClient } from '../src/index.js'
 // import { FirecrawlClient } from '../src/index.js'
-import { ExaClient } from '../src/index.js'
+// import { ExaClient } from '../src/index.js'
+import { DiffbotClient } from '../src/index.js'
 
 /**
  * Scratch pad for testing.
@@ -57,12 +58,20 @@ async function main() {
   // })
   // console.log(JSON.stringify(res, null, 2))
 
-  const exa = new ExaClient()
-  const res = await exa.search({
-    query: 'OpenAI',
-    contents: {
-      text: true
-    }
+  // const exa = new ExaClient()
+  // const res = await exa.search({
+  //   query: 'OpenAI',
+  //   contents: { text: true }
+  // })
+  // console.log(JSON.stringify(res, null, 2))
+
+  const diffbot = new DiffbotClient()
+  // const res = await diffbot.analyzeUrl({
+  //   url: 'https://www.bbc.com/news/articles/cp4475gwny1o'
+  // })
+  const res = await diffbot.enhanceEntity({
+    type: 'Person',
+    name: 'Travis Fischer'
   })
   console.log(JSON.stringify(res, null, 2))
 }
