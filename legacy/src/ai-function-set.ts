@@ -7,6 +7,9 @@ import { AIFunctionsProvider } from './fns.js'
  *
  * This class mimics a built-in `Set<AIFunction>`, but with additional utility
  * methods like `pick`, `omit`, and `map`.
+ *
+ * Function names are case-insensitive to make it easier to match them with
+ * possible LLM hallucinations.
  */
 export class AIFunctionSet implements Iterable<types.AIFunction> {
   protected readonly _map: Map<string, types.AIFunction>
@@ -20,7 +23,9 @@ export class AIFunctionSet implements Iterable<types.AIFunction> {
           : [fn]
     )
 
-    this._map = new Map(fns ? fns.map((fn) => [fn.spec.name, fn]) : null)
+    this._map = new Map(
+      fns ? fns.map((fn) => [transformName(fn.spec.name), fn]) : null
+    )
   }
 
   get size(): number {
@@ -28,21 +33,21 @@ export class AIFunctionSet implements Iterable<types.AIFunction> {
   }
 
   add(fn: types.AIFunction): this {
-    this._map.set(fn.spec.name, fn)
+    this._map.set(transformName(fn.spec.name), fn)
     return this
   }
 
   get(name: string): types.AIFunction | undefined {
-    return this._map.get(name)
+    return this._map.get(transformName(name))
   }
 
   set(name: string, fn: types.AIFunction): this {
-    this._map.set(name, fn)
+    this._map.set(transformName(name), fn)
     return this
   }
 
   has(name: string): boolean {
-    return this._map.has(name)
+    return this._map.has(transformName(name))
   }
 
   clear(): void {
@@ -50,20 +55,24 @@ export class AIFunctionSet implements Iterable<types.AIFunction> {
   }
 
   delete(name: string): boolean {
-    return this._map.delete(name)
+    return this._map.delete(transformName(name))
   }
 
   pick(...keys: string[]): AIFunctionSet {
-    const keysToIncludeSet = new Set(keys)
+    const keysToIncludeSet = new Set(keys.map(transformName))
     return new AIFunctionSet(
-      Array.from(this).filter((fn) => keysToIncludeSet.has(fn.spec.name))
+      Array.from(this).filter((fn) =>
+        keysToIncludeSet.has(transformName(fn.spec.name))
+      )
     )
   }
 
   omit(...keys: string[]): AIFunctionSet {
-    const keysToExcludeSet = new Set(keys)
+    const keysToExcludeSet = new Set(keys.map(transformName))
     return new AIFunctionSet(
-      Array.from(this).filter((fn) => !keysToExcludeSet.has(fn.spec.name))
+      Array.from(this).filter(
+        (fn) => !keysToExcludeSet.has(transformName(fn.spec.name))
+      )
     )
   }
 
@@ -89,4 +98,8 @@ export class AIFunctionSet implements Iterable<types.AIFunction> {
   [Symbol.iterator](): Iterator<types.AIFunction> {
     return this.entries
   }
+}
+
+function transformName(name: string): string {
+  return name.toLowerCase()
 }
