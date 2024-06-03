@@ -29,7 +29,8 @@ async function main() {
 
   const wikipedia = new WikipediaClient()
   const res = await wikipedia.getPageSummary({
-    title: 'Naruto_(TV_series)'
+    // title: 'Naruto_(TV_series)'
+    title: 'SpaceX'
   })
   console.log(JSON.stringify(res, null, 2))
 
