@@ -1,6 +1,7 @@
 import defaultKy, { type KyInstance } from 'ky'
 import { z } from 'zod'
 
+import { aiFunction, AIFunctionsProvider } from '../fns.js'
 import { assert, getEnv } from '../utils.js'
 
 // All proxycurl types are auto-generated from their openapi spec
@@ -52,7 +53,9 @@ export namespace proxycurl {
   >
 
   export const PersonLookupEndpointParamsQueryClassSchema = z.object({
-    company_domain: z.string(),
+    company_domain: z
+      .string()
+      .describe('The domain URL of the company the person works at'),
     enrich_profile: z.string().optional(),
     first_name: z.string(),
     last_name: z.string().optional(),
@@ -66,8 +69,8 @@ export namespace proxycurl {
 
   export const RoleLookupEndpointParamsQueryClassSchema = z.object({
     company_name: z.string(),
-    enrich_profile: z.string().optional(),
-    role: z.string()
+    role: z.string(),
+    enrich_profile: z.string().optional()
   })
   export type RoleLookupEndpointParamsQueryClass = z.infer<
     typeof RoleLookupEndpointParamsQueryClassSchema
@@ -84,7 +87,7 @@ export namespace proxycurl {
   >
 
   export const ReverseEmailLookupEndpointParamsQueryClassSchema = z.object({
-    email: z.string().optional(),
+    email: z.string(),
     enrich_profile: z.string().optional(),
     lookup_depth: z.string().optional()
   })
@@ -98,7 +101,6 @@ export namespace proxycurl {
     description: z.string().optional(),
     employee_count_max: z.string().optional(),
     employee_count_min: z.string().optional(),
-    enrich_profiles: z.string().optional(),
     follower_count_max: z.string().optional(),
     follower_count_min: z.string().optional(),
     founded_after_year: z.string().optional(),
@@ -113,7 +115,8 @@ export namespace proxycurl {
     public_identifier_in_list: z.string().optional(),
     public_identifier_not_in_list: z.string().optional(),
     region: z.string().optional(),
-    type: z.string().optional()
+    type: z.string().optional(),
+    enrich_profiles: z.string().optional()
   })
   export type CompanySearchEndpointParamsQueryClass = z.infer<
     typeof CompanySearchEndpointParamsQueryClassSchema
@@ -2000,7 +2003,7 @@ export namespace proxycurl {
   export type CompanySearchResult = z.infer<typeof CompanySearchResultSchema>
 }
 
-export class ProxycurlClient {
+export class ProxycurlClient extends AIFunctionsProvider {
   readonly ky: KyInstance
   readonly apiKey: string
   readonly apiBaseUrl: string
@@ -2015,8 +2018,15 @@ export class ProxycurlClient {
     apiBaseUrl?: string
     ky?: KyInstance
   } = {}) {
-    assert(apiKey, 'ProxycurlClient missing required "apiKey"')
-    assert(apiBaseUrl, 'ProxycurlClient missing required "apiBaseUrl"')
+    assert(
+      apiKey,
+      'ProxycurlClient missing required "apiKey" (defaults to "PROXYCURL_API_KEY")'
+    )
+    assert(
+      apiBaseUrl,
+      'ProxycurlClient missing required "apiBaseUrl" (defaults to "PROXYCURL_API_BASE_URL")'
+    )
+    super()
 
     this.apiKey = apiKey
     this.apiBaseUrl = apiBaseUrl
@@ -2029,6 +2039,12 @@ export class ProxycurlClient {
     })
   }
 
+  @aiFunction({
+    name: 'get_linkedin_company',
+    description:
+      "Gets the LinkedIn profile for a company given it's domain `url`.",
+    inputSchema: proxycurl.CompanyProfileEndpointParamsQueryClassSchema
+  })
   async getLinkedInCompany(
     opts: proxycurl.CompanyProfileEndpointParamsQueryClass
   ) {
@@ -2039,6 +2055,12 @@ export class ProxycurlClient {
       .json<proxycurl.ResultProfile>()
   }
 
+  @aiFunction({
+    name: 'get_linkedin_person',
+    description:
+      'Gets the LinkedIn profile for a person given some unique, identifying information about them.',
+    inputSchema: proxycurl.PersonProfileEndpointParamsQueryClassSchema
+  })
   async getLinkedInPerson(
     opts: proxycurl.PersonProfileEndpointParamsQueryClass
   ) {
@@ -2049,6 +2071,12 @@ export class ProxycurlClient {
       .json<proxycurl.PublicPerson>()
   }
 
+  @aiFunction({
+    name: 'resolve_linkedin_person',
+    description:
+      'Resolves the LinkedIn profile for a person given their `first_name` and `company_domain` URL.',
+    inputSchema: proxycurl.PersonLookupEndpointParamsQueryClassSchema
+  })
   async resolveLinkedInPerson(
     opts: proxycurl.PersonLookupEndpointParamsQueryClass
   ) {
@@ -2059,7 +2087,13 @@ export class ProxycurlClient {
       .json<proxycurl.PublicPerson>()
   }
 
-  async resolvePersonByEmail(
+  @aiFunction({
+    name: 'resolve_linkedin_person_by_email',
+    description:
+      'Resolves the LinkedIn profile for a person given their `email`.',
+    inputSchema: proxycurl.ReverseEmailLookupEndpointParamsQueryClassSchema
+  })
+  async resolveLinkedInPersonByEmail(
     opts: proxycurl.ReverseEmailLookupEndpointParamsQueryClass
   ) {
     return this.ky
@@ -2069,47 +2103,61 @@ export class ProxycurlClient {
       .json<proxycurl.ReverseEmailUrlEnrichResult>()
   }
 
+  @aiFunction({
+    name: 'resolve_linkedin_person_at_company_by_role',
+    description:
+      'Resolves the LinkedIn profile for a person at a given `company_name` and `role`.',
+    inputSchema: proxycurl.RoleLookupEndpointParamsQueryClassSchema
+  })
   async resolveLinkedInPersonAtCompanyByRole(
     opts: proxycurl.RoleLookupEndpointParamsQueryClass
   ) {
     return this.ky
-      .get('/api/find/company/role/', {
+      .get('api/find/company/role/', {
         searchParams: { ...opts }
       })
       .json<proxycurl.PublicPerson>()
   }
 
+  @aiFunction({
+    name: 'resolve_linkedin_company',
+    description:
+      'Resolves the LinkedIn profile for a company given the `company_name` and/or `company_domain`.',
+    inputSchema: proxycurl.CompanyLookupEndpointParamsQueryClassSchema
+  })
   async resolveLinkedInCompany(
     opts: proxycurl.CompanyLookupEndpointParamsQueryClass
   ) {
     return this.ky
-      .get('/api/linkedin/company/resolve', {
+      .get('api/linkedin/company/resolve', {
         searchParams: { ...opts }
       })
       .json<proxycurl.ResultProfile>()
   }
 
-  async resolveLinkedInPersonByEmail(
-    opts: proxycurl.ReverseEmailLookupEndpointParamsQueryClass
-  ) {
-    return this.ky
-      .get('/api/linkedin/profile/resolve/email', {
-        searchParams: { ...opts }
-      })
-      .json<proxycurl.ReverseEmailUrlEnrichResult>()
-  }
-
+  @aiFunction({
+    name: 'search_linkedin_companies',
+    description:
+      'Searches LinkedIn company profiles based on a set of criteria such as `name`, `industry`, `region`, `description`, `city`, number of employees, founding date, funding raised, etc.',
+    inputSchema: proxycurl.CompanySearchEndpointParamsQueryClassSchema
+  })
   async searchCompanies(opts: proxycurl.CompanySearchEndpointParamsQueryClass) {
     return this.ky
-      .get('/api/v2/search/company', {
+      .get('api/v2/search/company', {
         searchParams: { ...opts }
       })
       .json<proxycurl.CompanySearchResult>()
   }
 
+  @aiFunction({
+    name: 'search_linkedin_people',
+    description:
+      'Searches LinkedIn people profiles based on a set of criteria such as `country`, `first_name`, `last_name`, `current_company_name`, `headline`, `industries`, `past_company_name`, `summary`, `city`, `education_school_name`, etc.',
+    inputSchema: proxycurl.PersonSearchEndpointParamsQueryClassSchema
+  })
   async searchPeople(opts: proxycurl.PersonSearchEndpointParamsQueryClass) {
     return this.ky
-      .get('/api/v2/search/person/', {
+      .get('api/v2/search/person/', {
         searchParams: { ...opts }
       })
       .json<proxycurl.PersonSearchResult>()
