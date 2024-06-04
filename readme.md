@@ -113,12 +113,12 @@ The SDK-specific imports are all isolated to keep the main `@agentic/stdlib` as 
 - common utility functions for LLM-based function calling should be exported for convenience
 - clients and AIFunctions should be composable via `AIFunctionSet`
 - clients must work with all major TS AI SDKs
-  - SDK adaptors should be as lightweight as possible and be optional peer dependencies of `@agentic/core`
+  - SDK adaptors should be as lightweight as possible and be optional peer dependencies of `@agentic/stdlib`
   - SDK adatptor entrypoints should all be isolated to their own top-level imports
-    - `@agentic/core/ai-sdk`
-    - `@agentic/core/dexter`
-    - `@agentic/core/genkit`
-    - `@agentic/core/langchain`
+    - `@agentic/stdlib/ai-sdk`
+    - `@agentic/stdlib/dexter`
+    - `@agentic/stdlib/genkit`
+    - `@agentic/stdlib/langchain`
 
 ## Services
 
