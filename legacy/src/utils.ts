@@ -1,5 +1,6 @@
 import type { Jsonifiable } from 'type-fest'
 import dedent from 'dedent'
+import hashObjectImpl from 'hash-object'
 
 import type * as types from './types.js'
 
@@ -139,4 +140,8 @@ const dedenter = dedent.withOptions({ escapeSpecialCharacters: true })
  */
 export function cleanStringForModel(text: string): string {
   return dedenter(text).trim()
+}
+
+export function hashObject(object: Record<string, any>): string {
+  return hashObjectImpl(object, { algorithm: 'sha256' })
 }
