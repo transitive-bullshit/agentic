@@ -66,9 +66,14 @@
     "@nangohq/node": "^0.39.32",
     "dedent": "^1.5.3",
     "delay": "^6.0.0",
+    "hash-object": "^5.0.1",
+    "is-relative-url": "^4.0.0",
     "jsonrepair": "^3.6.1",
     "ky": "^1.2.4",
+    "normalize-url": "^8.0.1",
+    "p-map": "^7.0.2",
     "p-throttle": "^6.1.0",
+    "quick-lru": "^7.0.0",
     "twitter-api-sdk": "^1.2.1",
     "type-fest": "^4.18.3",
     "zod": "^3.23.3",
@@ -105,8 +110,8 @@
     "@dexaai/dexter": "^2.0.3",
     "@genkit-ai/ai": "^0.5.2",
     "@langchain/core": "^0.2.5",
-    "expr-eval": "^2.0.2",
-    "ai": "^3.1.22"
+    "ai": "^3.1.22",
+    "expr-eval": "^2.0.2"
   },
   "peerDependenciesMeta": {
     "@dexaai/dexter": {

@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://trywalter.ai"><img alt="Agentic" src="/media/agentic-header.jpg" width="616"></a>
+  <a href="https://trywalter.ai"><img alt="Agentic" src="/media/agentic-header.jpg" width="308"></a>
 </p>
 
 <p align="center">
@@ -154,7 +154,6 @@ The SDK-specific imports are all isolated to keep the main `@agentic/stdlib` as 
   - instructor-js
   - TODO
 - services
-  - calculator
   - e2b
   - search-and-scrape
   - replicate
@@ -166,6 +165,8 @@ The SDK-specific imports are all isolated to keep the main `@agentic/stdlib` as 
     - provide a converter for langchain `DynamicStructuredTool`
   - pull from other libs
   - pull from [nango](https://docs.nango.dev/integrations/overview)
+- tools
+  - calculator
 - tools / chains / flows / runnables
   - market maps
 - https://github.com/causaly/zod-validation-error
