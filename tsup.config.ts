@@ -6,7 +6,8 @@ export default defineConfig([
       'src/index.ts',
       'src/sdks/ai-sdk.ts',
       'src/sdks/dexter.ts',
-      'src/sdks/genkit.ts'
+      'src/sdks/genkit.ts',
+      'src/tools/calculator.ts'
     ],
     outDir: 'dist',
     target: 'node18',

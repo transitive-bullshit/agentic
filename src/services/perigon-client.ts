@@ -106,13 +106,11 @@ export namespace perigon {
     q: z.string()
       .describe(`Search query. It may use boolean operators (AND, OR, NOT) and quotes for exact matching. Example search queries:
 
-- AI agents
-- Compare the latest predictions and popular opinions on the 2024 US election
+- election news
 - "elon musk" AND tesla
 - (upcoming release OR launch) AND apple
 - (Google OR Amazon) AND NOT ("Jeff Bezos" OR Android)
 - "climate change"
-- Crypto* OR Bitcoin NOT Ethereum
 `),
     title: z
       .string()

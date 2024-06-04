@@ -75,6 +75,9 @@ importers:
       eslint:
         specifier: ^8.57.0
         version: 8.57.0
+      expr-eval:
+        specifier: ^2.0.2
+        version: 2.0.2
       husky:
         specifier: ^9.0.11
         version: 9.0.11
@@ -1913,6 +1916,9 @@ packages:
   exit-hook@4.0.0:
     resolution: {integrity: sha512-Fqs7ChZm72y40wKjOFXBKg7nJZvQJmewP5/7LtePDdnah/+FH9Hp5sgMujSCMPXlxOAW2//1jrW9pnsY7o20vQ==}
     engines: {node: '>=18'}
+
+  expr-eval@2.0.2:
+    resolution: {integrity: sha512-4EMSHGOPSwAfBiibw3ndnP0AvjDWLsMvGOvWEZ2F96IGk0bIVdjQisOHxReSkE13mHcfbuCiXw+G4y0zv6N8Eg==}
 
   express@4.19.2:
     resolution: {integrity: sha512-5T6nhjsT+EOMzuck8JjBHARTHfMht0POzlA60WV2pMD3gyXw2LZnZ+ueGdNxG+0calOJcWKbpFcuzLZ91YWq9Q==}
@@ -6518,6 +6524,8 @@ snapshots:
       strip-final-newline: 3.0.0
 
   exit-hook@4.0.0: {}
+
+  expr-eval@2.0.2: {}
 
   express@4.19.2:
     dependencies:

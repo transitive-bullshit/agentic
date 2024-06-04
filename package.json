@@ -37,6 +37,11 @@
       "types": "./dist/sdks/genkit.d.ts",
       "import": "./dist/sdks/genkit.js",
       "default": "./dist/sdks/genkit.js"
+    },
+    "./calculator": {
+      "types": "./dist/tools/calculator.d.ts",
+      "import": "./dist/tools/calculator.js",
+      "default": "./dist/tools/calculator.js"
     }
   },
   "files": [
@@ -81,6 +86,7 @@
     "del-cli": "^5.1.0",
     "dotenv": "^16.4.5",
     "eslint": "^8.57.0",
+    "expr-eval": "^2.0.2",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.5",
     "np": "^10.0.5",
@@ -99,6 +105,7 @@
     "@dexaai/dexter": "^2.0.3",
     "@genkit-ai/ai": "^0.5.2",
     "@langchain/core": "^0.2.5",
+    "expr-eval": "^2.0.2",
     "ai": "^3.1.22"
   },
   "peerDependenciesMeta": {
@@ -109,6 +116,9 @@
       "optional": true
     },
     "@langchain/core": {
+      "optional": true
+    },
+    "expr-eval": {
       "optional": true
     },
     "ai": {
