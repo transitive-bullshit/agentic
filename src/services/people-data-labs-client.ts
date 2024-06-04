@@ -1,7 +1,7 @@
 import defaultKy, { type KyInstance } from 'ky'
 import pThrottle from 'p-throttle'
 
-import { assert, getEnv, throttleKy } from '../utils.js'
+import { assert, getEnv, sanitizeSearchParams, throttleKy } from '../utils.js'
 
 /**
  * TODO: I'm holding off on converting this client to an `AIFunctionsProvider`
@@ -515,8 +515,7 @@ export class PeopleDataLabsClient {
   async companyProfile(options: peopledatalabs.CompanyLookupOptions) {
     return this.ky
       .get('company/enrich', {
-        // @ts-expect-error location is a string[] and searchparams shows a TS error heres
-        searchParams: { ...options }
+        searchParams: sanitizeSearchParams({ ...options })
       })
       .json<peopledatalabs.CompanyLookupResponse>()
   }
