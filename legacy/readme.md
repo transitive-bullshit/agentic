@@ -1,21 +1,22 @@
 <p align="center">
-  <a href="https://trywalter.ai"><img alt="Walter" src="https://trywalter.ai/walter-logo.svg" width="256"></a>
+  <a href="https://trywalter.ai"><img alt="Agentic" src="/media/agentic-header.jpg" width="616"></a>
 </p>
 
 <p align="center">
-  <em>Agentic recommendations for AI-native products...</em>
+  <em>AI agent stdlib that works with any AI SDK and LLM</em>
 </p>
 
 <p align="center">
-  <a href="https://github.com/transitive-bullshit/walter/actions/workflows/test.yml"><img alt="Build Status" src="https://github.com/transitive-bullshit/walter/actions/workflows/main.yml/badge.svg" /></a>
+  <a href="https://github.com/transitive-bullshit/walter/actions/workflows/main.yml"><img alt="Build Status" src="https://github.com/transitive-bullshit/walter/actions/workflows/main.yml/badge.svg" /></a>
+  <a href="https://www.npmjs.com/package/@agentic/stdlib"><img alt="NPM" src="https://img.shields.io/npm/v/@agentic/stdlib.svg" /></a>
   <a href="https://github.com/transitive-bullshit/walter/blob/main/license"><img alt="MIT License" src="https://img.shields.io/badge/license-MIT-blue" /></a>
   <a href="https://prettier.io"><img alt="Prettier Code Formatting" src="https://img.shields.io/badge/code_style-prettier-brightgreen.svg" /></a>
-  <a href="https://twitter.com/transitive_bs"><img alt="Discuss on Twitter" src="https://img.shields.io/badge/twitter-discussion-blue" /></a>
 </p>
 
-# @agentic/stdlib <!-- omit from toc -->
+# Agentic <!-- omit from toc -->
 
-**TODO: this is an active WIP**
+> [!WARNING]  
+> TODO: this project is not published yet and is an active WIP.
 
 The goal of this project is to create a **set of standard AI functions / tools** which are **optimized for both normal TS-usage as well as LLM-based usage** across any popular AI SDK via simple adaptors.
 
@@ -73,7 +74,6 @@ async function main() {
   const runner = createAIRunner({
     chatModel: new ChatModel({
       params: { model: 'gpt-4o', temperature: 0 }
-      // debug: true
     }),
     functions: createDexterFunctions(
       perigon.functions.pick('search_news_stories'),
@@ -92,18 +92,24 @@ async function main() {
 
 Here we've exposed 2 functions to the LLM, `search_news_stories` which corresponds to the `PerigonClient.searchStories` method and `serper_google_search` via the `SerperClient.search` method.
 
-All of the SDK adaptors like `createDexterFunctions` are very flexible in what they accept, which is why we can pass an `AIFunctionSet` (like `perigon.functions.pick('search_news_stories')` or `perigon.functions` or `serper.functions`) or an `AIFunctioProvider` (like `perigon` or `serper`) or an individual `AIFunction` (like `perigon.functions.get('search_news_stories')` or `serper.functions.get('serper_google_search')`). You can pass as many or as few of these `AIFunctionLike` objects as you'd like and you can manipulate them as `AIFunctionSet` sets via `.pick`, `.omit`, and `.map`.
+All of the SDK adaptors like `createDexterFunctions` are very flexible in what they accept. `AIFunctionLike` objects include:
+
+- `AIFunctionSet` - Sets of AI functions (like `perigon.functions.pick('search_news_stories')` or `perigon.functions` or `serper.functions`)
+- `AIFunctionsProvider` - Client classes which expose an `AIFunctionSet` via the `.functions` property (like `perigon` or `serper`)
+- `AIFunction` - Individual functions (like `perigon.functions.get('search_news_stories')` or `serper.functions.get('serper_google_search')`)
+
+You can pass as many or as few of these `AIFunctionLike` objects as you'd like and you can manipulate them as `AIFunctionSet` objects via `.pick`, `.omit`, `.get`, `.map`, etc.
 
 The SDK-specific imports are all isolated to keep the main `@agentic/stdlib` as lightweight as possible.
 
-## Goals
+## Client Goals
 
 - clients should be as minimal as possible
 - clients must use `ky` as a lightweight native fetch wrapper
 - clients must have a strongly-typed TS DX
 - clients should expose select methods via the `@aiFunction(...)` decorator
   - `@aiFunction` methods must use `zod` for input schema validation
-- it should be easy to create external clients which follow the `AIFunctioProvider` superclass / `@aiFunction` decorator pattern
+- it should be easy to create external clients which follow the `AIFunctionsProvider` superclass / `@aiFunction` decorator pattern
 - common utility functions for LLM-based function calling should be exported for convenience
 - clients and AIFunctions should be composable via `AIFunctionSet`
 - clients must work with all major TS AI SDKs
@@ -166,6 +172,6 @@ The SDK-specific imports are all isolated to keep the main `@agentic/stdlib` as 
 
 ## License
 
-PROPRIETARY © [Travis Fischer](https://twitter.com/transitive_bs)
+MIT © [Travis Fischer](https://twitter.com/transitive_bs)
 
 To stay up to date or learn more, follow [@transitive_bs](https://twitter.com/transitive_bs) on Twitter.
