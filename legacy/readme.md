@@ -141,10 +141,12 @@ The SDK-specific imports are all isolated to keep the main `@agentic/stdlib` as 
 
 ## AI SDKs
 
+- openai sdk
 - vercel ai sdk
 - dexa dexter
 - firebase genkit
 - langchain
+- llamaindex
 
 ## TODO
 
@@ -168,6 +170,8 @@ The SDK-specific imports are all isolated to keep the main `@agentic/stdlib` as 
 - tools / chains / flows / runnables
   - market maps
 - https://github.com/causaly/zod-validation-error
+- investigate [autotool](https://github.com/run-llama/LlamaIndexTS/tree/main/packages/autotool)
+- investigate [data connectors](https://github.com/mendableai/data-connectors)
 
 ## License
 
