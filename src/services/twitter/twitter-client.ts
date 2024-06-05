@@ -23,6 +23,7 @@ type TwitterApiMethod =
   | 'usersIdMentions'
   | 'findTweetById'
   | 'findTweetsById'
+  | 'searchRecentTweets'
   | 'findUserById'
   | 'findUserByUsername'
 
@@ -47,15 +48,9 @@ const twitterApiRateLimitsByPlan: Record<
     // TODO: according to the twitter docs, this shouldn't be allowed on the
     // free plan, but it seems to work...
     usersIdMentions: { limit: 1, interval: FIFTEEN_MINUTES_MS },
-
-    // TODO: according to the twitter docs, this shouldn't be allowed on the
-    // free plan, but it seems to work...
     findTweetById: { limit: 1, interval: FIFTEEN_MINUTES_MS },
-
-    // TODO: according to the twitter docs, this shouldn't be allowed on the
-    // free plan, but it seems to work...
     findTweetsById: { limit: 1, interval: FIFTEEN_MINUTES_MS },
-
+    searchRecentTweets: { limit: 1, interval: FIFTEEN_MINUTES_MS },
     findUserById: { limit: 1, interval: FIFTEEN_MINUTES_MS },
     findUserByUsername: { limit: 1, interval: FIFTEEN_MINUTES_MS }
   },
@@ -76,6 +71,10 @@ const twitterApiRateLimitsByPlan: Record<
     findTweetById: { limit: 15, interval: FIFTEEN_MINUTES_MS },
     findTweetsById: { limit: 15, interval: FIFTEEN_MINUTES_MS },
 
+    // 60 per 15m per user
+    // 60 per 15m per app
+    searchRecentTweets: { limit: 60, interval: FIFTEEN_MINUTES_MS },
+
     findUserById: { limit: 100, interval: TWENTY_FOUR_HOURS_MS },
     findUserByUsername: { limit: 100, interval: TWENTY_FOUR_HOURS_MS }
   },
@@ -95,6 +94,11 @@ const twitterApiRateLimitsByPlan: Record<
     findTweetById: { limit: 450, interval: FIFTEEN_MINUTES_MS },
     findTweetsById: { limit: 450, interval: FIFTEEN_MINUTES_MS },
 
+    // TODO: why would the per-user rate-limit be less than the per-app one?!
+    // 456 per 15m per user
+    // 300 per 15m per app
+    searchRecentTweets: { limit: 300, interval: FIFTEEN_MINUTES_MS },
+
     findUserById: { limit: 300, interval: FIFTEEN_MINUTES_MS },
     findUserByUsername: { limit: 300, interval: FIFTEEN_MINUTES_MS }
   },
@@ -107,6 +111,7 @@ const twitterApiRateLimitsByPlan: Record<
     usersIdMentions: { limit: 1800, interval: FIFTEEN_MINUTES_MS },
     findTweetById: { limit: 4500, interval: FIFTEEN_MINUTES_MS },
     findTweetsById: { limit: 4500, interval: FIFTEEN_MINUTES_MS },
+    searchRecentTweets: { limit: 3000, interval: FIFTEEN_MINUTES_MS },
     findUserById: { limit: 3000, interval: FIFTEEN_MINUTES_MS },
     findUserByUsername: { limit: 3000, interval: FIFTEEN_MINUTES_MS }
   }
@@ -143,6 +148,9 @@ export class TwitterClient extends AIFunctionsProvider {
     const findTweetsByIdThrottle = pThrottle(
       twitterApiRateLimits.findTweetsById
     )
+    const searchRecentTweetsThrottle = pThrottle(
+      twitterApiRateLimits.searchRecentTweets
+    )
     const findUserByIdThrottle = pThrottle(twitterApiRateLimits.findUserById)
     const findUserByUsernameThrottle = pThrottle(
       twitterApiRateLimits.findUserByUsername
@@ -153,6 +161,9 @@ export class TwitterClient extends AIFunctionsProvider {
     this._findTweetsById = findTweetsByIdThrottle(
       findTweetsByIdImpl(this.client)
     )
+    this._searchRecentTweets = searchRecentTweetsThrottle(
+      searchRecentTweetsImpl(this.client)
+    )
     this._findUserById = findUserByIdThrottle(findUserByIdImpl(this.client))
     this._findUserByUsername = findUserByUsernameThrottle(
       findUserByUsernameImpl(this.client)
@@ -162,6 +173,7 @@ export class TwitterClient extends AIFunctionsProvider {
   protected _createTweet: ReturnType<typeof createTweetImpl>
   protected _findTweetById: ReturnType<typeof findTweetByIdImpl>
   protected _findTweetsById: ReturnType<typeof findTweetsByIdImpl>
+  protected _searchRecentTweets: ReturnType<typeof searchRecentTweetsImpl>
   protected _findUserById: ReturnType<typeof findUserByIdImpl>
   protected _findUserByUsername: ReturnType<typeof findUserByUsernameImpl>
 
@@ -211,6 +223,26 @@ export class TwitterClient extends AIFunctionsProvider {
     )
 
     return this._findTweetsById(ids, params)
+  }
+
+  @aiFunction({
+    name: 'search_recent_tweets',
+    description: 'Searches for recent tweets',
+    inputSchema: z.object({
+      query: z.string().min(1),
+      sort_order: z
+        .enum(['recency', 'relevancy'])
+        .default('relevancy')
+        .optional()
+    })
+  })
+  async searchRecentTweets(params: types.SearchRecentTweetsParams) {
+    assert(
+      this.twitterApiPlan !== 'free',
+      'TwitterClient.searchRecentTweets not supported on free plan'
+    )
+
+    return this._searchRecentTweets(params)
   }
 
   @aiFunction({
@@ -367,6 +399,22 @@ function findTweetsByIdImpl(client: types.TwitterV2Client) {
       })
     } catch (err: any) {
       handleKnownTwitterErrors(err, { label: `fetching ${ids.length} tweets` })
+      throw err
+    }
+  }
+}
+
+function searchRecentTweetsImpl(client: types.TwitterV2Client) {
+  return async (params: types.SearchRecentTweetsParams) => {
+    try {
+      return await client.tweets.tweetsRecentSearch({
+        ...defaultTweetQueryParams,
+        ...params
+      })
+    } catch (err: any) {
+      handleKnownTwitterErrors(err, {
+        label: `searching tweets query "${params.query}"`
+      })
       throw err
     }
   }
