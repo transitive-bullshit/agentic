@@ -144,6 +144,7 @@ The SDK-specific imports are all isolated to keep the main `@agentic/stdlib` as 
 ## Non-service Tools
 
 - calculator
+- e2b (code interpreter)
 - search and scrape
 
 ## AI SDKs
@@ -165,7 +166,6 @@ The SDK-specific imports are all isolated to keep the main `@agentic/stdlib` as 
 
 - rename this repo to agentic
 - services
-  - e2b
   - replicate
   - huggingface
   - [skyvern](https://github.com/Skyvern-AI/skyvern)
@@ -173,7 +173,6 @@ The SDK-specific imports are all isolated to keep the main `@agentic/stdlib` as 
   - unstructured
   - pull from [langchain](https://github.com/langchain-ai/langchainjs/tree/main/langchain)
     - provide a converter for langchain `DynamicStructuredTool`
-  - pull from other libs
   - pull from [nango](https://docs.nango.dev/integrations/overview)
   - pull from [activepieces](https://github.com/activepieces/activepieces/tree/main/packages/pieces/community)
   - general openapi support ala [workgpt](https://github.com/team-openpm/workgpt)
