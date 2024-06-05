@@ -8,7 +8,7 @@ import restoreCursor from 'restore-cursor'
 // import { ProxycurlClient } from '../src/services/proxycurl-client.js'
 // import { WikipediaClient } from '../src/index.js'
 // import { PerigonClient } from '../src/index.js'
-import { FirecrawlClient } from '../src/index.js'
+// import { FirecrawlClient } from '../src/index.js'
 // import { ExaClient } from '../src/index.js'
 // import { DiffbotClient } from '../src/index.js'
 // import { WolframClient } from '../src/index.js'
@@ -16,6 +16,7 @@ import { FirecrawlClient } from '../src/index.js'
 //   createTwitterV2Client,
 //   TwitterClient
 // } from '../src/services/twitter/index.js'
+import { MidjourneyClient } from '../src/index.js'
 
 /**
  * Scratch pad for testing.
@@ -56,13 +57,13 @@ async function main() {
   // })
   // console.log(JSON.stringify(res, null, 2))
 
-  const firecrawl = new FirecrawlClient()
-  const res = await firecrawl.scrapeUrl({
-    url: 'https://www.bbc.com/news/articles/cp4475gwny1o'
-    // url: 'https://www.theguardian.com/technology/article/2024/jun/04/openai-google-ai-risks-letter'
-    // url: 'https://www.firecrawl.dev'
-  })
-  console.log(JSON.stringify(res, null, 2))
+  // const firecrawl = new FirecrawlClient()
+  // const res = await firecrawl.scrapeUrl({
+  //   url: 'https://www.bbc.com/news/articles/cp4475gwny1o'
+  //   // url: 'https://www.theguardian.com/technology/article/2024/jun/04/openai-google-ai-risks-letter'
+  //   // url: 'https://www.firecrawl.dev'
+  // })
+  // console.log(JSON.stringify(res, null, 2))
 
   // const exa = new ExaClient()
   // const res = await exa.search({
@@ -96,6 +97,12 @@ async function main() {
   //   query: 'open source AI agents'
   // })
   // console.log(res)
+
+  const midjourney = new MidjourneyClient()
+  const res = await midjourney.imagine(
+    'tiny lil baby kittens playing with an inquisitive AI robot, kawaii, anime'
+  )
+  console.log(JSON.stringify(res, null, 2))
 }
 
 try {
