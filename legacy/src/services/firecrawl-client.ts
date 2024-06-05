@@ -25,8 +25,31 @@ export namespace firecrawl {
    */
   export interface ScrapeResponse {
     success: boolean
-    data?: any
+    data?: Data
     error?: string
+  }
+
+  export interface Data {
+    content?: string
+    markdown?: string
+    html?: string
+    metadata: Metadata
+  }
+
+  export interface Metadata {
+    title: string
+    description: string
+    keywords?: string
+    robots?: string
+    ogTitle?: string
+    ogDescription?: string
+    ogUrl?: string
+    ogImage?: string
+    ogLocaleAlternate?: any[]
+    ogSiteName?: string
+    sourceURL?: string
+    modifiedTime?: string
+    publishedTime?: string
   }
 
   /**
@@ -132,9 +155,18 @@ export class FirecrawlClient extends AIFunctionsProvider {
       }
     }
 
-    return this.ky
-      .post('v0/scrapeUrl', { json })
+    const res = await this.ky
+      .post('v0/scrape', { json })
       .json<firecrawl.ScrapeResponse>()
+
+    if (!res.success || !res.data) return res
+
+    if (res.data.markdown) {
+      delete res.data.html
+      delete res.data.content
+    }
+
+    return res
   }
 
   async search(
