@@ -1,20 +1,16 @@
 import isRelativeUrlImpl from 'is-relative-url'
-import normalizeUrlImpl, { type Options } from 'normalize-url'
+import normalizeUrlImpl, {
+  type Options as NormalizeUrlOptions
+} from 'normalize-url'
 import QuickLRU from 'quick-lru'
 
 import { hashObject } from './utils.js'
 
 const protocolAllowList = new Set(['https:', 'http:'])
-const normalizedUrlCache = new QuickLRU<string, string | undefined>({
+const normalizedUrlCache = new QuickLRU<string, string | null>({
   maxSize: 4000
 })
 
-/**
- * Checks if a URL is crawlable.
- *
- * @param url - URL string to check
- * @returns whether the URL is crawlable
- */
 export function isValidCrawlableUrl(url: string): boolean {
   try {
     if (!url || isRelativeUrl(url)) {
@@ -43,42 +39,35 @@ export function isRelativeUrl(url: string): boolean {
   return isRelativeUrlImpl(url) && !url.startsWith('//')
 }
 
-/**
- * Normalizes a URL string.
- *
- * @param url - URL string to normalize
- * @param options - options for normalization.
- * @returns normalized URL string or null if an invalid URL was passed
- */
 export function normalizeUrl(
   url: string,
-  options?: Options
-): string | undefined {
-  let normalizedUrl: string | undefined
-  let cacheKey: string | undefined
+  options?: NormalizeUrlOptions
+): string | null {
+  let normalizedUrl: string | null | undefined
+
+  if (!url || isRelativeUrl(url)) {
+    return null
+  }
+
+  const opts = {
+    stripWWW: false,
+    defaultProtocol: 'https',
+    normalizeProtocol: true,
+    forceHttps: false,
+    stripHash: false,
+    stripTextFragment: true,
+    removeQueryParameters: [/^utm_\w+/i, 'ref', 'ref_src'],
+    removeTrailingSlash: true,
+    removeSingleSlash: true,
+    removeExplicitPort: true,
+    sortQueryParameters: true,
+    ...options
+  } as Required<NormalizeUrlOptions>
+
+  const optionsHash = hashObject(opts)
+  const cacheKey = `${url}-${optionsHash}`
 
   try {
-    if (!url || isRelativeUrl(url)) {
-      return
-    }
-
-    const opts = {
-      stripWWW: false,
-      defaultProtocol: 'https',
-      normalizeProtocol: true,
-      forceHttps: false,
-      stripHash: false,
-      stripTextFragment: true,
-      removeQueryParameters: [/^utm_\w+/i, 'ref', 'ref_src'],
-      removeTrailingSlash: true,
-      removeSingleSlash: true,
-      removeExplicitPort: true,
-      sortQueryParameters: true,
-      ...options
-    } as Required<Options>
-
-    const optionsHash = hashObject(opts)
-    cacheKey = `${url}-${optionsHash}`
     normalizedUrl = normalizedUrlCache.get(cacheKey)
 
     if (normalizedUrl !== undefined) {
@@ -86,14 +75,14 @@ export function normalizeUrl(
     }
 
     normalizedUrl = normalizeUrlImpl(url, opts)
+    if (!normalizeUrl) {
+      normalizedUrl = null
+    }
   } catch {
     // ignore invalid urls
-    normalizedUrl = undefined
+    normalizedUrl = null
   }
 
-  if (cacheKey) {
-    normalizedUrlCache.set(cacheKey, normalizedUrl!)
-  }
-
+  normalizedUrlCache.set(cacheKey, normalizedUrl!)
   return normalizedUrl
 }
