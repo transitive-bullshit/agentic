@@ -11,7 +11,11 @@ import restoreCursor from 'restore-cursor'
 // import { FirecrawlClient } from '../src/index.js'
 // import { ExaClient } from '../src/index.js'
 // import { DiffbotClient } from '../src/index.js'
-import { WolframClient } from '../src/index.js'
+// import { WolframClient } from '../src/index.js'
+import {
+  createTwitterV2Client,
+  TwitterClient
+} from '../src/services/twitter/index.js'
 
 /**
  * Scratch pad for testing.
@@ -76,14 +80,19 @@ async function main() {
   // })
   // console.log(JSON.stringify(res, null, 2))
 
-  const wolfram = new WolframClient()
-  // const res = await diffbot.analyzeUrl({
-  //   url: 'https://www.bbc.com/news/articles/cp4475gwny1o'
+  // const wolfram = new WolframClient()
+  // const res = await wolfram.ask({
+  //   input: 'population of new york city'
   // })
-  const res = await wolfram.ask({
-    input: 'population of new york city'
+  // console.log(res)
+
+  const client = await createTwitterV2Client({
+    // scopes: ['tweet.read', 'users.read', 'offline.access']
   })
-  console.log(res)
+  const twitter = new TwitterClient({ client })
+
+  const user = await twitter.findUserByUsername({ username: 'transitive_bs' })
+  console.log(user)
 }
 
 try {

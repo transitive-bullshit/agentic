@@ -7,6 +7,9 @@ export default defineConfig([
       'src/sdks/ai-sdk.ts',
       'src/sdks/dexter.ts',
       'src/sdks/genkit.ts',
+      'src/sdks/langchain.ts',
+      'src/sdks/llamaindex.ts',
+      'src/services/twitter/index.ts',
       'src/tools/calculator.ts'
     ],
     outDir: 'dist',
