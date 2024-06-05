@@ -44,9 +44,6 @@ importers:
       quick-lru:
         specifier: ^7.0.0
         version: 7.0.0
-      twitter-api-sdk:
-        specifier: ^1.2.1
-        version: 1.2.1(encoding@0.1.13)
       type-fest:
         specifier: ^4.18.3
         version: 4.18.3
@@ -60,6 +57,9 @@ importers:
       '@dexaai/dexter':
         specifier: ^2.0.3
         version: 2.1.0
+      '@e2b/code-interpreter':
+        specifier: ^0.0.7
+        version: 0.0.7(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       '@fisch0920/eslint-config':
         specifier: ^1.3.3
         version: 1.3.3(eslint@8.57.0)(typescript@5.4.5)
@@ -71,7 +71,7 @@ importers:
         version: 1.3.0(openai@4.47.3(encoding@0.1.13))(zod@3.23.8)
       '@langchain/core':
         specifier: ^0.2.5
-        version: 0.2.5(langchain@0.2.4(@notionhq/client@2.2.15(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13)))(openai@4.47.3(encoding@0.1.13))
+        version: 0.2.5(langchain@0.2.4(@notionhq/client@2.2.15(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13))(ws@8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)))(openai@4.47.3(encoding@0.1.13))
       '@total-typescript/ts-reset':
         specifier: ^0.5.1
         version: 0.5.1
@@ -101,7 +101,7 @@ importers:
         version: 15.2.5
       llamaindex:
         specifier: ^0.3.15
-        version: 0.3.15(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/credential-providers@3.590.0(@aws-sdk/client-sso-oidc@3.590.0))(@notionhq/client@2.2.15(encoding@0.1.13))(encoding@0.1.13)(node-fetch@3.3.2)(typescript@5.4.5)
+        version: 0.3.15(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/credential-providers@3.590.0(@aws-sdk/client-sso-oidc@3.590.0))(@notionhq/client@2.2.15(encoding@0.1.13))(bufferutil@4.0.8)(encoding@0.1.13)(node-fetch@3.3.2)(typescript@5.4.5)(utf-8-validate@6.0.4)
       np:
         specifier: ^10.0.5
         version: 10.0.5(typescript@5.4.5)
@@ -129,6 +129,9 @@ importers:
       tsx:
         specifier: ^4.11.0
         version: 4.11.0
+      twitter-api-sdk:
+        specifier: ^1.2.1
+        version: 1.2.1(encoding@0.1.13)
       typescript:
         specifier: ^5.4.5
         version: 5.4.5
@@ -155,10 +158,10 @@ importers:
         version: 1.3.0(openai@4.47.3(encoding@0.1.13))(zod@3.23.8)
       '@langchain/core':
         specifier: ^0.2.5
-        version: 0.2.5(langchain@0.2.4(@aws-sdk/credential-provider-node@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0))(@notionhq/client@2.2.15(encoding@0.1.13))(@pinecone-database/pinecone@2.2.2)(assemblyai@4.4.5)(axios@1.7.2)(chromadb@1.7.3(@google/generative-ai@0.11.5)(cohere-ai@7.10.2(@aws-sdk/client-sso-oidc@3.590.0)(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13)))(encoding@0.1.13)(fast-xml-parser@4.2.5)(ignore@5.3.1)(mammoth@1.7.2)(mongodb@6.7.0(@aws-sdk/credential-providers@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)))(openai@4.47.3(encoding@0.1.13))(ws@8.17.0))(openai@4.47.3(encoding@0.1.13))
+        version: 0.2.5(langchain@0.2.4(@aws-sdk/credential-provider-node@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0))(@notionhq/client@2.2.15(encoding@0.1.13))(@pinecone-database/pinecone@2.2.2)(assemblyai@4.4.5(bufferutil@4.0.8)(utf-8-validate@6.0.4))(axios@1.7.2)(chromadb@1.7.3(@google/generative-ai@0.11.5)(cohere-ai@7.10.2(@aws-sdk/client-sso-oidc@3.590.0)(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13)))(encoding@0.1.13)(fast-xml-parser@4.2.5)(ignore@5.3.1)(mammoth@1.7.2)(mongodb@6.7.0(@aws-sdk/credential-providers@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)))(openai@4.47.3(encoding@0.1.13))(ws@8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)))(openai@4.47.3(encoding@0.1.13))
       '@langchain/openai':
         specifier: ^0.1.1
-        version: 0.1.1(encoding@0.1.13)(langchain@0.2.4(@aws-sdk/credential-provider-node@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0))(@notionhq/client@2.2.15(encoding@0.1.13))(@pinecone-database/pinecone@2.2.2)(assemblyai@4.4.5)(axios@1.7.2)(chromadb@1.7.3(@google/generative-ai@0.11.5)(cohere-ai@7.10.2(@aws-sdk/client-sso-oidc@3.590.0)(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13)))(encoding@0.1.13)(fast-xml-parser@4.2.5)(ignore@5.3.1)(mammoth@1.7.2)(mongodb@6.7.0(@aws-sdk/credential-providers@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)))(openai@4.47.3(encoding@0.1.13))(ws@8.17.0))
+        version: 0.1.1(encoding@0.1.13)(langchain@0.2.4(@aws-sdk/credential-provider-node@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0))(@notionhq/client@2.2.15(encoding@0.1.13))(@pinecone-database/pinecone@2.2.2)(assemblyai@4.4.5(bufferutil@4.0.8)(utf-8-validate@6.0.4))(axios@1.7.2)(chromadb@1.7.3(@google/generative-ai@0.11.5)(cohere-ai@7.10.2(@aws-sdk/client-sso-oidc@3.590.0)(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13)))(encoding@0.1.13)(fast-xml-parser@4.2.5)(ignore@5.3.1)(mammoth@1.7.2)(mongodb@6.7.0(@aws-sdk/credential-providers@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)))(openai@4.47.3(encoding@0.1.13))(ws@8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)))
       ai:
         specifier: ^3.1.22
         version: 3.1.22(openai@4.47.3(encoding@0.1.13))(react@18.3.1)(solid-js@1.8.17)(svelte@4.2.17)(vue@3.4.27(typescript@5.4.5))(zod@3.23.8)
@@ -170,10 +173,10 @@ importers:
         version: 0.9.0(@genkit-ai/ai@0.5.2)(@genkit-ai/core@0.5.2)(encoding@0.1.13)
       langchain:
         specifier: ^0.2.4
-        version: 0.2.4(@aws-sdk/credential-provider-node@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0))(@notionhq/client@2.2.15(encoding@0.1.13))(@pinecone-database/pinecone@2.2.2)(assemblyai@4.4.5)(axios@1.7.2)(chromadb@1.7.3(@google/generative-ai@0.11.5)(cohere-ai@7.10.2(@aws-sdk/client-sso-oidc@3.590.0)(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13)))(encoding@0.1.13)(fast-xml-parser@4.2.5)(ignore@5.3.1)(mammoth@1.7.2)(mongodb@6.7.0(@aws-sdk/credential-providers@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)))(openai@4.47.3(encoding@0.1.13))(ws@8.17.0)
+        version: 0.2.4(@aws-sdk/credential-provider-node@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0))(@notionhq/client@2.2.15(encoding@0.1.13))(@pinecone-database/pinecone@2.2.2)(assemblyai@4.4.5(bufferutil@4.0.8)(utf-8-validate@6.0.4))(axios@1.7.2)(chromadb@1.7.3(@google/generative-ai@0.11.5)(cohere-ai@7.10.2(@aws-sdk/client-sso-oidc@3.590.0)(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13)))(encoding@0.1.13)(fast-xml-parser@4.2.5)(ignore@5.3.1)(mammoth@1.7.2)(mongodb@6.7.0(@aws-sdk/credential-providers@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)))(openai@4.47.3(encoding@0.1.13))(ws@8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4))
       llamaindex:
         specifier: ^0.3.15
-        version: 0.3.15(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/credential-providers@3.590.0(@aws-sdk/client-sso-oidc@3.590.0))(@notionhq/client@2.2.15(encoding@0.1.13))(encoding@0.1.13)(node-fetch@3.3.2)(typescript@5.4.5)
+        version: 0.3.15(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/credential-providers@3.590.0(@aws-sdk/client-sso-oidc@3.590.0))(@notionhq/client@2.2.15(encoding@0.1.13))(bufferutil@4.0.8)(encoding@0.1.13)(node-fetch@3.3.2)(typescript@5.4.5)(utf-8-validate@6.0.4)
       openai:
         specifier: ^4.47.3
         version: 4.47.3(encoding@0.1.13)
@@ -408,6 +411,10 @@ packages:
   '@dexaai/dexter@2.1.0':
     resolution: {integrity: sha512-3vhTSlpoW0DhQy2DaI3ocoZdw8RxBmsSysrGT0yZP6ZT2zHXlNVzYMj/ffbHmcR2y+VCkESKDJ/Vde4Ytf4agQ==}
     engines: {node: '>= 18'}
+
+  '@e2b/code-interpreter@0.0.7':
+    resolution: {integrity: sha512-e8nAY4zXU2b9nKthqq/pCPlTVD7f01dtzCtvabWmhlx7Wq+AUln14Q1Wf+uRVJXHkwS9BDv2CupdZpUChsjoCA==}
+    engines: {node: '>=18'}
 
   '@esbuild/aix-ppc64@0.21.4':
     resolution: {integrity: sha512-Zrm+B33R4LWPLjDEVnEqt2+SLTATlru1q/xYKVn8oVTbiRBGmK2VIMoIYGJDGyftnGaC788IuzGFAlb7IQ0Y8A==}
@@ -1796,6 +1803,10 @@ packages:
   buffer@5.7.1:
     resolution: {integrity: sha512-EHcyIPBQ4BSGlvjB16k5KgAJ27CIsHY/2JBmCRReo48y9rQ3MaUzWX3KVlBa4U7MyX02HdVj0K7C3WaB3ju7FQ==}
 
+  bufferutil@4.0.8:
+    resolution: {integrity: sha512-4T53u4PdgsXqKaIctwF8ifXlRTTmEPJ8iEPWFdGZvcf7sbwYo6FKFEX9eNNAnzFZ7EzJAQ3CJeOtCRA4rDp7Pw==}
+    engines: {node: '>=6.14.2'}
+
   builtin-modules@3.3.0:
     resolution: {integrity: sha512-zhaCDicdLuWN5UbN5IMnFqNMhNfo919sH85y2/ea+5Yg9TsTkeZxpL+JLbp6cgYFS4sRLp3YV4S6yDuqVWHYOw==}
     engines: {node: '>=6'}
@@ -2276,6 +2287,10 @@ packages:
 
   duck@0.1.12:
     resolution: {integrity: sha512-wkctla1O6VfP89gQ+J/yDesM0S7B7XLXjKGzXxMDVFg7uEn706niAtyYovKbyq1oT9YwDcly721/iUWoc8MVRg==}
+
+  e2b@0.16.1:
+    resolution: {integrity: sha512-2L1R/REEB+EezD4Q4MmcXXNATjvCYov2lv/69+PY6V95+wl1PZblIMTYAe7USxX6P6sqANxNs+kXqZr6RvXkSw==}
+    engines: {node: '>=18'}
 
   eastasianwidth@0.2.0:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
@@ -3308,6 +3323,11 @@ packages:
   isomorphic-fetch@3.0.0:
     resolution: {integrity: sha512-qvUtwJ3j6qwsF3jLxkZ72qCgjMysPzDfeV240JHiGZsANBYd+EEuu35v7dfrJ9Up0Ak07D7GGSkGhCHTqg/5wA==}
 
+  isomorphic-ws@5.0.0:
+    resolution: {integrity: sha512-muId7Zzn9ywDsyXgTIafTry2sV3nySZeUDe6YedVd1Hvuuep5AsIlqK+XefWpYTyJG5e503F2xIuT2lcU6rCSw==}
+    peerDependencies:
+      ws: '*'
+
   issue-regex@4.1.0:
     resolution: {integrity: sha512-X3HBmm7+Th+l4/kMtqwcHHgELD0Lfl0Ina6S3+grr+mKmTxsrM84NAO1UuRPIxIbGLIl3TCEu45S1kdu21HYbQ==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
@@ -3998,6 +4018,10 @@ packages:
     resolution: {integrity: sha512-dRB78srN/l6gqWulah9SrxeYnxeddIG30+GOqK/9OlLVyLg3HPnr6SqOWTWOXKRwC2eGYCkZ59NNuSgvSrpgOA==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
 
+  node-gyp-build@4.8.1:
+    resolution: {integrity: sha512-OSs33Z9yWr148JZcbZd5WiAXhh/n9z8TxQcdMhIOlpN9AhWpLfvVFO73+m77bBABQMaY9XSvIa+qk0jlI7Gcaw==}
+    hasBin: true
+
   node-releases@2.0.14:
     resolution: {integrity: sha512-y10wOWt8yZpqXmOgRo77WaHEmhYQYGNA6y421PKsKYWEK8aW+cqAphborZDhqfyKrbZEN92CN1X2KbafY2s7Yw==}
 
@@ -4157,6 +4181,10 @@ packages:
   openapi-types@12.1.3:
     resolution: {integrity: sha512-N4YtSYJqghVu4iek2ZUvcN/0aqH1kRDuNqzcycDxhOUpg7GdvLa2F3DgS6yBNhInhv2r/6I0Flkn7CqL8+nIcw==}
 
+  openapi-typescript-fetch@1.1.3:
+    resolution: {integrity: sha512-smLZPck4OkKMNExcw8jMgrMOGgVGx2N/s6DbKL2ftNl77g5HfoGpZGFy79RBzU/EkaO0OZpwBnslfdBfh7ZcWg==}
+    engines: {node: '>= 12.0.0', npm: '>= 7.0.0'}
+
   option@0.2.4:
     resolution: {integrity: sha512-pkEqbDyl8ou5cpq+VsnQbe/WlEy5qS7xPzMS1U55OCG9KPvwFD46zDbxQIj3egJSFc3D+XhYOPUzz49zQAVy7A==}
 
@@ -4269,6 +4297,9 @@ packages:
   parseurl@1.3.3:
     resolution: {integrity: sha512-CiyeOxFT/JZyN5m0z9PfXw4SCBJ6Sygz1Dpl0wqjlhDEGGBP1GnsUVEL0p63hoG1fcj3fHynXi9NYO4nWOL+qQ==}
     engines: {node: '>= 0.8'}
+
+  path-browserify@1.0.1:
+    resolution: {integrity: sha512-b7uo2UCUOYZcnF/3ID0lulOJi/bafxa1xPe7ZPsammBSpjSWQkjNxlt635YGS2MiR9GjvuXCtz2emr3jbsz98g==}
 
   path-exists@4.0.0:
     resolution: {integrity: sha512-ak9Qy5Q7jYb2Wwcey5Fpvg2KoAc/ZIhLSLOSBmRmygPsGwkVVt0fZa0qrtMz+m6tJTAHfZQ8FnmB4MG4LWy7/w==}
@@ -5432,6 +5463,10 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
 
+  utf-8-validate@6.0.4:
+    resolution: {integrity: sha512-xu9GQDeFp+eZ6LnCywXN/zBancWvOpUMzgjLPSjy4BRHSmTelvn2E0DG0o1sTiw5hkCKBHo8rwSKncfRfv2EEQ==}
+    engines: {node: '>=6.14.2'}
+
   util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
 
@@ -5823,9 +5858,9 @@ snapshots:
       '@aws-crypto/sha256-browser': 3.0.0
       '@aws-crypto/sha256-js': 3.0.0
       '@aws-sdk/client-sso-oidc': 3.590.0
-      '@aws-sdk/client-sts': 3.590.0(@aws-sdk/client-sso-oidc@3.590.0)
+      '@aws-sdk/client-sts': 3.590.0
       '@aws-sdk/core': 3.588.0
-      '@aws-sdk/credential-provider-node': 3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0(@aws-sdk/client-sso-oidc@3.590.0))
+      '@aws-sdk/credential-provider-node': 3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0)
       '@aws-sdk/middleware-host-header': 3.577.0
       '@aws-sdk/middleware-logger': 3.577.0
       '@aws-sdk/middleware-recursion-detection': 3.577.0
@@ -5869,9 +5904,9 @@ snapshots:
       '@aws-crypto/sha256-browser': 3.0.0
       '@aws-crypto/sha256-js': 3.0.0
       '@aws-sdk/client-sso-oidc': 3.590.0
-      '@aws-sdk/client-sts': 3.590.0(@aws-sdk/client-sso-oidc@3.590.0)
+      '@aws-sdk/client-sts': 3.590.0
       '@aws-sdk/core': 3.588.0
-      '@aws-sdk/credential-provider-node': 3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0(@aws-sdk/client-sso-oidc@3.590.0))
+      '@aws-sdk/credential-provider-node': 3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0)
       '@aws-sdk/middleware-host-header': 3.577.0
       '@aws-sdk/middleware-logger': 3.577.0
       '@aws-sdk/middleware-recursion-detection': 3.577.0
@@ -5916,7 +5951,7 @@ snapshots:
     dependencies:
       '@aws-crypto/sha256-browser': 3.0.0
       '@aws-crypto/sha256-js': 3.0.0
-      '@aws-sdk/client-sts': 3.590.0(@aws-sdk/client-sso-oidc@3.590.0)
+      '@aws-sdk/client-sts': 3.590.0
       '@aws-sdk/core': 3.588.0
       '@aws-sdk/credential-provider-node': 3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0(@aws-sdk/client-sso-oidc@3.590.0))
       '@aws-sdk/middleware-host-header': 3.577.0
@@ -5962,6 +5997,51 @@ snapshots:
       '@aws-crypto/sha256-browser': 3.0.0
       '@aws-crypto/sha256-js': 3.0.0
       '@aws-sdk/core': 3.588.0
+      '@aws-sdk/middleware-host-header': 3.577.0
+      '@aws-sdk/middleware-logger': 3.577.0
+      '@aws-sdk/middleware-recursion-detection': 3.577.0
+      '@aws-sdk/middleware-user-agent': 3.587.0
+      '@aws-sdk/region-config-resolver': 3.587.0
+      '@aws-sdk/types': 3.577.0
+      '@aws-sdk/util-endpoints': 3.587.0
+      '@aws-sdk/util-user-agent-browser': 3.577.0
+      '@aws-sdk/util-user-agent-node': 3.587.0
+      '@smithy/config-resolver': 3.0.1
+      '@smithy/core': 2.2.0
+      '@smithy/fetch-http-handler': 3.0.1
+      '@smithy/hash-node': 3.0.0
+      '@smithy/invalid-dependency': 3.0.0
+      '@smithy/middleware-content-length': 3.0.0
+      '@smithy/middleware-endpoint': 3.0.1
+      '@smithy/middleware-retry': 3.0.3
+      '@smithy/middleware-serde': 3.0.0
+      '@smithy/middleware-stack': 3.0.0
+      '@smithy/node-config-provider': 3.1.0
+      '@smithy/node-http-handler': 3.0.0
+      '@smithy/protocol-http': 4.0.0
+      '@smithy/smithy-client': 3.1.1
+      '@smithy/types': 3.0.0
+      '@smithy/url-parser': 3.0.0
+      '@smithy/util-base64': 3.0.0
+      '@smithy/util-body-length-browser': 3.0.0
+      '@smithy/util-body-length-node': 3.0.0
+      '@smithy/util-defaults-mode-browser': 3.0.3
+      '@smithy/util-defaults-mode-node': 3.0.3
+      '@smithy/util-endpoints': 2.0.1
+      '@smithy/util-middleware': 3.0.0
+      '@smithy/util-retry': 3.0.0
+      '@smithy/util-utf8': 3.0.0
+      tslib: 2.6.2
+    transitivePeerDependencies:
+      - aws-crt
+
+  '@aws-sdk/client-sts@3.590.0':
+    dependencies:
+      '@aws-crypto/sha256-browser': 3.0.0
+      '@aws-crypto/sha256-js': 3.0.0
+      '@aws-sdk/client-sso-oidc': 3.590.0
+      '@aws-sdk/core': 3.588.0
+      '@aws-sdk/credential-provider-node': 3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0)
       '@aws-sdk/middleware-host-header': 3.577.0
       '@aws-sdk/middleware-logger': 3.577.0
       '@aws-sdk/middleware-recursion-detection': 3.577.0
@@ -6103,11 +6183,48 @@ snapshots:
       - '@aws-sdk/client-sso-oidc'
       - aws-crt
 
+  '@aws-sdk/credential-provider-ini@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0)':
+    dependencies:
+      '@aws-sdk/client-sts': 3.590.0
+      '@aws-sdk/credential-provider-env': 3.587.0
+      '@aws-sdk/credential-provider-http': 3.587.0
+      '@aws-sdk/credential-provider-process': 3.587.0
+      '@aws-sdk/credential-provider-sso': 3.590.0(@aws-sdk/client-sso-oidc@3.590.0)
+      '@aws-sdk/credential-provider-web-identity': 3.587.0(@aws-sdk/client-sts@3.590.0)
+      '@aws-sdk/types': 3.577.0
+      '@smithy/credential-provider-imds': 3.1.0
+      '@smithy/property-provider': 3.1.0
+      '@smithy/shared-ini-file-loader': 3.1.0
+      '@smithy/types': 3.0.0
+      tslib: 2.6.2
+    transitivePeerDependencies:
+      - '@aws-sdk/client-sso-oidc'
+      - aws-crt
+
   '@aws-sdk/credential-provider-node@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0(@aws-sdk/client-sso-oidc@3.590.0))':
     dependencies:
       '@aws-sdk/credential-provider-env': 3.587.0
       '@aws-sdk/credential-provider-http': 3.587.0
       '@aws-sdk/credential-provider-ini': 3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0(@aws-sdk/client-sso-oidc@3.590.0))
+      '@aws-sdk/credential-provider-process': 3.587.0
+      '@aws-sdk/credential-provider-sso': 3.590.0(@aws-sdk/client-sso-oidc@3.590.0)
+      '@aws-sdk/credential-provider-web-identity': 3.587.0(@aws-sdk/client-sts@3.590.0)
+      '@aws-sdk/types': 3.577.0
+      '@smithy/credential-provider-imds': 3.1.0
+      '@smithy/property-provider': 3.1.0
+      '@smithy/shared-ini-file-loader': 3.1.0
+      '@smithy/types': 3.0.0
+      tslib: 2.6.2
+    transitivePeerDependencies:
+      - '@aws-sdk/client-sso-oidc'
+      - '@aws-sdk/client-sts'
+      - aws-crt
+
+  '@aws-sdk/credential-provider-node@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0)':
+    dependencies:
+      '@aws-sdk/credential-provider-env': 3.587.0
+      '@aws-sdk/credential-provider-http': 3.587.0
+      '@aws-sdk/credential-provider-ini': 3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0)
       '@aws-sdk/credential-provider-process': 3.587.0
       '@aws-sdk/credential-provider-sso': 3.590.0(@aws-sdk/client-sso-oidc@3.590.0)
       '@aws-sdk/credential-provider-web-identity': 3.587.0(@aws-sdk/client-sts@3.590.0)
@@ -6331,6 +6448,15 @@ snapshots:
       zod-validation-error: 3.3.0(zod@3.23.8)
     transitivePeerDependencies:
       - babel-plugin-macros
+
+  '@e2b/code-interpreter@0.0.7(bufferutil@4.0.8)(utf-8-validate@6.0.4)':
+    dependencies:
+      e2b: 0.16.1
+      isomorphic-ws: 5.0.0(ws@8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4))
+      ws: 8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
 
   '@esbuild/aix-ppc64@0.21.4':
     optional: true
@@ -6570,13 +6696,13 @@ snapshots:
 
   '@js-sdsl/ordered-map@4.4.2': {}
 
-  '@langchain/core@0.2.5(langchain@0.2.4(@aws-sdk/credential-provider-node@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0))(@notionhq/client@2.2.15(encoding@0.1.13))(@pinecone-database/pinecone@2.2.2)(assemblyai@4.4.5)(axios@1.7.2)(chromadb@1.7.3(@google/generative-ai@0.11.5)(cohere-ai@7.10.2(@aws-sdk/client-sso-oidc@3.590.0)(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13)))(encoding@0.1.13)(fast-xml-parser@4.2.5)(ignore@5.3.1)(mammoth@1.7.2)(mongodb@6.7.0(@aws-sdk/credential-providers@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)))(openai@4.47.3(encoding@0.1.13))(ws@8.17.0))(openai@4.47.3(encoding@0.1.13))':
+  '@langchain/core@0.2.5(langchain@0.2.4(@aws-sdk/credential-provider-node@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0))(@notionhq/client@2.2.15(encoding@0.1.13))(@pinecone-database/pinecone@2.2.2)(assemblyai@4.4.5(bufferutil@4.0.8)(utf-8-validate@6.0.4))(axios@1.7.2)(chromadb@1.7.3(@google/generative-ai@0.11.5)(cohere-ai@7.10.2(@aws-sdk/client-sso-oidc@3.590.0)(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13)))(encoding@0.1.13)(fast-xml-parser@4.2.5)(ignore@5.3.1)(mammoth@1.7.2)(mongodb@6.7.0(@aws-sdk/credential-providers@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)))(openai@4.47.3(encoding@0.1.13))(ws@8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)))(openai@4.47.3(encoding@0.1.13))':
     dependencies:
       ansi-styles: 5.2.0
       camelcase: 6.3.0
       decamelize: 1.2.0
       js-tiktoken: 1.0.12
-      langsmith: 0.1.30(@langchain/core@0.2.5(langchain@0.2.4(@aws-sdk/credential-provider-node@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0))(@notionhq/client@2.2.15(encoding@0.1.13))(@pinecone-database/pinecone@2.2.2)(assemblyai@4.4.5)(axios@1.7.2)(chromadb@1.7.3(@google/generative-ai@0.11.5)(cohere-ai@7.10.2(@aws-sdk/client-sso-oidc@3.590.0)(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13)))(encoding@0.1.13)(fast-xml-parser@4.2.5)(ignore@5.3.1)(mammoth@1.7.2)(mongodb@6.7.0(@aws-sdk/credential-providers@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)))(openai@4.47.3(encoding@0.1.13))(ws@8.17.0))(openai@4.47.3(encoding@0.1.13)))(langchain@0.2.4(@aws-sdk/credential-provider-node@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0))(@notionhq/client@2.2.15(encoding@0.1.13))(@pinecone-database/pinecone@2.2.2)(assemblyai@4.4.5)(axios@1.7.2)(chromadb@1.7.3(@google/generative-ai@0.11.5)(cohere-ai@7.10.2(@aws-sdk/client-sso-oidc@3.590.0)(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13)))(encoding@0.1.13)(fast-xml-parser@4.2.5)(ignore@5.3.1)(mammoth@1.7.2)(mongodb@6.7.0(@aws-sdk/credential-providers@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)))(openai@4.47.3(encoding@0.1.13))(ws@8.17.0))(openai@4.47.3(encoding@0.1.13))
+      langsmith: 0.1.30(@langchain/core@0.2.5(langchain@0.2.4(@aws-sdk/credential-provider-node@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0))(@notionhq/client@2.2.15(encoding@0.1.13))(@pinecone-database/pinecone@2.2.2)(assemblyai@4.4.5(bufferutil@4.0.8)(utf-8-validate@6.0.4))(axios@1.7.2)(chromadb@1.7.3(@google/generative-ai@0.11.5)(cohere-ai@7.10.2(@aws-sdk/client-sso-oidc@3.590.0)(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13)))(encoding@0.1.13)(fast-xml-parser@4.2.5)(ignore@5.3.1)(mammoth@1.7.2)(mongodb@6.7.0(@aws-sdk/credential-providers@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)))(openai@4.47.3(encoding@0.1.13))(ws@8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)))(openai@4.47.3(encoding@0.1.13)))(langchain@0.2.4(@aws-sdk/credential-provider-node@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0))(@notionhq/client@2.2.15(encoding@0.1.13))(@pinecone-database/pinecone@2.2.2)(assemblyai@4.4.5(bufferutil@4.0.8)(utf-8-validate@6.0.4))(axios@1.7.2)(chromadb@1.7.3(@google/generative-ai@0.11.5)(cohere-ai@7.10.2(@aws-sdk/client-sso-oidc@3.590.0)(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13)))(encoding@0.1.13)(fast-xml-parser@4.2.5)(ignore@5.3.1)(mammoth@1.7.2)(mongodb@6.7.0(@aws-sdk/credential-providers@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)))(openai@4.47.3(encoding@0.1.13))(ws@8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)))(openai@4.47.3(encoding@0.1.13))
       ml-distance: 4.0.1
       mustache: 4.2.0
       p-queue: 6.6.2
@@ -6588,13 +6714,13 @@ snapshots:
       - langchain
       - openai
 
-  '@langchain/core@0.2.5(langchain@0.2.4(@notionhq/client@2.2.15(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13)))(openai@4.47.3(encoding@0.1.13))':
+  '@langchain/core@0.2.5(langchain@0.2.4(@notionhq/client@2.2.15(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13))(ws@8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)))(openai@4.47.3(encoding@0.1.13))':
     dependencies:
       ansi-styles: 5.2.0
       camelcase: 6.3.0
       decamelize: 1.2.0
       js-tiktoken: 1.0.12
-      langsmith: 0.1.30(@langchain/core@0.2.5(langchain@0.2.4(@notionhq/client@2.2.15(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13)))(openai@4.47.3(encoding@0.1.13)))(langchain@0.2.4(@notionhq/client@2.2.15(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13)))(openai@4.47.3(encoding@0.1.13))
+      langsmith: 0.1.30(@langchain/core@0.2.5(langchain@0.2.4(@notionhq/client@2.2.15(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13))(ws@8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)))(openai@4.47.3(encoding@0.1.13)))(langchain@0.2.4(@notionhq/client@2.2.15(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13))(ws@8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)))(openai@4.47.3(encoding@0.1.13))
       ml-distance: 4.0.1
       mustache: 4.2.0
       p-queue: 6.6.2
@@ -6606,9 +6732,9 @@ snapshots:
       - langchain
       - openai
 
-  '@langchain/openai@0.1.1(encoding@0.1.13)(langchain@0.2.4(@aws-sdk/credential-provider-node@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0))(@notionhq/client@2.2.15(encoding@0.1.13))(@pinecone-database/pinecone@2.2.2)(assemblyai@4.4.5)(axios@1.7.2)(chromadb@1.7.3(@google/generative-ai@0.11.5)(cohere-ai@7.10.2(@aws-sdk/client-sso-oidc@3.590.0)(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13)))(encoding@0.1.13)(fast-xml-parser@4.2.5)(ignore@5.3.1)(mammoth@1.7.2)(mongodb@6.7.0(@aws-sdk/credential-providers@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)))(openai@4.47.3(encoding@0.1.13))(ws@8.17.0))':
+  '@langchain/openai@0.1.1(encoding@0.1.13)(langchain@0.2.4(@aws-sdk/credential-provider-node@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0))(@notionhq/client@2.2.15(encoding@0.1.13))(@pinecone-database/pinecone@2.2.2)(assemblyai@4.4.5(bufferutil@4.0.8)(utf-8-validate@6.0.4))(axios@1.7.2)(chromadb@1.7.3(@google/generative-ai@0.11.5)(cohere-ai@7.10.2(@aws-sdk/client-sso-oidc@3.590.0)(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13)))(encoding@0.1.13)(fast-xml-parser@4.2.5)(ignore@5.3.1)(mammoth@1.7.2)(mongodb@6.7.0(@aws-sdk/credential-providers@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)))(openai@4.47.3(encoding@0.1.13))(ws@8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)))':
     dependencies:
-      '@langchain/core': 0.2.5(langchain@0.2.4(@aws-sdk/credential-provider-node@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0))(@notionhq/client@2.2.15(encoding@0.1.13))(@pinecone-database/pinecone@2.2.2)(assemblyai@4.4.5)(axios@1.7.2)(chromadb@1.7.3(@google/generative-ai@0.11.5)(cohere-ai@7.10.2(@aws-sdk/client-sso-oidc@3.590.0)(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13)))(encoding@0.1.13)(fast-xml-parser@4.2.5)(ignore@5.3.1)(mammoth@1.7.2)(mongodb@6.7.0(@aws-sdk/credential-providers@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)))(openai@4.47.3(encoding@0.1.13))(ws@8.17.0))(openai@4.47.3(encoding@0.1.13))
+      '@langchain/core': 0.2.5(langchain@0.2.4(@aws-sdk/credential-provider-node@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0))(@notionhq/client@2.2.15(encoding@0.1.13))(@pinecone-database/pinecone@2.2.2)(assemblyai@4.4.5(bufferutil@4.0.8)(utf-8-validate@6.0.4))(axios@1.7.2)(chromadb@1.7.3(@google/generative-ai@0.11.5)(cohere-ai@7.10.2(@aws-sdk/client-sso-oidc@3.590.0)(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13)))(encoding@0.1.13)(fast-xml-parser@4.2.5)(ignore@5.3.1)(mammoth@1.7.2)(mongodb@6.7.0(@aws-sdk/credential-providers@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)))(openai@4.47.3(encoding@0.1.13))(ws@8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)))(openai@4.47.3(encoding@0.1.13))
       js-tiktoken: 1.0.12
       openai: 4.47.3(encoding@0.1.13)
       zod: 3.23.8
@@ -6617,9 +6743,9 @@ snapshots:
       - encoding
       - langchain
 
-  '@langchain/openai@0.1.1(encoding@0.1.13)(langchain@0.2.4(@notionhq/client@2.2.15(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13)))':
+  '@langchain/openai@0.1.1(encoding@0.1.13)(langchain@0.2.4(@notionhq/client@2.2.15(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13))(ws@8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)))':
     dependencies:
-      '@langchain/core': 0.2.5(langchain@0.2.4(@notionhq/client@2.2.15(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13)))(openai@4.47.3(encoding@0.1.13))
+      '@langchain/core': 0.2.5(langchain@0.2.4(@notionhq/client@2.2.15(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13))(ws@8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)))(openai@4.47.3(encoding@0.1.13))
       js-tiktoken: 1.0.12
       openai: 4.47.3(encoding@0.1.13)
       zod: 3.23.8
@@ -6629,17 +6755,17 @@ snapshots:
       - langchain
     optional: true
 
-  '@langchain/textsplitters@0.0.2(langchain@0.2.4(@aws-sdk/credential-provider-node@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0))(@notionhq/client@2.2.15(encoding@0.1.13))(@pinecone-database/pinecone@2.2.2)(assemblyai@4.4.5)(axios@1.7.2)(chromadb@1.7.3(@google/generative-ai@0.11.5)(cohere-ai@7.10.2(@aws-sdk/client-sso-oidc@3.590.0)(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13)))(encoding@0.1.13)(fast-xml-parser@4.2.5)(ignore@5.3.1)(mammoth@1.7.2)(mongodb@6.7.0(@aws-sdk/credential-providers@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)))(openai@4.47.3(encoding@0.1.13))(ws@8.17.0))(openai@4.47.3(encoding@0.1.13))':
+  '@langchain/textsplitters@0.0.2(langchain@0.2.4(@aws-sdk/credential-provider-node@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0))(@notionhq/client@2.2.15(encoding@0.1.13))(@pinecone-database/pinecone@2.2.2)(assemblyai@4.4.5(bufferutil@4.0.8)(utf-8-validate@6.0.4))(axios@1.7.2)(chromadb@1.7.3(@google/generative-ai@0.11.5)(cohere-ai@7.10.2(@aws-sdk/client-sso-oidc@3.590.0)(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13)))(encoding@0.1.13)(fast-xml-parser@4.2.5)(ignore@5.3.1)(mammoth@1.7.2)(mongodb@6.7.0(@aws-sdk/credential-providers@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)))(openai@4.47.3(encoding@0.1.13))(ws@8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)))(openai@4.47.3(encoding@0.1.13))':
     dependencies:
-      '@langchain/core': 0.2.5(langchain@0.2.4(@aws-sdk/credential-provider-node@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0))(@notionhq/client@2.2.15(encoding@0.1.13))(@pinecone-database/pinecone@2.2.2)(assemblyai@4.4.5)(axios@1.7.2)(chromadb@1.7.3(@google/generative-ai@0.11.5)(cohere-ai@7.10.2(@aws-sdk/client-sso-oidc@3.590.0)(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13)))(encoding@0.1.13)(fast-xml-parser@4.2.5)(ignore@5.3.1)(mammoth@1.7.2)(mongodb@6.7.0(@aws-sdk/credential-providers@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)))(openai@4.47.3(encoding@0.1.13))(ws@8.17.0))(openai@4.47.3(encoding@0.1.13))
+      '@langchain/core': 0.2.5(langchain@0.2.4(@aws-sdk/credential-provider-node@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0))(@notionhq/client@2.2.15(encoding@0.1.13))(@pinecone-database/pinecone@2.2.2)(assemblyai@4.4.5(bufferutil@4.0.8)(utf-8-validate@6.0.4))(axios@1.7.2)(chromadb@1.7.3(@google/generative-ai@0.11.5)(cohere-ai@7.10.2(@aws-sdk/client-sso-oidc@3.590.0)(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13)))(encoding@0.1.13)(fast-xml-parser@4.2.5)(ignore@5.3.1)(mammoth@1.7.2)(mongodb@6.7.0(@aws-sdk/credential-providers@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)))(openai@4.47.3(encoding@0.1.13))(ws@8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)))(openai@4.47.3(encoding@0.1.13))
       js-tiktoken: 1.0.12
     transitivePeerDependencies:
       - langchain
       - openai
 
-  '@langchain/textsplitters@0.0.2(langchain@0.2.4(@notionhq/client@2.2.15(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13)))(openai@4.47.3(encoding@0.1.13))':
+  '@langchain/textsplitters@0.0.2(langchain@0.2.4(@notionhq/client@2.2.15(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13))(ws@8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)))(openai@4.47.3(encoding@0.1.13))':
     dependencies:
-      '@langchain/core': 0.2.5(langchain@0.2.4(@notionhq/client@2.2.15(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13)))(openai@4.47.3(encoding@0.1.13))
+      '@langchain/core': 0.2.5(langchain@0.2.4(@notionhq/client@2.2.15(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13))(ws@8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)))(openai@4.47.3(encoding@0.1.13))
       js-tiktoken: 1.0.12
     transitivePeerDependencies:
       - langchain
@@ -7821,9 +7947,9 @@ snapshots:
 
   arrify@1.0.1: {}
 
-  assemblyai@4.4.5:
+  assemblyai@4.4.5(bufferutil@4.0.8)(utf-8-validate@6.0.4):
     dependencies:
-      ws: 8.17.0
+      ws: 8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -7965,6 +8091,11 @@ snapshots:
     dependencies:
       base64-js: 1.5.1
       ieee754: 1.2.1
+
+  bufferutil@4.0.8:
+    dependencies:
+      node-gyp-build: 4.8.1
+    optional: true
 
   builtin-modules@3.3.0: {}
 
@@ -8420,6 +8551,18 @@ snapshots:
   duck@0.1.12:
     dependencies:
       underscore: 1.13.6
+
+  e2b@0.16.1:
+    dependencies:
+      isomorphic-ws: 5.0.0(ws@8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4))
+      normalize-path: 3.0.0
+      openapi-typescript-fetch: 1.1.3
+      path-browserify: 1.0.1
+      platform: 1.3.6
+      ws: 8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+    optionalDependencies:
+      bufferutil: 4.0.8
+      utf-8-validate: 6.0.4
 
   eastasianwidth@0.2.0: {}
 
@@ -9656,6 +9799,10 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
+  isomorphic-ws@5.0.0(ws@8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)):
+    dependencies:
+      ws: 8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+
   issue-regex@4.1.0: {}
 
   iterator.prototype@1.1.2:
@@ -9765,17 +9912,17 @@ snapshots:
 
   ky@1.3.0: {}
 
-  langchain@0.2.4(@aws-sdk/credential-provider-node@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0))(@notionhq/client@2.2.15(encoding@0.1.13))(@pinecone-database/pinecone@2.2.2)(assemblyai@4.4.5)(axios@1.7.2)(chromadb@1.7.3(@google/generative-ai@0.11.5)(cohere-ai@7.10.2(@aws-sdk/client-sso-oidc@3.590.0)(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13)))(encoding@0.1.13)(fast-xml-parser@4.2.5)(ignore@5.3.1)(mammoth@1.7.2)(mongodb@6.7.0(@aws-sdk/credential-providers@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)))(openai@4.47.3(encoding@0.1.13))(ws@8.17.0):
+  langchain@0.2.4(@aws-sdk/credential-provider-node@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0))(@notionhq/client@2.2.15(encoding@0.1.13))(@pinecone-database/pinecone@2.2.2)(assemblyai@4.4.5(bufferutil@4.0.8)(utf-8-validate@6.0.4))(axios@1.7.2)(chromadb@1.7.3(@google/generative-ai@0.11.5)(cohere-ai@7.10.2(@aws-sdk/client-sso-oidc@3.590.0)(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13)))(encoding@0.1.13)(fast-xml-parser@4.2.5)(ignore@5.3.1)(mammoth@1.7.2)(mongodb@6.7.0(@aws-sdk/credential-providers@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)))(openai@4.47.3(encoding@0.1.13))(ws@8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)):
     dependencies:
-      '@langchain/core': 0.2.5(langchain@0.2.4(@aws-sdk/credential-provider-node@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0))(@notionhq/client@2.2.15(encoding@0.1.13))(@pinecone-database/pinecone@2.2.2)(assemblyai@4.4.5)(axios@1.7.2)(chromadb@1.7.3(@google/generative-ai@0.11.5)(cohere-ai@7.10.2(@aws-sdk/client-sso-oidc@3.590.0)(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13)))(encoding@0.1.13)(fast-xml-parser@4.2.5)(ignore@5.3.1)(mammoth@1.7.2)(mongodb@6.7.0(@aws-sdk/credential-providers@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)))(openai@4.47.3(encoding@0.1.13))(ws@8.17.0))(openai@4.47.3(encoding@0.1.13))
-      '@langchain/openai': 0.1.1(encoding@0.1.13)(langchain@0.2.4(@aws-sdk/credential-provider-node@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0))(@notionhq/client@2.2.15(encoding@0.1.13))(@pinecone-database/pinecone@2.2.2)(assemblyai@4.4.5)(axios@1.7.2)(chromadb@1.7.3(@google/generative-ai@0.11.5)(cohere-ai@7.10.2(@aws-sdk/client-sso-oidc@3.590.0)(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13)))(encoding@0.1.13)(fast-xml-parser@4.2.5)(ignore@5.3.1)(mammoth@1.7.2)(mongodb@6.7.0(@aws-sdk/credential-providers@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)))(openai@4.47.3(encoding@0.1.13))(ws@8.17.0))
-      '@langchain/textsplitters': 0.0.2(langchain@0.2.4(@aws-sdk/credential-provider-node@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0))(@notionhq/client@2.2.15(encoding@0.1.13))(@pinecone-database/pinecone@2.2.2)(assemblyai@4.4.5)(axios@1.7.2)(chromadb@1.7.3(@google/generative-ai@0.11.5)(cohere-ai@7.10.2(@aws-sdk/client-sso-oidc@3.590.0)(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13)))(encoding@0.1.13)(fast-xml-parser@4.2.5)(ignore@5.3.1)(mammoth@1.7.2)(mongodb@6.7.0(@aws-sdk/credential-providers@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)))(openai@4.47.3(encoding@0.1.13))(ws@8.17.0))(openai@4.47.3(encoding@0.1.13))
+      '@langchain/core': 0.2.5(langchain@0.2.4(@aws-sdk/credential-provider-node@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0))(@notionhq/client@2.2.15(encoding@0.1.13))(@pinecone-database/pinecone@2.2.2)(assemblyai@4.4.5(bufferutil@4.0.8)(utf-8-validate@6.0.4))(axios@1.7.2)(chromadb@1.7.3(@google/generative-ai@0.11.5)(cohere-ai@7.10.2(@aws-sdk/client-sso-oidc@3.590.0)(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13)))(encoding@0.1.13)(fast-xml-parser@4.2.5)(ignore@5.3.1)(mammoth@1.7.2)(mongodb@6.7.0(@aws-sdk/credential-providers@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)))(openai@4.47.3(encoding@0.1.13))(ws@8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)))(openai@4.47.3(encoding@0.1.13))
+      '@langchain/openai': 0.1.1(encoding@0.1.13)(langchain@0.2.4(@aws-sdk/credential-provider-node@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0))(@notionhq/client@2.2.15(encoding@0.1.13))(@pinecone-database/pinecone@2.2.2)(assemblyai@4.4.5(bufferutil@4.0.8)(utf-8-validate@6.0.4))(axios@1.7.2)(chromadb@1.7.3(@google/generative-ai@0.11.5)(cohere-ai@7.10.2(@aws-sdk/client-sso-oidc@3.590.0)(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13)))(encoding@0.1.13)(fast-xml-parser@4.2.5)(ignore@5.3.1)(mammoth@1.7.2)(mongodb@6.7.0(@aws-sdk/credential-providers@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)))(openai@4.47.3(encoding@0.1.13))(ws@8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)))
+      '@langchain/textsplitters': 0.0.2(langchain@0.2.4(@aws-sdk/credential-provider-node@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0))(@notionhq/client@2.2.15(encoding@0.1.13))(@pinecone-database/pinecone@2.2.2)(assemblyai@4.4.5(bufferutil@4.0.8)(utf-8-validate@6.0.4))(axios@1.7.2)(chromadb@1.7.3(@google/generative-ai@0.11.5)(cohere-ai@7.10.2(@aws-sdk/client-sso-oidc@3.590.0)(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13)))(encoding@0.1.13)(fast-xml-parser@4.2.5)(ignore@5.3.1)(mammoth@1.7.2)(mongodb@6.7.0(@aws-sdk/credential-providers@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)))(openai@4.47.3(encoding@0.1.13))(ws@8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)))(openai@4.47.3(encoding@0.1.13))
       binary-extensions: 2.3.0
       js-tiktoken: 1.0.12
       js-yaml: 4.1.0
       jsonpointer: 5.0.1
       langchainhub: 0.0.11
-      langsmith: 0.1.30(@langchain/core@0.2.5(langchain@0.2.4(@aws-sdk/credential-provider-node@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0))(@notionhq/client@2.2.15(encoding@0.1.13))(@pinecone-database/pinecone@2.2.2)(assemblyai@4.4.5)(axios@1.7.2)(chromadb@1.7.3(@google/generative-ai@0.11.5)(cohere-ai@7.10.2(@aws-sdk/client-sso-oidc@3.590.0)(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13)))(encoding@0.1.13)(fast-xml-parser@4.2.5)(ignore@5.3.1)(mammoth@1.7.2)(mongodb@6.7.0(@aws-sdk/credential-providers@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)))(openai@4.47.3(encoding@0.1.13))(ws@8.17.0))(openai@4.47.3(encoding@0.1.13)))(langchain@0.2.4(@aws-sdk/credential-provider-node@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0))(@notionhq/client@2.2.15(encoding@0.1.13))(@pinecone-database/pinecone@2.2.2)(assemblyai@4.4.5)(axios@1.7.2)(chromadb@1.7.3(@google/generative-ai@0.11.5)(cohere-ai@7.10.2(@aws-sdk/client-sso-oidc@3.590.0)(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13)))(encoding@0.1.13)(fast-xml-parser@4.2.5)(ignore@5.3.1)(mammoth@1.7.2)(mongodb@6.7.0(@aws-sdk/credential-providers@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)))(openai@4.47.3(encoding@0.1.13))(ws@8.17.0))(openai@4.47.3(encoding@0.1.13))
+      langsmith: 0.1.30(@langchain/core@0.2.5(langchain@0.2.4(@aws-sdk/credential-provider-node@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0))(@notionhq/client@2.2.15(encoding@0.1.13))(@pinecone-database/pinecone@2.2.2)(assemblyai@4.4.5(bufferutil@4.0.8)(utf-8-validate@6.0.4))(axios@1.7.2)(chromadb@1.7.3(@google/generative-ai@0.11.5)(cohere-ai@7.10.2(@aws-sdk/client-sso-oidc@3.590.0)(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13)))(encoding@0.1.13)(fast-xml-parser@4.2.5)(ignore@5.3.1)(mammoth@1.7.2)(mongodb@6.7.0(@aws-sdk/credential-providers@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)))(openai@4.47.3(encoding@0.1.13))(ws@8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)))(openai@4.47.3(encoding@0.1.13)))(langchain@0.2.4(@aws-sdk/credential-provider-node@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0))(@notionhq/client@2.2.15(encoding@0.1.13))(@pinecone-database/pinecone@2.2.2)(assemblyai@4.4.5(bufferutil@4.0.8)(utf-8-validate@6.0.4))(axios@1.7.2)(chromadb@1.7.3(@google/generative-ai@0.11.5)(cohere-ai@7.10.2(@aws-sdk/client-sso-oidc@3.590.0)(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13)))(encoding@0.1.13)(fast-xml-parser@4.2.5)(ignore@5.3.1)(mammoth@1.7.2)(mongodb@6.7.0(@aws-sdk/credential-providers@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)))(openai@4.47.3(encoding@0.1.13))(ws@8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)))(openai@4.47.3(encoding@0.1.13))
       ml-distance: 4.0.1
       openapi-types: 12.1.3
       p-retry: 4.6.2
@@ -9784,32 +9931,32 @@ snapshots:
       zod: 3.23.8
       zod-to-json-schema: 3.23.0(zod@3.23.8)
     optionalDependencies:
-      '@aws-sdk/credential-provider-node': 3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0(@aws-sdk/client-sso-oidc@3.590.0))
+      '@aws-sdk/credential-provider-node': 3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0)
       '@notionhq/client': 2.2.15(encoding@0.1.13)
       '@pinecone-database/pinecone': 2.2.2
-      assemblyai: 4.4.5
+      assemblyai: 4.4.5(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       axios: 1.7.2
       chromadb: 1.7.3(@google/generative-ai@0.11.5)(cohere-ai@7.10.2(@aws-sdk/client-sso-oidc@3.590.0)(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13))
       fast-xml-parser: 4.2.5
       ignore: 5.3.1
       mammoth: 1.7.2
       mongodb: 6.7.0(@aws-sdk/credential-providers@3.590.0(@aws-sdk/client-sso-oidc@3.590.0))
-      ws: 8.17.0
+      ws: 8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)
     transitivePeerDependencies:
       - encoding
       - openai
 
-  langchain@0.2.4(@notionhq/client@2.2.15(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13)):
+  langchain@0.2.4(@notionhq/client@2.2.15(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13))(ws@8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)):
     dependencies:
-      '@langchain/core': 0.2.5(langchain@0.2.4(@notionhq/client@2.2.15(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13)))(openai@4.47.3(encoding@0.1.13))
-      '@langchain/openai': 0.1.1(encoding@0.1.13)(langchain@0.2.4(@notionhq/client@2.2.15(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13)))
-      '@langchain/textsplitters': 0.0.2(langchain@0.2.4(@notionhq/client@2.2.15(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13)))(openai@4.47.3(encoding@0.1.13))
+      '@langchain/core': 0.2.5(langchain@0.2.4(@notionhq/client@2.2.15(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13))(ws@8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)))(openai@4.47.3(encoding@0.1.13))
+      '@langchain/openai': 0.1.1(encoding@0.1.13)(langchain@0.2.4(@notionhq/client@2.2.15(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13))(ws@8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)))
+      '@langchain/textsplitters': 0.0.2(langchain@0.2.4(@notionhq/client@2.2.15(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13))(ws@8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)))(openai@4.47.3(encoding@0.1.13))
       binary-extensions: 2.3.0
       js-tiktoken: 1.0.12
       js-yaml: 4.1.0
       jsonpointer: 5.0.1
       langchainhub: 0.0.11
-      langsmith: 0.1.30(@langchain/core@0.2.5(langchain@0.2.4(@notionhq/client@2.2.15(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13)))(openai@4.47.3(encoding@0.1.13)))(langchain@0.2.4(@notionhq/client@2.2.15(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13)))(openai@4.47.3(encoding@0.1.13))
+      langsmith: 0.1.30(@langchain/core@0.2.5(langchain@0.2.4(@notionhq/client@2.2.15(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13))(ws@8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)))(openai@4.47.3(encoding@0.1.13)))(langchain@0.2.4(@notionhq/client@2.2.15(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13))(ws@8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)))(openai@4.47.3(encoding@0.1.13))
       ml-distance: 4.0.1
       openapi-types: 12.1.3
       p-retry: 4.6.2
@@ -9819,6 +9966,7 @@ snapshots:
       zod-to-json-schema: 3.23.0(zod@3.23.8)
     optionalDependencies:
       '@notionhq/client': 2.2.15(encoding@0.1.13)
+      ws: 8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)
     transitivePeerDependencies:
       - encoding
       - openai
@@ -9826,7 +9974,7 @@ snapshots:
 
   langchainhub@0.0.11: {}
 
-  ? langsmith@0.1.30(@langchain/core@0.2.5(langchain@0.2.4(@aws-sdk/credential-provider-node@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0))(@notionhq/client@2.2.15(encoding@0.1.13))(@pinecone-database/pinecone@2.2.2)(assemblyai@4.4.5)(axios@1.7.2)(chromadb@1.7.3(@google/generative-ai@0.11.5)(cohere-ai@7.10.2(@aws-sdk/client-sso-oidc@3.590.0)(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13)))(encoding@0.1.13)(fast-xml-parser@4.2.5)(ignore@5.3.1)(mammoth@1.7.2)(mongodb@6.7.0(@aws-sdk/credential-providers@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)))(openai@4.47.3(encoding@0.1.13))(ws@8.17.0))(openai@4.47.3(encoding@0.1.13)))(langchain@0.2.4(@aws-sdk/credential-provider-node@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0))(@notionhq/client@2.2.15(encoding@0.1.13))(@pinecone-database/pinecone@2.2.2)(assemblyai@4.4.5)(axios@1.7.2)(chromadb@1.7.3(@google/generative-ai@0.11.5)(cohere-ai@7.10.2(@aws-sdk/client-sso-oidc@3.590.0)(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13)))(encoding@0.1.13)(fast-xml-parser@4.2.5)(ignore@5.3.1)(mammoth@1.7.2)(mongodb@6.7.0(@aws-sdk/credential-providers@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)))(openai@4.47.3(encoding@0.1.13))(ws@8.17.0))(openai@4.47.3(encoding@0.1.13))
+  ? langsmith@0.1.30(@langchain/core@0.2.5(langchain@0.2.4(@aws-sdk/credential-provider-node@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0))(@notionhq/client@2.2.15(encoding@0.1.13))(@pinecone-database/pinecone@2.2.2)(assemblyai@4.4.5(bufferutil@4.0.8)(utf-8-validate@6.0.4))(axios@1.7.2)(chromadb@1.7.3(@google/generative-ai@0.11.5)(cohere-ai@7.10.2(@aws-sdk/client-sso-oidc@3.590.0)(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13)))(encoding@0.1.13)(fast-xml-parser@4.2.5)(ignore@5.3.1)(mammoth@1.7.2)(mongodb@6.7.0(@aws-sdk/credential-providers@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)))(openai@4.47.3(encoding@0.1.13))(ws@8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)))(openai@4.47.3(encoding@0.1.13)))(langchain@0.2.4(@aws-sdk/credential-provider-node@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0))(@notionhq/client@2.2.15(encoding@0.1.13))(@pinecone-database/pinecone@2.2.2)(assemblyai@4.4.5(bufferutil@4.0.8)(utf-8-validate@6.0.4))(axios@1.7.2)(chromadb@1.7.3(@google/generative-ai@0.11.5)(cohere-ai@7.10.2(@aws-sdk/client-sso-oidc@3.590.0)(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13)))(encoding@0.1.13)(fast-xml-parser@4.2.5)(ignore@5.3.1)(mammoth@1.7.2)(mongodb@6.7.0(@aws-sdk/credential-providers@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)))(openai@4.47.3(encoding@0.1.13))(ws@8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)))(openai@4.47.3(encoding@0.1.13))
   : dependencies:
       '@types/uuid': 9.0.8
       commander: 10.0.1
@@ -9834,11 +9982,11 @@ snapshots:
       p-retry: 4.6.2
       uuid: 9.0.1
     optionalDependencies:
-      '@langchain/core': 0.2.5(langchain@0.2.4(@aws-sdk/credential-provider-node@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0))(@notionhq/client@2.2.15(encoding@0.1.13))(@pinecone-database/pinecone@2.2.2)(assemblyai@4.4.5)(axios@1.7.2)(chromadb@1.7.3(@google/generative-ai@0.11.5)(cohere-ai@7.10.2(@aws-sdk/client-sso-oidc@3.590.0)(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13)))(encoding@0.1.13)(fast-xml-parser@4.2.5)(ignore@5.3.1)(mammoth@1.7.2)(mongodb@6.7.0(@aws-sdk/credential-providers@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)))(openai@4.47.3(encoding@0.1.13))(ws@8.17.0))(openai@4.47.3(encoding@0.1.13))
-      langchain: 0.2.4(@aws-sdk/credential-provider-node@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0))(@notionhq/client@2.2.15(encoding@0.1.13))(@pinecone-database/pinecone@2.2.2)(assemblyai@4.4.5)(axios@1.7.2)(chromadb@1.7.3(@google/generative-ai@0.11.5)(cohere-ai@7.10.2(@aws-sdk/client-sso-oidc@3.590.0)(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13)))(encoding@0.1.13)(fast-xml-parser@4.2.5)(ignore@5.3.1)(mammoth@1.7.2)(mongodb@6.7.0(@aws-sdk/credential-providers@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)))(openai@4.47.3(encoding@0.1.13))(ws@8.17.0)
+      '@langchain/core': 0.2.5(langchain@0.2.4(@aws-sdk/credential-provider-node@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0))(@notionhq/client@2.2.15(encoding@0.1.13))(@pinecone-database/pinecone@2.2.2)(assemblyai@4.4.5(bufferutil@4.0.8)(utf-8-validate@6.0.4))(axios@1.7.2)(chromadb@1.7.3(@google/generative-ai@0.11.5)(cohere-ai@7.10.2(@aws-sdk/client-sso-oidc@3.590.0)(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13)))(encoding@0.1.13)(fast-xml-parser@4.2.5)(ignore@5.3.1)(mammoth@1.7.2)(mongodb@6.7.0(@aws-sdk/credential-providers@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)))(openai@4.47.3(encoding@0.1.13))(ws@8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)))(openai@4.47.3(encoding@0.1.13))
+      langchain: 0.2.4(@aws-sdk/credential-provider-node@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0))(@notionhq/client@2.2.15(encoding@0.1.13))(@pinecone-database/pinecone@2.2.2)(assemblyai@4.4.5(bufferutil@4.0.8)(utf-8-validate@6.0.4))(axios@1.7.2)(chromadb@1.7.3(@google/generative-ai@0.11.5)(cohere-ai@7.10.2(@aws-sdk/client-sso-oidc@3.590.0)(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13)))(encoding@0.1.13)(fast-xml-parser@4.2.5)(ignore@5.3.1)(mammoth@1.7.2)(mongodb@6.7.0(@aws-sdk/credential-providers@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)))(openai@4.47.3(encoding@0.1.13))(ws@8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4))
       openai: 4.47.3(encoding@0.1.13)
 
-  langsmith@0.1.30(@langchain/core@0.2.5(langchain@0.2.4(@notionhq/client@2.2.15(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13)))(openai@4.47.3(encoding@0.1.13)))(langchain@0.2.4(@notionhq/client@2.2.15(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13)))(openai@4.47.3(encoding@0.1.13)):
+  langsmith@0.1.30(@langchain/core@0.2.5(langchain@0.2.4(@notionhq/client@2.2.15(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13))(ws@8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)))(openai@4.47.3(encoding@0.1.13)))(langchain@0.2.4(@notionhq/client@2.2.15(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13))(ws@8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)))(openai@4.47.3(encoding@0.1.13)):
     dependencies:
       '@types/uuid': 9.0.8
       commander: 10.0.1
@@ -9846,8 +9994,8 @@ snapshots:
       p-retry: 4.6.2
       uuid: 9.0.1
     optionalDependencies:
-      '@langchain/core': 0.2.5(langchain@0.2.4(@notionhq/client@2.2.15(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13)))(openai@4.47.3(encoding@0.1.13))
-      langchain: 0.2.4(@notionhq/client@2.2.15(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13))
+      '@langchain/core': 0.2.5(langchain@0.2.4(@notionhq/client@2.2.15(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13))(ws@8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)))(openai@4.47.3(encoding@0.1.13))
+      langchain: 0.2.4(@notionhq/client@2.2.15(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13))(ws@8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4))
       openai: 4.47.3(encoding@0.1.13)
 
   language-subtag-registry@0.3.23: {}
@@ -9940,7 +10088,7 @@ snapshots:
       - zen-observable
       - zenObservable
 
-  llamaindex@0.3.15(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/credential-providers@3.590.0(@aws-sdk/client-sso-oidc@3.590.0))(@notionhq/client@2.2.15(encoding@0.1.13))(encoding@0.1.13)(node-fetch@3.3.2)(typescript@5.4.5):
+  llamaindex@0.3.15(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/credential-providers@3.590.0(@aws-sdk/client-sso-oidc@3.590.0))(@notionhq/client@2.2.15(encoding@0.1.13))(bufferutil@4.0.8)(encoding@0.1.13)(node-fetch@3.3.2)(typescript@5.4.5)(utf-8-validate@6.0.4):
     dependencies:
       '@anthropic-ai/sdk': 0.20.9(encoding@0.1.13)
       '@aws-crypto/sha256-js': 5.2.0
@@ -9961,7 +10109,7 @@ snapshots:
       '@xenova/transformers': 2.17.2
       '@zilliz/milvus2-sdk-node': 2.4.2
       ajv: 8.14.0
-      assemblyai: 4.4.5
+      assemblyai: 4.4.5(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       chromadb: 1.7.3(@google/generative-ai@0.11.5)(cohere-ai@7.10.2(@aws-sdk/client-sso-oidc@3.590.0)(encoding@0.1.13))(encoding@0.1.13)(openai@4.47.3(encoding@0.1.13))
       cohere-ai: 7.10.2(@aws-sdk/client-sso-oidc@3.590.0)(encoding@0.1.13)
       js-tiktoken: 1.0.12
@@ -10287,6 +10435,9 @@ snapshots:
       fetch-blob: 3.2.0
       formdata-polyfill: 4.0.10
 
+  node-gyp-build@4.8.1:
+    optional: true
+
   node-releases@2.0.14: {}
 
   normalize-package-data@2.5.0:
@@ -10526,6 +10677,8 @@ snapshots:
 
   openapi-types@12.1.3: {}
 
+  openapi-typescript-fetch@1.1.3: {}
+
   option@0.2.4: {}
 
   optionator@0.9.4:
@@ -10639,6 +10792,8 @@ snapshots:
       type-fest: 4.18.3
 
   parseurl@1.3.3: {}
+
+  path-browserify@1.0.1: {}
 
   path-exists@4.0.0: {}
 
@@ -11890,6 +12045,11 @@ snapshots:
     dependencies:
       react: 18.3.1
 
+  utf-8-validate@6.0.4:
+    dependencies:
+      node-gyp-build: 4.8.1
+    optional: true
+
   util-deprecate@1.0.2: {}
 
   utils-merge@1.0.1: {}
@@ -12129,7 +12289,10 @@ snapshots:
       signal-exit: 3.0.7
       typedarray-to-buffer: 3.1.5
 
-  ws@8.17.0: {}
+  ws@8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4):
+    optionalDependencies:
+      bufferutil: 4.0.8
+      utf-8-validate: 6.0.4
 
   xdg-basedir@5.1.0: {}
 

@@ -141,6 +141,11 @@ The SDK-specific imports are all isolated to keep the main `@agentic/stdlib` as 
 - weatherapi
 - wikipedia
 
+## Non-service Tools
+
+- calculator
+- search and scrape
+
 ## AI SDKs
 
 - OpenAI SDK
@@ -161,7 +166,6 @@ The SDK-specific imports are all isolated to keep the main `@agentic/stdlib` as 
 - rename this repo to agentic
 - services
   - e2b
-  - search-and-scrape
   - replicate
   - huggingface
   - [skyvern](https://github.com/Skyvern-AI/skyvern)

@@ -10,7 +10,8 @@ export default defineConfig([
       'src/sdks/langchain.ts',
       'src/sdks/llamaindex.ts',
       'src/services/twitter/index.ts',
-      'src/tools/calculator.ts'
+      'src/tools/calculator.ts',
+      'src/tools/e2b.ts'
     ],
     outDir: 'dist',
     target: 'node18',

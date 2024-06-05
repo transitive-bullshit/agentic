@@ -53,6 +53,11 @@
       "import": "./dist/tools/calculator.js",
       "default": "./dist/tools/calculator.js"
     },
+    "./e2b": {
+      "types": "./dist/tools/e2b.d.ts",
+      "import": "./dist/tools/e2b.js",
+      "default": "./dist/tools/e2b.js"
+    },
     "./twitter": {
       "types": "./dist/services/twitter/index.d.ts",
       "import": "./dist/services/twitter/index.js",
@@ -95,6 +100,7 @@
   },
   "devDependencies": {
     "@dexaai/dexter": "^2.0.3",
+    "@e2b/code-interpreter": "^0.0.7",
     "@fisch0920/eslint-config": "^1.3.3",
     "@genkit-ai/ai": "^0.5.2",
     "@instructor-ai/instructor": "^1.3.0",
@@ -124,6 +130,7 @@
   },
   "peerDependencies": {
     "@dexaai/dexter": "^2.0.3",
+    "@e2b/code-interpreter": "^0.0.7",
     "@genkit-ai/ai": "^0.5.2",
     "@langchain/core": "^0.2.5",
     "ai": "^3.1.22",
@@ -133,6 +140,9 @@
   },
   "peerDependenciesMeta": {
     "@dexaai/dexter": {
+      "optional": true
+    },
+    "@e2b/code-interpreter": {
       "optional": true
     },
     "@genkit-ai/ai": {
