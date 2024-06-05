@@ -47,7 +47,7 @@ export interface AIFunction<
 > {
   (input: string | Msg): MaybePromise<Return>
 
-  /** The Zod schema for the arguments string. */
+  /** The Zod schema for the input object. */
   inputSchema: InputSchema
 
   /** Parse the function arguments from a message. */
@@ -57,18 +57,6 @@ export interface AIFunction<
   spec: AIFunctionSpec
 
   /** The underlying function implementation without any arg parsing or validation. */
-  impl: (params: z.infer<InputSchema>) => MaybePromise<Return>
-}
-
-/**
- * A tool meant to be used with LLM function calling.
- */
-export interface AITool<
-  InputSchema extends z.ZodObject<any> = z.ZodObject<any>,
-  Return = any
-> {
-  function: AIFunction<InputSchema, Return>
-
-  /** The tool spec for the OpenAI API `tools` property. */
-  spec: AIToolSpec
+  // TODO: this `any` shouldn't be necessary, but it is for `createAIFunction` results to be assignable to `AIFunctionLike`
+  impl: (params: z.infer<InputSchema> | any) => MaybePromise<Return>
 }
