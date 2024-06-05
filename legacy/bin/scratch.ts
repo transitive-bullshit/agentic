@@ -87,12 +87,14 @@ async function main() {
   // console.log(res)
 
   const client = await createTwitterV2Client({
-    // scopes: ['tweet.read', 'users.read', 'offline.access']
+    scopes: ['tweet.read', 'users.read', 'offline.access']
   })
   const twitter = new TwitterClient({ client })
-
-  const user = await twitter.findUserByUsername({ username: 'transitive_bs' })
-  console.log(user)
+  // const res = await twitter.findUserByUsername({ username: 'transitive_bs' })
+  const res = await twitter.searchRecentTweets({
+    query: 'open source AI agents'
+  })
+  console.log(res)
 }
 
 try {
