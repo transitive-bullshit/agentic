@@ -3,6 +3,9 @@ import { z } from 'zod'
 
 import { createAIFunction } from '../create-ai-function.js'
 
+// TODO: consider using https://github.com/josdejong/mathjs
+// TODO: ensure `expr` is sanitized to not run arbitrary code
+
 export const CalculatorInputSchema = z.object({
   expr: z.string().describe('mathematical expression to evaluate')
 })
