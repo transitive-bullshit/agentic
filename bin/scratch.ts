@@ -58,8 +58,9 @@ async function main() {
 
   const firecrawl = new FirecrawlClient()
   const res = await firecrawl.scrapeUrl({
-    // url: 'https://www.bbc.com/news/articles/cp4475gwny1o'
-    url: 'https://www.firecrawl.dev'
+    url: 'https://www.bbc.com/news/articles/cp4475gwny1o'
+    // url: 'https://www.theguardian.com/technology/article/2024/jun/04/openai-google-ai-risks-letter'
+    // url: 'https://www.firecrawl.dev'
   })
   console.log(JSON.stringify(res, null, 2))
 
