@@ -116,9 +116,10 @@ The SDK-specific imports are all isolated to keep the main `@agentic/stdlib` as 
   - SDK adaptors should be as lightweight as possible and be optional peer dependencies of `@agentic/stdlib`
   - SDK adatptor entrypoints should all be isolated to their own top-level imports
     - `@agentic/stdlib/ai-sdk`
+    - `@agentic/stdlib/langchain`
+    - `@agentic/stdlib/llamaindex`
     - `@agentic/stdlib/dexter`
     - `@agentic/stdlib/genkit`
-    - `@agentic/stdlib/langchain`
 
 ## Services
 
@@ -136,23 +137,28 @@ The SDK-specific imports are all isolated to keep the main `@agentic/stdlib` as 
 - serpapi
 - serper
 - twitter (WIP)
+- wolfram alpha
 - weatherapi
 - wikipedia
 
 ## AI SDKs
 
-- openai sdk
-- vercel ai sdk
-- dexa dexter
-- firebase genkit
-- langchain
-- llamaindex
+- OpenAI SDK
+  - no need for an adaptor; use `AIFunctionSet.specs` or `AIFunctionSet.toolSpecs`
+- Vercel AI SDK
+  - `import { createAISDKTools } from '@agentic/stdlib/ai-sdk'`
+- LangChain
+  - `import { createLangChainTools } from '@agentic/stdlib/langchain'`
+- LlamaIndex
+  - `import { createLlamaIndexTools } from '@agentic/stdlib/llamaindex'`
+- Firebase Genkit
+  - `import { createGenkitTools } from '@agentic/stdlib/genkit'`
+- Dexa Dexter
+  - `import { createDexterFunctions } from '@agentic/stdlib/dexter'`
 
 ## TODO
 
 - rename this repo to agentic
-- sdks
-  - TODO
 - services
   - e2b
   - search-and-scrape
