@@ -39,7 +39,7 @@ export namespace midjourney {
 }
 
 /**
- * Unofficial Midjourney API client.
+ * Unofficial Midjourney API client for generative images.
  *
  * @see https://www.imagineapi.dev
  */

@@ -5,7 +5,7 @@ import { aiFunction, AIFunctionsProvider } from '../fns.js'
 import { assert, getEnv, omit } from '../utils.js'
 
 export namespace serper {
-  export const BASE_URL = 'https://google.serper.dev'
+  export const API_BASE_URL = 'https://google.serper.dev'
 
   export const SearchParamsSchema = z.object({
     q: z.string().describe('search query'),
@@ -217,7 +217,7 @@ export class SerperClient extends AIFunctionsProvider {
 
   constructor({
     apiKey = getEnv('SERPER_API_KEY'),
-    apiBaseUrl = serper.BASE_URL,
+    apiBaseUrl = serper.API_BASE_URL,
     ky = defaultKy,
     ...params
   }: {

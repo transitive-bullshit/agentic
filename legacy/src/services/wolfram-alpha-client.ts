@@ -4,7 +4,7 @@ import { z } from 'zod'
 import { aiFunction, AIFunctionsProvider } from '../fns.js'
 import { assert, getEnv } from '../utils.js'
 
-export namespace wolfram {
+export namespace wolframalpha {
   export const API_BASE_URL = 'https://www.wolframalpha.com/api/'
 
   export const AskWolframAlphaOptionsSchema = z.object({
@@ -28,14 +28,14 @@ export namespace wolfram {
  *
  * @see https://products.wolframalpha.com/llm-api/documentation
  */
-export class WolframClient extends AIFunctionsProvider {
+export class WolframAlphaClient extends AIFunctionsProvider {
   protected readonly ky: KyInstance
   protected readonly appId: string
   protected readonly apiBaseUrl: string
 
   constructor({
     appId = getEnv('WOLFRAM_APP_ID'),
-    apiBaseUrl = wolfram.API_BASE_URL,
+    apiBaseUrl = wolframalpha.API_BASE_URL,
     ky = defaultKy
   }: {
     appId?: string
@@ -44,7 +44,7 @@ export class WolframClient extends AIFunctionsProvider {
   } = {}) {
     assert(
       appId,
-      'WolframClient missing required "appId" (defaults to "WOLFRAM_APP_ID")'
+      'WolframAlphaClient missing required "appId" (defaults to "WOLFRAM_APP_ID")'
     )
     super()
 
@@ -77,9 +77,9 @@ export class WolframClient extends AIFunctionsProvider {
   - Re-send the exact same 'input' with NO modifications, and add the 'assumption' parameter, formatted as a list, with the relevant values.
   - ONLY simplify or rephrase the initial query if a more relevant 'Assumption' or other input suggestions are not provided.
 `.trim(),
-    inputSchema: wolfram.AskWolframAlphaOptionsSchema
+    inputSchema: wolframalpha.AskWolframAlphaOptionsSchema
   })
-  async ask(queryOrOptions: string | wolfram.AskWolframAlphaOptions) {
+  async ask(queryOrOptions: string | wolframalpha.AskWolframAlphaOptions) {
     const options =
       typeof queryOrOptions === 'string'
         ? { input: queryOrOptions }

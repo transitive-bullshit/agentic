@@ -659,6 +659,13 @@ export namespace diffbot {
   }
 }
 
+/**
+ * Diffbot provides web page classification and scraping. It also provides
+ * access to a knowledge graph with the ability to perform person and company
+ * data enrichment.
+ *
+ * @see https://docs.diffbot.com
+ */
 export class DiffbotClient extends AIFunctionsProvider {
   protected readonly ky: KyInstance
   protected readonly kyKnowledgeGraph: KyInstance

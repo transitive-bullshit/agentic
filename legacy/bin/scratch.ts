@@ -11,7 +11,7 @@ import restoreCursor from 'restore-cursor'
 // import { FirecrawlClient } from '../src/index.js'
 // import { ExaClient } from '../src/index.js'
 // import { DiffbotClient } from '../src/index.js'
-// import { WolframClient } from '../src/index.js'
+// import { WolframAlphaClient } from '../src/index.js'
 // import {
 //   createTwitterV2Client,
 //   TwitterClient
@@ -83,7 +83,7 @@ async function main() {
   // })
   // console.log(JSON.stringify(res, null, 2))
 
-  // const wolfram = new WolframClient()
+  // const wolfram = new WolframAlphaClient()
   // const res = await wolfram.ask({
   //   input: 'population of new york city'
   // })

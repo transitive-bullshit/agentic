@@ -475,6 +475,13 @@ export namespace predictleads {
   >
 }
 
+/**
+ * In-depth company data, including signals like fundraising announcemnts,
+ * hiring intent, new customers signed, technologies used, product launches,
+ * location expansions, awards received, etc.
+ *
+ * @see https://predictleads.com
+ */
 export class PredictLeadsClient extends AIFunctionsProvider {
   protected readonly ky: KyInstance
   protected readonly apiKey: string

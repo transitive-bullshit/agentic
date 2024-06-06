@@ -163,6 +163,11 @@ export namespace exa {
   }
 }
 
+/**
+ * Web search tailored for LLMs.
+ *
+ * @see https://docs.exa.ai
+ */
 export class ExaClient extends AIFunctionsProvider {
   protected readonly ky: KyInstance
   protected readonly apiKey: string

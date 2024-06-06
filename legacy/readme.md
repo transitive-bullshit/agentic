@@ -123,26 +123,29 @@ The SDK-specific imports are all isolated to keep the main `@agentic/stdlib` as 
 
 ## Services
 
-- bing
-- clearbit
-- dexa
-- diffbot
-- exa
-- firecrawl
-- midjourney (unofficial API)
-- novu
-- people data labs (WIP)
-- perigon
-- predict leads
-- proxycurl
-- scraper
-- searxng
-- serpapi
-- serper
-- twitter
-- wolfram alpha
-- weatherapi
-- wikipedia
+| Service                                                                  | Client                 | Description                                                                                                                                                                                                                                                   |
+| ------------------------------------------------------------------------ | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Bing](https://www.microsoft.com/en-us/bing/apis/bing-web-search-api)    | `BingClient`           | Bing web search                                                                                                                                                                                                                                               |
+| [Clearbit](https://dashboard.clearbit.com/docs)                          | `ClearbitClient`       | Resolving and enriching people and company data                                                                                                                                                                                                               |
+| [Dexa](https://dexa.ai)                                                  | `DexaClient`           | Answers questions from the world's best podcasters                                                                                                                                                                                                            |
+| [Diffbot](https://docs.diffbot.com)                                      | `DiffbotClient`        | Web page classification and scraping; person and company data enrichment                                                                                                                                                                                      |
+| [Exa](https://docs.exa.ai)                                               | `ExaClient`            | Web search tailored for LLMs                                                                                                                                                                                                                                  |
+| [Firecrawl](https://www.firecrawl.dev)                                   | `FirecrawlClient`      | Website scraping and sanitization                                                                                                                                                                                                                             |
+| [Midjourney](https://www.imagineapi.dev)                                 | `MidjourneyClient`     | Unofficial Midjourney client for generative images                                                                                                                                                                                                            |
+| [Novu](https://novu.co)                                                  | `NovuClient`           | Sending notifications (email, SMS, in-app, push, etc)                                                                                                                                                                                                         |
+| [People Data Labs](https://www.peopledatalabs.com)                       | `PeopleDataLabsClient` | People & company data (WIP)                                                                                                                                                                                                                                   |
+| [Perigon](https://www.goperigon.com/products/news-api)                   | `PerigonClient`        | Real-time news API and web content data from 140,000+ sources. Structured and enriched by AI, primed for LLMs.                                                                                                                                                |
+| [Polygon](https://polygon.io)                                            | `PolygonClient`        | Stock market and company financial data                                                                                                                                                                                                                       |
+| [PredictLeads](https://predictleads.com)                                 | `PredictLeadsClient`   | In-depth company data including signals like fundraising events, hiring news, product launches, technologies used, etc                                                                                                                                        |
+| [Proxycurl](https://nubela.co/proxycurl)                                 | `ProxycurlClient`      | People and company data from LinkedIn & Crunchbase                                                                                                                                                                                                            |
+| Scraper                                                                  | `ScraperClient`        | Scrapes URLs into clean html/markdown/text content (TODO: currently closed beta)                                                                                                                                                                              |
+| [Searxng](https://docs.searxng.org)                                      | `SearxngClient`        | OSS meta search engine capable of searching across many providers like Reddit, Google, Brave, Arxiv, Genius, IMDB, Rotten Tomatoes, Wikidata, Wolfram Alpha, YouTube, GitHub, [etc](https://docs.searxng.org/user/configured_engines.html#configured-engines) |
+| [SerpAPI](https://serpapi.com/search-api)                                | `SerpAPIClient`        | Lightweight wrapper around SerpAPI for Google search                                                                                                                                                                                                          |
+| [Serper](https://serper.dev)                                             | `SerperClient`         | Lightweight wrapper around Serper for Google search                                                                                                                                                                                                           |
+| [Twitter](https://developer.x.com/en/docs/twitter-api)                   | `TwitterClient`        | Basic Twitter API methods for fetching users, tweets, and searching recent tweets. Includes support for plan-aware rate-limiting.                                                                                                                             |
+| [WeatherAPI](https://api.weatherapi.com)                                 | `WeatherClient`        | Basic access to current weather data based on location                                                                                                                                                                                                        |
+| [Wikipedia](https://www.mediawiki.org/wiki/API)                          | `WikipediaClient`      | Wikipedia page search and summaries                                                                                                                                                                                                                           |
+| [Wolfram Alpha](https://products.wolframalpha.com/llm-api/documentation) | `WolframAlphaClient`   | Wolfram Alpha LLM API client for answering computational, mathematical, and scientific questions.                                                                                                                                                             |
 
 ## Non-service Tools
 

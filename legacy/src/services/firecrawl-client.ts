@@ -5,9 +5,6 @@ import { aiFunction, AIFunctionsProvider } from '../fns.js'
 import { assert, delay, getEnv } from '../utils.js'
 import { zodToJsonSchema } from '../zod-to-json-schema.js'
 
-// TODO: Deprioritizing this client for now because the API doesn't seem to be
-// stable.
-
 export namespace firecrawl {
   /**
    * Generic parameter interface.
@@ -84,6 +81,9 @@ export namespace firecrawl {
 }
 
 /**
+ * Turn websites into LLM-ready data. Crawl and convert any website into clean
+ * markdown or structured data.
+ *
  * @see https://www.firecrawl.dev
  * @see https://github.com/mendableai/firecrawl
  */

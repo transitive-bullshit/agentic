@@ -91,8 +91,8 @@ export namespace novu {
 }
 
 /**
- * Client for interacting with the Novu API, a router for sending notifications
- * across different channels like Email, SMS, Chat, In-App, and Push.
+ * The Novu API provides a router for sending notifications across different
+ * channels like Email, SMS, Chat, In-App, and Push.
  *
  * @see https://novu.co
  */
