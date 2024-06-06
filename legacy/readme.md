@@ -79,8 +79,7 @@ async function main() {
       perigon.functions.pick('search_news_stories'),
       serper
     ),
-    systemMessage:
-      'You are a helpful assistant. Be as concise as possible. Respond in markdown. Always cite your sources.'
+    systemMessage: `You are a helpful assistant. Be as concise as possible.`
   })
 
   const result = await runner(
@@ -101,25 +100,6 @@ All of the SDK adaptors like `createDexterFunctions` are very flexible in what t
 You can pass as many or as few of these `AIFunctionLike` objects as you'd like and you can manipulate them as `AIFunctionSet` objects via `.pick`, `.omit`, `.get`, `.map`, etc.
 
 The SDK-specific imports are all isolated to keep the main `@agentic/stdlib` as lightweight as possible.
-
-## Client Goals
-
-- clients should be as minimal as possible
-- clients must use `ky` as a lightweight native fetch wrapper
-- clients must have a strongly-typed TS DX
-- clients should expose select methods via the `@aiFunction(...)` decorator
-  - `@aiFunction` methods must use `zod` for input schema validation
-- it should be easy to create external clients which follow the `AIFunctionsProvider` superclass / `@aiFunction` decorator pattern
-- common utility functions for LLM-based function calling should be exported for convenience
-- clients and AIFunctions should be composable via `AIFunctionSet`
-- clients must work with all major TS AI SDKs
-  - SDK adaptors should be as lightweight as possible and be optional peer dependencies of `@agentic/stdlib`
-  - SDK adatptor entrypoints should all be isolated to their own top-level imports
-    - `@agentic/stdlib/ai-sdk`
-    - `@agentic/stdlib/langchain`
-    - `@agentic/stdlib/llamaindex`
-    - `@agentic/stdlib/dexter`
-    - `@agentic/stdlib/genkit`
 
 ## Services
 
@@ -167,6 +147,16 @@ The SDK-specific imports are all isolated to keep the main `@agentic/stdlib` as 
   - `import { createGenkitTools } from '@agentic/stdlib/genkit'`
 - Dexa Dexter
   - `import { createDexterFunctions } from '@agentic/stdlib/dexter'`
+
+## Client Goals
+
+- clients should be as minimal as possible
+- clients should use `ky` and `zod` where possible
+- clients must have a strongly-typed TS DX
+- clients should expose select methods via the `@aiFunction(...)` decorator
+- clients and AIFunctions should be composable via `AIFunctionSet`
+- clients must work with all major TS AI SDKs
+  - SDK adaptors should be as lightweight as possible and be optional peer dependencies of `@agentic/stdlib`
 
 ## TODO
 
