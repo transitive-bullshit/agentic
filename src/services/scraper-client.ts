@@ -40,8 +40,8 @@ export namespace scraper {
  * proxies and JavaScript rendering if needed.
  */
 export class ScraperClient extends AIFunctionsProvider {
-  readonly apiBaseUrl: string
-  readonly ky: KyInstance
+  protected readonly ky: KyInstance
+  protected readonly apiBaseUrl: string
 
   constructor({
     apiBaseUrl = getEnv('SCRAPER_API_BASE_URL'),

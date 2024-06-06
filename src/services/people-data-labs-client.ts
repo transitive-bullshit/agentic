@@ -450,9 +450,9 @@ export namespace peopledatalabs {
  * @see https://www.peopledatalabs.com
  */
 export class PeopleDataLabsClient {
-  readonly ky: KyInstance
-  readonly apiKey: string
-  readonly apiBaseUrl: string
+  protected readonly ky: KyInstance
+  protected readonly apiKey: string
+  protected readonly apiBaseUrl: string
 
   constructor({
     apiKey = getEnv('PEOPLE_DATA_LABS_API_KEY'),

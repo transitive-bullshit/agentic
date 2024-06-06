@@ -1,3 +1,4 @@
+export * from './bing-client.js'
 export * from './clearbit-client.js'
 export * from './dexa-client.js'
 export * from './diffbot-client.js'

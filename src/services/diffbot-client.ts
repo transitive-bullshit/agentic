@@ -660,12 +660,12 @@ export namespace diffbot {
 }
 
 export class DiffbotClient extends AIFunctionsProvider {
-  readonly ky: KyInstance
-  readonly kyKnowledgeGraph: KyInstance
+  protected readonly ky: KyInstance
+  protected readonly kyKnowledgeGraph: KyInstance
 
-  readonly apiKey: string
-  readonly apiBaseUrl: string
-  readonly apiKnowledgeGraphBaseUrl: string
+  protected readonly apiKey: string
+  protected readonly apiBaseUrl: string
+  protected readonly apiKnowledgeGraphBaseUrl: string
 
   constructor({
     apiKey = getEnv('DIFFBOT_API_KEY'),

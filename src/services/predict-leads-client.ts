@@ -476,9 +476,9 @@ export namespace predictleads {
 }
 
 export class PredictLeadsClient extends AIFunctionsProvider {
-  readonly ky: KyInstance
-  readonly apiKey: string
-  readonly apiToken: string
+  protected readonly ky: KyInstance
+  protected readonly apiKey: string
+  protected readonly apiToken: string
 
   constructor({
     apiKey = getEnv('PREDICT_LEADS_API_KEY'),

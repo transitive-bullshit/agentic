@@ -123,6 +123,7 @@ The SDK-specific imports are all isolated to keep the main `@agentic/stdlib` as 
 
 ## Services
 
+- bing
 - clearbit
 - dexa
 - diffbot
