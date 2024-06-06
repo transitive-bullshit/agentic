@@ -667,7 +667,7 @@ export class SerpAPIClient extends AIFunctionsProvider {
   @aiFunction({
     name: 'serpapi_google_search',
     description:
-      'Uses Google Search to return the most relevant web pages for a given query. Can also be used to find up-to-date news and information about many topics.',
+      'Uses Google Search to return the most relevant web pages for a given query. Useful for finding up-to-date news and information about any topic.',
     inputSchema: z.object({
       q: z.string().describe('search query'),
       num: z
