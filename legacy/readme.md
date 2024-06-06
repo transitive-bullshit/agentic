@@ -27,7 +27,7 @@ import { WeatherClient } from '@agentic/stdlib'
 
 const weather = new WeatherClient() // (requires `WEATHER_API_KEY` env var)
 
-const result = await clearbit.getCurrentWeather({
+const result = await weather.getCurrentWeather({
   q: 'San Francisco'
 })
 
