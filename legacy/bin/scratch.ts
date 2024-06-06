@@ -2,7 +2,6 @@
 import 'dotenv/config'
 
 import restoreCursor from 'restore-cursor'
-import { TavilyClient } from 'tavily'
 
 // import { SearxngClient } from '../src/services/searxng-client.js'
 // import { ClearbitClient } from '../src/index.js'
@@ -19,6 +18,7 @@ import { TavilyClient } from 'tavily'
 // } from '../src/services/twitter/index.js'
 // import { MidjourneyClient } from '../src/index.js'
 // import { BingClient } from '../src/index.js'
+import { TavilyClient } from '../src/index.js'
 
 /**
  * Scratch pad for testing.
@@ -113,9 +113,10 @@ async function main() {
   // console.log(JSON.stringify(res, null, 2))
 
   const tavily = new TavilyClient()
-  const res = await tavily.search(
-    'when do experts predict that OpenAI will release GPT-5?'
-  )
+  const res = await tavily.search({
+    query: 'when do experts predict that OpenAI will release GPT-5?',
+    include_answer: true
+  })
   console.log(JSON.stringify(res, null, 2))
 }
 
