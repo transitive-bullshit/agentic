@@ -2010,6 +2010,13 @@ export namespace proxycurl {
   export type CompanySearchResult = z.infer<typeof CompanySearchResultSchema>
 }
 
+/**
+ * Pull rich data about people and companies.
+ *
+ * Essentially a wrapper around LinkedIn & Crunchbase.
+ *
+ * @see https://nubela.co/proxycurl/
+ */
 export class ProxycurlClient extends AIFunctionsProvider {
   protected readonly ky: KyInstance
   protected readonly apiKey: string

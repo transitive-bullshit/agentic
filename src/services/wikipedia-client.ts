@@ -96,6 +96,11 @@ export namespace wikipedia {
   }
 }
 
+/**
+ * Basic Wikipedia API client for searching wiki pages and resolving page data.
+ *
+ * @see https://www.mediawiki.org/wiki/API
+ */
 export class WikipediaClient extends AIFunctionsProvider {
   protected readonly ky: KyInstance
   protected readonly apiBaseUrl: string

@@ -10,7 +10,7 @@ import { assert, getEnv } from '../utils.js'
  */
 
 export namespace serpapi {
-  export const BASE_URL = 'https://serpapi.com'
+  export const API_BASE_URL = 'https://serpapi.com'
 
   export type BaseResponse<P = Record<string | number | symbol, never>> = {
     search_metadata: {
@@ -641,7 +641,7 @@ export class SerpAPIClient extends AIFunctionsProvider {
 
   constructor({
     apiKey = getEnv('SERPAPI_API_KEY') ?? getEnv('SERP_API_KEY'),
-    apiBaseUrl = serpapi.BASE_URL,
+    apiBaseUrl = serpapi.API_BASE_URL,
     ky = defaultKy,
     ...params
   }: {

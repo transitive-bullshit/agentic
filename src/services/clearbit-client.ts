@@ -360,6 +360,11 @@ export namespace clearbit {
   }
 }
 
+/**
+ * The Clearbit API helps with resolving and enriching people and company data.
+ *
+ * @see https://dashboard.clearbit.com/docs
+ */
 export class ClearbitClient {
   protected readonly ky: KyInstance
   protected readonly apiKey: string

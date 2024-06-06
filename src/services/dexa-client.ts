@@ -12,6 +12,12 @@ export namespace dexa {
   export type AskDexaOptions = z.infer<typeof AskDexaOptionsSchema>
 }
 
+/**
+ * Dexa provides answers from the world's best podcasters.
+ *
+ * @note The Dexa API is not yet publicly available.
+ * @see https://dexa.ai
+ */
 export class DexaClient extends AIFunctionsProvider {
   protected readonly ky: KyInstance
   protected readonly apiKey: string

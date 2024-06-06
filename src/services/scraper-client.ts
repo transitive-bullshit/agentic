@@ -38,6 +38,8 @@ export namespace scraper {
  *
  * It tries the simplest and fastest methods first, and falls back to slower
  * proxies and JavaScript rendering if needed.
+ *
+ * @note This service is currently available only via a closed beta.
  */
 export class ScraperClient extends AIFunctionsProvider {
   protected readonly ky: KyInstance

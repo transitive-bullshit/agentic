@@ -255,11 +255,29 @@ export namespace searxng {
 }
 
 /**
+ * Open source meta search engine capable of searching across many different
+ * sources and search engines.
+ *
+ * The most important search engines are:
+ *
+ * - "reddit" (Reddit posts)
+ * - "google" (Google web search)
+ * - "google news" (Google News search)
+ * - "brave" (Brave web search)
+ * - "arxiv" (academic papers)
+ * - "genius" (Genius.com for song lyrics)
+ * - "imdb" (movies and TV shows)
+ * - "hackernews" (Hacker News)
+ * - "wikidata" (Wikidata)
+ * - "wolframalpha" (Wolfram Alpha)
+ * - "youtube" (YouTube videos)
+ * - "github" (GitHub code and repositories)
+ *
  * @see https://docs.searxng.org
  *
  * NOTE: You'll need to run a local instance of Searxng to use this client.
  *
- * See [perplexica](https://github.com/ItzCrazyKns/Perplexica/blob/master/docker-compose.yaml) for an example.
+ * See [perplexica](https://github.com/ItzCrazyKns/Perplexica/blob/master/docker-compose.yaml) for an example of how to set this up.
  */
 export class SearxngClient extends AIFunctionsProvider {
   protected readonly ky: KyInstance

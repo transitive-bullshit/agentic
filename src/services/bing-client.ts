@@ -238,6 +238,11 @@ export namespace bing {
   }
 }
 
+/**
+ * Bing web search client.
+ *
+ * @see https://www.microsoft.com/en-us/bing/apis/bing-web-search-api
+ */
 export class BingClient extends AIFunctionsProvider {
   protected readonly ky: KyInstance
   protected readonly apiKey: string
