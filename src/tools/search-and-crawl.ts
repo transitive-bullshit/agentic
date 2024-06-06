@@ -7,6 +7,9 @@ import { SerpAPIClient } from '../services/serpapi-client.js'
 import { isValidCrawlableUrl, normalizeUrl } from '../url-utils.js'
 import { omit, pick } from '../utils.js'
 
+// TODO: allow `search` tool to support other search clients
+// (e.g. Bing, Exa, Searxng, Serper, Tavily)
+
 export class SearchAndCrawl extends AIFunctionsProvider {
   readonly serpapi: SerpAPIClient
   readonly diffbot: DiffbotClient
@@ -21,7 +24,7 @@ export class SearchAndCrawl extends AIFunctionsProvider {
   @aiFunction({
     name: 'search_and_crawl',
     description:
-      'Uses Google to search the web, crawls the results, and then summarizes the most relevant results.',
+      'Uses Google to search the web, crawls the results, and then summarizes the most relevant results. Useful for creating in-depth summaries of topics along with sources.',
     inputSchema: z.object({
       query: z.string().describe('search query')
     })
