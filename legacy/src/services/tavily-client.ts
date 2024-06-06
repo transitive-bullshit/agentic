@@ -1,11 +1,18 @@
 import defaultKy, { type KyInstance } from 'ky'
+import pThrottle from 'p-throttle'
 import { z } from 'zod'
 
 import { aiFunction, AIFunctionsProvider } from '../fns.js'
-import { assert, getEnv, pruneNullOrUndefined } from '../utils.js'
+import { assert, getEnv, pruneNullOrUndefined, throttleKy } from '../utils.js'
 
 export namespace tavily {
   export const API_BASE_URL = 'https://api.tavily.com'
+
+  // Allow up to 20 requests per minute by default.
+  export const throttle = pThrottle({
+    limit: 20,
+    interval: 60 * 1000
+  })
 
   export interface SearchOptions {
     /** Search query. (required) */
@@ -86,10 +93,12 @@ export class TavilyClient extends AIFunctionsProvider {
   constructor({
     apiKey = getEnv('TAVILY_API_KEY'),
     apiBaseUrl = tavily.API_BASE_URL,
+    throttle = true,
     ky = defaultKy
   }: {
     apiKey?: string
     apiBaseUrl?: string
+    throttle?: boolean
     ky?: KyInstance
   } = {}) {
     assert(
@@ -101,7 +110,9 @@ export class TavilyClient extends AIFunctionsProvider {
     this.apiKey = apiKey
     this.apiBaseUrl = apiBaseUrl
 
-    this.ky = ky.extend({
+    const throttledKy = throttle ? throttleKy(ky, tavily.throttle) : ky
+
+    this.ky = throttledKy.extend({
       prefixUrl: this.apiBaseUrl
     })
   }

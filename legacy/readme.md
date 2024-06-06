@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <em>AI agent stdlib that works with any TypeScript AI SDK and LLM</em>
+  <em>AI agent stdlib that works with any LLM and TypeScript AI SDK</em>
 </p>
 
 <p align="center">
@@ -15,12 +15,12 @@
 
 # Agentic <!-- omit from toc -->
 
-> [!WARNING]  
+> [!WARNING]
 > TODO: this project is not published yet and is an active WIP.
 
 The goal of this project is to create a **set of standard AI functions / tools** which are **optimized for both normal TS-usage as well as LLM-based apps** and that work with all of the major AI SDKs (LangChain, LlamaIndex, Vercel AI SDK, OpenAI SDK, etc).
 
-For example, stdlib clients like `WeatherClient` can be used normally as a fully-typed TS client:
+For example, stdlib clients like `WeatherClient` can be used as normal TS classes:
 
 ```ts
 import { WeatherClient } from '@agentic/stdlib'
@@ -33,9 +33,9 @@ const result = await weather.getCurrentWeather({
 console.log(result)
 ```
 
-Or you can use this same function an LLM-based tool which works across all of the major AI SDKs via adaptors.
+Or you can use them as LLM-based tools where the LLM decides when and how to invoke the underlying functions for you.
 
-Here's an example using [Vercel's AI SDK](https://github.com/vercel/ai):
+This works across all of the major AI SDKs via adaptors. Here's an example using [Vercel's AI SDK](https://github.com/vercel/ai):
 
 ```ts
 // sdk-specific imports
@@ -50,7 +50,7 @@ const weather = new WeatherClient()
 
 const result = await generateText({
   model: openai('gpt-4o'),
-  // this is the key line which uses the ai-sdk adaptor
+  // this is the key line which uses the `@agentic/stdlib/ai-sdk` adaptor
   tools: createAISDKTools(weather),
   toolChoice: 'required',
   prompt: 'What is the weather in San Francisco?'
@@ -59,7 +59,7 @@ const result = await generateText({
 console.log(result.toolResults[0])
 ```
 
-You can use all of our thoroughly tested stdlib AI functions with your favorite AI SDK – without having to write any glue code!
+You can use our standard library of thoroughly tested AI functions with your favorite AI SDK – without having to write any glue code!
 
 Here's a slightly more complex example which uses multiple clients and selects a subset of their functions using the `AIFunctionSet.pick` method:
 
@@ -72,6 +72,7 @@ import { createDexterFunctions } from '@agentic/stdlib/dexter'
 import { PerigonClient, SerperClient } from '@agentic/stdlib'
 
 async function main() {
+  // Perigon is a news API and Serper is a Google search API
   const perigon = new PerigonClient()
   const serper = new SerperClient()
 
@@ -131,14 +132,16 @@ All heavy third-party imports are isolated as _optional peer dependencies_ to ke
 | [Slack](https://api.slack.com/docs)                                      | `SlackClient`          | Send and receive Slack messages.                                                                                                                                                                                                                               |
 | [Tavily](https://tavily.com)                                             | `TavilyClient`         | Web search API tailored for LLMs. 🔥                                                                                                                                                                                                                           |
 | [Twilio](https://www.twilio.com/docs/conversations/api)                  | `TwilioClient`         | Twilio conversation API to send and receive SMS messages.                                                                                                                                                                                                      |
-| [Twitter](https://developer.x.com/en/docs/twitter-api)                   | `TwitterClient`        | Basic Twitter API methods for fetching users, tweets, and searching recent tweets. Includes support for plan-aware rate-limiting.                                                                                                                              |
+| [Twitter](https://developer.x.com/en/docs/twitter-api)                   | `TwitterClient`        | Basic Twitter API methods for fetching users, tweets, and searching recent tweets. Includes support for plan-aware rate-limiting. Uses [Nango](https://www.nango.dev) for OAuth support.                                                                       |
 | [WeatherAPI](https://www.weatherapi.com)                                 | `WeatherClient`        | Basic access to current weather data based on location.                                                                                                                                                                                                        |
 | [Wikipedia](https://www.mediawiki.org/wiki/API)                          | `WikipediaClient`      | Wikipedia page search and summaries.                                                                                                                                                                                                                           |
 | [Wolfram Alpha](https://products.wolframalpha.com/llm-api/documentation) | `WolframAlphaClient`   | Wolfram Alpha LLM API client for answering computational, mathematical, and scientific questions.                                                                                                                                                              |
 
+Note that many of these clients expose multiple AI functions.
+
 ## Compound Tools
 
-- search and scrape
+- `SearchAndCrawl`
 
 ## AI SDKs
 
@@ -161,6 +164,7 @@ All heavy third-party imports are isolated as _optional peer dependencies_ to ke
 - clients should use `ky` and `zod` where possible
 - clients should have a strongly-typed TS DX
 - clients should expose select methods via the `@aiFunction(...)` decorator
+  - `inputSchema` zod schemas should be as minimal as possible with descriptions prompt engineered specifically for use with LLMs
 - clients and AIFunctions should be composable via `AIFunctionSet`
 - clients should work with all major TS AI SDKs
   - SDK adaptors should be as lightweight as possible and be optional peer dependencies of `@agentic/stdlib`
@@ -171,7 +175,9 @@ All heavy third-party imports are isolated as _optional peer dependencies_ to ke
 - sdks
   - modelfusion
 - services
+  - [phantombuster](https://phantombuster.com)
   - perplexity
+  - valtown
   - replicate
   - huggingface
   - [skyvern](https://github.com/Skyvern-AI/skyvern)
