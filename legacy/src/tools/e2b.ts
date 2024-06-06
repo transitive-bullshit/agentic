@@ -4,6 +4,11 @@ import { z } from 'zod'
 import { createAIFunction } from '../create-ai-function.js'
 import { getEnv } from '../utils.js'
 
+/**
+ * E2B Python code interpreter sandbox.
+ *
+ * @see https://e2b.dev
+ */
 export const e2b = createAIFunction(
   {
     name: 'execute_python',
