@@ -2,6 +2,7 @@
 import 'dotenv/config'
 
 import restoreCursor from 'restore-cursor'
+import { TavilyClient } from 'tavily'
 
 // import { SearxngClient } from '../src/services/searxng-client.js'
 // import { ClearbitClient } from '../src/index.js'
@@ -17,7 +18,7 @@ import restoreCursor from 'restore-cursor'
 //   TwitterClient
 // } from '../src/services/twitter/index.js'
 // import { MidjourneyClient } from '../src/index.js'
-import { BingClient } from '../src/index.js'
+// import { BingClient } from '../src/index.js'
 
 /**
  * Scratch pad for testing.
@@ -105,10 +106,16 @@ async function main() {
   // )
   // console.log(JSON.stringify(res, null, 2))
 
-  const bing = new BingClient()
-  const res = await bing.search({
-    q: 'world cup 2024 freestyle wrestling news'
-  })
+  // const bing = new BingClient()
+  // const res = await bing.search({
+  //   q: 'world cup 2024 freestyle wrestling news'
+  // })
+  // console.log(JSON.stringify(res, null, 2))
+
+  const tavily = new TavilyClient()
+  const res = await tavily.search(
+    'when do experts predict that OpenAI will release GPT-5?'
+  )
   console.log(JSON.stringify(res, null, 2))
 }
 
