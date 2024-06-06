@@ -18,9 +18,9 @@
 > [!WARNING]  
 > TODO: this project is not published yet and is an active WIP.
 
-The goal of this project is to create a **set of standard AI functions / tools** which are **optimized for both normal TS-usage as well as LLM-based usage** across all of the popular AI SDKs.
+The goal of this project is to create a **set of standard AI functions / tools** which are **optimized for both normal TS-usage as well as LLM-based apps** that work with all of the major AI SDKs (LangChain, LlamaIndex, Vercel AI SDK, OpenAI SDK, etc).
 
-For a simple example, `WeatherClient` can be used normally as a TS client:
+For a simple example, stdlib clients like `WeatherClient` can be used normally as a fully-typed TS client:
 
 ```ts
 import { WeatherClient } from '@agentic/stdlib'
@@ -34,9 +34,9 @@ const result = await clearbit.getCurrentWeather({
 console.log(result)
 ```
 
-Or you can use it as a set of LLM-based functions / tools which work with all of the major AI SDKs via adaptors.
+Or you can use this same function an LLM-based tool which works across all of the major AI SDKs via adaptors.
 
-This example uses [Vercel's AI SDK](https://github.com/vercel/ai):
+Here's an example using [Vercel's AI SDK](https://github.com/vercel/ai):
 
 ```ts
 // sdk-specific imports
@@ -60,7 +60,7 @@ const result = await generateText({
 console.log(result.toolResults[0])
 ```
 
-You can use all of our hand-crafted stdlib functions with your favorite AI SDK or custom AI SDK – without having to write any glue code!
+You can use all of our thoroughly tested stdlib AI functions with your favorite AI SDK – without having to write any glue code!
 
 Here's a slightly more complex example which uses multiple clients and selects a subset of their functions using the `AIFunctionSet.pick` method:
 
@@ -94,15 +94,15 @@ async function main() {
 }
 ```
 
-Here we've exposed 2 functions to the LLM, `search_news_stories` (which implicitly comes from `PerigonClient.searchStories`) and `serper_google_search` (which implicitly comes from `SerperClient.search`).
+Here we've exposed 2 functions to the LLM, `search_news_stories` (which comes from the `PerigonClient.searchStories` method) and `serper_google_search` (which implicitly comes from the `SerperClient.search` method).
 
-All of the SDK adaptors like `createDexterFunctions` are very flexible in what they accept. `AIFunctionLike` objects include:
+All of the SDK adaptors like `createDexterFunctions` accept very flexible in what they accept. `AIFunctionLike` objects include:
 
 - `AIFunctionSet` - Sets of AI functions (like `perigon.functions.pick('search_news_stories')` or `perigon.functions` or `serper.functions`)
 - `AIFunctionsProvider` - Client classes which expose an `AIFunctionSet` via the `.functions` property (like `perigon` or `serper`)
-- `AIFunction` - Individual functions (like `perigon.functions.get('search_news_stories')` or `serper.functions.get('serper_google_search')`)
+- `AIFunction` - Individual functions (like `perigon.functions.get('search_news_stories')` or `serper.functions.get('serper_google_search')` or AI functions created directly via the `createAIFunction` utility function)
 
-You can pass as many of these `AIFunctionLike` objects as you'd like and you can manipulate them as `AIFunctionSet` objects via `.pick`, `.omit`, `.get`, `.map`, etc.
+You can pass as many of these `AIFunctionLike` objects as you'd like and you can manipulate them as `AIFunctionSet` sets via `.pick`, `.omit`, `.get`, `.map`, etc.
 
 All heavy third-party imports are isolated as _optional peer dependencies_ to keep the main `@agentic/stdlib` package as lightweight as possible.
 
