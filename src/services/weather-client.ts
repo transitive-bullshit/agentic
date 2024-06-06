@@ -74,6 +74,11 @@ export namespace weatherapi {
   }
 }
 
+/**
+ * Simple Weather API client for accessing weather data based on location.
+ *
+ * @see https://www.weatherapi.com
+ */
 export class WeatherClient extends AIFunctionsProvider {
   protected readonly ky: KyInstance
   protected readonly apiKey: string
@@ -107,7 +112,7 @@ export class WeatherClient extends AIFunctionsProvider {
       q: z
         .string()
         .describe(
-          'Location to get the weather for. May be a city name, zipcode, IP address, or lat/lng coordinates. Example: "London"'
+          'Location to get the weather for. Can be a city name, zipcode, IP address, or lat/lng coordinates. Example: "London"'
         )
     })
   })

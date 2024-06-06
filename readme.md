@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <em>AI agent stdlib that works with any AI SDK and LLM</em>
+  <em>AI agent stdlib that works with any TypeScript AI SDK and LLM</em>
 </p>
 
 <p align="center">
@@ -18,9 +18,9 @@
 > [!WARNING]  
 > TODO: this project is not published yet and is an active WIP.
 
-The goal of this project is to create a **set of standard AI functions / tools** which are **optimized for both normal TS-usage as well as LLM-based apps** that work with all of the major AI SDKs (LangChain, LlamaIndex, Vercel AI SDK, OpenAI SDK, etc).
+The goal of this project is to create a **set of standard AI functions / tools** which are **optimized for both normal TS-usage as well as LLM-based apps** and that work with all of the major AI SDKs (LangChain, LlamaIndex, Vercel AI SDK, OpenAI SDK, etc).
 
-For a simple example, stdlib clients like `WeatherClient` can be used normally as a fully-typed TS client:
+For example, stdlib clients like `WeatherClient` can be used normally as a fully-typed TS client:
 
 ```ts
 import { WeatherClient } from '@agentic/stdlib'
@@ -30,7 +30,6 @@ const weather = new WeatherClient() // (requires `WEATHER_API_KEY` env var)
 const result = await weather.getCurrentWeather({
   q: 'San Francisco'
 })
-
 console.log(result)
 ```
 
@@ -111,9 +110,11 @@ All heavy third-party imports are isolated as _optional peer dependencies_ to ke
 | Service                                                                  | Client                 | Description                                                                                                                                                                                                                                                    |
 | ------------------------------------------------------------------------ | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [Bing](https://www.microsoft.com/en-us/bing/apis/bing-web-search-api)    | `BingClient`           | Bing web search.                                                                                                                                                                                                                                               |
+| [Calculator](https://github.com/silentmatt/expr-eval)                    | `calculator`           | Basic calculator for simple mathematical expressions.                                                                                                                                                                                                          |
 | [Clearbit](https://dashboard.clearbit.com/docs)                          | `ClearbitClient`       | Resolving and enriching people and company datae.                                                                                                                                                                                                              |
 | [Dexa](https://dexa.ai)                                                  | `DexaClient`           | Answers questions from the world's best podcasters.                                                                                                                                                                                                            |
 | [Diffbot](https://docs.diffbot.com)                                      | `DiffbotClient`        | Web page classification and scraping; person and company data enrichment.                                                                                                                                                                                      |
+| [E2B](https://e2b.dev)                                                   | `e2b`                  | Hosted Python code intrepreter sandbox which is really useful for data analysis, flexible code execution, and advanced reasoning on-the-fly.                                                                                                                   |
 | [Exa](https://docs.exa.ai)                                               | `ExaClient`            | Web search tailored for LLMs.                                                                                                                                                                                                                                  |
 | [Firecrawl](https://www.firecrawl.dev)                                   | `FirecrawlClient`      | Website scraping and sanitization.                                                                                                                                                                                                                             |
 | [Midjourney](https://www.imagineapi.dev)                                 | `MidjourneyClient`     | Unofficial Midjourney client for generative images.                                                                                                                                                                                                            |
@@ -130,14 +131,12 @@ All heavy third-party imports are isolated as _optional peer dependencies_ to ke
 | [Slack](https://api.slack.com/docs)                                      | `SlackClient`          | Send and receive Slack messages.                                                                                                                                                                                                                               |
 | [Twilio](https://www.twilio.com/docs/conversations/api)                  | `TwilioClient`         | Twilio conversation API to send and receive SMS messages.                                                                                                                                                                                                      |
 | [Twitter](https://developer.x.com/en/docs/twitter-api)                   | `TwitterClient`        | Basic Twitter API methods for fetching users, tweets, and searching recent tweets. Includes support for plan-aware rate-limiting.                                                                                                                              |
-| [WeatherAPI](https://api.weatherapi.com)                                 | `WeatherClient`        | Basic access to current weather data based on location.                                                                                                                                                                                                        |
+| [WeatherAPI](https://www.weatherapi.com)                                 | `WeatherClient`        | Basic access to current weather data based on location.                                                                                                                                                                                                        |
 | [Wikipedia](https://www.mediawiki.org/wiki/API)                          | `WikipediaClient`      | Wikipedia page search and summaries.                                                                                                                                                                                                                           |
 | [Wolfram Alpha](https://products.wolframalpha.com/llm-api/documentation) | `WolframAlphaClient`   | Wolfram Alpha LLM API client for answering computational, mathematical, and scientific questions.                                                                                                                                                              |
 
-## Non-service Tools
+## Compound Tools
 
-- calculator
-- e2b (code interpreter)
 - search and scrape
 
 ## AI SDKs
