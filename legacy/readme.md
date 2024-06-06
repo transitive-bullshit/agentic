@@ -18,9 +18,9 @@
 > [!WARNING]  
 > TODO: this project is not published yet and is an active WIP.
 
-The goal of this project is to create a **set of standard AI functions / tools** which are **optimized for both normal TS-usage as well as LLM-based usage** across any popular AI SDK via simple adaptors.
+The goal of this project is to create a **set of standard AI functions / tools** which are **optimized for both normal TS-usage as well as LLM-based usage** across all of the popular AI SDKs.
 
-For example, all of the stdlib tools like `WeatherClient` can be used both as normal, fully-typed TS SDKs:
+For a simple example, `WeatherClient` can be used normally as a TS client:
 
 ```ts
 import { WeatherClient } from '@agentic/stdlib'
@@ -34,7 +34,9 @@ const result = await clearbit.getCurrentWeather({
 console.log(result)
 ```
 
-Or you can use them as a set of LLM-based functions / tools using adaptors specific to each LLM SDK. This example uses [Vercel's AI SDK](https://github.com/vercel/ai):
+Or you can use it as a set of LLM-based functions / tools which work with all of the major AI SDKs via adaptors.
+
+This example uses [Vercel's AI SDK](https://github.com/vercel/ai):
 
 ```ts
 // sdk-specific imports
@@ -49,6 +51,7 @@ const weather = new WeatherClient()
 
 const result = await generateText({
   model: openai('gpt-4o'),
+  // this is the key line which uses the ai-sdk adaptor
   tools: createAISDKTools(weather),
   toolChoice: 'required',
   prompt: 'What is the weather in San Francisco?'
@@ -57,7 +60,9 @@ const result = await generateText({
 console.log(result.toolResults[0])
 ```
 
-Let's take a slightly more complicated example which uses multiple clients and selects a subset of their functions using the `pick` method:
+You can use all of our hand-crafted stdlib functions with your favorite AI SDK or custom AI SDK – without having to write any glue code!
+
+Here's a slightly more complex example which uses multiple clients and selects a subset of their functions using the `AIFunctionSet.pick` method:
 
 ```ts
 // sdk-specific imports
@@ -89,7 +94,7 @@ async function main() {
 }
 ```
 
-Here we've exposed 2 functions to the LLM, `search_news_stories` which corresponds to the `PerigonClient.searchStories` method and `serper_google_search` via the `SerperClient.search` method.
+Here we've exposed 2 functions to the LLM, `search_news_stories` (which implicitly comes from `PerigonClient.searchStories`) and `serper_google_search` (which implicitly comes from `SerperClient.search`).
 
 All of the SDK adaptors like `createDexterFunctions` are very flexible in what they accept. `AIFunctionLike` objects include:
 
@@ -97,9 +102,9 @@ All of the SDK adaptors like `createDexterFunctions` are very flexible in what t
 - `AIFunctionsProvider` - Client classes which expose an `AIFunctionSet` via the `.functions` property (like `perigon` or `serper`)
 - `AIFunction` - Individual functions (like `perigon.functions.get('search_news_stories')` or `serper.functions.get('serper_google_search')`)
 
-You can pass as many or as few of these `AIFunctionLike` objects as you'd like and you can manipulate them as `AIFunctionSet` objects via `.pick`, `.omit`, `.get`, `.map`, etc.
+You can pass as many of these `AIFunctionLike` objects as you'd like and you can manipulate them as `AIFunctionSet` objects via `.pick`, `.omit`, `.get`, `.map`, etc.
 
-The SDK-specific imports are all isolated to keep the main `@agentic/stdlib` as lightweight as possible.
+All heavy third-party imports are isolated as _optional peer dependencies_ to keep the main `@agentic/stdlib` package as lightweight as possible.
 
 ## Services
 
