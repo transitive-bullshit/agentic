@@ -128,6 +128,7 @@ The SDK-specific imports are all isolated to keep the main `@agentic/stdlib` as 
 - diffbot
 - exa
 - firecrawl (WIP)
+- midjourney
 - people data labs (WIP)
 - perigon
 - predict leads
@@ -169,7 +170,6 @@ The SDK-specific imports are all isolated to keep the main `@agentic/stdlib` as 
   - replicate
   - huggingface
   - [skyvern](https://github.com/Skyvern-AI/skyvern)
-  - midjourney
   - unstructured
   - pull from [langchain](https://github.com/langchain-ai/langchainjs/tree/main/langchain)
     - provide a converter for langchain `DynamicStructuredTool`

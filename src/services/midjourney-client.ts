@@ -5,6 +5,8 @@ import { TimeoutError } from '../errors.js'
 import { aiFunction, AIFunctionsProvider } from '../fns.js'
 import { assert, delay, getEnv, pruneNullOrUndefined } from '../utils.js'
 
+// TODO: add additional methods for upscaling, variations, etc.
+
 export namespace midjourney {
   export const API_BASE_URL = 'https://cl.imagineapi.dev'
 
@@ -27,6 +29,12 @@ export namespace midjourney {
     upscaled_urls?: string[]
     ref?: string
     upscaled?: string[]
+  }
+
+  export interface JobOptions {
+    wait?: boolean
+    timeoutMs?: number
+    intervalMs?: number
   }
 }
 
@@ -79,12 +87,22 @@ export class MidjourneyClient extends AIFunctionsProvider {
     })
   })
   async imagine(
-    promptOrOptions: string | { prompt: string }
+    promptOrOptions:
+      | string
+      | ({
+          prompt: string
+        } & midjourney.JobOptions)
   ): Promise<midjourney.Job> {
-    const options =
-      typeof promptOrOptions === 'string'
-        ? { prompt: promptOrOptions }
-        : promptOrOptions
+    const {
+      wait = true,
+      timeoutMs,
+      intervalMs,
+      ...options
+    } = typeof promptOrOptions === 'string'
+      ? ({ prompt: promptOrOptions } as {
+          prompt: string
+        } & midjourney.JobOptions)
+      : promptOrOptions
 
     const res = await this.ky
       .post('items/images', {
@@ -92,15 +110,56 @@ export class MidjourneyClient extends AIFunctionsProvider {
       })
       .json<midjourney.ImagineResponse>()
 
-    return pruneNullOrUndefined(res.data)
+    const job = pruneNullOrUndefined(res.data)
+    if (!wait) {
+      return job
+    }
+
+    if (job.status === 'completed' || job.status === 'failed') {
+      return job
+    }
+
+    return this.waitForJobById(job.id, {
+      timeoutMs,
+      intervalMs
+    })
   }
 
-  async getJobById(jobId: string): Promise<midjourney.Job> {
+  async getJobById(
+    jobIdOrOptions:
+      | string
+      | ({
+          jobId: string
+        } & midjourney.JobOptions)
+  ): Promise<midjourney.Job> {
+    const {
+      jobId,
+      wait = true,
+      timeoutMs,
+      intervalMs
+    } = typeof jobIdOrOptions === 'string'
+      ? ({ jobId: jobIdOrOptions } as {
+          jobId: string
+        } & midjourney.JobOptions)
+      : jobIdOrOptions
+
     const res = await this.ky
       .get(`items/images/${jobId}`)
       .json<midjourney.ImagineResponse>()
 
-    return pruneNullOrUndefined(res.data)
+    const job = pruneNullOrUndefined(res.data)
+    if (!wait) {
+      return job
+    }
+
+    if (job.status === 'completed' || job.status === 'failed') {
+      return job
+    }
+
+    return this.waitForJobById(job.id, {
+      timeoutMs,
+      intervalMs
+    })
   }
 
   async waitForJobById(
@@ -108,11 +167,8 @@ export class MidjourneyClient extends AIFunctionsProvider {
     {
       timeoutMs = 5 * 60 * 1000, // 5 minutes
       intervalMs = 1000
-    }: {
-      timeoutMs?: number
-      intervalMs?: number
-    } = {}
-  ) {
+    }: Omit<midjourney.JobOptions, 'wait'> = {}
+  ): Promise<midjourney.Job> {
     const startTimeMs = Date.now()
 
     function checkForTimeout() {
