@@ -97,9 +97,9 @@ export namespace wikipedia {
 }
 
 export class WikipediaClient extends AIFunctionsProvider {
-  readonly apiBaseUrl: string
-  readonly apiUserAgent: string
-  readonly ky: KyInstance
+  protected readonly ky: KyInstance
+  protected readonly apiBaseUrl: string
+  protected readonly apiUserAgent: string
 
   constructor({
     apiBaseUrl = getEnv('WIKIPEDIA_API_BASE_URL') ??

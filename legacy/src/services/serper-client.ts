@@ -210,10 +210,10 @@ export namespace serper {
  * @see https://serper.dev
  */
 export class SerperClient extends AIFunctionsProvider {
-  readonly ky: KyInstance
-  readonly apiKey: string
-  readonly apiBaseUrl: string
-  readonly params: serper.ClientParams
+  protected readonly ky: KyInstance
+  protected readonly apiKey: string
+  protected readonly apiBaseUrl: string
+  protected readonly params: serper.ClientParams
 
   constructor({
     apiKey = getEnv('SERPER_API_KEY'),

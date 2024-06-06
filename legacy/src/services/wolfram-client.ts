@@ -29,9 +29,9 @@ export namespace wolfram {
  * @see https://products.wolframalpha.com/llm-api/documentation
  */
 export class WolframClient extends AIFunctionsProvider {
-  readonly ky: KyInstance
-  readonly appId: string
-  readonly apiBaseUrl: string
+  protected readonly ky: KyInstance
+  protected readonly appId: string
+  protected readonly apiBaseUrl: string
 
   constructor({
     appId = getEnv('WOLFRAM_APP_ID'),

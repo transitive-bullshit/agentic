@@ -164,9 +164,9 @@ export namespace exa {
 }
 
 export class ExaClient extends AIFunctionsProvider {
-  readonly apiKey: string
-  readonly apiBaseUrl: string
-  readonly ky: KyInstance
+  protected readonly ky: KyInstance
+  protected readonly apiKey: string
+  protected readonly apiBaseUrl: string
 
   constructor({
     apiKey = getEnv('EXA_API_KEY'),

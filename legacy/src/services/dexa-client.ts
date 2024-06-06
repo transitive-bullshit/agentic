@@ -13,9 +13,9 @@ export namespace dexa {
 }
 
 export class DexaClient extends AIFunctionsProvider {
-  readonly apiKey: string
-  readonly apiBaseUrl: string
-  readonly ky: KyInstance
+  protected readonly ky: KyInstance
+  protected readonly apiKey: string
+  protected readonly apiBaseUrl: string
 
   constructor({
     apiKey = getEnv('DEXA_API_KEY'),

@@ -75,9 +75,9 @@ export namespace weatherapi {
 }
 
 export class WeatherClient extends AIFunctionsProvider {
-  readonly ky: KyInstance
-  readonly apiKey: string
-  readonly apiBaseUrl: string
+  protected readonly ky: KyInstance
+  protected readonly apiKey: string
+  protected readonly apiBaseUrl: string
 
   constructor({
     apiKey = getEnv('WEATHER_API_KEY'),

@@ -2011,9 +2011,9 @@ export namespace proxycurl {
 }
 
 export class ProxycurlClient extends AIFunctionsProvider {
-  readonly ky: KyInstance
-  readonly apiKey: string
-  readonly apiBaseUrl: string
+  protected readonly ky: KyInstance
+  protected readonly apiKey: string
+  protected readonly apiBaseUrl: string
 
   constructor({
     apiKey = getEnv('PROXYCURL_API_KEY'),

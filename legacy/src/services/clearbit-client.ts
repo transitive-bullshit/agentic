@@ -361,9 +361,9 @@ export namespace clearbit {
 }
 
 export class ClearbitClient {
-  readonly ky: KyInstance
-  readonly apiKey: string
-  readonly _maxPageSize = 100
+  protected readonly ky: KyInstance
+  protected readonly apiKey: string
+  protected readonly _maxPageSize = 100
 
   static readonly PersonRoles = [
     'communications',

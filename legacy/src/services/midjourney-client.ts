@@ -44,9 +44,9 @@ export namespace midjourney {
  * @see https://www.imagineapi.dev
  */
 export class MidjourneyClient extends AIFunctionsProvider {
-  readonly ky: KyInstance
-  readonly apiKey: string
-  readonly apiBaseUrl: string
+  protected readonly ky: KyInstance
+  protected readonly apiKey: string
+  protected readonly apiBaseUrl: string
 
   constructor({
     apiKey = getEnv('MIDJOURNEY_IMAGINE_API_KEY'),

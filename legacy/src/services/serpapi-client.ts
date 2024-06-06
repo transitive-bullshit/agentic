@@ -634,10 +634,10 @@ export namespace serpapi {
  * @see https://serpapi.com/search-api
  */
 export class SerpAPIClient extends AIFunctionsProvider {
-  protected ky: KyInstance
-  protected apiKey: string
-  protected apiBaseUrl: string
-  protected params: serpapi.ClientParams
+  protected readonly ky: KyInstance
+  protected readonly apiKey: string
+  protected readonly apiBaseUrl: string
+  protected readonly params: serpapi.ClientParams
 
   constructor({
     apiKey = getEnv('SERPAPI_API_KEY') ?? getEnv('SERP_API_KEY'),

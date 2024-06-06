@@ -262,8 +262,8 @@ export namespace searxng {
  * See [perplexica](https://github.com/ItzCrazyKns/Perplexica/blob/master/docker-compose.yaml) for an example.
  */
 export class SearxngClient extends AIFunctionsProvider {
-  readonly ky: KyInstance
-  readonly apiBaseUrl: string
+  protected readonly ky: KyInstance
+  protected readonly apiBaseUrl: string
 
   constructor({
     apiBaseUrl = getEnv('SEARXNG_API_BASE_URL'),

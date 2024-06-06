@@ -626,8 +626,8 @@ export namespace perigon {
  * @see https://www.goperigon.com/products/news-api
  */
 export class PerigonClient extends AIFunctionsProvider {
-  readonly ky: KyInstance
-  readonly apiKey: string
+  protected readonly ky: KyInstance
+  protected readonly apiKey: string
 
   constructor({
     apiKey = getEnv('PERIGON_API_KEY'),

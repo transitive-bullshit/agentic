@@ -16,7 +16,8 @@ import restoreCursor from 'restore-cursor'
 //   createTwitterV2Client,
 //   TwitterClient
 // } from '../src/services/twitter/index.js'
-import { MidjourneyClient } from '../src/index.js'
+// import { MidjourneyClient } from '../src/index.js'
+import { BingClient } from '../src/index.js'
 
 /**
  * Scratch pad for testing.
@@ -98,10 +99,16 @@ async function main() {
   // })
   // console.log(res)
 
-  const midjourney = new MidjourneyClient()
-  const res = await midjourney.imagine(
-    'tiny lil baby kittens playing with an inquisitive AI robot, kawaii, anime'
-  )
+  // const midjourney = new MidjourneyClient()
+  // const res = await midjourney.imagine(
+  //   'tiny lil baby kittens playing with an inquisitive AI robot, kawaii, anime'
+  // )
+  // console.log(JSON.stringify(res, null, 2))
+
+  const bing = new BingClient()
+  const res = await bing.search({
+    q: 'world cup 2024 freestyle wrestling news'
+  })
   console.log(JSON.stringify(res, null, 2))
 }
 
