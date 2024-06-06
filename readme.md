@@ -127,6 +127,7 @@ All heavy third-party imports are isolated as _optional peer dependencies_ to ke
 | [Searxng](https://docs.searxng.org)                                      | `SearxngClient`        | OSS meta search engine capable of searching across many providers like Reddit, Google, Brave, Arxiv, Genius, IMDB, Rotten Tomatoes, Wikidata, Wolfram Alpha, YouTube, GitHub, [etc](https://docs.searxng.org/user/configured_engines.html#configured-engines). |
 | [SerpAPI](https://serpapi.com/search-api)                                | `SerpAPIClient`        | Lightweight wrapper around SerpAPI for Google search.                                                                                                                                                                                                          |
 | [Serper](https://serper.dev)                                             | `SerperClient`         | Lightweight wrapper around Serper for Google search.                                                                                                                                                                                                           |
+| [Slack](https://api.slack.com/docs)                                      | `SlackClient`          | Send and receive basic Slack messages.                                                                                                                                                                                                                         |
 | [Twitter](https://developer.x.com/en/docs/twitter-api)                   | `TwitterClient`        | Basic Twitter API methods for fetching users, tweets, and searching recent tweets. Includes support for plan-aware rate-limiting.                                                                                                                              |
 | [WeatherAPI](https://api.weatherapi.com)                                 | `WeatherClient`        | Basic access to current weather data based on location.                                                                                                                                                                                                        |
 | [Wikipedia](https://www.mediawiki.org/wiki/API)                          | `WikipediaClient`      | Wikipedia page search and summaries.                                                                                                                                                                                                                           |
@@ -157,10 +158,10 @@ All heavy third-party imports are isolated as _optional peer dependencies_ to ke
 
 - clients should be as minimal as possible
 - clients should use `ky` and `zod` where possible
-- clients must have a strongly-typed TS DX
+- clients should have a strongly-typed TS DX
 - clients should expose select methods via the `@aiFunction(...)` decorator
 - clients and AIFunctions should be composable via `AIFunctionSet`
-- clients must work with all major TS AI SDKs
+- clients should work with all major TS AI SDKs
   - SDK adaptors should be as lightweight as possible and be optional peer dependencies of `@agentic/stdlib`
 
 ## TODO
@@ -173,7 +174,6 @@ All heavy third-party imports are isolated as _optional peer dependencies_ to ke
   - replicate
   - huggingface
   - [skyvern](https://github.com/Skyvern-AI/skyvern)
-  - unstructured
   - pull from [langchain](https://github.com/langchain-ai/langchainjs/tree/main/langchain)
     - provide a converter for langchain `DynamicStructuredTool`
   - pull from [nango](https://docs.nango.dev/integrations/overview)
