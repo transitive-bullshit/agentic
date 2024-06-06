@@ -128,8 +128,9 @@ The SDK-specific imports are all isolated to keep the main `@agentic/stdlib` as 
 - dexa
 - diffbot
 - exa
-- firecrawl (WIP)
-- midjourney
+- firecrawl
+- midjourney (unofficial API)
+- novu
 - people data labs (WIP)
 - perigon
 - predict leads
