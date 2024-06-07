@@ -224,6 +224,7 @@ See the [examples](./examples) directory for examples of how to use each of thes
 - [David Zhang](https://x.com/dzhng)
 - [Philipp Burckhardt](https://x.com/burckhap)
 - [Riley Tomasek](https://x.com/rileytomasek)
+- And all of the [amazing OSS contributors](https://github.com/transitive-bullshit/agentic/graphs/contributors)!
 
 ## License
 
