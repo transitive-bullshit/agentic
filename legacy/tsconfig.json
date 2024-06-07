@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "composite": false,
+    "target": "es2020",
+    "lib": ["esnext", "es2022.error", "DOM"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noImplicitAny": false,
+    "forceConsistentCasingInFileNames": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true
+  }
+}

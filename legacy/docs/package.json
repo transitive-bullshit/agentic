@@ -1,0 +1,22 @@
+{
+  "private": true,
+  "description": "Agentic docs website",
+  "repository": "transitive-bullshit/agentic",
+  "homepage": "https://agentic.so/docs",
+  "license": "MIT",
+  "scripts": {
+    "dev": "next dev",
+    "build-web": "next build",
+    "start": "next start",
+    "eslint-check": "eslint \"**/*.{ts,tsx}\"",
+    "prettier-check": "prettier --check \"**/*.{js,ts,tsx,md,mdx}\"",
+    "prettier-write": "prettier --write \"**/*.{js,ts,tsx,md,mdx}\""
+  },
+  "dependencies": {
+    "next": "13.4.7",
+    "nextra": "^2.8.0",
+    "nextra-theme-docs": "^2.8.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
+}

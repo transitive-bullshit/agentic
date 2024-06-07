@@ -1,0 +1,74 @@
+{
+  "name": "agentic",
+  "private": true,
+  "description": "Everything you need to build reliable AI agents with TypeScript.",
+  "author": "Travis Fischer <travis@transitivebullsh.it>",
+  "repository": {
+    "type": "git",
+    "url": "transitive-bullshit/agentic"
+  },
+  "license": "MIT",
+  "type": "module",
+  "packageManager": "pnpm@8.6.2",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "turbo build",
+    "changeset": "changeset",
+    "clean": "turbo clean",
+    "dev": "turbo dev --no-cache --continue",
+    "prepare": "husky install",
+    "publint": "turbo publint",
+    "release": "turbo clean && turbo build && changeset publish",
+    "test": "turbo test",
+    "pre-commit": "lint-staged",
+    "version-packages": "changeset version"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.26.2",
+    "@trivago/prettier-plugin-sort-imports": "^4.1.1",
+    "@types/node": "^20.4.1",
+    "@typescript-eslint/eslint-plugin": "^5.61.0",
+    "@typescript-eslint/parser": "^5.61.0",
+    "ava": "^5.3.1",
+    "del-cli": "^5.0.0",
+    "dotenv": "^16.3.1",
+    "eslint": "^8.44.0",
+    "eslint-plugin-tsdoc": "^0.2.17",
+    "expect-type": "^0.16.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.3",
+    "npm-run-all": "^4.1.5",
+    "prettier": "2.8.8",
+    "publint": "^0.1.16",
+    "sinon": "^15.2.0",
+    "tsup": "7.1.0",
+    "tsx": "^3.12.7",
+    "turbo": "^1.10.7",
+    "typedoc": "^0.24.8",
+    "typedoc-plugin-markdown": "4.0.0-next.17",
+    "typescript": "^5.1.6"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --ignore-unknown --write"
+    ]
+  },
+  "keywords": [
+    "ai",
+    "openai",
+    "autonomous",
+    "agent",
+    "agi",
+    "autogpt",
+    "babyagi",
+    "llms",
+    "chatgpt",
+    "openapi",
+    "functions",
+    "guardrails",
+    "plugins"
+  ]
+}

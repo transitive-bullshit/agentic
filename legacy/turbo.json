@@ -1,0 +1,44 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "pipeline": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["build/**"]
+    },
+    "lint": {
+      "dependsOn": ["^build", "build"]
+    },
+    "type-check": {
+      "dependsOn": ["^build", "build"]
+    },
+    "test": {
+      "dependsOn": [
+        "^test",
+        "prettier-check",
+        "eslint-check",
+        "build",
+        "unit-test"
+      ]
+    },
+    "prettier-check": {
+      "dependsOn": ["^build", "build"]
+    },
+    "eslint-check": {
+      "dependsOn": ["^build", "build"]
+    },
+    "unit-test": {
+      "dotEnv": [".env"],
+      "outputs": ["test/.snapshots"]
+    },
+    "publint": {
+      "dependsOn": ["^build", "build"]
+    },
+    "clean": {
+      "cache": false
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    }
+  }
+}

@@ -1,0 +1,315 @@
+import { Anthropic } from '@anthropic-ai/sdk'
+import { EventEmitter } from 'eventemitter3'
+import defaultKy from 'ky'
+import { OpenAIClient } from 'openai-fetch'
+import { SetOptional } from 'type-fest'
+
+import * as types from './types'
+import { DummyTaskTracker, TaskTracker, TerminalTaskTracker } from './events'
+import { HumanFeedbackOptions, HumanFeedbackType } from './human-feedback'
+import { HumanFeedbackMechanismCLI } from './human-feedback/cli'
+import { OpenAIChatCompletion } from './llms/openai'
+import { defaultLogger } from './logger'
+import { openaiModelDefaults } from './model_defaults'
+import { defaultIDGeneratorFn, isFunction, isString } from './utils'
+
+/**
+ * Main entrypoint for using Agentic to build AI-powered applications.
+ *
+ * -   It provides a set of common functionality and configuration defaults, which are shared across all tools and tasks.
+ * -   You will usually want to create a single Agentic instance and use it throughout your application.
+ */
+export class Agentic extends EventEmitter {
+  protected _ky: types.KyInstance
+  protected _logger: types.Logger
+  protected _taskTracker: TaskTracker
+
+  protected _openai?: types.openai.OpenAIClient
+  protected _anthropic?: types.anthropic.Anthropic
+
+  protected _openaiModelDefaults: Pick<
+    types.BaseLLMOptions,
+    'provider' | 'model' | 'modelParams' | 'timeoutMs' | 'retryConfig'
+  >
+  protected _humanFeedbackDefaults: HumanFeedbackOptions<HumanFeedbackType, any>
+  protected _idGeneratorFn: types.IDGeneratorFunction
+  protected _id: string
+
+  constructor(
+    opts: {
+      /**
+       * OpenAI client instance to use (by default, a new `openai-fetch` client will be created.)
+       */
+      openai?: types.openai.OpenAIClient
+
+      /**
+       * Anthropic client instance to use (by default, a new `@anthropic-ai/sdk` client will be created.)
+       */
+      anthropic?: types.anthropic.Anthropic
+
+      /**
+       * Default values for LLM calls.
+       */
+      modelDefaults?: Pick<
+        types.BaseLLMOptions,
+        'provider' | 'model' | 'modelParams' | 'timeoutMs' | 'retryConfig'
+      >
+
+      /**
+       * Default option values for when requesting human feedback.
+       */
+      humanFeedbackDefaults?: HumanFeedbackOptions<HumanFeedbackType, any>
+
+      /**
+       * Function to generate a unique identifier for each task.
+       */
+      idGeneratorFn?: types.IDGeneratorFunction
+
+      /**
+       * Logger instance to use for logging events of various severities.
+       */
+      logger?: types.Logger
+
+      /**
+       * Ky instance to use for HTTP requests.
+       */
+      ky?: types.KyInstance
+
+      /**
+       * A task tracker or `false` to disable. By default, tasks will be tracked via the terminal (assuming `stderr` is a TTY).
+       *
+       * You can also pass in a custom tracker to track tasks in a different way (e.g. via a database or web UI) by extending the `TaskTracker` class.
+       */
+      taskTracker?: TaskTracker | false
+    } = {}
+  ) {
+    super()
+
+    // TODO: This is a bit hacky, but we're doing it to have a slightly nicer API
+    // for the end developer when creating subclasses of `BaseTask` to use as
+    // tools.
+    if (!globalThis.__agentic?.deref()) {
+      globalThis.__agentic = new WeakRef(this)
+    }
+
+    this._openai = opts.openai || new OpenAIClient()
+    this._anthropic = opts.anthropic || new Anthropic()
+
+    this._ky = opts.ky ?? defaultKy
+    this._logger = opts.logger ?? defaultLogger
+    if (opts.taskTracker) {
+      this._taskTracker = opts.taskTracker
+    } else if (opts.taskTracker === false) {
+      this._taskTracker = new DummyTaskTracker()
+    } else {
+      this._taskTracker = new TerminalTaskTracker()
+    }
+
+    this._openaiModelDefaults = openaiModelDefaults(opts.modelDefaults || {})
+
+    // TODO
+    // this._anthropicModelDefaults = {}
+
+    this._humanFeedbackDefaults = {
+      type: 'confirm',
+      abort: false,
+      editing: false,
+      annotations: false,
+      mechanism: HumanFeedbackMechanismCLI,
+      ...opts.humanFeedbackDefaults
+    }
+
+    this._idGeneratorFn = opts.idGeneratorFn ?? defaultIDGeneratorFn
+    this._id = this._idGeneratorFn()
+  }
+
+  /**
+   * OpenAI client used for making requests to the OpenAI API.
+   */
+  public get openai(): types.openai.OpenAIClient | undefined {
+    return this._openai
+  }
+
+  /**
+   * Anthropic client used for making requests to the Anthropic API.
+   */
+  public get anthropic(): types.anthropic.Anthropic | undefined {
+    return this._anthropic
+  }
+
+  /**
+   * Ky instance used for making HTTP requests.
+   */
+  public get ky(): types.KyInstance {
+    return this._ky
+  }
+
+  /**
+   * Logger used for logging events of various severities.
+   */
+  public get logger(): types.Logger {
+    return this._logger
+  }
+
+  /**
+   * Default option values when requesting human feedback in tasks.
+   */
+  public get humanFeedbackDefaults() {
+    return this._humanFeedbackDefaults
+  }
+
+  /**
+   * Task tracker used for tracking tasks.
+   */
+  public get taskTracker(): TaskTracker {
+    return this._taskTracker
+  }
+
+  /**
+   * Function used to generate a unique identifier for each task.
+   */
+  public get idGeneratorFn(): types.IDGeneratorFunction {
+    return this._idGeneratorFn
+  }
+
+  /**
+   * Creates an OpenAI chat completion.
+   *
+   * @param promptOrChatCompletionParams - prompt to send to the OpenAI API or an object containing the chat completion parameters
+   * @param modelParams - additional parameters to pass to the OpenAI API
+   * @returns chat completion
+   */
+  openaiChatCompletion<TInput extends types.TaskInput = void>(
+    promptOrChatCompletionParams:
+      | types.ChatMessageContent<TInput>
+      | SetOptional<types.OpenAIChatCompletionParamsInput<TInput>, 'model'>,
+    modelParams?: SetOptional<
+      types.OpenAIChatCompletionParamsInput,
+      'model' | 'messages'
+    >
+  ) {
+    let options: SetOptional<
+      types.OpenAIChatCompletionParamsInput<TInput>,
+      'model'
+    >
+
+    if (
+      isString(promptOrChatCompletionParams) ||
+      isFunction(promptOrChatCompletionParams)
+    ) {
+      options = {
+        ...modelParams,
+        messages: [
+          {
+            role: 'user',
+            content: promptOrChatCompletionParams
+          }
+        ]
+      }
+    } else {
+      options = { ...promptOrChatCompletionParams, ...modelParams }
+
+      if (!options.messages) {
+        throw new Error('messages must be provided')
+      }
+    }
+
+    return new OpenAIChatCompletion<TInput>({
+      ...this._openaiModelDefaults,
+      agentic: this,
+      ...options
+    })
+  }
+
+  /**
+   * Shortcut for creating an OpenAI chat completion call with the `gpt-3.5-turbo` model.
+   */
+  gpt3<TInput extends types.TaskInput = void>(
+    promptOrChatCompletionParams:
+      | types.ChatMessageContent<TInput>
+      | SetOptional<types.OpenAIChatCompletionParamsInput<TInput>, 'model'>,
+    modelParams?: SetOptional<
+      types.OpenAIChatCompletionParamsInput,
+      'model' | 'messages'
+    >
+  ) {
+    let options: SetOptional<
+      types.OpenAIChatCompletionParamsInput<TInput>,
+      'model'
+    >
+
+    if (
+      isString(promptOrChatCompletionParams) ||
+      isFunction(promptOrChatCompletionParams)
+    ) {
+      options = {
+        ...modelParams,
+        messages: [
+          {
+            role: 'user',
+            content: promptOrChatCompletionParams
+          }
+        ]
+      }
+    } else {
+      options = { ...promptOrChatCompletionParams, ...modelParams }
+
+      if (!options.messages) {
+        throw new Error('messages must be provided')
+      }
+    }
+
+    return new OpenAIChatCompletion<TInput>({
+      ...this._openaiModelDefaults,
+      agentic: this,
+      model: 'gpt-3.5-turbo',
+      ...options
+    })
+  }
+
+  /**
+   * Shortcut for creating an OpenAI chat completion call with the `gpt-4` model.
+   */
+  gpt4<TInput extends types.TaskInput = void>(
+    promptOrChatCompletionParams:
+      | types.ChatMessageContent<TInput>
+      | SetOptional<types.OpenAIChatCompletionParamsInput<TInput>, 'model'>,
+    modelParams?: SetOptional<
+      types.OpenAIChatCompletionParamsInput,
+      'model' | 'messages'
+    >
+  ) {
+    let options: SetOptional<
+      types.OpenAIChatCompletionParamsInput<TInput>,
+      'model'
+    >
+
+    if (
+      isString(promptOrChatCompletionParams) ||
+      isFunction(promptOrChatCompletionParams)
+    ) {
+      options = {
+        ...modelParams,
+        messages: [
+          {
+            role: 'user',
+            content: promptOrChatCompletionParams
+          }
+        ]
+      }
+    } else {
+      options = { ...promptOrChatCompletionParams, ...modelParams }
+
+      if (!options.messages) {
+        throw new Error('messages must be provided')
+      }
+    }
+
+    return new OpenAIChatCompletion<TInput>({
+      ...this._openaiModelDefaults,
+      agentic: this,
+      model: 'gpt-4',
+      ...options
+    })
+  }
+}

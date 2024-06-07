@@ -1,0 +1,6 @@
+.snapshots/
+build/
+dist/
+node_modules/
+.next/
+.vercel/

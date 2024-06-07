@@ -1,0 +1,14 @@
+# See https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# This file auto-assigns reviewers for pull requests based on file/directory changes.
+# Pattern: path/to/code @owner1 @owner2
+
+# Example usages:
+# * @username                   # username is the owner of the whole repo
+# /folder/ @username            # username is the owner of 'folder/' directory
+# *.ext @username               # username is the owner of all '.ext' files
+
+# Remember:
+# 1. Users/teams must have write access to the repo.
+# 2. Multiple owners can be specified.
+# 3. The last matching pattern takes precedence.

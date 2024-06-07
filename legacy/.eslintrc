@@ -1,0 +1,70 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+  "plugins": ["@typescript-eslint", "eslint-plugin-tsdoc"],
+  "root": true,
+  "env": {
+    "browser": false,
+    "es6": true
+  },
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": "latest",
+    "sourceType": "module",
+    "project": "tsconfig.json"
+  },
+  "rules": {
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        "vars": "all",
+        "args": "after-used",
+        "ignoreRestSiblings": true
+      }
+    ],
+    "no-useless-catch": "warn",
+    "@typescript-eslint/no-extra-semi": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "padding-line-between-statements": [
+      "error",
+      {
+        "blankLine": "always",
+        "prev": ["block", "block-like"],
+        "next": "*"
+      },
+      {
+        "blankLine": "always",
+        "prev": "*",
+        "next": ["block", "block-like"]
+      },
+      {
+        "blankLine": "any",
+        "prev": ["singleline-const", "singleline-let", "expression"],
+        "next": ["block", "block-like"]
+      }
+    ],
+    "tsdoc/syntax": "warn"
+  },
+  "overrides": [
+    {
+      "files": ["*.tsx"],
+      "rules": {
+        "no-undef": "off"
+      }
+    },
+    {
+      // disable process.env for framework source files
+      "files": "packages/**/src/*.ts",
+      "rules": {
+        "no-process-env": "error"
+      }
+    }
+  ],
+  "settings": {},
+  "globals": {
+    "__DEV__": true
+  }
+}
