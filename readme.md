@@ -178,6 +178,8 @@ Note that many of these clients expose multiple AI functions.
 - Dexa Dexter
   - `import { createDexterFunctions } from '@agentic/stdlib/dexter'`
 
+See the [examples](./examples) directory for examples of how to use each of these adaptors.
+
 ## Client Goals
 
 - clients should be as minimal as possible
