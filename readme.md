@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <em>AI agent stdlib that works with any LLM and TypeScript AI SDK</em>
+  <em>AI agent stdlib that works with any LLM and TypeScript AI SDK.</em>
 </p>
 
 <p align="center">
@@ -42,9 +42,9 @@ const result = await weather.getCurrentWeather({
 console.log(result)
 ```
 
-Or you can use them as LLM-based tools where the LLM decides when and how to invoke the underlying functions for you.
+Or you can use these clients as LLM-based tools where the LLM decides when and how to invoke the underlying functions for you.
 
-This works across all of the major AI SDKs via adaptors. Here's an example using [Vercel's AI SDK](https://github.com/vercel/ai):
+**This works across all of the major AI SDKs via adaptors**. Here's an example using [Vercel's AI SDK](https://github.com/vercel/ai):
 
 ```ts
 // sdk-specific imports
