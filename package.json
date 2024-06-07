@@ -1,6 +1,5 @@
 {
   "name": "@agentic/stdlib",
-  "private": true,
   "version": "0.3.1",
   "description": "AI function stdlib that works with any LLM and TypeScript AI SDK.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
