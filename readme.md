@@ -175,6 +175,7 @@ Note that many of these clients expose multiple AI functions.
 - sdks
   - modelfusion
 - services
+  - browserbase
   - [phantombuster](https://phantombuster.com)
   - perplexity
   - valtown
@@ -186,14 +187,22 @@ Note that many of these clients expose multiple AI functions.
   - pull from [nango](https://docs.nango.dev/integrations/overview)
   - pull from [activepieces](https://github.com/activepieces/activepieces/tree/main/packages/pieces/community)
   - general openapi support ala [workgpt](https://github.com/team-openpm/workgpt)
-- tools / chains / flows / runnables
+- compound tools / chains / flows / runnables
   - market maps
-- https://github.com/causaly/zod-validation-error
+- incorporate [zod-validation-error](https://github.com/causaly/zod-validation-error)
 - investigate [autotool](https://github.com/run-llama/LlamaIndexTS/tree/main/packages/autotool)
 - investigate [data connectors](https://github.com/mendableai/data-connectors)
 
+## Contributors
+
+- [Travis Fischer](https://x.com/transitive_bs)
+- [Kevin Raheja](https://x.com/crabfisher)
+- [David Zhang](https://x.com/dzhng)
+- [Philipp Burckhardt](https://x.com/burckhap)
+- [Riley Tomasek](https://x.com/rileytomasek)
+
 ## License
 
-MIT © [Travis Fischer](https://twitter.com/transitive_bs)
+MIT © [Travis Fischer](https://x.com/transitive_bs)
 
-To stay up to date or learn more, follow [@transitive_bs](https://twitter.com/transitive_bs) on Twitter.
+To stay up to date or learn more, follow [@transitive_bs](https://x.com/transitive_bs) on Twitter.

@@ -122,7 +122,7 @@ export function sanitizeSearchParams(
       }
 
       return [[key, String(value)]]
-    })
+    }) as [string, string][]
   )
 }
 

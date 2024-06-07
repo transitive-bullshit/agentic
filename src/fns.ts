@@ -1,5 +1,3 @@
-import './symbol-polyfill.js'
-
 import type { z } from 'zod'
 
 import type * as types from './types.js'
@@ -12,6 +10,27 @@ export interface PrivateAIFunctionMetadata {
   description: string
   inputSchema: z.AnyZodObject
   methodName: string
+}
+
+// Polyfill for `Symbol.metadata`
+// https://github.com/microsoft/TypeScript/issues/53461
+declare global {
+  interface SymbolConstructor {
+    readonly metadata: unique symbol
+  }
+}
+
+;(Symbol as any).metadata ??= Symbol.for('Symbol.metadata')
+
+const _metadata = Object.create(null)
+
+if (typeof Symbol === 'function' && Symbol.metadata) {
+  Object.defineProperty(globalThis, Symbol.metadata, {
+    enumerable: true,
+    configurable: true,
+    writable: true,
+    value: _metadata
+  })
 }
 
 export abstract class AIFunctionsProvider {
@@ -72,18 +91,13 @@ export function aiFunction<
     if (!context.metadata.invocables) {
       context.metadata.invocables = []
     }
+
     ;(context.metadata.invocables as PrivateAIFunctionMetadata[]).push({
       name: name ?? methodName,
       description,
       inputSchema,
       methodName
     })
-
-    // console.log({
-    //   name,
-    //   methodName,
-    //   context
-    // })
 
     context.addInitializer(function () {
       ;(this as any)[methodName] = (this as any)[methodName].bind(this)
