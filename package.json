@@ -2,14 +2,14 @@
   "name": "@agentic/stdlib",
   "private": true,
   "version": "0.1.0",
-  "description": "TODO",
+  "description": "AI function stdlib that works with any LLM and TypeScript AI SDK.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "transitive-bullshit/agentic"
   },
-  "packageManager": "pnpm@9.1.4",
+  "packageManager": "pnpm@9.2.0",
   "engines": {
     "node": ">=18"
   },

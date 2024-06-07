@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://trywalter.ai"><img alt="Agentic" src="/media/agentic-header.jpg" width="308"></a>
+  <img alt="Agentic" src="/media/agentic-header.jpg" width="308">
 </p>
 
 <p align="center">
@@ -7,9 +7,9 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/transitive-bullshit/walter/actions/workflows/main.yml"><img alt="Build Status" src="https://github.com/transitive-bullshit/walter/actions/workflows/main.yml/badge.svg" /></a>
+  <a href="https://github.com/transitive-bullshit/agentic/actions/workflows/main.yml"><img alt="Build Status" src="https://github.com/transitive-bullshit/agentic/actions/workflows/main.yml/badge.svg" /></a>
   <a href="https://www.npmjs.com/package/@agentic/stdlib"><img alt="NPM" src="https://img.shields.io/npm/v/@agentic/stdlib.svg" /></a>
-  <a href="https://github.com/transitive-bullshit/walter/blob/main/license"><img alt="MIT License" src="https://img.shields.io/badge/license-MIT-blue" /></a>
+  <a href="https://github.com/transitive-bullshit/agentic/blob/main/license"><img alt="MIT License" src="https://img.shields.io/badge/license-MIT-blue" /></a>
   <a href="https://prettier.io"><img alt="Prettier Code Formatting" src="https://img.shields.io/badge/code_style-prettier-brightgreen.svg" /></a>
 </p>
 
