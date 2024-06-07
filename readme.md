@@ -191,7 +191,6 @@ Note that many of these clients expose multiple AI functions.
 
 ## TODO
 
-- rename this repo to agentic
 - sdks
   - modelfusion
 - services
