@@ -42,9 +42,9 @@ const result = await weather.getCurrentWeather({
 console.log(result)
 ```
 
-Or you can use these clients as LLM-based tools where the LLM decides when and how to invoke the underlying functions for you.
+Or you can use these clients as **LLM-based tools** where the LLM decides when and how to invoke the underlying functions for you.
 
-**This works across all of the major AI SDKs via adaptors**. Here's an example using [Vercel's AI SDK](https://github.com/vercel/ai):
+This works across all of the major AI SDKs via adaptors. Here's an example using [Vercel's AI SDK](https://github.com/vercel/ai):
 
 ```ts
 // sdk-specific imports
@@ -193,12 +193,15 @@ See the [examples](./examples) directory for examples of how to use each of thes
 
 ## TODO
 
+- move @nangohq/node to a peer dep
+
 - sdks
   - modelfusion
 - services
   - browserbase
   - [phantombuster](https://phantombuster.com)
   - perplexity
+  - [socialdata](https://socialdata.tools)
   - valtown
   - replicate
   - huggingface
