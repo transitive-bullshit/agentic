@@ -1,0 +1,15 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`sanitizeSearchParams 1`] = `"a=1&c=13"`;
+
+exports[`sanitizeSearchParams 2`] = `"a=1&a=2&a=3"`;
+
+exports[`sanitizeSearchParams 3`] = `"b=a&b=b&foo=true"`;
+
+exports[`sanitizeSearchParams 4`] = `"b=false&b=true&b=false"`;
+
+exports[`sanitizeSearchParams 5`] = `"flag=foo&flag=bar&flag=baz&token=test"`;
+
+exports[`sanitizeSearchParams 6`] = `""`;
+
+exports[`sanitizeSearchParams 7`] = `""`;
