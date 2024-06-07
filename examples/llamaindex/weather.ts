@@ -1,10 +1,9 @@
 #!/usr/bin/env node
 import 'dotenv/config'
 
+import { WeatherClient } from '@agentic/stdlib'
+import { createLlamaIndexTools } from '@agentic/stdlib/llamaindex'
 import { OpenAI, OpenAIAgent } from 'llamaindex'
-
-import { WeatherClient } from '../../src/index.js'
-import { createLlamaIndexTools } from '../../src/sdks/llamaindex.js'
 
 async function main() {
   const weather = new WeatherClient()

@@ -1,12 +1,11 @@
 #!/usr/bin/env node
 import 'dotenv/config'
 
+import { WeatherClient } from '@agentic/stdlib'
+import { createGenkitTools } from '@agentic/stdlib/genkit'
 import { generate } from '@genkit-ai/ai'
 import { configureGenkit } from '@genkit-ai/core'
 import { gpt4o, openAI } from 'genkitx-openai'
-
-import { WeatherClient } from '../../src/index.js'
-import { createGenkitTools } from '../../src/sdks/genkit.js'
 
 async function main() {
   const weather = new WeatherClient()

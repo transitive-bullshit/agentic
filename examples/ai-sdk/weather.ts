@@ -1,11 +1,10 @@
 #!/usr/bin/env node
 import 'dotenv/config'
 
+import { WeatherClient } from '@agentic/stdlib'
+import { createAISDKTools } from '@agentic/stdlib/ai-sdk'
 import { openai } from '@ai-sdk/openai'
 import { generateText } from 'ai'
-
-import { WeatherClient } from '../../src/index.js'
-import { createAISDKTools } from '../../src/sdks/ai-sdk.js'
 
 async function main() {
   const weather = new WeatherClient()

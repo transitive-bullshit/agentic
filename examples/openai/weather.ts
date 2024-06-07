@@ -1,9 +1,8 @@
 #!/usr/bin/env node
 import 'dotenv/config'
 
+import { assert, WeatherClient } from '@agentic/stdlib'
 import OpenAI from 'openai'
-
-import { assert, WeatherClient } from '../../src/index.js'
 
 async function main() {
   const weather = new WeatherClient()

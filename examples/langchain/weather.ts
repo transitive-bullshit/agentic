@@ -1,12 +1,11 @@
 #!/usr/bin/env node
 import 'dotenv/config'
 
+import { WeatherClient } from '@agentic/stdlib'
+import { createLangChainTools } from '@agentic/stdlib/langchain'
 import { ChatPromptTemplate } from '@langchain/core/prompts'
 import { ChatOpenAI } from '@langchain/openai'
 import { AgentExecutor, createToolCallingAgent } from 'langchain/agents'
-
-import { WeatherClient } from '../../src/index.js'
-import { createLangChainTools } from '../../src/sdks/langchain.js'
 
 async function main() {
   const weather = new WeatherClient()
