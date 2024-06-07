@@ -1,10 +1,9 @@
 #!/usr/bin/env node
 import 'dotenv/config'
 
+import { PerigonClient, SerperClient } from '@agentic/stdlib'
+import { createDexterFunctions } from '@agentic/stdlib/dexter'
 import { ChatModel, createAIRunner } from '@dexaai/dexter'
-
-import { PerigonClient, SerperClient } from '../../src/index.js'
-import { createDexterFunctions } from '../../src/sdks/dexter.js'
 
 async function main() {
   const perigon = new PerigonClient()

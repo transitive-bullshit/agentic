@@ -133,10 +133,10 @@
     "@dexaai/dexter": "^2.0.3",
     "@e2b/code-interpreter": "^0.0.7",
     "@genkit-ai/ai": "^0.5.2",
-    "@langchain/core": "^0.2.5",
-    "ai": "^3.1.22",
+    "@langchain/core": "^0.2.6",
+    "ai": "^3.1.30",
     "expr-eval": "^2.0.2",
-    "llamaindex": "^0.3.15",
+    "llamaindex": "^0.3.16",
     "twitter-api-sdk": "^1.2.1"
   },
   "peerDependenciesMeta": {

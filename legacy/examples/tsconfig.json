@@ -1,4 +1,4 @@
 {
   "extends": "../tsconfig.json",
-  "include": ["ai-sdk", "dexter"]
+  "include": ["ai-sdk", "dexter", "genkit", "langchain", "llamaindex", "openai"]
 }
