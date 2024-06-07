@@ -15,8 +15,17 @@
 
 # Agentic <!-- omit from toc -->
 
-> [!WARNING]
-> TODO: this project is not published yet and is an active WIP.
+- [Intro](#intro)
+- [Install](#install)
+- [Services](#services)
+- [Compound Tools](#compound-tools)
+- [AI SDKs](#ai-sdks)
+- [Client Goals](#client-goals)
+- [TODO](#todo)
+- [Contributors](#contributors)
+- [License](#license)
+
+## Intro
 
 The goal of this project is to create a **set of standard AI functions / tools** which are **optimized for both normal TS-usage as well as LLM-based apps** and that work with all of the major AI SDKs (LangChain, LlamaIndex, Vercel AI SDK, OpenAI SDK, etc).
 
@@ -104,7 +113,18 @@ All of the SDK adaptors like `createDexterFunctions` accept very flexible in wha
 
 You can pass as many of these `AIFunctionLike` objects as you'd like and you can manipulate them as `AIFunctionSet` sets via `.pick`, `.omit`, `.get`, `.map`, etc.
 
-All heavy third-party imports are isolated as _optional peer dependencies_ to keep the main `@agentic/stdlib` package as lightweight as possible.
+## Install
+
+```sh
+npm install @agentic/stdlib
+```
+
+This package is [ESM only](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c) and requires `Node.js >= 18` or an equivalent environment (bun, deno, CF workers, etc).
+
+> [!NOTE]
+> All heavy third-party imports are isolated as _optional peer dependencies_ to keep the main `@agentic/stdlib` package as lightweight as possible.
+
+Depending on the AI SDK and tool you want to use, you'll also need to install the required peer dependencies.
 
 ## Services
 
