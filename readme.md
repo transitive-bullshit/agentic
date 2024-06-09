@@ -150,6 +150,7 @@ Depending on the AI SDK and tool you want to use, you'll also need to install th
 | [SerpAPI](https://serpapi.com/search-api)                                | `SerpAPIClient`        | Lightweight wrapper around SerpAPI for Google search.                                                                                                                                                                                                          |
 | [Serper](https://serper.dev)                                             | `SerperClient`         | Lightweight wrapper around Serper for Google search.                                                                                                                                                                                                           |
 | [Slack](https://api.slack.com/docs)                                      | `SlackClient`          | Send and receive Slack messages.                                                                                                                                                                                                                               |
+| [SocialData](https://socialdata.tools)                                   | `SocialDataClient`     | Unofficial Twitter / X client (readonly) which is much cheaper than the official Twitter API.                                                                                                                                                                  |
 | [Tavily](https://tavily.com)                                             | `TavilyClient`         | Web search API tailored for LLMs.                                                                                                                                                                                                                              |
 | [Twilio](https://www.twilio.com/docs/conversations/api)                  | `TwilioClient`         | Twilio conversation API to send and receive SMS messages.                                                                                                                                                                                                      |
 | [Twitter](https://developer.x.com/en/docs/twitter-api)                   | `TwitterClient`        | Basic Twitter API methods for fetching users, tweets, and searching recent tweets. Includes support for plan-aware rate-limiting. Uses [Nango](https://www.nango.dev) for OAuth support.                                                                       |
@@ -198,7 +199,6 @@ See the [examples](./examples) directory for examples of how to use each of thes
   - [phantombuster](https://phantombuster.com)
   - [apify](https://apify.com/store)
   - perplexity
-  - [socialdata](https://socialdata.tools)
   - valtown
   - replicate
   - huggingface
