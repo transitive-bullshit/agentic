@@ -4,6 +4,8 @@ import pThrottle from 'p-throttle'
 import { AIFunctionsProvider } from '../fns.js'
 import { assert, getEnv, throttleKy } from '../utils.js'
 
+// TODO: need to add `aiFunction` wrappers for each method
+
 export namespace socialdata {
   export const API_BASE_URL = 'https:///api.socialdata.tools'
 
