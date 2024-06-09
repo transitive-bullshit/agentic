@@ -212,6 +212,7 @@ See the [examples](./examples) directory for examples of how to use each of thes
   - market maps
 - incorporate [zod-validation-error](https://github.com/causaly/zod-validation-error)
 - investigate [autotool](https://github.com/run-llama/LlamaIndexTS/tree/main/packages/autotool)
+- investigate [alt search engines](https://seirdy.one/posts/2021/03/10/search-engines-with-own-indexes/)
 - investigate [data connectors](https://github.com/mendableai/data-connectors)
 
 ## Contributors
