@@ -193,13 +193,10 @@ See the [examples](./examples) directory for examples of how to use each of thes
 
 ## TODO
 
-- move @nangohq/node to a peer dep
-
-- sdks
-  - modelfusion
 - services
   - browserbase
   - [phantombuster](https://phantombuster.com)
+  - [apify](https://apify.com/store)
   - perplexity
   - [socialdata](https://socialdata.tools)
   - valtown

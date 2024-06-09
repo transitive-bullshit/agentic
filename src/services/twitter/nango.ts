@@ -1,6 +1,6 @@
 import { type Connection, Nango } from '@nangohq/node'
 
-import { getEnv } from './utils.js'
+import { getEnv } from '../../utils.js'
 
 // This is intentionally left as a global singleton to avoid re-creating the
 // Nango connection instance on successive calls in serverless environments.
