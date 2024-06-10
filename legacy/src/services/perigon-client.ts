@@ -168,7 +168,7 @@ export namespace perigon {
       'Labels to filter by, could be "Opinion", "Paid-news", "Non-news", etc. If multiple parameters are passed, they will be applied as OR operations.'
     ),
     excludeLabel: z
-      .union([ArticleLabelSchema, z.literal('Low Content')])
+      .array(z.union([ArticleLabelSchema, z.literal('Low Content')]))
       .optional()
       .describe(
         'Exclude results that include specific labels ("Opinion", "Non-news", "Paid News", etc.). You can filter multiple by repeating the parameter.'
@@ -681,19 +681,20 @@ export class PerigonClient extends AIFunctionsProvider {
     })
   })
   async searchArticles(opts: perigon.ArticlesSearchOptions) {
+    const searchParams = sanitizeSearchParams({
+      sortBy: 'relevance',
+      ...opts,
+      apiKey: this.apiKey,
+      size: Math.max(
+        1,
+        Math.min(perigon.MAX_PAGE_SIZE, opts.size || perigon.DEFAULT_PAGE_SIZE)
+      )
+    })
+    console.log('perigon.searchArticles', searchParams)
+
     return this.ky
       .get('all', {
-        searchParams: sanitizeSearchParams({
-          ...opts,
-          apiKey: this.apiKey,
-          size: Math.max(
-            1,
-            Math.min(
-              perigon.MAX_PAGE_SIZE,
-              opts.size || perigon.DEFAULT_PAGE_SIZE
-            )
-          )
-        })
+        searchParams
       })
       .json<perigon.ArticlesSearchResponse>()
   }
@@ -720,19 +721,20 @@ export class PerigonClient extends AIFunctionsProvider {
     })
   })
   async searchStories(opts: perigon.StoriesSearchOptions) {
+    const searchParams = sanitizeSearchParams({
+      sortBy: 'relevance',
+      ...opts,
+      apiKey: this.apiKey,
+      size: Math.max(
+        1,
+        Math.min(perigon.MAX_PAGE_SIZE, opts.size || perigon.DEFAULT_PAGE_SIZE)
+      )
+    })
+    console.log('perigon.searchStories', searchParams)
+
     return this.ky
       .get('stories/all', {
-        searchParams: sanitizeSearchParams({
-          ...opts,
-          apiKey: this.apiKey,
-          size: Math.max(
-            1,
-            Math.min(
-              perigon.MAX_PAGE_SIZE,
-              opts.size || perigon.DEFAULT_PAGE_SIZE
-            )
-          )
-        })
+        searchParams
       })
       .json<perigon.StoriesSearchResponse>()
   }

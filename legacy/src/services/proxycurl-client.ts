@@ -1,3 +1,4 @@
+import type { Simplify } from 'type-fest'
 import defaultKy, { type KyInstance } from 'ky'
 import pThrottle from 'p-throttle'
 import { z } from 'zod'
@@ -52,8 +53,13 @@ export namespace proxycurl {
     typeof CompanyProfileEndpointParamsQueryClassSchema
   >
 
+  /**
+   * Requires one of:
+   * - `facebook_profile_url`
+   * - `linkedin_profile_url`
+   * - `twitter_profile_url`
+   */
   export const PersonProfileEndpointParamsQueryClassSchema = z.object({
-    // requires one of `facebook_profile_url`, `linkedin_profile_url`, or `twitter_profile_url`
     facebook_profile_url: z.string().optional(),
     linkedin_profile_url: z.string().optional(),
     twitter_profile_url: z.string().optional(),
@@ -68,8 +74,8 @@ export namespace proxycurl {
     fallback_to_cache: FallbackToCacheSchema,
     use_cache: UseCacheSchema
   })
-  export type PersonProfileEndpointParamsQueryClass = z.infer<
-    typeof PersonProfileEndpointParamsQueryClassSchema
+  export type PersonProfileEndpointParamsQueryClass = Simplify<
+    z.infer<typeof PersonProfileEndpointParamsQueryClassSchema>
   >
 
   export const PersonLookupEndpointParamsQueryClassSchema = z.object({
