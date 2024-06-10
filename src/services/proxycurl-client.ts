@@ -2046,11 +2046,13 @@ export class ProxycurlClient extends AIFunctionsProvider {
     apiBaseUrl = getEnv('PROXYCURL_API_BASE_URL') ??
       'https://nubela.co/proxycurl',
     throttle = true,
+    timeoutMs = 30_000,
     ky = defaultKy
   }: {
     apiKey?: string
     apiBaseUrl?: string
     throttle?: boolean
+    timeoutMs?: number
     ky?: KyInstance
   } = {}) {
     assert(
@@ -2070,6 +2072,7 @@ export class ProxycurlClient extends AIFunctionsProvider {
 
     this.ky = throttledKy.extend({
       prefixUrl: apiBaseUrl,
+      timeout: timeoutMs,
       headers: {
         Authorization: `Bearer ${apiKey}`
       }
