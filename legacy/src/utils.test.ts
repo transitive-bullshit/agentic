@@ -52,6 +52,25 @@ test('sanitizeSearchParams', () => {
   expect(sanitizeSearchParams({ a: [] }).toString()).toMatchSnapshot()
 })
 
+describe('stringifyForModel', () => {
+  test('handles basic objects', () => {
+    const input = {
+      foo: 'bar',
+      nala: ['is', 'cute'],
+      kittens: null,
+      cats: undefined,
+      paws: 4.3
+    }
+    const result = stringifyForModel(input)
+    expect(result).toEqual(JSON.stringify(input, null))
+  })
+
+  test('handles empty input', () => {
+    const result = stringifyForModel()
+    expect(result).toEqual('')
+  })
+})
+
 test(
   'throttleKy should rate-limit requests to ky properly',
   async () => {
@@ -85,22 +104,3 @@ test(
     timeout: 60_000
   }
 )
-
-describe('stringifyForModel', () => {
-  test('handles basic objects', () => {
-    const input = {
-      foo: 'bar',
-      nala: ['is', 'cute'],
-      kittens: null,
-      cats: undefined,
-      paws: 4.3
-    }
-    const result = stringifyForModel(input)
-    expect(result).toEqual(JSON.stringify(input, null))
-  })
-
-  test('handles empty input', () => {
-    const result = stringifyForModel()
-    expect(result).toEqual('')
-  })
-})
