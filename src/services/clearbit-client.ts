@@ -2,7 +2,13 @@ import defaultKy from 'ky'
 import pThrottle from 'p-throttle'
 
 import type { DeepNullable, KyInstance } from '../types.js'
-import { assert, delay, getEnv, throttleKy } from '../utils.js'
+import {
+  assert,
+  delay,
+  getEnv,
+  sanitizeSearchParams,
+  throttleKy
+} from '../utils.js'
 
 export namespace clearbit {
   // Allow up to 600 requests per minute by default.
@@ -10,6 +16,8 @@ export namespace clearbit {
     limit: 600,
     interval: 60 * 1000
   })
+
+  export const MAX_PAGE_SIZE = 100
 
   export interface CompanyEnrichmentOptions {
     domain: string
@@ -358,19 +366,8 @@ export namespace clearbit {
     role: string
     seniority: string
   }
-}
 
-/**
- * The Clearbit API helps with resolving and enriching people and company data.
- *
- * @see https://dashboard.clearbit.com/docs
- */
-export class ClearbitClient {
-  protected readonly ky: KyInstance
-  protected readonly apiKey: string
-  protected readonly _maxPageSize = 100
-
-  static readonly PersonRoles = [
+  export const PersonRoles = [
     'communications',
     'customer_service',
     'education',
@@ -391,7 +388,7 @@ export class ClearbitClient {
     'sales'
   ]
 
-  static readonly SenioritiesV2 = [
+  export const SenioritiesV2 = [
     'Executive',
     'VP',
     'Owner',
@@ -402,9 +399,9 @@ export class ClearbitClient {
     'Entry'
   ]
 
-  static readonly Seniorities = ['executive', 'director', 'manager']
+  export const Seniorities = ['executive', 'director', 'manager']
 
-  static readonly SubIndustries = [
+  export const SubIndustries = [
     'Automotive',
     'Consumer Discretionary',
     'Consumer Goods',
@@ -516,6 +513,16 @@ export class ClearbitClient {
     'Energy',
     'Utilities'
   ]
+}
+
+/**
+ * The Clearbit API helps with resolving and enriching people and company data.
+ *
+ * @see https://dashboard.clearbit.com/docs
+ */
+export class ClearbitClient {
+  protected readonly ky: KyInstance
+  protected readonly apiKey: string
 
   constructor({
     apiKey = getEnv('CLEARBIT_API_KEY'),
@@ -573,14 +580,13 @@ export class ClearbitClient {
   async prospectorPeopleV2(options: clearbit.PeopleSearchOptionsV2) {
     return this.ky
       .get('https://prospector.clearbit.com/v2/people/search', {
-        // @ts-expect-error location is a string[] and searchparams shows a TS error heres
-        searchParams: {
+        searchParams: sanitizeSearchParams({
           ...options,
           page_size: Math.min(
-            this._maxPageSize,
-            options.page_size || this._maxPageSize
+            clearbit.MAX_PAGE_SIZE,
+            options.page_size || clearbit.MAX_PAGE_SIZE
           )
-        }
+        })
       })
       .json<clearbit.ProspectorResponseV2>()
   }
@@ -588,15 +594,14 @@ export class ClearbitClient {
   async prospectorPeopleV1(options: clearbit.PeopleSearchOptionsV1) {
     return this.ky
       .get('https://prospector.clearbit.com/v1/people/search', {
-        // @ts-expect-error location is a string[] and searchparams shows a TS error heres
-        searchParams: {
+        searchParams: sanitizeSearchParams({
           email: false,
           ...options,
           page_size: Math.min(
-            this._maxPageSize,
-            options.page_size || this._maxPageSize
+            clearbit.MAX_PAGE_SIZE,
+            options.page_size || clearbit.MAX_PAGE_SIZE
           )
-        }
+        })
       })
       .json<clearbit.ProspectorResponseV1>()
   }

@@ -286,7 +286,7 @@ export namespace diffbot {
       .optional()
       .describe('Name of the entity'),
     url: z
-      .array(z.string())
+      .union([z.string(), z.array(z.string())])
       .optional()
       .describe('Origin or homepage URL of the entity'),
     phone: z.string().optional().describe('Phone number of the entity'),
