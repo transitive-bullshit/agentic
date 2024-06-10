@@ -106,10 +106,12 @@ export function throttleKy(
  * that correctly handles arrays of values as repeated keys.
  */
 export function sanitizeSearchParams(
-  searchParams: Record<
-    string,
-    string | number | boolean | string[] | number[] | boolean[] | undefined
-  >
+  searchParams:
+    | Record<
+        string,
+        string | number | boolean | string[] | number[] | boolean[] | undefined
+      >
+    | object
 ): URLSearchParams {
   return new URLSearchParams(
     Object.entries(searchParams).flatMap(([key, value]) => {
