@@ -259,7 +259,7 @@ export namespace diffbot {
     description?: string
     homepageUri?: string
     allNames?: string[]
-    skills?: Skill[]
+    skills?: Partial<BasicEntity>[]
     crawlTimestamp?: number
     summary?: string
     image?: string
@@ -383,70 +383,119 @@ export namespace diffbot {
     nbOrigins?: number
     nbIncomingEdges?: number
     nbFollowers?: number
+    nbLocations?: number
+    nbEmployeesMin?: number
+    nbEmployeesMax?: number
+    nbActiveEmployeeEdges?: number
     educations?: Education[]
     nationalities?: Nationality[]
     allNames?: string[]
-    skills?: Skill[]
-    children?: Children[]
+    skills?: Partial<BasicEntity>[]
+    children?: BasicEntity[]
     height?: number
     image?: string
     images?: Image[]
     allOriginHashes?: string[]
     nameDetail?: NameDetail
-    parents?: Parent[]
+    parents?: BasicEntity[]
     gender?: Gender
     importance?: number
+    wikipediaPageviews?: number
     wikipediaPageviewsLastQuarterGrowth?: number
     wikipediaPageviewsLastYear?: number
     wikipediaPageviewsLastYearGrowth?: number
-    wikipediaPageviews?: number
     wikipediaPageviewsLastQuarter?: number
     wikipediaPageviewsGrowth?: number
-    birthPlace?: BirthPlace
+    birthPlace?: Location
     types?: string[]
     unions?: Union[]
     languages?: Language[]
     employments?: Employment[]
     birthDate?: DateTime
-    religion?: Religion
+    religion?: Partial<BasicEntity>
     awards?: Award[]
-    netWorth?: NetWorth
+    netWorth?: Amount
     allDescriptions?: string[]
     locations?: Location[]
     location?: Location
     interests?: Interest[]
-    emailAddresses?: any
+    suppliers?: BasicEntity[]
+    subsidiaries?: BasicEntity[]
+    ipo?: {
+      date: DateTime
+      stockExchange: string
+    }
+    motto?: string
+    logo?: string
+    foundingDate?: DateTime
+    totalInvestment?: Amount
+    naicsClassification2017?: any[]
+    naicsClassification?: any[]
+    sicClassification?: any[]
+    employeeCategories?: any[]
+    emailAddresses?: EmailAddress[]
     age?: number
+    isPublic?: boolean
+    isAcquired?: boolean
+    isDissolved?: boolean
+    isNonProfit?: boolean
     crawlTimestamp?: number
+    founders?: BasicEntity[]
+    boardMembers?: BasicEntity[]
+    ceo?: BasicEntity
+    investments?: Investment[]
+    acquiredBy?: BasicEntity[]
+    diffbotClassification?: any[]
+    blogUri?: string
+    descriptors?: string[]
+    industries?: string[]
+    partnerships?: BasicEntity[]
+    categories?: Category[]
+    customers?: BasicEntity[]
+    technographics?: Technographic[]
+    stock?: Stock
+    companiesHouseIds?: string[]
+  }
+
+  export interface Technographic {
+    technology: Partial<BasicEntity>
+    categories: string[]
+  }
+
+  export interface Category {
+    level?: number
+    isPrimary?: boolean
+    name: string
+    diffbotUri?: string
+    targetDiffbotId?: string
+    type?: string
+  }
+
+  export interface Investment {
+    date: DateTime
+    amount?: Amount
+    isCurrent: boolean
+    series: string
+    investors: BasicEntity[]
+  }
+
+  export interface Amount {
+    currency: string
+    value: number
+  }
+
+  export interface EmailAddress {
+    contactString: string
+    type: string
   }
 
   export interface Education {
-    institution: Institution
+    institution: BasicEntity
     isCurrent?: boolean
-    major?: Major
-    degree?: Degree
+    major?: BasicEntity
+    degree?: BasicEntity
     from?: DateTime
     to?: DateTime
-  }
-
-  export interface Institution {
-    summary: string
-    image: string
-    types: string[]
-    name: string
-    diffbotUri: string
-    targetDiffbotId: string
-    type: string
-  }
-
-  export interface Major {}
-
-  export interface Degree {
-    types: string[]
-    name: string
-    diffbotUri: string
-    targetDiffbotId: string
-    type: string
   }
 
   export interface DateTime {
@@ -457,21 +506,6 @@ export namespace diffbot {
 
   export interface Nationality {
     name: string
-    type: string
-  }
-
-  export interface Skill {
-    name: string
-    diffbotUri?: string
-    targetDiffbotId?: string
-  }
-
-  export interface Children {
-    summary: string
-    types: string[]
-    name: string
-    diffbotUri: string
-    targetDiffbotId: string
     type: string
   }
 
@@ -486,88 +520,31 @@ export namespace diffbot {
     middleName?: string[]
   }
 
-  export interface Parent {
-    summary: string
-    types: string[]
-    name: string
-    diffbotUri: string
-    targetDiffbotId: string
-    type: string
-    image?: string
-  }
-
   export interface Gender {
     normalizedValue: string
   }
 
-  export interface BirthPlace {
-    country: Country
+  export interface Stock {
+    symbol: string
     isCurrent: boolean
-    address: string
-    city: City
-    subregion: Subregion
-    latitude: number
-    precision: number
-    surfaceForm: string
-    region: Region
-    longitude: number
-  }
-
-  export interface Country {
-    summary: string
-    image: string
-    types: string[]
-    name: string
-    diffbotUri: string
-    targetDiffbotId: string
-    type: string
-  }
-
-  export interface City {
-    summary: string
-    image: string
-    types: string[]
-    name: string
-    diffbotUri: string
-    targetDiffbotId: string
-    type: string
-  }
-
-  export interface Subregion {
-    summary: string
-    image: string
-    types: string[]
-    name: string
-    diffbotUri: string
-    targetDiffbotId: string
-    type: string
-  }
-
-  export interface Region {
-    summary: string
-    image: string
-    types: string[]
-    name: string
-    diffbotUri: string
-    targetDiffbotId: string
-    type: string
+    exchange: string
   }
 
   export interface Union {
-    person: Person
+    person: BasicEntity
     from?: DateTime
     to?: DateTime
     type?: string
   }
 
-  export interface Person {
-    summary: string
-    image: string
-    types: string[]
+  export interface BasicEntity {
     name: string
+    summary: string
+    type: string
+    image?: string
+    types?: string[]
     diffbotUri: string
     targetDiffbotId: string
-    type: string
   }
 
   export interface Language {
@@ -577,69 +554,33 @@ export namespace diffbot {
 
   export interface Employment {
     isCurrent?: boolean
-    employer?: Employer
+    employer?: BasicEntity
     from?: DateTime
-    categories?: EmploymentCategory[]
+    categories?: Partial<BasicEntity>[]
     title?: string
     to?: DateTime
     location?: Location
   }
 
-  export interface Employer {
-    summary?: string
-    image?: string
-    types?: string[]
-    name: string
-    diffbotUri?: string
-    targetDiffbotId?: string
-    type: string
-  }
-
-  export interface EmploymentCategory {
-    types: string[]
-    name: string
-    diffbotUri: string
-    targetDiffbotId: string
-    type: string
-  }
-
   export interface Location {
-    country?: Country
     isCurrent: boolean
-    address: string
-    city: City
-    street: string
-    metroArea: MetroArea
-    subregion: Subregion
-    latitude: number
-    precision: number
-    postalCode: string
-    region?: Region
-    longitude: number
-  }
-
-  export interface MetroArea {
-    summary: string
-    image: string
-    types: string[]
-    name: string
-    diffbotUri: string
-    targetDiffbotId: string
-    type: string
-  }
-
-  export interface Religion {
-    str: string
+    country?: BasicEntity
+    address?: string
+    city?: BasicEntity
+    street?: string
+    metroArea?: BasicEntity
+    subregion?: BasicEntity
+    surfaceForm?: string
+    latitude?: number
+    longitude?: number
+    postalCode?: string
+    region?: BasicEntity
+    precision?: number
   }
 
   export interface Award {
     title: string
     date?: DateTime
-  }
-
-  export interface NetWorth {
-    currency: string
-    value: number
   }
 
   export interface Interest {
@@ -655,7 +596,14 @@ export namespace diffbot {
       'images',
       'nationalities',
       'awards',
-      'interests'
+      'interests',
+      'suppliers',
+      'partnerships',
+      'industries',
+      'categories',
+      'technographics',
+      'employeeCategories',
+      'diffbotClassification'
     )
   }
 
