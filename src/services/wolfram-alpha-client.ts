@@ -2,7 +2,7 @@ import defaultKy, { type KyInstance } from 'ky'
 import { z } from 'zod'
 
 import { aiFunction, AIFunctionsProvider } from '../fns.js'
-import { assert, getEnv } from '../utils.js'
+import { assert, getEnv, sanitizeSearchParams } from '../utils.js'
 
 export namespace wolframalpha {
   export const API_BASE_URL = 'https://www.wolframalpha.com/api/'
@@ -85,6 +85,8 @@ export class WolframAlphaClient extends AIFunctionsProvider {
         ? { input: queryOrOptions }
         : queryOrOptions
 
-    return this.ky.get('v1/llm-api', { searchParams: { ...options } }).text()
+    return this.ky
+      .get('v1/llm-api', { searchParams: sanitizeSearchParams(options) })
+      .text()
   }
 }

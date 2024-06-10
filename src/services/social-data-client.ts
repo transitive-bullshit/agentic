@@ -2,7 +2,7 @@ import defaultKy, { type KyInstance } from 'ky'
 import pThrottle from 'p-throttle'
 
 import { AIFunctionsProvider } from '../fns.js'
-import { assert, getEnv, throttleKy } from '../utils.js'
+import { assert, getEnv, sanitizeSearchParams, throttleKy } from '../utils.js'
 
 // TODO: need to add `aiFunction` wrappers for each method
 
@@ -207,7 +207,7 @@ export class SocialDataClient extends AIFunctionsProvider {
 
     return this.ky
       .get('twitter/statuses/show', {
-        searchParams: options
+        searchParams: sanitizeSearchParams(options)
       })
       .json<socialdata.TweetResponse>()
   }
@@ -223,7 +223,7 @@ export class SocialDataClient extends AIFunctionsProvider {
 
     return this.ky
       .get(`twitter/tweets/${tweetId}/liking_users`, {
-        searchParams: params
+        searchParams: sanitizeSearchParams(params)
       })
       .json<socialdata.UsersResponse>()
   }
@@ -239,7 +239,7 @@ export class SocialDataClient extends AIFunctionsProvider {
 
     return this.ky
       .get(`twitter/tweets/${tweetId}/retweeted_by`, {
-        searchParams: params
+        searchParams: sanitizeSearchParams(params)
       })
       .json<socialdata.UsersResponse>()
   }
@@ -257,10 +257,10 @@ export class SocialDataClient extends AIFunctionsProvider {
 
     return this.ky
       .get('twitter/search', {
-        searchParams: {
+        searchParams: sanitizeSearchParams({
           type: 'top',
           ...options
-        }
+        })
       })
       .json<socialdata.TweetsResponse>()
   }
@@ -310,7 +310,7 @@ export class SocialDataClient extends AIFunctionsProvider {
       .get(
         `twitter/user/${userId}/${replies ? 'tweets-and-replies' : 'tweets'}`,
         {
-          searchParams: params
+          searchParams: sanitizeSearchParams(params)
         }
       )
       .json<socialdata.TweetsResponse>()
@@ -329,7 +329,7 @@ export class SocialDataClient extends AIFunctionsProvider {
 
     return this.ky
       .get(`twitter/user/${userId}/likes`, {
-        searchParams: params
+        searchParams: sanitizeSearchParams(params)
       })
       .json<socialdata.TweetsResponse>()
   }
@@ -345,10 +345,10 @@ export class SocialDataClient extends AIFunctionsProvider {
 
     return this.ky
       .get('twitter/followers/list', {
-        searchParams: {
+        searchParams: sanitizeSearchParams({
           user_id,
           ...params
-        }
+        })
       })
       .json<socialdata.UsersResponse>()
   }
@@ -364,10 +364,10 @@ export class SocialDataClient extends AIFunctionsProvider {
 
     return this.ky
       .get('twitter/friends/list', {
-        searchParams: {
+        searchParams: sanitizeSearchParams({
           user_id,
           ...params
-        }
+        })
       })
       .json<socialdata.UsersResponse>()
   }
@@ -383,7 +383,7 @@ export class SocialDataClient extends AIFunctionsProvider {
 
     return this.ky
       .get(`twitter/user/${sourceUserId}/following/${targetUserId}`, {
-        searchParams: params
+        searchParams: sanitizeSearchParams(params)
       })
       .json<socialdata.UserFollowingResponse>()
   }
@@ -391,10 +391,15 @@ export class SocialDataClient extends AIFunctionsProvider {
   /**
    * Returns a list of users with screenname or full name matching the search query.
    */
-  async searchUsersByUsername(queryOrOpts: socialdata.SearchUsersOptions) {
+  async searchUsersByUsername(
+    queryOrOpts: string | socialdata.SearchUsersOptions
+  ) {
+    const params =
+      typeof queryOrOpts === 'string' ? { query: queryOrOpts } : queryOrOpts
+
     return this.ky
       .get('twitter/search-users', {
-        searchParams: queryOrOpts
+        searchParams: sanitizeSearchParams(params)
       })
       .json<socialdata.UsersResponse>()
   }

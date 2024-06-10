@@ -556,7 +556,7 @@ export class ClearbitClient {
   async companyEnrichment(options: clearbit.CompanyEnrichmentOptions) {
     return this.ky
       .get('https://company-stream.clearbit.com/v2/companies/find', {
-        searchParams: { ...options }
+        searchParams: sanitizeSearchParams(options)
       })
       .json<clearbit.CompanyResponse>()
   }
@@ -564,7 +564,7 @@ export class ClearbitClient {
   async companySearch(options: clearbit.CompanySearchOptions) {
     return this.ky
       .get('https://discovery.clearbit.com/v1/companies/search', {
-        searchParams: { ...options }
+        searchParams: sanitizeSearchParams(options)
       })
       .json<clearbit.CompanySearchResponse>()
   }

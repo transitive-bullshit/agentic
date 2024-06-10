@@ -2,7 +2,7 @@ import defaultKy, { type KyInstance } from 'ky'
 import { z } from 'zod'
 
 import { aiFunction, AIFunctionsProvider } from '../fns.js'
-import { assert, getEnv } from '../utils.js'
+import { assert, getEnv, sanitizeSearchParams } from '../utils.js'
 
 export namespace weatherapi {
   export const BASE_URL = 'https://api.weatherapi.com/v1'
@@ -124,10 +124,10 @@ export class WeatherClient extends AIFunctionsProvider {
 
     return this.ky
       .get('current.json', {
-        searchParams: {
+        searchParams: sanitizeSearchParams({
           key: this.apiKey,
           ...options
-        }
+        })
       })
       .json<weatherapi.CurrentWeatherResponse>()
   }
