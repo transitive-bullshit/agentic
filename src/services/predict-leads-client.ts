@@ -532,7 +532,7 @@ export class PredictLeadsClient extends AIFunctionsProvider {
       'Returns basic information about a company given its `domain` like location, name, stock ticker, description, etc.',
     inputSchema: predictleads.CompanyParamsSchema
   })
-  async company(domainOrOpts: string | predictleads.CompanyParams) {
+  async getCompany(domainOrOpts: string | predictleads.CompanyParams) {
     const opts =
       typeof domainOrOpts === 'string' ? { domain: domainOrOpts } : domainOrOpts
     const { domain } = opts
