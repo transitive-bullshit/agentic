@@ -72,6 +72,7 @@
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "build": "tsup",
+    "dev": "tsup --watch",
     "clean": "del dist",
     "prebuild": "run-s clean",
     "predev": "run-s clean",

@@ -1,3 +1,4 @@
+import type { Simplify } from 'type-fest'
 import defaultKy, { type KyInstance } from 'ky'
 import pThrottle from 'p-throttle'
 import { z } from 'zod'
@@ -657,6 +658,8 @@ export namespace diffbot {
       'interests'
     )
   }
+
+  export type PrunedEntity = Simplify<ReturnType<typeof pruneEntity>>
 }
 
 /**
@@ -747,7 +750,9 @@ export class DiffbotClient extends AIFunctionsProvider {
       threshold: true
     })
   })
-  async enhanceEntity(opts: diffbot.EnhanceEntityOptions) {
+  async enhanceEntity(
+    opts: diffbot.EnhanceEntityOptions
+  ): Promise<diffbot.PrunedEntity[]> {
     const res = await this.kyKnowledgeGraph
       .get('kg/v3/enhance', {
         searchParams: sanitizeSearchParams({

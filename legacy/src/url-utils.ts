@@ -7,7 +7,7 @@ import QuickLRU from 'quick-lru'
 import { hashObject } from './utils.js'
 
 const protocolAllowList = new Set(['https:', 'http:'])
-const normalizedUrlCache = new QuickLRU<string, string | null>({
+const normalizedUrlCache = new QuickLRU<string, string>({
   maxSize: 4000
 })
 
@@ -42,11 +42,11 @@ export function isRelativeUrl(url: string): boolean {
 export function normalizeUrl(
   url: string,
   options?: NormalizeUrlOptions
-): string | null {
-  let normalizedUrl: string | null | undefined
+): string | undefined {
+  let normalizedUrl: string | undefined
 
   if (!url || isRelativeUrl(url)) {
-    return null
+    return undefined
   }
 
   const opts = {
@@ -71,18 +71,26 @@ export function normalizeUrl(
     normalizedUrl = normalizedUrlCache.get(cacheKey)
 
     if (normalizedUrl !== undefined) {
-      return normalizedUrl
+      if (normalizedUrl) {
+        return normalizedUrl
+      } else {
+        return undefined
+      }
     }
 
     normalizedUrl = normalizeUrlImpl(url, opts)
     if (!normalizeUrl) {
-      normalizedUrl = null
+      normalizedUrl = ''
     }
   } catch {
     // ignore invalid urls
-    normalizedUrl = null
+    normalizedUrl = ''
   }
 
   normalizedUrlCache.set(cacheKey, normalizedUrl!)
-  return normalizedUrl
+  if (normalizedUrl) {
+    return normalizedUrl
+  } else {
+    return undefined
+  }
 }
