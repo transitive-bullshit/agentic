@@ -387,6 +387,7 @@ export namespace diffbot {
     nbEmployeesMin?: number
     nbEmployeesMax?: number
     nbActiveEmployeeEdges?: number
+    nbUniqueInvestors?: number
     educations?: Education[]
     nationalities?: Nationality[]
     allNames?: string[]
@@ -432,6 +433,8 @@ export namespace diffbot {
     naicsClassification2017?: any[]
     naicsClassification?: any[]
     sicClassification?: any[]
+    naceClassification?: any[]
+    iSicClassification?: any[]
     employeeCategories?: any[]
     emailAddresses?: EmailAddress[]
     age?: number
@@ -455,6 +458,15 @@ export namespace diffbot {
     technographics?: Technographic[]
     stock?: Stock
     companiesHouseIds?: string[]
+    yearlyRevenues?: AnnualRevenue[]
+  }
+
+  export interface AnnualRevenue {
+    revenue: Amount
+    isCurrent: boolean
+    year: number
+    filingDate: DateTime
+    revenueDate: DateTime
   }
 
   export interface Technographic {
