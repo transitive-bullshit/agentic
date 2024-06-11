@@ -18,7 +18,11 @@ export namespace tavily {
     /** Search query. (required) */
     query: string
 
-    /** The depth of the search. It can be basic or advanced. Default is basic for quick results and advanced for indepth high quality results but longer response time. Advanced calls equals 2 requests. */
+    /**
+     * The depth of the search. It can be basic or advanced. Default is basic
+     * for quick results and advanced for indepth high quality results but
+     * longer response time. Advanced calls equals 2 requests.
+     */
     search_depth?: 'basic' | 'advanced'
 
     /** Include a synthesized answer in the search results. Default is `false`. */
@@ -33,10 +37,16 @@ export namespace tavily {
     /** The number of maximum search results to return. Default is `5`. */
     max_results?: number
 
-    /** A list of domains to specifically include in the search results. Default is `undefined`, which includes all domains. */
+    /**
+     * A list of domains to specifically include in the search results.
+     * Default is `undefined`, which includes all domains.
+     */
     include_domains?: string[]
 
-    /** A list of domains to specifically exclude from the search results. Default is `undefined`, which doesn't exclude any domains. */
+    /**
+     * A list of domains to specifically exclude from the search results.
+     * Default is `undefined`, which doesn't exclude any domains.
+     */
     exclude_domains?: string[]
   }
 
@@ -68,7 +78,9 @@ export namespace tavily {
     title: string
 
     /**
-     * The most query related content from the scraped url. We use proprietary AI and algorithms to extract only the most relevant content from each url, to optimize for context quality and size.
+     * The most query related content from the scraped url. We use proprietary
+     * AI and algorithms to extract only the most relevant content from each
+     * url, to optimize for context quality and size.
      */
     content: string
 
