@@ -115,10 +115,10 @@
     "del-cli": "^5.1.0",
     "dotenv": "^16.4.5",
     "eslint": "^8.57.0",
-    "expr-eval": "^2.0.2",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.5",
     "llamaindex": "^0.3.16",
+    "mathjs": "^13.0.0",
     "np": "^10.0.5",
     "npm-run-all2": "^6.2.0",
     "only-allow": "^1.2.1",
@@ -139,8 +139,8 @@
     "@langchain/core": "^0.2.6",
     "@nangohq/node": "^0.39.33",
     "ai": "^3.1.30",
-    "expr-eval": "^2.0.2",
     "llamaindex": "^0.3.16",
+    "mathjs": "^13.0.0",
     "twitter-api-sdk": "^1.2.1"
   },
   "peerDependenciesMeta": {
@@ -162,10 +162,10 @@
     "ai": {
       "optional": true
     },
-    "expr-eval": {
+    "llamaindex": {
       "optional": true
     },
-    "llamaindex": {
+    "mathjs": {
       "optional": true
     },
     "twitter-api-sdk": {
