@@ -20,8 +20,13 @@ export type MaybePromise<T> = T | Promise<T>
 export type RelaxedJsonifiable = Jsonifiable | Record<string, Jsonifiable>
 
 export interface AIFunctionSpec {
+  /** AI Function name. */
   name: string
+
+  /** Description of what the function does. */
   description: string
+
+  /** JSON schema spec of the function's input parameters */
   parameters: Record<string, unknown>
 }
 
@@ -36,6 +41,13 @@ export type AIFunctionImpl<Return> = Omit<
   'name' | 'toString' | 'arguments' | 'caller' | 'prototype' | 'length'
 >
 
+/**
+ * Flexible type which accepts any AI-function-like object, including:
+ *   - `AIFunctionSet` - Sets of AI functions
+ *   - `AIFunctionsProvider` - Client classes which expose an `AIFunctionSet`
+ *      via the `.functions` property
+ *   - `AIFunction` - Individual functions
+ */
 export type AIFunctionLike = AIFunctionsProvider | AIFunction | AIFunctionSet
 
 /**
@@ -45,6 +57,11 @@ export interface AIFunction<
   InputSchema extends z.ZodObject<any> = z.ZodObject<any>,
   Return = any
 > {
+  /**
+   * Invokes the underlying AI function `impl` but first validates the input
+   * against this function's `inputSchema`. This method is callable and is
+   * meant to be passed the raw LLM JSON string or an OpenAI-compatible Message.
+   */
   (input: string | Msg): MaybePromise<Return>
 
   /** The Zod schema for the input object. */
@@ -53,10 +70,12 @@ export interface AIFunction<
   /** Parse the function arguments from a message. */
   parseInput(input: string | Msg): z.infer<InputSchema>
 
-  /** The function spec for the OpenAI API `functions` property. */
+  /** The JSON schema function spec for the OpenAI API `functions` property. */
   spec: AIFunctionSpec
 
-  /** The underlying function implementation without any arg parsing or validation. */
+  /**
+   * The underlying function implementation without any arg parsing or validation.
+   */
   // TODO: this `any` shouldn't be necessary, but it is for `createAIFunction` results to be assignable to `AIFunctionLike`
   impl: (params: z.infer<InputSchema> | any) => MaybePromise<Return>
 }
