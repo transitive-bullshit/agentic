@@ -40,7 +40,7 @@ export function isRelativeUrl(url: string): boolean {
 }
 
 export function normalizeUrl(
-  url: string,
+  url?: string,
   options?: NormalizeUrlOptions
 ): string | undefined {
   let normalizedUrl: string | undefined
