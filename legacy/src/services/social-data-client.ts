@@ -205,11 +205,13 @@ export class SocialDataClient extends AIFunctionsProvider {
   async getTweetById(idOrOpts: string | socialdata.GetTweetByIdOptions) {
     const options = typeof idOrOpts === 'string' ? { id: idOrOpts } : idOrOpts
 
-    return this.ky
-      .get('twitter/statuses/show', {
-        searchParams: sanitizeSearchParams(options)
-      })
-      .json<socialdata.TweetResponse>()
+    return this._handleResponse(
+      this.ky
+        .get('twitter/statuses/show', {
+          searchParams: sanitizeSearchParams(options)
+        })
+        .json<socialdata.TweetResponse>()
+    )
   }
 
   /**
@@ -221,11 +223,13 @@ export class SocialDataClient extends AIFunctionsProvider {
     const { tweetId, ...params } =
       typeof idOrOpts === 'string' ? { tweetId: idOrOpts } : idOrOpts
 
-    return this.ky
-      .get(`twitter/tweets/${tweetId}/liking_users`, {
-        searchParams: sanitizeSearchParams(params)
-      })
-      .json<socialdata.UsersResponse>()
+    return this._handleResponse(
+      this.ky
+        .get(`twitter/tweets/${tweetId}/liking_users`, {
+          searchParams: sanitizeSearchParams(params)
+        })
+        .json<socialdata.UsersResponse>()
+    )
   }
 
   /**
@@ -237,11 +241,13 @@ export class SocialDataClient extends AIFunctionsProvider {
     const { tweetId, ...params } =
       typeof idOrOpts === 'string' ? { tweetId: idOrOpts } : idOrOpts
 
-    return this.ky
-      .get(`twitter/tweets/${tweetId}/retweeted_by`, {
-        searchParams: sanitizeSearchParams(params)
-      })
-      .json<socialdata.UsersResponse>()
+    return this._handleResponse(
+      this.ky
+        .get(`twitter/tweets/${tweetId}/retweeted_by`, {
+          searchParams: sanitizeSearchParams(params)
+        })
+        .json<socialdata.UsersResponse>()
+    )
   }
 
   /**
@@ -255,14 +261,16 @@ export class SocialDataClient extends AIFunctionsProvider {
     const options =
       typeof queryOrOpts === 'string' ? { query: queryOrOpts } : queryOrOpts
 
-    return this.ky
-      .get('twitter/search', {
-        searchParams: sanitizeSearchParams({
-          type: 'top',
-          ...options
+    return this._handleResponse(
+      this.ky
+        .get('twitter/search', {
+          searchParams: sanitizeSearchParams({
+            type: 'top',
+            ...options
+          })
         })
-      })
-      .json<socialdata.TweetsResponse>()
+        .json<socialdata.TweetsResponse>()
+    )
   }
 
   /**
@@ -286,9 +294,9 @@ export class SocialDataClient extends AIFunctionsProvider {
         ? { username: usernameOrOptions }
         : usernameOrOptions
 
-    return this.ky
-      .get(`twitter/user/${username}`)
-      .json<socialdata.UserResponse>()
+    return this._handleResponse(
+      this.ky.get(`twitter/user/${username}`).json<socialdata.UserResponse>()
+    )
   }
 
   /**
@@ -306,14 +314,16 @@ export class SocialDataClient extends AIFunctionsProvider {
       ...params
     } = typeof idOrOpts === 'string' ? { userId: idOrOpts } : idOrOpts
 
-    return this.ky
-      .get(
-        `twitter/user/${userId}/${replies ? 'tweets-and-replies' : 'tweets'}`,
-        {
-          searchParams: sanitizeSearchParams(params)
-        }
-      )
-      .json<socialdata.TweetsResponse>()
+    return this._handleResponse(
+      this.ky
+        .get(
+          `twitter/user/${userId}/${replies ? 'tweets-and-replies' : 'tweets'}`,
+          {
+            searchParams: sanitizeSearchParams(params)
+          }
+        )
+        .json<socialdata.TweetsResponse>()
+    )
   }
 
   /**
@@ -327,11 +337,13 @@ export class SocialDataClient extends AIFunctionsProvider {
     const { userId, ...params } =
       typeof idOrOpts === 'string' ? { userId: idOrOpts } : idOrOpts
 
-    return this.ky
-      .get(`twitter/user/${userId}/likes`, {
-        searchParams: sanitizeSearchParams(params)
-      })
-      .json<socialdata.TweetsResponse>()
+    return this._handleResponse(
+      this.ky
+        .get(`twitter/user/${userId}/likes`, {
+          searchParams: sanitizeSearchParams(params)
+        })
+        .json<socialdata.TweetsResponse>()
+    )
   }
 
   /**
@@ -343,14 +355,16 @@ export class SocialDataClient extends AIFunctionsProvider {
     const { userId: user_id, ...params } =
       typeof idOrOpts === 'string' ? { userId: idOrOpts } : idOrOpts
 
-    return this.ky
-      .get('twitter/followers/list', {
-        searchParams: sanitizeSearchParams({
-          user_id,
-          ...params
+    return this._handleResponse(
+      this.ky
+        .get('twitter/followers/list', {
+          searchParams: sanitizeSearchParams({
+            user_id,
+            ...params
+          })
         })
-      })
-      .json<socialdata.UsersResponse>()
+        .json<socialdata.UsersResponse>()
+    )
   }
 
   /**
@@ -362,14 +376,16 @@ export class SocialDataClient extends AIFunctionsProvider {
     const { userId: user_id, ...params } =
       typeof idOrOpts === 'string' ? { userId: idOrOpts } : idOrOpts
 
-    return this.ky
-      .get('twitter/friends/list', {
-        searchParams: sanitizeSearchParams({
-          user_id,
-          ...params
+    return this._handleResponse(
+      this.ky
+        .get('twitter/friends/list', {
+          searchParams: sanitizeSearchParams({
+            user_id,
+            ...params
+          })
         })
-      })
-      .json<socialdata.UsersResponse>()
+        .json<socialdata.UsersResponse>()
+    )
   }
 
   /**
@@ -381,11 +397,13 @@ export class SocialDataClient extends AIFunctionsProvider {
   async isUserFollowingUser(opts: socialdata.UserFollowingOptions) {
     const { sourceUserId, targetUserId, ...params } = opts
 
-    return this.ky
-      .get(`twitter/user/${sourceUserId}/following/${targetUserId}`, {
-        searchParams: sanitizeSearchParams(params)
-      })
-      .json<socialdata.UserFollowingResponse>()
+    return this._handleResponse(
+      this.ky
+        .get(`twitter/user/${sourceUserId}/following/${targetUserId}`, {
+          searchParams: sanitizeSearchParams(params)
+        })
+        .json<socialdata.UserFollowingResponse>()
+    )
   }
 
   /**
@@ -397,10 +415,24 @@ export class SocialDataClient extends AIFunctionsProvider {
     const params =
       typeof queryOrOpts === 'string' ? { query: queryOrOpts } : queryOrOpts
 
-    return this.ky
-      .get('twitter/search-users', {
-        searchParams: sanitizeSearchParams(params)
-      })
-      .json<socialdata.UsersResponse>()
+    return this._handleResponse(
+      this.ky
+        .get('twitter/search-users', {
+          searchParams: sanitizeSearchParams(params)
+        })
+        .json<socialdata.UsersResponse>()
+    )
+  }
+
+  protected async _handleResponse<T extends object | socialdata.ErrorResponse>(
+    resP: Promise<T>
+  ): Promise<Exclude<T, socialdata.ErrorResponse>> {
+    const res = await resP
+
+    if ((res as socialdata.ErrorResponse).status === 'error') {
+      throw new Error((res as socialdata.ErrorResponse).message)
+    }
+
+    return res as unknown as Exclude<T, socialdata.ErrorResponse>
   }
 }
