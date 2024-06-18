@@ -280,7 +280,9 @@ export class SocialDataClient extends AIFunctionsProvider {
     const { userId } =
       typeof idOrOpts === 'string' ? { userId: idOrOpts } : idOrOpts
 
-    return this.ky.get(`twitter/user/${userId}`).json<socialdata.UserResponse>()
+    return this._handleResponse(
+      this.ky.get(`twitter/user/${userId}`).json<socialdata.UserResponse>()
+    )
   }
 
   /**
