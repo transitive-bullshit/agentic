@@ -1,11 +1,19 @@
 import defaultKy, { type KyInstance } from 'ky'
+import pThrottle from 'p-throttle'
 import z from 'zod'
 
 import { aiFunction, AIFunctionsProvider } from '../fns.js'
-import { assert, delay, getEnv } from '../utils.js'
+import { assert, delay, getEnv, throttleKy } from '../utils.js'
 import { zodToJsonSchema } from '../zod-to-json-schema.js'
 
 export namespace firecrawl {
+  // Allow up to 1 request per second by default.
+  export const throttle = pThrottle({
+    limit: 1,
+    interval: 1000,
+    strict: true
+  })
+
   /**
    * Generic parameter interface.
    */
@@ -96,11 +104,13 @@ export class FirecrawlClient extends AIFunctionsProvider {
     apiKey = getEnv('FIRECRAWL_API_KEY'),
     apiBaseUrl = getEnv('FIRECRAWL_API_BASE_URL') ??
       'https://api.firecrawl.dev',
+    throttle = true,
     timeoutMs = 60_000,
     ky = defaultKy
   }: {
     apiKey?: string
     apiBaseUrl?: string
+    throttle?: boolean
     timeoutMs?: number
     ky?: KyInstance
   } = {}) {
@@ -117,7 +127,9 @@ export class FirecrawlClient extends AIFunctionsProvider {
     this.apiKey = apiKey
     this.apiBaseUrl = apiBaseUrl
 
-    this.ky = ky.extend({
+    const throttledKy = throttle ? throttleKy(ky, firecrawl.throttle) : ky
+
+    this.ky = throttledKy.extend({
       prefixUrl: apiBaseUrl,
       timeout: timeoutMs,
       headers: {
@@ -155,18 +167,7 @@ export class FirecrawlClient extends AIFunctionsProvider {
       }
     }
 
-    const res = await this.ky
-      .post('v0/scrape', { json })
-      .json<firecrawl.ScrapeResponse>()
-
-    if (!res.success || !res.data) return res
-
-    if (res.data.markdown) {
-      delete res.data.html
-      delete res.data.content
-    }
-
-    return res
+    return this.ky.post('v0/scrape', { json }).json<firecrawl.ScrapeResponse>()
   }
 
   async search(

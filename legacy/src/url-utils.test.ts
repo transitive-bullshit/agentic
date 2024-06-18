@@ -17,6 +17,9 @@ describe('normalizeUrl', () => {
     expect(normalizeUrl('https://google.com/abc/123//')).toBe(
       'https://google.com/abc/123'
     )
+    expect(normalizeUrl('//google.com')).toBe('https://google.com')
+    expect(normalizeUrl('google.com')).toBe('https://google.com')
+    expect(normalizeUrl('abc.foo.com')).toBe('https://abc.foo.com')
   })
 
   test('invalid urls', async () => {

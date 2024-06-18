@@ -82,7 +82,7 @@ export class ScraperClient extends AIFunctionsProvider {
       | string
       | {
           url: string
-          format?: 'html' | 'markdown' | 'plaintext'
+          format?: 'html' | 'markdown' | 'plaintext' | 'all'
           timeoutMs?: number
         }
   ): Promise<Partial<scraper.ScrapeResult>> {

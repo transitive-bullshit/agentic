@@ -681,20 +681,20 @@ export class PerigonClient extends AIFunctionsProvider {
     })
   })
   async searchArticles(opts: perigon.ArticlesSearchOptions) {
-    const searchParams = sanitizeSearchParams({
-      sortBy: 'relevance',
-      ...opts,
-      apiKey: this.apiKey,
-      size: Math.max(
-        1,
-        Math.min(perigon.MAX_PAGE_SIZE, opts.size || perigon.DEFAULT_PAGE_SIZE)
-      )
-    })
-    console.log('perigon.searchArticles', searchParams)
-
     return this.ky
       .get('all', {
-        searchParams
+        searchParams: sanitizeSearchParams({
+          sortBy: 'relevance',
+          ...opts,
+          apiKey: this.apiKey,
+          size: Math.max(
+            1,
+            Math.min(
+              perigon.MAX_PAGE_SIZE,
+              opts.size || perigon.DEFAULT_PAGE_SIZE
+            )
+          )
+        })
       })
       .json<perigon.ArticlesSearchResponse>()
   }
@@ -721,20 +721,20 @@ export class PerigonClient extends AIFunctionsProvider {
     })
   })
   async searchStories(opts: perigon.StoriesSearchOptions) {
-    const searchParams = sanitizeSearchParams({
-      sortBy: 'relevance',
-      ...opts,
-      apiKey: this.apiKey,
-      size: Math.max(
-        1,
-        Math.min(perigon.MAX_PAGE_SIZE, opts.size || perigon.DEFAULT_PAGE_SIZE)
-      )
-    })
-    console.log('perigon.searchStories', searchParams)
-
     return this.ky
       .get('stories/all', {
-        searchParams
+        searchParams: sanitizeSearchParams({
+          sortBy: 'relevance',
+          ...opts,
+          apiKey: this.apiKey,
+          size: Math.max(
+            1,
+            Math.min(
+              perigon.MAX_PAGE_SIZE,
+              opts.size || perigon.DEFAULT_PAGE_SIZE
+            )
+          )
+        })
       })
       .json<perigon.StoriesSearchResponse>()
   }
