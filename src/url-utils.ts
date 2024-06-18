@@ -45,8 +45,16 @@ export function normalizeUrl(
 ): string | undefined {
   let normalizedUrl: string | undefined
 
-  if (!url || isRelativeUrl(url)) {
+  if (!url || typeof url !== 'string') {
     return undefined
+  }
+
+  if (isRelativeUrl(url)) {
+    if (!/^[./]/.test(url) && url.indexOf('.') > 0) {
+      url = `https://${url}`
+    } else {
+      return undefined
+    }
   }
 
   const opts = {
