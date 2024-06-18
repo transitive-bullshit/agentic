@@ -196,6 +196,7 @@ See the [examples](./examples) directory for examples of how to use each of thes
 
 - services
   - browserbase
+  - [brave search](https://brave.com/search/api/)
   - [phantombuster](https://phantombuster.com)
   - [apify](https://apify.com/store)
   - perplexity
