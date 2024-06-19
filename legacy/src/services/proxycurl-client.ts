@@ -1935,6 +1935,7 @@ export namespace proxycurl {
   export type SearchResult = z.infer<typeof SearchResultSchema>
 
   export const ResultProfileSchema = z.object({
+    linkedin_url: z.string().optional(),
     acquisitions: PurpleAcquisitionSchema.optional(),
     affiliated_companies: z.array(PurpleAffiliatedCompanySchema).optional(),
     background_cover_image_url: z.string().optional(),
@@ -1963,7 +1964,12 @@ export namespace proxycurl {
     updates: z.array(PurpleCompanyUpdateSchema).optional(),
     website: z.string().optional()
   })
-  export type ResultProfile = z.infer<typeof ResultProfileSchema>
+  export type CompanyProfile = z.infer<typeof ResultProfileSchema>
+  export type ResolvedCompanyProfile = {
+    url: string
+    last_updated: string
+    profile: CompanyProfile
+  }
 
   export const CompanyUrlEnrichResultProfileSchema = z.object({
     acquisitions: FluffyAcquisitionSchema.optional(),
@@ -2087,8 +2093,8 @@ export class ProxycurlClient extends AIFunctionsProvider {
   })
   async getLinkedInCompany(
     opts: proxycurl.CompanyProfileEndpointParamsQueryClass
-  ) {
-    return this.ky
+  ): Promise<proxycurl.CompanyProfile> {
+    const res = await this.ky
       .get('api/linkedin/company', {
         searchParams: sanitizeSearchParams({
           funding_data: 'include',
@@ -2097,7 +2103,12 @@ export class ProxycurlClient extends AIFunctionsProvider {
           ...opts
         })
       })
-      .json<proxycurl.ResultProfile>()
+      .json<proxycurl.CompanyProfile>()
+
+    return {
+      linkedin_url: opts.url,
+      ...res
+    }
   }
 
   @aiFunction({
@@ -2181,15 +2192,20 @@ export class ProxycurlClient extends AIFunctionsProvider {
   })
   async resolveLinkedInCompany(
     opts: proxycurl.CompanyLookupEndpointParamsQueryClass
-  ) {
-    return this.ky
+  ): Promise<proxycurl.CompanyProfile> {
+    const res = await this.ky
       .get('api/linkedin/company/resolve', {
         searchParams: sanitizeSearchParams({
           enrich_profile: 'enrich',
           ...opts
         })
       })
-      .json<proxycurl.ResultProfile>()
+      .json<proxycurl.ResolvedCompanyProfile>()
+
+    return {
+      linkedin_url: res.url,
+      ...res.profile
+    }
   }
 
   @aiFunction({
