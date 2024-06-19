@@ -7,10 +7,12 @@ import { assert, delay, getEnv, throttleKy } from '../utils.js'
 import { zodToJsonSchema } from '../zod-to-json-schema.js'
 
 export namespace firecrawl {
-  // Allow up to 1 request per second by default.
+  export const BASE_URL = 'https://api.firecrawl.dev'
+
+  // Allow up to 50 request per minute by default.
   export const throttle = pThrottle({
     limit: 1,
-    interval: 1000,
+    interval: 1200,
     strict: true
   })
 
@@ -102,8 +104,7 @@ export class FirecrawlClient extends AIFunctionsProvider {
 
   constructor({
     apiKey = getEnv('FIRECRAWL_API_KEY'),
-    apiBaseUrl = getEnv('FIRECRAWL_API_BASE_URL') ??
-      'https://api.firecrawl.dev',
+    apiBaseUrl = getEnv('FIRECRAWL_API_BASE_URL') ?? firecrawl.BASE_URL,
     throttle = true,
     timeoutMs = 60_000,
     ky = defaultKy
