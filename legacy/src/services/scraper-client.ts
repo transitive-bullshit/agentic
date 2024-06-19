@@ -13,7 +13,7 @@ export namespace scraper {
     strict: true
   })
 
-  export type ScrapeResult = {
+  export type ScrapeResult = Partial<{
     author: string
     byline: string
     description: string
@@ -36,7 +36,7 @@ export namespace scraper {
 
     /** The text for the main content of the page. */
     textContent: string
-  }
+  }>
 }
 
 /**
@@ -97,7 +97,7 @@ export class ScraperClient extends AIFunctionsProvider {
           format?: 'html' | 'markdown' | 'plaintext' | 'all'
           timeoutMs?: number
         }
-  ): Promise<Partial<scraper.ScrapeResult>> {
+  ): Promise<scraper.ScrapeResult> {
     const {
       timeoutMs = 60_000,
       format = 'markdown',
@@ -111,7 +111,7 @@ export class ScraperClient extends AIFunctionsProvider {
       })
       .json<scraper.ScrapeResult>()
 
-    if (res.length <= 40) {
+    if (res.length && res.length <= 40) {
       try {
         const message = (JSON.parse(res.textContent as string) as any).message
         throw new Error(`Failed to scrape URL "${opts.url}": ${message}`)
