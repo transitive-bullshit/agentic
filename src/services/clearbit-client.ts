@@ -1,11 +1,12 @@
 import defaultKy from 'ky'
 import pThrottle from 'p-throttle'
 
-import type { DeepNullable, KyInstance } from '../types.js'
+import type { KyInstance } from '../types.js'
 import {
   assert,
   delay,
   getEnv,
+  pruneNullOrUndefinedDeep,
   sanitizeSearchParams,
   throttleKy
 } from '../utils.js'
@@ -37,7 +38,7 @@ export namespace clearbit {
       phoneNumbers: string[]
       emailAddresses: string[]
     }
-    category: {
+    category: Partial<{
       sector: string
       industryGroup: string
       industry: string
@@ -48,14 +49,14 @@ export namespace clearbit {
       naicsCode: string
       naics6Codes: string[]
       naics6Codes2022: string[]
-    }
+    }>
     tags: string[]
     description: string
     foundedYear: number
     location: string
     timeZone: string
     utcOffset: number
-    geo: {
+    geo: Partial<{
       streetNumber: string
       streetName: string
       subPremise: string
@@ -68,16 +69,16 @@ export namespace clearbit {
       countryCode: string
       lat: number
       lng: number
-    }
+    }>
     logo: string
-    facebook: {
+    facebook: Partial<{
       handle: string
       likes: number
-    }
+    }>
     linkedin: {
       handle: string
     }
-    twitter: {
+    twitter: Partial<{
       handle: string
       id: string
       bio: string
@@ -86,30 +87,30 @@ export namespace clearbit {
       location: string
       site: string
       avatar: string
-    }
+    }>
     crunchbase: {
       handle: string
     }
     emailProvider: boolean
     type: string
     ticker: string
-    identifiers: {
+    identifiers: Partial<{
       usEIN: string
       usCIK: string
-    }
+    }>
     phone: string
-    metrics: {
+    metrics: Partial<{
       alexaUsRank: number
       alexaGlobalRank: number
       trafficRank: string
       employees: number
       employeesRange: string
-      marketCap: string
+      marketCap: number
       raised: number
       annualRevenue: string
       estimatedAnnualRevenue: string
-      fiscalYearEnd: string
-    }
+      fiscalYearEnd: number
+    }>
     indexedAt: string
     tech: string[]
     techCategories: string[]
@@ -121,18 +122,18 @@ export namespace clearbit {
     }
   }
 
-  export type EmailLookupResponse = DeepNullable<{
+  export type EmailLookupResponse = Partial<{
     id: string
-    name: {
+    name: Partial<{
       fullName: string
       givenName: string
       familyName: string
-    }
+    }>
     email: string
     location: string
     timeZone: string
     utcOffset: number
-    geo: {
+    geo: Partial<{
       city: string
       state: string
       stateCode: string
@@ -140,22 +141,22 @@ export namespace clearbit {
       countryCode: string
       lat: number
       lng: number
-    }
+    }>
     bio: string
     site: string
     avatar: string
-    employment: {
+    employment: Partial<{
       domain: string
       name: string
       title: string
       role: string
       subRole: string
       seniority: string
-    }
+    }>
     facebook: {
       handle: string
     }
-    github: {
+    github: Partial<{
       handle: string
       id: string
       avatar: string
@@ -163,8 +164,8 @@ export namespace clearbit {
       blog: string
       followers: number
       following: number
-    }
-    twitter: {
+    }>
+    twitter: Partial<{
       handle: string
       id: string
       bio: string
@@ -175,14 +176,14 @@ export namespace clearbit {
       location: string
       site: string
       avatar: string
-    }
+    }>
     linkedin: {
       handle: string
     }
     googleplus: {
       handle: null
     }
-    gravatar: {
+    gravatar: Partial<{
       handle: string
       urls: {
         value: string
@@ -193,7 +194,7 @@ export namespace clearbit {
         url: string
         type: string
       }[]
-    }
+    }>
     fuzzy: boolean
     emailProvider: boolean
     indexedAt: string
@@ -204,7 +205,7 @@ export namespace clearbit {
 
   export type CompanyResponse = {
     id: string
-  } & DeepNullable<CompanyNullableProps>
+  } & Partial<CompanyNullableProps>
 
   export interface CompanySearchOptions {
     /**
@@ -260,17 +261,17 @@ export namespace clearbit {
   }
 
   export interface EmploymentAttributes {
-    company: string
-    domain: string
-    linkedin: string
-    title: string
-    role: string
-    subRole: string
-    seniority: string
-    startDate: string
-    endDate: string
-    present: boolean
-    highlight: boolean
+    company?: string
+    domain?: string
+    linkedin?: string
+    title?: string
+    role?: string
+    subRole?: string
+    seniority?: string
+    startDate?: string
+    endDate?: string
+    present?: boolean
+    highlight?: boolean
   }
 
   export interface EmailAttributes {
@@ -291,7 +292,7 @@ export namespace clearbit {
 
   export type PersonAttributesV2 = {
     id: string
-  } & DeepNullable<{
+  } & Partial<{
     name: Name
     avatar: string
     location: string
@@ -554,31 +555,37 @@ export class ClearbitClient {
   }
 
   async companyEnrichment(options: clearbit.CompanyEnrichmentOptions) {
-    return this.ky
+    const res = await this.ky
       .get('https://company-stream.clearbit.com/v2/companies/find', {
         searchParams: sanitizeSearchParams(options)
       })
       .json<clearbit.CompanyResponse>()
+
+    return pruneNullOrUndefinedDeep(res)
   }
 
   async companySearch(options: clearbit.CompanySearchOptions) {
-    return this.ky
+    const res = await this.ky
       .get('https://discovery.clearbit.com/v1/companies/search', {
         searchParams: sanitizeSearchParams(options)
       })
       .json<clearbit.CompanySearchResponse>()
+
+    return pruneNullOrUndefinedDeep(res)
   }
 
   async companyAutocomplete(name: string) {
-    return this.ky
+    const res = await this.ky
       .get('https://autocomplete.clearbit.com/v1/companies/suggest', {
         searchParams: { query: name }
       })
       .json<clearbit.BasicCompanyResponse[]>()
+
+    return pruneNullOrUndefinedDeep(res)
   }
 
   async prospectorPeopleV2(options: clearbit.PeopleSearchOptionsV2) {
-    return this.ky
+    const res = await this.ky
       .get('https://prospector.clearbit.com/v2/people/search', {
         searchParams: sanitizeSearchParams({
           ...options,
@@ -589,10 +596,12 @@ export class ClearbitClient {
         })
       })
       .json<clearbit.ProspectorResponseV2>()
+
+    return pruneNullOrUndefinedDeep(res)
   }
 
   async prospectorPeopleV1(options: clearbit.PeopleSearchOptionsV1) {
-    return this.ky
+    const res = await this.ky
       .get('https://prospector.clearbit.com/v1/people/search', {
         searchParams: sanitizeSearchParams({
           email: false,
@@ -604,6 +613,8 @@ export class ClearbitClient {
         })
       })
       .json<clearbit.ProspectorResponseV1>()
+
+    return pruneNullOrUndefinedDeep(res)
   }
 
   // TODO Status code = 202 means the response was queued.
@@ -622,7 +633,8 @@ export class ClearbitClient {
     })
 
     if (response.status !== 202 || !maxRetries) {
-      return response.json<clearbit.EmailLookupResponse>()
+      const res = await response.json<clearbit.EmailLookupResponse>()
+      return pruneNullOrUndefinedDeep(res)
     }
 
     if (maxRetries && response.status === 202) {
@@ -637,7 +649,8 @@ export class ClearbitClient {
         count++
         running = response.status === 202
       }
-      return response.json<clearbit.EmailLookupResponse>()
+      const res = await response.json<clearbit.EmailLookupResponse>()
+      return pruneNullOrUndefinedDeep(res)
     }
 
     throw new Error('clearbit email lookup error 202', { cause: response })
@@ -653,17 +666,21 @@ export class ClearbitClient {
   }
 
   async revealCompanyFromIP(ip: string) {
-    return this.ky
+    const res = await this.ky
       .get('https://reveal.clearbit.com/v1/companies/find', {
         searchParams: { ip }
       })
       .json<clearbit.CompanyRevealResponse>()
       .catch((_) => undefined)
+
+    if (res) {
+      return pruneNullOrUndefinedDeep(res)
+    }
   }
 
   static filterEmploymentProspectorV2(
     companyName: string,
-    employments: Array<DeepNullable<clearbit.EmploymentAttributes> | null> | null
+    employments?: Array<Partial<clearbit.EmploymentAttributes>>
   ) {
     if (employments && employments.length > 0) {
       // We filter by employment endDate because some people could have multiple

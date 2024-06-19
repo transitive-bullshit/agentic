@@ -67,6 +67,29 @@ export function pruneNullOrUndefined<T extends Record<string, any>>(
   ) as NonNullable<T>
 }
 
+export function pruneNullOrUndefinedDeep<T extends Record<string, any>>(
+  obj: T
+): NonNullable<{ [K in keyof T]: Exclude<T[K], undefined | null> }> {
+  if (!obj || Array.isArray(obj) || typeof obj !== 'object') return obj
+
+  return Object.fromEntries(
+    Object.entries(obj)
+      .filter(([, value]) => value !== undefined && value !== null)
+      .map(([key, value]) =>
+        Array.isArray(value)
+          ? [
+              key,
+              value
+                .filter((v) => v !== undefined && v !== null)
+                .map(pruneNullOrUndefinedDeep as any)
+            ]
+          : typeof value === 'object'
+            ? [key, pruneNullOrUndefinedDeep(value)]
+            : [key, value]
+      )
+  ) as NonNullable<T>
+}
+
 export function getEnv(name: string): string | undefined {
   try {
     return typeof process !== 'undefined'

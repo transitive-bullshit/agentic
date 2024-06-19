@@ -1,10 +1,18 @@
 import defaultKy, { type KyInstance } from 'ky'
+import pThrottle from 'p-throttle'
 import { z } from 'zod'
 
 import { aiFunction, AIFunctionsProvider } from '../fns.js'
-import { assert, getEnv, omit } from '../utils.js'
+import { assert, getEnv, omit, throttleKy } from '../utils.js'
 
 export namespace scraper {
+  // Allow up to 1 request per second by default.
+  export const throttle = pThrottle({
+    limit: 1,
+    interval: 1000,
+    strict: true
+  })
+
   export type ScrapeResult = {
     author: string
     byline: string
@@ -47,10 +55,12 @@ export class ScraperClient extends AIFunctionsProvider {
 
   constructor({
     apiBaseUrl = getEnv('SCRAPER_API_BASE_URL'),
+    throttle = true,
     ky = defaultKy
   }: {
     apiKey?: string
     apiBaseUrl?: string
+    throttle?: boolean
     ky?: KyInstance
   } = {}) {
     assert(
@@ -60,7 +70,9 @@ export class ScraperClient extends AIFunctionsProvider {
     super()
 
     this.apiBaseUrl = apiBaseUrl
-    this.ky = ky.extend({ prefixUrl: this.apiBaseUrl })
+
+    const throttledKy = throttle ? throttleKy(ky, scraper.throttle) : ky
+    this.ky = throttledKy.extend({ prefixUrl: this.apiBaseUrl })
   }
 
   @aiFunction({
@@ -98,6 +110,15 @@ export class ScraperClient extends AIFunctionsProvider {
         timeout: timeoutMs
       })
       .json<scraper.ScrapeResult>()
+
+    if (res.length <= 40) {
+      try {
+        const message = (JSON.parse(res.textContent as string) as any).message
+        throw new Error(`Failed to scrape URL "${opts.url}": ${message}`)
+      } catch {
+        throw new Error(`Failed to scrape URL "${opts.url}"`)
+      }
+    }
 
     switch (format) {
       case 'html':
