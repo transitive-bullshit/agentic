@@ -14,16 +14,16 @@ export namespace scraper {
   })
 
   export type ScrapeResult = Partial<{
+    title: string
+    siteName: string
+    description: string
     author: string
     byline: string
-    description: string
     imageUrl: string
+    logoUrl: string
     lang: string
     length: number
-    logoUrl: string
     publishedTime: string
-    siteName: string
-    title: string
 
     /** The HTML for the main content of the page. */
     content: string
