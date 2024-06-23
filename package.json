@@ -110,7 +110,7 @@
     "@langchain/core": "^0.2.9",
     "@nangohq/node": "^0.40.5",
     "@total-typescript/ts-reset": "^0.5.1",
-    "@types/node": "^20.14.7",
+    "@types/node": "^20.14.8",
     "ai": "^3.2.5",
     "del-cli": "^5.1.0",
     "dotenv": "^16.4.5",
