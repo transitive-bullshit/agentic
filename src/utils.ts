@@ -183,3 +183,15 @@ export function hashObject(
 ): string {
   return hashObjectImpl(object, { algorithm: 'sha256', ...options })
 }
+
+export function isAIFunction(obj: any): obj is types.AIFunction {
+  if (!obj) return false
+  if (typeof obj !== 'function') return false
+  if (!obj.inputSchema) return false
+  if (!obj.parseInput) return false
+  if (!obj.spec) return false
+  if (!obj.impl) return false
+  if (!obj.spec.name || typeof obj.spec.name !== 'string') return false
+
+  return true
+}
