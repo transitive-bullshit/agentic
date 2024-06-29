@@ -32,8 +32,7 @@ export class AIFunctionSet implements Iterable<types.AIFunction> {
         return fn
       }
 
-      const f = fn as any
-      const fa = (f.functions ?? f) as AIFunctionSet
+      const fa = ((fn as any).functions ?? fn) as AIFunctionSet
       if (fa) {
         try {
           const fns = [...fa]
