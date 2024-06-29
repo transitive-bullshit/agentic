@@ -1,5 +1,6 @@
 import type * as types from './types.ts'
 import { AIFunctionsProvider } from './fns.js'
+import { isAIFunction } from './utils.js'
 
 /**
  * A set of AI functions intended to make it easier to work with large sets of
@@ -15,13 +16,53 @@ export class AIFunctionSet implements Iterable<types.AIFunction> {
   protected readonly _map: Map<string, types.AIFunction>
 
   constructor(aiFunctionLikeObjects?: types.AIFunctionLike[]) {
-    const fns = aiFunctionLikeObjects?.flatMap((fn) =>
-      fn instanceof AIFunctionsProvider
-        ? [...fn.functions]
-        : fn instanceof AIFunctionSet
-          ? [...fn]
-          : [fn]
-    )
+    // TODO: these `instanceof` checks seem to be failing on some platforms,
+    // so for now we're using an uglier, but more reliable approach to parsing
+    // the AIFunctionLike objects.
+    const fns = aiFunctionLikeObjects?.flatMap((fn) => {
+      if (fn instanceof AIFunctionsProvider) {
+        return [...fn.functions]
+      }
+
+      if (fn instanceof AIFunctionSet) {
+        return [...fn]
+      }
+
+      if (isAIFunction(fn)) {
+        return fn
+      }
+
+      const f = fn as any
+      const fa = (f.functions ?? f) as AIFunctionSet
+      if (fa) {
+        try {
+          const fns = [...fa]
+          if (fns.every(isAIFunction)) {
+            return fns
+          }
+        } catch {}
+      }
+
+      throw new Error(`Invalid AIFunctionLike: ${fn}`)
+    })
+
+    // TODO: This is the cleaner approach which should work in theory, but is
+    // not working in practice due to the `instanceof` checks failing.
+    // const fns = aiFunctionLikeObjects?.flatMap((fn) =>
+    //   fn instanceof AIFunctionsProvider
+    //     ? [...fn.functions]
+    //     : fn instanceof AIFunctionSet
+    //       ? [...fn]
+    //       : [fn]
+    // )
+
+    if (fns) {
+      for (const fn of fns) {
+        if (!isAIFunction(fn)) {
+          throw new Error(`Invalid AIFunctionLike: ${fn}`)
+        }
+      }
+    }
 
     this._map = new Map(
       fns ? fns.map((fn) => [transformName(fn.spec.name), fn]) : null
