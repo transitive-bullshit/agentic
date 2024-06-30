@@ -134,21 +134,34 @@ export function sanitizeSearchParams(
         string,
         string | number | boolean | string[] | number[] | boolean[] | undefined
       >
-    | object
+    | object,
+  { csv = false }: { csv?: boolean } = {}
 ): URLSearchParams {
-  return new URLSearchParams(
-    Object.entries(searchParams).flatMap(([key, value]) => {
-      if (key === undefined || value === undefined) {
-        return []
-      }
+  const entries = Object.entries(searchParams).flatMap(([key, value]) => {
+    if (key === undefined || value === undefined) {
+      return []
+    }
 
-      if (Array.isArray(value)) {
-        return value.map((v) => [key, String(v)])
-      }
+    if (Array.isArray(value)) {
+      return value.map((v) => [key, String(v)])
+    }
 
-      return [[key, String(value)]]
-    }) as [string, string][]
+    return [[key, String(value)]]
+  }) as [string, string][]
+
+  if (!csv) {
+    return new URLSearchParams(entries)
+  }
+
+  const csvEntries = entries.reduce(
+    (acc, [key, value]) => ({
+      ...acc,
+      [key]: acc[key] ? `${acc[key]},${value}` : value
+    }),
+    {} as any
   )
+
+  return new URLSearchParams(csvEntries)
 }
 
 /**

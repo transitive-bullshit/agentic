@@ -19,7 +19,8 @@ import restoreCursor from 'restore-cursor'
 // import { MidjourneyClient } from '../src/index.js'
 // import { BingClient } from '../src/index.js'
 // import { TavilyClient } from '../src/index.js'
-import { SocialDataClient } from '../src/index.js'
+// import { SocialDataClient } from '../src/index.js'
+import { HunterClient } from '../src/index.js'
 
 /**
  * Scratch pad for testing.
@@ -120,8 +121,19 @@ async function main() {
   // })
   // console.log(JSON.stringify(res, null, 2))
 
-  const socialData = new SocialDataClient()
-  const res = await socialData.getUserByUsername('transitive_bs')
+  // const socialData = new SocialDataClient()
+  // const res = await socialData.getUserByUsername('transitive_bs')
+  // console.log(JSON.stringify(res, null, 2))
+
+  const hunter = new HunterClient()
+  // const res = await hunter.emailVerifier({
+  //   email: 'travis@transitivebullsh.it'
+  // })
+  const res = await hunter.emailFinder({
+    domain: 'aomni.com',
+    first_name: 'David',
+    last_name: 'Zhang'
+  })
   console.log(JSON.stringify(res, null, 2))
 }
 
