@@ -84,6 +84,7 @@ export namespace hunter {
         department?: string
       }
     }
+    errors?: Error[]
   }
 
   export interface DomainSearchData {
@@ -153,6 +154,7 @@ export namespace hunter {
         max_duration?: string
       }
     }
+    errors?: Error[]
   }
 
   export interface EmailFinderData {
@@ -178,6 +180,7 @@ export namespace hunter {
         email: string
       }
     }
+    errors?: Error[]
   }
 
   export interface EmailVerifierData {
@@ -202,6 +205,12 @@ export namespace hunter {
     block: boolean
     sources?: Source[]
     _deprecation_notice?: string
+  }
+
+  export interface Error {
+    id: string
+    code: number
+    details: string
   }
 }
 
