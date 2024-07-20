@@ -20,7 +20,8 @@ import restoreCursor from 'restore-cursor'
 // import { BingClient } from '../src/index.js'
 // import { TavilyClient } from '../src/index.js'
 // import { SocialDataClient } from '../src/index.js'
-import { HunterClient } from '../src/index.js'
+// import { HunterClient } from '../src/index.js'
+import { JinaClient } from '../src/index.js'
 
 /**
  * Scratch pad for testing.
@@ -125,15 +126,28 @@ async function main() {
   // const res = await socialData.getUserByUsername('transitive_bs')
   // console.log(JSON.stringify(res, null, 2))
 
-  const hunter = new HunterClient()
-  // const res = await hunter.emailVerifier({
-  //   email: 'travis@transitivebullsh.it'
+  // const hunter = new HunterClient()
+  // // const res = await hunter.emailVerifier({
+  // //   email: 'travis@transitivebullsh.it'
+  // // })
+  // const res = await hunter.emailFinder({
+  //   domain: 'aomni.com',
+  //   first_name: 'David',
+  //   last_name: 'Zhang'
   // })
-  const res = await hunter.emailFinder({
-    domain: 'aomni.com',
-    first_name: 'David',
-    last_name: 'Zhang'
+  // console.log(JSON.stringify(res, null, 2))
+
+  const jina = new JinaClient()
+  const res = await jina.readUrl({
+    url: 'https://news.ycombinator.com'
+    // returnFormat: 'screenshot'
+    // json: true
   })
+  // const res = await jina.search({
+  //   query: 'trump assassination attempt',
+  //   // returnFormat: 'screenshot',
+  //   json: true
+  // })
   console.log(JSON.stringify(res, null, 2))
 }
 
