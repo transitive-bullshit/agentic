@@ -124,35 +124,16 @@ export namespace clearbit {
 
   export type EmailLookupResponse = Partial<{
     id: string
-    name: Partial<{
-      fullName: string
-      givenName: string
-      familyName: string
-    }>
+    name: Partial<Name>
     email: string
     location: string
     timeZone: string
     utcOffset: number
-    geo: Partial<{
-      city: string
-      state: string
-      stateCode: string
-      country: string
-      countryCode: string
-      lat: number
-      lng: number
-    }>
+    geo: Partial<GeoIP>
     bio: string
     site: string
     avatar: string
-    employment: Partial<{
-      domain: string
-      name: string
-      title: string
-      role: string
-      subRole: string
-      seniority: string
-    }>
+    employment: Partial<EmploymentAttributes>
     facebook: {
       handle: string
     }
@@ -271,6 +252,8 @@ export namespace clearbit {
     startDate?: string
     endDate?: string
     present?: boolean
+    location?: string
+    email?: string
     highlight?: boolean
   }
 
@@ -354,6 +337,8 @@ export namespace clearbit {
     stateCode: string
     country: string
     countryCode: string
+    lat?: number
+    lng?: number
   }
 
   export interface CompanyRevealResponse {

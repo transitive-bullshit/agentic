@@ -219,14 +219,13 @@ See the [examples](./examples) directory for examples of how to use each of thes
 - investigate [autotool](https://github.com/run-llama/LlamaIndexTS/tree/main/packages/autotool)
 - investigate [alt search engines](https://seirdy.one/posts/2021/03/10/search-engines-with-own-indexes/)
 - investigate [data connectors](https://github.com/mendableai/data-connectors)
+- add unit tests for individual providers
 
 ## Contributors
 
 - [Travis Fischer](https://x.com/transitive_bs)
-- [Kevin Raheja](https://x.com/crabfisher)
 - [David Zhang](https://x.com/dzhng)
 - [Philipp Burckhardt](https://x.com/burckhap)
-- [Riley Tomasek](https://x.com/rileytomasek)
 - And all of the [amazing OSS contributors](https://github.com/transitive-bullshit/agentic/graphs/contributors)!
 
 ## License

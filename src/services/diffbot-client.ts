@@ -573,12 +573,13 @@ export namespace diffbot {
 
   export interface Employment {
     isCurrent?: boolean
-    employer?: BasicEntity
-    from?: DateTime
-    categories?: Partial<BasicEntity>[]
     title?: string
-    to?: DateTime
+    description?: string
+    employer?: BasicEntity
     location?: Location
+    categories?: Partial<BasicEntity>[]
+    from?: DateTime
+    to?: DateTime
   }
 
   export interface Location {

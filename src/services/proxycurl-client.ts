@@ -1839,7 +1839,7 @@ export namespace proxycurl {
     typeof ReverseEmailUrlEnrichResultProfileSchema
   >
 
-  export const PublicPersonSchema = z.object({
+  export const PersonProfileSchema = z.object({
     accomplishment_courses: z.array(StickyCourseSchema).optional(),
     accomplishment_honors_awards: z.array(StickyHonourAwardSchema).optional(),
     accomplishment_organisations: z
@@ -1877,7 +1877,7 @@ export namespace proxycurl {
     summary: z.string().optional(),
     volunteer_work: z.array(StickyVolunteeringExperienceSchema).optional()
   })
-  export type PublicPerson = z.infer<typeof PublicPersonSchema>
+  export type PersonProfile = z.infer<typeof PersonProfileSchema>
 
   export const PurpleAcquisitionSchema = z.object({
     acquired: z.array(PurpleAcquiredCompanySchema).optional(),
@@ -1930,7 +1930,7 @@ export namespace proxycurl {
   export const SearchResultSchema = z.object({
     last_updated: z.string().optional(),
     linkedin_profile_url: z.string().optional(),
-    profile: PublicPersonSchema.optional()
+    profile: PersonProfileSchema.optional()
   })
   export type SearchResult = z.infer<typeof SearchResultSchema>
 
@@ -2119,12 +2119,12 @@ export class ProxycurlClient extends AIFunctionsProvider {
   })
   async getLinkedInPerson(
     opts: proxycurl.PersonProfileEndpointParamsQueryClass
-  ) {
+  ): Promise<proxycurl.PersonProfile> {
     return this.ky
       .get('api/v2/linkedin', {
         searchParams: sanitizeSearchParams(opts)
       })
-      .json<proxycurl.PublicPerson>()
+      .json<proxycurl.PersonProfile>()
   }
 
   @aiFunction({
@@ -2135,7 +2135,7 @@ export class ProxycurlClient extends AIFunctionsProvider {
   })
   async resolveLinkedInPerson(
     opts: proxycurl.PersonLookupEndpointParamsQueryClass
-  ) {
+  ): Promise<proxycurl.PersonProfile> {
     return this.ky
       .get('api/linkedin/profile/resolve', {
         searchParams: sanitizeSearchParams({
@@ -2143,7 +2143,7 @@ export class ProxycurlClient extends AIFunctionsProvider {
           ...opts
         })
       })
-      .json<proxycurl.PublicPerson>()
+      .json<proxycurl.PersonProfile>()
   }
 
   @aiFunction({
@@ -2173,7 +2173,7 @@ export class ProxycurlClient extends AIFunctionsProvider {
   })
   async resolveLinkedInPersonAtCompanyByRole(
     opts: proxycurl.RoleLookupEndpointParamsQueryClass
-  ) {
+  ): Promise<proxycurl.PersonProfile> {
     return this.ky
       .get('api/find/company/role/', {
         searchParams: sanitizeSearchParams({
@@ -2181,7 +2181,7 @@ export class ProxycurlClient extends AIFunctionsProvider {
           ...opts
         })
       })
-      .json<proxycurl.PublicPerson>()
+      .json<proxycurl.PersonProfile>()
   }
 
   @aiFunction({
