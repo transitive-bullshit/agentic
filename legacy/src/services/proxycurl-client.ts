@@ -1879,6 +1879,16 @@ export namespace proxycurl {
   })
   export type PersonProfile = z.infer<typeof PersonProfileSchema>
 
+  export type ResolvedPersonProfile = {
+    profile: PersonProfile
+    url?: string
+    name_similarity_score?: number
+    company_similarity_score?: number
+    title_similarity_score?: number
+    location_similarity_score?: number
+    last_updated?: string
+  }
+
   export const PurpleAcquisitionSchema = z.object({
     acquired: z.array(PurpleAcquiredCompanySchema).optional(),
     acquired_by: PurpleAcquisitorSchema.optional()
@@ -2135,15 +2145,16 @@ export class ProxycurlClient extends AIFunctionsProvider {
   })
   async resolveLinkedInPerson(
     opts: proxycurl.PersonLookupEndpointParamsQueryClass
-  ): Promise<proxycurl.PersonProfile> {
+  ): Promise<proxycurl.ResolvedPersonProfile> {
     return this.ky
       .get('api/linkedin/profile/resolve', {
         searchParams: sanitizeSearchParams({
+          similarity_checks: 'include',
           enrich_profile: 'enrich',
           ...opts
         })
       })
-      .json<proxycurl.PersonProfile>()
+      .json<proxycurl.ResolvedPersonProfile>()
   }
 
   @aiFunction({
@@ -2173,7 +2184,7 @@ export class ProxycurlClient extends AIFunctionsProvider {
   })
   async resolveLinkedInPersonAtCompanyByRole(
     opts: proxycurl.RoleLookupEndpointParamsQueryClass
-  ): Promise<proxycurl.PersonProfile> {
+  ): Promise<proxycurl.ResolvedPersonProfile> {
     return this.ky
       .get('api/find/company/role/', {
         searchParams: sanitizeSearchParams({
@@ -2181,7 +2192,7 @@ export class ProxycurlClient extends AIFunctionsProvider {
           ...opts
         })
       })
-      .json<proxycurl.PersonProfile>()
+      .json<proxycurl.ResolvedPersonProfile>()
   }
 
   @aiFunction({
