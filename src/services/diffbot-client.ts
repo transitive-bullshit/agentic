@@ -94,26 +94,27 @@ export namespace diffbot {
   }
 
   export interface DiffbotObject {
-    date: string
-    sentiment: number
-    images: Image[]
-    author: string
-    estimatedDate: string
-    publisherRegion: string
-    icon: string
-    diffbotUri: string
-    siteName: string
     type: string
     title: string
-    tags: Tag[]
-    publisherCountry: string
-    humanLanguage: string
-    authorUrl: string
     pageUrl: string
-    html: string
-    text: string
+    diffbotUri: string
+    description?: string
+    date?: string
+    sentiment?: number
+    author?: string
+    estimatedDate?: string
+    publisherRegion?: string
+    icon?: string
+    siteName?: string
+    publisherCountry?: string
+    humanLanguage?: string
+    authorUrl?: string
+    html?: string
+    text?: string
+    images?: Image[]
+    tags?: Tag[]
     categories?: ObjectCategory[]
-    authors: Author[]
+    authors?: Author[]
     breadcrumb?: Breadcrumb[]
     items?: ListItem[]
     meta?: any

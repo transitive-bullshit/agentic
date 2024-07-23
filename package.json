@@ -121,6 +121,7 @@
     "mathjs": "^13.0.3",
     "np": "^10.0.7",
     "npm-run-all2": "^6.2.2",
+    "octokit": "^4.0.2",
     "only-allow": "^1.2.1",
     "openai-fetch": "^2.0.4",
     "prettier": "^3.3.3",
@@ -140,6 +141,7 @@
     "ai": "^3.1.30",
     "llamaindex": "^0.3.16",
     "mathjs": "^13.0.0",
+    "octokit": "^4.0.2",
     "twitter-api-sdk": "^1.2.1"
   },
   "peerDependenciesMeta": {
@@ -165,6 +167,9 @@
       "optional": true
     },
     "mathjs": {
+      "optional": true
+    },
+    "octokit": {
       "optional": true
     },
     "twitter-api-sdk": {
