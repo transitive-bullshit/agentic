@@ -126,7 +126,7 @@
     "openai-fetch": "^2.0.4",
     "prettier": "^3.3.3",
     "restore-cursor": "^5.0.0",
-    "tsup": "^8.2.2",
+    "tsup": "^8.2.3",
     "tsx": "^4.16.2",
     "twitter-api-sdk": "^1.2.1",
     "typescript": "^5.5.4",
