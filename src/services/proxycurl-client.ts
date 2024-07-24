@@ -1880,7 +1880,7 @@ export namespace proxycurl {
   export type PersonProfile = z.infer<typeof PersonProfileSchema>
 
   export type ResolvedPersonProfile = {
-    profile: PersonProfile
+    profile?: PersonProfile
     url?: string
     name_similarity_score?: number
     company_similarity_score?: number

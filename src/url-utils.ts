@@ -1,6 +1,6 @@
 import isRelativeUrlImpl from 'is-relative-url'
 import normalizeUrlImpl, {
-  type Options as NormalizeUrlOptions
+  type Options as NormalizeUrlImplOptions
 } from 'normalize-url'
 import QuickLRU from 'quick-lru'
 
@@ -39,9 +39,13 @@ export function isRelativeUrl(url: string): boolean {
   return isRelativeUrlImpl(url) && !url.startsWith('//')
 }
 
+export type NormalizeUrlOptions = NormalizeUrlImplOptions & {
+  allowSloppyUris?: boolean
+}
+
 export function normalizeUrl(
   url?: string,
-  options?: NormalizeUrlOptions
+  { allowSloppyUris = true, ...options }: NormalizeUrlOptions = {}
 ): string | undefined {
   let normalizedUrl: string | undefined
 
@@ -50,7 +54,7 @@ export function normalizeUrl(
   }
 
   if (isRelativeUrl(url)) {
-    if (!/^[./]/.test(url) && url.indexOf('.') > 0) {
+    if (allowSloppyUris && !/^[#./]/.test(url) && url.indexOf('.') > 0) {
       url = `https://${url}`
     } else {
       return undefined

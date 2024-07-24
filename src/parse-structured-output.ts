@@ -35,14 +35,17 @@ export function parseStructuredOutput<T>(
   outputSchema: ZodType<T>
 ): T {
   let result
-  if (outputSchema instanceof z.ZodArray) {
+  if (outputSchema instanceof z.ZodArray || 'element' in outputSchema) {
     result = parseArrayOutput(output)
-  } else if (outputSchema instanceof z.ZodObject) {
+  } else if (outputSchema instanceof z.ZodObject || 'omit' in outputSchema) {
     result = parseObjectOutput(output)
   } else if (outputSchema instanceof z.ZodBoolean) {
     result = parseBooleanOutput(output)
-  } else if (outputSchema instanceof z.ZodNumber) {
-    result = parseNumberOutput(output, outputSchema)
+  } else if (
+    outputSchema instanceof z.ZodNumber ||
+    'nonnegative' in outputSchema
+  ) {
+    result = parseNumberOutput(output, outputSchema as unknown as z.ZodNumber)
   } else {
     // Default to string output...
     result = output
@@ -69,6 +72,8 @@ export function safeParseStructuredOutput<T>(
       data
     }
   } catch (err: any) {
+    console.error(err)
+
     return {
       success: false,
       error: err.message
