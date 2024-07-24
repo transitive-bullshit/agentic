@@ -1,16 +1,9 @@
-import type { Simplify } from 'type-fest'
 import defaultKy, { type KyInstance } from 'ky'
 import pThrottle from 'p-throttle'
 import { z } from 'zod'
 
 import { aiFunction, AIFunctionsProvider } from '../fns.js'
-import {
-  assert,
-  getEnv,
-  omit,
-  sanitizeSearchParams,
-  throttleKy
-} from '../utils.js'
+import { assert, getEnv, sanitizeSearchParams, throttleKy } from '../utils.js'
 
 export namespace diffbot {
   export const API_BASE_URL = 'https://api.diffbot.com'
@@ -335,7 +328,7 @@ export namespace diffbot {
     hits: number
     kgversion: string
     request_ctx: RequestCtx
-    data: EnhanceEntityResponseDatum[]
+    data: EnhanceEntityResult[]
     errors: any[]
   }
 
@@ -353,7 +346,7 @@ export namespace diffbot {
     search: string
   }
 
-  export interface EnhanceEntityResponseDatum {
+  export interface EnhanceEntityResult {
     score: number
     esscore: number
     entity: Entity
@@ -608,27 +601,6 @@ export namespace diffbot {
     name: string
     type: string
   }
-
-  export function pruneEntity(entity: diffbot.Entity) {
-    return omit(
-      entity,
-      'allOriginHashes',
-      'locations',
-      'images',
-      'nationalities',
-      'awards',
-      'interests',
-      'suppliers',
-      'partnerships',
-      'industries',
-      'categories',
-      'technographics',
-      'employeeCategories',
-      'diffbotClassification'
-    )
-  }
-
-  export type PrunedEntity = Simplify<ReturnType<typeof pruneEntity>>
 }
 
 /**
@@ -721,8 +693,8 @@ export class DiffbotClient extends AIFunctionsProvider {
   })
   async enhanceEntity(
     opts: diffbot.EnhanceEntityOptions
-  ): Promise<diffbot.PrunedEntity[]> {
-    const res = await this.kyKnowledgeGraph
+  ): Promise<diffbot.EnhanceEntityResponse> {
+    return this.kyKnowledgeGraph
       .get('kg/v3/enhance', {
         searchParams: sanitizeSearchParams({
           ...opts,
@@ -730,8 +702,6 @@ export class DiffbotClient extends AIFunctionsProvider {
         })
       })
       .json<diffbot.EnhanceEntityResponse>()
-
-    return res.data.map((datum) => diffbot.pruneEntity(datum.entity))
   }
 
   async searchKnowledgeGraph(options: diffbot.KnowledgeGraphSearchOptions) {
