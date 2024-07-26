@@ -98,7 +98,8 @@
     "quick-lru": "^7.0.0",
     "type-fest": "^4.21.0",
     "zod": "^3.23.3",
-    "zod-to-json-schema": "^3.23.1"
+    "zod-to-json-schema": "^3.23.1",
+    "zod-validation-error": "^3.3.0"
   },
   "devDependencies": {
     "@aws-sdk/client-sso-oidc": "^3.616.0",

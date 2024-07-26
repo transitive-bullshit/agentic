@@ -1,20 +1,10 @@
-import type { JsonValue } from 'type-fest'
+import type { JsonObject, JsonValue } from 'type-fest'
 import { jsonrepair, JSONRepairError } from 'jsonrepair'
 import { z, type ZodType } from 'zod'
+import { fromZodError } from 'zod-validation-error'
 
 import { ParseError } from './errors.js'
-
-export type SafeParseResult<T> =
-  | {
-      success: true
-      data: T
-      error?: never
-    }
-  | {
-      success: false
-      data?: never
-      error: string
-    }
+import { type SafeParseResult } from './types.js'
 
 /**
  * Parses a string which is expected to contain a structured JSON value.
@@ -25,15 +15,18 @@ export type SafeParseResult<T> =
  * The JSON value is then parsed against a `zod` schema to enforce the shape of
  * the output.
  *
- * @param output - string to parse
- * @param outputSchema - zod schema
- *
  * @returns parsed output
  */
 export function parseStructuredOutput<T>(
-  output: string,
+  value: unknown,
   outputSchema: ZodType<T>
 ): T {
+  if (!value || typeof value !== 'string') {
+    throw new Error('Invalid output: expected string')
+  }
+
+  const output = value as string
+
   let result
   if (outputSchema instanceof z.ZodArray || 'element' in outputSchema) {
     result = parseArrayOutput(output)
@@ -55,16 +48,25 @@ export function parseStructuredOutput<T>(
   const safeResult = (outputSchema.safeParse as any)(result)
 
   if (!safeResult.success) {
-    throw new ParseError(safeResult.error)
+    throw fromZodError(safeResult.error)
   }
 
   return safeResult.data
 }
 
 export function safeParseStructuredOutput<T>(
-  output: string,
+  value: unknown,
   outputSchema: ZodType<T>
 ): SafeParseResult<T> {
+  if (!value || typeof value !== 'string') {
+    return {
+      success: false,
+      error: 'Invalid output: expected string'
+    }
+  }
+
+  const output = value as string
+
   try {
     const data = parseStructuredOutput<T>(output, outputSchema)
     return {
@@ -72,7 +74,7 @@ export function safeParseStructuredOutput<T>(
       data
     }
   } catch (err: any) {
-    console.error(err)
+    // console.error(err)
 
     return {
       success: false,
@@ -179,18 +181,16 @@ const BOOLEAN_OUTPUTS: Record<string, boolean> = {
  * @param output - string to parse
  * @returns parsed array
  */
-export function parseArrayOutput(output: string): Array<any> {
+export function parseArrayOutput(output: string): JsonValue[] {
   try {
     const arrayOutput = extractJSONFromString(output, 'array')
     if (arrayOutput.length === 0) {
-      throw new ParseError(`Invalid JSON array: ${output}`)
+      throw new ParseError('Invalid JSON array')
     }
 
     const parsedOutput = arrayOutput[0]
     if (!Array.isArray(parsedOutput)) {
-      throw new ParseError(
-        `Invalid JSON array: ${JSON.stringify(parsedOutput)}`
-      )
+      throw new ParseError('Expected JSON array')
     }
 
     return parsedOutput
@@ -211,24 +211,24 @@ export function parseArrayOutput(output: string): Array<any> {
  * @param output - string to parse
  * @returns parsed object
  */
-export function parseObjectOutput(output: string) {
+export function parseObjectOutput(output: string): JsonObject {
   try {
     const arrayOutput = extractJSONFromString(output, 'object')
     if (arrayOutput.length === 0) {
-      throw new ParseError(`Invalid JSON object: ${output}`)
+      throw new ParseError('Invalid JSON object')
     }
 
     let parsedOutput = arrayOutput[0]
     if (Array.isArray(parsedOutput)) {
       // TODO
       parsedOutput = parsedOutput[0]
-    } else if (typeof parsedOutput !== 'object') {
-      throw new ParseError(
-        `Invalid JSON object: ${JSON.stringify(parsedOutput)}`
-      )
     }
 
-    return parsedOutput
+    if (!parsedOutput || typeof parsedOutput !== 'object') {
+      throw new ParseError('Expected JSON object')
+    }
+
+    return parsedOutput as JsonObject
   } catch (err: any) {
     if (err instanceof JSONRepairError) {
       throw new ParseError(err.message, { cause: err })

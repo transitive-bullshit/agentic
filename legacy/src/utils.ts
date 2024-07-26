@@ -1,4 +1,3 @@
-import type { Jsonifiable } from 'type-fest'
 import dedent from 'dedent'
 import hashObjectImpl, { type Options as HashObjectOptions } from 'hash-object'
 
@@ -167,7 +166,9 @@ export function sanitizeSearchParams(
 /**
  * Stringifies a JSON value in a way that's optimized for use with LLM prompts.
  */
-export function stringifyForModel(jsonObject?: Jsonifiable): string {
+export function stringifyForModel(
+  jsonObject?: types.RelaxedJsonifiable
+): string {
   if (jsonObject === undefined) {
     return ''
   }
@@ -207,4 +208,25 @@ export function isAIFunction(obj: any): obj is types.AIFunction {
   if (!obj.spec.name || typeof obj.spec.name !== 'string') return false
 
   return true
+}
+
+export function getErrorMessage(error?: unknown): string {
+  if (!error) {
+    return 'unknown error'
+  }
+
+  if (typeof error === 'string') {
+    return error
+  }
+
+  const message = (error as any).message
+  if (message && typeof message === 'string') {
+    return message
+  }
+
+  try {
+    return JSON.stringify(error)
+  } catch {
+    return 'unknown error'
+  }
 }
