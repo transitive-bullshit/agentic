@@ -1,4 +1,4 @@
-import type { Jsonifiable } from 'type-fest'
+import type { Jsonifiable, SetOptional, Simplify } from 'type-fest'
 import type { z } from 'zod'
 
 import type { AIFunctionSet } from './ai-function-set.js'
@@ -6,8 +6,10 @@ import type { AIFunctionsProvider } from './fns.js'
 import type { Msg } from './message.js'
 
 export type { Msg } from './message.js'
+export type { Schema } from './schema.js'
 export type { KyInstance } from 'ky'
 export type { ThrottledFunction } from 'p-throttle'
+export type { Simplify } from 'type-fest'
 
 export type Nullable<T> = T | null
 
@@ -17,7 +19,15 @@ export type DeepNullable<T> = T extends object
 
 export type MaybePromise<T> = T | Promise<T>
 
-export type RelaxedJsonifiable = Jsonifiable | Record<string, Jsonifiable>
+// TODO: use a more specific type
+export type JSONSchema = Record<string, unknown>
+
+export type RelaxedJsonifiable =
+  | Jsonifiable
+  | Record<string, unknown>
+  | JSONSchema
+
+export type Context = object
 
 export interface AIFunctionSpec {
   /** AI Function name. */
@@ -27,7 +37,7 @@ export interface AIFunctionSpec {
   description: string
 
   /** JSON schema spec of the function's input parameters */
-  parameters: Record<string, unknown>
+  parameters: JSONSchema
 }
 
 export interface AIToolSpec {
@@ -79,3 +89,54 @@ export interface AIFunction<
   // TODO: this `any` shouldn't be necessary, but it is for `createAIFunction` results to be assignable to `AIFunctionLike`
   impl: (params: z.infer<InputSchema> | any) => MaybePromise<Return>
 }
+
+export interface ChatParams {
+  messages: Msg[]
+  model: string & {}
+  functions?: AIFunctionSpec[]
+  function_call?: 'none' | 'auto' | { name: string }
+  tools?: AIToolSpec[]
+  tool_choice?:
+    | 'none'
+    | 'auto'
+    | 'required'
+    | { type: 'function'; function: { name: string } }
+  parallel_tool_calls?: boolean
+  logit_bias?: Record<string, number>
+  logprobs?: boolean
+  max_tokens?: number
+  presence_penalty?: number
+  frequency_penalty?: number
+  response_format?: { type: 'text' | 'json_object' }
+  seed?: number
+  stop?: string | null | Array<string>
+  temperature?: number
+  top_logprobs?: number
+  top_p?: number
+  user?: string
+}
+
+/** An OpenAI-compatible chat completions API */
+export type ChatFn = (
+  params: Simplify<SetOptional<ChatParams, 'model'>>
+) => Promise<{ message: Msg }>
+
+export type AIChainResult = string | Record<string, any>
+
+export type AIChain<Result extends AIChainResult = string> = (
+  params:
+    | string
+    | Simplify<SetOptional<Omit<ChatParams, 'tools' | 'functions'>, 'model'>>
+) => Promise<Result>
+
+export type SafeParseResult<TData> =
+  | {
+      success: true
+      data: TData
+    }
+  | {
+      success: false
+      error: string
+    }
+
+export type ValidatorFn<TData> = (value: unknown) => SafeParseResult<TData>

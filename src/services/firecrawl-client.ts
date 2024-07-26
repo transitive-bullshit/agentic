@@ -3,6 +3,7 @@ import pThrottle from 'p-throttle'
 import z from 'zod'
 
 import { aiFunction, AIFunctionsProvider } from '../fns.js'
+import { isZodSchema } from '../schema.js'
 import { assert, delay, getEnv, throttleKy } from '../utils.js'
 import { zodToJsonSchema } from '../zod-to-json-schema.js'
 
@@ -157,7 +158,7 @@ export class FirecrawlClient extends AIFunctionsProvider {
 
     if (opts?.extractorOptions?.extractionSchema) {
       let schema = opts.extractorOptions.extractionSchema
-      if (schema instanceof z.ZodSchema) {
+      if (isZodSchema(schema)) {
         schema = zodToJsonSchema(schema)
       }
 
