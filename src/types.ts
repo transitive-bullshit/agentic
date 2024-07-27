@@ -1,9 +1,10 @@
-import type { Jsonifiable, SetOptional, Simplify } from 'type-fest'
+import type { Jsonifiable, SetOptional, SetRequired, Simplify } from 'type-fest'
 import type { z } from 'zod'
 
 import type { AIFunctionSet } from './ai-function-set.js'
 import type { AIFunctionsProvider } from './fns.js'
 import type { Msg } from './message.js'
+import type { Schema } from './schema.js'
 
 export type { Msg } from './message.js'
 export type { Schema } from './schema.js'
@@ -65,14 +66,14 @@ export type AIFunctionLike = AIFunctionsProvider | AIFunction | AIFunctionSet
  */
 export interface AIFunction<
   InputSchema extends z.ZodObject<any> = z.ZodObject<any>,
-  Return = any
+  Output = any
 > {
   /**
    * Invokes the underlying AI function `impl` but first validates the input
    * against this function's `inputSchema`. This method is callable and is
    * meant to be passed the raw LLM JSON string or an OpenAI-compatible Message.
    */
-  (input: string | Msg): MaybePromise<Return>
+  (input: string | Msg): MaybePromise<Output>
 
   /** The Zod schema for the input object. */
   inputSchema: InputSchema
@@ -87,7 +88,7 @@ export interface AIFunction<
    * The underlying function implementation without any arg parsing or validation.
    */
   // TODO: this `any` shouldn't be necessary, but it is for `createAIFunction` results to be assignable to `AIFunctionLike`
-  impl: (params: z.infer<InputSchema> | any) => MaybePromise<Return>
+  impl: (params: z.infer<InputSchema> | any) => MaybePromise<Output>
 }
 
 export interface ChatParams {
@@ -124,7 +125,7 @@ export type ChatFn = (
 export type AIChainResult = string | Record<string, any>
 
 export type AIChain<Result extends AIChainResult = string> = (
-  params:
+  params?:
     | string
     | Simplify<SetOptional<Omit<ChatParams, 'tools' | 'functions'>, 'model'>>
 ) => Promise<Result>
@@ -140,3 +141,24 @@ export type SafeParseResult<TData> =
     }
 
 export type ValidatorFn<TData> = (value: unknown) => SafeParseResult<TData>
+
+export type AIChainParams<Result extends AIChainResult = string> = {
+  chatFn: ChatFn
+  params?: Simplify<Partial<Omit<ChatParams, 'tools' | 'functions'>>>
+  tools?: AIFunctionLike[]
+  schema?: z.ZodType<Result> | Schema<Result>
+  maxCalls?: number
+  maxRetries?: number
+  toolCallConcurrency?: number
+  injectSchemaIntoSystemMessage?: boolean
+}
+
+export type ExtractObjectParams<Result extends AIChainResult = string> =
+  Simplify<
+    SetRequired<
+      Omit<AIChainParams<Result>, 'tools' | 'toolCallConcurrency' | 'params'>,
+      'schema'
+    > & {
+      params: SetRequired<Partial<ChatParams>, 'messages'>
+    }
+  >

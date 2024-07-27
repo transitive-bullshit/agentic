@@ -1,20 +1,25 @@
 #!/usr/bin/env node
 import 'dotenv/config'
 
-import { createAIChain, Msg } from '@agentic/stdlib'
+import { extractObject, Msg } from '@agentic/stdlib'
 import { ChatModel } from '@dexaai/dexter'
 import { z } from 'zod'
 
 async function main() {
   const chatModel = new ChatModel({
-    params: { model: 'gpt-4o', temperature: 0 },
+    params: { model: 'gpt-4o-mini', temperature: 0 },
     debug: true
   })
 
-  const chain = createAIChain({
+  const result = await extractObject({
     chatFn: chatModel.run.bind(chatModel),
     params: {
-      messages: [Msg.system('Extract a JSON user object from the given text.')]
+      messages: [
+        Msg.system('Extract a JSON user object from the given text.'),
+        Msg.user(
+          'Bob Vance is 42 years old and lives in Brooklyn, NY. He is a software engineer.'
+        )
+      ]
     },
     schema: z.object({
       name: z.string(),
@@ -23,9 +28,6 @@ async function main() {
     })
   })
 
-  const result = await chain(
-    'Bob Vance is 42 years old and lives in Brooklyn, NY. He is a software engineer.'
-  )
   console.log(result)
 }
 
