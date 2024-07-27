@@ -14,7 +14,7 @@ import { zodToJsonSchema } from './zod-to-json-schema.js'
  * The `spec` property of the returned function is the spec for adding the
  * function to the OpenAI API `functions` property.
  */
-export function createAIFunction<InputSchema extends z.ZodObject<any>, Return>(
+export function createAIFunction<InputSchema extends z.ZodObject<any>, Output>(
   spec: {
     /** Name of the function. */
     name: string
@@ -24,8 +24,8 @@ export function createAIFunction<InputSchema extends z.ZodObject<any>, Return>(
     inputSchema: InputSchema
   },
   /** Implementation of the function to call with the parsed arguments. */
-  implementation: (params: z.infer<InputSchema>) => types.MaybePromise<Return>
-): types.AIFunction<InputSchema, Return> {
+  implementation: (params: z.infer<InputSchema>) => types.MaybePromise<Output>
+): types.AIFunction<InputSchema, Output> {
   assert(spec.name, 'createAIFunction missing required "spec.name"')
   assert(
     spec.inputSchema,
@@ -52,7 +52,7 @@ export function createAIFunction<InputSchema extends z.ZodObject<any>, Return>(
   }
 
   // Call the implementation function with the parsed arguments.
-  const aiFunction: types.AIFunction<InputSchema, Return> = (
+  const aiFunction: types.AIFunction<InputSchema, Output> = (
     input: string | types.Msg
   ) => {
     const parsedInput = parseInput(input)

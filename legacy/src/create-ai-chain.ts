@@ -1,5 +1,4 @@
 import type { SetOptional } from 'type-fest'
-import type { ZodType } from 'zod'
 import pMap from 'p-map'
 
 import type * as types from './types.js'
@@ -33,18 +32,7 @@ export function createAIChain<Result extends types.AIChainResult = string>({
   maxRetries = 2,
   toolCallConcurrency = 8,
   injectSchemaIntoSystemMessage = true
-}: {
-  chatFn: types.ChatFn
-  params?: types.Simplify<
-    Partial<Omit<types.ChatParams, 'tools' | 'functions'>>
-  >
-  tools?: types.AIFunctionLike[]
-  schema?: ZodType<Result> | types.Schema<Result>
-  maxCalls?: number
-  maxRetries?: number
-  toolCallConcurrency?: number
-  injectSchemaIntoSystemMessage?: boolean
-}): types.AIChain<Result> {
+}: types.AIChainParams<Result>): types.AIChain<Result> {
   const functionSet = new AIFunctionSet(tools)
   const defaultParams: Partial<types.ChatParams> | undefined =
     rawSchema && !functionSet.size
@@ -67,7 +55,7 @@ export function createAIChain<Result extends types.AIChainResult = string>({
             ...chatParams,
             messages: [
               ...(params?.messages ?? []),
-              ...(chatParams.messages ?? [])
+              ...(chatParams?.messages ?? [])
             ]
           }
 
