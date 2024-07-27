@@ -28,8 +28,6 @@ export type RelaxedJsonifiable =
   | Record<string, unknown>
   | JSONSchema
 
-export type Context = object
-
 export interface AIFunctionSpec {
   /** AI Function name. */
   name: string
