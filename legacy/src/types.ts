@@ -1,16 +1,15 @@
-import type { Jsonifiable, SetOptional, SetRequired, Simplify } from 'type-fest'
+import type { Jsonifiable, SetOptional, Simplify } from 'type-fest'
 import type { z } from 'zod'
 
 import type { AIFunctionSet } from './ai-function-set.js'
 import type { AIFunctionsProvider } from './fns.js'
 import type { Msg } from './message.js'
-import type { Schema } from './schema.js'
 
 export type { Msg } from './message.js'
 export type { Schema } from './schema.js'
 export type { KyInstance } from 'ky'
 export type { ThrottledFunction } from 'p-throttle'
-export type { Simplify } from 'type-fest'
+export type { SetRequired, Simplify } from 'type-fest'
 
 export type Nullable<T> = T | null
 
@@ -136,24 +135,3 @@ export type SafeParseResult<TData> =
     }
 
 export type ValidatorFn<TData> = (value: unknown) => SafeParseResult<TData>
-
-export type AIChainParams<Result extends AIChainResult = string> = {
-  chatFn: ChatFn
-  params?: Simplify<Partial<Omit<ChatParams, 'tools' | 'functions'>>>
-  tools?: AIFunctionLike[]
-  schema?: z.ZodType<Result> | Schema<Result>
-  maxCalls?: number
-  maxRetries?: number
-  toolCallConcurrency?: number
-  injectSchemaIntoSystemMessage?: boolean
-}
-
-export type ExtractObjectParams<Result extends AIChainResult = string> =
-  Simplify<
-    SetRequired<
-      Omit<AIChainParams<Result>, 'tools' | 'toolCallConcurrency' | 'params'>,
-      'schema'
-    > & {
-      params: SetRequired<Partial<ChatParams>, 'messages'>
-    }
-  >

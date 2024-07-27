@@ -1,4 +1,5 @@
 import type { SetOptional } from 'type-fest'
+import type { z } from 'zod'
 import pMap from 'p-map'
 
 import type * as types from './types.js'
@@ -7,6 +8,19 @@ import { AbortError } from './errors.js'
 import { Msg } from './message.js'
 import { asSchema, augmentSystemMessageWithJsonSchema } from './schema.js'
 import { getErrorMessage } from './utils.js'
+
+export type AIChainParams<Result extends types.AIChainResult = string> = {
+  chatFn: types.ChatFn
+  params?: types.Simplify<
+    Partial<Omit<types.ChatParams, 'tools' | 'functions'>>
+  >
+  tools?: types.AIFunctionLike[]
+  schema?: z.ZodType<Result> | types.Schema<Result>
+  maxCalls?: number
+  maxRetries?: number
+  toolCallConcurrency?: number
+  injectSchemaIntoSystemMessage?: boolean
+}
 
 /**
  * Creates a chain of chat completion calls that can be invoked as a single
@@ -32,7 +46,7 @@ export function createAIChain<Result extends types.AIChainResult = string>({
   maxRetries = 2,
   toolCallConcurrency = 8,
   injectSchemaIntoSystemMessage = true
-}: types.AIChainParams<Result>): types.AIChain<Result> {
+}: AIChainParams<Result>): types.AIChain<Result> {
   const functionSet = new AIFunctionSet(tools)
   const defaultParams: Partial<types.ChatParams> | undefined =
     rawSchema && !functionSet.size

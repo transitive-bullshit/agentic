@@ -39,7 +39,10 @@ export abstract class AIFunctionsProvider {
   get functions(): AIFunctionSet {
     if (!this._functions) {
       const metadata = this.constructor[Symbol.metadata]
-      assert(metadata)
+      assert(
+        metadata,
+        'Your runtime does not appear to support ES decorator metadata: https://github.com/tc39/proposal-decorator-metadata/issues/14'
+      )
       const invocables =
         (metadata?.invocables as PrivateAIFunctionMetadata[]) ?? []
       // console.log({ metadata, invocables })

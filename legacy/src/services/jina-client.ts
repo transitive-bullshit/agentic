@@ -75,6 +75,12 @@ export namespace jina {
     }
   }
 
+  export interface ReaderResponseHtml extends JinaResponse {
+    data: {
+      html: string
+    }
+  }
+
   export interface SearchResponse extends JinaResponse {
     data: ReaderData[]
   }
@@ -159,7 +165,9 @@ export class JinaClient extends AIFunctionsProvider {
         ? T['json'] extends true
           ? T['returnFormat'] extends 'screenshot'
             ? jina.ReaderResponseScreenshot
-            : jina.ReaderResponse
+            : T['returnFormat'] extends 'html'
+              ? jina.ReaderResponseHtml
+              : jina.ReaderResponse
           : T['returnFormat'] extends 'screenshot'
             ? ArrayBuffer
             : string
