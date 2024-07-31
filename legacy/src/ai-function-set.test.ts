@@ -1,9 +1,9 @@
 import { expect, test } from 'vitest'
 import { z } from 'zod'
 
-import { AIFunctionSet } from './ai-function-set.js'
-import { aiFunction, AIFunctionsProvider } from './fns.js'
-import { calculator } from './tools/calculator.js'
+import { AIFunctionSet } from './ai-function-set'
+import { aiFunction, AIFunctionsProvider } from './fns'
+import { calculator } from './tools/calculator'
 
 class MockAITool extends AIFunctionsProvider {
   @aiFunction({

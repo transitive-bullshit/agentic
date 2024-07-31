@@ -2,12 +2,12 @@ import type { SetOptional } from 'type-fest'
 import type { z } from 'zod'
 import pMap from 'p-map'
 
-import type * as types from './types.js'
-import { AIFunctionSet } from './ai-function-set.js'
-import { AbortError } from './errors.js'
-import { Msg } from './message.js'
-import { asSchema, augmentSystemMessageWithJsonSchema } from './schema.js'
-import { getErrorMessage } from './utils.js'
+import type * as types from './types'
+import { AIFunctionSet } from './ai-function-set'
+import { AbortError } from './errors'
+import { Msg } from './message'
+import { asSchema, augmentSystemMessageWithJsonSchema } from './schema'
+import { getErrorMessage } from './utils'
 
 export type AIChainParams<Result extends types.AIChainResult = string> = {
   chatFn: types.ChatFn

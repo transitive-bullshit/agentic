@@ -1,7 +1,7 @@
 import defaultKy from 'ky'
 import pThrottle from 'p-throttle'
 
-import type { KyInstance } from '../types.js'
+import type { KyInstance } from '../types'
 import {
   assert,
   delay,
@@ -9,7 +9,7 @@ import {
   pruneNullOrUndefinedDeep,
   sanitizeSearchParams,
   throttleKy
-} from '../utils.js'
+} from '../utils'
 
 export namespace clearbit {
   // Allow up to 600 requests per minute by default.

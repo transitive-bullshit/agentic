@@ -1,9 +1,9 @@
 import type { z } from 'zod'
 
-import type * as types from './types.js'
-import { parseStructuredOutput } from './parse-structured-output.js'
-import { assert } from './utils.js'
-import { zodToJsonSchema } from './zod-to-json-schema.js'
+import type * as types from './types'
+import { parseStructuredOutput } from './parse-structured-output'
+import { assert } from './utils'
+import { zodToJsonSchema } from './zod-to-json-schema'
 
 /**
  * Create a function meant to be used with OpenAI tool or function calling.

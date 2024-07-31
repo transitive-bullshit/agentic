@@ -1,7 +1,7 @@
 import defaultKy, { type KyInstance } from 'ky'
 
-import { AIFunctionsProvider } from '../fns.js'
-import { assert, getEnv } from '../utils.js'
+import { AIFunctionsProvider } from '../fns'
+import { assert, getEnv } from '../utils'
 
 export namespace hackernews {
   export type ItemType =

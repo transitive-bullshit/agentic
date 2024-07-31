@@ -1,8 +1,8 @@
 import defaultKy, { type KyInstance } from 'ky'
 import pThrottle from 'p-throttle'
 
-import { AIFunctionsProvider } from '../fns.js'
-import { assert, getEnv, sanitizeSearchParams, throttleKy } from '../utils.js'
+import { AIFunctionsProvider } from '../fns'
+import { assert, getEnv, sanitizeSearchParams, throttleKy } from '../utils'
 
 // TODO: need to add `aiFunction` wrappers for each method
 

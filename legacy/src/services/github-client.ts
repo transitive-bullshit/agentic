@@ -1,7 +1,7 @@
 import { Octokit } from 'octokit'
 
-import { AIFunctionsProvider } from '../fns.js'
-import { assert, getEnv } from '../utils.js'
+import { AIFunctionsProvider } from '../fns'
+import { assert, getEnv } from '../utils'
 
 export namespace github {
   export interface User {

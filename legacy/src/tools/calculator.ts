@@ -1,7 +1,7 @@
 import { evaluate } from 'mathjs'
 import { z } from 'zod'
 
-import { createAIFunction } from '../create-ai-function.js'
+import { createAIFunction } from '../create-ai-function'
 
 // TODO: ensure `expr` is sanitized to not run arbitrary code
 

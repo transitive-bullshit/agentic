@@ -1,6 +1,6 @@
 import type { Jsonifiable } from 'type-fest'
 
-import { cleanStringForModel, stringifyForModel } from './utils.js'
+import { cleanStringForModel, stringifyForModel } from './utils'
 
 /**
  * Generic/default OpenAI message without any narrowing applied.

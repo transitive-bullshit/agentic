@@ -1,9 +1,9 @@
 import type { z } from 'zod'
 
-import type * as types from './types.js'
-import { safeParseStructuredOutput } from './parse-structured-output.js'
-import { stringifyForModel } from './utils.js'
-import { zodToJsonSchema } from './zod-to-json-schema.js'
+import type * as types from './types'
+import { safeParseStructuredOutput } from './parse-structured-output'
+import { stringifyForModel } from './utils'
+import { zodToJsonSchema } from './zod-to-json-schema'
 
 /**
  * Used to mark schemas so we can support both Zod and custom schemas.

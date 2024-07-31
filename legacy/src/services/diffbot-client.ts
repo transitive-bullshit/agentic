@@ -2,8 +2,8 @@ import defaultKy, { type KyInstance } from 'ky'
 import pThrottle from 'p-throttle'
 import { z } from 'zod'
 
-import { aiFunction, AIFunctionsProvider } from '../fns.js'
-import { assert, getEnv, sanitizeSearchParams, throttleKy } from '../utils.js'
+import { aiFunction, AIFunctionsProvider } from '../fns'
+import { assert, getEnv, sanitizeSearchParams, throttleKy } from '../utils'
 
 export namespace diffbot {
   export const API_BASE_URL = 'https://api.diffbot.com'

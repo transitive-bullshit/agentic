@@ -1,5 +1,5 @@
-import type * as types from './types.js'
-import { type AIChainParams, createAIChain } from './create-ai-chain.js'
+import type * as types from './types'
+import { type AIChainParams, createAIChain } from './create-ai-chain'
 
 export type ExtractObjectParams<Result extends types.AIChainResult = string> =
   types.Simplify<

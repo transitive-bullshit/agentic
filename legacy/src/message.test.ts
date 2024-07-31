@@ -1,8 +1,8 @@
 import type * as OpenAI from 'openai-fetch'
 import { describe, expect, expectTypeOf, it } from 'vitest'
 
-import type * as types from './types.js'
-import { Msg } from './message.js'
+import type * as types from './types'
+import { Msg } from './message'
 
 describe('Msg', () => {
   it('creates a message and fixes indentation', () => {

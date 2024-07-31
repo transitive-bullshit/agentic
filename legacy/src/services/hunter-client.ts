@@ -1,13 +1,13 @@
 import defaultKy, { type KyInstance } from 'ky'
 import { z } from 'zod'
 
-import { aiFunction, AIFunctionsProvider } from '../fns.js'
+import { aiFunction, AIFunctionsProvider } from '../fns'
 import {
   assert,
   getEnv,
   pruneNullOrUndefinedDeep,
   sanitizeSearchParams
-} from '../utils.js'
+} from '../utils'
 
 export namespace hunter {
   export const API_BASE_URL = 'https://api.hunter.io'

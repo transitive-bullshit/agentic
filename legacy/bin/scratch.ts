@@ -3,25 +3,25 @@ import 'dotenv/config'
 
 import restoreCursor from 'restore-cursor'
 
-// import { SearxngClient } from '../src/services/searxng-client.js'
-// import { ClearbitClient } from '../src/index.js'
-// import { ProxycurlClient } from '../src/services/proxycurl-client.js'
-// import { WikipediaClient } from '../src/index.js'
-// import { PerigonClient } from '../src/index.js'
-// import { FirecrawlClient } from '../src/index.js'
-// import { ExaClient } from '../src/index.js'
-// import { DiffbotClient } from '../src/index.js'
-// import { WolframAlphaClient } from '../src/index.js'
+// import { SearxngClient } from '../src/services/searxng-client'
+// import { ClearbitClient } from '../src/index'
+// import { ProxycurlClient } from '../src/services/proxycurl-client'
+// import { WikipediaClient } from '../src/index'
+// import { PerigonClient } from '../src/index'
+// import { FirecrawlClient } from '../src/index'
+// import { ExaClient } from '../src/index'
+// import { DiffbotClient } from '../src/index'
+// import { WolframAlphaClient } from '../src/index'
 // import {
 //   createTwitterV2Client,
 //   TwitterClient
-// } from '../src/services/twitter/index.js'
-// import { MidjourneyClient } from '../src/index.js'
-// import { BingClient } from '../src/index.js'
-// import { TavilyClient } from '../src/index.js'
-// import { SocialDataClient } from '../src/index.js'
-// import { HunterClient } from '../src/index.js'
-import { JinaClient } from '../src/index.js'
+// } from '../src/services/twitter/index'
+// import { MidjourneyClient } from '../src/index'
+// import { BingClient } from '../src/index'
+// import { TavilyClient } from '../src/index'
+// import { SocialDataClient } from '../src/index'
+// import { HunterClient } from '../src/index'
+import { JinaClient } from '../src/index'
 
 /**
  * Scratch pad for testing.

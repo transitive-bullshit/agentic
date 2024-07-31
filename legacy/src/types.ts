@@ -1,12 +1,12 @@
 import type { Jsonifiable, SetOptional, Simplify } from 'type-fest'
 import type { z } from 'zod'
 
-import type { AIFunctionSet } from './ai-function-set.js'
-import type { AIFunctionsProvider } from './fns.js'
-import type { Msg } from './message.js'
+import type { AIFunctionSet } from './ai-function-set'
+import type { AIFunctionsProvider } from './fns'
+import type { Msg } from './message'
 
-export type { Msg } from './message.js'
-export type { Schema } from './schema.js'
+export type { Msg } from './message'
+export type { Schema } from './schema'
 export type { KyInstance } from 'ky'
 export type { ThrottledFunction } from 'p-throttle'
 export type { SetRequired, Simplify } from 'type-fest'
