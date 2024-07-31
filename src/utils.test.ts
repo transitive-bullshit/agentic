@@ -2,14 +2,14 @@ import ky from 'ky'
 import pThrottle from 'p-throttle'
 import { describe, expect, test } from 'vitest'
 
-import { mockKyInstance } from './_utils.js'
+import { mockKyInstance } from './_utils'
 import {
   omit,
   pick,
   sanitizeSearchParams,
   stringifyForModel,
   throttleKy
-} from './utils.js'
+} from './utils'
 
 test('pick', () => {
   expect(pick({ a: 1, b: 2, c: 3 }, 'a', 'c')).toEqual({ a: 1, c: 3 })

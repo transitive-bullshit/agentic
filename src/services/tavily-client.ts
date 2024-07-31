@@ -2,8 +2,8 @@ import defaultKy, { type KyInstance } from 'ky'
 import pThrottle from 'p-throttle'
 import { z } from 'zod'
 
-import { aiFunction, AIFunctionsProvider } from '../fns.js'
-import { assert, getEnv, pruneNullOrUndefined, throttleKy } from '../utils.js'
+import { aiFunction, AIFunctionsProvider } from '../fns'
+import { assert, getEnv, pruneNullOrUndefined, throttleKy } from '../utils'
 
 export namespace tavily {
   export const API_BASE_URL = 'https://api.tavily.com'

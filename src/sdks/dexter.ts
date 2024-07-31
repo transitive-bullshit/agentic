@@ -1,7 +1,7 @@
 import { createAIFunction } from '@dexaai/dexter'
 
-import type { AIFunctionLike } from '../types.js'
-import { AIFunctionSet } from '../ai-function-set.js'
+import type { AIFunctionLike } from '../types'
+import { AIFunctionSet } from '../ai-function-set'
 
 /**
  * Converts a set of Agentic stdlib AI functions to an array of Dexter-

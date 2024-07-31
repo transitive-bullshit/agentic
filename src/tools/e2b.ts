@@ -1,8 +1,8 @@
 import { CodeInterpreter, type ProcessMessage } from '@e2b/code-interpreter'
 import { z } from 'zod'
 
-import { createAIFunction } from '../create-ai-function.js'
-import { getEnv } from '../utils.js'
+import { createAIFunction } from '../create-ai-function'
+import { getEnv } from '../utils'
 
 /**
  * E2B Python code interpreter sandbox.

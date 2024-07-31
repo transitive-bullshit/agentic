@@ -1,7 +1,7 @@
 import { tool } from 'ai'
 
-import type { AIFunctionLike } from '../types.js'
-import { AIFunctionSet } from '../ai-function-set.js'
+import type { AIFunctionLike } from '../types'
+import { AIFunctionSet } from '../ai-function-set'
 
 /**
  * Converts a set of Agentic stdlib AI functions to an object compatible with

@@ -1,11 +1,11 @@
 import pMap from 'p-map'
 import { z } from 'zod'
 
-import { aiFunction, AIFunctionsProvider } from '../fns.js'
-import { type diffbot, DiffbotClient } from '../services/diffbot-client.js'
-import { SerpAPIClient } from '../services/serpapi-client.js'
-import { isValidCrawlableUrl, normalizeUrl } from '../url-utils.js'
-import { omit, pick } from '../utils.js'
+import { aiFunction, AIFunctionsProvider } from '../fns'
+import { type diffbot, DiffbotClient } from '../services/diffbot-client'
+import { SerpAPIClient } from '../services/serpapi-client'
+import { isValidCrawlableUrl, normalizeUrl } from '../url-utils'
+import { omit, pick } from '../utils'
 
 // TODO: allow `search` tool to support other search clients
 // (e.g. Bing, Exa, Searxng, Serper, Tavily)

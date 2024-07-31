@@ -3,8 +3,8 @@ import { jsonrepair, JSONRepairError } from 'jsonrepair'
 import { z, type ZodType } from 'zod'
 import { fromZodError } from 'zod-validation-error'
 
-import { ParseError } from './errors.js'
-import { type SafeParseResult } from './types.js'
+import { ParseError } from './errors'
+import { type SafeParseResult } from './types'
 
 /**
  * Parses a string which is expected to contain a structured JSON value.

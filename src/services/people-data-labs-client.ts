@@ -1,7 +1,7 @@
 import defaultKy, { type KyInstance } from 'ky'
 import pThrottle from 'p-throttle'
 
-import { assert, getEnv, sanitizeSearchParams, throttleKy } from '../utils.js'
+import { assert, getEnv, sanitizeSearchParams, throttleKy } from '../utils'
 
 /**
  * TODO: I'm holding off on converting this client to an `AIFunctionsProvider`

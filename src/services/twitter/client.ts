@@ -1,7 +1,7 @@
 import { auth, Client as TwitterV2Client } from 'twitter-api-sdk'
 
-import { assert, getEnv } from '../../utils.js'
-import { getNango, validateNangoConnectionOAuthScopes } from './nango.js'
+import { assert, getEnv } from '../../utils'
+import { getNango, validateNangoConnectionOAuthScopes } from './nango'
 
 // Auth new Nango accounts here: https://app.nango.dev/connections
 

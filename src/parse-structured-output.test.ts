@@ -8,7 +8,7 @@ import {
   parseNumberOutput,
   parseObjectOutput,
   parseStructuredOutput
-} from './parse-structured-output.js'
+} from './parse-structured-output'
 
 test('extractJSONFromString should extract JSON object from string', () => {
   let jsonStr = 'Some text {"name":"John Doe"} more text'

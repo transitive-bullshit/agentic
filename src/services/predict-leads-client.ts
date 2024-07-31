@@ -2,15 +2,15 @@ import defaultKy, { type KyInstance } from 'ky'
 import pThrottle from 'p-throttle'
 import { z } from 'zod'
 
-import type { DeepNullable } from '../types.js'
-import { aiFunction, AIFunctionsProvider } from '../fns.js'
+import type { DeepNullable } from '../types'
+import { aiFunction, AIFunctionsProvider } from '../fns'
 import {
   assert,
   getEnv,
   pruneUndefined,
   sanitizeSearchParams,
   throttleKy
-} from '../utils.js'
+} from '../utils'
 
 // TODO: improve `domain` validation for fast-fail
 

@@ -2,8 +2,8 @@ import defaultKy, { type KyInstance } from 'ky'
 import pThrottle from 'p-throttle'
 import { z } from 'zod'
 
-import { aiFunction, AIFunctionsProvider } from '../fns.js'
-import { getEnv, pruneNullOrUndefined, throttleKy } from '../utils.js'
+import { aiFunction, AIFunctionsProvider } from '../fns'
+import { getEnv, pruneNullOrUndefined, throttleKy } from '../utils'
 
 export namespace jina {
   export const ReaderFormatSchema = z.enum([

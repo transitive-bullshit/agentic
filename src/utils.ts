@@ -1,9 +1,9 @@
 import dedent from 'dedent'
 import hashObjectImpl, { type Options as HashObjectOptions } from 'hash-object'
 
-import type * as types from './types.js'
+import type * as types from './types'
 
-export { assert } from './assert.js'
+export { assert } from './assert'
 export { default as delay } from 'delay'
 
 /**

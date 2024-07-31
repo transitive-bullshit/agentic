@@ -1,9 +1,9 @@
 import type { z } from 'zod'
 
-import type * as types from './types.js'
-import { AIFunctionSet } from './ai-function-set.js'
-import { createAIFunction } from './create-ai-function.js'
-import { assert } from './utils.js'
+import type * as types from './types'
+import { AIFunctionSet } from './ai-function-set'
+import { createAIFunction } from './create-ai-function'
+import { assert } from './utils'
 
 export interface PrivateAIFunctionMetadata {
   name: string

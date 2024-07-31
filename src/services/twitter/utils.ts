@@ -1,6 +1,6 @@
-import type * as types from './types.js'
-import { omit } from '../../utils.js'
-import { TwitterError } from './error.js'
+import type * as types from './types'
+import { omit } from '../../utils'
+import { TwitterError } from './error'
 
 /**
  * Error handler which takes in an unknown Error object and converts it to a

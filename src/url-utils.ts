@@ -4,7 +4,7 @@ import normalizeUrlImpl, {
 } from 'normalize-url'
 import QuickLRU from 'quick-lru'
 
-import { hashObject } from './utils.js'
+import { hashObject } from './utils'
 
 const protocolAllowList = new Set(['https:', 'http:'])
 const normalizedUrlCache = new QuickLRU<string, string>({

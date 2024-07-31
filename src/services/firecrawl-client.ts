@@ -2,10 +2,10 @@ import defaultKy, { type KyInstance } from 'ky'
 import pThrottle from 'p-throttle'
 import z from 'zod'
 
-import { aiFunction, AIFunctionsProvider } from '../fns.js'
-import { isZodSchema } from '../schema.js'
-import { assert, delay, getEnv, throttleKy } from '../utils.js'
-import { zodToJsonSchema } from '../zod-to-json-schema.js'
+import { aiFunction, AIFunctionsProvider } from '../fns'
+import { isZodSchema } from '../schema'
+import { assert, delay, getEnv, throttleKy } from '../utils'
+import { zodToJsonSchema } from '../zod-to-json-schema'
 
 export namespace firecrawl {
   export const BASE_URL = 'https://api.firecrawl.dev'

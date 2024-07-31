@@ -1,10 +1,10 @@
 import pThrottle from 'p-throttle'
 import { z } from 'zod'
 
-import type * as types from './types.js'
-import { aiFunction, AIFunctionsProvider } from '../../fns.js'
-import { assert, getEnv } from '../../utils.js'
-import { handleKnownTwitterErrors } from './utils.js'
+import type * as types from './types'
+import { aiFunction, AIFunctionsProvider } from '../../fns'
+import { assert, getEnv } from '../../utils'
+import { handleKnownTwitterErrors } from './utils'
 
 /**
  * This file contains rate-limited wrappers around all of the core Twitter API

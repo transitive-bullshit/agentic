@@ -2,8 +2,8 @@ import defaultKy, { type KyInstance } from 'ky'
 import pThrottle from 'p-throttle'
 import { z } from 'zod'
 
-import { aiFunction, AIFunctionsProvider } from '../fns.js'
-import { assert, getEnv, omit, throttleKy } from '../utils.js'
+import { aiFunction, AIFunctionsProvider } from '../fns'
+import { assert, getEnv, omit, throttleKy } from '../utils'
 
 export namespace scraper {
   // Allow up to 1 request per second by default.

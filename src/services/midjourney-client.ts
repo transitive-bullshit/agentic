@@ -1,9 +1,9 @@
 import defaultKy, { type KyInstance } from 'ky'
 import { z } from 'zod'
 
-import { TimeoutError } from '../errors.js'
-import { aiFunction, AIFunctionsProvider } from '../fns.js'
-import { assert, delay, getEnv, pruneNullOrUndefined } from '../utils.js'
+import { TimeoutError } from '../errors'
+import { aiFunction, AIFunctionsProvider } from '../fns'
+import { assert, delay, getEnv, pruneNullOrUndefined } from '../utils'
 
 // TODO: add additional methods for upscaling, variations, etc.
 

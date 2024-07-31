@@ -1,6 +1,6 @@
 import type * as types from './types.ts'
-import { AIFunctionsProvider } from './fns.js'
-import { isAIFunction } from './utils.js'
+import { AIFunctionsProvider } from './fns'
+import { isAIFunction } from './utils'
 
 /**
  * A set of AI functions intended to make it easier to work with large sets of

@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest'
 
-import { normalizeUrl } from './url-utils.js'
+import { normalizeUrl } from './url-utils'
 
 describe('normalizeUrl', () => {
   test('valid urls', async () => {

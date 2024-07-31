@@ -1,8 +1,8 @@
 import defaultKy, { type KyInstance } from 'ky'
 import { z } from 'zod'
 
-import { aiFunction, AIFunctionsProvider } from '../fns.js'
-import { assert, getEnv, omit } from '../utils.js'
+import { aiFunction, AIFunctionsProvider } from '../fns'
+import { assert, getEnv, omit } from '../utils'
 
 export namespace serper {
   export const API_BASE_URL = 'https://google.serper.dev'
