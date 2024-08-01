@@ -6,6 +6,8 @@ import { mockKyInstance } from './_utils'
 import {
   omit,
   pick,
+  pruneEmpty,
+  pruneEmptyDeep,
   sanitizeSearchParams,
   stringifyForModel,
   throttleKy
@@ -20,9 +22,11 @@ test('pick', () => {
 
 test('omit', () => {
   expect(omit({ a: 1, b: 2, c: 3 }, 'a', 'c')).toEqual({ b: 2 })
-  expect(
-    omit({ a: { b: 'foo' }, d: -1, foo: null } as any, 'b', 'foo')
-  ).toEqual({ a: { b: 'foo' }, d: -1 })
+  expect(omit({ a: { b: 'foo' }, d: -1, foo: null }, 'b', 'foo')).toEqual({
+    a: { b: 'foo' },
+    d: -1
+  })
+  expect(omit({ a: 1, b: 2, c: 3 }, 'foo', 'bar', 'c')).toEqual({ a: 1, b: 2 })
 })
 
 test('sanitizeSearchParams', () => {
@@ -69,6 +73,69 @@ describe('stringifyForModel', () => {
     const result = stringifyForModel()
     expect(result).toEqual('')
   })
+})
+
+test('pruneEmpty', () => {
+  expect(
+    pruneEmpty({
+      a: 1,
+      b: { foo: true },
+      c: [true],
+      d: 'foo',
+      e: null,
+      f: undefined
+    })
+  ).toEqual({
+    a: 1,
+    b: { foo: true },
+    c: [true],
+    d: 'foo'
+  })
+
+  expect(pruneEmpty({ a: 0, b: {}, c: [], d: '' })).toEqual({
+    a: 0
+  })
+  expect(pruneEmpty({ b: {}, c: [], d: '' })).toEqual({})
+
+  expect(
+    pruneEmpty({
+      a: null,
+      b: { foo: [{}], bar: [null, undefined, ''] },
+      c: ['', '', ''],
+      d: '',
+      e: undefined,
+      f: [],
+      g: {}
+    })
+  ).toEqual({
+    b: { foo: [{}], bar: [null, undefined, ''] },
+    c: ['', '', '']
+  })
+})
+
+test('pruneEmptyDeep', () => {
+  expect(
+    pruneEmptyDeep({ a: 1, b: { foo: true }, c: [true], d: 'foo' })
+  ).toEqual({
+    a: 1,
+    b: { foo: true },
+    c: [true],
+    d: 'foo'
+  })
+
+  expect(pruneEmptyDeep({ a: 0, b: {}, c: [], d: '' })).toEqual({
+    a: 0
+  })
+
+  expect(
+    pruneEmptyDeep({
+      a: null,
+      b: { foo: [{}], bar: [null, undefined, ''] },
+      c: ['', '', ''],
+      d: '',
+      e: undefined
+    })
+  ).toEqual(undefined)
 })
 
 test(
