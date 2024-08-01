@@ -45,7 +45,7 @@ export namespace wikipedia {
     acceptLanguage?: string
   }
 
-  export interface PageSummary {
+  export interface PageSummaryResponse {
     ns?: number
     index?: number
     type: string
@@ -182,6 +182,6 @@ export class WikipediaClient extends AIFunctionsProvider {
           'accept-language': acceptLanguage
         }
       })
-      .json<wikipedia.PageSummary>()
+      .json<wikipedia.PageSummaryResponse>()
   }
 }

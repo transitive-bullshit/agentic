@@ -141,6 +141,9 @@ importers:
       vitest:
         specifier: 2.0.4
         version: 2.0.4(@types/node@22.0.0)
+      wikibase-sdk:
+        specifier: ^10.0.2
+        version: 10.0.2
 
   examples:
     dependencies:
@@ -6443,6 +6446,10 @@ packages:
   widest-line@5.0.0:
     resolution: {integrity: sha512-c9bZp7b5YtRj2wOe6dlj32MK+Bx/M/d+9VB2SHM1OtsUHR0aV0tdP6DWh/iMt0kWi1t5g1Iudu6hQRNd1A4PVA==}
     engines: {node: '>=18'}
+
+  wikibase-sdk@10.0.2:
+    resolution: {integrity: sha512-4J1efmQU9oUC66BtqJkiqvLNtF1XVOvPKfnHMFfyyRcAHLTTeXnh+lDFIDiyI2sbNt2Q7oa4UlsxDB3ARK4CJA==}
+    engines: {node: '>= 12.0.0'}
 
   wikipedia@2.1.2:
     resolution: {integrity: sha512-RAYaMpXC9/E873RaSEtlEa8dXK4e0p5k98GKOd210MtkE5emm6fcnwD+N6ZA4cuffjDWagvhaQKtp/mGp2BOVQ==}
@@ -14476,6 +14483,8 @@ snapshots:
   widest-line@5.0.0:
     dependencies:
       string-width: 7.2.0
+
+  wikibase-sdk@10.0.2: {}
 
   wikipedia@2.1.2:
     dependencies:
