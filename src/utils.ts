@@ -15,8 +15,8 @@ export { default as delay } from 'delay'
  * ```
  */
 export const omit = <
-  T extends Record<any, unknown> | object,
-  K extends keyof T = keyof T
+  T extends Record<string, unknown> | object,
+  K extends keyof any
 >(
   inputObj: T,
   ...keys: K[]
@@ -36,8 +36,8 @@ export const omit = <
  * ```
  */
 export const pick = <
-  T extends Record<any, unknown> | object,
-  K extends keyof T = keyof T
+  T extends Record<string, unknown> | object,
+  K extends keyof T
 >(
   inputObj: T,
   ...keys: K[]
@@ -108,6 +108,50 @@ export function pruneEmpty<T extends Record<string, any>>(
       return true
     })
   ) as NonNullable<T>
+}
+
+export function pruneEmptyDeep<T>(
+  value?: T
+):
+  | undefined
+  | (T extends Record<string, any>
+      ? { [K in keyof T]: Exclude<T[K], undefined | null> }
+      : T extends Array<infer U>
+        ? Array<Exclude<U, undefined | null>>
+        : Exclude<T, null>) {
+  if (value === undefined || value === null) return undefined
+
+  if (typeof value === 'string') {
+    if (!value) return undefined
+
+    return value as any
+  }
+
+  if (Array.isArray(value)) {
+    if (!value.length) return undefined
+
+    value = value
+      .map((v) => pruneEmptyDeep(v))
+      .filter((v) => v !== undefined) as any
+
+    if (!value || !Array.isArray(value) || !value.length) return undefined
+    return value as any
+  }
+
+  if (typeof value === 'object') {
+    if (!Object.keys(value).length) return undefined
+
+    value = Object.fromEntries(
+      Object.entries(value)
+        .map(([k, v]) => [k, pruneEmptyDeep(v)])
+        .filter(([, v]) => v !== undefined)
+    )
+
+    if (!value || !Object.keys(value).length) return undefined
+    return value as any
+  }
+
+  return value as any
 }
 
 export function getEnv(name: string): string | undefined {

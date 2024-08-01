@@ -22,10 +22,6 @@
     "strict": true,
     "useDefineForClassFields": true,
     "verbatimModuleSyntax": true
-
-    // NOTE: these are deprecated
-    // "experimentalDecorators": true,
-    // "emitDecoratorMetadata": true,
   },
   "include": ["src"]
 }
