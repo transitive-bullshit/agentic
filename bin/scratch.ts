@@ -3,25 +3,7 @@ import 'dotenv/config'
 
 import restoreCursor from 'restore-cursor'
 
-// import { SearxngClient } from '../src/services/searxng-client'
-// import { ClearbitClient } from '../src/index'
-// import { ProxycurlClient } from '../src/services/proxycurl-client'
-// import { WikipediaClient } from '../src/index'
-// import { PerigonClient } from '../src/index'
-// import { FirecrawlClient } from '../src/index'
-// import { ExaClient } from '../src/index'
-// import { DiffbotClient } from '../src/index'
-// import { WolframAlphaClient } from '../src/index'
-// import {
-//   createTwitterV2Client,
-//   TwitterClient
-// } from '../src/services/twitter/index'
-// import { MidjourneyClient } from '../src/index'
-// import { BingClient } from '../src/index'
-// import { TavilyClient } from '../src/index'
-// import { SocialDataClient } from '../src/index'
-// import { HunterClient } from '../src/index'
-import { JinaClient } from '../src/index'
+import { WikipediaClient } from '../src'
 
 /**
  * Scratch pad for testing.
@@ -137,17 +119,27 @@ async function main() {
   // })
   // console.log(JSON.stringify(res, null, 2))
 
-  const jina = new JinaClient()
-  const res = await jina.readUrl({
-    url: 'https://news.ycombinator.com'
-    // returnFormat: 'screenshot'
-    // json: true
-  })
+  // const jina = new JinaClient()
+  // const res = await jina.readUrl({
+  //   url: 'https://news.ycombinator.com'
+  //   // returnFormat: 'screenshot'
+  //   // json: true
+  // })
   // const res = await jina.search({
   //   query: 'trump assassination attempt',
   //   // returnFormat: 'screenshot',
   //   json: true
   // })
+
+  // const serper = new SerpAPIClient()
+  // const res = await serper.search({
+  //   q: 'elon musk'
+  // })
+  const wikipedia = new WikipediaClient()
+  const res = await wikipedia.getPageSummary({
+    title: 'Elon_musk'
+  })
+
   console.log(JSON.stringify(res, null, 2))
 }
 

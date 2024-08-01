@@ -131,7 +131,8 @@
     "tsx": "^4.16.2",
     "twitter-api-sdk": "^1.2.1",
     "typescript": "^5.5.4",
-    "vitest": "2.0.4"
+    "vitest": "2.0.4",
+    "wikibase-sdk": "^10.0.2"
   },
   "peerDependencies": {
     "@dexaai/dexter": "^2.0.3",
@@ -143,7 +144,8 @@
     "llamaindex": "^0.3.16",
     "mathjs": "^13.0.0",
     "octokit": "^4.0.2",
-    "twitter-api-sdk": "^1.2.1"
+    "twitter-api-sdk": "^1.2.1",
+    "wikibase-sdk": "^10.0.2"
   },
   "peerDependenciesMeta": {
     "@dexaai/dexter": {
@@ -174,6 +176,9 @@
       "optional": true
     },
     "twitter-api-sdk": {
+      "optional": true
+    },
+    "wikibase-sdk": {
       "optional": true
     }
   },
