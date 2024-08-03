@@ -62,7 +62,14 @@ export class GitHubClient extends AIFunctionsProvider {
     this.octokit = new Octokit({ auth: apiKey })
   }
 
-  async getUser(username: string): Promise<github.User> {
+  async getUserByUsername(
+    usernameOrOpts: string | { username: string }
+  ): Promise<github.User> {
+    const { username } =
+      typeof usernameOrOpts === 'string'
+        ? { username: usernameOrOpts }
+        : usernameOrOpts
+
     const res = await this.octokit.request(`GET /users/${username}`, {
       headers: {
         'X-GitHub-Api-Version': '2022-11-28'
