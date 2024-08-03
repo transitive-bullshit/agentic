@@ -10,6 +10,8 @@ export default defineConfig([
       'src/sdks/langchain.ts',
       'src/sdks/llamaindex.ts',
       'src/services/twitter/index.ts',
+      'src/services/github-client.ts',
+      'src/services/wikidata-client.ts',
       'src/tools/calculator.ts',
       'src/tools/e2b.ts'
     ],

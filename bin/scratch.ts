@@ -3,7 +3,7 @@ import 'dotenv/config'
 
 import restoreCursor from 'restore-cursor'
 
-import { WikipediaClient } from '../src'
+import { SerperClient } from '../src'
 
 /**
  * Scratch pad for testing.
@@ -131,14 +131,14 @@ async function main() {
   //   json: true
   // })
 
-  // const serper = new SerpAPIClient()
-  // const res = await serper.search({
-  //   q: 'elon musk'
-  // })
-  const wikipedia = new WikipediaClient()
-  const res = await wikipedia.getPageSummary({
-    title: 'Elon_musk'
+  const serper = new SerperClient()
+  const res = await serper.search({
+    q: 'elon musk'
   })
+  // const wikipedia = new WikipediaClient()
+  // const res = await wikipedia.getPageSummary({
+  //   title: 'Elon_musk'
+  // })
 
   console.log(JSON.stringify(res, null, 2))
 }
