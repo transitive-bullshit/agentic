@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 import 'dotenv/config'
 
-import { PerigonClient, SerperClient } from '@agentic/stdlib'
-import { createDexterFunctions } from '@agentic/stdlib/dexter'
+import { createDexterFunctions } from '@agentic/dexter'
+import { PerigonClient } from '@agentic/perigon'
+import { SerperClient } from '@agentic/serper'
 import { ChatModel, createAIRunner } from '@dexaai/dexter'
 
 async function main() {

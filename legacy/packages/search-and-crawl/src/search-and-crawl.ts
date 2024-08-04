@@ -1,10 +1,15 @@
-import { aiFunction, AIFunctionsProvider , omit, pick } from '@agentic/core'
+import {
+  aiFunction,
+  AIFunctionsProvider,
+  isValidCrawlableUrl,
+  normalizeUrl,
+  omit,
+  pick
+} from '@agentic/core'
+import { type diffbot, DiffbotClient } from '@agentic/diffbot'
+import { SerpAPIClient } from '@agentic/serpapi'
 import pMap from 'p-map'
 import { z } from 'zod'
-
-import { type diffbot, DiffbotClient } from '../services/diffbot-client'
-import { SerpAPIClient } from '../services/serpapi-client'
-import { isValidCrawlableUrl, normalizeUrl } from '../url-utils'
 
 // TODO: allow `search` tool to support other search clients
 // (e.g. Bing, Exa, Searxng, Serper, Tavily)

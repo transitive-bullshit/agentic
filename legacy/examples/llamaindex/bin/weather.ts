@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 import 'dotenv/config'
 
-import { WeatherClient } from '@agentic/stdlib'
-import { createLlamaIndexTools } from '@agentic/stdlib/llamaindex'
+import { createLlamaIndexTools } from '@agentic/llamaindex'
+import { WeatherClient } from '@agentic/weather'
 import { OpenAI, OpenAIAgent } from 'llamaindex'
 
 async function main() {
@@ -19,7 +19,7 @@ async function main() {
     message: 'What is the weather in San Francisco?'
   })
 
-  console.log(response.response.message.content)
+  console.log(response.message.content)
 }
 
 await main()

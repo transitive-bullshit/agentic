@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 import 'dotenv/config'
 
-import { assert, WeatherClient } from '@agentic/stdlib'
+import { assert } from '@agentic/core'
+import { WeatherClient } from '@agentic/weather'
 import OpenAI from 'openai'
 
 async function main() {
@@ -51,7 +52,7 @@ async function main() {
       temperature: 0,
       tools: weather.functions.toolSpecs
     })
-    const message = res.choices[0].message
+    const message = res.choices?.[0]?.message
     console.log(JSON.stringify(message, null, 2))
   }
 }

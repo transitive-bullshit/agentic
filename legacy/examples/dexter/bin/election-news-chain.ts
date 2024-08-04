@@ -1,12 +1,9 @@
 #!/usr/bin/env node
 import 'dotenv/config'
 
-import {
-  createAIChain,
-  Msg,
-  PerigonClient,
-  SerperClient
-} from '@agentic/stdlib'
+import { createAIChain, Msg } from '@agentic/core'
+import { PerigonClient } from '@agentic/perigon'
+import { SerperClient } from '@agentic/serper'
 import { ChatModel } from '@dexaai/dexter'
 
 async function main() {

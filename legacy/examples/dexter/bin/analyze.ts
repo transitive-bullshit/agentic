@@ -1,13 +1,16 @@
 #!/usr/bin/env node
 import 'dotenv/config'
 
-import { DiffbotClient, SearchAndCrawl, SerpAPIClient } from '@agentic/stdlib'
-import { createDexterFunctions } from '@agentic/stdlib/dexter'
+import { createDexterFunctions } from '@agentic/dexter'
+import { DiffbotClient } from '@agentic/diffbot'
+import { SearchAndCrawl } from '@agentic/search-and-crawl'
+import { SerpAPIClient } from '@agentic/serpapi'
 import { ChatModel, createAIRunner } from '@dexaai/dexter'
 
 async function main() {
   const serpapi = new SerpAPIClient()
   const diffbot = new DiffbotClient()
+
   const searchAndCrawl = new SearchAndCrawl({ serpapi, diffbot })
 
   const runner = createAIRunner({
