@@ -1,9 +1,8 @@
 #!/usr/bin/env node
 import 'dotenv/config'
 
+import { SerperClient } from '@agentic/serper'
 import restoreCursor from 'restore-cursor'
-
-import { SerperClient } from '../src'
 
 /**
  * Scratch pad for testing.

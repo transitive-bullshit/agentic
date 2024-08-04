@@ -82,7 +82,7 @@ importers:
         version: 1.4.2(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       ai:
         specifier: ^3.1.30
-        version: 3.3.0(openai@4.54.0(encoding@0.1.13))(react@18.3.1)(sswr@2.1.0(svelte@4.2.18))(svelte@4.2.18)(vue@3.4.35(typescript@5.5.4))(zod@3.23.8)
+        version: 3.3.0(openai@4.54.0)(react@18.3.1)(sswr@2.1.0(svelte@4.2.18))(svelte@4.2.18)(vue@3.4.35(typescript@5.5.4))(zod@3.23.8)
       openai:
         specifier: ^4.49.0
         version: 4.54.0(encoding@0.1.13)
@@ -234,6 +234,25 @@ importers:
         specifier: workspace:*
         version: link:../../packages/tsconfig
 
+  examples/playground:
+    dependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      '@agentic/serper':
+        specifier: workspace:*
+        version: link:../../packages/serper
+      restore-cursor:
+        specifier: ^5.1.0
+        version: 5.1.0
+      zod:
+        specifier: ^3.23.8
+        version: 3.23.8
+    devDependencies:
+      '@agentic/tsconfig':
+        specifier: workspace:*
+        version: link:../../packages/tsconfig
+
   packages/ai-sdk:
     devDependencies:
       '@agentic/core':
@@ -244,7 +263,7 @@ importers:
         version: link:../tsconfig
       ai:
         specifier: ^3.1.30
-        version: 3.3.0(openai@4.54.0(encoding@0.1.13))(react@18.3.1)(sswr@2.1.0(svelte@4.2.18))(svelte@4.2.18)(vue@3.4.35(typescript@5.5.4))(zod@3.23.8)
+        version: 3.3.0(openai@4.54.0)(react@18.3.1)(sswr@2.1.0(svelte@4.2.18))(svelte@4.2.18)(vue@3.4.35(typescript@5.5.4))(zod@3.23.8)
 
   packages/bing:
     dependencies:
@@ -9557,7 +9576,7 @@ snapshots:
       clean-stack: 4.2.0
       indent-string: 5.0.0
 
-  ai@3.3.0(openai@4.54.0(encoding@0.1.13))(react@18.3.1)(sswr@2.1.0(svelte@4.2.18))(svelte@4.2.18)(vue@3.4.35(typescript@5.5.4))(zod@3.23.8):
+  ai@3.3.0(openai@4.54.0)(react@18.3.1)(sswr@2.1.0(svelte@4.2.18))(svelte@4.2.18)(vue@3.4.35(typescript@5.5.4))(zod@3.23.8):
     dependencies:
       '@ai-sdk/provider': 0.0.14
       '@ai-sdk/provider-utils': 1.0.5(zod@3.23.8)
