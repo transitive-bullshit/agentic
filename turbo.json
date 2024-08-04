@@ -8,9 +8,8 @@
       "outputLogs": "new-only"
     },
     "clean": {
-      "dependsOn": ["^clean"],
-      "outputs": ["dist/**"],
-      "outputLogs": "new-only"
+      "cache": false,
+      "dependsOn": ["^clean"]
     },
     "test": {
       "dependsOn": [
