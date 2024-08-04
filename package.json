@@ -21,56 +21,6 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "default": "./dist/index.js"
-    },
-    "./ai-sdk": {
-      "types": "./dist/sdks/ai-sdk.d.ts",
-      "import": "./dist/sdks/ai-sdk.js",
-      "default": "./dist/sdks/ai-sdk.js"
-    },
-    "./dexter": {
-      "types": "./dist/sdks/dexter.d.ts",
-      "import": "./dist/sdks/dexter.js",
-      "default": "./dist/sdks/dexter.js"
-    },
-    "./genkit": {
-      "types": "./dist/sdks/genkit.d.ts",
-      "import": "./dist/sdks/genkit.js",
-      "default": "./dist/sdks/genkit.js"
-    },
-    "./langchain": {
-      "types": "./dist/sdks/langchain.d.ts",
-      "import": "./dist/sdks/langchain.js",
-      "default": "./dist/sdks/langchain.js"
-    },
-    "./llamaindex": {
-      "types": "./dist/sdks/llamaindex.d.ts",
-      "import": "./dist/sdks/llamaindex.js",
-      "default": "./dist/sdks/llamaindex.js"
-    },
-    "./calculator": {
-      "types": "./dist/tools/calculator.d.ts",
-      "import": "./dist/tools/calculator.js",
-      "default": "./dist/tools/calculator.js"
-    },
-    "./e2b": {
-      "types": "./dist/tools/e2b.d.ts",
-      "import": "./dist/tools/e2b.js",
-      "default": "./dist/tools/e2b.js"
-    },
-    "./twitter": {
-      "types": "./dist/services/twitter/index.d.ts",
-      "import": "./dist/services/twitter/index.js",
-      "default": "./dist/services/twitter/index.js"
-    },
-    "./github": {
-      "types": "./dist/services/github-client.d.ts",
-      "import": "./dist/services/github-client.js",
-      "default": "./dist/services/github-client.js"
-    },
-    "./wikidata": {
-      "types": "./dist/services/wikidata-client.d.ts",
-      "import": "./dist/services/wikidata-client.js",
-      "default": "./dist/services/wikidata-client.js"
     }
   },
   "files": [
@@ -143,54 +93,6 @@
     "typescript": "^5.5.4",
     "vitest": "2.0.4",
     "wikibase-sdk": "^10.0.2"
-  },
-  "peerDependencies": {
-    "@dexaai/dexter": "^2.0.3",
-    "@e2b/code-interpreter": "^0.0.7",
-    "@genkit-ai/ai": "^0.5.2",
-    "@langchain/core": "^0.2.6",
-    "@nangohq/node": "^0.39.33",
-    "ai": "^3.1.30",
-    "llamaindex": "^0.3.16",
-    "mathjs": "^13.0.0",
-    "octokit": "^4.0.2",
-    "twitter-api-sdk": "^1.2.1",
-    "wikibase-sdk": "^10.0.2"
-  },
-  "peerDependenciesMeta": {
-    "@dexaai/dexter": {
-      "optional": true
-    },
-    "@e2b/code-interpreter": {
-      "optional": true
-    },
-    "@genkit-ai/ai": {
-      "optional": true
-    },
-    "@langchain/core": {
-      "optional": true
-    },
-    "@nangohq/node": {
-      "optional": true
-    },
-    "ai": {
-      "optional": true
-    },
-    "llamaindex": {
-      "optional": true
-    },
-    "mathjs": {
-      "optional": true
-    },
-    "octokit": {
-      "optional": true
-    },
-    "twitter-api-sdk": {
-      "optional": true
-    },
-    "wikibase-sdk": {
-      "optional": true
-    }
   },
   "lint-staged": {
     "*.{ts,tsx}": [
