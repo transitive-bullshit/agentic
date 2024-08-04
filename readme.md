@@ -33,7 +33,7 @@
 
 ## Intro
 
-The goal of this project is to create a **set of standard AI functions / tools** which are **optimized for both normal TS-usage as well as LLM-based apps** and **work with all of the major TS AI SDKs** (LangChain, LlamaIndex, Vercel AI SDK, OpenAI SDK, etc).
+The goal of this project is to create a **set of standard AI functions / tools** which are **optimized for both normal TS-usage as well as LLM-based apps** and work with all of the major TS AI SDKs (LangChain, LlamaIndex, Vercel AI SDK, OpenAI SDK, etc).
 
 Agentic clients like `WeatherClient` can be used as normal TS classes:
 
