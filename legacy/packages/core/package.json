@@ -48,7 +48,7 @@
     "zod-validation-error": "^3.3.0"
   },
   "peerDependencies": {
-    "zod": "^3.23.3"
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@agentic/tsconfig": "workspace:*",

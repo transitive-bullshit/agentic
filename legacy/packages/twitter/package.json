@@ -37,7 +37,7 @@
   },
   "peerDependencies": {
     "@agentic/core": "workspace:*",
-    "zod": "^3.23.3",
+    "zod": "^3.23.8",
     "@nangohq/node": "^0.42.2",
     "twitter-api-sdk": "^1.2.1"
   },

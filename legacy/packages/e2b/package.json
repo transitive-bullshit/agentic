@@ -30,11 +30,10 @@
     "test:lint": "eslint .",
     "test:typecheck": "tsc --noEmit"
   },
-  "dependencies": {},
   "peerDependencies": {
     "@agentic/core": "workspace:*",
     "@e2b/code-interpreter": "^0.0.8",
-    "zod": "^3.23.3"
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@agentic/core": "workspace:*",
