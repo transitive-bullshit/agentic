@@ -127,11 +127,6 @@ npm install @agentic/stdlib @agentic/core zod
 
 This package is [ESM only](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c) and requires `Node.js >= 18` or an equivalent environment (bun, deno, CF workers, etc).
 
-> [!NOTE]
-> All heavy third-party imports are isolated as _optional peer dependencies_ to keep the main `@agentic/stdlib` package as lightweight as possible.
-
-Depending on the AI SDK and tool you want to use, you'll also need to install the required peer dependencies.
-
 ### AI SDKs
 
 Each AI SDK adapter is available from it's own package and needs to be installed in addition to the packages above.
@@ -142,7 +137,7 @@ Each AI SDK adapter is available from it's own package and needs to be installed
 </summary>
 
 ```sh
-npm install @agentic/ai-sdk
+npm install @agentic/ai-sdk ai
 ```
 
 ```ts
@@ -157,7 +152,7 @@ import { createAISDKTools } from '@agentic/ai-sdk'
 </summary>
 
 ```sh
-npm install @agentic/langchain
+npm install @agentic/langchain @langchain/core langchain
 ```
 
 ```ts
@@ -172,7 +167,7 @@ import { createLangChainTools } from '@agentic/langchain'
 </summary>
 
 ```sh
-npm install @agentic/llamaindex
+npm install @agentic/llamaindex llamaindex
 ```
 
 ```ts
@@ -187,7 +182,7 @@ import { createLlamaIndexTools } from '@agentic/llamaindex'
 </summary>
 
 ```sh
-npm install @agentic/genkit
+npm install @agentic/genkit @genkit-ai/ai @genkit-ai/core
 ```
 
 ```ts
@@ -202,7 +197,7 @@ import { createGenkitTools } from '@agentic/genkit'
 </summary>
 
 ```sh
-npm install @agentic/dexter
+npm install @agentic/dexter @dexaai/dexter
 ```
 
 ```ts
@@ -279,7 +274,7 @@ const messages: OpenAI.ChatCompletionMessageParam[] = [
 
 </details>
 
-See the [examples](./examples) directory for examples of how to use each of these adapters.
+See the [examples](./examples) directory for working examples of how to use each of these adapters.
 
 ### Optimized Imports
 
@@ -306,7 +301,7 @@ import { e2b } from '@agentic/e2b'
 ```
 
 > [!NOTE]
-> There is no functional difference between using `@agentic/stdlib` versus using the individual packages directly. The only difference is if you want to optimize your install size (when running on serverless functions, for instance), in which case installing and using the individual packages directly will be more optimal. The default examples use `@agentic/stdlib` because it provides a simpler DX.
+> There is no functional difference between using `@agentic/stdlib` versus using the individual packages directly. The only difference is if you want to optimize your install size (when running on serverless functions, for instance), in which case installing and using the individual packages directly will be more efficient. The default examples use `@agentic/stdlib` because it provides a simpler DX.
 
 ## Services
 
