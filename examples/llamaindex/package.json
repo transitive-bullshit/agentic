@@ -1,0 +1,20 @@
+{
+  "name": "agentic-examples-llamaindex",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "test": "run-s test:*",
+    "test:lint": "eslint .",
+    "test:typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@agentic/core": "workspace:*",
+    "@agentic/llamaindex": "workspace:*",
+    "@agentic/stdlib": "workspace:*",
+    "llamaindex": "^0.5.13",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@agentic/tsconfig": "workspace:*"
+  }
+}

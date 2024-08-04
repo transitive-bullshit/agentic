@@ -1,0 +1,46 @@
+{
+  "name": "@agentic/genkit",
+  "version": "7.0.0",
+  "description": "Agentic adapter for the Firebase Genkit AI SDK.",
+  "author": "Travis Fischer <travis@transitivebullsh.it>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/transitive-bullshit/agentic.git"
+  },
+  "type": "module",
+  "source": "./src/index.ts",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup --config ../../tsup.config.ts",
+    "dev": "tsup --config ../../tsup.config.ts --watch",
+    "clean": "del dist",
+    "test": "run-s test:*",
+    "test:lint": "eslint .",
+    "test:typecheck": "tsc --noEmit",
+    "test:unit": "vitest run"
+  },
+  "peerDependencies": {
+    "@agentic/core": "workspace:*",
+    "@genkit-ai/ai": "^0.5.9"
+  },
+  "devDependencies": {
+    "@agentic/core": "workspace:*",
+    "@agentic/tsconfig": "workspace:*",
+    "@genkit-ai/ai": "^0.5.9"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

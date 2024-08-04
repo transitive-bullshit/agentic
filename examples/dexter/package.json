@@ -1,0 +1,24 @@
+{
+  "name": "agentic-examples-dexter",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "test": "run-s test:*",
+    "test:lint": "eslint .",
+    "test:typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@agentic/core": "workspace:*",
+    "@agentic/dexter": "workspace:*",
+    "@agentic/e2b": "workspace:*",
+    "@agentic/perigon": "workspace:*",
+    "@agentic/serper": "workspace:*",
+    "@agentic/stdlib": "workspace:*",
+    "@agentic/weather": "workspace:*",
+    "@dexaai/dexter": "^2.1.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@agentic/tsconfig": "workspace:*"
+  }
+}

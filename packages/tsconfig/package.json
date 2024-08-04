@@ -1,0 +1,21 @@
+{
+  "name": "@agentic/tsconfig",
+  "version": "1.0.0",
+  "private": true,
+  "exports": {
+    ".": {
+      "import": "./tsconfig.base.json",
+      "default": "./tsconfig.base.json"
+    },
+    "./base.json": {
+      "import": "./tsconfig.base.json",
+      "default": "./tsconfig.base.json"
+    }
+  },
+  "files": [
+    "tsconfig.base.json"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}
