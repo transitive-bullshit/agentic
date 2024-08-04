@@ -17,6 +17,7 @@
 
 - [Intro](#intro)
 - [Install](#install)
+  - [Optimized Imports](#optimized-imports)
   - [AI SDKs](#ai-sdks)
     - [Vercel AI SDk](#vercel-ai-sdk)
     - [LangChain](#langchain)
@@ -24,7 +25,6 @@
     - [Firebase Genkit](#firebase-genkit)
     - [Dexa Dexter](#dexa-dexter)
     - [OpenAI SDK](#openai-sdk)
-  - [Optimized Imports](#optimized-imports)
 - [Services](#services)
 - [Client Design Philosophy](#client-design-philosophy)
 - [TODO](#todo)
@@ -128,9 +128,24 @@ npm install @agentic/stdlib @agentic/core zod
 
 This package is [ESM only](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c) and requires `Node.js >= 18` or an equivalent environment (bun, deno, CF workers, etc).
 
+### Optimized Imports
+
+`@agentic/stdlib` is just a convenience package which re-exports all of the built-in AI tool packages. If you want to optimize your imports, you can replace `@agentic/stdlib` with the specific AI tools you want. For example:
+
+```sh
+npm install @agentic/weather @agentic/core zod
+```
+
+```ts
+import { WeatherClient } from '@agentic/weather'
+```
+
+> [!NOTE]
+> There is no functional difference between using `@agentic/stdlib` versus using the individual packages directly. The only difference is if you want to optimize your install size (when running on serverless functions, for instance), in which case installing and using the individual packages directly will be more efficient. The default examples use `@agentic/stdlib` because it provides a simpler DX.
+
 ### AI SDKs
 
-Each AI SDK adapter has its own package which needs to be installed.
+To use Agentic with one of the supported AI SDKs, you'll also need to install its (_really lightweight_) adapter package.
 
 #### Vercel AI SDk
 
@@ -264,21 +279,6 @@ console.log(JSON.stringify(toolResult, null, 2))
 See [examples/openai](./examples/openai) for a full example.
 
 </details>
-
-### Optimized Imports
-
-`@agentic/stdlib` is just a convenience wrapper which re-exports all of the built-in AI tool packages. If you want to optimize your imports, you can replace `@agentic/stdlib` with the specific AI tools you want. For example:
-
-```sh
-npm install @agentic/weather @agentic/core zod
-```
-
-```ts
-import { WeatherClient } from '@agentic/weather'
-```
-
-> [!NOTE]
-> There is no functional difference between using `@agentic/stdlib` versus using the individual packages directly. The only difference is if you want to optimize your install size (when running on serverless functions, for instance), in which case installing and using the individual packages directly will be more efficient. The default examples use `@agentic/stdlib` because it provides a simpler DX.
 
 ## Services
 
