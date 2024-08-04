@@ -1,13 +1,11 @@
-import defaultKy, { type KyInstance } from 'ky'
-import { z } from 'zod'
-
-import { aiFunction, AIFunctionsProvider } from '../fns'
-import {
+import { aiFunction, AIFunctionsProvider ,
   assert,
   getEnv,
   pruneNullOrUndefinedDeep,
   sanitizeSearchParams
-} from '../utils'
+} from '@agentic/core'
+import defaultKy, { type KyInstance } from 'ky'
+import { z } from 'zod'
 
 export namespace hunter {
   export const API_BASE_URL = 'https://api.hunter.io'

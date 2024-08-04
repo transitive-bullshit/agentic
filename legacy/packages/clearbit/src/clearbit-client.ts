@@ -1,7 +1,3 @@
-import defaultKy from 'ky'
-import pThrottle from 'p-throttle'
-
-import type { KyInstance } from '../types'
 import {
   assert,
   delay,
@@ -9,7 +5,9 @@ import {
   pruneNullOrUndefinedDeep,
   sanitizeSearchParams,
   throttleKy
-} from '../utils'
+} from '@agentic/core'
+import defaultKy, { type KyInstance } from 'ky'
+import pThrottle from 'p-throttle'
 
 export namespace clearbit {
   // Allow up to 600 requests per minute by default.

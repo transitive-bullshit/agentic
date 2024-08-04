@@ -1,8 +1,9 @@
+import {
+  type AIFunctionLike,
+  AIFunctionSet,
+  stringifyForModel
+} from '@agentic/core'
 import { DynamicStructuredTool } from '@langchain/core/tools'
-
-import type { AIFunctionLike } from '../types'
-import { AIFunctionSet } from '../ai-function-set'
-import { stringifyForModel } from '../utils'
 
 /**
  * Converts a set of Agentic stdlib AI functions to an array of LangChain-

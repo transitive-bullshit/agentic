@@ -1,8 +1,6 @@
+import { type AIFunctionLike, AIFunctionSet } from '@agentic/core'
 import { defineTool } from '@genkit-ai/ai'
 import { z } from 'zod'
-
-import type { AIFunctionLike } from '../types'
-import { AIFunctionSet } from '../ai-function-set'
 
 /**
  * Converts a set of Agentic stdlib AI functions to an array of Genkit-

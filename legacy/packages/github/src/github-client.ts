@@ -1,7 +1,5 @@
+import { AIFunctionsProvider , assert, getEnv } from '@agentic/core'
 import { Octokit } from 'octokit'
-
-import { AIFunctionsProvider } from '../fns'
-import { assert, getEnv } from '../utils'
 
 export namespace github {
   export interface User {

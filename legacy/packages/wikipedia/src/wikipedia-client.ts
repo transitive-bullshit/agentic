@@ -1,9 +1,7 @@
+import { aiFunction, AIFunctionsProvider , assert, getEnv, throttleKy } from '@agentic/core'
 import defaultKy, { type KyInstance } from 'ky'
 import pThrottle from 'p-throttle'
 import { z } from 'zod'
-
-import { aiFunction, AIFunctionsProvider } from '../fns'
-import { assert, getEnv, throttleKy } from '../utils'
 
 export namespace wikipedia {
   // Allow up to 200 requests per second by default.

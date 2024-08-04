@@ -1,7 +1,5 @@
+import { AIFunctionsProvider , assert, getEnv } from '@agentic/core'
 import defaultKy, { type KyInstance } from 'ky'
-
-import { AIFunctionsProvider } from '../fns'
-import { assert, getEnv } from '../utils'
 
 export namespace hackernews {
   export type ItemType =

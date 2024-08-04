@@ -37,7 +37,8 @@
   },
   "devDependencies": {
     "@agentic/core": "workspace:*",
-    "@agentic/tsconfig": "workspace:*"
+    "@agentic/tsconfig": "workspace:*",
+    "ai": "^3.1.30"
   },
   "publishConfig": {
     "access": "public"
