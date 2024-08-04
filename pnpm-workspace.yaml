@@ -1,4 +1,3 @@
 packages:
   - 'packages/*'
-  - 'examples/ai-sdk'
-#  - 'examples/*'
+  - 'examples/*'

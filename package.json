@@ -29,6 +29,7 @@
     "@total-typescript/ts-reset": "^0.5.1",
     "@types/node": "^22.0.0",
     "del-cli": "^5.1.0",
+    "dotenv": "^16.4.5",
     "eslint": "^8.57.0",
     "husky": "^9.1.4",
     "lint-staged": "^15.2.7",

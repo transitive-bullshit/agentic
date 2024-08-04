@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 import 'dotenv/config'
 
-import { WeatherClient } from '@agentic/stdlib'
-import { createDexterFunctions } from '@agentic/stdlib/dexter'
+import { createDexterFunctions } from '@agentic/dexter'
+import { WeatherClient } from '@agentic/weather'
 import { ChatModel, createAIRunner } from '@dexaai/dexter'
 
 async function main() {

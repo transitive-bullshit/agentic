@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 import 'dotenv/config'
 
-import { createDexterFunctions } from '@agentic/stdlib/dexter'
-import { e2b } from '@agentic/stdlib/e2b'
+import { createDexterFunctions } from '@agentic/dexter'
+import { e2b } from '@agentic/e2b'
 import { ChatModel, createAIRunner } from '@dexaai/dexter'
 
 async function main() {

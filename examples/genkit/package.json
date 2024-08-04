@@ -1,5 +1,5 @@
 {
-  "name": "agentic-examples-ai-sdk",
+  "name": "agentic-examples-genkit",
   "type": "module",
   "private": true,
   "scripts": {
@@ -10,11 +10,11 @@
   "dependencies": {
     "@agentic/ai-sdk": "workspace:*",
     "@agentic/core": "workspace:*",
+    "@agentic/genkit": "workspace:*",
     "@agentic/weather": "workspace:*",
-    "@ai-sdk/openai": "^0.0.24",
-    "@browserbasehq/sdk": "^1.4.2",
-    "ai": "^3.1.30",
-    "openai": "^4.49.0",
+    "@genkit-ai/ai": "^0.5.9",
+    "@genkit-ai/core": "^0.5.9",
+    "genkitx-openai": "^0.10.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {

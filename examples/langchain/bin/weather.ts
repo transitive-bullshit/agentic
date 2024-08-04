@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 import 'dotenv/config'
 
-import { WeatherClient } from '@agentic/stdlib'
-import { createLangChainTools } from '@agentic/stdlib/langchain'
+import { createLangChainTools } from '@agentic/langchain'
+import { WeatherClient } from '@agentic/weather'
 import { ChatPromptTemplate } from '@langchain/core/prompts'
 import { ChatOpenAI } from '@langchain/openai'
 import { AgentExecutor, createToolCallingAgent } from 'langchain/agents'

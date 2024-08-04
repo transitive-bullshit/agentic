@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import 'dotenv/config'
 
-import { extractObject, Msg } from '@agentic/stdlib'
+import { extractObject, Msg } from '@agentic/core'
 import { ChatModel } from '@dexaai/dexter'
 import { z } from 'zod'
 
