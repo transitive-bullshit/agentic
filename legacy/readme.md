@@ -33,7 +33,7 @@
 
 ## Intro
 
-Agentic is a **standard library of AI functions / tools** which are **optimized for both normal TS-usage as well as LLM-based apps** and work with all of the major TS AI SDKs (LangChain, LlamaIndex, Vercel AI SDK, OpenAI SDK, etc).
+Agentic is a **standard library of AI functions / tools** which are **optimized for both normal TS-usage as well as LLM-based usage**. Agentic works with all of the major TS AI SDKs (LangChain, LlamaIndex, Vercel AI SDK, OpenAI SDK, etc).
 
 Agentic clients like `WeatherClient` can be used as normal TS classes:
 
@@ -343,7 +343,6 @@ Note that you can import any of these AI tools from `@agentic/stdlib` OR from th
   - valtown
   - replicate
   - huggingface
-  - [skyvern](https://github.com/Skyvern-AI/skyvern)
   - pull from [clay](https://www.clay.com/integrations)
   - pull from [langchain](https://github.com/langchain-ai/langchainjs/tree/main/langchain)
     - provide a converter for langchain `DynamicStructuredTool`
@@ -352,7 +351,6 @@ Note that you can import any of these AI tools from `@agentic/stdlib` OR from th
   - general openapi support ala [workgpt](https://github.com/team-openpm/workgpt)
 - compound tools / chains / flows / runnables
   - market maps
-- incorporate [zod-validation-error](https://github.com/causaly/zod-validation-error)
 - investigate [autotool](https://github.com/run-llama/LlamaIndexTS/tree/main/packages/autotool)
 - investigate [alt search engines](https://seirdy.one/posts/2021/03/10/search-engines-with-own-indexes/)
 - investigate [data connectors](https://github.com/mendableai/data-connectors)
