@@ -277,18 +277,6 @@ npm install @agentic/weather @agentic/core zod
 import { WeatherClient } from '@agentic/weather'
 ```
 
-Some of these individual tool packages have peer dependencies if they depend on large, external packages. If so, you'll need to install their peer deps as well.
-
-Take `e2b`, for example, which requires `@e2b/code-interpreter` as a peer dep:
-
-```sh
-npm install @agentic/e2b @agentic/core zod @e2b/code-interpreter
-```
-
-```ts
-import { e2b } from '@agentic/e2b'
-```
-
 > [!NOTE]
 > There is no functional difference between using `@agentic/stdlib` versus using the individual packages directly. The only difference is if you want to optimize your install size (when running on serverless functions, for instance), in which case installing and using the individual packages directly will be more efficient. The default examples use `@agentic/stdlib` because it provides a simpler DX.
 
