@@ -1,8 +1,6 @@
+import { AIFunctionsProvider , assert, getEnv, sanitizeSearchParams, throttleKy } from '@agentic/core'
 import defaultKy, { type KyInstance } from 'ky'
 import pThrottle from 'p-throttle'
-
-import { AIFunctionsProvider } from '../fns'
-import { assert, getEnv, sanitizeSearchParams, throttleKy } from '../utils'
 
 // TODO: need to add `aiFunction` wrappers for each method
 

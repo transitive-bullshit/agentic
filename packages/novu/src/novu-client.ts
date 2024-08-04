@@ -1,8 +1,6 @@
+import { aiFunction, AIFunctionsProvider , assert, getEnv } from '@agentic/core'
 import defaultKy, { type KyInstance } from 'ky'
 import { z } from 'zod'
-
-import { aiFunction, AIFunctionsProvider } from '../fns'
-import { assert, getEnv } from '../utils'
 
 export namespace novu {
   export const API_BASE_URL = 'https://api.novu.co/v1'

@@ -1,8 +1,8 @@
+import { getEnv } from '@agentic/core'
 import { CodeInterpreter, type ProcessMessage } from '@e2b/code-interpreter'
 import { z } from 'zod'
 
 import { createAIFunction } from '../create-ai-function'
-import { getEnv } from '../utils'
 
 /**
  * E2B Python code interpreter sandbox.

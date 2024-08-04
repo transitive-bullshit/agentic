@@ -1,9 +1,12 @@
+import {
+  aiFunction,
+  AIFunctionsProvider,
+  assert,
+  getEnv,
+  Msg
+} from '@agentic/core'
 import defaultKy, { type KyInstance } from 'ky'
 import { z } from 'zod'
-
-import { aiFunction, AIFunctionsProvider } from '../fns'
-import { Msg } from '../message'
-import { assert, getEnv } from '../utils'
 
 export namespace dexa {
   export const AskDexaOptionsSchema = z.object({

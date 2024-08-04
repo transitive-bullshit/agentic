@@ -1,10 +1,8 @@
 import type * as wikibase from 'wikibase-sdk'
+import { AIFunctionsProvider , assert, getEnv, throttleKy } from '@agentic/core'
 import defaultKy, { type KyInstance } from 'ky'
 import pThrottle from 'p-throttle'
 import wdk from 'wikibase-sdk/wikidata.org'
-
-import { AIFunctionsProvider } from '../fns'
-import { assert, getEnv, throttleKy } from '../utils'
 
 export namespace wikidata {
   // Allow up to 200 requests per second by default.

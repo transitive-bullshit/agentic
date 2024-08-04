@@ -1,7 +1,5 @@
+import { type AIFunctionLike, AIFunctionSet } from '@agentic/core'
 import { createAIFunction } from '@dexaai/dexter'
-
-import type { AIFunctionLike } from '../types'
-import { AIFunctionSet } from '../ai-function-set'
 
 /**
  * Converts a set of Agentic stdlib AI functions to an array of Dexter-

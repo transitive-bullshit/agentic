@@ -1,10 +1,8 @@
 import type { Simplify } from 'type-fest'
+import { aiFunction, AIFunctionsProvider , assert, getEnv, sanitizeSearchParams, throttleKy } from '@agentic/core'
 import defaultKy, { type KyInstance } from 'ky'
 import pThrottle from 'p-throttle'
 import { z } from 'zod'
-
-import { aiFunction, AIFunctionsProvider } from '../fns'
-import { assert, getEnv, sanitizeSearchParams, throttleKy } from '../utils'
 
 // All proxycurl types are auto-generated from their openapi spec
 export namespace proxycurl {

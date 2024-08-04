@@ -1,9 +1,8 @@
+import { aiFunction, AIFunctionsProvider , assert, delay, getEnv } from '@agentic/core'
 import defaultKy, { type KyInstance } from 'ky'
 import { z } from 'zod'
 
 import { TimeoutError } from '../errors'
-import { aiFunction, AIFunctionsProvider } from '../fns'
-import { assert, delay, getEnv } from '../utils'
 
 // TODO: need to expose more aiFunctions
 

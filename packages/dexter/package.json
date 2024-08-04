@@ -1,0 +1,46 @@
+{
+  "name": "@agentic/dexter",
+  "version": "6.6.1",
+  "description": "Agentic adapter for the Dexter AI SDK by Dexa.",
+  "author": "Travis Fischer <travis@transitivebullsh.it>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/transitive-bullshit/agentic.git"
+  },
+  "type": "module",
+  "source": "./src/index.ts",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "clean": "del dist",
+    "test": "run-s test:*",
+    "test:lint": "eslint .",
+    "test:typecheck": "tsc --noEmit",
+    "test:unit": "vitest run"
+  },
+  "peerDependencies": {
+    "@agentic/core": "workspace:*",
+    "@dexaai/dexter": "^2.1.0"
+  },
+  "devDependencies": {
+    "@agentic/core": "workspace:*",
+    "@agentic/tsconfig": "workspace:*",
+    "@dexaai/dexter": "^2.1.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "name": "@agentic/llamaindex",
+  "version": "6.6.1",
+  "description": "Agentic adapter for the LlamaIndex AI SDK.",
+  "author": "Travis Fischer <travis@transitivebullsh.it>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/transitive-bullshit/agentic.git"
+  },
+  "type": "module",
+  "source": "./src/index.ts",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "clean": "del dist",
+    "test": "run-s test:*",
+    "test:lint": "eslint .",
+    "test:typecheck": "tsc --noEmit",
+    "test:unit": "vitest run"
+  },
+  "peerDependencies": {
+    "@agentic/core": "workspace:*",
+    "llamaindex": "^0.5.13"
+  },
+  "devDependencies": {
+    "@agentic/core": "workspace:*",
+    "@agentic/tsconfig": "workspace:*",
+    "llamaindex": "^0.5.13"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
