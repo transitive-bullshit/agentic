@@ -8,7 +8,7 @@ import { zodToJsonSchema } from './zod-to-json-schema'
 /**
  * Used to mark schemas so we can support both Zod and custom schemas.
  */
-export const schemaSymbol = Symbol('agentic..schema')
+export const schemaSymbol = Symbol('agentic.schema')
 export const validatorSymbol = Symbol('agentic.validator')
 
 export type Schema<TData = unknown> = {

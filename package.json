@@ -1,7 +1,6 @@
 {
-  "name": "@agentic/stdlib",
-  "version": "6.6.1",
-  "description": "AI function stdlib that works with any LLM and TypeScript AI SDK.",
+  "name": "agentic",
+  "private": true,
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",
   "repository": {
@@ -13,91 +12,51 @@
     "node": ">=18"
   },
   "type": "module",
-  "source": "./src/index.ts",
-  "types": "./dist/index.d.ts",
-  "sideEffects": false,
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "default": "./dist/index.js"
-    }
-  },
-  "files": [
-    "dist"
-  ],
-  "publishConfig": {
-    "access": "public"
-  },
   "scripts": {
-    "preinstall": "npx only-allow pnpm",
-    "build": "tsup",
-    "dev": "tsup --watch",
-    "clean": "del dist",
+    "build": "run-s build:*",
+    "build:core": "cd packages/core && pnpm build",
+    "build:ai-sdk": "cd packages/ai-sdk && pnpm build",
+    "build:weather": "cd packages/weather && pnpm build",
+    "build:examples": "cd examples/ai-sdk && pnpm build",
+    "clean": "run-s clean:*",
+    "clean:core": "cd packages/core && pnpm clean",
+    "clean:ai-sdk": "cd packages/ai-sdk && pnpm clean",
+    "clean:weather": "cd packages/weather && pnpm clean",
+    "clean:examples": "cd examples/ai-sdk && pnpm clean",
     "prebuild": "run-s clean",
+    "precommit": "lint-staged",
     "predev": "run-s clean",
+    "preinstall": "npx only-allow pnpm",
     "pretest": "run-s build",
     "prepare": "husky",
-    "precommit": "lint-staged",
     "test": "run-s test:*",
     "test:format": "prettier --check \"**/*.{js,ts,tsx}\"",
     "test:lint": "eslint .",
     "test:typecheck": "tsc --noEmit",
     "test:unit": "vitest run"
   },
-  "dependencies": {
-    "dedent": "^1.5.3",
-    "delay": "^6.0.0",
-    "hash-object": "^5.0.1",
-    "is-relative-url": "^4.0.0",
-    "jsonrepair": "^3.6.1",
-    "ky": "^1.5.0",
-    "normalize-url": "^8.0.1",
-    "p-map": "^7.0.2",
-    "p-throttle": "^6.1.0",
-    "quick-lru": "^7.0.0",
-    "type-fest": "^4.21.0",
-    "zod": "^3.23.3",
-    "zod-to-json-schema": "^3.23.2",
-    "zod-validation-error": "^3.3.0"
-  },
   "devDependencies": {
-    "@aws-sdk/client-sso-oidc": "^3.620.1",
-    "@browserbasehq/sdk": "^1.4.2",
-    "@dexaai/dexter": "^2.1.0",
-    "@e2b/code-interpreter": "^0.0.8",
     "@fisch0920/eslint-config": "^1.4.0",
-    "@genkit-ai/ai": "^0.5.8",
-    "@langchain/core": "^0.2.18",
-    "@nangohq/node": "^0.42.2",
     "@total-typescript/ts-reset": "^0.5.1",
     "@types/node": "^22.0.0",
-    "ai": "^3.2.39",
     "del-cli": "^5.1.0",
-    "dotenv": "^16.4.5",
     "eslint": "^8.57.0",
     "husky": "^9.1.4",
     "lint-staged": "^15.2.7",
-    "llamaindex": "^0.5.11",
-    "mathjs": "^13.0.3",
     "np": "^10.0.7",
     "npm-run-all2": "^6.2.2",
-    "octokit": "^4.0.2",
     "only-allow": "^1.2.1",
-    "openai-fetch": "^2.0.4",
     "prettier": "^3.3.3",
-    "restore-cursor": "^5.1.0",
     "tsup": "^8.2.3",
     "tsx": "^4.16.2",
-    "twitter-api-sdk": "^1.2.1",
     "typescript": "^5.5.4",
     "vitest": "2.0.4",
-    "wikibase-sdk": "^10.0.2"
+    "zod": "^3.23.3"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
-      "eslint --fix",
-      "prettier --ignore-unknown --write"
+      "prettier --ignore-unknown --write",
+      "eslint --fix"
     ]
   }
 }

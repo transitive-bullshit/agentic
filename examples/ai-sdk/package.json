@@ -1,7 +1,6 @@
 {
-  "name": "agentic-examples",
+  "name": "agentic-examples-ai-sdk",
   "private": true,
-  "version": "0.1.0",
   "description": "Examples of how to use the Agentic AI SDK.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",
@@ -9,33 +8,24 @@
     "type": "git",
     "url": "git+https://github.com/transitive-bullshit/agentic.git"
   },
-  "packageManager": "pnpm@9.2.0",
-  "engines": {
-    "node": ">=18"
-  },
   "type": "module",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "build": "tsc",
     "clean": "del dist",
-    "prebuild": "run-s clean",
-    "pretest": "run-s build",
     "test": "run-s test:*",
+    "test:format": "prettier --check \"**/*.{js,ts,tsx}\"",
+    "test:lint": "eslint .",
     "test:typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@agentic/stdlib": "workspace:*",
+    "@agentic/ai-sdk": "workspace:*",
+    "@agentic/core": "workspace:*",
+    "@agentic/weather": "workspace:*",
     "@ai-sdk/openai": "^0.0.24",
-    "@dexaai/dexter": "^2.1.0",
-    "@genkit-ai/ai": "^0.5.2",
-    "@genkit-ai/core": "^0.5.2",
-    "@langchain/core": "^0.2.6",
-    "@langchain/openai": "^0.1.2",
+    "@browserbasehq/sdk": "^1.4.2",
     "ai": "^3.1.30",
     "dotenv": "^16.4.5",
-    "genkitx-openai": "^0.10.0",
-    "langchain": "^0.2.5",
-    "llamaindex": "^0.3.16",
     "openai": "^4.49.0",
     "zod": "^3.23.8"
   }
