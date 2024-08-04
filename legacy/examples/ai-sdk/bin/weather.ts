@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 import 'dotenv/config'
 
-import { WeatherClient } from '@agentic/stdlib'
-import { createAISDKTools } from '@agentic/stdlib/ai-sdk'
+import { createAISDKTools } from '@agentic/ai-sdk'
+import { WeatherClient } from '@agentic/weather'
 import { openai } from '@ai-sdk/openai'
 import { generateText } from 'ai'
 

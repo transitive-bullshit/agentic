@@ -1,2 +1,7 @@
 packages:
-  - 'examples'
+  - 'packages/core'
+  - 'packages/weather'
+  - 'packages/ai-sdk'
+  - 'examples/ai-sdk'
+#  - 'examples'
+#  - 'packages/*'

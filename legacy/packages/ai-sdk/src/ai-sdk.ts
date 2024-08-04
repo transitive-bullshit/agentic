@@ -1,7 +1,5 @@
+import { type AIFunctionLike, AIFunctionSet } from '@agentic/core'
 import { tool } from 'ai'
-
-import type { AIFunctionLike } from '../types'
-import { AIFunctionSet } from '../ai-function-set'
 
 /**
  * Converts a set of Agentic stdlib AI functions to an object compatible with
