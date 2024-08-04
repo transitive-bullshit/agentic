@@ -1,6 +1,6 @@
 {
   "name": "@agentic/search-and-crawl",
-  "version": "6.6.1",
+  "version": "7.0.0",
   "description": "Agentic SDK for Google search and crawling the top results.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",

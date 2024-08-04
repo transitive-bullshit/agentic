@@ -1,6 +1,6 @@
 {
   "name": "@agentic/searxng",
-  "version": "6.6.1",
+  "version": "7.0.0",
   "description": "Agentic SDK for the SearXNG meta search engine.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",

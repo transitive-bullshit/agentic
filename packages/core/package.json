@@ -1,6 +1,6 @@
 {
   "name": "@agentic/core",
-  "version": "6.6.1",
+  "version": "7.0.0",
   "description": "Agentic AI utils which work with any LLM and TypeScript AI SDK.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",

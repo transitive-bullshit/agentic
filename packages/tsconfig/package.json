@@ -1,5 +1,6 @@
 {
   "name": "@agentic/tsconfig",
+  "version": "1.0.0",
   "private": true,
   "exports": {
     ".": {
@@ -13,5 +14,8 @@
   },
   "files": [
     "tsconfig.base.json"
-  ]
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
 }
