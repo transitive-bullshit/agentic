@@ -1,4 +1,6 @@
-import { aiFunction, AIFunctionsProvider ,
+import {
+  aiFunction,
+  AIFunctionsProvider,
   assert,
   getEnv,
   pruneNullOrUndefinedDeep,

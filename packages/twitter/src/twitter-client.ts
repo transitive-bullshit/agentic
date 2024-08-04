@@ -1,9 +1,8 @@
+import { aiFunction, AIFunctionsProvider, assert, getEnv } from '@agentic/core'
 import pThrottle from 'p-throttle'
 import { z } from 'zod'
 
 import type * as types from './types'
-import { aiFunction, AIFunctionsProvider } from '../../fns'
-import { assert, getEnv } from '../../utils'
 import { handleKnownTwitterErrors } from './utils'
 
 /**

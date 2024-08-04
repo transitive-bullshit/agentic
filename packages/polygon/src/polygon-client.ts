@@ -1,4 +1,4 @@
-import { AIFunctionsProvider , assert, getEnv } from '@agentic/core'
+import { AIFunctionsProvider, assert, getEnv } from '@agentic/core'
 import defaultKy, { type KyInstance } from 'ky'
 
 // TODO: add aiFunction decorator to select methods

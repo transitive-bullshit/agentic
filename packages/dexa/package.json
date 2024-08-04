@@ -1,7 +1,7 @@
 {
   "name": "@agentic/dexa",
   "version": "6.6.1",
-  "description": "Agentic Dexa SDK.",
+  "description": "Agentic SDK for Dexa's API (currently closed beta).",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",
   "repository": {

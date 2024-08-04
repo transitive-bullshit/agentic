@@ -1,4 +1,4 @@
-import { aiFunction, AIFunctionsProvider , assert, getEnv } from '@agentic/core'
+import { aiFunction, AIFunctionsProvider, assert, getEnv } from '@agentic/core'
 import defaultKy, { type KyInstance } from 'ky'
 import { z } from 'zod'
 

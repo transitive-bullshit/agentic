@@ -1,8 +1,13 @@
-import { aiFunction, AIFunctionsProvider , assert, delay, getEnv } from '@agentic/core'
+import {
+  aiFunction,
+  AIFunctionsProvider,
+  assert,
+  delay,
+  getEnv,
+  TimeoutError
+} from '@agentic/core'
 import defaultKy, { type KyInstance } from 'ky'
 import { z } from 'zod'
-
-import { TimeoutError } from '../errors'
 
 export namespace twilio {
   export const CONVERSATION_API_BASE_URL = 'https://conversations.twilio.com/v1'

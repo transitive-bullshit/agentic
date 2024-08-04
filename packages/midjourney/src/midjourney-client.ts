@@ -1,8 +1,14 @@
-import { aiFunction, AIFunctionsProvider , assert, delay, getEnv, pruneNullOrUndefined } from '@agentic/core'
+import {
+  aiFunction,
+  AIFunctionsProvider,
+  assert,
+  delay,
+  getEnv,
+  pruneNullOrUndefined,
+  TimeoutError
+} from '@agentic/core'
 import defaultKy, { type KyInstance } from 'ky'
 import { z } from 'zod'
-
-import { TimeoutError } from '../errors'
 
 // TODO: add additional methods for upscaling, variations, etc.
 

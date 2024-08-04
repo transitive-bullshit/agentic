@@ -1,5 +1,6 @@
+import { omit } from '@agentic/core'
+
 import type * as types from './types'
-import { omit } from '../../utils'
 import { TwitterError } from './error'
 
 /**

@@ -1,7 +1,7 @@
 {
   "name": "@agentic/weather",
   "version": "6.6.1",
-  "description": "Agentic Weather SDK.",
+  "description": "Agentic SDK for weatherapi.com.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",
   "repository": {
