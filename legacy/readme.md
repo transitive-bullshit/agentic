@@ -126,11 +126,12 @@ You can pass as many of these `AIFunctionLike` objects as you'd like and you can
 npm install @agentic/stdlib @agentic/core zod
 ```
 
-This package is [ESM only](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c) and requires `Node.js >= 18` or an equivalent environment (bun, deno, CF workers, etc).
-
 - `@agentic/core` - exports core AI utils and `@aiFunction` decorator
 - `@agentic/stdlib` - exports all of the built-in AI tools (convenience wrapper around the individual tool packages; see [Optimized Imports](#optimized-imports) if you'd rather import the individual packages directly)
 - `zod` - used for schema validation
+
+> [!NOTE]
+> This package is [ESM only](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c) and requires `Node.js >= 18` or an equivalent environment (bun, deno, CF workers, etc).
 
 ### Optimized Imports
 
