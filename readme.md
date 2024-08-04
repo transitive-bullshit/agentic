@@ -26,7 +26,7 @@
     - [OpenAI SDK](#openai-sdk)
   - [Optimized Imports](#optimized-imports)
 - [Services](#services)
-- [Client Goals](#client-goals)
+- [Client Design Philosophy](#client-design-philosophy)
 - [TODO](#todo)
 - [Contributors](#contributors)
 - [License](#license)
@@ -340,7 +340,7 @@ import { e2b } from '@agentic/e2b'
 
 Note that you can import any of these AI tools from `@agentic/stdlib` OR from their individual packages. Installing and importing from their individual packages is more efficient, but it's less convenient so it isn't the default.
 
-## Client Goals
+## Client Design Philosophy
 
 - clients should be as minimal as possible
 - clients should use `ky` and `zod` where possible
