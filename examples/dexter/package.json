@@ -10,12 +10,10 @@
   "dependencies": {
     "@agentic/core": "workspace:*",
     "@agentic/dexter": "workspace:*",
-    "@agentic/diffbot": "workspace:*",
     "@agentic/e2b": "workspace:*",
     "@agentic/perigon": "workspace:*",
-    "@agentic/search-and-crawl": "workspace:*",
-    "@agentic/serpapi": "workspace:*",
     "@agentic/serper": "workspace:*",
+    "@agentic/stdlib": "workspace:*",
     "@agentic/weather": "workspace:*",
     "@dexaai/dexter": "^2.1.0",
     "zod": "^3.23.8"

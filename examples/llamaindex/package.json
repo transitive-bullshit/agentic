@@ -10,7 +10,7 @@
   "dependencies": {
     "@agentic/core": "workspace:*",
     "@agentic/llamaindex": "workspace:*",
-    "@agentic/weather": "workspace:*",
+    "@agentic/stdlib": "workspace:*",
     "llamaindex": "^0.5.13",
     "zod": "^3.23.8"
   },

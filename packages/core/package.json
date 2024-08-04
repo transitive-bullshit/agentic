@@ -1,7 +1,7 @@
 {
   "name": "@agentic/core",
   "version": "6.6.1",
-  "description": "AI function stdlib that works with any LLM and TypeScript AI SDK.",
+  "description": "Core agentic AI utils which work with any LLM and TypeScript AI SDK.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",
   "repository": {

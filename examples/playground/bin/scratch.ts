@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import 'dotenv/config'
 
-import { SerperClient } from '@agentic/serper'
+import { SerperClient } from '@agentic/stdlib'
 import restoreCursor from 'restore-cursor'
 
 /**

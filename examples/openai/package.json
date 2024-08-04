@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@agentic/core": "workspace:*",
-    "@agentic/weather": "workspace:*",
+    "@agentic/stdlib": "workspace:*",
     "openai": "^4.49.0",
     "zod": "^3.23.8"
   },

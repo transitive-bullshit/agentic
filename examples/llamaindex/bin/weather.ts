@@ -2,7 +2,7 @@
 import 'dotenv/config'
 
 import { createLlamaIndexTools } from '@agentic/llamaindex'
-import { WeatherClient } from '@agentic/weather'
+import { WeatherClient } from '@agentic/stdlib'
 import { OpenAI, OpenAIAgent } from 'llamaindex'
 
 async function main() {

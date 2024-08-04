@@ -2,9 +2,7 @@
 import 'dotenv/config'
 
 import { createDexterFunctions } from '@agentic/dexter'
-import { DiffbotClient } from '@agentic/diffbot'
-import { SearchAndCrawl } from '@agentic/search-and-crawl'
-import { SerpAPIClient } from '@agentic/serpapi'
+import { DiffbotClient, SearchAndCrawl, SerpAPIClient } from '@agentic/stdlib'
 import { ChatModel, createAIRunner } from '@dexaai/dexter'
 
 async function main() {

@@ -8,10 +8,9 @@
     "test:typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@agentic/ai-sdk": "workspace:*",
     "@agentic/core": "workspace:*",
     "@agentic/genkit": "workspace:*",
-    "@agentic/weather": "workspace:*",
+    "@agentic/stdlib": "workspace:*",
     "@genkit-ai/ai": "^0.5.9",
     "@genkit-ai/core": "^0.5.9",
     "genkitx-openai": "^0.10.0",

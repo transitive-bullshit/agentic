@@ -102,24 +102,18 @@ importers:
       '@agentic/dexter':
         specifier: workspace:*
         version: link:../../packages/dexter
-      '@agentic/diffbot':
-        specifier: workspace:*
-        version: link:../../packages/diffbot
       '@agentic/e2b':
         specifier: workspace:*
         version: link:../../packages/e2b
       '@agentic/perigon':
         specifier: workspace:*
         version: link:../../packages/perigon
-      '@agentic/search-and-crawl':
-        specifier: workspace:*
-        version: link:../../packages/search-and-crawl
-      '@agentic/serpapi':
-        specifier: workspace:*
-        version: link:../../packages/serpapi
       '@agentic/serper':
         specifier: workspace:*
         version: link:../../packages/serper
+      '@agentic/stdlib':
+        specifier: workspace:*
+        version: link:../../packages/stdlib
       '@agentic/weather':
         specifier: workspace:*
         version: link:../../packages/weather
@@ -136,18 +130,15 @@ importers:
 
   examples/genkit:
     dependencies:
-      '@agentic/ai-sdk':
-        specifier: workspace:*
-        version: link:../../packages/ai-sdk
       '@agentic/core':
         specifier: workspace:*
         version: link:../../packages/core
       '@agentic/genkit':
         specifier: workspace:*
         version: link:../../packages/genkit
-      '@agentic/weather':
+      '@agentic/stdlib':
         specifier: workspace:*
-        version: link:../../packages/weather
+        version: link:../../packages/stdlib
       '@genkit-ai/ai':
         specifier: ^0.5.9
         version: 0.5.9
@@ -173,9 +164,9 @@ importers:
       '@agentic/langchain':
         specifier: workspace:*
         version: link:../../packages/langchain
-      '@agentic/weather':
+      '@agentic/stdlib':
         specifier: workspace:*
-        version: link:../../packages/weather
+        version: link:../../packages/stdlib
       '@langchain/core':
         specifier: ^0.2.20
         version: 0.2.20(langchain@0.2.12(@aws-sdk/credential-provider-node@3.623.0)(@browserbasehq/sdk@1.4.2)(@notionhq/client@2.2.15)(@pinecone-database/pinecone@3.0.0)(assemblyai@4.6.1)(axios@1.7.3)(chromadb@1.8.1(openai@4.54.0))(fast-xml-parser@4.4.1)(ignore@5.3.1)(mammoth@1.8.0)(mongodb@6.8.0)(openai@4.54.0)(ws@8.18.0))(openai@4.54.0)
@@ -201,9 +192,9 @@ importers:
       '@agentic/llamaindex':
         specifier: workspace:*
         version: link:../../packages/llamaindex
-      '@agentic/weather':
+      '@agentic/stdlib':
         specifier: workspace:*
-        version: link:../../packages/weather
+        version: link:../../packages/stdlib
       llamaindex:
         specifier: ^0.5.13
         version: 0.5.13(@aws-sdk/client-sso-oidc@3.623.0(@aws-sdk/client-sts@3.623.0))(@aws-sdk/credential-providers@3.623.0(@aws-sdk/client-sso-oidc@3.623.0(@aws-sdk/client-sts@3.623.0)))(@notionhq/client@2.2.15(encoding@0.1.13))(bufferutil@4.0.8)(encoding@0.1.13)(socks@2.8.3)(typescript@5.5.4)(utf-8-validate@6.0.4)
@@ -220,9 +211,9 @@ importers:
       '@agentic/core':
         specifier: workspace:*
         version: link:../../packages/core
-      '@agentic/weather':
+      '@agentic/stdlib':
         specifier: workspace:*
-        version: link:../../packages/weather
+        version: link:../../packages/stdlib
       openai:
         specifier: ^4.49.0
         version: 4.54.0(encoding@0.1.13)
@@ -239,9 +230,9 @@ importers:
       '@agentic/core':
         specifier: workspace:*
         version: link:../../packages/core
-      '@agentic/serper':
+      '@agentic/stdlib':
         specifier: workspace:*
-        version: link:../../packages/serper
+        version: link:../../packages/stdlib
       restore-cursor:
         specifier: ^5.1.0
         version: 5.1.0
@@ -492,6 +483,9 @@ importers:
       ky:
         specifier: ^1.5.0
         version: 1.5.0
+      octokit:
+        specifier: ^4.0.2
+        version: 4.0.2
       p-throttle:
         specifier: ^6.1.0
         version: 6.1.0
@@ -505,9 +499,6 @@ importers:
       '@agentic/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
-      octokit:
-        specifier: ^4.0.2
-        version: 4.0.2
 
   packages/hacker-news:
     dependencies:
@@ -813,6 +804,133 @@ importers:
         specifier: workspace:*
         version: link:../tsconfig
 
+  packages/stdlib:
+    dependencies:
+      '@agentic/ai-sdk':
+        specifier: workspace:*
+        version: link:../ai-sdk
+      '@agentic/bing':
+        specifier: workspace:*
+        version: link:../bing
+      '@agentic/calculator':
+        specifier: workspace:*
+        version: link:../calculator
+      '@agentic/clearbit':
+        specifier: workspace:*
+        version: link:../clearbit
+      '@agentic/dexa':
+        specifier: workspace:*
+        version: link:../dexa
+      '@agentic/dexter':
+        specifier: workspace:*
+        version: link:../dexter
+      '@agentic/diffbot':
+        specifier: workspace:*
+        version: link:../diffbot
+      '@agentic/e2b':
+        specifier: workspace:*
+        version: link:../e2b
+      '@agentic/exa':
+        specifier: workspace:*
+        version: link:../exa
+      '@agentic/firecrawl':
+        specifier: workspace:*
+        version: link:../firecrawl
+      '@agentic/genkit':
+        specifier: workspace:*
+        version: link:../genkit
+      '@agentic/github':
+        specifier: workspace:*
+        version: link:../github
+      '@agentic/hacker-news':
+        specifier: workspace:*
+        version: link:../hacker-news
+      '@agentic/hunter':
+        specifier: workspace:*
+        version: link:../hunter
+      '@agentic/jina':
+        specifier: workspace:*
+        version: link:../jina
+      '@agentic/langchain':
+        specifier: workspace:*
+        version: link:../langchain
+      '@agentic/llamaindex':
+        specifier: workspace:*
+        version: link:../llamaindex
+      '@agentic/midjourney':
+        specifier: workspace:*
+        version: link:../midjourney
+      '@agentic/novu':
+        specifier: workspace:*
+        version: link:../novu
+      '@agentic/people-data-labs':
+        specifier: workspace:*
+        version: link:../people-data-labs
+      '@agentic/perigon':
+        specifier: workspace:*
+        version: link:../perigon
+      '@agentic/polygon':
+        specifier: workspace:*
+        version: link:../polygon
+      '@agentic/predict-leads':
+        specifier: workspace:*
+        version: link:../predict-leads
+      '@agentic/proxycurl':
+        specifier: workspace:*
+        version: link:../proxycurl
+      '@agentic/search-and-crawl':
+        specifier: workspace:*
+        version: link:../search-and-crawl
+      '@agentic/searxng':
+        specifier: workspace:*
+        version: link:../searxng
+      '@agentic/serpapi':
+        specifier: workspace:*
+        version: link:../serpapi
+      '@agentic/serper':
+        specifier: workspace:*
+        version: link:../serper
+      '@agentic/slack':
+        specifier: workspace:*
+        version: link:../slack
+      '@agentic/social-data':
+        specifier: workspace:*
+        version: link:../social-data
+      '@agentic/tavily':
+        specifier: workspace:*
+        version: link:../tavily
+      '@agentic/twilio':
+        specifier: workspace:*
+        version: link:../twilio
+      '@agentic/twitter':
+        specifier: workspace:*
+        version: link:../twitter
+      '@agentic/weather':
+        specifier: workspace:*
+        version: link:../weather
+      '@agentic/wikidata':
+        specifier: workspace:*
+        version: link:../wikidata
+      '@agentic/wikipedia':
+        specifier: workspace:*
+        version: link:../wikipedia
+      '@agentic/wolfram-alpha':
+        specifier: workspace:*
+        version: link:../wolfram-alpha
+      '@e2b/code-interpreter':
+        specifier: ^0.0.8
+        version: 0.0.8(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      zod:
+        specifier: ^3.23.8
+        version: 3.23.8
+    devDependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
+      '@agentic/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+
   packages/tavily:
     dependencies:
       ky:
@@ -852,12 +970,18 @@ importers:
 
   packages/twitter:
     dependencies:
+      '@nangohq/node':
+        specifier: ^0.42.2
+        version: 0.42.2
       ky:
         specifier: ^1.5.0
         version: 1.5.0
       p-throttle:
         specifier: ^6.1.0
         version: 6.1.0
+      twitter-api-sdk:
+        specifier: ^1.2.1
+        version: 1.2.1(encoding@0.1.13)
       type-fest:
         specifier: ^4.21.0
         version: 4.23.0
@@ -871,12 +995,6 @@ importers:
       '@agentic/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
-      '@nangohq/node':
-        specifier: ^0.42.2
-        version: 0.42.2
-      twitter-api-sdk:
-        specifier: ^1.2.1
-        version: 1.2.1(encoding@0.1.13)
 
   packages/weather:
     dependencies:
@@ -902,6 +1020,9 @@ importers:
       p-throttle:
         specifier: ^6.1.0
         version: 6.1.0
+      wikibase-sdk:
+        specifier: ^10.0.3
+        version: 10.0.3
       zod:
         specifier: ^3.23.8
         version: 3.23.8
@@ -912,9 +1033,6 @@ importers:
       '@agentic/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
-      wikibase-sdk:
-        specifier: ^10.0.3
-        version: 10.0.3
 
   packages/wikipedia:
     dependencies:
