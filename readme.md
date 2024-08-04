@@ -135,11 +135,11 @@ Each AI SDK adapter has its own package which needs to be installed.
 #### Vercel AI SDk
 
 <details>
-<summary>
+<summary>Install</summary>
+
 ```sh
 npm install @agentic/ai-sdk ai
 ```
-</summary>
 
 ```ts
 import { createAISDKTools } from '@agentic/ai-sdk'
@@ -152,11 +152,11 @@ See [examples/ai-sdk](./examples/ai-sdk) for a full example.
 #### LangChain
 
 <details>
-<summary>
+<summary>Install</summary>
+
 ```sh
 npm install @agentic/langchain @langchain/core langchain
 ```
-</summary>
 
 ```ts
 import { createLangChainTools } from '@agentic/langchain'
@@ -169,11 +169,11 @@ See [examples/langchain](./examples/langchain) for a full example.
 #### LlamaIndex
 
 <details>
-<summary>
+<summary>Install</summary>
+
 ```sh
 npm install @agentic/llamaindex llamaindex
 ```
-</summary>
 
 ```ts
 import { createLlamaIndexTools } from '@agentic/llamaindex'
@@ -186,11 +186,11 @@ See [examples/llamaindex](./examples/llamaindex) for a full example.
 #### Firebase Genkit
 
 <details>
-<summary>
+<summary>Install</summary>
+
 ```sh
 npm install @agentic/genkit @genkit-ai/ai @genkit-ai/core
 ```
-</summary>
 
 ```ts
 import { createGenkitTools } from '@agentic/genkit'
@@ -203,11 +203,11 @@ See [examples/genkit](./examples/genkit) for a full example.
 #### Dexa Dexter
 
 <details>
-<summary>
+<summary>Install</summary>
+
 ```sh
 npm install @agentic/dexter @dexaai/dexter
 ```
-</summary>
 
 ```ts
 import { createDexterFunctions } from '@agentic/dexter'
@@ -220,11 +220,11 @@ See [examples/dexter](./examples/dexter) for a full example.
 #### OpenAI SDK
 
 <details>
-<summary>
+<summary>Install</summary>
+
 ```sh
 npm install openai
 ```
-</summary>
 
 There's no need for an adapter with the OpenAI SDK since all agentic tools are compatible with OpenAI by default. You can use `AIFunctionSet.specs` for function calling or `AIFunctionSet.toolSpecs` for parallel tool calling.
 
