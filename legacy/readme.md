@@ -17,24 +17,31 @@
 
 - [Intro](#intro)
 - [Install](#install)
+  - [AI SDKs](#ai-sdks)
+    - [Vercel AI SDk](#vercel-ai-sdk)
+    - [LangChain](#langchain)
+    - [LlamaIndex](#llamaindex)
+    - [Firebase Genkit](#firebase-genkit)
+    - [Dexa Dexter](#dexa-dexter)
+    - [OpenAI SDK](#openai-sdk)
+  - [Optimized Imports](#optimized-imports)
 - [Services](#services)
-- [Compound Tools](#compound-tools)
-- [AI SDKs](#ai-sdks)
-- [Client Goals](#client-goals)
+- [Client Design Philosophy](#client-design-philosophy)
 - [TODO](#todo)
 - [Contributors](#contributors)
 - [License](#license)
 
 ## Intro
 
-The goal of this project is to create a **set of standard AI functions / tools** which are **optimized for both normal TS-usage as well as LLM-based apps** and that work with all of the major AI SDKs (LangChain, LlamaIndex, Vercel AI SDK, OpenAI SDK, etc).
+The goal of this project is to create a **set of standard AI functions / tools** which are **optimized for both normal TS-usage as well as LLM-based apps** and **work with all of the major TS AI SDKs** (LangChain, LlamaIndex, Vercel AI SDK, OpenAI SDK, etc).
 
-For example, stdlib clients like `WeatherClient` can be used as normal TS classes:
+Agentic clients like `WeatherClient` can be used as normal TS classes:
 
 ```ts
 import { WeatherClient } from '@agentic/stdlib'
 
-const weather = new WeatherClient() // (requires `WEATHER_API_KEY` env var)
+// Requires `process.env.WEATHER_API_KEY` (from weatherapi.com)
+const weather = new WeatherClient()
 
 const result = await weather.getCurrentWeather({
   q: 'San Francisco'
@@ -44,13 +51,13 @@ console.log(result)
 
 Or you can use these clients as **LLM-based tools** where the LLM decides when and how to invoke the underlying functions for you.
 
-This works across all of the major AI SDKs via adaptors. Here's an example using [Vercel's AI SDK](https://github.com/vercel/ai):
+This works across all of the major AI SDKs via adapters. Here's an example using [Vercel's AI SDK](https://github.com/vercel/ai):
 
 ```ts
 // sdk-specific imports
 import { openai } from '@ai-sdk/openai'
 import { generateText } from 'ai'
-import { createAISDKTools } from '@agentic/stdlib/ai-sdk'
+import { createAISDKTools } from '@agentic/ai-sdk'
 
 // sdk-agnostic imports
 import { WeatherClient } from '@agentic/stdlib'
@@ -58,8 +65,8 @@ import { WeatherClient } from '@agentic/stdlib'
 const weather = new WeatherClient()
 
 const result = await generateText({
-  model: openai('gpt-4o'),
-  // this is the key line which uses the `@agentic/stdlib/ai-sdk` adaptor
+  model: openai('gpt-4o-mini'),
+  // this is the key line which uses the `@agentic/ai-sdk` adapter
   tools: createAISDKTools(weather),
   toolChoice: 'required',
   prompt: 'What is the weather in San Francisco?'
@@ -75,7 +82,7 @@ Here's a slightly more complex example which uses multiple clients and selects a
 ```ts
 // sdk-specific imports
 import { ChatModel, createAIRunner } from '@dexaai/dexter'
-import { createDexterFunctions } from '@agentic/stdlib/dexter'
+import { createDexterFunctions } from '@agentic/dexter'
 
 // sdk-agnostic imports
 import { PerigonClient, SerperClient } from '@agentic/stdlib'
@@ -87,13 +94,13 @@ async function main() {
 
   const runner = createAIRunner({
     chatModel: new ChatModel({
-      params: { model: 'gpt-4o', temperature: 0 }
+      params: { model: 'gpt-4o-mini', temperature: 0 }
     }),
     functions: createDexterFunctions(
       perigon.functions.pick('search_news_stories'),
       serper
     ),
-    systemMessage: `You are a helpful assistant. Be as concise as possible.`
+    systemMessage: 'You are a helpful assistant. Be as concise as possible.'
   })
 
   const result = await runner(
@@ -105,7 +112,7 @@ async function main() {
 
 Here we've exposed 2 functions to the LLM, `search_news_stories` (which comes from the `PerigonClient.searchStories` method) and `serper_google_search` (which implicitly comes from the `SerperClient.search` method).
 
-All of the SDK adaptors like `createDexterFunctions` accept very flexible in what they accept. `AIFunctionLike` objects include:
+All of the SDK adapters like `createDexterFunctions` accept very flexible `AIFunctionLike` objects, which include:
 
 - `AIFunctionSet` - Sets of AI functions (like `perigon.functions.pick('search_news_stories')` or `perigon.functions` or `serper.functions`)
 - `AIFunctionsProvider` - Client classes which expose an `AIFunctionSet` via the `.functions` property (like `perigon` or `serper`)
@@ -116,76 +123,237 @@ You can pass as many of these `AIFunctionLike` objects as you'd like and you can
 ## Install
 
 ```sh
-npm install @agentic/stdlib
+npm install @agentic/stdlib @agentic/core zod
 ```
 
 This package is [ESM only](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c) and requires `Node.js >= 18` or an equivalent environment (bun, deno, CF workers, etc).
 
-> [!NOTE]
-> All heavy third-party imports are isolated as _optional peer dependencies_ to keep the main `@agentic/stdlib` package as lightweight as possible.
+### AI SDKs
 
-Depending on the AI SDK and tool you want to use, you'll also need to install the required peer dependencies.
+Each AI SDK adapter has its own package which needs to be installed.
+
+<details>
+<summary>
+#### Vercel AI SDk
+</summary>
+
+```sh
+npm install @agentic/ai-sdk ai
+```
+
+```ts
+import { createAISDKTools } from '@agentic/ai-sdk'
+```
+
+See [examples/ai-sdk](./examples/ai-sdk) for a full example.
+
+</details>
+
+<details>
+<summary>
+#### LangChain
+</summary>
+
+```sh
+npm install @agentic/langchain @langchain/core langchain
+```
+
+```ts
+import { createLangChainTools } from '@agentic/langchain'
+```
+
+See [examples/langchain](./examples/langchain) for a full example.
+
+</details>
+
+<details>
+<summary>
+#### LlamaIndex
+</summary>
+
+```sh
+npm install @agentic/llamaindex llamaindex
+```
+
+```ts
+import { createLlamaIndexTools } from '@agentic/llamaindex'
+```
+
+See [examples/llamaindex](./examples/llamaindex) for a full example.
+
+</details>
+
+<details>
+<summary>
+#### Firebase Genkit
+</summary>
+
+```sh
+npm install @agentic/genkit @genkit-ai/ai @genkit-ai/core
+```
+
+```ts
+import { createGenkitTools } from '@agentic/genkit'
+```
+
+See [examples/genkit](./examples/genkit) for a full example.
+
+</details>
+
+<details>
+<summary>
+#### Dexa Dexter
+</summary>
+
+```sh
+npm install @agentic/dexter @dexaai/dexter
+```
+
+```ts
+import { createDexterFunctions } from '@agentic/dexter'
+```
+
+See [examples/dexter](./examples/dexter) for a full example.
+
+</details>
+
+<details>
+<summary>
+#### OpenAI SDK
+</summary>
+
+```sh
+npm install openai
+```
+
+There's no need for an adapter with the OpenAI SDK since all agentic tools are compatible with OpenAI by default. You can use `AIFunctionSet.specs` for function calling or `AIFunctionSet.toolSpecs` for parallel tool calling.
+
+```ts
+import { WeatherClient } from '@agentic/stdlib'
+import OpenAI from 'openai'
+
+const weather = new WeatherClient()
+const openai = new OpenAI()
+
+const messages: OpenAI.ChatCompletionMessageParam[] = [
+  {
+    role: 'system',
+    content: 'You are a helpful assistant. Be as concise as possible.'
+  },
+  { role: 'user', content: 'What is the weather in San Francisco?' }
+]
+
+{
+  // First call to OpenAI to invoke the weather tool
+  const res = await openai.chat.completions.create({
+    messages,
+    model: 'gpt-4o-mini',
+    temperature: 0,
+    tools: weather.functions.toolSpecs,
+    tool_choice: 'required'
+  })
+  const message = res.choices[0]?.message!
+  console.log(JSON.stringify(message, null, 2))
+  assert(message.tool_calls?.[0]?.function?.name === 'get_current_weather')
+
+  const fn = weather.functions.get('get_current_weather')!
+  assert(fn)
+
+  const toolParams = message.tool_calls[0].function.arguments
+  const toolResult = await fn(toolParams)
+
+  messages.push(message)
+  messages.push({
+    role: 'tool',
+    tool_call_id: message.tool_calls[0].id,
+    content: JSON.stringify(toolResult)
+  })
+}
+
+{
+  // Second call to OpenAI to generate a text response
+  const res = await openai.chat.completions.create({
+    messages,
+    model: 'gpt-4o-mini',
+    temperature: 0,
+    tools: weather.functions.toolSpecs
+  })
+  const message = res.choices?.[0]?.message
+  console.log(JSON.stringify(message, null, 2))
+}
+```
+
+See [examples/openai](./examples/openai) for a full example.
+
+</details>
+
+See the [examples](./examples) directory for working examples of how to use each of these adapters.
+
+### Optimized Imports
+
+`@agentic/stdlib` is just a convenience wrapper which re-exports all of the built-in AI tool packages. If you want to optimize your imports, you can replace `@agentic/stdlib` with the specific AI tools you want. For example:
+
+```sh
+npm install @agentic/weather @agentic/core zod
+```
+
+```ts
+import { WeatherClient } from '@agentic/weather'
+```
+
+Some of these individual tool packages have peer dependencies if they depend on large, external packages. If so, you'll need to install their peer deps as well.
+
+Take `e2b`, for example, which requires `@e2b/code-interpreter` as a peer dep:
+
+```sh
+npm install @agentic/e2b @agentic/core zod @e2b/code-interpreter
+```
+
+```ts
+import { e2b } from '@agentic/e2b'
+```
+
+> [!NOTE]
+> There is no functional difference between using `@agentic/stdlib` versus using the individual packages directly. The only difference is if you want to optimize your install size (when running on serverless functions, for instance), in which case installing and using the individual packages directly will be more efficient. The default examples use `@agentic/stdlib` because it provides a simpler DX.
 
 ## Services
 
-| Service                                                                  | Client                 | Description                                                                                                                                                                                                                                                    |
-| ------------------------------------------------------------------------ | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [Bing](https://www.microsoft.com/en-us/bing/apis/bing-web-search-api)    | `BingClient`           | Bing web search.                                                                                                                                                                                                                                               |
-| [Calculator](https://github.com/josdejong/mathjs)                        | `calculator`           | Basic calculator for simple mathematical expressions.                                                                                                                                                                                                          |
-| [Clearbit](https://dashboard.clearbit.com/docs)                          | `ClearbitClient`       | Resolving and enriching people and company datae.                                                                                                                                                                                                              |
-| [Dexa](https://dexa.ai)                                                  | `DexaClient`           | Answers questions from the world's best podcasters.                                                                                                                                                                                                            |
-| [Diffbot](https://docs.diffbot.com)                                      | `DiffbotClient`        | Web page classification and scraping; person and company data enrichment.                                                                                                                                                                                      |
-| [E2B](https://e2b.dev)                                                   | `e2b`                  | Hosted Python code intrepreter sandbox which is really useful for data analysis, flexible code execution, and advanced reasoning on-the-fly.                                                                                                                   |
-| [Exa](https://docs.exa.ai)                                               | `ExaClient`            | Web search tailored for LLMs.                                                                                                                                                                                                                                  |
-| [Firecrawl](https://www.firecrawl.dev)                                   | `FirecrawlClient`      | Website scraping and sanitization.                                                                                                                                                                                                                             |
-| [HackerNews](https://github.com/HackerNews/API)                          | `HackerNewsClient`     | Official HackerNews API.                                                                                                                                                                                                                                       |
-| [Hunter](https://hunter.io)                                              | `HunterClient`         | Email finder, verifier, and enrichment.                                                                                                                                                                                                                        |
-| [Jina](https://jina.ai/reader)                                           | `JinaClient`           | Clean URL reader and web search + URL top result reading with a generous free tier.                                                                                                                                                                            |
-| [Midjourney](https://www.imagineapi.dev)                                 | `MidjourneyClient`     | Unofficial Midjourney client for generative images.                                                                                                                                                                                                            |
-| [Novu](https://novu.co)                                                  | `NovuClient`           | Sending notifications (email, SMS, in-app, push, etc).                                                                                                                                                                                                         |
-| [People Data Labs](https://www.peopledatalabs.com)                       | `PeopleDataLabsClient` | People & company data (WIP).                                                                                                                                                                                                                                   |
-| [Perigon](https://www.goperigon.com/products/news-api)                   | `PerigonClient`        | Real-time news API and web content data from 140,000+ sources. Structured and enriched by AI, primed for LLMs.                                                                                                                                                 |
-| [Polygon](https://polygon.io)                                            | `PolygonClient`        | Stock market and company financial data.                                                                                                                                                                                                                       |
-| [PredictLeads](https://predictleads.com)                                 | `PredictLeadsClient`   | In-depth company data including signals like fundraising events, hiring news, product launches, technologies used, etc.                                                                                                                                        |
-| [Proxycurl](https://nubela.co/proxycurl)                                 | `ProxycurlClient`      | People and company data from LinkedIn & Crunchbase.                                                                                                                                                                                                            |
-| Scraper                                                                  | `ScraperClient`        | Scrapes URLs into clean html/markdown/text content (TODO: currently closed beta).                                                                                                                                                                              |
-| [Searxng](https://docs.searxng.org)                                      | `SearxngClient`        | OSS meta search engine capable of searching across many providers like Reddit, Google, Brave, Arxiv, Genius, IMDB, Rotten Tomatoes, Wikidata, Wolfram Alpha, YouTube, GitHub, [etc](https://docs.searxng.org/user/configured_engines.html#configured-engines). |
-| [SerpAPI](https://serpapi.com/search-api)                                | `SerpAPIClient`        | Lightweight wrapper around SerpAPI for Google search.                                                                                                                                                                                                          |
-| [Serper](https://serper.dev)                                             | `SerperClient`         | Lightweight wrapper around Serper for Google search.                                                                                                                                                                                                           |
-| [Slack](https://api.slack.com/docs)                                      | `SlackClient`          | Send and receive Slack messages.                                                                                                                                                                                                                               |
-| [SocialData](https://socialdata.tools)                                   | `SocialDataClient`     | Unofficial Twitter / X client (readonly) which is much cheaper than the official Twitter API.                                                                                                                                                                  |
-| [Tavily](https://tavily.com)                                             | `TavilyClient`         | Web search API tailored for LLMs.                                                                                                                                                                                                                              |
-| [Twilio](https://www.twilio.com/docs/conversations/api)                  | `TwilioClient`         | Twilio conversation API to send and receive SMS messages.                                                                                                                                                                                                      |
-| [Twitter](https://developer.x.com/en/docs/twitter-api)                   | `TwitterClient`        | Basic Twitter API methods for fetching users, tweets, and searching recent tweets. Includes support for plan-aware rate-limiting. Uses [Nango](https://www.nango.dev) for OAuth support.                                                                       |
-| [WeatherAPI](https://www.weatherapi.com)                                 | `WeatherClient`        | Basic access to current weather data based on location.                                                                                                                                                                                                        |
-| [Wikidata](https://www.wikidata.org/wiki/Wikidata:Data_access)           | `WikidataClient`       | Basic Wikidata client.                                                                                                                                                                                                                                         |
-| [Wikipedia](https://www.mediawiki.org/wiki/API)                          | `WikipediaClient`      | Wikipedia page search and summaries.                                                                                                                                                                                                                           |
-| [Wolfram Alpha](https://products.wolframalpha.com/llm-api/documentation) | `WolframAlphaClient`   | Wolfram Alpha LLM API client for answering computational, mathematical, and scientific questions.                                                                                                                                                              |
+| Service                                                                  | Package                     | Named export           | Description                                                                                                                                                                                                                                                    |
+| ------------------------------------------------------------------------ | --------------------------- | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Bing](https://www.microsoft.com/en-us/bing/apis/bing-web-search-api)    | `@agentic/bing`             | `BingClient`           | Bing web search.                                                                                                                                                                                                                                               |
+| [Calculator](https://github.com/josdejong/mathjs)                        | `@agentic/calculator`       | `calculator`           | Basic calculator for simple mathematical expressions.                                                                                                                                                                                                          |
+| [Clearbit](https://dashboard.clearbit.com/docs)                          | `@agentic/clearbit`         | `ClearbitClient`       | Resolving and enriching people and company datae.                                                                                                                                                                                                              |
+| [Dexa](https://dexa.ai)                                                  | `@agentic/dexa`             | `DexaClient`           | Answers questions from the world's best podcasters.                                                                                                                                                                                                            |
+| [Diffbot](https://docs.diffbot.com)                                      | `@agentic/diffbot`          | `DiffbotClient`        | Web page classification and scraping; person and company data enrichment.                                                                                                                                                                                      |
+| [E2B](https://e2b.dev)                                                   | `@agentic/e2b`              | `e2b`                  | Hosted Python code intrepreter sandbox which is really useful for data analysis, flexible code execution, and advanced reasoning on-the-fly. (_peer dep_ `@e2b/code-interpreter`)                                                                              |
+| [Exa](https://docs.exa.ai)                                               | `@agentic/exa`              | `ExaClient`            | Web search tailored for LLMs.                                                                                                                                                                                                                                  |
+| [Firecrawl](https://www.firecrawl.dev)                                   | `@agentic/firecrawl`        | `FirecrawlClient`      | Website scraping and sanitization.                                                                                                                                                                                                                             |
+| [HackerNews](https://github.com/HackerNews/API)                          | `@agentic/hacker-news`      | `HackerNewsClient`     | Official HackerNews API.                                                                                                                                                                                                                                       |
+| [Hunter](https://hunter.io)                                              | `@agentic/hunter`           | `HunterClient`         | Email finder, verifier, and enrichment.                                                                                                                                                                                                                        |
+| [Jina](https://jina.ai/reader)                                           | `@agentic/jina`             | `JinaClient`           | Clean URL reader and web search + URL top result reading with a generous free tier.                                                                                                                                                                            |
+| [Midjourney](https://www.imagineapi.dev)                                 | `@agentic/midjourney`       | `MidjourneyClient`     | Unofficial Midjourney client for generative images.                                                                                                                                                                                                            |
+| [Novu](https://novu.co)                                                  | `@agentic/novu`             | `NovuClient`           | Sending notifications (email, SMS, in-app, push, etc).                                                                                                                                                                                                         |
+| [People Data Labs](https://www.peopledatalabs.com)                       | `@agentic/people-data-labs` | `PeopleDataLabsClient` | People & company data (WIP).                                                                                                                                                                                                                                   |
+| [Perigon](https://www.goperigon.com/products/news-api)                   | `@agentic/perigon`          | `PerigonClient`        | Real-time news API and web content data from 140,000+ sources. Structured and enriched by AI, primed for LLMs.                                                                                                                                                 |
+| [Polygon](https://polygon.io)                                            | `@agentic/polygon`          | `PolygonClient`        | Stock market and company financial data.                                                                                                                                                                                                                       |
+| [PredictLeads](https://predictleads.com)                                 | `@agentic/predict-leads`    | `PredictLeadsClient`   | In-depth company data including signals like fundraising events, hiring news, product launches, technologies used, etc.                                                                                                                                        |
+| [Proxycurl](https://nubela.co/proxycurl)                                 | `@agentic/proxycurl`        | `ProxycurlClient`      | People and company data from LinkedIn & Crunchbase.                                                                                                                                                                                                            |
+| [Searxng](https://docs.searxng.org)                                      | `@agentic/searxng`          | `SearxngClient`        | OSS meta search engine capable of searching across many providers like Reddit, Google, Brave, Arxiv, Genius, IMDB, Rotten Tomatoes, Wikidata, Wolfram Alpha, YouTube, GitHub, [etc](https://docs.searxng.org/user/configured_engines.html#configured-engines). |
+| [SerpAPI](https://serpapi.com/search-api)                                | `@agentic/serpapi`          | `SerpAPIClient`        | Lightweight wrapper around SerpAPI for Google search.                                                                                                                                                                                                          |
+| [Serper](https://serper.dev)                                             | `@agentic/serper`           | `SerperClient`         | Lightweight wrapper around Serper for Google search.                                                                                                                                                                                                           |
+| [Slack](https://api.slack.com/docs)                                      | `@agentic/slack`            | `SlackClient`          | Send and receive Slack messages.                                                                                                                                                                                                                               |
+| [SocialData](https://socialdata.tools)                                   | `@agentic/social-data`      | `SocialDataClient`     | Unofficial Twitter / X client (readonly) which is much cheaper than the official Twitter API.                                                                                                                                                                  |
+| [Tavily](https://tavily.com)                                             | `@agentic/tavily`           | `TavilyClient`         | Web search API tailored for LLMs.                                                                                                                                                                                                                              |
+| [Twilio](https://www.twilio.com/docs/conversations/api)                  | `@agentic/twilio`           | `TwilioClient`         | Twilio conversation API to send and receive SMS messages.                                                                                                                                                                                                      |
+| [Twitter](https://developer.x.com/en/docs/twitter-api)                   | `@agentic/twitter`          | `TwitterClient`        | Basic Twitter API methods for fetching users, tweets, and searching recent tweets. Includes support for plan-aware rate-limiting. Uses [Nango](https://www.nango.dev) for OAuth support.                                                                       |
+| [Weather](https://www.weatherapi.com)                                    | `@agentic/weather`          | `WeatherClient`        | Basic access to current weather data based on location.                                                                                                                                                                                                        |
+| [Wikidata](https://www.wikidata.org/wiki/Wikidata:Data_access)           | `@agentic/wikidata`         | `WikidataClient`       | Basic Wikidata client.                                                                                                                                                                                                                                         |
+| [Wikipedia](https://www.mediawiki.org/wiki/API)                          | `@agentic/wikipedia`        | `WikipediaClient`      | Wikipedia page search and summaries.                                                                                                                                                                                                                           |
+| [Wolfram Alpha](https://products.wolframalpha.com/llm-api/documentation) | `@agentic/wolfram-alpha`    | `WolframAlphaClient`   | Wolfram Alpha LLM API client for answering computational, mathematical, and scientific questions.                                                                                                                                                              |
 
-Note that many of these clients expose multiple AI functions.
+Note that you can import any of these AI tools from `@agentic/stdlib` OR from their individual packages. Installing and importing from their individual packages is more efficient, but it's less convenient so it isn't the default.
 
-## Compound Tools
-
-- `SearchAndCrawl`
-
-## AI SDKs
-
-- OpenAI SDK
-  - no need for an adaptor; use `AIFunctionSet.specs` or `AIFunctionSet.toolSpecs`
-- Vercel AI SDK
-  - `import { createAISDKTools } from '@agentic/stdlib/ai-sdk'`
-- LangChain
-  - `import { createLangChainTools } from '@agentic/stdlib/langchain'`
-- LlamaIndex
-  - `import { createLlamaIndexTools } from '@agentic/stdlib/llamaindex'`
-- Firebase Genkit
-  - `import { createGenkitTools } from '@agentic/stdlib/genkit'`
-- Dexa Dexter
-  - `import { createDexterFunctions } from '@agentic/stdlib/dexter'`
-
-See the [examples](./examples) directory for examples of how to use each of these adaptors.
-
-## Client Goals
+## Client Design Philosophy
 
 - clients should be as minimal as possible
 - clients should use `ky` and `zod` where possible
@@ -194,7 +362,6 @@ See the [examples](./examples) directory for examples of how to use each of thes
   - `inputSchema` zod schemas should be as minimal as possible with descriptions prompt engineered specifically for use with LLMs
 - clients and AIFunctions should be composable via `AIFunctionSet`
 - clients should work with all major TS AI SDKs
-  - SDK adaptors should be as lightweight as possible and be optional peer dependencies of `@agentic/stdlib`
 
 ## TODO
 

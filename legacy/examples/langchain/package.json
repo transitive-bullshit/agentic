@@ -1,0 +1,22 @@
+{
+  "name": "agentic-examples-langchain",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "test": "run-s test:*",
+    "test:lint": "eslint .",
+    "test:typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@agentic/core": "workspace:*",
+    "@agentic/langchain": "workspace:*",
+    "@agentic/stdlib": "workspace:*",
+    "@langchain/core": "^0.2.20",
+    "@langchain/openai": "^0.2.5",
+    "langchain": "^0.2.12",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@agentic/tsconfig": "workspace:*"
+  }
+}

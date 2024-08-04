@@ -1,0 +1,23 @@
+{
+  "name": "agentic-examples-ai-sdk",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "test": "run-s test:*",
+    "test:lint": "eslint .",
+    "test:typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@agentic/ai-sdk": "workspace:*",
+    "@agentic/core": "workspace:*",
+    "@agentic/weather": "workspace:*",
+    "@ai-sdk/openai": "^0.0.24",
+    "@browserbasehq/sdk": "^1.4.2",
+    "ai": "^3.1.30",
+    "openai": "^4.49.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@agentic/tsconfig": "workspace:*"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "name": "agentic-examples-openai",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "test": "run-s test:*",
+    "test:lint": "eslint .",
+    "test:typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@agentic/core": "workspace:*",
+    "@agentic/stdlib": "workspace:*",
+    "openai": "^4.49.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@agentic/tsconfig": "workspace:*"
+  }
+}

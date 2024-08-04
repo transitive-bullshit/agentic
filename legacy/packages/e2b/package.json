@@ -1,0 +1,46 @@
+{
+  "name": "@agentic/e2b",
+  "version": "7.0.0",
+  "description": "Agentic SDK for E2B's hosted code interpreter.",
+  "author": "Travis Fischer <travis@transitivebullsh.it>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/transitive-bullshit/agentic.git"
+  },
+  "type": "module",
+  "source": "./src/index.ts",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup --config ../../tsup.config.ts",
+    "dev": "tsup --config ../../tsup.config.ts --watch",
+    "clean": "del dist",
+    "test": "run-s test:*",
+    "test:lint": "eslint .",
+    "test:typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "@agentic/core": "workspace:*",
+    "@e2b/code-interpreter": "^0.0.8",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@agentic/core": "workspace:*",
+    "@agentic/tsconfig": "workspace:*",
+    "@e2b/code-interpreter": "^0.0.8"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
