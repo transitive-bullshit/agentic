@@ -132,14 +132,14 @@ This package is [ESM only](https://gist.github.com/sindresorhus/a39789f98801d908
 
 Each AI SDK adapter has its own package which needs to be installed.
 
+#### Vercel AI SDk
+
 <details>
 <summary>
-#### Vercel AI SDk
-</summary>
-
 ```sh
 npm install @agentic/ai-sdk ai
 ```
+</summary>
 
 ```ts
 import { createAISDKTools } from '@agentic/ai-sdk'
@@ -149,14 +149,14 @@ See [examples/ai-sdk](./examples/ai-sdk) for a full example.
 
 </details>
 
+#### LangChain
+
 <details>
 <summary>
-#### LangChain
-</summary>
-
 ```sh
 npm install @agentic/langchain @langchain/core langchain
 ```
+</summary>
 
 ```ts
 import { createLangChainTools } from '@agentic/langchain'
@@ -166,14 +166,14 @@ See [examples/langchain](./examples/langchain) for a full example.
 
 </details>
 
+#### LlamaIndex
+
 <details>
 <summary>
-#### LlamaIndex
-</summary>
-
 ```sh
 npm install @agentic/llamaindex llamaindex
 ```
+</summary>
 
 ```ts
 import { createLlamaIndexTools } from '@agentic/llamaindex'
@@ -183,14 +183,14 @@ See [examples/llamaindex](./examples/llamaindex) for a full example.
 
 </details>
 
+#### Firebase Genkit
+
 <details>
 <summary>
-#### Firebase Genkit
-</summary>
-
 ```sh
 npm install @agentic/genkit @genkit-ai/ai @genkit-ai/core
 ```
+</summary>
 
 ```ts
 import { createGenkitTools } from '@agentic/genkit'
@@ -200,14 +200,14 @@ See [examples/genkit](./examples/genkit) for a full example.
 
 </details>
 
+#### Dexa Dexter
+
 <details>
 <summary>
-#### Dexa Dexter
-</summary>
-
 ```sh
 npm install @agentic/dexter @dexaai/dexter
 ```
+</summary>
 
 ```ts
 import { createDexterFunctions } from '@agentic/dexter'
@@ -217,14 +217,14 @@ See [examples/dexter](./examples/dexter) for a full example.
 
 </details>
 
+#### OpenAI SDK
+
 <details>
 <summary>
-#### OpenAI SDK
-</summary>
-
 ```sh
 npm install openai
 ```
+</summary>
 
 There's no need for an adapter with the OpenAI SDK since all agentic tools are compatible with OpenAI by default. You can use `AIFunctionSet.specs` for function calling or `AIFunctionSet.toolSpecs` for parallel tool calling.
 
