@@ -1,6 +1,6 @@
 {
   "name": "@agentic/twitter",
-  "version": "6.6.1",
+  "version": "7.0.0",
   "description": "Agentic SDK for Twitter.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",

@@ -1,6 +1,6 @@
 {
   "name": "@agentic/github",
-  "version": "6.6.1",
+  "version": "7.0.0",
   "description": "Agentic SDK for GitHub.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",

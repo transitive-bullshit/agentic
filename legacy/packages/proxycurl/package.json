@@ -1,6 +1,6 @@
 {
   "name": "@agentic/proxycurl",
-  "version": "6.6.1",
+  "version": "7.0.0",
   "description": "Agentic SDK for Proxycurl.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",
