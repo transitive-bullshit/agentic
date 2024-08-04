@@ -21,7 +21,7 @@
     "test:typecheck": "turbo test:typecheck",
     "test:unit": "turbo test:unit",
     "changeset": "changeset",
-    "release": "run-s build changeset publish",
+    "release": "run-s release:*",
     "release:build": "run-s build",
     "release:version": "changeset version",
     "release:publish": "changeset publish",
