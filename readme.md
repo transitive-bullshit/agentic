@@ -33,14 +33,15 @@
 
 ## Intro
 
-The goal of this project is to create a **set of standard AI functions / tools** which are **optimized for both normal TS-usage as well as LLM-based apps** and that work with all of the major AI SDKs (LangChain, LlamaIndex, Vercel AI SDK, OpenAI SDK, etc).
+The goal of this project is to create a **set of standard AI functions / tools** which are **optimized for both normal TS-usage as well as LLM-based apps** and **work with all of the major TS AI SDKs** (LangChain, LlamaIndex, Vercel AI SDK, OpenAI SDK, etc).
 
-For example, stdlib clients like `WeatherClient` can be used as normal TS classes:
+Agentic clients like `WeatherClient` can be used as normal TS classes:
 
 ```ts
 import { WeatherClient } from '@agentic/stdlib'
 
-const weather = new WeatherClient() // (requires `WEATHER_API_KEY` env var)
+// Requires `process.env.WEATHER_API_KEY` (from weatherapi.com)
+const weather = new WeatherClient()
 
 const result = await weather.getCurrentWeather({
   q: 'San Francisco'
@@ -64,7 +65,7 @@ import { WeatherClient } from '@agentic/stdlib'
 const weather = new WeatherClient()
 
 const result = await generateText({
-  model: openai('gpt-4o'),
+  model: openai('gpt-4o-mini'),
   // this is the key line which uses the `@agentic/ai-sdk` adapter
   tools: createAISDKTools(weather),
   toolChoice: 'required',
@@ -93,13 +94,13 @@ async function main() {
 
   const runner = createAIRunner({
     chatModel: new ChatModel({
-      params: { model: 'gpt-4o', temperature: 0 }
+      params: { model: 'gpt-4o-mini', temperature: 0 }
     }),
     functions: createDexterFunctions(
       perigon.functions.pick('search_news_stories'),
       serper
     ),
-    systemMessage: `You are a helpful assistant. Be as concise as possible.`
+    systemMessage: 'You are a helpful assistant. Be as concise as possible.'
   })
 
   const result = await runner(
@@ -111,7 +112,7 @@ async function main() {
 
 Here we've exposed 2 functions to the LLM, `search_news_stories` (which comes from the `PerigonClient.searchStories` method) and `serper_google_search` (which implicitly comes from the `SerperClient.search` method).
 
-All of the SDK adapters like `createDexterFunctions` accept very flexible in what they accept. `AIFunctionLike` objects include:
+All of the SDK adapters like `createDexterFunctions` accept very flexible `AIFunctionLike` objects, which include:
 
 - `AIFunctionSet` - Sets of AI functions (like `perigon.functions.pick('search_news_stories')` or `perigon.functions` or `serper.functions`)
 - `AIFunctionsProvider` - Client classes which expose an `AIFunctionSet` via the `.functions` property (like `perigon` or `serper`)
@@ -129,7 +130,7 @@ This package is [ESM only](https://gist.github.com/sindresorhus/a39789f98801d908
 
 ### AI SDKs
 
-Each AI SDK adapter is available from it's own package and needs to be installed in addition to the packages above.
+Each AI SDK adapter has its own package which needs to be installed.
 
 <details>
 <summary>
@@ -143,6 +144,8 @@ npm install @agentic/ai-sdk ai
 ```ts
 import { createAISDKTools } from '@agentic/ai-sdk'
 ```
+
+See [examples/ai-sdk](./examples/ai-sdk) for a full example.
 
 </details>
 
@@ -159,6 +162,8 @@ npm install @agentic/langchain @langchain/core langchain
 import { createLangChainTools } from '@agentic/langchain'
 ```
 
+See [examples/langchain](./examples/langchain) for a full example.
+
 </details>
 
 <details>
@@ -173,6 +178,8 @@ npm install @agentic/llamaindex llamaindex
 ```ts
 import { createLlamaIndexTools } from '@agentic/llamaindex'
 ```
+
+See [examples/llamaindex](./examples/llamaindex) for a full example.
 
 </details>
 
@@ -189,6 +196,8 @@ npm install @agentic/genkit @genkit-ai/ai @genkit-ai/core
 import { createGenkitTools } from '@agentic/genkit'
 ```
 
+See [examples/genkit](./examples/genkit) for a full example.
+
 </details>
 
 <details>
@@ -204,6 +213,8 @@ npm install @agentic/dexter @dexaai/dexter
 import { createDexterFunctions } from '@agentic/dexter'
 ```
 
+See [examples/dexter](./examples/dexter) for a full example.
+
 </details>
 
 <details>
@@ -215,7 +226,7 @@ import { createDexterFunctions } from '@agentic/dexter'
 npm install openai
 ```
 
-There's no need for an adapter with the OpenAI SDK since all agentic tools are compatible with OpenAI by default. You can use `AIFunctionSet.specs` for function calling or `AIFunctionSet.toolSpecs` for parallel tool calling. For example:
+There's no need for an adapter with the OpenAI SDK since all agentic tools are compatible with OpenAI by default. You can use `AIFunctionSet.specs` for function calling or `AIFunctionSet.toolSpecs` for parallel tool calling.
 
 ```ts
 import { WeatherClient } from '@agentic/stdlib'
@@ -236,7 +247,7 @@ const messages: OpenAI.ChatCompletionMessageParam[] = [
   // First call to OpenAI to invoke the weather tool
   const res = await openai.chat.completions.create({
     messages,
-    model: 'gpt-4o',
+    model: 'gpt-4o-mini',
     temperature: 0,
     tools: weather.functions.toolSpecs,
     tool_choice: 'required'
@@ -263,7 +274,7 @@ const messages: OpenAI.ChatCompletionMessageParam[] = [
   // Second call to OpenAI to generate a text response
   const res = await openai.chat.completions.create({
     messages,
-    model: 'gpt-4o',
+    model: 'gpt-4o-mini',
     temperature: 0,
     tools: weather.functions.toolSpecs
   })
@@ -271,6 +282,8 @@ const messages: OpenAI.ChatCompletionMessageParam[] = [
   console.log(JSON.stringify(message, null, 2))
 }
 ```
+
+See [examples/openai](./examples/openai) for a full example.
 
 </details>
 

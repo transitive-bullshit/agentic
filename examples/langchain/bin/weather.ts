@@ -12,7 +12,7 @@ async function main() {
 
   const tools = createLangChainTools(weather)
   const agent = createToolCallingAgent({
-    llm: new ChatOpenAI({ model: 'gpt-4o', temperature: 0 }),
+    llm: new ChatOpenAI({ model: 'gpt-4o-mini', temperature: 0 }),
     tools,
     prompt: ChatPromptTemplate.fromMessages([
       ['system', 'You are a helpful assistant. Be as concise as possible.'],

@@ -12,7 +12,7 @@ async function main() {
   console.log(browserTool.parameters)
 
   const result = await generateText({
-    model: openai('gpt-4o'),
+    model: openai('gpt-4o-mini'),
     tools: { browserTool },
     toolChoice: 'required',
     temperature: 0,
