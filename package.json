@@ -27,22 +27,22 @@
   "devDependencies": {
     "@fisch0920/eslint-config": "^1.4.0",
     "@total-typescript/ts-reset": "^0.5.1",
-    "@types/node": "^22.0.0",
+    "@types/node": "^22.1.0",
     "del-cli": "^5.1.0",
     "dotenv": "^16.4.5",
     "eslint": "^8.57.0",
     "husky": "^9.1.4",
-    "lint-staged": "^15.2.7",
+    "lint-staged": "^15.2.8",
     "np": "^10.0.7",
     "npm-run-all2": "^6.2.2",
     "only-allow": "^1.2.1",
     "prettier": "^3.3.3",
-    "tsup": "^8.2.3",
-    "tsx": "^4.16.2",
+    "tsup": "^8.2.4",
+    "tsx": "^4.16.5",
     "turbo": "^2.0.11",
     "typescript": "^5.5.4",
-    "vitest": "2.0.4",
-    "zod": "^3.23.3"
+    "vitest": "2.0.5",
+    "zod": "^3.23.8"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
