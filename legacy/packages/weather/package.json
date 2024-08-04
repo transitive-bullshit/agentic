@@ -27,7 +27,6 @@
     "dev": "tsup --watch",
     "clean": "del dist",
     "test": "run-s test:*",
-    "test:format": "prettier --check \"**/*.{js,ts,tsx}\"",
     "test:lint": "eslint .",
     "test:typecheck": "tsc --noEmit"
   },
