@@ -51,6 +51,9 @@
   "peerDependencies": {
     "zod": "^3.23.3"
   },
+  "devDependencies": {
+    "@agentic/tsconfig": "workspace:*"
+  },
   "publishConfig": {
     "access": "public"
   }

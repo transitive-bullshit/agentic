@@ -39,7 +39,8 @@
     "zod": "^3.23.3"
   },
   "devDependencies": {
-    "@agentic/core": "workspace:*"
+    "@agentic/core": "workspace:*",
+    "@agentic/tsconfig": "workspace:*"
   },
   "publishConfig": {
     "access": "public"

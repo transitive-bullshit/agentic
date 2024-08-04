@@ -1,7 +1,8 @@
 packages:
+  - 'packages/tsconfig'
   - 'packages/core'
   - 'packages/weather'
   - 'packages/ai-sdk'
   - 'examples/ai-sdk'
-#  - 'examples'
+#  - 'examples/*'
 #  - 'packages/*'
