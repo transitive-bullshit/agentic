@@ -1,6 +1,7 @@
 export * from './ai-function-set'
 export * from './create-ai-chain'
 export * from './create-ai-function'
+export * from './echo'
 export * from './errors'
 export * from './extract-object'
 export * from './fns'

@@ -1,5 +1,3 @@
-import 'dotenv/config'
-
 import defaultKy, {
   type AfterResponseHook,
   type BeforeRequestHook,
