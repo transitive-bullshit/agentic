@@ -1,0 +1,84 @@
+{
+  "name": "@agentic/stdlib",
+  "version": "6.6.1",
+  "description": "Standard library of AI functions which work with any LLM and TypeScript AI SDK.",
+  "author": "Travis Fischer <travis@transitivebullsh.it>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/transitive-bullshit/agentic.git"
+  },
+  "type": "module",
+  "source": "./src/index.ts",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup --config ../../tsup.config.ts",
+    "dev": "tsup --config ../../tsup.config.ts --watch",
+    "clean": "del dist",
+    "test": "run-s test:*",
+    "test:lint": "eslint .",
+    "test:typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@agentic/ai-sdk": "workspace:*",
+    "@agentic/bing": "workspace:*",
+    "@agentic/calculator": "workspace:*",
+    "@agentic/clearbit": "workspace:*",
+    "@agentic/dexa": "workspace:*",
+    "@agentic/dexter": "workspace:*",
+    "@agentic/diffbot": "workspace:*",
+    "@agentic/e2b": "workspace:*",
+    "@agentic/exa": "workspace:*",
+    "@agentic/firecrawl": "workspace:*",
+    "@agentic/genkit": "workspace:*",
+    "@agentic/github": "workspace:*",
+    "@agentic/hacker-news": "workspace:*",
+    "@agentic/hunter": "workspace:*",
+    "@agentic/jina": "workspace:*",
+    "@agentic/langchain": "workspace:*",
+    "@agentic/llamaindex": "workspace:*",
+    "@agentic/midjourney": "workspace:*",
+    "@agentic/novu": "workspace:*",
+    "@agentic/people-data-labs": "workspace:*",
+    "@agentic/perigon": "workspace:*",
+    "@agentic/polygon": "workspace:*",
+    "@agentic/predict-leads": "workspace:*",
+    "@agentic/proxycurl": "workspace:*",
+    "@agentic/search-and-crawl": "workspace:*",
+    "@agentic/searxng": "workspace:*",
+    "@agentic/serpapi": "workspace:*",
+    "@agentic/serper": "workspace:*",
+    "@agentic/slack": "workspace:*",
+    "@agentic/social-data": "workspace:*",
+    "@agentic/tavily": "workspace:*",
+    "@agentic/twilio": "workspace:*",
+    "@agentic/twitter": "workspace:*",
+    "@agentic/weather": "workspace:*",
+    "@agentic/wikidata": "workspace:*",
+    "@agentic/wikipedia": "workspace:*",
+    "@agentic/wolfram-alpha": "workspace:*",
+    "@e2b/code-interpreter": "^0.0.8"
+  },
+  "peerDependencies": {
+    "@agentic/core": "workspace:*",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@agentic/core": "workspace:*",
+    "@agentic/tsconfig": "workspace:*"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -10,7 +10,7 @@
   "dependencies": {
     "@agentic/core": "workspace:*",
     "@agentic/langchain": "workspace:*",
-    "@agentic/weather": "workspace:*",
+    "@agentic/stdlib": "workspace:*",
     "@langchain/core": "^0.2.20",
     "@langchain/openai": "^0.2.5",
     "langchain": "^0.2.12",

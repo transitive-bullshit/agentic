@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@agentic/core": "workspace:*",
-    "@agentic/serper": "workspace:*",
+    "@agentic/stdlib": "workspace:*",
     "restore-cursor": "^5.1.0",
     "zod": "^3.23.8"
   },

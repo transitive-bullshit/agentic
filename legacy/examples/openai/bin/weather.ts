@@ -2,7 +2,7 @@
 import 'dotenv/config'
 
 import { assert } from '@agentic/core'
-import { WeatherClient } from '@agentic/weather'
+import { WeatherClient } from '@agentic/stdlib'
 import OpenAI from 'openai'
 
 async function main() {

@@ -31,21 +31,19 @@
     "test:typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@nangohq/node": "^0.42.2",
     "ky": "^1.5.0",
     "p-throttle": "^6.1.0",
+    "twitter-api-sdk": "^1.2.1",
     "type-fest": "^4.21.0"
   },
   "peerDependencies": {
     "@agentic/core": "workspace:*",
-    "zod": "^3.23.8",
-    "@nangohq/node": "^0.42.2",
-    "twitter-api-sdk": "^1.2.1"
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@agentic/core": "workspace:*",
-    "@agentic/tsconfig": "workspace:*",
-    "@nangohq/node": "^0.42.2",
-    "twitter-api-sdk": "^1.2.1"
+    "@agentic/tsconfig": "workspace:*"
   },
   "publishConfig": {
     "access": "public"

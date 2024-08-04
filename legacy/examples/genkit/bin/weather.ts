@@ -2,7 +2,7 @@
 import 'dotenv/config'
 
 import { createGenkitTools } from '@agentic/genkit'
-import { WeatherClient } from '@agentic/weather'
+import { WeatherClient } from '@agentic/stdlib'
 import { generate } from '@genkit-ai/ai'
 import { configureGenkit } from '@genkit-ai/core'
 import { gpt4o, openAI } from 'genkitx-openai'
