@@ -49,5 +49,10 @@
       "prettier --ignore-unknown --write",
       "eslint --fix"
     ]
+  },
+  "pnpm": {
+    "overrides": {
+      "esbuild": "^0.23.0"
+    }
   }
 }
