@@ -1,15 +1,15 @@
-import is from '@sindresorhus/is'
+import { isError } from '@sindresorhus/is'
 
 function assertImpl(value: unknown, message?: string | Error): asserts value {
   if (value) {
     return
   }
 
-  if (is.error(message)) {
-    throw message
+  if (!message) {
+    throw new Error('Assertion failed')
   }
 
-  throw new Error(message ?? 'Assertion failed')
+  throw isError(message) ? message : new Error(message)
 }
 
 /**
