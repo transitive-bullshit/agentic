@@ -1,5 +1,5 @@
 import type * as wikibase from 'wikibase-sdk'
-import { AIFunctionsProvider , assert, getEnv, throttleKy } from '@agentic/core'
+import { AIFunctionsProvider, assert, getEnv, throttleKy } from '@agentic/core'
 import defaultKy, { type KyInstance } from 'ky'
 import pThrottle from 'p-throttle'
 import wdk from 'wikibase-sdk/wikidata.org'

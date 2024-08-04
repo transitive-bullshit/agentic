@@ -76,10 +76,10 @@ importers:
         version: 0.0.24(zod@3.23.8)
       '@browserbasehq/sdk':
         specifier: ^1.4.2
-        version: 1.4.2
+        version: 1.4.2(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       ai:
         specifier: ^3.1.30
-        version: 3.3.0(openai@4.54.0(encoding@0.1.13))(react@18.3.1)(sswr@2.1.0(svelte@4.2.18))(svelte@4.2.18)(vue@3.4.35(typescript@5.5.4))(zod@3.23.8)
+        version: 3.3.0(openai@4.54.0)(react@18.3.1)(sswr@2.1.0(svelte@4.2.18))(svelte@4.2.18)(vue@3.4.35(typescript@5.5.4))(zod@3.23.8)
       dotenv:
         specifier: ^16.4.5
         version: 16.4.5
@@ -104,7 +104,7 @@ importers:
         version: link:../tsconfig
       ai:
         specifier: ^3.1.30
-        version: 3.3.0(openai@4.54.0(encoding@0.1.13))(react@18.3.1)(sswr@2.1.0(svelte@4.2.18))(svelte@4.2.18)(vue@3.4.35(typescript@5.5.4))(zod@3.23.8)
+        version: 3.3.0(openai@4.54.0)(react@18.3.1)(sswr@2.1.0(svelte@4.2.18))(svelte@4.2.18)(vue@3.4.35(typescript@5.5.4))(zod@3.23.8)
 
   packages/bing:
     dependencies:
@@ -246,6 +246,76 @@ importers:
         specifier: ^2.1.0
         version: 2.1.0
 
+  packages/diffbot:
+    dependencies:
+      ky:
+        specifier: ^1.5.0
+        version: 1.5.0
+      p-throttle:
+        specifier: ^6.1.0
+        version: 6.1.0
+      zod:
+        specifier: ^3.23.3
+        version: 3.23.8
+    devDependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
+      '@agentic/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+
+  packages/e2b:
+    dependencies:
+      zod:
+        specifier: ^3.23.3
+        version: 3.23.8
+    devDependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
+      '@agentic/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      '@e2b/code-interpreter':
+        specifier: ^0.0.8
+        version: 0.0.8(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+
+  packages/exa:
+    dependencies:
+      ky:
+        specifier: ^1.5.0
+        version: 1.5.0
+      zod:
+        specifier: ^3.23.3
+        version: 3.23.8
+    devDependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
+      '@agentic/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+
+  packages/firecrawl:
+    dependencies:
+      ky:
+        specifier: ^1.5.0
+        version: 1.5.0
+      p-throttle:
+        specifier: ^6.1.0
+        version: 6.1.0
+      zod:
+        specifier: ^3.23.3
+        version: 3.23.8
+    devDependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
+      '@agentic/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+
   packages/genkit:
     devDependencies:
       '@agentic/core':
@@ -257,6 +327,79 @@ importers:
       '@genkit-ai/ai':
         specifier: ^0.5.9
         version: 0.5.9
+
+  packages/github:
+    dependencies:
+      ky:
+        specifier: ^1.5.0
+        version: 1.5.0
+      p-throttle:
+        specifier: ^6.1.0
+        version: 6.1.0
+      zod:
+        specifier: ^3.23.3
+        version: 3.23.8
+    devDependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
+      '@agentic/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      octokit:
+        specifier: ^4.0.2
+        version: 4.0.2
+
+  packages/hacker-news:
+    dependencies:
+      ky:
+        specifier: ^1.5.0
+        version: 1.5.0
+      zod:
+        specifier: ^3.23.3
+        version: 3.23.8
+    devDependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
+      '@agentic/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+
+  packages/hunter:
+    dependencies:
+      ky:
+        specifier: ^1.5.0
+        version: 1.5.0
+      zod:
+        specifier: ^3.23.3
+        version: 3.23.8
+    devDependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
+      '@agentic/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+
+  packages/jina:
+    dependencies:
+      ky:
+        specifier: ^1.5.0
+        version: 1.5.0
+      p-throttle:
+        specifier: ^6.1.0
+        version: 6.1.0
+      zod:
+        specifier: ^3.23.3
+        version: 3.23.8
+    devDependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
+      '@agentic/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
 
   packages/langchain:
     devDependencies:
@@ -280,11 +423,338 @@ importers:
         version: link:../tsconfig
       llamaindex:
         specifier: ^0.5.13
-        version: 0.5.13(@aws-sdk/client-sso-oidc@3.623.0(@aws-sdk/client-sts@3.623.0))(@aws-sdk/credential-providers@3.623.0(@aws-sdk/client-sso-oidc@3.623.0(@aws-sdk/client-sts@3.623.0)))(@notionhq/client@2.2.15(encoding@0.1.13))(encoding@0.1.13)(socks@2.8.3)(typescript@5.5.4)
+        version: 0.5.13(@aws-sdk/client-sso-oidc@3.623.0(@aws-sdk/client-sts@3.623.0))(@aws-sdk/credential-providers@3.623.0(@aws-sdk/client-sso-oidc@3.623.0(@aws-sdk/client-sts@3.623.0)))(@notionhq/client@2.2.15(encoding@0.1.13))(bufferutil@4.0.8)(encoding@0.1.13)(socks@2.8.3)(typescript@5.5.4)(utf-8-validate@6.0.4)
+
+  packages/midjourney:
+    dependencies:
+      ky:
+        specifier: ^1.5.0
+        version: 1.5.0
+      zod:
+        specifier: ^3.23.3
+        version: 3.23.8
+    devDependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
+      '@agentic/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+
+  packages/novu:
+    dependencies:
+      ky:
+        specifier: ^1.5.0
+        version: 1.5.0
+      zod:
+        specifier: ^3.23.3
+        version: 3.23.8
+    devDependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
+      '@agentic/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+
+  packages/people-data-labs:
+    dependencies:
+      ky:
+        specifier: ^1.5.0
+        version: 1.5.0
+      p-throttle:
+        specifier: ^6.1.0
+        version: 6.1.0
+      zod:
+        specifier: ^3.23.3
+        version: 3.23.8
+    devDependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
+      '@agentic/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+
+  packages/perigon:
+    dependencies:
+      ky:
+        specifier: ^1.5.0
+        version: 1.5.0
+      p-throttle:
+        specifier: ^6.1.0
+        version: 6.1.0
+      zod:
+        specifier: ^3.23.3
+        version: 3.23.8
+    devDependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
+      '@agentic/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+
+  packages/polygon:
+    dependencies:
+      ky:
+        specifier: ^1.5.0
+        version: 1.5.0
+      zod:
+        specifier: ^3.23.3
+        version: 3.23.8
+    devDependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
+      '@agentic/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+
+  packages/predict-leads:
+    dependencies:
+      ky:
+        specifier: ^1.5.0
+        version: 1.5.0
+      p-throttle:
+        specifier: ^6.1.0
+        version: 6.1.0
+      zod:
+        specifier: ^3.23.3
+        version: 3.23.8
+    devDependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
+      '@agentic/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+
+  packages/proxycurl:
+    dependencies:
+      ky:
+        specifier: ^1.5.0
+        version: 1.5.0
+      p-throttle:
+        specifier: ^6.1.0
+        version: 6.1.0
+      zod:
+        specifier: ^3.23.3
+        version: 3.23.8
+    devDependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
+      '@agentic/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+
+  packages/searxng:
+    dependencies:
+      ky:
+        specifier: ^1.5.0
+        version: 1.5.0
+      zod:
+        specifier: ^3.23.3
+        version: 3.23.8
+    devDependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
+      '@agentic/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+
+  packages/serpapi:
+    dependencies:
+      ky:
+        specifier: ^1.5.0
+        version: 1.5.0
+      zod:
+        specifier: ^3.23.3
+        version: 3.23.8
+    devDependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
+      '@agentic/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+
+  packages/serper:
+    dependencies:
+      ky:
+        specifier: ^1.5.0
+        version: 1.5.0
+      zod:
+        specifier: ^3.23.3
+        version: 3.23.8
+    devDependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
+      '@agentic/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+
+  packages/slack:
+    dependencies:
+      ky:
+        specifier: ^1.5.0
+        version: 1.5.0
+      zod:
+        specifier: ^3.23.3
+        version: 3.23.8
+    devDependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
+      '@agentic/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+
+  packages/social-data:
+    dependencies:
+      ky:
+        specifier: ^1.5.0
+        version: 1.5.0
+      p-throttle:
+        specifier: ^6.1.0
+        version: 6.1.0
+      zod:
+        specifier: ^3.23.3
+        version: 3.23.8
+    devDependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
+      '@agentic/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+
+  packages/tavily:
+    dependencies:
+      ky:
+        specifier: ^1.5.0
+        version: 1.5.0
+      p-throttle:
+        specifier: ^6.1.0
+        version: 6.1.0
+      zod:
+        specifier: ^3.23.3
+        version: 3.23.8
+    devDependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
+      '@agentic/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
 
   packages/tsconfig: {}
 
+  packages/twilio:
+    dependencies:
+      ky:
+        specifier: ^1.5.0
+        version: 1.5.0
+      zod:
+        specifier: ^3.23.3
+        version: 3.23.8
+    devDependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
+      '@agentic/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+
+  packages/twitter:
+    dependencies:
+      ky:
+        specifier: ^1.5.0
+        version: 1.5.0
+      p-throttle:
+        specifier: ^6.1.0
+        version: 6.1.0
+      type-fest:
+        specifier: ^4.21.0
+        version: 4.23.0
+      zod:
+        specifier: ^3.23.3
+        version: 3.23.8
+    devDependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
+      '@agentic/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      '@nangohq/node':
+        specifier: ^0.42.2
+        version: 0.42.2
+      twitter-api-sdk:
+        specifier: ^1.2.1
+        version: 1.2.1(encoding@0.1.13)
+
   packages/weather:
+    dependencies:
+      ky:
+        specifier: ^1.5.0
+        version: 1.5.0
+      zod:
+        specifier: ^3.23.3
+        version: 3.23.8
+    devDependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
+      '@agentic/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+
+  packages/wikidata:
+    dependencies:
+      ky:
+        specifier: ^1.5.0
+        version: 1.5.0
+      p-throttle:
+        specifier: ^6.1.0
+        version: 6.1.0
+      zod:
+        specifier: ^3.23.3
+        version: 3.23.8
+    devDependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
+      '@agentic/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      wikibase-sdk:
+        specifier: ^10.0.3
+        version: 10.0.3
+
+  packages/wikipedia:
+    dependencies:
+      ky:
+        specifier: ^1.5.0
+        version: 1.5.0
+      p-throttle:
+        specifier: ^6.1.0
+        version: 6.1.0
+      zod:
+        specifier: ^3.23.3
+        version: 3.23.8
+    devDependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
+      '@agentic/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+
+  packages/wolfram-alpha:
     dependencies:
       ky:
         specifier: ^1.5.0
@@ -643,6 +1113,10 @@ packages:
   '@discordjs/util@1.1.0':
     resolution: {integrity: sha512-IndcI5hzlNZ7GS96RV3Xw1R2kaDuXEp7tRIy/KlhidpN/BQ1qh1NZt3377dMLTa44xDUNKT7hnXkA/oUAzD/lg==}
     engines: {node: '>=16.11.0'}
+
+  '@e2b/code-interpreter@0.0.8':
+    resolution: {integrity: sha512-cKDFY9js9l3MfL71x0IDvaz0mAhvHIurVFnimtFRXNzuV0TxhuFqsauKabet0TMOrcDF3H3trC7pct6mNgRYTA==}
+    engines: {node: '>=18'}
 
   '@esbuild/aix-ppc64@0.21.5':
     resolution: {integrity: sha512-1SDgH6ZSPTlggy1yI6+Dbkiz8xzpHJEVAlF/AM1tHPLsf5STom9rwtjE4hKAF20FfXXNTFqEYXyJNWh1GiZedQ==}
@@ -1073,6 +1547,10 @@ packages:
   '@mongodb-js/saslprep@1.1.8':
     resolution: {integrity: sha512-qKwC/M/nNNaKUBMQ0nuzm47b7ZYWQHN3pcXq4IIcoSBc2hOIrflAxJduIvvqmhoz3gR2TacTAs8vlsCVPkiEdQ==}
 
+  '@nangohq/node@0.42.2':
+    resolution: {integrity: sha512-I+4O37hEVO0Nipo/G1LbVgAvocNk5Al27xTINHbg6vG9UhiuZLpNMFJZojR0eIieR3CjuIdCq21xIbSCxAwseQ==}
+    engines: {node: '>=18.0'}
+
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
     engines: {node: '>= 8'}
@@ -1088,6 +1566,113 @@ packages:
   '@notionhq/client@2.2.15':
     resolution: {integrity: sha512-XhdSY/4B1D34tSco/GION+23GMjaS9S2zszcqYkMHo8RcWInymF6L1x+Gk7EmHdrSxNFva2WM8orhC4BwQCwgw==}
     engines: {node: '>=12'}
+
+  '@octokit/app@15.1.0':
+    resolution: {integrity: sha512-TkBr7QgOmE6ORxvIAhDbZsqPkF7RSqTY4pLTtUQCvr6dTXqvi2fFo46q3h1lxlk/sGMQjqyZ0kEahkD/NyzOHg==}
+    engines: {node: '>= 18'}
+
+  '@octokit/auth-app@7.1.0':
+    resolution: {integrity: sha512-cazGaJPSgeZ8NkVYeM/C5l/6IQ5vZnsI8p1aMucadCkt/bndI+q+VqwrlnWbASRmenjOkf1t1RpCKrif53U8gw==}
+    engines: {node: '>= 18'}
+
+  '@octokit/auth-oauth-app@8.1.1':
+    resolution: {integrity: sha512-5UtmxXAvU2wfcHIPPDWzVSAWXVJzG3NWsxb7zCFplCWEmMCArSZV0UQu5jw5goLQXbFyOr5onzEH37UJB3zQQg==}
+    engines: {node: '>= 18'}
+
+  '@octokit/auth-oauth-device@7.1.1':
+    resolution: {integrity: sha512-HWl8lYueHonuyjrKKIup/1tiy0xcmQCdq5ikvMO1YwkNNkxb6DXfrPjrMYItNLyCP/o2H87WuijuE+SlBTT8eg==}
+    engines: {node: '>= 18'}
+
+  '@octokit/auth-oauth-user@5.1.1':
+    resolution: {integrity: sha512-rRkMz0ErOppdvEfnemHJXgZ9vTPhBuC6yASeFaB7I2yLMd7QpjfrL1mnvRPlyKo+M6eeLxrKanXJ9Qte29SRsw==}
+    engines: {node: '>= 18'}
+
+  '@octokit/auth-token@5.1.1':
+    resolution: {integrity: sha512-rh3G3wDO8J9wSjfI436JUKzHIxq8NaiL0tVeB2aXmG6p/9859aUOAjA9pmSPNGGZxfwmaJ9ozOJImuNVJdpvbA==}
+    engines: {node: '>= 18'}
+
+  '@octokit/auth-unauthenticated@6.1.0':
+    resolution: {integrity: sha512-zPSmfrUAcspZH/lOFQnVnvjQZsIvmfApQH6GzJrkIunDooU1Su2qt2FfMTSVPRp7WLTQyC20Kd55lF+mIYaohQ==}
+    engines: {node: '>= 18'}
+
+  '@octokit/core@6.1.2':
+    resolution: {integrity: sha512-hEb7Ma4cGJGEUNOAVmyfdB/3WirWMg5hDuNFVejGEDFqupeOysLc2sG6HJxY2etBp5YQu5Wtxwi020jS9xlUwg==}
+    engines: {node: '>= 18'}
+
+  '@octokit/endpoint@10.1.1':
+    resolution: {integrity: sha512-JYjh5rMOwXMJyUpj028cu0Gbp7qe/ihxfJMLc8VZBMMqSwLgOxDI1911gV4Enl1QSavAQNJcwmwBF9M0VvLh6Q==}
+    engines: {node: '>= 18'}
+
+  '@octokit/graphql@8.1.1':
+    resolution: {integrity: sha512-ukiRmuHTi6ebQx/HFRCXKbDlOh/7xEV6QUXaE7MJEKGNAncGI/STSbOkl12qVXZrfZdpXctx5O9X1AIaebiDBg==}
+    engines: {node: '>= 18'}
+
+  '@octokit/oauth-app@7.1.3':
+    resolution: {integrity: sha512-EHXbOpBkSGVVGF1W+NLMmsnSsJRkcrnVmDKt0TQYRBb6xWfWzoi9sBD4DIqZ8jGhOWO/V8t4fqFyJ4vDQDn9bg==}
+    engines: {node: '>= 18'}
+
+  '@octokit/oauth-authorization-url@7.1.1':
+    resolution: {integrity: sha512-ooXV8GBSabSWyhLUowlMIVd9l1s2nsOGQdlP2SQ4LnkEsGXzeCvbSbCPdZThXhEFzleGPwbapT0Sb+YhXRyjCA==}
+    engines: {node: '>= 18'}
+
+  '@octokit/oauth-methods@5.1.2':
+    resolution: {integrity: sha512-C5lglRD+sBlbrhCUTxgJAFjWgJlmTx5bQ7Ch0+2uqRjYv7Cfb5xpX4WuSC9UgQna3sqRGBL9EImX9PvTpMaQ7g==}
+    engines: {node: '>= 18'}
+
+  '@octokit/openapi-types@22.2.0':
+    resolution: {integrity: sha512-QBhVjcUa9W7Wwhm6DBFu6ZZ+1/t/oYxqc2tp81Pi41YNuJinbFRx8B133qVOrAaBbF7D/m0Et6f9/pZt9Rc+tg==}
+
+  '@octokit/openapi-webhooks-types@8.3.0':
+    resolution: {integrity: sha512-vKLsoR4xQxg4Z+6rU/F65ItTUz/EXbD+j/d4mlq2GW8TsA4Tc8Kdma2JTAAJ5hrKWUQzkR/Esn2fjsqiVRYaQg==}
+
+  '@octokit/plugin-paginate-graphql@5.2.2':
+    resolution: {integrity: sha512-7znSVvlNAOJisCqAnjN1FtEziweOHSjPGAuc5W58NeGNAr/ZB57yCsjQbXDlWsVryA7hHQaEQPcBbJYFawlkyg==}
+    engines: {node: '>= 18'}
+    peerDependencies:
+      '@octokit/core': '>=6'
+
+  '@octokit/plugin-paginate-rest@11.3.3':
+    resolution: {integrity: sha512-o4WRoOJZlKqEEgj+i9CpcmnByvtzoUYC6I8PD2SA95M+BJ2x8h7oLcVOg9qcowWXBOdcTRsMZiwvM3EyLm9AfA==}
+    engines: {node: '>= 18'}
+    peerDependencies:
+      '@octokit/core': '>=6'
+
+  '@octokit/plugin-rest-endpoint-methods@13.2.4':
+    resolution: {integrity: sha512-gusyAVgTrPiuXOdfqOySMDztQHv6928PQ3E4dqVGEtOvRXAKRbJR4b1zQyniIT9waqaWk/UDaoJ2dyPr7Bk7Iw==}
+    engines: {node: '>= 18'}
+    peerDependencies:
+      '@octokit/core': '>=6'
+
+  '@octokit/plugin-retry@7.1.1':
+    resolution: {integrity: sha512-G9Ue+x2odcb8E1XIPhaFBnTTIrrUDfXN05iFXiqhR+SeeeDMMILcAnysOsxUpEWcQp2e5Ft397FCXTcPkiPkLw==}
+    engines: {node: '>= 18'}
+    peerDependencies:
+      '@octokit/core': '>=6'
+
+  '@octokit/plugin-throttling@9.3.1':
+    resolution: {integrity: sha512-Qd91H4liUBhwLB2h6jZ99bsxoQdhgPk6TdwnClPyTBSDAdviGPceViEgUwj+pcQDmB/rfAXAXK7MTochpHM3yQ==}
+    engines: {node: '>= 18'}
+    peerDependencies:
+      '@octokit/core': ^6.0.0
+
+  '@octokit/request-error@6.1.4':
+    resolution: {integrity: sha512-VpAhIUxwhWZQImo/dWAN/NpPqqojR6PSLgLYAituLM6U+ddx9hCioFGwBr5Mi+oi5CLeJkcAs3gJ0PYYzU6wUg==}
+    engines: {node: '>= 18'}
+
+  '@octokit/request@9.1.3':
+    resolution: {integrity: sha512-V+TFhu5fdF3K58rs1pGUJIDH5RZLbZm5BI+MNF+6o/ssFNT4vWlCh/tVpF3NxGtP15HUxTTMUbsG5llAuU2CZA==}
+    engines: {node: '>= 18'}
+
+  '@octokit/types@13.5.0':
+    resolution: {integrity: sha512-HdqWTf5Z3qwDVlzCrP8UJquMwunpDiMPt5er+QjGzL4hqr/vBVY/MauQgS1xWxCDT1oMx1EULyqxncdCY/NVSQ==}
+
+  '@octokit/webhooks-methods@5.1.0':
+    resolution: {integrity: sha512-yFZa3UH11VIxYnnoOYCVoJ3q4ChuSOk2IVBBQ0O3xtKX4x9bmKb/1t+Mxixv2iUhzMdOl1qeWJqEhouXXzB3rQ==}
+    engines: {node: '>= 18'}
+
+  '@octokit/webhooks@13.3.0':
+    resolution: {integrity: sha512-TUkJLtI163Bz5+JK0O+zDkQpn4gKwN+BovclUvCj6pI/6RXrFqQvUMRS2M+Rt8Rv0qR3wjoMoOPmpJKeOh0nBg==}
+    engines: {node: '>= 18'}
 
   '@opentelemetry/api-logs@0.49.1':
     resolution: {integrity: sha512-kaNl/T7WzyMUQHQlVq7q0oV4Kev6+0xFwqzofryC66jgGMacd0QH5TwfpbUwSTby+SdAdprAe5UKMvBw4tKS5Q==}
@@ -1644,6 +2229,9 @@ packages:
   '@total-typescript/ts-reset@0.5.1':
     resolution: {integrity: sha512-AqlrT8YA1o7Ff5wPfMOL0pvL+1X+sw60NN6CcOCqs658emD6RfiXhF7Gu9QcfKBH7ELY2nInLhKSCWVoNL70MQ==}
 
+  '@types/aws-lambda@8.10.142':
+    resolution: {integrity: sha512-wy2y/2hQKrS6myOS++koXg3N1Hg+LLyPjaggCFajczSHZPqBnOMuT2sdH3kiASrmdBYyM3pmjyz5SoWraRllCQ==}
+
   '@types/diff-match-patch@1.0.36':
     resolution: {integrity: sha512-xFdR6tkm0MWvBfO8xXCSsinYxHcqkQUlcHeSpMC2ukzOb6lwQAfDmW+Qt0AvlGd8HpsS28qKsB+oPeJn9I39jg==}
 
@@ -2126,6 +2714,9 @@ packages:
     resolution: {integrity: sha512-4Bcg1P8xhUuqcii/S0Z9wiHIrQVPMermM1any+MX5GeGD7faD3/msQUDGLol9wOcz4/jbg/WJnGqoJF6LiBdtg==}
     engines: {node: '>=10.0.0'}
 
+  before-after-hook@3.0.2:
+    resolution: {integrity: sha512-Nik3Sc0ncrMK4UUdXQmAnRtzmNQTAAXmXIopizwZ1W1t8QmfJj+zL4OA2I7XPTPW5z5TDqv4hRo/JzouDJnX3A==}
+
   bignumber.js@9.1.2:
     resolution: {integrity: sha512-2/mKyZH9K85bzOEfhXDBFZTGd1CTs+5IHpeFQo9luiBG7hghdC851Pj2WAhb6E3R6b9tZj/XKhbg4fum+Kepug==}
 
@@ -2142,6 +2733,9 @@ packages:
   body-parser@1.20.2:
     resolution: {integrity: sha512-ml9pReCu3M61kGlqoTm2umSXTlRTuGTx0bfYj+uIUKKYycG5NtSbeetV3faSU6R7ajOPw0g/J1PvK4qNy7s5bA==}
     engines: {node: '>= 0.8', npm: 1.2.8000 || >= 1.4.16}
+
+  bottleneck@2.19.5:
+    resolution: {integrity: sha512-VHiNCbI1lKdl44tGrhNfU3lup0Tj/ZBMJB5/2ZbNXRCPuRCO7ed2mgcK4r17y+KB2EfuYuRaVlwNbAeaWGSpbw==}
 
   bowser@2.11.0:
     resolution: {integrity: sha512-AlcaJBi/pqqJBIQ8U9Mcpc9i8Aqxn88Skv5d+xBX006BY5u8N3mGLHa5Lgppa7L/HfwgwLgZ6NYs+Ag6uUmJRA==}
@@ -2180,6 +2774,10 @@ packages:
 
   buffer@6.0.3:
     resolution: {integrity: sha512-FTiCpNxtwiZZHEZbcbTIcZjERVICn9yq/pDFkTl95/AxzD1naBctN7YO68riM/gLSDY7sdrMby8hofADYuuqOA==}
+
+  bufferutil@4.0.8:
+    resolution: {integrity: sha512-4T53u4PdgsXqKaIctwF8ifXlRTTmEPJ8iEPWFdGZvcf7sbwYo6FKFEX9eNNAnzFZ7EzJAQ3CJeOtCRA4rDp7Pw==}
+    engines: {node: '>=6.14.2'}
 
   builtin-modules@3.3.0:
     resolution: {integrity: sha512-zhaCDicdLuWN5UbN5IMnFqNMhNfo919sH85y2/ea+5Yg9TsTkeZxpL+JLbp6cgYFS4sRLp3YV4S6yDuqVWHYOw==}
@@ -2699,6 +3297,10 @@ packages:
 
   duck@0.1.12:
     resolution: {integrity: sha512-wkctla1O6VfP89gQ+J/yDesM0S7B7XLXjKGzXxMDVFg7uEn706niAtyYovKbyq1oT9YwDcly721/iUWoc8MVRg==}
+
+  e2b@0.16.1:
+    resolution: {integrity: sha512-2L1R/REEB+EezD4Q4MmcXXNATjvCYov2lv/69+PY6V95+wl1PZblIMTYAe7USxX6P6sqANxNs+kXqZr6RvXkSw==}
+    engines: {node: '>=18'}
 
   eastasianwidth@0.2.0:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
@@ -3793,6 +4395,11 @@ packages:
   isomorphic-fetch@3.0.0:
     resolution: {integrity: sha512-qvUtwJ3j6qwsF3jLxkZ72qCgjMysPzDfeV240JHiGZsANBYd+EEuu35v7dfrJ9Up0Ak07D7GGSkGhCHTqg/5wA==}
 
+  isomorphic-ws@5.0.0:
+    resolution: {integrity: sha512-muId7Zzn9ywDsyXgTIafTry2sV3nySZeUDe6YedVd1Hvuuep5AsIlqK+XefWpYTyJG5e503F2xIuT2lcU6rCSw==}
+    peerDependencies:
+      ws: '*'
+
   issue-regex@4.1.0:
     resolution: {integrity: sha512-X3HBmm7+Th+l4/kMtqwcHHgELD0Lfl0Ina6S3+grr+mKmTxsrM84NAO1UuRPIxIbGLIl3TCEu45S1kdu21HYbQ==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
@@ -4376,6 +4983,10 @@ packages:
     resolution: {integrity: sha512-dRB78srN/l6gqWulah9SrxeYnxeddIG30+GOqK/9OlLVyLg3HPnr6SqOWTWOXKRwC2eGYCkZ59NNuSgvSrpgOA==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
 
+  node-gyp-build@4.8.1:
+    resolution: {integrity: sha512-OSs33Z9yWr148JZcbZd5WiAXhh/n9z8TxQcdMhIOlpN9AhWpLfvVFO73+m77bBABQMaY9XSvIa+qk0jlI7Gcaw==}
+    hasBin: true
+
   node-releases@2.0.18:
     resolution: {integrity: sha512-d9VeXT4SJ7ZeOqGX6R5EM022wpL+eWPooLI+5UpWn2jCT1aosUQEhQP214x33Wkwx3JQMvIm+tIoVOdodFS40g==}
 
@@ -4479,6 +5090,10 @@ packages:
   obuf@1.1.2:
     resolution: {integrity: sha512-PX1wu0AmAdPqOL1mWhqmlOd8kOIZQwGZw6rh7uby9fTc5lhaOWFLX3I6R1hrF9k3zUY40e6igsLGkDXK92LJNg==}
 
+  octokit@4.0.2:
+    resolution: {integrity: sha512-wbqF4uc1YbcldtiBFfkSnquHtECEIpYD78YUXI6ri1Im5OO2NLo6ZVpRdbJpdnpZ05zMrVPssNiEo6JQtea+Qg==}
+    engines: {node: '>= 18'}
+
   on-finished@2.4.1:
     resolution: {integrity: sha512-oVlzkg3ENAhCk2zdv7IJwd/QUD4z2RxRwpkcGY8psCVcCYZNq4wYnVWALHM+brtuJjePWiYF/ClmuDr8Ch5+kg==}
     engines: {node: '>= 0.8'}
@@ -4541,6 +5156,10 @@ packages:
   openai@4.54.0:
     resolution: {integrity: sha512-e/12BdtTtj+tXs7iHm+Dm7H7WjEWnw7O52B2wSfCQ6lD5F6cvjzo7cANXy5TJ1Q3/qc8YRPT5wBTTFtP5sBp1g==}
     hasBin: true
+
+  openapi-typescript-fetch@1.1.3:
+    resolution: {integrity: sha512-smLZPck4OkKMNExcw8jMgrMOGgVGx2N/s6DbKL2ftNl77g5HfoGpZGFy79RBzU/EkaO0OZpwBnslfdBfh7ZcWg==}
+    engines: {node: '>= 12.0.0', npm: '>= 7.0.0'}
 
   option@0.2.4:
     resolution: {integrity: sha512-pkEqbDyl8ou5cpq+VsnQbe/WlEy5qS7xPzMS1U55OCG9KPvwFD46zDbxQIj3egJSFc3D+XhYOPUzz49zQAVy7A==}
@@ -4660,6 +5279,9 @@ packages:
 
   partial-json@0.1.7:
     resolution: {integrity: sha512-Njv/59hHaokb/hRUjce3Hdv12wd60MtM9Z5Olmn+nehe0QDAsRtRbJPvJ0Z91TusF0SuZRIvnM+S4l6EIP8leA==}
+
+  path-browserify@1.0.1:
+    resolution: {integrity: sha512-b7uo2UCUOYZcnF/3ID0lulOJi/bafxa1xPe7ZPsammBSpjSWQkjNxlt635YGS2MiR9GjvuXCtz2emr3jbsz98g==}
 
   path-exists@4.0.0:
     resolution: {integrity: sha512-ak9Qy5Q7jYb2Wwcey5Fpvg2KoAc/ZIhLSLOSBmRmygPsGwkVVt0fZa0qrtMz+m6tJTAHfZQ8FnmB4MG4LWy7/w==}
@@ -5743,6 +6365,10 @@ packages:
     resolution: {integrity: sha512-imDlFFAvitbCm1JtDFJ6eG882qwxHUmVT2noPb3p2jq5o5DuXOchMbkVS9kUeC3/4WpY5N0GBZ3RvqNyjHZw1Q==}
     hasBin: true
 
+  twitter-api-sdk@1.2.1:
+    resolution: {integrity: sha512-tNQ6DGYucFk94JlnUMsHCkHg5o1wnCdHh71Y2ukygNVssOdD1gNVjOpaojJrdwbEAhoZvcWdGHerCa55F8HKxQ==}
+    engines: {node: '>=14'}
+
   type-check@0.4.0:
     resolution: {integrity: sha512-XleUoc9uwGXqjWwXaUTZAmzMcFZ5858QA2vvx1Ur5xIcixXIP+8LnFDgRplU30us6teqdlskFfu+ae4K79Ooew==}
     engines: {node: '>= 0.8.0'}
@@ -5838,6 +6464,12 @@ packages:
     resolution: {integrity: sha512-lRfVq8fE8gz6QMBuDM6a+LO3IAzTi05H6gCVaUpir2E1Rwpo4ZUog45KpNXKC/Mn3Yb9UDuHumeFTo9iV/D9FQ==}
     engines: {node: '>=18'}
 
+  universal-github-app-jwt@2.2.0:
+    resolution: {integrity: sha512-G5o6f95b5BggDGuUfKDApKaCgNYy2x7OdHY0zSMF081O0EJobw+1130VONhrA7ezGSV2FNOGyM+KQpQZAr9bIQ==}
+
+  universal-user-agent@7.0.2:
+    resolution: {integrity: sha512-0JCqzSKnStlRRQfCdowvqy3cy0Dvtlb8xecj/H8JFZuCze4rwjPZQOgvFvn0Ws/usCHQFGpyr+pB9adaGwXn4Q==}
+
   universalify@0.2.0:
     resolution: {integrity: sha512-CJ1QgKmNg3CwvAv/kOFmtnEN05f0D/cn9QntgNOQlQF9dgvVTHj3t+8JPdjqawCHk7V/KA+fbUqzZ9XWhcqPUg==}
     engines: {node: '>= 4.0.0'}
@@ -5879,6 +6511,10 @@ packages:
     resolution: {integrity: sha512-PElTlVMwpblvbNqQ82d2n6RjStvdSoNe9FG28kNfz3WiXilJm4DdNkEzRhCZuIDwY8U08WVihhGR5iRqAwfDiw==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
+
+  utf-8-validate@6.0.4:
+    resolution: {integrity: sha512-xu9GQDeFp+eZ6LnCywXN/zBancWvOpUMzgjLPSjy4BRHSmTelvn2E0DG0o1sTiw5hkCKBHo8rwSKncfRfv2EEQ==}
+    engines: {node: '>=6.14.2'}
 
   util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
@@ -6052,6 +6688,10 @@ packages:
   widest-line@5.0.0:
     resolution: {integrity: sha512-c9bZp7b5YtRj2wOe6dlj32MK+Bx/M/d+9VB2SHM1OtsUHR0aV0tdP6DWh/iMt0kWi1t5g1Iudu6hQRNd1A4PVA==}
     engines: {node: '>=18'}
+
+  wikibase-sdk@10.0.3:
+    resolution: {integrity: sha512-fWhwvUD7SAie6JEiHRjKB9tg77jHRmAPpv+Jdj7/FQn919IucL0AY38vKulqz4HN94IKa9Iz4A/3XyS8Bx2M6g==}
+    engines: {node: '>= 12.0.0'}
 
   wikipedia@2.1.2:
     resolution: {integrity: sha512-RAYaMpXC9/E873RaSEtlEa8dXK4e0p5k98GKOd210MtkE5emm6fcnwD+N6ZA4cuffjDWagvhaQKtp/mGp2BOVQ==}
@@ -6871,9 +7511,9 @@ snapshots:
       '@babel/helper-validator-identifier': 7.24.7
       to-fast-properties: 2.0.0
 
-  '@browserbasehq/sdk@1.4.2':
+  '@browserbasehq/sdk@1.4.2(bufferutil@4.0.8)(utf-8-validate@6.0.4)':
     dependencies:
-      puppeteer-core: 22.15.0
+      puppeteer-core: 22.15.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       zod: 3.23.8
     transitivePeerDependencies:
       - bufferutil
@@ -6929,6 +7569,15 @@ snapshots:
       undici: 6.13.0
 
   '@discordjs/util@1.1.0': {}
+
+  '@e2b/code-interpreter@0.0.8(bufferutil@4.0.8)(utf-8-validate@6.0.4)':
+    dependencies:
+      e2b: 0.16.1
+      isomorphic-ws: 5.0.0(ws@8.18.0(bufferutil@4.0.8)(utf-8-validate@6.0.4))
+      ws: 8.18.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
 
   '@esbuild/aix-ppc64@0.21.5':
     optional: true
@@ -7120,7 +7769,7 @@ snapshots:
       '@typescript-eslint/utils': 7.17.0(eslint@8.57.0)(typescript@5.5.4)
       eslint-config-prettier: 9.1.0(eslint@8.57.0)
       eslint-import-resolver-typescript: 3.6.1(@typescript-eslint/parser@7.17.0(eslint@8.57.0)(typescript@5.5.4))(eslint-plugin-import@2.29.1(@typescript-eslint/parser@7.17.0(eslint@8.57.0)(typescript@5.5.4))(eslint@8.57.0))(eslint@8.57.0)
-      eslint-plugin-import: 2.29.1(@typescript-eslint/parser@7.17.0(eslint@8.57.0)(typescript@5.5.4))(eslint-import-resolver-typescript@3.6.1(@typescript-eslint/parser@7.17.0(eslint@8.57.0)(typescript@5.5.4))(eslint-plugin-import@2.29.1(@typescript-eslint/parser@7.17.0(eslint@8.57.0)(typescript@5.5.4))(eslint@8.57.0))(eslint@8.57.0))(eslint@8.57.0)
+      eslint-plugin-import: 2.29.1(@typescript-eslint/parser@7.17.0(eslint@8.57.0)(typescript@5.5.4))(eslint-import-resolver-typescript@3.6.1)(eslint@8.57.0)
       eslint-plugin-jest: 28.6.0(@typescript-eslint/eslint-plugin@7.17.0(@typescript-eslint/parser@7.17.0(eslint@8.57.0)(typescript@5.5.4))(eslint@8.57.0)(typescript@5.5.4))(eslint@8.57.0)(typescript@5.5.4)
       eslint-plugin-jest-dom: 5.4.0(eslint@8.57.0)
       eslint-plugin-jsx-a11y: 6.9.0(eslint@8.57.0)
@@ -7316,6 +7965,12 @@ snapshots:
     dependencies:
       sparse-bitfield: 3.0.3
 
+  '@nangohq/node@0.42.2':
+    dependencies:
+      axios: 1.7.3
+    transitivePeerDependencies:
+      - debug
+
   '@nodelib/fs.scandir@2.1.5':
     dependencies:
       '@nodelib/fs.stat': 2.0.5
@@ -7334,6 +7989,152 @@ snapshots:
       node-fetch: 2.7.0(encoding@0.1.13)
     transitivePeerDependencies:
       - encoding
+
+  '@octokit/app@15.1.0':
+    dependencies:
+      '@octokit/auth-app': 7.1.0
+      '@octokit/auth-unauthenticated': 6.1.0
+      '@octokit/core': 6.1.2
+      '@octokit/oauth-app': 7.1.3
+      '@octokit/plugin-paginate-rest': 11.3.3(@octokit/core@6.1.2)
+      '@octokit/types': 13.5.0
+      '@octokit/webhooks': 13.3.0
+
+  '@octokit/auth-app@7.1.0':
+    dependencies:
+      '@octokit/auth-oauth-app': 8.1.1
+      '@octokit/auth-oauth-user': 5.1.1
+      '@octokit/request': 9.1.3
+      '@octokit/request-error': 6.1.4
+      '@octokit/types': 13.5.0
+      lru-cache: 10.4.3
+      universal-github-app-jwt: 2.2.0
+      universal-user-agent: 7.0.2
+
+  '@octokit/auth-oauth-app@8.1.1':
+    dependencies:
+      '@octokit/auth-oauth-device': 7.1.1
+      '@octokit/auth-oauth-user': 5.1.1
+      '@octokit/request': 9.1.3
+      '@octokit/types': 13.5.0
+      universal-user-agent: 7.0.2
+
+  '@octokit/auth-oauth-device@7.1.1':
+    dependencies:
+      '@octokit/oauth-methods': 5.1.2
+      '@octokit/request': 9.1.3
+      '@octokit/types': 13.5.0
+      universal-user-agent: 7.0.2
+
+  '@octokit/auth-oauth-user@5.1.1':
+    dependencies:
+      '@octokit/auth-oauth-device': 7.1.1
+      '@octokit/oauth-methods': 5.1.2
+      '@octokit/request': 9.1.3
+      '@octokit/types': 13.5.0
+      universal-user-agent: 7.0.2
+
+  '@octokit/auth-token@5.1.1': {}
+
+  '@octokit/auth-unauthenticated@6.1.0':
+    dependencies:
+      '@octokit/request-error': 6.1.4
+      '@octokit/types': 13.5.0
+
+  '@octokit/core@6.1.2':
+    dependencies:
+      '@octokit/auth-token': 5.1.1
+      '@octokit/graphql': 8.1.1
+      '@octokit/request': 9.1.3
+      '@octokit/request-error': 6.1.4
+      '@octokit/types': 13.5.0
+      before-after-hook: 3.0.2
+      universal-user-agent: 7.0.2
+
+  '@octokit/endpoint@10.1.1':
+    dependencies:
+      '@octokit/types': 13.5.0
+      universal-user-agent: 7.0.2
+
+  '@octokit/graphql@8.1.1':
+    dependencies:
+      '@octokit/request': 9.1.3
+      '@octokit/types': 13.5.0
+      universal-user-agent: 7.0.2
+
+  '@octokit/oauth-app@7.1.3':
+    dependencies:
+      '@octokit/auth-oauth-app': 8.1.1
+      '@octokit/auth-oauth-user': 5.1.1
+      '@octokit/auth-unauthenticated': 6.1.0
+      '@octokit/core': 6.1.2
+      '@octokit/oauth-authorization-url': 7.1.1
+      '@octokit/oauth-methods': 5.1.2
+      '@types/aws-lambda': 8.10.142
+      universal-user-agent: 7.0.2
+
+  '@octokit/oauth-authorization-url@7.1.1': {}
+
+  '@octokit/oauth-methods@5.1.2':
+    dependencies:
+      '@octokit/oauth-authorization-url': 7.1.1
+      '@octokit/request': 9.1.3
+      '@octokit/request-error': 6.1.4
+      '@octokit/types': 13.5.0
+
+  '@octokit/openapi-types@22.2.0': {}
+
+  '@octokit/openapi-webhooks-types@8.3.0': {}
+
+  '@octokit/plugin-paginate-graphql@5.2.2(@octokit/core@6.1.2)':
+    dependencies:
+      '@octokit/core': 6.1.2
+
+  '@octokit/plugin-paginate-rest@11.3.3(@octokit/core@6.1.2)':
+    dependencies:
+      '@octokit/core': 6.1.2
+      '@octokit/types': 13.5.0
+
+  '@octokit/plugin-rest-endpoint-methods@13.2.4(@octokit/core@6.1.2)':
+    dependencies:
+      '@octokit/core': 6.1.2
+      '@octokit/types': 13.5.0
+
+  '@octokit/plugin-retry@7.1.1(@octokit/core@6.1.2)':
+    dependencies:
+      '@octokit/core': 6.1.2
+      '@octokit/request-error': 6.1.4
+      '@octokit/types': 13.5.0
+      bottleneck: 2.19.5
+
+  '@octokit/plugin-throttling@9.3.1(@octokit/core@6.1.2)':
+    dependencies:
+      '@octokit/core': 6.1.2
+      '@octokit/types': 13.5.0
+      bottleneck: 2.19.5
+
+  '@octokit/request-error@6.1.4':
+    dependencies:
+      '@octokit/types': 13.5.0
+
+  '@octokit/request@9.1.3':
+    dependencies:
+      '@octokit/endpoint': 10.1.1
+      '@octokit/request-error': 6.1.4
+      '@octokit/types': 13.5.0
+      universal-user-agent: 7.0.2
+
+  '@octokit/types@13.5.0':
+    dependencies:
+      '@octokit/openapi-types': 22.2.0
+
+  '@octokit/webhooks-methods@5.1.0': {}
+
+  '@octokit/webhooks@13.3.0':
+    dependencies:
+      '@octokit/openapi-webhooks-types': 8.3.0
+      '@octokit/request-error': 6.1.4
+      '@octokit/webhooks-methods': 5.1.0
 
   '@opentelemetry/api-logs@0.49.1':
     dependencies:
@@ -7993,6 +8794,8 @@ snapshots:
 
   '@total-typescript/ts-reset@0.5.1': {}
 
+  '@types/aws-lambda@8.10.142': {}
+
   '@types/diff-match-patch@1.0.36': {}
 
   '@types/estree@1.0.5': {}
@@ -8296,7 +9099,7 @@ snapshots:
       clean-stack: 4.2.0
       indent-string: 5.0.0
 
-  ai@3.3.0(openai@4.54.0(encoding@0.1.13))(react@18.3.1)(sswr@2.1.0(svelte@4.2.18))(svelte@4.2.18)(vue@3.4.35(typescript@5.5.4))(zod@3.23.8):
+  ai@3.3.0(openai@4.54.0)(react@18.3.1)(sswr@2.1.0(svelte@4.2.18))(svelte@4.2.18)(vue@3.4.35(typescript@5.5.4))(zod@3.23.8):
     dependencies:
       '@ai-sdk/provider': 0.0.14
       '@ai-sdk/provider-utils': 1.0.5(zod@3.23.8)
@@ -8489,9 +9292,9 @@ snapshots:
 
   arrify@1.0.1: {}
 
-  assemblyai@4.6.1:
+  assemblyai@4.6.1(bufferutil@4.0.8)(utf-8-validate@6.0.4):
     dependencies:
-      ws: 8.18.0
+      ws: 8.18.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -8568,6 +9371,8 @@ snapshots:
 
   basic-ftp@5.0.5: {}
 
+  before-after-hook@3.0.2: {}
+
   bignumber.js@9.1.2: {}
 
   binary-extensions@2.3.0: {}
@@ -8596,6 +9401,8 @@ snapshots:
       unpipe: 1.0.0
     transitivePeerDependencies:
       - supports-color
+
+  bottleneck@2.19.5: {}
 
   bowser@2.11.0: {}
 
@@ -8645,6 +9452,11 @@ snapshots:
     dependencies:
       base64-js: 1.5.1
       ieee754: 1.2.1
+
+  bufferutil@4.0.8:
+    dependencies:
+      node-gyp-build: 4.8.1
+    optional: true
 
   builtin-modules@3.3.0: {}
 
@@ -9156,6 +9968,18 @@ snapshots:
     dependencies:
       underscore: 1.13.7
 
+  e2b@0.16.1:
+    dependencies:
+      isomorphic-ws: 5.0.0(ws@8.18.0(bufferutil@4.0.8)(utf-8-validate@6.0.4))
+      normalize-path: 3.0.0
+      openapi-typescript-fetch: 1.1.3
+      path-browserify: 1.0.1
+      platform: 1.3.6
+      ws: 8.18.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+    optionalDependencies:
+      bufferutil: 4.0.8
+      utf-8-validate: 6.0.4
+
   eastasianwidth@0.2.0: {}
 
   ecdsa-sig-formatter@1.0.11:
@@ -9396,7 +10220,7 @@ snapshots:
       enhanced-resolve: 5.17.1
       eslint: 8.57.0
       eslint-module-utils: 2.8.1(@typescript-eslint/parser@7.17.0(eslint@8.57.0)(typescript@5.5.4))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.1(@typescript-eslint/parser@7.17.0(eslint@8.57.0)(typescript@5.5.4))(eslint-plugin-import@2.29.1(@typescript-eslint/parser@7.17.0(eslint@8.57.0)(typescript@5.5.4))(eslint@8.57.0))(eslint@8.57.0))(eslint@8.57.0)
-      eslint-plugin-import: 2.29.1(@typescript-eslint/parser@7.17.0(eslint@8.57.0)(typescript@5.5.4))(eslint-import-resolver-typescript@3.6.1(@typescript-eslint/parser@7.17.0(eslint@8.57.0)(typescript@5.5.4))(eslint-plugin-import@2.29.1(@typescript-eslint/parser@7.17.0(eslint@8.57.0)(typescript@5.5.4))(eslint@8.57.0))(eslint@8.57.0))(eslint@8.57.0)
+      eslint-plugin-import: 2.29.1(@typescript-eslint/parser@7.17.0(eslint@8.57.0)(typescript@5.5.4))(eslint-import-resolver-typescript@3.6.1)(eslint@8.57.0)
       fast-glob: 3.3.2
       get-tsconfig: 4.7.6
       is-core-module: 2.15.0
@@ -9418,7 +10242,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-import@2.29.1(@typescript-eslint/parser@7.17.0(eslint@8.57.0)(typescript@5.5.4))(eslint-import-resolver-typescript@3.6.1(@typescript-eslint/parser@7.17.0(eslint@8.57.0)(typescript@5.5.4))(eslint-plugin-import@2.29.1(@typescript-eslint/parser@7.17.0(eslint@8.57.0)(typescript@5.5.4))(eslint@8.57.0))(eslint@8.57.0))(eslint@8.57.0):
+  eslint-plugin-import@2.29.1(@typescript-eslint/parser@7.17.0(eslint@8.57.0)(typescript@5.5.4))(eslint-import-resolver-typescript@3.6.1)(eslint@8.57.0):
     dependencies:
       array-includes: 3.1.8
       array.prototype.findlastindex: 1.2.5
@@ -10505,6 +11329,10 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
+  isomorphic-ws@5.0.0(ws@8.18.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)):
+    dependencies:
+      ws: 8.18.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+
   issue-regex@4.1.0: {}
 
   iterator.prototype@1.1.2:
@@ -10746,7 +11574,7 @@ snapshots:
       - zen-observable
       - zenObservable
 
-  llamaindex@0.5.13(@aws-sdk/client-sso-oidc@3.623.0(@aws-sdk/client-sts@3.623.0))(@aws-sdk/credential-providers@3.623.0(@aws-sdk/client-sso-oidc@3.623.0(@aws-sdk/client-sts@3.623.0)))(@notionhq/client@2.2.15(encoding@0.1.13))(encoding@0.1.13)(socks@2.8.3)(typescript@5.5.4):
+  llamaindex@0.5.13(@aws-sdk/client-sso-oidc@3.623.0(@aws-sdk/client-sts@3.623.0))(@aws-sdk/credential-providers@3.623.0(@aws-sdk/client-sso-oidc@3.623.0(@aws-sdk/client-sts@3.623.0)))(@notionhq/client@2.2.15(encoding@0.1.13))(bufferutil@4.0.8)(encoding@0.1.13)(socks@2.8.3)(typescript@5.5.4)(utf-8-validate@6.0.4):
     dependencies:
       '@anthropic-ai/sdk': 0.21.1(encoding@0.1.13)
       '@aws-crypto/sha256-js': 5.2.0
@@ -10771,7 +11599,7 @@ snapshots:
       '@xenova/transformers': 2.17.2
       '@zilliz/milvus2-sdk-node': 2.4.4
       ajv: 8.17.1
-      assemblyai: 4.6.1
+      assemblyai: 4.6.1(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       chromadb: 1.8.1(@google/generative-ai@0.12.0)(cohere-ai@7.10.6(@aws-sdk/client-sso-oidc@3.623.0(@aws-sdk/client-sts@3.623.0))(encoding@0.1.13))(encoding@0.1.13)(openai@4.54.0(encoding@0.1.13))
       cohere-ai: 7.10.6(@aws-sdk/client-sso-oidc@3.623.0(@aws-sdk/client-sts@3.623.0))(encoding@0.1.13)
       discord-api-types: 0.37.93
@@ -11136,6 +11964,9 @@ snapshots:
       fetch-blob: 3.2.0
       formdata-polyfill: 4.0.10
 
+  node-gyp-build@4.8.1:
+    optional: true
+
   node-releases@2.0.18: {}
 
   nopt@5.0.0:
@@ -11304,6 +12135,19 @@ snapshots:
 
   obuf@1.1.2: {}
 
+  octokit@4.0.2:
+    dependencies:
+      '@octokit/app': 15.1.0
+      '@octokit/core': 6.1.2
+      '@octokit/oauth-app': 7.1.3
+      '@octokit/plugin-paginate-graphql': 5.2.2(@octokit/core@6.1.2)
+      '@octokit/plugin-paginate-rest': 11.3.3(@octokit/core@6.1.2)
+      '@octokit/plugin-rest-endpoint-methods': 13.2.4(@octokit/core@6.1.2)
+      '@octokit/plugin-retry': 7.1.1(@octokit/core@6.1.2)
+      '@octokit/plugin-throttling': 9.3.1(@octokit/core@6.1.2)
+      '@octokit/request-error': 6.1.4
+      '@octokit/types': 13.5.0
+
   on-finished@2.4.1:
     dependencies:
       ee-first: 1.1.1
@@ -11388,6 +12232,8 @@ snapshots:
       node-fetch: 2.7.0(encoding@0.1.13)
     transitivePeerDependencies:
       - encoding
+
+  openapi-typescript-fetch@1.1.3: {}
 
   option@0.2.4: {}
 
@@ -11518,6 +12364,8 @@ snapshots:
   parseurl@1.3.3: {}
 
   partial-json@0.1.7: {}
+
+  path-browserify@1.0.1: {}
 
   path-exists@4.0.0: {}
 
@@ -11764,13 +12612,13 @@ snapshots:
     dependencies:
       escape-goat: 4.0.0
 
-  puppeteer-core@22.15.0:
+  puppeteer-core@22.15.0(bufferutil@4.0.8)(utf-8-validate@6.0.4):
     dependencies:
       '@puppeteer/browsers': 2.3.0
       chromium-bidi: 0.6.3(devtools-protocol@0.0.1312386)
       debug: 4.3.6
       devtools-protocol: 0.0.1312386
-      ws: 8.18.0
+      ws: 8.18.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)
     transitivePeerDependencies:
       - bufferutil
       - supports-color
@@ -12698,6 +13546,13 @@ snapshots:
       turbo-windows-64: 2.0.11
       turbo-windows-arm64: 2.0.11
 
+  twitter-api-sdk@1.2.1(encoding@0.1.13):
+    dependencies:
+      abort-controller: 3.0.0
+      node-fetch: 2.7.0(encoding@0.1.13)
+    transitivePeerDependencies:
+      - encoding
+
   type-check@0.4.0:
     dependencies:
       prelude-ls: 1.2.1
@@ -12789,6 +13644,10 @@ snapshots:
 
   unicorn-magic@0.1.0: {}
 
+  universal-github-app-jwt@2.2.0: {}
+
+  universal-user-agent@7.0.2: {}
+
   universalify@0.2.0: {}
 
   universalify@2.0.1: {}
@@ -12839,6 +13698,11 @@ snapshots:
   use-sync-external-store@1.2.2(react@18.3.1):
     dependencies:
       react: 18.3.1
+
+  utf-8-validate@6.0.4:
+    dependencies:
+      node-gyp-build: 4.8.1
+    optional: true
 
   util-deprecate@1.0.2: {}
 
@@ -13021,6 +13885,8 @@ snapshots:
     dependencies:
       string-width: 7.2.0
 
+  wikibase-sdk@10.0.3: {}
+
   wikipedia@2.1.2:
     dependencies:
       axios: 1.7.3
@@ -13083,7 +13949,10 @@ snapshots:
 
   wrappy@1.0.2: {}
 
-  ws@8.18.0: {}
+  ws@8.18.0(bufferutil@4.0.8)(utf-8-validate@6.0.4):
+    optionalDependencies:
+      bufferutil: 4.0.8
+      utf-8-validate: 6.0.4
 
   xdg-basedir@5.1.0: {}
 

@@ -1,6 +1,9 @@
-import type { aiFunction, AIFunctionsProvider ,
+import {
+  aiFunction,
+  AIFunctionsProvider,
   assert,
-DeepNullable ,   getEnv,
+  type DeepNullable,
+  getEnv,
   pruneUndefined,
   sanitizeSearchParams,
   throttleKy
