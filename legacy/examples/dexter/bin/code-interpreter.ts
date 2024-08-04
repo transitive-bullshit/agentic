@@ -8,7 +8,7 @@ import { ChatModel, createAIRunner } from '@dexaai/dexter'
 async function main() {
   const runner = createAIRunner({
     chatModel: new ChatModel({
-      params: { model: 'gpt-4o', temperature: 0 },
+      params: { model: 'gpt-4o-mini', temperature: 0 },
       debug: true
     }),
     functions: createDexterFunctions(e2b)

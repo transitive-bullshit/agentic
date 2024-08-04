@@ -21,7 +21,7 @@ async function main() {
     // First call to OpenAI to invoke the weather tool
     const res = await openai.chat.completions.create({
       messages,
-      model: 'gpt-4o',
+      model: 'gpt-4o-mini',
       temperature: 0,
       tools: weather.functions.toolSpecs,
       tool_choice: 'required'
@@ -48,7 +48,7 @@ async function main() {
     // Second call to OpenAI to generate a text response
     const res = await openai.chat.completions.create({
       messages,
-      model: 'gpt-4o',
+      model: 'gpt-4o-mini',
       temperature: 0,
       tools: weather.functions.toolSpecs
     })

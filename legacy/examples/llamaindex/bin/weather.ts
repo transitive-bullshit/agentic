@@ -10,7 +10,7 @@ async function main() {
 
   const tools = createLlamaIndexTools(weather)
   const agent = new OpenAIAgent({
-    llm: new OpenAI({ model: 'gpt-4o', temperature: 0 }),
+    llm: new OpenAI({ model: 'gpt-4o-mini', temperature: 0 }),
     systemPrompt: 'You are a helpful assistant. Be as concise as possible.',
     tools
   })

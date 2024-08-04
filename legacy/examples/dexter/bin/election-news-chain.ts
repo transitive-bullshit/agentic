@@ -11,7 +11,7 @@ async function main() {
   const serper = new SerperClient()
 
   const chatModel = new ChatModel({
-    params: { model: 'gpt-4o', temperature: 0 },
+    params: { model: 'gpt-4o-mini', temperature: 0 },
     debug: true
   })
 

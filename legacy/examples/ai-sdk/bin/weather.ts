@@ -10,7 +10,7 @@ async function main() {
   const weather = new WeatherClient()
 
   const result = await generateText({
-    model: openai('gpt-4o'),
+    model: openai('gpt-4o-mini'),
     tools: createAISDKTools(weather),
     toolChoice: 'required',
     temperature: 0,
