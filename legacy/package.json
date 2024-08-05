@@ -14,6 +14,7 @@
   "type": "module",
   "scripts": {
     "build": "turbo build",
+    "dev": "turbo dev --concurrency 50 --continue",
     "clean": "turbo clean",
     "test": "turbo test",
     "test:format": "prettier --check \"**/*.{js,ts,tsx}\"",
