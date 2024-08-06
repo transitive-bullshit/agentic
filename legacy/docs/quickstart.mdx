@@ -1,0 +1,208 @@
+---
+title: 'Quick Start'
+---
+
+## Install
+
+<Info>
+  **Prerequisite**: All Agentic packages are [ESM
+  only](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c)
+  and require `Node.js >= 18` or an equivalent environment (Bun, Deno, CF
+  workers, etc).
+</Info>
+
+<Steps>
+  <Step title='Install core deps'>
+    <CodeGroup>
+      ```bash npm
+      npm install @agentic/core zod
+      ```
+
+      ```bash yarn
+      yarn add @agentic/core zod
+      ```
+
+      ```bash pnpm
+      pnpm add @agentic/core zod
+      ```
+    </CodeGroup>
+
+  </Step>
+
+  <Step title='Install AI tools'>
+    You can either install all of the AI tools via the convenience package `@agentic/stdlib`, or you can install them individually via their respective packages (`@agentic/weather`, `@agentic/twitter`, etc.).
+
+    <AccordionGroup>
+      <Accordion title="Install all AI tools">
+        <CodeGroup>
+          ```bash npm
+          npm install @agentic/stdlib
+          ```
+
+          ```bash yarn
+          yarn add @agentic/stdlib
+          ```
+
+          ```bash pnpm
+          pnpm add @agentic/stdlib
+          ```
+        </CodeGroup>
+      </Accordion>
+
+      <Accordion title="Install individual AI tools">
+        Docs for individual tools are available [here](/tools).
+
+        Here's an example of how to install the `@agentic/calculator` tool:
+
+        <CodeGroup>
+          ```bash npm
+          npm install @agentic/calculator
+          ```
+
+          ```bash yarn
+          yarn add @agentic/calculator
+          ```
+
+          ```bash pnpm
+          pnpm add @agentic/calculator
+          ```
+        </CodeGroup>
+      </Accordion>
+
+    </AccordionGroup>
+
+    <Note>
+      There is no functional difference between using `@agentic/stdlib` versus using the individual tool packages directly. The only difference is if you want to optimize your install size (when running on serverless functions, for instance).
+
+      The default examples all use `@agentic/stdlib` because it provides a simpler DX.
+    </Note>
+
+  </Step>
+
+  <Step title='Install an AI SDK Adapter'>
+    To use Agentic with one of the supported AI SDKs, you'll also need to install its corresponding adapter package.
+
+    <AccordionGroup>
+      <Accordion title="Vercel AI SDK">
+        <CodeGroup>
+          ```bash npm
+          npm install @agentic/ai-sdk ai
+          ```
+
+          ```bash yarn
+          yarn add @agentic/ai-sdk ai
+          ```
+
+          ```bash pnpm
+          pnpm add @agentic/ai-sdk ai
+          ```
+        </CodeGroup>
+
+        See the [Agentic ⇒ Vercel AI SDK](/sdks/ai-sdk) docs for more details.
+      </Accordion>
+
+      <Accordion title="LangChain">
+        <CodeGroup>
+          ```bash npm
+          npm install @agentic/langchain @langchain/core langchain
+          ```
+
+          ```bash yarn
+          yarn add @agentic/langchain @langchain/core langchain
+          ```
+
+          ```bash pnpm
+          pnpm add @agentic/langchain @langchain/core langchain
+          ```
+        </CodeGroup>
+
+        See the [Agentic ⇒ LangChain](/sdks/langchain) docs for more details.
+      </Accordion>
+
+      <Accordion title="LlamaIndex">
+        <CodeGroup>
+          ```bash npm
+          npm install @agentic/llamaindex llamaindex
+          ```
+
+          ```bash yarn
+          yarn add @agentic/llamaindex llamaindex
+          ```
+
+          ```bash pnpm
+          pnpm add @agentic/llamaindex llamaindex
+          ```
+        </CodeGroup>
+
+        See the [Agentic ⇒ LlamaIndex](/sdks/llamaindex) docs for more details.
+      </Accordion>
+
+      <Accordion title="Firebase Genkit">
+        <CodeGroup>
+          ```bash npm
+          npm install @agentic/genkit @genkit-ai/ai @genkit-ai/core
+          ```
+
+          ```bash yarn
+          yarn add @agentic/genkit @genkit-ai/ai @genkit-ai/core
+          ```
+
+          ```bash pnpm
+          pnpm add @agentic/genkit @genkit-ai/ai @genkit-ai/core
+          ```
+        </CodeGroup>
+
+        See the [Agentic ⇒ Genkit](/sdks/genkit) docs for more details.
+      </Accordion>
+
+      <Accordion title="Dexa Dexter">
+        <CodeGroup>
+          ```bash npm
+          npm install @agentic/dexter @dexaai/dexter
+          ```
+
+          ```bash yarn
+          yarn add @agentic/dexter @dexaai/dexter
+          ```
+
+          ```bash pnpm
+          pnpm add @agentic/dexter @dexaai/dexter
+          ```
+        </CodeGroup>
+
+        See the [Agentic ⇒ Dexter](/sdks/dexter) docs for more details.
+      </Accordion>
+
+      <Accordion title="OpenAI SDK">
+        <CodeGroup>
+          ```bash npm
+          npm install openai
+          ```
+
+          ```bash yarn
+          yarn add openai
+          ```
+
+          ```bash pnpm
+          pnpm add openai
+          ```
+        </CodeGroup>
+
+        There's no need for a separate adapter with the OpenAI SDK since all agentic tools are compatible with OpenAI by default. You can use `AIFunctionSet.specs` for function calling or `AIFunctionSet.toolSpecs` for parallel tool calling.
+
+        See the [Agentic ⇒ OpenAI](/sdks/openai) docs for more details.
+      </Accordion>
+
+    </AccordionGroup>
+
+    <Note>
+      You can use Agentic without any of these AI SDKs. `@agentic/core` and all tool packages are completely agnostic to the specific LLM and AI SDK.
+    </Note>
+
+  </Step>
+
+</Steps>
+
+## Usage
+
+TODO

@@ -25,7 +25,7 @@
     - [Firebase Genkit](#firebase-genkit)
     - [Dexa Dexter](#dexa-dexter)
     - [OpenAI SDK](#openai-sdk)
-- [Services](#services)
+- [Tools](#tools)
 - [Client Design Philosophy](#client-design-philosophy)
 - [TODO](#todo)
 - [Contributors](#contributors)
@@ -285,9 +285,9 @@ See [examples/openai](./examples/openai) for a full example.
 
 </details>
 
-## Services
+## Tools
 
-| Service                                                                  | Package                     | Named export           | Description                                                                                                                                                                                                                                                    |
+| Service / Tool                                                           | Package                     | Named export           | Description                                                                                                                                                                                                                                                    |
 | ------------------------------------------------------------------------ | --------------------------- | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [Bing](https://www.microsoft.com/en-us/bing/apis/bing-web-search-api)    | `@agentic/bing`             | `BingClient`           | Bing web search.                                                                                                                                                                                                                                               |
 | [Calculator](https://github.com/josdejong/mathjs)                        | `@agentic/calculator`       | `calculator`           | Basic calculator for simple mathematical expressions.                                                                                                                                                                                                          |
@@ -334,7 +334,7 @@ Note that you can import any of these AI tools from `@agentic/stdlib` OR from th
 
 ## TODO
 
-- services
+- tools
   - browserbase
   - [brave search](https://brave.com/search/api/)
   - [phantombuster](https://phantombuster.com)
