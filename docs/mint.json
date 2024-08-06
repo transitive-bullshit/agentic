@@ -1,0 +1,66 @@
+{
+  "$schema": "https://mintlify.com/schema.json",
+  "name": "Agentic",
+  "logo": {
+    "dark": "/media/agentic-logo-dark.svg",
+    "light": "/media/agentic-logo-light.svg"
+  },
+  "favicon": "/media/favicon.svg",
+  "colors": {
+    "primary": "#DD5130",
+    "light": "#F76340",
+    "dark": "#DD5130",
+    "anchors": {
+      "from": "#DD5130",
+      "to": "#F76340"
+    }
+  },
+  "topbarLinks": [
+    {
+      "name": "Twitter",
+      "url": "https://x.com/transitive_bs"
+    }
+  ],
+  "topbarCtaButton": {
+    "name": "GitHub",
+    "url": "https://github.com/transitive-bullshit/agentic"
+  },
+  "anchors": [
+    {
+      "name": "GitHub",
+      "icon": "github",
+      "url": "https://github.com/transitive-bullshit/agentic"
+    }
+  ],
+  "navigation": [
+    {
+      "group": "Getting Started",
+      "pages": [
+        "intro",
+        "quickstart",
+        "usage",
+        {
+          "group": "AI SDKs",
+          "pages": [
+            "sdks/ai-sdk",
+            "sdks/langchain",
+            "sdks/llamaindex",
+            "sdks/genkit",
+            "sdks/dexter"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "Tools",
+      "pages": ["tools/bing", "tools/weather"]
+    }
+  ],
+  "footerSocials": {
+    "x": "https://x.com/transitive_bs",
+    "github": "https://github.com/transitive-bullshit/agentic"
+  },
+  "seo": {
+    "indexHiddenPages": true
+  }
+}
