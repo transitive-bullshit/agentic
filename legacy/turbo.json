@@ -13,9 +13,9 @@
     },
     "test": {
       "dependsOn": [
+        "build",
         "test:format",
         "test:lint",
-        "build",
         "test:typecheck",
         "test:unit"
       ]
