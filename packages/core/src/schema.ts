@@ -59,9 +59,10 @@ export function isZodSchema(value: unknown): value is z.ZodType {
 }
 
 export function asSchema<TData>(
-  schema: z.Schema<TData> | Schema<TData>
+  schema: z.Schema<TData> | Schema<TData>,
+  opts: { strict?: boolean } = {}
 ): Schema<TData> {
-  return isSchema(schema) ? schema : createSchemaFromZodSchema(schema)
+  return isSchema(schema) ? schema : createSchemaFromZodSchema(schema, opts)
 }
 
 /**
@@ -84,9 +85,10 @@ export function createSchema<TData = unknown>(
 }
 
 export function createSchemaFromZodSchema<TData>(
-  zodSchema: z.Schema<TData>
+  zodSchema: z.Schema<TData>,
+  opts: { strict?: boolean } = {}
 ): Schema<TData> {
-  return createSchema(zodToJsonSchema(zodSchema), {
+  return createSchema(zodToJsonSchema(zodSchema, opts), {
     validate: (value) => {
       return safeParseStructuredOutput(value, zodSchema)
     }

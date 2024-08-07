@@ -10,6 +10,7 @@ export interface PrivateAIFunctionMetadata {
   description: string
   inputSchema: z.AnyZodObject
   methodName: string
+  strict?: boolean
 }
 
 // Polyfill for `Symbol.metadata`
@@ -69,11 +70,13 @@ export function aiFunction<
 >({
   name,
   description,
-  inputSchema
+  inputSchema,
+  strict
 }: {
   name?: string
   description: string
   inputSchema: InputSchema
+  strict?: boolean
 }) {
   return (
     _targetMethod: (
@@ -99,7 +102,8 @@ export function aiFunction<
       name: name ?? methodName,
       description,
       inputSchema,
-      methodName
+      methodName,
+      strict
     })
 
     context.addInitializer(function () {

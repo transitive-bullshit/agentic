@@ -12,6 +12,7 @@ async function main() {
   })
 
   const result = await extractObject({
+    name: 'extract-user',
     chatFn: chatModel.run.bind(chatModel),
     params: {
       messages: [
@@ -25,7 +26,8 @@ async function main() {
       name: z.string(),
       age: z.number(),
       location: z.string().optional()
-    })
+    }),
+    strict: true
   })
 
   console.log(result)
