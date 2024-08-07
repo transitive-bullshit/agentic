@@ -80,6 +80,8 @@ export function createAIChain<Result extends types.AIChainResult = string>({
   const functionSet = new AIFunctionSet(tools)
   const schema = rawSchema ? asSchema(rawSchema, { strict }) : undefined
 
+  // TODO: support custom stopping criteria (like setting a flag in a tool call)
+
   const defaultParams: Partial<types.ChatParams> | undefined =
     schema && !functionSet.size
       ? {
@@ -190,10 +192,10 @@ export function createAIChain<Result extends types.AIChainResult = string>({
           throw new AbortError(
             'Function calls are not supported; expected tool call'
           )
+        } else if (Msg.isRefusal(message)) {
+          throw new AbortError(`Model refusal: ${message.refusal}`)
         } else if (Msg.isAssistant(message)) {
-          if (message.refusal) {
-            throw new AbortError(`Model refusal: ${message.refusal}`)
-          } else if (schema && schema.validate) {
+          if (schema && schema.validate) {
             const result = schema.validate(message.content)
 
             if (result.success) {
@@ -211,6 +213,8 @@ export function createAIChain<Result extends types.AIChainResult = string>({
         if (err instanceof AbortError) {
           throw err
         }
+
+        console.warn(`Chain "${name}" error:`, err.message)
 
         messages.push(
           Msg.user(

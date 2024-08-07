@@ -3,7 +3,7 @@ import type { z } from 'zod'
 
 import type { AIFunctionSet } from './ai-function-set'
 import type { AIFunctionsProvider } from './fns'
-import type { Msg } from './message'
+import type { LegacyMsg, Msg } from './message'
 
 export type { Msg } from './message'
 export type { Schema } from './schema'
@@ -130,6 +130,10 @@ export interface ChatParams {
   user?: string
 }
 
+export type LegacyChatParams = Simplify<
+  Omit<ChatParams, 'messages'> & { messages: LegacyMsg[] }
+>
+
 export interface ResponseFormatJSONSchema {
   /**
    * The name of the response format. Must be a-z, A-Z, 0-9, or contain
@@ -158,10 +162,21 @@ export interface ResponseFormatJSONSchema {
   strict?: boolean
 }
 
+/**
+ * OpenAI has changed some of their types, so instead of trying to support all
+ * possible types, for these params, just relax them for now.
+ */
+export type RelaxedChatParams = Simplify<
+  Omit<ChatParams, 'messages' | 'response_format'> & {
+    messages: object[]
+    response_format?: { type: 'text' | 'json_object' | string }
+  }
+>
+
 /** An OpenAI-compatible chat completions API */
 export type ChatFn = (
-  params: Simplify<SetOptional<ChatParams, 'model'>>
-) => Promise<{ message: Msg }>
+  params: Simplify<SetOptional<RelaxedChatParams, 'model'>>
+) => Promise<{ message: Msg | LegacyMsg }>
 
 export type AIChainResult = string | Record<string, any>
 
