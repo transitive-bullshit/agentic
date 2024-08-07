@@ -366,7 +366,7 @@ importers:
         version: link:../tsconfig
       openai-fetch:
         specifier: ^2.1.0
-        version: link:../../../openai-fetch
+        version: 2.1.0
 
   packages/dexa:
     dependencies:
@@ -5512,6 +5512,10 @@ packages:
 
   openai-fetch@2.0.3:
     resolution: {integrity: sha512-3Kv2lRgld3MYj+TaSgDBb8YnYEVdn601U+I1y0oZs4bCaPINEZXgcQAQAUGFmFVFpG4vU2Jr6ZAKiF5ZlmM5Fg==}
+    engines: {node: '>=18'}
+
+  openai-fetch@2.1.0:
+    resolution: {integrity: sha512-oYROvwejcUybiVWZJFla/9QbfVgDujCjLQf6xwrEyK/nECG5FWcpXgTfKZOyG+e4SJNGxN+SF6OXhXDTO+JA0Q==}
     engines: {node: '>=18'}
 
   openai-zod-to-json-schema@1.0.0:
@@ -13277,6 +13281,10 @@ snapshots:
       is-wsl: 2.2.0
 
   openai-fetch@2.0.3:
+    dependencies:
+      ky: 1.5.0
+
+  openai-fetch@2.1.0:
     dependencies:
       ky: 1.5.0
 
