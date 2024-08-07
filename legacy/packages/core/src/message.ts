@@ -7,10 +7,17 @@ import { cleanStringForModel, stringifyForModel } from './utils'
  */
 export interface Msg {
   /**
-   * The contents of the message. `content` is required for all messages, and
-   * may be null for assistant messages with function calls.
+   * The contents of the message. `content` may be null for assistant messages
+   * with function calls or `undefined` for assistant messages if a `refusal`
+   * was given by the model.
    */
-  content: string | null
+  content?: string | null
+
+  /**
+   * The reason the model refused to generate this message or `undefined` if the
+   * message was generated successfully.
+   */
+  refusal?: string | null
 
   /**
    * The role of the messages author. One of `system`, `user`, `assistant`,
@@ -95,7 +102,8 @@ export namespace Msg {
   export type Assistant = {
     role: 'assistant'
     name?: string
-    content: string
+    content?: string
+    refusal?: string
   }
 
   /** Message with arguments to call a function. */
@@ -262,7 +270,7 @@ export namespace Msg {
       return Msg.toolCall(msg.tool_calls)
     } else if (msg.content === null && msg.function_call != null) {
       return Msg.funcCall(msg.function_call)
-    } else if (msg.content !== null) {
+    } else if (msg.content !== null && msg.content !== undefined) {
       return Msg.assistant(msg.content)
     } else {
       // @TODO: probably don't want to error here

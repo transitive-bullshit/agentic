@@ -10,15 +10,42 @@ import { asSchema, augmentSystemMessageWithJsonSchema } from './schema'
 import { getErrorMessage } from './utils'
 
 export type AIChainParams<Result extends types.AIChainResult = string> = {
+  /** Name of the chain */
+  name: string
+
+  /** Chat completions function */
   chatFn: types.ChatFn
+
+  /** Description of the chain */
+  description?: string
+
+  /** Optional chat completion params */
   params?: types.Simplify<
     Partial<Omit<types.ChatParams, 'tools' | 'functions'>>
   >
+
+  /** Optional tools */
   tools?: types.AIFunctionLike[]
+
+  /** Optional response schema */
   schema?: z.ZodType<Result> | types.Schema<Result>
+
+  /**
+   * Whether or not the response schema should be treated as strict for
+   * constrained structured output generation.
+   */
+  strict?: boolean
+
+  /** Max number of LLM calls to allow */
   maxCalls?: number
+
+  /** Max number of retries to allow */
   maxRetries?: number
+
+  /** Max concurrency when invoking tool calls */
   toolCallConcurrency?: number
+
+  /** Whether or not to inject the schema into the context */
   injectSchemaIntoSystemMessage?: boolean
 }
 
@@ -38,6 +65,8 @@ export type AIChainParams<Result extends types.AIChainResult = string> = {
  * exceeds `maxCalls` (`maxCalls` is expected to be >= `maxRetries`).
  */
 export function createAIChain<Result extends types.AIChainResult = string>({
+  name,
+  description,
   chatFn,
   params,
   schema: rawSchema,
@@ -45,13 +74,26 @@ export function createAIChain<Result extends types.AIChainResult = string>({
   maxCalls = 5,
   maxRetries = 2,
   toolCallConcurrency = 8,
-  injectSchemaIntoSystemMessage = true
+  injectSchemaIntoSystemMessage = false,
+  strict = false
 }: AIChainParams<Result>): types.AIChain<Result> {
   const functionSet = new AIFunctionSet(tools)
+  const schema = rawSchema ? asSchema(rawSchema, { strict }) : undefined
+
   const defaultParams: Partial<types.ChatParams> | undefined =
-    rawSchema && !functionSet.size
+    schema && !functionSet.size
       ? {
-          response_format: { type: 'json_object' }
+          response_format: strict
+            ? {
+                type: 'json_schema',
+                json_schema: {
+                  name,
+                  description,
+                  strict,
+                  schema: schema.jsonSchema
+                }
+              }
+            : { type: 'json_object' }
         }
       : undefined
 
@@ -77,8 +119,6 @@ export function createAIChain<Result extends types.AIChainResult = string>({
       throw new Error('AIChain error: "messages" is empty')
     }
 
-    const schema = rawSchema ? asSchema(rawSchema) : undefined
-
     if (schema && injectSchemaIntoSystemMessage) {
       const lastSystemMessageIndex = messages.findLastIndex(Msg.isSystem)
       const lastSystemMessageContent =
@@ -101,6 +141,7 @@ export function createAIChain<Result extends types.AIChainResult = string>({
 
     do {
       ++numCalls
+
       const response = await chatFn({
         ...modelParams,
         messages,
@@ -150,7 +191,9 @@ export function createAIChain<Result extends types.AIChainResult = string>({
             'Function calls are not supported; expected tool call'
           )
         } else if (Msg.isAssistant(message)) {
-          if (schema && schema.validate) {
+          if (message.refusal) {
+            throw new AbortError(`Model refusal: ${message.refusal}`)
+          } else if (schema && schema.validate) {
             const result = schema.validate(message.content)
 
             if (result.success) {
@@ -177,7 +220,7 @@ export function createAIChain<Result extends types.AIChainResult = string>({
 
         if (numErrors > maxRetries) {
           throw new Error(
-            `Chain failed after ${numErrors} errors: ${err.message}`,
+            `Chain ${name} failed after ${numErrors} errors: ${err.message}`,
             {
               cause: err
             }
@@ -186,6 +229,8 @@ export function createAIChain<Result extends types.AIChainResult = string>({
       }
     } while (numCalls < maxCalls)
 
-    throw new Error(`Chain aborted after reaching max ${maxCalls} calls`)
+    throw new Error(
+      `Chain "${name}" aborted after reaching max ${maxCalls} calls`
+    )
   }
 }

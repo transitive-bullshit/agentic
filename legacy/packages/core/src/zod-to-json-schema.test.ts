@@ -1,10 +1,10 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, test } from 'vitest'
 import { z } from 'zod'
 
 import { zodToJsonSchema } from './zod-to-json-schema'
 
 describe('zodToJsonSchema', () => {
-  it('handles basic objects', () => {
+  test('handles basic objects', () => {
     const params = zodToJsonSchema(
       z.object({
         name: z.string().min(1).describe('Name of the person'),
@@ -30,7 +30,7 @@ describe('zodToJsonSchema', () => {
     })
   })
 
-  it('handles enums and unions', () => {
+  test('handles enums and unions', () => {
     const params = zodToJsonSchema(
       z.object({
         name: z.string().min(1).describe('Name of the person'),

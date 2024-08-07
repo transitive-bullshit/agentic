@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, test } from 'vitest'
 import { z } from 'zod'
 
 import { createAIFunction } from './create-ai-function'
@@ -18,7 +18,7 @@ const fullName = createAIFunction(
 )
 
 describe('createAIFunction()', () => {
-  it('exposes OpenAI function calling spec', () => {
+  test('exposes OpenAI function calling spec', () => {
     expect(fullName.spec.name).toEqual('fullName')
     expect(fullName.spec.description).toEqual(
       'Returns the full name of a person.'
@@ -34,7 +34,7 @@ describe('createAIFunction()', () => {
     })
   })
 
-  it('executes the function', async () => {
+  test('executes the function', async () => {
     expect(await fullName('{"first": "John", "last": "Doe"}')).toEqual(
       'John Doe'
     )

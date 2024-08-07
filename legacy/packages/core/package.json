@@ -40,11 +40,11 @@
     "jsonrepair": "^3.6.1",
     "ky": "^1.5.0",
     "normalize-url": "^8.0.1",
+    "openai-zod-to-json-schema": "^1.0.0",
     "p-map": "^7.0.2",
     "p-throttle": "^6.1.0",
     "quick-lru": "^7.0.0",
     "type-fest": "^4.21.0",
-    "zod-to-json-schema": "^3.23.2",
     "zod-validation-error": "^3.3.0"
   },
   "peerDependencies": {
@@ -52,7 +52,7 @@
   },
   "devDependencies": {
     "@agentic/tsconfig": "workspace:*",
-    "openai-fetch": "^2.0.4"
+    "openai-fetch": "^2.1.0"
   },
   "publishConfig": {
     "access": "public"
