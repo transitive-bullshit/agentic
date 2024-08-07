@@ -168,8 +168,8 @@ export interface ResponseFormatJSONSchema {
  */
 export type RelaxedChatParams = Simplify<
   Omit<ChatParams, 'messages' | 'response_format'> & {
-    messages: object[]
-    response_format?: { type: 'text' | 'json_object' | string }
+    messages: any[]
+    response_format?: any
   }
 >
 
