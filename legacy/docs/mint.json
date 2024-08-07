@@ -53,7 +53,38 @@
     },
     {
       "group": "Tools",
-      "pages": ["tools/bing", "tools/weather"]
+      "pages": [
+        "tools/bing",
+        "tools/calculator",
+        "tools/clearbit",
+        "tools/dexa",
+        "tools/diffbot",
+        "tools/e2b",
+        "tools/exa",
+        "tools/firecrawl",
+        "tools/hacker-news",
+        "tools/hunter",
+        "tools/jina",
+        "tools/midjourney",
+        "tools/novu",
+        "tools/people-data-labs",
+        "tools/perigon",
+        "tools/polygon",
+        "tools/predict-leads",
+        "tools/proxycurl",
+        "tools/searxng",
+        "tools/serpapi",
+        "tools/serper",
+        "tools/slack",
+        "tools/social-data",
+        "tools/tavily",
+        "tools/twilio",
+        "tools/twitter",
+        "tools/weather",
+        "tools/wikidata",
+        "tools/wikipedia",
+        "tools/wolfram-alpha"
+      ]
     }
   ],
   "footerSocials": {
