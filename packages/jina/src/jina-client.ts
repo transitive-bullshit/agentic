@@ -101,7 +101,7 @@ export namespace jina {
 /**
  * LLM-friendly URL reader and search client by Jina AI.
  *
- * - Includes a very generous free tier.
+ * - Includes a small free tier.
  * - Does not support "stream mode".
  * - Results default to markdown text format.
  * - To return JSON (especially useful for `search`), set `json: true` in the
