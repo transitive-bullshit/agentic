@@ -7,7 +7,7 @@
     "type": "git",
     "url": "git+https://github.com/transitive-bullshit/agentic.git"
   },
-  "packageManager": "pnpm@9.6.0",
+  "packageManager": "pnpm@9.7.0",
   "engines": {
     "node": ">=18"
   },
@@ -26,6 +26,7 @@
     "release:build": "run-s build",
     "release:version": "changeset version",
     "release:publish": "changeset publish",
+    "pretest": "run-s build",
     "precommit": "lint-staged",
     "preinstall": "npx only-allow pnpm",
     "prepare": "husky"
@@ -45,7 +46,7 @@
     "prettier": "^3.3.3",
     "tsup": "^8.2.4",
     "tsx": "^4.16.5",
-    "turbo": "^2.0.11",
+    "turbo": "^2.0.12",
     "typescript": "^5.5.4",
     "vitest": "2.0.5",
     "zod": "^3.23.8"

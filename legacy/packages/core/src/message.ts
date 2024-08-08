@@ -7,10 +7,17 @@ import { cleanStringForModel, stringifyForModel } from './utils'
  */
 export interface Msg {
   /**
-   * The contents of the message. `content` is required for all messages, and
-   * may be null for assistant messages with function calls.
+   * The contents of the message. `content` may be null for assistant messages
+   * with function calls or `undefined` for assistant messages if a `refusal`
+   * was given by the model.
    */
-  content: string | null
+  content?: string | null
+
+  /**
+   * The reason the model refused to generate this message or `undefined` if the
+   * message was generated successfully.
+   */
+  refusal?: string | null
 
   /**
    * The role of the messages author. One of `system`, `user`, `assistant`,
@@ -40,6 +47,15 @@ export interface Msg {
    * `content`. May contain a-z, A-Z, 0-9, and underscores, with a maximum length of
    * 64 characters.
    */
+  name?: string
+}
+
+export interface LegacyMsg {
+  content: string | null
+  role: Msg.Role
+  function_call?: Msg.Call.Function
+  tool_calls?: Msg.Call.Tool[]
+  tool_call_id?: string
   name?: string
 }
 
@@ -96,6 +112,13 @@ export namespace Msg {
     role: 'assistant'
     name?: string
     content: string
+  }
+
+  /** Message with refusal reason from the assistant. */
+  export type Refusal = {
+    role: 'assistant'
+    name?: string
+    refusal: string
   }
 
   /** Message with arguments to call a function. */
@@ -185,6 +208,27 @@ export namespace Msg {
     }
   }
 
+  /**
+   * Create an assistant refusal message. Cleans indentation and newlines by
+   * default.
+   */
+  export function refusal(
+    refusal: string,
+    opts?: {
+      /** Custom name for the message. */
+      name?: string
+      /** Whether to clean extra newlines and indentation. Defaults to true. */
+      cleanRefusal?: boolean
+    }
+  ): Msg.Refusal {
+    const { name, cleanRefusal = true } = opts ?? {}
+    return {
+      role: 'assistant',
+      refusal: cleanRefusal ? cleanStringForModel(refusal) : refusal,
+      ...(name ? { name } : {})
+    }
+  }
+
   /** Create a function call message with argumets. */
   export function funcCall(
     function_call: {
@@ -249,7 +293,7 @@ export namespace Msg {
     // @TODO
     response: any
     // response: ChatModel.EnrichedResponse
-  ): Msg.Assistant | Msg.FuncCall | Msg.ToolCall {
+  ): Msg.Assistant | Msg.Refusal | Msg.FuncCall | Msg.ToolCall {
     const msg = response.choices[0].message as Msg
     return narrowResponseMessage(msg)
   }
@@ -257,13 +301,15 @@ export namespace Msg {
   /** Narrow a message received from the API. It only responds with role=assistant */
   export function narrowResponseMessage(
     msg: Msg
-  ): Msg.Assistant | Msg.FuncCall | Msg.ToolCall {
+  ): Msg.Assistant | Msg.Refusal | Msg.FuncCall | Msg.ToolCall {
     if (msg.content === null && msg.tool_calls != null) {
       return Msg.toolCall(msg.tool_calls)
     } else if (msg.content === null && msg.function_call != null) {
       return Msg.funcCall(msg.function_call)
-    } else if (msg.content !== null) {
+    } else if (msg.content !== null && msg.content !== undefined) {
       return Msg.assistant(msg.content)
+    } else if (msg.refusal != null) {
+      return Msg.refusal(msg.refusal)
     } else {
       // @TODO: probably don't want to error here
       console.log('Invalid message', msg)
@@ -282,6 +328,10 @@ export namespace Msg {
   /** Check if a message is an assistant message. */
   export function isAssistant(message: Msg): message is Msg.Assistant {
     return message.role === 'assistant' && message.content !== null
+  }
+  /** Check if a message is an assistant refusal message. */
+  export function isRefusal(message: Msg): message is Msg.Refusal {
+    return message.role === 'assistant' && message.refusal !== null
   }
   /** Check if a message is a function call message with arguments. */
   export function isFuncCall(message: Msg): message is Msg.FuncCall {
@@ -304,6 +354,7 @@ export namespace Msg {
   export function narrow(message: Msg.System): Msg.System
   export function narrow(message: Msg.User): Msg.User
   export function narrow(message: Msg.Assistant): Msg.Assistant
+  export function narrow(message: Msg.Assistant): Msg.Refusal
   export function narrow(message: Msg.FuncCall): Msg.FuncCall
   export function narrow(message: Msg.FuncResult): Msg.FuncResult
   export function narrow(message: Msg.ToolCall): Msg.ToolCall
@@ -314,6 +365,7 @@ export namespace Msg {
     | Msg.System
     | Msg.User
     | Msg.Assistant
+    | Msg.Refusal
     | Msg.FuncCall
     | Msg.FuncResult
     | Msg.ToolCall
@@ -325,6 +377,9 @@ export namespace Msg {
       return message
     }
     if (isAssistant(message)) {
+      return message
+    }
+    if (isRefusal(message)) {
       return message
     }
     if (isFuncCall(message)) {

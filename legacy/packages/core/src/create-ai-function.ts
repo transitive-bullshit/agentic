@@ -20,8 +20,13 @@ export function createAIFunction<InputSchema extends z.ZodObject<any>, Output>(
     name: string
     /** Description of the function. */
     description?: string
-    /** Zod schema for the arguments string. */
+    /** Zod schema for the function parameters. */
     inputSchema: InputSchema
+    /**
+     * Whether or not to enable structured output generation based on the given
+     * zod schema.
+     */
+    strict?: boolean
   },
   /** Implementation of the function to call with the parsed arguments. */
   implementation: (params: z.infer<InputSchema>) => types.MaybePromise<Output>
@@ -59,12 +64,15 @@ export function createAIFunction<InputSchema extends z.ZodObject<any>, Output>(
     return implementation(parsedInput)
   }
 
+  const strict = !!spec.strict
+
   aiFunction.inputSchema = spec.inputSchema
   aiFunction.parseInput = parseInput
   aiFunction.spec = {
     name: spec.name,
     description: spec.description?.trim() ?? '',
-    parameters: zodToJsonSchema(spec.inputSchema)
+    parameters: zodToJsonSchema(spec.inputSchema, { strict }),
+    strict
   }
   aiFunction.impl = implementation
 
