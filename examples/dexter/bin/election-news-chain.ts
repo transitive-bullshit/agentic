@@ -16,6 +16,7 @@ async function main() {
   })
 
   const chain = createAIChain({
+    name: 'search_news',
     chatFn: chatModel.run.bind(chatModel),
     tools: [perigon.functions.pick('search_news_stories'), serper],
     params: {

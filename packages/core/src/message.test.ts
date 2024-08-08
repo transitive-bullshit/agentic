@@ -1,11 +1,11 @@
 import type * as OpenAI from 'openai-fetch'
-import { describe, expect, expectTypeOf, it } from 'vitest'
+import { describe, expect, expectTypeOf, test } from 'vitest'
 
 import type * as types from './types'
 import { Msg } from './message'
 
 describe('Msg', () => {
-  it('creates a message and fixes indentation', () => {
+  test('creates a message and fixes indentation', () => {
     const msgContent = `
       Hello, World!
     `
@@ -14,7 +14,7 @@ describe('Msg', () => {
     expect(msg.content).toEqual('Hello, World!')
   })
 
-  it('supports disabling indentation fixing', () => {
+  test('supports disabling indentation fixing', () => {
     const msgContent = `
       Hello, World!
     `
@@ -22,7 +22,7 @@ describe('Msg', () => {
     expect(msg.content).toEqual('\n      Hello, World!\n    ')
   })
 
-  it('handles tool calls request', () => {
+  test('handles tool calls request', () => {
     const msg = Msg.toolCall([
       {
         id: 'fake-tool-call-id',
@@ -37,13 +37,13 @@ describe('Msg', () => {
     expect(Msg.isToolCall(msg)).toBe(true)
   })
 
-  it('handles tool call response', () => {
+  test('handles tool call response', () => {
     const msg = Msg.toolResult('Hello, World!', 'fake-tool-call-id')
     expectTypeOf(msg).toMatchTypeOf<types.Msg.ToolResult>()
     expect(Msg.isToolResult(msg)).toBe(true)
   })
 
-  it('prompt message types should interop with openai-fetch message types', () => {
+  test('prompt message types should interop with openai-fetch message types', () => {
     expectTypeOf({} as OpenAI.ChatMessage).toMatchTypeOf<types.Msg>()
     expectTypeOf({} as types.Msg).toMatchTypeOf<OpenAI.ChatMessage>()
     expectTypeOf({} as types.Msg.System).toMatchTypeOf<OpenAI.ChatMessage>()
