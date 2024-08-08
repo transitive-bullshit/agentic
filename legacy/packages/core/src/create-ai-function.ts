@@ -20,7 +20,7 @@ export function createAIFunction<InputSchema extends z.ZodObject<any>, Output>(
     name: string
     /** Description of the function. */
     description?: string
-    /** Zod schema for the arguments string. */
+    /** Zod schema for the function parameters. */
     inputSchema: InputSchema
     /**
      * Whether or not to enable structured output generation based on the given

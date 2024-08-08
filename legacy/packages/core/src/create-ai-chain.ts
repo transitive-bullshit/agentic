@@ -195,14 +195,8 @@ export function createAIChain<Result extends types.AIChainResult = string>({
         } else if (Msg.isRefusal(message)) {
           throw new AbortError(`Model refusal: ${message.refusal}`)
         } else if (Msg.isAssistant(message)) {
-          if (schema && schema.validate) {
-            const result = schema.validate(message.content)
-
-            if (result.success) {
-              return result.data
-            }
-
-            throw new Error(result.error)
+          if (schema) {
+            return schema.parse(message.content)
           } else {
             return message.content as Result
           }

@@ -196,4 +196,5 @@ export type SafeParseResult<TData> =
       error: string
     }
 
-export type ValidatorFn<TData> = (value: unknown) => SafeParseResult<TData>
+export type ParseFn<TData> = (value: unknown) => TData
+export type SafeParseFn<TData> = (value: unknown) => SafeParseResult<TData>
