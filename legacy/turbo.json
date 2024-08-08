@@ -12,13 +12,7 @@
       "dependsOn": ["^clean"]
     },
     "test": {
-      "dependsOn": [
-        "build",
-        "test:format",
-        "test:lint",
-        "test:typecheck",
-        "test:unit"
-      ]
+      "dependsOn": ["test:format", "test:lint", "test:typecheck", "test:unit"]
     },
     "test:lint": {
       "dependsOn": ["^test:lint"],
