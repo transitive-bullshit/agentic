@@ -36,10 +36,8 @@ export interface AIFunctionSpec {
 
   /**
    * Whether to enable strict schema adherence when generating the function
-   * parameters. If set to true, the model will always follow the exact schema
-   * defined in the `schema` field. Only a subset of JSON Schema is supported
-   * when `strict` is `true`. To learn more, read the
-   * [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
+   * parameters. Currently only supported by OpenAI's
+   * [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs).
    */
   strict?: boolean
 }
@@ -156,8 +154,8 @@ export interface ResponseFormatJSONSchema {
    * Whether to enable strict schema adherence when generating the output. If
    * set to true, the model will always follow the exact schema defined in the
    * `schema` field. Only a subset of JSON Schema is supported when `strict`
-   * is `true`. To learn more, read the
-   * [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
+   * is `true`. Currently only supported by OpenAI's
+   * [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs).
    */
   strict?: boolean
 }
