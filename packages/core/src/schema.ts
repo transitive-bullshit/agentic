@@ -1,7 +1,7 @@
 import type { z } from 'zod'
 
 import type * as types from './types'
-import { safeParseStructuredOutput } from './parse-structured-output'
+import { parseStructuredOutput } from './parse-structured-output'
 import { stringifyForModel } from './utils'
 import { zodToJsonSchema } from './zod-to-json-schema'
 
@@ -9,7 +9,6 @@ import { zodToJsonSchema } from './zod-to-json-schema'
  * Used to mark schemas so we can support both Zod and custom schemas.
  */
 export const schemaSymbol = Symbol('agentic.schema')
-export const validatorSymbol = Symbol('agentic.validator')
 
 export type Schema<TData = unknown> = {
   /**
@@ -18,10 +17,18 @@ export type Schema<TData = unknown> = {
   readonly jsonSchema: types.JSONSchema
 
   /**
-   * Optional. Validates that the structure of a value matches this schema,
-   * and returns a typed version of the value if it does.
+   * Parses the value, validates that it matches this schema, and returns a
+   * typed version of the value if it does. Throw an error if the value does
+   * not match the schema.
    */
-  readonly validate?: types.ValidatorFn<TData>
+  readonly parse: types.ParseFn<TData>
+
+  /**
+   * Parses the value, validates that it matches this schema, and returns a
+   * typed version of the value if it does. Returns an error message if the
+   * value does not match the schema, and will never throw an error.
+   */
+  readonly safeParse: types.SafeParseFn<TData>
 
   /**
    * Used to mark schemas so we can support both Zod and custom schemas.
@@ -41,7 +48,7 @@ export function isSchema(value: unknown): value is Schema {
     schemaSymbol in value &&
     value[schemaSymbol] === true &&
     'jsonSchema' in value &&
-    'validate' in value
+    'parse' in value
   )
 }
 
@@ -71,16 +78,28 @@ export function asSchema<TData>(
 export function createSchema<TData = unknown>(
   jsonSchema: types.JSONSchema,
   {
-    validate
+    parse = (value) => value as TData,
+    safeParse
   }: {
-    validate?: types.ValidatorFn<TData>
+    parse?: types.ParseFn<TData>
+    safeParse?: types.SafeParseFn<TData>
   } = {}
 ): Schema<TData> {
+  safeParse ??= (value: unknown) => {
+    try {
+      const result = parse(value)
+      return { success: true, data: result }
+    } catch (err: any) {
+      return { success: false, error: err.message ?? String(err) }
+    }
+  }
+
   return {
     [schemaSymbol]: true,
     _type: undefined as TData,
     jsonSchema,
-    validate
+    parse,
+    safeParse
   }
 }
 
@@ -89,8 +108,8 @@ export function createSchemaFromZodSchema<TData>(
   opts: { strict?: boolean } = {}
 ): Schema<TData> {
   return createSchema(zodToJsonSchema(zodSchema, opts), {
-    validate: (value) => {
-      return safeParseStructuredOutput(value, zodSchema)
+    parse: (value) => {
+      return parseStructuredOutput(value, zodSchema)
     }
   })
 }
