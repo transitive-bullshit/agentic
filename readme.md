@@ -1,5 +1,5 @@
 <p align="center">
-  <img alt="Agentic" src="/media/agentic-header.jpg" width="308">
+  <img alt="Agentic" src="/docs/media/agentic-header.jpg" width="308">
 </p>
 
 <p align="center">
