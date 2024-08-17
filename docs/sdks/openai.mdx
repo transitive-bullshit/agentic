@@ -1,0 +1,83 @@
+---
+title: OpenAI
+description: How to use Agentic with the OpenAI TS SDK directly.
+---
+
+<Note>
+  There's no need for an adapter with the OpenAI SDK since all agentic tools are
+  compatible with OpenAI by default. You can use `AIFunctionSet.specs` for
+  function calling or `AIFunctionSet.toolSpecs` for parallel tool calling.
+</Note>
+
+## Install
+
+<CodeGroup>
+```bash npm
+npm install @agentic/core @agentic/stdlib openai
+```
+
+```bash yarn
+yarn add @agentic/core @agentic/stdlib openai
+```
+
+```bash pnpm
+pnpm add @agentic/core @agentic/stdlib openai
+```
+
+</CodeGroup>
+
+## Usage
+
+```ts
+import { WeatherClient } from '@agentic/stdlib'
+import OpenAI from 'openai'
+
+const weather = new WeatherClient()
+const openai = new OpenAI()
+
+const messages: OpenAI.ChatCompletionMessageParam[] = [
+  {
+    role: 'system',
+    content: 'You are a helpful assistant. Be as concise as possible.'
+  },
+  { role: 'user', content: 'What is the weather in San Francisco?' }
+]
+
+const res = await openai.chat.completions.create({
+  messages,
+  model: 'gpt-4o-mini',
+  temperature: 0,
+  tools: weather.functions.toolSpecs,
+  tool_choice: 'required'
+})
+const message = res.choices[0]?.message!
+console.log(JSON.stringify(message, null, 2))
+assert(message.tool_calls?.[0]?.function?.name === 'get_current_weather')
+
+const fn = weather.functions.get('get_current_weather')!
+
+const toolParams = message.tool_calls[0].function.arguments
+const toolResult = await fn(toolParams)
+console.log(JSON.stringify(toolResult, null, 2))
+```
+
+## Running this example
+
+<Info>
+  You'll need a free API key from [weatherapi.com](https://www.weatherapi.com)
+  to run this example. Store it in a local `.env` file as `WEATHER_API_KEY`.
+</Info>
+
+<Info>
+  You'll need an [OpenAI API key](https://platform.openai.com/docs/quickstart)
+  to run this example. Store it in a local `.env` file as `OPENAI_API_KEY`.
+</Info>
+
+```sh
+git clone git@github.com:transitive-bullshit/agentic.git
+cd agentic
+pnpm install
+echo 'WEATHER_API_KEY=your-key' >> .env
+echo 'OPENAI_API_KEY=your-key' >> .env
+npx tsx examples/openai/bin/weather.ts
+```

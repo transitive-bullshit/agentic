@@ -1,0 +1,89 @@
+---
+title: Genkit
+description: Agentic adapter for the Firebase Genkit SDK.
+---
+
+- package: `@agentic/genkit`
+- exports: `function createGenkitTools`
+- [source](https://github.com/transitive-bullshit/agentic/blob/main/packages/genkit/src/genkit.ts)
+- [Firebase Genkit docs](https://firebase.google.com/docs/genkit)
+
+## Install
+
+<CodeGroup>
+```bash npm
+npm install @agentic/genkit @genkit-ai/ai @genkit-ai/core
+```
+
+```bash yarn
+yarn add @agentic/genkit @genkit-ai/ai @genkit-ai/core
+```
+
+```bash pnpm
+pnpm add @agentic/genkit @genkit-ai/ai @genkit-ai/core
+```
+
+</CodeGroup>
+
+## Usage
+
+This example also requires you to install the [genkitx-openai](https://github.com/TheFireCo/genkit-plugins/tree/main/plugins/openai) package, which adds support for OpenAI to Genkit.
+
+```ts
+import 'dotenv/config'
+
+import { createGenkitTools } from '@agentic/genkit'
+import { WeatherClient } from '@agentic/stdlib'
+import { generate } from '@genkit-ai/ai'
+import { configureGenkit } from '@genkit-ai/core'
+import { gpt4oMini, openAI } from 'genkitx-openai'
+
+async function main() {
+  const weather = new WeatherClient()
+
+  configureGenkit({
+    plugins: [openAI()]
+  })
+
+  const result = await generate({
+    model: gpt4oMini,
+    tools: createGenkitTools(weather),
+    history: [
+      {
+        role: 'system',
+        content: [
+          {
+            text: 'You are a helpful assistant. Be as concise as possible.'
+          }
+        ]
+      }
+    ],
+    prompt: 'What is the weather in San Francisco?'
+  })
+
+  console.log(result)
+}
+
+await main()
+```
+
+## Running this example
+
+<Info>
+  You'll need a free API key from [weatherapi.com](https://www.weatherapi.com)
+  to run this example. Store it in a local `.env` file as `WEATHER_API_KEY`.
+</Info>
+
+<Info>
+  You'll need an [OpenAI API key](https://platform.openai.com/docs/quickstart)
+  to run this example. Store it in a local `.env` file as `OPENAI_API_KEY`.
+</Info>
+
+```sh
+git clone git@github.com:transitive-bullshit/agentic.git
+cd agentic
+pnpm install
+echo 'WEATHER_API_KEY=your-key' >> .env
+echo 'OPENAI_API_KEY=your-key' >> .env
+npx tsx examples/genkit/bin/weather.ts
+```
