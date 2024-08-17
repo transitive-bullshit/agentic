@@ -31,8 +31,8 @@ export type AIChainParams<Result extends types.AIChainResult = string> = {
   schema?: z.ZodType<Result> | types.Schema<Result>
 
   /**
-   * Whether or not the response schema should be treated as strict for
-   * constrained structured output generation.
+   * Whether or not the response schema should use OpenAI's structured output
+   * generation.
    */
   strict?: boolean
 
