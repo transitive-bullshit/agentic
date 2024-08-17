@@ -231,7 +231,7 @@ export namespace Msg {
 
   /** Create a function call message with argumets. */
   export function funcCall(
-    function_call: {
+    funcCall: {
       /** Name of the function to call. */
       name: string
       /** Arguments to pass to the function. */
@@ -246,7 +246,7 @@ export namespace Msg {
       ...opts,
       role: 'assistant',
       content: null,
-      function_call
+      function_call: funcCall
     }
   }
 
@@ -261,7 +261,7 @@ export namespace Msg {
 
   /** Create a function call message with argumets. */
   export function toolCall(
-    tool_calls: Msg.Call.Tool[],
+    toolCalls: Msg.Call.Tool[],
     opts?: {
       /** The name descriptor for the message.(message.name) */
       name?: string
@@ -271,21 +271,26 @@ export namespace Msg {
       ...opts,
       role: 'assistant',
       content: null,
-      tool_calls
+      tool_calls: toolCalls
     }
   }
 
   /** Create a tool call result message. */
   export function toolResult(
     content: Jsonifiable,
-    tool_call_id: string,
+    toolCallId: string,
     opts?: {
       /** The name of the tool which was called */
       name?: string
     }
   ): Msg.ToolResult {
     const contentString = stringifyForModel(content)
-    return { ...opts, role: 'tool', tool_call_id, content: contentString }
+    return {
+      ...opts,
+      role: 'tool',
+      tool_call_id: toolCallId,
+      content: contentString
+    }
   }
 
   /** Get the narrowed message from an EnrichedResponse. */
@@ -327,7 +332,7 @@ export namespace Msg {
   }
   /** Check if a message is an assistant message. */
   export function isAssistant(message: Msg): message is Msg.Assistant {
-    return message.role === 'assistant' && message.content !== null
+    return message.role === 'assistant' && message.content != null
   }
   /** Check if a message is an assistant refusal message. */
   export function isRefusal(message: Msg): message is Msg.Refusal {
