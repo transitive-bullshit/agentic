@@ -1,0 +1,39 @@
+---
+title: Twilio
+description: Twilio conversation API to send and receive SMS messages.
+---
+
+- package: `@agentic/twilio`
+- exports: `class TwilioClient`, `namespace twilio`
+- env vars: `TWILIO_API_KEY`
+- [source](https://github.com/transitive-bullshit/agentic/blob/main/packages/twilio/src/twilio-client.ts)
+- [twilio api docs](https://www.twilio.com/docs/conversations/api)
+
+## Install
+
+<CodeGroup>
+```bash npm
+npm install @agentic/twilio
+```
+
+```bash yarn
+yarn add @agentic/twilio
+```
+
+```bash pnpm
+pnpm add @agentic/twilio
+```
+
+</CodeGroup>
+
+## Usage
+
+```ts
+import { TwilioClient } from '@agentic/twilio'
+
+const twilio = new TwilioClient()
+const res = await twilio.sendMessage({
+  conversationId: 'TODO',
+  text: 'Hello, world'
+})
+```

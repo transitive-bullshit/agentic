@@ -1,0 +1,76 @@
+---
+title: LlamaIndex
+description: Agentic adapter for the LlamaIndex TS SDK.
+---
+
+- package: `@agentic/llamaindex`
+- exports: `function createLlamaIndexTools`
+- [source](https://github.com/transitive-bullshit/agentic/blob/main/packages/llamaindex/src/llamaindex.ts)
+- [LlamaIndex TS docs](https://ts.llamaindex.ai)
+
+## Install
+
+<CodeGroup>
+```bash npm
+npm install @agentic/llamaindex llamaindex
+```
+
+```bash yarn
+yarn add @agentic/llamaindex llamaindex
+```
+
+```bash pnpm
+pnpm add @agentic/llamaindex llamaindex
+```
+
+</CodeGroup>
+
+## Usage
+
+```ts
+import 'dotenv/config'
+
+import { createLlamaIndexTools } from '@agentic/llamaindex'
+import { WeatherClient } from '@agentic/stdlib'
+import { OpenAI, OpenAIAgent } from 'llamaindex'
+
+async function main() {
+  const weather = new WeatherClient()
+
+  const tools = createLlamaIndexTools(weather)
+  const agent = new OpenAIAgent({
+    llm: new OpenAI({ model: 'gpt-4o-mini', temperature: 0 }),
+    systemPrompt: 'You are a helpful assistant. Be as concise as possible.',
+    tools
+  })
+
+  const response = await agent.chat({
+    message: 'What is the weather in San Francisco?'
+  })
+
+  console.log(response.message.content)
+}
+
+await main()
+```
+
+## Running this example
+
+<Info>
+  You'll need a free API key from [weatherapi.com](https://www.weatherapi.com)
+  to run this example. Store it in a local `.env` file as `WEATHER_API_KEY`.
+</Info>
+
+<Info>
+  You'll need an [OpenAI API key](https://platform.openai.com/docs/quickstart)
+  to run this example. Store it in a local `.env` file as `OPENAI_API_KEY`.
+</Info>
+
+```sh
+git clone git@github.com:transitive-bullshit/agentic.git
+cd agentic
+pnpm install
+echo 'WEATHER_API_KEY=your-key' >> .env
+echo 'OPENAI_API_KEY=your-key' >> .env
+npx tsx examples/llamaindex/bin/weather.ts
+```

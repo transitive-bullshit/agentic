@@ -1,0 +1,38 @@
+---
+title: HackerNews
+description: Basic client for the official Hacker News API.
+---
+
+Note that the [HN Algolia API](https://hn.algolia.com/api) seems to no longer be available, so we can't add search without quite a bit of overhead.
+
+- package: `@agentic/hacker-news`
+- exports: `class HackerNewsClient`, `namespace hackernews`
+- env vars: `HACKER_NEWS_API_USER_AGENT` (_optional_)
+- [source](https://github.com/transitive-bullshit/agentic/blob/main/packages/hacker-news/src/hacker-news-client.ts)
+- [HN api docs](https://github.com/HackerNews/API)
+
+## Install
+
+<CodeGroup>
+```bash npm
+npm install @agentic/hacker-news
+```
+
+```bash yarn
+yarn add @agentic/hacker-news
+```
+
+```bash pnpm
+pnpm add @agentic/hacker-news
+```
+
+</CodeGroup>
+
+## Usage
+
+```ts
+import { HackerNewsClient } from '@agentic/hacker-news'
+
+const hn = new HackerNewsClient()
+const res = await hn.getTopStories()
+```

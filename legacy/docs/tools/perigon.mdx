@@ -1,0 +1,44 @@
+---
+title: Perigon
+description: Real-time news API.
+---
+
+Real-time news API and web content data from 140,000+ sources. Structured and enriched by AI, primed for LLMs.
+
+- search news articles
+- search news stories (clusters of related news articles)
+- search people, companies, topics, and journalists
+
+- package: `@agentic/perigon`
+- exports: `class PerigonClient`, `namespace perigon`
+- env vars: `PERIGON_API_KEY`
+- [source](https://github.com/transitive-bullshit/agentic/blob/main/packages/perigon/src/perigon-client.ts)
+- [perigon api docs](https://www.goperigon.com/products/news-api)
+
+## Install
+
+<CodeGroup>
+```bash npm
+npm install @agentic/perigon
+```
+
+```bash yarn
+yarn add @agentic/perigon
+```
+
+```bash pnpm
+pnpm add @agentic/perigon
+```
+
+</CodeGroup>
+
+## Usage
+
+```ts
+import { PerigonClient } from '@agentic/perigon'
+
+const perigon = new PerigonClient()
+const res = await perigon.searchArticles({
+  q: '"elon musk" AND tesla'
+})
+```

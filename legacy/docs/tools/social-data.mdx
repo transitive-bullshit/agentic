@@ -1,0 +1,36 @@
+---
+title: Social Data Tools
+description: Unofficial Twitter / X client (readonly) which is much cheaper than the official Twitter API.
+---
+
+- package: `@agentic/social-data`
+- exports: `class SocialDataClient`, `namespace socialdata`
+- env vars: `SOCIAL_DATA_API_KEY`
+- [source](https://github.com/transitive-bullshit/agentic/blob/main/packages/social-data/src/social-data-client.ts)
+- [social data tools api docs](https://socialdata.tools)
+
+## Install
+
+<CodeGroup>
+```bash npm
+npm install @agentic/social-data
+```
+
+```bash yarn
+yarn add @agentic/social-data
+```
+
+```bash pnpm
+pnpm add @agentic/social-data
+```
+
+</CodeGroup>
+
+## Usage
+
+```ts
+import { SocialDataClient } from '@agentic/social-data'
+
+const sd = new SocialDataClient()
+const res = await sd.getUserByUsername('transitive_bs')
+```

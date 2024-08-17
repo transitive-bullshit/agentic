@@ -1,5 +1,5 @@
 <p align="center">
-  <img alt="Agentic" src="/media/agentic-header.jpg" width="308">
+  <img alt="Agentic" src="/docs/media/agentic-header.jpg" width="308">
 </p>
 
 <p align="center">
@@ -25,7 +25,7 @@
     - [Firebase Genkit](#firebase-genkit)
     - [Dexa Dexter](#dexa-dexter)
     - [OpenAI SDK](#openai-sdk)
-- [Services](#services)
+- [Tools](#tools)
 - [Client Design Philosophy](#client-design-philosophy)
 - [TODO](#todo)
 - [Contributors](#contributors)
@@ -150,7 +150,7 @@ import { WeatherClient } from '@agentic/weather'
 
 ### AI SDKs
 
-To use Agentic with one of the supported AI SDKs, you'll also need to install its (_really lightweight_) adapter package.
+To use Agentic with one of the supported AI SDKs, you'll also need to install its corresponding adapter package.
 
 #### Vercel AI SDk
 
@@ -285,21 +285,21 @@ See [examples/openai](./examples/openai) for a full example.
 
 </details>
 
-## Services
+## Tools
 
-| Service                                                                  | Package                     | Named export           | Description                                                                                                                                                                                                                                                    |
+| Service / Tool                                                           | Package                     | Named export           | Description                                                                                                                                                                                                                                                    |
 | ------------------------------------------------------------------------ | --------------------------- | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [Bing](https://www.microsoft.com/en-us/bing/apis/bing-web-search-api)    | `@agentic/bing`             | `BingClient`           | Bing web search.                                                                                                                                                                                                                                               |
 | [Calculator](https://github.com/josdejong/mathjs)                        | `@agentic/calculator`       | `calculator`           | Basic calculator for simple mathematical expressions.                                                                                                                                                                                                          |
-| [Clearbit](https://dashboard.clearbit.com/docs)                          | `@agentic/clearbit`         | `ClearbitClient`       | Resolving and enriching people and company datae.                                                                                                                                                                                                              |
+| [Clearbit](https://dashboard.clearbit.com/docs)                          | `@agentic/clearbit`         | `ClearbitClient`       | Resolving and enriching people and company data.                                                                                                                                                                                                               |
 | [Dexa](https://dexa.ai)                                                  | `@agentic/dexa`             | `DexaClient`           | Answers questions from the world's best podcasters.                                                                                                                                                                                                            |
 | [Diffbot](https://docs.diffbot.com)                                      | `@agentic/diffbot`          | `DiffbotClient`        | Web page classification and scraping; person and company data enrichment.                                                                                                                                                                                      |
 | [E2B](https://e2b.dev)                                                   | `@agentic/e2b`              | `e2b`                  | Hosted Python code intrepreter sandbox which is really useful for data analysis, flexible code execution, and advanced reasoning on-the-fly. (_peer dep_ `@e2b/code-interpreter`)                                                                              |
 | [Exa](https://docs.exa.ai)                                               | `@agentic/exa`              | `ExaClient`            | Web search tailored for LLMs.                                                                                                                                                                                                                                  |
-| [Firecrawl](https://www.firecrawl.dev)                                   | `@agentic/firecrawl`        | `FirecrawlClient`      | Website scraping and sanitization.                                                                                                                                                                                                                             |
+| [Firecrawl](https://www.firecrawl.dev)                                   | `@agentic/firecrawl`        | `FirecrawlClient`      | Website scraping and structured data extraction.                                                                                                                                                                                                               |
 | [HackerNews](https://github.com/HackerNews/API)                          | `@agentic/hacker-news`      | `HackerNewsClient`     | Official HackerNews API.                                                                                                                                                                                                                                       |
 | [Hunter](https://hunter.io)                                              | `@agentic/hunter`           | `HunterClient`         | Email finder, verifier, and enrichment.                                                                                                                                                                                                                        |
-| [Jina](https://jina.ai/reader)                                           | `@agentic/jina`             | `JinaClient`           | Clean URL reader and web search + URL top result reading with a generous free tier.                                                                                                                                                                            |
+| [Jina](https://jina.ai/reader)                                           | `@agentic/jina`             | `JinaClient`           | URL scraper and web search.                                                                                                                                                                                                                                    |
 | [Midjourney](https://www.imagineapi.dev)                                 | `@agentic/midjourney`       | `MidjourneyClient`     | Unofficial Midjourney client for generative images.                                                                                                                                                                                                            |
 | [Novu](https://novu.co)                                                  | `@agentic/novu`             | `NovuClient`           | Sending notifications (email, SMS, in-app, push, etc).                                                                                                                                                                                                         |
 | [People Data Labs](https://www.peopledatalabs.com)                       | `@agentic/people-data-labs` | `PeopleDataLabsClient` | People & company data (WIP).                                                                                                                                                                                                                                   |
@@ -334,7 +334,7 @@ Note that you can import any of these AI tools from `@agentic/stdlib` OR from th
 
 ## TODO
 
-- services
+- tools
   - browserbase
   - [brave search](https://brave.com/search/api/)
   - [phantombuster](https://phantombuster.com)

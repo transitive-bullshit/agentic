@@ -1,0 +1,36 @@
+---
+title: Exa
+description: Web search tailored for LLMs.
+---
+
+- package: `@agentic/exa`
+- exports: `class ExaClient`, `namespace exa`
+- env vars: `EXA_API_KEY`
+- [source](https://github.com/transitive-bullshit/agentic/blob/main/packages/exa/src/exa-client.ts)
+- [exa api docs](https://docs.exa.ai)
+
+## Install
+
+<CodeGroup>
+```bash npm
+npm install @agentic/exa
+```
+
+```bash yarn
+yarn add @agentic/exa
+```
+
+```bash pnpm
+pnpm add @agentic/exa
+```
+
+</CodeGroup>
+
+## Usage
+
+```ts
+import { ExaClient } from '@agentic/exa'
+
+const exa = new ExaClient()
+const res = await exa.search('latest news')
+```

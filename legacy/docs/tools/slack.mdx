@@ -1,0 +1,39 @@
+---
+title: Slack
+description: Minimal Slack API client for sending and receiving Slack messages.
+---
+
+- package: `@agentic/slack`
+- exports: `class SlackClient`, `namespace slack`
+- env vars: `SLACK_API_KEY`
+- [source](https://github.com/transitive-bullshit/agentic/blob/main/packages/slack/src/slack-client.ts)
+- [slack api docs](https://api.slack.com/docs)
+
+## Install
+
+<CodeGroup>
+```bash npm
+npm install @agentic/slack
+```
+
+```bash yarn
+yarn add @agentic/slack
+```
+
+```bash pnpm
+pnpm add @agentic/slack
+```
+
+</CodeGroup>
+
+## Usage
+
+```ts
+import { SlackClient } from '@agentic/slack'
+
+const slack = new SlackClient()
+const res = await slack.sendMessage({
+  text: 'hello',
+  channel: 'general'
+})
+```

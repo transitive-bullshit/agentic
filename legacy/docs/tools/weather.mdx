@@ -1,0 +1,36 @@
+---
+title: Weather
+description: Simple Weather API client for accessing weather data based on location.
+---
+
+- package: `@agentic/weather`
+- exports: `class WeatherClient`, `namespace weather`
+- env vars: `WEATHER_API_KEY`
+- [source](https://github.com/transitive-bullshit/agentic/blob/main/packages/weather/src/weather-client.ts)
+- [weatherapi.com api docs](https://www.weatherapi.com)
+
+## Install
+
+<CodeGroup>
+```bash npm
+npm install @agentic/weather
+```
+
+```bash yarn
+yarn add @agentic/weather
+```
+
+```bash pnpm
+pnpm add @agentic/weather
+```
+
+</CodeGroup>
+
+## Usage
+
+```ts
+import { WeatherClient } from '@agentic/weather'
+
+const weather = new WeatherClient()
+const res = await weather.getCurrentWeather('new york')
+```

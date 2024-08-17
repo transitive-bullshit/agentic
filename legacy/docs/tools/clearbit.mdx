@@ -1,0 +1,36 @@
+---
+title: Clearbit
+description: Resolving and enriching people and company data.
+---
+
+- package: `@agentic/clearbit`
+- exports: `class ClearbitClient`, `namespace clearbit`
+- env vars: `CLEARBIT_API_KEY`
+- [source](https://github.com/transitive-bullshit/agentic/blob/main/packages/clearbit/src/clearbit-client.ts)
+- [clearbit api docs](https://dashboard.clearbit.com/docs)
+
+## Install
+
+<CodeGroup>
+```bash npm
+npm install @agentic/clearbit
+```
+
+```bash yarn
+yarn add @agentic/clearbit
+```
+
+```bash pnpm
+pnpm add @agentic/clearbit
+```
+
+</CodeGroup>
+
+## Usage
+
+```ts
+import { ClearbitClient } from '@agentic/clearbit'
+
+const clearbit = new ClearbitClient()
+const res = await clearbit.companyEnrichment({ domain: 'apple.com' })
+```

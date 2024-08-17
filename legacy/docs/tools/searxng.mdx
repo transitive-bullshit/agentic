@@ -1,0 +1,59 @@
+---
+title: Searxng
+description: OSS meta search engine.
+---
+
+Open source meta search engine capable of searching across many different
+sources and search engines.
+
+The most important search engines are:
+
+- `reddit` (Reddit posts)
+- `google` (Google web search)
+- `google news` (Google News search)
+- `brave` (Brave web search)
+- `arxiv` (academic papers)
+- `genius` (Genius.com for song lyrics)
+- `imdb` (movies and TV shows)
+- `hackernews` (Hacker News)
+- `wikidata` (Wikidata)
+- `wolframalpha` (Wolfram Alpha)
+- `youtube` (YouTube videos)
+- `github` (GitHub code and repositories)
+
+---
+
+- package: `@agentic/searxng`
+- exports: `class SearxngClient`, `namespace searxng`
+- env vars: `SEARXNG_API_BASE_URL`
+- [source](https://github.com/transitive-bullshit/agentic/blob/main/packages/searxng/src/searxng-client.ts)
+- [searxng api docs](https://docs.searxng.org)
+
+## Install
+
+<CodeGroup>
+```bash npm
+npm install @agentic/searxng
+```
+
+```bash yarn
+yarn add @agentic/searxng
+```
+
+```bash pnpm
+pnpm add @agentic/searxng
+```
+
+</CodeGroup>
+
+## Usage
+
+```ts
+import { SearxngClient } from '@agentic/searxng'
+
+const searxng = new SearxngClient()
+const res = await searxng.search({
+  query: 'us election',
+  engines: ['google', 'reddit', 'hackernews']
+})
+```

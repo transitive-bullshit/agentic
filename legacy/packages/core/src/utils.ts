@@ -217,13 +217,10 @@ export function sanitizeSearchParams(
     return new URLSearchParams(entries)
   }
 
-  const csvEntries = entries.reduce(
-    (acc, [key, value]) => ({
-      ...acc,
-      [key]: acc[key] ? `${acc[key]},${value}` : value
-    }),
-    {} as any
-  )
+  const csvEntries: Record<string, string> = {}
+  for (const [key, value] of entries) {
+    csvEntries[key] = csvEntries[key] ? `${csvEntries[key]},${value}` : value
+  }
 
   return new URLSearchParams(csvEntries)
 }

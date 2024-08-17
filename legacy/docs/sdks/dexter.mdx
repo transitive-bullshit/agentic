@@ -1,0 +1,75 @@
+---
+title: Dexter
+description: Agentic adapter for the Dexa Dexter SDK.
+---
+
+- package: `@agentic/dexter`
+- exports: `function createDexterFunctions`
+- [source](https://github.com/transitive-bullshit/agentic/blob/main/packages/dexter/src/dexter.ts)
+- [Dexa Dexter SDK docs](https://dexter.dexa.ai)
+
+## Install
+
+<CodeGroup>
+```bash npm
+npm install @agentic/dexter @dexaai/dexter
+```
+
+```bash yarn
+yarn add @agentic/dexter @dexaai/dexter
+```
+
+```bash pnpm
+pnpm add @agentic/dexter @dexaai/dexter
+```
+
+</CodeGroup>
+
+## Usage
+
+```ts
+import 'dotenv/config'
+
+import { createDexterFunctions } from '@agentic/dexter'
+import { WeatherClient } from '@agentic/weather'
+import { ChatModel, createAIRunner } from '@dexaai/dexter'
+
+async function main() {
+  const weather = new WeatherClient()
+
+  const runner = createAIRunner({
+    chatModel: new ChatModel({
+      params: { model: 'gpt-4o-mini', temperature: 0 }
+      // debug: true
+    }),
+    functions: createDexterFunctions(weather),
+    systemMessage: 'You are a helpful assistant. Be as concise as possible.'
+  })
+
+  const result = await runner('What is the weather in San Francisco?')
+  console.log(result)
+}
+
+await main()
+```
+
+## Running this example
+
+<Info>
+  You'll need a free API key from [weatherapi.com](https://www.weatherapi.com)
+  to run this example. Store it in a local `.env` file as `WEATHER_API_KEY`.
+</Info>
+
+<Info>
+  You'll need an [OpenAI API key](https://platform.openai.com/docs/quickstart)
+  to run this example. Store it in a local `.env` file as `OPENAI_API_KEY`.
+</Info>
+
+```sh
+git clone git@github.com:transitive-bullshit/agentic.git
+cd agentic
+pnpm install
+echo 'WEATHER_API_KEY=your-key' >> .env
+echo 'OPENAI_API_KEY=your-key' >> .env
+npx tsx examples/dexter/bin/weather.ts
+```
