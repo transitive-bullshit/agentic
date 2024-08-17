@@ -91,5 +91,9 @@
   },
   "seo": {
     "indexHiddenPages": true
+  },
+  "modeToggle": {
+    "default": "light",
+    "isHidden": true
   }
 }
