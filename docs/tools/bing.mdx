@@ -1,0 +1,36 @@
+---
+title: Bing
+description: Bing web search API client.
+---
+
+- package: `@agentic/bing`
+- exports: `class BingClient`, `namespace bing`
+- env vars: `BING_API_KEY`
+- [source](https://github.com/transitive-bullshit/agentic/blob/main/packages/bing/src/bing-client.ts)
+- [bing web search docs](https://www.microsoft.com/en-us/bing/apis/bing-web-search-api)
+
+## Install
+
+<CodeGroup>
+```bash npm
+npm install @agentic/bing
+```
+
+```bash yarn
+yarn add @agentic/bing
+```
+
+```bash pnpm
+pnpm add @agentic/bing
+```
+
+</CodeGroup>
+
+## Usage
+
+```ts
+import { BingClient } from '@agentic/bing'
+
+const bing = new BingClient()
+const res = await bing.search('latest news')
+```

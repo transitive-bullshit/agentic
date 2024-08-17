@@ -1,0 +1,35 @@
+---
+title: Calculator
+description: A simple calculator tool.
+---
+
+- package: `@agentic/calculator`
+- exports: `function calculator`
+- env vars: _none_
+- [source](https://github.com/transitive-bullshit/agentic/blob/main/packages/calculator/src/calculator.ts)
+- [mathjs docs](https://mathjs.org)
+
+## Install
+
+<CodeGroup>
+```bash npm
+npm install @agentic/calculator
+```
+
+```bash yarn
+yarn add @agentic/calculator
+```
+
+```bash pnpm
+pnpm add @agentic/calculator
+```
+
+</CodeGroup>
+
+## Usage
+
+```ts
+import { calculator } from '@agentic/calculator'
+
+const res = await calculator({ expr: '1 + 1' })
+```

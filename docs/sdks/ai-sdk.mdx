@@ -1,0 +1,77 @@
+---
+title: Vercel AI SDK
+description: Agentic adapter for the Vercel AI SDK.
+---
+
+- package: `@agentic/ai-sdk`
+- exports: `function createAISDKTools`
+- [source](https://github.com/transitive-bullshit/agentic/blob/main/packages/ai-sdk/src/ai-sdk.ts)
+- [Vercel AI SDK docs](https://sdk.vercel.ai)
+
+## Install
+
+<CodeGroup>
+```bash npm
+npm install @agentic/ai-sdk ai
+```
+
+```bash yarn
+yarn add @agentic/ai-sdk ai
+```
+
+```bash pnpm
+pnpm add @agentic/ai-sdk ai
+```
+
+</CodeGroup>
+
+## Usage
+
+This example also requires you to install `@ai-sdk/openai`.
+
+```ts
+import 'dotenv/config'
+
+import { createAISDKTools } from '@agentic/ai-sdk'
+import { WeatherClient } from '@agentic/weather'
+import { openai } from '@ai-sdk/openai'
+import { generateText } from 'ai'
+
+async function main() {
+  const weather = new WeatherClient()
+
+  const result = await generateText({
+    model: openai('gpt-4o-mini'),
+    tools: createAISDKTools(weather),
+    toolChoice: 'required',
+    temperature: 0,
+    system: 'You are a helpful assistant. Be as concise as possible.',
+    prompt: 'What is the weather in San Francisco?'
+  })
+
+  console.log(result.toolResults[0])
+}
+
+await main()
+```
+
+## Running this example
+
+<Info>
+  You'll need a free API key from [weatherapi.com](https://www.weatherapi.com)
+  to run this example. Store it in a local `.env` file as `WEATHER_API_KEY`.
+</Info>
+
+<Info>
+  You'll need an [OpenAI API key](https://platform.openai.com/docs/quickstart)
+  to run this example. Store it in a local `.env` file as `OPENAI_API_KEY`.
+</Info>
+
+```sh
+git clone git@github.com:transitive-bullshit/agentic.git
+cd agentic
+pnpm install
+echo 'WEATHER_API_KEY=your-key' >> .env
+echo 'OPENAI_API_KEY=your-key' >> .env
+npx tsx examples/ai-sdk/bin/weather.ts
+```

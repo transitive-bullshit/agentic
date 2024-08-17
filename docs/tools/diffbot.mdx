@@ -1,0 +1,38 @@
+---
+title: Diffbot
+description: Diffbot API client.
+---
+
+Diffbot provides web page classification and scraping. It also provides access to a knowledge graph with the ability to perform person and company data enrichment.
+
+- package: `@agentic/diffbot`
+- exports: `class DiffbotClient`, `namespace diffbot`
+- env vars: `DIFFBOT_API_KEY`
+- [source](https://github.com/transitive-bullshit/agentic/blob/main/packages/diffbot/src/diffbot-client.ts)
+- [diffbot api docs](https://docs.diffbot.com)
+
+## Install
+
+<CodeGroup>
+```bash npm
+npm install @agentic/diffbot
+```
+
+```bash yarn
+yarn add @agentic/diffbot
+```
+
+```bash pnpm
+pnpm add @agentic/diffbot
+```
+
+</CodeGroup>
+
+## Usage
+
+```ts
+import { DiffbotClient } from '@agentic/diffbot'
+
+const diffbot = new DiffbotClient()
+const res = await diffbot.analyzeUrl('https://example.com')
+```

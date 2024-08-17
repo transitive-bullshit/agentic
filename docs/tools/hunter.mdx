@@ -1,0 +1,41 @@
+---
+title: Hunter
+description: Email finder, verifier, and enrichment.
+---
+
+- package: `@agentic/hunter`
+- exports: `class HunterClient`, `namespace hunter`
+- env vars: `HUNTER_API_KEY`
+- [source](https://github.com/transitive-bullshit/agentic/blob/main/packages/hunter/src/hunter-client.ts)
+- [hunter api docs](https://hunter.io/api)
+
+## Install
+
+<CodeGroup>
+```bash npm
+npm install @agentic/hunter
+```
+
+```bash yarn
+yarn add @agentic/hunter
+```
+
+```bash pnpm
+pnpm add @agentic/hunter
+```
+
+</CodeGroup>
+
+## Usage
+
+```ts
+import { HunterClient } from '@agentic/hunter'
+
+const hunter = new HunterClient()
+const res0 = await hunter.domainSearch('apple.com')
+const res1 = await hunter.emailFinder({
+  domain: 'transitivebullsh.it',
+  first_name: 'travis',
+  last_name: 'fischer'
+})
+```

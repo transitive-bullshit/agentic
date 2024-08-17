@@ -1,0 +1,40 @@
+---
+title: Twitter
+description: Official Twitter / X API client.
+---
+
+Basic Twitter API methods for fetching users, tweets, and searching recent tweets. Includes support for plan-aware rate-limiting. Uses [Nango](https://www.nango.dev) for OAuth support.
+
+- package: `@agentic/twitter`
+- exports: `class TwitterClient`, `namespace twitter`
+- env vars: `TWITTER_API_KEY`, `TWITTER_API_PLAN`
+- [source](https://github.com/transitive-bullshit/agentic/blob/main/packages/twitter/src/twitter-client.ts)
+- [twitter api docs](https://developer.twitter.com/en/docs/twitter-api)
+
+## Install
+
+<CodeGroup>
+```bash npm
+npm install @agentic/twitter
+```
+
+```bash yarn
+yarn add @agentic/twitter
+```
+
+```bash pnpm
+pnpm add @agentic/twitter
+```
+
+</CodeGroup>
+
+## Usage
+
+```ts
+import { TwitterClient } from '@agentic/twitter'
+
+const twitter = new TwitterClient()
+const res = await twitter.createTweet({
+  text: 'hello, world'
+})
+```

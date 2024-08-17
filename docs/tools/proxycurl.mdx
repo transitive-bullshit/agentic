@@ -1,0 +1,42 @@
+---
+title: Proxycurl
+description: People and company data from LinkedIn & Crunchbase.
+---
+
+- package: `@agentic/proxycurl`
+- exports: `class ProxycurlClient`, `namespace proxycurl`
+- env vars: `PROXYCURL_API_KEY`
+- [source](https://github.com/transitive-bullshit/agentic/blob/main/packages/proxycurl/src/proxycurl-client.ts)
+- [proxycurl api docs](https://nubela.co/proxycurl)
+
+## Install
+
+<CodeGroup>
+```bash npm
+npm install @agentic/proxycurl
+```
+
+```bash yarn
+yarn add @agentic/proxycurl
+```
+
+```bash pnpm
+pnpm add @agentic/proxycurl
+```
+
+</CodeGroup>
+
+## Usage
+
+```ts
+import { ProxycurlClient } from '@agentic/proxycurl'
+
+const proxycurl = new ProxycurlClient()
+const company = await proxycurl.getLinkedInCompany({
+  url: 'https://linkedin.com/company/apple'
+})
+
+const person = await proxycurl.getLinkedInPerson({
+  url: 'https://linkedin.com/in/fisch2'
+})
+```

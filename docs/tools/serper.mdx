@@ -1,0 +1,36 @@
+---
+title: Serper
+description: Lightweight wrapper around Serper for Google search.
+---
+
+- package: `@agentic/serper`
+- exports: `class SerperClient`, `namespace serper`
+- env vars: `SERPER_API_KEY`
+- [source](https://github.com/transitive-bullshit/agentic/blob/main/packages/serper/src/serper-client.ts)
+- [serper api docs](https://serper.dev)
+
+## Install
+
+<CodeGroup>
+```bash npm
+npm install @agentic/serper
+```
+
+```bash yarn
+yarn add @agentic/serper
+```
+
+```bash pnpm
+pnpm add @agentic/serper
+```
+
+</CodeGroup>
+
+## Usage
+
+```ts
+import { SerperClient } from '@agentic/serper'
+
+const serper = new SerperClient()
+const res = await serper.search('latest news')
+```
