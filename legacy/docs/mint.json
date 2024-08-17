@@ -6,13 +6,14 @@
     "light": "/media/agentic-logo-light.svg"
   },
   "favicon": "/media/favicon.svg",
+  "backgroundImage": "/media/bg.png",
   "colors": {
-    "primary": "#DD5130",
-    "light": "#F76340",
-    "dark": "#DD5130",
+    "primary": "#0D969D",
+    "light": "#13D3DC",
+    "dark": "#0D969D",
     "anchors": {
-      "from": "#DD5130",
-      "to": "#F76340"
+      "from": "#0D969D",
+      "to": "#13D3DC"
     }
   },
   "topbarLinks": [
