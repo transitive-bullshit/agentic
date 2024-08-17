@@ -41,7 +41,6 @@
     "eslint": "^8.57.0",
     "husky": "^9.1.4",
     "lint-staged": "^15.2.9",
-    "mintlify": "^4.0.203",
     "npm-run-all2": "^6.2.2",
     "only-allow": "^1.2.1",
     "prettier": "^3.3.3",

@@ -150,7 +150,7 @@ import { WeatherClient } from '@agentic/weather'
 
 ### AI SDKs
 
-To use Agentic with one of the supported AI SDKs, you'll also need to install its (_really lightweight_) adapter package.
+To use Agentic with one of the supported AI SDKs, you'll also need to install its corresponding adapter package.
 
 #### Vercel AI SDk
 

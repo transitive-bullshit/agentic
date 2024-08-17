@@ -35,20 +35,17 @@
   "navigation": [
     {
       "group": "Getting Started",
+      "pages": ["intro", "quickstart", "usage"]
+    },
+    {
+      "group": "AI SDKs",
       "pages": [
-        "intro",
-        "quickstart",
-        "usage",
-        {
-          "group": "AI SDKs",
-          "pages": [
-            "sdks/ai-sdk",
-            "sdks/langchain",
-            "sdks/llamaindex",
-            "sdks/genkit",
-            "sdks/dexter"
-          ]
-        }
+        "sdks/ai-sdk",
+        "sdks/langchain",
+        "sdks/llamaindex",
+        "sdks/genkit",
+        "sdks/dexter",
+        "sdks/openai"
       ]
     },
     {

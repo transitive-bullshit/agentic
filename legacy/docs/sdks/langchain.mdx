@@ -1,0 +1,87 @@
+---
+title: LangChain
+description: Agentic adapter for the LangChain JS SDK.
+---
+
+- package: `@agentic/langchain`
+- exports: `function createLangChainTools`
+- [source](https://github.com/transitive-bullshit/agentic/blob/main/packages/langchain/src/langchain.ts)
+- [LangChain JS docs](https://js.langchain.com)
+
+## Install
+
+<CodeGroup>
+```bash npm
+npm install @agentic/langchain @langchain/core langchain
+```
+
+```bash yarn
+yarn add @agentic/langchain @langchain/core langchain
+```
+
+```bash pnpm
+pnpm add @agentic/langchain @langchain/core langchain
+```
+
+</CodeGroup>
+
+## Usage
+
+```ts
+import { createLangChainTools } from '@agentic/langchain'
+import { WeatherClient } from '@agentic/stdlib'
+import { ChatPromptTemplate } from '@langchain/core/prompts'
+import { ChatOpenAI } from '@langchain/openai'
+import { AgentExecutor, createToolCallingAgent } from 'langchain/agents'
+
+async function main() {
+  const weather = new WeatherClient()
+
+  const tools = createLangChainTools(weather)
+  const agent = createToolCallingAgent({
+    llm: new ChatOpenAI({ model: 'gpt-4o-mini', temperature: 0 }),
+    tools,
+    prompt: ChatPromptTemplate.fromMessages([
+      ['system', 'You are a helpful assistant. Be as concise as possible.'],
+      ['placeholder', '{chat_history}'],
+      ['human', '{input}'],
+      ['placeholder', '{agent_scratchpad}']
+    ])
+  })
+
+  const agentExecutor = new AgentExecutor({
+    agent,
+    tools
+    // verbose: true
+  })
+
+  const result = await agentExecutor.invoke({
+    input: 'What is the weather in San Francisco?'
+  })
+
+  console.log(result.output)
+}
+
+await main()
+```
+
+## Running this example
+
+<Info>
+  You'll need a free API key from [weatherapi.com](https://www.weatherapi.com)
+  to run this example. Store it in a local `.env` file as `WEATHER_API_KEY`.
+</Info>
+
+<Info>
+  You'll need an [OpenAI API key](https://platform.openai.com/docs/quickstart)
+  to run this example. Store it in a local `.env` file as `OPENAI_API_KEY`.
+</Info>
+
+```sh
+git clone git@github.com:transitive-bullshit/agentic.git
+cd agentic
+pnpm install
+echo 'WEATHER_API_KEY=your-key' >> .env
+echo 'OPENAI_API_KEY=your-key' >> .env
+npx tsx examples/langchain/bin/weather.ts
+```
