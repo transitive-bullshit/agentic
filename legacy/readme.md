@@ -19,6 +19,14 @@
 
 - [Intro](#intro)
 - [Docs](#docs)
+- [AI SDKs](#ai-sdks)
+  - [Vercel AI SDK](#vercel-ai-sdk)
+  - [LangChain](#langchain)
+  - [LlamaIndex](#llamaindex)
+  - [Firebase Genkit](#firebase-genkit)
+  - [Dexa Dexter](#dexa-dexter)
+  - [OpenAI](#openai)
+- [Tools](#tools)
 - [Contributors](#contributors)
 - [License](#license)
 
@@ -101,19 +109,72 @@ async function main() {
 }
 ```
 
-Here we've exposed 2 functions to the LLM, `search_news_stories` (which comes from the `PerigonClient.searchStories` method) and `serper_google_search` (which implicitly comes from the `SerperClient.search` method).
-
-All of the SDK adapters like `createDexterFunctions` accept very flexible `AIFunctionLike` objects, which include:
-
-- `AIFunctionSet` - Sets of AI functions (like `perigon.functions.pick('search_news_stories')` or `perigon.functions` or `serper.functions`)
-- `AIFunctionsProvider` - Client classes which expose an `AIFunctionSet` via the `.functions` property (like `perigon` or `serper`)
-- `AIFunction` - Individual functions (like `perigon.functions.get('search_news_stories')` or `serper.functions.get('serper_google_search')` or AI functions created directly via the `createAIFunction` utility function)
-
-You can pass as many of these `AIFunctionLike` objects as you'd like and you can manipulate them as `AIFunctionSet` sets via `.pick`, `.omit`, `.get`, `.map`, etc.
-
 ## Docs
 
 Full docs are available at [agentic.so](https://agentic.so).
+
+## AI SDKs
+
+### Vercel AI SDK
+
+[Agentic adapter docs for the Vercel AI SDK](https://agentic.so/sdks/ai-sdk)
+
+### LangChain
+
+[Agentic adapter docs for LangChain](https://agentic.so/sdks/langchain)
+
+### LlamaIndex
+
+[Agentic adapter docs for LlamaIndex](https://agentic.so/sdks/llamaindex)
+
+### Firebase Genkit
+
+[Agentic adapter docs for Genkit](https://agentic.so/sdks/genkit)
+
+### Dexa Dexter
+
+[Agentic adapter docs for Dexter](https://agentic.so/sdks/dexter)
+
+### OpenAI
+
+[Agentic adapter docs for OpenAI](https://agentic.so/sdks/openai)
+
+## Tools
+
+| Service / Tool                                                           | Package                     | Docs                                              | Description                                                                                                                                                                                                                                                    |
+| ------------------------------------------------------------------------ | --------------------------- | ------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Bing](https://www.microsoft.com/en-us/bing/apis/bing-web-search-api)    | `@agentic/bing`             | [docs](https://agentic.so/tools/bing)             | Bing web search.                                                                                                                                                                                                                                               |
+| [Calculator](https://github.com/josdejong/mathjs)                        | `@agentic/calculator`       | [docs](https://agentic.so/tools/calculator)       | Basic calculator for simple mathematical expressions.                                                                                                                                                                                                          |
+| [Clearbit](https://dashboard.clearbit.com/docs)                          | `@agentic/clearbit`         | [docs](https://agentic.so/tools/clearbit)         | Resolving and enriching people and company data.                                                                                                                                                                                                               |
+| [Dexa](https://dexa.ai)                                                  | `@agentic/dexa`             | [docs](https://agentic.so/tools/dexa)             | Answers questions from the world's best podcasters.                                                                                                                                                                                                            |
+| [Diffbot](https://docs.diffbot.com)                                      | `@agentic/diffbot`          | [docs](https://agentic.so/tools/diffbot)          | Web page classification and scraping; person and company data enrichment.                                                                                                                                                                                      |
+| [E2B](https://e2b.dev)                                                   | `@agentic/e2b`              | [docs](https://agentic.so/tools/e2b)              | Hosted Python code intrepreter sandbox which is really useful for data analysis, flexible code execution, and advanced reasoning on-the-fly.                                                                                                                   |
+| [Exa](https://docs.exa.ai)                                               | `@agentic/exa`              | [docs](https://agentic.so/tools/exa)              | Web search tailored for LLMs.                                                                                                                                                                                                                                  |
+| [Firecrawl](https://www.firecrawl.dev)                                   | `@agentic/firecrawl`        | [docs](https://agentic.so/tools/firecrawl)        | Website scraping and structured data extraction.                                                                                                                                                                                                               |
+| [HackerNews](https://github.com/HackerNews/API)                          | `@agentic/hacker-news`      | [docs](https://agentic.so/tools/hacker-news)      | Official HackerNews API.                                                                                                                                                                                                                                       |
+| [Hunter](https://hunter.io)                                              | `@agentic/hunter`           | [docs](https://agentic.so/tools/hunter)           | Email finder, verifier, and enrichment.                                                                                                                                                                                                                        |
+| [Jina](https://jina.ai/reader)                                           | `@agentic/jina`             | [docs](https://agentic.so/tools/jina)             | URL scraper and web search.                                                                                                                                                                                                                                    |
+| [Midjourney](https://www.imagineapi.dev)                                 | `@agentic/midjourney`       | [docs](https://agentic.so/tools/midjourney)       | Unofficial Midjourney client for generative images.                                                                                                                                                                                                            |
+| [Novu](https://novu.co)                                                  | `@agentic/novu`             | [docs](https://agentic.so/tools/novu)             | Sending notifications (email, SMS, in-app, push, etc).                                                                                                                                                                                                         |
+| [People Data Labs](https://www.peopledatalabs.com)                       | `@agentic/people-data-labs` | [docs](https://agentic.so/tools/people-data-labs) | People & company data (WIP).                                                                                                                                                                                                                                   |
+| [Perigon](https://www.goperigon.com/products/news-api)                   | `@agentic/perigon`          | [docs](https://agentic.so/tools/perigon)          | Real-time news API and web content data from 140,000+ sources. Structured and enriched by AI, primed for LLMs.                                                                                                                                                 |
+| [Polygon](https://polygon.io)                                            | `@agentic/polygon`          | [docs](https://agentic.so/tools/polygon)          | Stock market and company financial data.                                                                                                                                                                                                                       |
+| [PredictLeads](https://predictleads.com)                                 | `@agentic/predict-leads`    | [docs](https://agentic.so/tools/predict-leads)    | In-depth company data including signals like fundraising events, hiring news, product launches, technologies used, etc.                                                                                                                                        |
+| [Proxycurl](https://nubela.co/proxycurl)                                 | `@agentic/proxycurl`        | [docs](https://agentic.so/tools/proxycurl)        | People and company data from LinkedIn & Crunchbase.                                                                                                                                                                                                            |
+| [Searxng](https://docs.searxng.org)                                      | `@agentic/searxng`          | [docs](https://agentic.so/tools/searxng)          | OSS meta search engine capable of searching across many providers like Reddit, Google, Brave, Arxiv, Genius, IMDB, Rotten Tomatoes, Wikidata, Wolfram Alpha, YouTube, GitHub, [etc](https://docs.searxng.org/user/configured_engines.html#configured-engines). |
+| [SerpAPI](https://serpapi.com/search-api)                                | `@agentic/serpapi`          | [docs](https://agentic.so/tools/serpapi)          | Lightweight wrapper around SerpAPI for Google search.                                                                                                                                                                                                          |
+| [Serper](https://serper.dev)                                             | `@agentic/serper`           | [docs](https://agentic.so/tools/serper)           | Lightweight wrapper around Serper for Google search.                                                                                                                                                                                                           |
+| [Slack](https://api.slack.com/docs)                                      | `@agentic/slack`            | [docs](https://agentic.so/tools/slack)            | Send and receive Slack messages.                                                                                                                                                                                                                               |
+| [SocialData](https://socialdata.tools)                                   | `@agentic/social-data`      | [docs](https://agentic.so/tools/social-data)      | Unofficial Twitter / X client (readonly) which is much cheaper than the official Twitter API.                                                                                                                                                                  |
+| [Tavily](https://tavily.com)                                             | `@agentic/tavily`           | [docs](https://agentic.so/tools/tavily)           | Web search API tailored for LLMs.                                                                                                                                                                                                                              |
+| [Twilio](https://www.twilio.com/docs/conversations/api)                  | `@agentic/twilio`           | [docs](https://agentic.so/tools/twilio)           | Twilio conversation API to send and receive SMS messages.                                                                                                                                                                                                      |
+| [Twitter](https://developer.x.com/en/docs/twitter-api)                   | `@agentic/twitter`          | [docs](https://agentic.so/tools/twitter)          | Basic Twitter API methods for fetching users, tweets, and searching recent tweets. Includes support for plan-aware rate-limiting. Uses [Nango](https://www.nango.dev) for OAuth support.                                                                       |
+| [Weather](https://www.weatherapi.com)                                    | `@agentic/weather`          | [docs](https://agentic.so/tools/weather)          | Basic access to current weather data based on location.                                                                                                                                                                                                        |
+| [Wikidata](https://www.wikidata.org/wiki/Wikidata:Data_access)           | `@agentic/wikidata`         | [docs](https://agentic.so/tools/wikidata)         | Basic Wikidata client.                                                                                                                                                                                                                                         |
+| [Wikipedia](https://www.mediawiki.org/wiki/API)                          | `@agentic/wikipedia`        | [docs](https://agentic.so/tools/wikipedia)        | Wikipedia page search and summaries.                                                                                                                                                                                                                           |
+| [Wolfram Alpha](https://products.wolframalpha.com/llm-api/documentation) | `@agentic/wolfram-alpha`    | [docs](https://agentic.so/tools/wolfram-alpha)    | Wolfram Alpha LLM API client for answering computational, mathematical, and scientific questions.                                                                                                                                                              |
+
+For more details, see the [docs](https://agentic.so).
 
 ## Contributors
 
