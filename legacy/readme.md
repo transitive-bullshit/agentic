@@ -139,6 +139,10 @@ Full docs are available at [agentic.so](https://agentic.so).
 
 [Agentic adapter docs for OpenAI](https://agentic.so/sdks/openai)
 
+### GenAIScript
+
+[Agentic support in GenAIScript](https://agentic.so/sdks/genaiscript)
+
 ## Tools
 
 | Service / Tool                                                           | Package                     | Docs                                              | Description                                                                                                                                                                                                                                                    |
