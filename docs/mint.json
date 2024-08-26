@@ -46,7 +46,8 @@
         "sdks/llamaindex",
         "sdks/genkit",
         "sdks/dexter",
-        "sdks/openai"
+        "sdks/openai",
+        "sdks/genaiscript"
       ]
     },
     {
