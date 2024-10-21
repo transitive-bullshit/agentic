@@ -34,7 +34,7 @@
     "@agentic/core": "workspace:*",
     "ky": "^1.7.2",
     "octokit": "^4.0.2",
-    "p-throttle": "^6.1.0"
+    "p-throttle": "^6.2.0"
   },
   "peerDependencies": {
     "zod": "^3.23.8"
