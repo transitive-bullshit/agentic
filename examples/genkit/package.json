@@ -11,8 +11,8 @@
     "@agentic/core": "workspace:*",
     "@agentic/genkit": "workspace:*",
     "@agentic/stdlib": "workspace:*",
-    "@genkit-ai/ai": "^0.5.9",
-    "@genkit-ai/core": "^0.5.9",
+    "@genkit-ai/ai": "^0.5.16",
+    "@genkit-ai/core": "^0.5.16",
     "genkitx-openai": "^0.10.0",
     "zod": "^3.23.8"
   },
