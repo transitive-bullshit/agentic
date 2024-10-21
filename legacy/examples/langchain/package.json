@@ -8,7 +8,6 @@
     "test:typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@agentic/core": "workspace:*",
     "@agentic/langchain": "workspace:*",
     "@agentic/stdlib": "workspace:*",
     "@langchain/core": "^0.3.13",
