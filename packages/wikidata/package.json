@@ -33,7 +33,7 @@
   "dependencies": {
     "@agentic/core": "workspace:*",
     "ky": "^1.7.2",
-    "p-throttle": "^6.1.0",
+    "p-throttle": "^6.2.0",
     "wikibase-sdk": "^10.0.3"
   },
   "peerDependencies": {
