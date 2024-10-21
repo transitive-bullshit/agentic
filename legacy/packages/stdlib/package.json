@@ -68,7 +68,7 @@
     "@agentic/wikidata": "workspace:*",
     "@agentic/wikipedia": "workspace:*",
     "@agentic/wolfram-alpha": "workspace:*",
-    "@e2b/code-interpreter": "^0.0.8"
+    "@e2b/code-interpreter": "^1.0.2"
   },
   "peerDependencies": {
     "@agentic/core": "workspace:*",

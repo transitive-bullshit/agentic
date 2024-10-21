@@ -11,7 +11,7 @@
     "@agentic/core": "workspace:*",
     "@agentic/llamaindex": "workspace:*",
     "@agentic/stdlib": "workspace:*",
-    "llamaindex": "^0.5.13",
+    "llamaindex": "^0.7.3",
     "zod": "^3.23.8"
   },
   "devDependencies": {
