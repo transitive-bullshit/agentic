@@ -71,9 +71,6 @@ importers:
       '@agentic/ai-sdk':
         specifier: workspace:*
         version: link:../../packages/ai-sdk
-      '@agentic/core':
-        specifier: workspace:*
-        version: link:../../packages/core
       '@agentic/weather':
         specifier: workspace:*
         version: link:../../packages/weather
@@ -133,9 +130,6 @@ importers:
 
   examples/genkit:
     dependencies:
-      '@agentic/core':
-        specifier: workspace:*
-        version: link:../../packages/core
       '@agentic/genkit':
         specifier: workspace:*
         version: link:../../packages/genkit
@@ -161,9 +155,6 @@ importers:
 
   examples/langchain:
     dependencies:
-      '@agentic/core':
-        specifier: workspace:*
-        version: link:../../packages/core
       '@agentic/langchain':
         specifier: workspace:*
         version: link:../../packages/langchain
@@ -248,10 +239,11 @@ importers:
         version: link:../../packages/tsconfig
 
   packages/ai-sdk:
-    devDependencies:
+    dependencies:
       '@agentic/core':
         specifier: workspace:*
         version: link:../core
+    devDependencies:
       '@agentic/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
@@ -261,6 +253,9 @@ importers:
 
   packages/bing:
     dependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
       ky:
         specifier: ^1.5.0
         version: 1.7.2
@@ -268,18 +263,15 @@ importers:
         specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
-      '@agentic/core':
-        specifier: workspace:*
-        version: link:../core
       '@agentic/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
 
   packages/calculator:
     dependencies:
-      ky:
-        specifier: ^1.5.0
-        version: 1.7.2
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
       mathjs:
         specifier: ^13.0.3
         version: 13.2.0
@@ -287,15 +279,15 @@ importers:
         specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
-      '@agentic/core':
-        specifier: workspace:*
-        version: link:../core
       '@agentic/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
 
   packages/clearbit:
     dependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
       ky:
         specifier: ^1.5.0
         version: 1.7.2
@@ -306,9 +298,6 @@ importers:
         specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
-      '@agentic/core':
-        specifier: workspace:*
-        version: link:../core
       '@agentic/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
@@ -367,6 +356,9 @@ importers:
 
   packages/dexa:
     dependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
       ky:
         specifier: ^1.5.0
         version: 1.7.2
@@ -377,18 +369,16 @@ importers:
         specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
-      '@agentic/core':
-        specifier: workspace:*
-        version: link:../core
       '@agentic/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
 
   packages/dexter:
-    devDependencies:
+    dependencies:
       '@agentic/core':
         specifier: workspace:*
         version: link:../core
+    devDependencies:
       '@agentic/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
@@ -398,6 +388,9 @@ importers:
 
   packages/diffbot:
     dependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
       ky:
         specifier: ^1.5.0
         version: 1.7.2
@@ -408,22 +401,19 @@ importers:
         specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
-      '@agentic/core':
-        specifier: workspace:*
-        version: link:../core
       '@agentic/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
 
   packages/e2b:
     dependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
       zod:
         specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
-      '@agentic/core':
-        specifier: workspace:*
-        version: link:../core
       '@agentic/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
@@ -433,6 +423,9 @@ importers:
 
   packages/exa:
     dependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
       ky:
         specifier: ^1.5.0
         version: 1.7.2
@@ -440,15 +433,15 @@ importers:
         specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
-      '@agentic/core':
-        specifier: workspace:*
-        version: link:../core
       '@agentic/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
 
   packages/firecrawl:
     dependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
       ky:
         specifier: ^1.5.0
         version: 1.7.2
@@ -459,18 +452,16 @@ importers:
         specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
-      '@agentic/core':
-        specifier: workspace:*
-        version: link:../core
       '@agentic/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
 
   packages/genkit:
-    devDependencies:
+    dependencies:
       '@agentic/core':
         specifier: workspace:*
         version: link:../core
+    devDependencies:
       '@agentic/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
@@ -480,6 +471,9 @@ importers:
 
   packages/github:
     dependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
       ky:
         specifier: ^1.5.0
         version: 1.7.2
@@ -493,15 +487,15 @@ importers:
         specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
-      '@agentic/core':
-        specifier: workspace:*
-        version: link:../core
       '@agentic/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
 
   packages/hacker-news:
     dependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
       ky:
         specifier: ^1.5.0
         version: 1.7.2
@@ -509,15 +503,15 @@ importers:
         specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
-      '@agentic/core':
-        specifier: workspace:*
-        version: link:../core
       '@agentic/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
 
   packages/hunter:
     dependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
       ky:
         specifier: ^1.5.0
         version: 1.7.2
@@ -525,15 +519,15 @@ importers:
         specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
-      '@agentic/core':
-        specifier: workspace:*
-        version: link:../core
       '@agentic/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
 
   packages/jina:
     dependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
       ky:
         specifier: ^1.5.0
         version: 1.7.2
@@ -544,18 +538,16 @@ importers:
         specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
-      '@agentic/core':
-        specifier: workspace:*
-        version: link:../core
       '@agentic/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
 
   packages/langchain:
-    devDependencies:
+    dependencies:
       '@agentic/core':
         specifier: workspace:*
         version: link:../core
+    devDependencies:
       '@agentic/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
@@ -564,10 +556,11 @@ importers:
         version: 0.3.13(openai@4.68.1(encoding@0.1.13)(zod@3.23.8))
 
   packages/llamaindex:
-    devDependencies:
+    dependencies:
       '@agentic/core':
         specifier: workspace:*
         version: link:../core
+    devDependencies:
       '@agentic/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
@@ -577,6 +570,9 @@ importers:
 
   packages/midjourney:
     dependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
       ky:
         specifier: ^1.5.0
         version: 1.7.2
@@ -584,15 +580,15 @@ importers:
         specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
-      '@agentic/core':
-        specifier: workspace:*
-        version: link:../core
       '@agentic/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
 
   packages/novu:
     dependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
       ky:
         specifier: ^1.5.0
         version: 1.7.2
@@ -600,15 +596,15 @@ importers:
         specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
-      '@agentic/core':
-        specifier: workspace:*
-        version: link:../core
       '@agentic/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
 
   packages/people-data-labs:
     dependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
       ky:
         specifier: ^1.5.0
         version: 1.7.2
@@ -619,15 +615,15 @@ importers:
         specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
-      '@agentic/core':
-        specifier: workspace:*
-        version: link:../core
       '@agentic/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
 
   packages/perigon:
     dependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
       ky:
         specifier: ^1.5.0
         version: 1.7.2
@@ -638,15 +634,15 @@ importers:
         specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
-      '@agentic/core':
-        specifier: workspace:*
-        version: link:../core
       '@agentic/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
 
   packages/polygon:
     dependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
       ky:
         specifier: ^1.5.0
         version: 1.7.2
@@ -654,15 +650,15 @@ importers:
         specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
-      '@agentic/core':
-        specifier: workspace:*
-        version: link:../core
       '@agentic/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
 
   packages/predict-leads:
     dependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
       ky:
         specifier: ^1.5.0
         version: 1.7.2
@@ -673,15 +669,15 @@ importers:
         specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
-      '@agentic/core':
-        specifier: workspace:*
-        version: link:../core
       '@agentic/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
 
   packages/proxycurl:
     dependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
       ky:
         specifier: ^1.5.0
         version: 1.7.2
@@ -692,15 +688,15 @@ importers:
         specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
-      '@agentic/core':
-        specifier: workspace:*
-        version: link:../core
       '@agentic/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
 
   packages/search-and-crawl:
     dependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
       '@agentic/diffbot':
         specifier: workspace:*
         version: link:../diffbot
@@ -714,15 +710,15 @@ importers:
         specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
-      '@agentic/core':
-        specifier: workspace:*
-        version: link:../core
       '@agentic/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
 
   packages/searxng:
     dependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
       ky:
         specifier: ^1.5.0
         version: 1.7.2
@@ -730,15 +726,15 @@ importers:
         specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
-      '@agentic/core':
-        specifier: workspace:*
-        version: link:../core
       '@agentic/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
 
   packages/serpapi:
     dependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
       ky:
         specifier: ^1.5.0
         version: 1.7.2
@@ -746,15 +742,15 @@ importers:
         specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
-      '@agentic/core':
-        specifier: workspace:*
-        version: link:../core
       '@agentic/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
 
   packages/serper:
     dependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
       ky:
         specifier: ^1.5.0
         version: 1.7.2
@@ -762,15 +758,15 @@ importers:
         specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
-      '@agentic/core':
-        specifier: workspace:*
-        version: link:../core
       '@agentic/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
 
   packages/slack:
     dependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
       ky:
         specifier: ^1.5.0
         version: 1.7.2
@@ -778,15 +774,15 @@ importers:
         specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
-      '@agentic/core':
-        specifier: workspace:*
-        version: link:../core
       '@agentic/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
 
   packages/social-data:
     dependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
       ky:
         specifier: ^1.5.0
         version: 1.7.2
@@ -797,9 +793,6 @@ importers:
         specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
-      '@agentic/core':
-        specifier: workspace:*
-        version: link:../core
       '@agentic/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
@@ -818,6 +811,9 @@ importers:
       '@agentic/clearbit':
         specifier: workspace:*
         version: link:../clearbit
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
       '@agentic/dexa':
         specifier: workspace:*
         version: link:../dexa
@@ -924,15 +920,15 @@ importers:
         specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
-      '@agentic/core':
-        specifier: workspace:*
-        version: link:../core
       '@agentic/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
 
   packages/tavily:
     dependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
       ky:
         specifier: ^1.5.0
         version: 1.7.2
@@ -943,9 +939,6 @@ importers:
         specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
-      '@agentic/core':
-        specifier: workspace:*
-        version: link:../core
       '@agentic/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
@@ -954,6 +947,9 @@ importers:
 
   packages/twilio:
     dependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
       ky:
         specifier: ^1.5.0
         version: 1.7.2
@@ -961,15 +957,15 @@ importers:
         specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
-      '@agentic/core':
-        specifier: workspace:*
-        version: link:../core
       '@agentic/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
 
   packages/twitter:
     dependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
       '@nangohq/node':
         specifier: ^0.42.2
         version: 0.42.18
@@ -989,15 +985,15 @@ importers:
         specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
-      '@agentic/core':
-        specifier: workspace:*
-        version: link:../core
       '@agentic/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
 
   packages/weather:
     dependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
       ky:
         specifier: ^1.5.0
         version: 1.7.2
@@ -1005,15 +1001,15 @@ importers:
         specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
-      '@agentic/core':
-        specifier: workspace:*
-        version: link:../core
       '@agentic/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
 
   packages/wikidata:
     dependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
       ky:
         specifier: ^1.5.0
         version: 1.7.2
@@ -1027,15 +1023,15 @@ importers:
         specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
-      '@agentic/core':
-        specifier: workspace:*
-        version: link:../core
       '@agentic/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
 
   packages/wikipedia:
     dependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
       ky:
         specifier: ^1.5.0
         version: 1.7.2
@@ -1046,15 +1042,15 @@ importers:
         specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
-      '@agentic/core':
-        specifier: workspace:*
-        version: link:../core
       '@agentic/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
 
   packages/wolfram-alpha:
     dependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
       ky:
         specifier: ^1.5.0
         version: 1.7.2
@@ -1062,9 +1058,6 @@ importers:
         specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
-      '@agentic/core':
-        specifier: workspace:*
-        version: link:../core
       '@agentic/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
@@ -7769,8 +7762,8 @@ snapshots:
       '@typescript-eslint/parser': 7.18.0(eslint@8.57.1)(typescript@5.6.3)
       '@typescript-eslint/utils': 7.18.0(eslint@8.57.1)(typescript@5.6.3)
       eslint-config-prettier: 9.1.0(eslint@8.57.1)
-      eslint-import-resolver-typescript: 3.6.3(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.6.3))(eslint-plugin-import@2.31.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.6.3))(eslint@8.57.1))(eslint@8.57.1)
-      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.6.3))(eslint-import-resolver-typescript@3.6.3(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.6.3))(eslint-plugin-import@2.31.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.6.3))(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1)
+      eslint-import-resolver-typescript: 3.6.3(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.6.3))(eslint-plugin-import@2.31.0)(eslint@8.57.1)
+      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.6.3))(eslint-import-resolver-typescript@3.6.3)(eslint@8.57.1)
       eslint-plugin-jest: 28.8.3(@typescript-eslint/eslint-plugin@7.18.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.6.3))(eslint@8.57.1)(typescript@5.6.3))(eslint@8.57.1)(typescript@5.6.3)
       eslint-plugin-jest-dom: 5.4.0(eslint@8.57.1)
       eslint-plugin-jsx-a11y: 6.10.0(eslint@8.57.1)
@@ -10255,37 +10248,37 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-import-resolver-typescript@3.6.3(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.6.3))(eslint-plugin-import@2.31.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.6.3))(eslint@8.57.1))(eslint@8.57.1):
+  eslint-import-resolver-typescript@3.6.3(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.6.3))(eslint-plugin-import@2.31.0)(eslint@8.57.1):
     dependencies:
       '@nolyfill/is-core-module': 1.0.39
       debug: 4.3.7
       enhanced-resolve: 5.17.1
       eslint: 8.57.1
-      eslint-module-utils: 2.12.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.6.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.3(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.6.3))(eslint-plugin-import@2.31.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.6.3))(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1)
+      eslint-module-utils: 2.12.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.6.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.3)(eslint@8.57.1)
       fast-glob: 3.3.2
       get-tsconfig: 4.8.1
       is-bun-module: 1.2.1
       is-glob: 4.0.3
     optionalDependencies:
-      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.6.3))(eslint-import-resolver-typescript@3.6.3(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.6.3))(eslint-plugin-import@2.31.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.6.3))(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1)
+      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.6.3))(eslint-import-resolver-typescript@3.6.3)(eslint@8.57.1)
     transitivePeerDependencies:
       - '@typescript-eslint/parser'
       - eslint-import-resolver-node
       - eslint-import-resolver-webpack
       - supports-color
 
-  eslint-module-utils@2.12.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.6.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.3(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.6.3))(eslint-plugin-import@2.31.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.6.3))(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1):
+  eslint-module-utils@2.12.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.6.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.3)(eslint@8.57.1):
     dependencies:
       debug: 3.2.7
     optionalDependencies:
       '@typescript-eslint/parser': 7.18.0(eslint@8.57.1)(typescript@5.6.3)
       eslint: 8.57.1
       eslint-import-resolver-node: 0.3.9
-      eslint-import-resolver-typescript: 3.6.3(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.6.3))(eslint-plugin-import@2.31.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.6.3))(eslint@8.57.1))(eslint@8.57.1)
+      eslint-import-resolver-typescript: 3.6.3(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.6.3))(eslint-plugin-import@2.31.0)(eslint@8.57.1)
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-import@2.31.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.6.3))(eslint-import-resolver-typescript@3.6.3(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.6.3))(eslint-plugin-import@2.31.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.6.3))(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1):
+  eslint-plugin-import@2.31.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.6.3))(eslint-import-resolver-typescript@3.6.3)(eslint@8.57.1):
     dependencies:
       '@rtsao/scc': 1.1.0
       array-includes: 3.1.8
@@ -10296,7 +10289,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 8.57.1
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.12.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.6.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.3(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.6.3))(eslint-plugin-import@2.31.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.6.3))(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1)
+      eslint-module-utils: 2.12.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.6.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.3)(eslint@8.57.1)
       hasown: 2.0.2
       is-core-module: 2.15.1
       is-glob: 4.0.3

@@ -31,16 +31,15 @@
     "test:typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@agentic/core": "workspace:*",
     "@agentic/diffbot": "workspace:*",
     "@agentic/serpapi": "workspace:*",
     "p-map": "^7.0.2"
   },
   "peerDependencies": {
-    "@agentic/core": "workspace:*",
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@agentic/core": "workspace:*",
     "@agentic/tsconfig": "workspace:*"
   },
   "publishConfig": {

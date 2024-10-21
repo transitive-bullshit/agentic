@@ -31,6 +31,7 @@
     "test:typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@agentic/core": "workspace:*",
     "@nangohq/node": "^0.42.2",
     "ky": "^1.5.0",
     "p-throttle": "^6.1.0",
@@ -38,11 +39,9 @@
     "type-fest": "^4.21.0"
   },
   "peerDependencies": {
-    "@agentic/core": "workspace:*",
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@agentic/core": "workspace:*",
     "@agentic/tsconfig": "workspace:*"
   },
   "publishConfig": {

@@ -31,16 +31,15 @@
     "test:typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@agentic/core": "workspace:*",
     "ky": "^1.5.0",
     "p-throttle": "^6.1.0",
     "wikibase-sdk": "^10.0.3"
   },
   "peerDependencies": {
-    "@agentic/core": "workspace:*",
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@agentic/core": "workspace:*",
     "@agentic/tsconfig": "workspace:*"
   },
   "publishConfig": {

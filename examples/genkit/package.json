@@ -8,7 +8,6 @@
     "test:typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@agentic/core": "workspace:*",
     "@agentic/genkit": "workspace:*",
     "@agentic/stdlib": "workspace:*",
     "@genkit-ai/ai": "^0.5.16",

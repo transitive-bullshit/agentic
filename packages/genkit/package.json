@@ -31,12 +31,13 @@
     "test:typecheck": "tsc --noEmit",
     "test:unit": "vitest run"
   },
+  "dependencies": {
+    "@agentic/core": "workspace:*"
+  },
   "peerDependencies": {
-    "@agentic/core": "workspace:*",
     "@genkit-ai/ai": "^0.5.16"
   },
   "devDependencies": {
-    "@agentic/core": "workspace:*",
     "@agentic/tsconfig": "workspace:*",
     "@genkit-ai/ai": "^0.5.16"
   },
