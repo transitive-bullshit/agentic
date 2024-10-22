@@ -1,5 +1,16 @@
 # @agentic/twilio
 
+## 7.1.0
+
+### Minor Changes
+
+- 33bcbe0: Update deps
+
+### Patch Changes
+
+- Updated dependencies [33bcbe0]
+  - @agentic/core@7.1.0
+
 ## 7.0.0
 
 ### Major Changes
