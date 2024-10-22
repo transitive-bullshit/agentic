@@ -15,5 +15,5 @@ export function extractObject<Result extends types.AIChainResult = string>(
   args: ExtractObjectParams<Result>
 ): Promise<Result> {
   const chain = createAIChain(args)
-  return chain()
+  return chain() as Promise<Result>
 }

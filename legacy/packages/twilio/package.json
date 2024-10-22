@@ -31,14 +31,13 @@
     "test:typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "ky": "^1.5.0"
+    "@agentic/core": "workspace:*",
+    "ky": "^1.7.2"
   },
   "peerDependencies": {
-    "@agentic/core": "workspace:*",
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@agentic/core": "workspace:*",
     "@agentic/tsconfig": "workspace:*"
   },
   "publishConfig": {

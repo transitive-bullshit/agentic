@@ -1,12 +1,13 @@
 #!/usr/bin/env node
 import 'dotenv/config'
 
-import { openai } from '@ai-sdk/openai'
+import { createOpenAI } from '@ai-sdk/openai'
 import { Browserbase, BrowserbaseAISDK } from '@browserbasehq/sdk'
 import { generateText } from 'ai'
 
 async function main() {
   const browserbase = new Browserbase()
+  const openai = createOpenAI({ compatibility: 'strict' })
 
   const browserTool = BrowserbaseAISDK(browserbase, { textContent: true })
   console.log(browserTool.parameters)

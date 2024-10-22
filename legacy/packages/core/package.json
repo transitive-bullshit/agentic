@@ -32,27 +32,26 @@
     "test:unit": "vitest run"
   },
   "dependencies": {
-    "@sindresorhus/is": "^7.0.0",
     "dedent": "^1.5.3",
     "delay": "^6.0.0",
     "hash-object": "^5.0.1",
     "is-relative-url": "^4.0.0",
-    "jsonrepair": "^3.6.1",
-    "ky": "^1.5.0",
+    "jsonrepair": "^3.9.0",
+    "ky": "^1.7.2",
     "normalize-url": "^8.0.1",
-    "openai-zod-to-json-schema": "^1.0.0",
+    "openai-zod-to-json-schema": "^1.0.3",
     "p-map": "^7.0.2",
-    "p-throttle": "^6.1.0",
+    "p-throttle": "^6.2.0",
     "quick-lru": "^7.0.0",
-    "type-fest": "^4.21.0",
-    "zod-validation-error": "^3.3.0"
+    "type-fest": "^4.26.1",
+    "zod-validation-error": "^3.4.0"
   },
   "peerDependencies": {
     "zod": "^3.23.8"
   },
   "devDependencies": {
     "@agentic/tsconfig": "workspace:*",
-    "openai-fetch": "^3.0.0"
+    "openai-fetch": "^3.3.1"
   },
   "publishConfig": {
     "access": "public"
