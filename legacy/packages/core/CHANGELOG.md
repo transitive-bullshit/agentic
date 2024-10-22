@@ -1,5 +1,11 @@
 # @agentic/core
 
+## 7.1.0
+
+### Minor Changes
+
+- 33bcbe0: Update deps
+
 ## 7.0.0
 
 ### Major Changes

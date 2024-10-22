@@ -1,6 +1,6 @@
 {
   "name": "@agentic/e2b",
-  "version": "7.0.0",
+  "version": "7.1.0",
   "description": "Agentic SDK for E2B's hosted code interpreter.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",

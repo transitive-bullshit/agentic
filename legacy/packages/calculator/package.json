@@ -1,6 +1,6 @@
 {
   "name": "@agentic/calculator",
-  "version": "7.0.0",
+  "version": "7.1.0",
   "description": "Agentic calculator tool wrapping mathjs.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",
