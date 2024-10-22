@@ -31,14 +31,15 @@
     "test:typecheck": "tsc --noEmit",
     "test:unit": "vitest run"
   },
+  "dependencies": {
+    "@agentic/core": "workspace:*"
+  },
   "peerDependencies": {
-    "@agentic/core": "workspace:*",
-    "llamaindex": "^0.5.13"
+    "llamaindex": "^0.7.3"
   },
   "devDependencies": {
-    "@agentic/core": "workspace:*",
     "@agentic/tsconfig": "workspace:*",
-    "llamaindex": "^0.5.13"
+    "llamaindex": "^0.7.3"
   },
   "publishConfig": {
     "access": "public"

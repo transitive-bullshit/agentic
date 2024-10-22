@@ -30,15 +30,16 @@
     "test:lint": "eslint .",
     "test:typecheck": "tsc --noEmit"
   },
+  "dependencies": {
+    "@agentic/core": "workspace:*"
+  },
   "peerDependencies": {
-    "@agentic/core": "workspace:*",
-    "@e2b/code-interpreter": "^0.0.8",
+    "@e2b/code-interpreter": "^1.0.2",
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@agentic/core": "workspace:*",
     "@agentic/tsconfig": "workspace:*",
-    "@e2b/code-interpreter": "^0.0.8"
+    "@e2b/code-interpreter": "^1.0.2"
   },
   "publishConfig": {
     "access": "public"

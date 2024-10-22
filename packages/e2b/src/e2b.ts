@@ -1,5 +1,5 @@
 import { createAIFunction, getEnv } from '@agentic/core'
-import { CodeInterpreter, type ProcessMessage } from '@e2b/code-interpreter'
+import { Sandbox } from '@e2b/code-interpreter'
 import { z } from 'zod'
 
 /**
@@ -26,17 +26,17 @@ Execute python code in a Jupyter notebook cell and returns any result, stdout, s
     })
   },
   async ({ code }) => {
-    const sandbox = await CodeInterpreter.create({
+    const sandbox = await Sandbox.create({
       apiKey: getEnv('E2B_API_KEY')
     })
 
     try {
-      const exec = await sandbox.notebook.execCell(code, {
-        onStderr: (msg: ProcessMessage) => {
+      const exec = await sandbox.runCode(code, {
+        onStderr: (msg) => {
           console.warn('[Code Interpreter stderr]', msg)
         },
 
-        onStdout: (stdout: ProcessMessage) => {
+        onStdout: (stdout) => {
           console.log('[Code Interpreter stdout]', stdout)
         }
       })
@@ -48,7 +48,7 @@ Execute python code in a Jupyter notebook cell and returns any result, stdout, s
 
       return exec.results.map((result) => result.toJSON())
     } finally {
-      await sandbox.close()
+      await sandbox.kill()
     }
   }
 )
