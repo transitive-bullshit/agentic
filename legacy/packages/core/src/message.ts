@@ -7,6 +7,12 @@ import { cleanStringForModel, stringifyForModel } from './utils'
  */
 export interface Msg {
   /**
+   * The role of the messages author. One of `system`, `user`, `assistant`,
+   * 'tool', or `function`.
+   */
+  role: Msg.Role
+
+  /**
    * The contents of the message. `content` may be null for assistant messages
    * with function calls or `undefined` for assistant messages if a `refusal`
    * was given by the model.
@@ -18,12 +24,6 @@ export interface Msg {
    * message was generated successfully.
    */
   refusal?: string | null
-
-  /**
-   * The role of the messages author. One of `system`, `user`, `assistant`,
-   * 'tool', or `function`.
-   */
-  role: Msg.Role
 
   /**
    * The name and arguments of a function that should be called, as generated
@@ -58,6 +58,33 @@ export interface LegacyMsg {
   tool_call_id?: string
   name?: string
 }
+
+/** Used for multimodal chat messages. */
+export type ChatMessageContentPart =
+  | {
+      type: 'text'
+      text: string
+    }
+  // User messages only.
+  | {
+      type: 'image_url'
+      image_url: {
+        url: string
+        detail?: 'low' | 'high' | 'auto' | (string & {})
+      }
+    }
+  | {
+      type: 'input_audio'
+      input_audio: {
+        data: string
+        format: 'mp3' | 'wav' | (string & {})
+      }
+    }
+  // Assistant messages only.
+  | {
+      type: 'refusal'
+      refusal: string
+    }
 
 /** Narrowed OpenAI Message types. */
 export namespace Msg {
