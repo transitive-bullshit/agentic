@@ -1,5 +1,11 @@
 # @agentic/core
 
+## 7.2.0
+
+### Minor Changes
+
+- Remove hash-object and search-and-crawl packages
+
 ## 7.1.0
 
 ### Minor Changes

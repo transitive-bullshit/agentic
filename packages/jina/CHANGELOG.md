@@ -1,5 +1,16 @@
 # @agentic/jina
 
+## 7.2.0
+
+### Minor Changes
+
+- Remove hash-object and search-and-crawl packages
+
+### Patch Changes
+
+- Updated dependencies
+  - @agentic/core@7.2.0
+
 ## 7.1.0
 
 ### Minor Changes
