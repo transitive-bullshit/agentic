@@ -56,7 +56,6 @@
     "@agentic/polygon": "workspace:*",
     "@agentic/predict-leads": "workspace:*",
     "@agentic/proxycurl": "workspace:*",
-    "@agentic/search-and-crawl": "workspace:*",
     "@agentic/searxng": "workspace:*",
     "@agentic/serpapi": "workspace:*",
     "@agentic/serper": "workspace:*",
