@@ -1,7 +1,7 @@
-// eslint-disable-next-line simple-import-sort/imports
 import { openai } from '@ai-sdk/openai'
 import { generateText } from 'ai'
 import { expect, test } from 'vitest'
+
 import { createAISDKTools } from '../../ai-sdk'
 import { JigsawStackClient } from './jigsawstack-client'
 

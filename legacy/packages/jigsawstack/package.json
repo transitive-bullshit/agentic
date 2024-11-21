@@ -29,14 +29,16 @@
     "test": "run-s test:*",
     "test:lint": "eslint .",
     "test:typecheck": "tsc --noEmit",
-    "test:unit": "vitest run"
+    "test-unit": "vitest run"
   },
   "peerDependencies": {
     "@agentic/core": "workspace:*"
   },
   "devDependencies": {
     "@agentic/core": "workspace:*",
-    "@agentic/tsconfig": "workspace:*"
+    "@agentic/tsconfig": "workspace:*",
+    "@ai-sdk/openai": "^0.0.68",
+    "ai": "^4.0.2"
   },
   "publishConfig": {
     "access": "public"
