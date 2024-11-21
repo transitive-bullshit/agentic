@@ -1,7 +1,6 @@
-#!/usr/bin/env node
 import 'dotenv/config'
 
-import { SerperClient } from '@agentic/stdlib'
+import { ExaClient } from '@agentic/stdlib'
 import restoreCursor from 'restore-cursor'
 
 /**
@@ -130,21 +129,13 @@ async function main() {
   //   json: true
   // })
 
-  const serper = new SerperClient()
-  const res = await serper.search({
-    q: 'elon musk'
+  const exa = new ExaClient()
+  const res = await exa.search({
+    query: 'OpenAI',
+    category: 'fodojdifjoidfj'
   })
-  // const wikipedia = new WikipediaClient()
-  // const res = await wikipedia.getPageSummary({
-  //   title: 'Elon_musk'
-  // })
 
   console.log(JSON.stringify(res, null, 2))
 }
 
-try {
-  await main()
-} catch (err) {
-  console.error('error', err)
-  process.exit(1)
-}
+await main()

@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 import 'dotenv/config'
 
 import { createLlamaIndexTools } from '@agentic/llamaindex'
