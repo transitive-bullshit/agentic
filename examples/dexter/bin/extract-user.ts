@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 import 'dotenv/config'
 
 import { extractObject, Msg } from '@agentic/core'
