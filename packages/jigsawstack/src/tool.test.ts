@@ -1,5 +1,3 @@
-// eslint-disable-next-line simple-import-sort/imports
-
 import { expect, test } from 'vitest'
 
 import { type jigsawstack, JigsawStackClient } from './jigsawstack-client'
