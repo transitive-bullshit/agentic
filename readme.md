@@ -177,6 +177,7 @@ Full docs are available at [agentic.so](https://agentic.so).
 | [Wikidata](https://www.wikidata.org/wiki/Wikidata:Data_access)           | `@agentic/wikidata`         | [docs](https://agentic.so/tools/wikidata)         | Basic Wikidata client.                                                                                                                                                                                                                                         |
 | [Wikipedia](https://www.mediawiki.org/wiki/API)                          | `@agentic/wikipedia`        | [docs](https://agentic.so/tools/wikipedia)        | Wikipedia page search and summaries.                                                                                                                                                                                                                           |
 | [Wolfram Alpha](https://products.wolframalpha.com/llm-api/documentation) | `@agentic/wolfram-alpha`    | [docs](https://agentic.so/tools/wolfram-alpha)    | Wolfram Alpha LLM API client for answering computational, mathematical, and scientific questions.                                                                                                                                                              |
+| [Needle](https://needle-ai.com) | `@agentic/needle` | [docs](https://agentic.so/tools/needle) | API client for using Needle - Search private data with RAG pipelines out of the box. |
 
 For more details, see the [docs](https://agentic.so).
 

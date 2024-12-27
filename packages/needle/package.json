@@ -1,0 +1,56 @@
+{
+  "name": "@agentic/needle",
+  "version": "0.0.0",
+  "description": "Agentic adapter for the Needle AI SDK.",
+  "author": "Jan Heimes <jan@needle-ai.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/transitive-bullshit/agentic.git"
+  },
+  "type": "module",
+  "source": "./src/index.ts",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup --config ../../tsup.config.ts",
+    "dev": "tsup --config ../../tsup.config.ts --watch",
+    "clean": "del dist",
+    "test": "run-s test:*",
+    "test:lint": "eslint .",
+    "test:typecheck": "tsc --noEmit",
+    "test:unit": "vitest run"
+  },
+  "dependencies": {
+    "@agentic/core": "workspace:*",
+    "ky": "^1.2.0"
+  },
+  "peerDependencies": {
+    "@needle-ai/needle": "^1.0.0"
+  },
+  "devDependencies": {
+    "@agentic/tsconfig": "workspace:*",
+    "@needle-ai/needle": "^1.0.0",
+    "@types/node": "^20.11.16",
+    "del-cli": "^5.1.0",
+    "dotenv": "^16.4.5",
+    "npm-run-all": "^4.1.5",
+    "tsup": "^8.0.2",
+    "typescript": "^5.3.3",
+    "vitest": "^2.1.5"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
+  
