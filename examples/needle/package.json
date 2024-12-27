@@ -1,0 +1,18 @@
+{
+  "name": "@agentic/example-needle",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "tsx bin/needle.ts"
+  },
+  "dependencies": {
+    "@agentic/core": "workspace:*",
+    "@agentic/needle": "workspace:*",
+    "dotenv": "^16.4.5",
+    "openai": "^4.28.0",
+    "tsx": "^4.7.0"
+  },
+  "devDependencies": {
+    "@agentic/tsconfig": "workspace:*"
+  }
+}

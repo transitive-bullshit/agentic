@@ -197,6 +197,28 @@ importers:
         specifier: workspace:*
         version: link:../../packages/tsconfig
 
+  examples/needle:
+    dependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      '@agentic/needle':
+        specifier: workspace:*
+        version: link:../../packages/needle
+      dotenv:
+        specifier: ^16.4.5
+        version: 16.4.5
+      openai:
+        specifier: ^4.28.0
+        version: 4.73.0(encoding@0.1.13)(zod@3.23.8)
+      tsx:
+        specifier: ^4.7.0
+        version: 4.19.2
+    devDependencies:
+      '@agentic/tsconfig':
+        specifier: workspace:*
+        version: link:../../packages/tsconfig
+
   examples/openai:
     dependencies:
       '@agentic/core':
@@ -596,9 +618,6 @@ importers:
       '@agentic/core':
         specifier: workspace:*
         version: link:../core
-      '@needle-ai/needle':
-        specifier: ^1.0.0
-        version: 1.0.0
       ky:
         specifier: ^1.2.0
         version: 1.7.2
@@ -606,6 +625,9 @@ importers:
       '@agentic/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
+      '@needle-ai/needle':
+        specifier: ^1.0.0
+        version: 1.0.0
       '@types/node':
         specifier: ^20.11.16
         version: 20.17.6
@@ -618,6 +640,9 @@ importers:
       npm-run-all:
         specifier: ^4.1.5
         version: 4.1.5
+      openai:
+        specifier: ^4.28.0
+        version: 4.73.0(encoding@0.1.13)(zod@3.23.8)
       tsup:
         specifier: ^8.0.2
         version: 8.3.5(postcss@8.4.49)(tsx@4.19.2)(typescript@5.6.3)(yaml@2.6.0)
