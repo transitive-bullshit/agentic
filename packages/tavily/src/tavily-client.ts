@@ -24,10 +24,18 @@ export namespace tavily {
     query: string
 
     /**
+    * The category of the search. 
+    * This will determine which of our agents willbe used for the search. Currently, only "general" and "news" are supported. 
+    * Default is "general".
+    */
+    topic?: string
+    
+    /**
      * The depth of the search. It can be basic or advanced. Default is basic
      * for quick results and advanced for indepth high quality results but
      * longer response time. Advanced calls equals 2 requests.
      */
+    
     search_depth?: 'basic' | 'advanced'
 
     /** Include a synthesized answer in the search results. Default is `false`. */
