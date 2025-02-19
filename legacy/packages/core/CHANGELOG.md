@@ -1,5 +1,11 @@
 # @agentic/core
 
+## 7.3.1
+
+### Patch Changes
+
+- Add readmes to all packages.
+
 ## 7.3.0
 
 ### Minor Changes
