@@ -32,8 +32,8 @@
   },
   "dependencies": {
     "@agentic/core": "workspace:*",
-    "ky": "^1.7.2",
-    "p-throttle": "^6.2.0"
+    "ky": "^1.7.5",
+    "p-throttle": "^7.0.0"
   },
   "peerDependencies": {
     "zod": "^3.23.8"

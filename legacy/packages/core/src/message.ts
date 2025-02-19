@@ -89,7 +89,13 @@ export type ChatMessageContentPart =
 /** Narrowed OpenAI Message types. */
 export namespace Msg {
   /** Possible roles for a message. */
-  export type Role = 'system' | 'user' | 'assistant' | 'function' | 'tool'
+  export type Role =
+    | 'system'
+    | 'developer'
+    | 'user'
+    | 'assistant'
+    | 'function'
+    | 'tool'
 
   export namespace Call {
     /**
@@ -123,6 +129,13 @@ export namespace Msg {
   /** Message with text content for the system. */
   export type System = {
     role: 'system'
+    content: string
+    name?: string
+  }
+
+  /** Message with text content for the developer. */
+  export type Developer = {
+    role: 'developer'
     content: string
     name?: string
   }
@@ -194,6 +207,24 @@ export namespace Msg {
     const { name, cleanContent = true } = opts ?? {}
     return {
       role: 'system',
+      content: cleanContent ? cleanStringForModel(content) : content,
+      ...(name ? { name } : {})
+    }
+  }
+
+  /** Create a developer message. Cleans indentation and newlines by default. */
+  export function developer(
+    content: string,
+    opts?: {
+      /** Custom name for the message. */
+      name?: string
+      /** Whether to clean extra newlines and indentation. Defaults to true. */
+      cleanContent?: boolean
+    }
+  ): Msg.Developer {
+    const { name, cleanContent = true } = opts ?? {}
+    return {
+      role: 'developer',
       content: cleanContent ? cleanStringForModel(content) : content,
       ...(name ? { name } : {})
     }
@@ -353,6 +384,10 @@ export namespace Msg {
   export function isSystem(message: Msg): message is Msg.System {
     return message.role === 'system'
   }
+  /** Check if a message is a developer message. */
+  export function isDeveloper(message: Msg): message is Msg.Developer {
+    return message.role === 'developer'
+  }
   /** Check if a message is a user message. */
   export function isUser(message: Msg): message is Msg.User {
     return message.role === 'user'
@@ -384,6 +419,7 @@ export namespace Msg {
 
   /** Narrow a ChatModel.Message to a specific type. */
   export function narrow(message: Msg.System): Msg.System
+  export function narrow(message: Msg.Developer): Msg.Developer
   export function narrow(message: Msg.User): Msg.User
   export function narrow(message: Msg.Assistant): Msg.Assistant
   export function narrow(message: Msg.Assistant): Msg.Refusal
@@ -395,6 +431,7 @@ export namespace Msg {
     message: Msg
   ):
     | Msg.System
+    | Msg.Developer
     | Msg.User
     | Msg.Assistant
     | Msg.Refusal
@@ -403,6 +440,9 @@ export namespace Msg {
     | Msg.ToolCall
     | Msg.ToolResult {
     if (isSystem(message)) {
+      return message
+    }
+    if (isDeveloper(message)) {
       return message
     }
     if (isUser(message)) {

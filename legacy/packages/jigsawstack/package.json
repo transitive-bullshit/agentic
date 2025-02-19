@@ -44,7 +44,7 @@
     "access": "public"
   },
   "dependencies": {
-    "ky": "^1.5.0",
-    "p-throttle": "^6.1.0"
+    "ky": "^1.7.5",
+    "p-throttle": "^7.0.0"
   }
 }
