@@ -94,29 +94,30 @@ export namespace socialdata {
     tweet_created_at: string
     id: number
     id_str: string
-    text: any
+    text: string | null
     full_text: string
     source: string
     truncated: boolean
-    in_reply_to_status_id: any
-    in_reply_to_status_id_str: any
-    in_reply_to_user_id: any
-    in_reply_to_user_id_str: any
-    in_reply_to_screen_name: any
+    in_reply_to_status_id: number | null
+    in_reply_to_status_id_str: string | null
+    in_reply_to_user_id: number | null
+    in_reply_to_user_id_str: string | null
+    in_reply_to_screen_name: string | null
     user: User
-    quoted_status_id: any
-    quoted_status_id_str: any
+    lang: string
+    quoted_status_id: number | null
+    quoted_status_id_str: string | null
     is_quote_status: boolean
-    quoted_status: any
-    retweeted_status: any
+    is_pinned: boolean
     quote_count: number
     reply_count: number
     retweet_count: number
     favorite_count: number
-    lang: string
-    entities: Entities
     views_count: number
     bookmark_count: number
+    quoted_status: Tweet | null
+    retweeted_status: Tweet | null
+    entities: Entities
   }
 
   export interface User {
@@ -125,7 +126,7 @@ export namespace socialdata {
     name: string
     screen_name: string
     location: string
-    url: any
+    url: string | null
     description: string
     protected: boolean
     verified: boolean
@@ -141,10 +142,12 @@ export namespace socialdata {
   }
 
   export interface Entities {
-    user_mentions?: any[]
     urls?: any[]
+    user_mentions?: any[]
     hashtags?: any[]
     symbols?: any[]
+    media?: any[]
+    timestamps?: any[]
   }
 
   export interface UserFollowingStatus {

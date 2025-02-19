@@ -132,7 +132,7 @@ async function main() {
   const exa = new ExaClient()
   const res = await exa.search({
     query: 'OpenAI',
-    category: 'fodojdifjoidfj'
+    category: 'linkedin profile'
   })
 
   console.log(JSON.stringify(res, null, 2))
