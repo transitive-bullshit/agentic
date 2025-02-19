@@ -1,0 +1,5 @@
+{
+  "extends": "@agentic/tsconfig/base.json",
+  "include": ["bin"],
+  "exclude": ["node_modules", "dist"]
+}
