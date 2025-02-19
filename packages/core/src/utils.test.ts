@@ -140,6 +140,9 @@ test('pruneEmptyDeep', () => {
 
 test(
   'throttleKy should rate-limit requests to ky properly',
+  {
+    timeout: 60_000
+  },
   async () => {
     const interval = 1000
     const throttle = pThrottle({
@@ -166,8 +169,5 @@ test(
         expect(duration >= interval - interval / 5).toBeTruthy()
       }
     }
-  },
-  {
-    timeout: 60_000
   }
 )

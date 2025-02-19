@@ -37,14 +37,14 @@
   "devDependencies": {
     "@agentic/core": "workspace:*",
     "@agentic/tsconfig": "workspace:*",
-    "@ai-sdk/openai": "^0.0.68",
+    "@ai-sdk/openai": "^1.1.13",
     "ai": "^4.0.2"
   },
   "publishConfig": {
     "access": "public"
   },
   "dependencies": {
-    "ky": "^1.5.0",
-    "p-throttle": "^6.1.0"
+    "ky": "^1.7.5",
+    "p-throttle": "^7.0.0"
   }
 }

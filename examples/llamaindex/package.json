@@ -12,7 +12,7 @@
     "@agentic/llamaindex": "workspace:*",
     "@agentic/stdlib": "workspace:*",
     "llamaindex": "^0.7.3",
-    "zod": "^3.23.8"
+    "zod": "^3.24.2"
   },
   "devDependencies": {
     "@agentic/tsconfig": "workspace:*"

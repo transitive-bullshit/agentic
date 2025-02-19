@@ -94,10 +94,12 @@ export function getPrunedTweet(
 ): Partial<types.Tweet> {
   const urls = tweet.entities?.urls
   let text = tweet.text
+
   if (text && urls) {
     for (const url of urls) {
-      if (!url.expanded_url || !url.url) continue
-      text = text!.replaceAll(url.url, url.expanded_url!)
+      if (url.expanded_url && url.url) {
+        text = text!.replaceAll(url.url, url.expanded_url!)
+      }
     }
   }
 
@@ -119,10 +121,12 @@ export function getPrunedTwitterUser(
 ): Partial<types.TwitterUser> {
   const urls = twitterUser.entities?.description?.urls
   let description = twitterUser.description
+
   if (description && urls) {
     for (const url of urls) {
-      if (!url.expanded_url || !url.url) continue
-      description = description!.replaceAll(url.url, url.expanded_url!)
+      if (url.expanded_url && url.url) {
+        description = description!.replaceAll(url.url, url.expanded_url!)
+      }
     }
   }
 

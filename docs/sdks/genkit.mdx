@@ -12,15 +12,15 @@ description: Agentic adapter for the Firebase Genkit SDK.
 
 <CodeGroup>
 ```bash npm
-npm install @agentic/genkit @genkit-ai/ai @genkit-ai/core
+npm install @agentic/genkit genkit
 ```
 
 ```bash yarn
-yarn add @agentic/genkit @genkit-ai/ai @genkit-ai/core
+yarn add @agentic/genkit genkit
 ```
 
 ```bash pnpm
-pnpm add @agentic/genkit @genkit-ai/ai @genkit-ai/core
+pnpm add @agentic/genkit genkit
 ```
 
 </CodeGroup>
@@ -34,30 +34,20 @@ import 'dotenv/config'
 
 import { createGenkitTools } from '@agentic/genkit'
 import { WeatherClient } from '@agentic/stdlib'
-import { generate } from '@genkit-ai/ai'
-import { configureGenkit } from '@genkit-ai/core'
+import { genkit } from 'genkit'
 import { gpt4oMini, openAI } from 'genkitx-openai'
 
 async function main() {
   const weather = new WeatherClient()
 
-  configureGenkit({
+  const ai = genkit({
     plugins: [openAI()]
   })
 
-  const result = await generate({
+  const result = await ai.generate({
     model: gpt4oMini,
-    tools: createGenkitTools(weather),
-    history: [
-      {
-        role: 'system',
-        content: [
-          {
-            text: 'You are a helpful assistant. Be as concise as possible.'
-          }
-        ]
-      }
-    ],
+    tools: createGenkitTools(ai, weather),
+    system: 'You are a helpful assistant. Be as concise as possible.',
     prompt: 'What is the weather in San Francisco?'
   })
 
