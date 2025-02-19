@@ -7,7 +7,7 @@
     "type": "git",
     "url": "git+https://github.com/transitive-bullshit/agentic.git"
   },
-  "packageManager": "pnpm@9.12.2",
+  "packageManager": "pnpm@10.4.1",
   "engines": {
     "node": ">=18"
   },
@@ -33,24 +33,24 @@
     "prepare": "husky"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.27.10",
+    "@changesets/cli": "^2.28.0",
     "@fisch0920/eslint-config": "^1.4.0",
     "@total-typescript/ts-reset": "^0.6.1",
-    "@types/node": "^22.9.1",
+    "@types/node": "^22.13.4",
     "del-cli": "^6.0.0",
-    "dotenv": "^16.4.5",
+    "dotenv": "^16.4.7",
     "eslint": "^8.57.1",
     "husky": "^9.1.7",
-    "lint-staged": "^15.2.10",
-    "npm-run-all2": "^7.0.0",
+    "lint-staged": "^15.4.3",
+    "npm-run-all2": "^7.0.2",
     "only-allow": "^1.2.1",
-    "prettier": "^3.3.3",
-    "tsup": "^8.3.0",
-    "tsx": "^4.19.1",
-    "turbo": "^2.3.0",
-    "typescript": "^5.6.3",
-    "vitest": "2.1.5",
-    "zod": "^3.23.8"
+    "prettier": "^3.5.1",
+    "tsup": "^8.3.6",
+    "tsx": "^4.19.3",
+    "turbo": "^2.4.2",
+    "typescript": "^5.7.3",
+    "vitest": "3.0.6",
+    "zod": "^3.24.2"
   },
   "lint-staged": {
     "*.{ts,tsx}": [

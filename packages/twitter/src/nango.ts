@@ -26,7 +26,7 @@ export function validateNangoConnectionOAuthScopes({
   scopes: string[]
 }) {
   const connectionScopes = new Set<string>(
-    connection.credentials.raw.scope.split(' ')
+    (connection.credentials as any).raw.scope.split(' ')
   )
   const missingScopes = new Set<string>()
 
