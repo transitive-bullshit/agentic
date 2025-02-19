@@ -1,5 +1,52 @@
 # @agentic/stdlib
 
+## 7.3.0
+
+### Minor Changes
+
+- Update all deps
+
+### Patch Changes
+
+- Updated dependencies
+  - @agentic/ai-sdk@7.3.0
+  - @agentic/bing@7.3.0
+  - @agentic/calculator@7.3.0
+  - @agentic/clearbit@7.3.0
+  - @agentic/core@7.3.0
+  - @agentic/dexa@7.3.0
+  - @agentic/dexter@7.3.0
+  - @agentic/diffbot@7.3.0
+  - @agentic/e2b@7.3.0
+  - @agentic/exa@7.3.0
+  - @agentic/firecrawl@7.3.0
+  - @agentic/genkit@7.3.0
+  - @agentic/github@7.3.0
+  - @agentic/hacker-news@7.3.0
+  - @agentic/hunter@7.3.0
+  - @agentic/jina@7.3.0
+  - @agentic/langchain@7.3.0
+  - @agentic/llamaindex@7.3.0
+  - @agentic/midjourney@7.3.0
+  - @agentic/novu@7.3.0
+  - @agentic/people-data-labs@7.3.0
+  - @agentic/perigon@7.3.0
+  - @agentic/polygon@7.3.0
+  - @agentic/predict-leads@7.3.0
+  - @agentic/proxycurl@7.3.0
+  - @agentic/searxng@7.3.0
+  - @agentic/serpapi@7.3.0
+  - @agentic/serper@7.3.0
+  - @agentic/slack@7.3.0
+  - @agentic/social-data@7.3.0
+  - @agentic/tavily@7.3.0
+  - @agentic/twilio@7.3.0
+  - @agentic/twitter@7.3.0
+  - @agentic/weather@7.3.0
+  - @agentic/wikidata@7.3.0
+  - @agentic/wikipedia@7.3.0
+  - @agentic/wolfram-alpha@7.3.0
+
 ## 7.2.0
 
 ### Minor Changes

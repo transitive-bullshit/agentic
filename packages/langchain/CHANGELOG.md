@@ -1,5 +1,16 @@
 # @agentic/langchain
 
+## 7.3.0
+
+### Minor Changes
+
+- Update all deps
+
+### Patch Changes
+
+- Updated dependencies
+  - @agentic/core@7.3.0
+
 ## 7.2.0
 
 ### Minor Changes
