@@ -1,6 +1,6 @@
 {
   "name": "@agentic/genkit",
-  "version": "7.2.0",
+  "version": "7.3.0",
   "description": "Agentic adapter for the Firebase Genkit AI SDK.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",
