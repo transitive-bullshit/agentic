@@ -1,6 +1,6 @@
 {
   "name": "@agentic/stdlib",
-  "version": "7.3.0",
+  "version": "7.3.1",
   "description": "Standard library of AI functions which work with any LLM and TypeScript AI SDK.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",
