@@ -36,7 +36,6 @@ export namespace tavily {
      * for quick results and advanced for indepth high quality results but
      * longer response time. Advanced calls equals 2 requests.
      */
-
     search_depth?: 'basic' | 'advanced'
 
     /** Include a synthesized answer in the search results. Default is `false`. */
