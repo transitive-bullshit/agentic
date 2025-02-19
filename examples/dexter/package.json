@@ -15,8 +15,8 @@
     "@agentic/serper": "workspace:*",
     "@agentic/stdlib": "workspace:*",
     "@agentic/weather": "workspace:*",
-    "@dexaai/dexter": "^2.1.0",
-    "zod": "^3.23.8"
+    "@dexaai/dexter": "^4.1.1",
+    "zod": "^3.24.2"
   },
   "devDependencies": {
     "@agentic/tsconfig": "workspace:*"
