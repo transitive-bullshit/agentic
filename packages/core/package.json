@@ -49,6 +49,19 @@
     "@agentic/tsconfig": "workspace:*",
     "openai-fetch": "^3.3.1"
   },
+  "keywords": [
+    "agentic",
+    "ai",
+    "sdk",
+    "openai",
+    "llm",
+    "tools",
+    "stdlib",
+    "standard",
+    "library",
+    "functions",
+    "typescript"
+  ],
   "publishConfig": {
     "access": "public"
   }
