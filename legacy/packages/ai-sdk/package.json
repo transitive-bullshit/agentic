@@ -35,11 +35,11 @@
     "@agentic/core": "workspace:*"
   },
   "peerDependencies": {
-    "ai": "^3.1.30"
+    "ai": "^4.1.0"
   },
   "devDependencies": {
     "@agentic/tsconfig": "workspace:*",
-    "ai": "^3.1.30"
+    "ai": "^4.1.42"
   },
   "publishConfig": {
     "access": "public"

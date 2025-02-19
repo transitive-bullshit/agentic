@@ -35,11 +35,11 @@
     "@agentic/core": "workspace:*"
   },
   "peerDependencies": {
-    "@genkit-ai/ai": "^0.5.16"
+    "genkit": "^1.0.4"
   },
   "devDependencies": {
     "@agentic/tsconfig": "workspace:*",
-    "@genkit-ai/ai": "^0.5.16"
+    "genkit": "^1.0.4"
   },
   "publishConfig": {
     "access": "public"
