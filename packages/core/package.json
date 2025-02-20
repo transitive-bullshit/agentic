@@ -60,7 +60,9 @@
     "standard",
     "library",
     "functions",
-    "typescript"
+    "typescript",
+    "agent",
+    "agents"
   ],
   "publishConfig": {
     "access": "public"
