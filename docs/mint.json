@@ -82,7 +82,8 @@
         "tools/weather",
         "tools/wikidata",
         "tools/wikipedia",
-        "tools/wolfram-alpha"
+        "tools/wolfram-alpha",
+        "tools/zoominfo"
       ]
     }
   ],

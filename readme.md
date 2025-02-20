@@ -26,6 +26,7 @@
   - [Firebase Genkit](#firebase-genkit)
   - [Dexa Dexter](#dexa-dexter)
   - [OpenAI](#openai)
+  - [GenAIScript](#genaiscript)
 - [Tools](#tools)
 - [Contributors](#contributors)
 - [License](#license)
@@ -177,6 +178,7 @@ Full docs are available at [agentic.so](https://agentic.so).
 | [Wikidata](https://www.wikidata.org/wiki/Wikidata:Data_access)           | `@agentic/wikidata`         | [docs](https://agentic.so/tools/wikidata)         | Basic Wikidata client.                                                                                                                                                                                                                                         |
 | [Wikipedia](https://www.mediawiki.org/wiki/API)                          | `@agentic/wikipedia`        | [docs](https://agentic.so/tools/wikipedia)        | Wikipedia page search and summaries.                                                                                                                                                                                                                           |
 | [Wolfram Alpha](https://products.wolframalpha.com/llm-api/documentation) | `@agentic/wolfram-alpha`    | [docs](https://agentic.so/tools/wolfram-alpha)    | Wolfram Alpha LLM API client for answering computational, mathematical, and scientific questions.                                                                                                                                                              |
+| [ZoomInfo](https://api-docs.zoominfo.com)                                | `@agentic/zoominfo`         | [docs](https://agentic.so/tools/zoominfo)         | Powerful B2B person and company data enrichment.                                                                                                                                                                                                               |
 
 For more details, see the [docs](https://agentic.so).
 
