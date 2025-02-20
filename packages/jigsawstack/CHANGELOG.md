@@ -1,5 +1,13 @@
 # @agentic/jigsawstack
 
+## 2.0.2
+
+### Patch Changes
+
+- Downgrade p-throttle to v6.2.0
+- Updated dependencies
+  - @agentic/core@7.3.2
+
 ## 2.0.1
 
 ### Patch Changes
