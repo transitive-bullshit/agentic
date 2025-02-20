@@ -45,6 +45,6 @@
   },
   "dependencies": {
     "ky": "^1.7.5",
-    "p-throttle": "^7.0.0"
+    "p-throttle": "^6.2.0"
   }
 }

@@ -283,8 +283,8 @@ importers:
         specifier: ^1.7.5
         version: 1.7.5
       p-throttle:
-        specifier: ^7.0.0
-        version: 7.0.0
+        specifier: ^6.2.0
+        version: 6.2.0
       zod:
         specifier: ^3.23.8
         version: 3.24.2
@@ -314,8 +314,8 @@ importers:
         specifier: ^7.0.2
         version: 7.0.3
       p-throttle:
-        specifier: ^7.0.0
-        version: 7.0.0
+        specifier: ^6.2.0
+        version: 6.2.0
       type-fest:
         specifier: ^4.35.0
         version: 4.35.0
@@ -342,8 +342,8 @@ importers:
         specifier: ^1.7.5
         version: 1.7.5
       p-throttle:
-        specifier: ^7.0.0
-        version: 7.0.0
+        specifier: ^6.2.0
+        version: 6.2.0
       zod:
         specifier: ^3.23.8
         version: 3.24.2
@@ -374,8 +374,8 @@ importers:
         specifier: ^1.7.5
         version: 1.7.5
       p-throttle:
-        specifier: ^7.0.0
-        version: 7.0.0
+        specifier: ^6.2.0
+        version: 6.2.0
       zod:
         specifier: ^3.23.8
         version: 3.24.2
@@ -425,8 +425,8 @@ importers:
         specifier: ^1.7.5
         version: 1.7.5
       p-throttle:
-        specifier: ^7.0.0
-        version: 7.0.0
+        specifier: ^6.2.0
+        version: 6.2.0
       zod:
         specifier: ^3.23.8
         version: 3.24.2
@@ -460,8 +460,8 @@ importers:
         specifier: ^4.0.2
         version: 4.1.2
       p-throttle:
-        specifier: ^7.0.0
-        version: 7.0.0
+        specifier: ^6.2.0
+        version: 6.2.0
       zod:
         specifier: ^3.23.8
         version: 3.24.2
@@ -508,8 +508,8 @@ importers:
         specifier: ^1.7.5
         version: 1.7.5
       p-throttle:
-        specifier: ^7.0.0
-        version: 7.0.0
+        specifier: ^6.2.0
+        version: 6.2.0
     devDependencies:
       '@agentic/core':
         specifier: workspace:*
@@ -533,8 +533,8 @@ importers:
         specifier: ^1.7.5
         version: 1.7.5
       p-throttle:
-        specifier: ^7.0.0
-        version: 7.0.0
+        specifier: ^6.2.0
+        version: 6.2.0
       zod:
         specifier: ^3.23.8
         version: 3.24.2
@@ -610,8 +610,8 @@ importers:
         specifier: ^1.7.5
         version: 1.7.5
       p-throttle:
-        specifier: ^7.0.0
-        version: 7.0.0
+        specifier: ^6.2.0
+        version: 6.2.0
       zod:
         specifier: ^3.23.8
         version: 3.24.2
@@ -629,8 +629,8 @@ importers:
         specifier: ^1.7.5
         version: 1.7.5
       p-throttle:
-        specifier: ^7.0.0
-        version: 7.0.0
+        specifier: ^6.2.0
+        version: 6.2.0
       zod:
         specifier: ^3.23.8
         version: 3.24.2
@@ -664,8 +664,8 @@ importers:
         specifier: ^1.7.5
         version: 1.7.5
       p-throttle:
-        specifier: ^7.0.0
-        version: 7.0.0
+        specifier: ^6.2.0
+        version: 6.2.0
       zod:
         specifier: ^3.23.8
         version: 3.24.2
@@ -683,8 +683,8 @@ importers:
         specifier: ^1.7.5
         version: 1.7.5
       p-throttle:
-        specifier: ^7.0.0
-        version: 7.0.0
+        specifier: ^6.2.0
+        version: 6.2.0
       zod:
         specifier: ^3.23.8
         version: 3.24.2
@@ -766,8 +766,8 @@ importers:
         specifier: ^1.7.5
         version: 1.7.5
       p-throttle:
-        specifier: ^7.0.0
-        version: 7.0.0
+        specifier: ^6.2.0
+        version: 6.2.0
       zod:
         specifier: ^3.23.8
         version: 3.24.2
@@ -909,8 +909,8 @@ importers:
         specifier: ^1.7.5
         version: 1.7.5
       p-throttle:
-        specifier: ^7.0.0
-        version: 7.0.0
+        specifier: ^6.2.0
+        version: 6.2.0
       zod:
         specifier: ^3.23.8
         version: 3.24.2
@@ -949,8 +949,8 @@ importers:
         specifier: ^1.7.5
         version: 1.7.5
       p-throttle:
-        specifier: ^7.0.0
-        version: 7.0.0
+        specifier: ^6.2.0
+        version: 6.2.0
       twitter-api-sdk:
         specifier: ^1.2.1
         version: 1.2.1(encoding@0.1.13)
@@ -990,8 +990,8 @@ importers:
         specifier: ^1.7.5
         version: 1.7.5
       p-throttle:
-        specifier: ^7.0.0
-        version: 7.0.0
+        specifier: ^6.2.0
+        version: 6.2.0
       wikibase-sdk:
         specifier: ^10.0.3
         version: 10.2.1
@@ -1012,8 +1012,8 @@ importers:
         specifier: ^1.7.5
         version: 1.7.5
       p-throttle:
-        specifier: ^7.0.0
-        version: 7.0.0
+        specifier: ^6.2.0
+        version: 6.2.0
       zod:
         specifier: ^3.23.8
         version: 3.24.2
@@ -5200,10 +5200,6 @@ packages:
 
   p-throttle@6.2.0:
     resolution: {integrity: sha512-NCKkOVj6PZa6NiTmfvGilDdf6vO1rFCD3KDnkHko8dTOtkpk4cSR/VTAhhLMG9aiQ7/A9HYgEDNmxzf6hxzR3g==}
-    engines: {node: '>=18'}
-
-  p-throttle@7.0.0:
-    resolution: {integrity: sha512-aio0v+S0QVkH1O+9x4dHtD4dgCExACcL+3EtNaGqC01GBudS9ijMuUsmN8OVScyV4OOp0jqdLShZFuSlbL/AsA==}
     engines: {node: '>=18'}
 
   p-timeout@3.2.0:
@@ -11742,8 +11738,6 @@ snapshots:
       retry: 0.13.1
 
   p-throttle@6.2.0: {}
-
-  p-throttle@7.0.0: {}
 
   p-timeout@3.2.0:
     dependencies:

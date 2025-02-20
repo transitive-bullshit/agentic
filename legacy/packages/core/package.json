@@ -38,7 +38,7 @@
     "ky": "^1.7.5",
     "openai-zod-to-json-schema": "^1.0.3",
     "p-map": "^7.0.2",
-    "p-throttle": "^7.0.0",
+    "p-throttle": "^6.2.0",
     "type-fest": "^4.35.0",
     "zod-validation-error": "^3.4.0"
   },
