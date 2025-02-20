@@ -1,5 +1,49 @@
 # @agentic/stdlib
 
+## 7.3.2
+
+### Patch Changes
+
+- Downgrade p-throttle to v6.2.0
+- Updated dependencies
+  - @agentic/ai-sdk@7.3.2
+  - @agentic/bing@7.3.2
+  - @agentic/calculator@7.3.2
+  - @agentic/clearbit@7.3.2
+  - @agentic/core@7.3.2
+  - @agentic/dexa@7.3.2
+  - @agentic/dexter@7.3.2
+  - @agentic/diffbot@7.3.2
+  - @agentic/e2b@7.3.2
+  - @agentic/exa@7.3.2
+  - @agentic/firecrawl@7.3.2
+  - @agentic/genkit@7.3.2
+  - @agentic/github@7.3.2
+  - @agentic/hacker-news@7.3.2
+  - @agentic/hunter@7.3.2
+  - @agentic/jina@7.3.2
+  - @agentic/langchain@7.3.2
+  - @agentic/llamaindex@7.3.2
+  - @agentic/midjourney@7.3.2
+  - @agentic/novu@7.3.2
+  - @agentic/people-data-labs@7.3.2
+  - @agentic/perigon@7.3.2
+  - @agentic/polygon@7.3.2
+  - @agentic/predict-leads@7.3.2
+  - @agentic/proxycurl@7.3.2
+  - @agentic/searxng@7.3.2
+  - @agentic/serpapi@7.3.2
+  - @agentic/serper@7.3.2
+  - @agentic/slack@7.3.2
+  - @agentic/social-data@7.3.2
+  - @agentic/tavily@7.3.2
+  - @agentic/twilio@7.3.2
+  - @agentic/twitter@7.3.2
+  - @agentic/weather@7.3.2
+  - @agentic/wikidata@7.3.2
+  - @agentic/wikipedia@7.3.2
+  - @agentic/wolfram-alpha@7.3.2
+
 ## 7.3.1
 
 ### Patch Changes
