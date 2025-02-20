@@ -1052,6 +1052,9 @@ importers:
       p-throttle:
         specifier: ^6.2.0
         version: 6.2.0
+      zod:
+        specifier: ^3.23.8
+        version: 3.24.2
     devDependencies:
       '@agentic/tsconfig':
         specifier: workspace:*
