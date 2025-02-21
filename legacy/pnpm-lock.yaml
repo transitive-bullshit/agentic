@@ -889,6 +889,9 @@ importers:
       '@agentic/wolfram-alpha':
         specifier: workspace:*
         version: link:../wolfram-alpha
+      '@agentic/zoominfo':
+        specifier: workspace:*
+        version: link:../zoominfo
       '@e2b/code-interpreter':
         specifier: ^1.0.2
         version: 1.0.4
