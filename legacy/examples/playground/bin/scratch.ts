@@ -137,7 +137,9 @@ async function main() {
 
   const zoomInfo = new ZoomInfoClient()
   const res = await zoomInfo.enrichContact({
-    emailAddress: 'crabfisher@gmail.com'
+    // emailAddress: 'travis@transitivebullsh.it'
+    fullName: 'Kevin Raheja',
+    companyName: 'HeyGen'
   })
   // const res = await zoomInfo.searchContacts({
   //   fullName: 'Kevin Raheja'
