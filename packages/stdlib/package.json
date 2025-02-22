@@ -73,7 +73,7 @@
     "@e2b/code-interpreter": "^1.0.2"
   },
   "peerDependencies": {
-    "zod": "^3.23.8"
+    "zod": "^3.24.2"
   },
   "devDependencies": {
     "@agentic/tsconfig": "workspace:*"

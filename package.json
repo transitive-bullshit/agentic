@@ -45,6 +45,7 @@
     "npm-run-all2": "^7.0.2",
     "only-allow": "^1.2.1",
     "prettier": "^3.5.1",
+    "syncpack": "14.0.0-alpha.10",
     "tsup": "^8.3.6",
     "tsx": "^4.19.3",
     "turbo": "^2.4.2",
