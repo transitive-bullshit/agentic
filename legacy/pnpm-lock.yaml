@@ -65,6 +65,9 @@ importers:
       zod:
         specifier: ^3.24.2
         version: 3.24.2
+      zoominfo-api-auth-client:
+        specifier: ^1.0.1
+        version: 1.0.1
 
   examples/ai-sdk:
     dependencies:
@@ -1110,8 +1113,8 @@ importers:
         specifier: workspace:*
         version: link:../core
       jsrsasign:
-        specifier: ^11.1.0
-        version: 11.1.0
+        specifier: ^10.9.0
+        version: 10.9.0
       ky:
         specifier: ^1.7.5
         version: 1.7.5
@@ -2466,6 +2469,9 @@ packages:
     resolution: {integrity: sha512-RE3mdQ7P3FRSe7eqCWoeQ/Z9QXrtniSjp1wUjt5nRC3WIpz5rSCve6o3fsZ2aCpJtrZjSZgjwXAoTO5k4tEI0w==}
     engines: {node: '>=4'}
 
+  axios@0.21.4:
+    resolution: {integrity: sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==}
+
   axios@1.7.9:
     resolution: {integrity: sha512-LhLcE7Hbiryz8oMDdDptSrWowmB4Bl6RCt6sIJKpRB4XtVf0iEgewX3au/pJqm+Py1kCASkb/FFKjxQaLtxJvw==}
 
@@ -3751,8 +3757,8 @@ packages:
     resolution: {integrity: sha512-SWfjz8SuQ0wZjwsxtSJ3Zy8vvLg6aO/kxcp9TWNPGwJKgTZVfhNEQBMk/vPOpYCDFWRxD6QWuI6IHR1t615f0w==}
     hasBin: true
 
-  jsrsasign@11.1.0:
-    resolution: {integrity: sha512-Ov74K9GihaK9/9WncTe1mPmvrO7Py665TUfUKvraXBpu+xcTWitrtuOwcjf4KMU9maPaYn0OuaWy0HOzy/GBXg==}
+  jsrsasign@10.9.0:
+    resolution: {integrity: sha512-QWLUikj1SBJGuyGK8tjKSx3K7Y69KYJnrs/pQ1KZ6wvZIkHkWjZ1PJDpuvc1/28c1uP0KW9qn1eI1LzHQqDOwQ==}
 
   jsx-ast-utils@3.3.5:
     resolution: {integrity: sha512-ZZow9HBI5O6EPgSJLUb8n2NKgmVWTwCvHGwFuJlMjvLFqlGG6pjirPhtdsseaLZjSibD8eegzmYpUZwoIlj2cQ==}
@@ -5304,6 +5310,9 @@ packages:
   zod@3.24.2:
     resolution: {integrity: sha512-lY7CDW43ECgW9u1TcT3IoXHflywfVqDYze4waEz812jR/bZ8FHDsl7pFQoSZTz5N+2NqRXs8GBwnAwo3ZNxqhQ==}
 
+  zoominfo-api-auth-client@1.0.1:
+    resolution: {integrity: sha512-0MOZ5XhEo5ZOeky3jx6n2+4iI3jZd97qePOu8Z27wTQuQ6eRcRIxVbX1mosy3Wn6C7VtcbIsIyf6YDcjHwpIRg==}
+
 snapshots:
 
   '@ai-sdk/openai@1.1.13(zod@3.24.2)':
@@ -6772,6 +6781,12 @@ snapshots:
       possible-typed-array-names: 1.0.0
 
   axe-core@4.10.2: {}
+
+  axios@0.21.4:
+    dependencies:
+      follow-redirects: 1.15.9
+    transitivePeerDependencies:
+      - debug
 
   axios@1.7.9:
     dependencies:
@@ -8246,7 +8261,7 @@ snapshots:
 
   jsonrepair@3.12.0: {}
 
-  jsrsasign@11.1.0: {}
+  jsrsasign@10.9.0: {}
 
   jsx-ast-utils@3.3.5:
     dependencies:
@@ -9777,3 +9792,10 @@ snapshots:
       zod: 3.24.2
 
   zod@3.24.2: {}
+
+  zoominfo-api-auth-client@1.0.1:
+    dependencies:
+      axios: 0.21.4
+      jsrsasign: 10.9.0
+    transitivePeerDependencies:
+      - debug
