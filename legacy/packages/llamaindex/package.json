@@ -35,11 +35,11 @@
     "@agentic/core": "workspace:*"
   },
   "peerDependencies": {
-    "llamaindex": "^0.7.3"
+    "llamaindex": "^0.9.2"
   },
   "devDependencies": {
     "@agentic/tsconfig": "workspace:*",
-    "llamaindex": "^0.7.3"
+    "llamaindex": "^0.9.2"
   },
   "publishConfig": {
     "access": "public"
