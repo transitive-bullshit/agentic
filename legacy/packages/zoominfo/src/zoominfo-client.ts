@@ -320,7 +320,7 @@ export namespace zoominfo {
 }
 
 /**
- * ZoomInfo ia a robust B2B entity enrichment API.
+ * ZoomInfo is a robust B2B enrichment and search API for people and companies.
  *
  * @see https://api-docs.zoominfo.com
  */

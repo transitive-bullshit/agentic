@@ -32,6 +32,7 @@
   },
   "dependencies": {
     "@agentic/ai-sdk": "workspace:*",
+    "@agentic/apollo": "workspace:*",
     "@agentic/bing": "workspace:*",
     "@agentic/calculator": "workspace:*",
     "@agentic/clearbit": "workspace:*",

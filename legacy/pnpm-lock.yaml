@@ -242,6 +242,25 @@ importers:
         specifier: ^4.1.42
         version: 4.1.42(react@18.3.1)(zod@3.24.2)
 
+  packages/apollo:
+    dependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
+      ky:
+        specifier: ^1.7.5
+        version: 1.7.5
+      p-throttle:
+        specifier: ^6.2.0
+        version: 6.2.0
+      zod:
+        specifier: ^3.23.8
+        version: 3.24.2
+    devDependencies:
+      '@agentic/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+
   packages/bing:
     dependencies:
       '@agentic/core':
@@ -556,6 +575,25 @@ importers:
         specifier: ^0.3.13
         version: 0.3.40(openai@4.85.2(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))
 
+  packages/leadmagic:
+    dependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
+      ky:
+        specifier: ^1.7.5
+        version: 1.7.5
+      p-throttle:
+        specifier: ^6.2.0
+        version: 6.2.0
+      zod:
+        specifier: ^3.23.8
+        version: 3.24.2
+    devDependencies:
+      '@agentic/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+
   packages/llamaindex:
     dependencies:
       '@agentic/core':
@@ -693,6 +731,25 @@ importers:
         specifier: workspace:*
         version: link:../tsconfig
 
+  packages/rocketreach:
+    dependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
+      ky:
+        specifier: ^1.7.5
+        version: 1.7.5
+      p-throttle:
+        specifier: ^6.2.0
+        version: 6.2.0
+      zod:
+        specifier: ^3.23.8
+        version: 3.24.2
+    devDependencies:
+      '@agentic/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+
   packages/searxng:
     dependencies:
       '@agentic/core':
@@ -781,6 +838,9 @@ importers:
       '@agentic/ai-sdk':
         specifier: workspace:*
         version: link:../ai-sdk
+      '@agentic/apollo':
+        specifier: workspace:*
+        version: link:../apollo
       '@agentic/bing':
         specifier: workspace:*
         version: link:../bing
