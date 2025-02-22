@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "@agentic/core": "workspace:*",
-    "jsrsasign": "^11.1.0",
+    "jsrsasign": "^10.9.0",
     "ky": "^1.7.5",
     "p-throttle": "^6.2.0"
   },

@@ -317,6 +317,44 @@ export namespace zoominfo {
     label: string
     employeeCount: number
   }
+
+  export interface SearchResult<T> {
+    maxResults: number
+    totalResults: number
+    currentPage: number
+    data: T[]
+  }
+
+  export type SearchContactsResponse = SearchResult<ContactSearchResult>
+
+  export interface ContactSearchResult {
+    id: number
+    firstName: string
+    middleName: string
+    lastName: string
+    validDate: string
+    lastUpdatedDate: string
+    jobTitle: string
+    contactAccuracyScore: number
+    hasEmail: boolean
+    hasSupplementalEmail: boolean
+    hasDirectPhone: boolean
+    hasMobilePhone: boolean
+    hasCompanyIndustry: boolean
+    hasCompanyPhone: boolean
+    hasCompanyStreet: boolean
+    hasCompanyState: boolean
+    hasCompanyZipCode: boolean
+    hasCompanyCountry: boolean
+    hasCompanyRevenue: boolean
+    hasCompanyEmployeeCount: boolean
+    company: BasicCompany
+  }
+
+  export interface BasicCompany {
+    id: number
+    name: string
+  }
 }
 
 /**
@@ -419,6 +457,8 @@ export class ZoomInfoClient extends AIFunctionsProvider {
         'ZoomInfo failed to get access token via PKI auth'
       )
 
+      console.log('Got access token:', this.accessToken)
+
       return
     }
 
@@ -441,9 +481,9 @@ export class ZoomInfoClient extends AIFunctionsProvider {
           password
         }
       })
-      .json<{ data: { jwt: string } }>()
+      .json<{ jwt: string }>()
 
-    return res.data.jwt
+    return res.jwt
   }
 
   async getAccessTokenViaPKI({
@@ -461,8 +501,8 @@ export class ZoomInfoClient extends AIFunctionsProvider {
       alg: 'RS256'
     }
     const data = {
-      iss: 'zoominfo-api-auth-client-nodejs',
       aud: 'enterprise_api',
+      iss: 'api-client@zoominfo.com',
       username,
       client_id: clientId,
       iat: getIAT(dtNow),
@@ -480,13 +520,14 @@ export class ZoomInfoClient extends AIFunctionsProvider {
 
     const res = await this.ky
       .post('authenticate', {
+        json: {},
         headers: {
           Authorization: `Bearer ${clientJWT}`
         }
       })
-      .json<{ data: { jwt: string } }>()
+      .json<{ jwt: string }>()
 
-    return res.data.jwt
+    return res.jwt
   }
 
   @aiFunction({
@@ -572,6 +613,19 @@ fullName AND companyId/companyName. Combining these values effectively results i
         }
       })
       .json<zoominfo.EnrichCompanyResponse>()
+  }
+
+  async searchContacts(opts: { fullName?: string; emailAddress?: string }) {
+    await this.authenticate()
+
+    return this.ky
+      .post('search/contact', {
+        json: opts,
+        headers: {
+          Authorization: `Bearer ${this.accessToken}`
+        }
+      })
+      .json<zoominfo.SearchContactsResponse>()
   }
 }
 
