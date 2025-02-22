@@ -1,3 +1,4 @@
+export * from '@agentic/apollo'
 export * from '@agentic/bing'
 export * from '@agentic/calculator'
 export * from '@agentic/clearbit'
