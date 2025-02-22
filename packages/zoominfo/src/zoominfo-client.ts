@@ -41,6 +41,8 @@ export namespace zoominfo {
     lastUpdatedDateAfter?: string
     validDateAfter?: string
     contactAccuracyScoreMin?: number
+
+    outputFields?: string[]
   }
 
   export interface EnrichCompanyOptions {
@@ -56,6 +58,8 @@ export namespace zoominfo {
     companyZipCode?: string //	Zip Code or Postal Code for the company's primary address
     companyCountry?: string //	Country for the company's primary address. You can use free text or see the Country lookup endpoint for values.
     ipAddress?: string //	IP address associated with the company
+
+    outputFields?: string[]
   }
 
   export interface EnrichContactResponse {
@@ -67,8 +71,9 @@ export namespace zoominfo {
   }
 
   export interface EnrichContactResult {
-    input: Partial<EnrichContactOptions>
+    input: Partial<Omit<EnrichContactOptions, 'outputFields'>>
     data: EnrichedContact[]
+    matchStatus?: 'FULL_MATCH' | 'PARTIAL_MATCH' | 'NO_MATCH'
   }
 
   export interface EnrichedContact {
@@ -564,15 +569,86 @@ fullName AND companyId/companyName. Combining these values effectively results i
       externalURL: z.string().optional(),
       lastUpdatedDateAfter: z.string().optional(),
       validDateAfter: z.string().optional(),
-      contactAccuracyScoreMin: z.number().optional()
+      contactAccuracyScoreMin: z.number().optional(),
+      outputFields: z.array(z.string()).optional()
     })
   })
   async enrichContact(opts: zoominfo.EnrichContactOptions) {
     await this.authenticate()
 
+    const {
+      outputFields = [
+        'id',
+        'firstName',
+        'middleName',
+        'lastName',
+        'email',
+        'hasCanadianEmail',
+        'phone',
+        'directPhoneDoNotCall',
+        'street',
+        'city',
+        'region',
+        'metroArea',
+        'zipCode',
+        'state',
+        'country',
+        'personHasMoved',
+        'withinEu',
+        'withinCalifornia',
+        'withinCanada',
+        'lastUpdatedDate',
+        'noticeProvidedDate',
+        'salutation',
+        'suffix',
+        'jobTitle',
+        'jobFunction',
+        'companyDivision',
+        'education',
+        'hashedEmails',
+        'picture',
+        'mobilePhoneDoNotCall',
+        'externalUrls',
+        'companyId',
+        'companyName',
+        'companyDescriptionList',
+        'companyPhone',
+        'companyFax',
+        'companyStreet',
+        'companyCity',
+        'companyState',
+        'companyZipCode',
+        'companyCountry',
+        'companyLogo',
+        'companySicCodes',
+        'companyNaicsCodes',
+        'contactAccuracyScore',
+        'companyWebsite',
+        'companyRevenue',
+        'companyRevenueNumeric',
+        'companyEmployeeCount',
+        'companyType',
+        'companyTicker',
+        'companyRanking',
+        'isDefunct',
+        'companySocialMediaUrls',
+        'companyPrimaryIndustry',
+        'companyIndustries',
+        'companyRevenueRange',
+        'companyEmployeeRange',
+        'employmentHistory',
+        'managementLevel',
+        'locationCompanyId'
+      ],
+      ...matchPersonInput
+    } = opts
+
     return this.ky
       .post('enrich/contact', {
-        json: opts,
+        json: {
+          matchPersonInput: [matchPersonInput],
+          outputFields
+        },
         headers: {
           Authorization: `Bearer ${this.accessToken}`
         }
@@ -599,15 +675,76 @@ fullName AND companyId/companyName. Combining these values effectively results i
       companyState: z.string().optional(),
       companyZipCode: z.string().optional(),
       companyCountry: z.string().optional(),
-      ipAddress: z.string().optional()
+      ipAddress: z.string().optional(),
+      outputFields: z.array(z.string()).optional()
     })
   })
   async enrichCompany(opts: zoominfo.EnrichCompanyOptions) {
     await this.authenticate()
 
+    const {
+      outputFields = [
+        'id',
+        'name',
+        'website',
+        'domainList',
+        'logo',
+        'ticker',
+        'revenue',
+        'socialMediaUrls',
+        'employeeCount',
+        'numberOfContactsInZoomInfo',
+        'phone',
+        'fax',
+        'street',
+        'city',
+        'state',
+        'zipCode',
+        'country',
+        'continent',
+        'companyStatus',
+        'companyStatusDate',
+        'descriptionList',
+        'sicCodes',
+        'naicsCodes',
+        'competitors',
+        'ultimateParentId',
+        'ultimateParentName',
+        'ultimateParentRevenue',
+        'ultimateParentEmployees',
+        'subUnitCodes',
+        'subUnitType',
+        'subUnitIndustries',
+        'primaryIndustry',
+        'industries',
+        'parentId',
+        'parentName',
+        'locationCount',
+        'metroArea',
+        'lastUpdatedDate',
+        'createdDate',
+        'certificationDate',
+        'certified',
+        'hashtags',
+        'products',
+        'techAttributes',
+        'revenueRange',
+        'employeeRange',
+        'companyFunding',
+        'recentFundingAmount',
+        'recentFundingDate',
+        'totalFundingAmount',
+        'employeeGrowth'
+      ],
+      ...matchCompanyInput
+    } = opts
+
     return this.ky
       .post('enrich/company', {
-        json: opts,
+        json: {
+          matchCompanyInput: [matchCompanyInput],
+          outputFields
+        },
         headers: {
           Authorization: `Bearer ${this.accessToken}`
         }
