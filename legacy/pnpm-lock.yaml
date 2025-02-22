@@ -895,6 +895,9 @@ importers:
       '@agentic/langchain':
         specifier: workspace:*
         version: link:../langchain
+      '@agentic/leadmagic':
+        specifier: workspace:*
+        version: link:../leadmagic
       '@agentic/llamaindex':
         specifier: workspace:*
         version: link:../llamaindex
@@ -919,6 +922,9 @@ importers:
       '@agentic/proxycurl':
         specifier: workspace:*
         version: link:../proxycurl
+      '@agentic/rocketreach':
+        specifier: workspace:*
+        version: link:../rocketreach
       '@agentic/searxng':
         specifier: workspace:*
         version: link:../searxng
