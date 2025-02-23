@@ -13,9 +13,10 @@ export namespace leadmagic {
   export const API_BASE_URL = 'https://api.leadmagic.io'
 
   // Allow up to 300 requests per minute by default.
+  // (5 requests per second)
   export const throttle = pThrottle({
-    limit: 300,
-    interval: 60_000
+    limit: 5,
+    interval: 1000
   })
 
   export interface ProfileSearchOptions {

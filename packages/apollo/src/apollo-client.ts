@@ -269,7 +269,7 @@ export namespace apollo {
 }
 
 /**
- * Apollo.io is a robust B2B person and company enrichment API.
+ * Apollo.io is a B2B person and company enrichment API.
  *
  * @see https://docs.apollo.io
  */
