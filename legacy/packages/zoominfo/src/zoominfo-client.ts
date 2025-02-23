@@ -775,6 +775,9 @@ export class ZoomInfoClient extends AIFunctionsProvider {
         json: {
           username,
           password
+        },
+        headers: {
+          'cache-control': 'no-cache'
         }
       })
       .json<{ jwt: string }>()
@@ -822,7 +825,8 @@ export class ZoomInfoClient extends AIFunctionsProvider {
       .post('authenticate', {
         json: {},
         headers: {
-          Authorization: `Bearer ${clientJWT}`
+          Authorization: `Bearer ${clientJWT}`,
+          'cache-control': 'no-cache'
         }
       })
       .json<{ jwt: string }>()
@@ -1143,7 +1147,8 @@ fullName AND companyId/companyName. Combining these values effectively results i
     return this.ky
       .get('lookup/usage', {
         headers: {
-          Authorization: `Bearer ${this.accessToken}`
+          Authorization: `Bearer ${this.accessToken}`,
+          'cache-control': 'no-cache'
         }
       })
       .json<zoominfo.UsageResponse>()
