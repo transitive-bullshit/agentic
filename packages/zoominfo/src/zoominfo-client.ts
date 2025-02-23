@@ -46,18 +46,54 @@ export namespace zoominfo {
   }
 
   export interface EnrichCompanyOptions {
-    companyId?: string // Unique ZoomInfo identifier for a company
-    companyName?: string // Company name
-    companyWebsite?: string //	Company website URL in http://www.example.com format
-    companyTicker?: string //	Company stock ticker symbol
-    companyPhone?: string //	Phone number of the company headquarters
-    companyFax?: string //	Fax number of the company headquarters
-    companyStreet?: string //	Street address for the company's primary address
-    companyCity?: string //	City for the company's primary address
-    companyState?: string //	Company state (U.S.) or province (Canada). You can use free text state or province names (e.g., "new hampshire"), the two-letter common abbreviation for a U.S. state (e.g., "nh"), or values provided in the State lookup endpoint.
-    companyZipCode?: string //	Zip Code or Postal Code for the company's primary address
-    companyCountry?: string //	Country for the company's primary address. You can use free text or see the Country lookup endpoint for values.
-    ipAddress?: string //	IP address associated with the company
+    /**
+     * Unique ZoomInfo identifier for a company
+     */
+    companyId?: string
+    /**
+     * Company name
+     */
+    companyName?: string
+    /**
+     * Company website URL in http://www.example.com format
+     */
+    companyWebsite?: string
+    /**
+     * Company stock ticker symbol
+     */
+    companyTicker?: string
+    /**
+     * Phone number of the company headquarters
+     */
+    companyPhone?: string
+    /**
+     * Fax number of the company headquarters
+     */
+    companyFax?: string
+    /**
+     * Street address for the company's primary address
+     */
+    companyStreet?: string
+    /**
+     * City for the company's primary address
+     */
+    companyCity?: string
+    /**
+     * Company state (U.S.) or province (Canada). You can use free text state or province names (e.g., "new hampshire"), the two-letter common abbreviation for a U.S. state (e.g., "nh"), or values provided in the State lookup endpoint.
+     */
+    companyState?: string
+    /**
+     * Zip Code or Postal Code for the company's primary address
+     */
+    companyZipCode?: string
+    /**
+     * Country for the company's primary address. You can use free text or see the Country lookup endpoint for values.
+     */
+    companyCountry?: string
+    /**
+     * IP address associated with the company
+     */
+    ipAddress?: string
 
     outputFields?: string[]
   }
@@ -328,149 +364,569 @@ export namespace zoominfo {
   }
 
   export interface SearchContactsOptions {
-    rpp?: number // Limits the results returned to the given number of results per page. Default is 25.
-    page?: number // Provides the results for the given page, used in conjunction with rpp
-    sortOrder?: string // Provide sortBy if specifying sortOrder. Valid values are asc, ascending, desc, and descending. By default, results are sorted in descending order.
-    sortBy?: string // Sort results by valid output fields: contactAccuracyScore, lastName, companyName, hierarchy, sourceCount, lastMentioned, relevance
-    personId?: string // Unique ZoomInfo identifier for the contact. Can include a comma-separated list.
-    emailAddress?: string // Work email address for the contact in example@example.com format
-    supplementalEmail?: string[] // Supplemental email address for the contact in example@example.com format
-    hashedEmail?: string // Hashed email value for the contact. Allows searching via an email address with the extra security of not exposing the email. Supported hash algorithms are: MD5, SHA1, SHA256 and SHA512.
-    phone?: string[] // List of person phones or mobile numbers. Here's an example list - any of the following phone number formats are acceptable: ["(123)-456-7890", "1234567890", "123 456 7890", "123-445-7890"]. Alphabetical characters are not allowed.
-    fullName?: string // Contact full name
-    firstName?: string // Contact first name
-    middleInitial?: string // Contact middle initial
-    lastName?: string // Contact last name
-    jobTitle?: string // Contact title at current place of employment. Use OR to input multiple job titles.
-    excludeJobTitle?: string // Exclude comma-separated list of job titles
-    managementLevel?: string // Contact management level at current place of employment. See the Management Levels lookup endpoint for values.
-    excludeManagementLevel?: string // Exclude contact based on management level. See the Management Levels lookup endpoint for values.
-    department?: string // Contact department at current place of employment. See the Contact Departments lookup endpoint for values.
-    boardMember?: string // Exclude or include board members from search results. By default, the API includes board members in results. See the Board Members lookup endpoint for values.
-    excludePartialProfiles?: boolean // Contacts who do not have an active company associated with them are considered partial profiles. Exclude contacts with a partial profile from search results.
-    executivesOnly?: boolean // Return only executives
-    requiredFields?: string // Specify a list of required fields for each record returned. Can include email, phone (direct or company), directPhone, personalEmail, and mobilePhone. Can include a comma-separated list of these fields. For example, requiring direct phone (directPhone) will only return contacts which have the Direct Phone Number field populated.
-    contactAccuracyScoreMin?: string // Minimum accuracy score for search results. This score indicates the likelihood that a contact is reachable and still employed by the company listed. Minimum score is 70 and maximum is 99.
-    contactAccuracyScoreMax?: string // Maximum accuracy score for search results. This score indicates the likelihood that a contact is reachable and still employed by the company listed. Minimum score is 70 and maximum is 99.
-    jobFunction?: string // Contact job function at their current place of employment. See the Job Function lookup endpoint for values.
-    lastUpdatedDateAfter?: string // The date after which the contact's profile was last updated in YYYY-MM-DD format
-    validDateAfter?: string // The date after which the contact's profile was last validated in YYYY-MM-DD format
-    lastUpdatedInMonths?: number // Number of months within which the contact's profile was last updated. For example, if lastUpdatedinMonths is 12 only contacts that were updated in the last 12 months will be returned.
-    hasBeenNotified?: string // Contacts who have been notified of inclusion in ZoomInfo's database. Values are exclude, include, and only.
-    companyPastOrPresent?: string // Returns companies based on a contact's work history. Values are present (default), past, and pastAndPresent.
-    school?: string // Contact educational institution
-    degree?: string // Contact education degree
-    locationCompanyId?: string[] // Searches by contact's location IDs. Use the Location Enrich endpoint to obtain a list of location IDs for a company.
-    companyId?: string // ZoomInfo unique identifier for the company. Will accept a comma-separated list.
-    companyName?: string // Company name. Can use OR and NOT operators to include or exclude companies by name. For example, "Vodaphone OR Comcast NOT Verizon"
-    companyWebsite?: string // URL to the company website in http://www.example.com format
-    companyTicker?: string[] // Company stock ticker symbol
-    companyDescription?: string // Text description unique to the company you want to use as search criteria
-    parentId?: string // ZoomInfo Company ID for parent company
-    ultimateParentId?: string // ZoomInfo Company ID for ultimate parent company
-    companyType?: string // Company type (private, public, and so on). See the Company Type lookup endpoint for values.
-    address?: string // Company address
-    street?: string // Company street
-    state?: string // Company state (U.S.) or province (Canada). You can use free text state or province names (e.g., "new hampshire"), the two-letter common abbreviation for a U.S. state (e.g., "nh"), or values provided in the State lookup endpoint.
-    zipCode?: string // Zip Code of the company's primary address.
-    country?: string // Country for the company's primary address. You can use free text or see the Country lookup endpoint for values.
-    continent?: string // Continent for the company's primary address. See the Continent lookup endpoint for values.
-    zipCodeRadiusMiles?: string // Used in conjunction with zipCode, designates a geographical radius (in miles) from the zipCode provided.
-    hashTagString?: string // Hash tags for a company. Can include a comma-separated list.
-    techAttributeTagList?: string // Specify technology product tags. See the Tech - Product lookup endpoint for values. This string uses a numerical dot notation format similar to an IP address. The notation denotes the hierarchical structure: parent-category.category.vendor. For example, 333.202.28. You can use wildcards in the notation (e.g., 333.202.\\\\\\*, \\\\\\*.202.\\\\\\*, and so on).
-    subUnitTypes?: string // Company sub types (e.g., division, subsidiary and so on). See the Sub Unit Type lookup endpoint for values.
-    primaryIndustriesOnly?: boolean // Used in conjunction with the industryCodes input parameter. When set to true, any result returned must have one of the specified industries as a primary industry. If no industries are specified, then this parameter will be ignored. Default is false.
-    industryCodes?: string // Top-level industry that the contact works in. A contact can have multiple top level industries. Tags are based on the contact's current company. Can include a comma-separated list. See the Industry Codes lookup endpoint for values.
-    industryKeywords?: string // Industry keywords associated with a company. Can include a comma-separated list.
-    sicCodes?: string // The Standard Industrial Classification is a system for classifying industries by a four-digit code. See the SIC Codes lookup endpoint for values.
-    naicsCodes?: string // The North American Industry Classification System (NAICS) is the standard used by Federal statistical agencies in classifying business establishments for the purpose of collecting, analyzing, and publishing statistical data related to the U.S. business economy. See the NAICS Codes lookup endpoint for values.
-    revenueMin?: number // Minimum annual revenue for a company in U.S. dollars. Use with revenueMax to set a range. Alternatively, you can use the revenue parameter to search for pre-defined ranges.
-    revenueMax?: number // Maximum annual revenue for a company in U.S. dollars. Use with revenueMin to set a range. Alternatively, you can use the revenue parameter to search for pre-defined ranges.
-    revenue?: string // Annual revenue range in U.S. dollars. Accepts a comma-separated list of values. See the Revenue Range lookup endpoint for values. Alternatively, to get more granular ranges, you can use the revenueMin and revenueMax parameters.
-    employeeRangeMin?: string // Minimum employee count for a company. Use with employeeRangeMax to set a range. Alternatively, you can use the employeeCount parameter to search for pre-defined ranges.
-    employeeRangeMax?: string // Maximum employee count for a company. Use with employeeRangeMin to set a range. Alternatively, you can use the employeeCount parameter to search for pre-defined ranges.
-    employeeCount?: string // Employee count range. Accepts a comma-separated list of values. See the Employee Count lookup endpoint for values. Alternatively, to get more granular ranges, you can use the employeeRangeMin and employeeRangeMax parameters.
-    companyRanking?: string // Company ranking list (e.g., Fortune 500 and so on). See the Company Ranking lookup endpoint for values.
-    metroRegion?: string // Company metro area. Accepts a comma-separated list of U.S. and Canada metro areas. See the Metro Area lookup endpoint for values.
-    locationSearchType?: string // Location criteria for search. Values are PersonOrHQ, PersonAndHQ, Person, HQ, PersonThenHQ.
-    fundingAmountMin?: number // Minimum funding amount in thousands (e.g., 1 = 1000, 500 = 500,000). If fundingAmountMin is used without fundingAmountMax, the result will be the amount specified or greater.
-    fundingAmountMax?: number // Maximum funding amount in thousands (e.g., 1 = 1000, 500 = 500,000). If fundingAmountMax is used without fundingAmountMin, the result will be the amount specified or less.
-    fundingStartDate?: string // Start date of the funding in YYYY-MM-DD format. If fundingStartDate and fundingEndDate are both specified, they will be used as a range. Start date after end date returns an error. If start date and end date are the same, will return results for exact date.
-    fundingEndDate?: string // End date of the funding in YYYY-MM-DD format. If fundingStartDate and fundingEndDate are both specified, they will be used as a range. Start date after end date returns an error. If start date and end date are the same, will return results for exact date.
-    excludedRegions?: string // Exclude a company metro area. Accepts a comma-separated list of U.S. and Canada metro areas. See the Metro Area lookup endpoint for values.
-    zoominfoContactsMin?: string // Minimum number of ZoomInfo contacts associated with company
-    zoominfoContactsMax?: string // Maximum number of ZoomInfo contacts associated with company
-    companyStructureIncludedSubUnitTypes?: string // Company hierarchical structure
-    oneYearEmployeeGrowthRateMin?: string // Minimum one year employee growth rate for a company. Use with oneYearEmployeeGrowthRateMax to set a range.
-    oneYearEmployeeGrowthRateMax?: string // Maximum one year employee growth rate for a company. Use with oneYearEmployeeGrowthRateMin to set a range.
-    twoYearEmployeeGrowthRateMin?: string // Minimum two year employee growth rate for a company. Use with twoYearEmployeeGrowthRateMax to set a range.
-    twoYearEmployeeGrowthRateMax?: string // Maximum two year employee growth rate for a company. Use with twoYearEmployeeGrowthRateMin to set a range.
-    positionStartDateMin?: string // Minimum date for when a contact began current employment. Use with positionStartDateMax to set a range.
-    positionStartDateMax?: string // Maximum date for when a contact began current employment. Use with positionStartDateMin to set a range.
-    webReferences?: string[] // List of web references for a contact. Default criteria is OR between multiple values. Should only contain english letters and numbers.
-    filterByBuyingCommittee?: boolean // Boolean flag for Buying Committee. Setting this to TRUE will filter the results based on the Buying Committees set for the account. Default is FALSE.
-    techSkills?: string[] // List of technology skills for a contact. Default criteria is OR between multiple values. Should only contain string numbers
-    yearsOfExperience?: string // Years of overall experience. Must be a comma-separated string of values. See the Years of Experience lookup endpoint for values.
-    engagementStartDate?: string // Engagement start date in YYYY-MM-DD format.
-    engagementEndDate?: string // Engagement end date in YYYY-MM-DD format. EngagementStartDate is required.
-    engagementType?: string[] // List of engagement types to search for. Accepted values are a list of email, phone, online meeting.
+    /**
+     * Limits the results returned to the given number of results per page. Default is 25.
+     */
+    rpp?: number
+    /**
+     * Provides the results for the given page, used in conjunction with rpp
+     */
+    page?: number
+    /**
+     * Provide sortBy if specifying sortOrder. Valid values are asc, ascending, desc, and descending. By default, results are sorted in descending order.
+     */
+    sortOrder?: string
+    /**
+     * Sort results by valid output fields: contactAccuracyScore, lastName, companyName, hierarchy, sourceCount, lastMentioned, relevance
+     */
+    sortBy?: string
+    /**
+     * Unique ZoomInfo identifier for the contact. Can include a comma-separated list.
+     */
+    personId?: string
+    /**
+     * Work email address for the contact in example@example.com format
+     */
+    emailAddress?: string
+    /**
+     * Supplemental email address for the contact in example@example.com format
+     */
+    supplementalEmail?: string[]
+    /**
+     * Hashed email value for the contact. Allows searching via an email address with the extra security of not exposing the email. Supported hash algorithms are: MD5, SHA1, SHA256 and SHA512.
+     */
+    hashedEmail?: string
+    /**
+     * List of person phones or mobile numbers. Here's an example list - any of the following phone number formats are acceptable: ["(123)-456-7890", "1234567890", "123 456 7890", "123-445-7890"]. Alphabetical characters are not allowed.
+     */
+    phone?: string[]
+    /**
+     * Contact full name
+     */
+    fullName?: string
+    /**
+     * Contact first name
+     */
+    firstName?: string
+    /**
+     * Contact middle initial
+     */
+    middleInitial?: string
+    /**
+     * Contact last name
+     */
+    lastName?: string
+    /**
+     * Contact title at current place of employment. Use OR to input multiple job titles.
+     */
+    jobTitle?: string
+    /**
+     * Exclude comma-separated list of job titles
+     */
+    excludeJobTitle?: string
+    /**
+     * Contact management level at current place of employment. See the Management Levels lookup endpoint for values.
+     */
+    managementLevel?: string
+    /**
+     * Exclude contact based on management level. See the Management Levels lookup endpoint for values.
+     */
+    excludeManagementLevel?: string
+    /**
+     * Contact department at current place of employment. See the Contact Departments lookup endpoint for values.
+     */
+    department?: string
+    /**
+     * Exclude or include board members from search results. By default, the API includes board members in results. See the Board Members lookup endpoint for values.
+     */
+    boardMember?: string
+    /**
+     * Contacts who do not have an active company associated with them are considered partial profiles. Exclude contacts with a partial profile from search results.
+     */
+    excludePartialProfiles?: boolean
+    /**
+     * Return only executives
+     */
+    executivesOnly?: boolean
+    /**
+     * Specify a list of required fields for each record returned. Can include email, phone (direct or company), directPhone, personalEmail, and mobilePhone. Can include a comma-separated list of these fields. For example, requiring direct phone (directPhone) will only return contacts which have the Direct Phone Number field populated.
+     */
+    requiredFields?: string
+    /**
+     * Minimum accuracy score for search results. This score indicates the likelihood that a contact is reachable and still employed by the company listed. Minimum score is 70 and maximum is 99.
+     */
+    contactAccuracyScoreMin?: string
+    /**
+     * Maximum accuracy score for search results. This score indicates the likelihood that a contact is reachable and still employed by the company listed. Minimum score is 70 and maximum is 99.
+     */
+    contactAccuracyScoreMax?: string
+    /**
+     * Contact job function at their current place of employment. See the Job Function lookup endpoint for values.
+     */
+    jobFunction?: string
+    /**
+     * The date after which the contact's profile was last updated in YYYY-MM-DD format
+     */
+    lastUpdatedDateAfter?: string
+    /**
+     * The date after which the contact's profile was last validated in YYYY-MM-DD format
+     */
+    validDateAfter?: string
+    /**
+     * Number of months within which the contact's profile was last updated. For example, if lastUpdatedinMonths is 12 only contacts that were updated in the last 12 months will be returned.
+     */
+    lastUpdatedInMonths?: number
+    /**
+     * Contacts who have been notified of inclusion in ZoomInfo's database. Values are exclude, include, and only.
+     */
+    hasBeenNotified?: string
+    /**
+     * Returns companies based on a contact's work history. Values are present (default), past, and pastAndPresent.
+     */
+    companyPastOrPresent?: string
+    /**
+     * Contact educational institution
+     */
+    school?: string
+    /**
+     * Contact education degree
+     */
+    degree?: string
+    /**
+     * Searches by contact's location IDs. Use the Location Enrich endpoint to obtain a list of location IDs for a company.
+     */
+    locationCompanyId?: string[]
+    /**
+     * ZoomInfo unique identifier for the company. Will accept a comma-separated list.
+     */
+    companyId?: string
+    /**
+     * Company name. Can use OR and NOT operators to include or exclude companies by name. For example, "Vodaphone OR Comcast NOT Verizon"
+     */
+    companyName?: string
+    /**
+     * URL to the company website in http://www.example.com format
+     */
+    companyWebsite?: string
+    /**
+     * Company stock ticker symbol
+     */
+    companyTicker?: string[]
+    /**
+     * Text description unique to the company you want to use as search criteria
+     */
+    companyDescription?: string
+    /**
+     * ZoomInfo Company ID for parent company
+     */
+    parentId?: string
+    /**
+     * ZoomInfo Company ID for ultimate parent company
+     */
+    ultimateParentId?: string
+    /**
+     * Company type (private, public, and so on). See the Company Type lookup endpoint for values.
+     */
+    companyType?: string
+    /**
+     * Company address
+     */
+    address?: string
+    /**
+     * Company street
+     */
+    street?: string
+    /**
+     * Company state (U.S.) or province (Canada). You can use free text state or province names (e.g., "new hampshire"), the two-letter common abbreviation for a U.S. state (e.g., "nh"), or values provided in the State lookup endpoint.
+     */
+    state?: string
+    /**
+     * Zip Code of the company's primary address.
+     */
+    zipCode?: string
+    /**
+     * Country for the company's primary address. You can use free text or see the Country lookup endpoint for values.
+     */
+    country?: string
+    /**
+     * Continent for the company's primary address. See the Continent lookup endpoint for values.
+     */
+    continent?: string
+    /**
+     * Used in conjunction with zipCode, designates a geographical radius (in miles) from the zipCode provided.
+     */
+    zipCodeRadiusMiles?: string
+    /**
+     * Hash tags for a company. Can include a comma-separated list.
+     */
+    hashTagString?: string
+    /**
+     * Specify technology product tags. See the Tech - Product lookup endpoint for values. This string uses a numerical dot notation format similar to an IP address. The notation denotes the hierarchical structure: parent-category.category.vendor. For example, 333.202.28. You can use wildcards in the notation (e.g., 333.202.\\\\\\*, \\\\\\*.202.\\\\\\*, and so on).
+     */
+    techAttributeTagList?: string
+    /**
+     * Company sub types (e.g., division, subsidiary and so on). See the Sub Unit Type lookup endpoint for values.
+     */
+    subUnitTypes?: string
+    /**
+     * Used in conjunction with the industryCodes input parameter. When set to true, any result returned must have one of the specified industries as a primary industry. If no industries are specified, then this parameter will be ignored. Default is false.
+     */
+    primaryIndustriesOnly?: boolean
+    /**
+     * Top-level industry that the contact works in. A contact can have multiple top level industries. Tags are based on the contact's current company. Can include a comma-separated list. See the Industry Codes lookup endpoint for values.
+     */
+    industryCodes?: string
+    /**
+     * Industry keywords associated with a company. Can include a comma-separated list.
+     */
+    industryKeywords?: string
+    /**
+     * The Standard Industrial Classification is a system for classifying industries by a four-digit code. See the SIC Codes lookup endpoint for values.
+     */
+    sicCodes?: string
+    /**
+     * The North American Industry Classification System (NAICS) is the standard used by Federal statistical agencies in classifying business establishments for the purpose of collecting, analyzing, and publishing statistical data related to the U.S. business economy. See the NAICS Codes lookup endpoint for values.
+     */
+    naicsCodes?: string
+    /**
+     * Minimum annual revenue for a company in U.S. dollars. Use with revenueMax to set a range. Alternatively, you can use the revenue parameter to search for pre-defined ranges.
+     */
+    revenueMin?: number
+    /**
+     * Maximum annual revenue for a company in U.S. dollars. Use with revenueMin to set a range. Alternatively, you can use the revenue parameter to search for pre-defined ranges.
+     */
+    revenueMax?: number
+    /**
+     * Annual revenue range in U.S. dollars. Accepts a comma-separated list of values. See the Revenue Range lookup endpoint for values. Alternatively, to get more granular ranges, you can use the revenueMin and revenueMax parameters.
+     */
+    revenue?: string
+    /**
+     * Minimum employee count for a company. Use with employeeRangeMax to set a range. Alternatively, you can use the employeeCount parameter to search for pre-defined ranges.
+     */
+    employeeRangeMin?: string
+    /**
+     * Maximum employee count for a company. Use with employeeRangeMin to set a range. Alternatively, you can use the employeeCount parameter to search for pre-defined ranges.
+     */
+    employeeRangeMax?: string
+    /**
+     * Employee count range. Accepts a comma-separated list of values. See the Employee Count lookup endpoint for values. Alternatively, to get more granular ranges, you can use the employeeRangeMin and employeeRangeMax parameters.
+     */
+    employeeCount?: string
+    /**
+     * Company ranking list (e.g., Fortune 500 and so on). See the Company Ranking lookup endpoint for values.
+     */
+    companyRanking?: string
+    /**
+     * Company metro area. Accepts a comma-separated list of U.S. and Canada metro areas. See the Metro Area lookup endpoint for values.
+     */
+    metroRegion?: string
+    /**
+     * Location criteria for search. Values are PersonOrHQ, PersonAndHQ, Person, HQ, PersonThenHQ.
+     */
+    locationSearchType?: string
+    /**
+     * Minimum funding amount in thousands (e.g., 1 = 1000, 500 = 500,000). If fundingAmountMin is used without fundingAmountMax, the result will be the amount specified or greater.
+     */
+    fundingAmountMin?: number
+    /**
+     * Maximum funding amount in thousands (e.g., 1 = 1000, 500 = 500,000). If fundingAmountMax is used without fundingAmountMin, the result will be the amount specified or less.
+     */
+    fundingAmountMax?: number
+    /**
+     * Start date of the funding in YYYY-MM-DD format. If fundingStartDate and fundingEndDate are both specified, they will be used as a range. Start date after end date returns an error. If start date and end date are the same, will return results for exact date.
+     */
+    fundingStartDate?: string
+    /**
+     * End date of the funding in YYYY-MM-DD format. If fundingStartDate and fundingEndDate are both specified, they will be used as a range. Start date after end date returns an error. If start date and end date are the same, will return results for exact date.
+     */
+    fundingEndDate?: string
+    /**
+     * Exclude a company metro area. Accepts a comma-separated list of U.S. and Canada metro areas. See the Metro Area lookup endpoint for values.
+     */
+    excludedRegions?: string
+    /**
+     * Minimum number of ZoomInfo contacts associated with company
+     */
+    zoominfoContactsMin?: string
+    /**
+     * Maximum number of ZoomInfo contacts associated with company
+     */
+    zoominfoContactsMax?: string
+    /**
+     * Company hierarchical structure
+     */
+    companyStructureIncludedSubUnitTypes?: string
+    /**
+     * Minimum one year employee growth rate for a company. Use with oneYearEmployeeGrowthRateMax to set a range.
+     */
+    oneYearEmployeeGrowthRateMin?: string
+    /**
+     * Maximum one year employee growth rate for a company. Use with oneYearEmployeeGrowthRateMin to set a range.
+     */
+    oneYearEmployeeGrowthRateMax?: string
+    /**
+     * Minimum two year employee growth rate for a company. Use with twoYearEmployeeGrowthRateMax to set a range.
+     */
+    twoYearEmployeeGrowthRateMin?: string
+    /**
+     * Maximum two year employee growth rate for a company. Use with twoYearEmployeeGrowthRateMin to set a range.
+     */
+    twoYearEmployeeGrowthRateMax?: string
+    /**
+     * Minimum date for when a contact began current employment. Use with positionStartDateMax to set a range.
+     */
+    positionStartDateMin?: string
+    /**
+     * Maximum date for when a contact began current employment. Use with positionStartDateMin to set a range.
+     */
+    positionStartDateMax?: string
+    /**
+     * List of web references for a contact. Default criteria is OR between multiple values. Should only contain english letters and numbers.
+     */
+    webReferences?: string[]
+    /**
+     * Boolean flag for Buying Committee. Setting this to TRUE will filter the results based on the Buying Committees set for the account. Default is FALSE.
+     */
+    filterByBuyingCommittee?: boolean
+    /**
+     * List of technology skills for a contact. Default criteria is OR between multiple values. Should only contain string numbers
+     */
+    techSkills?: string[]
+    /**
+     * Years of overall experience. Must be a comma-separated string of values. See the Years of Experience lookup endpoint for values.
+     */
+    yearsOfExperience?: string
+    /**
+     * Engagement start date in YYYY-MM-DD format.
+     */
+    engagementStartDate?: string
+    /**
+     * Engagement end date in YYYY-MM-DD format. EngagementStartDate is required.
+     */
+    engagementEndDate?: string
+    /**
+     * List of engagement types to search for. Accepted values are a list of email, phone, online meeting.
+     */
+    engagementType?: string[]
   }
 
   export interface SearchCompaniesOptions {
-    rpp?: number // Limits the results returned to the given number of results per page. Default is 25.
-    page?: number // Provides the results for the given page, used in conjunction with rpp
-    sortOrder?: string // Provide sortBy if specifying sortOrder. Valid values are asc, ascending, desc, and descending. By default, results are sorted in descending order.
-    sortBy?: string // Sort results by valid output fields: name, employeeCount, revenue
-    companyId?: string // ZoomInfo unique identifier for the company. Will accept-comma-separated list.
-    companyName?: string // Company name
-    companyWebsite?: string // URL to the company website in http://www.example.com format
-    companyDescription?: string // Text description unique to the company you want to use as search criteria
-    parentId?: string // ZoomInfo Company ID for parent company
-    ultimateParentId?: string // ZoomInfo Company ID for ultimate parent company
-    companyTicker?: string[] // Company stock ticker symbol
-    companyType?: string // Company type (private, public, and so on). See the Company Type lookup endpoint for values.
-    businessModel?: string[] // Search using Business Model (B2C, B2B, B2G) for a company. Default is All
-    address?: string // Company address
-    street?: string // Company street
-    state?: string // Company state (U.S.) or province (Canada). You can use free text state or province names (e.g., "new hampshire"), the two-letter common abbreviation for a U.S. state (e.g., "nh"), or values provided in the State lookup endpoint. Do not use state in conjunction with country in a search request, as the system uses OR logic between these two fields. If both are included in the request, the returned results will reflect all states.
-    zipCode?: string // Zip Code of the company's primary address.
-    country?: string // Country for the company's primary address. You can use free text or see the Country lookup endpoint for values. Do not use country in conjunction with state in a search request, as the system uses OR logic between these two fields. If both are included in the request, the returned results will reflect all states.
-    continent?: string // Continent for the company's primary address. See the Continent lookup endpoint for values.
-    zipCodeRadiusMiles?: string // Used in conjunction with zipCode, designates a geographical radius (in miles) from the zipCode provided.
-    hashTagString?: string // Hash tags for a company. Can include a comma-separated list.
-    techAttributeTagList?: string // Specify technology product tags. See the Tech - Product lookup endpoint for values. This string uses a numerical dot notation format similar to an IP address. The notation denotes the hierarchical structure: parent-category.category.vendor. For example, 333.202.28. You can use wildcards in the notation (e.g., 333.202.\\\\*, \\\\*.202.\\\\*, and so on).
-    subUnitTypes?: string // Company sub types (e.g., division, subsidiary and so on). See the Sub Unit Type lookup endpoint for values.
-    primaryIndustriesOnly?: boolean // Used in conjunction with the industryCodes input parameter. When set to true, any result returned must have one of the specified industries as a primary industry. If no industries are specified, then this parameter will be ignored. Default is false.
-    industryCodes?: string // Top-level Industry that the contact works in. A contact can have multiple top level industries. Tags are based on the contact's current company. Can include a comma-separated list. See the Industry Codes lookup endpoint for values.
-    industryKeywords?: string // Industry keywords associated with a company. Can include either 'AND' or 'OR' operators. For example, 'software AND security' or 'software OR security'.
-    sicCodes?: string // The Standard Industrial Classification is a system for classifying industries by a four-digit code. See the SIC Codes lookup endpoint for values.
-    naicsCodes?: string // The North American Industry Classification System (NAICS) is the standard used by Federal statistical agencies in classifying business establishments for the purpose of collecting, analyzing, and publishing statistical data related to the U.S. business economy. See the NAICS Codes lookup endpoint for values.
-    revenueMin?: number // Minimum annual revenue for a company in U.S. dollars. Use with revenueMax to set a range. Alternatively, you can use the revenue parameter to search for pre-defined ranges.
-    revenueMax?: number // Maximum annual revenue for a company in U.S. dollars. Use with revenueMin to set a range. Alternatively, you can use the revenue parameter to search for pre-defined ranges.
-    revenue?: string // Annual revenue range in U.S. dollars. Accepts a comma-separated list of values. See the Revenue Range lookup endpoint for values. Alternatively, to get more granular ranges, you can use the revenueMin and revenueMax parameters.
-    employeeRangeMin?: string // Minimum employee count for a company. Use with employeeRangeMax to set a range. Alternatively, you can use the employeeCount parameter to search for pre-defined ranges.
-    employeeRangeMax?: string // Maximum employee count for a company. Use with employeeRangeMin to set a range. Alternatively, you can use the employeeCount parameter to search for pre-defined ranges.
-    employeeCount?: string // Employee count range. Accepts a comma-separated list of values. See the Employee Count lookup endpoint for values. Alternatively, to get more granular ranges, you can use the employeeRangeMin and employeeRangeMax parameters.
-    companyRanking?: string // Company ranking list (e.g., Fortune 500 and so on). See the Company Ranking lookup endpoint for values.
-    metroRegion?: string // Company metro area. Accepts a comma-separated list of U.S. and Canada metro areas. See the Metro Area lookup endpoint for values.
-    locationSearchType?: string // Location criteria for search. Values are PersonOrHQ, PersonAndHQ, Person, HQ, PersonThenHQ.
-    fundingAmountMin?: number // Minimum funding amount in thousands (e.g., 1 = 1000, 500 = 500,000). If fundingAmountMin is used without fundingAmountMax, the result will be the amount specified or greater.
-    fundingAmountMax?: number // Maximum funding amount in thousands (e.g., 1 = 1000, 500 = 500,000). If fundingAmountMax is used without fundingAmountMin, the result will be the amount specified or less.
-    fundingStartDate?: string // Start date of the funding in YYYY-MM-DD format. If fundingStartDate and fundingEndDate are both specified, they will be used as a range. Start date after end date returns an error. If start date and end date are the same, will return results for exact date.
-    fundingEndDate?: string // End date of the funding in YYYY-MM-DD format. If fundingStartDate and fundingEndDate are both specified, they will be used as a range. Start date after end date returns an error. If start date and end date are the same, will return results for exact date.
-    excludedRegions?: string // Exclude a company metro area. Accepts a comma-separated list of U.S. and Canada metro areas. See the Metro Area lookup endpoint for values.
-    zoominfoContactsMin?: string // Minimum number of ZoomInfo contacts associated with company
-    zoominfoContactsMax?: string // Maximum number of ZoomInfo contacts associated with company
-    companyStructureIncludedSubUnitTypes?: string // Company hierarchical structure
-    certified?: number // Denotes if ZoomInfo's research and data team has confirmed activity within the past 12 months
-    excludeDefunctCompanies?: boolean // Include or exclude defunct companies. The default value is false.
-    oneYearEmployeeGrowthRateMin?: string // Minimum one year employee growth rate for a company. Use with oneYearEmployeeGrowthRateMax to set a range.
-    oneYearEmployeeGrowthRateMax?: string // Maximum one year employee growth rate for a company. Use with oneYearEmployeeGrowthRateMin to set a range.
-    twoYearEmployeeGrowthRateMin?: string // Minimum two year employee growth rate for a company. Use with twoYearEmployeeGrowthRateMax to set a range.
-    twoYearEmployeeGrowthRateMax?: string // Maximum two year employee growth rate for a company. Use with twoYearEmployeeGrowthRateMin to set a range.
-    engagementStartDate?: string // Engagement start date in YYYY-MM-DD format.
-    engagementEndDate?: string // Engagement end date in YYYY-MM-DD format. EngagementStartDate is required.
-    engagementType?: string[] // List of engagement types to search for. Accepted values are a list of email, phone, online meeting.
+    /**
+     * Limits the results returned to the given number of results per page. Default is 25.
+     */
+    rpp?: number
+    /**
+     * Provides the results for the given page, used in conjunction with rpp
+     */
+    page?: number
+    /**
+     * Provide sortBy if specifying sortOrder. Valid values are asc, ascending, desc, and descending. By default, results are sorted in descending order.
+     */
+    sortOrder?: string
+    /**
+     * Sort results by valid output fields: name, employeeCount, revenue
+     */
+    sortBy?: string
+    /**
+     * ZoomInfo unique identifier for the company. Will accept-comma-separated list.
+     */
+    companyId?: string
+    /**
+     * Company name
+     */
+    companyName?: string
+    /**
+     * URL to the company website in http://www.example.com format
+     */
+    companyWebsite?: string
+    /**
+     * Text description unique to the company you want to use as search criteria
+     */
+    companyDescription?: string
+    /**
+     * ZoomInfo Company ID for parent company
+     */
+    parentId?: string
+    /**
+     * ZoomInfo Company ID for ultimate parent company
+     */
+    ultimateParentId?: string
+    /**
+     * Company stock ticker symbol
+     */
+    companyTicker?: string[]
+    /**
+     * Company type (private, public, and so on). See the Company Type lookup endpoint for values.
+     */
+    companyType?: string
+    /**
+     * Search using Business Model (B2C, B2B, B2G) for a company. Default is All
+     */
+    businessModel?: string[]
+    /**
+     * Company address
+     */
+    address?: string
+    /**
+     * Company street
+     */
+    street?: string
+    /**
+     * Company state (U.S.) or province (Canada). You can use free text state or province names (e.g., "new hampshire"), the two-letter common abbreviation for a U.S. state (e.g., "nh"), or values provided in the State lookup endpoint. Do not use state in conjunction with country in a search request, as the system uses OR logic between these two fields. If both are included in the request, the returned results will reflect all states.
+     */
+    state?: string
+    /**
+     * Zip Code of the company's primary address.
+     */
+    zipCode?: string
+    /**
+     * Country for the company's primary address. You can use free text or see the Country lookup endpoint for values. Do not use country in conjunction with state in a search request, as the system uses OR logic between these two fields. If both are included in the request, the returned results will reflect all states.
+     */
+    country?: string
+    /**
+     * Continent for the company's primary address. See the Continent lookup endpoint for values.
+     */
+    continent?: string
+    /**
+     * Used in conjunction with zipCode, designates a geographical radius (in miles) from the zipCode provided.
+     */
+    zipCodeRadiusMiles?: string
+    /**
+     * Hash tags for a company. Can include a comma-separated list.
+     */
+    hashTagString?: string
+    /**
+     * Specify technology product tags. See the Tech - Product lookup endpoint for values. This string uses a numerical dot notation format similar to an IP address. The notation denotes the hierarchical structure: parent-category.category.vendor. For example, 333.202.28. You can use wildcards in the notation (e.g., 333.202.\\\\*, \\\\*.202.\\\\*, and so on).
+     */
+    techAttributeTagList?: string
+    /**
+     * Company sub types (e.g., division, subsidiary and so on). See the Sub Unit Type lookup endpoint for values.
+     */
+    subUnitTypes?: string
+    /**
+     * Used in conjunction with the industryCodes input parameter. When set to true, any result returned must have one of the specified industries as a primary industry. If no industries are specified, then this parameter will be ignored. Default is false.
+     */
+    primaryIndustriesOnly?: boolean
+    /**
+     * Top-level Industry that the contact works in. A contact can have multiple top level industries. Tags are based on the contact's current company. Can include a comma-separated list. See the Industry Codes lookup endpoint for values.
+     */
+    industryCodes?: string
+    /**
+     * Industry keywords associated with a company. Can include either 'AND' or 'OR' operators. For example, 'software AND security' or 'software OR security'.
+     */
+    industryKeywords?: string
+    /**
+     * The Standard Industrial Classification is a system for classifying industries by a four-digit code. See the SIC Codes lookup endpoint for values.
+     */
+    sicCodes?: string
+    /**
+     * The North American Industry Classification System (NAICS) is the standard used by Federal statistical agencies in classifying business establishments for the purpose of collecting, analyzing, and publishing statistical data related to the U.S. business economy. See the NAICS Codes lookup endpoint for values.
+     */
+    naicsCodes?: string
+    /**
+     * Minimum annual revenue for a company in U.S. dollars. Use with revenueMax to set a range. Alternatively, you can use the revenue parameter to search for pre-defined ranges.
+     */
+    revenueMin?: number
+    /**
+     * Maximum annual revenue for a company in U.S. dollars. Use with revenueMin to set a range. Alternatively, you can use the revenue parameter to search for pre-defined ranges.
+     */
+    revenueMax?: number
+    /**
+     * Annual revenue range in U.S. dollars. Accepts a comma-separated list of values. See the Revenue Range lookup endpoint for values. Alternatively, to get more granular ranges, you can use the revenueMin and revenueMax parameters.
+     */
+    revenue?: string
+    /**
+     * Minimum employee count for a company. Use with employeeRangeMax to set a range. Alternatively, you can use the employeeCount parameter to search for pre-defined ranges.
+     */
+    employeeRangeMin?: string
+    /**
+     * Maximum employee count for a company. Use with employeeRangeMin to set a range. Alternatively, you can use the employeeCount parameter to search for pre-defined ranges.
+     */
+    employeeRangeMax?: string
+    /**
+     * Employee count range. Accepts a comma-separated list of values. See the Employee Count lookup endpoint for values. Alternatively, to get more granular ranges, you can use the employeeRangeMin and employeeRangeMax parameters.
+     */
+    employeeCount?: string
+    /**
+     * Company ranking list (e.g., Fortune 500 and so on). See the Company Ranking lookup endpoint for values.
+     */
+    companyRanking?: string
+    /**
+     * Company metro area. Accepts a comma-separated list of U.S. and Canada metro areas. See the Metro Area lookup endpoint for values.
+     */
+    metroRegion?: string
+    /**
+     * Location criteria for search. Values are PersonOrHQ, PersonAndHQ, Person, HQ, PersonThenHQ.
+     */
+    locationSearchType?: string
+    /**
+     * Minimum funding amount in thousands (e.g., 1 = 1000, 500 = 500,000). If fundingAmountMin is used without fundingAmountMax, the result will be the amount specified or greater.
+     */
+    fundingAmountMin?: number
+    /**
+     * Maximum funding amount in thousands (e.g., 1 = 1000, 500 = 500,000). If fundingAmountMax is used without fundingAmountMin, the result will be the amount specified or less.
+     */
+    fundingAmountMax?: number
+    /**
+     * Start date of the funding in YYYY-MM-DD format. If fundingStartDate and fundingEndDate are both specified, they will be used as a range. Start date after end date returns an error. If start date and end date are the same, will return results for exact date.
+     */
+    fundingStartDate?: string
+    /**
+     * End date of the funding in YYYY-MM-DD format. If fundingStartDate and fundingEndDate are both specified, they will be used as a range. Start date after end date returns an error. If start date and end date are the same, will return results for exact date.
+     */
+    fundingEndDate?: string
+    /**
+     * Exclude a company metro area. Accepts a comma-separated list of U.S. and Canada metro areas. See the Metro Area lookup endpoint for values.
+     */
+    excludedRegions?: string
+    /**
+     * Minimum number of ZoomInfo contacts associated with company
+     */
+    zoominfoContactsMin?: string
+    /**
+     * Maximum number of ZoomInfo contacts associated with company
+     */
+    zoominfoContactsMax?: string
+    /**
+     * Company hierarchical structure
+     */
+    companyStructureIncludedSubUnitTypes?: string
+    /**
+     * Denotes if ZoomInfo's research and data team has confirmed activity within the past 12 months
+     */
+    certified?: number
+    /**
+     * Include or exclude defunct companies. The default value is false.
+     */
+    excludeDefunctCompanies?: boolean
+    /**
+     * Minimum one year employee growth rate for a company. Use with oneYearEmployeeGrowthRateMax to set a range.
+     */
+    oneYearEmployeeGrowthRateMin?: string
+    /**
+     * Maximum one year employee growth rate for a company. Use with oneYearEmployeeGrowthRateMin to set a range.
+     */
+    oneYearEmployeeGrowthRateMax?: string
+    /**
+     * Minimum two year employee growth rate for a company. Use with twoYearEmployeeGrowthRateMax to set a range.
+     */
+    twoYearEmployeeGrowthRateMin?: string
+    /**
+     * Maximum two year employee growth rate for a company. Use with twoYearEmployeeGrowthRateMin to set a range.
+     */
+    twoYearEmployeeGrowthRateMax?: string
+    /**
+     * Engagement start date in YYYY-MM-DD format.
+     */
+    engagementStartDate?: string
+    /**
+     * Engagement end date in YYYY-MM-DD format. EngagementStartDate is required.
+     */
+    engagementEndDate?: string
+    /**
+     * List of engagement types to search for. Accepted values are a list of email, phone, online meeting.
+     */
+    engagementType?: string[]
   }
 
   export interface SearchResult<T> {
