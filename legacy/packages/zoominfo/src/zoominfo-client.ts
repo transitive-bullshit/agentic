@@ -16,11 +16,11 @@ export namespace zoominfo {
   // Access tokens expire after 60 minutes, so renew them every 55 minutes.
   export const ACCESS_TOKEN_EXPIRATION_MS = 55 * 60 * 1000
 
-  // Allow up to 25 requests per second by default.
+  // Allow up to 1500 requests per minute by default.
   // https://api-docs.zoominfo.com/#rate-and-usage-limits
   export const throttle = pThrottle({
-    limit: 25,
-    interval: 1000
+    limit: 1500,
+    interval: 60_000
   })
 
   export interface EnrichContactOptions {
@@ -106,14 +106,24 @@ export namespace zoominfo {
     }
   }
 
+  export type MatchStatus =
+    | 'NO_MATCH'
+    | 'FULL_MATCH'
+    | 'CONTACT_ONLY_MATCH'
+    | 'COMPANY_ONLY_MATCH'
+    | 'NON_MATCH_BY_REQUIRED_FIELDS'
+    | 'NON_MATCH_BY_LAST_UPDATED_DATE'
+    | 'NON_MATCH_BY_VALID_DATE'
+    | 'NON_MATCH_BY_CONTACT_ACCURACY_MIN'
+    | 'INVALID_INPUT'
+    | 'LIMIT_EXCEEDED'
+    | 'SERVICE_ERROR'
+    | 'OPT_OUT'
+
   export interface EnrichContactResult {
     input: Partial<Omit<EnrichContactOptions, 'outputFields'>>
     data: EnrichedContact[]
-    matchStatus?:
-      | 'FULL_MATCH'
-      | 'PARTIAL_MATCH'
-      | 'NO_MATCH'
-      | 'COMPANY_ONLY_MATCH'
+    matchStatus?: MatchStatus
   }
 
   export interface EnrichedContact {
@@ -1103,6 +1113,7 @@ export namespace zoominfo {
  * ZoomInfo is a robust B2B enrichment and search API for people and companies.
  *
  * @see https://api-docs.zoominfo.com
+ * @see https://tech-docs.zoominfo.com/enterprise-api-getting-started-guide.pdf
  */
 export class ZoomInfoClient extends AIFunctionsProvider {
   protected readonly ky: KyInstance
