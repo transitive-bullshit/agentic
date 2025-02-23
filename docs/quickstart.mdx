@@ -10,25 +10,25 @@ title: Quick Start
 </Info>
 
 <Steps>
-  <Step title='Install core deps'>
+  <Step title='Install core deps (zod)'>
     <CodeGroup>
       ```bash npm
-      npm install @agentic/core zod
+      npm install zod
       ```
 
       ```bash yarn
-      yarn add @agentic/core zod
+      yarn add zod
       ```
 
       ```bash pnpm
-      pnpm add @agentic/core zod
+      pnpm add zod
       ```
     </CodeGroup>
 
   </Step>
 
   <Step title='Install AI tools'>
-    You can either install all of the AI tools via the convenience package `@agentic/stdlib`, or you can install them individually via their respective packages (`@agentic/weather`, `@agentic/twitter`, etc.).
+    You can either install all of the AI tools via `@agentic/stdlib`, or you can install them individually via their respective packages (`@agentic/weather`, `@agentic/twitter`, etc.).
 
     <AccordionGroup>
       <Accordion title="Install all AI tools">
@@ -72,7 +72,7 @@ title: Quick Start
     <Note>
       There is no functional difference between using `@agentic/stdlib` versus using the individual tool packages directly. The only difference is if you want to optimize your install size (when running on serverless functions, for instance).
 
-      The default examples all use `@agentic/stdlib` because it provides a simpler DX.
+      The default examples all use `@agentic/stdlib` for simplicity.
     </Note>
 
   </Step>
@@ -138,15 +138,15 @@ title: Quick Start
       <Accordion title="Firebase Genkit">
         <CodeGroup>
           ```bash npm
-          npm install @agentic/genkit @genkit-ai/ai @genkit-ai/core
+          npm install @agentic/genkit genkit
           ```
 
           ```bash yarn
-          yarn add @agentic/genkit @genkit-ai/ai @genkit-ai/core
+          yarn add @agentic/genkit genkit
           ```
 
           ```bash pnpm
-          pnpm add @agentic/genkit @genkit-ai/ai @genkit-ai/core
+          pnpm add @agentic/genkit genkit
           ```
         </CodeGroup>
 

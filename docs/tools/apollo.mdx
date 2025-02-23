@@ -1,0 +1,38 @@
+---
+title: Apollo
+description: Apollo provides an API for B2B person and company enrichment.
+---
+
+- package: `@agentic/apollo`
+- exports: `class Apollo`, `namespace apollo`
+- env vars: `APOLLO_API_KEY`
+- [source](https://github.com/transitive-bullshit/agentic/blob/main/packages/apollo/src/apollo-client.ts)
+- [apollo api docs](https://docs.apollo.io)
+
+## Install
+
+<CodeGroup>
+```bash npm
+npm install @agentic/apollo
+```
+
+```bash yarn
+yarn add @agentic/apollo
+```
+
+```bash pnpm
+pnpm add @agentic/apollo
+```
+
+</CodeGroup>
+
+## Usage
+
+```ts
+import { ApolloClient } from '@agentic/apollo'
+
+const apollo = new ApolloClient()
+const res = await apollo.enrichPerson({
+  linkedin_url: 'https://linkedin.com/in/fisch2'
+})
+```

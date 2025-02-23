@@ -32,6 +32,7 @@
   },
   "dependencies": {
     "@agentic/ai-sdk": "workspace:*",
+    "@agentic/apollo": "workspace:*",
     "@agentic/bing": "workspace:*",
     "@agentic/calculator": "workspace:*",
     "@agentic/clearbit": "workspace:*",
@@ -48,6 +49,7 @@
     "@agentic/hunter": "workspace:*",
     "@agentic/jina": "workspace:*",
     "@agentic/langchain": "workspace:*",
+    "@agentic/leadmagic": "workspace:*",
     "@agentic/llamaindex": "workspace:*",
     "@agentic/midjourney": "workspace:*",
     "@agentic/novu": "workspace:*",
@@ -56,6 +58,7 @@
     "@agentic/polygon": "workspace:*",
     "@agentic/predict-leads": "workspace:*",
     "@agentic/proxycurl": "workspace:*",
+    "@agentic/rocketreach": "workspace:*",
     "@agentic/searxng": "workspace:*",
     "@agentic/serpapi": "workspace:*",
     "@agentic/serper": "workspace:*",
@@ -68,10 +71,11 @@
     "@agentic/wikidata": "workspace:*",
     "@agentic/wikipedia": "workspace:*",
     "@agentic/wolfram-alpha": "workspace:*",
+    "@agentic/zoominfo": "workspace:*",
     "@e2b/code-interpreter": "^1.0.2"
   },
   "peerDependencies": {
-    "zod": "^3.23.8"
+    "zod": "^3.24.2"
   },
   "devDependencies": {
     "@agentic/tsconfig": "workspace:*"

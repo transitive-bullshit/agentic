@@ -35,7 +35,7 @@
     "@agentic/core": "workspace:*"
   },
   "peerDependencies": {
-    "ai": "^4.1.0"
+    "ai": "^4.1.42"
   },
   "devDependencies": {
     "@agentic/tsconfig": "workspace:*",

@@ -1,0 +1,38 @@
+---
+title: RocketReach
+description: RocketReach provides an API for B2B person and company enrichment.
+---
+
+- package: `@agentic/rocketreach`
+- exports: `class RocketReach`, `namespace rocketreach`
+- env vars: `ROCKETREACH_API_KEY`
+- [source](https://github.com/transitive-bullshit/agentic/blob/main/packages/rocketreach/src/rocketreach-client.ts)
+- [rocketreach api docs](https://rocketreach.co/api/v2/docs)
+
+## Install
+
+<CodeGroup>
+```bash npm
+npm install @agentic/rocketreach
+```
+
+```bash yarn
+yarn add @agentic/rocketreach
+```
+
+```bash pnpm
+pnpm add @agentic/rocketreach
+```
+
+</CodeGroup>
+
+## Usage
+
+```ts
+import { RocketReachClient } from '@agentic/rocketreach'
+
+const rocketreach = new RocketReachClient()
+const res = await rocketreach.lookupPerson({
+  linkedin_url: 'https://www.linkedin.com/in/fisch2'
+})
+```

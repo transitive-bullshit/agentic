@@ -35,7 +35,7 @@
     "ky": "^1.7.5"
   },
   "peerDependencies": {
-    "zod": "^3.23.8"
+    "zod": "^3.24.2"
   },
   "devDependencies": {
     "@agentic/tsconfig": "workspace:*"
