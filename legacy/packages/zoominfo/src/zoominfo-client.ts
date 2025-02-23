@@ -73,7 +73,11 @@ export namespace zoominfo {
   export interface EnrichContactResult {
     input: Partial<Omit<EnrichContactOptions, 'outputFields'>>
     data: EnrichedContact[]
-    matchStatus?: 'FULL_MATCH' | 'PARTIAL_MATCH' | 'NO_MATCH'
+    matchStatus?:
+      | 'FULL_MATCH'
+      | 'PARTIAL_MATCH'
+      | 'NO_MATCH'
+      | 'COMPANY_ONLY_MATCH'
   }
 
   export interface EnrichedContact {
@@ -368,7 +372,7 @@ export namespace zoominfo {
     address?: string // Company address
     street?: string // Company street
     state?: string // Company state (U.S.) or province (Canada). You can use free text state or province names (e.g., "new hampshire"), the two-letter common abbreviation for a U.S. state (e.g., "nh"), or values provided in the State lookup endpoint.
-    zipCode?: string // Zip Code of the company's primary address
+    zipCode?: string // Zip Code of the company's primary address.
     country?: string // Country for the company's primary address. You can use free text or see the Country lookup endpoint for values.
     continent?: string // Continent for the company's primary address. See the Continent lookup endpoint for values.
     zipCodeRadiusMiles?: string // Used in conjunction with zipCode, designates a geographical radius (in miles) from the zipCode provided.
@@ -429,7 +433,7 @@ export namespace zoominfo {
     address?: string // Company address
     street?: string // Company street
     state?: string // Company state (U.S.) or province (Canada). You can use free text state or province names (e.g., "new hampshire"), the two-letter common abbreviation for a U.S. state (e.g., "nh"), or values provided in the State lookup endpoint. Do not use state in conjunction with country in a search request, as the system uses OR logic between these two fields. If both are included in the request, the returned results will reflect all states.
-    zipCode?: string // Zip Code of the company's primary address
+    zipCode?: string // Zip Code of the company's primary address.
     country?: string // Country for the company's primary address. You can use free text or see the Country lookup endpoint for values. Do not use country in conjunction with state in a search request, as the system uses OR logic between these two fields. If both are included in the request, the returned results will reflect all states.
     continent?: string // Continent for the company's primary address. See the Continent lookup endpoint for values.
     zipCodeRadiusMiles?: string // Used in conjunction with zipCode, designates a geographical radius (in miles) from the zipCode provided.
@@ -625,6 +629,18 @@ export namespace zoominfo {
     'totalFundingAmount',
     'employeeGrowth'
   ] as const
+
+  export interface UsageResponse {
+    usage: Usage[]
+  }
+
+  export interface Usage {
+    limitType: string
+    description: string
+    limit: number
+    currentUsage: number
+    usageRemaining: number
+  }
 }
 
 /**
@@ -693,6 +709,9 @@ export class ZoomInfoClient extends AIFunctionsProvider {
    * Attempts to authenticate with ZoomInfo using the provided credentials
    * (either basic auth or PKI auth). If there's already a valid access token,
    * then it will be reused unless `force` is set to `true`.
+   *
+   * NOTE: All API methods call this internally, so there is no reason to call
+   * this yourself unless you need to force a re-authentication.
    */
   async authenticate({
     force = false
@@ -1106,6 +1125,28 @@ fullName AND companyId/companyName. Combining these values effectively results i
         }
       })
       .json<zoominfo.SearchCompaniesResponse>()
+  }
+
+  /**
+   * Retrieve current usage stats and available data depending on your
+   * ZoomInfo plan.
+   */
+  @aiFunction({
+    name: 'zoominfo_get_usage',
+    description:
+      'Retrieves current usage stats for available data depending on your ZoomInfo plan.',
+    inputSchema: z.object({})
+  })
+  async getUsage() {
+    await this.authenticate()
+
+    return this.ky
+      .get('lookup/usage', {
+        headers: {
+          Authorization: `Bearer ${this.accessToken}`
+        }
+      })
+      .json<zoominfo.UsageResponse>()
   }
 }
 

@@ -11,9 +11,10 @@ import pThrottle from 'p-throttle'
 
 export namespace clearbit {
   // Allow up to 600 requests per minute by default.
+  // (10 requests per second)
   export const throttle = pThrottle({
-    limit: 600,
-    interval: 60 * 1000
+    limit: 10,
+    interval: 1000
   })
 
   export const MAX_PAGE_SIZE = 100
