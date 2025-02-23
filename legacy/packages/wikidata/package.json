@@ -37,7 +37,7 @@
     "wikibase-sdk": "^10.0.3"
   },
   "peerDependencies": {
-    "zod": "^3.23.8"
+    "zod": "^3.24.2"
   },
   "devDependencies": {
     "@agentic/tsconfig": "workspace:*"

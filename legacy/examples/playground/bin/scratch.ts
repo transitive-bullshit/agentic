@@ -1,6 +1,6 @@
 import 'dotenv/config'
 
-import { ExaClient } from '@agentic/stdlib'
+import { ZoomInfoClient } from '@agentic/stdlib'
 import restoreCursor from 'restore-cursor'
 
 /**
@@ -129,11 +129,21 @@ async function main() {
   //   json: true
   // })
 
-  const exa = new ExaClient()
-  const res = await exa.search({
-    query: 'OpenAI',
-    category: 'linkedin profile'
+  // const exa = new ExaClient()
+  // const res = await exa.search({
+  //   query: 'OpenAI',
+  //   category: 'linkedin profile'
+  // })
+
+  const zoomInfo = new ZoomInfoClient()
+  const res = await zoomInfo.enrichContact({
+    // emailAddress: 'travis@transitivebullsh.it'
+    fullName: 'Kevin Raheja',
+    companyName: 'HeyGen'
   })
+  // const res = await zoomInfo.searchContacts({
+  //   fullName: 'Kevin Raheja'
+  // })
 
   console.log(JSON.stringify(res, null, 2))
 }

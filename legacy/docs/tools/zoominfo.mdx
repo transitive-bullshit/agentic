@@ -1,0 +1,40 @@
+---
+title: ZoomInfo
+description: ZoomInfo provides a powerful API for B2B person and company data enrichment.
+---
+
+- package: `@agentic/zoominfo`
+- exports: `class ZoomInfo`, `namespace zoominfo`
+- env vars:
+  - `ZOOMINFO_USERNAME` and `ZOOMINFO_PASSWORD` for basic auth
+  - `ZOOMINFO_USERNAME`, `ZOOMINFO_CLIENT_ID`, and `ZOOMINFO_PRIVATE_KEY` for PKI auth
+- [source](https://github.com/transitive-bullshit/agentic/blob/main/packages/zoominfo/src/zoominfo-client.ts)
+- [zoominfo api docs](https://api-docs.zoominfo.com)
+
+## Install
+
+<CodeGroup>
+```bash npm
+npm install @agentic/zoominfo
+```
+
+```bash yarn
+yarn add @agentic/zoominfo
+```
+
+```bash pnpm
+pnpm add @agentic/zoominfo
+```
+
+</CodeGroup>
+
+## Usage
+
+```ts
+import { ZoomInfoClient } from '@agentic/zoominfo'
+
+const zoomInfo = new ZoomInfoClient()
+const res = await zoomInfo.enrichContact({
+  emailAddress: 'travis@transitivebullsh.it'
+})
+```

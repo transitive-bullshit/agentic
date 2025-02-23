@@ -45,12 +45,14 @@
     "npm-run-all2": "^7.0.2",
     "only-allow": "^1.2.1",
     "prettier": "^3.5.1",
+    "syncpack": "14.0.0-alpha.10",
     "tsup": "^8.3.6",
     "tsx": "^4.19.3",
     "turbo": "^2.4.2",
     "typescript": "^5.7.3",
     "vitest": "3.0.6",
-    "zod": "^3.24.2"
+    "zod": "^3.24.2",
+    "zoominfo-api-auth-client": "^1.0.1"
   },
   "lint-staged": {
     "*.{ts,tsx}": [

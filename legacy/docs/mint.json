@@ -53,6 +53,7 @@
     {
       "group": "Tools",
       "pages": [
+        "tools/apollo",
         "tools/bing",
         "tools/calculator",
         "tools/clearbit",
@@ -64,6 +65,7 @@
         "tools/hacker-news",
         "tools/hunter",
         "tools/jina",
+        "tools/leadmagic",
         "tools/midjourney",
         "tools/novu",
         "tools/people-data-labs",
@@ -71,6 +73,7 @@
         "tools/polygon",
         "tools/predict-leads",
         "tools/proxycurl",
+        "tools/rocketreach",
         "tools/searxng",
         "tools/serpapi",
         "tools/serper",
@@ -82,7 +85,8 @@
         "tools/weather",
         "tools/wikidata",
         "tools/wikipedia",
-        "tools/wolfram-alpha"
+        "tools/wolfram-alpha",
+        "tools/zoominfo"
       ]
     }
   ],

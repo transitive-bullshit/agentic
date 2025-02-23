@@ -11,7 +11,7 @@
     "@agentic/langchain": "workspace:*",
     "@agentic/stdlib": "workspace:*",
     "@langchain/core": "^0.3.13",
-    "@langchain/openai": "^0.3.11",
+    "@langchain/openai": "0.4.4",
     "langchain": "^0.3.3",
     "zod": "^3.24.2"
   },
