@@ -1,5 +1,13 @@
 # @agentic/jigsawstack
 
+## 2.0.3
+
+### Patch Changes
+
+- Minor
+- Updated dependencies
+  - @agentic/core@7.3.3
+
 ## 2.0.2
 
 ### Patch Changes
