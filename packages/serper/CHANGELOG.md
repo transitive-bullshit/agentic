@@ -1,5 +1,13 @@
 # @agentic/serper
 
+## 7.3.3
+
+### Patch Changes
+
+- Minor
+- Updated dependencies
+  - @agentic/core@7.3.3
+
 ## 7.3.2
 
 ### Patch Changes

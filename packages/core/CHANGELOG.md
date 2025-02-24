@@ -1,5 +1,11 @@
 # @agentic/core
 
+## 7.3.3
+
+### Patch Changes
+
+- Minor
+
 ## 7.3.2
 
 ### Patch Changes

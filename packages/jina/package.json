@@ -1,6 +1,6 @@
 {
   "name": "@agentic/jina",
-  "version": "7.3.2",
+  "version": "7.3.3",
   "description": "Agentic SDK for Jina AI.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",
