@@ -1,5 +1,13 @@
 # @agentic/stdlib
 
+## 7.4.2
+
+### Patch Changes
+
+- Bug fix for zoominfo re-authentication
+- Updated dependencies
+  - @agentic/zoominfo@7.4.2
+
 ## 7.4.1
 
 ### Patch Changes
