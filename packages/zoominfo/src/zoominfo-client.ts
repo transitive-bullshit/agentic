@@ -13,8 +13,8 @@ import { z } from 'zod'
 export namespace zoominfo {
   export const API_BASE_URL = 'https://api.zoominfo.com'
 
-  // Access tokens expire after 60 minutes, so renew them every 55 minutes.
-  export const ACCESS_TOKEN_EXPIRATION_MS = 55 * 60 * 1000
+  // Access tokens expire after 60 minutes, so renew them every 57 minutes.
+  export const ACCESS_TOKEN_EXPIRATION_MS = 57 * 60 * 1000
 
   // Allow up to 1500 requests per minute by default.
   // https://api-docs.zoominfo.com/#rate-and-usage-limits
@@ -247,6 +247,7 @@ export namespace zoominfo {
   export interface EnrichCompanyResult {
     input: Partial<EnrichCompanyOptions>
     data: EnrichedCompany[]
+    matchStatus?: MatchStatus
   }
 
   export interface EnrichedCompany {
@@ -1186,7 +1187,7 @@ export class ZoomInfoClient extends AIFunctionsProvider {
     if (
       !force &&
       this.accessToken &&
-      this.accessTokenDateMS! + zoominfo.ACCESS_TOKEN_EXPIRATION_MS < Date.now()
+      this.accessTokenDateMS! + zoominfo.ACCESS_TOKEN_EXPIRATION_MS > Date.now()
     ) {
       // Access token is still valid.
       return
