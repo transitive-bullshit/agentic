@@ -116,10 +116,12 @@ export class JinaClient extends AIFunctionsProvider {
 
   constructor({
     apiKey = getEnv('JINA_API_KEY'),
+    timeoutMs = 60_000,
     throttle = true,
     ky = defaultKy
   }: {
     apiKey?: string
+    timeoutMs?: number
     throttle?: boolean
     ky?: KyInstance
   } = {}) {
@@ -131,12 +133,14 @@ export class JinaClient extends AIFunctionsProvider {
       ky = ky.extend({ headers: { Authorization: `Bearer ${apiKey}` } })
     }
 
+    ky = ky.extend({ timeout: timeoutMs })
+
     const throttledKyReader = throttle
       ? throttleKy(
           ky,
           pThrottle({
             limit: apiKey ? 200 : 20,
-            interval: 60 * 60 * 1000
+            interval: 60 * 60 * 1000 // 60 minutes
           })
         )
       : ky
@@ -147,11 +151,11 @@ export class JinaClient extends AIFunctionsProvider {
           ky,
           pThrottle({
             limit: apiKey ? 40 : 5,
-            interval: 60 * 60 * 1000
+            interval: 60 * 60 * 1000 // 60 minutes
           })
         )
       : ky
-    this.kySearch = throttledKySearch.extend({ prefixUrl: 'https://s.jina.ai	' })
+    this.kySearch = throttledKySearch.extend({ prefixUrl: 'https://s.jina.ai' })
   }
 
   @aiFunction({
