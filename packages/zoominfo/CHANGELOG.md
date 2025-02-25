@@ -1,5 +1,11 @@
 # @agentic/zoominfo
 
+## 7.4.2
+
+### Patch Changes
+
+- Bug fix for zoominfo re-authentication
+
 ## 7.4.1
 
 ### Patch Changes
