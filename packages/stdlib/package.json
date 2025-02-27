@@ -45,6 +45,7 @@
     "@agentic/firecrawl": "workspace:*",
     "@agentic/genkit": "workspace:*",
     "@agentic/github": "workspace:*",
+    "@agentic/gravatar": "workspace:*",
     "@agentic/hacker-news": "workspace:*",
     "@agentic/hunter": "workspace:*",
     "@agentic/jina": "workspace:*",

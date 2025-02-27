@@ -1,6 +1,6 @@
 import 'dotenv/config'
 
-import { ZoomInfoClient } from '@agentic/stdlib'
+import * as stdlib from '@agentic/stdlib'
 import restoreCursor from 'restore-cursor'
 
 /**
@@ -135,15 +135,17 @@ async function main() {
   //   category: 'linkedin profile'
   // })
 
-  const zoomInfo = new ZoomInfoClient()
-  const res = await zoomInfo.enrichContact({
-    // emailAddress: 'travis@transitivebullsh.it'
-    fullName: 'Kevin Raheja',
-    companyName: 'HeyGen'
-  })
+  // const zoomInfo = new ZoomInfoClient()
+  // const res = await zoomInfo.enrichContact({
+  //   // emailAddress: 'travis@transitivebullsh.it'
+  //   fullName: 'Kevin Raheja',
+  //   companyName: 'HeyGen'
+  // })
   // const res = await zoomInfo.searchContacts({
   //   fullName: 'Kevin Raheja'
   // })
+  const gravatar = new stdlib.GravatarClient()
+  const res = await gravatar.getProfileByIdentifier('email@example.com')
 
   console.log(JSON.stringify(res, null, 2))
 }
