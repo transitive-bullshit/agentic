@@ -1,5 +1,13 @@
 # @agentic/stdlib
 
+## 7.4.5
+
+### Patch Changes
+
+- Fix gravatar types
+- Updated dependencies
+  - @agentic/gravatar@7.4.3
+
 ## 7.4.4
 
 ### Patch Changes
