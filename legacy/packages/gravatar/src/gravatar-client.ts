@@ -34,6 +34,8 @@ export namespace gravatar {
     hash: string
     /** The user’s display name that appears on their profile. */
     display_name: string
+    first_name?: string
+    last_name?: string
     /** The full URL to the user’s Gravatar profile. */
     profile_url: string
     /** The URL to the user’s avatar image, if set. */
@@ -49,11 +51,20 @@ export namespace gravatar {
     /** The name of the company where the user is employed. */
     company: string
     /** An array of verified accounts the user has added to their profile. The number of verified accounts displayed is limited to a maximum of 4 in unauthenticated requests. */
-    verified_accounts: any[]
+    verified_accounts: Account[]
     /** A phonetic guide to pronouncing the user’s name. */
     pronunciation: string
     /** The pronouns the user prefers to use. */
     pronouns: string
+
+    is_organization?: boolean
+    links?: Link[]
+    interests?: any[]
+    gallery?: Image[]
+    payments?: {
+      links?: any[]
+      crypto_wallets?: CryptoWallet[]
+    }
 
     /** The total number of verified accounts the user has added to their profile, including those not displayed on their profile. This property is only provided in authenticated API requests. */
     number_verified_accounts?: number
@@ -63,6 +74,40 @@ export namespace gravatar {
 
     /** The date the user registered their account. This property is only provided in authenticated API requests. Example: "2021-10-01" */
     registration_date?: string
+
+    contact_info?: ContactInfo
+  }
+
+  export interface Account {
+    service_type: string
+    service_label: string
+    service_icon: string
+    url: string
+    is_hidden: boolean
+  }
+
+  export interface Link {
+    label: string
+    url: string
+  }
+
+  export interface Image {
+    url: string
+    alt_text: string
+  }
+
+  export interface CryptoWallet {
+    label: string
+    address: string
+  }
+
+  export interface ContactInfo {
+    home_phone: string
+    work_phone: string
+    cell_phone: string
+    email: string
+    contact_form: string
+    calendar: string
   }
 }
 
@@ -144,5 +189,18 @@ export class GravatarClient extends AIFunctionsProvider {
 
       throw err
     }
+  }
+
+  async getAvatarForIdentifier(
+    emailOrOpts: string | gravatar.GetProfileByIdentifierOptions
+  ): Promise<string> {
+    const { email } =
+      typeof emailOrOpts === 'string' ? { email: emailOrOpts } : emailOrOpts
+    const hashedEmail = crypto
+      .createHash('SHA256')
+      .update(email.trim().toLowerCase(), 'utf8')
+      .digest('hex')
+
+    return `https://gravatar.com/avatar/${hashedEmail}`
   }
 }
