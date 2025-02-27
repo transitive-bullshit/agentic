@@ -1,5 +1,11 @@
 # @agentic/social-data
 
+## 7.3.4
+
+### Patch Changes
+
+- Add gravatar; minor type fixes
+
 ## 7.3.3
 
 ### Patch Changes
