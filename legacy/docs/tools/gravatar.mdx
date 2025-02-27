@@ -1,0 +1,36 @@
+---
+title: Gravatar
+description: Gravatar Profile API.
+---
+
+- package: `@agentic/gravatar`
+- exports: `class GravatarClient`, `namespace gravatar`
+- env vars: `GRAVATAR_API_KEY` _(optional)_
+- [source](https://github.com/transitive-bullshit/agentic/blob/main/packages/gravatar/src/gravatar-client.ts)
+- [Gravatar API docs](https://docs.gravatar.com/api/profiles/rest-api/)
+
+## Install
+
+<CodeGroup>
+```bash npm
+npm install @agentic/gravatar
+```
+
+```bash yarn
+yarn add @agentic/gravatar
+```
+
+```bash pnpm
+pnpm add @agentic/gravatar
+```
+
+</CodeGroup>
+
+## Usage
+
+```ts
+import { GravatarClient } from '@agentic/gravatar'
+
+const gravatar = new GravatarClient()
+const profile = await gravatar.getProfileByIdentifier('my-email@example.com')
+```
