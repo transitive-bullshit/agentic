@@ -1,5 +1,11 @@
 # @agentic/jina
 
+## 7.3.5
+
+### Patch Changes
+
+- Add gravatar; minor type fixes
+
 ## 7.3.4
 
 ### Patch Changes
