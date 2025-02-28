@@ -49,6 +49,9 @@ export class DexaClient extends AIFunctionsProvider {
     this.ky = ky.extend({ prefixUrl: this.apiBaseUrl, timeout: timeoutMs })
   }
 
+  /**
+   * Answers questions based on knowledge of trusted experts and podcasters. Example experts include: Andrew Huberman, Tim Ferriss, Lex Fridman, Peter Attia, Seth Godin, Rhonda Patrick, Rick Rubin, and more.
+   */
   @aiFunction({
     name: 'ask_dexa',
     description:

@@ -661,6 +661,9 @@ export class DiffbotClient extends AIFunctionsProvider {
     })
   }
 
+  /**
+   * Scrapes and extracts structured data from a web page. Also classifies the web page as one of several types (article, product, discussion, job, image, video, list, event, or other).
+   */
   @aiFunction({
     name: 'diffbot_analyze_url',
     description:
@@ -673,6 +676,9 @@ export class DiffbotClient extends AIFunctionsProvider {
     return this._extract<diffbot.ExtractAnalyzeResponse>('v3/analyze', options)
   }
 
+  /**
+   * Scrapes and extracts clean article text from news articles, blog posts, and other text-heavy web pages.
+   */
   @aiFunction({
     name: 'diffbot_extract_article_from_url',
     description:
@@ -685,6 +691,9 @@ export class DiffbotClient extends AIFunctionsProvider {
     return this._extract<diffbot.ExtractArticleResponse>('v3/article', options)
   }
 
+  /**
+   * Resolves and enriches a partial person or organization entity.
+   */
   @aiFunction({
     name: 'diffbot_enhance_entity',
     description:

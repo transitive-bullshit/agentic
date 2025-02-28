@@ -79,6 +79,9 @@ export class MidjourneyClient extends AIFunctionsProvider {
     })
   }
 
+  /**
+   * Creates 4 images from a prompt using the Midjourney API. Useful for generating images on the fly.
+   */
   @aiFunction({
     name: 'midjourney_create_images',
     description:

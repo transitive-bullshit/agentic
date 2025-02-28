@@ -526,6 +526,9 @@ export class PredictLeadsClient extends AIFunctionsProvider {
     })
   }
 
+  /**
+   * Returns basic information about a company given its `domain` like location, name, stock ticker, description, etc.
+   */
   @aiFunction({
     name: 'get_company',
     description:
@@ -541,6 +544,9 @@ export class PredictLeadsClient extends AIFunctionsProvider {
     return this.ky.get(`v2/companies/${domain}`).json<predictleads.Response>()
   }
 
+  /**
+   * Returns a list of events from news for a given company. Events are found in press releases, industry news, blogs, social media, and other online sources.
+   */
   @aiFunction({
     name: 'get_company_events',
     description:

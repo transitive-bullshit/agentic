@@ -271,6 +271,7 @@ export class HackerNewsClient extends AIFunctionsProvider {
     })
   }
 
+  /** Fetches a HN story or comment by its ID. */
   @aiFunction({
     name: 'hacker_news_get_item',
     description: 'Fetches a HN story or comment by its ID.',
@@ -287,6 +288,9 @@ export class HackerNewsClient extends AIFunctionsProvider {
       .json<hackernews.SearchItem>()
   }
 
+  /**
+   * Fetches a HN user by username.
+   */
   @aiFunction({
     name: 'hacker_news_get_user',
     description: 'Fetches a HN user by username.',
@@ -303,6 +307,7 @@ export class HackerNewsClient extends AIFunctionsProvider {
       .json<hackernews.SearchUser>()
   }
 
+  /** Searches HN for stories and comments matching the given query. */
   @aiFunction({
     name: 'hacker_news_search',
     description:
@@ -342,6 +347,9 @@ export class HackerNewsClient extends AIFunctionsProvider {
       .json<hackernews.SearchResponse>()
   }
 
+  /**
+   * Fetches / searches the top stories currently on the front page of HN. This is the same as `hacker_news_search`, but with `tags: ["front_page"]` set to filter only by the current front page stories.
+   */
   @aiFunction({
     name: 'hacker_news_get_top_stories',
     description:

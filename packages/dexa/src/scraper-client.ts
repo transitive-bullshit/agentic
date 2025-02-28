@@ -80,6 +80,9 @@ export class ScraperClient extends AIFunctionsProvider {
     this.ky = throttledKy.extend({ prefixUrl: this.apiBaseUrl })
   }
 
+  /**
+   * Scrapes the content of a single URL.
+   */
   @aiFunction({
     name: 'scrape_url',
     description: 'Scrapes the content of a single URL.',

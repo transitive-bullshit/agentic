@@ -307,6 +307,23 @@ export class SearxngClient extends AIFunctionsProvider {
     this.ky = ky.extend({ prefixUrl: apiBaseUrl })
   }
 
+  /**
+   * Searches across multiple search engines using a local instance of Searxng. To search only specific engines, use the `engines` parameter.
+   *
+   * The most important search engines are:
+   *
+   * - "reddit" (Reddit posts)
+   * - "google" (Google web search)
+   * - "google news" (Google News search)
+   * - "brave" (Brave web search)
+   * - "arxiv" (academic papers)
+   * - "genius" (Genius.com for song lyrics)
+   * - "imdb" (movies and TV shows)
+   * - "hackernews" (Hacker News)
+   * - "wikidata" (Wikidata)
+   * - "wolframalpha" (Wolfram Alpha)
+   * - "youtube" (YouTube videos)
+   */
   @aiFunction({
     name: 'searxng',
     description: `Searches across multiple search engines using a local instance of Searxng. To search only specific engines, use the \`engines\` parameter.

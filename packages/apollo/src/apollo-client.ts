@@ -311,6 +311,13 @@ export class ApolloClient extends AIFunctionsProvider {
     })
   }
 
+  /**
+   * Attempts to enrich a person with Apollo data.
+   *
+   * Apollo relies on the information you pass via the endpoint's parameters to identify the correct person to enrich. If you provide more information about a person, Apollo is more likely to find a match within its database. If you only provide general information, such as a name without a domain or email address, you might receive a 200 response, but the response will indicate that no records have been enriched.
+   *
+   * By default, this endpoint does not return personal emails or phone numbers. Use the reveal_personal_emails and reveal_phone_number parameters to retrieve emails and phone numbers.
+   */
   @aiFunction({
     name: 'apollo_enrich_person',
     description: `Attempts to enrich a person with Apollo data.

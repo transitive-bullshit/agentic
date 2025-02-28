@@ -2108,6 +2108,7 @@ export class ProxycurlClient extends AIFunctionsProvider {
     })
   }
 
+  /** Gets the LinkedIn profile for a company given it's domain `url`. */
   @aiFunction({
     name: 'get_linkedin_company',
     description:
@@ -2134,6 +2135,7 @@ export class ProxycurlClient extends AIFunctionsProvider {
     }
   }
 
+  /** Gets the LinkedIn profile for a person given some unique, identifying information about them. */
   @aiFunction({
     name: 'get_linkedin_person',
     description:
@@ -2150,6 +2152,7 @@ export class ProxycurlClient extends AIFunctionsProvider {
       .json<proxycurl.PersonProfile>()
   }
 
+  /** Resolves the LinkedIn profile for a person given their `first_name` and `company_domain` URL. */
   @aiFunction({
     name: 'resolve_linkedin_person',
     description:
@@ -2170,6 +2173,7 @@ export class ProxycurlClient extends AIFunctionsProvider {
       .json<proxycurl.ResolvedPersonProfile>()
   }
 
+  /** Resolves the LinkedIn profile for a person given their `email`. */
   @aiFunction({
     name: 'resolve_linkedin_person_by_email',
     description:
@@ -2189,6 +2193,7 @@ export class ProxycurlClient extends AIFunctionsProvider {
       .json<proxycurl.ReverseEmailUrlEnrichResult>()
   }
 
+  /** Resolves the LinkedIn profile for a person at a given `company_name` and `role`. */
   @aiFunction({
     name: 'resolve_linkedin_person_at_company_by_role',
     description:
@@ -2208,6 +2213,7 @@ export class ProxycurlClient extends AIFunctionsProvider {
       .json<proxycurl.ResolvedPersonProfile>()
   }
 
+  /** Resolves the LinkedIn profile for a company given the `company_name` and/or `company_domain`. */
   @aiFunction({
     name: 'resolve_linkedin_company',
     description:
@@ -2232,6 +2238,7 @@ export class ProxycurlClient extends AIFunctionsProvider {
     }
   }
 
+  /** Searches LinkedIn company profiles based on a set of criteria such as `name`, `industry`, `region`, `description`, `city`, number of employees, founding date, funding raised, etc. */
   @aiFunction({
     name: 'search_linkedin_companies',
     description:
@@ -2246,6 +2253,7 @@ export class ProxycurlClient extends AIFunctionsProvider {
       .json<proxycurl.CompanySearchResult>()
   }
 
+  /** Searches LinkedIn people profiles based on a set of criteria such as `country`, `first_name`, `last_name`, `current_company_name`, `headline`, `industries`, `past_company_name`, `summary`, `city`, `education_school_name`, etc. */
   @aiFunction({
     name: 'search_linkedin_people',
     description:

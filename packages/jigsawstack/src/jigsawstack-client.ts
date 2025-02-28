@@ -155,6 +155,9 @@ export class JigsawStackClient extends AIFunctionsProvider {
     })
   }
 
+  /**
+   * Perform web searches and retrieve high-quality results of the given query
+   */
   @aiFunction({
     name: 'jigsawstack_ai_search',
     description:
@@ -173,6 +176,9 @@ export class JigsawStackClient extends AIFunctionsProvider {
       .json<jigsawstack.SearchResponse>()
   }
 
+  /**
+   * Scrape any website
+   */
   @aiFunction({
     name: 'jigsawstack_ai_scrape',
     description: 'Scrape any website',
@@ -195,6 +201,9 @@ export class JigsawStackClient extends AIFunctionsProvider {
       .json<jigsawstack.ScrapeResponse>()
   }
 
+  /**
+   * Recognise, describe and retrieve data within an image with great accuracy.
+   */
   @aiFunction({
     name: 'jigsawstack_vocr',
     description:
@@ -217,6 +226,9 @@ export class JigsawStackClient extends AIFunctionsProvider {
       .json<jigsawstack.VOCRResponse>()
   }
 
+  /**
+   * Generate semantically correct SQL queries from text.
+   */
   @aiFunction({
     name: 'jigsawstack_text_to_sql',
     description: 'Generate semantically correct SQL queries from text.',
@@ -241,6 +253,9 @@ export class JigsawStackClient extends AIFunctionsProvider {
       .json<jigsawstack.TextToSqlResponse>()
   }
 
+  /**
+   * Convert audio/video files into accurate text transcriptions instantly.
+   */
   @aiFunction({
     name: 'jigsawstack_speech_to_text',
     description:
