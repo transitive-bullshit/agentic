@@ -17,6 +17,7 @@
     "dev": "turbo dev --concurrency 50 --continue",
     "docs": "cd docs && npx mintlify dev",
     "clean": "turbo clean",
+    "fix:format": "prettier --write \"**/*.{js,ts,tsx}\"",
     "test": "turbo test",
     "test:format": "prettier --check \"**/*.{js,ts,tsx}\"",
     "test:lint": "turbo test:lint",

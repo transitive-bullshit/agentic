@@ -275,6 +275,9 @@ export class BingClient extends AIFunctionsProvider {
     })
   }
 
+  /**
+   * Searches the web using the Bing search engine to return the most relevant web pages for a given query. Can also be used to find up-to-date news and information about many topics.
+   */
   @aiFunction({
     name: 'bing_web_search',
     description:

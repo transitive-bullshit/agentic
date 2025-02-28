@@ -176,6 +176,9 @@ export class TwitterClient extends AIFunctionsProvider {
   protected _findUserById: ReturnType<typeof findUserByIdImpl>
   protected _findUserByUsername: ReturnType<typeof findUserByUsernameImpl>
 
+  /**
+   * Creates a new tweet
+   */
   @aiFunction({
     name: 'create_tweet',
     description: 'Creates a new tweet',
@@ -189,6 +192,9 @@ export class TwitterClient extends AIFunctionsProvider {
     return this._createTweet(params)
   }
 
+  /**
+   * Fetch a tweet by its ID
+   */
   @aiFunction({
     name: 'get_tweet_by_id',
     description: 'Fetch a tweet by its ID',
@@ -196,18 +202,18 @@ export class TwitterClient extends AIFunctionsProvider {
       id: z.string().min(1)
     })
   })
-  async findTweetById({
-    id,
-    ...params
-  }: { id: string } & types.FindTweetByIdParams) {
+  async findTweetById(params: { id: string } & types.FindTweetByIdParams) {
     assert(
       this.twitterApiPlan !== 'free',
       'TwitterClient.findTweetById not supported on free plan'
     )
 
-    return this._findTweetById(id, params)
+    return this._findTweetById(params.id, params)
   }
 
+  /**
+   * Fetch an array of tweets by their IDs
+   */
   @aiFunction({
     name: 'get_tweets_by_id',
     description: 'Fetch an array of tweets by their IDs',
@@ -224,6 +230,9 @@ export class TwitterClient extends AIFunctionsProvider {
     return this._findTweetsById(ids, params)
   }
 
+  /**
+   * Searches for recent tweets
+   */
   @aiFunction({
     name: 'search_recent_tweets',
     description: 'Searches for recent tweets',
@@ -244,6 +253,9 @@ export class TwitterClient extends AIFunctionsProvider {
     return this._searchRecentTweets(params)
   }
 
+  /**
+   * Fetch a twitter user by ID
+   */
   @aiFunction({
     name: 'get_twitter_user_by_id',
     description: 'Fetch a twitter user by ID',
@@ -263,6 +275,9 @@ export class TwitterClient extends AIFunctionsProvider {
     return this._findUserById(id, params)
   }
 
+  /**
+   * Fetch a twitter user by username
+   */
   @aiFunction({
     name: 'get_twitter_user_by_username',
     description: 'Fetch a twitter user by username',

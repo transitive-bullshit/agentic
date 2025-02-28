@@ -139,6 +139,8 @@ export class WikipediaClient extends AIFunctionsProvider {
     })
   }
 
+  /**
+   * Searches Wikipedia for pages matching the given query. */
   @aiFunction({
     name: 'wikipedia_search',
     description: 'Searches Wikipedia for pages matching the given query.',
@@ -157,6 +159,9 @@ export class WikipediaClient extends AIFunctionsProvider {
     )
   }
 
+  /**
+   * Gets a summary of the given Wikipedia page.
+   */
   @aiFunction({
     name: 'wikipedia_get_page_summary',
     description: 'Gets a summary of the given Wikipedia page.',

@@ -160,6 +160,9 @@ export class GravatarClient extends AIFunctionsProvider {
     })
   }
 
+  /**
+   * Get Gravatar profile by email. Returns a profile object or `undefined` if not found.
+   */
   @aiFunction({
     name: 'gravatar_get_profile',
     description:

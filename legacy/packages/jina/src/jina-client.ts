@@ -158,6 +158,9 @@ export class JinaClient extends AIFunctionsProvider {
     this.kySearch = throttledKySearch.extend({ prefixUrl: 'https://s.jina.ai' })
   }
 
+  /**
+   * Reads the contents of the given URL and returns it's main contents in a clean, LLM-friendly format.
+   */
   @aiFunction({
     name: 'readUrl',
     description:
@@ -198,6 +201,9 @@ export class JinaClient extends AIFunctionsProvider {
     }
   }
 
+  /**
+   * Searches the web for the given query and returns the top-5 results including their page contents in a clean, LLM-friendly format.
+   */
   @aiFunction({
     name: 'search',
     description:

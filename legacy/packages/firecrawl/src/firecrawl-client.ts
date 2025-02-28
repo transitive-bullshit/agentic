@@ -145,6 +145,9 @@ export class FirecrawlClient extends AIFunctionsProvider {
     })
   }
 
+  /**
+   * Scrape the contents of a URL.
+   */
   @aiFunction({
     name: 'firecrawl_scrape_url',
     description: 'Scrape the contents of a URL.',

@@ -249,6 +249,9 @@ export class HunterClient extends AIFunctionsProvider {
     })
   }
 
+  /**
+   * Gets all the email addresses associated with a given company or domain.
+   */
   @aiFunction({
     name: 'hunter_domain_search',
     description:
@@ -280,6 +283,9 @@ export class HunterClient extends AIFunctionsProvider {
     return pruneNullOrUndefinedDeep(res)
   }
 
+  /**
+   * Finds the most likely email address from a domain name, a first name and a last name.
+   */
   @aiFunction({
     name: 'hunter_email_finder',
     description:
@@ -308,6 +314,9 @@ export class HunterClient extends AIFunctionsProvider {
     return pruneNullOrUndefinedDeep(res)
   }
 
+  /**
+   * Verifies the deliverability of an email address.
+   */
   @aiFunction({
     name: 'hunter_email_verifier',
     description: 'Verifies the deliverability of an email address.',

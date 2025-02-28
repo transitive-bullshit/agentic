@@ -97,6 +97,9 @@ export class LeadMagicClient extends AIFunctionsProvider {
     })
   }
 
+  /**
+   * Attempts to enrich a person with LeadMagic data based on their public LinkedIn username / identifier.
+   */
   @aiFunction({
     name: 'leadmagic_profile_search',
     description:

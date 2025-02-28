@@ -109,6 +109,9 @@ export class WeatherClient extends AIFunctionsProvider {
     this.ky = ky.extend({ prefixUrl: apiBaseUrl })
   }
 
+  /**
+   * Gets info about the current weather at a given location.
+   */
   @aiFunction({
     name: 'get_current_weather',
     description: 'Gets info about the current weather at a given location.',
