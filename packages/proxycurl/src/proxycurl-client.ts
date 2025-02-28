@@ -2075,7 +2075,7 @@ export class ProxycurlClient extends AIFunctionsProvider {
     apiBaseUrl = getEnv('PROXYCURL_API_BASE_URL') ??
       'https://nubela.co/proxycurl',
     throttle = true,
-    timeoutMs = 30_000,
+    timeoutMs = 60_000,
     ky = defaultKy
   }: {
     apiKey?: string

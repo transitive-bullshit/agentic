@@ -198,7 +198,12 @@ export function sanitizeSearchParams(
         string | number | boolean | string[] | number[] | boolean[] | undefined
       >
     | object,
-  { csv = false }: { csv?: boolean } = {}
+  {
+    csv = false
+  }: {
+    /** Whether or not to use comma-separated-values for arrays or multiple entries (the default) */
+    csv?: boolean
+  } = {}
 ): URLSearchParams {
   const entries = Object.entries(searchParams).flatMap(([key, value]) => {
     if (key === undefined || value === undefined) {
