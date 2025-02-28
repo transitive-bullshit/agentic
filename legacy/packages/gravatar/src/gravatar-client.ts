@@ -51,7 +51,7 @@ export namespace gravatar {
     /** The name of the company where the user is employed. */
     company: string
     /** An array of verified accounts the user has added to their profile. The number of verified accounts displayed is limited to a maximum of 4 in unauthenticated requests. */
-    verified_accounts: Account[]
+    verified_accounts: VerifiedAccount[]
     /** A phonetic guide to pronouncing the user’s name. */
     pronunciation: string
     /** The pronouns the user prefers to use. */
@@ -60,9 +60,9 @@ export namespace gravatar {
     is_organization?: boolean
     links?: Link[]
     interests?: any[]
-    gallery?: Image[]
+    gallery?: GalleryImage[]
     payments?: {
-      links?: any[]
+      links?: Link[]
       crypto_wallets?: CryptoWallet[]
     }
 
@@ -78,7 +78,7 @@ export namespace gravatar {
     contact_info?: ContactInfo
   }
 
-  export interface Account {
+  export interface VerifiedAccount {
     service_type: string
     service_label: string
     service_icon: string
@@ -91,7 +91,7 @@ export namespace gravatar {
     url: string
   }
 
-  export interface Image {
+  export interface GalleryImage {
     url: string
     alt_text: string
   }

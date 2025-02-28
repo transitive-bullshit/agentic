@@ -144,8 +144,17 @@ async function main() {
   // const res = await zoomInfo.searchContacts({
   //   fullName: 'Kevin Raheja'
   // })
-  const gravatar = new stdlib.GravatarClient()
-  const res = await gravatar.getProfileByIdentifier('email@example.com')
+  // const gravatar = new stdlib.GravatarClient()
+  // const res = await gravatar.getProfileByIdentifier('email@example.com')
+
+  const hn = new stdlib.HackerNewsClient()
+  // const res = await hn.getSearchItem('43201417')
+  const res = await hn.searchItems({
+    query: 'OpenAI',
+    tags: ['story'],
+    sortBy: 'recency',
+    numericFilters: ['points>1000']
+  })
 
   console.log(JSON.stringify(res, null, 2))
 }
