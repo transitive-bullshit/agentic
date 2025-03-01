@@ -189,7 +189,8 @@ export function throttleKy(
 
 /**
  * Creates a new `URLSearchParams` object with all values coerced to strings
- * that correctly handles arrays of values as repeated keys.
+ * that correctly handles arrays of values as repeated keys (or CSV) and
+ * correctly removes `undefined` keys and values.
  */
 export function sanitizeSearchParams(
   searchParams:
