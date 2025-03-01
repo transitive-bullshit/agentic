@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "@agentic/tsconfig": "workspace:*",
-    "ai": "^4.1.42"
+    "ai": "^4.1.47"
   },
   "publishConfig": {
     "access": "public"
