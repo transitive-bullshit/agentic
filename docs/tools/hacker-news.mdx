@@ -34,5 +34,9 @@ pnpm add @agentic/hacker-news
 import { HackerNewsClient } from '@agentic/hacker-news'
 
 const hn = new HackerNewsClient()
-const res = await hn.getTopStories()
+const res = await hn.searchItems({
+  query: 'example query',
+  tags: ['story'],
+  numericFilters: ['points>100']
+})
 ```
