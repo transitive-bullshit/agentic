@@ -76,7 +76,7 @@
     "@e2b/code-interpreter": "^1.0.2"
   },
   "peerDependencies": {
-    "zod": "^3.24.2"
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@agentic/tsconfig": "workspace:*"

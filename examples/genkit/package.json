@@ -12,7 +12,7 @@
     "@agentic/stdlib": "workspace:*",
     "genkit": "^1.0.4",
     "genkitx-openai": "^0.16.0",
-    "zod": "^3.24.2"
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@agentic/tsconfig": "workspace:*"

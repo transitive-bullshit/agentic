@@ -13,7 +13,7 @@
     "@ai-sdk/openai": "^1.1.13",
     "ai": "^4.1.42",
     "openai": "^4.85.2",
-    "zod": "^3.24.2"
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@agentic/tsconfig": "workspace:*"
