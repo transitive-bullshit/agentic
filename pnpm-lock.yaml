@@ -4,6 +4,18 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+catalogs:
+  default:
+    ky:
+      specifier: ^1.7.5
+      version: 1.7.5
+    p-throttle:
+      specifier: ^6.2.0
+      version: 6.2.0
+    zod:
+      specifier: ^3.24.2
+      version: 3.24.2
+
 importers:
 
   .:
@@ -63,7 +75,7 @@ importers:
         specifier: 3.0.7
         version: 3.0.7(@types/node@22.13.8)(tsx@4.19.3)(yaml@2.7.0)
       zod:
-        specifier: ^3.24.2
+        specifier: 'catalog:'
         version: 3.24.2
       zoominfo-api-auth-client:
         specifier: ^1.0.1
@@ -87,7 +99,7 @@ importers:
         specifier: ^4.85.2
         version: 4.85.2(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)
       zod:
-        specifier: ^3.24.2
+        specifier: 'catalog:'
         version: 3.24.2
     devDependencies:
       '@agentic/tsconfig':
@@ -121,7 +133,7 @@ importers:
         specifier: ^4.1.1
         version: 4.1.1
       zod:
-        specifier: ^3.24.2
+        specifier: 'catalog:'
         version: 3.24.2
     devDependencies:
       '@agentic/tsconfig':
@@ -143,7 +155,7 @@ importers:
         specifier: ^0.16.0
         version: 0.16.0(genkit@1.0.4)(ws@8.18.0)(zod@3.24.2)
       zod:
-        specifier: ^3.24.2
+        specifier: 'catalog:'
         version: 3.24.2
     devDependencies:
       '@agentic/tsconfig':
@@ -168,7 +180,7 @@ importers:
         specifier: ^0.3.3
         version: 0.3.19(@langchain/core@0.3.40(openai@4.85.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)))(axios@1.7.9)(encoding@0.1.13)(handlebars@4.7.8)(openai@4.85.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))(ws@8.18.0)
       zod:
-        specifier: ^3.24.2
+        specifier: 'catalog:'
         version: 3.24.2
     devDependencies:
       '@agentic/tsconfig':
@@ -190,7 +202,7 @@ importers:
         specifier: ^0.9.2
         version: 0.9.2(@aws-crypto/sha256-js@5.2.0)(encoding@0.1.13)(js-tiktoken@1.0.19)(pathe@1.1.2)(tree-sitter@0.22.4)(web-tree-sitter@0.24.7)(ws@8.18.0)(zod@3.24.2)
       zod:
-        specifier: ^3.24.2
+        specifier: 'catalog:'
         version: 3.24.2
     devDependencies:
       '@agentic/tsconfig':
@@ -209,7 +221,7 @@ importers:
         specifier: ^4.85.2
         version: 4.85.2(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)
       zod:
-        specifier: ^3.24.2
+        specifier: 'catalog:'
         version: 3.24.2
     devDependencies:
       '@agentic/tsconfig':
@@ -228,7 +240,7 @@ importers:
         specifier: ^5.1.0
         version: 5.1.0
       zod:
-        specifier: ^3.24.2
+        specifier: 'catalog:'
         version: 3.24.2
     devDependencies:
       '@agentic/tsconfig':
@@ -254,13 +266,13 @@ importers:
         specifier: workspace:*
         version: link:../core
       ky:
-        specifier: ^1.7.5
+        specifier: 'catalog:'
         version: 1.7.5
       p-throttle:
-        specifier: ^6.2.0
+        specifier: 'catalog:'
         version: 6.2.0
       zod:
-        specifier: ^3.24.2
+        specifier: 'catalog:'
         version: 3.24.2
     devDependencies:
       '@agentic/tsconfig':
@@ -273,10 +285,10 @@ importers:
         specifier: workspace:*
         version: link:../core
       ky:
-        specifier: ^1.7.5
+        specifier: 'catalog:'
         version: 1.7.5
       zod:
-        specifier: ^3.24.2
+        specifier: 'catalog:'
         version: 3.24.2
     devDependencies:
       '@agentic/tsconfig':
@@ -292,7 +304,7 @@ importers:
         specifier: ^13.0.3
         version: 13.2.3
       zod:
-        specifier: ^3.24.2
+        specifier: 'catalog:'
         version: 3.24.2
     devDependencies:
       '@agentic/tsconfig':
@@ -305,13 +317,13 @@ importers:
         specifier: workspace:*
         version: link:../core
       ky:
-        specifier: ^1.7.5
+        specifier: 'catalog:'
         version: 1.7.5
       p-throttle:
-        specifier: ^6.2.0
+        specifier: 'catalog:'
         version: 6.2.0
       zod:
-        specifier: ^3.24.2
+        specifier: 'catalog:'
         version: 3.24.2
     devDependencies:
       '@agentic/tsconfig':
@@ -330,7 +342,7 @@ importers:
         specifier: ^3.9.0
         version: 3.12.0
       ky:
-        specifier: ^1.7.5
+        specifier: 'catalog:'
         version: 1.7.5
       openai-zod-to-json-schema:
         specifier: ^1.0.3
@@ -339,13 +351,13 @@ importers:
         specifier: ^7.0.2
         version: 7.0.3
       p-throttle:
-        specifier: ^6.2.0
+        specifier: 'catalog:'
         version: 6.2.0
       type-fest:
         specifier: ^4.35.0
         version: 4.35.0
       zod:
-        specifier: ^3.24.2
+        specifier: 'catalog:'
         version: 3.24.2
       zod-validation-error:
         specifier: ^3.4.0
@@ -364,13 +376,13 @@ importers:
         specifier: workspace:*
         version: link:../core
       ky:
-        specifier: ^1.7.5
+        specifier: 'catalog:'
         version: 1.7.5
       p-throttle:
-        specifier: ^6.2.0
+        specifier: 'catalog:'
         version: 6.2.0
       zod:
-        specifier: ^3.24.2
+        specifier: 'catalog:'
         version: 3.24.2
     devDependencies:
       '@agentic/tsconfig':
@@ -396,13 +408,13 @@ importers:
         specifier: workspace:*
         version: link:../core
       ky:
-        specifier: ^1.7.5
+        specifier: 'catalog:'
         version: 1.7.5
       p-throttle:
-        specifier: ^6.2.0
+        specifier: 'catalog:'
         version: 6.2.0
       zod:
-        specifier: ^3.24.2
+        specifier: 'catalog:'
         version: 3.24.2
     devDependencies:
       '@agentic/tsconfig':
@@ -415,7 +427,7 @@ importers:
         specifier: workspace:*
         version: link:../core
       zod:
-        specifier: ^3.24.2
+        specifier: 'catalog:'
         version: 3.24.2
     devDependencies:
       '@agentic/tsconfig':
@@ -431,10 +443,10 @@ importers:
         specifier: workspace:*
         version: link:../core
       ky:
-        specifier: ^1.7.5
+        specifier: 'catalog:'
         version: 1.7.5
       zod:
-        specifier: ^3.24.2
+        specifier: 'catalog:'
         version: 3.24.2
     devDependencies:
       '@agentic/tsconfig':
@@ -447,13 +459,13 @@ importers:
         specifier: workspace:*
         version: link:../core
       ky:
-        specifier: ^1.7.5
+        specifier: 'catalog:'
         version: 1.7.5
       p-throttle:
-        specifier: ^6.2.0
+        specifier: 'catalog:'
         version: 6.2.0
       zod:
-        specifier: ^3.24.2
+        specifier: 'catalog:'
         version: 3.24.2
     devDependencies:
       '@agentic/tsconfig':
@@ -479,16 +491,16 @@ importers:
         specifier: workspace:*
         version: link:../core
       ky:
-        specifier: ^1.7.5
+        specifier: 'catalog:'
         version: 1.7.5
       octokit:
         specifier: ^4.0.2
         version: 4.1.2
       p-throttle:
-        specifier: ^6.2.0
+        specifier: 'catalog:'
         version: 6.2.0
       zod:
-        specifier: ^3.24.2
+        specifier: 'catalog:'
         version: 3.24.2
     devDependencies:
       '@agentic/tsconfig':
@@ -501,13 +513,13 @@ importers:
         specifier: workspace:*
         version: link:../core
       ky:
-        specifier: ^1.7.5
+        specifier: 'catalog:'
         version: 1.7.5
       p-throttle:
-        specifier: ^6.2.0
+        specifier: 'catalog:'
         version: 6.2.0
       zod:
-        specifier: ^3.24.2
+        specifier: 'catalog:'
         version: 3.24.2
     devDependencies:
       '@agentic/tsconfig':
@@ -520,10 +532,10 @@ importers:
         specifier: workspace:*
         version: link:../core
       ky:
-        specifier: ^1.7.5
+        specifier: 'catalog:'
         version: 1.7.5
       zod:
-        specifier: ^3.24.2
+        specifier: 'catalog:'
         version: 3.24.2
     devDependencies:
       '@agentic/tsconfig':
@@ -536,10 +548,10 @@ importers:
         specifier: workspace:*
         version: link:../core
       ky:
-        specifier: ^1.7.5
+        specifier: 'catalog:'
         version: 1.7.5
       zod:
-        specifier: ^3.24.2
+        specifier: 'catalog:'
         version: 3.24.2
     devDependencies:
       '@agentic/tsconfig':
@@ -549,10 +561,10 @@ importers:
   packages/jigsawstack:
     dependencies:
       ky:
-        specifier: ^1.7.5
+        specifier: 'catalog:'
         version: 1.7.5
       p-throttle:
-        specifier: ^6.2.0
+        specifier: 'catalog:'
         version: 6.2.0
     devDependencies:
       '@agentic/core':
@@ -574,13 +586,13 @@ importers:
         specifier: workspace:*
         version: link:../core
       ky:
-        specifier: ^1.7.5
+        specifier: 'catalog:'
         version: 1.7.5
       p-throttle:
-        specifier: ^6.2.0
+        specifier: 'catalog:'
         version: 6.2.0
       zod:
-        specifier: ^3.24.2
+        specifier: 'catalog:'
         version: 3.24.2
     devDependencies:
       '@agentic/tsconfig':
@@ -606,13 +618,13 @@ importers:
         specifier: workspace:*
         version: link:../core
       ky:
-        specifier: ^1.7.5
+        specifier: 'catalog:'
         version: 1.7.5
       p-throttle:
-        specifier: ^6.2.0
+        specifier: 'catalog:'
         version: 6.2.0
       zod:
-        specifier: ^3.24.2
+        specifier: 'catalog:'
         version: 3.24.2
     devDependencies:
       '@agentic/tsconfig':
@@ -638,10 +650,10 @@ importers:
         specifier: workspace:*
         version: link:../core
       ky:
-        specifier: ^1.7.5
+        specifier: 'catalog:'
         version: 1.7.5
       zod:
-        specifier: ^3.24.2
+        specifier: 'catalog:'
         version: 3.24.2
     devDependencies:
       '@agentic/tsconfig':
@@ -654,10 +666,10 @@ importers:
         specifier: workspace:*
         version: link:../core
       ky:
-        specifier: ^1.7.5
+        specifier: 'catalog:'
         version: 1.7.5
       zod:
-        specifier: ^3.24.2
+        specifier: 'catalog:'
         version: 3.24.2
     devDependencies:
       '@agentic/tsconfig':
@@ -670,13 +682,13 @@ importers:
         specifier: workspace:*
         version: link:../core
       ky:
-        specifier: ^1.7.5
+        specifier: 'catalog:'
         version: 1.7.5
       p-throttle:
-        specifier: ^6.2.0
+        specifier: 'catalog:'
         version: 6.2.0
       zod:
-        specifier: ^3.24.2
+        specifier: 'catalog:'
         version: 3.24.2
     devDependencies:
       '@agentic/tsconfig':
@@ -689,13 +701,13 @@ importers:
         specifier: workspace:*
         version: link:../core
       ky:
-        specifier: ^1.7.5
+        specifier: 'catalog:'
         version: 1.7.5
       p-throttle:
-        specifier: ^6.2.0
+        specifier: 'catalog:'
         version: 6.2.0
       zod:
-        specifier: ^3.24.2
+        specifier: 'catalog:'
         version: 3.24.2
     devDependencies:
       '@agentic/tsconfig':
@@ -708,10 +720,10 @@ importers:
         specifier: workspace:*
         version: link:../core
       ky:
-        specifier: ^1.7.5
+        specifier: 'catalog:'
         version: 1.7.5
       zod:
-        specifier: ^3.24.2
+        specifier: 'catalog:'
         version: 3.24.2
     devDependencies:
       '@agentic/tsconfig':
@@ -724,13 +736,13 @@ importers:
         specifier: workspace:*
         version: link:../core
       ky:
-        specifier: ^1.7.5
+        specifier: 'catalog:'
         version: 1.7.5
       p-throttle:
-        specifier: ^6.2.0
+        specifier: 'catalog:'
         version: 6.2.0
       zod:
-        specifier: ^3.24.2
+        specifier: 'catalog:'
         version: 3.24.2
     devDependencies:
       '@agentic/tsconfig':
@@ -743,13 +755,13 @@ importers:
         specifier: workspace:*
         version: link:../core
       ky:
-        specifier: ^1.7.5
+        specifier: 'catalog:'
         version: 1.7.5
       p-throttle:
-        specifier: ^6.2.0
+        specifier: 'catalog:'
         version: 6.2.0
       zod:
-        specifier: ^3.24.2
+        specifier: 'catalog:'
         version: 3.24.2
     devDependencies:
       '@agentic/tsconfig':
@@ -762,13 +774,13 @@ importers:
         specifier: workspace:*
         version: link:../core
       ky:
-        specifier: ^1.7.5
+        specifier: 'catalog:'
         version: 1.7.5
       p-throttle:
-        specifier: ^6.2.0
+        specifier: 'catalog:'
         version: 6.2.0
       zod:
-        specifier: ^3.24.2
+        specifier: 'catalog:'
         version: 3.24.2
     devDependencies:
       '@agentic/tsconfig':
@@ -781,10 +793,10 @@ importers:
         specifier: workspace:*
         version: link:../core
       ky:
-        specifier: ^1.7.5
+        specifier: 'catalog:'
         version: 1.7.5
       zod:
-        specifier: ^3.24.2
+        specifier: 'catalog:'
         version: 3.24.2
     devDependencies:
       '@agentic/tsconfig':
@@ -797,10 +809,10 @@ importers:
         specifier: workspace:*
         version: link:../core
       ky:
-        specifier: ^1.7.5
+        specifier: 'catalog:'
         version: 1.7.5
       zod:
-        specifier: ^3.24.2
+        specifier: 'catalog:'
         version: 3.24.2
     devDependencies:
       '@agentic/tsconfig':
@@ -813,10 +825,10 @@ importers:
         specifier: workspace:*
         version: link:../core
       ky:
-        specifier: ^1.7.5
+        specifier: 'catalog:'
         version: 1.7.5
       zod:
-        specifier: ^3.24.2
+        specifier: 'catalog:'
         version: 3.24.2
     devDependencies:
       '@agentic/tsconfig':
@@ -829,10 +841,10 @@ importers:
         specifier: workspace:*
         version: link:../core
       ky:
-        specifier: ^1.7.5
+        specifier: 'catalog:'
         version: 1.7.5
       zod:
-        specifier: ^3.24.2
+        specifier: 'catalog:'
         version: 3.24.2
     devDependencies:
       '@agentic/tsconfig':
@@ -845,13 +857,13 @@ importers:
         specifier: workspace:*
         version: link:../core
       ky:
-        specifier: ^1.7.5
+        specifier: 'catalog:'
         version: 1.7.5
       p-throttle:
-        specifier: ^6.2.0
+        specifier: 'catalog:'
         version: 6.2.0
       zod:
-        specifier: ^3.24.2
+        specifier: 'catalog:'
         version: 3.24.2
     devDependencies:
       '@agentic/tsconfig':
@@ -990,7 +1002,7 @@ importers:
         specifier: ^1.0.2
         version: 1.0.4
       zod:
-        specifier: ^3.24.2
+        specifier: 'catalog:'
         version: 3.24.2
     devDependencies:
       '@agentic/tsconfig':
@@ -1003,13 +1015,13 @@ importers:
         specifier: workspace:*
         version: link:../core
       ky:
-        specifier: ^1.7.5
+        specifier: 'catalog:'
         version: 1.7.5
       p-throttle:
-        specifier: ^6.2.0
+        specifier: 'catalog:'
         version: 6.2.0
       zod:
-        specifier: ^3.24.2
+        specifier: 'catalog:'
         version: 3.24.2
     devDependencies:
       '@agentic/tsconfig':
@@ -1024,10 +1036,10 @@ importers:
         specifier: workspace:*
         version: link:../core
       ky:
-        specifier: ^1.7.5
+        specifier: 'catalog:'
         version: 1.7.5
       zod:
-        specifier: ^3.24.2
+        specifier: 'catalog:'
         version: 3.24.2
     devDependencies:
       '@agentic/tsconfig':
@@ -1043,10 +1055,10 @@ importers:
         specifier: ^0.42.2
         version: 0.42.22
       ky:
-        specifier: ^1.7.5
+        specifier: 'catalog:'
         version: 1.7.5
       p-throttle:
-        specifier: ^6.2.0
+        specifier: 'catalog:'
         version: 6.2.0
       twitter-api-sdk:
         specifier: ^1.2.1
@@ -1055,7 +1067,7 @@ importers:
         specifier: ^4.35.0
         version: 4.35.0
       zod:
-        specifier: ^3.24.2
+        specifier: 'catalog:'
         version: 3.24.2
     devDependencies:
       '@agentic/tsconfig':
@@ -1068,10 +1080,10 @@ importers:
         specifier: workspace:*
         version: link:../core
       ky:
-        specifier: ^1.7.5
+        specifier: 'catalog:'
         version: 1.7.5
       zod:
-        specifier: ^3.24.2
+        specifier: 'catalog:'
         version: 3.24.2
     devDependencies:
       '@agentic/tsconfig':
@@ -1084,16 +1096,16 @@ importers:
         specifier: workspace:*
         version: link:../core
       ky:
-        specifier: ^1.7.5
+        specifier: 'catalog:'
         version: 1.7.5
       p-throttle:
-        specifier: ^6.2.0
+        specifier: 'catalog:'
         version: 6.2.0
       wikibase-sdk:
         specifier: ^10.0.3
         version: 10.2.1
       zod:
-        specifier: ^3.24.2
+        specifier: 'catalog:'
         version: 3.24.2
     devDependencies:
       '@agentic/tsconfig':
@@ -1106,13 +1118,13 @@ importers:
         specifier: workspace:*
         version: link:../core
       ky:
-        specifier: ^1.7.5
+        specifier: 'catalog:'
         version: 1.7.5
       p-throttle:
-        specifier: ^6.2.0
+        specifier: 'catalog:'
         version: 6.2.0
       zod:
-        specifier: ^3.24.2
+        specifier: 'catalog:'
         version: 3.24.2
     devDependencies:
       '@agentic/tsconfig':
@@ -1125,10 +1137,10 @@ importers:
         specifier: workspace:*
         version: link:../core
       ky:
-        specifier: ^1.7.5
+        specifier: 'catalog:'
         version: 1.7.5
       zod:
-        specifier: ^3.24.2
+        specifier: 'catalog:'
         version: 3.24.2
     devDependencies:
       '@agentic/tsconfig':
@@ -1144,13 +1156,13 @@ importers:
         specifier: ^10.9.0
         version: 10.9.0
       ky:
-        specifier: ^1.7.5
+        specifier: 'catalog:'
         version: 1.7.5
       p-throttle:
-        specifier: ^6.2.0
+        specifier: 'catalog:'
         version: 6.2.0
       zod:
-        specifier: ^3.24.2
+        specifier: 'catalog:'
         version: 3.24.2
     devDependencies:
       '@agentic/tsconfig':
