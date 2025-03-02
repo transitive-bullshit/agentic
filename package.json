@@ -52,7 +52,7 @@
     "turbo": "^2.4.4",
     "typescript": "^5.8.2",
     "vitest": "3.0.7",
-    "zod": "^3.24.2",
+    "zod": "catalog:",
     "zoominfo-api-auth-client": "^1.0.1"
   },
   "lint-staged": {
