@@ -91,6 +91,7 @@ export interface AIFunction<
   // TODO: this `any` shouldn't be necessary, but it is for `createAIFunction` results to be assignable to `AIFunctionLike`
   impl: (params: z.infer<InputSchema> | any) => MaybePromise<Output>
 }
+
 export type SafeParseResult<TData> =
   | {
       success: true
