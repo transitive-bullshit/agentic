@@ -160,13 +160,13 @@ importers:
         version: link:../../packages/stdlib
       '@langchain/core':
         specifier: ^0.3.13
-        version: 0.3.40(openai@4.85.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))
+        version: 0.3.40(openai@4.87.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))
       '@langchain/openai':
         specifier: 0.4.4
-        version: 0.4.4(@langchain/core@0.3.40(openai@4.85.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)))(encoding@0.1.13)(ws@8.18.0)
+        version: 0.4.4(@langchain/core@0.3.40(openai@4.87.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)))(encoding@0.1.13)(ws@8.18.0)
       langchain:
         specifier: ^0.3.3
-        version: 0.3.19(@langchain/core@0.3.40(openai@4.85.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)))(axios@1.7.9)(encoding@0.1.13)(handlebars@4.7.8)(openai@4.85.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))(ws@8.18.0)
+        version: 0.3.19(@langchain/core@0.3.40(openai@4.87.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)))(axios@1.7.9)(encoding@0.1.13)(handlebars@4.7.8)(openai@4.87.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))(ws@8.18.0)
       zod:
         specifier: ^3.24.2
         version: 3.24.2
@@ -188,7 +188,7 @@ importers:
         version: link:../../packages/stdlib
       llamaindex:
         specifier: ^0.9.2
-        version: 0.9.2(@aws-crypto/sha256-js@5.2.0)(encoding@0.1.13)(js-tiktoken@1.0.19)(pathe@1.1.2)(tree-sitter@0.22.4)(web-tree-sitter@0.24.7)(ws@8.18.0)(zod@3.24.2)
+        version: 0.9.2(@aws-crypto/sha256-js@5.2.0)(js-tiktoken@1.0.19)(pathe@1.1.2)(tree-sitter@0.22.4)(web-tree-sitter@0.24.7)(ws@8.18.0)(zod@3.24.2)
       zod:
         specifier: ^3.24.2
         version: 3.24.2
@@ -206,8 +206,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/stdlib
       openai:
-        specifier: ^4.85.2
-        version: 4.85.2(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)
+        specifier: ^4.87.3
+        version: 4.87.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)
       zod:
         specifier: ^3.24.2
         version: 3.24.2
@@ -598,7 +598,7 @@ importers:
         version: link:../tsconfig
       '@langchain/core':
         specifier: ^0.3.13
-        version: 0.3.40(openai@4.85.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))
+        version: 0.3.40(openai@4.87.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))
 
   packages/leadmagic:
     dependencies:
@@ -630,7 +630,7 @@ importers:
         version: link:../tsconfig
       llamaindex:
         specifier: ^0.9.2
-        version: 0.9.2(@aws-crypto/sha256-js@5.2.0)(encoding@0.1.13)(js-tiktoken@1.0.19)(pathe@1.1.2)(tree-sitter@0.22.4)(web-tree-sitter@0.24.7)(ws@8.18.0)(zod@3.24.2)
+        version: 0.9.2(@aws-crypto/sha256-js@5.2.0)(js-tiktoken@1.0.19)(pathe@1.1.2)(tree-sitter@0.22.4)(web-tree-sitter@0.24.7)(ws@8.18.0)(zod@3.24.2)
 
   packages/midjourney:
     dependencies:
@@ -4330,8 +4330,8 @@ packages:
       zod:
         optional: true
 
-  openai@4.85.3:
-    resolution: {integrity: sha512-KTMXAK6FPd2IvsPtglMt0J1GyVrjMxCYzu/mVbCPabzzquSJoZlYpHtE0p0ScZPyt11XTc757xSO4j39j5g+Xw==}
+  openai@4.87.3:
+    resolution: {integrity: sha512-d2D54fzMuBYTxMW8wcNmhT1rYKcTfMJ8t+4KjH2KtvYenygITiGBgHoIrzHwnDQWW+C5oCA+ikIR2jgPCFqcKQ==}
     hasBin: true
     peerDependencies:
       ws: ^8.18.0
@@ -5974,8 +5974,8 @@ snapshots:
       '@typescript-eslint/parser': 7.18.0(eslint@8.57.1)(typescript@5.8.2)
       '@typescript-eslint/utils': 7.18.0(eslint@8.57.1)(typescript@5.8.2)
       eslint-config-prettier: 9.1.0(eslint@8.57.1)
-      eslint-import-resolver-typescript: 3.6.3(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint-plugin-import@2.31.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint@8.57.1))(eslint@8.57.1)
-      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint-import-resolver-typescript@3.6.3(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint-plugin-import@2.31.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1)
+      eslint-import-resolver-typescript: 3.6.3(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint-plugin-import@2.31.0)(eslint@8.57.1)
+      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint-import-resolver-typescript@3.6.3)(eslint@8.57.1)
       eslint-plugin-jest: 28.9.0(@typescript-eslint/eslint-plugin@7.18.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint@8.57.1)(typescript@5.8.2))(eslint@8.57.1)(typescript@5.8.2)
       eslint-plugin-jest-dom: 5.4.0(eslint@8.57.1)
       eslint-plugin-jsx-a11y: 6.10.2(eslint@8.57.1)
@@ -6083,14 +6083,14 @@ snapshots:
 
   '@js-sdsl/ordered-map@4.4.2': {}
 
-  '@langchain/core@0.3.40(openai@4.85.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))':
+  '@langchain/core@0.3.40(openai@4.87.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))':
     dependencies:
       '@cfworker/json-schema': 4.1.1
       ansi-styles: 5.2.0
       camelcase: 6.3.0
       decamelize: 1.2.0
       js-tiktoken: 1.0.15
-      langsmith: 0.3.10(openai@4.85.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))
+      langsmith: 0.3.10(openai@4.87.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))
       mustache: 4.2.0
       p-queue: 6.6.2
       p-retry: 4.6.2
@@ -6100,20 +6100,20 @@ snapshots:
     transitivePeerDependencies:
       - openai
 
-  '@langchain/openai@0.4.4(@langchain/core@0.3.40(openai@4.85.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)))(encoding@0.1.13)(ws@8.18.0)':
+  '@langchain/openai@0.4.4(@langchain/core@0.3.40(openai@4.87.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)))(encoding@0.1.13)(ws@8.18.0)':
     dependencies:
-      '@langchain/core': 0.3.40(openai@4.85.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))
+      '@langchain/core': 0.3.40(openai@4.87.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))
       js-tiktoken: 1.0.19
-      openai: 4.85.2(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)
+      openai: 4.87.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)
       zod: 3.24.2
       zod-to-json-schema: 3.24.1(zod@3.24.2)
     transitivePeerDependencies:
       - encoding
       - ws
 
-  '@langchain/textsplitters@0.1.0(@langchain/core@0.3.40(openai@4.85.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)))':
+  '@langchain/textsplitters@0.1.0(@langchain/core@0.3.40(openai@4.87.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)))':
     dependencies:
-      '@langchain/core': 0.3.40(openai@4.85.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))
+      '@langchain/core': 0.3.40(openai@4.87.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))
       js-tiktoken: 1.0.19
 
   '@llamaindex/cloud@3.0.2(@llamaindex/core@0.5.1(@aws-crypto/sha256-js@5.2.0)(gpt-tokenizer@2.8.1)(js-tiktoken@1.0.19)(pathe@1.1.2))(@llamaindex/env@0.1.28(@aws-crypto/sha256-js@5.2.0)(gpt-tokenizer@2.8.1)(js-tiktoken@1.0.19)(pathe@1.1.2))':
@@ -6152,11 +6152,11 @@ snapshots:
       tree-sitter: 0.22.4
       web-tree-sitter: 0.24.7
 
-  '@llamaindex/openai@0.1.53(@aws-crypto/sha256-js@5.2.0)(encoding@0.1.13)(gpt-tokenizer@2.8.1)(js-tiktoken@1.0.19)(pathe@1.1.2)(ws@8.18.0)(zod@3.24.2)':
+  '@llamaindex/openai@0.1.53(@aws-crypto/sha256-js@5.2.0)(gpt-tokenizer@2.8.1)(js-tiktoken@1.0.19)(pathe@1.1.2)(ws@8.18.0)(zod@3.24.2)':
     dependencies:
       '@llamaindex/core': 0.5.1(@aws-crypto/sha256-js@5.2.0)(gpt-tokenizer@2.8.1)(js-tiktoken@1.0.19)(pathe@1.1.2)
       '@llamaindex/env': 0.1.28(@aws-crypto/sha256-js@5.2.0)(gpt-tokenizer@2.8.1)(js-tiktoken@1.0.19)(pathe@1.1.2)
-      openai: 4.85.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)
+      openai: 4.87.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)
     transitivePeerDependencies:
       - '@aws-crypto/sha256-js'
       - '@huggingface/transformers'
@@ -7636,37 +7636,37 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-import-resolver-typescript@3.6.3(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint-plugin-import@2.31.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint@8.57.1))(eslint@8.57.1):
+  eslint-import-resolver-typescript@3.6.3(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint-plugin-import@2.31.0)(eslint@8.57.1):
     dependencies:
       '@nolyfill/is-core-module': 1.0.39
       debug: 4.4.0
       enhanced-resolve: 5.17.1
       eslint: 8.57.1
-      eslint-module-utils: 2.12.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.3(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint-plugin-import@2.31.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1)
+      eslint-module-utils: 2.12.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.3)(eslint@8.57.1)
       fast-glob: 3.3.2
       get-tsconfig: 4.10.0
       is-bun-module: 1.2.1
       is-glob: 4.0.3
     optionalDependencies:
-      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint-import-resolver-typescript@3.6.3(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint-plugin-import@2.31.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1)
+      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint-import-resolver-typescript@3.6.3)(eslint@8.57.1)
     transitivePeerDependencies:
       - '@typescript-eslint/parser'
       - eslint-import-resolver-node
       - eslint-import-resolver-webpack
       - supports-color
 
-  eslint-module-utils@2.12.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.3(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint-plugin-import@2.31.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1):
+  eslint-module-utils@2.12.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.3)(eslint@8.57.1):
     dependencies:
       debug: 3.2.7
     optionalDependencies:
       '@typescript-eslint/parser': 7.18.0(eslint@8.57.1)(typescript@5.8.2)
       eslint: 8.57.1
       eslint-import-resolver-node: 0.3.9
-      eslint-import-resolver-typescript: 3.6.3(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint-plugin-import@2.31.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint@8.57.1))(eslint@8.57.1)
+      eslint-import-resolver-typescript: 3.6.3(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint-plugin-import@2.31.0)(eslint@8.57.1)
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-import@2.31.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint-import-resolver-typescript@3.6.3(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint-plugin-import@2.31.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1):
+  eslint-plugin-import@2.31.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint-import-resolver-typescript@3.6.3)(eslint@8.57.1):
     dependencies:
       '@rtsao/scc': 1.1.0
       array-includes: 3.1.8
@@ -7677,7 +7677,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 8.57.1
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.12.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.3(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint-plugin-import@2.31.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1)
+      eslint-module-utils: 2.12.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.3)(eslint@8.57.1)
       hasown: 2.0.2
       is-core-module: 2.15.1
       is-glob: 4.0.3
@@ -8087,7 +8087,7 @@ snapshots:
   genkitx-openai@0.16.0(genkit@1.0.4)(ws@8.18.0)(zod@3.24.2):
     dependencies:
       genkit: 1.0.4
-      openai: 4.85.2(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)
+      openai: 4.87.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)
     transitivePeerDependencies:
       - encoding
       - ws
@@ -8552,15 +8552,15 @@ snapshots:
 
   ky@1.7.5: {}
 
-  langchain@0.3.19(@langchain/core@0.3.40(openai@4.85.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)))(axios@1.7.9)(encoding@0.1.13)(handlebars@4.7.8)(openai@4.85.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))(ws@8.18.0):
+  langchain@0.3.19(@langchain/core@0.3.40(openai@4.87.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)))(axios@1.7.9)(encoding@0.1.13)(handlebars@4.7.8)(openai@4.87.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))(ws@8.18.0):
     dependencies:
-      '@langchain/core': 0.3.40(openai@4.85.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))
-      '@langchain/openai': 0.4.4(@langchain/core@0.3.40(openai@4.85.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)))(encoding@0.1.13)(ws@8.18.0)
-      '@langchain/textsplitters': 0.1.0(@langchain/core@0.3.40(openai@4.85.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)))
+      '@langchain/core': 0.3.40(openai@4.87.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))
+      '@langchain/openai': 0.4.4(@langchain/core@0.3.40(openai@4.87.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)))(encoding@0.1.13)(ws@8.18.0)
+      '@langchain/textsplitters': 0.1.0(@langchain/core@0.3.40(openai@4.87.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)))
       js-tiktoken: 1.0.15
       js-yaml: 4.1.0
       jsonpointer: 5.0.1
-      langsmith: 0.3.10(openai@4.85.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))
+      langsmith: 0.3.10(openai@4.87.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))
       openapi-types: 12.1.3
       p-retry: 4.6.2
       uuid: 10.0.0
@@ -8575,7 +8575,7 @@ snapshots:
       - openai
       - ws
 
-  langsmith@0.3.10(openai@4.85.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)):
+  langsmith@0.3.10(openai@4.87.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)):
     dependencies:
       '@types/uuid': 10.0.0
       chalk: 4.1.2
@@ -8585,7 +8585,7 @@ snapshots:
       semver: 7.7.1
       uuid: 10.0.0
     optionalDependencies:
-      openai: 4.85.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)
+      openai: 4.87.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)
 
   language-subtag-registry@0.3.23: {}
 
@@ -8628,13 +8628,13 @@ snapshots:
       rfdc: 1.4.1
       wrap-ansi: 9.0.0
 
-  llamaindex@0.9.2(@aws-crypto/sha256-js@5.2.0)(encoding@0.1.13)(js-tiktoken@1.0.19)(pathe@1.1.2)(tree-sitter@0.22.4)(web-tree-sitter@0.24.7)(ws@8.18.0)(zod@3.24.2):
+  llamaindex@0.9.2(@aws-crypto/sha256-js@5.2.0)(js-tiktoken@1.0.19)(pathe@1.1.2)(tree-sitter@0.22.4)(web-tree-sitter@0.24.7)(ws@8.18.0)(zod@3.24.2):
     dependencies:
       '@llamaindex/cloud': 3.0.2(@llamaindex/core@0.5.1(@aws-crypto/sha256-js@5.2.0)(gpt-tokenizer@2.8.1)(js-tiktoken@1.0.19)(pathe@1.1.2))(@llamaindex/env@0.1.28(@aws-crypto/sha256-js@5.2.0)(gpt-tokenizer@2.8.1)(js-tiktoken@1.0.19)(pathe@1.1.2))
       '@llamaindex/core': 0.5.1(@aws-crypto/sha256-js@5.2.0)(gpt-tokenizer@2.8.1)(js-tiktoken@1.0.19)(pathe@1.1.2)
       '@llamaindex/env': 0.1.28(@aws-crypto/sha256-js@5.2.0)(gpt-tokenizer@2.8.1)(js-tiktoken@1.0.19)(pathe@1.1.2)
       '@llamaindex/node-parser': 1.0.1(@llamaindex/core@0.5.1(@aws-crypto/sha256-js@5.2.0)(gpt-tokenizer@2.8.1)(js-tiktoken@1.0.19)(pathe@1.1.2))(@llamaindex/env@0.1.28(@aws-crypto/sha256-js@5.2.0)(gpt-tokenizer@2.8.1)(js-tiktoken@1.0.19)(pathe@1.1.2))(tree-sitter@0.22.4)(web-tree-sitter@0.24.7)
-      '@llamaindex/openai': 0.1.53(@aws-crypto/sha256-js@5.2.0)(encoding@0.1.13)(gpt-tokenizer@2.8.1)(js-tiktoken@1.0.19)(pathe@1.1.2)(ws@8.18.0)(zod@3.24.2)
+      '@llamaindex/openai': 0.1.53(@aws-crypto/sha256-js@5.2.0)(gpt-tokenizer@2.8.1)(js-tiktoken@1.0.19)(pathe@1.1.2)(ws@8.18.0)(zod@3.24.2)
       '@types/lodash': 4.17.15
       '@types/node': 22.13.10
       ajv: 8.17.1
@@ -8922,7 +8922,7 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
-  openai@4.85.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2):
+  openai@4.87.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2):
     dependencies:
       '@types/node': 18.19.80
       '@types/node-fetch': 2.6.12

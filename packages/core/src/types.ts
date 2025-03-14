@@ -35,11 +35,16 @@ export interface AIFunctionSpec {
   parameters: JSONSchema
 
   /**
+   * The type of the function tool. Always `function`.
+   */
+  type: 'function'
+
+  /**
    * Whether to enable strict schema adherence when generating the function
    * parameters. Currently only supported by OpenAI's
    * [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs).
    */
-  strict?: boolean
+  strict: boolean
 }
 
 export interface AIToolSpec {

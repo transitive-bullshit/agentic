@@ -72,6 +72,7 @@ export function createAIFunction<InputSchema extends z.ZodObject<any>, Output>(
     name: spec.name,
     description: spec.description?.trim() ?? '',
     parameters: zodToJsonSchema(spec.inputSchema, { strict }),
+    type: 'function',
     strict
   }
   aiFunction.impl = implementation
