@@ -13,7 +13,7 @@ async function main() {
     model: openai('gpt-4o-mini'),
     tools: createAISDKTools(weather),
     experimental_activeTools: Array.from(weather.functions).map(
-      (fn) => fn.name
+      (fn) => fn.spec.name
     ),
     toolChoice: 'required',
     temperature: 0,
