@@ -55,6 +55,7 @@ export namespace jina {
     withGeneratedAlt: z.boolean().optional(),
     withLinksSummary: z.boolean().optional(),
     withImagesSummary: z.boolean().optional(),
+    withFavicon: z.boolean().optional(),
     setCookie: z.string().optional(),
     proxyUrl: z.string().optional(),
     noCache: z.boolean().optional(),
@@ -95,6 +96,7 @@ export namespace jina {
     content: string
     description?: string
     publishedTime?: string
+    favicon?: string
   }
 }
 
@@ -249,6 +251,7 @@ export class JinaClient extends AIFunctionsProvider {
       withGeneratedAlt: 'x-with-generated-alt',
       withLinksSummary: 'x-with-links-summary',
       withImagesSummary: 'x-with-images-summary',
+      withFavicon: 'x-with-favicon',
       setCookie: 'x-set-cookie',
       proxyUrl: 'x-proxy-url',
       noCache: 'x-no-cache',
