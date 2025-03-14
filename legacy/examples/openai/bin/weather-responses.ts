@@ -1,5 +1,6 @@
 import 'dotenv/config'
 
+import type { ResponseInput } from 'openai/resources/responses/responses.mjs'
 import { assert } from '@agentic/core'
 import { WeatherClient } from '@agentic/stdlib'
 import OpenAI from 'openai'
@@ -8,7 +9,7 @@ async function main() {
   const weather = new WeatherClient()
   const openai = new OpenAI()
 
-  const messages: OpenAI.ChatCompletionMessageParam[] = [
+  const messages: ResponseInput = [
     {
       role: 'system',
       content: 'You are a helpful assistant. Be as concise as possible.'
@@ -18,28 +19,28 @@ async function main() {
 
   {
     // First call to OpenAI to invoke the weather tool
-    const res = await openai.chat.completions.create({
-      messages,
+    const res = await openai.responses.create({
       model: 'gpt-4o-mini',
       temperature: 0,
-      tools: weather.functions.toolSpecs,
-      tool_choice: 'required'
+      tools: weather.functions.responsesToolSpecs,
+      tool_choice: 'required',
+      input: messages
     })
-    const message = res.choices[0]?.message!
+
+    const message = res.output[0]
     console.log(JSON.stringify(message, null, 2))
-    assert(message.tool_calls?.[0]?.function?.name === 'get_current_weather')
+    assert(message?.type === 'function_call')
+    assert(message.name === 'get_current_weather')
 
     const fn = weather.functions.get('get_current_weather')!
     assert(fn)
-
-    const toolParams = message.tool_calls[0].function.arguments
-    const toolResult = await fn(toolParams)
+    const toolResult = await fn(message.arguments)
 
     messages.push(message)
     messages.push({
-      role: 'tool',
-      tool_call_id: message.tool_calls[0].id,
-      content: JSON.stringify(toolResult)
+      type: 'function_call_output',
+      call_id: message.call_id,
+      output: JSON.stringify(toolResult)
     })
   }
 
@@ -47,14 +48,14 @@ async function main() {
 
   {
     // Second call to OpenAI to generate a text response
-    const res = await openai.chat.completions.create({
-      messages,
+    const res = await openai.responses.create({
       model: 'gpt-4o-mini',
       temperature: 0,
-      tools: weather.functions.toolSpecs
+      tools: weather.functions.responsesToolSpecs,
+      input: messages
     })
-    const message = res.choices?.[0]?.message
-    console.log(message?.content)
+
+    console.log(res.output_text)
   }
 }
 

@@ -35,11 +35,16 @@ export interface AIFunctionSpec {
   parameters: JSONSchema
 
   /**
+   * The type of the function tool. Always `function`.
+   */
+  type: 'function'
+
+  /**
    * Whether to enable strict schema adherence when generating the function
    * parameters. Currently only supported by OpenAI's
    * [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs).
    */
-  strict?: boolean
+  strict: boolean
 }
 
 export interface AIToolSpec {
@@ -91,6 +96,7 @@ export interface AIFunction<
   // TODO: this `any` shouldn't be necessary, but it is for `createAIFunction` results to be assignable to `AIFunctionLike`
   impl: (params: z.infer<InputSchema> | any) => MaybePromise<Output>
 }
+
 export type SafeParseResult<TData> =
   | {
       success: true

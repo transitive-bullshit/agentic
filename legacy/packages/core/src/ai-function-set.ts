@@ -2,6 +2,10 @@ import type * as types from './types.ts'
 import { AIFunctionsProvider } from './fns'
 import { isAIFunction } from './utils'
 
+export type AIFunctionSetOptions = {
+  transformNameKeysFn?: (name: string) => string
+}
+
 /**
  * A set of AI functions intended to make it easier to work with large sets of
  * AI functions across different clients.
@@ -14,8 +18,14 @@ import { isAIFunction } from './utils'
  */
 export class AIFunctionSet implements Iterable<types.AIFunction> {
   protected readonly _map: Map<string, types.AIFunction>
+  protected readonly _transformNameKeysFn: (name: string) => string
 
-  constructor(aiFunctionLikeObjects?: types.AIFunctionLike[]) {
+  constructor(
+    aiFunctionLikeObjects?: types.AIFunctionLike[],
+    { transformNameKeysFn = transformName }: AIFunctionSetOptions = {}
+  ) {
+    this._transformNameKeysFn = transformNameKeysFn
+
     // TODO: these `instanceof` checks seem to be failing on some platforms,
     // so for now we're using an uglier, but more reliable approach to parsing
     // the AIFunctionLike objects.
@@ -64,7 +74,9 @@ export class AIFunctionSet implements Iterable<types.AIFunction> {
     }
 
     this._map = new Map(
-      fns ? fns.map((fn) => [transformName(fn.spec.name), fn]) : null
+      fns
+        ? fns.map((fn) => [this._transformNameKeysFn(fn.spec.name), fn])
+        : null
     )
   }
 
@@ -73,21 +85,21 @@ export class AIFunctionSet implements Iterable<types.AIFunction> {
   }
 
   add(fn: types.AIFunction): this {
-    this._map.set(transformName(fn.spec.name), fn)
+    this._map.set(this._transformNameKeysFn(fn.spec.name), fn)
     return this
   }
 
   get(name: string): types.AIFunction | undefined {
-    return this._map.get(transformName(name))
+    return this._map.get(this._transformNameKeysFn(name))
   }
 
   set(name: string, fn: types.AIFunction): this {
-    this._map.set(transformName(name), fn)
+    this._map.set(this._transformNameKeysFn(name), fn)
     return this
   }
 
   has(name: string): boolean {
-    return this._map.has(transformName(name))
+    return this._map.has(this._transformNameKeysFn(name))
   }
 
   clear(): void {
@@ -95,23 +107,23 @@ export class AIFunctionSet implements Iterable<types.AIFunction> {
   }
 
   delete(name: string): boolean {
-    return this._map.delete(transformName(name))
+    return this._map.delete(this._transformNameKeysFn(name))
   }
 
   pick(...keys: string[]): AIFunctionSet {
-    const keysToIncludeSet = new Set(keys.map(transformName))
+    const keysToIncludeSet = new Set(keys.map(this._transformNameKeysFn))
     return new AIFunctionSet(
       Array.from(this).filter((fn) =>
-        keysToIncludeSet.has(transformName(fn.spec.name))
+        keysToIncludeSet.has(this._transformNameKeysFn(fn.spec.name))
       )
     )
   }
 
   omit(...keys: string[]): AIFunctionSet {
-    const keysToExcludeSet = new Set(keys.map(transformName))
+    const keysToExcludeSet = new Set(keys.map(this._transformNameKeysFn))
     return new AIFunctionSet(
       Array.from(this).filter(
-        (fn) => !keysToExcludeSet.has(transformName(fn.spec.name))
+        (fn) => !keysToExcludeSet.has(this._transformNameKeysFn(fn.spec.name))
       )
     )
   }
@@ -120,15 +132,34 @@ export class AIFunctionSet implements Iterable<types.AIFunction> {
     return [...this.entries].map(fn)
   }
 
+  /**
+   * Returns the functions in this set as an array compatible with OpenAI's
+   * chat completions `functions`.
+   */
   get specs(): types.AIFunctionSpec[] {
     return this.map((fn) => fn.spec)
   }
 
+  /**
+   * Returns the functions in this set as an array compatible with OpenAI's
+   * chat completions `tools`.
+   */
   get toolSpecs(): types.AIToolSpec[] {
     return this.map((fn) => ({
       type: 'function' as const,
       function: fn.spec
     }))
+  }
+
+  /**
+   * Returns the tools in this set compatible with OpenAI's `responses` API.
+   *
+   * Note that this is currently the same type as `AIFunctionSet.specs`, but
+   * they are separate APIs which may diverge over time, so if you're using the
+   * OpenAI `responses` API, you should reference this property.
+   */
+  get responsesToolSpecs(): types.AIFunctionSpec[] {
+    return this.specs
   }
 
   get entries(): IterableIterator<types.AIFunction> {
