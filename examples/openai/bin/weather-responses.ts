@@ -22,7 +22,7 @@ async function main() {
     const res = await openai.responses.create({
       model: 'gpt-4o-mini',
       temperature: 0,
-      tools: weather.functions.specs,
+      tools: weather.functions.responsesToolSpecs,
       tool_choice: 'required',
       input: messages
     })
@@ -34,9 +34,7 @@ async function main() {
 
     const fn = weather.functions.get('get_current_weather')!
     assert(fn)
-
-    const toolParams = message.arguments
-    const toolResult = await fn(toolParams)
+    const toolResult = await fn(message.arguments)
 
     messages.push(message)
     messages.push({
