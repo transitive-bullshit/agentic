@@ -1,6 +1,6 @@
 {
   "name": "@agentic/gravatar",
-  "version": "7.4.3",
+  "version": "7.4.4",
   "description": "Agentic SDK for Gravatar.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",

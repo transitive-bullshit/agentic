@@ -1,5 +1,54 @@
 # @agentic/stdlib
 
+## 7.4.6
+
+### Patch Changes
+
+- Add support for OpenAI responses, small fixes
+- Updated dependencies
+  - @agentic/ai-sdk@7.3.4
+  - @agentic/apollo@7.4.2
+  - @agentic/bing@7.3.4
+  - @agentic/calculator@7.3.4
+  - @agentic/clearbit@7.3.4
+  - @agentic/core@7.3.4
+  - @agentic/dexa@7.3.4
+  - @agentic/dexter@7.3.4
+  - @agentic/diffbot@7.3.4
+  - @agentic/e2b@7.3.4
+  - @agentic/exa@7.3.4
+  - @agentic/firecrawl@7.3.4
+  - @agentic/genkit@7.3.4
+  - @agentic/github@7.3.4
+  - @agentic/gravatar@7.4.4
+  - @agentic/hacker-news@7.3.4
+  - @agentic/hunter@7.3.4
+  - @agentic/jina@7.3.6
+  - @agentic/langchain@7.3.4
+  - @agentic/leadmagic@7.4.2
+  - @agentic/llamaindex@7.3.4
+  - @agentic/midjourney@7.3.4
+  - @agentic/novu@7.3.4
+  - @agentic/people-data-labs@7.3.4
+  - @agentic/perigon@7.3.4
+  - @agentic/polygon@7.3.4
+  - @agentic/predict-leads@7.3.4
+  - @agentic/proxycurl@7.3.4
+  - @agentic/rocketreach@7.4.2
+  - @agentic/searxng@7.3.4
+  - @agentic/serpapi@7.3.4
+  - @agentic/serper@7.3.4
+  - @agentic/slack@7.3.4
+  - @agentic/social-data@7.3.5
+  - @agentic/tavily@7.3.4
+  - @agentic/twilio@7.3.4
+  - @agentic/twitter@7.3.4
+  - @agentic/weather@7.3.4
+  - @agentic/wikidata@7.3.4
+  - @agentic/wikipedia@7.3.4
+  - @agentic/wolfram-alpha@7.3.4
+  - @agentic/zoominfo@7.4.3
+
 ## 7.4.5
 
 ### Patch Changes

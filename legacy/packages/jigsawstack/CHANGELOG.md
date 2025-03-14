@@ -1,5 +1,13 @@
 # @agentic/jigsawstack
 
+## 2.0.4
+
+### Patch Changes
+
+- Add support for OpenAI responses, small fixes
+- Updated dependencies
+  - @agentic/core@7.3.4
+
 ## 2.0.3
 
 ### Patch Changes
