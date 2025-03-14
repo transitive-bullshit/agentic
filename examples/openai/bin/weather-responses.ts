@@ -51,7 +51,7 @@ async function main() {
     const res = await openai.responses.create({
       model: 'gpt-4o-mini',
       temperature: 0,
-      tools: weather.functions.specs,
+      tools: weather.functions.responsesToolSpecs,
       input: messages
     })
 
