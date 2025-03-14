@@ -64,6 +64,12 @@ export function createAIFunction<InputSchema extends z.ZodObject<any>, Output>(
     return implementation(parsedInput)
   }
 
+  // Override the default function name with the intended name.
+  Object.defineProperty(aiFunction, 'name', {
+    value: spec.name,
+    writable: false
+  })
+
   const strict = !!spec.strict
 
   aiFunction.inputSchema = spec.inputSchema
