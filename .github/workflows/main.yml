@@ -11,8 +11,6 @@ jobs:
       matrix:
         node-version:
           - 18
-          - 20
-          - 21
           - 22
           - 23
 
@@ -23,7 +21,7 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 10.5.2
+          version: 10.6.3
           run_install: false
 
       - name: Install Node.js

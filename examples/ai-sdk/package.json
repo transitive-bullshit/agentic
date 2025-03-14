@@ -10,9 +10,9 @@
   "dependencies": {
     "@agentic/ai-sdk": "workspace:*",
     "@agentic/weather": "workspace:*",
-    "@ai-sdk/openai": "^1.1.13",
-    "ai": "^4.1.42",
-    "openai": "^4.85.2",
+    "@ai-sdk/openai": "^1.2.5",
+    "ai": "^4.1.61",
+    "openai": "^4.87.3",
     "zod": "^3.24.2"
   },
   "devDependencies": {
