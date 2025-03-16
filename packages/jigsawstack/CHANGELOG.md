@@ -1,5 +1,13 @@
 # @agentic/jigsawstack
 
+## 2.0.5
+
+### Patch Changes
+
+- Add Mastra AI Agent framework support
+- Updated dependencies
+  - @agentic/core@7.3.5
+
 ## 2.0.4
 
 ### Patch Changes

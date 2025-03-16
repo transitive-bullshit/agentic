@@ -1,5 +1,13 @@
 # @agentic/diffbot
 
+## 7.3.5
+
+### Patch Changes
+
+- Add Mastra AI Agent framework support
+- Updated dependencies
+  - @agentic/core@7.3.5
+
 ## 7.3.4
 
 ### Patch Changes
