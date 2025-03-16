@@ -13,15 +13,15 @@ description: How to use Agentic with the OpenAI TS SDK directly.
 
 <CodeGroup>
 ```bash npm
-npm install @agentic/core @agentic/stdlib openai
+npm install @agentic/stdlib openai
 ```
 
 ```bash yarn
-yarn add @agentic/core @agentic/stdlib openai
+yarn add @agentic/stdlib openai
 ```
 
 ```bash pnpm
-pnpm add @agentic/core @agentic/stdlib openai
+pnpm add @agentic/stdlib openai
 ```
 
 </CodeGroup>
@@ -56,12 +56,12 @@ assert(message.tool_calls?.[0]?.function?.name === 'get_current_weather')
 
 const fn = weather.functions.get('get_current_weather')!
 
-const toolParams = message.tool_calls[0].function.arguments
-const toolResult = await fn(toolParams)
+const toolArgs = message.tool_calls[0].function.arguments
+const toolResult = await fn(toolArgs)
 console.log(JSON.stringify(toolResult, null, 2))
 ```
 
-## Running this example
+### Running this example
 
 <Info>
   You'll need a free API key from [weatherapi.com](https://www.weatherapi.com)
@@ -80,4 +80,78 @@ pnpm install
 echo 'WEATHER_API_KEY=your-key' >> .env
 echo 'OPENAI_API_KEY=your-key' >> .env
 npx tsx examples/openai/bin/weather.ts
+```
+
+## OpenAI Responses API
+
+Agentic also supports the [OpenAI Responses API](https://platform.openai.com/docs/api-reference/responses) by referencing `AIFunctionSet.responsesToolSpecs` as in this example:
+
+```ts
+import 'dotenv/config'
+
+import type { ResponseInput } from 'openai/resources/responses/responses.mjs'
+import { WeatherClient } from '@agentic/stdlib'
+import OpenAI from 'openai'
+
+async function main() {
+  const weather = new WeatherClient()
+  const openai = new OpenAI()
+
+  const messages: ResponseInput = [
+    {
+      role: 'system',
+      content: 'You are a helpful assistant. Be as concise as possible.'
+    },
+    { role: 'user', content: 'What is the weather in San Francisco?' }
+  ]
+
+  {
+    // Call to OpenAI to invoke the weather tool
+    const res = await openai.responses.create({
+      model: 'gpt-4o-mini',
+      temperature: 0,
+      tools: weather.functions.responsesToolSpecs,
+      tool_choice: 'required',
+      input: messages
+    })
+
+    const message = res.output[0]
+    console.log(JSON.stringify(message, null, 2))
+    assert(message?.type === 'function_call')
+    assert(message.name === 'get_current_weather')
+
+    const fn = weather.functions.get('get_current_weather')!
+    const toolResult = await fn(message.arguments)
+
+    messages.push(message)
+    messages.push({
+      type: 'function_call_output',
+      call_id: message.call_id,
+      output: JSON.stringify(toolResult)
+    })
+  }
+}
+
+await main()
+```
+
+### Running this example
+
+<Info>
+  You'll need a free API key from [weatherapi.com](https://www.weatherapi.com)
+  to run this example. Store it in a local `.env` file as `WEATHER_API_KEY`.
+</Info>
+
+<Info>
+  You'll need an [OpenAI API key](https://platform.openai.com/docs/quickstart)
+  to run this example. Store it in a local `.env` file as `OPENAI_API_KEY`.
+</Info>
+
+```sh
+git clone git@github.com:transitive-bullshit/agentic.git
+cd agentic
+pnpm install
+echo 'WEATHER_API_KEY=your-key' >> .env
+echo 'OPENAI_API_KEY=your-key' >> .env
+npx tsx examples/openai/bin/weather-responses.ts
 ```

@@ -42,6 +42,7 @@
       "group": "AI SDKs",
       "pages": [
         "sdks/ai-sdk",
+        "sdks/mastra",
         "sdks/langchain",
         "sdks/llamaindex",
         "sdks/genkit",

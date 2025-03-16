@@ -21,6 +21,7 @@
 - [Docs](#docs)
 - [AI SDKs](#ai-sdks)
   - [Vercel AI SDK](#vercel-ai-sdk)
+  - [Mastra](#mastra)
   - [LangChain](#langchain)
   - [LlamaIndex](#llamaindex)
   - [Firebase Genkit](#firebase-genkit)
@@ -33,7 +34,7 @@
 
 ## Intro
 
-Agentic is a **standard library of AI functions / tools** which are **optimized for both normal TS-usage as well as LLM-based usage**. Agentic works with all of the major TS AI SDKs (LangChain, LlamaIndex, Vercel AI SDK, OpenAI SDK, etc).
+Agentic is a **standard library of AI functions / tools** which are **optimized for both normal TS-usage as well as LLM-based usage**. Agentic works with all of the major TS AI SDKs (Vercel AI SDK, Mastra, LangChain, LlamaIndex, OpenAI SDK, etc).
 
 Agentic clients like `WeatherClient` can be used as normal TS classes:
 
@@ -119,6 +120,10 @@ Full docs are available at [agentic.so](https://agentic.so).
 ### Vercel AI SDK
 
 [Agentic adapter docs for the Vercel AI SDK](https://agentic.so/sdks/ai-sdk)
+
+### Mastra
+
+[Agentic adapter docs for the Mastra AI Agent framework](https://agentic.so/sdks/mastra)
 
 ### LangChain
 
