@@ -1,26 +1,26 @@
 ---
-title: Vercel AI SDK
-description: Agentic adapter for the Vercel AI SDK.
+title: Mastra
+description: Agentic adapter for the Mastra AI Agent framework.
 ---
 
-- package: `@agentic/ai-sdk`
-- exports: `function createAISDKTools`
-- [source](https://github.com/transitive-bullshit/agentic/blob/main/packages/ai-sdk/src/ai-sdk.ts)
-- [Vercel AI SDK docs](https://sdk.vercel.ai)
+- package: `@agentic/mastra`
+- exports: `function createMastraTools`
+- [source](https://github.com/transitive-bullshit/agentic/blob/main/packages/mastra/src/mastra.ts)
+- [Mastra docs](https://mastra.ai/docs)
 
 ## Install
 
 <CodeGroup>
 ```bash npm
-npm install @agentic/ai-sdk ai
+npm install @agentic/mastra @mastra/core
 ```
 
 ```bash yarn
-yarn add @agentic/ai-sdk ai
+yarn add @agentic/mastra @mastra/core
 ```
 
 ```bash pnpm
-pnpm add @agentic/ai-sdk ai
+pnpm add @agentic/mastra @mastra/core
 ```
 
 </CodeGroup>
@@ -30,24 +30,25 @@ pnpm add @agentic/ai-sdk ai
 ```ts
 import 'dotenv/config'
 
-import { createAISDKTools } from '@agentic/ai-sdk'
+import { createMastraTools } from '@agentic/mastra'
 import { WeatherClient } from '@agentic/weather'
 import { openai } from '@ai-sdk/openai'
-import { generateText } from 'ai'
+import { Agent } from '@mastra/core/agent'
 
 async function main() {
   const weather = new WeatherClient()
 
-  const result = await generateText({
+  const weatherAgent = new Agent({
+    name: 'Weather Agent',
+    instructions: 'You are a helpful assistant. Be as concise as possible.',
     model: openai('gpt-4o-mini'),
-    tools: createAISDKTools(weather),
-    toolChoice: 'required',
-    temperature: 0,
-    system: 'You are a helpful assistant. Be as concise as possible.',
-    prompt: 'What is the weather in San Francisco?'
+    tools: createMastraTools(weather)
   })
 
-  console.log(result.toolResults[0])
+  const res = await weatherAgent.generate(
+    'What is the weather in San Francisco?'
+  )
+  console.log(res.text)
 }
 
 await main()
@@ -88,5 +89,5 @@ cd agentic
 pnpm install
 echo 'WEATHER_API_KEY=your-key' >> .env
 echo 'OPENAI_API_KEY=your-key' >> .env
-npx tsx examples/ai-sdk/bin/weather.ts
+npx tsx examples/mastra/bin/weather.ts
 ```

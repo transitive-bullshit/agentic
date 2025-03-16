@@ -52,6 +52,7 @@
     "@agentic/langchain": "workspace:*",
     "@agentic/leadmagic": "workspace:*",
     "@agentic/llamaindex": "workspace:*",
+    "@agentic/mastra": "workspace:*",
     "@agentic/midjourney": "workspace:*",
     "@agentic/novu": "workspace:*",
     "@agentic/people-data-labs": "workspace:*",
