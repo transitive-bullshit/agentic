@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <em>AI agent stdlib that works with any LLM and TypeScript AI SDK.</em>
+  <em>Agentic adapter for LangChain's JS SDK.</em>
 </p>
 
 <p align="center">
