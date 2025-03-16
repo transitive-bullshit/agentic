@@ -1,11 +1,12 @@
 name: CI
 
-on: [push, pull_request]
+on: [push]
 
 jobs:
   test:
     name: Test Node.js ${{ matrix.node-version }}
     runs-on: ubuntu-latest
+
     strategy:
       fail-fast: true
       matrix:
@@ -15,26 +16,13 @@ jobs:
           - 23
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10.6.3
-          run_install: false
-
-      - name: Install Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'pnpm'
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile --strict-peer-dependencies
-
-      - name: Run build
-        run: pnpm build
-
-      - name: Run test
-        run: pnpm test
+      - run: pnpm install --frozen-lockfile --strict-peer-dependencies
+      - run: pnpm build
+      - run: pnpm test
