@@ -1,5 +1,11 @@
 # @agentic/ai-sdk
 
+## 7.3.6
+
+### Patch Changes
+
+- Update readmes
+
 ## 7.3.5
 
 ### Patch Changes
