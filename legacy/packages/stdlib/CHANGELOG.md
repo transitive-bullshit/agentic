@@ -1,5 +1,49 @@
 # @agentic/stdlib
 
+## 7.4.7
+
+### Patch Changes
+
+- Add Mastra AI Agent framework support
+- Updated dependencies
+  - @agentic/apollo@7.4.3
+  - @agentic/bing@7.3.5
+  - @agentic/calculator@7.3.5
+  - @agentic/clearbit@7.3.5
+  - @agentic/core@7.3.5
+  - @agentic/dexa@7.3.5
+  - @agentic/diffbot@7.3.5
+  - @agentic/e2b@7.3.5
+  - @agentic/exa@7.3.5
+  - @agentic/firecrawl@7.3.5
+  - @agentic/github@7.3.5
+  - @agentic/gravatar@7.4.5
+  - @agentic/hacker-news@7.3.5
+  - @agentic/hunter@7.3.5
+  - @agentic/jina@7.3.7
+  - @agentic/leadmagic@7.4.3
+  - @agentic/midjourney@7.3.5
+  - @agentic/novu@7.3.5
+  - @agentic/people-data-labs@7.3.5
+  - @agentic/perigon@7.3.5
+  - @agentic/polygon@7.3.5
+  - @agentic/predict-leads@7.3.5
+  - @agentic/proxycurl@7.3.5
+  - @agentic/rocketreach@7.4.3
+  - @agentic/searxng@7.3.5
+  - @agentic/serpapi@7.3.5
+  - @agentic/serper@7.3.5
+  - @agentic/slack@7.3.5
+  - @agentic/social-data@7.3.6
+  - @agentic/tavily@7.3.5
+  - @agentic/twilio@7.3.5
+  - @agentic/twitter@7.3.5
+  - @agentic/weather@7.3.5
+  - @agentic/wikidata@7.3.5
+  - @agentic/wikipedia@7.3.5
+  - @agentic/wolfram-alpha@7.3.5
+  - @agentic/zoominfo@7.4.4
+
 ## 7.4.6
 
 ### Patch Changes

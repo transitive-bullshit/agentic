@@ -1,5 +1,13 @@
 # @agentic/zoominfo
 
+## 7.4.4
+
+### Patch Changes
+
+- Add Mastra AI Agent framework support
+- Updated dependencies
+  - @agentic/core@7.3.5
+
 ## 7.4.3
 
 ### Patch Changes
