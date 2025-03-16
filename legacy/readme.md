@@ -78,39 +78,6 @@ console.log(result.toolResults[0])
 
 You can use our standard library of thoroughly tested AI functions with your favorite AI SDK – without having to write any glue code!
 
-Here's a slightly more complex example which uses multiple clients and selects a subset of their functions using the `AIFunctionSet.pick` method:
-
-```ts
-// sdk-specific imports
-import { ChatModel, createAIRunner } from '@dexaai/dexter'
-import { createDexterFunctions } from '@agentic/dexter'
-
-// sdk-agnostic imports
-import { PerigonClient, SerperClient } from '@agentic/stdlib'
-
-async function main() {
-  // Perigon is a news API and Serper is a Google search API
-  const perigon = new PerigonClient()
-  const serper = new SerperClient()
-
-  const runner = createAIRunner({
-    chatModel: new ChatModel({
-      params: { model: 'gpt-4o-mini', temperature: 0 }
-    }),
-    functions: createDexterFunctions(
-      perigon.functions.pick('search_news_stories'),
-      serper
-    ),
-    systemMessage: 'You are a helpful assistant. Be as concise as possible.'
-  })
-
-  const result = await runner(
-    'Summarize the latest news stories about the upcoming US election.'
-  )
-  console.log(result)
-}
-```
-
 ## Docs
 
 Full docs are available at [agentic.so](https://agentic.so).
