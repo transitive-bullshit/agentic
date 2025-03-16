@@ -61,6 +61,7 @@ export function createAIFunction<InputSchema extends z.ZodObject<any>, Output>(
     input: string | types.Msg
   ) => {
     const parsedInput = parseInput(input)
+
     return implementation(parsedInput)
   }
 
@@ -81,7 +82,12 @@ export function createAIFunction<InputSchema extends z.ZodObject<any>, Output>(
     type: 'function',
     strict
   }
-  aiFunction.impl = implementation
+  aiFunction.impl = (
+    params: z.infer<InputSchema>
+  ): types.MaybePromise<Output> => {
+    console.error(spec.name, params)
+    return implementation(params)
+  }
 
   return aiFunction
 }

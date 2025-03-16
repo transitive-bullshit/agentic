@@ -70,7 +70,7 @@ title: Quick Start
     </AccordionGroup>
 
     <Note>
-      There is no functional difference between using `@agentic/stdlib` versus using the individual tool packages directly. The only difference is if you want to optimize your install size (when running on serverless functions, for instance).
+      There is no functional difference between using `@agentic/stdlib` versus using the individual tool packages directly. The only difference is if you want to optimize your install size.
 
       The default examples all use `@agentic/stdlib` for simplicity.
     </Note>
@@ -97,6 +97,24 @@ title: Quick Start
         </CodeGroup>
 
         See the [AI SDK adapter docs](/sdks/ai-sdk) for usage details.
+      </Accordion>
+
+      <Accordion title="Mastra">
+        <CodeGroup>
+          ```bash npm
+          npm install @agentic/mastra @mastra/core
+          ```
+
+          ```bash yarn
+          yarn add @agentic/mastra @mastra/core
+          ```
+
+          ```bash pnpm
+          pnpm add @agentic/mastra @mastra/core
+          ```
+        </CodeGroup>
+
+        See the [Mastra adapter docs](/sdks/mastra) for usage details.
       </Accordion>
 
       <Accordion title="LangChain">
@@ -194,7 +212,7 @@ title: Quick Start
     </AccordionGroup>
 
     <Note>
-      You can use Agentic without any of these AI SDKs. `@agentic/core`, `@agentic/stdlib`, and all individual tool packages are completely agnostic to specific LLMs and AI SDKs.
+      You can use Agentic without any of these AI SDKs. `@agentic/core`, `@agentic/stdlib`, and all individual tool packages are compatible with any LLM and AI SDK that supports function calling / tool use.
     </Note>
 
   </Step>
