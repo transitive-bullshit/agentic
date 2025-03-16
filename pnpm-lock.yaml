@@ -895,9 +895,6 @@ importers:
 
   packages/stdlib:
     dependencies:
-      '@agentic/ai-sdk':
-        specifier: workspace:*
-        version: link:../ai-sdk
       '@agentic/apollo':
         specifier: workspace:*
         version: link:../apollo
@@ -916,9 +913,6 @@ importers:
       '@agentic/dexa':
         specifier: workspace:*
         version: link:../dexa
-      '@agentic/dexter':
-        specifier: workspace:*
-        version: link:../dexter
       '@agentic/diffbot':
         specifier: workspace:*
         version: link:../diffbot
@@ -931,9 +925,6 @@ importers:
       '@agentic/firecrawl':
         specifier: workspace:*
         version: link:../firecrawl
-      '@agentic/genkit':
-        specifier: workspace:*
-        version: link:../genkit
       '@agentic/github':
         specifier: workspace:*
         version: link:../github
@@ -949,18 +940,9 @@ importers:
       '@agentic/jina':
         specifier: workspace:*
         version: link:../jina
-      '@agentic/langchain':
-        specifier: workspace:*
-        version: link:../langchain
       '@agentic/leadmagic':
         specifier: workspace:*
         version: link:../leadmagic
-      '@agentic/llamaindex':
-        specifier: workspace:*
-        version: link:../llamaindex
-      '@agentic/mastra':
-        specifier: workspace:*
-        version: link:../mastra
       '@agentic/midjourney':
         specifier: workspace:*
         version: link:../midjourney
