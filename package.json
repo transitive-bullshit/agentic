@@ -26,6 +26,7 @@
     "changeset": "changeset",
     "release": "run-s release:*",
     "release:build": "run-s build",
+    "release:changeset": "changeset",
     "release:version": "changeset version",
     "release:publish": "changeset publish",
     "pretest": "run-s build",
