@@ -457,72 +457,6 @@ export class FirecrawlClient extends AIFunctionsProvider {
   }
 
   /**
-   * Sends a POST request.
-   */
-  protected async postRequest(path: string, data: any): Promise<any> {
-    try {
-      const response = await this.ky.post(path, { json: data })
-      return await response.json()
-    } catch (err) {
-      if (err instanceof Error) {
-        const response = await (err as any).response?.json()
-        if (response?.error) {
-          throw new firecrawl.FirecrawlError(
-            `Request failed. Error: ${response.error}`,
-            (err as any).response?.status ?? 500,
-            response?.details
-          )
-        }
-      }
-      throw err
-    }
-  }
-
-  /**
-   * Sends a GET request.
-   */
-  protected async getRequest(path: string): Promise<any> {
-    try {
-      const response = await this.ky.get(path)
-      return await response.json()
-    } catch (err) {
-      if (err instanceof Error) {
-        const response = await (err as any).response?.json()
-        if (response?.error) {
-          throw new firecrawl.FirecrawlError(
-            `Request failed. Error: ${response.error}`,
-            (err as any).response?.status ?? 500,
-            response?.details
-          )
-        }
-      }
-      throw err
-    }
-  }
-
-  /**
-   * Sends a DELETE request.
-   */
-  protected async deleteRequest(path: string): Promise<any> {
-    try {
-      const response = await this.ky.delete(path)
-      return await response.json()
-    } catch (err) {
-      if (err instanceof Error) {
-        const response = await (err as any).response?.json()
-        if (response?.error) {
-          throw new firecrawl.FirecrawlError(
-            `Request failed. Error: ${response.error}`,
-            (err as any).response?.status ?? 500,
-            response?.details
-          )
-        }
-      }
-      throw err
-    }
-  }
-
-  /**
    * Scrape the contents of a URL.
    */
   @aiFunction({
@@ -841,6 +775,72 @@ export class FirecrawlClient extends AIFunctionsProvider {
         err instanceof Error ? err.message : 'Unknown error',
         500
       )
+    }
+  }
+
+  /**
+   * Sends a POST request.
+   */
+  protected async postRequest(path: string, data: any): Promise<any> {
+    try {
+      const response = await this.ky.post(path, { json: data })
+      return await response.json()
+    } catch (err) {
+      if (err instanceof Error) {
+        const response = await (err as any).response?.json()
+        if (response?.error) {
+          throw new firecrawl.FirecrawlError(
+            `Request failed. Error: ${response.error}`,
+            (err as any).response?.status ?? 500,
+            response?.details
+          )
+        }
+      }
+      throw err
+    }
+  }
+
+  /**
+   * Sends a GET request.
+   */
+  protected async getRequest(path: string): Promise<any> {
+    try {
+      const response = await this.ky.get(path)
+      return await response.json()
+    } catch (err) {
+      if (err instanceof Error) {
+        const response = await (err as any).response?.json()
+        if (response?.error) {
+          throw new firecrawl.FirecrawlError(
+            `Request failed. Error: ${response.error}`,
+            (err as any).response?.status ?? 500,
+            response?.details
+          )
+        }
+      }
+      throw err
+    }
+  }
+
+  /**
+   * Sends a DELETE request.
+   */
+  protected async deleteRequest(path: string): Promise<any> {
+    try {
+      const response = await this.ky.delete(path)
+      return await response.json()
+    } catch (err) {
+      if (err instanceof Error) {
+        const response = await (err as any).response?.json()
+        if (response?.error) {
+          throw new firecrawl.FirecrawlError(
+            `Request failed. Error: ${response.error}`,
+            (err as any).response?.status ?? 500,
+            response?.details
+          )
+        }
+      }
+      throw err
     }
   }
 }
