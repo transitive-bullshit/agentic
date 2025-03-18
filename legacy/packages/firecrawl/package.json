@@ -26,8 +26,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsup --config ../../tsup.config.ts",
-    "dev": "tsup --config ../../tsup.config.ts --watch",
+    "build": "tsup",
+    "dev": "tsup --watch",
     "clean": "del dist",
     "test": "run-s test:*",
     "test:lint": "eslint .",
