@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-import { FirecrawlClient } from './dist/index.mjs'
+import { FirecrawlClient } from './firecrawl-client'
 
 // Initialize the client with the API key
 const apiKey = 'FIRECRAWL-API-KEY'
@@ -26,7 +26,8 @@ async function testUrlScraping() {
 async function testSearch() {
   console.log('\n🔍 Testing search...')
   try {
-    const result = await firecrawl.search('artificial intelligence news', {
+    const result = await firecrawl.search({
+      query: 'artificial intelligence news',
       limit: 5,
       lang: 'en',
       country: 'us'
@@ -45,7 +46,8 @@ async function testSearch() {
 async function testCrawlUrl() {
   console.log('\n🔍 Testing URL crawling...')
   try {
-    const result = await firecrawl.crawlUrl('https://example.com', {
+    const result = await firecrawl.crawlUrl({
+      url: 'https://example.com',
       maxDepth: 2,
       limit: 5
     })
