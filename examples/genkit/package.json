@@ -10,9 +10,9 @@
   "dependencies": {
     "@agentic/genkit": "workspace:*",
     "@agentic/stdlib": "workspace:*",
-    "genkit": "^1.0.4",
-    "genkitx-openai": "^0.16.0",
-    "zod": "^3.24.2"
+    "genkit": "catalog:",
+    "genkitx-openai": "catalog:",
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@agentic/tsconfig": "workspace:*"

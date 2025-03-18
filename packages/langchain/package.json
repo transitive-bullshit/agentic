@@ -35,11 +35,11 @@
     "@agentic/core": "workspace:*"
   },
   "peerDependencies": {
-    "@langchain/core": "^0.3.13"
+    "@langchain/core": "catalog:"
   },
   "devDependencies": {
     "@agentic/tsconfig": "workspace:*",
-    "@langchain/core": "^0.3.13"
+    "@langchain/core": "catalog:"
   },
   "publishConfig": {
     "access": "public"

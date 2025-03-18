@@ -32,10 +32,10 @@
   },
   "dependencies": {
     "@agentic/core": "workspace:*",
-    "mathjs": "^13.0.3"
+    "mathjs": "catalog:"
   },
   "peerDependencies": {
-    "zod": "^3.24.2"
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@agentic/tsconfig": "workspace:*"

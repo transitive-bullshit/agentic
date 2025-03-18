@@ -32,22 +32,21 @@
     "test:unit": "vitest run"
   },
   "dependencies": {
-    "dedent": "^1.5.3",
-    "delay": "^6.0.0",
-    "jsonrepair": "^3.9.0",
-    "ky": "^1.7.5",
-    "openai-zod-to-json-schema": "^1.0.3",
-    "p-map": "^7.0.2",
-    "p-throttle": "^6.2.0",
-    "type-fest": "^4.35.0",
-    "zod-validation-error": "^3.4.0"
+    "dedent": "catalog:",
+    "delay": "catalog:",
+    "jsonrepair": "catalog:",
+    "ky": "catalog:",
+    "openai-zod-to-json-schema": "catalog:",
+    "p-throttle": "catalog:",
+    "type-fest": "catalog:",
+    "zod-validation-error": "catalog:"
   },
   "peerDependencies": {
-    "zod": "^3.24.2"
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@agentic/tsconfig": "workspace:*",
-    "openai-fetch": "^3.3.1"
+    "openai-fetch": "catalog:"
   },
   "keywords": [
     "agentic",

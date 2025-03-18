@@ -10,9 +10,9 @@
   "dependencies": {
     "@agentic/mastra": "workspace:*",
     "@agentic/weather": "workspace:*",
-    "@ai-sdk/openai": "^1.2.5",
-    "@mastra/core": "^0.6.0",
-    "zod": "^3.24.2"
+    "@ai-sdk/openai": "catalog:",
+    "@mastra/core": "catalog:",
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@agentic/tsconfig": "workspace:*"

@@ -18,6 +18,7 @@
 # Agentic <!-- omit from toc -->
 
 - [Intro](#intro)
+  - [Under the hood](#under-the-hood)
 - [Docs](#docs)
 - [AI SDKs](#ai-sdks)
   - [Vercel AI SDK](#vercel-ai-sdk)
@@ -52,7 +53,7 @@ console.log(result)
 
 Or you can use these clients as **LLM-based tools** where the LLM decides when and how to invoke the underlying functions for you.
 
-This works across all of the major AI SDKs via adapters. Here's an example using [Vercel's AI SDK](https://github.com/vercel/ai):
+This works across all the leading AI SDKs via adapters. Here's an example using [Vercel's AI SDK](https://github.com/vercel/ai):
 
 ```ts
 // sdk-specific imports
@@ -77,6 +78,12 @@ console.log(result.toolResults[0])
 ```
 
 You can use our standard library of thoroughly tested AI functions with your favorite AI SDK – without having to write any glue code!
+
+### Under the hood
+
+All of the adapters (like `createAISDKTools` in this example) accept a very flexible var args of `AIFunctionLike` parameters, so you can pass as many tools / functions / clients as you like. An `AIFunctionLike` can be any agentic client instance, a single `AIFunction` selected from the client's `.functions` property (which holds an `AIFunctionSet` of available AI functions), or an AI function created manually via `createAIFunction`.
+
+`AIFunctionLike` and `AIFunctionSet` are implementation details that you likely won't have to touch directly, but they're important primitives because they're designed to maximize flexibility when working with various AI functions coming from different places.
 
 ## Docs
 
@@ -155,6 +162,8 @@ Full docs are available at [agentic.so](https://agentic.so).
 | [Wikipedia](https://www.mediawiki.org/wiki/API)                          | `@agentic/wikipedia`        | [docs](https://agentic.so/tools/wikipedia)        | Wikipedia page search and summaries.                                                                                                                                                                                                                           |
 | [Wolfram Alpha](https://products.wolframalpha.com/llm-api/documentation) | `@agentic/wolfram-alpha`    | [docs](https://agentic.so/tools/wolfram-alpha)    | Wolfram Alpha LLM API client for answering computational, mathematical, and scientific questions.                                                                                                                                                              |
 | [ZoomInfo](https://api-docs.zoominfo.com)                                | `@agentic/zoominfo`         | [docs](https://agentic.so/tools/zoominfo)         | Powerful B2B person and company data enrichment.                                                                                                                                                                                                               |
+
+> [!NOTE] All Agentic clients have been hand-crafted for minimal size, with very few relying on external dependencies aside from our native `fetch` wrapper, [ky](https://github.com/sindresorhus/ky).
 
 For more details, see the [docs](https://agentic.so).
 
