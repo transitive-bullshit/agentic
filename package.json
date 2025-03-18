@@ -24,7 +24,7 @@
     "test:lint": "turbo test:lint",
     "test:typecheck": "turbo test:typecheck",
     "test:unit": "turbo test:unit",
-    "release": "bumpp && pnpm publish",
+    "release": "bumpp -r && pnpm publish -r",
     "pretest": "run-s build",
     "prerelease": "run-s build",
     "precommit": "lint-staged",
