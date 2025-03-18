@@ -75,9 +75,6 @@ catalogs:
     openai-zod-to-json-schema:
       specifier: ^1.0.3
       version: 1.0.3
-    p-map:
-      specifier: ^7.0.2
-      version: 7.0.3
     p-throttle:
       specifier: ^7.0.0
       version: 7.0.0
@@ -453,9 +450,6 @@ importers:
       openai-zod-to-json-schema:
         specifier: 'catalog:'
         version: 1.0.3(zod@3.24.2)
-      p-map:
-        specifier: 'catalog:'
-        version: 7.0.3
       p-throttle:
         specifier: 'catalog:'
         version: 7.0.0
@@ -577,6 +571,15 @@ importers:
       '@agentic/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
+      '@types/node':
+        specifier: ^20.11.16
+        version: 20.17.24
+      tsup:
+        specifier: ^8.0.1
+        version: 8.4.0(jiti@2.4.2)(postcss@8.5.3)(tsx@4.19.3)(typescript@5.8.2)(yaml@2.7.0)
+      typescript:
+        specifier: ^5.3.3
+        version: 5.8.2
 
   packages/genkit:
     dependencies:
