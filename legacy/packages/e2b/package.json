@@ -1,6 +1,6 @@
 {
   "name": "@agentic/e2b",
-  "version": "7.3.5",
+  "version": "7.4.7",
   "description": "Agentic SDK for E2B's hosted code interpreter.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",
@@ -34,12 +34,12 @@
     "@agentic/core": "workspace:*"
   },
   "peerDependencies": {
-    "@e2b/code-interpreter": "^1.0.2",
-    "zod": "^3.24.2"
+    "@e2b/code-interpreter": "catalog:",
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@agentic/tsconfig": "workspace:*",
-    "@e2b/code-interpreter": "^1.0.2"
+    "@e2b/code-interpreter": "catalog:"
   },
   "publishConfig": {
     "access": "public"

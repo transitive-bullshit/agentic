@@ -1,6 +1,6 @@
 {
   "name": "@agentic/firecrawl",
-  "version": "7.3.5",
+  "version": "7.4.7",
   "description": "Agentic SDK for Firecrawl.",
   "authors": [
     "Travis Fischer <travis@transitivebullsh.it>",
@@ -11,15 +11,23 @@
     "type": "git",
     "url": "git+https://github.com/transitive-bullshit/agentic.git"
   },
-  "sideEffects": false,
-  "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
+  "type": "module",
+  "source": "./src/index.ts",
   "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
   "files": [
-    "dist/**"
+    "dist"
   ],
   "scripts": {
-    "build": "tsup",
+    "build": "tsup --config ../../tsup.config.ts",
+    "dev": "tsup --config ../../tsup.config.ts --watch",
     "clean": "del dist",
     "test": "run-s test:*",
     "test:lint": "eslint .",
@@ -27,17 +35,14 @@
   },
   "dependencies": {
     "@agentic/core": "workspace:*",
-    "ky": "^1.7.5",
-    "p-throttle": "^6.2.0"
+    "ky": "catalog:",
+    "p-throttle": "catalog:"
   },
   "peerDependencies": {
-    "zod": "^3.24.2"
+    "zod": "catalog:"
   },
   "devDependencies": {
-    "@agentic/tsconfig": "workspace:*",
-    "@types/node": "^20.11.16",
-    "tsup": "^8.0.1",
-    "typescript": "^5.3.3"
+    "@agentic/tsconfig": "workspace:*"
   },
   "publishConfig": {
     "access": "public"

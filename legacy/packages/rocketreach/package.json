@@ -1,6 +1,6 @@
 {
   "name": "@agentic/rocketreach",
-  "version": "7.4.3",
+  "version": "7.4.7",
   "description": "Agentic SDK for RocketReach.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",
@@ -33,11 +33,11 @@
   },
   "dependencies": {
     "@agentic/core": "workspace:*",
-    "ky": "^1.7.5",
-    "p-throttle": "^6.2.0"
+    "ky": "catalog:",
+    "p-throttle": "catalog:"
   },
   "peerDependencies": {
-    "zod": "^3.24.2"
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@agentic/tsconfig": "workspace:*"

@@ -10,8 +10,8 @@
   "dependencies": {
     "@agentic/core": "workspace:*",
     "@agentic/stdlib": "workspace:*",
-    "openai": "^4.87.3",
-    "zod": "^3.24.2"
+    "openai": "catalog:",
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@agentic/tsconfig": "workspace:*"
