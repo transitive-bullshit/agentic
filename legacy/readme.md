@@ -81,7 +81,7 @@ You can use our standard library of thoroughly tested AI functions with your fav
 
 ### Under the hood
 
-All of the adapters (like `createAISDKTools` in this example) accept a very flexible var args of `AIFunctionLike` parameters, so you can pass as many tools / functions / clients as you like. An `AIFunctionLike` can be any agentic client instance, a single `AIFunction` selected from the client's `.functions` property (which holds an `AIFunctionSet` of available AI functions), or an AI function created manually via `createAIFunction`.
+All of the adapters (like `createAISDKTools` in this example) accept a very flexible var args of `AIFunctionLike` parameters, so you can pass as many tools as you'd like. An `AIFunctionLike` can be any agentic client instance, a single `AIFunction` selected from the client's `.functions` property (which holds an `AIFunctionSet` of available AI functions), or an AI function created manually via `createAIFunction`.
 
 `AIFunctionLike` and `AIFunctionSet` are implementation details that you likely won't have to touch directly, but they're important primitives because they're designed to maximize flexibility when working with various AI functions coming from different places.
 
