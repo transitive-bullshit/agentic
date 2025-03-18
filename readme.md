@@ -163,7 +163,8 @@ Full docs are available at [agentic.so](https://agentic.so).
 | [Wolfram Alpha](https://products.wolframalpha.com/llm-api/documentation) | `@agentic/wolfram-alpha`    | [docs](https://agentic.so/tools/wolfram-alpha)    | Wolfram Alpha LLM API client for answering computational, mathematical, and scientific questions.                                                                                                                                                              |
 | [ZoomInfo](https://api-docs.zoominfo.com)                                | `@agentic/zoominfo`         | [docs](https://agentic.so/tools/zoominfo)         | Powerful B2B person and company data enrichment.                                                                                                                                                                                                               |
 
-> [!NOTE] All Agentic clients have been hand-crafted for minimal size, with very few relying on external dependencies aside from our native `fetch` wrapper, [ky](https://github.com/sindresorhus/ky).
+> [!NOTE]
+> All Agentic clients have been hand-crafted for minimal size, with very few relying on external dependencies aside from our native `fetch` wrapper, [ky](https://github.com/sindresorhus/ky).
 
 For more details, see the [docs](https://agentic.so).
 
