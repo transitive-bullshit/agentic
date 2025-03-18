@@ -1,6 +1,6 @@
 {
   "name": "@agentic/slack",
-  "version": "7.3.5",
+  "version": "7.4.7",
   "description": "Agentic SDK for Slack.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",
