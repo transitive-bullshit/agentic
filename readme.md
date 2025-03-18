@@ -177,7 +177,7 @@ For more details, see the [docs](https://agentic.so).
 
 <p align="center">
   <a href="https://github.com/transitive-bullshit/agentic/graphs/contributors">
-    <img src="https://contrib.rocks/image?repo=transitive-bullshit/agentic" width="600" />
+    <img src="https://contrib.rocks/image?repo=transitive-bullshit/agentic&max=150" width="600" />
   </a>
 </p>
 
