@@ -83,13 +83,19 @@
     "openai",
     "llm",
     "tools",
+    "functions",
     "stdlib",
     "standard",
     "library",
     "functions",
     "typescript",
     "agent",
-    "agents"
+    "agents",
+    "ai tools",
+    "ai functions",
+    "ai function calling",
+    "ai tool calling",
+    "tool use"
   ],
   "publishConfig": {
     "access": "public"
