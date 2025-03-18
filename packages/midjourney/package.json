@@ -1,6 +1,6 @@
 {
   "name": "@agentic/midjourney",
-  "version": "7.5.0",
+  "version": "7.5.1",
   "description": "Agentic SDK for the unofficial Midjourney API via imagineapi.dev.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",
