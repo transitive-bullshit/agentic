@@ -76,8 +76,8 @@ catalogs:
       specifier: ^1.0.3
       version: 1.0.3
     p-throttle:
-      specifier: ^7.0.0
-      version: 7.0.0
+      specifier: ^6.2.0
+      version: 6.2.0
     restore-cursor:
       specifier: ^5.1.0
       version: 5.1.0
@@ -373,7 +373,7 @@ importers:
         version: 1.7.5
       p-throttle:
         specifier: 'catalog:'
-        version: 7.0.0
+        version: 6.2.0
       zod:
         specifier: 'catalog:'
         version: 3.24.2
@@ -424,7 +424,7 @@ importers:
         version: 1.7.5
       p-throttle:
         specifier: 'catalog:'
-        version: 7.0.0
+        version: 6.2.0
       zod:
         specifier: 'catalog:'
         version: 3.24.2
@@ -452,7 +452,7 @@ importers:
         version: 1.0.3(zod@3.24.2)
       p-throttle:
         specifier: 'catalog:'
-        version: 7.0.0
+        version: 6.2.0
       type-fest:
         specifier: 'catalog:'
         version: 4.37.0
@@ -480,7 +480,7 @@ importers:
         version: 1.7.5
       p-throttle:
         specifier: 'catalog:'
-        version: 7.0.0
+        version: 6.2.0
       zod:
         specifier: 'catalog:'
         version: 3.24.2
@@ -512,7 +512,7 @@ importers:
         version: 1.7.5
       p-throttle:
         specifier: 'catalog:'
-        version: 7.0.0
+        version: 6.2.0
       zod:
         specifier: 'catalog:'
         version: 3.24.2
@@ -563,7 +563,7 @@ importers:
         version: 1.7.5
       p-throttle:
         specifier: 'catalog:'
-        version: 7.0.0
+        version: 6.2.0
       zod:
         specifier: 'catalog:'
         version: 3.24.2
@@ -598,7 +598,7 @@ importers:
         version: 4.1.2
       p-throttle:
         specifier: 'catalog:'
-        version: 7.0.0
+        version: 6.2.0
       zod:
         specifier: 'catalog:'
         version: 3.24.2
@@ -617,7 +617,7 @@ importers:
         version: 1.7.5
       p-throttle:
         specifier: 'catalog:'
-        version: 7.0.0
+        version: 6.2.0
       zod:
         specifier: 'catalog:'
         version: 3.24.2
@@ -665,7 +665,7 @@ importers:
         version: 1.7.5
       p-throttle:
         specifier: 'catalog:'
-        version: 7.0.0
+        version: 6.2.0
     devDependencies:
       '@agentic/core':
         specifier: workspace:*
@@ -690,7 +690,7 @@ importers:
         version: 1.7.5
       p-throttle:
         specifier: 'catalog:'
-        version: 7.0.0
+        version: 6.2.0
       zod:
         specifier: 'catalog:'
         version: 3.24.2
@@ -722,7 +722,7 @@ importers:
         version: 1.7.5
       p-throttle:
         specifier: 'catalog:'
-        version: 7.0.0
+        version: 6.2.0
       zod:
         specifier: 'catalog:'
         version: 3.24.2
@@ -799,7 +799,7 @@ importers:
         version: 1.7.5
       p-throttle:
         specifier: 'catalog:'
-        version: 7.0.0
+        version: 6.2.0
       zod:
         specifier: 'catalog:'
         version: 3.24.2
@@ -818,7 +818,7 @@ importers:
         version: 1.7.5
       p-throttle:
         specifier: 'catalog:'
-        version: 7.0.0
+        version: 6.2.0
       zod:
         specifier: 'catalog:'
         version: 3.24.2
@@ -853,7 +853,7 @@ importers:
         version: 1.7.5
       p-throttle:
         specifier: 'catalog:'
-        version: 7.0.0
+        version: 6.2.0
       zod:
         specifier: 'catalog:'
         version: 3.24.2
@@ -872,7 +872,7 @@ importers:
         version: 1.7.5
       p-throttle:
         specifier: 'catalog:'
-        version: 7.0.0
+        version: 6.2.0
       zod:
         specifier: 'catalog:'
         version: 3.24.2
@@ -891,7 +891,7 @@ importers:
         version: 1.7.5
       p-throttle:
         specifier: 'catalog:'
-        version: 7.0.0
+        version: 6.2.0
       zod:
         specifier: 'catalog:'
         version: 3.24.2
@@ -974,7 +974,7 @@ importers:
         version: 1.7.5
       p-throttle:
         specifier: 'catalog:'
-        version: 7.0.0
+        version: 6.2.0
       zod:
         specifier: 'catalog:'
         version: 3.24.2
@@ -1117,7 +1117,7 @@ importers:
         version: 1.7.5
       p-throttle:
         specifier: 'catalog:'
-        version: 7.0.0
+        version: 6.2.0
       zod:
         specifier: 'catalog:'
         version: 3.24.2
@@ -1157,7 +1157,7 @@ importers:
         version: 1.7.5
       p-throttle:
         specifier: 'catalog:'
-        version: 7.0.0
+        version: 6.2.0
       twitter-api-sdk:
         specifier: 'catalog:'
         version: 1.2.1(encoding@0.1.13)
@@ -1198,7 +1198,7 @@ importers:
         version: 1.7.5
       p-throttle:
         specifier: 'catalog:'
-        version: 7.0.0
+        version: 6.2.0
       wikibase-sdk:
         specifier: 'catalog:'
         version: 10.2.2
@@ -1220,7 +1220,7 @@ importers:
         version: 1.7.5
       p-throttle:
         specifier: 'catalog:'
-        version: 7.0.0
+        version: 6.2.0
       zod:
         specifier: 'catalog:'
         version: 3.24.2
@@ -1258,7 +1258,7 @@ importers:
         version: 1.7.5
       p-throttle:
         specifier: 'catalog:'
-        version: 7.0.0
+        version: 6.2.0
       zod:
         specifier: 'catalog:'
         version: 3.24.2
@@ -5350,10 +5350,6 @@ packages:
     resolution: {integrity: sha512-NCKkOVj6PZa6NiTmfvGilDdf6vO1rFCD3KDnkHko8dTOtkpk4cSR/VTAhhLMG9aiQ7/A9HYgEDNmxzf6hxzR3g==}
     engines: {node: '>=18'}
 
-  p-throttle@7.0.0:
-    resolution: {integrity: sha512-aio0v+S0QVkH1O+9x4dHtD4dgCExACcL+3EtNaGqC01GBudS9ijMuUsmN8OVScyV4OOp0jqdLShZFuSlbL/AsA==}
-    engines: {node: '>=18'}
-
   p-timeout@3.2.0:
     resolution: {integrity: sha512-rhIwUycgwwKcP9yTOOFK/AKsAopjjCakVqLHePO3CC6Mir1Z99xT+R63jZxAT5lFZLa2inS5h+ZS2GvR99/FBg==}
     engines: {node: '>=8'}
@@ -7280,8 +7276,8 @@ snapshots:
       '@typescript-eslint/parser': 7.18.0(eslint@8.57.1)(typescript@5.8.2)
       '@typescript-eslint/utils': 7.18.0(eslint@8.57.1)(typescript@5.8.2)
       eslint-config-prettier: 9.1.0(eslint@8.57.1)
-      eslint-import-resolver-typescript: 3.6.3(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint-plugin-import@2.31.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint@8.57.1))(eslint@8.57.1)
-      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint-import-resolver-typescript@3.6.3(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint-plugin-import@2.31.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1)
+      eslint-import-resolver-typescript: 3.6.3(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint-plugin-import@2.31.0)(eslint@8.57.1)
+      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint-import-resolver-typescript@3.6.3)(eslint@8.57.1)
       eslint-plugin-jest: 28.9.0(@typescript-eslint/eslint-plugin@7.18.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint@8.57.1)(typescript@5.8.2))(eslint@8.57.1)(typescript@5.8.2)
       eslint-plugin-jest-dom: 5.4.0(eslint@8.57.1)
       eslint-plugin-jsx-a11y: 6.10.2(eslint@8.57.1)
@@ -10061,37 +10057,37 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-import-resolver-typescript@3.6.3(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint-plugin-import@2.31.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint@8.57.1))(eslint@8.57.1):
+  eslint-import-resolver-typescript@3.6.3(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint-plugin-import@2.31.0)(eslint@8.57.1):
     dependencies:
       '@nolyfill/is-core-module': 1.0.39
       debug: 4.4.0
       enhanced-resolve: 5.17.1
       eslint: 8.57.1
-      eslint-module-utils: 2.12.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.3(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint-plugin-import@2.31.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1)
+      eslint-module-utils: 2.12.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.3)(eslint@8.57.1)
       fast-glob: 3.3.2
       get-tsconfig: 4.10.0
       is-bun-module: 1.2.1
       is-glob: 4.0.3
     optionalDependencies:
-      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint-import-resolver-typescript@3.6.3(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint-plugin-import@2.31.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1)
+      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint-import-resolver-typescript@3.6.3)(eslint@8.57.1)
     transitivePeerDependencies:
       - '@typescript-eslint/parser'
       - eslint-import-resolver-node
       - eslint-import-resolver-webpack
       - supports-color
 
-  eslint-module-utils@2.12.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.3(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint-plugin-import@2.31.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1):
+  eslint-module-utils@2.12.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.3)(eslint@8.57.1):
     dependencies:
       debug: 3.2.7
     optionalDependencies:
       '@typescript-eslint/parser': 7.18.0(eslint@8.57.1)(typescript@5.8.2)
       eslint: 8.57.1
       eslint-import-resolver-node: 0.3.9
-      eslint-import-resolver-typescript: 3.6.3(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint-plugin-import@2.31.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint@8.57.1))(eslint@8.57.1)
+      eslint-import-resolver-typescript: 3.6.3(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint-plugin-import@2.31.0)(eslint@8.57.1)
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-import@2.31.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint-import-resolver-typescript@3.6.3(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint-plugin-import@2.31.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1):
+  eslint-plugin-import@2.31.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint-import-resolver-typescript@3.6.3)(eslint@8.57.1):
     dependencies:
       '@rtsao/scc': 1.1.0
       array-includes: 3.1.8
@@ -10102,7 +10098,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 8.57.1
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.12.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.3(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint-plugin-import@2.31.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1)
+      eslint-module-utils: 2.12.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.3)(eslint@8.57.1)
       hasown: 2.0.2
       is-core-module: 2.15.1
       is-glob: 4.0.3
@@ -11482,8 +11478,6 @@ snapshots:
       retry: 0.13.1
 
   p-throttle@6.2.0: {}
-
-  p-throttle@7.0.0: {}
 
   p-timeout@3.2.0:
     dependencies:
