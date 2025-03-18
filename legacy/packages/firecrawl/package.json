@@ -1,6 +1,6 @@
 {
   "name": "@agentic/firecrawl",
-  "version": "7.5.0",
+  "version": "7.5.1",
   "description": "Agentic SDK for Firecrawl.",
   "authors": [
     "Travis Fischer <travis@transitivebullsh.it>",
