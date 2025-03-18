@@ -17,7 +17,7 @@ catalog:
   openai: ^4.87.3
   openai-fetch: ^3.4.2
   p-map: ^7.0.2
-  p-throttle: ^7.0.0
+  p-throttle: ^6.2.0 # https://github.com/transitive-bullshit/agentic/issues/686
   restore-cursor: ^5.1.0
   twitter-api-sdk: ^1.2.1
   type-fest: ^4.37.0
