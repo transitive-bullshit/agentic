@@ -35,11 +35,11 @@
     "@agentic/core": "workspace:*"
   },
   "peerDependencies": {
-    "@mastra/core": "^0.6.0"
+    "@mastra/core": "catalog:"
   },
   "devDependencies": {
     "@agentic/tsconfig": "workspace:*",
-    "@mastra/core": "^0.6.0"
+    "@mastra/core": "catalog:"
   },
   "publishConfig": {
     "access": "public"

@@ -1,3 +1,50 @@
 packages:
   - 'packages/*'
   - 'examples/*'
+
+catalog:
+  ky: ^1.7.5
+  zod: ^3.24.2
+  zod-validation-error: ^3.4.0
+  openai-zod-to-json-schema: ^1.0.3
+  dedent: ^1.5.3
+  delay: ^6.0.0
+  jsonrepair: ^3.9.0
+  jsrsasign: ^10.9.0
+  mathjs: ^13.0.3
+  '@nangohq/node': ^0.42.2
+  octokit: ^4.0.2
+  openai: ^4.87.3
+  openai-fetch: ^3.4.2
+  p-map: ^7.0.2
+  p-throttle: ^7.0.0
+  restore-cursor: ^5.1.0
+  twitter-api-sdk: ^1.2.1
+  type-fest: ^4.37.0
+  wikibase-sdk: ^10.2.2
+  '@types/jsrsasign': ^10.5.15
+
+  # vercel ai sdk
+  ai: ^4.1.61
+  '@ai-sdk/openai': ^1.2.5
+
+  # genkit
+  genkit: ^1.2.0
+  genkitx-openai: ^0.20.1
+
+  # langchain
+  langchain: ^0.3.3
+  '@langchain/core': ^0.3.42
+  '@langchain/openai': ^0.4.5
+
+  # llamaindex
+  'llamaindex': ^0.9.11
+
+  # dexter
+  '@dexaai/dexter': ^4.1.1
+
+  # mastra
+  '@mastra/core': ^0.6.1
+
+  # e2b
+  '@e2b/code-interpreter': ^1.0.2

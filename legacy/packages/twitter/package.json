@@ -32,14 +32,14 @@
   },
   "dependencies": {
     "@agentic/core": "workspace:*",
-    "@nangohq/node": "^0.42.2",
-    "ky": "^1.7.5",
-    "p-throttle": "^6.2.0",
-    "twitter-api-sdk": "^1.2.1",
-    "type-fest": "^4.35.0"
+    "@nangohq/node": "catalog:",
+    "ky": "catalog:",
+    "p-throttle": "catalog:",
+    "twitter-api-sdk": "catalog:",
+    "type-fest": "catalog:"
   },
   "peerDependencies": {
-    "zod": "^3.24.2"
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@agentic/tsconfig": "workspace:*"

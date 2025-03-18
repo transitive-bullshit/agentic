@@ -35,11 +35,11 @@
     "@agentic/core": "workspace:*"
   },
   "peerDependencies": {
-    "genkit": "^1.0.4"
+    "genkit": "catalog:"
   },
   "devDependencies": {
     "@agentic/tsconfig": "workspace:*",
-    "genkit": "^1.0.4"
+    "genkit": "catalog:"
   },
   "publishConfig": {
     "access": "public"

@@ -35,11 +35,11 @@
     "@agentic/core": "workspace:*"
   },
   "peerDependencies": {
-    "@dexaai/dexter": "^4.1.1"
+    "@dexaai/dexter": "catalog:"
   },
   "devDependencies": {
     "@agentic/tsconfig": "workspace:*",
-    "@dexaai/dexter": "^4.1.1"
+    "@dexaai/dexter": "catalog:"
   },
   "publishConfig": {
     "access": "public"

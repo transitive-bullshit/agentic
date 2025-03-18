@@ -32,12 +32,12 @@
   },
   "dependencies": {
     "@agentic/core": "workspace:*",
-    "ky": "^1.7.5",
-    "p-throttle": "^6.2.0",
-    "wikibase-sdk": "^10.0.3"
+    "ky": "catalog:",
+    "p-throttle": "catalog:",
+    "wikibase-sdk": "catalog:"
   },
   "peerDependencies": {
-    "zod": "^3.24.2"
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@agentic/tsconfig": "workspace:*"

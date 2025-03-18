@@ -68,10 +68,10 @@
     "@agentic/wikipedia": "workspace:*",
     "@agentic/wolfram-alpha": "workspace:*",
     "@agentic/zoominfo": "workspace:*",
-    "@e2b/code-interpreter": "^1.0.2"
+    "@e2b/code-interpreter": "catalog:"
   },
   "peerDependencies": {
-    "zod": "^3.24.2"
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@agentic/tsconfig": "workspace:*"

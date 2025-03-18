@@ -33,16 +33,16 @@
   },
   "dependencies": {
     "@agentic/core": "workspace:*",
-    "jsrsasign": "^10.9.0",
-    "ky": "^1.7.5",
-    "p-throttle": "^6.2.0"
+    "jsrsasign": "catalog:",
+    "ky": "catalog:",
+    "p-throttle": "catalog:"
   },
   "peerDependencies": {
-    "zod": "^3.24.2"
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@agentic/tsconfig": "workspace:*",
-    "@types/jsrsasign": "^10.5.15"
+    "@types/jsrsasign": "catalog:"
   },
   "publishConfig": {
     "access": "public"
