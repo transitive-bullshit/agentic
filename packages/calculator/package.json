@@ -1,6 +1,6 @@
 {
   "name": "@agentic/calculator",
-  "version": "7.3.5",
+  "version": "7.4.7",
   "description": "Agentic calculator tool wrapping mathjs.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",
@@ -32,10 +32,10 @@
   },
   "dependencies": {
     "@agentic/core": "workspace:*",
-    "mathjs": "^13.0.3"
+    "mathjs": "catalog:"
   },
   "peerDependencies": {
-    "zod": "^3.24.2"
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@agentic/tsconfig": "workspace:*"

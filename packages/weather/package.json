@@ -1,6 +1,6 @@
 {
   "name": "@agentic/weather",
-  "version": "7.3.5",
+  "version": "7.4.7",
   "description": "Agentic SDK for weatherapi.com.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",
@@ -10,6 +10,7 @@
   },
   "type": "module",
   "source": "./src/index.ts",
+  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "sideEffects": false,
   "exports": {
@@ -32,10 +33,10 @@
   },
   "dependencies": {
     "@agentic/core": "workspace:*",
-    "ky": "^1.7.5"
+    "ky": "catalog:"
   },
   "peerDependencies": {
-    "zod": "^3.24.2"
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@agentic/tsconfig": "workspace:*"

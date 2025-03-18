@@ -7,7 +7,7 @@
     "type": "git",
     "url": "git+https://github.com/transitive-bullshit/agentic.git"
   },
-  "packageManager": "pnpm@10.6.3",
+  "packageManager": "pnpm@10.6.4",
   "engines": {
     "node": ">=18"
   },
@@ -17,47 +17,47 @@
     "dev": "turbo dev --concurrency 50 --continue",
     "docs": "cd docs && npx mintlify dev",
     "clean": "turbo clean",
+    "fix": "run-s fix:*",
     "fix:format": "prettier --write \"**/*.{js,ts,tsx}\"",
     "test": "turbo test",
     "test:format": "prettier --check \"**/*.{js,ts,tsx}\"",
     "test:lint": "turbo test:lint",
     "test:typecheck": "turbo test:typecheck",
     "test:unit": "turbo test:unit",
-    "changeset": "changeset",
-    "release": "run-s release:*",
-    "release:build": "run-s build",
-    "release:changeset": "changeset",
-    "release:version": "changeset version",
-    "release:publish": "changeset publish",
+    "release": "bumpp && pnpm publish",
     "pretest": "run-s build",
+    "prerelease": "run-s build",
     "precommit": "lint-staged",
     "preinstall": "npx only-allow pnpm",
-    "prepare": "husky"
+    "prepare": "simple-git-hooks"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.28.1",
     "@fisch0920/eslint-config": "^1.4.0",
     "@total-typescript/ts-reset": "^0.6.1",
     "@types/node": "^22.13.10",
+    "bumpp": "^10.1.0",
     "del-cli": "^6.0.0",
     "dotenv": "^16.4.7",
     "eslint": "^8.57.1",
-    "husky": "^9.1.7",
     "lint-staged": "^15.5.0",
     "npm-run-all2": "^7.0.2",
     "only-allow": "^1.2.1",
     "prettier": "^3.5.3",
+    "simple-git-hooks": "^2.11.1",
     "syncpack": "14.0.0-alpha.10",
     "tsup": "^8.4.0",
     "tsx": "^4.19.3",
     "turbo": "^2.4.4",
     "typescript": "^5.8.2",
-    "vitest": "3.0.8",
-    "zod": "^3.24.2",
+    "vitest": "3.0.9",
+    "zod": "catalog:",
     "zoominfo-api-auth-client": "^1.0.1"
   },
+  "simple-git-hooks": {
+    "pre-commit": "npx lint-staged"
+  },
   "lint-staged": {
-    "*.{ts,tsx}": [
+    "*": [
       "prettier --ignore-unknown --write",
       "eslint --fix"
     ]

@@ -68,10 +68,10 @@
     "@agentic/wikipedia": "workspace:*",
     "@agentic/wolfram-alpha": "workspace:*",
     "@agentic/zoominfo": "workspace:*",
-    "@e2b/code-interpreter": "^1.0.2"
+    "@e2b/code-interpreter": "catalog:"
   },
   "peerDependencies": {
-    "zod": "^3.24.2"
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@agentic/tsconfig": "workspace:*"
@@ -83,13 +83,19 @@
     "openai",
     "llm",
     "tools",
+    "functions",
     "stdlib",
     "standard",
     "library",
     "functions",
     "typescript",
     "agent",
-    "agents"
+    "agents",
+    "ai tools",
+    "ai functions",
+    "ai function calling",
+    "ai tool calling",
+    "tool use"
   ],
   "publishConfig": {
     "access": "public"

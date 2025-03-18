@@ -1,6 +1,6 @@
 {
   "name": "@agentic/mastra",
-  "version": "0.1.2",
+  "version": "7.4.7",
   "description": "Agentic adapter for the Mastra AI Agent SDK.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",
@@ -35,11 +35,11 @@
     "@agentic/core": "workspace:*"
   },
   "peerDependencies": {
-    "@mastra/core": "^0.6.0"
+    "@mastra/core": "catalog:"
   },
   "devDependencies": {
     "@agentic/tsconfig": "workspace:*",
-    "@mastra/core": "^0.6.0"
+    "@mastra/core": "catalog:"
   },
   "publishConfig": {
     "access": "public"

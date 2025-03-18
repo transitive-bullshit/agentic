@@ -1,6 +1,6 @@
 {
   "name": "@agentic/dexter",
-  "version": "7.3.6",
+  "version": "7.4.7",
   "description": "Agentic adapter for the Dexter AI SDK by Dexa.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",
@@ -35,11 +35,11 @@
     "@agentic/core": "workspace:*"
   },
   "peerDependencies": {
-    "@dexaai/dexter": "^4.1.1"
+    "@dexaai/dexter": "catalog:"
   },
   "devDependencies": {
     "@agentic/tsconfig": "workspace:*",
-    "@dexaai/dexter": "^4.1.1"
+    "@dexaai/dexter": "catalog:"
   },
   "publishConfig": {
     "access": "public"

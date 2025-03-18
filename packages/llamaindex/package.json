@@ -1,6 +1,6 @@
 {
   "name": "@agentic/llamaindex",
-  "version": "7.3.6",
+  "version": "7.4.7",
   "description": "Agentic adapter for the LlamaIndex AI SDK.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",
@@ -35,11 +35,11 @@
     "@agentic/core": "workspace:*"
   },
   "peerDependencies": {
-    "llamaindex": "^0.9.2"
+    "llamaindex": "catalog:"
   },
   "devDependencies": {
     "@agentic/tsconfig": "workspace:*",
-    "llamaindex": "^0.9.2"
+    "llamaindex": "catalog:"
   },
   "publishConfig": {
     "access": "public"
