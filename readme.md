@@ -173,11 +173,13 @@ For more details, see the [docs](https://agentic.so).
 - [Travis Fischer](https://x.com/transitive_bs)
 - [David Zhang](https://x.com/dzhng)
 - [Philipp Burckhardt](https://x.com/burckhap)
-- And all of the [amazing OSS contributors](https://github.com/transitive-bullshit/agentic/graphs/contributors)!
+- And all of these [amazing OSS contributors](https://github.com/transitive-bullshit/agentic/graphs/contributors):
 
-<a href="https://github.com/transitive-bullshit/agentic/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=transitive-bullshit/agentic" />
-</a>
+<p align="center">
+  <a href="https://github.com/transitive-bullshit/agentic/graphs/contributors">
+    <img src="https://contrib.rocks/image?repo=transitive-bullshit/agentic" />
+  </a>
+</p>
 
 ## License
 
