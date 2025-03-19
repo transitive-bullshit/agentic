@@ -54,6 +54,14 @@ export type FindUserByUsernameParams = Simplify<
   Parameters<TwitterV2Client['users']['findUserByUsername']>[1]
 >
 
+export type ListTweetsLikedByUserIdParams = Simplify<
+  Parameters<TwitterV2Client['tweets']['usersIdLikedTweets']>[1]
+>
+
+export type ListTweetsByUserIdParams = Simplify<
+  Parameters<TwitterV2Client['tweets']['usersIdTweets']>[1]
+>
+
 type Unpacked<T> = T extends (infer U)[] ? U : T
 
 export type Tweet = Simplify<
