@@ -7,24 +7,21 @@ import { TwitterError } from './error'
  * Error handler which takes in an unknown Error object and converts it to a
  * structured TwitterError object for a set of common Twitter API errors.
  *
- * Re-throws the error and will never return.
+ * Re-throws the error if not recognized and will never return.
  */
-export function handleKnownTwitterErrors(
+export function handleTwitterError(
   err: any,
   { label = '' }: { label?: string } = {}
-) {
+): never {
   if (err.status === 403) {
     // user may have deleted the tweet we're trying to respond to
-    throw new TwitterError(
-      err.error?.detail || `error ${label}: 403 forbidden`,
-      {
-        type: 'twitter:forbidden',
-        isFinal: true,
-        cause: err
-      }
-    )
+    throw new TwitterError(err.error?.detail || `${label}: 403 forbidden`, {
+      type: 'twitter:forbidden',
+      isFinal: true,
+      cause: err
+    })
   } else if (err.status === 401) {
-    throw new TwitterError(`error ${label}: unauthorized`, {
+    throw new TwitterError(`${label}: unauthorized`, {
       type: 'twitter:auth',
       cause: err
     })
@@ -34,13 +31,13 @@ export function handleKnownTwitterErrors(
         err.error?.error_description
       )
     ) {
-      throw new TwitterError(`error ${label}: invalid auth token`, {
+      throw new TwitterError(`${label}: invalid auth token`, {
         type: 'twitter:auth',
         cause: err
       })
     }
   } else if (err.status === 429) {
-    throw new TwitterError(`error ${label}: too many requests`, {
+    throw new TwitterError(`${label}: too many requests`, {
       type: 'twitter:rate-limit',
       cause: err
     })
@@ -54,9 +51,7 @@ export function handleKnownTwitterErrors(
 
   if (err.status >= 400 && err.status < 500) {
     throw new TwitterError(
-      `error ${label}: ${err.status} ${
-        err.error?.description || err.toString()
-      }`,
+      `${label}: ${err.status} ${err.error?.description || err.toString()}`,
       {
         type: 'twitter:unknown',
         isFinal: true,
@@ -65,9 +60,7 @@ export function handleKnownTwitterErrors(
     )
   } else if (err.status >= 500) {
     throw new TwitterError(
-      `error ${label}: ${err.status} ${
-        err.error?.description || err.toString()
-      }`,
+      `${label}: ${err.status} ${err.error?.description || err.toString()}`,
       {
         type: 'twitter:unknown',
         isFinal: false,
