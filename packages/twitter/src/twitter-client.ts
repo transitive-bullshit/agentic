@@ -19,14 +19,14 @@ import { handleTwitterError } from './utils'
 
 type TwitterApiMethod =
   | 'createTweet'
-  | 'usersIdMentions'
-  | 'findTweetById'
-  | 'findTweetsById'
+  | 'getTweetById'
+  | 'getTweetsById'
   | 'searchRecentTweets'
+  | 'listTweetMentionsByUserId'
   | 'listTweetsLikedByUserId'
   | 'listTweetsByUserId'
-  | 'findUserById'
-  | 'findUserByUsername'
+  | 'getUserById'
+  | 'getUserByUsername'
 
 const TWENTY_FOUR_HOURS_MS = 24 * 60 * 60 * 1000
 const FIFTEEN_MINUTES_MS = 15 * 60 * 1000
@@ -46,16 +46,14 @@ const twitterApiRateLimitsByPlan: Record<
     // 50 per 24h per app
     createTweet: { limit: 50, interval: TWENTY_FOUR_HOURS_MS },
 
-    // TODO: according to the twitter docs, this shouldn't be allowed on the
-    // free plan, but it seems to work...
-    usersIdMentions: { limit: 1, interval: FIFTEEN_MINUTES_MS },
-    findTweetById: { limit: 1, interval: FIFTEEN_MINUTES_MS },
-    findTweetsById: { limit: 1, interval: FIFTEEN_MINUTES_MS },
+    getTweetById: { limit: 1, interval: FIFTEEN_MINUTES_MS },
+    getTweetsById: { limit: 1, interval: FIFTEEN_MINUTES_MS },
     searchRecentTweets: { limit: 1, interval: FIFTEEN_MINUTES_MS },
+    listTweetMentionsByUserId: { limit: 1, interval: FIFTEEN_MINUTES_MS },
     listTweetsLikedByUserId: { limit: 1, interval: FIFTEEN_MINUTES_MS },
     listTweetsByUserId: { limit: 1, interval: FIFTEEN_MINUTES_MS },
-    findUserById: { limit: 1, interval: FIFTEEN_MINUTES_MS },
-    findUserByUsername: { limit: 1, interval: FIFTEEN_MINUTES_MS }
+    getUserById: { limit: 1, interval: FIFTEEN_MINUTES_MS },
+    getUserByUsername: { limit: 1, interval: FIFTEEN_MINUTES_MS }
   },
 
   basic: {
@@ -63,20 +61,18 @@ const twitterApiRateLimitsByPlan: Record<
     // 1667 per 24h per app
     createTweet: { limit: 100, interval: TWENTY_FOUR_HOURS_MS },
 
-    // https://developer.twitter.com/en/docs/twitter-api/tweets/timelines/api-reference/get-users-id-mentions
-    // TODO: undocumented? https://docs.x.com/x-api/fundamentals/rate-limits
-    // 10 per 15m per user
-    // 10 per 15m per app
-    usersIdMentions: { limit: 180, interval: FIFTEEN_MINUTES_MS },
-
     // 15 per 15m per user
     // 15 per 15m per app
-    findTweetById: { limit: 15, interval: FIFTEEN_MINUTES_MS },
-    findTweetsById: { limit: 15, interval: FIFTEEN_MINUTES_MS },
+    getTweetById: { limit: 15, interval: FIFTEEN_MINUTES_MS },
+    getTweetsById: { limit: 15, interval: FIFTEEN_MINUTES_MS },
 
     // 60 per 15m per user
     // 60 per 15m per app
     searchRecentTweets: { limit: 60, interval: FIFTEEN_MINUTES_MS },
+
+    // 10 per 15m per user
+    // 10 per 15m per app
+    listTweetMentionsByUserId: { limit: 180, interval: FIFTEEN_MINUTES_MS },
 
     // 5 per 15min per user
     // 5 per 15min per app
@@ -88,8 +84,8 @@ const twitterApiRateLimitsByPlan: Record<
 
     // 100 per 24h per user
     // 500 per 24h per app
-    findUserById: { limit: 100, interval: TWENTY_FOUR_HOURS_MS },
-    findUserByUsername: { limit: 100, interval: TWENTY_FOUR_HOURS_MS }
+    getUserById: { limit: 100, interval: TWENTY_FOUR_HOURS_MS },
+    getUserByUsername: { limit: 100, interval: TWENTY_FOUR_HOURS_MS }
   },
 
   pro: {
@@ -97,19 +93,19 @@ const twitterApiRateLimitsByPlan: Record<
     // 10k per 24h per app
     createTweet: { limit: 100, interval: FIFTEEN_MINUTES_MS },
 
-    // 300 per 15m per user
-    // 450 per 15m per app
-    usersIdMentions: { limit: 300, interval: FIFTEEN_MINUTES_MS },
-
     // TODO: why would the per-user rate-limit be more than the per-app one?!
     // 900 per 15m per user
     // 450 per 15m per app
-    findTweetById: { limit: 450, interval: FIFTEEN_MINUTES_MS },
-    findTweetsById: { limit: 450, interval: FIFTEEN_MINUTES_MS },
+    getTweetById: { limit: 450, interval: FIFTEEN_MINUTES_MS },
+    getTweetsById: { limit: 450, interval: FIFTEEN_MINUTES_MS },
 
     // 300 per 15m per user
     // 450 per 15m per app
     searchRecentTweets: { limit: 300, interval: FIFTEEN_MINUTES_MS },
+
+    // 300 per 15m per user
+    // 450 per 15m per app
+    listTweetMentionsByUserId: { limit: 300, interval: FIFTEEN_MINUTES_MS },
 
     // 75 per 15min per user
     // 75 per 15min per app
@@ -121,8 +117,8 @@ const twitterApiRateLimitsByPlan: Record<
 
     // 900 per 15m per user
     // 300 per 15m per app
-    findUserById: { limit: 300, interval: FIFTEEN_MINUTES_MS },
-    findUserByUsername: { limit: 300, interval: FIFTEEN_MINUTES_MS }
+    getUserById: { limit: 300, interval: FIFTEEN_MINUTES_MS },
+    getUserByUsername: { limit: 300, interval: FIFTEEN_MINUTES_MS }
   },
 
   enterprise: {
@@ -130,17 +126,33 @@ const twitterApiRateLimitsByPlan: Record<
     // completely customizable, but it's still useful to define rate limits
     // for robustness. These values just 10x those of the pro plan.
     createTweet: { limit: 1000, interval: FIFTEEN_MINUTES_MS },
-    usersIdMentions: { limit: 3000, interval: FIFTEEN_MINUTES_MS },
-    findTweetById: { limit: 4500, interval: FIFTEEN_MINUTES_MS },
-    findTweetsById: { limit: 4500, interval: FIFTEEN_MINUTES_MS },
+
+    getTweetById: { limit: 4500, interval: FIFTEEN_MINUTES_MS },
+    getTweetsById: { limit: 4500, interval: FIFTEEN_MINUTES_MS },
+
     searchRecentTweets: { limit: 3000, interval: FIFTEEN_MINUTES_MS },
+    listTweetMentionsByUserId: { limit: 3000, interval: FIFTEEN_MINUTES_MS },
     listTweetsLikedByUserId: { limit: 750, interval: FIFTEEN_MINUTES_MS },
     listTweetsByUserId: { limit: 9000, interval: FIFTEEN_MINUTES_MS },
-    findUserById: { limit: 3000, interval: FIFTEEN_MINUTES_MS },
-    findUserByUsername: { limit: 3000, interval: FIFTEEN_MINUTES_MS }
+
+    getUserById: { limit: 3000, interval: FIFTEEN_MINUTES_MS },
+    getUserByUsername: { limit: 3000, interval: FIFTEEN_MINUTES_MS }
   }
 }
 
+/**
+ * Twitter API v2 client wrapper with rate-limited methods and `@aiFunction`
+ * compatibility.
+ *
+ * Rate limits differ by plan, so make sure theh `twitterApiPlan` parameter is
+ * properly set to maximize your rate-limit usage.
+ *
+ * @note This class does not handle distributed rate-limits. It assumes a
+ * single, local client is accessing the API at a time, which is a better fit
+ * for serverful environments.
+ *
+ * @see https://docs.x.com/x-api/fundamentals/rate-limits
+ */
 export class TwitterClient extends AIFunctionsProvider {
   readonly client: types.TwitterV2Client
   readonly twitterApiPlan: types.TwitterApiPlan
@@ -168,12 +180,13 @@ export class TwitterClient extends AIFunctionsProvider {
     assert(twitterApiRateLimits, `Invalid twitter api plan: ${twitterApiPlan}`)
 
     const createTweetThrottle = pThrottle(twitterApiRateLimits.createTweet)
-    const findTweetByIdThrottle = pThrottle(twitterApiRateLimits.findTweetById)
-    const findTweetsByIdThrottle = pThrottle(
-      twitterApiRateLimits.findTweetsById
-    )
+    const getTweetByIdThrottle = pThrottle(twitterApiRateLimits.getTweetById)
+    const getTweetsByIdThrottle = pThrottle(twitterApiRateLimits.getTweetsById)
     const searchRecentTweetsThrottle = pThrottle(
       twitterApiRateLimits.searchRecentTweets
+    )
+    const listTweetMentionsByUserIdThrottle = pThrottle(
+      twitterApiRateLimits.listTweetMentionsByUserId
     )
     const listTweetsLikedByUserIdThrottle = pThrottle(
       twitterApiRateLimits.listTweetsLikedByUserId
@@ -181,18 +194,19 @@ export class TwitterClient extends AIFunctionsProvider {
     const listTweetsByUserIdThrottle = pThrottle(
       twitterApiRateLimits.listTweetsByUserId
     )
-    const findUserByIdThrottle = pThrottle(twitterApiRateLimits.findUserById)
-    const findUserByUsernameThrottle = pThrottle(
-      twitterApiRateLimits.findUserByUsername
+    const getUserByIdThrottle = pThrottle(twitterApiRateLimits.getUserById)
+    const getUserByUsernameThrottle = pThrottle(
+      twitterApiRateLimits.getUserByUsername
     )
 
     this._createTweet = createTweetThrottle(createTweetImpl(this.client))
-    this._findTweetById = findTweetByIdThrottle(findTweetByIdImpl(this.client))
-    this._findTweetsById = findTweetsByIdThrottle(
-      findTweetsByIdImpl(this.client)
-    )
+    this._getTweetById = getTweetByIdThrottle(getTweetByIdImpl(this.client))
+    this._getTweetsById = getTweetsByIdThrottle(getTweetsByIdImpl(this.client))
     this._searchRecentTweets = searchRecentTweetsThrottle(
       searchRecentTweetsImpl(this.client)
+    )
+    this._listTweetMentionsByUserId = listTweetMentionsByUserIdThrottle(
+      listTweetMentionsByUserIdImpl(this.client)
     )
     this._listTweetsLikedByUserId = listTweetsLikedByUserIdThrottle(
       listTweetsLikedByUserIdImpl(this.client)
@@ -200,22 +214,25 @@ export class TwitterClient extends AIFunctionsProvider {
     this._listTweetsByUserId = listTweetsByUserIdThrottle(
       listTweetsByUserIdImpl(this.client)
     )
-    this._findUserById = findUserByIdThrottle(findUserByIdImpl(this.client))
-    this._findUserByUsername = findUserByUsernameThrottle(
-      findUserByUsernameImpl(this.client)
+    this._getUserById = getUserByIdThrottle(getUserByIdImpl(this.client))
+    this._getUserByUsername = getUserByUsernameThrottle(
+      getUserByUsernameImpl(this.client)
     )
   }
 
   protected _createTweet: ReturnType<typeof createTweetImpl>
-  protected _findTweetById: ReturnType<typeof findTweetByIdImpl>
-  protected _findTweetsById: ReturnType<typeof findTweetsByIdImpl>
+  protected _getTweetById: ReturnType<typeof getTweetByIdImpl>
+  protected _getTweetsById: ReturnType<typeof getTweetsByIdImpl>
   protected _searchRecentTweets: ReturnType<typeof searchRecentTweetsImpl>
+  protected _listTweetMentionsByUserId: ReturnType<
+    typeof listTweetMentionsByUserIdImpl
+  >
   protected _listTweetsLikedByUserId: ReturnType<
     typeof listTweetsLikedByUserIdImpl
   >
   protected _listTweetsByUserId: ReturnType<typeof listTweetsByUserIdImpl>
-  protected _findUserById: ReturnType<typeof findUserByIdImpl>
-  protected _findUserByUsername: ReturnType<typeof findUserByUsernameImpl>
+  protected _getUserById: ReturnType<typeof getUserByIdImpl>
+  protected _getUserByUsername: ReturnType<typeof getUserByUsernameImpl>
 
   /**
    * Creates a new tweet
@@ -243,13 +260,13 @@ export class TwitterClient extends AIFunctionsProvider {
       id: z.string().nonempty()
     })
   })
-  async findTweetById(params: { id: string } & types.FindTweetByIdParams) {
+  async getTweetById(params: { id: string } & types.GetTweetByIdParams) {
     assert(
       this.twitterApiPlan !== 'free',
-      'TwitterClient.findTweetById is not supported on free plan'
+      'TwitterClient.getTweetById is not supported on free plan'
     )
 
-    return this._findTweetById(params.id, params)
+    return this._getTweetById(params.id, params)
   }
 
   /**
@@ -262,13 +279,13 @@ export class TwitterClient extends AIFunctionsProvider {
       ids: z.array(z.string().nonempty())
     })
   })
-  async findTweetsById({ ids, ...params }: types.FindTweetsByIdParams) {
+  async getTweetsById({ ids, ...params }: types.GetTweetsByIdParams) {
     assert(
       this.twitterApiPlan !== 'free',
-      'TwitterClient.findTweetsById is not supported on free plan'
+      'TwitterClient.getTweetsById is not supported on free plan'
     )
 
-    return this._findTweetsById(ids, params)
+    return this._getTweetsById(ids, params)
   }
 
   /**
@@ -294,6 +311,30 @@ export class TwitterClient extends AIFunctionsProvider {
     )
 
     return this._searchRecentTweets(params)
+  }
+
+  /**
+   * Lists tweets which mention the given user.
+   */
+  @aiFunction({
+    name: 'list_tweet_mentions_by_user_id',
+    description: 'Lists tweets which mention the given user.',
+    inputSchema: z.object({
+      userId: z.string().nonempty(),
+      max_results: z.number().min(5).max(100).optional(),
+      pagination_token: z.string().optional()
+    })
+  })
+  async listTweetMentionsByUserId({
+    userId,
+    ...params
+  }: { userId: string } & types.ListTweetMentionsByUserIdParams) {
+    assert(
+      this.twitterApiPlan !== 'free',
+      'TwitterClient.listTweetMentionsByUserId is not supported on free plan'
+    )
+
+    return this._listTweetMentionsByUserId(userId, params)
   }
 
   /**
@@ -360,16 +401,16 @@ export class TwitterClient extends AIFunctionsProvider {
       id: z.string().min(1)
     })
   })
-  async findUserById({
+  async getUserById({
     id,
     ...params
-  }: { id: string } & types.FindUserByIdParams) {
+  }: { id: string } & types.GetUserByIdParams) {
     assert(
       this.twitterApiPlan !== 'free',
-      'TwitterClient.findUserById not supported on free plan'
+      'TwitterClient.getUserById not supported on free plan'
     )
 
-    return this._findUserById(id, params)
+    return this._getUserById(id, params)
   }
 
   /**
@@ -382,16 +423,16 @@ export class TwitterClient extends AIFunctionsProvider {
       username: z.string().min(1)
     })
   })
-  async findUserByUsername({
+  async getUserByUsername({
     username,
     ...params
-  }: { username: string } & types.FindUserByUsernameParams) {
+  }: { username: string } & types.GetUserByUsernameParams) {
     assert(
       this.twitterApiPlan !== 'free',
-      'TwitterClient.findUserByUsername not supported on free plan'
+      'TwitterClient.getUserByUsername not supported on free plan'
     )
 
-    return this._findUserByUsername(username, params)
+    return this._getUserByUsername(username, params)
   }
 }
 
@@ -482,8 +523,8 @@ function createTweetImpl(client: types.TwitterV2Client) {
   }
 }
 
-function findTweetByIdImpl(client: types.TwitterV2Client) {
-  return async (tweetId: string, params?: types.FindTweetByIdParams) => {
+function getTweetByIdImpl(client: types.TwitterV2Client) {
+  return async (tweetId: string, params?: types.GetTweetByIdParams) => {
     try {
       return await client.tweets.findTweetById(tweetId, {
         ...defaultTweetQueryParams,
@@ -495,10 +536,10 @@ function findTweetByIdImpl(client: types.TwitterV2Client) {
   }
 }
 
-function findTweetsByIdImpl(client: types.TwitterV2Client) {
+function getTweetsByIdImpl(client: types.TwitterV2Client) {
   return async (
     ids: string[],
-    params?: Omit<types.FindTweetsByIdParams, 'ids'>
+    params?: Omit<types.GetTweetsByIdParams, 'ids'>
   ) => {
     try {
       return await client.tweets.findTweetsById({
@@ -527,8 +568,8 @@ function searchRecentTweetsImpl(client: types.TwitterV2Client) {
   }
 }
 
-function findUserByIdImpl(client: types.TwitterV2Client) {
-  return async (userId: string, params?: types.FindUserByIdParams) => {
+function getUserByIdImpl(client: types.TwitterV2Client) {
+  return async (userId: string, params?: types.GetUserByIdParams) => {
     try {
       return await client.users.findUserById(userId, {
         ...defaultUserQueryParams,
@@ -542,8 +583,8 @@ function findUserByIdImpl(client: types.TwitterV2Client) {
   }
 }
 
-function findUserByUsernameImpl(client: types.TwitterV2Client) {
-  return async (username: string, params?: types.FindUserByUsernameParams) => {
+function getUserByUsernameImpl(client: types.TwitterV2Client) {
+  return async (username: string, params?: types.GetUserByUsernameParams) => {
     try {
       return await client.users.findUserByUsername(username, {
         ...defaultUserQueryParams,
@@ -552,6 +593,24 @@ function findUserByUsernameImpl(client: types.TwitterV2Client) {
     } catch (err: any) {
       handleTwitterError(err, {
         label: `error fetching user with username ${username}`
+      })
+    }
+  }
+}
+
+function listTweetMentionsByUserIdImpl(client: types.TwitterV2Client) {
+  return async (
+    userId: string,
+    params?: types.ListTweetMentionsByUserIdParams
+  ) => {
+    try {
+      return await client.tweets.usersIdMentions(userId, {
+        ...defaultTweetQueryParams,
+        ...params
+      })
+    } catch (err: any) {
+      handleTwitterError(err, {
+        label: `error fetching tweets mentions for user ${userId}`
       })
     }
   }

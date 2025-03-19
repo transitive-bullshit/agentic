@@ -30,15 +30,15 @@ export type CreateTweetParams = Simplify<
   Parameters<TwitterV2Client['tweets']['createTweet']>[0]
 >
 
-export type UsersIdMentionsParams = Simplify<
+export type ListTweetMentionsByUserIdParams = Simplify<
   Parameters<TwitterV2Client['tweets']['usersIdMentions']>[1]
 >
 
-export type FindTweetByIdParams = Simplify<
+export type GetTweetByIdParams = Simplify<
   Parameters<TwitterV2Client['tweets']['findTweetById']>[1]
 >
 
-export type FindTweetsByIdParams = Simplify<
+export type GetTweetsByIdParams = Simplify<
   Parameters<TwitterV2Client['tweets']['findTweetsById']>[0]
 >
 
@@ -46,11 +46,11 @@ export type SearchRecentTweetsParams = Simplify<
   Parameters<TwitterV2Client['tweets']['tweetsRecentSearch']>[0]
 >
 
-export type FindUserByIdParams = Simplify<
+export type GetUserByIdParams = Simplify<
   Parameters<TwitterV2Client['users']['findUserById']>[1]
 >
 
-export type FindUserByUsernameParams = Simplify<
+export type GetUserByUsernameParams = Simplify<
   Parameters<TwitterV2Client['users']['findUserByUsername']>[1]
 >
 
