@@ -48,7 +48,8 @@
         "sdks/genkit",
         "sdks/dexter",
         "sdks/openai",
-        "sdks/genaiscript"
+        "sdks/genaiscript",
+        "sdks/xsai"
       ]
     },
     {
