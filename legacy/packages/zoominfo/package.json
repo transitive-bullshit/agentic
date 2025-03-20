@@ -35,7 +35,8 @@
     "@agentic/core": "workspace:*",
     "jsrsasign": "catalog:",
     "ky": "catalog:",
-    "p-throttle": "catalog:"
+    "p-throttle": "catalog:",
+    "zoominfo-api-auth-client": "^1.0.1"
   },
   "peerDependencies": {
     "zod": "catalog:"

@@ -50,8 +50,7 @@
     "turbo": "^2.4.4",
     "typescript": "^5.8.2",
     "vitest": "3.0.9",
-    "zod": "catalog:",
-    "zoominfo-api-auth-client": "^1.0.1"
+    "zod": "catalog:"
   },
   "simple-git-hooks": {
     "pre-commit": "npx lint-staged"
