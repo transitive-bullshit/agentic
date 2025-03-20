@@ -29,6 +29,7 @@
   - [Dexa Dexter](#dexa-dexter)
   - [OpenAI](#openai)
   - [GenAIScript](#genaiscript)
+  - [xsAI SDK](#xsai-sdk)
 - [Tools](#tools)
 - [Contributors](#contributors)
 - [License](#license)
@@ -122,6 +123,10 @@ Full docs are available at [agentic.so](https://agentic.so).
 ### GenAIScript
 
 [Agentic support in GenAIScript](https://agentic.so/sdks/genaiscript)
+
+### xsAI SDK
+
+[Agentic adapter docs for the xsAI SDK](https://agentic.so/sdks/xsai)
 
 ## Tools
 

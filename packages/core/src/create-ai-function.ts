@@ -85,7 +85,6 @@ export function createAIFunction<InputSchema extends z.ZodObject<any>, Output>(
   aiFunction.impl = (
     params: z.infer<InputSchema>
   ): types.MaybePromise<Output> => {
-    console.error(spec.name, params)
     return implementation(params)
   }
 
