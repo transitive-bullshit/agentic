@@ -28,6 +28,10 @@ catalog:
   ai: ^4.1.61
   '@ai-sdk/openai': ^1.2.5
 
+  # xsai
+  xsai: ^0.1.3
+  '@xsai/tool': ^0.1.3
+
   # genkit
   genkit: ^1.2.0
   genkitx-openai: ^0.20.1
