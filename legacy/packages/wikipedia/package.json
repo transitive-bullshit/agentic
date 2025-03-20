@@ -1,6 +1,6 @@
 {
   "name": "@agentic/wikipedia",
-  "version": "7.5.2",
+  "version": "7.5.3",
   "description": "Agentic SDK for wikipedia.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",

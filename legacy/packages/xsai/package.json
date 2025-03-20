@@ -1,6 +1,6 @@
 {
   "name": "@agentic/xsai",
-  "version": "7.5.2",
+  "version": "7.5.3",
   "description": "Agentic adapter for the xsAI SDK.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",

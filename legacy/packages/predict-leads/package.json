@@ -1,6 +1,6 @@
 {
   "name": "@agentic/predict-leads",
-  "version": "7.5.2",
+  "version": "7.5.3",
   "description": "Agentic SDK for Predict Leads.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",
