@@ -75,7 +75,7 @@ export interface AIFunction<
   Output = any
 > {
   /**
-   * Invokes the underlying AI function `impl` but first validates the input
+   * Invokes the underlying AI function `execute` but first validates the input
    * against this function's `inputSchema`. This method is callable and is
    * meant to be passed the raw LLM JSON string or an OpenAI-compatible Message.
    */
@@ -94,7 +94,7 @@ export interface AIFunction<
    * The underlying function implementation without any arg parsing or validation.
    */
   // TODO: this `any` shouldn't be necessary, but it is for `createAIFunction` results to be assignable to `AIFunctionLike`
-  impl: (params: z.infer<InputSchema> | any) => MaybePromise<Output>
+  execute: (params: z.infer<InputSchema> | any) => MaybePromise<Output>
 }
 
 export type SafeParseResult<TData> =
