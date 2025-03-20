@@ -38,11 +38,11 @@ export abstract class AIFunctionsProvider {
   private _functions?: AIFunctionSet
 
   /**
-   * Returns a set of AI-compatible functions exposed by this class.
+   * An `AIFunctionSet` containing all of the AI-compatible functions exposed
+   * by this class.
    *
-   * The returned `AIFunctionSet` is useful for manipulating AI functions across
-   * multiple providers, picking specific functions, ommitting certain functions,
-   * etc.
+   * This property is useful for manipulating AI functions across multiple
+   * sources, picking specific functions, ommitting certain functions, etc.
    */
   get functions(): AIFunctionSet {
     if (!this._functions) {
@@ -53,7 +53,6 @@ export abstract class AIFunctionsProvider {
       )
       const invocables =
         (metadata?.invocables as PrivateAIFunctionMetadata[]) ?? []
-      // console.log({ metadata, invocables })
 
       const aiFunctions = invocables.map((invocable) => {
         const impl = (this as any)[invocable.methodName]
