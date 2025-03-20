@@ -164,9 +164,6 @@ importers:
       zod:
         specifier: 'catalog:'
         version: 3.24.2
-      zoominfo-api-auth-client:
-        specifier: ^1.0.1
-        version: 1.0.1
 
   examples/ai-sdk:
     dependencies:
@@ -1303,6 +1300,9 @@ importers:
       zod:
         specifier: 'catalog:'
         version: 3.24.2
+      zoominfo-api-auth-client:
+        specifier: ^1.0.1
+        version: 1.0.1
     devDependencies:
       '@agentic/tsconfig':
         specifier: workspace:*
