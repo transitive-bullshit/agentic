@@ -2,7 +2,7 @@
 import 'dotenv/config'
 
 import { WeatherClient } from '@agentic/weather'
-import { createXSAISDKTools } from '@agentic/xsai'
+import { createXSAITools } from '@agentic/xsai'
 import { generateText } from 'xsai'
 
 async function main() {
@@ -12,7 +12,7 @@ async function main() {
     apiKey: process.env.OPENAI_API_KEY!,
     baseURL: 'https://api.openai.com/v1/',
     model: 'gpt-4o-mini',
-    tools: await createXSAISDKTools(weather),
+    tools: await createXSAITools(weather),
     toolChoice: 'required',
     temperature: 0,
     messages: [

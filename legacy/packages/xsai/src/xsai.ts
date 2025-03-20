@@ -5,7 +5,7 @@ import { tool, type ToolResult } from '@xsai/tool'
  * Converts a set of Agentic stdlib AI functions to an object compatible with
  * [the xsAI SDK's](https://github.com/moeru-ai/xsai) `tools` parameter.
  */
-export function createXSAISDKTools(
+export function createXSAITools(
   ...aiFunctionLikeTools: AIFunctionLike[]
 ): Promise<ToolResult[]> {
   const fns = new AIFunctionSet(aiFunctionLikeTools)

@@ -4,7 +4,7 @@ description: Agentic adapter for the xsAI SDK.
 ---
 
 - package: `@agentic/xsai`
-- exports: `function createXSAISDKTools`
+- exports: `function createXSAITools`
 - [source](https://github.com/transitive-bullshit/agentic/blob/main/packages/xsai/src/xsai.ts)
 - [xsAI SDK docs](https://xsai.js.org)
 
@@ -28,7 +28,7 @@ pnpm add @agentic/xsai xsai @xsai/tool
 ## Usage
 
 <Note>
-  Note that `createXSAISDKTools` is `async` because `xsai`'s underlying
+  Note that `createXSAITools` is `async` because `xsai`'s underlying
   `xsschema.toJsonSchema` is async.
 </Note>
 
@@ -36,7 +36,7 @@ pnpm add @agentic/xsai xsai @xsai/tool
 import 'dotenv/config'
 
 import { WeatherClient } from '@agentic/weather'
-import { createXSAISDKTools } from '@agentic/xsai'
+import { createXSAITools } from '@agentic/xsai'
 import { generateText } from 'xsai'
 
 async function main() {
@@ -46,7 +46,7 @@ async function main() {
     apiKey: process.env.OPENAI_API_KEY!,
     baseURL: 'https://api.openai.com/v1/',
     model: 'gpt-4o-mini',
-    tools: await createXSAISDKTools(weather),
+    tools: await createXSAITools(weather),
     toolChoice: 'required',
     temperature: 0,
     messages: [
