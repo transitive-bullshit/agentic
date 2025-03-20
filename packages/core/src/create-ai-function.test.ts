@@ -2,6 +2,7 @@ import { describe, expect, test } from 'vitest'
 import { z } from 'zod'
 
 import { createAIFunction } from './create-ai-function'
+import { type Msg } from './message'
 
 const fullName = createAIFunction(
   {
@@ -34,9 +35,22 @@ describe('createAIFunction()', () => {
     })
   })
 
-  test('executes the function', async () => {
+  test('executes the function with JSON string', async () => {
     expect(await fullName('{"first": "John", "last": "Doe"}')).toEqual(
       'John Doe'
     )
+  })
+
+  test('executes the function with OpenAI Message', async () => {
+    const message: Msg.FuncCall = {
+      role: 'assistant',
+      content: null,
+      function_call: {
+        name: 'fullName',
+        arguments: '{"first": "Jane", "last": "Smith"}'
+      }
+    }
+
+    expect(await fullName(message)).toEqual('Jane Smith')
   })
 })
