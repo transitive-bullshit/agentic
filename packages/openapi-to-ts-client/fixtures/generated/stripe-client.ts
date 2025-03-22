@@ -6,8 +6,8 @@
  */
 
 import {
-  aiFunction,
   AIFunctionsProvider,
+  aiFunction,
   assert,
   getEnv,
   pick,
@@ -16598,7 +16598,7 @@ export namespace stripe {
       /** A description of the product or service that was sold. */
       product_description: z
         .string()
-        .max(150_000)
+        .max(150000)
         .nullable()
         .describe('A description of the product or service that was sold.')
         .optional(),
@@ -16668,7 +16668,7 @@ export namespace stripe {
       /** A description of the product or service that was sold. */
       product_description: z
         .string()
-        .max(150_000)
+        .max(150000)
         .nullable()
         .describe('A description of the product or service that was sold.')
         .optional(),
@@ -24493,7 +24493,7 @@ export namespace stripe {
     /** Internal-only description of the product sold or service provided by the business. It's used by Stripe for risk and underwriting purposes. */
     product_description: z
       .string()
-      .max(40_000)
+      .max(40000)
       .nullable()
       .describe(
         "Internal-only description of the product sold or service provided by the business. It's used by Stripe for risk and underwriting purposes."
@@ -25689,7 +25689,7 @@ export namespace stripe {
           'Time at which the result expires and is no longer available for download.'
         ),
       /** SQL for the query. */
-      sql: z.string().max(100_000).describe('SQL for the query.'),
+      sql: z.string().max(100000).describe('SQL for the query.'),
       /** The query's execution status, which will be `completed` for successful runs, and `canceled`, `failed`, or `timed_out` otherwise. */
       status: z
         .string()
@@ -27392,7 +27392,7 @@ export namespace stripe {
     /** Any server or activity logs showing proof that the customer accessed or downloaded the purchased digital product. This information should include IP addresses, corresponding timestamps, and any detailed recorded activity. */
     access_activity_log: z
       .string()
-      .max(150_000)
+      .max(150000)
       .nullable()
       .describe(
         'Any server or activity logs showing proof that the customer accessed or downloaded the purchased digital product. This information should include IP addresses, corresponding timestamps, and any detailed recorded activity.'
@@ -27416,7 +27416,7 @@ export namespace stripe {
     /** An explanation of how and when the customer was shown your refund policy prior to purchase. */
     cancellation_policy_disclosure: z
       .string()
-      .max(150_000)
+      .max(150000)
       .nullable()
       .describe(
         'An explanation of how and when the customer was shown your refund policy prior to purchase.'
@@ -27425,7 +27425,7 @@ export namespace stripe {
     /** A justification for why the customer's subscription was not canceled. */
     cancellation_rebuttal: z
       .string()
-      .max(150_000)
+      .max(150000)
       .nullable()
       .describe(
         "A justification for why the customer's subscription was not canceled."
@@ -27481,7 +27481,7 @@ export namespace stripe {
     /** An explanation of the difference between the disputed charge versus the prior charge that appears to be a duplicate. */
     duplicate_charge_explanation: z
       .string()
-      .max(150_000)
+      .max(150000)
       .nullable()
       .describe(
         'An explanation of the difference between the disputed charge versus the prior charge that appears to be a duplicate.'
@@ -27500,7 +27500,7 @@ export namespace stripe {
     /** A description of the product or service that was sold. */
     product_description: z
       .string()
-      .max(150_000)
+      .max(150000)
       .nullable()
       .describe('A description of the product or service that was sold.')
       .optional(),
@@ -27523,7 +27523,7 @@ export namespace stripe {
     /** Documentation demonstrating that the customer was shown your refund policy prior to purchase. */
     refund_policy_disclosure: z
       .string()
-      .max(150_000)
+      .max(150000)
       .nullable()
       .describe(
         'Documentation demonstrating that the customer was shown your refund policy prior to purchase.'
@@ -27532,7 +27532,7 @@ export namespace stripe {
     /** A justification for why the customer is not entitled to a refund. */
     refund_refusal_explanation: z
       .string()
-      .max(150_000)
+      .max(150000)
       .nullable()
       .describe(
         'A justification for why the customer is not entitled to a refund.'
@@ -27610,7 +27610,7 @@ export namespace stripe {
     /** Any additional evidence or statements. */
     uncategorized_text: z
       .string()
-      .max(150_000)
+      .max(150000)
       .nullable()
       .describe('Any additional evidence or statements.')
       .optional()
@@ -32959,7 +32959,7 @@ export namespace stripe {
     /** A human-readable message providing more details about the error. For card errors, these messages can be shown to your users. */
     message: z
       .string()
-      .max(40_000)
+      .max(40000)
       .describe(
         'A human-readable message providing more details about the error. For card errors, these messages can be shown to your users.'
       )
@@ -34372,7 +34372,7 @@ export namespace stripe {
       /** An arbitrary string attached to the object. Often useful for displaying to users. */
       description: z
         .string()
-        .max(40_000)
+        .max(40000)
         .nullable()
         .describe(
           'An arbitrary string attached to the object. Often useful for displaying to users.'
@@ -61274,7 +61274,7 @@ You can prefill any information on the account.</p>.`,
     params: stripe.GetAccountsAccountParams
   ): Promise<stripe.GetAccountsAccountResponse> {
     return this.ky
-      .get(`/v1/accounts/${params.account}`, {
+      .get(`/v1/accounts/${params['account']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetAccountsAccountResponse>()
@@ -61316,7 +61316,7 @@ after which some properties can no longer be updated.</p>
     params: stripe.PostAccountsAccountParams
   ): Promise<stripe.PostAccountsAccountResponse> {
     return this.ky
-      .post(`/v1/accounts/${params.account}`)
+      .post(`/v1/accounts/${params['account']}`)
       .json<stripe.PostAccountsAccountResponse>()
   }
 
@@ -61344,7 +61344,7 @@ after which some properties can no longer be updated.</p>
     params: stripe.DeleteAccountsAccountParams
   ): Promise<stripe.DeleteAccountsAccountResponse> {
     return this.ky
-      .delete(`/v1/accounts/${params.account}`)
+      .delete(`/v1/accounts/${params['account']}`)
       .json<stripe.DeleteAccountsAccountResponse>()
   }
 
@@ -61360,7 +61360,7 @@ after which some properties can no longer be updated.</p>
     params: stripe.PostAccountsAccountBankAccountsParams
   ): Promise<stripe.PostAccountsAccountBankAccountsResponse> {
     return this.ky
-      .post(`/v1/accounts/${params.account}/bank_accounts`)
+      .post(`/v1/accounts/${params['account']}/bank_accounts`)
       .json<stripe.PostAccountsAccountBankAccountsResponse>()
   }
 
@@ -61377,7 +61377,7 @@ after which some properties can no longer be updated.</p>
     params: stripe.GetAccountsAccountBankAccountsIdParams
   ): Promise<stripe.GetAccountsAccountBankAccountsIdResponse> {
     return this.ky
-      .get(`/v1/accounts/${params.account}/bank_accounts/${params.id}`, {
+      .get(`/v1/accounts/${params['account']}/bank_accounts/${params['id']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetAccountsAccountBankAccountsIdResponse>()
@@ -61409,7 +61409,7 @@ arguments or changes.</p>.`,
     params: stripe.PostAccountsAccountBankAccountsIdParams
   ): Promise<stripe.PostAccountsAccountBankAccountsIdResponse> {
     return this.ky
-      .post(`/v1/accounts/${params.account}/bank_accounts/${params.id}`)
+      .post(`/v1/accounts/${params['account']}/bank_accounts/${params['id']}`)
       .json<stripe.PostAccountsAccountBankAccountsIdResponse>()
   }
 
@@ -61426,7 +61426,7 @@ arguments or changes.</p>.`,
     params: stripe.DeleteAccountsAccountBankAccountsIdParams
   ): Promise<stripe.DeleteAccountsAccountBankAccountsIdResponse> {
     return this.ky
-      .delete(`/v1/accounts/${params.account}/bank_accounts/${params.id}`)
+      .delete(`/v1/accounts/${params['account']}/bank_accounts/${params['id']}`)
       .json<stripe.DeleteAccountsAccountBankAccountsIdResponse>()
   }
 
@@ -61443,7 +61443,7 @@ arguments or changes.</p>.`,
     params: stripe.GetAccountsAccountCapabilitiesParams
   ): Promise<stripe.GetAccountsAccountCapabilitiesResponse> {
     return this.ky
-      .get(`/v1/accounts/${params.account}/capabilities`, {
+      .get(`/v1/accounts/${params['account']}/capabilities`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetAccountsAccountCapabilitiesResponse>()
@@ -61463,7 +61463,7 @@ arguments or changes.</p>.`,
   ): Promise<stripe.GetAccountsAccountCapabilitiesCapabilityResponse> {
     return this.ky
       .get(
-        `/v1/accounts/${params.account}/capabilities/${params.capability}`,
+        `/v1/accounts/${params['account']}/capabilities/${params['capability']}`,
         {
           searchParams: sanitizeSearchParams(pick(params, 'expand'))
         }
@@ -61485,7 +61485,7 @@ arguments or changes.</p>.`,
   ): Promise<stripe.PostAccountsAccountCapabilitiesCapabilityResponse> {
     return this.ky
       .post(
-        `/v1/accounts/${params.account}/capabilities/${params.capability}`
+        `/v1/accounts/${params['account']}/capabilities/${params['capability']}`
       )
       .json<stripe.PostAccountsAccountCapabilitiesCapabilityResponse>()
   }
@@ -61502,7 +61502,7 @@ arguments or changes.</p>.`,
     params: stripe.GetAccountsAccountExternalAccountsParams
   ): Promise<stripe.GetAccountsAccountExternalAccountsResponse> {
     return this.ky
-      .get(`/v1/accounts/${params.account}/external_accounts`, {
+      .get(`/v1/accounts/${params['account']}/external_accounts`, {
         searchParams: sanitizeSearchParams(
           pick(
             params,
@@ -61529,7 +61529,7 @@ arguments or changes.</p>.`,
     params: stripe.PostAccountsAccountExternalAccountsParams
   ): Promise<stripe.PostAccountsAccountExternalAccountsResponse> {
     return this.ky
-      .post(`/v1/accounts/${params.account}/external_accounts`)
+      .post(`/v1/accounts/${params['account']}/external_accounts`)
       .json<stripe.PostAccountsAccountExternalAccountsResponse>()
   }
 
@@ -61547,7 +61547,7 @@ arguments or changes.</p>.`,
   ): Promise<stripe.GetAccountsAccountExternalAccountsIdResponse> {
     return this.ky
       .get(
-        `/v1/accounts/${params.account}/external_accounts/${params.id}`,
+        `/v1/accounts/${params['account']}/external_accounts/${params['id']}`,
         {
           searchParams: sanitizeSearchParams(pick(params, 'expand'))
         }
@@ -61582,7 +61582,7 @@ arguments or changes.</p>.`,
   ): Promise<stripe.PostAccountsAccountExternalAccountsIdResponse> {
     return this.ky
       .post(
-        `/v1/accounts/${params.account}/external_accounts/${params.id}`
+        `/v1/accounts/${params['account']}/external_accounts/${params['id']}`
       )
       .json<stripe.PostAccountsAccountExternalAccountsIdResponse>()
   }
@@ -61601,7 +61601,7 @@ arguments or changes.</p>.`,
   ): Promise<stripe.DeleteAccountsAccountExternalAccountsIdResponse> {
     return this.ky
       .delete(
-        `/v1/accounts/${params.account}/external_accounts/${params.id}`
+        `/v1/accounts/${params['account']}/external_accounts/${params['id']}`
       )
       .json<stripe.DeleteAccountsAccountExternalAccountsIdResponse>()
   }
@@ -61622,7 +61622,7 @@ arguments or changes.</p>.`,
     params: stripe.PostAccountsAccountLoginLinksParams
   ): Promise<stripe.PostAccountsAccountLoginLinksResponse> {
     return this.ky
-      .post(`/v1/accounts/${params.account}/login_links`)
+      .post(`/v1/accounts/${params['account']}/login_links`)
       .json<stripe.PostAccountsAccountLoginLinksResponse>()
   }
 
@@ -61639,7 +61639,7 @@ arguments or changes.</p>.`,
     params: stripe.GetAccountsAccountPeopleParams
   ): Promise<stripe.GetAccountsAccountPeopleResponse> {
     return this.ky
-      .get(`/v1/accounts/${params.account}/people`, {
+      .get(`/v1/accounts/${params['account']}/people`, {
         searchParams: sanitizeSearchParams(
           pick(
             params,
@@ -61666,7 +61666,7 @@ arguments or changes.</p>.`,
     params: stripe.PostAccountsAccountPeopleParams
   ): Promise<stripe.PostAccountsAccountPeopleResponse> {
     return this.ky
-      .post(`/v1/accounts/${params.account}/people`)
+      .post(`/v1/accounts/${params['account']}/people`)
       .json<stripe.PostAccountsAccountPeopleResponse>()
   }
 
@@ -61682,7 +61682,7 @@ arguments or changes.</p>.`,
     params: stripe.GetAccountsAccountPeoplePersonParams
   ): Promise<stripe.GetAccountsAccountPeoplePersonResponse> {
     return this.ky
-      .get(`/v1/accounts/${params.account}/people/${params.person}`, {
+      .get(`/v1/accounts/${params['account']}/people/${params['person']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetAccountsAccountPeoplePersonResponse>()
@@ -61700,7 +61700,7 @@ arguments or changes.</p>.`,
     params: stripe.PostAccountsAccountPeoplePersonParams
   ): Promise<stripe.PostAccountsAccountPeoplePersonResponse> {
     return this.ky
-      .post(`/v1/accounts/${params.account}/people/${params.person}`)
+      .post(`/v1/accounts/${params['account']}/people/${params['person']}`)
       .json<stripe.PostAccountsAccountPeoplePersonResponse>()
   }
 
@@ -61717,7 +61717,7 @@ arguments or changes.</p>.`,
     params: stripe.DeleteAccountsAccountPeoplePersonParams
   ): Promise<stripe.DeleteAccountsAccountPeoplePersonResponse> {
     return this.ky
-      .delete(`/v1/accounts/${params.account}/people/${params.person}`)
+      .delete(`/v1/accounts/${params['account']}/people/${params['person']}`)
       .json<stripe.DeleteAccountsAccountPeoplePersonResponse>()
   }
 
@@ -61734,7 +61734,7 @@ arguments or changes.</p>.`,
     params: stripe.GetAccountsAccountPersonsParams
   ): Promise<stripe.GetAccountsAccountPersonsResponse> {
     return this.ky
-      .get(`/v1/accounts/${params.account}/persons`, {
+      .get(`/v1/accounts/${params['account']}/persons`, {
         searchParams: sanitizeSearchParams(
           pick(
             params,
@@ -61761,7 +61761,7 @@ arguments or changes.</p>.`,
     params: stripe.PostAccountsAccountPersonsParams
   ): Promise<stripe.PostAccountsAccountPersonsResponse> {
     return this.ky
-      .post(`/v1/accounts/${params.account}/persons`)
+      .post(`/v1/accounts/${params['account']}/persons`)
       .json<stripe.PostAccountsAccountPersonsResponse>()
   }
 
@@ -61777,7 +61777,7 @@ arguments or changes.</p>.`,
     params: stripe.GetAccountsAccountPersonsPersonParams
   ): Promise<stripe.GetAccountsAccountPersonsPersonResponse> {
     return this.ky
-      .get(`/v1/accounts/${params.account}/persons/${params.person}`, {
+      .get(`/v1/accounts/${params['account']}/persons/${params['person']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetAccountsAccountPersonsPersonResponse>()
@@ -61795,7 +61795,7 @@ arguments or changes.</p>.`,
     params: stripe.PostAccountsAccountPersonsPersonParams
   ): Promise<stripe.PostAccountsAccountPersonsPersonResponse> {
     return this.ky
-      .post(`/v1/accounts/${params.account}/persons/${params.person}`)
+      .post(`/v1/accounts/${params['account']}/persons/${params['person']}`)
       .json<stripe.PostAccountsAccountPersonsPersonResponse>()
   }
 
@@ -61812,7 +61812,7 @@ arguments or changes.</p>.`,
     params: stripe.DeleteAccountsAccountPersonsPersonParams
   ): Promise<stripe.DeleteAccountsAccountPersonsPersonResponse> {
     return this.ky
-      .delete(`/v1/accounts/${params.account}/persons/${params.person}`)
+      .delete(`/v1/accounts/${params['account']}/persons/${params['person']}`)
       .json<stripe.DeleteAccountsAccountPersonsPersonResponse>()
   }
 
@@ -61832,7 +61832,7 @@ arguments or changes.</p>.`,
     params: stripe.PostAccountsAccountRejectParams
   ): Promise<stripe.PostAccountsAccountRejectResponse> {
     return this.ky
-      .post(`/v1/accounts/${params.account}/reject`)
+      .post(`/v1/accounts/${params['account']}/reject`)
       .json<stripe.PostAccountsAccountRejectResponse>()
   }
 
@@ -61882,7 +61882,7 @@ arguments or changes.</p>.`,
     params: stripe.GetApplePayDomainsDomainParams
   ): Promise<stripe.GetApplePayDomainsDomainResponse> {
     return this.ky
-      .get(`/v1/apple_pay/domains/${params.domain}`, {
+      .get(`/v1/apple_pay/domains/${params['domain']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetApplePayDomainsDomainResponse>()
@@ -61900,7 +61900,7 @@ arguments or changes.</p>.`,
     params: stripe.DeleteApplePayDomainsDomainParams
   ): Promise<stripe.DeleteApplePayDomainsDomainResponse> {
     return this.ky
-      .delete(`/v1/apple_pay/domains/${params.domain}`)
+      .delete(`/v1/apple_pay/domains/${params['domain']}`)
       .json<stripe.DeleteApplePayDomainsDomainResponse>()
   }
 
@@ -61936,7 +61936,7 @@ arguments or changes.</p>.`,
     params: stripe.GetApplicationFeesFeeRefundsIdParams
   ): Promise<stripe.GetApplicationFeesFeeRefundsIdResponse> {
     return this.ky
-      .get(`/v1/application_fees/${params.fee}/refunds/${params.id}`, {
+      .get(`/v1/application_fees/${params['fee']}/refunds/${params['id']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetApplicationFeesFeeRefundsIdResponse>()
@@ -61958,7 +61958,7 @@ arguments or changes.</p>.`,
     params: stripe.PostApplicationFeesFeeRefundsIdParams
   ): Promise<stripe.PostApplicationFeesFeeRefundsIdResponse> {
     return this.ky
-      .post(`/v1/application_fees/${params.fee}/refunds/${params.id}`)
+      .post(`/v1/application_fees/${params['fee']}/refunds/${params['id']}`)
       .json<stripe.PostApplicationFeesFeeRefundsIdResponse>()
   }
 
@@ -61975,7 +61975,7 @@ arguments or changes.</p>.`,
     params: stripe.GetApplicationFeesIdParams
   ): Promise<stripe.GetApplicationFeesIdResponse> {
     return this.ky
-      .get(`/v1/application_fees/${params.id}`, {
+      .get(`/v1/application_fees/${params['id']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetApplicationFeesIdResponse>()
@@ -61990,7 +61990,7 @@ arguments or changes.</p>.`,
     params: stripe.PostApplicationFeesIdRefundParams
   ): Promise<stripe.PostApplicationFeesIdRefundResponse> {
     return this.ky
-      .post(`/v1/application_fees/${params.id}/refund`)
+      .post(`/v1/application_fees/${params['id']}/refund`)
       .json<stripe.PostApplicationFeesIdRefundResponse>()
   }
 
@@ -62007,7 +62007,7 @@ arguments or changes.</p>.`,
     params: stripe.GetApplicationFeesIdRefundsParams
   ): Promise<stripe.GetApplicationFeesIdRefundsResponse> {
     return this.ky
-      .get(`/v1/application_fees/${params.id}/refunds`, {
+      .get(`/v1/application_fees/${params['id']}/refunds`, {
         searchParams: sanitizeSearchParams(
           pick(params, 'ending_before', 'expand', 'limit', 'starting_after')
         )
@@ -62043,7 +62043,7 @@ or when trying to refund more money than is left on an application fee.</p>.`,
     params: stripe.PostApplicationFeesIdRefundsParams
   ): Promise<stripe.PostApplicationFeesIdRefundsResponse> {
     return this.ky
-      .post(`/v1/application_fees/${params.id}/refunds`)
+      .post(`/v1/application_fees/${params['id']}/refunds`)
       .json<stripe.PostApplicationFeesIdRefundsResponse>()
   }
 
@@ -62175,7 +62175,7 @@ or when trying to refund more money than is left on an application fee.</p>.`,
     params: stripe.GetBalanceHistoryIdParams
   ): Promise<stripe.GetBalanceHistoryIdResponse> {
     return this.ky
-      .get(`/v1/balance/history/${params.id}`, {
+      .get(`/v1/balance/history/${params['id']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetBalanceHistoryIdResponse>()
@@ -62219,7 +62219,7 @@ or when trying to refund more money than is left on an application fee.</p>.`,
     params: stripe.GetBalanceTransactionsIdParams
   ): Promise<stripe.GetBalanceTransactionsIdResponse> {
     return this.ky
-      .get(`/v1/balance_transactions/${params.id}`, {
+      .get(`/v1/balance_transactions/${params['id']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetBalanceTransactionsIdResponse>()
@@ -62271,7 +62271,7 @@ or when trying to refund more money than is left on an application fee.</p>.`,
     params: stripe.GetBillingAlertsIdParams
   ): Promise<stripe.GetBillingAlertsIdResponse> {
     return this.ky
-      .get(`/v1/billing/alerts/${params.id}`, {
+      .get(`/v1/billing/alerts/${params['id']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetBillingAlertsIdResponse>()
@@ -62290,7 +62290,7 @@ or when trying to refund more money than is left on an application fee.</p>.`,
     params: stripe.PostBillingAlertsIdActivateParams
   ): Promise<stripe.PostBillingAlertsIdActivateResponse> {
     return this.ky
-      .post(`/v1/billing/alerts/${params.id}/activate`)
+      .post(`/v1/billing/alerts/${params['id']}/activate`)
       .json<stripe.PostBillingAlertsIdActivateResponse>()
   }
 
@@ -62307,7 +62307,7 @@ or when trying to refund more money than is left on an application fee.</p>.`,
     params: stripe.PostBillingAlertsIdArchiveParams
   ): Promise<stripe.PostBillingAlertsIdArchiveResponse> {
     return this.ky
-      .post(`/v1/billing/alerts/${params.id}/archive`)
+      .post(`/v1/billing/alerts/${params['id']}/archive`)
       .json<stripe.PostBillingAlertsIdArchiveResponse>()
   }
 
@@ -62324,7 +62324,7 @@ or when trying to refund more money than is left on an application fee.</p>.`,
     params: stripe.PostBillingAlertsIdDeactivateParams
   ): Promise<stripe.PostBillingAlertsIdDeactivateResponse> {
     return this.ky
-      .post(`/v1/billing/alerts/${params.id}/deactivate`)
+      .post(`/v1/billing/alerts/${params['id']}/deactivate`)
       .json<stripe.PostBillingAlertsIdDeactivateResponse>()
   }
 
@@ -62376,7 +62376,7 @@ or when trying to refund more money than is left on an application fee.</p>.`,
     params: stripe.GetBillingCreditBalanceTransactionsIdParams
   ): Promise<stripe.GetBillingCreditBalanceTransactionsIdResponse> {
     return this.ky
-      .get(`/v1/billing/credit_balance_transactions/${params.id}`, {
+      .get(`/v1/billing/credit_balance_transactions/${params['id']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetBillingCreditBalanceTransactionsIdResponse>()
@@ -62428,7 +62428,7 @@ or when trying to refund more money than is left on an application fee.</p>.`,
     params: stripe.GetBillingCreditGrantsIdParams
   ): Promise<stripe.GetBillingCreditGrantsIdResponse> {
     return this.ky
-      .get(`/v1/billing/credit_grants/${params.id}`, {
+      .get(`/v1/billing/credit_grants/${params['id']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetBillingCreditGrantsIdResponse>()
@@ -62446,7 +62446,7 @@ or when trying to refund more money than is left on an application fee.</p>.`,
     params: stripe.PostBillingCreditGrantsIdParams
   ): Promise<stripe.PostBillingCreditGrantsIdResponse> {
     return this.ky
-      .post(`/v1/billing/credit_grants/${params.id}`)
+      .post(`/v1/billing/credit_grants/${params['id']}`)
       .json<stripe.PostBillingCreditGrantsIdResponse>()
   }
 
@@ -62462,7 +62462,7 @@ or when trying to refund more money than is left on an application fee.</p>.`,
     params: stripe.PostBillingCreditGrantsIdExpireParams
   ): Promise<stripe.PostBillingCreditGrantsIdExpireResponse> {
     return this.ky
-      .post(`/v1/billing/credit_grants/${params.id}/expire`)
+      .post(`/v1/billing/credit_grants/${params['id']}/expire`)
       .json<stripe.PostBillingCreditGrantsIdExpireResponse>()
   }
 
@@ -62478,7 +62478,7 @@ or when trying to refund more money than is left on an application fee.</p>.`,
     params: stripe.PostBillingCreditGrantsIdVoidParams
   ): Promise<stripe.PostBillingCreditGrantsIdVoidResponse> {
     return this.ky
-      .post(`/v1/billing/credit_grants/${params.id}/void`)
+      .post(`/v1/billing/credit_grants/${params['id']}/void`)
       .json<stripe.PostBillingCreditGrantsIdVoidResponse>()
   }
 
@@ -62560,7 +62560,7 @@ or when trying to refund more money than is left on an application fee.</p>.`,
     params: stripe.GetBillingMetersIdParams
   ): Promise<stripe.GetBillingMetersIdResponse> {
     return this.ky
-      .get(`/v1/billing/meters/${params.id}`, {
+      .get(`/v1/billing/meters/${params['id']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetBillingMetersIdResponse>()
@@ -62578,7 +62578,7 @@ or when trying to refund more money than is left on an application fee.</p>.`,
     params: stripe.PostBillingMetersIdParams
   ): Promise<stripe.PostBillingMetersIdResponse> {
     return this.ky
-      .post(`/v1/billing/meters/${params.id}`)
+      .post(`/v1/billing/meters/${params['id']}`)
       .json<stripe.PostBillingMetersIdResponse>()
   }
 
@@ -62595,7 +62595,7 @@ or when trying to refund more money than is left on an application fee.</p>.`,
     params: stripe.PostBillingMetersIdDeactivateParams
   ): Promise<stripe.PostBillingMetersIdDeactivateResponse> {
     return this.ky
-      .post(`/v1/billing/meters/${params.id}/deactivate`)
+      .post(`/v1/billing/meters/${params['id']}/deactivate`)
       .json<stripe.PostBillingMetersIdDeactivateResponse>()
   }
 
@@ -62611,7 +62611,7 @@ or when trying to refund more money than is left on an application fee.</p>.`,
     params: stripe.GetBillingMetersIdEventSummariesParams
   ): Promise<stripe.GetBillingMetersIdEventSummariesResponse> {
     return this.ky
-      .get(`/v1/billing/meters/${params.id}/event_summaries`, {
+      .get(`/v1/billing/meters/${params['id']}/event_summaries`, {
         searchParams: sanitizeSearchParams(
           pick(
             params,
@@ -62642,7 +62642,7 @@ or when trying to refund more money than is left on an application fee.</p>.`,
     params: stripe.PostBillingMetersIdReactivateParams
   ): Promise<stripe.PostBillingMetersIdReactivateResponse> {
     return this.ky
-      .post(`/v1/billing/meters/${params.id}/reactivate`)
+      .post(`/v1/billing/meters/${params['id']}/reactivate`)
       .json<stripe.PostBillingMetersIdReactivateResponse>()
   }
 
@@ -62695,7 +62695,7 @@ or when trying to refund more money than is left on an application fee.</p>.`,
     params: stripe.GetBillingPortalConfigurationsConfigurationParams
   ): Promise<stripe.GetBillingPortalConfigurationsConfigurationResponse> {
     return this.ky
-      .get(`/v1/billing_portal/configurations/${params.configuration}`, {
+      .get(`/v1/billing_portal/configurations/${params['configuration']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetBillingPortalConfigurationsConfigurationResponse>()
@@ -62714,7 +62714,7 @@ or when trying to refund more money than is left on an application fee.</p>.`,
     params: stripe.PostBillingPortalConfigurationsConfigurationParams
   ): Promise<stripe.PostBillingPortalConfigurationsConfigurationResponse> {
     return this.ky
-      .post(`/v1/billing_portal/configurations/${params.configuration}`)
+      .post(`/v1/billing_portal/configurations/${params['configuration']}`)
       .json<stripe.PostBillingPortalConfigurationsConfigurationResponse>()
   }
 
@@ -62808,7 +62808,7 @@ to an hour behind during outages. Search functionality is not available to merch
     params: stripe.GetChargesChargeParams
   ): Promise<stripe.GetChargesChargeResponse> {
     return this.ky
-      .get(`/v1/charges/${params.charge}`, {
+      .get(`/v1/charges/${params['charge']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetChargesChargeResponse>()
@@ -62827,7 +62827,7 @@ to an hour behind during outages. Search functionality is not available to merch
     params: stripe.PostChargesChargeParams
   ): Promise<stripe.PostChargesChargeResponse> {
     return this.ky
-      .post(`/v1/charges/${params.charge}`)
+      .post(`/v1/charges/${params['charge']}`)
       .json<stripe.PostChargesChargeResponse>()
   }
 
@@ -62851,7 +62851,7 @@ to an hour behind during outages. Search functionality is not available to merch
     params: stripe.PostChargesChargeCaptureParams
   ): Promise<stripe.PostChargesChargeCaptureResponse> {
     return this.ky
-      .post(`/v1/charges/${params.charge}/capture`)
+      .post(`/v1/charges/${params['charge']}/capture`)
       .json<stripe.PostChargesChargeCaptureResponse>()
   }
 
@@ -62867,7 +62867,7 @@ to an hour behind during outages. Search functionality is not available to merch
     params: stripe.GetChargesChargeDisputeParams
   ): Promise<stripe.GetChargesChargeDisputeResponse> {
     return this.ky
-      .get(`/v1/charges/${params.charge}/dispute`, {
+      .get(`/v1/charges/${params['charge']}/dispute`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetChargesChargeDisputeResponse>()
@@ -62882,7 +62882,7 @@ to an hour behind during outages. Search functionality is not available to merch
     params: stripe.PostChargesChargeDisputeParams
   ): Promise<stripe.PostChargesChargeDisputeResponse> {
     return this.ky
-      .post(`/v1/charges/${params.charge}/dispute`)
+      .post(`/v1/charges/${params['charge']}/dispute`)
       .json<stripe.PostChargesChargeDisputeResponse>()
   }
 
@@ -62895,7 +62895,7 @@ to an hour behind during outages. Search functionality is not available to merch
     params: stripe.PostChargesChargeDisputeCloseParams
   ): Promise<stripe.PostChargesChargeDisputeCloseResponse> {
     return this.ky
-      .post(`/v1/charges/${params.charge}/dispute/close`)
+      .post(`/v1/charges/${params['charge']}/dispute/close`)
       .json<stripe.PostChargesChargeDisputeCloseResponse>()
   }
 
@@ -62931,7 +62931,7 @@ or when you attempt to refund more money than is left on a charge.</p>.`,
     params: stripe.PostChargesChargeRefundParams
   ): Promise<stripe.PostChargesChargeRefundResponse> {
     return this.ky
-      .post(`/v1/charges/${params.charge}/refund`)
+      .post(`/v1/charges/${params['charge']}/refund`)
       .json<stripe.PostChargesChargeRefundResponse>()
   }
 
@@ -62948,7 +62948,7 @@ or when you attempt to refund more money than is left on a charge.</p>.`,
     params: stripe.GetChargesChargeRefundsParams
   ): Promise<stripe.GetChargesChargeRefundsResponse> {
     return this.ky
-      .get(`/v1/charges/${params.charge}/refunds`, {
+      .get(`/v1/charges/${params['charge']}/refunds`, {
         searchParams: sanitizeSearchParams(
           pick(params, 'ending_before', 'expand', 'limit', 'starting_after')
         )
@@ -62988,7 +62988,7 @@ or when trying to refund more money than is left on a charge.</p>.`,
     params: stripe.PostChargesChargeRefundsParams
   ): Promise<stripe.PostChargesChargeRefundsResponse> {
     return this.ky
-      .post(`/v1/charges/${params.charge}/refunds`)
+      .post(`/v1/charges/${params['charge']}/refunds`)
       .json<stripe.PostChargesChargeRefundsResponse>()
   }
 
@@ -63004,7 +63004,7 @@ or when trying to refund more money than is left on a charge.</p>.`,
     params: stripe.GetChargesChargeRefundsRefundParams
   ): Promise<stripe.GetChargesChargeRefundsRefundResponse> {
     return this.ky
-      .get(`/v1/charges/${params.charge}/refunds/${params.refund}`, {
+      .get(`/v1/charges/${params['charge']}/refunds/${params['refund']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetChargesChargeRefundsRefundResponse>()
@@ -63022,7 +63022,7 @@ or when trying to refund more money than is left on a charge.</p>.`,
     params: stripe.PostChargesChargeRefundsRefundParams
   ): Promise<stripe.PostChargesChargeRefundsRefundResponse> {
     return this.ky
-      .post(`/v1/charges/${params.charge}/refunds/${params.refund}`)
+      .post(`/v1/charges/${params['charge']}/refunds/${params['refund']}`)
       .json<stripe.PostChargesChargeRefundsRefundResponse>()
   }
 
@@ -63072,7 +63072,7 @@ or when trying to refund more money than is left on a charge.</p>.`,
     params: stripe.GetCheckoutSessionsSessionParams
   ): Promise<stripe.GetCheckoutSessionsSessionResponse> {
     return this.ky
-      .get(`/v1/checkout/sessions/${params.session}`, {
+      .get(`/v1/checkout/sessions/${params['session']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetCheckoutSessionsSessionResponse>()
@@ -63090,7 +63090,7 @@ or when trying to refund more money than is left on a charge.</p>.`,
     params: stripe.PostCheckoutSessionsSessionParams
   ): Promise<stripe.PostCheckoutSessionsSessionResponse> {
     return this.ky
-      .post(`/v1/checkout/sessions/${params.session}`)
+      .post(`/v1/checkout/sessions/${params['session']}`)
       .json<stripe.PostCheckoutSessionsSessionResponse>()
   }
 
@@ -63110,7 +63110,7 @@ or when trying to refund more money than is left on a charge.</p>.`,
     params: stripe.PostCheckoutSessionsSessionExpireParams
   ): Promise<stripe.PostCheckoutSessionsSessionExpireResponse> {
     return this.ky
-      .post(`/v1/checkout/sessions/${params.session}/expire`)
+      .post(`/v1/checkout/sessions/${params['session']}/expire`)
       .json<stripe.PostCheckoutSessionsSessionExpireResponse>()
   }
 
@@ -63127,7 +63127,7 @@ or when trying to refund more money than is left on a charge.</p>.`,
     params: stripe.GetCheckoutSessionsSessionLineItemsParams
   ): Promise<stripe.GetCheckoutSessionsSessionLineItemsResponse> {
     return this.ky
-      .get(`/v1/checkout/sessions/${params.session}/line_items`, {
+      .get(`/v1/checkout/sessions/${params['session']}/line_items`, {
         searchParams: sanitizeSearchParams(
           pick(params, 'ending_before', 'expand', 'limit', 'starting_after')
         )
@@ -63186,7 +63186,7 @@ after creation and payment will be deducted your Stripe balance.</p>.`,
     params: stripe.GetClimateOrdersOrderParams
   ): Promise<stripe.GetClimateOrdersOrderResponse> {
     return this.ky
-      .get(`/v1/climate/orders/${params.order}`, {
+      .get(`/v1/climate/orders/${params['order']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetClimateOrdersOrderResponse>()
@@ -63205,7 +63205,7 @@ after creation and payment will be deducted your Stripe balance.</p>.`,
     params: stripe.PostClimateOrdersOrderParams
   ): Promise<stripe.PostClimateOrdersOrderResponse> {
     return this.ky
-      .post(`/v1/climate/orders/${params.order}`)
+      .post(`/v1/climate/orders/${params['order']}`)
       .json<stripe.PostClimateOrdersOrderResponse>()
   }
 
@@ -63227,7 +63227,7 @@ provides 90 days advance notice and refunds the <code>amount_total</code>.</p>.`
     params: stripe.PostClimateOrdersOrderCancelParams
   ): Promise<stripe.PostClimateOrdersOrderCancelResponse> {
     return this.ky
-      .post(`/v1/climate/orders/${params.order}/cancel`)
+      .post(`/v1/climate/orders/${params['order']}/cancel`)
       .json<stripe.PostClimateOrdersOrderCancelResponse>()
   }
 
@@ -63262,7 +63262,7 @@ provides 90 days advance notice and refunds the <code>amount_total</code>.</p>.`
     params: stripe.GetClimateProductsProductParams
   ): Promise<stripe.GetClimateProductsProductResponse> {
     return this.ky
-      .get(`/v1/climate/products/${params.product}`, {
+      .get(`/v1/climate/products/${params['product']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetClimateProductsProductResponse>()
@@ -63298,7 +63298,7 @@ provides 90 days advance notice and refunds the <code>amount_total</code>.</p>.`
     params: stripe.GetClimateSuppliersSupplierParams
   ): Promise<stripe.GetClimateSuppliersSupplierResponse> {
     return this.ky
-      .get(`/v1/climate/suppliers/${params.supplier}`, {
+      .get(`/v1/climate/suppliers/${params['supplier']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetClimateSuppliersSupplierResponse>()
@@ -63316,7 +63316,7 @@ provides 90 days advance notice and refunds the <code>amount_total</code>.</p>.`
     params: stripe.GetConfirmationTokensConfirmationTokenParams
   ): Promise<stripe.GetConfirmationTokensConfirmationTokenResponse> {
     return this.ky
-      .get(`/v1/confirmation_tokens/${params.confirmation_token}`, {
+      .get(`/v1/confirmation_tokens/${params['confirmation_token']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetConfirmationTokensConfirmationTokenResponse>()
@@ -63352,7 +63352,7 @@ provides 90 days advance notice and refunds the <code>amount_total</code>.</p>.`
     params: stripe.GetCountrySpecsCountryParams
   ): Promise<stripe.GetCountrySpecsCountryResponse> {
     return this.ky
-      .get(`/v1/country_specs/${params.country}`, {
+      .get(`/v1/country_specs/${params['country']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetCountrySpecsCountryResponse>()
@@ -63406,7 +63406,7 @@ provides 90 days advance notice and refunds the <code>amount_total</code>.</p>.`
     params: stripe.GetCouponsCouponParams
   ): Promise<stripe.GetCouponsCouponResponse> {
     return this.ky
-      .get(`/v1/coupons/${params.coupon}`, {
+      .get(`/v1/coupons/${params['coupon']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetCouponsCouponResponse>()
@@ -63425,7 +63425,7 @@ provides 90 days advance notice and refunds the <code>amount_total</code>.</p>.`
     params: stripe.PostCouponsCouponParams
   ): Promise<stripe.PostCouponsCouponResponse> {
     return this.ky
-      .post(`/v1/coupons/${params.coupon}`)
+      .post(`/v1/coupons/${params['coupon']}`)
       .json<stripe.PostCouponsCouponResponse>()
   }
 
@@ -63442,7 +63442,7 @@ provides 90 days advance notice and refunds the <code>amount_total</code>.</p>.`
     params: stripe.DeleteCouponsCouponParams
   ): Promise<stripe.DeleteCouponsCouponResponse> {
     return this.ky
-      .delete(`/v1/coupons/${params.coupon}`)
+      .delete(`/v1/coupons/${params['coupon']}`)
       .json<stripe.DeleteCouponsCouponResponse>()
   }
 
@@ -63556,7 +63556,7 @@ or <code>post_payment_credit_notes_amount</code> depending on its <code>status</
     params: stripe.GetCreditNotesCreditNoteLinesParams
   ): Promise<stripe.GetCreditNotesCreditNoteLinesResponse> {
     return this.ky
-      .get(`/v1/credit_notes/${params.credit_note}/lines`, {
+      .get(`/v1/credit_notes/${params['credit_note']}/lines`, {
         searchParams: sanitizeSearchParams(
           pick(params, 'ending_before', 'expand', 'limit', 'starting_after')
         )
@@ -63577,7 +63577,7 @@ or <code>post_payment_credit_notes_amount</code> depending on its <code>status</
     params: stripe.GetCreditNotesIdParams
   ): Promise<stripe.GetCreditNotesIdResponse> {
     return this.ky
-      .get(`/v1/credit_notes/${params.id}`, {
+      .get(`/v1/credit_notes/${params['id']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetCreditNotesIdResponse>()
@@ -63595,7 +63595,7 @@ or <code>post_payment_credit_notes_amount</code> depending on its <code>status</
     params: stripe.PostCreditNotesIdParams
   ): Promise<stripe.PostCreditNotesIdResponse> {
     return this.ky
-      .post(`/v1/credit_notes/${params.id}`)
+      .post(`/v1/credit_notes/${params['id']}`)
       .json<stripe.PostCreditNotesIdResponse>()
   }
 
@@ -63612,7 +63612,7 @@ or <code>post_payment_credit_notes_amount</code> depending on its <code>status</
     params: stripe.PostCreditNotesIdVoidParams
   ): Promise<stripe.PostCreditNotesIdVoidResponse> {
     return this.ky
-      .post(`/v1/credit_notes/${params.id}/void`)
+      .post(`/v1/credit_notes/${params['id']}/void`)
       .json<stripe.PostCreditNotesIdVoidResponse>()
   }
 
@@ -63702,7 +63702,7 @@ to an hour behind during outages. Search functionality is not available to merch
     params: stripe.GetCustomersCustomerParams
   ): Promise<stripe.GetCustomersCustomerResponse> {
     return this.ky
-      .get(`/v1/customers/${params.customer}`, {
+      .get(`/v1/customers/${params['customer']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetCustomersCustomerResponse>()
@@ -63724,7 +63724,7 @@ to an hour behind during outages. Search functionality is not available to merch
     params: stripe.PostCustomersCustomerParams
   ): Promise<stripe.PostCustomersCustomerResponse> {
     return this.ky
-      .post(`/v1/customers/${params.customer}`)
+      .post(`/v1/customers/${params['customer']}`)
       .json<stripe.PostCustomersCustomerResponse>()
   }
 
@@ -63741,7 +63741,7 @@ to an hour behind during outages. Search functionality is not available to merch
     params: stripe.DeleteCustomersCustomerParams
   ): Promise<stripe.DeleteCustomersCustomerResponse> {
     return this.ky
-      .delete(`/v1/customers/${params.customer}`)
+      .delete(`/v1/customers/${params['customer']}`)
       .json<stripe.DeleteCustomersCustomerResponse>()
   }
 
@@ -63758,7 +63758,7 @@ to an hour behind during outages. Search functionality is not available to merch
     params: stripe.GetCustomersCustomerBalanceTransactionsParams
   ): Promise<stripe.GetCustomersCustomerBalanceTransactionsResponse> {
     return this.ky
-      .get(`/v1/customers/${params.customer}/balance_transactions`, {
+      .get(`/v1/customers/${params['customer']}/balance_transactions`, {
         searchParams: sanitizeSearchParams(
           pick(params, 'ending_before', 'expand', 'limit', 'starting_after')
         )
@@ -63779,7 +63779,7 @@ to an hour behind during outages. Search functionality is not available to merch
     params: stripe.PostCustomersCustomerBalanceTransactionsParams
   ): Promise<stripe.PostCustomersCustomerBalanceTransactionsResponse> {
     return this.ky
-      .post(`/v1/customers/${params.customer}/balance_transactions`)
+      .post(`/v1/customers/${params['customer']}/balance_transactions`)
       .json<stripe.PostCustomersCustomerBalanceTransactionsResponse>()
   }
 
@@ -63798,7 +63798,7 @@ to an hour behind during outages. Search functionality is not available to merch
   ): Promise<stripe.GetCustomersCustomerBalanceTransactionsTransactionResponse> {
     return this.ky
       .get(
-        `/v1/customers/${params.customer}/balance_transactions/${params.transaction}`,
+        `/v1/customers/${params['customer']}/balance_transactions/${params['transaction']}`,
         {
           searchParams: sanitizeSearchParams(pick(params, 'expand'))
         }
@@ -63821,7 +63821,7 @@ to an hour behind during outages. Search functionality is not available to merch
   ): Promise<stripe.PostCustomersCustomerBalanceTransactionsTransactionResponse> {
     return this.ky
       .post(
-        `/v1/customers/${params.customer}/balance_transactions/${params.transaction}`
+        `/v1/customers/${params['customer']}/balance_transactions/${params['transaction']}`
       )
       .json<stripe.PostCustomersCustomerBalanceTransactionsTransactionResponse>()
   }
@@ -63839,7 +63839,7 @@ to an hour behind during outages. Search functionality is not available to merch
     params: stripe.GetCustomersCustomerBankAccountsParams
   ): Promise<stripe.GetCustomersCustomerBankAccountsResponse> {
     return this.ky
-      .get(`/v1/customers/${params.customer}/bank_accounts`, {
+      .get(`/v1/customers/${params['customer']}/bank_accounts`, {
         searchParams: sanitizeSearchParams(
           pick(params, 'ending_before', 'expand', 'limit', 'starting_after')
         )
@@ -63867,7 +63867,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
     params: stripe.PostCustomersCustomerBankAccountsParams
   ): Promise<stripe.PostCustomersCustomerBankAccountsResponse> {
     return this.ky
-      .post(`/v1/customers/${params.customer}/bank_accounts`)
+      .post(`/v1/customers/${params['customer']}/bank_accounts`)
       .json<stripe.PostCustomersCustomerBankAccountsResponse>()
   }
 
@@ -63885,7 +63885,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
   ): Promise<stripe.GetCustomersCustomerBankAccountsIdResponse> {
     return this.ky
       .get(
-        `/v1/customers/${params.customer}/bank_accounts/${params.id}`,
+        `/v1/customers/${params['customer']}/bank_accounts/${params['id']}`,
         {
           searchParams: sanitizeSearchParams(pick(params, 'expand'))
         }
@@ -63905,7 +63905,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
     params: stripe.PostCustomersCustomerBankAccountsIdParams
   ): Promise<stripe.PostCustomersCustomerBankAccountsIdResponse> {
     return this.ky
-      .post(`/v1/customers/${params.customer}/bank_accounts/${params.id}`)
+      .post(`/v1/customers/${params['customer']}/bank_accounts/${params['id']}`)
       .json<stripe.PostCustomersCustomerBankAccountsIdResponse>()
   }
 
@@ -63922,7 +63922,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
   ): Promise<stripe.DeleteCustomersCustomerBankAccountsIdResponse> {
     return this.ky
       .delete(
-        `/v1/customers/${params.customer}/bank_accounts/${params.id}`
+        `/v1/customers/${params['customer']}/bank_accounts/${params['id']}`
       )
       .json<stripe.DeleteCustomersCustomerBankAccountsIdResponse>()
   }
@@ -63941,7 +63941,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
   ): Promise<stripe.PostCustomersCustomerBankAccountsIdVerifyResponse> {
     return this.ky
       .post(
-        `/v1/customers/${params.customer}/bank_accounts/${params.id}/verify`
+        `/v1/customers/${params['customer']}/bank_accounts/${params['id']}/verify`
       )
       .json<stripe.PostCustomersCustomerBankAccountsIdVerifyResponse>()
   }
@@ -63962,7 +63962,7 @@ If you need more than those 10, you can use this API method and the <code>limit<
     params: stripe.GetCustomersCustomerCardsParams
   ): Promise<stripe.GetCustomersCustomerCardsResponse> {
     return this.ky
-      .get(`/v1/customers/${params.customer}/cards`, {
+      .get(`/v1/customers/${params['customer']}/cards`, {
         searchParams: sanitizeSearchParams(
           pick(params, 'ending_before', 'expand', 'limit', 'starting_after')
         )
@@ -63990,7 +63990,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
     params: stripe.PostCustomersCustomerCardsParams
   ): Promise<stripe.PostCustomersCustomerCardsResponse> {
     return this.ky
-      .post(`/v1/customers/${params.customer}/cards`)
+      .post(`/v1/customers/${params['customer']}/cards`)
       .json<stripe.PostCustomersCustomerCardsResponse>()
   }
 
@@ -64007,7 +64007,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
     params: stripe.GetCustomersCustomerCardsIdParams
   ): Promise<stripe.GetCustomersCustomerCardsIdResponse> {
     return this.ky
-      .get(`/v1/customers/${params.customer}/cards/${params.id}`, {
+      .get(`/v1/customers/${params['customer']}/cards/${params['id']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetCustomersCustomerCardsIdResponse>()
@@ -64025,7 +64025,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
     params: stripe.PostCustomersCustomerCardsIdParams
   ): Promise<stripe.PostCustomersCustomerCardsIdResponse> {
     return this.ky
-      .post(`/v1/customers/${params.customer}/cards/${params.id}`)
+      .post(`/v1/customers/${params['customer']}/cards/${params['id']}`)
       .json<stripe.PostCustomersCustomerCardsIdResponse>()
   }
 
@@ -64041,7 +64041,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
     params: stripe.DeleteCustomersCustomerCardsIdParams
   ): Promise<stripe.DeleteCustomersCustomerCardsIdResponse> {
     return this.ky
-      .delete(`/v1/customers/${params.customer}/cards/${params.id}`)
+      .delete(`/v1/customers/${params['customer']}/cards/${params['id']}`)
       .json<stripe.DeleteCustomersCustomerCardsIdResponse>()
   }
 
@@ -64057,7 +64057,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
     params: stripe.GetCustomersCustomerCashBalanceParams
   ): Promise<stripe.GetCustomersCustomerCashBalanceResponse> {
     return this.ky
-      .get(`/v1/customers/${params.customer}/cash_balance`, {
+      .get(`/v1/customers/${params['customer']}/cash_balance`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetCustomersCustomerCashBalanceResponse>()
@@ -64075,7 +64075,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
     params: stripe.PostCustomersCustomerCashBalanceParams
   ): Promise<stripe.PostCustomersCustomerCashBalanceResponse> {
     return this.ky
-      .post(`/v1/customers/${params.customer}/cash_balance`)
+      .post(`/v1/customers/${params['customer']}/cash_balance`)
       .json<stripe.PostCustomersCustomerCashBalanceResponse>()
   }
 
@@ -64092,7 +64092,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
     params: stripe.GetCustomersCustomerCashBalanceTransactionsParams
   ): Promise<stripe.GetCustomersCustomerCashBalanceTransactionsResponse> {
     return this.ky
-      .get(`/v1/customers/${params.customer}/cash_balance_transactions`, {
+      .get(`/v1/customers/${params['customer']}/cash_balance_transactions`, {
         searchParams: sanitizeSearchParams(
           pick(params, 'ending_before', 'expand', 'limit', 'starting_after')
         )
@@ -64115,7 +64115,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
   ): Promise<stripe.GetCustomersCustomerCashBalanceTransactionsTransactionResponse> {
     return this.ky
       .get(
-        `/v1/customers/${params.customer}/cash_balance_transactions/${params.transaction}`,
+        `/v1/customers/${params['customer']}/cash_balance_transactions/${params['transaction']}`,
         {
           searchParams: sanitizeSearchParams(pick(params, 'expand'))
         }
@@ -64132,7 +64132,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
     params: stripe.GetCustomersCustomerDiscountParams
   ): Promise<stripe.GetCustomersCustomerDiscountResponse> {
     return this.ky
-      .get(`/v1/customers/${params.customer}/discount`, {
+      .get(`/v1/customers/${params['customer']}/discount`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetCustomersCustomerDiscountResponse>()
@@ -64151,7 +64151,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
     params: stripe.DeleteCustomersCustomerDiscountParams
   ): Promise<stripe.DeleteCustomersCustomerDiscountResponse> {
     return this.ky
-      .delete(`/v1/customers/${params.customer}/discount`)
+      .delete(`/v1/customers/${params['customer']}/discount`)
       .json<stripe.DeleteCustomersCustomerDiscountResponse>()
   }
 
@@ -64171,7 +64171,7 @@ funding instructions will be retrieved. In other words, we will return the same 
     params: stripe.PostCustomersCustomerFundingInstructionsParams
   ): Promise<stripe.PostCustomersCustomerFundingInstructionsResponse> {
     return this.ky
-      .post(`/v1/customers/${params.customer}/funding_instructions`)
+      .post(`/v1/customers/${params['customer']}/funding_instructions`)
       .json<stripe.PostCustomersCustomerFundingInstructionsResponse>()
   }
 
@@ -64188,7 +64188,7 @@ funding instructions will be retrieved. In other words, we will return the same 
     params: stripe.GetCustomersCustomerPaymentMethodsParams
   ): Promise<stripe.GetCustomersCustomerPaymentMethodsResponse> {
     return this.ky
-      .get(`/v1/customers/${params.customer}/payment_methods`, {
+      .get(`/v1/customers/${params['customer']}/payment_methods`, {
         searchParams: sanitizeSearchParams(
           pick(
             params,
@@ -64219,7 +64219,7 @@ funding instructions will be retrieved. In other words, we will return the same 
   ): Promise<stripe.GetCustomersCustomerPaymentMethodsPaymentMethodResponse> {
     return this.ky
       .get(
-        `/v1/customers/${params.customer}/payment_methods/${params.payment_method}`,
+        `/v1/customers/${params['customer']}/payment_methods/${params['payment_method']}`,
         {
           searchParams: sanitizeSearchParams(pick(params, 'expand'))
         }
@@ -64239,7 +64239,7 @@ funding instructions will be retrieved. In other words, we will return the same 
     params: stripe.GetCustomersCustomerSourcesParams
   ): Promise<stripe.GetCustomersCustomerSourcesResponse> {
     return this.ky
-      .get(`/v1/customers/${params.customer}/sources`, {
+      .get(`/v1/customers/${params['customer']}/sources`, {
         searchParams: sanitizeSearchParams(
           pick(
             params,
@@ -64274,7 +64274,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
     params: stripe.PostCustomersCustomerSourcesParams
   ): Promise<stripe.PostCustomersCustomerSourcesResponse> {
     return this.ky
-      .post(`/v1/customers/${params.customer}/sources`)
+      .post(`/v1/customers/${params['customer']}/sources`)
       .json<stripe.PostCustomersCustomerSourcesResponse>()
   }
 
@@ -64290,7 +64290,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
     params: stripe.GetCustomersCustomerSourcesIdParams
   ): Promise<stripe.GetCustomersCustomerSourcesIdResponse> {
     return this.ky
-      .get(`/v1/customers/${params.customer}/sources/${params.id}`, {
+      .get(`/v1/customers/${params['customer']}/sources/${params['id']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetCustomersCustomerSourcesIdResponse>()
@@ -64308,7 +64308,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
     params: stripe.PostCustomersCustomerSourcesIdParams
   ): Promise<stripe.PostCustomersCustomerSourcesIdResponse> {
     return this.ky
-      .post(`/v1/customers/${params.customer}/sources/${params.id}`)
+      .post(`/v1/customers/${params['customer']}/sources/${params['id']}`)
       .json<stripe.PostCustomersCustomerSourcesIdResponse>()
   }
 
@@ -64324,7 +64324,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
     params: stripe.DeleteCustomersCustomerSourcesIdParams
   ): Promise<stripe.DeleteCustomersCustomerSourcesIdResponse> {
     return this.ky
-      .delete(`/v1/customers/${params.customer}/sources/${params.id}`)
+      .delete(`/v1/customers/${params['customer']}/sources/${params['id']}`)
       .json<stripe.DeleteCustomersCustomerSourcesIdResponse>()
   }
 
@@ -64342,7 +64342,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
   ): Promise<stripe.PostCustomersCustomerSourcesIdVerifyResponse> {
     return this.ky
       .post(
-        `/v1/customers/${params.customer}/sources/${params.id}/verify`
+        `/v1/customers/${params['customer']}/sources/${params['id']}/verify`
       )
       .json<stripe.PostCustomersCustomerSourcesIdVerifyResponse>()
   }
@@ -64360,7 +64360,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
     params: stripe.GetCustomersCustomerSubscriptionsParams
   ): Promise<stripe.GetCustomersCustomerSubscriptionsResponse> {
     return this.ky
-      .get(`/v1/customers/${params.customer}/subscriptions`, {
+      .get(`/v1/customers/${params['customer']}/subscriptions`, {
         searchParams: sanitizeSearchParams(
           pick(params, 'ending_before', 'expand', 'limit', 'starting_after')
         )
@@ -64380,7 +64380,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
     params: stripe.PostCustomersCustomerSubscriptionsParams
   ): Promise<stripe.PostCustomersCustomerSubscriptionsResponse> {
     return this.ky
-      .post(`/v1/customers/${params.customer}/subscriptions`)
+      .post(`/v1/customers/${params['customer']}/subscriptions`)
       .json<stripe.PostCustomersCustomerSubscriptionsResponse>()
   }
 
@@ -64398,7 +64398,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
   ): Promise<stripe.GetCustomersCustomerSubscriptionsSubscriptionExposedIdResponse> {
     return this.ky
       .get(
-        `/v1/customers/${params.customer}/subscriptions/${params.subscription_exposed_id}`,
+        `/v1/customers/${params['customer']}/subscriptions/${params['subscription_exposed_id']}`,
         {
           searchParams: sanitizeSearchParams(pick(params, 'expand'))
         }
@@ -64421,7 +64421,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
   ): Promise<stripe.PostCustomersCustomerSubscriptionsSubscriptionExposedIdResponse> {
     return this.ky
       .post(
-        `/v1/customers/${params.customer}/subscriptions/${params.subscription_exposed_id}`
+        `/v1/customers/${params['customer']}/subscriptions/${params['subscription_exposed_id']}`
       )
       .json<stripe.PostCustomersCustomerSubscriptionsSubscriptionExposedIdResponse>()
   }
@@ -64448,7 +64448,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
   ): Promise<stripe.DeleteCustomersCustomerSubscriptionsSubscriptionExposedIdResponse> {
     return this.ky
       .delete(
-        `/v1/customers/${params.customer}/subscriptions/${params.subscription_exposed_id}`
+        `/v1/customers/${params['customer']}/subscriptions/${params['subscription_exposed_id']}`
       )
       .json<stripe.DeleteCustomersCustomerSubscriptionsSubscriptionExposedIdResponse>()
   }
@@ -64464,7 +64464,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
   ): Promise<stripe.GetCustomersCustomerSubscriptionsSubscriptionExposedIdDiscountResponse> {
     return this.ky
       .get(
-        `/v1/customers/${params.customer}/subscriptions/${params.subscription_exposed_id}/discount`,
+        `/v1/customers/${params['customer']}/subscriptions/${params['subscription_exposed_id']}/discount`,
         {
           searchParams: sanitizeSearchParams(pick(params, 'expand'))
         }
@@ -64487,7 +64487,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
   ): Promise<stripe.DeleteCustomersCustomerSubscriptionsSubscriptionExposedIdDiscountResponse> {
     return this.ky
       .delete(
-        `/v1/customers/${params.customer}/subscriptions/${params.subscription_exposed_id}/discount`
+        `/v1/customers/${params['customer']}/subscriptions/${params['subscription_exposed_id']}/discount`
       )
       .json<stripe.DeleteCustomersCustomerSubscriptionsSubscriptionExposedIdDiscountResponse>()
   }
@@ -64504,7 +64504,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
     params: stripe.GetCustomersCustomerTaxIdsParams
   ): Promise<stripe.GetCustomersCustomerTaxIdsResponse> {
     return this.ky
-      .get(`/v1/customers/${params.customer}/tax_ids`, {
+      .get(`/v1/customers/${params['customer']}/tax_ids`, {
         searchParams: sanitizeSearchParams(
           pick(params, 'ending_before', 'expand', 'limit', 'starting_after')
         )
@@ -64525,7 +64525,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
     params: stripe.PostCustomersCustomerTaxIdsParams
   ): Promise<stripe.PostCustomersCustomerTaxIdsResponse> {
     return this.ky
-      .post(`/v1/customers/${params.customer}/tax_ids`)
+      .post(`/v1/customers/${params['customer']}/tax_ids`)
       .json<stripe.PostCustomersCustomerTaxIdsResponse>()
   }
 
@@ -64542,7 +64542,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
     params: stripe.GetCustomersCustomerTaxIdsIdParams
   ): Promise<stripe.GetCustomersCustomerTaxIdsIdResponse> {
     return this.ky
-      .get(`/v1/customers/${params.customer}/tax_ids/${params.id}`, {
+      .get(`/v1/customers/${params['customer']}/tax_ids/${params['id']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetCustomersCustomerTaxIdsIdResponse>()
@@ -64560,7 +64560,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
     params: stripe.DeleteCustomersCustomerTaxIdsIdParams
   ): Promise<stripe.DeleteCustomersCustomerTaxIdsIdResponse> {
     return this.ky
-      .delete(`/v1/customers/${params.customer}/tax_ids/${params.id}`)
+      .delete(`/v1/customers/${params['customer']}/tax_ids/${params['id']}`)
       .json<stripe.DeleteCustomersCustomerTaxIdsIdResponse>()
   }
 
@@ -64594,7 +64594,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
     params: stripe.GetDisputesDisputeParams
   ): Promise<stripe.GetDisputesDisputeResponse> {
     return this.ky
-      .get(`/v1/disputes/${params.dispute}`, {
+      .get(`/v1/disputes/${params['dispute']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetDisputesDisputeResponse>()
@@ -64616,7 +64616,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
     params: stripe.PostDisputesDisputeParams
   ): Promise<stripe.PostDisputesDisputeResponse> {
     return this.ky
-      .post(`/v1/disputes/${params.dispute}`)
+      .post(`/v1/disputes/${params['dispute']}`)
       .json<stripe.PostDisputesDisputeResponse>()
   }
 
@@ -64636,7 +64636,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
     params: stripe.PostDisputesDisputeCloseParams
   ): Promise<stripe.PostDisputesDisputeCloseResponse> {
     return this.ky
-      .post(`/v1/disputes/${params.dispute}/close`)
+      .post(`/v1/disputes/${params['dispute']}/close`)
       .json<stripe.PostDisputesDisputeCloseResponse>()
   }
 
@@ -64671,7 +64671,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
     params: stripe.GetEntitlementsActiveEntitlementsIdParams
   ): Promise<stripe.GetEntitlementsActiveEntitlementsIdResponse> {
     return this.ky
-      .get(`/v1/entitlements/active_entitlements/${params.id}`, {
+      .get(`/v1/entitlements/active_entitlements/${params['id']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetEntitlementsActiveEntitlementsIdResponse>()
@@ -64723,7 +64723,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
     params: stripe.GetEntitlementsFeaturesIdParams
   ): Promise<stripe.GetEntitlementsFeaturesIdResponse> {
     return this.ky
-      .get(`/v1/entitlements/features/${params.id}`, {
+      .get(`/v1/entitlements/features/${params['id']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetEntitlementsFeaturesIdResponse>()
@@ -64742,7 +64742,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
     params: stripe.PostEntitlementsFeaturesIdParams
   ): Promise<stripe.PostEntitlementsFeaturesIdResponse> {
     return this.ky
-      .post(`/v1/entitlements/features/${params.id}`)
+      .post(`/v1/entitlements/features/${params['id']}`)
       .json<stripe.PostEntitlementsFeaturesIdResponse>()
   }
 
@@ -64775,7 +64775,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
     params: stripe.DeleteEphemeralKeysKeyParams
   ): Promise<stripe.DeleteEphemeralKeysKeyResponse> {
     return this.ky
-      .delete(`/v1/ephemeral_keys/${params.key}`)
+      .delete(`/v1/ephemeral_keys/${params['key']}`)
       .json<stripe.DeleteEphemeralKeysKeyResponse>()
   }
 
@@ -64811,7 +64811,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
     params: stripe.GetEventsIdParams
   ): Promise<stripe.GetEventsIdResponse> {
     return this.ky
-      .get(`/v1/events/${params.id}`, {
+      .get(`/v1/events/${params['id']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetEventsIdResponse>()
@@ -64849,7 +64849,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
     params: stripe.GetExchangeRatesRateIdParams
   ): Promise<stripe.GetExchangeRatesRateIdResponse> {
     return this.ky
-      .get(`/v1/exchange_rates/${params.rate_id}`, {
+      .get(`/v1/exchange_rates/${params['rate_id']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetExchangeRatesRateIdResponse>()
@@ -64899,7 +64899,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
     params: stripe.GetFileLinksLinkParams
   ): Promise<stripe.GetFileLinksLinkResponse> {
     return this.ky
-      .get(`/v1/file_links/${params.link}`, {
+      .get(`/v1/file_links/${params['link']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetFileLinksLinkResponse>()
@@ -64918,7 +64918,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
     params: stripe.PostFileLinksLinkParams
   ): Promise<stripe.PostFileLinksLinkResponse> {
     return this.ky
-      .post(`/v1/file_links/${params.link}`)
+      .post(`/v1/file_links/${params['link']}`)
       .json<stripe.PostFileLinksLinkResponse>()
   }
 
@@ -64976,7 +64976,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
     params: stripe.GetFilesFileParams
   ): Promise<stripe.GetFilesFileResponse> {
     return this.ky
-      .get(`/v1/files/${params.file}`, {
+      .get(`/v1/files/${params['file']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetFilesFileResponse>()
@@ -65014,7 +65014,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
     params: stripe.GetFinancialConnectionsAccountsAccountParams
   ): Promise<stripe.GetFinancialConnectionsAccountsAccountResponse> {
     return this.ky
-      .get(`/v1/financial_connections/accounts/${params.account}`, {
+      .get(`/v1/financial_connections/accounts/${params['account']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetFinancialConnectionsAccountsAccountResponse>()
@@ -65035,7 +65035,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
   ): Promise<stripe.PostFinancialConnectionsAccountsAccountDisconnectResponse> {
     return this.ky
       .post(
-        `/v1/financial_connections/accounts/${params.account}/disconnect`
+        `/v1/financial_connections/accounts/${params['account']}/disconnect`
       )
       .json<stripe.PostFinancialConnectionsAccountsAccountDisconnectResponse>()
   }
@@ -65052,7 +65052,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
     params: stripe.GetFinancialConnectionsAccountsAccountOwnersParams
   ): Promise<stripe.GetFinancialConnectionsAccountsAccountOwnersResponse> {
     return this.ky
-      .get(`/v1/financial_connections/accounts/${params.account}/owners`, {
+      .get(`/v1/financial_connections/accounts/${params['account']}/owners`, {
         searchParams: sanitizeSearchParams(
           pick(
             params,
@@ -65081,7 +65081,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
     params: stripe.PostFinancialConnectionsAccountsAccountRefreshParams
   ): Promise<stripe.PostFinancialConnectionsAccountsAccountRefreshResponse> {
     return this.ky
-      .post(`/v1/financial_connections/accounts/${params.account}/refresh`)
+      .post(`/v1/financial_connections/accounts/${params['account']}/refresh`)
       .json<stripe.PostFinancialConnectionsAccountsAccountRefreshResponse>()
   }
 
@@ -65099,7 +65099,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
     params: stripe.PostFinancialConnectionsAccountsAccountSubscribeParams
   ): Promise<stripe.PostFinancialConnectionsAccountsAccountSubscribeResponse> {
     return this.ky
-      .post(`/v1/financial_connections/accounts/${params.account}/subscribe`)
+      .post(`/v1/financial_connections/accounts/${params['account']}/subscribe`)
       .json<stripe.PostFinancialConnectionsAccountsAccountSubscribeResponse>()
   }
 
@@ -65118,7 +65118,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
   ): Promise<stripe.PostFinancialConnectionsAccountsAccountUnsubscribeResponse> {
     return this.ky
       .post(
-        `/v1/financial_connections/accounts/${params.account}/unsubscribe`
+        `/v1/financial_connections/accounts/${params['account']}/unsubscribe`
       )
       .json<stripe.PostFinancialConnectionsAccountsAccountUnsubscribeResponse>()
   }
@@ -65153,7 +65153,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
     params: stripe.GetFinancialConnectionsSessionsSessionParams
   ): Promise<stripe.GetFinancialConnectionsSessionsSessionResponse> {
     return this.ky
-      .get(`/v1/financial_connections/sessions/${params.session}`, {
+      .get(`/v1/financial_connections/sessions/${params['session']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetFinancialConnectionsSessionsSessionResponse>()
@@ -65192,7 +65192,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
     params: stripe.GetFinancialConnectionsTransactionsTransactionParams
   ): Promise<stripe.GetFinancialConnectionsTransactionsTransactionResponse> {
     return this.ky
-      .get(`/v1/financial_connections/transactions/${params.transaction}`, {
+      .get(`/v1/financial_connections/transactions/${params['transaction']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetFinancialConnectionsTransactionsTransactionResponse>()
@@ -65244,7 +65244,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
     params: stripe.GetForwardingRequestsIdParams
   ): Promise<stripe.GetForwardingRequestsIdResponse> {
     return this.ky
-      .get(`/v1/forwarding/requests/${params.id}`, {
+      .get(`/v1/forwarding/requests/${params['id']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetForwardingRequestsIdResponse>()
@@ -65280,7 +65280,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
     params: stripe.GetIdentityVerificationReportsReportParams
   ): Promise<stripe.GetIdentityVerificationReportsReportResponse> {
     return this.ky
-      .get(`/v1/identity/verification_reports/${params.report}`, {
+      .get(`/v1/identity/verification_reports/${params['report']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetIdentityVerificationReportsReportResponse>()
@@ -65350,7 +65350,7 @@ To change the default, you should <a href="/docs/api#update_customer">update the
     params: stripe.GetIdentityVerificationSessionsSessionParams
   ): Promise<stripe.GetIdentityVerificationSessionsSessionResponse> {
     return this.ky
-      .get(`/v1/identity/verification_sessions/${params.session}`, {
+      .get(`/v1/identity/verification_sessions/${params['session']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetIdentityVerificationSessionsSessionResponse>()
@@ -65374,7 +65374,7 @@ verification check and options.</p>.`,
     params: stripe.PostIdentityVerificationSessionsSessionParams
   ): Promise<stripe.PostIdentityVerificationSessionsSessionResponse> {
     return this.ky
-      .post(`/v1/identity/verification_sessions/${params.session}`)
+      .post(`/v1/identity/verification_sessions/${params['session']}`)
       .json<stripe.PostIdentityVerificationSessionsSessionResponse>()
   }
 
@@ -65395,7 +65395,7 @@ verification check and options.</p>.`,
     params: stripe.PostIdentityVerificationSessionsSessionCancelParams
   ): Promise<stripe.PostIdentityVerificationSessionsSessionCancelResponse> {
     return this.ky
-      .post(`/v1/identity/verification_sessions/${params.session}/cancel`)
+      .post(`/v1/identity/verification_sessions/${params['session']}/cancel`)
       .json<stripe.PostIdentityVerificationSessionsSessionCancelResponse>()
   }
 
@@ -65448,7 +65448,7 @@ used for any purpose.</p>
     params: stripe.PostIdentityVerificationSessionsSessionRedactParams
   ): Promise<stripe.PostIdentityVerificationSessionsSessionRedactResponse> {
     return this.ky
-      .post(`/v1/identity/verification_sessions/${params.session}/redact`)
+      .post(`/v1/identity/verification_sessions/${params['session']}/redact`)
       .json<stripe.PostIdentityVerificationSessionsSessionRedactResponse>()
   }
 
@@ -65484,7 +65484,7 @@ used for any purpose.</p>
     params: stripe.GetInvoiceRenderingTemplatesTemplateParams
   ): Promise<stripe.GetInvoiceRenderingTemplatesTemplateResponse> {
     return this.ky
-      .get(`/v1/invoice_rendering_templates/${params.template}`, {
+      .get(`/v1/invoice_rendering_templates/${params['template']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand', 'version'))
       })
       .json<stripe.GetInvoiceRenderingTemplatesTemplateResponse>()
@@ -65503,7 +65503,7 @@ used for any purpose.</p>
     params: stripe.PostInvoiceRenderingTemplatesTemplateArchiveParams
   ): Promise<stripe.PostInvoiceRenderingTemplatesTemplateArchiveResponse> {
     return this.ky
-      .post(`/v1/invoice_rendering_templates/${params.template}/archive`)
+      .post(`/v1/invoice_rendering_templates/${params['template']}/archive`)
       .json<stripe.PostInvoiceRenderingTemplatesTemplateArchiveResponse>()
   }
 
@@ -65521,7 +65521,7 @@ used for any purpose.</p>
     params: stripe.PostInvoiceRenderingTemplatesTemplateUnarchiveParams
   ): Promise<stripe.PostInvoiceRenderingTemplatesTemplateUnarchiveResponse> {
     return this.ky
-      .post(`/v1/invoice_rendering_templates/${params.template}/unarchive`)
+      .post(`/v1/invoice_rendering_templates/${params['template']}/unarchive`)
       .json<stripe.PostInvoiceRenderingTemplatesTemplateUnarchiveResponse>()
   }
 
@@ -65573,7 +65573,7 @@ used for any purpose.</p>
     params: stripe.GetInvoiceitemsInvoiceitemParams
   ): Promise<stripe.GetInvoiceitemsInvoiceitemResponse> {
     return this.ky
-      .get(`/v1/invoiceitems/${params.invoiceitem}`, {
+      .get(`/v1/invoiceitems/${params['invoiceitem']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetInvoiceitemsInvoiceitemResponse>()
@@ -65592,7 +65592,7 @@ used for any purpose.</p>
     params: stripe.PostInvoiceitemsInvoiceitemParams
   ): Promise<stripe.PostInvoiceitemsInvoiceitemResponse> {
     return this.ky
-      .post(`/v1/invoiceitems/${params.invoiceitem}`)
+      .post(`/v1/invoiceitems/${params['invoiceitem']}`)
       .json<stripe.PostInvoiceitemsInvoiceitemResponse>()
   }
 
@@ -65609,7 +65609,7 @@ used for any purpose.</p>
     params: stripe.DeleteInvoiceitemsInvoiceitemParams
   ): Promise<stripe.DeleteInvoiceitemsInvoiceitemResponse> {
     return this.ky
-      .delete(`/v1/invoiceitems/${params.invoiceitem}`)
+      .delete(`/v1/invoiceitems/${params['invoiceitem']}`)
       .json<stripe.DeleteInvoiceitemsInvoiceitemResponse>()
   }
 
@@ -65760,7 +65760,7 @@ to an hour behind during outages. Search functionality is not available to merch
     params: stripe.GetInvoicesInvoiceParams
   ): Promise<stripe.GetInvoicesInvoiceResponse> {
     return this.ky
-      .get(`/v1/invoices/${params.invoice}`, {
+      .get(`/v1/invoices/${params['invoice']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetInvoicesInvoiceResponse>()
@@ -65788,7 +65788,7 @@ sending reminders for, or <a href="/docs/billing/invoices/reconciliation">automa
     params: stripe.PostInvoicesInvoiceParams
   ): Promise<stripe.PostInvoicesInvoiceResponse> {
     return this.ky
-      .post(`/v1/invoices/${params.invoice}`)
+      .post(`/v1/invoices/${params['invoice']}`)
       .json<stripe.PostInvoicesInvoiceResponse>()
   }
 
@@ -65805,7 +65805,7 @@ sending reminders for, or <a href="/docs/billing/invoices/reconciliation">automa
     params: stripe.DeleteInvoicesInvoiceParams
   ): Promise<stripe.DeleteInvoicesInvoiceResponse> {
     return this.ky
-      .delete(`/v1/invoices/${params.invoice}`)
+      .delete(`/v1/invoices/${params['invoice']}`)
       .json<stripe.DeleteInvoicesInvoiceResponse>()
   }
 
@@ -65822,7 +65822,7 @@ sending reminders for, or <a href="/docs/billing/invoices/reconciliation">automa
     params: stripe.PostInvoicesInvoiceAddLinesParams
   ): Promise<stripe.PostInvoicesInvoiceAddLinesResponse> {
     return this.ky
-      .post(`/v1/invoices/${params.invoice}/add_lines`)
+      .post(`/v1/invoices/${params['invoice']}/add_lines`)
       .json<stripe.PostInvoicesInvoiceAddLinesResponse>()
   }
 
@@ -65839,7 +65839,7 @@ sending reminders for, or <a href="/docs/billing/invoices/reconciliation">automa
     params: stripe.PostInvoicesInvoiceFinalizeParams
   ): Promise<stripe.PostInvoicesInvoiceFinalizeResponse> {
     return this.ky
-      .post(`/v1/invoices/${params.invoice}/finalize`)
+      .post(`/v1/invoices/${params['invoice']}/finalize`)
       .json<stripe.PostInvoicesInvoiceFinalizeResponse>()
   }
 
@@ -65856,7 +65856,7 @@ sending reminders for, or <a href="/docs/billing/invoices/reconciliation">automa
     params: stripe.GetInvoicesInvoiceLinesParams
   ): Promise<stripe.GetInvoicesInvoiceLinesResponse> {
     return this.ky
-      .get(`/v1/invoices/${params.invoice}/lines`, {
+      .get(`/v1/invoices/${params['invoice']}/lines`, {
         searchParams: sanitizeSearchParams(
           pick(params, 'ending_before', 'expand', 'limit', 'starting_after')
         )
@@ -65882,7 +65882,7 @@ Updating an invoice’s line item is only possible before the invoice is finaliz
     params: stripe.PostInvoicesInvoiceLinesLineItemIdParams
   ): Promise<stripe.PostInvoicesInvoiceLinesLineItemIdResponse> {
     return this.ky
-      .post(`/v1/invoices/${params.invoice}/lines/${params.line_item_id}`)
+      .post(`/v1/invoices/${params['invoice']}/lines/${params['line_item_id']}`)
       .json<stripe.PostInvoicesInvoiceLinesLineItemIdResponse>()
   }
 
@@ -65899,7 +65899,7 @@ Updating an invoice’s line item is only possible before the invoice is finaliz
     params: stripe.PostInvoicesInvoiceMarkUncollectibleParams
   ): Promise<stripe.PostInvoicesInvoiceMarkUncollectibleResponse> {
     return this.ky
-      .post(`/v1/invoices/${params.invoice}/mark_uncollectible`)
+      .post(`/v1/invoices/${params['invoice']}/mark_uncollectible`)
       .json<stripe.PostInvoicesInvoiceMarkUncollectibleResponse>()
   }
 
@@ -65916,7 +65916,7 @@ Updating an invoice’s line item is only possible before the invoice is finaliz
     params: stripe.PostInvoicesInvoicePayParams
   ): Promise<stripe.PostInvoicesInvoicePayResponse> {
     return this.ky
-      .post(`/v1/invoices/${params.invoice}/pay`)
+      .post(`/v1/invoices/${params['invoice']}/pay`)
       .json<stripe.PostInvoicesInvoicePayResponse>()
   }
 
@@ -65933,7 +65933,7 @@ Updating an invoice’s line item is only possible before the invoice is finaliz
     params: stripe.PostInvoicesInvoiceRemoveLinesParams
   ): Promise<stripe.PostInvoicesInvoiceRemoveLinesResponse> {
     return this.ky
-      .post(`/v1/invoices/${params.invoice}/remove_lines`)
+      .post(`/v1/invoices/${params['invoice']}/remove_lines`)
       .json<stripe.PostInvoicesInvoiceRemoveLinesResponse>()
   }
 
@@ -65953,7 +65953,7 @@ Updating an invoice’s line item is only possible before the invoice is finaliz
     params: stripe.PostInvoicesInvoiceSendParams
   ): Promise<stripe.PostInvoicesInvoiceSendResponse> {
     return this.ky
-      .post(`/v1/invoices/${params.invoice}/send`)
+      .post(`/v1/invoices/${params['invoice']}/send`)
       .json<stripe.PostInvoicesInvoiceSendResponse>()
   }
 
@@ -65970,7 +65970,7 @@ Updating an invoice’s line item is only possible before the invoice is finaliz
     params: stripe.PostInvoicesInvoiceUpdateLinesParams
   ): Promise<stripe.PostInvoicesInvoiceUpdateLinesResponse> {
     return this.ky
-      .post(`/v1/invoices/${params.invoice}/update_lines`)
+      .post(`/v1/invoices/${params['invoice']}/update_lines`)
       .json<stripe.PostInvoicesInvoiceUpdateLinesResponse>()
   }
 
@@ -65990,7 +65990,7 @@ Updating an invoice’s line item is only possible before the invoice is finaliz
     params: stripe.PostInvoicesInvoiceVoidParams
   ): Promise<stripe.PostInvoicesInvoiceVoidResponse> {
     return this.ky
-      .post(`/v1/invoices/${params.invoice}/void`)
+      .post(`/v1/invoices/${params['invoice']}/void`)
       .json<stripe.PostInvoicesInvoiceVoidResponse>()
   }
 
@@ -66026,7 +66026,7 @@ Updating an invoice’s line item is only possible before the invoice is finaliz
     params: stripe.GetIssuingAuthorizationsAuthorizationParams
   ): Promise<stripe.GetIssuingAuthorizationsAuthorizationResponse> {
     return this.ky
-      .get(`/v1/issuing/authorizations/${params.authorization}`, {
+      .get(`/v1/issuing/authorizations/${params['authorization']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetIssuingAuthorizationsAuthorizationResponse>()
@@ -66045,7 +66045,7 @@ Updating an invoice’s line item is only possible before the invoice is finaliz
     params: stripe.PostIssuingAuthorizationsAuthorizationParams
   ): Promise<stripe.PostIssuingAuthorizationsAuthorizationResponse> {
     return this.ky
-      .post(`/v1/issuing/authorizations/${params.authorization}`)
+      .post(`/v1/issuing/authorizations/${params['authorization']}`)
       .json<stripe.PostIssuingAuthorizationsAuthorizationResponse>()
   }
 
@@ -66064,7 +66064,7 @@ This method is deprecated. Instead, <a href="/docs/issuing/controls/real-time-au
     params: stripe.PostIssuingAuthorizationsAuthorizationApproveParams
   ): Promise<stripe.PostIssuingAuthorizationsAuthorizationApproveResponse> {
     return this.ky
-      .post(`/v1/issuing/authorizations/${params.authorization}/approve`)
+      .post(`/v1/issuing/authorizations/${params['authorization']}/approve`)
       .json<stripe.PostIssuingAuthorizationsAuthorizationApproveResponse>()
   }
 
@@ -66083,7 +66083,7 @@ This method is deprecated. Instead, <a href="/docs/issuing/controls/real-time-au
     params: stripe.PostIssuingAuthorizationsAuthorizationDeclineParams
   ): Promise<stripe.PostIssuingAuthorizationsAuthorizationDeclineResponse> {
     return this.ky
-      .post(`/v1/issuing/authorizations/${params.authorization}/decline`)
+      .post(`/v1/issuing/authorizations/${params['authorization']}/decline`)
       .json<stripe.PostIssuingAuthorizationsAuthorizationDeclineResponse>()
   }
 
@@ -66135,7 +66135,7 @@ This method is deprecated. Instead, <a href="/docs/issuing/controls/real-time-au
     params: stripe.GetIssuingCardholdersCardholderParams
   ): Promise<stripe.GetIssuingCardholdersCardholderResponse> {
     return this.ky
-      .get(`/v1/issuing/cardholders/${params.cardholder}`, {
+      .get(`/v1/issuing/cardholders/${params['cardholder']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetIssuingCardholdersCardholderResponse>()
@@ -66154,7 +66154,7 @@ This method is deprecated. Instead, <a href="/docs/issuing/controls/real-time-au
     params: stripe.PostIssuingCardholdersCardholderParams
   ): Promise<stripe.PostIssuingCardholdersCardholderResponse> {
     return this.ky
-      .post(`/v1/issuing/cardholders/${params.cardholder}`)
+      .post(`/v1/issuing/cardholders/${params['cardholder']}`)
       .json<stripe.PostIssuingCardholdersCardholderResponse>()
   }
 
@@ -66205,7 +66205,7 @@ This method is deprecated. Instead, <a href="/docs/issuing/controls/real-time-au
     params: stripe.GetIssuingCardsCardParams
   ): Promise<stripe.GetIssuingCardsCardResponse> {
     return this.ky
-      .get(`/v1/issuing/cards/${params.card}`, {
+      .get(`/v1/issuing/cards/${params['card']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetIssuingCardsCardResponse>()
@@ -66224,7 +66224,7 @@ This method is deprecated. Instead, <a href="/docs/issuing/controls/real-time-au
     params: stripe.PostIssuingCardsCardParams
   ): Promise<stripe.PostIssuingCardsCardResponse> {
     return this.ky
-      .post(`/v1/issuing/cards/${params.card}`)
+      .post(`/v1/issuing/cards/${params['card']}`)
       .json<stripe.PostIssuingCardsCardResponse>()
   }
 
@@ -66276,7 +66276,7 @@ This method is deprecated. Instead, <a href="/docs/issuing/controls/real-time-au
     params: stripe.GetIssuingDisputesDisputeParams
   ): Promise<stripe.GetIssuingDisputesDisputeResponse> {
     return this.ky
-      .get(`/v1/issuing/disputes/${params.dispute}`, {
+      .get(`/v1/issuing/disputes/${params['dispute']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetIssuingDisputesDisputeResponse>()
@@ -66295,7 +66295,7 @@ This method is deprecated. Instead, <a href="/docs/issuing/controls/real-time-au
     params: stripe.PostIssuingDisputesDisputeParams
   ): Promise<stripe.PostIssuingDisputesDisputeResponse> {
     return this.ky
-      .post(`/v1/issuing/disputes/${params.dispute}`)
+      .post(`/v1/issuing/disputes/${params['dispute']}`)
       .json<stripe.PostIssuingDisputesDisputeResponse>()
   }
 
@@ -66312,7 +66312,7 @@ This method is deprecated. Instead, <a href="/docs/issuing/controls/real-time-au
     params: stripe.PostIssuingDisputesDisputeSubmitParams
   ): Promise<stripe.PostIssuingDisputesDisputeSubmitResponse> {
     return this.ky
-      .post(`/v1/issuing/disputes/${params.dispute}/submit`)
+      .post(`/v1/issuing/disputes/${params['dispute']}/submit`)
       .json<stripe.PostIssuingDisputesDisputeSubmitResponse>()
   }
 
@@ -66365,7 +66365,7 @@ This method is deprecated. Instead, <a href="/docs/issuing/controls/real-time-au
   ): Promise<stripe.GetIssuingPersonalizationDesignsPersonalizationDesignResponse> {
     return this.ky
       .get(
-        `/v1/issuing/personalization_designs/${params.personalization_design}`,
+        `/v1/issuing/personalization_designs/${params['personalization_design']}`,
         {
           searchParams: sanitizeSearchParams(pick(params, 'expand'))
         }
@@ -66387,7 +66387,7 @@ This method is deprecated. Instead, <a href="/docs/issuing/controls/real-time-au
   ): Promise<stripe.PostIssuingPersonalizationDesignsPersonalizationDesignResponse> {
     return this.ky
       .post(
-        `/v1/issuing/personalization_designs/${params.personalization_design}`
+        `/v1/issuing/personalization_designs/${params['personalization_design']}`
       )
       .json<stripe.PostIssuingPersonalizationDesignsPersonalizationDesignResponse>()
   }
@@ -66423,7 +66423,7 @@ This method is deprecated. Instead, <a href="/docs/issuing/controls/real-time-au
     params: stripe.GetIssuingPhysicalBundlesPhysicalBundleParams
   ): Promise<stripe.GetIssuingPhysicalBundlesPhysicalBundleResponse> {
     return this.ky
-      .get(`/v1/issuing/physical_bundles/${params.physical_bundle}`, {
+      .get(`/v1/issuing/physical_bundles/${params['physical_bundle']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetIssuingPhysicalBundlesPhysicalBundleResponse>()
@@ -66441,7 +66441,7 @@ This method is deprecated. Instead, <a href="/docs/issuing/controls/real-time-au
     params: stripe.GetIssuingSettlementsSettlementParams
   ): Promise<stripe.GetIssuingSettlementsSettlementResponse> {
     return this.ky
-      .get(`/v1/issuing/settlements/${params.settlement}`, {
+      .get(`/v1/issuing/settlements/${params['settlement']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetIssuingSettlementsSettlementResponse>()
@@ -66460,7 +66460,7 @@ This method is deprecated. Instead, <a href="/docs/issuing/controls/real-time-au
     params: stripe.PostIssuingSettlementsSettlementParams
   ): Promise<stripe.PostIssuingSettlementsSettlementResponse> {
     return this.ky
-      .post(`/v1/issuing/settlements/${params.settlement}`)
+      .post(`/v1/issuing/settlements/${params['settlement']}`)
       .json<stripe.PostIssuingSettlementsSettlementResponse>()
   }
 
@@ -66495,7 +66495,7 @@ This method is deprecated. Instead, <a href="/docs/issuing/controls/real-time-au
     params: stripe.GetIssuingTokensTokenParams
   ): Promise<stripe.GetIssuingTokensTokenResponse> {
     return this.ky
-      .get(`/v1/issuing/tokens/${params.token}`, {
+      .get(`/v1/issuing/tokens/${params['token']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetIssuingTokensTokenResponse>()
@@ -66514,7 +66514,7 @@ This method is deprecated. Instead, <a href="/docs/issuing/controls/real-time-au
     params: stripe.PostIssuingTokensTokenParams
   ): Promise<stripe.PostIssuingTokensTokenResponse> {
     return this.ky
-      .post(`/v1/issuing/tokens/${params.token}`)
+      .post(`/v1/issuing/tokens/${params['token']}`)
       .json<stripe.PostIssuingTokensTokenResponse>()
   }
 
@@ -66550,7 +66550,7 @@ This method is deprecated. Instead, <a href="/docs/issuing/controls/real-time-au
     params: stripe.GetIssuingTransactionsTransactionParams
   ): Promise<stripe.GetIssuingTransactionsTransactionResponse> {
     return this.ky
-      .get(`/v1/issuing/transactions/${params.transaction}`, {
+      .get(`/v1/issuing/transactions/${params['transaction']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetIssuingTransactionsTransactionResponse>()
@@ -66569,7 +66569,7 @@ This method is deprecated. Instead, <a href="/docs/issuing/controls/real-time-au
     params: stripe.PostIssuingTransactionsTransactionParams
   ): Promise<stripe.PostIssuingTransactionsTransactionResponse> {
     return this.ky
-      .post(`/v1/issuing/transactions/${params.transaction}`)
+      .post(`/v1/issuing/transactions/${params['transaction']}`)
       .json<stripe.PostIssuingTransactionsTransactionResponse>()
   }
 
@@ -66603,7 +66603,7 @@ This method is deprecated. Instead, <a href="/docs/issuing/controls/real-time-au
     params: stripe.GetLinkAccountSessionsSessionParams
   ): Promise<stripe.GetLinkAccountSessionsSessionResponse> {
     return this.ky
-      .get(`/v1/link_account_sessions/${params.session}`, {
+      .get(`/v1/link_account_sessions/${params['session']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetLinkAccountSessionsSessionResponse>()
@@ -66641,7 +66641,7 @@ This method is deprecated. Instead, <a href="/docs/issuing/controls/real-time-au
     params: stripe.GetLinkedAccountsAccountParams
   ): Promise<stripe.GetLinkedAccountsAccountResponse> {
     return this.ky
-      .get(`/v1/linked_accounts/${params.account}`, {
+      .get(`/v1/linked_accounts/${params['account']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetLinkedAccountsAccountResponse>()
@@ -66660,7 +66660,7 @@ This method is deprecated. Instead, <a href="/docs/issuing/controls/real-time-au
     params: stripe.PostLinkedAccountsAccountDisconnectParams
   ): Promise<stripe.PostLinkedAccountsAccountDisconnectResponse> {
     return this.ky
-      .post(`/v1/linked_accounts/${params.account}/disconnect`)
+      .post(`/v1/linked_accounts/${params['account']}/disconnect`)
       .json<stripe.PostLinkedAccountsAccountDisconnectResponse>()
   }
 
@@ -66676,7 +66676,7 @@ This method is deprecated. Instead, <a href="/docs/issuing/controls/real-time-au
     params: stripe.GetLinkedAccountsAccountOwnersParams
   ): Promise<stripe.GetLinkedAccountsAccountOwnersResponse> {
     return this.ky
-      .get(`/v1/linked_accounts/${params.account}/owners`, {
+      .get(`/v1/linked_accounts/${params['account']}/owners`, {
         searchParams: sanitizeSearchParams(
           pick(
             params,
@@ -66704,7 +66704,7 @@ This method is deprecated. Instead, <a href="/docs/issuing/controls/real-time-au
     params: stripe.PostLinkedAccountsAccountRefreshParams
   ): Promise<stripe.PostLinkedAccountsAccountRefreshResponse> {
     return this.ky
-      .post(`/v1/linked_accounts/${params.account}/refresh`)
+      .post(`/v1/linked_accounts/${params['account']}/refresh`)
       .json<stripe.PostLinkedAccountsAccountRefreshResponse>()
   }
 
@@ -66720,7 +66720,7 @@ This method is deprecated. Instead, <a href="/docs/issuing/controls/real-time-au
     params: stripe.GetMandatesMandateParams
   ): Promise<stripe.GetMandatesMandateResponse> {
     return this.ky
-      .get(`/v1/mandates/${params.mandate}`, {
+      .get(`/v1/mandates/${params['mandate']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetMandatesMandateResponse>()
@@ -66822,7 +66822,7 @@ to an hour behind during outages. Search functionality is not available to merch
     params: stripe.GetPaymentIntentsIntentParams
   ): Promise<stripe.GetPaymentIntentsIntentResponse> {
     return this.ky
-      .get(`/v1/payment_intents/${params.intent}`, {
+      .get(`/v1/payment_intents/${params['intent']}`, {
         searchParams: sanitizeSearchParams(
           pick(params, 'client_secret', 'expand')
         )
@@ -66854,7 +66854,7 @@ the <a href="/docs/api/payment_intents/confirm">confirm API</a> instead.</p>.`,
     params: stripe.PostPaymentIntentsIntentParams
   ): Promise<stripe.PostPaymentIntentsIntentResponse> {
     return this.ky
-      .post(`/v1/payment_intents/${params.intent}`)
+      .post(`/v1/payment_intents/${params['intent']}`)
       .json<stripe.PostPaymentIntentsIntentResponse>()
   }
 
@@ -66871,7 +66871,7 @@ the <a href="/docs/api/payment_intents/confirm">confirm API</a> instead.</p>.`,
     params: stripe.PostPaymentIntentsIntentApplyCustomerBalanceParams
   ): Promise<stripe.PostPaymentIntentsIntentApplyCustomerBalanceResponse> {
     return this.ky
-      .post(`/v1/payment_intents/${params.intent}/apply_customer_balance`)
+      .post(`/v1/payment_intents/${params['intent']}/apply_customer_balance`)
       .json<stripe.PostPaymentIntentsIntentApplyCustomerBalanceResponse>()
   }
 
@@ -66895,7 +66895,7 @@ the <a href="/docs/api/payment_intents/confirm">confirm API</a> instead.</p>.`,
     params: stripe.PostPaymentIntentsIntentCancelParams
   ): Promise<stripe.PostPaymentIntentsIntentCancelResponse> {
     return this.ky
-      .post(`/v1/payment_intents/${params.intent}/cancel`)
+      .post(`/v1/payment_intents/${params['intent']}/cancel`)
       .json<stripe.PostPaymentIntentsIntentCancelResponse>()
   }
 
@@ -66919,7 +66919,7 @@ the <a href="/docs/api/payment_intents/confirm">confirm API</a> instead.</p>.`,
     params: stripe.PostPaymentIntentsIntentCaptureParams
   ): Promise<stripe.PostPaymentIntentsIntentCaptureResponse> {
     return this.ky
-      .post(`/v1/payment_intents/${params.intent}/capture`)
+      .post(`/v1/payment_intents/${params['intent']}/capture`)
       .json<stripe.PostPaymentIntentsIntentCaptureResponse>()
   }
 
@@ -66983,7 +66983,7 @@ transition the PaymentIntent to the <code>canceled</code> state.</p>.`,
     params: stripe.PostPaymentIntentsIntentConfirmParams
   ): Promise<stripe.PostPaymentIntentsIntentConfirmResponse> {
     return this.ky
-      .post(`/v1/payment_intents/${params.intent}/confirm`)
+      .post(`/v1/payment_intents/${params['intent']}/confirm`)
       .json<stripe.PostPaymentIntentsIntentConfirmResponse>()
   }
 
@@ -67046,7 +67046,7 @@ After it’s captured, a PaymentIntent can no longer be incremented.</p>
     params: stripe.PostPaymentIntentsIntentIncrementAuthorizationParams
   ): Promise<stripe.PostPaymentIntentsIntentIncrementAuthorizationResponse> {
     return this.ky
-      .post(`/v1/payment_intents/${params.intent}/increment_authorization`)
+      .post(`/v1/payment_intents/${params['intent']}/increment_authorization`)
       .json<stripe.PostPaymentIntentsIntentIncrementAuthorizationResponse>()
   }
 
@@ -67062,7 +67062,7 @@ After it’s captured, a PaymentIntent can no longer be incremented.</p>
     params: stripe.PostPaymentIntentsIntentVerifyMicrodepositsParams
   ): Promise<stripe.PostPaymentIntentsIntentVerifyMicrodepositsResponse> {
     return this.ky
-      .post(`/v1/payment_intents/${params.intent}/verify_microdeposits`)
+      .post(`/v1/payment_intents/${params['intent']}/verify_microdeposits`)
       .json<stripe.PostPaymentIntentsIntentVerifyMicrodepositsResponse>()
   }
 
@@ -67112,7 +67112,7 @@ After it’s captured, a PaymentIntent can no longer be incremented.</p>
     params: stripe.GetPaymentLinksPaymentLinkParams
   ): Promise<stripe.GetPaymentLinksPaymentLinkResponse> {
     return this.ky
-      .get(`/v1/payment_links/${params.payment_link}`, {
+      .get(`/v1/payment_links/${params['payment_link']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetPaymentLinksPaymentLinkResponse>()
@@ -67130,7 +67130,7 @@ After it’s captured, a PaymentIntent can no longer be incremented.</p>
     params: stripe.PostPaymentLinksPaymentLinkParams
   ): Promise<stripe.PostPaymentLinksPaymentLinkResponse> {
     return this.ky
-      .post(`/v1/payment_links/${params.payment_link}`)
+      .post(`/v1/payment_links/${params['payment_link']}`)
       .json<stripe.PostPaymentLinksPaymentLinkResponse>()
   }
 
@@ -67147,7 +67147,7 @@ After it’s captured, a PaymentIntent can no longer be incremented.</p>
     params: stripe.GetPaymentLinksPaymentLinkLineItemsParams
   ): Promise<stripe.GetPaymentLinksPaymentLinkLineItemsResponse> {
     return this.ky
-      .get(`/v1/payment_links/${params.payment_link}/line_items`, {
+      .get(`/v1/payment_links/${params['payment_link']}/line_items`, {
         searchParams: sanitizeSearchParams(
           pick(params, 'ending_before', 'expand', 'limit', 'starting_after')
         )
@@ -67201,7 +67201,7 @@ After it’s captured, a PaymentIntent can no longer be incremented.</p>
     params: stripe.GetPaymentMethodConfigurationsConfigurationParams
   ): Promise<stripe.GetPaymentMethodConfigurationsConfigurationResponse> {
     return this.ky
-      .get(`/v1/payment_method_configurations/${params.configuration}`, {
+      .get(`/v1/payment_method_configurations/${params['configuration']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetPaymentMethodConfigurationsConfigurationResponse>()
@@ -67219,7 +67219,7 @@ After it’s captured, a PaymentIntent can no longer be incremented.</p>
     params: stripe.PostPaymentMethodConfigurationsConfigurationParams
   ): Promise<stripe.PostPaymentMethodConfigurationsConfigurationResponse> {
     return this.ky
-      .post(`/v1/payment_method_configurations/${params.configuration}`)
+      .post(`/v1/payment_method_configurations/${params['configuration']}`)
       .json<stripe.PostPaymentMethodConfigurationsConfigurationResponse>()
   }
 
@@ -67271,7 +67271,7 @@ After it’s captured, a PaymentIntent can no longer be incremented.</p>
     params: stripe.GetPaymentMethodDomainsPaymentMethodDomainParams
   ): Promise<stripe.GetPaymentMethodDomainsPaymentMethodDomainResponse> {
     return this.ky
-      .get(`/v1/payment_method_domains/${params.payment_method_domain}`, {
+      .get(`/v1/payment_method_domains/${params['payment_method_domain']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetPaymentMethodDomainsPaymentMethodDomainResponse>()
@@ -67289,7 +67289,7 @@ After it’s captured, a PaymentIntent can no longer be incremented.</p>
     params: stripe.PostPaymentMethodDomainsPaymentMethodDomainParams
   ): Promise<stripe.PostPaymentMethodDomainsPaymentMethodDomainResponse> {
     return this.ky
-      .post(`/v1/payment_method_domains/${params.payment_method_domain}`)
+      .post(`/v1/payment_method_domains/${params['payment_method_domain']}`)
       .json<stripe.PostPaymentMethodDomainsPaymentMethodDomainResponse>()
   }
 
@@ -67317,7 +67317,7 @@ The payment method doesn’t appear in Elements for this domain until it is acti
   ): Promise<stripe.PostPaymentMethodDomainsPaymentMethodDomainValidateResponse> {
     return this.ky
       .post(
-        `/v1/payment_method_domains/${params.payment_method_domain}/validate`
+        `/v1/payment_method_domains/${params['payment_method_domain']}/validate`
       )
       .json<stripe.PostPaymentMethodDomainsPaymentMethodDomainValidateResponse>()
   }
@@ -67374,7 +67374,7 @@ The payment method doesn’t appear in Elements for this domain until it is acti
     params: stripe.GetPaymentMethodsPaymentMethodParams
   ): Promise<stripe.GetPaymentMethodsPaymentMethodResponse> {
     return this.ky
-      .get(`/v1/payment_methods/${params.payment_method}`, {
+      .get(`/v1/payment_methods/${params['payment_method']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetPaymentMethodsPaymentMethodResponse>()
@@ -67393,7 +67393,7 @@ The payment method doesn’t appear in Elements for this domain until it is acti
     params: stripe.PostPaymentMethodsPaymentMethodParams
   ): Promise<stripe.PostPaymentMethodsPaymentMethodResponse> {
     return this.ky
-      .post(`/v1/payment_methods/${params.payment_method}`)
+      .post(`/v1/payment_methods/${params['payment_method']}`)
       .json<stripe.PostPaymentMethodsPaymentMethodResponse>()
   }
 
@@ -67433,7 +67433,7 @@ on the Customer to the PaymentMethod’s ID.</p>.`,
     params: stripe.PostPaymentMethodsPaymentMethodAttachParams
   ): Promise<stripe.PostPaymentMethodsPaymentMethodAttachResponse> {
     return this.ky
-      .post(`/v1/payment_methods/${params.payment_method}/attach`)
+      .post(`/v1/payment_methods/${params['payment_method']}/attach`)
       .json<stripe.PostPaymentMethodsPaymentMethodAttachResponse>()
   }
 
@@ -67450,7 +67450,7 @@ on the Customer to the PaymentMethod’s ID.</p>.`,
     params: stripe.PostPaymentMethodsPaymentMethodDetachParams
   ): Promise<stripe.PostPaymentMethodsPaymentMethodDetachResponse> {
     return this.ky
-      .post(`/v1/payment_methods/${params.payment_method}/detach`)
+      .post(`/v1/payment_methods/${params['payment_method']}/detach`)
       .json<stripe.PostPaymentMethodsPaymentMethodDetachResponse>()
   }
 
@@ -67508,7 +67508,7 @@ on the Customer to the PaymentMethod’s ID.</p>.`,
     params: stripe.GetPayoutsPayoutParams
   ): Promise<stripe.GetPayoutsPayoutResponse> {
     return this.ky
-      .get(`/v1/payouts/${params.payout}`, {
+      .get(`/v1/payouts/${params['payout']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetPayoutsPayoutResponse>()
@@ -67527,7 +67527,7 @@ on the Customer to the PaymentMethod’s ID.</p>.`,
     params: stripe.PostPayoutsPayoutParams
   ): Promise<stripe.PostPayoutsPayoutResponse> {
     return this.ky
-      .post(`/v1/payouts/${params.payout}`)
+      .post(`/v1/payouts/${params['payout']}`)
       .json<stripe.PostPayoutsPayoutResponse>()
   }
 
@@ -67544,7 +67544,7 @@ on the Customer to the PaymentMethod’s ID.</p>.`,
     params: stripe.PostPayoutsPayoutCancelParams
   ): Promise<stripe.PostPayoutsPayoutCancelResponse> {
     return this.ky
-      .post(`/v1/payouts/${params.payout}/cancel`)
+      .post(`/v1/payouts/${params['payout']}/cancel`)
       .json<stripe.PostPayoutsPayoutCancelResponse>()
   }
 
@@ -67564,7 +67564,7 @@ on the Customer to the PaymentMethod’s ID.</p>.`,
     params: stripe.PostPayoutsPayoutReverseParams
   ): Promise<stripe.PostPayoutsPayoutReverseResponse> {
     return this.ky
-      .post(`/v1/payouts/${params.payout}/reverse`)
+      .post(`/v1/payouts/${params['payout']}/reverse`)
       .json<stripe.PostPayoutsPayoutReverseResponse>()
   }
 
@@ -67613,7 +67613,7 @@ on the Customer to the PaymentMethod’s ID.</p>.`,
     params: stripe.GetPlansPlanParams
   ): Promise<stripe.GetPlansPlanResponse> {
     return this.ky
-      .get(`/v1/plans/${params.plan}`, {
+      .get(`/v1/plans/${params['plan']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetPlansPlanResponse>()
@@ -67632,7 +67632,7 @@ on the Customer to the PaymentMethod’s ID.</p>.`,
     params: stripe.PostPlansPlanParams
   ): Promise<stripe.PostPlansPlanResponse> {
     return this.ky
-      .post(`/v1/plans/${params.plan}`)
+      .post(`/v1/plans/${params['plan']}`)
       .json<stripe.PostPlansPlanResponse>()
   }
 
@@ -67649,7 +67649,7 @@ on the Customer to the PaymentMethod’s ID.</p>.`,
     params: stripe.DeletePlansPlanParams
   ): Promise<stripe.DeletePlansPlanResponse> {
     return this.ky
-      .delete(`/v1/plans/${params.plan}`)
+      .delete(`/v1/plans/${params['plan']}`)
       .json<stripe.DeletePlansPlanResponse>()
   }
 
@@ -67723,7 +67723,7 @@ to an hour behind during outages. Search functionality is not available to merch
     params: stripe.GetPricesPriceParams
   ): Promise<stripe.GetPricesPriceResponse> {
     return this.ky
-      .get(`/v1/prices/${params.price}`, {
+      .get(`/v1/prices/${params['price']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetPricesPriceResponse>()
@@ -67742,7 +67742,7 @@ to an hour behind during outages. Search functionality is not available to merch
     params: stripe.PostPricesPriceParams
   ): Promise<stripe.PostPricesPriceResponse> {
     return this.ky
-      .post(`/v1/prices/${params.price}`)
+      .post(`/v1/prices/${params['price']}`)
       .json<stripe.PostPricesPriceResponse>()
   }
 
@@ -67816,7 +67816,7 @@ to an hour behind during outages. Search functionality is not available to merch
     params: stripe.GetProductsIdParams
   ): Promise<stripe.GetProductsIdResponse> {
     return this.ky
-      .get(`/v1/products/${params.id}`, {
+      .get(`/v1/products/${params['id']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetProductsIdResponse>()
@@ -67835,7 +67835,7 @@ to an hour behind during outages. Search functionality is not available to merch
     params: stripe.PostProductsIdParams
   ): Promise<stripe.PostProductsIdResponse> {
     return this.ky
-      .post(`/v1/products/${params.id}`)
+      .post(`/v1/products/${params['id']}`)
       .json<stripe.PostProductsIdResponse>()
   }
 
@@ -67852,7 +67852,7 @@ to an hour behind during outages. Search functionality is not available to merch
     params: stripe.DeleteProductsIdParams
   ): Promise<stripe.DeleteProductsIdResponse> {
     return this.ky
-      .delete(`/v1/products/${params.id}`)
+      .delete(`/v1/products/${params['id']}`)
       .json<stripe.DeleteProductsIdResponse>()
   }
 
@@ -67868,7 +67868,7 @@ to an hour behind during outages. Search functionality is not available to merch
     params: stripe.GetProductsProductFeaturesParams
   ): Promise<stripe.GetProductsProductFeaturesResponse> {
     return this.ky
-      .get(`/v1/products/${params.product}/features`, {
+      .get(`/v1/products/${params['product']}/features`, {
         searchParams: sanitizeSearchParams(
           pick(params, 'ending_before', 'expand', 'limit', 'starting_after')
         )
@@ -67889,7 +67889,7 @@ to an hour behind during outages. Search functionality is not available to merch
     params: stripe.PostProductsProductFeaturesParams
   ): Promise<stripe.PostProductsProductFeaturesResponse> {
     return this.ky
-      .post(`/v1/products/${params.product}/features`)
+      .post(`/v1/products/${params['product']}/features`)
       .json<stripe.PostProductsProductFeaturesResponse>()
   }
 
@@ -67906,7 +67906,7 @@ to an hour behind during outages. Search functionality is not available to merch
     params: stripe.GetProductsProductFeaturesIdParams
   ): Promise<stripe.GetProductsProductFeaturesIdResponse> {
     return this.ky
-      .get(`/v1/products/${params.product}/features/${params.id}`, {
+      .get(`/v1/products/${params['product']}/features/${params['id']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetProductsProductFeaturesIdResponse>()
@@ -67924,7 +67924,7 @@ to an hour behind during outages. Search functionality is not available to merch
     params: stripe.DeleteProductsProductFeaturesIdParams
   ): Promise<stripe.DeleteProductsProductFeaturesIdResponse> {
     return this.ky
-      .delete(`/v1/products/${params.product}/features/${params.id}`)
+      .delete(`/v1/products/${params['product']}/features/${params['id']}`)
       .json<stripe.DeleteProductsProductFeaturesIdResponse>()
   }
 
@@ -67976,7 +67976,7 @@ to an hour behind during outages. Search functionality is not available to merch
     params: stripe.GetPromotionCodesPromotionCodeParams
   ): Promise<stripe.GetPromotionCodesPromotionCodeResponse> {
     return this.ky
-      .get(`/v1/promotion_codes/${params.promotion_code}`, {
+      .get(`/v1/promotion_codes/${params['promotion_code']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetPromotionCodesPromotionCodeResponse>()
@@ -67995,7 +67995,7 @@ to an hour behind during outages. Search functionality is not available to merch
     params: stripe.PostPromotionCodesPromotionCodeParams
   ): Promise<stripe.PostPromotionCodesPromotionCodeResponse> {
     return this.ky
-      .post(`/v1/promotion_codes/${params.promotion_code}`)
+      .post(`/v1/promotion_codes/${params['promotion_code']}`)
       .json<stripe.PostPromotionCodesPromotionCodeResponse>()
   }
 
@@ -68044,7 +68044,7 @@ to an hour behind during outages. Search functionality is not available to merch
     params: stripe.GetQuotesQuoteParams
   ): Promise<stripe.GetQuotesQuoteResponse> {
     return this.ky
-      .get(`/v1/quotes/${params.quote}`, {
+      .get(`/v1/quotes/${params['quote']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetQuotesQuoteResponse>()
@@ -68062,7 +68062,7 @@ to an hour behind during outages. Search functionality is not available to merch
     params: stripe.PostQuotesQuoteParams
   ): Promise<stripe.PostQuotesQuoteResponse> {
     return this.ky
-      .post(`/v1/quotes/${params.quote}`)
+      .post(`/v1/quotes/${params['quote']}`)
       .json<stripe.PostQuotesQuoteResponse>()
   }
 
@@ -68078,7 +68078,7 @@ to an hour behind during outages. Search functionality is not available to merch
     params: stripe.PostQuotesQuoteAcceptParams
   ): Promise<stripe.PostQuotesQuoteAcceptResponse> {
     return this.ky
-      .post(`/v1/quotes/${params.quote}/accept`)
+      .post(`/v1/quotes/${params['quote']}/accept`)
       .json<stripe.PostQuotesQuoteAcceptResponse>()
   }
 
@@ -68094,7 +68094,7 @@ to an hour behind during outages. Search functionality is not available to merch
     params: stripe.PostQuotesQuoteCancelParams
   ): Promise<stripe.PostQuotesQuoteCancelResponse> {
     return this.ky
-      .post(`/v1/quotes/${params.quote}/cancel`)
+      .post(`/v1/quotes/${params['quote']}/cancel`)
       .json<stripe.PostQuotesQuoteCancelResponse>()
   }
 
@@ -68111,7 +68111,7 @@ to an hour behind during outages. Search functionality is not available to merch
     params: stripe.GetQuotesQuoteComputedUpfrontLineItemsParams
   ): Promise<stripe.GetQuotesQuoteComputedUpfrontLineItemsResponse> {
     return this.ky
-      .get(`/v1/quotes/${params.quote}/computed_upfront_line_items`, {
+      .get(`/v1/quotes/${params['quote']}/computed_upfront_line_items`, {
         searchParams: sanitizeSearchParams(
           pick(params, 'ending_before', 'expand', 'limit', 'starting_after')
         )
@@ -68131,7 +68131,7 @@ to an hour behind during outages. Search functionality is not available to merch
     params: stripe.PostQuotesQuoteFinalizeParams
   ): Promise<stripe.PostQuotesQuoteFinalizeResponse> {
     return this.ky
-      .post(`/v1/quotes/${params.quote}/finalize`)
+      .post(`/v1/quotes/${params['quote']}/finalize`)
       .json<stripe.PostQuotesQuoteFinalizeResponse>()
   }
 
@@ -68148,7 +68148,7 @@ to an hour behind during outages. Search functionality is not available to merch
     params: stripe.GetQuotesQuoteLineItemsParams
   ): Promise<stripe.GetQuotesQuoteLineItemsResponse> {
     return this.ky
-      .get(`/v1/quotes/${params.quote}/line_items`, {
+      .get(`/v1/quotes/${params['quote']}/line_items`, {
         searchParams: sanitizeSearchParams(
           pick(params, 'ending_before', 'expand', 'limit', 'starting_after')
         )
@@ -68169,7 +68169,7 @@ to an hour behind during outages. Search functionality is not available to merch
     params: stripe.GetQuotesQuotePdfParams
   ): Promise<stripe.GetQuotesQuotePdfResponse> {
     return this.ky
-      .get(`/v1/quotes/${params.quote}/pdf`, {
+      .get(`/v1/quotes/${params['quote']}/pdf`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetQuotesQuotePdfResponse>()
@@ -68209,7 +68209,7 @@ to an hour behind during outages. Search functionality is not available to merch
     params: stripe.GetRadarEarlyFraudWarningsEarlyFraudWarningParams
   ): Promise<stripe.GetRadarEarlyFraudWarningsEarlyFraudWarningResponse> {
     return this.ky
-      .get(`/v1/radar/early_fraud_warnings/${params.early_fraud_warning}`, {
+      .get(`/v1/radar/early_fraud_warnings/${params['early_fraud_warning']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetRadarEarlyFraudWarningsEarlyFraudWarningResponse>()
@@ -68263,7 +68263,7 @@ to an hour behind during outages. Search functionality is not available to merch
     params: stripe.GetRadarValueListItemsItemParams
   ): Promise<stripe.GetRadarValueListItemsItemResponse> {
     return this.ky
-      .get(`/v1/radar/value_list_items/${params.item}`, {
+      .get(`/v1/radar/value_list_items/${params['item']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetRadarValueListItemsItemResponse>()
@@ -68282,7 +68282,7 @@ to an hour behind during outages. Search functionality is not available to merch
     params: stripe.DeleteRadarValueListItemsItemParams
   ): Promise<stripe.DeleteRadarValueListItemsItemResponse> {
     return this.ky
-      .delete(`/v1/radar/value_list_items/${params.item}`)
+      .delete(`/v1/radar/value_list_items/${params['item']}`)
       .json<stripe.DeleteRadarValueListItemsItemResponse>()
   }
 
@@ -68334,7 +68334,7 @@ to an hour behind during outages. Search functionality is not available to merch
     params: stripe.GetRadarValueListsValueListParams
   ): Promise<stripe.GetRadarValueListsValueListResponse> {
     return this.ky
-      .get(`/v1/radar/value_lists/${params.value_list}`, {
+      .get(`/v1/radar/value_lists/${params['value_list']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetRadarValueListsValueListResponse>()
@@ -68353,7 +68353,7 @@ to an hour behind during outages. Search functionality is not available to merch
     params: stripe.PostRadarValueListsValueListParams
   ): Promise<stripe.PostRadarValueListsValueListResponse> {
     return this.ky
-      .post(`/v1/radar/value_lists/${params.value_list}`)
+      .post(`/v1/radar/value_lists/${params['value_list']}`)
       .json<stripe.PostRadarValueListsValueListResponse>()
   }
 
@@ -68370,7 +68370,7 @@ to an hour behind during outages. Search functionality is not available to merch
     params: stripe.DeleteRadarValueListsValueListParams
   ): Promise<stripe.DeleteRadarValueListsValueListResponse> {
     return this.ky
-      .delete(`/v1/radar/value_lists/${params.value_list}`)
+      .delete(`/v1/radar/value_lists/${params['value_list']}`)
       .json<stripe.DeleteRadarValueListsValueListResponse>()
   }
 
@@ -68439,7 +68439,7 @@ or when trying to refund more money than is left on a charge.</p>.`,
     params: stripe.GetRefundsRefundParams
   ): Promise<stripe.GetRefundsRefundResponse> {
     return this.ky
-      .get(`/v1/refunds/${params.refund}`, {
+      .get(`/v1/refunds/${params['refund']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetRefundsRefundResponse>()
@@ -68461,7 +68461,7 @@ or when trying to refund more money than is left on a charge.</p>.`,
     params: stripe.PostRefundsRefundParams
   ): Promise<stripe.PostRefundsRefundResponse> {
     return this.ky
-      .post(`/v1/refunds/${params.refund}`)
+      .post(`/v1/refunds/${params['refund']}`)
       .json<stripe.PostRefundsRefundResponse>()
   }
 
@@ -68481,7 +68481,7 @@ or when trying to refund more money than is left on a charge.</p>.`,
     params: stripe.PostRefundsRefundCancelParams
   ): Promise<stripe.PostRefundsRefundCancelResponse> {
     return this.ky
-      .post(`/v1/refunds/${params.refund}/cancel`)
+      .post(`/v1/refunds/${params['refund']}/cancel`)
       .json<stripe.PostRefundsRefundCancelResponse>()
   }
 
@@ -68533,7 +68533,7 @@ or when trying to refund more money than is left on a charge.</p>.`,
     params: stripe.GetReportingReportRunsReportRunParams
   ): Promise<stripe.GetReportingReportRunsReportRunResponse> {
     return this.ky
-      .get(`/v1/reporting/report_runs/${params.report_run}`, {
+      .get(`/v1/reporting/report_runs/${params['report_run']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetReportingReportRunsReportRunResponse>()
@@ -68570,7 +68570,7 @@ or when trying to refund more money than is left on a charge.</p>.`,
     params: stripe.GetReportingReportTypesReportTypeParams
   ): Promise<stripe.GetReportingReportTypesReportTypeResponse> {
     return this.ky
-      .get(`/v1/reporting/report_types/${params.report_type}`, {
+      .get(`/v1/reporting/report_types/${params['report_type']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetReportingReportTypesReportTypeResponse>()
@@ -68607,7 +68607,7 @@ or when trying to refund more money than is left on a charge.</p>.`,
     params: stripe.GetReviewsReviewParams
   ): Promise<stripe.GetReviewsReviewResponse> {
     return this.ky
-      .get(`/v1/reviews/${params.review}`, {
+      .get(`/v1/reviews/${params['review']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetReviewsReviewResponse>()
@@ -68626,7 +68626,7 @@ or when trying to refund more money than is left on a charge.</p>.`,
     params: stripe.PostReviewsReviewApproveParams
   ): Promise<stripe.PostReviewsReviewApproveResponse> {
     return this.ky
-      .post(`/v1/reviews/${params.review}/approve`)
+      .post(`/v1/reviews/${params['review']}/approve`)
       .json<stripe.PostReviewsReviewApproveResponse>()
   }
 
@@ -68709,7 +68709,7 @@ it to collect any required permissions to charge the payment method later.</p>.`
     params: stripe.GetSetupIntentsIntentParams
   ): Promise<stripe.GetSetupIntentsIntentResponse> {
     return this.ky
-      .get(`/v1/setup_intents/${params.intent}`, {
+      .get(`/v1/setup_intents/${params['intent']}`, {
         searchParams: sanitizeSearchParams(
           pick(params, 'client_secret', 'expand')
         )
@@ -68729,7 +68729,7 @@ it to collect any required permissions to charge the payment method later.</p>.`
     params: stripe.PostSetupIntentsIntentParams
   ): Promise<stripe.PostSetupIntentsIntentResponse> {
     return this.ky
-      .post(`/v1/setup_intents/${params.intent}`)
+      .post(`/v1/setup_intents/${params['intent']}`)
       .json<stripe.PostSetupIntentsIntentResponse>()
   }
 
@@ -68749,7 +68749,7 @@ it to collect any required permissions to charge the payment method later.</p>.`
     params: stripe.PostSetupIntentsIntentCancelParams
   ): Promise<stripe.PostSetupIntentsIntentCancelResponse> {
     return this.ky
-      .post(`/v1/setup_intents/${params.intent}/cancel`)
+      .post(`/v1/setup_intents/${params['intent']}/cancel`)
       .json<stripe.PostSetupIntentsIntentCancelResponse>()
   }
 
@@ -68791,7 +68791,7 @@ confirmation limit is reached.</p>.`,
     params: stripe.PostSetupIntentsIntentConfirmParams
   ): Promise<stripe.PostSetupIntentsIntentConfirmResponse> {
     return this.ky
-      .post(`/v1/setup_intents/${params.intent}/confirm`)
+      .post(`/v1/setup_intents/${params['intent']}/confirm`)
       .json<stripe.PostSetupIntentsIntentConfirmResponse>()
   }
 
@@ -68807,7 +68807,7 @@ confirmation limit is reached.</p>.`,
     params: stripe.PostSetupIntentsIntentVerifyMicrodepositsParams
   ): Promise<stripe.PostSetupIntentsIntentVerifyMicrodepositsResponse> {
     return this.ky
-      .post(`/v1/setup_intents/${params.intent}/verify_microdeposits`)
+      .post(`/v1/setup_intents/${params['intent']}/verify_microdeposits`)
       .json<stripe.PostSetupIntentsIntentVerifyMicrodepositsResponse>()
   }
 
@@ -68857,7 +68857,7 @@ confirmation limit is reached.</p>.`,
     params: stripe.GetShippingRatesShippingRateTokenParams
   ): Promise<stripe.GetShippingRatesShippingRateTokenResponse> {
     return this.ky
-      .get(`/v1/shipping_rates/${params.shipping_rate_token}`, {
+      .get(`/v1/shipping_rates/${params['shipping_rate_token']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetShippingRatesShippingRateTokenResponse>()
@@ -68875,7 +68875,7 @@ confirmation limit is reached.</p>.`,
     params: stripe.PostShippingRatesShippingRateTokenParams
   ): Promise<stripe.PostShippingRatesShippingRateTokenResponse> {
     return this.ky
-      .post(`/v1/shipping_rates/${params.shipping_rate_token}`)
+      .post(`/v1/shipping_rates/${params['shipping_rate_token']}`)
       .json<stripe.PostShippingRatesShippingRateTokenResponse>()
   }
 
@@ -68909,7 +68909,7 @@ confirmation limit is reached.</p>.`,
     params: stripe.GetSigmaScheduledQueryRunsScheduledQueryRunParams
   ): Promise<stripe.GetSigmaScheduledQueryRunsScheduledQueryRunResponse> {
     return this.ky
-      .get(`/v1/sigma/scheduled_query_runs/${params.scheduled_query_run}`, {
+      .get(`/v1/sigma/scheduled_query_runs/${params['scheduled_query_run']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetSigmaScheduledQueryRunsScheduledQueryRunResponse>()
@@ -68942,7 +68942,7 @@ confirmation limit is reached.</p>.`,
     params: stripe.GetSourcesSourceParams
   ): Promise<stripe.GetSourcesSourceResponse> {
     return this.ky
-      .get(`/v1/sources/${params.source}`, {
+      .get(`/v1/sources/${params['source']}`, {
         searchParams: sanitizeSearchParams(
           pick(params, 'client_secret', 'expand')
         )
@@ -68966,7 +68966,7 @@ confirmation limit is reached.</p>.`,
     params: stripe.PostSourcesSourceParams
   ): Promise<stripe.PostSourcesSourceResponse> {
     return this.ky
-      .post(`/v1/sources/${params.source}`)
+      .post(`/v1/sources/${params['source']}`)
       .json<stripe.PostSourcesSourceResponse>()
   }
 
@@ -68984,7 +68984,7 @@ confirmation limit is reached.</p>.`,
   ): Promise<stripe.GetSourcesSourceMandateNotificationsMandateNotificationResponse> {
     return this.ky
       .get(
-        `/v1/sources/${params.source}/mandate_notifications/${params.mandate_notification}`,
+        `/v1/sources/${params['source']}/mandate_notifications/${params['mandate_notification']}`,
         {
           searchParams: sanitizeSearchParams(pick(params, 'expand'))
         }
@@ -69004,7 +69004,7 @@ confirmation limit is reached.</p>.`,
     params: stripe.GetSourcesSourceSourceTransactionsParams
   ): Promise<stripe.GetSourcesSourceSourceTransactionsResponse> {
     return this.ky
-      .get(`/v1/sources/${params.source}/source_transactions`, {
+      .get(`/v1/sources/${params['source']}/source_transactions`, {
         searchParams: sanitizeSearchParams(
           pick(params, 'ending_before', 'expand', 'limit', 'starting_after')
         )
@@ -69027,7 +69027,7 @@ confirmation limit is reached.</p>.`,
   ): Promise<stripe.GetSourcesSourceSourceTransactionsSourceTransactionResponse> {
     return this.ky
       .get(
-        `/v1/sources/${params.source}/source_transactions/${params.source_transaction}`,
+        `/v1/sources/${params['source']}/source_transactions/${params['source_transaction']}`,
         {
           searchParams: sanitizeSearchParams(pick(params, 'expand'))
         }
@@ -69047,7 +69047,7 @@ confirmation limit is reached.</p>.`,
     params: stripe.PostSourcesSourceVerifyParams
   ): Promise<stripe.PostSourcesSourceVerifyResponse> {
     return this.ky
-      .post(`/v1/sources/${params.source}/verify`)
+      .post(`/v1/sources/${params['source']}/verify`)
       .json<stripe.PostSourcesSourceVerifyResponse>()
   }
 
@@ -69099,7 +69099,7 @@ confirmation limit is reached.</p>.`,
     params: stripe.GetSubscriptionItemsItemParams
   ): Promise<stripe.GetSubscriptionItemsItemResponse> {
     return this.ky
-      .get(`/v1/subscription_items/${params.item}`, {
+      .get(`/v1/subscription_items/${params['item']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetSubscriptionItemsItemResponse>()
@@ -69118,7 +69118,7 @@ confirmation limit is reached.</p>.`,
     params: stripe.PostSubscriptionItemsItemParams
   ): Promise<stripe.PostSubscriptionItemsItemResponse> {
     return this.ky
-      .post(`/v1/subscription_items/${params.item}`)
+      .post(`/v1/subscription_items/${params['item']}`)
       .json<stripe.PostSubscriptionItemsItemResponse>()
   }
 
@@ -69135,7 +69135,7 @@ confirmation limit is reached.</p>.`,
     params: stripe.DeleteSubscriptionItemsItemParams
   ): Promise<stripe.DeleteSubscriptionItemsItemResponse> {
     return this.ky
-      .delete(`/v1/subscription_items/${params.item}`)
+      .delete(`/v1/subscription_items/${params['item']}`)
       .json<stripe.DeleteSubscriptionItemsItemResponse>()
   }
 
@@ -69157,7 +69157,7 @@ confirmation limit is reached.</p>.`,
   ): Promise<stripe.GetSubscriptionItemsSubscriptionItemUsageRecordSummariesResponse> {
     return this.ky
       .get(
-        `/v1/subscription_items/${params.subscription_item}/usage_record_summaries`,
+        `/v1/subscription_items/${params['subscription_item']}/usage_record_summaries`,
         {
           searchParams: sanitizeSearchParams(
             pick(params, 'ending_before', 'expand', 'limit', 'starting_after')
@@ -69193,7 +69193,7 @@ confirmation limit is reached.</p>.`,
   ): Promise<stripe.PostSubscriptionItemsSubscriptionItemUsageRecordsResponse> {
     return this.ky
       .post(
-        `/v1/subscription_items/${params.subscription_item}/usage_records`
+        `/v1/subscription_items/${params['subscription_item']}/usage_records`
       )
       .json<stripe.PostSubscriptionItemsSubscriptionItemUsageRecordsResponse>()
   }
@@ -69246,7 +69246,7 @@ confirmation limit is reached.</p>.`,
     params: stripe.GetSubscriptionSchedulesScheduleParams
   ): Promise<stripe.GetSubscriptionSchedulesScheduleResponse> {
     return this.ky
-      .get(`/v1/subscription_schedules/${params.schedule}`, {
+      .get(`/v1/subscription_schedules/${params['schedule']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetSubscriptionSchedulesScheduleResponse>()
@@ -69264,7 +69264,7 @@ confirmation limit is reached.</p>.`,
     params: stripe.PostSubscriptionSchedulesScheduleParams
   ): Promise<stripe.PostSubscriptionSchedulesScheduleResponse> {
     return this.ky
-      .post(`/v1/subscription_schedules/${params.schedule}`)
+      .post(`/v1/subscription_schedules/${params['schedule']}`)
       .json<stripe.PostSubscriptionSchedulesScheduleResponse>()
   }
 
@@ -69281,7 +69281,7 @@ confirmation limit is reached.</p>.`,
     params: stripe.PostSubscriptionSchedulesScheduleCancelParams
   ): Promise<stripe.PostSubscriptionSchedulesScheduleCancelResponse> {
     return this.ky
-      .post(`/v1/subscription_schedules/${params.schedule}/cancel`)
+      .post(`/v1/subscription_schedules/${params['schedule']}/cancel`)
       .json<stripe.PostSubscriptionSchedulesScheduleCancelResponse>()
   }
 
@@ -69298,7 +69298,7 @@ confirmation limit is reached.</p>.`,
     params: stripe.PostSubscriptionSchedulesScheduleReleaseParams
   ): Promise<stripe.PostSubscriptionSchedulesScheduleReleaseResponse> {
     return this.ky
-      .post(`/v1/subscription_schedules/${params.schedule}/release`)
+      .post(`/v1/subscription_schedules/${params['schedule']}/release`)
       .json<stripe.PostSubscriptionSchedulesScheduleReleaseResponse>()
   }
 
@@ -69385,7 +69385,7 @@ to an hour behind during outages. Search functionality is not available to merch
     params: stripe.GetSubscriptionsSubscriptionExposedIdParams
   ): Promise<stripe.GetSubscriptionsSubscriptionExposedIdResponse> {
     return this.ky
-      .get(`/v1/subscriptions/${params.subscription_exposed_id}`, {
+      .get(`/v1/subscriptions/${params['subscription_exposed_id']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetSubscriptionsSubscriptionExposedIdResponse>()
@@ -69443,7 +69443,7 @@ To preview how the proration is calculated, use the <a href="/docs/api/invoices/
     params: stripe.PostSubscriptionsSubscriptionExposedIdParams
   ): Promise<stripe.PostSubscriptionsSubscriptionExposedIdResponse> {
     return this.ky
-      .post(`/v1/subscriptions/${params.subscription_exposed_id}`)
+      .post(`/v1/subscriptions/${params['subscription_exposed_id']}`)
       .json<stripe.PostSubscriptionsSubscriptionExposedIdResponse>()
   }
 
@@ -69467,7 +69467,7 @@ To preview how the proration is calculated, use the <a href="/docs/api/invoices/
     params: stripe.DeleteSubscriptionsSubscriptionExposedIdParams
   ): Promise<stripe.DeleteSubscriptionsSubscriptionExposedIdResponse> {
     return this.ky
-      .delete(`/v1/subscriptions/${params.subscription_exposed_id}`)
+      .delete(`/v1/subscriptions/${params['subscription_exposed_id']}`)
       .json<stripe.DeleteSubscriptionsSubscriptionExposedIdResponse>()
   }
 
@@ -69485,7 +69485,7 @@ To preview how the proration is calculated, use the <a href="/docs/api/invoices/
     params: stripe.DeleteSubscriptionsSubscriptionExposedIdDiscountParams
   ): Promise<stripe.DeleteSubscriptionsSubscriptionExposedIdDiscountResponse> {
     return this.ky
-      .delete(`/v1/subscriptions/${params.subscription_exposed_id}/discount`)
+      .delete(`/v1/subscriptions/${params['subscription_exposed_id']}/discount`)
       .json<stripe.DeleteSubscriptionsSubscriptionExposedIdDiscountResponse>()
   }
 
@@ -69502,7 +69502,7 @@ To preview how the proration is calculated, use the <a href="/docs/api/invoices/
     params: stripe.PostSubscriptionsSubscriptionResumeParams
   ): Promise<stripe.PostSubscriptionsSubscriptionResumeResponse> {
     return this.ky
-      .post(`/v1/subscriptions/${params.subscription}/resume`)
+      .post(`/v1/subscriptions/${params['subscription']}/resume`)
       .json<stripe.PostSubscriptionsSubscriptionResumeResponse>()
   }
 
@@ -69536,7 +69536,7 @@ To preview how the proration is calculated, use the <a href="/docs/api/invoices/
     params: stripe.GetTaxCalculationsCalculationParams
   ): Promise<stripe.GetTaxCalculationsCalculationResponse> {
     return this.ky
-      .get(`/v1/tax/calculations/${params.calculation}`, {
+      .get(`/v1/tax/calculations/${params['calculation']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetTaxCalculationsCalculationResponse>()
@@ -69555,7 +69555,7 @@ To preview how the proration is calculated, use the <a href="/docs/api/invoices/
     params: stripe.GetTaxCalculationsCalculationLineItemsParams
   ): Promise<stripe.GetTaxCalculationsCalculationLineItemsResponse> {
     return this.ky
-      .get(`/v1/tax/calculations/${params.calculation}/line_items`, {
+      .get(`/v1/tax/calculations/${params['calculation']}/line_items`, {
         searchParams: sanitizeSearchParams(
           pick(params, 'ending_before', 'expand', 'limit', 'starting_after')
         )
@@ -69610,7 +69610,7 @@ To preview how the proration is calculated, use the <a href="/docs/api/invoices/
     params: stripe.GetTaxRegistrationsIdParams
   ): Promise<stripe.GetTaxRegistrationsIdResponse> {
     return this.ky
-      .get(`/v1/tax/registrations/${params.id}`, {
+      .get(`/v1/tax/registrations/${params['id']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetTaxRegistrationsIdResponse>()
@@ -69632,7 +69632,7 @@ To preview how the proration is calculated, use the <a href="/docs/api/invoices/
     params: stripe.PostTaxRegistrationsIdParams
   ): Promise<stripe.PostTaxRegistrationsIdResponse> {
     return this.ky
-      .post(`/v1/tax/registrations/${params.id}`)
+      .post(`/v1/tax/registrations/${params['id']}`)
       .json<stripe.PostTaxRegistrationsIdResponse>()
   }
 
@@ -69717,7 +69717,7 @@ To preview how the proration is calculated, use the <a href="/docs/api/invoices/
     params: stripe.GetTaxTransactionsTransactionParams
   ): Promise<stripe.GetTaxTransactionsTransactionResponse> {
     return this.ky
-      .get(`/v1/tax/transactions/${params.transaction}`, {
+      .get(`/v1/tax/transactions/${params['transaction']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetTaxTransactionsTransactionResponse>()
@@ -69736,7 +69736,7 @@ To preview how the proration is calculated, use the <a href="/docs/api/invoices/
     params: stripe.GetTaxTransactionsTransactionLineItemsParams
   ): Promise<stripe.GetTaxTransactionsTransactionLineItemsResponse> {
     return this.ky
-      .get(`/v1/tax/transactions/${params.transaction}/line_items`, {
+      .get(`/v1/tax/transactions/${params['transaction']}/line_items`, {
         searchParams: sanitizeSearchParams(
           pick(params, 'ending_before', 'expand', 'limit', 'starting_after')
         )
@@ -69776,7 +69776,7 @@ To preview how the proration is calculated, use the <a href="/docs/api/invoices/
     params: stripe.GetTaxCodesIdParams
   ): Promise<stripe.GetTaxCodesIdResponse> {
     return this.ky
-      .get(`/v1/tax_codes/${params.id}`, {
+      .get(`/v1/tax_codes/${params['id']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetTaxCodesIdResponse>()
@@ -69828,7 +69828,7 @@ To preview how the proration is calculated, use the <a href="/docs/api/invoices/
     params: stripe.GetTaxIdsIdParams
   ): Promise<stripe.GetTaxIdsIdResponse> {
     return this.ky
-      .get(`/v1/tax_ids/${params.id}`, {
+      .get(`/v1/tax_ids/${params['id']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetTaxIdsIdResponse>()
@@ -69847,7 +69847,7 @@ To preview how the proration is calculated, use the <a href="/docs/api/invoices/
     params: stripe.DeleteTaxIdsIdParams
   ): Promise<stripe.DeleteTaxIdsIdResponse> {
     return this.ky
-      .delete(`/v1/tax_ids/${params.id}`)
+      .delete(`/v1/tax_ids/${params['id']}`)
       .json<stripe.DeleteTaxIdsIdResponse>()
   }
 
@@ -69896,7 +69896,7 @@ To preview how the proration is calculated, use the <a href="/docs/api/invoices/
     params: stripe.GetTaxRatesTaxRateParams
   ): Promise<stripe.GetTaxRatesTaxRateResponse> {
     return this.ky
-      .get(`/v1/tax_rates/${params.tax_rate}`, {
+      .get(`/v1/tax_rates/${params['tax_rate']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetTaxRatesTaxRateResponse>()
@@ -69914,7 +69914,7 @@ To preview how the proration is calculated, use the <a href="/docs/api/invoices/
     params: stripe.PostTaxRatesTaxRateParams
   ): Promise<stripe.PostTaxRatesTaxRateResponse> {
     return this.ky
-      .post(`/v1/tax_rates/${params.tax_rate}`)
+      .post(`/v1/tax_rates/${params['tax_rate']}`)
       .json<stripe.PostTaxRatesTaxRateResponse>()
   }
 
@@ -69965,7 +69965,7 @@ To preview how the proration is calculated, use the <a href="/docs/api/invoices/
     params: stripe.GetTerminalConfigurationsConfigurationParams
   ): Promise<stripe.GetTerminalConfigurationsConfigurationResponse> {
     return this.ky
-      .get(`/v1/terminal/configurations/${params.configuration}`, {
+      .get(`/v1/terminal/configurations/${params['configuration']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetTerminalConfigurationsConfigurationResponse>()
@@ -69983,7 +69983,7 @@ To preview how the proration is calculated, use the <a href="/docs/api/invoices/
     params: stripe.PostTerminalConfigurationsConfigurationParams
   ): Promise<stripe.PostTerminalConfigurationsConfigurationResponse> {
     return this.ky
-      .post(`/v1/terminal/configurations/${params.configuration}`)
+      .post(`/v1/terminal/configurations/${params['configuration']}`)
       .json<stripe.PostTerminalConfigurationsConfigurationResponse>()
   }
 
@@ -69999,7 +69999,7 @@ To preview how the proration is calculated, use the <a href="/docs/api/invoices/
     params: stripe.DeleteTerminalConfigurationsConfigurationParams
   ): Promise<stripe.DeleteTerminalConfigurationsConfigurationResponse> {
     return this.ky
-      .delete(`/v1/terminal/configurations/${params.configuration}`)
+      .delete(`/v1/terminal/configurations/${params['configuration']}`)
       .json<stripe.DeleteTerminalConfigurationsConfigurationResponse>()
   }
 
@@ -70068,7 +70068,7 @@ For further details, including which address fields are required in each country
     params: stripe.GetTerminalLocationsLocationParams
   ): Promise<stripe.GetTerminalLocationsLocationResponse> {
     return this.ky
-      .get(`/v1/terminal/locations/${params.location}`, {
+      .get(`/v1/terminal/locations/${params['location']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetTerminalLocationsLocationResponse>()
@@ -70087,7 +70087,7 @@ For further details, including which address fields are required in each country
     params: stripe.PostTerminalLocationsLocationParams
   ): Promise<stripe.PostTerminalLocationsLocationResponse> {
     return this.ky
-      .post(`/v1/terminal/locations/${params.location}`)
+      .post(`/v1/terminal/locations/${params['location']}`)
       .json<stripe.PostTerminalLocationsLocationResponse>()
   }
 
@@ -70103,7 +70103,7 @@ For further details, including which address fields are required in each country
     params: stripe.DeleteTerminalLocationsLocationParams
   ): Promise<stripe.DeleteTerminalLocationsLocationResponse> {
     return this.ky
-      .delete(`/v1/terminal/locations/${params.location}`)
+      .delete(`/v1/terminal/locations/${params['location']}`)
       .json<stripe.DeleteTerminalLocationsLocationResponse>()
   }
 
@@ -70153,7 +70153,7 @@ For further details, including which address fields are required in each country
     params: stripe.GetTerminalReadersReaderParams
   ): Promise<stripe.GetTerminalReadersReaderResponse> {
     return this.ky
-      .get(`/v1/terminal/readers/${params.reader}`, {
+      .get(`/v1/terminal/readers/${params['reader']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetTerminalReadersReaderResponse>()
@@ -70172,7 +70172,7 @@ For further details, including which address fields are required in each country
     params: stripe.PostTerminalReadersReaderParams
   ): Promise<stripe.PostTerminalReadersReaderResponse> {
     return this.ky
-      .post(`/v1/terminal/readers/${params.reader}`)
+      .post(`/v1/terminal/readers/${params['reader']}`)
       .json<stripe.PostTerminalReadersReaderResponse>()
   }
 
@@ -70188,7 +70188,7 @@ For further details, including which address fields are required in each country
     params: stripe.DeleteTerminalReadersReaderParams
   ): Promise<stripe.DeleteTerminalReadersReaderResponse> {
     return this.ky
-      .delete(`/v1/terminal/readers/${params.reader}`)
+      .delete(`/v1/terminal/readers/${params['reader']}`)
       .json<stripe.DeleteTerminalReadersReaderResponse>()
   }
 
@@ -70204,7 +70204,7 @@ For further details, including which address fields are required in each country
     params: stripe.PostTerminalReadersReaderCancelActionParams
   ): Promise<stripe.PostTerminalReadersReaderCancelActionResponse> {
     return this.ky
-      .post(`/v1/terminal/readers/${params.reader}/cancel_action`)
+      .post(`/v1/terminal/readers/${params['reader']}/cancel_action`)
       .json<stripe.PostTerminalReadersReaderCancelActionResponse>()
   }
 
@@ -70221,7 +70221,7 @@ For further details, including which address fields are required in each country
     params: stripe.PostTerminalReadersReaderProcessPaymentIntentParams
   ): Promise<stripe.PostTerminalReadersReaderProcessPaymentIntentResponse> {
     return this.ky
-      .post(`/v1/terminal/readers/${params.reader}/process_payment_intent`)
+      .post(`/v1/terminal/readers/${params['reader']}/process_payment_intent`)
       .json<stripe.PostTerminalReadersReaderProcessPaymentIntentResponse>()
   }
 
@@ -70237,7 +70237,7 @@ For further details, including which address fields are required in each country
     params: stripe.PostTerminalReadersReaderProcessSetupIntentParams
   ): Promise<stripe.PostTerminalReadersReaderProcessSetupIntentResponse> {
     return this.ky
-      .post(`/v1/terminal/readers/${params.reader}/process_setup_intent`)
+      .post(`/v1/terminal/readers/${params['reader']}/process_setup_intent`)
       .json<stripe.PostTerminalReadersReaderProcessSetupIntentResponse>()
   }
 
@@ -70253,7 +70253,7 @@ For further details, including which address fields are required in each country
     params: stripe.PostTerminalReadersReaderRefundPaymentParams
   ): Promise<stripe.PostTerminalReadersReaderRefundPaymentResponse> {
     return this.ky
-      .post(`/v1/terminal/readers/${params.reader}/refund_payment`)
+      .post(`/v1/terminal/readers/${params['reader']}/refund_payment`)
       .json<stripe.PostTerminalReadersReaderRefundPaymentResponse>()
   }
 
@@ -70269,7 +70269,7 @@ For further details, including which address fields are required in each country
     params: stripe.PostTerminalReadersReaderSetReaderDisplayParams
   ): Promise<stripe.PostTerminalReadersReaderSetReaderDisplayResponse> {
     return this.ky
-      .post(`/v1/terminal/readers/${params.reader}/set_reader_display`)
+      .post(`/v1/terminal/readers/${params['reader']}/set_reader_display`)
       .json<stripe.PostTerminalReadersReaderSetReaderDisplayResponse>()
   }
 
@@ -70304,7 +70304,7 @@ For further details, including which address fields are required in each country
   ): Promise<stripe.PostTestHelpersCustomersCustomerFundCashBalanceResponse> {
     return this.ky
       .post(
-        `/v1/test_helpers/customers/${params.customer}/fund_cash_balance`
+        `/v1/test_helpers/customers/${params['customer']}/fund_cash_balance`
       )
       .json<stripe.PostTestHelpersCustomersCustomerFundCashBalanceResponse>()
   }
@@ -70339,7 +70339,7 @@ For further details, including which address fields are required in each country
   ): Promise<stripe.PostTestHelpersIssuingAuthorizationsAuthorizationCaptureResponse> {
     return this.ky
       .post(
-        `/v1/test_helpers/issuing/authorizations/${params.authorization}/capture`
+        `/v1/test_helpers/issuing/authorizations/${params['authorization']}/capture`
       )
       .json<stripe.PostTestHelpersIssuingAuthorizationsAuthorizationCaptureResponse>()
   }
@@ -70358,7 +70358,7 @@ For further details, including which address fields are required in each country
   ): Promise<stripe.PostTestHelpersIssuingAuthorizationsAuthorizationExpireResponse> {
     return this.ky
       .post(
-        `/v1/test_helpers/issuing/authorizations/${params.authorization}/expire`
+        `/v1/test_helpers/issuing/authorizations/${params['authorization']}/expire`
       )
       .json<stripe.PostTestHelpersIssuingAuthorizationsAuthorizationExpireResponse>()
   }
@@ -70378,7 +70378,7 @@ For further details, including which address fields are required in each country
   ): Promise<stripe.PostTestHelpersIssuingAuthorizationsAuthorizationFinalizeAmountResponse> {
     return this.ky
       .post(
-        `/v1/test_helpers/issuing/authorizations/${params.authorization}/finalize_amount`
+        `/v1/test_helpers/issuing/authorizations/${params['authorization']}/finalize_amount`
       )
       .json<stripe.PostTestHelpersIssuingAuthorizationsAuthorizationFinalizeAmountResponse>()
   }
@@ -70398,7 +70398,7 @@ For further details, including which address fields are required in each country
   ): Promise<stripe.PostTestHelpersIssuingAuthorizationsAuthorizationFraudChallengesRespondResponse> {
     return this.ky
       .post(
-        `/v1/test_helpers/issuing/authorizations/${params.authorization}/fraud_challenges/respond`
+        `/v1/test_helpers/issuing/authorizations/${params['authorization']}/fraud_challenges/respond`
       )
       .json<stripe.PostTestHelpersIssuingAuthorizationsAuthorizationFraudChallengesRespondResponse>()
   }
@@ -70417,7 +70417,7 @@ For further details, including which address fields are required in each country
   ): Promise<stripe.PostTestHelpersIssuingAuthorizationsAuthorizationIncrementResponse> {
     return this.ky
       .post(
-        `/v1/test_helpers/issuing/authorizations/${params.authorization}/increment`
+        `/v1/test_helpers/issuing/authorizations/${params['authorization']}/increment`
       )
       .json<stripe.PostTestHelpersIssuingAuthorizationsAuthorizationIncrementResponse>()
   }
@@ -70436,7 +70436,7 @@ For further details, including which address fields are required in each country
   ): Promise<stripe.PostTestHelpersIssuingAuthorizationsAuthorizationReverseResponse> {
     return this.ky
       .post(
-        `/v1/test_helpers/issuing/authorizations/${params.authorization}/reverse`
+        `/v1/test_helpers/issuing/authorizations/${params['authorization']}/reverse`
       )
       .json<stripe.PostTestHelpersIssuingAuthorizationsAuthorizationReverseResponse>()
   }
@@ -70455,7 +70455,7 @@ For further details, including which address fields are required in each country
     params: stripe.PostTestHelpersIssuingCardsCardShippingDeliverParams
   ): Promise<stripe.PostTestHelpersIssuingCardsCardShippingDeliverResponse> {
     return this.ky
-      .post(`/v1/test_helpers/issuing/cards/${params.card}/shipping/deliver`)
+      .post(`/v1/test_helpers/issuing/cards/${params['card']}/shipping/deliver`)
       .json<stripe.PostTestHelpersIssuingCardsCardShippingDeliverResponse>()
   }
 
@@ -70472,7 +70472,7 @@ For further details, including which address fields are required in each country
     params: stripe.PostTestHelpersIssuingCardsCardShippingFailParams
   ): Promise<stripe.PostTestHelpersIssuingCardsCardShippingFailResponse> {
     return this.ky
-      .post(`/v1/test_helpers/issuing/cards/${params.card}/shipping/fail`)
+      .post(`/v1/test_helpers/issuing/cards/${params['card']}/shipping/fail`)
       .json<stripe.PostTestHelpersIssuingCardsCardShippingFailResponse>()
   }
 
@@ -70490,7 +70490,7 @@ For further details, including which address fields are required in each country
     params: stripe.PostTestHelpersIssuingCardsCardShippingReturnParams
   ): Promise<stripe.PostTestHelpersIssuingCardsCardShippingReturnResponse> {
     return this.ky
-      .post(`/v1/test_helpers/issuing/cards/${params.card}/shipping/return`)
+      .post(`/v1/test_helpers/issuing/cards/${params['card']}/shipping/return`)
       .json<stripe.PostTestHelpersIssuingCardsCardShippingReturnResponse>()
   }
 
@@ -70507,7 +70507,7 @@ For further details, including which address fields are required in each country
     params: stripe.PostTestHelpersIssuingCardsCardShippingShipParams
   ): Promise<stripe.PostTestHelpersIssuingCardsCardShippingShipResponse> {
     return this.ky
-      .post(`/v1/test_helpers/issuing/cards/${params.card}/shipping/ship`)
+      .post(`/v1/test_helpers/issuing/cards/${params['card']}/shipping/ship`)
       .json<stripe.PostTestHelpersIssuingCardsCardShippingShipResponse>()
   }
 
@@ -70525,7 +70525,7 @@ For further details, including which address fields are required in each country
     params: stripe.PostTestHelpersIssuingCardsCardShippingSubmitParams
   ): Promise<stripe.PostTestHelpersIssuingCardsCardShippingSubmitResponse> {
     return this.ky
-      .post(`/v1/test_helpers/issuing/cards/${params.card}/shipping/submit`)
+      .post(`/v1/test_helpers/issuing/cards/${params['card']}/shipping/submit`)
       .json<stripe.PostTestHelpersIssuingCardsCardShippingSubmitResponse>()
   }
 
@@ -70544,7 +70544,7 @@ For further details, including which address fields are required in each country
   ): Promise<stripe.PostTestHelpersIssuingPersonalizationDesignsPersonalizationDesignActivateResponse> {
     return this.ky
       .post(
-        `/v1/test_helpers/issuing/personalization_designs/${params.personalization_design}/activate`
+        `/v1/test_helpers/issuing/personalization_designs/${params['personalization_design']}/activate`
       )
       .json<stripe.PostTestHelpersIssuingPersonalizationDesignsPersonalizationDesignActivateResponse>()
   }
@@ -70564,7 +70564,7 @@ For further details, including which address fields are required in each country
   ): Promise<stripe.PostTestHelpersIssuingPersonalizationDesignsPersonalizationDesignDeactivateResponse> {
     return this.ky
       .post(
-        `/v1/test_helpers/issuing/personalization_designs/${params.personalization_design}/deactivate`
+        `/v1/test_helpers/issuing/personalization_designs/${params['personalization_design']}/deactivate`
       )
       .json<stripe.PostTestHelpersIssuingPersonalizationDesignsPersonalizationDesignDeactivateResponse>()
   }
@@ -70584,7 +70584,7 @@ For further details, including which address fields are required in each country
   ): Promise<stripe.PostTestHelpersIssuingPersonalizationDesignsPersonalizationDesignRejectResponse> {
     return this.ky
       .post(
-        `/v1/test_helpers/issuing/personalization_designs/${params.personalization_design}/reject`
+        `/v1/test_helpers/issuing/personalization_designs/${params['personalization_design']}/reject`
       )
       .json<stripe.PostTestHelpersIssuingPersonalizationDesignsPersonalizationDesignRejectResponse>()
   }
@@ -70620,7 +70620,7 @@ For further details, including which address fields are required in each country
   ): Promise<stripe.PostTestHelpersIssuingSettlementsSettlementCompleteResponse> {
     return this.ky
       .post(
-        `/v1/test_helpers/issuing/settlements/${params.settlement}/complete`
+        `/v1/test_helpers/issuing/settlements/${params['settlement']}/complete`
       )
       .json<stripe.PostTestHelpersIssuingSettlementsSettlementCompleteResponse>()
   }
@@ -70675,7 +70675,7 @@ For further details, including which address fields are required in each country
   ): Promise<stripe.PostTestHelpersIssuingTransactionsTransactionRefundResponse> {
     return this.ky
       .post(
-        `/v1/test_helpers/issuing/transactions/${params.transaction}/refund`
+        `/v1/test_helpers/issuing/transactions/${params['transaction']}/refund`
       )
       .json<stripe.PostTestHelpersIssuingTransactionsTransactionRefundResponse>()
   }
@@ -70693,7 +70693,7 @@ For further details, including which address fields are required in each country
     params: stripe.PostTestHelpersRefundsRefundExpireParams
   ): Promise<stripe.PostTestHelpersRefundsRefundExpireResponse> {
     return this.ky
-      .post(`/v1/test_helpers/refunds/${params.refund}/expire`)
+      .post(`/v1/test_helpers/refunds/${params['refund']}/expire`)
       .json<stripe.PostTestHelpersRefundsRefundExpireResponse>()
   }
 
@@ -70712,7 +70712,7 @@ For further details, including which address fields are required in each country
   ): Promise<stripe.PostTestHelpersTerminalReadersReaderPresentPaymentMethodResponse> {
     return this.ky
       .post(
-        `/v1/test_helpers/terminal/readers/${params.reader}/present_payment_method`
+        `/v1/test_helpers/terminal/readers/${params['reader']}/present_payment_method`
       )
       .json<stripe.PostTestHelpersTerminalReadersReaderPresentPaymentMethodResponse>()
   }
@@ -70764,7 +70764,7 @@ For further details, including which address fields are required in each country
     params: stripe.GetTestHelpersTestClocksTestClockParams
   ): Promise<stripe.GetTestHelpersTestClocksTestClockResponse> {
     return this.ky
-      .get(`/v1/test_helpers/test_clocks/${params.test_clock}`, {
+      .get(`/v1/test_helpers/test_clocks/${params['test_clock']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetTestHelpersTestClocksTestClockResponse>()
@@ -70782,7 +70782,7 @@ For further details, including which address fields are required in each country
     params: stripe.DeleteTestHelpersTestClocksTestClockParams
   ): Promise<stripe.DeleteTestHelpersTestClocksTestClockResponse> {
     return this.ky
-      .delete(`/v1/test_helpers/test_clocks/${params.test_clock}`)
+      .delete(`/v1/test_helpers/test_clocks/${params['test_clock']}`)
       .json<stripe.DeleteTestHelpersTestClocksTestClockResponse>()
   }
 
@@ -70799,7 +70799,7 @@ For further details, including which address fields are required in each country
     params: stripe.PostTestHelpersTestClocksTestClockAdvanceParams
   ): Promise<stripe.PostTestHelpersTestClocksTestClockAdvanceResponse> {
     return this.ky
-      .post(`/v1/test_helpers/test_clocks/${params.test_clock}/advance`)
+      .post(`/v1/test_helpers/test_clocks/${params['test_clock']}/advance`)
       .json<stripe.PostTestHelpersTestClocksTestClockAdvanceResponse>()
   }
 
@@ -70817,7 +70817,7 @@ For further details, including which address fields are required in each country
     params: stripe.PostTestHelpersTreasuryInboundTransfersIdFailParams
   ): Promise<stripe.PostTestHelpersTreasuryInboundTransfersIdFailResponse> {
     return this.ky
-      .post(`/v1/test_helpers/treasury/inbound_transfers/${params.id}/fail`)
+      .post(`/v1/test_helpers/treasury/inbound_transfers/${params['id']}/fail`)
       .json<stripe.PostTestHelpersTreasuryInboundTransfersIdFailResponse>()
   }
 
@@ -70836,7 +70836,7 @@ For further details, including which address fields are required in each country
   ): Promise<stripe.PostTestHelpersTreasuryInboundTransfersIdReturnResponse> {
     return this.ky
       .post(
-        `/v1/test_helpers/treasury/inbound_transfers/${params.id}/return`
+        `/v1/test_helpers/treasury/inbound_transfers/${params['id']}/return`
       )
       .json<stripe.PostTestHelpersTreasuryInboundTransfersIdReturnResponse>()
   }
@@ -70856,7 +70856,7 @@ For further details, including which address fields are required in each country
   ): Promise<stripe.PostTestHelpersTreasuryInboundTransfersIdSucceedResponse> {
     return this.ky
       .post(
-        `/v1/test_helpers/treasury/inbound_transfers/${params.id}/succeed`
+        `/v1/test_helpers/treasury/inbound_transfers/${params['id']}/succeed`
       )
       .json<stripe.PostTestHelpersTreasuryInboundTransfersIdSucceedResponse>()
   }
@@ -70874,7 +70874,7 @@ For further details, including which address fields are required in each country
     params: stripe.PostTestHelpersTreasuryOutboundPaymentsIdParams
   ): Promise<stripe.PostTestHelpersTreasuryOutboundPaymentsIdResponse> {
     return this.ky
-      .post(`/v1/test_helpers/treasury/outbound_payments/${params.id}`)
+      .post(`/v1/test_helpers/treasury/outbound_payments/${params['id']}`)
       .json<stripe.PostTestHelpersTreasuryOutboundPaymentsIdResponse>()
   }
 
@@ -70892,7 +70892,7 @@ For further details, including which address fields are required in each country
     params: stripe.PostTestHelpersTreasuryOutboundPaymentsIdFailParams
   ): Promise<stripe.PostTestHelpersTreasuryOutboundPaymentsIdFailResponse> {
     return this.ky
-      .post(`/v1/test_helpers/treasury/outbound_payments/${params.id}/fail`)
+      .post(`/v1/test_helpers/treasury/outbound_payments/${params['id']}/fail`)
       .json<stripe.PostTestHelpersTreasuryOutboundPaymentsIdFailResponse>()
   }
 
@@ -70910,7 +70910,7 @@ For further details, including which address fields are required in each country
     params: stripe.PostTestHelpersTreasuryOutboundPaymentsIdPostParams
   ): Promise<stripe.PostTestHelpersTreasuryOutboundPaymentsIdPostResponse> {
     return this.ky
-      .post(`/v1/test_helpers/treasury/outbound_payments/${params.id}/post`)
+      .post(`/v1/test_helpers/treasury/outbound_payments/${params['id']}/post`)
       .json<stripe.PostTestHelpersTreasuryOutboundPaymentsIdPostResponse>()
   }
 
@@ -70929,7 +70929,7 @@ For further details, including which address fields are required in each country
   ): Promise<stripe.PostTestHelpersTreasuryOutboundPaymentsIdReturnResponse> {
     return this.ky
       .post(
-        `/v1/test_helpers/treasury/outbound_payments/${params.id}/return`
+        `/v1/test_helpers/treasury/outbound_payments/${params['id']}/return`
       )
       .json<stripe.PostTestHelpersTreasuryOutboundPaymentsIdReturnResponse>()
   }
@@ -70949,7 +70949,7 @@ For further details, including which address fields are required in each country
   ): Promise<stripe.PostTestHelpersTreasuryOutboundTransfersOutboundTransferResponse> {
     return this.ky
       .post(
-        `/v1/test_helpers/treasury/outbound_transfers/${params.outbound_transfer}`
+        `/v1/test_helpers/treasury/outbound_transfers/${params['outbound_transfer']}`
       )
       .json<stripe.PostTestHelpersTreasuryOutboundTransfersOutboundTransferResponse>()
   }
@@ -70969,7 +70969,7 @@ For further details, including which address fields are required in each country
   ): Promise<stripe.PostTestHelpersTreasuryOutboundTransfersOutboundTransferFailResponse> {
     return this.ky
       .post(
-        `/v1/test_helpers/treasury/outbound_transfers/${params.outbound_transfer}/fail`
+        `/v1/test_helpers/treasury/outbound_transfers/${params['outbound_transfer']}/fail`
       )
       .json<stripe.PostTestHelpersTreasuryOutboundTransfersOutboundTransferFailResponse>()
   }
@@ -70989,7 +70989,7 @@ For further details, including which address fields are required in each country
   ): Promise<stripe.PostTestHelpersTreasuryOutboundTransfersOutboundTransferPostResponse> {
     return this.ky
       .post(
-        `/v1/test_helpers/treasury/outbound_transfers/${params.outbound_transfer}/post`
+        `/v1/test_helpers/treasury/outbound_transfers/${params['outbound_transfer']}/post`
       )
       .json<stripe.PostTestHelpersTreasuryOutboundTransfersOutboundTransferPostResponse>()
   }
@@ -71009,7 +71009,7 @@ For further details, including which address fields are required in each country
   ): Promise<stripe.PostTestHelpersTreasuryOutboundTransfersOutboundTransferReturnResponse> {
     return this.ky
       .post(
-        `/v1/test_helpers/treasury/outbound_transfers/${params.outbound_transfer}/return`
+        `/v1/test_helpers/treasury/outbound_transfers/${params['outbound_transfer']}/return`
       )
       .json<stripe.PostTestHelpersTreasuryOutboundTransfersOutboundTransferReturnResponse>()
   }
@@ -71076,7 +71076,7 @@ You can use this token with any v1 API method in place of a bank account diction
     params: stripe.GetTokensTokenParams
   ): Promise<stripe.GetTokensTokenResponse> {
     return this.ky
-      .get(`/v1/tokens/${params.token}`, {
+      .get(`/v1/tokens/${params['token']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetTokensTokenResponse>()
@@ -71127,7 +71127,7 @@ You can use this token with any v1 API method in place of a bank account diction
     params: stripe.GetTopupsTopupParams
   ): Promise<stripe.GetTopupsTopupResponse> {
     return this.ky
-      .get(`/v1/topups/${params.topup}`, {
+      .get(`/v1/topups/${params['topup']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetTopupsTopupResponse>()
@@ -71146,7 +71146,7 @@ You can use this token with any v1 API method in place of a bank account diction
     params: stripe.PostTopupsTopupParams
   ): Promise<stripe.PostTopupsTopupResponse> {
     return this.ky
-      .post(`/v1/topups/${params.topup}`)
+      .post(`/v1/topups/${params['topup']}`)
       .json<stripe.PostTopupsTopupResponse>()
   }
 
@@ -71163,7 +71163,7 @@ You can use this token with any v1 API method in place of a bank account diction
     params: stripe.PostTopupsTopupCancelParams
   ): Promise<stripe.PostTopupsTopupCancelResponse> {
     return this.ky
-      .post(`/v1/topups/${params.topup}/cancel`)
+      .post(`/v1/topups/${params['topup']}/cancel`)
       .json<stripe.PostTopupsTopupCancelResponse>()
   }
 
@@ -71214,7 +71214,7 @@ You can use this token with any v1 API method in place of a bank account diction
     params: stripe.GetTransfersIdReversalsParams
   ): Promise<stripe.GetTransfersIdReversalsResponse> {
     return this.ky
-      .get(`/v1/transfers/${params.id}/reversals`, {
+      .get(`/v1/transfers/${params['id']}/reversals`, {
         searchParams: sanitizeSearchParams(
           pick(params, 'ending_before', 'expand', 'limit', 'starting_after')
         )
@@ -71242,7 +71242,7 @@ You can use this token with any v1 API method in place of a bank account diction
     params: stripe.PostTransfersIdReversalsParams
   ): Promise<stripe.PostTransfersIdReversalsResponse> {
     return this.ky
-      .post(`/v1/transfers/${params.id}/reversals`)
+      .post(`/v1/transfers/${params['id']}/reversals`)
       .json<stripe.PostTransfersIdReversalsResponse>()
   }
 
@@ -71259,7 +71259,7 @@ You can use this token with any v1 API method in place of a bank account diction
     params: stripe.GetTransfersTransferParams
   ): Promise<stripe.GetTransfersTransferResponse> {
     return this.ky
-      .get(`/v1/transfers/${params.transfer}`, {
+      .get(`/v1/transfers/${params['transfer']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetTransfersTransferResponse>()
@@ -71281,7 +71281,7 @@ You can use this token with any v1 API method in place of a bank account diction
     params: stripe.PostTransfersTransferParams
   ): Promise<stripe.PostTransfersTransferResponse> {
     return this.ky
-      .post(`/v1/transfers/${params.transfer}`)
+      .post(`/v1/transfers/${params['transfer']}`)
       .json<stripe.PostTransfersTransferResponse>()
   }
 
@@ -71298,7 +71298,7 @@ You can use this token with any v1 API method in place of a bank account diction
     params: stripe.GetTransfersTransferReversalsIdParams
   ): Promise<stripe.GetTransfersTransferReversalsIdResponse> {
     return this.ky
-      .get(`/v1/transfers/${params.transfer}/reversals/${params.id}`, {
+      .get(`/v1/transfers/${params['transfer']}/reversals/${params['id']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetTransfersTransferReversalsIdResponse>()
@@ -71320,7 +71320,7 @@ You can use this token with any v1 API method in place of a bank account diction
     params: stripe.PostTransfersTransferReversalsIdParams
   ): Promise<stripe.PostTransfersTransferReversalsIdResponse> {
     return this.ky
-      .post(`/v1/transfers/${params.transfer}/reversals/${params.id}`)
+      .post(`/v1/transfers/${params['transfer']}/reversals/${params['id']}`)
       .json<stripe.PostTransfersTransferReversalsIdResponse>()
   }
 
@@ -71372,7 +71372,7 @@ You can use this token with any v1 API method in place of a bank account diction
     params: stripe.GetTreasuryCreditReversalsCreditReversalParams
   ): Promise<stripe.GetTreasuryCreditReversalsCreditReversalResponse> {
     return this.ky
-      .get(`/v1/treasury/credit_reversals/${params.credit_reversal}`, {
+      .get(`/v1/treasury/credit_reversals/${params['credit_reversal']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetTreasuryCreditReversalsCreditReversalResponse>()
@@ -71425,7 +71425,7 @@ You can use this token with any v1 API method in place of a bank account diction
     params: stripe.GetTreasuryDebitReversalsDebitReversalParams
   ): Promise<stripe.GetTreasuryDebitReversalsDebitReversalResponse> {
     return this.ky
-      .get(`/v1/treasury/debit_reversals/${params.debit_reversal}`, {
+      .get(`/v1/treasury/debit_reversals/${params['debit_reversal']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetTreasuryDebitReversalsDebitReversalResponse>()
@@ -71478,7 +71478,7 @@ You can use this token with any v1 API method in place of a bank account diction
     params: stripe.GetTreasuryFinancialAccountsFinancialAccountParams
   ): Promise<stripe.GetTreasuryFinancialAccountsFinancialAccountResponse> {
     return this.ky
-      .get(`/v1/treasury/financial_accounts/${params.financial_account}`, {
+      .get(`/v1/treasury/financial_accounts/${params['financial_account']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetTreasuryFinancialAccountsFinancialAccountResponse>()
@@ -71497,7 +71497,7 @@ You can use this token with any v1 API method in place of a bank account diction
     params: stripe.PostTreasuryFinancialAccountsFinancialAccountParams
   ): Promise<stripe.PostTreasuryFinancialAccountsFinancialAccountResponse> {
     return this.ky
-      .post(`/v1/treasury/financial_accounts/${params.financial_account}`)
+      .post(`/v1/treasury/financial_accounts/${params['financial_account']}`)
       .json<stripe.PostTreasuryFinancialAccountsFinancialAccountResponse>()
   }
 
@@ -71516,7 +71516,7 @@ You can use this token with any v1 API method in place of a bank account diction
   ): Promise<stripe.PostTreasuryFinancialAccountsFinancialAccountCloseResponse> {
     return this.ky
       .post(
-        `/v1/treasury/financial_accounts/${params.financial_account}/close`
+        `/v1/treasury/financial_accounts/${params['financial_account']}/close`
       )
       .json<stripe.PostTreasuryFinancialAccountsFinancialAccountCloseResponse>()
   }
@@ -71536,7 +71536,7 @@ You can use this token with any v1 API method in place of a bank account diction
   ): Promise<stripe.GetTreasuryFinancialAccountsFinancialAccountFeaturesResponse> {
     return this.ky
       .get(
-        `/v1/treasury/financial_accounts/${params.financial_account}/features`,
+        `/v1/treasury/financial_accounts/${params['financial_account']}/features`,
         {
           searchParams: sanitizeSearchParams(pick(params, 'expand'))
         }
@@ -71559,7 +71559,7 @@ You can use this token with any v1 API method in place of a bank account diction
   ): Promise<stripe.PostTreasuryFinancialAccountsFinancialAccountFeaturesResponse> {
     return this.ky
       .post(
-        `/v1/treasury/financial_accounts/${params.financial_account}/features`
+        `/v1/treasury/financial_accounts/${params['financial_account']}/features`
       )
       .json<stripe.PostTreasuryFinancialAccountsFinancialAccountFeaturesResponse>()
   }
@@ -71612,7 +71612,7 @@ You can use this token with any v1 API method in place of a bank account diction
     params: stripe.GetTreasuryInboundTransfersIdParams
   ): Promise<stripe.GetTreasuryInboundTransfersIdResponse> {
     return this.ky
-      .get(`/v1/treasury/inbound_transfers/${params.id}`, {
+      .get(`/v1/treasury/inbound_transfers/${params['id']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetTreasuryInboundTransfersIdResponse>()
@@ -71632,7 +71632,7 @@ You can use this token with any v1 API method in place of a bank account diction
   ): Promise<stripe.PostTreasuryInboundTransfersInboundTransferCancelResponse> {
     return this.ky
       .post(
-        `/v1/treasury/inbound_transfers/${params.inbound_transfer}/cancel`
+        `/v1/treasury/inbound_transfers/${params['inbound_transfer']}/cancel`
       )
       .json<stripe.PostTreasuryInboundTransfersInboundTransferCancelResponse>()
   }
@@ -71685,7 +71685,7 @@ You can use this token with any v1 API method in place of a bank account diction
     params: stripe.GetTreasuryOutboundPaymentsIdParams
   ): Promise<stripe.GetTreasuryOutboundPaymentsIdResponse> {
     return this.ky
-      .get(`/v1/treasury/outbound_payments/${params.id}`, {
+      .get(`/v1/treasury/outbound_payments/${params['id']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetTreasuryOutboundPaymentsIdResponse>()
@@ -71703,7 +71703,7 @@ You can use this token with any v1 API method in place of a bank account diction
     params: stripe.PostTreasuryOutboundPaymentsIdCancelParams
   ): Promise<stripe.PostTreasuryOutboundPaymentsIdCancelResponse> {
     return this.ky
-      .post(`/v1/treasury/outbound_payments/${params.id}/cancel`)
+      .post(`/v1/treasury/outbound_payments/${params['id']}/cancel`)
       .json<stripe.PostTreasuryOutboundPaymentsIdCancelResponse>()
   }
 
@@ -71755,7 +71755,7 @@ You can use this token with any v1 API method in place of a bank account diction
     params: stripe.GetTreasuryOutboundTransfersOutboundTransferParams
   ): Promise<stripe.GetTreasuryOutboundTransfersOutboundTransferResponse> {
     return this.ky
-      .get(`/v1/treasury/outbound_transfers/${params.outbound_transfer}`, {
+      .get(`/v1/treasury/outbound_transfers/${params['outbound_transfer']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetTreasuryOutboundTransfersOutboundTransferResponse>()
@@ -71776,7 +71776,7 @@ You can use this token with any v1 API method in place of a bank account diction
   ): Promise<stripe.PostTreasuryOutboundTransfersOutboundTransferCancelResponse> {
     return this.ky
       .post(
-        `/v1/treasury/outbound_transfers/${params.outbound_transfer}/cancel`
+        `/v1/treasury/outbound_transfers/${params['outbound_transfer']}/cancel`
       )
       .json<stripe.PostTreasuryOutboundTransfersOutboundTransferCancelResponse>()
   }
@@ -71812,7 +71812,7 @@ You can use this token with any v1 API method in place of a bank account diction
     params: stripe.GetTreasuryReceivedCreditsIdParams
   ): Promise<stripe.GetTreasuryReceivedCreditsIdResponse> {
     return this.ky
-      .get(`/v1/treasury/received_credits/${params.id}`, {
+      .get(`/v1/treasury/received_credits/${params['id']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetTreasuryReceivedCreditsIdResponse>()
@@ -71849,7 +71849,7 @@ You can use this token with any v1 API method in place of a bank account diction
     params: stripe.GetTreasuryReceivedDebitsIdParams
   ): Promise<stripe.GetTreasuryReceivedDebitsIdResponse> {
     return this.ky
-      .get(`/v1/treasury/received_debits/${params.id}`, {
+      .get(`/v1/treasury/received_debits/${params['id']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetTreasuryReceivedDebitsIdResponse>()
@@ -71885,7 +71885,7 @@ You can use this token with any v1 API method in place of a bank account diction
     params: stripe.GetTreasuryTransactionEntriesIdParams
   ): Promise<stripe.GetTreasuryTransactionEntriesIdResponse> {
     return this.ky
-      .get(`/v1/treasury/transaction_entries/${params.id}`, {
+      .get(`/v1/treasury/transaction_entries/${params['id']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetTreasuryTransactionEntriesIdResponse>()
@@ -71921,7 +71921,7 @@ You can use this token with any v1 API method in place of a bank account diction
     params: stripe.GetTreasuryTransactionsIdParams
   ): Promise<stripe.GetTreasuryTransactionsIdResponse> {
     return this.ky
-      .get(`/v1/treasury/transactions/${params.id}`, {
+      .get(`/v1/treasury/transactions/${params['id']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetTreasuryTransactionsIdResponse>()
@@ -71974,7 +71974,7 @@ You can use this token with any v1 API method in place of a bank account diction
     params: stripe.GetWebhookEndpointsWebhookEndpointParams
   ): Promise<stripe.GetWebhookEndpointsWebhookEndpointResponse> {
     return this.ky
-      .get(`/v1/webhook_endpoints/${params.webhook_endpoint}`, {
+      .get(`/v1/webhook_endpoints/${params['webhook_endpoint']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'expand'))
       })
       .json<stripe.GetWebhookEndpointsWebhookEndpointResponse>()
@@ -71993,7 +71993,7 @@ You can use this token with any v1 API method in place of a bank account diction
     params: stripe.PostWebhookEndpointsWebhookEndpointParams
   ): Promise<stripe.PostWebhookEndpointsWebhookEndpointResponse> {
     return this.ky
-      .post(`/v1/webhook_endpoints/${params.webhook_endpoint}`)
+      .post(`/v1/webhook_endpoints/${params['webhook_endpoint']}`)
       .json<stripe.PostWebhookEndpointsWebhookEndpointResponse>()
   }
 
@@ -72010,7 +72010,7 @@ You can use this token with any v1 API method in place of a bank account diction
     params: stripe.DeleteWebhookEndpointsWebhookEndpointParams
   ): Promise<stripe.DeleteWebhookEndpointsWebhookEndpointResponse> {
     return this.ky
-      .delete(`/v1/webhook_endpoints/${params.webhook_endpoint}`)
+      .delete(`/v1/webhook_endpoints/${params['webhook_endpoint']}`)
       .json<stripe.DeleteWebhookEndpointsWebhookEndpointResponse>()
   }
 }
