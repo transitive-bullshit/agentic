@@ -125,7 +125,7 @@ function createParserOverride({
       const ref = schema.$ref as string
       if (!ref) return
 
-      const name = getComponentName(ref)
+      const name = getComponentDisplayName(ref)
       if (!name) return
 
       if (type === name) {

@@ -16185,7 +16185,7 @@ export namespace stripe {
       links: z
         .object({
           /** Details about each object. */
-          data: z.array(file_linkSchema).describe('Details about each object.'),
+          data: z.array(FileLinkSchema).describe('Details about each object.'),
           /** True if this list has another page of items after this one that can be fetched. */
           has_more: z
             .boolean()
@@ -16298,7 +16298,7 @@ export namespace stripe {
         .optional(),
       /** The file object this link points to. */
       file: z
-        .union([z.string().max(5000), fileSchema])
+        .union([z.string().max(5000), FileSchema])
         .describe('The file object this link points to.'),
       /** Unique identifier for the object. */
       id: z.string().max(5000).describe('Unique identifier for the object.'),
@@ -16363,7 +16363,7 @@ export namespace stripe {
         .describe(
           "String representing the object's type. Objects of the same type share the same value."
         ),
-      settings: customer_balance_customer_balance_settingsSchema
+      settings: CustomerBalanceCustomerBalanceSettingsSchema
     })
     .describe(
       "A customer's `Cash balance` represents real funds. Customers can add funds to their cash balance by sending a bank transfer. These funds can be used for payment and can eventually be paid out to your bank account."
@@ -16372,7 +16372,7 @@ export namespace stripe {
 
   export const SourceOwnerSchema = z.object({
     /** Owner's address. */
-    address: addressSchema.nullable().describe("Owner's address.").optional(),
+    address: AddressSchema.nullable().describe("Owner's address.").optional(),
     /** Owner's email address. */
     email: z
       .string()
@@ -16395,8 +16395,7 @@ export namespace stripe {
       .describe("Owner's phone number (including extension).")
       .optional(),
     /** Verified owner's address. Verified values are verified or provided by the payment method directly (and if supported) at the time of authorization or settlement. They cannot be set or mutated. */
-    verified_address: addressSchema
-      .nullable()
+    verified_address: AddressSchema.nullable()
       .describe(
         "Verified owner's address. Verified values are verified or provided by the payment method directly (and if supported) at the time of authorization or settlement. They cannot be set or mutated."
       )
@@ -16432,7 +16431,7 @@ export namespace stripe {
   export type SourceOwner = z.infer<typeof SourceOwnerSchema>
 
   export const ShippingSchema = z.object({
-    address: addressSchema.optional(),
+    address: AddressSchema.optional(),
     /** The delivery service that shipped a physical product, such as Fedex, UPS, USPS, etc. */
     carrier: z
       .string()
@@ -16466,7 +16465,7 @@ export namespace stripe {
   export const PromotionCodesResourceRestrictionsSchema = z.object({
     /** Promotion code restrictions defined in each available currency option. Each key must be a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) and a [supported currency](https://stripe.com/docs/currencies). */
     currency_options: z
-      .record(promotion_code_currency_optionSchema)
+      .record(PromotionCodeCurrencyOptionSchema)
       .describe(
         'Promotion code restrictions defined in each available currency option. Each key must be a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) and a [supported currency](https://stripe.com/docs/currencies).'
       )
@@ -16502,7 +16501,7 @@ export namespace stripe {
 
   export const BillingDetailsSchema = z.object({
     /** Billing address. */
-    address: addressSchema.nullable().describe('Billing address.').optional(),
+    address: AddressSchema.nullable().describe('Billing address.').optional(),
     /** Email address. */
     email: z
       .string()
@@ -16523,21 +16522,21 @@ export namespace stripe {
   export type BillingDetails = z.infer<typeof BillingDetailsSchema>
 
   export const PaymentFlowsAmountDetailsSchema = z.object({
-    tip: payment_flows_amount_details_client_resource_tipSchema.optional()
+    tip: PaymentFlowsAmountDetailsClientResourceTipSchema.optional()
   })
   export type PaymentFlowsAmountDetails = z.infer<
     typeof PaymentFlowsAmountDetailsSchema
   >
 
   export const PaymentFlowsAmountDetailsClientSchema = z.object({
-    tip: payment_flows_amount_details_client_resource_tipSchema.optional()
+    tip: PaymentFlowsAmountDetailsClientResourceTipSchema.optional()
   })
   export type PaymentFlowsAmountDetailsClient = z.infer<
     typeof PaymentFlowsAmountDetailsClientSchema
   >
 
   export const RefundNextActionDisplayDetailsSchema = z.object({
-    email_sent: email_sentSchema,
+    email_sent: EmailSentSchema,
     /** The expiry timestamp. */
     expires_at: z.number().int().describe('The expiry timestamp.')
   })
@@ -16604,8 +16603,7 @@ export namespace stripe {
         .describe('A description of the product or service that was sold.')
         .optional(),
       /** The address to which a physical product was shipped. All fields are required for Visa Compelling Evidence 3.0 evidence submission. */
-      shipping_address: dispute_transaction_shipping_addressSchema
-        .nullable()
+      shipping_address: DisputeTransactionShippingAddressSchema.nullable()
         .describe(
           'The address to which a physical product was shipped. All fields are required for Visa Compelling Evidence 3.0 evidence submission.'
         )
@@ -16675,8 +16673,7 @@ export namespace stripe {
         .describe('A description of the product or service that was sold.')
         .optional(),
       /** The address to which a physical product was shipped. All fields are required for Visa Compelling Evidence 3.0 evidence submission. */
-      shipping_address: dispute_transaction_shipping_addressSchema
-        .nullable()
+      shipping_address: DisputeTransactionShippingAddressSchema.nullable()
         .describe(
           'The address to which a physical product was shipped. All fields are required for Visa Compelling Evidence 3.0 evidence submission.'
         )
@@ -16688,7 +16685,7 @@ export namespace stripe {
     >
 
   export const IssuingCardholderAddressSchema = z.object({
-    address: addressSchema
+    address: AddressSchema
   })
   export type IssuingCardholderAddress = z.infer<
     typeof IssuingCardholderAddressSchema
@@ -16696,8 +16693,7 @@ export namespace stripe {
 
   export const IssuingCardholderCardIssuingSchema = z.object({
     /** Information about cardholder acceptance of Celtic [Authorized User Terms](https://stripe.com/docs/issuing/cards#accept-authorized-user-terms). Required for cards backed by a Celtic program. */
-    user_terms_acceptance: issuing_cardholder_user_terms_acceptanceSchema
-      .nullable()
+    user_terms_acceptance: IssuingCardholderUserTermsAcceptanceSchema.nullable()
       .describe(
         'Information about cardholder acceptance of Celtic [Authorized User Terms](https://stripe.com/docs/issuing/cards#accept-authorized-user-terms). Required for cards backed by a Celtic program.'
       )
@@ -17338,7 +17334,7 @@ export namespace stripe {
       .optional(),
     /** Limit spending with amount-based rules that apply across this cardholder's cards. */
     spending_limits: z
-      .array(issuing_cardholder_spending_limitSchema)
+      .array(IssuingCardholderSpendingLimitSchema)
       .nullable()
       .describe(
         "Limit spending with amount-based rules that apply across this cardholder's cards."
@@ -17358,7 +17354,7 @@ export namespace stripe {
   /** A Physical Bundle represents the bundle of physical items - card stock, carrier letter, and envelope - that is shipped to a cardholder when you create a physical card. */
   export const IssuingPhysicalBundleSchema = z
     .object({
-      features: issuing_physical_bundle_featuresSchema,
+      features: IssuingPhysicalBundleFeaturesSchema,
       /** Unique identifier for the object. */
       id: z.string().max(5000).describe('Unique identifier for the object.'),
       /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
@@ -17399,8 +17395,7 @@ export namespace stripe {
       .enum(['disabled', 'normalization_only', 'validation_and_normalization'])
       .describe('The address validation capabilities to use.'),
     /** The normalized shipping address. */
-    normalized_address: addressSchema
-      .nullable()
+    normalized_address: AddressSchema.nullable()
       .describe('The normalized shipping address.')
       .optional(),
     /** The validation result for the shipping address. */
@@ -18045,7 +18040,7 @@ export namespace stripe {
       .optional(),
     /** Limit spending with amount-based rules that apply across any cards this card replaced (i.e., its `replacement_for` card and _that_ card's `replacement_for` card, up the chain). */
     spending_limits: z
-      .array(issuing_card_spending_limitSchema)
+      .array(IssuingCardSpendingLimitSchema)
       .nullable()
       .describe(
         "Limit spending with amount-based rules that apply across any cards this card replaced (i.e., its `replacement_for` card and _that_ card's `replacement_for` card, up the chain)."
@@ -18073,8 +18068,7 @@ export namespace stripe {
         "The additional amount Stripe will hold if the authorization is approved, in the card's [currency](https://stripe.com/docs/api#issuing_authorization_object-pending-request-currency) and in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal)."
       ),
     /** Detailed breakdown of amount components. These amounts are denominated in `currency` and in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal). */
-    amount_details: issuing_authorization_amount_detailsSchema
-      .nullable()
+    amount_details: IssuingAuthorizationAmountDetailsSchema.nullable()
       .describe(
         'Detailed breakdown of amount components. These amounts are denominated in `currency` and in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal).'
       )
@@ -18125,8 +18119,7 @@ export namespace stripe {
         "The `pending_request.amount` at the time of the request, presented in your card's currency and in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal). Stripe held this amount from your account to fund the authorization if the request was approved."
       ),
     /** Detailed breakdown of amount components. These amounts are denominated in `currency` and in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal). */
-    amount_details: issuing_authorization_amount_detailsSchema
-      .nullable()
+    amount_details: IssuingAuthorizationAmountDetailsSchema.nullable()
       .describe(
         'Detailed breakdown of amount components. These amounts are denominated in `currency` and in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal).'
       )
@@ -18250,7 +18243,7 @@ export namespace stripe {
       .enum(['app', 'manual', 'on_file', 'other'])
       .describe('The method used for tokenizing a card.')
       .optional(),
-    cardholder_address: issuing_network_token_addressSchema.optional(),
+    cardholder_address: IssuingNetworkTokenAddressSchema.optional(),
     /** The name of the cardholder tokenizing the card. */
     cardholder_name: z
       .string()
@@ -18352,7 +18345,7 @@ export namespace stripe {
       .optional(),
     /** The legs of the trip. */
     segments: z
-      .array(issuing_transaction_flight_data_legSchema)
+      .array(IssuingTransactionFlightDataLegSchema)
       .nullable()
       .describe('The legs of the trip.')
       .optional(),
@@ -18431,7 +18424,7 @@ export namespace stripe {
       .optional(),
     /** The ID of the Radar rule that matched the payment, if applicable. */
     rule: z
-      .union([z.string().max(5000), ruleSchema])
+      .union([z.string().max(5000), RuleSchema])
       .describe(
         'The ID of the Radar rule that matched the payment, if applicable.'
       )
@@ -18456,7 +18449,7 @@ export namespace stripe {
   export type ChargeOutcome = z.infer<typeof ChargeOutcomeSchema>
 
   export const AmazonPayUnderlyingPaymentMethodFundingDetailsSchema = z.object({
-    card: payment_method_details_passthrough_cardSchema.optional(),
+    card: PaymentMethodDetailsPassthroughCardSchema.optional(),
     /** funding type of the underlying payment method. */
     type: z
       .literal('card')
@@ -18470,8 +18463,7 @@ export namespace stripe {
 
   export const PaymentMethodDetailsCardInstallmentsSchema = z.object({
     /** Installment plan selected for the payment. */
-    plan: payment_method_details_card_installments_planSchema
-      .nullable()
+    plan: PaymentMethodDetailsCardInstallmentsPlanSchema.nullable()
       .describe('Installment plan selected for the payment.')
       .optional()
   })
@@ -18481,8 +18473,7 @@ export namespace stripe {
 
   export const PaymentMethodDetailsCardWalletMasterpassSchema = z.object({
     /** Owner's verified billing address. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated. */
-    billing_address: addressSchema
-      .nullable()
+    billing_address: AddressSchema.nullable()
       .describe(
         "Owner's verified billing address. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated."
       )
@@ -18506,8 +18497,7 @@ export namespace stripe {
       )
       .optional(),
     /** Owner's verified shipping address. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated. */
-    shipping_address: addressSchema
-      .nullable()
+    shipping_address: AddressSchema.nullable()
       .describe(
         "Owner's verified shipping address. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated."
       )
@@ -18519,8 +18509,7 @@ export namespace stripe {
 
   export const PaymentMethodDetailsCardWalletVisaCheckoutSchema = z.object({
     /** Owner's verified billing address. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated. */
-    billing_address: addressSchema
-      .nullable()
+    billing_address: AddressSchema.nullable()
       .describe(
         "Owner's verified billing address. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated."
       )
@@ -18544,8 +18533,7 @@ export namespace stripe {
       )
       .optional(),
     /** Owner's verified shipping address. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated. */
-    shipping_address: addressSchema
-      .nullable()
+    shipping_address: AddressSchema.nullable()
       .describe(
         "Owner's verified shipping address. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated."
       )
@@ -18691,8 +18679,7 @@ export namespace stripe {
       .describe('How card details were read in this transaction.')
       .optional(),
     /** A collection of fields required to be displayed on receipts. Only required for EMV transactions. */
-    receipt: payment_method_details_interac_present_receiptSchema
-      .nullable()
+    receipt: PaymentMethodDetailsInteracPresentReceiptSchema.nullable()
       .describe(
         'A collection of fields required to be displayed on receipts. Only required for EMV transactions.'
       )
@@ -18704,8 +18691,7 @@ export namespace stripe {
 
   export const KlarnaPayerDetailsSchema = z.object({
     /** The payer's address */
-    address: klarna_addressSchema
-      .nullable()
+    address: KlarnaAddressSchema.nullable()
       .describe("The payer's address")
       .optional()
   })
@@ -18713,8 +18699,7 @@ export namespace stripe {
 
   export const PaymentMethodDetailsKonbiniSchema = z.object({
     /** If the payment succeeded, this contains the details of the convenience store where the payment was completed. */
-    store: payment_method_details_konbini_storeSchema
-      .nullable()
+    store: PaymentMethodDetailsKonbiniStoreSchema.nullable()
       .describe(
         'If the payment succeeded, this contains the details of the convenience store where the payment was completed.'
       )
@@ -18726,8 +18711,7 @@ export namespace stripe {
 
   export const PaymentMethodDetailsMobilepaySchema = z.object({
     /** Internal card details */
-    card: internal_cardSchema
-      .nullable()
+    card: InternalCardSchema.nullable()
       .describe('Internal card details')
       .optional()
   })
@@ -18779,8 +18763,7 @@ export namespace stripe {
       )
       .optional(),
     /** The level of protection offered as defined by PayPal Seller Protection for Merchants, for this transaction. */
-    seller_protection: paypal_seller_protectionSchema
-      .nullable()
+    seller_protection: PaypalSellerProtectionSchema.nullable()
       .describe(
         'The level of protection offered as defined by PayPal Seller Protection for Merchants, for this transaction.'
       )
@@ -18799,7 +18782,7 @@ export namespace stripe {
 
   export const RevolutPayUnderlyingPaymentMethodFundingDetailsSchema = z.object(
     {
-      card: payment_method_details_passthrough_cardSchema.optional(),
+      card: PaymentMethodDetailsPassthroughCardSchema.optional(),
       /** funding type of the underlying payment method. */
       type: z
         .literal('card')
@@ -18870,8 +18853,7 @@ export namespace stripe {
         )
         .optional(),
       /** The amount of the tax rate when the `rate_type` is `flat_amount`. Tax rates with `rate_type` `percentage` can vary based on the transaction, resulting in this field being `null`. This field exposes the amount and currency of the flat tax rate. */
-      flat_amount: tax_rate_flat_amountSchema
-        .nullable()
+      flat_amount: TaxRateFlatAmountSchema.nullable()
         .describe(
           'The amount of the tax rate when the `rate_type` is `flat_amount`. Tax rates with `rate_type` `percentage` can vary based on the transaction, resulting in this field being `null`. This field exposes the amount and currency of the flat tax rate.'
         )
@@ -18971,7 +18953,7 @@ export namespace stripe {
 
   export const InvoicePaymentMethodOptionsAcssDebitSchema = z.object({
     mandate_options:
-      invoice_payment_method_options_acss_debit_mandate_optionsSchema.optional(),
+      InvoicePaymentMethodOptionsAcssDebitMandateOptionsSchema.optional(),
     /** Bank account verification method. */
     verification_method: z
       .enum(['automatic', 'instant', 'microdeposits'])
@@ -18983,7 +18965,7 @@ export namespace stripe {
   >
 
   export const SubscriptionPaymentMethodOptionsCardSchema = z.object({
-    mandate_options: invoice_mandate_options_cardSchema.optional(),
+    mandate_options: InvoiceMandateOptionsCardSchema.optional(),
     /** Selected network to process this Subscription on. Depends on the available networks of the card attached to the Subscription. Can be only set confirm-time. */
     network: z
       .enum([
@@ -19022,7 +19004,7 @@ export namespace stripe {
   export const InvoicePaymentMethodOptionsCustomerBalanceBankTransferSchema =
     z.object({
       eu_bank_transfer:
-        invoice_payment_method_options_customer_balance_bank_transfer_eu_bank_transferSchema.optional(),
+        InvoicePaymentMethodOptionsCustomerBalanceBankTransferEuBankTransferSchema.optional(),
       /** The bank transfer type that can be used for funding. Permitted values include: `eu_bank_transfer`, `gb_bank_transfer`, `jp_bank_transfer`, `mx_bank_transfer`, or `us_bank_transfer`. */
       type: z
         .string()
@@ -19039,7 +19021,7 @@ export namespace stripe {
   export const InvoicePaymentMethodOptionsUsBankAccountLinkedAccountOptionsSchema =
     z.object({
       filters:
-        invoice_payment_method_options_us_bank_account_linked_account_options_filtersSchema.optional(),
+        InvoicePaymentMethodOptionsUsBankAccountLinkedAccountOptionsFiltersSchema.optional(),
       /** The list of permissions to request. The `payment_method` permission must be included. */
       permissions: z
         .array(
@@ -19077,7 +19059,7 @@ export namespace stripe {
         .string()
         .max(5000)
         .describe('The url for mobile redirect based auth'),
-      qr_code: payment_intent_next_action_cashapp_qr_codeSchema
+      qr_code: PaymentIntentNextActionCashappQrCodeSchema
     })
   export type PaymentIntentNextActionCashappHandleRedirectOrDisplayQrCode =
     z.infer<
@@ -19092,7 +19074,7 @@ export namespace stripe {
       .describe('Currency supported by the bank account')
       .optional(),
     mandate_options:
-      setup_intent_payment_method_options_mandate_options_acss_debitSchema.optional(),
+      SetupIntentPaymentMethodOptionsMandateOptionsAcssDebitSchema.optional(),
     /** Bank account verification method. */
     verification_method: z
       .enum(['automatic', 'instant', 'microdeposits'])
@@ -19105,7 +19087,7 @@ export namespace stripe {
 
   export const SetupIntentPaymentMethodOptionsBacsDebitSchema = z.object({
     mandate_options:
-      setup_intent_payment_method_options_mandate_options_bacs_debitSchema.optional()
+      SetupIntentPaymentMethodOptionsMandateOptionsBacsDebitSchema.optional()
   })
   export type SetupIntentPaymentMethodOptionsBacsDebit = z.infer<
     typeof SetupIntentPaymentMethodOptionsBacsDebitSchema
@@ -19114,8 +19096,7 @@ export namespace stripe {
   export const SetupIntentPaymentMethodOptionsCardSchema = z.object({
     /** Configuration options for setting up an eMandate for cards issued in India. */
     mandate_options:
-      setup_intent_payment_method_options_card_mandate_optionsSchema
-        .nullable()
+      SetupIntentPaymentMethodOptionsCardMandateOptionsSchema.nullable()
         .describe(
           'Configuration options for setting up an eMandate for cards issued in India.'
         )
@@ -19157,7 +19138,7 @@ export namespace stripe {
 
   export const SetupIntentPaymentMethodOptionsSepaDebitSchema = z.object({
     mandate_options:
-      setup_intent_payment_method_options_mandate_options_sepa_debitSchema.optional()
+      SetupIntentPaymentMethodOptionsMandateOptionsSepaDebitSchema.optional()
   })
   export type SetupIntentPaymentMethodOptionsSepaDebit = z.infer<
     typeof SetupIntentPaymentMethodOptionsSepaDebitSchema
@@ -19165,7 +19146,7 @@ export namespace stripe {
 
   export const LinkedAccountOptionsUsBankAccountSchema = z.object({
     filters:
-      payment_flows_private_payment_methods_us_bank_account_linked_account_options_filtersSchema.optional(),
+      PaymentFlowsPrivatePaymentMethodsUsBankAccountLinkedAccountOptionsFiltersSchema.optional(),
     /** The list of permissions to request. The `payment_method` permission must be included. */
     permissions: z
       .array(
@@ -19199,7 +19180,7 @@ export namespace stripe {
   export const BillingClocksResourceStatusDetailsStatusDetailsSchema = z.object(
     {
       advancing:
-        billing_clocks_resource_status_details_advancing_status_detailsSchema.optional()
+        BillingClocksResourceStatusDetailsAdvancingStatusDetailsSchema.optional()
     }
   )
   export type BillingClocksResourceStatusDetailsStatusDetails = z.infer<
@@ -19208,7 +19189,7 @@ export namespace stripe {
 
   /** Configures how this subscription behaves during the trial period. */
   export const SubscriptionsTrialsResourceTrialSettingsSchema = z
-    .object({ end_behavior: subscriptions_trials_resource_end_behaviorSchema })
+    .object({ end_behavior: SubscriptionsTrialsResourceEndBehaviorSchema })
     .describe(
       'Configures how this subscription behaves during the trial period.'
     )
@@ -19218,8 +19199,7 @@ export namespace stripe {
 
   export const BillingCreditGrantsResourceAmountSchema = z.object({
     /** The monetary amount. */
-    monetary: billing_credit_grants_resource_monetary_amountSchema
-      .nullable()
+    monetary: BillingCreditGrantsResourceMonetaryAmountSchema.nullable()
       .describe('The monetary amount.')
       .optional(),
     /** The type of this amount. We currently only support `monetary` billing credits. */
@@ -19243,7 +19223,7 @@ export namespace stripe {
       .optional(),
     /** The prices that credit grants can apply to. We currently only support `metered` prices. This refers to prices that have a [Billing Meter](https://docs.stripe.com/api/billing/meter) attached to them. */
     prices: z
-      .array(billing_credit_grants_resource_applicable_priceSchema)
+      .array(BillingCreditGrantsResourceApplicablePriceSchema)
       .describe(
         'The prices that credit grants can apply to. We currently only support `metered` prices. This refers to prices that have a [Billing Meter](https://docs.stripe.com/api/billing/meter) attached to them.'
       )
@@ -19255,8 +19235,7 @@ export namespace stripe {
 
   export const InvoicesResourceLineItemsProrationDetailsSchema = z.object({
     /** For a credit proration `line_item`, the original debit line_items to which the credit proration applies. */
-    credited_items: invoices_resource_line_items_credited_itemsSchema
-      .nullable()
+    credited_items: InvoicesResourceLineItemsCreditedItemsSchema.nullable()
       .describe(
         'For a credit proration `line_item`, the original debit line_items to which the credit proration applies.'
       )
@@ -19267,7 +19246,7 @@ export namespace stripe {
   >
 
   export const InvoicePaymentMethodOptionsCardSchema = z.object({
-    installments: invoice_installments_cardSchema.optional(),
+    installments: InvoiceInstallmentsCardSchema.optional(),
     /** We strongly recommend that you rely on our SCA Engine to automatically prompt your customers for authentication based on risk level and [other requirements](https://stripe.com/docs/strong-customer-authentication). However, if you wish to request 3D Secure based on logic from your own fraud engine, provide this option. Read our guide on [manually requesting 3D Secure](https://stripe.com/docs/payments/3d-secure/authentication-flow#manual-three-ds) for more information on how this configuration interacts with Radar and our SCA Engine. */
     request_three_d_secure: z
       .enum(['any', 'automatic', 'challenge'])
@@ -19292,8 +19271,7 @@ export namespace stripe {
       )
       .optional(),
     /** Invoice pdf rendering options */
-    pdf: invoice_rendering_pdfSchema
-      .nullable()
+    pdf: InvoiceRenderingPdfSchema.nullable()
       .describe('Invoice pdf rendering options')
       .optional(),
     /** ID of the rendering template that the invoice is formatted by. */
@@ -19319,15 +19297,13 @@ export namespace stripe {
 
   export const ShippingRateDeliveryEstimateSchema = z.object({
     /** The upper bound of the estimated range. If empty, represents no upper bound i.e., infinite. */
-    maximum: shipping_rate_delivery_estimate_boundSchema
-      .nullable()
+    maximum: ShippingRateDeliveryEstimateBoundSchema.nullable()
       .describe(
         'The upper bound of the estimated range. If empty, represents no upper bound i.e., infinite.'
       )
       .optional(),
     /** The lower bound of the estimated range. If empty, represents no lower bound. */
-    minimum: shipping_rate_delivery_estimate_boundSchema
-      .nullable()
+    minimum: ShippingRateDeliveryEstimateBoundSchema.nullable()
       .describe(
         'The lower bound of the estimated range. If empty, represents no lower bound.'
       )
@@ -19353,7 +19329,7 @@ export namespace stripe {
       ),
     /** Shipping rates defined in each available currency option. Each key must be a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) and a [supported currency](https://stripe.com/docs/currencies). */
     currency_options: z
-      .record(shipping_rate_currency_optionSchema)
+      .record(ShippingRateCurrencyOptionSchema)
       .describe(
         'Shipping rates defined in each available currency option. Each key must be a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) and a [supported currency](https://stripe.com/docs/currencies).'
       )
@@ -19375,7 +19351,7 @@ export namespace stripe {
       .optional(),
     /** Indicates which line items triggered a threshold invoice. */
     item_reasons: z
-      .array(invoice_item_threshold_reasonSchema)
+      .array(InvoiceItemThresholdReasonSchema)
       .describe('Indicates which line items triggered a threshold invoice.')
   })
   export type InvoiceThresholdReason = z.infer<
@@ -19385,7 +19361,7 @@ export namespace stripe {
   /** ABA Records contain U.S. bank account details per the ABA format. */
   export const FundingInstructionsBankTransferAbaRecordSchema = z
     .object({
-      account_holder_address: addressSchema,
+      account_holder_address: AddressSchema,
       /** The account holder name */
       account_holder_name: z
         .string()
@@ -19395,7 +19371,7 @@ export namespace stripe {
       account_number: z.string().max(5000).describe('The ABA account number'),
       /** The account type */
       account_type: z.string().max(5000).describe('The account type'),
-      bank_address: addressSchema,
+      bank_address: AddressSchema,
       /** The bank name */
       bank_name: z.string().max(5000).describe('The bank name'),
       /** The ABA routing number */
@@ -19411,7 +19387,7 @@ export namespace stripe {
   /** Iban Records contain E.U. bank account details per the SEPA format. */
   export const FundingInstructionsBankTransferIbanRecordSchema = z
     .object({
-      account_holder_address: addressSchema,
+      account_holder_address: AddressSchema,
       /** The name of the person or business that owns the bank account */
       account_holder_name: z
         .string()
@@ -19419,7 +19395,7 @@ export namespace stripe {
         .describe(
           'The name of the person or business that owns the bank account'
         ),
-      bank_address: addressSchema,
+      bank_address: AddressSchema,
       /** The BIC/SWIFT code of the account. */
       bic: z.string().max(5000).describe('The BIC/SWIFT code of the account.'),
       /** Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)). */
@@ -19442,7 +19418,7 @@ export namespace stripe {
   /** Sort Code Records contain U.K. bank account details per the sort code format. */
   export const FundingInstructionsBankTransferSortCodeRecordSchema = z
     .object({
-      account_holder_address: addressSchema,
+      account_holder_address: AddressSchema,
       /** The name of the person or business that owns the bank account */
       account_holder_name: z
         .string()
@@ -19452,7 +19428,7 @@ export namespace stripe {
         ),
       /** The account number */
       account_number: z.string().max(5000).describe('The account number'),
-      bank_address: addressSchema,
+      bank_address: AddressSchema,
       /** The six-digit sort code */
       sort_code: z.string().max(5000).describe('The six-digit sort code')
     })
@@ -19466,13 +19442,13 @@ export namespace stripe {
   /** SPEI Records contain Mexico bank account details per the SPEI format. */
   export const FundingInstructionsBankTransferSpeiRecordSchema = z
     .object({
-      account_holder_address: addressSchema,
+      account_holder_address: AddressSchema,
       /** The account holder name */
       account_holder_name: z
         .string()
         .max(5000)
         .describe('The account holder name'),
-      bank_address: addressSchema,
+      bank_address: AddressSchema,
       /** The three-digit bank code */
       bank_code: z.string().max(5000).describe('The three-digit bank code'),
       /** The short banking institution name */
@@ -19493,7 +19469,7 @@ export namespace stripe {
   /** SWIFT Records contain U.S. bank account details per the SWIFT format. */
   export const FundingInstructionsBankTransferSwiftRecordSchema = z
     .object({
-      account_holder_address: addressSchema,
+      account_holder_address: AddressSchema,
       /** The account holder name */
       account_holder_name: z
         .string()
@@ -19503,7 +19479,7 @@ export namespace stripe {
       account_number: z.string().max(5000).describe('The account number'),
       /** The account type */
       account_type: z.string().max(5000).describe('The account type'),
-      bank_address: addressSchema,
+      bank_address: AddressSchema,
       /** The bank name */
       bank_name: z.string().max(5000).describe('The bank name'),
       /** The SWIFT code */
@@ -19519,7 +19495,7 @@ export namespace stripe {
   /** Zengin Records contain Japan bank account details per the Zengin format. */
   export const FundingInstructionsBankTransferZenginRecordSchema = z
     .object({
-      account_holder_address: addressSchema,
+      account_holder_address: AddressSchema,
       /** The account holder name */
       account_holder_name: z
         .string()
@@ -19543,7 +19519,7 @@ export namespace stripe {
           'The bank account type. In Japan, this can only be `futsu` or `toza`.'
         )
         .optional(),
-      bank_address: addressSchema,
+      bank_address: AddressSchema,
       /** The bank code of the account */
       bank_code: z
         .string()
@@ -19589,7 +19565,7 @@ export namespace stripe {
         .describe(
           'The URL to the hosted Swish instructions page, which allows customers to view the QR code.'
         ),
-      qr_code: payment_intent_next_action_swish_qr_codeSchema
+      qr_code: PaymentIntentNextActionSwishQrCodeSchema
     })
   export type PaymentIntentNextActionSwishHandleRedirectOrDisplayQrCode =
     z.infer<
@@ -19598,7 +19574,7 @@ export namespace stripe {
 
   export const PaymentIntentPaymentMethodOptionsAcssDebitSchema = z.object({
     mandate_options:
-      payment_intent_payment_method_options_mandate_options_acss_debitSchema.optional(),
+      PaymentIntentPaymentMethodOptionsMandateOptionsAcssDebitSchema.optional(),
     /**
      * Indicates that you intend to make future payments with this PaymentIntent's payment method.
      *
@@ -19634,7 +19610,7 @@ export namespace stripe {
 
   export const PaymentFlowsInstallmentOptionsSchema = z.object({
     enabled: z.boolean(),
-    plan: payment_method_details_card_installments_planSchema.optional()
+    plan: PaymentMethodDetailsCardInstallmentsPlanSchema.optional()
   })
   export type PaymentFlowsInstallmentOptions = z.infer<
     typeof PaymentFlowsInstallmentOptionsSchema
@@ -19642,7 +19618,7 @@ export namespace stripe {
 
   export const PaymentIntentPaymentMethodOptionsBacsDebitSchema = z.object({
     mandate_options:
-      payment_intent_payment_method_options_mandate_options_bacs_debitSchema.optional(),
+      PaymentIntentPaymentMethodOptionsMandateOptionsBacsDebitSchema.optional(),
     /**
      * Indicates that you intend to make future payments with this PaymentIntent's payment method.
      *
@@ -19674,7 +19650,7 @@ export namespace stripe {
   export const PaymentMethodOptionsCardInstallmentsSchema = z.object({
     /** Installment plans that may be selected for this PaymentIntent. */
     available_plans: z
-      .array(payment_method_details_card_installments_planSchema)
+      .array(PaymentMethodDetailsCardInstallmentsPlanSchema)
       .nullable()
       .describe(
         'Installment plans that may be selected for this PaymentIntent.'
@@ -19685,8 +19661,7 @@ export namespace stripe {
       .boolean()
       .describe('Whether Installments are enabled for this PaymentIntent.'),
     /** Installment plan selected for this PaymentIntent. */
-    plan: payment_method_details_card_installments_planSchema
-      .nullable()
+    plan: PaymentMethodDetailsCardInstallmentsPlanSchema.nullable()
       .describe('Installment plan selected for this PaymentIntent.')
       .optional()
   })
@@ -19711,7 +19686,7 @@ export namespace stripe {
         'Request ability to [increment](https://stripe.com/docs/terminal/features/incremental-authorizations) this PaymentIntent if the combination of MCC and card brand is eligible. Check [incremental_authorization_supported](https://stripe.com/docs/api/charges/object#charge_object-payment_method_details-card_present-incremental_authorization_supported) in the [Confirm](https://stripe.com/docs/api/payment_intents/confirm) response to verify support.'
       )
       .optional(),
-    routing: payment_method_options_card_present_routingSchema.optional()
+    routing: PaymentMethodOptionsCardPresentRoutingSchema.optional()
   })
   export type PaymentMethodOptionsCardPresent = z.infer<
     typeof PaymentMethodOptionsCardPresentSchema
@@ -19720,7 +19695,7 @@ export namespace stripe {
   export const PaymentMethodOptionsCustomerBalanceBankTransferSchema = z.object(
     {
       eu_bank_transfer:
-        payment_method_options_customer_balance_eu_bank_accountSchema.optional(),
+        PaymentMethodOptionsCustomerBalanceEuBankAccountSchema.optional(),
       /**
        * List of address types that should be returned in the financial_addresses response. If not specified, all valid types will be returned.
        *
@@ -19764,7 +19739,7 @@ export namespace stripe {
 
   export const PaymentIntentPaymentMethodOptionsSepaDebitSchema = z.object({
     mandate_options:
-      payment_intent_payment_method_options_mandate_options_sepa_debitSchema.optional(),
+      PaymentIntentPaymentMethodOptionsMandateOptionsSepaDebitSchema.optional(),
     /**
      * Indicates that you intend to make future payments with this PaymentIntent's payment method.
      *
@@ -19795,7 +19770,7 @@ export namespace stripe {
 
   export const PaymentIntentCardProcessingSchema = z.object({
     customer_notification:
-      payment_intent_processing_customer_notificationSchema.optional()
+      PaymentIntentProcessingCustomerNotificationSchema.optional()
   })
   export type PaymentIntentCardProcessing = z.infer<
     typeof PaymentIntentCardProcessingSchema
@@ -19803,8 +19778,7 @@ export namespace stripe {
 
   export const PaymentMethodCardWalletMasterpassSchema = z.object({
     /** Owner's verified billing address. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated. */
-    billing_address: addressSchema
-      .nullable()
+    billing_address: AddressSchema.nullable()
       .describe(
         "Owner's verified billing address. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated."
       )
@@ -19828,8 +19802,7 @@ export namespace stripe {
       )
       .optional(),
     /** Owner's verified shipping address. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated. */
-    shipping_address: addressSchema
-      .nullable()
+    shipping_address: AddressSchema.nullable()
       .describe(
         "Owner's verified shipping address. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated."
       )
@@ -19841,8 +19814,7 @@ export namespace stripe {
 
   export const PaymentMethodCardWalletVisaCheckoutSchema = z.object({
     /** Owner's verified billing address. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated. */
-    billing_address: addressSchema
-      .nullable()
+    billing_address: AddressSchema.nullable()
       .describe(
         "Owner's verified billing address. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated."
       )
@@ -19866,8 +19838,7 @@ export namespace stripe {
       )
       .optional(),
     /** Owner's verified shipping address. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated. */
-    shipping_address: addressSchema
-      .nullable()
+    shipping_address: AddressSchema.nullable()
       .describe(
         "Owner's verified shipping address. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated."
       )
@@ -19959,8 +19930,7 @@ export namespace stripe {
       .describe('The last four digits of the card.')
       .optional(),
     /** Contains information about card networks that can be used to process the payment. */
-    networks: payment_method_card_present_networksSchema
-      .nullable()
+    networks: PaymentMethodCardPresentNetworksSchema.nullable()
       .describe(
         'Contains information about card networks that can be used to process the payment.'
       )
@@ -19992,15 +19962,14 @@ export namespace stripe {
 
   export const PaymentMethodKlarnaSchema = z.object({
     /** The customer's date of birth, if provided. */
-    dob: payment_flows_private_payment_methods_klarna_dobSchema
-      .nullable()
+    dob: PaymentFlowsPrivatePaymentMethodsKlarnaDobSchema.nullable()
       .describe("The customer's date of birth, if provided.")
       .optional()
   })
   export type PaymentMethodKlarna = z.infer<typeof PaymentMethodKlarnaSchema>
 
   export const PaymentMethodUsBankAccountStatusDetailsSchema = z.object({
-    blocked: payment_method_us_bank_account_blockedSchema.optional()
+    blocked: PaymentMethodUsBankAccountBlockedSchema.optional()
   })
   export type PaymentMethodUsBankAccountStatusDetails = z.infer<
     typeof PaymentMethodUsBankAccountStatusDetailsSchema
@@ -20023,8 +19992,7 @@ export namespace stripe {
       )
       .optional(),
     /** The customer's location as identified by Stripe Tax. */
-    location: customer_tax_locationSchema
-      .nullable()
+    location: CustomerTaxLocationSchema.nullable()
       .describe("The customer's location as identified by Stripe Tax.")
       .optional()
   })
@@ -20041,7 +20009,7 @@ export namespace stripe {
       .optional(),
     /** Fields that are `currently_due` and need to be collected again because validation or verification failed. */
     errors: z
-      .array(account_requirements_errorSchema)
+      .array(AccountRequirementsErrorSchema)
       .nullable()
       .describe(
         'Fields that are `currently_due` and need to be collected again because validation or verification failed.'
@@ -20070,8 +20038,7 @@ export namespace stripe {
 
   export const PersonAdditionalTosAcceptancesSchema = z.object({
     /** Details on the legal guardian's acceptance of the main Stripe service agreement. */
-    account: person_additional_tos_acceptanceSchema
-      .nullable()
+    account: PersonAdditionalTosAcceptanceSchema.nullable()
       .describe(
         "Details on the legal guardian's acceptance of the main Stripe service agreement."
       )
@@ -20082,14 +20049,14 @@ export namespace stripe {
   >
 
   export const AccountCardIssuingSettingsSchema = z.object({
-    tos_acceptance: card_issuing_account_terms_of_serviceSchema.optional()
+    tos_acceptance: CardIssuingAccountTermsOfServiceSchema.optional()
   })
   export type AccountCardIssuingSettings = z.infer<
     typeof AccountCardIssuingSettingsSchema
   >
 
   export const AccountCardPaymentsSettingsSchema = z.object({
-    decline_on: account_decline_charge_onSchema.optional(),
+    decline_on: AccountDeclineChargeOnSchema.optional(),
     /** The default text that appears on credit card statements when a charge is made. This field prefixes any dynamic `statement_descriptor` specified on the charge. `statement_descriptor_prefix` is useful for maximizing descriptor space for the dynamic portion. */
     statement_descriptor_prefix: z
       .string()
@@ -20129,7 +20096,7 @@ export namespace stripe {
       .describe(
         'A Boolean indicating if Stripe should try to reclaim negative balances from an attached bank account. See [Understanding Connect account balances](/connect/account-balances) for details. The default value is `false` when [controller.requirement_collection](/api/accounts/object#account_object-controller-requirement_collection) is `application`, which includes Custom accounts, otherwise `true`.'
       ),
-    schedule: transfer_scheduleSchema,
+    schedule: TransferScheduleSchema,
     /** The text that appears on the bank account statement for payouts. If not set, this defaults to the platform's bank descriptor as set in the Dashboard. */
     statement_descriptor: z
       .string()
@@ -20145,7 +20112,7 @@ export namespace stripe {
   >
 
   export const AccountTreasurySettingsSchema = z.object({
-    tos_acceptance: account_terms_of_serviceSchema.optional()
+    tos_acceptance: AccountTermsOfServiceSchema.optional()
   })
   export type AccountTreasurySettings = z.infer<
     typeof AccountTreasurySettingsSchema
@@ -20154,7 +20121,7 @@ export namespace stripe {
   export const ConnectEmbeddedAccountConfigClaimSchema = z.object({
     /** Whether the embedded component is enabled. */
     enabled: z.boolean().describe('Whether the embedded component is enabled.'),
-    features: connect_embedded_account_features_claimSchema
+    features: ConnectEmbeddedAccountFeaturesClaimSchema
   })
   export type ConnectEmbeddedAccountConfigClaim = z.infer<
     typeof ConnectEmbeddedAccountConfigClaimSchema
@@ -20163,7 +20130,7 @@ export namespace stripe {
   export const ConnectEmbeddedPayoutsConfigSchema = z.object({
     /** Whether the embedded component is enabled. */
     enabled: z.boolean().describe('Whether the embedded component is enabled.'),
-    features: connect_embedded_payouts_featuresSchema
+    features: ConnectEmbeddedPayoutsFeaturesSchema
   })
   export type ConnectEmbeddedPayoutsConfig = z.infer<
     typeof ConnectEmbeddedPayoutsConfigSchema
@@ -20172,7 +20139,7 @@ export namespace stripe {
   export const ConnectEmbeddedBaseConfigClaimSchema = z.object({
     /** Whether the embedded component is enabled. */
     enabled: z.boolean().describe('Whether the embedded component is enabled.'),
-    features: connect_embedded_base_featuresSchema
+    features: ConnectEmbeddedBaseFeaturesSchema
   })
   export type ConnectEmbeddedBaseConfigClaim = z.infer<
     typeof ConnectEmbeddedBaseConfigClaimSchema
@@ -20181,7 +20148,7 @@ export namespace stripe {
   export const ConnectEmbeddedFinancialAccountConfigClaimSchema = z.object({
     /** Whether the embedded component is enabled. */
     enabled: z.boolean().describe('Whether the embedded component is enabled.'),
-    features: connect_embedded_financial_account_featuresSchema
+    features: ConnectEmbeddedFinancialAccountFeaturesSchema
   })
   export type ConnectEmbeddedFinancialAccountConfigClaim = z.infer<
     typeof ConnectEmbeddedFinancialAccountConfigClaimSchema
@@ -20193,7 +20160,7 @@ export namespace stripe {
       enabled: z
         .boolean()
         .describe('Whether the embedded component is enabled.'),
-      features: connect_embedded_financial_account_transactions_featuresSchema
+      features: ConnectEmbeddedFinancialAccountTransactionsFeaturesSchema
     })
   export type ConnectEmbeddedFinancialAccountTransactionsConfigClaim = z.infer<
     typeof ConnectEmbeddedFinancialAccountTransactionsConfigClaimSchema
@@ -20202,7 +20169,7 @@ export namespace stripe {
   export const ConnectEmbeddedIssuingCardConfigClaimSchema = z.object({
     /** Whether the embedded component is enabled. */
     enabled: z.boolean().describe('Whether the embedded component is enabled.'),
-    features: connect_embedded_issuing_card_featuresSchema
+    features: ConnectEmbeddedIssuingCardFeaturesSchema
   })
   export type ConnectEmbeddedIssuingCardConfigClaim = z.infer<
     typeof ConnectEmbeddedIssuingCardConfigClaimSchema
@@ -20211,7 +20178,7 @@ export namespace stripe {
   export const ConnectEmbeddedIssuingCardsListConfigClaimSchema = z.object({
     /** Whether the embedded component is enabled. */
     enabled: z.boolean().describe('Whether the embedded component is enabled.'),
-    features: connect_embedded_issuing_cards_list_featuresSchema
+    features: ConnectEmbeddedIssuingCardsListFeaturesSchema
   })
   export type ConnectEmbeddedIssuingCardsListConfigClaim = z.infer<
     typeof ConnectEmbeddedIssuingCardsListConfigClaimSchema
@@ -20220,7 +20187,7 @@ export namespace stripe {
   export const ConnectEmbeddedPaymentsConfigClaimSchema = z.object({
     /** Whether the embedded component is enabled. */
     enabled: z.boolean().describe('Whether the embedded component is enabled.'),
-    features: connect_embedded_payments_featuresSchema
+    features: ConnectEmbeddedPaymentsFeaturesSchema
   })
   export type ConnectEmbeddedPaymentsConfigClaim = z.infer<
     typeof ConnectEmbeddedPaymentsConfigClaimSchema
@@ -20286,7 +20253,7 @@ export namespace stripe {
         .nullable()
         .describe('The plaintext secret value to be stored.')
         .optional(),
-      scope: secret_service_resource_scopeSchema
+      scope: SecretServiceResourceScopeSchema
     })
     .describe(
       "Secret Store is an API that allows Stripe Apps developers to securely persist secrets for use by UI Extensions and app backends.\n\nThe primary resource in Secret Store is a `secret`. Other apps can't view secrets created by an app. Additionally, secrets are scoped to provide further permission control.\n\nAll Dashboard users and the app backend share `account` scoped secrets. Use the `account` scope for secrets that don't change per-user, like a third-party API key.\n\nA `user` scoped secret is accessible by the app backend and one specific Dashboard user. Use the `user` scope for per-user secrets like per-user OAuth tokens, where different users might have different permissions.\n\nRelated guide: [Store data between page reloads](https://stripe.com/docs/stripe-apps/store-auth-data-custom-objects)"
@@ -20302,7 +20269,7 @@ export namespace stripe {
       .describe(
         'Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).'
       ),
-    source_types: balance_amount_by_source_typeSchema.optional()
+    source_types: BalanceAmountBySourceTypeSchema.optional()
   })
   export type BalanceAmount = z.infer<typeof BalanceAmountSchema>
 
@@ -20321,7 +20288,7 @@ export namespace stripe {
       .describe(
         'ID of the external account for this net balance (not expandable).'
       ),
-    source_types: balance_amount_by_source_typeSchema.optional()
+    source_types: BalanceAmountBySourceTypeSchema.optional()
   })
   export type BalanceNetAvailable = z.infer<typeof BalanceNetAvailableSchema>
 
@@ -20329,10 +20296,10 @@ export namespace stripe {
   export const BillingMeterEventAdjustmentSchema = z
     .object({
       /** Specifies which event to cancel. */
-      cancel: billing_meter_resource_billing_meter_event_adjustment_cancelSchema
-        .nullable()
-        .describe('Specifies which event to cancel.')
-        .optional(),
+      cancel:
+        BillingMeterResourceBillingMeterEventAdjustmentCancelSchema.nullable()
+          .describe('Specifies which event to cancel.')
+          .optional(),
       /** The name of the meter event. Corresponds with the `event_name` field on a meter. */
       event_name: z
         .string()
@@ -20371,7 +20338,7 @@ export namespace stripe {
   >
 
   export const PortalSubscriptionCancelSchema = z.object({
-    cancellation_reason: portal_subscription_cancellation_reasonSchema,
+    cancellation_reason: PortalSubscriptionCancellationReasonSchema,
     /** Whether the feature is enabled. */
     enabled: z.boolean().describe('Whether the feature is enabled.'),
     /** Whether to cancel subscriptions immediately or at the end of the billing period. */
@@ -20394,7 +20361,7 @@ export namespace stripe {
   export const PortalResourceScheduleUpdateAtPeriodEndSchema = z.object({
     /** List of conditions. When any condition is true, an update will be scheduled at the end of the current period. */
     conditions: z
-      .array(portal_resource_schedule_update_at_period_end_conditionSchema)
+      .array(PortalResourceScheduleUpdateAtPeriodEndConditionSchema)
       .describe(
         'List of conditions. When any condition is true, an update will be scheduled at the end of the current period.'
       )
@@ -20405,8 +20372,7 @@ export namespace stripe {
 
   export const PortalFlowsRetentionSchema = z.object({
     /** Configuration when `retention.type=coupon_offer`. */
-    coupon_offer: portal_flows_coupon_offerSchema
-      .nullable()
+    coupon_offer: PortalFlowsCouponOfferSchema.nullable()
       .describe('Configuration when `retention.type=coupon_offer`.')
       .optional(),
     /** Type of retention strategy that will be used. */
@@ -20418,12 +20384,12 @@ export namespace stripe {
 
   export const PaymentPagesCheckoutSessionAfterExpirationSchema = z.object({
     /** When set, configuration used to recover the Checkout Session on expiry. */
-    recovery: payment_pages_checkout_session_after_expiration_recoverySchema
-      .nullable()
-      .describe(
-        'When set, configuration used to recover the Checkout Session on expiry.'
-      )
-      .optional()
+    recovery:
+      PaymentPagesCheckoutSessionAfterExpirationRecoverySchema.nullable()
+        .describe(
+          'When set, configuration used to recover the Checkout Session on expiry.'
+        )
+        .optional()
   })
   export type PaymentPagesCheckoutSessionAfterExpiration = z.infer<
     typeof PaymentPagesCheckoutSessionAfterExpirationSchema
@@ -20432,8 +20398,7 @@ export namespace stripe {
   export const PaymentPagesCheckoutSessionConsentCollectionSchema = z.object({
     /** If set to `hidden`, it will hide legal text related to the reuse of a payment method. */
     payment_method_reuse_agreement:
-      payment_pages_checkout_session_payment_method_reuse_agreementSchema
-        .nullable()
+      PaymentPagesCheckoutSessionPaymentMethodReuseAgreementSchema.nullable()
         .describe(
           'If set to `hidden`, it will hide legal text related to the reuse of a payment method.'
         )
@@ -20474,7 +20439,7 @@ export namespace stripe {
         .optional(),
       /** The options available for the customer to select. Up to 200 options allowed. */
       options: z
-        .array(payment_pages_checkout_session_custom_fields_optionSchema)
+        .array(PaymentPagesCheckoutSessionCustomFieldsOptionSchema)
         .describe(
           'The options available for the customer to select. Up to 200 options allowed.'
         ),
@@ -20495,30 +20460,27 @@ export namespace stripe {
 
   export const PaymentPagesCheckoutSessionCustomTextSchema = z.object({
     /** Custom text that should be displayed after the payment confirmation button. */
-    after_submit: payment_pages_checkout_session_custom_text_positionSchema
-      .nullable()
+    after_submit: PaymentPagesCheckoutSessionCustomTextPositionSchema.nullable()
       .describe(
         'Custom text that should be displayed after the payment confirmation button.'
       )
       .optional(),
     /** Custom text that should be displayed alongside shipping address collection. */
-    shipping_address: payment_pages_checkout_session_custom_text_positionSchema
-      .nullable()
-      .describe(
-        'Custom text that should be displayed alongside shipping address collection.'
-      )
-      .optional(),
+    shipping_address:
+      PaymentPagesCheckoutSessionCustomTextPositionSchema.nullable()
+        .describe(
+          'Custom text that should be displayed alongside shipping address collection.'
+        )
+        .optional(),
     /** Custom text that should be displayed alongside the payment confirmation button. */
-    submit: payment_pages_checkout_session_custom_text_positionSchema
-      .nullable()
+    submit: PaymentPagesCheckoutSessionCustomTextPositionSchema.nullable()
       .describe(
         'Custom text that should be displayed alongside the payment confirmation button.'
       )
       .optional(),
     /** Custom text that should be displayed in place of the default terms of service agreement text. */
     terms_of_service_acceptance:
-      payment_pages_checkout_session_custom_text_positionSchema
-        .nullable()
+      PaymentPagesCheckoutSessionCustomTextPositionSchema.nullable()
         .describe(
           'Custom text that should be displayed in place of the default terms of service agreement text.'
         )
@@ -20531,8 +20493,7 @@ export namespace stripe {
   export const PaymentLinksResourceConsentCollectionSchema = z.object({
     /** Settings related to the payment method reuse text shown in the Checkout UI. */
     payment_method_reuse_agreement:
-      payment_links_resource_payment_method_reuse_agreementSchema
-        .nullable()
+      PaymentLinksResourcePaymentMethodReuseAgreementSchema.nullable()
         .describe(
           'Settings related to the payment method reuse text shown in the Checkout UI.'
         )
@@ -20561,7 +20522,7 @@ export namespace stripe {
   export const PaymentLinksResourceCustomFieldsDropdownSchema = z.object({
     /** The options available for the customer to select. Up to 200 options allowed. */
     options: z
-      .array(payment_links_resource_custom_fields_dropdown_optionSchema)
+      .array(PaymentLinksResourceCustomFieldsDropdownOptionSchema)
       .describe(
         'The options available for the customer to select. Up to 200 options allowed.'
       )
@@ -20572,30 +20533,26 @@ export namespace stripe {
 
   export const PaymentLinksResourceCustomTextSchema = z.object({
     /** Custom text that should be displayed after the payment confirmation button. */
-    after_submit: payment_links_resource_custom_text_positionSchema
-      .nullable()
+    after_submit: PaymentLinksResourceCustomTextPositionSchema.nullable()
       .describe(
         'Custom text that should be displayed after the payment confirmation button.'
       )
       .optional(),
     /** Custom text that should be displayed alongside shipping address collection. */
-    shipping_address: payment_links_resource_custom_text_positionSchema
-      .nullable()
+    shipping_address: PaymentLinksResourceCustomTextPositionSchema.nullable()
       .describe(
         'Custom text that should be displayed alongside shipping address collection.'
       )
       .optional(),
     /** Custom text that should be displayed alongside the payment confirmation button. */
-    submit: payment_links_resource_custom_text_positionSchema
-      .nullable()
+    submit: PaymentLinksResourceCustomTextPositionSchema.nullable()
       .describe(
         'Custom text that should be displayed alongside the payment confirmation button.'
       )
       .optional(),
     /** Custom text that should be displayed in place of the default terms of service agreement text. */
     terms_of_service_acceptance:
-      payment_links_resource_custom_text_positionSchema
-        .nullable()
+      PaymentLinksResourceCustomTextPositionSchema.nullable()
         .describe(
           'Custom text that should be displayed in place of the default terms of service agreement text.'
         )
@@ -20606,7 +20563,7 @@ export namespace stripe {
   >
 
   export const PaymentLinksResourceRestrictionsSchema = z.object({
-    completed_sessions: payment_links_resource_completed_sessionsSchema
+    completed_sessions: PaymentLinksResourceCompletedSessionsSchema
   })
   export type PaymentLinksResourceRestrictions = z.infer<
     typeof PaymentLinksResourceRestrictionsSchema
@@ -20620,7 +20577,7 @@ export namespace stripe {
         'Currency supported by the bank account. Returned when the Session is in `setup` mode.'
       )
       .optional(),
-    mandate_options: checkout_acss_debit_mandate_optionsSchema.optional(),
+    mandate_options: CheckoutAcssDebitMandateOptionsSchema.optional(),
     /**
      * Indicates that you intend to make future payments with this PaymentIntent's payment method.
      *
@@ -20656,7 +20613,7 @@ export namespace stripe {
 
   export const CheckoutBacsDebitPaymentMethodOptionsSchema = z.object({
     mandate_options:
-      checkout_payment_method_options_mandate_options_bacs_debitSchema.optional(),
+      CheckoutPaymentMethodOptionsMandateOptionsBacsDebitSchema.optional(),
     /**
      * Indicates that you intend to make future payments with this PaymentIntent's payment method.
      *
@@ -20688,7 +20645,7 @@ export namespace stripe {
   export const CheckoutCustomerBalanceBankTransferPaymentMethodOptionsSchema =
     z.object({
       eu_bank_transfer:
-        payment_method_options_customer_balance_eu_bank_accountSchema.optional(),
+        PaymentMethodOptionsCustomerBalanceEuBankAccountSchema.optional(),
       /**
        * List of address types that should be returned in the financial_addresses response. If not specified, all valid types will be returned.
        *
@@ -20731,7 +20688,7 @@ export namespace stripe {
 
   export const CheckoutSepaDebitPaymentMethodOptionsSchema = z.object({
     mandate_options:
-      checkout_payment_method_options_mandate_options_sepa_debitSchema.optional(),
+      CheckoutPaymentMethodOptionsMandateOptionsSepaDebitSchema.optional(),
     /**
      * Indicates that you intend to make future payments with this PaymentIntent's payment method.
      *
@@ -20778,7 +20735,7 @@ export namespace stripe {
         ),
       /** The locations in which this supplier operates. */
       locations: z
-        .array(climate_removals_locationSchema)
+        .array(ClimateRemovalsLocationSchema)
         .describe('The locations in which this supplier operates.'),
       /** Name of this carbon removal supplier. */
       name: z
@@ -20809,8 +20766,7 @@ export namespace stripe {
       .object({
         /** If this is a Mandate accepted online, this hash contains details about the online acceptance. */
         online:
-          confirmation_tokens_resource_mandate_data_resource_customer_acceptance_resource_onlineSchema
-            .nullable()
+          ConfirmationTokensResourceMandateDataResourceCustomerAcceptanceResourceOnlineSchema.nullable()
             .describe(
               'If this is a Mandate accepted online, this hash contains details about the online acceptance.'
             )
@@ -20835,8 +20791,7 @@ export namespace stripe {
   export const ConfirmationTokensResourcePaymentMethodOptionsSchema = z
     .object({
       /** This hash contains the card payment method options. */
-      card: confirmation_tokens_resource_payment_method_options_resource_cardSchema
-        .nullable()
+      card: ConfirmationTokensResourcePaymentMethodOptionsResourceCardSchema.nullable()
         .describe('This hash contains the card payment method options.')
         .optional()
     })
@@ -20846,7 +20801,7 @@ export namespace stripe {
   >
 
   export const ConfirmationTokensResourceShippingSchema = z.object({
-    address: addressSchema,
+    address: AddressSchema,
     /** Recipient name. */
     name: z.string().max(5000).describe('Recipient name.'),
     /** Recipient phone (including extension). */
@@ -20862,8 +20817,8 @@ export namespace stripe {
   >
 
   export const CountrySpecVerificationFieldsSchema = z.object({
-    company: country_spec_verification_field_detailsSchema,
-    individual: country_spec_verification_field_detailsSchema
+    company: CountrySpecVerificationFieldDetailsSchema,
+    individual: CountrySpecVerificationFieldDetailsSchema
   })
   export type CountrySpecVerificationFields = z.infer<
     typeof CountrySpecVerificationFieldsSchema
@@ -20876,8 +20831,7 @@ export namespace stripe {
       enabled: z.boolean().describe('Whether the Payment Element is enabled.'),
       /** This hash defines whether the Payment Element supports certain features. */
       features:
-        customer_session_resource_components_resource_payment_element_resource_featuresSchema
-          .nullable()
+        CustomerSessionResourceComponentsResourcePaymentElementResourceFeaturesSchema.nullable()
           .describe(
             'This hash defines whether the Payment Element supports certain features.'
           )
@@ -20895,7 +20849,7 @@ export namespace stripe {
     .object({
       /** The [Feature](https://stripe.com/docs/api/entitlements/feature) that the customer is entitled to. */
       feature: z
-        .union([z.string().max(5000), entitlements.featureSchema])
+        .union([z.string().max(5000), EntitlementsFeatureSchema])
         .describe(
           'The [Feature](https://stripe.com/docs/api/entitlements/feature) that the customer is entitled to.'
         ),
@@ -20951,7 +20905,7 @@ export namespace stripe {
         .object({
           /** Details about each object. */
           data: z
-            .array(financial_connections.account_ownerSchema)
+            .array(FinancialConnectionsAccountOwnerSchema)
             .describe('Details about each object.'),
           /** True if this list has another page of items after this one that can be fetched. */
           has_more: z
@@ -21028,7 +20982,7 @@ export namespace stripe {
         .enum(['pending', 'posted', 'void'])
         .describe('The status of the transaction.'),
       status_transitions:
-        bank_connections_resource_transaction_resource_status_transitionsSchema,
+        BankConnectionsResourceTransactionResourceStatusTransitionsSchema,
       /** Time at which the transaction was transacted. Measured in seconds since the Unix epoch. */
       transacted_at: z
         .number()
@@ -21068,7 +21022,7 @@ export namespace stripe {
         .describe('The body payload to send to the destination endpoint.'),
       /** The headers to include in the forwarded request. Can be omitted if no additional headers (excluding Stripe-generated ones such as the Content-Type header) should be included. */
       headers: z
-        .array(forwarded_request_headerSchema)
+        .array(ForwardedRequestHeaderSchema)
         .describe(
           'The headers to include in the forwarded request. Can be omitted if no additional headers (excluding Stripe-generated ones such as the Content-Type header) should be included.'
         ),
@@ -21094,7 +21048,7 @@ export namespace stripe {
         .describe('The response body from the destination endpoint to Stripe.'),
       /** HTTP headers that the destination endpoint returned. */
       headers: z
-        .array(forwarded_request_headerSchema)
+        .array(ForwardedRequestHeaderSchema)
         .describe('HTTP headers that the destination endpoint returned.'),
       /** The HTTP status code that the destination endpoint returned. */
       status: z
@@ -21120,8 +21074,7 @@ export namespace stripe {
         .describe('Email to be verified.')
         .optional(),
       /** Details on the verification error. Present when status is `unverified`. */
-      error: gelato_email_report_errorSchema
-        .nullable()
+      error: GelatoEmailReportErrorSchema.nullable()
         .describe(
           'Details on the verification error. Present when status is `unverified`.'
         )
@@ -21138,8 +21091,7 @@ export namespace stripe {
   export const GelatoPhoneReportSchema = z
     .object({
       /** Details on the verification error. Present when status is `unverified`. */
-      error: gelato_phone_report_errorSchema
-        .nullable()
+      error: GelatoPhoneReportErrorSchema.nullable()
         .describe(
           'Details on the verification error. Present when status is `unverified`.'
         )
@@ -21172,8 +21124,7 @@ export namespace stripe {
         )
         .optional(),
       /** Details on the verification error. Present when status is `unverified`. */
-      error: gelato_selfie_report_errorSchema
-        .nullable()
+      error: GelatoSelfieReportErrorSchema.nullable()
         .describe(
           'Details on the verification error. Present when status is `unverified`.'
         )
@@ -21203,8 +21154,7 @@ export namespace stripe {
         .describe(
           "Whether this payment method may be offered at checkout. True if `display_preference` is `on` and the payment method's capability is active."
         ),
-      display_preference:
-        payment_method_config_resource_display_preferenceSchema
+      display_preference: PaymentMethodConfigResourceDisplayPreferenceSchema
     })
   export type PaymentMethodConfigResourcePaymentMethodProperties = z.infer<
     typeof PaymentMethodConfigResourcePaymentMethodPropertiesSchema
@@ -21218,7 +21168,7 @@ export namespace stripe {
         .enum(['active', 'inactive'])
         .describe('The status of the payment method on the domain.'),
       status_details:
-        payment_method_domain_resource_payment_method_status_detailsSchema.optional()
+        PaymentMethodDomainResourcePaymentMethodStatusDetailsSchema.optional()
     })
     .describe(
       'Indicates the status of a specific payment method on a payment method domain.'
@@ -21233,7 +21183,7 @@ export namespace stripe {
    */
   export const ProductFeatureSchema = z
     .object({
-      entitlement_feature: entitlements.featureSchema,
+      entitlement_feature: EntitlementsFeatureSchema,
       /** Unique identifier for the object. */
       id: z.string().max(5000).describe('Unique identifier for the object.'),
       /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
@@ -21304,7 +21254,7 @@ export namespace stripe {
         .object({
           /** Details about each object. */
           data: z
-            .array(radar.value_list_itemSchema)
+            .array(RadarValueListItemSchema)
             .describe('Details about each object.'),
           /** True if this list has another page of items after this one that can be fetched. */
           has_more: z
@@ -21375,7 +21325,7 @@ export namespace stripe {
         .describe(
           "String representing the object's type. Objects of the same type share the same value."
         ),
-      period: periodSchema,
+      period: PeriodSchema,
       /** The ID of the subscription item this summary is describing. */
       subscription_item: z
         .string()
@@ -21395,7 +21345,7 @@ export namespace stripe {
   export type UsageRecordSummary = z.infer<typeof UsageRecordSummarySchema>
 
   export const TaxProductResourceShipFromDetailsSchema = z.object({
-    address: tax_product_resource_postal_addressSchema
+    address: TaxProductResourcePostalAddressSchema
   })
   export type TaxProductResourceShipFromDetails = z.infer<
     typeof TaxProductResourceShipFromDetailsSchema
@@ -21412,8 +21362,7 @@ export namespace stripe {
       )
       .optional(),
     /** The amount of the tax rate when the `rate_type` is `flat_amount`. Tax rates with `rate_type` `percentage` can vary based on the transaction, resulting in this field being `null`. This field exposes the amount and currency of the flat tax rate. */
-    flat_amount: tax_rate_flat_amountSchema
-      .nullable()
+    flat_amount: TaxRateFlatAmountSchema.nullable()
       .describe(
         'The amount of the tax rate when the `rate_type` is `flat_amount`. Tax rates with `rate_type` `percentage` can vary based on the transaction, resulting in this field being `null`. This field exposes the amount and currency of the flat tax rate.'
       )
@@ -21469,7 +21418,7 @@ export namespace stripe {
   export const TaxProductRegistrationsResourceCountryOptionsEuropeSchema =
     z.object({
       standard:
-        tax_product_registrations_resource_country_options_eu_standardSchema.optional(),
+        TaxProductRegistrationsResourceCountryOptionsEuStandardSchema.optional(),
       /** Type of registration in an EU country. */
       type: z
         .enum(['ioss', 'oss_non_union', 'oss_union', 'standard'])
@@ -21482,7 +21431,7 @@ export namespace stripe {
   export const TaxProductRegistrationsResourceCountryOptionsCanadaSchema =
     z.object({
       province_standard:
-        tax_product_registrations_resource_country_options_ca_province_standardSchema.optional(),
+        TaxProductRegistrationsResourceCountryOptionsCaProvinceStandardSchema.optional(),
       /** Type of registration in Canada. */
       type: z
         .enum(['province_standard', 'simplified', 'standard'])
@@ -21497,7 +21446,7 @@ export namespace stripe {
       /** Elections for the state sales tax registration. */
       elections: z
         .array(
-          tax_product_registrations_resource_country_options_us_state_sales_tax_electionSchema
+          TaxProductRegistrationsResourceCountryOptionsUsStateSalesTaxElectionSchema
         )
         .describe('Elections for the state sales tax registration.')
         .optional()
@@ -21508,7 +21457,7 @@ export namespace stripe {
     >
 
   export const TaxProductResourceTaxSettingsHeadOfficeSchema = z.object({
-    address: addressSchema
+    address: AddressSchema
   })
   export type TaxProductResourceTaxSettingsHeadOffice = z.infer<
     typeof TaxProductResourceTaxSettingsHeadOfficeSchema
@@ -21574,8 +21523,7 @@ export namespace stripe {
       .describe('A custom identifier for this line item in the transaction.'),
     /** If `type=reversal`, contains information about what was reversed. */
     reversal:
-      tax_product_resource_tax_transaction_line_item_resource_reversalSchema
-        .nullable()
+      TaxProductResourceTaxTransactionLineItemResourceReversalSchema.nullable()
         .describe(
           'If `type=reversal`, contains information about what was reversed.'
         )
@@ -21606,22 +21554,22 @@ export namespace stripe {
 
   export const TerminalConfigurationConfigurationResourceTippingSchema =
     z.object({
-      aud: terminal_configuration_configuration_resource_currency_specific_configSchema.optional(),
-      cad: terminal_configuration_configuration_resource_currency_specific_configSchema.optional(),
-      chf: terminal_configuration_configuration_resource_currency_specific_configSchema.optional(),
-      czk: terminal_configuration_configuration_resource_currency_specific_configSchema.optional(),
-      dkk: terminal_configuration_configuration_resource_currency_specific_configSchema.optional(),
-      eur: terminal_configuration_configuration_resource_currency_specific_configSchema.optional(),
-      gbp: terminal_configuration_configuration_resource_currency_specific_configSchema.optional(),
-      hkd: terminal_configuration_configuration_resource_currency_specific_configSchema.optional(),
-      jpy: terminal_configuration_configuration_resource_currency_specific_configSchema.optional(),
-      myr: terminal_configuration_configuration_resource_currency_specific_configSchema.optional(),
-      nok: terminal_configuration_configuration_resource_currency_specific_configSchema.optional(),
-      nzd: terminal_configuration_configuration_resource_currency_specific_configSchema.optional(),
-      pln: terminal_configuration_configuration_resource_currency_specific_configSchema.optional(),
-      sek: terminal_configuration_configuration_resource_currency_specific_configSchema.optional(),
-      sgd: terminal_configuration_configuration_resource_currency_specific_configSchema.optional(),
-      usd: terminal_configuration_configuration_resource_currency_specific_configSchema.optional()
+      aud: TerminalConfigurationConfigurationResourceCurrencySpecificConfigSchema.optional(),
+      cad: TerminalConfigurationConfigurationResourceCurrencySpecificConfigSchema.optional(),
+      chf: TerminalConfigurationConfigurationResourceCurrencySpecificConfigSchema.optional(),
+      czk: TerminalConfigurationConfigurationResourceCurrencySpecificConfigSchema.optional(),
+      dkk: TerminalConfigurationConfigurationResourceCurrencySpecificConfigSchema.optional(),
+      eur: TerminalConfigurationConfigurationResourceCurrencySpecificConfigSchema.optional(),
+      gbp: TerminalConfigurationConfigurationResourceCurrencySpecificConfigSchema.optional(),
+      hkd: TerminalConfigurationConfigurationResourceCurrencySpecificConfigSchema.optional(),
+      jpy: TerminalConfigurationConfigurationResourceCurrencySpecificConfigSchema.optional(),
+      myr: TerminalConfigurationConfigurationResourceCurrencySpecificConfigSchema.optional(),
+      nok: TerminalConfigurationConfigurationResourceCurrencySpecificConfigSchema.optional(),
+      nzd: TerminalConfigurationConfigurationResourceCurrencySpecificConfigSchema.optional(),
+      pln: TerminalConfigurationConfigurationResourceCurrencySpecificConfigSchema.optional(),
+      sek: TerminalConfigurationConfigurationResourceCurrencySpecificConfigSchema.optional(),
+      sgd: TerminalConfigurationConfigurationResourceCurrencySpecificConfigSchema.optional(),
+      usd: TerminalConfigurationConfigurationResourceCurrencySpecificConfigSchema.optional()
     })
   export type TerminalConfigurationConfigurationResourceTipping = z.infer<
     typeof TerminalConfigurationConfigurationResourceTippingSchema
@@ -21634,7 +21582,7 @@ export namespace stripe {
    */
   export const TerminalLocationSchema = z
     .object({
-      address: addressSchema,
+      address: AddressSchema,
       /** The ID of a configuration that will be used to customize all readers in this location. */
       configuration_overrides: z
         .string()
@@ -21691,7 +21639,7 @@ export namespace stripe {
           'Override showing a tipping selection screen on this transaction.'
         )
         .optional(),
-      tipping: terminal_reader_reader_resource_tipping_configSchema.optional()
+      tipping: TerminalReaderReaderResourceTippingConfigSchema.optional()
     })
     .describe('Represents a per-transaction override of a reader configuration')
   export type TerminalReaderReaderResourceProcessConfig = z.infer<
@@ -21709,7 +21657,7 @@ export namespace stripe {
         ),
       /** List of line items in the cart. */
       line_items: z
-        .array(terminal_reader_reader_resource_line_itemSchema)
+        .array(TerminalReaderReaderResourceLineItemSchema)
         .describe('List of line items in the cart.'),
       /** Tax amount for the entire cart. A positive integer in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal). */
       tax: z
@@ -21734,7 +21682,7 @@ export namespace stripe {
   >
 
   export const TreasurySharedResourceBillingDetailsSchema = z.object({
-    address: addressSchema,
+    address: AddressSchema,
     /** Email address. */
     email: z
       .string()
@@ -21763,7 +21711,7 @@ export namespace stripe {
       /** Additional details; includes at least one entry when the status is not `active`. */
       status_details: z
         .array(
-          treasury_financial_accounts_resource_toggles_setting_status_detailsSchema
+          TreasuryFinancialAccountsResourceTogglesSettingStatusDetailsSchema
         )
         .describe(
           'Additional details; includes at least one entry when the status is not `active`.'
@@ -21788,7 +21736,7 @@ export namespace stripe {
       /** Additional details; includes at least one entry when the status is not `active`. */
       status_details: z
         .array(
-          treasury_financial_accounts_resource_toggles_setting_status_detailsSchema
+          TreasuryFinancialAccountsResourceTogglesSettingStatusDetailsSchema
         )
         .describe(
           'Additional details; includes at least one entry when the status is not `active`.'
@@ -21814,7 +21762,7 @@ export namespace stripe {
         /** Additional details; includes at least one entry when the status is not `active`. */
         status_details: z
           .array(
-            treasury_financial_accounts_resource_toggles_setting_status_detailsSchema
+            TreasuryFinancialAccountsResourceTogglesSettingStatusDetailsSchema
           )
           .describe(
             'Additional details; includes at least one entry when the status is not `active`.'
@@ -21843,7 +21791,7 @@ export namespace stripe {
         /** Additional details; includes at least one entry when the status is not `active`. */
         status_details: z
           .array(
-            treasury_financial_accounts_resource_toggles_setting_status_detailsSchema
+            TreasuryFinancialAccountsResourceTogglesSettingStatusDetailsSchema
           )
           .describe(
             'Additional details; includes at least one entry when the status is not `active`.'
@@ -21860,7 +21808,7 @@ export namespace stripe {
   /** FinancialAddresses contain identifying information that resolves to a FinancialAccount. */
   export const TreasuryFinancialAccountsResourceFinancialAddressSchema = z
     .object({
-      aba: treasury_financial_accounts_resource_aba_recordSchema.optional(),
+      aba: TreasuryFinancialAccountsResourceAbaRecordSchema.optional(),
       /** The list of networks that the address supports */
       supported_networks: z
         .array(z.enum(['ach', 'us_domestic_wire']))
@@ -21878,10 +21826,10 @@ export namespace stripe {
 
   export const TreasuryFinancialAccountsResourceStatusDetailsSchema = z.object({
     /** Details related to the closure of this FinancialAccount */
-    closed: treasury_financial_accounts_resource_closed_status_detailsSchema
-      .nullable()
-      .describe('Details related to the closure of this FinancialAccount')
-      .optional()
+    closed:
+      TreasuryFinancialAccountsResourceClosedStatusDetailsSchema.nullable()
+        .describe('Details related to the closure of this FinancialAccount')
+        .optional()
   })
   export type TreasuryFinancialAccountsResourceStatusDetails = z.infer<
     typeof TreasuryFinancialAccountsResourceStatusDetailsSchema
@@ -21890,7 +21838,7 @@ export namespace stripe {
   export const LegalEntityCompanyVerificationDocumentSchema = z.object({
     /** The back of a document returned by a [file upload](https://stripe.com/docs/api#create_file) with a `purpose` value of `additional_verification`. */
     back: z
-      .union([z.string().max(5000), fileSchema])
+      .union([z.string().max(5000), FileSchema])
       .nullable()
       .describe(
         'The back of a document returned by a [file upload](https://stripe.com/docs/api#create_file) with a `purpose` value of `additional_verification`.'
@@ -21916,7 +21864,7 @@ export namespace stripe {
       .optional(),
     /** The front of a document returned by a [file upload](https://stripe.com/docs/api#create_file) with a `purpose` value of `additional_verification`. */
     front: z
-      .union([z.string().max(5000), fileSchema])
+      .union([z.string().max(5000), FileSchema])
       .nullable()
       .describe(
         'The front of a document returned by a [file upload](https://stripe.com/docs/api#create_file) with a `purpose` value of `additional_verification`.'
@@ -21943,7 +21891,7 @@ export namespace stripe {
           'Amount (in the `currency` specified) that will be taken off the subtotal of any invoices for this customer.'
         )
         .optional(),
-      applies_to: coupon_applies_toSchema.optional(),
+      applies_to: CouponAppliesToSchema.optional(),
       /** Time at which the object was created. Measured in seconds since the Unix epoch. */
       created: z
         .number()
@@ -21961,7 +21909,7 @@ export namespace stripe {
         .optional(),
       /** Coupons defined in each available currency option. Each key must be a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) and a [supported currency](https://stripe.com/docs/currencies). */
       currency_options: z
-        .record(coupon_currency_optionSchema)
+        .record(CouponCurrencyOptionSchema)
         .describe(
           'Coupons defined in each available currency option. Each key must be a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) and a [supported currency](https://stripe.com/docs/currencies).'
         )
@@ -22063,8 +22011,8 @@ export namespace stripe {
       .nullable()
       .describe('The time that the customer accepts the mandate.')
       .optional(),
-    offline: offline_acceptanceSchema.optional(),
-    online: online_acceptanceSchema.optional(),
+    offline: OfflineAcceptanceSchema.optional(),
+    online: OnlineAcceptanceSchema.optional(),
     /** The mandate includes the type of customer acceptance information, such as: `online` or `offline`. */
     type: z
       .enum(['offline', 'online'])
@@ -22075,8 +22023,8 @@ export namespace stripe {
   export type CustomerAcceptance = z.infer<typeof CustomerAcceptanceSchema>
 
   export const SetupAttemptPaymentMethodDetailsCardWalletSchema = z.object({
-    apple_pay: payment_method_details_card_wallet_apple_paySchema.optional(),
-    google_pay: payment_method_details_card_wallet_google_paySchema.optional(),
+    apple_pay: PaymentMethodDetailsCardWalletApplePaySchema.optional(),
+    google_pay: PaymentMethodDetailsCardWalletGooglePaySchema.optional(),
     /** The type of the card wallet, one of `apple_pay`, `google_pay`, or `link`. An additional hash is included on the Wallet subhash with a name matching this value. It contains additional information specific to the card wallet type. */
     type: z
       .enum(['apple_pay', 'google_pay', 'link'])
@@ -22089,7 +22037,7 @@ export namespace stripe {
   >
 
   export const RefundNextActionSchema = z.object({
-    display_details: refund_next_action_display_detailsSchema.optional(),
+    display_details: RefundNextActionDisplayDetailsSchema.optional(),
     /** Type of the next action to perform. */
     type: z.string().max(5000).describe('Type of the next action to perform.')
   })
@@ -22097,9 +22045,8 @@ export namespace stripe {
 
   export const DisputeEnhancedEligibilitySchema = z.object({
     visa_compelling_evidence_3:
-      dispute_enhanced_eligibility_visa_compelling_evidence3Schema.optional(),
-    visa_compliance:
-      dispute_enhanced_eligibility_visa_complianceSchema.optional()
+      DisputeEnhancedEligibilityVisaCompellingEvidence3Schema.optional(),
+    visa_compliance: DisputeEnhancedEligibilityVisaComplianceSchema.optional()
   })
   export type DisputeEnhancedEligibility = z.infer<
     typeof DisputeEnhancedEligibilitySchema
@@ -22108,7 +22055,7 @@ export namespace stripe {
   export const IssuingCardholderIdDocumentSchema = z.object({
     /** The back of a document returned by a [file upload](https://stripe.com/docs/api#create_file) with a `purpose` value of `identity_document`. */
     back: z
-      .union([z.string().max(5000), fileSchema])
+      .union([z.string().max(5000), FileSchema])
       .nullable()
       .describe(
         'The back of a document returned by a [file upload](https://stripe.com/docs/api#create_file) with a `purpose` value of `identity_document`.'
@@ -22116,7 +22063,7 @@ export namespace stripe {
       .optional(),
     /** The front of a document returned by a [file upload](https://stripe.com/docs/api#create_file) with a `purpose` value of `identity_document`. */
     front: z
-      .union([z.string().max(5000), fileSchema])
+      .union([z.string().max(5000), FileSchema])
       .nullable()
       .describe(
         'The front of a document returned by a [file upload](https://stripe.com/docs/api#create_file) with a `purpose` value of `identity_document`.'
@@ -22128,8 +22075,8 @@ export namespace stripe {
   >
 
   export const IssuingCardWalletsSchema = z.object({
-    apple_pay: issuing_card_apple_paySchema,
-    google_pay: issuing_card_google_paySchema,
+    apple_pay: IssuingCardApplePaySchema,
+    google_pay: IssuingCardGooglePaySchema,
     /** Unique identifier for a card used with digital wallets */
     primary_account_identifier: z
       .string()
@@ -22143,7 +22090,7 @@ export namespace stripe {
   export const IssuingDisputeCanceledEvidenceSchema = z.object({
     /** (ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute. */
     additional_documentation: z
-      .union([z.string().max(5000), fileSchema])
+      .union([z.string().max(5000), FileSchema])
       .nullable()
       .describe(
         '(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.'
@@ -22223,7 +22170,7 @@ export namespace stripe {
   export const IssuingDisputeDuplicateEvidenceSchema = z.object({
     /** (ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute. */
     additional_documentation: z
-      .union([z.string().max(5000), fileSchema])
+      .union([z.string().max(5000), FileSchema])
       .nullable()
       .describe(
         '(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.'
@@ -22231,7 +22178,7 @@ export namespace stripe {
       .optional(),
     /** (ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Copy of the card statement showing that the product had already been paid for. */
     card_statement: z
-      .union([z.string().max(5000), fileSchema])
+      .union([z.string().max(5000), FileSchema])
       .nullable()
       .describe(
         '(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Copy of the card statement showing that the product had already been paid for.'
@@ -22239,7 +22186,7 @@ export namespace stripe {
       .optional(),
     /** (ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Copy of the receipt showing that the product had been paid for in cash. */
     cash_receipt: z
-      .union([z.string().max(5000), fileSchema])
+      .union([z.string().max(5000), FileSchema])
       .nullable()
       .describe(
         '(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Copy of the receipt showing that the product had been paid for in cash.'
@@ -22247,7 +22194,7 @@ export namespace stripe {
       .optional(),
     /** (ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Image of the front and back of the check that was used to pay for the product. */
     check_image: z
-      .union([z.string().max(5000), fileSchema])
+      .union([z.string().max(5000), FileSchema])
       .nullable()
       .describe(
         '(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Image of the front and back of the check that was used to pay for the product.'
@@ -22279,7 +22226,7 @@ export namespace stripe {
   export const IssuingDisputeFraudulentEvidenceSchema = z.object({
     /** (ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute. */
     additional_documentation: z
-      .union([z.string().max(5000), fileSchema])
+      .union([z.string().max(5000), FileSchema])
       .nullable()
       .describe(
         '(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.'
@@ -22303,7 +22250,7 @@ export namespace stripe {
     {
       /** (ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute. */
       additional_documentation: z
-        .union([z.string().max(5000), fileSchema])
+        .union([z.string().max(5000), FileSchema])
         .nullable()
         .describe(
           '(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.'
@@ -22358,7 +22305,7 @@ export namespace stripe {
   export const IssuingDisputeNoValidAuthorizationEvidenceSchema = z.object({
     /** (ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute. */
     additional_documentation: z
-      .union([z.string().max(5000), fileSchema])
+      .union([z.string().max(5000), FileSchema])
       .nullable()
       .describe(
         '(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.'
@@ -22381,7 +22328,7 @@ export namespace stripe {
   export const IssuingDisputeNotReceivedEvidenceSchema = z.object({
     /** (ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute. */
     additional_documentation: z
-      .union([z.string().max(5000), fileSchema])
+      .union([z.string().max(5000), FileSchema])
       .nullable()
       .describe(
         '(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.'
@@ -22424,7 +22371,7 @@ export namespace stripe {
   export const IssuingDisputeOtherEvidenceSchema = z.object({
     /** (ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute. */
     additional_documentation: z
-      .union([z.string().max(5000), fileSchema])
+      .union([z.string().max(5000), FileSchema])
       .nullable()
       .describe(
         '(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.'
@@ -22460,7 +22407,7 @@ export namespace stripe {
   export const IssuingDisputeServiceNotAsDescribedEvidenceSchema = z.object({
     /** (ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute. */
     additional_documentation: z
-      .union([z.string().max(5000), fileSchema])
+      .union([z.string().max(5000), FileSchema])
       .nullable()
       .describe(
         '(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.'
@@ -22516,8 +22463,7 @@ export namespace stripe {
       ),
     /** The exemption applied to this authorization. */
     authentication_exemption:
-      issuing_authorization_authentication_exemptionSchema
-        .nullable()
+      IssuingAuthorizationAuthenticationExemptionSchema.nullable()
         .describe('The exemption applied to this authorization.')
         .optional(),
     /** Whether the cardholder provided a CVC and if it matched Stripe’s record. */
@@ -22542,8 +22488,7 @@ export namespace stripe {
       )
       .optional(),
     /** 3D Secure details. */
-    three_d_secure: issuing_authorization_three_d_secureSchema
-      .nullable()
+    three_d_secure: IssuingAuthorizationThreeDSecureSchema.nullable()
       .describe('3D Secure details.')
       .optional()
   })
@@ -22552,8 +22497,7 @@ export namespace stripe {
   >
 
   export const PaymentMethodDetailsAmazonPaySchema = z.object({
-    funding:
-      amazon_pay_underlying_payment_method_funding_detailsSchema.optional()
+    funding: AmazonPayUnderlyingPaymentMethodFundingDetailsSchema.optional()
   })
   export type PaymentMethodDetailsAmazonPay = z.infer<
     typeof PaymentMethodDetailsAmazonPaySchema
@@ -22561,8 +22505,7 @@ export namespace stripe {
 
   export const PaymentMethodDetailsKlarnaSchema = z.object({
     /** The payer details for this transaction. */
-    payer_details: klarna_payer_detailsSchema
-      .nullable()
+    payer_details: KlarnaPayerDetailsSchema.nullable()
       .describe('The payer details for this transaction.')
       .optional(),
     /**
@@ -22595,8 +22538,7 @@ export namespace stripe {
   >
 
   export const PaymentMethodDetailsRevolutPaySchema = z.object({
-    funding:
-      revolut_pay_underlying_payment_method_funding_detailsSchema.optional()
+    funding: RevolutPayUnderlyingPaymentMethodFundingDetailsSchema.optional()
   })
   export type PaymentMethodDetailsRevolutPay = z.infer<
     typeof PaymentMethodDetailsRevolutPaySchema
@@ -22604,8 +22546,7 @@ export namespace stripe {
 
   export const CurrencyOptionSchema = z.object({
     /** When set, provides configuration for the amount to be adjusted by the customer during Checkout Sessions and Payment Links. */
-    custom_unit_amount: custom_unit_amountSchema
-      .nullable()
+    custom_unit_amount: CustomUnitAmountSchema.nullable()
       .describe(
         'When set, provides configuration for the amount to be adjusted by the customer during Checkout Sessions and Payment Links.'
       )
@@ -22620,7 +22561,7 @@ export namespace stripe {
       .optional(),
     /** Each element represents a pricing tier. This parameter requires `billing_scheme` to be set to `tiered`. See also the documentation for `billing_scheme`. */
     tiers: z
-      .array(price_tierSchema)
+      .array(PriceTierSchema)
       .describe(
         'Each element represents a pricing tier. This parameter requires `billing_scheme` to be set to `tiered`. See also the documentation for `billing_scheme`.'
       )
@@ -22647,7 +22588,7 @@ export namespace stripe {
 
   export const InvoicePaymentMethodOptionsCustomerBalanceSchema = z.object({
     bank_transfer:
-      invoice_payment_method_options_customer_balance_bank_transferSchema.optional(),
+      InvoicePaymentMethodOptionsCustomerBalanceBankTransferSchema.optional(),
     /** The funding method type to be used when there are not enough funds in the customer balance. Permitted values include: `bank_transfer`. */
     funding_type: z
       .literal('bank_transfer')
@@ -22663,7 +22604,7 @@ export namespace stripe {
 
   export const InvoicePaymentMethodOptionsUsBankAccountSchema = z.object({
     financial_connections:
-      invoice_payment_method_options_us_bank_account_linked_account_optionsSchema.optional(),
+      InvoicePaymentMethodOptionsUsBankAccountLinkedAccountOptionsSchema.optional(),
     /** Bank account verification method. */
     verification_method: z
       .enum(['automatic', 'instant', 'microdeposits'])
@@ -22725,8 +22666,7 @@ export namespace stripe {
       status: z
         .enum(['advancing', 'internal_failure', 'ready'])
         .describe('The status of the Test Clock.'),
-      status_details:
-        billing_clocks_resource_status_details_status_detailsSchema
+      status_details: BillingClocksResourceStatusDetailsStatusDetailsSchema
     })
     .describe(
       'A test clock enables deterministic control over objects in testmode. With a test clock, you can create\nobjects at a frozen time in the past or future, and advance to a specific future time to observe webhooks and state changes. After the clock advances,\nyou can either validate the current state of your scenario (and test your assumptions), change the current state of your scenario (and test more complex scenarios), or keep advancing forward in time.'
@@ -22734,7 +22674,7 @@ export namespace stripe {
   export type TestHelpersTestClock = z.infer<typeof TestHelpersTestClockSchema>
 
   export const BillingCreditGrantsResourceApplicabilityConfigSchema = z.object({
-    scope: billing_credit_grants_resource_scopeSchema
+    scope: BillingCreditGrantsResourceScopeSchema
   })
   export type BillingCreditGrantsResourceApplicabilityConfig = z.infer<
     typeof BillingCreditGrantsResourceApplicabilityConfigSchema
@@ -22752,7 +22692,7 @@ export namespace stripe {
       .describe('Whether this tax amount is inclusive or exclusive.'),
     /** The tax rate that was applied to get this tax amount. */
     tax_rate: z
-      .union([z.string().max(5000), tax_rateSchema])
+      .union([z.string().max(5000), TaxRateSchema])
       .describe('The tax rate that was applied to get this tax amount.'),
     /** The reasoning behind this tax, for example, if the product is tax exempt. The possible values for this field may be extended as new tax rules are supported. */
     taxability_reason: z
@@ -22793,7 +22733,7 @@ export namespace stripe {
   export const LineItemsTaxAmountSchema = z.object({
     /** Amount of tax applied for this rate. */
     amount: z.number().int().describe('Amount of tax applied for this rate.'),
-    rate: tax_rateSchema,
+    rate: TaxRateSchema,
     /** The reasoning behind this tax, for example, if the product is tax exempt. The possible values for this field may be extended as new tax rules are supported. */
     taxability_reason: z
       .enum([
@@ -22832,7 +22772,7 @@ export namespace stripe {
 
   export const PaymentMethodOptionsCustomerBalanceSchema = z.object({
     bank_transfer:
-      payment_method_options_customer_balance_bank_transferSchema.optional(),
+      PaymentMethodOptionsCustomerBalanceBankTransferSchema.optional(),
     /** The funding method type to be used when there are not enough funds in the customer balance. Permitted values include: `bank_transfer`. */
     funding_type: z
       .literal('bank_transfer')
@@ -22862,7 +22802,7 @@ export namespace stripe {
   >
 
   export const PaymentIntentProcessingSchema = z.object({
-    card: payment_intent_card_processingSchema.optional(),
+    card: PaymentIntentCardProcessingSchema.optional(),
     /** Type of the payment method for which payment is in `processing` state, one of `card`. */
     type: z
       .literal('card')
@@ -22877,7 +22817,7 @@ export namespace stripe {
   export const AccountFutureRequirementsSchema = z.object({
     /** Fields that are due and can be satisfied by providing the corresponding alternative fields instead. */
     alternatives: z
-      .array(account_requirements_alternativeSchema)
+      .array(AccountRequirementsAlternativeSchema)
       .nullable()
       .describe(
         'Fields that are due and can be satisfied by providing the corresponding alternative fields instead.'
@@ -22926,7 +22866,7 @@ export namespace stripe {
       .optional(),
     /** Fields that are `currently_due` and need to be collected again because validation or verification failed. */
     errors: z
-      .array(account_requirements_errorSchema)
+      .array(AccountRequirementsErrorSchema)
       .nullable()
       .describe(
         'Fields that are `currently_due` and need to be collected again because validation or verification failed.'
@@ -22964,7 +22904,7 @@ export namespace stripe {
   export const PersonFutureRequirementsSchema = z.object({
     /** Fields that are due and can be satisfied by providing the corresponding alternative fields instead. */
     alternatives: z
-      .array(account_requirements_alternativeSchema)
+      .array(AccountRequirementsAlternativeSchema)
       .nullable()
       .describe(
         'Fields that are due and can be satisfied by providing the corresponding alternative fields instead.'
@@ -22978,7 +22918,7 @@ export namespace stripe {
       ),
     /** Fields that are `currently_due` and need to be collected again because validation or verification failed. */
     errors: z
-      .array(account_requirements_errorSchema)
+      .array(AccountRequirementsErrorSchema)
       .describe(
         'Fields that are `currently_due` and need to be collected again because validation or verification failed.'
       ),
@@ -23008,7 +22948,7 @@ export namespace stripe {
   export const PersonRequirementsSchema = z.object({
     /** Fields that are due and can be satisfied by providing the corresponding alternative fields instead. */
     alternatives: z
-      .array(account_requirements_alternativeSchema)
+      .array(AccountRequirementsAlternativeSchema)
       .nullable()
       .describe(
         'Fields that are due and can be satisfied by providing the corresponding alternative fields instead.'
@@ -23022,7 +22962,7 @@ export namespace stripe {
       ),
     /** Fields that are `currently_due` and need to be collected again because validation or verification failed. */
     errors: z
-      .array(account_requirements_errorSchema)
+      .array(AccountRequirementsErrorSchema)
       .describe(
         'Fields that are `currently_due` and need to be collected again because validation or verification failed.'
       ),
@@ -23050,7 +22990,7 @@ export namespace stripe {
   export const LegalEntityPersonVerificationDocumentSchema = z.object({
     /** The back of an ID returned by a [file upload](https://stripe.com/docs/api#create_file) with a `purpose` value of `identity_document`. */
     back: z
-      .union([z.string().max(5000), fileSchema])
+      .union([z.string().max(5000), FileSchema])
       .nullable()
       .describe(
         'The back of an ID returned by a [file upload](https://stripe.com/docs/api#create_file) with a `purpose` value of `identity_document`.'
@@ -23076,7 +23016,7 @@ export namespace stripe {
       .optional(),
     /** The front of an ID returned by a [file upload](https://stripe.com/docs/api#create_file) with a `purpose` value of `identity_document`. */
     front: z
-      .union([z.string().max(5000), fileSchema])
+      .union([z.string().max(5000), FileSchema])
       .nullable()
       .describe(
         'The front of an ID returned by a [file upload](https://stripe.com/docs/api#create_file) with a `purpose` value of `identity_document`.'
@@ -23090,7 +23030,7 @@ export namespace stripe {
   export const AccountRequirementsSchema = z.object({
     /** Fields that are due and can be satisfied by providing the corresponding alternative fields instead. */
     alternatives: z
-      .array(account_requirements_alternativeSchema)
+      .array(AccountRequirementsAlternativeSchema)
       .nullable()
       .describe(
         'Fields that are due and can be satisfied by providing the corresponding alternative fields instead.'
@@ -23139,7 +23079,7 @@ export namespace stripe {
       .optional(),
     /** Fields that are `currently_due` and need to be collected again because validation or verification failed. */
     errors: z
-      .array(account_requirements_errorSchema)
+      .array(AccountRequirementsErrorSchema)
       .nullable()
       .describe(
         'Fields that are `currently_due` and need to be collected again because validation or verification failed.'
@@ -23175,7 +23115,7 @@ export namespace stripe {
   export const AccountBrandingSettingsSchema = z.object({
     /** (ID of a [file upload](https://stripe.com/docs/guides/file-upload)) An icon for the account. Must be square and at least 128px x 128px. */
     icon: z
-      .union([z.string().max(5000), fileSchema])
+      .union([z.string().max(5000), FileSchema])
       .nullable()
       .describe(
         '(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) An icon for the account. Must be square and at least 128px x 128px.'
@@ -23183,7 +23123,7 @@ export namespace stripe {
       .optional(),
     /** (ID of a [file upload](https://stripe.com/docs/guides/file-upload)) A logo for the account that will be used in Checkout instead of the icon and without the account's name next to it if provided. Must be at least 128px x 128px. */
     logo: z
-      .union([z.string().max(5000), fileSchema])
+      .union([z.string().max(5000), FileSchema])
       .nullable()
       .describe(
         "(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) A logo for the account that will be used in Checkout instead of the icon and without the account's name next to it if provided. Must be at least 128px x 128px."
@@ -23213,8 +23153,8 @@ export namespace stripe {
   >
 
   export const DeletedExternalAccountSchema = z.union([
-    deleted_bank_accountSchema,
-    deleted_cardSchema
+    DeletedBankAccountSchema,
+    DeletedCardSchema
   ])
   export type DeletedExternalAccount = z.infer<
     typeof DeletedExternalAccountSchema
@@ -23223,7 +23163,7 @@ export namespace stripe {
   export const AccountCapabilityFutureRequirementsSchema = z.object({
     /** Fields that are due and can be satisfied by providing the corresponding alternative fields instead. */
     alternatives: z
-      .array(account_requirements_alternativeSchema)
+      .array(AccountRequirementsAlternativeSchema)
       .nullable()
       .describe(
         'Fields that are due and can be satisfied by providing the corresponding alternative fields instead.'
@@ -23265,7 +23205,7 @@ export namespace stripe {
       .optional(),
     /** Fields that are `currently_due` and need to be collected again because validation or verification failed. */
     errors: z
-      .array(account_requirements_errorSchema)
+      .array(AccountRequirementsErrorSchema)
       .describe(
         'Fields that are `currently_due` and need to be collected again because validation or verification failed.'
       ),
@@ -23295,7 +23235,7 @@ export namespace stripe {
   export const AccountCapabilityRequirementsSchema = z.object({
     /** Fields that are due and can be satisfied by providing the corresponding alternative fields instead. */
     alternatives: z
-      .array(account_requirements_alternativeSchema)
+      .array(AccountRequirementsAlternativeSchema)
       .nullable()
       .describe(
         'Fields that are due and can be satisfied by providing the corresponding alternative fields instead.'
@@ -23337,7 +23277,7 @@ export namespace stripe {
       .optional(),
     /** Fields that are `currently_due` and need to be collected again because validation or verification failed. */
     errors: z
-      .array(account_requirements_errorSchema)
+      .array(AccountRequirementsErrorSchema)
       .describe(
         'Fields that are `currently_due` and need to be collected again because validation or verification failed.'
       ),
@@ -23375,38 +23315,37 @@ export namespace stripe {
       ),
     /** Breakdown of balance by destination. */
     net_available: z
-      .array(balance_net_availableSchema)
+      .array(BalanceNetAvailableSchema)
       .describe('Breakdown of balance by destination.')
       .optional(),
-    source_types: balance_amount_by_source_typeSchema.optional()
+    source_types: BalanceAmountBySourceTypeSchema.optional()
   })
   export type BalanceAmountNet = z.infer<typeof BalanceAmountNetSchema>
 
   export const BalanceDetailSchema = z.object({
     /** Funds that are available for use. */
     available: z
-      .array(balance_amountSchema)
+      .array(BalanceAmountSchema)
       .describe('Funds that are available for use.')
   })
   export type BalanceDetail = z.infer<typeof BalanceDetailSchema>
 
   export const CreditBalanceSchema = z.object({
-    available_balance: billing_credit_grants_resource_amountSchema,
-    ledger_balance: billing_credit_grants_resource_amountSchema
+    available_balance: BillingCreditGrantsResourceAmountSchema,
+    ledger_balance: BillingCreditGrantsResourceAmountSchema
   })
   export type CreditBalance = z.infer<typeof CreditBalanceSchema>
 
   export const PortalFlowsFlowAfterCompletionSchema = z.object({
     /** Configuration when `after_completion.type=hosted_confirmation`. */
-    hosted_confirmation: portal_flows_after_completion_hosted_confirmationSchema
-      .nullable()
-      .describe(
-        'Configuration when `after_completion.type=hosted_confirmation`.'
-      )
-      .optional(),
+    hosted_confirmation:
+      PortalFlowsAfterCompletionHostedConfirmationSchema.nullable()
+        .describe(
+          'Configuration when `after_completion.type=hosted_confirmation`.'
+        )
+        .optional(),
     /** Configuration when `after_completion.type=redirect`. */
-    redirect: portal_flows_after_completion_redirectSchema
-      .nullable()
+    redirect: PortalFlowsAfterCompletionRedirectSchema.nullable()
       .describe('Configuration when `after_completion.type=redirect`.')
       .optional(),
     /** The specified type of behavior after the flow is completed. */
@@ -23420,8 +23359,7 @@ export namespace stripe {
 
   export const PortalFlowsFlowSubscriptionCancelSchema = z.object({
     /** Specify a retention strategy to be used in the cancellation flow. */
-    retention: portal_flows_retentionSchema
-      .nullable()
+    retention: PortalFlowsRetentionSchema.nullable()
       .describe(
         'Specify a retention strategy to be used in the cancellation flow.'
       )
@@ -23439,7 +23377,7 @@ export namespace stripe {
   export const PortalFlowsFlowSubscriptionUpdateConfirmSchema = z.object({
     /** The coupon or promotion code to apply to this subscription update. Currently, only up to one may be specified. */
     discounts: z
-      .array(portal_flows_subscription_update_confirm_discountSchema)
+      .array(PortalFlowsSubscriptionUpdateConfirmDiscountSchema)
       .nullable()
       .describe(
         'The coupon or promotion code to apply to this subscription update. Currently, only up to one may be specified.'
@@ -23447,7 +23385,7 @@ export namespace stripe {
       .optional(),
     /** The [subscription item](https://stripe.com/docs/api/subscription_items) to be updated through this flow. Currently, only up to one may be specified and subscriptions with multiple items are not updatable. */
     items: z
-      .array(portal_flows_subscription_update_confirm_itemSchema)
+      .array(PortalFlowsSubscriptionUpdateConfirmItemSchema)
       .describe(
         'The [subscription item](https://stripe.com/docs/api/subscription_items) to be updated through this flow. Currently, only up to one may be specified and subscriptions with multiple items are not updatable.'
       ),
@@ -23464,8 +23402,7 @@ export namespace stripe {
   export const PaymentPagesCheckoutSessionCollectedInformationSchema = z.object(
     {
       /** Shipping information for this Checkout Session. */
-      shipping_details: shippingSchema
-        .nullable()
+      shipping_details: ShippingSchema.nullable()
         .describe('Shipping information for this Checkout Session.')
         .optional()
     }
@@ -23476,8 +23413,7 @@ export namespace stripe {
 
   export const PaymentPagesCheckoutSessionCustomerDetailsSchema = z.object({
     /** The customer's address after a completed Checkout Session. Note: This property is populated only for sessions on or after March 30, 2022. */
-    address: addressSchema
-      .nullable()
+    address: AddressSchema.nullable()
       .describe(
         "The customer's address after a completed Checkout Session. Note: This property is populated only for sessions on or after March 30, 2022."
       )
@@ -23522,7 +23458,7 @@ export namespace stripe {
       .optional(),
     /** The customer’s tax IDs after a completed Checkout Session. */
     tax_ids: z
-      .array(payment_pages_checkout_session_tax_idSchema)
+      .array(PaymentPagesCheckoutSessionTaxIdSchema)
       .nullable()
       .describe('The customer’s tax IDs after a completed Checkout Session.')
       .optional()
@@ -23533,9 +23469,8 @@ export namespace stripe {
 
   export const PaymentLinksResourceAfterCompletionSchema = z.object({
     hosted_confirmation:
-      payment_links_resource_completion_behavior_confirmation_pageSchema.optional(),
-    redirect:
-      payment_links_resource_completion_behavior_redirectSchema.optional(),
+      PaymentLinksResourceCompletionBehaviorConfirmationPageSchema.optional(),
+    redirect: PaymentLinksResourceCompletionBehaviorRedirectSchema.optional(),
     /** The specified behavior after the purchase is complete. */
     type: z
       .enum(['hosted_confirmation', 'redirect'])
@@ -23546,7 +23481,7 @@ export namespace stripe {
   >
 
   export const CheckoutCardPaymentMethodOptionsSchema = z.object({
-    installments: checkout_card_installments_optionsSchema.optional(),
+    installments: CheckoutCardInstallmentsOptionsSchema.optional(),
     /** Request ability to [capture beyond the standard authorization validity window](/payments/extended-authorization) for this CheckoutSession. */
     request_extended_authorization: z
       .enum(['if_available', 'never'])
@@ -23582,7 +23517,7 @@ export namespace stripe {
         'We strongly recommend that you rely on our SCA Engine to automatically prompt your customers for authentication based on risk level and [other requirements](https://stripe.com/docs/strong-customer-authentication). However, if you wish to request 3D Secure based on logic from your own fraud engine, provide this option. If not provided, this value defaults to `automatic`. Read our guide on [manually requesting 3D Secure](https://stripe.com/docs/payments/3d-secure/authentication-flow#manual-three-ds) for more information on how this configuration interacts with Radar and our SCA Engine.'
       ),
     restrictions:
-      payment_pages_private_card_payment_method_options_resource_restrictionsSchema.optional(),
+      PaymentPagesPrivateCardPaymentMethodOptionsResourceRestrictionsSchema.optional(),
     /**
      * Indicates that you intend to make future payments with this PaymentIntent's payment method.
      *
@@ -23621,7 +23556,7 @@ export namespace stripe {
 
   export const CheckoutCustomerBalancePaymentMethodOptionsSchema = z.object({
     bank_transfer:
-      checkout_customer_balance_bank_transfer_payment_method_optionsSchema.optional(),
+      CheckoutCustomerBalanceBankTransferPaymentMethodOptionsSchema.optional(),
     /** The funding method type to be used when there are not enough funds in the customer balance. Permitted values include: `bank_transfer`. */
     funding_type: z
       .literal('bank_transfer')
@@ -23651,8 +23586,7 @@ export namespace stripe {
   >
 
   export const CheckoutUsBankAccountPaymentMethodOptionsSchema = z.object({
-    financial_connections:
-      linked_account_options_us_bank_accountSchema.optional(),
+    financial_connections: LinkedAccountOptionsUsBankAccountSchema.optional(),
     /**
      * Indicates that you intend to make future payments with this PaymentIntent's payment method.
      *
@@ -23697,8 +23631,7 @@ export namespace stripe {
           'Time at which the delivery occurred. Measured in seconds since the Unix epoch.'
         ),
       /** Specific location of this delivery. */
-      location: climate_removals_locationSchema
-        .nullable()
+      location: ClimateRemovalsLocationSchema.nullable()
         .describe('Specific location of this delivery.')
         .optional(),
       /** Quantity of carbon removal supplied by this delivery. */
@@ -23715,7 +23648,7 @@ export namespace stripe {
           'Once retired, a URL to the registry entry for the tons from this delivery.'
         )
         .optional(),
-      supplier: climate.supplierSchema
+      supplier: ClimateSupplierSchema
     })
     .describe('The delivery of a specified quantity of carbon for an order.')
   export type ClimateRemovalsOrderDeliveries = z.infer<
@@ -23726,7 +23659,7 @@ export namespace stripe {
   export const ConfirmationTokensResourceMandateDataSchema = z
     .object({
       customer_acceptance:
-        confirmation_tokens_resource_mandate_data_resource_customer_acceptanceSchema
+        ConfirmationTokensResourceMandateDataResourceCustomerAcceptanceSchema
     })
     .describe('Data used for generating a Mandate.')
   export type ConfirmationTokensResourceMandateData = z.infer<
@@ -23787,7 +23720,7 @@ export namespace stripe {
         .describe(
           'Countries that can accept transfers from the specified country.'
         ),
-      verification_fields: country_spec_verification_fieldsSchema
+      verification_fields: CountrySpecVerificationFieldsSchema
     })
     .describe(
       "Stripe needs to collect certain pieces of information about each account\ncreated. These requirements can differ depending on the account's country. The\nCountry Specs API makes these rules available to your integration.\n\nYou can also view the information from this API call as [an online\nguide](/docs/connect/required-verification-information)."
@@ -23806,7 +23739,7 @@ export namespace stripe {
       .describe('Whether this tax amount is inclusive or exclusive.'),
     /** The tax rate that was applied to get this tax amount. */
     tax_rate: z
-      .union([z.string().max(5000), tax_rateSchema])
+      .union([z.string().max(5000), TaxRateSchema])
       .describe('The tax rate that was applied to get this tax amount.'),
     /** The reasoning behind this tax, for example, if the product is tax exempt. The possible values for this field may be extended as new tax rules are supported. */
     taxability_reason: z
@@ -23845,8 +23778,8 @@ export namespace stripe {
   export type CreditNoteTaxAmount = z.infer<typeof CreditNoteTaxAmountSchema>
 
   export const DeletedPaymentSourceSchema = z.union([
-    deleted_bank_accountSchema,
-    deleted_cardSchema
+    DeletedBankAccountSchema,
+    DeletedCardSchema
   ])
   export type DeletedPaymentSource = z.infer<typeof DeletedPaymentSourceSchema>
 
@@ -23906,7 +23839,7 @@ export namespace stripe {
         .describe(
           'Time at which the object was created. Measured in seconds since the Unix epoch.'
         ),
-      data: notification_event_dataSchema,
+      data: NotificationEventDataSchema,
       /** Unique identifier for the object. */
       id: z.string().max(5000).describe('Unique identifier for the object.'),
       /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
@@ -23929,8 +23862,7 @@ export namespace stripe {
           "Number of webhooks that haven't been successfully delivered (for example, to return a 20x response) to the URLs you specify."
         ),
       /** Information on the API request that triggers the event. */
-      request: notification_event_requestSchema
-        .nullable()
+      request: NotificationEventRequestSchema.nullable()
         .describe('Information on the API request that triggers the event.')
         .optional(),
       /** Description of the event (for example, `invoice.created` or `charge.refunded`). */
@@ -23954,9 +23886,9 @@ export namespace stripe {
       .describe(
         'The time that the external institution calculated this balance. Measured in seconds since the Unix epoch.'
       ),
-    cash: bank_connections_resource_balance_api_resource_cash_balanceSchema.optional(),
+    cash: BankConnectionsResourceBalanceApiResourceCashBalanceSchema.optional(),
     credit:
-      bank_connections_resource_balance_api_resource_credit_balanceSchema.optional(),
+      BankConnectionsResourceBalanceApiResourceCreditBalanceSchema.optional(),
     /**
      * The balances owed to (or by) the account holder, before subtracting any outbound pending transactions or adding any inbound pending transactions.
      *
@@ -23984,13 +23916,11 @@ export namespace stripe {
   export const GelatoIdNumberReportSchema = z
     .object({
       /** Date of birth. */
-      dob: gelato_data_id_number_report_dateSchema
-        .nullable()
+      dob: GelatoDataIdNumberReportDateSchema.nullable()
         .describe('Date of birth.')
         .optional(),
       /** Details on the verification error. Present when status is `unverified`. */
-      error: gelato_id_number_report_errorSchema
-        .nullable()
+      error: GelatoIdNumberReportErrorSchema.nullable()
         .describe(
           'Details on the verification error. Present when status is `unverified`.'
         )
@@ -24033,8 +23963,8 @@ export namespace stripe {
   export type GelatoIdNumberReport = z.infer<typeof GelatoIdNumberReportSchema>
 
   export const GelatoVerificationReportOptionsSchema = z.object({
-    document: gelato_report_document_optionsSchema.optional(),
-    id_number: gelato_report_id_number_optionsSchema.optional()
+    document: GelatoReportDocumentOptionsSchema.optional(),
+    id_number: GelatoReportIdNumberOptionsSchema.optional()
   })
   export type GelatoVerificationReportOptions = z.infer<
     typeof GelatoVerificationReportOptionsSchema
@@ -24042,13 +23972,11 @@ export namespace stripe {
 
   export const GelatoVerifiedOutputsSchema = z.object({
     /** The user's verified address. */
-    address: addressSchema
-      .nullable()
+    address: AddressSchema.nullable()
       .describe("The user's verified address.")
       .optional(),
     /** The user’s verified date of birth. */
-    dob: gelato_data_verified_outputs_dateSchema
-      .nullable()
+    dob: GelatoDataVerifiedOutputsDateSchema.nullable()
       .describe('The user’s verified date of birth.')
       .optional(),
     /** The user's verified email address */
@@ -24116,22 +24044,22 @@ export namespace stripe {
   export const PaymentMethodConfigurationSchema = z
     .object({
       acss_debit:
-        payment_method_config_resource_payment_method_propertiesSchema.optional(),
+        PaymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
       /** Whether the configuration can be used for new payments. */
       active: z
         .boolean()
         .describe('Whether the configuration can be used for new payments.'),
       affirm:
-        payment_method_config_resource_payment_method_propertiesSchema.optional(),
+        PaymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
       afterpay_clearpay:
-        payment_method_config_resource_payment_method_propertiesSchema.optional(),
+        PaymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
       alipay:
-        payment_method_config_resource_payment_method_propertiesSchema.optional(),
-      alma: payment_method_config_resource_payment_method_propertiesSchema.optional(),
+        PaymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
+      alma: PaymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
       amazon_pay:
-        payment_method_config_resource_payment_method_propertiesSchema.optional(),
+        PaymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
       apple_pay:
-        payment_method_config_resource_payment_method_propertiesSchema.optional(),
+        PaymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
       /** For child configs, the Connect application associated with the configuration. */
       application: z
         .string()
@@ -24142,45 +24070,45 @@ export namespace stripe {
         )
         .optional(),
       au_becs_debit:
-        payment_method_config_resource_payment_method_propertiesSchema.optional(),
+        PaymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
       bacs_debit:
-        payment_method_config_resource_payment_method_propertiesSchema.optional(),
+        PaymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
       bancontact:
-        payment_method_config_resource_payment_method_propertiesSchema.optional(),
-      blik: payment_method_config_resource_payment_method_propertiesSchema.optional(),
+        PaymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
+      blik: PaymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
       boleto:
-        payment_method_config_resource_payment_method_propertiesSchema.optional(),
-      card: payment_method_config_resource_payment_method_propertiesSchema.optional(),
+        PaymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
+      card: PaymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
       cartes_bancaires:
-        payment_method_config_resource_payment_method_propertiesSchema.optional(),
+        PaymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
       cashapp:
-        payment_method_config_resource_payment_method_propertiesSchema.optional(),
+        PaymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
       customer_balance:
-        payment_method_config_resource_payment_method_propertiesSchema.optional(),
-      eps: payment_method_config_resource_payment_method_propertiesSchema.optional(),
-      fpx: payment_method_config_resource_payment_method_propertiesSchema.optional(),
+        PaymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
+      eps: PaymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
+      fpx: PaymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
       giropay:
-        payment_method_config_resource_payment_method_propertiesSchema.optional(),
+        PaymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
       google_pay:
-        payment_method_config_resource_payment_method_propertiesSchema.optional(),
+        PaymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
       grabpay:
-        payment_method_config_resource_payment_method_propertiesSchema.optional(),
+        PaymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
       /** Unique identifier for the object. */
       id: z.string().max(5000).describe('Unique identifier for the object.'),
       ideal:
-        payment_method_config_resource_payment_method_propertiesSchema.optional(),
+        PaymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
       /** The default configuration is used whenever a payment method configuration is not specified. */
       is_default: z
         .boolean()
         .describe(
           'The default configuration is used whenever a payment method configuration is not specified.'
         ),
-      jcb: payment_method_config_resource_payment_method_propertiesSchema.optional(),
+      jcb: PaymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
       klarna:
-        payment_method_config_resource_payment_method_propertiesSchema.optional(),
+        PaymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
       konbini:
-        payment_method_config_resource_payment_method_propertiesSchema.optional(),
-      link: payment_method_config_resource_payment_method_propertiesSchema.optional(),
+        PaymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
+      link: PaymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
       /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
       livemode: z
         .boolean()
@@ -24188,9 +24116,9 @@ export namespace stripe {
           'Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.'
         ),
       mobilepay:
-        payment_method_config_resource_payment_method_propertiesSchema.optional(),
+        PaymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
       multibanco:
-        payment_method_config_resource_payment_method_propertiesSchema.optional(),
+        PaymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
       /** The configuration's name. */
       name: z.string().max(5000).describe("The configuration's name."),
       /** String representing the object's type. Objects of the same type share the same value. */
@@ -24199,8 +24127,8 @@ export namespace stripe {
         .describe(
           "String representing the object's type. Objects of the same type share the same value."
         ),
-      oxxo: payment_method_config_resource_payment_method_propertiesSchema.optional(),
-      p24: payment_method_config_resource_payment_method_propertiesSchema.optional(),
+      oxxo: PaymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
+      p24: PaymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
       /** For child configs, the configuration's parent configuration. */
       parent: z
         .string()
@@ -24211,28 +24139,28 @@ export namespace stripe {
         )
         .optional(),
       pay_by_bank:
-        payment_method_config_resource_payment_method_propertiesSchema.optional(),
+        PaymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
       paynow:
-        payment_method_config_resource_payment_method_propertiesSchema.optional(),
+        PaymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
       paypal:
-        payment_method_config_resource_payment_method_propertiesSchema.optional(),
+        PaymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
       promptpay:
-        payment_method_config_resource_payment_method_propertiesSchema.optional(),
+        PaymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
       revolut_pay:
-        payment_method_config_resource_payment_method_propertiesSchema.optional(),
+        PaymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
       sepa_debit:
-        payment_method_config_resource_payment_method_propertiesSchema.optional(),
+        PaymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
       sofort:
-        payment_method_config_resource_payment_method_propertiesSchema.optional(),
+        PaymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
       swish:
-        payment_method_config_resource_payment_method_propertiesSchema.optional(),
+        PaymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
       twint:
-        payment_method_config_resource_payment_method_propertiesSchema.optional(),
+        PaymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
       us_bank_account:
-        payment_method_config_resource_payment_method_propertiesSchema.optional(),
+        PaymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
       wechat_pay:
-        payment_method_config_resource_payment_method_propertiesSchema.optional(),
-      zip: payment_method_config_resource_payment_method_propertiesSchema.optional()
+        PaymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
+      zip: PaymentMethodConfigResourcePaymentMethodPropertiesSchema.optional()
     })
     .describe(
       "PaymentMethodConfigurations control which payment methods are displayed to your customers when you don't explicitly specify payment method types. You can have multiple configurations with different sets of payment methods for different scenarios.\n\nThere are two types of PaymentMethodConfigurations. Which is used depends on the [charge type](https://stripe.com/docs/connect/charges):\n\n**Direct** configurations apply to payments created on your account, including Connect destination charges, Connect separate charges and transfers, and payments not involving Connect.\n\n**Child** configurations apply to payments created on your connected accounts using direct charges, and charges with the on_behalf_of parameter.\n\nChild configurations have a `parent` that sets default values and controls which settings connected accounts may override. You can specify a parent ID at payment time, and Stripe will automatically resolve the connected account’s associated child configuration. Parent configurations are [managed in the dashboard](https://dashboard.stripe.com/settings/payment_methods/connected_accounts) and are not available in this API.\n\nRelated guides:\n- [Payment Method Configurations API](https://stripe.com/docs/connect/payment-method-configurations)\n- [Multiple configurations on dynamic payment methods](https://stripe.com/docs/payments/multiple-payment-method-configs)\n- [Multiple configurations for your Connect accounts](https://stripe.com/docs/connect/multiple-payment-method-configurations)"
@@ -24249,8 +24177,8 @@ export namespace stripe {
    */
   export const PaymentMethodDomainSchema = z
     .object({
-      amazon_pay: payment_method_domain_resource_payment_method_statusSchema,
-      apple_pay: payment_method_domain_resource_payment_method_statusSchema,
+      amazon_pay: PaymentMethodDomainResourcePaymentMethodStatusSchema,
+      apple_pay: PaymentMethodDomainResourcePaymentMethodStatusSchema,
       /** Time at which the object was created. Measured in seconds since the Unix epoch. */
       created: z
         .number()
@@ -24271,10 +24199,10 @@ export namespace stripe {
         .describe(
           'Whether this payment method domain is enabled. If the domain is not enabled, payment methods that require a payment method domain will not appear in Elements.'
         ),
-      google_pay: payment_method_domain_resource_payment_method_statusSchema,
+      google_pay: PaymentMethodDomainResourcePaymentMethodStatusSchema,
       /** Unique identifier for the object. */
       id: z.string().max(5000).describe('Unique identifier for the object.'),
-      link: payment_method_domain_resource_payment_method_statusSchema,
+      link: PaymentMethodDomainResourcePaymentMethodStatusSchema,
       /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
       livemode: z
         .boolean()
@@ -24287,7 +24215,7 @@ export namespace stripe {
         .describe(
           "String representing the object's type. Objects of the same type share the same value."
         ),
-      paypal: payment_method_domain_resource_payment_method_statusSchema
+      paypal: PaymentMethodDomainResourcePaymentMethodStatusSchema
     })
     .describe(
       'A payment method domain represents a web domain that you have registered with Stripe.\nStripe Elements use registered payment method domains to control where certain payment methods are shown.\n\nRelated guide: [Payment method domains](https://stripe.com/docs/payments/payment-methods/pmd-registration).'
@@ -24296,8 +24224,7 @@ export namespace stripe {
 
   export const TaxProductResourceCustomerDetailsSchema = z.object({
     /** The customer's postal address (for example, home or business location). */
-    address: tax_product_resource_postal_addressSchema
-      .nullable()
+    address: TaxProductResourcePostalAddressSchema.nullable()
       .describe(
         "The customer's postal address (for example, home or business location)."
       )
@@ -24317,7 +24244,7 @@ export namespace stripe {
       .optional(),
     /** The customer's tax IDs (for example, EU VAT numbers). */
     tax_ids: z
-      .array(tax_product_resource_customer_details_resource_tax_idSchema)
+      .array(TaxProductResourceCustomerDetailsResourceTaxIdSchema)
       .describe("The customer's tax IDs (for example, EU VAT numbers)."),
     /** The taxability override used for taxation. */
     taxability_override: z
@@ -24336,7 +24263,7 @@ export namespace stripe {
       .describe(
         'The amount of tax, in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal).'
       ),
-    jurisdiction: tax_product_resource_jurisdictionSchema,
+    jurisdiction: TaxProductResourceJurisdictionSchema,
     /** Indicates whether the jurisdiction was determined by the origin (merchant's address) or destination (customer's address). */
     sourcing: z
       .enum(['destination', 'origin'])
@@ -24344,8 +24271,7 @@ export namespace stripe {
         "Indicates whether the jurisdiction was determined by the origin (merchant's address) or destination (customer's address)."
       ),
     /** Details regarding the rate for this tax. This field will be `null` when the tax is not imposed, for example if the product is exempt from tax. */
-    tax_rate_details: tax_product_resource_line_item_tax_rate_detailsSchema
-      .nullable()
+    tax_rate_details: TaxProductResourceLineItemTaxRateDetailsSchema.nullable()
       .describe(
         'Details regarding the rate for this tax. This field will be `null` when the tax is not imposed, for example if the product is exempt from tax.'
       )
@@ -24398,7 +24324,7 @@ export namespace stripe {
       .describe(
         'Specifies whether the tax amount is included in the line item amount.'
       ),
-    tax_rate_details: tax_product_resource_tax_rate_detailsSchema,
+    tax_rate_details: TaxProductResourceTaxRateDetailsSchema,
     /** The reasoning behind this tax, for example, if the product is tax exempt. We might extend the possible values for this field to support new tax rules. */
     taxability_reason: z
       .enum([
@@ -24435,9 +24361,9 @@ export namespace stripe {
 
   export const TaxProductResourceTaxSettingsStatusDetailsSchema = z.object({
     active:
-      tax_product_resource_tax_settings_status_details_resource_activeSchema.optional(),
+      TaxProductResourceTaxSettingsStatusDetailsResourceActiveSchema.optional(),
     pending:
-      tax_product_resource_tax_settings_status_details_resource_pendingSchema.optional()
+      TaxProductResourceTaxSettingsStatusDetailsResourcePendingSchema.optional()
   })
   export type TaxProductResourceTaxSettingsStatusDetails = z.infer<
     typeof TaxProductResourceTaxSettingsStatusDetailsSchema
@@ -24447,7 +24373,7 @@ export namespace stripe {
     z.object({
       /** A File ID representing an image you would like displayed on the reader. */
       splashscreen: z
-        .union([z.string().max(5000), fileSchema])
+        .union([z.string().max(5000), FileSchema])
         .describe(
           'A File ID representing an image you would like displayed on the reader.'
         )
@@ -24462,8 +24388,7 @@ export namespace stripe {
   export const TerminalReaderReaderResourceSetReaderDisplayActionSchema = z
     .object({
       /** Cart object to be displayed by the reader. */
-      cart: terminal_reader_reader_resource_cartSchema
-        .nullable()
+      cart: TerminalReaderReaderResourceCartSchema.nullable()
         .describe('Cart object to be displayed by the reader.')
         .optional(),
       /** Type of information to be displayed by the reader. */
@@ -24478,13 +24403,13 @@ export namespace stripe {
 
   export const TreasuryOutboundPaymentsResourceOutboundPaymentResourceTrackingDetailsSchema =
     z.object({
-      ach: treasury_outbound_payments_resource_ach_tracking_detailsSchema.optional(),
+      ach: TreasuryOutboundPaymentsResourceAchTrackingDetailsSchema.optional(),
       /** The US bank account network used to send funds. */
       type: z
         .enum(['ach', 'us_domestic_wire'])
         .describe('The US bank account network used to send funds.'),
       us_domestic_wire:
-        treasury_outbound_payments_resource_us_domestic_wire_tracking_detailsSchema.optional()
+        TreasuryOutboundPaymentsResourceUsDomesticWireTrackingDetailsSchema.optional()
     })
   export type TreasuryOutboundPaymentsResourceOutboundPaymentResourceTrackingDetails =
     z.infer<
@@ -24493,13 +24418,13 @@ export namespace stripe {
 
   export const TreasuryOutboundTransfersResourceOutboundTransferResourceTrackingDetailsSchema =
     z.object({
-      ach: treasury_outbound_transfers_resource_ach_tracking_detailsSchema.optional(),
+      ach: TreasuryOutboundTransfersResourceAchTrackingDetailsSchema.optional(),
       /** The US bank account network used to send funds. */
       type: z
         .enum(['ach', 'us_domestic_wire'])
         .describe('The US bank account network used to send funds.'),
       us_domestic_wire:
-        treasury_outbound_transfers_resource_us_domestic_wire_tracking_detailsSchema.optional()
+        TreasuryOutboundTransfersResourceUsDomesticWireTrackingDetailsSchema.optional()
     })
   export type TreasuryOutboundTransfersResourceOutboundTransferResourceTrackingDetails =
     z.infer<
@@ -24510,7 +24435,7 @@ export namespace stripe {
   export const TreasuryFinancialAccountsResourceFinancialAddressesFeaturesSchema =
     z
       .object({
-        aba: treasury_financial_accounts_resource_aba_toggle_settingsSchema.optional()
+        aba: TreasuryFinancialAccountsResourceAbaToggleSettingsSchema.optional()
       })
       .describe(
         'Settings related to Financial Addresses features on a Financial Account'
@@ -24523,7 +24448,7 @@ export namespace stripe {
   /** InboundTransfers contains inbound transfers features for a FinancialAccount. */
   export const TreasuryFinancialAccountsResourceInboundTransfersSchema = z
     .object({
-      ach: treasury_financial_accounts_resource_inbound_ach_toggle_settingsSchema.optional()
+      ach: TreasuryFinancialAccountsResourceInboundAchToggleSettingsSchema.optional()
     })
     .describe(
       'InboundTransfers contains inbound transfers features for a FinancialAccount.'
@@ -24534,8 +24459,7 @@ export namespace stripe {
 
   export const AccountBusinessProfileSchema = z.object({
     /** The applicant's gross annual revenue for its preceding fiscal year. */
-    annual_revenue: account_annual_revenueSchema
-      .nullable()
+    annual_revenue: AccountAnnualRevenueSchema.nullable()
       .describe(
         "The applicant's gross annual revenue for its preceding fiscal year."
       )
@@ -24558,8 +24482,7 @@ export namespace stripe {
         '[The merchant category code for the account](/connect/setting-mcc). MCCs are used to classify businesses based on the goods or services they provide.'
       )
       .optional(),
-    monthly_estimated_revenue:
-      account_monthly_estimated_revenueSchema.optional(),
+    monthly_estimated_revenue: AccountMonthlyEstimatedRevenueSchema.optional(),
     /** The customer-facing business name. */
     name: z
       .string()
@@ -24577,8 +24500,7 @@ export namespace stripe {
       )
       .optional(),
     /** A publicly available mailing address for sending support issues to. */
-    support_address: addressSchema
-      .nullable()
+    support_address: AddressSchema.nullable()
       .describe(
         'A publicly available mailing address for sending support issues to.'
       )
@@ -24621,14 +24543,14 @@ export namespace stripe {
   >
 
   export const LegalEntityCompanyVerificationSchema = z.object({
-    document: legal_entity_company_verification_documentSchema
+    document: LegalEntityCompanyVerificationDocumentSchema
   })
   export type LegalEntityCompanyVerification = z.infer<
     typeof LegalEntityCompanyVerificationSchema
   >
 
   export const AccountUnificationAccountControllerSchema = z.object({
-    fees: account_unification_account_controller_feesSchema.optional(),
+    fees: AccountUnificationAccountControllerFeesSchema.optional(),
     /** `true` if the Connect application retrieving the resource controls the account and can therefore exercise [platform controls](https://stripe.com/docs/connect/platform-controls-for-standard-accounts). Otherwise, this field is null. */
     is_controller: z
       .boolean()
@@ -24636,7 +24558,7 @@ export namespace stripe {
         '`true` if the Connect application retrieving the resource controls the account and can therefore exercise [platform controls](https://stripe.com/docs/connect/platform-controls-for-standard-accounts). Otherwise, this field is null.'
       )
       .optional(),
-    losses: account_unification_account_controller_lossesSchema.optional(),
+    losses: AccountUnificationAccountControllerLossesSchema.optional(),
     /** A value indicating responsibility for collecting requirements on this account. Only returned when the Connect application retrieving the resource controls the account. */
     requirement_collection: z
       .enum(['application', 'stripe'])
@@ -24645,7 +24567,7 @@ export namespace stripe {
       )
       .optional(),
     stripe_dashboard:
-      account_unification_account_controller_stripe_dashboardSchema.optional(),
+      AccountUnificationAccountControllerStripeDashboardSchema.optional(),
     /** The controller type. Can be `application`, if a Connect application controls the account, or `account`, if the account controls itself. */
     type: z
       .enum(['account', 'application'])
@@ -24679,11 +24601,11 @@ export namespace stripe {
       .optional(),
     /** List of items constituting the order. */
     items: z
-      .array(source_order_itemSchema)
+      .array(SourceOrderItemSchema)
       .nullable()
       .describe('List of items constituting the order.')
       .optional(),
-    shipping: shippingSchema.optional()
+    shipping: ShippingSchema.optional()
   })
   export type SourceOrder = z.infer<typeof SourceOrderSchema>
 
@@ -24835,8 +24757,7 @@ export namespace stripe {
       )
       .optional(),
     /** Details about payments collected offline. */
-    offline: payment_method_details_card_present_offlineSchema
-      .nullable()
+    offline: PaymentMethodDetailsCardPresentOfflineSchema.nullable()
       .describe('Details about payments collected offline.')
       .optional(),
     /** Defines whether the authorized amount can be over-captured or not */
@@ -24866,14 +24787,13 @@ export namespace stripe {
       .describe('How card details were read in this transaction.')
       .optional(),
     /** A collection of fields required to be displayed on receipts. Only required for EMV transactions. */
-    receipt: payment_method_details_card_present_receiptSchema
-      .nullable()
+    receipt: PaymentMethodDetailsCardPresentReceiptSchema.nullable()
       .describe(
         'A collection of fields required to be displayed on receipts. Only required for EMV transactions.'
       )
       .optional(),
     wallet:
-      payment_flows_private_payment_methods_card_present_common_walletSchema.optional()
+      PaymentFlowsPrivatePaymentMethodsCardPresentCommonWalletSchema.optional()
   })
   export type PaymentMethodDetailsCardPresent = z.infer<
     typeof PaymentMethodDetailsCardPresentSchema
@@ -24882,17 +24802,14 @@ export namespace stripe {
   export const DisputeEnhancedEvidenceVisaCompellingEvidence3Schema = z.object({
     /** Disputed transaction details for Visa Compelling Evidence 3.0 evidence submission. */
     disputed_transaction:
-      dispute_visa_compelling_evidence3_disputed_transactionSchema
-        .nullable()
+      DisputeVisaCompellingEvidence3DisputedTransactionSchema.nullable()
         .describe(
           'Disputed transaction details for Visa Compelling Evidence 3.0 evidence submission.'
         )
         .optional(),
     /** List of exactly two prior undisputed transaction objects for Visa Compelling Evidence 3.0 evidence submission. */
     prior_undisputed_transactions: z
-      .array(
-        dispute_visa_compelling_evidence3_prior_undisputed_transactionSchema
-      )
+      .array(DisputeVisaCompellingEvidence3PriorUndisputedTransactionSchema)
       .describe(
         'List of exactly two prior undisputed transaction objects for Visa Compelling Evidence 3.0 evidence submission.'
       )
@@ -24911,7 +24828,7 @@ export namespace stripe {
         "Date by which evidence must be submitted in order to successfully challenge dispute. Will be 0 if the customer's bank or credit card company doesn't allow a response for this particular dispute."
       )
       .optional(),
-    enhanced_eligibility: dispute_enhanced_eligibilitySchema,
+    enhanced_eligibility: DisputeEnhancedEligibilitySchema,
     /** Whether evidence has been staged for this dispute. */
     has_evidence: z
       .boolean()
@@ -24936,8 +24853,7 @@ export namespace stripe {
 
   export const IssuingCardholderVerificationSchema = z.object({
     /** An identifying document, either a passport or local ID card. */
-    document: issuing_cardholder_id_documentSchema
-      .nullable()
+    document: IssuingCardholderIdDocumentSchema.nullable()
       .describe('An identifying document, either a passport or local ID card.')
       .optional()
   })
@@ -24946,10 +24862,9 @@ export namespace stripe {
   >
 
   export const IssuingCardShippingSchema = z.object({
-    address: addressSchema,
+    address: AddressSchema,
     /** Address validation details for the shipment. */
-    address_validation: issuing_card_shipping_address_validationSchema
-      .nullable()
+    address_validation: IssuingCardShippingAddressValidationSchema.nullable()
       .describe('Address validation details for the shipment.')
       .optional(),
     /** The delivery company that shipped a card. */
@@ -24959,8 +24874,7 @@ export namespace stripe {
       .describe('The delivery company that shipped a card.')
       .optional(),
     /** Additional information that may be required for clearing customs. */
-    customs: issuing_card_shipping_customsSchema
-      .nullable()
+    customs: IssuingCardShippingCustomsSchema.nullable()
       .describe(
         'Additional information that may be required for clearing customs.'
       )
@@ -25034,18 +24948,15 @@ export namespace stripe {
 
   export const IssuingAuthorizationFleetReportedBreakdownSchema = z.object({
     /** Breakdown of fuel portion of the purchase. */
-    fuel: issuing_authorization_fleet_fuel_price_dataSchema
-      .nullable()
+    fuel: IssuingAuthorizationFleetFuelPriceDataSchema.nullable()
       .describe('Breakdown of fuel portion of the purchase.')
       .optional(),
     /** Breakdown of non-fuel portion of the purchase. */
-    non_fuel: issuing_authorization_fleet_non_fuel_price_dataSchema
-      .nullable()
+    non_fuel: IssuingAuthorizationFleetNonFuelPriceDataSchema.nullable()
       .describe('Breakdown of non-fuel portion of the purchase.')
       .optional(),
     /** Information about tax included in this transaction. */
-    tax: issuing_authorization_fleet_tax_dataSchema
-      .nullable()
+    tax: IssuingAuthorizationFleetTaxDataSchema.nullable()
       .describe('Information about tax included in this transaction.')
       .optional()
   })
@@ -25055,18 +24966,15 @@ export namespace stripe {
 
   export const IssuingTransactionFleetReportedBreakdownSchema = z.object({
     /** Breakdown of fuel portion of the purchase. */
-    fuel: issuing_transaction_fleet_fuel_price_dataSchema
-      .nullable()
+    fuel: IssuingTransactionFleetFuelPriceDataSchema.nullable()
       .describe('Breakdown of fuel portion of the purchase.')
       .optional(),
     /** Breakdown of non-fuel portion of the purchase. */
-    non_fuel: issuing_transaction_fleet_non_fuel_price_dataSchema
-      .nullable()
+    non_fuel: IssuingTransactionFleetNonFuelPriceDataSchema.nullable()
       .describe('Breakdown of non-fuel portion of the purchase.')
       .optional(),
     /** Information about tax included in this transaction. */
-    tax: issuing_transaction_fleet_tax_dataSchema
-      .nullable()
+    tax: IssuingTransactionFleetTaxDataSchema.nullable()
       .describe('Information about tax included in this transaction.')
       .optional()
   })
@@ -25075,10 +24983,9 @@ export namespace stripe {
   >
 
   export const SetupIntentPaymentMethodOptionsUsBankAccountSchema = z.object({
-    financial_connections:
-      linked_account_options_us_bank_accountSchema.optional(),
+    financial_connections: LinkedAccountOptionsUsBankAccountSchema.optional(),
     mandate_options:
-      payment_method_options_us_bank_account_mandate_optionsSchema.optional(),
+      PaymentMethodOptionsUsBankAccountMandateOptionsSchema.optional(),
     /** Bank account verification method. */
     verification_method: z
       .enum(['automatic', 'instant', 'microdeposits'])
@@ -25098,7 +25005,7 @@ export namespace stripe {
           "Controls when the funds will be captured from the customer's account."
         )
         .optional(),
-      installments: payment_flows_installment_optionsSchema.optional(),
+      installments: PaymentFlowsInstallmentOptionsSchema.optional(),
       /** Request ability to [increment](https://stripe.com/docs/terminal/features/incremental-authorizations) this PaymentIntent if the combination of MCC and card brand is eligible. Check [incremental_authorization_supported](https://stripe.com/docs/api/charges/object#charge_object-payment_method_details-card_present-incremental_authorization_supported) in the [Confirm](https://stripe.com/docs/api/payment_intents/confirm) response to verify support. */
       request_incremental_authorization_support: z
         .boolean()
@@ -25113,7 +25020,7 @@ export namespace stripe {
           'When enabled, using a card that is attached to a customer will require the CVC to be provided again (i.e. using the cvc_token parameter).'
         )
         .optional(),
-      routing: payment_method_options_card_present_routingSchema.optional(),
+      routing: PaymentMethodOptionsCardPresentRoutingSchema.optional(),
       /**
        * Indicates that you intend to make future payments with this PaymentIntent's payment method.
        *
@@ -25152,15 +25059,13 @@ export namespace stripe {
      *
      * For more information, see the [installments integration guide](https://stripe.com/docs/payments/installments).
      */
-    installments: payment_method_options_card_installmentsSchema
-      .nullable()
+    installments: PaymentMethodOptionsCardInstallmentsSchema.nullable()
       .describe(
         'Installment details for this payment (Mexico only).\n\nFor more information, see the [installments integration guide](https://stripe.com/docs/payments/installments).'
       )
       .optional(),
     /** Configuration options for setting up an eMandate for cards issued in India. */
-    mandate_options: payment_method_options_card_mandate_optionsSchema
-      .nullable()
+    mandate_options: PaymentMethodOptionsCardMandateOptionsSchema.nullable()
       .describe(
         'Configuration options for setting up an eMandate for cards issued in India.'
       )
@@ -25267,10 +25172,9 @@ export namespace stripe {
   >
 
   export const PaymentIntentPaymentMethodOptionsUsBankAccountSchema = z.object({
-    financial_connections:
-      linked_account_options_us_bank_accountSchema.optional(),
+    financial_connections: LinkedAccountOptionsUsBankAccountSchema.optional(),
     mandate_options:
-      payment_method_options_us_bank_account_mandate_optionsSchema.optional(),
+      PaymentMethodOptionsUsBankAccountMandateOptionsSchema.optional(),
     /** Preferred transaction settlement speed */
     preferred_settlement_speed: z
       .enum(['fastest', 'standard'])
@@ -25402,15 +25306,13 @@ export namespace stripe {
       .describe('The last four digits of the card.')
       .optional(),
     /** Contains information about card networks that can be used to process the payment. */
-    networks: payment_method_card_present_networksSchema
-      .nullable()
+    networks: PaymentMethodCardPresentNetworksSchema.nullable()
       .describe(
         'Contains information about card networks that can be used to process the payment.'
       )
       .optional(),
     /** Details about payment methods collected offline. */
-    offline: payment_method_details_card_present_offlineSchema
-      .nullable()
+    offline: PaymentMethodDetailsCardPresentOfflineSchema.nullable()
       .describe('Details about payment methods collected offline.')
       .optional(),
     /** EMV tag 5F2D. Preferred languages specified by the integrated circuit chip. */
@@ -25434,7 +25336,7 @@ export namespace stripe {
       .describe('How card details were read in this transaction.')
       .optional(),
     wallet:
-      payment_flows_private_payment_methods_card_present_common_walletSchema.optional()
+      PaymentFlowsPrivatePaymentMethodsCardPresentCommonWalletSchema.optional()
   })
   export type PaymentMethodCardPresent = z.infer<
     typeof PaymentMethodCardPresentSchema
@@ -25488,8 +25390,7 @@ export namespace stripe {
       .describe('Last four digits of the bank account number.')
       .optional(),
     /** Contains information about US bank account networks that can be used. */
-    networks: us_bank_account_networksSchema
-      .nullable()
+    networks: UsBankAccountNetworksSchema.nullable()
       .describe(
         'Contains information about US bank account networks that can be used.'
       )
@@ -25502,8 +25403,7 @@ export namespace stripe {
       .describe('Routing number of the bank account.')
       .optional(),
     /** Contains information about the future reusability of this PaymentMethod. */
-    status_details: payment_method_us_bank_account_status_detailsSchema
-      .nullable()
+    status_details: PaymentMethodUsBankAccountStatusDetailsSchema.nullable()
       .describe(
         'Contains information about the future reusability of this PaymentMethod.'
       )
@@ -25515,8 +25415,7 @@ export namespace stripe {
 
   export const LegalEntityPersonVerificationSchema = z.object({
     /** A document showing address, either a passport, local ID card, or utility bill from a well-known utility company. */
-    additional_document: legal_entity_person_verification_documentSchema
-      .nullable()
+    additional_document: LegalEntityPersonVerificationDocumentSchema.nullable()
       .describe(
         'A document showing address, either a passport, local ID card, or utility bill from a well-known utility company.'
       )
@@ -25539,7 +25438,7 @@ export namespace stripe {
         'One of `document_address_mismatch`, `document_dob_mismatch`, `document_duplicate_type`, `document_id_number_mismatch`, `document_name_mismatch`, `document_nationality_mismatch`, `failed_keyed_identity`, or `failed_other`. A machine-readable code specifying the verification state for the person.'
       )
       .optional(),
-    document: legal_entity_person_verification_documentSchema.optional(),
+    document: LegalEntityPersonVerificationDocumentSchema.optional(),
     /** The state of verification for the person. Possible values are `unverified`, `pending`, or `verified`. */
     status: z
       .string()
@@ -25563,7 +25462,7 @@ export namespace stripe {
     enabled: z.boolean().describe('Whether the feature is enabled.'),
     /** The list of up to 10 products that support subscription updates. */
     products: z
-      .array(portal_subscription_update_productSchema)
+      .array(PortalSubscriptionUpdateProductSchema)
       .nullable()
       .describe(
         'The list of up to 10 products that support subscription updates.'
@@ -25575,7 +25474,7 @@ export namespace stripe {
       .describe(
         "Determines how to handle prorations resulting from subscription updates. Valid values are `none`, `create_prorations`, and `always_invoice`. Defaults to a value of `none` if you don't set it during creation."
       ),
-    schedule_at_period_end: portal_resource_schedule_update_at_period_endSchema
+    schedule_at_period_end: PortalResourceScheduleUpdateAtPeriodEndSchema
   })
   export type PortalSubscriptionUpdate = z.infer<
     typeof PortalSubscriptionUpdateSchema
@@ -25596,7 +25495,7 @@ export namespace stripe {
         ),
       /** Current prices for a metric ton of carbon removal in a currency's smallest unit. */
       current_prices_per_metric_ton: z
-        .record(climate_removals_products_priceSchema)
+        .record(ClimateRemovalsProductsPriceSchema)
         .describe(
           "Current prices for a metric ton of carbon removal in a currency's smallest unit."
         ),
@@ -25640,7 +25539,7 @@ export namespace stripe {
         ),
       /** The carbon removal suppliers that fulfill orders for this Climate product. */
       suppliers: z
-        .array(climate.supplierSchema)
+        .array(ClimateSupplierSchema)
         .describe(
           'The carbon removal suppliers that fulfill orders for this Climate product.'
         )
@@ -25695,7 +25594,7 @@ export namespace stripe {
         .describe(
           "String representing the object's type. Objects of the same type share the same value."
         ),
-      parameters: financial_reporting_finance_report_run_run_parametersSchema,
+      parameters: FinancialReportingFinanceReportRunRunParametersSchema,
       /** The ID of the [report type](https://stripe.com/docs/reports/report-types) to run, such as `"balance.summary.1"`. */
       report_type: z
         .string()
@@ -25707,8 +25606,7 @@ export namespace stripe {
        * The file object representing the result of the report run (populated when
        *  `status=succeeded`).
        */
-      result: fileSchema
-        .nullable()
+      result: FileSchema.nullable()
         .describe(
           'The file object representing the result of the report run (populated when\n `status=succeeded`).'
         )
@@ -25764,10 +25662,9 @@ export namespace stripe {
         .describe(
           'When the query was run, Sigma contained a snapshot of your Stripe data at this time.'
         ),
-      error: sigma_scheduled_query_run_errorSchema.optional(),
+      error: SigmaScheduledQueryRunErrorSchema.optional(),
       /** The file object representing the results of the query. */
-      file: fileSchema
-        .nullable()
+      file: FileSchema.nullable()
         .describe('The file object representing the results of the query.')
         .optional(),
       /** Unique identifier for the object. */
@@ -25868,7 +25765,7 @@ export namespace stripe {
       ),
     /** Detailed account of taxes relevant to this line item. */
     tax_breakdown: z
-      .array(tax_product_resource_line_item_tax_breakdownSchema)
+      .array(TaxProductResourceLineItemTaxBreakdownSchema)
       .nullable()
       .describe('Detailed account of taxes relevant to this line item.')
       .optional(),
@@ -25915,7 +25812,7 @@ export namespace stripe {
       ),
     /** Detailed account of taxes relevant to shipping cost. */
     tax_breakdown: z
-      .array(tax_product_resource_line_item_tax_breakdownSchema)
+      .array(TaxProductResourceLineItemTaxBreakdownSchema)
       .describe('Detailed account of taxes relevant to shipping cost.')
       .optional(),
     /** The [tax code](https://stripe.com/docs/tax/tax-categories) ID used for shipping. */
@@ -25933,9 +25830,9 @@ export namespace stripe {
   /** Settings related to Outbound Payments features on a Financial Account */
   export const TreasuryFinancialAccountsResourceOutboundPaymentsSchema = z
     .object({
-      ach: treasury_financial_accounts_resource_outbound_ach_toggle_settingsSchema.optional(),
+      ach: TreasuryFinancialAccountsResourceOutboundAchToggleSettingsSchema.optional(),
       us_domestic_wire:
-        treasury_financial_accounts_resource_toggle_settingsSchema.optional()
+        TreasuryFinancialAccountsResourceToggleSettingsSchema.optional()
     })
     .describe(
       'Settings related to Outbound Payments features on a Financial Account'
@@ -25947,9 +25844,9 @@ export namespace stripe {
   /** OutboundTransfers contains outbound transfers features for a FinancialAccount. */
   export const TreasuryFinancialAccountsResourceOutboundTransfersSchema = z
     .object({
-      ach: treasury_financial_accounts_resource_outbound_ach_toggle_settingsSchema.optional(),
+      ach: TreasuryFinancialAccountsResourceOutboundAchToggleSettingsSchema.optional(),
       us_domestic_wire:
-        treasury_financial_accounts_resource_toggle_settingsSchema.optional()
+        TreasuryFinancialAccountsResourceToggleSettingsSchema.optional()
     })
     .describe(
       'OutboundTransfers contains outbound transfers features for a FinancialAccount.'
@@ -25959,7 +25856,7 @@ export namespace stripe {
   >
 
   export const CardGeneratedFromPaymentMethodDetailsSchema = z.object({
-    card_present: payment_method_details_card_presentSchema.optional(),
+    card_present: PaymentMethodDetailsCardPresentSchema.optional(),
     /** The type of payment method transaction-specific details from the transaction that generated this `card` payment method. Always `card_present`. */
     type: z
       .string()
@@ -25975,11 +25872,11 @@ export namespace stripe {
   export const CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransferSchema =
     z.object({
       eu_bank_transfer:
-        customer_balance_resource_cash_balance_transaction_resource_funded_transaction_resource_bank_transfer_resource_eu_bank_transferSchema.optional(),
+        CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransferResourceEuBankTransferSchema.optional(),
       gb_bank_transfer:
-        customer_balance_resource_cash_balance_transaction_resource_funded_transaction_resource_bank_transfer_resource_gb_bank_transferSchema.optional(),
+        CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransferResourceGbBankTransferSchema.optional(),
       jp_bank_transfer:
-        customer_balance_resource_cash_balance_transaction_resource_funded_transaction_resource_bank_transfer_resource_jp_bank_transferSchema.optional(),
+        CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransferResourceJpBankTransferSchema.optional(),
       /** The user-supplied reference field on the bank transfer. */
       reference: z
         .string()
@@ -26000,7 +25897,7 @@ export namespace stripe {
           'The funding method type used to fund the customer balance. Permitted values include: `eu_bank_transfer`, `gb_bank_transfer`, `jp_bank_transfer`, `mx_bank_transfer`, or `us_bank_transfer`.'
         ),
       us_bank_transfer:
-        customer_balance_resource_cash_balance_transaction_resource_funded_transaction_resource_bank_transfer_resource_us_bank_transferSchema.optional()
+        CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransferResourceUsBankTransferSchema.optional()
     })
   export type CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransfer =
     z.infer<
@@ -26008,10 +25905,10 @@ export namespace stripe {
     >
 
   export const DisputePaymentMethodDetailsSchema = z.object({
-    amazon_pay: dispute_payment_method_details_amazon_paySchema.optional(),
-    card: dispute_payment_method_details_cardSchema.optional(),
-    klarna: dispute_payment_method_details_klarnaSchema.optional(),
-    paypal: dispute_payment_method_details_paypalSchema.optional(),
+    amazon_pay: DisputePaymentMethodDetailsAmazonPaySchema.optional(),
+    card: DisputePaymentMethodDetailsCardSchema.optional(),
+    klarna: DisputePaymentMethodDetailsKlarnaSchema.optional(),
+    paypal: DisputePaymentMethodDetailsPaypalSchema.optional(),
     /** Payment method type. */
     type: z
       .enum(['amazon_pay', 'card', 'klarna', 'paypal'])
@@ -26023,8 +25920,8 @@ export namespace stripe {
 
   export const SetupIntentNextActionSchema = z.object({
     cashapp_handle_redirect_or_display_qr_code:
-      payment_intent_next_action_cashapp_handle_redirect_or_display_qr_codeSchema.optional(),
-    redirect_to_url: setup_intent_next_action_redirect_to_urlSchema.optional(),
+      PaymentIntentNextActionCashappHandleRedirectOrDisplayQrCodeSchema.optional(),
+    redirect_to_url: SetupIntentNextActionRedirectToUrlSchema.optional(),
     /** Type of the next action to perform, one of `redirect_to_url`, `use_stripe_sdk`, `alipay_handle_redirect`, `oxxo_display_details`, or `verify_with_microdeposits`. */
     type: z
       .string()
@@ -26040,7 +25937,7 @@ export namespace stripe {
       )
       .optional(),
     verify_with_microdeposits:
-      setup_intent_next_action_verify_with_microdepositsSchema.optional()
+      SetupIntentNextActionVerifyWithMicrodepositsSchema.optional()
   })
   export type SetupIntentNextAction = z.infer<
     typeof SetupIntentNextActionSchema
@@ -26048,23 +25945,19 @@ export namespace stripe {
 
   export const PaymentIntentNextActionKonbiniStoresSchema = z.object({
     /** FamilyMart instruction details. */
-    familymart: payment_intent_next_action_konbini_familymartSchema
-      .nullable()
+    familymart: PaymentIntentNextActionKonbiniFamilymartSchema.nullable()
       .describe('FamilyMart instruction details.')
       .optional(),
     /** Lawson instruction details. */
-    lawson: payment_intent_next_action_konbini_lawsonSchema
-      .nullable()
+    lawson: PaymentIntentNextActionKonbiniLawsonSchema.nullable()
       .describe('Lawson instruction details.')
       .optional(),
     /** Ministop instruction details. */
-    ministop: payment_intent_next_action_konbini_ministopSchema
-      .nullable()
+    ministop: PaymentIntentNextActionKonbiniMinistopSchema.nullable()
       .describe('Ministop instruction details.')
       .optional(),
     /** Seicomart instruction details. */
-    seicomart: payment_intent_next_action_konbini_seicomartSchema
-      .nullable()
+    seicomart: PaymentIntentNextActionKonbiniSeicomartSchema.nullable()
       .describe('Seicomart instruction details.')
       .optional()
   })
@@ -26086,8 +25979,8 @@ export namespace stripe {
         .describe(
           'Time at which the object was created. Measured in seconds since the Unix epoch.'
         ),
-      customer_mapping: billing_meter_resource_customer_mapping_settingsSchema,
-      default_aggregation: billing_meter_resource_aggregation_settingsSchema,
+      customer_mapping: BillingMeterResourceCustomerMappingSettingsSchema,
+      default_aggregation: BillingMeterResourceAggregationSettingsSchema,
       /** The meter's name. */
       display_name: z.string().max(5000).describe("The meter's name."),
       /** The name of the meter event to record usage for. Corresponds with the `event_name` field on meter events. */
@@ -26120,7 +26013,7 @@ export namespace stripe {
       /** The meter's status. */
       status: z.enum(['active', 'inactive']).describe("The meter's status."),
       status_transitions:
-        billing_meter_resource_billing_meter_status_transitionsSchema,
+        BillingMeterResourceBillingMeterStatusTransitionsSchema,
       /** Time at which the object was last updated. Measured in seconds since the Unix epoch. */
       updated: z
         .number()
@@ -26128,7 +26021,7 @@ export namespace stripe {
         .describe(
           'Time at which the object was last updated. Measured in seconds since the Unix epoch.'
         ),
-      value_settings: billing_meter_resource_billing_meter_valueSchema
+      value_settings: BillingMeterResourceBillingMeterValueSchema
     })
     .describe(
       'Meters specify how to aggregate meter events over a billing period. Meter events represent the actions that customers take in your system. Meters attach to prices and form the basis of the bill.\n\nRelated guide: [Usage based billing](https://docs.stripe.com/billing/subscriptions/usage-based)'
@@ -26138,12 +26031,10 @@ export namespace stripe {
   /** Configuration for the components supported by this Customer Session. */
   export const CustomerSessionResourceComponentsSchema = z
     .object({
-      buy_button:
-        customer_session_resource_components_resource_buy_buttonSchema,
+      buy_button: CustomerSessionResourceComponentsResourceBuyButtonSchema,
       payment_element:
-        customer_session_resource_components_resource_payment_elementSchema,
-      pricing_table:
-        customer_session_resource_components_resource_pricing_tableSchema
+        CustomerSessionResourceComponentsResourcePaymentElementSchema,
+      pricing_table: CustomerSessionResourceComponentsResourcePricingTableSchema
     })
     .describe(
       'Configuration for the components supported by this Customer Session.'
@@ -26221,22 +26112,19 @@ export namespace stripe {
         )
         .describe('The field kinds to be replaced in the forwarded request.'),
       /** Context about the request from Stripe's servers to the destination endpoint. */
-      request_context: forwarded_request_contextSchema
-        .nullable()
+      request_context: ForwardedRequestContextSchema.nullable()
         .describe(
           "Context about the request from Stripe's servers to the destination endpoint."
         )
         .optional(),
       /** The request that was sent to the destination endpoint. We redact any sensitive fields. */
-      request_details: forwarded_request_detailsSchema
-        .nullable()
+      request_details: ForwardedRequestDetailsSchema.nullable()
         .describe(
           'The request that was sent to the destination endpoint. We redact any sensitive fields.'
         )
         .optional(),
       /** The response that the destination endpoint returned to us. We redact any sensitive fields. */
-      response_details: forwarded_response_detailsSchema
-        .nullable()
+      response_details: ForwardedResponseDetailsSchema.nullable()
         .describe(
           'The response that the destination endpoint returned to us. We redact any sensitive fields.'
         )
@@ -26257,10 +26145,10 @@ export namespace stripe {
   export type ForwardingRequest = z.infer<typeof ForwardingRequestSchema>
 
   export const GelatoVerificationSessionOptionsSchema = z.object({
-    document: gelato_session_document_optionsSchema.optional(),
-    email: gelato_session_email_optionsSchema.optional(),
-    id_number: gelato_session_id_number_optionsSchema.optional(),
-    phone: gelato_session_phone_optionsSchema.optional()
+    document: GelatoSessionDocumentOptionsSchema.optional(),
+    email: GelatoSessionEmailOptionsSchema.optional(),
+    id_number: GelatoSessionIdNumberOptionsSchema.optional(),
+    phone: GelatoSessionPhoneOptionsSchema.optional()
   })
   export type GelatoVerificationSessionOptions = z.infer<
     typeof GelatoVerificationSessionOptionsSchema
@@ -26269,9 +26157,9 @@ export namespace stripe {
   export const TaxProductRegistrationsResourceCountryOptionsUnitedStatesSchema =
     z.object({
       local_amusement_tax:
-        tax_product_registrations_resource_country_options_us_local_amusement_taxSchema.optional(),
+        TaxProductRegistrationsResourceCountryOptionsUsLocalAmusementTaxSchema.optional(),
       local_lease_tax:
-        tax_product_registrations_resource_country_options_us_local_lease_taxSchema.optional(),
+        TaxProductRegistrationsResourceCountryOptionsUsLocalLeaseTaxSchema.optional(),
       /** Two-letter US state code ([ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)). */
       state: z
         .string()
@@ -26280,7 +26168,7 @@ export namespace stripe {
           'Two-letter US state code ([ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)).'
         ),
       state_sales_tax:
-        tax_product_registrations_resource_country_options_us_state_sales_taxSchema.optional(),
+        TaxProductRegistrationsResourceCountryOptionsUsStateSalesTaxSchema.optional(),
       /** Type of registration in the US. */
       type: z
         .enum([
@@ -26304,9 +26192,9 @@ export namespace stripe {
         .literal('payments')
         .describe('Set when `type` is `balance`.')
         .optional(),
-      billing_details: treasury_shared_resource_billing_detailsSchema,
+      billing_details: TreasurySharedResourceBillingDetailsSchema,
       financial_account:
-        received_payment_method_details_financial_accountSchema.optional(),
+        ReceivedPaymentMethodDetailsFinancialAccountSchema.optional(),
       /** Set when `type` is `issuing_card`. This is an [Issuing Card](https://stripe.com/docs/api#issuing_cards) ID. */
       issuing_card: z
         .string()
@@ -26328,7 +26216,7 @@ export namespace stripe {
           "Polymorphic type matching the originating money movement's source. This can be an external account, a Stripe balance, or a FinancialAccount."
         ),
       us_bank_account:
-        treasury_shared_resource_initiating_payment_method_details_us_bank_accountSchema.optional()
+        TreasurySharedResourceInitiatingPaymentMethodDetailsUsBankAccountSchema.optional()
     })
   export type TreasurySharedResourceInitiatingPaymentMethodDetailsInitiatingPaymentMethodDetails =
     z.infer<
@@ -26346,8 +26234,7 @@ export namespace stripe {
       )
       .optional(),
     /** Check results by Card networks on Card address and CVC at the time of authorization */
-    checks: setup_attempt_payment_method_details_card_checksSchema
-      .nullable()
+    checks: SetupAttemptPaymentMethodDetailsCardChecksSchema.nullable()
       .describe(
         'Check results by Card networks on Card address and CVC at the time of authorization'
       )
@@ -26414,15 +26301,13 @@ export namespace stripe {
       )
       .optional(),
     /** Populated if this authorization used 3D Secure authentication. */
-    three_d_secure: three_d_secure_detailsSchema
-      .nullable()
+    three_d_secure: ThreeDSecureDetailsSchema.nullable()
       .describe(
         'Populated if this authorization used 3D Secure authentication.'
       )
       .optional(),
     /** If this Card is part of a card wallet, this contains the details of the card wallet. */
-    wallet: setup_attempt_payment_method_details_card_walletSchema
-      .nullable()
+    wallet: SetupAttemptPaymentMethodDetailsCardWalletSchema.nullable()
       .describe(
         'If this Card is part of a card wallet, this contains the details of the card wallet.'
       )
@@ -26435,7 +26320,7 @@ export namespace stripe {
   export const CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionSchema =
     z.object({
       bank_transfer:
-        customer_balance_resource_cash_balance_transaction_resource_funded_transaction_resource_bank_transferSchema
+        CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransferSchema
     })
   export type CustomerBalanceResourceCashBalanceTransactionResourceFundedTransaction =
     z.infer<
@@ -26444,8 +26329,8 @@ export namespace stripe {
 
   export const DisputeEnhancedEvidenceSchema = z.object({
     visa_compelling_evidence_3:
-      dispute_enhanced_evidence_visa_compelling_evidence3Schema.optional(),
-    visa_compliance: dispute_enhanced_evidence_visa_complianceSchema.optional()
+      DisputeEnhancedEvidenceVisaCompellingEvidence3Schema.optional(),
+    visa_compliance: DisputeEnhancedEvidenceVisaComplianceSchema.optional()
   })
   export type DisputeEnhancedEvidence = z.infer<
     typeof DisputeEnhancedEvidenceSchema
@@ -26454,8 +26339,7 @@ export namespace stripe {
   export const IssuingAuthorizationFleetDataSchema = z.object({
     /** Answers to prompts presented to the cardholder at the point of sale. Prompted fields vary depending on the configuration of your physical fleet cards. Typical points of sale support only numeric entry. */
     cardholder_prompt_data:
-      issuing_authorization_fleet_cardholder_prompt_dataSchema
-        .nullable()
+      IssuingAuthorizationFleetCardholderPromptDataSchema.nullable()
         .describe(
           'Answers to prompts presented to the cardholder at the point of sale. Prompted fields vary depending on the configuration of your physical fleet cards. Typical points of sale support only numeric entry.'
         )
@@ -26471,12 +26355,12 @@ export namespace stripe {
       .describe('The type of purchase.')
       .optional(),
     /** More information about the total amount. Typically this information is received from the merchant after the authorization has been approved and the fuel dispensed. This information is not guaranteed to be accurate as some merchants may provide unreliable data. */
-    reported_breakdown: issuing_authorization_fleet_reported_breakdownSchema
-      .nullable()
-      .describe(
-        'More information about the total amount. Typically this information is received from the merchant after the authorization has been approved and the fuel dispensed. This information is not guaranteed to be accurate as some merchants may provide unreliable data.'
-      )
-      .optional(),
+    reported_breakdown:
+      IssuingAuthorizationFleetReportedBreakdownSchema.nullable()
+        .describe(
+          'More information about the total amount. Typically this information is received from the merchant after the authorization has been approved and the fuel dispensed. This information is not guaranteed to be accurate as some merchants may provide unreliable data.'
+        )
+        .optional(),
     /** The type of fuel service. */
     service_type: z
       .enum(['full_service', 'non_fuel_transaction', 'self_service'])
@@ -26489,16 +26373,16 @@ export namespace stripe {
   >
 
   export const IssuingNetworkTokenNetworkDataSchema = z.object({
-    device: issuing_network_token_deviceSchema.optional(),
-    mastercard: issuing_network_token_mastercardSchema.optional(),
+    device: IssuingNetworkTokenDeviceSchema.optional(),
+    mastercard: IssuingNetworkTokenMastercardSchema.optional(),
     /** The network that the token is associated with. An additional hash is included with a name matching this value, containing tokenization data specific to the card network. */
     type: z
       .enum(['mastercard', 'visa'])
       .describe(
         'The network that the token is associated with. An additional hash is included with a name matching this value, containing tokenization data specific to the card network.'
       ),
-    visa: issuing_network_token_visaSchema.optional(),
-    wallet_provider: issuing_network_token_wallet_providerSchema.optional()
+    visa: IssuingNetworkTokenVisaSchema.optional(),
+    wallet_provider: IssuingNetworkTokenWalletProviderSchema.optional()
   })
   export type IssuingNetworkTokenNetworkData = z.infer<
     typeof IssuingNetworkTokenNetworkDataSchema
@@ -26507,8 +26391,7 @@ export namespace stripe {
   export const IssuingTransactionFleetDataSchema = z.object({
     /** Answers to prompts presented to cardholder at point of sale. */
     cardholder_prompt_data:
-      issuing_transaction_fleet_cardholder_prompt_dataSchema
-        .nullable()
+      IssuingTransactionFleetCardholderPromptDataSchema.nullable()
         .describe(
           'Answers to prompts presented to cardholder at point of sale.'
         )
@@ -26523,12 +26406,12 @@ export namespace stripe {
       )
       .optional(),
     /** More information about the total amount. This information is not guaranteed to be accurate as some merchants may provide unreliable data. */
-    reported_breakdown: issuing_transaction_fleet_reported_breakdownSchema
-      .nullable()
-      .describe(
-        'More information about the total amount. This information is not guaranteed to be accurate as some merchants may provide unreliable data.'
-      )
-      .optional(),
+    reported_breakdown:
+      IssuingTransactionFleetReportedBreakdownSchema.nullable()
+        .describe(
+          'More information about the total amount. This information is not guaranteed to be accurate as some merchants may provide unreliable data.'
+        )
+        .optional(),
     /** The type of fuel service. One of `non_fuel_transaction`, `full_service`, or `self_service`. */
     service_type: z
       .string()
@@ -26563,8 +26446,7 @@ export namespace stripe {
           'Time at which the object was created. Measured in seconds since the Unix epoch.'
         ),
       /** The estimated range for how long shipping will take, meant to be displayable to the customer. This will appear on CheckoutSessions. */
-      delivery_estimate: shipping_rate_delivery_estimateSchema
-        .nullable()
+      delivery_estimate: ShippingRateDeliveryEstimateSchema.nullable()
         .describe(
           'The estimated range for how long shipping will take, meant to be displayable to the customer. This will appear on CheckoutSessions.'
         )
@@ -26578,7 +26460,7 @@ export namespace stripe {
           'The name of the shipping rate, meant to be displayable to the customer. This will appear on CheckoutSessions.'
         )
         .optional(),
-      fixed_amount: shipping_rate_fixed_amountSchema.optional(),
+      fixed_amount: ShippingRateFixedAmountSchema.optional(),
       /** Unique identifier for the object. */
       id: z.string().max(5000).describe('Unique identifier for the object.'),
       /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
@@ -26609,7 +26491,7 @@ export namespace stripe {
         .optional(),
       /** A [tax code](https://stripe.com/docs/tax/tax-categories) ID. The Shipping tax code is `txcd_92010001`. */
       tax_code: z
-        .union([z.string().max(5000), tax_codeSchema])
+        .union([z.string().max(5000), TaxCodeSchema])
         .nullable()
         .describe(
           'A [tax code](https://stripe.com/docs/tax/tax-categories) ID. The Shipping tax code is `txcd_92010001`.'
@@ -26640,7 +26522,7 @@ export namespace stripe {
         'The URL for the Konbini payment instructions page, which allows customers to view and print a Konbini voucher.'
       )
       .optional(),
-    stores: payment_intent_next_action_konbini_storesSchema
+    stores: PaymentIntentNextActionKonbiniStoresSchema
   })
   export type PaymentIntentNextActionKonbini = z.infer<
     typeof PaymentIntentNextActionKonbiniSchema
@@ -26663,23 +26545,23 @@ export namespace stripe {
     .object({
       /** Available funds that you can transfer or pay out automatically by Stripe or explicitly through the [Transfers API](https://stripe.com/docs/api#transfers) or [Payouts API](https://stripe.com/docs/api#payouts). You can find the available balance for each currency and payment type in the `source_types` property. */
       available: z
-        .array(balance_amountSchema)
+        .array(BalanceAmountSchema)
         .describe(
           'Available funds that you can transfer or pay out automatically by Stripe or explicitly through the [Transfers API](https://stripe.com/docs/api#transfers) or [Payouts API](https://stripe.com/docs/api#payouts). You can find the available balance for each currency and payment type in the `source_types` property.'
         ),
       /** Funds held due to negative balances on connected accounts where [account.controller.requirement_collection](/api/accounts/object#account_object-controller-requirement_collection) is `application`, which includes Custom accounts. You can find the connect reserve balance for each currency and payment type in the `source_types` property. */
       connect_reserved: z
-        .array(balance_amountSchema)
+        .array(BalanceAmountSchema)
         .describe(
           'Funds held due to negative balances on connected accounts where [account.controller.requirement_collection](/api/accounts/object#account_object-controller-requirement_collection) is `application`, which includes Custom accounts. You can find the connect reserve balance for each currency and payment type in the `source_types` property.'
         )
         .optional(),
       /** Funds that you can pay out using Instant Payouts. */
       instant_available: z
-        .array(balance_amount_netSchema)
+        .array(BalanceAmountNetSchema)
         .describe('Funds that you can pay out using Instant Payouts.')
         .optional(),
-      issuing: balance_detailSchema.optional(),
+      issuing: BalanceDetailSchema.optional(),
       /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
       livemode: z
         .boolean()
@@ -26694,7 +26576,7 @@ export namespace stripe {
         ),
       /** Funds that aren't available in the balance yet. You can find the pending balance for each currency and each payment type in the `source_types` property. */
       pending: z
-        .array(balance_amountSchema)
+        .array(BalanceAmountSchema)
         .describe(
           "Funds that aren't available in the balance yet. You can find the pending balance for each currency and each payment type in the `source_types` property."
         )
@@ -26705,8 +26587,7 @@ export namespace stripe {
   export type Balance = z.infer<typeof BalanceSchema>
 
   export const PaymentPagesCheckoutSessionCustomFieldsSchema = z.object({
-    dropdown:
-      payment_pages_checkout_session_custom_fields_dropdownSchema.optional(),
+    dropdown: PaymentPagesCheckoutSessionCustomFieldsDropdownSchema.optional(),
     /** String of your choice that your integration can use to reconcile this field. Must be unique to this field, alphanumeric, and up to 200 characters. */
     key: z
       .string()
@@ -26714,16 +26595,15 @@ export namespace stripe {
       .describe(
         'String of your choice that your integration can use to reconcile this field. Must be unique to this field, alphanumeric, and up to 200 characters.'
       ),
-    label: payment_pages_checkout_session_custom_fields_labelSchema,
-    numeric:
-      payment_pages_checkout_session_custom_fields_numericSchema.optional(),
+    label: PaymentPagesCheckoutSessionCustomFieldsLabelSchema,
+    numeric: PaymentPagesCheckoutSessionCustomFieldsNumericSchema.optional(),
     /** Whether the customer is required to complete the field before completing the Checkout Session. Defaults to `false`. */
     optional: z
       .boolean()
       .describe(
         'Whether the customer is required to complete the field before completing the Checkout Session. Defaults to `false`.'
       ),
-    text: payment_pages_checkout_session_custom_fields_textSchema.optional(),
+    text: PaymentPagesCheckoutSessionCustomFieldsTextSchema.optional(),
     /** The type of the field. */
     type: z
       .enum(['dropdown', 'numeric', 'text'])
@@ -26734,7 +26614,7 @@ export namespace stripe {
   >
 
   export const PaymentLinksResourceCustomFieldsSchema = z.object({
-    dropdown: payment_links_resource_custom_fields_dropdownSchema.optional(),
+    dropdown: PaymentLinksResourceCustomFieldsDropdownSchema.optional(),
     /** String of your choice that your integration can use to reconcile this field. Must be unique to this field, alphanumeric, and up to 200 characters. */
     key: z
       .string()
@@ -26742,15 +26622,15 @@ export namespace stripe {
       .describe(
         'String of your choice that your integration can use to reconcile this field. Must be unique to this field, alphanumeric, and up to 200 characters.'
       ),
-    label: payment_links_resource_custom_fields_labelSchema,
-    numeric: payment_links_resource_custom_fields_numericSchema.optional(),
+    label: PaymentLinksResourceCustomFieldsLabelSchema,
+    numeric: PaymentLinksResourceCustomFieldsNumericSchema.optional(),
     /** Whether the customer is required to complete the field before completing the Checkout Session. Defaults to `false`. */
     optional: z
       .boolean()
       .describe(
         'Whether the customer is required to complete the field before completing the Checkout Session. Defaults to `false`.'
       ),
-    text: payment_links_resource_custom_fields_textSchema.optional(),
+    text: PaymentLinksResourceCustomFieldsTextSchema.optional(),
     /** The type of the field. */
     type: z
       .enum(['dropdown', 'numeric', 'text'])
@@ -26764,25 +26644,21 @@ export namespace stripe {
   export const GelatoDocumentReportSchema = z
     .object({
       /** Address as it appears in the document. */
-      address: addressSchema
-        .nullable()
+      address: AddressSchema.nullable()
         .describe('Address as it appears in the document.')
         .optional(),
       /** Date of birth as it appears in the document. */
-      dob: gelato_data_document_report_date_of_birthSchema
-        .nullable()
+      dob: GelatoDataDocumentReportDateOfBirthSchema.nullable()
         .describe('Date of birth as it appears in the document.')
         .optional(),
       /** Details on the verification error. Present when status is `unverified`. */
-      error: gelato_document_report_errorSchema
-        .nullable()
+      error: GelatoDocumentReportErrorSchema.nullable()
         .describe(
           'Details on the verification error. Present when status is `unverified`.'
         )
         .optional(),
       /** Expiration date of the document. */
-      expiration_date: gelato_data_document_report_expiration_dateSchema
-        .nullable()
+      expiration_date: GelatoDataDocumentReportExpirationDateSchema.nullable()
         .describe('Expiration date of the document.')
         .optional(),
       /** Array of [File](https://stripe.com/docs/api/files) ids containing images for this document. */
@@ -26801,8 +26677,7 @@ export namespace stripe {
         .describe('First name as it appears in the document.')
         .optional(),
       /** Issued date of the document. */
-      issued_date: gelato_data_document_report_issued_dateSchema
-        .nullable()
+      issued_date: GelatoDataDocumentReportIssuedDateSchema.nullable()
         .describe('Issued date of the document.')
         .optional(),
       /** Issuing country of the document. */
@@ -26849,7 +26724,7 @@ export namespace stripe {
   export const SourceTransactionSchema = z
     .object({
       ach_credit_transfer:
-        source_transaction_ach_credit_transfer_dataSchema.optional(),
+        SourceTransactionAchCreditTransferDataSchema.optional(),
       /** A positive integer in the smallest currency unit (that is, 100 cents for $1.00, or 1 for ¥1, Japanese Yen being a zero-decimal currency) representing the amount your customer has pushed to the receiver. */
       amount: z
         .number()
@@ -26858,7 +26733,7 @@ export namespace stripe {
           'A positive integer in the smallest currency unit (that is, 100 cents for $1.00, or 1 for ¥1, Japanese Yen being a zero-decimal currency) representing the amount your customer has pushed to the receiver.'
         ),
       chf_credit_transfer:
-        source_transaction_chf_credit_transfer_dataSchema.optional(),
+        SourceTransactionChfCreditTransferDataSchema.optional(),
       /** Time at which the object was created. Measured in seconds since the Unix epoch. */
       created: z
         .number()
@@ -26873,7 +26748,7 @@ export namespace stripe {
           'Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).'
         ),
       gbp_credit_transfer:
-        source_transaction_gbp_credit_transfer_dataSchema.optional(),
+        SourceTransactionGbpCreditTransferDataSchema.optional(),
       /** Unique identifier for the object. */
       id: z.string().max(5000).describe('Unique identifier for the object.'),
       /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
@@ -26888,9 +26763,9 @@ export namespace stripe {
         .describe(
           "String representing the object's type. Objects of the same type share the same value."
         ),
-      paper_check: source_transaction_paper_check_dataSchema.optional(),
+      paper_check: SourceTransactionPaperCheckDataSchema.optional(),
       sepa_credit_transfer:
-        source_transaction_sepa_credit_transfer_dataSchema.optional(),
+        SourceTransactionSepaCreditTransferDataSchema.optional(),
       /** The ID of the source this transaction is attached to. */
       source: z
         .string()
@@ -26940,7 +26815,7 @@ export namespace stripe {
       ),
     /** The ID of the Shipping Rate to use for this shipping option. */
     shipping_rate: z
-      .union([z.string().max(5000), shipping_rateSchema])
+      .union([z.string().max(5000), ShippingRateSchema])
       .describe('The ID of the Shipping Rate to use for this shipping option.')
   })
   export type PaymentLinksResourceShippingOption = z.infer<
@@ -26957,7 +26832,7 @@ export namespace stripe {
       ),
     /** The shipping rate. */
     shipping_rate: z
-      .union([z.string().max(5000), shipping_rateSchema])
+      .union([z.string().max(5000), ShippingRateSchema])
       .describe('The shipping rate.')
   })
   export type PaymentPagesCheckoutSessionShippingOption = z.infer<
@@ -26991,7 +26866,7 @@ export namespace stripe {
         .describe(
           "Total amount of the order including fees in the currency's smallest unit."
         ),
-      beneficiary: climate_removals_beneficiarySchema.optional(),
+      beneficiary: ClimateRemovalsBeneficiarySchema.optional(),
       /** Time at which the order was canceled. Measured in seconds since the Unix epoch. */
       canceled_at: z
         .number()
@@ -27059,7 +26934,7 @@ export namespace stripe {
         .optional(),
       /** Details about the delivery of carbon removal for this order. */
       delivery_details: z
-        .array(climate_removals_order_deliveriesSchema)
+        .array(ClimateRemovalsOrderDeliveriesSchema)
         .describe(
           'Details about the delivery of carbon removal for this order.'
         ),
@@ -27094,7 +26969,7 @@ export namespace stripe {
         ),
       /** Unique ID for the Climate `Product` this order is purchasing. */
       product: z
-        .union([z.string().max(5000), climate.productSchema])
+        .union([z.string().max(5000), ClimateProductSchema])
         .describe(
           'Unique ID for the Climate `Product` this order is purchasing.'
         ),
@@ -27124,10 +26999,9 @@ export namespace stripe {
    */
   export const TaxSettingsSchema = z
     .object({
-      defaults: tax_product_resource_tax_settings_defaultsSchema,
+      defaults: TaxProductResourceTaxSettingsDefaultsSchema,
       /** The place where your business is located. */
-      head_office: tax_product_resource_tax_settings_head_officeSchema
-        .nullable()
+      head_office: TaxProductResourceTaxSettingsHeadOfficeSchema.nullable()
         .describe('The place where your business is located.')
         .optional(),
       /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
@@ -27146,7 +27020,7 @@ export namespace stripe {
       status: z
         .enum(['active', 'pending'])
         .describe('The status of the Tax `Settings`.'),
-      status_details: tax_product_resource_tax_settings_status_detailsSchema
+      status_details: TaxProductResourceTaxSettingsStatusDetailsSchema
     })
     .describe(
       'You can use Tax `Settings` to manage configurations used by Stripe Tax calculations.\n\nRelated guide: [Using the Settings API](https://stripe.com/docs/tax/settings-api)'
@@ -27155,15 +27029,13 @@ export namespace stripe {
 
   export const IssuingCardholderIndividualSchema = z.object({
     /** Information related to the card_issuing program for this cardholder. */
-    card_issuing: issuing_cardholder_card_issuingSchema
-      .nullable()
+    card_issuing: IssuingCardholderCardIssuingSchema.nullable()
       .describe(
         'Information related to the card_issuing program for this cardholder.'
       )
       .optional(),
     /** The date of birth of this cardholder. */
-    dob: issuing_cardholder_individual_dobSchema
-      .nullable()
+    dob: IssuingCardholderIndividualDobSchema.nullable()
       .describe('The date of birth of this cardholder.')
       .optional(),
     /** The first name of this cardholder. Required before activating Cards. This field cannot contain any numbers, special characters (except periods, commas, hyphens, spaces and apostrophes) or non-latin letters. */
@@ -27185,8 +27057,7 @@ export namespace stripe {
       )
       .optional(),
     /** Government-issued ID document for this cardholder. */
-    verification: issuing_cardholder_verificationSchema
-      .nullable()
+    verification: IssuingCardholderVerificationSchema.nullable()
       .describe('Government-issued ID document for this cardholder.')
       .optional()
   })
@@ -27199,15 +27070,14 @@ export namespace stripe {
     .object({
       /** The file for the card logo to use with physical bundles that support card logos. Must have a `purpose` value of `issuing_logo`. */
       card_logo: z
-        .union([z.string().max(5000), fileSchema])
+        .union([z.string().max(5000), FileSchema])
         .nullable()
         .describe(
           'The file for the card logo to use with physical bundles that support card logos. Must have a `purpose` value of `issuing_logo`.'
         )
         .optional(),
       /** Hash containing carrier text, for use with physical bundles that support carrier text. */
-      carrier_text: issuing_personalization_design_carrier_textSchema
-        .nullable()
+      carrier_text: IssuingPersonalizationDesignCarrierTextSchema.nullable()
         .describe(
           'Hash containing carrier text, for use with physical bundles that support carrier text.'
         )
@@ -27257,12 +27127,12 @@ export namespace stripe {
         ),
       /** The physical bundle object belonging to this personalization design. */
       physical_bundle: z
-        .union([z.string().max(5000), issuing.physical_bundleSchema])
+        .union([z.string().max(5000), IssuingPhysicalBundleSchema])
         .describe(
           'The physical bundle object belonging to this personalization design.'
         ),
-      preferences: issuing_personalization_design_preferencesSchema,
-      rejection_reasons: issuing_personalization_design_rejection_reasonsSchema,
+      preferences: IssuingPersonalizationDesignPreferencesSchema,
+      rejection_reasons: IssuingPersonalizationDesignRejectionReasonsSchema,
       /** Whether this personalization design can be used to create cards. */
       status: z
         .enum(['active', 'inactive', 'rejected', 'review'])
@@ -27280,11 +27150,10 @@ export namespace stripe {
   /** FinancialAddresses contain identifying information that resolves to a FinancialAccount. */
   export const FundingInstructionsBankTransferFinancialAddressSchema = z
     .object({
-      aba: funding_instructions_bank_transfer_aba_recordSchema.optional(),
-      iban: funding_instructions_bank_transfer_iban_recordSchema.optional(),
-      sort_code:
-        funding_instructions_bank_transfer_sort_code_recordSchema.optional(),
-      spei: funding_instructions_bank_transfer_spei_recordSchema.optional(),
+      aba: FundingInstructionsBankTransferAbaRecordSchema.optional(),
+      iban: FundingInstructionsBankTransferIbanRecordSchema.optional(),
+      sort_code: FundingInstructionsBankTransferSortCodeRecordSchema.optional(),
+      spei: FundingInstructionsBankTransferSpeiRecordSchema.optional(),
       /** The payment networks supported by this FinancialAddress */
       supported_networks: z
         .array(
@@ -27301,12 +27170,12 @@ export namespace stripe {
         )
         .describe('The payment networks supported by this FinancialAddress')
         .optional(),
-      swift: funding_instructions_bank_transfer_swift_recordSchema.optional(),
+      swift: FundingInstructionsBankTransferSwiftRecordSchema.optional(),
       /** The type of financial address */
       type: z
         .enum(['aba', 'iban', 'sort_code', 'spei', 'swift', 'zengin'])
         .describe('The type of financial address'),
-      zengin: funding_instructions_bank_transfer_zengin_recordSchema.optional()
+      zengin: FundingInstructionsBankTransferZenginRecordSchema.optional()
     })
     .describe(
       'FinancialAddresses contain identifying information that resolves to a FinancialAccount.'
@@ -27319,7 +27188,7 @@ export namespace stripe {
   export const TerminalConfigurationSchema = z
     .object({
       bbpos_wisepos_e:
-        terminal_configuration_configuration_resource_device_type_specific_configSchema.optional(),
+        TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfigSchema.optional(),
       /** Unique identifier for the object. */
       id: z.string().max(5000).describe('Unique identifier for the object.'),
       /** Whether this Configuration is the default for your account */
@@ -27350,15 +27219,15 @@ export namespace stripe {
           "String representing the object's type. Objects of the same type share the same value."
         ),
       offline:
-        terminal_configuration_configuration_resource_offline_configSchema.optional(),
+        TerminalConfigurationConfigurationResourceOfflineConfigSchema.optional(),
       reboot_window:
-        terminal_configuration_configuration_resource_reboot_windowSchema.optional(),
+        TerminalConfigurationConfigurationResourceRebootWindowSchema.optional(),
       stripe_s700:
-        terminal_configuration_configuration_resource_device_type_specific_configSchema.optional(),
+        TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfigSchema.optional(),
       tipping:
-        terminal_configuration_configuration_resource_tippingSchema.optional(),
+        TerminalConfigurationConfigurationResourceTippingSchema.optional(),
       verifone_p400:
-        terminal_configuration_configuration_resource_device_type_specific_configSchema.optional()
+        TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfigSchema.optional()
     })
     .describe(
       'A Configurations object represents how features should be configured for terminal readers.'
@@ -27368,17 +27237,15 @@ export namespace stripe {
   >
 
   export const LegalEntityCompanySchema = z.object({
-    address: addressSchema.optional(),
+    address: AddressSchema.optional(),
     /** The Kana variation of the company's primary address (Japan only). */
-    address_kana: legal_entity_japan_addressSchema
-      .nullable()
+    address_kana: LegalEntityJapanAddressSchema.nullable()
       .describe(
         "The Kana variation of the company's primary address (Japan only)."
       )
       .optional(),
     /** The Kanji variation of the company's primary address (Japan only). */
-    address_kanji: legal_entity_japan_addressSchema
-      .nullable()
+    address_kanji: LegalEntityJapanAddressSchema.nullable()
       .describe(
         "The Kanji variation of the company's primary address (Japan only)."
       )
@@ -27391,12 +27258,12 @@ export namespace stripe {
       )
       .optional(),
     /** This hash is used to attest that the director information provided to Stripe is both current and correct. */
-    directorship_declaration: legal_entity_directorship_declarationSchema
-      .nullable()
-      .describe(
-        'This hash is used to attest that the director information provided to Stripe is both current and correct.'
-      )
-      .optional(),
+    directorship_declaration:
+      LegalEntityDirectorshipDeclarationSchema.nullable()
+        .describe(
+          'This hash is used to attest that the director information provided to Stripe is both current and correct.'
+        )
+        .optional(),
     /** Whether the company's executives have been provided. This Boolean will be `true` if you've manually indicated that all executives are provided via [the `executives_provided` parameter](https://stripe.com/docs/api/accounts/update#update_account-company-executives_provided), or if Stripe determined that sufficient executives were provided. */
     executives_provided: z
       .boolean()
@@ -27447,8 +27314,7 @@ export namespace stripe {
       )
       .optional(),
     /** This hash is used to attest that the beneficial owner information provided to Stripe is both current and correct. */
-    ownership_declaration: legal_entity_ubo_declarationSchema
-      .nullable()
+    ownership_declaration: LegalEntityUboDeclarationSchema.nullable()
       .describe(
         'This hash is used to attest that the beneficial owner information provided to Stripe is both current and correct.'
       )
@@ -27516,8 +27382,7 @@ export namespace stripe {
       .describe("Whether the company's business VAT number was provided.")
       .optional(),
     /** Information on the verification state of the company. */
-    verification: legal_entity_company_verificationSchema
-      .nullable()
+    verification: LegalEntityCompanyVerificationSchema.nullable()
       .describe('Information on the verification state of the company.')
       .optional()
   })
@@ -27542,7 +27407,7 @@ export namespace stripe {
       .optional(),
     /** (ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Your subscription cancellation policy, as shown to the customer. */
     cancellation_policy: z
-      .union([z.string().max(5000), fileSchema])
+      .union([z.string().max(5000), FileSchema])
       .nullable()
       .describe(
         '(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Your subscription cancellation policy, as shown to the customer.'
@@ -27568,7 +27433,7 @@ export namespace stripe {
       .optional(),
     /** (ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Any communication with the customer that you feel is relevant to your case. Examples include emails proving that the customer received the product or service, or demonstrating their use of or satisfaction with the product or service. */
     customer_communication: z
-      .union([z.string().max(5000), fileSchema])
+      .union([z.string().max(5000), FileSchema])
       .nullable()
       .describe(
         '(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Any communication with the customer that you feel is relevant to your case. Examples include emails proving that the customer received the product or service, or demonstrating their use of or satisfaction with the product or service.'
@@ -27599,7 +27464,7 @@ export namespace stripe {
       .optional(),
     /** (ID of a [file upload](https://stripe.com/docs/guides/file-upload)) A relevant document or contract showing the customer's signature. */
     customer_signature: z
-      .union([z.string().max(5000), fileSchema])
+      .union([z.string().max(5000), FileSchema])
       .nullable()
       .describe(
         "(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) A relevant document or contract showing the customer's signature."
@@ -27607,7 +27472,7 @@ export namespace stripe {
       .optional(),
     /** (ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Documentation for the prior charge that can uniquely identify the charge, such as a receipt, shipping label, work order, etc. This document should be paired with a similar document from the disputed payment that proves the two payments are separate. */
     duplicate_charge_documentation: z
-      .union([z.string().max(5000), fileSchema])
+      .union([z.string().max(5000), FileSchema])
       .nullable()
       .describe(
         '(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Documentation for the prior charge that can uniquely identify the charge, such as a receipt, shipping label, work order, etc. This document should be paired with a similar document from the disputed payment that proves the two payments are separate.'
@@ -27631,7 +27496,7 @@ export namespace stripe {
         'The Stripe ID for the prior charge which appears to be a duplicate of the disputed charge.'
       )
       .optional(),
-    enhanced_evidence: dispute_enhanced_evidenceSchema,
+    enhanced_evidence: DisputeEnhancedEvidenceSchema,
     /** A description of the product or service that was sold. */
     product_description: z
       .string()
@@ -27641,7 +27506,7 @@ export namespace stripe {
       .optional(),
     /** (ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Any receipt or message sent to the customer notifying them of the charge. */
     receipt: z
-      .union([z.string().max(5000), fileSchema])
+      .union([z.string().max(5000), FileSchema])
       .nullable()
       .describe(
         '(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Any receipt or message sent to the customer notifying them of the charge.'
@@ -27649,7 +27514,7 @@ export namespace stripe {
       .optional(),
     /** (ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Your refund policy, as shown to the customer. */
     refund_policy: z
-      .union([z.string().max(5000), fileSchema])
+      .union([z.string().max(5000), FileSchema])
       .nullable()
       .describe(
         '(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Your refund policy, as shown to the customer.'
@@ -27684,7 +27549,7 @@ export namespace stripe {
       .optional(),
     /** (ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Documentation showing proof that a service was provided to the customer. This could include a copy of a signed contract, work order, or other form of written agreement. */
     service_documentation: z
-      .union([z.string().max(5000), fileSchema])
+      .union([z.string().max(5000), FileSchema])
       .nullable()
       .describe(
         '(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Documentation showing proof that a service was provided to the customer. This could include a copy of a signed contract, work order, or other form of written agreement.'
@@ -27719,7 +27584,7 @@ export namespace stripe {
       .optional(),
     /** (ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Documentation showing proof that a product was shipped to the customer at the same address the customer provided to you. This could include a copy of the shipment receipt, shipping label, etc. It should show the customer's full shipping address, if possible. */
     shipping_documentation: z
-      .union([z.string().max(5000), fileSchema])
+      .union([z.string().max(5000), FileSchema])
       .nullable()
       .describe(
         "(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Documentation showing proof that a product was shipped to the customer at the same address the customer provided to you. This could include a copy of the shipment receipt, shipping label, etc. It should show the customer's full shipping address, if possible."
@@ -27736,7 +27601,7 @@ export namespace stripe {
       .optional(),
     /** (ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Any additional evidence or statements. */
     uncategorized_file: z
-      .union([z.string().max(5000), fileSchema])
+      .union([z.string().max(5000), FileSchema])
       .nullable()
       .describe(
         '(ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Any additional evidence or statements.'
@@ -27754,8 +27619,8 @@ export namespace stripe {
 
   export const PaymentMethodDetailsCardWalletSchema = z.object({
     amex_express_checkout:
-      payment_method_details_card_wallet_amex_express_checkoutSchema.optional(),
-    apple_pay: payment_method_details_card_wallet_apple_paySchema.optional(),
+      PaymentMethodDetailsCardWalletAmexExpressCheckoutSchema.optional(),
+    apple_pay: PaymentMethodDetailsCardWalletApplePaySchema.optional(),
     /** (For tokenized numbers only.) The last four digits of the device account number. */
     dynamic_last4: z
       .string()
@@ -27765,11 +27630,10 @@ export namespace stripe {
         '(For tokenized numbers only.) The last four digits of the device account number.'
       )
       .optional(),
-    google_pay: payment_method_details_card_wallet_google_paySchema.optional(),
-    link: payment_method_details_card_wallet_linkSchema.optional(),
-    masterpass: payment_method_details_card_wallet_masterpassSchema.optional(),
-    samsung_pay:
-      payment_method_details_card_wallet_samsung_paySchema.optional(),
+    google_pay: PaymentMethodDetailsCardWalletGooglePaySchema.optional(),
+    link: PaymentMethodDetailsCardWalletLinkSchema.optional(),
+    masterpass: PaymentMethodDetailsCardWalletMasterpassSchema.optional(),
+    samsung_pay: PaymentMethodDetailsCardWalletSamsungPaySchema.optional(),
     /** The type of the card wallet, one of `amex_express_checkout`, `apple_pay`, `google_pay`, `masterpass`, `samsung_pay`, `visa_checkout`, or `link`. An additional hash is included on the Wallet subhash with a name matching this value. It contains additional information specific to the card wallet type. */
     type: z
       .enum([
@@ -27784,8 +27648,7 @@ export namespace stripe {
       .describe(
         'The type of the card wallet, one of `amex_express_checkout`, `apple_pay`, `google_pay`, `masterpass`, `samsung_pay`, `visa_checkout`, or `link`. An additional hash is included on the Wallet subhash with a name matching this value. It contains additional information specific to the card wallet type.'
       ),
-    visa_checkout:
-      payment_method_details_card_wallet_visa_checkoutSchema.optional()
+    visa_checkout: PaymentMethodDetailsCardWalletVisaCheckoutSchema.optional()
   })
   export type PaymentMethodDetailsCardWallet = z.infer<
     typeof PaymentMethodDetailsCardWalletSchema
@@ -27812,7 +27675,7 @@ export namespace stripe {
         .optional(),
       /** A list of financial addresses that can be used to fund the customer balance */
       financial_addresses: z
-        .array(funding_instructions_bank_transfer_financial_addressSchema)
+        .array(FundingInstructionsBankTransferFinancialAddressSchema)
         .describe(
           'A list of financial addresses that can be used to fund the customer balance'
         )
@@ -27852,8 +27715,8 @@ export namespace stripe {
 
   export const PaymentMethodCardWalletSchema = z.object({
     amex_express_checkout:
-      payment_method_card_wallet_amex_express_checkoutSchema.optional(),
-    apple_pay: payment_method_card_wallet_apple_paySchema.optional(),
+      PaymentMethodCardWalletAmexExpressCheckoutSchema.optional(),
+    apple_pay: PaymentMethodCardWalletApplePaySchema.optional(),
     /** (For tokenized numbers only.) The last four digits of the device account number. */
     dynamic_last4: z
       .string()
@@ -27863,10 +27726,10 @@ export namespace stripe {
         '(For tokenized numbers only.) The last four digits of the device account number.'
       )
       .optional(),
-    google_pay: payment_method_card_wallet_google_paySchema.optional(),
-    link: payment_method_card_wallet_linkSchema.optional(),
-    masterpass: payment_method_card_wallet_masterpassSchema.optional(),
-    samsung_pay: payment_method_card_wallet_samsung_paySchema.optional(),
+    google_pay: PaymentMethodCardWalletGooglePaySchema.optional(),
+    link: PaymentMethodCardWalletLinkSchema.optional(),
+    masterpass: PaymentMethodCardWalletMasterpassSchema.optional(),
+    samsung_pay: PaymentMethodCardWalletSamsungPaySchema.optional(),
     /** The type of the card wallet, one of `amex_express_checkout`, `apple_pay`, `google_pay`, `masterpass`, `samsung_pay`, `visa_checkout`, or `link`. An additional hash is included on the Wallet subhash with a name matching this value. It contains additional information specific to the card wallet type. */
     type: z
       .enum([
@@ -27881,7 +27744,7 @@ export namespace stripe {
       .describe(
         'The type of the card wallet, one of `amex_express_checkout`, `apple_pay`, `google_pay`, `masterpass`, `samsung_pay`, `visa_checkout`, or `link`. An additional hash is included on the Wallet subhash with a name matching this value. It contains additional information specific to the card wallet type.'
       ),
-    visa_checkout: payment_method_card_wallet_visa_checkoutSchema.optional()
+    visa_checkout: PaymentMethodCardWalletVisaCheckoutSchema.optional()
   })
   export type PaymentMethodCardWallet = z.infer<
     typeof PaymentMethodCardWalletSchema
@@ -27895,7 +27758,7 @@ export namespace stripe {
       .describe('The country of the bank account to fund'),
     /** A list of financial addresses that can be used to fund a particular balance */
     financial_addresses: z
-      .array(funding_instructions_bank_transfer_financial_addressSchema)
+      .array(FundingInstructionsBankTransferFinancialAddressSchema)
       .describe(
         'A list of financial addresses that can be used to fund a particular balance'
       ),
@@ -27938,7 +27801,7 @@ export namespace stripe {
           'The ID of an existing [Customer](https://stripe.com/docs/api/customers/object) used for the resource.'
         )
         .optional(),
-      customer_details: tax_product_resource_customer_detailsSchema,
+      customer_details: TaxProductResourceCustomerDetailsSchema,
       /** Unique identifier for the transaction. */
       id: z
         .string()
@@ -27949,7 +27812,7 @@ export namespace stripe {
         .object({
           /** Details about each object. */
           data: z
-            .array(tax.transaction_line_itemSchema)
+            .array(TaxTransactionLineItemSchema)
             .describe('Details about each object.'),
           /** True if this list has another page of items after this one that can be fetched. */
           has_more: z
@@ -28006,22 +27869,21 @@ export namespace stripe {
         .max(5000)
         .describe("A custom unique identifier, such as 'myOrder_123'."),
       /** If `type=reversal`, contains information about what was reversed. */
-      reversal: tax_product_resource_tax_transaction_resource_reversalSchema
-        .nullable()
-        .describe(
-          'If `type=reversal`, contains information about what was reversed.'
-        )
-        .optional(),
+      reversal:
+        TaxProductResourceTaxTransactionResourceReversalSchema.nullable()
+          .describe(
+            'If `type=reversal`, contains information about what was reversed.'
+          )
+          .optional(),
       /** The details of the ship from location, such as the address. */
-      ship_from_details: tax_product_resource_ship_from_detailsSchema
-        .nullable()
+      ship_from_details: TaxProductResourceShipFromDetailsSchema.nullable()
         .describe('The details of the ship from location, such as the address.')
         .optional(),
       /** The shipping cost details for the transaction. */
-      shipping_cost: tax_product_resource_tax_transaction_shipping_costSchema
-        .nullable()
-        .describe('The shipping cost details for the transaction.')
-        .optional(),
+      shipping_cost:
+        TaxProductResourceTaxTransactionShippingCostSchema.nullable()
+          .describe('The shipping cost details for the transaction.')
+          .optional(),
       /** Timestamp of date at which the tax rules and rates in effect applies for the calculation. */
       tax_date: z
         .number()
@@ -28061,13 +27923,13 @@ export namespace stripe {
       .describe('Total shipping cost after taxes are applied.'),
     /** The ID of the ShippingRate for this invoice. */
     shipping_rate: z
-      .union([z.string().max(5000), shipping_rateSchema])
+      .union([z.string().max(5000), ShippingRateSchema])
       .nullable()
       .describe('The ID of the ShippingRate for this invoice.')
       .optional(),
     /** The taxes applied to the shipping rate. */
     taxes: z
-      .array(line_items_tax_amountSchema)
+      .array(LineItemsTaxAmountSchema)
       .describe('The taxes applied to the shipping rate.')
       .optional()
   })
@@ -28076,11 +27938,11 @@ export namespace stripe {
   >
 
   export const PortalFeaturesSchema = z.object({
-    customer_update: portal_customer_updateSchema,
-    invoice_history: portal_invoice_listSchema,
-    payment_method_update: portal_payment_method_updateSchema,
-    subscription_cancel: portal_subscription_cancelSchema,
-    subscription_update: portal_subscription_updateSchema
+    customer_update: PortalCustomerUpdateSchema,
+    invoice_history: PortalInvoiceListSchema,
+    payment_method_update: PortalPaymentMethodUpdateSchema,
+    subscription_cancel: PortalSubscriptionCancelSchema,
+    subscription_update: PortalSubscriptionUpdateSchema
   })
   export type PortalFeatures = z.infer<typeof PortalFeaturesSchema>
 
@@ -28106,13 +27968,13 @@ export namespace stripe {
       .describe('Total shipping cost after discounts and taxes are applied.'),
     /** The ID of the ShippingRate for this order. */
     shipping_rate: z
-      .union([z.string().max(5000), shipping_rateSchema])
+      .union([z.string().max(5000), ShippingRateSchema])
       .nullable()
       .describe('The ID of the ShippingRate for this order.')
       .optional(),
     /** The taxes applied to the shipping rate. */
     taxes: z
-      .array(line_items_tax_amountSchema)
+      .array(LineItemsTaxAmountSchema)
       .describe('The taxes applied to the shipping rate.')
       .optional()
   })
@@ -28129,7 +27991,7 @@ export namespace stripe {
    */
   export const FundingInstructionsSchema = z
     .object({
-      bank_transfer: funding_instructions_bank_transferSchema,
+      bank_transfer: FundingInstructionsBankTransferSchema,
       /** Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies). */
       currency: z
         .string()
@@ -28166,15 +28028,15 @@ export namespace stripe {
   export const TreasuryFinancialAccountFeaturesSchema = z
     .object({
       card_issuing:
-        treasury_financial_accounts_resource_toggle_settingsSchema.optional(),
+        TreasuryFinancialAccountsResourceToggleSettingsSchema.optional(),
       deposit_insurance:
-        treasury_financial_accounts_resource_toggle_settingsSchema.optional(),
+        TreasuryFinancialAccountsResourceToggleSettingsSchema.optional(),
       financial_addresses:
-        treasury_financial_accounts_resource_financial_addresses_featuresSchema.optional(),
+        TreasuryFinancialAccountsResourceFinancialAddressesFeaturesSchema.optional(),
       inbound_transfers:
-        treasury_financial_accounts_resource_inbound_transfersSchema.optional(),
+        TreasuryFinancialAccountsResourceInboundTransfersSchema.optional(),
       intra_stripe_flows:
-        treasury_financial_accounts_resource_toggle_settingsSchema.optional(),
+        TreasuryFinancialAccountsResourceToggleSettingsSchema.optional(),
       /** String representing the object's type. Objects of the same type share the same value. */
       object: z
         .literal('treasury.financial_account_features')
@@ -28182,9 +28044,9 @@ export namespace stripe {
           "String representing the object's type. Objects of the same type share the same value."
         ),
       outbound_payments:
-        treasury_financial_accounts_resource_outbound_paymentsSchema.optional(),
+        TreasuryFinancialAccountsResourceOutboundPaymentsSchema.optional(),
       outbound_transfers:
-        treasury_financial_accounts_resource_outbound_transfersSchema.optional()
+        TreasuryFinancialAccountsResourceOutboundTransfersSchema.optional()
     })
     .describe(
       'Encodes whether a FinancialAccount has access to a particular Feature, with a `status` enum and associated `status_details`.\nStripe or the platform can control Features via the requested field.'
@@ -28194,15 +28056,15 @@ export namespace stripe {
   >
 
   export const IssuingDisputeEvidenceSchema = z.object({
-    canceled: issuing_dispute_canceled_evidenceSchema.optional(),
-    duplicate: issuing_dispute_duplicate_evidenceSchema.optional(),
-    fraudulent: issuing_dispute_fraudulent_evidenceSchema.optional(),
+    canceled: IssuingDisputeCanceledEvidenceSchema.optional(),
+    duplicate: IssuingDisputeDuplicateEvidenceSchema.optional(),
+    fraudulent: IssuingDisputeFraudulentEvidenceSchema.optional(),
     merchandise_not_as_described:
-      issuing_dispute_merchandise_not_as_described_evidenceSchema.optional(),
+      IssuingDisputeMerchandiseNotAsDescribedEvidenceSchema.optional(),
     no_valid_authorization:
-      issuing_dispute_no_valid_authorization_evidenceSchema.optional(),
-    not_received: issuing_dispute_not_received_evidenceSchema.optional(),
-    other: issuing_dispute_other_evidenceSchema.optional(),
+      IssuingDisputeNoValidAuthorizationEvidenceSchema.optional(),
+    not_received: IssuingDisputeNotReceivedEvidenceSchema.optional(),
+    other: IssuingDisputeOtherEvidenceSchema.optional(),
     /** The reason for filing the dispute. Its value will match the field containing the evidence. */
     reason: z
       .enum([
@@ -28219,7 +28081,7 @@ export namespace stripe {
         'The reason for filing the dispute. Its value will match the field containing the evidence.'
       ),
     service_not_as_described:
-      issuing_dispute_service_not_as_described_evidenceSchema.optional()
+      IssuingDisputeServiceNotAsDescribedEvidenceSchema.optional()
   })
   export type IssuingDisputeEvidence = z.infer<
     typeof IssuingDisputeEvidenceSchema
@@ -28260,14 +28122,13 @@ export namespace stripe {
         ),
       /** Prices defined in each available currency option. Each key must be a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) and a [supported currency](https://stripe.com/docs/currencies). */
       currency_options: z
-        .record(currency_optionSchema)
+        .record(CurrencyOptionSchema)
         .describe(
           'Prices defined in each available currency option. Each key must be a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) and a [supported currency](https://stripe.com/docs/currencies).'
         )
         .optional(),
       /** When set, provides configuration for the amount to be adjusted by the customer during Checkout Sessions and Payment Links. */
-      custom_unit_amount: custom_unit_amountSchema
-        .nullable()
+      custom_unit_amount: CustomUnitAmountSchema.nullable()
         .describe(
           'When set, provides configuration for the amount to be adjusted by the customer during Checkout Sessions and Payment Links.'
         )
@@ -28310,11 +28171,10 @@ export namespace stripe {
         ),
       /** The ID of the product this price is associated with. */
       product: z
-        .union([z.string().max(5000), productSchema, deleted_productSchema])
+        .union([z.string().max(5000), ProductSchema, DeletedProductSchema])
         .describe('The ID of the product this price is associated with.'),
       /** The recurring components of a price such as `interval` and `usage_type`. */
-      recurring: recurringSchema
-        .nullable()
+      recurring: RecurringSchema.nullable()
         .describe(
           'The recurring components of a price such as `interval` and `usage_type`.'
         )
@@ -28329,7 +28189,7 @@ export namespace stripe {
         .optional(),
       /** Each element represents a pricing tier. This parameter requires `billing_scheme` to be set to `tiered`. See also the documentation for `billing_scheme`. */
       tiers: z
-        .array(price_tierSchema)
+        .array(PriceTierSchema)
         .describe(
           'Each element represents a pricing tier. This parameter requires `billing_scheme` to be set to `tiered`. See also the documentation for `billing_scheme`.'
         )
@@ -28343,8 +28203,7 @@ export namespace stripe {
         )
         .optional(),
       /** Apply a transformation to the reported usage or set quantity before computing the amount billed. Cannot be combined with `tiers`. */
-      transform_quantity: transform_quantitySchema
-        .nullable()
+      transform_quantity: TransformQuantitySchema.nullable()
         .describe(
           'Apply a transformation to the reported usage or set quantity before computing the amount billed. Cannot be combined with `tiers`.'
         )
@@ -28403,7 +28262,7 @@ export namespace stripe {
         ),
       /** The ID of the [Price](https://stripe.com/docs/api/prices) object that is the default price for this product. */
       default_price: z
-        .union([z.string().max(5000), priceSchema])
+        .union([z.string().max(5000), PriceSchema])
         .nullable()
         .describe(
           'The ID of the [Price](https://stripe.com/docs/api/prices) object that is the default price for this product.'
@@ -28434,7 +28293,7 @@ export namespace stripe {
         ),
       /** A list of up to 15 marketing features for this product. These are displayed in [pricing tables](https://stripe.com/docs/payments/checkout/pricing-table). */
       marketing_features: z
-        .array(product_marketing_featureSchema)
+        .array(ProductMarketingFeatureSchema)
         .describe(
           'A list of up to 15 marketing features for this product. These are displayed in [pricing tables](https://stripe.com/docs/payments/checkout/pricing-table).'
         ),
@@ -28458,8 +28317,7 @@ export namespace stripe {
           "String representing the object's type. Objects of the same type share the same value."
         ),
       /** The dimensions of this product for shipping purposes. */
-      package_dimensions: package_dimensionsSchema
-        .nullable()
+      package_dimensions: PackageDimensionsSchema.nullable()
         .describe('The dimensions of this product for shipping purposes.')
         .optional(),
       /** Whether this product is shipped (i.e., physical goods). */
@@ -28479,7 +28337,7 @@ export namespace stripe {
         .optional(),
       /** A [tax code](https://stripe.com/docs/tax/tax-categories) ID. */
       tax_code: z
-        .union([z.string().max(5000), tax_codeSchema])
+        .union([z.string().max(5000), TaxCodeSchema])
         .nullable()
         .describe(
           'A [tax code](https://stripe.com/docs/tax/tax-categories) ID.'
@@ -28515,21 +28373,18 @@ export namespace stripe {
   export type Product = z.infer<typeof ProductSchema>
 
   export const PortalFlowsFlowSchema = z.object({
-    after_completion: portal_flows_flow_after_completionSchema,
+    after_completion: PortalFlowsFlowAfterCompletionSchema,
     /** Configuration when `flow.type=subscription_cancel`. */
-    subscription_cancel: portal_flows_flow_subscription_cancelSchema
-      .nullable()
+    subscription_cancel: PortalFlowsFlowSubscriptionCancelSchema.nullable()
       .describe('Configuration when `flow.type=subscription_cancel`.')
       .optional(),
     /** Configuration when `flow.type=subscription_update`. */
-    subscription_update: portal_flows_flow_subscription_updateSchema
-      .nullable()
+    subscription_update: PortalFlowsFlowSubscriptionUpdateSchema.nullable()
       .describe('Configuration when `flow.type=subscription_update`.')
       .optional(),
     /** Configuration when `flow.type=subscription_update_confirm`. */
     subscription_update_confirm:
-      portal_flows_flow_subscription_update_confirmSchema
-        .nullable()
+      PortalFlowsFlowSubscriptionUpdateConfirmSchema.nullable()
         .describe('Configuration when `flow.type=subscription_update_confirm`.')
         .optional(),
     /** Type of flow that the customer will go through. */
@@ -28546,36 +28401,32 @@ export namespace stripe {
 
   export const IssuingTransactionPurchaseDetailsSchema = z.object({
     /** Fleet-specific information for transactions using Fleet cards. */
-    fleet: issuing_transaction_fleet_dataSchema
-      .nullable()
+    fleet: IssuingTransactionFleetDataSchema.nullable()
       .describe(
         'Fleet-specific information for transactions using Fleet cards.'
       )
       .optional(),
     /** Information about the flight that was purchased with this transaction. */
-    flight: issuing_transaction_flight_dataSchema
-      .nullable()
+    flight: IssuingTransactionFlightDataSchema.nullable()
       .describe(
         'Information about the flight that was purchased with this transaction.'
       )
       .optional(),
     /** Information about fuel that was purchased with this transaction. */
-    fuel: issuing_transaction_fuel_dataSchema
-      .nullable()
+    fuel: IssuingTransactionFuelDataSchema.nullable()
       .describe(
         'Information about fuel that was purchased with this transaction.'
       )
       .optional(),
     /** Information about lodging that was purchased with this transaction. */
-    lodging: issuing_transaction_lodging_dataSchema
-      .nullable()
+    lodging: IssuingTransactionLodgingDataSchema.nullable()
       .describe(
         'Information about lodging that was purchased with this transaction.'
       )
       .optional(),
     /** The line items in the purchase. */
     receipt: z
-      .array(issuing_transaction_receipt_dataSchema)
+      .array(IssuingTransactionReceiptDataSchema)
       .nullable()
       .describe('The line items in the purchase.')
       .optional(),
@@ -28592,92 +28443,92 @@ export namespace stripe {
   >
 
   export const TaxProductRegistrationsResourceCountryOptionsSchema = z.object({
-    ae: tax_product_registrations_resource_country_options_defaultSchema.optional(),
-    al: tax_product_registrations_resource_country_options_defaultSchema.optional(),
-    am: tax_product_registrations_resource_country_options_simplifiedSchema.optional(),
-    ao: tax_product_registrations_resource_country_options_defaultSchema.optional(),
-    at: tax_product_registrations_resource_country_options_europeSchema.optional(),
-    au: tax_product_registrations_resource_country_options_defaultSchema.optional(),
-    ba: tax_product_registrations_resource_country_options_defaultSchema.optional(),
-    bb: tax_product_registrations_resource_country_options_defaultSchema.optional(),
-    be: tax_product_registrations_resource_country_options_europeSchema.optional(),
-    bg: tax_product_registrations_resource_country_options_europeSchema.optional(),
-    bh: tax_product_registrations_resource_country_options_defaultSchema.optional(),
-    bs: tax_product_registrations_resource_country_options_defaultSchema.optional(),
-    by: tax_product_registrations_resource_country_options_simplifiedSchema.optional(),
-    ca: tax_product_registrations_resource_country_options_canadaSchema.optional(),
-    cd: tax_product_registrations_resource_country_options_defaultSchema.optional(),
-    ch: tax_product_registrations_resource_country_options_defaultSchema.optional(),
-    cl: tax_product_registrations_resource_country_options_simplifiedSchema.optional(),
-    co: tax_product_registrations_resource_country_options_simplifiedSchema.optional(),
-    cr: tax_product_registrations_resource_country_options_simplifiedSchema.optional(),
-    cy: tax_product_registrations_resource_country_options_europeSchema.optional(),
-    cz: tax_product_registrations_resource_country_options_europeSchema.optional(),
-    de: tax_product_registrations_resource_country_options_europeSchema.optional(),
-    dk: tax_product_registrations_resource_country_options_europeSchema.optional(),
-    ec: tax_product_registrations_resource_country_options_simplifiedSchema.optional(),
-    ee: tax_product_registrations_resource_country_options_europeSchema.optional(),
-    eg: tax_product_registrations_resource_country_options_simplifiedSchema.optional(),
-    es: tax_product_registrations_resource_country_options_europeSchema.optional(),
-    fi: tax_product_registrations_resource_country_options_europeSchema.optional(),
-    fr: tax_product_registrations_resource_country_options_europeSchema.optional(),
-    gb: tax_product_registrations_resource_country_options_defaultSchema.optional(),
-    ge: tax_product_registrations_resource_country_options_simplifiedSchema.optional(),
-    gn: tax_product_registrations_resource_country_options_defaultSchema.optional(),
-    gr: tax_product_registrations_resource_country_options_europeSchema.optional(),
-    hr: tax_product_registrations_resource_country_options_europeSchema.optional(),
-    hu: tax_product_registrations_resource_country_options_europeSchema.optional(),
-    id: tax_product_registrations_resource_country_options_simplifiedSchema.optional(),
-    ie: tax_product_registrations_resource_country_options_europeSchema.optional(),
-    is: tax_product_registrations_resource_country_options_defaultSchema.optional(),
-    it: tax_product_registrations_resource_country_options_europeSchema.optional(),
-    jp: tax_product_registrations_resource_country_options_defaultSchema.optional(),
-    ke: tax_product_registrations_resource_country_options_simplifiedSchema.optional(),
-    kh: tax_product_registrations_resource_country_options_simplifiedSchema.optional(),
-    kr: tax_product_registrations_resource_country_options_simplifiedSchema.optional(),
-    kz: tax_product_registrations_resource_country_options_simplifiedSchema.optional(),
-    lt: tax_product_registrations_resource_country_options_europeSchema.optional(),
-    lu: tax_product_registrations_resource_country_options_europeSchema.optional(),
-    lv: tax_product_registrations_resource_country_options_europeSchema.optional(),
-    ma: tax_product_registrations_resource_country_options_simplifiedSchema.optional(),
-    md: tax_product_registrations_resource_country_options_simplifiedSchema.optional(),
-    me: tax_product_registrations_resource_country_options_defaultSchema.optional(),
-    mk: tax_product_registrations_resource_country_options_defaultSchema.optional(),
-    mr: tax_product_registrations_resource_country_options_defaultSchema.optional(),
-    mt: tax_product_registrations_resource_country_options_europeSchema.optional(),
-    mx: tax_product_registrations_resource_country_options_simplifiedSchema.optional(),
-    my: tax_product_registrations_resource_country_options_simplifiedSchema.optional(),
-    ng: tax_product_registrations_resource_country_options_simplifiedSchema.optional(),
-    nl: tax_product_registrations_resource_country_options_europeSchema.optional(),
-    no: tax_product_registrations_resource_country_options_defaultSchema.optional(),
-    np: tax_product_registrations_resource_country_options_simplifiedSchema.optional(),
-    nz: tax_product_registrations_resource_country_options_defaultSchema.optional(),
-    om: tax_product_registrations_resource_country_options_defaultSchema.optional(),
-    pe: tax_product_registrations_resource_country_options_simplifiedSchema.optional(),
-    pl: tax_product_registrations_resource_country_options_europeSchema.optional(),
-    pt: tax_product_registrations_resource_country_options_europeSchema.optional(),
-    ro: tax_product_registrations_resource_country_options_europeSchema.optional(),
-    rs: tax_product_registrations_resource_country_options_defaultSchema.optional(),
-    ru: tax_product_registrations_resource_country_options_simplifiedSchema.optional(),
-    sa: tax_product_registrations_resource_country_options_simplifiedSchema.optional(),
-    se: tax_product_registrations_resource_country_options_europeSchema.optional(),
-    sg: tax_product_registrations_resource_country_options_defaultSchema.optional(),
-    si: tax_product_registrations_resource_country_options_europeSchema.optional(),
-    sk: tax_product_registrations_resource_country_options_europeSchema.optional(),
-    sn: tax_product_registrations_resource_country_options_simplifiedSchema.optional(),
-    sr: tax_product_registrations_resource_country_options_defaultSchema.optional(),
-    th: tax_product_registrations_resource_country_options_simplifiedSchema.optional(),
-    tj: tax_product_registrations_resource_country_options_simplifiedSchema.optional(),
-    tr: tax_product_registrations_resource_country_options_simplifiedSchema.optional(),
-    tz: tax_product_registrations_resource_country_options_simplifiedSchema.optional(),
-    ug: tax_product_registrations_resource_country_options_simplifiedSchema.optional(),
-    us: tax_product_registrations_resource_country_options_united_statesSchema.optional(),
-    uy: tax_product_registrations_resource_country_options_defaultSchema.optional(),
-    uz: tax_product_registrations_resource_country_options_simplifiedSchema.optional(),
-    vn: tax_product_registrations_resource_country_options_simplifiedSchema.optional(),
-    za: tax_product_registrations_resource_country_options_defaultSchema.optional(),
-    zm: tax_product_registrations_resource_country_options_simplifiedSchema.optional(),
-    zw: tax_product_registrations_resource_country_options_defaultSchema.optional()
+    ae: TaxProductRegistrationsResourceCountryOptionsDefaultSchema.optional(),
+    al: TaxProductRegistrationsResourceCountryOptionsDefaultSchema.optional(),
+    am: TaxProductRegistrationsResourceCountryOptionsSimplifiedSchema.optional(),
+    ao: TaxProductRegistrationsResourceCountryOptionsDefaultSchema.optional(),
+    at: TaxProductRegistrationsResourceCountryOptionsEuropeSchema.optional(),
+    au: TaxProductRegistrationsResourceCountryOptionsDefaultSchema.optional(),
+    ba: TaxProductRegistrationsResourceCountryOptionsDefaultSchema.optional(),
+    bb: TaxProductRegistrationsResourceCountryOptionsDefaultSchema.optional(),
+    be: TaxProductRegistrationsResourceCountryOptionsEuropeSchema.optional(),
+    bg: TaxProductRegistrationsResourceCountryOptionsEuropeSchema.optional(),
+    bh: TaxProductRegistrationsResourceCountryOptionsDefaultSchema.optional(),
+    bs: TaxProductRegistrationsResourceCountryOptionsDefaultSchema.optional(),
+    by: TaxProductRegistrationsResourceCountryOptionsSimplifiedSchema.optional(),
+    ca: TaxProductRegistrationsResourceCountryOptionsCanadaSchema.optional(),
+    cd: TaxProductRegistrationsResourceCountryOptionsDefaultSchema.optional(),
+    ch: TaxProductRegistrationsResourceCountryOptionsDefaultSchema.optional(),
+    cl: TaxProductRegistrationsResourceCountryOptionsSimplifiedSchema.optional(),
+    co: TaxProductRegistrationsResourceCountryOptionsSimplifiedSchema.optional(),
+    cr: TaxProductRegistrationsResourceCountryOptionsSimplifiedSchema.optional(),
+    cy: TaxProductRegistrationsResourceCountryOptionsEuropeSchema.optional(),
+    cz: TaxProductRegistrationsResourceCountryOptionsEuropeSchema.optional(),
+    de: TaxProductRegistrationsResourceCountryOptionsEuropeSchema.optional(),
+    dk: TaxProductRegistrationsResourceCountryOptionsEuropeSchema.optional(),
+    ec: TaxProductRegistrationsResourceCountryOptionsSimplifiedSchema.optional(),
+    ee: TaxProductRegistrationsResourceCountryOptionsEuropeSchema.optional(),
+    eg: TaxProductRegistrationsResourceCountryOptionsSimplifiedSchema.optional(),
+    es: TaxProductRegistrationsResourceCountryOptionsEuropeSchema.optional(),
+    fi: TaxProductRegistrationsResourceCountryOptionsEuropeSchema.optional(),
+    fr: TaxProductRegistrationsResourceCountryOptionsEuropeSchema.optional(),
+    gb: TaxProductRegistrationsResourceCountryOptionsDefaultSchema.optional(),
+    ge: TaxProductRegistrationsResourceCountryOptionsSimplifiedSchema.optional(),
+    gn: TaxProductRegistrationsResourceCountryOptionsDefaultSchema.optional(),
+    gr: TaxProductRegistrationsResourceCountryOptionsEuropeSchema.optional(),
+    hr: TaxProductRegistrationsResourceCountryOptionsEuropeSchema.optional(),
+    hu: TaxProductRegistrationsResourceCountryOptionsEuropeSchema.optional(),
+    id: TaxProductRegistrationsResourceCountryOptionsSimplifiedSchema.optional(),
+    ie: TaxProductRegistrationsResourceCountryOptionsEuropeSchema.optional(),
+    is: TaxProductRegistrationsResourceCountryOptionsDefaultSchema.optional(),
+    it: TaxProductRegistrationsResourceCountryOptionsEuropeSchema.optional(),
+    jp: TaxProductRegistrationsResourceCountryOptionsDefaultSchema.optional(),
+    ke: TaxProductRegistrationsResourceCountryOptionsSimplifiedSchema.optional(),
+    kh: TaxProductRegistrationsResourceCountryOptionsSimplifiedSchema.optional(),
+    kr: TaxProductRegistrationsResourceCountryOptionsSimplifiedSchema.optional(),
+    kz: TaxProductRegistrationsResourceCountryOptionsSimplifiedSchema.optional(),
+    lt: TaxProductRegistrationsResourceCountryOptionsEuropeSchema.optional(),
+    lu: TaxProductRegistrationsResourceCountryOptionsEuropeSchema.optional(),
+    lv: TaxProductRegistrationsResourceCountryOptionsEuropeSchema.optional(),
+    ma: TaxProductRegistrationsResourceCountryOptionsSimplifiedSchema.optional(),
+    md: TaxProductRegistrationsResourceCountryOptionsSimplifiedSchema.optional(),
+    me: TaxProductRegistrationsResourceCountryOptionsDefaultSchema.optional(),
+    mk: TaxProductRegistrationsResourceCountryOptionsDefaultSchema.optional(),
+    mr: TaxProductRegistrationsResourceCountryOptionsDefaultSchema.optional(),
+    mt: TaxProductRegistrationsResourceCountryOptionsEuropeSchema.optional(),
+    mx: TaxProductRegistrationsResourceCountryOptionsSimplifiedSchema.optional(),
+    my: TaxProductRegistrationsResourceCountryOptionsSimplifiedSchema.optional(),
+    ng: TaxProductRegistrationsResourceCountryOptionsSimplifiedSchema.optional(),
+    nl: TaxProductRegistrationsResourceCountryOptionsEuropeSchema.optional(),
+    no: TaxProductRegistrationsResourceCountryOptionsDefaultSchema.optional(),
+    np: TaxProductRegistrationsResourceCountryOptionsSimplifiedSchema.optional(),
+    nz: TaxProductRegistrationsResourceCountryOptionsDefaultSchema.optional(),
+    om: TaxProductRegistrationsResourceCountryOptionsDefaultSchema.optional(),
+    pe: TaxProductRegistrationsResourceCountryOptionsSimplifiedSchema.optional(),
+    pl: TaxProductRegistrationsResourceCountryOptionsEuropeSchema.optional(),
+    pt: TaxProductRegistrationsResourceCountryOptionsEuropeSchema.optional(),
+    ro: TaxProductRegistrationsResourceCountryOptionsEuropeSchema.optional(),
+    rs: TaxProductRegistrationsResourceCountryOptionsDefaultSchema.optional(),
+    ru: TaxProductRegistrationsResourceCountryOptionsSimplifiedSchema.optional(),
+    sa: TaxProductRegistrationsResourceCountryOptionsSimplifiedSchema.optional(),
+    se: TaxProductRegistrationsResourceCountryOptionsEuropeSchema.optional(),
+    sg: TaxProductRegistrationsResourceCountryOptionsDefaultSchema.optional(),
+    si: TaxProductRegistrationsResourceCountryOptionsEuropeSchema.optional(),
+    sk: TaxProductRegistrationsResourceCountryOptionsEuropeSchema.optional(),
+    sn: TaxProductRegistrationsResourceCountryOptionsSimplifiedSchema.optional(),
+    sr: TaxProductRegistrationsResourceCountryOptionsDefaultSchema.optional(),
+    th: TaxProductRegistrationsResourceCountryOptionsSimplifiedSchema.optional(),
+    tj: TaxProductRegistrationsResourceCountryOptionsSimplifiedSchema.optional(),
+    tr: TaxProductRegistrationsResourceCountryOptionsSimplifiedSchema.optional(),
+    tz: TaxProductRegistrationsResourceCountryOptionsSimplifiedSchema.optional(),
+    ug: TaxProductRegistrationsResourceCountryOptionsSimplifiedSchema.optional(),
+    us: TaxProductRegistrationsResourceCountryOptionsUnitedStatesSchema.optional(),
+    uy: TaxProductRegistrationsResourceCountryOptionsDefaultSchema.optional(),
+    uz: TaxProductRegistrationsResourceCountryOptionsSimplifiedSchema.optional(),
+    vn: TaxProductRegistrationsResourceCountryOptionsSimplifiedSchema.optional(),
+    za: TaxProductRegistrationsResourceCountryOptionsDefaultSchema.optional(),
+    zm: TaxProductRegistrationsResourceCountryOptionsSimplifiedSchema.optional(),
+    zw: TaxProductRegistrationsResourceCountryOptionsDefaultSchema.optional()
   })
   export type TaxProductRegistrationsResourceCountryOptions = z.infer<
     typeof TaxProductRegistrationsResourceCountryOptionsSchema
@@ -28713,7 +28564,7 @@ export namespace stripe {
           'The ID of an existing [Customer](https://stripe.com/docs/api/customers/object) used for the resource.'
         )
         .optional(),
-      customer_details: tax_product_resource_customer_detailsSchema,
+      customer_details: TaxProductResourceCustomerDetailsSchema,
       /** Timestamp of date at which the tax calculation will expire. */
       expires_at: z
         .number()
@@ -28733,7 +28584,7 @@ export namespace stripe {
         .object({
           /** Details about each object. */
           data: z
-            .array(tax.calculation_line_itemSchema)
+            .array(TaxCalculationLineItemSchema)
             .describe('Details about each object.'),
           /** True if this list has another page of items after this one that can be fetched. */
           has_more: z
@@ -28770,15 +28621,14 @@ export namespace stripe {
           "String representing the object's type. Objects of the same type share the same value."
         ),
       /** The details of the ship from location, such as the address. */
-      ship_from_details: tax_product_resource_ship_from_detailsSchema
-        .nullable()
+      ship_from_details: TaxProductResourceShipFromDetailsSchema.nullable()
         .describe('The details of the ship from location, such as the address.')
         .optional(),
       /** The shipping cost details for the calculation. */
-      shipping_cost: tax_product_resource_tax_calculation_shipping_costSchema
-        .nullable()
-        .describe('The shipping cost details for the calculation.')
-        .optional(),
+      shipping_cost:
+        TaxProductResourceTaxCalculationShippingCostSchema.nullable()
+          .describe('The shipping cost details for the calculation.')
+          .optional(),
       /** The amount of tax to be collected on top of the line item prices. */
       tax_amount_exclusive: z
         .number()
@@ -28795,7 +28645,7 @@ export namespace stripe {
         ),
       /** Breakdown of individual tax amounts that add up to the total. */
       tax_breakdown: z
-        .array(tax_product_resource_tax_breakdownSchema)
+        .array(TaxProductResourceTaxBreakdownSchema)
         .describe(
           'Breakdown of individual tax amounts that add up to the total.'
         ),
@@ -28835,7 +28685,7 @@ export namespace stripe {
         .describe(
           'Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).'
         ),
-      country_options: tax_product_registrations_resource_country_optionsSchema,
+      country_options: TaxProductRegistrationsResourceCountryOptionsSchema,
       /** Time at which the object was created. Measured in seconds since the Unix epoch. */
       created: z
         .number()
@@ -28879,18 +28729,18 @@ export namespace stripe {
   export type TaxRegistration = z.infer<typeof TaxRegistrationSchema>
 
   export const MandatePaymentMethodDetailsSchema = z.object({
-    acss_debit: mandate_acss_debitSchema.optional(),
-    amazon_pay: mandate_amazon_paySchema.optional(),
-    au_becs_debit: mandate_au_becs_debitSchema.optional(),
-    bacs_debit: mandate_bacs_debitSchema.optional(),
-    card: card_mandate_payment_method_detailsSchema.optional(),
-    cashapp: mandate_cashappSchema.optional(),
-    kakao_pay: mandate_kakao_paySchema.optional(),
-    kr_card: mandate_kr_cardSchema.optional(),
-    link: mandate_linkSchema.optional(),
-    paypal: mandate_paypalSchema.optional(),
-    revolut_pay: mandate_revolut_paySchema.optional(),
-    sepa_debit: mandate_sepa_debitSchema.optional(),
+    acss_debit: MandateAcssDebitSchema.optional(),
+    amazon_pay: MandateAmazonPaySchema.optional(),
+    au_becs_debit: MandateAuBecsDebitSchema.optional(),
+    bacs_debit: MandateBacsDebitSchema.optional(),
+    card: CardMandatePaymentMethodDetailsSchema.optional(),
+    cashapp: MandateCashappSchema.optional(),
+    kakao_pay: MandateKakaoPaySchema.optional(),
+    kr_card: MandateKrCardSchema.optional(),
+    link: MandateLinkSchema.optional(),
+    paypal: MandatePaypalSchema.optional(),
+    revolut_pay: MandateRevolutPaySchema.optional(),
+    sepa_debit: MandateSepaDebitSchema.optional(),
     /** This mandate corresponds with a specific payment method type. The `payment_method_details` includes an additional hash with the same name and contains mandate information that's specific to that payment method. */
     type: z
       .string()
@@ -28898,47 +28748,41 @@ export namespace stripe {
       .describe(
         "This mandate corresponds with a specific payment method type. The `payment_method_details` includes an additional hash with the same name and contains mandate information that's specific to that payment method."
       ),
-    us_bank_account: mandate_us_bank_accountSchema.optional()
+    us_bank_account: MandateUsBankAccountSchema.optional()
   })
   export type MandatePaymentMethodDetails = z.infer<
     typeof MandatePaymentMethodDetailsSchema
   >
 
   export const RefundDestinationDetailsSchema = z.object({
-    affirm: destination_details_unimplementedSchema.optional(),
-    afterpay_clearpay: destination_details_unimplementedSchema.optional(),
-    alipay: destination_details_unimplementedSchema.optional(),
-    alma: destination_details_unimplementedSchema.optional(),
-    amazon_pay: destination_details_unimplementedSchema.optional(),
-    au_bank_transfer: destination_details_unimplementedSchema.optional(),
-    blik: refund_destination_details_blikSchema.optional(),
-    br_bank_transfer:
-      refund_destination_details_br_bank_transferSchema.optional(),
-    card: refund_destination_details_cardSchema.optional(),
-    cashapp: destination_details_unimplementedSchema.optional(),
-    customer_cash_balance: destination_details_unimplementedSchema.optional(),
-    eps: destination_details_unimplementedSchema.optional(),
-    eu_bank_transfer:
-      refund_destination_details_eu_bank_transferSchema.optional(),
-    gb_bank_transfer:
-      refund_destination_details_gb_bank_transferSchema.optional(),
-    giropay: destination_details_unimplementedSchema.optional(),
-    grabpay: destination_details_unimplementedSchema.optional(),
-    jp_bank_transfer:
-      refund_destination_details_jp_bank_transferSchema.optional(),
-    klarna: destination_details_unimplementedSchema.optional(),
-    multibanco: refund_destination_details_multibancoSchema.optional(),
-    mx_bank_transfer:
-      refund_destination_details_mx_bank_transferSchema.optional(),
-    p24: refund_destination_details_p24Schema.optional(),
-    paynow: destination_details_unimplementedSchema.optional(),
-    paypal: destination_details_unimplementedSchema.optional(),
-    pix: destination_details_unimplementedSchema.optional(),
-    revolut: destination_details_unimplementedSchema.optional(),
-    sofort: destination_details_unimplementedSchema.optional(),
-    swish: refund_destination_details_swishSchema.optional(),
-    th_bank_transfer:
-      refund_destination_details_th_bank_transferSchema.optional(),
+    affirm: DestinationDetailsUnimplementedSchema.optional(),
+    afterpay_clearpay: DestinationDetailsUnimplementedSchema.optional(),
+    alipay: DestinationDetailsUnimplementedSchema.optional(),
+    alma: DestinationDetailsUnimplementedSchema.optional(),
+    amazon_pay: DestinationDetailsUnimplementedSchema.optional(),
+    au_bank_transfer: DestinationDetailsUnimplementedSchema.optional(),
+    blik: RefundDestinationDetailsBlikSchema.optional(),
+    br_bank_transfer: RefundDestinationDetailsBrBankTransferSchema.optional(),
+    card: RefundDestinationDetailsCardSchema.optional(),
+    cashapp: DestinationDetailsUnimplementedSchema.optional(),
+    customer_cash_balance: DestinationDetailsUnimplementedSchema.optional(),
+    eps: DestinationDetailsUnimplementedSchema.optional(),
+    eu_bank_transfer: RefundDestinationDetailsEuBankTransferSchema.optional(),
+    gb_bank_transfer: RefundDestinationDetailsGbBankTransferSchema.optional(),
+    giropay: DestinationDetailsUnimplementedSchema.optional(),
+    grabpay: DestinationDetailsUnimplementedSchema.optional(),
+    jp_bank_transfer: RefundDestinationDetailsJpBankTransferSchema.optional(),
+    klarna: DestinationDetailsUnimplementedSchema.optional(),
+    multibanco: RefundDestinationDetailsMultibancoSchema.optional(),
+    mx_bank_transfer: RefundDestinationDetailsMxBankTransferSchema.optional(),
+    p24: RefundDestinationDetailsP24Schema.optional(),
+    paynow: DestinationDetailsUnimplementedSchema.optional(),
+    paypal: DestinationDetailsUnimplementedSchema.optional(),
+    pix: DestinationDetailsUnimplementedSchema.optional(),
+    revolut: DestinationDetailsUnimplementedSchema.optional(),
+    sofort: DestinationDetailsUnimplementedSchema.optional(),
+    swish: RefundDestinationDetailsSwishSchema.optional(),
+    th_bank_transfer: RefundDestinationDetailsThBankTransferSchema.optional(),
     /** The type of transaction-specific details of the payment method used in the refund (e.g., `card`). An additional hash is included on `destination_details` with a name matching this value. It contains information specific to the refund transaction. */
     type: z
       .string()
@@ -28946,10 +28790,9 @@ export namespace stripe {
       .describe(
         'The type of transaction-specific details of the payment method used in the refund (e.g., `card`). An additional hash is included on `destination_details` with a name matching this value. It contains information specific to the refund transaction.'
       ),
-    us_bank_transfer:
-      refund_destination_details_us_bank_transferSchema.optional(),
-    wechat_pay: destination_details_unimplementedSchema.optional(),
-    zip: destination_details_unimplementedSchema.optional()
+    us_bank_transfer: RefundDestinationDetailsUsBankTransferSchema.optional(),
+    wechat_pay: DestinationDetailsUnimplementedSchema.optional(),
+    zip: DestinationDetailsUnimplementedSchema.optional()
   })
   export type RefundDestinationDetails = z.infer<
     typeof RefundDestinationDetailsSchema
@@ -28957,50 +28800,44 @@ export namespace stripe {
 
   export const SubscriptionsResourcePaymentMethodOptionsSchema = z.object({
     /** This sub-hash contains details about the Canadian pre-authorized debit payment method options to pass to invoices created by the subscription. */
-    acss_debit: invoice_payment_method_options_acss_debitSchema
-      .nullable()
+    acss_debit: InvoicePaymentMethodOptionsAcssDebitSchema.nullable()
       .describe(
         'This sub-hash contains details about the Canadian pre-authorized debit payment method options to pass to invoices created by the subscription.'
       )
       .optional(),
     /** This sub-hash contains details about the Bancontact payment method options to pass to invoices created by the subscription. */
-    bancontact: invoice_payment_method_options_bancontactSchema
-      .nullable()
+    bancontact: InvoicePaymentMethodOptionsBancontactSchema.nullable()
       .describe(
         'This sub-hash contains details about the Bancontact payment method options to pass to invoices created by the subscription.'
       )
       .optional(),
     /** This sub-hash contains details about the Card payment method options to pass to invoices created by the subscription. */
-    card: subscription_payment_method_options_cardSchema
-      .nullable()
+    card: SubscriptionPaymentMethodOptionsCardSchema.nullable()
       .describe(
         'This sub-hash contains details about the Card payment method options to pass to invoices created by the subscription.'
       )
       .optional(),
     /** This sub-hash contains details about the Bank transfer payment method options to pass to invoices created by the subscription. */
-    customer_balance: invoice_payment_method_options_customer_balanceSchema
-      .nullable()
-      .describe(
-        'This sub-hash contains details about the Bank transfer payment method options to pass to invoices created by the subscription.'
-      )
-      .optional(),
+    customer_balance:
+      InvoicePaymentMethodOptionsCustomerBalanceSchema.nullable()
+        .describe(
+          'This sub-hash contains details about the Bank transfer payment method options to pass to invoices created by the subscription.'
+        )
+        .optional(),
     /** This sub-hash contains details about the Konbini payment method options to pass to invoices created by the subscription. */
-    konbini: invoice_payment_method_options_konbiniSchema
-      .nullable()
+    konbini: InvoicePaymentMethodOptionsKonbiniSchema.nullable()
       .describe(
         'This sub-hash contains details about the Konbini payment method options to pass to invoices created by the subscription.'
       )
       .optional(),
     /** This sub-hash contains details about the SEPA Direct Debit payment method options to pass to invoices created by the subscription. */
-    sepa_debit: invoice_payment_method_options_sepa_debitSchema
-      .nullable()
+    sepa_debit: InvoicePaymentMethodOptionsSepaDebitSchema.nullable()
       .describe(
         'This sub-hash contains details about the SEPA Direct Debit payment method options to pass to invoices created by the subscription.'
       )
       .optional(),
     /** This sub-hash contains details about the ACH direct debit payment method options to pass to invoices created by the subscription. */
-    us_bank_account: invoice_payment_method_options_us_bank_accountSchema
-      .nullable()
+    us_bank_account: InvoicePaymentMethodOptionsUsBankAccountSchema.nullable()
       .describe(
         'This sub-hash contains details about the ACH direct debit payment method options to pass to invoices created by the subscription.'
       )
@@ -29012,50 +28849,44 @@ export namespace stripe {
 
   export const InvoicesPaymentMethodOptionsSchema = z.object({
     /** If paying by `acss_debit`, this sub-hash contains details about the Canadian pre-authorized debit payment method options to pass to the invoice’s PaymentIntent. */
-    acss_debit: invoice_payment_method_options_acss_debitSchema
-      .nullable()
+    acss_debit: InvoicePaymentMethodOptionsAcssDebitSchema.nullable()
       .describe(
         'If paying by `acss_debit`, this sub-hash contains details about the Canadian pre-authorized debit payment method options to pass to the invoice’s PaymentIntent.'
       )
       .optional(),
     /** If paying by `bancontact`, this sub-hash contains details about the Bancontact payment method options to pass to the invoice’s PaymentIntent. */
-    bancontact: invoice_payment_method_options_bancontactSchema
-      .nullable()
+    bancontact: InvoicePaymentMethodOptionsBancontactSchema.nullable()
       .describe(
         'If paying by `bancontact`, this sub-hash contains details about the Bancontact payment method options to pass to the invoice’s PaymentIntent.'
       )
       .optional(),
     /** If paying by `card`, this sub-hash contains details about the Card payment method options to pass to the invoice’s PaymentIntent. */
-    card: invoice_payment_method_options_cardSchema
-      .nullable()
+    card: InvoicePaymentMethodOptionsCardSchema.nullable()
       .describe(
         'If paying by `card`, this sub-hash contains details about the Card payment method options to pass to the invoice’s PaymentIntent.'
       )
       .optional(),
     /** If paying by `customer_balance`, this sub-hash contains details about the Bank transfer payment method options to pass to the invoice’s PaymentIntent. */
-    customer_balance: invoice_payment_method_options_customer_balanceSchema
-      .nullable()
-      .describe(
-        'If paying by `customer_balance`, this sub-hash contains details about the Bank transfer payment method options to pass to the invoice’s PaymentIntent.'
-      )
-      .optional(),
+    customer_balance:
+      InvoicePaymentMethodOptionsCustomerBalanceSchema.nullable()
+        .describe(
+          'If paying by `customer_balance`, this sub-hash contains details about the Bank transfer payment method options to pass to the invoice’s PaymentIntent.'
+        )
+        .optional(),
     /** If paying by `konbini`, this sub-hash contains details about the Konbini payment method options to pass to the invoice’s PaymentIntent. */
-    konbini: invoice_payment_method_options_konbiniSchema
-      .nullable()
+    konbini: InvoicePaymentMethodOptionsKonbiniSchema.nullable()
       .describe(
         'If paying by `konbini`, this sub-hash contains details about the Konbini payment method options to pass to the invoice’s PaymentIntent.'
       )
       .optional(),
     /** If paying by `sepa_debit`, this sub-hash contains details about the SEPA Direct Debit payment method options to pass to the invoice’s PaymentIntent. */
-    sepa_debit: invoice_payment_method_options_sepa_debitSchema
-      .nullable()
+    sepa_debit: InvoicePaymentMethodOptionsSepaDebitSchema.nullable()
       .describe(
         'If paying by `sepa_debit`, this sub-hash contains details about the SEPA Direct Debit payment method options to pass to the invoice’s PaymentIntent.'
       )
       .optional(),
     /** If paying by `us_bank_account`, this sub-hash contains details about the ACH direct debit payment method options to pass to the invoice’s PaymentIntent. */
-    us_bank_account: invoice_payment_method_options_us_bank_accountSchema
-      .nullable()
+    us_bank_account: InvoicePaymentMethodOptionsUsBankAccountSchema.nullable()
       .describe(
         'If paying by `us_bank_account`, this sub-hash contains details about the ACH direct debit payment method options to pass to the invoice’s PaymentIntent.'
       )
@@ -29176,13 +29007,13 @@ export namespace stripe {
         ),
       /** The product whose pricing this plan determines. */
       product: z
-        .union([z.string().max(5000), productSchema, deleted_productSchema])
+        .union([z.string().max(5000), ProductSchema, DeletedProductSchema])
         .nullable()
         .describe('The product whose pricing this plan determines.')
         .optional(),
       /** Each element represents a pricing tier. This parameter requires `billing_scheme` to be set to `tiered`. See also the documentation for `billing_scheme`. */
       tiers: z
-        .array(plan_tierSchema)
+        .array(PlanTierSchema)
         .describe(
           'Each element represents a pricing tier. This parameter requires `billing_scheme` to be set to `tiered`. See also the documentation for `billing_scheme`.'
         )
@@ -29196,8 +29027,7 @@ export namespace stripe {
         )
         .optional(),
       /** Apply a transformation to the reported usage or set quantity before computing the amount billed. Cannot be combined with `tiers`. */
-      transform_usage: transform_usageSchema
-        .nullable()
+      transform_usage: TransformUsageSchema.nullable()
         .describe(
           'Apply a transformation to the reported usage or set quantity before computing the amount billed. Cannot be combined with `tiers`.'
         )
@@ -29230,10 +29060,9 @@ export namespace stripe {
    */
   export const IssuingCardholderSchema = z
     .object({
-      billing: issuing_cardholder_addressSchema,
+      billing: IssuingCardholderAddressSchema,
       /** Additional information about a `company` cardholder. */
-      company: issuing_cardholder_companySchema
-        .nullable()
+      company: IssuingCardholderCompanySchema.nullable()
         .describe('Additional information about a `company` cardholder.')
         .optional(),
       /** Time at which the object was created. Measured in seconds since the Unix epoch. */
@@ -29253,8 +29082,7 @@ export namespace stripe {
       /** Unique identifier for the object. */
       id: z.string().max(5000).describe('Unique identifier for the object.'),
       /** Additional information about an `individual` cardholder. */
-      individual: issuing_cardholder_individualSchema
-        .nullable()
+      individual: IssuingCardholderIndividualSchema.nullable()
         .describe('Additional information about an `individual` cardholder.')
         .optional(),
       /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
@@ -29302,10 +29130,9 @@ export namespace stripe {
           'The cardholder’s preferred locales (languages), ordered by preference. Locales can be `de`, `en`, `es`, `fr`, or `it`.\n This changes the language of the [3D Secure flow](https://stripe.com/docs/issuing/3d-secure) and one-time password messages sent to the cardholder.'
         )
         .optional(),
-      requirements: issuing_cardholder_requirementsSchema,
+      requirements: IssuingCardholderRequirementsSchema,
       /** Rules that control spending across this cardholder's cards. Refer to our [documentation](https://stripe.com/docs/issuing/controls/spending-controls) for more details. */
-      spending_controls: issuing_cardholder_authorization_controlsSchema
-        .nullable()
+      spending_controls: IssuingCardholderAuthorizationControlsSchema.nullable()
         .describe(
           "Rules that control spending across this cardholder's cards. Refer to our [documentation](https://stripe.com/docs/issuing/controls/spending-controls) for more details."
         )
@@ -29330,12 +29157,12 @@ export namespace stripe {
 
   export const SubscriptionsResourcePaymentSettingsSchema = z.object({
     /** Payment-method-specific configuration to provide to invoices created by the subscription. */
-    payment_method_options: subscriptions_resource_payment_method_optionsSchema
-      .nullable()
-      .describe(
-        'Payment-method-specific configuration to provide to invoices created by the subscription.'
-      )
-      .optional(),
+    payment_method_options:
+      SubscriptionsResourcePaymentMethodOptionsSchema.nullable()
+        .describe(
+          'Payment-method-specific configuration to provide to invoices created by the subscription.'
+        )
+        .optional(),
     /** The list of payment method types to provide to every invoice created by the subscription. If not set, Stripe attempts to automatically determine the types to use by looking at the invoice’s default payment method, the subscription’s default payment method, the customer’s default payment method, and your [invoice template settings](https://dashboard.stripe.com/settings/billing/invoice). */
     payment_method_types: z
       .array(
@@ -29406,8 +29233,7 @@ export namespace stripe {
       )
       .optional(),
     /** Payment-method-specific configuration to provide to the invoice’s PaymentIntent. */
-    payment_method_options: invoices_payment_method_optionsSchema
-      .nullable()
+    payment_method_options: InvoicesPaymentMethodOptionsSchema.nullable()
       .describe(
         'Payment-method-specific configuration to provide to the invoice’s PaymentIntent.'
       )
@@ -29478,10 +29304,10 @@ export namespace stripe {
         .max(5000)
         .describe('The account the person is associated with.'),
       additional_tos_acceptances:
-        person_additional_tos_acceptancesSchema.optional(),
-      address: addressSchema.optional(),
-      address_kana: legal_entity_japan_addressSchema.nullable().optional(),
-      address_kanji: legal_entity_japan_addressSchema.nullable().optional(),
+        PersonAdditionalTosAcceptancesSchema.optional(),
+      address: AddressSchema.optional(),
+      address_kana: LegalEntityJapanAddressSchema.nullable().optional(),
+      address_kanji: LegalEntityJapanAddressSchema.nullable().optional(),
       /** Time at which the object was created. Measured in seconds since the Unix epoch. */
       created: z
         .number()
@@ -29489,7 +29315,7 @@ export namespace stripe {
         .describe(
           'Time at which the object was created. Measured in seconds since the Unix epoch.'
         ),
-      dob: legal_entity_dobSchema.optional(),
+      dob: LegalEntityDobSchema.optional(),
       /** The person's email address. */
       email: z
         .string()
@@ -29527,9 +29353,7 @@ export namespace stripe {
           'A list of alternate names or aliases that the person is known by.'
         )
         .optional(),
-      future_requirements: person_future_requirementsSchema
-        .nullable()
-        .optional(),
+      future_requirements: PersonFutureRequirementsSchema.nullable().optional(),
       /** The person's gender. */
       gender: z.string().nullable().describe("The person's gender.").optional(),
       /** Unique identifier for the object. */
@@ -29608,9 +29432,9 @@ export namespace stripe {
           'Indicates if the person or any of their representatives, family members, or other closely related persons, declares that they hold or have held an important public job or function, in any jurisdiction.'
         )
         .optional(),
-      registered_address: addressSchema.optional(),
-      relationship: person_relationshipSchema.optional(),
-      requirements: person_requirementsSchema.nullable().optional(),
+      registered_address: AddressSchema.optional(),
+      relationship: PersonRelationshipSchema.optional(),
+      requirements: PersonRequirementsSchema.nullable().optional(),
       /** Whether the last four digits of the person's Social Security number have been provided (U.S. only). */
       ssn_last_4_provided: z
         .boolean()
@@ -29618,7 +29442,7 @@ export namespace stripe {
           "Whether the last four digits of the person's Social Security number have been provided (U.S. only)."
         )
         .optional(),
-      verification: legal_entity_person_verificationSchema.optional()
+      verification: LegalEntityPersonVerificationSchema.optional()
     })
     .describe(
       'This is an object representing a person associated with a Stripe account.\n\nA platform cannot access a person for an account where [account.controller.requirement_collection](/api/accounts/object#account_object-controller-requirement_collection) is `stripe`, which includes Standard and Express accounts, after creating an Account Link or Account Session to start Connect onboarding.\n\nSee the [Standard onboarding](/connect/standard-accounts) or [Express onboarding](/connect/express-accounts) documentation for information about prefilling information and account onboarding steps. Learn more about [handling identity verification with the API](/connect/handling-api-verification#person-information).'
@@ -29638,15 +29462,15 @@ export namespace stripe {
       application: z
         .union([
           z.string().max(5000),
-          applicationSchema,
-          deleted_applicationSchema
+          ApplicationSchema,
+          DeletedApplicationSchema
         ])
         .nullable()
         .describe(
           'ID of the Connect Application that created the configuration.'
         )
         .optional(),
-      business_profile: portal_business_profileSchema,
+      business_profile: PortalBusinessProfileSchema,
       /** Time at which the object was created. Measured in seconds since the Unix epoch. */
       created: z
         .number()
@@ -29663,7 +29487,7 @@ export namespace stripe {
           "The default URL to redirect customers to when they click on the portal's link to return to your website. This can be [overriden](https://stripe.com/docs/api/customer_portal/sessions/create#create_portal_session-return_url) when creating the session."
         )
         .optional(),
-      features: portal_featuresSchema,
+      features: PortalFeaturesSchema,
       /** Unique identifier for the object. */
       id: z.string().max(5000).describe('Unique identifier for the object.'),
       /** Whether the configuration is the default. If `true`, this configuration can be managed in the Dashboard and portal sessions will use this configuration unless it is overriden when creating the session. */
@@ -29678,7 +29502,7 @@ export namespace stripe {
         .describe(
           'Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.'
         ),
-      login_page: portal_login_pageSchema,
+      login_page: PortalLoginPageSchema,
       /** Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. */
       metadata: z
         .record(z.string().max(500))
@@ -29709,22 +29533,22 @@ export namespace stripe {
   >
 
   export const ConnectEmbeddedAccountSessionCreateComponentsSchema = z.object({
-    account_management: connect_embedded_account_config_claimSchema,
-    account_onboarding: connect_embedded_account_config_claimSchema,
-    balances: connect_embedded_payouts_configSchema,
-    documents: connect_embedded_base_config_claimSchema,
-    financial_account: connect_embedded_financial_account_config_claimSchema,
+    account_management: ConnectEmbeddedAccountConfigClaimSchema,
+    account_onboarding: ConnectEmbeddedAccountConfigClaimSchema,
+    balances: ConnectEmbeddedPayoutsConfigSchema,
+    documents: ConnectEmbeddedBaseConfigClaimSchema,
+    financial_account: ConnectEmbeddedFinancialAccountConfigClaimSchema,
     financial_account_transactions:
-      connect_embedded_financial_account_transactions_config_claimSchema,
-    issuing_card: connect_embedded_issuing_card_config_claimSchema,
-    issuing_cards_list: connect_embedded_issuing_cards_list_config_claimSchema,
-    notification_banner: connect_embedded_account_config_claimSchema,
-    payment_details: connect_embedded_payments_config_claimSchema,
-    payments: connect_embedded_payments_config_claimSchema,
-    payouts: connect_embedded_payouts_configSchema,
-    payouts_list: connect_embedded_base_config_claimSchema,
-    tax_registrations: connect_embedded_base_config_claimSchema,
-    tax_settings: connect_embedded_base_config_claimSchema
+      ConnectEmbeddedFinancialAccountTransactionsConfigClaimSchema,
+    issuing_card: ConnectEmbeddedIssuingCardConfigClaimSchema,
+    issuing_cards_list: ConnectEmbeddedIssuingCardsListConfigClaimSchema,
+    notification_banner: ConnectEmbeddedAccountConfigClaimSchema,
+    payment_details: ConnectEmbeddedPaymentsConfigClaimSchema,
+    payments: ConnectEmbeddedPaymentsConfigClaimSchema,
+    payouts: ConnectEmbeddedPayoutsConfigSchema,
+    payouts_list: ConnectEmbeddedBaseConfigClaimSchema,
+    tax_registrations: ConnectEmbeddedBaseConfigClaimSchema,
+    tax_settings: ConnectEmbeddedBaseConfigClaimSchema
   })
   export type ConnectEmbeddedAccountSessionCreateComponents = z.infer<
     typeof ConnectEmbeddedAccountSessionCreateComponentsSchema
@@ -29755,7 +29579,7 @@ export namespace stripe {
         )
         .describe('The array of paths to active Features in the Features hash.')
         .optional(),
-      balance: treasury_financial_accounts_resource_balanceSchema,
+      balance: TreasuryFinancialAccountsResourceBalanceSchema,
       /** Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)). */
       country: z
         .string()
@@ -29770,10 +29594,10 @@ export namespace stripe {
         .describe(
           'Time at which the object was created. Measured in seconds since the Unix epoch.'
         ),
-      features: treasury.financial_account_featuresSchema.optional(),
+      features: TreasuryFinancialAccountFeaturesSchema.optional(),
       /** The set of credentials that resolve to a FinancialAccount. */
       financial_addresses: z
-        .array(treasury_financial_accounts_resource_financial_addressSchema)
+        .array(TreasuryFinancialAccountsResourceFinancialAddressSchema)
         .describe('The set of credentials that resolve to a FinancialAccount.'),
       /** Unique identifier for the object. */
       id: z.string().max(5000).describe('Unique identifier for the object.'),
@@ -29828,8 +29652,7 @@ export namespace stripe {
         .optional(),
       /** The set of functionalities that the platform can restrict on the FinancialAccount. */
       platform_restrictions:
-        treasury_financial_accounts_resource_platform_restrictionsSchema
-          .nullable()
+        TreasuryFinancialAccountsResourcePlatformRestrictionsSchema.nullable()
           .describe(
             'The set of functionalities that the platform can restrict on the FinancialAccount.'
           )
@@ -29859,7 +29682,7 @@ export namespace stripe {
       status: z
         .enum(['closed', 'open'])
         .describe('Status of this FinancialAccount.'),
-      status_details: treasury_financial_accounts_resource_status_detailsSchema,
+      status_details: TreasuryFinancialAccountsResourceStatusDetailsSchema,
       /** The currencies the FinancialAccount can hold a balance in. Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. */
       supported_currencies: z
         .array(z.string())
@@ -29877,56 +29700,56 @@ export namespace stripe {
   export const SetupIntentPaymentMethodOptionsSchema = z.object({
     acss_debit: z
       .union([
-        setup_intent_payment_method_options_acss_debitSchema,
-        setup_intent_type_specific_payment_method_options_clientSchema
+        SetupIntentPaymentMethodOptionsAcssDebitSchema,
+        SetupIntentTypeSpecificPaymentMethodOptionsClientSchema
       ])
       .optional(),
     amazon_pay: z
       .union([
-        setup_intent_payment_method_options_amazon_paySchema,
-        setup_intent_type_specific_payment_method_options_clientSchema
+        SetupIntentPaymentMethodOptionsAmazonPaySchema,
+        SetupIntentTypeSpecificPaymentMethodOptionsClientSchema
       ])
       .optional(),
     bacs_debit: z
       .union([
-        setup_intent_payment_method_options_bacs_debitSchema,
-        setup_intent_type_specific_payment_method_options_clientSchema
+        SetupIntentPaymentMethodOptionsBacsDebitSchema,
+        SetupIntentTypeSpecificPaymentMethodOptionsClientSchema
       ])
       .optional(),
     card: z
       .union([
-        setup_intent_payment_method_options_cardSchema,
-        setup_intent_type_specific_payment_method_options_clientSchema
+        SetupIntentPaymentMethodOptionsCardSchema,
+        SetupIntentTypeSpecificPaymentMethodOptionsClientSchema
       ])
       .optional(),
     card_present: z
       .union([
-        setup_intent_payment_method_options_card_presentSchema,
-        setup_intent_type_specific_payment_method_options_clientSchema
+        SetupIntentPaymentMethodOptionsCardPresentSchema,
+        SetupIntentTypeSpecificPaymentMethodOptionsClientSchema
       ])
       .optional(),
     link: z
       .union([
-        setup_intent_payment_method_options_linkSchema,
-        setup_intent_type_specific_payment_method_options_clientSchema
+        SetupIntentPaymentMethodOptionsLinkSchema,
+        SetupIntentTypeSpecificPaymentMethodOptionsClientSchema
       ])
       .optional(),
     paypal: z
       .union([
-        setup_intent_payment_method_options_paypalSchema,
-        setup_intent_type_specific_payment_method_options_clientSchema
+        SetupIntentPaymentMethodOptionsPaypalSchema,
+        SetupIntentTypeSpecificPaymentMethodOptionsClientSchema
       ])
       .optional(),
     sepa_debit: z
       .union([
-        setup_intent_payment_method_options_sepa_debitSchema,
-        setup_intent_type_specific_payment_method_options_clientSchema
+        SetupIntentPaymentMethodOptionsSepaDebitSchema,
+        SetupIntentTypeSpecificPaymentMethodOptionsClientSchema
       ])
       .optional(),
     us_bank_account: z
       .union([
-        setup_intent_payment_method_options_us_bank_accountSchema,
-        setup_intent_type_specific_payment_method_options_clientSchema
+        SetupIntentPaymentMethodOptionsUsBankAccountSchema,
+        SetupIntentTypeSpecificPaymentMethodOptionsClientSchema
       ])
       .optional()
   })
@@ -29963,7 +29786,7 @@ export namespace stripe {
         .describe(
           'The client secret of this AccountSession. Used on the client to set up secure access to the given `account`.\n\nThe client secret can be used to provide access to `account` from your frontend. It should not be stored, logged, or exposed to anyone other than the connected account. Make sure that you have TLS enabled on any page that includes the client secret.\n\nRefer to our docs to [setup Connect embedded components](https://stripe.com/docs/connect/get-started-connect-embedded-components) and learn about how `client_secret` should be handled.'
         ),
-      components: connect_embedded_account_session_create_componentsSchema,
+      components: ConnectEmbeddedAccountSessionCreateComponentsSchema,
       /** The timestamp at which this AccountSession will expire. */
       expires_at: z
         .number()
@@ -30020,8 +29843,7 @@ export namespace stripe {
       )
       .optional(),
     /** Check results by Card networks on Card address and CVC at time of payment. */
-    checks: payment_method_details_card_checksSchema
-      .nullable()
+    checks: PaymentMethodDetailsCardChecksSchema.nullable()
       .describe(
         'Check results by Card networks on Card address and CVC at time of payment.'
       )
@@ -30046,7 +29868,7 @@ export namespace stripe {
       .int()
       .describe("Four-digit number representing the card's expiration year."),
     extended_authorization:
-      payment_flows_private_payment_methods_card_details_api_resource_enterprise_features_extended_authorization_extended_authorizationSchema.optional(),
+      PaymentFlowsPrivatePaymentMethodsCardDetailsApiResourceEnterpriseFeaturesExtendedAuthorizationExtendedAuthorizationSchema.optional(),
     /**
      * Uniquely identifies this particular card number. You can use this attribute to check whether two customers who’ve signed up with you are using the same card number, for example. For payment methods that tokenize card information (Apple Pay, Google Pay), the tokenized number might be provided instead of the underlying card number.
      *
@@ -30070,14 +29892,13 @@ export namespace stripe {
       )
       .optional(),
     incremental_authorization:
-      payment_flows_private_payment_methods_card_details_api_resource_enterprise_features_incremental_authorization_incremental_authorizationSchema.optional(),
+      PaymentFlowsPrivatePaymentMethodsCardDetailsApiResourceEnterpriseFeaturesIncrementalAuthorizationIncrementalAuthorizationSchema.optional(),
     /**
      * Installment details for this payment (Mexico only).
      *
      * For more information, see the [installments integration guide](https://stripe.com/docs/payments/installments).
      */
-    installments: payment_method_details_card_installmentsSchema
-      .nullable()
+    installments: PaymentMethodDetailsCardInstallmentsSchema.nullable()
       .describe(
         'Installment details for this payment (Mexico only).\n\nFor more information, see the [installments integration guide](https://stripe.com/docs/payments/installments).'
       )
@@ -30097,7 +29918,7 @@ export namespace stripe {
       .describe('ID of the mandate used to make this payment or created by it.')
       .optional(),
     multicapture:
-      payment_flows_private_payment_methods_card_details_api_resource_multicaptureSchema.optional(),
+      PaymentFlowsPrivatePaymentMethodsCardDetailsApiResourceMulticaptureSchema.optional(),
     /** Identifies which network this charge was processed on. Can be `amex`, `cartes_bancaires`, `diners`, `discover`, `eftpos_au`, `interac`, `jcb`, `link`, `mastercard`, `unionpay`, `visa`, or `unknown`. */
     network: z
       .string()
@@ -30108,8 +29929,7 @@ export namespace stripe {
       )
       .optional(),
     /** If this card has network token credentials, this contains the details of the network token credentials. */
-    network_token: payment_method_details_card_network_tokenSchema
-      .nullable()
+    network_token: PaymentMethodDetailsCardNetworkTokenSchema.nullable()
       .describe(
         'If this card has network token credentials, this contains the details of the network token credentials.'
       )
@@ -30124,7 +29944,7 @@ export namespace stripe {
       )
       .optional(),
     overcapture:
-      payment_flows_private_payment_methods_card_details_api_resource_enterprise_features_overcapture_overcaptureSchema.optional(),
+      PaymentFlowsPrivatePaymentMethodsCardDetailsApiResourceEnterpriseFeaturesOvercaptureOvercaptureSchema.optional(),
     /** Status of a card based on the card issuer. */
     regulated_status: z
       .enum(['regulated', 'unregulated'])
@@ -30132,13 +29952,11 @@ export namespace stripe {
       .describe('Status of a card based on the card issuer.')
       .optional(),
     /** Populated if this transaction used 3D Secure authentication. */
-    three_d_secure: three_d_secure_details_chargeSchema
-      .nullable()
+    three_d_secure: ThreeDSecureDetailsChargeSchema.nullable()
       .describe('Populated if this transaction used 3D Secure authentication.')
       .optional(),
     /** If this Card is part of a card wallet, this contains the details of the card wallet. */
-    wallet: payment_method_details_card_walletSchema
-      .nullable()
+    wallet: PaymentMethodDetailsCardWalletSchema.nullable()
       .describe(
         'If this Card is part of a card wallet, this contains the details of the card wallet.'
       )
@@ -30179,11 +29997,11 @@ export namespace stripe {
         .describe(
           'Time at which the object was created. Measured in seconds since the Unix epoch.'
         ),
-      document: gelato_document_reportSchema.optional(),
-      email: gelato_email_reportSchema.optional(),
+      document: GelatoDocumentReportSchema.optional(),
+      email: GelatoEmailReportSchema.optional(),
       /** Unique identifier for the object. */
       id: z.string().max(5000).describe('Unique identifier for the object.'),
-      id_number: gelato_id_number_reportSchema.optional(),
+      id_number: GelatoIdNumberReportSchema.optional(),
       /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
       livemode: z
         .boolean()
@@ -30196,9 +30014,9 @@ export namespace stripe {
         .describe(
           "String representing the object's type. Objects of the same type share the same value."
         ),
-      options: gelato_verification_report_optionsSchema.optional(),
-      phone: gelato_phone_reportSchema.optional(),
-      selfie: gelato_selfie_reportSchema.optional(),
+      options: GelatoVerificationReportOptionsSchema.optional(),
+      phone: GelatoPhoneReportSchema.optional(),
+      selfie: GelatoSelfieReportSchema.optional(),
       /** Type of report. */
       type: z
         .enum(['document', 'id_number', 'verification_flow'])
@@ -30240,10 +30058,10 @@ export namespace stripe {
    */
   export const SourceSchema = z
     .object({
-      ach_credit_transfer: source_type_ach_credit_transferSchema.optional(),
-      ach_debit: source_type_ach_debitSchema.optional(),
-      acss_debit: source_type_acss_debitSchema.optional(),
-      alipay: source_type_alipaySchema.optional(),
+      ach_credit_transfer: SourceTypeAchCreditTransferSchema.optional(),
+      ach_debit: SourceTypeAchDebitSchema.optional(),
+      acss_debit: SourceTypeAcssDebitSchema.optional(),
+      alipay: SourceTypeAlipaySchema.optional(),
       /** This field indicates whether this payment method can be shown again to its customer in a checkout flow. Stripe products such as Checkout and Elements use this field to determine whether a payment method can be shown as a saved payment method in a checkout flow. The field defaults to “unspecified”. */
       allow_redisplay: z
         .enum(['always', 'limited', 'unspecified'])
@@ -30261,10 +30079,10 @@ export namespace stripe {
           'A positive integer in the smallest currency unit (that is, 100 cents for $1.00, or 1 for ¥1, Japanese Yen being a zero-decimal currency) representing the total amount associated with the source. This is the amount for which the source will be chargeable once ready. Required for `single_use` sources.'
         )
         .optional(),
-      au_becs_debit: source_type_au_becs_debitSchema.optional(),
-      bancontact: source_type_bancontactSchema.optional(),
-      card: source_type_cardSchema.optional(),
-      card_present: source_type_card_presentSchema.optional(),
+      au_becs_debit: SourceTypeAuBecsDebitSchema.optional(),
+      bancontact: SourceTypeBancontactSchema.optional(),
+      card: SourceTypeCardSchema.optional(),
+      card_present: SourceTypeCardPresentSchema.optional(),
       /** The client secret of the source. Used for client-side retrieval using a publishable key. */
       client_secret: z
         .string()
@@ -30272,7 +30090,7 @@ export namespace stripe {
         .describe(
           'The client secret of the source. Used for client-side retrieval using a publishable key.'
         ),
-      code_verification: source_code_verification_flowSchema.optional(),
+      code_verification: SourceCodeVerificationFlowSchema.optional(),
       /** Time at which the object was created. Measured in seconds since the Unix epoch. */
       created: z
         .number()
@@ -30296,7 +30114,7 @@ export namespace stripe {
           'The ID of the customer to which this source is attached. This will not be present when the source has not been attached to a customer.'
         )
         .optional(),
-      eps: source_type_epsSchema.optional(),
+      eps: SourceTypeEpsSchema.optional(),
       /** The authentication `flow` of the source. `flow` is one of `redirect`, `receiver`, `code_verification`, `none`. */
       flow: z
         .string()
@@ -30304,11 +30122,11 @@ export namespace stripe {
         .describe(
           'The authentication `flow` of the source. `flow` is one of `redirect`, `receiver`, `code_verification`, `none`.'
         ),
-      giropay: source_type_giropaySchema.optional(),
+      giropay: SourceTypeGiropaySchema.optional(),
       /** Unique identifier for the object. */
       id: z.string().max(5000).describe('Unique identifier for the object.'),
-      ideal: source_type_idealSchema.optional(),
-      klarna: source_type_klarnaSchema.optional(),
+      ideal: SourceTypeIdealSchema.optional(),
+      klarna: SourceTypeKlarnaSchema.optional(),
       /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
       livemode: z
         .boolean()
@@ -30323,7 +30141,7 @@ export namespace stripe {
           'Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.'
         )
         .optional(),
-      multibanco: source_type_multibancoSchema.optional(),
+      multibanco: SourceTypeMultibancoSchema.optional(),
       /** String representing the object's type. Objects of the same type share the same value. */
       object: z
         .literal('source')
@@ -30331,18 +30149,17 @@ export namespace stripe {
           "String representing the object's type. Objects of the same type share the same value."
         ),
       /** Information about the owner of the payment instrument that may be used or required by particular source types. */
-      owner: source_ownerSchema
-        .nullable()
+      owner: SourceOwnerSchema.nullable()
         .describe(
           'Information about the owner of the payment instrument that may be used or required by particular source types.'
         )
         .optional(),
-      p24: source_type_p24Schema.optional(),
-      receiver: source_receiver_flowSchema.optional(),
-      redirect: source_redirect_flowSchema.optional(),
-      sepa_debit: source_type_sepa_debitSchema.optional(),
-      sofort: source_type_sofortSchema.optional(),
-      source_order: source_orderSchema.optional(),
+      p24: SourceTypeP24Schema.optional(),
+      receiver: SourceReceiverFlowSchema.optional(),
+      redirect: SourceRedirectFlowSchema.optional(),
+      sepa_debit: SourceTypeSepaDebitSchema.optional(),
+      sofort: SourceTypeSofortSchema.optional(),
+      source_order: SourceOrderSchema.optional(),
       /** Extra information about a source. This will appear on your customer's statement every time you charge the source. */
       statement_descriptor: z
         .string()
@@ -30359,7 +30176,7 @@ export namespace stripe {
         .describe(
           'The status of the source, one of `canceled`, `chargeable`, `consumed`, `failed`, or `pending`. Only `chargeable` sources can be used to create a charge.'
         ),
-      three_d_secure: source_type_three_d_secureSchema.optional(),
+      three_d_secure: SourceTypeThreeDSecureSchema.optional(),
       /** The `type` of the source. The `type` is a payment method, one of `ach_credit_transfer`, `ach_debit`, `alipay`, `bancontact`, `card`, `card_present`, `eps`, `giropay`, `ideal`, `multibanco`, `klarna`, `p24`, `sepa_debit`, `sofort`, `three_d_secure`, or `wechat`. An additional hash is included on the source with a name matching this value. It contains additional information specific to the [payment method](https://stripe.com/docs/sources) used. */
       type: z
         .enum([
@@ -30394,7 +30211,7 @@ export namespace stripe {
           'Either `reusable` or `single_use`. Whether this source should be reusable or not. Some source types may or may not be reusable by construction, while others may leave the option at creation. If an incompatible value is passed, an error will be returned.'
         )
         .optional(),
-      wechat: source_type_wechatSchema.optional()
+      wechat: SourceTypeWechatSchema.optional()
     })
     .describe(
       "`Source` objects allow you to accept a variety of payment methods. They\nrepresent a customer's payment instrument, and can be used with the Stripe API\njust like a `Card` object: once chargeable, they can be charged, or can be\nattached to customers.\n\nStripe doesn't recommend using the deprecated [Sources API](https://stripe.com/docs/api/sources).\nWe recommend that you adopt the [PaymentMethods API](https://stripe.com/docs/api/payment_methods).\nThis newer API provides access to our latest features and payment method types.\n\nRelated guides: [Sources API](https://stripe.com/docs/sources) and [Sources & Customers](https://stripe.com/docs/sources/customers)."
@@ -30421,7 +30238,7 @@ export namespace stripe {
     .object({
       /** The configuration used by this session, describing the features available. */
       configuration: z
-        .union([z.string().max(5000), billing_portal.configurationSchema])
+        .union([z.string().max(5000), BillingPortalConfigurationSchema])
         .describe(
           'The configuration used by this session, describing the features available.'
         ),
@@ -30438,8 +30255,7 @@ export namespace stripe {
         .max(5000)
         .describe('The ID of the customer for this session.'),
       /** Information about a specific flow for the customer to go through. See the [docs](https://stripe.com/docs/customer-management/portal-deep-links) to learn more about using customer portal deep links and flows. */
-      flow: portal_flows_flowSchema
-        .nullable()
+      flow: PortalFlowsFlowSchema.nullable()
         .describe(
           'Information about a specific flow for the customer to go through. See the [docs](https://stripe.com/docs/customer-management/portal-deep-links) to learn more about using customer portal deep links and flows.'
         )
@@ -30556,7 +30372,7 @@ export namespace stripe {
         .nullable()
         .describe('The reason why the card was canceled.')
         .optional(),
-      cardholder: issuing.cardholderSchema,
+      cardholder: IssuingCardholderSchema,
       /** Time at which the object was created. Measured in seconds since the Unix epoch. */
       created: z
         .number()
@@ -30624,19 +30440,27 @@ export namespace stripe {
         ),
       /** The personalization design object belonging to this card. */
       personalization_design: z
-        .union([z.string().max(5000), issuing.personalization_designSchema])
+        .union([z.string().max(5000), IssuingPersonalizationDesignSchema])
         .nullable()
         .describe('The personalization design object belonging to this card.')
         .optional(),
       /** The latest card that replaces this card, if any. */
       replaced_by: z
-        .union([z.string().max(5000), issuing.cardSchema])
+        .union([
+          z.string().max(5000),
+          // TODO: Support recursive types for `IssuingCardSchema`.
+          z.any()
+        ])
         .nullable()
         .describe('The latest card that replaces this card, if any.')
         .optional(),
       /** The card this card replaces, if any. */
       replacement_for: z
-        .union([z.string().max(5000), issuing.cardSchema])
+        .union([
+          z.string().max(5000),
+          // TODO: Support recursive types for `IssuingCardSchema`.
+          z.any()
+        ])
         .nullable()
         .describe('The card this card replaces, if any.')
         .optional(),
@@ -30647,11 +30471,10 @@ export namespace stripe {
         .describe('The reason why the previous card needed to be replaced.')
         .optional(),
       /** Where and how the card will be shipped. */
-      shipping: issuing_card_shippingSchema
-        .nullable()
+      shipping: IssuingCardShippingSchema.nullable()
         .describe('Where and how the card will be shipped.')
         .optional(),
-      spending_controls: issuing_card_authorization_controlsSchema,
+      spending_controls: IssuingCardAuthorizationControlsSchema,
       /** Whether authorizations can be approved on this card. May be blocked from activating cards depending on past-due Cardholder requirements. Defaults to `inactive`. */
       status: z
         .enum(['active', 'canceled', 'inactive'])
@@ -30661,8 +30484,7 @@ export namespace stripe {
       /** The type of the card. */
       type: z.enum(['physical', 'virtual']).describe('The type of the card.'),
       /** Information relating to digital wallets (like Apple Pay and Google Pay). */
-      wallets: issuing_card_walletsSchema
-        .nullable()
+      wallets: IssuingCardWalletsSchema.nullable()
         .describe(
           'Information relating to digital wallets (like Apple Pay and Google Pay).'
         )
@@ -30716,15 +30538,14 @@ export namespace stripe {
       /** Unique identifier for the object. */
       id: z.string().max(5000).describe('Unique identifier for the object.'),
       /** If present, this property tells you the last error encountered when processing the verification. */
-      last_error: gelato_session_last_errorSchema
-        .nullable()
+      last_error: GelatoSessionLastErrorSchema.nullable()
         .describe(
           'If present, this property tells you the last error encountered when processing the verification.'
         )
         .optional(),
       /** ID of the most recent VerificationReport. [Learn more about accessing detailed verification results.](https://stripe.com/docs/identity/verification-sessions#results) */
       last_verification_report: z
-        .union([z.string().max(5000), identity.verification_reportSchema])
+        .union([z.string().max(5000), IdentityVerificationReportSchema])
         .nullable()
         .describe(
           'ID of the most recent VerificationReport. [Learn more about accessing detailed verification results.](https://stripe.com/docs/identity/verification-sessions#results)'
@@ -30749,20 +30570,17 @@ export namespace stripe {
           "String representing the object's type. Objects of the same type share the same value."
         ),
       /** A set of options for the session’s verification checks. */
-      options: gelato_verification_session_optionsSchema
-        .nullable()
+      options: GelatoVerificationSessionOptionsSchema.nullable()
         .describe('A set of options for the session’s verification checks.')
         .optional(),
       /** Details provided about the user being verified. These details may be shown to the user. */
-      provided_details: gelato_provided_detailsSchema
-        .nullable()
+      provided_details: GelatoProvidedDetailsSchema.nullable()
         .describe(
           'Details provided about the user being verified. These details may be shown to the user.'
         )
         .optional(),
       /** Redaction status of this VerificationSession. If the VerificationSession is not redacted, this field will be null. */
-      redaction: verification_session_redactionSchema
-        .nullable()
+      redaction: VerificationSessionRedactionSchema.nullable()
         .describe(
           'Redaction status of this VerificationSession. If the VerificationSession is not redacted, this field will be null.'
         )
@@ -30804,8 +30622,7 @@ export namespace stripe {
         )
         .optional(),
       /** The user’s verified data. */
-      verified_outputs: gelato_verified_outputsSchema
-        .nullable()
+      verified_outputs: GelatoVerifiedOutputsSchema.nullable()
         .describe('The user’s verified data.')
         .optional()
     })
@@ -30823,7 +30640,7 @@ export namespace stripe {
    */
   export const SourceMandateNotificationSchema = z
     .object({
-      acss_debit: source_mandate_notification_acss_debit_dataSchema.optional(),
+      acss_debit: SourceMandateNotificationAcssDebitDataSchema.optional(),
       /** A positive integer in the smallest currency unit (that is, 100 cents for $1.00, or 1 for ¥1, Japanese Yen being a zero-decimal currency) representing the amount associated with the mandate notification. The amount is expressed in the currency of the underlying source. Required if the notification type is `debit_initiated`. */
       amount: z
         .number()
@@ -30833,7 +30650,7 @@ export namespace stripe {
           'A positive integer in the smallest currency unit (that is, 100 cents for $1.00, or 1 for ¥1, Japanese Yen being a zero-decimal currency) representing the amount associated with the mandate notification. The amount is expressed in the currency of the underlying source. Required if the notification type is `debit_initiated`.'
         )
         .optional(),
-      bacs_debit: source_mandate_notification_bacs_debit_dataSchema.optional(),
+      bacs_debit: SourceMandateNotificationBacsDebitDataSchema.optional(),
       /** Time at which the object was created. Measured in seconds since the Unix epoch. */
       created: z
         .number()
@@ -30862,8 +30679,8 @@ export namespace stripe {
         .describe(
           'The reason of the mandate notification. Valid reasons are `mandate_confirmed` or `debit_initiated`.'
         ),
-      sepa_debit: source_mandate_notification_sepa_debit_dataSchema.optional(),
-      source: sourceSchema,
+      sepa_debit: SourceMandateNotificationSepaDebitDataSchema.optional(),
+      source: SourceSchema,
       /** The status of the mandate notification. Valid statuses are `pending` or `submitted`. */
       status: z
         .string()
@@ -30888,30 +30705,28 @@ export namespace stripe {
 
   export const PaymentIntentNextActionSchema = z.object({
     alipay_handle_redirect:
-      payment_intent_next_action_alipay_handle_redirectSchema.optional(),
-    boleto_display_details: payment_intent_next_action_boletoSchema.optional(),
+      PaymentIntentNextActionAlipayHandleRedirectSchema.optional(),
+    boleto_display_details: PaymentIntentNextActionBoletoSchema.optional(),
     card_await_notification:
-      payment_intent_next_action_card_await_notificationSchema.optional(),
+      PaymentIntentNextActionCardAwaitNotificationSchema.optional(),
     cashapp_handle_redirect_or_display_qr_code:
-      payment_intent_next_action_cashapp_handle_redirect_or_display_qr_codeSchema.optional(),
+      PaymentIntentNextActionCashappHandleRedirectOrDisplayQrCodeSchema.optional(),
     display_bank_transfer_instructions:
-      payment_intent_next_action_display_bank_transfer_instructionsSchema.optional(),
-    konbini_display_details:
-      payment_intent_next_action_konbiniSchema.optional(),
+      PaymentIntentNextActionDisplayBankTransferInstructionsSchema.optional(),
+    konbini_display_details: PaymentIntentNextActionKonbiniSchema.optional(),
     multibanco_display_details:
-      payment_intent_next_action_display_multibanco_detailsSchema.optional(),
+      PaymentIntentNextActionDisplayMultibancoDetailsSchema.optional(),
     oxxo_display_details:
-      payment_intent_next_action_display_oxxo_detailsSchema.optional(),
+      PaymentIntentNextActionDisplayOxxoDetailsSchema.optional(),
     paynow_display_qr_code:
-      payment_intent_next_action_paynow_display_qr_codeSchema.optional(),
+      PaymentIntentNextActionPaynowDisplayQrCodeSchema.optional(),
     pix_display_qr_code:
-      payment_intent_next_action_pix_display_qr_codeSchema.optional(),
+      PaymentIntentNextActionPixDisplayQrCodeSchema.optional(),
     promptpay_display_qr_code:
-      payment_intent_next_action_promptpay_display_qr_codeSchema.optional(),
-    redirect_to_url:
-      payment_intent_next_action_redirect_to_urlSchema.optional(),
+      PaymentIntentNextActionPromptpayDisplayQrCodeSchema.optional(),
+    redirect_to_url: PaymentIntentNextActionRedirectToUrlSchema.optional(),
     swish_handle_redirect_or_display_qr_code:
-      payment_intent_next_action_swish_handle_redirect_or_display_qr_codeSchema.optional(),
+      PaymentIntentNextActionSwishHandleRedirectOrDisplayQrCodeSchema.optional(),
     /** Type of the next action to perform, one of `redirect_to_url`, `use_stripe_sdk`, `alipay_handle_redirect`, `oxxo_display_details`, or `verify_with_microdeposits`. */
     type: z
       .string()
@@ -30927,13 +30742,13 @@ export namespace stripe {
       )
       .optional(),
     verify_with_microdeposits:
-      payment_intent_next_action_verify_with_microdepositsSchema.optional(),
+      PaymentIntentNextActionVerifyWithMicrodepositsSchema.optional(),
     wechat_pay_display_qr_code:
-      payment_intent_next_action_wechat_pay_display_qr_codeSchema.optional(),
+      PaymentIntentNextActionWechatPayDisplayQrCodeSchema.optional(),
     wechat_pay_redirect_to_android_app:
-      payment_intent_next_action_wechat_pay_redirect_to_android_appSchema.optional(),
+      PaymentIntentNextActionWechatPayRedirectToAndroidAppSchema.optional(),
     wechat_pay_redirect_to_ios_app:
-      payment_intent_next_action_wechat_pay_redirect_to_ios_appSchema.optional()
+      PaymentIntentNextActionWechatPayRedirectToIosAppSchema.optional()
   })
   export type PaymentIntentNextAction = z.infer<
     typeof PaymentIntentNextActionSchema
@@ -30944,7 +30759,7 @@ export namespace stripe {
     .object({
       /** Card associated with this token. */
       card: z
-        .union([z.string().max(5000), issuing.cardSchema])
+        .union([z.string().max(5000), IssuingCardSchema])
         .describe('Card associated with this token.'),
       /** Time at which the object was created. Measured in seconds since the Unix epoch. */
       created: z
@@ -30982,7 +30797,7 @@ export namespace stripe {
         .describe(
           'The token service provider / card network associated with the token.'
         ),
-      network_data: issuing_network_token_network_dataSchema.optional(),
+      network_data: IssuingNetworkTokenNetworkDataSchema.optional(),
       /** Time at which the token was last updated by the card network. Measured in seconds since the Unix epoch. */
       network_updated_at: z
         .number()
@@ -31012,47 +30827,45 @@ export namespace stripe {
   export type IssuingToken = z.infer<typeof IssuingTokenSchema>
 
   export const CheckoutSessionPaymentMethodOptionsSchema = z.object({
-    acss_debit: checkout_acss_debit_payment_method_optionsSchema.optional(),
-    affirm: checkout_affirm_payment_method_optionsSchema.optional(),
+    acss_debit: CheckoutAcssDebitPaymentMethodOptionsSchema.optional(),
+    affirm: CheckoutAffirmPaymentMethodOptionsSchema.optional(),
     afterpay_clearpay:
-      checkout_afterpay_clearpay_payment_method_optionsSchema.optional(),
-    alipay: checkout_alipay_payment_method_optionsSchema.optional(),
-    amazon_pay: checkout_amazon_pay_payment_method_optionsSchema.optional(),
-    au_becs_debit:
-      checkout_au_becs_debit_payment_method_optionsSchema.optional(),
-    bacs_debit: checkout_bacs_debit_payment_method_optionsSchema.optional(),
-    bancontact: checkout_bancontact_payment_method_optionsSchema.optional(),
-    boleto: checkout_boleto_payment_method_optionsSchema.optional(),
-    card: checkout_card_payment_method_optionsSchema.optional(),
-    cashapp: checkout_cashapp_payment_method_optionsSchema.optional(),
+      CheckoutAfterpayClearpayPaymentMethodOptionsSchema.optional(),
+    alipay: CheckoutAlipayPaymentMethodOptionsSchema.optional(),
+    amazon_pay: CheckoutAmazonPayPaymentMethodOptionsSchema.optional(),
+    au_becs_debit: CheckoutAuBecsDebitPaymentMethodOptionsSchema.optional(),
+    bacs_debit: CheckoutBacsDebitPaymentMethodOptionsSchema.optional(),
+    bancontact: CheckoutBancontactPaymentMethodOptionsSchema.optional(),
+    boleto: CheckoutBoletoPaymentMethodOptionsSchema.optional(),
+    card: CheckoutCardPaymentMethodOptionsSchema.optional(),
+    cashapp: CheckoutCashappPaymentMethodOptionsSchema.optional(),
     customer_balance:
-      checkout_customer_balance_payment_method_optionsSchema.optional(),
-    eps: checkout_eps_payment_method_optionsSchema.optional(),
-    fpx: checkout_fpx_payment_method_optionsSchema.optional(),
-    giropay: checkout_giropay_payment_method_optionsSchema.optional(),
-    grabpay: checkout_grab_pay_payment_method_optionsSchema.optional(),
-    ideal: checkout_ideal_payment_method_optionsSchema.optional(),
-    kakao_pay: checkout_kakao_pay_payment_method_optionsSchema.optional(),
-    klarna: checkout_klarna_payment_method_optionsSchema.optional(),
-    konbini: checkout_konbini_payment_method_optionsSchema.optional(),
-    kr_card: checkout_kr_card_payment_method_optionsSchema.optional(),
-    link: checkout_link_payment_method_optionsSchema.optional(),
-    mobilepay: checkout_mobilepay_payment_method_optionsSchema.optional(),
-    multibanco: checkout_multibanco_payment_method_optionsSchema.optional(),
-    naver_pay: checkout_naver_pay_payment_method_optionsSchema.optional(),
-    oxxo: checkout_oxxo_payment_method_optionsSchema.optional(),
-    p24: checkout_p24_payment_method_optionsSchema.optional(),
-    payco: checkout_payco_payment_method_optionsSchema.optional(),
-    paynow: checkout_paynow_payment_method_optionsSchema.optional(),
-    paypal: checkout_paypal_payment_method_optionsSchema.optional(),
-    pix: checkout_pix_payment_method_optionsSchema.optional(),
-    revolut_pay: checkout_revolut_pay_payment_method_optionsSchema.optional(),
-    samsung_pay: checkout_samsung_pay_payment_method_optionsSchema.optional(),
-    sepa_debit: checkout_sepa_debit_payment_method_optionsSchema.optional(),
-    sofort: checkout_sofort_payment_method_optionsSchema.optional(),
-    swish: checkout_swish_payment_method_optionsSchema.optional(),
-    us_bank_account:
-      checkout_us_bank_account_payment_method_optionsSchema.optional()
+      CheckoutCustomerBalancePaymentMethodOptionsSchema.optional(),
+    eps: CheckoutEpsPaymentMethodOptionsSchema.optional(),
+    fpx: CheckoutFpxPaymentMethodOptionsSchema.optional(),
+    giropay: CheckoutGiropayPaymentMethodOptionsSchema.optional(),
+    grabpay: CheckoutGrabPayPaymentMethodOptionsSchema.optional(),
+    ideal: CheckoutIdealPaymentMethodOptionsSchema.optional(),
+    kakao_pay: CheckoutKakaoPayPaymentMethodOptionsSchema.optional(),
+    klarna: CheckoutKlarnaPaymentMethodOptionsSchema.optional(),
+    konbini: CheckoutKonbiniPaymentMethodOptionsSchema.optional(),
+    kr_card: CheckoutKrCardPaymentMethodOptionsSchema.optional(),
+    link: CheckoutLinkPaymentMethodOptionsSchema.optional(),
+    mobilepay: CheckoutMobilepayPaymentMethodOptionsSchema.optional(),
+    multibanco: CheckoutMultibancoPaymentMethodOptionsSchema.optional(),
+    naver_pay: CheckoutNaverPayPaymentMethodOptionsSchema.optional(),
+    oxxo: CheckoutOxxoPaymentMethodOptionsSchema.optional(),
+    p24: CheckoutP24PaymentMethodOptionsSchema.optional(),
+    payco: CheckoutPaycoPaymentMethodOptionsSchema.optional(),
+    paynow: CheckoutPaynowPaymentMethodOptionsSchema.optional(),
+    paypal: CheckoutPaypalPaymentMethodOptionsSchema.optional(),
+    pix: CheckoutPixPaymentMethodOptionsSchema.optional(),
+    revolut_pay: CheckoutRevolutPayPaymentMethodOptionsSchema.optional(),
+    samsung_pay: CheckoutSamsungPayPaymentMethodOptionsSchema.optional(),
+    sepa_debit: CheckoutSepaDebitPaymentMethodOptionsSchema.optional(),
+    sofort: CheckoutSofortPaymentMethodOptionsSchema.optional(),
+    swish: CheckoutSwishPaymentMethodOptionsSchema.optional(),
+    us_bank_account: CheckoutUsBankAccountPaymentMethodOptionsSchema.optional()
   })
   export type CheckoutSessionPaymentMethodOptions = z.infer<
     typeof CheckoutSessionPaymentMethodOptionsSchema
@@ -31061,278 +30874,278 @@ export namespace stripe {
   export const PaymentIntentPaymentMethodOptionsSchema = z.object({
     acss_debit: z
       .union([
-        payment_intent_payment_method_options_acss_debitSchema,
-        payment_intent_type_specific_payment_method_options_clientSchema
+        PaymentIntentPaymentMethodOptionsAcssDebitSchema,
+        PaymentIntentTypeSpecificPaymentMethodOptionsClientSchema
       ])
       .optional(),
     affirm: z
       .union([
-        payment_method_options_affirmSchema,
-        payment_intent_type_specific_payment_method_options_clientSchema
+        PaymentMethodOptionsAffirmSchema,
+        PaymentIntentTypeSpecificPaymentMethodOptionsClientSchema
       ])
       .optional(),
     afterpay_clearpay: z
       .union([
-        payment_method_options_afterpay_clearpaySchema,
-        payment_intent_type_specific_payment_method_options_clientSchema
+        PaymentMethodOptionsAfterpayClearpaySchema,
+        PaymentIntentTypeSpecificPaymentMethodOptionsClientSchema
       ])
       .optional(),
     alipay: z
       .union([
-        payment_method_options_alipaySchema,
-        payment_intent_type_specific_payment_method_options_clientSchema
+        PaymentMethodOptionsAlipaySchema,
+        PaymentIntentTypeSpecificPaymentMethodOptionsClientSchema
       ])
       .optional(),
     alma: z
       .union([
-        payment_method_options_almaSchema,
-        payment_intent_type_specific_payment_method_options_clientSchema
+        PaymentMethodOptionsAlmaSchema,
+        PaymentIntentTypeSpecificPaymentMethodOptionsClientSchema
       ])
       .optional(),
     amazon_pay: z
       .union([
-        payment_method_options_amazon_paySchema,
-        payment_intent_type_specific_payment_method_options_clientSchema
+        PaymentMethodOptionsAmazonPaySchema,
+        PaymentIntentTypeSpecificPaymentMethodOptionsClientSchema
       ])
       .optional(),
     au_becs_debit: z
       .union([
-        payment_intent_payment_method_options_au_becs_debitSchema,
-        payment_intent_type_specific_payment_method_options_clientSchema
+        PaymentIntentPaymentMethodOptionsAuBecsDebitSchema,
+        PaymentIntentTypeSpecificPaymentMethodOptionsClientSchema
       ])
       .optional(),
     bacs_debit: z
       .union([
-        payment_intent_payment_method_options_bacs_debitSchema,
-        payment_intent_type_specific_payment_method_options_clientSchema
+        PaymentIntentPaymentMethodOptionsBacsDebitSchema,
+        PaymentIntentTypeSpecificPaymentMethodOptionsClientSchema
       ])
       .optional(),
     bancontact: z
       .union([
-        payment_method_options_bancontactSchema,
-        payment_intent_type_specific_payment_method_options_clientSchema
+        PaymentMethodOptionsBancontactSchema,
+        PaymentIntentTypeSpecificPaymentMethodOptionsClientSchema
       ])
       .optional(),
     blik: z
       .union([
-        payment_intent_payment_method_options_blikSchema,
-        payment_intent_type_specific_payment_method_options_clientSchema
+        PaymentIntentPaymentMethodOptionsBlikSchema,
+        PaymentIntentTypeSpecificPaymentMethodOptionsClientSchema
       ])
       .optional(),
     boleto: z
       .union([
-        payment_method_options_boletoSchema,
-        payment_intent_type_specific_payment_method_options_clientSchema
+        PaymentMethodOptionsBoletoSchema,
+        PaymentIntentTypeSpecificPaymentMethodOptionsClientSchema
       ])
       .optional(),
     card: z
       .union([
-        payment_intent_payment_method_options_cardSchema,
-        payment_intent_type_specific_payment_method_options_clientSchema
+        PaymentIntentPaymentMethodOptionsCardSchema,
+        PaymentIntentTypeSpecificPaymentMethodOptionsClientSchema
       ])
       .optional(),
     card_present: z
       .union([
-        payment_method_options_card_presentSchema,
-        payment_intent_type_specific_payment_method_options_clientSchema
+        PaymentMethodOptionsCardPresentSchema,
+        PaymentIntentTypeSpecificPaymentMethodOptionsClientSchema
       ])
       .optional(),
     cashapp: z
       .union([
-        payment_method_options_cashappSchema,
-        payment_intent_type_specific_payment_method_options_clientSchema
+        PaymentMethodOptionsCashappSchema,
+        PaymentIntentTypeSpecificPaymentMethodOptionsClientSchema
       ])
       .optional(),
     customer_balance: z
       .union([
-        payment_method_options_customer_balanceSchema,
-        payment_intent_type_specific_payment_method_options_clientSchema
+        PaymentMethodOptionsCustomerBalanceSchema,
+        PaymentIntentTypeSpecificPaymentMethodOptionsClientSchema
       ])
       .optional(),
     eps: z
       .union([
-        payment_intent_payment_method_options_epsSchema,
-        payment_intent_type_specific_payment_method_options_clientSchema
+        PaymentIntentPaymentMethodOptionsEpsSchema,
+        PaymentIntentTypeSpecificPaymentMethodOptionsClientSchema
       ])
       .optional(),
     fpx: z
       .union([
-        payment_method_options_fpxSchema,
-        payment_intent_type_specific_payment_method_options_clientSchema
+        PaymentMethodOptionsFpxSchema,
+        PaymentIntentTypeSpecificPaymentMethodOptionsClientSchema
       ])
       .optional(),
     giropay: z
       .union([
-        payment_method_options_giropaySchema,
-        payment_intent_type_specific_payment_method_options_clientSchema
+        PaymentMethodOptionsGiropaySchema,
+        PaymentIntentTypeSpecificPaymentMethodOptionsClientSchema
       ])
       .optional(),
     grabpay: z
       .union([
-        payment_method_options_grabpaySchema,
-        payment_intent_type_specific_payment_method_options_clientSchema
+        PaymentMethodOptionsGrabpaySchema,
+        PaymentIntentTypeSpecificPaymentMethodOptionsClientSchema
       ])
       .optional(),
     ideal: z
       .union([
-        payment_method_options_idealSchema,
-        payment_intent_type_specific_payment_method_options_clientSchema
+        PaymentMethodOptionsIdealSchema,
+        PaymentIntentTypeSpecificPaymentMethodOptionsClientSchema
       ])
       .optional(),
     interac_present: z
       .union([
-        payment_method_options_interac_presentSchema,
-        payment_intent_type_specific_payment_method_options_clientSchema
+        PaymentMethodOptionsInteracPresentSchema,
+        PaymentIntentTypeSpecificPaymentMethodOptionsClientSchema
       ])
       .optional(),
     kakao_pay: z
       .union([
-        payment_flows_private_payment_methods_kakao_pay_payment_method_optionsSchema,
-        payment_intent_type_specific_payment_method_options_clientSchema
+        PaymentFlowsPrivatePaymentMethodsKakaoPayPaymentMethodOptionsSchema,
+        PaymentIntentTypeSpecificPaymentMethodOptionsClientSchema
       ])
       .optional(),
     klarna: z
       .union([
-        payment_method_options_klarnaSchema,
-        payment_intent_type_specific_payment_method_options_clientSchema
+        PaymentMethodOptionsKlarnaSchema,
+        PaymentIntentTypeSpecificPaymentMethodOptionsClientSchema
       ])
       .optional(),
     konbini: z
       .union([
-        payment_method_options_konbiniSchema,
-        payment_intent_type_specific_payment_method_options_clientSchema
+        PaymentMethodOptionsKonbiniSchema,
+        PaymentIntentTypeSpecificPaymentMethodOptionsClientSchema
       ])
       .optional(),
     kr_card: z
       .union([
-        payment_method_options_kr_cardSchema,
-        payment_intent_type_specific_payment_method_options_clientSchema
+        PaymentMethodOptionsKrCardSchema,
+        PaymentIntentTypeSpecificPaymentMethodOptionsClientSchema
       ])
       .optional(),
     link: z
       .union([
-        payment_intent_payment_method_options_linkSchema,
-        payment_intent_type_specific_payment_method_options_clientSchema
+        PaymentIntentPaymentMethodOptionsLinkSchema,
+        PaymentIntentTypeSpecificPaymentMethodOptionsClientSchema
       ])
       .optional(),
     mobilepay: z
       .union([
-        payment_intent_payment_method_options_mobilepaySchema,
-        payment_intent_type_specific_payment_method_options_clientSchema
+        PaymentIntentPaymentMethodOptionsMobilepaySchema,
+        PaymentIntentTypeSpecificPaymentMethodOptionsClientSchema
       ])
       .optional(),
     multibanco: z
       .union([
-        payment_method_options_multibancoSchema,
-        payment_intent_type_specific_payment_method_options_clientSchema
+        PaymentMethodOptionsMultibancoSchema,
+        PaymentIntentTypeSpecificPaymentMethodOptionsClientSchema
       ])
       .optional(),
     naver_pay: z
       .union([
-        payment_flows_private_payment_methods_naver_pay_payment_method_optionsSchema,
-        payment_intent_type_specific_payment_method_options_clientSchema
+        PaymentFlowsPrivatePaymentMethodsNaverPayPaymentMethodOptionsSchema,
+        PaymentIntentTypeSpecificPaymentMethodOptionsClientSchema
       ])
       .optional(),
     oxxo: z
       .union([
-        payment_method_options_oxxoSchema,
-        payment_intent_type_specific_payment_method_options_clientSchema
+        PaymentMethodOptionsOxxoSchema,
+        PaymentIntentTypeSpecificPaymentMethodOptionsClientSchema
       ])
       .optional(),
     p24: z
       .union([
-        payment_method_options_p24Schema,
-        payment_intent_type_specific_payment_method_options_clientSchema
+        PaymentMethodOptionsP24Schema,
+        PaymentIntentTypeSpecificPaymentMethodOptionsClientSchema
       ])
       .optional(),
     pay_by_bank: z
       .union([
-        payment_method_options_pay_by_bankSchema,
-        payment_intent_type_specific_payment_method_options_clientSchema
+        PaymentMethodOptionsPayByBankSchema,
+        PaymentIntentTypeSpecificPaymentMethodOptionsClientSchema
       ])
       .optional(),
     payco: z
       .union([
-        payment_flows_private_payment_methods_payco_payment_method_optionsSchema,
-        payment_intent_type_specific_payment_method_options_clientSchema
+        PaymentFlowsPrivatePaymentMethodsPaycoPaymentMethodOptionsSchema,
+        PaymentIntentTypeSpecificPaymentMethodOptionsClientSchema
       ])
       .optional(),
     paynow: z
       .union([
-        payment_method_options_paynowSchema,
-        payment_intent_type_specific_payment_method_options_clientSchema
+        PaymentMethodOptionsPaynowSchema,
+        PaymentIntentTypeSpecificPaymentMethodOptionsClientSchema
       ])
       .optional(),
     paypal: z
       .union([
-        payment_method_options_paypalSchema,
-        payment_intent_type_specific_payment_method_options_clientSchema
+        PaymentMethodOptionsPaypalSchema,
+        PaymentIntentTypeSpecificPaymentMethodOptionsClientSchema
       ])
       .optional(),
     pix: z
       .union([
-        payment_method_options_pixSchema,
-        payment_intent_type_specific_payment_method_options_clientSchema
+        PaymentMethodOptionsPixSchema,
+        PaymentIntentTypeSpecificPaymentMethodOptionsClientSchema
       ])
       .optional(),
     promptpay: z
       .union([
-        payment_method_options_promptpaySchema,
-        payment_intent_type_specific_payment_method_options_clientSchema
+        PaymentMethodOptionsPromptpaySchema,
+        PaymentIntentTypeSpecificPaymentMethodOptionsClientSchema
       ])
       .optional(),
     revolut_pay: z
       .union([
-        payment_method_options_revolut_paySchema,
-        payment_intent_type_specific_payment_method_options_clientSchema
+        PaymentMethodOptionsRevolutPaySchema,
+        PaymentIntentTypeSpecificPaymentMethodOptionsClientSchema
       ])
       .optional(),
     samsung_pay: z
       .union([
-        payment_flows_private_payment_methods_samsung_pay_payment_method_optionsSchema,
-        payment_intent_type_specific_payment_method_options_clientSchema
+        PaymentFlowsPrivatePaymentMethodsSamsungPayPaymentMethodOptionsSchema,
+        PaymentIntentTypeSpecificPaymentMethodOptionsClientSchema
       ])
       .optional(),
     sepa_debit: z
       .union([
-        payment_intent_payment_method_options_sepa_debitSchema,
-        payment_intent_type_specific_payment_method_options_clientSchema
+        PaymentIntentPaymentMethodOptionsSepaDebitSchema,
+        PaymentIntentTypeSpecificPaymentMethodOptionsClientSchema
       ])
       .optional(),
     sofort: z
       .union([
-        payment_method_options_sofortSchema,
-        payment_intent_type_specific_payment_method_options_clientSchema
+        PaymentMethodOptionsSofortSchema,
+        PaymentIntentTypeSpecificPaymentMethodOptionsClientSchema
       ])
       .optional(),
     swish: z
       .union([
-        payment_intent_payment_method_options_swishSchema,
-        payment_intent_type_specific_payment_method_options_clientSchema
+        PaymentIntentPaymentMethodOptionsSwishSchema,
+        PaymentIntentTypeSpecificPaymentMethodOptionsClientSchema
       ])
       .optional(),
     twint: z
       .union([
-        payment_method_options_twintSchema,
-        payment_intent_type_specific_payment_method_options_clientSchema
+        PaymentMethodOptionsTwintSchema,
+        PaymentIntentTypeSpecificPaymentMethodOptionsClientSchema
       ])
       .optional(),
     us_bank_account: z
       .union([
-        payment_intent_payment_method_options_us_bank_accountSchema,
-        payment_intent_type_specific_payment_method_options_clientSchema
+        PaymentIntentPaymentMethodOptionsUsBankAccountSchema,
+        PaymentIntentTypeSpecificPaymentMethodOptionsClientSchema
       ])
       .optional(),
     wechat_pay: z
       .union([
-        payment_method_options_wechat_paySchema,
-        payment_intent_type_specific_payment_method_options_clientSchema
+        PaymentMethodOptionsWechatPaySchema,
+        PaymentIntentTypeSpecificPaymentMethodOptionsClientSchema
       ])
       .optional(),
     zip: z
       .union([
-        payment_method_options_zipSchema,
-        payment_intent_type_specific_payment_method_options_clientSchema
+        PaymentMethodOptionsZipSchema,
+        PaymentIntentTypeSpecificPaymentMethodOptionsClientSchema
       ])
       .optional()
   })
@@ -31357,8 +31170,7 @@ export namespace stripe {
   export const AccountSchema = z
     .object({
       /** Business information about the account. */
-      business_profile: account_business_profileSchema
-        .nullable()
+      business_profile: AccountBusinessProfileSchema.nullable()
         .describe('Business information about the account.')
         .optional(),
       /** The business type. After you create an [Account Link](/api/account_links) or [Account Session](/api/account_sessions), this property is only returned for accounts where [controller.requirement_collection](/api/accounts/object#account_object-controller-requirement_collection) is `application`, which includes Custom accounts. */
@@ -31369,14 +31181,14 @@ export namespace stripe {
           'The business type. After you create an [Account Link](/api/account_links) or [Account Session](/api/account_sessions), this property is only returned for accounts where [controller.requirement_collection](/api/accounts/object#account_object-controller-requirement_collection) is `application`, which includes Custom accounts.'
         )
         .optional(),
-      capabilities: account_capabilitiesSchema.optional(),
+      capabilities: AccountCapabilitiesSchema.optional(),
       /** Whether the account can process charges. */
       charges_enabled: z
         .boolean()
         .describe('Whether the account can process charges.')
         .optional(),
-      company: legal_entity_companySchema.optional(),
-      controller: account_unification_account_controllerSchema.optional(),
+      company: LegalEntityCompanySchema.optional(),
+      controller: AccountUnificationAccountControllerSchema.optional(),
       /** The account's country. */
       country: z
         .string()
@@ -31420,7 +31232,7 @@ export namespace stripe {
         .object({
           /** The list contains all external accounts that have been attached to the Stripe account. These may be bank accounts or cards. */
           data: z
-            .array(z.union([bank_accountSchema, cardSchema]))
+            .array(z.union([BankAccountSchema, CardSchema]))
             .describe(
               'The list contains all external accounts that have been attached to the Stripe account. These may be bank accounts or cards.'
             ),
@@ -31446,15 +31258,14 @@ export namespace stripe {
           'External accounts (bank accounts and debit cards) currently attached to this account. External accounts are only returned for requests where `controller[is_controller]` is true.'
         )
         .optional(),
-      future_requirements: account_future_requirementsSchema.optional(),
+      future_requirements: AccountFutureRequirementsSchema.optional(),
       /** The groups associated with the account. */
-      groups: account_group_membershipSchema
-        .nullable()
+      groups: AccountGroupMembershipSchema.nullable()
         .describe('The groups associated with the account.')
         .optional(),
       /** Unique identifier for the object. */
       id: z.string().max(5000).describe('Unique identifier for the object.'),
-      individual: personSchema.optional(),
+      individual: PersonSchema.optional(),
       /** Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. */
       metadata: z
         .record(z.string().max(500))
@@ -31473,15 +31284,14 @@ export namespace stripe {
         .boolean()
         .describe('Whether the funds in this account can be paid out.')
         .optional(),
-      requirements: account_requirementsSchema.optional(),
+      requirements: AccountRequirementsSchema.optional(),
       /** Options for customizing how the account functions within Stripe. */
-      settings: account_settingsSchema
-        .nullable()
+      settings: AccountSettingsSchema.nullable()
         .describe(
           'Options for customizing how the account functions within Stripe.'
         )
         .optional(),
-      tos_acceptance: account_tos_acceptanceSchema.optional(),
+      tos_acceptance: AccountTosAcceptanceSchema.optional(),
       /** The Stripe account type. Can be `standard`, `express`, `custom`, or `none`. */
       type: z
         .enum(['custom', 'express', 'none', 'standard'])
@@ -31508,7 +31318,7 @@ export namespace stripe {
     .object({
       /** The ID of the account that the bank account is associated with. */
       account: z
-        .union([z.string().max(5000), accountSchema])
+        .union([z.string().max(5000), AccountSchema])
         .nullable()
         .describe(
           'The ID of the account that the bank account is associated with.'
@@ -31573,7 +31383,7 @@ export namespace stripe {
         ),
       /** The ID of the customer that the bank account is associated with. */
       customer: z
-        .union([z.string().max(5000), customerSchema, deleted_customerSchema])
+        .union([z.string().max(5000), CustomerSchema, DeletedCustomerSchema])
         .nullable()
         .describe(
           'The ID of the customer that the bank account is associated with.'
@@ -31597,8 +31407,7 @@ export namespace stripe {
         )
         .optional(),
       /** Information about the [upcoming new requirements for the bank account](https://stripe.com/docs/connect/custom-accounts/future-requirements), including what information needs to be collected, and by when. */
-      future_requirements: external_account_requirementsSchema
-        .nullable()
+      future_requirements: ExternalAccountRequirementsSchema.nullable()
         .describe(
           'Information about the [upcoming new requirements for the bank account](https://stripe.com/docs/connect/custom-accounts/future-requirements), including what information needs to be collected, and by when.'
         )
@@ -31625,8 +31434,7 @@ export namespace stripe {
           "String representing the object's type. Objects of the same type share the same value."
         ),
       /** Information about the requirements for the bank account, including what information needs to be collected. */
-      requirements: external_account_requirementsSchema
-        .nullable()
+      requirements: ExternalAccountRequirementsSchema.nullable()
         .describe(
           'Information about the requirements for the bank account, including what information needs to be collected.'
         )
@@ -31662,8 +31470,7 @@ export namespace stripe {
   export const CustomerSchema = z
     .object({
       /** The customer's address. */
-      address: addressSchema
-        .nullable()
+      address: AddressSchema.nullable()
         .describe("The customer's address.")
         .optional(),
       /** The current balance, if any, that's stored on the customer. If negative, the customer has credit to apply to their next invoice. If positive, the customer has an amount owed that's added to their next invoice. The balance only considers amounts that Stripe hasn't successfully applied to any invoice. It doesn't reflect unpaid invoices. This balance is only taken into account after invoices finalize. */
@@ -31675,8 +31482,7 @@ export namespace stripe {
         )
         .optional(),
       /** The current funds being held by Stripe on behalf of the customer. You can apply these funds towards payment intents when the source is "cash_balance". The `settings[reconciliation_mode]` field describes if these funds apply to these payment intents manually or automatically. */
-      cash_balance: cash_balanceSchema
-        .nullable()
+      cash_balance: CashBalanceSchema.nullable()
         .describe(
           'The current funds being held by Stripe on behalf of the customer. You can apply these funds towards payment intents when the source is "cash_balance". The `settings[reconciliation_mode]` field describes if these funds apply to these payment intents manually or automatically.'
         )
@@ -31705,9 +31511,9 @@ export namespace stripe {
       default_source: z
         .union([
           z.string().max(5000),
-          bank_accountSchema,
-          cardSchema,
-          sourceSchema
+          BankAccountSchema,
+          CardSchema,
+          SourceSchema
         ])
         .nullable()
         .describe(
@@ -31738,8 +31544,7 @@ export namespace stripe {
         )
         .optional(),
       /** Describes the current discount active on the customer, if there is one. */
-      discount: discountSchema
-        .nullable()
+      discount: DiscountSchema.nullable()
         .describe(
           'Describes the current discount active on the customer, if there is one.'
         )
@@ -31769,7 +31574,7 @@ export namespace stripe {
           'The prefix for the customer used to generate unique invoice numbers.'
         )
         .optional(),
-      invoice_settings: invoice_setting_customer_settingSchema.optional(),
+      invoice_settings: InvoiceSettingCustomerSettingSchema.optional(),
       /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
       livemode: z
         .boolean()
@@ -31820,8 +31625,7 @@ export namespace stripe {
         )
         .optional(),
       /** Mailing and shipping address for the customer. Appears on invoices emailed to this customer. */
-      shipping: shippingSchema
-        .nullable()
+      shipping: ShippingSchema.nullable()
         .describe(
           'Mailing and shipping address for the customer. Appears on invoices emailed to this customer.'
         )
@@ -31831,7 +31635,7 @@ export namespace stripe {
         .object({
           /** Details about each object. */
           data: z
-            .array(z.union([bank_accountSchema, cardSchema, sourceSchema]))
+            .array(z.union([BankAccountSchema, CardSchema, SourceSchema]))
             .describe('Details about each object.'),
           /** True if this list has another page of items after this one that can be fetched. */
           has_more: z
@@ -31858,7 +31662,7 @@ export namespace stripe {
         .object({
           /** Details about each object. */
           data: z
-            .array(subscriptionSchema)
+            .array(SubscriptionSchema)
             .describe('Details about each object.'),
           /** True if this list has another page of items after this one that can be fetched. */
           has_more: z
@@ -31880,7 +31684,7 @@ export namespace stripe {
         })
         .describe("The customer's current subscriptions, if any.")
         .optional(),
-      tax: customer_taxSchema.optional(),
+      tax: CustomerTaxSchema.optional(),
       /** Describes the customer's tax exemption status, which is `none`, `exempt`, or `reverse`. When set to `reverse`, invoice and receipt PDFs include the following text: **"Reverse charge"**. */
       tax_exempt: z
         .enum(['exempt', 'none', 'reverse'])
@@ -31893,7 +31697,7 @@ export namespace stripe {
       tax_ids: z
         .object({
           /** Details about each object. */
-          data: z.array(tax_idSchema).describe('Details about each object.'),
+          data: z.array(TaxIdSchema).describe('Details about each object.'),
           /** True if this list has another page of items after this one that can be fetched. */
           has_more: z
             .boolean()
@@ -31916,7 +31720,7 @@ export namespace stripe {
         .optional(),
       /** ID of the test clock that this customer belongs to. */
       test_clock: z
-        .union([z.string().max(5000), test_helpers.test_clockSchema])
+        .union([z.string().max(5000), TestHelpersTestClockSchema])
         .nullable()
         .describe('ID of the test clock that this customer belongs to.')
         .optional()
@@ -31937,7 +31741,7 @@ export namespace stripe {
     .object({
       /** The account this card belongs to. This attribute will not be in the card object if the card belongs to a customer or recipient instead. This property is only available for accounts where [controller.requirement_collection](/api/accounts/object#account_object-controller-requirement_collection) is `application`, which includes Custom accounts. */
       account: z
-        .union([z.string().max(5000), accountSchema])
+        .union([z.string().max(5000), AccountSchema])
         .nullable()
         .describe(
           'The account this card belongs to. This attribute will not be in the card object if the card belongs to a customer or recipient instead. This property is only available for accounts where [controller.requirement_collection](/api/accounts/object#account_object-controller-requirement_collection) is `application`, which includes Custom accounts.'
@@ -32045,7 +31849,7 @@ export namespace stripe {
         .optional(),
       /** The customer that this card belongs to. This attribute will not be in the card object if the card belongs to an account or recipient instead. */
       customer: z
-        .union([z.string().max(5000), customerSchema, deleted_customerSchema])
+        .union([z.string().max(5000), CustomerSchema, DeletedCustomerSchema])
         .nullable()
         .describe(
           'The customer that this card belongs to. This attribute will not be in the card object if the card belongs to an account or recipient instead.'
@@ -32132,7 +31936,7 @@ export namespace stripe {
         .nullable()
         .describe('Cardholder name.')
         .optional(),
-      networks: token_card_networksSchema.optional(),
+      networks: TokenCardNetworksSchema.optional(),
       /** String representing the object's type. Objects of the same type share the same value. */
       object: z
         .literal('card')
@@ -32186,10 +31990,10 @@ export namespace stripe {
           'The Checkout session that this coupon is applied to, if it is applied to a particular session in payment mode. Will not be present for subscription mode.'
         )
         .optional(),
-      coupon: couponSchema,
+      coupon: CouponSchema,
       /** The ID of the customer associated with this discount. */
       customer: z
-        .union([z.string().max(5000), customerSchema, deleted_customerSchema])
+        .union([z.string().max(5000), CustomerSchema, DeletedCustomerSchema])
         .nullable()
         .describe('The ID of the customer associated with this discount.')
         .optional(),
@@ -32235,7 +32039,7 @@ export namespace stripe {
         ),
       /** The promotion code applied to create this discount. */
       promotion_code: z
-        .union([z.string().max(5000), promotion_codeSchema])
+        .union([z.string().max(5000), PromotionCodeSchema])
         .nullable()
         .describe('The promotion code applied to create this discount.')
         .optional(),
@@ -32284,7 +32088,7 @@ export namespace stripe {
         .describe(
           'The customer-facing code. Regardless of case, this code must be unique across all active promotion codes for each customer. Valid characters are lower case letters (a-z), upper case letters (A-Z), and digits (0-9).'
         ),
-      coupon: couponSchema,
+      coupon: CouponSchema,
       /** Time at which the object was created. Measured in seconds since the Unix epoch. */
       created: z
         .number()
@@ -32294,7 +32098,7 @@ export namespace stripe {
         ),
       /** The customer that this promotion code can be used by. */
       customer: z
-        .union([z.string().max(5000), customerSchema, deleted_customerSchema])
+        .union([z.string().max(5000), CustomerSchema, DeletedCustomerSchema])
         .nullable()
         .describe('The customer that this promotion code can be used by.')
         .optional(),
@@ -32336,7 +32140,7 @@ export namespace stripe {
         .describe(
           "String representing the object's type. Objects of the same type share the same value."
         ),
-      restrictions: promotion_codes_resource_restrictionsSchema,
+      restrictions: PromotionCodesResourceRestrictionsSchema,
       /** Number of times this promotion code has been used. */
       times_redeemed: z
         .number()
@@ -32351,7 +32155,7 @@ export namespace stripe {
   export const InvoiceSettingCustomerSettingSchema = z.object({
     /** Default custom fields to be displayed on invoices for this customer. */
     custom_fields: z
-      .array(invoice_setting_custom_fieldSchema)
+      .array(InvoiceSettingCustomFieldSchema)
       .nullable()
       .describe(
         'Default custom fields to be displayed on invoices for this customer.'
@@ -32359,7 +32163,7 @@ export namespace stripe {
       .optional(),
     /** ID of a payment method that's attached to the customer, to be used as the customer's default payment method for subscriptions and invoices. */
     default_payment_method: z
-      .union([z.string().max(5000), payment_methodSchema])
+      .union([z.string().max(5000), PaymentMethodSchema])
       .nullable()
       .describe(
         "ID of a payment method that's attached to the customer, to be used as the customer's default payment method for subscriptions and invoices."
@@ -32373,8 +32177,7 @@ export namespace stripe {
       .describe('Default footer to be displayed on invoices for this customer.')
       .optional(),
     /** Default options for invoice PDF rendering for this customer. */
-    rendering_options: invoice_setting_customer_rendering_optionsSchema
-      .nullable()
+    rendering_options: InvoiceSettingCustomerRenderingOptionsSchema.nullable()
       .describe('Default options for invoice PDF rendering for this customer.')
       .optional()
   })
@@ -32391,10 +32194,10 @@ export namespace stripe {
    */
   export const PaymentMethodSchema = z
     .object({
-      acss_debit: payment_method_acss_debitSchema.optional(),
-      affirm: payment_method_affirmSchema.optional(),
-      afterpay_clearpay: payment_method_afterpay_clearpaySchema.optional(),
-      alipay: payment_flows_private_payment_methods_alipaySchema.optional(),
+      acss_debit: PaymentMethodAcssDebitSchema.optional(),
+      affirm: PaymentMethodAffirmSchema.optional(),
+      afterpay_clearpay: PaymentMethodAfterpayClearpaySchema.optional(),
+      alipay: PaymentFlowsPrivatePaymentMethodsAlipaySchema.optional(),
       /** This field indicates whether this payment method can be shown again to its customer in a checkout flow. Stripe products such as Checkout and Elements use this field to determine whether a payment method can be shown as a saved payment method in a checkout flow. The field defaults to “unspecified”. */
       allow_redisplay: z
         .enum(['always', 'limited', 'unspecified'])
@@ -32402,17 +32205,17 @@ export namespace stripe {
           'This field indicates whether this payment method can be shown again to its customer in a checkout flow. Stripe products such as Checkout and Elements use this field to determine whether a payment method can be shown as a saved payment method in a checkout flow. The field defaults to “unspecified”.'
         )
         .optional(),
-      alma: payment_method_almaSchema.optional(),
-      amazon_pay: payment_method_amazon_paySchema.optional(),
-      au_becs_debit: payment_method_au_becs_debitSchema.optional(),
-      bacs_debit: payment_method_bacs_debitSchema.optional(),
-      bancontact: payment_method_bancontactSchema.optional(),
-      billing_details: billing_detailsSchema,
-      blik: payment_method_blikSchema.optional(),
-      boleto: payment_method_boletoSchema.optional(),
-      card: payment_method_cardSchema.optional(),
-      card_present: payment_method_card_presentSchema.optional(),
-      cashapp: payment_method_cashappSchema.optional(),
+      alma: PaymentMethodAlmaSchema.optional(),
+      amazon_pay: PaymentMethodAmazonPaySchema.optional(),
+      au_becs_debit: PaymentMethodAuBecsDebitSchema.optional(),
+      bacs_debit: PaymentMethodBacsDebitSchema.optional(),
+      bancontact: PaymentMethodBancontactSchema.optional(),
+      billing_details: BillingDetailsSchema,
+      blik: PaymentMethodBlikSchema.optional(),
+      boleto: PaymentMethodBoletoSchema.optional(),
+      card: PaymentMethodCardSchema.optional(),
+      card_present: PaymentMethodCardPresentSchema.optional(),
+      cashapp: PaymentMethodCashappSchema.optional(),
       /** Time at which the object was created. Measured in seconds since the Unix epoch. */
       created: z
         .number()
@@ -32422,26 +32225,26 @@ export namespace stripe {
         ),
       /** The ID of the Customer to which this PaymentMethod is saved. This will not be set when the PaymentMethod has not been saved to a Customer. */
       customer: z
-        .union([z.string().max(5000), customerSchema])
+        .union([z.string().max(5000), CustomerSchema])
         .nullable()
         .describe(
           'The ID of the Customer to which this PaymentMethod is saved. This will not be set when the PaymentMethod has not been saved to a Customer.'
         )
         .optional(),
-      customer_balance: payment_method_customer_balanceSchema.optional(),
-      eps: payment_method_epsSchema.optional(),
-      fpx: payment_method_fpxSchema.optional(),
-      giropay: payment_method_giropaySchema.optional(),
-      grabpay: payment_method_grabpaySchema.optional(),
+      customer_balance: PaymentMethodCustomerBalanceSchema.optional(),
+      eps: PaymentMethodEpsSchema.optional(),
+      fpx: PaymentMethodFpxSchema.optional(),
+      giropay: PaymentMethodGiropaySchema.optional(),
+      grabpay: PaymentMethodGrabpaySchema.optional(),
       /** Unique identifier for the object. */
       id: z.string().max(5000).describe('Unique identifier for the object.'),
-      ideal: payment_method_idealSchema.optional(),
-      interac_present: payment_method_interac_presentSchema.optional(),
-      kakao_pay: payment_method_kakao_paySchema.optional(),
-      klarna: payment_method_klarnaSchema.optional(),
-      konbini: payment_method_konbiniSchema.optional(),
-      kr_card: payment_method_kr_cardSchema.optional(),
-      link: payment_method_linkSchema.optional(),
+      ideal: PaymentMethodIdealSchema.optional(),
+      interac_present: PaymentMethodInteracPresentSchema.optional(),
+      kakao_pay: PaymentMethodKakaoPaySchema.optional(),
+      klarna: PaymentMethodKlarnaSchema.optional(),
+      konbini: PaymentMethodKonbiniSchema.optional(),
+      kr_card: PaymentMethodKrCardSchema.optional(),
+      link: PaymentMethodLinkSchema.optional(),
       /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
       livemode: z
         .boolean()
@@ -32456,30 +32259,30 @@ export namespace stripe {
           'Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.'
         )
         .optional(),
-      mobilepay: payment_method_mobilepaySchema.optional(),
-      multibanco: payment_method_multibancoSchema.optional(),
-      naver_pay: payment_method_naver_paySchema.optional(),
+      mobilepay: PaymentMethodMobilepaySchema.optional(),
+      multibanco: PaymentMethodMultibancoSchema.optional(),
+      naver_pay: PaymentMethodNaverPaySchema.optional(),
       /** String representing the object's type. Objects of the same type share the same value. */
       object: z
         .literal('payment_method')
         .describe(
           "String representing the object's type. Objects of the same type share the same value."
         ),
-      oxxo: payment_method_oxxoSchema.optional(),
-      p24: payment_method_p24Schema.optional(),
-      pay_by_bank: payment_method_pay_by_bankSchema.optional(),
-      payco: payment_method_paycoSchema.optional(),
-      paynow: payment_method_paynowSchema.optional(),
-      paypal: payment_method_paypalSchema.optional(),
-      pix: payment_method_pixSchema.optional(),
-      promptpay: payment_method_promptpaySchema.optional(),
-      radar_options: radar_radar_optionsSchema.optional(),
-      revolut_pay: payment_method_revolut_paySchema.optional(),
-      samsung_pay: payment_method_samsung_paySchema.optional(),
-      sepa_debit: payment_method_sepa_debitSchema.optional(),
-      sofort: payment_method_sofortSchema.optional(),
-      swish: payment_method_swishSchema.optional(),
-      twint: payment_method_twintSchema.optional(),
+      oxxo: PaymentMethodOxxoSchema.optional(),
+      p24: PaymentMethodP24Schema.optional(),
+      pay_by_bank: PaymentMethodPayByBankSchema.optional(),
+      payco: PaymentMethodPaycoSchema.optional(),
+      paynow: PaymentMethodPaynowSchema.optional(),
+      paypal: PaymentMethodPaypalSchema.optional(),
+      pix: PaymentMethodPixSchema.optional(),
+      promptpay: PaymentMethodPromptpaySchema.optional(),
+      radar_options: RadarRadarOptionsSchema.optional(),
+      revolut_pay: PaymentMethodRevolutPaySchema.optional(),
+      samsung_pay: PaymentMethodSamsungPaySchema.optional(),
+      sepa_debit: PaymentMethodSepaDebitSchema.optional(),
+      sofort: PaymentMethodSofortSchema.optional(),
+      swish: PaymentMethodSwishSchema.optional(),
+      twint: PaymentMethodTwintSchema.optional(),
       /** The type of the PaymentMethod. An additional hash is included on the PaymentMethod with a name matching this value. It contains additional information specific to the PaymentMethod type. */
       type: z
         .enum([
@@ -32533,9 +32336,9 @@ export namespace stripe {
         .describe(
           'The type of the PaymentMethod. An additional hash is included on the PaymentMethod with a name matching this value. It contains additional information specific to the PaymentMethod type.'
         ),
-      us_bank_account: payment_method_us_bank_accountSchema.optional(),
-      wechat_pay: payment_method_wechat_paySchema.optional(),
-      zip: payment_method_zipSchema.optional()
+      us_bank_account: PaymentMethodUsBankAccountSchema.optional(),
+      wechat_pay: PaymentMethodWechatPaySchema.optional(),
+      zip: PaymentMethodZipSchema.optional()
     })
     .describe(
       "PaymentMethod objects represent your customer's payment instruments.\nYou can use them with [PaymentIntents](https://stripe.com/docs/payments/payment-intents) to collect payments or save them to\nCustomer objects to store instrument details for future payments.\n\nRelated guides: [Payment Methods](https://stripe.com/docs/payments/payment-methods) and [More Payment Scenarios](https://stripe.com/docs/payments/more-payment-scenarios)."
@@ -32551,8 +32354,7 @@ export namespace stripe {
         'Card brand. Can be `amex`, `diners`, `discover`, `eftpos_au`, `jcb`, `link`, `mastercard`, `unionpay`, `visa`, or `unknown`.'
       ),
     /** Checks on Card address and CVC if provided. */
-    checks: payment_method_card_checksSchema
-      .nullable()
+    checks: PaymentMethodCardChecksSchema.nullable()
       .describe('Checks on Card address and CVC if provided.')
       .optional(),
     /** Two-letter ISO code representing the country of the card. You could use this attribute to get a sense of the international breakdown of cards you've collected. */
@@ -32604,8 +32406,7 @@ export namespace stripe {
         'Card funding type. Can be `credit`, `debit`, `prepaid`, or `unknown`.'
       ),
     /** Details of the original PaymentMethod that created this object. */
-    generated_from: payment_method_card_generated_cardSchema
-      .nullable()
+    generated_from: PaymentMethodCardGeneratedCardSchema.nullable()
       .describe(
         'Details of the original PaymentMethod that created this object.'
       )
@@ -32613,8 +32414,7 @@ export namespace stripe {
     /** The last four digits of the card. */
     last4: z.string().max(5000).describe('The last four digits of the card.'),
     /** Contains information about card networks that can be used to process the payment. */
-    networks: networksSchema
-      .nullable()
+    networks: NetworksSchema.nullable()
       .describe(
         'Contains information about card networks that can be used to process the payment.'
       )
@@ -32626,15 +32426,13 @@ export namespace stripe {
       .describe('Status of a card based on the card issuer.')
       .optional(),
     /** Contains details on how this Card may be used for 3D Secure authentication. */
-    three_d_secure_usage: three_d_secure_usageSchema
-      .nullable()
+    three_d_secure_usage: ThreeDSecureUsageSchema.nullable()
       .describe(
         'Contains details on how this Card may be used for 3D Secure authentication.'
       )
       .optional(),
     /** If this Card is part of a card wallet, this contains the details of the card wallet. */
-    wallet: payment_method_card_walletSchema
-      .nullable()
+    wallet: PaymentMethodCardWalletSchema.nullable()
       .describe(
         'If this Card is part of a card wallet, this contains the details of the card wallet.'
       )
@@ -32651,15 +32449,15 @@ export namespace stripe {
       .describe('The charge that created this object.')
       .optional(),
     /** Transaction-specific details of the payment method used in the payment. */
-    payment_method_details: card_generated_from_payment_method_detailsSchema
-      .nullable()
-      .describe(
-        'Transaction-specific details of the payment method used in the payment.'
-      )
-      .optional(),
+    payment_method_details:
+      CardGeneratedFromPaymentMethodDetailsSchema.nullable()
+        .describe(
+          'Transaction-specific details of the payment method used in the payment.'
+        )
+        .optional(),
     /** The ID of the SetupAttempt that generated this PaymentMethod, if any. */
     setup_attempt: z
-      .union([z.string().max(5000), setup_attemptSchema])
+      .union([z.string().max(5000), SetupAttemptSchema])
       .nullable()
       .describe(
         'The ID of the SetupAttempt that generated this PaymentMethod, if any.'
@@ -32680,7 +32478,7 @@ export namespace stripe {
     .object({
       /** The value of [application](https://stripe.com/docs/api/setup_intents/object#setup_intent_object-application) on the SetupIntent at the time of this confirmation. */
       application: z
-        .union([z.string().max(5000), applicationSchema])
+        .union([z.string().max(5000), ApplicationSchema])
         .nullable()
         .describe(
           'The value of [application](https://stripe.com/docs/api/setup_intents/object#setup_intent_object-application) on the SetupIntent at the time of this confirmation.'
@@ -32706,7 +32504,7 @@ export namespace stripe {
         ),
       /** The value of [customer](https://stripe.com/docs/api/setup_intents/object#setup_intent_object-customer) on the SetupIntent at the time of this confirmation. */
       customer: z
-        .union([z.string().max(5000), customerSchema, deleted_customerSchema])
+        .union([z.string().max(5000), CustomerSchema, DeletedCustomerSchema])
         .nullable()
         .describe(
           'The value of [customer](https://stripe.com/docs/api/setup_intents/object#setup_intent_object-customer) on the SetupIntent at the time of this confirmation.'
@@ -32740,7 +32538,7 @@ export namespace stripe {
         ),
       /** The value of [on_behalf_of](https://stripe.com/docs/api/setup_intents/object#setup_intent_object-on_behalf_of) on the SetupIntent at the time of this confirmation. */
       on_behalf_of: z
-        .union([z.string().max(5000), accountSchema])
+        .union([z.string().max(5000), AccountSchema])
         .nullable()
         .describe(
           'The value of [on_behalf_of](https://stripe.com/docs/api/setup_intents/object#setup_intent_object-on_behalf_of) on the SetupIntent at the time of this confirmation.'
@@ -32748,19 +32546,18 @@ export namespace stripe {
         .optional(),
       /** ID of the payment method used with this SetupAttempt. */
       payment_method: z
-        .union([z.string().max(5000), payment_methodSchema])
+        .union([z.string().max(5000), PaymentMethodSchema])
         .describe('ID of the payment method used with this SetupAttempt.'),
-      payment_method_details: setup_attempt_payment_method_detailsSchema,
+      payment_method_details: SetupAttemptPaymentMethodDetailsSchema,
       /** The error encountered during this attempt to confirm the SetupIntent, if any. */
-      setup_error: api_errorsSchema
-        .nullable()
+      setup_error: ApiErrorsSchema.nullable()
         .describe(
           'The error encountered during this attempt to confirm the SetupIntent, if any.'
         )
         .optional(),
       /** ID of the SetupIntent that this attempt belongs to. */
       setup_intent: z
-        .union([z.string().max(5000), setup_intentSchema])
+        .union([z.string().max(5000), SetupIntentSchema])
         .describe('ID of the SetupIntent that this attempt belongs to.'),
       /** Status of this SetupAttempt, one of `requires_confirmation`, `requires_action`, `processing`, `succeeded`, `failed`, or `abandoned`. */
       status: z
@@ -32783,32 +32580,24 @@ export namespace stripe {
   export type SetupAttempt = z.infer<typeof SetupAttemptSchema>
 
   export const SetupAttemptPaymentMethodDetailsSchema = z.object({
-    acss_debit:
-      setup_attempt_payment_method_details_acss_debitSchema.optional(),
-    amazon_pay:
-      setup_attempt_payment_method_details_amazon_paySchema.optional(),
-    au_becs_debit:
-      setup_attempt_payment_method_details_au_becs_debitSchema.optional(),
-    bacs_debit:
-      setup_attempt_payment_method_details_bacs_debitSchema.optional(),
-    bancontact:
-      setup_attempt_payment_method_details_bancontactSchema.optional(),
-    boleto: setup_attempt_payment_method_details_boletoSchema.optional(),
-    card: setup_attempt_payment_method_details_cardSchema.optional(),
-    card_present:
-      setup_attempt_payment_method_details_card_presentSchema.optional(),
-    cashapp: setup_attempt_payment_method_details_cashappSchema.optional(),
-    ideal: setup_attempt_payment_method_details_idealSchema.optional(),
-    kakao_pay: setup_attempt_payment_method_details_kakao_paySchema.optional(),
-    klarna: setup_attempt_payment_method_details_klarnaSchema.optional(),
-    kr_card: setup_attempt_payment_method_details_kr_cardSchema.optional(),
-    link: setup_attempt_payment_method_details_linkSchema.optional(),
-    paypal: setup_attempt_payment_method_details_paypalSchema.optional(),
-    revolut_pay:
-      setup_attempt_payment_method_details_revolut_paySchema.optional(),
-    sepa_debit:
-      setup_attempt_payment_method_details_sepa_debitSchema.optional(),
-    sofort: setup_attempt_payment_method_details_sofortSchema.optional(),
+    acss_debit: SetupAttemptPaymentMethodDetailsAcssDebitSchema.optional(),
+    amazon_pay: SetupAttemptPaymentMethodDetailsAmazonPaySchema.optional(),
+    au_becs_debit: SetupAttemptPaymentMethodDetailsAuBecsDebitSchema.optional(),
+    bacs_debit: SetupAttemptPaymentMethodDetailsBacsDebitSchema.optional(),
+    bancontact: SetupAttemptPaymentMethodDetailsBancontactSchema.optional(),
+    boleto: SetupAttemptPaymentMethodDetailsBoletoSchema.optional(),
+    card: SetupAttemptPaymentMethodDetailsCardSchema.optional(),
+    card_present: SetupAttemptPaymentMethodDetailsCardPresentSchema.optional(),
+    cashapp: SetupAttemptPaymentMethodDetailsCashappSchema.optional(),
+    ideal: SetupAttemptPaymentMethodDetailsIdealSchema.optional(),
+    kakao_pay: SetupAttemptPaymentMethodDetailsKakaoPaySchema.optional(),
+    klarna: SetupAttemptPaymentMethodDetailsKlarnaSchema.optional(),
+    kr_card: SetupAttemptPaymentMethodDetailsKrCardSchema.optional(),
+    link: SetupAttemptPaymentMethodDetailsLinkSchema.optional(),
+    paypal: SetupAttemptPaymentMethodDetailsPaypalSchema.optional(),
+    revolut_pay: SetupAttemptPaymentMethodDetailsRevolutPaySchema.optional(),
+    sepa_debit: SetupAttemptPaymentMethodDetailsSepaDebitSchema.optional(),
+    sofort: SetupAttemptPaymentMethodDetailsSofortSchema.optional(),
     /** The type of the payment method used in the SetupIntent (e.g., `card`). An additional hash is included on `payment_method_details` with a name matching this value. It contains confirmation-specific information for the payment method. */
     type: z
       .string()
@@ -32817,7 +32606,7 @@ export namespace stripe {
         'The type of the payment method used in the SetupIntent (e.g., `card`). An additional hash is included on `payment_method_details` with a name matching this value. It contains confirmation-specific information for the payment method.'
       ),
     us_bank_account:
-      setup_attempt_payment_method_details_us_bank_accountSchema.optional()
+      SetupAttemptPaymentMethodDetailsUsBankAccountSchema.optional()
   })
   export type SetupAttemptPaymentMethodDetails = z.infer<
     typeof SetupAttemptPaymentMethodDetailsSchema
@@ -32849,7 +32638,7 @@ export namespace stripe {
       .optional(),
     /** The ID of the SEPA Direct Debit PaymentMethod which was generated by this SetupAttempt. */
     generated_sepa_debit: z
-      .union([z.string().max(5000), payment_methodSchema])
+      .union([z.string().max(5000), PaymentMethodSchema])
       .nullable()
       .describe(
         'The ID of the SEPA Direct Debit PaymentMethod which was generated by this SetupAttempt.'
@@ -32857,7 +32646,7 @@ export namespace stripe {
       .optional(),
     /** The mandate for the SEPA Direct Debit PaymentMethod which was generated by this SetupAttempt. */
     generated_sepa_debit_mandate: z
-      .union([z.string().max(5000), mandateSchema])
+      .union([z.string().max(5000), MandateSchema])
       .nullable()
       .describe(
         'The mandate for the SEPA Direct Debit PaymentMethod which was generated by this SetupAttempt.'
@@ -32901,7 +32690,7 @@ export namespace stripe {
   /** A Mandate is a record of the permission that your customer gives you to debit their payment method. */
   export const MandateSchema = z
     .object({
-      customer_acceptance: customer_acceptanceSchema,
+      customer_acceptance: CustomerAcceptanceSchema,
       /** Unique identifier for the object. */
       id: z.string().max(5000).describe('Unique identifier for the object.'),
       /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
@@ -32910,7 +32699,7 @@ export namespace stripe {
         .describe(
           'Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.'
         ),
-      multi_use: mandate_multi_useSchema.optional(),
+      multi_use: MandateMultiUseSchema.optional(),
       /** String representing the object's type. Objects of the same type share the same value. */
       object: z
         .literal('mandate')
@@ -32925,10 +32714,10 @@ export namespace stripe {
         .optional(),
       /** ID of the payment method associated with this mandate. */
       payment_method: z
-        .union([z.string().max(5000), payment_methodSchema])
+        .union([z.string().max(5000), PaymentMethodSchema])
         .describe('ID of the payment method associated with this mandate.'),
-      payment_method_details: mandate_payment_method_detailsSchema,
-      single_use: mandate_single_useSchema.optional(),
+      payment_method_details: MandatePaymentMethodDetailsSchema,
+      single_use: MandateSingleUseSchema.optional(),
       /** The mandate status indicates whether or not you can use it to initiate a payment. */
       status: z
         .enum(['active', 'inactive', 'pending'])
@@ -32948,15 +32737,14 @@ export namespace stripe {
   export const SetupAttemptPaymentMethodDetailsCardPresentSchema = z.object({
     /** The ID of the Card PaymentMethod which was generated by this SetupAttempt. */
     generated_card: z
-      .union([z.string().max(5000), payment_methodSchema])
+      .union([z.string().max(5000), PaymentMethodSchema])
       .nullable()
       .describe(
         'The ID of the Card PaymentMethod which was generated by this SetupAttempt.'
       )
       .optional(),
     /** Details about payments collected offline. */
-    offline: payment_method_details_card_present_offlineSchema
-      .nullable()
+    offline: PaymentMethodDetailsCardPresentOfflineSchema.nullable()
       .describe('Details about payments collected offline.')
       .optional()
   })
@@ -33016,7 +32804,7 @@ export namespace stripe {
       .optional(),
     /** The ID of the SEPA Direct Debit PaymentMethod which was generated by this SetupAttempt. */
     generated_sepa_debit: z
-      .union([z.string().max(5000), payment_methodSchema])
+      .union([z.string().max(5000), PaymentMethodSchema])
       .nullable()
       .describe(
         'The ID of the SEPA Direct Debit PaymentMethod which was generated by this SetupAttempt.'
@@ -33024,7 +32812,7 @@ export namespace stripe {
       .optional(),
     /** The mandate for the SEPA Direct Debit PaymentMethod which was generated by this SetupAttempt. */
     generated_sepa_debit_mandate: z
-      .union([z.string().max(5000), mandateSchema])
+      .union([z.string().max(5000), MandateSchema])
       .nullable()
       .describe(
         'The mandate for the SEPA Direct Debit PaymentMethod which was generated by this SetupAttempt.'
@@ -33080,7 +32868,7 @@ export namespace stripe {
       .optional(),
     /** The ID of the SEPA Direct Debit PaymentMethod which was generated by this SetupAttempt. */
     generated_sepa_debit: z
-      .union([z.string().max(5000), payment_methodSchema])
+      .union([z.string().max(5000), PaymentMethodSchema])
       .nullable()
       .describe(
         'The ID of the SEPA Direct Debit PaymentMethod which was generated by this SetupAttempt.'
@@ -33088,7 +32876,7 @@ export namespace stripe {
       .optional(),
     /** The mandate for the SEPA Direct Debit PaymentMethod which was generated by this SetupAttempt. */
     generated_sepa_debit_mandate: z
-      .union([z.string().max(5000), mandateSchema])
+      .union([z.string().max(5000), MandateSchema])
       .nullable()
       .describe(
         'The mandate for the SEPA Direct Debit PaymentMethod which was generated by this SetupAttempt.'
@@ -33200,8 +32988,8 @@ export namespace stripe {
         'If the error is parameter-specific, the parameter related to the error. For example, you can use this to display a message near the correct form field.'
       )
       .optional(),
-    payment_intent: payment_intentSchema.optional(),
-    payment_method: payment_methodSchema.optional(),
+    payment_intent: PaymentIntentSchema.optional(),
+    payment_method: PaymentMethodSchema.optional(),
     /** If the error is specific to the type of payment method, the payment method type that had a problem. This field is only populated for invoice-related errors. */
     payment_method_type: z
       .string()
@@ -33216,10 +33004,10 @@ export namespace stripe {
       .max(5000)
       .describe('A URL to the request log entry in your dashboard.')
       .optional(),
-    setup_intent: setup_intentSchema.optional(),
+    setup_intent: SetupIntentSchema.optional(),
     /** The [source object](https://stripe.com/docs/api/sources/object) for errors returned on a request involving a source. */
     source: z
-      .union([bank_accountSchema, cardSchema, sourceSchema])
+      .union([BankAccountSchema, CardSchema, SourceSchema])
       .describe(
         'The [source object](https://stripe.com/docs/api/sources/object) for errors returned on a request involving a source.'
       )
@@ -33268,8 +33056,8 @@ export namespace stripe {
         .optional(),
       amount_details: z
         .union([
-          payment_flows_amount_detailsSchema,
-          payment_flows_amount_details_clientSchema
+          PaymentFlowsAmountDetailsSchema,
+          PaymentFlowsAmountDetailsClientSchema
         ])
         .optional(),
       /** Amount that this PaymentIntent collects. */
@@ -33280,7 +33068,7 @@ export namespace stripe {
         .optional(),
       /** ID of the Connect application that created the PaymentIntent. */
       application: z
-        .union([z.string().max(5000), applicationSchema])
+        .union([z.string().max(5000), ApplicationSchema])
         .nullable()
         .describe(
           'ID of the Connect application that created the PaymentIntent.'
@@ -33297,8 +33085,7 @@ export namespace stripe {
         .optional(),
       /** Settings to configure compatible payment methods from the [Stripe Dashboard](https://dashboard.stripe.com/settings/payment_methods) */
       automatic_payment_methods:
-        payment_flows_automatic_payment_methods_payment_intentSchema
-          .nullable()
+        PaymentFlowsAutomaticPaymentMethodsPaymentIntentSchema.nullable()
           .describe(
             'Settings to configure compatible payment methods from the [Stripe Dashboard](https://dashboard.stripe.com/settings/payment_methods)'
           )
@@ -33376,7 +33163,7 @@ export namespace stripe {
        * If [setup_future_usage](https://stripe.com/docs/api#payment_intent_object-setup_future_usage) is set and this PaymentIntent's payment method is not `card_present`, then the payment method attaches to the Customer after the PaymentIntent has been confirmed and any required actions from the user are complete. If the payment method is `card_present` and isn't a digital wallet, then a [generated_card](https://docs.stripe.com/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card is created and attached to the Customer instead.
        */
       customer: z
-        .union([z.string().max(5000), customerSchema, deleted_customerSchema])
+        .union([z.string().max(5000), CustomerSchema, DeletedCustomerSchema])
         .nullable()
         .describe(
           "ID of the Customer this PaymentIntent belongs to, if one exists.\n\nPayment methods attached to other Customers cannot be used with this PaymentIntent.\n\nIf [setup_future_usage](https://stripe.com/docs/api#payment_intent_object-setup_future_usage) is set and this PaymentIntent's payment method is not `card_present`, then the payment method attaches to the Customer after the PaymentIntent has been confirmed and any required actions from the user are complete. If the payment method is `card_present` and isn't a digital wallet, then a [generated_card](https://docs.stripe.com/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card is created and attached to the Customer instead."
@@ -33395,22 +33182,21 @@ export namespace stripe {
       id: z.string().max(5000).describe('Unique identifier for the object.'),
       /** ID of the invoice that created this PaymentIntent, if it exists. */
       invoice: z
-        .union([z.string().max(5000), invoiceSchema])
+        .union([z.string().max(5000), InvoiceSchema])
         .nullable()
         .describe(
           'ID of the invoice that created this PaymentIntent, if it exists.'
         )
         .optional(),
       /** The payment error encountered in the previous PaymentIntent confirmation. It will be cleared if the PaymentIntent is later updated for any reason. */
-      last_payment_error: api_errorsSchema
-        .nullable()
+      last_payment_error: ApiErrorsSchema.nullable()
         .describe(
           'The payment error encountered in the previous PaymentIntent confirmation. It will be cleared if the PaymentIntent is later updated for any reason.'
         )
         .optional(),
       /** ID of the latest [Charge object](https://stripe.com/docs/api/charges) created by this PaymentIntent. This property is `null` until PaymentIntent confirmation is attempted. */
       latest_charge: z
-        .union([z.string().max(5000), chargeSchema])
+        .union([z.string().max(5000), ChargeSchema])
         .nullable()
         .describe(
           'ID of the latest [Charge object](https://stripe.com/docs/api/charges) created by this PaymentIntent. This property is `null` until PaymentIntent confirmation is attempted.'
@@ -33430,8 +33216,7 @@ export namespace stripe {
         )
         .optional(),
       /** If present, this property tells you what actions you need to take in order for your customer to fulfill a payment using the provided source. */
-      next_action: payment_intent_next_actionSchema
-        .nullable()
+      next_action: PaymentIntentNextActionSchema.nullable()
         .describe(
           'If present, this property tells you what actions you need to take in order for your customer to fulfill a payment using the provided source.'
         )
@@ -33444,7 +33229,7 @@ export namespace stripe {
         ),
       /** The account (if any) for which the funds of the PaymentIntent are intended. See the PaymentIntents [use case for connected accounts](https://stripe.com/docs/payments/connected-accounts) for details. */
       on_behalf_of: z
-        .union([z.string().max(5000), accountSchema])
+        .union([z.string().max(5000), AccountSchema])
         .nullable()
         .describe(
           'The account (if any) for which the funds of the PaymentIntent are intended. See the PaymentIntents [use case for connected accounts](https://stripe.com/docs/payments/connected-accounts) for details.'
@@ -33452,21 +33237,19 @@ export namespace stripe {
         .optional(),
       /** ID of the payment method used in this PaymentIntent. */
       payment_method: z
-        .union([z.string().max(5000), payment_methodSchema])
+        .union([z.string().max(5000), PaymentMethodSchema])
         .nullable()
         .describe('ID of the payment method used in this PaymentIntent.')
         .optional(),
       /** Information about the [payment method configuration](https://stripe.com/docs/api/payment_method_configurations) used for this PaymentIntent. */
       payment_method_configuration_details:
-        payment_method_config_biz_payment_method_configuration_detailsSchema
-          .nullable()
+        PaymentMethodConfigBizPaymentMethodConfigurationDetailsSchema.nullable()
           .describe(
             'Information about the [payment method configuration](https://stripe.com/docs/api/payment_method_configurations) used for this PaymentIntent.'
           )
           .optional(),
       /** Payment-method-specific configuration for this PaymentIntent. */
-      payment_method_options: payment_intent_payment_method_optionsSchema
-        .nullable()
+      payment_method_options: PaymentIntentPaymentMethodOptionsSchema.nullable()
         .describe(
           'Payment-method-specific configuration for this PaymentIntent.'
         )
@@ -33478,8 +33261,7 @@ export namespace stripe {
           'The list of payment method types (e.g. card) that this PaymentIntent is allowed to use.'
         ),
       /** If present, this property tells you about the processing state of the payment. */
-      processing: payment_intent_processingSchema
-        .nullable()
+      processing: PaymentIntentProcessingSchema.nullable()
         .describe(
           'If present, this property tells you about the processing state of the payment.'
         )
@@ -33495,7 +33277,7 @@ export namespace stripe {
         .optional(),
       /** ID of the review associated with this PaymentIntent, if any. */
       review: z
-        .union([z.string().max(5000), reviewSchema])
+        .union([z.string().max(5000), ReviewSchema])
         .nullable()
         .describe(
           'ID of the review associated with this PaymentIntent, if any.'
@@ -33518,8 +33300,7 @@ export namespace stripe {
         )
         .optional(),
       /** Shipping information for this PaymentIntent. */
-      shipping: shippingSchema
-        .nullable()
+      shipping: ShippingSchema.nullable()
         .describe('Shipping information for this PaymentIntent.')
         .optional(),
       /**
@@ -33559,8 +33340,7 @@ export namespace stripe {
           'Status of this PaymentIntent, one of `requires_payment_method`, `requires_confirmation`, `requires_action`, `processing`, `requires_capture`, `canceled`, or `succeeded`. Read more about each PaymentIntent [status](https://stripe.com/docs/payments/intents#intent-statuses).'
         ),
       /** The data that automatically creates a Transfer after the payment finalizes. Learn more about the [use case for connected accounts](https://stripe.com/docs/payments/connected-accounts). */
-      transfer_data: transfer_dataSchema
-        .nullable()
+      transfer_data: TransferDataSchema.nullable()
         .describe(
           'The data that automatically creates a Transfer after the payment finalizes. Learn more about the [use case for connected accounts](https://stripe.com/docs/payments/connected-accounts).'
         )
@@ -33636,9 +33416,7 @@ export namespace stripe {
         .optional(),
       /** The account tax IDs associated with the invoice. Only editable when the invoice is a draft. */
       account_tax_ids: z
-        .array(
-          z.union([z.string().max(5000), tax_idSchema, deleted_tax_idSchema])
-        )
+        .array(z.union([z.string().max(5000), TaxIdSchema, DeletedTaxIdSchema]))
         .nullable()
         .describe(
           'The account tax IDs associated with the invoice. Only editable when the invoice is a draft.'
@@ -33672,8 +33450,8 @@ export namespace stripe {
       application: z
         .union([
           z.string().max(5000),
-          applicationSchema,
-          deleted_applicationSchema
+          ApplicationSchema,
+          DeletedApplicationSchema
         ])
         .nullable()
         .describe('ID of the Connect Application that created the invoice.')
@@ -33707,7 +33485,7 @@ export namespace stripe {
           "Controls whether Stripe performs [automatic collection](https://stripe.com/docs/invoicing/integration/automatic-advancement-collection) of the invoice. If `false`, the invoice's state doesn't automatically advance without an explicit action."
         )
         .optional(),
-      automatic_tax: automatic_taxSchema,
+      automatic_tax: AutomaticTaxSchema,
       /** The time when this invoice is currently scheduled to be automatically finalized. The field will be `null` if the invoice is not scheduled to finalize in the future. If the invoice is not in the draft state, this field will always be `null` - see `finalized_at` for the time when an already-finalized invoice was finalized. */
       automatically_finalizes_at: z
         .number()
@@ -33747,7 +33525,7 @@ export namespace stripe {
         .optional(),
       /** ID of the latest charge generated for this invoice, if any. */
       charge: z
-        .union([z.string().max(5000), chargeSchema])
+        .union([z.string().max(5000), ChargeSchema])
         .nullable()
         .describe('ID of the latest charge generated for this invoice, if any.')
         .optional(),
@@ -33772,19 +33550,18 @@ export namespace stripe {
         ),
       /** Custom fields displayed on the invoice. */
       custom_fields: z
-        .array(invoice_setting_custom_fieldSchema)
+        .array(InvoiceSettingCustomFieldSchema)
         .nullable()
         .describe('Custom fields displayed on the invoice.')
         .optional(),
       /** The ID of the customer who will be billed. */
       customer: z
-        .union([z.string().max(5000), customerSchema, deleted_customerSchema])
+        .union([z.string().max(5000), CustomerSchema, DeletedCustomerSchema])
         .nullable()
         .describe('The ID of the customer who will be billed.')
         .optional(),
       /** The customer's address. Until the invoice is finalized, this field will equal `customer.address`. Once the invoice is finalized, this field will no longer be updated. */
-      customer_address: addressSchema
-        .nullable()
+      customer_address: AddressSchema.nullable()
         .describe(
           "The customer's address. Until the invoice is finalized, this field will equal `customer.address`. Once the invoice is finalized, this field will no longer be updated."
         )
@@ -33817,8 +33594,7 @@ export namespace stripe {
         )
         .optional(),
       /** The customer's shipping information. Until the invoice is finalized, this field will equal `customer.shipping`. Once the invoice is finalized, this field will no longer be updated. */
-      customer_shipping: shippingSchema
-        .nullable()
+      customer_shipping: ShippingSchema.nullable()
         .describe(
           "The customer's shipping information. Until the invoice is finalized, this field will equal `customer.shipping`. Once the invoice is finalized, this field will no longer be updated."
         )
@@ -33833,7 +33609,7 @@ export namespace stripe {
         .optional(),
       /** The customer's tax IDs. Until the invoice is finalized, this field will contain the same tax IDs as `customer.tax_ids`. Once the invoice is finalized, this field will no longer be updated. */
       customer_tax_ids: z
-        .array(invoices_resource_invoice_tax_idSchema)
+        .array(InvoicesResourceInvoiceTaxIdSchema)
         .nullable()
         .describe(
           "The customer's tax IDs. Until the invoice is finalized, this field will contain the same tax IDs as `customer.tax_ids`. Once the invoice is finalized, this field will no longer be updated."
@@ -33841,7 +33617,7 @@ export namespace stripe {
         .optional(),
       /** ID of the default payment method for the invoice. It must belong to the customer associated with the invoice. If not set, defaults to the subscription's default payment method, if any, or to the default payment method in the customer's invoice settings. */
       default_payment_method: z
-        .union([z.string().max(5000), payment_methodSchema])
+        .union([z.string().max(5000), PaymentMethodSchema])
         .nullable()
         .describe(
           "ID of the default payment method for the invoice. It must belong to the customer associated with the invoice. If not set, defaults to the subscription's default payment method, if any, or to the default payment method in the customer's invoice settings."
@@ -33851,9 +33627,9 @@ export namespace stripe {
       default_source: z
         .union([
           z.string().max(5000),
-          bank_accountSchema,
-          cardSchema,
-          sourceSchema
+          BankAccountSchema,
+          CardSchema,
+          SourceSchema
         ])
         .nullable()
         .describe(
@@ -33862,7 +33638,7 @@ export namespace stripe {
         .optional(),
       /** The tax rates applied to this invoice, if any. */
       default_tax_rates: z
-        .array(tax_rateSchema)
+        .array(TaxRateSchema)
         .describe('The tax rates applied to this invoice, if any.'),
       /** An arbitrary string attached to the object. Often useful for displaying to users. Referenced as 'memo' in the Dashboard. */
       description: z
@@ -33874,8 +33650,7 @@ export namespace stripe {
         )
         .optional(),
       /** Describes the current discount applied to this invoice, if there is one. Not populated if there are multiple discounts. */
-      discount: discountSchema
-        .nullable()
+      discount: DiscountSchema.nullable()
         .describe(
           'Describes the current discount applied to this invoice, if there is one. Not populated if there are multiple discounts.'
         )
@@ -33883,11 +33658,7 @@ export namespace stripe {
       /** The discounts applied to the invoice. Line item discounts are applied before invoice discounts. Use `expand[]=discounts` to expand each discount. */
       discounts: z
         .array(
-          z.union([
-            z.string().max(5000),
-            discountSchema,
-            deleted_discountSchema
-          ])
+          z.union([z.string().max(5000), DiscountSchema, DeletedDiscountSchema])
         )
         .describe(
           'The discounts applied to the invoice. Line item discounts are applied before invoice discounts. Use `expand[]=discounts` to expand each discount.'
@@ -33927,8 +33698,7 @@ export namespace stripe {
         .describe('Footer displayed on the invoice.')
         .optional(),
       /** Details of the invoice that was cloned. See the [revision documentation](https://stripe.com/docs/invoicing/invoice-revisions) for more details. */
-      from_invoice: invoices_resource_from_invoiceSchema
-        .nullable()
+      from_invoice: InvoicesResourceFromInvoiceSchema.nullable()
         .describe(
           'Details of the invoice that was cloned. See the [revision documentation](https://stripe.com/docs/invoicing/invoice-revisions) for more details.'
         )
@@ -33959,17 +33729,20 @@ export namespace stripe {
           'The link to download the PDF for the invoice. If the invoice has not been finalized yet, this will be null.'
         )
         .optional(),
-      issuer: connect_account_referenceSchema,
+      issuer: ConnectAccountReferenceSchema,
       /** The error encountered during the previous attempt to finalize the invoice. This field is cleared when the invoice is successfully finalized. */
-      last_finalization_error: api_errorsSchema
-        .nullable()
+      last_finalization_error: ApiErrorsSchema.nullable()
         .describe(
           'The error encountered during the previous attempt to finalize the invoice. This field is cleared when the invoice is successfully finalized.'
         )
         .optional(),
       /** The ID of the most recent non-draft revision of this invoice */
       latest_revision: z
-        .union([z.string().max(5000), invoiceSchema])
+        .union([
+          z.string().max(5000),
+          // TODO: Support recursive types for `InvoiceSchema`.
+          z.any()
+        ])
         .nullable()
         .describe(
           'The ID of the most recent non-draft revision of this invoice'
@@ -33979,7 +33752,7 @@ export namespace stripe {
       lines: z
         .object({
           /** Details about each object. */
-          data: z.array(line_itemSchema).describe('Details about each object.'),
+          data: z.array(LineItemSchema).describe('Details about each object.'),
           /** True if this list has another page of items after this one that can be fetched. */
           has_more: z
             .boolean()
@@ -34041,7 +33814,7 @@ export namespace stripe {
         ),
       /** The account (if any) for which the funds of the invoice payment are intended. If set, the invoice will be presented with the branding and support information of the specified account. See the [Invoices with Connect](https://stripe.com/docs/billing/invoices/connect) documentation for details. */
       on_behalf_of: z
-        .union([z.string().max(5000), accountSchema])
+        .union([z.string().max(5000), AccountSchema])
         .nullable()
         .describe(
           'The account (if any) for which the funds of the invoice payment are intended. If set, the invoice will be presented with the branding and support information of the specified account. See the [Invoices with Connect](https://stripe.com/docs/billing/invoices/connect) documentation for details.'
@@ -34061,13 +33834,13 @@ export namespace stripe {
         ),
       /** The PaymentIntent associated with this invoice. The PaymentIntent is generated when the invoice is finalized, and can then be used to pay the invoice. Note that voiding an invoice will cancel the PaymentIntent. */
       payment_intent: z
-        .union([z.string().max(5000), payment_intentSchema])
+        .union([z.string().max(5000), PaymentIntentSchema])
         .nullable()
         .describe(
           'The PaymentIntent associated with this invoice. The PaymentIntent is generated when the invoice is finalized, and can then be used to pay the invoice. Note that voiding an invoice will cancel the PaymentIntent.'
         )
         .optional(),
-      payment_settings: invoices_payment_settingsSchema,
+      payment_settings: InvoicesPaymentSettingsSchema,
       /** End of the usage period during which invoice items were added to this invoice. This looks back one period for a subscription invoice. Use the [line item period](/api/invoices/line_item#invoice_line_item_object-period) to get the service period for each price. */
       period_end: z
         .number()
@@ -34098,7 +33871,7 @@ export namespace stripe {
         ),
       /** The quote this invoice was generated from. */
       quote: z
-        .union([z.string().max(5000), quoteSchema])
+        .union([z.string().max(5000), QuoteSchema])
         .nullable()
         .describe('The quote this invoice was generated from.')
         .optional(),
@@ -34112,22 +33885,19 @@ export namespace stripe {
         )
         .optional(),
       /** The rendering-related settings that control how the invoice is displayed on customer-facing surfaces such as PDF and Hosted Invoice Page. */
-      rendering: invoices_resource_invoice_renderingSchema
-        .nullable()
+      rendering: InvoicesResourceInvoiceRenderingSchema.nullable()
         .describe(
           'The rendering-related settings that control how the invoice is displayed on customer-facing surfaces such as PDF and Hosted Invoice Page.'
         )
         .optional(),
       /** The details of the cost of shipping, including the ShippingRate applied on the invoice. */
-      shipping_cost: invoices_resource_shipping_costSchema
-        .nullable()
+      shipping_cost: InvoicesResourceShippingCostSchema.nullable()
         .describe(
           'The details of the cost of shipping, including the ShippingRate applied on the invoice.'
         )
         .optional(),
       /** Shipping details for the invoice. The Invoice PDF will use the `shipping_details` value if it is set, otherwise the PDF will render the shipping address from the customer. */
-      shipping_details: shippingSchema
-        .nullable()
+      shipping_details: ShippingSchema.nullable()
         .describe(
           'Shipping details for the invoice. The Invoice PDF will use the `shipping_details` value if it is set, otherwise the PDF will render the shipping address from the customer.'
         )
@@ -34156,18 +33926,17 @@ export namespace stripe {
           'The status of the invoice, one of `draft`, `open`, `paid`, `uncollectible`, or `void`. [Learn more](https://stripe.com/docs/billing/invoices/workflow#workflow-overview)'
         )
         .optional(),
-      status_transitions: invoices_resource_status_transitionsSchema,
+      status_transitions: InvoicesResourceStatusTransitionsSchema,
       /** The subscription that this invoice was prepared for, if any. */
       subscription: z
-        .union([z.string().max(5000), subscriptionSchema])
+        .union([z.string().max(5000), SubscriptionSchema])
         .nullable()
         .describe(
           'The subscription that this invoice was prepared for, if any.'
         )
         .optional(),
       /** Details about the subscription that created this invoice. */
-      subscription_details: subscription_details_dataSchema
-        .nullable()
+      subscription_details: SubscriptionDetailsDataSchema.nullable()
         .describe('Details about the subscription that created this invoice.')
         .optional(),
       /** Only set for upcoming invoices that preview prorations. The time used to calculate prorations. */
@@ -34205,16 +33974,16 @@ export namespace stripe {
         .optional(),
       /** ID of the test clock this invoice belongs to. */
       test_clock: z
-        .union([z.string().max(5000), test_helpers.test_clockSchema])
+        .union([z.string().max(5000), TestHelpersTestClockSchema])
         .nullable()
         .describe('ID of the test clock this invoice belongs to.')
         .optional(),
-      threshold_reason: invoice_threshold_reasonSchema.optional(),
+      threshold_reason: InvoiceThresholdReasonSchema.optional(),
       /** Total after discounts and taxes. */
       total: z.number().int().describe('Total after discounts and taxes.'),
       /** The aggregate amounts calculated per discount across all line items. */
       total_discount_amounts: z
-        .array(discounts_resource_discount_amountSchema)
+        .array(DiscountsResourceDiscountAmountSchema)
         .nullable()
         .describe(
           'The aggregate amounts calculated per discount across all line items.'
@@ -34231,7 +34000,7 @@ export namespace stripe {
         .optional(),
       /** Contains pretax credit amounts (ex: discount, credit grants, etc) that apply to this invoice. This is a combined list of total_pretax_credit_amounts across all invoice line items. */
       total_pretax_credit_amounts: z
-        .array(invoices_resource_pretax_credit_amountSchema)
+        .array(InvoicesResourcePretaxCreditAmountSchema)
         .nullable()
         .describe(
           'Contains pretax credit amounts (ex: discount, credit grants, etc) that apply to this invoice. This is a combined list of total_pretax_credit_amounts across all invoice line items.'
@@ -34239,13 +34008,12 @@ export namespace stripe {
         .optional(),
       /** The aggregate amounts calculated per tax rate for all line items. */
       total_tax_amounts: z
-        .array(invoice_tax_amountSchema)
+        .array(InvoiceTaxAmountSchema)
         .describe(
           'The aggregate amounts calculated per tax rate for all line items.'
         ),
       /** The account (if any) the payment will be attributed to for tax reporting, and where funds from the payment will be transferred to for the invoice. */
-      transfer_data: invoice_transfer_dataSchema
-        .nullable()
+      transfer_data: InvoiceTransferDataSchema.nullable()
         .describe(
           'The account (if any) the payment will be attributed to for tax reporting, and where funds from the payment will be transferred to for the invoice.'
         )
@@ -34289,7 +34057,7 @@ export namespace stripe {
         ),
       /** ID of the customer. */
       customer: z
-        .union([z.string().max(5000), customerSchema])
+        .union([z.string().max(5000), CustomerSchema])
         .nullable()
         .describe('ID of the customer.')
         .optional(),
@@ -34308,8 +34076,7 @@ export namespace stripe {
           "String representing the object's type. Objects of the same type share the same value."
         ),
       /** The account or customer the tax ID belongs to. */
-      owner: tax_i_ds_ownerSchema
-        .nullable()
+      owner: TaxIDsOwnerSchema.nullable()
         .describe('The account or customer the tax ID belongs to.')
         .optional(),
       /** Type of the tax ID, one of `ad_nrt`, `ae_trn`, `al_tin`, `am_tin`, `ao_tin`, `ar_cuit`, `au_abn`, `au_arn`, `ba_tin`, `bb_tin`, `bg_uic`, `bh_vat`, `bo_tin`, `br_cnpj`, `br_cpf`, `bs_tin`, `by_tin`, `ca_bn`, `ca_gst_hst`, `ca_pst_bc`, `ca_pst_mb`, `ca_pst_sk`, `ca_qst`, `cd_nif`, `ch_uid`, `ch_vat`, `cl_tin`, `cn_tin`, `co_nit`, `cr_tin`, `de_stn`, `do_rcn`, `ec_ruc`, `eg_tin`, `es_cif`, `eu_oss_vat`, `eu_vat`, `gb_vat`, `ge_vat`, `gn_nif`, `hk_br`, `hr_oib`, `hu_tin`, `id_npwp`, `il_vat`, `in_gst`, `is_vat`, `jp_cn`, `jp_rn`, `jp_trn`, `ke_pin`, `kh_tin`, `kr_brn`, `kz_bin`, `li_uid`, `li_vat`, `ma_vat`, `md_vat`, `me_pib`, `mk_vat`, `mr_nif`, `mx_rfc`, `my_frp`, `my_itn`, `my_sst`, `ng_tin`, `no_vat`, `no_voec`, `np_pan`, `nz_gst`, `om_vat`, `pe_ruc`, `ph_tin`, `ro_tin`, `rs_pib`, `ru_inn`, `ru_kpp`, `sa_vat`, `sg_gst`, `sg_uen`, `si_tin`, `sn_ninea`, `sr_fin`, `sv_nit`, `th_vat`, `tj_tin`, `tr_tin`, `tw_vat`, `tz_vat`, `ua_vat`, `ug_tin`, `us_ein`, `uy_ruc`, `uz_tin`, `uz_vat`, `ve_rif`, `vn_tin`, `za_vat`, `zm_tin`, or `zw_tin`. Note that some legacy tax IDs have type `unknown` */
@@ -34423,8 +34190,7 @@ export namespace stripe {
       /** Value of the tax ID. */
       value: z.string().max(5000).describe('Value of the tax ID.'),
       /** Tax ID verification information. */
-      verification: tax_id_verificationSchema
-        .nullable()
+      verification: TaxIdVerificationSchema.nullable()
         .describe('Tax ID verification information.')
         .optional()
     })
@@ -34436,19 +34202,19 @@ export namespace stripe {
   export const TaxIDsOwnerSchema = z.object({
     /** The account being referenced when `type` is `account`. */
     account: z
-      .union([z.string().max(5000), accountSchema])
+      .union([z.string().max(5000), AccountSchema])
       .describe('The account being referenced when `type` is `account`.')
       .optional(),
     /** The Connect Application being referenced when `type` is `application`. */
     application: z
-      .union([z.string().max(5000), applicationSchema])
+      .union([z.string().max(5000), ApplicationSchema])
       .describe(
         'The Connect Application being referenced when `type` is `application`.'
       )
       .optional(),
     /** The customer being referenced when `type` is `customer`. */
     customer: z
-      .union([z.string().max(5000), customerSchema])
+      .union([z.string().max(5000), CustomerSchema])
       .describe('The customer being referenced when `type` is `customer`.')
       .optional(),
     /** Type of owner referenced. */
@@ -34475,8 +34241,7 @@ export namespace stripe {
         'Whether Stripe automatically computes tax on this invoice. Note that incompatible invoice items (invoice items with manually specified [tax rates](https://stripe.com/docs/api/tax_rates), negative amounts, or `tax_behavior=unspecified`) cannot be added to automatic tax invoices.'
       ),
     /** The account that's liable for tax. If set, the business address and tax registrations required to perform the tax calculation are loaded from this account. The tax transaction is returned in the report of the connected account. */
-    liability: connect_account_referenceSchema
-      .nullable()
+    liability: ConnectAccountReferenceSchema.nullable()
       .describe(
         "The account that's liable for tax. If set, the business address and tax registrations required to perform the tax calculation are loaded from this account. The tax transaction is returned in the report of the connected account."
       )
@@ -34495,7 +34260,7 @@ export namespace stripe {
   export const ConnectAccountReferenceSchema = z.object({
     /** The connected account being referenced when `type` is `account`. */
     account: z
-      .union([z.string().max(5000), accountSchema])
+      .union([z.string().max(5000), AccountSchema])
       .describe(
         'The connected account being referenced when `type` is `account`.'
       )
@@ -34540,13 +34305,13 @@ export namespace stripe {
         ),
       /** ID of the Connect application that created the charge. */
       application: z
-        .union([z.string().max(5000), applicationSchema])
+        .union([z.string().max(5000), ApplicationSchema])
         .nullable()
         .describe('ID of the Connect application that created the charge.')
         .optional(),
       /** The application fee (if any) for the charge. [See the Connect documentation](https://stripe.com/docs/connect/direct-charges#collect-fees) for details. */
       application_fee: z
-        .union([z.string().max(5000), application_feeSchema])
+        .union([z.string().max(5000), ApplicationFeeSchema])
         .nullable()
         .describe(
           'The application fee (if any) for the charge. [See the Connect documentation](https://stripe.com/docs/connect/direct-charges#collect-fees) for details.'
@@ -34563,13 +34328,13 @@ export namespace stripe {
         .optional(),
       /** ID of the balance transaction that describes the impact of this charge on your account balance (not including refunds or disputes). */
       balance_transaction: z
-        .union([z.string().max(5000), balance_transactionSchema])
+        .union([z.string().max(5000), BalanceTransactionSchema])
         .nullable()
         .describe(
           'ID of the balance transaction that describes the impact of this charge on your account balance (not including refunds or disputes).'
         )
         .optional(),
-      billing_details: billing_detailsSchema,
+      billing_details: BillingDetailsSchema,
       /** The full statement descriptor that is passed to card networks, and that is displayed on your customers' credit card and bank statements. Allows you to see what the statement descriptor looks like after the static and dynamic portions are combined. This value only exists for card payments. */
       calculated_statement_descriptor: z
         .string()
@@ -34600,7 +34365,7 @@ export namespace stripe {
         ),
       /** ID of the customer this charge is for if one exists. */
       customer: z
-        .union([z.string().max(5000), customerSchema, deleted_customerSchema])
+        .union([z.string().max(5000), CustomerSchema, DeletedCustomerSchema])
         .nullable()
         .describe('ID of the customer this charge is for if one exists.')
         .optional(),
@@ -34617,7 +34382,7 @@ export namespace stripe {
       disputed: z.boolean().describe('Whether the charge has been disputed.'),
       /** ID of the balance transaction that describes the reversal of the balance on your account due to payment failure. */
       failure_balance_transaction: z
-        .union([z.string().max(5000), balance_transactionSchema])
+        .union([z.string().max(5000), BalanceTransactionSchema])
         .nullable()
         .describe(
           'ID of the balance transaction that describes the reversal of the balance on your account due to payment failure.'
@@ -34642,15 +34407,14 @@ export namespace stripe {
         )
         .optional(),
       /** Information on fraud assessments for the charge. */
-      fraud_details: charge_fraud_detailsSchema
-        .nullable()
+      fraud_details: ChargeFraudDetailsSchema.nullable()
         .describe('Information on fraud assessments for the charge.')
         .optional(),
       /** Unique identifier for the object. */
       id: z.string().max(5000).describe('Unique identifier for the object.'),
       /** ID of the invoice this charge is for if one exists. */
       invoice: z
-        .union([z.string().max(5000), invoiceSchema])
+        .union([z.string().max(5000), InvoiceSchema])
         .nullable()
         .describe('ID of the invoice this charge is for if one exists.')
         .optional(),
@@ -34674,15 +34438,14 @@ export namespace stripe {
         ),
       /** The account (if any) the charge was made on behalf of without triggering an automatic transfer. See the [Connect documentation](https://stripe.com/docs/connect/separate-charges-and-transfers) for details. */
       on_behalf_of: z
-        .union([z.string().max(5000), accountSchema])
+        .union([z.string().max(5000), AccountSchema])
         .nullable()
         .describe(
           'The account (if any) the charge was made on behalf of without triggering an automatic transfer. See the [Connect documentation](https://stripe.com/docs/connect/separate-charges-and-transfers) for details.'
         )
         .optional(),
       /** Details about whether the payment was accepted, and why. See [understanding declines](https://stripe.com/docs/declines) for details. */
-      outcome: charge_outcomeSchema
-        .nullable()
+      outcome: ChargeOutcomeSchema.nullable()
         .describe(
           'Details about whether the payment was accepted, and why. See [understanding declines](https://stripe.com/docs/declines) for details.'
         )
@@ -34695,7 +34458,7 @@ export namespace stripe {
         ),
       /** ID of the PaymentIntent associated with this charge, if one exists. */
       payment_intent: z
-        .union([z.string().max(5000), payment_intentSchema])
+        .union([z.string().max(5000), PaymentIntentSchema])
         .nullable()
         .describe(
           'ID of the PaymentIntent associated with this charge, if one exists.'
@@ -34709,13 +34472,12 @@ export namespace stripe {
         .describe('ID of the payment method used in this charge.')
         .optional(),
       /** Details about the payment method at the time of the transaction. */
-      payment_method_details: payment_method_detailsSchema
-        .nullable()
+      payment_method_details: PaymentMethodDetailsSchema.nullable()
         .describe(
           'Details about the payment method at the time of the transaction.'
         )
         .optional(),
-      radar_options: radar_radar_optionsSchema.optional(),
+      radar_options: RadarRadarOptionsSchema.optional(),
       /** This is the email address that the receipt for this charge was sent to. */
       receipt_email: z
         .string()
@@ -34753,7 +34515,7 @@ export namespace stripe {
       refunds: z
         .object({
           /** Details about each object. */
-          data: z.array(refundSchema).describe('Details about each object.'),
+          data: z.array(RefundSchema).describe('Details about each object.'),
           /** True if this list has another page of items after this one that can be fetched. */
           has_more: z
             .boolean()
@@ -34777,18 +34539,17 @@ export namespace stripe {
         .optional(),
       /** ID of the review associated with this charge if one exists. */
       review: z
-        .union([z.string().max(5000), reviewSchema])
+        .union([z.string().max(5000), ReviewSchema])
         .nullable()
         .describe('ID of the review associated with this charge if one exists.')
         .optional(),
       /** Shipping information for the charge. */
-      shipping: shippingSchema
-        .nullable()
+      shipping: ShippingSchema.nullable()
         .describe('Shipping information for the charge.')
         .optional(),
       /** The transfer ID which created this charge. Only present if the charge came from another Stripe account. [See the Connect documentation](https://docs.stripe.com/connect/destination-charges) for details. */
       source_transfer: z
-        .union([z.string().max(5000), transferSchema])
+        .union([z.string().max(5000), TransferSchema])
         .nullable()
         .describe(
           'The transfer ID which created this charge. Only present if the charge came from another Stripe account. [See the Connect documentation](https://docs.stripe.com/connect/destination-charges) for details.'
@@ -34824,14 +34585,13 @@ export namespace stripe {
         ),
       /** ID of the transfer to the `destination` account (only applicable if the charge was created using the `destination` parameter). */
       transfer: z
-        .union([z.string().max(5000), transferSchema])
+        .union([z.string().max(5000), TransferSchema])
         .describe(
           'ID of the transfer to the `destination` account (only applicable if the charge was created using the `destination` parameter).'
         )
         .optional(),
       /** An optional dictionary including the account to automatically transfer to as part of a destination charge. [See the Connect documentation](https://stripe.com/docs/connect/destination-charges) for details. */
-      transfer_data: charge_transfer_dataSchema
-        .nullable()
+      transfer_data: ChargeTransferDataSchema.nullable()
         .describe(
           'An optional dictionary including the account to automatically transfer to as part of a destination charge. [See the Connect documentation](https://stripe.com/docs/connect/destination-charges) for details.'
         )
@@ -34854,7 +34614,7 @@ export namespace stripe {
   export const ApplicationFeeSchema = z.object({
     /** ID of the Stripe account this fee was taken from. */
     account: z
-      .union([z.string().max(5000), accountSchema])
+      .union([z.string().max(5000), AccountSchema])
       .describe('ID of the Stripe account this fee was taken from.'),
     /** Amount earned, in cents (or local equivalent). */
     amount: z
@@ -34870,11 +34630,11 @@ export namespace stripe {
       ),
     /** ID of the Connect application that earned the fee. */
     application: z
-      .union([z.string().max(5000), applicationSchema])
+      .union([z.string().max(5000), ApplicationSchema])
       .describe('ID of the Connect application that earned the fee.'),
     /** Balance transaction that describes the impact of this collected application fee on your account balance (not including refunds). */
     balance_transaction: z
-      .union([z.string().max(5000), balance_transactionSchema])
+      .union([z.string().max(5000), BalanceTransactionSchema])
       .nullable()
       .describe(
         'Balance transaction that describes the impact of this collected application fee on your account balance (not including refunds).'
@@ -34882,7 +34642,7 @@ export namespace stripe {
       .optional(),
     /** ID of the charge that the application fee was taken from. */
     charge: z
-      .union([z.string().max(5000), chargeSchema])
+      .union([z.string().max(5000), ChargeSchema])
       .describe('ID of the charge that the application fee was taken from.'),
     /** Time at which the object was created. Measured in seconds since the Unix epoch. */
     created: z
@@ -34898,8 +34658,7 @@ export namespace stripe {
         'Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).'
       ),
     /** Polymorphic source of the application fee. Includes the ID of the object the application fee was created from. */
-    fee_source: platform_earning_fee_sourceSchema
-      .nullable()
+    fee_source: PlatformEarningFeeSourceSchema.nullable()
       .describe(
         'Polymorphic source of the application fee. Includes the ID of the object the application fee was created from.'
       )
@@ -34920,7 +34679,7 @@ export namespace stripe {
       ),
     /** ID of the corresponding charge on the platform account, if this fee was the result of a charge using the `destination` parameter. */
     originating_transaction: z
-      .union([z.string().max(5000), chargeSchema])
+      .union([z.string().max(5000), ChargeSchema])
       .nullable()
       .describe(
         'ID of the corresponding charge on the platform account, if this fee was the result of a charge using the `destination` parameter.'
@@ -34936,7 +34695,7 @@ export namespace stripe {
     refunds: z
       .object({
         /** Details about each object. */
-        data: z.array(fee_refundSchema).describe('Details about each object.'),
+        data: z.array(FeeRefundSchema).describe('Details about each object.'),
         /** True if this list has another page of items after this one that can be fetched. */
         has_more: z
           .boolean()
@@ -35020,7 +34779,7 @@ export namespace stripe {
         ),
       /** Detailed breakdown of fees (in cents (or local equivalent)) paid for this transaction. */
       fee_details: z
-        .array(feeSchema)
+        .array(FeeSchema)
         .describe(
           'Detailed breakdown of fees (in cents (or local equivalent)) paid for this transaction.'
         ),
@@ -35050,22 +34809,22 @@ export namespace stripe {
       source: z
         .union([
           z.string().max(5000),
-          application_feeSchema,
-          chargeSchema,
-          connect_collection_transferSchema,
-          customer_cash_balance_transactionSchema,
-          disputeSchema,
-          fee_refundSchema,
-          issuing.authorizationSchema,
-          issuing.disputeSchema,
-          issuing.transactionSchema,
-          payoutSchema,
-          refundSchema,
-          reserve_transactionSchema,
-          tax_deducted_at_sourceSchema,
-          topupSchema,
-          transferSchema,
-          transfer_reversalSchema
+          ApplicationFeeSchema,
+          ChargeSchema,
+          ConnectCollectionTransferSchema,
+          CustomerCashBalanceTransactionSchema,
+          DisputeSchema,
+          FeeRefundSchema,
+          IssuingAuthorizationSchema,
+          IssuingDisputeSchema,
+          IssuingTransactionSchema,
+          PayoutSchema,
+          RefundSchema,
+          ReserveTransactionSchema,
+          TaxDeductedAtSourceSchema,
+          TopupSchema,
+          TransferSchema,
+          TransferReversalSchema
         ])
         .nullable()
         .describe('This transaction relates to the Stripe object.')
@@ -35146,7 +34905,7 @@ export namespace stripe {
       ),
     /** ID of the account that funds are being collected for. */
     destination: z
-      .union([z.string().max(5000), accountSchema])
+      .union([z.string().max(5000), AccountSchema])
       .describe('ID of the account that funds are being collected for.'),
     /** Unique identifier for the object. */
     id: z.string().max(5000).describe('Unique identifier for the object.'),
@@ -35176,9 +34935,9 @@ export namespace stripe {
   export const CustomerCashBalanceTransactionSchema = z
     .object({
       adjusted_for_overdraft:
-        customer_balance_resource_cash_balance_transaction_resource_adjusted_for_overdraftSchema.optional(),
+        CustomerBalanceResourceCashBalanceTransactionResourceAdjustedForOverdraftSchema.optional(),
       applied_to_payment:
-        customer_balance_resource_cash_balance_transaction_resource_applied_to_payment_transactionSchema.optional(),
+        CustomerBalanceResourceCashBalanceTransactionResourceAppliedToPaymentTransactionSchema.optional(),
       /** Time at which the object was created. Measured in seconds since the Unix epoch. */
       created: z
         .number()
@@ -35195,7 +34954,7 @@ export namespace stripe {
         ),
       /** The customer whose available cash balance changed as a result of this transaction. */
       customer: z
-        .union([z.string().max(5000), customerSchema])
+        .union([z.string().max(5000), CustomerSchema])
         .describe(
           'The customer whose available cash balance changed as a result of this transaction.'
         ),
@@ -35207,7 +34966,7 @@ export namespace stripe {
           'The total available cash balance for the specified currency after this transaction was applied. Represented in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal).'
         ),
       funded:
-        customer_balance_resource_cash_balance_transaction_resource_funded_transactionSchema.optional(),
+        CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionSchema.optional(),
       /** Unique identifier for the object. */
       id: z.string().max(5000).describe('Unique identifier for the object.'),
       /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
@@ -35230,9 +34989,9 @@ export namespace stripe {
           "String representing the object's type. Objects of the same type share the same value."
         ),
       refunded_from_payment:
-        customer_balance_resource_cash_balance_transaction_resource_refunded_from_payment_transactionSchema.optional(),
+        CustomerBalanceResourceCashBalanceTransactionResourceRefundedFromPaymentTransactionSchema.optional(),
       transferred_to_balance:
-        customer_balance_resource_cash_balance_transaction_resource_transferred_to_balanceSchema.optional(),
+        CustomerBalanceResourceCashBalanceTransactionResourceTransferredToBalanceSchema.optional(),
       /** The type of the cash balance transaction. New types may be added in future. See [Customer Balance](https://stripe.com/docs/payments/customer-balance#types) to learn more about these types. */
       type: z
         .enum([
@@ -35250,7 +35009,7 @@ export namespace stripe {
           'The type of the cash balance transaction. New types may be added in future. See [Customer Balance](https://stripe.com/docs/payments/customer-balance#types) to learn more about these types.'
         ),
       unapplied_from_payment:
-        customer_balance_resource_cash_balance_transaction_resource_unapplied_from_payment_transactionSchema.optional()
+        CustomerBalanceResourceCashBalanceTransactionResourceUnappliedFromPaymentTransactionSchema.optional()
     })
     .describe(
       'Customers with certain payments enabled have a cash balance, representing funds that were paid\nby the customer to a merchant, but have not yet been allocated to a payment. Cash Balance Transactions\nrepresent when funds are moved into or out of this balance. This includes funding by the customer, allocation\nto payments, and refunds to the customer.'
@@ -35263,13 +35022,13 @@ export namespace stripe {
     z.object({
       /** The [Balance Transaction](https://stripe.com/docs/api/balance_transactions/object) that corresponds to funds taken out of your Stripe balance. */
       balance_transaction: z
-        .union([z.string().max(5000), balance_transactionSchema])
+        .union([z.string().max(5000), BalanceTransactionSchema])
         .describe(
           'The [Balance Transaction](https://stripe.com/docs/api/balance_transactions/object) that corresponds to funds taken out of your Stripe balance.'
         ),
       /** The [Cash Balance Transaction](https://stripe.com/docs/api/cash_balance_transactions/object) that brought the customer balance negative, triggering the clawback of funds. */
       linked_transaction: z
-        .union([z.string().max(5000), customer_cash_balance_transactionSchema])
+        .union([z.string().max(5000), CustomerCashBalanceTransactionSchema])
         .describe(
           'The [Cash Balance Transaction](https://stripe.com/docs/api/cash_balance_transactions/object) that brought the customer balance negative, triggering the clawback of funds.'
         )
@@ -35283,7 +35042,7 @@ export namespace stripe {
     z.object({
       /** The [Payment Intent](https://stripe.com/docs/api/payment_intents/object) that funds were applied to. */
       payment_intent: z
-        .union([z.string().max(5000), payment_intentSchema])
+        .union([z.string().max(5000), PaymentIntentSchema])
         .describe(
           'The [Payment Intent](https://stripe.com/docs/api/payment_intents/object) that funds were applied to.'
         )
@@ -35297,7 +35056,7 @@ export namespace stripe {
     z.object({
       /** The [Refund](https://stripe.com/docs/api/refunds/object) that moved these funds into the customer's cash balance. */
       refund: z
-        .union([z.string().max(5000), refundSchema])
+        .union([z.string().max(5000), RefundSchema])
         .describe(
           "The [Refund](https://stripe.com/docs/api/refunds/object) that moved these funds into the customer's cash balance."
         )
@@ -35323,7 +35082,7 @@ export namespace stripe {
         .describe('Amount, in cents (or local equivalent).'),
       /** Balance transaction that describes the impact on your account balance. */
       balance_transaction: z
-        .union([z.string().max(5000), balance_transactionSchema])
+        .union([z.string().max(5000), BalanceTransactionSchema])
         .nullable()
         .describe(
           'Balance transaction that describes the impact on your account balance.'
@@ -35331,7 +35090,7 @@ export namespace stripe {
         .optional(),
       /** ID of the charge that's refunded. */
       charge: z
-        .union([z.string().max(5000), chargeSchema])
+        .union([z.string().max(5000), ChargeSchema])
         .nullable()
         .describe("ID of the charge that's refunded.")
         .optional(),
@@ -35356,10 +35115,10 @@ export namespace stripe {
           'An arbitrary string attached to the object. You can use this for displaying to users (available on non-card refunds only).'
         )
         .optional(),
-      destination_details: refund_destination_detailsSchema.optional(),
+      destination_details: RefundDestinationDetailsSchema.optional(),
       /** After the refund fails, this balance transaction describes the adjustment made on your account balance that reverses the initial balance transaction. */
       failure_balance_transaction: z
-        .union([z.string().max(5000), balance_transactionSchema])
+        .union([z.string().max(5000), BalanceTransactionSchema])
         .describe(
           'After the refund fails, this balance transaction describes the adjustment made on your account balance that reverses the initial balance transaction.'
         )
@@ -35390,7 +35149,7 @@ export namespace stripe {
           'Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.'
         )
         .optional(),
-      next_action: refund_next_actionSchema.optional(),
+      next_action: RefundNextActionSchema.optional(),
       /** String representing the object's type. Objects of the same type share the same value. */
       object: z
         .literal('refund')
@@ -35399,7 +35158,7 @@ export namespace stripe {
         ),
       /** ID of the PaymentIntent that's refunded. */
       payment_intent: z
-        .union([z.string().max(5000), payment_intentSchema])
+        .union([z.string().max(5000), PaymentIntentSchema])
         .nullable()
         .describe("ID of the PaymentIntent that's refunded.")
         .optional(),
@@ -35427,7 +35186,7 @@ export namespace stripe {
         .optional(),
       /** The transfer reversal that's associated with the refund. Only present if the charge came from another Stripe account. */
       source_transfer_reversal: z
-        .union([z.string().max(5000), transfer_reversalSchema])
+        .union([z.string().max(5000), TransferReversalSchema])
         .nullable()
         .describe(
           "The transfer reversal that's associated with the refund. Only present if the charge came from another Stripe account."
@@ -35444,7 +35203,7 @@ export namespace stripe {
         .optional(),
       /** This refers to the transfer reversal object if the accompanying transfer reverses. This is only applicable if the charge was created using the destination parameter. */
       transfer_reversal: z
-        .union([z.string().max(5000), transfer_reversalSchema])
+        .union([z.string().max(5000), TransferReversalSchema])
         .nullable()
         .describe(
           'This refers to the transfer reversal object if the accompanying transfer reverses. This is only applicable if the charge was created using the destination parameter.'
@@ -35480,7 +35239,7 @@ export namespace stripe {
         .describe('Amount, in cents (or local equivalent).'),
       /** Balance transaction that describes the impact on your account balance. */
       balance_transaction: z
-        .union([z.string().max(5000), balance_transactionSchema])
+        .union([z.string().max(5000), BalanceTransactionSchema])
         .nullable()
         .describe(
           'Balance transaction that describes the impact on your account balance.'
@@ -35501,7 +35260,7 @@ export namespace stripe {
         ),
       /** Linked payment refund for the transfer reversal. */
       destination_payment_refund: z
-        .union([z.string().max(5000), refundSchema])
+        .union([z.string().max(5000), RefundSchema])
         .nullable()
         .describe('Linked payment refund for the transfer reversal.')
         .optional(),
@@ -35523,13 +35282,13 @@ export namespace stripe {
         ),
       /** ID of the refund responsible for the transfer reversal. */
       source_refund: z
-        .union([z.string().max(5000), refundSchema])
+        .union([z.string().max(5000), RefundSchema])
         .nullable()
         .describe('ID of the refund responsible for the transfer reversal.')
         .optional(),
       /** ID of the transfer that was reversed. */
       transfer: z
-        .union([z.string().max(5000), transferSchema])
+        .union([z.string().max(5000), TransferSchema])
         .describe('ID of the transfer that was reversed.')
     })
     .describe(
@@ -35565,7 +35324,7 @@ export namespace stripe {
         ),
       /** Balance transaction that describes the impact of this transfer on your account balance. */
       balance_transaction: z
-        .union([z.string().max(5000), balance_transactionSchema])
+        .union([z.string().max(5000), BalanceTransactionSchema])
         .nullable()
         .describe(
           'Balance transaction that describes the impact of this transfer on your account balance.'
@@ -35593,13 +35352,13 @@ export namespace stripe {
         .optional(),
       /** ID of the Stripe account the transfer was sent to. */
       destination: z
-        .union([z.string().max(5000), accountSchema])
+        .union([z.string().max(5000), AccountSchema])
         .nullable()
         .describe('ID of the Stripe account the transfer was sent to.')
         .optional(),
       /** If the destination is a Stripe account, this will be the ID of the payment that the destination account received for the transfer. */
       destination_payment: z
-        .union([z.string().max(5000), chargeSchema])
+        .union([z.string().max(5000), ChargeSchema])
         .describe(
           'If the destination is a Stripe account, this will be the ID of the payment that the destination account received for the transfer.'
         )
@@ -35629,7 +35388,7 @@ export namespace stripe {
         .object({
           /** Details about each object. */
           data: z
-            .array(transfer_reversalSchema)
+            .array(TransferReversalSchema)
             .describe('Details about each object.'),
           /** True if this list has another page of items after this one that can be fetched. */
           has_more: z
@@ -35660,7 +35419,7 @@ export namespace stripe {
         ),
       /** ID of the charge that was used to fund the transfer. If null, the transfer was funded from the available balance. */
       source_transaction: z
-        .union([z.string().max(5000), chargeSchema])
+        .union([z.string().max(5000), ChargeSchema])
         .nullable()
         .describe(
           'ID of the charge that was used to fund the transfer. If null, the transfer was funded from the available balance.'
@@ -35693,7 +35452,7 @@ export namespace stripe {
     z.object({
       /** The [Balance Transaction](https://stripe.com/docs/api/balance_transactions/object) that corresponds to funds transferred to your Stripe balance. */
       balance_transaction: z
-        .union([z.string().max(5000), balance_transactionSchema])
+        .union([z.string().max(5000), BalanceTransactionSchema])
         .describe(
           'The [Balance Transaction](https://stripe.com/docs/api/balance_transactions/object) that corresponds to funds transferred to your Stripe balance.'
         )
@@ -35707,7 +35466,7 @@ export namespace stripe {
     z.object({
       /** The [Payment Intent](https://stripe.com/docs/api/payment_intents/object) that funds were unapplied from. */
       payment_intent: z
-        .union([z.string().max(5000), payment_intentSchema])
+        .union([z.string().max(5000), PaymentIntentSchema])
         .describe(
           'The [Payment Intent](https://stripe.com/docs/api/payment_intents/object) that funds were unapplied from.'
         )
@@ -35735,13 +35494,13 @@ export namespace stripe {
         ),
       /** List of zero, one, or two balance transactions that show funds withdrawn and reinstated to your Stripe account as a result of this dispute. */
       balance_transactions: z
-        .array(balance_transactionSchema)
+        .array(BalanceTransactionSchema)
         .describe(
           'List of zero, one, or two balance transactions that show funds withdrawn and reinstated to your Stripe account as a result of this dispute.'
         ),
       /** ID of the charge that's disputed. */
       charge: z
-        .union([z.string().max(5000), chargeSchema])
+        .union([z.string().max(5000), ChargeSchema])
         .describe("ID of the charge that's disputed."),
       /** Time at which the object was created. Measured in seconds since the Unix epoch. */
       created: z
@@ -35762,8 +35521,8 @@ export namespace stripe {
         .describe(
           'List of eligibility types that are included in `enhanced_evidence`.'
         ),
-      evidence: dispute_evidenceSchema,
-      evidence_details: dispute_evidence_detailsSchema,
+      evidence: DisputeEvidenceSchema,
+      evidence_details: DisputeEvidenceDetailsSchema,
       /** Unique identifier for the object. */
       id: z.string().max(5000).describe('Unique identifier for the object.'),
       /** If true, it's still possible to refund the disputed payment. After the payment has been fully refunded, no further funds are withdrawn from your Stripe account as a result of this dispute. */
@@ -35792,11 +35551,11 @@ export namespace stripe {
         ),
       /** ID of the PaymentIntent that's disputed. */
       payment_intent: z
-        .union([z.string().max(5000), payment_intentSchema])
+        .union([z.string().max(5000), PaymentIntentSchema])
         .nullable()
         .describe("ID of the PaymentIntent that's disputed.")
         .optional(),
-      payment_method_details: dispute_payment_method_detailsSchema.optional(),
+      payment_method_details: DisputePaymentMethodDetailsSchema.optional(),
       /** Reason given by cardholder for dispute. Possible values are `bank_cannot_process`, `check_returned`, `credit_not_processed`, `customer_initiated`, `debit_not_authorized`, `duplicate`, `fraudulent`, `general`, `incorrect_account_details`, `insufficient_funds`, `product_not_received`, `product_unacceptable`, `subscription_canceled`, or `unrecognized`. Learn more about [dispute reasons](https://stripe.com/docs/disputes/categories). */
       reason: z
         .string()
@@ -35840,7 +35599,7 @@ export namespace stripe {
         .describe('Amount, in cents (or local equivalent).'),
       /** Balance transaction that describes the impact on your account balance. */
       balance_transaction: z
-        .union([z.string().max(5000), balance_transactionSchema])
+        .union([z.string().max(5000), BalanceTransactionSchema])
         .nullable()
         .describe(
           'Balance transaction that describes the impact on your account balance.'
@@ -35861,7 +35620,7 @@ export namespace stripe {
         ),
       /** ID of the application fee that was refunded. */
       fee: z
-        .union([z.string().max(5000), application_feeSchema])
+        .union([z.string().max(5000), ApplicationFeeSchema])
         .describe('ID of the application fee that was refunded.'),
       /** Unique identifier for the object. */
       id: z.string().max(5000).describe('Unique identifier for the object.'),
@@ -35902,8 +35661,7 @@ export namespace stripe {
           'The total amount that was authorized or rejected. This amount is in `currency` and in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal). `amount` should be the same as `merchant_amount`, unless `currency` and `merchant_currency` are different.'
         ),
       /** Detailed breakdown of amount components. These amounts are denominated in `currency` and in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal). */
-      amount_details: issuing_authorization_amount_detailsSchema
-        .nullable()
+      amount_details: IssuingAuthorizationAmountDetailsSchema.nullable()
         .describe(
           'Detailed breakdown of amount components. These amounts are denominated in `currency` and in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal).'
         )
@@ -35918,14 +35676,14 @@ export namespace stripe {
         .describe('How the card details were provided.'),
       /** List of balance transactions associated with this authorization. */
       balance_transactions: z
-        .array(balance_transactionSchema)
+        .array(BalanceTransactionSchema)
         .describe(
           'List of balance transactions associated with this authorization.'
         ),
-      card: issuing.cardSchema,
+      card: IssuingCardSchema,
       /** The cardholder to whom this authorization belongs. */
       cardholder: z
-        .union([z.string().max(5000), issuing.cardholderSchema])
+        .union([z.string().max(5000), IssuingCardholderSchema])
         .nullable()
         .describe('The cardholder to whom this authorization belongs.')
         .optional(),
@@ -35943,23 +35701,21 @@ export namespace stripe {
           'The currency of the cardholder. This currency can be different from the currency presented at authorization and the `merchant_currency` field on this authorization. Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).'
         ),
       /** Fleet-specific information for authorizations using Fleet cards. */
-      fleet: issuing_authorization_fleet_dataSchema
-        .nullable()
+      fleet: IssuingAuthorizationFleetDataSchema.nullable()
         .describe(
           'Fleet-specific information for authorizations using Fleet cards.'
         )
         .optional(),
       /** Fraud challenges sent to the cardholder, if this authorization was declined for fraud risk reasons. */
       fraud_challenges: z
-        .array(issuing_authorization_fraud_challengeSchema)
+        .array(IssuingAuthorizationFraudChallengeSchema)
         .nullable()
         .describe(
           'Fraud challenges sent to the cardholder, if this authorization was declined for fraud risk reasons.'
         )
         .optional(),
       /** Information about fuel that was purchased with this transaction. Typically this information is received from the merchant after the authorization has been approved and the fuel dispensed. */
-      fuel: issuing_authorization_fuel_dataSchema
-        .nullable()
+      fuel: IssuingAuthorizationFuelDataSchema.nullable()
         .describe(
           'Information about fuel that was purchased with this transaction. Typically this information is received from the merchant after the authorization has been approved and the fuel dispensed.'
         )
@@ -35985,7 +35741,7 @@ export namespace stripe {
         .describe(
           'The local currency that was presented to the cardholder for the authorization. This currency can be different from the cardholder currency and the `currency` field on this authorization. Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).'
         ),
-      merchant_data: issuing_authorization_merchant_dataSchema,
+      merchant_data: IssuingAuthorizationMerchantDataSchema,
       /** Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. */
       metadata: z
         .record(z.string().max(500))
@@ -35993,8 +35749,7 @@ export namespace stripe {
           'Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.'
         ),
       /** Details about the authorization, such as identifiers, set by the card network. */
-      network_data: issuing_authorization_network_dataSchema
-        .nullable()
+      network_data: IssuingAuthorizationNetworkDataSchema.nullable()
         .describe(
           'Details about the authorization, such as identifiers, set by the card network.'
         )
@@ -36006,15 +35761,14 @@ export namespace stripe {
           "String representing the object's type. Objects of the same type share the same value."
         ),
       /** The pending authorization request. This field will only be non-null during an `issuing_authorization.request` webhook. */
-      pending_request: issuing_authorization_pending_requestSchema
-        .nullable()
+      pending_request: IssuingAuthorizationPendingRequestSchema.nullable()
         .describe(
           'The pending authorization request. This field will only be non-null during an `issuing_authorization.request` webhook.'
         )
         .optional(),
       /** History of every time a `pending_request` authorization was approved/declined, either by you directly or by Stripe (e.g. based on your spending_controls). If the merchant changes the authorization by performing an incremental authorization, you can look at this field to see the previous requests for the authorization. This field can be helpful in determining why a given authorization was approved/declined. */
       request_history: z
-        .array(issuing_authorization_requestSchema)
+        .array(IssuingAuthorizationRequestSchema)
         .describe(
           'History of every time a `pending_request` authorization was approved/declined, either by you directly or by Stripe (e.g. based on your spending_controls). If the merchant changes the authorization by performing an incremental authorization, you can look at this field to see the previous requests for the authorization. This field can be helpful in determining why a given authorization was approved/declined.'
         ),
@@ -36024,7 +35778,7 @@ export namespace stripe {
         .describe('The current status of the authorization in its lifecycle.'),
       /** [Token](https://stripe.com/docs/api/issuing/tokens/object) object used for this authorization. If a network token was not used for this authorization, this field will be null. */
       token: z
-        .union([z.string().max(5000), issuing.tokenSchema])
+        .union([z.string().max(5000), IssuingTokenSchema])
         .nullable()
         .describe(
           '[Token](https://stripe.com/docs/api/issuing/tokens/object) object used for this authorization. If a network token was not used for this authorization, this field will be null.'
@@ -36032,18 +35786,17 @@ export namespace stripe {
         .optional(),
       /** List of [transactions](https://stripe.com/docs/api/issuing/transactions) associated with this authorization. */
       transactions: z
-        .array(issuing.transactionSchema)
+        .array(IssuingTransactionSchema)
         .describe(
           'List of [transactions](https://stripe.com/docs/api/issuing/transactions) associated with this authorization.'
         ),
       /** [Treasury](https://stripe.com/docs/api/treasury) details related to this authorization if it was created on a [FinancialAccount](https://stripe.com/docs/api/treasury/financial_accounts). */
-      treasury: issuing_authorization_treasurySchema
-        .nullable()
+      treasury: IssuingAuthorizationTreasurySchema.nullable()
         .describe(
           '[Treasury](https://stripe.com/docs/api/treasury) details related to this authorization if it was created on a [FinancialAccount](https://stripe.com/docs/api/treasury/financial_accounts).'
         )
         .optional(),
-      verification_data: issuing_authorization_verification_dataSchema,
+      verification_data: IssuingAuthorizationVerificationDataSchema,
       /** Whether the authorization bypassed fraud risk checks because the cardholder has previously completed a fraud challenge on a similar high-risk authorization from the same merchant. */
       verified_by_fraud_challenge: z
         .boolean()
@@ -36084,21 +35837,20 @@ export namespace stripe {
           'The transaction amount, which will be reflected in your balance. This amount is in your currency and in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal).'
         ),
       /** Detailed breakdown of amount components. These amounts are denominated in `currency` and in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal). */
-      amount_details: issuing_transaction_amount_detailsSchema
-        .nullable()
+      amount_details: IssuingTransactionAmountDetailsSchema.nullable()
         .describe(
           'Detailed breakdown of amount components. These amounts are denominated in `currency` and in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal).'
         )
         .optional(),
       /** The `Authorization` object that led to this transaction. */
       authorization: z
-        .union([z.string().max(5000), issuing.authorizationSchema])
+        .union([z.string().max(5000), IssuingAuthorizationSchema])
         .nullable()
         .describe('The `Authorization` object that led to this transaction.')
         .optional(),
       /** ID of the [balance transaction](https://stripe.com/docs/api/balance_transactions) associated with this transaction. */
       balance_transaction: z
-        .union([z.string().max(5000), balance_transactionSchema])
+        .union([z.string().max(5000), BalanceTransactionSchema])
         .nullable()
         .describe(
           'ID of the [balance transaction](https://stripe.com/docs/api/balance_transactions) associated with this transaction.'
@@ -36106,11 +35858,11 @@ export namespace stripe {
         .optional(),
       /** The card used to make this transaction. */
       card: z
-        .union([z.string().max(5000), issuing.cardSchema])
+        .union([z.string().max(5000), IssuingCardSchema])
         .describe('The card used to make this transaction.'),
       /** The cardholder to whom this transaction belongs. */
       cardholder: z
-        .union([z.string().max(5000), issuing.cardholderSchema])
+        .union([z.string().max(5000), IssuingCardholderSchema])
         .nullable()
         .describe('The cardholder to whom this transaction belongs.')
         .optional(),
@@ -36129,7 +35881,7 @@ export namespace stripe {
         ),
       /** If you've disputed the transaction, the ID of the dispute. */
       dispute: z
-        .union([z.string().max(5000), issuing.disputeSchema])
+        .union([z.string().max(5000), IssuingDisputeSchema])
         .nullable()
         .describe("If you've disputed the transaction, the ID of the dispute.")
         .optional(),
@@ -36152,7 +35904,7 @@ export namespace stripe {
       merchant_currency: z
         .string()
         .describe('The currency with which the merchant is taking payment.'),
-      merchant_data: issuing_authorization_merchant_dataSchema,
+      merchant_data: IssuingAuthorizationMerchantDataSchema,
       /** Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. */
       metadata: z
         .record(z.string().max(500))
@@ -36160,8 +35912,7 @@ export namespace stripe {
           'Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.'
         ),
       /** Details about the transaction, such as processing dates, set by the card network. */
-      network_data: issuing_transaction_network_dataSchema
-        .nullable()
+      network_data: IssuingTransactionNetworkDataSchema.nullable()
         .describe(
           'Details about the transaction, such as processing dates, set by the card network.'
         )
@@ -36173,23 +35924,21 @@ export namespace stripe {
           "String representing the object's type. Objects of the same type share the same value."
         ),
       /** Additional purchase information that is optionally provided by the merchant. */
-      purchase_details: issuing_transaction_purchase_detailsSchema
-        .nullable()
+      purchase_details: IssuingTransactionPurchaseDetailsSchema.nullable()
         .describe(
           'Additional purchase information that is optionally provided by the merchant.'
         )
         .optional(),
       /** [Token](https://stripe.com/docs/api/issuing/tokens/object) object used for this transaction. If a network token was not used for this transaction, this field will be null. */
       token: z
-        .union([z.string().max(5000), issuing.tokenSchema])
+        .union([z.string().max(5000), IssuingTokenSchema])
         .nullable()
         .describe(
           '[Token](https://stripe.com/docs/api/issuing/tokens/object) object used for this transaction. If a network token was not used for this transaction, this field will be null.'
         )
         .optional(),
       /** [Treasury](https://stripe.com/docs/api/treasury) details related to this transaction if it was created on a [FinancialAccount](/docs/api/treasury/financial_accounts */
-      treasury: issuing_transaction_treasurySchema
-        .nullable()
+      treasury: IssuingTransactionTreasurySchema.nullable()
         .describe(
           '[Treasury](https://stripe.com/docs/api/treasury) details related to this transaction if it was created on a [FinancialAccount](/docs/api/treasury/financial_accounts'
         )
@@ -36228,7 +35977,7 @@ export namespace stripe {
         ),
       /** List of balance transactions associated with the dispute. */
       balance_transactions: z
-        .array(balance_transactionSchema)
+        .array(BalanceTransactionSchema)
         .nullable()
         .describe('List of balance transactions associated with the dispute.')
         .optional(),
@@ -36243,7 +35992,7 @@ export namespace stripe {
       currency: z
         .string()
         .describe('The currency the `transaction` was made in.'),
-      evidence: issuing_dispute_evidenceSchema,
+      evidence: IssuingDisputeEvidenceSchema,
       /** Unique identifier for the object. */
       id: z.string().max(5000).describe('Unique identifier for the object.'),
       /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
@@ -36298,11 +36047,10 @@ export namespace stripe {
         .describe('Current status of the dispute.'),
       /** The transaction being disputed. */
       transaction: z
-        .union([z.string().max(5000), issuing.transactionSchema])
+        .union([z.string().max(5000), IssuingTransactionSchema])
         .describe('The transaction being disputed.'),
       /** [Treasury](https://stripe.com/docs/api/treasury) details related to this dispute if it was created on a [FinancialAccount](/docs/api/treasury/financial_accounts */
-      treasury: issuing_dispute_treasurySchema
-        .nullable()
+      treasury: IssuingDisputeTreasurySchema.nullable()
         .describe(
           '[Treasury](https://stripe.com/docs/api/treasury) details related to this dispute if it was created on a [FinancialAccount](/docs/api/treasury/financial_accounts'
         )
@@ -36334,7 +36082,7 @@ export namespace stripe {
         ),
       /** The application fee (if any) for the payout. [See the Connect documentation](https://stripe.com/docs/connect/instant-payouts#monetization-and-fees) for details. */
       application_fee: z
-        .union([z.string().max(5000), application_feeSchema])
+        .union([z.string().max(5000), ApplicationFeeSchema])
         .nullable()
         .describe(
           'The application fee (if any) for the payout. [See the Connect documentation](https://stripe.com/docs/connect/instant-payouts#monetization-and-fees) for details.'
@@ -36364,7 +36112,7 @@ export namespace stripe {
         ),
       /** ID of the balance transaction that describes the impact of this payout on your account balance. */
       balance_transaction: z
-        .union([z.string().max(5000), balance_transactionSchema])
+        .union([z.string().max(5000), BalanceTransactionSchema])
         .nullable()
         .describe(
           'ID of the balance transaction that describes the impact of this payout on your account balance.'
@@ -36396,17 +36144,17 @@ export namespace stripe {
       destination: z
         .union([
           z.string().max(5000),
-          bank_accountSchema,
-          cardSchema,
-          deleted_bank_accountSchema,
-          deleted_cardSchema
+          BankAccountSchema,
+          CardSchema,
+          DeletedBankAccountSchema,
+          DeletedCardSchema
         ])
         .nullable()
         .describe('ID of the bank account or card the payout is sent to.')
         .optional(),
       /** If the payout fails or cancels, this is the ID of the balance transaction that reverses the initial balance transaction and returns the funds from the failed payout back in your balance. */
       failure_balance_transaction: z
-        .union([z.string().max(5000), balance_transactionSchema])
+        .union([z.string().max(5000), BalanceTransactionSchema])
         .nullable()
         .describe(
           'If the payout fails or cancels, this is the ID of the balance transaction that reverses the initial balance transaction and returns the funds from the failed payout back in your balance.'
@@ -36461,7 +36209,11 @@ export namespace stripe {
         ),
       /** If the payout reverses another, this is the ID of the original payout. */
       original_payout: z
-        .union([z.string().max(5000), payoutSchema])
+        .union([
+          z.string().max(5000),
+          // TODO: Support recursive types for `PayoutSchema`.
+          z.any()
+        ])
         .nullable()
         .describe(
           'If the payout reverses another, this is the ID of the original payout.'
@@ -36475,7 +36227,11 @@ export namespace stripe {
         ),
       /** If the payout reverses, this is the ID of the payout that reverses this payout. */
       reversed_by: z
-        .union([z.string().max(5000), payoutSchema])
+        .union([
+          z.string().max(5000),
+          // TODO: Support recursive types for `PayoutSchema`.
+          z.any()
+        ])
         .nullable()
         .describe(
           'If the payout reverses, this is the ID of the payout that reverses this payout.'
@@ -36505,8 +36261,7 @@ export namespace stripe {
           "Current status of the payout: `paid`, `pending`, `in_transit`, `canceled` or `failed`. A payout is `pending` until it's submitted to the bank, when it becomes `in_transit`. The status changes to `paid` if the transaction succeeds, or to `failed` or `canceled` (within 5 business days). Some payouts that fail might initially show as `paid`, then change to `failed`."
         ),
       /** A value that generates from the beneficiary's bank that allows users to track payouts with their bank. Banks might call this a "reference number" or something similar. */
-      trace_id: payouts_trace_idSchema
-        .nullable()
+      trace_id: PayoutsTraceIdSchema.nullable()
         .describe(
           'A value that generates from the beneficiary\'s bank that allows users to track payouts with their bank. Banks might call this a "reference number" or something similar.'
         )
@@ -36534,7 +36289,7 @@ export namespace stripe {
       amount: z.number().int().describe('Amount transferred.'),
       /** ID of the balance transaction that describes the impact of this top-up on your account balance. May not be specified depending on status of top-up. */
       balance_transaction: z
-        .union([z.string().max(5000), balance_transactionSchema])
+        .union([z.string().max(5000), BalanceTransactionSchema])
         .nullable()
         .describe(
           'ID of the balance transaction that describes the impact of this top-up on your account balance. May not be specified depending on status of top-up.'
@@ -36611,8 +36366,7 @@ export namespace stripe {
           "String representing the object's type. Objects of the same type share the same value."
         ),
       /** The source field is deprecated. It might not always be present in the API response. */
-      source: sourceSchema
-        .nullable()
+      source: SourceSchema.nullable()
         .describe(
           'The source field is deprecated. It might not always be present in the API response.'
         )
@@ -36646,55 +36400,52 @@ export namespace stripe {
   export type Topup = z.infer<typeof TopupSchema>
 
   export const PaymentMethodDetailsSchema = z.object({
-    ach_credit_transfer:
-      payment_method_details_ach_credit_transferSchema.optional(),
-    ach_debit: payment_method_details_ach_debitSchema.optional(),
-    acss_debit: payment_method_details_acss_debitSchema.optional(),
-    affirm: payment_method_details_affirmSchema.optional(),
-    afterpay_clearpay:
-      payment_method_details_afterpay_clearpaySchema.optional(),
-    alipay:
-      payment_flows_private_payment_methods_alipay_detailsSchema.optional(),
-    alma: payment_method_details_almaSchema.optional(),
-    amazon_pay: payment_method_details_amazon_paySchema.optional(),
-    au_becs_debit: payment_method_details_au_becs_debitSchema.optional(),
-    bacs_debit: payment_method_details_bacs_debitSchema.optional(),
-    bancontact: payment_method_details_bancontactSchema.optional(),
-    blik: payment_method_details_blikSchema.optional(),
-    boleto: payment_method_details_boletoSchema.optional(),
-    card: payment_method_details_cardSchema.optional(),
-    card_present: payment_method_details_card_presentSchema.optional(),
-    cashapp: payment_method_details_cashappSchema.optional(),
-    customer_balance: payment_method_details_customer_balanceSchema.optional(),
-    eps: payment_method_details_epsSchema.optional(),
-    fpx: payment_method_details_fpxSchema.optional(),
-    giropay: payment_method_details_giropaySchema.optional(),
-    grabpay: payment_method_details_grabpaySchema.optional(),
-    ideal: payment_method_details_idealSchema.optional(),
-    interac_present: payment_method_details_interac_presentSchema.optional(),
-    kakao_pay: payment_method_details_kakao_paySchema.optional(),
-    klarna: payment_method_details_klarnaSchema.optional(),
-    konbini: payment_method_details_konbiniSchema.optional(),
-    kr_card: payment_method_details_kr_cardSchema.optional(),
-    link: payment_method_details_linkSchema.optional(),
-    mobilepay: payment_method_details_mobilepaySchema.optional(),
-    multibanco: payment_method_details_multibancoSchema.optional(),
-    naver_pay: payment_method_details_naver_paySchema.optional(),
-    oxxo: payment_method_details_oxxoSchema.optional(),
-    p24: payment_method_details_p24Schema.optional(),
-    pay_by_bank: payment_method_details_pay_by_bankSchema.optional(),
-    payco: payment_method_details_paycoSchema.optional(),
-    paynow: payment_method_details_paynowSchema.optional(),
-    paypal: payment_method_details_paypalSchema.optional(),
-    pix: payment_method_details_pixSchema.optional(),
-    promptpay: payment_method_details_promptpaySchema.optional(),
-    revolut_pay: payment_method_details_revolut_paySchema.optional(),
-    samsung_pay: payment_method_details_samsung_paySchema.optional(),
-    sepa_debit: payment_method_details_sepa_debitSchema.optional(),
-    sofort: payment_method_details_sofortSchema.optional(),
-    stripe_account: payment_method_details_stripe_accountSchema.optional(),
-    swish: payment_method_details_swishSchema.optional(),
-    twint: payment_method_details_twintSchema.optional(),
+    ach_credit_transfer: PaymentMethodDetailsAchCreditTransferSchema.optional(),
+    ach_debit: PaymentMethodDetailsAchDebitSchema.optional(),
+    acss_debit: PaymentMethodDetailsAcssDebitSchema.optional(),
+    affirm: PaymentMethodDetailsAffirmSchema.optional(),
+    afterpay_clearpay: PaymentMethodDetailsAfterpayClearpaySchema.optional(),
+    alipay: PaymentFlowsPrivatePaymentMethodsAlipayDetailsSchema.optional(),
+    alma: PaymentMethodDetailsAlmaSchema.optional(),
+    amazon_pay: PaymentMethodDetailsAmazonPaySchema.optional(),
+    au_becs_debit: PaymentMethodDetailsAuBecsDebitSchema.optional(),
+    bacs_debit: PaymentMethodDetailsBacsDebitSchema.optional(),
+    bancontact: PaymentMethodDetailsBancontactSchema.optional(),
+    blik: PaymentMethodDetailsBlikSchema.optional(),
+    boleto: PaymentMethodDetailsBoletoSchema.optional(),
+    card: PaymentMethodDetailsCardSchema.optional(),
+    card_present: PaymentMethodDetailsCardPresentSchema.optional(),
+    cashapp: PaymentMethodDetailsCashappSchema.optional(),
+    customer_balance: PaymentMethodDetailsCustomerBalanceSchema.optional(),
+    eps: PaymentMethodDetailsEpsSchema.optional(),
+    fpx: PaymentMethodDetailsFpxSchema.optional(),
+    giropay: PaymentMethodDetailsGiropaySchema.optional(),
+    grabpay: PaymentMethodDetailsGrabpaySchema.optional(),
+    ideal: PaymentMethodDetailsIdealSchema.optional(),
+    interac_present: PaymentMethodDetailsInteracPresentSchema.optional(),
+    kakao_pay: PaymentMethodDetailsKakaoPaySchema.optional(),
+    klarna: PaymentMethodDetailsKlarnaSchema.optional(),
+    konbini: PaymentMethodDetailsKonbiniSchema.optional(),
+    kr_card: PaymentMethodDetailsKrCardSchema.optional(),
+    link: PaymentMethodDetailsLinkSchema.optional(),
+    mobilepay: PaymentMethodDetailsMobilepaySchema.optional(),
+    multibanco: PaymentMethodDetailsMultibancoSchema.optional(),
+    naver_pay: PaymentMethodDetailsNaverPaySchema.optional(),
+    oxxo: PaymentMethodDetailsOxxoSchema.optional(),
+    p24: PaymentMethodDetailsP24Schema.optional(),
+    pay_by_bank: PaymentMethodDetailsPayByBankSchema.optional(),
+    payco: PaymentMethodDetailsPaycoSchema.optional(),
+    paynow: PaymentMethodDetailsPaynowSchema.optional(),
+    paypal: PaymentMethodDetailsPaypalSchema.optional(),
+    pix: PaymentMethodDetailsPixSchema.optional(),
+    promptpay: PaymentMethodDetailsPromptpaySchema.optional(),
+    revolut_pay: PaymentMethodDetailsRevolutPaySchema.optional(),
+    samsung_pay: PaymentMethodDetailsSamsungPaySchema.optional(),
+    sepa_debit: PaymentMethodDetailsSepaDebitSchema.optional(),
+    sofort: PaymentMethodDetailsSofortSchema.optional(),
+    stripe_account: PaymentMethodDetailsStripeAccountSchema.optional(),
+    swish: PaymentMethodDetailsSwishSchema.optional(),
+    twint: PaymentMethodDetailsTwintSchema.optional(),
     /**
      * The type of transaction-specific details of the payment method used in the payment. See [PaymentMethod.type](https://stripe.com/docs/api/payment_methods/object#payment_method_object-type) for the full list of possible types.
      * An additional hash is included on `payment_method_details` with a name matching this value.
@@ -36706,10 +36457,10 @@ export namespace stripe {
       .describe(
         'The type of transaction-specific details of the payment method used in the payment. See [PaymentMethod.type](https://stripe.com/docs/api/payment_methods/object#payment_method_object-type) for the full list of possible types.\nAn additional hash is included on `payment_method_details` with a name matching this value.\nIt contains information specific to the payment method.'
       ),
-    us_bank_account: payment_method_details_us_bank_accountSchema.optional(),
-    wechat: payment_method_details_wechatSchema.optional(),
-    wechat_pay: payment_method_details_wechat_paySchema.optional(),
-    zip: payment_method_details_zipSchema.optional()
+    us_bank_account: PaymentMethodDetailsUsBankAccountSchema.optional(),
+    wechat: PaymentMethodDetailsWechatSchema.optional(),
+    wechat_pay: PaymentMethodDetailsWechatPaySchema.optional(),
+    zip: PaymentMethodDetailsZipSchema.optional()
   })
   export type PaymentMethodDetails = z.infer<typeof PaymentMethodDetailsSchema>
 
@@ -36739,7 +36490,7 @@ export namespace stripe {
       .optional(),
     /** The ID of the SEPA Direct Debit PaymentMethod which was generated by this Charge. */
     generated_sepa_debit: z
-      .union([z.string().max(5000), payment_methodSchema])
+      .union([z.string().max(5000), PaymentMethodSchema])
       .nullable()
       .describe(
         'The ID of the SEPA Direct Debit PaymentMethod which was generated by this Charge.'
@@ -36747,7 +36498,7 @@ export namespace stripe {
       .optional(),
     /** The mandate for the SEPA Direct Debit PaymentMethod which was generated by this Charge. */
     generated_sepa_debit_mandate: z
-      .union([z.string().max(5000), mandateSchema])
+      .union([z.string().max(5000), MandateSchema])
       .nullable()
       .describe(
         'The mandate for the SEPA Direct Debit PaymentMethod which was generated by this Charge.'
@@ -36840,7 +36591,7 @@ export namespace stripe {
       .optional(),
     /** The ID of the SEPA Direct Debit PaymentMethod which was generated by this Charge. */
     generated_sepa_debit: z
-      .union([z.string().max(5000), payment_methodSchema])
+      .union([z.string().max(5000), PaymentMethodSchema])
       .nullable()
       .describe(
         'The ID of the SEPA Direct Debit PaymentMethod which was generated by this Charge.'
@@ -36848,7 +36599,7 @@ export namespace stripe {
       .optional(),
     /** The mandate for the SEPA Direct Debit PaymentMethod which was generated by this Charge. */
     generated_sepa_debit_mandate: z
-      .union([z.string().max(5000), mandateSchema])
+      .union([z.string().max(5000), MandateSchema])
       .nullable()
       .describe(
         'The mandate for the SEPA Direct Debit PaymentMethod which was generated by this Charge.'
@@ -36913,7 +36664,7 @@ export namespace stripe {
       .optional(),
     /** The ID of the SEPA Direct Debit PaymentMethod which was generated by this Charge. */
     generated_sepa_debit: z
-      .union([z.string().max(5000), payment_methodSchema])
+      .union([z.string().max(5000), PaymentMethodSchema])
       .nullable()
       .describe(
         'The ID of the SEPA Direct Debit PaymentMethod which was generated by this Charge.'
@@ -36921,7 +36672,7 @@ export namespace stripe {
       .optional(),
     /** The mandate for the SEPA Direct Debit PaymentMethod which was generated by this Charge. */
     generated_sepa_debit_mandate: z
-      .union([z.string().max(5000), mandateSchema])
+      .union([z.string().max(5000), MandateSchema])
       .nullable()
       .describe(
         'The mandate for the SEPA Direct Debit PaymentMethod which was generated by this Charge.'
@@ -37002,7 +36753,7 @@ export namespace stripe {
       .optional(),
     /** ID of the mandate used to make this payment. */
     mandate: z
-      .union([z.string().max(5000), mandateSchema])
+      .union([z.string().max(5000), MandateSchema])
       .describe('ID of the mandate used to make this payment.')
       .optional(),
     /** Reference number to locate ACH payments with customer's bank. */
@@ -37041,7 +36792,7 @@ export namespace stripe {
         .optional(),
       /** The charge associated with this review. */
       charge: z
-        .union([z.string().max(5000), chargeSchema])
+        .union([z.string().max(5000), ChargeSchema])
         .nullable()
         .describe('The charge associated with this review.')
         .optional(),
@@ -37076,8 +36827,7 @@ export namespace stripe {
         .describe('The IP address where the payment originated.')
         .optional(),
       /** Information related to the location of the payment. Note that this information is an approximation and attempts to locate the nearest population center - it should not be used to determine a specific address. */
-      ip_address_location: radar_review_resource_locationSchema
-        .nullable()
+      ip_address_location: RadarReviewResourceLocationSchema.nullable()
         .describe(
           'Information related to the location of the payment. Note that this information is an approximation and attempts to locate the nearest population center - it should not be used to determine a specific address.'
         )
@@ -37104,7 +36854,7 @@ export namespace stripe {
         ),
       /** The PaymentIntent ID associated with this review, if one exists. */
       payment_intent: z
-        .union([z.string().max(5000), payment_intentSchema])
+        .union([z.string().max(5000), PaymentIntentSchema])
         .describe(
           'The PaymentIntent ID associated with this review, if one exists.'
         )
@@ -37117,8 +36867,7 @@ export namespace stripe {
           'The reason the review is currently open or closed. One of `rule`, `manual`, `approved`, `refunded`, `refunded_as_fraud`, `disputed`, or `redacted`.'
         ),
       /** Information related to the browsing session of the user who initiated the payment. */
-      session: radar_review_resource_sessionSchema
-        .nullable()
+      session: RadarReviewResourceSessionSchema.nullable()
         .describe(
           'Information related to the browsing session of the user who initiated the payment.'
         )
@@ -37141,7 +36890,7 @@ export namespace stripe {
       .optional(),
     /** ID of an existing, connected Stripe account to transfer funds to if `transfer_data` was specified in the charge request. */
     destination: z
-      .union([z.string().max(5000), accountSchema])
+      .union([z.string().max(5000), AccountSchema])
       .describe(
         'ID of an existing, connected Stripe account to transfer funds to if `transfer_data` was specified in the charge request.'
       )
@@ -37158,10 +36907,10 @@ export namespace stripe {
         'The Checkout session that this coupon is applied to, if it is applied to a particular session in payment mode. Will not be present for subscription mode.'
       )
       .optional(),
-    coupon: couponSchema,
+    coupon: CouponSchema,
     /** The ID of the customer associated with this discount. */
     customer: z
-      .union([z.string().max(5000), customerSchema, deleted_customerSchema])
+      .union([z.string().max(5000), CustomerSchema, DeletedCustomerSchema])
       .nullable()
       .describe('The ID of the customer associated with this discount.')
       .optional(),
@@ -37200,7 +36949,7 @@ export namespace stripe {
       ),
     /** The promotion code applied to create this discount. */
     promotion_code: z
-      .union([z.string().max(5000), promotion_codeSchema])
+      .union([z.string().max(5000), PromotionCodeSchema])
       .nullable()
       .describe('The promotion code applied to create this discount.')
       .optional(),
@@ -37235,7 +36984,7 @@ export namespace stripe {
       .describe('The relation between this invoice and the cloned invoice'),
     /** The invoice that was cloned. */
     invoice: z
-      .union([z.string().max(5000), invoiceSchema])
+      .union([z.string().max(5000), InvoiceSchema])
       .describe('The invoice that was cloned.')
   })
   export type InvoicesResourceFromInvoice = z.infer<
@@ -37280,7 +37029,7 @@ export namespace stripe {
         .optional(),
       /** The amount of discount calculated per discount for this line item. */
       discount_amounts: z
-        .array(discounts_resource_discount_amountSchema)
+        .array(DiscountsResourceDiscountAmountSchema)
         .nullable()
         .describe(
           'The amount of discount calculated per discount for this line item.'
@@ -37294,7 +37043,7 @@ export namespace stripe {
         ),
       /** The discounts applied to the invoice line item. Line item discounts are applied before invoice discounts. Use `expand[]=discounts` to expand each discount. */
       discounts: z
-        .array(z.union([z.string().max(5000), discountSchema]))
+        .array(z.union([z.string().max(5000), DiscountSchema]))
         .describe(
           'The discounts applied to the invoice line item. Line item discounts are applied before invoice discounts. Use `expand[]=discounts` to expand each discount.'
         ),
@@ -37309,7 +37058,7 @@ export namespace stripe {
         .optional(),
       /** The ID of the [invoice item](https://stripe.com/docs/api/invoiceitems) associated with this line item if any. */
       invoice_item: z
-        .union([z.string().max(5000), invoiceitemSchema])
+        .union([z.string().max(5000), InvoiceitemSchema])
         .describe(
           'The ID of the [invoice item](https://stripe.com/docs/api/invoiceitems) associated with this line item if any.'
         )
@@ -37332,27 +37081,26 @@ export namespace stripe {
         .describe(
           "String representing the object's type. Objects of the same type share the same value."
         ),
-      period: invoice_line_item_periodSchema,
+      period: InvoiceLineItemPeriodSchema,
       /** Contains pretax credit amounts (ex: discount, credit grants, etc) that apply to this line item. */
       pretax_credit_amounts: z
-        .array(invoices_resource_pretax_credit_amountSchema)
+        .array(InvoicesResourcePretaxCreditAmountSchema)
         .nullable()
         .describe(
           'Contains pretax credit amounts (ex: discount, credit grants, etc) that apply to this line item.'
         )
         .optional(),
       /** The price of the line item. */
-      price: priceSchema
-        .nullable()
+      price: PriceSchema.nullable()
         .describe('The price of the line item.')
         .optional(),
       /** Whether this is a proration. */
       proration: z.boolean().describe('Whether this is a proration.'),
       /** Additional details for proration line items */
-      proration_details: invoices_resource_line_items_proration_detailsSchema
-        .nullable()
-        .describe('Additional details for proration line items')
-        .optional(),
+      proration_details:
+        InvoicesResourceLineItemsProrationDetailsSchema.nullable()
+          .describe('Additional details for proration line items')
+          .optional(),
       /** The quantity of the subscription, if the line item is a subscription or a proration. */
       quantity: z
         .number()
@@ -37364,26 +37112,26 @@ export namespace stripe {
         .optional(),
       /** The subscription that the invoice item pertains to, if any. */
       subscription: z
-        .union([z.string().max(5000), subscriptionSchema])
+        .union([z.string().max(5000), SubscriptionSchema])
         .nullable()
         .describe('The subscription that the invoice item pertains to, if any.')
         .optional(),
       /** The subscription item that generated this line item. Left empty if the line item is not an explicit result of a subscription. */
       subscription_item: z
-        .union([z.string().max(5000), subscription_itemSchema])
+        .union([z.string().max(5000), SubscriptionItemSchema])
         .describe(
           'The subscription item that generated this line item. Left empty if the line item is not an explicit result of a subscription.'
         )
         .optional(),
       /** The amount of tax calculated per tax rate for this line item */
       tax_amounts: z
-        .array(invoice_tax_amountSchema)
+        .array(InvoiceTaxAmountSchema)
         .describe(
           'The amount of tax calculated per tax rate for this line item'
         ),
       /** The tax rates which apply to the line item. */
       tax_rates: z
-        .array(tax_rateSchema)
+        .array(TaxRateSchema)
         .describe('The tax rates which apply to the line item.'),
       /** A string identifying the type of the source of this line item, either an `invoiceitem` or a `subscription`. */
       type: z
@@ -37413,7 +37161,7 @@ export namespace stripe {
       .describe('The amount, in cents (or local equivalent), of the discount.'),
     /** The discount that was applied to get this discount amount. */
     discount: z
-      .union([z.string().max(5000), discountSchema, deleted_discountSchema])
+      .union([z.string().max(5000), DiscountSchema, DeletedDiscountSchema])
       .describe('The discount that was applied to get this discount amount.')
   })
   export type DiscountsResourceDiscountAmount = z.infer<
@@ -37450,7 +37198,7 @@ export namespace stripe {
         ),
       /** The ID of the customer who will be billed when this invoice item is billed. */
       customer: z
-        .union([z.string().max(5000), customerSchema, deleted_customerSchema])
+        .union([z.string().max(5000), CustomerSchema, DeletedCustomerSchema])
         .describe(
           'The ID of the customer who will be billed when this invoice item is billed.'
         ),
@@ -37478,7 +37226,7 @@ export namespace stripe {
         ),
       /** The discounts which apply to the invoice item. Item discounts are applied before invoice discounts. Use `expand[]=discounts` to expand each discount. */
       discounts: z
-        .array(z.union([z.string().max(5000), discountSchema]))
+        .array(z.union([z.string().max(5000), DiscountSchema]))
         .nullable()
         .describe(
           'The discounts which apply to the invoice item. Item discounts are applied before invoice discounts. Use `expand[]=discounts` to expand each discount.'
@@ -37488,7 +37236,7 @@ export namespace stripe {
       id: z.string().max(5000).describe('Unique identifier for the object.'),
       /** The ID of the invoice this invoice item belongs to. */
       invoice: z
-        .union([z.string().max(5000), invoiceSchema])
+        .union([z.string().max(5000), InvoiceSchema])
         .nullable()
         .describe('The ID of the invoice this invoice item belongs to.')
         .optional(),
@@ -37512,10 +37260,9 @@ export namespace stripe {
         .describe(
           "String representing the object's type. Objects of the same type share the same value."
         ),
-      period: invoice_line_item_periodSchema,
+      period: InvoiceLineItemPeriodSchema,
       /** The price of the invoice item. */
-      price: priceSchema
-        .nullable()
+      price: PriceSchema.nullable()
         .describe('The price of the invoice item.')
         .optional(),
       /** Whether the invoice item was created automatically as a proration adjustment when the customer switched plans. */
@@ -37533,7 +37280,7 @@ export namespace stripe {
         ),
       /** The subscription that this invoice item has been created for, if any. */
       subscription: z
-        .union([z.string().max(5000), subscriptionSchema])
+        .union([z.string().max(5000), SubscriptionSchema])
         .nullable()
         .describe(
           'The subscription that this invoice item has been created for, if any.'
@@ -37549,7 +37296,7 @@ export namespace stripe {
         .optional(),
       /** The tax rates which apply to the invoice item. When set, the `default_tax_rates` on the invoice do not apply to this invoice item. */
       tax_rates: z
-        .array(tax_rateSchema)
+        .array(TaxRateSchema)
         .nullable()
         .describe(
           'The tax rates which apply to the invoice item. When set, the `default_tax_rates` on the invoice do not apply to this invoice item.'
@@ -37557,7 +37304,7 @@ export namespace stripe {
         .optional(),
       /** ID of the test clock this invoice item belongs to. */
       test_clock: z
-        .union([z.string().max(5000), test_helpers.test_clockSchema])
+        .union([z.string().max(5000), TestHelpersTestClockSchema])
         .nullable()
         .describe('ID of the test clock this invoice item belongs to.')
         .optional(),
@@ -37595,8 +37342,8 @@ export namespace stripe {
       application: z
         .union([
           z.string().max(5000),
-          applicationSchema,
-          deleted_applicationSchema
+          ApplicationSchema,
+          DeletedApplicationSchema
         ])
         .nullable()
         .describe(
@@ -37611,7 +37358,7 @@ export namespace stripe {
           "A non-negative decimal between 0 and 100, with at most two decimal places. This represents the percentage of the subscription invoice total that will be transferred to the application owner's Stripe account."
         )
         .optional(),
-      automatic_tax: subscription_automatic_taxSchema,
+      automatic_tax: SubscriptionAutomaticTaxSchema,
       /** The reference point that aligns future [billing cycle](https://stripe.com/docs/subscriptions/billing-cycle) dates. It sets the day of week for `week` intervals, the day of month for `month` and `year` intervals, and the month of year for `year` intervals. The timestamp is in UTC format. */
       billing_cycle_anchor: z
         .number()
@@ -37621,15 +37368,13 @@ export namespace stripe {
         ),
       /** The fixed values used to calculate the `billing_cycle_anchor`. */
       billing_cycle_anchor_config:
-        subscriptions_resource_billing_cycle_anchor_configSchema
-          .nullable()
+        SubscriptionsResourceBillingCycleAnchorConfigSchema.nullable()
           .describe(
             'The fixed values used to calculate the `billing_cycle_anchor`.'
           )
           .optional(),
       /** Define thresholds at which an invoice will be sent, and the subscription advanced to a new billing period */
-      billing_thresholds: subscription_billing_thresholdsSchema
-        .nullable()
+      billing_thresholds: SubscriptionBillingThresholdsSchema.nullable()
         .describe(
           'Define thresholds at which an invoice will be sent, and the subscription advanced to a new billing period'
         )
@@ -37659,8 +37404,7 @@ export namespace stripe {
         )
         .optional(),
       /** Details about why this subscription was cancelled */
-      cancellation_details: cancellation_detailsSchema
-        .nullable()
+      cancellation_details: CancellationDetailsSchema.nullable()
         .describe('Details about why this subscription was cancelled')
         .optional(),
       /** Either `charge_automatically`, or `send_invoice`. When charging automatically, Stripe will attempt to pay this subscription at the end of the cycle using the default source attached to the customer. When sending an invoice, Stripe will email your customer an invoice with payment instructions and mark the subscription as `active`. */
@@ -37698,7 +37442,7 @@ export namespace stripe {
         ),
       /** ID of the customer who owns the subscription. */
       customer: z
-        .union([z.string().max(5000), customerSchema, deleted_customerSchema])
+        .union([z.string().max(5000), CustomerSchema, DeletedCustomerSchema])
         .describe('ID of the customer who owns the subscription.'),
       /** Number of days a customer has to pay invoices generated by this subscription. This value will be `null` for subscriptions where `collection_method=charge_automatically`. */
       days_until_due: z
@@ -37711,7 +37455,7 @@ export namespace stripe {
         .optional(),
       /** ID of the default payment method for the subscription. It must belong to the customer associated with the subscription. This takes precedence over `default_source`. If neither are set, invoices will use the customer's [invoice_settings.default_payment_method](https://stripe.com/docs/api/customers/object#customer_object-invoice_settings-default_payment_method) or [default_source](https://stripe.com/docs/api/customers/object#customer_object-default_source). */
       default_payment_method: z
-        .union([z.string().max(5000), payment_methodSchema])
+        .union([z.string().max(5000), PaymentMethodSchema])
         .nullable()
         .describe(
           "ID of the default payment method for the subscription. It must belong to the customer associated with the subscription. This takes precedence over `default_source`. If neither are set, invoices will use the customer's [invoice_settings.default_payment_method](https://stripe.com/docs/api/customers/object#customer_object-invoice_settings-default_payment_method) or [default_source](https://stripe.com/docs/api/customers/object#customer_object-default_source)."
@@ -37721,9 +37465,9 @@ export namespace stripe {
       default_source: z
         .union([
           z.string().max(5000),
-          bank_accountSchema,
-          cardSchema,
-          sourceSchema
+          BankAccountSchema,
+          CardSchema,
+          SourceSchema
         ])
         .nullable()
         .describe(
@@ -37732,7 +37476,7 @@ export namespace stripe {
         .optional(),
       /** The tax rates that will apply to any subscription item that does not have `tax_rates` set. Invoices created will have their `default_tax_rates` populated from the subscription. */
       default_tax_rates: z
-        .array(tax_rateSchema)
+        .array(TaxRateSchema)
         .nullable()
         .describe(
           'The tax rates that will apply to any subscription item that does not have `tax_rates` set. Invoices created will have their `default_tax_rates` populated from the subscription.'
@@ -37748,15 +37492,14 @@ export namespace stripe {
         )
         .optional(),
       /** Describes the current discount applied to this subscription, if there is one. When billing, a discount applied to a subscription overrides a discount applied on a customer-wide basis. This field has been deprecated and will be removed in a future API version. Use `discounts` instead. */
-      discount: discountSchema
-        .nullable()
+      discount: DiscountSchema.nullable()
         .describe(
           'Describes the current discount applied to this subscription, if there is one. When billing, a discount applied to a subscription overrides a discount applied on a customer-wide basis. This field has been deprecated and will be removed in a future API version. Use `discounts` instead.'
         )
         .optional(),
       /** The discounts applied to the subscription. Subscription item discounts are applied before subscription discounts. Use `expand[]=discounts` to expand each discount. */
       discounts: z
-        .array(z.union([z.string().max(5000), discountSchema]))
+        .array(z.union([z.string().max(5000), DiscountSchema]))
         .describe(
           'The discounts applied to the subscription. Subscription item discounts are applied before subscription discounts. Use `expand[]=discounts` to expand each discount.'
         ),
@@ -37771,14 +37514,13 @@ export namespace stripe {
         .optional(),
       /** Unique identifier for the object. */
       id: z.string().max(5000).describe('Unique identifier for the object.'),
-      invoice_settings:
-        subscriptions_resource_subscription_invoice_settingsSchema,
+      invoice_settings: SubscriptionsResourceSubscriptionInvoiceSettingsSchema,
       /** List of subscription items, each with an attached price. */
       items: z
         .object({
           /** Details about each object. */
           data: z
-            .array(subscription_itemSchema)
+            .array(SubscriptionItemSchema)
             .describe('Details about each object.'),
           /** True if this list has another page of items after this one that can be fetched. */
           has_more: z
@@ -37801,7 +37543,7 @@ export namespace stripe {
         .describe('List of subscription items, each with an attached price.'),
       /** The most recent invoice this subscription has generated. */
       latest_invoice: z
-        .union([z.string().max(5000), invoiceSchema])
+        .union([z.string().max(5000), InvoiceSchema])
         .nullable()
         .describe('The most recent invoice this subscription has generated.')
         .optional(),
@@ -37834,52 +37576,48 @@ export namespace stripe {
         ),
       /** The account (if any) the charge was made on behalf of for charges associated with this subscription. See the Connect documentation for details. */
       on_behalf_of: z
-        .union([z.string().max(5000), accountSchema])
+        .union([z.string().max(5000), AccountSchema])
         .nullable()
         .describe(
           'The account (if any) the charge was made on behalf of for charges associated with this subscription. See the Connect documentation for details.'
         )
         .optional(),
       /** If specified, payment collection for this subscription will be paused. Note that the subscription status will be unchanged and will not be updated to `paused`. Learn more about [pausing collection](https://stripe.com/docs/billing/subscriptions/pause-payment). */
-      pause_collection: subscriptions_resource_pause_collectionSchema
-        .nullable()
+      pause_collection: SubscriptionsResourcePauseCollectionSchema.nullable()
         .describe(
           'If specified, payment collection for this subscription will be paused. Note that the subscription status will be unchanged and will not be updated to `paused`. Learn more about [pausing collection](https://stripe.com/docs/billing/subscriptions/pause-payment).'
         )
         .optional(),
       /** Payment settings passed on to invoices created by the subscription. */
-      payment_settings: subscriptions_resource_payment_settingsSchema
-        .nullable()
+      payment_settings: SubscriptionsResourcePaymentSettingsSchema.nullable()
         .describe(
           'Payment settings passed on to invoices created by the subscription.'
         )
         .optional(),
       /** Specifies an interval for how often to bill for any pending invoice items. It is analogous to calling [Create an invoice](https://stripe.com/docs/api#create_invoice) for the given subscription at the specified interval. */
       pending_invoice_item_interval:
-        subscription_pending_invoice_item_intervalSchema
-          .nullable()
+        SubscriptionPendingInvoiceItemIntervalSchema.nullable()
           .describe(
             'Specifies an interval for how often to bill for any pending invoice items. It is analogous to calling [Create an invoice](https://stripe.com/docs/api#create_invoice) for the given subscription at the specified interval.'
           )
           .optional(),
       /** You can use this [SetupIntent](https://stripe.com/docs/api/setup_intents) to collect user authentication when creating a subscription without immediate payment or updating a subscription's payment method, allowing you to optimize for off-session payments. Learn more in the [SCA Migration Guide](https://stripe.com/docs/billing/migration/strong-customer-authentication#scenario-2). */
       pending_setup_intent: z
-        .union([z.string().max(5000), setup_intentSchema])
+        .union([z.string().max(5000), SetupIntentSchema])
         .nullable()
         .describe(
           "You can use this [SetupIntent](https://stripe.com/docs/api/setup_intents) to collect user authentication when creating a subscription without immediate payment or updating a subscription's payment method, allowing you to optimize for off-session payments. Learn more in the [SCA Migration Guide](https://stripe.com/docs/billing/migration/strong-customer-authentication#scenario-2)."
         )
         .optional(),
       /** If specified, [pending updates](https://stripe.com/docs/billing/subscriptions/pending-updates) that will be applied to the subscription once the `latest_invoice` has been paid. */
-      pending_update: subscriptions_resource_pending_updateSchema
-        .nullable()
+      pending_update: SubscriptionsResourcePendingUpdateSchema.nullable()
         .describe(
           'If specified, [pending updates](https://stripe.com/docs/billing/subscriptions/pending-updates) that will be applied to the subscription once the `latest_invoice` has been paid.'
         )
         .optional(),
       /** The schedule attached to the subscription */
       schedule: z
-        .union([z.string().max(5000), subscription_scheduleSchema])
+        .union([z.string().max(5000), SubscriptionScheduleSchema])
         .nullable()
         .describe('The schedule attached to the subscription')
         .optional(),
@@ -37919,13 +37657,12 @@ export namespace stripe {
         ),
       /** ID of the test clock this subscription belongs to. */
       test_clock: z
-        .union([z.string().max(5000), test_helpers.test_clockSchema])
+        .union([z.string().max(5000), TestHelpersTestClockSchema])
         .nullable()
         .describe('ID of the test clock this subscription belongs to.')
         .optional(),
       /** The account (if any) the subscription's payments will be attributed to for tax reporting, and where funds from each payment will be transferred to for each of the subscription's invoices. */
-      transfer_data: subscription_transfer_dataSchema
-        .nullable()
+      transfer_data: SubscriptionTransferDataSchema.nullable()
         .describe(
           "The account (if any) the subscription's payments will be attributed to for tax reporting, and where funds from each payment will be transferred to for each of the subscription's invoices."
         )
@@ -37938,8 +37675,7 @@ export namespace stripe {
         .describe('If the subscription has a trial, the end of that trial.')
         .optional(),
       /** Settings related to subscription trials. */
-      trial_settings: subscriptions_trials_resource_trial_settingsSchema
-        .nullable()
+      trial_settings: SubscriptionsTrialsResourceTrialSettingsSchema.nullable()
         .describe('Settings related to subscription trials.')
         .optional(),
       /** If the subscription has a trial, the beginning of that trial. */
@@ -37971,8 +37707,7 @@ export namespace stripe {
         'Whether Stripe automatically computes tax on this subscription.'
       ),
     /** The account that's liable for tax. If set, the business address and tax registrations required to perform the tax calculation are loaded from this account. The tax transaction is returned in the report of the connected account. */
-    liability: connect_account_referenceSchema
-      .nullable()
+    liability: ConnectAccountReferenceSchema.nullable()
       .describe(
         "The account that's liable for tax. If set, the business address and tax registrations required to perform the tax calculation are loaded from this account. The tax transaction is returned in the report of the connected account."
       )
@@ -37986,15 +37721,13 @@ export namespace stripe {
     z.object({
       /** The account tax IDs associated with the subscription. Will be set on invoices generated by the subscription. */
       account_tax_ids: z
-        .array(
-          z.union([z.string().max(5000), tax_idSchema, deleted_tax_idSchema])
-        )
+        .array(z.union([z.string().max(5000), TaxIdSchema, DeletedTaxIdSchema]))
         .nullable()
         .describe(
           'The account tax IDs associated with the subscription. Will be set on invoices generated by the subscription.'
         )
         .optional(),
-      issuer: connect_account_referenceSchema
+      issuer: ConnectAccountReferenceSchema
     })
   export type SubscriptionsResourceSubscriptionInvoiceSettings = z.infer<
     typeof SubscriptionsResourceSubscriptionInvoiceSettingsSchema
@@ -38007,8 +37740,7 @@ export namespace stripe {
   export const SubscriptionItemSchema = z
     .object({
       /** Define thresholds at which an invoice will be sent, and the related subscription advanced to a new billing period */
-      billing_thresholds: subscription_item_billing_thresholdsSchema
-        .nullable()
+      billing_thresholds: SubscriptionItemBillingThresholdsSchema.nullable()
         .describe(
           'Define thresholds at which an invoice will be sent, and the related subscription advanced to a new billing period'
         )
@@ -38022,7 +37754,7 @@ export namespace stripe {
         ),
       /** The discounts applied to the subscription item. Subscription item discounts are applied before subscription discounts. Use `expand[]=discounts` to expand each discount. */
       discounts: z
-        .array(z.union([z.string().max(5000), discountSchema]))
+        .array(z.union([z.string().max(5000), DiscountSchema]))
         .describe(
           'The discounts applied to the subscription item. Subscription item discounts are applied before subscription discounts. Use `expand[]=discounts` to expand each discount.'
         ),
@@ -38040,7 +37772,7 @@ export namespace stripe {
         .describe(
           "String representing the object's type. Objects of the same type share the same value."
         ),
-      price: priceSchema,
+      price: PriceSchema,
       /** The [quantity](https://stripe.com/docs/subscriptions/quantities) of the plan to which the customer should be subscribed. */
       quantity: z
         .number()
@@ -38056,7 +37788,7 @@ export namespace stripe {
         .describe('The `subscription` this `subscription_item` belongs to.'),
       /** The tax rates which apply to this `subscription_item`. When set, the `default_tax_rates` on the subscription do not apply to this `subscription_item`. */
       tax_rates: z
-        .array(tax_rateSchema)
+        .array(TaxRateSchema)
         .nullable()
         .describe(
           'The tax rates which apply to this `subscription_item`. When set, the `default_tax_rates` on the subscription do not apply to this `subscription_item`.'
@@ -38095,7 +37827,7 @@ export namespace stripe {
     .object({
       /** ID of the Connect application that created the SetupIntent. */
       application: z
-        .union([z.string().max(5000), applicationSchema])
+        .union([z.string().max(5000), ApplicationSchema])
         .nullable()
         .describe('ID of the Connect application that created the SetupIntent.')
         .optional(),
@@ -38112,8 +37844,7 @@ export namespace stripe {
         .optional(),
       /** Settings for dynamic payment methods compatible with this Setup Intent */
       automatic_payment_methods:
-        payment_flows_automatic_payment_methods_setup_intentSchema
-          .nullable()
+        PaymentFlowsAutomaticPaymentMethodsSetupIntentSchema.nullable()
           .describe(
             'Settings for dynamic payment methods compatible with this Setup Intent'
           )
@@ -38152,7 +37883,7 @@ export namespace stripe {
        * If present, the SetupIntent's payment method will be attached to the Customer on successful setup. Payment methods attached to other Customers cannot be used with this SetupIntent.
        */
       customer: z
-        .union([z.string().max(5000), customerSchema, deleted_customerSchema])
+        .union([z.string().max(5000), CustomerSchema, DeletedCustomerSchema])
         .nullable()
         .describe(
           "ID of the Customer this SetupIntent belongs to, if one exists.\n\nIf present, the SetupIntent's payment method will be attached to the Customer on successful setup. Payment methods attached to other Customers cannot be used with this SetupIntent."
@@ -38182,15 +37913,14 @@ export namespace stripe {
       /** Unique identifier for the object. */
       id: z.string().max(5000).describe('Unique identifier for the object.'),
       /** The error encountered in the previous SetupIntent confirmation. */
-      last_setup_error: api_errorsSchema
-        .nullable()
+      last_setup_error: ApiErrorsSchema.nullable()
         .describe(
           'The error encountered in the previous SetupIntent confirmation.'
         )
         .optional(),
       /** The most recent SetupAttempt for this SetupIntent. */
       latest_attempt: z
-        .union([z.string().max(5000), setup_attemptSchema])
+        .union([z.string().max(5000), SetupAttemptSchema])
         .nullable()
         .describe('The most recent SetupAttempt for this SetupIntent.')
         .optional(),
@@ -38202,7 +37932,7 @@ export namespace stripe {
         ),
       /** ID of the multi use Mandate generated by the SetupIntent. */
       mandate: z
-        .union([z.string().max(5000), mandateSchema])
+        .union([z.string().max(5000), MandateSchema])
         .nullable()
         .describe('ID of the multi use Mandate generated by the SetupIntent.')
         .optional(),
@@ -38215,8 +37945,7 @@ export namespace stripe {
         )
         .optional(),
       /** If present, this property tells you what actions you need to take in order for your customer to continue payment setup. */
-      next_action: setup_intent_next_actionSchema
-        .nullable()
+      next_action: SetupIntentNextActionSchema.nullable()
         .describe(
           'If present, this property tells you what actions you need to take in order for your customer to continue payment setup.'
         )
@@ -38229,13 +37958,13 @@ export namespace stripe {
         ),
       /** The account (if any) for which the setup is intended. */
       on_behalf_of: z
-        .union([z.string().max(5000), accountSchema])
+        .union([z.string().max(5000), AccountSchema])
         .nullable()
         .describe('The account (if any) for which the setup is intended.')
         .optional(),
       /** ID of the payment method used with this SetupIntent. If the payment method is `card_present` and isn't a digital wallet, then the [generated_card](https://docs.stripe.com/api/setup_attempts/object#setup_attempt_object-payment_method_details-card_present-generated_card) associated with the `latest_attempt` is attached to the Customer instead. */
       payment_method: z
-        .union([z.string().max(5000), payment_methodSchema])
+        .union([z.string().max(5000), PaymentMethodSchema])
         .nullable()
         .describe(
           "ID of the payment method used with this SetupIntent. If the payment method is `card_present` and isn't a digital wallet, then the [generated_card](https://docs.stripe.com/api/setup_attempts/object#setup_attempt_object-payment_method_details-card_present-generated_card) associated with the `latest_attempt` is attached to the Customer instead."
@@ -38243,15 +37972,13 @@ export namespace stripe {
         .optional(),
       /** Information about the [payment method configuration](https://stripe.com/docs/api/payment_method_configurations) used for this Setup Intent. */
       payment_method_configuration_details:
-        payment_method_config_biz_payment_method_configuration_detailsSchema
-          .nullable()
+        PaymentMethodConfigBizPaymentMethodConfigurationDetailsSchema.nullable()
           .describe(
             'Information about the [payment method configuration](https://stripe.com/docs/api/payment_method_configurations) used for this Setup Intent.'
           )
           .optional(),
       /** Payment method-specific configuration for this SetupIntent. */
-      payment_method_options: setup_intent_payment_method_optionsSchema
-        .nullable()
+      payment_method_options: SetupIntentPaymentMethodOptionsSchema.nullable()
         .describe('Payment method-specific configuration for this SetupIntent.')
         .optional(),
       /** The list of payment method types (e.g. card) that this SetupIntent is allowed to set up. */
@@ -38262,7 +37989,7 @@ export namespace stripe {
         ),
       /** ID of the single_use Mandate generated by the SetupIntent. */
       single_use_mandate: z
-        .union([z.string().max(5000), mandateSchema])
+        .union([z.string().max(5000), MandateSchema])
         .nullable()
         .describe('ID of the single_use Mandate generated by the SetupIntent.')
         .optional(),
@@ -38320,7 +38047,7 @@ export namespace stripe {
         ),
       /** List of subscription items, each with an attached plan, that will be set if the update is applied. */
       subscription_items: z
-        .array(subscription_itemSchema)
+        .array(SubscriptionItemSchema)
         .nullable()
         .describe(
           'List of subscription items, each with an attached plan, that will be set if the update is applied.'
@@ -38362,8 +38089,8 @@ export namespace stripe {
       application: z
         .union([
           z.string().max(5000),
-          applicationSchema,
-          deleted_applicationSchema
+          ApplicationSchema,
+          DeletedApplicationSchema
         ])
         .nullable()
         .describe('ID of the Connect Application that created the schedule.')
@@ -38394,17 +38121,16 @@ export namespace stripe {
           'Time at which the object was created. Measured in seconds since the Unix epoch.'
         ),
       /** Object representing the start and end dates for the current phase of the subscription schedule, if it is `active`. */
-      current_phase: subscription_schedule_current_phaseSchema
-        .nullable()
+      current_phase: SubscriptionScheduleCurrentPhaseSchema.nullable()
         .describe(
           'Object representing the start and end dates for the current phase of the subscription schedule, if it is `active`.'
         )
         .optional(),
       /** ID of the customer who owns the subscription schedule. */
       customer: z
-        .union([z.string().max(5000), customerSchema, deleted_customerSchema])
+        .union([z.string().max(5000), CustomerSchema, DeletedCustomerSchema])
         .describe('ID of the customer who owns the subscription schedule.'),
-      default_settings: subscription_schedules_resource_default_settingsSchema,
+      default_settings: SubscriptionSchedulesResourceDefaultSettingsSchema,
       /** Behavior of the subscription schedule and underlying subscription when it ends. Possible values are `release` or `cancel` with the default being `release`. `release` will end the subscription schedule and keep the underlying subscription running. `cancel` will end the subscription schedule and cancel the underlying subscription. */
       end_behavior: z
         .enum(['cancel', 'none', 'release', 'renew'])
@@ -38435,7 +38161,7 @@ export namespace stripe {
         ),
       /** Configuration for the subscription schedule's phases. */
       phases: z
-        .array(subscription_schedule_phase_configurationSchema)
+        .array(SubscriptionSchedulePhaseConfigurationSchema)
         .describe("Configuration for the subscription schedule's phases."),
       /** Time at which the subscription schedule was released. Measured in seconds since the Unix epoch. */
       released_at: z
@@ -38463,7 +38189,7 @@ export namespace stripe {
         ),
       /** ID of the subscription managed by the subscription schedule. */
       subscription: z
-        .union([z.string().max(5000), subscriptionSchema])
+        .union([z.string().max(5000), SubscriptionSchema])
         .nullable()
         .describe(
           'ID of the subscription managed by the subscription schedule.'
@@ -38471,7 +38197,7 @@ export namespace stripe {
         .optional(),
       /** ID of the test clock this subscription schedule belongs to. */
       test_clock: z
-        .union([z.string().max(5000), test_helpers.test_clockSchema])
+        .union([z.string().max(5000), TestHelpersTestClockSchema])
         .nullable()
         .describe('ID of the test clock this subscription schedule belongs to.')
         .optional()
@@ -38491,7 +38217,7 @@ export namespace stripe {
       )
       .optional(),
     automatic_tax:
-      subscription_schedules_resource_default_settings_automatic_taxSchema.optional(),
+      SubscriptionSchedulesResourceDefaultSettingsAutomaticTaxSchema.optional(),
     /** Possible values are `phase_start` or `automatic`. If `phase_start` then billing cycle anchor of the subscription is set to the start of the phase when entering the phase. If `automatic` then the billing cycle anchor is automatically modified as needed when entering the phase. For more information, see the billing cycle [documentation](https://stripe.com/docs/billing/subscriptions/billing-cycle). */
     billing_cycle_anchor: z
       .enum(['automatic', 'phase_start'])
@@ -38499,8 +38225,7 @@ export namespace stripe {
         'Possible values are `phase_start` or `automatic`. If `phase_start` then billing cycle anchor of the subscription is set to the start of the phase when entering the phase. If `automatic` then the billing cycle anchor is automatically modified as needed when entering the phase. For more information, see the billing cycle [documentation](https://stripe.com/docs/billing/subscriptions/billing-cycle).'
       ),
     /** Define thresholds at which an invoice will be sent, and the subscription advanced to a new billing period */
-    billing_thresholds: subscription_billing_thresholdsSchema
-      .nullable()
+    billing_thresholds: SubscriptionBillingThresholdsSchema.nullable()
       .describe(
         'Define thresholds at which an invoice will be sent, and the subscription advanced to a new billing period'
       )
@@ -38515,7 +38240,7 @@ export namespace stripe {
       .optional(),
     /** ID of the default payment method for the subscription schedule. If not set, invoices will use the default payment method in the customer's invoice settings. */
     default_payment_method: z
-      .union([z.string().max(5000), payment_methodSchema])
+      .union([z.string().max(5000), PaymentMethodSchema])
       .nullable()
       .describe(
         "ID of the default payment method for the subscription schedule. If not set, invoices will use the default payment method in the customer's invoice settings."
@@ -38530,18 +38255,17 @@ export namespace stripe {
         'Subscription description, meant to be displayable to the customer. Use this field to optionally store an explanation of the subscription for rendering in Stripe surfaces and certain local payment methods UIs.'
       )
       .optional(),
-    invoice_settings: invoice_setting_subscription_schedule_settingSchema,
+    invoice_settings: InvoiceSettingSubscriptionScheduleSettingSchema,
     /** The account (if any) the charge was made on behalf of for charges associated with the schedule's subscription. See the Connect documentation for details. */
     on_behalf_of: z
-      .union([z.string().max(5000), accountSchema])
+      .union([z.string().max(5000), AccountSchema])
       .nullable()
       .describe(
         "The account (if any) the charge was made on behalf of for charges associated with the schedule's subscription. See the Connect documentation for details."
       )
       .optional(),
     /** The account (if any) the associated subscription's payments will be attributed to for tax reporting, and where funds from each payment will be transferred to for each of the subscription's invoices. */
-    transfer_data: subscription_transfer_dataSchema
-      .nullable()
+    transfer_data: SubscriptionTransferDataSchema.nullable()
       .describe(
         "The account (if any) the associated subscription's payments will be attributed to for tax reporting, and where funds from each payment will be transferred to for each of the subscription's invoices."
       )
@@ -38566,8 +38290,7 @@ export namespace stripe {
           'Whether Stripe automatically computes tax on invoices created during this phase.'
         ),
       /** The account that's liable for tax. If set, the business address and tax registrations required to perform the tax calculation are loaded from this account. The tax transaction is returned in the report of the connected account. */
-      liability: connect_account_referenceSchema
-        .nullable()
+      liability: ConnectAccountReferenceSchema.nullable()
         .describe(
           "The account that's liable for tax. If set, the business address and tax registrations required to perform the tax calculation are loaded from this account. The tax transaction is returned in the report of the connected account."
         )
@@ -38581,9 +38304,7 @@ export namespace stripe {
   export const InvoiceSettingSubscriptionScheduleSettingSchema = z.object({
     /** The account tax IDs associated with the subscription schedule. Will be set on invoices generated by the subscription schedule. */
     account_tax_ids: z
-      .array(
-        z.union([z.string().max(5000), tax_idSchema, deleted_tax_idSchema])
-      )
+      .array(z.union([z.string().max(5000), TaxIdSchema, DeletedTaxIdSchema]))
       .nullable()
       .describe(
         'The account tax IDs associated with the subscription schedule. Will be set on invoices generated by the subscription schedule.'
@@ -38598,7 +38319,7 @@ export namespace stripe {
         'Number of days within which a customer must pay invoices generated by this subscription schedule. This value will be `null` for subscription schedules where `billing=charge_automatically`.'
       )
       .optional(),
-    issuer: connect_account_referenceSchema
+    issuer: ConnectAccountReferenceSchema
   })
   export type InvoiceSettingSubscriptionScheduleSetting = z.infer<
     typeof InvoiceSettingSubscriptionScheduleSettingSchema
@@ -38615,7 +38336,7 @@ export namespace stripe {
       .optional(),
     /** The account where funds from the payment will be transferred to upon payment success. */
     destination: z
-      .union([z.string().max(5000), accountSchema])
+      .union([z.string().max(5000), AccountSchema])
       .describe(
         'The account where funds from the payment will be transferred to upon payment success.'
       )
@@ -38629,7 +38350,7 @@ export namespace stripe {
     .object({
       /** A list of prices and quantities that will generate invoice items appended to the next invoice for this phase. */
       add_invoice_items: z
-        .array(subscription_schedule_add_invoice_itemSchema)
+        .array(SubscriptionScheduleAddInvoiceItemSchema)
         .describe(
           'A list of prices and quantities that will generate invoice items appended to the next invoice for this phase.'
         ),
@@ -38641,7 +38362,7 @@ export namespace stripe {
           "A non-negative decimal between 0 and 100, with at most two decimal places. This represents the percentage of the subscription invoice total that will be transferred to the application owner's Stripe account during this phase of the schedule."
         )
         .optional(),
-      automatic_tax: schedules_phase_automatic_taxSchema.optional(),
+      automatic_tax: SchedulesPhaseAutomaticTaxSchema.optional(),
       /** Possible values are `phase_start` or `automatic`. If `phase_start` then billing cycle anchor of the subscription is set to the start of the phase when entering the phase. If `automatic` then the billing cycle anchor is automatically modified as needed when entering the phase. For more information, see the billing cycle [documentation](https://stripe.com/docs/billing/subscriptions/billing-cycle). */
       billing_cycle_anchor: z
         .enum(['automatic', 'phase_start'])
@@ -38651,8 +38372,7 @@ export namespace stripe {
         )
         .optional(),
       /** Define thresholds at which an invoice will be sent, and the subscription advanced to a new billing period */
-      billing_thresholds: subscription_billing_thresholdsSchema
-        .nullable()
+      billing_thresholds: SubscriptionBillingThresholdsSchema.nullable()
         .describe(
           'Define thresholds at which an invoice will be sent, and the subscription advanced to a new billing period'
         )
@@ -38667,7 +38387,7 @@ export namespace stripe {
         .optional(),
       /** ID of the coupon to use during this phase of the subscription schedule. */
       coupon: z
-        .union([z.string().max(5000), couponSchema, deleted_couponSchema])
+        .union([z.string().max(5000), CouponSchema, DeletedCouponSchema])
         .nullable()
         .describe(
           'ID of the coupon to use during this phase of the subscription schedule.'
@@ -38681,7 +38401,7 @@ export namespace stripe {
         ),
       /** ID of the default payment method for the subscription schedule. It must belong to the customer associated with the subscription schedule. If not set, invoices will use the default payment method in the customer's invoice settings. */
       default_payment_method: z
-        .union([z.string().max(5000), payment_methodSchema])
+        .union([z.string().max(5000), PaymentMethodSchema])
         .nullable()
         .describe(
           "ID of the default payment method for the subscription schedule. It must belong to the customer associated with the subscription schedule. If not set, invoices will use the default payment method in the customer's invoice settings."
@@ -38689,7 +38409,7 @@ export namespace stripe {
         .optional(),
       /** The default tax rates to apply to the subscription during this phase of the subscription schedule. */
       default_tax_rates: z
-        .array(tax_rateSchema)
+        .array(TaxRateSchema)
         .nullable()
         .describe(
           'The default tax rates to apply to the subscription during this phase of the subscription schedule.'
@@ -38706,7 +38426,7 @@ export namespace stripe {
         .optional(),
       /** The stackable discounts that will be applied to the subscription on this phase. Subscription item discounts are applied before subscription discounts. */
       discounts: z
-        .array(discounts_resource_stackable_discountSchema)
+        .array(DiscountsResourceStackableDiscountSchema)
         .describe(
           'The stackable discounts that will be applied to the subscription on this phase. Subscription item discounts are applied before subscription discounts.'
         ),
@@ -38717,13 +38437,12 @@ export namespace stripe {
         .describe('The end of this phase of the subscription schedule.'),
       /** The invoice settings applicable during this phase. */
       invoice_settings:
-        invoice_setting_subscription_schedule_phase_settingSchema
-          .nullable()
+        InvoiceSettingSubscriptionSchedulePhaseSettingSchema.nullable()
           .describe('The invoice settings applicable during this phase.')
           .optional(),
       /** Subscription items to configure the subscription to during this phase of the subscription schedule. */
       items: z
-        .array(subscription_schedule_configuration_itemSchema)
+        .array(SubscriptionScheduleConfigurationItemSchema)
         .describe(
           'Subscription items to configure the subscription to during this phase of the subscription schedule.'
         ),
@@ -38737,7 +38456,7 @@ export namespace stripe {
         .optional(),
       /** The account (if any) the charge was made on behalf of for charges associated with the schedule's subscription. See the Connect documentation for details. */
       on_behalf_of: z
-        .union([z.string().max(5000), accountSchema])
+        .union([z.string().max(5000), AccountSchema])
         .nullable()
         .describe(
           "The account (if any) the charge was made on behalf of for charges associated with the schedule's subscription. See the Connect documentation for details."
@@ -38755,8 +38474,7 @@ export namespace stripe {
         .int()
         .describe('The start of this phase of the subscription schedule.'),
       /** The account (if any) the associated subscription's payments will be attributed to for tax reporting, and where funds from each payment will be transferred to for each of the subscription's invoices. */
-      transfer_data: subscription_transfer_dataSchema
-        .nullable()
+      transfer_data: SubscriptionTransferDataSchema.nullable()
         .describe(
           "The account (if any) the associated subscription's payments will be attributed to for tax reporting, and where funds from each payment will be transferred to for each of the subscription's invoices."
         )
@@ -38781,11 +38499,11 @@ export namespace stripe {
     .object({
       /** The stackable discounts that will be applied to the item. */
       discounts: z
-        .array(discounts_resource_stackable_discountSchema)
+        .array(DiscountsResourceStackableDiscountSchema)
         .describe('The stackable discounts that will be applied to the item.'),
       /** ID of the price used to generate the invoice item. */
       price: z
-        .union([z.string().max(5000), priceSchema, deleted_priceSchema])
+        .union([z.string().max(5000), PriceSchema, DeletedPriceSchema])
         .describe('ID of the price used to generate the invoice item.'),
       /** The quantity of the invoice item. */
       quantity: z
@@ -38796,7 +38514,7 @@ export namespace stripe {
         .optional(),
       /** The tax rates which apply to the item. When set, the `default_tax_rates` do not apply to this item. */
       tax_rates: z
-        .array(tax_rateSchema)
+        .array(TaxRateSchema)
         .nullable()
         .describe(
           'The tax rates which apply to the item. When set, the `default_tax_rates` do not apply to this item.'
@@ -38813,13 +38531,13 @@ export namespace stripe {
   export const DiscountsResourceStackableDiscountSchema = z.object({
     /** ID of the coupon to create a new discount for. */
     coupon: z
-      .union([z.string().max(5000), couponSchema])
+      .union([z.string().max(5000), CouponSchema])
       .nullable()
       .describe('ID of the coupon to create a new discount for.')
       .optional(),
     /** ID of an existing discount on the object (or one of its ancestors) to reuse. */
     discount: z
-      .union([z.string().max(5000), discountSchema])
+      .union([z.string().max(5000), DiscountSchema])
       .nullable()
       .describe(
         'ID of an existing discount on the object (or one of its ancestors) to reuse.'
@@ -38827,7 +38545,7 @@ export namespace stripe {
       .optional(),
     /** ID of the promotion code to create a new discount for. */
     promotion_code: z
-      .union([z.string().max(5000), promotion_codeSchema])
+      .union([z.string().max(5000), PromotionCodeSchema])
       .nullable()
       .describe('ID of the promotion code to create a new discount for.')
       .optional()
@@ -38850,8 +38568,7 @@ export namespace stripe {
         'Whether Stripe automatically computes tax on invoices created during this phase.'
       ),
     /** The account that's liable for tax. If set, the business address and tax registrations required to perform the tax calculation are loaded from this account. The tax transaction is returned in the report of the connected account. */
-    liability: connect_account_referenceSchema
-      .nullable()
+    liability: ConnectAccountReferenceSchema.nullable()
       .describe(
         "The account that's liable for tax. If set, the business address and tax registrations required to perform the tax calculation are loaded from this account. The tax transaction is returned in the report of the connected account."
       )
@@ -38864,9 +38581,7 @@ export namespace stripe {
   export const InvoiceSettingSubscriptionSchedulePhaseSettingSchema = z.object({
     /** The account tax IDs associated with this phase of the subscription schedule. Will be set on invoices generated by this phase of the subscription schedule. */
     account_tax_ids: z
-      .array(
-        z.union([z.string().max(5000), tax_idSchema, deleted_tax_idSchema])
-      )
+      .array(z.union([z.string().max(5000), TaxIdSchema, DeletedTaxIdSchema]))
       .nullable()
       .describe(
         'The account tax IDs associated with this phase of the subscription schedule. Will be set on invoices generated by this phase of the subscription schedule.'
@@ -38882,8 +38597,7 @@ export namespace stripe {
       )
       .optional(),
     /** The connected account that issues the invoice. The invoice is presented with the branding and support information of the specified account. */
-    issuer: connect_account_referenceSchema
-      .nullable()
+    issuer: ConnectAccountReferenceSchema.nullable()
       .describe(
         'The connected account that issues the invoice. The invoice is presented with the branding and support information of the specified account.'
       )
@@ -38897,15 +38611,14 @@ export namespace stripe {
   export const SubscriptionScheduleConfigurationItemSchema = z
     .object({
       /** Define thresholds at which an invoice will be sent, and the related subscription advanced to a new billing period */
-      billing_thresholds: subscription_item_billing_thresholdsSchema
-        .nullable()
+      billing_thresholds: SubscriptionItemBillingThresholdsSchema.nullable()
         .describe(
           'Define thresholds at which an invoice will be sent, and the related subscription advanced to a new billing period'
         )
         .optional(),
       /** The discounts applied to the subscription item. Subscription item discounts are applied before subscription discounts. Use `expand[]=discounts` to expand each discount. */
       discounts: z
-        .array(discounts_resource_stackable_discountSchema)
+        .array(DiscountsResourceStackableDiscountSchema)
         .describe(
           'The discounts applied to the subscription item. Subscription item discounts are applied before subscription discounts. Use `expand[]=discounts` to expand each discount.'
         ),
@@ -38919,7 +38632,7 @@ export namespace stripe {
         .optional(),
       /** ID of the price to which the customer should be subscribed. */
       price: z
-        .union([z.string().max(5000), priceSchema, deleted_priceSchema])
+        .union([z.string().max(5000), PriceSchema, DeletedPriceSchema])
         .describe(
           'ID of the price to which the customer should be subscribed.'
         ),
@@ -38933,7 +38646,7 @@ export namespace stripe {
         .optional(),
       /** The tax rates which apply to this `phase_item`. When set, the `default_tax_rates` on the phase do not apply to this `phase_item`. */
       tax_rates: z
-        .array(tax_rateSchema)
+        .array(TaxRateSchema)
         .nullable()
         .describe(
           'The tax rates which apply to this `phase_item`. When set, the `default_tax_rates` on the phase do not apply to this `phase_item`.'
@@ -38955,7 +38668,7 @@ export namespace stripe {
       ),
     /** The credit balance transaction that was applied to get this pretax credit amount. */
     credit_balance_transaction: z
-      .union([z.string().max(5000), billing.credit_balance_transactionSchema])
+      .union([z.string().max(5000), BillingCreditBalanceTransactionSchema])
       .nullable()
       .describe(
         'The credit balance transaction that was applied to get this pretax credit amount.'
@@ -38963,7 +38676,7 @@ export namespace stripe {
       .optional(),
     /** The discount that was applied to get this pretax credit amount. */
     discount: z
-      .union([z.string().max(5000), discountSchema, deleted_discountSchema])
+      .union([z.string().max(5000), DiscountSchema, DeletedDiscountSchema])
       .describe(
         'The discount that was applied to get this pretax credit amount.'
       )
@@ -38988,21 +38701,19 @@ export namespace stripe {
           'Time at which the object was created. Measured in seconds since the Unix epoch.'
         ),
       /** Credit details for this credit balance transaction. Only present if type is `credit`. */
-      credit: billing_credit_grants_resource_balance_creditSchema
-        .nullable()
+      credit: BillingCreditGrantsResourceBalanceCreditSchema.nullable()
         .describe(
           'Credit details for this credit balance transaction. Only present if type is `credit`.'
         )
         .optional(),
       /** The credit grant associated with this credit balance transaction. */
       credit_grant: z
-        .union([z.string().max(5000), billing.credit_grantSchema])
+        .union([z.string().max(5000), BillingCreditGrantSchema])
         .describe(
           'The credit grant associated with this credit balance transaction.'
         ),
       /** Debit details for this credit balance transaction. Only present if type is `debit`. */
-      debit: billing_credit_grants_resource_balance_debitSchema
-        .nullable()
+      debit: BillingCreditGrantsResourceBalanceDebitSchema.nullable()
         .describe(
           'Debit details for this credit balance transaction. Only present if type is `debit`.'
         )
@@ -39028,7 +38739,7 @@ export namespace stripe {
         ),
       /** ID of the test clock this credit balance transaction belongs to. */
       test_clock: z
-        .union([z.string().max(5000), test_helpers.test_clockSchema])
+        .union([z.string().max(5000), TestHelpersTestClockSchema])
         .nullable()
         .describe(
           'ID of the test clock this credit balance transaction belongs to.'
@@ -39049,11 +38760,10 @@ export namespace stripe {
   >
 
   export const BillingCreditGrantsResourceBalanceCreditSchema = z.object({
-    amount: billing_credit_grants_resource_amountSchema,
+    amount: BillingCreditGrantsResourceAmountSchema,
     /** Details of the invoice to which the reinstated credits were originally applied. Only present if `type` is `credits_application_invoice_voided`. */
     credits_application_invoice_voided:
-      billing_credit_grants_resource_balance_credits_application_invoice_voidedSchema
-        .nullable()
+      BillingCreditGrantsResourceBalanceCreditsApplicationInvoiceVoidedSchema.nullable()
         .describe(
           'Details of the invoice to which the reinstated credits were originally applied. Only present if `type` is `credits_application_invoice_voided`.'
         )
@@ -39071,7 +38781,7 @@ export namespace stripe {
     z.object({
       /** The invoice to which the reinstated billing credits were originally applied. */
       invoice: z
-        .union([z.string().max(5000), invoiceSchema])
+        .union([z.string().max(5000), InvoiceSchema])
         .describe(
           'The invoice to which the reinstated billing credits were originally applied.'
         ),
@@ -39095,9 +38805,9 @@ export namespace stripe {
    */
   export const BillingCreditGrantSchema = z
     .object({
-      amount: billing_credit_grants_resource_amountSchema,
+      amount: BillingCreditGrantsResourceAmountSchema,
       applicability_config:
-        billing_credit_grants_resource_applicability_configSchema,
+        BillingCreditGrantsResourceApplicabilityConfigSchema,
       /** The category of this credit grant. This is for tracking purposes and isn't displayed to the customer. */
       category: z
         .enum(['paid', 'promotional'])
@@ -39113,7 +38823,7 @@ export namespace stripe {
         ),
       /** ID of the customer receiving the billing credits. */
       customer: z
-        .union([z.string().max(5000), customerSchema, deleted_customerSchema])
+        .union([z.string().max(5000), CustomerSchema, DeletedCustomerSchema])
         .describe('ID of the customer receiving the billing credits.'),
       /** The time when the billing credits become effective-when they're eligible for use. */
       effective_at: z
@@ -39171,7 +38881,7 @@ export namespace stripe {
         .optional(),
       /** ID of the test clock this credit grant belongs to. */
       test_clock: z
-        .union([z.string().max(5000), test_helpers.test_clockSchema])
+        .union([z.string().max(5000), TestHelpersTestClockSchema])
         .nullable()
         .describe('ID of the test clock this credit grant belongs to.')
         .optional(),
@@ -39198,11 +38908,10 @@ export namespace stripe {
   export type BillingCreditGrant = z.infer<typeof BillingCreditGrantSchema>
 
   export const BillingCreditGrantsResourceBalanceDebitSchema = z.object({
-    amount: billing_credit_grants_resource_amountSchema,
+    amount: BillingCreditGrantsResourceAmountSchema,
     /** Details of how the billing credits were applied to an invoice. Only present if `type` is `credits_applied`. */
     credits_applied:
-      billing_credit_grants_resource_balance_credits_appliedSchema
-        .nullable()
+      BillingCreditGrantsResourceBalanceCreditsAppliedSchema.nullable()
         .describe(
           'Details of how the billing credits were applied to an invoice. Only present if `type` is `credits_applied`.'
         )
@@ -39220,7 +38929,7 @@ export namespace stripe {
     z.object({
       /** The invoice to which the billing credits were applied. */
       invoice: z
-        .union([z.string().max(5000), invoiceSchema])
+        .union([z.string().max(5000), InvoiceSchema])
         .describe('The invoice to which the billing credits were applied.'),
       /** The invoice line item to which the billing credits were applied. */
       invoice_line_item: z
@@ -39254,8 +38963,8 @@ export namespace stripe {
       application: z
         .union([
           z.string().max(5000),
-          applicationSchema,
-          deleted_applicationSchema
+          ApplicationSchema,
+          DeletedApplicationSchema
         ])
         .nullable()
         .describe('ID of the Connect Application that created the quote.')
@@ -39277,14 +38986,14 @@ export namespace stripe {
           "A non-negative decimal between 0 and 100, with at most two decimal places. This represents the percentage of the subscription invoice total that will be transferred to the application owner's Stripe account. Only applicable if there are line items with recurring prices on the quote."
         )
         .optional(),
-      automatic_tax: quotes_resource_automatic_taxSchema,
+      automatic_tax: QuotesResourceAutomaticTaxSchema,
       /** Either `charge_automatically`, or `send_invoice`. When charging automatically, Stripe will attempt to pay invoices at the end of the subscription cycle or on finalization using the default payment method attached to the subscription or customer. When sending an invoice, Stripe will email your customer an invoice with payment instructions and mark the subscription as `active`. Defaults to `charge_automatically`. */
       collection_method: z
         .enum(['charge_automatically', 'send_invoice'])
         .describe(
           'Either `charge_automatically`, or `send_invoice`. When charging automatically, Stripe will attempt to pay invoices at the end of the subscription cycle or on finalization using the default payment method attached to the subscription or customer. When sending an invoice, Stripe will email your customer an invoice with payment instructions and mark the subscription as `active`. Defaults to `charge_automatically`.'
         ),
-      computed: quotes_resource_computedSchema,
+      computed: QuotesResourceComputedSchema,
       /** Time at which the object was created. Measured in seconds since the Unix epoch. */
       created: z
         .number()
@@ -39303,7 +39012,7 @@ export namespace stripe {
         .optional(),
       /** The customer which this quote belongs to. A customer is required before finalizing the quote. Once specified, it cannot be changed. */
       customer: z
-        .union([z.string().max(5000), customerSchema, deleted_customerSchema])
+        .union([z.string().max(5000), CustomerSchema, DeletedCustomerSchema])
         .nullable()
         .describe(
           'The customer which this quote belongs to. A customer is required before finalizing the quote. Once specified, it cannot be changed.'
@@ -39311,7 +39020,7 @@ export namespace stripe {
         .optional(),
       /** The tax rates applied to this quote. */
       default_tax_rates: z
-        .array(z.union([z.string().max(5000), tax_rateSchema]))
+        .array(z.union([z.string().max(5000), TaxRateSchema]))
         .describe('The tax rates applied to this quote.')
         .optional(),
       /** A description that will be displayed on the quote PDF. */
@@ -39323,7 +39032,7 @@ export namespace stripe {
         .optional(),
       /** The discounts applied to this quote. */
       discounts: z
-        .array(z.union([z.string().max(5000), discountSchema]))
+        .array(z.union([z.string().max(5000), DiscountSchema]))
         .describe('The discounts applied to this quote.'),
       /** The date on which the quote will be canceled if in `open` or `draft` status. Measured in seconds since the Unix epoch. */
       expires_at: z
@@ -39340,8 +39049,7 @@ export namespace stripe {
         .describe('A footer that will be displayed on the quote PDF.')
         .optional(),
       /** Details of the quote that was cloned. See the [cloning documentation](https://stripe.com/docs/quotes/clone) for more details. */
-      from_quote: quotes_resource_from_quoteSchema
-        .nullable()
+      from_quote: QuotesResourceFromQuoteSchema.nullable()
         .describe(
           'Details of the quote that was cloned. See the [cloning documentation](https://stripe.com/docs/quotes/clone) for more details.'
         )
@@ -39357,16 +39065,16 @@ export namespace stripe {
       id: z.string().max(5000).describe('Unique identifier for the object.'),
       /** The invoice that was created from this quote. */
       invoice: z
-        .union([z.string().max(5000), invoiceSchema, deleted_invoiceSchema])
+        .union([z.string().max(5000), InvoiceSchema, DeletedInvoiceSchema])
         .nullable()
         .describe('The invoice that was created from this quote.')
         .optional(),
-      invoice_settings: invoice_setting_quote_settingSchema,
+      invoice_settings: InvoiceSettingQuoteSettingSchema,
       /** A list of items the customer is being quoted for. */
       line_items: z
         .object({
           /** Details about each object. */
-          data: z.array(itemSchema).describe('Details about each object.'),
+          data: z.array(ItemSchema).describe('Details about each object.'),
           /** True if this list has another page of items after this one that can be fetched. */
           has_more: z
             .boolean()
@@ -39416,7 +39124,7 @@ export namespace stripe {
         ),
       /** The account on behalf of which to charge. See the [Connect documentation](https://support.stripe.com/questions/sending-invoices-on-behalf-of-connected-accounts) for details. */
       on_behalf_of: z
-        .union([z.string().max(5000), accountSchema])
+        .union([z.string().max(5000), AccountSchema])
         .nullable()
         .describe(
           'The account on behalf of which to charge. See the [Connect documentation](https://support.stripe.com/questions/sending-invoices-on-behalf-of-connected-accounts) for details.'
@@ -39426,20 +39134,19 @@ export namespace stripe {
       status: z
         .enum(['accepted', 'canceled', 'draft', 'open'])
         .describe('The status of the quote.'),
-      status_transitions: quotes_resource_status_transitionsSchema,
+      status_transitions: QuotesResourceStatusTransitionsSchema,
       /** The subscription that was created or updated from this quote. */
       subscription: z
-        .union([z.string().max(5000), subscriptionSchema])
+        .union([z.string().max(5000), SubscriptionSchema])
         .nullable()
         .describe(
           'The subscription that was created or updated from this quote.'
         )
         .optional(),
-      subscription_data:
-        quotes_resource_subscription_data_subscription_dataSchema,
+      subscription_data: QuotesResourceSubscriptionDataSubscriptionDataSchema,
       /** The subscription schedule that was created or updated from this quote. */
       subscription_schedule: z
-        .union([z.string().max(5000), subscription_scheduleSchema])
+        .union([z.string().max(5000), SubscriptionScheduleSchema])
         .nullable()
         .describe(
           'The subscription schedule that was created or updated from this quote.'
@@ -39447,14 +39154,13 @@ export namespace stripe {
         .optional(),
       /** ID of the test clock this quote belongs to. */
       test_clock: z
-        .union([z.string().max(5000), test_helpers.test_clockSchema])
+        .union([z.string().max(5000), TestHelpersTestClockSchema])
         .nullable()
         .describe('ID of the test clock this quote belongs to.')
         .optional(),
-      total_details: quotes_resource_total_detailsSchema,
+      total_details: QuotesResourceTotalDetailsSchema,
       /** The account (if any) the payments will be attributed to for tax reporting, and where funds from each payment will be transferred to for each of the invoices. */
-      transfer_data: quotes_resource_transfer_dataSchema
-        .nullable()
+      transfer_data: QuotesResourceTransferDataSchema.nullable()
         .describe(
           'The account (if any) the payments will be attributed to for tax reporting, and where funds from each payment will be transferred to for each of the invoices.'
         )
@@ -39469,8 +39175,7 @@ export namespace stripe {
     /** Automatically calculate taxes */
     enabled: z.boolean().describe('Automatically calculate taxes'),
     /** The account that's liable for tax. If set, the business address and tax registrations required to perform the tax calculation are loaded from this account. The tax transaction is returned in the report of the connected account. */
-    liability: connect_account_referenceSchema
-      .nullable()
+    liability: ConnectAccountReferenceSchema.nullable()
       .describe(
         "The account that's liable for tax. If set, the business address and tax registrations required to perform the tax calculation are loaded from this account. The tax transaction is returned in the report of the connected account."
       )
@@ -39490,13 +39195,12 @@ export namespace stripe {
 
   export const QuotesResourceComputedSchema = z.object({
     /** The definitive totals and line items the customer will be charged on a recurring basis. Takes into account the line items with recurring prices and discounts with `duration=forever` coupons only. Defaults to `null` if no inputted line items with recurring prices. */
-    recurring: quotes_resource_recurringSchema
-      .nullable()
+    recurring: QuotesResourceRecurringSchema.nullable()
       .describe(
         'The definitive totals and line items the customer will be charged on a recurring basis. Takes into account the line items with recurring prices and discounts with `duration=forever` coupons only. Defaults to `null` if no inputted line items with recurring prices.'
       )
       .optional(),
-    upfront: quotes_resource_upfrontSchema
+    upfront: QuotesResourceUpfrontSchema
   })
   export type QuotesResourceComputed = z.infer<
     typeof QuotesResourceComputedSchema
@@ -39526,7 +39230,7 @@ export namespace stripe {
       .describe(
         'The number of intervals (specified in the `interval` attribute) between subscription billings. For example, `interval=month` and `interval_count=3` bills every 3 months.'
       ),
-    total_details: quotes_resource_total_detailsSchema
+    total_details: QuotesResourceTotalDetailsSchema
   })
   export type QuotesResourceRecurring = z.infer<
     typeof QuotesResourceRecurringSchema
@@ -39550,7 +39254,7 @@ export namespace stripe {
       .number()
       .int()
       .describe('This is the sum of all the tax amounts.'),
-    breakdown: quotes_resource_total_details_resource_breakdownSchema.optional()
+    breakdown: QuotesResourceTotalDetailsResourceBreakdownSchema.optional()
   })
   export type QuotesResourceTotalDetails = z.infer<
     typeof QuotesResourceTotalDetailsSchema
@@ -39559,11 +39263,11 @@ export namespace stripe {
   export const QuotesResourceTotalDetailsResourceBreakdownSchema = z.object({
     /** The aggregated discounts. */
     discounts: z
-      .array(line_items_discount_amountSchema)
+      .array(LineItemsDiscountAmountSchema)
       .describe('The aggregated discounts.'),
     /** The aggregated tax amounts by rate. */
     taxes: z
-      .array(line_items_tax_amountSchema)
+      .array(LineItemsTaxAmountSchema)
       .describe('The aggregated tax amounts by rate.')
   })
   export type QuotesResourceTotalDetailsResourceBreakdown = z.infer<
@@ -39573,7 +39277,7 @@ export namespace stripe {
   export const LineItemsDiscountAmountSchema = z.object({
     /** The amount discounted. */
     amount: z.number().int().describe('The amount discounted.'),
-    discount: discountSchema
+    discount: DiscountSchema
   })
   export type LineItemsDiscountAmount = z.infer<
     typeof LineItemsDiscountAmountSchema
@@ -39594,7 +39298,7 @@ export namespace stripe {
     line_items: z
       .object({
         /** Details about each object. */
-        data: z.array(itemSchema).describe('Details about each object.'),
+        data: z.array(ItemSchema).describe('Details about each object.'),
         /** True if this list has another page of items after this one that can be fetched. */
         has_more: z
           .boolean()
@@ -39617,7 +39321,7 @@ export namespace stripe {
         'The line items that will appear on the next invoice after this quote is accepted. This does not include pending invoice items that exist on the customer but may still be included in the next invoice.'
       )
       .optional(),
-    total_details: quotes_resource_total_detailsSchema
+    total_details: QuotesResourceTotalDetailsSchema
   })
   export type QuotesResourceUpfront = z.infer<
     typeof QuotesResourceUpfrontSchema
@@ -39667,7 +39371,7 @@ export namespace stripe {
         .optional(),
       /** The discounts applied to the line item. */
       discounts: z
-        .array(line_items_discount_amountSchema)
+        .array(LineItemsDiscountAmountSchema)
         .describe('The discounts applied to the line item.')
         .optional(),
       /** Unique identifier for the object. */
@@ -39679,8 +39383,7 @@ export namespace stripe {
           "String representing the object's type. Objects of the same type share the same value."
         ),
       /** The price used to generate the line item. */
-      price: priceSchema
-        .nullable()
+      price: PriceSchema.nullable()
         .describe('The price used to generate the line item.')
         .optional(),
       /** The quantity of products being purchased. */
@@ -39692,7 +39395,7 @@ export namespace stripe {
         .optional(),
       /** The taxes applied to the line item. */
       taxes: z
-        .array(line_items_tax_amountSchema)
+        .array(LineItemsTaxAmountSchema)
         .describe('The taxes applied to the line item.')
         .optional()
     })
@@ -39706,7 +39409,7 @@ export namespace stripe {
       .describe('Whether this quote is a revision of a different quote.'),
     /** The quote that was cloned. */
     quote: z
-      .union([z.string().max(5000), quoteSchema])
+      .union([z.string().max(5000), QuoteSchema])
       .describe('The quote that was cloned.')
   })
   export type QuotesResourceFromQuote = z.infer<
@@ -39723,7 +39426,7 @@ export namespace stripe {
         'Number of days within which a customer must pay invoices generated by this quote. This value will be `null` for quotes where `collection_method=charge_automatically`.'
       )
       .optional(),
-    issuer: connect_account_referenceSchema
+    issuer: ConnectAccountReferenceSchema
   })
   export type InvoiceSettingQuoteSetting = z.infer<
     typeof InvoiceSettingQuoteSettingSchema
@@ -39749,7 +39452,7 @@ export namespace stripe {
       .optional(),
     /** The account where funds from the payment will be transferred to upon payment success. */
     destination: z
-      .union([z.string().max(5000), accountSchema])
+      .union([z.string().max(5000), AccountSchema])
       .describe(
         'The account where funds from the payment will be transferred to upon payment success.'
       )
@@ -39770,7 +39473,7 @@ export namespace stripe {
       .optional(),
     /** The account where funds from the payment will be transferred to upon payment success. */
     destination: z
-      .union([z.string().max(5000), accountSchema])
+      .union([z.string().max(5000), AccountSchema])
       .describe(
         'The account where funds from the payment will be transferred to upon payment success.'
       )
@@ -39792,7 +39495,7 @@ export namespace stripe {
       .optional(),
     /** The account (if any) that the payment is attributed to for tax reporting, and where funds from the payment are transferred to after payment success. */
     destination: z
-      .union([z.string().max(5000), accountSchema])
+      .union([z.string().max(5000), AccountSchema])
       .describe(
         'The account (if any) that the payment is attributed to for tax reporting, and where funds from the payment are transferred to after payment success.'
       )
@@ -39833,8 +39536,7 @@ export namespace stripe {
       )
       .optional(),
     /** Information about the object that generated this PaymentMethod. */
-    generated_from: sepa_debit_generated_fromSchema
-      .nullable()
+    generated_from: SepaDebitGeneratedFromSchema.nullable()
       .describe(
         'Information about the object that generated this PaymentMethod.'
       )
@@ -39854,7 +39556,7 @@ export namespace stripe {
   export const SepaDebitGeneratedFromSchema = z.object({
     /** The ID of the Charge that generated this PaymentMethod, if any. */
     charge: z
-      .union([z.string().max(5000), chargeSchema])
+      .union([z.string().max(5000), ChargeSchema])
       .nullable()
       .describe(
         'The ID of the Charge that generated this PaymentMethod, if any.'
@@ -39862,7 +39564,7 @@ export namespace stripe {
       .optional(),
     /** The ID of the SetupAttempt that generated this PaymentMethod, if any. */
     setup_attempt: z
-      .union([z.string().max(5000), setup_attemptSchema])
+      .union([z.string().max(5000), SetupAttemptSchema])
       .nullable()
       .describe(
         'The ID of the SetupAttempt that generated this PaymentMethod, if any.'
@@ -39874,23 +39576,23 @@ export namespace stripe {
   >
 
   export const AccountSettingsSchema = z.object({
-    bacs_debit_payments: account_bacs_debit_payments_settingsSchema.optional(),
-    branding: account_branding_settingsSchema,
-    card_issuing: account_card_issuing_settingsSchema.optional(),
-    card_payments: account_card_payments_settingsSchema,
-    dashboard: account_dashboard_settingsSchema,
-    invoices: account_invoices_settingsSchema.optional(),
-    payments: account_payments_settingsSchema,
-    payouts: account_payout_settingsSchema.optional(),
-    sepa_debit_payments: account_sepa_debit_payments_settingsSchema.optional(),
-    treasury: account_treasury_settingsSchema.optional()
+    bacs_debit_payments: AccountBacsDebitPaymentsSettingsSchema.optional(),
+    branding: AccountBrandingSettingsSchema,
+    card_issuing: AccountCardIssuingSettingsSchema.optional(),
+    card_payments: AccountCardPaymentsSettingsSchema,
+    dashboard: AccountDashboardSettingsSchema,
+    invoices: AccountInvoicesSettingsSchema.optional(),
+    payments: AccountPaymentsSettingsSchema,
+    payouts: AccountPayoutSettingsSchema.optional(),
+    sepa_debit_payments: AccountSepaDebitPaymentsSettingsSchema.optional(),
+    treasury: AccountTreasurySettingsSchema.optional()
   })
   export type AccountSettings = z.infer<typeof AccountSettingsSchema>
 
   export const AccountInvoicesSettingsSchema = z.object({
     /** The list of default Account Tax IDs to automatically include on invoices. Account Tax IDs get added when an invoice is finalized. */
     default_account_tax_ids: z
-      .array(z.union([z.string().max(5000), tax_idSchema]))
+      .array(z.union([z.string().max(5000), TaxIdSchema]))
       .nullable()
       .describe(
         'The list of default Account Tax IDs to automatically include on invoices. Account Tax IDs get added when an invoice is finalized.'
@@ -39901,13 +39603,13 @@ export namespace stripe {
     typeof AccountInvoicesSettingsSchema
   >
 
-  export const ExternalAccountSchema = z.union([bank_accountSchema, cardSchema])
+  export const ExternalAccountSchema = z.union([BankAccountSchema, CardSchema])
   export type ExternalAccount = z.infer<typeof ExternalAccountSchema>
 
   export const ThresholdsResourceUsageAlertFilterSchema = z.object({
     /** Limit the scope of the alert to this customer ID */
     customer: z
-      .union([z.string().max(5000), customerSchema])
+      .union([z.string().max(5000), CustomerSchema])
       .nullable()
       .describe('Limit the scope of the alert to this customer ID')
       .optional(),
@@ -39923,8 +39625,7 @@ export namespace stripe {
       .boolean()
       .describe('Indicates whether automatic tax is enabled for the session'),
     /** The account that's liable for tax. If set, the business address and tax registrations required to perform the tax calculation are loaded from this account. The tax transaction is returned in the report of the connected account. */
-    liability: connect_account_referenceSchema
-      .nullable()
+    liability: ConnectAccountReferenceSchema.nullable()
       .describe(
         "The account that's liable for tax. If set, the business address and tax registrations required to perform the tax calculation are loaded from this account. The tax transaction is returned in the report of the connected account."
       )
@@ -39945,13 +39646,13 @@ export namespace stripe {
   export const PaymentPagesCheckoutSessionDiscountSchema = z.object({
     /** Coupon attached to the Checkout Session. */
     coupon: z
-      .union([z.string().max(5000), couponSchema])
+      .union([z.string().max(5000), CouponSchema])
       .nullable()
       .describe('Coupon attached to the Checkout Session.')
       .optional(),
     /** Promotion code attached to the Checkout Session. */
     promotion_code: z
-      .union([z.string().max(5000), promotion_codeSchema])
+      .union([z.string().max(5000), PromotionCodeSchema])
       .nullable()
       .describe('Promotion code attached to the Checkout Session.')
       .optional()
@@ -39968,8 +39669,7 @@ export namespace stripe {
         "If `true`, tax will be calculated automatically using the customer's location."
       ),
     /** The account that's liable for tax. If set, the business address and tax registrations required to perform the tax calculation are loaded from this account. The tax transaction is returned in the report of the connected account. */
-    liability: connect_account_referenceSchema
-      .nullable()
+    liability: ConnectAccountReferenceSchema.nullable()
       .describe(
         "The account that's liable for tax. If set, the business address and tax registrations required to perform the tax calculation are loaded from this account. The tax transaction is returned in the report of the connected account."
       )
@@ -39980,7 +39680,7 @@ export namespace stripe {
   >
 
   export const PaymentLinksResourceSubscriptionDataInvoiceSettingsSchema =
-    z.object({ issuer: connect_account_referenceSchema })
+    z.object({ issuer: ConnectAccountReferenceSchema })
   export type PaymentLinksResourceSubscriptionDataInvoiceSettings = z.infer<
     typeof PaymentLinksResourceSubscriptionDataInvoiceSettingsSchema
   >
@@ -39997,7 +39697,7 @@ export namespace stripe {
       .optional(),
     /** The connected account receiving the transfer. */
     destination: z
-      .union([z.string().max(5000), accountSchema])
+      .union([z.string().max(5000), AccountSchema])
       .describe('The connected account receiving the transfer.')
   })
   export type PaymentLinksResourceTransferData = z.infer<
@@ -40008,11 +39708,11 @@ export namespace stripe {
     z.object({
       /** The aggregated discounts. */
       discounts: z
-        .array(line_items_discount_amountSchema)
+        .array(LineItemsDiscountAmountSchema)
         .describe('The aggregated discounts.'),
       /** The aggregated tax amounts by rate. */
       taxes: z
-        .array(line_items_tax_amountSchema)
+        .array(LineItemsTaxAmountSchema)
         .describe('The aggregated tax amounts by rate.')
     })
   export type PaymentPagesCheckoutSessionTotalDetailsResourceBreakdown =
@@ -40023,10 +39723,10 @@ export namespace stripe {
   /** Details of the PaymentMethod collected by Payment Element */
   export const ConfirmationTokensResourcePaymentMethodPreviewSchema = z
     .object({
-      acss_debit: payment_method_acss_debitSchema.optional(),
-      affirm: payment_method_affirmSchema.optional(),
-      afterpay_clearpay: payment_method_afterpay_clearpaySchema.optional(),
-      alipay: payment_flows_private_payment_methods_alipaySchema.optional(),
+      acss_debit: PaymentMethodAcssDebitSchema.optional(),
+      affirm: PaymentMethodAffirmSchema.optional(),
+      afterpay_clearpay: PaymentMethodAfterpayClearpaySchema.optional(),
+      alipay: PaymentFlowsPrivatePaymentMethodsAlipaySchema.optional(),
       /** This field indicates whether this payment method can be shown again to its customer in a checkout flow. Stripe products such as Checkout and Elements use this field to determine whether a payment method can be shown as a saved payment method in a checkout flow. The field defaults to “unspecified”. */
       allow_redisplay: z
         .enum(['always', 'limited', 'unspecified'])
@@ -40034,54 +39734,54 @@ export namespace stripe {
           'This field indicates whether this payment method can be shown again to its customer in a checkout flow. Stripe products such as Checkout and Elements use this field to determine whether a payment method can be shown as a saved payment method in a checkout flow. The field defaults to “unspecified”.'
         )
         .optional(),
-      alma: payment_method_almaSchema.optional(),
-      amazon_pay: payment_method_amazon_paySchema.optional(),
-      au_becs_debit: payment_method_au_becs_debitSchema.optional(),
-      bacs_debit: payment_method_bacs_debitSchema.optional(),
-      bancontact: payment_method_bancontactSchema.optional(),
-      billing_details: billing_detailsSchema,
-      blik: payment_method_blikSchema.optional(),
-      boleto: payment_method_boletoSchema.optional(),
-      card: payment_method_cardSchema.optional(),
-      card_present: payment_method_card_presentSchema.optional(),
-      cashapp: payment_method_cashappSchema.optional(),
+      alma: PaymentMethodAlmaSchema.optional(),
+      amazon_pay: PaymentMethodAmazonPaySchema.optional(),
+      au_becs_debit: PaymentMethodAuBecsDebitSchema.optional(),
+      bacs_debit: PaymentMethodBacsDebitSchema.optional(),
+      bancontact: PaymentMethodBancontactSchema.optional(),
+      billing_details: BillingDetailsSchema,
+      blik: PaymentMethodBlikSchema.optional(),
+      boleto: PaymentMethodBoletoSchema.optional(),
+      card: PaymentMethodCardSchema.optional(),
+      card_present: PaymentMethodCardPresentSchema.optional(),
+      cashapp: PaymentMethodCashappSchema.optional(),
       /** The ID of the Customer to which this PaymentMethod is saved. This will not be set when the PaymentMethod has not been saved to a Customer. */
       customer: z
-        .union([z.string().max(5000), customerSchema])
+        .union([z.string().max(5000), CustomerSchema])
         .nullable()
         .describe(
           'The ID of the Customer to which this PaymentMethod is saved. This will not be set when the PaymentMethod has not been saved to a Customer.'
         )
         .optional(),
-      customer_balance: payment_method_customer_balanceSchema.optional(),
-      eps: payment_method_epsSchema.optional(),
-      fpx: payment_method_fpxSchema.optional(),
-      giropay: payment_method_giropaySchema.optional(),
-      grabpay: payment_method_grabpaySchema.optional(),
-      ideal: payment_method_idealSchema.optional(),
-      interac_present: payment_method_interac_presentSchema.optional(),
-      kakao_pay: payment_method_kakao_paySchema.optional(),
-      klarna: payment_method_klarnaSchema.optional(),
-      konbini: payment_method_konbiniSchema.optional(),
-      kr_card: payment_method_kr_cardSchema.optional(),
-      link: payment_method_linkSchema.optional(),
-      mobilepay: payment_method_mobilepaySchema.optional(),
-      multibanco: payment_method_multibancoSchema.optional(),
-      naver_pay: payment_method_naver_paySchema.optional(),
-      oxxo: payment_method_oxxoSchema.optional(),
-      p24: payment_method_p24Schema.optional(),
-      pay_by_bank: payment_method_pay_by_bankSchema.optional(),
-      payco: payment_method_paycoSchema.optional(),
-      paynow: payment_method_paynowSchema.optional(),
-      paypal: payment_method_paypalSchema.optional(),
-      pix: payment_method_pixSchema.optional(),
-      promptpay: payment_method_promptpaySchema.optional(),
-      revolut_pay: payment_method_revolut_paySchema.optional(),
-      samsung_pay: payment_method_samsung_paySchema.optional(),
-      sepa_debit: payment_method_sepa_debitSchema.optional(),
-      sofort: payment_method_sofortSchema.optional(),
-      swish: payment_method_swishSchema.optional(),
-      twint: payment_method_twintSchema.optional(),
+      customer_balance: PaymentMethodCustomerBalanceSchema.optional(),
+      eps: PaymentMethodEpsSchema.optional(),
+      fpx: PaymentMethodFpxSchema.optional(),
+      giropay: PaymentMethodGiropaySchema.optional(),
+      grabpay: PaymentMethodGrabpaySchema.optional(),
+      ideal: PaymentMethodIdealSchema.optional(),
+      interac_present: PaymentMethodInteracPresentSchema.optional(),
+      kakao_pay: PaymentMethodKakaoPaySchema.optional(),
+      klarna: PaymentMethodKlarnaSchema.optional(),
+      konbini: PaymentMethodKonbiniSchema.optional(),
+      kr_card: PaymentMethodKrCardSchema.optional(),
+      link: PaymentMethodLinkSchema.optional(),
+      mobilepay: PaymentMethodMobilepaySchema.optional(),
+      multibanco: PaymentMethodMultibancoSchema.optional(),
+      naver_pay: PaymentMethodNaverPaySchema.optional(),
+      oxxo: PaymentMethodOxxoSchema.optional(),
+      p24: PaymentMethodP24Schema.optional(),
+      pay_by_bank: PaymentMethodPayByBankSchema.optional(),
+      payco: PaymentMethodPaycoSchema.optional(),
+      paynow: PaymentMethodPaynowSchema.optional(),
+      paypal: PaymentMethodPaypalSchema.optional(),
+      pix: PaymentMethodPixSchema.optional(),
+      promptpay: PaymentMethodPromptpaySchema.optional(),
+      revolut_pay: PaymentMethodRevolutPaySchema.optional(),
+      samsung_pay: PaymentMethodSamsungPaySchema.optional(),
+      sepa_debit: PaymentMethodSepaDebitSchema.optional(),
+      sofort: PaymentMethodSofortSchema.optional(),
+      swish: PaymentMethodSwishSchema.optional(),
+      twint: PaymentMethodTwintSchema.optional(),
       /** The type of the PaymentMethod. An additional hash is included on the PaymentMethod with a name matching this value. It contains additional information specific to the PaymentMethod type. */
       type: z
         .enum([
@@ -40135,9 +39835,9 @@ export namespace stripe {
         .describe(
           'The type of the PaymentMethod. An additional hash is included on the PaymentMethod with a name matching this value. It contains additional information specific to the PaymentMethod type.'
         ),
-      us_bank_account: payment_method_us_bank_accountSchema.optional(),
-      wechat_pay: payment_method_wechat_paySchema.optional(),
-      zip: payment_method_zipSchema.optional()
+      us_bank_account: PaymentMethodUsBankAccountSchema.optional(),
+      wechat_pay: PaymentMethodWechatPaySchema.optional(),
+      zip: PaymentMethodZipSchema.optional()
     })
     .describe('Details of the PaymentMethod collected by Payment Element')
   export type ConfirmationTokensResourcePaymentMethodPreview = z.infer<
@@ -40154,14 +39854,14 @@ export namespace stripe {
       ),
     /** The credit balance transaction that was applied to get this pretax credit amount. */
     credit_balance_transaction: z
-      .union([z.string().max(5000), billing.credit_balance_transactionSchema])
+      .union([z.string().max(5000), BillingCreditBalanceTransactionSchema])
       .describe(
         'The credit balance transaction that was applied to get this pretax credit amount.'
       )
       .optional(),
     /** The discount that was applied to get this pretax credit amount. */
     discount: z
-      .union([z.string().max(5000), discountSchema, deleted_discountSchema])
+      .union([z.string().max(5000), DiscountSchema, DeletedDiscountSchema])
       .describe(
         'The discount that was applied to get this pretax credit amount.'
       )
@@ -40176,24 +39876,24 @@ export namespace stripe {
   >
 
   export const PaymentSourceSchema = z.union([
-    accountSchema,
-    bank_accountSchema,
-    cardSchema,
-    sourceSchema
+    AccountSchema,
+    BankAccountSchema,
+    CardSchema,
+    SourceSchema
   ])
   export type PaymentSource = z.infer<typeof PaymentSourceSchema>
 
   export const BankConnectionsResourceAccountholderSchema = z.object({
     /** The ID of the Stripe account this account belongs to. Should only be present if `account_holder.type` is `account`. */
     account: z
-      .union([z.string().max(5000), accountSchema])
+      .union([z.string().max(5000), AccountSchema])
       .describe(
         'The ID of the Stripe account this account belongs to. Should only be present if `account_holder.type` is `account`.'
       )
       .optional(),
     /** ID of the Stripe customer this account belongs to. Present if and only if `account_holder.type` is `customer`. */
     customer: z
-      .union([z.string().max(5000), customerSchema])
+      .union([z.string().max(5000), CustomerSchema])
       .describe(
         'ID of the Stripe customer this account belongs to. Present if and only if `account_holder.type` is `customer`.'
       )
@@ -40223,7 +39923,7 @@ export namespace stripe {
         ),
       /** ID of the charge this early fraud warning is for, optionally expanded. */
       charge: z
-        .union([z.string().max(5000), chargeSchema])
+        .union([z.string().max(5000), ChargeSchema])
         .describe(
           'ID of the charge this early fraud warning is for, optionally expanded.'
         ),
@@ -40257,7 +39957,7 @@ export namespace stripe {
         ),
       /** ID of the Payment Intent this early fraud warning is for, optionally expanded. */
       payment_intent: z
-        .union([z.string().max(5000), payment_intentSchema])
+        .union([z.string().max(5000), PaymentIntentSchema])
         .describe(
           'ID of the Payment Intent this early fraud warning is for, optionally expanded.'
         )
@@ -40311,7 +40011,7 @@ export namespace stripe {
         .optional(),
       /** ID of the mandate used to make this payment. */
       mandate: z
-        .union([z.string().max(5000), mandateSchema])
+        .union([z.string().max(5000), MandateSchema])
         .describe('ID of the mandate used to make this payment.')
         .optional(),
       /** The network rails used. See the [docs](https://stripe.com/docs/treasury/money-movement/timelines) to learn more about money movement timelines for each network type. */
@@ -40373,7 +40073,7 @@ export namespace stripe {
         .optional(),
       /** ID of the mandate used to make this payment. */
       mandate: z
-        .union([z.string().max(5000), mandateSchema])
+        .union([z.string().max(5000), MandateSchema])
         .describe('ID of the mandate used to make this payment.')
         .optional(),
       /** The network rails used. See the [docs](https://stripe.com/docs/treasury/money-movement/timelines) to learn more about money movement timelines for each network type. */
@@ -40435,7 +40135,7 @@ export namespace stripe {
         .optional(),
       /** ID of the mandate used to make this payment. */
       mandate: z
-        .union([z.string().max(5000), mandateSchema])
+        .union([z.string().max(5000), MandateSchema])
         .describe('ID of the mandate used to make this payment.')
         .optional(),
       /** The network rails used. See the [docs](https://stripe.com/docs/treasury/money-movement/timelines) to learn more about money movement timelines for each network type. */
@@ -40480,8 +40180,8 @@ export namespace stripe {
    */
   export const TokenSchema = z
     .object({
-      bank_account: bank_accountSchema.optional(),
-      card: cardSchema.optional(),
+      bank_account: BankAccountSchema.optional(),
+      card: CardSchema.optional(),
       /** IP address of the client that generates the token. */
       client_ip: z
         .string()
@@ -40534,13 +40234,13 @@ export namespace stripe {
     .object({
       /** The billing credit balances. One entry per credit grant currency. If a customer only has credit grants in a single currency, then this will have a single balance entry. */
       balances: z
-        .array(credit_balanceSchema)
+        .array(CreditBalanceSchema)
         .describe(
           'The billing credit balances. One entry per credit grant currency. If a customer only has credit grants in a single currency, then this will have a single balance entry.'
         ),
       /** The customer the balance is for. */
       customer: z
-        .union([z.string().max(5000), customerSchema, deleted_customerSchema])
+        .union([z.string().max(5000), CustomerSchema, DeletedCustomerSchema])
         .describe('The customer the balance is for.'),
       /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
       livemode: z
@@ -40565,15 +40265,13 @@ export namespace stripe {
   export const PaymentPagesCheckoutSessionInvoiceSettingsSchema = z.object({
     /** The account tax IDs associated with the invoice. */
     account_tax_ids: z
-      .array(
-        z.union([z.string().max(5000), tax_idSchema, deleted_tax_idSchema])
-      )
+      .array(z.union([z.string().max(5000), TaxIdSchema, DeletedTaxIdSchema]))
       .nullable()
       .describe('The account tax IDs associated with the invoice.')
       .optional(),
     /** Custom fields displayed on the invoice. */
     custom_fields: z
-      .array(invoice_setting_custom_fieldSchema)
+      .array(InvoiceSettingCustomFieldSchema)
       .nullable()
       .describe('Custom fields displayed on the invoice.')
       .optional(),
@@ -40594,8 +40292,7 @@ export namespace stripe {
       .describe('Footer displayed on the invoice.')
       .optional(),
     /** The connected account that issues the invoice. The invoice is presented with the branding and support information of the specified account. */
-    issuer: connect_account_referenceSchema
-      .nullable()
+    issuer: ConnectAccountReferenceSchema.nullable()
       .describe(
         'The connected account that issues the invoice. The invoice is presented with the branding and support information of the specified account.'
       )
@@ -40609,8 +40306,7 @@ export namespace stripe {
       )
       .optional(),
     /** Options for invoice PDF rendering. */
-    rendering_options: invoice_setting_checkout_rendering_optionsSchema
-      .nullable()
+    rendering_options: InvoiceSettingCheckoutRenderingOptionsSchema.nullable()
       .describe('Options for invoice PDF rendering.')
       .optional()
   })
@@ -40621,15 +40317,13 @@ export namespace stripe {
   export const PaymentLinksResourceInvoiceSettingsSchema = z.object({
     /** The account tax IDs associated with the invoice. */
     account_tax_ids: z
-      .array(
-        z.union([z.string().max(5000), tax_idSchema, deleted_tax_idSchema])
-      )
+      .array(z.union([z.string().max(5000), TaxIdSchema, DeletedTaxIdSchema]))
       .nullable()
       .describe('The account tax IDs associated with the invoice.')
       .optional(),
     /** A list of up to 4 custom fields to be displayed on the invoice. */
     custom_fields: z
-      .array(invoice_setting_custom_fieldSchema)
+      .array(InvoiceSettingCustomFieldSchema)
       .nullable()
       .describe(
         'A list of up to 4 custom fields to be displayed on the invoice.'
@@ -40652,8 +40346,7 @@ export namespace stripe {
       .describe('Footer to be displayed on the invoice.')
       .optional(),
     /** The connected account that issues the invoice. The invoice is presented with the branding and support information of the specified account. */
-    issuer: connect_account_referenceSchema
-      .nullable()
+    issuer: ConnectAccountReferenceSchema.nullable()
       .describe(
         'The connected account that issues the invoice. The invoice is presented with the branding and support information of the specified account.'
       )
@@ -40667,8 +40360,7 @@ export namespace stripe {
       )
       .optional(),
     /** Options for invoice PDF rendering. */
-    rendering_options: invoice_setting_checkout_rendering_optionsSchema
-      .nullable()
+    rendering_options: InvoiceSettingCheckoutRenderingOptionsSchema.nullable()
       .describe('Options for invoice PDF rendering.')
       .optional()
   })
@@ -40686,8 +40378,7 @@ export namespace stripe {
         "The subscription's description, meant to be displayable to the customer. Use this field to optionally store an explanation of the subscription for rendering in Stripe surfaces and certain local payment methods UIs."
       )
       .optional(),
-    invoice_settings:
-      payment_links_resource_subscription_data_invoice_settingsSchema,
+    invoice_settings: PaymentLinksResourceSubscriptionDataInvoiceSettingsSchema,
     /** Set of [key-value pairs](https://stripe.com/docs/api/metadata) that will set metadata on [Subscriptions](https://stripe.com/docs/api/subscriptions) generated from this payment link. */
     metadata: z
       .record(z.string().max(500))
@@ -40704,8 +40395,7 @@ export namespace stripe {
       )
       .optional(),
     /** Settings related to subscription trials. */
-    trial_settings: subscriptions_trials_resource_trial_settingsSchema
-      .nullable()
+    trial_settings: SubscriptionsTrialsResourceTrialSettingsSchema.nullable()
       .describe('Settings related to subscription trials.')
       .optional()
   })
@@ -40732,7 +40422,7 @@ export namespace stripe {
       .int()
       .describe('This is the sum of all the tax amounts.'),
     breakdown:
-      payment_pages_checkout_session_total_details_resource_breakdownSchema.optional()
+      PaymentPagesCheckoutSessionTotalDetailsResourceBreakdownSchema.optional()
   })
   export type PaymentPagesCheckoutSessionTotalDetails = z.infer<
     typeof PaymentPagesCheckoutSessionTotalDetailsSchema
@@ -40750,10 +40440,10 @@ export namespace stripe {
         )
         .optional(),
       process_config:
-        terminal_reader_reader_resource_process_setup_configSchema.optional(),
+        TerminalReaderReaderResourceProcessSetupConfigSchema.optional(),
       /** Most recent SetupIntent processed by the reader. */
       setup_intent: z
-        .union([z.string().max(5000), setup_intentSchema])
+        .union([z.string().max(5000), SetupIntentSchema])
         .describe('Most recent SetupIntent processed by the reader.')
     })
     .describe('Represents a reader action to process a setup intent')
@@ -40772,7 +40462,7 @@ export namespace stripe {
         .optional(),
       /** Charge that is being refunded. */
       charge: z
-        .union([z.string().max(5000), chargeSchema])
+        .union([z.string().max(5000), ChargeSchema])
         .describe('Charge that is being refunded.')
         .optional(),
       /** Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. */
@@ -40784,7 +40474,7 @@ export namespace stripe {
         .optional(),
       /** Payment intent that is being refunded. */
       payment_intent: z
-        .union([z.string().max(5000), payment_intentSchema])
+        .union([z.string().max(5000), PaymentIntentSchema])
         .describe('Payment intent that is being refunded.')
         .optional(),
       /** The reason for the refund. */
@@ -40794,7 +40484,7 @@ export namespace stripe {
         .optional(),
       /** Unique identifier for the refund object. */
       refund: z
-        .union([z.string().max(5000), refundSchema])
+        .union([z.string().max(5000), RefundSchema])
         .describe('Unique identifier for the refund object.')
         .optional(),
       /** Boolean indicating whether the application fee should be refunded when refunding this charge. If a full charge refund is given, the full application fee will be refunded. Otherwise, the application fee will be refunded in an amount proportional to the amount of the charge refunded. An application fee can be refunded only by the application that created the charge. */
@@ -40805,7 +40495,7 @@ export namespace stripe {
         )
         .optional(),
       refund_payment_config:
-        terminal_reader_reader_resource_refund_payment_configSchema.optional(),
+        TerminalReaderReaderResourceRefundPaymentConfigSchema.optional(),
       /** Boolean indicating whether the transfer should be reversed when refunding this charge. The transfer will be reversed proportionally to the amount being refunded (either the entire or partial amount). A transfer can be reversed only by the application that created the charge. */
       reverse_transfer: z
         .boolean()
@@ -40828,12 +40518,11 @@ export namespace stripe {
     .object({
       /** The account for which the capability enables functionality. */
       account: z
-        .union([z.string().max(5000), accountSchema])
+        .union([z.string().max(5000), AccountSchema])
         .describe(
           'The account for which the capability enables functionality.'
         ),
-      future_requirements:
-        account_capability_future_requirementsSchema.optional(),
+      future_requirements: AccountCapabilityFutureRequirementsSchema.optional(),
       /** The identifier for the capability. */
       id: z.string().max(5000).describe('The identifier for the capability.'),
       /** String representing the object's type. Objects of the same type share the same value. */
@@ -40855,7 +40544,7 @@ export namespace stripe {
           'Time at which the capability was requested. Measured in seconds since the Unix epoch.'
         )
         .optional(),
-      requirements: account_capability_requirementsSchema.optional(),
+      requirements: AccountCapabilityRequirementsSchema.optional(),
       /** The status of the capability. */
       status: z
         .enum(['active', 'disabled', 'inactive', 'pending', 'unrequested'])
@@ -40873,7 +40562,7 @@ export namespace stripe {
       .describe(
         'Indicates whether invoice creation is enabled for the Checkout Session.'
       ),
-    invoice_data: payment_pages_checkout_session_invoice_settingsSchema
+    invoice_data: PaymentPagesCheckoutSessionInvoiceSettingsSchema
   })
   export type PaymentPagesCheckoutSessionInvoiceCreation = z.infer<
     typeof PaymentPagesCheckoutSessionInvoiceCreationSchema
@@ -40885,8 +40574,7 @@ export namespace stripe {
       .boolean()
       .describe('Enable creating an invoice on successful payment.'),
     /** Configuration for the invoice. Default invoice values will be used if unspecified. */
-    invoice_data: payment_links_resource_invoice_settingsSchema
-      .nullable()
+    invoice_data: PaymentLinksResourceInvoiceSettingsSchema.nullable()
       .describe(
         'Configuration for the invoice. Default invoice values will be used if unspecified.'
       )
@@ -40931,7 +40619,7 @@ export namespace stripe {
         ),
       /** The amount of discount calculated per discount for this line item */
       discount_amounts: z
-        .array(discounts_resource_discount_amountSchema)
+        .array(DiscountsResourceDiscountAmountSchema)
         .describe(
           'The amount of discount calculated per discount for this line item'
         ),
@@ -40957,7 +40645,7 @@ export namespace stripe {
         ),
       /** The pretax credit amounts (ex: discount, credit grants, etc) for this line item. */
       pretax_credit_amounts: z
-        .array(credit_notes_pretax_credit_amountSchema)
+        .array(CreditNotesPretaxCreditAmountSchema)
         .describe(
           'The pretax credit amounts (ex: discount, credit grants, etc) for this line item.'
         ),
@@ -40970,13 +40658,13 @@ export namespace stripe {
         .optional(),
       /** The amount of tax calculated per tax rate for this line item */
       tax_amounts: z
-        .array(credit_note_tax_amountSchema)
+        .array(CreditNoteTaxAmountSchema)
         .describe(
           'The amount of tax calculated per tax rate for this line item'
         ),
       /** The tax rates which apply to the line item. */
       tax_rates: z
-        .array(tax_rateSchema)
+        .array(TaxRateSchema)
         .describe('The tax rates which apply to the line item.'),
       /** The type of the credit note line item, one of `invoice_line_item` or `custom_line_item`. When the type is `invoice_line_item` there is an additional `invoice_line_item` property on the resource the value of which is the id of the credited line item on the invoice. */
       type: z
@@ -41016,10 +40704,9 @@ export namespace stripe {
     .object({
       /** Most recent PaymentIntent processed by the reader. */
       payment_intent: z
-        .union([z.string().max(5000), payment_intentSchema])
+        .union([z.string().max(5000), PaymentIntentSchema])
         .describe('Most recent PaymentIntent processed by the reader.'),
-      process_config:
-        terminal_reader_reader_resource_process_configSchema.optional()
+      process_config: TerminalReaderReaderResourceProcessConfigSchema.optional()
     })
     .describe('Represents a reader action to process a payment intent')
   export type TerminalReaderReaderResourceProcessPaymentIntentAction = z.infer<
@@ -41027,41 +40714,41 @@ export namespace stripe {
   >
 
   export const InboundTransfersSchema = z.object({
-    billing_details: treasury_shared_resource_billing_detailsSchema,
+    billing_details: TreasurySharedResourceBillingDetailsSchema,
     /** The type of the payment method used in the InboundTransfer. */
     type: z
       .literal('us_bank_account')
       .describe('The type of the payment method used in the InboundTransfer.'),
     us_bank_account:
-      inbound_transfers_payment_method_details_us_bank_accountSchema.optional()
+      InboundTransfersPaymentMethodDetailsUsBankAccountSchema.optional()
   })
   export type InboundTransfers = z.infer<typeof InboundTransfersSchema>
 
   export const OutboundPaymentsPaymentMethodDetailsSchema = z.object({
-    billing_details: treasury_shared_resource_billing_detailsSchema,
+    billing_details: TreasurySharedResourceBillingDetailsSchema,
     financial_account:
-      outbound_payments_payment_method_details_financial_accountSchema.optional(),
+      OutboundPaymentsPaymentMethodDetailsFinancialAccountSchema.optional(),
     /** The type of the payment method used in the OutboundPayment. */
     type: z
       .enum(['financial_account', 'us_bank_account'])
       .describe('The type of the payment method used in the OutboundPayment.'),
     us_bank_account:
-      outbound_payments_payment_method_details_us_bank_accountSchema.optional()
+      OutboundPaymentsPaymentMethodDetailsUsBankAccountSchema.optional()
   })
   export type OutboundPaymentsPaymentMethodDetails = z.infer<
     typeof OutboundPaymentsPaymentMethodDetailsSchema
   >
 
   export const OutboundTransfersPaymentMethodDetailsSchema = z.object({
-    billing_details: treasury_shared_resource_billing_detailsSchema,
+    billing_details: TreasurySharedResourceBillingDetailsSchema,
     financial_account:
-      outbound_transfers_payment_method_details_financial_accountSchema.optional(),
+      OutboundTransfersPaymentMethodDetailsFinancialAccountSchema.optional(),
     /** The type of the payment method used in the OutboundTransfer. */
     type: z
       .enum(['financial_account', 'us_bank_account'])
       .describe('The type of the payment method used in the OutboundTransfer.'),
     us_bank_account:
-      outbound_transfers_payment_method_details_us_bank_accountSchema.optional()
+      OutboundTransfersPaymentMethodDetailsUsBankAccountSchema.optional()
   })
   export type OutboundTransfersPaymentMethodDetails = z.infer<
     typeof OutboundTransfersPaymentMethodDetailsSchema
@@ -41101,11 +40788,11 @@ export namespace stripe {
         ),
       /** ID of the customer. */
       customer: z
-        .union([z.string().max(5000), customerSchema, deleted_customerSchema])
+        .union([z.string().max(5000), CustomerSchema, DeletedCustomerSchema])
         .describe('ID of the customer.'),
       /** Customer balance transaction related to this credit note. */
       customer_balance_transaction: z
-        .union([z.string().max(5000), customer_balance_transactionSchema])
+        .union([z.string().max(5000), CustomerBalanceTransactionSchema])
         .nullable()
         .describe('Customer balance transaction related to this credit note.')
         .optional(),
@@ -41118,7 +40805,7 @@ export namespace stripe {
         ),
       /** The aggregate amounts calculated per discount for all line items. */
       discount_amounts: z
-        .array(discounts_resource_discount_amountSchema)
+        .array(DiscountsResourceDiscountAmountSchema)
         .describe(
           'The aggregate amounts calculated per discount for all line items.'
         ),
@@ -41135,14 +40822,14 @@ export namespace stripe {
       id: z.string().max(5000).describe('Unique identifier for the object.'),
       /** ID of the invoice. */
       invoice: z
-        .union([z.string().max(5000), invoiceSchema])
+        .union([z.string().max(5000), InvoiceSchema])
         .describe('ID of the invoice.'),
       /** Line items that make up the credit note */
       lines: z
         .object({
           /** Details about each object. */
           data: z
-            .array(credit_note_line_itemSchema)
+            .array(CreditNoteLineItemSchema)
             .describe('Details about each object.'),
           /** True if this list has another page of items after this one that can be fetched. */
           has_more: z
@@ -41211,7 +40898,7 @@ export namespace stripe {
         .describe('The link to download the PDF of the credit note.'),
       /** The pretax credit amounts (ex: discount, credit grants, etc) for all line items. */
       pretax_credit_amounts: z
-        .array(credit_notes_pretax_credit_amountSchema)
+        .array(CreditNotesPretaxCreditAmountSchema)
         .describe(
           'The pretax credit amounts (ex: discount, credit grants, etc) for all line items.'
         ),
@@ -41230,13 +40917,12 @@ export namespace stripe {
         .optional(),
       /** Refund related to this credit note. */
       refund: z
-        .union([z.string().max(5000), refundSchema])
+        .union([z.string().max(5000), RefundSchema])
         .nullable()
         .describe('Refund related to this credit note.')
         .optional(),
       /** The details of the cost of shipping, including the ShippingRate applied to the invoice. */
-      shipping_cost: invoices_resource_shipping_costSchema
-        .nullable()
+      shipping_cost: InvoicesResourceShippingCostSchema.nullable()
         .describe(
           'The details of the cost of shipping, including the ShippingRate applied to the invoice.'
         )
@@ -41265,7 +40951,7 @@ export namespace stripe {
         .optional(),
       /** The aggregate amounts calculated per tax rate for all line items. */
       tax_amounts: z
-        .array(credit_note_tax_amountSchema)
+        .array(CreditNoteTaxAmountSchema)
         .describe(
           'The aggregate amounts calculated per tax rate for all line items.'
         ),
@@ -41330,7 +41016,7 @@ export namespace stripe {
         ),
       /** The ID of the credit note (if any) related to the transaction. */
       credit_note: z
-        .union([z.string().max(5000), credit_noteSchema])
+        .union([z.string().max(5000), CreditNoteSchema])
         .nullable()
         .describe(
           'The ID of the credit note (if any) related to the transaction.'
@@ -41344,7 +41030,7 @@ export namespace stripe {
         ),
       /** The ID of the customer the transaction belongs to. */
       customer: z
-        .union([z.string().max(5000), customerSchema])
+        .union([z.string().max(5000), CustomerSchema])
         .describe('The ID of the customer the transaction belongs to.'),
       /** An arbitrary string attached to the object. Often useful for displaying to users. */
       description: z
@@ -41366,7 +41052,7 @@ export namespace stripe {
       id: z.string().max(5000).describe('Unique identifier for the object.'),
       /** The ID of the invoice (if any) related to the transaction. */
       invoice: z
-        .union([z.string().max(5000), invoiceSchema])
+        .union([z.string().max(5000), InvoiceSchema])
         .nullable()
         .describe('The ID of the invoice (if any) related to the transaction.')
         .optional(),
@@ -41436,7 +41122,7 @@ export namespace stripe {
         .describe(
           'The client secret of this Customer Session. Used on the client to set up secure access to the given `customer`.\n\nThe client secret can be used to provide access to `customer` from your frontend. It should not be stored, logged, or exposed to anyone other than the relevant customer. Make sure that you have TLS enabled on any page that includes the client secret.'
         ),
-      components: customer_session_resource_componentsSchema.optional(),
+      components: CustomerSessionResourceComponentsSchema.optional(),
       /** Time at which the object was created. Measured in seconds since the Unix epoch. */
       created: z
         .number()
@@ -41446,7 +41132,7 @@ export namespace stripe {
         ),
       /** The Customer the Customer Session was created for. */
       customer: z
-        .union([z.string().max(5000), customerSchema])
+        .union([z.string().max(5000), CustomerSchema])
         .describe('The Customer the Customer Session was created for.'),
       /** The timestamp at which this Customer Session will expire. */
       expires_at: z
@@ -41476,7 +41162,7 @@ export namespace stripe {
     .object({
       /** The filters allow limiting the scope of this usage alert. You can only specify up to one filter at this time. */
       filters: z
-        .array(thresholds_resource_usage_alert_filterSchema)
+        .array(ThresholdsResourceUsageAlertFilterSchema)
         .nullable()
         .describe(
           'The filters allow limiting the scope of this usage alert. You can only specify up to one filter at this time.'
@@ -41489,7 +41175,7 @@ export namespace stripe {
         .describe('The value at which this alert will trigger.'),
       /** The [Billing Meter](/api/billing/meter) ID whose usage is monitored. */
       meter: z
-        .union([z.string().max(5000), billing.meterSchema])
+        .union([z.string().max(5000), BillingMeterSchema])
         .describe(
           'The [Billing Meter](/api/billing/meter) ID whose usage is monitored.'
         ),
@@ -41537,8 +41223,7 @@ export namespace stripe {
       /** Title of the alert. */
       title: z.string().max(5000).describe('Title of the alert.'),
       /** Encapsulates configuration of the alert to monitor usage on a specific [Billing Meter](https://stripe.com/docs/api/billing/meter). */
-      usage_threshold: thresholds_resource_usage_threshold_configSchema
-        .nullable()
+      usage_threshold: ThresholdsResourceUsageThresholdConfigSchema.nullable()
         .describe(
           'Encapsulates configuration of the alert to monitor usage on a specific [Billing Meter](https://stripe.com/docs/api/billing/meter).'
         )
@@ -41585,8 +41270,7 @@ export namespace stripe {
           'Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.'
         ),
       /** Data used for generating a Mandate. */
-      mandate_data: confirmation_tokens_resource_mandate_dataSchema
-        .nullable()
+      mandate_data: ConfirmationTokensResourceMandateDataSchema.nullable()
         .describe('Data used for generating a Mandate.')
         .optional(),
       /** String representing the object's type. Objects of the same type share the same value. */
@@ -41606,16 +41290,14 @@ export namespace stripe {
         .optional(),
       /** Payment-method-specific configuration for this ConfirmationToken. */
       payment_method_options:
-        confirmation_tokens_resource_payment_method_optionsSchema
-          .nullable()
+        ConfirmationTokensResourcePaymentMethodOptionsSchema.nullable()
           .describe(
             'Payment-method-specific configuration for this ConfirmationToken.'
           )
           .optional(),
       /** Payment details collected by the Payment Element, used to create a PaymentMethod when a PaymentIntent or SetupIntent is confirmed with this ConfirmationToken. */
       payment_method_preview:
-        confirmation_tokens_resource_payment_method_previewSchema
-          .nullable()
+        ConfirmationTokensResourcePaymentMethodPreviewSchema.nullable()
           .describe(
             'Payment details collected by the Payment Element, used to create a PaymentMethod when a PaymentIntent or SetupIntent is confirmed with this ConfirmationToken.'
           )
@@ -41649,8 +41331,7 @@ export namespace stripe {
         )
         .optional(),
       /** Shipping information collected on this ConfirmationToken. */
-      shipping: confirmation_tokens_resource_shippingSchema
-        .nullable()
+      shipping: ConfirmationTokensResourceShippingSchema.nullable()
         .describe('Shipping information collected on this ConfirmationToken.')
         .optional(),
       /** Indicates whether the Stripe SDK is used to handle confirmation flow. Defaults to `true` on ConfirmationToken. */
@@ -41669,18 +41350,15 @@ export namespace stripe {
   export const FinancialConnectionsAccountSchema = z
     .object({
       /** The account holder that this account belongs to. */
-      account_holder: bank_connections_resource_accountholderSchema
-        .nullable()
+      account_holder: BankConnectionsResourceAccountholderSchema.nullable()
         .describe('The account holder that this account belongs to.')
         .optional(),
       /** The most recent information about the account's balance. */
-      balance: bank_connections_resource_balanceSchema
-        .nullable()
+      balance: BankConnectionsResourceBalanceSchema.nullable()
         .describe("The most recent information about the account's balance.")
         .optional(),
       /** The state of the most recent attempt to refresh the account balance. */
-      balance_refresh: bank_connections_resource_balance_refreshSchema
-        .nullable()
+      balance_refresh: BankConnectionsResourceBalanceRefreshSchema.nullable()
         .describe(
           'The state of the most recent attempt to refresh the account balance.'
         )
@@ -41739,18 +41417,18 @@ export namespace stripe {
       ownership: z
         .union([
           z.string().max(5000),
-          financial_connections.account_ownershipSchema
+          FinancialConnectionsAccountOwnershipSchema
         ])
         .nullable()
         .describe("The most recent information about the account's owners.")
         .optional(),
       /** The state of the most recent attempt to refresh the account owners. */
-      ownership_refresh: bank_connections_resource_ownership_refreshSchema
-        .nullable()
-        .describe(
-          'The state of the most recent attempt to refresh the account owners.'
-        )
-        .optional(),
+      ownership_refresh:
+        BankConnectionsResourceOwnershipRefreshSchema.nullable()
+          .describe(
+            'The state of the most recent attempt to refresh the account owners.'
+          )
+          .optional(),
       /** The list of permissions granted by this account. */
       permissions: z
         .array(
@@ -41806,12 +41484,12 @@ export namespace stripe {
           'The [PaymentMethod type](https://stripe.com/docs/api/payment_methods/object#payment_method_object-type)(s) that can be created from this account.'
         ),
       /** The state of the most recent attempt to refresh the account transactions. */
-      transaction_refresh: bank_connections_resource_transaction_refreshSchema
-        .nullable()
-        .describe(
-          'The state of the most recent attempt to refresh the account transactions.'
-        )
-        .optional()
+      transaction_refresh:
+        BankConnectionsResourceTransactionRefreshSchema.nullable()
+          .describe(
+            'The state of the most recent attempt to refresh the account transactions.'
+          )
+          .optional()
     })
     .describe(
       'A Financial Connections Account represents an account that exists outside of Stripe, to which you have been granted some degree of access.'
@@ -41838,13 +41516,13 @@ export namespace stripe {
         .describe('Detailed failure message, only set if status is `failed`.')
         .optional(),
       process_payment_intent:
-        terminal_reader_reader_resource_process_payment_intent_actionSchema.optional(),
+        TerminalReaderReaderResourceProcessPaymentIntentActionSchema.optional(),
       process_setup_intent:
-        terminal_reader_reader_resource_process_setup_intent_actionSchema.optional(),
+        TerminalReaderReaderResourceProcessSetupIntentActionSchema.optional(),
       refund_payment:
-        terminal_reader_reader_resource_refund_payment_actionSchema.optional(),
+        TerminalReaderReaderResourceRefundPaymentActionSchema.optional(),
       set_reader_display:
-        terminal_reader_reader_resource_set_reader_display_actionSchema.optional(),
+        TerminalReaderReaderResourceSetReaderDisplayActionSchema.optional(),
       /** Status of the action performed by the reader. */
       status: z
         .enum(['failed', 'in_progress', 'succeeded'])
@@ -41868,8 +41546,7 @@ export namespace stripe {
   export const FinancialConnectionsSessionSchema = z
     .object({
       /** The account holder for whom accounts are collected in this session. */
-      account_holder: bank_connections_resource_accountholderSchema
-        .nullable()
+      account_holder: BankConnectionsResourceAccountholderSchema.nullable()
         .describe(
           'The account holder for whom accounts are collected in this session.'
         )
@@ -41879,7 +41556,7 @@ export namespace stripe {
         .object({
           /** Details about each object. */
           data: z
-            .array(financial_connections.accountSchema)
+            .array(FinancialConnectionsAccountSchema)
             .describe('Details about each object.'),
           /** True if this list has another page of items after this one that can be fetched. */
           has_more: z
@@ -41909,7 +41586,7 @@ export namespace stripe {
           'A value that will be passed to the client to launch the authentication flow.'
         ),
       filters:
-        bank_connections_resource_link_account_session_filtersSchema.optional(),
+        BankConnectionsResourceLinkAccountSessionFiltersSchema.optional(),
       /** Unique identifier for the object. */
       id: z.string().max(5000).describe('Unique identifier for the object.'),
       /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
@@ -41964,8 +41641,7 @@ export namespace stripe {
   export const TerminalReaderSchema = z
     .object({
       /** The most recent action performed by the reader. */
-      action: terminal_reader_reader_resource_reader_actionSchema
-        .nullable()
+      action: TerminalReaderReaderResourceReaderActionSchema.nullable()
         .describe('The most recent action performed by the reader.')
         .optional(),
       /** The current software version of the reader. */
@@ -42014,7 +41690,7 @@ export namespace stripe {
         ),
       /** The location identifier of the reader. */
       location: z
-        .union([z.string().max(5000), terminal.locationSchema])
+        .union([z.string().max(5000), TerminalLocationSchema])
         .nullable()
         .describe('The location identifier of the reader.')
         .optional(),
@@ -42064,7 +41740,7 @@ export namespace stripe {
         .describe(
           "Whether the payment link's `url` is active. If `false`, customers visiting the URL will be shown a page saying that the link has been deactivated."
         ),
-      after_completion: payment_links_resource_after_completionSchema,
+      after_completion: PaymentLinksResourceAfterCompletionSchema,
       /** Whether user redeemable promotion codes are enabled. */
       allow_promotion_codes: z
         .boolean()
@@ -42073,8 +41749,8 @@ export namespace stripe {
       application: z
         .union([
           z.string().max(5000),
-          applicationSchema,
-          deleted_applicationSchema
+          ApplicationSchema,
+          DeletedApplicationSchema
         ])
         .nullable()
         .describe(
@@ -42098,7 +41774,7 @@ export namespace stripe {
           "This represents the percentage of the subscription invoice total that will be transferred to the application owner's Stripe account."
         )
         .optional(),
-      automatic_tax: payment_links_resource_automatic_taxSchema,
+      automatic_tax: PaymentLinksResourceAutomaticTaxSchema,
       /** Configuration for collecting the customer's billing address. Defaults to `auto`. */
       billing_address_collection: z
         .enum(['auto', 'required'])
@@ -42106,8 +41782,7 @@ export namespace stripe {
           "Configuration for collecting the customer's billing address. Defaults to `auto`."
         ),
       /** When set, provides configuration to gather active consent from customers. */
-      consent_collection: payment_links_resource_consent_collectionSchema
-        .nullable()
+      consent_collection: PaymentLinksResourceConsentCollectionSchema.nullable()
         .describe(
           'When set, provides configuration to gather active consent from customers.'
         )
@@ -42120,11 +41795,11 @@ export namespace stripe {
         ),
       /** Collect additional information from your customer using custom fields. Up to 3 fields are supported. */
       custom_fields: z
-        .array(payment_links_resource_custom_fieldsSchema)
+        .array(PaymentLinksResourceCustomFieldsSchema)
         .describe(
           'Collect additional information from your customer using custom fields. Up to 3 fields are supported.'
         ),
-      custom_text: payment_links_resource_custom_textSchema,
+      custom_text: PaymentLinksResourceCustomTextSchema,
       /** Configuration for Customer creation during checkout. */
       customer_creation: z
         .enum(['always', 'if_required'])
@@ -42141,8 +41816,7 @@ export namespace stripe {
         )
         .optional(),
       /** Configuration for creating invoice for payment mode payment links. */
-      invoice_creation: payment_links_resource_invoice_creationSchema
-        .nullable()
+      invoice_creation: PaymentLinksResourceInvoiceCreationSchema.nullable()
         .describe(
           'Configuration for creating invoice for payment mode payment links.'
         )
@@ -42151,7 +41825,7 @@ export namespace stripe {
       line_items: z
         .object({
           /** Details about each object. */
-          data: z.array(itemSchema).describe('Details about each object.'),
+          data: z.array(ItemSchema).describe('Details about each object.'),
           /** True if this list has another page of items after this one that can be fetched. */
           has_more: z
             .boolean()
@@ -42192,19 +41866,19 @@ export namespace stripe {
         ),
       /** The account on behalf of which to charge. See the [Connect documentation](https://support.stripe.com/questions/sending-invoices-on-behalf-of-connected-accounts) for details. */
       on_behalf_of: z
-        .union([z.string().max(5000), accountSchema])
+        .union([z.string().max(5000), AccountSchema])
         .nullable()
         .describe(
           'The account on behalf of which to charge. See the [Connect documentation](https://support.stripe.com/questions/sending-invoices-on-behalf-of-connected-accounts) for details.'
         )
         .optional(),
       /** Indicates the parameters to be passed to PaymentIntent creation during checkout. */
-      payment_intent_data: payment_links_resource_payment_intent_dataSchema
-        .nullable()
-        .describe(
-          'Indicates the parameters to be passed to PaymentIntent creation during checkout.'
-        )
-        .optional(),
+      payment_intent_data:
+        PaymentLinksResourcePaymentIntentDataSchema.nullable()
+          .describe(
+            'Indicates the parameters to be passed to PaymentIntent creation during checkout.'
+          )
+          .optional(),
       /** Configuration for collecting a payment method during checkout. Defaults to `always`. */
       payment_method_collection: z
         .enum(['always', 'if_required'])
@@ -42257,24 +41931,21 @@ export namespace stripe {
           "The list of payment method types that customers can use. When `null`, Stripe will dynamically show relevant payment methods you've enabled in your [payment method settings](https://dashboard.stripe.com/settings/payment_methods)."
         )
         .optional(),
-      phone_number_collection:
-        payment_links_resource_phone_number_collectionSchema,
+      phone_number_collection: PaymentLinksResourcePhoneNumberCollectionSchema,
       /** Settings that restrict the usage of a payment link. */
-      restrictions: payment_links_resource_restrictionsSchema
-        .nullable()
+      restrictions: PaymentLinksResourceRestrictionsSchema.nullable()
         .describe('Settings that restrict the usage of a payment link.')
         .optional(),
       /** Configuration for collecting the customer's shipping address. */
       shipping_address_collection:
-        payment_links_resource_shipping_address_collectionSchema
-          .nullable()
+        PaymentLinksResourceShippingAddressCollectionSchema.nullable()
           .describe(
             "Configuration for collecting the customer's shipping address."
           )
           .optional(),
       /** The shipping rate options applied to the session. */
       shipping_options: z
-        .array(payment_links_resource_shipping_optionSchema)
+        .array(PaymentLinksResourceShippingOptionSchema)
         .describe('The shipping rate options applied to the session.'),
       /** Indicates the type of transaction being performed which customizes relevant text on the page, such as the submit button. */
       submit_type: z
@@ -42283,16 +41954,14 @@ export namespace stripe {
           'Indicates the type of transaction being performed which customizes relevant text on the page, such as the submit button.'
         ),
       /** When creating a subscription, the specified configuration data will be used. There must be at least one line item with a recurring price to use `subscription_data`. */
-      subscription_data: payment_links_resource_subscription_dataSchema
-        .nullable()
+      subscription_data: PaymentLinksResourceSubscriptionDataSchema.nullable()
         .describe(
           'When creating a subscription, the specified configuration data will be used. There must be at least one line item with a recurring price to use `subscription_data`.'
         )
         .optional(),
-      tax_id_collection: payment_links_resource_tax_id_collectionSchema,
+      tax_id_collection: PaymentLinksResourceTaxIdCollectionSchema,
       /** The account (if any) the payments will be attributed to for tax reporting, and where funds from each payment will be transferred to. */
-      transfer_data: payment_links_resource_transfer_dataSchema
-        .nullable()
+      transfer_data: PaymentLinksResourceTransferDataSchema.nullable()
         .describe(
           'The account (if any) the payments will be attributed to for tax reporting, and where funds from each payment will be transferred to.'
         )
@@ -42346,12 +42015,12 @@ export namespace stripe {
         )
         .optional(),
       /** Details about this InboundTransfer's failure. Only set when status is `failed`. */
-      failure_details: treasury_inbound_transfers_resource_failure_detailsSchema
-        .nullable()
-        .describe(
-          "Details about this InboundTransfer's failure. Only set when status is `failed`."
-        )
-        .optional(),
+      failure_details:
+        TreasuryInboundTransfersResourceFailureDetailsSchema.nullable()
+          .describe(
+            "Details about this InboundTransfer's failure. Only set when status is `failed`."
+          )
+          .optional(),
       /** The FinancialAccount that received the funds. */
       financial_account: z
         .string()
@@ -42369,7 +42038,7 @@ export namespace stripe {
       /** Unique identifier for the object. */
       id: z.string().max(5000).describe('Unique identifier for the object.'),
       linked_flows:
-        treasury_inbound_transfers_resource_inbound_transfer_resource_linked_flowsSchema,
+        TreasuryInboundTransfersResourceInboundTransferResourceLinkedFlowsSchema,
       /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
       livemode: z
         .boolean()
@@ -42398,8 +42067,7 @@ export namespace stripe {
         )
         .optional(),
       /** Details about the PaymentMethod for an InboundTransfer. */
-      origin_payment_method_details: inbound_transfersSchema
-        .nullable()
+      origin_payment_method_details: InboundTransfersSchema.nullable()
         .describe('Details about the PaymentMethod for an InboundTransfer.')
         .optional(),
       /** Returns `true` if the funds for an InboundTransfer were returned after the InboundTransfer went to the `succeeded` state. */
@@ -42424,10 +42092,10 @@ export namespace stripe {
           'Status of the InboundTransfer: `processing`, `succeeded`, `failed`, and `canceled`. An InboundTransfer is `processing` if it is created and pending. The status changes to `succeeded` once the funds have been "confirmed" and a `transaction` is created and posted. The status changes to `failed` if the transfer fails.'
         ),
       status_transitions:
-        treasury_inbound_transfers_resource_inbound_transfer_resource_status_transitionsSchema,
+        TreasuryInboundTransfersResourceInboundTransferResourceStatusTransitionsSchema,
       /** The Transaction associated with this object. */
       transaction: z
-        .union([z.string().max(5000), treasury.transactionSchema])
+        .union([z.string().max(5000), TreasuryTransactionSchema])
         .nullable()
         .describe('The Transaction associated with this object.')
         .optional()
@@ -42444,7 +42112,7 @@ export namespace stripe {
     .object({
       /** Amount (in cents) transferred. */
       amount: z.number().int().describe('Amount (in cents) transferred.'),
-      balance_impact: treasury_transactions_resource_balance_impactSchema,
+      balance_impact: TreasuryTransactionsResourceBalanceImpactSchema,
       /** Time at which the object was created. Measured in seconds since the Unix epoch. */
       created: z
         .number()
@@ -42470,7 +42138,7 @@ export namespace stripe {
         .object({
           /** Details about each object. */
           data: z
-            .array(treasury.transaction_entrySchema)
+            .array(TreasuryTransactionEntrySchema)
             .describe('Details about each object.'),
           /** True if this list has another page of items after this one that can be fetched. */
           has_more: z
@@ -42509,8 +42177,7 @@ export namespace stripe {
         .describe('ID of the flow that created the Transaction.')
         .optional(),
       /** Details of the flow that created the Transaction. */
-      flow_details: treasury_transactions_resource_flow_detailsSchema
-        .nullable()
+      flow_details: TreasuryTransactionsResourceFlowDetailsSchema.nullable()
         .describe('Details of the flow that created the Transaction.')
         .optional(),
       /** Type of the flow that created the Transaction. */
@@ -42546,7 +42213,7 @@ export namespace stripe {
         .enum(['open', 'posted', 'void'])
         .describe('Status of the Transaction.'),
       status_transitions:
-        treasury_transactions_resource_abstract_transaction_resource_status_transitionsSchema
+        TreasuryTransactionsResourceAbstractTransactionResourceStatusTransitionsSchema
     })
     .describe(
       "Transactions represent changes to a [FinancialAccount's](https://stripe.com/docs/api#financial_accounts) balance."
@@ -42556,7 +42223,7 @@ export namespace stripe {
   /** TransactionEntries represent individual units of money movements within a single [Transaction](https://stripe.com/docs/api#transactions). */
   export const TreasuryTransactionEntrySchema = z
     .object({
-      balance_impact: treasury_transactions_resource_balance_impactSchema,
+      balance_impact: TreasuryTransactionsResourceBalanceImpactSchema,
       /** Time at which the object was created. Measured in seconds since the Unix epoch. */
       created: z
         .number()
@@ -42590,8 +42257,7 @@ export namespace stripe {
         .describe('Token of the flow associated with the TransactionEntry.')
         .optional(),
       /** Details of the flow associated with the TransactionEntry. */
-      flow_details: treasury_transactions_resource_flow_detailsSchema
-        .nullable()
+      flow_details: TreasuryTransactionsResourceFlowDetailsSchema.nullable()
         .describe('Details of the flow associated with the TransactionEntry.')
         .optional(),
       /** Type of the flow associated with the TransactionEntry. */
@@ -42624,7 +42290,7 @@ export namespace stripe {
         ),
       /** The Transaction associated with this object. */
       transaction: z
-        .union([z.string().max(5000), treasury.transactionSchema])
+        .union([z.string().max(5000), TreasuryTransactionSchema])
         .describe('The Transaction associated with this object.'),
       /** The specific money movement that generated the TransactionEntry. */
       type: z
@@ -42662,14 +42328,14 @@ export namespace stripe {
   >
 
   export const TreasuryTransactionsResourceFlowDetailsSchema = z.object({
-    credit_reversal: treasury.credit_reversalSchema.optional(),
-    debit_reversal: treasury.debit_reversalSchema.optional(),
-    inbound_transfer: treasury.inbound_transferSchema.optional(),
-    issuing_authorization: issuing.authorizationSchema.optional(),
-    outbound_payment: treasury.outbound_paymentSchema.optional(),
-    outbound_transfer: treasury.outbound_transferSchema.optional(),
-    received_credit: treasury.received_creditSchema.optional(),
-    received_debit: treasury.received_debitSchema.optional(),
+    credit_reversal: TreasuryCreditReversalSchema.optional(),
+    debit_reversal: TreasuryDebitReversalSchema.optional(),
+    inbound_transfer: TreasuryInboundTransferSchema.optional(),
+    issuing_authorization: IssuingAuthorizationSchema.optional(),
+    outbound_payment: TreasuryOutboundPaymentSchema.optional(),
+    outbound_transfer: TreasuryOutboundTransferSchema.optional(),
+    received_credit: TreasuryReceivedCreditSchema.optional(),
+    received_debit: TreasuryReceivedDebitSchema.optional(),
     /** Type of the flow that created the Transaction. Set to the same value as `flow_type`. */
     type: z
       .enum([
@@ -42757,10 +42423,10 @@ export namespace stripe {
         .enum(['canceled', 'posted', 'processing'])
         .describe('Status of the CreditReversal'),
       status_transitions:
-        treasury_received_credits_resource_status_transitionsSchema,
+        TreasuryReceivedCreditsResourceStatusTransitionsSchema,
       /** The Transaction associated with this object. */
       transaction: z
-        .union([z.string().max(5000), treasury.transactionSchema])
+        .union([z.string().max(5000), TreasuryTransactionSchema])
         .nullable()
         .describe('The Transaction associated with this object.')
         .optional()
@@ -42810,8 +42476,7 @@ export namespace stripe {
       id: z.string().max(5000).describe('Unique identifier for the object.'),
       /** Other flows linked to a DebitReversal. */
       linked_flows:
-        treasury_received_debits_resource_debit_reversal_linked_flowsSchema
-          .nullable()
+        TreasuryReceivedDebitsResourceDebitReversalLinkedFlowsSchema.nullable()
           .describe('Other flows linked to a DebitReversal.')
           .optional(),
       /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
@@ -42845,11 +42510,10 @@ export namespace stripe {
       status: z
         .enum(['failed', 'processing', 'succeeded'])
         .describe('Status of the DebitReversal'),
-      status_transitions:
-        treasury_received_debits_resource_status_transitionsSchema,
+      status_transitions: TreasuryReceivedDebitsResourceStatusTransitionsSchema,
       /** The Transaction associated with this object. */
       transaction: z
-        .union([z.string().max(5000), treasury.transactionSchema])
+        .union([z.string().max(5000), TreasuryTransactionSchema])
         .nullable()
         .describe('The Transaction associated with this object.')
         .optional()
@@ -42920,14 +42584,12 @@ export namespace stripe {
         .optional(),
       /** Details about the PaymentMethod for an OutboundPayment. */
       destination_payment_method_details:
-        outbound_payments_payment_method_detailsSchema
-          .nullable()
+        OutboundPaymentsPaymentMethodDetailsSchema.nullable()
           .describe('Details about the PaymentMethod for an OutboundPayment.')
           .optional(),
       /** Details about the end user. */
       end_user_details:
-        treasury_outbound_payments_resource_outbound_payment_resource_end_user_detailsSchema
-          .nullable()
+        TreasuryOutboundPaymentsResourceOutboundPaymentResourceEndUserDetailsSchema.nullable()
           .describe('Details about the end user.')
           .optional(),
       /** The date when funds are expected to arrive in the destination account. */
@@ -42973,8 +42635,7 @@ export namespace stripe {
         ),
       /** Details about a returned OutboundPayment. Only set when the status is `returned`. */
       returned_details:
-        treasury_outbound_payments_resource_returned_statusSchema
-          .nullable()
+        TreasuryOutboundPaymentsResourceReturnedStatusSchema.nullable()
           .describe(
             'Details about a returned OutboundPayment. Only set when the status is `returned`.'
           )
@@ -42993,18 +42654,17 @@ export namespace stripe {
           'Current status of the OutboundPayment: `processing`, `failed`, `posted`, `returned`, `canceled`. An OutboundPayment is `processing` if it has been created and is pending. The status changes to `posted` once the OutboundPayment has been "confirmed" and funds have left the account, or to `failed` or `canceled`. If an OutboundPayment fails to arrive at its destination, its status will change to `returned`.'
         ),
       status_transitions:
-        treasury_outbound_payments_resource_outbound_payment_resource_status_transitionsSchema,
+        TreasuryOutboundPaymentsResourceOutboundPaymentResourceStatusTransitionsSchema,
       /** Details about network-specific tracking information if available. */
       tracking_details:
-        treasury_outbound_payments_resource_outbound_payment_resource_tracking_detailsSchema
-          .nullable()
+        TreasuryOutboundPaymentsResourceOutboundPaymentResourceTrackingDetailsSchema.nullable()
           .describe(
             'Details about network-specific tracking information if available.'
           )
           .optional(),
       /** The Transaction associated with this object. */
       transaction: z
-        .union([z.string().max(5000), treasury.transactionSchema])
+        .union([z.string().max(5000), TreasuryTransactionSchema])
         .describe('The Transaction associated with this object.')
     })
     .describe(
@@ -43032,7 +42692,7 @@ export namespace stripe {
       .describe('Reason for the return.'),
     /** The Transaction associated with this object. */
     transaction: z
-      .union([z.string().max(5000), treasury.transactionSchema])
+      .union([z.string().max(5000), TreasuryTransactionSchema])
       .describe('The Transaction associated with this object.')
   })
   export type TreasuryOutboundPaymentsResourceReturnedStatus = z.infer<
@@ -43088,7 +42748,7 @@ export namespace stripe {
         )
         .optional(),
       destination_payment_method_details:
-        outbound_transfers_payment_method_detailsSchema,
+        OutboundTransfersPaymentMethodDetailsSchema,
       /** The date when funds are expected to arrive in the destination account. */
       expected_arrival_date: z
         .number()
@@ -43132,8 +42792,7 @@ export namespace stripe {
         ),
       /** Details about a returned OutboundTransfer. Only set when the status is `returned`. */
       returned_details:
-        treasury_outbound_transfers_resource_returned_detailsSchema
-          .nullable()
+        TreasuryOutboundTransfersResourceReturnedDetailsSchema.nullable()
           .describe(
             'Details about a returned OutboundTransfer. Only set when the status is `returned`.'
           )
@@ -43152,18 +42811,17 @@ export namespace stripe {
           'Current status of the OutboundTransfer: `processing`, `failed`, `canceled`, `posted`, `returned`. An OutboundTransfer is `processing` if it has been created and is pending. The status changes to `posted` once the OutboundTransfer has been "confirmed" and funds have left the account, or to `failed` or `canceled`. If an OutboundTransfer fails to arrive at its destination, its status will change to `returned`.'
         ),
       status_transitions:
-        treasury_outbound_transfers_resource_status_transitionsSchema,
+        TreasuryOutboundTransfersResourceStatusTransitionsSchema,
       /** Details about network-specific tracking information if available. */
       tracking_details:
-        treasury_outbound_transfers_resource_outbound_transfer_resource_tracking_detailsSchema
-          .nullable()
+        TreasuryOutboundTransfersResourceOutboundTransferResourceTrackingDetailsSchema.nullable()
           .describe(
             'Details about network-specific tracking information if available.'
           )
           .optional(),
       /** The Transaction associated with this object. */
       transaction: z
-        .union([z.string().max(5000), treasury.transactionSchema])
+        .union([z.string().max(5000), TreasuryTransactionSchema])
         .describe('The Transaction associated with this object.')
     })
     .describe(
@@ -43192,7 +42850,7 @@ export namespace stripe {
         .describe('Reason for the return.'),
       /** The Transaction associated with this object. */
       transaction: z
-        .union([z.string().max(5000), treasury.transactionSchema])
+        .union([z.string().max(5000), TreasuryTransactionSchema])
         .describe('The Transaction associated with this object.')
     })
   export type TreasuryOutboundTransfersResourceReturnedDetails = z.infer<
@@ -43256,8 +42914,8 @@ export namespace stripe {
       /** Unique identifier for the object. */
       id: z.string().max(5000).describe('Unique identifier for the object.'),
       initiating_payment_method_details:
-        treasury_shared_resource_initiating_payment_method_details_initiating_payment_method_detailsSchema,
-      linked_flows: treasury_received_credits_resource_linked_flowsSchema,
+        TreasurySharedResourceInitiatingPaymentMethodDetailsInitiatingPaymentMethodDetailsSchema,
+      linked_flows: TreasuryReceivedCreditsResourceLinkedFlowsSchema,
       /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
       livemode: z
         .boolean()
@@ -43276,8 +42934,7 @@ export namespace stripe {
         ),
       /** Details describing when a ReceivedCredit may be reversed. */
       reversal_details:
-        treasury_received_credits_resource_reversal_detailsSchema
-          .nullable()
+        TreasuryReceivedCreditsResourceReversalDetailsSchema.nullable()
           .describe('Details describing when a ReceivedCredit may be reversed.')
           .optional(),
       /** Status of the ReceivedCredit. ReceivedCredits are created either `succeeded` (approved) or `failed` (declined). If a ReceivedCredit is declined, the failure reason can be found in the `failure_code` field. */
@@ -43288,7 +42945,7 @@ export namespace stripe {
         ),
       /** The Transaction associated with this object. */
       transaction: z
-        .union([z.string().max(5000), treasury.transactionSchema])
+        .union([z.string().max(5000), TreasuryTransactionSchema])
         .nullable()
         .describe('The Transaction associated with this object.')
         .optional()
@@ -43339,8 +42996,7 @@ export namespace stripe {
       .optional(),
     /** The expandable object of the source flow. */
     source_flow_details:
-      treasury_received_credits_resource_source_flows_detailsSchema
-        .nullable()
+      TreasuryReceivedCreditsResourceSourceFlowsDetailsSchema.nullable()
         .describe('The expandable object of the source flow.')
         .optional(),
     /** The type of flow that originated the ReceivedCredit (for example, `outbound_payment`). */
@@ -43359,10 +43015,10 @@ export namespace stripe {
 
   export const TreasuryReceivedCreditsResourceSourceFlowsDetailsSchema =
     z.object({
-      credit_reversal: treasury.credit_reversalSchema.optional(),
-      outbound_payment: treasury.outbound_paymentSchema.optional(),
-      outbound_transfer: treasury.outbound_transferSchema.optional(),
-      payout: payoutSchema.optional(),
+      credit_reversal: TreasuryCreditReversalSchema.optional(),
+      outbound_payment: TreasuryOutboundPaymentSchema.optional(),
+      outbound_transfer: TreasuryOutboundTransferSchema.optional(),
+      payout: PayoutSchema.optional(),
       /** The type of the source flow that originated the ReceivedCredit. */
       type: z
         .enum([
@@ -43438,8 +43094,8 @@ export namespace stripe {
       /** Unique identifier for the object. */
       id: z.string().max(5000).describe('Unique identifier for the object.'),
       initiating_payment_method_details:
-        treasury_shared_resource_initiating_payment_method_details_initiating_payment_method_detailsSchema.optional(),
-      linked_flows: treasury_received_debits_resource_linked_flowsSchema,
+        TreasurySharedResourceInitiatingPaymentMethodDetailsInitiatingPaymentMethodDetailsSchema.optional(),
+      linked_flows: TreasuryReceivedDebitsResourceLinkedFlowsSchema,
       /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
       livemode: z
         .boolean()
@@ -43457,10 +43113,12 @@ export namespace stripe {
           "String representing the object's type. Objects of the same type share the same value."
         ),
       /** Details describing when a ReceivedDebit might be reversed. */
-      reversal_details: treasury_received_debits_resource_reversal_detailsSchema
-        .nullable()
-        .describe('Details describing when a ReceivedDebit might be reversed.')
-        .optional(),
+      reversal_details:
+        TreasuryReceivedDebitsResourceReversalDetailsSchema.nullable()
+          .describe(
+            'Details describing when a ReceivedDebit might be reversed.'
+          )
+          .optional(),
       /** Status of the ReceivedDebit. ReceivedDebits are created with a status of either `succeeded` (approved) or `failed` (declined). The failure reason can be found under the `failure_code`. */
       status: z
         .enum(['failed', 'succeeded'])
@@ -43469,7 +43127,7 @@ export namespace stripe {
         ),
       /** The Transaction associated with this object. */
       transaction: z
-        .union([z.string().max(5000), treasury.transactionSchema])
+        .union([z.string().max(5000), TreasuryTransactionSchema])
         .nullable()
         .describe('The Transaction associated with this object.')
         .optional()
@@ -43500,19 +43158,19 @@ export namespace stripe {
   export const CheckoutSessionSchema = z
     .object({
       /** Settings for price localization with [Adaptive Pricing](https://docs.stripe.com/payments/checkout/adaptive-pricing). */
-      adaptive_pricing: payment_pages_checkout_session_adaptive_pricingSchema
-        .nullable()
-        .describe(
-          'Settings for price localization with [Adaptive Pricing](https://docs.stripe.com/payments/checkout/adaptive-pricing).'
-        )
-        .optional(),
+      adaptive_pricing:
+        PaymentPagesCheckoutSessionAdaptivePricingSchema.nullable()
+          .describe(
+            'Settings for price localization with [Adaptive Pricing](https://docs.stripe.com/payments/checkout/adaptive-pricing).'
+          )
+          .optional(),
       /** When set, provides configuration for actions to take if this Checkout Session expires. */
-      after_expiration: payment_pages_checkout_session_after_expirationSchema
-        .nullable()
-        .describe(
-          'When set, provides configuration for actions to take if this Checkout Session expires.'
-        )
-        .optional(),
+      after_expiration:
+        PaymentPagesCheckoutSessionAfterExpirationSchema.nullable()
+          .describe(
+            'When set, provides configuration for actions to take if this Checkout Session expires.'
+          )
+          .optional(),
       /** Enables user redeemable promotion codes. */
       allow_promotion_codes: z
         .boolean()
@@ -43533,7 +43191,7 @@ export namespace stripe {
         .nullable()
         .describe('Total of all items after discounts and taxes are applied.')
         .optional(),
-      automatic_tax: payment_pages_checkout_session_automatic_taxSchema,
+      automatic_tax: PaymentPagesCheckoutSessionAutomaticTaxSchema,
       /** Describes whether Checkout should collect the customer's billing address. Defaults to `auto`. */
       billing_address_collection: z
         .enum(['auto', 'required'])
@@ -43575,21 +43233,18 @@ export namespace stripe {
         .optional(),
       /** Information about the customer collected within the Checkout Session. */
       collected_information:
-        payment_pages_checkout_session_collected_informationSchema
-          .nullable()
+        PaymentPagesCheckoutSessionCollectedInformationSchema.nullable()
           .describe(
             'Information about the customer collected within the Checkout Session.'
           )
           .optional(),
       /** Results of `consent_collection` for this session. */
-      consent: payment_pages_checkout_session_consentSchema
-        .nullable()
+      consent: PaymentPagesCheckoutSessionConsentSchema.nullable()
         .describe('Results of `consent_collection` for this session.')
         .optional(),
       /** When set, provides configuration for the Checkout Session to gather active consent from customers. */
       consent_collection:
-        payment_pages_checkout_session_consent_collectionSchema
-          .nullable()
+        PaymentPagesCheckoutSessionConsentCollectionSchema.nullable()
           .describe(
             'When set, provides configuration for the Checkout Session to gather active consent from customers.'
           )
@@ -43611,19 +43266,18 @@ export namespace stripe {
         .optional(),
       /** Currency conversion details for [Adaptive Pricing](https://docs.stripe.com/payments/checkout/adaptive-pricing) sessions */
       currency_conversion:
-        payment_pages_checkout_session_currency_conversionSchema
-          .nullable()
+        PaymentPagesCheckoutSessionCurrencyConversionSchema.nullable()
           .describe(
             'Currency conversion details for [Adaptive Pricing](https://docs.stripe.com/payments/checkout/adaptive-pricing) sessions'
           )
           .optional(),
       /** Collect additional information from your customer using custom fields. Up to 3 fields are supported. */
       custom_fields: z
-        .array(payment_pages_checkout_session_custom_fieldsSchema)
+        .array(PaymentPagesCheckoutSessionCustomFieldsSchema)
         .describe(
           'Collect additional information from your customer using custom fields. Up to 3 fields are supported.'
         ),
-      custom_text: payment_pages_checkout_session_custom_textSchema,
+      custom_text: PaymentPagesCheckoutSessionCustomTextSchema,
       /**
        * The ID of the customer for this Session.
        * For Checkout Sessions in `subscription` mode or Checkout Sessions with `customer_creation` set as `always` in `payment` mode, Checkout
@@ -43632,7 +43286,7 @@ export namespace stripe {
        * the Session was created.
        */
       customer: z
-        .union([z.string().max(5000), customerSchema, deleted_customerSchema])
+        .union([z.string().max(5000), CustomerSchema, DeletedCustomerSchema])
         .nullable()
         .describe(
           'The ID of the customer for this Session.\nFor Checkout Sessions in `subscription` mode or Checkout Sessions with `customer_creation` set as `always` in `payment` mode, Checkout\nwill create a new customer object based on information provided\nduring the payment flow unless an existing customer was provided when\nthe Session was created.'
@@ -43647,12 +43301,12 @@ export namespace stripe {
         )
         .optional(),
       /** The customer details including the customer's tax exempt status and the customer's tax IDs. Customer's address details are not present on Sessions in `setup` mode. */
-      customer_details: payment_pages_checkout_session_customer_detailsSchema
-        .nullable()
-        .describe(
-          "The customer details including the customer's tax exempt status and the customer's tax IDs. Customer's address details are not present on Sessions in `setup` mode."
-        )
-        .optional(),
+      customer_details:
+        PaymentPagesCheckoutSessionCustomerDetailsSchema.nullable()
+          .describe(
+            "The customer details including the customer's tax exempt status and the customer's tax IDs. Customer's address details are not present on Sessions in `setup` mode."
+          )
+          .optional(),
       /**
        * If provided, this value will be used when the Customer object is created.
        * If not provided, customers will be asked to enter their email address.
@@ -43670,7 +43324,7 @@ export namespace stripe {
         .optional(),
       /** List of coupons and promotion codes attached to the Checkout Session. */
       discounts: z
-        .array(payment_pages_checkout_session_discountSchema)
+        .array(PaymentPagesCheckoutSessionDiscountSchema)
         .nullable()
         .describe(
           'List of coupons and promotion codes attached to the Checkout Session.'
@@ -43685,24 +43339,24 @@ export namespace stripe {
       id: z.string().max(5000).describe('Unique identifier for the object.'),
       /** ID of the invoice created by the Checkout Session, if it exists. */
       invoice: z
-        .union([z.string().max(5000), invoiceSchema])
+        .union([z.string().max(5000), InvoiceSchema])
         .nullable()
         .describe(
           'ID of the invoice created by the Checkout Session, if it exists.'
         )
         .optional(),
       /** Details on the state of invoice creation for the Checkout Session. */
-      invoice_creation: payment_pages_checkout_session_invoice_creationSchema
-        .nullable()
-        .describe(
-          'Details on the state of invoice creation for the Checkout Session.'
-        )
-        .optional(),
+      invoice_creation:
+        PaymentPagesCheckoutSessionInvoiceCreationSchema.nullable()
+          .describe(
+            'Details on the state of invoice creation for the Checkout Session.'
+          )
+          .optional(),
       /** The line items purchased by the customer. */
       line_items: z
         .object({
           /** Details about each object. */
-          data: z.array(itemSchema).describe('Details about each object.'),
+          data: z.array(ItemSchema).describe('Details about each object.'),
           /** True if this list has another page of items after this one that can be fetched. */
           has_more: z
             .boolean()
@@ -43799,7 +43453,7 @@ export namespace stripe {
         ),
       /** The ID of the PaymentIntent for Checkout Sessions in `payment` mode. You can't confirm or cancel the PaymentIntent for a Checkout Session. To cancel, [expire the Checkout Session](https://stripe.com/docs/api/checkout/sessions/expire) instead. */
       payment_intent: z
-        .union([z.string().max(5000), payment_intentSchema])
+        .union([z.string().max(5000), PaymentIntentSchema])
         .nullable()
         .describe(
           "The ID of the PaymentIntent for Checkout Sessions in `payment` mode. You can't confirm or cancel the PaymentIntent for a Checkout Session. To cancel, [expire the Checkout Session](https://stripe.com/docs/api/checkout/sessions/expire) instead."
@@ -43807,7 +43461,7 @@ export namespace stripe {
         .optional(),
       /** The ID of the Payment Link that created this Session. */
       payment_link: z
-        .union([z.string().max(5000), payment_linkSchema])
+        .union([z.string().max(5000), PaymentLinkSchema])
         .nullable()
         .describe('The ID of the Payment Link that created this Session.')
         .optional(),
@@ -43821,19 +43475,18 @@ export namespace stripe {
         .optional(),
       /** Information about the payment method configuration used for this Checkout session if using dynamic payment methods. */
       payment_method_configuration_details:
-        payment_method_config_biz_payment_method_configuration_detailsSchema
-          .nullable()
+        PaymentMethodConfigBizPaymentMethodConfigurationDetailsSchema.nullable()
           .describe(
             'Information about the payment method configuration used for this Checkout session if using dynamic payment methods.'
           )
           .optional(),
       /** Payment-method-specific configuration for the PaymentIntent or SetupIntent of this CheckoutSession. */
-      payment_method_options: checkout_session_payment_method_optionsSchema
-        .nullable()
-        .describe(
-          'Payment-method-specific configuration for the PaymentIntent or SetupIntent of this CheckoutSession.'
-        )
-        .optional(),
+      payment_method_options:
+        CheckoutSessionPaymentMethodOptionsSchema.nullable()
+          .describe(
+            'Payment-method-specific configuration for the PaymentIntent or SetupIntent of this CheckoutSession.'
+          )
+          .optional(),
       /**
        * A list of the types of payment methods (e.g. card) this Checkout
        * Session is allowed to accept.
@@ -43853,7 +43506,7 @@ export namespace stripe {
           "The payment status of the Checkout Session, one of `paid`, `unpaid`, or `no_payment_required`.\nYou can use this value to decide when to fulfill your customer's order."
         ),
       phone_number_collection:
-        payment_pages_checkout_session_phone_number_collectionSchema.optional(),
+        PaymentPagesCheckoutSessionPhoneNumberCollectionSchema.optional(),
       /** The ID of the original expired Checkout Session that triggered the recovery flow. */
       recovered_from: z
         .string()
@@ -43880,15 +43533,14 @@ export namespace stripe {
         .optional(),
       /** Controls saved payment method settings for the session. Only available in `payment` and `subscription` mode. */
       saved_payment_method_options:
-        payment_pages_checkout_session_saved_payment_method_optionsSchema
-          .nullable()
+        PaymentPagesCheckoutSessionSavedPaymentMethodOptionsSchema.nullable()
           .describe(
             'Controls saved payment method settings for the session. Only available in `payment` and `subscription` mode.'
           )
           .optional(),
       /** The ID of the SetupIntent for Checkout Sessions in `setup` mode. You can't confirm or cancel the SetupIntent for a Checkout Session. To cancel, [expire the Checkout Session](https://stripe.com/docs/api/checkout/sessions/expire) instead. */
       setup_intent: z
-        .union([z.string().max(5000), setup_intentSchema])
+        .union([z.string().max(5000), SetupIntentSchema])
         .nullable()
         .describe(
           "The ID of the SetupIntent for Checkout Sessions in `setup` mode. You can't confirm or cancel the SetupIntent for a Checkout Session. To cancel, [expire the Checkout Session](https://stripe.com/docs/api/checkout/sessions/expire) instead."
@@ -43896,27 +43548,24 @@ export namespace stripe {
         .optional(),
       /** When set, provides configuration for Checkout to collect a shipping address from a customer. */
       shipping_address_collection:
-        payment_pages_checkout_session_shipping_address_collectionSchema
-          .nullable()
+        PaymentPagesCheckoutSessionShippingAddressCollectionSchema.nullable()
           .describe(
             'When set, provides configuration for Checkout to collect a shipping address from a customer.'
           )
           .optional(),
       /** The details of the customer cost of shipping, including the customer chosen ShippingRate. */
-      shipping_cost: payment_pages_checkout_session_shipping_costSchema
-        .nullable()
+      shipping_cost: PaymentPagesCheckoutSessionShippingCostSchema.nullable()
         .describe(
           'The details of the customer cost of shipping, including the customer chosen ShippingRate.'
         )
         .optional(),
       /** Shipping information for this Checkout Session. */
-      shipping_details: shippingSchema
-        .nullable()
+      shipping_details: ShippingSchema.nullable()
         .describe('Shipping information for this Checkout Session.')
         .optional(),
       /** The shipping rate options applied to this Session. */
       shipping_options: z
-        .array(payment_pages_checkout_session_shipping_optionSchema)
+        .array(PaymentPagesCheckoutSessionShippingOptionSchema)
         .describe('The shipping rate options applied to this Session.'),
       /** The status of the Checkout Session, one of `open`, `complete`, or `expired`. */
       status: z
@@ -43940,7 +43589,7 @@ export namespace stripe {
         .optional(),
       /** The ID of the subscription for Checkout Sessions in `subscription` mode. */
       subscription: z
-        .union([z.string().max(5000), subscriptionSchema])
+        .union([z.string().max(5000), SubscriptionSchema])
         .nullable()
         .describe(
           'The ID of the subscription for Checkout Sessions in `subscription` mode.'
@@ -43959,10 +43608,9 @@ export namespace stripe {
         )
         .optional(),
       tax_id_collection:
-        payment_pages_checkout_session_tax_id_collectionSchema.optional(),
+        PaymentPagesCheckoutSessionTaxIdCollectionSchema.optional(),
       /** Tax and discount details for the computed total amount. */
-      total_details: payment_pages_checkout_session_total_detailsSchema
-        .nullable()
+      total_details: PaymentPagesCheckoutSessionTotalDetailsSchema.nullable()
         .describe('Tax and discount details for the computed total amount.')
         .optional(),
       /** The UI mode of the Session. Defaults to `hosted`. */
@@ -44002,7 +43650,7 @@ export namespace stripe {
   })
   export type GetAccountParams = z.infer<typeof GetAccountParamsSchema>
 
-  export const GetAccountResponseSchema = accountSchema
+  export const GetAccountResponseSchema = AccountSchema
   export type GetAccountResponse = z.infer<typeof GetAccountResponseSchema>
 
   export const PostAccountLinksParamsSchema = z.object({})
@@ -44010,7 +43658,7 @@ export namespace stripe {
     typeof PostAccountLinksParamsSchema
   >
 
-  export const PostAccountLinksResponseSchema = account_linkSchema
+  export const PostAccountLinksResponseSchema = AccountLinkSchema
   export type PostAccountLinksResponse = z.infer<
     typeof PostAccountLinksResponseSchema
   >
@@ -44020,7 +43668,7 @@ export namespace stripe {
     typeof PostAccountSessionsParamsSchema
   >
 
-  export const PostAccountSessionsResponseSchema = account_sessionSchema
+  export const PostAccountSessionsResponseSchema = AccountSessionSchema
   export type PostAccountSessionsResponse = z.infer<
     typeof PostAccountSessionsResponseSchema
   >
@@ -44072,7 +43720,7 @@ export namespace stripe {
   export type GetAccountsParams = z.infer<typeof GetAccountsParamsSchema>
 
   export const GetAccountsResponseSchema = z.object({
-    data: z.array(accountSchema),
+    data: z.array(AccountSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -44097,7 +43745,7 @@ export namespace stripe {
   export const PostAccountsParamsSchema = z.object({})
   export type PostAccountsParams = z.infer<typeof PostAccountsParamsSchema>
 
-  export const PostAccountsResponseSchema = accountSchema
+  export const PostAccountsResponseSchema = AccountSchema
   export type PostAccountsResponse = z.infer<typeof PostAccountsResponseSchema>
 
   export const GetAccountsAccountParamsSchema = z.object({
@@ -44112,7 +43760,7 @@ export namespace stripe {
     typeof GetAccountsAccountParamsSchema
   >
 
-  export const GetAccountsAccountResponseSchema = accountSchema
+  export const GetAccountsAccountResponseSchema = AccountSchema
   export type GetAccountsAccountResponse = z.infer<
     typeof GetAccountsAccountResponseSchema
   >
@@ -44124,7 +43772,7 @@ export namespace stripe {
     typeof PostAccountsAccountParamsSchema
   >
 
-  export const PostAccountsAccountResponseSchema = accountSchema
+  export const PostAccountsAccountResponseSchema = AccountSchema
   export type PostAccountsAccountResponse = z.infer<
     typeof PostAccountsAccountResponseSchema
   >
@@ -44136,7 +43784,7 @@ export namespace stripe {
     typeof DeleteAccountsAccountParamsSchema
   >
 
-  export const DeleteAccountsAccountResponseSchema = deleted_accountSchema
+  export const DeleteAccountsAccountResponseSchema = DeletedAccountSchema
   export type DeleteAccountsAccountResponse = z.infer<
     typeof DeleteAccountsAccountResponseSchema
   >
@@ -44149,7 +43797,7 @@ export namespace stripe {
   >
 
   export const PostAccountsAccountBankAccountsResponseSchema =
-    external_accountSchema
+    ExternalAccountSchema
   export type PostAccountsAccountBankAccountsResponse = z.infer<
     typeof PostAccountsAccountBankAccountsResponseSchema
   >
@@ -44168,7 +43816,7 @@ export namespace stripe {
   >
 
   export const GetAccountsAccountBankAccountsIdResponseSchema =
-    external_accountSchema
+    ExternalAccountSchema
   export type GetAccountsAccountBankAccountsIdResponse = z.infer<
     typeof GetAccountsAccountBankAccountsIdResponseSchema
   >
@@ -44182,7 +43830,7 @@ export namespace stripe {
   >
 
   export const PostAccountsAccountBankAccountsIdResponseSchema =
-    external_accountSchema
+    ExternalAccountSchema
   export type PostAccountsAccountBankAccountsIdResponse = z.infer<
     typeof PostAccountsAccountBankAccountsIdResponseSchema
   >
@@ -44196,7 +43844,7 @@ export namespace stripe {
   >
 
   export const DeleteAccountsAccountBankAccountsIdResponseSchema =
-    deleted_external_accountSchema
+    DeletedExternalAccountSchema
   export type DeleteAccountsAccountBankAccountsIdResponse = z.infer<
     typeof DeleteAccountsAccountBankAccountsIdResponseSchema
   >
@@ -44214,7 +43862,7 @@ export namespace stripe {
   >
 
   export const GetAccountsAccountCapabilitiesResponseSchema = z.object({
-    data: z.array(capabilitySchema),
+    data: z.array(CapabilitySchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -44251,7 +43899,7 @@ export namespace stripe {
   >
 
   export const GetAccountsAccountCapabilitiesCapabilityResponseSchema =
-    capabilitySchema
+    CapabilitySchema
   export type GetAccountsAccountCapabilitiesCapabilityResponse = z.infer<
     typeof GetAccountsAccountCapabilitiesCapabilityResponseSchema
   >
@@ -44264,7 +43912,7 @@ export namespace stripe {
   >
 
   export const PostAccountsAccountCapabilitiesCapabilityResponseSchema =
-    capabilitySchema
+    CapabilitySchema
   export type PostAccountsAccountCapabilitiesCapabilityResponse = z.infer<
     typeof PostAccountsAccountCapabilitiesCapabilityResponseSchema
   >
@@ -44313,7 +43961,7 @@ export namespace stripe {
   export const GetAccountsAccountExternalAccountsResponseSchema = z.object({
     /** The list contains all external accounts that have been attached to the Stripe account. These may be bank accounts or cards. */
     data: z
-      .array(z.union([bank_accountSchema, cardSchema]))
+      .array(z.union([BankAccountSchema, CardSchema]))
       .describe(
         'The list contains all external accounts that have been attached to the Stripe account. These may be bank accounts or cards.'
       ),
@@ -44347,7 +43995,7 @@ export namespace stripe {
   >
 
   export const PostAccountsAccountExternalAccountsResponseSchema =
-    external_accountSchema
+    ExternalAccountSchema
   export type PostAccountsAccountExternalAccountsResponse = z.infer<
     typeof PostAccountsAccountExternalAccountsResponseSchema
   >
@@ -44366,7 +44014,7 @@ export namespace stripe {
   >
 
   export const GetAccountsAccountExternalAccountsIdResponseSchema =
-    external_accountSchema
+    ExternalAccountSchema
   export type GetAccountsAccountExternalAccountsIdResponse = z.infer<
     typeof GetAccountsAccountExternalAccountsIdResponseSchema
   >
@@ -44380,7 +44028,7 @@ export namespace stripe {
   >
 
   export const PostAccountsAccountExternalAccountsIdResponseSchema =
-    external_accountSchema
+    ExternalAccountSchema
   export type PostAccountsAccountExternalAccountsIdResponse = z.infer<
     typeof PostAccountsAccountExternalAccountsIdResponseSchema
   >
@@ -44394,7 +44042,7 @@ export namespace stripe {
   >
 
   export const DeleteAccountsAccountExternalAccountsIdResponseSchema =
-    deleted_external_accountSchema
+    DeletedExternalAccountSchema
   export type DeleteAccountsAccountExternalAccountsIdResponse = z.infer<
     typeof DeleteAccountsAccountExternalAccountsIdResponseSchema
   >
@@ -44406,7 +44054,7 @@ export namespace stripe {
     typeof PostAccountsAccountLoginLinksParamsSchema
   >
 
-  export const PostAccountsAccountLoginLinksResponseSchema = login_linkSchema
+  export const PostAccountsAccountLoginLinksResponseSchema = LoginLinkSchema
   export type PostAccountsAccountLoginLinksResponse = z.infer<
     typeof PostAccountsAccountLoginLinksResponseSchema
   >
@@ -44462,7 +44110,7 @@ export namespace stripe {
   >
 
   export const GetAccountsAccountPeopleResponseSchema = z.object({
-    data: z.array(personSchema),
+    data: z.array(PersonSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -44492,7 +44140,7 @@ export namespace stripe {
     typeof PostAccountsAccountPeopleParamsSchema
   >
 
-  export const PostAccountsAccountPeopleResponseSchema = personSchema
+  export const PostAccountsAccountPeopleResponseSchema = PersonSchema
   export type PostAccountsAccountPeopleResponse = z.infer<
     typeof PostAccountsAccountPeopleResponseSchema
   >
@@ -44510,7 +44158,7 @@ export namespace stripe {
     typeof GetAccountsAccountPeoplePersonParamsSchema
   >
 
-  export const GetAccountsAccountPeoplePersonResponseSchema = personSchema
+  export const GetAccountsAccountPeoplePersonResponseSchema = PersonSchema
   export type GetAccountsAccountPeoplePersonResponse = z.infer<
     typeof GetAccountsAccountPeoplePersonResponseSchema
   >
@@ -44523,7 +44171,7 @@ export namespace stripe {
     typeof PostAccountsAccountPeoplePersonParamsSchema
   >
 
-  export const PostAccountsAccountPeoplePersonResponseSchema = personSchema
+  export const PostAccountsAccountPeoplePersonResponseSchema = PersonSchema
   export type PostAccountsAccountPeoplePersonResponse = z.infer<
     typeof PostAccountsAccountPeoplePersonResponseSchema
   >
@@ -44537,7 +44185,7 @@ export namespace stripe {
   >
 
   export const DeleteAccountsAccountPeoplePersonResponseSchema =
-    deleted_personSchema
+    DeletedPersonSchema
   export type DeleteAccountsAccountPeoplePersonResponse = z.infer<
     typeof DeleteAccountsAccountPeoplePersonResponseSchema
   >
@@ -44593,7 +44241,7 @@ export namespace stripe {
   >
 
   export const GetAccountsAccountPersonsResponseSchema = z.object({
-    data: z.array(personSchema),
+    data: z.array(PersonSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -44623,7 +44271,7 @@ export namespace stripe {
     typeof PostAccountsAccountPersonsParamsSchema
   >
 
-  export const PostAccountsAccountPersonsResponseSchema = personSchema
+  export const PostAccountsAccountPersonsResponseSchema = PersonSchema
   export type PostAccountsAccountPersonsResponse = z.infer<
     typeof PostAccountsAccountPersonsResponseSchema
   >
@@ -44641,7 +44289,7 @@ export namespace stripe {
     typeof GetAccountsAccountPersonsPersonParamsSchema
   >
 
-  export const GetAccountsAccountPersonsPersonResponseSchema = personSchema
+  export const GetAccountsAccountPersonsPersonResponseSchema = PersonSchema
   export type GetAccountsAccountPersonsPersonResponse = z.infer<
     typeof GetAccountsAccountPersonsPersonResponseSchema
   >
@@ -44654,7 +44302,7 @@ export namespace stripe {
     typeof PostAccountsAccountPersonsPersonParamsSchema
   >
 
-  export const PostAccountsAccountPersonsPersonResponseSchema = personSchema
+  export const PostAccountsAccountPersonsPersonResponseSchema = PersonSchema
   export type PostAccountsAccountPersonsPersonResponse = z.infer<
     typeof PostAccountsAccountPersonsPersonResponseSchema
   >
@@ -44668,7 +44316,7 @@ export namespace stripe {
   >
 
   export const DeleteAccountsAccountPersonsPersonResponseSchema =
-    deleted_personSchema
+    DeletedPersonSchema
   export type DeleteAccountsAccountPersonsPersonResponse = z.infer<
     typeof DeleteAccountsAccountPersonsPersonResponseSchema
   >
@@ -44680,7 +44328,7 @@ export namespace stripe {
     typeof PostAccountsAccountRejectParamsSchema
   >
 
-  export const PostAccountsAccountRejectResponseSchema = accountSchema
+  export const PostAccountsAccountRejectResponseSchema = AccountSchema
   export type PostAccountsAccountRejectResponse = z.infer<
     typeof PostAccountsAccountRejectResponseSchema
   >
@@ -44722,7 +44370,7 @@ export namespace stripe {
   >
 
   export const GetApplePayDomainsResponseSchema = z.object({
-    data: z.array(apple_pay_domainSchema),
+    data: z.array(ApplePayDomainSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -44751,7 +44399,7 @@ export namespace stripe {
     typeof PostApplePayDomainsParamsSchema
   >
 
-  export const PostApplePayDomainsResponseSchema = apple_pay_domainSchema
+  export const PostApplePayDomainsResponseSchema = ApplePayDomainSchema
   export type PostApplePayDomainsResponse = z.infer<
     typeof PostApplePayDomainsResponseSchema
   >
@@ -44768,7 +44416,7 @@ export namespace stripe {
     typeof GetApplePayDomainsDomainParamsSchema
   >
 
-  export const GetApplePayDomainsDomainResponseSchema = apple_pay_domainSchema
+  export const GetApplePayDomainsDomainResponseSchema = ApplePayDomainSchema
   export type GetApplePayDomainsDomainResponse = z.infer<
     typeof GetApplePayDomainsDomainResponseSchema
   >
@@ -44781,7 +44429,7 @@ export namespace stripe {
   >
 
   export const DeleteApplePayDomainsDomainResponseSchema =
-    deleted_apple_pay_domainSchema
+    DeletedApplePayDomainSchema
   export type DeleteApplePayDomainsDomainResponse = z.infer<
     typeof DeleteApplePayDomainsDomainResponseSchema
   >
@@ -44845,7 +44493,7 @@ export namespace stripe {
   >
 
   export const GetApplicationFeesResponseSchema = z.object({
-    data: z.array(application_feeSchema),
+    data: z.array(ApplicationFeeSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -44882,7 +44530,7 @@ export namespace stripe {
     typeof GetApplicationFeesFeeRefundsIdParamsSchema
   >
 
-  export const GetApplicationFeesFeeRefundsIdResponseSchema = fee_refundSchema
+  export const GetApplicationFeesFeeRefundsIdResponseSchema = FeeRefundSchema
   export type GetApplicationFeesFeeRefundsIdResponse = z.infer<
     typeof GetApplicationFeesFeeRefundsIdResponseSchema
   >
@@ -44895,7 +44543,7 @@ export namespace stripe {
     typeof PostApplicationFeesFeeRefundsIdParamsSchema
   >
 
-  export const PostApplicationFeesFeeRefundsIdResponseSchema = fee_refundSchema
+  export const PostApplicationFeesFeeRefundsIdResponseSchema = FeeRefundSchema
   export type PostApplicationFeesFeeRefundsIdResponse = z.infer<
     typeof PostApplicationFeesFeeRefundsIdResponseSchema
   >
@@ -44912,7 +44560,7 @@ export namespace stripe {
     typeof GetApplicationFeesIdParamsSchema
   >
 
-  export const GetApplicationFeesIdResponseSchema = application_feeSchema
+  export const GetApplicationFeesIdResponseSchema = ApplicationFeeSchema
   export type GetApplicationFeesIdResponse = z.infer<
     typeof GetApplicationFeesIdResponseSchema
   >
@@ -44924,7 +44572,7 @@ export namespace stripe {
     typeof PostApplicationFeesIdRefundParamsSchema
   >
 
-  export const PostApplicationFeesIdRefundResponseSchema = application_feeSchema
+  export const PostApplicationFeesIdRefundResponseSchema = ApplicationFeeSchema
   export type PostApplicationFeesIdRefundResponse = z.infer<
     typeof PostApplicationFeesIdRefundResponseSchema
   >
@@ -44967,7 +44615,7 @@ export namespace stripe {
 
   export const GetApplicationFeesIdRefundsResponseSchema = z.object({
     /** Details about each object. */
-    data: z.array(fee_refundSchema).describe('Details about each object.'),
+    data: z.array(FeeRefundSchema).describe('Details about each object.'),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -44997,7 +44645,7 @@ export namespace stripe {
     typeof PostApplicationFeesIdRefundsParamsSchema
   >
 
-  export const PostApplicationFeesIdRefundsResponseSchema = fee_refundSchema
+  export const PostApplicationFeesIdRefundsResponseSchema = FeeRefundSchema
   export type PostApplicationFeesIdRefundsResponse = z.infer<
     typeof PostApplicationFeesIdRefundsResponseSchema
   >
@@ -45045,7 +44693,7 @@ export namespace stripe {
   export type GetAppsSecretsParams = z.infer<typeof GetAppsSecretsParamsSchema>
 
   export const GetAppsSecretsResponseSchema = z.object({
-    data: z.array(apps.secretSchema),
+    data: z.array(AppsSecretSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -45074,7 +44722,7 @@ export namespace stripe {
     typeof PostAppsSecretsParamsSchema
   >
 
-  export const PostAppsSecretsResponseSchema = apps.secretSchema
+  export const PostAppsSecretsResponseSchema = AppsSecretSchema
   export type PostAppsSecretsResponse = z.infer<
     typeof PostAppsSecretsResponseSchema
   >
@@ -45084,7 +44732,7 @@ export namespace stripe {
     typeof PostAppsSecretsDeleteParamsSchema
   >
 
-  export const PostAppsSecretsDeleteResponseSchema = apps.secretSchema
+  export const PostAppsSecretsDeleteResponseSchema = AppsSecretSchema
   export type PostAppsSecretsDeleteResponse = z.infer<
     typeof PostAppsSecretsDeleteResponseSchema
   >
@@ -45114,7 +44762,7 @@ export namespace stripe {
     typeof GetAppsSecretsFindParamsSchema
   >
 
-  export const GetAppsSecretsFindResponseSchema = apps.secretSchema
+  export const GetAppsSecretsFindResponseSchema = AppsSecretSchema
   export type GetAppsSecretsFindResponse = z.infer<
     typeof GetAppsSecretsFindResponseSchema
   >
@@ -45128,7 +44776,7 @@ export namespace stripe {
   })
   export type GetBalanceParams = z.infer<typeof GetBalanceParamsSchema>
 
-  export const GetBalanceResponseSchema = balanceSchema
+  export const GetBalanceResponseSchema = BalanceSchema
   export type GetBalanceResponse = z.infer<typeof GetBalanceResponseSchema>
 
   export const GetBalanceHistoryParamsSchema = z.object({
@@ -45211,7 +44859,7 @@ export namespace stripe {
   >
 
   export const GetBalanceHistoryResponseSchema = z.object({
-    data: z.array(balance_transactionSchema),
+    data: z.array(BalanceTransactionSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -45247,7 +44895,7 @@ export namespace stripe {
     typeof GetBalanceHistoryIdParamsSchema
   >
 
-  export const GetBalanceHistoryIdResponseSchema = balance_transactionSchema
+  export const GetBalanceHistoryIdResponseSchema = BalanceTransactionSchema
   export type GetBalanceHistoryIdResponse = z.infer<
     typeof GetBalanceHistoryIdResponseSchema
   >
@@ -45332,7 +44980,7 @@ export namespace stripe {
   >
 
   export const GetBalanceTransactionsResponseSchema = z.object({
-    data: z.array(balance_transactionSchema),
+    data: z.array(BalanceTransactionSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -45368,8 +45016,7 @@ export namespace stripe {
     typeof GetBalanceTransactionsIdParamsSchema
   >
 
-  export const GetBalanceTransactionsIdResponseSchema =
-    balance_transactionSchema
+  export const GetBalanceTransactionsIdResponseSchema = BalanceTransactionSchema
   export type GetBalanceTransactionsIdResponse = z.infer<
     typeof GetBalanceTransactionsIdResponseSchema
   >
@@ -45421,7 +45068,7 @@ export namespace stripe {
   >
 
   export const GetBillingAlertsResponseSchema = z.object({
-    data: z.array(billing.alertSchema),
+    data: z.array(BillingAlertSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -45450,7 +45097,7 @@ export namespace stripe {
     typeof PostBillingAlertsParamsSchema
   >
 
-  export const PostBillingAlertsResponseSchema = billing.alertSchema
+  export const PostBillingAlertsResponseSchema = BillingAlertSchema
   export type PostBillingAlertsResponse = z.infer<
     typeof PostBillingAlertsResponseSchema
   >
@@ -45467,7 +45114,7 @@ export namespace stripe {
     typeof GetBillingAlertsIdParamsSchema
   >
 
-  export const GetBillingAlertsIdResponseSchema = billing.alertSchema
+  export const GetBillingAlertsIdResponseSchema = BillingAlertSchema
   export type GetBillingAlertsIdResponse = z.infer<
     typeof GetBillingAlertsIdResponseSchema
   >
@@ -45479,7 +45126,7 @@ export namespace stripe {
     typeof PostBillingAlertsIdActivateParamsSchema
   >
 
-  export const PostBillingAlertsIdActivateResponseSchema = billing.alertSchema
+  export const PostBillingAlertsIdActivateResponseSchema = BillingAlertSchema
   export type PostBillingAlertsIdActivateResponse = z.infer<
     typeof PostBillingAlertsIdActivateResponseSchema
   >
@@ -45491,7 +45138,7 @@ export namespace stripe {
     typeof PostBillingAlertsIdArchiveParamsSchema
   >
 
-  export const PostBillingAlertsIdArchiveResponseSchema = billing.alertSchema
+  export const PostBillingAlertsIdArchiveResponseSchema = BillingAlertSchema
   export type PostBillingAlertsIdArchiveResponse = z.infer<
     typeof PostBillingAlertsIdArchiveResponseSchema
   >
@@ -45503,7 +45150,7 @@ export namespace stripe {
     typeof PostBillingAlertsIdDeactivateParamsSchema
   >
 
-  export const PostBillingAlertsIdDeactivateResponseSchema = billing.alertSchema
+  export const PostBillingAlertsIdDeactivateResponseSchema = BillingAlertSchema
   export type PostBillingAlertsIdDeactivateResponse = z.infer<
     typeof PostBillingAlertsIdDeactivateResponseSchema
   >
@@ -45538,7 +45185,7 @@ export namespace stripe {
   >
 
   export const GetBillingCreditBalanceSummaryResponseSchema =
-    billing.credit_balance_summarySchema
+    BillingCreditBalanceSummarySchema
   export type GetBillingCreditBalanceSummaryResponse = z.infer<
     typeof GetBillingCreditBalanceSummaryResponseSchema
   >
@@ -45592,7 +45239,7 @@ export namespace stripe {
   >
 
   export const GetBillingCreditBalanceTransactionsResponseSchema = z.object({
-    data: z.array(billing.credit_balance_transactionSchema),
+    data: z.array(BillingCreditBalanceTransactionSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -45630,7 +45277,7 @@ export namespace stripe {
   >
 
   export const GetBillingCreditBalanceTransactionsIdResponseSchema =
-    billing.credit_balance_transactionSchema
+    BillingCreditBalanceTransactionSchema
   export type GetBillingCreditBalanceTransactionsIdResponse = z.infer<
     typeof GetBillingCreditBalanceTransactionsIdResponseSchema
   >
@@ -45677,7 +45324,7 @@ export namespace stripe {
   >
 
   export const GetBillingCreditGrantsResponseSchema = z.object({
-    data: z.array(billing.credit_grantSchema),
+    data: z.array(BillingCreditGrantSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -45706,8 +45353,7 @@ export namespace stripe {
     typeof PostBillingCreditGrantsParamsSchema
   >
 
-  export const PostBillingCreditGrantsResponseSchema =
-    billing.credit_grantSchema
+  export const PostBillingCreditGrantsResponseSchema = BillingCreditGrantSchema
   export type PostBillingCreditGrantsResponse = z.infer<
     typeof PostBillingCreditGrantsResponseSchema
   >
@@ -45725,8 +45371,7 @@ export namespace stripe {
     typeof GetBillingCreditGrantsIdParamsSchema
   >
 
-  export const GetBillingCreditGrantsIdResponseSchema =
-    billing.credit_grantSchema
+  export const GetBillingCreditGrantsIdResponseSchema = BillingCreditGrantSchema
   export type GetBillingCreditGrantsIdResponse = z.infer<
     typeof GetBillingCreditGrantsIdResponseSchema
   >
@@ -45740,7 +45385,7 @@ export namespace stripe {
   >
 
   export const PostBillingCreditGrantsIdResponseSchema =
-    billing.credit_grantSchema
+    BillingCreditGrantSchema
   export type PostBillingCreditGrantsIdResponse = z.infer<
     typeof PostBillingCreditGrantsIdResponseSchema
   >
@@ -45754,7 +45399,7 @@ export namespace stripe {
   >
 
   export const PostBillingCreditGrantsIdExpireResponseSchema =
-    billing.credit_grantSchema
+    BillingCreditGrantSchema
   export type PostBillingCreditGrantsIdExpireResponse = z.infer<
     typeof PostBillingCreditGrantsIdExpireResponseSchema
   >
@@ -45768,7 +45413,7 @@ export namespace stripe {
   >
 
   export const PostBillingCreditGrantsIdVoidResponseSchema =
-    billing.credit_grantSchema
+    BillingCreditGrantSchema
   export type PostBillingCreditGrantsIdVoidResponse = z.infer<
     typeof PostBillingCreditGrantsIdVoidResponseSchema
   >
@@ -45779,7 +45424,7 @@ export namespace stripe {
   >
 
   export const PostBillingMeterEventAdjustmentsResponseSchema =
-    billing.meter_event_adjustmentSchema
+    BillingMeterEventAdjustmentSchema
   export type PostBillingMeterEventAdjustmentsResponse = z.infer<
     typeof PostBillingMeterEventAdjustmentsResponseSchema
   >
@@ -45789,7 +45434,7 @@ export namespace stripe {
     typeof PostBillingMeterEventsParamsSchema
   >
 
-  export const PostBillingMeterEventsResponseSchema = billing.meter_eventSchema
+  export const PostBillingMeterEventsResponseSchema = BillingMeterEventSchema
   export type PostBillingMeterEventsResponse = z.infer<
     typeof PostBillingMeterEventsResponseSchema
   >
@@ -45835,7 +45480,7 @@ export namespace stripe {
   >
 
   export const GetBillingMetersResponseSchema = z.object({
-    data: z.array(billing.meterSchema),
+    data: z.array(BillingMeterSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -45864,7 +45509,7 @@ export namespace stripe {
     typeof PostBillingMetersParamsSchema
   >
 
-  export const PostBillingMetersResponseSchema = billing.meterSchema
+  export const PostBillingMetersResponseSchema = BillingMeterSchema
   export type PostBillingMetersResponse = z.infer<
     typeof PostBillingMetersResponseSchema
   >
@@ -45882,7 +45527,7 @@ export namespace stripe {
     typeof GetBillingMetersIdParamsSchema
   >
 
-  export const GetBillingMetersIdResponseSchema = billing.meterSchema
+  export const GetBillingMetersIdResponseSchema = BillingMeterSchema
   export type GetBillingMetersIdResponse = z.infer<
     typeof GetBillingMetersIdResponseSchema
   >
@@ -45895,7 +45540,7 @@ export namespace stripe {
     typeof PostBillingMetersIdParamsSchema
   >
 
-  export const PostBillingMetersIdResponseSchema = billing.meterSchema
+  export const PostBillingMetersIdResponseSchema = BillingMeterSchema
   export type PostBillingMetersIdResponse = z.infer<
     typeof PostBillingMetersIdResponseSchema
   >
@@ -45908,7 +45553,7 @@ export namespace stripe {
     typeof PostBillingMetersIdDeactivateParamsSchema
   >
 
-  export const PostBillingMetersIdDeactivateResponseSchema = billing.meterSchema
+  export const PostBillingMetersIdDeactivateResponseSchema = BillingMeterSchema
   export type PostBillingMetersIdDeactivateResponse = z.infer<
     typeof PostBillingMetersIdDeactivateResponseSchema
   >
@@ -45977,7 +45622,7 @@ export namespace stripe {
   >
 
   export const GetBillingMetersIdEventSummariesResponseSchema = z.object({
-    data: z.array(billing.meter_event_summarySchema),
+    data: z.array(BillingMeterEventSummarySchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -46009,7 +45654,7 @@ export namespace stripe {
     typeof PostBillingMetersIdReactivateParamsSchema
   >
 
-  export const PostBillingMetersIdReactivateResponseSchema = billing.meterSchema
+  export const PostBillingMetersIdReactivateResponseSchema = BillingMeterSchema
   export type PostBillingMetersIdReactivateResponse = z.infer<
     typeof PostBillingMetersIdReactivateResponseSchema
   >
@@ -46064,7 +45709,7 @@ export namespace stripe {
   >
 
   export const GetBillingPortalConfigurationsResponseSchema = z.object({
-    data: z.array(billing_portal.configurationSchema),
+    data: z.array(BillingPortalConfigurationSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -46094,7 +45739,7 @@ export namespace stripe {
   >
 
   export const PostBillingPortalConfigurationsResponseSchema =
-    billing_portal.configurationSchema
+    BillingPortalConfigurationSchema
   export type PostBillingPortalConfigurationsResponse = z.infer<
     typeof PostBillingPortalConfigurationsResponseSchema
   >
@@ -46113,7 +45758,7 @@ export namespace stripe {
   >
 
   export const GetBillingPortalConfigurationsConfigurationResponseSchema =
-    billing_portal.configurationSchema
+    BillingPortalConfigurationSchema
   export type GetBillingPortalConfigurationsConfigurationResponse = z.infer<
     typeof GetBillingPortalConfigurationsConfigurationResponseSchema
   >
@@ -46125,7 +45770,7 @@ export namespace stripe {
   >
 
   export const PostBillingPortalConfigurationsConfigurationResponseSchema =
-    billing_portal.configurationSchema
+    BillingPortalConfigurationSchema
   export type PostBillingPortalConfigurationsConfigurationResponse = z.infer<
     typeof PostBillingPortalConfigurationsConfigurationResponseSchema
   >
@@ -46136,7 +45781,7 @@ export namespace stripe {
   >
 
   export const PostBillingPortalSessionsResponseSchema =
-    billing_portal.sessionSchema
+    BillingPortalSessionSchema
   export type PostBillingPortalSessionsResponse = z.infer<
     typeof PostBillingPortalSessionsResponseSchema
   >
@@ -46210,7 +45855,7 @@ export namespace stripe {
   export type GetChargesParams = z.infer<typeof GetChargesParamsSchema>
 
   export const GetChargesResponseSchema = z.object({
-    data: z.array(chargeSchema),
+    data: z.array(ChargeSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -46235,7 +45880,7 @@ export namespace stripe {
   export const PostChargesParamsSchema = z.object({})
   export type PostChargesParams = z.infer<typeof PostChargesParamsSchema>
 
-  export const PostChargesResponseSchema = chargeSchema
+  export const PostChargesResponseSchema = ChargeSchema
   export type PostChargesResponse = z.infer<typeof PostChargesResponseSchema>
 
   export const GetChargesSearchParamsSchema = z.object({
@@ -46273,7 +45918,7 @@ export namespace stripe {
   >
 
   export const GetChargesSearchResponseSchema = z.object({
-    data: z.array(chargeSchema),
+    data: z.array(ChargeSchema),
     has_more: z.boolean(),
     next_page: z.string().max(5000).nullable().optional(),
     /** String representing the object's type. Objects of the same type share the same value. */
@@ -46308,7 +45953,7 @@ export namespace stripe {
     typeof GetChargesChargeParamsSchema
   >
 
-  export const GetChargesChargeResponseSchema = chargeSchema
+  export const GetChargesChargeResponseSchema = ChargeSchema
   export type GetChargesChargeResponse = z.infer<
     typeof GetChargesChargeResponseSchema
   >
@@ -46320,7 +45965,7 @@ export namespace stripe {
     typeof PostChargesChargeParamsSchema
   >
 
-  export const PostChargesChargeResponseSchema = chargeSchema
+  export const PostChargesChargeResponseSchema = ChargeSchema
   export type PostChargesChargeResponse = z.infer<
     typeof PostChargesChargeResponseSchema
   >
@@ -46332,7 +45977,7 @@ export namespace stripe {
     typeof PostChargesChargeCaptureParamsSchema
   >
 
-  export const PostChargesChargeCaptureResponseSchema = chargeSchema
+  export const PostChargesChargeCaptureResponseSchema = ChargeSchema
   export type PostChargesChargeCaptureResponse = z.infer<
     typeof PostChargesChargeCaptureResponseSchema
   >
@@ -46349,7 +45994,7 @@ export namespace stripe {
     typeof GetChargesChargeDisputeParamsSchema
   >
 
-  export const GetChargesChargeDisputeResponseSchema = disputeSchema
+  export const GetChargesChargeDisputeResponseSchema = DisputeSchema
   export type GetChargesChargeDisputeResponse = z.infer<
     typeof GetChargesChargeDisputeResponseSchema
   >
@@ -46361,7 +46006,7 @@ export namespace stripe {
     typeof PostChargesChargeDisputeParamsSchema
   >
 
-  export const PostChargesChargeDisputeResponseSchema = disputeSchema
+  export const PostChargesChargeDisputeResponseSchema = DisputeSchema
   export type PostChargesChargeDisputeResponse = z.infer<
     typeof PostChargesChargeDisputeResponseSchema
   >
@@ -46373,7 +46018,7 @@ export namespace stripe {
     typeof PostChargesChargeDisputeCloseParamsSchema
   >
 
-  export const PostChargesChargeDisputeCloseResponseSchema = disputeSchema
+  export const PostChargesChargeDisputeCloseResponseSchema = DisputeSchema
   export type PostChargesChargeDisputeCloseResponse = z.infer<
     typeof PostChargesChargeDisputeCloseResponseSchema
   >
@@ -46389,7 +46034,7 @@ export namespace stripe {
     typeof PostChargesChargeRefundParamsSchema
   >
 
-  export const PostChargesChargeRefundResponseSchema = chargeSchema
+  export const PostChargesChargeRefundResponseSchema = ChargeSchema
   export type PostChargesChargeRefundResponse = z.infer<
     typeof PostChargesChargeRefundResponseSchema
   >
@@ -46430,7 +46075,7 @@ export namespace stripe {
 
   export const GetChargesChargeRefundsResponseSchema = z.object({
     /** Details about each object. */
-    data: z.array(refundSchema).describe('Details about each object.'),
+    data: z.array(RefundSchema).describe('Details about each object.'),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -46464,7 +46109,7 @@ export namespace stripe {
     typeof PostChargesChargeRefundsParamsSchema
   >
 
-  export const PostChargesChargeRefundsResponseSchema = refundSchema
+  export const PostChargesChargeRefundsResponseSchema = RefundSchema
   export type PostChargesChargeRefundsResponse = z.infer<
     typeof PostChargesChargeRefundsResponseSchema
   >
@@ -46482,7 +46127,7 @@ export namespace stripe {
     typeof GetChargesChargeRefundsRefundParamsSchema
   >
 
-  export const GetChargesChargeRefundsRefundResponseSchema = refundSchema
+  export const GetChargesChargeRefundsRefundResponseSchema = RefundSchema
   export type GetChargesChargeRefundsRefundResponse = z.infer<
     typeof GetChargesChargeRefundsRefundResponseSchema
   >
@@ -46495,7 +46140,7 @@ export namespace stripe {
     typeof PostChargesChargeRefundsRefundParamsSchema
   >
 
-  export const PostChargesChargeRefundsRefundResponseSchema = refundSchema
+  export const PostChargesChargeRefundsRefundResponseSchema = RefundSchema
   export type PostChargesChargeRefundsRefundResponse = z.infer<
     typeof PostChargesChargeRefundsRefundResponseSchema
   >
@@ -46593,7 +46238,7 @@ export namespace stripe {
   >
 
   export const GetCheckoutSessionsResponseSchema = z.object({
-    data: z.array(checkout.sessionSchema),
+    data: z.array(CheckoutSessionSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -46621,7 +46266,7 @@ export namespace stripe {
     typeof PostCheckoutSessionsParamsSchema
   >
 
-  export const PostCheckoutSessionsResponseSchema = checkout.sessionSchema
+  export const PostCheckoutSessionsResponseSchema = CheckoutSessionSchema
   export type PostCheckoutSessionsResponse = z.infer<
     typeof PostCheckoutSessionsResponseSchema
   >
@@ -46638,7 +46283,7 @@ export namespace stripe {
     typeof GetCheckoutSessionsSessionParamsSchema
   >
 
-  export const GetCheckoutSessionsSessionResponseSchema = checkout.sessionSchema
+  export const GetCheckoutSessionsSessionResponseSchema = CheckoutSessionSchema
   export type GetCheckoutSessionsSessionResponse = z.infer<
     typeof GetCheckoutSessionsSessionResponseSchema
   >
@@ -46650,8 +46295,7 @@ export namespace stripe {
     typeof PostCheckoutSessionsSessionParamsSchema
   >
 
-  export const PostCheckoutSessionsSessionResponseSchema =
-    checkout.sessionSchema
+  export const PostCheckoutSessionsSessionResponseSchema = CheckoutSessionSchema
   export type PostCheckoutSessionsSessionResponse = z.infer<
     typeof PostCheckoutSessionsSessionResponseSchema
   >
@@ -46664,7 +46308,7 @@ export namespace stripe {
   >
 
   export const PostCheckoutSessionsSessionExpireResponseSchema =
-    checkout.sessionSchema
+    CheckoutSessionSchema
   export type PostCheckoutSessionsSessionExpireResponse = z.infer<
     typeof PostCheckoutSessionsSessionExpireResponseSchema
   >
@@ -46707,7 +46351,7 @@ export namespace stripe {
 
   export const GetCheckoutSessionsSessionLineItemsResponseSchema = z.object({
     /** Details about each object. */
-    data: z.array(itemSchema).describe('Details about each object.'),
+    data: z.array(ItemSchema).describe('Details about each object.'),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -46766,7 +46410,7 @@ export namespace stripe {
   >
 
   export const GetClimateOrdersResponseSchema = z.object({
-    data: z.array(climate.orderSchema),
+    data: z.array(ClimateOrderSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -46795,7 +46439,7 @@ export namespace stripe {
     typeof PostClimateOrdersParamsSchema
   >
 
-  export const PostClimateOrdersResponseSchema = climate.orderSchema
+  export const PostClimateOrdersResponseSchema = ClimateOrderSchema
   export type PostClimateOrdersResponse = z.infer<
     typeof PostClimateOrdersResponseSchema
   >
@@ -46813,7 +46457,7 @@ export namespace stripe {
     typeof GetClimateOrdersOrderParamsSchema
   >
 
-  export const GetClimateOrdersOrderResponseSchema = climate.orderSchema
+  export const GetClimateOrdersOrderResponseSchema = ClimateOrderSchema
   export type GetClimateOrdersOrderResponse = z.infer<
     typeof GetClimateOrdersOrderResponseSchema
   >
@@ -46826,7 +46470,7 @@ export namespace stripe {
     typeof PostClimateOrdersOrderParamsSchema
   >
 
-  export const PostClimateOrdersOrderResponseSchema = climate.orderSchema
+  export const PostClimateOrdersOrderResponseSchema = ClimateOrderSchema
   export type PostClimateOrdersOrderResponse = z.infer<
     typeof PostClimateOrdersOrderResponseSchema
   >
@@ -46839,7 +46483,7 @@ export namespace stripe {
     typeof PostClimateOrdersOrderCancelParamsSchema
   >
 
-  export const PostClimateOrdersOrderCancelResponseSchema = climate.orderSchema
+  export const PostClimateOrdersOrderCancelResponseSchema = ClimateOrderSchema
   export type PostClimateOrdersOrderCancelResponse = z.infer<
     typeof PostClimateOrdersOrderCancelResponseSchema
   >
@@ -46880,7 +46524,7 @@ export namespace stripe {
   >
 
   export const GetClimateProductsResponseSchema = z.object({
-    data: z.array(climate.productSchema),
+    data: z.array(ClimateProductSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -46916,7 +46560,7 @@ export namespace stripe {
     typeof GetClimateProductsProductParamsSchema
   >
 
-  export const GetClimateProductsProductResponseSchema = climate.productSchema
+  export const GetClimateProductsProductResponseSchema = ClimateProductSchema
   export type GetClimateProductsProductResponse = z.infer<
     typeof GetClimateProductsProductResponseSchema
   >
@@ -46957,7 +46601,7 @@ export namespace stripe {
   >
 
   export const GetClimateSuppliersResponseSchema = z.object({
-    data: z.array(climate.supplierSchema),
+    data: z.array(ClimateSupplierSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -46993,8 +46637,7 @@ export namespace stripe {
     typeof GetClimateSuppliersSupplierParamsSchema
   >
 
-  export const GetClimateSuppliersSupplierResponseSchema =
-    climate.supplierSchema
+  export const GetClimateSuppliersSupplierResponseSchema = ClimateSupplierSchema
   export type GetClimateSuppliersSupplierResponse = z.infer<
     typeof GetClimateSuppliersSupplierResponseSchema
   >
@@ -47012,7 +46655,7 @@ export namespace stripe {
   >
 
   export const GetConfirmationTokensConfirmationTokenResponseSchema =
-    confirmation_tokenSchema
+    ConfirmationTokenSchema
   export type GetConfirmationTokensConfirmationTokenResponse = z.infer<
     typeof GetConfirmationTokensConfirmationTokenResponseSchema
   >
@@ -47053,7 +46696,7 @@ export namespace stripe {
   >
 
   export const GetCountrySpecsResponseSchema = z.object({
-    data: z.array(country_specSchema),
+    data: z.array(CountrySpecSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -47089,7 +46732,7 @@ export namespace stripe {
     typeof GetCountrySpecsCountryParamsSchema
   >
 
-  export const GetCountrySpecsCountryResponseSchema = country_specSchema
+  export const GetCountrySpecsCountryResponseSchema = CountrySpecSchema
   export type GetCountrySpecsCountryResponse = z.infer<
     typeof GetCountrySpecsCountryResponseSchema
   >
@@ -47143,7 +46786,7 @@ export namespace stripe {
   export type GetCouponsParams = z.infer<typeof GetCouponsParamsSchema>
 
   export const GetCouponsResponseSchema = z.object({
-    data: z.array(couponSchema),
+    data: z.array(CouponSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -47168,7 +46811,7 @@ export namespace stripe {
   export const PostCouponsParamsSchema = z.object({})
   export type PostCouponsParams = z.infer<typeof PostCouponsParamsSchema>
 
-  export const PostCouponsResponseSchema = couponSchema
+  export const PostCouponsResponseSchema = CouponSchema
   export type PostCouponsResponse = z.infer<typeof PostCouponsResponseSchema>
 
   export const GetCouponsCouponParamsSchema = z.object({
@@ -47183,7 +46826,7 @@ export namespace stripe {
     typeof GetCouponsCouponParamsSchema
   >
 
-  export const GetCouponsCouponResponseSchema = couponSchema
+  export const GetCouponsCouponResponseSchema = CouponSchema
   export type GetCouponsCouponResponse = z.infer<
     typeof GetCouponsCouponResponseSchema
   >
@@ -47195,7 +46838,7 @@ export namespace stripe {
     typeof PostCouponsCouponParamsSchema
   >
 
-  export const PostCouponsCouponResponseSchema = couponSchema
+  export const PostCouponsCouponResponseSchema = CouponSchema
   export type PostCouponsCouponResponse = z.infer<
     typeof PostCouponsCouponResponseSchema
   >
@@ -47207,7 +46850,7 @@ export namespace stripe {
     typeof DeleteCouponsCouponParamsSchema
   >
 
-  export const DeleteCouponsCouponResponseSchema = deleted_couponSchema
+  export const DeleteCouponsCouponResponseSchema = DeletedCouponSchema
   export type DeleteCouponsCouponResponse = z.infer<
     typeof DeleteCouponsCouponResponseSchema
   >
@@ -47277,7 +46920,7 @@ export namespace stripe {
   export type GetCreditNotesParams = z.infer<typeof GetCreditNotesParamsSchema>
 
   export const GetCreditNotesResponseSchema = z.object({
-    data: z.array(credit_noteSchema),
+    data: z.array(CreditNoteSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -47305,7 +46948,7 @@ export namespace stripe {
     typeof PostCreditNotesParamsSchema
   >
 
-  export const PostCreditNotesResponseSchema = credit_noteSchema
+  export const PostCreditNotesResponseSchema = CreditNoteSchema
   export type PostCreditNotesResponse = z.infer<
     typeof PostCreditNotesResponseSchema
   >
@@ -47437,7 +47080,7 @@ export namespace stripe {
     typeof GetCreditNotesPreviewParamsSchema
   >
 
-  export const GetCreditNotesPreviewResponseSchema = credit_noteSchema
+  export const GetCreditNotesPreviewResponseSchema = CreditNoteSchema
   export type GetCreditNotesPreviewResponse = z.infer<
     typeof GetCreditNotesPreviewResponseSchema
   >
@@ -47596,7 +47239,7 @@ export namespace stripe {
   export const GetCreditNotesPreviewLinesResponseSchema = z.object({
     /** Details about each object. */
     data: z
-      .array(credit_note_line_itemSchema)
+      .array(CreditNoteLineItemSchema)
       .describe('Details about each object.'),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
@@ -47659,7 +47302,7 @@ export namespace stripe {
   export const GetCreditNotesCreditNoteLinesResponseSchema = z.object({
     /** Details about each object. */
     data: z
-      .array(credit_note_line_itemSchema)
+      .array(CreditNoteLineItemSchema)
       .describe('Details about each object.'),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
@@ -47695,7 +47338,7 @@ export namespace stripe {
     typeof GetCreditNotesIdParamsSchema
   >
 
-  export const GetCreditNotesIdResponseSchema = credit_noteSchema
+  export const GetCreditNotesIdResponseSchema = CreditNoteSchema
   export type GetCreditNotesIdResponse = z.infer<
     typeof GetCreditNotesIdResponseSchema
   >
@@ -47707,7 +47350,7 @@ export namespace stripe {
     typeof PostCreditNotesIdParamsSchema
   >
 
-  export const PostCreditNotesIdResponseSchema = credit_noteSchema
+  export const PostCreditNotesIdResponseSchema = CreditNoteSchema
   export type PostCreditNotesIdResponse = z.infer<
     typeof PostCreditNotesIdResponseSchema
   >
@@ -47719,7 +47362,7 @@ export namespace stripe {
     typeof PostCreditNotesIdVoidParamsSchema
   >
 
-  export const PostCreditNotesIdVoidResponseSchema = credit_noteSchema
+  export const PostCreditNotesIdVoidResponseSchema = CreditNoteSchema
   export type PostCreditNotesIdVoidResponse = z.infer<
     typeof PostCreditNotesIdVoidResponseSchema
   >
@@ -47729,7 +47372,7 @@ export namespace stripe {
     typeof PostCustomerSessionsParamsSchema
   >
 
-  export const PostCustomerSessionsResponseSchema = customer_sessionSchema
+  export const PostCustomerSessionsResponseSchema = CustomerSessionSchema
   export type PostCustomerSessionsResponse = z.infer<
     typeof PostCustomerSessionsResponseSchema
   >
@@ -47799,7 +47442,7 @@ export namespace stripe {
   export type GetCustomersParams = z.infer<typeof GetCustomersParamsSchema>
 
   export const GetCustomersResponseSchema = z.object({
-    data: z.array(customerSchema),
+    data: z.array(CustomerSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -47824,7 +47467,7 @@ export namespace stripe {
   export const PostCustomersParamsSchema = z.object({})
   export type PostCustomersParams = z.infer<typeof PostCustomersParamsSchema>
 
-  export const PostCustomersResponseSchema = customerSchema
+  export const PostCustomersResponseSchema = CustomerSchema
   export type PostCustomersResponse = z.infer<
     typeof PostCustomersResponseSchema
   >
@@ -47864,7 +47507,7 @@ export namespace stripe {
   >
 
   export const GetCustomersSearchResponseSchema = z.object({
-    data: z.array(customerSchema),
+    data: z.array(CustomerSchema),
     has_more: z.boolean(),
     next_page: z.string().max(5000).nullable().optional(),
     /** String representing the object's type. Objects of the same type share the same value. */
@@ -47900,8 +47543,8 @@ export namespace stripe {
   >
 
   export const GetCustomersCustomerResponseSchema = z.union([
-    customerSchema,
-    deleted_customerSchema
+    CustomerSchema,
+    DeletedCustomerSchema
   ])
   export type GetCustomersCustomerResponse = z.infer<
     typeof GetCustomersCustomerResponseSchema
@@ -47914,7 +47557,7 @@ export namespace stripe {
     typeof PostCustomersCustomerParamsSchema
   >
 
-  export const PostCustomersCustomerResponseSchema = customerSchema
+  export const PostCustomersCustomerResponseSchema = CustomerSchema
   export type PostCustomersCustomerResponse = z.infer<
     typeof PostCustomersCustomerResponseSchema
   >
@@ -47926,7 +47569,7 @@ export namespace stripe {
     typeof DeleteCustomersCustomerParamsSchema
   >
 
-  export const DeleteCustomersCustomerResponseSchema = deleted_customerSchema
+  export const DeleteCustomersCustomerResponseSchema = DeletedCustomerSchema
   export type DeleteCustomersCustomerResponse = z.infer<
     typeof DeleteCustomersCustomerResponseSchema
   >
@@ -47971,7 +47614,7 @@ export namespace stripe {
     {
       /** Details about each object. */
       data: z
-        .array(customer_balance_transactionSchema)
+        .array(CustomerBalanceTransactionSchema)
         .describe('Details about each object.'),
       /** True if this list has another page of items after this one that can be fetched. */
       has_more: z
@@ -48004,7 +47647,7 @@ export namespace stripe {
   >
 
   export const PostCustomersCustomerBalanceTransactionsResponseSchema =
-    customer_balance_transactionSchema
+    CustomerBalanceTransactionSchema
   export type PostCustomersCustomerBalanceTransactionsResponse = z.infer<
     typeof PostCustomersCustomerBalanceTransactionsResponseSchema
   >
@@ -48025,7 +47668,7 @@ export namespace stripe {
     >
 
   export const GetCustomersCustomerBalanceTransactionsTransactionResponseSchema =
-    customer_balance_transactionSchema
+    CustomerBalanceTransactionSchema
   export type GetCustomersCustomerBalanceTransactionsTransactionResponse =
     z.infer<
       typeof GetCustomersCustomerBalanceTransactionsTransactionResponseSchema
@@ -48042,7 +47685,7 @@ export namespace stripe {
     >
 
   export const PostCustomersCustomerBalanceTransactionsTransactionResponseSchema =
-    customer_balance_transactionSchema
+    CustomerBalanceTransactionSchema
   export type PostCustomersCustomerBalanceTransactionsTransactionResponse =
     z.infer<
       typeof PostCustomersCustomerBalanceTransactionsTransactionResponseSchema
@@ -48084,7 +47727,7 @@ export namespace stripe {
 
   export const GetCustomersCustomerBankAccountsResponseSchema = z.object({
     /** Details about each object. */
-    data: z.array(bank_accountSchema).describe('Details about each object.'),
+    data: z.array(BankAccountSchema).describe('Details about each object.'),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -48115,7 +47758,7 @@ export namespace stripe {
   >
 
   export const PostCustomersCustomerBankAccountsResponseSchema =
-    payment_sourceSchema
+    PaymentSourceSchema
   export type PostCustomersCustomerBankAccountsResponse = z.infer<
     typeof PostCustomersCustomerBankAccountsResponseSchema
   >
@@ -48134,7 +47777,7 @@ export namespace stripe {
   >
 
   export const GetCustomersCustomerBankAccountsIdResponseSchema =
-    bank_accountSchema
+    BankAccountSchema
   export type GetCustomersCustomerBankAccountsIdResponse = z.infer<
     typeof GetCustomersCustomerBankAccountsIdResponseSchema
   >
@@ -48148,9 +47791,9 @@ export namespace stripe {
   >
 
   export const PostCustomersCustomerBankAccountsIdResponseSchema = z.union([
-    cardSchema,
-    bank_accountSchema,
-    sourceSchema
+    CardSchema,
+    BankAccountSchema,
+    SourceSchema
   ])
   export type PostCustomersCustomerBankAccountsIdResponse = z.infer<
     typeof PostCustomersCustomerBankAccountsIdResponseSchema
@@ -48165,8 +47808,8 @@ export namespace stripe {
   >
 
   export const DeleteCustomersCustomerBankAccountsIdResponseSchema = z.union([
-    payment_sourceSchema,
-    deleted_payment_sourceSchema
+    PaymentSourceSchema,
+    DeletedPaymentSourceSchema
   ])
   export type DeleteCustomersCustomerBankAccountsIdResponse = z.infer<
     typeof DeleteCustomersCustomerBankAccountsIdResponseSchema
@@ -48180,7 +47823,7 @@ export namespace stripe {
   >
 
   export const PostCustomersCustomerBankAccountsIdVerifyResponseSchema =
-    bank_accountSchema
+    BankAccountSchema
   export type PostCustomersCustomerBankAccountsIdVerifyResponse = z.infer<
     typeof PostCustomersCustomerBankAccountsIdVerifyResponseSchema
   >
@@ -48220,7 +47863,7 @@ export namespace stripe {
   >
 
   export const GetCustomersCustomerCardsResponseSchema = z.object({
-    data: z.array(cardSchema),
+    data: z.array(CardSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -48250,7 +47893,7 @@ export namespace stripe {
     typeof PostCustomersCustomerCardsParamsSchema
   >
 
-  export const PostCustomersCustomerCardsResponseSchema = payment_sourceSchema
+  export const PostCustomersCustomerCardsResponseSchema = PaymentSourceSchema
   export type PostCustomersCustomerCardsResponse = z.infer<
     typeof PostCustomersCustomerCardsResponseSchema
   >
@@ -48268,7 +47911,7 @@ export namespace stripe {
     typeof GetCustomersCustomerCardsIdParamsSchema
   >
 
-  export const GetCustomersCustomerCardsIdResponseSchema = cardSchema
+  export const GetCustomersCustomerCardsIdResponseSchema = CardSchema
   export type GetCustomersCustomerCardsIdResponse = z.infer<
     typeof GetCustomersCustomerCardsIdResponseSchema
   >
@@ -48282,9 +47925,9 @@ export namespace stripe {
   >
 
   export const PostCustomersCustomerCardsIdResponseSchema = z.union([
-    cardSchema,
-    bank_accountSchema,
-    sourceSchema
+    CardSchema,
+    BankAccountSchema,
+    SourceSchema
   ])
   export type PostCustomersCustomerCardsIdResponse = z.infer<
     typeof PostCustomersCustomerCardsIdResponseSchema
@@ -48299,8 +47942,8 @@ export namespace stripe {
   >
 
   export const DeleteCustomersCustomerCardsIdResponseSchema = z.union([
-    payment_sourceSchema,
-    deleted_payment_sourceSchema
+    PaymentSourceSchema,
+    DeletedPaymentSourceSchema
   ])
   export type DeleteCustomersCustomerCardsIdResponse = z.infer<
     typeof DeleteCustomersCustomerCardsIdResponseSchema
@@ -48318,8 +47961,7 @@ export namespace stripe {
     typeof GetCustomersCustomerCashBalanceParamsSchema
   >
 
-  export const GetCustomersCustomerCashBalanceResponseSchema =
-    cash_balanceSchema
+  export const GetCustomersCustomerCashBalanceResponseSchema = CashBalanceSchema
   export type GetCustomersCustomerCashBalanceResponse = z.infer<
     typeof GetCustomersCustomerCashBalanceResponseSchema
   >
@@ -48332,7 +47974,7 @@ export namespace stripe {
   >
 
   export const PostCustomersCustomerCashBalanceResponseSchema =
-    cash_balanceSchema
+    CashBalanceSchema
   export type PostCustomersCustomerCashBalanceResponse = z.infer<
     typeof PostCustomersCustomerCashBalanceResponseSchema
   >
@@ -48384,7 +48026,7 @@ export namespace stripe {
     .object({
       /** Details about each object. */
       data: z
-        .array(customer_cash_balance_transactionSchema)
+        .array(CustomerCashBalanceTransactionSchema)
         .describe('Details about each object.'),
       /** True if this list has another page of items after this one that can be fetched. */
       has_more: z
@@ -48427,7 +48069,7 @@ export namespace stripe {
     >
 
   export const GetCustomersCustomerCashBalanceTransactionsTransactionResponseSchema =
-    customer_cash_balance_transactionSchema
+    CustomerCashBalanceTransactionSchema
   export type GetCustomersCustomerCashBalanceTransactionsTransactionResponse =
     z.infer<
       typeof GetCustomersCustomerCashBalanceTransactionsTransactionResponseSchema
@@ -48445,7 +48087,7 @@ export namespace stripe {
     typeof GetCustomersCustomerDiscountParamsSchema
   >
 
-  export const GetCustomersCustomerDiscountResponseSchema = discountSchema
+  export const GetCustomersCustomerDiscountResponseSchema = DiscountSchema
   export type GetCustomersCustomerDiscountResponse = z.infer<
     typeof GetCustomersCustomerDiscountResponseSchema
   >
@@ -48458,7 +48100,7 @@ export namespace stripe {
   >
 
   export const DeleteCustomersCustomerDiscountResponseSchema =
-    deleted_discountSchema
+    DeletedDiscountSchema
   export type DeleteCustomersCustomerDiscountResponse = z.infer<
     typeof DeleteCustomersCustomerDiscountResponseSchema
   >
@@ -48471,7 +48113,7 @@ export namespace stripe {
   >
 
   export const PostCustomersCustomerFundingInstructionsResponseSchema =
-    funding_instructionsSchema
+    FundingInstructionsSchema
   export type PostCustomersCustomerFundingInstructionsResponse = z.infer<
     typeof PostCustomersCustomerFundingInstructionsResponseSchema
   >
@@ -48572,7 +48214,7 @@ export namespace stripe {
   >
 
   export const GetCustomersCustomerPaymentMethodsResponseSchema = z.object({
-    data: z.array(payment_methodSchema),
+    data: z.array(PaymentMethodSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -48610,7 +48252,7 @@ export namespace stripe {
   >
 
   export const GetCustomersCustomerPaymentMethodsPaymentMethodResponseSchema =
-    payment_methodSchema
+    PaymentMethodSchema
   export type GetCustomersCustomerPaymentMethodsPaymentMethodResponse = z.infer<
     typeof GetCustomersCustomerPaymentMethodsPaymentMethodResponseSchema
   >
@@ -48658,7 +48300,7 @@ export namespace stripe {
   export const GetCustomersCustomerSourcesResponseSchema = z.object({
     /** Details about each object. */
     data: z
-      .array(z.union([bank_accountSchema, cardSchema, sourceSchema]))
+      .array(z.union([BankAccountSchema, CardSchema, SourceSchema]))
       .describe('Details about each object.'),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
@@ -48689,7 +48331,7 @@ export namespace stripe {
     typeof PostCustomersCustomerSourcesParamsSchema
   >
 
-  export const PostCustomersCustomerSourcesResponseSchema = payment_sourceSchema
+  export const PostCustomersCustomerSourcesResponseSchema = PaymentSourceSchema
   export type PostCustomersCustomerSourcesResponse = z.infer<
     typeof PostCustomersCustomerSourcesResponseSchema
   >
@@ -48707,8 +48349,7 @@ export namespace stripe {
     typeof GetCustomersCustomerSourcesIdParamsSchema
   >
 
-  export const GetCustomersCustomerSourcesIdResponseSchema =
-    payment_sourceSchema
+  export const GetCustomersCustomerSourcesIdResponseSchema = PaymentSourceSchema
   export type GetCustomersCustomerSourcesIdResponse = z.infer<
     typeof GetCustomersCustomerSourcesIdResponseSchema
   >
@@ -48722,9 +48363,9 @@ export namespace stripe {
   >
 
   export const PostCustomersCustomerSourcesIdResponseSchema = z.union([
-    cardSchema,
-    bank_accountSchema,
-    sourceSchema
+    CardSchema,
+    BankAccountSchema,
+    SourceSchema
   ])
   export type PostCustomersCustomerSourcesIdResponse = z.infer<
     typeof PostCustomersCustomerSourcesIdResponseSchema
@@ -48739,8 +48380,8 @@ export namespace stripe {
   >
 
   export const DeleteCustomersCustomerSourcesIdResponseSchema = z.union([
-    payment_sourceSchema,
-    deleted_payment_sourceSchema
+    PaymentSourceSchema,
+    DeletedPaymentSourceSchema
   ])
   export type DeleteCustomersCustomerSourcesIdResponse = z.infer<
     typeof DeleteCustomersCustomerSourcesIdResponseSchema
@@ -48755,7 +48396,7 @@ export namespace stripe {
   >
 
   export const PostCustomersCustomerSourcesIdVerifyResponseSchema =
-    bank_accountSchema
+    BankAccountSchema
   export type PostCustomersCustomerSourcesIdVerifyResponse = z.infer<
     typeof PostCustomersCustomerSourcesIdVerifyResponseSchema
   >
@@ -48798,7 +48439,7 @@ export namespace stripe {
 
   export const GetCustomersCustomerSubscriptionsResponseSchema = z.object({
     /** Details about each object. */
-    data: z.array(subscriptionSchema).describe('Details about each object.'),
+    data: z.array(SubscriptionSchema).describe('Details about each object.'),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -48829,7 +48470,7 @@ export namespace stripe {
   >
 
   export const PostCustomersCustomerSubscriptionsResponseSchema =
-    subscriptionSchema
+    SubscriptionSchema
   export type PostCustomersCustomerSubscriptionsResponse = z.infer<
     typeof PostCustomersCustomerSubscriptionsResponseSchema
   >
@@ -48850,7 +48491,7 @@ export namespace stripe {
     >
 
   export const GetCustomersCustomerSubscriptionsSubscriptionExposedIdResponseSchema =
-    subscriptionSchema
+    SubscriptionSchema
   export type GetCustomersCustomerSubscriptionsSubscriptionExposedIdResponse =
     z.infer<
       typeof GetCustomersCustomerSubscriptionsSubscriptionExposedIdResponseSchema
@@ -48867,7 +48508,7 @@ export namespace stripe {
     >
 
   export const PostCustomersCustomerSubscriptionsSubscriptionExposedIdResponseSchema =
-    subscriptionSchema
+    SubscriptionSchema
   export type PostCustomersCustomerSubscriptionsSubscriptionExposedIdResponse =
     z.infer<
       typeof PostCustomersCustomerSubscriptionsSubscriptionExposedIdResponseSchema
@@ -48884,7 +48525,7 @@ export namespace stripe {
     >
 
   export const DeleteCustomersCustomerSubscriptionsSubscriptionExposedIdResponseSchema =
-    subscriptionSchema
+    SubscriptionSchema
   export type DeleteCustomersCustomerSubscriptionsSubscriptionExposedIdResponse =
     z.infer<
       typeof DeleteCustomersCustomerSubscriptionsSubscriptionExposedIdResponseSchema
@@ -48906,7 +48547,7 @@ export namespace stripe {
     >
 
   export const GetCustomersCustomerSubscriptionsSubscriptionExposedIdDiscountResponseSchema =
-    discountSchema
+    DiscountSchema
   export type GetCustomersCustomerSubscriptionsSubscriptionExposedIdDiscountResponse =
     z.infer<
       typeof GetCustomersCustomerSubscriptionsSubscriptionExposedIdDiscountResponseSchema
@@ -48923,7 +48564,7 @@ export namespace stripe {
     >
 
   export const DeleteCustomersCustomerSubscriptionsSubscriptionExposedIdDiscountResponseSchema =
-    deleted_discountSchema
+    DeletedDiscountSchema
   export type DeleteCustomersCustomerSubscriptionsSubscriptionExposedIdDiscountResponse =
     z.infer<
       typeof DeleteCustomersCustomerSubscriptionsSubscriptionExposedIdDiscountResponseSchema
@@ -48967,7 +48608,7 @@ export namespace stripe {
 
   export const GetCustomersCustomerTaxIdsResponseSchema = z.object({
     /** Details about each object. */
-    data: z.array(tax_idSchema).describe('Details about each object.'),
+    data: z.array(TaxIdSchema).describe('Details about each object.'),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -48997,7 +48638,7 @@ export namespace stripe {
     typeof PostCustomersCustomerTaxIdsParamsSchema
   >
 
-  export const PostCustomersCustomerTaxIdsResponseSchema = tax_idSchema
+  export const PostCustomersCustomerTaxIdsResponseSchema = TaxIdSchema
   export type PostCustomersCustomerTaxIdsResponse = z.infer<
     typeof PostCustomersCustomerTaxIdsResponseSchema
   >
@@ -49015,7 +48656,7 @@ export namespace stripe {
     typeof GetCustomersCustomerTaxIdsIdParamsSchema
   >
 
-  export const GetCustomersCustomerTaxIdsIdResponseSchema = tax_idSchema
+  export const GetCustomersCustomerTaxIdsIdResponseSchema = TaxIdSchema
   export type GetCustomersCustomerTaxIdsIdResponse = z.infer<
     typeof GetCustomersCustomerTaxIdsIdResponseSchema
   >
@@ -49029,7 +48670,7 @@ export namespace stripe {
   >
 
   export const DeleteCustomersCustomerTaxIdsIdResponseSchema =
-    deleted_tax_idSchema
+    DeletedTaxIdSchema
   export type DeleteCustomersCustomerTaxIdsIdResponse = z.infer<
     typeof DeleteCustomersCustomerTaxIdsIdResponseSchema
   >
@@ -49099,7 +48740,7 @@ export namespace stripe {
   export type GetDisputesParams = z.infer<typeof GetDisputesParamsSchema>
 
   export const GetDisputesResponseSchema = z.object({
-    data: z.array(disputeSchema),
+    data: z.array(DisputeSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -49133,7 +48774,7 @@ export namespace stripe {
     typeof GetDisputesDisputeParamsSchema
   >
 
-  export const GetDisputesDisputeResponseSchema = disputeSchema
+  export const GetDisputesDisputeResponseSchema = DisputeSchema
   export type GetDisputesDisputeResponse = z.infer<
     typeof GetDisputesDisputeResponseSchema
   >
@@ -49145,7 +48786,7 @@ export namespace stripe {
     typeof PostDisputesDisputeParamsSchema
   >
 
-  export const PostDisputesDisputeResponseSchema = disputeSchema
+  export const PostDisputesDisputeResponseSchema = DisputeSchema
   export type PostDisputesDisputeResponse = z.infer<
     typeof PostDisputesDisputeResponseSchema
   >
@@ -49157,7 +48798,7 @@ export namespace stripe {
     typeof PostDisputesDisputeCloseParamsSchema
   >
 
-  export const PostDisputesDisputeCloseResponseSchema = disputeSchema
+  export const PostDisputesDisputeCloseResponseSchema = DisputeSchema
   export type PostDisputesDisputeCloseResponse = z.infer<
     typeof PostDisputesDisputeCloseResponseSchema
   >
@@ -49200,7 +48841,7 @@ export namespace stripe {
   >
 
   export const GetEntitlementsActiveEntitlementsResponseSchema = z.object({
-    data: z.array(entitlements.active_entitlementSchema),
+    data: z.array(EntitlementsActiveEntitlementSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -49237,7 +48878,7 @@ export namespace stripe {
   >
 
   export const GetEntitlementsActiveEntitlementsIdResponseSchema =
-    entitlements.active_entitlementSchema
+    EntitlementsActiveEntitlementSchema
   export type GetEntitlementsActiveEntitlementsIdResponse = z.infer<
     typeof GetEntitlementsActiveEntitlementsIdResponseSchema
   >
@@ -49293,7 +48934,7 @@ export namespace stripe {
   >
 
   export const GetEntitlementsFeaturesResponseSchema = z.object({
-    data: z.array(entitlements.featureSchema),
+    data: z.array(EntitlementsFeatureSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -49323,7 +48964,7 @@ export namespace stripe {
   >
 
   export const PostEntitlementsFeaturesResponseSchema =
-    entitlements.featureSchema
+    EntitlementsFeatureSchema
   export type PostEntitlementsFeaturesResponse = z.infer<
     typeof PostEntitlementsFeaturesResponseSchema
   >
@@ -49342,7 +48983,7 @@ export namespace stripe {
   >
 
   export const GetEntitlementsFeaturesIdResponseSchema =
-    entitlements.featureSchema
+    EntitlementsFeatureSchema
   export type GetEntitlementsFeaturesIdResponse = z.infer<
     typeof GetEntitlementsFeaturesIdResponseSchema
   >
@@ -49355,7 +48996,7 @@ export namespace stripe {
   >
 
   export const PostEntitlementsFeaturesIdResponseSchema =
-    entitlements.featureSchema
+    EntitlementsFeatureSchema
   export type PostEntitlementsFeaturesIdResponse = z.infer<
     typeof PostEntitlementsFeaturesIdResponseSchema
   >
@@ -49365,7 +49006,7 @@ export namespace stripe {
     typeof PostEphemeralKeysParamsSchema
   >
 
-  export const PostEphemeralKeysResponseSchema = ephemeral_keySchema
+  export const PostEphemeralKeysResponseSchema = EphemeralKeySchema
   export type PostEphemeralKeysResponse = z.infer<
     typeof PostEphemeralKeysResponseSchema
   >
@@ -49377,7 +49018,7 @@ export namespace stripe {
     typeof DeleteEphemeralKeysKeyParamsSchema
   >
 
-  export const DeleteEphemeralKeysKeyResponseSchema = ephemeral_keySchema
+  export const DeleteEphemeralKeysKeyResponseSchema = EphemeralKeySchema
   export type DeleteEphemeralKeysKeyResponse = z.infer<
     typeof DeleteEphemeralKeysKeyResponseSchema
   >
@@ -49453,7 +49094,7 @@ export namespace stripe {
   export type GetEventsParams = z.infer<typeof GetEventsParamsSchema>
 
   export const GetEventsResponseSchema = z.object({
-    data: z.array(eventSchema),
+    data: z.array(EventSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -49485,7 +49126,7 @@ export namespace stripe {
   })
   export type GetEventsIdParams = z.infer<typeof GetEventsIdParamsSchema>
 
-  export const GetEventsIdResponseSchema = eventSchema
+  export const GetEventsIdResponseSchema = EventSchema
   export type GetEventsIdResponse = z.infer<typeof GetEventsIdResponseSchema>
 
   export const GetExchangeRatesParamsSchema = z.object({
@@ -49524,7 +49165,7 @@ export namespace stripe {
   >
 
   export const GetExchangeRatesResponseSchema = z.object({
-    data: z.array(exchange_rateSchema),
+    data: z.array(ExchangeRateSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -49560,7 +49201,7 @@ export namespace stripe {
     typeof GetExchangeRatesRateIdParamsSchema
   >
 
-  export const GetExchangeRatesRateIdResponseSchema = exchange_rateSchema
+  export const GetExchangeRatesRateIdResponseSchema = ExchangeRateSchema
   export type GetExchangeRatesRateIdResponse = z.infer<
     typeof GetExchangeRatesRateIdResponseSchema
   >
@@ -49626,7 +49267,7 @@ export namespace stripe {
 
   export const GetFileLinksResponseSchema = z.object({
     /** Details about each object. */
-    data: z.array(file_linkSchema).describe('Details about each object.'),
+    data: z.array(FileLinkSchema).describe('Details about each object.'),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -49651,7 +49292,7 @@ export namespace stripe {
   export const PostFileLinksParamsSchema = z.object({})
   export type PostFileLinksParams = z.infer<typeof PostFileLinksParamsSchema>
 
-  export const PostFileLinksResponseSchema = file_linkSchema
+  export const PostFileLinksResponseSchema = FileLinkSchema
   export type PostFileLinksResponse = z.infer<
     typeof PostFileLinksResponseSchema
   >
@@ -49668,7 +49309,7 @@ export namespace stripe {
     typeof GetFileLinksLinkParamsSchema
   >
 
-  export const GetFileLinksLinkResponseSchema = file_linkSchema
+  export const GetFileLinksLinkResponseSchema = FileLinkSchema
   export type GetFileLinksLinkResponse = z.infer<
     typeof GetFileLinksLinkResponseSchema
   >
@@ -49678,7 +49319,7 @@ export namespace stripe {
     typeof PostFileLinksLinkParamsSchema
   >
 
-  export const PostFileLinksLinkResponseSchema = file_linkSchema
+  export const PostFileLinksLinkResponseSchema = FileLinkSchema
   export type PostFileLinksLinkResponse = z.infer<
     typeof PostFileLinksLinkResponseSchema
   >
@@ -49757,7 +49398,7 @@ export namespace stripe {
   export type GetFilesParams = z.infer<typeof GetFilesParamsSchema>
 
   export const GetFilesResponseSchema = z.object({
-    data: z.array(fileSchema),
+    data: z.array(FileSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -49824,7 +49465,7 @@ export namespace stripe {
   })
   export type PostFilesParams = z.infer<typeof PostFilesParamsSchema>
 
-  export const PostFilesResponseSchema = fileSchema
+  export const PostFilesResponseSchema = FileSchema
   export type PostFilesResponse = z.infer<typeof PostFilesResponseSchema>
 
   export const GetFilesFileParamsSchema = z.object({
@@ -49837,7 +49478,7 @@ export namespace stripe {
   })
   export type GetFilesFileParams = z.infer<typeof GetFilesFileParamsSchema>
 
-  export const GetFilesFileResponseSchema = fileSchema
+  export const GetFilesFileResponseSchema = FileSchema
   export type GetFilesFileResponse = z.infer<typeof GetFilesFileResponseSchema>
 
   export const GetFinancialConnectionsAccountsParamsSchema = z.object({
@@ -49896,7 +49537,7 @@ export namespace stripe {
   export const GetFinancialConnectionsAccountsResponseSchema = z.object({
     /** Details about each object. */
     data: z
-      .array(financial_connections.accountSchema)
+      .array(FinancialConnectionsAccountSchema)
       .describe('Details about each object.'),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
@@ -49934,7 +49575,7 @@ export namespace stripe {
   >
 
   export const GetFinancialConnectionsAccountsAccountResponseSchema =
-    financial_connections.accountSchema
+    FinancialConnectionsAccountSchema
   export type GetFinancialConnectionsAccountsAccountResponse = z.infer<
     typeof GetFinancialConnectionsAccountsAccountResponseSchema
   >
@@ -49946,7 +49587,7 @@ export namespace stripe {
   >
 
   export const PostFinancialConnectionsAccountsAccountDisconnectResponseSchema =
-    financial_connections.accountSchema
+    FinancialConnectionsAccountSchema
   export type PostFinancialConnectionsAccountsAccountDisconnectResponse =
     z.infer<
       typeof PostFinancialConnectionsAccountsAccountDisconnectResponseSchema
@@ -49998,7 +49639,7 @@ export namespace stripe {
     z.object({
       /** Details about each object. */
       data: z
-        .array(financial_connections.account_ownerSchema)
+        .array(FinancialConnectionsAccountOwnerSchema)
         .describe('Details about each object.'),
       /** True if this list has another page of items after this one that can be fetched. */
       has_more: z
@@ -50029,7 +49670,7 @@ export namespace stripe {
   >
 
   export const PostFinancialConnectionsAccountsAccountRefreshResponseSchema =
-    financial_connections.accountSchema
+    FinancialConnectionsAccountSchema
   export type PostFinancialConnectionsAccountsAccountRefreshResponse = z.infer<
     typeof PostFinancialConnectionsAccountsAccountRefreshResponseSchema
   >
@@ -50041,7 +49682,7 @@ export namespace stripe {
   >
 
   export const PostFinancialConnectionsAccountsAccountSubscribeResponseSchema =
-    financial_connections.accountSchema
+    FinancialConnectionsAccountSchema
   export type PostFinancialConnectionsAccountsAccountSubscribeResponse =
     z.infer<
       typeof PostFinancialConnectionsAccountsAccountSubscribeResponseSchema
@@ -50055,7 +49696,7 @@ export namespace stripe {
     >
 
   export const PostFinancialConnectionsAccountsAccountUnsubscribeResponseSchema =
-    financial_connections.accountSchema
+    FinancialConnectionsAccountSchema
   export type PostFinancialConnectionsAccountsAccountUnsubscribeResponse =
     z.infer<
       typeof PostFinancialConnectionsAccountsAccountUnsubscribeResponseSchema
@@ -50067,7 +49708,7 @@ export namespace stripe {
   >
 
   export const PostFinancialConnectionsSessionsResponseSchema =
-    financial_connections.sessionSchema
+    FinancialConnectionsSessionSchema
   export type PostFinancialConnectionsSessionsResponse = z.infer<
     typeof PostFinancialConnectionsSessionsResponseSchema
   >
@@ -50085,7 +49726,7 @@ export namespace stripe {
   >
 
   export const GetFinancialConnectionsSessionsSessionResponseSchema =
-    financial_connections.sessionSchema
+    FinancialConnectionsSessionSchema
   export type GetFinancialConnectionsSessionsSessionResponse = z.infer<
     typeof GetFinancialConnectionsSessionsSessionResponseSchema
   >
@@ -50157,7 +49798,7 @@ export namespace stripe {
   export const GetFinancialConnectionsTransactionsResponseSchema = z.object({
     /** Details about each object. */
     data: z
-      .array(financial_connections.transactionSchema)
+      .array(FinancialConnectionsTransactionSchema)
       .describe('Details about each object.'),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
@@ -50196,7 +49837,7 @@ export namespace stripe {
   >
 
   export const GetFinancialConnectionsTransactionsTransactionResponseSchema =
-    financial_connections.transactionSchema
+    FinancialConnectionsTransactionSchema
   export type GetFinancialConnectionsTransactionsTransactionResponse = z.infer<
     typeof GetFinancialConnectionsTransactionsTransactionResponseSchema
   >
@@ -50251,7 +49892,7 @@ export namespace stripe {
   /** List of ForwardingRequest data. */
   export const GetForwardingRequestsResponseSchema = z
     .object({
-      data: z.array(forwarding.requestSchema),
+      data: z.array(ForwardingRequestSchema),
       /** True if this list has another page of items after this one that can be fetched. */
       has_more: z
         .boolean()
@@ -50280,7 +49921,7 @@ export namespace stripe {
     typeof PostForwardingRequestsParamsSchema
   >
 
-  export const PostForwardingRequestsResponseSchema = forwarding.requestSchema
+  export const PostForwardingRequestsResponseSchema = ForwardingRequestSchema
   export type PostForwardingRequestsResponse = z.infer<
     typeof PostForwardingRequestsResponseSchema
   >
@@ -50297,7 +49938,7 @@ export namespace stripe {
     typeof GetForwardingRequestsIdParamsSchema
   >
 
-  export const GetForwardingRequestsIdResponseSchema = forwarding.requestSchema
+  export const GetForwardingRequestsIdResponseSchema = ForwardingRequestSchema
   export type GetForwardingRequestsIdResponse = z.infer<
     typeof GetForwardingRequestsIdResponseSchema
   >
@@ -50374,7 +50015,7 @@ export namespace stripe {
   >
 
   export const GetIdentityVerificationReportsResponseSchema = z.object({
-    data: z.array(identity.verification_reportSchema),
+    data: z.array(IdentityVerificationReportSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -50411,7 +50052,7 @@ export namespace stripe {
   >
 
   export const GetIdentityVerificationReportsReportResponseSchema =
-    identity.verification_reportSchema
+    IdentityVerificationReportSchema
   export type GetIdentityVerificationReportsReportResponse = z.infer<
     typeof GetIdentityVerificationReportsReportResponseSchema
   >
@@ -50483,7 +50124,7 @@ export namespace stripe {
   >
 
   export const GetIdentityVerificationSessionsResponseSchema = z.object({
-    data: z.array(identity.verification_sessionSchema),
+    data: z.array(IdentityVerificationSessionSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -50513,7 +50154,7 @@ export namespace stripe {
   >
 
   export const PostIdentityVerificationSessionsResponseSchema =
-    identity.verification_sessionSchema
+    IdentityVerificationSessionSchema
   export type PostIdentityVerificationSessionsResponse = z.infer<
     typeof PostIdentityVerificationSessionsResponseSchema
   >
@@ -50531,7 +50172,7 @@ export namespace stripe {
   >
 
   export const GetIdentityVerificationSessionsSessionResponseSchema =
-    identity.verification_sessionSchema
+    IdentityVerificationSessionSchema
   export type GetIdentityVerificationSessionsSessionResponse = z.infer<
     typeof GetIdentityVerificationSessionsSessionResponseSchema
   >
@@ -50544,7 +50185,7 @@ export namespace stripe {
   >
 
   export const PostIdentityVerificationSessionsSessionResponseSchema =
-    identity.verification_sessionSchema
+    IdentityVerificationSessionSchema
   export type PostIdentityVerificationSessionsSessionResponse = z.infer<
     typeof PostIdentityVerificationSessionsSessionResponseSchema
   >
@@ -50556,7 +50197,7 @@ export namespace stripe {
   >
 
   export const PostIdentityVerificationSessionsSessionCancelResponseSchema =
-    identity.verification_sessionSchema
+    IdentityVerificationSessionSchema
   export type PostIdentityVerificationSessionsSessionCancelResponse = z.infer<
     typeof PostIdentityVerificationSessionsSessionCancelResponseSchema
   >
@@ -50568,7 +50209,7 @@ export namespace stripe {
   >
 
   export const PostIdentityVerificationSessionsSessionRedactResponseSchema =
-    identity.verification_sessionSchema
+    IdentityVerificationSessionSchema
   export type PostIdentityVerificationSessionsSessionRedactResponse = z.infer<
     typeof PostIdentityVerificationSessionsSessionRedactResponseSchema
   >
@@ -50612,7 +50253,7 @@ export namespace stripe {
   export const GetInvoiceRenderingTemplatesResponseSchema = z.object({
     /** Details about each object. */
     data: z
-      .array(invoice_rendering_templateSchema)
+      .array(InvoiceRenderingTemplateSchema)
       .describe('Details about each object.'),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
@@ -50650,7 +50291,7 @@ export namespace stripe {
   >
 
   export const GetInvoiceRenderingTemplatesTemplateResponseSchema =
-    invoice_rendering_templateSchema
+    InvoiceRenderingTemplateSchema
   export type GetInvoiceRenderingTemplatesTemplateResponse = z.infer<
     typeof GetInvoiceRenderingTemplatesTemplateResponseSchema
   >
@@ -50662,7 +50303,7 @@ export namespace stripe {
   >
 
   export const PostInvoiceRenderingTemplatesTemplateArchiveResponseSchema =
-    invoice_rendering_templateSchema
+    InvoiceRenderingTemplateSchema
   export type PostInvoiceRenderingTemplatesTemplateArchiveResponse = z.infer<
     typeof PostInvoiceRenderingTemplatesTemplateArchiveResponseSchema
   >
@@ -50674,7 +50315,7 @@ export namespace stripe {
   >
 
   export const PostInvoiceRenderingTemplatesTemplateUnarchiveResponseSchema =
-    invoice_rendering_templateSchema
+    InvoiceRenderingTemplateSchema
   export type PostInvoiceRenderingTemplatesTemplateUnarchiveResponse = z.infer<
     typeof PostInvoiceRenderingTemplatesTemplateUnarchiveResponseSchema
   >
@@ -50753,7 +50394,7 @@ export namespace stripe {
   >
 
   export const GetInvoiceitemsResponseSchema = z.object({
-    data: z.array(invoiceitemSchema),
+    data: z.array(InvoiceitemSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -50782,7 +50423,7 @@ export namespace stripe {
     typeof PostInvoiceitemsParamsSchema
   >
 
-  export const PostInvoiceitemsResponseSchema = invoiceitemSchema
+  export const PostInvoiceitemsResponseSchema = InvoiceitemSchema
   export type PostInvoiceitemsResponse = z.infer<
     typeof PostInvoiceitemsResponseSchema
   >
@@ -50799,7 +50440,7 @@ export namespace stripe {
     typeof GetInvoiceitemsInvoiceitemParamsSchema
   >
 
-  export const GetInvoiceitemsInvoiceitemResponseSchema = invoiceitemSchema
+  export const GetInvoiceitemsInvoiceitemResponseSchema = InvoiceitemSchema
   export type GetInvoiceitemsInvoiceitemResponse = z.infer<
     typeof GetInvoiceitemsInvoiceitemResponseSchema
   >
@@ -50811,7 +50452,7 @@ export namespace stripe {
     typeof PostInvoiceitemsInvoiceitemParamsSchema
   >
 
-  export const PostInvoiceitemsInvoiceitemResponseSchema = invoiceitemSchema
+  export const PostInvoiceitemsInvoiceitemResponseSchema = InvoiceitemSchema
   export type PostInvoiceitemsInvoiceitemResponse = z.infer<
     typeof PostInvoiceitemsInvoiceitemResponseSchema
   >
@@ -50824,7 +50465,7 @@ export namespace stripe {
   >
 
   export const DeleteInvoiceitemsInvoiceitemResponseSchema =
-    deleted_invoiceitemSchema
+    DeletedInvoiceitemSchema
   export type DeleteInvoiceitemsInvoiceitemResponse = z.infer<
     typeof DeleteInvoiceitemsInvoiceitemResponseSchema
   >
@@ -50919,7 +50560,7 @@ export namespace stripe {
   export type GetInvoicesParams = z.infer<typeof GetInvoicesParamsSchema>
 
   export const GetInvoicesResponseSchema = z.object({
-    data: z.array(invoiceSchema),
+    data: z.array(InvoiceSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -50944,7 +50585,7 @@ export namespace stripe {
   export const PostInvoicesParamsSchema = z.object({})
   export type PostInvoicesParams = z.infer<typeof PostInvoicesParamsSchema>
 
-  export const PostInvoicesResponseSchema = invoiceSchema
+  export const PostInvoicesResponseSchema = InvoiceSchema
   export type PostInvoicesResponse = z.infer<typeof PostInvoicesResponseSchema>
 
   export const PostInvoicesCreatePreviewParamsSchema = z.object({})
@@ -50952,7 +50593,7 @@ export namespace stripe {
     typeof PostInvoicesCreatePreviewParamsSchema
   >
 
-  export const PostInvoicesCreatePreviewResponseSchema = invoiceSchema
+  export const PostInvoicesCreatePreviewResponseSchema = InvoiceSchema
   export type PostInvoicesCreatePreviewResponse = z.infer<
     typeof PostInvoicesCreatePreviewResponseSchema
   >
@@ -50992,7 +50633,7 @@ export namespace stripe {
   >
 
   export const GetInvoicesSearchResponseSchema = z.object({
-    data: z.array(invoiceSchema),
+    data: z.array(InvoiceSchema),
     has_more: z.boolean(),
     next_page: z.string().max(5000).nullable().optional(),
     /** String representing the object's type. Objects of the same type share the same value. */
@@ -51694,7 +51335,7 @@ export namespace stripe {
     typeof GetInvoicesUpcomingParamsSchema
   >
 
-  export const GetInvoicesUpcomingResponseSchema = invoiceSchema
+  export const GetInvoicesUpcomingResponseSchema = InvoiceSchema
   export type GetInvoicesUpcomingResponse = z.infer<
     typeof GetInvoicesUpcomingResponseSchema
   >
@@ -52404,7 +52045,7 @@ export namespace stripe {
 
   export const GetInvoicesUpcomingLinesResponseSchema = z.object({
     /** Details about each object. */
-    data: z.array(line_itemSchema).describe('Details about each object.'),
+    data: z.array(LineItemSchema).describe('Details about each object.'),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -52439,7 +52080,7 @@ export namespace stripe {
     typeof GetInvoicesInvoiceParamsSchema
   >
 
-  export const GetInvoicesInvoiceResponseSchema = invoiceSchema
+  export const GetInvoicesInvoiceResponseSchema = InvoiceSchema
   export type GetInvoicesInvoiceResponse = z.infer<
     typeof GetInvoicesInvoiceResponseSchema
   >
@@ -52451,7 +52092,7 @@ export namespace stripe {
     typeof PostInvoicesInvoiceParamsSchema
   >
 
-  export const PostInvoicesInvoiceResponseSchema = invoiceSchema
+  export const PostInvoicesInvoiceResponseSchema = InvoiceSchema
   export type PostInvoicesInvoiceResponse = z.infer<
     typeof PostInvoicesInvoiceResponseSchema
   >
@@ -52463,7 +52104,7 @@ export namespace stripe {
     typeof DeleteInvoicesInvoiceParamsSchema
   >
 
-  export const DeleteInvoicesInvoiceResponseSchema = deleted_invoiceSchema
+  export const DeleteInvoicesInvoiceResponseSchema = DeletedInvoiceSchema
   export type DeleteInvoicesInvoiceResponse = z.infer<
     typeof DeleteInvoicesInvoiceResponseSchema
   >
@@ -52475,7 +52116,7 @@ export namespace stripe {
     typeof PostInvoicesInvoiceAddLinesParamsSchema
   >
 
-  export const PostInvoicesInvoiceAddLinesResponseSchema = invoiceSchema
+  export const PostInvoicesInvoiceAddLinesResponseSchema = InvoiceSchema
   export type PostInvoicesInvoiceAddLinesResponse = z.infer<
     typeof PostInvoicesInvoiceAddLinesResponseSchema
   >
@@ -52487,7 +52128,7 @@ export namespace stripe {
     typeof PostInvoicesInvoiceFinalizeParamsSchema
   >
 
-  export const PostInvoicesInvoiceFinalizeResponseSchema = invoiceSchema
+  export const PostInvoicesInvoiceFinalizeResponseSchema = InvoiceSchema
   export type PostInvoicesInvoiceFinalizeResponse = z.infer<
     typeof PostInvoicesInvoiceFinalizeResponseSchema
   >
@@ -52530,7 +52171,7 @@ export namespace stripe {
 
   export const GetInvoicesInvoiceLinesResponseSchema = z.object({
     /** Details about each object. */
-    data: z.array(line_itemSchema).describe('Details about each object.'),
+    data: z.array(LineItemSchema).describe('Details about each object.'),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -52563,8 +52204,7 @@ export namespace stripe {
     typeof PostInvoicesInvoiceLinesLineItemIdParamsSchema
   >
 
-  export const PostInvoicesInvoiceLinesLineItemIdResponseSchema =
-    line_itemSchema
+  export const PostInvoicesInvoiceLinesLineItemIdResponseSchema = LineItemSchema
   export type PostInvoicesInvoiceLinesLineItemIdResponse = z.infer<
     typeof PostInvoicesInvoiceLinesLineItemIdResponseSchema
   >
@@ -52577,7 +52217,7 @@ export namespace stripe {
   >
 
   export const PostInvoicesInvoiceMarkUncollectibleResponseSchema =
-    invoiceSchema
+    InvoiceSchema
   export type PostInvoicesInvoiceMarkUncollectibleResponse = z.infer<
     typeof PostInvoicesInvoiceMarkUncollectibleResponseSchema
   >
@@ -52589,7 +52229,7 @@ export namespace stripe {
     typeof PostInvoicesInvoicePayParamsSchema
   >
 
-  export const PostInvoicesInvoicePayResponseSchema = invoiceSchema
+  export const PostInvoicesInvoicePayResponseSchema = InvoiceSchema
   export type PostInvoicesInvoicePayResponse = z.infer<
     typeof PostInvoicesInvoicePayResponseSchema
   >
@@ -52601,7 +52241,7 @@ export namespace stripe {
     typeof PostInvoicesInvoiceRemoveLinesParamsSchema
   >
 
-  export const PostInvoicesInvoiceRemoveLinesResponseSchema = invoiceSchema
+  export const PostInvoicesInvoiceRemoveLinesResponseSchema = InvoiceSchema
   export type PostInvoicesInvoiceRemoveLinesResponse = z.infer<
     typeof PostInvoicesInvoiceRemoveLinesResponseSchema
   >
@@ -52613,7 +52253,7 @@ export namespace stripe {
     typeof PostInvoicesInvoiceSendParamsSchema
   >
 
-  export const PostInvoicesInvoiceSendResponseSchema = invoiceSchema
+  export const PostInvoicesInvoiceSendResponseSchema = InvoiceSchema
   export type PostInvoicesInvoiceSendResponse = z.infer<
     typeof PostInvoicesInvoiceSendResponseSchema
   >
@@ -52625,7 +52265,7 @@ export namespace stripe {
     typeof PostInvoicesInvoiceUpdateLinesParamsSchema
   >
 
-  export const PostInvoicesInvoiceUpdateLinesResponseSchema = invoiceSchema
+  export const PostInvoicesInvoiceUpdateLinesResponseSchema = InvoiceSchema
   export type PostInvoicesInvoiceUpdateLinesResponse = z.infer<
     typeof PostInvoicesInvoiceUpdateLinesResponseSchema
   >
@@ -52637,7 +52277,7 @@ export namespace stripe {
     typeof PostInvoicesInvoiceVoidParamsSchema
   >
 
-  export const PostInvoicesInvoiceVoidResponseSchema = invoiceSchema
+  export const PostInvoicesInvoiceVoidResponseSchema = InvoiceSchema
   export type PostInvoicesInvoiceVoidResponse = z.infer<
     typeof PostInvoicesInvoiceVoidResponseSchema
   >
@@ -52714,7 +52354,7 @@ export namespace stripe {
   >
 
   export const GetIssuingAuthorizationsResponseSchema = z.object({
-    data: z.array(issuing.authorizationSchema),
+    data: z.array(IssuingAuthorizationSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -52751,7 +52391,7 @@ export namespace stripe {
   >
 
   export const GetIssuingAuthorizationsAuthorizationResponseSchema =
-    issuing.authorizationSchema
+    IssuingAuthorizationSchema
   export type GetIssuingAuthorizationsAuthorizationResponse = z.infer<
     typeof GetIssuingAuthorizationsAuthorizationResponseSchema
   >
@@ -52764,7 +52404,7 @@ export namespace stripe {
   >
 
   export const PostIssuingAuthorizationsAuthorizationResponseSchema =
-    issuing.authorizationSchema
+    IssuingAuthorizationSchema
   export type PostIssuingAuthorizationsAuthorizationResponse = z.infer<
     typeof PostIssuingAuthorizationsAuthorizationResponseSchema
   >
@@ -52776,7 +52416,7 @@ export namespace stripe {
   >
 
   export const PostIssuingAuthorizationsAuthorizationApproveResponseSchema =
-    issuing.authorizationSchema
+    IssuingAuthorizationSchema
   export type PostIssuingAuthorizationsAuthorizationApproveResponse = z.infer<
     typeof PostIssuingAuthorizationsAuthorizationApproveResponseSchema
   >
@@ -52788,7 +52428,7 @@ export namespace stripe {
   >
 
   export const PostIssuingAuthorizationsAuthorizationDeclineResponseSchema =
-    issuing.authorizationSchema
+    IssuingAuthorizationSchema
   export type PostIssuingAuthorizationsAuthorizationDeclineResponse = z.infer<
     typeof PostIssuingAuthorizationsAuthorizationDeclineResponseSchema
   >
@@ -52868,7 +52508,7 @@ export namespace stripe {
   >
 
   export const GetIssuingCardholdersResponseSchema = z.object({
-    data: z.array(issuing.cardholderSchema),
+    data: z.array(IssuingCardholderSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -52897,7 +52537,7 @@ export namespace stripe {
     typeof PostIssuingCardholdersParamsSchema
   >
 
-  export const PostIssuingCardholdersResponseSchema = issuing.cardholderSchema
+  export const PostIssuingCardholdersResponseSchema = IssuingCardholderSchema
   export type PostIssuingCardholdersResponse = z.infer<
     typeof PostIssuingCardholdersResponseSchema
   >
@@ -52915,7 +52555,7 @@ export namespace stripe {
   >
 
   export const GetIssuingCardholdersCardholderResponseSchema =
-    issuing.cardholderSchema
+    IssuingCardholderSchema
   export type GetIssuingCardholdersCardholderResponse = z.infer<
     typeof GetIssuingCardholdersCardholderResponseSchema
   >
@@ -52928,7 +52568,7 @@ export namespace stripe {
   >
 
   export const PostIssuingCardholdersCardholderResponseSchema =
-    issuing.cardholderSchema
+    IssuingCardholderSchema
   export type PostIssuingCardholdersCardholderResponse = z.infer<
     typeof PostIssuingCardholdersCardholderResponseSchema
   >
@@ -53025,7 +52665,7 @@ export namespace stripe {
   >
 
   export const GetIssuingCardsResponseSchema = z.object({
-    data: z.array(issuing.cardSchema),
+    data: z.array(IssuingCardSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -53054,7 +52694,7 @@ export namespace stripe {
     typeof PostIssuingCardsParamsSchema
   >
 
-  export const PostIssuingCardsResponseSchema = issuing.cardSchema
+  export const PostIssuingCardsResponseSchema = IssuingCardSchema
   export type PostIssuingCardsResponse = z.infer<
     typeof PostIssuingCardsResponseSchema
   >
@@ -53071,7 +52711,7 @@ export namespace stripe {
     typeof GetIssuingCardsCardParamsSchema
   >
 
-  export const GetIssuingCardsCardResponseSchema = issuing.cardSchema
+  export const GetIssuingCardsCardResponseSchema = IssuingCardSchema
   export type GetIssuingCardsCardResponse = z.infer<
     typeof GetIssuingCardsCardResponseSchema
   >
@@ -53083,7 +52723,7 @@ export namespace stripe {
     typeof PostIssuingCardsCardParamsSchema
   >
 
-  export const PostIssuingCardsCardResponseSchema = issuing.cardSchema
+  export const PostIssuingCardsCardResponseSchema = IssuingCardSchema
   export type PostIssuingCardsCardResponse = z.infer<
     typeof PostIssuingCardsCardResponseSchema
   >
@@ -53150,7 +52790,7 @@ export namespace stripe {
   >
 
   export const GetIssuingDisputesResponseSchema = z.object({
-    data: z.array(issuing.disputeSchema),
+    data: z.array(IssuingDisputeSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -53179,7 +52819,7 @@ export namespace stripe {
     typeof PostIssuingDisputesParamsSchema
   >
 
-  export const PostIssuingDisputesResponseSchema = issuing.disputeSchema
+  export const PostIssuingDisputesResponseSchema = IssuingDisputeSchema
   export type PostIssuingDisputesResponse = z.infer<
     typeof PostIssuingDisputesResponseSchema
   >
@@ -53196,7 +52836,7 @@ export namespace stripe {
     typeof GetIssuingDisputesDisputeParamsSchema
   >
 
-  export const GetIssuingDisputesDisputeResponseSchema = issuing.disputeSchema
+  export const GetIssuingDisputesDisputeResponseSchema = IssuingDisputeSchema
   export type GetIssuingDisputesDisputeResponse = z.infer<
     typeof GetIssuingDisputesDisputeResponseSchema
   >
@@ -53208,7 +52848,7 @@ export namespace stripe {
     typeof PostIssuingDisputesDisputeParamsSchema
   >
 
-  export const PostIssuingDisputesDisputeResponseSchema = issuing.disputeSchema
+  export const PostIssuingDisputesDisputeResponseSchema = IssuingDisputeSchema
   export type PostIssuingDisputesDisputeResponse = z.infer<
     typeof PostIssuingDisputesDisputeResponseSchema
   >
@@ -53221,7 +52861,7 @@ export namespace stripe {
   >
 
   export const PostIssuingDisputesDisputeSubmitResponseSchema =
-    issuing.disputeSchema
+    IssuingDisputeSchema
   export type PostIssuingDisputesDisputeSubmitResponse = z.infer<
     typeof PostIssuingDisputesDisputeSubmitResponseSchema
   >
@@ -53284,7 +52924,7 @@ export namespace stripe {
   >
 
   export const GetIssuingPersonalizationDesignsResponseSchema = z.object({
-    data: z.array(issuing.personalization_designSchema),
+    data: z.array(IssuingPersonalizationDesignSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -53314,7 +52954,7 @@ export namespace stripe {
   >
 
   export const PostIssuingPersonalizationDesignsResponseSchema =
-    issuing.personalization_designSchema
+    IssuingPersonalizationDesignSchema
   export type PostIssuingPersonalizationDesignsResponse = z.infer<
     typeof PostIssuingPersonalizationDesignsResponseSchema
   >
@@ -53334,7 +52974,7 @@ export namespace stripe {
     >
 
   export const GetIssuingPersonalizationDesignsPersonalizationDesignResponseSchema =
-    issuing.personalization_designSchema
+    IssuingPersonalizationDesignSchema
   export type GetIssuingPersonalizationDesignsPersonalizationDesignResponse =
     z.infer<
       typeof GetIssuingPersonalizationDesignsPersonalizationDesignResponseSchema
@@ -53348,7 +52988,7 @@ export namespace stripe {
     >
 
   export const PostIssuingPersonalizationDesignsPersonalizationDesignResponseSchema =
-    issuing.personalization_designSchema
+    IssuingPersonalizationDesignSchema
   export type PostIssuingPersonalizationDesignsPersonalizationDesignResponse =
     z.infer<
       typeof PostIssuingPersonalizationDesignsPersonalizationDesignResponseSchema
@@ -53400,7 +53040,7 @@ export namespace stripe {
   >
 
   export const GetIssuingPhysicalBundlesResponseSchema = z.object({
-    data: z.array(issuing.physical_bundleSchema),
+    data: z.array(IssuingPhysicalBundleSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -53437,7 +53077,7 @@ export namespace stripe {
   >
 
   export const GetIssuingPhysicalBundlesPhysicalBundleResponseSchema =
-    issuing.physical_bundleSchema
+    IssuingPhysicalBundleSchema
   export type GetIssuingPhysicalBundlesPhysicalBundleResponse = z.infer<
     typeof GetIssuingPhysicalBundlesPhysicalBundleResponseSchema
   >
@@ -53455,7 +53095,7 @@ export namespace stripe {
   >
 
   export const GetIssuingSettlementsSettlementResponseSchema =
-    issuing.settlementSchema
+    IssuingSettlementSchema
   export type GetIssuingSettlementsSettlementResponse = z.infer<
     typeof GetIssuingSettlementsSettlementResponseSchema
   >
@@ -53468,7 +53108,7 @@ export namespace stripe {
   >
 
   export const PostIssuingSettlementsSettlementResponseSchema =
-    issuing.settlementSchema
+    IssuingSettlementSchema
   export type PostIssuingSettlementsSettlementResponse = z.infer<
     typeof PostIssuingSettlementsSettlementResponseSchema
   >
@@ -53534,7 +53174,7 @@ export namespace stripe {
   >
 
   export const GetIssuingTokensResponseSchema = z.object({
-    data: z.array(issuing.tokenSchema),
+    data: z.array(IssuingTokenSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -53569,7 +53209,7 @@ export namespace stripe {
     typeof GetIssuingTokensTokenParamsSchema
   >
 
-  export const GetIssuingTokensTokenResponseSchema = issuing.tokenSchema
+  export const GetIssuingTokensTokenResponseSchema = IssuingTokenSchema
   export type GetIssuingTokensTokenResponse = z.infer<
     typeof GetIssuingTokensTokenResponseSchema
   >
@@ -53581,7 +53221,7 @@ export namespace stripe {
     typeof PostIssuingTokensTokenParamsSchema
   >
 
-  export const PostIssuingTokensTokenResponseSchema = issuing.tokenSchema
+  export const PostIssuingTokensTokenResponseSchema = IssuingTokenSchema
   export type PostIssuingTokensTokenResponse = z.infer<
     typeof PostIssuingTokensTokenResponseSchema
   >
@@ -53656,7 +53296,7 @@ export namespace stripe {
   >
 
   export const GetIssuingTransactionsResponseSchema = z.object({
-    data: z.array(issuing.transactionSchema),
+    data: z.array(IssuingTransactionSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -53693,7 +53333,7 @@ export namespace stripe {
   >
 
   export const GetIssuingTransactionsTransactionResponseSchema =
-    issuing.transactionSchema
+    IssuingTransactionSchema
   export type GetIssuingTransactionsTransactionResponse = z.infer<
     typeof GetIssuingTransactionsTransactionResponseSchema
   >
@@ -53706,7 +53346,7 @@ export namespace stripe {
   >
 
   export const PostIssuingTransactionsTransactionResponseSchema =
-    issuing.transactionSchema
+    IssuingTransactionSchema
   export type PostIssuingTransactionsTransactionResponse = z.infer<
     typeof PostIssuingTransactionsTransactionResponseSchema
   >
@@ -53717,7 +53357,7 @@ export namespace stripe {
   >
 
   export const PostLinkAccountSessionsResponseSchema =
-    financial_connections.sessionSchema
+    FinancialConnectionsSessionSchema
   export type PostLinkAccountSessionsResponse = z.infer<
     typeof PostLinkAccountSessionsResponseSchema
   >
@@ -53735,7 +53375,7 @@ export namespace stripe {
   >
 
   export const GetLinkAccountSessionsSessionResponseSchema =
-    financial_connections.sessionSchema
+    FinancialConnectionsSessionSchema
   export type GetLinkAccountSessionsSessionResponse = z.infer<
     typeof GetLinkAccountSessionsSessionResponseSchema
   >
@@ -53796,7 +53436,7 @@ export namespace stripe {
   export const GetLinkedAccountsResponseSchema = z.object({
     /** Details about each object. */
     data: z
-      .array(financial_connections.accountSchema)
+      .array(FinancialConnectionsAccountSchema)
       .describe('Details about each object.'),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
@@ -53834,7 +53474,7 @@ export namespace stripe {
   >
 
   export const GetLinkedAccountsAccountResponseSchema =
-    financial_connections.accountSchema
+    FinancialConnectionsAccountSchema
   export type GetLinkedAccountsAccountResponse = z.infer<
     typeof GetLinkedAccountsAccountResponseSchema
   >
@@ -53847,7 +53487,7 @@ export namespace stripe {
   >
 
   export const PostLinkedAccountsAccountDisconnectResponseSchema =
-    financial_connections.accountSchema
+    FinancialConnectionsAccountSchema
   export type PostLinkedAccountsAccountDisconnectResponse = z.infer<
     typeof PostLinkedAccountsAccountDisconnectResponseSchema
   >
@@ -53896,7 +53536,7 @@ export namespace stripe {
   export const GetLinkedAccountsAccountOwnersResponseSchema = z.object({
     /** Details about each object. */
     data: z
-      .array(financial_connections.account_ownerSchema)
+      .array(FinancialConnectionsAccountOwnerSchema)
       .describe('Details about each object.'),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
@@ -53928,7 +53568,7 @@ export namespace stripe {
   >
 
   export const PostLinkedAccountsAccountRefreshResponseSchema =
-    financial_connections.accountSchema
+    FinancialConnectionsAccountSchema
   export type PostLinkedAccountsAccountRefreshResponse = z.infer<
     typeof PostLinkedAccountsAccountRefreshResponseSchema
   >
@@ -53945,7 +53585,7 @@ export namespace stripe {
     typeof GetMandatesMandateParamsSchema
   >
 
-  export const GetMandatesMandateResponseSchema = mandateSchema
+  export const GetMandatesMandateResponseSchema = MandateSchema
   export type GetMandatesMandateResponse = z.infer<
     typeof GetMandatesMandateResponseSchema
   >
@@ -54009,7 +53649,7 @@ export namespace stripe {
   >
 
   export const GetPaymentIntentsResponseSchema = z.object({
-    data: z.array(payment_intentSchema),
+    data: z.array(PaymentIntentSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -54038,7 +53678,7 @@ export namespace stripe {
     typeof PostPaymentIntentsParamsSchema
   >
 
-  export const PostPaymentIntentsResponseSchema = payment_intentSchema
+  export const PostPaymentIntentsResponseSchema = PaymentIntentSchema
   export type PostPaymentIntentsResponse = z.infer<
     typeof PostPaymentIntentsResponseSchema
   >
@@ -54078,7 +53718,7 @@ export namespace stripe {
   >
 
   export const GetPaymentIntentsSearchResponseSchema = z.object({
-    data: z.array(payment_intentSchema),
+    data: z.array(PaymentIntentSchema),
     has_more: z.boolean(),
     next_page: z.string().max(5000).nullable().optional(),
     /** String representing the object's type. Objects of the same type share the same value. */
@@ -54121,7 +53761,7 @@ export namespace stripe {
     typeof GetPaymentIntentsIntentParamsSchema
   >
 
-  export const GetPaymentIntentsIntentResponseSchema = payment_intentSchema
+  export const GetPaymentIntentsIntentResponseSchema = PaymentIntentSchema
   export type GetPaymentIntentsIntentResponse = z.infer<
     typeof GetPaymentIntentsIntentResponseSchema
   >
@@ -54133,7 +53773,7 @@ export namespace stripe {
     typeof PostPaymentIntentsIntentParamsSchema
   >
 
-  export const PostPaymentIntentsIntentResponseSchema = payment_intentSchema
+  export const PostPaymentIntentsIntentResponseSchema = PaymentIntentSchema
   export type PostPaymentIntentsIntentResponse = z.infer<
     typeof PostPaymentIntentsIntentResponseSchema
   >
@@ -54145,7 +53785,7 @@ export namespace stripe {
   >
 
   export const PostPaymentIntentsIntentApplyCustomerBalanceResponseSchema =
-    payment_intentSchema
+    PaymentIntentSchema
   export type PostPaymentIntentsIntentApplyCustomerBalanceResponse = z.infer<
     typeof PostPaymentIntentsIntentApplyCustomerBalanceResponseSchema
   >
@@ -54158,7 +53798,7 @@ export namespace stripe {
   >
 
   export const PostPaymentIntentsIntentCancelResponseSchema =
-    payment_intentSchema
+    PaymentIntentSchema
   export type PostPaymentIntentsIntentCancelResponse = z.infer<
     typeof PostPaymentIntentsIntentCancelResponseSchema
   >
@@ -54171,7 +53811,7 @@ export namespace stripe {
   >
 
   export const PostPaymentIntentsIntentCaptureResponseSchema =
-    payment_intentSchema
+    PaymentIntentSchema
   export type PostPaymentIntentsIntentCaptureResponse = z.infer<
     typeof PostPaymentIntentsIntentCaptureResponseSchema
   >
@@ -54184,7 +53824,7 @@ export namespace stripe {
   >
 
   export const PostPaymentIntentsIntentConfirmResponseSchema =
-    payment_intentSchema
+    PaymentIntentSchema
   export type PostPaymentIntentsIntentConfirmResponse = z.infer<
     typeof PostPaymentIntentsIntentConfirmResponseSchema
   >
@@ -54196,7 +53836,7 @@ export namespace stripe {
   >
 
   export const PostPaymentIntentsIntentIncrementAuthorizationResponseSchema =
-    payment_intentSchema
+    PaymentIntentSchema
   export type PostPaymentIntentsIntentIncrementAuthorizationResponse = z.infer<
     typeof PostPaymentIntentsIntentIncrementAuthorizationResponseSchema
   >
@@ -54208,7 +53848,7 @@ export namespace stripe {
   >
 
   export const PostPaymentIntentsIntentVerifyMicrodepositsResponseSchema =
-    payment_intentSchema
+    PaymentIntentSchema
   export type PostPaymentIntentsIntentVerifyMicrodepositsResponse = z.infer<
     typeof PostPaymentIntentsIntentVerifyMicrodepositsResponseSchema
   >
@@ -54256,7 +53896,7 @@ export namespace stripe {
   >
 
   export const GetPaymentLinksResponseSchema = z.object({
-    data: z.array(payment_linkSchema),
+    data: z.array(PaymentLinkSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -54285,7 +53925,7 @@ export namespace stripe {
     typeof PostPaymentLinksParamsSchema
   >
 
-  export const PostPaymentLinksResponseSchema = payment_linkSchema
+  export const PostPaymentLinksResponseSchema = PaymentLinkSchema
   export type PostPaymentLinksResponse = z.infer<
     typeof PostPaymentLinksResponseSchema
   >
@@ -54302,7 +53942,7 @@ export namespace stripe {
     typeof GetPaymentLinksPaymentLinkParamsSchema
   >
 
-  export const GetPaymentLinksPaymentLinkResponseSchema = payment_linkSchema
+  export const GetPaymentLinksPaymentLinkResponseSchema = PaymentLinkSchema
   export type GetPaymentLinksPaymentLinkResponse = z.infer<
     typeof GetPaymentLinksPaymentLinkResponseSchema
   >
@@ -54314,7 +53954,7 @@ export namespace stripe {
     typeof PostPaymentLinksPaymentLinkParamsSchema
   >
 
-  export const PostPaymentLinksPaymentLinkResponseSchema = payment_linkSchema
+  export const PostPaymentLinksPaymentLinkResponseSchema = PaymentLinkSchema
   export type PostPaymentLinksPaymentLinkResponse = z.infer<
     typeof PostPaymentLinksPaymentLinkResponseSchema
   >
@@ -54357,7 +53997,7 @@ export namespace stripe {
 
   export const GetPaymentLinksPaymentLinkLineItemsResponseSchema = z.object({
     /** Details about each object. */
-    data: z.array(itemSchema).describe('Details about each object.'),
+    data: z.array(ItemSchema).describe('Details about each object.'),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -54421,7 +54061,7 @@ export namespace stripe {
   >
 
   export const GetPaymentMethodConfigurationsResponseSchema = z.object({
-    data: z.array(payment_method_configurationSchema),
+    data: z.array(PaymentMethodConfigurationSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -54451,7 +54091,7 @@ export namespace stripe {
   >
 
   export const PostPaymentMethodConfigurationsResponseSchema =
-    payment_method_configurationSchema
+    PaymentMethodConfigurationSchema
   export type PostPaymentMethodConfigurationsResponse = z.infer<
     typeof PostPaymentMethodConfigurationsResponseSchema
   >
@@ -54470,7 +54110,7 @@ export namespace stripe {
   >
 
   export const GetPaymentMethodConfigurationsConfigurationResponseSchema =
-    payment_method_configurationSchema
+    PaymentMethodConfigurationSchema
   export type GetPaymentMethodConfigurationsConfigurationResponse = z.infer<
     typeof GetPaymentMethodConfigurationsConfigurationResponseSchema
   >
@@ -54482,7 +54122,7 @@ export namespace stripe {
   >
 
   export const PostPaymentMethodConfigurationsConfigurationResponseSchema =
-    payment_method_configurationSchema
+    PaymentMethodConfigurationSchema
   export type PostPaymentMethodConfigurationsConfigurationResponse = z.infer<
     typeof PostPaymentMethodConfigurationsConfigurationResponseSchema
   >
@@ -54538,7 +54178,7 @@ export namespace stripe {
   >
 
   export const GetPaymentMethodDomainsResponseSchema = z.object({
-    data: z.array(payment_method_domainSchema),
+    data: z.array(PaymentMethodDomainSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -54568,7 +54208,7 @@ export namespace stripe {
   >
 
   export const PostPaymentMethodDomainsResponseSchema =
-    payment_method_domainSchema
+    PaymentMethodDomainSchema
   export type PostPaymentMethodDomainsResponse = z.infer<
     typeof PostPaymentMethodDomainsResponseSchema
   >
@@ -54587,7 +54227,7 @@ export namespace stripe {
   >
 
   export const GetPaymentMethodDomainsPaymentMethodDomainResponseSchema =
-    payment_method_domainSchema
+    PaymentMethodDomainSchema
   export type GetPaymentMethodDomainsPaymentMethodDomainResponse = z.infer<
     typeof GetPaymentMethodDomainsPaymentMethodDomainResponseSchema
   >
@@ -54599,7 +54239,7 @@ export namespace stripe {
   >
 
   export const PostPaymentMethodDomainsPaymentMethodDomainResponseSchema =
-    payment_method_domainSchema
+    PaymentMethodDomainSchema
   export type PostPaymentMethodDomainsPaymentMethodDomainResponse = z.infer<
     typeof PostPaymentMethodDomainsPaymentMethodDomainResponseSchema
   >
@@ -54612,7 +54252,7 @@ export namespace stripe {
     >
 
   export const PostPaymentMethodDomainsPaymentMethodDomainValidateResponseSchema =
-    payment_method_domainSchema
+    PaymentMethodDomainSchema
   export type PostPaymentMethodDomainsPaymentMethodDomainValidateResponse =
     z.infer<
       typeof PostPaymentMethodDomainsPaymentMethodDomainValidateResponseSchema
@@ -54714,7 +54354,7 @@ export namespace stripe {
   >
 
   export const GetPaymentMethodsResponseSchema = z.object({
-    data: z.array(payment_methodSchema),
+    data: z.array(PaymentMethodSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -54743,7 +54383,7 @@ export namespace stripe {
     typeof PostPaymentMethodsParamsSchema
   >
 
-  export const PostPaymentMethodsResponseSchema = payment_methodSchema
+  export const PostPaymentMethodsResponseSchema = PaymentMethodSchema
   export type PostPaymentMethodsResponse = z.infer<
     typeof PostPaymentMethodsResponseSchema
   >
@@ -54761,7 +54401,7 @@ export namespace stripe {
   >
 
   export const GetPaymentMethodsPaymentMethodResponseSchema =
-    payment_methodSchema
+    PaymentMethodSchema
   export type GetPaymentMethodsPaymentMethodResponse = z.infer<
     typeof GetPaymentMethodsPaymentMethodResponseSchema
   >
@@ -54774,7 +54414,7 @@ export namespace stripe {
   >
 
   export const PostPaymentMethodsPaymentMethodResponseSchema =
-    payment_methodSchema
+    PaymentMethodSchema
   export type PostPaymentMethodsPaymentMethodResponse = z.infer<
     typeof PostPaymentMethodsPaymentMethodResponseSchema
   >
@@ -54787,7 +54427,7 @@ export namespace stripe {
   >
 
   export const PostPaymentMethodsPaymentMethodAttachResponseSchema =
-    payment_methodSchema
+    PaymentMethodSchema
   export type PostPaymentMethodsPaymentMethodAttachResponse = z.infer<
     typeof PostPaymentMethodsPaymentMethodAttachResponseSchema
   >
@@ -54800,7 +54440,7 @@ export namespace stripe {
   >
 
   export const PostPaymentMethodsPaymentMethodDetachResponseSchema =
-    payment_methodSchema
+    PaymentMethodSchema
   export type PostPaymentMethodsPaymentMethodDetachResponse = z.infer<
     typeof PostPaymentMethodsPaymentMethodDetachResponseSchema
   >
@@ -54884,7 +54524,7 @@ export namespace stripe {
   export type GetPayoutsParams = z.infer<typeof GetPayoutsParamsSchema>
 
   export const GetPayoutsResponseSchema = z.object({
-    data: z.array(payoutSchema),
+    data: z.array(PayoutSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -54909,7 +54549,7 @@ export namespace stripe {
   export const PostPayoutsParamsSchema = z.object({})
   export type PostPayoutsParams = z.infer<typeof PostPayoutsParamsSchema>
 
-  export const PostPayoutsResponseSchema = payoutSchema
+  export const PostPayoutsResponseSchema = PayoutSchema
   export type PostPayoutsResponse = z.infer<typeof PostPayoutsResponseSchema>
 
   export const GetPayoutsPayoutParamsSchema = z.object({
@@ -54924,7 +54564,7 @@ export namespace stripe {
     typeof GetPayoutsPayoutParamsSchema
   >
 
-  export const GetPayoutsPayoutResponseSchema = payoutSchema
+  export const GetPayoutsPayoutResponseSchema = PayoutSchema
   export type GetPayoutsPayoutResponse = z.infer<
     typeof GetPayoutsPayoutResponseSchema
   >
@@ -54936,7 +54576,7 @@ export namespace stripe {
     typeof PostPayoutsPayoutParamsSchema
   >
 
-  export const PostPayoutsPayoutResponseSchema = payoutSchema
+  export const PostPayoutsPayoutResponseSchema = PayoutSchema
   export type PostPayoutsPayoutResponse = z.infer<
     typeof PostPayoutsPayoutResponseSchema
   >
@@ -54948,7 +54588,7 @@ export namespace stripe {
     typeof PostPayoutsPayoutCancelParamsSchema
   >
 
-  export const PostPayoutsPayoutCancelResponseSchema = payoutSchema
+  export const PostPayoutsPayoutCancelResponseSchema = PayoutSchema
   export type PostPayoutsPayoutCancelResponse = z.infer<
     typeof PostPayoutsPayoutCancelResponseSchema
   >
@@ -54960,7 +54600,7 @@ export namespace stripe {
     typeof PostPayoutsPayoutReverseParamsSchema
   >
 
-  export const PostPayoutsPayoutReverseResponseSchema = payoutSchema
+  export const PostPayoutsPayoutReverseResponseSchema = PayoutSchema
   export type PostPayoutsPayoutReverseResponse = z.infer<
     typeof PostPayoutsPayoutReverseResponseSchema
   >
@@ -55028,7 +54668,7 @@ export namespace stripe {
 
   export const GetPlansResponseSchema = z.object({
     /** Details about each object. */
-    data: z.array(planSchema).describe('Details about each object.'),
+    data: z.array(PlanSchema).describe('Details about each object.'),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -55053,7 +54693,7 @@ export namespace stripe {
   export const PostPlansParamsSchema = z.object({})
   export type PostPlansParams = z.infer<typeof PostPlansParamsSchema>
 
-  export const PostPlansResponseSchema = planSchema
+  export const PostPlansResponseSchema = PlanSchema
   export type PostPlansResponse = z.infer<typeof PostPlansResponseSchema>
 
   export const GetPlansPlanParamsSchema = z.object({
@@ -55066,7 +54706,7 @@ export namespace stripe {
   })
   export type GetPlansPlanParams = z.infer<typeof GetPlansPlanParamsSchema>
 
-  export const GetPlansPlanResponseSchema = planSchema
+  export const GetPlansPlanResponseSchema = PlanSchema
   export type GetPlansPlanResponse = z.infer<typeof GetPlansPlanResponseSchema>
 
   export const PostPlansPlanParamsSchema = z.object({
@@ -55074,7 +54714,7 @@ export namespace stripe {
   })
   export type PostPlansPlanParams = z.infer<typeof PostPlansPlanParamsSchema>
 
-  export const PostPlansPlanResponseSchema = planSchema
+  export const PostPlansPlanResponseSchema = PlanSchema
   export type PostPlansPlanResponse = z.infer<
     typeof PostPlansPlanResponseSchema
   >
@@ -55086,7 +54726,7 @@ export namespace stripe {
     typeof DeletePlansPlanParamsSchema
   >
 
-  export const DeletePlansPlanResponseSchema = deleted_planSchema
+  export const DeletePlansPlanResponseSchema = DeletedPlanSchema
   export type DeletePlansPlanResponse = z.infer<
     typeof DeletePlansPlanResponseSchema
   >
@@ -55180,7 +54820,7 @@ export namespace stripe {
 
   export const GetPricesResponseSchema = z.object({
     /** Details about each object. */
-    data: z.array(priceSchema).describe('Details about each object.'),
+    data: z.array(PriceSchema).describe('Details about each object.'),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -55205,7 +54845,7 @@ export namespace stripe {
   export const PostPricesParamsSchema = z.object({})
   export type PostPricesParams = z.infer<typeof PostPricesParamsSchema>
 
-  export const PostPricesResponseSchema = priceSchema
+  export const PostPricesResponseSchema = PriceSchema
   export type PostPricesResponse = z.infer<typeof PostPricesResponseSchema>
 
   export const GetPricesSearchParamsSchema = z.object({
@@ -55243,7 +54883,7 @@ export namespace stripe {
   >
 
   export const GetPricesSearchResponseSchema = z.object({
-    data: z.array(priceSchema),
+    data: z.array(PriceSchema),
     has_more: z.boolean(),
     next_page: z.string().max(5000).nullable().optional(),
     /** String representing the object's type. Objects of the same type share the same value. */
@@ -55276,7 +54916,7 @@ export namespace stripe {
   })
   export type GetPricesPriceParams = z.infer<typeof GetPricesPriceParamsSchema>
 
-  export const GetPricesPriceResponseSchema = priceSchema
+  export const GetPricesPriceResponseSchema = PriceSchema
   export type GetPricesPriceResponse = z.infer<
     typeof GetPricesPriceResponseSchema
   >
@@ -55288,7 +54928,7 @@ export namespace stripe {
     typeof PostPricesPriceParamsSchema
   >
 
-  export const PostPricesPriceResponseSchema = priceSchema
+  export const PostPricesPriceResponseSchema = PriceSchema
   export type PostPricesPriceResponse = z.infer<
     typeof PostPricesPriceResponseSchema
   >
@@ -55370,7 +55010,7 @@ export namespace stripe {
 
   export const GetProductsResponseSchema = z.object({
     /** Details about each object. */
-    data: z.array(productSchema).describe('Details about each object.'),
+    data: z.array(ProductSchema).describe('Details about each object.'),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -55395,7 +55035,7 @@ export namespace stripe {
   export const PostProductsParamsSchema = z.object({})
   export type PostProductsParams = z.infer<typeof PostProductsParamsSchema>
 
-  export const PostProductsResponseSchema = productSchema
+  export const PostProductsResponseSchema = ProductSchema
   export type PostProductsResponse = z.infer<typeof PostProductsResponseSchema>
 
   export const GetProductsSearchParamsSchema = z.object({
@@ -55433,7 +55073,7 @@ export namespace stripe {
   >
 
   export const GetProductsSearchResponseSchema = z.object({
-    data: z.array(productSchema),
+    data: z.array(ProductSchema),
     has_more: z.boolean(),
     next_page: z.string().max(5000).nullable().optional(),
     /** String representing the object's type. Objects of the same type share the same value. */
@@ -55466,7 +55106,7 @@ export namespace stripe {
   })
   export type GetProductsIdParams = z.infer<typeof GetProductsIdParamsSchema>
 
-  export const GetProductsIdResponseSchema = productSchema
+  export const GetProductsIdResponseSchema = ProductSchema
   export type GetProductsIdResponse = z.infer<
     typeof GetProductsIdResponseSchema
   >
@@ -55476,7 +55116,7 @@ export namespace stripe {
   })
   export type PostProductsIdParams = z.infer<typeof PostProductsIdParamsSchema>
 
-  export const PostProductsIdResponseSchema = productSchema
+  export const PostProductsIdResponseSchema = ProductSchema
   export type PostProductsIdResponse = z.infer<
     typeof PostProductsIdResponseSchema
   >
@@ -55488,7 +55128,7 @@ export namespace stripe {
     typeof DeleteProductsIdParamsSchema
   >
 
-  export const DeleteProductsIdResponseSchema = deleted_productSchema
+  export const DeleteProductsIdResponseSchema = DeletedProductSchema
   export type DeleteProductsIdResponse = z.infer<
     typeof DeleteProductsIdResponseSchema
   >
@@ -55530,7 +55170,7 @@ export namespace stripe {
   >
 
   export const GetProductsProductFeaturesResponseSchema = z.object({
-    data: z.array(product_featureSchema),
+    data: z.array(ProductFeatureSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -55560,7 +55200,7 @@ export namespace stripe {
     typeof PostProductsProductFeaturesParamsSchema
   >
 
-  export const PostProductsProductFeaturesResponseSchema = product_featureSchema
+  export const PostProductsProductFeaturesResponseSchema = ProductFeatureSchema
   export type PostProductsProductFeaturesResponse = z.infer<
     typeof PostProductsProductFeaturesResponseSchema
   >
@@ -55580,8 +55220,7 @@ export namespace stripe {
     typeof GetProductsProductFeaturesIdParamsSchema
   >
 
-  export const GetProductsProductFeaturesIdResponseSchema =
-    product_featureSchema
+  export const GetProductsProductFeaturesIdResponseSchema = ProductFeatureSchema
   export type GetProductsProductFeaturesIdResponse = z.infer<
     typeof GetProductsProductFeaturesIdResponseSchema
   >
@@ -55595,7 +55234,7 @@ export namespace stripe {
   >
 
   export const DeleteProductsProductFeaturesIdResponseSchema =
-    deleted_product_featureSchema
+    DeletedProductFeatureSchema
   export type DeleteProductsProductFeaturesIdResponse = z.infer<
     typeof DeleteProductsProductFeaturesIdResponseSchema
   >
@@ -55678,7 +55317,7 @@ export namespace stripe {
   >
 
   export const GetPromotionCodesResponseSchema = z.object({
-    data: z.array(promotion_codeSchema),
+    data: z.array(PromotionCodeSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -55707,7 +55346,7 @@ export namespace stripe {
     typeof PostPromotionCodesParamsSchema
   >
 
-  export const PostPromotionCodesResponseSchema = promotion_codeSchema
+  export const PostPromotionCodesResponseSchema = PromotionCodeSchema
   export type PostPromotionCodesResponse = z.infer<
     typeof PostPromotionCodesResponseSchema
   >
@@ -55725,7 +55364,7 @@ export namespace stripe {
   >
 
   export const GetPromotionCodesPromotionCodeResponseSchema =
-    promotion_codeSchema
+    PromotionCodeSchema
   export type GetPromotionCodesPromotionCodeResponse = z.infer<
     typeof GetPromotionCodesPromotionCodeResponseSchema
   >
@@ -55738,7 +55377,7 @@ export namespace stripe {
   >
 
   export const PostPromotionCodesPromotionCodeResponseSchema =
-    promotion_codeSchema
+    PromotionCodeSchema
   export type PostPromotionCodesPromotionCodeResponse = z.infer<
     typeof PostPromotionCodesPromotionCodeResponseSchema
   >
@@ -55796,7 +55435,7 @@ export namespace stripe {
   export type GetQuotesParams = z.infer<typeof GetQuotesParamsSchema>
 
   export const GetQuotesResponseSchema = z.object({
-    data: z.array(quoteSchema),
+    data: z.array(QuoteSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -55821,7 +55460,7 @@ export namespace stripe {
   export const PostQuotesParamsSchema = z.object({})
   export type PostQuotesParams = z.infer<typeof PostQuotesParamsSchema>
 
-  export const PostQuotesResponseSchema = quoteSchema
+  export const PostQuotesResponseSchema = QuoteSchema
   export type PostQuotesResponse = z.infer<typeof PostQuotesResponseSchema>
 
   export const GetQuotesQuoteParamsSchema = z.object({
@@ -55834,7 +55473,7 @@ export namespace stripe {
   })
   export type GetQuotesQuoteParams = z.infer<typeof GetQuotesQuoteParamsSchema>
 
-  export const GetQuotesQuoteResponseSchema = quoteSchema
+  export const GetQuotesQuoteResponseSchema = QuoteSchema
   export type GetQuotesQuoteResponse = z.infer<
     typeof GetQuotesQuoteResponseSchema
   >
@@ -55846,7 +55485,7 @@ export namespace stripe {
     typeof PostQuotesQuoteParamsSchema
   >
 
-  export const PostQuotesQuoteResponseSchema = quoteSchema
+  export const PostQuotesQuoteResponseSchema = QuoteSchema
   export type PostQuotesQuoteResponse = z.infer<
     typeof PostQuotesQuoteResponseSchema
   >
@@ -55858,7 +55497,7 @@ export namespace stripe {
     typeof PostQuotesQuoteAcceptParamsSchema
   >
 
-  export const PostQuotesQuoteAcceptResponseSchema = quoteSchema
+  export const PostQuotesQuoteAcceptResponseSchema = QuoteSchema
   export type PostQuotesQuoteAcceptResponse = z.infer<
     typeof PostQuotesQuoteAcceptResponseSchema
   >
@@ -55870,7 +55509,7 @@ export namespace stripe {
     typeof PostQuotesQuoteCancelParamsSchema
   >
 
-  export const PostQuotesQuoteCancelResponseSchema = quoteSchema
+  export const PostQuotesQuoteCancelResponseSchema = QuoteSchema
   export type PostQuotesQuoteCancelResponse = z.infer<
     typeof PostQuotesQuoteCancelResponseSchema
   >
@@ -55913,7 +55552,7 @@ export namespace stripe {
 
   export const GetQuotesQuoteComputedUpfrontLineItemsResponseSchema = z.object({
     /** Details about each object. */
-    data: z.array(itemSchema).describe('Details about each object.'),
+    data: z.array(ItemSchema).describe('Details about each object.'),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -55943,7 +55582,7 @@ export namespace stripe {
     typeof PostQuotesQuoteFinalizeParamsSchema
   >
 
-  export const PostQuotesQuoteFinalizeResponseSchema = quoteSchema
+  export const PostQuotesQuoteFinalizeResponseSchema = QuoteSchema
   export type PostQuotesQuoteFinalizeResponse = z.infer<
     typeof PostQuotesQuoteFinalizeResponseSchema
   >
@@ -55986,7 +55625,7 @@ export namespace stripe {
 
   export const GetQuotesQuoteLineItemsResponseSchema = z.object({
     /** Details about each object. */
-    data: z.array(itemSchema).describe('Details about each object.'),
+    data: z.array(ItemSchema).describe('Details about each object.'),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -56089,7 +55728,7 @@ export namespace stripe {
   >
 
   export const GetRadarEarlyFraudWarningsResponseSchema = z.object({
-    data: z.array(radar.early_fraud_warningSchema),
+    data: z.array(RadarEarlyFraudWarningSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -56127,7 +55766,7 @@ export namespace stripe {
   >
 
   export const GetRadarEarlyFraudWarningsEarlyFraudWarningResponseSchema =
-    radar.early_fraud_warningSchema
+    RadarEarlyFraudWarningSchema
   export type GetRadarEarlyFraudWarningsEarlyFraudWarningResponse = z.infer<
     typeof GetRadarEarlyFraudWarningsEarlyFraudWarningResponseSchema
   >
@@ -56196,7 +55835,7 @@ export namespace stripe {
   >
 
   export const GetRadarValueListItemsResponseSchema = z.object({
-    data: z.array(radar.value_list_itemSchema),
+    data: z.array(RadarValueListItemSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -56225,8 +55864,7 @@ export namespace stripe {
     typeof PostRadarValueListItemsParamsSchema
   >
 
-  export const PostRadarValueListItemsResponseSchema =
-    radar.value_list_itemSchema
+  export const PostRadarValueListItemsResponseSchema = RadarValueListItemSchema
   export type PostRadarValueListItemsResponse = z.infer<
     typeof PostRadarValueListItemsResponseSchema
   >
@@ -56244,7 +55882,7 @@ export namespace stripe {
   >
 
   export const GetRadarValueListItemsItemResponseSchema =
-    radar.value_list_itemSchema
+    RadarValueListItemSchema
   export type GetRadarValueListItemsItemResponse = z.infer<
     typeof GetRadarValueListItemsItemResponseSchema
   >
@@ -56257,7 +55895,7 @@ export namespace stripe {
   >
 
   export const DeleteRadarValueListItemsItemResponseSchema =
-    deleted_radar.value_list_itemSchema
+    DeletedRadarValueListItemSchema
   export type DeleteRadarValueListItemsItemResponse = z.infer<
     typeof DeleteRadarValueListItemsItemResponseSchema
   >
@@ -56329,7 +55967,7 @@ export namespace stripe {
   >
 
   export const GetRadarValueListsResponseSchema = z.object({
-    data: z.array(radar.value_listSchema),
+    data: z.array(RadarValueListSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -56358,7 +55996,7 @@ export namespace stripe {
     typeof PostRadarValueListsParamsSchema
   >
 
-  export const PostRadarValueListsResponseSchema = radar.value_listSchema
+  export const PostRadarValueListsResponseSchema = RadarValueListSchema
   export type PostRadarValueListsResponse = z.infer<
     typeof PostRadarValueListsResponseSchema
   >
@@ -56375,8 +56013,7 @@ export namespace stripe {
     typeof GetRadarValueListsValueListParamsSchema
   >
 
-  export const GetRadarValueListsValueListResponseSchema =
-    radar.value_listSchema
+  export const GetRadarValueListsValueListResponseSchema = RadarValueListSchema
   export type GetRadarValueListsValueListResponse = z.infer<
     typeof GetRadarValueListsValueListResponseSchema
   >
@@ -56388,8 +56025,7 @@ export namespace stripe {
     typeof PostRadarValueListsValueListParamsSchema
   >
 
-  export const PostRadarValueListsValueListResponseSchema =
-    radar.value_listSchema
+  export const PostRadarValueListsValueListResponseSchema = RadarValueListSchema
   export type PostRadarValueListsValueListResponse = z.infer<
     typeof PostRadarValueListsValueListResponseSchema
   >
@@ -56402,7 +56038,7 @@ export namespace stripe {
   >
 
   export const DeleteRadarValueListsValueListResponseSchema =
-    deleted_radar.value_listSchema
+    DeletedRadarValueListSchema
   export type DeleteRadarValueListsValueListResponse = z.infer<
     typeof DeleteRadarValueListsValueListResponseSchema
   >
@@ -56469,7 +56105,7 @@ export namespace stripe {
   export type GetRefundsParams = z.infer<typeof GetRefundsParamsSchema>
 
   export const GetRefundsResponseSchema = z.object({
-    data: z.array(refundSchema),
+    data: z.array(RefundSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -56494,7 +56130,7 @@ export namespace stripe {
   export const PostRefundsParamsSchema = z.object({})
   export type PostRefundsParams = z.infer<typeof PostRefundsParamsSchema>
 
-  export const PostRefundsResponseSchema = refundSchema
+  export const PostRefundsResponseSchema = RefundSchema
   export type PostRefundsResponse = z.infer<typeof PostRefundsResponseSchema>
 
   export const GetRefundsRefundParamsSchema = z.object({
@@ -56509,7 +56145,7 @@ export namespace stripe {
     typeof GetRefundsRefundParamsSchema
   >
 
-  export const GetRefundsRefundResponseSchema = refundSchema
+  export const GetRefundsRefundResponseSchema = RefundSchema
   export type GetRefundsRefundResponse = z.infer<
     typeof GetRefundsRefundResponseSchema
   >
@@ -56519,7 +56155,7 @@ export namespace stripe {
     typeof PostRefundsRefundParamsSchema
   >
 
-  export const PostRefundsRefundResponseSchema = refundSchema
+  export const PostRefundsRefundResponseSchema = RefundSchema
   export type PostRefundsRefundResponse = z.infer<
     typeof PostRefundsRefundResponseSchema
   >
@@ -56531,7 +56167,7 @@ export namespace stripe {
     typeof PostRefundsRefundCancelParamsSchema
   >
 
-  export const PostRefundsRefundCancelResponseSchema = refundSchema
+  export const PostRefundsRefundCancelResponseSchema = RefundSchema
   export type PostRefundsRefundCancelResponse = z.infer<
     typeof PostRefundsRefundCancelResponseSchema
   >
@@ -56587,7 +56223,7 @@ export namespace stripe {
   >
 
   export const GetReportingReportRunsResponseSchema = z.object({
-    data: z.array(reporting.report_runSchema),
+    data: z.array(ReportingReportRunSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -56616,8 +56252,7 @@ export namespace stripe {
     typeof PostReportingReportRunsParamsSchema
   >
 
-  export const PostReportingReportRunsResponseSchema =
-    reporting.report_runSchema
+  export const PostReportingReportRunsResponseSchema = ReportingReportRunSchema
   export type PostReportingReportRunsResponse = z.infer<
     typeof PostReportingReportRunsResponseSchema
   >
@@ -56635,7 +56270,7 @@ export namespace stripe {
   >
 
   export const GetReportingReportRunsReportRunResponseSchema =
-    reporting.report_runSchema
+    ReportingReportRunSchema
   export type GetReportingReportRunsReportRunResponse = z.infer<
     typeof GetReportingReportRunsReportRunResponseSchema
   >
@@ -56652,7 +56287,7 @@ export namespace stripe {
   >
 
   export const GetReportingReportTypesResponseSchema = z.object({
-    data: z.array(reporting.report_typeSchema),
+    data: z.array(ReportingReportTypeSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -56688,7 +56323,7 @@ export namespace stripe {
   >
 
   export const GetReportingReportTypesReportTypeResponseSchema =
-    reporting.report_typeSchema
+    ReportingReportTypeSchema
   export type GetReportingReportTypesReportTypeResponse = z.infer<
     typeof GetReportingReportTypesReportTypeResponseSchema
   >
@@ -56742,7 +56377,7 @@ export namespace stripe {
   export type GetReviewsParams = z.infer<typeof GetReviewsParamsSchema>
 
   export const GetReviewsResponseSchema = z.object({
-    data: z.array(reviewSchema),
+    data: z.array(ReviewSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -56775,7 +56410,7 @@ export namespace stripe {
     typeof GetReviewsReviewParamsSchema
   >
 
-  export const GetReviewsReviewResponseSchema = reviewSchema
+  export const GetReviewsReviewResponseSchema = ReviewSchema
   export type GetReviewsReviewResponse = z.infer<
     typeof GetReviewsReviewResponseSchema
   >
@@ -56787,7 +56422,7 @@ export namespace stripe {
     typeof PostReviewsReviewApproveParamsSchema
   >
 
-  export const PostReviewsReviewApproveResponseSchema = reviewSchema
+  export const PostReviewsReviewApproveResponseSchema = ReviewSchema
   export type PostReviewsReviewApproveResponse = z.infer<
     typeof PostReviewsReviewApproveResponseSchema
   >
@@ -56857,7 +56492,7 @@ export namespace stripe {
   >
 
   export const GetSetupAttemptsResponseSchema = z.object({
-    data: z.array(setup_attemptSchema),
+    data: z.array(SetupAttemptSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -56959,7 +56594,7 @@ export namespace stripe {
   >
 
   export const GetSetupIntentsResponseSchema = z.object({
-    data: z.array(setup_intentSchema),
+    data: z.array(SetupIntentSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -56988,7 +56623,7 @@ export namespace stripe {
     typeof PostSetupIntentsParamsSchema
   >
 
-  export const PostSetupIntentsResponseSchema = setup_intentSchema
+  export const PostSetupIntentsResponseSchema = SetupIntentSchema
   export type PostSetupIntentsResponse = z.infer<
     typeof PostSetupIntentsResponseSchema
   >
@@ -57013,7 +56648,7 @@ export namespace stripe {
     typeof GetSetupIntentsIntentParamsSchema
   >
 
-  export const GetSetupIntentsIntentResponseSchema = setup_intentSchema
+  export const GetSetupIntentsIntentResponseSchema = SetupIntentSchema
   export type GetSetupIntentsIntentResponse = z.infer<
     typeof GetSetupIntentsIntentResponseSchema
   >
@@ -57025,7 +56660,7 @@ export namespace stripe {
     typeof PostSetupIntentsIntentParamsSchema
   >
 
-  export const PostSetupIntentsIntentResponseSchema = setup_intentSchema
+  export const PostSetupIntentsIntentResponseSchema = SetupIntentSchema
   export type PostSetupIntentsIntentResponse = z.infer<
     typeof PostSetupIntentsIntentResponseSchema
   >
@@ -57037,7 +56672,7 @@ export namespace stripe {
     typeof PostSetupIntentsIntentCancelParamsSchema
   >
 
-  export const PostSetupIntentsIntentCancelResponseSchema = setup_intentSchema
+  export const PostSetupIntentsIntentCancelResponseSchema = SetupIntentSchema
   export type PostSetupIntentsIntentCancelResponse = z.infer<
     typeof PostSetupIntentsIntentCancelResponseSchema
   >
@@ -57049,7 +56684,7 @@ export namespace stripe {
     typeof PostSetupIntentsIntentConfirmParamsSchema
   >
 
-  export const PostSetupIntentsIntentConfirmResponseSchema = setup_intentSchema
+  export const PostSetupIntentsIntentConfirmResponseSchema = SetupIntentSchema
   export type PostSetupIntentsIntentConfirmResponse = z.infer<
     typeof PostSetupIntentsIntentConfirmResponseSchema
   >
@@ -57062,7 +56697,7 @@ export namespace stripe {
   >
 
   export const PostSetupIntentsIntentVerifyMicrodepositsResponseSchema =
-    setup_intentSchema
+    SetupIntentSchema
   export type PostSetupIntentsIntentVerifyMicrodepositsResponse = z.infer<
     typeof PostSetupIntentsIntentVerifyMicrodepositsResponseSchema
   >
@@ -57128,7 +56763,7 @@ export namespace stripe {
   >
 
   export const GetShippingRatesResponseSchema = z.object({
-    data: z.array(shipping_rateSchema),
+    data: z.array(ShippingRateSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -57157,7 +56792,7 @@ export namespace stripe {
     typeof PostShippingRatesParamsSchema
   >
 
-  export const PostShippingRatesResponseSchema = shipping_rateSchema
+  export const PostShippingRatesResponseSchema = ShippingRateSchema
   export type PostShippingRatesResponse = z.infer<
     typeof PostShippingRatesResponseSchema
   >
@@ -57175,7 +56810,7 @@ export namespace stripe {
   >
 
   export const GetShippingRatesShippingRateTokenResponseSchema =
-    shipping_rateSchema
+    ShippingRateSchema
   export type GetShippingRatesShippingRateTokenResponse = z.infer<
     typeof GetShippingRatesShippingRateTokenResponseSchema
   >
@@ -57188,7 +56823,7 @@ export namespace stripe {
   >
 
   export const PostShippingRatesShippingRateTokenResponseSchema =
-    shipping_rateSchema
+    ShippingRateSchema
   export type PostShippingRatesShippingRateTokenResponse = z.infer<
     typeof PostShippingRatesShippingRateTokenResponseSchema
   >
@@ -57229,7 +56864,7 @@ export namespace stripe {
   >
 
   export const GetSigmaScheduledQueryRunsResponseSchema = z.object({
-    data: z.array(scheduled_query_runSchema),
+    data: z.array(ScheduledQueryRunSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -57267,7 +56902,7 @@ export namespace stripe {
   >
 
   export const GetSigmaScheduledQueryRunsScheduledQueryRunResponseSchema =
-    scheduled_query_runSchema
+    ScheduledQueryRunSchema
   export type GetSigmaScheduledQueryRunsScheduledQueryRunResponse = z.infer<
     typeof GetSigmaScheduledQueryRunsScheduledQueryRunResponseSchema
   >
@@ -57275,7 +56910,7 @@ export namespace stripe {
   export const PostSourcesParamsSchema = z.object({})
   export type PostSourcesParams = z.infer<typeof PostSourcesParamsSchema>
 
-  export const PostSourcesResponseSchema = sourceSchema
+  export const PostSourcesResponseSchema = SourceSchema
   export type PostSourcesResponse = z.infer<typeof PostSourcesResponseSchema>
 
   export const GetSourcesSourceParamsSchema = z.object({
@@ -57298,7 +56933,7 @@ export namespace stripe {
     typeof GetSourcesSourceParamsSchema
   >
 
-  export const GetSourcesSourceResponseSchema = sourceSchema
+  export const GetSourcesSourceResponseSchema = SourceSchema
   export type GetSourcesSourceResponse = z.infer<
     typeof GetSourcesSourceResponseSchema
   >
@@ -57310,7 +56945,7 @@ export namespace stripe {
     typeof PostSourcesSourceParamsSchema
   >
 
-  export const PostSourcesSourceResponseSchema = sourceSchema
+  export const PostSourcesSourceResponseSchema = SourceSchema
   export type PostSourcesSourceResponse = z.infer<
     typeof PostSourcesSourceResponseSchema
   >
@@ -57331,7 +56966,7 @@ export namespace stripe {
     >
 
   export const GetSourcesSourceMandateNotificationsMandateNotificationResponseSchema =
-    source_mandate_notificationSchema
+    SourceMandateNotificationSchema
   export type GetSourcesSourceMandateNotificationsMandateNotificationResponse =
     z.infer<
       typeof GetSourcesSourceMandateNotificationsMandateNotificationResponseSchema
@@ -57374,7 +57009,7 @@ export namespace stripe {
   >
 
   export const GetSourcesSourceSourceTransactionsResponseSchema = z.object({
-    data: z.array(source_transactionSchema),
+    data: z.array(SourceTransactionSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -57413,7 +57048,7 @@ export namespace stripe {
     >
 
   export const GetSourcesSourceSourceTransactionsSourceTransactionResponseSchema =
-    source_transactionSchema
+    SourceTransactionSchema
   export type GetSourcesSourceSourceTransactionsSourceTransactionResponse =
     z.infer<
       typeof GetSourcesSourceSourceTransactionsSourceTransactionResponseSchema
@@ -57426,7 +57061,7 @@ export namespace stripe {
     typeof PostSourcesSourceVerifyParamsSchema
   >
 
-  export const PostSourcesSourceVerifyResponseSchema = sourceSchema
+  export const PostSourcesSourceVerifyResponseSchema = SourceSchema
   export type PostSourcesSourceVerifyResponse = z.infer<
     typeof PostSourcesSourceVerifyResponseSchema
   >
@@ -57470,7 +57105,7 @@ export namespace stripe {
   >
 
   export const GetSubscriptionItemsResponseSchema = z.object({
-    data: z.array(subscription_itemSchema),
+    data: z.array(SubscriptionItemSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -57499,7 +57134,7 @@ export namespace stripe {
     typeof PostSubscriptionItemsParamsSchema
   >
 
-  export const PostSubscriptionItemsResponseSchema = subscription_itemSchema
+  export const PostSubscriptionItemsResponseSchema = SubscriptionItemSchema
   export type PostSubscriptionItemsResponse = z.infer<
     typeof PostSubscriptionItemsResponseSchema
   >
@@ -57516,7 +57151,7 @@ export namespace stripe {
     typeof GetSubscriptionItemsItemParamsSchema
   >
 
-  export const GetSubscriptionItemsItemResponseSchema = subscription_itemSchema
+  export const GetSubscriptionItemsItemResponseSchema = SubscriptionItemSchema
   export type GetSubscriptionItemsItemResponse = z.infer<
     typeof GetSubscriptionItemsItemResponseSchema
   >
@@ -57528,7 +57163,7 @@ export namespace stripe {
     typeof PostSubscriptionItemsItemParamsSchema
   >
 
-  export const PostSubscriptionItemsItemResponseSchema = subscription_itemSchema
+  export const PostSubscriptionItemsItemResponseSchema = SubscriptionItemSchema
   export type PostSubscriptionItemsItemResponse = z.infer<
     typeof PostSubscriptionItemsItemResponseSchema
   >
@@ -57541,7 +57176,7 @@ export namespace stripe {
   >
 
   export const DeleteSubscriptionItemsItemResponseSchema =
-    deleted_subscription_itemSchema
+    DeletedSubscriptionItemSchema
   export type DeleteSubscriptionItemsItemResponse = z.infer<
     typeof DeleteSubscriptionItemsItemResponseSchema
   >
@@ -57586,7 +57221,7 @@ export namespace stripe {
 
   export const GetSubscriptionItemsSubscriptionItemUsageRecordSummariesResponseSchema =
     z.object({
-      data: z.array(usage_record_summarySchema),
+      data: z.array(UsageRecordSummarySchema),
       /** True if this list has another page of items after this one that can be fetched. */
       has_more: z
         .boolean()
@@ -57617,7 +57252,7 @@ export namespace stripe {
   >
 
   export const PostSubscriptionItemsSubscriptionItemUsageRecordsResponseSchema =
-    usage_recordSchema
+    UsageRecordSchema
   export type PostSubscriptionItemsSubscriptionItemUsageRecordsResponse =
     z.infer<
       typeof PostSubscriptionItemsSubscriptionItemUsageRecordsResponseSchema
@@ -57730,7 +57365,7 @@ export namespace stripe {
   >
 
   export const GetSubscriptionSchedulesResponseSchema = z.object({
-    data: z.array(subscription_scheduleSchema),
+    data: z.array(SubscriptionScheduleSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -57760,7 +57395,7 @@ export namespace stripe {
   >
 
   export const PostSubscriptionSchedulesResponseSchema =
-    subscription_scheduleSchema
+    SubscriptionScheduleSchema
   export type PostSubscriptionSchedulesResponse = z.infer<
     typeof PostSubscriptionSchedulesResponseSchema
   >
@@ -57778,7 +57413,7 @@ export namespace stripe {
   >
 
   export const GetSubscriptionSchedulesScheduleResponseSchema =
-    subscription_scheduleSchema
+    SubscriptionScheduleSchema
   export type GetSubscriptionSchedulesScheduleResponse = z.infer<
     typeof GetSubscriptionSchedulesScheduleResponseSchema
   >
@@ -57791,7 +57426,7 @@ export namespace stripe {
   >
 
   export const PostSubscriptionSchedulesScheduleResponseSchema =
-    subscription_scheduleSchema
+    SubscriptionScheduleSchema
   export type PostSubscriptionSchedulesScheduleResponse = z.infer<
     typeof PostSubscriptionSchedulesScheduleResponseSchema
   >
@@ -57804,7 +57439,7 @@ export namespace stripe {
   >
 
   export const PostSubscriptionSchedulesScheduleCancelResponseSchema =
-    subscription_scheduleSchema
+    SubscriptionScheduleSchema
   export type PostSubscriptionSchedulesScheduleCancelResponse = z.infer<
     typeof PostSubscriptionSchedulesScheduleCancelResponseSchema
   >
@@ -57817,7 +57452,7 @@ export namespace stripe {
   >
 
   export const PostSubscriptionSchedulesScheduleReleaseResponseSchema =
-    subscription_scheduleSchema
+    SubscriptionScheduleSchema
   export type PostSubscriptionSchedulesScheduleReleaseResponse = z.infer<
     typeof PostSubscriptionSchedulesScheduleReleaseResponseSchema
   >
@@ -57955,7 +57590,7 @@ export namespace stripe {
   >
 
   export const GetSubscriptionsResponseSchema = z.object({
-    data: z.array(subscriptionSchema),
+    data: z.array(SubscriptionSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -57984,7 +57619,7 @@ export namespace stripe {
     typeof PostSubscriptionsParamsSchema
   >
 
-  export const PostSubscriptionsResponseSchema = subscriptionSchema
+  export const PostSubscriptionsResponseSchema = SubscriptionSchema
   export type PostSubscriptionsResponse = z.infer<
     typeof PostSubscriptionsResponseSchema
   >
@@ -58024,7 +57659,7 @@ export namespace stripe {
   >
 
   export const GetSubscriptionsSearchResponseSchema = z.object({
-    data: z.array(subscriptionSchema),
+    data: z.array(SubscriptionSchema),
     has_more: z.boolean(),
     next_page: z.string().max(5000).nullable().optional(),
     /** String representing the object's type. Objects of the same type share the same value. */
@@ -58060,7 +57695,7 @@ export namespace stripe {
   >
 
   export const GetSubscriptionsSubscriptionExposedIdResponseSchema =
-    subscriptionSchema
+    SubscriptionSchema
   export type GetSubscriptionsSubscriptionExposedIdResponse = z.infer<
     typeof GetSubscriptionsSubscriptionExposedIdResponseSchema
   >
@@ -58073,7 +57708,7 @@ export namespace stripe {
   >
 
   export const PostSubscriptionsSubscriptionExposedIdResponseSchema =
-    subscriptionSchema
+    SubscriptionSchema
   export type PostSubscriptionsSubscriptionExposedIdResponse = z.infer<
     typeof PostSubscriptionsSubscriptionExposedIdResponseSchema
   >
@@ -58086,7 +57721,7 @@ export namespace stripe {
   >
 
   export const DeleteSubscriptionsSubscriptionExposedIdResponseSchema =
-    subscriptionSchema
+    SubscriptionSchema
   export type DeleteSubscriptionsSubscriptionExposedIdResponse = z.infer<
     typeof DeleteSubscriptionsSubscriptionExposedIdResponseSchema
   >
@@ -58098,7 +57733,7 @@ export namespace stripe {
   >
 
   export const DeleteSubscriptionsSubscriptionExposedIdDiscountResponseSchema =
-    deleted_discountSchema
+    DeletedDiscountSchema
   export type DeleteSubscriptionsSubscriptionExposedIdDiscountResponse =
     z.infer<
       typeof DeleteSubscriptionsSubscriptionExposedIdDiscountResponseSchema
@@ -58112,7 +57747,7 @@ export namespace stripe {
   >
 
   export const PostSubscriptionsSubscriptionResumeResponseSchema =
-    subscriptionSchema
+    SubscriptionSchema
   export type PostSubscriptionsSubscriptionResumeResponse = z.infer<
     typeof PostSubscriptionsSubscriptionResumeResponseSchema
   >
@@ -58122,7 +57757,7 @@ export namespace stripe {
     typeof PostTaxCalculationsParamsSchema
   >
 
-  export const PostTaxCalculationsResponseSchema = tax.calculationSchema
+  export const PostTaxCalculationsResponseSchema = TaxCalculationSchema
   export type PostTaxCalculationsResponse = z.infer<
     typeof PostTaxCalculationsResponseSchema
   >
@@ -58140,7 +57775,7 @@ export namespace stripe {
   >
 
   export const GetTaxCalculationsCalculationResponseSchema =
-    tax.calculationSchema
+    TaxCalculationSchema
   export type GetTaxCalculationsCalculationResponse = z.infer<
     typeof GetTaxCalculationsCalculationResponseSchema
   >
@@ -58184,7 +57819,7 @@ export namespace stripe {
   export const GetTaxCalculationsCalculationLineItemsResponseSchema = z.object({
     /** Details about each object. */
     data: z
-      .array(tax.calculation_line_itemSchema)
+      .array(TaxCalculationLineItemSchema)
       .describe('Details about each object.'),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
@@ -58250,7 +57885,7 @@ export namespace stripe {
   >
 
   export const GetTaxRegistrationsResponseSchema = z.object({
-    data: z.array(tax.registrationSchema),
+    data: z.array(TaxRegistrationSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -58279,7 +57914,7 @@ export namespace stripe {
     typeof PostTaxRegistrationsParamsSchema
   >
 
-  export const PostTaxRegistrationsResponseSchema = tax.registrationSchema
+  export const PostTaxRegistrationsResponseSchema = TaxRegistrationSchema
   export type PostTaxRegistrationsResponse = z.infer<
     typeof PostTaxRegistrationsResponseSchema
   >
@@ -58296,7 +57931,7 @@ export namespace stripe {
     typeof GetTaxRegistrationsIdParamsSchema
   >
 
-  export const GetTaxRegistrationsIdResponseSchema = tax.registrationSchema
+  export const GetTaxRegistrationsIdResponseSchema = TaxRegistrationSchema
   export type GetTaxRegistrationsIdResponse = z.infer<
     typeof GetTaxRegistrationsIdResponseSchema
   >
@@ -58308,7 +57943,7 @@ export namespace stripe {
     typeof PostTaxRegistrationsIdParamsSchema
   >
 
-  export const PostTaxRegistrationsIdResponseSchema = tax.registrationSchema
+  export const PostTaxRegistrationsIdResponseSchema = TaxRegistrationSchema
   export type PostTaxRegistrationsIdResponse = z.infer<
     typeof PostTaxRegistrationsIdResponseSchema
   >
@@ -58322,7 +57957,7 @@ export namespace stripe {
   })
   export type GetTaxSettingsParams = z.infer<typeof GetTaxSettingsParamsSchema>
 
-  export const GetTaxSettingsResponseSchema = tax.settingsSchema
+  export const GetTaxSettingsResponseSchema = TaxSettingsSchema
   export type GetTaxSettingsResponse = z.infer<
     typeof GetTaxSettingsResponseSchema
   >
@@ -58332,7 +57967,7 @@ export namespace stripe {
     typeof PostTaxSettingsParamsSchema
   >
 
-  export const PostTaxSettingsResponseSchema = tax.settingsSchema
+  export const PostTaxSettingsResponseSchema = TaxSettingsSchema
   export type PostTaxSettingsResponse = z.infer<
     typeof PostTaxSettingsResponseSchema
   >
@@ -58345,7 +57980,7 @@ export namespace stripe {
   >
 
   export const PostTaxTransactionsCreateFromCalculationResponseSchema =
-    tax.transactionSchema
+    TaxTransactionSchema
   export type PostTaxTransactionsCreateFromCalculationResponse = z.infer<
     typeof PostTaxTransactionsCreateFromCalculationResponseSchema
   >
@@ -58356,7 +57991,7 @@ export namespace stripe {
   >
 
   export const PostTaxTransactionsCreateReversalResponseSchema =
-    tax.transactionSchema
+    TaxTransactionSchema
   export type PostTaxTransactionsCreateReversalResponse = z.infer<
     typeof PostTaxTransactionsCreateReversalResponseSchema
   >
@@ -58374,7 +58009,7 @@ export namespace stripe {
   >
 
   export const GetTaxTransactionsTransactionResponseSchema =
-    tax.transactionSchema
+    TaxTransactionSchema
   export type GetTaxTransactionsTransactionResponse = z.infer<
     typeof GetTaxTransactionsTransactionResponseSchema
   >
@@ -58418,7 +58053,7 @@ export namespace stripe {
   export const GetTaxTransactionsTransactionLineItemsResponseSchema = z.object({
     /** Details about each object. */
     data: z
-      .array(tax.transaction_line_itemSchema)
+      .array(TaxTransactionLineItemSchema)
       .describe('Details about each object.'),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
@@ -58475,7 +58110,7 @@ export namespace stripe {
   export type GetTaxCodesParams = z.infer<typeof GetTaxCodesParamsSchema>
 
   export const GetTaxCodesResponseSchema = z.object({
-    data: z.array(tax_codeSchema),
+    data: z.array(TaxCodeSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -58506,7 +58141,7 @@ export namespace stripe {
   })
   export type GetTaxCodesIdParams = z.infer<typeof GetTaxCodesIdParamsSchema>
 
-  export const GetTaxCodesIdResponseSchema = tax_codeSchema
+  export const GetTaxCodesIdResponseSchema = TaxCodeSchema
   export type GetTaxCodesIdResponse = z.infer<
     typeof GetTaxCodesIdResponseSchema
   >
@@ -58557,7 +58192,7 @@ export namespace stripe {
 
   export const GetTaxIdsResponseSchema = z.object({
     /** Details about each object. */
-    data: z.array(tax_idSchema).describe('Details about each object.'),
+    data: z.array(TaxIdSchema).describe('Details about each object.'),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -58581,7 +58216,7 @@ export namespace stripe {
   export const PostTaxIdsParamsSchema = z.object({})
   export type PostTaxIdsParams = z.infer<typeof PostTaxIdsParamsSchema>
 
-  export const PostTaxIdsResponseSchema = tax_idSchema
+  export const PostTaxIdsResponseSchema = TaxIdSchema
   export type PostTaxIdsResponse = z.infer<typeof PostTaxIdsResponseSchema>
 
   export const GetTaxIdsIdParamsSchema = z.object({
@@ -58594,7 +58229,7 @@ export namespace stripe {
   })
   export type GetTaxIdsIdParams = z.infer<typeof GetTaxIdsIdParamsSchema>
 
-  export const GetTaxIdsIdResponseSchema = tax_idSchema
+  export const GetTaxIdsIdResponseSchema = TaxIdSchema
   export type GetTaxIdsIdResponse = z.infer<typeof GetTaxIdsIdResponseSchema>
 
   export const DeleteTaxIdsIdParamsSchema = z.object({
@@ -58602,7 +58237,7 @@ export namespace stripe {
   })
   export type DeleteTaxIdsIdParams = z.infer<typeof DeleteTaxIdsIdParamsSchema>
 
-  export const DeleteTaxIdsIdResponseSchema = deleted_tax_idSchema
+  export const DeleteTaxIdsIdResponseSchema = DeletedTaxIdSchema
   export type DeleteTaxIdsIdResponse = z.infer<
     typeof DeleteTaxIdsIdResponseSchema
   >
@@ -58668,7 +58303,7 @@ export namespace stripe {
   export type GetTaxRatesParams = z.infer<typeof GetTaxRatesParamsSchema>
 
   export const GetTaxRatesResponseSchema = z.object({
-    data: z.array(tax_rateSchema),
+    data: z.array(TaxRateSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -58693,7 +58328,7 @@ export namespace stripe {
   export const PostTaxRatesParamsSchema = z.object({})
   export type PostTaxRatesParams = z.infer<typeof PostTaxRatesParamsSchema>
 
-  export const PostTaxRatesResponseSchema = tax_rateSchema
+  export const PostTaxRatesResponseSchema = TaxRateSchema
   export type PostTaxRatesResponse = z.infer<typeof PostTaxRatesResponseSchema>
 
   export const GetTaxRatesTaxRateParamsSchema = z.object({
@@ -58708,7 +58343,7 @@ export namespace stripe {
     typeof GetTaxRatesTaxRateParamsSchema
   >
 
-  export const GetTaxRatesTaxRateResponseSchema = tax_rateSchema
+  export const GetTaxRatesTaxRateResponseSchema = TaxRateSchema
   export type GetTaxRatesTaxRateResponse = z.infer<
     typeof GetTaxRatesTaxRateResponseSchema
   >
@@ -58720,7 +58355,7 @@ export namespace stripe {
     typeof PostTaxRatesTaxRateParamsSchema
   >
 
-  export const PostTaxRatesTaxRateResponseSchema = tax_rateSchema
+  export const PostTaxRatesTaxRateResponseSchema = TaxRateSchema
   export type PostTaxRatesTaxRateResponse = z.infer<
     typeof PostTaxRatesTaxRateResponseSchema
   >
@@ -58768,7 +58403,7 @@ export namespace stripe {
   >
 
   export const GetTerminalConfigurationsResponseSchema = z.object({
-    data: z.array(terminal.configurationSchema),
+    data: z.array(TerminalConfigurationSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -58798,7 +58433,7 @@ export namespace stripe {
   >
 
   export const PostTerminalConfigurationsResponseSchema =
-    terminal.configurationSchema
+    TerminalConfigurationSchema
   export type PostTerminalConfigurationsResponse = z.infer<
     typeof PostTerminalConfigurationsResponseSchema
   >
@@ -58816,8 +58451,8 @@ export namespace stripe {
   >
 
   export const GetTerminalConfigurationsConfigurationResponseSchema = z.union([
-    terminal.configurationSchema,
-    deleted_terminal.configurationSchema
+    TerminalConfigurationSchema,
+    DeletedTerminalConfigurationSchema
   ])
   export type GetTerminalConfigurationsConfigurationResponse = z.infer<
     typeof GetTerminalConfigurationsConfigurationResponseSchema
@@ -58831,8 +58466,8 @@ export namespace stripe {
   >
 
   export const PostTerminalConfigurationsConfigurationResponseSchema = z.union([
-    terminal.configurationSchema,
-    deleted_terminal.configurationSchema
+    TerminalConfigurationSchema,
+    DeletedTerminalConfigurationSchema
   ])
   export type PostTerminalConfigurationsConfigurationResponse = z.infer<
     typeof PostTerminalConfigurationsConfigurationResponseSchema
@@ -58846,7 +58481,7 @@ export namespace stripe {
   >
 
   export const DeleteTerminalConfigurationsConfigurationResponseSchema =
-    deleted_terminal.configurationSchema
+    DeletedTerminalConfigurationSchema
   export type DeleteTerminalConfigurationsConfigurationResponse = z.infer<
     typeof DeleteTerminalConfigurationsConfigurationResponseSchema
   >
@@ -58857,7 +58492,7 @@ export namespace stripe {
   >
 
   export const PostTerminalConnectionTokensResponseSchema =
-    terminal.connection_tokenSchema
+    TerminalConnectionTokenSchema
   export type PostTerminalConnectionTokensResponse = z.infer<
     typeof PostTerminalConnectionTokensResponseSchema
   >
@@ -58898,7 +58533,7 @@ export namespace stripe {
   >
 
   export const GetTerminalLocationsResponseSchema = z.object({
-    data: z.array(terminal.locationSchema),
+    data: z.array(TerminalLocationSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -58927,7 +58562,7 @@ export namespace stripe {
     typeof PostTerminalLocationsParamsSchema
   >
 
-  export const PostTerminalLocationsResponseSchema = terminal.locationSchema
+  export const PostTerminalLocationsResponseSchema = TerminalLocationSchema
   export type PostTerminalLocationsResponse = z.infer<
     typeof PostTerminalLocationsResponseSchema
   >
@@ -58945,8 +58580,8 @@ export namespace stripe {
   >
 
   export const GetTerminalLocationsLocationResponseSchema = z.union([
-    terminal.locationSchema,
-    deleted_terminal.locationSchema
+    TerminalLocationSchema,
+    DeletedTerminalLocationSchema
   ])
   export type GetTerminalLocationsLocationResponse = z.infer<
     typeof GetTerminalLocationsLocationResponseSchema
@@ -58960,8 +58595,8 @@ export namespace stripe {
   >
 
   export const PostTerminalLocationsLocationResponseSchema = z.union([
-    terminal.locationSchema,
-    deleted_terminal.locationSchema
+    TerminalLocationSchema,
+    DeletedTerminalLocationSchema
   ])
   export type PostTerminalLocationsLocationResponse = z.infer<
     typeof PostTerminalLocationsLocationResponseSchema
@@ -58975,7 +58610,7 @@ export namespace stripe {
   >
 
   export const DeleteTerminalLocationsLocationResponseSchema =
-    deleted_terminal.locationSchema
+    DeletedTerminalLocationSchema
   export type DeleteTerminalLocationsLocationResponse = z.infer<
     typeof DeleteTerminalLocationsLocationResponseSchema
   >
@@ -59052,7 +58687,7 @@ export namespace stripe {
 
   export const GetTerminalReadersResponseSchema = z.object({
     /** A list of readers */
-    data: z.array(terminal.readerSchema).describe('A list of readers'),
+    data: z.array(TerminalReaderSchema).describe('A list of readers'),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -59080,7 +58715,7 @@ export namespace stripe {
     typeof PostTerminalReadersParamsSchema
   >
 
-  export const PostTerminalReadersResponseSchema = terminal.readerSchema
+  export const PostTerminalReadersResponseSchema = TerminalReaderSchema
   export type PostTerminalReadersResponse = z.infer<
     typeof PostTerminalReadersResponseSchema
   >
@@ -59098,8 +58733,8 @@ export namespace stripe {
   >
 
   export const GetTerminalReadersReaderResponseSchema = z.union([
-    terminal.readerSchema,
-    deleted_terminal.readerSchema
+    TerminalReaderSchema,
+    DeletedTerminalReaderSchema
   ])
   export type GetTerminalReadersReaderResponse = z.infer<
     typeof GetTerminalReadersReaderResponseSchema
@@ -59113,8 +58748,8 @@ export namespace stripe {
   >
 
   export const PostTerminalReadersReaderResponseSchema = z.union([
-    terminal.readerSchema,
-    deleted_terminal.readerSchema
+    TerminalReaderSchema,
+    DeletedTerminalReaderSchema
   ])
   export type PostTerminalReadersReaderResponse = z.infer<
     typeof PostTerminalReadersReaderResponseSchema
@@ -59128,7 +58763,7 @@ export namespace stripe {
   >
 
   export const DeleteTerminalReadersReaderResponseSchema =
-    deleted_terminal.readerSchema
+    DeletedTerminalReaderSchema
   export type DeleteTerminalReadersReaderResponse = z.infer<
     typeof DeleteTerminalReadersReaderResponseSchema
   >
@@ -59141,7 +58776,7 @@ export namespace stripe {
   >
 
   export const PostTerminalReadersReaderCancelActionResponseSchema =
-    terminal.readerSchema
+    TerminalReaderSchema
   export type PostTerminalReadersReaderCancelActionResponse = z.infer<
     typeof PostTerminalReadersReaderCancelActionResponseSchema
   >
@@ -59153,7 +58788,7 @@ export namespace stripe {
   >
 
   export const PostTerminalReadersReaderProcessPaymentIntentResponseSchema =
-    terminal.readerSchema
+    TerminalReaderSchema
   export type PostTerminalReadersReaderProcessPaymentIntentResponse = z.infer<
     typeof PostTerminalReadersReaderProcessPaymentIntentResponseSchema
   >
@@ -59165,7 +58800,7 @@ export namespace stripe {
   >
 
   export const PostTerminalReadersReaderProcessSetupIntentResponseSchema =
-    terminal.readerSchema
+    TerminalReaderSchema
   export type PostTerminalReadersReaderProcessSetupIntentResponse = z.infer<
     typeof PostTerminalReadersReaderProcessSetupIntentResponseSchema
   >
@@ -59178,7 +58813,7 @@ export namespace stripe {
   >
 
   export const PostTerminalReadersReaderRefundPaymentResponseSchema =
-    terminal.readerSchema
+    TerminalReaderSchema
   export type PostTerminalReadersReaderRefundPaymentResponse = z.infer<
     typeof PostTerminalReadersReaderRefundPaymentResponseSchema
   >
@@ -59191,7 +58826,7 @@ export namespace stripe {
   >
 
   export const PostTerminalReadersReaderSetReaderDisplayResponseSchema =
-    terminal.readerSchema
+    TerminalReaderSchema
   export type PostTerminalReadersReaderSetReaderDisplayResponse = z.infer<
     typeof PostTerminalReadersReaderSetReaderDisplayResponseSchema
   >
@@ -59202,7 +58837,7 @@ export namespace stripe {
   >
 
   export const PostTestHelpersConfirmationTokensResponseSchema =
-    confirmation_tokenSchema
+    ConfirmationTokenSchema
   export type PostTestHelpersConfirmationTokensResponse = z.infer<
     typeof PostTestHelpersConfirmationTokensResponseSchema
   >
@@ -59214,7 +58849,7 @@ export namespace stripe {
   >
 
   export const PostTestHelpersCustomersCustomerFundCashBalanceResponseSchema =
-    customer_cash_balance_transactionSchema
+    CustomerCashBalanceTransactionSchema
   export type PostTestHelpersCustomersCustomerFundCashBalanceResponse = z.infer<
     typeof PostTestHelpersCustomersCustomerFundCashBalanceResponseSchema
   >
@@ -59225,7 +58860,7 @@ export namespace stripe {
   >
 
   export const PostTestHelpersIssuingAuthorizationsResponseSchema =
-    issuing.authorizationSchema
+    IssuingAuthorizationSchema
   export type PostTestHelpersIssuingAuthorizationsResponse = z.infer<
     typeof PostTestHelpersIssuingAuthorizationsResponseSchema
   >
@@ -59238,7 +58873,7 @@ export namespace stripe {
     >
 
   export const PostTestHelpersIssuingAuthorizationsAuthorizationCaptureResponseSchema =
-    issuing.authorizationSchema
+    IssuingAuthorizationSchema
   export type PostTestHelpersIssuingAuthorizationsAuthorizationCaptureResponse =
     z.infer<
       typeof PostTestHelpersIssuingAuthorizationsAuthorizationCaptureResponseSchema
@@ -59252,7 +58887,7 @@ export namespace stripe {
     >
 
   export const PostTestHelpersIssuingAuthorizationsAuthorizationExpireResponseSchema =
-    issuing.authorizationSchema
+    IssuingAuthorizationSchema
   export type PostTestHelpersIssuingAuthorizationsAuthorizationExpireResponse =
     z.infer<
       typeof PostTestHelpersIssuingAuthorizationsAuthorizationExpireResponseSchema
@@ -59266,7 +58901,7 @@ export namespace stripe {
     >
 
   export const PostTestHelpersIssuingAuthorizationsAuthorizationFinalizeAmountResponseSchema =
-    issuing.authorizationSchema
+    IssuingAuthorizationSchema
   export type PostTestHelpersIssuingAuthorizationsAuthorizationFinalizeAmountResponse =
     z.infer<
       typeof PostTestHelpersIssuingAuthorizationsAuthorizationFinalizeAmountResponseSchema
@@ -59280,7 +58915,7 @@ export namespace stripe {
     >
 
   export const PostTestHelpersIssuingAuthorizationsAuthorizationFraudChallengesRespondResponseSchema =
-    issuing.authorizationSchema
+    IssuingAuthorizationSchema
   export type PostTestHelpersIssuingAuthorizationsAuthorizationFraudChallengesRespondResponse =
     z.infer<
       typeof PostTestHelpersIssuingAuthorizationsAuthorizationFraudChallengesRespondResponseSchema
@@ -59294,7 +58929,7 @@ export namespace stripe {
     >
 
   export const PostTestHelpersIssuingAuthorizationsAuthorizationIncrementResponseSchema =
-    issuing.authorizationSchema
+    IssuingAuthorizationSchema
   export type PostTestHelpersIssuingAuthorizationsAuthorizationIncrementResponse =
     z.infer<
       typeof PostTestHelpersIssuingAuthorizationsAuthorizationIncrementResponseSchema
@@ -59308,7 +58943,7 @@ export namespace stripe {
     >
 
   export const PostTestHelpersIssuingAuthorizationsAuthorizationReverseResponseSchema =
-    issuing.authorizationSchema
+    IssuingAuthorizationSchema
   export type PostTestHelpersIssuingAuthorizationsAuthorizationReverseResponse =
     z.infer<
       typeof PostTestHelpersIssuingAuthorizationsAuthorizationReverseResponseSchema
@@ -59321,7 +58956,7 @@ export namespace stripe {
   >
 
   export const PostTestHelpersIssuingCardsCardShippingDeliverResponseSchema =
-    issuing.cardSchema
+    IssuingCardSchema
   export type PostTestHelpersIssuingCardsCardShippingDeliverResponse = z.infer<
     typeof PostTestHelpersIssuingCardsCardShippingDeliverResponseSchema
   >
@@ -59333,7 +58968,7 @@ export namespace stripe {
   >
 
   export const PostTestHelpersIssuingCardsCardShippingFailResponseSchema =
-    issuing.cardSchema
+    IssuingCardSchema
   export type PostTestHelpersIssuingCardsCardShippingFailResponse = z.infer<
     typeof PostTestHelpersIssuingCardsCardShippingFailResponseSchema
   >
@@ -59345,7 +58980,7 @@ export namespace stripe {
   >
 
   export const PostTestHelpersIssuingCardsCardShippingReturnResponseSchema =
-    issuing.cardSchema
+    IssuingCardSchema
   export type PostTestHelpersIssuingCardsCardShippingReturnResponse = z.infer<
     typeof PostTestHelpersIssuingCardsCardShippingReturnResponseSchema
   >
@@ -59357,7 +58992,7 @@ export namespace stripe {
   >
 
   export const PostTestHelpersIssuingCardsCardShippingShipResponseSchema =
-    issuing.cardSchema
+    IssuingCardSchema
   export type PostTestHelpersIssuingCardsCardShippingShipResponse = z.infer<
     typeof PostTestHelpersIssuingCardsCardShippingShipResponseSchema
   >
@@ -59369,7 +59004,7 @@ export namespace stripe {
   >
 
   export const PostTestHelpersIssuingCardsCardShippingSubmitResponseSchema =
-    issuing.cardSchema
+    IssuingCardSchema
   export type PostTestHelpersIssuingCardsCardShippingSubmitResponse = z.infer<
     typeof PostTestHelpersIssuingCardsCardShippingSubmitResponseSchema
   >
@@ -59382,7 +59017,7 @@ export namespace stripe {
     >
 
   export const PostTestHelpersIssuingPersonalizationDesignsPersonalizationDesignActivateResponseSchema =
-    issuing.personalization_designSchema
+    IssuingPersonalizationDesignSchema
   export type PostTestHelpersIssuingPersonalizationDesignsPersonalizationDesignActivateResponse =
     z.infer<
       typeof PostTestHelpersIssuingPersonalizationDesignsPersonalizationDesignActivateResponseSchema
@@ -59396,7 +59031,7 @@ export namespace stripe {
     >
 
   export const PostTestHelpersIssuingPersonalizationDesignsPersonalizationDesignDeactivateResponseSchema =
-    issuing.personalization_designSchema
+    IssuingPersonalizationDesignSchema
   export type PostTestHelpersIssuingPersonalizationDesignsPersonalizationDesignDeactivateResponse =
     z.infer<
       typeof PostTestHelpersIssuingPersonalizationDesignsPersonalizationDesignDeactivateResponseSchema
@@ -59410,7 +59045,7 @@ export namespace stripe {
     >
 
   export const PostTestHelpersIssuingPersonalizationDesignsPersonalizationDesignRejectResponseSchema =
-    issuing.personalization_designSchema
+    IssuingPersonalizationDesignSchema
   export type PostTestHelpersIssuingPersonalizationDesignsPersonalizationDesignRejectResponse =
     z.infer<
       typeof PostTestHelpersIssuingPersonalizationDesignsPersonalizationDesignRejectResponseSchema
@@ -59422,7 +59057,7 @@ export namespace stripe {
   >
 
   export const PostTestHelpersIssuingSettlementsResponseSchema =
-    issuing.settlementSchema
+    IssuingSettlementSchema
   export type PostTestHelpersIssuingSettlementsResponse = z.infer<
     typeof PostTestHelpersIssuingSettlementsResponseSchema
   >
@@ -59441,7 +59076,7 @@ export namespace stripe {
     >
 
   export const PostTestHelpersIssuingSettlementsSettlementCompleteResponseSchema =
-    issuing.settlementSchema
+    IssuingSettlementSchema
   export type PostTestHelpersIssuingSettlementsSettlementCompleteResponse =
     z.infer<
       typeof PostTestHelpersIssuingSettlementsSettlementCompleteResponseSchema
@@ -59455,7 +59090,7 @@ export namespace stripe {
     >
 
   export const PostTestHelpersIssuingTransactionsCreateForceCaptureResponseSchema =
-    issuing.transactionSchema
+    IssuingTransactionSchema
   export type PostTestHelpersIssuingTransactionsCreateForceCaptureResponse =
     z.infer<
       typeof PostTestHelpersIssuingTransactionsCreateForceCaptureResponseSchema
@@ -59469,7 +59104,7 @@ export namespace stripe {
     >
 
   export const PostTestHelpersIssuingTransactionsCreateUnlinkedRefundResponseSchema =
-    issuing.transactionSchema
+    IssuingTransactionSchema
   export type PostTestHelpersIssuingTransactionsCreateUnlinkedRefundResponse =
     z.infer<
       typeof PostTestHelpersIssuingTransactionsCreateUnlinkedRefundResponseSchema
@@ -59483,7 +59118,7 @@ export namespace stripe {
     >
 
   export const PostTestHelpersIssuingTransactionsTransactionRefundResponseSchema =
-    issuing.transactionSchema
+    IssuingTransactionSchema
   export type PostTestHelpersIssuingTransactionsTransactionRefundResponse =
     z.infer<
       typeof PostTestHelpersIssuingTransactionsTransactionRefundResponseSchema
@@ -59496,7 +59131,7 @@ export namespace stripe {
     typeof PostTestHelpersRefundsRefundExpireParamsSchema
   >
 
-  export const PostTestHelpersRefundsRefundExpireResponseSchema = refundSchema
+  export const PostTestHelpersRefundsRefundExpireResponseSchema = RefundSchema
   export type PostTestHelpersRefundsRefundExpireResponse = z.infer<
     typeof PostTestHelpersRefundsRefundExpireResponseSchema
   >
@@ -59509,7 +59144,7 @@ export namespace stripe {
     >
 
   export const PostTestHelpersTerminalReadersReaderPresentPaymentMethodResponseSchema =
-    terminal.readerSchema
+    TerminalReaderSchema
   export type PostTestHelpersTerminalReadersReaderPresentPaymentMethodResponse =
     z.infer<
       typeof PostTestHelpersTerminalReadersReaderPresentPaymentMethodResponseSchema
@@ -59551,7 +59186,7 @@ export namespace stripe {
   >
 
   export const GetTestHelpersTestClocksResponseSchema = z.object({
-    data: z.array(test_helpers.test_clockSchema),
+    data: z.array(TestHelpersTestClockSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -59581,7 +59216,7 @@ export namespace stripe {
   >
 
   export const PostTestHelpersTestClocksResponseSchema =
-    test_helpers.test_clockSchema
+    TestHelpersTestClockSchema
   export type PostTestHelpersTestClocksResponse = z.infer<
     typeof PostTestHelpersTestClocksResponseSchema
   >
@@ -59599,7 +59234,7 @@ export namespace stripe {
   >
 
   export const GetTestHelpersTestClocksTestClockResponseSchema =
-    test_helpers.test_clockSchema
+    TestHelpersTestClockSchema
   export type GetTestHelpersTestClocksTestClockResponse = z.infer<
     typeof GetTestHelpersTestClocksTestClockResponseSchema
   >
@@ -59612,7 +59247,7 @@ export namespace stripe {
   >
 
   export const DeleteTestHelpersTestClocksTestClockResponseSchema =
-    deleted_test_helpers.test_clockSchema
+    DeletedTestHelpersTestClockSchema
   export type DeleteTestHelpersTestClocksTestClockResponse = z.infer<
     typeof DeleteTestHelpersTestClocksTestClockResponseSchema
   >
@@ -59625,7 +59260,7 @@ export namespace stripe {
   >
 
   export const PostTestHelpersTestClocksTestClockAdvanceResponseSchema =
-    test_helpers.test_clockSchema
+    TestHelpersTestClockSchema
   export type PostTestHelpersTestClocksTestClockAdvanceResponse = z.infer<
     typeof PostTestHelpersTestClocksTestClockAdvanceResponseSchema
   >
@@ -59637,7 +59272,7 @@ export namespace stripe {
   >
 
   export const PostTestHelpersTreasuryInboundTransfersIdFailResponseSchema =
-    treasury.inbound_transferSchema
+    TreasuryInboundTransferSchema
   export type PostTestHelpersTreasuryInboundTransfersIdFailResponse = z.infer<
     typeof PostTestHelpersTreasuryInboundTransfersIdFailResponseSchema
   >
@@ -59649,7 +59284,7 @@ export namespace stripe {
   >
 
   export const PostTestHelpersTreasuryInboundTransfersIdReturnResponseSchema =
-    treasury.inbound_transferSchema
+    TreasuryInboundTransferSchema
   export type PostTestHelpersTreasuryInboundTransfersIdReturnResponse = z.infer<
     typeof PostTestHelpersTreasuryInboundTransfersIdReturnResponseSchema
   >
@@ -59661,7 +59296,7 @@ export namespace stripe {
   >
 
   export const PostTestHelpersTreasuryInboundTransfersIdSucceedResponseSchema =
-    treasury.inbound_transferSchema
+    TreasuryInboundTransferSchema
   export type PostTestHelpersTreasuryInboundTransfersIdSucceedResponse =
     z.infer<
       typeof PostTestHelpersTreasuryInboundTransfersIdSucceedResponseSchema
@@ -59675,7 +59310,7 @@ export namespace stripe {
   >
 
   export const PostTestHelpersTreasuryOutboundPaymentsIdResponseSchema =
-    treasury.outbound_paymentSchema
+    TreasuryOutboundPaymentSchema
   export type PostTestHelpersTreasuryOutboundPaymentsIdResponse = z.infer<
     typeof PostTestHelpersTreasuryOutboundPaymentsIdResponseSchema
   >
@@ -59687,7 +59322,7 @@ export namespace stripe {
   >
 
   export const PostTestHelpersTreasuryOutboundPaymentsIdFailResponseSchema =
-    treasury.outbound_paymentSchema
+    TreasuryOutboundPaymentSchema
   export type PostTestHelpersTreasuryOutboundPaymentsIdFailResponse = z.infer<
     typeof PostTestHelpersTreasuryOutboundPaymentsIdFailResponseSchema
   >
@@ -59699,7 +59334,7 @@ export namespace stripe {
   >
 
   export const PostTestHelpersTreasuryOutboundPaymentsIdPostResponseSchema =
-    treasury.outbound_paymentSchema
+    TreasuryOutboundPaymentSchema
   export type PostTestHelpersTreasuryOutboundPaymentsIdPostResponse = z.infer<
     typeof PostTestHelpersTreasuryOutboundPaymentsIdPostResponseSchema
   >
@@ -59711,7 +59346,7 @@ export namespace stripe {
   >
 
   export const PostTestHelpersTreasuryOutboundPaymentsIdReturnResponseSchema =
-    treasury.outbound_paymentSchema
+    TreasuryOutboundPaymentSchema
   export type PostTestHelpersTreasuryOutboundPaymentsIdReturnResponse = z.infer<
     typeof PostTestHelpersTreasuryOutboundPaymentsIdReturnResponseSchema
   >
@@ -59724,7 +59359,7 @@ export namespace stripe {
     >
 
   export const PostTestHelpersTreasuryOutboundTransfersOutboundTransferResponseSchema =
-    treasury.outbound_transferSchema
+    TreasuryOutboundTransferSchema
   export type PostTestHelpersTreasuryOutboundTransfersOutboundTransferResponse =
     z.infer<
       typeof PostTestHelpersTreasuryOutboundTransfersOutboundTransferResponseSchema
@@ -59738,7 +59373,7 @@ export namespace stripe {
     >
 
   export const PostTestHelpersTreasuryOutboundTransfersOutboundTransferFailResponseSchema =
-    treasury.outbound_transferSchema
+    TreasuryOutboundTransferSchema
   export type PostTestHelpersTreasuryOutboundTransfersOutboundTransferFailResponse =
     z.infer<
       typeof PostTestHelpersTreasuryOutboundTransfersOutboundTransferFailResponseSchema
@@ -59752,7 +59387,7 @@ export namespace stripe {
     >
 
   export const PostTestHelpersTreasuryOutboundTransfersOutboundTransferPostResponseSchema =
-    treasury.outbound_transferSchema
+    TreasuryOutboundTransferSchema
   export type PostTestHelpersTreasuryOutboundTransfersOutboundTransferPostResponse =
     z.infer<
       typeof PostTestHelpersTreasuryOutboundTransfersOutboundTransferPostResponseSchema
@@ -59766,7 +59401,7 @@ export namespace stripe {
     >
 
   export const PostTestHelpersTreasuryOutboundTransfersOutboundTransferReturnResponseSchema =
-    treasury.outbound_transferSchema
+    TreasuryOutboundTransferSchema
   export type PostTestHelpersTreasuryOutboundTransfersOutboundTransferReturnResponse =
     z.infer<
       typeof PostTestHelpersTreasuryOutboundTransfersOutboundTransferReturnResponseSchema
@@ -59778,7 +59413,7 @@ export namespace stripe {
   >
 
   export const PostTestHelpersTreasuryReceivedCreditsResponseSchema =
-    treasury.received_creditSchema
+    TreasuryReceivedCreditSchema
   export type PostTestHelpersTreasuryReceivedCreditsResponse = z.infer<
     typeof PostTestHelpersTreasuryReceivedCreditsResponseSchema
   >
@@ -59789,7 +59424,7 @@ export namespace stripe {
   >
 
   export const PostTestHelpersTreasuryReceivedDebitsResponseSchema =
-    treasury.received_debitSchema
+    TreasuryReceivedDebitSchema
   export type PostTestHelpersTreasuryReceivedDebitsResponse = z.infer<
     typeof PostTestHelpersTreasuryReceivedDebitsResponseSchema
   >
@@ -59797,7 +59432,7 @@ export namespace stripe {
   export const PostTokensParamsSchema = z.object({})
   export type PostTokensParams = z.infer<typeof PostTokensParamsSchema>
 
-  export const PostTokensResponseSchema = tokenSchema
+  export const PostTokensResponseSchema = TokenSchema
   export type PostTokensResponse = z.infer<typeof PostTokensResponseSchema>
 
   export const GetTokensTokenParamsSchema = z.object({
@@ -59810,7 +59445,7 @@ export namespace stripe {
   })
   export type GetTokensTokenParams = z.infer<typeof GetTokensTokenParamsSchema>
 
-  export const GetTokensTokenResponseSchema = tokenSchema
+  export const GetTokensTokenResponseSchema = TokenSchema
   export type GetTokensTokenResponse = z.infer<
     typeof GetTokensTokenResponseSchema
   >
@@ -59884,7 +59519,7 @@ export namespace stripe {
   export type GetTopupsParams = z.infer<typeof GetTopupsParamsSchema>
 
   export const GetTopupsResponseSchema = z.object({
-    data: z.array(topupSchema),
+    data: z.array(TopupSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -59909,7 +59544,7 @@ export namespace stripe {
   export const PostTopupsParamsSchema = z.object({})
   export type PostTopupsParams = z.infer<typeof PostTopupsParamsSchema>
 
-  export const PostTopupsResponseSchema = topupSchema
+  export const PostTopupsResponseSchema = TopupSchema
   export type PostTopupsResponse = z.infer<typeof PostTopupsResponseSchema>
 
   export const GetTopupsTopupParamsSchema = z.object({
@@ -59922,7 +59557,7 @@ export namespace stripe {
   })
   export type GetTopupsTopupParams = z.infer<typeof GetTopupsTopupParamsSchema>
 
-  export const GetTopupsTopupResponseSchema = topupSchema
+  export const GetTopupsTopupResponseSchema = TopupSchema
   export type GetTopupsTopupResponse = z.infer<
     typeof GetTopupsTopupResponseSchema
   >
@@ -59934,7 +59569,7 @@ export namespace stripe {
     typeof PostTopupsTopupParamsSchema
   >
 
-  export const PostTopupsTopupResponseSchema = topupSchema
+  export const PostTopupsTopupResponseSchema = TopupSchema
   export type PostTopupsTopupResponse = z.infer<
     typeof PostTopupsTopupResponseSchema
   >
@@ -59946,7 +59581,7 @@ export namespace stripe {
     typeof PostTopupsTopupCancelParamsSchema
   >
 
-  export const PostTopupsTopupCancelResponseSchema = topupSchema
+  export const PostTopupsTopupCancelResponseSchema = TopupSchema
   export type PostTopupsTopupCancelResponse = z.infer<
     typeof PostTopupsTopupCancelResponseSchema
   >
@@ -60015,7 +59650,7 @@ export namespace stripe {
 
   export const GetTransfersResponseSchema = z.object({
     /** Details about each object. */
-    data: z.array(transferSchema).describe('Details about each object.'),
+    data: z.array(TransferSchema).describe('Details about each object.'),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -60040,7 +59675,7 @@ export namespace stripe {
   export const PostTransfersParamsSchema = z.object({})
   export type PostTransfersParams = z.infer<typeof PostTransfersParamsSchema>
 
-  export const PostTransfersResponseSchema = transferSchema
+  export const PostTransfersResponseSchema = TransferSchema
   export type PostTransfersResponse = z.infer<
     typeof PostTransfersResponseSchema
   >
@@ -60084,7 +59719,7 @@ export namespace stripe {
   export const GetTransfersIdReversalsResponseSchema = z.object({
     /** Details about each object. */
     data: z
-      .array(transfer_reversalSchema)
+      .array(TransferReversalSchema)
       .describe('Details about each object.'),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
@@ -60115,7 +59750,7 @@ export namespace stripe {
     typeof PostTransfersIdReversalsParamsSchema
   >
 
-  export const PostTransfersIdReversalsResponseSchema = transfer_reversalSchema
+  export const PostTransfersIdReversalsResponseSchema = TransferReversalSchema
   export type PostTransfersIdReversalsResponse = z.infer<
     typeof PostTransfersIdReversalsResponseSchema
   >
@@ -60132,7 +59767,7 @@ export namespace stripe {
     typeof GetTransfersTransferParamsSchema
   >
 
-  export const GetTransfersTransferResponseSchema = transferSchema
+  export const GetTransfersTransferResponseSchema = TransferSchema
   export type GetTransfersTransferResponse = z.infer<
     typeof GetTransfersTransferResponseSchema
   >
@@ -60144,7 +59779,7 @@ export namespace stripe {
     typeof PostTransfersTransferParamsSchema
   >
 
-  export const PostTransfersTransferResponseSchema = transferSchema
+  export const PostTransfersTransferResponseSchema = TransferSchema
   export type PostTransfersTransferResponse = z.infer<
     typeof PostTransfersTransferResponseSchema
   >
@@ -60163,7 +59798,7 @@ export namespace stripe {
   >
 
   export const GetTransfersTransferReversalsIdResponseSchema =
-    transfer_reversalSchema
+    TransferReversalSchema
   export type GetTransfersTransferReversalsIdResponse = z.infer<
     typeof GetTransfersTransferReversalsIdResponseSchema
   >
@@ -60177,7 +59812,7 @@ export namespace stripe {
   >
 
   export const PostTransfersTransferReversalsIdResponseSchema =
-    transfer_reversalSchema
+    TransferReversalSchema
   export type PostTransfersTransferReversalsIdResponse = z.infer<
     typeof PostTransfersTransferReversalsIdResponseSchema
   >
@@ -60235,7 +59870,7 @@ export namespace stripe {
   export const GetTreasuryCreditReversalsResponseSchema = z.object({
     /** Details about each object. */
     data: z
-      .array(treasury.credit_reversalSchema)
+      .array(TreasuryCreditReversalSchema)
       .describe('Details about each object.'),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
@@ -60265,7 +59900,7 @@ export namespace stripe {
   >
 
   export const PostTreasuryCreditReversalsResponseSchema =
-    treasury.credit_reversalSchema
+    TreasuryCreditReversalSchema
   export type PostTreasuryCreditReversalsResponse = z.infer<
     typeof PostTreasuryCreditReversalsResponseSchema
   >
@@ -60283,7 +59918,7 @@ export namespace stripe {
   >
 
   export const GetTreasuryCreditReversalsCreditReversalResponseSchema =
-    treasury.credit_reversalSchema
+    TreasuryCreditReversalSchema
   export type GetTreasuryCreditReversalsCreditReversalResponse = z.infer<
     typeof GetTreasuryCreditReversalsCreditReversalResponseSchema
   >
@@ -60346,7 +59981,7 @@ export namespace stripe {
   export const GetTreasuryDebitReversalsResponseSchema = z.object({
     /** Details about each object. */
     data: z
-      .array(treasury.debit_reversalSchema)
+      .array(TreasuryDebitReversalSchema)
       .describe('Details about each object.'),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
@@ -60376,7 +60011,7 @@ export namespace stripe {
   >
 
   export const PostTreasuryDebitReversalsResponseSchema =
-    treasury.debit_reversalSchema
+    TreasuryDebitReversalSchema
   export type PostTreasuryDebitReversalsResponse = z.infer<
     typeof PostTreasuryDebitReversalsResponseSchema
   >
@@ -60394,7 +60029,7 @@ export namespace stripe {
   >
 
   export const GetTreasuryDebitReversalsDebitReversalResponseSchema =
-    treasury.debit_reversalSchema
+    TreasuryDebitReversalSchema
   export type GetTreasuryDebitReversalsDebitReversalResponse = z.infer<
     typeof GetTreasuryDebitReversalsDebitReversalResponseSchema
   >
@@ -60444,7 +60079,7 @@ export namespace stripe {
   >
 
   export const GetTreasuryFinancialAccountsResponseSchema = z.object({
-    data: z.array(treasury.financial_accountSchema),
+    data: z.array(TreasuryFinancialAccountSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -60474,7 +60109,7 @@ export namespace stripe {
   >
 
   export const PostTreasuryFinancialAccountsResponseSchema =
-    treasury.financial_accountSchema
+    TreasuryFinancialAccountSchema
   export type PostTreasuryFinancialAccountsResponse = z.infer<
     typeof PostTreasuryFinancialAccountsResponseSchema
   >
@@ -60493,7 +60128,7 @@ export namespace stripe {
   >
 
   export const GetTreasuryFinancialAccountsFinancialAccountResponseSchema =
-    treasury.financial_accountSchema
+    TreasuryFinancialAccountSchema
   export type GetTreasuryFinancialAccountsFinancialAccountResponse = z.infer<
     typeof GetTreasuryFinancialAccountsFinancialAccountResponseSchema
   >
@@ -60505,7 +60140,7 @@ export namespace stripe {
   >
 
   export const PostTreasuryFinancialAccountsFinancialAccountResponseSchema =
-    treasury.financial_accountSchema
+    TreasuryFinancialAccountSchema
   export type PostTreasuryFinancialAccountsFinancialAccountResponse = z.infer<
     typeof PostTreasuryFinancialAccountsFinancialAccountResponseSchema
   >
@@ -60518,7 +60153,7 @@ export namespace stripe {
     >
 
   export const PostTreasuryFinancialAccountsFinancialAccountCloseResponseSchema =
-    treasury.financial_accountSchema
+    TreasuryFinancialAccountSchema
   export type PostTreasuryFinancialAccountsFinancialAccountCloseResponse =
     z.infer<
       typeof PostTreasuryFinancialAccountsFinancialAccountCloseResponseSchema
@@ -60539,7 +60174,7 @@ export namespace stripe {
     >
 
   export const GetTreasuryFinancialAccountsFinancialAccountFeaturesResponseSchema =
-    treasury.financial_account_featuresSchema
+    TreasuryFinancialAccountFeaturesSchema
   export type GetTreasuryFinancialAccountsFinancialAccountFeaturesResponse =
     z.infer<
       typeof GetTreasuryFinancialAccountsFinancialAccountFeaturesResponseSchema
@@ -60553,7 +60188,7 @@ export namespace stripe {
     >
 
   export const PostTreasuryFinancialAccountsFinancialAccountFeaturesResponseSchema =
-    treasury.financial_account_featuresSchema
+    TreasuryFinancialAccountFeaturesSchema
   export type PostTreasuryFinancialAccountsFinancialAccountFeaturesResponse =
     z.infer<
       typeof PostTreasuryFinancialAccountsFinancialAccountFeaturesResponseSchema
@@ -60608,7 +60243,7 @@ export namespace stripe {
   export const GetTreasuryInboundTransfersResponseSchema = z.object({
     /** Details about each object. */
     data: z
-      .array(treasury.inbound_transferSchema)
+      .array(TreasuryInboundTransferSchema)
       .describe('Details about each object.'),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
@@ -60638,7 +60273,7 @@ export namespace stripe {
   >
 
   export const PostTreasuryInboundTransfersResponseSchema =
-    treasury.inbound_transferSchema
+    TreasuryInboundTransferSchema
   export type PostTreasuryInboundTransfersResponse = z.infer<
     typeof PostTreasuryInboundTransfersResponseSchema
   >
@@ -60656,7 +60291,7 @@ export namespace stripe {
   >
 
   export const GetTreasuryInboundTransfersIdResponseSchema =
-    treasury.inbound_transferSchema
+    TreasuryInboundTransferSchema
   export type GetTreasuryInboundTransfersIdResponse = z.infer<
     typeof GetTreasuryInboundTransfersIdResponseSchema
   >
@@ -60668,7 +60303,7 @@ export namespace stripe {
   >
 
   export const PostTreasuryInboundTransfersInboundTransferCancelResponseSchema =
-    treasury.inbound_transferSchema
+    TreasuryInboundTransferSchema
   export type PostTreasuryInboundTransfersInboundTransferCancelResponse =
     z.infer<
       typeof PostTreasuryInboundTransfersInboundTransferCancelResponseSchema
@@ -60744,7 +60379,7 @@ export namespace stripe {
   export const GetTreasuryOutboundPaymentsResponseSchema = z.object({
     /** Details about each object. */
     data: z
-      .array(treasury.outbound_paymentSchema)
+      .array(TreasuryOutboundPaymentSchema)
       .describe('Details about each object.'),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
@@ -60775,7 +60410,7 @@ export namespace stripe {
   >
 
   export const PostTreasuryOutboundPaymentsResponseSchema =
-    treasury.outbound_paymentSchema
+    TreasuryOutboundPaymentSchema
   export type PostTreasuryOutboundPaymentsResponse = z.infer<
     typeof PostTreasuryOutboundPaymentsResponseSchema
   >
@@ -60793,7 +60428,7 @@ export namespace stripe {
   >
 
   export const GetTreasuryOutboundPaymentsIdResponseSchema =
-    treasury.outbound_paymentSchema
+    TreasuryOutboundPaymentSchema
   export type GetTreasuryOutboundPaymentsIdResponse = z.infer<
     typeof GetTreasuryOutboundPaymentsIdResponseSchema
   >
@@ -60806,7 +60441,7 @@ export namespace stripe {
   >
 
   export const PostTreasuryOutboundPaymentsIdCancelResponseSchema =
-    treasury.outbound_paymentSchema
+    TreasuryOutboundPaymentSchema
   export type PostTreasuryOutboundPaymentsIdCancelResponse = z.infer<
     typeof PostTreasuryOutboundPaymentsIdCancelResponseSchema
   >
@@ -60860,7 +60495,7 @@ export namespace stripe {
   export const GetTreasuryOutboundTransfersResponseSchema = z.object({
     /** Details about each object. */
     data: z
-      .array(treasury.outbound_transferSchema)
+      .array(TreasuryOutboundTransferSchema)
       .describe('Details about each object.'),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
@@ -60890,7 +60525,7 @@ export namespace stripe {
   >
 
   export const PostTreasuryOutboundTransfersResponseSchema =
-    treasury.outbound_transferSchema
+    TreasuryOutboundTransferSchema
   export type PostTreasuryOutboundTransfersResponse = z.infer<
     typeof PostTreasuryOutboundTransfersResponseSchema
   >
@@ -60909,7 +60544,7 @@ export namespace stripe {
   >
 
   export const GetTreasuryOutboundTransfersOutboundTransferResponseSchema =
-    treasury.outbound_transferSchema
+    TreasuryOutboundTransferSchema
   export type GetTreasuryOutboundTransfersOutboundTransferResponse = z.infer<
     typeof GetTreasuryOutboundTransfersOutboundTransferResponseSchema
   >
@@ -60922,7 +60557,7 @@ export namespace stripe {
     >
 
   export const PostTreasuryOutboundTransfersOutboundTransferCancelResponseSchema =
-    treasury.outbound_transferSchema
+    TreasuryOutboundTransferSchema
   export type PostTreasuryOutboundTransfersOutboundTransferCancelResponse =
     z.infer<
       typeof PostTreasuryOutboundTransfersOutboundTransferCancelResponseSchema
@@ -60990,7 +60625,7 @@ export namespace stripe {
   export const GetTreasuryReceivedCreditsResponseSchema = z.object({
     /** Details about each object. */
     data: z
-      .array(treasury.received_creditSchema)
+      .array(TreasuryReceivedCreditSchema)
       .describe('Details about each object.'),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
@@ -61027,7 +60662,7 @@ export namespace stripe {
   >
 
   export const GetTreasuryReceivedCreditsIdResponseSchema =
-    treasury.received_creditSchema
+    TreasuryReceivedCreditSchema
   export type GetTreasuryReceivedCreditsIdResponse = z.infer<
     typeof GetTreasuryReceivedCreditsIdResponseSchema
   >
@@ -61081,7 +60716,7 @@ export namespace stripe {
   export const GetTreasuryReceivedDebitsResponseSchema = z.object({
     /** Details about each object. */
     data: z
-      .array(treasury.received_debitSchema)
+      .array(TreasuryReceivedDebitSchema)
       .describe('Details about each object.'),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
@@ -61118,7 +60753,7 @@ export namespace stripe {
   >
 
   export const GetTreasuryReceivedDebitsIdResponseSchema =
-    treasury.received_debitSchema
+    TreasuryReceivedDebitSchema
   export type GetTreasuryReceivedDebitsIdResponse = z.infer<
     typeof GetTreasuryReceivedDebitsIdResponseSchema
   >
@@ -61206,7 +60841,7 @@ export namespace stripe {
   export const GetTreasuryTransactionEntriesResponseSchema = z.object({
     /** Details about each object. */
     data: z
-      .array(treasury.transaction_entrySchema)
+      .array(TreasuryTransactionEntrySchema)
       .describe('Details about each object.'),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
@@ -61244,7 +60879,7 @@ export namespace stripe {
   >
 
   export const GetTreasuryTransactionEntriesIdResponseSchema =
-    treasury.transaction_entrySchema
+    TreasuryTransactionEntrySchema
   export type GetTreasuryTransactionEntriesIdResponse = z.infer<
     typeof GetTreasuryTransactionEntriesIdResponseSchema
   >
@@ -61339,7 +60974,7 @@ export namespace stripe {
   export const GetTreasuryTransactionsResponseSchema = z.object({
     /** Details about each object. */
     data: z
-      .array(treasury.transactionSchema)
+      .array(TreasuryTransactionSchema)
       .describe('Details about each object.'),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
@@ -61376,7 +61011,7 @@ export namespace stripe {
   >
 
   export const GetTreasuryTransactionsIdResponseSchema =
-    treasury.transactionSchema
+    TreasuryTransactionSchema
   export type GetTreasuryTransactionsIdResponse = z.infer<
     typeof GetTreasuryTransactionsIdResponseSchema
   >
@@ -61417,7 +61052,7 @@ export namespace stripe {
   >
 
   export const GetWebhookEndpointsResponseSchema = z.object({
-    data: z.array(webhook_endpointSchema),
+    data: z.array(WebhookEndpointSchema),
     /** True if this list has another page of items after this one that can be fetched. */
     has_more: z
       .boolean()
@@ -61446,7 +61081,7 @@ export namespace stripe {
     typeof PostWebhookEndpointsParamsSchema
   >
 
-  export const PostWebhookEndpointsResponseSchema = webhook_endpointSchema
+  export const PostWebhookEndpointsResponseSchema = WebhookEndpointSchema
   export type PostWebhookEndpointsResponse = z.infer<
     typeof PostWebhookEndpointsResponseSchema
   >
@@ -61464,7 +61099,7 @@ export namespace stripe {
   >
 
   export const GetWebhookEndpointsWebhookEndpointResponseSchema =
-    webhook_endpointSchema
+    WebhookEndpointSchema
   export type GetWebhookEndpointsWebhookEndpointResponse = z.infer<
     typeof GetWebhookEndpointsWebhookEndpointResponseSchema
   >
@@ -61477,7 +61112,7 @@ export namespace stripe {
   >
 
   export const PostWebhookEndpointsWebhookEndpointResponseSchema =
-    webhook_endpointSchema
+    WebhookEndpointSchema
   export type PostWebhookEndpointsWebhookEndpointResponse = z.infer<
     typeof PostWebhookEndpointsWebhookEndpointResponseSchema
   >
@@ -61490,7 +61125,7 @@ export namespace stripe {
   >
 
   export const DeleteWebhookEndpointsWebhookEndpointResponseSchema =
-    deleted_webhook_endpointSchema
+    DeletedWebhookEndpointSchema
   export type DeleteWebhookEndpointsWebhookEndpointResponse = z.infer<
     typeof DeleteWebhookEndpointsWebhookEndpointResponseSchema
   >
