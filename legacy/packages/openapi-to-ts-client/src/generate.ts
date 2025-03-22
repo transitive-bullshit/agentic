@@ -6,7 +6,6 @@ import { fileURLToPath } from 'node:url'
 import type { IJsonSchema, OpenAPIV3 } from 'openapi-types'
 import { assert } from '@agentic/core'
 import SwaggerParser from '@apidevtools/swagger-parser'
-import camelCase from 'camelcase'
 import decamelize from 'decamelize'
 import { execa } from 'execa'
 
@@ -15,11 +14,13 @@ import {
   dereference,
   dereferenceFull,
   getAndResolve,
+  getComponentDisplayName,
   getComponentName,
   getOperationParamsName,
   getOperationResponseName,
   jsonSchemaToZod,
   naiveMergeJSONSchemas,
+  pascalCase,
   prettify
 } from './utils'
 
@@ -62,7 +63,7 @@ async function main() {
     openapiSpecName.toLowerCase() === openapiSpecName,
     `OpenAPI spec name "${openapiSpecName}" must be in kebab case`
   )
-  const name = camelCase(openapiSpecName, { pascalCase: true })
+  const name = pascalCase(openapiSpecName)
   const nameLowerCase = name.toLowerCase()
   const nameSnakeCase = decamelize(name)
   const nameKebabCase = decamelize(name, { separator: '-' })
@@ -214,7 +215,7 @@ async function main() {
               operationParamsSources[key] = source
             }
           } else if (derefed?.anyOf || derefed?.oneOf) {
-            const componentName = getComponentName(schema.$ref)
+            const componentName = getComponentDisplayName(schema.$ref)
             operationParamsSources[componentName] = source
 
             // TODO: handle this case
@@ -368,7 +369,7 @@ async function main() {
 
         if (operationParamsJSONSchema.$refs.length) {
           const refSchemas = operationParamsJSONSchema.$refs.map(
-            (ref) => `${getComponentName(ref)!}Schema`
+            (ref) => `${getComponentDisplayName(ref)!}Schema`
           )
 
           operationsParamsSchema = operationsParamsSchema.replace(
@@ -394,7 +395,7 @@ async function main() {
         let isDuplicateDefinition = false
 
         if (operationResponseJSONSchema.$ref) {
-          const componentName = getComponentName(
+          const componentName = getComponentDisplayName(
             operationResponseJSONSchema.$ref
           )
           if (componentName === operationResponseName) {
@@ -475,12 +476,13 @@ async function main() {
       if (description && !/[!.?]$/.test(description)) {
         description += '.'
       }
+      const isDescriptionMultiline = description?.includes('\n')
 
       const aiClientMethod = `
         ${description ? `/**\n * ${description}\n */` : ''}
         @aiFunction({
           name: '${operationNameSnakeCase}',
-          ${description ? `description: '${description}',` : ''}${hasUnionParams ? '\n// TODO: Improve handling of union params' : ''}
+          ${description ? `description: ${isDescriptionMultiline ? `\`${description.replaceAll('`', '\\`')}\`` : `'${description}'`},` : ''}${hasUnionParams ? '\n// TODO: Improve handling of union params' : ''}
           inputSchema: ${namespaceName}.${operationParamsName}Schema${hasUnionParams ? ' as any' : ''},
         })
         async ${operationName}(${!hasParams ? '_' : ''}params: ${namespaceName}.${operationParamsName}): Promise<${namespaceName}.${operationResponseName}> {
@@ -527,7 +529,7 @@ async function main() {
   )
 
   for (const ref of sortedComponents) {
-    const type = getComponentName(ref)
+    const type = getComponentDisplayName(ref)
     assert(type, `Invalid ref name ${ref}`)
 
     const name = `${type}Schema`
@@ -539,17 +541,17 @@ async function main() {
 
     processedComponents.add(ref)
 
-    if (type === 'SearchResponse') {
-      console.log(type, dereferenced)
-    }
-
     const schema = jsonSchemaToZod(dereferenced, { name, type })
     componentSchemas[type] = schema
   }
 
   console.log(
     '\ncomponents',
-    Array.from(sortedComponents).map((ref) => getComponentName(ref))
+    JSON.stringify(
+      sortedComponents.map((ref) => getComponentName(ref)),
+      null,
+      2
+    )
   )
 
   // console.log(
@@ -585,33 +587,32 @@ import defaultKy, { type KyInstance } from 'ky'
 import { z } from 'zod'`.trim()
 
   const commentLine = `// ${'-'.repeat(77)}`
-  const outputTypes = (
+  const outputTypes = [
+    header,
+    `export namespace ${namespaceName} {`,
+    apiBaseUrl ? `export const apiBaseUrl = '${apiBaseUrl}'` : undefined,
+    Object.values(componentSchemas).length
+      ? `${commentLine}\n// Component schemas\n${commentLine}`
+      : undefined,
+    ...Object.values(componentSchemas),
+    Object.values(operationSchemas).length
+      ? `${commentLine}\n// Operation schemas\n${commentLine}`
+      : undefined,
+    ...Object.values(operationSchemas),
+    '}'
+  ]
+    .filter(Boolean)
+    .join('\n\n')
+
+  const output = (
     await prettify(
       [
-        header,
-        `export namespace ${namespaceName} {`,
-        apiBaseUrl ? `export const apiBaseUrl = '${apiBaseUrl}'` : undefined,
-        Object.values(componentSchemas).length
-          ? `${commentLine}\n// Component schemas\n${commentLine}`
-          : undefined,
-        ...Object.values(componentSchemas),
-        Object.values(operationSchemas).length
-          ? `${commentLine}\n// Operation schemas\n${commentLine}`
-          : undefined,
-        ...Object.values(operationSchemas),
-        '}'
-      ]
-        .filter(Boolean)
-        .join('\n\n')
-    )
-  )
-    .replaceAll(/z\s*\.object\({}\)\s*\.merge\(([^)]*)\)/gm, '$1')
-    .replaceAll(/\/\*\*(\S.*)\*\//g, '/** $1 */')
+        outputTypes,
+        `
 
-  const output = await prettify(
-    [
-      outputTypes,
-      `
+/**
+ * Agentic client for ${name}.${spec.info?.description ? `\n * ${spec.info.description}` : ''}
+ */
 export class ${clientName} extends AIFunctionsProvider {
   protected readonly ky: KyInstance
   ${hasGlobalApiKeyInHeader ? 'protected readonly apiKey: string' : ''}
@@ -651,12 +652,15 @@ export class ${clientName} extends AIFunctionsProvider {
     })
   }
 `,
-      aiClientMethodsString,
-      '}'
-    ].join('\n\n')
+        aiClientMethodsString,
+        '}'
+      ].join('\n\n')
+    )
   )
+    .replaceAll(/z\s*\.object\({}\)\s*\.merge\(([^)]*)\)/gm, '$1')
+    .replaceAll(/\/\*\*(\S.*)\*\//g, '/** $1 */')
 
-  // console.log(output)
+  console.log(output)
   await fs.mkdir(destFolder, { recursive: true })
   await fs.writeFile(destFileClient, output)
   await execa('npx', ['eslint', '--fix', destFileClient])

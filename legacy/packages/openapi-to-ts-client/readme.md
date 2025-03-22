@@ -19,6 +19,12 @@
 
 **See the [github repo](https://github.com/transitive-bullshit/agentic) or [docs](https://agentic.so) for more info.**
 
+## TODO
+
+- [ ] Convert HTML in descriptions to markdown.
+- [ ] Properly format multiline function comments.
+- [ ] Debug stripe schema issue.
+
 ## License
 
 MIT © [Travis Fischer](https://x.com/transitive_bs)
