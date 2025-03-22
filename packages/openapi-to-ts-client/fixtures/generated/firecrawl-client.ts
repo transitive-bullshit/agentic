@@ -1,3 +1,6 @@
+/* eslint-disable unicorn/no-unreadable-iife */
+/* eslint-disable unicorn/no-array-reduce */
+
 /**
  * This file was auto-generated from an OpenAPI spec.
  */
@@ -8,6 +11,10 @@ import { z } from 'zod'
 
 export namespace firecrawl {
   export const apiBaseUrl = 'https://api.firecrawl.dev/v0'
+
+  // -----------------------------------------------------------------------------
+  // Component schemas
+  // -----------------------------------------------------------------------------
 
   export const ScrapeResponseSchema = z.object({
     success: z.boolean().optional(),
@@ -160,6 +167,10 @@ export namespace firecrawl {
   export type CrawlStatusResponseObj = z.infer<
     typeof CrawlStatusResponseObjSchema
   >
+
+  // -----------------------------------------------------------------------------
+  // Operation schemas
+  // -----------------------------------------------------------------------------
 
   export const ScrapeParamsSchema = z.object({
     /** The URL to scrape */

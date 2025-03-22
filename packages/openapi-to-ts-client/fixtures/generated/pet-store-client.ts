@@ -1,3 +1,6 @@
+/* eslint-disable unicorn/no-unreadable-iife */
+/* eslint-disable unicorn/no-array-reduce */
+
 /**
  * This file was auto-generated from an OpenAPI spec.
  */
@@ -13,6 +16,10 @@ import { z } from 'zod'
 export namespace petstore {
   export const apiBaseUrl = 'http://petstore.swagger.io/v1'
 
+  // -----------------------------------------------------------------------------
+  // Component schemas
+  // -----------------------------------------------------------------------------
+
   export const PetSchema = z.object({
     id: z.number().int(),
     name: z.string(),
@@ -22,6 +29,10 @@ export namespace petstore {
 
   export const PetsSchema = z.array(PetSchema).max(100)
   export type Pets = z.infer<typeof PetsSchema>
+
+  // -----------------------------------------------------------------------------
+  // Operation schemas
+  // -----------------------------------------------------------------------------
 
   export const ListPetsParamsSchema = z.object({
     /** How many items to return at one time (max 100) */
