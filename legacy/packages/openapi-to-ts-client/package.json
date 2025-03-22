@@ -12,12 +12,8 @@
   "source": "./src/index.ts",
   "types": "./dist/index.d.ts",
   "sideEffects": false,
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "default": "./dist/index.js"
-    }
+  "bin": {
+    "openapi-to-ts-client": "./dist/index.js"
   },
   "files": [
     "dist"
@@ -28,8 +24,7 @@
     "clean": "del dist",
     "test": "run-s test:*",
     "test:lint": "eslint .",
-    "test:typecheck": "tsc --noEmit",
-    "test:unit": "vitest run"
+    "test:typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@agentic/core": "workspace:*",
