@@ -611,7 +611,7 @@ import { z } from 'zod'`.trim()
         `
 
 /**
- * Agentic client for ${name}.${spec.info?.description ? `\n * ${spec.info.description}` : ''}
+ * Agentic ${name} client.${spec.info?.description ? `\n *\n * ${spec.info.description}` : ''}
  */
 export class ${clientName} extends AIFunctionsProvider {
   protected readonly ky: KyInstance
@@ -658,7 +658,7 @@ export class ${clientName} extends AIFunctionsProvider {
     )
   )
     .replaceAll(/z\s*\.object\({}\)\s*\.merge\(([^)]*)\)/gm, '$1')
-    .replaceAll(/\/\*\*(\S.*)\*\//g, '/** $1 */')
+    .replaceAll(/\/\*\*(\S.*\S)\*\//g, '/** $1 */')
 
   console.log(output)
   await fs.mkdir(destFolder, { recursive: true })

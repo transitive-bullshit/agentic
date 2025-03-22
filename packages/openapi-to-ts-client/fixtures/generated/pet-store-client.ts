@@ -63,6 +63,9 @@ export namespace petstore {
   export type ShowPetByIdResponse = z.infer<typeof ShowPetByIdResponseSchema>
 }
 
+/**
+ * Agentic PetStore client.
+ */
 export class PetStoreClient extends AIFunctionsProvider {
   protected readonly ky: KyInstance
 
