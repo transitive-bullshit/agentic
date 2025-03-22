@@ -61497,7 +61497,8 @@ export namespace stripe {
 }
 
 /**
- * Agentic client for Stripe.
+ * Agentic Stripe client.
+ *
  * The Stripe REST API. Please see https://stripe.com/docs/api for more details.
  */
 export class StripeClient extends AIFunctionsProvider {

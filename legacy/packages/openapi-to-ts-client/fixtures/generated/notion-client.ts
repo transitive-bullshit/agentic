@@ -182,12 +182,12 @@ export namespace notion {
     typeof CheckboxPropertyResponseSchema
   >
 
-  export const URLPropertyResponseSchema = z.object({
+  export const UrlPropertyResponseSchema = z.object({
     id: z.string(),
     type: z.literal('url'),
     url: z.record(z.any())
   })
-  export type URLPropertyResponse = z.infer<typeof URLPropertyResponseSchema>
+  export type UrlPropertyResponse = z.infer<typeof UrlPropertyResponseSchema>
 
   export const EmailPropertyResponseSchema = z.object({
     id: z.string(),
@@ -1465,6 +1465,11 @@ export namespace notion {
   export type OauthTokenParams = z.infer<typeof OauthTokenParamsSchema>
 }
 
+/**
+ * Agentic Notion client.
+ *
+ * API specification for Notion
+ */
 export class NotionClient extends AIFunctionsProvider {
   protected readonly ky: KyInstance
   protected readonly apiKey: string

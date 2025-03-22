@@ -494,6 +494,11 @@ export namespace firecrawl {
   >
 }
 
+/**
+ * Agentic Firecrawl client.
+ *
+ * API for interacting with Firecrawl services to perform web scraping and crawling tasks.
+ */
 export class FirecrawlClient extends AIFunctionsProvider {
   protected readonly ky: KyInstance
   protected readonly apiKey: string
