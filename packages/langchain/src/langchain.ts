@@ -19,7 +19,7 @@ export function createLangChainTools(...aiFunctionLikeTools: AIFunctionLike[]) {
         description: fn.spec.description,
         schema: fn.inputSchema,
         func: async (input) => {
-          const result = await Promise.resolve(fn.impl(input))
+          const result = await Promise.resolve(fn.execute(input))
           // LangChain tools require the output to be a string
           return stringifyForModel(result)
         }

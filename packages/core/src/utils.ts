@@ -264,7 +264,7 @@ export function isAIFunction(obj: any): obj is types.AIFunction {
   if (!obj.inputSchema) return false
   if (!obj.parseInput) return false
   if (!obj.spec) return false
-  if (!obj.impl) return false
+  if (!obj.execute) return false
   if (!obj.spec.name || typeof obj.spec.name !== 'string') return false
 
   return true

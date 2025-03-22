@@ -11,7 +11,7 @@ export function createLlamaIndexTools(
   const fns = new AIFunctionSet(aiFunctionLikeTools)
 
   return fns.map((fn) =>
-    FunctionTool.from(fn.impl, {
+    FunctionTool.from(fn.execute, {
       name: fn.spec.name,
       description: fn.spec.description,
       parameters: fn.spec.parameters as any

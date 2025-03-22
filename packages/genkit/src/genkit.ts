@@ -20,7 +20,7 @@ export function createGenkitTools(
         inputSchema: fn.inputSchema,
         outputSchema: z.any()
       },
-      fn.impl
+      fn.execute
     )
   )
 }

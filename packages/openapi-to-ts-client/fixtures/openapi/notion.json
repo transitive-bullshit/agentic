@@ -1,0 +1,4448 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Notion API",
+    "version": "1.0.0",
+    "description": "API specification for Notion"
+  },
+  "servers": [{ "url": "https://api.notion.so" }],
+  "security": [{ "oauth2": [] }],
+
+  "paths": {
+    "/users/me": {
+      "get": {
+        "summary": "Get current user",
+        "operationId": "getSelf",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserObjectResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{user_id}": {
+      "get": {
+        "summary": "Get user",
+        "operationId": "getUser",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserObjectResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "summary": "List users",
+        "operationId": "listUsers",
+        "parameters": [
+          {
+            "name": "start_cursor",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListUsersResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pages": {
+      "post": {
+        "summary": "Create page",
+        "operationId": "createPage",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePageParameters"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/PageObjectResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/PartialPageObjectResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pages/{page_id}": {
+      "get": {
+        "summary": "Get page",
+        "operationId": "getPage",
+        "parameters": [
+          {
+            "name": "page_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter_properties",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/PageObjectResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/PartialPageObjectResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update page",
+        "operationId": "updatePage",
+        "parameters": [
+          {
+            "name": "page_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePageParameters"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/PageObjectResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/PartialPageObjectResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pages/{page_id}/properties/{property_id}": {
+      "get": {
+        "summary": "Get page property",
+        "operationId": "getPageProperty",
+        "parameters": [
+          {
+            "name": "page_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "property_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "start_cursor",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/PropertyItemObjectResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/PropertyItemListResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/blocks/{block_id}": {
+      "get": {
+        "summary": "Get block",
+        "operationId": "getBlock",
+        "parameters": [
+          {
+            "name": "block_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/PartialBlockObjectResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/BlockObjectResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update block",
+        "operationId": "updateBlock",
+        "parameters": [
+          {
+            "name": "block_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateBlockParameters"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/PartialBlockObjectResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/BlockObjectResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete block",
+        "operationId": "deleteBlock",
+        "parameters": [
+          {
+            "name": "block_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/PartialBlockObjectResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/BlockObjectResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/blocks/{block_id}/children": {
+      "get": {
+        "summary": "List block children",
+        "operationId": "listBlockChildren",
+        "parameters": [
+          {
+            "name": "block_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "start_cursor",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListBlockChildrenResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Append block children",
+        "operationId": "appendBlockChildren",
+        "parameters": [
+          {
+            "name": "block_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AppendBlockChildrenParameters"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AppendBlockChildrenResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/databases/{database_id}": {
+      "get": {
+        "summary": "Get database",
+        "operationId": "getDatabase",
+        "parameters": [
+          {
+            "name": "database_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/PartialDatabaseObjectResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DatabaseObjectResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update database",
+        "operationId": "updateDatabase",
+        "parameters": [
+          {
+            "name": "database_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateDatabaseParameters"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/PartialDatabaseObjectResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DatabaseObjectResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/databases/{database_id}/query": {
+      "post": {
+        "summary": "Query database",
+        "operationId": "queryDatabase",
+        "parameters": [
+          {
+            "name": "database_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter_properties",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QueryDatabaseParameters"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QueryDatabaseResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/databases": {
+      "get": {
+        "summary": "List databases",
+        "operationId": "listDatabases",
+        "parameters": [
+          {
+            "name": "start_cursor",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListDatabasesResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create database",
+        "operationId": "createDatabase",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateDatabaseParameters"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/PartialDatabaseObjectResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DatabaseObjectResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/search": {
+      "post": {
+        "summary": "Search",
+        "operationId": "search",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchParameters"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/comments": {
+      "post": {
+        "summary": "Create comment",
+        "operationId": "createComment",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCommentParameters"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/CommentObjectResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/PartialCommentObjectResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "List comments",
+        "operationId": "listComments",
+        "parameters": [
+          {
+            "name": "block_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "start_cursor",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListCommentsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/oauth/token": {
+      "post": {
+        "summary": "OAuth token",
+        "operationId": "oauthToken",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OauthTokenParameters"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OauthTokenResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+
+  "components": {
+    "securitySchemes": {
+      "oauth2": {
+        "type": "oauth2",
+        "flows": {
+          "authorizationCode": {
+            "scopes": {},
+            "authorizationUrl": "https://api.notion.com/v1/oauth/authorize",
+            "tokenUrl": "https://api.notion.com/v1/oauth/token"
+          }
+        }
+      }
+    },
+    "schemas": {
+      "UserObjectResponse": {
+        "type": "object",
+        "properties": {
+          "object": {
+            "type": "string",
+            "enum": ["user"]
+          },
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["person", "bot"]
+          },
+          "name": {
+            "type": "string"
+          },
+          "avatar_url": {
+            "type": "string"
+          }
+        },
+        "required": ["object", "id", "type", "name", "avatar_url"]
+      },
+      "ListUsersResponse": {
+        "type": "object",
+        "properties": {
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserObjectResponse"
+            }
+          },
+          "next_cursor": {
+            "type": ["string", "null"]
+          },
+          "has_more": {
+            "type": "boolean"
+          }
+        },
+        "required": ["results", "next_cursor", "has_more"]
+      },
+      "CreatePageParameters": {
+        "type": "object",
+        "properties": {
+          "parent": {
+            "type": "object",
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": ["page_id"]
+                  },
+                  "page_id": {
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "page_id"]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": ["database_id"]
+                  },
+                  "database_id": {
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "database_id"]
+              }
+            ]
+          },
+          "properties": {
+            "type": "object",
+            "additionalProperties": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/RichTextItemRequest"
+                      }
+                    }
+                  },
+                  "required": ["title"]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "rich_text": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/RichTextItemRequest"
+                      }
+                    }
+                  },
+                  "required": ["rich_text"]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "number": {
+                      "type": ["number", "null"]
+                    }
+                  },
+                  "required": ["number"]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "select": {
+                      "type": ["object", "null"],
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        }
+                      },
+                      "required": ["name"]
+                    }
+                  },
+                  "required": ["select"]
+                }
+              ]
+            }
+          }
+        },
+        "required": ["parent", "properties"]
+      },
+      "PageObjectResponse": {
+        "type": "object",
+        "properties": {
+          "object": {
+            "type": "string",
+            "enum": ["page"]
+          },
+          "id": {
+            "type": "string"
+          },
+          "created_time": {
+            "type": "string"
+          },
+          "last_edited_time": {
+            "type": "string"
+          },
+          "archived": {
+            "type": "boolean"
+          },
+          "url": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "object",
+          "id",
+          "created_time",
+          "last_edited_time",
+          "archived",
+          "url"
+        ]
+      },
+      "PartialPageObjectResponse": {
+        "type": "object",
+        "properties": {
+          "object": {
+            "type": "string",
+            "enum": ["page"]
+          },
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": ["object", "id"]
+      },
+      "UpdatePageParameters": {
+        "type": "object",
+        "properties": {
+          "properties": {
+            "type": "object",
+            "additionalProperties": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/RichTextItemRequest"
+                      }
+                    }
+                  },
+                  "required": ["title"]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "rich_text": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/RichTextItemRequest"
+                      }
+                    }
+                  },
+                  "required": ["rich_text"]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "number": {
+                      "type": ["number", "null"]
+                    }
+                  },
+                  "required": ["number"]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "select": {
+                      "type": ["object", "null"],
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        }
+                      },
+                      "required": ["name"]
+                    }
+                  },
+                  "required": ["select"]
+                }
+              ]
+            }
+          },
+          "archived": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PropertyItemObjectResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": ["type", "id"]
+      },
+      "PropertyItemListResponse": {
+        "type": "object",
+        "properties": {
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PropertyItemObjectResponse"
+            }
+          },
+          "next_cursor": {
+            "type": ["string", "null"]
+          },
+          "has_more": {
+            "type": "boolean"
+          }
+        },
+        "required": ["results", "next_cursor", "has_more"]
+      },
+      "PartialBlockObjectResponse": {
+        "type": "object",
+        "properties": {
+          "object": {
+            "type": "string",
+            "enum": ["block"]
+          },
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": ["object", "id"]
+      },
+      "BlockObjectResponse": {
+        "type": "object",
+        "properties": {
+          "object": {
+            "type": "string",
+            "enum": ["block"]
+          },
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "created_time": {
+            "type": "string"
+          },
+          "last_edited_time": {
+            "type": "string"
+          },
+          "has_children": {
+            "type": "boolean"
+          },
+          "archived": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "object",
+          "id",
+          "type",
+          "created_time",
+          "last_edited_time",
+          "has_children",
+          "archived"
+        ]
+      },
+      "UpdateBlockParameters": {
+        "type": "object",
+        "properties": {
+          "paragraph": {
+            "type": "object",
+            "properties": {
+              "rich_text": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/RichTextItemRequest"
+                }
+              },
+              "color": {
+                "type": "string"
+              }
+            }
+          },
+          "heading_1": {
+            "type": "object",
+            "properties": {
+              "rich_text": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/RichTextItemRequest"
+                }
+              },
+              "color": {
+                "type": "string"
+              }
+            }
+          },
+          "heading_2": {
+            "type": "object",
+            "properties": {
+              "rich_text": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/RichTextItemRequest"
+                }
+              },
+              "color": {
+                "type": "string"
+              }
+            }
+          },
+          "heading_3": {
+            "type": "object",
+            "properties": {
+              "rich_text": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/RichTextItemRequest"
+                }
+              },
+              "color": {
+                "type": "string"
+              }
+            }
+          },
+          "bulleted_list_item": {
+            "type": "object",
+            "properties": {
+              "rich_text": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/RichTextItemRequest"
+                }
+              },
+              "color": {
+                "type": "string"
+              }
+            }
+          },
+          "numbered_list_item": {
+            "type": "object",
+            "properties": {
+              "rich_text": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/RichTextItemRequest"
+                }
+              },
+              "color": {
+                "type": "string"
+              }
+            }
+          },
+          "quote": {
+            "type": "object",
+            "properties": {
+              "rich_text": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/RichTextItemRequest"
+                }
+              },
+              "color": {
+                "type": "string"
+              }
+            }
+          },
+          "to_do": {
+            "type": "object",
+            "properties": {
+              "rich_text": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/RichTextItemRequest"
+                }
+              },
+              "checked": {
+                "type": "boolean"
+              },
+              "color": {
+                "type": "string"
+              }
+            }
+          },
+          "toggle": {
+            "type": "object",
+            "properties": {
+              "rich_text": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/RichTextItemRequest"
+                }
+              },
+              "color": {
+                "type": "string"
+              }
+            }
+          },
+          "code": {
+            "type": "object",
+            "properties": {
+              "rich_text": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/RichTextItemRequest"
+                }
+              },
+              "language": {
+                "type": "string"
+              }
+            }
+          },
+          "embed": {
+            "type": "object",
+            "properties": {
+              "url": {
+                "type": "string"
+              }
+            }
+          },
+          "image": {
+            "type": "object",
+            "properties": {
+              "external": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "video": {
+            "type": "object",
+            "properties": {
+              "external": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "file": {
+            "type": "object",
+            "properties": {
+              "external": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "pdf": {
+            "type": "object",
+            "properties": {
+              "external": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "bookmark": {
+            "type": "object",
+            "properties": {
+              "url": {
+                "type": "string"
+              }
+            }
+          },
+          "equation": {
+            "type": "object",
+            "properties": {
+              "expression": {
+                "type": "string"
+              }
+            }
+          },
+          "divider": {
+            "type": "object"
+          },
+          "table_of_contents": {
+            "type": "object",
+            "properties": {
+              "color": {
+                "type": "string"
+              }
+            }
+          },
+          "breadcrumb": {
+            "type": "object"
+          },
+          "column_list": {
+            "type": "object"
+          },
+          "column": {
+            "type": "object"
+          },
+          "link_to_page": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["page_id", "database_id"]
+              },
+              "page_id": {
+                "type": "string"
+              },
+              "database_id": {
+                "type": "string"
+              }
+            }
+          },
+          "table_row": {
+            "type": "object",
+            "properties": {
+              "cells": {
+                "type": "array",
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RichTextItemRequest"
+                  }
+                }
+              }
+            }
+          },
+          "archived": {
+            "type": "boolean"
+          }
+        }
+      },
+      "ListBlockChildrenResponse": {
+        "type": "object",
+        "properties": {
+          "object": {
+            "type": "string",
+            "enum": ["list"]
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/PartialBlockObjectResponse"
+                },
+                {
+                  "$ref": "#/components/schemas/BlockObjectResponse"
+                }
+              ]
+            }
+          },
+          "next_cursor": {
+            "type": ["string", "null"]
+          },
+          "has_more": {
+            "type": "boolean"
+          }
+        },
+        "required": ["object", "results", "next_cursor", "has_more"]
+      },
+      "AppendBlockChildrenParameters": {
+        "type": "object",
+        "properties": {
+          "children": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BlockObjectRequest"
+            }
+          }
+        },
+        "required": ["children"]
+      },
+      "AppendBlockChildrenResponse": {
+        "type": "object",
+        "properties": {
+          "object": {
+            "type": "string",
+            "enum": ["list"]
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/PartialBlockObjectResponse"
+                },
+                {
+                  "$ref": "#/components/schemas/BlockObjectResponse"
+                }
+              ]
+            }
+          },
+          "next_cursor": {
+            "type": ["string", "null"]
+          },
+          "has_more": {
+            "type": "boolean"
+          }
+        },
+        "required": ["object", "results", "next_cursor", "has_more"]
+      },
+      "PartialDatabaseObjectResponse": {
+        "type": "object",
+        "properties": {
+          "object": {
+            "type": "string",
+            "enum": ["database"]
+          },
+          "id": {
+            "type": "string"
+          },
+          "properties": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/DatabasePropertyConfigResponse"
+            }
+          }
+        },
+        "required": ["object", "id", "properties"]
+      },
+      "DatabaseObjectResponse": {
+        "type": "object",
+        "properties": {
+          "object": {
+            "type": "string",
+            "enum": ["database"]
+          },
+          "id": {
+            "type": "string"
+          },
+          "cover": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": ["external"]
+                  },
+                  "external": {
+                    "type": "object",
+                    "properties": {
+                      "url": {
+                        "type": "string"
+                      }
+                    },
+                    "required": ["url"]
+                  }
+                },
+                "required": ["type", "external"]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "icon": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": ["emoji"]
+                  },
+                  "emoji": {
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "emoji"]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": ["external"]
+                  },
+                  "external": {
+                    "type": "object",
+                    "properties": {
+                      "url": {
+                        "type": "string"
+                      }
+                    },
+                    "required": ["url"]
+                  }
+                },
+                "required": ["type", "external"]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "created_time": {
+            "type": "string"
+          },
+          "created_by": {
+            "$ref": "#/components/schemas/PartialUserObjectResponse"
+          },
+          "last_edited_time": {
+            "type": "string"
+          },
+          "last_edited_by": {
+            "$ref": "#/components/schemas/PartialUserObjectResponse"
+          },
+          "title": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RichTextItemResponse"
+            }
+          },
+          "description": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RichTextItemResponse"
+            }
+          },
+          "is_inline": {
+            "type": "boolean"
+          },
+          "properties": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/DatabasePropertyConfigResponse"
+            }
+          },
+          "parent": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": ["page_id"]
+                  },
+                  "page_id": {
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "page_id"]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": ["workspace"]
+                  },
+                  "workspace": {
+                    "type": "boolean",
+                    "enum": [true]
+                  }
+                },
+                "required": ["type", "workspace"]
+              }
+            ]
+          },
+          "url": {
+            "type": "string"
+          },
+          "archived": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "object",
+          "id",
+          "created_time",
+          "created_by",
+          "last_edited_time",
+          "last_edited_by",
+          "title",
+          "description",
+          "is_inline",
+          "properties",
+          "parent",
+          "url",
+          "archived"
+        ]
+      },
+      "UpdateDatabaseParameters": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RichTextItemRequest"
+            }
+          },
+          "description": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RichTextItemRequest"
+            }
+          },
+          "icon": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "emoji": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": ["emoji"]
+                  }
+                },
+                "required": ["emoji", "type"]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "external": {
+                    "type": "object",
+                    "properties": {
+                      "url": {
+                        "type": "string"
+                      }
+                    },
+                    "required": ["url"]
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": ["external"]
+                  }
+                },
+                "required": ["external", "type"]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "cover": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "external": {
+                    "type": "object",
+                    "properties": {
+                      "url": {
+                        "type": "string"
+                      }
+                    },
+                    "required": ["url"]
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": ["external"]
+                  }
+                },
+                "required": ["external", "type"]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "properties": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/PropertyUpdateSchema"
+            }
+          },
+          "is_inline": {
+            "type": "boolean"
+          },
+          "archived": {
+            "type": "boolean"
+          }
+        }
+      },
+      "QueryDatabaseParameters": {
+        "type": "object",
+        "properties": {
+          "sorts": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "property": {
+                      "type": "string"
+                    },
+                    "direction": {
+                      "type": "string",
+                      "enum": ["ascending", "descending"]
+                    }
+                  },
+                  "required": ["property", "direction"]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": {
+                      "type": "string",
+                      "enum": ["created_time", "last_edited_time"]
+                    },
+                    "direction": {
+                      "type": "string",
+                      "enum": ["ascending", "descending"]
+                    }
+                  },
+                  "required": ["timestamp", "direction"]
+                }
+              ]
+            }
+          },
+          "filter": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/PropertyFilter"
+              },
+              {
+                "$ref": "#/components/schemas/CompoundFilter"
+              }
+            ]
+          },
+          "start_cursor": {
+            "type": "string"
+          },
+          "page_size": {
+            "type": "integer"
+          },
+          "archived": {
+            "type": "boolean"
+          }
+        }
+      },
+      "QueryDatabaseResponse": {
+        "type": "object",
+        "properties": {
+          "object": {
+            "type": "string",
+            "enum": ["list"]
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/PageObjectResponse"
+                },
+                {
+                  "$ref": "#/components/schemas/PartialPageObjectResponse"
+                }
+              ]
+            }
+          },
+          "next_cursor": {
+            "type": ["string", "null"]
+          },
+          "has_more": {
+            "type": "boolean"
+          }
+        },
+        "required": ["object", "results", "next_cursor", "has_more"]
+      },
+      "ListDatabasesResponse": {
+        "type": "object",
+        "properties": {
+          "object": {
+            "type": "string",
+            "enum": ["list"]
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/PartialDatabaseObjectResponse"
+                },
+                {
+                  "$ref": "#/components/schemas/DatabaseObjectResponse"
+                }
+              ]
+            }
+          },
+          "next_cursor": {
+            "type": ["string", "null"]
+          },
+          "has_more": {
+            "type": "boolean"
+          }
+        },
+        "required": ["object", "results", "next_cursor", "has_more"]
+      },
+      "CreateDatabaseParameters": {
+        "type": "object",
+        "properties": {
+          "parent": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": ["page_id"]
+                  },
+                  "page_id": {
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "page_id"]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": ["database_id"]
+                  },
+                  "database_id": {
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "database_id"]
+              }
+            ]
+          },
+          "properties": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/PropertySchema"
+            }
+          },
+          "icon": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": ["emoji"]
+                  },
+                  "emoji": {
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "emoji"]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": ["external"]
+                  },
+                  "external": {
+                    "type": "object",
+                    "properties": {
+                      "url": {
+                        "type": "string"
+                      }
+                    },
+                    "required": ["url"]
+                  }
+                },
+                "required": ["type", "external"]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "cover": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": ["external"]
+                  },
+                  "external": {
+                    "type": "object",
+                    "properties": {
+                      "url": {
+                        "type": "string"
+                      }
+                    },
+                    "required": ["url"]
+                  }
+                },
+                "required": ["type", "external"]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RichTextItemRequest"
+            }
+          },
+          "description": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RichTextItemRequest"
+            }
+          },
+          "is_inline": {
+            "type": "boolean"
+          }
+        },
+        "required": ["parent", "properties", "title"]
+      },
+      "SearchParameters": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string"
+          },
+          "sort": {
+            "type": "object",
+            "properties": {
+              "direction": {
+                "type": "string",
+                "enum": ["ascending", "descending"]
+              },
+              "timestamp": {
+                "type": "string",
+                "enum": ["last_edited_time"]
+              }
+            },
+            "required": ["direction", "timestamp"]
+          },
+          "filter": {
+            "type": "object",
+            "properties": {
+              "value": {
+                "type": "string",
+                "enum": ["page", "database"]
+              },
+              "property": {
+                "type": "string",
+                "enum": ["object"]
+              }
+            },
+            "required": ["value", "property"]
+          },
+          "start_cursor": {
+            "type": "string"
+          },
+          "page_size": {
+            "type": "integer"
+          }
+        }
+      },
+      "SearchResponse": {
+        "type": "object",
+        "properties": {
+          "object": {
+            "type": "string",
+            "enum": ["list"]
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/PageObjectResponse"
+                },
+                {
+                  "$ref": "#/components/schemas/PartialPageObjectResponse"
+                },
+                {
+                  "$ref": "#/components/schemas/PartialDatabaseObjectResponse"
+                },
+                {
+                  "$ref": "#/components/schemas/DatabaseObjectResponse"
+                }
+              ]
+            }
+          },
+          "next_cursor": {
+            "type": ["string", "null"]
+          },
+          "has_more": {
+            "type": "boolean"
+          }
+        },
+        "required": ["object", "results", "next_cursor", "has_more"]
+      },
+      "CreateCommentParameters": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "parent": {
+                "type": "object",
+                "properties": {
+                  "page_id": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": ["page_id"]
+                  }
+                },
+                "required": ["page_id"]
+              },
+              "rich_text": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/RichTextItemRequest"
+                }
+              }
+            },
+            "required": ["parent", "rich_text"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "discussion_id": {
+                "type": "string"
+              },
+              "rich_text": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/RichTextItemRequest"
+                }
+              }
+            },
+            "required": ["discussion_id", "rich_text"]
+          }
+        ]
+      },
+      "CommentObjectResponse": {
+        "type": "object",
+        "properties": {
+          "object": {
+            "type": "string",
+            "enum": ["comment"]
+          },
+          "id": {
+            "type": "string"
+          },
+          "parent": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": ["page_id"]
+                  },
+                  "page_id": {
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "page_id"]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": ["block_id"]
+                  },
+                  "block_id": {
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "block_id"]
+              }
+            ]
+          },
+          "discussion_id": {
+            "type": "string"
+          },
+          "rich_text": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RichTextItemResponse"
+            }
+          },
+          "created_by": {
+            "$ref": "#/components/schemas/PartialUserObjectResponse"
+          },
+          "created_time": {
+            "type": "string"
+          },
+          "last_edited_time": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "object",
+          "id",
+          "parent",
+          "discussion_id",
+          "rich_text",
+          "created_by",
+          "created_time",
+          "last_edited_time"
+        ]
+      },
+      "PartialCommentObjectResponse": {
+        "type": "object",
+        "properties": {
+          "object": {
+            "type": "string",
+            "enum": ["comment"]
+          },
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": ["object", "id"]
+      },
+      "ListCommentsResponse": {
+        "type": "object",
+        "properties": {
+          "object": {
+            "type": "string",
+            "enum": ["list"]
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CommentObjectResponse"
+            }
+          },
+          "next_cursor": {
+            "type": ["string", "null"]
+          },
+          "has_more": {
+            "type": "boolean"
+          }
+        },
+        "required": ["object", "results", "next_cursor", "has_more"]
+      },
+      "OauthTokenParameters": {
+        "type": "object",
+        "properties": {
+          "grant_type": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string"
+          },
+          "redirect_uri": {
+            "type": "string"
+          },
+          "external_account": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": ["key", "name"]
+          }
+        },
+        "required": ["grant_type", "code"]
+      },
+      "OauthTokenResponse": {
+        "type": "object",
+        "properties": {
+          "access_token": {
+            "type": "string"
+          },
+          "token_type": {
+            "type": "string",
+            "enum": ["bearer"]
+          },
+          "bot_id": {
+            "type": "string"
+          },
+          "workspace_name": {
+            "type": ["string", "null"]
+          },
+          "workspace_icon": {
+            "type": ["string", "null"]
+          },
+          "workspace_id": {
+            "type": "string"
+          },
+          "owner": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": ["user"]
+                  },
+                  "user": {
+                    "oneOf": [
+                      {
+                        "$ref": "#/components/schemas/UserObjectResponse"
+                      },
+                      {
+                        "$ref": "#/components/schemas/PartialUserObjectResponse"
+                      }
+                    ]
+                  }
+                },
+                "required": ["type", "user"]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": ["workspace"]
+                  },
+                  "workspace": {
+                    "type": "boolean",
+                    "enum": [true]
+                  }
+                },
+                "required": ["type", "workspace"]
+              }
+            ]
+          },
+          "duplicated_template_id": {
+            "type": ["string", "null"]
+          }
+        },
+        "required": [
+          "access_token",
+          "token_type",
+          "bot_id",
+          "workspace_name",
+          "workspace_icon",
+          "workspace_id",
+          "owner",
+          "duplicated_template_id"
+        ]
+      },
+      "RichTextItemRequest": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "text": {
+                "type": "object",
+                "properties": {
+                  "content": {
+                    "type": "string"
+                  },
+                  "link": {
+                    "type": ["object", "null"],
+                    "properties": {
+                      "url": {
+                        "type": "string"
+                      }
+                    },
+                    "required": ["url"]
+                  }
+                },
+                "required": ["content"]
+              },
+              "type": {
+                "type": "string",
+                "enum": ["text"]
+              },
+              "annotations": {
+                "$ref": "#/components/schemas/AnnotationRequest"
+              }
+            },
+            "required": ["text"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "mention": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "user": {
+                        "oneOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              }
+                            },
+                            "required": ["id"]
+                          },
+                          {
+                            "$ref": "#/components/schemas/UserObjectResponse"
+                          }
+                        ]
+                      }
+                    },
+                    "required": ["user"]
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "page": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          }
+                        },
+                        "required": ["id"]
+                      }
+                    },
+                    "required": ["page"]
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "database": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          }
+                        },
+                        "required": ["id"]
+                      }
+                    },
+                    "required": ["database"]
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "date": {
+                        "$ref": "#/components/schemas/DateRequest"
+                      }
+                    },
+                    "required": ["date"]
+                  }
+                ]
+              },
+              "type": {
+                "type": "string",
+                "enum": ["mention"]
+              },
+              "annotations": {
+                "$ref": "#/components/schemas/AnnotationRequest"
+              }
+            },
+            "required": ["mention"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "equation": {
+                "type": "object",
+                "properties": {
+                  "expression": {
+                    "type": "string"
+                  }
+                },
+                "required": ["expression"]
+              },
+              "type": {
+                "type": "string",
+                "enum": ["equation"]
+              },
+              "annotations": {
+                "$ref": "#/components/schemas/AnnotationRequest"
+              }
+            },
+            "required": ["equation"]
+          }
+        ]
+      },
+      "RichTextItemResponse": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/TextRichTextItemResponse"
+          },
+          {
+            "$ref": "#/components/schemas/MentionRichTextItemResponse"
+          },
+          {
+            "$ref": "#/components/schemas/EquationRichTextItemResponse"
+          }
+        ]
+      },
+      "AnnotationRequest": {
+        "type": "object",
+        "properties": {
+          "bold": {
+            "type": "boolean"
+          },
+          "italic": {
+            "type": "boolean"
+          },
+          "strikethrough": {
+            "type": "boolean"
+          },
+          "underline": {
+            "type": "boolean"
+          },
+          "code": {
+            "type": "boolean"
+          },
+          "color": {
+            "type": "string",
+            "enum": [
+              "default",
+              "gray",
+              "brown",
+              "orange",
+              "yellow",
+              "green",
+              "blue",
+              "purple",
+              "pink",
+              "red",
+              "gray_background",
+              "brown_background",
+              "orange_background",
+              "yellow_background",
+              "green_background",
+              "blue_background",
+              "purple_background",
+              "pink_background",
+              "red_background"
+            ]
+          }
+        }
+      },
+      "DateRequest": {
+        "type": "object",
+        "properties": {
+          "start": {
+            "type": "string"
+          },
+          "end": {
+            "type": ["string", "null"]
+          },
+          "time_zone": {
+            "type": ["string", "null"]
+          }
+        },
+        "required": ["start"]
+      },
+      "TextRichTextItemResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["text"]
+          },
+          "text": {
+            "type": "object",
+            "properties": {
+              "content": {
+                "type": "string"
+              },
+              "link": {
+                "type": ["object", "null"],
+                "properties": {
+                  "url": {
+                    "type": "string"
+                  }
+                },
+                "required": ["url"]
+              }
+            },
+            "required": ["content", "link"]
+          },
+          "annotations": {
+            "$ref": "#/components/schemas/AnnotationResponse"
+          },
+          "plain_text": {
+            "type": "string"
+          },
+          "href": {
+            "type": ["string", "null"]
+          }
+        },
+        "required": ["type", "text", "annotations", "plain_text", "href"]
+      },
+      "MentionRichTextItemResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["mention"]
+          },
+          "mention": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": ["user"]
+                  },
+                  "user": {
+                    "oneOf": [
+                      {
+                        "$ref": "#/components/schemas/PartialUserObjectResponse"
+                      },
+                      {
+                        "$ref": "#/components/schemas/UserObjectResponse"
+                      }
+                    ]
+                  }
+                },
+                "required": ["type", "user"]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": ["date"]
+                  },
+                  "date": {
+                    "$ref": "#/components/schemas/DateResponse"
+                  }
+                },
+                "required": ["type", "date"]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": ["link_preview"]
+                  },
+                  "link_preview": {
+                    "type": "object",
+                    "properties": {
+                      "url": {
+                        "type": "string"
+                      }
+                    },
+                    "required": ["url"]
+                  }
+                },
+                "required": ["type", "link_preview"]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": ["page"]
+                  },
+                  "page": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      }
+                    },
+                    "required": ["id"]
+                  }
+                },
+                "required": ["type", "page"]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": ["database"]
+                  },
+                  "database": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      }
+                    },
+                    "required": ["id"]
+                  }
+                },
+                "required": ["type", "database"]
+              }
+            ]
+          },
+          "annotations": {
+            "$ref": "#/components/schemas/AnnotationResponse"
+          },
+          "plain_text": {
+            "type": "string"
+          },
+          "href": {
+            "type": ["string", "null"]
+          }
+        },
+        "required": ["type", "mention", "annotations", "plain_text", "href"]
+      },
+      "EquationRichTextItemResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["equation"]
+          },
+          "equation": {
+            "type": "object",
+            "properties": {
+              "expression": {
+                "type": "string"
+              }
+            },
+            "required": ["expression"]
+          },
+          "annotations": {
+            "$ref": "#/components/schemas/AnnotationResponse"
+          },
+          "plain_text": {
+            "type": "string"
+          },
+          "href": {
+            "type": ["string", "null"]
+          }
+        },
+        "required": ["type", "equation", "annotations", "plain_text", "href"]
+      },
+      "AnnotationResponse": {
+        "type": "object",
+        "properties": {
+          "bold": {
+            "type": "boolean"
+          },
+          "italic": {
+            "type": "boolean"
+          },
+          "strikethrough": {
+            "type": "boolean"
+          },
+          "underline": {
+            "type": "boolean"
+          },
+          "code": {
+            "type": "boolean"
+          },
+          "color": {
+            "type": "string",
+            "enum": [
+              "default",
+              "gray",
+              "brown",
+              "orange",
+              "yellow",
+              "green",
+              "blue",
+              "purple",
+              "pink",
+              "red",
+              "gray_background",
+              "brown_background",
+              "orange_background",
+              "yellow_background",
+              "green_background",
+              "blue_background",
+              "purple_background",
+              "pink_background",
+              "red_background"
+            ]
+          }
+        },
+        "required": [
+          "bold",
+          "italic",
+          "strikethrough",
+          "underline",
+          "code",
+          "color"
+        ]
+      },
+      "DateResponse": {
+        "type": "object",
+        "properties": {
+          "start": {
+            "type": "string"
+          },
+          "end": {
+            "type": ["string", "null"]
+          },
+          "time_zone": {
+            "type": ["string", "null"]
+          }
+        },
+        "required": ["start", "end", "time_zone"]
+      },
+      "PartialUserObjectResponse": {
+        "type": "object",
+        "properties": {
+          "object": {
+            "type": "string",
+            "enum": ["user"]
+          },
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": ["object", "id"]
+      },
+      "DatabasePropertyConfigResponse": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/TitlePropertyResponse"
+          },
+          {
+            "$ref": "#/components/schemas/RichTextPropertyResponse"
+          },
+          {
+            "$ref": "#/components/schemas/NumberPropertyResponse"
+          },
+          {
+            "$ref": "#/components/schemas/SelectPropertyResponse"
+          },
+          {
+            "$ref": "#/components/schemas/MultiSelectPropertyResponse"
+          },
+          {
+            "$ref": "#/components/schemas/DatePropertyResponse"
+          },
+          {
+            "$ref": "#/components/schemas/PeoplePropertyResponse"
+          },
+          {
+            "$ref": "#/components/schemas/FilePropertyResponse"
+          },
+          {
+            "$ref": "#/components/schemas/CheckboxPropertyResponse"
+          },
+          {
+            "$ref": "#/components/schemas/URLPropertyResponse"
+          },
+          {
+            "$ref": "#/components/schemas/EmailPropertyResponse"
+          },
+          {
+            "$ref": "#/components/schemas/PhoneNumberPropertyResponse"
+          },
+          {
+            "$ref": "#/components/schemas/FormulaPropertyResponse"
+          },
+          {
+            "$ref": "#/components/schemas/RelationPropertyResponse"
+          },
+          {
+            "$ref": "#/components/schemas/RollupPropertyResponse"
+          },
+          {
+            "$ref": "#/components/schemas/CreatedTimePropertyResponse"
+          },
+          {
+            "$ref": "#/components/schemas/CreatedByPropertyResponse"
+          },
+          {
+            "$ref": "#/components/schemas/LastEditedTimePropertyResponse"
+          },
+          {
+            "$ref": "#/components/schemas/LastEditedByPropertyResponse"
+          }
+        ]
+      },
+      "TitlePropertyResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["title"]
+          },
+          "title": {
+            "type": "object"
+          }
+        },
+        "required": ["id", "type", "title"]
+      },
+      "RichTextPropertyResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["rich_text"]
+          },
+          "rich_text": {
+            "type": "object"
+          }
+        },
+        "required": ["id", "type", "rich_text"]
+      },
+      "NumberPropertyResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["number"]
+          },
+          "number": {
+            "type": "object",
+            "properties": {
+              "format": {
+                "type": "string"
+              }
+            },
+            "required": ["format"]
+          }
+        },
+        "required": ["id", "type", "number"]
+      },
+      "SelectPropertyResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["select"]
+          },
+          "select": {
+            "type": "object",
+            "properties": {
+              "options": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SelectOption"
+                }
+              }
+            },
+            "required": ["options"]
+          }
+        },
+        "required": ["id", "type", "select"]
+      },
+      "MultiSelectPropertyResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["multi_select"]
+          },
+          "multi_select": {
+            "type": "object",
+            "properties": {
+              "options": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SelectOption"
+                }
+              }
+            },
+            "required": ["options"]
+          }
+        },
+        "required": ["id", "type", "multi_select"]
+      },
+      "DatePropertyResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["date"]
+          },
+          "date": {
+            "type": "object"
+          }
+        },
+        "required": ["id", "type", "date"]
+      },
+      "PeoplePropertyResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["people"]
+          },
+          "people": {
+            "type": "object"
+          }
+        },
+        "required": ["id", "type", "people"]
+      },
+      "FilePropertyResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["files"]
+          },
+          "files": {
+            "type": "object"
+          }
+        },
+        "required": ["id", "type", "files"]
+      },
+      "CheckboxPropertyResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["checkbox"]
+          },
+          "checkbox": {
+            "type": "object"
+          }
+        },
+        "required": ["id", "type", "checkbox"]
+      },
+      "URLPropertyResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["url"]
+          },
+          "url": {
+            "type": "object"
+          }
+        },
+        "required": ["id", "type", "url"]
+      },
+      "EmailPropertyResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["email"]
+          },
+          "email": {
+            "type": "object"
+          }
+        },
+        "required": ["id", "type", "email"]
+      },
+      "PhoneNumberPropertyResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["phone_number"]
+          },
+          "phone_number": {
+            "type": "object"
+          }
+        },
+        "required": ["id", "type", "phone_number"]
+      },
+      "FormulaPropertyResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["formula"]
+          },
+          "formula": {
+            "type": "object",
+            "properties": {
+              "expression": {
+                "type": "string"
+              }
+            },
+            "required": ["expression"]
+          }
+        },
+        "required": ["id", "type", "formula"]
+      },
+      "RelationPropertyResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["relation"]
+          },
+          "relation": {
+            "type": "object",
+            "properties": {
+              "database_id": {
+                "type": "string"
+              },
+              "synced_property_name": {
+                "type": "string"
+              },
+              "synced_property_id": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "database_id",
+              "synced_property_name",
+              "synced_property_id"
+            ]
+          }
+        },
+        "required": ["id", "type", "relation"]
+      },
+      "RollupPropertyResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["rollup"]
+          },
+          "rollup": {
+            "type": "object",
+            "properties": {
+              "relation_property_name": {
+                "type": "string"
+              },
+              "relation_property_id": {
+                "type": "string"
+              },
+              "rollup_property_name": {
+                "type": "string"
+              },
+              "rollup_property_id": {
+                "type": "string"
+              },
+              "function": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "relation_property_name",
+              "relation_property_id",
+              "rollup_property_name",
+
+              "rollup_property_id",
+              "function"
+            ]
+          }
+        },
+        "required": ["id", "type", "rollup"]
+      },
+      "CreatedTimePropertyResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["created_time"]
+          },
+          "created_time": {
+            "type": "object"
+          }
+        },
+        "required": ["id", "type", "created_time"]
+      },
+      "CreatedByPropertyResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["created_by"]
+          },
+          "created_by": {
+            "type": "object"
+          }
+        },
+        "required": ["id", "type", "created_by"]
+      },
+      "LastEditedTimePropertyResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["last_edited_time"]
+          },
+          "last_edited_time": {
+            "type": "object"
+          }
+        },
+        "required": ["id", "type", "last_edited_time"]
+      },
+      "LastEditedByPropertyResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["last_edited_by"]
+          },
+          "last_edited_by": {
+            "type": "object"
+          }
+        },
+        "required": ["id", "type", "last_edited_by"]
+      },
+      "SelectOption": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "color": {
+            "type": "string"
+          }
+        },
+        "required": ["id", "name", "color"]
+      },
+      "PropertyUpdateSchema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          }
+        }
+      },
+      "PropertySchema": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "name": {
+            "type": ["string", "null"]
+          }
+        },
+        "required": ["type"]
+      },
+      "PropertyFilter": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "property": {
+                "type": "string"
+              },
+              "title": {
+                "$ref": "#/components/schemas/TextPropertyFilter"
+              }
+            },
+            "required": ["property", "title"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "property": {
+                "type": "string"
+              },
+              "rich_text": {
+                "$ref": "#/components/schemas/TextPropertyFilter"
+              }
+            },
+            "required": ["property", "rich_text"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "property": {
+                "type": "string"
+              },
+              "number": {
+                "$ref": "#/components/schemas/NumberPropertyFilter"
+              }
+            },
+            "required": ["property", "number"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "property": {
+                "type": "string"
+              },
+              "checkbox": {
+                "$ref": "#/components/schemas/CheckboxPropertyFilter"
+              }
+            },
+            "required": ["property", "checkbox"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "property": {
+                "type": "string"
+              },
+              "select": {
+                "$ref": "#/components/schemas/SelectPropertyFilter"
+              }
+            },
+            "required": ["property", "select"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "property": {
+                "type": "string"
+              },
+              "multi_select": {
+                "$ref": "#/components/schemas/MultiSelectPropertyFilter"
+              }
+            },
+            "required": ["property", "multi_select"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "property": {
+                "type": "string"
+              },
+              "date": {
+                "$ref": "#/components/schemas/DatePropertyFilter"
+              }
+            },
+            "required": ["property", "date"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "property": {
+                "type": "string"
+              },
+              "people": {
+                "$ref": "#/components/schemas/PeoplePropertyFilter"
+              }
+            },
+            "required": ["property", "people"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "property": {
+                "type": "string"
+              },
+              "files": {
+                "$ref": "#/components/schemas/FilesPropertyFilter"
+              }
+            },
+            "required": ["property", "files"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "property": {
+                "type": "string"
+              },
+              "url": {
+                "$ref": "#/components/schemas/TextPropertyFilter"
+              }
+            },
+            "required": ["property", "url"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "property": {
+                "type": "string"
+              },
+              "email": {
+                "$ref": "#/components/schemas/TextPropertyFilter"
+              }
+            },
+            "required": ["property", "email"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "property": {
+                "type": "string"
+              },
+              "phone_number": {
+                "$ref": "#/components/schemas/TextPropertyFilter"
+              }
+            },
+            "required": ["property", "phone_number"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "property": {
+                "type": "string"
+              },
+              "relation": {
+                "$ref": "#/components/schemas/RelationPropertyFilter"
+              }
+            },
+            "required": ["property", "relation"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "property": {
+                "type": "string"
+              },
+              "created_by": {
+                "$ref": "#/components/schemas/PeoplePropertyFilter"
+              }
+            },
+            "required": ["property", "created_by"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "property": {
+                "type": "string"
+              },
+              "created_time": {
+                "$ref": "#/components/schemas/DatePropertyFilter"
+              }
+            },
+            "required": ["property", "created_time"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "property": {
+                "type": "string"
+              },
+              "last_edited_by": {
+                "$ref": "#/components/schemas/PeoplePropertyFilter"
+              }
+            },
+            "required": ["property", "last_edited_by"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "property": {
+                "type": "string"
+              },
+              "last_edited_time": {
+                "$ref": "#/components/schemas/DatePropertyFilter"
+              }
+            },
+            "required": ["property", "last_edited_time"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "timestamp": {
+                "type": "string",
+                "enum": ["created_time", "last_edited_time"]
+              },
+              "created_time": {
+                "$ref": "#/components/schemas/DatePropertyFilter"
+              }
+            },
+            "required": ["timestamp", "created_time"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "timestamp": {
+                "type": "string",
+                "enum": ["created_time", "last_edited_time"]
+              },
+              "last_edited_time": {
+                "$ref": "#/components/schemas/DatePropertyFilter"
+              }
+            },
+            "required": ["timestamp", "last_edited_time"]
+          }
+        ]
+      },
+      "TextPropertyFilter": {
+        "type": "object",
+        "properties": {
+          "equals": {
+            "type": "string"
+          },
+          "does_not_equal": {
+            "type": "string"
+          },
+          "contains": {
+            "type": "string"
+          },
+          "does_not_contain": {
+            "type": "string"
+          },
+          "starts_with": {
+            "type": "string"
+          },
+          "ends_with": {
+            "type": "string"
+          },
+          "is_empty": {
+            "type": "boolean"
+          },
+          "is_not_empty": {
+            "type": "boolean"
+          }
+        }
+      },
+      "NumberPropertyFilter": {
+        "type": "object",
+        "properties": {
+          "equals": {
+            "type": "number"
+          },
+          "does_not_equal": {
+            "type": "number"
+          },
+          "greater_than": {
+            "type": "number"
+          },
+          "less_than": {
+            "type": "number"
+          },
+          "greater_than_or_equal_to": {
+            "type": "number"
+          },
+          "less_than_or_equal_to": {
+            "type": "number"
+          },
+          "is_empty": {
+            "type": "boolean"
+          },
+          "is_not_empty": {
+            "type": "boolean"
+          }
+        }
+      },
+      "CheckboxPropertyFilter": {
+        "type": "object",
+        "properties": {
+          "equals": {
+            "type": "boolean"
+          },
+          "does_not_equal": {
+            "type": "boolean"
+          }
+        }
+      },
+      "SelectPropertyFilter": {
+        "type": "object",
+        "properties": {
+          "equals": {
+            "type": "string"
+          },
+          "does_not_equal": {
+            "type": "string"
+          },
+          "is_empty": {
+            "type": "boolean"
+          },
+          "is_not_empty": {
+            "type": "boolean"
+          }
+        }
+      },
+      "MultiSelectPropertyFilter": {
+        "type": "object",
+        "properties": {
+          "contains": {
+            "type": "string"
+          },
+          "does_not_contain": {
+            "type": "string"
+          },
+          "is_empty": {
+            "type": "boolean"
+          },
+          "is_not_empty": {
+            "type": "boolean"
+          }
+        }
+      },
+      "DatePropertyFilter": {
+        "type": "object",
+        "properties": {
+          "equals": {
+            "type": "string"
+          },
+          "before": {
+            "type": "string"
+          },
+          "after": {
+            "type": "string"
+          },
+          "on_or_before": {
+            "type": "string"
+          },
+          "on_or_after": {
+            "type": "string"
+          },
+          "past_week": {},
+          "past_month": {},
+          "past_year": {},
+          "next_week": {},
+          "next_month": {},
+          "next_year": {},
+          "is_empty": {
+            "type": "boolean"
+          },
+          "is_not_empty": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PeoplePropertyFilter": {
+        "type": "object",
+        "properties": {
+          "contains": {
+            "type": "string"
+          },
+          "does_not_contain": {
+            "type": "string"
+          },
+          "is_empty": {
+            "type": "boolean"
+          },
+          "is_not_empty": {
+            "type": "boolean"
+          }
+        }
+      },
+      "FilesPropertyFilter": {
+        "type": "object",
+        "properties": {
+          "is_empty": {
+            "type": "boolean"
+          },
+          "is_not_empty": {
+            "type": "boolean"
+          }
+        }
+      },
+      "RelationPropertyFilter": {
+        "type": "object",
+        "properties": {
+          "contains": {
+            "type": "string"
+          },
+          "does_not_contain": {
+            "type": "string"
+          },
+          "is_empty": {
+            "type": "boolean"
+          },
+          "is_not_empty": {
+            "type": "boolean"
+          }
+        }
+      },
+      "CompoundFilter": {
+        "type": "object",
+        "properties": {
+          "and": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PropertyFilter"
+            }
+          },
+          "or": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PropertyFilter"
+            }
+          }
+        }
+      },
+      "BlockObjectRequest": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "object": {
+                "type": "string",
+                "enum": ["block"]
+              },
+              "type": {
+                "type": "string",
+                "enum": ["paragraph"]
+              },
+              "paragraph": {
+                "type": "object",
+                "properties": {
+                  "rich_text": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/RichTextItemRequest"
+                    }
+                  },
+                  "color": {
+                    "type": "string"
+                  }
+                },
+                "required": ["rich_text"]
+              }
+            },
+            "required": ["object", "type", "paragraph"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "object": {
+                "type": "string",
+                "enum": ["block"]
+              },
+              "type": {
+                "type": "string",
+                "enum": ["heading_1"]
+              },
+              "heading_1": {
+                "type": "object",
+                "properties": {
+                  "rich_text": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/RichTextItemRequest"
+                    }
+                  },
+                  "color": {
+                    "type": "string"
+                  }
+                },
+                "required": ["rich_text"]
+              }
+            },
+            "required": ["object", "type", "heading_1"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "object": {
+                "type": "string",
+                "enum": ["block"]
+              },
+              "type": {
+                "type": "string",
+                "enum": ["heading_2"]
+              },
+              "heading_2": {
+                "type": "object",
+
+                "properties": {
+                  "rich_text": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/RichTextItemRequest"
+                    }
+                  },
+                  "color": {
+                    "type": "string"
+                  }
+                },
+                "required": ["rich_text"]
+              }
+            },
+            "required": ["object", "type", "heading_2"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "object": {
+                "type": "string",
+                "enum": ["block"]
+              },
+              "type": {
+                "type": "string",
+                "enum": ["heading_3"]
+              },
+              "heading_3": {
+                "type": "object",
+                "properties": {
+                  "rich_text": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/RichTextItemRequest"
+                    }
+                  },
+                  "color": {
+                    "type": "string"
+                  }
+                },
+                "required": ["rich_text"]
+              }
+            },
+            "required": ["object", "type", "heading_3"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "object": {
+                "type": "string",
+                "enum": ["block"]
+              },
+              "type": {
+                "type": "string",
+                "enum": ["bulleted_list_item"]
+              },
+              "bulleted_list_item": {
+                "type": "object",
+                "properties": {
+                  "rich_text": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/RichTextItemRequest"
+                    }
+                  },
+                  "color": {
+                    "type": "string"
+                  }
+                },
+                "required": ["rich_text"]
+              }
+            },
+            "required": ["object", "type", "bulleted_list_item"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "object": {
+                "type": "string",
+                "enum": ["block"]
+              },
+              "type": {
+                "type": "string",
+                "enum": ["numbered_list_item"]
+              },
+              "numbered_list_item": {
+                "type": "object",
+                "properties": {
+                  "rich_text": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/RichTextItemRequest"
+                    }
+                  },
+                  "color": {
+                    "type": "string"
+                  }
+                },
+                "required": ["rich_text"]
+              }
+            },
+            "required": ["object", "type", "numbered_list_item"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "object": {
+                "type": "string",
+                "enum": ["block"]
+              },
+              "type": {
+                "type": "string",
+                "enum": ["to_do"]
+              },
+              "to_do": {
+                "type": "object",
+                "properties": {
+                  "rich_text": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/RichTextItemRequest"
+                    }
+                  },
+                  "checked": {
+                    "type": "boolean"
+                  },
+                  "color": {
+                    "type": "string"
+                  }
+                },
+                "required": ["rich_text", "checked"]
+              }
+            },
+            "required": ["object", "type", "to_do"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "object": {
+                "type": "string",
+                "enum": ["block"]
+              },
+              "type": {
+                "type": "string",
+                "enum": ["toggle"]
+              },
+              "toggle": {
+                "type": "object",
+                "properties": {
+                  "rich_text": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/RichTextItemRequest"
+                    }
+                  },
+                  "color": {
+                    "type": "string"
+                  }
+                },
+                "required": ["rich_text"]
+              }
+            },
+            "required": ["object", "type", "toggle"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "object": {
+                "type": "string",
+                "enum": ["block"]
+              },
+              "type": {
+                "type": "string",
+                "enum": ["code"]
+              },
+              "code": {
+                "type": "object",
+                "properties": {
+                  "rich_text": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/RichTextItemRequest"
+                    }
+                  },
+                  "language": {
+                    "type": "string"
+                  },
+                  "caption": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/RichTextItemRequest"
+                    }
+                  }
+                },
+                "required": ["rich_text", "language"]
+              }
+            },
+            "required": ["object", "type", "code"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "object": {
+                "type": "string",
+                "enum": ["block"]
+              },
+              "type": {
+                "type": "string",
+                "enum": ["child_page"]
+              },
+              "child_page": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  }
+                },
+                "required": ["title"]
+              }
+            },
+            "required": ["object", "type", "child_page"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "object": {
+                "type": "string",
+                "enum": ["block"]
+              },
+              "type": {
+                "type": "string",
+                "enum": ["child_database"]
+              },
+              "child_database": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  }
+                },
+                "required": ["title"]
+              }
+            },
+            "required": ["object", "type", "child_database"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "object": {
+                "type": "string",
+                "enum": ["block"]
+              },
+              "type": {
+                "type": "string",
+                "enum": ["embed"]
+              },
+              "embed": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string"
+                  },
+                  "caption": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/RichTextItemRequest"
+                    }
+                  }
+                },
+                "required": ["url"]
+              }
+            },
+            "required": ["object", "type", "embed"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "object": {
+                "type": "string",
+                "enum": ["block"]
+              },
+              "type": {
+                "type": "string",
+                "enum": ["image"]
+              },
+              "image": {
+                "type": "object",
+                "properties": {
+                  "external": {
+                    "type": "object",
+                    "properties": {
+                      "url": {
+                        "type": "string"
+                      }
+                    },
+                    "required": ["url"]
+                  },
+                  "caption": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/RichTextItemRequest"
+                    }
+                  }
+                },
+                "required": ["external"]
+              }
+            },
+            "required": ["object", "type", "image"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "object": {
+                "type": "string",
+                "enum": ["block"]
+              },
+              "type": {
+                "type": "string",
+                "enum": ["video"]
+              },
+              "video": {
+                "type": "object",
+                "properties": {
+                  "external": {
+                    "type": "object",
+                    "properties": {
+                      "url": {
+                        "type": "string"
+                      }
+                    },
+                    "required": ["url"]
+                  },
+                  "caption": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/RichTextItemRequest"
+                    }
+                  }
+                },
+                "required": ["external"]
+              }
+            },
+            "required": ["object", "type", "video"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "object": {
+                "type": "string",
+                "enum": ["block"]
+              },
+              "type": {
+                "type": "string",
+                "enum": ["file"]
+              },
+              "file": {
+                "type": "object",
+                "properties": {
+                  "external": {
+                    "type": "object",
+                    "properties": {
+                      "url": {
+                        "type": "string"
+                      }
+                    },
+                    "required": ["url"]
+                  },
+                  "caption": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/RichTextItemRequest"
+                    }
+                  }
+                },
+                "required": ["external"]
+              }
+            },
+            "required": ["object", "type", "file"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "object": {
+                "type": "string",
+                "enum": ["block"]
+              },
+              "type": {
+                "type": "string",
+                "enum": ["pdf"]
+              },
+              "pdf": {
+                "type": "object",
+                "properties": {
+                  "external": {
+                    "type": "object",
+                    "properties": {
+                      "url": {
+                        "type": "string"
+                      }
+                    },
+                    "required": ["url"]
+                  },
+                  "caption": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/RichTextItemRequest"
+                    }
+                  }
+                },
+                "required": ["external"]
+              }
+            },
+            "required": ["object", "type", "pdf"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "object": {
+                "type": "string",
+                "enum": ["block"]
+              },
+              "type": {
+                "type": "string",
+                "enum": ["bookmark"]
+              },
+              "bookmark": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string"
+                  },
+                  "caption": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/RichTextItemRequest"
+                    }
+                  }
+                },
+                "required": ["url"]
+              }
+            },
+            "required": ["object", "type", "bookmark"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "object": {
+                "type": "string",
+                "enum": ["block"]
+              },
+              "type": {
+                "type": "string",
+                "enum": ["equation"]
+              },
+              "equation": {
+                "type": "object",
+                "properties": {
+                  "expression": {
+                    "type": "string"
+                  }
+                },
+                "required": ["expression"]
+              }
+            },
+            "required": ["object", "type", "equation"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "object": {
+                "type": "string",
+                "enum": ["block"]
+              },
+              "type": {
+                "type": "string",
+                "enum": ["divider"]
+              },
+              "divider": {
+                "type": "object"
+              }
+            },
+            "required": ["object", "type", "divider"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "object": {
+                "type": "string",
+                "enum": ["block"]
+              },
+              "type": {
+                "type": "string",
+                "enum": ["table_of_contents"]
+              },
+              "table_of_contents": {
+                "type": "object",
+                "properties": {
+                  "color": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "required": ["object", "type", "table_of_contents"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "object": {
+                "type": "string",
+                "enum": ["block"]
+              },
+              "type": {
+                "type": "string",
+                "enum": ["column_list"]
+              },
+              "column_list": {
+                "type": "object"
+              }
+            },
+            "required": ["object", "type", "column_list"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "object": {
+                "type": "string",
+                "enum": ["block"]
+              },
+              "type": {
+                "type": "string",
+                "enum": ["column"]
+              },
+              "column": {
+                "type": "object"
+              }
+            },
+            "required": ["object", "type", "column"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "object": {
+                "type": "string",
+                "enum": ["block"]
+              },
+              "type": {
+                "type": "string",
+                "enum": ["link_to_page"]
+              },
+              "link_to_page": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "enum": ["page_id"]
+                      },
+                      "page_id": {
+                        "type": "string"
+                      }
+                    },
+                    "required": ["type", "page_id"]
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "enum": ["database_id"]
+                      },
+                      "database_id": {
+                        "type": "string"
+                      }
+                    },
+                    "required": ["type", "database_id"]
+                  }
+                ]
+              }
+            },
+            "required": ["object", "type", "link_to_page"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "object": {
+                "type": "string",
+                "enum": ["block"]
+              },
+              "type": {
+                "type": "string",
+                "enum": ["table"]
+              },
+              "table": {
+                "type": "object",
+                "properties": {
+                  "table_width": {
+                    "type": "integer"
+                  },
+                  "has_column_header": {
+                    "type": "boolean"
+                  },
+                  "has_row_header": {
+                    "type": "boolean"
+                  },
+                  "children": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/BlockObjectRequest"
+                    }
+                  }
+                },
+                "required": ["table_width", "children"]
+              }
+            },
+            "required": ["object", "type", "table"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "object": {
+                "type": "string",
+                "enum": ["block"]
+              },
+              "type": {
+                "type": "string",
+                "enum": ["table_row"]
+              },
+              "table_row": {
+                "type": "object",
+                "properties": {
+                  "cells": {
+                    "type": "array",
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/RichTextItemRequest"
+                      }
+                    }
+                  }
+                },
+                "required": ["cells"]
+              }
+            },
+            "required": ["object", "type", "table_row"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "object": {
+                "type": "string",
+                "enum": ["block"]
+              },
+              "type": {
+                "type": "string",
+                "enum": ["synced_block"]
+              },
+              "synced_block": {
+                "type": "object",
+                "properties": {
+                  "synced_from": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "enum": ["block_id"]
+                          },
+                          "block_id": {
+                            "type": "string"
+                          }
+                        },
+                        "required": ["type", "block_id"]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "children": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/BlockObjectRequest"
+                    }
+                  }
+                }
+              }
+            },
+            "required": ["object", "type", "synced_block"]
+          }
+        ]
+      }
+    }
+  }
+}

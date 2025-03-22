@@ -1,0 +1,51 @@
+{
+  "name": "@agentic/openapi-to-ts-client",
+  "version": "0.1.0",
+  "description": "TODO",
+  "author": "Travis Fischer <travis@transitivebullsh.it>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/transitive-bullshit/agentic.git"
+  },
+  "type": "module",
+  "source": "./src/index.ts",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "clean": "del dist",
+    "test": "run-s test:*",
+    "test:lint": "eslint .",
+    "test:typecheck": "tsc --noEmit",
+    "test:unit": "vitest run"
+  },
+  "dependencies": {
+    "@agentic/core": "workspace:*",
+    "@apidevtools/swagger-parser": "^10.1.1",
+    "camelcase": "^8.0.0",
+    "decamelize": "^6.0.0",
+    "execa": "^9.5.2",
+    "json-schema-to-zod": "^2.6.0",
+    "openapi-types": "^12.1.3",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@agentic/tsconfig": "workspace:*",
+    "ky": "catalog:"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

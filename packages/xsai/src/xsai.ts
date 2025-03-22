@@ -16,7 +16,7 @@ export function createXSAITools(
         name: fn.spec.name,
         description: fn.spec.description,
         parameters: fn.inputSchema,
-        execute: fn.impl
+        execute: fn.execute
       })
     )
   )

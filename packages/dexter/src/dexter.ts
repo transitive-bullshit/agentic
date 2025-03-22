@@ -17,7 +17,7 @@ export function createDexterFunctions(
         description: fn.spec.description,
         argsSchema: fn.inputSchema
       },
-      fn.impl
+      fn.execute
     )
   )
 }

@@ -15,7 +15,7 @@ export function createMastraTools(...aiFunctionLikeTools: AIFunctionLike[]) {
         id: fn.spec.name,
         description: fn.spec.description,
         inputSchema: fn.inputSchema,
-        execute: (ctx) => fn.impl(ctx.context)
+        execute: (ctx) => fn.execute(ctx.context)
       })
     ])
   )
