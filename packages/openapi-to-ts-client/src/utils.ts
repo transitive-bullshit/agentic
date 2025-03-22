@@ -1,6 +1,7 @@
 import type SwaggerParser from '@apidevtools/swagger-parser'
 import type { IJsonSchema, OpenAPIV3, OpenAPIV3_1 } from 'openapi-types'
 import { assert } from '@agentic/core'
+import camelcase from 'camelcase'
 import {
   type JsonSchema,
   jsonSchemaToZod as jsonSchemaToZodImpl,
@@ -21,8 +22,8 @@ export function prettify(source: string): Promise<string> {
   })
 }
 
-export function titleCase(identifier: string): string {
-  return `${identifier.slice(0, 1).toUpperCase()}${identifier.slice(1)}`
+export function pascalCase(identifier: string): string {
+  return camelcase(identifier, { pascalCase: true })
 }
 
 export function unTitleCase(identifier: string): string {
@@ -240,10 +241,15 @@ const reservedWords = new Set([
 ])
 
 export function getComponentName(ref: string) {
-  const name0 = ref.split('/').pop()!
-  assert(name0, `Invalid ref name ${ref}`)
+  const name = ref.split('/').pop()!
+  assert(name, `Invalid ref name ${ref}`)
 
-  const name1 = titleCase(name0)
+  return name
+}
+
+export function getComponentDisplayName(ref: string) {
+  const name0 = getComponentName(ref)
+  const name1 = pascalCase(name0)
   assert(name1, `Invalid ref name ${ref}`)
 
   if (reservedWords.has(name1)) {
@@ -257,7 +263,7 @@ export function getOperationParamsName(
   operationName: string,
   schemas?: Record<string, string>
 ) {
-  const name = `${titleCase(operationName)}Params`
+  const name = `${pascalCase(operationName)}Params`
   if (!schemas) return name
 
   let tempName = name
@@ -274,7 +280,7 @@ export function getOperationResponseName(
   operationName: string,
   schemas?: Record<string, string>
 ) {
-  const name = `${titleCase(operationName)}Response`
+  const name = `${pascalCase(operationName)}Response`
   if (!schemas) return name
 
   let tempName = name
