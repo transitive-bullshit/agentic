@@ -19,6 +19,7 @@ import {
   getOperationParamsName,
   getOperationResponseName,
   jsonSchemaToZod,
+  naiveMergeJSONSchemas,
   prettify
 } from './utils'
 
@@ -38,7 +39,9 @@ const httpMethods = [
 ] as const
 
 async function main() {
-  const pathToOpenApiSpec = process.argv[2]
+  const pathToOpenApiSpec =
+    process.argv[2] ??
+    path.join(dirname, '..', 'fixtures', 'openapi', 'notion.json')
   assert(pathToOpenApiSpec, 'Missing path to OpenAPI spec')
 
   const parser = new SwaggerParser()
@@ -177,6 +180,7 @@ async function main() {
       operationIds.add(operationName)
       const operationNameSnakeCase = decamelize(operationName)
 
+      // if (path !== '/comments' || method !== 'post') continue
       // if (path !== '/crawl/status/{jobId}') continue
       // if (path !== '/pets' || method !== 'post') continue
       // console.log(method, path, operationName)
@@ -191,6 +195,7 @@ async function main() {
       const operationResponseJSONSchemas: Record<string, IJsonSchema> = {}
 
       const operationParamsSources: Record<string, string> = {}
+      let operationParamsUnionSource: string | undefined
 
       // eslint-disable-next-line unicorn/consistent-function-scoping
       function addJSONSchemaParams(schema: IJsonSchema, source: string) {
@@ -208,6 +213,16 @@ async function main() {
               )
               operationParamsSources[key] = source
             }
+          } else if (derefed?.anyOf || derefed?.oneOf) {
+            const componentName = getComponentName(schema.$ref)
+            operationParamsSources[componentName] = source
+
+            // TODO: handle this case
+            assert(
+              !operationParamsUnionSource,
+              `Duplicate union source ${source} for operation ${operationName}`
+            )
+            operationParamsUnionSource = source
           }
         } else {
           assert(schema.type === 'object')
@@ -232,6 +247,17 @@ async function main() {
               ...operationParamsJSONSchema.required,
               ...schema.required
             ]
+          }
+
+          if (schema?.anyOf || schema?.oneOf) {
+            operationParamsSources[schema.title || '__union__'] = source
+
+            // TODO: handle this case
+            assert(
+              !operationParamsUnionSource,
+              `Duplicate union source ${source} for operation ${operationName}`
+            )
+            operationParamsUnionSource = source
           }
         }
       }
@@ -308,9 +334,33 @@ async function main() {
         componentSchemas
       )
       const operationResponseName = getOperationResponseName(operationName)
+      let derefedParams: any = dereference(
+        operationParamsJSONSchema,
+        parser.$refs
+      )
+      for (const ref of derefedParams.$refs) {
+        const temp: any = dereference({ $ref: ref }, parser.$refs)
+        if (temp) {
+          derefedParams = naiveMergeJSONSchemas(derefedParams, temp)
+        }
+      }
+      // console.log(JSON.stringify(derefedParams, null, 2))
+      const hasUnionParams = !!(derefedParams.anyOf || derefedParams.oneOf)
+      const hasParams =
+        Object.keys(derefedParams.properties ?? {}).length > 0 || hasUnionParams
+
+      assert(
+        hasUnionParams === !!operationParamsUnionSource,
+        'Unexpected union params'
+      )
+
+      // TODO: handle empty params case
 
       {
         // Merge all operations params into one schema declaration
+        // TODO: Don't generate this if it's only refs. We're currently handling
+        // this in a hacky way by removing the `z.object({}).merge(...)` down
+        // below.
         let operationsParamsSchema = jsonSchemaToZod(
           operationParamsJSONSchema,
           { name: `${operationParamsName}Schema`, type: operationParamsName }
@@ -430,18 +480,18 @@ async function main() {
         ${description ? `/**\n * ${description}\n */` : ''}
         @aiFunction({
           name: '${operationNameSnakeCase}',
-          ${description ? `description: '${description}',` : ''}
-          inputSchema: ${namespaceName}.${operationParamsName}Schema,
+          ${description ? `description: '${description}',` : ''}${hasUnionParams ? '\n// TODO: Improve handling of union params' : ''}
+          inputSchema: ${namespaceName}.${operationParamsName}Schema${hasUnionParams ? ' as any' : ''},
         })
-        async ${operationName}(params: ${namespaceName}.${operationParamsName}): Promise<${namespaceName}.${operationResponseName}> {
+        async ${operationName}(${!hasParams ? '_' : ''}params: ${namespaceName}.${operationParamsName}): Promise<${namespaceName}.${operationResponseName}> {
           return this.ky.${method}(${pathTemplate}${
-            onlyHasPathParams
+            !hasParams || onlyHasPathParams
               ? ''
               : `, {
-            ${hasQueryParams ? (onlyHasOneParamsSource ? `searchParams: sanitizeSearchParams(params),` : `searchParams: sanitizeSearchParams(pick(params, '${queryParams.join("', '")}')),`) : ''}
-            ${hasBodyParams ? (onlyHasOneParamsSource ? `json: params,` : `json: pick(params, '${bodyParams.join("', '")}'),`) : ''}
-            ${hasFormDataParams ? (onlyHasOneParamsSource ? `form: params,` : `form: pick(params, '${formDataParams.join("', '")}'),`) : ''}
-            ${hasHeadersParams ? (onlyHasOneParamsSource ? `headers: params,` : `headers: pick(params, '${headersParams.join("', '")}'),`) : ''}
+            ${hasQueryParams ? (onlyHasOneParamsSource || hasUnionParams ? `searchParams: sanitizeSearchParams(params),` : `searchParams: sanitizeSearchParams(pick(params, '${queryParams.join("', '")}')),`) : ''}
+            ${hasBodyParams ? (onlyHasOneParamsSource || hasUnionParams ? `json: params,` : `json: pick(params, '${bodyParams.join("', '")}'),`) : ''}
+            ${hasFormDataParams ? (onlyHasOneParamsSource || hasUnionParams ? `form: params,` : `form: pick(params, '${formDataParams.join("', '")}'),`) : ''}
+            ${hasHeadersParams ? (onlyHasOneParamsSource || hasUnionParams ? `headers: params,` : `headers: pick(params, '${headersParams.join("', '")}'),`) : ''}
           }`
           }).json<${namespaceName}.${operationResponseName}>()
         }
@@ -458,12 +508,11 @@ async function main() {
   > = {}
 
   for (const ref of componentsToProcess) {
-    const component = parser.$refs.get(ref)
-    assert(component)
+    const component = { $ref: ref }
 
     const resolved = new Set<string>()
     const dereferenced = dereference(component, parser.$refs)
-    dereference(component, parser.$refs, resolved, 0, Number.POSITIVE_INFINITY)
+    dereferenceFull(component, parser.$refs, resolved)
     assert(dereferenced)
 
     for (const ref of resolved) {
@@ -483,33 +532,25 @@ async function main() {
 
     const name = `${type}Schema`
 
-    const { dereferenced, refs } = componentToRefs[ref]!
+    const { dereferenced } = componentToRefs[ref]!
     if (processedComponents.has(ref)) {
       continue
     }
 
-    for (const r of refs) {
-      if (processedComponents.has(r)) {
-        continue
-      }
-
-      processedComponents.add(r)
-    }
-
     processedComponents.add(ref)
+
+    if (type === 'SearchResponse') {
+      console.log(type, dereferenced)
+    }
 
     const schema = jsonSchemaToZod(dereferenced, { name, type })
     componentSchemas[type] = schema
-
-    // console.log(ref, name, dereferenced)
   }
 
-  // console.log(
-  //   '\ncomponents',
-  //   Array.from(componentsToProcess)
-  //     .map((ref) => getComponentName(ref))
-  //     .sort()
-  // )
+  console.log(
+    '\ncomponents',
+    Array.from(sortedComponents).map((ref) => getComponentName(ref))
+  )
 
   // console.log(
   //   '\nmodels',
@@ -525,6 +566,9 @@ async function main() {
   const aiClientMethodsString = aiClientMethods.join('\n\n')
 
   const header = `
+/* eslint-disable unicorn/no-unreadable-iife */
+/* eslint-disable unicorn/no-array-reduce */
+
 /**
  * This file was auto-generated from an OpenAPI spec.
  */
@@ -540,13 +584,20 @@ import {
 import defaultKy, { type KyInstance } from 'ky'
 import { z } from 'zod'`.trim()
 
+  const commentLine = `// ${'-'.repeat(77)}`
   const outputTypes = (
     await prettify(
       [
         header,
         `export namespace ${namespaceName} {`,
         apiBaseUrl ? `export const apiBaseUrl = '${apiBaseUrl}'` : undefined,
+        Object.values(componentSchemas).length
+          ? `${commentLine}\n// Component schemas\n${commentLine}`
+          : undefined,
         ...Object.values(componentSchemas),
+        Object.values(operationSchemas).length
+          ? `${commentLine}\n// Operation schemas\n${commentLine}`
+          : undefined,
         ...Object.values(operationSchemas),
         '}'
       ]
@@ -554,7 +605,7 @@ import { z } from 'zod'`.trim()
         .join('\n\n')
     )
   )
-    .replaceAll(/z\.object\({}\)\.merge\(([^)]*)\)/g, '$1')
+    .replaceAll(/z\s*\.object\({}\)\s*\.merge\(([^)]*)\)/gm, '$1')
     .replaceAll(/\/\*\*(\S.*)\*\//g, '/** $1 */')
 
   const output = await prettify(
@@ -593,7 +644,7 @@ export class ${clientName} extends AIFunctionsProvider {
       ${
         hasGlobalApiKeyInHeader
           ? `headers: {
-        ${apiKeyHeaderNames.map((name) => `'${(resolvedSecuritySchemes[name] as any).name || 'Authorization'}': ${(resolvedSecuritySchemes[name] as any).schema?.toLowerCase() === 'bearer' ? '`Bearer ${apiKey}`' : 'apiKey'}`).join(',\n')}
+        ${apiKeyHeaderNames.map((name) => `'${(resolvedSecuritySchemes[name] as any).name || 'Authorization'}': ${(resolvedSecuritySchemes[name] as any).schema?.toLowerCase() === 'bearer' || resolvedSecuritySchemes[name]?.type?.toLowerCase() === 'oauth2' ? '`Bearer ${apiKey}`' : 'apiKey'}`).join(',\n')}
       },`
           : ''
       }
