@@ -1,9 +1,10 @@
 import type SwaggerParser from '@apidevtools/swagger-parser'
-import type { OpenAPIV3, OpenAPIV3_1 } from 'openapi-types'
+import type { IJsonSchema, OpenAPIV3, OpenAPIV3_1 } from 'openapi-types'
 import { assert } from '@agentic/core'
 import {
   type JsonSchema,
-  jsonSchemaToZod as jsonSchemaToZodImpl
+  jsonSchemaToZod as jsonSchemaToZodImpl,
+  type ParserOverride
 } from 'json-schema-to-zod'
 import * as prettier from 'prettier'
 
@@ -75,7 +76,8 @@ export function dereference<T extends object = object>(
   refs: SwaggerParser.$Refs,
   resolved?: Set<string>,
   depth = 0,
-  maxDepth = 1
+  maxDepth = 1,
+  visited = new Set<string>()
 ): T {
   if (!obj) return obj
 
@@ -85,29 +87,72 @@ export function dereference<T extends object = object>(
 
   if (Array.isArray(obj)) {
     return obj.map((item) =>
-      dereference(item, refs, resolved, depth + 1, maxDepth)
+      dereference(item, refs, resolved, depth + 1, maxDepth, visited)
     ) as T
   } else if (typeof obj === 'object') {
     if ('$ref' in obj) {
       const ref = obj.$ref as string
-      const derefed = refs.get(ref)
-      if (!derefed) {
+      if (visited?.has(ref)) {
         return obj
       }
+      visited?.add(ref)
+      const derefed = refs.get(ref)
+      assert(derefed, `Invalid schema: $ref not found for ${ref}`)
       resolved?.add(ref)
-      derefed.title = ref.split('/').pop()!
-      return dereference(derefed, refs, resolved, depth + 1, maxDepth)
+      derefed.title ??= ref.split('/').pop()!
+      return dereference(derefed, refs, resolved, depth + 1, maxDepth, visited)
     } else {
       return Object.fromEntries(
         Object.entries(obj).map(([key, value]) => [
           key,
-          dereference(value, refs, resolved, depth + 1, maxDepth)
+          dereference(value, refs, resolved, depth + 1, maxDepth, visited)
         ])
       ) as T
     }
   } else {
     return obj
   }
+}
+
+function createParserOverride({
+  type
+}: {
+  type?: string
+} = {}): ParserOverride {
+  const jsonSchemaToZodParserOverride: ParserOverride = (schema, _refs) => {
+    if ('$ref' in schema) {
+      const ref = schema.$ref as string
+      if (!ref) return
+
+      const name = getComponentName(ref)
+      if (!name) return
+
+      if (type === name) {
+        // TODO: Support recursive types.
+        return `\n// TODO: Support recursive types for \`${name}Schema\`.\nz.any()`
+      }
+
+      return `${name}Schema`
+    } else if (schema.oneOf) {
+      const { oneOf, ...partialSchema } = schema
+
+      // Replace oneOf with anyOf because `json-schema-to-zod` treats oneOf
+      // with a complicated `z.any().superRefine(...)` which we'd like messes
+      // up the resulting types.
+      const newSchema = {
+        ...partialSchema,
+        anyOf: oneOf
+      }
+
+      const res = jsonSchemaToZodImpl(newSchema, {
+        parserOverride: jsonSchemaToZodParserOverride
+      })
+
+      return res
+    }
+  }
+
+  return jsonSchemaToZodParserOverride
 }
 
 export function jsonSchemaToZod(
@@ -126,17 +171,7 @@ export function jsonSchemaToZod(
     withJsdocs: true,
     type: type ?? true,
     noImport: true,
-    parserOverride: (schema, _refs) => {
-      if ('$ref' in schema) {
-        const ref = schema.$ref as string
-        if (!ref) return
-
-        const name = getComponentName(ref)
-        if (!name) return
-
-        return `${name}Schema`
-      }
-    }
+    parserOverride: createParserOverride({ type })
   })
 }
 
@@ -250,4 +285,34 @@ export function getOperationResponseName(
   }
 
   return tempName
+}
+
+export function naiveMergeJSONSchemas(...schemas: IJsonSchema[]): IJsonSchema {
+  const result: any = {}
+
+  for (const ischema of schemas) {
+    const schema = ischema as any
+    const arrayKeys: string[] = []
+    const objectKeys: string[] = []
+
+    for (const [key, value] of Object.entries(schema)) {
+      if (Array.isArray(value)) {
+        arrayKeys.push(key)
+      } else if (typeof value === 'object') {
+        objectKeys.push(key)
+      } else {
+        result[key] = value
+      }
+    }
+
+    for (const key of arrayKeys) {
+      result[key] = [...(result[key] ?? []), ...(schema[key] ?? [])]
+    }
+
+    for (const key of objectKeys) {
+      result[key] = { ...result[key], ...schema[key] }
+    }
+  }
+
+  return result as IJsonSchema
 }
