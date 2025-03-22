@@ -1181,7 +1181,7 @@ export namespace notion {
     PeoplePropertyResponseSchema,
     FilePropertyResponseSchema,
     CheckboxPropertyResponseSchema,
-    URLPropertyResponseSchema,
+    UrlPropertyResponseSchema,
     EmailPropertyResponseSchema,
     PhoneNumberPropertyResponseSchema,
     FormulaPropertyResponseSchema,
