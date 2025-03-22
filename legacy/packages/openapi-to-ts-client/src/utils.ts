@@ -123,11 +123,9 @@ function createParserOverride({
   const jsonSchemaToZodParserOverride: ParserOverride = (schema, _refs) => {
     if ('$ref' in schema) {
       const ref = schema.$ref as string
-      if (!ref) return
+      assert(ref, `Invalid schema: $ref not found for ${schema.$ref}`)
 
       const name = getComponentDisplayName(ref)
-      if (!name) return
-
       if (type === name) {
         // TODO: Support recursive types.
         return `\n// TODO: Support recursive types for \`${name}Schema\`.\nz.any()`
