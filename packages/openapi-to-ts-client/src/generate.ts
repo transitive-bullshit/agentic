@@ -665,7 +665,7 @@ export class ${clientName} extends AIFunctionsProvider {
   console.log(output)
   await fs.mkdir(destFolder, { recursive: true })
   await fs.writeFile(destFileClient, output)
-  await execa('npx', ['eslint', '--fix', destFileClient])
+  await execa('npx', ['eslint', '--fix', '--no-ignore', destFileClient])
 }
 
 await main()
