@@ -1468,7 +1468,7 @@ export namespace notion {
 /**
  * Agentic Notion client.
  *
- * API specification for Notion
+ * API specification for Notion.
  */
 export class NotionClient extends AIFunctionsProvider {
   protected readonly ky: KyInstance

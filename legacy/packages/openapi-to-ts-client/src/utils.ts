@@ -322,3 +322,11 @@ export function naiveMergeJSONSchemas(...schemas: IJsonSchema[]): IJsonSchema {
 
   return result as IJsonSchema
 }
+
+export function getDescription(description?: string): string | undefined {
+  if (description && !/[!.?]$/.test(description)) {
+    description += '.'
+  }
+
+  return description
+}

@@ -16,6 +16,7 @@ import {
   getAndResolve,
   getComponentDisplayName,
   getComponentName,
+  getDescription,
   getOperationParamsName,
   getOperationResponseName,
   jsonSchemaToZod,
@@ -472,10 +473,9 @@ async function main() {
         ? '`' + path.replaceAll(/{([^}]+)}/g, '${params["$1"]}') + '`'
         : `'${path}'`
 
-      let description = operation.description || operation.summary
-      if (description && !/[!.?]$/.test(description)) {
-        description += '.'
-      }
+      const description = getDescription(
+        operation.description || operation.summary
+      )
       const isDescriptionMultiline = description?.includes('\n')
 
       const aiClientMethod = `
@@ -604,6 +604,8 @@ import { z } from 'zod'`.trim()
     .filter(Boolean)
     .join('\n\n')
 
+  const description = getDescription(spec.info?.description)
+
   const output = (
     await prettify(
       [
@@ -611,7 +613,7 @@ import { z } from 'zod'`.trim()
         `
 
 /**
- * Agentic ${name} client.${spec.info?.description ? `\n *\n * ${spec.info.description}` : ''}
+ * Agentic ${name} client.${description ? `\n *\n * ${description}` : ''}
  */
 export class ${clientName} extends AIFunctionsProvider {
   protected readonly ky: KyInstance
