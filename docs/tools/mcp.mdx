@@ -1,0 +1,85 @@
+---
+title: MCP Tools
+description: Agentic adapter for accessing tools defined by Model Context Protocol (MCP) servers.
+---
+
+- package: `@agentic/mcp`
+- exports: `class McpTools`, `createMcpTools`
+- [source](https://github.com/transitive-bullshit/agentic/blob/main/packages/mcp/src/mcp-tools.ts)
+- [MCP docs](https://modelcontextprotocol.io)
+
+## Install
+
+<CodeGroup>
+```bash npm
+npm install @agentic/mcp
+```
+
+```bash yarn
+yarn add @agentic/mcp
+```
+
+```bash pnpm
+pnpm add @agentic/mcp
+```
+
+</CodeGroup>
+
+## Usage
+
+```ts
+import 'dotenv/config'
+
+import { createAISDKTools } from '@agentic/ai-sdk'
+import { createMcpTools } from '@agentic/mcp'
+import { openai } from '@ai-sdk/openai'
+import { generateText } from 'ai'
+
+async function main() {
+  // Create an MCP tools provider, which will start a local MCP server process
+  // and use the stdio transport to communicate with it.
+  const mcpTools = await createMcpTools({
+    name: 'agentic-mcp-filesystem',
+    serverProcess: {
+      command: 'npx',
+      args: [
+        '-y',
+        // This example uses a built-in example MCP server from Anthropic, which
+        // provides a set of tools to access the local filesystem.
+        '@modelcontextprotocol/server-filesystem',
+        // Allow the MCP server to access the current working directory.
+        process.cwd()
+        // Feel free to add additional directories the tool should have access to.
+      ]
+    }
+  })
+
+  const result = await generateText({
+    model: openai('gpt-4o-mini'),
+    tools: createAISDKTools(mcpTools),
+    toolChoice: 'required',
+    temperature: 0,
+    system: 'You are a helpful assistant. Be as concise as possible.',
+    prompt: 'What files are in the current directory?'
+  })
+
+  console.log(result.toolResults[0])
+}
+
+await main()
+```
+
+### createMcpTools
+
+`createMcpTools` creates a new `McpTools` instance by starting or connecting to an MCP server.
+
+You must provide either an existing `transport`, an existing `serverUrl`, or a
+`serverProcess` to spawn.
+
+All tools within the `McpTools` instance will be namespaced under the given `name`.
+
+### JSON Schema
+
+Note that `McpTools` uses JSON Schemas for toll input parameters, whereas most built-in tools use Zod schemas. This is important because some AI frameworks don't support JSON Schemas.
+
+Currently, Mastra, Dexter, and xsAI don't support JSON Schema input parameters, so they won't work with `McpTools`.

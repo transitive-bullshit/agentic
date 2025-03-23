@@ -1,0 +1,38 @@
+---
+title: DuckDuckGo
+description: Search for research articles.
+---
+
+- package: `@agentic/duck-duck-go`
+- exports: `class DuckDuckGoClient`, `namespace duckduckgo`
+- [source](https://github.com/transitive-bullshit/agentic/blob/main/packages/duck-duck-go/src/duck-duck-go-client.ts)
+- [Duck Duck Go api docs](https://api.duckduckgo.com)
+
+## Install
+
+<CodeGroup>
+```bash npm
+npm install @agentic/duck-duck-go
+```
+
+```bash yarn
+yarn add @agentic/duck-duck-go
+```
+
+```bash pnpm
+pnpm add @agentic/duck-duck-go
+```
+
+</CodeGroup>
+
+## Usage
+
+```ts
+import { DuckDuckGoClient } from '@agentic/duck-duck-go'
+
+// No API is required to use the DuckDuckGo API
+const duckDuckGo = new DuckDuckGoClient()
+const results = await duckDuckGo.search({
+  query: 'latest news about AI'
+})
+```
