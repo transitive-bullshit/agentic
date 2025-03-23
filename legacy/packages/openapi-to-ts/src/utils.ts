@@ -1,7 +1,7 @@
 import type SwaggerParser from '@apidevtools/swagger-parser'
 import type { IJsonSchema, OpenAPIV3, OpenAPIV3_1 } from 'openapi-types'
 import { assert } from '@agentic/core'
-import camelcase from 'camelcase'
+import camelCaseImpl from 'camelcase'
 import {
   type JsonSchema,
   jsonSchemaToZod as jsonSchemaToZodImpl,
@@ -23,11 +23,11 @@ export function prettify(source: string): Promise<string> {
 }
 
 export function pascalCase(identifier: string): string {
-  return camelcase(identifier, { pascalCase: true })
+  return camelCaseImpl(identifier, { pascalCase: true })
 }
 
-export function unTitleCase(identifier: string): string {
-  return `${identifier.slice(0, 1).toLowerCase()}${identifier.slice(1)}`
+export function camelCase(identifier: string): string {
+  return camelCaseImpl(identifier)
 }
 
 export function getAndResolve<T extends object = object>(

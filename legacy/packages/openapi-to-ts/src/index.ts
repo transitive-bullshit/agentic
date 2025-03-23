@@ -1,1 +1,1 @@
-export * from './generate'
+export * from './generate-ts-from-openapi'

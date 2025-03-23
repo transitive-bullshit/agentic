@@ -13,7 +13,7 @@
   "types": "./dist/index.d.ts",
   "sideEffects": false,
   "bin": {
-    "openapi-to-ts": "./dist/index.js"
+    "openapi-to-ts": "./dist/generate-from-openapi.js"
   },
   "files": [
     "dist"
