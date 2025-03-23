@@ -1,5 +1,5 @@
 {
   "root": true,
   "extends": ["@fisch0920/eslint-config/node"],
-  "ignorePatterns": ["out", "packages/openapi-to-ts-client/fixtures/generated"]
+  "ignorePatterns": ["out", "packages/openapi-to-ts/fixtures/generated"]
 }
