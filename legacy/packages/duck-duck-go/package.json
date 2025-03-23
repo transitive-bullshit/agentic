@@ -1,0 +1,48 @@
+{
+  "name": "@agentic/duck-duck-go",
+  "version": "7.5.3",
+  "description": "Agentic SDK for DuckDuckGo.",
+  "author": "Travis Fischer <travis@transitivebullsh.it>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/transitive-bullshit/agentic.git"
+  },
+  "type": "module",
+  "source": "./src/index.ts",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "clean": "del dist",
+    "test": "run-s test:*",
+    "test:lint": "eslint .",
+    "test:typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@agentic/core": "workspace:*",
+    "duck-duck-scrape": "^2.2.7",
+    "string-strip-html": "^13.4.12"
+  },
+  "peerDependencies": {
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@agentic/tsconfig": "workspace:*"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

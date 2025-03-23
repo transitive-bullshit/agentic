@@ -1,0 +1,39 @@
+---
+title: ArXiv
+description: Search for research articles.
+---
+
+- package: `@agentic/arxiv`
+- exports: `class ArXivClient`, `namespace arxiv`
+- [source](https://github.com/transitive-bullshit/agentic/blob/main/packages/arxiv/src/arxiv-client.ts)
+- [arxiv api docs](https://info.arxiv.org/help/api/index.html)
+
+## Install
+
+<CodeGroup>
+```bash npm
+npm install @agentic/arxiv
+```
+
+```bash yarn
+yarn add @agentic/arxiv
+```
+
+```bash pnpm
+pnpm add @agentic/arxiv
+```
+
+</CodeGroup>
+
+## Usage
+
+```ts
+import { ArXivClient } from '@agentic/arxiv'
+
+// No API is required to use the ArXiv API
+const arxiv = new ArXivClient()
+const results = await arxiv.search({
+  query: 'machine learning',
+  maxResults: 10
+})
+```
