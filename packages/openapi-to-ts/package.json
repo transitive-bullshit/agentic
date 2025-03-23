@@ -1,5 +1,5 @@
 {
-  "name": "@agentic/openapi-to-ts-client",
+  "name": "@agentic/openapi-to-ts",
   "version": "0.1.0",
   "description": "TODO",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
@@ -13,7 +13,7 @@
   "types": "./dist/index.d.ts",
   "sideEffects": false,
   "bin": {
-    "openapi-to-ts-client": "./dist/index.js"
+    "openapi-to-ts": "./dist/index.js"
   },
   "files": [
     "dist"

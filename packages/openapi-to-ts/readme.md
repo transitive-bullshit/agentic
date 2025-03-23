@@ -21,6 +21,10 @@
 
 ## TODO
 
+- convert to https://github.com/readmeio/oas
+- support filters
+  - // match only the schema named `foo` and `GET` operation for the `/api/v1/foo` path
+  - include: '^(#/components/schemas/foo|#/paths/api/v1/foo/get)$',
 - [ ] Convert HTML in descriptions to markdown.
 - [ ] Properly format multiline function comments.
 - [ ] Debug stripe schema issue.
