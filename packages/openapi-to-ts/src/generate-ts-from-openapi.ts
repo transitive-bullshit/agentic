@@ -11,6 +11,7 @@ import { execa } from 'execa'
 
 import { convertParametersToJSONSchema } from './openapi-parameters-to-json-schema'
 import {
+  camelCase,
   dereference,
   dereferenceFull,
   getAndResolve,
@@ -40,26 +41,22 @@ const httpMethods = [
   'trace'
 ] as const
 
-async function main() {
-  const pathToOpenApiSpec =
-    process.argv[2] ??
-    path.join(dirname, '..', 'fixtures', 'openapi', 'notion.json')
-  assert(pathToOpenApiSpec, 'Missing path to OpenAPI spec')
-
+export async function generateTSFromOpenAPI(openapiFilePath: string) {
   const parser = new SwaggerParser()
-  const spec = (await parser.bundle(pathToOpenApiSpec)) as OpenAPIV3.Document
+  const spec = (await parser.bundle(openapiFilePath)) as OpenAPIV3.Document
   // | OpenAPIV3_1.Document
 
   if (
     // TODO: make this less brittle
     spec.openapi !== '3.0.0' &&
     spec.openapi !== '3.1.0' &&
-    spec.openapi !== '3.1.1'
+    spec.openapi !== '3.1.1' &&
+    spec.openapi.split('.')[0] !== '3'
   ) {
     throw new Error(`Unexpected OpenAPI version "${spec.openapi}"`)
   }
 
-  const openapiSpecName = path.basename(pathToOpenApiSpec, '.json')
+  const openapiSpecName = path.basename(openapiFilePath, '.json')
   assert(
     openapiSpecName.toLowerCase() === openapiSpecName,
     `OpenAPI spec name "${openapiSpecName}" must be in kebab case`
@@ -148,7 +145,7 @@ async function main() {
     requestBodyFormDataJSONSchemaPaths
   ]
 
-  const operationIds = new Set<string>()
+  const operationNames = new Set<string>()
   const operationSchemas: Record<string, string> = {}
   const componentSchemas: Record<string, string> = {}
   const aiClientMethods: string[] = []
@@ -168,18 +165,19 @@ async function main() {
         continue
       }
 
-      const operationName =
-        // TODO: better camelCase fallback
+      const operationId =
         operation.operationId || `${method}${path.replaceAll(/\W+/g, '_')}`
       assert(
-        operationName,
-        `Invalid operation name ${operationName} for path "${method} ${path}"`
+        operationId,
+        `Invalid operation id ${operationId} for path "${method} ${path}"`
       )
+
+      const operationName = camelCase(operationId)
       assert(
-        !operationIds.has(operationName),
+        !operationNames.has(operationName),
         `Duplicate operation name "${operationName}"`
       )
-      operationIds.add(operationName)
+      operationNames.add(operationName)
       const operationNameSnakeCase = decamelize(operationName)
 
       // if (path !== '/comments' || method !== 'post') continue
@@ -611,7 +609,6 @@ import { z } from 'zod'`.trim()
       [
         outputTypes,
         `
-
 /**
  * Agentic ${name} client.${description ? `\n *\n * ${description}` : ''}
  */
@@ -667,5 +664,3 @@ export class ${clientName} extends AIFunctionsProvider {
   await fs.writeFile(destFileClient, output)
   await execa('npx', ['eslint', '--fix', '--no-ignore', destFileClient])
 }
-
-await main()
