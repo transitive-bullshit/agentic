@@ -1,9 +1,6 @@
-import type { z } from 'zod'
-
 import type * as types from './types'
-import { parseStructuredOutput } from './parse-structured-output'
+import { asSchema } from './schema'
 import { assert } from './utils'
-import { zodToJsonSchema } from './zod-to-json-schema'
 
 /**
  * Create a function meant to be used with OpenAI tool or function calling.
@@ -14,7 +11,10 @@ import { zodToJsonSchema } from './zod-to-json-schema'
  * The `spec` property of the returned function is the spec for adding the
  * function to the OpenAI API `functions` property.
  */
-export function createAIFunction<InputSchema extends z.ZodObject<any>, Output>(
+export function createAIFunction<
+  InputSchema extends types.AIFunctionInputSchema,
+  Output
+>(
   spec: {
     /** Name of the function. */
     name: string
@@ -29,7 +29,9 @@ export function createAIFunction<InputSchema extends z.ZodObject<any>, Output>(
     strict?: boolean
   },
   /** Implementation of the function to call with the parsed arguments. */
-  implementation: (params: z.infer<InputSchema>) => types.MaybePromise<Output>
+  implementation: (
+    params: types.inferInput<InputSchema>
+  ) => types.MaybePromise<Output>
 ): types.AIFunction<InputSchema, Output> {
   assert(spec.name, 'createAIFunction missing required "spec.name"')
   assert(
@@ -42,17 +44,22 @@ export function createAIFunction<InputSchema extends z.ZodObject<any>, Output>(
     'createAIFunction "implementation" must be a function'
   )
 
+  const strict = !!spec.strict
+  const inputSchema = asSchema(spec.inputSchema, { strict })
+
   /** Parse the arguments string, optionally reading from a message. */
-  const parseInput = (input: string | types.Msg) => {
+  const parseInput = (
+    input: string | types.Msg
+  ): types.inferInput<InputSchema> => {
     if (typeof input === 'string') {
-      return parseStructuredOutput(input, spec.inputSchema)
+      return inputSchema.parse(input)
     } else {
       const args = input.function_call?.arguments
       assert(
         args,
         `Missing required function_call.arguments for function ${spec.name}`
       )
-      return parseStructuredOutput(args, spec.inputSchema)
+      return inputSchema.parse(args)
     }
   }
 
@@ -71,19 +78,19 @@ export function createAIFunction<InputSchema extends z.ZodObject<any>, Output>(
     writable: false
   })
 
-  const strict = !!spec.strict
-
   aiFunction.inputSchema = spec.inputSchema
   aiFunction.parseInput = parseInput
+
   aiFunction.spec = {
     name: spec.name,
     description: spec.description?.trim() ?? '',
-    parameters: zodToJsonSchema(spec.inputSchema, { strict }),
+    parameters: inputSchema.jsonSchema,
     type: 'function',
     strict
   }
+
   aiFunction.execute = (
-    params: z.infer<InputSchema>
+    params: types.inferInput<InputSchema>
   ): types.MaybePromise<Output> => {
     return implementation(params)
   }

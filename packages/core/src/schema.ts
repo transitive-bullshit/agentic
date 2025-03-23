@@ -39,6 +39,11 @@ export type Schema<TData = unknown> = {
    * Schema type for inference.
    */
   _type: TData
+
+  /**
+   * Source Zod schema if this object was created from a Zod schema.
+   */
+  _source?: any
 }
 
 export function isSchema(value: unknown): value is Schema {
@@ -56,10 +61,8 @@ export function isZodSchema(value: unknown): value is z.ZodType {
   return (
     typeof value === 'object' &&
     value !== null &&
-    '_type' in value &&
-    '_output' in value &&
-    '_input' in value &&
     '_def' in value &&
+    '~standard' in value &&
     'parse' in value &&
     'safeParse' in value
   )
@@ -73,16 +76,25 @@ export function asSchema<TData>(
 }
 
 /**
- * Create a schema from a JSON Schema.
+ * Create a Schema from a JSON Schema.
+ *
+ * All `AIFunction` input schemas accept either a Zod schema or a custom JSON
+ * Schema. Use this function to wrap JSON schemas for use with `AIFunction`.
+ *
+ * Note that JSON Schemas are not validated by default, so you have to pass
+ * in an optional `parse` function (using `ajv`, for instance) if you'd like to
+ * validate them at runtime.
  */
-export function createSchema<TData = unknown>(
+export function createJsonSchema<TData = unknown>(
   jsonSchema: types.JSONSchema,
   {
     parse = (value) => value as TData,
-    safeParse
+    safeParse,
+    source
   }: {
     parse?: types.ParseFn<TData>
     safeParse?: types.SafeParseFn<TData>
+    source?: any
   } = {}
 ): Schema<TData> {
   safeParse ??= (value: unknown) => {
@@ -99,7 +111,8 @@ export function createSchema<TData = unknown>(
     _type: undefined as TData,
     jsonSchema,
     parse,
-    safeParse
+    safeParse,
+    _source: source
   }
 }
 
@@ -107,10 +120,11 @@ export function createSchemaFromZodSchema<TData>(
   zodSchema: z.Schema<TData>,
   opts: { strict?: boolean } = {}
 ): Schema<TData> {
-  return createSchema(zodToJsonSchema(zodSchema, opts), {
+  return createJsonSchema(zodToJsonSchema(zodSchema, opts), {
     parse: (value) => {
       return parseStructuredOutput(value, zodSchema)
-    }
+    },
+    source: zodSchema
   })
 }
 

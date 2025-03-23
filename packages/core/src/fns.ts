@@ -1,5 +1,3 @@
-import type { z } from 'zod'
-
 import type * as types from './types'
 import { AIFunctionSet } from './ai-function-set'
 import { createAIFunction } from './create-ai-function'
@@ -8,7 +6,7 @@ import { assert } from './utils'
 export interface PrivateAIFunctionMetadata {
   name: string
   description: string
-  inputSchema: z.AnyZodObject
+  inputSchema: types.AIFunctionInputSchema
   methodName: string
   strict?: boolean
 }
@@ -35,7 +33,7 @@ if (typeof Symbol === 'function' && Symbol.metadata) {
 }
 
 export abstract class AIFunctionsProvider {
-  private _functions?: AIFunctionSet
+  protected _functions?: AIFunctionSet
 
   /**
    * An `AIFunctionSet` containing all of the AI-compatible functions exposed
@@ -70,7 +68,7 @@ export abstract class AIFunctionsProvider {
 
 export function aiFunction<
   This extends AIFunctionsProvider,
-  InputSchema extends z.SomeZodObject,
+  InputSchema extends types.AIFunctionInputSchema,
   OptionalArgs extends Array<undefined>,
   Return extends types.MaybePromise<any>
 >({
@@ -87,14 +85,14 @@ export function aiFunction<
   return (
     _targetMethod: (
       this: This,
-      input: z.infer<InputSchema>,
+      input: types.inferInput<InputSchema>,
       ...optionalArgs: OptionalArgs
     ) => Return,
     context: ClassMethodDecoratorContext<
       This,
       (
         this: This,
-        input: z.infer<InputSchema>,
+        input: types.inferInput<InputSchema>,
         ...optionalArgs: OptionalArgs
       ) => Return
     >
