@@ -23,6 +23,8 @@ catalog:
   type-fest: ^4.37.0
   wikibase-sdk: ^10.2.2
   '@types/jsrsasign': ^10.5.15
+  fast-xml-parser: ^5.0.9
+  '@modelcontextprotocol/sdk': ^1.7.0
 
   # vercel ai sdk
   ai: ^4.1.61

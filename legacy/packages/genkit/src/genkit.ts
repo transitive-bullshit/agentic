@@ -1,5 +1,10 @@
 import type { Genkit } from 'genkit'
-import { type AIFunctionLike, AIFunctionSet } from '@agentic/core'
+import {
+  type AIFunctionLike,
+  AIFunctionSet,
+  asSchema,
+  isZodSchema
+} from '@agentic/core'
 import { z } from 'zod'
 
 /**
@@ -12,15 +17,22 @@ export function createGenkitTools(
 ) {
   const fns = new AIFunctionSet(aiFunctionLikeTools)
 
-  return fns.map((fn) =>
-    genkit.defineTool(
+  return fns.map((fn) => {
+    const inputSchemaKey = isZodSchema(fn.inputSchema)
+      ? ('inputSchema' as const)
+      : ('inputJsonSchema' as const)
+
+    return genkit.defineTool(
       {
         name: fn.spec.name,
         description: fn.spec.description,
-        inputSchema: fn.inputSchema,
+        // TODO: This schema handling should be able to be cleaned up.
+        [inputSchemaKey]: isZodSchema(fn.inputSchema)
+          ? fn.inputSchema
+          : asSchema(fn.inputSchema).jsonSchema,
         outputSchema: z.any()
       },
       fn.execute
     )
-  )
+  })
 }

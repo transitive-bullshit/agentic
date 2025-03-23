@@ -1,5 +1,10 @@
-import { type AIFunctionLike, AIFunctionSet } from '@agentic/core'
-import { tool } from 'ai'
+import {
+  type AIFunctionLike,
+  AIFunctionSet,
+  asSchema,
+  isZodSchema
+} from '@agentic/core'
+import { jsonSchema, tool } from 'ai'
 
 /**
  * Converts a set of Agentic stdlib AI functions to an object compatible with
@@ -13,7 +18,9 @@ export function createAISDKTools(...aiFunctionLikeTools: AIFunctionLike[]) {
       fn.spec.name,
       tool({
         description: fn.spec.description,
-        parameters: fn.inputSchema,
+        parameters: isZodSchema(fn.inputSchema)
+          ? fn.inputSchema
+          : jsonSchema(asSchema(fn.inputSchema).jsonSchema),
         execute: fn.execute
       })
     ])

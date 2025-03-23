@@ -9,9 +9,11 @@
   },
   "dependencies": {
     "@agentic/ai-sdk": "workspace:*",
+    "@agentic/mcp": "workspace:*",
     "@agentic/weather": "workspace:*",
     "@ai-sdk/openai": "catalog:",
     "ai": "catalog:",
+    "exit-hook": "^4.0.0",
     "openai": "catalog:",
     "zod": "catalog:"
   },
