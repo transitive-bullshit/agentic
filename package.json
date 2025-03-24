@@ -14,7 +14,7 @@
   "type": "module",
   "scripts": {
     "build": "turbo build",
-    "dev": "turbo dev --concurrency 50 --continue",
+    "dev": "turbo dev --continue",
     "docs": "cd docs && npx mintlify dev",
     "clean": "turbo clean",
     "fix": "run-s fix:*",

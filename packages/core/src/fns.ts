@@ -1,5 +1,3 @@
-import type { z } from 'zod'
-
 import type * as types from './types'
 import { AIFunctionSet } from './ai-function-set'
 import { createAIFunction } from './create-ai-function'
@@ -8,7 +6,7 @@ import { assert } from './utils'
 export interface PrivateAIFunctionMetadata {
   name: string
   description: string
-  inputSchema: z.AnyZodObject
+  inputSchema: types.AIFunctionInputSchema
   methodName: string
   strict?: boolean
 }
@@ -35,8 +33,15 @@ if (typeof Symbol === 'function' && Symbol.metadata) {
 }
 
 export abstract class AIFunctionsProvider {
-  private _functions?: AIFunctionSet
+  protected _functions?: AIFunctionSet
 
+  /**
+   * An `AIFunctionSet` containing all of the AI-compatible functions exposed
+   * by this class.
+   *
+   * This property is useful for manipulating AI functions across multiple
+   * sources, picking specific functions, ommitting certain functions, etc.
+   */
   get functions(): AIFunctionSet {
     if (!this._functions) {
       const metadata = this.constructor[Symbol.metadata]
@@ -46,7 +51,6 @@ export abstract class AIFunctionsProvider {
       )
       const invocables =
         (metadata?.invocables as PrivateAIFunctionMetadata[]) ?? []
-      // console.log({ metadata, invocables })
 
       const aiFunctions = invocables.map((invocable) => {
         const impl = (this as any)[invocable.methodName]
@@ -64,7 +68,7 @@ export abstract class AIFunctionsProvider {
 
 export function aiFunction<
   This extends AIFunctionsProvider,
-  InputSchema extends z.SomeZodObject,
+  InputSchema extends types.AIFunctionInputSchema,
   OptionalArgs extends Array<undefined>,
   Return extends types.MaybePromise<any>
 >({
@@ -81,14 +85,14 @@ export function aiFunction<
   return (
     _targetMethod: (
       this: This,
-      input: z.infer<InputSchema>,
+      input: types.inferInput<InputSchema>,
       ...optionalArgs: OptionalArgs
     ) => Return,
     context: ClassMethodDecoratorContext<
       This,
       (
         this: This,
-        input: z.infer<InputSchema>,
+        input: types.inferInput<InputSchema>,
         ...optionalArgs: OptionalArgs
       ) => Return
     >
@@ -108,6 +112,23 @@ export function aiFunction<
 
     context.addInitializer(function () {
       ;(this as any)[methodName] = (this as any)[methodName].bind(this)
+      // ;(this as any)[methodName].aiFunction = this.functions.get(
+      //   name ?? methodName
+      // )
     })
   }
 }
+
+// declare module './fns' {
+//   // Define a type for methods decorated with @aiFunction
+//   type AIFunctionMethod<
+//     T extends z.ZodObject<any> = z.ZodObject<any>,
+//     R = any
+//   > = ((...args: any[]) => R) & {
+//     aiFunction?: AIFunction<T, R>
+//   }
+
+//   interface AIFunctionsProvider {
+//     [methodName: string]: AIFunctionMethod<any, any>
+//   }
+// }

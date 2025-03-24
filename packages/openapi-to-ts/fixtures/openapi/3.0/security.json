@@ -1,0 +1,392 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "version": "1.0.0",
+    "title": "Support for different security types",
+    "description": "https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#securitySchemeObject"
+  },
+  "servers": [
+    {
+      "url": "https://httpbin.org"
+    }
+  ],
+  "tags": [
+    {
+      "name": "API Key"
+    },
+    {
+      "name": "HTTP"
+    },
+    {
+      "name": "OAuth 2"
+    },
+    {
+      "name": "OpenID Connect"
+    },
+    {
+      "name": "Other"
+    }
+  ],
+  "paths": {
+    "/anything/apiKey": {
+      "get": {
+        "summary": "Query parameter",
+        "description": "`apiKey` auth will be supplied within an `apiKey` query parameter.",
+        "tags": ["API Key"],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "apiKey_query": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "Cookie",
+        "description": "`apiKey` auth will be supplied within an `api_key` cookie.",
+        "tags": ["API Key"],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "apiKey_cookie": []
+          }
+        ]
+      },
+      "put": {
+        "summary": "Header",
+        "description": "`apiKey` auth will be supplied within an `X-API-KEY` header.",
+        "tags": ["API Key"],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "apiKey_header": []
+          }
+        ]
+      }
+    },
+    "/anything/basic": {
+      "post": {
+        "summary": "Basic",
+        "description": "Authentication credentials will be supplied within a `Basic` `Authorization` header.\n\nhttps://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#basic-authentication-sample",
+        "tags": ["HTTP"],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ]
+      }
+    },
+    "/anything/bearer": {
+      "post": {
+        "summary": "Bearer",
+        "description": "Authentication credentials will be supplied within a `Bearer` `Authorization` header.\n\nhttps://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#basic-authentication-sample",
+        "tags": ["HTTP"],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "put": {
+        "summary": "Bearer (`jwt` format)",
+        "description": "Authentication credentials will be supplied within a `Bearer` `Authorization` header, but its data should be controlled as a JWT.\n\nhttps://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#basic-authentication-sample\n\n> ℹ️\n> We currently do not support any special handling for this so they're handled as a standard `Bearer` authentication token.",
+        "tags": ["HTTP"],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "bearer_jwt": []
+          }
+        ]
+      }
+    },
+    "/anything/oauth2": {
+      "post": {
+        "summary": "General support (all flow types)",
+        "description": "> ℹ️\n> We currently do not handle OAuth 2 authentication flows so if an operation has an `oauth2` requirement we assume that the user, or the projects JWT, has a qualified `bearer` token and will use that.\n\nhttps://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-fields-23",
+        "tags": ["OAuth 2"],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "oauth2": ["write:things"]
+          }
+        ]
+      },
+      "get": {
+        "summary": "General support (authorizationCode flow type)",
+        "description": "> ℹ️\n> We currently do not handle OAuth 2 authentication flows so if an operation has an `oauth2` requirement we assume that the user, or the projects JWT, has a qualified `bearer` token and will use that.\n\nhttps://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-fields-23",
+        "tags": ["OAuth 2"],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "oauth2_authorizationCode": ["write:things"]
+          }
+        ]
+      },
+      "put": {
+        "summary": "General support (clientCredentials flow type)",
+        "description": "> ℹ️\n> We currently do not handle OAuth 2 authentication flows so if an operation has an `oauth2` requirement we assume that the user, or the projects JWT, has a qualified `bearer` token and will use that.\n\nhttps://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-fields-23",
+        "tags": ["OAuth 2"],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "oauth2_clientCredentials": ["write:things"]
+          }
+        ]
+      },
+      "patch": {
+        "summary": "General support (implicit flow type)",
+        "description": "> ℹ️\n> We currently do not handle OAuth 2 authentication flows so if an operation has an `oauth2` requirement we assume that the user, or the projects JWT, has a qualified `bearer` token and will use that.\n\nhttps://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-fields-23",
+        "tags": ["OAuth 2"],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "oauth2_implicit": ["write:things"]
+          }
+        ]
+      },
+      "delete": {
+        "summary": "General support (password flow type)",
+        "description": "> ℹ️\n> We currently do not handle OAuth 2 authentication flows so if an operation has an `oauth2` requirement we assume that the user, or the projects JWT, has a qualified `bearer` token and will use that.\n\nhttps://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-fields-23",
+        "tags": ["OAuth 2"],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "oauth2_password": ["write:things"]
+          }
+        ]
+      }
+    },
+    "/anything/openIdConnect": {
+      "post": {
+        "summary": "General support",
+        "description": "🚧 This is not supported.",
+        "tags": ["OpenID Connect"],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "openIdConnect": []
+          }
+        ]
+      }
+    },
+    "/anything/no-auth": {
+      "post": {
+        "summary": "No auth requirements",
+        "description": "This operation does not have any authentication requirements.",
+        "tags": ["Other"],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/anything/optional-auth": {
+      "get": {
+        "summary": "Optional auth",
+        "description": "The `apiKey` query parameter auth on this operation is optional.\n\nhttps://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#security-requirement-object",
+        "tags": ["Other"],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "apiKey_query": []
+          },
+          {}
+        ]
+      }
+    },
+    "/status/401": {
+      "post": {
+        "summary": "Forced invalid authentication",
+        "description": "This endpoint requires an authentication header but making any request to it will forcefully return a 401 status code for invalid auth.",
+        "tags": ["Other"],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "apiKey_header": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "apiKey_cookie": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "api_key",
+        "description": "An API key that will be supplied in a named cookie. https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#security-scheme-object"
+      },
+      "apiKey_header": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-API-KEY",
+        "description": "An API key that will be supplied in a named header. https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#security-scheme-object"
+      },
+      "apiKey_query": {
+        "type": "apiKey",
+        "in": "query",
+        "name": "apiKey",
+        "description": "An API key that will be supplied in a named query parameter. https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#security-scheme-object"
+      },
+      "basic": {
+        "type": "http",
+        "scheme": "basic",
+        "description": "Basic auth that takes a base64'd combination of `user:password`. https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#basic-authentication-sample"
+      },
+      "bearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "A bearer token that will be supplied within an `Authentication` header as `bearer <token>`. https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#basic-authentication-sample"
+      },
+      "bearer_jwt": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "A bearer token that will be supplied within an `Authentication` header as `bearer <token>`. In this case, the format of the token is specified as JWT. https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#jwt-bearer-sample"
+      },
+      "oauth2": {
+        "type": "oauth2",
+        "description": "An OAuth 2 security flow. https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-fields-23",
+        "flows": {
+          "authorizationCode": {
+            "authorizationUrl": "http://example.com/oauth/dialog",
+            "tokenUrl": "http://example.com/oauth/token",
+            "scopes": {
+              "write:things": "Add things to your account"
+            }
+          },
+          "clientCredentials": {
+            "tokenUrl": "http://example.com/oauth/token",
+            "scopes": {
+              "write:things": "Add things to your account"
+            }
+          },
+          "implicit": {
+            "authorizationUrl": "http://example.com/oauth/dialog",
+            "scopes": {
+              "write:things": "Add things to your account"
+            }
+          },
+          "password": {
+            "tokenUrl": "http://example.com/oauth/token",
+            "scopes": {
+              "write:things": "Add things to your account"
+            }
+          }
+        }
+      },
+      "oauth2_authorizationCode": {
+        "type": "oauth2",
+        "description": "An OAuth 2 security flow that only supports the `authorizationCode` flow type. https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#oauth-flows-object",
+        "flows": {
+          "authorizationCode": {
+            "authorizationUrl": "http://alt.example.com/oauth/dialog",
+            "tokenUrl": "http://alt.example.com/oauth/token",
+            "scopes": {
+              "write:things": "Add things to your account"
+            }
+          }
+        }
+      },
+      "oauth2_clientCredentials": {
+        "type": "oauth2",
+        "description": "An OAuth 2 security flow that only supports the `clientCredentials` flow type. https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#oauth-flows-object",
+        "flows": {
+          "clientCredentials": {
+            "tokenUrl": "http://alt.example.com/oauth/token",
+            "scopes": {
+              "write:things": "Add things to your account"
+            }
+          }
+        }
+      },
+      "oauth2_implicit": {
+        "type": "oauth2",
+        "description": "An OAuth 2 security flow that only supports the `implicit` flow type. https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#oauth-flows-object",
+        "flows": {
+          "implicit": {
+            "authorizationUrl": "http://alt.example.com/oauth/dialog",
+            "scopes": {
+              "write:things": "Add things to your account"
+            }
+          }
+        }
+      },
+      "oauth2_password": {
+        "type": "oauth2",
+        "description": "An OAuth 2 security flow that only supports the `password` flow type. https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#oauth-flows-object",
+        "flows": {
+          "password": {
+            "tokenUrl": "http://alt.example.com/oauth/token",
+            "scopes": {
+              "write:things": "Add things to your account"
+            }
+          }
+        }
+      },
+      "openIdConnect": {
+        "type": "openIdConnect",
+        "openIdConnectUrl": "https://example.com/.well-known/openid-configuration",
+        "description": "OpenAPI authentication. https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-fields-23"
+      }
+    }
+  }
+}
