@@ -13,7 +13,7 @@ import {
 import { Client as McpClient } from '@modelcontextprotocol/sdk/client/index.js'
 import { type z } from 'zod'
 
-import type { McpClientOptions, McpToolsFilter } from './types'
+import type { McpToolsFilter, McpToolsOptions } from './types'
 import { paginate } from './paginate'
 
 /**
@@ -39,7 +39,7 @@ export class McpTools extends AIFunctionsProvider {
     rawToolResponses = false
   }: {
     client: McpClient
-  } & McpClientOptions) {
+  } & McpToolsOptions) {
     super()
 
     this.name = name
@@ -136,7 +136,7 @@ export class McpTools extends AIFunctionsProvider {
    * All tools within the `McpTools` instance will be namespaced under the given
    * `name`.
    */
-  static async fromMcpClient(params: { client: McpClient } & McpClientOptions) {
+  static async fromMcpClient(params: { client: McpClient } & McpToolsOptions) {
     const mcpTools = new McpTools(params)
     await mcpTools._init()
     return mcpTools
@@ -152,7 +152,7 @@ export class McpTools extends AIFunctionsProvider {
  * `name`.
  */
 export async function createMcpTools(
-  params: McpClientOptions
+  params: McpToolsOptions
 ): Promise<McpTools> {
   const transport = await createMcpTransport(params)
   const client = new McpClient(
@@ -169,7 +169,7 @@ export async function createMcpTools(
  * `serverUrl`, or a `serverProcess` to spawn.
  */
 export async function createMcpTransport(
-  params: McpClientOptions
+  params: McpToolsOptions
 ): Promise<Transport> {
   if (params.transport) return params.transport
 
