@@ -4,10 +4,10 @@ import type { z } from 'zod'
 import type { AIFunctionSet } from './ai-function-set'
 import type { AIFunctionsProvider } from './fns'
 import type { Msg } from './message'
-import type { Schema } from './schema'
+import type { AgenticSchema } from './schema'
 
 export type { Msg } from './message'
-export type { Schema } from './schema'
+export type { AgenticSchema } from './schema'
 export type { KyInstance } from 'ky'
 export type { ThrottledFunction } from 'p-throttle'
 export type { SetOptional, SetRequired, Simplify } from 'type-fest'
@@ -57,11 +57,11 @@ export interface AIToolSpec {
  * A Zod object schema or a custom schema created from a JSON schema via
  * `createSchema()`.
  */
-export type AIFunctionInputSchema = z.ZodObject<any> | Schema<any>
+export type AIFunctionInputSchema = z.ZodObject<any> | AgenticSchema<any>
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export type inferInput<InputSchema extends AIFunctionInputSchema> =
-  InputSchema extends Schema<any>
+  InputSchema extends AgenticSchema<any>
     ? InputSchema['_type']
     : InputSchema extends z.ZodTypeAny
       ? z.infer<InputSchema>

@@ -1,4 +1,8 @@
-import { type AIFunctionLike, AIFunctionSet } from '@agentic/core'
+import {
+  type AIFunctionLike,
+  AIFunctionSet,
+  asZodOrJsonSchema
+} from '@agentic/core'
 import { FunctionTool } from 'llamaindex'
 
 /**
@@ -14,7 +18,8 @@ export function createLlamaIndexTools(
     FunctionTool.from(fn.execute, {
       name: fn.spec.name,
       description: fn.spec.description,
-      parameters: fn.spec.parameters as any
+      // TODO: Investigate types here
+      parameters: asZodOrJsonSchema(fn.inputSchema) as any
     })
   )
 }

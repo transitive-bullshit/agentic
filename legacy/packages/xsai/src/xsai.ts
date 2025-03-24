@@ -3,7 +3,7 @@ import { tool, type ToolResult } from '@xsai/tool'
 
 /**
  * Converts a set of Agentic stdlib AI functions to an object compatible with
- * [the xsAI SDK's](https://github.com/moeru-ai/xsai) `tools` parameter.
+ * the [xsAI SDK's](https://github.com/moeru-ai/xsai) `tools` parameter.
  */
 export function createXSAITools(
   ...aiFunctionLikeTools: AIFunctionLike[]
