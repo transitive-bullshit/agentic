@@ -19,6 +19,7 @@
 
 - [Intro](#intro)
   - [Under the hood](#under-the-hood)
+- [Features](#features)
 - [Docs](#docs)
 - [AI SDKs](#ai-sdks)
   - [Vercel AI SDK](#vercel-ai-sdk)
@@ -52,7 +53,7 @@ const result = await weather.getCurrentWeather({
 console.log(result)
 ```
 
-Or you can use these clients as **LLM-based tools** where the LLM decides when and how to invoke the underlying functions for you.
+Or you can use these clients as **LLM-based tools**.
 
 This works across all the leading AI SDKs via adapters. Here's an example using [Vercel's AI SDK](https://github.com/vercel/ai):
 
@@ -80,7 +81,7 @@ console.log(result.toolResults[0])
 
 You can use our standard library of thoroughly tested AI functions with your favorite AI SDK – without having to write any glue code!
 
-All Agentic clients expose an `AIFunctionSet`, which makes it easy to mix & match all sorts of different tools together.
+All Agentic clients expose an `AIFunctionSet`, which makes it easy to mix & match different tools together.
 
 ```ts
 import { SerperClient, WikipediaClient, FirecrawlClient } from '@agentic/stdlib'
@@ -91,6 +92,8 @@ const firecrawl = new FirecrawlClient()
 
 const result = await generateText({
   model: openai('gpt-4o-mini'),
+  // This example uses tools from 3 different sources. You can pass as many
+  // sources as you want.
   tools: createAISDKTools(
     googleSearch,
     wikipedia,
@@ -99,7 +102,7 @@ const result = await generateText({
   ),
   toolChoice: 'required',
   prompt:
-    'What year did Jurassic Park come out, and what else happened that year?'
+    'What year did Jurassic Park the movie come out, and what else happened that year?'
 })
 ```
 
@@ -107,7 +110,18 @@ const result = await generateText({
 
 All of the adapters (like `createAISDKTools`) accept a very flexible var args of `AIFunctionLike` parameters, so you can pass as many tools as you'd like. An `AIFunctionLike` can be any agentic client instance, a single `AIFunction` selected from the client's `.functions` property (which holds an `AIFunctionSet` of available AI functions), or an AI function created manually via `createAIFunction`.
 
-`AIFunctionLike` and `AIFunctionSet` are details that you likely won't have to touch directly, but they're important because of their flexibility.
+`AIFunctionLike` and `AIFunctionSet` are implementation details that you likely won't have to touch directly, but they're important because of their flexibility.
+
+## Features
+
+✅ Thoroughly tested, production-ready AI tools
+✅ Tools work across all leading TS AI SDKs
+✅ Tools are hand-coded and extremely minimal
+✅ Tools have both a good manual DX and LLM DX via the `@aiFunction` decorator
+✅ Tools use native `fetch`
+✅ Tools use `ky` to wrap `fetch`, so HTTP options, throttling, retries, etc are easy to customize
+✅ Supports tools from any MCP server ([createMcpTools(...)](https://agentic.so/tools/mcp))
+✅ Generate new Agentic tool clients from OpenAPI specs ([@agentic/openapi-to-ts](./packages/openapi-to-ts))
 
 ## Docs
 
@@ -198,7 +212,7 @@ Full docs are available at [agentic.so](https://agentic.so).
 > All Agentic clients have been hand-crafted for minimal size, with very few relying on external dependencies aside from our native `fetch` wrapper, [ky](https://github.com/sindresorhus/ky).
 
 > [!NOTE]
-> Missing a tool or want to add your own tool to this list? If you have an OpenAPI v3 spec for your API, we make it extremely easy to add support using our [@agentic/openapi-to-ts CLI](./packages/openapi-to-ts). Otherwise, feel free to [open an issue to discuss](https://github.com/transitive-bullshit/agentic/issues/new?q=sort%3Aupdated-desc+is%3Aissue+is%3Aopen).
+> Missing a tool or want to add your own tool to this list? If you have an OpenAPI v3 spec for your tool's API, we make it extremely easy to add support using our [@agentic/openapi-to-ts CLI](./packages/openapi-to-ts). Otherwise, feel free to [open an issue to discuss](https://github.com/transitive-bullshit/agentic/issues/new?q=sort%3Aupdated-desc+is%3Aissue+is%3Aopen).
 
 For more details, see the [docs](https://agentic.so).
 

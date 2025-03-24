@@ -3,7 +3,7 @@ import type { Transport } from '@modelcontextprotocol/sdk/shared/transport.js'
 
 export type McpToolsFilter = (toolName: string) => boolean
 
-export interface McpClientOptions {
+export interface McpToolsOptions {
   /**
    * Provide a name for this client which will be its namespace for all tools and prompts.
    */

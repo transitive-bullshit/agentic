@@ -78,8 +78,52 @@ You must provide either an existing `transport`, an existing `serverUrl`, or a
 
 All tools within the `McpTools` instance will be namespaced under the given `name`.
 
+`createMcpTools` takes in the following options ([source](https://github.com/transitive-bullshit/agentic/blob/main/packages/mcp/src/types.ts)):
+
+```ts
+export interface McpToolsOptions {
+  /**
+   * Provide a name for this client which will be its namespace for all tools and prompts.
+   */
+  name: string
+
+  /**
+   * Provide a version number for this client (defaults to 1.0.0).
+   */
+  version?: string
+
+  /**
+   * If you already have an MCP transport you'd like to use, pass it here to connect to the server.
+   */
+  transport?: Transport
+
+  /**
+   * Start a local server process using the stdio MCP transport.
+   */
+  serverProcess?: StdioServerParameters
+
+  /**
+   * Connect to a remote server process using the SSE MCP transport.
+   */
+  serverUrl?: string
+
+  /**
+   * Return tool responses in raw MCP form instead of processing them for Genkit compatibility.
+   */
+  rawToolResponses?: boolean
+
+  /**
+   * An optional filter function to determine which tools should be enabled.
+   *
+   * By default, all tools available on the MCP server will be enabled, but you
+   * can use this to filter a subset of those tools.
+   */
+  toolsFilter?: McpToolsFilter
+}
+```
+
 ### JSON Schema
 
-Note that `McpTools` uses JSON Schemas for toll input parameters, whereas most built-in tools use Zod schemas. This is important because some AI frameworks don't support JSON Schemas.
+Note that `McpTools` uses JSON Schemas for toll input parameters, whereas most built-in tools use Zod schemas. This is important because some AI frameworks don't support JSON Schemas as AI function parameters.
 
-Currently, Mastra, Dexter, and xsAI don't support JSON Schema input parameters, so they won't work with `McpTools`.
+Currently, Mastra, Dexter, and xsAI don't support JSON Schema input parameters, so they won't work with `McpTools`. All of the other AI SDKs should work fine with the JSON Schema-based tools.
