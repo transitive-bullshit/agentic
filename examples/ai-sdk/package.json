@@ -13,7 +13,7 @@
     "@agentic/weather": "workspace:*",
     "@ai-sdk/openai": "catalog:",
     "ai": "catalog:",
-    "exit-hook": "^4.0.0",
+    "exit-hook": "catalog:",
     "openai": "catalog:",
     "zod": "catalog:"
   },

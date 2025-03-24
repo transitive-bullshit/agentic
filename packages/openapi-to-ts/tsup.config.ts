@@ -14,7 +14,7 @@ export default defineConfig([
     dts: true
   },
   {
-    entry: ['bin/generate-from-openapi.ts'],
+    entry: ['bin/openapi-to-ts.ts'],
     outDir: 'dist',
     target: 'node18',
     platform: 'node',

@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <em>TODO.</em>
+  <em>Generate an Agentic TypeScript client from an OpenAPI spec.</em>
 </p>
 
 <p align="center">
@@ -19,15 +19,36 @@
 
 **See the [github repo](https://github.com/transitive-bullshit/agentic) or [docs](https://agentic.so) for more info.**
 
+## Example Usage
+
+```sh
+# local development
+tsx bin/openapi-to-ts.ts fixtures/openapi/3.0/notion.json -o fixtures/generated
+
+# published version
+npx @agentic/openapi-to-ts fixtures/openapi/3.0/notion.json -o fixtures/generated
+
+# npm install -g version
+npm install -g @agentic/openapi-to-ts
+openapi-to-ts fixtures/openapi/3.0/notion.json -o fixtures/generated
+```
+
+Most OpenAPI specs should be supported, but I've made no attempt to maximize robustness. This tool is meant to generate Agentic TS clients which are 99% of the way there, but some tweaking may be necessary post-generation.
+
+Some things you may want to tweak:
+
+- simplifying the zod parameters accepted by `@aiFunction` input schemas since LLMs tend to do better with a few, key parameters
+- removing unused API endpoints & associated types that you don't want to expose to LLMs
+
 ## TODO
 
-- convert to https://github.com/readmeio/oas
+- convert openapi parsing & utils to https://github.com/readmeio/oas
 - support filters
   - // match only the schema named `foo` and `GET` operation for the `/api/v1/foo` path
   - include: '^(#/components/schemas/foo|#/paths/api/v1/foo/get)$',
-- [ ] Convert HTML in descriptions to markdown.
-- [ ] Properly format multiline function comments.
-- [ ] Debug stripe schema issue.
+- [ ] Convert HTML in descriptions to markdown
+- [ ] Properly format multiline function comments
+- [ ] Debug stripe schema issue
 
 ## License
 

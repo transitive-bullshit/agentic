@@ -1,7 +1,7 @@
 {
   "name": "@agentic/openapi-to-ts",
   "version": "0.1.0",
-  "description": "TODO",
+  "description": "Generate an Agentic TypeScript client from an OpenAPI spec.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",
   "repository": {
@@ -13,7 +13,7 @@
   "types": "./dist/index.d.ts",
   "sideEffects": false,
   "bin": {
-    "openapi-to-ts": "./dist/generate-from-openapi.js"
+    "openapi-to-ts": "./dist/openapi-to-ts.js"
   },
   "files": [
     "dist"
@@ -30,15 +30,16 @@
     "@agentic/core": "workspace:*",
     "@apidevtools/swagger-parser": "^10.1.1",
     "camelcase": "^8.0.0",
+    "cleye": "catalog:",
     "decamelize": "^6.0.0",
     "execa": "^9.5.2",
+    "exit-hook": "catalog:",
     "json-schema-to-zod": "^2.6.0",
     "openapi-types": "^12.1.3",
     "zod": "catalog:"
   },
   "devDependencies": {
-    "@agentic/tsconfig": "workspace:*",
-    "ky": "catalog:"
+    "@agentic/tsconfig": "workspace:*"
   },
   "publishConfig": {
     "access": "public"
