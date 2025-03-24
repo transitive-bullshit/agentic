@@ -210,12 +210,9 @@ Full docs are available at [agentic.so](https://agentic.so).
 | [ZoomInfo](https://api-docs.zoominfo.com)                                | `@agentic/zoominfo`         | [docs](https://agentic.so/tools/zoominfo)         | Powerful B2B person and company data enrichment.                                                                                                                                                                                                               |
 
 > [!NOTE]
-> All Agentic clients have been hand-crafted for minimal size, with very few relying on external dependencies aside from our native `fetch` wrapper, [ky](https://github.com/sindresorhus/ky).
+> Missing a tool or want to add your own tool to this list? If you have an OpenAPI v3 spec for your tool's API, we make it extremely easy to add support using our [@agentic/openapi-to-ts](./packages/openapi-to-ts) CLI. Otherwise, feel free to [open an issue to discuss](https://github.com/transitive-bullshit/agentic/issues/new?q=sort%3Aupdated-desc+is%3Aissue+is%3Aopen) or submit a PR.
 
-> [!NOTE]
-> Missing a tool or want to add your own tool to this list? If you have an OpenAPI v3 spec for your tool's API, we make it extremely easy to add support using our [@agentic/openapi-to-ts CLI](./packages/openapi-to-ts). Otherwise, feel free to [open an issue to discuss](https://github.com/transitive-bullshit/agentic/issues/new?q=sort%3Aupdated-desc+is%3Aissue+is%3Aopen).
-
-For more details, see the [docs](https://agentic.so).
+For more details on tool usage, see the [docs](https://agentic.so).
 
 ## Contributors
 
