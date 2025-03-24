@@ -18,7 +18,7 @@
 # Agentic <!-- omit from toc -->
 
 - [Intro](#intro)
-  - [Under the hood](#under-the-hood)
+  - [Using Multiple Tools](#using-multiple-tools)
 - [Features](#features)
 - [Docs](#docs)
 - [AI SDKs](#ai-sdks)
@@ -53,9 +53,7 @@ const result = await weather.getCurrentWeather({
 console.log(result)
 ```
 
-Or you can use these clients as **LLM-based tools**.
-
-This works across all the leading AI SDKs via adapters. Here's an example using [Vercel's AI SDK](https://github.com/vercel/ai):
+Or you can use these clients as **LLM-based tools**. Here's an example using [Vercel's AI SDK](https://github.com/vercel/ai):
 
 ```ts
 // sdk-specific imports
@@ -81,10 +79,16 @@ console.log(result.toolResults[0])
 
 You can use our standard library of thoroughly tested AI functions with your favorite AI SDK – without having to write any glue code!
 
-All Agentic clients expose an `AIFunctionSet`, which makes it easy to mix & match different tools together.
+### Using Multiple Tools
+
+All adapters (like `createAISDKTools`) accept a very flexible var args of `AIFunctionLike` parameters, so you can pass as many tools as you'd like.
+
+They also expose a `.functions` property which is an `AIFunctionSet`. This combination makes it really easy to mix & match different tools together.
 
 ```ts
 import { SerperClient, WikipediaClient, FirecrawlClient } from '@agentic/stdlib'
+import { createAIFunction } from '@agentic/core'
+import { z } from 'zod'
 
 const googleSearch = new SerperClient()
 const wikipedia = new WikipediaClient()
@@ -92,23 +96,29 @@ const firecrawl = new FirecrawlClient()
 
 const result = await generateText({
   model: openai('gpt-4o-mini'),
-  // This example uses tools from 3 different clients. You can pass as many
-  // tool sources as you want.
+  // This example uses tools from 4 different sources. You can pass as many
+  // AIFunctionLike objects as you want.
   tools: createAISDKTools(
     googleSearch,
     wikipedia,
     // Pick a single function from the firecrawl client's set of AI functions
-    firecrawl.functions.pick('firecrawl_search')
+    firecrawl.functions.pick('firecrawl_search'),
+    // Create a custom AI function (based off of Anthropic's think tool: https://www.anthropic.com/engineering/claude-think-tool)
+    createAIFunction({
+      name: 'think',
+      description: `Use this tool to think about something. It will not obtain new information or change the database, but just append the thought to the log. Use it when complex reasoning or some cache memory is needed.`,
+      inputSchema: z.object({
+        thought: z.string().describe('A thought to think about.')
+      }),
+      execute: ({ thought }) => thought
+    })
   ),
-  toolChoice: 'required',
   prompt:
     'What year did Jurassic Park the movie come out, and what else happened that year?'
 })
 ```
 
-### Under the hood
-
-All adapters (like `createAISDKTools`) accept a very flexible var args of `AIFunctionLike` parameters, so you can pass as many tools as you'd like. An `AIFunctionLike` can be any agentic client instance, a single `AIFunction` selected from the client's `.functions` property (which holds an `AIFunctionSet` of available AI functions), or an AI function created manually via `createAIFunction`.
+An `AIFunctionLike` can be any agentic client instance, a single `AIFunction` selected from the client's `.functions` property (which holds an `AIFunctionSet` of available AI functions), or an AI function created manually via `createAIFunction`.
 
 `AIFunctionLike` and `AIFunctionSet` are implementation details that you likely won't have to touch directly, but they're important because of their flexibility.
 
