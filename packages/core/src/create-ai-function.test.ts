@@ -6,19 +6,17 @@ import { type Msg } from './message'
 
 // TODO: Add tests for passing JSON schema directly.
 
-const fullNameAIFunction = createAIFunction(
-  {
-    name: 'fullName',
-    description: 'Returns the full name of a person.',
-    inputSchema: z.object({
-      first: z.string(),
-      last: z.string()
-    })
-  },
-  async ({ first, last }) => {
+const fullNameAIFunction = createAIFunction({
+  name: 'fullName',
+  description: 'Returns the full name of a person.',
+  inputSchema: z.object({
+    first: z.string(),
+    last: z.string()
+  }),
+  execute: ({ first, last }) => {
     return `${first} ${last}`
   }
-)
+})
 
 describe('createAIFunction()', () => {
   test('exposes OpenAI function calling spec', () => {

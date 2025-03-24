@@ -1,6 +1,37 @@
 import type * as types from './types'
-import { asSchema } from './schema'
+import { asAgenticSchema } from './schema'
 import { assert } from './utils'
+
+export type CreateAIFunctionArgs<
+  InputSchema extends types.AIFunctionInputSchema
+> = {
+  /** Name of the function. */
+  name: string
+
+  /** Description of the function. */
+  description?: string
+
+  /**
+   * Zod schema or AgenticSchema for the function parameters.
+   *
+   * You can use a JSON Schema for more dynamic tool sources such as MCP by
+   * using the `createJsonSchema` utility function.
+   */
+  inputSchema: InputSchema
+
+  /**
+   * Whether to enable strict structured output generation based on the given
+   * input schema. (this is a feature of the OpenAI API)
+   *
+   * Defaults to `true`.
+   */
+  strict?: boolean
+}
+
+export type AIFunctionImplementation<
+  InputSchema extends types.AIFunctionInputSchema,
+  Output
+> = (params: types.inferInput<InputSchema>) => types.MaybePromise<Output>
 
 /**
  * Create a function meant to be used with OpenAI tool or function calling.
@@ -15,84 +46,98 @@ export function createAIFunction<
   InputSchema extends types.AIFunctionInputSchema,
   Output
 >(
-  spec: {
-    /** Name of the function. */
-    name: string
-    /** Description of the function. */
-    description?: string
-    /** Zod schema for the function parameters. */
-    inputSchema: InputSchema
-    /**
-     * Whether or not to enable structured output generation based on the given
-     * zod schema.
-     */
-    strict?: boolean
+  args: CreateAIFunctionArgs<InputSchema>,
+  /** Underlying function implementation. */
+  execute: AIFunctionImplementation<InputSchema, Output>
+): types.AIFunction<InputSchema, Output>
+export function createAIFunction<
+  InputSchema extends types.AIFunctionInputSchema,
+  Output
+>(
+  args: CreateAIFunctionArgs<InputSchema> & {
+    /** Underlying function implementation. */
+    execute: AIFunctionImplementation<InputSchema, Output>
+  }
+): types.AIFunction<InputSchema, Output>
+export function createAIFunction<
+  InputSchema extends types.AIFunctionInputSchema,
+  Output
+>(
+  {
+    name,
+    description = '',
+    inputSchema,
+    strict = true,
+    execute
+  }: CreateAIFunctionArgs<InputSchema> & {
+    /** Underlying function implementation. */
+    execute?: AIFunctionImplementation<InputSchema, Output>
   },
-  /** Implementation of the function to call with the parsed arguments. */
-  implementation: (
-    params: types.inferInput<InputSchema>
-  ) => types.MaybePromise<Output>
+  /** Underlying function implementation. */
+  executeArg?: AIFunctionImplementation<InputSchema, Output>
 ): types.AIFunction<InputSchema, Output> {
-  assert(spec.name, 'createAIFunction missing required "spec.name"')
+  assert(name, 'createAIFunction missing required "name"')
+  assert(inputSchema, 'createAIFunction missing required "inputSchema"')
   assert(
-    spec.inputSchema,
-    'createAIFunction missing required "spec.inputSchema"'
+    execute || executeArg,
+    'createAIFunction missing required "execute" function implementation'
   )
-  assert(implementation, 'createAIFunction missing required "implementation"')
   assert(
-    typeof implementation === 'function',
-    'createAIFunction "implementation" must be a function'
+    !(execute && executeArg),
+    'createAIFunction: cannot provide both "execute" and a second function argument. there should only be one function implementation.'
+  )
+  execute ??= executeArg
+  assert(
+    execute,
+    'createAIFunction missing required "execute" function implementation'
+  )
+  assert(
+    typeof execute === 'function',
+    'createAIFunction "execute" must be a function'
   )
 
-  const strict = !!spec.strict
-  const inputSchema = asSchema(spec.inputSchema, { strict })
+  const inputAgenticSchema = asAgenticSchema(inputSchema, { strict })
 
   /** Parse the arguments string, optionally reading from a message. */
   const parseInput = (
     input: string | types.Msg
   ): types.inferInput<InputSchema> => {
     if (typeof input === 'string') {
-      return inputSchema.parse(input)
+      return inputAgenticSchema.parse(input)
     } else {
       const args = input.function_call?.arguments
       assert(
         args,
-        `Missing required function_call.arguments for function ${spec.name}`
+        `Missing required function_call.arguments for function ${name}`
       )
-      return inputSchema.parse(args)
+      return inputAgenticSchema.parse(args)
     }
   }
 
-  // Call the implementation function with the parsed arguments.
+  // Call the underlying function implementation with the parsed arguments.
   const aiFunction: types.AIFunction<InputSchema, Output> = (
     input: string | types.Msg
   ) => {
     const parsedInput = parseInput(input)
 
-    return implementation(parsedInput)
+    return execute(parsedInput)
   }
 
   // Override the default function name with the intended name.
   Object.defineProperty(aiFunction, 'name', {
-    value: spec.name,
+    value: name,
     writable: false
   })
 
-  aiFunction.inputSchema = spec.inputSchema
+  aiFunction.inputSchema = inputSchema
   aiFunction.parseInput = parseInput
-
+  aiFunction.execute = execute
   aiFunction.spec = {
-    name: spec.name,
-    description: spec.description?.trim() ?? '',
-    parameters: inputSchema.jsonSchema,
+    name,
+    description,
+    parameters: inputAgenticSchema.jsonSchema,
     type: 'function',
     strict
-  }
-
-  aiFunction.execute = (
-    params: types.inferInput<InputSchema>
-  ): types.MaybePromise<Output> => {
-    return implementation(params)
   }
 
   return aiFunction

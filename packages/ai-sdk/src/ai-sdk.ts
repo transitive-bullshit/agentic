@@ -1,7 +1,7 @@
 import {
   type AIFunctionLike,
   AIFunctionSet,
-  asSchema,
+  asAgenticSchema,
   isZodSchema
 } from '@agentic/core'
 import { jsonSchema, tool } from 'ai'
@@ -20,7 +20,7 @@ export function createAISDKTools(...aiFunctionLikeTools: AIFunctionLike[]) {
         description: fn.spec.description,
         parameters: isZodSchema(fn.inputSchema)
           ? fn.inputSchema
-          : jsonSchema(asSchema(fn.inputSchema).jsonSchema),
+          : jsonSchema(asAgenticSchema(fn.inputSchema).jsonSchema),
         execute: fn.execute
       })
     ])

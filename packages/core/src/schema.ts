@@ -10,7 +10,14 @@ import { zodToJsonSchema } from './zod-to-json-schema'
  */
 export const schemaSymbol = Symbol('agentic.schema')
 
-export type Schema<TData = unknown> = {
+/**
+ * Structured schema used across Agentic, which wraps either a Zod schema or a
+ * JSON Schema.
+ *
+ * JSON Schema support is important to support more dynamic tool sources such as
+ * MCP.
+ */
+export type AgenticSchema<TData = unknown> = {
   /**
    * The JSON Schema.
    */
@@ -46,7 +53,7 @@ export type Schema<TData = unknown> = {
   _source?: any
 }
 
-export function isSchema(value: unknown): value is Schema {
+export function isAgenticSchema(value: unknown): value is AgenticSchema {
   return (
     typeof value === 'object' &&
     value !== null &&
@@ -59,24 +66,31 @@ export function isSchema(value: unknown): value is Schema {
 
 export function isZodSchema(value: unknown): value is z.ZodType {
   return (
+    !!value &&
     typeof value === 'object' &&
-    value !== null &&
     '_def' in value &&
     '~standard' in value &&
-    'parse' in value &&
-    'safeParse' in value
+    (value['~standard'] as any)?.vendor === 'zod'
   )
 }
 
-export function asSchema<TData>(
-  schema: z.Schema<TData> | Schema<TData>,
+export function asAgenticSchema<TData>(
+  schema: z.Schema<TData> | AgenticSchema<TData>,
   opts: { strict?: boolean } = {}
-): Schema<TData> {
-  return isSchema(schema) ? schema : createSchemaFromZodSchema(schema, opts)
+): AgenticSchema<TData> {
+  return isAgenticSchema(schema)
+    ? schema
+    : createAgenticSchemaFromZodSchema(schema, opts)
+}
+
+export function asZodOrJsonSchema<TData>(
+  schema: z.Schema<TData> | AgenticSchema<TData>
+): z.Schema<TData> | types.JSONSchema {
+  return isZodSchema(schema) ? schema : schema.jsonSchema
 }
 
 /**
- * Create a Schema from a JSON Schema.
+ * Create an AgenticSchema from a JSON Schema.
  *
  * All `AIFunction` input schemas accept either a Zod schema or a custom JSON
  * Schema. Use this function to wrap JSON schemas for use with `AIFunction`.
@@ -96,7 +110,7 @@ export function createJsonSchema<TData = unknown>(
     safeParse?: types.SafeParseFn<TData>
     source?: any
   } = {}
-): Schema<TData> {
+): AgenticSchema<TData> {
   safeParse ??= (value: unknown) => {
     try {
       const result = parse(value)
@@ -116,10 +130,10 @@ export function createJsonSchema<TData = unknown>(
   }
 }
 
-export function createSchemaFromZodSchema<TData>(
+export function createAgenticSchemaFromZodSchema<TData>(
   zodSchema: z.Schema<TData>,
   opts: { strict?: boolean } = {}
-): Schema<TData> {
+): AgenticSchema<TData> {
   return createJsonSchema(zodToJsonSchema(zodSchema, opts), {
     parse: (value) => {
       return parseStructuredOutput(value, zodSchema)

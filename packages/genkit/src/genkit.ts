@@ -2,7 +2,7 @@ import type { Genkit } from 'genkit'
 import {
   type AIFunctionLike,
   AIFunctionSet,
-  asSchema,
+  asZodOrJsonSchema,
   isZodSchema
 } from '@agentic/core'
 import { z } from 'zod'
@@ -26,10 +26,7 @@ export function createGenkitTools(
       {
         name: fn.spec.name,
         description: fn.spec.description,
-        // TODO: This schema handling should be able to be cleaned up.
-        [inputSchemaKey]: isZodSchema(fn.inputSchema)
-          ? fn.inputSchema
-          : asSchema(fn.inputSchema).jsonSchema,
+        [inputSchemaKey]: asZodOrJsonSchema(fn.inputSchema),
         outputSchema: z.any()
       },
       fn.execute
