@@ -20,7 +20,6 @@ export type DeepNullable<T> = T extends object
 
 export type MaybePromise<T> = T | Promise<T>
 
-// TODO: use a more specific type
 export type JSONSchema = Record<string, unknown>
 
 export type RelaxedJsonifiable = Jsonifiable | Record<string, unknown>
