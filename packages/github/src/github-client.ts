@@ -1,5 +1,6 @@
-import { AIFunctionsProvider, assert, getEnv } from '@agentic/core'
+import { aiFunction, AIFunctionsProvider, assert, getEnv } from '@agentic/core'
 import { Octokit } from 'octokit'
+import { z } from 'zod'
 
 export namespace github {
   export interface User {
@@ -60,6 +61,16 @@ export class GitHubClient extends AIFunctionsProvider {
     this.octokit = new Octokit({ auth: apiKey })
   }
 
+  /**
+   * Get a user by username.
+   */
+  @aiFunction({
+    name: 'github_get_user_by_username',
+    description: 'Get a user by username.',
+    inputSchema: z.object({
+      username: z.string().describe('The username of the user to get.')
+    })
+  })
   async getUserByUsername(
     usernameOrOpts: string | { username: string }
   ): Promise<github.User> {

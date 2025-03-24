@@ -34,6 +34,11 @@ async function main() {
           type: Boolean,
           description: 'Disables eslint formatting',
           default: false
+        },
+        noZodSchemaJsDocs: {
+          type: Boolean,
+          description: 'Disables js docs for zod schemas',
+          default: false
         }
       }
     },
@@ -55,7 +60,8 @@ async function main() {
     outputDir: args.flags.outputDir || process.cwd(),
     dryRun: args.flags.dryRun,
     prettier: !args.flags.noPrettier,
-    eslint: !args.flags.noEslint
+    eslint: !args.flags.noEslint,
+    zodSchemaJsDocs: !args.flags.noZodSchemaJsDocs
   })
 
   if (args.flags.dryRun) {
