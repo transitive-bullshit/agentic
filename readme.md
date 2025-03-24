@@ -114,14 +114,14 @@ All of the adapters (like `createAISDKTools`) accept a very flexible var args of
 
 ## Features
 
-✅ Thoroughly tested, production-ready AI tools
-✅ Tools work across all leading TS AI SDKs
-✅ Tools are hand-coded and extremely minimal
-✅ Tools have both a good manual DX and LLM DX via the `@aiFunction` decorator
-✅ Tools use native `fetch`
-✅ Tools use `ky` to wrap `fetch`, so HTTP options, throttling, retries, etc are easy to customize
-✅ Supports tools from any MCP server ([createMcpTools(...)](https://agentic.so/tools/mcp))
-✅ Generate new Agentic tool clients from OpenAPI specs ([@agentic/openapi-to-ts](./packages/openapi-to-ts))
+- ✅ Thoroughly tested, production-ready AI tools
+- ✅ Tools work across all leading TS AI SDKs
+- ✅ Tools are hand-coded and extremely minimal
+- ✅ Tools have both a good manual DX and LLM DX via the `@aiFunction` decorator
+- ✅ Tools use native `fetch`
+- ✅ Tools use `ky` to wrap `fetch`, so HTTP options, throttling, retries, etc are easy to customize
+- ✅ Supports tools from any MCP server ([createMcpTools(...)](https://agentic.so/tools/mcp))
+- ✅ Generate new Agentic tool clients from OpenAPI specs ([@agentic/openapi-to-ts](./packages/openapi-to-ts))
 
 ## Docs
 
