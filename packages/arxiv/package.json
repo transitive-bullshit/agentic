@@ -1,6 +1,6 @@
 {
   "name": "@agentic/arxiv",
-  "version": "7.6.0",
+  "version": "7.6.1",
   "description": "Agentic SDK for Arxiv.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",

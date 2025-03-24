@@ -1,6 +1,6 @@
 {
   "name": "@agentic/zoominfo",
-  "version": "7.6.0",
+  "version": "7.6.1",
   "description": "Agentic SDK for ZoomInfo.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",
