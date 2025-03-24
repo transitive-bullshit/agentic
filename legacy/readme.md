@@ -209,8 +209,7 @@ Full docs are available at [agentic.so](https://agentic.so).
 | [Wolfram Alpha](https://products.wolframalpha.com/llm-api/documentation) | `@agentic/wolfram-alpha`    | [docs](https://agentic.so/tools/wolfram-alpha)    | Wolfram Alpha LLM API client for answering computational, mathematical, and scientific questions.                                                                                                                                                              |
 | [ZoomInfo](https://api-docs.zoominfo.com)                                | `@agentic/zoominfo`         | [docs](https://agentic.so/tools/zoominfo)         | Powerful B2B person and company data enrichment.                                                                                                                                                                                                               |
 
-> [!NOTE]
-> Missing a tool or want to add your own tool to this list? If you have an OpenAPI v3 spec for your tool's API, we make it extremely easy to add support using our [@agentic/openapi-to-ts](./packages/openapi-to-ts) CLI. Otherwise, feel free to [open an issue to discuss](https://github.com/transitive-bullshit/agentic/issues/new?q=sort%3Aupdated-desc+is%3Aissue+is%3Aopen) or submit a PR.
+> [!NOTE] > **Missing a tool or want to add your own tool to this list?** If you have an OpenAPI v3 spec for your tool's API, we make it extremely easy to add support using our [@agentic/openapi-to-ts](./packages/openapi-to-ts) CLI. Otherwise, feel free to [open an issue to discuss](https://github.com/transitive-bullshit/agentic/issues/new?q=sort%3Aupdated-desc+is%3Aissue+is%3Aopen) or submit a PR.
 
 For more details on tool usage, see the [docs](https://agentic.so).
 
