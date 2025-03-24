@@ -1,6 +1,6 @@
 {
   "name": "@agentic/diffbot",
-  "version": "7.5.3",
+  "version": "7.6.0",
   "description": "Agentic SDK for Diffbot.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",
