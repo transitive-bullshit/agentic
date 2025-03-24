@@ -1,6 +1,6 @@
 {
   "name": "@agentic/jigsawstack",
-  "version": "7.5.3",
+  "version": "7.6.0",
   "description": "Agentic adapter for the Jigsawstack AI SDK.",
   "author": "Narcisse Egonu",
   "license": "MIT",
