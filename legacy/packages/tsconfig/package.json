@@ -1,6 +1,6 @@
 {
   "name": "@agentic/tsconfig",
-  "version": "7.6.0",
+  "version": "7.6.1",
   "private": true,
   "exports": {
     ".": {

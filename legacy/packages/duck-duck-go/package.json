@@ -1,6 +1,6 @@
 {
   "name": "@agentic/duck-duck-go",
-  "version": "7.6.0",
+  "version": "7.6.1",
   "description": "Agentic SDK for DuckDuckGo.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",
