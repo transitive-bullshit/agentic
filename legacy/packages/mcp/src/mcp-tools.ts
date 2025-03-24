@@ -55,9 +55,9 @@ export class McpTools extends AIFunctionsProvider {
   }
 
   /**
-   * Initialize the MCPTools instance by fetching all available tools from the MCP client.
+   * Initialize the McpTools instance by fetching all available tools from the MCP client.
    * This method must be called before using this class' tools.
-   * It is called automatically when using `MCPTools.from()`.
+   * It is called automatically when using `McpTools.from()`.
    */
   protected async _init() {
     const capabilties = this.client.getServerCapabilities()
