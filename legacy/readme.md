@@ -36,7 +36,7 @@
 
 ## Intro
 
-Agentic is a **standard library of AI functions / tools** which are **optimized for both normal TS-usage as well as LLM-based usage**. Agentic works with all of the major TS AI SDKs (Vercel AI SDK, Mastra, LangChain, LlamaIndex, OpenAI SDK, etc).
+Agentic is a **standard library of AI functions / tools** which are **optimized for both normal TS-usage as well as LLM-based usage**. Agentic works with all of the major TS AI SDKs (Vercel AI SDK, Mastra, LangChain, LlamaIndex, OpenAI SDK, MCP, etc).
 
 Agentic clients like `WeatherClient` can be used as normal TS classes:
 
@@ -80,11 +80,34 @@ console.log(result.toolResults[0])
 
 You can use our standard library of thoroughly tested AI functions with your favorite AI SDK – without having to write any glue code!
 
+All Agentic clients expose an `AIFunctionSet`, which makes it easy to mix & match all sorts of different tools together.
+
+```ts
+import { SerperClient, WikipediaClient, FirecrawlClient } from '@agentic/stdlib'
+
+const googleSearch = new SerperClient()
+const wikipedia = new WikipediaClient()
+const firecrawl = new FirecrawlClient()
+
+const result = await generateText({
+  model: openai('gpt-4o-mini'),
+  tools: createAISDKTools(
+    googleSearch,
+    wikipedia,
+    // Pick a single function from the firecrawl client's set of AI functions
+    firecrawl.functions.pick('firecrawl_search')
+  ),
+  toolChoice: 'required',
+  prompt:
+    'What year did Jurassic Park come out, and what else happened that year?'
+})
+```
+
 ### Under the hood
 
-All of the adapters (like `createAISDKTools` in this example) accept a very flexible var args of `AIFunctionLike` parameters, so you can pass as many tools as you'd like. An `AIFunctionLike` can be any agentic client instance, a single `AIFunction` selected from the client's `.functions` property (which holds an `AIFunctionSet` of available AI functions), or an AI function created manually via `createAIFunction`.
+All of the adapters (like `createAISDKTools`) accept a very flexible var args of `AIFunctionLike` parameters, so you can pass as many tools as you'd like. An `AIFunctionLike` can be any agentic client instance, a single `AIFunction` selected from the client's `.functions` property (which holds an `AIFunctionSet` of available AI functions), or an AI function created manually via `createAIFunction`.
 
-`AIFunctionLike` and `AIFunctionSet` are implementation details that you likely won't have to touch directly, but they're important primitives because they're designed to maximize flexibility when working with various AI functions coming from different places.
+`AIFunctionLike` and `AIFunctionSet` are details that you likely won't have to touch directly, but they're important because of their flexibility.
 
 ## Docs
 
