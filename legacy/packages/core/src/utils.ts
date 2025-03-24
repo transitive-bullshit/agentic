@@ -232,9 +232,18 @@ export function sanitizeSearchParams(
 
 /**
  * Stringifies a JSON value in a way that's optimized for use with LLM prompts.
+ *
+ * Replacement for `JSON.stringify` when working with LLMs.
+ *
+ * @example
+ * ```ts
+ * stringifyForModel({ a: 1, b: 2 }) // '{"a":1,"b":2}'
+ * ```
  */
 export function stringifyForModel(
-  jsonObject?: types.RelaxedJsonifiable
+  jsonObject?: types.RelaxedJsonifiable,
+  replacer: (number | string)[] | null = null,
+  space: string | number = 0
 ): string {
   if (jsonObject === undefined) {
     return ''
@@ -244,13 +253,13 @@ export function stringifyForModel(
     return jsonObject
   }
 
-  return JSON.stringify(jsonObject, null, 0)
+  return JSON.stringify(jsonObject, replacer, space)
 }
 
 const dedenter = dedent.withOptions({ escapeSpecialCharacters: true })
 
 /**
- * Clean a string by removing extra newlines and indentation.
+ * Cleans a string by removing extra newlines and indentation.
  *
  * @see: https://github.com/dmnd/dedent
  */
@@ -264,7 +273,7 @@ export function isAIFunction(obj: any): obj is types.AIFunction {
   if (!obj.inputSchema) return false
   if (!obj.parseInput) return false
   if (!obj.spec) return false
-  if (!obj.impl) return false
+  if (!obj.execute) return false
   if (!obj.spec.name || typeof obj.spec.name !== 'string') return false
 
   return true

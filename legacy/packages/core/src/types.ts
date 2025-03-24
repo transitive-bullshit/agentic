@@ -4,9 +4,10 @@ import type { z } from 'zod'
 import type { AIFunctionSet } from './ai-function-set'
 import type { AIFunctionsProvider } from './fns'
 import type { Msg } from './message'
+import type { AgenticSchema } from './schema'
 
 export type { Msg } from './message'
-export type { Schema } from './schema'
+export type { AgenticSchema } from './schema'
 export type { KyInstance } from 'ky'
 export type { ThrottledFunction } from 'p-throttle'
 export type { SetOptional, SetRequired, Simplify } from 'type-fest'
@@ -19,7 +20,6 @@ export type DeepNullable<T> = T extends object
 
 export type MaybePromise<T> = T | Promise<T>
 
-// TODO: use a more specific type
 export type JSONSchema = Record<string, unknown>
 
 export type RelaxedJsonifiable = Jsonifiable | Record<string, unknown>
@@ -52,6 +52,20 @@ export interface AIToolSpec {
   function: AIFunctionSpec
 }
 
+/**
+ * A Zod object schema or a custom schema created from a JSON schema via
+ * `createSchema()`.
+ */
+export type AIFunctionInputSchema = z.ZodObject<any> | AgenticSchema<any>
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export type inferInput<InputSchema extends AIFunctionInputSchema> =
+  InputSchema extends AgenticSchema<any>
+    ? InputSchema['_type']
+    : InputSchema extends z.ZodTypeAny
+      ? z.infer<InputSchema>
+      : never
+
 /** The implementation of the function, with arg parsing and validation. */
 export type AIFunctionImpl<Return> = Omit<
   (input: string | Msg) => MaybePromise<Return>,
@@ -65,27 +79,32 @@ export type AIFunctionImpl<Return> = Omit<
  *      via the `.functions` property
  *   - `AIFunction` - Individual functions
  */
-export type AIFunctionLike = AIFunctionsProvider | AIFunction | AIFunctionSet
+export type AIFunctionLike =
+  | AIFunctionsProvider
+  | AIFunction<AIFunctionInputSchema>
+  | AIFunctionSet
 
 /**
  * A function meant to be used with LLM function calling.
  */
 export interface AIFunction<
-  InputSchema extends z.ZodObject<any> = z.ZodObject<any>,
+  // TODO
+  // InputSchema extends AIFunctionInputSchema = z.ZodObject<any>,
+  InputSchema extends AIFunctionInputSchema = AIFunctionInputSchema,
   Output = any
 > {
   /**
-   * Invokes the underlying AI function `impl` but first validates the input
+   * Invokes the underlying AI function `execute` but first validates the input
    * against this function's `inputSchema`. This method is callable and is
    * meant to be passed the raw LLM JSON string or an OpenAI-compatible Message.
    */
   (input: string | Msg): MaybePromise<Output>
 
-  /** The Zod schema for the input object. */
+  /** The schema for the input object (zod or custom schema). */
   inputSchema: InputSchema
 
   /** Parse the function arguments from a message. */
-  parseInput(input: string | Msg): z.infer<InputSchema>
+  parseInput(input: string | Msg): inferInput<InputSchema>
 
   /** The JSON schema function spec for the OpenAI API `functions` property. */
   spec: AIFunctionSpec
@@ -94,7 +113,7 @@ export interface AIFunction<
    * The underlying function implementation without any arg parsing or validation.
    */
   // TODO: this `any` shouldn't be necessary, but it is for `createAIFunction` results to be assignable to `AIFunctionLike`
-  impl: (params: z.infer<InputSchema> | any) => MaybePromise<Output>
+  execute: (params: inferInput<InputSchema> | any) => MaybePromise<Output>
 }
 
 export type SafeParseResult<TData> =

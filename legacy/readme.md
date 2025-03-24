@@ -36,7 +36,7 @@
 
 ## Intro
 
-Agentic is a **standard library of AI functions / tools** which are **optimized for both normal TS-usage as well as LLM-based usage**. Agentic works with all of the major TS AI SDKs (Vercel AI SDK, Mastra, LangChain, LlamaIndex, OpenAI SDK, etc).
+Agentic is a **standard library of AI functions / tools** which are **optimized for both normal TS-usage as well as LLM-based usage**. Agentic works with all of the major TS AI SDKs (Vercel AI SDK, Mastra, LangChain, LlamaIndex, OpenAI SDK, MCP, etc).
 
 Agentic clients like `WeatherClient` can be used as normal TS classes:
 
@@ -80,11 +80,34 @@ console.log(result.toolResults[0])
 
 You can use our standard library of thoroughly tested AI functions with your favorite AI SDK – without having to write any glue code!
 
+All Agentic clients expose an `AIFunctionSet`, which makes it easy to mix & match all sorts of different tools together.
+
+```ts
+import { SerperClient, WikipediaClient, FirecrawlClient } from '@agentic/stdlib'
+
+const googleSearch = new SerperClient()
+const wikipedia = new WikipediaClient()
+const firecrawl = new FirecrawlClient()
+
+const result = await generateText({
+  model: openai('gpt-4o-mini'),
+  tools: createAISDKTools(
+    googleSearch,
+    wikipedia,
+    // Pick a single function from the firecrawl client's set of AI functions
+    firecrawl.functions.pick('firecrawl_search')
+  ),
+  toolChoice: 'required',
+  prompt:
+    'What year did Jurassic Park come out, and what else happened that year?'
+})
+```
+
 ### Under the hood
 
-All of the adapters (like `createAISDKTools` in this example) accept a very flexible var args of `AIFunctionLike` parameters, so you can pass as many tools as you'd like. An `AIFunctionLike` can be any agentic client instance, a single `AIFunction` selected from the client's `.functions` property (which holds an `AIFunctionSet` of available AI functions), or an AI function created manually via `createAIFunction`.
+All of the adapters (like `createAISDKTools`) accept a very flexible var args of `AIFunctionLike` parameters, so you can pass as many tools as you'd like. An `AIFunctionLike` can be any agentic client instance, a single `AIFunction` selected from the client's `.functions` property (which holds an `AIFunctionSet` of available AI functions), or an AI function created manually via `createAIFunction`.
 
-`AIFunctionLike` and `AIFunctionSet` are implementation details that you likely won't have to touch directly, but they're important primitives because they're designed to maximize flexibility when working with various AI functions coming from different places.
+`AIFunctionLike` and `AIFunctionSet` are details that you likely won't have to touch directly, but they're important because of their flexibility.
 
 ## Docs
 
@@ -133,11 +156,13 @@ Full docs are available at [agentic.so](https://agentic.so).
 | Service / Tool                                                           | Package                     | Docs                                              | Description                                                                                                                                                                                                                                                    |
 | ------------------------------------------------------------------------ | --------------------------- | ------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [Apollo](https://docs.apollo.io)                                         | `@agentic/apollo`           | [docs](https://agentic.so/tools/apollo)           | B2B person and company enrichment API.                                                                                                                                                                                                                         |
+| [ArXiv](https://arxiv.org)                                               | `@agentic/arxiv`            | [docs](https://agentic.so/tools/arxiv)            | Search for research articles.                                                                                                                                                                                                                                  |
 | [Bing](https://www.microsoft.com/en-us/bing/apis/bing-web-search-api)    | `@agentic/bing`             | [docs](https://agentic.so/tools/bing)             | Bing web search.                                                                                                                                                                                                                                               |
 | [Calculator](https://github.com/josdejong/mathjs)                        | `@agentic/calculator`       | [docs](https://agentic.so/tools/calculator)       | Basic calculator for simple mathematical expressions.                                                                                                                                                                                                          |
 | [Clearbit](https://dashboard.clearbit.com/docs)                          | `@agentic/clearbit`         | [docs](https://agentic.so/tools/clearbit)         | Resolving and enriching people and company data.                                                                                                                                                                                                               |
 | [Dexa](https://dexa.ai)                                                  | `@agentic/dexa`             | [docs](https://agentic.so/tools/dexa)             | Answers questions from the world's best podcasters.                                                                                                                                                                                                            |
 | [Diffbot](https://docs.diffbot.com)                                      | `@agentic/diffbot`          | [docs](https://agentic.so/tools/diffbot)          | Web page classification and scraping; person and company data enrichment.                                                                                                                                                                                      |
+| [DuckDuckGo](https://duckduckgo.com)                                     | `@agentic/duck-duck-go`     | [docs](https://agentic.so/tools/duck-duck-go)     | Privacy-focused web search API.                                                                                                                                                                                                                                |
 | [E2B](https://e2b.dev)                                                   | `@agentic/e2b`              | [docs](https://agentic.so/tools/e2b)              | Hosted Python code interpreter sandbox which is really useful for data analysis, flexible code execution, and advanced reasoning on-the-fly.                                                                                                                   |
 | [Exa](https://docs.exa.ai)                                               | `@agentic/exa`              | [docs](https://agentic.so/tools/exa)              | Web search tailored for LLMs.                                                                                                                                                                                                                                  |
 | [Firecrawl](https://www.firecrawl.dev)                                   | `@agentic/firecrawl`        | [docs](https://agentic.so/tools/firecrawl)        | Website scraping and structured data extraction.                                                                                                                                                                                                               |
@@ -147,6 +172,7 @@ Full docs are available at [agentic.so](https://agentic.so).
 | [Jina](https://jina.ai/reader)                                           | `@agentic/jina`             | [docs](https://agentic.so/tools/jina)             | URL scraper and web search.                                                                                                                                                                                                                                    |
 | [LeadMagic](https://leadmagic.io)                                        | `@agentic/leadmagic`        | [docs](https://agentic.so/tools/leadmagic)        | B2B person, company, and email enrichment API.                                                                                                                                                                                                                 |
 | [Midjourney](https://www.imagineapi.dev)                                 | `@agentic/midjourney`       | [docs](https://agentic.so/tools/midjourney)       | Unofficial Midjourney client for generative images.                                                                                                                                                                                                            |
+| [McpTools](https://modelcontextprotocol.io)                              | `@agentic/mcp`              | [docs](https://agentic.so/tools/mcp)              | Model Context Protocol (MCP) client, supporting any MCP server. Use [createMcpTools](https://agentic.so/tools/mcp) to spawn or connect to an MCP server.                                                                                                       |
 | [Novu](https://novu.co)                                                  | `@agentic/novu`             | [docs](https://agentic.so/tools/novu)             | Sending notifications (email, SMS, in-app, push, etc).                                                                                                                                                                                                         |
 | [People Data Labs](https://www.peopledatalabs.com)                       | `@agentic/people-data-labs` | [docs](https://agentic.so/tools/people-data-labs) | People & company data (WIP).                                                                                                                                                                                                                                   |
 | [Perigon](https://www.goperigon.com/products/news-api)                   | `@agentic/perigon`          | [docs](https://agentic.so/tools/perigon)          | Real-time news API and web content data from 140,000+ sources. Structured and enriched by AI, primed for LLMs.                                                                                                                                                 |
@@ -170,6 +196,9 @@ Full docs are available at [agentic.so](https://agentic.so).
 
 > [!NOTE]
 > All Agentic clients have been hand-crafted for minimal size, with very few relying on external dependencies aside from our native `fetch` wrapper, [ky](https://github.com/sindresorhus/ky).
+
+> [!NOTE]
+> Missing a tool or want to add your own tool to this list? If you have an OpenAPI v3 spec for your API, we make it extremely easy to add support using our [@agentic/openapi-to-ts CLI](./packages/openapi-to-ts). Otherwise, feel free to [open an issue to discuss](https://github.com/transitive-bullshit/agentic/issues/new?q=sort%3Aupdated-desc+is%3Aissue+is%3Aopen).
 
 For more details, see the [docs](https://agentic.so).
 
