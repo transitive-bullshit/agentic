@@ -152,6 +152,7 @@ const twitterApiRateLimitsByPlan: Record<
  * for serverful environments.
  *
  * @see https://docs.x.com/x-api/fundamentals/rate-limits
+ * @see https://docs.x.com/x-api
  */
 export class TwitterClient extends AIFunctionsProvider {
   readonly client: types.TwitterV2Client
