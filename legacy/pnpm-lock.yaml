@@ -39,12 +39,18 @@ catalogs:
     ai:
       specifier: ^4.1.61
       version: 4.1.61
+    cleye:
+      specifier: ^1.3.4
+      version: 1.3.4
     dedent:
       specifier: ^1.5.3
       version: 1.5.3
     delay:
       specifier: ^6.0.0
       version: 6.0.0
+    exit-hook:
+      specifier: ^4.0.0
+      version: 4.0.0
     fast-xml-parser:
       specifier: ^5.0.9
       version: 5.0.9
@@ -189,7 +195,7 @@ importers:
         specifier: 'catalog:'
         version: 4.1.61(react@18.3.1)(zod@3.24.2)
       exit-hook:
-        specifier: ^4.0.0
+        specifier: 'catalog:'
         version: 4.0.0
       openai:
         specifier: 'catalog:'
@@ -891,12 +897,18 @@ importers:
       camelcase:
         specifier: ^8.0.0
         version: 8.0.0
+      cleye:
+        specifier: 'catalog:'
+        version: 1.3.4
       decamelize:
         specifier: ^6.0.0
         version: 6.0.0
       execa:
         specifier: ^9.5.2
         version: 9.5.2
+      exit-hook:
+        specifier: 'catalog:'
+        version: 4.0.0
       json-schema-to-zod:
         specifier: ^2.6.0
         version: 2.6.0
@@ -910,9 +922,6 @@ importers:
       '@agentic/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
-      ky:
-        specifier: 'catalog:'
-        version: 1.7.5
 
   packages/people-data-labs:
     dependencies:
@@ -3873,6 +3882,9 @@ packages:
     resolution: {integrity: sha512-GfisEZEJvzKrmGWkvfhgzcz/BllN1USeqD2V6tg14OAOgaCD2Z/PUEuxnAZ/nPvmaHRG7a8y77p1T/IRQ4D1Hw==}
     engines: {node: '>=4'}
 
+  cleye@1.3.4:
+    resolution: {integrity: sha512-Rd6M8ecBDtdYdPR22h6gG37lPqqJ3hSOaplaGwuGYey9xKmEElOvTgupqfyLSlISshroRpVhYjDtW3vwNUNBaQ==}
+
   cli-cursor@5.0.0:
     resolution: {integrity: sha512-aCj4O5wKyszjMmDT4tZj93kxyydN/K5zPWSCe6/0AV/AA1pqe5ZBIw0a2ZfPQV7lL5/yb5HsUreJ6UFAF1tEQw==}
     engines: {node: '>=18'}
@@ -6494,6 +6506,9 @@ packages:
     resolution: {integrity: sha512-DZ4yORTwrbTj/7MZYq2w+/ZFdI6OZ/f9SFHR+71gIVUZhOQPHzVCLpvRnPgyaMpfWxxk/4ONva3GQSyNIKRv6A==}
     engines: {node: '>=10'}
 
+  terminal-columns@1.4.1:
+    resolution: {integrity: sha512-IKVL/itiMy947XWVv4IHV7a0KQXvKjj4ptbi7Ew9MPMcOLzkiQeyx3Gyvh62hKrfJ0RZc4M1nbhzjNM39Kyujw==}
+
   text-table@0.2.0:
     resolution: {integrity: sha512-N+8UisAXDGk8PFXP4HAzVR9nbfmVJ3zYLAWiTIoqC5v5isinhr+r5uaO8+7r3BMfuNIufIsA7RdpVgacC2cSpw==}
 
@@ -6670,6 +6685,9 @@ packages:
   type-fest@4.37.0:
     resolution: {integrity: sha512-S/5/0kFftkq27FPNye0XM1e2NsnoD/3FS+pBmbjmmtLT6I+i344KoOf7pvXreaFsDamWeaJX55nczA1m5PsBDg==}
     engines: {node: '>=16'}
+
+  type-flag@3.0.0:
+    resolution: {integrity: sha512-3YaYwMseXCAhBB14RXW5cRQfJQlEknS6i4C8fCfeUdS3ihG9EdccdR9kt3vP73ZdeTGmPb4bZtkDn5XMIn1DLA==}
 
   type-is@1.6.18:
     resolution: {integrity: sha512-TkRKr9sUTxEH8MdfuCSP7VizJyzRNMjj2J2do2Jr3Kym598JVdEksuzPQCnlFPW4ky9Q+iA+ma9BGm06XQBy8g==}
@@ -10214,6 +10232,11 @@ snapshots:
     dependencies:
       escape-string-regexp: 1.0.5
 
+  cleye@1.3.4:
+    dependencies:
+      terminal-columns: 1.4.1
+      type-flag: 3.0.0
+
   cli-cursor@5.0.0:
     dependencies:
       restore-cursor: 5.1.0
@@ -13109,6 +13132,8 @@ snapshots:
       mkdirp: 1.0.4
       yallist: 4.0.0
 
+  terminal-columns@1.4.1: {}
+
   text-table@0.2.0: {}
 
   thenify-all@1.6.0:
@@ -13265,6 +13290,8 @@ snapshots:
   type-fest@4.35.0: {}
 
   type-fest@4.37.0: {}
+
+  type-flag@3.0.0: {}
 
   type-is@1.6.18:
     dependencies:

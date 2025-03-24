@@ -1,7 +1,6 @@
 /* eslint-disable no-template-curly-in-string */
 import * as fs from 'node:fs/promises'
 import path from 'node:path'
-import { fileURLToPath } from 'node:url'
 
 import type { IJsonSchema, OpenAPIV3 } from 'openapi-types'
 import { assert } from '@agentic/core'
@@ -16,7 +15,6 @@ import {
   dereferenceFull,
   getAndResolve,
   getComponentDisplayName,
-  getComponentName,
   getDescription,
   getOperationParamsName,
   getOperationResponseName,
@@ -26,7 +24,6 @@ import {
   prettify
 } from './utils'
 
-const dirname = path.dirname(fileURLToPath(import.meta.url))
 const jsonContentType = 'application/json'
 const multipartFormData = 'multipart/form-data'
 
@@ -41,7 +38,21 @@ const httpMethods = [
   'trace'
 ] as const
 
-export async function generateTSFromOpenAPI(openapiFilePath: string) {
+export type GenerateTSFromOpenAPIOptions = {
+  openapiFilePath: string
+  outputDir: string
+  dryRun?: boolean
+  prettier?: boolean
+  eslint?: boolean
+}
+
+export async function generateTSFromOpenAPI({
+  openapiFilePath,
+  outputDir,
+  dryRun = false,
+  prettier = true,
+  eslint = true
+}: GenerateTSFromOpenAPIOptions): Promise<string> {
   const parser = new SwaggerParser()
   const spec = (await parser.bundle(openapiFilePath)) as OpenAPIV3.Document
   // | OpenAPIV3_1.Document
@@ -68,12 +79,8 @@ export async function generateTSFromOpenAPI(openapiFilePath: string) {
   const nameUpperCase = nameSnakeCase.toUpperCase()
   const clientName = `${name}Client`
   const namespaceName = nameLowerCase
-  // const destFolder = path.join('packages', nameKebabCase)
-  // const destFolderSrc = path.join(destFolder, 'src')
 
-  const destFolder = path.join(dirname, '..', 'fixtures', 'generated')
-  const destFileClient = path.join(destFolder, `${nameKebabCase}-client.ts`)
-
+  const destFileClient = path.join(outputDir, `${nameKebabCase}-client.ts`)
   const apiBaseUrl = spec.servers?.[0]?.url
 
   const securitySchemes = spec.components?.securitySchemes
@@ -543,14 +550,14 @@ export async function generateTSFromOpenAPI(openapiFilePath: string) {
     componentSchemas[type] = schema
   }
 
-  console.log(
-    '\ncomponents',
-    JSON.stringify(
-      sortedComponents.map((ref) => getComponentName(ref)),
-      null,
-      2
-    )
-  )
+  // console.log(
+  //   '\ncomponents',
+  //   JSON.stringify(
+  //     sortedComponents.map((ref) => getComponentName(ref)),
+  //     null,
+  //     2
+  //   )
+  // )
 
   // console.log(
   //   '\nmodels',
@@ -603,9 +610,10 @@ import { z } from 'zod'`.trim()
     .join('\n\n')
 
   const description = getDescription(spec.info?.description)
+  const prettifyImpl = prettier ? prettify : (code: string) => code
 
   const output = (
-    await prettify(
+    await prettifyImpl(
       [
         outputTypes,
         `
@@ -659,8 +667,16 @@ export class ${clientName} extends AIFunctionsProvider {
     .replaceAll(/z\s*\.object\({}\)\s*\.merge\(([^)]*)\)/gm, '$1')
     .replaceAll(/\/\*\*(\S.*\S)\*\//g, '/** $1 */')
 
-  console.log(output)
-  await fs.mkdir(destFolder, { recursive: true })
+  if (dryRun) {
+    return output
+  }
+
+  await fs.mkdir(outputDir, { recursive: true })
   await fs.writeFile(destFileClient, output)
-  await execa('npx', ['eslint', '--fix', '--no-ignore', destFileClient])
+
+  if (eslint) {
+    await execa('npx', ['eslint', '--fix', '--no-ignore', destFileClient])
+  }
+
+  return output
 }

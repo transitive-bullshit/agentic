@@ -1,6 +1,8 @@
 /**
  * This file is forked from: https://github.com/kogosoftwarellc/open-api/tree/main/packages/openapi-jsonschema-parameters
  *
+ * Several fixes have been applied.
+ *
  * The original code is licensed under the MIT license.
  */
 
