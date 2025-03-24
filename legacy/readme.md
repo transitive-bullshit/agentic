@@ -92,8 +92,8 @@ const firecrawl = new FirecrawlClient()
 
 const result = await generateText({
   model: openai('gpt-4o-mini'),
-  // This example uses tools from 3 different sources. You can pass as many
-  // sources as you want.
+  // This example uses tools from 3 different clients. You can pass as many
+  // tool sources as you want.
   tools: createAISDKTools(
     googleSearch,
     wikipedia,
@@ -108,13 +108,13 @@ const result = await generateText({
 
 ### Under the hood
 
-All of the adapters (like `createAISDKTools`) accept a very flexible var args of `AIFunctionLike` parameters, so you can pass as many tools as you'd like. An `AIFunctionLike` can be any agentic client instance, a single `AIFunction` selected from the client's `.functions` property (which holds an `AIFunctionSet` of available AI functions), or an AI function created manually via `createAIFunction`.
+All adapters (like `createAISDKTools`) accept a very flexible var args of `AIFunctionLike` parameters, so you can pass as many tools as you'd like. An `AIFunctionLike` can be any agentic client instance, a single `AIFunction` selected from the client's `.functions` property (which holds an `AIFunctionSet` of available AI functions), or an AI function created manually via `createAIFunction`.
 
 `AIFunctionLike` and `AIFunctionSet` are implementation details that you likely won't have to touch directly, but they're important because of their flexibility.
 
 ## Features
 
-- ✅ Thoroughly tested, production-ready AI tools
+- ✅ All tools are thoroughly tested in production
 - ✅ Tools work across all leading TS AI SDKs
 - ✅ Tools are hand-coded and extremely minimal
 - ✅ Tools have both a good manual DX and LLM DX via the `@aiFunction` decorator
@@ -122,6 +122,7 @@ All of the adapters (like `createAISDKTools`) accept a very flexible var args of
 - ✅ Tools use `ky` to wrap `fetch`, so HTTP options, throttling, retries, etc are easy to customize
 - ✅ Supports tools from any MCP server ([createMcpTools(...)](https://agentic.so/tools/mcp))
 - ✅ Generate new Agentic tool clients from OpenAPI specs ([@agentic/openapi-to-ts](./packages/openapi-to-ts))
+- ✅ 100% open source && not trying to sell you anything 💯
 
 ## Docs
 
