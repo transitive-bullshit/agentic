@@ -31,12 +31,19 @@ pnpm add @agentic/twitter
 ## Usage
 
 ```ts
-import { TwitterClient } from '@agentic/twitter'
+import { TwitterClient, createTwitterV2Client } from '@agentic/twitter'
 
-const twitter = new TwitterClient()
+// Requires Nango connection ID and callback URL environment variables
+const rawClient = await createTwitterV2Client()
+
+const twitter = new TwitterClient({ client: rawClient })
 const res = await twitter.createTweet({
   text: 'hello, world'
 })
 ```
 
-Our examples use [Nango](https://www.nango.dev) for OAuth support via the `createTwitterV2Client` helper function, but you can pass any instance of the underlying [TwitterV2Client](https://github.com/twitterdev/twitter-api-typescript-sdk) to the `TwitterClient` constructor.
+This example uses [Nango](https://www.nango.dev) for OAuth support via the [createTwitterV2Client](https://github.com/transitive-bullshit/agentic/blob/main/packages/twitter/src/client.ts#L53) helper function, but you can pass any instance of the underlying [TwitterV2Client](https://github.com/twitterdev/twitter-api-typescript-sdk) to the `TwitterClient` constructor.
+
+All `TwitterClient` methods are automatically throttled based on your [Twitter API plan](https://docs.x.com/x-api/fundamentals/rate-limits). You can set the twitter plan by setting the `TWITTER_API_PLAN` environment variable or by passing the `twitterApiPlan` parameter to the `TwitterClient` constructor.
+
+This twitter client is pretty robust, taking into account my [learnings from building a Twitter bot which gained over 150k followers](https://transitivebullsh.it/chatgpt-twitter-bot-lessons).
