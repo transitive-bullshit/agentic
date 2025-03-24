@@ -116,10 +116,12 @@ export function dereference<T extends object = object>(
 }
 
 function createParserOverride({
-  type
+  type,
+  withJsdocs
 }: {
   type?: string
-} = {}): ParserOverride {
+  withJsdocs: boolean
+}): ParserOverride {
   const jsonSchemaToZodParserOverride: ParserOverride = (schema, _refs) => {
     if ('$ref' in schema) {
       const ref = schema.$ref as string
@@ -144,6 +146,7 @@ function createParserOverride({
       }
 
       const res = jsonSchemaToZodImpl(newSchema, {
+        withJsdocs,
         parserOverride: jsonSchemaToZodParserOverride
       })
 
@@ -158,19 +161,21 @@ export function jsonSchemaToZod(
   schema: JsonSchema,
   {
     name,
-    type
+    type,
+    withJsdocs = true
   }: {
     name?: string
     type?: string
+    withJsdocs?: boolean
   } = {}
 ): string {
   return jsonSchemaToZodImpl(schema, {
     name,
     module: 'esm',
-    withJsdocs: true,
+    withJsdocs,
     type: type ?? true,
     noImport: true,
-    parserOverride: createParserOverride({ type })
+    parserOverride: createParserOverride({ type, withJsdocs })
   })
 }
 
@@ -322,9 +327,11 @@ export function naiveMergeJSONSchemas(...schemas: IJsonSchema[]): IJsonSchema {
 }
 
 export function getDescription(description?: string): string | undefined {
-  if (description && !/[!.?]$/.test(description)) {
+  if (!description) return undefined
+
+  if (!/[!.?]$/.test(description)) {
     description += '.'
   }
 
-  return description
+  return description.replaceAll('/*', '\\/\\*').replaceAll('*/', '\\*\\/')
 }

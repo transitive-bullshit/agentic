@@ -32,9 +32,7 @@
   },
   "dependencies": {
     "@agentic/core": "workspace:*",
-    "ky": "catalog:",
-    "octokit": "catalog:",
-    "p-throttle": "catalog:"
+    "octokit": "catalog:"
   },
   "peerDependencies": {
     "zod": "catalog:"

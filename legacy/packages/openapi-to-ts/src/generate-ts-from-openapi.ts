@@ -8,6 +8,7 @@ import SwaggerParser from '@apidevtools/swagger-parser'
 import decamelize from 'decamelize'
 import { execa } from 'execa'
 
+import type { GenerateTSFromOpenAPIOptions } from './types'
 import { convertParametersToJSONSchema } from './openapi-parameters-to-json-schema'
 import {
   camelCase,
@@ -38,20 +39,13 @@ const httpMethods = [
   'trace'
 ] as const
 
-export type GenerateTSFromOpenAPIOptions = {
-  openapiFilePath: string
-  outputDir: string
-  dryRun?: boolean
-  prettier?: boolean
-  eslint?: boolean
-}
-
 export async function generateTSFromOpenAPI({
   openapiFilePath,
   outputDir,
   dryRun = false,
   prettier = true,
-  eslint = true
+  eslint = true,
+  zodSchemaJsDocs = true
 }: GenerateTSFromOpenAPIOptions): Promise<string> {
   const parser = new SwaggerParser()
   const spec = (await parser.bundle(openapiFilePath)) as OpenAPIV3.Document
@@ -179,7 +173,7 @@ export async function generateTSFromOpenAPI({
         `Invalid operation id ${operationId} for path "${method} ${path}"`
       )
 
-      const operationName = camelCase(operationId)
+      const operationName = camelCase(operationId.replaceAll('/', '-'))
       assert(
         !operationNames.has(operationName),
         `Duplicate operation name "${operationName}"`
@@ -196,7 +190,11 @@ export async function generateTSFromOpenAPI({
         type: 'object',
         properties: {} as Record<string, any>,
         required: [] as string[],
-        $refs: [] as string[]
+        $refs: [] as string[],
+        oneOf: undefined as IJsonSchema[] | undefined,
+        anyOf: undefined as IJsonSchema[] | undefined
+        // TODO
+        // allOf: undefined as IJsonSchema[] | undefined
       }
 
       const operationResponseJSONSchemas: Record<string, IJsonSchema> = {}
@@ -232,8 +230,6 @@ export async function generateTSFromOpenAPI({
             operationParamsUnionSource = source
           }
         } else {
-          assert(schema.type === 'object')
-
           if (schema.properties) {
             operationParamsJSONSchema.properties = {
               ...operationParamsJSONSchema.properties,
@@ -256,7 +252,9 @@ export async function generateTSFromOpenAPI({
             ]
           }
 
-          if (schema?.anyOf || schema?.oneOf) {
+          if (schema.anyOf || schema.oneOf) {
+            operationParamsJSONSchema.anyOf = schema.anyOf
+            operationParamsJSONSchema.oneOf = schema.oneOf
             operationParamsSources[schema.title || '__union__'] = source
 
             // TODO: handle this case
@@ -356,9 +354,19 @@ export async function generateTSFromOpenAPI({
       const hasParams =
         Object.keys(derefedParams.properties ?? {}).length > 0 || hasUnionParams
 
+      if (hasUnionParams !== !!operationParamsUnionSource) {
+        console.log(
+          JSON.stringify(
+            { derefedParams, hasUnionParams, operationParamsUnionSource },
+            null,
+            2
+          )
+        )
+      }
+
       assert(
         hasUnionParams === !!operationParamsUnionSource,
-        'Unexpected union params'
+        `Unexpected union params for operation ${operationName}`
       )
 
       // TODO: handle empty params case
@@ -370,7 +378,11 @@ export async function generateTSFromOpenAPI({
         // below.
         let operationsParamsSchema = jsonSchemaToZod(
           operationParamsJSONSchema,
-          { name: `${operationParamsName}Schema`, type: operationParamsName }
+          {
+            name: `${operationParamsName}Schema`,
+            type: operationParamsName,
+            withJsdocs: zodSchemaJsDocs
+          }
         )
 
         if (operationParamsJSONSchema.$refs.length) {
@@ -414,7 +426,8 @@ export async function generateTSFromOpenAPI({
             operationResponseJSONSchema,
             {
               name: `${operationResponseName}Schema`,
-              type: operationResponseName
+              type: operationResponseName,
+              withJsdocs: zodSchemaJsDocs
             }
           )
 
@@ -481,13 +494,12 @@ export async function generateTSFromOpenAPI({
       const description = getDescription(
         operation.description || operation.summary
       )
-      const isDescriptionMultiline = description?.includes('\n')
 
       const aiClientMethod = `
         ${description ? `/**\n * ${description}\n */` : ''}
         @aiFunction({
           name: '${operationNameSnakeCase}',
-          ${description ? `description: ${isDescriptionMultiline ? `\`${description.replaceAll('`', '\\`')}\`` : `'${description}'`},` : ''}${hasUnionParams ? '\n// TODO: Improve handling of union params' : ''}
+          ${description ? `description: \`${description.replaceAll('`', '\\`')}\`,` : ''}${hasUnionParams ? '\n// TODO: Improve handling of union params' : ''}
           inputSchema: ${namespaceName}.${operationParamsName}Schema${hasUnionParams ? ' as any' : ''},
         })
         async ${operationName}(${!hasParams ? '_' : ''}params: ${namespaceName}.${operationParamsName}): Promise<${namespaceName}.${operationResponseName}> {
@@ -523,7 +535,12 @@ export async function generateTSFromOpenAPI({
     assert(dereferenced)
 
     for (const ref of resolved) {
-      assert(componentsToProcess.has(ref))
+      if (ref.startsWith('#/components/examples')) continue
+
+      assert(
+        componentsToProcess.has(ref),
+        `Ref ${ref} not found in componentsToProcess`
+      )
     }
 
     componentToRefs[ref] = { dereferenced, refs: resolved }
@@ -546,7 +563,11 @@ export async function generateTSFromOpenAPI({
 
     processedComponents.add(ref)
 
-    const schema = jsonSchemaToZod(dereferenced, { name, type })
+    const schema = jsonSchemaToZod(dereferenced, {
+      name,
+      type,
+      withJsdocs: zodSchemaJsDocs
+    })
     componentSchemas[type] = schema
   }
 
@@ -663,9 +684,8 @@ export class ${clientName} extends AIFunctionsProvider {
         '}'
       ].join('\n\n')
     )
-  )
-    .replaceAll(/z\s*\.object\({}\)\s*\.merge\(([^)]*)\)/gm, '$1')
-    .replaceAll(/\/\*\*(\S.*\S)\*\//g, '/** $1 */')
+  ).replaceAll(/z\s*\.object\({}\)\s*\.merge\(([^)]*)\)/gm, '$1')
+  // .replaceAll(/\/\*\*(\S.*\S)\*\//g, '/** $1 */')
 
   if (dryRun) {
     return output

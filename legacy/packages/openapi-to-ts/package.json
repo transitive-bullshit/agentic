@@ -39,7 +39,8 @@
     "zod": "catalog:"
   },
   "devDependencies": {
-    "@agentic/tsconfig": "workspace:*"
+    "@agentic/tsconfig": "workspace:*",
+    "ky": "catalog:"
   },
   "publishConfig": {
     "access": "public"

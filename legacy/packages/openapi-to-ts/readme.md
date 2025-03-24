@@ -44,11 +44,16 @@ Some things you may want to tweak:
 
 - convert openapi parsing & utils to https://github.com/readmeio/oas
 - support filters
-  - // match only the schema named `foo` and `GET` operation for the `/api/v1/foo` path
-  - include: '^(#/components/schemas/foo|#/paths/api/v1/foo/get)$',
-- [ ] Convert HTML in descriptions to markdown
-- [ ] Properly format multiline function comments
-- [ ] Debug stripe schema issue
+  - optional array of path globs
+  - optional array of tag globs
+  - consider using https://github.com/micromatch/micromatch
+- Convert HTML in descriptions to markdown
+- Properly format multiline function comments
+- Debug stripe schema issue
+- Fix `json-schema-to-zod` `withJsdocs` issue (github example) where jsdocs aren't escaped for JS block comments
+- Fix github example issue with `nullable()` zod schema parameter
+- Fix github `json-schema-to-zod` example issue with string enum given default value `true` as a non-string boolean
+- Fix github `gists/get-revision` missing path parameter because of ref
 
 ## License
 
