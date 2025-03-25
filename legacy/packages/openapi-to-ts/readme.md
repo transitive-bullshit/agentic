@@ -60,6 +60,7 @@ Some things you may want to tweak:
 - Fix github example issue with `nullable()` zod schema parameter
 - Fix github `json-schema-to-zod` example issue with string enum given default value `true` as a non-string boolean
 - Fix github `gists/get-revision` missing path parameter because of ref
+- Fix github `activity_star_repo_for_authenticated_user` path seems incorrect
 
 ## License
 
