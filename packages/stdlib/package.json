@@ -45,6 +45,7 @@
     "@agentic/exa": "workspace:*",
     "@agentic/firecrawl": "workspace:*",
     "@agentic/github": "workspace:*",
+    "@agentic/google-custom-search": "workspace:*",
     "@agentic/gravatar": "workspace:*",
     "@agentic/hacker-news": "workspace:*",
     "@agentic/hunter": "workspace:*",
