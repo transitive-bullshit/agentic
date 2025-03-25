@@ -7,8 +7,8 @@ settings:
 catalogs:
   default:
     '@ai-sdk/openai':
-      specifier: ^1.2.5
-      version: 1.2.5
+      specifier: ^1.3.1
+      version: 1.3.1
     '@apidevtools/swagger-parser':
       specifier: ^10.1.1
       version: 10.1.1
@@ -16,25 +16,25 @@ catalogs:
       specifier: ^4.1.1
       version: 4.1.1
     '@e2b/code-interpreter':
-      specifier: ^1.0.2
+      specifier: ^1.0.4
       version: 1.0.4
     '@fisch0920/eslint-config':
       specifier: ^1.4.0
       version: 1.4.0
     '@langchain/core':
-      specifier: ^0.3.42
-      version: 0.3.42
+      specifier: ^0.3.43
+      version: 0.3.43
     '@langchain/openai':
-      specifier: ^0.4.5
-      version: 0.4.5
+      specifier: ^0.4.9
+      version: 0.4.9
     '@mastra/core':
-      specifier: ^0.6.1
-      version: 0.6.1
+      specifier: ^0.6.4
+      version: 0.6.4
     '@modelcontextprotocol/sdk':
       specifier: ^1.7.0
       version: 1.7.0
     '@nangohq/node':
-      specifier: ^0.42.2
+      specifier: ^0.42.22
       version: 0.42.22
     '@total-typescript/ts-reset':
       specifier: ^0.6.1
@@ -49,8 +49,8 @@ catalogs:
       specifier: ^0.1.3
       version: 0.1.3
     ai:
-      specifier: ^4.1.61
-      version: 4.1.61
+      specifier: ^4.2.2
+      version: 4.2.2
     bumpp:
       specifier: ^10.1.0
       version: 10.1.0
@@ -79,7 +79,7 @@ catalogs:
       specifier: ^2.2.7
       version: 2.2.7
     eslint:
-      specifier: ^8.57.1
+      specifier: 8.57.1
       version: 8.57.1
     execa:
       specifier: ^9.5.2
@@ -91,16 +91,16 @@ catalogs:
       specifier: ^5.0.9
       version: 5.0.9
     genkit:
-      specifier: ^1.2.0
-      version: 1.2.0
+      specifier: ^1.3.0
+      version: 1.3.0
     genkitx-openai:
-      specifier: ^0.20.1
-      version: 0.20.1
+      specifier: ^0.20.2
+      version: 0.20.2
     json-schema-to-zod:
       specifier: ^2.6.0
       version: 2.6.0
     jsonrepair:
-      specifier: ^3.9.0
+      specifier: ^3.12.0
       version: 3.12.0
     jsrsasign:
       specifier: ^10.9.0
@@ -109,29 +109,29 @@ catalogs:
       specifier: ^1.7.5
       version: 1.7.5
     langchain:
-      specifier: ^0.3.3
+      specifier: ^0.3.19
       version: 0.3.19
     lint-staged:
       specifier: ^15.5.0
       version: 15.5.0
     llamaindex:
-      specifier: ^0.9.11
-      version: 0.9.11
+      specifier: ^0.9.12
+      version: 0.9.12
     mathjs:
-      specifier: ^13.0.3
+      specifier: ^13.2.3
       version: 13.2.3
     npm-run-all2:
       specifier: ^7.0.2
       version: 7.0.2
     octokit:
-      specifier: ^4.0.2
+      specifier: ^4.1.2
       version: 4.1.2
     only-allow:
       specifier: ^1.2.1
       version: 1.2.1
     openai:
-      specifier: ^4.87.3
-      version: 4.87.3
+      specifier: ^4.89.0
+      version: 4.89.0
     openai-fetch:
       specifier: ^3.4.2
       version: 3.4.2
@@ -151,8 +151,8 @@ catalogs:
       specifier: ^5.1.0
       version: 5.1.0
     simple-git-hooks:
-      specifier: ^2.11.1
-      version: 2.11.1
+      specifier: ^2.12.1
+      version: 2.12.1
     string-strip-html:
       specifier: ^13.4.12
       version: 13.4.12
@@ -172,13 +172,13 @@ catalogs:
       specifier: ^1.2.1
       version: 1.2.1
     type-fest:
-      specifier: ^4.37.0
-      version: 4.37.0
+      specifier: ^4.38.0
+      version: 4.38.0
     typescript:
       specifier: ^5.8.2
       version: 5.8.2
     vitest:
-      specifier: 3.0.9
+      specifier: ^3.0.9
       version: 3.0.9
     wikibase-sdk:
       specifier: ^10.2.2
@@ -235,7 +235,7 @@ importers:
         version: 3.5.3
       simple-git-hooks:
         specifier: 'catalog:'
-        version: 2.11.1
+        version: 2.12.1
       syncpack:
         specifier: 'catalog:'
         version: 14.0.0-alpha.10
@@ -271,16 +271,16 @@ importers:
         version: link:../../packages/weather
       '@ai-sdk/openai':
         specifier: 'catalog:'
-        version: 1.2.5(zod@3.24.2)
+        version: 1.3.1(zod@3.24.2)
       ai:
         specifier: 'catalog:'
-        version: 4.1.61(react@18.3.1)(zod@3.24.2)
+        version: 4.2.2(react@18.3.1)(zod@3.24.2)
       exit-hook:
         specifier: 'catalog:'
         version: 4.0.0
       openai:
         specifier: 'catalog:'
-        version: 4.87.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)
+        version: 4.89.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)
       zod:
         specifier: 'catalog:'
         version: 3.24.2
@@ -333,10 +333,10 @@ importers:
         version: link:../../packages/stdlib
       genkit:
         specifier: 'catalog:'
-        version: 1.2.0
+        version: 1.3.0
       genkitx-openai:
         specifier: 'catalog:'
-        version: 0.20.1(genkit@1.2.0)(ws@8.18.0)(zod@3.24.2)
+        version: 0.20.2(encoding@0.1.13)(genkit@1.3.0)(ws@8.18.0)(zod@3.24.2)
       zod:
         specifier: 'catalog:'
         version: 3.24.2
@@ -355,13 +355,13 @@ importers:
         version: link:../../packages/stdlib
       '@langchain/core':
         specifier: 'catalog:'
-        version: 0.3.42(openai@4.87.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))
+        version: 0.3.43(openai@4.89.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))
       '@langchain/openai':
         specifier: 'catalog:'
-        version: 0.4.5(@langchain/core@0.3.42(openai@4.87.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)))(encoding@0.1.13)(ws@8.18.0)
+        version: 0.4.9(@langchain/core@0.3.43(openai@4.89.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)))(encoding@0.1.13)(ws@8.18.0)
       langchain:
         specifier: 'catalog:'
-        version: 0.3.19(@langchain/core@0.3.42(openai@4.87.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)))(axios@1.7.9)(encoding@0.1.13)(handlebars@4.7.8)(openai@4.87.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))(ws@8.18.0)
+        version: 0.3.19(@langchain/core@0.3.43(openai@4.89.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)))(axios@1.7.9)(encoding@0.1.13)(handlebars@4.7.8)(openai@4.89.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))(ws@8.18.0)
       zod:
         specifier: 'catalog:'
         version: 3.24.2
@@ -383,7 +383,7 @@ importers:
         version: link:../../packages/stdlib
       llamaindex:
         specifier: 'catalog:'
-        version: 0.9.11(tree-sitter@0.22.4)(web-tree-sitter@0.24.7)(ws@8.18.0)(zod@3.24.2)
+        version: 0.9.12(encoding@0.1.13)(tree-sitter@0.22.4)(web-tree-sitter@0.24.7)(ws@8.18.0)(zod@3.24.2)
       zod:
         specifier: 'catalog:'
         version: 3.24.2
@@ -402,10 +402,10 @@ importers:
         version: link:../../packages/weather
       '@ai-sdk/openai':
         specifier: 'catalog:'
-        version: 1.2.5(zod@3.24.2)
+        version: 1.3.1(zod@3.24.2)
       '@mastra/core':
         specifier: 'catalog:'
-        version: 0.6.1(encoding@0.1.13)(react@18.3.1)
+        version: 0.6.4(encoding@0.1.13)(react@18.3.1)
       zod:
         specifier: 'catalog:'
         version: 3.24.2
@@ -424,7 +424,7 @@ importers:
         version: link:../../packages/stdlib
       openai:
         specifier: 'catalog:'
-        version: 4.87.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)
+        version: 4.89.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)
       zod:
         specifier: 'catalog:'
         version: 3.24.2
@@ -485,7 +485,7 @@ importers:
         version: link:../tsconfig
       ai:
         specifier: 'catalog:'
-        version: 4.1.61(react@18.3.1)(zod@3.24.2)
+        version: 4.2.2(react@18.3.1)(zod@3.24.2)
 
   packages/apollo:
     dependencies:
@@ -598,7 +598,7 @@ importers:
         version: 6.2.0
       type-fest:
         specifier: 'catalog:'
-        version: 4.37.0
+        version: 4.38.0
       zod:
         specifier: 'catalog:'
         version: 3.24.2
@@ -745,7 +745,7 @@ importers:
         version: link:../tsconfig
       genkit:
         specifier: 'catalog:'
-        version: 1.2.0
+        version: 1.3.0
 
   packages/github:
     dependencies:
@@ -831,10 +831,10 @@ importers:
         version: link:../tsconfig
       '@ai-sdk/openai':
         specifier: 'catalog:'
-        version: 1.2.5(zod@3.24.2)
+        version: 1.3.1(zod@3.24.2)
       ai:
         specifier: 'catalog:'
-        version: 4.1.61(react@18.3.1)(zod@3.24.2)
+        version: 4.2.2(react@18.3.1)(zod@3.24.2)
 
   packages/jina:
     dependencies:
@@ -866,7 +866,7 @@ importers:
         version: link:../tsconfig
       '@langchain/core':
         specifier: 'catalog:'
-        version: 0.3.42(openai@4.87.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))
+        version: 0.3.43(openai@4.89.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))
 
   packages/leadmagic:
     dependencies:
@@ -898,7 +898,7 @@ importers:
         version: link:../tsconfig
       llamaindex:
         specifier: 'catalog:'
-        version: 0.9.11(tree-sitter@0.22.4)(web-tree-sitter@0.24.7)(ws@8.18.0)(zod@3.24.2)
+        version: 0.9.12(encoding@0.1.13)(tree-sitter@0.22.4)(web-tree-sitter@0.24.7)(ws@8.18.0)(zod@3.24.2)
 
   packages/mastra:
     dependencies:
@@ -911,7 +911,7 @@ importers:
         version: link:../tsconfig
       '@mastra/core':
         specifier: 'catalog:'
-        version: 0.6.1(encoding@0.1.13)(react@18.3.1)
+        version: 0.6.4(encoding@0.1.13)(react@18.3.1)
 
   packages/mcp:
     dependencies:
@@ -1384,7 +1384,7 @@ importers:
         version: 1.2.1(encoding@0.1.13)
       type-fest:
         specifier: 'catalog:'
-        version: 4.37.0
+        version: 4.38.0
       zod:
         specifier: 'catalog:'
         version: 3.24.2
@@ -1509,8 +1509,8 @@ importers:
 
 packages:
 
-  '@ai-sdk/openai@1.2.5':
-    resolution: {integrity: sha512-COK7LzspgQQh5Yq070xfDdVMvp8WX592rXRaMaYNNqu1xpzahxDcM24aF9xgKYWuYH0UMoOw4UmWGwGxr6ygIg==}
+  '@ai-sdk/openai@1.3.1':
+    resolution: {integrity: sha512-Fhb9IYEJdS9vIFwOxr9igiWF8x0xYSqAB7eYuHtZ9D6ovo4RB2JO7lSg0qQWGIGYxtwoipXwLjgF/ov25W23Hw==}
     engines: {node: '>=18'}
     peerDependencies:
       zod: ^3.0.0
@@ -1524,8 +1524,18 @@ packages:
       zod:
         optional: true
 
+  '@ai-sdk/provider-utils@2.2.1':
+    resolution: {integrity: sha512-BuExLp+NcpwsAVj1F4bgJuQkSqO/+roV9wM7RdIO+NVrcT8RBUTdXzf5arHt5T58VpK7bZyB2V9qigjaPHE+Dg==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      zod: ^3.23.8
+
   '@ai-sdk/provider@1.0.11':
     resolution: {integrity: sha512-CPyImHGiT3svyfmvPvAFTianZzWFtm0qK82XjwlQIA1C3IQ2iku/PMQXi7aFyrX0TyMh3VTkJPB03tjU2VXVrw==}
+    engines: {node: '>=18'}
+
+  '@ai-sdk/provider@1.1.0':
+    resolution: {integrity: sha512-0M+qjp+clUD0R1E5eWQFhxEvWLNaOtGQRUaBn8CUABnSKredagq92hUS9VjOzGsTm37xLfpaxl97AVtbeOsHew==}
     engines: {node: '>=18'}
 
   '@ai-sdk/react@1.1.23':
@@ -1540,6 +1550,16 @@ packages:
       zod:
         optional: true
 
+  '@ai-sdk/react@1.2.1':
+    resolution: {integrity: sha512-ZC1GlQ/NRMMAl66nbcqiKmn2DrJb7faDQxvdE8W0aUZYNsGCwFLiNcbGkV7i6Y3VM0nFq9p8joOqAs1cv7zt9g==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      react: ^18 || ^19 || ^19.0.0-rc
+      zod: ^3.23.8
+    peerDependenciesMeta:
+      zod:
+        optional: true
+
   '@ai-sdk/ui-utils@1.1.19':
     resolution: {integrity: sha512-rDHy2uxlPMt3jjS9L6mBrsfhEInZ5BVoWevmD13fsAt2s/XWy2OwwKmgmUQkdLlY4mn/eyeYAfDGK8+5CbOAgg==}
     engines: {node: '>=18'}
@@ -1548,6 +1568,12 @@ packages:
     peerDependenciesMeta:
       zod:
         optional: true
+
+  '@ai-sdk/ui-utils@1.2.1':
+    resolution: {integrity: sha512-BzvMbYm7LHBlbWuLlcG1jQh4eu14MGpz7L+wrGO1+F4oQ+O0fAjgUSNwPWGlZpKmg4NrcVq/QLmxiVJrx2R4Ew==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      zod: ^3.23.8
 
   '@anush008/tokenizers-darwin-universal@0.0.0':
     resolution: {integrity: sha512-SACpWEooTjFX89dFKRVUhivMxxcZRtA3nJGVepdLyrwTkQ1TZQ8581B5JoXp0TcTMHfgnDaagifvVoBiFEdNCQ==}
@@ -1940,15 +1966,11 @@ packages:
     peerDependencies:
       typescript: ^5.0.0
 
-  '@genkit-ai/ai@1.2.0':
-    resolution: {integrity: sha512-ha/DImgoYfYmdsBDa1zxRLbEiuj1grrkLe+MhmCoJLFJoec+P9dU3koVTm62NLWBQCHEEpzTe6y94m8S1twq/Q==}
+  '@genkit-ai/ai@1.3.0':
+    resolution: {integrity: sha512-pocwD7/a6lXYiCkmTNNqINjLk44c8Mpgx0xpfAlC4PirMjACQSfPaPwrO1SdrmRM/0VV0WihcEOcirPcWOrV/Q==}
 
-  '@genkit-ai/core@1.2.0':
-    resolution: {integrity: sha512-dyvQu/ucmcXlsYQfdq9OmWH5f6+piA0h3aLCwQIXZH/cwVL4Y86TQhPfkTohjy8SLe48Ag+acGa9SPa51wONQA==}
-
-  '@grpc/grpc-js@1.12.6':
-    resolution: {integrity: sha512-JXUj6PI0oqqzTGvKtzOkxtpsyPRNsrmhh41TtIz/zEB6J+AUiZZ0dxWzcMwO9Ns5rmSPuMdghlTbUuqIM48d3Q==}
-    engines: {node: '>=12.10.0'}
+  '@genkit-ai/core@1.3.0':
+    resolution: {integrity: sha512-vwoHaiKkA8VBgGbp7a2oDzBFCicCFOihwCup48PvOY8kA9VYCws/qdUkFnrDh5NqzL7urXmjKE2wNf/59UmU9g==}
 
   '@grpc/grpc-js@1.13.1':
     resolution: {integrity: sha512-z5nNuIs75S73ZULjPDe5QCNTiCv7FyBZXEVWOyAHtcebnuJf0g1SuueI3U1/z/KK39XyAQRUC+C9ZQJOtgHynA==}
@@ -2000,12 +2022,12 @@ packages:
   '@jsdevtools/ono@7.1.3':
     resolution: {integrity: sha512-4JQNk+3mVzK3xh2rqd6RB4J46qUR19azEHBneZyTZM+c456qOrbbM/5xcR8huNCCcbVt7+UmizG6GuUvPvKUYg==}
 
-  '@langchain/core@0.3.42':
-    resolution: {integrity: sha512-pT/jC5lqWK3YGDq8dQwgKoa6anqAhMtG1x5JbnrOj9NdaLeBbCKBDQ+/Ykzk3nZ8o+0UMsaXNZo7IVL83VVjHg==}
+  '@langchain/core@0.3.43':
+    resolution: {integrity: sha512-DwiSUwmZqcuOn7j8SFdeOH1nvaUqG7q8qn3LhobdQYEg5PmjLgd2yLr2KzuT/YWMBfjkOR+Di5K6HEdFmouTxg==}
     engines: {node: '>=18'}
 
-  '@langchain/openai@0.4.5':
-    resolution: {integrity: sha512-S/sqC71GVsCDiFGU0A0VQDFGNrjcuz72FxlfuSxwOuo955qad/0Yp0hRhWJilPOjgDByGwaeZkOaxC/oE9ABdQ==}
+  '@langchain/openai@0.4.9':
+    resolution: {integrity: sha512-NAsaionRHNdqaMjVLPkFCyjUDze+OqRHghA1Cn4fPoAafz+FXcl9c7LlEl9Xo0FH6/8yiCl7Rw2t780C/SBVxQ==}
     engines: {node: '>=18'}
     peerDependencies:
       '@langchain/core': '>=0.3.39 <0.4.0'
@@ -2067,14 +2089,14 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@llamaindex/cloud@3.0.9':
-    resolution: {integrity: sha512-QBKKfzhbbzre2/csWDva2uCqdCkBlq1PjX3flLHUcGGP+UurAkyzB/Zabqz30jNGa7j6bEz97b5c9aAI1hIy+A==}
+  '@llamaindex/cloud@4.0.0':
+    resolution: {integrity: sha512-wnVZx+oQFf9GxbbpKaBkPPnbDGQ+Y6VBa62Rfwrhljx69va2962j7NUOly0BkfaqqW3wm/hDiSUObbMsdeZwoA==}
     peerDependencies:
-      '@llamaindex/core': 0.5.8
+      '@llamaindex/core': 0.6.0
       '@llamaindex/env': 0.1.29
 
-  '@llamaindex/core@0.5.8':
-    resolution: {integrity: sha512-0IP/4Py6prDaFCalFD46yrxdM8PFjjelPAL/kvYEJcZ4EoSE9VFqlFbw+vewIh/P5M6bjG2AlucQfQd+r90dQg==}
+  '@llamaindex/core@0.6.0':
+    resolution: {integrity: sha512-d4YWmWkzSm+BJQPphCAMMV+LxafeiJKd9Q8qN/ML5bRoh4cw/G4WB/CtyKjnHJ99OZuVyeDRGrKQUAlecBwUtA==}
 
   '@llamaindex/env@0.1.29':
     resolution: {integrity: sha512-GoITt+QLDNIhu2i1sGsPH8tHH13Gxp4i4ofMFlefrHagytvF761MG7nvTAQVIqP9kxBYk4dnSQ3lQnVPFAfMZQ==}
@@ -2087,26 +2109,26 @@ packages:
       gpt-tokenizer:
         optional: true
 
-  '@llamaindex/node-parser@1.0.8':
-    resolution: {integrity: sha512-PAHVaaPfPF+A+hIKWoX0Ns7DD4BHAfdu5BXGumM5oEvUW0NVZ3i6VPR1BfttBd5W9qRSOzpCJtTdAkxLbr3kxA==}
+  '@llamaindex/node-parser@2.0.0':
+    resolution: {integrity: sha512-MJ3sizjkVqpC+vijwl3FVGxdwaJhHgqyqbvWOJR4bqaoW5kJZGoX/yFPTwkMfHiPjdPW8r3x1U1p6ZWTotNcRw==}
     peerDependencies:
-      '@llamaindex/core': 0.5.8
+      '@llamaindex/core': 0.6.0
       '@llamaindex/env': 0.1.29
       tree-sitter: ^0.22.0
       web-tree-sitter: ^0.24.3
 
-  '@llamaindex/openai@0.1.61':
-    resolution: {integrity: sha512-U+45VGdWarTJngrGUOupvppaputIo7UC599wvqffEeAdsekVdEf/Z6YMWhjumDf4MveMosAA47oes6RTdAvCgw==}
+  '@llamaindex/openai@0.2.0':
+    resolution: {integrity: sha512-QW8wFIZ+kmpIfk6/VhradEAEXFkeStgzMJvXoFAUvNJVIqpDpiPHr7OK5pWKqKyo9DOXXXr09ezGuD76q/SUlg==}
 
-  '@llamaindex/workflow@0.0.16':
-    resolution: {integrity: sha512-kOL5DLIkz9K9skJLcFBTS4XpRat4nWmeEw2FwpUl6qUsCX+EYXSOHBMnZ1psByfwT5HrmYbgtCQ1Xq1hIEBX8g==}
+  '@llamaindex/workflow@1.0.0':
+    resolution: {integrity: sha512-ObIS955N8N7wusw9dHgPgGUOJMIzqCMl3UgssDQcqR3roH7QdDF3kU5cBsjisUuair2GrbS7Gbb/rEC1h3RMkw==}
     peerDependencies:
-      '@llamaindex/core': 0.5.8
+      '@llamaindex/core': 0.6.0
       '@llamaindex/env': 0.1.29
       zod: ^3.23.8
 
-  '@mastra/core@0.6.1':
-    resolution: {integrity: sha512-5J/+Rwi2E809RXlZpgEIBo7i0ruOb8kDCy1Su0eTjqkYvq1hvfJ07YHzAI67bDYmA6G0LZ763KCsUL9rRuxkiw==}
+  '@mastra/core@0.6.4':
+    resolution: {integrity: sha512-8IXdPEvlnIHaQY5Rb9mFIRfs+lZrH/u7wVPtpiFHmHcVD5AfJZBeAOh/XyoHqb9hAZ+VQ9NLejanPVgx++c/ag==}
     engines: {node: '>=20'}
 
   '@modelcontextprotocol/sdk@1.7.0':
@@ -3229,9 +3251,6 @@ packages:
   '@types/node@20.17.27':
     resolution: {integrity: sha512-U58sbKhDrthHlxHRJw7ZLiLDZGmAUOZUbpw0S6nL27sYUdhvgBLCRu/keSd6qcTsfArd1sRFCCBxzWATGr/0UA==}
 
-  '@types/node@22.13.10':
-    resolution: {integrity: sha512-I6LPUvlRH+O6VRUqYOcMudhaIdUVWfsjnZavnsraHvpBwaEyMN29ry+0UVJhImYL16xsscu0aske3yA+uPOWfw==}
-
   '@types/node@22.13.13':
     resolution: {integrity: sha512-ClsL5nMwKaBRwPcCvH8E7+nU4GxHVx1axNvMZTFHMEfNI7oahimt26P5zjVCRrjiIWj6YFXfE1v3dEp94wLcGQ==}
 
@@ -3416,11 +3435,6 @@ packages:
     peerDependencies:
       acorn: ^6.0.0 || ^7.0.0 || ^8.0.0
 
-  acorn@8.14.0:
-    resolution: {integrity: sha512-cl669nCJTZBsL97OF4kUQm5g5hC2uihk0NxY3WENAC0TYdILVkAyHymAntgxGkl7K+t0cXIrH5siy5S4XkFycA==}
-    engines: {node: '>=0.4.0'}
-    hasBin: true
-
   acorn@8.14.1:
     resolution: {integrity: sha512-OvQ/2pUDKmgfCg++xsTX1wGxfTaszcHVcTctW4UJB4hibJx2HXxxO5UmVgyjMa+ZDsiaf5wWLXYpRWMmBI0QHg==}
     engines: {node: '>=0.4.0'}
@@ -3444,6 +3458,16 @@ packages:
       react:
         optional: true
       zod:
+        optional: true
+
+  ai@4.2.2:
+    resolution: {integrity: sha512-lSQyQCP13/CYuPQ95vnMGgZBUPnqNrEwenreoO/qpPei0NJNDbYYIyUYceQa4WmOUnq2rkP2y4eU0WRrbZoQBQ==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      react: ^18 || ^19 || ^19.0.0-rc
+      zod: ^3.23.8
+    peerDependenciesMeta:
+      react:
         optional: true
 
   ajv-draft-04@1.0.0:
@@ -4526,11 +4550,11 @@ packages:
     resolution: {integrity: sha512-a4tiq7E0/5fTjxPAaH4jpjkSv/uCaU2p5KC6HVGrvl0cDjA8iBZv4vv1gyzlmK0ZUKqwpOyQMKzZQe3lTit77A==}
     engines: {node: '>=14'}
 
-  genkit@1.2.0:
-    resolution: {integrity: sha512-8DM5QvGX9byPYieKTWq4dgBigxxxGdshzQybPbVms8RIAbtPjRbfWCVRejcvexzXN1is5vEifazgahmkaVu79A==}
+  genkit@1.3.0:
+    resolution: {integrity: sha512-byJOPXPSmD+weiCnXhe2Kw4wLVlnMalpznOvosaoF/aCqdDChikZ+SQJESZi+m/91YssrV4zGZeqcoN5jSHD7A==}
 
-  genkitx-openai@0.20.1:
-    resolution: {integrity: sha512-+iYGxhyw6EtkY8TS3+18OXWjOT/xkEiJQgkw6apUcbtmhOpDOSztZEi4Y//A5IKlfGD8ueWpvrEiyB/wMVsXrw==}
+  genkitx-openai@0.20.2:
+    resolution: {integrity: sha512-OWzQmBbJh3YwF8tuBsokVzMIxbQiur2IeXEXWUvY4qVS05gOdPt2EC+/jlEJgoAkTta3KF/elZdmAQmkK6+pYA==}
     peerDependencies:
       genkit: ^0.9.0 || ^1.0.0
 
@@ -4722,9 +4746,6 @@ packages:
   import-fresh@3.3.1:
     resolution: {integrity: sha512-TR3KfrTZTYLPB6jUjfx6MF9WcWrHL9su5TObK4ZkYgBdWKPOFoSoQIdEuTuR82pmtxH2spWG9h6etwfr1pLBqQ==}
     engines: {node: '>=6'}
-
-  import-in-the-middle@1.13.0:
-    resolution: {integrity: sha512-YG86SYDtrL/Yu8JgfWb7kjQ0myLeT1whw6fs/ZHFkXFcbk9zJU9lOCsSJHpvaPumU11nN3US7NW6x1YTk+HrUA==}
 
   import-in-the-middle@1.13.1:
     resolution: {integrity: sha512-k2V9wNm9B+ysuelDTHjI9d5KPc4l8zAZTGqj+pcynvWkypZd857ryzN8jNC7Pg2YZXNMJcHRPpaDyCBbNyVRpA==}
@@ -5117,6 +5138,7 @@ packages:
 
   libsql@0.4.7:
     resolution: {integrity: sha512-T9eIRCs6b0J1SHKYIvD8+KCJMcWZ900iZyxdnSCdqxN12Z1ijzT+jY5nrk72Jw4B0HGzms2NgpryArlJqvc3Lw==}
+    cpu: [x64, arm64, wasm32]
     os: [darwin, linux, win32]
 
   lilconfig@3.1.3:
@@ -5135,8 +5157,8 @@ packages:
     resolution: {integrity: sha512-iyAZCeyD+c1gPyE9qpFu8af0Y+MRtmKOncdGoA2S5EY8iFq99dmmvkNnHiWo+pj0s7yH7l3KPIgee77tKpXPWQ==}
     engines: {node: '>=18.0.0'}
 
-  llamaindex@0.9.11:
-    resolution: {integrity: sha512-qkSi3FL56oscWKFumssNj4kVIYx3FfWi4Pe2l+lvUX5OJwcNvuJwIRwuKMCOm6HcFiEMB4rgkDCHm2w0tUEz9g==}
+  llamaindex@0.9.12:
+    resolution: {integrity: sha512-Gvo3gUNsXxZs3j4D2taS5vdVFrs2oW+Njd3c3J18moiV0UvIgzPtju3ExuJ9OIGRTjX7ehkzK7xUdH1CH7tSeA==}
     engines: {node: '>=18.0.0'}
 
   load-tsconfig@0.2.5:
@@ -5483,6 +5505,18 @@ packages:
 
   openai@4.87.3:
     resolution: {integrity: sha512-d2D54fzMuBYTxMW8wcNmhT1rYKcTfMJ8t+4KjH2KtvYenygITiGBgHoIrzHwnDQWW+C5oCA+ikIR2jgPCFqcKQ==}
+    hasBin: true
+    peerDependencies:
+      ws: ^8.18.0
+      zod: ^3.23.8
+    peerDependenciesMeta:
+      ws:
+        optional: true
+      zod:
+        optional: true
+
+  openai@4.89.0:
+    resolution: {integrity: sha512-XNI0q2l8/Os6jmojxaID5EhyQjxZgzR2gWcpEjYWK5hGKwE7AcifxEY7UNwFDDHJQXqeiosQ0CJwQN+rvnwdjA==}
     hasBin: true
     peerDependencies:
       ws: ^8.18.0
@@ -5896,10 +5930,6 @@ packages:
     resolution: {integrity: sha512-Xf0nWe6RseziFMu+Ap9biiUbmplq6S9/p+7w7YXP/JBHhrUDDUhwa+vANyubuqfZWTveU//DYVGsDG7RKL/vEw==}
     engines: {node: '>=0.10.0'}
 
-  require-in-the-middle@7.5.1:
-    resolution: {integrity: sha512-fgZEz/t3FDrU9o7EhI+iNNq1pNNpJImOvX72HUd6RoFiw8MaKd8/gR5tLuc8A0G0e55LMbP6ImjnmXY6zrTmjw==}
-    engines: {node: '>=8.6.0'}
-
   require-in-the-middle@7.5.2:
     resolution: {integrity: sha512-gAZ+kLqBdHarXB64XpAe2VCjB7rIRv+mU8tfRWziHRJ5umKsIHN2tLLv6EtMw7WCdP19S0ERVMldNvxYCHnhSQ==}
     engines: {node: '>=8.6.0'}
@@ -6074,8 +6104,8 @@ packages:
     resolution: {integrity: sha512-bzyZ1e88w9O1iNJbKnOlvYTrWPDl46O1bG0D3XInv+9tkPrxrN8jUUTiFlDkkmKWgn1M6CfIA13SuGqOa9Korw==}
     engines: {node: '>=14'}
 
-  simple-git-hooks@2.11.1:
-    resolution: {integrity: sha512-tgqwPUMDcNDhuf1Xf6KTUsyeqGdgKMhzaH4PAZZuzguOgTl5uuyeYe/8mWgAr6IBxB5V06uqEf6Dy37gIWDtDg==}
+  simple-git-hooks@2.12.1:
+    resolution: {integrity: sha512-NB3V4XyCOrWTIhjh85DyEoVlM3adHWwqQXKYHmuegy/108bJPP6YxuPGm4ZKBq1+GVKRbKJuzNY//09cMJYp+A==}
     hasBin: true
 
   simple-wcswidth@1.0.1:
@@ -6470,6 +6500,10 @@ packages:
     resolution: {integrity: sha512-S/5/0kFftkq27FPNye0XM1e2NsnoD/3FS+pBmbjmmtLT6I+i344KoOf7pvXreaFsDamWeaJX55nczA1m5PsBDg==}
     engines: {node: '>=16'}
 
+  type-fest@4.38.0:
+    resolution: {integrity: sha512-2dBz5D5ycHIoliLYLi0Q2V7KRaDlH0uWIvmk7TYlAg5slqwiPv1ezJdZm1QEM0xgk29oYWMCbIG7E6gHpvChlg==}
+    engines: {node: '>=16'}
+
   type-flag@3.0.0:
     resolution: {integrity: sha512-3YaYwMseXCAhBB14RXW5cRQfJQlEknS6i4C8fCfeUdS3ihG9EdccdR9kt3vP73ZdeTGmPb4bZtkDn5XMIn1DLA==}
 
@@ -6823,10 +6857,10 @@ packages:
 
 snapshots:
 
-  '@ai-sdk/openai@1.2.5(zod@3.24.2)':
+  '@ai-sdk/openai@1.3.1(zod@3.24.2)':
     dependencies:
-      '@ai-sdk/provider': 1.0.11
-      '@ai-sdk/provider-utils': 2.1.13(zod@3.24.2)
+      '@ai-sdk/provider': 1.1.0
+      '@ai-sdk/provider-utils': 2.2.1(zod@3.24.2)
       zod: 3.24.2
 
   '@ai-sdk/provider-utils@2.1.13(zod@3.24.2)':
@@ -6838,7 +6872,18 @@ snapshots:
     optionalDependencies:
       zod: 3.24.2
 
+  '@ai-sdk/provider-utils@2.2.1(zod@3.24.2)':
+    dependencies:
+      '@ai-sdk/provider': 1.1.0
+      nanoid: 3.3.11
+      secure-json-parse: 2.7.0
+      zod: 3.24.2
+
   '@ai-sdk/provider@1.0.11':
+    dependencies:
+      json-schema: 0.4.0
+
+  '@ai-sdk/provider@1.1.0':
     dependencies:
       json-schema: 0.4.0
 
@@ -6852,6 +6897,16 @@ snapshots:
       react: 18.3.1
       zod: 3.24.2
 
+  '@ai-sdk/react@1.2.1(react@18.3.1)(zod@3.24.2)':
+    dependencies:
+      '@ai-sdk/provider-utils': 2.2.1(zod@3.24.2)
+      '@ai-sdk/ui-utils': 1.2.1(zod@3.24.2)
+      react: 18.3.1
+      swr: 2.3.3(react@18.3.1)
+      throttleit: 2.1.0
+    optionalDependencies:
+      zod: 3.24.2
+
   '@ai-sdk/ui-utils@1.1.19(zod@3.24.2)':
     dependencies:
       '@ai-sdk/provider': 1.0.11
@@ -6859,6 +6914,13 @@ snapshots:
       zod-to-json-schema: 3.24.5(zod@3.24.2)
     optionalDependencies:
       zod: 3.24.2
+
+  '@ai-sdk/ui-utils@1.2.1(zod@3.24.2)':
+    dependencies:
+      '@ai-sdk/provider': 1.1.0
+      '@ai-sdk/provider-utils': 2.2.1(zod@3.24.2)
+      zod: 3.24.2
+      zod-to-json-schema: 3.24.5(zod@3.24.2)
 
   '@anush008/tokenizers-darwin-universal@0.0.0':
     optional: true
@@ -7531,9 +7593,9 @@ snapshots:
       - jest
       - supports-color
 
-  '@genkit-ai/ai@1.2.0':
+  '@genkit-ai/ai@1.3.0':
     dependencies:
-      '@genkit-ai/core': 1.2.0
+      '@genkit-ai/core': 1.3.0
       '@opentelemetry/api': 1.9.0
       '@types/node': 20.17.27
       colorette: 2.0.20
@@ -7545,7 +7607,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@genkit-ai/core@1.2.0':
+  '@genkit-ai/core@1.3.0':
     dependencies:
       '@opentelemetry/api': 1.9.0
       '@opentelemetry/context-async-hooks': 1.30.1(@opentelemetry/api@1.9.0)
@@ -7567,11 +7629,6 @@ snapshots:
       zod-to-json-schema: 3.24.5(zod@3.24.2)
     transitivePeerDependencies:
       - supports-color
-
-  '@grpc/grpc-js@1.12.6':
-    dependencies:
-      '@grpc/proto-loader': 0.7.13
-      '@js-sdsl/ordered-map': 4.4.2
 
   '@grpc/grpc-js@1.13.1':
     dependencies:
@@ -7627,14 +7684,14 @@ snapshots:
 
   '@jsdevtools/ono@7.1.3': {}
 
-  '@langchain/core@0.3.42(openai@4.87.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))':
+  '@langchain/core@0.3.43(openai@4.89.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))':
     dependencies:
       '@cfworker/json-schema': 4.1.1
       ansi-styles: 5.2.0
       camelcase: 6.3.0
       decamelize: 1.2.0
       js-tiktoken: 1.0.19
-      langsmith: 0.3.10(openai@4.87.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))
+      langsmith: 0.3.10(openai@4.89.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))
       mustache: 4.2.0
       p-queue: 6.6.2
       p-retry: 4.6.2
@@ -7644,9 +7701,9 @@ snapshots:
     transitivePeerDependencies:
       - openai
 
-  '@langchain/openai@0.4.5(@langchain/core@0.3.42(openai@4.87.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)))(encoding@0.1.13)(ws@8.18.0)':
+  '@langchain/openai@0.4.9(@langchain/core@0.3.43(openai@4.89.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)))(encoding@0.1.13)(ws@8.18.0)':
     dependencies:
-      '@langchain/core': 0.3.42(openai@4.87.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))
+      '@langchain/core': 0.3.43(openai@4.89.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))
       js-tiktoken: 1.0.19
       openai: 4.87.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)
       zod: 3.24.2
@@ -7655,9 +7712,9 @@ snapshots:
       - encoding
       - ws
 
-  '@langchain/textsplitters@0.1.0(@langchain/core@0.3.42(openai@4.87.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)))':
+  '@langchain/textsplitters@0.1.0(@langchain/core@0.3.43(openai@4.89.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)))':
     dependencies:
-      '@langchain/core': 0.3.42(openai@4.87.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))
+      '@langchain/core': 0.3.43(openai@4.89.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))
       js-tiktoken: 1.0.19
 
   '@libsql/client@0.14.0':
@@ -7716,12 +7773,12 @@ snapshots:
   '@libsql/win32-x64-msvc@0.4.7':
     optional: true
 
-  '@llamaindex/cloud@3.0.9(@llamaindex/core@0.5.8(gpt-tokenizer@2.8.1))(@llamaindex/env@0.1.29(gpt-tokenizer@2.8.1))':
+  '@llamaindex/cloud@4.0.0(@llamaindex/core@0.6.0(gpt-tokenizer@2.8.1))(@llamaindex/env@0.1.29(gpt-tokenizer@2.8.1))':
     dependencies:
-      '@llamaindex/core': 0.5.8(gpt-tokenizer@2.8.1)
+      '@llamaindex/core': 0.6.0(gpt-tokenizer@2.8.1)
       '@llamaindex/env': 0.1.29(gpt-tokenizer@2.8.1)
 
-  '@llamaindex/core@0.5.8(gpt-tokenizer@2.8.1)':
+  '@llamaindex/core@0.6.0(gpt-tokenizer@2.8.1)':
     dependencies:
       '@llamaindex/env': 0.1.29(gpt-tokenizer@2.8.1)
       '@types/node': 22.13.13
@@ -7740,33 +7797,33 @@ snapshots:
     optionalDependencies:
       gpt-tokenizer: 2.8.1
 
-  '@llamaindex/node-parser@1.0.8(@llamaindex/core@0.5.8(gpt-tokenizer@2.8.1))(@llamaindex/env@0.1.29(gpt-tokenizer@2.8.1))(tree-sitter@0.22.4)(web-tree-sitter@0.24.7)':
+  '@llamaindex/node-parser@2.0.0(@llamaindex/core@0.6.0(gpt-tokenizer@2.8.1))(@llamaindex/env@0.1.29(gpt-tokenizer@2.8.1))(tree-sitter@0.22.4)(web-tree-sitter@0.24.7)':
     dependencies:
-      '@llamaindex/core': 0.5.8(gpt-tokenizer@2.8.1)
+      '@llamaindex/core': 0.6.0(gpt-tokenizer@2.8.1)
       '@llamaindex/env': 0.1.29(gpt-tokenizer@2.8.1)
       html-to-text: 9.0.5
       tree-sitter: 0.22.4
       web-tree-sitter: 0.24.7
 
-  '@llamaindex/openai@0.1.61(gpt-tokenizer@2.8.1)(ws@8.18.0)(zod@3.24.2)':
+  '@llamaindex/openai@0.2.0(encoding@0.1.13)(gpt-tokenizer@2.8.1)(ws@8.18.0)':
     dependencies:
-      '@llamaindex/core': 0.5.8(gpt-tokenizer@2.8.1)
+      '@llamaindex/core': 0.6.0(gpt-tokenizer@2.8.1)
       '@llamaindex/env': 0.1.29(gpt-tokenizer@2.8.1)
       openai: 4.87.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)
+      zod: 3.24.2
     transitivePeerDependencies:
       - '@huggingface/transformers'
       - encoding
       - gpt-tokenizer
       - ws
-      - zod
 
-  '@llamaindex/workflow@0.0.16(@llamaindex/core@0.5.8(gpt-tokenizer@2.8.1))(@llamaindex/env@0.1.29(gpt-tokenizer@2.8.1))(zod@3.24.2)':
+  '@llamaindex/workflow@1.0.0(@llamaindex/core@0.6.0(gpt-tokenizer@2.8.1))(@llamaindex/env@0.1.29(gpt-tokenizer@2.8.1))(zod@3.24.2)':
     dependencies:
-      '@llamaindex/core': 0.5.8(gpt-tokenizer@2.8.1)
+      '@llamaindex/core': 0.6.0(gpt-tokenizer@2.8.1)
       '@llamaindex/env': 0.1.29(gpt-tokenizer@2.8.1)
       zod: 3.24.2
 
-  '@mastra/core@0.6.1(encoding@0.1.13)(react@18.3.1)':
+  '@mastra/core@0.6.4(encoding@0.1.13)(react@18.3.1)':
     dependencies:
       '@libsql/client': 0.14.0
       '@opentelemetry/api': 1.9.0
@@ -8070,7 +8127,7 @@ snapshots:
 
   '@opentelemetry/exporter-logs-otlp-grpc@0.57.2(@opentelemetry/api@1.9.0)':
     dependencies:
-      '@grpc/grpc-js': 1.12.6
+      '@grpc/grpc-js': 1.13.1
       '@opentelemetry/api': 1.9.0
       '@opentelemetry/core': 1.30.1(@opentelemetry/api@1.9.0)
       '@opentelemetry/otlp-exporter-base': 0.57.2(@opentelemetry/api@1.9.0)
@@ -8100,7 +8157,7 @@ snapshots:
 
   '@opentelemetry/exporter-metrics-otlp-grpc@0.57.2(@opentelemetry/api@1.9.0)':
     dependencies:
-      '@grpc/grpc-js': 1.12.6
+      '@grpc/grpc-js': 1.13.1
       '@opentelemetry/api': 1.9.0
       '@opentelemetry/core': 1.30.1(@opentelemetry/api@1.9.0)
       '@opentelemetry/exporter-metrics-otlp-http': 0.57.2(@opentelemetry/api@1.9.0)
@@ -8148,7 +8205,7 @@ snapshots:
 
   '@opentelemetry/exporter-trace-otlp-grpc@0.57.2(@opentelemetry/api@1.9.0)':
     dependencies:
-      '@grpc/grpc-js': 1.12.6
+      '@grpc/grpc-js': 1.13.1
       '@opentelemetry/api': 1.9.0
       '@opentelemetry/core': 1.30.1(@opentelemetry/api@1.9.0)
       '@opentelemetry/otlp-exporter-base': 0.57.2(@opentelemetry/api@1.9.0)
@@ -8561,8 +8618,8 @@ snapshots:
       '@opentelemetry/api': 1.9.0
       '@opentelemetry/api-logs': 0.57.2
       '@types/shimmer': 1.2.0
-      import-in-the-middle: 1.13.0
-      require-in-the-middle: 7.5.1
+      import-in-the-middle: 1.13.1
+      require-in-the-middle: 7.5.2
       semver: 7.7.1
       shimmer: 1.2.1
     transitivePeerDependencies:
@@ -8590,7 +8647,7 @@ snapshots:
 
   '@opentelemetry/otlp-grpc-exporter-base@0.57.2(@opentelemetry/api@1.9.0)':
     dependencies:
-      '@grpc/grpc-js': 1.12.6
+      '@grpc/grpc-js': 1.13.1
       '@opentelemetry/api': 1.9.0
       '@opentelemetry/core': 1.30.1(@opentelemetry/api@1.9.0)
       '@opentelemetry/otlp-exporter-base': 0.57.2(@opentelemetry/api@1.9.0)
@@ -9297,10 +9354,6 @@ snapshots:
     dependencies:
       undici-types: 6.19.8
 
-  '@types/node@22.13.10':
-    dependencies:
-      undici-types: 6.20.0
-
   '@types/node@22.13.13':
     dependencies:
       undici-types: 6.20.0
@@ -9548,10 +9601,6 @@ snapshots:
       mime-types: 3.0.0
       negotiator: 1.0.0
 
-  acorn-import-attributes@1.9.5(acorn@8.14.0):
-    dependencies:
-      acorn: 8.14.0
-
   acorn-import-attributes@1.9.5(acorn@8.14.1):
     dependencies:
       acorn: 8.14.1
@@ -9559,8 +9608,6 @@ snapshots:
   acorn-jsx@5.3.2(acorn@8.14.1):
     dependencies:
       acorn: 8.14.1
-
-  acorn@8.14.0: {}
 
   acorn@8.14.1: {}
 
@@ -9582,6 +9629,18 @@ snapshots:
     optionalDependencies:
       react: 18.3.1
       zod: 3.24.2
+
+  ai@4.2.2(react@18.3.1)(zod@3.24.2):
+    dependencies:
+      '@ai-sdk/provider': 1.1.0
+      '@ai-sdk/provider-utils': 2.2.1(zod@3.24.2)
+      '@ai-sdk/react': 1.2.1(react@18.3.1)(zod@3.24.2)
+      '@ai-sdk/ui-utils': 1.2.1(zod@3.24.2)
+      '@opentelemetry/api': 1.9.0
+      jsondiffpatch: 0.6.0
+      zod: 3.24.2
+    optionalDependencies:
+      react: 18.3.1
 
   ajv-draft-04@1.0.0(ajv@8.17.1):
     optionalDependencies:
@@ -10917,17 +10976,17 @@ snapshots:
       - encoding
       - supports-color
 
-  genkit@1.2.0:
+  genkit@1.3.0:
     dependencies:
-      '@genkit-ai/ai': 1.2.0
-      '@genkit-ai/core': 1.2.0
+      '@genkit-ai/ai': 1.3.0
+      '@genkit-ai/core': 1.3.0
       uuid: 10.0.0
     transitivePeerDependencies:
       - supports-color
 
-  genkitx-openai@0.20.1(genkit@1.2.0)(ws@8.18.0)(zod@3.24.2):
+  genkitx-openai@0.20.2(encoding@0.1.13)(genkit@1.3.0)(ws@8.18.0)(zod@3.24.2):
     dependencies:
-      genkit: 1.2.0
+      genkit: 1.3.0
       openai: 4.87.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)
     transitivePeerDependencies:
       - encoding
@@ -11151,13 +11210,6 @@ snapshots:
     dependencies:
       parent-module: 1.0.1
       resolve-from: 4.0.0
-
-  import-in-the-middle@1.13.0:
-    dependencies:
-      acorn: 8.14.0
-      acorn-import-attributes: 1.9.5(acorn@8.14.0)
-      cjs-module-lexer: 1.4.3
-      module-details-from-path: 1.0.3
 
   import-in-the-middle@1.13.1:
     dependencies:
@@ -11412,15 +11464,15 @@ snapshots:
 
   ky@1.7.5: {}
 
-  langchain@0.3.19(@langchain/core@0.3.42(openai@4.87.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)))(axios@1.7.9)(encoding@0.1.13)(handlebars@4.7.8)(openai@4.87.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))(ws@8.18.0):
+  langchain@0.3.19(@langchain/core@0.3.43(openai@4.89.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)))(axios@1.7.9)(encoding@0.1.13)(handlebars@4.7.8)(openai@4.89.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))(ws@8.18.0):
     dependencies:
-      '@langchain/core': 0.3.42(openai@4.87.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))
-      '@langchain/openai': 0.4.5(@langchain/core@0.3.42(openai@4.87.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)))(encoding@0.1.13)(ws@8.18.0)
-      '@langchain/textsplitters': 0.1.0(@langchain/core@0.3.42(openai@4.87.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)))
+      '@langchain/core': 0.3.43(openai@4.89.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))
+      '@langchain/openai': 0.4.9(@langchain/core@0.3.43(openai@4.89.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)))(encoding@0.1.13)(ws@8.18.0)
+      '@langchain/textsplitters': 0.1.0(@langchain/core@0.3.43(openai@4.89.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)))
       js-tiktoken: 1.0.19
       js-yaml: 4.1.0
       jsonpointer: 5.0.1
-      langsmith: 0.3.10(openai@4.87.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))
+      langsmith: 0.3.10(openai@4.89.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))
       openapi-types: 12.1.3
       p-retry: 4.6.2
       uuid: 10.0.0
@@ -11435,7 +11487,7 @@ snapshots:
       - openai
       - ws
 
-  langsmith@0.3.10(openai@4.87.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)):
+  langsmith@0.3.10(openai@4.89.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)):
     dependencies:
       '@types/uuid': 10.0.0
       chalk: 4.1.2
@@ -11445,7 +11497,7 @@ snapshots:
       semver: 7.7.1
       uuid: 10.0.0
     optionalDependencies:
-      openai: 4.87.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)
+      openai: 4.89.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)
 
   language-subtag-registry@0.3.23: {}
 
@@ -11501,16 +11553,16 @@ snapshots:
       rfdc: 1.4.1
       wrap-ansi: 9.0.0
 
-  llamaindex@0.9.11(tree-sitter@0.22.4)(web-tree-sitter@0.24.7)(ws@8.18.0)(zod@3.24.2):
+  llamaindex@0.9.12(encoding@0.1.13)(tree-sitter@0.22.4)(web-tree-sitter@0.24.7)(ws@8.18.0)(zod@3.24.2):
     dependencies:
-      '@llamaindex/cloud': 3.0.9(@llamaindex/core@0.5.8(gpt-tokenizer@2.8.1))(@llamaindex/env@0.1.29(gpt-tokenizer@2.8.1))
-      '@llamaindex/core': 0.5.8(gpt-tokenizer@2.8.1)
+      '@llamaindex/cloud': 4.0.0(@llamaindex/core@0.6.0(gpt-tokenizer@2.8.1))(@llamaindex/env@0.1.29(gpt-tokenizer@2.8.1))
+      '@llamaindex/core': 0.6.0(gpt-tokenizer@2.8.1)
       '@llamaindex/env': 0.1.29(gpt-tokenizer@2.8.1)
-      '@llamaindex/node-parser': 1.0.8(@llamaindex/core@0.5.8(gpt-tokenizer@2.8.1))(@llamaindex/env@0.1.29(gpt-tokenizer@2.8.1))(tree-sitter@0.22.4)(web-tree-sitter@0.24.7)
-      '@llamaindex/openai': 0.1.61(gpt-tokenizer@2.8.1)(ws@8.18.0)(zod@3.24.2)
-      '@llamaindex/workflow': 0.0.16(@llamaindex/core@0.5.8(gpt-tokenizer@2.8.1))(@llamaindex/env@0.1.29(gpt-tokenizer@2.8.1))(zod@3.24.2)
+      '@llamaindex/node-parser': 2.0.0(@llamaindex/core@0.6.0(gpt-tokenizer@2.8.1))(@llamaindex/env@0.1.29(gpt-tokenizer@2.8.1))(tree-sitter@0.22.4)(web-tree-sitter@0.24.7)
+      '@llamaindex/openai': 0.2.0(encoding@0.1.13)(gpt-tokenizer@2.8.1)(ws@8.18.0)
+      '@llamaindex/workflow': 1.0.0(@llamaindex/core@0.6.0(gpt-tokenizer@2.8.1))(@llamaindex/env@0.1.29(gpt-tokenizer@2.8.1))(zod@3.24.2)
       '@types/lodash': 4.17.15
-      '@types/node': 22.13.10
+      '@types/node': 22.13.13
       ajv: 8.17.1
       gpt-tokenizer: 2.8.1
       lodash: 4.17.21
@@ -11831,6 +11883,21 @@ snapshots:
       zod: 3.24.2
 
   openai@4.87.3(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2):
+    dependencies:
+      '@types/node': 18.19.83
+      '@types/node-fetch': 2.6.12
+      abort-controller: 3.0.0
+      agentkeepalive: 4.6.0
+      form-data-encoder: 1.7.2
+      formdata-node: 4.4.1
+      node-fetch: 2.7.0(encoding@0.1.13)
+    optionalDependencies:
+      ws: 8.18.0
+      zod: 3.24.2
+    transitivePeerDependencies:
+      - encoding
+
+  openai@4.89.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2):
     dependencies:
       '@types/node': 18.19.83
       '@types/node-fetch': 2.6.12
@@ -12236,14 +12303,6 @@ snapshots:
 
   require-from-string@2.0.2: {}
 
-  require-in-the-middle@7.5.1:
-    dependencies:
-      debug: 4.4.0
-      module-details-from-path: 1.0.3
-      resolve: 1.22.10
-    transitivePeerDependencies:
-      - supports-color
-
   require-in-the-middle@7.5.2:
     dependencies:
       debug: 4.4.0
@@ -12476,7 +12535,7 @@ snapshots:
 
   signal-exit@4.1.0: {}
 
-  simple-git-hooks@2.11.1: {}
+  simple-git-hooks@2.12.1: {}
 
   simple-wcswidth@1.0.1: {}
 
@@ -12863,6 +12922,8 @@ snapshots:
   type-fest@0.8.1: {}
 
   type-fest@4.37.0: {}
+
+  type-fest@4.38.0: {}
 
   type-flag@3.0.0: {}
 
