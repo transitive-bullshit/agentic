@@ -1,124 +1,11 @@
-/* eslint-disable unicorn/no-unreadable-iife */
-/* eslint-disable unicorn/no-array-reduce */
-
 /**
  * This file was auto-generated from an OpenAPI spec.
  */
 
 import { aiFunction,AIFunctionsProvider } from '@agentic/core'
 import defaultKy, { type KyInstance } from 'ky'
-import { z } from 'zod'
 
-export namespace security {
-  export const apiBaseUrl = 'https://httpbin.org'
-
-  // -----------------------------------------------------------------------------
-  // Operation schemas
-  // -----------------------------------------------------------------------------
-
-  export const GetAnythingApiKeyParamsSchema = z.object({})
-  export type GetAnythingApiKeyParams = z.infer<
-    typeof GetAnythingApiKeyParamsSchema
-  >
-
-  export type GetAnythingApiKeyResponse = undefined
-
-  export const PostAnythingApiKeyParamsSchema = z.object({})
-  export type PostAnythingApiKeyParams = z.infer<
-    typeof PostAnythingApiKeyParamsSchema
-  >
-
-  export type PostAnythingApiKeyResponse = undefined
-
-  export const PutAnythingApiKeyParamsSchema = z.object({})
-  export type PutAnythingApiKeyParams = z.infer<
-    typeof PutAnythingApiKeyParamsSchema
-  >
-
-  export type PutAnythingApiKeyResponse = undefined
-
-  export const PostAnythingBasicParamsSchema = z.object({})
-  export type PostAnythingBasicParams = z.infer<
-    typeof PostAnythingBasicParamsSchema
-  >
-
-  export type PostAnythingBasicResponse = undefined
-
-  export const PostAnythingBearerParamsSchema = z.object({})
-  export type PostAnythingBearerParams = z.infer<
-    typeof PostAnythingBearerParamsSchema
-  >
-
-  export type PostAnythingBearerResponse = undefined
-
-  export const PutAnythingBearerParamsSchema = z.object({})
-  export type PutAnythingBearerParams = z.infer<
-    typeof PutAnythingBearerParamsSchema
-  >
-
-  export type PutAnythingBearerResponse = undefined
-
-  export const GetAnythingOauth2ParamsSchema = z.object({})
-  export type GetAnythingOauth2Params = z.infer<
-    typeof GetAnythingOauth2ParamsSchema
-  >
-
-  export type GetAnythingOauth2Response = undefined
-
-  export const PostAnythingOauth2ParamsSchema = z.object({})
-  export type PostAnythingOauth2Params = z.infer<
-    typeof PostAnythingOauth2ParamsSchema
-  >
-
-  export type PostAnythingOauth2Response = undefined
-
-  export const PutAnythingOauth2ParamsSchema = z.object({})
-  export type PutAnythingOauth2Params = z.infer<
-    typeof PutAnythingOauth2ParamsSchema
-  >
-
-  export type PutAnythingOauth2Response = undefined
-
-  export const DeleteAnythingOauth2ParamsSchema = z.object({})
-  export type DeleteAnythingOauth2Params = z.infer<
-    typeof DeleteAnythingOauth2ParamsSchema
-  >
-
-  export type DeleteAnythingOauth2Response = undefined
-
-  export const PatchAnythingOauth2ParamsSchema = z.object({})
-  export type PatchAnythingOauth2Params = z.infer<
-    typeof PatchAnythingOauth2ParamsSchema
-  >
-
-  export type PatchAnythingOauth2Response = undefined
-
-  export const PostAnythingOpenIdConnectParamsSchema = z.object({})
-  export type PostAnythingOpenIdConnectParams = z.infer<
-    typeof PostAnythingOpenIdConnectParamsSchema
-  >
-
-  export type PostAnythingOpenIdConnectResponse = undefined
-
-  export const PostAnythingNoAuthParamsSchema = z.object({})
-  export type PostAnythingNoAuthParams = z.infer<
-    typeof PostAnythingNoAuthParamsSchema
-  >
-
-  export type PostAnythingNoAuthResponse = undefined
-
-  export const GetAnythingOptionalAuthParamsSchema = z.object({})
-  export type GetAnythingOptionalAuthParams = z.infer<
-    typeof GetAnythingOptionalAuthParamsSchema
-  >
-
-  export type GetAnythingOptionalAuthResponse = undefined
-
-  export const PostStatus401ParamsSchema = z.object({})
-  export type PostStatus401Params = z.infer<typeof PostStatus401ParamsSchema>
-
-  export type PostStatus401Response = undefined
-}
+import { security } from './security'
 
 /**
  * Agentic Security client.
@@ -153,7 +40,8 @@ export class SecurityClient extends AIFunctionsProvider {
   @aiFunction({
     name: 'security_get_anything_api_key',
     description: `\`apiKey\` auth will be supplied within an \`apiKey\` query parameter.`,
-    inputSchema: security.GetAnythingApiKeyParamsSchema
+    inputSchema: security.GetAnythingApiKeyParamsSchema,
+    tags: ['API Key']
   })
   async getAnythingApiKey(
     _params: security.GetAnythingApiKeyParams
@@ -169,7 +57,8 @@ export class SecurityClient extends AIFunctionsProvider {
   @aiFunction({
     name: 'security_post_anything_api_key',
     description: `\`apiKey\` auth will be supplied within an \`api_key\` cookie.`,
-    inputSchema: security.PostAnythingApiKeyParamsSchema
+    inputSchema: security.PostAnythingApiKeyParamsSchema,
+    tags: ['API Key']
   })
   async postAnythingApiKey(
     _params: security.PostAnythingApiKeyParams
@@ -185,7 +74,8 @@ export class SecurityClient extends AIFunctionsProvider {
   @aiFunction({
     name: 'security_put_anything_api_key',
     description: `\`apiKey\` auth will be supplied within an \`X-API-KEY\` header.`,
-    inputSchema: security.PutAnythingApiKeyParamsSchema
+    inputSchema: security.PutAnythingApiKeyParamsSchema,
+    tags: ['API Key']
   })
   async putAnythingApiKey(
     _params: security.PutAnythingApiKeyParams
@@ -205,7 +95,8 @@ https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#basic-a
     description: `Authentication credentials will be supplied within a \`Basic\` \`Authorization\` header.
 
 https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#basic-authentication-sample.`,
-    inputSchema: security.PostAnythingBasicParamsSchema
+    inputSchema: security.PostAnythingBasicParamsSchema,
+    tags: ['HTTP']
   })
   async postAnythingBasic(
     _params: security.PostAnythingBasicParams
@@ -225,7 +116,8 @@ https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#basic-a
     description: `Authentication credentials will be supplied within a \`Bearer\` \`Authorization\` header.
 
 https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#basic-authentication-sample.`,
-    inputSchema: security.PostAnythingBearerParamsSchema
+    inputSchema: security.PostAnythingBearerParamsSchema,
+    tags: ['HTTP']
   })
   async postAnythingBearer(
     _params: security.PostAnythingBearerParams
@@ -251,7 +143,8 @@ https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#basic-a
 
 > ℹ️
 > We currently do not support any special handling for this so they're handled as a standard \`Bearer\` authentication token.`,
-    inputSchema: security.PutAnythingBearerParamsSchema
+    inputSchema: security.PutAnythingBearerParamsSchema,
+    tags: ['HTTP']
   })
   async putAnythingBearer(
     _params: security.PutAnythingBearerParams
@@ -273,7 +166,8 @@ https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-f
 > We currently do not handle OAuth 2 authentication flows so if an operation has an \`oauth2\` requirement we assume that the user, or the projects JWT, has a qualified \`bearer\` token and will use that.
 
 https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-fields-23.`,
-    inputSchema: security.GetAnythingOauth2ParamsSchema
+    inputSchema: security.GetAnythingOauth2ParamsSchema,
+    tags: ['OAuth 2']
   })
   async getAnythingOauth2(
     _params: security.GetAnythingOauth2Params
@@ -295,7 +189,8 @@ https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-f
 > We currently do not handle OAuth 2 authentication flows so if an operation has an \`oauth2\` requirement we assume that the user, or the projects JWT, has a qualified \`bearer\` token and will use that.
 
 https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-fields-23.`,
-    inputSchema: security.PostAnythingOauth2ParamsSchema
+    inputSchema: security.PostAnythingOauth2ParamsSchema,
+    tags: ['OAuth 2']
   })
   async postAnythingOauth2(
     _params: security.PostAnythingOauth2Params
@@ -317,7 +212,8 @@ https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-f
 > We currently do not handle OAuth 2 authentication flows so if an operation has an \`oauth2\` requirement we assume that the user, or the projects JWT, has a qualified \`bearer\` token and will use that.
 
 https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-fields-23.`,
-    inputSchema: security.PutAnythingOauth2ParamsSchema
+    inputSchema: security.PutAnythingOauth2ParamsSchema,
+    tags: ['OAuth 2']
   })
   async putAnythingOauth2(
     _params: security.PutAnythingOauth2Params
@@ -339,7 +235,8 @@ https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-f
 > We currently do not handle OAuth 2 authentication flows so if an operation has an \`oauth2\` requirement we assume that the user, or the projects JWT, has a qualified \`bearer\` token and will use that.
 
 https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-fields-23.`,
-    inputSchema: security.DeleteAnythingOauth2ParamsSchema
+    inputSchema: security.DeleteAnythingOauth2ParamsSchema,
+    tags: ['OAuth 2']
   })
   async deleteAnythingOauth2(
     _params: security.DeleteAnythingOauth2Params
@@ -361,7 +258,8 @@ https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-f
 > We currently do not handle OAuth 2 authentication flows so if an operation has an \`oauth2\` requirement we assume that the user, or the projects JWT, has a qualified \`bearer\` token and will use that.
 
 https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-fields-23.`,
-    inputSchema: security.PatchAnythingOauth2ParamsSchema
+    inputSchema: security.PatchAnythingOauth2ParamsSchema,
+    tags: ['OAuth 2']
   })
   async patchAnythingOauth2(
     _params: security.PatchAnythingOauth2Params
@@ -377,7 +275,8 @@ https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-f
   @aiFunction({
     name: 'security_post_anything_open_id_connect',
     description: `🚧 This is not supported.`,
-    inputSchema: security.PostAnythingOpenIdConnectParamsSchema
+    inputSchema: security.PostAnythingOpenIdConnectParamsSchema,
+    tags: ['OpenID Connect']
   })
   async postAnythingOpenIdConnect(
     _params: security.PostAnythingOpenIdConnectParams
@@ -393,7 +292,8 @@ https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-f
   @aiFunction({
     name: 'security_post_anything_no_auth',
     description: `This operation does not have any authentication requirements.`,
-    inputSchema: security.PostAnythingNoAuthParamsSchema
+    inputSchema: security.PostAnythingNoAuthParamsSchema,
+    tags: ['Other']
   })
   async postAnythingNoAuth(
     _params: security.PostAnythingNoAuthParams
@@ -413,7 +313,8 @@ https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#securit
     description: `The \`apiKey\` query parameter auth on this operation is optional.
 
 https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#security-requirement-object.`,
-    inputSchema: security.GetAnythingOptionalAuthParamsSchema
+    inputSchema: security.GetAnythingOptionalAuthParamsSchema,
+    tags: ['Other']
   })
   async getAnythingOptionalAuth(
     _params: security.GetAnythingOptionalAuthParams
@@ -429,7 +330,8 @@ https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#securit
   @aiFunction({
     name: 'security_post_status401',
     description: `This endpoint requires an authentication header but making any request to it will forcefully return a 401 status code for invalid auth.`,
-    inputSchema: security.PostStatus401ParamsSchema
+    inputSchema: security.PostStatus401ParamsSchema,
+    tags: ['Other']
   })
   async postStatus401(
     _params: security.PostStatus401Params

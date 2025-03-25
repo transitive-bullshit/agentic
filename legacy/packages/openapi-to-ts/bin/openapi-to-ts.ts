@@ -37,7 +37,7 @@ async function main() {
           description: 'Disables eslint formatting',
           default: false
         },
-        noZodSchemaJsDocs: {
+        noZodJsDocs: {
           type: Boolean,
           description: 'Disables js docs for zod schemas',
           default: false
@@ -57,13 +57,24 @@ async function main() {
     return
   }
 
+  if (Object.keys(args.unknownFlags).length) {
+    console.error(
+      'Unknown flags:',
+      Object.keys(args.unknownFlags).join(', '),
+      '\n'
+    )
+    args.showHelp()
+    gracefulExit(1)
+    return
+  }
+
   const output = await generateTSFromOpenAPI({
     openapiFilePath,
     outputDir: args.flags.outputDir || process.cwd(),
     dryRun: args.flags.dryRun,
     prettier: !args.flags.noPrettier,
     eslint: !args.flags.noEslint,
-    zodSchemaJsDocs: !args.flags.noZodSchemaJsDocs
+    zodSchemaJsDocs: !args.flags.noZodJsDocs
   })
 
   if (args.flags.dryRun) {

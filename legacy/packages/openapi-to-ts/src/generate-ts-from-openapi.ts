@@ -75,6 +75,7 @@ export async function generateTSFromOpenAPI({
   const namespaceName = nameLowerCase
 
   const destFileClient = path.join(outputDir, `${nameKebabCase}-client.ts`)
+  const destFileTypes = path.join(outputDir, `${nameKebabCase}.ts`)
   const apiBaseUrl = spec.servers?.[0]?.url
 
   const securitySchemes = spec.components?.securitySchemes
@@ -515,12 +516,15 @@ export async function generateTSFromOpenAPI({
         operation.description || operation.summary
       )
 
+      const { tags } = operation
+      const hasTags = !!tags?.length
+
       const aiClientMethod = `
         ${description ? `/**\n * ${description}\n */` : ''}
         @aiFunction({
           name: '${operationNameSnakeCase}',
           ${description ? `description: \`${description.replaceAll('`', '\\`')}\`,` : ''}${hasUnionParams ? '\n// TODO: Improve handling of union params' : ''}
-          inputSchema: ${namespaceName}.${operationParamsName}Schema${hasUnionParams ? ' as any' : ''},
+          inputSchema: ${namespaceName}.${operationParamsName}Schema${hasUnionParams ? ' as any' : ''}, ${hasTags ? `tags: [ '${tags.join("', '")}' ]` : ''}
         })
         async ${operationName}(${!hasParams ? '_' : ''}params: ${namespaceName}.${operationParamsName}): Promise<${namespaceName}.${operationResponseName}> {
           return this.ky.${method}(${pathTemplate}${
@@ -613,10 +617,24 @@ export async function generateTSFromOpenAPI({
 
   const aiClientMethodsString = aiClientMethods.join('\n\n')
 
-  const header = `
-/* eslint-disable unicorn/no-unreadable-iife */
-/* eslint-disable unicorn/no-array-reduce */
+  const prettifyImpl = async (code: string) => {
+    if (prettier) {
+      code = await prettify(code)
+    }
 
+    return code
+      .replaceAll(/z\s*\.object\({}\)\s*\.merge\(([^)]*)\)/gm, '$1')
+      .replaceAll(/\/\*\*(\S.*\S)\*\//g, '/** $1 */')
+  }
+
+  const typesHeader = `
+/**
+ * This file was auto-generated from an OpenAPI spec.
+ */
+
+import { z } from 'zod'`.trim()
+
+  const clientHeader = `
 /**
  * This file was auto-generated from an OpenAPI spec.
  */
@@ -630,34 +648,34 @@ import {
   ${aiClientMethodsString.includes('sanitizeSearchParams(') ? 'sanitizeSearchParams,' : ''}
 } from '@agentic/core'
 import defaultKy, { type KyInstance } from 'ky'
-import { z } from 'zod'`.trim()
+import { ${namespaceName} } from './${nameKebabCase}'`.trim()
 
   const commentLine = `// ${'-'.repeat(77)}`
-  const outputTypes = [
-    header,
-    `export namespace ${namespaceName} {`,
-    apiBaseUrl ? `export const apiBaseUrl = '${apiBaseUrl}'` : undefined,
-    Object.values(componentSchemas).length
-      ? `${commentLine}\n// Component schemas\n${commentLine}`
-      : undefined,
-    ...Object.values(componentSchemas),
-    Object.values(operationSchemas).length
-      ? `${commentLine}\n// Operation schemas\n${commentLine}`
-      : undefined,
-    ...Object.values(operationSchemas),
-    '}'
-  ]
-    .filter(Boolean)
-    .join('\n\n')
+  const typesOutput = await prettifyImpl(
+    [
+      typesHeader,
+      `export namespace ${namespaceName} {`,
+      apiBaseUrl ? `export const apiBaseUrl = '${apiBaseUrl}'` : undefined,
+      Object.values(componentSchemas).length
+        ? `${commentLine}\n// Component schemas\n${commentLine}`
+        : undefined,
+      ...Object.values(componentSchemas),
+      Object.values(operationSchemas).length
+        ? `${commentLine}\n// Operation schemas\n${commentLine}`
+        : undefined,
+      ...Object.values(operationSchemas),
+      '}'
+    ]
+      .filter(Boolean)
+      .join('\n\n')
+  )
 
   const description = getDescription(spec.info?.description)
-  const prettifyImpl = prettier ? prettify : (code: string) => code
 
-  const output = (
-    await prettifyImpl(
-      [
-        outputTypes,
-        `
+  const clientOutput = await prettifyImpl(
+    [
+      clientHeader,
+      `
 /**
  * Agentic ${name} client.${description ? `\n *\n * ${description}` : ''}
  */
@@ -700,23 +718,28 @@ export class ${clientName} extends AIFunctionsProvider {
     })
   }
 `,
-        aiClientMethodsString,
-        '}'
-      ].join('\n\n')
-    )
+      aiClientMethodsString,
+      '}'
+    ].join('\n\n')
   )
-    .replaceAll(/z\s*\.object\({}\)\s*\.merge\(([^)]*)\)/gm, '$1')
-    .replaceAll(/\/\*\*(\S.*\S)\*\//g, '/** $1 */')
 
+  const output = [typesOutput, clientOutput].join('\n\n')
   if (dryRun) {
     return output
   }
 
   await fs.mkdir(outputDir, { recursive: true })
-  await fs.writeFile(destFileClient, output)
+  await fs.writeFile(destFileTypes, typesOutput)
+  await fs.writeFile(destFileClient, clientOutput)
 
   if (eslint) {
-    await execa('npx', ['eslint', '--fix', '--no-ignore', destFileClient])
+    await execa('npx', [
+      'eslint',
+      '--fix',
+      '--no-ignore',
+      destFileClient,
+      destFileTypes
+    ])
   }
 
   return output

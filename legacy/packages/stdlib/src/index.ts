@@ -1,6 +1,7 @@
 export * from '@agentic/apollo'
 export * from '@agentic/arxiv'
 export * from '@agentic/bing'
+export * from '@agentic/brave-search'
 export * from '@agentic/calculator'
 export * from '@agentic/clearbit'
 export * from '@agentic/dexa'

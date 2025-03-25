@@ -541,6 +541,22 @@ importers:
         specifier: workspace:*
         version: link:../tsconfig
 
+  packages/brave-search:
+    dependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
+      ky:
+        specifier: 'catalog:'
+        version: 1.7.5
+      zod:
+        specifier: 'catalog:'
+        version: 3.24.2
+    devDependencies:
+      '@agentic/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+
   packages/calculator:
     dependencies:
       '@agentic/core':
@@ -1222,6 +1238,9 @@ importers:
       '@agentic/bing':
         specifier: workspace:*
         version: link:../bing
+      '@agentic/brave-search':
+        specifier: workspace:*
+        version: link:../brave-search
       '@agentic/calculator':
         specifier: workspace:*
         version: link:../calculator

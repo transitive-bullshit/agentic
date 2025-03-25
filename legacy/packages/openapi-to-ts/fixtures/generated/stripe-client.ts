@@ -1,6 +1,3 @@
-/* eslint-disable unicorn/no-unreadable-iife */
-/* eslint-disable unicorn/no-array-reduce */
-
 /**
  * This file was auto-generated from an OpenAPI spec.
  */
@@ -64086,12 +64083,12 @@ Updating an invoice’s line item is only possible before the invoice is finaliz
   }
 
   /**
- * <p>[Deprecated] Approves a pending Issuing <code>Authorization</code> object. This request should be made within the timeout window of the <a href="/docs/issuing/controls/real-time-authorizations">real-time authorization</a> flow. 
+ * <p>[Deprecated] Approves a pending Issuing <code>Authorization</code> object. This request should be made within the timeout window of the <a href="/docs/issuing/controls/real-time-authorizations">real-time authorization</a> flow.
 This method is deprecated. Instead, <a href="/docs/issuing/controls/real-time-authorizations#authorization-handling">respond directly to the webhook request to approve an authorization</a>.</p>.
  */
   @aiFunction({
     name: 'post_issuing_authorizations_authorization_approve',
-    description: `<p>[Deprecated] Approves a pending Issuing <code>Authorization</code> object. This request should be made within the timeout window of the <a href="/docs/issuing/controls/real-time-authorizations">real-time authorization</a> flow. 
+    description: `<p>[Deprecated] Approves a pending Issuing <code>Authorization</code> object. This request should be made within the timeout window of the <a href="/docs/issuing/controls/real-time-authorizations">real-time authorization</a> flow.
 This method is deprecated. Instead, <a href="/docs/issuing/controls/real-time-authorizations#authorization-handling">respond directly to the webhook request to approve an authorization</a>.</p>.`,
     inputSchema:
       stripe.PostIssuingAuthorizationsAuthorizationApproveParamsSchema

@@ -1,14 +1,14 @@
 import type * as types from './types'
+import type { AIFunction } from './types'
 import { AIFunctionSet } from './ai-function-set'
-import { createAIFunction } from './create-ai-function'
+import {
+  createAIFunction,
+  type CreateAIFunctionArgs
+} from './create-ai-function'
 import { assert } from './utils'
 
-export interface PrivateAIFunctionMetadata {
-  name: string
-  description: string
-  inputSchema: types.AIFunctionInputSchema
+export type PrivateAIFunctionMetadata = CreateAIFunctionArgs & {
   methodName: string
-  strict?: boolean
 }
 
 // Polyfill for `Symbol.metadata`
@@ -64,6 +64,23 @@ export abstract class AIFunctionsProvider {
 
     return this._functions
   }
+
+  /**
+   * Returns the AIFunctions provided by this class filtered by the given tags.
+   */
+  getFunctionsFilteredByTags(...tags: string[]): AIFunctionSet {
+    return this.functions.getFilteredByTags(...tags)
+  }
+
+  /**
+   * Returns the AIFunctions provided by this class which match a custom filter
+   * function.
+   */
+  getFunctionsFilteredBy(
+    filterFn: (fn: AIFunction) => boolean | undefined
+  ): AIFunctionSet {
+    return this.functions.getFilteredBy(filterFn)
+  }
 }
 
 export function aiFunction<
@@ -71,17 +88,7 @@ export function aiFunction<
   InputSchema extends types.AIFunctionInputSchema,
   OptionalArgs extends Array<undefined>,
   Return extends types.MaybePromise<any>
->({
-  name,
-  description,
-  inputSchema,
-  strict
-}: {
-  name?: string
-  description: string
-  inputSchema: InputSchema
-  strict?: boolean
-}) {
+>(args: CreateAIFunctionArgs<InputSchema>) {
   return (
     _targetMethod: (
       this: This,
@@ -102,12 +109,10 @@ export function aiFunction<
       context.metadata.invocables = []
     }
 
+    assert(args.name, 'aiFunction requires a non-empty "name" argument')
     ;(context.metadata.invocables as PrivateAIFunctionMetadata[]).push({
-      name: name ?? methodName,
-      description,
-      inputSchema,
-      methodName,
-      strict
+      ...args,
+      methodName
     })
 
     context.addInitializer(function () {
