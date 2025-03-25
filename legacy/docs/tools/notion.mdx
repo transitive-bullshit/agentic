@@ -1,0 +1,38 @@
+---
+title: Notion
+description: Notion API client.
+---
+
+The [Notion API](https://developers.notion.com/docs) provides a router for accessing pages, databases, and content.
+
+- package: `@agentic/notion`
+- exports: `class NotionClient`, `namespace notion`
+- env vars: `NOTION_API_KEY`
+- [source](https://github.com/transitive-bullshit/agentic/blob/main/packages/notion/src/notion-client.ts)
+- [notion api docs](https://developers.notion.com/docs)
+
+## Install
+
+<CodeGroup>
+```bash npm
+npm install @agentic/notion
+```
+
+```bash yarn
+yarn add @agentic/notion
+```
+
+```bash pnpm
+pnpm add @agentic/notion
+```
+
+</CodeGroup>
+
+## Usage
+
+```ts
+import { NotionClient } from '@agentic/notion'
+
+const notion = new NotionClient()
+const authenticatedUser = await notion.getSelf()
+```
