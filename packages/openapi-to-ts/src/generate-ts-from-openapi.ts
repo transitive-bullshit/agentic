@@ -699,8 +699,9 @@ export class ${clientName} extends AIFunctionsProvider {
         '}'
       ].join('\n\n')
     )
-  ).replaceAll(/z\s*\.object\({}\)\s*\.merge\(([^)]*)\)/gm, '$1')
-  // .replaceAll(/\/\*\*(\S.*\S)\*\//g, '/** $1 */')
+  )
+    .replaceAll(/z\s*\.object\({}\)\s*\.merge\(([^)]*)\)/gm, '$1')
+    .replaceAll(/\/\*\*(\S.*\S)\*\//g, '/** $1 */')
 
   if (dryRun) {
     return output
