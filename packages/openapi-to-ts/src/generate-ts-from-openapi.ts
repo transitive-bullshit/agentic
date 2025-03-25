@@ -199,7 +199,7 @@ export async function generateTSFromOpenAPI({
 
       const operationResponseJSONSchemas: Record<string, IJsonSchema> = {}
 
-      const operationParamsSources: Record<string, string> = {}
+      const operationParamsSources: Record<string, Set<string>> = {}
       let operationParamsUnionSource: string | undefined
 
       // eslint-disable-next-line unicorn/consistent-function-scoping
@@ -212,15 +212,21 @@ export async function generateTSFromOpenAPI({
           const derefed = dereference(schema, parser.$refs, componentsToProcess)
           if (derefed?.properties) {
             for (const key of Object.keys(derefed.properties)) {
-              assert(
-                !operationParamsSources[key],
-                `Duplicate params key ${key} for operation ${operationName} from ${operationParamsSources[key]} and ${source}`
-              )
-              operationParamsSources[key] = source
+              // assert(
+              //   !operationParamsSources[key],
+              //   `Duplicate params key ${key} for operation ${operationName} from ${operationParamsSources[key]} and ${source}`
+              // )
+              operationParamsSources[key] = new Set([
+                ...(operationParamsSources[key] || []),
+                source
+              ])
             }
           } else if (derefed?.anyOf || derefed?.oneOf) {
             const componentName = getComponentDisplayName(schema.$ref)
-            operationParamsSources[componentName] = source
+            operationParamsSources[componentName] = new Set([
+              ...(operationParamsSources[componentName] || []),
+              source
+            ])
 
             // TODO: handle this case
             assert(
@@ -237,11 +243,14 @@ export async function generateTSFromOpenAPI({
             }
 
             for (const key of Object.keys(schema.properties)) {
-              assert(
-                !operationParamsSources[key],
-                `Duplicate params key ${key} for operation ${operationName} from ${operationParamsSources[key]} and ${source}`
-              )
-              operationParamsSources[key] = source
+              // assert(
+              //   !operationParamsSources[key],
+              //   `Duplicate params key "${key}" for operation "${operationName}" from "${operationParamsSources[key]}" and "${source}"`
+              // )
+              operationParamsSources[key] = new Set([
+                ...(operationParamsSources[key] || []),
+                source
+              ])
             }
           }
 
@@ -255,7 +264,10 @@ export async function generateTSFromOpenAPI({
           if (schema.anyOf || schema.oneOf) {
             operationParamsJSONSchema.anyOf = schema.anyOf
             operationParamsJSONSchema.oneOf = schema.oneOf
-            operationParamsSources[schema.title || '__union__'] = source
+            operationParamsSources[schema.title || '__union__'] = new Set([
+              ...(operationParamsSources[schema.title || '__union__'] || []),
+              source
+            ])
 
             // TODO: handle this case
             assert(
@@ -311,7 +323,10 @@ export async function generateTSFromOpenAPI({
       }
 
       if (operation.parameters) {
-        const params = convertParametersToJSONSchema(operation.parameters)
+        const parameters = operation.parameters.map((param) =>
+          dereference(param, parser.$refs, componentsToProcess)
+        )
+        const params = convertParametersToJSONSchema(parameters)
 
         if (params.body) {
           addJSONSchemaParams(params.body, 'body')
@@ -458,28 +473,28 @@ export async function generateTSFromOpenAPI({
       //   )
       // )
 
-      const queryParams = Object.keys(operationParamsSources).filter(
-        (key) => operationParamsSources[key] === 'query'
+      const queryParams = Object.keys(operationParamsSources).filter((key) =>
+        operationParamsSources[key]?.has('query')
       )
       const hasQueryParams = queryParams.length > 0
 
-      const bodyParams = Object.keys(operationParamsSources).filter(
-        (key) => operationParamsSources[key] === 'body'
+      const bodyParams = Object.keys(operationParamsSources).filter((key) =>
+        operationParamsSources[key]?.has('body')
       )
       const hasBodyParams = bodyParams.length > 0
 
-      const formDataParams = Object.keys(operationParamsSources).filter(
-        (key) => operationParamsSources[key] === 'formData'
+      const formDataParams = Object.keys(operationParamsSources).filter((key) =>
+        operationParamsSources[key]?.has('formData')
       )
       const hasFormDataParams = formDataParams.length > 0
 
-      const pathParams = Object.keys(operationParamsSources).filter(
-        (key) => operationParamsSources[key] === 'path'
+      const pathParams = Object.keys(operationParamsSources).filter((key) =>
+        operationParamsSources[key]?.has('path')
       )
       const hasPathParams = pathParams.length > 0
 
-      const headersParams = Object.keys(operationParamsSources).filter(
-        (key) => operationParamsSources[key] === 'headers'
+      const headersParams = Object.keys(operationParamsSources).filter((key) =>
+        operationParamsSources[key]?.has('headers')
       )
       const hasHeadersParams = headersParams.length > 0
 
