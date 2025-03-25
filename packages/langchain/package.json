@@ -1,6 +1,6 @@
 {
   "name": "@agentic/langchain",
-  "version": "7.6.1",
+  "version": "7.6.2",
   "description": "Agentic adapter for the LangChain AI SDK.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",

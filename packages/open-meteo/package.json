@@ -1,6 +1,6 @@
 {
   "name": "@agentic/open-meteo",
-  "version": "7.6.1",
+  "version": "7.6.2",
   "description": "Agentic SDK for the Open-Meteo weather API.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",
