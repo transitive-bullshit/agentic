@@ -55,6 +55,7 @@
     "@agentic/mcp": "workspace:*",
     "@agentic/notion": "workspace:*",
     "@agentic/novu": "workspace:*",
+    "@agentic/open-meteo": "workspace:*",
     "@agentic/people-data-labs": "workspace:*",
     "@agentic/perigon": "workspace:*",
     "@agentic/polygon": "workspace:*",
