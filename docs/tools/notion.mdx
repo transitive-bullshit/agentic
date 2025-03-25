@@ -36,3 +36,5 @@ import { NotionClient } from '@agentic/notion'
 const notion = new NotionClient()
 const authenticatedUser = await notion.getSelf()
 ```
+
+You'll need to set up a [Notion Integration](https://developers.notion.com/docs/authorization), give it access to some pages in your Notion workspace, and then set the `NOTION_API_KEY` environment variable to the integration's token.
