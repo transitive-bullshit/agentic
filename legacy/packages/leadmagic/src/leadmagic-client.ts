@@ -20,7 +20,7 @@ export namespace leadmagic {
   })
 
   export interface ProfileSearchOptions {
-    linkedinUsername: string
+    linkedinUrl: string
   }
 
   export interface EnrichedPerson {
@@ -51,6 +51,58 @@ export namespace leadmagic {
     subtitle: string
     caption: string
     subComponents: any[]
+  }
+
+  export interface EmailFinderOptions {
+    first_name: string
+    last_name: string
+    domain: string
+  }
+
+  export interface MobileFinderOptions {
+    linkedinUrl: string
+  }
+
+  export interface RoleFinderOptions {
+    role: string
+    domain: string
+  }
+
+  export interface CreditsResponse {
+    credits: number
+  }
+
+  export interface EmailFinderResponse {
+    emailAddress: string
+    emailScore: number
+    domain: string
+    firstName: string
+    lastName: string
+    creditsConsumed: number
+  }
+
+  export interface MobileFinderResponse {
+    profileUrl: string
+    mobileNumber: string
+    firstName: string
+    lastName: string
+    verificationScore: number
+    creditsConsumed: number
+  }
+
+  export interface RoleFinderResponse {
+    matches: RoleMatch[]
+    creditsConsumed: number
+  }
+
+  export interface RoleMatch {
+    fullName: string
+    firstName: string
+    lastName: string
+    headline: string
+    profileUrl: string
+    emailAddress: string
+    score: number
   }
 }
 
@@ -98,27 +150,132 @@ export class LeadMagicClient extends AIFunctionsProvider {
   }
 
   /**
-   * Attempts to enrich a person with LeadMagic data based on their public LinkedIn username / identifier.
+   * Attempts to enrich a person with LeadMagic data based on their public
+   * LinkedIn URL.
    */
   @aiFunction({
-    name: 'leadmagic_profile_search',
+    name: 'leadmagic_get_person_by_linkedin_url',
     description:
-      'Attempts to enrich a person with LeadMagic data based on their public LinkedIn username / identifier.',
+      'Attempts to enrich a person with LeadMagic data based on their LinkedIn profile URL.',
     inputSchema: z.object({
-      linkedinUsername: z
+      linkedinUrl: z
         .string()
         .describe(
-          'The public LinkedIn username / identifier of the person to enrich. This is the last part of the LinkedIn profile URL. For example, `https://linkedin.com/in/fisch2` would be `fisch2`.'
+          'The LinkedIn profile URL of the person to enrich. For example, "https://linkedin.com/in/fisch2"'
         )
     })
   })
-  async profileSearch(opts: leadmagic.ProfileSearchOptions) {
+  async getPersonByLinkedInUrl(urlOrOpts: leadmagic.ProfileSearchOptions) {
+    const opts =
+      typeof urlOrOpts === 'string' ? { linkedinUrl: urlOrOpts } : urlOrOpts
+
     return this.ky
       .post('profile-search', {
         json: {
-          profile_url: opts.linkedinUsername.split('/').at(-1)?.trim()!
+          profile_url: opts.linkedinUrl
         }
       })
       .json<leadmagic.EnrichedPerson>()
+  }
+
+  /**
+   * Checks the remaining credits balance for your LeadMagic account.
+   */
+  @aiFunction({
+    name: 'leadmagic_check_credits',
+    description:
+      'Checks the remaining credits balance for your LeadMagic account.',
+    inputSchema: z.object({})
+  })
+  async checkCredits() {
+    return this.ky.post('credits').json()
+  }
+
+  /**
+   * Finds email addresses based on a person's first name, last name, and company
+   * domain.
+   */
+  @aiFunction({
+    name: 'leadmagic_email_finder',
+    description:
+      "Finds email addresses based on a person's first name, last name, and company domain.",
+    inputSchema: z.object({
+      first_name: z.string().describe('The first name of the person'),
+      last_name: z.string().describe('The last name of the person'),
+      domain: z
+        .string()
+        .describe('The company domain (e.g., "https://company.com")')
+    })
+  })
+  async findEmailsForPerson(opts: leadmagic.EmailFinderOptions) {
+    return this.ky
+      .post('email-finder', {
+        json: {
+          first_name: opts.first_name,
+          last_name: opts.last_name,
+          domain: opts.domain
+        }
+      })
+      .json<leadmagic.EmailFinderResponse>()
+  }
+
+  /**
+   * Finds mobile/phone numbers based on a person's LinkedIn profile URL.
+   */
+  @aiFunction({
+    name: 'leadmagic_mobile_finder',
+    description:
+      "Finds mobile/phone numbers based on a person's LinkedIn profile URL.",
+    inputSchema: z.object({
+      linkedinUrl: z
+        .string()
+        .describe(
+          'The LinkedIn profile URL of the person. For example, `https://linkedin.com/in/fisch2`'
+        )
+    })
+  })
+  async findMobilePhoneNumberForPerson(
+    urlOrOpts: string | leadmagic.MobileFinderOptions
+  ) {
+    const opts =
+      typeof urlOrOpts === 'string' ? { linkedinUrl: urlOrOpts } : urlOrOpts
+
+    return this.ky
+      .post('mobile-finder', {
+        json: {
+          profile_url: opts.linkedinUrl
+        }
+      })
+      .json<leadmagic.MobileFinderResponse>()
+  }
+
+  /**
+   * Finds people matching specific job roles at a company based on the company
+   * domain.
+   */
+  @aiFunction({
+    name: 'leadmagic_role_finder',
+    description:
+      'Finds people matching specific job roles at a company based on the company domain.',
+    inputSchema: z.object({
+      role: z
+        .string()
+        .describe(
+          'The job role/title to search for (e.g., "CTO", "Marketing Manager")'
+        ),
+      domain: z
+        .string()
+        .describe('The company domain (e.g., "https://company.com")')
+    })
+  })
+  async findPeopleByRole(opts: leadmagic.RoleFinderOptions) {
+    return this.ky
+      .post('role-finder', {
+        json: {
+          role: opts.role,
+          domain: opts.domain
+        }
+      })
+      .json<leadmagic.RoleFinderResponse>()
   }
 }
