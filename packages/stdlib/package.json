@@ -34,6 +34,7 @@
     "@agentic/apollo": "workspace:*",
     "@agentic/arxiv": "workspace:*",
     "@agentic/bing": "workspace:*",
+    "@agentic/brave-search": "workspace:*",
     "@agentic/calculator": "workspace:*",
     "@agentic/clearbit": "workspace:*",
     "@agentic/core": "workspace:*",

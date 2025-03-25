@@ -96,7 +96,7 @@ export class McpTools extends AIFunctionsProvider {
         return createAIFunction(
           {
             name: `${this.name}_${tool.name}`,
-            description: tool.description,
+            description: tool.description ?? `${this.name} ${tool.name}`,
             inputSchema: createJsonSchema(tool.inputSchema),
             strict: true
           },

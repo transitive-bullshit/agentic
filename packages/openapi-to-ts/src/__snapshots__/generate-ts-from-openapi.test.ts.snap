@@ -1,21 +1,10 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`openapi-to-ts > firecrawl.json 1`] = `
-"/* eslint-disable unicorn/no-unreadable-iife */
-/* eslint-disable unicorn/no-array-reduce */
-
-/**
+"/**
  * This file was auto-generated from an OpenAPI spec.
  */
 
-import {
-  AIFunctionsProvider,
-  aiFunction,
-  assert,
-  getEnv,
-  pick
-} from '@agentic/core'
-import defaultKy, { type KyInstance } from 'ky'
 import { z } from 'zod'
 
 export namespace firecrawl {
@@ -487,6 +476,21 @@ export namespace firecrawl {
   >
 }
 
+
+/**
+ * This file was auto-generated from an OpenAPI spec.
+ */
+
+import {
+  AIFunctionsProvider,
+  aiFunction,
+  assert,
+  getEnv,
+  pick
+} from '@agentic/core'
+import defaultKy, { type KyInstance } from 'ky'
+import { firecrawl } from './firecrawl'
+
 /**
  * Agentic Firecrawl client.
  *
@@ -529,7 +533,8 @@ export class FirecrawlClient extends AIFunctionsProvider {
   @aiFunction({
     name: 'firecrawl_scrape',
     description: \`Scrape a single URL.\`,
-    inputSchema: firecrawl.ScrapeParamsSchema
+    inputSchema: firecrawl.ScrapeParamsSchema,
+    tags: ['Scraping']
   })
   async scrape(
     params: firecrawl.ScrapeParams
@@ -557,7 +562,8 @@ export class FirecrawlClient extends AIFunctionsProvider {
   @aiFunction({
     name: 'firecrawl_crawl_urls',
     description: \`Crawl multiple URLs based on options.\`,
-    inputSchema: firecrawl.CrawlUrlsParamsSchema
+    inputSchema: firecrawl.CrawlUrlsParamsSchema,
+    tags: ['Crawling']
   })
   async crawlUrls(
     params: firecrawl.CrawlUrlsParams
@@ -575,7 +581,8 @@ export class FirecrawlClient extends AIFunctionsProvider {
   @aiFunction({
     name: 'firecrawl_search_google',
     description: \`Search for a keyword in Google, returns top page results with markdown content for each page.\`,
-    inputSchema: firecrawl.SearchGoogleParamsSchema
+    inputSchema: firecrawl.SearchGoogleParamsSchema,
+    tags: ['Search']
   })
   async searchGoogle(
     params: firecrawl.SearchGoogleParams
@@ -593,7 +600,8 @@ export class FirecrawlClient extends AIFunctionsProvider {
   @aiFunction({
     name: 'firecrawl_get_crawl_status',
     description: \`Get the status of a crawl job.\`,
-    inputSchema: firecrawl.GetCrawlStatusParamsSchema
+    inputSchema: firecrawl.GetCrawlStatusParamsSchema,
+    tags: ['Crawl']
   })
   async getCrawlStatus(
     params: firecrawl.GetCrawlStatusParams
@@ -609,7 +617,8 @@ export class FirecrawlClient extends AIFunctionsProvider {
   @aiFunction({
     name: 'firecrawl_cancel_crawl_job',
     description: \`Cancel a crawl job.\`,
-    inputSchema: firecrawl.CancelCrawlJobParamsSchema
+    inputSchema: firecrawl.CancelCrawlJobParamsSchema,
+    tags: ['Crawl']
   })
   async cancelCrawlJob(
     params: firecrawl.CancelCrawlJobParams
@@ -623,22 +632,10 @@ export class FirecrawlClient extends AIFunctionsProvider {
 `;
 
 exports[`openapi-to-ts > notion.json 1`] = `
-"/* eslint-disable unicorn/no-unreadable-iife */
-/* eslint-disable unicorn/no-array-reduce */
-
-/**
+"/**
  * This file was auto-generated from an OpenAPI spec.
  */
 
-import {
-  AIFunctionsProvider,
-  aiFunction,
-  assert,
-  getEnv,
-  pick,
-  sanitizeSearchParams
-} from '@agentic/core'
-import defaultKy, { type KyInstance } from 'ky'
 import { z } from 'zod'
 
 export namespace notion {
@@ -2090,6 +2087,22 @@ export namespace notion {
   export type OauthTokenParams = z.infer<typeof OauthTokenParamsSchema>
 }
 
+
+/**
+ * This file was auto-generated from an OpenAPI spec.
+ */
+
+import {
+  AIFunctionsProvider,
+  aiFunction,
+  assert,
+  getEnv,
+  pick,
+  sanitizeSearchParams
+} from '@agentic/core'
+import defaultKy, { type KyInstance } from 'ky'
+import { notion } from './notion'
+
 /**
  * Agentic Notion client.
  *
@@ -2567,20 +2580,10 @@ export class NotionClient extends AIFunctionsProvider {
 `;
 
 exports[`openapi-to-ts > pet-store.json 1`] = `
-"/* eslint-disable unicorn/no-unreadable-iife */
-/* eslint-disable unicorn/no-array-reduce */
-
-/**
+"/**
  * This file was auto-generated from an OpenAPI spec.
  */
 
-import {
-  AIFunctionsProvider,
-  aiFunction,
-  pick,
-  sanitizeSearchParams
-} from '@agentic/core'
-import defaultKy, { type KyInstance } from 'ky'
 import { z } from 'zod'
 
 export namespace petstore {
@@ -2633,6 +2636,20 @@ export namespace petstore {
   export type ShowPetByIdResponse = z.infer<typeof ShowPetByIdResponseSchema>
 }
 
+
+/**
+ * This file was auto-generated from an OpenAPI spec.
+ */
+
+import {
+  AIFunctionsProvider,
+  aiFunction,
+  pick,
+  sanitizeSearchParams
+} from '@agentic/core'
+import defaultKy, { type KyInstance } from 'ky'
+import { petstore } from './pet-store'
+
 /**
  * Agentic PetStore client.
  */
@@ -2664,7 +2681,8 @@ export class PetStoreClient extends AIFunctionsProvider {
   @aiFunction({
     name: 'pet_store_list_pets',
     description: \`List all pets.\`,
-    inputSchema: petstore.ListPetsParamsSchema
+    inputSchema: petstore.ListPetsParamsSchema,
+    tags: ['pets']
   })
   async listPets(
     params: petstore.ListPetsParams
@@ -2682,7 +2700,8 @@ export class PetStoreClient extends AIFunctionsProvider {
   @aiFunction({
     name: 'pet_store_create_pets',
     description: \`Create a pet.\`,
-    inputSchema: petstore.CreatePetsParamsSchema
+    inputSchema: petstore.CreatePetsParamsSchema,
+    tags: ['pets']
   })
   async createPets(
     params: petstore.CreatePetsParams
@@ -2700,7 +2719,8 @@ export class PetStoreClient extends AIFunctionsProvider {
   @aiFunction({
     name: 'pet_store_show_pet_by_id',
     description: \`Info for a specific pet.\`,
-    inputSchema: petstore.ShowPetByIdParamsSchema
+    inputSchema: petstore.ShowPetByIdParamsSchema,
+    tags: ['pets']
   })
   async showPetById(
     params: petstore.ShowPetByIdParams
@@ -2714,20 +2734,10 @@ export class PetStoreClient extends AIFunctionsProvider {
 `;
 
 exports[`openapi-to-ts > petstore-expanded.json 1`] = `
-"/* eslint-disable unicorn/no-unreadable-iife */
-/* eslint-disable unicorn/no-array-reduce */
-
-/**
+"/**
  * This file was auto-generated from an OpenAPI spec.
  */
 
-import {
-  AIFunctionsProvider,
-  aiFunction,
-  pick,
-  sanitizeSearchParams
-} from '@agentic/core'
-import defaultKy, { type KyInstance } from 'ky'
 import { z } from 'zod'
 
 export namespace petstoreexpanded {
@@ -2791,6 +2801,20 @@ export namespace petstoreexpanded {
 
   export type DeletePetResponse = undefined
 }
+
+
+/**
+ * This file was auto-generated from an OpenAPI spec.
+ */
+
+import {
+  AIFunctionsProvider,
+  aiFunction,
+  pick,
+  sanitizeSearchParams
+} from '@agentic/core'
+import defaultKy, { type KyInstance } from 'ky'
+import { petstoreexpanded } from './petstore-expanded'
 
 /**
  * Agentic PetstoreExpanded client.
@@ -2897,15 +2921,10 @@ Sed tempus felis lobortis leo pulvinar rutrum. Nam mattis velit nisl, eu condime
 `;
 
 exports[`openapi-to-ts > security.json 1`] = `
-"/* eslint-disable unicorn/no-unreadable-iife */
-/* eslint-disable unicorn/no-array-reduce */
-
-/**
+"/**
  * This file was auto-generated from an OpenAPI spec.
  */
 
-import { AIFunctionsProvider, aiFunction } from '@agentic/core'
-import defaultKy, { type KyInstance } from 'ky'
 import { z } from 'zod'
 
 export namespace security {
@@ -3019,6 +3038,15 @@ export namespace security {
   export type PostStatus401Response = undefined
 }
 
+
+/**
+ * This file was auto-generated from an OpenAPI spec.
+ */
+
+import { AIFunctionsProvider, aiFunction } from '@agentic/core'
+import defaultKy, { type KyInstance } from 'ky'
+import { security } from './security'
+
 /**
  * Agentic Security client.
  *
@@ -3052,7 +3080,8 @@ export class SecurityClient extends AIFunctionsProvider {
   @aiFunction({
     name: 'security_get_anything_api_key',
     description: \`\\\`apiKey\\\` auth will be supplied within an \\\`apiKey\\\` query parameter.\`,
-    inputSchema: security.GetAnythingApiKeyParamsSchema
+    inputSchema: security.GetAnythingApiKeyParamsSchema,
+    tags: ['API Key']
   })
   async getAnythingApiKey(
     _params: security.GetAnythingApiKeyParams
@@ -3068,7 +3097,8 @@ export class SecurityClient extends AIFunctionsProvider {
   @aiFunction({
     name: 'security_post_anything_api_key',
     description: \`\\\`apiKey\\\` auth will be supplied within an \\\`api_key\\\` cookie.\`,
-    inputSchema: security.PostAnythingApiKeyParamsSchema
+    inputSchema: security.PostAnythingApiKeyParamsSchema,
+    tags: ['API Key']
   })
   async postAnythingApiKey(
     _params: security.PostAnythingApiKeyParams
@@ -3084,7 +3114,8 @@ export class SecurityClient extends AIFunctionsProvider {
   @aiFunction({
     name: 'security_put_anything_api_key',
     description: \`\\\`apiKey\\\` auth will be supplied within an \\\`X-API-KEY\\\` header.\`,
-    inputSchema: security.PutAnythingApiKeyParamsSchema
+    inputSchema: security.PutAnythingApiKeyParamsSchema,
+    tags: ['API Key']
   })
   async putAnythingApiKey(
     _params: security.PutAnythingApiKeyParams
@@ -3104,7 +3135,8 @@ https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#basic-a
     description: \`Authentication credentials will be supplied within a \\\`Basic\\\` \\\`Authorization\\\` header.
 
 https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#basic-authentication-sample.\`,
-    inputSchema: security.PostAnythingBasicParamsSchema
+    inputSchema: security.PostAnythingBasicParamsSchema,
+    tags: ['HTTP']
   })
   async postAnythingBasic(
     _params: security.PostAnythingBasicParams
@@ -3124,7 +3156,8 @@ https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#basic-a
     description: \`Authentication credentials will be supplied within a \\\`Bearer\\\` \\\`Authorization\\\` header.
 
 https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#basic-authentication-sample.\`,
-    inputSchema: security.PostAnythingBearerParamsSchema
+    inputSchema: security.PostAnythingBearerParamsSchema,
+    tags: ['HTTP']
   })
   async postAnythingBearer(
     _params: security.PostAnythingBearerParams
@@ -3150,7 +3183,8 @@ https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#basic-a
 
 > ℹ️
 > We currently do not support any special handling for this so they're handled as a standard \\\`Bearer\\\` authentication token.\`,
-    inputSchema: security.PutAnythingBearerParamsSchema
+    inputSchema: security.PutAnythingBearerParamsSchema,
+    tags: ['HTTP']
   })
   async putAnythingBearer(
     _params: security.PutAnythingBearerParams
@@ -3172,7 +3206,8 @@ https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-f
 > We currently do not handle OAuth 2 authentication flows so if an operation has an \\\`oauth2\\\` requirement we assume that the user, or the projects JWT, has a qualified \\\`bearer\\\` token and will use that.
 
 https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-fields-23.\`,
-    inputSchema: security.GetAnythingOauth2ParamsSchema
+    inputSchema: security.GetAnythingOauth2ParamsSchema,
+    tags: ['OAuth 2']
   })
   async getAnythingOauth2(
     _params: security.GetAnythingOauth2Params
@@ -3194,7 +3229,8 @@ https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-f
 > We currently do not handle OAuth 2 authentication flows so if an operation has an \\\`oauth2\\\` requirement we assume that the user, or the projects JWT, has a qualified \\\`bearer\\\` token and will use that.
 
 https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-fields-23.\`,
-    inputSchema: security.PostAnythingOauth2ParamsSchema
+    inputSchema: security.PostAnythingOauth2ParamsSchema,
+    tags: ['OAuth 2']
   })
   async postAnythingOauth2(
     _params: security.PostAnythingOauth2Params
@@ -3216,7 +3252,8 @@ https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-f
 > We currently do not handle OAuth 2 authentication flows so if an operation has an \\\`oauth2\\\` requirement we assume that the user, or the projects JWT, has a qualified \\\`bearer\\\` token and will use that.
 
 https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-fields-23.\`,
-    inputSchema: security.PutAnythingOauth2ParamsSchema
+    inputSchema: security.PutAnythingOauth2ParamsSchema,
+    tags: ['OAuth 2']
   })
   async putAnythingOauth2(
     _params: security.PutAnythingOauth2Params
@@ -3238,7 +3275,8 @@ https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-f
 > We currently do not handle OAuth 2 authentication flows so if an operation has an \\\`oauth2\\\` requirement we assume that the user, or the projects JWT, has a qualified \\\`bearer\\\` token and will use that.
 
 https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-fields-23.\`,
-    inputSchema: security.DeleteAnythingOauth2ParamsSchema
+    inputSchema: security.DeleteAnythingOauth2ParamsSchema,
+    tags: ['OAuth 2']
   })
   async deleteAnythingOauth2(
     _params: security.DeleteAnythingOauth2Params
@@ -3260,7 +3298,8 @@ https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-f
 > We currently do not handle OAuth 2 authentication flows so if an operation has an \\\`oauth2\\\` requirement we assume that the user, or the projects JWT, has a qualified \\\`bearer\\\` token and will use that.
 
 https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-fields-23.\`,
-    inputSchema: security.PatchAnythingOauth2ParamsSchema
+    inputSchema: security.PatchAnythingOauth2ParamsSchema,
+    tags: ['OAuth 2']
   })
   async patchAnythingOauth2(
     _params: security.PatchAnythingOauth2Params
@@ -3276,7 +3315,8 @@ https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-f
   @aiFunction({
     name: 'security_post_anything_open_id_connect',
     description: \`🚧 This is not supported.\`,
-    inputSchema: security.PostAnythingOpenIdConnectParamsSchema
+    inputSchema: security.PostAnythingOpenIdConnectParamsSchema,
+    tags: ['OpenID Connect']
   })
   async postAnythingOpenIdConnect(
     _params: security.PostAnythingOpenIdConnectParams
@@ -3292,7 +3332,8 @@ https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-f
   @aiFunction({
     name: 'security_post_anything_no_auth',
     description: \`This operation does not have any authentication requirements.\`,
-    inputSchema: security.PostAnythingNoAuthParamsSchema
+    inputSchema: security.PostAnythingNoAuthParamsSchema,
+    tags: ['Other']
   })
   async postAnythingNoAuth(
     _params: security.PostAnythingNoAuthParams
@@ -3312,7 +3353,8 @@ https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#securit
     description: \`The \\\`apiKey\\\` query parameter auth on this operation is optional.
 
 https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#security-requirement-object.\`,
-    inputSchema: security.GetAnythingOptionalAuthParamsSchema
+    inputSchema: security.GetAnythingOptionalAuthParamsSchema,
+    tags: ['Other']
   })
   async getAnythingOptionalAuth(
     _params: security.GetAnythingOptionalAuthParams
@@ -3328,7 +3370,8 @@ https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#securit
   @aiFunction({
     name: 'security_post_status401',
     description: \`This endpoint requires an authentication header but making any request to it will forcefully return a 401 status code for invalid auth.\`,
-    inputSchema: security.PostStatus401ParamsSchema
+    inputSchema: security.PostStatus401ParamsSchema,
+    tags: ['Other']
   })
   async postStatus401(
     _params: security.PostStatus401Params
@@ -3340,15 +3383,10 @@ https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#securit
 `;
 
 exports[`openapi-to-ts > tic-tac-toe.json 1`] = `
-"/* eslint-disable unicorn/no-unreadable-iife */
-/* eslint-disable unicorn/no-array-reduce */
-
-/**
+"/**
  * This file was auto-generated from an OpenAPI spec.
  */
 
-import { AIFunctionsProvider, aiFunction } from '@agentic/core'
-import defaultKy, { type KyInstance } from 'ky'
 import { z } from 'zod'
 
 export namespace tictactoe {
@@ -3403,6 +3441,15 @@ export namespace tictactoe {
   export type PutSquareResponse = z.infer<typeof PutSquareResponseSchema>
 }
 
+
+/**
+ * This file was auto-generated from an OpenAPI spec.
+ */
+
+import { AIFunctionsProvider, aiFunction } from '@agentic/core'
+import defaultKy, { type KyInstance } from 'ky'
+import { tictactoe } from './tic-tac-toe'
+
 /**
  * Agentic TicTacToe client.
  *
@@ -3438,7 +3485,8 @@ export class TicTacToeClient extends AIFunctionsProvider {
   @aiFunction({
     name: 'tic_tac_toe_get_board',
     description: \`Retrieves the current state of the board and the winner.\`,
-    inputSchema: tictactoe.GetBoardParamsSchema
+    inputSchema: tictactoe.GetBoardParamsSchema,
+    tags: ['Gameplay']
   })
   async getBoard(
     _params: tictactoe.GetBoardParams
@@ -3452,7 +3500,8 @@ export class TicTacToeClient extends AIFunctionsProvider {
   @aiFunction({
     name: 'tic_tac_toe_get_square',
     description: \`Retrieves the requested square.\`,
-    inputSchema: tictactoe.GetSquareParamsSchema
+    inputSchema: tictactoe.GetSquareParamsSchema,
+    tags: ['Gameplay']
   })
   async getSquare(
     _params: tictactoe.GetSquareParams
@@ -3468,7 +3517,8 @@ export class TicTacToeClient extends AIFunctionsProvider {
   @aiFunction({
     name: 'tic_tac_toe_put_square',
     description: \`Places a mark on the board and retrieves the whole board and the winner (if any).\`,
-    inputSchema: tictactoe.PutSquareParamsSchema
+    inputSchema: tictactoe.PutSquareParamsSchema,
+    tags: ['Gameplay']
   })
   async putSquare(
     _params: tictactoe.PutSquareParams
