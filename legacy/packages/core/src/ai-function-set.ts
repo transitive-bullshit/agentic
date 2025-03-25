@@ -1,4 +1,5 @@
 import type * as types from './types.ts'
+import type { AIFunction } from './types.ts'
 import { AIFunctionsProvider } from './fns'
 import { isAIFunction } from './utils'
 
@@ -130,6 +131,25 @@ export class AIFunctionSet implements Iterable<types.AIFunction> {
 
   map<T>(fn: (fn: types.AIFunction) => T): T[] {
     return [...this.entries].map(fn)
+  }
+
+  /**
+   * Returns a new AIFunctionSet containing only the AIFunctions in this set
+   * matching the given tags.
+   */
+  getFilteredByTags(...tags: string[]): AIFunctionSet {
+    const tagsSet = new Set(tags)
+    return this.getFilteredBy((fn) => fn.tags?.some((t) => tagsSet.has(t)))
+  }
+
+  /**
+   * Returns a new AIFunctionSet containing only the AIFunctions in this set
+   * matching a custom filter function.
+   */
+  getFilteredBy(
+    filterFn: (fn: AIFunction) => boolean | undefined
+  ): AIFunctionSet {
+    return new AIFunctionSet(Array.from(this).filter((fn) => filterFn(fn)))
   }
 
   /**

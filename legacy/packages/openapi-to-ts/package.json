@@ -24,7 +24,8 @@
     "clean": "del dist",
     "test": "run-s test:*",
     "test:lint": "eslint .",
-    "test:typecheck": "tsc --noEmit"
+    "test:typecheck": "tsc --noEmit",
+    "test:unit": "vitest run"
   },
   "dependencies": {
     "@agentic/core": "workspace:*",

@@ -61,7 +61,10 @@ export async function generateTSFromOpenAPI({
     throw new Error(`Unexpected OpenAPI version "${spec.openapi}"`)
   }
 
-  const openapiSpecName = path.basename(openapiFilePath, '.json')
+  const openapiSpecName = path
+    .basename(openapiFilePath)
+    .replace(/\.json$/, '')
+    .replace(/\.yaml$/, '')
   assert(
     openapiSpecName.toLowerCase() === openapiSpecName,
     `OpenAPI spec name "${openapiSpecName}" must be in kebab case`
@@ -75,6 +78,7 @@ export async function generateTSFromOpenAPI({
   const namespaceName = nameLowerCase
 
   const destFileClient = path.join(outputDir, `${nameKebabCase}-client.ts`)
+  const destFileTypes = path.join(outputDir, `${nameKebabCase}.ts`)
   const apiBaseUrl = spec.servers?.[0]?.url
 
   const securitySchemes = spec.components?.securitySchemes
@@ -179,7 +183,12 @@ export async function generateTSFromOpenAPI({
         `Duplicate operation name "${operationName}"`
       )
       operationNames.add(operationName)
-      const operationNameSnakeCase = decamelize(operationName)
+      const operationNameSnakeCaseTemp = decamelize(operationName)
+      const operationNameSnakeCase = operationNameSnakeCaseTemp.startsWith(
+        `${nameSnakeCase}_`
+      )
+        ? operationNameSnakeCaseTemp
+        : `${nameSnakeCase}_${operationNameSnakeCaseTemp}`
 
       // if (path !== '/comments' || method !== 'post') continue
       // if (path !== '/crawl/status/{jobId}') continue
@@ -199,7 +208,7 @@ export async function generateTSFromOpenAPI({
 
       const operationResponseJSONSchemas: Record<string, IJsonSchema> = {}
 
-      const operationParamsSources: Record<string, string> = {}
+      const operationParamsSources: Record<string, Set<string>> = {}
       let operationParamsUnionSource: string | undefined
 
       // eslint-disable-next-line unicorn/consistent-function-scoping
@@ -212,15 +221,21 @@ export async function generateTSFromOpenAPI({
           const derefed = dereference(schema, parser.$refs, componentsToProcess)
           if (derefed?.properties) {
             for (const key of Object.keys(derefed.properties)) {
-              assert(
-                !operationParamsSources[key],
-                `Duplicate params key ${key} for operation ${operationName} from ${operationParamsSources[key]} and ${source}`
-              )
-              operationParamsSources[key] = source
+              // assert(
+              //   !operationParamsSources[key],
+              //   `Duplicate params key ${key} for operation ${operationName} from ${operationParamsSources[key]} and ${source}`
+              // )
+              operationParamsSources[key] = new Set([
+                ...(operationParamsSources[key] || []),
+                source
+              ])
             }
           } else if (derefed?.anyOf || derefed?.oneOf) {
             const componentName = getComponentDisplayName(schema.$ref)
-            operationParamsSources[componentName] = source
+            operationParamsSources[componentName] = new Set([
+              ...(operationParamsSources[componentName] || []),
+              source
+            ])
 
             // TODO: handle this case
             assert(
@@ -237,11 +252,14 @@ export async function generateTSFromOpenAPI({
             }
 
             for (const key of Object.keys(schema.properties)) {
-              assert(
-                !operationParamsSources[key],
-                `Duplicate params key ${key} for operation ${operationName} from ${operationParamsSources[key]} and ${source}`
-              )
-              operationParamsSources[key] = source
+              // assert(
+              //   !operationParamsSources[key],
+              //   `Duplicate params key "${key}" for operation "${operationName}" from "${operationParamsSources[key]}" and "${source}"`
+              // )
+              operationParamsSources[key] = new Set([
+                ...(operationParamsSources[key] || []),
+                source
+              ])
             }
           }
 
@@ -255,7 +273,10 @@ export async function generateTSFromOpenAPI({
           if (schema.anyOf || schema.oneOf) {
             operationParamsJSONSchema.anyOf = schema.anyOf
             operationParamsJSONSchema.oneOf = schema.oneOf
-            operationParamsSources[schema.title || '__union__'] = source
+            operationParamsSources[schema.title || '__union__'] = new Set([
+              ...(operationParamsSources[schema.title || '__union__'] || []),
+              source
+            ])
 
             // TODO: handle this case
             assert(
@@ -311,7 +332,10 @@ export async function generateTSFromOpenAPI({
       }
 
       if (operation.parameters) {
-        const params = convertParametersToJSONSchema(operation.parameters)
+        const parameters = operation.parameters.map((param) =>
+          dereference(param, parser.$refs, componentsToProcess)
+        )
+        const params = convertParametersToJSONSchema(parameters)
 
         if (params.body) {
           addJSONSchemaParams(params.body, 'body')
@@ -458,28 +482,28 @@ export async function generateTSFromOpenAPI({
       //   )
       // )
 
-      const queryParams = Object.keys(operationParamsSources).filter(
-        (key) => operationParamsSources[key] === 'query'
+      const queryParams = Object.keys(operationParamsSources).filter((key) =>
+        operationParamsSources[key]?.has('query')
       )
       const hasQueryParams = queryParams.length > 0
 
-      const bodyParams = Object.keys(operationParamsSources).filter(
-        (key) => operationParamsSources[key] === 'body'
+      const bodyParams = Object.keys(operationParamsSources).filter((key) =>
+        operationParamsSources[key]?.has('body')
       )
       const hasBodyParams = bodyParams.length > 0
 
-      const formDataParams = Object.keys(operationParamsSources).filter(
-        (key) => operationParamsSources[key] === 'formData'
+      const formDataParams = Object.keys(operationParamsSources).filter((key) =>
+        operationParamsSources[key]?.has('formData')
       )
       const hasFormDataParams = formDataParams.length > 0
 
-      const pathParams = Object.keys(operationParamsSources).filter(
-        (key) => operationParamsSources[key] === 'path'
+      const pathParams = Object.keys(operationParamsSources).filter((key) =>
+        operationParamsSources[key]?.has('path')
       )
       const hasPathParams = pathParams.length > 0
 
-      const headersParams = Object.keys(operationParamsSources).filter(
-        (key) => operationParamsSources[key] === 'headers'
+      const headersParams = Object.keys(operationParamsSources).filter((key) =>
+        operationParamsSources[key]?.has('headers')
       )
       const hasHeadersParams = headersParams.length > 0
 
@@ -495,12 +519,15 @@ export async function generateTSFromOpenAPI({
         operation.description || operation.summary
       )
 
+      const { tags } = operation
+      const hasTags = !!tags?.length
+
       const aiClientMethod = `
         ${description ? `/**\n * ${description}\n */` : ''}
         @aiFunction({
           name: '${operationNameSnakeCase}',
           ${description ? `description: \`${description.replaceAll('`', '\\`')}\`,` : ''}${hasUnionParams ? '\n// TODO: Improve handling of union params' : ''}
-          inputSchema: ${namespaceName}.${operationParamsName}Schema${hasUnionParams ? ' as any' : ''},
+          inputSchema: ${namespaceName}.${operationParamsName}Schema${hasUnionParams ? ' as any' : ''}, ${hasTags ? `tags: [ '${tags.join("', '")}' ]` : ''}
         })
         async ${operationName}(${!hasParams ? '_' : ''}params: ${namespaceName}.${operationParamsName}): Promise<${namespaceName}.${operationResponseName}> {
           return this.ky.${method}(${pathTemplate}${
@@ -593,10 +620,24 @@ export async function generateTSFromOpenAPI({
 
   const aiClientMethodsString = aiClientMethods.join('\n\n')
 
-  const header = `
-/* eslint-disable unicorn/no-unreadable-iife */
-/* eslint-disable unicorn/no-array-reduce */
+  const prettifyImpl = async (code: string) => {
+    if (prettier) {
+      code = await prettify(code)
+    }
 
+    return code
+      .replaceAll(/z\s*\.object\({}\)\s*\.merge\(([^)]*)\)/gm, '$1')
+      .replaceAll(/\/\*\*(\S.*\S)\*\//g, '/** $1 */')
+  }
+
+  const typesHeader = `
+/**
+ * This file was auto-generated from an OpenAPI spec.
+ */
+
+import { z } from 'zod'`.trim()
+
+  const clientHeader = `
 /**
  * This file was auto-generated from an OpenAPI spec.
  */
@@ -610,34 +651,34 @@ import {
   ${aiClientMethodsString.includes('sanitizeSearchParams(') ? 'sanitizeSearchParams,' : ''}
 } from '@agentic/core'
 import defaultKy, { type KyInstance } from 'ky'
-import { z } from 'zod'`.trim()
+import { ${namespaceName} } from './${nameKebabCase}'`.trim()
 
   const commentLine = `// ${'-'.repeat(77)}`
-  const outputTypes = [
-    header,
-    `export namespace ${namespaceName} {`,
-    apiBaseUrl ? `export const apiBaseUrl = '${apiBaseUrl}'` : undefined,
-    Object.values(componentSchemas).length
-      ? `${commentLine}\n// Component schemas\n${commentLine}`
-      : undefined,
-    ...Object.values(componentSchemas),
-    Object.values(operationSchemas).length
-      ? `${commentLine}\n// Operation schemas\n${commentLine}`
-      : undefined,
-    ...Object.values(operationSchemas),
-    '}'
-  ]
-    .filter(Boolean)
-    .join('\n\n')
+  const typesOutput = await prettifyImpl(
+    [
+      typesHeader,
+      `export namespace ${namespaceName} {`,
+      apiBaseUrl ? `export const apiBaseUrl = '${apiBaseUrl}'` : undefined,
+      Object.values(componentSchemas).length
+        ? `${commentLine}\n// Component schemas\n${commentLine}`
+        : undefined,
+      ...Object.values(componentSchemas),
+      Object.values(operationSchemas).length
+        ? `${commentLine}\n// Operation schemas\n${commentLine}`
+        : undefined,
+      ...Object.values(operationSchemas),
+      '}'
+    ]
+      .filter(Boolean)
+      .join('\n\n')
+  )
 
   const description = getDescription(spec.info?.description)
-  const prettifyImpl = prettier ? prettify : (code: string) => code
 
-  const output = (
-    await prettifyImpl(
-      [
-        outputTypes,
-        `
+  const clientOutput = await prettifyImpl(
+    [
+      clientHeader,
+      `
 /**
  * Agentic ${name} client.${description ? `\n *\n * ${description}` : ''}
  */
@@ -680,22 +721,28 @@ export class ${clientName} extends AIFunctionsProvider {
     })
   }
 `,
-        aiClientMethodsString,
-        '}'
-      ].join('\n\n')
-    )
-  ).replaceAll(/z\s*\.object\({}\)\s*\.merge\(([^)]*)\)/gm, '$1')
-  // .replaceAll(/\/\*\*(\S.*\S)\*\//g, '/** $1 */')
+      aiClientMethodsString,
+      '}'
+    ].join('\n\n')
+  )
 
+  const output = [typesOutput, clientOutput].join('\n\n')
   if (dryRun) {
     return output
   }
 
   await fs.mkdir(outputDir, { recursive: true })
-  await fs.writeFile(destFileClient, output)
+  await fs.writeFile(destFileTypes, typesOutput)
+  await fs.writeFile(destFileClient, clientOutput)
 
   if (eslint) {
-    await execa('npx', ['eslint', '--fix', '--no-ignore', destFileClient])
+    await execa('npx', [
+      'eslint',
+      '--fix',
+      '--no-ignore',
+      destFileClient,
+      destFileTypes
+    ])
   }
 
   return output

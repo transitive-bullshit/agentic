@@ -40,7 +40,7 @@ export namespace github {
 }
 
 /**
- * Basic GitHub API wrapper.
+ * Agentic GitHub client.
  */
 export class GitHubClient extends AIFunctionsProvider {
   protected readonly apiKey: string
