@@ -524,7 +524,7 @@ export class FirecrawlClient extends AIFunctionsProvider {
    * Scrape a single URL.
    */
   @aiFunction({
-    name: 'scrape',
+    name: 'firecrawl_scrape',
     description: `Scrape a single URL.`,
     inputSchema: firecrawl.ScrapeParamsSchema
   })
@@ -552,7 +552,7 @@ export class FirecrawlClient extends AIFunctionsProvider {
    * Crawl multiple URLs based on options.
    */
   @aiFunction({
-    name: 'crawl_urls',
+    name: 'firecrawl_crawl_urls',
     description: `Crawl multiple URLs based on options.`,
     inputSchema: firecrawl.CrawlUrlsParamsSchema
   })
@@ -570,7 +570,7 @@ export class FirecrawlClient extends AIFunctionsProvider {
    * Search for a keyword in Google, returns top page results with markdown content for each page.
    */
   @aiFunction({
-    name: 'search_google',
+    name: 'firecrawl_search_google',
     description: `Search for a keyword in Google, returns top page results with markdown content for each page.`,
     inputSchema: firecrawl.SearchGoogleParamsSchema
   })
@@ -588,7 +588,7 @@ export class FirecrawlClient extends AIFunctionsProvider {
    * Get the status of a crawl job.
    */
   @aiFunction({
-    name: 'get_crawl_status',
+    name: 'firecrawl_get_crawl_status',
     description: `Get the status of a crawl job.`,
     inputSchema: firecrawl.GetCrawlStatusParamsSchema
   })
@@ -604,7 +604,7 @@ export class FirecrawlClient extends AIFunctionsProvider {
    * Cancel a crawl job.
    */
   @aiFunction({
-    name: 'cancel_crawl_job',
+    name: 'firecrawl_cancel_crawl_job',
     description: `Cancel a crawl job.`,
     inputSchema: firecrawl.CancelCrawlJobParamsSchema
   })
