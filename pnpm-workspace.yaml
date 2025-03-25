@@ -19,7 +19,7 @@ catalog:
   '@total-typescript/ts-reset': ^0.6.1
   '@types/jsrsasign': ^10.5.15
   '@types/node': ^22.13.13
-  '@xsai/tool': ^0.1.3
+  '@xsai/tool': ^0.2.0-beta.1
   ai: ^4.2.2
   bumpp: ^10.1.0
   camelcase: ^8.0.0
@@ -66,7 +66,7 @@ catalog:
   typescript: ^5.8.2
   vitest: ^3.0.9
   wikibase-sdk: ^10.2.2
-  xsai: ^0.1.3
+  xsai: ^0.2.0-beta.1
   zod: ^3.24.2
   zod-validation-error: ^3.4.0
   zoominfo-api-auth-client: ^1.0.1

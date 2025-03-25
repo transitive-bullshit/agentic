@@ -11,7 +11,8 @@ async function main() {
   const weatherAgent = new Agent({
     name: 'Weather Agent',
     instructions: 'You are a helpful assistant. Be as concise as possible.',
-    model: openai('gpt-4o-mini'),
+    // TODO: this appears to be a recent bug in mastra or ai-sdk requiring an `any` here
+    model: openai('gpt-4o-mini') as any,
     tools: createMastraTools(weather)
   })
 
