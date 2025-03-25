@@ -20,6 +20,8 @@ import { openmeteo } from './open-meteo'
 export class OpenMeteoClient extends AIFunctionsProvider {
   protected readonly ky: KyInstance
 
+  protected readonly apiBaseUrl: string
+
   constructor({
     apiBaseUrl,
     ky = defaultKy
@@ -29,6 +31,8 @@ export class OpenMeteoClient extends AIFunctionsProvider {
     ky?: KyInstance
   } = {}) {
     super()
+
+    this.apiBaseUrl = apiBaseUrl
 
     this.ky = ky.extend({
       prefixUrl: apiBaseUrl
