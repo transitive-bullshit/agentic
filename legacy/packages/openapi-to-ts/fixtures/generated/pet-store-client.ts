@@ -8,6 +8,7 @@
 import {
   aiFunction,
   AIFunctionsProvider,
+  pick,
   sanitizeSearchParams
 } from '@agentic/core'
 import defaultKy, { type KyInstance } from 'ky'
@@ -93,7 +94,7 @@ export class PetStoreClient extends AIFunctionsProvider {
    */
   @aiFunction({
     name: 'list_pets',
-    description: 'List all pets.',
+    description: `List all pets.`,
     inputSchema: petstore.ListPetsParamsSchema
   })
   async listPets(
@@ -111,7 +112,7 @@ export class PetStoreClient extends AIFunctionsProvider {
    */
   @aiFunction({
     name: 'create_pets',
-    description: 'Create a pet.',
+    description: `Create a pet.`,
     inputSchema: petstore.CreatePetsParamsSchema
   })
   async createPets(
@@ -119,7 +120,7 @@ export class PetStoreClient extends AIFunctionsProvider {
   ): Promise<petstore.CreatePetsResponse> {
     return this.ky
       .post('/pets', {
-        json: params
+        json: pick(params, 'id', 'name', 'tag')
       })
       .json<petstore.CreatePetsResponse>()
   }
@@ -129,7 +130,7 @@ export class PetStoreClient extends AIFunctionsProvider {
    */
   @aiFunction({
     name: 'show_pet_by_id',
-    description: 'Info for a specific pet.',
+    description: `Info for a specific pet.`,
     inputSchema: petstore.ShowPetByIdParamsSchema
   })
   async showPetById(

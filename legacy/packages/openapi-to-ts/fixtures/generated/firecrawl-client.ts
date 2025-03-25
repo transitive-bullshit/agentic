@@ -5,7 +5,13 @@
  * This file was auto-generated from an OpenAPI spec.
  */
 
-import { aiFunction, AIFunctionsProvider, assert, getEnv } from '@agentic/core'
+import {
+  aiFunction,
+  AIFunctionsProvider,
+  assert,
+  getEnv,
+  pick
+} from '@agentic/core'
 import defaultKy, { type KyInstance } from 'ky'
 import { z } from 'zod'
 
@@ -21,7 +27,6 @@ export namespace firecrawl {
     /** Warning message to let you know of any issues. */
     warning: z
       .string()
-      .nullable()
       .describe('Warning message to let you know of any issues.')
       .optional(),
     data: z
@@ -29,7 +34,6 @@ export namespace firecrawl {
         /** Markdown content of the page if the `markdown` format was specified (default) */
         markdown: z
           .string()
-          .nullable()
           .describe(
             'Markdown content of the page if the `markdown` format was specified (default)'
           )
@@ -37,7 +41,6 @@ export namespace firecrawl {
         /** HTML version of the content on page if the `html` format was specified */
         html: z
           .string()
-          .nullable()
           .describe(
             'HTML version of the content on page if the `html` format was specified'
           )
@@ -45,7 +48,6 @@ export namespace firecrawl {
         /** Raw HTML content of the page if the `rawHtml` format was specified */
         rawHtml: z
           .string()
-          .nullable()
           .describe(
             'Raw HTML content of the page if the `rawHtml` format was specified'
           )
@@ -53,13 +55,11 @@ export namespace firecrawl {
         /** Links on the page if the `links` format was specified */
         links: z
           .array(z.string().url())
-          .nullable()
           .describe('Links on the page if the `links` format was specified')
           .optional(),
         /** URL of the screenshot of the page if the `screenshot` or `screenshot@fullSize` format was specified */
         screenshot: z
           .string()
-          .nullable()
           .describe(
             'URL of the screenshot of the page if the `screenshot` or `screenshot@fullSize` format was specified'
           )
@@ -68,7 +68,7 @@ export namespace firecrawl {
           .object({
             title: z.string().optional(),
             description: z.string().optional(),
-            language: z.string().nullable().optional(),
+            language: z.string().optional(),
             sourceURL: z.string().url().optional(),
             '<any other metadata> ': z.string().optional(),
             /** The status code of the page */
@@ -80,7 +80,6 @@ export namespace firecrawl {
             /** The error message of the page */
             error: z
               .string()
-              .nullable()
               .describe('The error message of the page')
               .optional()
           })
@@ -107,7 +106,6 @@ export namespace firecrawl {
     /** Markdown content of the page if the `markdown` format was specified (default) */
     markdown: z
       .string()
-      .nullable()
       .describe(
         'Markdown content of the page if the `markdown` format was specified (default)'
       )
@@ -115,7 +113,6 @@ export namespace firecrawl {
     /** HTML version of the content on page if the `html` format was specified */
     html: z
       .string()
-      .nullable()
       .describe(
         'HTML version of the content on page if the `html` format was specified'
       )
@@ -123,7 +120,6 @@ export namespace firecrawl {
     /** Raw HTML content of the page if the `rawHtml` format was specified */
     rawHtml: z
       .string()
-      .nullable()
       .describe(
         'Raw HTML content of the page if the `rawHtml` format was specified'
       )
@@ -131,13 +127,11 @@ export namespace firecrawl {
     /** Links on the page if the `links` format was specified */
     links: z
       .array(z.string().url())
-      .nullable()
       .describe('Links on the page if the `links` format was specified')
       .optional(),
     /** URL of the screenshot of the page if the `screenshot` or `screenshot@fullSize` format was specified */
     screenshot: z
       .string()
-      .nullable()
       .describe(
         'URL of the screenshot of the page if the `screenshot` or `screenshot@fullSize` format was specified'
       )
@@ -146,7 +140,7 @@ export namespace firecrawl {
       .object({
         title: z.string().optional(),
         description: z.string().optional(),
-        language: z.string().nullable().optional(),
+        language: z.string().optional(),
         sourceURL: z.string().url().optional(),
         '<any other metadata> ': z.string().optional(),
         /** The status code of the page */
@@ -156,11 +150,7 @@ export namespace firecrawl {
           .describe('The status code of the page')
           .optional(),
         /** The error message of the page */
-        error: z
-          .string()
-          .nullable()
-          .describe('The error message of the page')
-          .optional()
+        error: z.string().describe('The error message of the page').optional()
       })
       .optional()
   })
@@ -535,7 +525,7 @@ export class FirecrawlClient extends AIFunctionsProvider {
    */
   @aiFunction({
     name: 'scrape',
-    description: 'Scrape a single URL.',
+    description: `Scrape a single URL.`,
     inputSchema: firecrawl.ScrapeParamsSchema
   })
   async scrape(
@@ -543,7 +533,17 @@ export class FirecrawlClient extends AIFunctionsProvider {
   ): Promise<firecrawl.ScrapeResponse> {
     return this.ky
       .post('/scrape', {
-        json: params
+        json: pick(
+          params,
+          'url',
+          'formats',
+          'headers',
+          'includeTags',
+          'excludeTags',
+          'onlyMainContent',
+          'timeout',
+          'waitFor'
+        )
       })
       .json<firecrawl.ScrapeResponse>()
   }
@@ -553,7 +553,7 @@ export class FirecrawlClient extends AIFunctionsProvider {
    */
   @aiFunction({
     name: 'crawl_urls',
-    description: 'Crawl multiple URLs based on options.',
+    description: `Crawl multiple URLs based on options.`,
     inputSchema: firecrawl.CrawlUrlsParamsSchema
   })
   async crawlUrls(
@@ -561,7 +561,7 @@ export class FirecrawlClient extends AIFunctionsProvider {
   ): Promise<firecrawl.CrawlUrlsResponse> {
     return this.ky
       .post('/crawl', {
-        json: params
+        json: pick(params, 'url', 'crawlerOptions', 'pageOptions')
       })
       .json<firecrawl.CrawlUrlsResponse>()
   }
@@ -571,8 +571,7 @@ export class FirecrawlClient extends AIFunctionsProvider {
    */
   @aiFunction({
     name: 'search_google',
-    description:
-      'Search for a keyword in Google, returns top page results with markdown content for each page.',
+    description: `Search for a keyword in Google, returns top page results with markdown content for each page.`,
     inputSchema: firecrawl.SearchGoogleParamsSchema
   })
   async searchGoogle(
@@ -580,7 +579,7 @@ export class FirecrawlClient extends AIFunctionsProvider {
   ): Promise<firecrawl.SearchGoogleResponse> {
     return this.ky
       .post('/search', {
-        json: params
+        json: pick(params, 'query', 'pageOptions', 'searchOptions')
       })
       .json<firecrawl.SearchGoogleResponse>()
   }
@@ -590,7 +589,7 @@ export class FirecrawlClient extends AIFunctionsProvider {
    */
   @aiFunction({
     name: 'get_crawl_status',
-    description: 'Get the status of a crawl job.',
+    description: `Get the status of a crawl job.`,
     inputSchema: firecrawl.GetCrawlStatusParamsSchema
   })
   async getCrawlStatus(
@@ -606,7 +605,7 @@ export class FirecrawlClient extends AIFunctionsProvider {
    */
   @aiFunction({
     name: 'cancel_crawl_job',
-    description: 'Cancel a crawl job.',
+    description: `Cancel a crawl job.`,
     inputSchema: firecrawl.CancelCrawlJobParamsSchema
   })
   async cancelCrawlJob(
