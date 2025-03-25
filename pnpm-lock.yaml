@@ -1012,6 +1012,22 @@ importers:
         specifier: workspace:*
         version: link:../tsconfig
 
+  packages/open-meteo:
+    dependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
+      ky:
+        specifier: 'catalog:'
+        version: 1.7.5
+      zod:
+        specifier: 'catalog:'
+        version: 3.24.2
+    devDependencies:
+      '@agentic/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+
   packages/openapi-to-ts:
     dependencies:
       '@agentic/core':
@@ -1320,6 +1336,9 @@ importers:
       '@agentic/novu':
         specifier: workspace:*
         version: link:../novu
+      '@agentic/open-meteo':
+        specifier: workspace:*
+        version: link:../open-meteo
       '@agentic/people-data-labs':
         specifier: workspace:*
         version: link:../people-data-labs

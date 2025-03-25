@@ -61,7 +61,10 @@ export async function generateTSFromOpenAPI({
     throw new Error(`Unexpected OpenAPI version "${spec.openapi}"`)
   }
 
-  const openapiSpecName = path.basename(openapiFilePath, '.json')
+  const openapiSpecName = path
+    .basename(openapiFilePath)
+    .replace(/\.json$/, '')
+    .replace(/\.yaml$/, '')
   assert(
     openapiSpecName.toLowerCase() === openapiSpecName,
     `OpenAPI spec name "${openapiSpecName}" must be in kebab case`
