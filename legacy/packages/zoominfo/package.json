@@ -36,7 +36,7 @@
     "jsrsasign": "catalog:",
     "ky": "catalog:",
     "p-throttle": "catalog:",
-    "zoominfo-api-auth-client": "^1.0.1"
+    "zoominfo-api-auth-client": "catalog:"
   },
   "peerDependencies": {
     "zod": "catalog:"
