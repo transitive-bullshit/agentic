@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { cli } from 'cleye'
 import { gracefulExit } from 'exit-hook'
 
