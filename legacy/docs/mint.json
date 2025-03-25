@@ -69,6 +69,7 @@
         "tools/firecrawl",
         "tools/hacker-news",
         "tools/gravatar",
+        "tools/google-custom-search",
         "tools/hunter",
         "tools/jina",
         "tools/leadmagic",
