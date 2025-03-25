@@ -2,6 +2,7 @@ import {
   aiFunction,
   AIFunctionsProvider,
   getEnv,
+  omit,
   pick,
   sanitizeSearchParams
 } from '@agentic/core'
@@ -72,7 +73,7 @@ export class OpenMeteoClient extends AIFunctionsProvider {
 
     const { start, end } = validateAndSetDates(params.startDate, params.endDate)
 
-    return this.ky
+    const response = await this.ky
       .get('forecast', {
         searchParams: sanitizeSearchParams({
           ...(await extractLocation()),
@@ -91,6 +92,20 @@ export class OpenMeteoClient extends AIFunctionsProvider {
         })
       })
       .json<openmeteo.GetV1ForecastResponse>()
+
+    return omit(
+      response,
+      'latitude',
+      'longitude',
+      'elevation',
+      'generationtime_ms',
+      'utc_offset_seconds',
+      'timezone',
+      'timezone_abbreviation',
+      'elevation',
+      'hourly',
+      'hourly_units'
+    )
   }
 
   protected async _geocode(
