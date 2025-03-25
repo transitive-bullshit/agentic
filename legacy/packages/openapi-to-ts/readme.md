@@ -19,6 +19,12 @@
 
 **See the [github repo](https://github.com/transitive-bullshit/agentic) or [docs](https://agentic.so) for more info.**
 
+## Intro
+
+`@agentic/openapi-to-ts` is a tool for converting OpenAPI specs into minimal, self-contained Agentic TypeScript clients. API operations are converted to AIFunction-compatible methods and all types are converted to Zod schemas.
+
+The resulting tools are compatible with all leading TS AI SDKs.
+
 ## Example Usage
 
 ```sh

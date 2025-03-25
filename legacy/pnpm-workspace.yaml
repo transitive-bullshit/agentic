@@ -56,3 +56,8 @@ catalog:
 
   # e2b
   '@e2b/code-interpreter': ^1.0.2
+
+updateConfig:
+  ignoreDependencies:
+    - p-throttle # https://github.com/transitive-bullshit/agentic/issues/686
+    - eslint

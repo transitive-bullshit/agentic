@@ -34,7 +34,7 @@
   "devDependencies": {
     "@fisch0920/eslint-config": "^1.4.0",
     "@total-typescript/ts-reset": "^0.6.1",
-    "@types/node": "^22.13.10",
+    "@types/node": "^22.13.13",
     "bumpp": "^10.1.0",
     "del-cli": "^6.0.0",
     "dotenv": "^16.4.7",
