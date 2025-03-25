@@ -1505,7 +1505,7 @@ export class NotionClient extends AIFunctionsProvider {
    * Get current user.
    */
   @aiFunction({
-    name: 'get_self',
+    name: 'notion_get_self',
     description: `Get current user.`,
     inputSchema: notion.GetSelfParamsSchema
   })
@@ -1519,7 +1519,7 @@ export class NotionClient extends AIFunctionsProvider {
    * Get user.
    */
   @aiFunction({
-    name: 'get_user',
+    name: 'notion_get_user',
     description: `Get user.`,
     inputSchema: notion.GetUserParamsSchema
   })
@@ -1533,7 +1533,7 @@ export class NotionClient extends AIFunctionsProvider {
    * List users.
    */
   @aiFunction({
-    name: 'list_users',
+    name: 'notion_list_users',
     description: `List users.`,
     inputSchema: notion.ListUsersParamsSchema
   })
@@ -1553,7 +1553,7 @@ export class NotionClient extends AIFunctionsProvider {
    * Create page.
    */
   @aiFunction({
-    name: 'create_page',
+    name: 'notion_create_page',
     description: `Create page.`,
     inputSchema: notion.CreatePageParamsSchema
   })
@@ -1571,7 +1571,7 @@ export class NotionClient extends AIFunctionsProvider {
    * Get page.
    */
   @aiFunction({
-    name: 'get_page',
+    name: 'notion_get_page',
     description: `Get page.`,
     inputSchema: notion.GetPageParamsSchema
   })
@@ -1587,7 +1587,7 @@ export class NotionClient extends AIFunctionsProvider {
    * Update page.
    */
   @aiFunction({
-    name: 'update_page',
+    name: 'notion_update_page',
     description: `Update page.`,
     inputSchema: notion.UpdatePageParamsSchema
   })
@@ -1605,7 +1605,7 @@ export class NotionClient extends AIFunctionsProvider {
    * Get page property.
    */
   @aiFunction({
-    name: 'get_page_property',
+    name: 'notion_get_page_property',
     description: `Get page property.`,
     inputSchema: notion.GetPagePropertyParamsSchema
   })
@@ -1625,7 +1625,7 @@ export class NotionClient extends AIFunctionsProvider {
    * Get block.
    */
   @aiFunction({
-    name: 'get_block',
+    name: 'notion_get_block',
     description: `Get block.`,
     inputSchema: notion.GetBlockParamsSchema
   })
@@ -1641,7 +1641,7 @@ export class NotionClient extends AIFunctionsProvider {
    * Delete block.
    */
   @aiFunction({
-    name: 'delete_block',
+    name: 'notion_delete_block',
     description: `Delete block.`,
     inputSchema: notion.DeleteBlockParamsSchema
   })
@@ -1657,7 +1657,7 @@ export class NotionClient extends AIFunctionsProvider {
    * Update block.
    */
   @aiFunction({
-    name: 'update_block',
+    name: 'notion_update_block',
     description: `Update block.`,
     inputSchema: notion.UpdateBlockParamsSchema
   })
@@ -1702,7 +1702,7 @@ export class NotionClient extends AIFunctionsProvider {
    * List block children.
    */
   @aiFunction({
-    name: 'list_block_children',
+    name: 'notion_list_block_children',
     description: `List block children.`,
     inputSchema: notion.ListBlockChildrenParamsSchema
   })
@@ -1722,7 +1722,7 @@ export class NotionClient extends AIFunctionsProvider {
    * Append block children.
    */
   @aiFunction({
-    name: 'append_block_children',
+    name: 'notion_append_block_children',
     description: `Append block children.`,
     inputSchema: notion.AppendBlockChildrenParamsSchema
   })
@@ -1740,7 +1740,7 @@ export class NotionClient extends AIFunctionsProvider {
    * Get database.
    */
   @aiFunction({
-    name: 'get_database',
+    name: 'notion_get_database',
     description: `Get database.`,
     inputSchema: notion.GetDatabaseParamsSchema
   })
@@ -1756,7 +1756,7 @@ export class NotionClient extends AIFunctionsProvider {
    * Update database.
    */
   @aiFunction({
-    name: 'update_database',
+    name: 'notion_update_database',
     description: `Update database.`,
     inputSchema: notion.UpdateDatabaseParamsSchema
   })
@@ -1783,7 +1783,7 @@ export class NotionClient extends AIFunctionsProvider {
    * Query database.
    */
   @aiFunction({
-    name: 'query_database',
+    name: 'notion_query_database',
     description: `Query database.`,
     inputSchema: notion.QueryDatabaseParamsSchema
   })
@@ -1809,7 +1809,7 @@ export class NotionClient extends AIFunctionsProvider {
    * List databases.
    */
   @aiFunction({
-    name: 'list_databases',
+    name: 'notion_list_databases',
     description: `List databases.`,
     inputSchema: notion.ListDatabasesParamsSchema
   })
@@ -1829,7 +1829,7 @@ export class NotionClient extends AIFunctionsProvider {
    * Create database.
    */
   @aiFunction({
-    name: 'create_database',
+    name: 'notion_create_database',
     description: `Create database.`,
     inputSchema: notion.CreateDatabaseParamsSchema
   })
@@ -1856,7 +1856,7 @@ export class NotionClient extends AIFunctionsProvider {
    * Search.
    */
   @aiFunction({
-    name: 'search',
+    name: 'notion_search',
     description: `Search.`,
     inputSchema: notion.SearchParamsSchema
   })
@@ -1879,7 +1879,7 @@ export class NotionClient extends AIFunctionsProvider {
    * List comments.
    */
   @aiFunction({
-    name: 'list_comments',
+    name: 'notion_list_comments',
     description: `List comments.`,
     inputSchema: notion.ListCommentsParamsSchema
   })
@@ -1899,7 +1899,7 @@ export class NotionClient extends AIFunctionsProvider {
    * Create comment.
    */
   @aiFunction({
-    name: 'create_comment',
+    name: 'notion_create_comment',
     description: `Create comment.`,
     // TODO: Improve handling of union params
     inputSchema: notion.CreateCommentParamsSchema as any
@@ -1918,7 +1918,7 @@ export class NotionClient extends AIFunctionsProvider {
    * OAuth token.
    */
   @aiFunction({
-    name: 'oauth_token',
+    name: 'notion_oauth_token',
     description: `OAuth token.`,
     inputSchema: notion.OauthTokenParamsSchema
   })

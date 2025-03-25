@@ -94,7 +94,7 @@ export class TicTacToeClient extends AIFunctionsProvider {
    * Retrieves the current state of the board and the winner.
    */
   @aiFunction({
-    name: 'get_board',
+    name: 'tic_tac_toe_get_board',
     description: `Retrieves the current state of the board and the winner.`,
     inputSchema: tictactoe.GetBoardParamsSchema
   })
@@ -108,7 +108,7 @@ export class TicTacToeClient extends AIFunctionsProvider {
    * Retrieves the requested square.
    */
   @aiFunction({
-    name: 'get_square',
+    name: 'tic_tac_toe_get_square',
     description: `Retrieves the requested square.`,
     inputSchema: tictactoe.GetSquareParamsSchema
   })
@@ -124,7 +124,7 @@ export class TicTacToeClient extends AIFunctionsProvider {
    * Places a mark on the board and retrieves the whole board and the winner (if any).
    */
   @aiFunction({
-    name: 'put_square',
+    name: 'tic_tac_toe_put_square',
     description: `Places a mark on the board and retrieves the whole board and the winner (if any).`,
     inputSchema: tictactoe.PutSquareParamsSchema
   })

@@ -93,7 +93,7 @@ export class PetStoreClient extends AIFunctionsProvider {
    * List all pets.
    */
   @aiFunction({
-    name: 'list_pets',
+    name: 'pet_store_list_pets',
     description: `List all pets.`,
     inputSchema: petstore.ListPetsParamsSchema
   })
@@ -111,7 +111,7 @@ export class PetStoreClient extends AIFunctionsProvider {
    * Create a pet.
    */
   @aiFunction({
-    name: 'create_pets',
+    name: 'pet_store_create_pets',
     description: `Create a pet.`,
     inputSchema: petstore.CreatePetsParamsSchema
   })
@@ -129,7 +129,7 @@ export class PetStoreClient extends AIFunctionsProvider {
    * Info for a specific pet.
    */
   @aiFunction({
-    name: 'show_pet_by_id',
+    name: 'pet_store_show_pet_by_id',
     description: `Info for a specific pet.`,
     inputSchema: petstore.ShowPetByIdParamsSchema
   })

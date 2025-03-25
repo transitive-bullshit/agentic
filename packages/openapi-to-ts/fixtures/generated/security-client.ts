@@ -151,7 +151,7 @@ export class SecurityClient extends AIFunctionsProvider {
    * `apiKey` auth will be supplied within an `apiKey` query parameter.
    */
   @aiFunction({
-    name: 'get_anything_api_key',
+    name: 'security_get_anything_api_key',
     description: `\`apiKey\` auth will be supplied within an \`apiKey\` query parameter.`,
     inputSchema: security.GetAnythingApiKeyParamsSchema
   })
@@ -167,7 +167,7 @@ export class SecurityClient extends AIFunctionsProvider {
    * `apiKey` auth will be supplied within an `api_key` cookie.
    */
   @aiFunction({
-    name: 'post_anything_api_key',
+    name: 'security_post_anything_api_key',
     description: `\`apiKey\` auth will be supplied within an \`api_key\` cookie.`,
     inputSchema: security.PostAnythingApiKeyParamsSchema
   })
@@ -183,7 +183,7 @@ export class SecurityClient extends AIFunctionsProvider {
    * `apiKey` auth will be supplied within an `X-API-KEY` header.
    */
   @aiFunction({
-    name: 'put_anything_api_key',
+    name: 'security_put_anything_api_key',
     description: `\`apiKey\` auth will be supplied within an \`X-API-KEY\` header.`,
     inputSchema: security.PutAnythingApiKeyParamsSchema
   })
@@ -201,7 +201,7 @@ export class SecurityClient extends AIFunctionsProvider {
 https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#basic-authentication-sample.
  */
   @aiFunction({
-    name: 'post_anything_basic',
+    name: 'security_post_anything_basic',
     description: `Authentication credentials will be supplied within a \`Basic\` \`Authorization\` header.
 
 https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#basic-authentication-sample.`,
@@ -221,7 +221,7 @@ https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#basic-a
 https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#basic-authentication-sample.
  */
   @aiFunction({
-    name: 'post_anything_bearer',
+    name: 'security_post_anything_bearer',
     description: `Authentication credentials will be supplied within a \`Bearer\` \`Authorization\` header.
 
 https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#basic-authentication-sample.`,
@@ -244,7 +244,7 @@ https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#basic-a
 > We currently do not support any special handling for this so they're handled as a standard `Bearer` authentication token.
  */
   @aiFunction({
-    name: 'put_anything_bearer',
+    name: 'security_put_anything_bearer',
     description: `Authentication credentials will be supplied within a \`Bearer\` \`Authorization\` header, but its data should be controlled as a JWT.
 
 https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#basic-authentication-sample
@@ -268,7 +268,7 @@ https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#basic-a
 https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-fields-23.
  */
   @aiFunction({
-    name: 'get_anything_oauth2',
+    name: 'security_get_anything_oauth2',
     description: `> ℹ️
 > We currently do not handle OAuth 2 authentication flows so if an operation has an \`oauth2\` requirement we assume that the user, or the projects JWT, has a qualified \`bearer\` token and will use that.
 
@@ -290,7 +290,7 @@ https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-f
 https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-fields-23.
  */
   @aiFunction({
-    name: 'post_anything_oauth2',
+    name: 'security_post_anything_oauth2',
     description: `> ℹ️
 > We currently do not handle OAuth 2 authentication flows so if an operation has an \`oauth2\` requirement we assume that the user, or the projects JWT, has a qualified \`bearer\` token and will use that.
 
@@ -312,7 +312,7 @@ https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-f
 https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-fields-23.
  */
   @aiFunction({
-    name: 'put_anything_oauth2',
+    name: 'security_put_anything_oauth2',
     description: `> ℹ️
 > We currently do not handle OAuth 2 authentication flows so if an operation has an \`oauth2\` requirement we assume that the user, or the projects JWT, has a qualified \`bearer\` token and will use that.
 
@@ -334,7 +334,7 @@ https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-f
 https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-fields-23.
  */
   @aiFunction({
-    name: 'delete_anything_oauth2',
+    name: 'security_delete_anything_oauth2',
     description: `> ℹ️
 > We currently do not handle OAuth 2 authentication flows so if an operation has an \`oauth2\` requirement we assume that the user, or the projects JWT, has a qualified \`bearer\` token and will use that.
 
@@ -356,7 +356,7 @@ https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-f
 https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-fields-23.
  */
   @aiFunction({
-    name: 'patch_anything_oauth2',
+    name: 'security_patch_anything_oauth2',
     description: `> ℹ️
 > We currently do not handle OAuth 2 authentication flows so if an operation has an \`oauth2\` requirement we assume that the user, or the projects JWT, has a qualified \`bearer\` token and will use that.
 
@@ -375,7 +375,7 @@ https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-f
    * 🚧 This is not supported.
    */
   @aiFunction({
-    name: 'post_anything_open_id_connect',
+    name: 'security_post_anything_open_id_connect',
     description: `🚧 This is not supported.`,
     inputSchema: security.PostAnythingOpenIdConnectParamsSchema
   })
@@ -391,7 +391,7 @@ https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-f
    * This operation does not have any authentication requirements.
    */
   @aiFunction({
-    name: 'post_anything_no_auth',
+    name: 'security_post_anything_no_auth',
     description: `This operation does not have any authentication requirements.`,
     inputSchema: security.PostAnythingNoAuthParamsSchema
   })
@@ -409,7 +409,7 @@ https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-f
 https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#security-requirement-object.
  */
   @aiFunction({
-    name: 'get_anything_optional_auth',
+    name: 'security_get_anything_optional_auth',
     description: `The \`apiKey\` query parameter auth on this operation is optional.
 
 https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#security-requirement-object.`,
@@ -427,7 +427,7 @@ https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#securit
    * This endpoint requires an authentication header but making any request to it will forcefully return a 401 status code for invalid auth.
    */
   @aiFunction({
-    name: 'post_status401',
+    name: 'security_post_status401',
     description: `This endpoint requires an authentication header but making any request to it will forcefully return a 401 status code for invalid auth.`,
     inputSchema: security.PostStatus401ParamsSchema
   })

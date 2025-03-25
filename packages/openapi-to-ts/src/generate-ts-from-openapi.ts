@@ -179,7 +179,12 @@ export async function generateTSFromOpenAPI({
         `Duplicate operation name "${operationName}"`
       )
       operationNames.add(operationName)
-      const operationNameSnakeCase = decamelize(operationName)
+      const operationNameSnakeCaseTemp = decamelize(operationName)
+      const operationNameSnakeCase = operationNameSnakeCaseTemp.startsWith(
+        `${nameSnakeCase}_`
+      )
+        ? operationNameSnakeCaseTemp
+        : `${nameSnakeCase}_${operationNameSnakeCaseTemp}`
 
       // if (path !== '/comments' || method !== 'post') continue
       // if (path !== '/crawl/status/{jobId}') continue
