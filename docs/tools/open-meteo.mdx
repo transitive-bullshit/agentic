@@ -1,0 +1,42 @@
+---
+title: Open Meteo
+description: Open-Meteo weather API client.
+---
+
+The [Open-Meteo weather API](https://open-meteo.com) provides a free weather forecast API for open-source developers and non-commercial use.
+
+- package: `@agentic/open-meteo`
+- exports: `class OpenMeteoClient`, `namespace openmeteo`
+- env vars: `OPEN_METEO_API_KEY`
+- [source](https://github.com/transitive-bullshit/agentic/blob/main/packages/open-meteo/src/open-meteo-client.ts)
+- [open-meteo api docs](https://open-meteo.com/en/docs)
+
+## Install
+
+<CodeGroup>
+```bash npm
+npm install @agentic/open-meteo
+```
+
+```bash yarn
+yarn add @agentic/open-meteo
+```
+
+```bash pnpm
+pnpm add @agentic/open-meteo
+```
+
+</CodeGroup>
+
+## Usage
+
+```ts
+import { OpenMeteoClient } from '@agentic/open-meteo'
+
+const openMeteo = new OpenMeteoClient()
+const res = await openMeteo.getForecast({
+  location: {
+    name: 'San Francisco'
+  }
+})
+```
