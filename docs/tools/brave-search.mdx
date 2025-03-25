@@ -1,0 +1,36 @@
+---
+title: Brave Search
+description: Brave web search and local places search.
+---
+
+- package: `@agentic/brave-search`
+- exports: `class BraveSearchClient`, `namespace braveSearch`
+- env vars: `BRAVE_SEARCH_API_KEY`
+- [source](https://github.com/transitive-bullshit/agentic/blob/main/packages/brave-search/src/brave-search-client.ts)
+- [brave search docs](https://brave.com/search/api)
+
+## Install
+
+<CodeGroup>
+```bash npm
+npm install @agentic/brave-search
+```
+
+```bash yarn
+yarn add @agentic/brave-search
+```
+
+```bash pnpm
+pnpm add @agentic/brave-search
+```
+
+</CodeGroup>
+
+## Usage
+
+```ts
+import { BraveSearchClient } from '@agentic/brave-search'
+
+const braveSearch = new BraveSearchClient()
+const res = await braveSearch.search('latest news about openai')
+```

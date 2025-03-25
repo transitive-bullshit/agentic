@@ -1,5 +1,10 @@
 {
   "extends": "@agentic/tsconfig/base.json",
-  "include": ["src", "bin"],
+  "include": [
+    "src",
+    "bin",
+    "../open-meteo/src/open-meteo-client.ts",
+    "../open-meteo/src/open-meteo.ts"
+  ],
   "exclude": ["node_modules", "dist"]
 }

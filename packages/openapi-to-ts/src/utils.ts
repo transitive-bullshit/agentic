@@ -123,6 +123,10 @@ function createParserOverride({
   withJsdocs: boolean
 }): ParserOverride {
   const jsonSchemaToZodParserOverride: ParserOverride = (schema, _refs) => {
+    if ('nullable' in schema && schema.nullable) {
+      delete schema.nullable
+    }
+
     if ('$ref' in schema) {
       const ref = schema.$ref as string
       assert(ref, `Invalid schema: $ref not found for ${schema.$ref}`)

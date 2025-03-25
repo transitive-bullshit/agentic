@@ -3,13 +3,13 @@ import { asAgenticSchema } from './schema'
 import { assert } from './utils'
 
 export type CreateAIFunctionArgs<
-  InputSchema extends types.AIFunctionInputSchema
+  InputSchema extends types.AIFunctionInputSchema = types.AIFunctionInputSchema
 > = {
   /** Name of the function. */
   name: string
 
   /** Description of the function. */
-  description?: string
+  description: string
 
   /**
    * Zod schema or AgenticSchema for the function parameters.
@@ -26,6 +26,11 @@ export type CreateAIFunctionArgs<
    * Defaults to `true`.
    */
   strict?: boolean
+
+  /**
+   * Optional tags to help organize functions.
+   */
+  tags?: string[]
 }
 
 export type AIFunctionImplementation<
@@ -65,9 +70,10 @@ export function createAIFunction<
 >(
   {
     name,
-    description = '',
+    description,
     inputSchema,
     strict = true,
+    tags,
     execute
   }: CreateAIFunctionArgs<InputSchema> & {
     /** Underlying function implementation. */
@@ -132,6 +138,7 @@ export function createAIFunction<
   aiFunction.inputSchema = inputSchema
   aiFunction.parseInput = parseInput
   aiFunction.execute = execute
+  aiFunction.tags = tags
   aiFunction.spec = {
     name,
     description,

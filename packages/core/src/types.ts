@@ -114,6 +114,9 @@ export interface AIFunction<
    */
   // TODO: this `any` shouldn't be necessary, but it is for `createAIFunction` results to be assignable to `AIFunctionLike`
   execute: (params: inferInput<InputSchema> | any) => MaybePromise<Output>
+
+  /** Optional tags to help organize functions. */
+  tags?: string[]
 }
 
 export type SafeParseResult<TData> =
