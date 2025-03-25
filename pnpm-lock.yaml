@@ -7,8 +7,8 @@ settings:
 catalogs:
   default:
     '@ai-sdk/openai':
-      specifier: ^1.3.1
-      version: 1.3.1
+      specifier: ^1.3.2
+      version: 1.3.2
     '@apidevtools/swagger-parser':
       specifier: ^10.1.1
       version: 10.1.1
@@ -274,7 +274,7 @@ importers:
         version: link:../../packages/weather
       '@ai-sdk/openai':
         specifier: 'catalog:'
-        version: 1.3.1(zod@3.24.2)
+        version: 1.3.2(zod@3.24.2)
       ai:
         specifier: 'catalog:'
         version: 4.2.2(react@18.3.1)(zod@3.24.2)
@@ -405,7 +405,7 @@ importers:
         version: link:../../packages/weather
       '@ai-sdk/openai':
         specifier: 'catalog:'
-        version: 1.3.1(zod@3.24.2)
+        version: 1.3.2(zod@3.24.2)
       '@mastra/core':
         specifier: 'catalog:'
         version: 0.6.4(encoding@0.1.13)(react@18.3.1)
@@ -866,7 +866,7 @@ importers:
         version: link:../tsconfig
       '@ai-sdk/openai':
         specifier: 'catalog:'
-        version: 1.3.1(zod@3.24.2)
+        version: 1.3.2(zod@3.24.2)
       ai:
         specifier: 'catalog:'
         version: 4.2.2(react@18.3.1)(zod@3.24.2)
@@ -1588,8 +1588,8 @@ importers:
 
 packages:
 
-  '@ai-sdk/openai@1.3.1':
-    resolution: {integrity: sha512-Fhb9IYEJdS9vIFwOxr9igiWF8x0xYSqAB7eYuHtZ9D6ovo4RB2JO7lSg0qQWGIGYxtwoipXwLjgF/ov25W23Hw==}
+  '@ai-sdk/openai@1.3.2':
+    resolution: {integrity: sha512-TgtD2NbDKiOipaLb5/eY6fN64Gu32V/sZ0VM5UndsWAGKkB1if3jSLic6TcQjNvnBuhkzZY6L9deVDe4z+2PBg==}
     engines: {node: '>=18'}
     peerDependencies:
       zod: ^3.0.0
@@ -6963,7 +6963,7 @@ packages:
 
 snapshots:
 
-  '@ai-sdk/openai@1.3.1(zod@3.24.2)':
+  '@ai-sdk/openai@1.3.2(zod@3.24.2)':
     dependencies:
       '@ai-sdk/provider': 1.1.0
       '@ai-sdk/provider-utils': 2.2.1(zod@3.24.2)
