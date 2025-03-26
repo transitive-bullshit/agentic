@@ -1,6 +1,5 @@
 import 'dotenv/config'
 
-import type { ResponseInput } from 'openai/resources/responses/responses.mjs'
 import { assert } from '@agentic/core'
 import { WeatherClient } from '@agentic/stdlib'
 import OpenAI from 'openai'
@@ -9,7 +8,7 @@ async function main() {
   const weather = new WeatherClient()
   const openai = new OpenAI()
 
-  const messages: ResponseInput = [
+  const messages: OpenAI.Responses.ResponseInput = [
     {
       role: 'system',
       content: 'You are a helpful assistant. Be as concise as possible.'
