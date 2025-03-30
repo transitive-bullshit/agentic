@@ -12,14 +12,14 @@ catalog:
   '@e2b/code-interpreter': ^1.1.0
   '@fisch0920/eslint-config': ^1.4.0
   '@langchain/core': ^0.3.43
-  '@langchain/openai': ^0.5.1
+  '@langchain/openai': ^0.5.2
   '@mastra/core': ^0.7.0
   '@modelcontextprotocol/sdk': ^1.8.0
   '@nangohq/node': 0.42.22 # pinned for now
   '@total-typescript/ts-reset': ^0.6.1
   '@types/jsrsasign': ^10.5.15
   '@types/node': ^22.13.14
-  '@xsai/tool': ^0.2.0-beta.1
+  '@xsai/tool': ^0.2.0-beta.2
   ai: ^4.2.8
   bumpp: ^10.1.0
   camelcase: ^8.0.0
@@ -67,7 +67,7 @@ catalog:
   typescript: ^5.8.2
   vitest: ^3.0.9
   wikibase-sdk: ^10.2.2
-  xsai: ^0.2.0-beta.1
+  xsai: ^0.2.0-beta.2
   zod: ^3.24.2
   zod-validation-error: ^3.4.0
   zoominfo-api-auth-client: ^1.0.1
