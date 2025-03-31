@@ -10,7 +10,7 @@
   "dependencies": {
     "@agentic/ai-sdk": "workspace:*",
     "@agentic/mcp": "workspace:*",
-    "@agentic/weather": "workspace:*",
+    "@agentic/stdlib": "workspace:*",
     "@ai-sdk/openai": "catalog:",
     "ai": "catalog:",
     "exit-hook": "catalog:",

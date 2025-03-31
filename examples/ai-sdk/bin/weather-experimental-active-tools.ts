@@ -1,7 +1,7 @@
 import 'dotenv/config'
 
 import { createAISDKTools } from '@agentic/ai-sdk'
-import { WeatherClient } from '@agentic/weather'
+import { WeatherClient } from '@agentic/stdlib'
 import { createOpenAI } from '@ai-sdk/openai'
 import { generateText } from 'ai'
 
