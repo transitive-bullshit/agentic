@@ -16,7 +16,6 @@ export namespace wolframalpha {
     maxchars: z
       .number()
       .int()
-      .positive()
       .default(6000)
       .optional()
       .describe('max characters to generate in the response')

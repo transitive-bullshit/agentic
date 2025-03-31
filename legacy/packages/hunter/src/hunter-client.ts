@@ -43,8 +43,8 @@ export namespace hunter {
   export const DomainSearchOptionsSchema = z.object({
     domain: z.string().optional().describe('domain to search for'),
     company: z.string().optional().describe('company name to search for'),
-    limit: z.number().int().positive().optional(),
-    offset: z.number().int().nonnegative().optional(),
+    limit: z.number().int().optional(),
+    offset: z.number().int().optional(),
     type: z.enum(['personal', 'generic']).optional(),
     seniority: z.union([SenioritySchema, z.array(SenioritySchema)]).optional(),
     department: z
@@ -61,7 +61,7 @@ export namespace hunter {
     company: z.string().optional().describe('company name to search for'),
     first_name: z.string().describe("person's first name"),
     last_name: z.string().describe("person's last name"),
-    max_duration: z.number().int().positive().min(3).max(20).optional()
+    max_duration: z.number().int().min(3).max(20).optional()
   })
   export type EmailFinderOptions = z.infer<typeof EmailFinderOptionsSchema>
 

@@ -190,16 +190,10 @@ export namespace hackernews {
       .describe(
         'Filter by numeric range (created_at_i, points, or num_comments); (created_at_i is a timestamp in seconds). Ex: numericFilters=points>100,num_comments>=1000'
       ),
-    page: z
-      .number()
-      .int()
-      .nonnegative()
-      .optional()
-      .describe('Page number to return'),
+    page: z.number().int().optional().describe('Page number to return'),
     hitsPerPage: z
       .number()
       .int()
-      .positive()
       .optional()
       .describe('Number of results to return per page (defaults to 50)'),
     sortBy: hackernews.searchSortBySchema

@@ -332,11 +332,10 @@ export namespace predictleads {
       .string()
       .optional()
       .describe('Signals found until specified date (ISO 8601).'),
-    page: z.number().int().positive().default(1).optional(),
+    page: z.number().int().default(1).optional(),
     limit: z
       .number()
       .int()
-      .positive()
       .max(MAX_PAGE_SIZE)
       .default(DEFAULT_PAGE_SIZE)
       .optional(),
@@ -368,7 +367,6 @@ export namespace predictleads {
     limit: z
       .number()
       .int()
-      .positive()
       .max(MAX_PAGE_SIZE)
       .default(DEFAULT_PAGE_SIZE)
       .optional(),
@@ -407,7 +405,6 @@ export namespace predictleads {
     limit: z
       .number()
       .int()
-      .positive()
       .max(MAX_PAGE_SIZE)
       .default(DEFAULT_PAGE_SIZE)
       .optional()
@@ -422,7 +419,6 @@ export namespace predictleads {
     limit: z
       .number()
       .int()
-      .positive()
       .max(MAX_PAGE_SIZE)
       .default(DEFAULT_PAGE_SIZE)
       .optional()
@@ -436,7 +432,6 @@ export namespace predictleads {
     limit: z
       .number()
       .int()
-      .positive()
       .max(MAX_PAGE_SIZE)
       .default(DEFAULT_PAGE_SIZE)
       .optional()
@@ -450,7 +445,6 @@ export namespace predictleads {
     limit: z
       .number()
       .int()
-      .positive()
       .max(MAX_PAGE_SIZE)
       .default(DEFAULT_PAGE_SIZE)
       .optional()
@@ -465,7 +459,6 @@ export namespace predictleads {
     limit: z
       .number()
       .int()
-      .positive()
       .max(MAX_PAGE_SIZE)
       .default(DEFAULT_PAGE_SIZE)
       .optional()

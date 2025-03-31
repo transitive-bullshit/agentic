@@ -16,11 +16,10 @@ export namespace serper {
     autocorrect: z.boolean().default(true).optional(),
     gl: z.string().default('us').optional(),
     hl: z.string().default('en').optional(),
-    page: z.number().int().positive().default(1).optional(),
+    page: z.number().int().default(1).optional(),
     num: z
       .number()
       .int()
-      .positive()
       .default(10)
       .optional()
       .describe('number of results to return')

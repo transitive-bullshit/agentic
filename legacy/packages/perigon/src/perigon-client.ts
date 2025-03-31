@@ -245,7 +245,6 @@ export namespace perigon {
     page: z
       .number()
       .int()
-      .positive()
       .max(10_000)
       .default(0)
       .optional()
@@ -253,7 +252,6 @@ export namespace perigon {
     size: z
       .number()
       .int()
-      .positive()
       .max(DEFAULT_PAGE_SIZE)
       .optional()
       .describe('Number of results to return per page')
@@ -329,7 +327,6 @@ export namespace perigon {
     size: z
       .number()
       .int()
-      .positive()
       .max(DEFAULT_PAGE_SIZE)
       .optional()
       .describe('Number of results to return per page')
@@ -375,13 +372,11 @@ export namespace perigon {
     numEmployeesFrom: z
       .number()
       .int()
-      .positive()
       .optional()
       .describe('Minimum number of employees.'),
     numEmployeesTo: z
       .number()
       .int()
-      .positive()
       .optional()
       .describe('Maximum number of employees.'),
     ipoFrom: z
@@ -395,7 +390,6 @@ export namespace perigon {
     size: z
       .number()
       .int()
-      .positive()
       .max(DEFAULT_PAGE_SIZE)
       .optional()
       .describe('Number of results to return per page')

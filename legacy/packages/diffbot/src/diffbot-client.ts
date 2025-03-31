@@ -321,7 +321,6 @@ export namespace diffbot {
     size: z
       .number()
       .int()
-      .positive()
       .max(100)
       .optional()
       .describe('Number of results to return')
