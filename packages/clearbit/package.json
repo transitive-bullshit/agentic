@@ -1,6 +1,6 @@
 {
   "name": "@agentic/clearbit",
-  "version": "7.6.2",
+  "version": "7.6.3",
   "description": "Agentic SDK for Clearbit.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",
