@@ -1,6 +1,6 @@
 {
   "name": "@agentic/exa",
-  "version": "7.6.2",
+  "version": "7.6.3",
   "description": "Agentic SDK for the Exa search engine.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",
