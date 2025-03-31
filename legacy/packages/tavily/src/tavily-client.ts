@@ -172,7 +172,6 @@ export class TavilyClient extends AIFunctionsProvider {
       max_results: z
         .number()
         .int()
-        .positive()
         .default(5)
         .optional()
         .describe('Max number of search results to return.')

@@ -1,24 +1,24 @@
 import 'dotenv/config'
 
 import { createAISDKTools } from '@agentic/ai-sdk'
-import { WeatherClient } from '@agentic/stdlib'
+import { TavilyClient } from '@agentic/stdlib'
 import { createOpenAI } from '@ai-sdk/openai'
 import { generateText } from 'ai'
 
 async function main() {
-  const weather = new WeatherClient()
+  const tavily = new TavilyClient()
   const openai = createOpenAI({ compatibility: 'strict' })
 
   const result = await generateText({
     model: openai('gpt-4o-mini'),
-    tools: createAISDKTools(weather),
+    tools: createAISDKTools(tavily),
     toolChoice: 'required',
     temperature: 0,
     system: 'You are a helpful assistant. Be as concise as possible.',
-    prompt: 'What is the weather in San Francisco?'
+    prompt: 'What is the latest news in the US right now?'
   })
 
-  console.log(result.toolResults[0])
+  console.log(JSON.stringify(result.toolResults[0], null, 2))
 }
 
 await main()
