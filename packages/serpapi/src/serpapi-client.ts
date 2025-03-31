@@ -674,7 +674,6 @@ export class SerpAPIClient extends AIFunctionsProvider {
       num: z
         .number()
         .int()
-        .positive()
         .default(5)
         .optional()
         .describe('number of results to return')
