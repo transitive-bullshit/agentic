@@ -10,7 +10,7 @@ catalog:
   '@apidevtools/swagger-parser': ^10.1.1
   '@dexaai/dexter': ^4.1.1
   '@e2b/code-interpreter': ^1.1.0
-  '@fisch0920/config': ^1.0.0
+  '@fisch0920/config': ^1.0.1
   '@langchain/core': ^0.3.43
   '@langchain/openai': ^0.5.2
   '@mastra/core': ^0.7.0

@@ -51,10 +51,10 @@
     "vitest": "catalog:",
     "zod": "catalog:"
   },
+  "prettier": "@fisch0920/config/prettier",
   "simple-git-hooks": {
     "pre-commit": "npx lint-staged"
   },
-  "prettier": "@fisch0920/config/prettier",
   "lint-staged": {
     "*.{ts,tsx}": [
       "prettier --ignore-unknown --write",
