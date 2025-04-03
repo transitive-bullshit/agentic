@@ -80,9 +80,6 @@
   "peerDependencies": {
     "zod": "catalog:"
   },
-  "devDependencies": {
-    "@agentic/tsconfig": "workspace:*"
-  },
   "keywords": [
     "agentic",
     "ai",

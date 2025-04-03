@@ -13,8 +13,5 @@
     "@agentic/stdlib": "workspace:*",
     "llamaindex": "catalog:",
     "zod": "catalog:"
-  },
-  "devDependencies": {
-    "@agentic/tsconfig": "workspace:*"
   }
 }

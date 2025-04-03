@@ -580,7 +580,6 @@ export class FirecrawlClient extends AIFunctionsProvider {
         throw new firecrawl.FirecrawlError(err.message, 500)
       }
     }
-    return { success: false, error: 'Internal server error.', data: [] }
   }
 
   /**
@@ -620,7 +619,6 @@ export class FirecrawlClient extends AIFunctionsProvider {
         throw new firecrawl.FirecrawlError(err.message, 500)
       }
     }
-    return { success: false, error: 'Internal server error.' }
   }
 
   /**

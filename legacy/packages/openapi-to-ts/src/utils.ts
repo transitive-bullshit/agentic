@@ -7,10 +7,10 @@ import {
   jsonSchemaToZod as jsonSchemaToZodImpl,
   type ParserOverride
 } from 'json-schema-to-zod'
-import * as prettier from 'prettier'
+import { format as prettierFormat } from 'prettier'
 
 export function prettify(source: string): Promise<string> {
-  return prettier.format(source, {
+  return prettierFormat(source, {
     parser: 'typescript',
     semi: false,
     singleQuote: true,

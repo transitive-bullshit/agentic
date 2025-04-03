@@ -38,7 +38,6 @@
     "@mastra/core": "catalog:"
   },
   "devDependencies": {
-    "@agentic/tsconfig": "workspace:*",
     "@mastra/core": "catalog:"
   },
   "publishConfig": {

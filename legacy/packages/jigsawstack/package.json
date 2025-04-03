@@ -36,7 +36,6 @@
   },
   "devDependencies": {
     "@agentic/core": "workspace:*",
-    "@agentic/tsconfig": "workspace:*",
     "@ai-sdk/openai": "catalog:",
     "ai": "catalog:"
   },

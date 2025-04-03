@@ -1,5 +1,5 @@
 {
-  "extends": "@agentic/tsconfig/base.json",
+  "extends": "@fisch0920/config/tsconfig-node",
   "include": ["src"],
   "exclude": ["node_modules", "dist"]
 }

@@ -38,7 +38,6 @@
     "@dexaai/dexter": "catalog:"
   },
   "devDependencies": {
-    "@agentic/tsconfig": "workspace:*",
     "@dexaai/dexter": "catalog:"
   },
   "publishConfig": {

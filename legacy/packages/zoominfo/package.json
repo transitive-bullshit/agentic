@@ -42,7 +42,6 @@
     "zod": "catalog:"
   },
   "devDependencies": {
-    "@agentic/tsconfig": "workspace:*",
     "@types/jsrsasign": "catalog:"
   },
   "publishConfig": {

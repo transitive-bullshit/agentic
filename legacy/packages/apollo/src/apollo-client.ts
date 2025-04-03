@@ -158,7 +158,7 @@ export namespace apollo {
     is_likely_to_engage: boolean
   }
 
-  export interface TypedCustomFields {}
+  export type TypedCustomFields = any
 
   export interface ContactEmail {
     email: string
@@ -245,7 +245,7 @@ export namespace apollo {
     org_chart_show_department_filter: boolean
   }
 
-  export interface PrimaryPhone {}
+  export type PrimaryPhone = any
 
   export interface IndustryTagHash {
     'information technology & services': string

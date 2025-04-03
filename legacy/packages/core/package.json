@@ -45,7 +45,6 @@
     "zod": "catalog:"
   },
   "devDependencies": {
-    "@agentic/tsconfig": "workspace:*",
     "openai-fetch": "catalog:"
   },
   "keywords": [
