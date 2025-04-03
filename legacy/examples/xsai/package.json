@@ -13,8 +13,5 @@
     "xsai": "catalog:",
     "@xsai/tool": "catalog:",
     "zod": "catalog:"
-  },
-  "devDependencies": {
-    "@agentic/tsconfig": "workspace:*"
   }
 }

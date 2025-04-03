@@ -6,7 +6,7 @@ import {
   sanitizeSearchParams
 } from '@agentic/core'
 import defaultKy, { type KyInstance } from 'ky'
-import z from 'zod'
+import { z } from 'zod'
 
 export namespace hackernews {
   export const HACKER_NEWS_API_BASE_URL = 'https://hacker-news.firebaseio.com'

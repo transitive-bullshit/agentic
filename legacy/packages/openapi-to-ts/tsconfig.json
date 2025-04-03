@@ -1,10 +1,11 @@
 {
-  "extends": "@agentic/tsconfig/base.json",
-  "include": [
-    "src",
-    "bin",
-    "../open-meteo/src/open-meteo-client.ts",
-    "../open-meteo/src/open-meteo.ts"
-  ],
-  "exclude": ["node_modules", "dist"]
+  "extends": "@fisch0920/config/tsconfig-node",
+  "include": ["src", "bin", "**/*.ts"],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "fixtures/generated/github*.ts",
+    "fixtures/generated/tic-tac-toe*.ts",
+    "fixtures/generated/open-meteo-client.ts"
+  ]
 }

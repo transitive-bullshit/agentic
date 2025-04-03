@@ -16,8 +16,5 @@
     "exit-hook": "catalog:",
     "openai": "catalog:",
     "zod": "catalog:"
-  },
-  "devDependencies": {
-    "@agentic/tsconfig": "workspace:*"
   }
 }

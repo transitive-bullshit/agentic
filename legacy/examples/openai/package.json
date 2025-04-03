@@ -12,8 +12,5 @@
     "@agentic/stdlib": "workspace:*",
     "openai": "catalog:",
     "zod": "catalog:"
-  },
-  "devDependencies": {
-    "@agentic/tsconfig": "workspace:*"
   }
 }
