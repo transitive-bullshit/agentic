@@ -2,9 +2,8 @@
  * This file was auto-generated from an OpenAPI spec.
  */
 
-import { aiFunction,AIFunctionsProvider } from '@agentic/core'
+import { AIFunctionsProvider, aiFunction } from '@agentic/core'
 import defaultKy, { type KyInstance } from 'ky'
-
 import { tictactoe } from './tic-tac-toe'
 
 /**

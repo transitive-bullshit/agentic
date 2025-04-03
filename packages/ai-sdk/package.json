@@ -38,7 +38,6 @@
     "ai": "catalog:"
   },
   "devDependencies": {
-    "@agentic/tsconfig": "workspace:*",
     "ai": "catalog:"
   },
   "publishConfig": {

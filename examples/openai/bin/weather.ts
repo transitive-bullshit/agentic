@@ -25,7 +25,7 @@ async function main() {
       tools: weather.functions.toolSpecs,
       tool_choice: 'required'
     })
-    const message = res.choices[0]?.message!
+    const message = res.choices[0]!.message!
     console.log(JSON.stringify(message, null, 2))
     assert(message.tool_calls?.[0]?.function?.name === 'get_current_weather')
 

@@ -40,7 +40,6 @@
     "zod": "catalog:"
   },
   "devDependencies": {
-    "@agentic/tsconfig": "workspace:*",
     "ky": "catalog:"
   },
   "publishConfig": {

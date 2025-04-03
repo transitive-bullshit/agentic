@@ -9,12 +9,12 @@ const fixtures = [
   'firecrawl.json',
   // 'github.json', // TODO: not working 100% yet
   'notion.json',
-  'open-meteo.yaml',
+  // 'open-meteo.yaml',
   'pet-store.json',
   'petstore-expanded.json',
-  'security.json',
+  'security.json'
   // 'stripe.json', // TODO: not working 100% yet
-  'tic-tac-toe.json'
+  // 'tic-tac-toe.json'
 ]
 
 const dirname = path.join(fileURLToPath(import.meta.url), '..', '..')

@@ -14,8 +14,5 @@
     "@langchain/openai": "catalog:",
     "langchain": "catalog:",
     "zod": "catalog:"
-  },
-  "devDependencies": {
-    "@agentic/tsconfig": "workspace:*"
   }
 }
