@@ -8,7 +8,7 @@ import {
 } from '@agentic/core'
 import defaultKy, { type KyInstance } from 'ky'
 import pThrottle from 'p-throttle'
-import z from 'zod'
+import { z } from 'zod'
 
 export namespace gravatar {
   export const API_BASE_URL = 'https://api.gravatar.com'

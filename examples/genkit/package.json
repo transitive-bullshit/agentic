@@ -13,8 +13,5 @@
     "genkit": "catalog:",
     "genkitx-openai": "catalog:",
     "zod": "catalog:"
-  },
-  "devDependencies": {
-    "@agentic/tsconfig": "workspace:*"
   }
 }

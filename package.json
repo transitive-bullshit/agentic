@@ -32,8 +32,7 @@
     "prepare": "simple-git-hooks"
   },
   "devDependencies": {
-    "@fisch0920/eslint-config": "catalog:",
-    "@total-typescript/ts-reset": "catalog:",
+    "@fisch0920/config": "catalog:",
     "@types/node": "catalog:",
     "bumpp": "catalog:",
     "del-cli": "catalog:",
@@ -52,6 +51,7 @@
     "vitest": "catalog:",
     "zod": "catalog:"
   },
+  "prettier": "@fisch0920/config/prettier",
   "simple-git-hooks": {
     "pre-commit": "npx lint-staged"
   },

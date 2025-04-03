@@ -13,8 +13,5 @@
     "@ai-sdk/openai": "catalog:",
     "@mastra/core": "catalog:",
     "zod": "catalog:"
-  },
-  "devDependencies": {
-    "@agentic/tsconfig": "workspace:*"
   }
 }

@@ -17,8 +17,5 @@
     "@agentic/weather": "workspace:*",
     "@dexaai/dexter": "catalog:",
     "zod": "catalog:"
-  },
-  "devDependencies": {
-    "@agentic/tsconfig": "workspace:*"
   }
 }

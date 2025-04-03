@@ -10,13 +10,12 @@ catalog:
   '@apidevtools/swagger-parser': ^10.1.1
   '@dexaai/dexter': ^4.1.1
   '@e2b/code-interpreter': ^1.1.0
-  '@fisch0920/eslint-config': ^1.4.0
+  '@fisch0920/config': ^1.0.1
   '@langchain/core': ^0.3.43
   '@langchain/openai': ^0.5.2
   '@mastra/core': ^0.7.0
   '@modelcontextprotocol/sdk': ^1.8.0
   '@nangohq/node': 0.42.22 # pinned for now
-  '@total-typescript/ts-reset': ^0.6.1
   '@types/jsrsasign': ^10.5.15
   '@types/node': ^22.13.16
   '@xsai/tool': ^0.2.0-beta.2
@@ -30,7 +29,7 @@ catalog:
   delay: ^6.0.0
   dotenv: ^16.4.7
   duck-duck-scrape: ^2.2.7
-  eslint: 8.57.1 # pinned to v8 until we can upgrade to the new config format in v9
+  eslint: ^9.23.0
   execa: ^9.5.2
   exit-hook: ^4.0.0
   fast-xml-parser: ^5.0.9

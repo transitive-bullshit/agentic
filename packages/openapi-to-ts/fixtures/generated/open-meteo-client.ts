@@ -3,13 +3,12 @@
  */
 
 import {
-  aiFunction,
   AIFunctionsProvider,
+  aiFunction,
   pick,
   sanitizeSearchParams
 } from '@agentic/core'
 import defaultKy, { type KyInstance } from 'ky'
-
 import { openmeteo } from './open-meteo'
 
 /**

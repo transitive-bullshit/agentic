@@ -1069,18 +1069,6 @@ export class PolygonClient extends AIFunctionsProvider {
    * Get the daily open, high, low, and close (OHLC) for the entire markets.
    *
    * @param assetClass - the asset class to get data for
-   * @param params - input parameters (`date`, `adjusted`, `include_otc`)
-   * @returns promise that resolves to list of aggregates
-   */
-  async groupedDaily(
-    assetClass: 'stocks',
-    params: polygon.GroupedDailyInputStocks
-  ): Promise<polygon.GroupedDailyOutput>
-
-  /**
-   * Get the daily open, high, low, and close (OHLC) for the entire markets.
-   *
-   * @param assetClass - the asset class to get data for
    * @param params - input parameters (`date`, `adjusted`)
    * @returns promise that resolves to list of aggregates
    */

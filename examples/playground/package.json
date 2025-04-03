@@ -12,8 +12,5 @@
     "@agentic/stdlib": "workspace:*",
     "restore-cursor": "catalog:",
     "zod": "catalog:"
-  },
-  "devDependencies": {
-    "@agentic/tsconfig": "workspace:*"
   }
 }
