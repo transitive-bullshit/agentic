@@ -1,0 +1,58 @@
+{
+  "name": "agentic-platform",
+  "private": true,
+  "author": "Travis Fischer <travis@transitivebullsh.it>",
+  "license": "PROPRIETARY",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/transitive-bullshit/agentic-platform.git"
+  },
+  "packageManager": "pnpm@10.7.0",
+  "engines": {
+    "node": ">=18"
+  },
+  "type": "module",
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo dev --continue",
+    "clean": "turbo clean",
+    "fix": "run-s fix:*",
+    "fix:format": "prettier --write \"**/*.{js,ts,tsx}\"",
+    "test": "turbo test",
+    "test:format": "prettier --check \"**/*.{js,ts,tsx}\"",
+    "test:lint": "turbo test:lint",
+    "test:typecheck": "turbo test:typecheck",
+    "test:unit": "turbo test:unit",
+    "pretest": "run-s build",
+    "preinstall": "npx only-allow pnpm",
+    "prepare": "simple-git-hooks"
+  },
+  "devDependencies": {
+    "@fisch0920/config": "catalog:",
+    "@types/node": "catalog:",
+    "del-cli": "catalog:",
+    "dotenv": "catalog:",
+    "eslint": "catalog:",
+    "lint-staged": "catalog:",
+    "npm-run-all2": "catalog:",
+    "only-allow": "catalog:",
+    "prettier": "catalog:",
+    "simple-git-hooks": "catalog:",
+    "tsup": "catalog:",
+    "tsx": "catalog:",
+    "turbo": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:",
+    "zod": "catalog:"
+  },
+  "prettier": "@fisch0920/config/prettier",
+  "simple-git-hooks": {
+    "pre-commit": "npx lint-staged"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "prettier --ignore-unknown --write",
+      "eslint --fix"
+    ]
+  }
+}

@@ -1,0 +1,143 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+description: General TypeScript coding guidelines
+globs:
+---
+
+## General
+
+- Write elegant, concise, and readable code
+- Prefer `const` over `let` (never use `var`)
+- Use kebab-case for file and directory names
+- Use clear, descriptive names for variables, functions, and components
+
+## Modules
+
+### Imports & Exports
+
+- Always use ESM `import` and `export` (never use CJS `require`)
+  - File imports should never use an extension (NOT `.js`, `.ts` or `.tsx`).
+  - GOOD examples:
+    - `import { Foo } from './foo'`
+    - `import { type Route } from './types/root'`
+    - `import zod from 'zod'`
+    - `import { logger } from '~/types'`
+  - BAD examples:
+    - `import { Foo } from './foo.js'`
+    - `import { type Route } from './types/root.js'`
+    - `import { Foo } from './foo.ts'`
+- Always prefer named exports over default exports
+
+### Packages
+
+All packages must follow these `package.json` rules:
+
+- `type` must be set to `module`
+
+#### Directory Structure
+
+This project has the following structure:
+
+- A `src/` directory containing the core source code.
+- A single entrypoint in index.ts that exports the package's public API.
+- Place test helpers, utilities, or mocks in `src/test/` with a single entrypoint in `src/test/index.ts`.
+- Tests should be placed beside source code like `src/my-file.ts` and `src/my-file.test.ts` (NOT `src/test/my-file.test.ts` or `test/my-file.test.ts`).
+
+## TypeScript
+
+- Avoid semicolons at the end of lines
+- Use TypeScript's utility types (e.g., `Partial`, `Pick`, `Omit`) to manipulate existing types
+- Create custom types for complex data structures used throughout the application
+- If possible, avoid using `any`/`unknown` or casting values like `(value as any)` or `value!` in TypeScript outside of test files e.g. `*.test.ts` or test fixtures e.g. `**/test-data.ts`.
+- Don't rely on `typeof`, `ReturnType<>`, `Awaited<>`, etc for complex type inference (it's ok for simple types)
+- Use `as const` for better type inference
+- Functions should accept an object parameter instead of multiple parameters
+  - Good examples:
+    ```ts
+    function myFunction({ foo, bar }: { foo: boolean; bar: string }) {}
+    function VideoPlayer({ sid }: { sid: string }) {}
+    ```
+  - Bad examples:
+    ```ts
+    function myFunction(foo: boolean, bar: string, baz: number) {}
+    ```
+- Arguments should generally be destructured in the function definition, not the function body.
+  - Good example:
+    ```ts
+    function myFunction({ foo, bar }: { foo: boolean; bar: string }) {}
+    ```
+  - Bad example:
+    ```ts
+    function myFunction(args: { foo: boolean; bar: string }) {
+      const { foo, bar } = args
+    }
+    ```
+- Zod should be used to parse untrusted data, but not for data that is trusted like function arguments
+- Zod unions should always be used instead of enums
+  - For example, this union `z.union([z.literal('youtube'), z.literal('spotify')])` is better than this enum `z.enum(['youtube', 'spotify'])`
+- Promises (and `async` functions which implicitly create Promises) must always be properly handled, either via:
+  - Using `await` to wait for the Promise to resolve successfully
+  - Using `.then` or `.catch` to handle Promise resolution
+  - Returning a Promise to a calling function which itself has to handle the Promise.
+
+## Node.js
+
+- Utilize the `node:` protocol when importing Node.js modules (e.g., `import fs from 'node:fs/promises'`)
+- Prefer promise-based APIs over Node's legacy callback APIs
+- Use environment variables for secrets (avoid hardcoding sensitive information)
+
+### Web Standard APIs
+
+Always prefer using standard web APIs like `fetch`, `WebSocket`, and `ReadableStream` when possible. Avoid redundant libraries (like `node-fetch`).
+
+- Prefer the `fetch` API for making HTTP requests instead of Node.js modules like `http` or `https`
+  - Use the native `fetch` API instead of `node-fetch` or polyfilled `cross-fetch`
+  - Use the `ky` library for HTTP requests instead of `axios` or `superagent`
+- Use the WHATWG `URL` and `URLSearchParams` classes instead of the Node.js `url` module
+- Use `Request` and `Response` objects from the Fetch API instead of Node.js-specific request and response objects
+
+## Error Handling
+
+- Prefer `async`/`await` over `.then()` and `.catch()`
+- Always handle errors correctly (eg: `try`/`catch` or `.catch()`)
+- Avoid swallowing errors silently; always log or handle caught errors appropriately
+
+## Comments
+
+Comments should be used to document and explain code. They should complement the use of descriptive variable and function names and type declarations.
+
+- Add comments to explain complex sections of code
+- Add comments that will improve the autocompletion preview in IDEs (eg: functions and types)
+- Don't add comments that just reword symbol names or repeat type declarations
+- Use **JSDoc** formatting for comments (not TSDoc or inline comments)
+
+## Logging
+
+- Just use `console` for logging.
+
+## Testing
+
+### Unit Testing
+
+- **All unit tests should use Vitest**
+  - DO NOT attempt to install or use other testing libraries like Jest
+- Write unit tests for individual components and utility functions
+- Test files should be named `[target].test.ts` and placed in the same directory as the code they are testing (NOT a separate directory)
+  - Good example: `src/my-file.ts` and `src/my-file.test.ts`
+  - Bad example: `src/my-file.ts` and `src/test/my-file.test.ts` or `test/my-file.test.ts` or `src/__tests__/my-file.test.ts`
+- Tests should be run with `pnpm test:unit`
+- It's acceptable to use `any`/`unknown` in test files (such as `*.test.ts`) or test fixtures (like `**/test-data.ts`) to facilitate mocking or stubbing external modules or partial function arguments, referencing the usage guidelines in the TypeScript section.
+
+### Test Coverage
+
+- Test critical business logic and edge cases
+- Don't add tests for trivial code or just to increase test coverage
+- Don't make tests too brittle or flaky by relying on implementation details
+
+## Git
+
+- When possible, combine the `git add` and `git commit` commands into a single `git commit -am` command, to speed things up
