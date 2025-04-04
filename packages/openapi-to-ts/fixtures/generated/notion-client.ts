@@ -3,15 +3,14 @@
  */
 
 import {
-  aiFunction,
   AIFunctionsProvider,
+  aiFunction,
   assert,
   getEnv,
   pick,
   sanitizeSearchParams
 } from '@agentic/core'
 import defaultKy, { type KyInstance } from 'ky'
-
 import { notion } from './notion'
 
 /**
@@ -74,7 +73,7 @@ export class NotionClient extends AIFunctionsProvider {
   })
   async getUser(params: notion.GetUserParams): Promise<notion.GetUserResponse> {
     return this.ky
-      .get(`/users/${params.user_id}`)
+      .get(`/users/${params['user_id']}`)
       .json<notion.GetUserResponse>()
   }
 
@@ -126,7 +125,7 @@ export class NotionClient extends AIFunctionsProvider {
   })
   async getPage(params: notion.GetPageParams): Promise<notion.GetPageResponse> {
     return this.ky
-      .get(`/pages/${params.page_id}`, {
+      .get(`/pages/${params['page_id']}`, {
         searchParams: sanitizeSearchParams(pick(params, 'filter_properties'))
       })
       .json<notion.GetPageResponse>()
@@ -144,7 +143,7 @@ export class NotionClient extends AIFunctionsProvider {
     params: notion.UpdatePageParams
   ): Promise<notion.UpdatePageResponse> {
     return this.ky
-      .patch(`/pages/${params.page_id}`, {
+      .patch(`/pages/${params['page_id']}`, {
         json: pick(params, 'properties', 'archived')
       })
       .json<notion.UpdatePageResponse>()
@@ -162,7 +161,7 @@ export class NotionClient extends AIFunctionsProvider {
     params: notion.GetPagePropertyParams
   ): Promise<notion.GetPagePropertyResponse> {
     return this.ky
-      .get(`/pages/${params.page_id}/properties/${params.property_id}`, {
+      .get(`/pages/${params['page_id']}/properties/${params['property_id']}`, {
         searchParams: sanitizeSearchParams(
           pick(params, 'start_cursor', 'page_size')
         )
@@ -182,7 +181,7 @@ export class NotionClient extends AIFunctionsProvider {
     params: notion.GetBlockParams
   ): Promise<notion.GetBlockResponse> {
     return this.ky
-      .get(`/blocks/${params.block_id}`)
+      .get(`/blocks/${params['block_id']}`)
       .json<notion.GetBlockResponse>()
   }
 
@@ -198,7 +197,7 @@ export class NotionClient extends AIFunctionsProvider {
     params: notion.DeleteBlockParams
   ): Promise<notion.DeleteBlockResponse> {
     return this.ky
-      .delete(`/blocks/${params.block_id}`)
+      .delete(`/blocks/${params['block_id']}`)
       .json<notion.DeleteBlockResponse>()
   }
 
@@ -214,7 +213,7 @@ export class NotionClient extends AIFunctionsProvider {
     params: notion.UpdateBlockParams
   ): Promise<notion.UpdateBlockResponse> {
     return this.ky
-      .patch(`/blocks/${params.block_id}`, {
+      .patch(`/blocks/${params['block_id']}`, {
         json: pick(
           params,
           'paragraph',
@@ -259,7 +258,7 @@ export class NotionClient extends AIFunctionsProvider {
     params: notion.ListBlockChildrenParams
   ): Promise<notion.ListBlockChildrenResponse> {
     return this.ky
-      .get(`/blocks/${params.block_id}/children`, {
+      .get(`/blocks/${params['block_id']}/children`, {
         searchParams: sanitizeSearchParams(
           pick(params, 'start_cursor', 'page_size')
         )
@@ -279,7 +278,7 @@ export class NotionClient extends AIFunctionsProvider {
     params: notion.AppendBlockChildrenParams
   ): Promise<notion.AppendBlockChildrenResponse> {
     return this.ky
-      .patch(`/blocks/${params.block_id}/children`, {
+      .patch(`/blocks/${params['block_id']}/children`, {
         json: pick(params, 'children')
       })
       .json<notion.AppendBlockChildrenResponse>()
@@ -297,7 +296,7 @@ export class NotionClient extends AIFunctionsProvider {
     params: notion.GetDatabaseParams
   ): Promise<notion.GetDatabaseResponse> {
     return this.ky
-      .get(`/databases/${params.database_id}`)
+      .get(`/databases/${params['database_id']}`)
       .json<notion.GetDatabaseResponse>()
   }
 
@@ -313,7 +312,7 @@ export class NotionClient extends AIFunctionsProvider {
     params: notion.UpdateDatabaseParams
   ): Promise<notion.UpdateDatabaseResponse> {
     return this.ky
-      .patch(`/databases/${params.database_id}`, {
+      .patch(`/databases/${params['database_id']}`, {
         json: pick(
           params,
           'title',
@@ -340,7 +339,7 @@ export class NotionClient extends AIFunctionsProvider {
     params: notion.QueryDatabaseParams
   ): Promise<notion.QueryDatabaseResponse> {
     return this.ky
-      .post(`/databases/${params.database_id}/query`, {
+      .post(`/databases/${params['database_id']}/query`, {
         searchParams: sanitizeSearchParams(pick(params, 'filter_properties')),
         json: pick(
           params,
