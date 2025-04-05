@@ -6,20 +6,20 @@ updateConfig:
     - p-throttle
     - eslint
 catalog:
-  '@ai-sdk/openai': ^1.3.6
+  '@ai-sdk/openai': ^1.3.7
   '@apidevtools/swagger-parser': ^10.1.1
   '@dexaai/dexter': ^4.1.1
   '@e2b/code-interpreter': ^1.1.0
   '@fisch0920/config': ^1.0.2
   '@langchain/core': ^0.3.43
-  '@langchain/openai': ^0.5.2
+  '@langchain/openai': ^0.5.4
   '@mastra/core': ^0.7.0
   '@modelcontextprotocol/sdk': ^1.8.0
   '@nangohq/node': 0.42.22 # pinned for now
   '@types/jsrsasign': ^10.5.15
-  '@types/node': ^22.13.16
-  '@xsai/tool': ^0.2.0-beta.2
-  ai: ^4.2.10
+  '@types/node': ^22.14.0
+  '@xsai/tool': ^0.2.0-beta.3
+  ai: ^4.3.1
   bumpp: ^10.1.0
   camelcase: ^8.0.0
   cleye: ^1.3.4
@@ -29,25 +29,25 @@ catalog:
   delay: ^6.0.0
   dotenv: ^16.4.7
   duck-duck-scrape: ^2.2.7
-  eslint: ^9.23.0
+  eslint: ^9.24.0
   execa: ^9.5.2
   exit-hook: ^4.0.0
-  fast-xml-parser: ^5.0.9
-  genkit: ^1.4.0
+  fast-xml-parser: ^5.2.0
+  genkit: ^1.5.0
   genkitx-openai: ^0.20.2
   '@googleapis/customsearch': ^3.2.0
-  json-schema-to-zod: ^2.6.0
+  json-schema-to-zod: ^2.6.1
   jsonrepair: ^3.12.0
   jsrsasign: ^10.9.0
   ky: ^1.8.0
-  langchain: ^0.3.19
+  langchain: ^0.3.20
   lint-staged: ^15.5.0
-  llamaindex: ^0.9.14
+  llamaindex: ^0.9.16
   mathjs: ^13.2.3
   npm-run-all2: ^7.0.2
   octokit: ^4.1.2
   only-allow: ^1.2.1
-  openai: ^4.91.0
+  openai: ^4.91.1
   openai-fetch: ^3.4.2
   openai-zod-to-json-schema: ^1.0.3
   openapi-types: ^12.1.3
@@ -60,13 +60,13 @@ catalog:
   syncpack: 14.0.0-alpha.10
   tsup: ^8.4.0
   tsx: ^4.19.3
-  turbo: ^2.4.4
+  turbo: ^2.5.0
   twitter-api-sdk: ^1.2.1
-  type-fest: ^4.39.0
-  typescript: ^5.8.2
+  type-fest: ^4.39.1
+  typescript: ^5.8.3
   vitest: ^3.1.1
   wikibase-sdk: ^10.2.3
-  xsai: ^0.2.0-beta.2
+  xsai: ^0.2.0-beta.3
   zod: ^3.24.2
   zod-validation-error: ^3.4.0
   zoominfo-api-auth-client: ^1.0.1

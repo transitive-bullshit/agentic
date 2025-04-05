@@ -3,13 +3,12 @@
  */
 
 import {
-  aiFunction,
   AIFunctionsProvider,
+  aiFunction,
   pick,
   sanitizeSearchParams
 } from '@agentic/core'
 import defaultKy, { type KyInstance } from 'ky'
-
 import { petstore } from './pet-store'
 
 /**
@@ -88,7 +87,7 @@ export class PetStoreClient extends AIFunctionsProvider {
     params: petstore.ShowPetByIdParams
   ): Promise<petstore.ShowPetByIdResponse> {
     return this.ky
-      .get(`/pets/${params.petId}`)
+      .get(`/pets/${params['petId']}`)
       .json<petstore.ShowPetByIdResponse>()
   }
 }
