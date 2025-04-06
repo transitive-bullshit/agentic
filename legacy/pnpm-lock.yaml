@@ -49,8 +49,8 @@ catalogs:
       specifier: ^0.2.0-beta.3
       version: 0.2.0-beta.3
     ai:
-      specifier: ^4.3.1
-      version: 4.3.1
+      specifier: ^4.3.2
+      version: 4.3.2
     bumpp:
       specifier: ^10.1.0
       version: 10.1.0
@@ -271,7 +271,7 @@ importers:
         version: 1.3.7(zod@3.24.2)
       ai:
         specifier: 'catalog:'
-        version: 4.3.1(react@18.3.1)(zod@3.24.2)
+        version: 4.3.2(react@18.3.1)(zod@3.24.2)
       exit-hook:
         specifier: 'catalog:'
         version: 4.0.0
@@ -364,7 +364,7 @@ importers:
         version: link:../../packages/stdlib
       llamaindex:
         specifier: 'catalog:'
-        version: 0.9.16(gpt-tokenizer@2.8.1)(tree-sitter@0.22.4)(web-tree-sitter@0.24.7)(ws@8.18.0)(zod@3.24.2)
+        version: 0.9.16(encoding@0.1.13)(gpt-tokenizer@2.8.1)(tree-sitter@0.22.4)(web-tree-sitter@0.24.7)(ws@8.18.0)(zod@3.24.2)
       zod:
         specifier: 'catalog:'
         version: 3.24.2
@@ -443,7 +443,7 @@ importers:
     devDependencies:
       ai:
         specifier: 'catalog:'
-        version: 4.3.1(react@18.3.1)(zod@3.24.2)
+        version: 4.3.2(react@18.3.1)(zod@3.24.2)
 
   packages/apollo:
     dependencies:
@@ -745,7 +745,7 @@ importers:
         version: 1.3.7(zod@3.24.2)
       ai:
         specifier: 'catalog:'
-        version: 4.3.1(react@18.3.1)(zod@3.24.2)
+        version: 4.3.2(react@18.3.1)(zod@3.24.2)
 
   packages/jina:
     dependencies:
@@ -795,7 +795,7 @@ importers:
     devDependencies:
       llamaindex:
         specifier: 'catalog:'
-        version: 0.9.16(gpt-tokenizer@2.8.1)(tree-sitter@0.22.4)(web-tree-sitter@0.24.7)(ws@8.18.0)(zod@3.24.2)
+        version: 0.9.16(encoding@0.1.13)(gpt-tokenizer@2.8.1)(tree-sitter@0.22.4)(web-tree-sitter@0.24.7)(ws@8.18.0)(zod@3.24.2)
 
   packages/mastra:
     dependencies:
@@ -1346,12 +1346,6 @@ packages:
     peerDependencies:
       zod: ^3.0.0
 
-  '@ai-sdk/provider-utils@2.2.3':
-    resolution: {integrity: sha512-o3fWTzkxzI5Af7U7y794MZkYNEsxbjLam2nxyoUZSScqkacb7vZ3EYHLh21+xCcSSzEC161C7pZAGHtC0hTUMw==}
-    engines: {node: '>=18'}
-    peerDependencies:
-      zod: ^3.23.8
-
   '@ai-sdk/provider-utils@2.2.4':
     resolution: {integrity: sha512-13sEGBxB6kgaMPGOgCLYibF6r8iv8mgjhuToFrOTU09bBxbFQd8ZoARarCfJN6VomCUbUvMKwjTBLb1vQnN+WA==}
     engines: {node: '>=18'}
@@ -1362,16 +1356,6 @@ packages:
     resolution: {integrity: sha512-0M+qjp+clUD0R1E5eWQFhxEvWLNaOtGQRUaBn8CUABnSKredagq92hUS9VjOzGsTm37xLfpaxl97AVtbeOsHew==}
     engines: {node: '>=18'}
 
-  '@ai-sdk/react@1.2.5':
-    resolution: {integrity: sha512-0jOop3S2WkDOdO4X5I+5fTGqZlNX8/h1T1eYokpkR9xh8Vmrxqw8SsovqGvrddTsZykH8uXRsvI+G4FTyy894A==}
-    engines: {node: '>=18'}
-    peerDependencies:
-      react: ^18 || ^19 || ^19.0.0-rc
-      zod: ^3.23.8
-    peerDependenciesMeta:
-      zod:
-        optional: true
-
   '@ai-sdk/react@1.2.6':
     resolution: {integrity: sha512-5BFChNbcYtcY9MBStcDev7WZRHf0NpTrk8yfSoedWctB3jfWkFd1HECBvdc8w3mUQshF2MumLHtAhRO7IFtGGQ==}
     engines: {node: '>=18'}
@@ -1381,12 +1365,6 @@ packages:
     peerDependenciesMeta:
       zod:
         optional: true
-
-  '@ai-sdk/ui-utils@1.2.4':
-    resolution: {integrity: sha512-wLTxEZrKZRyBmlVZv8nGXgLBg5tASlqXwbuhoDu0MhZa467ZFREEnosH/OC/novyEHTQXko2zC606xoVbMrUcA==}
-    engines: {node: '>=18'}
-    peerDependencies:
-      zod: ^3.23.8
 
   '@ai-sdk/ui-utils@1.2.5':
     resolution: {integrity: sha512-XDgqnJcaCkDez7qolvk+PDbs/ceJvgkNkxkOlc9uDWqxfDJxtvCZ+14MP/1qr4IBwGIgKVHzMDYDXvqVhSWLzg==}
@@ -3305,8 +3283,8 @@ packages:
     resolution: {integrity: sha512-kja8j7PjmncONqaTsB8fQ+wE2mSU2DJ9D4XKoJ5PFWIdRMa6SLSN1ff4mOr4jCbfRSsxR4keIiySJU0N9T5hIQ==}
     engines: {node: '>= 8.0.0'}
 
-  ai@4.2.10:
-    resolution: {integrity: sha512-rOfKbNRWlzwxbFll6W9oAdnC0R5VVbAJoof+p92CatHzA3reqQZmYn33IBnj+CgqeXYUsH9KX9Wnj7g2wCHc9Q==}
+  ai@4.3.1:
+    resolution: {integrity: sha512-6RSRE0x0FAUZxWpLOq6yrh1IFXakvvJgHs8xPHtt8VmsTqhgjP5GClguaGs+KCpVbVfdygwgji7YJjOwq80suQ==}
     engines: {node: '>=18'}
     peerDependencies:
       react: ^18 || ^19 || ^19.0.0-rc
@@ -3315,8 +3293,8 @@ packages:
       react:
         optional: true
 
-  ai@4.3.1:
-    resolution: {integrity: sha512-6RSRE0x0FAUZxWpLOq6yrh1IFXakvvJgHs8xPHtt8VmsTqhgjP5GClguaGs+KCpVbVfdygwgji7YJjOwq80suQ==}
+  ai@4.3.2:
+    resolution: {integrity: sha512-h643SfhKil0Pnxk2tVIazFDL1JevutUghvc3mOpWqJFMcudmgtwQYlvxCkwSfljrrq+qIfne8d6jCihMMhM7pw==}
     engines: {node: '>=18'}
     peerDependencies:
       react: ^18 || ^19 || ^19.0.0-rc
@@ -6683,13 +6661,6 @@ snapshots:
       '@ai-sdk/provider-utils': 2.2.4(zod@3.24.2)
       zod: 3.24.2
 
-  '@ai-sdk/provider-utils@2.2.3(zod@3.24.2)':
-    dependencies:
-      '@ai-sdk/provider': 1.1.0
-      nanoid: 3.3.11
-      secure-json-parse: 2.7.0
-      zod: 3.24.2
-
   '@ai-sdk/provider-utils@2.2.4(zod@3.24.2)':
     dependencies:
       '@ai-sdk/provider': 1.1.0
@@ -6701,16 +6672,6 @@ snapshots:
     dependencies:
       json-schema: 0.4.0
 
-  '@ai-sdk/react@1.2.5(react@18.3.1)(zod@3.24.2)':
-    dependencies:
-      '@ai-sdk/provider-utils': 2.2.3(zod@3.24.2)
-      '@ai-sdk/ui-utils': 1.2.4(zod@3.24.2)
-      react: 18.3.1
-      swr: 2.3.3(react@18.3.1)
-      throttleit: 2.1.0
-    optionalDependencies:
-      zod: 3.24.2
-
   '@ai-sdk/react@1.2.6(react@18.3.1)(zod@3.24.2)':
     dependencies:
       '@ai-sdk/provider-utils': 2.2.4(zod@3.24.2)
@@ -6720,13 +6681,6 @@ snapshots:
       throttleit: 2.1.0
     optionalDependencies:
       zod: 3.24.2
-
-  '@ai-sdk/ui-utils@1.2.4(zod@3.24.2)':
-    dependencies:
-      '@ai-sdk/provider': 1.1.0
-      '@ai-sdk/provider-utils': 2.2.3(zod@3.24.2)
-      zod: 3.24.2
-      zod-to-json-schema: 3.24.5(zod@3.24.2)
 
   '@ai-sdk/ui-utils@1.2.5(zod@3.24.2)':
     dependencies:
@@ -7647,7 +7601,7 @@ snapshots:
       tree-sitter: 0.22.4
       web-tree-sitter: 0.24.7
 
-  '@llamaindex/openai@0.3.0(gpt-tokenizer@2.8.1)(ws@8.18.0)':
+  '@llamaindex/openai@0.3.0(encoding@0.1.13)(gpt-tokenizer@2.8.1)(ws@8.18.0)':
     dependencies:
       '@llamaindex/core': 0.6.2(gpt-tokenizer@2.8.1)
       '@llamaindex/env': 0.1.29(gpt-tokenizer@2.8.1)
@@ -7681,7 +7635,7 @@ snapshots:
       '@opentelemetry/sdk-trace-base': 1.30.1(@opentelemetry/api@1.9.0)
       '@opentelemetry/sdk-trace-node': 1.30.1(@opentelemetry/api@1.9.0)
       '@opentelemetry/semantic-conventions': 1.30.0
-      ai: 4.2.10(react@18.3.1)(zod@3.24.2)
+      ai: 4.3.1(react@18.3.1)(zod@3.24.2)
       cohere-ai: 7.16.0(encoding@0.1.13)
       date-fns: 3.6.0
       dotenv: 16.4.7
@@ -9456,19 +9410,19 @@ snapshots:
     dependencies:
       humanize-ms: 1.2.1
 
-  ai@4.2.10(react@18.3.1)(zod@3.24.2):
+  ai@4.3.1(react@18.3.1)(zod@3.24.2):
     dependencies:
       '@ai-sdk/provider': 1.1.0
-      '@ai-sdk/provider-utils': 2.2.3(zod@3.24.2)
-      '@ai-sdk/react': 1.2.5(react@18.3.1)(zod@3.24.2)
-      '@ai-sdk/ui-utils': 1.2.4(zod@3.24.2)
+      '@ai-sdk/provider-utils': 2.2.4(zod@3.24.2)
+      '@ai-sdk/react': 1.2.6(react@18.3.1)(zod@3.24.2)
+      '@ai-sdk/ui-utils': 1.2.5(zod@3.24.2)
       '@opentelemetry/api': 1.9.0
       jsondiffpatch: 0.6.0
       zod: 3.24.2
     optionalDependencies:
       react: 18.3.1
 
-  ai@4.3.1(react@18.3.1)(zod@3.24.2):
+  ai@4.3.2(react@18.3.1)(zod@3.24.2):
     dependencies:
       '@ai-sdk/provider': 1.1.0
       '@ai-sdk/provider-utils': 2.2.4(zod@3.24.2)
@@ -11417,13 +11371,13 @@ snapshots:
       rfdc: 1.4.1
       wrap-ansi: 9.0.0
 
-  llamaindex@0.9.16(gpt-tokenizer@2.8.1)(tree-sitter@0.22.4)(web-tree-sitter@0.24.7)(ws@8.18.0)(zod@3.24.2):
+  llamaindex@0.9.16(encoding@0.1.13)(gpt-tokenizer@2.8.1)(tree-sitter@0.22.4)(web-tree-sitter@0.24.7)(ws@8.18.0)(zod@3.24.2):
     dependencies:
       '@llamaindex/cloud': 4.0.2(@llamaindex/core@0.6.2(gpt-tokenizer@2.8.1))(@llamaindex/env@0.1.29(gpt-tokenizer@2.8.1))
       '@llamaindex/core': 0.6.2(gpt-tokenizer@2.8.1)
       '@llamaindex/env': 0.1.29(gpt-tokenizer@2.8.1)
       '@llamaindex/node-parser': 2.0.2(@llamaindex/core@0.6.2(gpt-tokenizer@2.8.1))(@llamaindex/env@0.1.29(gpt-tokenizer@2.8.1))(tree-sitter@0.22.4)(web-tree-sitter@0.24.7)
-      '@llamaindex/openai': 0.3.0(gpt-tokenizer@2.8.1)(ws@8.18.0)
+      '@llamaindex/openai': 0.3.0(encoding@0.1.13)(gpt-tokenizer@2.8.1)(ws@8.18.0)
       '@llamaindex/workflow': 1.0.2(@llamaindex/core@0.6.2(gpt-tokenizer@2.8.1))(@llamaindex/env@0.1.29(gpt-tokenizer@2.8.1))(zod@3.24.2)
       '@types/lodash': 4.17.15
       '@types/node': 22.13.16
