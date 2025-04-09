@@ -1,0 +1,39 @@
+---
+title: YouTube
+description: YouTube data API v3 client for searching YT videos and channels.
+---
+
+- package: `@agentic/youtube`
+- exports: `class YouTubeClient`, `namespace youtube`
+- env vars: `YOUTUBE_API_KEY`
+- [source](https://github.com/transitive-bullshit/agentic/blob/main/packages/youtube/src/youtube-client.ts)
+- [youtube api docs](https://developers.google.com/youtube/v3)
+  - [search docs](https://developers.google.com/youtube/v3/docs/search/list)
+
+## Install
+
+<CodeGroup>
+```bash npm
+npm install @agentic/youtube
+```
+
+```bash yarn
+yarn add @agentic/youtube
+```
+
+```bash pnpm
+pnpm add @agentic/youtube
+```
+
+</CodeGroup>
+
+## Usage
+
+```ts
+import { YouTubeClient } from '@agentic/youtube'
+
+const youtube = new YouTubeClient()
+const res = await youtube.searchVideos({
+  query: 'cute kittens'
+})
+```
