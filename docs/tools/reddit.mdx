@@ -1,0 +1,45 @@
+---
+title: Reddit
+description: Basic readonly Reddit API for getting top/hot/new/rising posts from subreddits.
+---
+
+- package: `@agentic/reddit`
+- exports: `class RedditClient`, `namespace reddit`
+- [source](https://github.com/transitive-bullshit/agentic/blob/main/packages/reddit/src/reddit-client.ts)
+- [reddit api docs](https://old.reddit.com/dev/api)
+
+<Note>
+  This client uses Reddit's free, publicly accessible legacy JSON API aimed at
+  RSS feeds, so no API key or auth is required. With that being said, Reddit
+  does impose rate limits on the API, so be considerate.
+</Note>
+
+## Install
+
+<CodeGroup>
+```bash npm
+npm install @agentic/reddit
+```
+
+```bash yarn
+yarn add @agentic/reddit
+```
+
+```bash pnpm
+pnpm add @agentic/reddit
+```
+
+</CodeGroup>
+
+## Usage
+
+```ts
+import { RedditClient } from '@agentic/reddit'
+
+const reddit = new RedditClient()
+const result = await reddit.getSubredditPosts({
+  subreddit: 'AskReddit',
+  type: 'hot',
+  limit: 10
+})
+```

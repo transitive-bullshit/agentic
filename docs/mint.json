@@ -83,6 +83,7 @@
         "tools/polygon",
         "tools/predict-leads",
         "tools/proxycurl",
+        "tools/reddit",
         "tools/rocketreach",
         "tools/searxng",
         "tools/serpapi",
