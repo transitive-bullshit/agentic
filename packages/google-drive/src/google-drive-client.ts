@@ -3,6 +3,7 @@ import {
   aiFunction,
   AIFunctionsProvider,
   pick,
+  pruneNullOrUndefined,
   pruneNullOrUndefinedDeep
 } from '@agentic/core'
 import { z } from 'zod'
@@ -110,14 +111,12 @@ export class GoogleDriveClient extends AIFunctionsProvider {
       ...opts,
       q
     })
-    const files = (data.files ?? []).map((file) =>
-      pick(file, ...googleDrive.fileFields)
-    )
+    const files = (data.files ?? []).map(convertFile)
 
-    return pruneNullOrUndefinedDeep({
+    return pruneNullOrUndefined({
       files,
       nextPageToken: data.nextPageToken
-    }) as any
+    })
   }
 
   /**
@@ -136,9 +135,7 @@ export class GoogleDriveClient extends AIFunctionsProvider {
       ...opts
     })
 
-    return pruneNullOrUndefinedDeep(
-      pick(data, ...googleDrive.fileFields)
-    ) as any
+    return convertFile(data)
   }
 
   /**
@@ -159,4 +156,40 @@ export class GoogleDriveClient extends AIFunctionsProvider {
   ): Promise<unknown> {
     return this.drive.files.export(opts)
   }
+
+  @aiFunction({
+    name: 'google_drive_create_folder',
+    description: 'Creates a new folder in Google Drive.',
+    inputSchema: z.object({
+      name: z.string().describe('The name of the folder to create.'),
+      parentId: z.string().describe('The ID of the parent folder.').optional()
+    })
+  })
+  async createFolder(
+    opts: Omit<
+      google.drive_v3.Params$Resource$Files$Create,
+      'media' | 'requestBody'
+    > & {
+      name: string
+      parentId?: string
+    }
+  ): Promise<googleDrive.File> {
+    const { data } = await this.drive.files.create({
+      requestBody: {
+        mimeType: 'application/vnd.google-apps.folder',
+        name: opts.name,
+        parents: opts.parentId ? [opts.parentId] : undefined
+      },
+      fields: googleDrive.requestFileFields,
+      ...opts
+    })
+
+    return convertFile(data)
+  }
+}
+
+function convertFile(data: google.drive_v3.Schema$File): googleDrive.File {
+  return pruneNullOrUndefinedDeep(
+    pick(data, ...googleDrive.fileFields)
+  ) as googleDrive.File
 }
