@@ -98,11 +98,13 @@ export class TypeformClient extends AIFunctionsProvider {
   constructor({
     apiKey = getEnv('TYPEFORM_API_KEY'),
     apiBaseUrl = typeform.API_BASE_URL,
+    timeoutMs = 60_000,
     ky = defaultKy
   }: {
     /** Typeform Personal Access Token */
     apiKey?: string
     apiBaseUrl?: string
+    timeoutMs?: number
     ky?: KyInstance
   } = {}) {
     assert(
@@ -116,6 +118,7 @@ export class TypeformClient extends AIFunctionsProvider {
 
     this.ky = ky.extend({
       prefixUrl: this.apiBaseUrl,
+      timeout: timeoutMs,
       headers: {
         Authorization: `Bearer ${this.apiKey}`
       }
