@@ -55,6 +55,7 @@
     {
       "group": "Tools",
       "pages": [
+        "tools/airtable",
         "tools/apollo",
         "tools/arxiv",
         "tools/bing",

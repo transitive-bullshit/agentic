@@ -32,6 +32,7 @@
     "test:typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@agentic/airtable": "workspace:*",
     "@agentic/apollo": "workspace:*",
     "@agentic/arxiv": "workspace:*",
     "@agentic/bing": "workspace:*",

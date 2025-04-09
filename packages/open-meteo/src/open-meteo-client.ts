@@ -28,10 +28,12 @@ export class OpenMeteoClient extends AIFunctionsProvider {
   constructor({
     apiKey = getEnv('OPEN_METEO_API_KEY'),
     apiBaseUrl = openmeteo.apiBaseUrl,
+    timeoutMs = 60_000,
     ky = defaultKy
   }: {
     apiKey?: string
     apiBaseUrl?: string
+    timeoutMs?: number
     ky?: KyInstance
   } = {}) {
     super()
@@ -41,6 +43,7 @@ export class OpenMeteoClient extends AIFunctionsProvider {
 
     this.ky = ky.extend({
       prefixUrl: apiBaseUrl,
+      timeout: timeoutMs,
       ...(apiKey
         ? {
             headers: {

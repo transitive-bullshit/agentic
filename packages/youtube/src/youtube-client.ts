@@ -97,10 +97,12 @@ export class YouTubeClient extends AIFunctionsProvider {
   constructor({
     apiKey = getEnv('YOUTUBE_API_KEY'),
     apiBaseUrl = youtube.API_BASE_URL,
+    timeoutMs = 30_000,
     ky = defaultKy
   }: {
     apiKey?: string
     apiBaseUrl?: string
+    timeoutMs?: number
     ky?: KyInstance
   } = {}) {
     assert(
@@ -113,7 +115,8 @@ export class YouTubeClient extends AIFunctionsProvider {
     this.apiBaseUrl = apiBaseUrl
 
     this.ky = ky.extend({
-      prefixUrl: this.apiBaseUrl
+      prefixUrl: this.apiBaseUrl,
+      timeout: timeoutMs
     })
   }
 

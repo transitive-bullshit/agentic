@@ -1,3 +1,4 @@
+export * from '@agentic/airtable'
 export * from '@agentic/apollo'
 export * from '@agentic/arxiv'
 export * from '@agentic/bing'

@@ -320,10 +320,12 @@ export class RedditClient extends AIFunctionsProvider {
   constructor({
     baseUrl = reddit.BASE_URL,
     userAgent = 'agentic-reddit-client/1.0.0',
+    timeoutMs = 60_000,
     ky = defaultKy
   }: {
     baseUrl?: string
     userAgent?: string
+    timeoutMs?: number
     ky?: KyInstance
   } = {}) {
     super()
@@ -332,6 +334,7 @@ export class RedditClient extends AIFunctionsProvider {
 
     this.ky = ky.extend({
       prefixUrl: this.baseUrl,
+      timeout: timeoutMs,
       headers: {
         'User-Agent': userAgent
       }
