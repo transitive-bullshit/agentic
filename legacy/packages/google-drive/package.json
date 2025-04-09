@@ -1,13 +1,13 @@
 {
-  "name": "@agentic/airtable",
+  "name": "@agentic/google-drive",
   "version": "7.6.3",
-  "description": "Agentic SDK for Airtable.",
+  "description": "Agentic SDK for Google Drive.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/transitive-bullshit/agentic.git",
-    "directory": "packages/airtable"
+    "directory": "packages/google-drive"
   },
   "type": "module",
   "source": "./src/index.ts",
@@ -32,10 +32,15 @@
     "test:typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@agentic/core": "workspace:*",
-    "ky": "catalog:"
+    "@agentic/core": "workspace:*"
+  },
+  "devDependencies": {
+    "google-auth-library": "catalog:",
+    "googleapis": "catalog:"
   },
   "peerDependencies": {
+    "google-auth-library": "catalog:",
+    "googleapis": "catalog:",
     "zod": "catalog:"
   },
   "publishConfig": {
