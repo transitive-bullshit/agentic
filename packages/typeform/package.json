@@ -1,7 +1,7 @@
 {
   "name": "@agentic/typeform",
   "version": "7.6.3",
-  "description": "Agentic SDK for the Typeform data API.",
+  "description": "Agentic SDK for the Typeform API.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",
   "repository": {
