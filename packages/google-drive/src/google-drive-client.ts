@@ -20,7 +20,7 @@ export namespace googleDrive {
     parents?: string[]
   }
 
-  export const fileFields: (keyof File)[] = [
+  export const fileFields: readonly (keyof File)[] = [
     'id',
     'name',
     'mimeType',
@@ -31,6 +31,7 @@ export namespace googleDrive {
     'modifiedTime',
     'parents'
   ]
+  export const requestFileFields = `files(${fileFields.join(',')}),nextPageToken`
 
   export interface ListFilesResponse {
     files: File[]
@@ -104,6 +105,7 @@ export class GoogleDriveClient extends AIFunctionsProvider {
     const q = conditions.join(' and ')
 
     const { data } = await this.drive.files.list({
+      fields: googleDrive.requestFileFields,
       ...opts,
       q
     })
@@ -128,7 +130,10 @@ export class GoogleDriveClient extends AIFunctionsProvider {
   async getFile(
     opts: google.drive_v3.Params$Resource$Files$Get
   ): Promise<googleDrive.File> {
-    const { data } = await this.drive.files.get(opts)
+    const { data } = await this.drive.files.get({
+      fields: googleDrive.requestFileFields,
+      ...opts
+    })
 
     return pruneNullOrUndefinedDeep(
       pick(data, ...googleDrive.fileFields)
