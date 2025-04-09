@@ -1191,6 +1191,9 @@ importers:
       '@agentic/twitter':
         specifier: workspace:*
         version: link:../twitter
+      '@agentic/typeform':
+        specifier: workspace:*
+        version: link:../typeform
       '@agentic/weather':
         specifier: workspace:*
         version: link:../weather
@@ -1263,6 +1266,21 @@ importers:
       type-fest:
         specifier: 'catalog:'
         version: 4.39.1
+      zod:
+        specifier: 'catalog:'
+        version: 3.24.2
+
+  packages/typeform:
+    dependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
+      ky:
+        specifier: 'catalog:'
+        version: 1.8.0
+      p-throttle:
+        specifier: 'catalog:'
+        version: 6.2.0
       zod:
         specifier: 'catalog:'
         version: 3.24.2

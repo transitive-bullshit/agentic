@@ -93,6 +93,7 @@
         "tools/tavily",
         "tools/twilio",
         "tools/twitter",
+        "tools/typeform",
         "tools/weather",
         "tools/wikidata",
         "tools/wikipedia",

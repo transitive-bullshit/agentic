@@ -72,6 +72,7 @@
     "@agentic/tavily": "workspace:*",
     "@agentic/twilio": "workspace:*",
     "@agentic/twitter": "workspace:*",
+    "@agentic/typeform": "workspace:*",
     "@agentic/weather": "workspace:*",
     "@agentic/wikidata": "workspace:*",
     "@agentic/wikipedia": "workspace:*",
