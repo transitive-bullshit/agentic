@@ -58,6 +58,7 @@ export namespace googleDrive {
  *
  * @example
  * ```ts
+ * import { GoogleDriveClient } from '@agentic/google-drive'
  * import { GoogleAuth } from 'google-auth-library'
  * import { google } from 'googleapis'
  *
