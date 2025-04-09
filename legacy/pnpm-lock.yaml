@@ -976,6 +976,21 @@ importers:
         specifier: 'catalog:'
         version: 3.24.2
 
+  packages/reddit:
+    dependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
+      ky:
+        specifier: 'catalog:'
+        version: 1.8.0
+      p-throttle:
+        specifier: 'catalog:'
+        version: 6.2.0
+      zod:
+        specifier: 'catalog:'
+        version: 3.24.2
+
   packages/rocketreach:
     dependencies:
       '@agentic/core':
@@ -1146,6 +1161,9 @@ importers:
       '@agentic/proxycurl':
         specifier: workspace:*
         version: link:../proxycurl
+      '@agentic/reddit':
+        specifier: workspace:*
+        version: link:../reddit
       '@agentic/rocketreach':
         specifier: workspace:*
         version: link:../rocketreach
@@ -5063,7 +5081,6 @@ packages:
 
   libsql@0.4.7:
     resolution: {integrity: sha512-T9eIRCs6b0J1SHKYIvD8+KCJMcWZ900iZyxdnSCdqxN12Z1ijzT+jY5nrk72Jw4B0HGzms2NgpryArlJqvc3Lw==}
-    cpu: [x64, arm64, wasm32]
     os: [darwin, linux, win32]
 
   lilconfig@3.1.3:

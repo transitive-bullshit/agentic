@@ -62,6 +62,7 @@
     "@agentic/polygon": "workspace:*",
     "@agentic/predict-leads": "workspace:*",
     "@agentic/proxycurl": "workspace:*",
+    "@agentic/reddit": "workspace:*",
     "@agentic/rocketreach": "workspace:*",
     "@agentic/searxng": "workspace:*",
     "@agentic/serpapi": "workspace:*",
