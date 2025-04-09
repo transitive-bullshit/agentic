@@ -97,6 +97,7 @@
         "tools/wikidata",
         "tools/wikipedia",
         "tools/wolfram-alpha",
+        "tools/youtube",
         "tools/zoominfo"
       ]
     }
