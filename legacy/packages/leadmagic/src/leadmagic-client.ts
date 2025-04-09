@@ -131,7 +131,7 @@ export class LeadMagicClient extends AIFunctionsProvider {
   } = {}) {
     assert(
       apiKey,
-      `LeadMagicClient missing required "username" (defaults to "LEADMAGIC_API_KEY")`
+      `LeadMagicClient missing required "apiKey" (defaults to "LEADMAGIC_API_KEY")`
     )
     super()
 

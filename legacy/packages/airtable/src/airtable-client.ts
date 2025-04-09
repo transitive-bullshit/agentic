@@ -33,7 +33,7 @@ export class AirtableClient extends AIFunctionsProvider {
   } = {}) {
     assert(
       apiKey,
-      `AirtableClient missing required "username" (defaults to "AIRTABLE_API_KEY")`
+      `AirtableClient missing required "apiKey" (defaults to "AIRTABLE_API_KEY")`
     )
     super()
 
