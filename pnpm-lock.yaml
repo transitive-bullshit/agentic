@@ -1203,6 +1203,9 @@ importers:
       '@agentic/wolfram-alpha':
         specifier: workspace:*
         version: link:../wolfram-alpha
+      '@agentic/youtube':
+        specifier: workspace:*
+        version: link:../youtube
       '@agentic/zoominfo':
         specifier: workspace:*
         version: link:../zoominfo
@@ -1330,6 +1333,21 @@ importers:
       '@xsai/tool':
         specifier: 'catalog:'
         version: 0.2.0-beta.3(zod-to-json-schema@3.24.5(zod@3.24.2))
+
+  packages/youtube:
+    dependencies:
+      '@agentic/core':
+        specifier: workspace:*
+        version: link:../core
+      ky:
+        specifier: 'catalog:'
+        version: 1.8.0
+      p-throttle:
+        specifier: 'catalog:'
+        version: 6.2.0
+      zod:
+        specifier: 'catalog:'
+        version: 3.24.2
 
   packages/zoominfo:
     dependencies:

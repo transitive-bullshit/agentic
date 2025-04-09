@@ -76,6 +76,7 @@
     "@agentic/wikidata": "workspace:*",
     "@agentic/wikipedia": "workspace:*",
     "@agentic/wolfram-alpha": "workspace:*",
+    "@agentic/youtube": "workspace:*",
     "@agentic/zoominfo": "workspace:*",
     "@e2b/code-interpreter": "catalog:"
   },
