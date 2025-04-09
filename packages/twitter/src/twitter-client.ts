@@ -141,10 +141,10 @@ const twitterApiRateLimitsByPlan: Record<
 }
 
 /**
- * Twitter API v2 client wrapper with rate-limited methods and `@aiFunction`
+ * Twitter/X API v2 client wrapper with rate-limited methods and `@aiFunction`
  * compatibility.
  *
- * Rate limits differ by plan, so make sure theh `twitterApiPlan` parameter is
+ * Rate limits differ by plan, so make sure the `twitterApiPlan` parameter is
  * properly set to maximize your rate-limit usage.
  *
  * @note This class does not handle distributed rate-limits. It assumes a
