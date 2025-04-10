@@ -1,6 +1,6 @@
 {
   "name": "@agentic/mcp",
-  "version": "7.6.3",
+  "version": "7.6.4",
   "description": "Agentic SDK wrapping an MCP client.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",

@@ -1,6 +1,6 @@
 {
   "name": "@agentic/google-custom-search",
-  "version": "7.6.3",
+  "version": "7.6.4",
   "description": "Agentic client for the Google Custom Search API.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",
