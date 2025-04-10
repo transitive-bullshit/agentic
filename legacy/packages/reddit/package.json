@@ -1,6 +1,6 @@
 {
   "name": "@agentic/reddit",
-  "version": "0.1.0",
+  "version": "7.6.4",
   "description": "Agentic SDK for Reddit.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",
