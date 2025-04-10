@@ -293,7 +293,7 @@ export class ApolloClient extends AIFunctionsProvider {
   } = {}) {
     assert(
       apiKey,
-      `ApolloClient missing required "username" (defaults to "APOLLO_API_KEY")`
+      `ApolloClient missing required "apiKey" (defaults to "APOLLO_API_KEY")`
     )
     super()
 

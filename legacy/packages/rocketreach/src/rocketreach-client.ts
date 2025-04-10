@@ -163,7 +163,7 @@ export class RocketReachClient extends AIFunctionsProvider {
   } = {}) {
     assert(
       apiKey,
-      `RocketReachClient missing required "username" (defaults to "ROCKETREACH_API_KEY")`
+      `RocketReachClient missing required "apiKey" (defaults to "ROCKETREACH_API_KEY")`
     )
     super()
 

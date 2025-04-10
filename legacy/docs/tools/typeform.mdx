@@ -1,0 +1,43 @@
+---
+title: Typeform
+description: Readonly Typeform API client for fetching form insights and responses.
+---
+
+- package: `@agentic/typeform`
+- exports: `class TypeformClient`, `namespace typeform`
+- env vars: `TYPEFORM_API_KEY`
+- [source](https://github.com/transitive-bullshit/agentic/blob/main/packages/typeform/src/typeform-client.ts)
+- [typeform api docs](https://www.typeform.com/developers/get-started/)
+
+## Install
+
+<CodeGroup>
+```bash npm
+npm install @agentic/typeform
+```
+
+```bash yarn
+yarn add @agentic/typeform
+```
+
+```bash pnpm
+pnpm add @agentic/typeform
+```
+
+</CodeGroup>
+
+## Usage
+
+```ts
+import { TypeformClient } from '@agentic/typeform'
+
+const typeform = new TypeformClient()
+
+const responses = await typeform.getResponsesForForm({
+  formId: 'TODO'
+})
+
+const insights = await typeform.getInsightsForForm({
+  formId: 'TODO'
+})
+```

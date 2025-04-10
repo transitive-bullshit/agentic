@@ -1,0 +1,47 @@
+---
+title: Google Drive
+description: Simplified Google Drive API.
+---
+
+- package: `@agentic/google-drive`
+- exports: `class GoogleDriveClient`, `namespace googleDrive`
+- [source](https://github.com/transitive-bullshit/agentic/blob/main/packages/google-drive/src/google-drive-client.ts)
+- [google drive docs](https://developers.google.com/workspace/drive/api)
+
+## Install
+
+<CodeGroup>
+```bash npm
+npm install @agentic/google-drive googleapis google-auth-library
+```
+
+```bash yarn
+yarn add @agentic/google-drive googleapis google-auth-library
+```
+
+```bash pnpm
+pnpm add @agentic/google-drive googleapis google-auth-library
+```
+
+</CodeGroup>
+
+## Example Usage
+
+```ts
+import { GoogleDriveClient } from '@agentic/google-drive'
+import { GoogleAuth } from 'google-auth-library'
+import { google } from 'googleapis'
+
+const auth = new GoogleAuth({ scopes: 'https://www.googleapis.com/auth/drive' })
+const drive = google.drive({ version: 'v3', auth })
+const client = new GoogleDriveClient({ drive })
+
+const result = await client.listFiles()
+
+const file = result.files[0]!
+const metadata = await client.getFile({ fileId: file.id })
+const content = await client.exportFile({
+  fileId: file.id,
+  mimeType: 'application/pdf'
+})
+```

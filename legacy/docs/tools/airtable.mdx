@@ -1,0 +1,51 @@
+---
+title: Airtable
+description: Airtable is a no-code spreadsheets, CRM, and database.
+---
+
+- package: `@agentic/airtable`
+- exports: `class AirtableClient`, `namespace airtable`
+- env vars: `AIRTABLE_API_KEY`
+- [source](https://github.com/transitive-bullshit/agentic/blob/main/packages/airtable/src/airtable-client.ts)
+- [airtable api docs](https://airtable.com/developers/web/api/introduction)
+
+## Install
+
+<CodeGroup>
+```bash npm
+npm install @agentic/airtable
+```
+
+```bash yarn
+yarn add @agentic/airtable
+```
+
+```bash pnpm
+pnpm add @agentic/airtable
+```
+
+</CodeGroup>
+
+## Usage
+
+```ts
+import { AirtableClient } from '@agentic/airtable'
+
+const airtable = new AirtableClient()
+const { bases } = await airtable.listBases()
+console.log('bases', tables)
+
+const baseId = bases[0]!.id
+const tables = await airtable.listTables({ baseId })
+console.log('tables', tables)
+
+const tableId = tables[0]!.id
+const searchResults = await airtable.searchRecords({
+  baseId,
+  tableId,
+  searchTerm: 'Travis'
+})
+console.log('search results', searchResults)
+```
+
+(this is just an example of how you'd use the client)
