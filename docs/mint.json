@@ -55,6 +55,7 @@
     {
       "group": "Tools",
       "pages": [
+        "tools/airtable",
         "tools/apollo",
         "tools/arxiv",
         "tools/bing",
@@ -70,6 +71,8 @@
         "tools/hacker-news",
         "tools/gravatar",
         "tools/google-custom-search",
+        "tools/google-docs",
+        "tools/google-drive",
         "tools/hunter",
         "tools/jina",
         "tools/leadmagic",
@@ -83,6 +86,7 @@
         "tools/polygon",
         "tools/predict-leads",
         "tools/proxycurl",
+        "tools/reddit",
         "tools/rocketreach",
         "tools/searxng",
         "tools/serpapi",
@@ -92,10 +96,12 @@
         "tools/tavily",
         "tools/twilio",
         "tools/twitter",
+        "tools/typeform",
         "tools/weather",
         "tools/wikidata",
         "tools/wikipedia",
         "tools/wolfram-alpha",
+        "tools/youtube",
         "tools/zoominfo"
       ]
     }

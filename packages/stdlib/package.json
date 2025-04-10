@@ -6,7 +6,8 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/transitive-bullshit/agentic.git"
+    "url": "git+https://github.com/transitive-bullshit/agentic.git",
+    "directory": "packages/stdlib"
   },
   "type": "module",
   "source": "./src/index.ts",
@@ -31,6 +32,7 @@
     "test:typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@agentic/airtable": "workspace:*",
     "@agentic/apollo": "workspace:*",
     "@agentic/arxiv": "workspace:*",
     "@agentic/bing": "workspace:*",
@@ -46,6 +48,8 @@
     "@agentic/firecrawl": "workspace:*",
     "@agentic/github": "workspace:*",
     "@agentic/google-custom-search": "workspace:*",
+    "@agentic/google-docs": "workspace:*",
+    "@agentic/google-drive": "workspace:*",
     "@agentic/gravatar": "workspace:*",
     "@agentic/hacker-news": "workspace:*",
     "@agentic/hunter": "workspace:*",
@@ -61,6 +65,7 @@
     "@agentic/polygon": "workspace:*",
     "@agentic/predict-leads": "workspace:*",
     "@agentic/proxycurl": "workspace:*",
+    "@agentic/reddit": "workspace:*",
     "@agentic/rocketreach": "workspace:*",
     "@agentic/searxng": "workspace:*",
     "@agentic/serpapi": "workspace:*",
@@ -70,10 +75,12 @@
     "@agentic/tavily": "workspace:*",
     "@agentic/twilio": "workspace:*",
     "@agentic/twitter": "workspace:*",
+    "@agentic/typeform": "workspace:*",
     "@agentic/weather": "workspace:*",
     "@agentic/wikidata": "workspace:*",
     "@agentic/wikipedia": "workspace:*",
     "@agentic/wolfram-alpha": "workspace:*",
+    "@agentic/youtube": "workspace:*",
     "@agentic/zoominfo": "workspace:*",
     "@e2b/code-interpreter": "catalog:"
   },

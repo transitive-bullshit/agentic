@@ -1,0 +1,45 @@
+---
+title: Google Docs
+description: Simplified Google Docs API.
+---
+
+- package: `@agentic/google-docs`
+- exports: `class GoogleDocsClient`, `namespace googleDocs`
+- [source](https://github.com/transitive-bullshit/agentic/blob/main/packages/google-docs/src/google-docs-client.ts)
+- [google docs docs](https://developers.google.com/workspace/docs/api)
+
+## Install
+
+<CodeGroup>
+```bash npm
+npm install @agentic/google-docs googleapis @google-cloud/local-auth
+```
+
+```bash yarn
+yarn add @agentic/google-docs googleapis @google-cloud/local-auth
+```
+
+```bash pnpm
+pnpm add @agentic/google-docs googleapis @google-cloud/local-auth
+```
+
+</CodeGroup>
+
+## Example Usage
+
+```ts
+import { GoogleDriveClient } from '@agentic/google-drive'
+import { authenticate } from '@google-cloud/local-auth'
+import { google } from 'googleapis'
+
+// (in a real app, store these auth credentials and reuse them)
+const auth = await authenticate({
+  scopes: ['https://www.googleapis.com/auth/documents.readonly'],
+  keyfilePath: process.env.GOOGLE_CREDENTIALS_PATH
+})
+const docs = google.docs({ version: 'v1', auth })
+const client = new GoogleDocsClient({ docs })
+
+const document = await client.getDocument({ documentId: 'TODO' })
+console.log(document)
+```
