@@ -1,13 +1,13 @@
 {
-  "name": "@agentic/google-drive",
+  "name": "@agentic/google-docs",
   "version": "7.6.3",
-  "description": "Agentic SDK for Google Drive.",
+  "description": "Agentic SDK for Google Docs.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/transitive-bullshit/agentic.git",
-    "directory": "packages/google-drive"
+    "directory": "packages/google-docs"
   },
   "type": "module",
   "source": "./src/index.ts",

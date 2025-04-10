@@ -12,15 +12,15 @@ description: Simplified Google Drive API.
 
 <CodeGroup>
 ```bash npm
-npm install @agentic/google-drive google-auth-library googleapis
+npm install @agentic/google-drive googleapis google-auth-library
 ```
 
 ```bash yarn
-yarn add @agentic/google-drive google-auth-library googleapis
+yarn add @agentic/google-drive googleapis google-auth-library
 ```
 
 ```bash pnpm
-pnpm add @agentic/google-drive google-auth-library googleapis
+pnpm add @agentic/google-drive googleapis google-auth-library
 ```
 
 </CodeGroup>
@@ -36,11 +36,11 @@ const auth = new GoogleAuth({ scopes: 'https://www.googleapis.com/auth/drive' })
 const drive = google.drive({ version: 'v3', auth })
 const client = new GoogleDriveClient({ drive })
 
-const result = await googleDrive.listFiles()
+const result = await client.listFiles()
 
 const file = result.files[0]!
-const metadata = await googleDrive.getFile({ fileId: file.id })
-const content = await googleDrive.exportFile({
+const metadata = await client.getFile({ fileId: file.id })
+const content = await client.exportFile({
   fileId: file.id,
   mimeType: 'application/pdf'
 })

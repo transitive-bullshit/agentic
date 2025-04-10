@@ -1,4 +1,5 @@
 import type * as google from 'googleapis'
+import type { SetNonNullable, Simplify } from 'type-fest'
 import {
   aiFunction,
   AIFunctionsProvider,
@@ -9,17 +10,22 @@ import {
 import { z } from 'zod'
 
 export namespace googleDrive {
-  export interface File {
-    id?: string
-    name: string
-    mimeType: string
-    webViewLink?: string
-    webContentLink?: string
-    size?: string
-    createdTime?: string
-    modifiedTime?: string
-    parents?: string[]
-  }
+  export type File = Simplify<
+    SetNonNullable<
+      Pick<
+        google.drive_v3.Schema$File,
+        | 'id'
+        | 'name'
+        | 'mimeType'
+        | 'webViewLink'
+        | 'webContentLink'
+        | 'size'
+        | 'createdTime'
+        | 'modifiedTime'
+        | 'parents'
+      >
+    >
+  >
 
   export const fileFields: readonly (keyof File)[] = [
     'id',
@@ -53,7 +59,7 @@ export namespace googleDrive {
 }
 
 /**
- * Simplified Drive API client.
+ * Simplified Google Drive API client.
  *
  * @see https://developers.google.com/workspace/drive/api
  *

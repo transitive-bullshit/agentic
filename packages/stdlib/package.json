@@ -48,6 +48,7 @@
     "@agentic/firecrawl": "workspace:*",
     "@agentic/github": "workspace:*",
     "@agentic/google-custom-search": "workspace:*",
+    "@agentic/google-docs": "workspace:*",
     "@agentic/google-drive": "workspace:*",
     "@agentic/gravatar": "workspace:*",
     "@agentic/hacker-news": "workspace:*",
