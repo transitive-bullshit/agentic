@@ -7,8 +7,8 @@ settings:
 catalogs:
   default:
     '@ai-sdk/openai':
-      specifier: ^1.3.11
-      version: 1.3.11
+      specifier: ^1.3.13
+      version: 1.3.13
     '@apidevtools/swagger-parser':
       specifier: ^10.1.1
       version: 10.1.1
@@ -31,8 +31,8 @@ catalogs:
       specifier: ^0.5.5
       version: 0.5.5
     '@mastra/core':
-      specifier: ^0.8.2
-      version: 0.8.2
+      specifier: ^0.8.3
+      version: 0.8.3
     '@modelcontextprotocol/sdk':
       specifier: ^1.9.0
       version: 1.9.0
@@ -49,8 +49,8 @@ catalogs:
       specifier: ^0.2.0-beta.3
       version: 0.2.0-beta.3
     ai:
-      specifier: ^4.3.6
-      version: 4.3.6
+      specifier: ^4.3.8
+      version: 4.3.8
     bumpp:
       specifier: ^10.1.0
       version: 10.1.0
@@ -118,8 +118,8 @@ catalogs:
       specifier: ^15.5.1
       version: 15.5.1
     llamaindex:
-      specifier: ^0.9.17
-      version: 0.9.17
+      specifier: ^0.10.0
+      version: 0.10.0
     mathjs:
       specifier: ^13.2.3
       version: 13.2.3
@@ -133,8 +133,8 @@ catalogs:
       specifier: ^1.2.1
       version: 1.2.1
     openai:
-      specifier: ^4.93.0
-      version: 4.93.0
+      specifier: ^4.94.0
+      version: 4.94.0
     openai-fetch:
       specifier: ^3.4.2
       version: 3.4.2
@@ -175,8 +175,8 @@ catalogs:
       specifier: ^1.2.1
       version: 1.2.1
     type-fest:
-      specifier: ^4.39.1
-      version: 4.39.1
+      specifier: ^4.40.0
+      version: 4.40.0
     typescript:
       specifier: ^5.8.3
       version: 5.8.3
@@ -271,16 +271,16 @@ importers:
         version: link:../../packages/stdlib
       '@ai-sdk/openai':
         specifier: 'catalog:'
-        version: 1.3.11(zod@3.24.2)
+        version: 1.3.13(zod@3.24.2)
       ai:
         specifier: 'catalog:'
-        version: 4.3.6(react@18.3.1)(zod@3.24.2)
+        version: 4.3.8(react@18.3.1)(zod@3.24.2)
       exit-hook:
         specifier: 'catalog:'
         version: 4.0.0
       openai:
         specifier: 'catalog:'
-        version: 4.93.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)
+        version: 4.94.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)
       zod:
         specifier: 'catalog:'
         version: 3.24.2
@@ -343,13 +343,13 @@ importers:
         version: link:../../packages/stdlib
       '@langchain/core':
         specifier: 'catalog:'
-        version: 0.3.44(openai@4.93.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))
+        version: 0.3.44(openai@4.94.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))
       '@langchain/openai':
         specifier: 'catalog:'
-        version: 0.5.5(@langchain/core@0.3.44(openai@4.93.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)))(encoding@0.1.13)(ws@8.18.0)
+        version: 0.5.5(@langchain/core@0.3.44(openai@4.94.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)))(encoding@0.1.13)(ws@8.18.0)
       langchain:
         specifier: 'catalog:'
-        version: 0.3.21(@langchain/core@0.3.44(openai@4.93.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)))(axios@1.7.9)(encoding@0.1.13)(handlebars@4.7.8)(openai@4.93.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))(ws@8.18.0)
+        version: 0.3.21(@langchain/core@0.3.44(openai@4.94.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)))(axios@1.7.9)(encoding@0.1.13)(handlebars@4.7.8)(openai@4.94.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))(ws@8.18.0)
       zod:
         specifier: 'catalog:'
         version: 3.24.2
@@ -367,7 +367,7 @@ importers:
         version: link:../../packages/stdlib
       llamaindex:
         specifier: 'catalog:'
-        version: 0.9.17(encoding@0.1.13)(gpt-tokenizer@2.8.1)(tree-sitter@0.22.4)(web-tree-sitter@0.24.7)(ws@8.18.0)(zod@3.24.2)
+        version: 0.10.0(encoding@0.1.13)(gpt-tokenizer@2.8.1)(tree-sitter@0.22.4)(web-tree-sitter@0.24.7)(ws@8.18.0)(zod@3.24.2)
       zod:
         specifier: 'catalog:'
         version: 3.24.2
@@ -382,10 +382,10 @@ importers:
         version: link:../../packages/weather
       '@ai-sdk/openai':
         specifier: 'catalog:'
-        version: 1.3.11(zod@3.24.2)
+        version: 1.3.13(zod@3.24.2)
       '@mastra/core':
         specifier: 'catalog:'
-        version: 0.8.2(encoding@0.1.13)(openapi-types@12.1.3)(react@18.3.1)
+        version: 0.8.3(encoding@0.1.13)(openapi-types@12.1.3)(react@18.3.1)
       zod:
         specifier: 'catalog:'
         version: 3.24.2
@@ -400,7 +400,7 @@ importers:
         version: link:../../packages/stdlib
       openai:
         specifier: 'catalog:'
-        version: 4.93.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)
+        version: 4.94.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)
       zod:
         specifier: 'catalog:'
         version: 3.24.2
@@ -446,7 +446,7 @@ importers:
     devDependencies:
       ai:
         specifier: 'catalog:'
-        version: 4.3.6(react@18.3.1)(zod@3.24.2)
+        version: 4.3.8(react@18.3.1)(zod@3.24.2)
 
   packages/airtable:
     dependencies:
@@ -563,7 +563,7 @@ importers:
         version: 6.2.0
       type-fest:
         specifier: 'catalog:'
-        version: 4.39.1
+        version: 4.40.0
       zod:
         specifier: 'catalog:'
         version: 3.24.2
@@ -711,7 +711,7 @@ importers:
         version: link:../core
       type-fest:
         specifier: 'catalog:'
-        version: 4.39.1
+        version: 4.40.0
       zod:
         specifier: 'catalog:'
         version: 3.24.2
@@ -727,7 +727,7 @@ importers:
         version: link:../core
       type-fest:
         specifier: 'catalog:'
-        version: 4.39.1
+        version: 4.40.0
       zod:
         specifier: 'catalog:'
         version: 3.24.2
@@ -789,10 +789,10 @@ importers:
         version: link:../core
       '@ai-sdk/openai':
         specifier: 'catalog:'
-        version: 1.3.11(zod@3.24.2)
+        version: 1.3.13(zod@3.24.2)
       ai:
         specifier: 'catalog:'
-        version: 4.3.6(react@18.3.1)(zod@3.24.2)
+        version: 4.3.8(react@18.3.1)(zod@3.24.2)
 
   packages/jina:
     dependencies:
@@ -817,7 +817,7 @@ importers:
     devDependencies:
       '@langchain/core':
         specifier: 'catalog:'
-        version: 0.3.44(openai@4.93.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))
+        version: 0.3.44(openai@4.94.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))
 
   packages/leadmagic:
     dependencies:
@@ -842,7 +842,7 @@ importers:
     devDependencies:
       llamaindex:
         specifier: 'catalog:'
-        version: 0.9.17(encoding@0.1.13)(gpt-tokenizer@2.8.1)(tree-sitter@0.22.4)(web-tree-sitter@0.24.7)(ws@8.18.0)(zod@3.24.2)
+        version: 0.10.0(encoding@0.1.13)(gpt-tokenizer@2.8.1)(tree-sitter@0.22.4)(web-tree-sitter@0.24.7)(ws@8.18.0)(zod@3.24.2)
 
   packages/mastra:
     dependencies:
@@ -852,7 +852,7 @@ importers:
     devDependencies:
       '@mastra/core':
         specifier: 'catalog:'
-        version: 0.8.2(encoding@0.1.13)(openapi-types@12.1.3)(react@18.3.1)
+        version: 0.8.3(encoding@0.1.13)(openapi-types@12.1.3)(react@18.3.1)
 
   packages/mcp:
     dependencies:
@@ -1318,7 +1318,7 @@ importers:
         version: 1.2.1(encoding@0.1.13)
       type-fest:
         specifier: 'catalog:'
-        version: 4.39.1
+        version: 4.40.0
       zod:
         specifier: 'catalog:'
         version: 3.24.2
@@ -1441,17 +1441,11 @@ importers:
 
 packages:
 
-  '@ai-sdk/openai@1.3.11':
-    resolution: {integrity: sha512-MZDh17JHKbSZG5MkbequDbjj3qcwBYnFQWY4DebAixOlpFw7aTDm5H38vKc6QPn7uQgS2MkggArVK6C0y6qGoA==}
+  '@ai-sdk/openai@1.3.13':
+    resolution: {integrity: sha512-t7l11mXI+VcmeAALX2iisURFOBxm2tCqBi6biciDaQZSdF1Az2Z4oOPowuRVmH+VZugXT0GRr4YSyo2mT/HAZA==}
     engines: {node: '>=18'}
     peerDependencies:
       zod: ^3.0.0
-
-  '@ai-sdk/provider-utils@2.2.6':
-    resolution: {integrity: sha512-sUlZ7Gnq84DCGWMQRIK8XVbkzIBnvPR1diV4v6JwPgpn5armnLI/j+rqn62MpLrU5ZCQZlDKl/Lw6ed3ulYqaA==}
-    engines: {node: '>=18'}
-    peerDependencies:
-      zod: ^3.23.8
 
   '@ai-sdk/provider-utils@2.2.7':
     resolution: {integrity: sha512-kM0xS3GWg3aMChh9zfeM+80vEZfXzR3JEUBdycZLtbRZ2TRT8xOj3WodGHPb06sUK5yD7pAXC/P7ctsi2fvUGQ==}
@@ -1459,23 +1453,9 @@ packages:
     peerDependencies:
       zod: ^3.23.8
 
-  '@ai-sdk/provider@1.1.2':
-    resolution: {integrity: sha512-ITdgNilJZwLKR7X5TnUr1BsQW6UTX5yFp0h66Nfx8XjBYkWD9W3yugr50GOz3CnE9m/U/Cd5OyEbTMI0rgi6ZQ==}
-    engines: {node: '>=18'}
-
   '@ai-sdk/provider@1.1.3':
     resolution: {integrity: sha512-qZMxYJ0qqX/RfnuIaab+zp8UAeJn/ygXXAffR5I4N0n1IrvA6qBsjc8hXLmBiMV2zoXlifkacF7sEFnYnjBcqg==}
     engines: {node: '>=18'}
-
-  '@ai-sdk/react@1.2.8':
-    resolution: {integrity: sha512-S2FzCSi4uTF0JuSN6zYMXyiAWVAzi/Hho8ISYgHpGZiICYLNCP2si4DuXQOsnWef3IXzQPLVoE11C63lILZIkw==}
-    engines: {node: '>=18'}
-    peerDependencies:
-      react: ^18 || ^19 || ^19.0.0-rc
-      zod: ^3.23.8
-    peerDependenciesMeta:
-      zod:
-        optional: true
 
   '@ai-sdk/react@1.2.9':
     resolution: {integrity: sha512-/VYm8xifyngaqFDLXACk/1czDRCefNCdALUyp+kIX6DUIYUWTM93ISoZ+qJ8+3E+FiJAKBQz61o8lIIl+vYtzg==}
@@ -1486,12 +1466,6 @@ packages:
     peerDependenciesMeta:
       zod:
         optional: true
-
-  '@ai-sdk/ui-utils@1.2.7':
-    resolution: {integrity: sha512-OVRxa4SDj0wVsMZ8tGr/whT89oqNtNoXBKmqWC2BRv5ZG6azL2LYZ5ZK35u3lb4l1IE7cWGsLlmq0py0ttsL7A==}
-    engines: {node: '>=18'}
-    peerDependencies:
-      zod: ^3.23.8
 
   '@ai-sdk/ui-utils@1.2.8':
     resolution: {integrity: sha512-nls/IJCY+ks3Uj6G/agNhXqQeLVqhNfoJbuNgCny+nX2veY5ADB91EcZUqVeQ/ionul2SeUswPY6Q/DxteY29Q==}
@@ -2078,8 +2052,8 @@ packages:
       tree-sitter: ^0.22.0
       web-tree-sitter: ^0.24.3
 
-  '@llamaindex/openai@0.3.0':
-    resolution: {integrity: sha512-SJJqyas7/SRz5YhegjrL6pQCt2Zx6MbOHbZgyPEwSXtVU1XzE8xfmaf5RmbIdOKT7+xhPKbt6pUc0en+Z4h+tw==}
+  '@llamaindex/openai@0.3.2':
+    resolution: {integrity: sha512-FZcvUZ21pKIEde2vfq3kOQSgaS+GKnsN7C1+0/N/I6jHFBo13PsIFl7vLOfX2Felm9dPaWdoG99nt45YZcP8xw==}
 
   '@llamaindex/workflow@1.0.3':
     resolution: {integrity: sha512-GzYzLfn12BTQiLVwFr9tGl1Sa7PPVErLLQAJMgvfjUK8cv764SpJGqln8iKTxnKF05HcRrmJeE7ZD9Lzpf7UrA==}
@@ -2088,8 +2062,8 @@ packages:
       '@llamaindex/env': 0.1.29
       zod: ^3.23.8
 
-  '@mastra/core@0.8.2':
-    resolution: {integrity: sha512-3sMrf0+gMqofk/1/0Li+LEO34d6GI3gseO4cCSoeHckpfGleg1smHgVwosvIWJgy3Ke46f486puliu8MaFg1KQ==}
+  '@mastra/core@0.8.3':
+    resolution: {integrity: sha512-nHPBvxkLeRUAyo+Dq7BLcPkFmKLNfuDqJsSOkTAK68TmquVWuJfzZp/8BksbQTP/e1bUmuUNS9XrVybIPXxhdw==}
     engines: {node: '>=20'}
 
   '@modelcontextprotocol/sdk@1.9.0':
@@ -3438,8 +3412,8 @@ packages:
     resolution: {integrity: sha512-kja8j7PjmncONqaTsB8fQ+wE2mSU2DJ9D4XKoJ5PFWIdRMa6SLSN1ff4mOr4jCbfRSsxR4keIiySJU0N9T5hIQ==}
     engines: {node: '>= 8.0.0'}
 
-  ai@4.3.5:
-    resolution: {integrity: sha512-hxJ+6YCdGOK1MVPGITmz1if+LXR/aW72w8TI8kiV+3R7lpK1hfpApR8EjqN2ag6cWa0R7OEI3gb/srWkQ3hT2Q==}
+  ai@4.3.6:
+    resolution: {integrity: sha512-cRL/9zFfPRRfVUOk+ll5FHy08FVc692voFzXWJ2YPD9KS+mkjDPp72QT9Etr0ZD/mdlJZHYq4ZHIts7nRpdD6A==}
     engines: {node: '>=18'}
     peerDependencies:
       react: ^18 || ^19 || ^19.0.0-rc
@@ -3448,8 +3422,8 @@ packages:
       react:
         optional: true
 
-  ai@4.3.6:
-    resolution: {integrity: sha512-cRL/9zFfPRRfVUOk+ll5FHy08FVc692voFzXWJ2YPD9KS+mkjDPp72QT9Etr0ZD/mdlJZHYq4ZHIts7nRpdD6A==}
+  ai@4.3.8:
+    resolution: {integrity: sha512-94iuXn+/I1X6v8I+9nycuHCv3RjtI9UqALw3UfANwaxOGEPtITfImfQg4DAR+3asnJViJ/IdCpWbTyzVXjHWPQ==}
     engines: {node: '>=18'}
     peerDependencies:
       react: ^18 || ^19 || ^19.0.0-rc
@@ -4032,10 +4006,6 @@ packages:
 
   domutils@3.2.2:
     resolution: {integrity: sha512-6kZKyUajlDuqlHKVX1w7gyslj9MPIXzIFiz/rGu35uC1wMi+kMhQwGhl4lt9unC9Vb9INnY9Z3/ZA3+FhASLaw==}
-
-  dotenv@16.4.7:
-    resolution: {integrity: sha512-47qPchRCykZC03FhkYAhrvwU4xDBFIj1QPqaarj6mdM/hgUzfPHcpkHJOn3mJAufFeeAxAzeGsr5X0M4k6fLZQ==}
-    engines: {node: '>=12'}
 
   dotenv@16.5.0:
     resolution: {integrity: sha512-m/C+AwOAr9/W1UOIZUo232ejMNnJAJtYQjUbHoNTBNTJSvqzzDh7vnrei3o3r3m9blf6ZoDkvcw0VmozNRFJxg==}
@@ -5199,6 +5169,7 @@ packages:
 
   libsql@0.4.7:
     resolution: {integrity: sha512-T9eIRCs6b0J1SHKYIvD8+KCJMcWZ900iZyxdnSCdqxN12Z1ijzT+jY5nrk72Jw4B0HGzms2NgpryArlJqvc3Lw==}
+    cpu: [x64, arm64, wasm32]
     os: [darwin, linux, win32]
 
   lilconfig@3.1.3:
@@ -5217,8 +5188,8 @@ packages:
     resolution: {integrity: sha512-iyAZCeyD+c1gPyE9qpFu8af0Y+MRtmKOncdGoA2S5EY8iFq99dmmvkNnHiWo+pj0s7yH7l3KPIgee77tKpXPWQ==}
     engines: {node: '>=18.0.0'}
 
-  llamaindex@0.9.17:
-    resolution: {integrity: sha512-pSx6Xt7NIvcaETVS99ol0HtwsGzGBPClvBJHMU3xFLo+X8N3WSrU6HGjw/JexKIc9ek9dcdpx5WtIK9XFzyN2Q==}
+  llamaindex@0.10.0:
+    resolution: {integrity: sha512-f7vzdznlTS+GYLOx4hlt4iJzG1v7GMUAGtOeOE1iCV9dQgu1SWSpsy/OGTb7P61wdnSpe8q4+5EbVj09yteZ4g==}
     engines: {node: '>=18.0.0'}
 
   load-tsconfig@0.2.5:
@@ -5577,8 +5548,8 @@ packages:
     peerDependencies:
       zod: ^3.23.8
 
-  openai@4.91.1:
-    resolution: {integrity: sha512-DbjrR0hIMQFbxz8+3qBsfPJnh3+I/skPgoSlT7f9eiZuhGBUissPQULNgx6gHNkLoZ3uS0uYS6eXPUdtg4nHzw==}
+  openai@4.93.0:
+    resolution: {integrity: sha512-2kONcISbThKLfm7T9paVzg+QCE1FOZtNMMUfXyXckUAoXRRS/mTP89JSDHPMp8uM5s0bz28RISbvQjArD6mgUQ==}
     hasBin: true
     peerDependencies:
       ws: ^8.18.0
@@ -5589,8 +5560,8 @@ packages:
       zod:
         optional: true
 
-  openai@4.93.0:
-    resolution: {integrity: sha512-2kONcISbThKLfm7T9paVzg+QCE1FOZtNMMUfXyXckUAoXRRS/mTP89JSDHPMp8uM5s0bz28RISbvQjArD6mgUQ==}
+  openai@4.94.0:
+    resolution: {integrity: sha512-WVmr9HWcwfouLJ7R3UHd2A93ClezTPuJljQxkCYQAL15Sjyt+FBNoqEz5MHSdH/ebQrVyvRhFyn/bvdqtSPyIA==}
     hasBin: true
     peerDependencies:
       ws: ^8.18.0
@@ -6557,6 +6528,10 @@ packages:
     resolution: {integrity: sha512-uW9qzd66uyHYxwyVBYiwS4Oi0qZyUqwjU+Oevr6ZogYiXt99EOYtwvzMSLw1c3lYo2HzJsep/NB23iEVEgjG/w==}
     engines: {node: '>=16'}
 
+  type-fest@4.40.0:
+    resolution: {integrity: sha512-ABHZ2/tS2JkvH1PEjxFDTUWC8dB5OsIGZP4IFLhR293GqT5Y5qB1WwL2kMPYhQW9DVgVD8Hd7I8gjwPIf5GFkw==}
+    engines: {node: '>=16'}
+
   type-flag@3.0.0:
     resolution: {integrity: sha512-3YaYwMseXCAhBB14RXW5cRQfJQlEknS6i4C8fCfeUdS3ihG9EdccdR9kt3vP73ZdeTGmPb4bZtkDn5XMIn1DLA==}
 
@@ -6926,17 +6901,10 @@ packages:
 
 snapshots:
 
-  '@ai-sdk/openai@1.3.11(zod@3.24.2)':
+  '@ai-sdk/openai@1.3.13(zod@3.24.2)':
     dependencies:
       '@ai-sdk/provider': 1.1.3
       '@ai-sdk/provider-utils': 2.2.7(zod@3.24.2)
-      zod: 3.24.2
-
-  '@ai-sdk/provider-utils@2.2.6(zod@3.24.2)':
-    dependencies:
-      '@ai-sdk/provider': 1.1.2
-      nanoid: 3.3.11
-      secure-json-parse: 2.7.0
       zod: 3.24.2
 
   '@ai-sdk/provider-utils@2.2.7(zod@3.24.2)':
@@ -6946,23 +6914,9 @@ snapshots:
       secure-json-parse: 2.7.0
       zod: 3.24.2
 
-  '@ai-sdk/provider@1.1.2':
-    dependencies:
-      json-schema: 0.4.0
-
   '@ai-sdk/provider@1.1.3':
     dependencies:
       json-schema: 0.4.0
-
-  '@ai-sdk/react@1.2.8(react@18.3.1)(zod@3.24.2)':
-    dependencies:
-      '@ai-sdk/provider-utils': 2.2.6(zod@3.24.2)
-      '@ai-sdk/ui-utils': 1.2.7(zod@3.24.2)
-      react: 18.3.1
-      swr: 2.3.3(react@18.3.1)
-      throttleit: 2.1.0
-    optionalDependencies:
-      zod: 3.24.2
 
   '@ai-sdk/react@1.2.9(react@18.3.1)(zod@3.24.2)':
     dependencies:
@@ -6973,13 +6927,6 @@ snapshots:
       throttleit: 2.1.0
     optionalDependencies:
       zod: 3.24.2
-
-  '@ai-sdk/ui-utils@1.2.7(zod@3.24.2)':
-    dependencies:
-      '@ai-sdk/provider': 1.1.2
-      '@ai-sdk/provider-utils': 2.2.6(zod@3.24.2)
-      zod: 3.24.2
-      zod-to-json-schema: 3.24.5(zod@3.24.2)
 
   '@ai-sdk/ui-utils@1.2.8(zod@3.24.2)':
     dependencies:
@@ -7776,14 +7723,14 @@ snapshots:
 
   '@jsdevtools/ono@7.1.3': {}
 
-  '@langchain/core@0.3.44(openai@4.93.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))':
+  '@langchain/core@0.3.44(openai@4.94.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))':
     dependencies:
       '@cfworker/json-schema': 4.1.1
       ansi-styles: 5.2.0
       camelcase: 6.3.0
       decamelize: 1.2.0
       js-tiktoken: 1.0.19
-      langsmith: 0.3.10(openai@4.93.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))
+      langsmith: 0.3.10(openai@4.94.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))
       mustache: 4.2.0
       p-queue: 6.6.2
       p-retry: 4.6.2
@@ -7793,20 +7740,20 @@ snapshots:
     transitivePeerDependencies:
       - openai
 
-  '@langchain/openai@0.5.5(@langchain/core@0.3.44(openai@4.93.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)))(encoding@0.1.13)(ws@8.18.0)':
+  '@langchain/openai@0.5.5(@langchain/core@0.3.44(openai@4.94.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)))(encoding@0.1.13)(ws@8.18.0)':
     dependencies:
-      '@langchain/core': 0.3.44(openai@4.93.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))
+      '@langchain/core': 0.3.44(openai@4.94.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))
       js-tiktoken: 1.0.19
-      openai: 4.91.1(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)
+      openai: 4.93.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)
       zod: 3.24.2
       zod-to-json-schema: 3.24.5(zod@3.24.2)
     transitivePeerDependencies:
       - encoding
       - ws
 
-  '@langchain/textsplitters@0.1.0(@langchain/core@0.3.44(openai@4.93.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)))':
+  '@langchain/textsplitters@0.1.0(@langchain/core@0.3.44(openai@4.94.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)))':
     dependencies:
-      '@langchain/core': 0.3.44(openai@4.93.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))
+      '@langchain/core': 0.3.44(openai@4.94.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))
       js-tiktoken: 1.0.19
 
   '@libsql/client@0.14.0':
@@ -7873,7 +7820,7 @@ snapshots:
   '@llamaindex/core@0.6.2(gpt-tokenizer@2.8.1)':
     dependencies:
       '@llamaindex/env': 0.1.29(gpt-tokenizer@2.8.1)
-      '@types/node': 22.14.0
+      '@types/node': 22.14.1
       magic-bytes.js: 1.10.0
       zod: 3.24.2
       zod-to-json-schema: 3.24.5(zod@3.24.2)
@@ -7897,17 +7844,17 @@ snapshots:
       tree-sitter: 0.22.4
       web-tree-sitter: 0.24.7
 
-  '@llamaindex/openai@0.3.0(encoding@0.1.13)(gpt-tokenizer@2.8.1)(ws@8.18.0)':
+  '@llamaindex/openai@0.3.2(encoding@0.1.13)(gpt-tokenizer@2.8.1)(ws@8.18.0)(zod@3.24.2)':
     dependencies:
       '@llamaindex/core': 0.6.2(gpt-tokenizer@2.8.1)
       '@llamaindex/env': 0.1.29(gpt-tokenizer@2.8.1)
-      openai: 4.91.1(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)
-      zod: 3.24.2
+      openai: 4.93.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)
     transitivePeerDependencies:
       - '@huggingface/transformers'
       - encoding
       - gpt-tokenizer
       - ws
+      - zod
 
   '@llamaindex/workflow@1.0.3(@llamaindex/core@0.6.2(gpt-tokenizer@2.8.1))(@llamaindex/env@0.1.29(gpt-tokenizer@2.8.1))(zod@3.24.2)':
     dependencies:
@@ -7915,7 +7862,7 @@ snapshots:
       '@llamaindex/env': 0.1.29(gpt-tokenizer@2.8.1)
       zod: 3.24.2
 
-  '@mastra/core@0.8.2(encoding@0.1.13)(openapi-types@12.1.3)(react@18.3.1)':
+  '@mastra/core@0.8.3(encoding@0.1.13)(openapi-types@12.1.3)(react@18.3.1)':
     dependencies:
       '@libsql/client': 0.14.0
       '@opentelemetry/api': 1.9.0
@@ -7931,10 +7878,10 @@ snapshots:
       '@opentelemetry/sdk-trace-base': 1.30.1(@opentelemetry/api@1.9.0)
       '@opentelemetry/sdk-trace-node': 1.30.1(@opentelemetry/api@1.9.0)
       '@opentelemetry/semantic-conventions': 1.30.0
-      ai: 4.3.5(react@18.3.1)(zod@3.24.2)
+      ai: 4.3.6(react@18.3.1)(zod@3.24.2)
       cohere-ai: 7.16.0(encoding@0.1.13)
       date-fns: 3.6.0
-      dotenv: 16.4.7
+      dotenv: 16.5.0
       fastembed: 1.14.4
       hono: 4.7.6
       hono-openapi: 0.4.6(hono@4.7.6)(openapi-types@12.1.3)(zod@3.24.2)
@@ -9456,11 +9403,11 @@ snapshots:
 
   '@types/bunyan@1.8.11':
     dependencies:
-      '@types/node': 22.14.0
+      '@types/node': 22.14.1
 
   '@types/connect@3.4.38':
     dependencies:
-      '@types/node': 22.14.0
+      '@types/node': 22.14.1
 
   '@types/debug@4.1.12':
     dependencies:
@@ -9489,14 +9436,14 @@ snapshots:
 
   '@types/memcached@2.2.10':
     dependencies:
-      '@types/node': 22.14.0
+      '@types/node': 22.14.1
 
   '@types/ms@2.1.0':
     optional: true
 
   '@types/mysql@2.15.26':
     dependencies:
-      '@types/node': 22.14.0
+      '@types/node': 22.14.1
 
   '@types/node-fetch@2.6.12':
     dependencies:
@@ -9527,7 +9474,7 @@ snapshots:
 
   '@types/pg@8.6.1':
     dependencies:
-      '@types/node': 22.14.0
+      '@types/node': 22.14.1
       pg-protocol: 1.8.0
       pg-types: 2.2.0
 
@@ -9537,7 +9484,7 @@ snapshots:
 
   '@types/tedious@4.0.14':
     dependencies:
-      '@types/node': 22.14.0
+      '@types/node': 22.14.1
 
   '@types/uuid@10.0.0': {}
 
@@ -9545,7 +9492,7 @@ snapshots:
 
   '@types/ws@8.18.0':
     dependencies:
-      '@types/node': 22.14.0
+      '@types/node': 22.14.1
 
   '@typescript-eslint/eslint-plugin@8.29.0(@typescript-eslint/parser@8.29.0(eslint@9.24.0(jiti@2.4.2))(typescript@5.8.3))(eslint@9.24.0(jiti@2.4.2))(typescript@5.8.3)':
     dependencies:
@@ -9774,19 +9721,19 @@ snapshots:
     dependencies:
       humanize-ms: 1.2.1
 
-  ai@4.3.5(react@18.3.1)(zod@3.24.2):
+  ai@4.3.6(react@18.3.1)(zod@3.24.2):
     dependencies:
-      '@ai-sdk/provider': 1.1.2
-      '@ai-sdk/provider-utils': 2.2.6(zod@3.24.2)
-      '@ai-sdk/react': 1.2.8(react@18.3.1)(zod@3.24.2)
-      '@ai-sdk/ui-utils': 1.2.7(zod@3.24.2)
+      '@ai-sdk/provider': 1.1.3
+      '@ai-sdk/provider-utils': 2.2.7(zod@3.24.2)
+      '@ai-sdk/react': 1.2.9(react@18.3.1)(zod@3.24.2)
+      '@ai-sdk/ui-utils': 1.2.8(zod@3.24.2)
       '@opentelemetry/api': 1.9.0
       jsondiffpatch: 0.6.0
       zod: 3.24.2
     optionalDependencies:
       react: 18.3.1
 
-  ai@4.3.6(react@18.3.1)(zod@3.24.2):
+  ai@4.3.8(react@18.3.1)(zod@3.24.2):
     dependencies:
       '@ai-sdk/provider': 1.1.3
       '@ai-sdk/provider-utils': 2.2.7(zod@3.24.2)
@@ -10379,8 +10326,6 @@ snapshots:
       dom-serializer: 2.0.0
       domelementtype: 2.3.0
       domhandler: 5.0.3
-
-  dotenv@16.4.7: {}
 
   dotenv@16.5.0: {}
 
@@ -11135,7 +11080,7 @@ snapshots:
   genkitx-openai@0.20.2(encoding@0.1.13)(genkit@1.6.0)(ws@8.18.0)(zod@3.24.2):
     dependencies:
       genkit: 1.6.0
-      openai: 4.91.1(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)
+      openai: 4.93.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)
     transitivePeerDependencies:
       - encoding
       - ws
@@ -11690,15 +11635,15 @@ snapshots:
 
   ky@1.8.1: {}
 
-  langchain@0.3.21(@langchain/core@0.3.44(openai@4.93.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)))(axios@1.7.9)(encoding@0.1.13)(handlebars@4.7.8)(openai@4.93.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))(ws@8.18.0):
+  langchain@0.3.21(@langchain/core@0.3.44(openai@4.94.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)))(axios@1.7.9)(encoding@0.1.13)(handlebars@4.7.8)(openai@4.94.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))(ws@8.18.0):
     dependencies:
-      '@langchain/core': 0.3.44(openai@4.93.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))
-      '@langchain/openai': 0.5.5(@langchain/core@0.3.44(openai@4.93.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)))(encoding@0.1.13)(ws@8.18.0)
-      '@langchain/textsplitters': 0.1.0(@langchain/core@0.3.44(openai@4.93.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)))
+      '@langchain/core': 0.3.44(openai@4.94.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))
+      '@langchain/openai': 0.5.5(@langchain/core@0.3.44(openai@4.94.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)))(encoding@0.1.13)(ws@8.18.0)
+      '@langchain/textsplitters': 0.1.0(@langchain/core@0.3.44(openai@4.94.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)))
       js-tiktoken: 1.0.19
       js-yaml: 4.1.0
       jsonpointer: 5.0.1
-      langsmith: 0.3.10(openai@4.93.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))
+      langsmith: 0.3.10(openai@4.94.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2))
       openapi-types: 12.1.3
       p-retry: 4.6.2
       uuid: 10.0.0
@@ -11713,7 +11658,7 @@ snapshots:
       - openai
       - ws
 
-  langsmith@0.3.10(openai@4.93.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)):
+  langsmith@0.3.10(openai@4.94.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)):
     dependencies:
       '@types/uuid': 10.0.0
       chalk: 4.1.2
@@ -11723,7 +11668,7 @@ snapshots:
       semver: 7.7.1
       uuid: 10.0.0
     optionalDependencies:
-      openai: 4.93.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)
+      openai: 4.94.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2)
 
   language-subtag-registry@0.3.23: {}
 
@@ -11779,16 +11724,16 @@ snapshots:
       rfdc: 1.4.1
       wrap-ansi: 9.0.0
 
-  llamaindex@0.9.17(encoding@0.1.13)(gpt-tokenizer@2.8.1)(tree-sitter@0.22.4)(web-tree-sitter@0.24.7)(ws@8.18.0)(zod@3.24.2):
+  llamaindex@0.10.0(encoding@0.1.13)(gpt-tokenizer@2.8.1)(tree-sitter@0.22.4)(web-tree-sitter@0.24.7)(ws@8.18.0)(zod@3.24.2):
     dependencies:
       '@llamaindex/cloud': 4.0.3(@llamaindex/core@0.6.2(gpt-tokenizer@2.8.1))(@llamaindex/env@0.1.29(gpt-tokenizer@2.8.1))
       '@llamaindex/core': 0.6.2(gpt-tokenizer@2.8.1)
       '@llamaindex/env': 0.1.29(gpt-tokenizer@2.8.1)
       '@llamaindex/node-parser': 2.0.2(@llamaindex/core@0.6.2(gpt-tokenizer@2.8.1))(@llamaindex/env@0.1.29(gpt-tokenizer@2.8.1))(tree-sitter@0.22.4)(web-tree-sitter@0.24.7)
-      '@llamaindex/openai': 0.3.0(encoding@0.1.13)(gpt-tokenizer@2.8.1)(ws@8.18.0)
+      '@llamaindex/openai': 0.3.2(encoding@0.1.13)(gpt-tokenizer@2.8.1)(ws@8.18.0)(zod@3.24.2)
       '@llamaindex/workflow': 1.0.3(@llamaindex/core@0.6.2(gpt-tokenizer@2.8.1))(@llamaindex/env@0.1.29(gpt-tokenizer@2.8.1))(zod@3.24.2)
       '@types/lodash': 4.17.15
-      '@types/node': 22.14.0
+      '@types/node': 22.14.1
       ajv: 8.17.1
       lodash: 4.17.21
       magic-bytes.js: 1.10.0
@@ -12121,7 +12066,7 @@ snapshots:
     dependencies:
       zod: 3.24.2
 
-  openai@4.91.1(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2):
+  openai@4.93.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2):
     dependencies:
       '@types/node': 18.19.83
       '@types/node-fetch': 2.6.12
@@ -12136,7 +12081,7 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
-  openai@4.93.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2):
+  openai@4.94.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.2):
     dependencies:
       '@types/node': 18.19.83
       '@types/node-fetch': 2.6.12
@@ -13184,6 +13129,8 @@ snapshots:
   type-fest@0.13.1: {}
 
   type-fest@4.39.1: {}
+
+  type-fest@4.40.0: {}
 
   type-flag@3.0.0: {}
 
