@@ -2,7 +2,7 @@
   "name": "agentic-platform",
   "private": true,
   "author": "Travis Fischer <travis@transitivebullsh.it>",
-  "license": "PROPRIETARY",
+  "license": "UNLICENSED",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/transitive-bullshit/agentic-platform.git"
@@ -33,6 +33,7 @@
     "del-cli": "catalog:",
     "dotenv": "catalog:",
     "eslint": "catalog:",
+    "eslint-plugin-drizzle": "^0.2.3",
     "lint-staged": "catalog:",
     "npm-run-all2": "catalog:",
     "only-allow": "catalog:",
