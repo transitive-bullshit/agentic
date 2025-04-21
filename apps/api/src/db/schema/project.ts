@@ -61,23 +61,23 @@ export const projects = pgTable(
     _webhooks: jsonb().$type<Webhook[]>().default([]),
 
     // Stripe products corresponding to the stripe plans across deployments
-    stripeBaseProduct: stripeId(),
-    stripeRequestProduct: stripeId(),
+    stripeBaseProductId: stripeId(),
+    stripeRequestProductId: stripeId(),
 
     // [metricSlug: string]: string
-    stripeMetricProducts: jsonb().$type<Record<string, string>>().default({}),
+    stripeMetricProductIds: jsonb().$type<Record<string, string>>().default({}),
 
     // Stripe coupons associated with this project, mapping from unique coupon
     // hash to stripe coupon id.
     // `[hash: string]: string`
-    _stripeCoupons: jsonb().$type<Record<string, string>>().default({}),
+    _stripeCouponIds: jsonb().$type<Record<string, string>>().default({}),
 
     // Stripe billing plans associated with this project (created lazily),
     // mapping from unique plan hash to stripe plan ids for base and request
     // respectively.
-    // `[hash: string]: { basePlan: string, requestPlan: string }`
-    _stripePlans: jsonb()
-      .$type<Record<string, { basePlan: string; requestPlan: string }>>()
+    // `[hash: string]: { basePlanId: string, requestPlanId: string }`
+    _stripePlanIds: jsonb()
+      .$type<Record<string, { basePlanId: string; requestPlanId: string }>>()
       .default({}),
 
     // Connected Stripe account (standard or express).
@@ -87,7 +87,7 @@ export const projects = pgTable(
     // the stripeID utility.
     // TODO: is it wise to share this between dev and prod?
     // TODO: is it okay for this to be public?
-    _stripeAccount: stripeId()
+    _stripeAccountId: stripeId()
   },
   (table) => [
     index('project_userId_idx').on(table.userId),
@@ -150,9 +150,9 @@ export const projectSelectSchema = createSelectSchema(projects).omit({
   _providerToken: true,
   _text: true,
   _webhooks: true,
-  _stripeCoupons: true,
-  _stripePlans: true,
-  _stripeAccount: true
+  _stripeCouponIds: true,
+  _stripePlanIds: true,
+  _stripeAccountId: true
 })
 
 // TODO: narrow update schema

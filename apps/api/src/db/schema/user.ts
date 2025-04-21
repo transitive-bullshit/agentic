@@ -18,6 +18,7 @@ import {
   createSelectSchema,
   createUpdateSchema,
   id,
+  stripeId,
   timestamps,
   userRoleEnum
 } from './utils'
@@ -49,7 +50,7 @@ export const users = pgTable(
     // third-party auth providers
     providers: jsonb().$type<AuthProviders>().default({}),
 
-    stripeCustomerId: text()
+    stripeCustomerId: stripeId().unique()
   },
   (table) => [
     uniqueIndex('user_email_idx').on(table.email),
@@ -69,7 +70,10 @@ export const usersRelations = relations(users, ({ many }) => ({
 
 export type User = typeof users.$inferSelect
 
-export const userInsertSchema = createInsertSchema(users).pick({
+export const userInsertSchema = createInsertSchema(users, {
+  // TODO: username validation
+  // username: (schema) => schema.min(3).max(20)
+}).pick({
   username: true,
   email: true,
   password: true,

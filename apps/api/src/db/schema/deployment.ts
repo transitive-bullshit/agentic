@@ -103,7 +103,6 @@ export const deploymentSelectSchema = createSelectSchema(deployments).omit({
   _url: true
 })
 
-// TODO: narrow
 export const deploymentUpdateSchema = createUpdateSchema(deployments).pick({
   enabled: true,
   published: true,
