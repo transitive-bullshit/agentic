@@ -1,9 +1,28 @@
 import { createId } from '@paralleldrive/cuid2'
-import { sql } from 'drizzle-orm'
-import { pgEnum, text, timestamp } from 'drizzle-orm/pg-core'
+import { sql, type Writable } from 'drizzle-orm'
+import {
+  pgEnum,
+  type PgVarcharBuilderInitial,
+  type PgVarcharConfig,
+  text,
+  timestamp,
+  varchar
+} from 'drizzle-orm/pg-core'
 import { createSchemaFactory } from 'drizzle-zod'
 
 export const id = text('id').primaryKey().$defaultFn(createId)
+
+export function cuid<U extends string, T extends Readonly<[U, ...U[]]>>(
+  config?: PgVarcharConfig<T | Writable<T>, never>
+): PgVarcharBuilderInitial<'', Writable<T>, 24> {
+  return varchar({ length: 24, ...config })
+}
+
+export function stripeId<U extends string, T extends Readonly<[U, ...U[]]>>(
+  config?: PgVarcharConfig<T | Writable<T>, never>
+): PgVarcharBuilderInitial<'', Writable<T>, 255> {
+  return varchar({ length: 255, ...config })
+}
 
 export const timestamps = {
   createdAt: timestamp('createdAt').notNull().defaultNow(),

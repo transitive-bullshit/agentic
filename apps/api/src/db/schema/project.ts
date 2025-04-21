@@ -18,6 +18,8 @@ import {
   createInsertSchema,
   createSelectSchema,
   createUpdateSchema,
+  cuid,
+  stripeId,
   timestamps
 } from './utils'
 
@@ -25,22 +27,22 @@ export const projects = pgTable(
   'projects',
   {
     // namespace/projectName
-    id: text('id').primaryKey(),
+    id: text().primaryKey(),
     ...timestamps,
 
     name: text().notNull(),
     alias: text(),
 
-    userId: text()
+    userId: cuid()
       .notNull()
       .references(() => users.id),
-    teamId: text().notNull(),
+    teamId: cuid().notNull(),
 
     // Most recently published Deployment if one exists
-    lastPublishedDeploymentId: text(),
+    lastPublishedDeploymentId: cuid(),
 
     // Most recent Deployment if one exists
-    lastDeploymentId: text(),
+    lastDeploymentId: cuid(),
 
     applicationFeePercent: integer().notNull().default(20),
 
@@ -59,8 +61,8 @@ export const projects = pgTable(
     _webhooks: jsonb().$type<Webhook[]>().default([]),
 
     // Stripe products corresponding to the stripe plans across deployments
-    stripeBaseProduct: text(),
-    stripeRequestProduct: text(),
+    stripeBaseProduct: stripeId(),
+    stripeRequestProduct: stripeId(),
 
     // [metricSlug: string]: string
     stripeMetricProducts: jsonb().$type<Record<string, string>>().default({}),
@@ -85,7 +87,7 @@ export const projects = pgTable(
     // the stripeID utility.
     // TODO: is it wise to share this between dev and prod?
     // TODO: is it okay for this to be public?
-    _stripeAccount: text()
+    _stripeAccount: stripeId()
   },
   (table) => [
     index('project_userId_idx').on(table.userId),

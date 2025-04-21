@@ -9,6 +9,7 @@ import {
   createInsertSchema,
   createSelectSchema,
   createUpdateSchema,
+  cuid,
   timestamps
 } from './utils'
 
@@ -16,7 +17,7 @@ export const deployments = pgTable(
   'deployments',
   {
     // namespace/projectName@hash
-    id: text('id').primaryKey(),
+    id: text().primaryKey(),
     ...timestamps,
 
     hash: text().notNull(),
@@ -28,11 +29,11 @@ export const deployments = pgTable(
     description: text().notNull().default(''),
     readme: text().notNull().default(''),
 
-    userId: text()
+    userId: cuid()
       .notNull()
       .references(() => users.id),
-    teamId: text().references(() => teams.id),
-    projectId: text()
+    teamId: cuid().references(() => teams.id),
+    projectId: cuid()
       .notNull()
       .references(() => projects.id, {
         onDelete: 'cascade'
@@ -52,8 +53,8 @@ export const deployments = pgTable(
     // Backend API URL
     _url: text().notNull(),
 
-    pricingPlans: jsonb().$type<PricingPlan[]>(),
-    coupons: jsonb().$type<Coupon[]>()
+    pricingPlans: jsonb().$type<PricingPlan[]>().notNull(),
+    coupons: jsonb().$type<Coupon[]>().notNull().default([])
   },
   (table) => [
     index('deployment_userId_idx').on(table.userId),

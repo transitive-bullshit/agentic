@@ -7,6 +7,7 @@ import {
   createInsertSchema,
   createSelectSchema,
   createUpdateSchema,
+  cuid,
   id,
   timestamps
 } from './utils'
@@ -20,7 +21,7 @@ export const teams = pgTable(
     slug: text().notNull().unique(),
     name: text().notNull(),
 
-    ownerId: text('owner').notNull()
+    ownerId: cuid().notNull()
   },
   (table) => [
     uniqueIndex('team_slug_idx').on(table.slug),

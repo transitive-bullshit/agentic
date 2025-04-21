@@ -1,33 +1,27 @@
 import { relations } from 'drizzle-orm'
-import {
-  index,
-  pgTable,
-  primaryKey,
-  text,
-  uniqueIndex
-} from 'drizzle-orm/pg-core'
+import { index, pgTable, primaryKey } from 'drizzle-orm/pg-core'
 
 import { teams } from './team'
 import { users } from './user'
-import { teamMemberRoleEnum, timestamps } from './utils'
+import { cuid, teamMemberRoleEnum, timestamps } from './utils'
 
 export const teamMembers = pgTable(
   'team_members',
   {
     ...timestamps,
 
-    userId: text()
+    userId: cuid()
       .notNull()
       .references(() => users.id, { onDelete: 'cascade' }),
-    teamId: text()
+    teamId: cuid()
       .notNull()
       .references(() => teams.id, { onDelete: 'cascade' }),
     role: teamMemberRoleEnum().default('user').notNull()
   },
   (table) => [
     primaryKey({ columns: [table.userId, table.teamId] }),
-    uniqueIndex('team_member_user_idx').on(table.userId),
-    uniqueIndex('team_member_team_idx').on(table.teamId),
+    index('team_member_user_idx').on(table.userId),
+    index('team_member_team_idx').on(table.teamId),
     index('team_member_createdAt_idx').on(table.createdAt),
     index('team_member_updatedAt_idx').on(table.updatedAt)
   ]
