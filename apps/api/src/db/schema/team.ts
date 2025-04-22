@@ -1,7 +1,7 @@
 import { relations } from 'drizzle-orm'
 import { index, pgTable, text, uniqueIndex } from 'drizzle-orm/pg-core'
 
-import { teamMembers } from './team-members'
+import { teamMembers } from './team-member'
 import { users } from './user'
 import {
   createInsertSchema,
@@ -37,8 +37,6 @@ export const teamsRelations = relations(teams, ({ one, many }) => ({
   }),
   members: many(teamMembers)
 }))
-
-export type Team = typeof teams.$inferSelect
 
 export const teamInsertSchema = createInsertSchema(teams, {
   slug: (schema) => schema.min(3).max(20) // TODO

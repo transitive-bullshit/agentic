@@ -123,8 +123,6 @@ export const projectsRelations = relations(projects, ({ one, many }) => ({
   })
 }))
 
-export type Project = typeof projects.$inferSelect
-
 export const projectInsertSchema = createInsertSchema(projects, {
   // TODO: validate project id
   // id: (schema) =>

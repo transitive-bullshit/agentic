@@ -1,7 +1,7 @@
 export * from './deployment'
 export * from './project'
 export * from './team'
-export * from './team-members'
+export * from './team-member'
 export type * from './types'
 export * from './user'
 export * from './utils'

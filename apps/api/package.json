@@ -34,9 +34,12 @@
     "test:unit": "vitest run"
   },
   "dependencies": {
+    "@hono/zod-validator": "^0.4.3",
     "@paralleldrive/cuid2": "^2.2.2",
+    "@workos-inc/node": "^7.47.0",
     "drizzle-orm": "^0.42.0",
     "drizzle-zod": "^0.7.1",
+    "hono": "^4.7.7",
     "jsonwebtoken": "^9.0.2",
     "postgres": "^3.4.5",
     "type-fest": "catalog:",

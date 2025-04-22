@@ -1,1 +1,8 @@
-export type Operation = 'create' | 'read' | 'update' | 'delete' | 'debug'
+// import type { Context } from 'hono'
+
+import type { TeamMemberWithTeam, User } from '@/db'
+
+export type AuthenticatedContext = {
+  user: User
+  teamMember?: TeamMemberWithTeam
+}

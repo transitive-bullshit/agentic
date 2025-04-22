@@ -68,8 +68,6 @@ export const usersRelations = relations(users, ({ many }) => ({
   // TODO: team memberships
 }))
 
-export type User = typeof users.$inferSelect
-
 export const userInsertSchema = createInsertSchema(users, {
   // TODO: username validation
   // username: (schema) => schema.min(3).max(20)

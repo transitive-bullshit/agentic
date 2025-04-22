@@ -90,8 +90,6 @@ export const deploymentsRelations = relations(deployments, ({ one }) => ({
 // TODO: virtual authProviders?
 // TODO: virtual openapi spec? (hide openapi.servers)
 
-export type Deployment = typeof deployments.$inferSelect
-
 // TODO: narrow
 export const deploymentInsertSchema = createInsertSchema(deployments, {
   // TODO: validate deployment id

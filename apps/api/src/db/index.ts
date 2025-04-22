@@ -10,3 +10,5 @@ const postgresClient =
   _postgresClient ?? (_postgresClient = postgres(env.DATABASE_URL))
 
 export const db = drizzle({ client: postgresClient, schema })
+
+export type * from './types'

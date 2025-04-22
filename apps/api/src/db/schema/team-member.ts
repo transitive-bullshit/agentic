@@ -37,5 +37,3 @@ export const teamMembersRelations = relations(teamMembers, ({ one }) => ({
     references: [teams.id]
   })
 }))
-
-export type TeamMember = typeof teamMembers.$inferSelect
