@@ -1,11 +1,11 @@
-import { drizzle, type NodePgClient } from 'drizzle-orm/node-postgres'
+import { drizzle } from 'drizzle-orm/postgres-js'
 import postgres from 'postgres'
 
 import { env } from '@/lib/env'
 
 import * as schema from './schema'
 
-let _postgresClient: NodePgClient | undefined
+let _postgresClient: ReturnType<typeof postgres> | undefined
 const postgresClient =
   _postgresClient ?? (_postgresClient = postgres(env.DATABASE_URL))
 
