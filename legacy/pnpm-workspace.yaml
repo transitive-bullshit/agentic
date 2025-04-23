@@ -10,12 +10,12 @@ catalog:
   "@apidevtools/swagger-parser": ^10.1.1
   "@dexaai/dexter": ^4.1.1
   "@e2b/code-interpreter": ^1.1.1
-  "@fisch0920/config": ^1.0.3
+  "@fisch0920/config": ^1.0.4
   "@googleapis/customsearch": ^3.2.0
-  "@langchain/core": ^0.3.45
+  "@langchain/core": ^0.3.46
   "@langchain/openai": ^0.5.6
   "@mastra/core": ^0.8.3
-  "@modelcontextprotocol/sdk": ^1.10.1
+  "@modelcontextprotocol/sdk": ^1.10.2
   "@nangohq/node": 0.42.22
   "@types/jsrsasign": ^10.5.15
   "@types/node": ^22.14.1
@@ -30,12 +30,12 @@ catalog:
   delay: ^6.0.0
   dotenv: ^16.5.0
   duck-duck-scrape: ^2.2.7
-  eslint: ^9.25.0
+  eslint: ^9.25.1
   execa: ^9.5.2
   exit-hook: ^4.0.0
-  fast-xml-parser: ^5.2.0
+  fast-xml-parser: ^5.2.1
   genkit: ^1.6.2
-  genkitx-openai: ^0.21.0
+  genkitx-openai: ^0.22.0
   google-auth-library: ^9.15.1
   googleapis: ^148.0.0
   json-schema-to-zod: ^2.6.1
@@ -66,7 +66,7 @@ catalog:
   twitter-api-sdk: ^1.2.1
   type-fest: ^4.40.0
   typescript: ^5.8.3
-  vitest: ^3.1.1
+  vitest: ^3.1.2
   wikibase-sdk: ^10.2.3
   xsai: ^0.2.0-beta.3
   zod: ^3.24.3
