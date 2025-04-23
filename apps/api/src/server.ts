@@ -1,16 +1,22 @@
+import { serve } from '@hono/node-server'
 import { Hono } from 'hono'
+import { compress } from 'hono/compress'
+import { cors } from 'hono/cors'
 
+import { apiV1 } from '@/api-v1'
+import { env } from '@/lib/env'
 import * as middleware from '@/lib/middleware'
-
-import type { AuthenticatedEnv } from './lib/types'
 
 export const app = new Hono()
 
-const pub = new Hono()
-const pri = new Hono<AuthenticatedEnv>()
+app.use(compress())
+app.use(middleware.responseTime)
+app.use(middleware.errorHandler)
+app.use(cors())
 
-app.route('/', pub)
-app.use('*', middleware.authenticate)
-app.use('*', middleware.team)
-app.use('*', middleware.me)
-app.route('/', pri)
+app.route('/v1', apiV1)
+
+serve({
+  fetch: app.fetch,
+  port: env.PORT
+})

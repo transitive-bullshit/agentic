@@ -1,3 +1,5 @@
 export * from './authenticate'
+export * from './error-handler'
 export * from './me'
+export * from './response-time'
 export * from './team'

@@ -7,7 +7,8 @@ export const envSchema = z.object({
     .enum(['development', 'test', 'production'])
     .default('development'),
   DATABASE_URL: z.string().url(),
-  JWT_SECRET: z.string()
+  JWT_SECRET: z.string(),
+  PORT: z.number().default(3000)
 })
 
 // eslint-disable-next-line no-process-env

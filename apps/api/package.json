@@ -34,6 +34,7 @@
     "test:unit": "vitest run"
   },
   "dependencies": {
+    "@hono/node-server": "^1.14.1",
     "@hono/zod-validator": "^0.4.3",
     "@paralleldrive/cuid2": "^2.2.2",
     "@workos-inc/node": "^7.47.0",

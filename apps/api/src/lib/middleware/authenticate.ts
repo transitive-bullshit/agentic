@@ -13,18 +13,19 @@ const jwtMiddleware = jwt({
 })
 
 export const authenticate = createMiddleware<AuthenticatedEnv>(
-  async (ctx, next) => {
+  async function authenticateMiddleware(ctx, next) {
     console.log(`[${ctx.req.method}] ${ctx.req.url}`)
 
     await jwtMiddleware(ctx, async () => {
       const payload = ctx.get('jwtPayload')
-      if (payload.type === 'user') {
-        const user = await db.query.users.findFirst({
-          where: eq(schema.users.id, payload.userId)
-        })
-        assert(user, 401, 'Unauthorized')
-        ctx.set('user', user)
-      }
+      assert(payload, 401, 'Unauthorized')
+      assert(payload.type === 'user', 401, 'Unauthorized')
+
+      const user = await db.query.users.findFirst({
+        where: eq(schema.users.id, payload.userId)
+      })
+      assert(user, 401, 'Unauthorized')
+      ctx.set('user', user)
 
       await next()
     })
