@@ -1,5 +1,11 @@
 import { relations } from 'drizzle-orm'
-import { index, pgTable, primaryKey } from 'drizzle-orm/pg-core'
+import {
+  boolean,
+  index,
+  pgTable,
+  primaryKey,
+  timestamp
+} from 'drizzle-orm/pg-core'
 
 import { teams } from './team'
 import { users } from './user'
@@ -16,7 +22,10 @@ export const teamMembers = pgTable(
     teamId: cuid()
       .notNull()
       .references(() => teams.id, { onDelete: 'cascade' }),
-    role: teamMemberRoleEnum().default('user').notNull()
+    role: teamMemberRoleEnum().default('user').notNull(),
+
+    confirmed: boolean().default(false),
+    confirmedAt: timestamp()
   },
   (table) => [
     primaryKey({ columns: [table.userId, table.teamId] }),

@@ -11,4 +11,5 @@ const postgresClient =
 
 export const db = drizzle({ client: postgresClient, schema })
 
+export * as schema from './schema'
 export type * from './types'

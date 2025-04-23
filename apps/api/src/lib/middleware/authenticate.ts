@@ -1,6 +1,32 @@
+import { eq } from 'drizzle-orm'
 import { createMiddleware } from 'hono/factory'
+import { jwt } from 'hono/jwt'
 
-export const authenticate = createMiddleware(async (c, next) => {
-  console.log(`[${c.req.method}] ${c.req.url}`)
-  await next()
+import type { AuthenticatedEnv } from '@/lib/types'
+import { db, schema } from '@/db'
+import { env } from '@/lib/env'
+
+import { assert } from '../utils'
+
+const jwtMiddleware = jwt({
+  secret: env.JWT_SECRET
 })
+
+export const authenticate = createMiddleware<AuthenticatedEnv>(
+  async (ctx, next) => {
+    console.log(`[${ctx.req.method}] ${ctx.req.url}`)
+
+    await jwtMiddleware(ctx, async () => {
+      const payload = ctx.get('jwtPayload')
+      if (payload.type === 'user') {
+        const user = await db.query.users.findFirst({
+          where: eq(schema.users.id, payload.userId)
+        })
+        assert(user, 401, 'Unauthorized')
+        ctx.set('user', user)
+      }
+
+      await next()
+    })
+  }
+)
