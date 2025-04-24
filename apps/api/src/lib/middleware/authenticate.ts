@@ -14,8 +14,6 @@ const jwtMiddleware = jwt({
 
 export const authenticate = createMiddleware<AuthenticatedEnv>(
   async function authenticateMiddleware(ctx, next) {
-    console.log(`[${ctx.req.method}] ${ctx.req.url}`)
-
     await jwtMiddleware(ctx, async () => {
       const payload = ctx.get('jwtPayload')
       assert(payload, 401, 'Unauthorized')
