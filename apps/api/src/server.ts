@@ -16,6 +16,7 @@ export const app = new Hono()
 
 app.use(sentry())
 app.use(compress())
+app.use(middleware.accessLogger)
 app.use(middleware.responseTime)
 app.use(middleware.errorHandler)
 app.use(cors())

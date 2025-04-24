@@ -57,11 +57,13 @@ export function pinoLevelToGcpSeverity(
 export function getGcpLoggingTimestamp() {
   const seconds = Date.now() / 1000
   const secondsRounded = Math.floor(seconds)
+
   // The following line is 2x as fast as seconds % 1000
   // Uses Math.round, not Math.floor due to JS floating point...
   // eg for a Date.now()=1713024754120
   // (seconds-secondsRounded)*1000 => 119.99988555908203
   const millis = Math.round((seconds - secondsRounded) * 1000)
+
   return `,"timestamp":{"seconds":${secondsRounded},"nanos":${millis}000000}`
 }
 
@@ -86,10 +88,12 @@ export function formatGcpLogObject(
     entry['logging.googleapis.com/trace'] = entry.trace_id
     delete entry.trace_id
   }
+
   if ((entry.span_id as string | undefined)?.length) {
     entry['logging.googleapis.com/spanId'] = entry.span_id
     delete entry.span_id
   }
+
   // Trace flags is a bit field even though there is one on defined bit,
   // so lets convert it to an int and test against a bitmask.
   // @see https://www.w3.org/TR/trace-context/#trace-flags

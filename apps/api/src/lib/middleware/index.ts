@@ -1,3 +1,4 @@
+export * from './access-logger'
 export * from './authenticate'
 export * from './error-handler'
 export * from './me'

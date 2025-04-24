@@ -4,8 +4,8 @@ import { createMiddleware } from 'hono/factory'
 import { HTTPException } from 'hono/http-exception'
 
 import type { AuthenticatedEnv } from '@/lib/types'
-
-import { HttpError } from '../errors'
+import { HttpError } from '@/lib/errors'
+import { logger } from '@/lib/logger'
 
 export const errorHandler = createMiddleware<AuthenticatedEnv>(
   async function errorHandlerMiddleware(ctx, next) {
@@ -28,7 +28,7 @@ export const errorHandler = createMiddleware<AuthenticatedEnv>(
       }
 
       if (status >= 500) {
-        console.error('http error', status, message)
+        logger.error({ err, status, message })
         Sentry.captureException(err)
       }
 
