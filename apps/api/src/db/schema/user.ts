@@ -1,3 +1,4 @@
+import { validators } from '@agentic/faas-utils'
 import { relations } from 'drizzle-orm'
 import {
   boolean,
@@ -64,13 +65,27 @@ export const users = pgTable(
 
 export const usersRelations = relations(users, ({ many }) => ({
   teamsOwned: many(teams)
-
-  // TODO: team memberships
 }))
 
 export const userInsertSchema = createInsertSchema(users, {
-  // TODO: username validation
-  // username: (schema) => schema.min(3).max(20)
+  username: (schema) =>
+    schema.nonempty().refine((username) => validators.username(username), {
+      message: 'Invalid username'
+    }),
+
+  email: (schema) =>
+    schema.refine(
+      (email) => {
+        if (email) {
+          return validators.email(email)
+        }
+
+        return true
+      },
+      {
+        message: 'Invalid email'
+      }
+    )
 }).pick({
   username: true,
   email: true,

@@ -1,0 +1,199 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`URL prefix and suffix success 1`] = `
+{
+  "deploymentHash": "01234567",
+  "deploymentId": "username/foo-bar@01234567",
+  "projectId": "username/foo-bar",
+  "servicePath": "/foo",
+}
+`;
+
+exports[`URL prefix and suffix success 2`] = `
+{
+  "deploymentHash": "01234567",
+  "deploymentId": "username/foo-bar@01234567",
+  "projectId": "username/foo-bar",
+  "servicePath": "/foo/bar/123",
+}
+`;
+
+exports[`URL prefix success 1`] = `
+{
+  "deploymentHash": "01234567",
+  "deploymentId": "username/foo-bar@01234567",
+  "projectId": "username/foo-bar",
+  "servicePath": "/foo",
+}
+`;
+
+exports[`URL prefix success 2`] = `
+{
+  "deploymentHash": "01234567",
+  "deploymentId": "username/foo-bar@01234567",
+  "projectId": "username/foo-bar",
+  "servicePath": "/foo",
+}
+`;
+
+exports[`URL prefix success 3`] = `
+{
+  "deploymentHash": "01234567",
+  "deploymentId": "username/foo-bar@01234567",
+  "projectId": "username/foo-bar",
+  "servicePath": "/foo/bar/456/123",
+}
+`;
+
+exports[`URL prefix success 4`] = `
+{
+  "deploymentHash": "01234567",
+  "deploymentId": "username/foo-bar@01234567",
+  "projectId": "username/foo-bar",
+  "servicePath": "/foo/bar/456/123",
+}
+`;
+
+exports[`URL prefix success 5`] = `
+{
+  "deploymentHash": "01234567",
+  "deploymentId": "username/foo-bar@01234567",
+  "projectId": "username/foo-bar",
+  "servicePath": "/foo/bar/456/123",
+}
+`;
+
+exports[`URL prefix success 6`] = `
+{
+  "projectId": "username/foo-bar",
+  "servicePath": "/foo/bar/456/123",
+  "version": "latest",
+}
+`;
+
+exports[`URL prefix success 7`] = `
+{
+  "projectId": "username/foo-bar",
+  "servicePath": "/foo/bar/456/123",
+  "version": "dev",
+}
+`;
+
+exports[`URL prefix success 8`] = `
+{
+  "projectId": "username/foo-bar",
+  "servicePath": "/foo/bar/456/123",
+  "version": "2.1.0",
+}
+`;
+
+exports[`URL suffix success 1`] = `
+{
+  "deploymentHash": "01234567",
+  "deploymentId": "username/foo-bar@01234567",
+  "projectId": "username/foo-bar",
+  "servicePath": "/foo",
+}
+`;
+
+exports[`URL suffix success 2`] = `
+{
+  "projectId": "username/foo-bar",
+  "servicePath": "/foo",
+  "version": "latest",
+}
+`;
+
+exports[`URL suffix success 3`] = `
+{
+  "projectId": "username/foo-bar",
+  "servicePath": "/foo",
+  "version": "dev",
+}
+`;
+
+exports[`URL suffix success 4`] = `
+{
+  "projectId": "username/foo-bar",
+  "servicePath": "/foo",
+  "version": "2.1.0",
+}
+`;
+
+exports[`namespace success 1`] = `
+{
+  "deploymentHash": "01234567",
+  "deploymentId": "username/foo-bar@01234567",
+  "projectId": "username/foo-bar",
+  "servicePath": "/foo",
+}
+`;
+
+exports[`namespace success 2`] = `
+{
+  "deploymentHash": "01234567",
+  "deploymentId": "username/foo-bar@01234567",
+  "projectId": "username/foo-bar",
+  "servicePath": "/foo",
+}
+`;
+
+exports[`namespace success 3`] = `
+{
+  "deploymentHash": "01234567",
+  "deploymentId": "username/foo-bar@01234567",
+  "projectId": "username/foo-bar",
+  "servicePath": "/foo",
+}
+`;
+
+exports[`namespace success 4`] = `
+{
+  "deploymentHash": "01234567",
+  "deploymentId": "username/foo-bar@01234567",
+  "projectId": "username/foo-bar",
+  "servicePath": "/foo",
+}
+`;
+
+exports[`namespace success 5`] = `
+{
+  "deploymentHash": "01234567",
+  "deploymentId": "username/foo-bar@01234567",
+  "projectId": "username/foo-bar",
+  "servicePath": "/foo/bar/123",
+}
+`;
+
+exports[`namespace success 6`] = `
+{
+  "deploymentHash": "01234567",
+  "deploymentId": "username/foo-bar@01234567",
+  "projectId": "username/foo-bar",
+  "servicePath": "/foo/bar/123",
+}
+`;
+
+exports[`namespace success 7`] = `
+{
+  "projectId": "username/foo-bar",
+  "servicePath": "/foo/bar/123",
+  "version": "latest",
+}
+`;
+
+exports[`namespace success 8`] = `
+{
+  "projectId": "username/foo-bar",
+  "servicePath": "/foo/bar/123",
+  "version": "dev",
+}
+`;
+
+exports[`namespace success 9`] = `
+{
+  "projectId": "username/foo-bar",
+  "servicePath": "/foo/bar/123",
+  "version": "1.2.3",
+}
+`;

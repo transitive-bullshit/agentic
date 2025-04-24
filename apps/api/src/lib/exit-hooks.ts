@@ -1,6 +1,7 @@
 import { promisify } from 'node:util'
 
 import type { ServerType } from '@hono/node-server'
+import * as Sentry from '@sentry/node'
 import { asyncExitHook } from 'exit-hook'
 import restoreCursor from 'restore-cursor'
 
@@ -32,6 +33,16 @@ export function initExitHooks({
       await db.$client.end({
         timeout: timeoutMs
       })
+    },
+    {
+      wait: timeoutMs
+    }
+  )
+
+  // Gracefully flush Sentry events
+  asyncExitHook(
+    async function flushSentryExitHook() {
+      await Sentry.flush(timeoutMs)
     },
     {
       wait: timeoutMs

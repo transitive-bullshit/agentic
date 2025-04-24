@@ -1,3 +1,4 @@
+import { validators } from '@agentic/faas-utils'
 import { relations } from 'drizzle-orm'
 import { boolean, index, jsonb, pgTable, text } from 'drizzle-orm/pg-core'
 
@@ -10,6 +11,8 @@ import {
   createSelectSchema,
   createUpdateSchema,
   cuid,
+  deploymentId,
+  projectId,
   timestamps
 } from './utils'
 
@@ -17,7 +20,7 @@ export const deployments = pgTable(
   'deployments',
   {
     // namespace/projectName@hash
-    id: text().primaryKey(),
+    id: deploymentId().primaryKey(),
     ...timestamps,
 
     hash: text().notNull(),
@@ -33,7 +36,7 @@ export const deployments = pgTable(
       .notNull()
       .references(() => users.id),
     teamId: cuid().references(() => teams.id),
-    projectId: cuid()
+    projectId: projectId()
       .notNull()
       .references(() => projects.id, {
         onDelete: 'cascade'
@@ -92,9 +95,17 @@ export const deploymentsRelations = relations(deployments, ({ one }) => ({
 
 // TODO: narrow
 export const deploymentInsertSchema = createInsertSchema(deployments, {
-  // TODO: validate deployment id
-  // id: (schema) =>
-  //   schema.refine((id) => validators.deployment(id), 'Invalid deployment id')
+  id: (schema) =>
+    schema.refine((id) => validators.project(id), {
+      message: 'Invalid deployment id'
+    }),
+
+  hash: (schema) =>
+    schema.refine((hash) => validators.deploymentHash(hash), {
+      message: 'Invalid deployment hash'
+    }),
+
+  _url: (schema) => schema.url()
 })
 
 export const deploymentSelectSchema = createSelectSchema(deployments).omit({

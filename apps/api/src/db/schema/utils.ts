@@ -21,6 +21,24 @@ export function stripeId<U extends string, T extends Readonly<[U, ...U[]]>>(
   return varchar({ length: 255, ...config })
 }
 
+/**
+ * `namespace/projectName`
+ */
+export function projectId<U extends string, T extends Readonly<[U, ...U[]]>>(
+  config?: PgVarcharConfig<T | Writable<T>, never>
+): PgVarcharBuilderInitial<'', Writable<T>, 130> {
+  return varchar({ length: 130, ...config })
+}
+
+/**
+ * `namespace/projectName@hash`
+ */
+export function deploymentId<U extends string, T extends Readonly<[U, ...U[]]>>(
+  config?: PgVarcharConfig<T | Writable<T>, never>
+): PgVarcharBuilderInitial<'', Writable<T>, 160> {
+  return varchar({ length: 160, ...config })
+}
+
 export const id = varchar('id', { length: 24 })
   .primaryKey()
   .$defaultFn(createId)

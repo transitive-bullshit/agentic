@@ -1,4 +1,5 @@
 import type { ContentfulStatusCode } from 'hono/utils/http-status'
+import * as Sentry from '@sentry/node'
 import { createMiddleware } from 'hono/factory'
 import { HTTPException } from 'hono/http-exception'
 
@@ -28,6 +29,7 @@ export const errorHandler = createMiddleware<AuthenticatedEnv>(
 
       if (status >= 500) {
         console.error('http error', status, message)
+        Sentry.captureException(err)
       }
 
       ctx.json({ error: message }, status)

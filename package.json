@@ -43,6 +43,7 @@
     "tsx": "catalog:",
     "turbo": "catalog:",
     "typescript": "catalog:",
+    "vite-tsconfig-paths": "^5.1.4",
     "vitest": "catalog:",
     "zod": "catalog:"
   },

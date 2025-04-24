@@ -1,11 +1,12 @@
 packages:
   - packages/*
   - apps/*
+
 catalog:
   '@ai-sdk/openai': ^1.3.6
-  '@fisch0920/config': ^1.0.4
+  '@fisch0920/config': ^1.1.0
   '@modelcontextprotocol/sdk': ^1.8.0
-  '@types/node': ^22.14.1
+  '@types/node': ^22.15.0
   ai: ^4.2.11
   cleye: ^1.3.4
   del-cli: ^6.0.0
@@ -17,13 +18,13 @@ catalog:
   npm-run-all2: ^7.0.2
   only-allow: ^1.2.1
   p-map: ^7.0.3
-  p-throttle: 6.2.0 # pinned for now
+  p-throttle: 6.2.0
   prettier: ^3.5.3
   restore-cursor: ^5.1.0
-  simple-git-hooks: ^2.12.1
+  simple-git-hooks: ^2.13.0
   tsup: ^8.4.0
   tsx: ^4.19.3
-  turbo: ^2.5.0
+  turbo: ^2.5.1
   type-fest: ^4.40.0
   typescript: ^5.8.3
   vitest: ^3.1.2

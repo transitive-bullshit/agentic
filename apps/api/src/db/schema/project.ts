@@ -1,3 +1,4 @@
+import { validators } from '@agentic/faas-utils'
 import { relations } from 'drizzle-orm'
 import {
   boolean,
@@ -19,6 +20,8 @@ import {
   createSelectSchema,
   createUpdateSchema,
   cuid,
+  deploymentId,
+  projectId,
   stripeId,
   timestamps
 } from './utils'
@@ -27,7 +30,7 @@ export const projects = pgTable(
   'projects',
   {
     // namespace/projectName
-    id: text().primaryKey(),
+    id: projectId().primaryKey(),
     ...timestamps,
 
     name: text().notNull(),
@@ -39,10 +42,10 @@ export const projects = pgTable(
     teamId: cuid().notNull(),
 
     // Most recently published Deployment if one exists
-    lastPublishedDeploymentId: cuid(),
+    lastPublishedDeploymentId: deploymentId(),
 
     // Most recent Deployment if one exists
-    lastDeploymentId: cuid(),
+    lastDeploymentId: deploymentId(),
 
     applicationFeePercent: integer().notNull().default(20),
 
@@ -124,12 +127,15 @@ export const projectsRelations = relations(projects, ({ one, many }) => ({
 }))
 
 export const projectInsertSchema = createInsertSchema(projects, {
-  // TODO: validate project id
-  // id: (schema) =>
-  //   schema.refine((id) => validators.project(id), 'Invalid project id')
-  // TODO: validate project name
-  // name: (schema) =>
-  //   schema.refine((name) => validators.projectName(name), 'Invalid project name')
+  id: (schema) =>
+    schema.refine((id) => validators.project(id), {
+      message: 'Invalid project id'
+    }),
+
+  name: (schema) =>
+    schema.refine((name) => validators.projectName(name), {
+      message: 'Invalid project name'
+    })
 })
   .pick({
     id: true,

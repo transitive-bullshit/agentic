@@ -10,7 +10,8 @@ export const envSchema = z.object({
     .default('development'),
   DATABASE_URL: z.string().url(),
   JWT_SECRET: z.string(),
-  PORT: z.number().default(3000)
+  PORT: z.number().default(3000),
+  SENTRY_DSN: z.string().url()
 })
 export type Env = z.infer<typeof envSchema>
 
@@ -19,4 +20,6 @@ export const env = parseZodSchema(envSchema, process.env, {
   error: 'Invalid environment variables'
 })
 
+export const isDev = env.NODE_ENV === 'development'
 export const isProd = env.NODE_ENV === 'production'
+export const isBrowser = (globalThis as any).window !== undefined

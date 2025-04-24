@@ -1,0 +1,13 @@
+import 'dotenv/config'
+
+import * as Sentry from '@sentry/node'
+
+// This MUST be run before anything else (imported first in the root file).
+// No other imports (like env) should be imported in this file.
+Sentry.init({
+  dsn: process.env.SENTRY_DSN, // eslint-disable-line no-process-env
+  environment: process.env.NODE_ENV || 'development', // eslint-disable-line no-process-env
+  release: process.env.COMMIT_SHA, // eslint-disable-line no-process-env
+  tracesSampleRate: 1.0,
+  integrations: [Sentry.extraErrorDataIntegration()]
+})
