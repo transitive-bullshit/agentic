@@ -46,7 +46,8 @@
     "postgres": "^3.4.5",
     "restore-cursor": "catalog:",
     "type-fest": "catalog:",
-    "zod": "catalog:"
+    "zod": "catalog:",
+    "zod-validation-error": "^3.4.0"
   },
   "devDependencies": {
     "@types/jsonwebtoken": "^9.0.9",

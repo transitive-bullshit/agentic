@@ -37,4 +37,6 @@ export function initExitHooks({
       wait: timeoutMs
     }
   )
+
+  // TODO: On Node.js, log unhandledRejection, uncaughtException, and warning events
 }

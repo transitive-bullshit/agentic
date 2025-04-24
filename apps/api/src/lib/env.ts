@@ -2,6 +2,8 @@ import 'dotenv/config'
 
 import { z } from 'zod'
 
+import { parseZodSchema } from './utils'
+
 export const envSchema = z.object({
   NODE_ENV: z
     .enum(['development', 'test', 'production'])
@@ -10,8 +12,11 @@ export const envSchema = z.object({
   JWT_SECRET: z.string(),
   PORT: z.number().default(3000)
 })
+export type Env = z.infer<typeof envSchema>
 
 // eslint-disable-next-line no-process-env
-export const env = envSchema.parse(process.env)
+export const env = parseZodSchema(envSchema, process.env, {
+  error: 'Invalid environment variables'
+})
 
 export const isProd = env.NODE_ENV === 'production'
