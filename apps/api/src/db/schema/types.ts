@@ -31,7 +31,7 @@ export const authProviderSchema = z
 export type AuthProvider = z.infer<typeof authProviderSchema>
 
 export const authProvidersSchema = z
-  .record(authProviderTypeSchema, authProviderSchema)
+  .record(authProviderTypeSchema, authProviderSchema.optional())
   .openapi('AuthProviders')
 export type AuthProviders = z.infer<typeof authProvidersSchema>
 

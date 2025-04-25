@@ -69,7 +69,7 @@ export const usersRelations = relations(users, ({ many }) => ({
 
 export const userInsertSchema = createInsertSchema(users, {
   username: (schema) =>
-    schema.nonempty().refine((username) => validators.username(username), {
+    schema.refine((username) => validators.username(username), {
       message: 'Invalid username'
     }),
 
@@ -98,7 +98,7 @@ export const userInsertSchema = createInsertSchema(users, {
 })
 
 export const userSelectSchema = createSelectSchema(users, {
-  providers: authProvidersSchema.optional()
+  providers: authProvidersSchema
 }).openapi('User')
 
 export const userUpdateSchema = createUpdateSchema(users)

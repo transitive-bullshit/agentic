@@ -14,7 +14,7 @@ import { getProviderToken } from '@/lib/auth/get-provider-token'
 
 import { deployments } from './deployment'
 import { teams } from './team'
-import { type Webhook, webhookSchema } from './types'
+import { type Webhook } from './types'
 import { users } from './user'
 import {
   createInsertSchema,
@@ -151,18 +151,18 @@ export const projectInsertSchema = createInsertSchema(projects, {
   })
 
 export const projectSelectSchema = createSelectSchema(projects, {
-  _webhooks: z.array(webhookSchema),
-  stripeMetricProductIds: z.record(z.string(), z.string()).optional(),
-  _stripeCouponIds: z.record(z.string(), z.string()).optional(),
-  _stripePlanIds: z
-    .record(
-      z.string(),
-      z.object({
-        basePlanId: z.string(),
-        requestPlanId: z.string()
-      })
-    )
-    .optional()
+  stripeMetricProductIds: z.record(z.string(), z.string()).optional()
+  // _webhooks: z.array(webhookSchema),
+  // _stripeCouponIds: z.record(z.string(), z.string()).optional(),
+  // _stripePlanIds: z
+  //   .record(
+  //     z.string(),
+  //     z.object({
+  //       basePlanId: z.string(),
+  //       requestPlanId: z.string()
+  //     })
+  //   )
+  //   .optional()
 })
   .omit({
     _secret: true,
