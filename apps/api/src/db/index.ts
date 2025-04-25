@@ -12,4 +12,30 @@ const postgresClient =
 export const db = drizzle({ client: postgresClient, schema })
 
 export * as schema from './schema'
+export * from './schemas'
 export type * from './types'
+export {
+  and,
+  arrayContained,
+  arrayContains,
+  between,
+  eq,
+  exists,
+  gt,
+  gte,
+  ilike,
+  inArray,
+  isNotNull,
+  isNull,
+  like,
+  lt,
+  lte,
+  ne,
+  not,
+  notBetween,
+  notExists,
+  notIlike,
+  notInArray,
+  notLike,
+  or
+} from 'drizzle-orm'

@@ -41,5 +41,5 @@ export const teamsRelations = relations(teams, ({ one, many }) => ({
 export const teamInsertSchema = createInsertSchema(teams, {
   slug: (schema) => schema.min(3).max(20) // TODO
 })
-export const teamSelectSchema = createSelectSchema(teams)
+export const teamSelectSchema = createSelectSchema(teams).openapi('Team')
 export const teamUpdateSchema = createUpdateSchema(teams).omit({ slug: true })

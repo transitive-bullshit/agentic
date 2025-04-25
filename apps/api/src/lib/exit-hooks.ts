@@ -20,7 +20,11 @@ export function initExitHooks({
   // Gracefully shutdown the HTTP server
   asyncExitHook(
     async function shutdownServerExitHook() {
-      await promisify(server.close)()
+      try {
+        await promisify(server.close)()
+      } catch {
+        // TODO
+      }
     },
     {
       wait: timeoutMs
@@ -30,9 +34,13 @@ export function initExitHooks({
   // Gracefully shutdown the postgres database connection
   asyncExitHook(
     async function shutdownDbExitHook() {
-      await db.$client.end({
-        timeout: timeoutMs
-      })
+      try {
+        await db.$client.end({
+          timeout: timeoutMs
+        })
+      } catch {
+        // TODO
+      }
     },
     {
       wait: timeoutMs

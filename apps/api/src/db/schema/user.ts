@@ -1,4 +1,4 @@
-import { validators } from '@agentic/faas-utils'
+import { validators } from '@agentic/validators'
 import { relations } from 'drizzle-orm'
 import {
   boolean,
@@ -12,8 +12,8 @@ import {
 
 import { sha256 } from '@/lib/utils'
 
-import type { AuthProviders } from './types'
 import { teams } from './team'
+import { type AuthProviders, authProvidersSchema } from './types'
 import {
   createInsertSchema,
   createSelectSchema,
@@ -42,7 +42,7 @@ export const users = pgTable(
     image: text(),
 
     emailConfirmed: boolean().default(false),
-    emailConfirmedAt: timestamp(),
+    emailConfirmedAt: timestamp({ mode: 'string' }),
     emailConfirmToken: text().unique().default(sha256()),
     passwordResetToken: text().unique(),
 
@@ -85,7 +85,9 @@ export const userInsertSchema = createInsertSchema(users, {
       {
         message: 'Invalid email'
       }
-    )
+    ),
+
+  providers: authProvidersSchema.optional()
 }).pick({
   username: true,
   email: true,
@@ -95,5 +97,8 @@ export const userInsertSchema = createInsertSchema(users, {
   image: true
 })
 
-export const userSelectSchema = createSelectSchema(users)
+export const userSelectSchema = createSelectSchema(users, {
+  providers: authProvidersSchema.optional()
+}).openapi('User')
+
 export const userUpdateSchema = createUpdateSchema(users)

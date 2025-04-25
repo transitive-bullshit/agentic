@@ -1,3 +1,4 @@
+import { isCuid } from '@paralleldrive/cuid2'
 import emailValidator from 'email-validator'
 import isRelativeUrl from 'is-relative-url'
 
@@ -49,4 +50,8 @@ export function serviceName(value: string): boolean {
 
 export function servicePath(value: string): boolean {
   return !!value && servicePathRe.test(value) && isRelativeUrl(value)
+}
+
+export function cuid(value: string): boolean {
+  return !!value && isCuid(value)
 }

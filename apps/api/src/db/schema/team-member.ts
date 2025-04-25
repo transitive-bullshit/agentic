@@ -9,7 +9,12 @@ import {
 
 import { teams } from './team'
 import { users } from './user'
-import { cuid, teamMemberRoleEnum, timestamps } from './utils'
+import {
+  createSelectSchema,
+  cuid,
+  teamMemberRoleEnum,
+  timestamps
+} from './utils'
 
 export const teamMembers = pgTable(
   'team_members',
@@ -25,7 +30,7 @@ export const teamMembers = pgTable(
     role: teamMemberRoleEnum().default('user').notNull(),
 
     confirmed: boolean().default(false),
-    confirmedAt: timestamp()
+    confirmedAt: timestamp({ mode: 'string' })
   },
   (table) => [
     primaryKey({ columns: [table.userId, table.teamId] }),
@@ -46,3 +51,6 @@ export const teamMembersRelations = relations(teamMembers, ({ one }) => ({
     references: [teams.id]
   })
 }))
+
+export const teamMemberSelectSchema =
+  createSelectSchema(teamMembers).openapi('TeamMember')

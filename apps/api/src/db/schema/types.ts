@@ -1,146 +1,161 @@
-export type AuthProviderType =
-  | 'github'
-  | 'google'
-  | 'spotify'
-  | 'twitter'
-  | 'linkedin'
-  | 'stripe'
+import { z } from '@hono/zod-openapi'
 
-export type AuthProvider = {
-  provider: AuthProviderType
+export const authProviderTypeSchema = z
+  .enum(['github', 'google', 'spotify', 'twitter', 'linkedin', 'stripe'])
+  .openapi('AuthProviderType')
+export type AuthProviderType = z.infer<typeof authProviderTypeSchema>
 
-  /** Provider-specific user id */
-  id: string
+export const authProviderSchema = z
+  .object({
+    provider: authProviderTypeSchema,
 
-  /** Provider-specific username */
-  username?: string
+    /** Provider-specific user id */
+    id: z.string(),
 
-  /** Standard oauth2 access token */
-  accessToken?: string
+    /** Provider-specific username */
+    username: z.string().optional(),
 
-  /** Standard oauth2 refresh token */
-  refreshToken?: string
+    /** Standard oauth2 access token */
+    accessToken: z.string().optional(),
 
-  /** Stripe public key */
-  publicKey?: string
+    /** Standard oauth2 refresh token */
+    refreshToken: z.string().optional(),
 
-  /** OAuth scope(s) */
-  scope?: string
-}
+    /** Stripe public key */
+    publicKey: z.string().optional(),
 
-export type AuthProviders = {
-  github?: AuthProvider
-  google?: AuthProvider
-  spotify?: AuthProvider
-  twitter?: AuthProvider
-  linkedin?: AuthProvider
-  stripeTest?: AuthProvider
-  stripeLive?: AuthProvider
-}
+    /** OAuth scope(s) */
+    scope: z.string().optional()
+  })
+  .openapi('AuthProvider')
+export type AuthProvider = z.infer<typeof authProviderSchema>
 
-export type Webhook = {
-  url: string
-  events: string[]
-}
+export const authProvidersSchema = z
+  .record(authProviderTypeSchema, authProviderSchema)
+  .openapi('AuthProviders')
+export type AuthProviders = z.infer<typeof authProvidersSchema>
 
-export type RateLimit = {
-  enabled: boolean
+export const webhookSchema = z
+  .object({
+    url: z.string(),
+    events: z.array(z.string())
+  })
+  .openapi('Webhook')
+export type Webhook = z.infer<typeof webhookSchema>
 
-  // informal description that overrides any other properties
-  desc?: string
+export const rateLimitSchema = z
+  .object({
+    enabled: z.boolean(),
 
-  interval: number // seconds
-  maxPerInterval: number // unitless
-}
+    // informal description that overrides any other properties
+    desc: z.string().optional(),
 
-export type PricingPlanTier = {
-  unitAmount?: number
-  flatAmount?: number
-  upTo: string
-} & (
-  | {
-      unitAmount: number
+    interval: z.number(), // seconds
+    maxPerInterval: z.number() // unitless
+  })
+  .openapi('RateLimit')
+export type RateLimit = z.infer<typeof rateLimitSchema>
+
+export const pricingPlanTierSchema = z
+  .object({
+    unitAmount: z.number().optional(),
+    flatAmount: z.number().optional(),
+    upTo: z.string()
+  })
+  .refine(
+    (data) =>
+      (data.unitAmount !== undefined) !== (data.flatAmount !== undefined),
+    {
+      message: 'Either unitAmount or flatAmount must be provided, but not both'
     }
-  | {
-      flatAmount: number
-    }
-)
+  )
+  .openapi('PricingPlanTier')
+export type PricingPlanTier = z.infer<typeof pricingPlanTierSchema>
 
-export type PricingPlanMetric = {
-  // slug acts as a primary key for metrics
-  slug: string
+export const pricingPlanMetricSchema = z
+  .object({
+    // slug acts as a primary key for metrics
+    slug: z.string(),
 
-  amount: number
+    amount: z.number(),
 
-  label: string
-  unitLabel: string
+    label: z.string(),
+    unitLabel: z.string(),
 
-  // TODO: should this default be 'licensed' or 'metered'?
-  // methinks licensed for "sites", "jobs", etc...
-  // TODO: this should probably be explicit since its easy to confuse
-  usageType: 'licensed' | 'metered'
+    // TODO: should this default be 'licensed' or 'metered'?
+    // methinks licensed for "sites", "jobs", etc...
+    // TODO: this should probably be explicit since its easy to confuse
+    usageType: z.enum(['licensed', 'metered']),
 
-  billingScheme: 'per_unit' | 'tiered'
+    billingScheme: z.enum(['per_unit', 'tiered']),
 
-  tiersMode: 'graduated' | 'volume'
-  tiers: PricingPlanTier[]
+    tiersMode: z.enum(['graduated', 'volume']),
+    tiers: z.array(pricingPlanTierSchema),
 
-  // TODO (low priority): add aggregateUsage
+    // TODO (low priority): add aggregateUsage
 
-  rateLimit?: RateLimit
-}
+    rateLimit: rateLimitSchema.optional()
+  })
+  .openapi('PricingPlanMetric')
+export type PricingPlanMetric = z.infer<typeof pricingPlanMetricSchema>
 
-export type PricingPlan = {
-  name: string
-  slug: string
+export const pricingPlanSchema = z
+  .object({
+    name: z.string(),
+    slug: z.string(),
 
-  desc?: string
-  features: string[]
+    desc: z.string().optional(),
+    features: z.array(z.string()),
 
-  auth: boolean
-  amount: number
-  trialPeriodDays?: number
+    auth: z.boolean(),
+    amount: z.number(),
+    trialPeriodDays: z.number().optional(),
 
-  requests: PricingPlanMetric
-  metrics: PricingPlanMetric[]
+    requests: pricingPlanMetricSchema,
+    metrics: z.array(pricingPlanMetricSchema),
 
-  rateLimit?: RateLimit
+    rateLimit: rateLimitSchema.optional(),
 
-  // used to uniquely identify this plan across deployments
-  baseId: string
+    // used to uniquely identify this plan across deployments
+    baseId: z.string(),
 
-  // used to uniquely identify this plan across deployments
-  requestsId: string
+    // used to uniquely identify this plan across deployments
+    requestsId: z.string(),
 
-  // [metricSlug: string]: string
-  metricIds: Record<string, string>
+    // [metricSlug: string]: string
+    metricIds: z.record(z.string()),
 
-  // NOTE: the stripe billing plan id(s) for this PricingPlan are referenced
-  // in the Project._stripePlans mapping via the plan's hash.
-  // NOTE: all metered billing usage is stored in stripe
-  stripeBasePlan: string
-  stripeRequestPlan: string
+    // NOTE: the stripe billing plan id(s) for this PricingPlan are referenced
+    // in the Project._stripePlans mapping via the plan's hash.
+    // NOTE: all metered billing usage is stored in stripe
+    stripeBasePlan: z.string(),
+    stripeRequestPlan: z.string(),
 
-  // [metricSlug: string]: string
-  stripeMetricPlans: Record<string, string>
-}
+    // [metricSlug: string]: string
+    stripeMetricPlans: z.record(z.string())
+  })
+  .openapi('PricingPlan')
+export type PricingPlan = z.infer<typeof pricingPlanSchema>
 
-export type Coupon = {
-  // used to uniquely identify this coupon across deployments
-  id: string
+export const couponSchema = z
+  .object({
+    // used to uniquely identify this coupon across deployments
+    id: z.string(),
 
-  valid: boolean
-  stripeCoupon: string
+    valid: z.boolean(),
+    stripeCoupon: z.string(),
 
-  name?: string
+    name: z.string().optional(),
 
-  currency?: string
-  amount_off?: number
-  percent_off?: number
+    currency: z.string().optional(),
+    amount_off: z.number().optional(),
+    percent_off: z.number().optional(),
 
-  duration: string
-  duration_in_months?: number
+    duration: z.string(),
+    duration_in_months: z.number().optional(),
 
-  redeem_by?: Date
-  max_redemptions?: number
-}
+    redeem_by: z.date().optional(),
+    max_redemptions: z.number().optional()
+  })
+  .openapi('Coupon')
+export type Coupon = z.infer<typeof couponSchema>

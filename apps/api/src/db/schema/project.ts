@@ -1,4 +1,5 @@
-import { validators } from '@agentic/faas-utils'
+import { validators } from '@agentic/validators'
+import { z } from '@hono/zod-openapi'
 import { relations } from 'drizzle-orm'
 import {
   boolean,
@@ -11,9 +12,9 @@ import {
 
 import { getProviderToken } from '@/lib/auth/get-provider-token'
 
-import type { Webhook } from './types'
 import { deployments } from './deployment'
 import { teams } from './team'
+import { type Webhook, webhookSchema } from './types'
 import { users } from './user'
 import {
   createInsertSchema,
@@ -149,15 +150,30 @@ export const projectInsertSchema = createInsertSchema(projects, {
     }
   })
 
-export const projectSelectSchema = createSelectSchema(projects).omit({
-  _secret: true,
-  _providerToken: true,
-  _text: true,
-  _webhooks: true,
-  _stripeCouponIds: true,
-  _stripePlanIds: true,
-  _stripeAccountId: true
+export const projectSelectSchema = createSelectSchema(projects, {
+  _webhooks: z.array(webhookSchema),
+  stripeMetricProductIds: z.record(z.string(), z.string()).optional(),
+  _stripeCouponIds: z.record(z.string(), z.string()).optional(),
+  _stripePlanIds: z
+    .record(
+      z.string(),
+      z.object({
+        basePlanId: z.string(),
+        requestPlanId: z.string()
+      })
+    )
+    .optional()
 })
+  .omit({
+    _secret: true,
+    _providerToken: true,
+    _text: true,
+    _webhooks: true,
+    _stripeCouponIds: true,
+    _stripePlanIds: true,
+    _stripeAccountId: true
+  })
+  .openapi('Project')
 
 // TODO: narrow update schema
 export const projectUpdateSchema = createUpdateSchema(projects)

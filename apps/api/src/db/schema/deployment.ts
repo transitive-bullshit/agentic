@@ -1,10 +1,16 @@
-import { validators } from '@agentic/faas-utils'
+import { validators } from '@agentic/validators'
+import { z } from '@hono/zod-openapi'
 import { relations } from 'drizzle-orm'
 import { boolean, index, jsonb, pgTable, text } from 'drizzle-orm/pg-core'
 
-import type { Coupon, PricingPlan } from './types'
 import { projects } from './project'
 import { teams } from './team'
+import {
+  type Coupon,
+  couponSchema,
+  type PricingPlan,
+  pricingPlanSchema
+} from './types'
 import { users } from './user'
 import {
   createInsertSchema,
@@ -105,12 +111,24 @@ export const deploymentInsertSchema = createInsertSchema(deployments, {
       message: 'Invalid deployment hash'
     }),
 
-  _url: (schema) => schema.url()
+  _url: (schema) => schema.url(),
+
+  build: z.object({}),
+  env: z.object({}),
+  pricingPlans: z.array(pricingPlanSchema),
+  coupons: z.array(couponSchema).optional()
 })
 
-export const deploymentSelectSchema = createSelectSchema(deployments).omit({
-  _url: true
+export const deploymentSelectSchema = createSelectSchema(deployments, {
+  build: z.object({}),
+  env: z.object({}),
+  pricingPlans: z.array(pricingPlanSchema),
+  coupons: z.array(couponSchema)
 })
+  .omit({
+    _url: true
+  })
+  .openapi('Deployment')
 
 export const deploymentUpdateSchema = createUpdateSchema(deployments).pick({
   enabled: true,

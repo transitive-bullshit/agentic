@@ -1,14 +1,14 @@
 {
-  "name": "@agentic/faas-utils",
+  "name": "@agentic/validators",
   "private": true,
   "version": "0.1.0",
-  "description": "Agentic platform FaaS utils.",
+  "description": "Validation utils for the Agentic platform.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "UNLICENSED",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/transitive-bullshit/agentic-platform.git",
-    "directory": "packages/faas-utils"
+    "directory": "packages/validators"
   },
   "type": "module",
   "source": "./src/index.ts",
@@ -24,6 +24,7 @@
     "test:unit": "vitest run"
   },
   "dependencies": {
+    "@paralleldrive/cuid2": "^2.2.2",
     "email-validator": "^2.0.4",
     "is-relative-url": "^4.0.0"
   }
