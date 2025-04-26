@@ -21,9 +21,10 @@ import {
   createSelectSchema,
   createUpdateSchema,
   cuid,
-  deploymentId,
+  optionalDeploymentId,
+  optionalStripeId,
+  optionalText,
   projectId,
-  stripeId,
   timestamps
 } from './utils'
 
@@ -35,7 +36,7 @@ export const projects = pgTable(
     ...timestamps,
 
     name: text().notNull(),
-    alias: text(),
+    alias: optionalText(),
 
     userId: cuid()
       .notNull()
@@ -43,38 +44,44 @@ export const projects = pgTable(
     teamId: cuid().notNull(),
 
     // Most recently published Deployment if one exists
-    lastPublishedDeploymentId: deploymentId(),
+    lastPublishedDeploymentId: optionalDeploymentId(),
 
     // Most recent Deployment if one exists
-    lastDeploymentId: deploymentId(),
+    lastDeploymentId: optionalDeploymentId(),
 
-    applicationFeePercent: integer().notNull().default(20),
+    applicationFeePercent: integer().default(20).notNull(),
 
     // TODO: This is going to need to vary from dev to prod
-    isStripeConnectEnabled: boolean().notNull().default(false),
+    isStripeConnectEnabled: boolean().default(false).notNull(),
 
     // All deployments share the same underlying proxy secret
-    _secret: text(),
+    _secret: optionalText(),
 
     // Auth token used to access the saasify API on behalf of this project
     _providerToken: text().notNull(),
 
     // TODO: Full-text search
-    _text: text().default(''),
+    _text: text().default('').notNull(),
 
-    _webhooks: jsonb().$type<Webhook[]>().default([]),
+    _webhooks: jsonb().$type<Webhook[]>().default([]).notNull(),
 
     // Stripe products corresponding to the stripe plans across deployments
-    stripeBaseProductId: stripeId(),
-    stripeRequestProductId: stripeId(),
+    stripeBaseProductId: optionalStripeId(),
+    stripeRequestProductId: optionalStripeId(),
 
     // [metricSlug: string]: string
-    stripeMetricProductIds: jsonb().$type<Record<string, string>>().default({}),
+    stripeMetricProductIds: jsonb()
+      .$type<Record<string, string>>()
+      .default({})
+      .notNull(),
 
     // Stripe coupons associated with this project, mapping from unique coupon
     // hash to stripe coupon id.
     // `[hash: string]: string`
-    _stripeCouponIds: jsonb().$type<Record<string, string>>().default({}),
+    _stripeCouponIds: jsonb()
+      .$type<Record<string, string>>()
+      .default({})
+      .notNull(),
 
     // Stripe billing plans associated with this project (created lazily),
     // mapping from unique plan hash to stripe plan ids for base and request
@@ -82,7 +89,8 @@ export const projects = pgTable(
     // `[hash: string]: { basePlanId: string, requestPlanId: string }`
     _stripePlanIds: jsonb()
       .$type<Record<string, { basePlanId: string; requestPlanId: string }>>()
-      .default({}),
+      .default({})
+      .notNull(),
 
     // Connected Stripe account (standard or express).
     // If not defined, then subscriptions for this project route through our
@@ -91,7 +99,7 @@ export const projects = pgTable(
     // the stripeID utility.
     // TODO: is it wise to share this between dev and prod?
     // TODO: is it okay for this to be public?
-    _stripeAccountId: stripeId()
+    _stripeAccountId: optionalStripeId()
   },
   (table) => [
     index('project_userId_idx').on(table.userId),
@@ -151,7 +159,17 @@ export const projectInsertSchema = createInsertSchema(projects, {
   })
 
 export const projectSelectSchema = createSelectSchema(projects, {
-  stripeMetricProductIds: z.record(z.string(), z.string()).optional()
+  alias: z.string().nonempty().optional(),
+
+  lastPublishedDeploymentId: z.string().nonempty().optional(),
+  lastDeploymentId: z.string().nonempty().optional(),
+
+  _secret: z.string().nonempty().optional(),
+
+  stripeBaseProductId: z.string().nonempty().optional(),
+  stripeRequestProductId: z.string().nonempty().optional(),
+
+  stripeMetricProductIds: z.record(z.string(), z.string()).optional(),
   // _webhooks: z.array(webhookSchema),
   // _stripeCouponIds: z.record(z.string(), z.string()).optional(),
   // _stripePlanIds: z
@@ -163,6 +181,7 @@ export const projectSelectSchema = createSelectSchema(projects, {
   //     })
   //   )
   //   .optional()
+  _stripeAccountId: z.string().nonempty().optional()
 })
   .omit({
     _secret: true,

@@ -18,6 +18,7 @@ export {
   and,
   arrayContained,
   arrayContains,
+  arrayOverlaps,
   between,
   eq,
   exists,

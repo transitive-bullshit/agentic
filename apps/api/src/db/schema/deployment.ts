@@ -18,6 +18,8 @@ import {
   createUpdateSchema,
   cuid,
   deploymentId,
+  optionalCuid,
+  optionalText,
   projectId,
   timestamps
 } from './utils'
@@ -30,18 +32,18 @@ export const deployments = pgTable(
     ...timestamps,
 
     hash: text().notNull(),
-    version: text(),
+    version: optionalText(),
 
-    enabled: boolean().notNull().default(true),
-    published: boolean().notNull().default(false),
+    enabled: boolean().default(true).notNull(),
+    published: boolean().default(false).notNull(),
 
-    description: text().notNull().default(''),
-    readme: text().notNull().default(''),
+    description: text().default('').notNull(),
+    readme: text().default('').notNull(),
 
     userId: cuid()
       .notNull()
       .references(() => users.id),
-    teamId: cuid().references(() => teams.id),
+    teamId: optionalCuid().references(() => teams.id),
     projectId: projectId()
       .notNull()
       .references(() => projects.id, {
@@ -51,9 +53,9 @@ export const deployments = pgTable(
     // TODO: tools?
     // services: jsonb().$type<Service[]>().default([]),
 
-    // Environment variables & secrets
-    build: jsonb().$type<object>(),
-    env: jsonb().$type<object>(),
+    // TODO: Environment variables & secrets
+    // build: jsonb().$type<object>(),
+    // env: jsonb().$type<object>(),
 
     // TODO: metadata config (logo, keywords, etc)
     // TODO: webhooks
@@ -63,7 +65,7 @@ export const deployments = pgTable(
     _url: text().notNull(),
 
     pricingPlans: jsonb().$type<PricingPlan[]>().notNull(),
-    coupons: jsonb().$type<Coupon[]>().notNull().default([])
+    coupons: jsonb().$type<Coupon[]>().default([]).notNull()
   },
   (table) => [
     index('deployment_userId_idx').on(table.userId),
@@ -113,15 +115,18 @@ export const deploymentInsertSchema = createInsertSchema(deployments, {
 
   _url: (schema) => schema.url(),
 
-  build: z.object({}),
-  env: z.object({}),
+  // build: z.object({}),
+  // env: z.object({}),
   pricingPlans: z.array(pricingPlanSchema),
   coupons: z.array(couponSchema).optional()
 })
 
 export const deploymentSelectSchema = createSelectSchema(deployments, {
-  build: z.object({}),
-  env: z.object({}),
+  version: z.string().nonempty().optional(),
+  teamId: z.string().cuid2().optional(),
+
+  // build: z.object({}),
+  // env: z.object({}),
   pricingPlans: z.array(pricingPlanSchema),
   coupons: z.array(couponSchema)
 })

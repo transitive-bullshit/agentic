@@ -3,6 +3,7 @@ import { z } from '@hono/zod-openapi'
 import { createId } from '@paralleldrive/cuid2'
 import { sql, type Writable } from 'drizzle-orm'
 import {
+  customType,
   pgEnum,
   type PgVarcharBuilderInitial,
   type PgVarcharConfig,
@@ -84,3 +85,94 @@ export const { createInsertSchema, createSelectSchema, createUpdateSchema } =
       date: true
     }
   })
+
+export type ColumnType =
+  // string
+  | 'text'
+  | 'varchar'
+  | 'timestamp'
+  | 'stripeId'
+  | 'projectId'
+  | 'deploymentId'
+  | 'cuid'
+  // boolean
+  | 'boolean'
+  // number
+  | 'integer'
+  | 'smallint'
+  | 'bigint'
+  // json
+  | 'json'
+  | 'jsonb'
+
+export type ColumnTypeToTSType<T extends ColumnType> = T extends
+  | 'text'
+  | 'varchar'
+  | 'timestamp'
+  | 'cuid'
+  | 'stripeId'
+  | 'projectId'
+  | 'deploymentId'
+  ? string
+  : T extends 'boolean'
+    ? boolean
+    : T extends 'integer' | 'smallint' | 'bigint'
+      ? number
+      : never
+
+/**
+ * @see https://github.com/drizzle-team/drizzle-orm/issues/2745
+ */
+function optional<
+  T extends ColumnType,
+  InferredType extends
+    | string
+    | boolean
+    | number
+    | object = ColumnTypeToTSType<T>
+>(dataType: T) {
+  return customType<{
+    data: InferredType | undefined
+    driverData: InferredType | null
+    config: T extends 'stripeId'
+      ? {
+          length: number
+        }
+      : never
+  }>({
+    dataType() {
+      if (dataType === 'stripeId') {
+        return 'varchar({ length: 255 })'
+      }
+
+      if (dataType === 'cuid') {
+        return 'varchar({ length: 24 })'
+      }
+
+      if (dataType === 'projectId') {
+        return 'varchar({ length: 130 })'
+      }
+
+      if (dataType === 'deploymentId') {
+        return 'varchar({ length: 160 })'
+      }
+
+      if (dataType === 'timestamp') {
+        return 'timestamp({ mode: "string" })'
+      }
+
+      return dataType
+    },
+    fromDriver: (v) => v ?? undefined,
+    toDriver: (v) => v ?? null
+  })
+}
+
+export const optionalText = optional('text')
+export const optionalTimestamp = optional('timestamp')
+export const optionalBoolean = optional('boolean')
+export const optionalVarchar = optional('varchar')
+export const optionalCuid = optional('cuid')
+export const optionalStripeId = optional('stripeId')
+export const optionalProjectId = optional('projectId')
+export const optionalDeploymentId = optional('deploymentId')
