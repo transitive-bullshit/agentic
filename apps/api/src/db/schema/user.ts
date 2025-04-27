@@ -89,4 +89,9 @@ export const userSelectSchema = createSelectSchema(users, {
   providers: authProvidersSchema
 }).openapi('User')
 
-export const userUpdateSchema = createUpdateSchema(users)
+export const userUpdateSchema = createUpdateSchema(users).pick({
+  firstName: true,
+  lastName: true,
+  image: true,
+  isStripeConnectEnabledByDefault: true
+})

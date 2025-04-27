@@ -15,12 +15,20 @@ const ParamsSchema = z.object({
 
 const route = createRoute({
   tags: ['users'],
-  operationId: 'getUser',
-  method: 'get',
+  operationId: 'updateUser',
+  method: 'put',
   path: 'users/{userId}',
   security: [{ bearerAuth: [] }],
   request: {
-    params: ParamsSchema
+    params: ParamsSchema,
+    body: {
+      required: true,
+      content: {
+        'application/json': {
+          schema: schema.userUpdateSchema
+        }
+      }
+    }
   },
   responses: {
     200: {
@@ -36,13 +44,16 @@ const route = createRoute({
   }
 })
 
-export function registerV1UsersGetUser(app: OpenAPIHono<AuthenticatedEnv>) {
+export function registerV1UsersUpdateUser(app: OpenAPIHono<AuthenticatedEnv>) {
   return app.openapi(route, async (c) => {
     const { userId } = c.req.valid('param')
+    const body = c.req.valid('json')
 
-    const user = await db.query.users.findFirst({
-      where: eq(schema.users.id, userId)
-    })
+    const user = await db
+      .update(schema.users)
+      .set(body)
+      .where(eq(schema.users.id, userId))
+      .returning()
     assert(user, 404, `User not found: ${userId}`)
 
     return c.json(parseZodSchema(schema.userSelectSchema, user))
