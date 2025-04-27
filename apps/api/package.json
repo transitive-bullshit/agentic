@@ -60,6 +60,7 @@
     "zod-validation-error": "^3.4.0"
   },
   "devDependencies": {
-    "@types/jsonwebtoken": "^9.0.9"
+    "@types/jsonwebtoken": "^9.0.9",
+    "drizzle-kit": "^0.31.0"
   }
 }
