@@ -1,6 +1,5 @@
 import { validators } from '@agentic/validators'
-import { z } from '@hono/zod-openapi'
-import { relations } from 'drizzle-orm'
+import { relations } from '@fisch0920/drizzle-orm'
 import {
   boolean,
   index,
@@ -8,7 +7,7 @@ import {
   pgTable,
   text,
   uniqueIndex
-} from 'drizzle-orm/pg-core'
+} from '@fisch0920/drizzle-orm/pg-core'
 
 import { sha256 } from '@/lib/utils'
 
@@ -19,9 +18,8 @@ import {
   createSelectSchema,
   createUpdateSchema,
   id,
-  optionalStripeId,
-  optionalText,
-  optionalTimestamp,
+  stripeId,
+  timestamp,
   timestamps,
   userRoleEnum
 } from './utils'
@@ -35,25 +33,25 @@ export const users = pgTable(
     username: text().notNull().unique(),
     role: userRoleEnum().default('user').notNull(),
 
-    email: optionalText().unique(),
-    password: optionalText(),
+    email: text().unique(),
+    password: text(),
 
     // metadata
-    firstName: optionalText(),
-    lastName: optionalText(),
-    image: optionalText(),
+    firstName: text(),
+    lastName: text(),
+    image: text(),
 
     emailConfirmed: boolean().default(false).notNull(),
-    emailConfirmedAt: optionalTimestamp(),
+    emailConfirmedAt: timestamp(),
     emailConfirmToken: text().unique().default(sha256()).notNull(),
-    passwordResetToken: optionalText().unique(),
+    passwordResetToken: text().unique(),
 
     isStripeConnectEnabledByDefault: boolean().default(true).notNull(),
 
     // third-party auth providers
     providers: jsonb().$type<AuthProviders>().default({}).notNull(),
 
-    stripeCustomerId: optionalStripeId().unique()
+    stripeCustomerId: stripeId().unique()
   },
   (table) => [
     uniqueIndex('user_email_idx').on(table.email),
@@ -75,19 +73,7 @@ export const userInsertSchema = createInsertSchema(users, {
       message: 'Invalid username'
     }),
 
-  email: (schema) =>
-    schema.refine(
-      (email) => {
-        if (email) {
-          return validators.email(email)
-        }
-
-        return true
-      },
-      {
-        message: 'Invalid email'
-      }
-    ),
+  email: (schema) => schema.email().optional(),
 
   providers: authProvidersSchema.optional()
 }).pick({
@@ -100,19 +86,7 @@ export const userInsertSchema = createInsertSchema(users, {
 })
 
 export const userSelectSchema = createSelectSchema(users, {
-  email: z.string().email().optional(),
-  password: z.string().nonempty().optional(),
-
-  firstName: z.string().optional(),
-  lastName: z.string().optional(),
-  image: z.string().nonempty().optional(),
-
-  emailConfirmedAt: z.string().datetime().optional(),
-  passwordResetToken: z.string().nonempty().optional(),
-
-  providers: authProvidersSchema,
-
-  stripeCustomerId: z.string().nonempty().optional()
+  providers: authProvidersSchema
 }).openapi('User')
 
 export const userUpdateSchema = createUpdateSchema(users)

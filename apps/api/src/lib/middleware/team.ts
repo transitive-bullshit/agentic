@@ -1,4 +1,4 @@
-import { and, eq } from 'drizzle-orm'
+import { and, eq } from '@fisch0920/drizzle-orm'
 import { createMiddleware } from 'hono/factory'
 
 import type { AuthenticatedEnv } from '@/lib/types'

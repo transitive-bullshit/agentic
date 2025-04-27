@@ -1,15 +1,18 @@
-import { z } from '@hono/zod-openapi'
-import { relations } from 'drizzle-orm'
-import { index, pgTable, primaryKey } from 'drizzle-orm/pg-core'
+import { relations } from '@fisch0920/drizzle-orm'
+import {
+  boolean,
+  index,
+  pgTable,
+  primaryKey
+} from '@fisch0920/drizzle-orm/pg-core'
 
 import { teams } from './team'
 import { users } from './user'
 import {
   createSelectSchema,
   cuid,
-  optionalBoolean,
-  optionalTimestamp,
   teamMemberRoleEnum,
+  timestamp,
   timestamps
 } from './utils'
 
@@ -26,8 +29,8 @@ export const teamMembers = pgTable(
       .references(() => teams.id, { onDelete: 'cascade' }),
     role: teamMemberRoleEnum().default('user').notNull(),
 
-    confirmed: optionalBoolean().default(false).notNull(),
-    confirmedAt: optionalTimestamp()
+    confirmed: boolean().default(false).notNull(),
+    confirmedAt: timestamp()
   },
   (table) => [
     primaryKey({ columns: [table.userId, table.teamId] }),
@@ -49,7 +52,5 @@ export const teamMembersRelations = relations(teamMembers, ({ one }) => ({
   })
 }))
 
-export const teamMemberSelectSchema = createSelectSchema(teamMembers, {
-  confirmed: z.boolean(),
-  confirmedAt: z.string().datetime().optional()
-}).openapi('TeamMember')
+export const teamMemberSelectSchema =
+  createSelectSchema(teamMembers).openapi('TeamMember')

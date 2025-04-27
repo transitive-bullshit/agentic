@@ -1,7 +1,13 @@
 import { validators } from '@agentic/validators'
+import { relations } from '@fisch0920/drizzle-orm'
+import {
+  boolean,
+  index,
+  jsonb,
+  pgTable,
+  text
+} from '@fisch0920/drizzle-orm/pg-core'
 import { z } from '@hono/zod-openapi'
-import { relations } from 'drizzle-orm'
-import { boolean, index, jsonb, pgTable, text } from 'drizzle-orm/pg-core'
 
 import { projects } from './project'
 import { teams } from './team'
@@ -18,8 +24,6 @@ import {
   createUpdateSchema,
   cuid,
   deploymentId,
-  optionalCuid,
-  optionalText,
   projectId,
   timestamps
 } from './utils'
@@ -32,7 +36,7 @@ export const deployments = pgTable(
     ...timestamps,
 
     hash: text().notNull(),
-    version: optionalText(),
+    version: text(),
 
     enabled: boolean().default(true).notNull(),
     published: boolean().default(false).notNull(),
@@ -43,7 +47,7 @@ export const deployments = pgTable(
     userId: cuid()
       .notNull()
       .references(() => users.id),
-    teamId: optionalCuid().references(() => teams.id),
+    teamId: cuid().references(() => teams.id),
     projectId: projectId()
       .notNull()
       .references(() => projects.id, {
@@ -122,9 +126,6 @@ export const deploymentInsertSchema = createInsertSchema(deployments, {
 })
 
 export const deploymentSelectSchema = createSelectSchema(deployments, {
-  version: z.string().nonempty().optional(),
-  teamId: z.string().cuid2().optional(),
-
   // build: z.object({}),
   // env: z.object({}),
   pricingPlans: z.array(pricingPlanSchema),

@@ -1,5 +1,10 @@
-import { relations } from 'drizzle-orm'
-import { index, pgTable, text, uniqueIndex } from 'drizzle-orm/pg-core'
+import { relations } from '@fisch0920/drizzle-orm'
+import {
+  index,
+  pgTable,
+  text,
+  uniqueIndex
+} from '@fisch0920/drizzle-orm/pg-core'
 
 import { teamMembers } from './team-member'
 import { users } from './user'

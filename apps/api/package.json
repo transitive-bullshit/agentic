@@ -37,7 +37,8 @@
   },
   "dependencies": {
     "@agentic/validators": "workspace:*",
-    "@fisch0920/drizzle-zod": "^0.7.2",
+    "@fisch0920/drizzle-orm": "^0.43.5",
+    "@fisch0920/drizzle-zod": "^0.7.7",
     "@google-cloud/logging": "^11.2.0",
     "@hono/node-server": "^1.14.1",
     "@hono/sentry": "^1.2.1",
@@ -46,7 +47,6 @@
     "@paralleldrive/cuid2": "^2.2.2",
     "@sentry/node": "^9.14.0",
     "@workos-inc/node": "^7.47.0",
-    "drizzle-orm": "^0.43.0",
     "eventid": "^2.0.1",
     "exit-hook": "catalog:",
     "hono": "^4.7.7",
@@ -60,7 +60,6 @@
     "zod-validation-error": "^3.4.0"
   },
   "devDependencies": {
-    "@types/jsonwebtoken": "^9.0.9",
-    "drizzle-kit": "^0.31.0"
+    "@types/jsonwebtoken": "^9.0.9"
   }
 }

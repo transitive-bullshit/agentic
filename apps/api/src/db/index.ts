@@ -1,4 +1,4 @@
-import { drizzle } from 'drizzle-orm/postgres-js'
+import { drizzle } from '@fisch0920/drizzle-orm/postgres-js'
 import postgres from 'postgres'
 
 import { env } from '@/lib/env'
@@ -39,4 +39,4 @@ export {
   notInArray,
   notLike,
   or
-} from 'drizzle-orm'
+} from '@fisch0920/drizzle-orm'

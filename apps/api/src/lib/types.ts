@@ -22,3 +22,14 @@ export type AuthenticatedEnv = {
 }
 
 export type AuthenticatedContext = Context<AuthenticatedEnv>
+
+// TODO: currently unused
+// export type NullToUndefinedDeep<T> = T extends null
+//   ? undefined
+//   : T extends Date
+//     ? T
+//     : T extends readonly (infer U)[]
+//       ? NullToUndefinedDeep<U>[]
+//       : T extends object
+//         ? { [K in keyof T]: NullToUndefinedDeep<T[K]> }
+//         : T

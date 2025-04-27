@@ -1,9 +1,8 @@
-import { eq } from 'drizzle-orm'
 import { createMiddleware } from 'hono/factory'
 import { jwt } from 'hono/jwt'
 
 import type { AuthenticatedEnv } from '@/lib/types'
-import { db, schema } from '@/db'
+import { db, eq, schema } from '@/db'
 import { env } from '@/lib/env'
 
 import { assert } from '../utils'

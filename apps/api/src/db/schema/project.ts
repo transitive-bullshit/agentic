@@ -1,6 +1,5 @@
 import { validators } from '@agentic/validators'
-import { z } from '@hono/zod-openapi'
-import { relations } from 'drizzle-orm'
+import { relations } from '@fisch0920/drizzle-orm'
 import {
   boolean,
   index,
@@ -8,7 +7,8 @@ import {
   jsonb,
   pgTable,
   text
-} from 'drizzle-orm/pg-core'
+} from '@fisch0920/drizzle-orm/pg-core'
+import { z } from '@hono/zod-openapi'
 
 import { getProviderToken } from '@/lib/auth/get-provider-token'
 
@@ -21,10 +21,9 @@ import {
   createSelectSchema,
   createUpdateSchema,
   cuid,
-  optionalDeploymentId,
-  optionalStripeId,
-  optionalText,
+  deploymentId,
   projectId,
+  stripeId,
   timestamps
 } from './utils'
 
@@ -36,7 +35,7 @@ export const projects = pgTable(
     ...timestamps,
 
     name: text().notNull(),
-    alias: optionalText(),
+    alias: text(),
 
     userId: cuid()
       .notNull()
@@ -44,10 +43,10 @@ export const projects = pgTable(
     teamId: cuid().notNull(),
 
     // Most recently published Deployment if one exists
-    lastPublishedDeploymentId: optionalDeploymentId(),
+    lastPublishedDeploymentId: deploymentId(),
 
     // Most recent Deployment if one exists
-    lastDeploymentId: optionalDeploymentId(),
+    lastDeploymentId: deploymentId(),
 
     applicationFeePercent: integer().default(20).notNull(),
 
@@ -55,7 +54,7 @@ export const projects = pgTable(
     isStripeConnectEnabled: boolean().default(false).notNull(),
 
     // All deployments share the same underlying proxy secret
-    _secret: optionalText(),
+    _secret: text(),
 
     // Auth token used to access the saasify API on behalf of this project
     _providerToken: text().notNull(),
@@ -66,8 +65,8 @@ export const projects = pgTable(
     _webhooks: jsonb().$type<Webhook[]>().default([]).notNull(),
 
     // Stripe products corresponding to the stripe plans across deployments
-    stripeBaseProductId: optionalStripeId(),
-    stripeRequestProductId: optionalStripeId(),
+    stripeBaseProductId: stripeId(),
+    stripeRequestProductId: stripeId(),
 
     // [metricSlug: string]: string
     stripeMetricProductIds: jsonb()
@@ -99,7 +98,7 @@ export const projects = pgTable(
     // the stripeID utility.
     // TODO: is it wise to share this between dev and prod?
     // TODO: is it okay for this to be public?
-    _stripeAccountId: optionalStripeId()
+    _stripeAccountId: stripeId()
   },
   (table) => [
     index('project_userId_idx').on(table.userId),
@@ -159,17 +158,7 @@ export const projectInsertSchema = createInsertSchema(projects, {
   })
 
 export const projectSelectSchema = createSelectSchema(projects, {
-  alias: z.string().nonempty().optional(),
-
-  lastPublishedDeploymentId: z.string().nonempty().optional(),
-  lastDeploymentId: z.string().nonempty().optional(),
-
-  _secret: z.string().nonempty().optional(),
-
-  stripeBaseProductId: z.string().nonempty().optional(),
-  stripeRequestProductId: z.string().nonempty().optional(),
-
-  stripeMetricProductIds: z.record(z.string(), z.string()).optional(),
+  stripeMetricProductIds: z.record(z.string(), z.string()).optional()
   // _webhooks: z.array(webhookSchema),
   // _stripeCouponIds: z.record(z.string(), z.string()).optional(),
   // _stripePlanIds: z
@@ -181,7 +170,6 @@ export const projectSelectSchema = createSelectSchema(projects, {
   //     })
   //   )
   //   .optional()
-  _stripeAccountId: z.string().nonempty().optional()
 })
   .omit({
     _secret: true,

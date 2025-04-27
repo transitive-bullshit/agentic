@@ -1,6 +1,7 @@
 {
   "extends": "@fisch0920/config/tsconfig-node",
   "compilerOptions": {
+    "strictNullChecks": true,
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
