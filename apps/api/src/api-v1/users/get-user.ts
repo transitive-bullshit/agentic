@@ -2,6 +2,7 @@ import { createRoute, type OpenAPIHono, z } from '@hono/zod-openapi'
 
 import type { AuthenticatedEnv } from '@/lib/types'
 import { db, eq, schema, userIdSchema } from '@/db'
+import { acl } from '@/lib/acl'
 import { assert, parseZodSchema } from '@/lib/utils'
 
 const ParamsSchema = z.object({
@@ -43,7 +44,8 @@ export function registerV1UsersGetUser(app: OpenAPIHono<AuthenticatedEnv>) {
     const user = await db.query.users.findFirst({
       where: eq(schema.users.id, userId)
     })
-    assert(user, 404, `User not found: ${userId}`)
+    assert(user, 404, `User not found "${userId}"`)
+    acl(c, user, { label: 'User', userField: 'id' })
 
     return c.json(parseZodSchema(schema.userSelectSchema, user))
   })
