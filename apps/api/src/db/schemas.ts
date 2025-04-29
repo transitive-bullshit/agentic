@@ -22,6 +22,12 @@ export const deploymentIdSchema = z
     message: 'Invalid deployment id'
   })
 
+export const usernameSchema = z
+  .string()
+  .refine((username) => validators.username(username), {
+    message: 'Invalid username'
+  })
+
 export const teamSlugSchema = z
   .string()
   .refine((slug) => validators.team(slug), {

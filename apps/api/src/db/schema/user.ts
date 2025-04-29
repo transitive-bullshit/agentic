@@ -21,6 +21,7 @@ import {
   stripeId,
   timestamp,
   timestamps,
+  username,
   userRoleEnum
 } from './utils'
 
@@ -30,7 +31,7 @@ export const users = pgTable(
     id,
     ...timestamps,
 
-    username: text().notNull().unique(),
+    username: username().notNull().unique(),
     role: userRoleEnum().default('user').notNull(),
 
     email: text().unique(),

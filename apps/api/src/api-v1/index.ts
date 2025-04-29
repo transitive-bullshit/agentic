@@ -17,7 +17,10 @@ import { registerV1UsersUpdateUser } from './users/update-user'
 
 export const apiV1 = new OpenAPIHono()
 
+// Public routes
 const pub = new OpenAPIHono()
+
+// Private, authenticated routes
 const pri = new OpenAPIHono<AuthenticatedEnv>()
 
 registerHealthCheck(pub)

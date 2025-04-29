@@ -1,28 +1,21 @@
-import { createRoute, type OpenAPIHono, z } from '@hono/zod-openapi'
+import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 
 import type { AuthenticatedEnv } from '@/lib/types'
-import { db, eq, schema, userIdSchema } from '@/db'
+import { db, eq, schema } from '@/db'
 import { acl } from '@/lib/acl'
 import { assert, parseZodSchema } from '@/lib/utils'
 
-const ParamsSchema = z.object({
-  userId: userIdSchema.openapi({
-    param: {
-      name: 'userId',
-      in: 'path'
-    }
-  })
-})
+import { UserIdParamsSchema } from './schemas'
 
 const route = createRoute({
-  description: 'Gets a user by ID.',
+  description: 'Gets a user',
   tags: ['users'],
   operationId: 'getUser',
   method: 'get',
   path: 'users/{userId}',
   security: [{ bearerAuth: [] }],
   request: {
-    params: ParamsSchema
+    params: UserIdParamsSchema
   },
   responses: {
     200: {

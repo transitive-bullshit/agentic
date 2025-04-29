@@ -15,6 +15,7 @@ import {
   createUpdateSchema,
   cuid,
   id,
+  teamSlug,
   timestamps
 } from './utils'
 
@@ -24,7 +25,7 @@ export const teams = pgTable(
     id,
     ...timestamps,
 
-    slug: text().notNull().unique(),
+    slug: teamSlug().notNull().unique(),
     name: text().notNull(),
 
     ownerId: cuid().notNull()

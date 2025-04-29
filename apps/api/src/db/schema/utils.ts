@@ -13,6 +13,8 @@ import { createSchemaFactory } from '@fisch0920/drizzle-zod'
 import { z } from '@hono/zod-openapi'
 import { createId } from '@paralleldrive/cuid2'
 
+const usernameAndTeamSlugLength = 64 as const
+
 /**
  * `cuid2`
  */
@@ -44,6 +46,18 @@ export function deploymentId<U extends string, T extends Readonly<[U, ...U[]]>>(
   config?: PgVarcharConfig<T | Writable<T>, never>
 ): PgVarcharBuilderInitial<'', Writable<T>, 160> {
   return varchar({ length: 160, ...config })
+}
+
+export function username<U extends string, T extends Readonly<[U, ...U[]]>>(
+  config?: PgVarcharConfig<T | Writable<T>, never>
+): PgVarcharBuilderInitial<'', Writable<T>, 64> {
+  return varchar({ length: usernameAndTeamSlugLength, ...config })
+}
+
+export function teamSlug<U extends string, T extends Readonly<[U, ...U[]]>>(
+  config?: PgVarcharConfig<T | Writable<T>, never>
+): PgVarcharBuilderInitial<'', Writable<T>, 64> {
+  return varchar({ length: usernameAndTeamSlugLength, ...config })
 }
 
 /**

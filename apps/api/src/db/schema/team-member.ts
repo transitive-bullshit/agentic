@@ -3,8 +3,7 @@ import {
   boolean,
   index,
   pgTable,
-  primaryKey,
-  text
+  primaryKey
 } from '@fisch0920/drizzle-orm/pg-core'
 
 import { teams } from './team'
@@ -15,6 +14,7 @@ import {
   createUpdateSchema,
   cuid,
   teamMemberRoleEnum,
+  teamSlug,
   timestamp,
   timestamps
 } from './utils'
@@ -27,7 +27,7 @@ export const teamMembers = pgTable(
     userId: cuid()
       .notNull()
       .references(() => users.id, { onDelete: 'cascade' }),
-    teamSlug: text()
+    teamSlug: teamSlug()
       .notNull()
       .references(() => teams.slug, { onDelete: 'cascade' }),
     teamId: cuid()
