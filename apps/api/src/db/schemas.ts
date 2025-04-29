@@ -21,3 +21,32 @@ export const deploymentIdSchema = z
   .refine((id) => validators.deployment(id), {
     message: 'Invalid deployment id'
   })
+
+export const teamSlugSchema = z
+  .string()
+  .refine((slug) => validators.team(slug), {
+    message: 'Invalid team slug'
+  })
+
+export const paginationSchema = z.object({
+  offset: z.number().int().nonnegative().default(0).optional(),
+  limit: z.number().int().positive().max(100).default(10).optional(),
+  sort: z.enum(['asc', 'desc']).default('desc').optional(),
+  sortBy: z.enum(['createdAt', 'updatedAt']).default('createdAt').optional()
+})
+
+// import type { PgTable, TableConfig } from '@fisch0920/drizzle-orm/pg-core'
+// import type { AnyZodObject } from 'zod'
+//
+// export function createWhereFilterSchema<
+//   TTableConfig extends TableConfig,
+//   TTable extends PgTable<TTableConfig>,
+//   T extends AnyZodObject
+// >(table: TTable, schema: T) {
+//   return z.object({
+//     where: z.record(
+//       z.enum(Object.keys(table._.columns) as [string, ...string[]]),
+//       z.string()
+//     )
+//   })
+// }

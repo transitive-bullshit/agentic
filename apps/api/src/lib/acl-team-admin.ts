@@ -3,16 +3,14 @@ import { and, db, eq, schema, type TeamMember } from '@/db'
 import type { AuthenticatedContext } from './types'
 import { assert } from './utils'
 
-export async function aclTeamMember(
+export async function aclTeamAdmin(
   ctx: AuthenticatedContext,
   {
     teamSlug,
-    teamMember,
-    userId
+    teamMember
   }: {
     teamSlug: string
     teamMember?: TeamMember
-    userId?: string
   }
 ) {
   const user = ctx.get('user')
@@ -23,13 +21,11 @@ export async function aclTeamMember(
     return
   }
 
-  userId ??= user.id
-
   if (!teamMember) {
     teamMember = await db.query.teamMembers.findFirst({
       where: and(
         eq(schema.teamMembers.teamSlug, teamSlug),
-        eq(schema.teamMembers.userId, userId)
+        eq(schema.teamMembers.userId, user.id)
       )
     })
   }
@@ -37,7 +33,13 @@ export async function aclTeamMember(
   assert(teamMember, 403, `User does not have access to team "${teamSlug}"`)
 
   assert(
-    teamMember.userId === userId,
+    teamMember.role === 'admin',
+    403,
+    `User does not have "admin" role for team "${teamSlug}"`
+  )
+
+  assert(
+    teamMember.userId === user.id,
     403,
     `User does not have access to team "${teamSlug}"`
   )

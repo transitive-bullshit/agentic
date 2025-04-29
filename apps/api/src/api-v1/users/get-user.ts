@@ -15,6 +15,7 @@ const ParamsSchema = z.object({
 })
 
 const route = createRoute({
+  description: 'Gets a user by ID.',
   tags: ['users'],
   operationId: 'getUser',
   method: 'get',
@@ -40,12 +41,12 @@ const route = createRoute({
 export function registerV1UsersGetUser(app: OpenAPIHono<AuthenticatedEnv>) {
   return app.openapi(route, async (c) => {
     const { userId } = c.req.valid('param')
+    await acl(c, { userId }, { label: 'User' })
 
     const user = await db.query.users.findFirst({
       where: eq(schema.users.id, userId)
     })
     assert(user, 404, `User not found "${userId}"`)
-    acl(c, user, { label: 'User', userField: 'id' })
 
     return c.json(parseZodSchema(schema.userSelectSchema, user))
   })

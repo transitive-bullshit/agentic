@@ -111,3 +111,116 @@ export const optionalCuid = optional('cuid')
 export const optionalStripeId = optional('stripeId')
 export const optionalProjectId = optional('projectId')
 export const optionalDeploymentId = optional('deploymentId')
+
+// ---
+
+
+type MaybePromise<T> = Promise<T> | T;
+type RequestTypes = {
+    body?: ZodRequestBody;
+    params?: ZodType;
+    query?: ZodType;
+    cookies?: ZodType;
+    headers?: ZodType | ZodType[];
+};
+type InputTypeBase<R extends RouteConfig, Part extends string, Type extends keyof ValidationTargets> = R['request'] extends RequestTypes ? RequestPart<R, Part> extends ZodType ? {
+    in: {
+        [K in Type]: HasUndefined<ValidationTargets[K]> extends true ? {
+            [K2 in keyof z.input<RequestPart<R, Part>>]?: z.input<RequestPart<R, Part>>[K2];
+        } : {
+            [K2 in keyof z.input<RequestPart<R, Part>>]: z.input<RequestPart<R, Part>>[K2];
+        };
+    };
+    out: {
+        [K in Type]: z.output<RequestPart<R, Part>>;
+    };
+} : {} : {};
+
+type InputTypeParam<R extends RouteConfig> = InputTypeBase<R, 'params', 'param'>;
+type InputTypeQuery<R extends RouteConfig> = InputTypeBase<R, 'query', 'query'>;
+type InputTypeHeader<R extends RouteConfig> = InputTypeBase<R, 'headers', 'header'>;
+type InputTypeCookie<R extends RouteConfig> = InputTypeBase<R, 'cookies', 'cookie'>;
+
+type o: <R extends RouteConfig, I extends Input = InputTypeParam<R> & InputTypeQuery<R> & InputTypeHeader<R> & InputTypeCookie<R> & InputTypeForm<R> & InputTypeJson<R>, P extends string = ConvertPathType<R["path"]>>({ middleware: routeMiddleware, hide, ...route }: R, handler: Handler<R["middleware"] extends MiddlewareHandler[] | MiddlewareHandler ? RouteMiddlewareParam<R>["env"] & E : E, P, I, R extends {
+    responses: {
+        [statusCode: number]: {
+            content: {
+                [mediaType: string]: ZodMediaTypeObject;
+            };
+        };
+    };
+} ? MaybePromise<RouteConfigToTypedResponse<R>> : MaybePromise<RouteConfigToTypedResponse<R>> | MaybePromise<Response>>) => OpenAPIHono<E, S & ToSchema<R["method"], MergePath<BasePath, P>, I, RouteConfigToTypedResponse<R>>, BasePath>;
+
+
+// ---
+
+import type { SetOptional, SetRequired, Simplify } from 'type-fest'
+import type { AnyZodObject } from 'zod'
+import { createRoute, type RouteConfig } from '@hono/zod-openapi'
+
+export type CreateOpenAPIHonoRouteOpts<
+  TAuthenticated extends boolean = true,
+  TMethod extends RouteConfig['method'] = RouteConfig['method']
+> = Simplify<
+  {
+    authenticated: TAuthenticated
+    paramsSchema?: AnyZodObject
+    bodySchema?: AnyZodObject
+    responseSchema: AnyZodObject
+    method: TMethod
+  } & SetRequired<
+    Omit<
+      SetOptional<Parameters<typeof createRoute>[0], 'responses'>,
+      'request' | 'responses' | 'security'
+    >,
+    'path' | 'operationId' | 'tags' | 'description'
+  >
+>
+
+export function createOpenAPIHonoRoute<TAuthenticated extends boolean>(
+  opts: CreateOpenAPIHonoRouteOpts<TAuthenticated>
+) {
+  const {
+    authenticated,
+    paramsSchema,
+    bodySchema,
+    responseSchema,
+    ...createRouteOpts
+  } = opts
+
+  return createRoute({
+    ...createRouteOpts,
+    security: authenticated
+      ? [
+          {
+            bearerAuth: []
+          }
+        ]
+      : [],
+    request: {
+      params: paramsSchema!,
+      body: bodySchema
+        ? {
+            required: true,
+            content: {
+              'application/json': {
+                schema: bodySchema
+              }
+            }
+          }
+        : undefined
+    },
+    responses: {
+      200: {
+        description: responseSchema.shape.description,
+        content: {
+          'application/json': {
+            schema: responseSchema
+          }
+        }
+      }
+      // TODO
+      // ...openApiErrorResponses
+    }
+  })
+}

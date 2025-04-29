@@ -24,6 +24,10 @@ export function username(value: string): boolean {
   return !!value && usernameRe.test(value)
 }
 
+export function team(value: string): boolean {
+  return username(value)
+}
+
 export function password(value: string): boolean {
   return !!value && passwordRe.test(value)
 }

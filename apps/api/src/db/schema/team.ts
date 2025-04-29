@@ -1,3 +1,4 @@
+import { validators } from '@agentic/validators'
 import { relations } from '@fisch0920/drizzle-orm'
 import {
   index,
@@ -44,7 +45,18 @@ export const teamsRelations = relations(teams, ({ one, many }) => ({
 }))
 
 export const teamInsertSchema = createInsertSchema(teams, {
-  slug: (schema) => schema.min(3).max(20) // TODO
-})
+  slug: (schema) =>
+    schema.refine((slug) => validators.team(slug), {
+      message: 'Invalid team slug'
+    })
+}).omit({ id: true, createdAt: true, updatedAt: true, ownerId: true })
+
 export const teamSelectSchema = createSelectSchema(teams).openapi('Team')
-export const teamUpdateSchema = createUpdateSchema(teams).omit({ slug: true })
+
+export const teamUpdateSchema = createUpdateSchema(teams).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+  ownerId: true,
+  slug: true
+})

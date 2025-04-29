@@ -1,8 +1,8 @@
 import type { AuthenticatedContext } from './types'
 import { assert } from './utils'
 
-export function acl<
-  TModel extends Record<string, unknown> & { id: string },
+export async function acl<
+  TModel extends Record<string, unknown>,
   TUserField extends keyof TModel = 'user',
   TTeamField extends keyof TModel = 'team'
 >(
@@ -10,8 +10,8 @@ export function acl<
   model: TModel,
   {
     label,
-    userField = 'user' as TUserField,
-    teamField = 'team' as TTeamField
+    userField = 'userId' as TUserField,
+    teamField = 'teamId' as TTeamField
   }: {
     label: string
     userField?: TUserField
@@ -34,6 +34,6 @@ export function acl<
   assert(
     isAuthUserOwner || isAuthUserAdmin || hasTeamAccess,
     403,
-    `User does not have access to ${label} "${model.id}"`
+    `User does not have access to ${label} "${model.id ?? userFieldValue}"`
   )
 }

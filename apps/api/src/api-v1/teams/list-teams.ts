@@ -1,0 +1,56 @@
+import { createRoute, type OpenAPIHono, z } from '@hono/zod-openapi'
+
+import type { AuthenticatedEnv } from '@/lib/types'
+import { db, eq, paginationSchema, schema } from '@/db'
+import { parseZodSchema } from '@/lib/utils'
+
+const route = createRoute({
+  description: 'Lists all teams the authenticated user belongs to.',
+  tags: ['teams'],
+  operationId: 'listTeams',
+  method: 'get',
+  path: 'teams',
+  security: [{ bearerAuth: [] }],
+  request: {
+    query: paginationSchema
+  },
+  responses: {
+    200: {
+      description: 'A list of teams',
+      content: {
+        'application/json': {
+          schema: z.array(schema.teamSelectSchema)
+        }
+      }
+    }
+    // TODO
+    // ...openApiErrorResponses
+  }
+})
+
+export function registerV1TeamsListTeams(app: OpenAPIHono<AuthenticatedEnv>) {
+  return app.openapi(route, async (c) => {
+    const {
+      offset = 0,
+      limit = 10,
+      sort = 'desc',
+      sortBy = 'createdAt'
+    } = c.req.valid('query')
+
+    // schema.teamMembers._.columns
+
+    const teamMembers = await db.query.teamMembers.findMany({
+      where: eq(schema.teamMembers.userId, c.get('user').id),
+      with: {
+        team: true
+      },
+      orderBy: (teamMembers, { asc, desc }) => [
+        sort === 'desc' ? desc(teamMembers[sortBy]) : asc(teamMembers[sortBy])
+      ],
+      offset,
+      limit
+    })
+
+    return c.json(parseZodSchema(z.array(schema.teamSelectSchema), teamMembers))
+  })
+}
