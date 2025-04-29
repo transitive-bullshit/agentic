@@ -37,3 +37,10 @@ export type DeploymentWithProject = BuildQueryResult<
   Tables['deployments'],
   { with: { project: true } }
 >
+
+export type Consumer = z.infer<typeof schema.consumerSelectSchema>
+export type ConsumerWithProjectAndDeployment = BuildQueryResult<
+  Tables,
+  Tables['consumers'],
+  { with: { project: true; deployment: true } }
+>

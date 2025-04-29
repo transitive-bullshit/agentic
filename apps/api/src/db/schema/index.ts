@@ -1,3 +1,4 @@
+export * from './consumer'
 export * from './deployment'
 export * from './project'
 export * from './team'
