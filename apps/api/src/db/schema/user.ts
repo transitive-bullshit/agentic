@@ -8,6 +8,7 @@ import {
   text,
   uniqueIndex
 } from '@fisch0920/drizzle-orm/pg-core'
+import { hashSync } from 'bcryptjs'
 
 import { sha256 } from '@/lib/utils'
 
@@ -68,6 +69,15 @@ export const usersRelations = relations(users, ({ many }) => ({
   teamsOwned: many(teams)
 }))
 
+export const userSelectSchema = createSelectSchema(users).openapi('User')
+
+function userRefinementHook(user: Partial<typeof users.$inferInsert>) {
+  return {
+    ...user,
+    password: user.password ? hashSync(user.password) : undefined
+  }
+}
+
 export const userInsertSchema = createInsertSchema(users, {
   username: (schema) =>
     schema.refine((username) => validators.username(username), {
@@ -77,22 +87,23 @@ export const userInsertSchema = createInsertSchema(users, {
   email: (schema) => schema.email().optional(),
 
   providers: authProvidersSchema.optional()
-}).pick({
-  username: true,
-  email: true,
-  password: true,
-  firstName: true,
-  lastName: true,
-  image: true
 })
+  .pick({
+    username: true,
+    email: true,
+    password: true,
+    firstName: true,
+    lastName: true,
+    image: true
+  })
+  .refine(userRefinementHook)
 
-export const userSelectSchema = createSelectSchema(users, {
-  providers: authProvidersSchema
-}).openapi('User')
-
-export const userUpdateSchema = createUpdateSchema(users).pick({
-  firstName: true,
-  lastName: true,
-  image: true,
-  isStripeConnectEnabledByDefault: true
-})
+export const userUpdateSchema = createUpdateSchema(users)
+  .pick({
+    firstName: true,
+    lastName: true,
+    image: true,
+    password: true,
+    isStripeConnectEnabledByDefault: true
+  })
+  .refine(userRefinementHook)

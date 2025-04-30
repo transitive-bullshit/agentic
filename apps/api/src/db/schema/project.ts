@@ -134,29 +134,6 @@ export const projectsRelations = relations(projects, ({ one, many }) => ({
   })
 }))
 
-export const projectInsertSchema = createInsertSchema(projects, {
-  id: (schema) =>
-    schema.refine((id) => validators.project(id), {
-      message: 'Invalid project id'
-    }),
-
-  name: (schema) =>
-    schema.refine((name) => validators.projectName(name), {
-      message: 'Invalid project name'
-    })
-})
-  .pick({
-    id: true,
-    name: true,
-    userId: true
-  })
-  .refine((data) => {
-    return {
-      ...data,
-      _providerToken: getProviderToken(data)
-    }
-  })
-
 export const projectSelectSchema = createSelectSchema(projects, {
   stripeMetricProductIds: z.record(z.string(), z.string()).optional()
   // _webhooks: z.array(webhookSchema),
@@ -181,6 +158,29 @@ export const projectSelectSchema = createSelectSchema(projects, {
     _stripeAccountId: true
   })
   .openapi('Project')
+
+export const projectInsertSchema = createInsertSchema(projects, {
+  id: (schema) =>
+    schema.refine((id) => validators.project(id), {
+      message: 'Invalid project id'
+    }),
+
+  name: (schema) =>
+    schema.refine((name) => validators.projectName(name), {
+      message: 'Invalid project name'
+    })
+})
+  .pick({
+    id: true,
+    name: true,
+    userId: true
+  })
+  .refine((data) => {
+    return {
+      ...data,
+      _providerToken: getProviderToken(data)
+    }
+  })
 
 // TODO: narrow update schema
 export const projectUpdateSchema = createUpdateSchema(projects)

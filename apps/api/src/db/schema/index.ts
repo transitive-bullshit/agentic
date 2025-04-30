@@ -1,5 +1,6 @@
 export * from './consumer'
 export * from './deployment'
+export * from './log-entry'
 export * from './project'
 export * from './team'
 export * from './team-member'

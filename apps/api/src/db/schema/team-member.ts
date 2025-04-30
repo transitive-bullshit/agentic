@@ -59,13 +59,13 @@ export const teamMembersRelations = relations(teamMembers, ({ one }) => ({
   })
 }))
 
+export const teamMemberSelectSchema =
+  createSelectSchema(teamMembers).openapi('TeamMember')
+
 export const teamMemberInsertSchema = createInsertSchema(teamMembers).pick({
   userId: true,
   role: true
 })
-
-export const teamMemberSelectSchema =
-  createSelectSchema(teamMembers).openapi('TeamMember')
 
 export const teamMemberUpdateSchema = createUpdateSchema(teamMembers).pick({
   role: true

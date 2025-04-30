@@ -107,11 +107,17 @@ export const consumersRelations = relations(consumers, ({ one }) => ({
 }))
 
 const stripeValidSubscriptionStatuses = new Set([
-  'trialing',
   'active',
+  'trialing',
   'incomplete',
   'past_due'
 ])
+
+export const consumerSelectSchema = createSelectSchema(consumers)
+  .openapi('Consumer')
+  .omit({
+    _stripeCustomerId: true
+  })
 
 export const consumerInsertSchema = createInsertSchema(consumers).pick({
   token: true,
@@ -124,16 +130,14 @@ export const consumerInsertSchema = createInsertSchema(consumers).pick({
   deploymentId: true
 })
 
-export const consumerSelectSchema =
-  createSelectSchema(consumers).openapi('Consumer')
-
 export const consumerUpdateSchema = createUpdateSchema(consumers).refine(
-  (data) => {
+  (consumer) => {
     return {
-      ...data,
+      ...consumer,
       enabled:
-        data.plan === 'free' ||
-        (data.status && stripeValidSubscriptionStatuses.has(data.status))
+        consumer.plan === 'free' ||
+        (consumer.status &&
+          stripeValidSubscriptionStatuses.has(consumer.status))
     }
   }
 )

@@ -105,7 +105,17 @@ export const deploymentsRelations = relations(deployments, ({ one }) => ({
 // TODO: virtual authProviders?
 // TODO: virtual openapi spec? (hide openapi.servers)
 
-// TODO: narrow
+export const deploymentSelectSchema = createSelectSchema(deployments, {
+  // build: z.object({}),
+  // env: z.object({}),
+  pricingPlans: z.array(pricingPlanSchema),
+  coupons: z.array(couponSchema)
+})
+  .omit({
+    _url: true
+  })
+  .openapi('Deployment')
+
 export const deploymentInsertSchema = createInsertSchema(deployments, {
   id: (schema) =>
     schema.refine((id) => validators.project(id), {
@@ -123,18 +133,7 @@ export const deploymentInsertSchema = createInsertSchema(deployments, {
   // env: z.object({}),
   pricingPlans: z.array(pricingPlanSchema),
   coupons: z.array(couponSchema).optional()
-})
-
-export const deploymentSelectSchema = createSelectSchema(deployments, {
-  // build: z.object({}),
-  // env: z.object({}),
-  pricingPlans: z.array(pricingPlanSchema),
-  coupons: z.array(couponSchema)
-})
-  .omit({
-    _url: true
-  })
-  .openapi('Deployment')
+}).omit({ id: true, createdAt: true, updatedAt: true })
 
 export const deploymentUpdateSchema = createUpdateSchema(deployments).pick({
   enabled: true,

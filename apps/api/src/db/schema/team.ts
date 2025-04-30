@@ -45,6 +45,8 @@ export const teamsRelations = relations(teams, ({ one, many }) => ({
   members: many(teamMembers)
 }))
 
+export const teamSelectSchema = createSelectSchema(teams).openapi('Team')
+
 export const teamInsertSchema = createInsertSchema(teams, {
   slug: (schema) =>
     schema.refine((slug) => validators.team(slug), {
@@ -52,12 +54,7 @@ export const teamInsertSchema = createInsertSchema(teams, {
     })
 }).omit({ id: true, createdAt: true, updatedAt: true, ownerId: true })
 
-export const teamSelectSchema = createSelectSchema(teams).openapi('Team')
-
-export const teamUpdateSchema = createUpdateSchema(teams).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-  ownerId: true,
-  slug: true
+export const teamUpdateSchema = createUpdateSchema(teams).pick({
+  name: true,
+  ownerId: true
 })

@@ -47,6 +47,7 @@
     "@paralleldrive/cuid2": "^2.2.2",
     "@sentry/node": "^9.14.0",
     "@workos-inc/node": "^7.47.0",
+    "bcryptjs": "^3.0.2",
     "eventid": "^2.0.1",
     "exit-hook": "catalog:",
     "hono": "^4.7.7",

@@ -50,13 +50,13 @@ export function deploymentId<U extends string, T extends Readonly<[U, ...U[]]>>(
 
 export function username<U extends string, T extends Readonly<[U, ...U[]]>>(
   config?: PgVarcharConfig<T | Writable<T>, never>
-): PgVarcharBuilderInitial<'', Writable<T>, 64> {
+): PgVarcharBuilderInitial<'', Writable<T>, typeof usernameAndTeamSlugLength> {
   return varchar({ length: usernameAndTeamSlugLength, ...config })
 }
 
 export function teamSlug<U extends string, T extends Readonly<[U, ...U[]]>>(
   config?: PgVarcharConfig<T | Writable<T>, never>
-): PgVarcharBuilderInitial<'', Writable<T>, 64> {
+): PgVarcharBuilderInitial<'', Writable<T>, typeof usernameAndTeamSlugLength> {
   return varchar({ length: usernameAndTeamSlugLength, ...config })
 }
 
