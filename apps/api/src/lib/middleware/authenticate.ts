@@ -7,9 +7,6 @@ import { env } from '@/lib/env'
 
 import { assert } from '../utils'
 
-const token = await jwt.sign({ userId: 'test', type: 'user' }, env.JWT_SECRET)
-console.log({ token })
-
 export const authenticate = createMiddleware<AuthenticatedEnv>(
   async function authenticateMiddleware(ctx, next) {
     const credentials = ctx.req.raw.headers.get('Authorization')

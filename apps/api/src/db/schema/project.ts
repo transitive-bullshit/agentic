@@ -12,10 +12,10 @@ import { z } from '@hono/zod-openapi'
 
 import { getProviderToken } from '@/lib/auth/get-provider-token'
 
-import { deployments } from './deployment'
-import { teams } from './team'
+import { deployments, deploymentSelectSchema } from './deployment'
+import { teams, teamSelectSchema } from './team'
 import { type Webhook } from './types'
-import { users } from './user'
+import { users, userSelectSchema } from './user'
 import {
   createInsertSchema,
   createSelectSchema,
@@ -144,11 +144,11 @@ export const projectRelationsSchema: z.ZodType<ProjectRelationFields> = z.enum([
   'team',
   'lastPublishedDeployment',
   'lastDeployment'
-  // 'deployments',
-  // 'publishedDeployments'
 ])
 
 export const projectSelectSchema = createSelectSchema(projects, {
+  applicationFeePercent: (schema) => schema.nonnegative(),
+
   stripeMetricProductIds: z.record(z.string(), z.string()).optional()
   // _webhooks: z.array(webhookSchema),
   // _stripeCouponIds: z.record(z.string(), z.string()).optional(),
@@ -171,6 +171,27 @@ export const projectSelectSchema = createSelectSchema(projects, {
     _stripePlanIds: true,
     _stripeAccountId: true
   })
+  .extend({
+    user: z
+      .lazy(() => userSelectSchema)
+      .optional()
+      .openapi('User', { type: 'object' }),
+
+    team: z
+      .lazy(() => teamSelectSchema)
+      .optional()
+      .openapi('Team', { type: 'object' }),
+
+    lastPublishedDeployment: z
+      .lazy(() => deploymentSelectSchema)
+      .optional()
+      .openapi('Deployment', { type: 'object' }),
+
+    lastDeployment: z
+      .lazy(() => deploymentSelectSchema)
+      .optional()
+      .openapi('Deployment', { type: 'object' })
+  })
   .openapi('Project')
 
 export const projectInsertSchema = createInsertSchema(projects, {
@@ -189,6 +210,7 @@ export const projectInsertSchema = createInsertSchema(projects, {
     name: true,
     userId: true
   })
+  .strict()
   .refine((data) => {
     return {
       ...data,
@@ -197,7 +219,7 @@ export const projectInsertSchema = createInsertSchema(projects, {
   })
 
 // TODO: narrow update schema
-export const projectUpdateSchema = createUpdateSchema(projects)
+export const projectUpdateSchema = createUpdateSchema(projects).strict()
 
 export const projectDebugSelectSchema = createSelectSchema(projects).pick({
   id: true,

@@ -5,6 +5,7 @@ import * as middleware from '@/lib/middleware'
 
 import { registerHealthCheck } from './health-check'
 import { registerV1ProjectsGetProject } from './projects/get-project'
+import { registerV1ProjectsListProjects } from './projects/list-projects'
 import { registerV1TeamsCreateTeam } from './teams/create-team'
 import { registerV1TeamsDeleteTeam } from './teams/delete-team'
 import { registerV1TeamsGetTeam } from './teams/get-team'
@@ -44,6 +45,7 @@ registerV1TeamsMembersDeleteTeamMember(pri)
 
 // Projects crud
 registerV1ProjectsGetProject(pri)
+registerV1ProjectsListProjects(pri)
 
 // Setup routes and middleware
 apiV1.route('/', pub)

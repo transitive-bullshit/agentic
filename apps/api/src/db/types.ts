@@ -44,3 +44,5 @@ export type ConsumerWithProjectAndDeployment = BuildQueryResult<
   Tables['consumers'],
   { with: { project: true; deployment: true } }
 >
+
+export type LogEntry = z.infer<typeof schema.logEntrySelectSchema>

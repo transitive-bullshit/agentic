@@ -5,9 +5,10 @@ import {
   pgTable,
   primaryKey
 } from '@fisch0920/drizzle-orm/pg-core'
+import { z } from '@hono/zod-openapi'
 
-import { teams } from './team'
-import { users } from './user'
+import { teams, teamSelectSchema } from './team'
+import { users, userSelectSchema } from './user'
 import {
   createInsertSchema,
   createSelectSchema,
@@ -59,14 +60,29 @@ export const teamMembersRelations = relations(teamMembers, ({ one }) => ({
   })
 }))
 
-export const teamMemberSelectSchema =
-  createSelectSchema(teamMembers).openapi('TeamMember')
+export const teamMemberSelectSchema = createSelectSchema(teamMembers)
+  .extend({
+    user: z
+      .lazy(() => userSelectSchema)
+      .optional()
+      .openapi('User', { type: 'object' }),
 
-export const teamMemberInsertSchema = createInsertSchema(teamMembers).pick({
-  userId: true,
-  role: true
-})
+    team: z
+      .lazy(() => teamSelectSchema)
+      .optional()
+      .openapi('Team', { type: 'object' })
+  })
+  .openapi('TeamMember')
 
-export const teamMemberUpdateSchema = createUpdateSchema(teamMembers).pick({
-  role: true
-})
+export const teamMemberInsertSchema = createInsertSchema(teamMembers)
+  .pick({
+    userId: true,
+    role: true
+  })
+  .strict()
+
+export const teamMemberUpdateSchema = createUpdateSchema(teamMembers)
+  .pick({
+    role: true
+  })
+  .strict()

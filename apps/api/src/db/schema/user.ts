@@ -89,6 +89,7 @@ export const userInsertSchema = createInsertSchema(users, {
     lastName: true,
     image: true
   })
+  .strict()
   .refine((user) => {
     return {
       ...user,
@@ -105,6 +106,7 @@ export const userUpdateSchema = createUpdateSchema(users)
     password: true,
     isStripeConnectEnabledByDefault: true
   })
+  .strict()
   .refine((user) => {
     return {
       ...user,

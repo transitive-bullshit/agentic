@@ -6,9 +6,10 @@ import {
   text,
   uniqueIndex
 } from '@fisch0920/drizzle-orm/pg-core'
+import { z } from '@hono/zod-openapi'
 
 import { teamMembers } from './team-member'
-import { users } from './user'
+import { users, userSelectSchema } from './user'
 import {
   createInsertSchema,
   createSelectSchema,
@@ -45,16 +46,27 @@ export const teamsRelations = relations(teams, ({ one, many }) => ({
   members: many(teamMembers)
 }))
 
-export const teamSelectSchema = createSelectSchema(teams).openapi('Team')
+export const teamSelectSchema = createSelectSchema(teams)
+  .extend({
+    owner: z
+      .lazy(() => userSelectSchema)
+      .optional()
+      .openapi('User', { type: 'object' })
+  })
+  .openapi('Team')
 
 export const teamInsertSchema = createInsertSchema(teams, {
   slug: (schema) =>
     schema.refine((slug) => validators.team(slug), {
       message: 'Invalid team slug'
     })
-}).omit({ id: true, createdAt: true, updatedAt: true, ownerId: true })
-
-export const teamUpdateSchema = createUpdateSchema(teams).pick({
-  name: true,
-  ownerId: true
 })
+  .omit({ id: true, createdAt: true, updatedAt: true, ownerId: true })
+  .strict()
+
+export const teamUpdateSchema = createUpdateSchema(teams)
+  .pick({
+    name: true,
+    ownerId: true
+  })
+  .strict()

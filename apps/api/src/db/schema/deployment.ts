@@ -10,14 +10,14 @@ import {
 import { z } from '@hono/zod-openapi'
 
 import { projects } from './project'
-import { teams } from './team'
+import { teams, teamSelectSchema } from './team'
 import {
   type Coupon,
   couponSchema,
   type PricingPlan,
   pricingPlanSchema
 } from './types'
-import { users } from './user'
+import { users, userSelectSchema } from './user'
 import {
   createInsertSchema,
   createSelectSchema,
@@ -114,6 +114,17 @@ export const deploymentSelectSchema = createSelectSchema(deployments, {
   .omit({
     _url: true
   })
+  .extend({
+    user: z
+      .lazy(() => userSelectSchema)
+      .optional()
+      .openapi('User', { type: 'object' }),
+
+    team: z
+      .lazy(() => teamSelectSchema)
+      .optional()
+      .openapi('Team', { type: 'object' })
+  })
   .openapi('Deployment')
 
 export const deploymentInsertSchema = createInsertSchema(deployments, {
@@ -133,13 +144,17 @@ export const deploymentInsertSchema = createInsertSchema(deployments, {
   // env: z.object({}),
   pricingPlans: z.array(pricingPlanSchema),
   coupons: z.array(couponSchema).optional()
-}).omit({ id: true, createdAt: true, updatedAt: true })
-
-export const deploymentUpdateSchema = createUpdateSchema(deployments).pick({
-  enabled: true,
-  published: true,
-  version: true,
-  description: true
 })
+  .omit({ id: true, createdAt: true, updatedAt: true })
+  .strict()
+
+export const deploymentUpdateSchema = createUpdateSchema(deployments)
+  .pick({
+    enabled: true,
+    published: true,
+    version: true,
+    description: true
+  })
+  .strict()
 
 // TODO: add admin select schema which includes all fields?

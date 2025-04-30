@@ -6,10 +6,11 @@ import {
   pgTable,
   text
 } from '@fisch0920/drizzle-orm/pg-core'
+import { z } from '@hono/zod-openapi'
 
-import { deployments } from './deployment'
-import { projects } from './project'
-import { users } from './user'
+import { deployments, deploymentSelectSchema } from './deployment'
+import { projects, projectSelectSchema } from './project'
+import { users, userSelectSchema } from './user'
 import {
   createInsertSchema,
   createSelectSchema,
@@ -114,24 +115,43 @@ const stripeValidSubscriptionStatuses = new Set([
 ])
 
 export const consumerSelectSchema = createSelectSchema(consumers)
-  .openapi('Consumer')
   .omit({
     _stripeCustomerId: true
   })
+  .extend({
+    user: z
+      .lazy(() => userSelectSchema)
+      .optional()
+      .openapi('User', { type: 'object' }),
 
-export const consumerInsertSchema = createInsertSchema(consumers).pick({
-  token: true,
-  plan: true,
-  env: true,
-  coupon: true,
-  source: true,
-  userId: true,
-  projectId: true,
-  deploymentId: true
-})
+    project: z
+      .lazy(() => projectSelectSchema)
+      .optional()
+      .openapi('Project', { type: 'object' }),
 
-export const consumerUpdateSchema = createUpdateSchema(consumers).refine(
-  (consumer) => {
+    deployment: z
+      .lazy(() => deploymentSelectSchema)
+      .optional()
+      .openapi('Deployment', { type: 'object' })
+  })
+  .openapi('Consumer')
+
+export const consumerInsertSchema = createInsertSchema(consumers)
+  .pick({
+    token: true,
+    plan: true,
+    env: true,
+    coupon: true,
+    source: true,
+    userId: true,
+    projectId: true,
+    deploymentId: true
+  })
+  .strict()
+
+export const consumerUpdateSchema = createUpdateSchema(consumers)
+  .strict()
+  .refine((consumer) => {
     return {
       ...consumer,
       enabled:
@@ -139,5 +159,4 @@ export const consumerUpdateSchema = createUpdateSchema(consumers).refine(
         (consumer.status &&
           stripeValidSubscriptionStatuses.has(consumer.status))
     }
-  }
-)
+  })
