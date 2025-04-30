@@ -2,7 +2,7 @@ import { z } from '@hono/zod-openapi'
 
 import { userIdSchema } from '@/db'
 
-export const UserIdParamsSchema = z.object({
+export const userIdParamsSchema = z.object({
   userId: userIdSchema.openapi({
     param: {
       description: 'User ID',

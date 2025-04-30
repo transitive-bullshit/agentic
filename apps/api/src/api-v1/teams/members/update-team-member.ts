@@ -6,8 +6,7 @@ import { aclTeamAdmin } from '@/lib/acl-team-admin'
 import { aclTeamMember } from '@/lib/acl-team-member'
 import { assert, parseZodSchema } from '@/lib/utils'
 
-import { TeamSlugParamsSchema } from '../schemas'
-import { TeamMemberUserIdParamsSchema } from './schemas'
+import { teamSlugTeamMemberUserIdParamsSchema } from './schemas'
 
 const route = createRoute({
   description: 'Updates a team member.',
@@ -17,7 +16,7 @@ const route = createRoute({
   path: 'teams/{team}/members/{userId}',
   security: [{ bearerAuth: [] }],
   request: {
-    params: TeamSlugParamsSchema.merge(TeamMemberUserIdParamsSchema),
+    params: teamSlugTeamMemberUserIdParamsSchema,
     body: {
       required: true,
       content: {

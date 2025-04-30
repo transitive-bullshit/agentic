@@ -5,7 +5,7 @@ import { db, eq, schema } from '@/db'
 import { acl } from '@/lib/acl'
 import { assert, parseZodSchema } from '@/lib/utils'
 
-import { UserIdParamsSchema } from './schemas'
+import { userIdParamsSchema } from './schemas'
 
 const route = createRoute({
   description: 'Updates a user',
@@ -15,7 +15,7 @@ const route = createRoute({
   path: 'users/{userId}',
   security: [{ bearerAuth: [] }],
   request: {
-    params: UserIdParamsSchema,
+    params: userIdParamsSchema,
     body: {
       required: true,
       content: {

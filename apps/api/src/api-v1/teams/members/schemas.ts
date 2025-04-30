@@ -2,7 +2,10 @@ import { z } from '@hono/zod-openapi'
 
 import { userIdSchema } from '@/db'
 
-export const TeamMemberUserIdParamsSchema = z.object({
+import { teamSlugParamsSchema } from '../schemas'
+
+export const teamSlugTeamMemberUserIdParamsSchema = z.object({
+  ...teamSlugParamsSchema.shape,
   userId: userIdSchema.openapi({
     param: {
       description: 'Team member user ID',

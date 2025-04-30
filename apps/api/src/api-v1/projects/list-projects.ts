@@ -1,8 +1,10 @@
 import { createRoute, type OpenAPIHono, z } from '@hono/zod-openapi'
 
 import type { AuthenticatedEnv } from '@/lib/types'
-import { db, eq, paginationSchema, schema } from '@/db'
+import { db, eq, schema } from '@/db'
 import { parseZodSchema } from '@/lib/utils'
+
+import { paginationAndPopulateProjectSchema } from './schemas'
 
 const route = createRoute({
   description: 'Lists projects the authenticated user has access to.',
@@ -12,7 +14,7 @@ const route = createRoute({
   path: 'projects',
   security: [{ bearerAuth: [] }],
   request: {
-    query: paginationSchema
+    query: paginationAndPopulateProjectSchema
   },
   responses: {
     200: {
@@ -36,7 +38,8 @@ export function registerV1ProjectsListProjects(
       offset = 0,
       limit = 10,
       sort = 'desc',
-      sortBy = 'createdAt'
+      sortBy = 'createdAt',
+      populate = []
     } = c.req.valid('query')
 
     const user = c.get('user')
@@ -50,7 +53,8 @@ export function registerV1ProjectsListProjects(
           ? eq(schema.projects.teamId, teamMember.teamId)
           : eq(schema.projects.userId, user.id),
       with: {
-        lastPublishedDeployment: true
+        lastPublishedDeployment: true,
+        ...Object.fromEntries(populate.map((field) => [field, true]))
       },
       orderBy: (projects, { asc, desc }) => [
         sort === 'desc' ? desc(projects[sortBy]) : asc(projects[sortBy])

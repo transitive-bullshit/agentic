@@ -6,8 +6,7 @@ import { aclTeamAdmin } from '@/lib/acl-team-admin'
 import { aclTeamMember } from '@/lib/acl-team-member'
 import { assert, parseZodSchema } from '@/lib/utils'
 
-import { TeamSlugParamsSchema } from '../schemas'
-import { TeamMemberUserIdParamsSchema } from './schemas'
+import { teamSlugTeamMemberUserIdParamsSchema } from './schemas'
 
 const route = createRoute({
   description: 'Deletes a team member.',
@@ -17,7 +16,7 @@ const route = createRoute({
   path: 'teams/{team}/members/{userId}',
   security: [{ bearerAuth: [] }],
   request: {
-    params: TeamSlugParamsSchema.merge(TeamMemberUserIdParamsSchema)
+    params: teamSlugTeamMemberUserIdParamsSchema
   },
   responses: {
     200: {
@@ -54,7 +53,7 @@ export function registerV1TeamsMembersDeleteTeamMember(
     assert(
       teamMember,
       404,
-      `Team member "${userId}" for team "${teamSlug}" not found`
+      `Failed to update team member "${userId}" for team "${teamSlug}"`
     )
 
     return c.json(parseZodSchema(schema.teamMemberSelectSchema, teamMember))

@@ -1,11 +1,11 @@
 import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 
 import type { AuthenticatedEnv } from '@/lib/types'
-import { db, eq, populateProjectSchema, schema } from '@/db'
+import { db, eq, schema } from '@/db'
 import { acl } from '@/lib/acl'
 import { assert, parseZodSchema } from '@/lib/utils'
 
-import { ProjectIdParamsSchema } from './schemas'
+import { populateProjectSchema, projectIdParamsSchema } from './schemas'
 
 const route = createRoute({
   description: 'Gets a project',
@@ -15,7 +15,7 @@ const route = createRoute({
   path: 'projects/{projectId}',
   security: [{ bearerAuth: [] }],
   request: {
-    params: ProjectIdParamsSchema,
+    params: projectIdParamsSchema,
     query: populateProjectSchema
   },
   responses: {

@@ -5,7 +5,7 @@ import { and, db, eq, schema } from '@/db'
 import { aclTeamAdmin } from '@/lib/acl-team-admin'
 import { assert, parseZodSchema } from '@/lib/utils'
 
-import { TeamSlugParamsSchema } from '../schemas'
+import { teamSlugParamsSchema } from '../schemas'
 
 const route = createRoute({
   description: 'Creates a team member.',
@@ -15,7 +15,7 @@ const route = createRoute({
   path: 'teams/{team}/members',
   security: [{ bearerAuth: [] }],
   request: {
-    params: TeamSlugParamsSchema,
+    params: teamSlugParamsSchema,
     body: {
       required: true,
       content: {
