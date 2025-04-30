@@ -1,5 +1,5 @@
 import { createMiddleware } from 'hono/factory'
-import { jwt } from 'hono/jwt'
+import * as jwt from 'hono/jwt'
 
 import type { AuthenticatedEnv } from '@/lib/types'
 import { db, eq, schema } from '@/db'
@@ -7,24 +7,40 @@ import { env } from '@/lib/env'
 
 import { assert } from '../utils'
 
-const jwtMiddleware = jwt({
-  secret: env.JWT_SECRET
-})
+const token = await jwt.sign({ userId: 'test', type: 'user' }, env.JWT_SECRET)
+console.log({ token })
 
 export const authenticate = createMiddleware<AuthenticatedEnv>(
   async function authenticateMiddleware(ctx, next) {
-    await jwtMiddleware(ctx, async () => {
-      const payload = ctx.get('jwtPayload')
-      assert(payload, 401, 'Unauthorized')
-      assert(payload.type === 'user', 401, 'Unauthorized')
+    const credentials = ctx.req.raw.headers.get('Authorization')
+    assert(credentials, 401, 'Unauthorized')
 
-      const user = await db.query.users.findFirst({
-        where: eq(schema.users.id, payload.userId)
-      })
-      assert(user, 401, 'Unauthorized')
-      ctx.set('user', user)
+    const parts = credentials.split(/\s+/)
+    assert(
+      parts.length === 1 ||
+        (parts.length === 2 && parts[0]?.toLowerCase() === 'bearer'),
+      401,
+      'Unauthorized'
+    )
+    const token = parts.at(-1)
+    assert(token, 401, 'Unauthorized')
 
-      await next()
+    const payload = await jwt.verify(token, env.JWT_SECRET)
+    console.log({ payload })
+    assert(payload, 401, 'Unauthorized')
+    assert(payload.type === 'user', 401, 'Unauthorized')
+    assert(
+      payload.userId && typeof payload.userId === 'string',
+      401,
+      'Unauthorized'
+    )
+
+    const user = await db.query.users.findFirst({
+      where: eq(schema.users.id, payload.userId)
     })
+    assert(user, 401, 'Unauthorized')
+    ctx.set('user', user as any)
+
+    await next()
   }
 )

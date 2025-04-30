@@ -3,8 +3,8 @@ import { assert } from './utils'
 
 export async function acl<
   TModel extends Record<string, unknown>,
-  TUserField extends keyof TModel = 'user',
-  TTeamField extends keyof TModel = 'team'
+  TUserField extends keyof TModel = 'userId',
+  TTeamField extends keyof TModel = 'teamId'
 >(
   ctx: AuthenticatedContext,
   model: TModel,

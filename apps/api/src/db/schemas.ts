@@ -1,6 +1,8 @@
 import { validators } from '@agentic/validators'
 import { z } from '@hono/zod-openapi'
 
+import { projectRelationsSchema } from './schema/project'
+
 function getCuidSchema(idLabel: string) {
   return z.string().refine((id) => validators.cuid(id), {
     message: `Invalid ${idLabel}`
@@ -39,6 +41,10 @@ export const paginationSchema = z.object({
   limit: z.number().int().positive().max(100).default(10).optional(),
   sort: z.enum(['asc', 'desc']).default('desc').optional(),
   sortBy: z.enum(['createdAt', 'updatedAt']).default('createdAt').optional()
+})
+
+export const populateProjectSchema = z.object({
+  populate: z.array(projectRelationsSchema).default([]).optional()
 })
 
 // import type { PgTable, TableConfig } from '@fisch0920/drizzle-orm/pg-core'

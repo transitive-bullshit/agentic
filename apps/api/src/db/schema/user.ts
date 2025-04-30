@@ -45,7 +45,7 @@ export const users = pgTable(
 
     emailConfirmed: boolean().default(false).notNull(),
     emailConfirmedAt: timestamp(),
-    emailConfirmToken: text().unique().default(sha256()).notNull(),
+    emailConfirmToken: text().unique().notNull(),
     passwordResetToken: text().unique(),
 
     isStripeConnectEnabledByDefault: boolean().default(true).notNull(),
@@ -71,13 +71,6 @@ export const usersRelations = relations(users, ({ many }) => ({
 
 export const userSelectSchema = createSelectSchema(users).openapi('User')
 
-function userRefinementHook(user: Partial<typeof users.$inferInsert>) {
-  return {
-    ...user,
-    password: user.password ? hashSync(user.password) : undefined
-  }
-}
-
 export const userInsertSchema = createInsertSchema(users, {
   username: (schema) =>
     schema.refine((username) => validators.username(username), {
@@ -96,7 +89,13 @@ export const userInsertSchema = createInsertSchema(users, {
     lastName: true,
     image: true
   })
-  .refine(userRefinementHook)
+  .refine((user) => {
+    return {
+      ...user,
+      emailConfirmToken: sha256(),
+      password: user.password ? hashSync(user.password) : undefined
+    }
+  })
 
 export const userUpdateSchema = createUpdateSchema(users)
   .pick({
@@ -106,4 +105,9 @@ export const userUpdateSchema = createUpdateSchema(users)
     password: true,
     isStripeConnectEnabledByDefault: true
   })
-  .refine(userRefinementHook)
+  .refine((user) => {
+    return {
+      ...user,
+      password: user.password ? hashSync(user.password) : undefined
+    }
+  })

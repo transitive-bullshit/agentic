@@ -4,6 +4,7 @@ import type { AuthenticatedEnv } from '@/lib/types'
 import * as middleware from '@/lib/middleware'
 
 import { registerHealthCheck } from './health-check'
+import { registerV1ProjectsGetProject } from './projects/get-project'
 import { registerV1TeamsCreateTeam } from './teams/create-team'
 import { registerV1TeamsDeleteTeam } from './teams/delete-team'
 import { registerV1TeamsGetTeam } from './teams/get-team'
@@ -40,6 +41,9 @@ registerV1TeamsUpdateTeam(pri)
 registerV1TeamsMembersCreateTeamMember(pri)
 registerV1TeamsMembersUpdateTeamMember(pri)
 registerV1TeamsMembersDeleteTeamMember(pri)
+
+// Projects crud
+registerV1ProjectsGetProject(pri)
 
 // Setup routes and middleware
 apiV1.route('/', pub)

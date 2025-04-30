@@ -103,13 +103,12 @@ export const projects = pgTable(
   (table) => [
     index('project_userId_idx').on(table.userId),
     index('project_teamId_idx').on(table.teamId),
-    index('project_teamId_idx').on(table.teamId),
     index('project_createdAt_idx').on(table.createdAt),
     index('project_updatedAt_idx').on(table.updatedAt)
   ]
 )
 
-export const projectsRelations = relations(projects, ({ one, many }) => ({
+export const projectsRelations = relations(projects, ({ one }) => ({
   user: one(users, {
     fields: [projects.userId],
     references: [users.id]
@@ -127,12 +126,27 @@ export const projectsRelations = relations(projects, ({ one, many }) => ({
     fields: [projects.lastDeploymentId],
     references: [deployments.id],
     relationName: 'lastDeployment'
-  }),
-  deployments: many(deployments, { relationName: 'deployments' }),
-  publishedDeployments: many(deployments, {
-    relationName: 'publishedDeployments'
   })
+  // deployments: many(deployments, {
+  //   relationName: 'deployments'
+  // }),
+  // publishedDeployments: many(deployments, {
+  //   relationName: 'publishedDeployments'
+  // })
 }))
+
+export type ProjectRelationFields = keyof ReturnType<
+  (typeof projectsRelations)['config']
+>
+
+export const projectRelationsSchema: z.ZodType<ProjectRelationFields> = z.enum([
+  'user',
+  'team',
+  'lastPublishedDeployment',
+  'lastDeployment'
+  // 'deployments',
+  // 'publishedDeployments'
+])
 
 export const projectSelectSchema = createSelectSchema(projects, {
   stripeMetricProductIds: z.record(z.string(), z.string()).optional()
