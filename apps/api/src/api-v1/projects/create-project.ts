@@ -3,7 +3,8 @@ import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 import type { AuthenticatedEnv } from '@/lib/types'
 import { db, schema } from '@/db'
 import { aclTeamMember } from '@/lib/acl-team-member'
-import { assert, parseZodSchema } from '@/lib/utils'
+import { getProviderToken } from '@/lib/auth/get-provider-token'
+import { assert, parseZodSchema, sha256 } from '@/lib/utils'
 
 const route = createRoute({
   description: 'Creates a new project.',
@@ -57,7 +58,9 @@ export function registerV1ProjectsCreateProject(
         ...body,
         teamId: teamMember?.teamId,
         userId: user.id,
-        id
+        id,
+        _secret: sha256(),
+        _providerToken: getProviderToken({ id })
       })
       .returning()
     assert(project, 404, `Failed to create project "${body.name}"`)

@@ -7,6 +7,7 @@ import { registerHealthCheck } from './health-check'
 import { registerV1ProjectsCreateProject } from './projects/create-project'
 import { registerV1ProjectsGetProject } from './projects/get-project'
 import { registerV1ProjectsListProjects } from './projects/list-projects'
+import { registerV1ProjectsUpdateProject } from './projects/update-project'
 import { registerV1TeamsCreateTeam } from './teams/create-team'
 import { registerV1TeamsDeleteTeam } from './teams/delete-team'
 import { registerV1TeamsGetTeam } from './teams/get-team'
@@ -46,8 +47,9 @@ registerV1TeamsMembersDeleteTeamMember(pri)
 
 // Projects crud
 registerV1ProjectsCreateProject(pri)
-registerV1ProjectsGetProject(pri)
 registerV1ProjectsListProjects(pri)
+registerV1ProjectsGetProject(pri)
+registerV1ProjectsUpdateProject(pri)
 
 // TODO
 // pub.get('/projects/alias/:alias(.+)', require('./projects').readByAlias)
@@ -59,7 +61,6 @@ registerV1ProjectsListProjects(pri)
 //   middleware.authenticate({ passthrough: true }),
 //   require('./projects').read
 // )
-// pri.put('/projects/:project(.+)', require('./projects').update)
 
 // Setup routes and middleware
 apiV1.route('/', pub)

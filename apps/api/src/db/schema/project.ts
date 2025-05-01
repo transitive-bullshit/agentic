@@ -52,10 +52,10 @@ export const projects = pgTable(
     isStripeConnectEnabled: boolean().default(false).notNull(),
 
     // All deployments share the same underlying proxy secret
-    _secret: text(),
+    _secret: text().notNull(),
 
     // Auth token used to access the saasify API on behalf of this project
-    // _providerToken: text().notNull(),
+    _providerToken: text().notNull(),
 
     // TODO: Full-text search
     _text: text().default('').notNull(),
@@ -101,6 +101,7 @@ export const projects = pgTable(
   (table) => [
     index('project_userId_idx').on(table.userId),
     index('project_teamId_idx').on(table.teamId),
+    index('project_alias_idx').on(table.alias),
     index('project_createdAt_idx').on(table.createdAt),
     index('project_updatedAt_idx').on(table.updatedAt)
   ]
@@ -162,7 +163,7 @@ export const projectSelectSchema = createSelectSchema(projects, {
 })
   .omit({
     _secret: true,
-    // _providerToken: true,
+    _providerToken: true,
     _text: true,
     _webhooks: true,
     _stripeCouponIds: true,
@@ -208,15 +209,13 @@ export const projectInsertSchema = createInsertSchema(projects, {
     teamId: true
   })
   .strict()
-// .refine((data) => {
-//   return {
-//     ...data,
-//     _providerToken: getProviderToken(data)
-//   }
-// })
 
-// TODO: narrow update schema
-export const projectUpdateSchema = createUpdateSchema(projects).strict()
+export const projectUpdateSchema = createUpdateSchema(projects)
+  .pick({
+    name: true,
+    alias: true
+  })
+  .strict()
 
 export const projectDebugSelectSchema = createSelectSchema(projects).pick({
   id: true,
@@ -233,4 +232,3 @@ export const projectDebugSelectSchema = createSelectSchema(projects).pick({
 
 // TODO: virtual saasUrl
 // TODO: virtual aliasUrl
-// TODO: virtual stripeConnectParams
