@@ -4,6 +4,7 @@ import type { AuthenticatedEnv } from '@/lib/types'
 import * as middleware from '@/lib/middleware'
 
 import { registerHealthCheck } from './health-check'
+import { registerV1ProjectsCreateProject } from './projects/create-project'
 import { registerV1ProjectsGetProject } from './projects/get-project'
 import { registerV1ProjectsListProjects } from './projects/list-projects'
 import { registerV1TeamsCreateTeam } from './teams/create-team'
@@ -44,8 +45,21 @@ registerV1TeamsMembersUpdateTeamMember(pri)
 registerV1TeamsMembersDeleteTeamMember(pri)
 
 // Projects crud
+registerV1ProjectsCreateProject(pri)
 registerV1ProjectsGetProject(pri)
 registerV1ProjectsListProjects(pri)
+
+// TODO
+// pub.get('/projects/alias/:alias(.+)', require('./projects').readByAlias)
+// pri.get('/projects/provider/:project(.+)', require('./provider').read)
+// pri.put('/projects/provider/:project(.+)', require('./provider').update)
+// pri.put('/projects/connect/:project(.+)', require('./projects').connect)
+// pub.get(
+//   '/projects/:project(.+)',
+//   middleware.authenticate({ passthrough: true }),
+//   require('./projects').read
+// )
+// pri.put('/projects/:project(.+)', require('./projects').update)
 
 // Setup routes and middleware
 apiV1.route('/', pub)

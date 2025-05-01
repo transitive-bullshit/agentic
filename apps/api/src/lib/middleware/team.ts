@@ -17,12 +17,11 @@ export const team = createMiddleware<AuthenticatedEnv>(
         where: and(
           eq(schema.teamMembers.teamId, teamId),
           eq(schema.teamMembers.userId, user.id)
-        ),
-        with: { team: true }
+        )
       })
       assert(teamMember, 401, 'Unauthorized')
 
-      await aclTeamMember(ctx, teamMember)
+      await aclTeamMember(ctx, { teamMember })
 
       ctx.set('teamMember', teamMember)
     }

@@ -10,8 +10,6 @@ import {
 } from '@fisch0920/drizzle-orm/pg-core'
 import { z } from '@hono/zod-openapi'
 
-import { getProviderToken } from '@/lib/auth/get-provider-token'
-
 import { deployments, deploymentSelectSchema } from './deployment'
 import { teams, teamSelectSchema } from './team'
 import { type Webhook } from './types'
@@ -40,7 +38,7 @@ export const projects = pgTable(
     userId: cuid()
       .notNull()
       .references(() => users.id),
-    teamId: cuid().notNull(),
+    teamId: cuid(),
 
     // Most recently published Deployment if one exists
     lastPublishedDeploymentId: deploymentId(),
@@ -57,7 +55,7 @@ export const projects = pgTable(
     _secret: text(),
 
     // Auth token used to access the saasify API on behalf of this project
-    _providerToken: text().notNull(),
+    // _providerToken: text().notNull(),
 
     // TODO: Full-text search
     _text: text().default('').notNull(),
@@ -164,7 +162,7 @@ export const projectSelectSchema = createSelectSchema(projects, {
 })
   .omit({
     _secret: true,
-    _providerToken: true,
+    // _providerToken: true,
     _text: true,
     _webhooks: true,
     _stripeCouponIds: true,
@@ -206,17 +204,16 @@ export const projectInsertSchema = createInsertSchema(projects, {
     })
 })
   .pick({
-    id: true,
     name: true,
-    userId: true
+    teamId: true
   })
   .strict()
-  .refine((data) => {
-    return {
-      ...data,
-      _providerToken: getProviderToken(data)
-    }
-  })
+// .refine((data) => {
+//   return {
+//     ...data,
+//     _providerToken: getProviderToken(data)
+//   }
+// })
 
 // TODO: narrow update schema
 export const projectUpdateSchema = createUpdateSchema(projects).strict()

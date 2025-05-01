@@ -1,10 +1,10 @@
 import type { Context } from 'hono'
 
-import type { TeamMemberWithTeam, User } from '@/db'
+import type { TeamMember, User } from '@/db'
 
 export type AuthenticatedEnvVariables = {
   user: User
-  teamMember?: TeamMemberWithTeam
+  teamMember?: TeamMember
   jwtPayload:
     | {
         type: 'user'

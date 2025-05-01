@@ -7,16 +7,19 @@ export async function aclTeamMember(
   ctx: AuthenticatedContext,
   {
     teamSlug,
+    teamId,
     teamMember,
     userId
   }: {
-    teamSlug: string
+    teamSlug?: string
+    teamId?: string
     teamMember?: TeamMember
     userId?: string
-  }
+  } & ({ teamSlug: string } | { teamId: string } | { teamMember: TeamMember })
 ) {
   const user = ctx.get('user')
   assert(user, 401, 'Authentication required')
+  assert(teamSlug || teamId, 500, 'Either teamSlug or teamId must be provided')
 
   if (user.role === 'admin') {
     // TODO: Allow admins to access all team resources
@@ -28,13 +31,18 @@ export async function aclTeamMember(
   if (!teamMember) {
     teamMember = await db.query.teamMembers.findFirst({
       where: and(
-        eq(schema.teamMembers.teamSlug, teamSlug),
+        teamSlug
+          ? eq(schema.teamMembers.teamSlug, teamSlug)
+          : eq(schema.teamMembers.teamId, teamId!),
         eq(schema.teamMembers.userId, userId)
       )
     })
   }
 
   assert(teamMember, 403, `User does not have access to team "${teamSlug}"`)
+  if (!ctx.get('teamMember')) {
+    ctx.set('teamMember', teamMember)
+  }
 
   assert(
     teamMember.userId === userId,

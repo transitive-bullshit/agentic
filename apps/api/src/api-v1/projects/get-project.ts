@@ -41,7 +41,10 @@ export function registerV1ProjectsGetProject(
 
     const project = await db.query.projects.findFirst({
       where: eq(schema.projects.id, projectId),
-      with: Object.fromEntries(populate.map((field) => [field, true]))
+      with: {
+        lastPublishedDeployment: true,
+        ...Object.fromEntries(populate.map((field) => [field, true]))
+      }
     })
     assert(project, 404, `Project not found "${projectId}"`)
     await acl(c, project, { label: 'Project' })
