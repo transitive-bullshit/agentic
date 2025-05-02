@@ -9,6 +9,7 @@ function getCuidSchema(idLabel: string) {
 
 export const cuidSchema = getCuidSchema('id')
 export const userIdSchema = getCuidSchema('user id')
+export const consumerIdSchema = getCuidSchema('consumer id')
 
 export const projectIdSchema = z
   .string()

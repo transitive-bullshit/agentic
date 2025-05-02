@@ -3,6 +3,7 @@ import { OpenAPIHono } from '@hono/zod-openapi'
 import type { AuthenticatedEnv } from '@/lib/types'
 import * as middleware from '@/lib/middleware'
 
+import { registerV1ConsumersGetConsumer } from './consumers/get-consumer'
 import { registerHealthCheck } from './health-check'
 import { registerV1ProjectsCreateProject } from './projects/create-project'
 import { registerV1ProjectsGetProject } from './projects/get-project'
@@ -18,6 +19,7 @@ import { registerV1TeamsMembersUpdateTeamMember } from './teams/members/update-t
 import { registerV1TeamsUpdateTeam } from './teams/update-team'
 import { registerV1UsersGetUser } from './users/get-user'
 import { registerV1UsersUpdateUser } from './users/update-user'
+import { registerV1StripeWebhook } from './webhooks/stripe-webhook'
 
 export const apiV1 = new OpenAPIHono()
 
@@ -61,6 +63,12 @@ registerV1ProjectsUpdateProject(pri)
 //   middleware.authenticate({ passthrough: true }),
 //   require('./projects').read
 // )
+
+// Consumers crud
+registerV1ConsumersGetConsumer(pri)
+
+// webhook events
+registerV1StripeWebhook(pub)
 
 // Setup routes and middleware
 apiV1.route('/', pub)

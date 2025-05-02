@@ -14,7 +14,6 @@ import { users, userSelectSchema } from './user'
 import {
   createInsertSchema,
   createSelectSchema,
-  createUpdateSchema,
   cuid,
   deploymentId,
   id,
@@ -33,6 +32,7 @@ export const consumers = pgTable(
     id,
     ...timestamps,
 
+    // API token for this consumer
     token: text().notNull(),
     plan: text(),
 
@@ -41,9 +41,6 @@ export const consumers = pgTable(
 
     env: text().default('dev').notNull(),
     coupon: text(),
-
-    // stripe subscription status (synced via webhooks)
-    status: text(),
 
     // only used during initial creation
     source: text(),
@@ -66,6 +63,9 @@ export const consumers = pgTable(
       .references(() => deployments.id, {
         onDelete: 'cascade'
       }),
+
+    // stripe subscription status (synced via webhooks)
+    stripeStatus: text(),
 
     stripeSubscriptionId: stripeId().notNull(),
     stripeSubscriptionBaseItemId: stripeId(),
@@ -107,13 +107,6 @@ export const consumersRelations = relations(consumers, ({ one }) => ({
   })
 }))
 
-const stripeValidSubscriptionStatuses = new Set([
-  'active',
-  'trialing',
-  'incomplete',
-  'past_due'
-])
-
 export const consumerSelectSchema = createSelectSchema(consumers)
   .omit({
     _stripeCustomerId: true
@@ -148,15 +141,3 @@ export const consumerInsertSchema = createInsertSchema(consumers)
     deploymentId: true
   })
   .strict()
-
-export const consumerUpdateSchema = createUpdateSchema(consumers)
-  .strict()
-  .refine((consumer) => {
-    return {
-      ...consumer,
-      enabled:
-        consumer.plan === 'free' ||
-        (consumer.status &&
-          stripeValidSubscriptionStatuses.has(consumer.status))
-    }
-  })

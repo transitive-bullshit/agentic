@@ -5,7 +5,9 @@
 
 # Agentic <!-- omit from toc -->
 
-**TODO**
+## TODO
+
+- simplify logger
 
 ## License
 
