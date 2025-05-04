@@ -19,7 +19,7 @@ const stripeValidSubscriptionStatuses = new Set([
 ])
 
 export function registerV1StripeWebhook(app: OpenAPIHono) {
-  return app.get('/webhooks/stripe', async (ctx) => {
+  return app.post('/webhooks/stripe', async (ctx) => {
     const body = await ctx.req.text()
     const signature = ctx.req.header('Stripe-Signature')
     assert(signature, 400, 'missing signature')
