@@ -66,6 +66,7 @@ export const projects = pgTable(
     stripeBaseProductId: stripeId(),
     stripeRequestProductId: stripeId(),
 
+    // Map between metric slugs and stripe product ids
     // [metricSlug: string]: string
     stripeMetricProductIds: jsonb()
       .$type<Record<string, string>>()

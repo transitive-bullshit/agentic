@@ -52,6 +52,7 @@
     "exit-hook": "catalog:",
     "hono": "^4.7.7",
     "jsonwebtoken": "^9.0.2",
+    "p-all": "^5.0.0",
     "pino": "^9.6.0",
     "pino-abstract-transport": "^2.0.0",
     "postgres": "^3.4.5",

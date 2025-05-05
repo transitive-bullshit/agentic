@@ -4,6 +4,7 @@ import type { AuthenticatedEnv } from '@/lib/types'
 import { db, schema } from '@/db'
 import { aclTeamMember } from '@/lib/acl-team-member'
 import { getProviderToken } from '@/lib/auth/get-provider-token'
+import { ensureAuthUser } from '@/lib/ensure-auth-user'
 import { assert, parseZodSchema, sha256 } from '@/lib/utils'
 
 const route = createRoute({
@@ -42,7 +43,7 @@ export function registerV1ProjectsCreateProject(
 ) {
   return app.openapi(route, async (c) => {
     const body = c.req.valid('json')
-    const user = c.get('user')
+    const user = await ensureAuthUser(c)
 
     if (body.teamId) {
       await aclTeamMember(c, { teamId: body.teamId })

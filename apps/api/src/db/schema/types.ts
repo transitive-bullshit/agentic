@@ -60,7 +60,7 @@ export const pricingPlanTierSchema = z
   .object({
     unitAmount: z.number().optional(),
     flatAmount: z.number().optional(),
-    upTo: z.string()
+    upTo: z.union([z.number(), z.literal('inf')])
   })
   .refine(
     (data) =>
@@ -116,10 +116,10 @@ export const pricingPlanSchema = z
 
     rateLimit: rateLimitSchema.optional(),
 
-    // used to uniquely identify this plan across deployments
+    // used to uniquely identify this pricing plan across deployments
     baseId: z.string(),
 
-    // used to uniquely identify this plan across deployments
+    // used to uniquely identify this pricing plan across deployments
     requestsId: z.string(),
 
     // [metricSlug: string]: string
@@ -128,9 +128,10 @@ export const pricingPlanSchema = z
     // NOTE: the stripe billing plan id(s) for this PricingPlan are referenced
     // in the Project._stripePlans mapping via the plan's hash.
     // NOTE: all metered billing usage is stored in stripe
-    stripeBasePlan: z.string(),
-    stripeRequestPlan: z.string(),
+    stripeBasePlanId: z.string(),
+    stripeRequestPlanId: z.string(),
 
+    // Record mapping metric slugs to stripe plan IDs
     // [metricSlug: string]: string
     stripeMetricPlans: z.record(z.string())
   })

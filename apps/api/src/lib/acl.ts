@@ -1,4 +1,5 @@
 import type { AuthenticatedContext } from './types'
+import { ensureAuthUser } from './ensure-auth-user'
 import { assert } from './utils'
 
 export async function acl<
@@ -18,9 +19,7 @@ export async function acl<
     teamField?: TTeamField
   }
 ) {
-  const user = ctx.get('user')
-  assert(user, 401, 'Authentication required')
-
+  const user = await ensureAuthUser(ctx)
   const teamMember = ctx.get('teamMember')
 
   const userFieldValue = model[userField]

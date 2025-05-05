@@ -67,7 +67,7 @@ export const consumers = pgTable(
     // stripe subscription status (synced via webhooks)
     stripeStatus: text(),
 
-    stripeSubscriptionId: stripeId().notNull(),
+    stripeSubscriptionId: stripeId(),
     stripeSubscriptionBaseItemId: stripeId(),
     stripeSubscriptionRequestItemId: stripeId(),
 
@@ -107,7 +107,16 @@ export const consumersRelations = relations(consumers, ({ one }) => ({
   })
 }))
 
-export const consumerSelectSchema = createSelectSchema(consumers)
+export type ConsumerRelationFields = keyof ReturnType<
+  (typeof consumersRelations)['config']
+>
+
+export const consumerRelationsSchema: z.ZodType<ConsumerRelationFields> =
+  z.enum(['user', 'project', 'deployment'])
+
+export const consumerSelectSchema = createSelectSchema(consumers, {
+  stripeSubscriptionMetricItems: z.record(z.string(), z.string())
+})
   .omit({
     _stripeCustomerId: true
   })
@@ -131,13 +140,10 @@ export const consumerSelectSchema = createSelectSchema(consumers)
 
 export const consumerInsertSchema = createInsertSchema(consumers)
   .pick({
-    token: true,
     plan: true,
     env: true,
     coupon: true,
     source: true,
-    userId: true,
-    projectId: true,
     deploymentId: true
   })
   .strict()

@@ -2,6 +2,7 @@ import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 
 import type { AuthenticatedEnv } from '@/lib/types'
 import { db, schema } from '@/db'
+import { ensureAuthUser } from '@/lib/ensure-auth-user'
 import { ensureUniqueTeamSlug } from '@/lib/ensure-unique-team-slug'
 import { assert, parseZodSchema } from '@/lib/utils'
 
@@ -38,7 +39,7 @@ const route = createRoute({
 
 export function registerV1TeamsCreateTeam(app: OpenAPIHono<AuthenticatedEnv>) {
   return app.openapi(route, async (c) => {
-    const user = c.get('user')
+    const user = await ensureAuthUser(c)
     const body = c.req.valid('json')
 
     await ensureUniqueTeamSlug(body.slug)

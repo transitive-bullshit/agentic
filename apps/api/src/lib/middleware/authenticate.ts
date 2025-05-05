@@ -31,6 +31,7 @@ export const authenticate = createMiddleware<AuthenticatedEnv>(
       401,
       'Unauthorized'
     )
+    ctx.set('userId', payload.userId)
 
     const user = await db.query.users.findFirst({
       where: eq(schema.users.id, payload.userId)

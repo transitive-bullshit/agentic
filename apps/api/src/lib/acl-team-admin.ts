@@ -1,6 +1,7 @@
 import { and, db, eq, schema, type TeamMember } from '@/db'
 
 import type { AuthenticatedContext } from './types'
+import { ensureAuthUser } from './ensure-auth-user'
 import { assert } from './utils'
 
 export async function aclTeamAdmin(
@@ -13,8 +14,7 @@ export async function aclTeamAdmin(
     teamMember?: TeamMember
   }
 ) {
-  const user = ctx.get('user')
-  assert(user, 401, 'Authentication required')
+  const user = await ensureAuthUser(ctx)
 
   if (user.role === 'admin') {
     // TODO: Allow admins to access all team resources

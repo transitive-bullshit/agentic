@@ -36,11 +36,12 @@ export function registerV1TeamsListTeams(app: OpenAPIHono<AuthenticatedEnv>) {
       sort = 'desc',
       sortBy = 'createdAt'
     } = c.req.valid('query')
+    const userId = c.get('userId')
 
     // schema.teamMembers._.columns
 
     const teamMembers = await db.query.teamMembers.findMany({
-      where: eq(schema.teamMembers.userId, c.get('user').id),
+      where: eq(schema.teamMembers.userId, userId),
       with: {
         team: true
       },

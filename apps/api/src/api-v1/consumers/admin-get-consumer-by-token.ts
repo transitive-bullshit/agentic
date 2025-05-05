@@ -2,20 +2,20 @@ import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 
 import type { AuthenticatedEnv } from '@/lib/types'
 import { db, eq, schema } from '@/db'
-import { acl } from '@/lib/acl'
+import { aclAdmin } from '@/lib/acl-admin'
 import { assert, parseZodSchema } from '@/lib/utils'
 
-import { consumerIdParamsSchema, populateConsumerSchema } from './schemas'
+import { consumerTokenParamsSchema, populateConsumerSchema } from './schemas'
 
 const route = createRoute({
   description: 'Gets a consumer',
   tags: ['consumers'],
   operationId: 'getConsumer',
   method: 'get',
-  path: 'consumers/{consumersId}',
+  path: 'admin/consumers/tokens/{token}',
   security: [{ bearerAuth: [] }],
   request: {
-    params: consumerIdParamsSchema,
+    params: consumerTokenParamsSchema,
     query: populateConsumerSchema
   },
   responses: {
@@ -32,21 +32,21 @@ const route = createRoute({
   }
 })
 
-export function registerV1ConsumersGetConsumer(
+export function registerV1AdminConsumersGetConsumerByToken(
   app: OpenAPIHono<AuthenticatedEnv>
 ) {
   return app.openapi(route, async (c) => {
-    const { consumerId } = c.req.valid('param')
+    const { token } = c.req.valid('param')
     const { populate = [] } = c.req.valid('query')
+    await aclAdmin(c)
 
     const consumer = await db.query.consumers.findFirst({
-      where: eq(schema.consumers.id, consumerId),
+      where: eq(schema.consumers.token, token),
       with: {
         ...Object.fromEntries(populate.map((field) => [field, true]))
       }
     })
-    assert(consumer, 404, `Consumer not found "${consumerId}"`)
-    await acl(c, consumer, { label: 'Consumer' })
+    assert(consumer, 404, `Consumer token not found "${token}"`)
 
     return c.json(parseZodSchema(schema.consumerSelectSchema, consumer))
   })

@@ -1,20 +1,11 @@
 import type { Context } from 'hono'
 
-import type { TeamMember, User } from '@/db'
+import type { RawTeamMember, RawUser } from '@/db'
 
 export type AuthenticatedEnvVariables = {
-  user: User
-  teamMember?: TeamMember
-  jwtPayload:
-    | {
-        type: 'user'
-        userId: string
-        username: string
-      }
-    | {
-        type: 'project'
-        projectId: string
-      }
+  userId: string
+  user?: RawUser
+  teamMember?: RawTeamMember
 }
 
 export type AuthenticatedEnv = {
@@ -33,3 +24,13 @@ export type AuthenticatedContext = Context<AuthenticatedEnv>
 //       : T extends object
 //         ? { [K in keyof T]: NullToUndefinedDeep<T[K]> }
 //         : T
+
+export type UndefinedToNullDeep<T> = T extends undefined
+  ? T | null
+  : T extends Date
+    ? T | null
+    : T extends readonly (infer U)[]
+      ? UndefinedToNullDeep<U>[]
+      : T extends object
+        ? { [K in keyof T]: UndefinedToNullDeep<T[K]> }
+        : T | null

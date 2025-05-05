@@ -2,6 +2,7 @@ import { createRoute, type OpenAPIHono, z } from '@hono/zod-openapi'
 
 import type { AuthenticatedEnv } from '@/lib/types'
 import { db, eq, schema } from '@/db'
+import { ensureAuthUser } from '@/lib/ensure-auth-user'
 import { parseZodSchema } from '@/lib/utils'
 
 import { paginationAndPopulateProjectSchema } from './schemas'
@@ -42,7 +43,7 @@ export function registerV1ProjectsListProjects(
       populate = []
     } = c.req.valid('query')
 
-    const user = c.get('user')
+    const user = await ensureAuthUser(c)
     const teamMember = c.get('teamMember')
     const isAdmin = user.role === 'admin'
 

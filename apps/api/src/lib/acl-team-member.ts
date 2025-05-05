@@ -1,6 +1,7 @@
-import { and, db, eq, schema, type TeamMember } from '@/db'
+import { and, db, eq, type RawTeamMember, schema } from '@/db'
 
 import type { AuthenticatedContext } from './types'
+import { ensureAuthUser } from './ensure-auth-user'
 import { assert } from './utils'
 
 export async function aclTeamMember(
@@ -13,12 +14,15 @@ export async function aclTeamMember(
   }: {
     teamSlug?: string
     teamId?: string
-    teamMember?: TeamMember
+    teamMember?: RawTeamMember
     userId?: string
-  } & ({ teamSlug: string } | { teamId: string } | { teamMember: TeamMember })
+  } & (
+    | { teamSlug: string }
+    | { teamId: string }
+    | { teamMember: RawTeamMember }
+  )
 ) {
-  const user = ctx.get('user')
-  assert(user, 401, 'Authentication required')
+  const user = await ensureAuthUser(ctx)
   assert(teamSlug || teamId, 500, 'Either teamSlug or teamId must be provided')
 
   if (user.role === 'admin') {

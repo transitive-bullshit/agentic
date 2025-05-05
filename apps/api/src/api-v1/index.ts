@@ -3,6 +3,7 @@ import { OpenAPIHono } from '@hono/zod-openapi'
 import type { AuthenticatedEnv } from '@/lib/types'
 import * as middleware from '@/lib/middleware'
 
+import { registerV1AdminConsumersGetConsumerByToken } from './consumers/admin-get-consumer-by-token'
 import { registerV1ConsumersGetConsumer } from './consumers/get-consumer'
 import { registerHealthCheck } from './health-check'
 import { registerV1ProjectsCreateProject } from './projects/create-project'
@@ -67,8 +68,11 @@ registerV1ProjectsUpdateProject(pri)
 // Consumers crud
 registerV1ConsumersGetConsumer(pri)
 
-// webhook events
+// Webhook event handlers
 registerV1StripeWebhook(pub)
+
+// Admin routes
+registerV1AdminConsumersGetConsumerByToken(pri)
 
 // Setup routes and middleware
 apiV1.route('/', pub)
