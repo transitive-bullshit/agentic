@@ -336,7 +336,7 @@ export async function upsertStripeSubscription({
       }
     } else {
       // TODO
-      consumerUpdate.stripeSubscriptionMetricItems![metricSlug] = null
+      delete consumerUpdate.stripeSubscriptionMetricItems![metricSlug]
     }
   }
 
@@ -350,7 +350,7 @@ export async function upsertStripeSubscription({
 
   const [updatedConsumer] = await db
     .update(schema.consumers)
-    .set(consumerUpdate as any) // TODO
+    .set(consumerUpdate)
     .where(eq(schema.consumers.id, consumer.id))
     .returning()
   assert(updatedConsumer, 500, 'Error updating consumer')

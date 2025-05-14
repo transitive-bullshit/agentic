@@ -25,12 +25,18 @@ export type AuthenticatedContext = Context<AuthenticatedEnv>
 //         ? { [K in keyof T]: NullToUndefinedDeep<T[K]> }
 //         : T
 
-export type UndefinedToNullDeep<T> = T extends undefined
-  ? T | null
-  : T extends Date
-    ? T | null
-    : T extends readonly (infer U)[]
-      ? UndefinedToNullDeep<U>[]
-      : T extends object
-        ? { [K in keyof T]: UndefinedToNullDeep<T[K]> }
-        : T | null
+// // TODO: currently unused
+// export type UndefinedToNullDeep<T> = T extends undefined
+//   ? T | null
+//   : T extends Date
+//     ? T | null
+//     : T extends readonly (infer U)[]
+//       ? UndefinedToNullDeep<U>[]
+//       : T extends object
+//         ? { [K in keyof T]: UndefinedToNullDeep<T[K]> }
+//         : T | null
+
+// // TODO: currently unused
+// export type UndefinedValuesToNullableValues<T> = T extends object
+//   ? { [K in keyof T]: T[K] extends undefined ? T[K] | null : T[K] }
+//   : T

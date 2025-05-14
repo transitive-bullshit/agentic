@@ -5,6 +5,7 @@ export default [
   ...config,
   {
     files: ['**/*.ts', '**/*.tsx'],
+    ignores: ['**/out/**'],
     plugins: {
       drizzle
     },

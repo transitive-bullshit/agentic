@@ -6,8 +6,6 @@ import type {
 } from '@fisch0920/drizzle-orm'
 import type { z } from '@hono/zod-openapi'
 
-import type { UndefinedToNullDeep } from '@/lib/types'
-
 import type * as schema from './schema'
 
 export type Tables = ExtractTablesWithRelations<typeof schema>
@@ -55,11 +53,9 @@ export type ConsumerWithProjectAndDeployment = BuildQueryResult<
 >
 export type RawConsumer = InferSelectModel<typeof schema.consumers>
 export type ConsumerUpdate = Partial<
-  UndefinedToNullDeep<
-    Omit<
-      InferInsertModel<typeof schema.consumers>,
-      'id' | 'projectId' | 'userId' | 'deploymentId'
-    >
+  Omit<
+    InferInsertModel<typeof schema.consumers>,
+    'id' | 'projectId' | 'userId' | 'deploymentId'
   >
 >
 
