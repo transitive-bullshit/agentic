@@ -220,7 +220,7 @@ export function createOpenAPIHonoRoute<TAuthenticated extends boolean>(
         }
       }
       // TODO
-      // ...openApiErrorResponses
+      // ...openppiErrorResponses
     }
   })
 }

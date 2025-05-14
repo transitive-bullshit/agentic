@@ -7,7 +7,15 @@ import { upsertStripeConnectCustomer } from '@/lib/billing/upsert-stripe-connect
 import { upsertStripeCustomer } from '@/lib/billing/upsert-stripe-customer'
 import { upsertStripePricingPlans } from '@/lib/billing/upsert-stripe-pricing-plans'
 import { upsertStripeSubscription } from '@/lib/billing/upsert-stripe-subscription'
-import { assert, parseZodSchema, sha256 } from '@/lib/utils'
+import {
+  assert,
+  openapiErrorResponse404,
+  openapiErrorResponse409,
+  openapiErrorResponse410,
+  openapiErrorResponses,
+  parseZodSchema,
+  sha256
+} from '@/lib/utils'
 
 const route = createRoute({
   description:
@@ -35,9 +43,11 @@ const route = createRoute({
           schema: schema.consumerSelectSchema
         }
       }
-    }
-    // TODO
-    // ...openApiErrorResponses
+    },
+    ...openapiErrorResponses,
+    ...openapiErrorResponse404,
+    ...openapiErrorResponse409,
+    ...openapiErrorResponse410
   }
 })
 

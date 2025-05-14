@@ -3,7 +3,12 @@ import { createRoute, type OpenAPIHono, z } from '@hono/zod-openapi'
 import type { AuthenticatedEnv } from '@/lib/types'
 import { db, eq, schema } from '@/db'
 import { acl } from '@/lib/acl'
-import { assert, parseZodSchema } from '@/lib/utils'
+import {
+  assert,
+  openapiErrorResponse404,
+  openapiErrorResponses,
+  parseZodSchema
+} from '@/lib/utils'
 
 import { projectIdParamsSchema } from '../projects/schemas'
 import { paginationAndPopulateConsumerSchema } from './schemas'
@@ -27,9 +32,9 @@ const route = createRoute({
           schema: z.array(schema.consumerSelectSchema)
         }
       }
-    }
-    // TODO
-    // ...openApiErrorResponses
+    },
+    ...openapiErrorResponses,
+    ...openapiErrorResponse404
   }
 })
 

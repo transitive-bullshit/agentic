@@ -4,7 +4,7 @@ import type { AuthenticatedEnv } from '@/lib/types'
 import { db, schema } from '@/db'
 import { ensureAuthUser } from '@/lib/ensure-auth-user'
 import { ensureUniqueTeamSlug } from '@/lib/ensure-unique-team-slug'
-import { assert, parseZodSchema } from '@/lib/utils'
+import { assert, openapiErrorResponses, parseZodSchema } from '@/lib/utils'
 
 const route = createRoute({
   description: 'Creates a team.',
@@ -31,9 +31,8 @@ const route = createRoute({
           schema: schema.teamSelectSchema
         }
       }
-    }
-    // TODO
-    // ...openApiErrorResponses
+    },
+    ...openapiErrorResponses
   }
 })
 
@@ -52,7 +51,7 @@ export function registerV1TeamsCreateTeam(app: OpenAPIHono<AuthenticatedEnv>) {
           ownerId: user.id
         })
         .returning()
-      assert(team, 404, `Failed to create team "${body.slug}"`)
+      assert(team, 500, `Failed to create team "${body.slug}"`)
 
       const [teamMember] = await tx.insert(schema.teamMembers).values({
         userId: user.id,
@@ -63,7 +62,7 @@ export function registerV1TeamsCreateTeam(app: OpenAPIHono<AuthenticatedEnv>) {
       })
       assert(
         teamMember,
-        404,
+        500,
         `Failed to create team member owner for team "${body.slug}"`
       )
 

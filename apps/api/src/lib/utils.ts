@@ -2,6 +2,7 @@ import { createHash, randomUUID } from 'node:crypto'
 
 import type { ContentfulStatusCode } from 'hono/utils/http-status'
 import type { ZodSchema } from 'zod'
+import { z } from '@hono/zod-openapi'
 
 import { HttpError, ZodValidationError } from './errors'
 
@@ -49,3 +50,47 @@ export function parseZodSchema<T>(
     })
   }
 }
+
+const errorContent = {
+  'application/json': {
+    schema: z.object({
+      error: z.string()
+    })
+  }
+} as const
+
+export const openapiErrorResponses = {
+  400: {
+    description: 'Bad Request',
+    content: errorContent
+  },
+  401: {
+    description: 'Unauthorized',
+    content: errorContent
+  },
+  403: {
+    description: 'Forbidden',
+    content: errorContent
+  }
+} as const
+
+export const openapiErrorResponse404 = {
+  404: {
+    description: 'Not Found',
+    content: errorContent
+  }
+} as const
+
+export const openapiErrorResponse409 = {
+  409: {
+    description: 'Conflict',
+    content: errorContent
+  }
+} as const
+
+export const openapiErrorResponse410 = {
+  410: {
+    description: 'Gone',
+    content: errorContent
+  }
+} as const

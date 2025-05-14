@@ -2,7 +2,12 @@ import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 
 import type { AuthenticatedEnv } from '@/lib/types'
 import { db, eq, schema } from '@/db'
-import { assert, parseZodSchema } from '@/lib/utils'
+import {
+  assert,
+  openapiErrorResponse404,
+  openapiErrorResponses,
+  parseZodSchema
+} from '@/lib/utils'
 
 import { projectIdParamsSchema } from './schemas'
 
@@ -32,9 +37,9 @@ const route = createRoute({
           schema: schema.projectSelectSchema
         }
       }
-    }
-    // TODO
-    // ...openApiErrorResponses
+    },
+    ...openapiErrorResponses,
+    ...openapiErrorResponse404
   }
 })
 
@@ -50,7 +55,7 @@ export function registerV1ProjectsUpdateProject(
       .set(body)
       .where(eq(schema.projects.id, projectId))
       .returning()
-    assert(project, 404, `Failed to update project "${projectId}"`)
+    assert(project, 500, `Failed to update project "${projectId}"`)
 
     return c.json(parseZodSchema(schema.projectSelectSchema, project))
   })

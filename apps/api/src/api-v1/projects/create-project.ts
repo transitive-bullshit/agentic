@@ -5,7 +5,12 @@ import { db, schema } from '@/db'
 import { aclTeamMember } from '@/lib/acl-team-member'
 import { getProviderToken } from '@/lib/auth/get-provider-token'
 import { ensureAuthUser } from '@/lib/ensure-auth-user'
-import { assert, parseZodSchema, sha256 } from '@/lib/utils'
+import {
+  assert,
+  openapiErrorResponses,
+  parseZodSchema,
+  sha256
+} from '@/lib/utils'
 
 const route = createRoute({
   description: 'Creates a new project.',
@@ -32,9 +37,8 @@ const route = createRoute({
           schema: schema.projectSelectSchema
         }
       }
-    }
-    // TODO
-    // ...openApiErrorResponses
+    },
+    ...openapiErrorResponses
   }
 })
 
@@ -64,7 +68,7 @@ export function registerV1ProjectsCreateProject(
         _providerToken: getProviderToken({ id })
       })
       .returning()
-    assert(project, 404, `Failed to create project "${body.name}"`)
+    assert(project, 500, `Failed to create project "${body.name}"`)
 
     return c.json(parseZodSchema(schema.projectSelectSchema, project))
   })

@@ -2,7 +2,7 @@ import { createRoute, type OpenAPIHono, z } from '@hono/zod-openapi'
 
 import type { AuthenticatedEnv } from '@/lib/types'
 import { db, eq, paginationSchema, schema } from '@/db'
-import { parseZodSchema } from '@/lib/utils'
+import { openapiErrorResponses, parseZodSchema } from '@/lib/utils'
 
 const route = createRoute({
   description: 'Lists all teams the authenticated user belongs to.',
@@ -22,9 +22,8 @@ const route = createRoute({
           schema: z.array(schema.teamSelectSchema)
         }
       }
-    }
-    // TODO
-    // ...openApiErrorResponses
+    },
+    ...openapiErrorResponses
   }
 })
 

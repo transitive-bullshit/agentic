@@ -1,4 +1,5 @@
 import { OpenAPIHono } from '@hono/zod-openapi'
+import { fromError } from 'zod-validation-error'
 
 import type { AuthenticatedEnv } from '@/lib/types'
 import * as middleware from '@/lib/middleware'
@@ -22,7 +23,18 @@ import { registerV1UsersGetUser } from './users/get-user'
 import { registerV1UsersUpdateUser } from './users/update-user'
 import { registerV1StripeWebhook } from './webhooks/stripe-webhook'
 
-export const apiV1 = new OpenAPIHono()
+export const apiV1 = new OpenAPIHono({
+  defaultHook: (result, ctx) => {
+    if (!result.success) {
+      return ctx.json(
+        {
+          error: fromError(result.error).toString()
+        },
+        400
+      )
+    }
+  }
+})
 
 // Public routes
 const pub = new OpenAPIHono()

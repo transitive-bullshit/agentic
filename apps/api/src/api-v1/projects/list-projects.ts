@@ -3,7 +3,7 @@ import { createRoute, type OpenAPIHono, z } from '@hono/zod-openapi'
 import type { AuthenticatedEnv } from '@/lib/types'
 import { db, eq, schema } from '@/db'
 import { ensureAuthUser } from '@/lib/ensure-auth-user'
-import { parseZodSchema } from '@/lib/utils'
+import { openapiErrorResponses, parseZodSchema } from '@/lib/utils'
 
 import { paginationAndPopulateProjectSchema } from './schemas'
 
@@ -25,9 +25,8 @@ const route = createRoute({
           schema: z.array(schema.projectSelectSchema)
         }
       }
-    }
-    // TODO
-    // ...openApiErrorResponses
+    },
+    ...openapiErrorResponses
   }
 })
 
