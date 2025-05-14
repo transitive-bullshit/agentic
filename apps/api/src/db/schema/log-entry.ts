@@ -101,6 +101,7 @@ export const logEntrySelectSchema = createSelectSchema(logEntries)
       .optional()
       .openapi('Consumer', { type: 'object' })
   })
+  .strip()
   .openapi('LogEntry')
 
 export const logEntryInsertSchema = createInsertSchema(logEntries)

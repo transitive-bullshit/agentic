@@ -192,6 +192,7 @@ export const projectSelectSchema = createSelectSchema(projects, {
       .optional()
       .openapi('Deployment', { type: 'object' })
   })
+  .strip()
   .openapi('Project')
 
 export const projectInsertSchema = createInsertSchema(projects, {

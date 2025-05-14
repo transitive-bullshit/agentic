@@ -136,6 +136,7 @@ export const consumerSelectSchema = createSelectSchema(consumers, {
       .optional()
       .openapi('Deployment', { type: 'object' })
   })
+  .strip()
   .openapi('Consumer')
 
 export const consumerInsertSchema = createInsertSchema(consumers)

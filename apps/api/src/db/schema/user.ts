@@ -13,7 +13,7 @@ import { hashSync } from 'bcryptjs'
 import { sha256 } from '@/lib/utils'
 
 import { teams } from './team'
-import { type AuthProviders, authProvidersSchema } from './types'
+import { type AuthProviders, publicAuthProvidersSchema } from './types'
 import {
   createInsertSchema,
   createSelectSchema,
@@ -69,7 +69,12 @@ export const usersRelations = relations(users, ({ many }) => ({
   teamsOwned: many(teams)
 }))
 
-export const userSelectSchema = createSelectSchema(users).openapi('User')
+export const userSelectSchema = createSelectSchema(users, {
+  providers: publicAuthProvidersSchema
+})
+  .omit({ password: true, emailConfirmToken: true, passwordResetToken: true })
+  .strip()
+  .openapi('User')
 
 export const userInsertSchema = createInsertSchema(users, {
   username: (schema) =>
@@ -77,9 +82,7 @@ export const userInsertSchema = createInsertSchema(users, {
       message: 'Invalid username'
     }),
 
-  email: (schema) => schema.email().optional(),
-
-  providers: authProvidersSchema.optional()
+  email: (schema) => schema.email().optional()
 })
   .pick({
     username: true,

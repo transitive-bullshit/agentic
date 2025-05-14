@@ -5,35 +5,49 @@ export const authProviderTypeSchema = z
   .openapi('AuthProviderType')
 export type AuthProviderType = z.infer<typeof authProviderTypeSchema>
 
-export const authProviderSchema = z
-  .object({
-    provider: authProviderTypeSchema,
+export const authProviderSchema = z.object({
+  provider: authProviderTypeSchema,
 
-    /** Provider-specific user id */
-    id: z.string(),
+  /** Provider-specific user id */
+  id: z.string(),
 
-    /** Provider-specific username */
-    username: z.string().optional(),
+  /** Provider-specific username */
+  username: z.string().optional(),
 
-    /** Standard oauth2 access token */
-    accessToken: z.string().optional(),
+  /** Standard oauth2 access token */
+  accessToken: z.string().optional(),
 
-    /** Standard oauth2 refresh token */
-    refreshToken: z.string().optional(),
+  /** Standard oauth2 refresh token */
+  refreshToken: z.string().optional(),
 
-    /** Stripe public key */
-    publicKey: z.string().optional(),
+  /** Stripe public key */
+  publicKey: z.string().optional(),
 
-    /** OAuth scope(s) */
-    scope: z.string().optional()
-  })
-  .openapi('AuthProvider')
+  /** OAuth scope(s) */
+  scope: z.string().optional()
+})
 export type AuthProvider = z.infer<typeof authProviderSchema>
 
-export const authProvidersSchema = z
-  .record(authProviderTypeSchema, authProviderSchema.optional())
-  .openapi('AuthProviders')
+export const publicAuthProviderSchema = authProviderSchema
+  .omit({
+    accessToken: true,
+    refreshToken: true,
+    publicKey: true
+  })
+  .strip()
+  .openapi('AuthProvider')
+export type PublicAuthProvider = z.infer<typeof publicAuthProviderSchema>
+
+export const authProvidersSchema = z.record(
+  authProviderTypeSchema,
+  authProviderSchema.optional()
+)
 export type AuthProviders = z.infer<typeof authProvidersSchema>
+
+export const publicAuthProvidersSchema = z
+  .record(authProviderTypeSchema, publicAuthProviderSchema.optional())
+  .openapi('AuthProviders')
+export type PublicAuthProviders = z.infer<typeof publicAuthProvidersSchema>
 
 export const webhookSchema = z
   .object({

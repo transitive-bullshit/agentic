@@ -125,6 +125,7 @@ export const deploymentSelectSchema = createSelectSchema(deployments, {
       .optional()
       .openapi('Team', { type: 'object' })
   })
+  .strip()
   .openapi('Deployment')
 
 export const deploymentInsertSchema = createInsertSchema(deployments, {

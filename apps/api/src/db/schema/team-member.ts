@@ -72,6 +72,7 @@ export const teamMemberSelectSchema = createSelectSchema(teamMembers)
       .optional()
       .openapi('Team', { type: 'object' })
   })
+  .strip()
   .openapi('TeamMember')
 
 export const teamMemberInsertSchema = createInsertSchema(teamMembers)
