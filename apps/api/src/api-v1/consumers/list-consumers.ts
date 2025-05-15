@@ -4,11 +4,11 @@ import type { AuthenticatedEnv } from '@/lib/types'
 import { db, eq, schema } from '@/db'
 import { acl } from '@/lib/acl'
 import {
-  assert,
+  openapiAuthenticatedSecuritySchemas,
   openapiErrorResponse404,
-  openapiErrorResponses,
-  parseZodSchema
-} from '@/lib/utils'
+  openapiErrorResponses
+} from '@/lib/openapi-utils'
+import { assert, parseZodSchema } from '@/lib/utils'
 
 import { projectIdParamsSchema } from '../projects/schemas'
 import { paginationAndPopulateConsumerSchema } from './schemas'
@@ -19,7 +19,7 @@ const route = createRoute({
   operationId: 'listConsumers',
   method: 'get',
   path: 'projects/{projectId}/consumers',
-  security: [{ bearerAuth: [] }],
+  security: openapiAuthenticatedSecuritySchemas,
   request: {
     params: projectIdParamsSchema,
     query: paginationAndPopulateConsumerSchema

@@ -2,7 +2,11 @@ import { createRoute, type OpenAPIHono, z } from '@hono/zod-openapi'
 
 import type { AuthenticatedEnv } from '@/lib/types'
 import { db, eq, paginationSchema, schema } from '@/db'
-import { openapiErrorResponses, parseZodSchema } from '@/lib/utils'
+import {
+  openapiAuthenticatedSecuritySchemas,
+  openapiErrorResponses
+} from '@/lib/openapi-utils'
+import { parseZodSchema } from '@/lib/utils'
 
 const route = createRoute({
   description: 'Lists all teams the authenticated user belongs to.',
@@ -10,7 +14,7 @@ const route = createRoute({
   operationId: 'listTeams',
   method: 'get',
   path: 'teams',
-  security: [{ bearerAuth: [] }],
+  security: openapiAuthenticatedSecuritySchemas,
   request: {
     query: paginationSchema
   },

@@ -3,11 +3,11 @@ import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 import type { AuthenticatedEnv } from '@/lib/types'
 import { db, eq, schema } from '@/db'
 import {
-  assert,
+  openapiAuthenticatedSecuritySchemas,
   openapiErrorResponse404,
-  openapiErrorResponses,
-  parseZodSchema
-} from '@/lib/utils'
+  openapiErrorResponses
+} from '@/lib/openapi-utils'
+import { assert, parseZodSchema } from '@/lib/utils'
 
 import { projectIdParamsSchema } from './schemas'
 
@@ -17,7 +17,7 @@ const route = createRoute({
   operationId: 'updateProject',
   method: 'put',
   path: 'projects/{projectId}',
-  security: [{ bearerAuth: [] }],
+  security: openapiAuthenticatedSecuritySchemas,
   request: {
     params: projectIdParamsSchema,
     body: {

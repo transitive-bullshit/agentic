@@ -6,11 +6,10 @@ import { aclTeamMember } from '@/lib/acl-team-member'
 import { getProviderToken } from '@/lib/auth/get-provider-token'
 import { ensureAuthUser } from '@/lib/ensure-auth-user'
 import {
-  assert,
-  openapiErrorResponses,
-  parseZodSchema,
-  sha256
-} from '@/lib/utils'
+  openapiAuthenticatedSecuritySchemas,
+  openapiErrorResponses
+} from '@/lib/openapi-utils'
+import { assert, parseZodSchema, sha256 } from '@/lib/utils'
 
 const route = createRoute({
   description: 'Creates a new project.',
@@ -18,7 +17,7 @@ const route = createRoute({
   operationId: 'createProject',
   method: 'post',
   path: 'projects',
-  security: [{ bearerAuth: [] }],
+  security: openapiAuthenticatedSecuritySchemas,
   request: {
     body: {
       required: true,

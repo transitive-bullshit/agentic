@@ -4,11 +4,11 @@ import type { AuthenticatedEnv } from '@/lib/types'
 import { db, eq, schema } from '@/db'
 import { acl } from '@/lib/acl'
 import {
-  assert,
+  openapiAuthenticatedSecuritySchemas,
   openapiErrorResponse404,
-  openapiErrorResponses,
-  parseZodSchema
-} from '@/lib/utils'
+  openapiErrorResponses
+} from '@/lib/openapi-utils'
+import { assert, parseZodSchema } from '@/lib/utils'
 
 import { userIdParamsSchema } from './schemas'
 
@@ -18,7 +18,7 @@ const route = createRoute({
   operationId: 'updateUser',
   method: 'put',
   path: 'users/{userId}',
-  security: [{ bearerAuth: [] }],
+  security: openapiAuthenticatedSecuritySchemas,
   request: {
     params: userIdParamsSchema,
     body: {

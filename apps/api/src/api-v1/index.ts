@@ -36,6 +36,12 @@ export const apiV1 = new OpenAPIHono({
   }
 })
 
+apiV1.openAPIRegistry.registerComponent('securitySchemes', 'Bearer', {
+  type: 'http',
+  scheme: 'bearer',
+  bearerFormat: 'JWT'
+})
+
 // Public routes
 const pub = new OpenAPIHono()
 

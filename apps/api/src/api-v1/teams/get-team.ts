@@ -4,11 +4,11 @@ import type { AuthenticatedEnv } from '@/lib/types'
 import { db, eq, schema } from '@/db'
 import { aclTeamMember } from '@/lib/acl-team-member'
 import {
-  assert,
+  openapiAuthenticatedSecuritySchemas,
   openapiErrorResponse404,
-  openapiErrorResponses,
-  parseZodSchema
-} from '@/lib/utils'
+  openapiErrorResponses
+} from '@/lib/openapi-utils'
+import { assert, parseZodSchema } from '@/lib/utils'
 
 import { teamSlugParamsSchema } from './schemas'
 
@@ -18,7 +18,7 @@ const route = createRoute({
   operationId: 'getTeam',
   method: 'get',
   path: 'teams/{team}',
-  security: [{ bearerAuth: [] }],
+  security: openapiAuthenticatedSecuritySchemas,
   request: {
     params: teamSlugParamsSchema
   },

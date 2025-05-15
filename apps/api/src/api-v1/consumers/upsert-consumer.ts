@@ -8,14 +8,13 @@ import { upsertStripeCustomer } from '@/lib/billing/upsert-stripe-customer'
 import { upsertStripePricingPlans } from '@/lib/billing/upsert-stripe-pricing-plans'
 import { upsertStripeSubscription } from '@/lib/billing/upsert-stripe-subscription'
 import {
-  assert,
+  openapiAuthenticatedSecuritySchemas,
   openapiErrorResponse404,
   openapiErrorResponse409,
   openapiErrorResponse410,
-  openapiErrorResponses,
-  parseZodSchema,
-  sha256
-} from '@/lib/utils'
+  openapiErrorResponses
+} from '@/lib/openapi-utils'
+import { assert, parseZodSchema, sha256 } from '@/lib/utils'
 
 const route = createRoute({
   description:
@@ -24,7 +23,7 @@ const route = createRoute({
   operationId: 'createConsumer',
   method: 'post',
   path: 'consumers',
-  security: [{ bearerAuth: [] }],
+  security: openapiAuthenticatedSecuritySchemas,
   request: {
     body: {
       required: true,

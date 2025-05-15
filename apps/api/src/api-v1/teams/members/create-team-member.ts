@@ -4,12 +4,12 @@ import type { AuthenticatedEnv } from '@/lib/types'
 import { and, db, eq, schema } from '@/db'
 import { aclTeamAdmin } from '@/lib/acl-team-admin'
 import {
-  assert,
+  openapiAuthenticatedSecuritySchemas,
   openapiErrorResponse404,
   openapiErrorResponse409,
-  openapiErrorResponses,
-  parseZodSchema
-} from '@/lib/utils'
+  openapiErrorResponses
+} from '@/lib/openapi-utils'
+import { assert, parseZodSchema } from '@/lib/utils'
 
 import { teamSlugParamsSchema } from '../schemas'
 
@@ -19,7 +19,7 @@ const route = createRoute({
   operationId: 'createTeamMember',
   method: 'post',
   path: 'teams/{team}/members',
-  security: [{ bearerAuth: [] }],
+  security: openapiAuthenticatedSecuritySchemas,
   request: {
     params: teamSlugParamsSchema,
     body: {

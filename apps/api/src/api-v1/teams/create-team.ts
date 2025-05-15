@@ -4,7 +4,11 @@ import type { AuthenticatedEnv } from '@/lib/types'
 import { db, schema } from '@/db'
 import { ensureAuthUser } from '@/lib/ensure-auth-user'
 import { ensureUniqueTeamSlug } from '@/lib/ensure-unique-team-slug'
-import { assert, openapiErrorResponses, parseZodSchema } from '@/lib/utils'
+import {
+  openapiAuthenticatedSecuritySchemas,
+  openapiErrorResponses
+} from '@/lib/openapi-utils'
+import { assert, parseZodSchema } from '@/lib/utils'
 
 const route = createRoute({
   description: 'Creates a team.',
@@ -12,7 +16,7 @@ const route = createRoute({
   operationId: 'createTeam',
   method: 'post',
   path: 'teams',
-  security: [{ bearerAuth: [] }],
+  security: openapiAuthenticatedSecuritySchemas,
   request: {
     body: {
       required: true,

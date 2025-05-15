@@ -3,7 +3,11 @@ import { createRoute, type OpenAPIHono, z } from '@hono/zod-openapi'
 import type { AuthenticatedEnv } from '@/lib/types'
 import { db, eq, schema } from '@/db'
 import { ensureAuthUser } from '@/lib/ensure-auth-user'
-import { openapiErrorResponses, parseZodSchema } from '@/lib/utils'
+import {
+  openapiAuthenticatedSecuritySchemas,
+  openapiErrorResponses
+} from '@/lib/openapi-utils'
+import { parseZodSchema } from '@/lib/utils'
 
 import { paginationAndPopulateProjectSchema } from './schemas'
 
@@ -13,7 +17,7 @@ const route = createRoute({
   operationId: 'listProjects',
   method: 'get',
   path: 'projects',
-  security: [{ bearerAuth: [] }],
+  security: openapiAuthenticatedSecuritySchemas,
   request: {
     query: paginationAndPopulateProjectSchema
   },

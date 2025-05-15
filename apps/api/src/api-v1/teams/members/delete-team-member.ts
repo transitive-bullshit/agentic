@@ -5,11 +5,11 @@ import { and, db, eq, schema } from '@/db'
 import { aclTeamAdmin } from '@/lib/acl-team-admin'
 import { aclTeamMember } from '@/lib/acl-team-member'
 import {
-  assert,
+  openapiAuthenticatedSecuritySchemas,
   openapiErrorResponse404,
-  openapiErrorResponses,
-  parseZodSchema
-} from '@/lib/utils'
+  openapiErrorResponses
+} from '@/lib/openapi-utils'
+import { assert, parseZodSchema } from '@/lib/utils'
 
 import { teamSlugTeamMemberUserIdParamsSchema } from './schemas'
 
@@ -19,7 +19,7 @@ const route = createRoute({
   operationId: 'deleteTeamMember',
   method: 'delete',
   path: 'teams/{team}/members/{userId}',
-  security: [{ bearerAuth: [] }],
+  security: openapiAuthenticatedSecuritySchemas,
   request: {
     params: teamSlugTeamMemberUserIdParamsSchema
   },
