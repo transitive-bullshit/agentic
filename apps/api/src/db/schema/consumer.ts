@@ -26,6 +26,16 @@ import {
 // This may require a separate model to aggregate User Applications.
 // https://docs.rapidapi.com/docs/keys#section-different-api-keys-per-application
 
+/**
+ * A `Consumer` is a user who has subscribed to a `Project`.
+ *
+ * Consumers are used to track usage and billing for a project.
+ *
+ * Consumers are linked to a corresponding Stripe Customer. The Stripe customer
+ * will either be the user's default Stripe Customer for the platform account,
+ * or a customer on the project's connected Stripe account if the project has
+ * Stripe Connect enabled.
+ */
 export const consumers = pgTable(
   'consumers',
   {
@@ -34,9 +44,15 @@ export const consumers = pgTable(
 
     // API token for this consumer
     token: text().notNull(),
+
+    // The stripe subscription plan this consumer is subscribed to (or 'free' if supported)
     plan: text(),
 
+    // Whether the consumer has made at least one successful API call after
+    // initializing their subscription.
     activated: boolean().default(false).notNull(),
+
+    // Whether the consumer's subscription is currently active
     enabled: boolean().default(true).notNull(),
 
     env: text().default('dev').notNull(),

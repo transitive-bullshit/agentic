@@ -34,7 +34,7 @@ const server = serve({
   port: env.PORT
 })
 
+initExitHooks({ server })
+
 // eslint-disable-next-line no-console
 console.log(`Server running on port ${env.PORT}`)
-
-initExitHooks({ server })

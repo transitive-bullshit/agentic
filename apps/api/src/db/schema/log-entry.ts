@@ -1,5 +1,5 @@
 import { relations } from '@fisch0920/drizzle-orm'
-import { index, pgTable, text } from '@fisch0920/drizzle-orm/pg-core'
+import { index, jsonb, pgTable, text } from '@fisch0920/drizzle-orm/pg-core'
 import { z } from '@hono/zod-openapi'
 
 import { consumers, consumerSelectSchema } from './consumer'
@@ -12,45 +12,48 @@ import {
   cuid,
   deploymentId,
   id,
+  logEntryLevelEnum,
+  logEntryTypeEnum,
   projectId,
-  stripeId,
   timestamps
 } from './utils'
 
+/**
+ * A `LogEntry` is an internal audit log entry.
+ */
 export const logEntries = pgTable(
   'log_entries',
   {
     id,
     ...timestamps,
 
-    type: text().notNull(),
-    level: text().notNull().default('info'), // TODO: enum
+    // core data (required)
+    type: logEntryTypeEnum().notNull().default('log'),
+    level: logEntryLevelEnum().notNull().default('info'),
+    message: text().notNull(),
 
-    // relations
+    // context info (required)
+    environment: text(),
+    service: text(),
+    requestId: text(),
+    traceId: text(),
+
+    // relations (optional)
     userId: cuid(),
     projectId: projectId(),
     deploymentId: deploymentId(),
     consumerId: cuid(),
 
-    // (optional) misc context info
-    service: text(),
-    hostname: text(),
-    provider: text(),
-    ip: text(),
-    plan: text(),
-    subtype: text(),
-
-    // (optional) denormalized info
-    username: text(),
-    email: text(),
-    token: text(),
-
-    // (optional) denormalized stripe info
-    stripeCustomer: stripeId(),
-    stripeSubscription: stripeId()
+    // misc metadata (optional)
+    metadata: jsonb().$type<Record<string, unknown>>().default({}).notNull()
   },
   (table) => [
     index('log_entry_type_idx').on(table.type),
+    index('log_entry_level_idx').on(table.level),
+    index('log_entry_environment_idx').on(table.environment),
+    index('log_entry_service_idx').on(table.service),
+    index('log_entry_requestId_idx').on(table.requestId),
+    index('log_entry_traceId_idx').on(table.traceId),
     index('log_entry_userId_idx').on(table.userId),
     index('log_entry_projectId_idx').on(table.projectId),
     index('log_entry_deploymentId_idx').on(table.deploymentId),

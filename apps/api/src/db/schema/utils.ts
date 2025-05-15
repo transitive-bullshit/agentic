@@ -92,6 +92,14 @@ export const timestamps = {
 
 export const userRoleEnum = pgEnum('UserRole', ['user', 'admin'])
 export const teamMemberRoleEnum = pgEnum('TeamMemberRole', ['user', 'admin'])
+export const logEntryTypeEnum = pgEnum('LogEntryType', ['log'])
+export const logEntryLevelEnum = pgEnum('LogEntryLevel', [
+  'trace',
+  'debug',
+  'info',
+  'warn',
+  'error'
+])
 
 export const { createInsertSchema, createSelectSchema, createUpdateSchema } =
   createSchemaFactory({
