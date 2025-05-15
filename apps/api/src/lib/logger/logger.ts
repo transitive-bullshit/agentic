@@ -1,116 +1,113 @@
-import fs from 'node:fs'
-
 import * as Sentry from '@sentry/node'
-import { type Logger, pino } from 'pino'
 
-import { isBrowser, isDev, isProd } from '@/lib/env'
+import type { Environment, Service } from '@/lib/types'
+import { env } from '@/lib/env'
 
-import {
-  formatGcpLogObject,
-  getGcpLoggingTimestamp,
-  pinoLevelToGcpSeverity
-} from './gcp-formatters'
 import { getTraceId } from './utils'
 
-const gcpTransportPath = `${import.meta.dirname}/gcp-transport.js`
-
-// TODO: Transport imports are hacky; find a better workaround
-const transportExists = fs.existsSync(gcpTransportPath)
-
-export const logger = pino({
-  messageKey: 'message',
-  level: isProd ? 'info' : 'trace',
-  timestamp: () => getGcpLoggingTimestamp(),
-  // Add the Sentry trace ID to the log context
-  mixin(_obj, _level, mixinLogger) {
-    try {
-      // Check if the logger already has a traceId in its bindings
-      const currentBindings = mixinLogger.bindings()
-      if (
-        currentBindings &&
-        typeof currentBindings === 'object' &&
-        'traceId' in currentBindings &&
-        currentBindings.traceId
-      ) {
-        // If traceId already exists in bindings, use that
-        const traceId = currentBindings.traceId
-        return { traceId, meta: { traceId } }
-      }
-
-      // Otherwise, get the trace ID from Sentry
-      const traceId = getTraceId()
-
-      // Duplicate in the `meta` field
-      return traceId ? { traceId, meta: { traceId } } : {}
-    } catch (err) {
-      Sentry.captureException(err)
-      return {}
-    }
-  },
-  formatters: {
-    level: pinoLevelToGcpSeverity,
-    log: (entry: Record<string, unknown>) => formatGcpLogObject(entry)
-  },
-  transport:
-    isDev && !isBrowser && transportExists
-      ? { target: gcpTransportPath }
-      : undefined,
-  hooks: {
-    logMethod(args, method, level) {
-      // Only capture errors if the log level is at least 50 (error)
-      if (level >= 50) {
-        let foundError: Error | undefined
-        const arg0 = args[0] as unknown
-        const arg1 = args[1] as unknown
-
-        for (const arg of [arg0, arg1]) {
-          if (arg instanceof Error) {
-            foundError = arg
-          } else if (arg && typeof arg === 'object') {
-            if ('err' in arg && arg.err instanceof Error) {
-              foundError = arg.err
-            }
-
-            if ('error' in arg && arg.error instanceof Error) {
-              foundError = arg.error
-            }
-          }
-
-          if (foundError) {
-            break
-          }
-        }
-
-        if (foundError) {
-          Sentry.captureException(foundError)
-        }
-      }
-
-      return method.apply(this, args)
-    }
-  }
-})
-
-// TODO: Add more groups
-export type LogGroup = 'api'
-
-/** Standardized way to extend the logger with helpful info */
-export function extendedLogger({
-  logger: baseLogger = logger,
-  ...args
-}: {
-  group: LogGroup
-  name: string
-  /** A more specific subtype of the name */
-  nameSubtype?: string
-  /** The eventId to add to the logger */
-  eventId?: string
-  logger?: Logger
-}): Logger {
-  const { group, name, nameSubtype } = args
-  return baseLogger.child(args, {
-    msgPrefix: `[${group}:${name}${nameSubtype ? `:${nameSubtype}` : ''}] `
-  })
+export interface Logger {
+  trace(message?: any, ...detail: any[]): void
+  debug(message?: any, ...detail: any[]): void
+  info(message?: any, ...detail: any[]): void
+  warn(message?: any, ...detail: any[]): void
+  error(message?: any, ...detail: any[]): void
 }
 
-export type { Logger } from 'pino'
+export type LogLevel = 'trace' | 'debug' | 'info' | 'warn' | 'error'
+
+export class ConsoleLogger implements Logger {
+  protected readonly environment: Environment
+  protected readonly service: Service
+  protected readonly requestId: string
+  protected readonly metadata: Record<string, unknown>
+  protected readonly console: Console
+
+  constructor({
+    requestId,
+    service,
+    environment = env.NODE_ENV,
+    metadata = {},
+    console = globalThis.console
+  }: {
+    requestId: string
+    service: Service
+    environment?: Environment
+    metadata?: Record<string, unknown>
+    console?: Console
+  }) {
+    this.requestId = requestId
+    this.service = service
+    this.environment = environment
+    this.metadata = metadata
+    this.console = console
+  }
+
+  trace(message?: any, ...detail: any[]) {
+    this.console.trace(this._marshal('trace', message, ...detail))
+  }
+
+  debug(message?: any, ...detail: any[]) {
+    this.console.debug(this._marshal('debug', message, ...detail))
+  }
+
+  info(message?: any, ...detail: any[]) {
+    this.console.info(this._marshal('info', message, ...detail))
+  }
+
+  warn(message?: any, ...detail: any[]) {
+    this.console.warn(this._marshal('warn', message, ...detail))
+  }
+
+  error(message?: any, ...detail: any[]) {
+    this.console.error(this._marshal('error', message, ...detail))
+  }
+
+  protected _marshal(level: LogLevel, message?: any, ...detail: any[]): string {
+    const log = {
+      type: 'log',
+      level,
+      message,
+      detail,
+      time: Date.now(),
+      env: this.environment,
+      service: this.service,
+      requestId: this.requestId,
+      traceId: getTraceId(),
+      metadata: this.metadata
+    }
+
+    if (level === 'error') {
+      let foundError: Error | undefined
+      for (const arg of detail) {
+        if (!arg) {
+          continue
+        }
+
+        if (arg instanceof Error) {
+          foundError = arg
+          break
+        }
+
+        if (typeof arg !== 'object') {
+          continue
+        }
+
+        if ('err' in arg && arg.err instanceof Error) {
+          foundError = arg.err
+          break
+        }
+
+        if ('error' in arg && arg.error instanceof Error) {
+          foundError = arg.error
+          break
+        }
+      }
+
+      if (foundError) {
+        Sentry.captureException(foundError)
+      }
+    }
+
+    return JSON.stringify(log, null, this.environment === 'development' ? 2 : 0)
+  }
+}

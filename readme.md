@@ -5,10 +5,6 @@
 
 # Agentic <!-- omit from toc -->
 
-## TODO
-
-- simplify logger
-
 ## License
 
 UNLICENSED PROPRIETARY © [Agentic](https://x.com/transitive_bs)

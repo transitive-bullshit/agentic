@@ -3,11 +3,12 @@ import * as Sentry from '@sentry/node'
 import { createMiddleware } from 'hono/factory'
 import { HTTPException } from 'hono/http-exception'
 
-import type { AuthenticatedEnv } from '@/lib/types'
+import type { DefaultEnv } from '@/lib/types'
 import { HttpError } from '@/lib/errors'
-import { logger } from '@/lib/logger'
 
-export const errorHandler = createMiddleware<AuthenticatedEnv>(
+import { env } from '../env'
+
+export const errorHandler = createMiddleware<DefaultEnv>(
   async function errorHandlerMiddleware(ctx, next) {
     try {
       await next()
@@ -15,7 +16,7 @@ export const errorHandler = createMiddleware<AuthenticatedEnv>(
       if (!ctx.res.status) {
         throw new HttpError({ statusCode: 404, message: 'Not Found' })
       }
-    } catch (err) {
+    } catch (err: any) {
       let message = 'Internal Server Error'
       let status: ContentfulStatusCode = 500
 
@@ -25,11 +26,16 @@ export const errorHandler = createMiddleware<AuthenticatedEnv>(
       } else if (err instanceof HttpError) {
         message = err.message
         status = err.statusCode
+      } else if (env.NODE_ENV === 'development' || env.NODE_ENV === 'test') {
+        message = err.message ?? message
       }
 
+      const logger = ctx.get('logger')
       if (status >= 500) {
-        logger.error({ err, status, message })
+        logger.error(message, { err, status })
         Sentry.captureException(err)
+      } else {
+        logger.warn(message, { err, status })
       }
 
       ctx.json({ error: message }, status)

@@ -10,7 +10,8 @@ export default [
       drizzle
     },
     rules: {
-      ...drizzle.configs.recommended.rules
+      ...drizzle.configs.recommended.rules,
+      'no-console': 'error'
     }
   }
 ]

@@ -3,7 +3,7 @@ import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 import type { AuthenticatedEnv } from '@/lib/types'
 import { db, schema } from '@/db'
 import { aclTeamMember } from '@/lib/acl-team-member'
-import { getProviderToken } from '@/lib/auth/get-provider-token'
+import { createProviderToken } from '@/lib/auth/create-provider-token'
 import { ensureAuthUser } from '@/lib/ensure-auth-user'
 import {
   openapiAuthenticatedSecuritySchemas,
@@ -64,7 +64,7 @@ export function registerV1ProjectsCreateProject(
         userId: user.id,
         id,
         _secret: sha256(),
-        _providerToken: getProviderToken({ id })
+        _providerToken: createProviderToken({ id })
       })
       .returning()
     assert(project, 500, `Failed to create project "${body.name}"`)

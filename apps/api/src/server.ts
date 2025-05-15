@@ -1,4 +1,4 @@
-import '@/lib/instrument'
+import '@/lib/sentry'
 
 import { serve } from '@hono/node-server'
 import { sentry } from '@hono/sentry'
@@ -16,10 +16,11 @@ export const app = new OpenAPIHono()
 
 app.use(sentry())
 app.use(compress())
-// app.use(middleware.accessLogger)
+app.use(cors())
+app.use(middleware.init)
+app.use(middleware.accessLogger)
 app.use(middleware.responseTime)
 app.use(middleware.errorHandler)
-app.use(cors())
 
 app.route('/v1', apiV1)
 
@@ -32,6 +33,8 @@ const server = serve({
   fetch: app.fetch,
   port: env.PORT
 })
+
+// eslint-disable-next-line no-console
 console.log(`Server running on port ${env.PORT}`)
 
 initExitHooks({ server })

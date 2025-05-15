@@ -13,20 +13,26 @@ import {
 import { stripe } from '@/lib/stripe'
 import { assert } from '@/lib/utils'
 
-export async function upsertStripeSubscription({
-  consumer,
-  user,
-  deployment,
-  project
-}: {
-  consumer: RawConsumer
-  user: RawUser
-  deployment: RawDeployment
-  project: RawProject
-}): Promise<{
+import type { AuthenticatedContext } from '../types'
+
+export async function upsertStripeSubscription(
+  ctx: AuthenticatedContext,
+  {
+    consumer,
+    user,
+    deployment,
+    project
+  }: {
+    consumer: RawConsumer
+    user: RawUser
+    deployment: RawDeployment
+    project: RawProject
+  }
+): Promise<{
   subscription: Stripe.Subscription
   consumer: RawConsumer
 }> {
+  const logger = ctx.get('logger')
   const stripeConnectParams = project._stripeAccountId
     ? [
         {
@@ -61,9 +67,9 @@ export async function upsertStripeSubscription({
       ...stripeConnectParams
     )
     const existingItems = existing.items.data
-    console.log()
-    console.log('existing subscription', JSON.stringify(existing, null, 2))
-    console.log()
+    logger.debug()
+    logger.debug('existing subscription', JSON.stringify(existing, null, 2))
+    logger.debug()
 
     const update: Stripe.SubscriptionUpdateParams = {}
 
@@ -87,7 +93,7 @@ export async function upsertStripeSubscription({
 
       for (const metric of pricingPlan.metrics) {
         const { slug: metricSlug } = metric
-        console.log({
+        logger.debug({
           metricSlug,
           plan: pricingPlan.stripeMetricPlans[metricSlug],
           id: consumer.stripeSubscriptionMetricItems[metricSlug]
@@ -101,7 +107,7 @@ export async function upsertStripeSubscription({
 
       const invalidItems = items.filter((item) => !item.plan)
       if (plan && invalidItems.length) {
-        console.error('billing warning found invalid items', invalidItems)
+        logger.error('billing warning found invalid items', invalidItems)
       }
 
       items = items.filter((item) => item.plan)
@@ -113,7 +119,7 @@ export async function upsertStripeSubscription({
           )
 
           if (!existingItem) {
-            console.error(
+            logger.error(
               'billing warning found new item that has a subscription item id but should not',
               { item }
             )
@@ -166,7 +172,7 @@ export async function upsertStripeSubscription({
           24 * 60 * 60 * pricingPlan.trialPeriodDays
       }
 
-      console.log('subscription', action, { items })
+      logger.debug('subscription', action, { items })
     } else {
       update.cancel_at_period_end = true
     }
@@ -234,7 +240,7 @@ export async function upsertStripeSubscription({
       createParams.application_fee_percent = project.applicationFeePercent
     }
 
-    console.log('subscription', action, { items })
+    logger.debug('subscription', action, { items })
     subscription = await stripe.subscriptions.create(
       createParams,
       ...stripeConnectParams
@@ -244,10 +250,7 @@ export async function upsertStripeSubscription({
   }
 
   assert(subscription, 500, 'Missing stripe subscription')
-
-  console.log()
-  console.log('subscription', JSON.stringify(subscription, null, 2))
-  console.log()
+  logger.debug('subscription', subscription)
 
   const consumerUpdate: ConsumerUpdate = consumer
 
@@ -309,7 +312,7 @@ export async function upsertStripeSubscription({
     pricingPlan?.metrics.find((metric) => metric.slug === metricSlug)
 
   for (const metricSlug of metricSlugs) {
-    console.log({
+    logger.debug({
       metricSlug,
       pricingPlan
     })
@@ -340,13 +343,11 @@ export async function upsertStripeSubscription({
     }
   }
 
-  console.log()
-  console.log()
-  console.log('consumer update', {
+  logger.debug()
+  logger.debug('consumer update', {
     ...consumer,
     ...consumerUpdate
   })
-  console.log()
 
   const [updatedConsumer] = await db
     .update(schema.consumers)

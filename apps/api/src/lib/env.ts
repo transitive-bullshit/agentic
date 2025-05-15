@@ -8,14 +8,12 @@ export const envSchema = z.object({
   NODE_ENV: z
     .enum(['development', 'test', 'production'])
     .default('development'),
+
   DATABASE_URL: z.string().url(),
+
   JWT_SECRET: z.string(),
   PORT: z.number().default(3000),
   SENTRY_DSN: z.string().url(),
-
-  WORKOS_CLIENT_ID: z.string(),
-  WORKOS_API_KEY: z.string(),
-  WORKOS_SESSION_SECRET: z.string(),
 
   STRIPE_SECRET_KEY: z.string(),
   STRIPE_PUBLISHABLE_KEY: z.string(),

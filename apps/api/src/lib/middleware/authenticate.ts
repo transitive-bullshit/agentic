@@ -23,7 +23,6 @@ export const authenticate = createMiddleware<AuthenticatedEnv>(
     assert(token, 401, 'Unauthorized')
 
     const payload = await jwt.verify(token, env.JWT_SECRET)
-    console.log({ payload })
     assert(payload, 401, 'Unauthorized')
     assert(payload.type === 'user', 401, 'Unauthorized')
     assert(

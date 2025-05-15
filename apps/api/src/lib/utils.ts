@@ -1,7 +1,7 @@
 import { createHash, randomUUID } from 'node:crypto'
 
 import type { ContentfulStatusCode } from 'hono/utils/http-status'
-import type { ZodSchema } from 'zod'
+import type { ZodSchema, ZodTypeDef } from 'zod'
 
 import { HttpError, ZodValidationError } from './errors'
 
@@ -31,15 +31,19 @@ export function assert(
   }
 }
 
-export function parseZodSchema<T>(
-  schema: ZodSchema<T>,
+export function parseZodSchema<
+  Output,
+  Def extends ZodTypeDef = ZodTypeDef,
+  Input = Output
+>(
+  schema: ZodSchema<Output, Def, Input>,
   input: unknown,
   {
     error
   }: {
     error?: string
   } = {}
-): T {
+): Output {
   try {
     return schema.parse(input)
   } catch (err) {

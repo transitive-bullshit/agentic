@@ -2,16 +2,32 @@ import type { Context } from 'hono'
 
 import type { RawTeamMember, RawUser } from '@/db'
 
-export type AuthenticatedEnvVariables = {
+import type { Env } from './env'
+import type { Logger } from './logger'
+
+export type Environment = Env['NODE_ENV']
+export type Service = 'api'
+
+export type DefaultEnvVariables = {
+  requestId: string
+  logger: Logger
+}
+
+export type AuthenticatedEnvVariables = DefaultEnvVariables & {
   userId: string
   user?: RawUser
   teamMember?: RawTeamMember
+}
+
+export type DefaultEnv = {
+  Variables: DefaultEnvVariables
 }
 
 export type AuthenticatedEnv = {
   Variables: AuthenticatedEnvVariables
 }
 
+export type DefaultContext = Context<DefaultEnv>
 export type AuthenticatedContext = Context<AuthenticatedEnv>
 
 // TODO: currently unused

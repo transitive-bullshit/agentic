@@ -131,20 +131,21 @@ export function registerV1ConsumersUpsertConsumer(
     // consumer._stripeAccount = project._stripeAccount
     await upsertStripeConnectCustomer({ stripeCustomer, consumer, project })
 
-    console.log('SUBSCRIPTION', existing ? 'UPDATE' : 'CREATE', {
+    const logger = c.get('logger')
+    logger.info('SUBSCRIPTION', existing ? 'UPDATE' : 'CREATE', {
       project,
       deployment,
       consumer
     })
 
     const { subscription, consumer: updatedConsumer } =
-      await upsertStripeSubscription({
+      await upsertStripeSubscription(c, {
         consumer,
         user,
         project,
         deployment
       })
-    console.log({ subscription })
+    logger.info('subscription', subscription)
 
     return c.json(parseZodSchema(schema.consumerSelectSchema, updatedConsumer))
   })

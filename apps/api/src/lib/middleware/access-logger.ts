@@ -1,7 +1,14 @@
+import { createMiddleware } from 'hono/factory'
 import { logger as honoLogger } from 'hono/logger'
 
-import { logger } from '@/lib/logger'
+import type { DefaultEnv } from '@/lib/types'
 
 import { unless } from './unless'
 
-export const accessLogger = unless(honoLogger(logger.trace), '/v1/health')
+export const accessLogger = unless(
+  createMiddleware<DefaultEnv>(async (ctx, next) => {
+    const logger = ctx.get('logger')
+    await honoLogger(logger.trace)(ctx, next)
+  }),
+  '/v1/health'
+)
