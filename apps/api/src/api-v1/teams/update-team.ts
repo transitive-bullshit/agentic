@@ -16,7 +16,7 @@ const route = createRoute({
   description: 'Updates a team.',
   tags: ['teams'],
   operationId: 'updateTeam',
-  method: 'put',
+  method: 'post',
   path: 'teams/{team}',
   security: openapiAuthenticatedSecuritySchemas,
   request: {

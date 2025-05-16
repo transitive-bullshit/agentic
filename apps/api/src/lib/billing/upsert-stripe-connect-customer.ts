@@ -4,6 +4,8 @@ import { db, eq, type RawConsumer, type RawProject, schema } from '@/db'
 import { stripe } from '@/lib/stripe'
 import { assert } from '@/lib/utils'
 
+// TODO: Update this for the new / updated Stripe Connect API
+
 export async function upsertStripeConnectCustomer({
   stripeCustomer,
   consumer,

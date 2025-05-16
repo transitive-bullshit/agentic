@@ -13,6 +13,11 @@ import { createSchemaFactory } from '@fisch0920/drizzle-zod'
 import { z } from '@hono/zod-openapi'
 import { createId } from '@paralleldrive/cuid2'
 
+import { hashObject, omit } from '@/lib/utils'
+
+import type { RawProject } from '../types'
+import type { PricingPlanMetric } from './types'
+
 const usernameAndTeamSlugLength = 64 as const
 
 /**
@@ -100,6 +105,13 @@ export const logEntryLevelEnum = pgEnum('LogEntryLevel', [
   'warn',
   'error'
 ])
+export const pricingIntervalEnum = pgEnum('PricingInterval', [
+  'day',
+  'week',
+  'month',
+  'year'
+])
+export const pricingCurrencyEnum = pgEnum('PricingCurrency', ['usd'])
 
 export const { createInsertSchema, createSelectSchema, createUpdateSchema } =
   createSchemaFactory({
@@ -109,3 +121,47 @@ export const { createInsertSchema, createSelectSchema, createUpdateSchema } =
       date: true
     }
   })
+
+/**
+ * Gets the hash used to uniquely map a PricingPlanMetric to its corresponding
+ * Stripe Price in a stable way across deployments within a project.
+ *
+ * This hash is used as the key for the `Project._stripePriceIdMap`.
+ */
+export function getPricingPlanMetricHashForStripePrice({
+  pricingPlanMetric,
+  project
+}: {
+  pricingPlanMetric: PricingPlanMetric
+  project: RawProject
+}) {
+  const hash = hashObject({
+    ...omit(pricingPlanMetric, 'stripePriceId', 'stripeMetricId'),
+    projectId: project.id,
+    stripeAccountId: project._stripeAccountId
+  })
+
+  return `price:${pricingPlanMetric.slug}:${hash}`
+}
+
+/**
+ * Gets the hash used to uniquely map a PricingPlanMetric to its corresponding
+ * Stripe Meter in a stable way across deployments within a project.
+ *
+ * This hash is used as the key for the `Project._stripePriceIdMap`.
+ */
+export function getPricingPlanMetricHashForStripeMeter({
+  pricingPlanMetric,
+  project
+}: {
+  pricingPlanMetric: PricingPlanMetric
+  project: RawProject
+}) {
+  const hash = hashObject({
+    ...omit(pricingPlanMetric, 'stripePriceId', 'stripeMetricId'),
+    projectId: project.id,
+    stripeAccountId: project._stripeAccountId
+  })
+
+  return `price:${pricingPlanMetric.slug}:${hash}`
+}

@@ -5,6 +5,26 @@
 
 # Agentic <!-- omit from toc -->
 
+## TODO
+
+- stripe
+  - plans => prices
+    - monthly vs yearly prices
+  - re-add custom metrics
+  - re-add coupons
+  - declarative json-based pricing
+    - like https://github.com/tierrun/tier and Saasify
+    - https://github.com/tierrun/tier/blob/main/pricing/schema.json
+    - https://blog.tier.run/tier-hello-world-demo
+- auth
+  - decide on approach for auth
+    - built-in, first-party, tight coupling
+    - https://github.com/toolbeam/openauth
+    - https://github.com/aipotheosis-labs/aci/tree/main/backend/apps
+    - https://github.com/NangoHQ/nango
+    - https://github.com/transitive-bullshit?submit=Search&q=oauth&tab=stars&type=&sort=&direction=&submit=Search
+    - clerk / workos / auth0
+
 ## License
 
 UNLICENSED PROPRIETARY © [Agentic](https://x.com/transitive_bs)

@@ -15,7 +15,7 @@ const route = createRoute({
   description: 'Updates a project.',
   tags: ['projects'],
   operationId: 'updateProject',
-  method: 'put',
+  method: 'post',
   path: 'projects/{projectId}',
   security: openapiAuthenticatedSecuritySchemas,
   request: {

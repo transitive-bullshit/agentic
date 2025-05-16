@@ -31,10 +31,10 @@ import {
  *
  * Consumers are used to track usage and billing for a project.
  *
- * Consumers are linked to a corresponding Stripe Customer. The Stripe customer
- * will either be the user's default Stripe Customer for the platform account,
- * or a customer on the project's connected Stripe account if the project has
- * Stripe Connect enabled.
+ * Consumers are linked to a corresponding Stripe Customer and Subscription.
+ * The Stripe customer will either be the user's default Stripe Customer for
+ * the platform account, or a customer on the project's connected Stripe
+ * account if the project has Stripe Connect enabled.
  */
 export const consumers = pgTable(
   'consumers',

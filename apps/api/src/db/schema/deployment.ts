@@ -12,10 +12,10 @@ import { z } from '@hono/zod-openapi'
 import { projects } from './project'
 import { teams, teamSelectSchema } from './team'
 import {
-  type Coupon,
-  couponSchema,
-  type PricingPlan,
-  pricingPlanSchema
+  // type Coupon,
+  // couponSchema,
+  type PricingPlanMapByInterval,
+  pricingPlanMapByIntervalSchema
 } from './types'
 import { users, userSelectSchema } from './user'
 import {
@@ -54,12 +54,8 @@ export const deployments = pgTable(
         onDelete: 'cascade'
       }),
 
-    // TODO: tools?
+    // TODO: Tool definitions or OpenAPI spec
     // services: jsonb().$type<Service[]>().default([]),
-
-    // TODO: Environment variables & secrets
-    // build: jsonb().$type<object>(),
-    // env: jsonb().$type<object>(),
 
     // TODO: metadata config (logo, keywords, etc)
     // TODO: webhooks
@@ -68,8 +64,13 @@ export const deployments = pgTable(
     // Backend API URL
     _url: text().notNull(),
 
-    pricingPlans: jsonb().$type<PricingPlan[]>().notNull(),
-    coupons: jsonb().$type<Coupon[]>().default([]).notNull()
+    // NOTE: this does not have a default value and must be given a value at creation.
+    // Record<PricingInterval, Record<string, PricingPlan>>
+    pricingPlanMapByInterval: jsonb()
+      .$type<PricingPlanMapByInterval>()
+      .notNull()
+
+    // coupons: jsonb().$type<Coupon[]>().default([]).notNull()
   },
   (table) => [
     index('deployment_userId_idx').on(table.userId),
@@ -108,8 +109,9 @@ export const deploymentsRelations = relations(deployments, ({ one }) => ({
 export const deploymentSelectSchema = createSelectSchema(deployments, {
   // build: z.object({}),
   // env: z.object({}),
-  pricingPlans: z.array(pricingPlanSchema),
-  coupons: z.array(couponSchema)
+
+  pricingPlanMapByInterval: pricingPlanMapByIntervalSchema
+  // coupons: z.array(couponSchema)
 })
   .omit({
     _url: true
@@ -141,10 +143,12 @@ export const deploymentInsertSchema = createInsertSchema(deployments, {
 
   _url: (schema) => schema.url(),
 
-  // build: z.object({}),
-  // env: z.object({}),
-  pricingPlans: z.array(pricingPlanSchema),
-  coupons: z.array(couponSchema).optional()
+  // TODO: should this public resource be decoupled from the internal pricing
+  // plan structure?
+  pricingPlanMapByInterval: pricingPlanMapByIntervalSchema
+
+  // TODO
+  // coupons: z.array(couponSchema).optional()
 })
   .omit({ id: true, createdAt: true, updatedAt: true })
   .strict()

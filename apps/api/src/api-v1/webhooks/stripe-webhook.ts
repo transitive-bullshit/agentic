@@ -40,8 +40,8 @@ export function registerV1StripeWebhook(app: OpenAPIHono) {
       })
     }
 
-    // Shouldn't ever happen because the signatures should be different, but it's
-    // a useful sanity check just in case.
+    // Shouldn't ever happen because the signatures _should_ be different, but
+    // it's a useful sanity check just in case.
     assert(
       event.livemode === isStripeLive,
       400,
@@ -89,7 +89,8 @@ export function registerV1StripeWebhook(app: OpenAPIHono) {
             await db
               .update(schema.consumers)
               .set({
-                stripeStatus: consumer.stripeStatus
+                stripeStatus: consumer.stripeStatus,
+                enabled: consumer.enabled
               })
               .where(eq(schema.consumers.id, consumer.id))
 

@@ -12,7 +12,16 @@ import { z } from '@hono/zod-openapi'
 
 import { deployments, deploymentSelectSchema } from './deployment'
 import { teams, teamSelectSchema } from './team'
-import { type Webhook } from './types'
+import {
+  pricingIntervalSchema,
+  type StripeMeterIdMap,
+  stripeMeterIdMapSchema,
+  type StripePriceIdMap,
+  stripePriceIdMapSchema,
+  type StripeProductIdMap,
+  stripeProductIdMapSchema,
+  type Webhook
+} from './types'
 import { users, userSelectSchema } from './user'
 import {
   createInsertSchema,
@@ -20,6 +29,8 @@ import {
   createUpdateSchema,
   cuid,
   deploymentId,
+  pricingCurrencyEnum,
+  pricingIntervalEnum,
   projectId,
   stripeId,
   timestamps
@@ -51,6 +62,18 @@ export const projects = pgTable(
     // TODO: This is going to need to vary from dev to prod
     isStripeConnectEnabled: boolean().default(false).notNull(),
 
+    // Which pricing intervals are supported for subscriptions to this project
+    pricingIntervals: pricingIntervalEnum()
+      .array()
+      .default(['month'])
+      .notNull(),
+
+    // Default pricing interval for subscriptions to this project
+    defaultPricingInterval: pricingIntervalEnum().default('month').notNull(),
+
+    // Pricing currency used across all prices and subscriptions to this project
+    pricingCurrency: pricingCurrencyEnum().default('usd').notNull(),
+
     // All deployments share the same underlying proxy secret
     _secret: text().notNull(),
 
@@ -62,41 +85,45 @@ export const projects = pgTable(
 
     _webhooks: jsonb().$type<Webhook[]>().default([]).notNull(),
 
-    // Stripe products corresponding to the stripe plans across deployments
-    stripeBaseProductId: stripeId(),
-    stripeRequestProductId: stripeId(),
-
-    // Map between metric slugs and stripe product ids
-    // [metricSlug: string]: string
-    stripeMetricProductIds: jsonb()
-      .$type<Record<string, string>>()
-      .default({})
-      .notNull(),
+    // TODO: currency?
 
     // Stripe coupons associated with this project, mapping from unique coupon
-    // hash to stripe coupon id.
+    // object hash to stripe coupon id.
     // `[hash: string]: string`
-    _stripeCouponIds: jsonb()
-      .$type<Record<string, string>>()
+    // _stripeCouponsMap: jsonb()
+    //   .$type<Record<string, string>>()
+    //   .default({})
+    //   .notNull(),
+
+    // Stripe billing Products associated with this project across deployments,
+    // mapping from PricingPlanMetric **slug** to Stripe Product id.
+    // NOTE: This map uses slugs as keys, unlike `_stripePriceIdMap`, because
+    // Stripe Products are agnostic to the PricingPlanMetric config. This is
+    // important for them to be shared across deployments even if the pricing
+    // details change.
+    _stripeProductIdMap: jsonb()
+      .$type<StripeProductIdMap>()
       .default({})
       .notNull(),
 
-    // Stripe billing plans associated with this project (created lazily),
-    // mapping from unique plan hash to stripe plan ids for base and request
-    // respectively.
-    // `[hash: string]: { basePlanId: string, requestPlanId: string }`
-    _stripePlanIds: jsonb()
-      .$type<Record<string, { basePlanId: string; requestPlanId: string }>>()
-      .default({})
-      .notNull(),
+    // Stripe billing Prices associated with this project, mapping from unique
+    // PricingPlanMetric **hash** to Stripe Price id.
+    // NOTE: This map uses hashes as keys, because Stripe Prices are dependent
+    // on the PricingPlanMetric config. This is important for them to be shared
+    // across deployments even if the pricing details change.
+    _stripePriceIdMap: jsonb().$type<StripePriceIdMap>().default({}).notNull(),
+
+    // Stripe billing Metrics associated with this project, mapping from unique
+    // PricingPlanMetric **slug** to Stripe Meter id.
+    // NOTE: This map uses slugs as keys, unlike `_stripePriceIdMap`, because
+    // Stripe Products are agnostic to the PricingPlanMetric config. This is
+    // important for them to be shared across deployments even if the pricing
+    // details change.
+    _stripeMeterIdMap: jsonb().$type<StripeMeterIdMap>().default({}).notNull(),
 
     // Connected Stripe account (standard or express).
     // If not defined, then subscriptions for this project route through our
     // main Stripe account.
-    // NOTE: the connected account is shared between dev and prod, so we're not using
-    // the stripeID utility.
-    // TODO: is it wise to share this between dev and prod?
-    // TODO: is it okay for this to be public?
     _stripeAccountId: stripeId()
   },
   (table) => [
@@ -149,26 +176,21 @@ export const projectRelationsSchema: z.ZodType<ProjectRelationFields> = z.enum([
 export const projectSelectSchema = createSelectSchema(projects, {
   applicationFeePercent: (schema) => schema.nonnegative(),
 
-  stripeMetricProductIds: z.record(z.string(), z.string()).optional()
-  // _webhooks: z.array(webhookSchema),
-  // _stripeCouponIds: z.record(z.string(), z.string()).optional(),
-  // _stripePlanIds: z
-  //   .record(
-  //     z.string(),
-  //     z.object({
-  //       basePlanId: z.string(),
-  //       requestPlanId: z.string()
-  //     })
-  //   )
-  //   .optional()
+  _stripeProductIdMap: stripeProductIdMapSchema,
+  _stripePriceIdMap: stripePriceIdMapSchema,
+  _stripeMeterIdMap: stripeMeterIdMapSchema,
+
+  pricingIntervals: z.array(pricingIntervalSchema).optional(),
+  defaultPricingInterval: pricingIntervalSchema.optional()
 })
   .omit({
     _secret: true,
     _providerToken: true,
     _text: true,
     _webhooks: true,
-    _stripeCouponIds: true,
-    _stripePlanIds: true,
+    _stripeProductIdMap: true,
+    _stripePriceIdMap: true,
+    _stripeMeterIdMap: true,
     _stripeAccountId: true
   })
   .extend({
@@ -229,7 +251,9 @@ export const projectDebugSelectSchema = createSelectSchema(projects).pick({
   updatedAt: true,
   isStripeConnectEnabled: true,
   lastPublishedDeploymentId: true,
-  lastDeploymentId: true
+  lastDeploymentId: true,
+  pricingIntervals: true,
+  defaultPricingInterval: true
 })
 
 // TODO: virtual saasUrl
