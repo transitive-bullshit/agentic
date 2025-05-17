@@ -15,7 +15,8 @@ import { parseZodSchema } from '@/lib/utils'
 import { consumerIdParamsSchema } from './schemas'
 
 const route = createRoute({
-  description: "Updates a consumer's subscription to a project.",
+  description:
+    "Updates a consumer's subscription to a different deployment or pricing plan.",
   tags: ['consumers'],
   operationId: 'updateConsumer',
   method: 'post',

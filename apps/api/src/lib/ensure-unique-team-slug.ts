@@ -18,6 +18,6 @@ export async function ensureUniqueTeamSlug(slug: string) {
   assert(
     !existingUser && !existingTeam,
     409,
-    `Team slug [${slug}] is not available`
+    `Team slug "${slug}" is not available`
   )
 }

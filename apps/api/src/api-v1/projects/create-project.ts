@@ -60,9 +60,9 @@ export function registerV1ProjectsCreateProject(
       .insert(schema.projects)
       .values({
         ...body,
+        id,
         teamId: teamMember?.teamId,
         userId: user.id,
-        id,
         _secret: sha256(),
         _providerToken: createProviderToken({ id })
       })

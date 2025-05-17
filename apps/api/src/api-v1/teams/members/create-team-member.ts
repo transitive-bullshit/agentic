@@ -78,7 +78,7 @@ export function registerV1TeamsMembersCreateTeamMember(
     })
     assert(
       teamMember,
-      400,
+      500,
       `Failed to create team member "${body.userId}"for team "${teamSlug}"`
     )
 

@@ -24,6 +24,7 @@ export async function upsertConsumer(
   }
 ) {
   assert(consumerId || deploymentId, 400, 'Missing required "deploymentId"')
+  const logger = c.get('logger')
   const userId = c.get('userId')
   let projectId: string | undefined
 
@@ -147,7 +148,6 @@ export async function upsertConsumer(
   // consumer._stripeAccount = project._stripeAccount
   await upsertStripeConnectCustomer({ stripeCustomer, consumer, project })
 
-  const logger = c.get('logger')
   logger.info('SUBSCRIPTION', existingConsumer ? 'UPDATE' : 'CREATE', {
     project,
     deployment,

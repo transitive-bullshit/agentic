@@ -57,7 +57,7 @@ export function registerV1TeamsMembersDeleteTeamMember(
       .returning()
     assert(
       teamMember,
-      404,
+      400,
       `Failed to update team member "${userId}" for team "${teamSlug}"`
     )
 

@@ -2,6 +2,7 @@ import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 
 import type { AuthenticatedEnv } from '@/lib/types'
 import { db, eq, schema } from '@/db'
+import { acl } from '@/lib/acl'
 import {
   openapiAuthenticatedSecuritySchemas,
   openapiErrorResponse404,
@@ -50,7 +51,15 @@ export function registerV1ProjectsUpdateProject(
     const { projectId } = c.req.valid('param')
     const body = c.req.valid('json')
 
-    const [project] = await db
+    // First ensure the project exists and the user has access to it
+    let project = await db.query.projects.findFirst({
+      where: eq(schema.projects.id, projectId)
+    })
+    assert(project, 404, `Project not found "${projectId}"`)
+    await acl(c, project, { label: 'Project' })
+
+    // Update the project
+    ;[project] = await db
       .update(schema.projects)
       .set(body)
       .where(eq(schema.projects.id, projectId))
