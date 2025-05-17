@@ -89,29 +89,29 @@ export const pricingIntervalSchema = z
   .openapi('PricingInterval')
 export type PricingInterval = z.infer<typeof pricingIntervalSchema>
 
-export const pricingPlanMetricHashSchema = z
+export const pricingPlanLineItemHashSchema = z
   .string()
   .nonempty()
-  .describe('Internal PricingPlanMetric hash')
+  .describe('Internal PricingPlanLineItem hash')
 
-export const pricingPlanMetricSlugSchema = z
+export const pricingPlanLineItemSlugSchema = z
   .string()
   .nonempty()
-  .describe('PricingPlanMetric slug')
+  .describe('PricingPlanLineItem slug')
 
 export const stripePriceIdMapSchema = z
-  .record(pricingPlanMetricHashSchema, z.string().describe('Stripe Price id'))
-  .describe('Map from internal PricingPlanMetric **hash** to Stripe Price id')
+  .record(pricingPlanLineItemHashSchema, z.string().describe('Stripe Price id'))
+  .describe('Map from internal PricingPlanLineItem **hash** to Stripe Price id')
   .openapi('StripePriceIdMap')
 export type StripePriceIdMap = z.infer<typeof stripePriceIdMapSchema>
 
 export const stripeMeterIdMapSchema = z
-  .record(pricingPlanMetricHashSchema, z.string().describe('Stripe Meter id'))
-  .describe('Map from internal PricingPlanMetric **slug** to Stripe Meter id')
+  .record(pricingPlanLineItemHashSchema, z.string().describe('Stripe Meter id'))
+  .describe('Map from internal PricingPlanLineItem **slug** to Stripe Meter id')
   .openapi('StripeMeterIdMap')
 export type StripeMeterIdMap = z.infer<typeof stripeMeterIdMapSchema>
 
-const commonPricingPlanMetricSchema = z.object({
+const commonPricingPlanLineItemSchema = z.object({
   /**
    * Slugs act as the primary key for metrics. They should be lower and
    * kebab-cased ("base", "requests", "image-transformations").
@@ -132,21 +132,21 @@ const commonPricingPlanMetricSchema = z.object({
 })
 
 /**
- * PricingPlanMetrics represent a single line-item in a Stripe Subscription.
+ * PricingPlanLineItems represent a single line-item in a Stripe Subscription.
  *
  * They map to a Stripe billing `Price` and possibly a corresponding Stripe
- * `Metric` for metered usage.
+ * `Meter` for metered usage.
  */
-export const pricingPlanMetricSchema = z
+export const pricingPlanLineItemSchema = z
   .discriminatedUnion('usageType', [
-    commonPricingPlanMetricSchema.merge(
+    commonPricingPlanLineItemSchema.merge(
       z.object({
         usageType: z.literal('licensed'),
         amount: z.number().nonnegative()
       })
     ),
 
-    commonPricingPlanMetricSchema.merge(
+    commonPricingPlanLineItemSchema.merge(
       z.object({
         usageType: z.literal('metered'),
         unitLabel: z.string().optional(),
@@ -189,7 +189,7 @@ export const pricingPlanMetricSchema = z
         defaultAggregation: z
           .object({
             /**
-             * Specifies how events are aggregated for a Stripe Metric.
+             * Specifies how events are aggregated for a Stripe Meter.
              * Allowed values are `count` to count the number of events, `sum`
              * to sum each event's value and `last` to take the last event's
              * value in the window.
@@ -235,14 +235,14 @@ export const pricingPlanMetricSchema = z
     return data
   })
   .describe(
-    'PricingPlanMetrics represent a single line-item in a Stripe Subscription. They map to a Stripe billing `Price` and possibly a corresponding Stripe `Metric` for metered usage.'
+    'PricingPlanLineItems represent a single line-item in a Stripe Subscription. They map to a Stripe billing `Price` and possibly a corresponding Stripe `Meter` for metered usage.'
   )
-  .openapi('PricingPlanMetric')
-export type PricingPlanMetric = z.infer<typeof pricingPlanMetricSchema>
+  .openapi('PricingPlanLineItem')
+export type PricingPlanLineItem = z.infer<typeof pricingPlanLineItemSchema>
 
 /**
  * Represents the config for a Stripe subscription with one or more
- * PricingPlanMetrics as line-items.
+ * PricingPlanLineItems as line-items.
  */
 export const pricingPlanSchema = z
   .object({
@@ -261,7 +261,7 @@ export const pricingPlanSchema = z
     trialPeriodDays: z.number().nonnegative().optional(),
 
     metricsMap: z
-      .record(pricingPlanMetricSlugSchema, pricingPlanMetricSchema)
+      .record(pricingPlanLineItemSlugSchema, pricingPlanLineItemSchema)
       .refine((metricsMap) => {
         // Stripe Checkout currently supports a max of 20 line items per
         // subscription.
@@ -279,14 +279,17 @@ export const pricingPlanSchema = z
     return data
   })
   .describe(
-    'Represents the config for a Stripe subscription with one or more PricingPlanMetrics as line-items.'
+    'Represents the config for a Stripe subscription with one or more PricingPlanLineItems as line-items.'
   )
   .openapi('PricingPlan')
 export type PricingPlan = z.infer<typeof pricingPlanSchema>
 
 export const stripeProductIdMapSchema = z
-  .record(pricingPlanMetricSlugSchema, z.string().describe('Stripe Product id'))
-  .describe('Map from PricingPlanMetric **slug** to Stripe Product id')
+  .record(
+    pricingPlanLineItemSlugSchema,
+    z.string().describe('Stripe Product id')
+  )
+  .describe('Map from PricingPlanLineItem **slug** to Stripe Product id')
   .openapi('StripeProductIdMap')
 export type StripeProductIdMap = z.infer<typeof stripeProductIdMapSchema>
 

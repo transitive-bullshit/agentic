@@ -19,8 +19,8 @@ import type { RawProject } from '../types'
 import type {
   PricingInterval,
   PricingPlan,
-  PricingPlanMap,
-  PricingPlanMetric
+  PricingPlanLineItem,
+  PricingPlanMap
 } from './types'
 
 const usernameAndTeamSlugLength = 64 as const
@@ -128,18 +128,19 @@ export const { createInsertSchema, createSelectSchema, createUpdateSchema } =
   })
 
 /**
- * Gets the hash used to uniquely map a PricingPlanMetric to its corresponding
- * Stripe Price in a stable way across deployments within a project.
+ * Gets the hash used to uniquely map a PricingPlanLineItem to its
+ * corresponding Stripe Price in a stable way across deployments within a
+ * project.
  *
  * This hash is used as the key for the `Project._stripePriceIdMap`.
  */
-export function getPricingPlanMetricHashForStripePrice({
+export function getPricingPlanLineItemHashForStripePrice({
   pricingPlan,
-  pricingPlanMetric,
+  pricingPlanLineItem,
   project
 }: {
   pricingPlan: PricingPlan
-  pricingPlanMetric: PricingPlanMetric
+  pricingPlanLineItem: PricingPlanLineItem
   project: RawProject
 }) {
   // TODO: use pricingPlan.slug as well here?
@@ -154,13 +155,13 @@ export function getPricingPlanMetricHashForStripePrice({
   //   - 'price:requests:<hash>'
 
   const hash = hashObject({
-    ...pricingPlanMetric,
+    ...pricingPlanLineItem,
     projectId: project.id,
     stripeAccountId: project._stripeAccountId,
     currency: project.pricingCurrency
   })
 
-  return `price:${pricingPlan.slug}:${pricingPlanMetric.slug}:${hash}`
+  return `price:${pricingPlan.slug}:${pricingPlanLineItem.slug}:${hash}`
 }
 
 export function getPricingPlansByInterval({

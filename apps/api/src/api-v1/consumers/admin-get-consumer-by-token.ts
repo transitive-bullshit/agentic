@@ -13,9 +13,9 @@ import { assert, parseZodSchema } from '@/lib/utils'
 import { consumerTokenParamsSchema, populateConsumerSchema } from './schemas'
 
 const route = createRoute({
-  description: 'Gets a consumer',
-  tags: ['consumers'],
-  operationId: 'getConsumer',
+  description: 'Gets a consumer by API token',
+  tags: ['admin', 'consumers'],
+  operationId: 'adminGetConsumerByToken',
   method: 'get',
   path: 'admin/consumers/tokens/{token}',
   security: openapiAuthenticatedSecuritySchemas,
@@ -51,7 +51,7 @@ export function registerV1AdminConsumersGetConsumerByToken(
         ...Object.fromEntries(populate.map((field) => [field, true]))
       }
     })
-    assert(consumer, 404, `Consumer token not found "${token}"`)
+    assert(consumer, 404, `API token not found "${token}"`)
 
     return c.json(parseZodSchema(schema.consumerSelectSchema, consumer))
   })

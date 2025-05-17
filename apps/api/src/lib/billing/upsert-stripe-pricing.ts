@@ -4,10 +4,10 @@ import pAll from 'p-all'
 import { db, eq, type RawDeployment, type RawProject, schema } from '@/db'
 import {
   getLabelForPricingInterval,
-  getPricingPlanMetricHashForStripePrice,
+  getPricingPlanLineItemHashForStripePrice,
   getPricingPlansByInterval,
   type PricingPlan,
-  type PricingPlanMetric
+  type PricingPlanLineItem
 } from '@/db/schema'
 import { stripe } from '@/lib/stripe'
 import { assert } from '@/lib/utils'
@@ -46,31 +46,31 @@ export async function upsertStripePricing({
     : []
   let dirty = false
 
-  async function upsertStripeResourcesForPricingPlanMetric({
+  async function upsertStripeResourcesForPricingPlanLineItem({
     pricingPlan,
-    pricingPlanMetric
+    pricingPlanLineItem
   }: {
     pricingPlan: PricingPlan
-    pricingPlanMetric: PricingPlanMetric
+    pricingPlanLineItem: PricingPlanLineItem
   }) {
     const { slug: pricingPlanSlug } = pricingPlan
-    const { slug: pricingPlanMetricSlug } = pricingPlanMetric
+    const { slug: pricingPlanLineItemSlug } = pricingPlanLineItem
 
     // Upsert the Stripe Product
-    if (!project._stripeProductIdMap[pricingPlanMetricSlug]) {
+    if (!project._stripeProductIdMap[pricingPlanLineItemSlug]) {
       const productParams: Stripe.ProductCreateParams = {
-        name: `${project.id} ${pricingPlanMetricSlug}`,
+        name: `${project.id} ${pricingPlanLineItemSlug}`,
         type: 'service',
         metadata: {
           projectId: project.id,
-          pricingPlanMetricSlug
+          pricingPlanLineItemSlug
         }
       }
 
-      if (pricingPlanMetric.usageType === 'licensed') {
-        productParams.unit_label = pricingPlanMetric.label
+      if (pricingPlanLineItem.usageType === 'licensed') {
+        productParams.unit_label = pricingPlanLineItem.label
       } else {
-        productParams.unit_label = pricingPlanMetric.unitLabel
+        productParams.unit_label = pricingPlanLineItem.unitLabel
       }
 
       const product = await stripe.products.create(
@@ -78,23 +78,23 @@ export async function upsertStripePricing({
         ...stripeConnectParams
       )
 
-      project._stripeProductIdMap[pricingPlanMetricSlug] = product.id
+      project._stripeProductIdMap[pricingPlanLineItemSlug] = product.id
       dirty = true
     }
 
-    assert(project._stripeProductIdMap[pricingPlanMetricSlug])
+    assert(project._stripeProductIdMap[pricingPlanLineItemSlug])
 
-    if (pricingPlanMetric.usageType === 'metered') {
+    if (pricingPlanLineItem.usageType === 'metered') {
       // Upsert the Stripe Meter
-      if (!project._stripeMeterIdMap[pricingPlanMetricSlug]) {
+      if (!project._stripeMeterIdMap[pricingPlanLineItemSlug]) {
         const stripeMeter = await stripe.billing.meters.create(
           {
-            display_name: `${project.id} ${pricingPlanMetric.label || pricingPlanMetricSlug}`,
-            event_name: `meter-${project.id}-${pricingPlanMetricSlug}`,
+            display_name: `${project.id} ${pricingPlanLineItem.label || pricingPlanLineItemSlug}`,
+            event_name: `meter-${project.id}-${pricingPlanLineItemSlug}`,
             // TODO: This currently isn't taken into account for the slug, so if it
             // changes across deployments, the meter will not be updated.
             default_aggregation: {
-              formula: pricingPlanMetric.defaultAggregation?.formula ?? 'sum'
+              formula: pricingPlanLineItem.defaultAggregation?.formula ?? 'sum'
             },
             customer_mapping: {
               event_payload_key: 'stripe_customer_id',
@@ -107,37 +107,37 @@ export async function upsertStripePricing({
           ...stripeConnectParams
         )
 
-        project._stripeMeterIdMap[pricingPlanMetricSlug] = stripeMeter.id
+        project._stripeMeterIdMap[pricingPlanLineItemSlug] = stripeMeter.id
         dirty = true
       }
 
-      assert(project._stripeMeterIdMap[pricingPlanMetricSlug])
+      assert(project._stripeMeterIdMap[pricingPlanLineItemSlug])
     } else {
-      assert(pricingPlanMetric.usageType === 'licensed', 400)
+      assert(pricingPlanLineItem.usageType === 'licensed', 400)
 
       assert(
-        !project._stripeMeterIdMap[pricingPlanMetricSlug],
+        !project._stripeMeterIdMap[pricingPlanLineItemSlug],
         400,
-        `Invalid pricing plan metric "${pricingPlanMetricSlug}" for pricing plan "${pricingPlanSlug}": licensed pricing plan metrics cannot replace a previous metered pricing plan metric. Use a different pricing plan metric slug for the new licensed plan.`
+        `Invalid pricing plan metric "${pricingPlanLineItemSlug}" for pricing plan "${pricingPlanSlug}": licensed pricing plan metrics cannot replace a previous metered pricing plan metric. Use a different pricing plan metric slug for the new licensed plan.`
       )
     }
 
-    const pricingPlanMetricHashForStripePrice =
-      getPricingPlanMetricHashForStripePrice({
+    const pricingPlanLineItemHashForStripePrice =
+      getPricingPlanLineItemHashForStripePrice({
         pricingPlan,
-        pricingPlanMetric,
+        pricingPlanLineItem,
         project
       })
 
     // Upsert the Stripe Price
-    if (!project._stripePriceIdMap[pricingPlanMetricHashForStripePrice]) {
+    if (!project._stripePriceIdMap[pricingPlanLineItemHashForStripePrice]) {
       const interval =
-        pricingPlanMetric.interval ?? project.defaultPricingInterval
+        pricingPlanLineItem.interval ?? project.defaultPricingInterval
 
       const nickname = [
         'price',
         project.id,
-        pricingPlanMetricSlug,
+        pricingPlanLineItemSlug,
         getLabelForPricingInterval(interval)
       ]
         .filter(Boolean)
@@ -145,7 +145,7 @@ export async function upsertStripePricing({
 
       const priceParams: Stripe.PriceCreateParams = {
         nickname,
-        product: project._stripeProductIdMap[pricingPlanMetricSlug],
+        product: project._stripeProductIdMap[pricingPlanLineItemSlug],
         currency: project.pricingCurrency,
         recurring: {
           interval,
@@ -153,35 +153,35 @@ export async function upsertStripePricing({
           // TODO: support this
           interval_count: 1,
 
-          usage_type: pricingPlanMetric.usageType,
+          usage_type: pricingPlanLineItem.usageType,
 
-          meter: project._stripeMeterIdMap[pricingPlanMetricSlug]
+          meter: project._stripeMeterIdMap[pricingPlanLineItemSlug]
         },
         metadata: {
           projectId: project.id,
-          pricingPlanMetricSlug
+          pricingPlanLineItemSlug
         }
       }
 
-      if (pricingPlanMetric.usageType === 'licensed') {
-        priceParams.unit_amount_decimal = pricingPlanMetric.amount.toFixed(12)
+      if (pricingPlanLineItem.usageType === 'licensed') {
+        priceParams.unit_amount_decimal = pricingPlanLineItem.amount.toFixed(12)
       } else {
-        priceParams.billing_scheme = pricingPlanMetric.billingScheme
+        priceParams.billing_scheme = pricingPlanLineItem.billingScheme
 
-        if (pricingPlanMetric.billingScheme === 'tiered') {
+        if (pricingPlanLineItem.billingScheme === 'tiered') {
           assert(
-            pricingPlanMetric.tiers?.length,
+            pricingPlanLineItem.tiers?.length,
             400,
-            `Invalid pricing plan metric "${pricingPlanMetricSlug}" for pricing plan "${pricingPlanSlug}": tiered billing schemes must have at least one tier.`
+            `Invalid pricing plan metric "${pricingPlanLineItemSlug}" for pricing plan "${pricingPlanSlug}": tiered billing schemes must have at least one tier.`
           )
           assert(
-            !pricingPlanMetric.transformQuantity,
+            !pricingPlanLineItem.transformQuantity,
             400,
-            `Invalid pricing plan metric "${pricingPlanMetricSlug}" for pricing plan "${pricingPlanSlug}": tiered billing schemes cannot have transformQuantity.`
+            `Invalid pricing plan metric "${pricingPlanLineItemSlug}" for pricing plan "${pricingPlanSlug}": tiered billing schemes cannot have transformQuantity.`
           )
 
-          priceParams.tiers_mode = pricingPlanMetric.tiersMode
-          priceParams.tiers = pricingPlanMetric.tiers!.map((tierData) => {
+          priceParams.tiers_mode = pricingPlanLineItem.tiersMode
+          priceParams.tiers = pricingPlanLineItem.tiers!.map((tierData) => {
             const tier: Stripe.PriceCreateParams.Tier = {
               up_to: tierData.upTo
             }
@@ -198,28 +198,28 @@ export async function upsertStripePricing({
           })
         } else {
           assert(
-            pricingPlanMetric.billingScheme === 'per_unit',
+            pricingPlanLineItem.billingScheme === 'per_unit',
             400,
-            `Invalid pricing plan metric "${pricingPlanMetricSlug}" for pricing plan "${pricingPlanSlug}": invalid billing scheme.`
+            `Invalid pricing plan metric "${pricingPlanLineItemSlug}" for pricing plan "${pricingPlanSlug}": invalid billing scheme.`
           )
           assert(
-            pricingPlanMetric.unitAmount !== undefined,
+            pricingPlanLineItem.unitAmount !== undefined,
             400,
-            `Invalid pricing plan metric "${pricingPlanMetricSlug}" for pricing plan "${pricingPlanSlug}": unitAmount is required for per_unit billing schemes.`
+            `Invalid pricing plan metric "${pricingPlanLineItemSlug}" for pricing plan "${pricingPlanSlug}": unitAmount is required for per_unit billing schemes.`
           )
           assert(
-            !pricingPlanMetric.tiers,
+            !pricingPlanLineItem.tiers,
             400,
-            `Invalid pricing plan metric "${pricingPlanMetricSlug}" for pricing plan "${pricingPlanSlug}": per_unit billing schemes cannot have tiers.`
+            `Invalid pricing plan metric "${pricingPlanLineItemSlug}" for pricing plan "${pricingPlanSlug}": per_unit billing schemes cannot have tiers.`
           )
 
           priceParams.unit_amount_decimal =
-            pricingPlanMetric.unitAmount.toFixed(12)
+            pricingPlanLineItem.unitAmount.toFixed(12)
 
-          if (pricingPlanMetric.transformQuantity) {
+          if (pricingPlanLineItem.transformQuantity) {
             priceParams.transform_quantity = {
-              divide_by: pricingPlanMetric.transformQuantity.divideBy,
-              round: pricingPlanMetric.transformQuantity.round
+              divide_by: pricingPlanLineItem.transformQuantity.divideBy,
+              round: pricingPlanLineItem.transformQuantity.round
             }
           }
         }
@@ -230,12 +230,12 @@ export async function upsertStripePricing({
         ...stripeConnectParams
       )
 
-      project._stripePriceIdMap[pricingPlanMetricHashForStripePrice] =
+      project._stripePriceIdMap[pricingPlanLineItemHashForStripePrice] =
         stripePrice.id
       dirty = true
     }
 
-    assert(project._stripePriceIdMap[pricingPlanMetricHashForStripePrice])
+    assert(project._stripePriceIdMap[pricingPlanLineItemHashForStripePrice])
   }
 
   const upserts: Array<() => Promise<void>> = []
@@ -259,11 +259,11 @@ export async function upsertStripePricing({
   }
 
   for (const pricingPlan of Object.values(deployment.pricingPlanMap)) {
-    for (const pricingPlanMetric of Object.values(pricingPlan.metricsMap)) {
+    for (const pricingPlanLineItem of Object.values(pricingPlan.metricsMap)) {
       upserts.push(() =>
-        upsertStripeResourcesForPricingPlanMetric({
+        upsertStripeResourcesForPricingPlanLineItem({
           pricingPlan,
-          pricingPlanMetric
+          pricingPlanLineItem
         })
       )
     }

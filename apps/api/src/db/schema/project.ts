@@ -94,9 +94,9 @@ export const projects = pgTable(
     //   .notNull(),
 
     // Stripe billing Products associated with this project across deployments,
-    // mapping from PricingPlanMetric **slug** to Stripe Product id.
+    // mapping from PricingPlanLineItem **slug** to Stripe Product id.
     // NOTE: This map uses slugs as keys, unlike `_stripePriceIdMap`, because
-    // Stripe Products are agnostic to the PricingPlanMetric config. This is
+    // Stripe Products are agnostic to the PricingPlanLineItem config. This is
     // important for them to be shared across deployments even if the pricing
     // details change.
     _stripeProductIdMap: jsonb()
@@ -105,16 +105,16 @@ export const projects = pgTable(
       .notNull(),
 
     // Stripe billing Prices associated with this project, mapping from unique
-    // PricingPlanMetric **hash** to Stripe Price id.
+    // PricingPlanLineItem **hash** to Stripe Price id.
     // NOTE: This map uses hashes as keys, because Stripe Prices are dependent
-    // on the PricingPlanMetric config. This is important for them to be shared
+    // on the PricingPlanLineItem config. This is important for them to be shared
     // across deployments even if the pricing details change.
     _stripePriceIdMap: jsonb().$type<StripePriceIdMap>().default({}).notNull(),
 
-    // Stripe billing Metrics associated with this project, mapping from unique
-    // PricingPlanMetric **slug** to Stripe Meter id.
+    // Stripe billing LineItems associated with this project, mapping from unique
+    // PricingPlanLineItem **slug** to Stripe Meter id.
     // NOTE: This map uses slugs as keys, unlike `_stripePriceIdMap`, because
-    // Stripe Products are agnostic to the PricingPlanMetric config. This is
+    // Stripe Products are agnostic to the PricingPlanLineItem config. This is
     // important for them to be shared across deployments even if the pricing
     // details change.
     _stripeMeterIdMap: jsonb().$type<StripeMeterIdMap>().default({}).notNull(),

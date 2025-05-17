@@ -43,34 +43,34 @@ apiV1.openAPIRegistry.registerComponent('securitySchemes', 'Bearer', {
 })
 
 // Public routes
-const pub = new OpenAPIHono()
+const publicRouter = new OpenAPIHono()
 
 // Private, authenticated routes
-const pri = new OpenAPIHono<AuthenticatedEnv>()
+const privateRouter = new OpenAPIHono<AuthenticatedEnv>()
 
-registerHealthCheck(pub)
+registerHealthCheck(publicRouter)
 
 // Users crud
-registerV1UsersGetUser(pri)
-registerV1UsersUpdateUser(pri)
+registerV1UsersGetUser(privateRouter)
+registerV1UsersUpdateUser(privateRouter)
 
 // Teams crud
-registerV1TeamsCreateTeam(pri)
-registerV1TeamsListTeams(pri)
-registerV1TeamsGetTeam(pri)
-registerV1TeamsDeleteTeam(pri)
-registerV1TeamsUpdateTeam(pri)
+registerV1TeamsCreateTeam(privateRouter)
+registerV1TeamsListTeams(privateRouter)
+registerV1TeamsGetTeam(privateRouter)
+registerV1TeamsDeleteTeam(privateRouter)
+registerV1TeamsUpdateTeam(privateRouter)
 
 // Team members crud
-registerV1TeamsMembersCreateTeamMember(pri)
-registerV1TeamsMembersUpdateTeamMember(pri)
-registerV1TeamsMembersDeleteTeamMember(pri)
+registerV1TeamsMembersCreateTeamMember(privateRouter)
+registerV1TeamsMembersUpdateTeamMember(privateRouter)
+registerV1TeamsMembersDeleteTeamMember(privateRouter)
 
 // Projects crud
-registerV1ProjectsCreateProject(pri)
-registerV1ProjectsListProjects(pri)
-registerV1ProjectsGetProject(pri)
-registerV1ProjectsUpdateProject(pri)
+registerV1ProjectsCreateProject(privateRouter)
+registerV1ProjectsListProjects(privateRouter)
+registerV1ProjectsGetProject(privateRouter)
+registerV1ProjectsUpdateProject(privateRouter)
 
 // TODO
 // pub.get('/projects/alias/:alias(.+)', require('./projects').readByAlias)
@@ -84,17 +84,42 @@ registerV1ProjectsUpdateProject(pri)
 // )
 
 // Consumers crud
-registerV1ConsumersGetConsumer(pri)
+registerV1ConsumersGetConsumer(privateRouter)
 
 // Webhook event handlers
-registerV1StripeWebhook(pub)
+registerV1StripeWebhook(publicRouter)
 
 // Admin routes
-registerV1AdminConsumersGetConsumerByToken(pri)
+registerV1AdminConsumersGetConsumerByToken(privateRouter)
 
 // Setup routes and middleware
-apiV1.route('/', pub)
+apiV1.route('/', publicRouter)
 apiV1.use(middleware.authenticate)
 apiV1.use(middleware.team)
 apiV1.use(middleware.me)
-apiV1.route('/', pri)
+apiV1.route('/', privateRouter)
+
+// API route types to be used by Hono's RPC client.
+// Should include all routes except for internal and admin routes.
+export type ApiRoutes =
+  | ReturnType<typeof registerHealthCheck>
+  // Users
+  | ReturnType<typeof registerV1UsersGetUser>
+  | ReturnType<typeof registerV1UsersUpdateUser>
+  // Teams
+  | ReturnType<typeof registerV1TeamsCreateTeam>
+  | ReturnType<typeof registerV1TeamsListTeams>
+  | ReturnType<typeof registerV1TeamsGetTeam>
+  | ReturnType<typeof registerV1TeamsDeleteTeam>
+  | ReturnType<typeof registerV1TeamsUpdateTeam>
+  // Team members
+  | ReturnType<typeof registerV1TeamsMembersCreateTeamMember>
+  | ReturnType<typeof registerV1TeamsMembersUpdateTeamMember>
+  | ReturnType<typeof registerV1TeamsMembersDeleteTeamMember>
+  // Projects
+  | ReturnType<typeof registerV1ProjectsCreateProject>
+  | ReturnType<typeof registerV1ProjectsListProjects>
+  | ReturnType<typeof registerV1ProjectsGetProject>
+  | ReturnType<typeof registerV1ProjectsUpdateProject>
+  // Consumers
+  | ReturnType<typeof registerV1ConsumersGetConsumer>
