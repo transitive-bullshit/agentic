@@ -1,9 +1,11 @@
 import { parseFaasIdentifier } from '@agentic/validators'
 
 import { and, db, eq, schema } from '@/db'
-import { assert, sha256 } from '@/lib/utils'
+import { assert } from '@/lib/utils'
 
 import type { AuthenticatedContext } from '../types'
+import { acl } from '../acl'
+import { createConsumerToken } from '../create-consumer-token'
 import { upsertStripeConnectCustomer } from './upsert-stripe-connect-customer'
 import { upsertStripeCustomer } from './upsert-stripe-customer'
 import { upsertStripePricing } from './upsert-stripe-pricing'
@@ -16,12 +18,12 @@ export async function upsertConsumer(
     deploymentId,
     consumerId
   }: {
-    plan?: string
+    plan: string
     deploymentId?: string
     consumerId?: string
   }
 ) {
-  assert(consumerId || deploymentId, 400)
+  assert(consumerId || deploymentId, 400, 'Missing required "deploymentId"')
   const userId = c.get('userId')
   let projectId: string | undefined
 
@@ -33,7 +35,6 @@ export async function upsertConsumer(
 
   if (!consumerId) {
     assert(projectId, 400, 'Missing required "deploymentId"')
-    assert(plan, 400, 'Missing required "plan"')
   }
 
   const [{ user, stripeCustomer }, existingConsumer] = await Promise.all([
@@ -52,18 +53,24 @@ export async function upsertConsumer(
   if (consumerId) {
     assert(existingConsumer, 404, `Consumer not found "${consumerId}"`)
     assert(existingConsumer.id === consumerId, 403)
+    await acl(c, existingConsumer, { label: 'Consumer' })
 
     if (projectId) {
       assert(
         existingConsumer.projectId === projectId,
         400,
-        `Deployment "${deploymentId}" does not belong to with consumer "${consumerId}" project "${existingConsumer.projectId}"`
+        `Deployment "${deploymentId}" does not belong to project "${existingConsumer.projectId}" for consumer "${consumerId}"`
       )
     }
 
-    consumerId = existingConsumer.id
     deploymentId ??= existingConsumer.deploymentId
     projectId ??= existingConsumer.projectId
+  } else {
+    assert(
+      !existingConsumer,
+      409,
+      `User "${user.email}" already has a subscription for project "${projectId ?? ''}"`
+    )
   }
 
   assert(consumerId)
@@ -99,6 +106,15 @@ export async function upsertConsumer(
     `Deployment has been disabled by its owner "${deployment.id}"`
   )
 
+  if (plan) {
+    const pricingPlan = deployment.pricingPlanMap[plan]
+    assert(
+      pricingPlan,
+      400,
+      `Pricing plan "${plan}" not found for deployment "${deploymentId}"`
+    )
+  }
+
   let consumer = existingConsumer
 
   if (consumer) {
@@ -116,8 +132,7 @@ export async function upsertConsumer(
       userId,
       projectId,
       deploymentId,
-      // TODO: refactor / improve token generation
-      token: sha256().slice(0, 24),
+      token: createConsumerToken(),
       _stripeCustomerId: stripeCustomer.id
     })
   }
