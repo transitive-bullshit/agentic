@@ -1,7 +1,5 @@
 import { z } from '@hono/zod-openapi'
 
-import { assert } from '@/lib/utils'
-
 export const authProviderTypeSchema = z
   .enum(['github', 'google', 'spotify', 'twitter', 'linkedin', 'stripe'])
   .openapi('AuthProviderType')
@@ -221,19 +219,30 @@ export const pricingPlanLineItemSchema = z
       })
     )
   ])
-  .refine((data) => {
-    assert(
-      data.slug !== 'base' || data.usageType === 'licensed',
-      `Invalid pricing plan metric "${data.slug}": "base" pricing plan metrics are reserved for "licensed" usage type.`
-    )
+  .refine(
+    (data) => {
+      if (data.slug === 'base') {
+        return data.usageType === 'licensed'
+      }
 
-    assert(
-      data.slug !== 'requests' || data.usageType === 'metered',
-      `Invalid pricing plan metric "${data.slug}": "requests" pricing plan metrics are reserved for "metered" usage type.`
-    )
+      return true
+    },
+    (data) => ({
+      message: `Invalid PricingPlanLineItem "${data.slug}": reserved "base" line-items must have "licensed" usage type.`
+    })
+  )
+  .refine(
+    (data) => {
+      if (data.slug === 'requests') {
+        return data.usageType === 'metered'
+      }
 
-    return true
-  })
+      return true
+    },
+    (data) => ({
+      message: `Invalid PricingPlanLineItem "${data.slug}": reserved "requests" line-items must have "metered" usage type.`
+    })
+  )
   .describe(
     'PricingPlanLineItems represent a single line-item in a Stripe Subscription. They map to a Stripe billing `Price` and possibly a corresponding Stripe `Meter` for metered usage.'
   )
@@ -265,22 +274,42 @@ export const pricingPlanSchema = z
         'Stripe Checkout currently supports a max of 20 line-items per subscription.'
     })
   })
-  .refine((data) => {
-    assert(
-      data.interval !== undefined || data.slug === 'free',
-      `Invalid PricingPlan "${data.slug}": non-free pricing plans must have an interval`
-    )
+  .refine(
+    (data) => {
+      if (data.interval === undefined) {
+        return data.slug === 'free'
+      }
 
-    const lineItemSlugs = new Set(
-      data.lineItems.map((lineItem) => lineItem.slug)
-    )
-    assert(
-      lineItemSlugs.size === data.lineItems.length,
-      `Invalid PricingPlan "${data.slug}": duplicate line-item slugs`
-    )
+      return true
+    },
+    (data) => ({
+      message: `Invalid PricingPlan "${data.slug}": non-free pricing plans must have a valid interval`
+    })
+  )
+  .refine(
+    (data) => {
+      if (data.slug === 'free') {
+        return data.interval === undefined
+      }
 
-    return true
-  })
+      return true
+    },
+    (data) => ({
+      message: `Invalid PricingPlan "${data.slug}": free pricing plans must not have an interval`
+    })
+  )
+  .refine(
+    (data) => {
+      const lineItemSlugs = new Set(
+        data.lineItems.map((lineItem) => lineItem.slug)
+      )
+
+      return lineItemSlugs.size === data.lineItems.length
+    },
+    (data) => ({
+      message: `Invalid PricingPlan "${data.slug}": duplicate line-item slugs`
+    })
+  )
   .describe(
     'Represents the config for a Stripe subscription with one or more PricingPlanLineItems.'
   )
