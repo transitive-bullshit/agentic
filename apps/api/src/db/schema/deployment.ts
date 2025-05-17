@@ -14,8 +14,8 @@ import { teams, teamSelectSchema } from './team'
 import {
   // type Coupon,
   // couponSchema,
-  type PricingPlanMapByInterval,
-  pricingPlanMapByIntervalSchema
+  type PricingPlanMap,
+  pricingPlanMapSchema
 } from './types'
 import { users, userSelectSchema } from './user'
 import {
@@ -64,11 +64,8 @@ export const deployments = pgTable(
     // Backend API URL
     _url: text().notNull(),
 
-    // NOTE: this does not have a default value and must be given a value at creation.
-    // Record<PricingInterval, Record<string, PricingPlan>>
-    pricingPlanMapByInterval: jsonb()
-      .$type<PricingPlanMapByInterval>()
-      .notNull()
+    // Record<string, PricingPlan>
+    pricingPlanMap: jsonb().$type<PricingPlanMap>().notNull()
 
     // coupons: jsonb().$type<Coupon[]>().default([]).notNull()
   },
@@ -110,7 +107,7 @@ export const deploymentSelectSchema = createSelectSchema(deployments, {
   // build: z.object({}),
   // env: z.object({}),
 
-  pricingPlanMapByInterval: pricingPlanMapByIntervalSchema
+  pricingPlanMap: pricingPlanMapSchema
   // coupons: z.array(couponSchema)
 })
   .omit({
@@ -145,7 +142,7 @@ export const deploymentInsertSchema = createInsertSchema(deployments, {
 
   // TODO: should this public resource be decoupled from the internal pricing
   // plan structure?
-  pricingPlanMapByInterval: pricingPlanMapByIntervalSchema
+  pricingPlanMap: pricingPlanMapSchema
 
   // TODO
   // coupons: z.array(couponSchema).optional()

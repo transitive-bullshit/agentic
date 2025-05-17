@@ -16,7 +16,12 @@ import { createId } from '@paralleldrive/cuid2'
 import { hashObject, omit } from '@/lib/utils'
 
 import type { RawProject } from '../types'
-import type { PricingPlanMetric } from './types'
+import type {
+  PricingInterval,
+  PricingPlan,
+  PricingPlanMap,
+  PricingPlanMetric
+} from './types'
 
 const usernameAndTeamSlugLength = 64 as const
 
@@ -135,33 +140,42 @@ export function getPricingPlanMetricHashForStripePrice({
   pricingPlanMetric: PricingPlanMetric
   project: RawProject
 }) {
+  // TODO: use pricingPlan.slug as well here?
+  // 'price:free:base:<hash>'
+  // 'price:basic-monthly:base:<hash>'
+  // 'price:basic-monthly:requests:<hash>'
+
   const hash = hashObject({
-    ...omit(pricingPlanMetric, 'stripePriceId', 'stripeMetricId'),
+    ...omit(pricingPlanMetric, 'stripePriceId', 'stripeMeterId'),
     projectId: project.id,
-    stripeAccountId: project._stripeAccountId
+    stripeAccountId: project._stripeAccountId,
+    currency: project.pricingCurrency
   })
 
   return `price:${pricingPlanMetric.slug}:${hash}`
 }
 
-/**
- * Gets the hash used to uniquely map a PricingPlanMetric to its corresponding
- * Stripe Meter in a stable way across deployments within a project.
- *
- * This hash is used as the key for the `Project._stripePriceIdMap`.
- */
-export function getPricingPlanMetricHashForStripeMeter({
-  pricingPlanMetric,
-  project
+export function getPricingPlansByInterval({
+  pricingInterval,
+  pricingPlanMap
 }: {
-  pricingPlanMetric: PricingPlanMetric
-  project: RawProject
-}) {
-  const hash = hashObject({
-    ...omit(pricingPlanMetric, 'stripePriceId', 'stripeMetricId'),
-    projectId: project.id,
-    stripeAccountId: project._stripeAccountId
-  })
+  pricingInterval: PricingInterval
+  pricingPlanMap: PricingPlanMap
+}): PricingPlan[] {
+  return Object.values(pricingPlanMap).filter(
+    (pricingPlan) => pricingPlan.interval === pricingInterval
+  )
+}
 
-  return `price:${pricingPlanMetric.slug}:${hash}`
+const pricingIntervalToLabelMap: Record<PricingInterval, string> = {
+  day: 'daily',
+  week: 'weekly',
+  month: 'monthly',
+  year: 'yearly'
+}
+
+export function getLabelForPricingInterval(
+  pricingInterval: PricingInterval
+): string {
+  return pricingIntervalToLabelMap[pricingInterval]
 }

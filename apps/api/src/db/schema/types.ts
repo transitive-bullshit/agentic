@@ -59,13 +59,8 @@ export type Webhook = z.infer<typeof webhookSchema>
 
 export const rateLimitSchema = z
   .object({
-    enabled: z.boolean(),
-
     interval: z.number(), // seconds
-    maxPerInterval: z.number(), // unitless
-
-    // informal description that overrides any other properties
-    desc: z.string().optional()
+    maxPerInterval: z.number() // unitless
   })
   .openapi('RateLimit')
 export type RateLimit = z.infer<typeof rateLimitSchema>
@@ -88,6 +83,7 @@ export type PricingPlanTier = z.infer<typeof pricingPlanTierSchema>
 
 export const pricingIntervalSchema = z
   .enum(['day', 'week', 'month', 'year'])
+  .describe('The frequency at which a subscription is billed.')
   .openapi('PricingInterval')
 export type PricingInterval = z.infer<typeof pricingIntervalSchema>
 
@@ -117,14 +113,20 @@ const commonPricingPlanMetricSchema = z.object({
   /**
    * Slugs act as the primary key for metrics. They should be lower and
    * kebab-cased ("base", "requests", "image-transformations").
+   *
+   * TODO: ensure user-provided custom metrics don't use reserved 'base'
+   * and 'requests' slugs.
    */
   slug: z.union([z.string(), z.literal('base'), z.literal('requests')]),
 
-  interval: pricingIntervalSchema,
+  /**
+   * The frequency at which a subscription is billed.
+   *
+   * Only optional when `PricingPlan.slug` is `free`.
+   */
+  interval: pricingIntervalSchema.optional(),
 
   label: z.string().optional().openapi('label', { example: 'API calls' }),
-
-  rateLimit: rateLimitSchema.optional(),
 
   stripePriceId: z.string().optional()
 })
@@ -134,7 +136,7 @@ export const pricingPlanMetricSchema = z
     commonPricingPlanMetricSchema.merge(
       z.object({
         usageType: z.literal('licensed'),
-        amount: z.number()
+        amount: z.number().nonnegative()
       })
     ),
 
@@ -143,10 +145,29 @@ export const pricingPlanMetricSchema = z
         usageType: z.literal('metered'),
         unitLabel: z.string().optional(),
 
+        /**
+         * Optional rate limit to enforce for this metric.
+         *
+         * You can use this, for example, to limit the number of API calls that
+         * can be made during a given interval.
+         */
+        rateLimit: rateLimitSchema.optional(),
+
+        /**
+         * Describes how to compute the price per period. Either `per_unit` or
+         * `tiered`.
+         *
+         * `per_unit` indicates that the fixed amount (specified in
+         * `unitAmount`) will be charged per unit of total usage.
+         *
+         * `tiered` indicates that the unit pricing will be computed using a
+         * tiering strategy as defined using the `tiers` and `tiersMode`
+         * attributes.
+         */
         billingScheme: z.enum(['per_unit', 'tiered']),
 
         // Only applicable for `per_unit` billing schemes
-        amount: z.number().optional(),
+        unitAmount: z.number().nonnegative().optional(),
 
         // Only applicable for `tiered` billing schemes
         tiersMode: z.enum(['graduated', 'volume']).optional(),
@@ -154,14 +175,48 @@ export const pricingPlanMetricSchema = z
 
         // TODO: add support for tiered rate limits?
 
+        /**
+         * The default settings to aggregate the Stripe Meter's events with.
+         *
+         * Deafults to `{ formula: 'sum' }`.
+         */
         defaultAggregation: z
           .object({
-            formula: z.enum(['sum', 'count', 'last'])
+            /**
+             * Specifies how events are aggregated for a Stripe Metric.
+             * Allowed values are `count` to count the number of events, `sum`
+             * to sum each event's value and `last` to take the last event's
+             * value in the window.
+             *
+             * Defaults to `sum`.
+             */
+            formula: z.enum(['sum', 'count', 'last']).default('sum')
           })
           .optional(),
 
-        // Stripe metric id, which is created lazily upon first use.
-        stripeMetricId: z.string().optional()
+        /**
+         * Optionally apply a transformation to the reported usage or set
+         * quantity before computing the amount billed. Cannot be combined
+         * with `tiers`.
+         */
+        transformQuantity: z
+          .object({
+            /**
+             * Divide usage by this number.
+             */
+            divideBy: z.number().positive(),
+
+            /**
+             * After division, either round the result `up` or `down`.
+             */
+            round: z.enum(['down', 'up'])
+          })
+          .optional(),
+
+        /**
+         * Stripe Meter id, which is created lazily upon first use.
+         */
+        stripeMeterId: z.string().optional()
       })
     )
   ])
@@ -171,15 +226,19 @@ export type PricingPlanMetric = z.infer<typeof pricingPlanMetricSchema>
 
 export const pricingPlanSchema = z
   .object({
-    name: z.string().openapi('name', { example: 'Starter Monthly' }),
-    slug: z.string().openapi('slug', { example: 'starter-monthly' }),
+    name: z.string().nonempty().openapi('name', { example: 'Starter Monthly' }),
+    slug: z.string().nonempty().openapi('slug', { example: 'starter-monthly' }),
+
+    /**
+     * The frequency at which a subscription is billed.
+     */
+    interval: pricingIntervalSchema.optional(),
 
     desc: z.string().optional(),
     features: z.array(z.string()),
 
-    interval: pricingIntervalSchema,
-
-    trialPeriodDays: z.number().optional(),
+    // TODO?
+    trialPeriodDays: z.number().nonnegative().optional(),
 
     metricsMap: z
       .record(pricingPlanMetricSlugSchema, pricingPlanMetricSchema)
@@ -190,6 +249,15 @@ export const pricingPlanSchema = z
       })
       .default({})
   })
+  .refine((data) => {
+    if (data.interval === undefined && data.slug !== 'free') {
+      throw new Error(
+        `Invalid PricingPlan "${data.slug}": non-free pricing plans must have an interval`
+      )
+    }
+
+    return data
+  })
   .openapi('PricingPlan')
 export type PricingPlan = z.infer<typeof pricingPlanSchema>
 
@@ -199,19 +267,13 @@ export const stripeProductIdMapSchema = z
   .openapi('StripeProductIdMap')
 export type StripeProductIdMap = z.infer<typeof stripeProductIdMapSchema>
 
-export const pricingPlanMapBySlugSchema = z
+export const pricingPlanMapSchema = z
   .record(z.string().describe('PricingPlan slug'), pricingPlanSchema)
+  .refine((data) => Object.keys(data).length > 0, {
+    message: 'Must contain at least one PricingPlan'
+  })
   .describe('Map from PricingPlan slug to PricingPlan')
-export type PricingPlanMapBySlug = z.infer<typeof pricingPlanMapBySlugSchema>
-
-export const pricingPlanMapByIntervalSchema = z
-  .record(pricingIntervalSchema, pricingPlanMapBySlugSchema)
-  .describe(
-    'Map from PricingInterval to a map from PricingPlan slug to PricingPlan'
-  )
-export type PricingPlanMapByInterval = z.infer<
-  typeof pricingPlanMapByIntervalSchema
->
+export type PricingPlanMap = z.infer<typeof pricingPlanMapSchema>
 
 // export const couponSchema = z
 //   .object({

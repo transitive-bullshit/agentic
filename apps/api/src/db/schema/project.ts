@@ -85,8 +85,6 @@ export const projects = pgTable(
 
     _webhooks: jsonb().$type<Webhook[]>().default([]).notNull(),
 
-    // TODO: currency?
-
     // Stripe coupons associated with this project, mapping from unique coupon
     // object hash to stripe coupon id.
     // `[hash: string]: string`
@@ -180,8 +178,8 @@ export const projectSelectSchema = createSelectSchema(projects, {
   _stripePriceIdMap: stripePriceIdMapSchema,
   _stripeMeterIdMap: stripeMeterIdMapSchema,
 
-  pricingIntervals: z.array(pricingIntervalSchema).optional(),
-  defaultPricingInterval: pricingIntervalSchema.optional()
+  pricingIntervals: z.array(pricingIntervalSchema).nonempty(),
+  defaultPricingInterval: pricingIntervalSchema
 })
   .omit({
     _secret: true,
@@ -240,21 +238,6 @@ export const projectUpdateSchema = createUpdateSchema(projects)
     alias: true
   })
   .strict()
-
-export const projectDebugSelectSchema = createSelectSchema(projects).pick({
-  id: true,
-  name: true,
-  alias: true,
-  userId: true,
-  teamId: true,
-  createdAt: true,
-  updatedAt: true,
-  isStripeConnectEnabled: true,
-  lastPublishedDeploymentId: true,
-  lastDeploymentId: true,
-  pricingIntervals: true,
-  defaultPricingInterval: true
-})
 
 // TODO: virtual saasUrl
 // TODO: virtual aliasUrl
