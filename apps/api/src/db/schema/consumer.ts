@@ -87,10 +87,10 @@ export const consumers = pgTable(
     stripeStatus: text(),
 
     // Main Stripe Subscription id
-    stripeSubscriptionId: stripeId(),
+    _stripeSubscriptionId: stripeId(),
 
     // [lineItemSlug: string]: string
-    stripeSubscriptionLineItemIdMap: jsonb()
+    _stripeSubscriptionLineItemIdMap: jsonb()
       .$type<Record<string, string>>()
       .default({})
       .notNull(),
@@ -132,7 +132,7 @@ export const consumerRelationsSchema: z.ZodType<ConsumerRelationFields> =
   z.enum(['user', 'project', 'deployment'])
 
 export const consumerSelectSchema = createSelectSchema(consumers, {
-  stripeSubscriptionLineItemIdMap: z.record(z.string(), z.string()),
+  _stripeSubscriptionLineItemIdMap: z.record(z.string(), z.string()),
 
   deploymentId: (schema) =>
     schema.refine((id) => validators.deploymentId(id), {
@@ -145,6 +145,8 @@ export const consumerSelectSchema = createSelectSchema(consumers, {
     })
 })
   .omit({
+    _stripeSubscriptionId: true,
+    _stripeSubscriptionLineItemIdMap: true,
     _stripeCustomerId: true
   })
   .extend({

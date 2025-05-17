@@ -341,7 +341,7 @@ export const pricingPlanMapSchema = z
 export type PricingPlanMap = z.infer<typeof pricingPlanMapSchema>
 
 // TODO
-// export const stripeSubscriptionLineItemIdMapSchema = z
+// export const _stripeSubscriptionLineItemIdMapSchema = z
 //   .record(pricingPlanLineItemHashSchema, z.string().describe('Stripe LineItem id'))
 //   .describe('Map from internal PricingPlanLineItem **hash** to Stripe LineItem id')
 //   .openapi('StripeSubscriptionLineItemMap')

@@ -53,17 +53,17 @@ export async function upsertStripeSubscription(
     ? deployment.pricingPlans.find((pricingPlan) => pricingPlan.slug === plan)
     : undefined
 
-  const action: 'create' | 'update' | 'cancel' = consumer.stripeSubscriptionId
+  const action: 'create' | 'update' | 'cancel' = consumer._stripeSubscriptionId
     ? plan
       ? 'update'
       : 'cancel'
     : 'create'
   let subscription: Stripe.Subscription | undefined
 
-  if (consumer.stripeSubscriptionId) {
+  if (consumer._stripeSubscriptionId) {
     // customer has an existing subscription
     const existing = await stripe.subscriptions.retrieve(
-      consumer.stripeSubscriptionId,
+      consumer._stripeSubscriptionId,
       ...stripeConnectParams
     )
     const existingItems = existing.items.data
@@ -155,7 +155,7 @@ export async function upsertStripeSubscription(
       assert(
         items.length || !plan,
         500,
-        `Error updating stripe subscription "${consumer.stripeSubscriptionId}"`
+        `Error updating stripe subscription "${consumer._stripeSubscriptionId}"`
       )
 
       for (const item of items) {
@@ -182,7 +182,7 @@ export async function upsertStripeSubscription(
     }
 
     subscription = await stripe.subscriptions.update(
-      consumer.stripeSubscriptionId,
+      consumer._stripeSubscriptionId,
       update,
       ...stripeConnectParams
     )
@@ -246,7 +246,7 @@ export async function upsertStripeSubscription(
       ...stripeConnectParams
     )
 
-    consumer.stripeSubscriptionId = subscription.id
+    consumer._stripeSubscriptionId = subscription.id
   }
 
   assert(subscription, 500, 'Missing stripe subscription')
@@ -258,7 +258,7 @@ export async function upsertStripeSubscription(
     consumerUpdate.stripeStatus = subscription.status
   } else {
     // TODO
-    consumerUpdate.stripeSubscriptionId = null
+    consumerUpdate._stripeSubscriptionId = null
     consumerUpdate.stripeStatus = 'cancelled'
   }
 

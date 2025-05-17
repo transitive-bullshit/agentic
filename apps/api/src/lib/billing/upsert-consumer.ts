@@ -33,6 +33,7 @@ export async function upsertConsumer(
 
   if (!consumerId) {
     assert(projectId, 400, 'Missing required "deploymentId"')
+    assert(plan, 400, 'Missing required "plan"')
   }
 
   const [{ user, stripeCustomer }, existingConsumer] = await Promise.all([
@@ -113,8 +114,8 @@ export async function upsertConsumer(
     ;[consumer] = await db.insert(schema.consumers).values({
       plan,
       userId,
-      deploymentId,
       projectId,
+      deploymentId,
       // TODO: refactor / improve token generation
       token: sha256().slice(0, 24),
       _stripeCustomerId: stripeCustomer.id
