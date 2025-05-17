@@ -5,7 +5,7 @@ import type { AuthenticatedEnv } from '@/lib/types'
 import { and, db, eq, schema } from '@/db'
 import { upsertStripeConnectCustomer } from '@/lib/billing/upsert-stripe-connect-customer'
 import { upsertStripeCustomer } from '@/lib/billing/upsert-stripe-customer'
-import { upsertStripePricingPlans } from '@/lib/billing/upsert-stripe-pricing-plans'
+import { upsertStripePricing } from '@/lib/billing/upsert-stripe-pricing'
 import { upsertStripeSubscription } from '@/lib/billing/upsert-stripe-subscription'
 import {
   openapiAuthenticatedSecuritySchemas,
@@ -123,10 +123,10 @@ export function registerV1ConsumersUpsertConsumer(
 
     assert(consumer, 500, 'Error creating consumer')
 
-    // make sure all pricing plans exist
-    await upsertStripePricingPlans({ deployment, project })
+    // Ensure that all Stripe pricing resources exist for this deployment
+    await upsertStripePricing({ deployment, project })
 
-    // make sure that customer and default source are created on stripe connect acct
+    // Ensure that customer and default source are created on the stripe connect account
     // TODO: is this necessary?
     // consumer._stripeAccount = project._stripeAccount
     await upsertStripeConnectCustomer({ stripeCustomer, consumer, project })

@@ -1,5 +1,7 @@
 import { z } from '@hono/zod-openapi'
 
+import { assert } from '@/lib/utils'
+
 export const authProviderTypeSchema = z
   .enum(['github', 'google', 'spotify', 'twitter', 'linkedin', 'stripe'])
   .openapi('AuthProviderType')
@@ -126,11 +128,15 @@ const commonPricingPlanMetricSchema = z.object({
    */
   interval: pricingIntervalSchema.optional(),
 
-  label: z.string().optional().openapi('label', { example: 'API calls' }),
-
-  stripePriceId: z.string().optional()
+  label: z.string().optional().openapi('label', { example: 'API calls' })
 })
 
+/**
+ * PricingPlanMetrics represent a single line-item in a Stripe Subscription.
+ *
+ * They map to a Stripe billing `Price` and possibly a corresponding Stripe
+ * `Metric` for metered usage.
+ */
 export const pricingPlanMetricSchema = z
   .discriminatedUnion('usageType', [
     commonPricingPlanMetricSchema.merge(
@@ -211,19 +217,33 @@ export const pricingPlanMetricSchema = z
              */
             round: z.enum(['down', 'up'])
           })
-          .optional(),
-
-        /**
-         * Stripe Meter id, which is created lazily upon first use.
-         */
-        stripeMeterId: z.string().optional()
+          .optional()
       })
     )
   ])
-  .describe('Stripe billing Price and possibly corresponding Metric')
+  .refine((data) => {
+    assert(
+      !(data.slug === 'base' && data.usageType !== 'licensed'),
+      `Invalid pricing plan metric "${data.slug}": "base" pricing plan metrics are reserved for "licensed" usage type.`
+    )
+
+    assert(
+      !(data.slug === 'requests' && data.usageType !== 'metered'),
+      `Invalid pricing plan metric "${data.slug}": "requests" pricing plan metrics are reserved for "metered" usage type.`
+    )
+
+    return data
+  })
+  .describe(
+    'PricingPlanMetrics represent a single line-item in a Stripe Subscription. They map to a Stripe billing `Price` and possibly a corresponding Stripe `Metric` for metered usage.'
+  )
   .openapi('PricingPlanMetric')
 export type PricingPlanMetric = z.infer<typeof pricingPlanMetricSchema>
 
+/**
+ * Represents the config for a Stripe subscription with one or more
+ * PricingPlanMetrics as line-items.
+ */
 export const pricingPlanSchema = z
   .object({
     name: z.string().nonempty().openapi('name', { example: 'Starter Monthly' }),
@@ -258,6 +278,9 @@ export const pricingPlanSchema = z
 
     return data
   })
+  .describe(
+    'Represents the config for a Stripe subscription with one or more PricingPlanMetrics as line-items.'
+  )
   .openapi('PricingPlan')
 export type PricingPlan = z.infer<typeof pricingPlanSchema>
 

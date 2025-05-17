@@ -12,13 +12,31 @@ import {
 import { stripe } from '@/lib/stripe'
 import { assert } from '@/lib/utils'
 
-export async function upsertStripeProductsAndPricing({
+/**
+ * Upserts all the Stripe resources corresponding to a Deployment's pricing
+ * plans.
+ *
+ * This includes Stripe `Product`, `Meter`, and `Price` objects.
+ *
+ * All Stripe resource IDs are stored in the `_stripeProductIdMap`,
+ * `_stripeMeterIdMap`, and `_stripePriceIdMap` fields of the given `project`.
+ *
+ * The `project` will be updated in the DB with any changes.
+ * The `deployment` is readonly and will not be updated, since all Stripe
+ * resources persist on its Project in case they're the same across deployments.
+ */
+export async function upsertStripePricing({
   deployment,
   project
 }: {
-  deployment: RawDeployment
+  deployment: Readonly<RawDeployment>
   project: RawProject
 }): Promise<void> {
+  assert(
+    deployment.projectId === project.id,
+    'Deployment and project must match'
+  )
+
   const stripeConnectParams = project._stripeAccountId
     ? [
         {
@@ -28,7 +46,7 @@ export async function upsertStripeProductsAndPricing({
     : []
   let dirty = false
 
-  async function upsertStripeProductAndPricingForMetric({
+  async function upsertStripeResourcesForPricingPlanMetric({
     pricingPlan,
     pricingPlanMetric
   }: {
@@ -37,12 +55,6 @@ export async function upsertStripeProductsAndPricing({
   }) {
     const { slug: pricingPlanSlug } = pricingPlan
     const { slug: pricingPlanMetricSlug } = pricingPlanMetric
-
-    const pricingPlanMetricHashForStripePrice =
-      getPricingPlanMetricHashForStripePrice({
-        pricingPlanMetric,
-        project
-      })
 
     // Upsert the Stripe Product
     if (!project._stripeProductIdMap[pricingPlanMetricSlug]) {
@@ -100,22 +112,22 @@ export async function upsertStripeProductsAndPricing({
       }
 
       assert(project._stripeMeterIdMap[pricingPlanMetricSlug])
-
-      if (!pricingPlanMetric.stripeMeterId) {
-        pricingPlanMetric.stripeMeterId =
-          project._stripeMeterIdMap[pricingPlanMetricSlug]
-        dirty = true
-
-        assert(pricingPlanMetric.stripeMeterId)
-      }
     } else {
-      assert(pricingPlanMetric.usageType === 'licensed')
+      assert(pricingPlanMetric.usageType === 'licensed', 400)
 
       assert(
         !project._stripeMeterIdMap[pricingPlanMetricSlug],
+        400,
         `Invalid pricing plan metric "${pricingPlanMetricSlug}" for pricing plan "${pricingPlanSlug}": licensed pricing plan metrics cannot replace a previous metered pricing plan metric. Use a different pricing plan metric slug for the new licensed plan.`
       )
     }
+
+    const pricingPlanMetricHashForStripePrice =
+      getPricingPlanMetricHashForStripePrice({
+        pricingPlan,
+        pricingPlanMetric,
+        project
+      })
 
     // Upsert the Stripe Price
     if (!project._stripePriceIdMap[pricingPlanMetricHashForStripePrice]) {
@@ -159,10 +171,12 @@ export async function upsertStripeProductsAndPricing({
         if (pricingPlanMetric.billingScheme === 'tiered') {
           assert(
             pricingPlanMetric.tiers?.length,
+            400,
             `Invalid pricing plan metric "${pricingPlanMetricSlug}" for pricing plan "${pricingPlanSlug}": tiered billing schemes must have at least one tier.`
           )
           assert(
             !pricingPlanMetric.transformQuantity,
+            400,
             `Invalid pricing plan metric "${pricingPlanMetricSlug}" for pricing plan "${pricingPlanSlug}": tiered billing schemes cannot have transformQuantity.`
           )
 
@@ -185,14 +199,17 @@ export async function upsertStripeProductsAndPricing({
         } else {
           assert(
             pricingPlanMetric.billingScheme === 'per_unit',
+            400,
             `Invalid pricing plan metric "${pricingPlanMetricSlug}" for pricing plan "${pricingPlanSlug}": invalid billing scheme.`
           )
           assert(
             pricingPlanMetric.unitAmount !== undefined,
+            400,
             `Invalid pricing plan metric "${pricingPlanMetricSlug}" for pricing plan "${pricingPlanSlug}": unitAmount is required for per_unit billing schemes.`
           )
           assert(
             !pricingPlanMetric.tiers,
+            400,
             `Invalid pricing plan metric "${pricingPlanMetricSlug}" for pricing plan "${pricingPlanSlug}": per_unit billing schemes cannot have tiers.`
           )
 
@@ -219,17 +236,15 @@ export async function upsertStripeProductsAndPricing({
     }
 
     assert(project._stripePriceIdMap[pricingPlanMetricHashForStripePrice])
-
-    if (!pricingPlanMetric.stripePriceId) {
-      pricingPlanMetric.stripePriceId =
-        project._stripePriceIdMap[pricingPlanMetricHashForStripePrice]
-    }
-
-    assert(pricingPlanMetric.stripePriceId)
   }
 
   const upserts: Array<() => Promise<void>> = []
 
+  // Validate deployment pricing plans to ensure they contain at least one valid
+  // plan per pricing interval configured on the project.
+  // TODO: move some of this `pricingPlanMap` validation to a separate function?
+  // We really wouldn't want to create some resources and then fail partway when
+  // this validation or some of the validation above fails.
   for (const pricingInterval of project.pricingIntervals) {
     const pricingPlans = getPricingPlansByInterval({
       pricingInterval,
@@ -238,6 +253,7 @@ export async function upsertStripeProductsAndPricing({
 
     assert(
       pricingPlans.length > 0,
+      400,
       `Invalid pricing config for deployment "${deployment.id}": no pricing plans for interval "${pricingInterval}"`
     )
   }
@@ -245,7 +261,7 @@ export async function upsertStripeProductsAndPricing({
   for (const pricingPlan of Object.values(deployment.pricingPlanMap)) {
     for (const pricingPlanMetric of Object.values(pricingPlan.metricsMap)) {
       upserts.push(() =>
-        upsertStripeProductAndPricingForMetric({
+        upsertStripeResourcesForPricingPlanMetric({
           pricingPlan,
           pricingPlanMetric
         })
@@ -256,16 +272,9 @@ export async function upsertStripeProductsAndPricing({
   await pAll(upserts, { concurrency: 4 })
 
   if (dirty) {
-    await Promise.all([
-      db
-        .update(schema.projects)
-        .set(project)
-        .where(eq(schema.projects.id, project.id)),
-
-      db
-        .update(schema.deployments)
-        .set(deployment)
-        .where(eq(schema.deployments.id, deployment.id))
-    ])
+    await db
+      .update(schema.projects)
+      .set(project)
+      .where(eq(schema.projects.id, project.id))
   }
 }

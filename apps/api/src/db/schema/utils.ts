@@ -13,7 +13,7 @@ import { createSchemaFactory } from '@fisch0920/drizzle-zod'
 import { z } from '@hono/zod-openapi'
 import { createId } from '@paralleldrive/cuid2'
 
-import { hashObject, omit } from '@/lib/utils'
+import { hashObject } from '@/lib/utils'
 
 import type { RawProject } from '../types'
 import type {
@@ -134,25 +134,33 @@ export const { createInsertSchema, createSelectSchema, createUpdateSchema } =
  * This hash is used as the key for the `Project._stripePriceIdMap`.
  */
 export function getPricingPlanMetricHashForStripePrice({
+  pricingPlan,
   pricingPlanMetric,
   project
 }: {
+  pricingPlan: PricingPlan
   pricingPlanMetric: PricingPlanMetric
   project: RawProject
 }) {
   // TODO: use pricingPlan.slug as well here?
-  // 'price:free:base:<hash>'
-  // 'price:basic-monthly:base:<hash>'
-  // 'price:basic-monthly:requests:<hash>'
+  // TODO: not sure if this is needed or not...
+  // With pricing plan slug:
+  //   - 'price:free:base:<hash>'
+  //   - 'price:basic-monthly:base:<hash>'
+  //   - 'price:basic-monthly:requests:<hash>'
+  // Without pricing plan slug:
+  //   - 'price:base:<hash>'
+  //   - 'price:base:<hash>'
+  //   - 'price:requests:<hash>'
 
   const hash = hashObject({
-    ...omit(pricingPlanMetric, 'stripePriceId', 'stripeMeterId'),
+    ...pricingPlanMetric,
     projectId: project.id,
     stripeAccountId: project._stripeAccountId,
     currency: project.pricingCurrency
   })
 
-  return `price:${pricingPlanMetric.slug}:${hash}`
+  return `price:${pricingPlan.slug}:${pricingPlanMetric.slug}:${hash}`
 }
 
 export function getPricingPlansByInterval({
