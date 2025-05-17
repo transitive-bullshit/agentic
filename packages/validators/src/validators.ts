@@ -40,11 +40,11 @@ export function deploymentHash(value: string): boolean {
   return !!value && deploymentHashRe.test(value)
 }
 
-export function project(value: string): boolean {
+export function projectId(value: string): boolean {
   return !!value && projectRe.test(value)
 }
 
-export function deployment(value: string): boolean {
+export function deploymentId(value: string): boolean {
   return !!value && deploymentRe.test(value)
 }
 

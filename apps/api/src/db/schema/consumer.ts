@@ -1,3 +1,4 @@
+import { validators } from '@agentic/validators'
 import { relations } from '@fisch0920/drizzle-orm'
 import {
   boolean,
@@ -14,6 +15,7 @@ import { users, userSelectSchema } from './user'
 import {
   createInsertSchema,
   createSelectSchema,
+  createUpdateSchema,
   cuid,
   deploymentId,
   id,
@@ -45,7 +47,8 @@ export const consumers = pgTable(
     // API token for this consumer
     token: text().notNull(),
 
-    // The stripe subscription plan this consumer is subscribed to (or 'free' if supported)
+    // The slug of the PricingPlan in the target deployment that this consumer
+    // is subscribed to.
     plan: text(),
 
     // Whether the consumer has made at least one successful API call after
@@ -55,8 +58,8 @@ export const consumers = pgTable(
     // Whether the consumer's subscription is currently active
     enabled: boolean().default(true).notNull(),
 
-    env: text().default('dev').notNull(),
-    coupon: text(),
+    // TODO: Re-add coupon support
+    // coupon: text(),
 
     // only used during initial creation
     source: text(),
@@ -72,23 +75,22 @@ export const consumers = pgTable(
         onDelete: 'cascade'
       }),
 
-    // The specific deployment this user is subscribed to
-    // (since pricing can change across deployment versions)
+    // The specific deployment this user is subscribed to, since pricing can
+    // change across deployment versions)
     deploymentId: deploymentId()
       .notNull()
       .references(() => deployments.id, {
         onDelete: 'cascade'
       }),
 
-    // stripe subscription status (synced via webhooks)
+    // Stripe subscription status (synced via webhooks)
     stripeStatus: text(),
 
+    // Main Stripe Subscription id
     stripeSubscriptionId: stripeId(),
-    stripeSubscriptionBaseItemId: stripeId(),
-    stripeSubscriptionRequestItemId: stripeId(),
 
-    // [metricSlug: string]: string
-    stripeSubscriptionMetricItems: jsonb()
+    // [lineItemSlug: string]: string
+    stripeSubscriptionLineItemIdMap: jsonb()
       .$type<Record<string, string>>()
       .default({})
       .notNull(),
@@ -99,7 +101,6 @@ export const consumers = pgTable(
   },
   (table) => [
     index('consumer_token_idx').on(table.token),
-    index('consumer_env_idx').on(table.env),
     index('consumer_userId_idx').on(table.userId),
     index('consumer_projectId_idx').on(table.projectId),
     index('consumer_deploymentId_idx').on(table.deploymentId),
@@ -131,7 +132,17 @@ export const consumerRelationsSchema: z.ZodType<ConsumerRelationFields> =
   z.enum(['user', 'project', 'deployment'])
 
 export const consumerSelectSchema = createSelectSchema(consumers, {
-  stripeSubscriptionMetricItems: z.record(z.string(), z.string())
+  stripeSubscriptionLineItemIdMap: z.record(z.string(), z.string()),
+
+  deploymentId: (schema) =>
+    schema.refine((id) => validators.deploymentId(id), {
+      message: 'Invalid deployment id'
+    }),
+
+  projectId: (schema) =>
+    schema.refine((id) => validators.projectId(id), {
+      message: 'Invalid project id'
+    })
 })
   .omit({
     _stripeCustomerId: true
@@ -155,12 +166,31 @@ export const consumerSelectSchema = createSelectSchema(consumers, {
   .strip()
   .openapi('Consumer')
 
-export const consumerInsertSchema = createInsertSchema(consumers)
+export const consumerInsertSchema = createInsertSchema(consumers, {
+  deploymentId: (schema) =>
+    schema.refine((id) => validators.deploymentId(id), {
+      message: 'Invalid deployment id'
+    }),
+
+  plan: z.string().nonempty()
+})
   .pick({
     plan: true,
-    env: true,
-    coupon: true,
     source: true,
+    deploymentId: true
+  })
+  .strict()
+
+export const consumerUpdateSchema = createUpdateSchema(consumers, {
+  deploymentId: (schema) =>
+    schema
+      .refine((id) => validators.deploymentId(id), {
+        message: 'Invalid deployment id'
+      })
+      .optional()
+})
+  .pick({
+    plan: true,
     deploymentId: true
   })
   .strict()

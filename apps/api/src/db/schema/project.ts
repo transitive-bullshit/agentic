@@ -217,7 +217,7 @@ export const projectSelectSchema = createSelectSchema(projects, {
 
 export const projectInsertSchema = createInsertSchema(projects, {
   id: (schema) =>
-    schema.refine((id) => validators.project(id), {
+    schema.refine((id) => validators.projectId(id), {
       message: 'Invalid project id'
     }),
 

@@ -129,13 +129,18 @@ export const deploymentSelectSchema = createSelectSchema(deployments, {
 
 export const deploymentInsertSchema = createInsertSchema(deployments, {
   id: (schema) =>
-    schema.refine((id) => validators.project(id), {
+    schema.refine((id) => validators.deploymentId(id), {
       message: 'Invalid deployment id'
     }),
 
   hash: (schema) =>
     schema.refine((hash) => validators.deploymentHash(hash), {
       message: 'Invalid deployment hash'
+    }),
+
+  projectId: (schema) =>
+    schema.refine((id) => validators.projectId(id), {
+      message: 'Invalid project id'
     }),
 
   _url: (schema) => schema.url(),

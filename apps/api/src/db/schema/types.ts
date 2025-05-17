@@ -113,10 +113,10 @@ export type StripeMeterIdMap = z.infer<typeof stripeMeterIdMapSchema>
 
 const commonPricingPlanLineItemSchema = z.object({
   /**
-   * Slugs act as the primary key for metrics. They should be lower and
+   * Slugs act as the primary key for LineItems. They should be lower and
    * kebab-cased ("base", "requests", "image-transformations").
    *
-   * TODO: ensure user-provided custom metrics don't use reserved 'base'
+   * TODO: ensure user-provided custom LineItems don't use reserved 'base'
    * and 'requests' slugs.
    */
   slug: z.union([z.string(), z.literal('base'), z.literal('requests')]),
@@ -152,7 +152,7 @@ export const pricingPlanLineItemSchema = z
         unitLabel: z.string().optional(),
 
         /**
-         * Optional rate limit to enforce for this metric.
+         * Optional rate limit to enforce for this metered LineItem.
          *
          * You can use this, for example, to limit the number of API calls that
          * can be made during a given interval.
@@ -223,16 +223,16 @@ export const pricingPlanLineItemSchema = z
   ])
   .refine((data) => {
     assert(
-      !(data.slug === 'base' && data.usageType !== 'licensed'),
+      data.slug !== 'base' || data.usageType === 'licensed',
       `Invalid pricing plan metric "${data.slug}": "base" pricing plan metrics are reserved for "licensed" usage type.`
     )
 
     assert(
-      !(data.slug === 'requests' && data.usageType !== 'metered'),
+      data.slug !== 'requests' || data.usageType === 'metered',
       `Invalid pricing plan metric "${data.slug}": "requests" pricing plan metrics are reserved for "metered" usage type.`
     )
 
-    return data
+    return true
   })
   .describe(
     'PricingPlanLineItems represent a single line-item in a Stripe Subscription. They map to a Stripe billing `Price` and possibly a corresponding Stripe `Meter` for metered usage.'
@@ -242,7 +242,7 @@ export type PricingPlanLineItem = z.infer<typeof pricingPlanLineItemSchema>
 
 /**
  * Represents the config for a Stripe subscription with one or more
- * PricingPlanLineItems as line-items.
+ * PricingPlanLineItems.
  */
 export const pricingPlanSchema = z
   .object({
@@ -260,26 +260,29 @@ export const pricingPlanSchema = z
     // TODO?
     trialPeriodDays: z.number().nonnegative().optional(),
 
-    metricsMap: z
-      .record(pricingPlanLineItemSlugSchema, pricingPlanLineItemSchema)
-      .refine((metricsMap) => {
-        // Stripe Checkout currently supports a max of 20 line items per
-        // subscription.
-        return Object.keys(metricsMap).length <= 20
-      })
-      .default({})
+    lineItems: z.array(pricingPlanLineItemSchema).nonempty().max(20, {
+      message:
+        'Stripe Checkout currently supports a max of 20 line-items per subscription.'
+    })
   })
   .refine((data) => {
-    if (data.interval === undefined && data.slug !== 'free') {
-      throw new Error(
-        `Invalid PricingPlan "${data.slug}": non-free pricing plans must have an interval`
-      )
-    }
+    assert(
+      data.interval !== undefined || data.slug === 'free',
+      `Invalid PricingPlan "${data.slug}": non-free pricing plans must have an interval`
+    )
 
-    return data
+    const lineItemSlugs = new Set(
+      data.lineItems.map((lineItem) => lineItem.slug)
+    )
+    assert(
+      lineItemSlugs.size === data.lineItems.length,
+      `Invalid PricingPlan "${data.slug}": duplicate line-item slugs`
+    )
+
+    return true
   })
   .describe(
-    'Represents the config for a Stripe subscription with one or more PricingPlanLineItems as line-items.'
+    'Represents the config for a Stripe subscription with one or more PricingPlanLineItems.'
   )
   .openapi('PricingPlan')
 export type PricingPlan = z.infer<typeof pricingPlanSchema>
@@ -294,12 +297,26 @@ export const stripeProductIdMapSchema = z
 export type StripeProductIdMap = z.infer<typeof stripeProductIdMapSchema>
 
 export const pricingPlanMapSchema = z
-  .record(z.string().describe('PricingPlan slug'), pricingPlanSchema)
+  .record(
+    z
+      .string()
+      .describe(
+        'PricingPlan slug ("free", "starter-monthly", "pro-annual", etc)'
+      ),
+    pricingPlanSchema
+  )
   .refine((data) => Object.keys(data).length > 0, {
     message: 'Must contain at least one PricingPlan'
   })
   .describe('Map from PricingPlan slug to PricingPlan')
 export type PricingPlanMap = z.infer<typeof pricingPlanMapSchema>
+
+// TODO
+// export const stripeSubscriptionLineItemIdMapSchema = z
+//   .record(pricingPlanLineItemHashSchema, z.string().describe('Stripe LineItem id'))
+//   .describe('Map from internal PricingPlanLineItem **hash** to Stripe LineItem id')
+//   .openapi('StripeSubscriptionLineItemMap')
+// export type StripeSubscriptionLineItemMap = z.infer<typeof stripeSubscriptionLineItemMapSchema>
 
 // export const couponSchema = z
 //   .object({

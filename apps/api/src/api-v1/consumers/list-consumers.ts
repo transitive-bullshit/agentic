@@ -14,7 +14,7 @@ import { projectIdParamsSchema } from '../projects/schemas'
 import { paginationAndPopulateConsumerSchema } from './schemas'
 
 const route = createRoute({
-  description: 'Lists consumers (customers) for a project.',
+  description: 'Lists all of the customers for a project.',
   tags: ['consumers'],
   operationId: 'listConsumers',
   method: 'get',

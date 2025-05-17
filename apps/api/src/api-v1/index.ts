@@ -5,7 +5,10 @@ import type { AuthenticatedEnv } from '@/lib/types'
 import * as middleware from '@/lib/middleware'
 
 import { registerV1AdminConsumersGetConsumerByToken } from './consumers/admin-get-consumer-by-token'
+import { registerV1ConsumersCreateConsumer } from './consumers/create-consumer'
 import { registerV1ConsumersGetConsumer } from './consumers/get-consumer'
+import { registerV1ProjectsListConsumers } from './consumers/list-consumers'
+import { registerV1ConsumersUpdateConsumer } from './consumers/update-consumer'
 import { registerHealthCheck } from './health-check'
 import { registerV1ProjectsCreateProject } from './projects/create-project'
 import { registerV1ProjectsGetProject } from './projects/get-project'
@@ -50,23 +53,23 @@ const privateRouter = new OpenAPIHono<AuthenticatedEnv>()
 
 registerHealthCheck(publicRouter)
 
-// Users crud
+// Users
 registerV1UsersGetUser(privateRouter)
 registerV1UsersUpdateUser(privateRouter)
 
-// Teams crud
+// Teams
 registerV1TeamsCreateTeam(privateRouter)
 registerV1TeamsListTeams(privateRouter)
 registerV1TeamsGetTeam(privateRouter)
 registerV1TeamsDeleteTeam(privateRouter)
 registerV1TeamsUpdateTeam(privateRouter)
 
-// Team members crud
+// Team members
 registerV1TeamsMembersCreateTeamMember(privateRouter)
 registerV1TeamsMembersUpdateTeamMember(privateRouter)
 registerV1TeamsMembersDeleteTeamMember(privateRouter)
 
-// Projects crud
+// Projects
 registerV1ProjectsCreateProject(privateRouter)
 registerV1ProjectsListProjects(privateRouter)
 registerV1ProjectsGetProject(privateRouter)
@@ -83,8 +86,11 @@ registerV1ProjectsUpdateProject(privateRouter)
 //   require('./projects').read
 // )
 
-// Consumers crud
+// Consumers
 registerV1ConsumersGetConsumer(privateRouter)
+registerV1ConsumersCreateConsumer(privateRouter)
+registerV1ConsumersUpdateConsumer(privateRouter)
+registerV1ProjectsListConsumers(privateRouter)
 
 // Webhook event handlers
 registerV1StripeWebhook(publicRouter)
@@ -123,3 +129,6 @@ export type ApiRoutes =
   | ReturnType<typeof registerV1ProjectsUpdateProject>
   // Consumers
   | ReturnType<typeof registerV1ConsumersGetConsumer>
+  | ReturnType<typeof registerV1ConsumersCreateConsumer>
+  | ReturnType<typeof registerV1ConsumersUpdateConsumer>
+  | ReturnType<typeof registerV1ProjectsListConsumers>

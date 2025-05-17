@@ -93,7 +93,7 @@ export const userInsertSchema = createInsertSchema(users, {
     image: true
   })
   .strict()
-  .refine((user) => {
+  .transform((user) => {
     return {
       ...user,
       emailConfirmToken: sha256(),
@@ -110,7 +110,7 @@ export const userUpdateSchema = createUpdateSchema(users)
     isStripeConnectEnabledByDefault: true
   })
   .strict()
-  .refine((user) => {
+  .transform((user) => {
     return {
       ...user,
       password: user.password ? hashSync(user.password) : undefined

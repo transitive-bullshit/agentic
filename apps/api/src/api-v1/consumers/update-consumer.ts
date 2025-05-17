@@ -1,27 +1,36 @@
 import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 
 import type { AuthenticatedEnv } from '@/lib/types'
-import { db, eq, schema } from '@/db'
-import { acl } from '@/lib/acl'
+import { schema } from '@/db'
+import { upsertConsumer } from '@/lib/billing/upsert-consumer'
 import {
   openapiAuthenticatedSecuritySchemas,
   openapiErrorResponse404,
+  openapiErrorResponse409,
+  openapiErrorResponse410,
   openapiErrorResponses
 } from '@/lib/openapi-utils'
-import { assert, parseZodSchema } from '@/lib/utils'
+import { parseZodSchema } from '@/lib/utils'
 
-import { consumerIdParamsSchema, populateConsumerSchema } from './schemas'
+import { consumerIdParamsSchema } from './schemas'
 
 const route = createRoute({
-  description: 'Gets a consumer',
+  description: "Updates a consumer's subscription to a project.",
   tags: ['consumers'],
-  operationId: 'getConsumer',
-  method: 'get',
+  operationId: 'updateConsumer',
+  method: 'post',
   path: 'consumers/{consumerId}',
   security: openapiAuthenticatedSecuritySchemas,
   request: {
     params: consumerIdParamsSchema,
-    query: populateConsumerSchema
+    body: {
+      required: true,
+      content: {
+        'application/json': {
+          schema: schema.consumerInsertSchema
+        }
+      }
+    }
   },
   responses: {
     200: {
@@ -33,25 +42,23 @@ const route = createRoute({
       }
     },
     ...openapiErrorResponses,
-    ...openapiErrorResponse404
+    ...openapiErrorResponse404,
+    ...openapiErrorResponse409,
+    ...openapiErrorResponse410
   }
 })
 
-export function registerV1ConsumersGetConsumer(
+export function registerV1ConsumersUpdateConsumer(
   app: OpenAPIHono<AuthenticatedEnv>
 ) {
   return app.openapi(route, async (c) => {
     const { consumerId } = c.req.valid('param')
-    const { populate = [] } = c.req.valid('query')
+    const body = c.req.valid('json')
 
-    const consumer = await db.query.consumers.findFirst({
-      where: eq(schema.consumers.id, consumerId),
-      with: {
-        ...Object.fromEntries(populate.map((field) => [field, true]))
-      }
+    const consumer = await upsertConsumer(c, {
+      ...body,
+      consumerId
     })
-    assert(consumer, 404, `Consumer not found "${consumerId}"`)
-    await acl(c, consumer, { label: 'Consumer' })
 
     return c.json(parseZodSchema(schema.consumerSelectSchema, consumer))
   })

@@ -13,13 +13,13 @@ export const consumerIdSchema = getCuidSchema('consumer id')
 
 export const projectIdSchema = z
   .string()
-  .refine((id) => validators.project(id), {
+  .refine((id) => validators.projectId(id), {
     message: 'Invalid project id'
   })
 
 export const deploymentIdSchema = z
   .string()
-  .refine((id) => validators.deployment(id), {
+  .refine((id) => validators.deploymentId(id), {
     message: 'Invalid deployment id'
   })
 

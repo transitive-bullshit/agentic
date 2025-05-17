@@ -259,7 +259,7 @@ export async function upsertStripePricing({
   }
 
   for (const pricingPlan of Object.values(deployment.pricingPlanMap)) {
-    for (const pricingPlanLineItem of Object.values(pricingPlan.metricsMap)) {
+    for (const pricingPlanLineItem of pricingPlan.lineItems) {
       upserts.push(() =>
         upsertStripeResourcesForPricingPlanLineItem({
           pricingPlan,
