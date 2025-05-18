@@ -12,10 +12,10 @@ import { z } from '@hono/zod-openapi'
 import { projects } from './project'
 import { teams, teamSelectSchema } from './team'
 import {
+  type PricingPlanList,
+  pricingPlanListSchema
   // type Coupon,
   // couponSchema,
-  type PricingPlanMap,
-  pricingPlanMapSchema
 } from './types'
 import { users, userSelectSchema } from './user'
 import {
@@ -64,8 +64,8 @@ export const deployments = pgTable(
     // Backend API URL
     _url: text().notNull(),
 
-    // Record<string, PricingPlan>
-    pricingPlanMap: jsonb().$type<PricingPlanMap>().notNull()
+    // Array<PricingPlan>
+    pricingPlans: jsonb().$type<PricingPlanList>().notNull()
 
     // coupons: jsonb().$type<Coupon[]>().default([]).notNull()
   },
@@ -107,7 +107,7 @@ export const deploymentSelectSchema = createSelectSchema(deployments, {
   // build: z.object({}),
   // env: z.object({}),
 
-  pricingPlanMap: pricingPlanMapSchema
+  pricingPlans: pricingPlanListSchema
   // coupons: z.array(couponSchema)
 })
   .omit({
@@ -145,11 +145,9 @@ export const deploymentInsertSchema = createInsertSchema(deployments, {
 
   _url: (schema) => schema.url(),
 
-  // TODO: should this public resource be decoupled from the internal pricing
-  // plan structure?
-  pricingPlanMap: pricingPlanMapSchema
+  pricingPlans: pricingPlanListSchema
 
-  // TODO
+  // TODOp
   // coupons: z.array(couponSchema).optional()
 })
   .omit({ id: true, createdAt: true, updatedAt: true })

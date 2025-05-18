@@ -10,6 +10,7 @@ import {
   type RawUser,
   schema
 } from '@/db'
+import { getStripePriceIdForPricingPlanLineItem } from '@/db/schema'
 import { stripe } from '@/lib/stripe'
 import { assert } from '@/lib/utils'
 
@@ -62,16 +63,43 @@ export async function upsertStripeSubscription(
 
   if (consumer._stripeSubscriptionId) {
     // customer has an existing subscription
-    const existing = await stripe.subscriptions.retrieve(
+    const existingStripeSubscription = await stripe.subscriptions.retrieve(
       consumer._stripeSubscriptionId,
       ...stripeConnectParams
     )
-    const existingItems = existing.items.data
+    const existingStripeSubscriptionItems =
+      existingStripeSubscription.items.data
     logger.debug()
-    logger.debug('existing subscription', JSON.stringify(existing, null, 2))
+    logger.debug(
+      'existing stripe subscription',
+      JSON.stringify(existingStripeSubscription, null, 2)
+    )
     logger.debug()
 
-    const update: Stripe.SubscriptionUpdateParams = {}
+    assert(
+      existingStripeSubscription.metadata?.userId === consumer.userId,
+      500,
+      `Error updating stripe subscription: invalid existing subscription "${existingStripeSubscription.id}" metadata for consumer "${consumer.id}"`
+    )
+    assert(
+      existingStripeSubscription.metadata?.consumerId === consumer.id,
+      500,
+      `Error updating stripe subscription: invalid existing subscription "${existingStripeSubscription.id}" metadata for consumer "${consumer.id}"`
+    )
+    assert(
+      existingStripeSubscription.metadata?.projectId === project.id,
+      500,
+      `Error updating stripe subscription: invalid existing subscription "${existingStripeSubscription.id}" metadata for project "${project.id}"`
+    )
+
+    const updateParams: Stripe.SubscriptionUpdateParams = {
+      metadata: {
+        userId: consumer.userId,
+        consumerId: consumer.id,
+        projectId: project.id,
+        deployment: deployment.id
+      }
+    }
 
     if (plan) {
       assert(
@@ -80,72 +108,56 @@ export async function upsertStripeSubscription(
         `Unable to update stripe subscription for invalid pricing plan "${plan}"`
       )
 
-      let items: Stripe.SubscriptionUpdateParams.Item[] = [
-        {
-          plan: pricingPlan.stripeBasePlanId,
-          id: consumer.stripeSubscriptionBaseItemId
-        },
-        {
-          plan: pricingPlan.stripeRequestPlanId,
-          id: consumer.stripeSubscriptionRequestItemId
-        }
-      ]
+      const items: Stripe.SubscriptionUpdateParams.Item[] =
+        pricingPlan.lineItems.map((lineItem) => {
+          const priceId = getStripePriceIdForPricingPlanLineItem({
+            pricingPlan,
+            pricingPlanLineItem: lineItem,
+            project
+          })
+          assert(
+            priceId,
+            500,
+            `Error updating stripe subscription: missing expected Stripe Price for plan "${pricingPlan.slug}" line item "${lineItem.slug}"`
+          )
 
-      for (const metric of pricingPlan.metrics) {
-        const { slug: metricSlug } = metric
-        logger.debug({
-          metricSlug,
-          plan: pricingPlan.stripeMetricPlans[metricSlug],
-          id: consumer.stripeSubscriptionMetricItems[metricSlug]
+          // An existing Stripe Subscription Item may or may not exist for this
+          // LineItem. It should exist if this is an update to an existing
+          // LineItem. It won't exist if it's a new LineItem.
+          const id = consumer._stripeSubscriptionItemIdMap[lineItem.slug]
+
+          return {
+            price: priceId,
+            id,
+            metadata: {
+              lineItemSlug: lineItem.slug
+            }
+          }
         })
 
-        items.push({
-          plan: pricingPlan.stripeMetricPlans[metricSlug]!,
-          id: consumer.stripeSubscriptionMetricItems[metricSlug]
-        })
-      }
-
-      const invalidItems = items.filter((item) => !item.plan)
-      if (plan && invalidItems.length) {
-        logger.error('billing warning found invalid items', invalidItems)
-      }
-
-      items = items.filter((item) => item.plan)
-
+      // Sanity check that LineItems we think should exist are all present in
+      // the current subscription's items.
       for (const item of items) {
         if (item.id) {
-          const existingItem = existingItems.find(
+          const existingItem = existingStripeSubscriptionItems.find(
             (existingItem) => item.id === existingItem.id
           )
 
-          if (!existingItem) {
-            logger.error(
-              'billing warning found new item that has a subscription item id but should not',
-              { item }
-            )
-            delete item.id
-          }
+          assert(
+            existingItem,
+            500,
+            `Error updating stripe subscription: invalid pricing plan "${plan}" missing existing Subscription Item for "${item.id}"`
+          )
         }
       }
 
-      // TODO: We should never use clear_usage because it causes us to lose money.
-      // A customer could downgrade their subscription at the end of a pay period
-      // and this would clear all usage for their period, effectively allowing them
-      // to hack the service for free usage.
-      // The solution to this problem is to always have an equivalent free plan for
-      // every paid plan.
-
-      for (const existingItem of existingItems) {
+      for (const existingItem of existingStripeSubscriptionItems) {
         const updatedItem = items.find((item) => item.id === existingItem.id)
 
         if (!updatedItem) {
           const deletedItem: Stripe.SubscriptionUpdateParams.Item = {
             id: existingItem.id,
             deleted: true
-          }
-
-          if (existingItem.plan.usage_type === 'metered') {
-            deletedItem.clear_usage = true
           }
 
           items.push(deletedItem)
@@ -164,63 +176,88 @@ export async function upsertStripeSubscription(
         }
       }
 
-      update.items = items
+      updateParams.items = items
 
       if (pricingPlan.trialPeriodDays) {
-        update.trial_end =
+        const trialEnd =
           Math.trunc(Date.now() / 1000) +
           24 * 60 * 60 * pricingPlan.trialPeriodDays
+
+        // Reuse the existing trial end date if one exists. Otherwise, set a new
+        // one for the updated subscription.
+        updateParams.trial_end =
+          existingStripeSubscription.trial_end ?? trialEnd
+      } else if (existingStripeSubscription.trial_end) {
+        // If the existing subscription has a trial end date, but the updated
+        // subscription doesn't, we should end the trial now.
+        updateParams.trial_end = 'now'
       }
 
       logger.debug('subscription', action, { items })
     } else {
-      update.cancel_at_period_end = true
+      updateParams.cancel_at_period_end = true
     }
 
     if (project.isStripeConnectEnabled && project.applicationFeePercent > 0) {
-      update.application_fee_percent = project.applicationFeePercent
+      updateParams.application_fee_percent = project.applicationFeePercent
     }
 
     subscription = await stripe.subscriptions.update(
       consumer._stripeSubscriptionId,
-      update,
+      updateParams,
       ...stripeConnectParams
     )
 
     // TODO: this will cancel the subscription without resolving current usage / invoices
     // await stripe.subscriptions.del(consumer.stripeSubscription)
   } else {
+    // Creating a new subscription for this consumer for the first time.
     assert(
       pricingPlan,
       404,
       `Unable to update stripe subscription for invalid pricing plan "${plan}"`
     )
 
-    let items: Stripe.SubscriptionCreateParams.Item[] = [
-      {
-        plan: pricingPlan.stripeBasePlanId
-      },
-      {
-        plan: pricingPlan.stripeRequestPlanId
-      }
-    ]
+    const items: Stripe.SubscriptionCreateParams.Item[] =
+      pricingPlan.lineItems.map((lineItem) => {
+        const priceId = getStripePriceIdForPricingPlanLineItem({
+          pricingPlan,
+          pricingPlanLineItem: lineItem,
+          project
+        })
+        assert(
+          priceId,
+          500,
+          `Error creating stripe subscription: missing expected Stripe Price for plan "${pricingPlan.slug}" line item "${lineItem.slug}"`
+        )
 
-    for (const metric of pricingPlan.metrics) {
-      const { slug: metricSlug } = metric
-      items.push({
-        plan: pricingPlan.stripeMetricPlans[metricSlug]!
+        // An existing Stripe Subscription Item may or may not exist for this
+        // LineItem. It should exist if this is an update to an existing
+        // LineItem. It won't exist if it's a new LineItem.
+        const id = consumer._stripeSubscriptionItemIdMap[lineItem.slug]
+        assert(
+          !id,
+          500,
+          `Error creating stripe subscription: consumer contains a Stripe Subscription Item for LineItem "${lineItem.slug}" and pricing plan "${pricingPlan.slug}"`
+        )
+
+        return {
+          price: priceId,
+          metadata: {
+            lineItemSlug: lineItem.slug
+          }
+        }
       })
-    }
 
-    items = items.filter((item) => item.plan)
     assert(
       items.length,
       500,
-      `Error creating stripe subscription for invalid plan "${pricingPlan.slug}"`
+      `Error creating stripe subscription: invalid plan "${plan}"`
     )
 
     const createParams: Stripe.SubscriptionCreateParams = {
       customer: stripeCustomerId,
+      description: `Agentic subscription to project "${project.id}"`,
       // TODO: coupons
       // coupon: filterConsumerCoupon(ctx, consumer, deployment),
       items,
@@ -249,105 +286,54 @@ export async function upsertStripeSubscription(
     consumer._stripeSubscriptionId = subscription.id
   }
 
+  // ----------------------------------------------------
+  // Same codepath for updating, creating, and cancelling
+  // ----------------------------------------------------
+
   assert(subscription, 500, 'Missing stripe subscription')
   logger.debug('subscription', subscription)
 
   const consumerUpdate: ConsumerUpdate = consumer
+  consumerUpdate.stripeStatus = subscription.status
 
-  if (plan) {
-    consumerUpdate.stripeStatus = subscription.status
-  } else {
-    // TODO
-    consumerUpdate._stripeSubscriptionId = null
-    consumerUpdate.stripeStatus = 'cancelled'
-  }
+  // if (!plan) {
+  // TODO: we cancel at the end of the billing interval, so we shouldn't
+  // invalidate the stripe subscription just yet. That should happen via
+  // webhook. And we should never set `_stripeSubscriptionId` to `null`.
+  // consumerUpdate._stripeSubscriptionId = null
+  // consumerUpdate.stripeStatus = 'cancelled'
+  // }
 
-  if (pricingPlan?.stripeBasePlanId) {
-    const subscriptionItem = subscription.items.data.find(
-      (item) => item.plan.id === pricingPlan.stripeBasePlanId
-    )
-    assert(
-      subscriptionItem,
-      500,
-      `Error initializing stripe subscription for base plan "${subscription.id}"`
-    )
+  if (pricingPlan) {
+    for (const lineItem of pricingPlan.lineItems) {
+      const stripeSubscriptionItemId =
+        consumer._stripeSubscriptionItemIdMap[lineItem.slug]
 
-    consumerUpdate.stripeSubscriptionBaseItemId = subscriptionItem.id
-    assert(
-      consumerUpdate.stripeSubscriptionBaseItemId,
-      500,
-      `Error initializing stripe subscription for base plan [${subscription.id}]`
-    )
-  } else {
-    // TODO
-    consumerUpdate.stripeSubscriptionBaseItemId = null
-  }
-
-  if (pricingPlan?.stripeRequestPlanId) {
-    const subscriptionItem = subscription.items.data.find(
-      (item) => item.plan.id === pricingPlan.stripeRequestPlanId
-    )
-    assert(
-      subscriptionItem,
-      500,
-      `Error initializing stripe subscription for metric "requests" on plan "${subscription.id}"`
-    )
-
-    consumerUpdate.stripeSubscriptionRequestItemId = subscriptionItem.id
-    assert(
-      consumerUpdate.stripeSubscriptionRequestItemId,
-      500,
-      `Error initializing stripe subscription for metric "requests" on plan "${subscription.id}"`
-    )
-  } else {
-    // TODO
-    consumerUpdate.stripeSubscriptionRequestItemId = null
-  }
-
-  const metricSlugs = (
-    pricingPlan?.metrics.map((metric) => metric.slug) ?? []
-  ).concat(Object.keys(consumer.stripeSubscriptionMetricItems))
-
-  const isMetricInPricingPlan = (metricSlug: string) =>
-    pricingPlan?.metrics.find((metric) => metric.slug === metricSlug)
-
-  for (const metricSlug of metricSlugs) {
-    logger.debug({
-      metricSlug,
-      pricingPlan
-    })
-    const metricPlan = pricingPlan?.stripeMetricPlans[metricSlug]
-
-    if (metricPlan) {
-      const subscriptionItem: Stripe.SubscriptionItem | undefined =
-        subscription.items.data.find((item) => item.plan.id === metricPlan)
-
-      if (isMetricInPricingPlan(metricSlug)) {
-        assert(
-          subscriptionItem,
-          500,
-          `Error initializing stripe subscription for metric "${metricSlug}" on plan [${subscription.id}]`
+      const stripeSubscriptionItem: Stripe.SubscriptionItem | undefined =
+        subscription.items.data.find((item) =>
+          stripeSubscriptionItemId
+            ? item.id === stripeSubscriptionItemId
+            : item.metadata?.lineItemSlug === lineItem.slug
         )
 
-        consumerUpdate.stripeSubscriptionMetricItems![metricSlug] =
-          subscriptionItem.id
-        assert(
-          consumerUpdate.stripeSubscriptionMetricItems![metricSlug],
-          500,
-          `Error initializing stripe subscription for metric "${metricSlug}" on plan [${subscription.id}]`
-        )
-      }
-    } else {
-      // TODO
-      delete consumerUpdate.stripeSubscriptionMetricItems![metricSlug]
+      assert(
+        stripeSubscriptionItem,
+        500,
+        `Error post-processing stripe subscription for line item "${lineItem.slug}" on plan "${pricingPlan.slug}"`
+      )
+
+      consumerUpdate._stripeSubscriptionItemIdMap![lineItem.slug] =
+        stripeSubscriptionItem.id
+      assert(
+        consumerUpdate._stripeSubscriptionItemIdMap![lineItem.slug],
+        500,
+        `Error post-processing stripe subscription for line item "${lineItem.slug}" on plan "${pricingPlan.slug}"`
+      )
     }
   }
 
   logger.debug()
-  logger.debug('consumer update', {
-    ...consumer,
-    ...consumerUpdate
-  })
+  logger.debug('consumer update', consumerUpdate)
 
   const [updatedConsumer] = await db
     .update(schema.consumers)

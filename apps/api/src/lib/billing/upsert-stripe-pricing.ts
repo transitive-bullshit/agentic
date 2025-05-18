@@ -242,13 +242,13 @@ export async function upsertStripePricing({
 
   // Validate deployment pricing plans to ensure they contain at least one valid
   // plan per pricing interval configured on the project.
-  // TODO: move some of this `pricingPlanMap` validation to a separate function?
+  // TODO: move some of this `pricingPlans` validation to a separate function?
   // We really wouldn't want to create some resources and then fail partway when
   // this validation or some of the validation above fails.
   for (const pricingInterval of project.pricingIntervals) {
     const pricingPlans = getPricingPlansByInterval({
       pricingInterval,
-      pricingPlanMap: deployment.pricingPlanMap
+      pricingPlans: deployment.pricingPlans
     })
 
     assert(
@@ -258,7 +258,7 @@ export async function upsertStripePricing({
     )
   }
 
-  for (const pricingPlan of Object.values(deployment.pricingPlanMap)) {
+  for (const pricingPlan of deployment.pricingPlans) {
     for (const pricingPlanLineItem of pricingPlan.lineItems) {
       upserts.push(() =>
         upsertStripeResourcesForPricingPlanLineItem({

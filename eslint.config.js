@@ -11,7 +11,8 @@ export default [
     },
     rules: {
       ...drizzle.configs.recommended.rules,
-      'no-console': 'error'
+      'no-console': 'error',
+      'unicorn/no-array-reduce': 'off'
     }
   }
 ]

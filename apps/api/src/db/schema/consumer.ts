@@ -11,6 +11,10 @@ import { z } from '@hono/zod-openapi'
 
 import { deployments, deploymentSelectSchema } from './deployment'
 import { projects, projectSelectSchema } from './project'
+import {
+  type StripeSubscriptionItemIdMap,
+  stripeSubscriptionItemIdMapSchema
+} from './types'
 import { users, userSelectSchema } from './user'
 import {
   createInsertSchema,
@@ -89,9 +93,9 @@ export const consumers = pgTable(
     // Main Stripe Subscription id
     _stripeSubscriptionId: stripeId(),
 
-    // [lineItemSlug: string]: string
-    _stripeSubscriptionLineItemIdMap: jsonb()
-      .$type<Record<string, string>>()
+    // [pricingPlanLineItemSlug: string]: string
+    _stripeSubscriptionItemIdMap: jsonb()
+      .$type<StripeSubscriptionItemIdMap>()
       .default({})
       .notNull(),
 
@@ -132,7 +136,7 @@ export const consumerRelationsSchema: z.ZodType<ConsumerRelationFields> =
   z.enum(['user', 'project', 'deployment'])
 
 export const consumerSelectSchema = createSelectSchema(consumers, {
-  _stripeSubscriptionLineItemIdMap: z.record(z.string(), z.string()),
+  _stripeSubscriptionItemIdMap: stripeSubscriptionItemIdMapSchema,
 
   deploymentId: (schema) =>
     schema.refine((id) => validators.deploymentId(id), {
@@ -146,7 +150,7 @@ export const consumerSelectSchema = createSelectSchema(consumers, {
 })
   .omit({
     _stripeSubscriptionId: true,
-    _stripeSubscriptionLineItemIdMap: true,
+    _stripeSubscriptionItemIdMap: true,
     _stripeCustomerId: true
   })
   .extend({

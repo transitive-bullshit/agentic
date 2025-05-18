@@ -108,7 +108,7 @@ export async function upsertConsumer(
   )
 
   if (plan) {
-    const pricingPlan = deployment.pricingPlanMap[plan]
+    const pricingPlan = deployment.pricingPlans.find((p) => p.slug === plan)
     assert(
       pricingPlan,
       400,

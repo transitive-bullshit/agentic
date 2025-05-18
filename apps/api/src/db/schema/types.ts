@@ -95,7 +95,16 @@ export const pricingPlanLineItemHashSchema = z
 export const pricingPlanLineItemSlugSchema = z
   .string()
   .nonempty()
-  .describe('PricingPlanLineItem slug')
+  .describe(
+    'PricingPlanLineItem slug which acts as a unique lookup key for LineItems across deployments. They must be lower and kebab-cased ("base", "requests", "image-transformations").'
+  )
+
+export const pricingPlanSlugSchema = z
+  .string()
+  .nonempty()
+  .describe(
+    'PricingPlan slug which acts as a unique lookup key for PricingPlans across deployments. They must be lower and kebab-cased and should have the interval as a suffix ("free", "starter-monthly", "pro-annual").'
+  )
 
 export const stripePriceIdMapSchema = z
   .record(pricingPlanLineItemHashSchema, z.string().describe('Stripe Price id'))
@@ -256,7 +265,13 @@ export type PricingPlanLineItem = z.infer<typeof pricingPlanLineItemSchema>
 export const pricingPlanSchema = z
   .object({
     name: z.string().nonempty().openapi('name', { example: 'Starter Monthly' }),
-    slug: z.string().nonempty().openapi('slug', { example: 'starter-monthly' }),
+    slug: z
+      .string()
+      .nonempty()
+      .describe(
+        'PricingPlan slug ("free", "starter-monthly", "pro-annual", etc)'
+      )
+      .openapi('slug', { example: 'starter-monthly' }),
 
     /**
      * The frequency at which a subscription is billed.
@@ -325,27 +340,69 @@ export const stripeProductIdMapSchema = z
   .openapi('StripeProductIdMap')
 export type StripeProductIdMap = z.infer<typeof stripeProductIdMapSchema>
 
-export const pricingPlanMapSchema = z
-  .record(
-    z
-      .string()
-      .describe(
-        'PricingPlan slug ("free", "starter-monthly", "pro-annual", etc)'
-      ),
-    pricingPlanSchema
-  )
-  .refine((data) => Object.keys(data).length > 0, {
+export const pricingPlanListSchema = z
+  .array(pricingPlanSchema)
+  .nonempty({
     message: 'Must contain at least one PricingPlan'
   })
-  .describe('Map from PricingPlan slug to PricingPlan')
-export type PricingPlanMap = z.infer<typeof pricingPlanMapSchema>
+  .refine(
+    (pricingPlans) => {
+      const slugs = new Set(pricingPlans.map((p) => p.slug))
+      return slugs.size === pricingPlans.length
+    },
+    {
+      message: `Invalid PricingPlanList: duplicate PricingPlan slugs`
+    }
+  )
+  .refine(
+    (pricingPlans) => {
+      const pricingPlanLineItemSlugMap: Record<string, PricingPlanLineItem[]> =
+        {}
+      for (const pricingPlan of pricingPlans) {
+        for (const lineItem of pricingPlan.lineItems) {
+          if (!pricingPlanLineItemSlugMap[lineItem.slug]) {
+            pricingPlanLineItemSlugMap[lineItem.slug] = []
+          }
 
-// TODO
-// export const _stripeSubscriptionLineItemIdMapSchema = z
-//   .record(pricingPlanLineItemHashSchema, z.string().describe('Stripe LineItem id'))
-//   .describe('Map from internal PricingPlanLineItem **hash** to Stripe LineItem id')
-//   .openapi('StripeSubscriptionLineItemMap')
-// export type StripeSubscriptionLineItemMap = z.infer<typeof stripeSubscriptionLineItemMapSchema>
+          pricingPlanLineItemSlugMap[lineItem.slug]!.push(lineItem)
+        }
+      }
+
+      for (const lineItems of Object.values(pricingPlanLineItemSlugMap)) {
+        if (lineItems.length <= 1) continue
+
+        const lineItem0 = lineItems[0]!
+
+        for (let i = 1; i < lineItems.length; ++i) {
+          const lineItem = lineItems[i]!
+
+          if (lineItem.usageType !== lineItem0.usageType) {
+            return false
+          }
+        }
+      }
+
+      return true
+    },
+    {
+      message: `Invalid PricingPlanList: all pricing plans which contain the same LineItems (by slug) must have the same usage type (licensed or metered).`
+    }
+  )
+  .describe('List of PricingPlans')
+export type PricingPlanList = z.infer<typeof pricingPlanListSchema>
+
+export const stripeSubscriptionItemIdMapSchema = z
+  .record(
+    pricingPlanLineItemSlugSchema,
+    z.string().describe('Stripe Subscription Item id')
+  )
+  .describe(
+    'Map from internal PricingPlanLineItem **slug** to Stripe Subscription Item id'
+  )
+  .openapi('StripeSubscriptionItemIdMap')
+export type StripeSubscriptionItemIdMap = z.infer<
+  typeof stripeSubscriptionItemIdMapSchema
+>
 
 // export const couponSchema = z
 //   .object({

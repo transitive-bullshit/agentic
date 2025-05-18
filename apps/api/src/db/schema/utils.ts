@@ -20,7 +20,7 @@ import type {
   PricingInterval,
   PricingPlan,
   PricingPlanLineItem,
-  PricingPlanMap
+  PricingPlanList
 } from './types'
 
 const usernameAndTeamSlugLength = 64 as const
@@ -164,15 +164,35 @@ export function getPricingPlanLineItemHashForStripePrice({
   return `price:${pricingPlan.slug}:${pricingPlanLineItem.slug}:${hash}`
 }
 
+export function getStripePriceIdForPricingPlanLineItem({
+  pricingPlan,
+  pricingPlanLineItem,
+  project
+}: {
+  pricingPlan: PricingPlan
+  pricingPlanLineItem: PricingPlanLineItem
+  project: RawProject
+}): string | undefined {
+  const pricingPlanLineItemHash = getPricingPlanLineItemHashForStripePrice({
+    pricingPlan,
+    pricingPlanLineItem,
+    project
+  })
+
+  return project._stripePriceIdMap[pricingPlanLineItemHash]
+}
+
 export function getPricingPlansByInterval({
   pricingInterval,
-  pricingPlanMap
+  pricingPlans
 }: {
   pricingInterval: PricingInterval
-  pricingPlanMap: PricingPlanMap
+  pricingPlans: PricingPlanList
 }): PricingPlan[] {
-  return Object.values(pricingPlanMap).filter(
-    (pricingPlan) => pricingPlan.interval === pricingInterval
+  return pricingPlans.filter(
+    (pricingPlan) =>
+      pricingPlan.interval === undefined ||
+      pricingPlan.interval === pricingInterval
   )
 }
 
