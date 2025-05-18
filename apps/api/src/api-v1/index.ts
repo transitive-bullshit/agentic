@@ -10,6 +10,11 @@ import { registerV1ConsumersGetConsumer } from './consumers/get-consumer'
 import { registerV1ProjectsListConsumers } from './consumers/list-consumers'
 import { registerV1ConsumersRefreshConsumerToken } from './consumers/refresh-consumer-token'
 import { registerV1ConsumersUpdateConsumer } from './consumers/update-consumer'
+import { registerV1DeploymentsCreateDeployment } from './deployments/create-deployment'
+import { registerV1DeploymentsGetDeployment } from './deployments/get-deployment'
+import { registerV1DeploymentsListDeployments } from './deployments/list-deployments'
+import { registerV1DeploymentsPublishDeployment } from './deployments/publish-deployment'
+import { registerV1DeploymentsUpdateDeployment } from './deployments/update-deployment'
 import { registerHealthCheck } from './health-check'
 import { registerV1ProjectsCreateProject } from './projects/create-project'
 import { registerV1ProjectsGetProject } from './projects/get-project'
@@ -76,23 +81,19 @@ registerV1ProjectsListProjects(privateRouter)
 registerV1ProjectsGetProject(privateRouter)
 registerV1ProjectsUpdateProject(privateRouter)
 
-// TODO
-// pub.get('/projects/alias/:alias(.+)', require('./projects').readByAlias)
-// pri.get('/projects/provider/:project(.+)', require('./provider').read)
-// pri.put('/projects/provider/:project(.+)', require('./provider').update)
-// pri.put('/projects/connect/:project(.+)', require('./projects').connect)
-// pub.get(
-//   '/projects/:project(.+)',
-//   middleware.authenticate({ passthrough: true }),
-//   require('./projects').read
-// )
-
 // Consumers
 registerV1ConsumersGetConsumer(privateRouter)
 registerV1ConsumersCreateConsumer(privateRouter)
 registerV1ConsumersUpdateConsumer(privateRouter)
 registerV1ConsumersRefreshConsumerToken(privateRouter)
 registerV1ProjectsListConsumers(privateRouter)
+
+// Deployments
+registerV1DeploymentsGetDeployment(privateRouter)
+registerV1DeploymentsCreateDeployment(privateRouter)
+registerV1DeploymentsUpdateDeployment(privateRouter)
+registerV1DeploymentsListDeployments(privateRouter)
+registerV1DeploymentsPublishDeployment(privateRouter)
 
 // Webhook event handlers
 registerV1StripeWebhook(publicRouter)
@@ -135,3 +136,9 @@ export type ApiRoutes =
   | ReturnType<typeof registerV1ConsumersUpdateConsumer>
   | ReturnType<typeof registerV1ConsumersRefreshConsumerToken>
   | ReturnType<typeof registerV1ProjectsListConsumers>
+  // Deployments
+  | ReturnType<typeof registerV1DeploymentsGetDeployment>
+  | ReturnType<typeof registerV1DeploymentsCreateDeployment>
+  | ReturnType<typeof registerV1DeploymentsUpdateDeployment>
+  | ReturnType<typeof registerV1DeploymentsListDeployments>
+  | ReturnType<typeof registerV1DeploymentsPublishDeployment>

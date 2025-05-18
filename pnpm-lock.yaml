@@ -179,6 +179,9 @@ importers:
       restore-cursor:
         specifier: 'catalog:'
         version: 5.1.0
+      semver:
+        specifier: ^7.7.2
+        version: 7.7.2
       stripe:
         specifier: ^18.1.0
         version: 18.1.0(@types/node@22.15.18)
@@ -195,6 +198,9 @@ importers:
       '@types/jsonwebtoken':
         specifier: ^9.0.9
         version: 9.0.9
+      '@types/semver':
+        specifier: ^7.7.0
+        version: 7.7.0
       drizzle-kit:
         specifier: ^0.31.1
         version: 0.31.1
@@ -1132,6 +1138,9 @@ packages:
 
   '@types/pg@8.6.1':
     resolution: {integrity: sha512-1Kc4oAGzAl7uqUStZCDvaLFqZrW9qWSjXOmBfdgyBP5La7Us6Mg4GBvRlSoaZMhQF/zSj1C8CtKMBkoiT8eL8w==}
+
+  '@types/semver@7.7.0':
+    resolution: {integrity: sha512-k107IF4+Xr7UHjwDc7Cfd6PRQfbdkiRabXGRjo07b4WyPahFBZCZ1sE+BNxYIJPPg73UkfOsVOLwqVc/6ETrIA==}
 
   '@types/shimmer@1.2.0':
     resolution: {integrity: sha512-UE7oxhQLLd9gub6JKIAhDq06T0F6FnztwMNRvYgjeQSBeMc1ZG/tA47EwfduvkuQS8apbkM/lpLpWsaCeYsXVg==}
@@ -4277,6 +4286,8 @@ snapshots:
       '@types/node': 22.15.18
       pg-protocol: 1.10.0
       pg-types: 2.2.0
+
+  '@types/semver@7.7.0': {}
 
   '@types/shimmer@1.2.0': {}
 

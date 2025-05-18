@@ -62,7 +62,7 @@ export const deployments = pgTable(
     // TODO: third-party auth provider config?
 
     // Backend API URL
-    _url: text().notNull(),
+    originUrl: text().notNull(),
 
     // Array<PricingPlan>
     pricingPlans: jsonb().$type<PricingPlanList>().notNull()
@@ -96,6 +96,13 @@ export const deploymentsRelations = relations(deployments, ({ one }) => ({
   })
 }))
 
+export type DeploymentRelationFields = keyof ReturnType<
+  (typeof deploymentsRelations)['config']
+>
+
+export const deploymentRelationsSchema: z.ZodType<DeploymentRelationFields> =
+  z.enum(['user', 'team', 'project'])
+
 // TODO: virtual hasFreeTier
 // TODO: virtual url
 // TODO: virtual openApiUrl
@@ -106,28 +113,6 @@ export const deploymentsRelations = relations(deployments, ({ one }) => ({
 export const deploymentSelectSchema = createSelectSchema(deployments, {
   // build: z.object({}),
   // env: z.object({}),
-
-  pricingPlans: pricingPlanListSchema
-  // coupons: z.array(couponSchema)
-})
-  .omit({
-    _url: true
-  })
-  .extend({
-    user: z
-      .lazy(() => userSelectSchema)
-      .optional()
-      .openapi('User', { type: 'object' }),
-
-    team: z
-      .lazy(() => teamSelectSchema)
-      .optional()
-      .openapi('Team', { type: 'object' })
-  })
-  .strip()
-  .openapi('Deployment')
-
-export const deploymentInsertSchema = createInsertSchema(deployments, {
   id: (schema) =>
     schema.refine((id) => validators.deploymentId(id), {
       message: 'Invalid deployment id'
@@ -138,28 +123,63 @@ export const deploymentInsertSchema = createInsertSchema(deployments, {
       message: 'Invalid deployment hash'
     }),
 
+  pricingPlans: pricingPlanListSchema
+  // coupons: z.array(couponSchema)
+})
+  .omit({
+    originUrl: true
+  })
+  .extend({
+    user: z
+      .lazy(() => userSelectSchema)
+      .optional()
+      .openapi('User', { type: 'object' }),
+
+    team: z
+      .lazy(() => teamSelectSchema)
+      .optional()
+      .openapi('Team', { type: 'object' }),
+
+    // TODO: Circular references make this schema less than ideal
+    project: z.object({}).optional().openapi('Project', { type: 'object' })
+  })
+  .strip()
+  .openapi('Deployment')
+
+export const deploymentInsertSchema = createInsertSchema(deployments, {
   projectId: (schema) =>
     schema.refine((id) => validators.projectId(id), {
       message: 'Invalid project id'
     }),
 
-  _url: (schema) => schema.url(),
+  originUrl: (schema) => schema.url(),
 
   pricingPlans: pricingPlanListSchema
 
   // TODOp
   // coupons: z.array(couponSchema).optional()
 })
-  .omit({ id: true, createdAt: true, updatedAt: true })
+  .omit({
+    id: true,
+    createdAt: true,
+    updatedAt: true,
+    hash: true,
+    userId: true,
+    teamId: true
+  })
   .strict()
 
 export const deploymentUpdateSchema = createUpdateSchema(deployments)
   .pick({
     enabled: true,
-    published: true,
-    version: true,
     description: true
   })
   .strict()
 
-// TODO: add admin select schema which includes all fields?
+export const deploymentPublishSchema = createUpdateSchema(deployments, {
+  version: z.string().nonempty()
+})
+  .pick({
+    version: true
+  })
+  .strict()

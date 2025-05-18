@@ -18,7 +18,7 @@ export async function upsertConsumer(
     deploymentId,
     consumerId
   }: {
-    plan: string
+    plan?: string
     deploymentId?: string
     consumerId?: string
   }

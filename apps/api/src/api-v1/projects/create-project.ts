@@ -2,7 +2,6 @@ import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 
 import type { AuthenticatedEnv } from '@/lib/types'
 import { db, schema } from '@/db'
-import { aclTeamMember } from '@/lib/acl-team-member'
 import { createProviderToken } from '@/lib/auth/create-provider-token'
 import { ensureAuthUser } from '@/lib/ensure-auth-user'
 import {
@@ -48,9 +47,9 @@ export function registerV1ProjectsCreateProject(
     const body = c.req.valid('json')
     const user = await ensureAuthUser(c)
 
-    if (body.teamId) {
-      await aclTeamMember(c, { teamId: body.teamId })
-    }
+    // if (body.teamId) {
+    //   await aclTeamMember(c, { teamId: body.teamId })
+    // }
 
     const teamMember = c.get('teamMember')
     const namespace = teamMember ? teamMember.teamSlug : user.username

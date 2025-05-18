@@ -54,6 +54,7 @@
     "p-all": "^5.0.0",
     "postgres": "^3.4.5",
     "restore-cursor": "catalog:",
+    "semver": "^7.7.2",
     "stripe": "^18.1.0",
     "type-fest": "catalog:",
     "zod": "catalog:",
@@ -61,6 +62,7 @@
   },
   "devDependencies": {
     "@types/jsonwebtoken": "^9.0.9",
+    "@types/semver": "^7.7.0",
     "drizzle-kit": "^0.31.1",
     "drizzle-orm": "^0.43.1"
   }

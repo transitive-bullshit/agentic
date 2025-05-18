@@ -8,8 +8,6 @@ import { assert } from './utils'
 
 /**
  * Attempts to find the Deployment matching the given identifier.
- *
- * If the Deployment is not found, throw an HttpError.
  */
 export async function tryGetDeployment(
   ctx: AuthenticatedContext,
@@ -21,7 +19,7 @@ export async function tryGetDeployment(
       project?: true
     }
   } = {}
-): Promise<RawDeployment> {
+): Promise<RawDeployment | undefined> {
   const user = await ensureAuthUser(ctx)
 
   const teamMember = ctx.get('teamMember')

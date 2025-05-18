@@ -18,8 +18,7 @@ import {
   type StripePriceIdMap,
   stripePriceIdMapSchema,
   type StripeProductIdMap,
-  stripeProductIdMapSchema,
-  type Webhook
+  stripeProductIdMapSchema
 } from './schemas'
 import { teams, teamSelectSchema } from './team'
 import { users, userSelectSchema } from './user'
@@ -77,13 +76,11 @@ export const projects = pgTable(
     // All deployments share the same underlying proxy secret
     _secret: text().notNull(),
 
-    // Auth token used to access the saasify API on behalf of this project
+    // Auth token used to access the platform API on behalf of this project
     _providerToken: text().notNull(),
 
     // TODO: Full-text search
-    _text: text().default('').notNull(),
-
-    _webhooks: jsonb().$type<Webhook[]>().default([]).notNull(),
+    // _text: text().default('').notNull(),
 
     // Stripe coupons associated with this project, mapping from unique coupon
     // object hash to stripe coupon id.
@@ -184,8 +181,7 @@ export const projectSelectSchema = createSelectSchema(projects, {
   .omit({
     _secret: true,
     _providerToken: true,
-    _text: true,
-    _webhooks: true,
+    // _text: true,
     _stripeProductIdMap: true,
     _stripePriceIdMap: true,
     _stripeMeterIdMap: true,
@@ -227,8 +223,7 @@ export const projectInsertSchema = createInsertSchema(projects, {
     })
 })
   .pick({
-    name: true,
-    teamId: true
+    name: true
   })
   .strict()
 

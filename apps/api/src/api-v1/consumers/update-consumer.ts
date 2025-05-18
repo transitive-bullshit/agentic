@@ -16,7 +16,7 @@ import { consumerIdParamsSchema } from './schemas'
 
 const route = createRoute({
   description:
-    "Updates a consumer's subscription to a different deployment or pricing plan.",
+    "Updates a consumer's subscription to a different deployment or pricing plan. Set `plan` to undefined to cancel the subscription.",
   tags: ['consumers'],
   operationId: 'updateConsumer',
   method: 'post',
@@ -28,7 +28,7 @@ const route = createRoute({
       required: true,
       content: {
         'application/json': {
-          schema: schema.consumerInsertSchema
+          schema: schema.consumerUpdateSchema
         }
       }
     }
