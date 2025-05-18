@@ -8,12 +8,12 @@ function success(...args: Parameters<typeof parseFaasIdentifier>) {
   expect(result).toBeTruthy()
   expect(result!.projectId).toBeTruthy()
   expect(result!.version || result!.deploymentHash).toBeTruthy()
-  expect(validators.project(result!.projectId)).toBe(true)
+  expect(validators.projectId(result!.projectId)).toBe(true)
   expect(validators.servicePath(result!.servicePath)).toBe(true)
 
   if (result!.deploymentHash) {
     expect(validators.deploymentHash(result!.deploymentHash)).toBe(true)
-    expect(validators.deployment(result!.deploymentId!)).toBe(true)
+    expect(validators.deploymentId(result!.deploymentId!)).toBe(true)
   }
 
   expect(result).toMatchSnapshot()
