@@ -11,7 +11,6 @@ import {
 import { z } from '@hono/zod-openapi'
 
 import { deployments, deploymentSelectSchema } from './deployment'
-import { teams, teamSelectSchema } from './team'
 import {
   pricingIntervalSchema,
   type StripeMeterIdMap,
@@ -21,7 +20,8 @@ import {
   type StripeProductIdMap,
   stripeProductIdMapSchema,
   type Webhook
-} from './types'
+} from './schemas'
+import { teams, teamSelectSchema } from './team'
 import { users, userSelectSchema } from './user'
 import {
   createInsertSchema,

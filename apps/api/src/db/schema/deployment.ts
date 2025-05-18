@@ -10,13 +10,13 @@ import {
 import { z } from '@hono/zod-openapi'
 
 import { projects } from './project'
-import { teams, teamSelectSchema } from './team'
 import {
   type PricingPlanList,
   pricingPlanListSchema
   // type Coupon,
   // couponSchema,
-} from './types'
+} from './schemas'
+import { teams, teamSelectSchema } from './team'
 import { users, userSelectSchema } from './user'
 import {
   createInsertSchema,

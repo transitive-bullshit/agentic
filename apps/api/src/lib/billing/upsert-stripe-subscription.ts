@@ -79,17 +79,17 @@ export async function upsertStripeSubscription(
     assert(
       existingStripeSubscription.metadata?.userId === consumer.userId,
       500,
-      `Error updating stripe subscription: invalid existing subscription "${existingStripeSubscription.id}" metadata for consumer "${consumer.id}"`
+      `Error updating stripe subscription: invalid existing subscription "${existingStripeSubscription.id}" metadata.userId for consumer "${consumer.id}"`
     )
     assert(
       existingStripeSubscription.metadata?.consumerId === consumer.id,
       500,
-      `Error updating stripe subscription: invalid existing subscription "${existingStripeSubscription.id}" metadata for consumer "${consumer.id}"`
+      `Error updating stripe subscription: invalid existing subscription "${existingStripeSubscription.id}" metadata.consumerId for consumer "${consumer.id}"`
     )
     assert(
       existingStripeSubscription.metadata?.projectId === project.id,
       500,
-      `Error updating stripe subscription: invalid existing subscription "${existingStripeSubscription.id}" metadata for project "${project.id}"`
+      `Error updating stripe subscription: invalid existing subscription "${existingStripeSubscription.id}" metadata.projectId for consumer "${consumer.id}"`
     )
 
     const updateParams: Stripe.SubscriptionUpdateParams = {
@@ -97,7 +97,7 @@ export async function upsertStripeSubscription(
         userId: consumer.userId,
         consumerId: consumer.id,
         projectId: project.id,
-        deployment: deployment.id
+        deploymentId: deployment.id
       }
     }
 
@@ -265,7 +265,7 @@ export async function upsertStripeSubscription(
         userId: consumer.userId,
         consumerId: consumer.id,
         projectId: project.id,
-        deployment: deployment.id
+        deploymentId: deployment.id
       }
     }
 

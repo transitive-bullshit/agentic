@@ -21,7 +21,7 @@ import type {
   PricingPlan,
   PricingPlanLineItem,
   PricingPlanList
-} from './types'
+} from './schemas'
 
 const usernameAndTeamSlugLength = 64 as const
 

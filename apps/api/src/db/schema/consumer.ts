@@ -14,7 +14,7 @@ import { projects, projectSelectSchema } from './project'
 import {
   type StripeSubscriptionItemIdMap,
   stripeSubscriptionItemIdMapSchema
-} from './types'
+} from './schemas'
 import { users, userSelectSchema } from './user'
 import {
   createInsertSchema,

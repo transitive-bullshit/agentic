@@ -12,8 +12,8 @@ import { hashSync } from 'bcryptjs'
 
 import { sha256 } from '@/lib/utils'
 
+import { type AuthProviders, publicAuthProvidersSchema } from './schemas'
 import { teams } from './team'
-import { type AuthProviders, publicAuthProvidersSchema } from './types'
 import {
   createInsertSchema,
   createSelectSchema,
