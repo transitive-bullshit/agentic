@@ -3,6 +3,7 @@ import { fromError } from 'zod-validation-error'
 
 import type { AuthenticatedEnv } from '@/lib/types'
 import * as middleware from '@/lib/middleware'
+import { registerOpenAPIErrorResponses } from '@/lib/openapi-utils'
 
 import { registerV1AdminConsumersGetConsumerByToken } from './consumers/admin-get-consumer-by-token'
 import { registerV1ConsumersCreateConsumer } from './consumers/create-consumer'
@@ -50,6 +51,8 @@ apiV1.openAPIRegistry.registerComponent('securitySchemes', 'Bearer', {
   scheme: 'bearer',
   bearerFormat: 'JWT'
 })
+
+registerOpenAPIErrorResponses(apiV1)
 
 // Public routes
 const publicRouter = new OpenAPIHono()

@@ -2,7 +2,14 @@ import { z } from '@hono/zod-openapi'
 import parseJson from 'parse-json'
 
 export const authProviderTypeSchema = z
-  .enum(['github', 'google', 'spotify', 'twitter', 'linkedin', 'stripe'])
+  .union([
+    z.literal('github'),
+    z.literal('google'),
+    z.literal('spotify'),
+    z.literal('twitter'),
+    z.literal('linkedin'),
+    z.literal('stripe')
+  ])
   .openapi('AuthProviderType')
 export type AuthProviderType = z.infer<typeof authProviderTypeSchema>
 
@@ -83,7 +90,12 @@ export const pricingPlanTierSchema = z
 export type PricingPlanTier = z.infer<typeof pricingPlanTierSchema>
 
 export const pricingIntervalSchema = z
-  .enum(['day', 'week', 'month', 'year'])
+  .union([
+    z.literal('day'),
+    z.literal('week'),
+    z.literal('month'),
+    z.literal('year')
+  ])
   .describe('The frequency at which a subscription is billed.')
   .openapi('PricingInterval')
 export type PricingInterval = z.infer<typeof pricingIntervalSchema>
@@ -178,13 +190,15 @@ export const pricingPlanLineItemSchema = z
          * tiering strategy as defined using the `tiers` and `tiersMode`
          * attributes.
          */
-        billingScheme: z.enum(['per_unit', 'tiered']),
+        billingScheme: z.union([z.literal('per_unit'), z.literal('tiered')]),
 
         // Only applicable for `per_unit` billing schemes
         unitAmount: z.number().nonnegative().optional(),
 
         // Only applicable for `tiered` billing schemes
-        tiersMode: z.enum(['graduated', 'volume']).optional(),
+        tiersMode: z
+          .union([z.literal('graduated'), z.literal('volume')])
+          .optional(),
         tiers: z.array(pricingPlanTierSchema).optional(),
 
         // TODO: add support for tiered rate limits?
@@ -204,7 +218,9 @@ export const pricingPlanLineItemSchema = z
              *
              * Defaults to `sum`.
              */
-            formula: z.enum(['sum', 'count', 'last']).default('sum')
+            formula: z
+              .union([z.literal('sum'), z.literal('count'), z.literal('last')])
+              .default('sum')
           })
           .optional(),
 
@@ -223,7 +239,7 @@ export const pricingPlanLineItemSchema = z
             /**
              * After division, either round the result `up` or `down`.
              */
-            round: z.enum(['down', 'up'])
+            round: z.union([z.literal('down'), z.literal('up')])
           })
           .optional()
       })
@@ -428,18 +444,19 @@ export type StripeSubscriptionItemIdMap = z.infer<
 //   .openapi('Coupon')
 // export type Coupon = z.infer<typeof couponSchema>
 
-export const deploymentOriginAdapterLocationSchema = z.enum([
-  'external'
-  // 'internal'
-])
+export const deploymentOriginAdapterLocationSchema = z.literal('external')
+// z.union([
+//   z.literal('external'),
+//   z.literal('internal')
+// ])
 export type DeploymentOriginAdapterLocation = z.infer<
   typeof deploymentOriginAdapterLocationSchema
 >
 
-// export const deploymentOriginAdapterInternalTypeSchema = z.enum([
-//   // 'docker',
-//   // 'mcp'
-//   // 'python-fastapi'
+// export const deploymentOriginAdapterInternalTypeSchema = z.union([
+//   z.literal('docker'),
+//   z.literal('mcp'),
+//   z.literal('python-fastapi'),
 //   // etc
 // ])
 // export type DeploymentOriginAdapterInternalType = z.infer<

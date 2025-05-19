@@ -8,7 +8,7 @@ import { unless } from './unless'
 export const accessLogger = unless(
   createMiddleware<DefaultEnv>(async (ctx, next) => {
     const logger = ctx.get('logger')
-    await honoLogger(logger.trace)(ctx, next)
+    await honoLogger(logger.trace.bind(logger))(ctx, next)
   }),
   '/v1/health'
 )

@@ -3,6 +3,8 @@ import 'dotenv/config'
 import { parseZodSchema } from '@agentic/platform-core'
 import { z } from 'zod'
 
+import { logLevelsSchema } from './logger'
+
 export const envSchema = z.object({
   NODE_ENV: z
     .enum(['development', 'test', 'production'])
@@ -10,13 +12,14 @@ export const envSchema = z.object({
 
   DATABASE_URL: z.string().url(),
 
-  JWT_SECRET: z.string(),
-  PORT: z.number().default(3000),
+  JWT_SECRET: z.string().nonempty(),
   SENTRY_DSN: z.string().url(),
+  PORT: z.number().default(3000),
+  LOG_LEVEL: logLevelsSchema.default('info'),
 
-  STRIPE_SECRET_KEY: z.string(),
-  STRIPE_PUBLISHABLE_KEY: z.string(),
-  STRIPE_WEBHOOK_SECRET: z.string()
+  STRIPE_SECRET_KEY: z.string().nonempty(),
+  STRIPE_PUBLISHABLE_KEY: z.string().nonempty(),
+  STRIPE_WEBHOOK_SECRET: z.string().nonempty()
 })
 export type Env = z.infer<typeof envSchema>
 

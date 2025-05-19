@@ -20,13 +20,13 @@ import {
   stripeId,
   timestamps
 } from './common'
-import { deployments, deploymentSelectSchema } from './deployment'
-import { projects, projectSelectSchema } from './project'
+import { deployments } from './deployment'
+import { projects } from './project'
 import {
   type StripeSubscriptionItemIdMap,
   stripeSubscriptionItemIdMapSchema
 } from './schemas'
-import { users, userSelectSchema } from './user'
+import { users } from './user'
 
 // TODO: Consumers should be valid for any enabled project like in RapidAPI and GCP.
 // This may require a separate model to aggregate User Applications.
@@ -146,22 +146,22 @@ export const consumerSelectSchema = createSelectSchema(consumers, {
     _stripeSubscriptionItemIdMap: true,
     _stripeCustomerId: true
   })
-  .extend({
-    user: z
-      .lazy(() => userSelectSchema)
-      .optional()
-      .openapi('User', { type: 'object' }),
+  // .extend({
+  //   user: z
+  //     .lazy(() => userSelectSchema)
+  //     .optional()
+  //     .openapi('User', { type: 'object' }),
 
-    project: z
-      .lazy(() => projectSelectSchema)
-      .optional()
-      .openapi('Project', { type: 'object' }),
+  //   project: z
+  //     .lazy(() => projectSelectSchema)
+  //     .optional()
+  //     .openapi('Project', { type: 'object' }),
 
-    deployment: z
-      .lazy(() => deploymentSelectSchema)
-      .optional()
-      .openapi('Deployment', { type: 'object' })
-  })
+  //   deployment: z
+  //     .lazy(() => deploymentSelectSchema)
+  //     .optional()
+  //     .openapi('Deployment', { type: 'object' })
+  // })
   .strip()
   .openapi('Consumer')
 

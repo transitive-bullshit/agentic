@@ -22,7 +22,7 @@ import {
   stripeId,
   timestamps
 } from './common'
-import { deployments, deploymentSelectSchema } from './deployment'
+import { deployments } from './deployment'
 import {
   pricingIntervalSchema,
   type StripeMeterIdMap,
@@ -32,8 +32,8 @@ import {
   type StripeProductIdMap,
   stripeProductIdMapSchema
 } from './schemas'
-import { teams, teamSelectSchema } from './team'
-import { users, userSelectSchema } from './user'
+import { teams } from './team'
+import { users } from './user'
 
 export const projects = pgTable(
   'projects',
@@ -176,27 +176,27 @@ export const projectSelectSchema = createSelectSchema(projects, {
     _stripeMeterIdMap: true,
     _stripeAccountId: true
   })
-  .extend({
-    user: z
-      .lazy(() => userSelectSchema)
-      .optional()
-      .openapi('User', { type: 'object' }),
+  // .extend({
+  //   user: z
+  //     .lazy(() => userSelectSchema)
+  //     .optional()
+  //     .openapi('User', { type: 'object' }),
 
-    team: z
-      .lazy(() => teamSelectSchema)
-      .optional()
-      .openapi('Team', { type: 'object' }),
+  //   team: z
+  //     .lazy(() => teamSelectSchema)
+  //     .optional()
+  //     .openapi('Team', { type: 'object' }),
 
-    lastPublishedDeployment: z
-      .lazy(() => deploymentSelectSchema)
-      .optional()
-      .openapi('Deployment', { type: 'object' }),
+  //   lastPublishedDeployment: z
+  //     .lazy(() => deploymentSelectSchema)
+  //     .optional()
+  //     .openapi('Deployment', { type: 'object' }),
 
-    lastDeployment: z
-      .lazy(() => deploymentSelectSchema)
-      .optional()
-      .openapi('Deployment', { type: 'object' })
-  })
+  //   lastDeployment: z
+  //     .lazy(() => deploymentSelectSchema)
+  //     .optional()
+  //     .openapi('Deployment', { type: 'object' })
+  // })
   .strip()
   .openapi('Project')
 

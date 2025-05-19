@@ -33,7 +33,6 @@
     "zod": "catalog:"
   },
   "devDependencies": {
-    "@agentic/platform-api": "workspace:*",
     "@agentic/platform-db": "workspace:*",
     "@commander-js/extra-typings": "^14.0.0"
   },

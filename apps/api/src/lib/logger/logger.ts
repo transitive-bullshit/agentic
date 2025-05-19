@@ -1,4 +1,6 @@
+import { assert } from '@agentic/platform-core'
 import * as Sentry from '@sentry/node'
+import { z } from 'zod'
 
 import type { Environment, Service } from '@/lib/types'
 import { env } from '@/lib/env'
@@ -13,7 +15,17 @@ export interface Logger {
   error(message?: any, ...detail: any[]): void
 }
 
-export type LogLevel = 'trace' | 'debug' | 'info' | 'warn' | 'error'
+const rawLogLevels = ['trace', 'debug', 'info', 'warn', 'error'] as const
+export const logLevelsSchema = z.enum(rawLogLevels)
+export type LogLevel = z.infer<typeof logLevelsSchema>
+
+export const logLevelsMap = rawLogLevels.reduce(
+  (acc, level, index) => {
+    acc[level] = index
+    return acc
+  },
+  {} as Record<LogLevel, number>
+)
 
 export class ConsoleLogger implements Logger {
   protected readonly environment: Environment
@@ -21,44 +33,70 @@ export class ConsoleLogger implements Logger {
   protected readonly requestId: string
   protected readonly metadata: Record<string, unknown>
   protected readonly console: Console
+  protected readonly logLevel: LogLevel
 
   constructor({
     requestId,
     service,
     environment = env.NODE_ENV,
     metadata = {},
-    console = globalThis.console
+    console = globalThis.console,
+    logLevel = env.LOG_LEVEL
   }: {
     requestId: string
     service: Service
     environment?: Environment
     metadata?: Record<string, unknown>
     console?: Console
+    logLevel?: LogLevel
   }) {
+    assert(console, 500, '`console` is required for Logger')
+
     this.requestId = requestId
     this.service = service
     this.environment = environment
     this.metadata = metadata
     this.console = console
+    this.logLevel = logLevel
   }
 
   trace(message?: any, ...detail: any[]) {
+    if (logLevelsMap[this.logLevel] > logLevelsMap.trace) {
+      return
+    }
+
     this.console.trace(this._marshal('trace', message, ...detail))
   }
 
   debug(message?: any, ...detail: any[]) {
+    if (logLevelsMap[this.logLevel] > logLevelsMap.debug) {
+      return
+    }
+
     this.console.debug(this._marshal('debug', message, ...detail))
   }
 
   info(message?: any, ...detail: any[]) {
+    if (logLevelsMap[this.logLevel] > logLevelsMap.info) {
+      return
+    }
+
     this.console.info(this._marshal('info', message, ...detail))
   }
 
   warn(message?: any, ...detail: any[]) {
+    if (logLevelsMap[this.logLevel] > logLevelsMap.warn) {
+      return
+    }
+
     this.console.warn(this._marshal('warn', message, ...detail))
   }
 
   error(message?: any, ...detail: any[]) {
+    if (logLevelsMap[this.logLevel] > logLevelsMap.error) {
+      return
+    }
+
     this.console.error(this._marshal('error', message, ...detail))
   }
 

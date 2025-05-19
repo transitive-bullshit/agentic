@@ -1,6 +1,5 @@
 import { relations } from '@fisch0920/drizzle-orm'
 import { index, jsonb, pgTable, text } from '@fisch0920/drizzle-orm/pg-core'
-import { z } from '@hono/zod-openapi'
 
 import {
   createInsertSchema,
@@ -13,10 +12,10 @@ import {
   projectId,
   timestamps
 } from './common'
-import { consumers, consumerSelectSchema } from './consumer'
-import { deployments, deploymentSelectSchema } from './deployment'
-import { projects, projectSelectSchema } from './project'
-import { users, userSelectSchema } from './user'
+import { consumers } from './consumer'
+import { deployments } from './deployment'
+import { projects } from './project'
+import { users } from './user'
 
 /**
  * A `LogEntry` is an internal audit log entry.
@@ -83,27 +82,27 @@ export const logEntriesRelations = relations(logEntries, ({ one }) => ({
 }))
 
 export const logEntrySelectSchema = createSelectSchema(logEntries)
-  .extend({
-    user: z
-      .lazy(() => userSelectSchema)
-      .optional()
-      .openapi('User', { type: 'object' }),
+  // .extend({
+  //   user: z
+  //     .lazy(() => userSelectSchema)
+  //     .optional()
+  //     .openapi('User', { type: 'object' }),
 
-    project: z
-      .lazy(() => projectSelectSchema)
-      .optional()
-      .openapi('Project', { type: 'object' }),
+  //   project: z
+  //     .lazy(() => projectSelectSchema)
+  //     .optional()
+  //     .openapi('Project', { type: 'object' }),
 
-    deployment: z
-      .lazy(() => deploymentSelectSchema)
-      .optional()
-      .openapi('Deployment', { type: 'object' }),
+  //   deployment: z
+  //     .lazy(() => deploymentSelectSchema)
+  //     .optional()
+  //     .openapi('Deployment', { type: 'object' }),
 
-    consumer: z
-      .lazy(() => consumerSelectSchema)
-      .optional()
-      .openapi('Consumer', { type: 'object' })
-  })
+  //   consumer: z
+  //     .lazy(() => consumerSelectSchema)
+  //     .optional()
+  //     .openapi('Consumer', { type: 'object' })
+  // })
   .strip()
   .openapi('LogEntry')
 

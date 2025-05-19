@@ -25,8 +25,8 @@ import {
   type PricingPlanList,
   pricingPlanListSchema
 } from './schemas'
-import { teams, teamSelectSchema } from './team'
-import { users, userSelectSchema } from './user'
+import { teams } from './team'
+import { users } from './user'
 
 export const deployments = pgTable(
   'deployments',
@@ -131,20 +131,20 @@ export const deploymentSelectSchema = createSelectSchema(deployments, {
   .omit({
     originUrl: true
   })
-  .extend({
-    user: z
-      .lazy(() => userSelectSchema)
-      .optional()
-      .openapi('User', { type: 'object' }),
+  // .extend({
+  //   user: z
+  //     .lazy(() => userSelectSchema)
+  //     .optional()
+  //     .openapi('User', { type: 'object' }),
 
-    team: z
-      .lazy(() => teamSelectSchema)
-      .optional()
-      .openapi('Team', { type: 'object' }),
+  //   team: z
+  //     .lazy(() => teamSelectSchema)
+  //     .optional()
+  //     .openapi('Team', { type: 'object' }),
 
-    // TODO: Circular references make this schema less than ideal
-    project: z.object({}).optional().openapi('Project', { type: 'object' })
-  })
+  //   // TODO: Circular references make this schema less than ideal
+  //   project: z.object({}).optional().openapi('Project', { type: 'object' })
+  // })
   .strip()
   .openapi('Deployment')
 

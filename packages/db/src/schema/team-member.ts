@@ -5,7 +5,6 @@ import {
   pgTable,
   primaryKey
 } from '@fisch0920/drizzle-orm/pg-core'
-import { z } from '@hono/zod-openapi'
 
 import {
   createInsertSchema,
@@ -17,8 +16,8 @@ import {
   timestamp,
   timestamps
 } from './common'
-import { teams, teamSelectSchema } from './team'
-import { users, userSelectSchema } from './user'
+import { teams } from './team'
+import { users } from './user'
 
 export const teamMembers = pgTable(
   'team_members',
@@ -61,17 +60,17 @@ export const teamMembersRelations = relations(teamMembers, ({ one }) => ({
 }))
 
 export const teamMemberSelectSchema = createSelectSchema(teamMembers)
-  .extend({
-    user: z
-      .lazy(() => userSelectSchema)
-      .optional()
-      .openapi('User', { type: 'object' }),
+  // .extend({
+  //   user: z
+  //     .lazy(() => userSelectSchema)
+  //     .optional()
+  //     .openapi('User', { type: 'object' }),
 
-    team: z
-      .lazy(() => teamSelectSchema)
-      .optional()
-      .openapi('Team', { type: 'object' })
-  })
+  //   team: z
+  //     .lazy(() => teamSelectSchema)
+  //     .optional()
+  //     .openapi('Team', { type: 'object' })
+  // })
   .strip()
   .openapi('TeamMember')
 
