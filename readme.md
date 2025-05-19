@@ -7,10 +7,13 @@
 
 ## TODO
 
+- **replace Project.id and Deployment.id with cuids**
+  - move others to `alias` or `publicIdentifier`?
+  - won't work with hono routing? test this
+
+---
+
 - stripe
-  - plans => prices
-    - monthly vs yearly prices
-  - re-add custom metrics
   - re-add coupons
   - declarative json-based pricing
     - like https://github.com/tierrun/tier and Saasify
@@ -26,7 +29,7 @@
     - clerk / workos / auth0
 - db
   - replace `enabled` with soft `deletedAt` timestamp
-- switch to [consola](https://github.com/unjs/consola) for logging
+- consider switching to [consola](https://github.com/unjs/consola) for logging?
 
 ## License
 
