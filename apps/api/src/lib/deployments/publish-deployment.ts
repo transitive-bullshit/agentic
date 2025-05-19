@@ -48,6 +48,7 @@ export async function publishDeployment(
         .where(eq(schema.deployments.id, deployment.id))
         .returning(),
 
+      // Update the project
       tx
         .update(schema.projects)
         .set({

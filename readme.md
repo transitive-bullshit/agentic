@@ -26,6 +26,7 @@
     - clerk / workos / auth0
 - db
   - replace `enabled` with soft `deletedAt` timestamp
+- switch to [consola](https://github.com/unjs/consola) for logging
 
 ## License
 
