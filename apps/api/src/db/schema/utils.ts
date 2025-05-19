@@ -1,3 +1,4 @@
+import { hashObject } from '@agentic/platform-core'
 import { type Equal, sql, type Writable } from '@fisch0920/drizzle-orm'
 import {
   pgEnum,
@@ -12,8 +13,6 @@ import {
 import { createSchemaFactory } from '@fisch0920/drizzle-zod'
 import { z } from '@hono/zod-openapi'
 import { createId } from '@paralleldrive/cuid2'
-
-import { hashObject } from '@/lib/utils'
 
 import type { RawProject } from '../types'
 import type {

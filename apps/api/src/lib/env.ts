@@ -1,8 +1,7 @@
 import 'dotenv/config'
 
+import { parseZodSchema } from '@agentic/platform-core'
 import { z } from 'zod'
-
-import { parseZodSchema } from './utils'
 
 export const envSchema = z.object({
   NODE_ENV: z

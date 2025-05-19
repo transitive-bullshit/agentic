@@ -1,5 +1,5 @@
 {
-  "name": "agentic-platform-api",
+  "name": "@agentic/platform-api",
   "private": true,
   "version": "0.1.0",
   "description": "Agentic platform API.",
@@ -12,20 +12,11 @@
   },
   "type": "module",
   "source": "./src/server.ts",
-  "types": "./dist/server.d.ts",
-  "bin": {
-    "agentic-platform-api": "./dist/server.js"
-  },
   "exports": {
     ".": {
-      "types": "./dist/server.d.ts",
-      "import": "./dist/server.js",
-      "default": "./dist/server.js"
+      "import": "./src/server.ts"
     }
   },
-  "files": [
-    "dist"
-  ],
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
@@ -36,6 +27,7 @@
     "test:unit": "vitest run"
   },
   "dependencies": {
+    "@agentic/platform-core": "workspace:*",
     "@agentic/validators": "workspace:*",
     "@fisch0920/drizzle-orm": "^0.43.7",
     "@fisch0920/drizzle-zod": "^0.7.9",
@@ -49,7 +41,6 @@
     "bcryptjs": "^3.0.2",
     "eventid": "^2.0.1",
     "exit-hook": "catalog:",
-    "hash-object": "^5.0.1",
     "hono": "^4.7.9",
     "jsonwebtoken": "^9.0.2",
     "p-all": "^5.0.0",
@@ -59,7 +50,6 @@
     "semver": "^7.7.2",
     "stripe": "^18.1.0",
     "type-fest": "catalog:",
-    "zod": "catalog:",
     "zod-validation-error": "^3.4.1"
   },
   "devDependencies": {

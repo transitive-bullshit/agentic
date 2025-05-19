@@ -1,5 +1,7 @@
 import type Stripe from 'stripe'
+import { assert } from '@agentic/platform-core'
 
+import type { AuthenticatedContext } from '@/lib/types'
 import {
   type ConsumerUpdate,
   db,
@@ -12,9 +14,6 @@ import {
 } from '@/db'
 import { getStripePriceIdForPricingPlanLineItem } from '@/db/schema'
 import { stripe } from '@/lib/stripe'
-import { assert } from '@/lib/utils'
-
-import type { AuthenticatedContext } from '../types'
 
 export async function upsertStripeSubscription(
   ctx: AuthenticatedContext,

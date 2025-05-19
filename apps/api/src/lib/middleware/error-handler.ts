@@ -1,12 +1,11 @@
 import type { ContentfulStatusCode } from 'hono/utils/http-status'
+import { HttpError } from '@agentic/platform-core'
 import * as Sentry from '@sentry/node'
 import { createMiddleware } from 'hono/factory'
 import { HTTPException } from 'hono/http-exception'
 
 import type { DefaultEnv } from '@/lib/types'
-import { HttpError } from '@/lib/errors'
-
-import { env } from '../env'
+import { env } from '@/lib/env'
 
 export const errorHandler = createMiddleware<DefaultEnv>(
   async function errorHandlerMiddleware(ctx, next) {

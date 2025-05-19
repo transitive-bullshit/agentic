@@ -1,8 +1,9 @@
+import { assert } from '@agentic/platform-core'
+
+import type { AuthenticatedContext } from '@/lib/types'
 import { db, eq, type RawDeployment, schema } from '@/db'
 import { acl } from '@/lib/acl'
-import { assert } from '@/lib/utils'
 
-import type { AuthenticatedContext } from '../types'
 import { normalizeDeploymentVersion } from './normalize-deployment-version'
 
 export async function publishDeployment(

@@ -1,0 +1,43 @@
+{
+  "name": "@agentic/cli",
+  "version": "0.0.1",
+  "description": "CLI for Agentic.",
+  "author": "Travis Fischer <travis@transitivebullsh.it>",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/transitive-bullshit/agentic-platform.git",
+    "directory": "packages/cli"
+  },
+  "type": "module",
+  "source": "./src/index.ts",
+  "types": "./src/index.ts",
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "bin": {
+    "agentic": "./bin/run.js"
+  },
+  "scripts": {
+    "test": "run-s test:*",
+    "test:lint": "eslint .",
+    "test:typecheck": "tsc --noEmit",
+    "test:unit": "vitest run"
+  },
+  "dependencies": {
+    "@agentic/platform-core": "workspace:*",
+    "commander": "^14.0.0",
+    "conf": "^13.1.0",
+    "ora": "^8.2.0",
+    "restore-cursor": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@agentic/platform-api": "workspace:*",
+    "@commander-js/extra-typings": "^14.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

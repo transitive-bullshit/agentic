@@ -1,4 +1,5 @@
 import type Stripe from 'stripe'
+import { assert } from '@agentic/platform-core'
 import pAll from 'p-all'
 
 import { db, eq, type RawDeployment, type RawProject, schema } from '@/db'
@@ -10,7 +11,6 @@ import {
   type PricingPlanLineItem
 } from '@/db/schema'
 import { stripe } from '@/lib/stripe'
-import { assert } from '@/lib/utils'
 
 /**
  * Upserts all the Stripe resources corresponding to a Deployment's pricing

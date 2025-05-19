@@ -1,3 +1,4 @@
+import { assert, parseZodSchema } from '@agentic/platform-core'
 import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 
 import type { AuthenticatedEnv } from '@/lib/types'
@@ -8,7 +9,6 @@ import {
   openapiErrorResponse404,
   openapiErrorResponses
 } from '@/lib/openapi-utils'
-import { assert, parseZodSchema } from '@/lib/utils'
 
 import { teamSlugParamsSchema } from './schemas'
 

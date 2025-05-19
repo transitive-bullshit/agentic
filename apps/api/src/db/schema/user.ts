@@ -1,3 +1,4 @@
+import { sha256 } from '@agentic/platform-core'
 import { validators } from '@agentic/validators'
 import { relations } from '@fisch0920/drizzle-orm'
 import {
@@ -9,8 +10,6 @@ import {
   uniqueIndex
 } from '@fisch0920/drizzle-orm/pg-core'
 import { hashSync } from 'bcryptjs'
-
-import { sha256 } from '@/lib/utils'
 
 import { type AuthProviders, publicAuthProvidersSchema } from './schemas'
 import { teams } from './team'

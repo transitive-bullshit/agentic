@@ -1,6 +1,7 @@
+import { assert } from '@agentic/platform-core'
+
 import type { DeploymentOriginAdapter } from '@/db/schema'
 import type { Logger } from '@/lib/logger'
-import { assert } from '@/lib/utils'
 import { validateOpenAPISpec } from '@/lib/validate-openapi-spec'
 
 /**

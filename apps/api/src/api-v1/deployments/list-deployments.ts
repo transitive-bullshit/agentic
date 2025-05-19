@@ -1,3 +1,4 @@
+import { parseZodSchema } from '@agentic/platform-core'
 import { createRoute, type OpenAPIHono, z } from '@hono/zod-openapi'
 
 import type { AuthenticatedEnv } from '@/lib/types'
@@ -6,7 +7,6 @@ import {
   openapiAuthenticatedSecuritySchemas,
   openapiErrorResponses
 } from '@/lib/openapi-utils'
-import { parseZodSchema } from '@/lib/utils'
 
 import { paginationAndPopulateAndFilterDeploymentSchema } from './schemas'
 

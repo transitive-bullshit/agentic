@@ -1,11 +1,10 @@
 import type { OpenAPIHono } from '@hono/zod-openapi'
 import type Stripe from 'stripe'
+import { assert,HttpError  } from '@agentic/platform-core'
 
 import { and, db, eq, schema } from '@/db'
 import { env, isStripeLive } from '@/lib/env'
-import { HttpError } from '@/lib/errors'
 import { stripe } from '@/lib/stripe'
-import { assert } from '@/lib/utils'
 
 const relevantStripeEvents = new Set<Stripe.Event.Type>([
   'customer.subscription.updated'

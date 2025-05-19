@@ -1,11 +1,10 @@
+import { assert } from '@agentic/platform-core'
 import { createMiddleware } from 'hono/factory'
 import * as jwt from 'hono/jwt'
 
 import type { AuthenticatedEnv } from '@/lib/types'
 import { db, eq, schema } from '@/db'
 import { env } from '@/lib/env'
-
-import { assert } from '../utils'
 
 export const authenticate = createMiddleware<AuthenticatedEnv>(
   async function authenticateMiddleware(ctx, next) {

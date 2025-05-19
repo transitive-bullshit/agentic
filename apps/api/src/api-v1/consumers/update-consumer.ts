@@ -1,3 +1,4 @@
+import { parseZodSchema } from '@agentic/platform-core'
 import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 
 import type { AuthenticatedEnv } from '@/lib/types'
@@ -10,7 +11,6 @@ import {
   openapiErrorResponse410,
   openapiErrorResponses
 } from '@/lib/openapi-utils'
-import { parseZodSchema } from '@/lib/utils'
 
 import { consumerIdParamsSchema } from './schemas'
 

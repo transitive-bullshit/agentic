@@ -1,0 +1,36 @@
+{
+  "name": "@agentic/platform-core",
+  "version": "0.0.1",
+  "description": "Core utilities for the Agentic platform.",
+  "author": "Travis Fischer <travis@transitivebullsh.it>",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/transitive-bullshit/agentic-platform.git",
+    "directory": "packages/cli"
+  },
+  "type": "module",
+  "source": "./src/index.ts",
+  "types": "./src/index.ts",
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "run-s test:*",
+    "test:lint": "eslint .",
+    "test:typecheck": "tsc --noEmit",
+    "test:unit": "vitest run"
+  },
+  "dependencies": {
+    "hash-object": "^5.0.1",
+    "zod": "catalog:",
+    "zod-validation-error": "^3.4.1"
+  },
+  "devDependencies": {
+    "hono": "^4.7.9"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

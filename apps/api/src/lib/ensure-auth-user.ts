@@ -1,7 +1,7 @@
+import { assert } from '@agentic/platform-core'
+
 import type { AuthenticatedContext } from '@/lib/types'
 import { db, eq, type RawUser, schema } from '@/db'
-
-import { assert } from './utils'
 
 export async function ensureAuthUser(
   ctx: AuthenticatedContext

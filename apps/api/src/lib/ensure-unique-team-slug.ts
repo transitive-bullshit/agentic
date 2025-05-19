@@ -1,6 +1,6 @@
-import { db, eq, schema } from '@/db'
+import { assert } from '@agentic/platform-core'
 
-import { assert } from './utils'
+import { db, eq, schema } from '@/db'
 
 export async function ensureUniqueTeamSlug(slug: string) {
   slug = slug.toLocaleLowerCase()

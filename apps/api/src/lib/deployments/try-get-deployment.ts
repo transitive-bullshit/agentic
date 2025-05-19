@@ -1,9 +1,9 @@
+import { assert } from '@agentic/platform-core'
 import { parseFaasIdentifier } from '@agentic/validators'
 
 import type { AuthenticatedContext } from '@/lib/types'
 import { db, eq, type RawDeployment, schema } from '@/db'
 import { ensureAuthUser } from '@/lib/ensure-auth-user'
-import { assert } from '@/lib/utils'
 
 /**
  * Attempts to find the Deployment matching the given identifier.

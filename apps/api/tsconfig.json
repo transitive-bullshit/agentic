@@ -6,6 +6,6 @@
       "@/*": ["src/*"]
     }
   },
-  "include": ["src", "*.config.ts"],
+  "include": ["src", "*.config.ts", "../../packages/core/src/errors.ts"],
   "exclude": ["node_modules", "dist"]
 }

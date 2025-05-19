@@ -1,6 +1,7 @@
+import { assert } from '@agentic/platform-core'
+
 import type { AuthenticatedContext } from './types'
 import { ensureAuthUser } from './ensure-auth-user'
-import { assert } from './utils'
 
 export async function aclAdmin(ctx: AuthenticatedContext) {
   const user = await ensureAuthUser(ctx)

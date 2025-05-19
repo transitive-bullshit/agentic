@@ -2,8 +2,7 @@ import { EventId } from 'eventid'
 import { createMiddleware } from 'hono/factory'
 
 import type { DefaultEnv } from '@/lib/types'
-
-import { ConsoleLogger } from '../logger'
+import { ConsoleLogger } from '@/lib/logger'
 
 /** Monotonically increasing ID for insertId. */
 const eventId = new EventId()
