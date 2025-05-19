@@ -3,7 +3,7 @@ import { acl } from '@/lib/acl'
 import { assert } from '@/lib/utils'
 
 import type { AuthenticatedContext } from '../types'
-import { resolveDeploymentVersion } from './resolve-deployment-version'
+import { normalizeDeploymentVersion } from './normalize-deployment-version'
 
 export async function publishDeployment(
   ctx: AuthenticatedContext,
@@ -24,7 +24,7 @@ export async function publishDeployment(
   assert(project, 404, `Project not found "${deployment.projectId}"`)
   await acl(ctx, project, { label: 'Project' })
 
-  const version = resolveDeploymentVersion({
+  const version = normalizeDeploymentVersion({
     deploymentId: deployment.id,
     project,
     version: rawVersion

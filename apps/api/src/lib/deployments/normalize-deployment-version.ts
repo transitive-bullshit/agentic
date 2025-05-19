@@ -3,7 +3,7 @@ import semver from 'semver'
 import type { RawProject } from '@/db/types'
 import { assert } from '@/lib/utils'
 
-export function resolveDeploymentVersion({
+export function normalizeDeploymentVersion({
   deploymentId,
   version: rawVersion,
   project

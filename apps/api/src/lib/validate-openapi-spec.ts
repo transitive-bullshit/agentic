@@ -13,43 +13,12 @@ import parseJson from 'parse-json'
 import type { Logger } from './logger'
 import type { LooseOpenAPI3Spec } from './types'
 
-function _processProblems(
-  problems: NormalizedProblem[],
-  {
-    logger,
-    silent
-  }: {
-    logger: Logger
-    silent: boolean
-  }
-) {
-  if (problems.length) {
-    let errorMessage: string | undefined
-
-    for (const problem of problems) {
-      const problemLocation = problem.location?.[0]?.pointer
-      const problemMessage = problemLocation
-        ? `${problem.message} at ${problemLocation}`
-        : problem.message
-
-      if (problem.severity === 'error') {
-        errorMessage = problemMessage
-        logger.error('openapi spec error', problemMessage)
-      } else if (!silent) {
-        logger.warn('openapi spec warning', problemMessage)
-      }
-    }
-
-    if (errorMessage) {
-      throw new Error(errorMessage)
-    }
-  }
-}
-
 /**
  * Validates an OpenAPI spec and bundles it into a single, normalized schema.
  *
  * The input `source` should be a JSON stringified OpenAPI spec (3.0 or 3.1).
+ *
+ * Adapted from https://github.com/openapi-ts/openapi-typescript/blob/main/packages/openapi-typescript/src/lib/redoc.ts
  */
 export async function validateOpenAPISpec(
   source: string,
@@ -132,4 +101,37 @@ export async function validateOpenAPISpec(
   logger.debug('<<< Bundling openapi spec')
 
   return bundled.bundle.parsed
+}
+
+function _processProblems(
+  problems: NormalizedProblem[],
+  {
+    logger,
+    silent
+  }: {
+    logger: Logger
+    silent: boolean
+  }
+) {
+  if (problems.length) {
+    let errorMessage: string | undefined
+
+    for (const problem of problems) {
+      const problemLocation = problem.location?.[0]?.pointer
+      const problemMessage = problemLocation
+        ? `${problem.message} at ${problemLocation}`
+        : problem.message
+
+      if (problem.severity === 'error') {
+        errorMessage = problemMessage
+        logger.error('openapi spec error', problemMessage)
+      } else if (!silent) {
+        logger.warn('openapi spec warning', problemMessage)
+      }
+    }
+
+    if (errorMessage) {
+      throw new Error(errorMessage)
+    }
+  }
 }

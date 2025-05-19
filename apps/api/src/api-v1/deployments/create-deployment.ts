@@ -4,8 +4,8 @@ import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 import type { AuthenticatedEnv } from '@/lib/types'
 import { db, eq, schema } from '@/db'
 import { acl } from '@/lib/acl'
+import { normalizeDeploymentVersion } from '@/lib/deployments/normalize-deployment-version'
 import { publishDeployment } from '@/lib/deployments/publish-deployment'
-import { resolveDeploymentVersion } from '@/lib/deployments/resolve-deployment-version'
 import { validateDeploymentOriginAdapter } from '@/lib/deployments/validate-deployment-origin-adapter'
 import { ensureAuthUser } from '@/lib/ensure-auth-user'
 import {
@@ -92,7 +92,7 @@ export function registerV1DeploymentsCreateDeployment(
     }
 
     if (version) {
-      version = resolveDeploymentVersion({
+      version = normalizeDeploymentVersion({
         deploymentId,
         project,
         version
