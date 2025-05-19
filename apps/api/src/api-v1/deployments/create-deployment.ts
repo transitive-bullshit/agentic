@@ -1,5 +1,5 @@
 import { assert, parseZodSchema, pick, sha256 } from '@agentic/platform-core'
-import { validators } from '@agentic/validators'
+import { validators } from '@agentic/platform-validators'
 import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 
 import type { AuthenticatedEnv } from '@/lib/types'

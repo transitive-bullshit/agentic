@@ -1,7 +1,11 @@
 import { z } from '@hono/zod-openapi'
 
-import { deploymentIdSchema, paginationSchema, projectIdSchema } from '@/db'
-import { deploymentRelationsSchema } from '@/db/schema'
+import {
+  deploymentIdSchema,
+  deploymentRelationsSchema,
+  paginationSchema,
+  projectIdSchema
+} from '@/db'
 
 export const deploymentIdParamsSchema = z.object({
   deploymentId: deploymentIdSchema.openapi({

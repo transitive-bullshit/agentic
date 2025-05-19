@@ -1,3 +1,4 @@
+import type { User } from '@agentic/platform-db'
 import { assert } from '@agentic/platform-core'
 import Conf from 'conf'
 
@@ -5,7 +6,7 @@ export const store = new Conf({ projectName: 'agentic' })
 
 export type Auth = {
   token: string
-  user: string
+  user: User
   teamId?: string
   teamSlug?: string
 }

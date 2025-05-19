@@ -1,6 +1,6 @@
 import type { OpenAPIHono } from '@hono/zod-openapi'
 import type Stripe from 'stripe'
-import { assert,HttpError  } from '@agentic/platform-core'
+import { assert, HttpError } from '@agentic/platform-core'
 
 import { and, db, eq, schema } from '@/db'
 import { env, isStripeLive } from '@/lib/env'

@@ -6,13 +6,13 @@ import {
   type ConsumerUpdate,
   db,
   eq,
+  getStripePriceIdForPricingPlanLineItem,
   type RawConsumer,
   type RawDeployment,
   type RawProject,
   type RawUser,
   schema
 } from '@/db'
-import { getStripePriceIdForPricingPlanLineItem } from '@/db/schema'
 import { stripe } from '@/lib/stripe'
 
 export async function upsertStripeSubscription(

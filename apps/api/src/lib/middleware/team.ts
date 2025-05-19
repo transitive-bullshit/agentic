@@ -1,9 +1,8 @@
 import { assert } from '@agentic/platform-core'
-import { and, eq } from '@fisch0920/drizzle-orm'
 import { createMiddleware } from 'hono/factory'
 
 import type { AuthenticatedEnv } from '@/lib/types'
-import { db, schema } from '@/db'
+import { and, db, eq, schema } from '@/db'
 import { aclTeamMember } from '@/lib/acl-team-member'
 
 export const team = createMiddleware<AuthenticatedEnv>(

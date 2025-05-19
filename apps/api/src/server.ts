@@ -38,5 +38,3 @@ initExitHooks({ server })
 
 // eslint-disable-next-line no-console
 console.log(`Server running on port ${env.PORT}`)
-
-export { type ApiRoutes } from '@/api-v1'

@@ -2,14 +2,18 @@ import type Stripe from 'stripe'
 import { assert } from '@agentic/platform-core'
 import pAll from 'p-all'
 
-import { db, eq, type RawDeployment, type RawProject, schema } from '@/db'
 import {
+  db,
+  eq,
   getLabelForPricingInterval,
   getPricingPlanLineItemHashForStripePrice,
   getPricingPlansByInterval,
   type PricingPlan,
-  type PricingPlanLineItem
-} from '@/db/schema'
+  type PricingPlanLineItem,
+  type RawDeployment,
+  type RawProject,
+  schema
+} from '@/db'
 import { stripe } from '@/lib/stripe'
 
 /**

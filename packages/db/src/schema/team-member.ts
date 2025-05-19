@@ -7,8 +7,6 @@ import {
 } from '@fisch0920/drizzle-orm/pg-core'
 import { z } from '@hono/zod-openapi'
 
-import { teams, teamSelectSchema } from './team'
-import { users, userSelectSchema } from './user'
 import {
   createInsertSchema,
   createSelectSchema,
@@ -18,7 +16,9 @@ import {
   teamSlug,
   timestamp,
   timestamps
-} from './utils'
+} from './common'
+import { teams, teamSelectSchema } from './team'
+import { users, userSelectSchema } from './user'
 
 export const teamMembers = pgTable(
   'team_members',

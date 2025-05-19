@@ -1,7 +1,10 @@
 import { z } from '@hono/zod-openapi'
 
-import { consumerIdSchema, paginationSchema } from '@/db'
-import { consumerRelationsSchema } from '@/db/schema'
+import {
+  consumerIdSchema,
+  consumerRelationsSchema,
+  paginationSchema
+} from '@/db'
 
 export const consumerIdParamsSchema = z.object({
   consumerId: consumerIdSchema.openapi({

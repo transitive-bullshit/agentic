@@ -1,4 +1,4 @@
-import { validators } from '@agentic/validators'
+import { validators } from '@agentic/platform-validators'
 import { relations } from '@fisch0920/drizzle-orm'
 import {
   boolean,
@@ -10,6 +10,18 @@ import {
 } from '@fisch0920/drizzle-orm/pg-core'
 import { z } from '@hono/zod-openapi'
 
+import {
+  createInsertSchema,
+  createSelectSchema,
+  createUpdateSchema,
+  cuid,
+  deploymentId,
+  pricingCurrencyEnum,
+  pricingIntervalEnum,
+  projectId,
+  stripeId,
+  timestamps
+} from './common'
 import { deployments, deploymentSelectSchema } from './deployment'
 import {
   pricingIntervalSchema,
@@ -22,18 +34,6 @@ import {
 } from './schemas'
 import { teams, teamSelectSchema } from './team'
 import { users, userSelectSchema } from './user'
-import {
-  createInsertSchema,
-  createSelectSchema,
-  createUpdateSchema,
-  cuid,
-  deploymentId,
-  pricingCurrencyEnum,
-  pricingIntervalEnum,
-  projectId,
-  stripeId,
-  timestamps
-} from './utils'
 
 export const projects = pgTable(
   'projects',
@@ -156,17 +156,6 @@ export const projectsRelations = relations(projects, ({ one }) => ({
   //   relationName: 'publishedDeployments'
   // })
 }))
-
-export type ProjectRelationFields = keyof ReturnType<
-  (typeof projectsRelations)['config']
->
-
-export const projectRelationsSchema: z.ZodType<ProjectRelationFields> = z.enum([
-  'user',
-  'team',
-  'lastPublishedDeployment',
-  'lastDeployment'
-])
 
 export const projectSelectSchema = createSelectSchema(projects, {
   applicationFeePercent: (schema) => schema.nonnegative(),

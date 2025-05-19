@@ -1,5 +1,9 @@
-import { validators } from '@agentic/validators'
+import { validators } from '@agentic/platform-validators'
 import { z } from '@hono/zod-openapi'
+
+import type { consumersRelations } from './schema/consumer'
+import type { deploymentsRelations } from './schema/deployment'
+import type { projectsRelations } from './schema/project'
 
 function getCuidSchema(idLabel: string) {
   return z.string().refine((id) => validators.cuid(id), {
@@ -57,3 +61,25 @@ export const paginationSchema = z.object({
 //     )
 //   })
 // }
+
+export type ProjectRelationFields = keyof ReturnType<
+  (typeof projectsRelations)['config']
+>
+export const projectRelationsSchema: z.ZodType<ProjectRelationFields> = z.enum([
+  'user',
+  'team',
+  'lastPublishedDeployment',
+  'lastDeployment'
+])
+
+export type DeploymentRelationFields = keyof ReturnType<
+  (typeof deploymentsRelations)['config']
+>
+export const deploymentRelationsSchema: z.ZodType<DeploymentRelationFields> =
+  z.enum(['user', 'team', 'project'])
+
+export type ConsumerRelationFields = keyof ReturnType<
+  (typeof consumersRelations)['config']
+>
+export const consumerRelationsSchema: z.ZodType<ConsumerRelationFields> =
+  z.enum(['user', 'project', 'deployment'])

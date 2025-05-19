@@ -110,35 +110,36 @@ apiV1.route('/', privateRouter)
 
 // API route types to be used by Hono's RPC client.
 // Should include all routes except for internal and admin routes.
-export type ApiRoutes =
-  | ReturnType<typeof registerHealthCheck>
-  // Users
-  | ReturnType<typeof registerV1UsersGetUser>
-  | ReturnType<typeof registerV1UsersUpdateUser>
-  // Teams
-  | ReturnType<typeof registerV1TeamsCreateTeam>
-  | ReturnType<typeof registerV1TeamsListTeams>
-  | ReturnType<typeof registerV1TeamsGetTeam>
-  | ReturnType<typeof registerV1TeamsDeleteTeam>
-  | ReturnType<typeof registerV1TeamsUpdateTeam>
-  // Team members
-  | ReturnType<typeof registerV1TeamsMembersCreateTeamMember>
-  | ReturnType<typeof registerV1TeamsMembersUpdateTeamMember>
-  | ReturnType<typeof registerV1TeamsMembersDeleteTeamMember>
-  // Projects
-  | ReturnType<typeof registerV1ProjectsCreateProject>
-  | ReturnType<typeof registerV1ProjectsListProjects>
-  | ReturnType<typeof registerV1ProjectsGetProject>
-  | ReturnType<typeof registerV1ProjectsUpdateProject>
-  // Consumers
-  | ReturnType<typeof registerV1ConsumersGetConsumer>
-  | ReturnType<typeof registerV1ConsumersCreateConsumer>
-  | ReturnType<typeof registerV1ConsumersUpdateConsumer>
-  | ReturnType<typeof registerV1ConsumersRefreshConsumerToken>
-  | ReturnType<typeof registerV1ProjectsListConsumers>
-  // Deployments
-  | ReturnType<typeof registerV1DeploymentsGetDeployment>
-  | ReturnType<typeof registerV1DeploymentsCreateDeployment>
-  | ReturnType<typeof registerV1DeploymentsUpdateDeployment>
-  | ReturnType<typeof registerV1DeploymentsListDeployments>
-  | ReturnType<typeof registerV1DeploymentsPublishDeployment>
+// NOTE: Removing for now because Hono's RPC client / types are clunky and slow.
+// export type ApiRoutes =
+//   | ReturnType<typeof registerHealthCheck>
+//   // Users
+//   | ReturnType<typeof registerV1UsersGetUser>
+//   | ReturnType<typeof registerV1UsersUpdateUser>
+//   // Teams
+//   | ReturnType<typeof registerV1TeamsCreateTeam>
+//   | ReturnType<typeof registerV1TeamsListTeams>
+//   | ReturnType<typeof registerV1TeamsGetTeam>
+//   | ReturnType<typeof registerV1TeamsDeleteTeam>
+//   | ReturnType<typeof registerV1TeamsUpdateTeam>
+//   // Team members
+//   | ReturnType<typeof registerV1TeamsMembersCreateTeamMember>
+//   | ReturnType<typeof registerV1TeamsMembersUpdateTeamMember>
+//   | ReturnType<typeof registerV1TeamsMembersDeleteTeamMember>
+//   // Projects
+//   | ReturnType<typeof registerV1ProjectsCreateProject>
+//   | ReturnType<typeof registerV1ProjectsListProjects>
+//   | ReturnType<typeof registerV1ProjectsGetProject>
+//   | ReturnType<typeof registerV1ProjectsUpdateProject>
+//   // Consumers
+//   | ReturnType<typeof registerV1ConsumersGetConsumer>
+//   | ReturnType<typeof registerV1ConsumersCreateConsumer>
+//   | ReturnType<typeof registerV1ConsumersUpdateConsumer>
+//   | ReturnType<typeof registerV1ConsumersRefreshConsumerToken>
+//   | ReturnType<typeof registerV1ProjectsListConsumers>
+//   // Deployments
+//   | ReturnType<typeof registerV1DeploymentsGetDeployment>
+//   | ReturnType<typeof registerV1DeploymentsCreateDeployment>
+//   | ReturnType<typeof registerV1DeploymentsUpdateDeployment>
+//   | ReturnType<typeof registerV1DeploymentsListDeployments>
+//   | ReturnType<typeof registerV1DeploymentsPublishDeployment>

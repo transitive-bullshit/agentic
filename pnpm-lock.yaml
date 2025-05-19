@@ -128,15 +128,12 @@ importers:
       '@agentic/platform-core':
         specifier: workspace:*
         version: link:../../packages/core
-      '@agentic/validators':
+      '@agentic/platform-db':
+        specifier: workspace:*
+        version: link:../../packages/db
+      '@agentic/platform-validators':
         specifier: workspace:*
         version: link:../../packages/validators
-      '@fisch0920/drizzle-orm':
-        specifier: ^0.43.7
-        version: 0.43.7(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(postgres@3.4.5)
-      '@fisch0920/drizzle-zod':
-        specifier: ^0.7.9
-        version: 0.7.9(@fisch0920/drizzle-orm@0.43.7(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(postgres@3.4.5))(zod@3.24.4)
       '@hono/node-server':
         specifier: ^1.14.1
         version: 1.14.1(hono@4.7.9)
@@ -146,21 +143,12 @@ importers:
       '@hono/zod-openapi':
         specifier: ^0.19.6
         version: 0.19.6(hono@4.7.9)(zod@3.24.4)
-      '@hono/zod-validator':
-        specifier: ^0.5.0
-        version: 0.5.0(hono@4.7.9)(zod@3.24.4)
-      '@paralleldrive/cuid2':
-        specifier: ^2.2.2
-        version: 2.2.2
       '@redocly/openapi-core':
         specifier: ^1.34.3
         version: 1.34.3(supports-color@10.0.0)
       '@sentry/node':
         specifier: ^9.19.0
         version: 9.19.0
-      bcryptjs:
-        specifier: ^3.0.2
-        version: 3.0.2
       eventid:
         specifier: ^2.0.1
         version: 2.0.1
@@ -179,9 +167,6 @@ importers:
       parse-json:
         specifier: ^8.3.0
         version: 8.3.0
-      postgres:
-        specifier: ^3.4.5
-        version: 3.4.5
       restore-cursor:
         specifier: 'catalog:'
         version: 5.1.0
@@ -238,6 +223,9 @@ importers:
       '@agentic/platform-api':
         specifier: workspace:*
         version: link:../../apps/api
+      '@agentic/platform-db':
+        specifier: workspace:*
+        version: link:../db
       '@commander-js/extra-typings':
         specifier: ^14.0.0
         version: 14.0.0(commander@14.0.0)
@@ -257,6 +245,45 @@ importers:
       hono:
         specifier: ^4.7.9
         version: 4.7.9
+
+  packages/db:
+    dependencies:
+      '@agentic/platform-core':
+        specifier: workspace:*
+        version: link:../core
+      '@agentic/platform-validators':
+        specifier: workspace:*
+        version: link:../validators
+      '@fisch0920/drizzle-orm':
+        specifier: ^0.43.7
+        version: 0.43.7(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(postgres@3.4.5)
+      '@fisch0920/drizzle-zod':
+        specifier: ^0.7.9
+        version: 0.7.9(@fisch0920/drizzle-orm@0.43.7(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(postgres@3.4.5))(zod@3.24.4)
+      '@hono/zod-openapi':
+        specifier: ^0.19.6
+        version: 0.19.6(hono@4.7.9)(zod@3.24.4)
+      '@paralleldrive/cuid2':
+        specifier: ^2.2.2
+        version: 2.2.2
+      bcryptjs:
+        specifier: ^3.0.2
+        version: 3.0.2
+      hono:
+        specifier: ^4.7.9
+        version: 4.7.9
+      parse-json:
+        specifier: ^8.3.0
+        version: 8.3.0
+      postgres:
+        specifier: ^3.4.5
+        version: 3.4.5
+      type-fest:
+        specifier: 'catalog:'
+        version: 4.41.0
+      zod:
+        specifier: 'catalog:'
+        version: 3.24.4
 
   packages/validators:
     dependencies:

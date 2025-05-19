@@ -1,4 +1,4 @@
-import { validators } from '@agentic/validators'
+import { validators } from '@agentic/platform-validators'
 import { relations } from '@fisch0920/drizzle-orm'
 import {
   boolean,
@@ -9,13 +9,6 @@ import {
 } from '@fisch0920/drizzle-orm/pg-core'
 import { z } from '@hono/zod-openapi'
 
-import { deployments, deploymentSelectSchema } from './deployment'
-import { projects, projectSelectSchema } from './project'
-import {
-  type StripeSubscriptionItemIdMap,
-  stripeSubscriptionItemIdMapSchema
-} from './schemas'
-import { users, userSelectSchema } from './user'
 import {
   createInsertSchema,
   createSelectSchema,
@@ -26,7 +19,14 @@ import {
   projectId,
   stripeId,
   timestamps
-} from './utils'
+} from './common'
+import { deployments, deploymentSelectSchema } from './deployment'
+import { projects, projectSelectSchema } from './project'
+import {
+  type StripeSubscriptionItemIdMap,
+  stripeSubscriptionItemIdMapSchema
+} from './schemas'
+import { users, userSelectSchema } from './user'
 
 // TODO: Consumers should be valid for any enabled project like in RapidAPI and GCP.
 // This may require a separate model to aggregate User Applications.
@@ -127,13 +127,6 @@ export const consumersRelations = relations(consumers, ({ one }) => ({
     references: [deployments.id]
   })
 }))
-
-export type ConsumerRelationFields = keyof ReturnType<
-  (typeof consumersRelations)['config']
->
-
-export const consumerRelationsSchema: z.ZodType<ConsumerRelationFields> =
-  z.enum(['user', 'project', 'deployment'])
 
 export const consumerSelectSchema = createSelectSchema(consumers, {
   _stripeSubscriptionItemIdMap: stripeSubscriptionItemIdMapSchema,

@@ -1,7 +1,7 @@
 import { assert } from '@agentic/platform-core'
 import semver from 'semver'
 
-import type { RawProject } from '@/db/types'
+import type { RawProject } from '@/db'
 
 export function normalizeDeploymentVersion({
   deploymentId,

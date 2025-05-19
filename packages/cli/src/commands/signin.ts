@@ -8,6 +8,8 @@ export const signin = new Command('login')
   .option('-u, --username <username>', 'account username')
   .option('-e, --email <email>', 'account email')
   .option('-p, --password <password>', 'account password')
-  .action(async (opts) => {
+  .action(async (_opts) => {
+    // TODO
+    // eslint-disable-next-line no-console
     console.log('TODO: signin')
   })

@@ -1,0 +1,43 @@
+{
+  "name": "@agentic/platform-db",
+  "version": "0.0.1",
+  "description": "Postgres database schemas and types for the Agentic platform using Drizzle as the ORM.",
+  "author": "Travis Fischer <travis@transitivebullsh.it>",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/transitive-bullshit/agentic-platform.git",
+    "directory": "packages/db"
+  },
+  "type": "module",
+  "main": "./src/index.ts",
+  "source": "./src/index.ts",
+  "types": "./src/index.ts",
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "run-s test:*",
+    "test:lint": "eslint .",
+    "test:typecheck": "tsc --noEmit",
+    "test:unit": "vitest run"
+  },
+  "dependencies": {
+    "@agentic/platform-core": "workspace:*",
+    "@agentic/platform-validators": "workspace:*",
+    "@fisch0920/drizzle-orm": "^0.43.7",
+    "@fisch0920/drizzle-zod": "^0.7.9",
+    "@hono/zod-openapi": "^0.19.6",
+    "@paralleldrive/cuid2": "^2.2.2",
+    "bcryptjs": "^3.0.2",
+    "hono": "^4.7.9",
+    "parse-json": "^8.3.0",
+    "postgres": "^3.4.5",
+    "type-fest": "catalog:",
+    "zod": "catalog:"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -1,5 +1,5 @@
 import { sha256 } from '@agentic/platform-core'
-import { validators } from '@agentic/validators'
+import { validators } from '@agentic/platform-validators'
 import { relations } from '@fisch0920/drizzle-orm'
 import {
   boolean,
@@ -11,8 +11,6 @@ import {
 } from '@fisch0920/drizzle-orm/pg-core'
 import { hashSync } from 'bcryptjs'
 
-import { type AuthProviders, publicAuthProvidersSchema } from './schemas'
-import { teams } from './team'
 import {
   createInsertSchema,
   createSelectSchema,
@@ -23,7 +21,9 @@ import {
   timestamps,
   username,
   userRoleEnum
-} from './utils'
+} from './common'
+import { type AuthProviders, publicAuthProvidersSchema } from './schemas'
+import { teams } from './team'
 
 export const users = pgTable(
   'users',

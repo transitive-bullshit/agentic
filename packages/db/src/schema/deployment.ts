@@ -1,4 +1,4 @@
-import { validators } from '@agentic/validators'
+import { validators } from '@agentic/platform-validators'
 import { relations } from '@fisch0920/drizzle-orm'
 import {
   boolean,
@@ -9,6 +9,15 @@ import {
 } from '@fisch0920/drizzle-orm/pg-core'
 import { z } from '@hono/zod-openapi'
 
+import {
+  createInsertSchema,
+  createSelectSchema,
+  createUpdateSchema,
+  cuid,
+  deploymentId,
+  projectId,
+  timestamps
+} from './common'
 import { projects } from './project'
 import {
   type DeploymentOriginAdapter,
@@ -18,15 +27,6 @@ import {
 } from './schemas'
 import { teams, teamSelectSchema } from './team'
 import { users, userSelectSchema } from './user'
-import {
-  createInsertSchema,
-  createSelectSchema,
-  createUpdateSchema,
-  cuid,
-  deploymentId,
-  projectId,
-  timestamps
-} from './utils'
 
 export const deployments = pgTable(
   'deployments',
@@ -104,13 +104,6 @@ export const deploymentsRelations = relations(deployments, ({ one }) => ({
     references: [projects.id]
   })
 }))
-
-export type DeploymentRelationFields = keyof ReturnType<
-  (typeof deploymentsRelations)['config']
->
-
-export const deploymentRelationsSchema: z.ZodType<DeploymentRelationFields> =
-  z.enum(['user', 'team', 'project'])
 
 // TODO: virtual hasFreeTier
 // TODO: virtual url

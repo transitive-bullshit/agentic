@@ -1,4 +1,4 @@
-import { validators } from '@agentic/validators'
+import { validators } from '@agentic/platform-validators'
 import { relations } from '@fisch0920/drizzle-orm'
 import {
   index,
@@ -8,8 +8,6 @@ import {
 } from '@fisch0920/drizzle-orm/pg-core'
 import { z } from '@hono/zod-openapi'
 
-import { teamMembers } from './team-member'
-import { users, userSelectSchema } from './user'
 import {
   createInsertSchema,
   createSelectSchema,
@@ -18,7 +16,9 @@ import {
   id,
   teamSlug,
   timestamps
-} from './utils'
+} from './common'
+import { teamMembers } from './team-member'
+import { users, userSelectSchema } from './user'
 
 export const teams = pgTable(
   'teams',

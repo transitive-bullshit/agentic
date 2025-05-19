@@ -2,10 +2,6 @@ import { relations } from '@fisch0920/drizzle-orm'
 import { index, jsonb, pgTable, text } from '@fisch0920/drizzle-orm/pg-core'
 import { z } from '@hono/zod-openapi'
 
-import { consumers, consumerSelectSchema } from './consumer'
-import { deployments, deploymentSelectSchema } from './deployment'
-import { projects, projectSelectSchema } from './project'
-import { users, userSelectSchema } from './user'
 import {
   createInsertSchema,
   createSelectSchema,
@@ -16,7 +12,11 @@ import {
   logEntryTypeEnum,
   projectId,
   timestamps
-} from './utils'
+} from './common'
+import { consumers, consumerSelectSchema } from './consumer'
+import { deployments, deploymentSelectSchema } from './deployment'
+import { projects, projectSelectSchema } from './project'
+import { users, userSelectSchema } from './user'
 
 /**
  * A `LogEntry` is an internal audit log entry.

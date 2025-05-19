@@ -1,5 +1,5 @@
 {
-  "name": "@agentic/validators",
+  "name": "@agentic/platform-validators",
   "private": true,
   "version": "0.1.0",
   "description": "Validation utils for the Agentic platform.",

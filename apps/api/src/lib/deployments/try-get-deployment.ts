@@ -1,5 +1,5 @@
 import { assert } from '@agentic/platform-core'
-import { parseFaasIdentifier } from '@agentic/validators'
+import { parseFaasIdentifier } from '@agentic/platform-validators'
 
 import type { AuthenticatedContext } from '@/lib/types'
 import { db, eq, type RawDeployment, schema } from '@/db'

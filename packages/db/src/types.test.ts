@@ -1,7 +1,5 @@
 import { expectTypeOf, test } from 'vitest'
 
-import type { LogLevel } from '@/lib/logger'
-
 import type { LogEntry, RawLogEntry, RawUser, User } from './types'
 
 type UserKeys = Exclude<keyof User & keyof RawUser, 'authProviders'>
@@ -19,6 +17,4 @@ test('LogEntry types are compatible', () => {
   expectTypeOf<LogEntry[LogEntryKeys]>().toEqualTypeOf<
     RawLogEntry[LogEntryKeys]
   >()
-
-  expectTypeOf<LogEntry['level']>().toEqualTypeOf<LogLevel>()
 })
