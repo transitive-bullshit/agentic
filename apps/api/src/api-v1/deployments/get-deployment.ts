@@ -3,12 +3,12 @@ import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 import type { AuthenticatedEnv } from '@/lib/types'
 import { schema } from '@/db'
 import { acl } from '@/lib/acl'
+import { tryGetDeployment } from '@/lib/deployments/try-get-deployment'
 import {
   openapiAuthenticatedSecuritySchemas,
   openapiErrorResponse404,
   openapiErrorResponses
 } from '@/lib/openapi-utils'
-import { tryGetDeployment } from '@/lib/try-get-deployment'
 import { assert, parseZodSchema } from '@/lib/utils'
 
 import { deploymentIdParamsSchema, populateDeploymentSchema } from './schemas'

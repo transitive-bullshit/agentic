@@ -4,12 +4,12 @@ import type { AuthenticatedEnv } from '@/lib/types'
 import { schema } from '@/db'
 import { acl } from '@/lib/acl'
 import { publishDeployment } from '@/lib/deployments/publish-deployment'
+import { tryGetDeployment } from '@/lib/deployments/try-get-deployment'
 import {
   openapiAuthenticatedSecuritySchemas,
   openapiErrorResponse404,
   openapiErrorResponses
 } from '@/lib/openapi-utils'
-import { tryGetDeployment } from '@/lib/try-get-deployment'
 import { assert, parseZodSchema } from '@/lib/utils'
 
 import { deploymentIdParamsSchema } from './schemas'

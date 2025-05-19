@@ -176,7 +176,11 @@ NOTE: Agentic currently only supports \`external\` API servers. If you'd like to
   pricingPlans: pricingPlanListSchema.describe(
     'List of PricingPlans should be available as subscriptions for this deployment.'
   ),
-  originAdapter: deploymentOriginAdapterSchema.optional()
+  originAdapter: deploymentOriginAdapterSchema.default({
+    location: 'external',
+    type: 'raw'
+  })
+  // .optional()
 
   // TODO
   // coupons: z.array(couponSchema).optional()
