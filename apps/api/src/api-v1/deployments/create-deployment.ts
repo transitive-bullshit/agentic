@@ -6,6 +6,7 @@ import { db, eq, schema } from '@/db'
 import { acl } from '@/lib/acl'
 import { publishDeployment } from '@/lib/deployments/publish-deployment'
 import { resolveDeploymentVersion } from '@/lib/deployments/resolve-deployment-version'
+import { validateDeploymentOriginAdapter } from '@/lib/deployments/validate-deployment-origin-adapter'
 import { ensureAuthUser } from '@/lib/ensure-auth-user'
 import {
   openapiAuthenticatedSecuritySchemas,
@@ -13,7 +14,7 @@ import {
   openapiErrorResponse409,
   openapiErrorResponses
 } from '@/lib/openapi-utils'
-import { assert, parseZodSchema, sha256 } from '@/lib/utils'
+import { assert, parseZodSchema, pick, sha256 } from '@/lib/utils'
 
 import { createDeploymentQuerySchema } from './schemas'
 
@@ -62,8 +63,6 @@ export function registerV1DeploymentsCreateDeployment(
 
     // validatePricingPlans(ctx, pricingPlans)
 
-    // TODO: validate OpenAPI origin schema
-
     const project = await db.query.projects.findFirst({
       where: eq(schema.projects.id, projectId),
       with: {
@@ -98,6 +97,12 @@ export function registerV1DeploymentsCreateDeployment(
         version
       })
     }
+
+    // Validate OpenAPI originUrl and originAdapter
+    await validateDeploymentOriginAdapter({
+      ...pick(body, 'originUrl', 'originAdapter'),
+      deploymentId
+    })
 
     let [[deployment]] = await db.transaction(async (tx) => {
       return Promise.all([
