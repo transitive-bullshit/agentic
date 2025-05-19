@@ -1,4 +1,5 @@
 import { z } from '@hono/zod-openapi'
+import parseJson from 'parse-json'
 
 export const authProviderTypeSchema = z
   .enum(['github', 'google', 'spotify', 'twitter', 'linkedin', 'stripe'])
@@ -452,19 +453,6 @@ export const commonDeploymentOriginAdapterSchema = z.object({
   // internalType: deploymentOriginAdapterInternalTypeSchema.optional()
 })
 
-const jsonLiteralSchema = z.union([
-  z.string(),
-  z.number(),
-  z.boolean(),
-  z.null()
-])
-type JsonLiteral = z.infer<typeof jsonLiteralSchema>
-type Json = JsonLiteral | { [key: string]: Json } | Json[]
-const jsonSchema: z.ZodType<Json> = z.lazy(() =>
-  z.union([jsonLiteralSchema, z.array(jsonSchema), z.record(jsonSchema)])
-)
-const jsonObjectSchema = z.record(jsonSchema)
-
 // TODO: add future support for:
 // - external mcp
 // - internal docker
@@ -476,11 +464,36 @@ export const deploymentOriginAdapterSchema = z
     z
       .object({
         type: z.literal('openapi'),
-        version: z.enum(['3.0', '3.1']),
-        // TODO: Make sure origin API servers are hidden in this embedded OpenAPI spec
-        spec: jsonObjectSchema.describe(
-          'JSON OpenAPI spec for the origin API server.'
-        )
+        // NOTE: The origin API servers should be hidden in the embedded
+        // OpenAPI spec, because clients should only be aware of the upstream
+        // Agentic API gateway.
+        spec: z
+          .string()
+          .refine(
+            (spec) => {
+              try {
+                parseJson(spec)
+              } catch {
+                return false
+              }
+            },
+            (data) => {
+              try {
+                parseJson(data)
+              } catch (err: any) {
+                return {
+                  message: `Invalid OpenAPI spec: ${err.message}`
+                }
+              }
+
+              return {
+                message: 'Invalid OpenAPI spec'
+              }
+            }
+          )
+          .describe(
+            'JSON stringified OpenAPI spec describing the origin API server.'
+          )
       })
       .merge(commonDeploymentOriginAdapterSchema),
 

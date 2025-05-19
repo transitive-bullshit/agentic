@@ -1,14 +1,23 @@
 import type { DeploymentOriginAdapter } from '@/db/schema'
+import type { Logger } from '@/lib/logger'
 import { assert } from '@/lib/utils'
+import { validateOpenAPISpec } from '@/lib/validate-openapi-spec'
 
+/**
+ * Validates and normalizes the origin adapter config for a deployment.
+ *
+ * NOTE: This method may mutate `originAdapter.spec`.
+ */
 export async function validateDeploymentOriginAdapter({
   deploymentId,
   originUrl,
-  originAdapter
+  originAdapter,
+  logger
 }: {
   deploymentId: string
   originUrl: string
   originAdapter: DeploymentOriginAdapter
+  logger: Logger
 }): Promise<void> {
   assert(
     originUrl,
@@ -17,17 +26,29 @@ export async function validateDeploymentOriginAdapter({
   )
 
   if (originAdapter.type === 'openapi') {
-    // TODO: Validate OpenAPI spec
     assert(
       originAdapter.spec,
       400,
-      `OpenAPI spec is required for deployment "${deploymentId}"`
+      `OpenAPI spec is required for deployment "${deploymentId}" with origin adapter type set to "openapi"`
     )
 
-    // TODO: Validate OpenAPI spec version is the same as `originAdapter.version`
+    // Validate and normalize the OpenAPI spec
+    const openapiSpec = await validateOpenAPISpec(originAdapter.spec, {
+      logger
+    })
 
-    // TODO: Remove origin servers from the OpenAPI spec and if they exist, ensure
-    // that `originUrl` matches.
+    // Remove origin servers from the OpenAPI spec.
+    // TODO: Ensure that `originUrl` matches any origin servers in the openapi spec?
+    delete openapiSpec.servers
+
+    // TODO: Additional, agentic-specific validation of the OpenAPI spec's
+    // operations to ensure they are valid AI functions.
+
+    // TODO: Simplify OpenAPI spec by removing any query params and headers
+    // specific to the Agentic API gateway.
+
+    // Update the openapi spec with the normalized version
+    originAdapter.spec = JSON.stringify(openapiSpec)
   } else {
     assert(
       originAdapter.type === 'raw',

@@ -59,6 +59,7 @@ export function registerV1DeploymentsCreateDeployment(
     const { publish } = c.req.valid('query')
     const body = c.req.valid('json')
     const teamMember = c.get('teamMember')
+    const logger = c.get('logger')
     const { projectId } = body
 
     // validatePricingPlans(ctx, pricingPlans)
@@ -86,7 +87,7 @@ export function registerV1DeploymentsCreateDeployment(
       assert(
         version,
         400,
-        `Deployment version is required to publish deployment "${deploymentId}"`
+        `Deployment "version" field is required to publish deployment "${deploymentId}"`
       )
     }
 
@@ -101,7 +102,8 @@ export function registerV1DeploymentsCreateDeployment(
     // Validate OpenAPI originUrl and originAdapter
     await validateDeploymentOriginAdapter({
       ...pick(body, 'originUrl', 'originAdapter'),
-      deploymentId
+      deploymentId,
+      logger
     })
 
     let [[deployment]] = await db.transaction(async (tx) => {

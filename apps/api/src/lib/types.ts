@@ -5,6 +5,8 @@ import type { RawTeamMember, RawUser } from '@/db'
 import type { Env } from './env'
 import type { Logger } from './logger'
 
+export type { OpenAPI3 as LooseOpenAPI3Spec } from 'openapi-typescript'
+
 export type Environment = Env['NODE_ENV']
 export type Service = 'api'
 
