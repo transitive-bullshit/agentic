@@ -13,6 +13,10 @@ export const deploymentIdParamsSchema = z.object({
   })
 })
 
+export const createDeploymentQuerySchema = z.object({
+  publish: z.boolean().default(false).optional()
+})
+
 export const filterDeploymentSchema = z.object({
   projectId: projectIdSchema.optional()
 })

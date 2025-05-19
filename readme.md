@@ -24,6 +24,8 @@
     - https://github.com/NangoHQ/nango
     - https://github.com/transitive-bullshit?submit=Search&q=oauth&tab=stars&type=&sort=&direction=&submit=Search
     - clerk / workos / auth0
+- db
+  - replace `enabled` with soft `deletedAt` timestamp
 
 ## License
 

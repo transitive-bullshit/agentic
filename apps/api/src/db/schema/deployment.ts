@@ -11,10 +11,10 @@ import { z } from '@hono/zod-openapi'
 
 import { projects } from './project'
 import {
+  type DeploymentOriginAdapter,
+  deploymentOriginAdapterSchema,
   type PricingPlanList,
   pricingPlanListSchema
-  // type Coupon,
-  // couponSchema,
 } from './schemas'
 import { teams, teamSelectSchema } from './team'
 import { users, userSelectSchema } from './user'
@@ -43,6 +43,7 @@ export const deployments = pgTable(
 
     description: text().default('').notNull(),
     readme: text().default('').notNull(),
+    iconUrl: text(),
 
     userId: cuid()
       .notNull()
@@ -57,12 +58,20 @@ export const deployments = pgTable(
     // TODO: Tool definitions or OpenAPI spec
     // services: jsonb().$type<Service[]>().default([]),
 
-    // TODO: metadata config (logo, keywords, etc)
+    // TODO: metadata config (logo, keywords, examples, etc)
+    // TODO: openapi spec or tool definitions or mcp adapter
     // TODO: webhooks
-    // TODO: third-party auth provider config?
+    // TODO: third-party auth provider config
+    // NOTE: will need consumer.authProviders as well as user.authProviders for
+    // this because custom oauth credentials that are deployment-specific. will
+    // prolly also need to hash the individual AuthProviders in
+    // deployment.authProviders to compare across deployments.
 
-    // Backend API URL
+    // Origin API URL
     originUrl: text().notNull(),
+
+    // Origin API adapter config (openapi, mcp, hosted externally or internally, etc)
+    originAdapter: jsonb().$type<DeploymentOriginAdapter>().notNull(),
 
     // Array<PricingPlan>
     pricingPlans: jsonb().$type<PricingPlanList>().notNull()
@@ -123,8 +132,8 @@ export const deploymentSelectSchema = createSelectSchema(deployments, {
       message: 'Invalid deployment hash'
     }),
 
-  pricingPlans: pricingPlanListSchema
-  // coupons: z.array(couponSchema)
+  pricingPlans: pricingPlanListSchema,
+  originAdapter: deploymentOriginAdapterSchema
 })
   .omit({
     originUrl: true
@@ -152,11 +161,24 @@ export const deploymentInsertSchema = createInsertSchema(deployments, {
       message: 'Invalid project id'
     }),
 
-  originUrl: (schema) => schema.url(),
+  iconUrl: (schema) =>
+    schema
+      .url()
+      .describe(
+        'Logo image URL to use for this delpoyment. Logos should have a square aspect ratio.'
+      ),
 
-  pricingPlans: pricingPlanListSchema
+  originUrl: (schema) =>
+    schema.url().describe(`Base URL of the externally hosted origin API server.
 
-  // TODOp
+NOTE: Agentic currently only supports \`external\` API servers. If you'd like to host your API or MCP server on Agentic's infrastructure, please reach out to support@agentic.so.`),
+
+  pricingPlans: pricingPlanListSchema.describe(
+    'List of PricingPlans should be available as subscriptions for this deployment.'
+  ),
+  originAdapter: deploymentOriginAdapterSchema.optional()
+
+  // TODO
   // coupons: z.array(couponSchema).optional()
 })
   .omit({

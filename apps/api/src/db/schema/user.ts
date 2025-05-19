@@ -51,7 +51,7 @@ export const users = pgTable(
     isStripeConnectEnabledByDefault: boolean().default(true).notNull(),
 
     // third-party auth providers
-    providers: jsonb().$type<AuthProviders>().default({}).notNull(),
+    authProviders: jsonb().$type<AuthProviders>().default({}).notNull(),
 
     stripeCustomerId: stripeId().unique()
   },
@@ -70,7 +70,7 @@ export const usersRelations = relations(users, ({ many }) => ({
 }))
 
 export const userSelectSchema = createSelectSchema(users, {
-  providers: publicAuthProvidersSchema
+  authProviders: publicAuthProvidersSchema
 })
   .omit({ password: true, emailConfirmToken: true, passwordResetToken: true })
   .strip()

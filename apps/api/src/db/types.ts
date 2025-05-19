@@ -5,6 +5,7 @@ import type {
   InferSelectModel
 } from '@fisch0920/drizzle-orm'
 import type { z } from '@hono/zod-openapi'
+import type { Simplify } from 'type-fest'
 
 import type * as schema from './schema'
 
@@ -35,7 +36,12 @@ export type ProjectWithLastPublishedDeployment = BuildQueryResult<
   Tables['projects'],
   { with: { lastPublishedDeployment: true } }
 >
-export type RawProject = InferSelectModel<typeof schema.projects>
+export type RawProject = Simplify<
+  InferSelectModel<typeof schema.projects> & {
+    lastPublishedDeployment?: RawDeployment | null // TODO: remove null (requires drizzle-orm changes)
+    lastDeployment?: RawDeployment | null // TODO: remove null (requires drizzle-orm changes)
+  }
+>
 
 export type Deployment = z.infer<typeof schema.deploymentSelectSchema>
 export type DeploymentWithProject = BuildQueryResult<
@@ -43,7 +49,11 @@ export type DeploymentWithProject = BuildQueryResult<
   Tables['deployments'],
   { with: { project: true } }
 >
-export type RawDeployment = InferSelectModel<typeof schema.deployments>
+export type RawDeployment = Simplify<
+  InferSelectModel<typeof schema.deployments> & {
+    project?: RawProject | null // TODO: remove null (requires drizzle-orm changes)
+  }
+>
 
 export type Consumer = z.infer<typeof schema.consumerSelectSchema>
 export type ConsumerWithProjectAndDeployment = BuildQueryResult<
@@ -51,7 +61,13 @@ export type ConsumerWithProjectAndDeployment = BuildQueryResult<
   Tables['consumers'],
   { with: { project: true; deployment: true } }
 >
-export type RawConsumer = InferSelectModel<typeof schema.consumers>
+export type RawConsumer = Simplify<
+  InferSelectModel<typeof schema.consumers> & {
+    user?: RawUser | null // TODO: remove null (requires drizzle-orm changes)
+    project?: RawProject | null // TODO: remove null (requires drizzle-orm changes)
+    deployment?: RawDeployment | null // TODO: remove null (requires drizzle-orm changes)
+  }
+>
 export type ConsumerUpdate = Partial<
   Omit<
     InferInsertModel<typeof schema.consumers>,

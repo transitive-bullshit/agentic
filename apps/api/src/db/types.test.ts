@@ -4,7 +4,7 @@ import type { LogLevel } from '@/lib/logger'
 
 import type { LogEntry, RawLogEntry, RawUser, User } from './types'
 
-type UserKeys = Exclude<keyof User & keyof RawUser, 'providers'>
+type UserKeys = Exclude<keyof User & keyof RawUser, 'authProviders'>
 type LogEntryKeys = keyof RawLogEntry & keyof LogEntry
 
 test('User types are compatible', () => {
