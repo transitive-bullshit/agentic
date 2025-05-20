@@ -35,7 +35,7 @@ import { users } from './user'
 export const logEntries = pgTable(
   'log_entries',
   {
-    id: logEntryPrimaryId,
+    ...logEntryPrimaryId,
     ...timestamps,
 
     // core data (required)

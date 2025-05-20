@@ -28,7 +28,7 @@ import { teams } from './team'
 export const users = pgTable(
   'users',
   {
-    id: userPrimaryId,
+    ...userPrimaryId,
     ...timestamps,
 
     username: username().notNull().unique(),

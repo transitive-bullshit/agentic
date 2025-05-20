@@ -23,7 +23,7 @@ import { users } from './user'
 export const teams = pgTable(
   'teams',
   {
-    id: teamPrimaryId,
+    ...teamPrimaryId,
     ...timestamps,
 
     slug: teamSlug().unique().notNull(),

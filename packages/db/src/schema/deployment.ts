@@ -41,7 +41,7 @@ import { users } from './user'
 export const deployments = pgTable(
   'deployments',
   {
-    id: deploymentPrimaryId,
+    ...deploymentPrimaryId,
     ...timestamps,
 
     identifier: deploymentIdentifier().unique().notNull(),

@@ -48,7 +48,7 @@ import { users } from './user'
 export const projects = pgTable(
   'projects',
   {
-    id: projectPrimaryId,
+    ...projectPrimaryId,
     ...timestamps,
 
     identifier: projectIdentifier().unique().notNull(),

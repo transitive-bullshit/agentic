@@ -41,12 +41,14 @@ function createIdForModel(modelType: ModelType): string {
 }
 
 /**
- * Returns the `id` primary key to use for a given model type.
+ * Returns the primary `id` key to use for a given model type.
  */
 function getPrimaryId(modelType: ModelType) {
-  return id()
-    .primaryKey()
-    .$defaultFn(() => createIdForModel(modelType))
+  return {
+    id: id()
+      .primaryKey()
+      .$defaultFn(() => createIdForModel(modelType))
+  }
 }
 
 export const projectPrimaryId = getPrimaryId('project')

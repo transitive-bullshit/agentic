@@ -50,7 +50,7 @@ import { users } from './user'
 export const consumers = pgTable(
   'consumers',
   {
-    id: consumerPrimaryId,
+    ...consumerPrimaryId,
     ...timestamps,
 
     // API token for this consumer
