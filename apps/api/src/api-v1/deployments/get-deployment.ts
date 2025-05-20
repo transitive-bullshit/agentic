@@ -16,7 +16,7 @@ import { deploymentIdParamsSchema, populateDeploymentSchema } from './schemas'
 const route = createRoute({
   description: 'Gets a deployment',
   tags: ['deployments'],
-  operationId: 'getdeployment',
+  operationId: 'getDeployment',
   method: 'get',
   path: 'deployments/{deploymentId}',
   security: openapiAuthenticatedSecuritySchemas,

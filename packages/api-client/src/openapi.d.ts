@@ -244,7 +244,7 @@ export interface paths {
             cookie?: never;
         };
         /** @description Gets a deployment */
-        get: operations["getdeployment"];
+        get: operations["getDeployment"];
         put?: never;
         /** @description Updates a deployment. */
         post: operations["updateDeployment"];
@@ -1174,7 +1174,7 @@ export interface operations {
             404: components["responses"]["404"];
         };
     };
-    getdeployment: {
+    getDeployment: {
         parameters: {
             query?: {
                 populate?: ("user" | "team" | "project")[];

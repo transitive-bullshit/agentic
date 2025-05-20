@@ -196,11 +196,11 @@ export class AgenticApiClient {
       .json()
   }
 
-  async getdeployment({
+  async getDeployment({
     deploymentId,
     ...searchParams
-  }: OperationParameters<'getdeployment'>): Promise<
-    OperationResponse<'getdeployment'>
+  }: OperationParameters<'getDeployment'>): Promise<
+    OperationResponse<'getDeployment'>
   > {
     return this.ky
       .get(`v1/deployments/${deploymentId}`, { searchParams })
