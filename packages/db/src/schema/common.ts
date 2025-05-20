@@ -33,12 +33,28 @@ export const idPrefixMap = {
 
 export type ModelType = keyof typeof idPrefixMap
 
-export function createId(modelType: ModelType): string {
+function createIdForModel(modelType: ModelType): string {
   const prefix = idPrefixMap[modelType]
   assert(prefix, 500, `Invalid model type: ${modelType}`)
 
   return `${prefix}_${createCuid2()}`
 }
+
+/**
+ * Returns the `id` primary key to use for a given model type.
+ */
+function getPrimaryId(modelType: ModelType) {
+  return id()
+    .primaryKey()
+    .$defaultFn(() => createIdForModel(modelType))
+}
+
+export const projectPrimaryId = getPrimaryId('project')
+export const deploymentPrimaryId = getPrimaryId('deployment')
+export const consumerPrimaryId = getPrimaryId('consumer')
+export const logEntryPrimaryId = getPrimaryId('logEntry')
+export const teamPrimaryId = getPrimaryId('team')
+export const userPrimaryId = getPrimaryId('user')
 
 /**
  * All of our model primary ids have the following format:
@@ -50,22 +66,6 @@ export function id<U extends string, T extends Readonly<[U, ...U[]]>>(
 ): PgVarcharBuilderInitial<'', Writable<T>, typeof idMaxLength> {
   return varchar({ length: idMaxLength, ...config })
 }
-
-/**
- * Returns the `id` primary key to use for a given model type.
- */
-function getPrimaryId(modelType: ModelType) {
-  return id()
-    .primaryKey()
-    .$defaultFn(() => createId(modelType))
-}
-
-export const projectPrimaryId = getPrimaryId('project')
-export const deploymentPrimaryId = getPrimaryId('deployment')
-export const consumerPrimaryId = getPrimaryId('consumer')
-export const logEntryPrimaryId = getPrimaryId('logEntry')
-export const teamPrimaryId = getPrimaryId('team')
-export const userPrimaryId = getPrimaryId('user')
 
 export const projectId = id
 export const deploymentId = id
