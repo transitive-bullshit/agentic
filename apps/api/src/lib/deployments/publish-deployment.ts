@@ -26,7 +26,7 @@ export async function publishDeployment(
   await acl(ctx, project, { label: 'Project' })
 
   const version = normalizeDeploymentVersion({
-    deploymentId: deployment.id,
+    deploymentIdentifier: deployment.identifier,
     project,
     version: rawVersion
   })

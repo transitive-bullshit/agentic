@@ -4,7 +4,7 @@ import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 import type { AuthenticatedEnv } from '@/lib/types'
 import { schema } from '@/db'
 import { acl } from '@/lib/acl'
-import { tryGetDeployment } from '@/lib/deployments/try-get-deployment'
+import { getDeploymentById } from '@/lib/deployments/get-deployment-by-id'
 import {
   openapiAuthenticatedSecuritySchemas,
   openapiErrorResponse404,
@@ -45,7 +45,8 @@ export function registerV1DeploymentsGetDeployment(
     const { deploymentId } = c.req.valid('param')
     const { populate = [] } = c.req.valid('query')
 
-    const deployment = await tryGetDeployment(c, deploymentId, {
+    const deployment = await getDeploymentById({
+      deploymentId,
       with: {
         ...Object.fromEntries(populate.map((field) => [field, true]))
       }

@@ -5,17 +5,19 @@ import {
   index,
   jsonb,
   pgTable,
-  text
+  text,
+  uniqueIndex
 } from '@fisch0920/drizzle-orm/pg-core'
 import { z } from '@hono/zod-openapi'
 
+import { deploymentIdentifierSchema, projectIdSchema } from '../schemas'
 import {
   createInsertSchema,
   createSelectSchema,
   createUpdateSchema,
   cuid,
-  deploymentId,
-  projectId,
+  deploymentIdentifier,
+  id,
   timestamps
 } from './common'
 import { projects } from './project'
@@ -31,10 +33,10 @@ import { users } from './user'
 export const deployments = pgTable(
   'deployments',
   {
-    // namespace/projectName@hash
-    id: deploymentId().primaryKey(),
+    id,
     ...timestamps,
 
+    identifier: deploymentIdentifier().unique().notNull(),
     hash: text().notNull(),
     version: text(),
 
@@ -48,7 +50,7 @@ export const deployments = pgTable(
       .notNull()
       .references(() => users.id),
     teamId: cuid().references(() => teams.id),
-    projectId: projectId()
+    projectId: cuid()
       .notNull()
       .references(() => projects.id, {
         onDelete: 'cascade'
@@ -78,6 +80,7 @@ export const deployments = pgTable(
     // coupons: jsonb().$type<Coupon[]>().default([]).notNull()
   },
   (table) => [
+    uniqueIndex('deployment_identifier_idx').on(table.identifier),
     index('deployment_userId_idx').on(table.userId),
     index('deployment_teamId_idx').on(table.teamId),
     index('deployment_projectId_idx').on(table.projectId),
@@ -112,12 +115,7 @@ export const deploymentsRelations = relations(deployments, ({ one }) => ({
 // TODO: virtual openapi spec? (hide openapi.servers)
 
 export const deploymentSelectSchema = createSelectSchema(deployments, {
-  // build: z.object({}),
-  // env: z.object({}),
-  id: (schema) =>
-    schema.refine((id) => validators.deploymentId(id), {
-      message: 'Invalid deployment id'
-    }),
+  identifier: deploymentIdentifierSchema,
 
   hash: (schema) =>
     schema.refine((hash) => validators.deploymentHash(hash), {
@@ -148,10 +146,7 @@ export const deploymentSelectSchema = createSelectSchema(deployments, {
   .openapi('Deployment')
 
 export const deploymentInsertSchema = createInsertSchema(deployments, {
-  projectId: (schema) =>
-    schema.refine((id) => validators.projectId(id), {
-      message: 'Invalid project id'
-    }),
+  projectId: projectIdSchema,
 
   iconUrl: (schema) =>
     schema

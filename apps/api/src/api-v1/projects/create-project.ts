@@ -53,17 +53,17 @@ export function registerV1ProjectsCreateProject(
 
     const teamMember = c.get('teamMember')
     const namespace = teamMember ? teamMember.teamSlug : user.username
-    const id = `${namespace}/${body.name}`
+    const identifier = `${namespace}/${body.name}`
 
     const [project] = await db
       .insert(schema.projects)
       .values({
         ...body,
-        id,
+        identifier,
         teamId: teamMember?.teamId,
         userId: user.id,
         _secret: sha256(),
-        _providerToken: createProviderToken({ id })
+        _providerToken: createProviderToken({ identifier })
       })
       .returning()
     assert(project, 500, `Failed to create project "${body.name}"`)

@@ -4,7 +4,7 @@ import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 import type { AuthenticatedEnv } from '@/lib/types'
 import { db, eq, schema } from '@/db'
 import { acl } from '@/lib/acl'
-import { tryGetDeployment } from '@/lib/deployments/try-get-deployment'
+import { getDeploymentById } from '@/lib/deployments/get-deployment-by-id'
 import {
   openapiAuthenticatedSecuritySchemas,
   openapiErrorResponse404,
@@ -53,7 +53,7 @@ export function registerV1DeploymentsUpdateDeployment(
     const body = c.req.valid('json')
 
     // First ensure the deployment exists and the user has access to it
-    let deployment = await tryGetDeployment(c, deploymentId)
+    let deployment = await getDeploymentById({ deploymentId })
     assert(deployment, 404, `Deployment not found "${deploymentId}"`)
     await acl(c, deployment, { label: 'Deployment' })
 

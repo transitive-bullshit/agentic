@@ -5,11 +5,9 @@ import {
   createInsertSchema,
   createSelectSchema,
   cuid,
-  deploymentId,
   id,
   logEntryLevelEnum,
   logEntryTypeEnum,
-  projectId,
   timestamps
 } from './common'
 import { consumers } from './consumer'
@@ -39,8 +37,8 @@ export const logEntries = pgTable(
 
     // relations (optional)
     userId: cuid(),
-    projectId: projectId(),
-    deploymentId: deploymentId(),
+    projectId: cuid(),
+    deploymentId: cuid(),
     consumerId: cuid(),
 
     // misc metadata (optional)

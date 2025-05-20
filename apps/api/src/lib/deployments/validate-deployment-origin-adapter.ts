@@ -10,12 +10,12 @@ import { validateOpenAPISpec } from '@/lib/validate-openapi-spec'
  * NOTE: This method may mutate `originAdapter.spec`.
  */
 export async function validateDeploymentOriginAdapter({
-  deploymentId,
+  deploymentIdentifier,
   originUrl,
   originAdapter,
   logger
 }: {
-  deploymentId: string
+  deploymentIdentifier: string
   originUrl: string
   originAdapter: DeploymentOriginAdapter
   logger: Logger
@@ -23,14 +23,14 @@ export async function validateDeploymentOriginAdapter({
   assert(
     originUrl,
     400,
-    `Origin URL is required for deployment "${deploymentId}"`
+    `Origin URL is required for deployment "${deploymentIdentifier}"`
   )
 
   if (originAdapter.type === 'openapi') {
     assert(
       originAdapter.spec,
       400,
-      `OpenAPI spec is required for deployment "${deploymentId}" with origin adapter type set to "openapi"`
+      `OpenAPI spec is required for deployment "${deploymentIdentifier}" with origin adapter type set to "openapi"`
     )
 
     // Validate and normalize the OpenAPI spec
@@ -54,7 +54,7 @@ export async function validateDeploymentOriginAdapter({
     assert(
       originAdapter.type === 'raw',
       400,
-      `Invalid origin adapter type "${originAdapter.type}" for deployment "${deploymentId}"`
+      `Invalid origin adapter type "${originAdapter.type}" for deployment "${deploymentIdentifier}"`
     )
   }
 }

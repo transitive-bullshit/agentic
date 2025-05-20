@@ -1,13 +1,13 @@
 export type ParsedFaasIdentifier = {
-  projectId: string
+  projectIdentifier: string
   servicePath: string
   deploymentHash?: string
-  deploymentId?: string
+  deploymentIdentifier?: string
   version?: string
 } & (
   | {
       deploymentHash: string
-      deploymentId: string
+      deploymentIdentifier: string
     }
   | {
       version: string

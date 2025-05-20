@@ -6,14 +6,16 @@ import * as validators from './validators'
 function success(...args: Parameters<typeof parseFaasIdentifier>) {
   const result = parseFaasIdentifier(...args)
   expect(result).toBeTruthy()
-  expect(result!.projectId).toBeTruthy()
+  expect(result!.projectIdentifier).toBeTruthy()
   expect(result!.version || result!.deploymentHash).toBeTruthy()
-  expect(validators.projectId(result!.projectId)).toBe(true)
+  expect(validators.projectIdentifier(result!.projectIdentifier)).toBe(true)
   expect(validators.servicePath(result!.servicePath)).toBe(true)
 
   if (result!.deploymentHash) {
     expect(validators.deploymentHash(result!.deploymentHash)).toBe(true)
-    expect(validators.deploymentId(result!.deploymentId!)).toBe(true)
+    expect(validators.deploymentIdentifier(result!.deploymentIdentifier!)).toBe(
+      true
+    )
   }
 
   expect(result).toMatchSnapshot()

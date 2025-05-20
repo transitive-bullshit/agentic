@@ -75,11 +75,11 @@ export function registerV1DeploymentsCreateDeployment(
 
     // TODO: investigate better short hash generation
     const hash = sha256().slice(0, 8)
-    const deploymentId = `${project.id}@${hash}`
+    const deploymentIdentifier = `${project.identifier}@${hash}`
     assert(
-      validators.deploymentId(deploymentId),
+      validators.deploymentIdentifier(deploymentIdentifier),
       400,
-      `Invalid deployment id "${deploymentId}"`
+      `Invalid deployment identifier "${deploymentIdentifier}"`
     )
 
     let { version } = body
@@ -87,13 +87,13 @@ export function registerV1DeploymentsCreateDeployment(
       assert(
         version,
         400,
-        `Deployment "version" field is required to publish deployment "${deploymentId}"`
+        `Deployment "version" field is required to publish deployment "${deploymentIdentifier}"`
       )
     }
 
     if (version) {
       version = normalizeDeploymentVersion({
-        deploymentId,
+        deploymentIdentifier,
         project,
         version
       })
@@ -102,36 +102,36 @@ export function registerV1DeploymentsCreateDeployment(
     // Validate OpenAPI originUrl and originAdapter
     await validateDeploymentOriginAdapter({
       ...pick(body, 'originUrl', 'originAdapter'),
-      deploymentId,
+      deploymentIdentifier,
       logger
     })
 
-    let [[deployment]] = await db.transaction(async (tx) => {
-      return Promise.all([
-        // Create the deployment
-        tx
-          .insert(schema.deployments)
-          .values({
-            ...body,
-            id: deploymentId,
-            hash,
-            userId: user.id,
-            teamId: teamMember?.teamId,
-            projectId,
-            version
-          })
-          .returning(),
+    // Create the deployment
+    let [deployment] = await db
+      .insert(schema.deployments)
+      .values({
+        ...body,
+        identifier: deploymentIdentifier,
+        hash,
+        userId: user.id,
+        teamId: teamMember?.teamId,
+        projectId,
+        version
+      })
+      .returning()
+    assert(
+      deployment,
+      500,
+      `Failed to create deployment "${deploymentIdentifier}"`
+    )
 
-        // Update the project
-        tx
-          .update(schema.projects)
-          .set({
-            lastDeploymentId: deploymentId
-          })
-          .where(eq(schema.projects.id, projectId))
-      ])
-    })
-    assert(deployment, 500, `Failed to create deployment "${deploymentId}"`)
+    // Update the project
+    await db
+      .update(schema.projects)
+      .set({
+        lastDeploymentId: deployment.id
+      })
+      .where(eq(schema.projects.id, projectId))
 
     if (publish) {
       deployment = await publishDeployment(c, {

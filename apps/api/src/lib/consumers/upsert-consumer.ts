@@ -1,8 +1,7 @@
 import { assert } from '@agentic/platform-core'
-import { parseFaasIdentifier } from '@agentic/platform-validators'
 
 import type { AuthenticatedContext } from '@/lib/types'
-import { and, db, eq, schema } from '@/db'
+import { and, db, eq, type RawDeployment, type RawProject, schema } from '@/db'
 import { acl } from '@/lib/acl'
 import { upsertStripeConnectCustomer } from '@/lib/billing/upsert-stripe-connect-customer'
 import { upsertStripeCustomer } from '@/lib/billing/upsert-stripe-customer'
@@ -25,12 +24,42 @@ export async function upsertConsumer(
   assert(consumerId || deploymentId, 400, 'Missing required "deploymentId"')
   const logger = c.get('logger')
   const userId = c.get('userId')
+  let deployment: RawDeployment | undefined
+  let project: RawProject | undefined
   let projectId: string | undefined
 
+  async function initDeploymentAndProject() {
+    assert(deploymentId, 400, 'Missing required "deploymentId"')
+    if (deployment && project) {
+      // Already initialized
+      return
+    }
+
+    deployment = await db.query.deployments.findFirst({
+      where: eq(schema.deployments.id, deploymentId),
+      with: {
+        project: true
+      }
+    })
+    assert(deployment, 404, `Deployment not found "${deploymentId}"`)
+    assert(
+      !deployment.deletedAt,
+      410,
+      `Deployment has been deleted by its owner "${deployment.id}"`
+    )
+    await acl(c, deployment, { label: 'Deployment' })
+
+    project = deployment.project!
+    assert(
+      project,
+      404,
+      `Project not found "${projectId}" for deployment "${deploymentId}"`
+    )
+    await acl(c, project, { label: 'Project' })
+  }
+
   if (deploymentId) {
-    const parsedIds = parseFaasIdentifier(deploymentId)
-    assert(parsedIds, 400, 'Invalid "deploymentId"')
-    projectId = parsedIds.projectId
+    await initDeploymentAndProject()
   }
 
   if (!consumerId) {
@@ -83,28 +112,15 @@ export async function upsertConsumer(
       existingConsumer.plan !== plan ||
       existingConsumer.deploymentId !== deploymentId,
     409,
-    `User "${user.email}" already has an active subscription to plan "${plan}" for project "${projectId}"`
+
+    plan
+      ? `User "${user.email}" already has an active subscription to plan "${plan}" for project "${projectId}"`
+      : `User "${user.email}" already has cancelled their subscription for project "${projectId}"`
   )
 
-  const deployment = await db.query.deployments.findFirst({
-    where: eq(schema.deployments.id, deploymentId),
-    with: {
-      project: true
-    }
-  })
-  assert(deployment, 404, `Deployment not found "${deploymentId}"`)
-
-  const { project } = deployment
-  assert(
-    project,
-    404,
-    `Project not found "${projectId}" for deployment "${deploymentId}"`
-  )
-  assert(
-    !deployment.deletedAt,
-    410,
-    `Deployment has been deleted by its owner "${deployment.id}"`
-  )
+  await initDeploymentAndProject()
+  assert(deployment, 500, `Error getting deployment "${deploymentId}"`)
+  assert(project, 500, `Error getting project "${projectId}"`)
 
   if (plan) {
     const pricingPlan = deployment.pricingPlans.find((p) => p.slug === plan)

@@ -5,7 +5,7 @@ import { parseFaasUri } from './parse-faas-uri'
 function success(value: string) {
   const result = parseFaasUri(value)
   expect(result).toBeTruthy()
-  expect(result?.projectId).toBeTruthy()
+  expect(result?.projectIdentifier).toBeTruthy()
   expect(result?.version || result?.deploymentHash).toBeTruthy()
   expect(result).toMatchSnapshot()
 }

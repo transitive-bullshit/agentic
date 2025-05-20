@@ -6,46 +6,57 @@ import { db, eq, type RawDeployment, schema } from '@/db'
 import { ensureAuthUser } from '@/lib/ensure-auth-user'
 
 /**
- * Attempts to find the Deployment matching the given identifier.
+ * Attempts to find the Deployment matching the given deployment identifier.
+ *
+ * Throws a HTTP 404 error if not found.
+ *
+ * Does not take care of ACLs.
  */
-export async function tryGetDeployment(
+export async function tryGetDeploymentByIdentifier(
   ctx: AuthenticatedContext,
-  identifier: string,
-  dbQueryOpts: {
+  {
+    deploymentIdentifier,
+    ...dbQueryOpts
+  }: {
+    deploymentIdentifier: string
     with?: {
       user?: true
       team?: true
       project?: true
     }
-  } = {}
-): Promise<RawDeployment | undefined> {
+  }
+): Promise<RawDeployment> {
   const user = await ensureAuthUser(ctx)
 
   const teamMember = ctx.get('teamMember')
   const namespace = teamMember ? teamMember.teamSlug : user.username
-  const parsedFaas = parseFaasIdentifier(identifier, {
+  const parsedFaas = parseFaasIdentifier(deploymentIdentifier, {
     namespace
   })
-  assert(parsedFaas, 400, `Invalid deployment identifier "${identifier}"`)
+  assert(
+    parsedFaas,
+    400,
+    `Invalid deployment identifier "${deploymentIdentifier}"`
+  )
 
-  const { projectId, deploymentHash, version } = parsedFaas
+  const { projectIdentifier, deploymentHash, version } = parsedFaas
 
   if (deploymentHash) {
-    const deploymentId = `${projectId}@${deploymentHash}`
+    const deploymentIdentifier = `${projectIdentifier}@${deploymentHash}`
 
     const deployment = await db.query.deployments.findFirst({
       ...dbQueryOpts,
-      where: eq(schema.deployments.id, deploymentId)
+      where: eq(schema.deployments.identifier, deploymentIdentifier)
     })
-    assert(deployment, 404, `Deployment not found "${deploymentId}"`)
+    assert(deployment, 404, `Deployment not found "${deploymentIdentifier}"`)
 
     return deployment
   } else if (version === 'latest') {
     const project = await db.query.projects.findFirst({
       ...dbQueryOpts,
-      where: eq(schema.projects.id, projectId)
+      where: eq(schema.projects.identifier, projectIdentifier)
     })
-    assert(project, 404, `Project not found "${projectId}"`)
+    assert(project, 404, `Project not found "${projectIdentifier}"`)
     assert(
       project.lastPublishedDeploymentId,
       404,
@@ -66,9 +77,9 @@ export async function tryGetDeployment(
   } else if (version === 'dev') {
     const project = await db.query.projects.findFirst({
       ...dbQueryOpts,
-      where: eq(schema.projects.id, projectId)
+      where: eq(schema.projects.id, projectIdentifier)
     })
-    assert(project, 404, `Project not found "${projectId}"`)
+    assert(project, 404, `Project not found "${projectIdentifier}"`)
     assert(
       project.lastDeploymentId,
       404,
@@ -88,5 +99,5 @@ export async function tryGetDeployment(
     return deployment
   }
 
-  assert(false, 400, `Invalid Deployment identifier "${identifier}"`)
+  assert(false, 400, `Invalid Deployment identifier "${deploymentIdentifier}"`)
 }

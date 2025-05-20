@@ -72,40 +72,50 @@ test('deploymentHash failure', () => {
   expect(validators.deploymentHash('012345678')).toBe(false)
 })
 
-test('projectId success', () => {
-  expect(validators.projectId('username/project-name')).toBe(true)
-  expect(validators.projectId('a/123')).toBe(true)
+test('projectIdentifier success', () => {
+  expect(validators.projectIdentifier('username/project-name')).toBe(true)
+  expect(validators.projectIdentifier('a/123')).toBe(true)
 })
 
-test('projectId failure', () => {
-  expect(validators.projectId('aaa//0123')).toBe(false)
-  expect(validators.projectId('foo@bar')).toBe(false)
-  expect(validators.projectId('abc/1.23')).toBe(false)
-  expect(validators.projectId('012345678/123@latest')).toBe(false)
-  expect(validators.projectId('foo@dev')).toBe(false)
-  expect(validators.projectId('username/Project-Name')).toBe(false)
-  expect(validators.projectId('_/___')).toBe(false)
+test('projectIdentifier failure', () => {
+  expect(validators.projectIdentifier('aaa//0123')).toBe(false)
+  expect(validators.projectIdentifier('foo@bar')).toBe(false)
+  expect(validators.projectIdentifier('abc/1.23')).toBe(false)
+  expect(validators.projectIdentifier('012345678/123@latest')).toBe(false)
+  expect(validators.projectIdentifier('foo@dev')).toBe(false)
+  expect(validators.projectIdentifier('username/Project-Name')).toBe(false)
+  expect(validators.projectIdentifier('_/___')).toBe(false)
 })
 
-test('deploymentId success', () => {
-  expect(validators.deploymentId('username/project-name@01234567')).toBe(true)
-  expect(validators.deploymentId('a/123@01234567')).toBe(true)
+test('deploymentIdentifier success', () => {
+  expect(
+    validators.deploymentIdentifier('username/project-name@01234567')
+  ).toBe(true)
+  expect(validators.deploymentIdentifier('a/123@01234567')).toBe(true)
 })
 
-test('deploymentId failure', () => {
-  expect(validators.deploymentId('username/project-name@012345678')).toBe(false)
-  expect(validators.deploymentId('username/project-name@latest')).toBe(false)
-  expect(validators.deploymentId('username/project-name@dev')).toBe(false)
-  expect(validators.deploymentId('username/Project-Name@01234567')).toBe(false)
-  expect(validators.deploymentId('a/123@0123A567')).toBe(false)
-  expect(validators.deploymentId('_/___@012.4567')).toBe(false)
-  expect(validators.deploymentId('_/___@01234567')).toBe(false)
-  expect(validators.deploymentId('aaa//0123@01234567')).toBe(false)
-  expect(validators.deploymentId('foo@bar@01234567')).toBe(false)
-  expect(validators.deploymentId('abc/1.23@01234567')).toBe(false)
-  expect(validators.deploymentId('012345678/123@latest')).toBe(false)
-  expect(validators.deploymentId('012345678/123@dev')).toBe(false)
-  expect(validators.deploymentId('012345678/123@1.0.1')).toBe(false)
+test('deploymentIdentifier failure', () => {
+  expect(
+    validators.deploymentIdentifier('username/project-name@012345678')
+  ).toBe(false)
+  expect(validators.deploymentIdentifier('username/project-name@latest')).toBe(
+    false
+  )
+  expect(validators.deploymentIdentifier('username/project-name@dev')).toBe(
+    false
+  )
+  expect(
+    validators.deploymentIdentifier('username/Project-Name@01234567')
+  ).toBe(false)
+  expect(validators.deploymentIdentifier('a/123@0123A567')).toBe(false)
+  expect(validators.deploymentIdentifier('_/___@012.4567')).toBe(false)
+  expect(validators.deploymentIdentifier('_/___@01234567')).toBe(false)
+  expect(validators.deploymentIdentifier('aaa//0123@01234567')).toBe(false)
+  expect(validators.deploymentIdentifier('foo@bar@01234567')).toBe(false)
+  expect(validators.deploymentIdentifier('abc/1.23@01234567')).toBe(false)
+  expect(validators.deploymentIdentifier('012345678/123@latest')).toBe(false)
+  expect(validators.deploymentIdentifier('012345678/123@dev')).toBe(false)
+  expect(validators.deploymentIdentifier('012345678/123@1.0.1')).toBe(false)
 })
 
 test('serviceName success', () => {

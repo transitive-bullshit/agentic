@@ -22,15 +22,15 @@ export function parseFaasUri(uri: string): ParsedFaasIdentifier | undefined {
   const pdsMatch = uri.match(projectDeploymentServiceRe)
 
   if (pdsMatch) {
-    const projectId = pdsMatch[1]!
+    const projectIdentifier = pdsMatch[1]!
     const deploymentHash = pdsMatch[2]!
     const servicePath = pdsMatch[3] || '/'
 
     return {
-      projectId,
+      projectIdentifier,
       deploymentHash,
       servicePath,
-      deploymentId: `${projectId}@${deploymentHash}`
+      deploymentIdentifier: `${projectIdentifier}@${deploymentHash}`
     }
   }
 
@@ -38,7 +38,7 @@ export function parseFaasUri(uri: string): ParsedFaasIdentifier | undefined {
 
   if (pvsMatch) {
     return {
-      projectId: pvsMatch[1]!,
+      projectIdentifier: pvsMatch[1]!,
       version: pvsMatch[2]!,
       servicePath: pvsMatch[3] || '/'
     }
@@ -48,7 +48,7 @@ export function parseFaasUri(uri: string): ParsedFaasIdentifier | undefined {
 
   if (psMatch) {
     return {
-      projectId: psMatch[1]!,
+      projectIdentifier: psMatch[1]!,
       servicePath: psMatch[2] || '/',
       version: 'latest'
     }

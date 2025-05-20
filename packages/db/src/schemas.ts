@@ -13,19 +13,25 @@ function getCuidSchema(idLabel: string) {
 
 export const cuidSchema = getCuidSchema('id')
 export const userIdSchema = getCuidSchema('user id')
+export const teamIdSchema = getCuidSchema('team id')
 export const consumerIdSchema = getCuidSchema('consumer id')
+export const projectIdSchema = getCuidSchema('project id')
+export const deploymentIdSchema = getCuidSchema('deployment id')
+export const logEntryIdSchema = getCuidSchema('log entry id')
 
-export const projectIdSchema = z
+export const projectIdentifierSchema = z
   .string()
-  .refine((id) => validators.projectId(id), {
-    message: 'Invalid project id'
+  .refine((id) => validators.projectIdentifier(id), {
+    message: 'Invalid project identifier'
   })
+  .openapi('ProjectIdentifier')
 
-export const deploymentIdSchema = z
+export const deploymentIdentifierSchema = z
   .string()
-  .refine((id) => validators.deploymentId(id), {
-    message: 'Invalid deployment id'
+  .refine((id) => validators.deploymentIdentifier(id), {
+    message: 'Invalid deployment identifier'
   })
+  .openapi('DeploymentIdentifier')
 
 export const usernameSchema = z
   .string()

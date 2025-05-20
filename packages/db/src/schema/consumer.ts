@@ -1,4 +1,3 @@
-import { validators } from '@agentic/platform-validators'
 import { relations } from '@fisch0920/drizzle-orm'
 import {
   boolean,
@@ -14,9 +13,7 @@ import {
   createSelectSchema,
   createUpdateSchema,
   cuid,
-  deploymentId,
   id,
-  projectId,
   stripeId,
   timestamps
 } from './common'
@@ -70,7 +67,7 @@ export const consumers = pgTable(
       .references(() => users.id),
 
     // The project this user is subscribed to
-    projectId: projectId()
+    projectId: cuid()
       .notNull()
       .references(() => projects.id, {
         onDelete: 'cascade'
@@ -78,7 +75,7 @@ export const consumers = pgTable(
 
     // The specific deployment this user is subscribed to, since pricing can
     // change across deployment versions)
-    deploymentId: deploymentId()
+    deploymentId: cuid()
       .notNull()
       .references(() => deployments.id, {
         onDelete: 'cascade'
@@ -134,17 +131,7 @@ export const consumersRelations = relations(consumers, ({ one }) => ({
 }))
 
 export const consumerSelectSchema = createSelectSchema(consumers, {
-  _stripeSubscriptionItemIdMap: stripeSubscriptionItemIdMapSchema,
-
-  deploymentId: (schema) =>
-    schema.refine((id) => validators.deploymentId(id), {
-      message: 'Invalid deployment id'
-    }),
-
-  projectId: (schema) =>
-    schema.refine((id) => validators.projectId(id), {
-      message: 'Invalid project id'
-    })
+  _stripeSubscriptionItemIdMap: stripeSubscriptionItemIdMapSchema
 })
   .omit({
     _stripeSubscriptionId: true,
@@ -171,10 +158,7 @@ export const consumerSelectSchema = createSelectSchema(consumers, {
   .openapi('Consumer')
 
 export const consumerInsertSchema = createInsertSchema(consumers, {
-  deploymentId: (schema) =>
-    schema.refine((id) => validators.deploymentId(id), {
-      message: 'Invalid deployment id'
-    }),
+  deploymentId: (schema) => schema.cuid2().optional(),
 
   plan: z.string().nonempty()
 })
@@ -186,12 +170,7 @@ export const consumerInsertSchema = createInsertSchema(consumers, {
   .strict()
 
 export const consumerUpdateSchema = createUpdateSchema(consumers, {
-  deploymentId: (schema) =>
-    schema
-      .refine((id) => validators.deploymentId(id), {
-        message: 'Invalid deployment id'
-      })
-      .optional()
+  deploymentId: (schema) => schema.cuid2().optional()
 })
   .pick({
     plan: true,

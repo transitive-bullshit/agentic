@@ -4,11 +4,11 @@ import semver from 'semver'
 import type { RawProject } from '@/db'
 
 export function normalizeDeploymentVersion({
-  deploymentId,
+  deploymentIdentifier,
   version: rawVersion,
   project
 }: {
-  deploymentId: string
+  deploymentIdentifier: string
   version: string
   project: RawProject
 }): string | undefined {
@@ -18,14 +18,14 @@ export function normalizeDeploymentVersion({
   assert(
     semver.valid(version),
     400,
-    `Invalid semver version "${version}" for deployment "${deploymentId}"`
+    `Invalid semver version "${version}" for deployment "${deploymentIdentifier}"`
   )
 
   const lastPublishedVersion = project.lastPublishedDeployment?.version
   assert(
     !lastPublishedVersion || semver.gt(version, lastPublishedVersion),
     400,
-    `Semver version "${version}" must be greater than the current published version "${lastPublishedVersion}" for deployment "${deploymentId}"`
+    `Semver version "${version}" must be greater than the current published version "${lastPublishedVersion}" for deployment "${deploymentIdentifier}"`
   )
 
   return version

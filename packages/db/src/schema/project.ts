@@ -6,19 +6,21 @@ import {
   integer,
   jsonb,
   pgTable,
-  text
+  text,
+  uniqueIndex
 } from '@fisch0920/drizzle-orm/pg-core'
 import { z } from '@hono/zod-openapi'
 
+import { projectIdentifierSchema } from '../schemas'
 import {
   createInsertSchema,
   createSelectSchema,
   createUpdateSchema,
   cuid,
-  deploymentId,
+  id,
   pricingCurrencyEnum,
   pricingIntervalEnum,
-  projectId,
+  projectIdentifier,
   stripeId,
   timestamps
 } from './common'
@@ -38,10 +40,10 @@ import { users } from './user'
 export const projects = pgTable(
   'projects',
   {
-    // namespace/projectName
-    id: projectId().primaryKey(),
+    id,
     ...timestamps,
 
+    identifier: projectIdentifier().unique().notNull(),
     name: text().notNull(),
     alias: text(),
 
@@ -51,10 +53,10 @@ export const projects = pgTable(
     teamId: cuid(),
 
     // Most recently published Deployment if one exists
-    lastPublishedDeploymentId: deploymentId(),
+    lastPublishedDeploymentId: cuid(),
 
     // Most recent Deployment if one exists
-    lastDeploymentId: deploymentId(),
+    lastDeploymentId: cuid(),
 
     applicationFeePercent: integer().default(20).notNull(),
 
@@ -122,6 +124,7 @@ export const projects = pgTable(
     _stripeAccountId: stripeId()
   },
   (table) => [
+    uniqueIndex('project_identifier_idx').on(table.identifier),
     index('project_userId_idx').on(table.userId),
     index('project_teamId_idx').on(table.teamId),
     index('project_alias_idx').on(table.alias),
@@ -159,6 +162,8 @@ export const projectsRelations = relations(projects, ({ one }) => ({
 }))
 
 export const projectSelectSchema = createSelectSchema(projects, {
+  identifier: projectIdentifierSchema,
+
   applicationFeePercent: (schema) => schema.nonnegative(),
 
   _stripeProductIdMap: stripeProductIdMapSchema,
@@ -202,10 +207,7 @@ export const projectSelectSchema = createSelectSchema(projects, {
   .openapi('Project')
 
 export const projectInsertSchema = createInsertSchema(projects, {
-  id: (schema) =>
-    schema.refine((id) => validators.projectId(id), {
-      message: 'Invalid project id'
-    }),
+  identifier: projectIdentifierSchema,
 
   name: (schema) =>
     schema.refine((name) => validators.projectName(name), {

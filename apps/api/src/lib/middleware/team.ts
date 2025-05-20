@@ -5,6 +5,10 @@ import type { AuthenticatedEnv } from '@/lib/types'
 import { and, db, eq, schema } from '@/db'
 import { aclTeamMember } from '@/lib/acl-team-member'
 
+// TODO: Instead of accepting `teamId` query param, change the authenticate
+// middleware to accept a different JWT payload and then use that to
+// determine the intended user and/or team.
+
 export const team = createMiddleware<AuthenticatedEnv>(
   async function teamMiddleware(ctx, next) {
     const teamId = ctx.req.query('teamId')
