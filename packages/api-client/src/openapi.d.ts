@@ -77,7 +77,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/v1/teams/{team}": {
+    "/v1/teams/{teamId}": {
         parameters: {
             query?: never;
             header?: never;
@@ -96,7 +96,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/v1/teams/{team}/members": {
+    "/v1/teams/{teamId}/members": {
         parameters: {
             query?: never;
             header?: never;
@@ -113,7 +113,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/v1/teams/{team}/members/{userId}": {
+    "/v1/teams/{teamId}/members/{userId}": {
         parameters: {
             query?: never;
             header?: never;
@@ -706,8 +706,8 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                /** @description Team slug */
-                team: string;
+                /** @description Team ID */
+                teamId: string;
             };
             cookie?: never;
         };
@@ -733,8 +733,8 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                /** @description Team slug */
-                team: string;
+                /** @description Team ID */
+                teamId: string;
             };
             cookie?: never;
         };
@@ -768,8 +768,8 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                /** @description Team slug */
-                team: string;
+                /** @description Team ID */
+                teamId: string;
             };
             cookie?: never;
         };
@@ -795,8 +795,8 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                /** @description Team slug */
-                team: string;
+                /** @description Team ID */
+                teamId: string;
             };
             cookie?: never;
         };
@@ -832,8 +832,8 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                /** @description Team slug */
-                team: string;
+                /** @description Team ID */
+                teamId: string;
                 /** @description Team member user ID */
                 userId: string;
             };
@@ -868,8 +868,8 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                /** @description Team slug */
-                team: string;
+                /** @description Team ID */
+                teamId: string;
                 /** @description Team member user ID */
                 userId: string;
             };

@@ -10,17 +10,17 @@ import {
   openapiErrorResponses
 } from '@/lib/openapi-utils'
 
-import { teamSlugParamsSchema } from './schemas'
+import { teamIdParamsSchema } from './schemas'
 
 const route = createRoute({
   description: 'Deletes a team by slug.',
   tags: ['teams'],
   operationId: 'deleteTeam',
   method: 'delete',
-  path: 'teams/{team}',
+  path: 'teams/{teamId}',
   security: openapiAuthenticatedSecuritySchemas,
   request: {
-    params: teamSlugParamsSchema
+    params: teamIdParamsSchema
   },
   responses: {
     200: {
@@ -38,14 +38,14 @@ const route = createRoute({
 
 export function registerV1TeamsDeleteTeam(app: OpenAPIHono<AuthenticatedEnv>) {
   return app.openapi(route, async (c) => {
-    const { team: teamSlug } = c.req.valid('param')
-    await aclTeamAdmin(c, { teamSlug })
+    const { teamId } = c.req.valid('param')
+    await aclTeamAdmin(c, { teamId })
 
     const [team] = await db
       .delete(schema.teams)
-      .where(eq(schema.teams.slug, teamSlug))
+      .where(eq(schema.teams.id, teamId))
       .returning()
-    assert(team, 404, `Team not found "${teamSlug}"`)
+    assert(team, 404, `Team not found "${teamId}"`)
 
     return c.json(parseZodSchema(schema.teamSelectSchema, team))
   })

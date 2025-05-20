@@ -11,17 +11,17 @@ import {
   openapiErrorResponses
 } from '@/lib/openapi-utils'
 
-import { teamSlugTeamMemberUserIdParamsSchema } from './schemas'
+import { teamIdTeamMemberUserIdParamsSchema } from './schemas'
 
 const route = createRoute({
   description: 'Updates a team member.',
   tags: ['teams'],
   operationId: 'updateTeamMember',
   method: 'post',
-  path: 'teams/{team}/members/{userId}',
+  path: 'teams/{teamId}/members/{userId}',
   security: openapiAuthenticatedSecuritySchemas,
   request: {
-    params: teamSlugTeamMemberUserIdParamsSchema,
+    params: teamIdTeamMemberUserIdParamsSchema,
     body: {
       required: true,
       content: {
@@ -49,18 +49,18 @@ export function registerV1TeamsMembersUpdateTeamMember(
   app: OpenAPIHono<AuthenticatedEnv>
 ) {
   return app.openapi(route, async (c) => {
-    const { team: teamSlug, userId } = c.req.valid('param')
+    const { teamId, userId } = c.req.valid('param')
     const body = c.req.valid('json')
 
-    await aclTeamAdmin(c, { teamSlug })
-    await aclTeamMember(c, { teamSlug, userId })
+    await aclTeamAdmin(c, { teamId })
+    await aclTeamMember(c, { teamId, userId })
 
     const [teamMember] = await db
       .update(schema.teamMembers)
       .set(body)
       .where(
         and(
-          eq(schema.teamMembers.teamSlug, teamSlug),
+          eq(schema.teamMembers.teamId, teamId),
           eq(schema.teamMembers.userId, userId)
         )
       )
@@ -68,7 +68,7 @@ export function registerV1TeamsMembersUpdateTeamMember(
     assert(
       teamMember,
       400,
-      `Failed to update team member "${userId}" for team "${teamSlug}"`
+      `Failed to update team member "${userId}" for team "${teamId}"`
     )
 
     return c.json(parseZodSchema(schema.teamMemberSelectSchema, teamMember))

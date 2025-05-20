@@ -11,17 +11,17 @@ import {
   openapiErrorResponses
 } from '@/lib/openapi-utils'
 
-import { teamSlugTeamMemberUserIdParamsSchema } from './schemas'
+import { teamIdTeamMemberUserIdParamsSchema } from './schemas'
 
 const route = createRoute({
   description: 'Deletes a team member.',
   tags: ['teams'],
   operationId: 'deleteTeamMember',
   method: 'delete',
-  path: 'teams/{team}/members/{userId}',
+  path: 'teams/{teamId}/members/{userId}',
   security: openapiAuthenticatedSecuritySchemas,
   request: {
-    params: teamSlugTeamMemberUserIdParamsSchema
+    params: teamIdTeamMemberUserIdParamsSchema
   },
   responses: {
     200: {
@@ -41,16 +41,16 @@ export function registerV1TeamsMembersDeleteTeamMember(
   app: OpenAPIHono<AuthenticatedEnv>
 ) {
   return app.openapi(route, async (c) => {
-    const { team: teamSlug, userId } = c.req.valid('param')
+    const { teamId, userId } = c.req.valid('param')
 
-    await aclTeamAdmin(c, { teamSlug })
-    await aclTeamMember(c, { teamSlug, userId })
+    await aclTeamAdmin(c, { teamId })
+    await aclTeamMember(c, { teamId, userId })
 
     const [teamMember] = await db
       .delete(schema.teamMembers)
       .where(
         and(
-          eq(schema.teamMembers.teamSlug, teamSlug),
+          eq(schema.teamMembers.teamId, teamId),
           eq(schema.teamMembers.userId, userId)
         )
       )
@@ -58,7 +58,7 @@ export function registerV1TeamsMembersDeleteTeamMember(
     assert(
       teamMember,
       400,
-      `Failed to update team member "${userId}" for team "${teamSlug}"`
+      `Failed to update team member "${userId}" for team "${teamId}"`
     )
 
     return c.json(parseZodSchema(schema.teamMemberSelectSchema, teamMember))

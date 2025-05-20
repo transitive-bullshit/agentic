@@ -8,13 +8,13 @@ import { ensureAuthUser } from './ensure-auth-user'
 export async function aclTeamMember(
   ctx: AuthenticatedContext,
   {
-    teamSlug,
     teamId,
+    teamSlug,
     teamMember,
     userId
   }: {
-    teamSlug?: string
     teamId?: string
+    teamSlug?: string
     teamMember?: RawTeamMember
     userId?: string
   } & (
@@ -23,8 +23,10 @@ export async function aclTeamMember(
     | { teamMember: RawTeamMember }
   )
 ) {
+  const teamLabel = teamId ?? teamSlug
+  assert(teamLabel, 500, 'Either teamSlug or teamId must be provided')
+
   const user = await ensureAuthUser(ctx)
-  assert(teamSlug || teamId, 500, 'Either teamSlug or teamId must be provided')
 
   if (user.role === 'admin') {
     // TODO: Allow admins to access all team resources
@@ -36,15 +38,15 @@ export async function aclTeamMember(
   if (!teamMember) {
     teamMember = await db.query.teamMembers.findFirst({
       where: and(
-        teamSlug
-          ? eq(schema.teamMembers.teamSlug, teamSlug)
-          : eq(schema.teamMembers.teamId, teamId!),
+        teamId
+          ? eq(schema.teamMembers.teamId, teamId)
+          : eq(schema.teamMembers.teamSlug, teamSlug!),
         eq(schema.teamMembers.userId, userId)
       )
     })
   }
 
-  assert(teamMember, 403, `User does not have access to team "${teamSlug}"`)
+  assert(teamMember, 403, `User does not have access to team "${teamLabel}"`)
   if (!ctx.get('teamMember')) {
     ctx.set('teamMember', teamMember)
   }
@@ -52,12 +54,12 @@ export async function aclTeamMember(
   assert(
     teamMember.userId === userId,
     403,
-    `User does not have access to team "${teamSlug}"`
+    `User does not have access to team "${teamLabel}"`
   )
 
   assert(
     teamMember.confirmed,
     403,
-    `User has not confirmed their invitation to team "${teamSlug}"`
+    `User has not confirmed their invitation to team "${teamLabel}"`
   )
 }

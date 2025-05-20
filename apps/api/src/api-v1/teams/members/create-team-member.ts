@@ -11,17 +11,17 @@ import {
   openapiErrorResponses
 } from '@/lib/openapi-utils'
 
-import { teamSlugParamsSchema } from '../schemas'
+import { teamIdParamsSchema } from '../schemas'
 
 const route = createRoute({
   description: 'Creates a team member.',
   tags: ['teams'],
   operationId: 'createTeamMember',
   method: 'post',
-  path: 'teams/{team}/members',
+  path: 'teams/{teamId}/members',
   security: openapiAuthenticatedSecuritySchemas,
   request: {
-    params: teamSlugParamsSchema,
+    params: teamIdParamsSchema,
     body: {
       required: true,
       content: {
@@ -50,36 +50,36 @@ export function registerV1TeamsMembersCreateTeamMember(
   app: OpenAPIHono<AuthenticatedEnv>
 ) {
   return app.openapi(route, async (c) => {
-    const { team: teamSlug } = c.req.valid('param')
+    const { teamId } = c.req.valid('param')
     const body = c.req.valid('json')
-    await aclTeamAdmin(c, { teamSlug })
+    await aclTeamAdmin(c, { teamId })
 
     const team = await db.query.teams.findFirst({
-      where: eq(schema.teams.slug, teamSlug)
+      where: eq(schema.teams.id, teamId)
     })
-    assert(team, 404, `Team not found "${teamSlug}"`)
+    assert(team, 404, `Team not found "${teamId}"`)
 
     const existingTeamMember = await db.query.teamMembers.findFirst({
       where: and(
-        eq(schema.teamMembers.teamSlug, teamSlug),
+        eq(schema.teamMembers.teamId, teamId),
         eq(schema.teamMembers.userId, body.userId)
       )
     })
     assert(
       existingTeamMember,
       409,
-      `User "${body.userId}" is already a member of team "${teamSlug}"`
+      `User "${body.userId}" is already a member of team "${teamId}"`
     )
 
     const [teamMember] = await db.insert(schema.teamMembers).values({
       ...body,
-      teamSlug,
-      teamId: team.id
+      teamId,
+      teamSlug: team.slug
     })
     assert(
       teamMember,
       500,
-      `Failed to create team member "${body.userId}"for team "${teamSlug}"`
+      `Failed to create team member "${body.userId}"for team "${teamId}"`
     )
 
     // TODO: send team invite email

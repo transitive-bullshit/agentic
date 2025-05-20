@@ -1,12 +1,12 @@
 import { z } from '@hono/zod-openapi'
 
-import { teamSlugSchema } from '@/db'
+import { teamIdSchema } from '@/db'
 
-export const teamSlugParamsSchema = z.object({
-  team: teamSlugSchema.openapi({
+export const teamIdParamsSchema = z.object({
+  teamId: teamIdSchema.openapi({
     param: {
-      description: 'Team slug',
-      name: 'team',
+      description: 'Team ID',
+      name: 'teamId',
       in: 'path'
     }
   })

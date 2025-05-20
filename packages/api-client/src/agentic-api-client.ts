@@ -5,23 +5,33 @@ import type { operations } from './openapi'
 import { getEnv } from './utils'
 
 export class AgenticApiClient {
-  ky: KyInstance
+  static readonly DEFAULT_API_BASE_URL = 'https://api.agentic.so'
+
+  public readonly ky: KyInstance
+  public readonly apiBaseUrl: string
 
   constructor({
     apiKey = getEnv('AGENTIC_API_KEY'),
+    apiBaseUrl = AgenticApiClient.DEFAULT_API_BASE_URL,
     ky = defaultKy
   }: {
     apiKey?: string
+    apiBaseUrl?: string
     ky?: KyInstance
   }) {
-    this.ky = ky.extend({ headers: { Authorization: `Bearer ${apiKey}` } })
+    this.apiBaseUrl = apiBaseUrl
+
+    this.ky = ky.extend({
+      prefixUrl: apiBaseUrl,
+      headers: { Authorization: `Bearer ${apiKey}` }
+    })
   }
 
   async getUser({
     userId,
     ...searchParams
   }: OperationParameters<'getUser'>): Promise<OperationResponse<'getUser'>> {
-    return this.ky.get(`/v1/users/${userId}`, { searchParams }).json()
+    return this.ky.get(`v1/users/${userId}`, { searchParams }).json()
   }
 
   async updateUser(
@@ -29,7 +39,223 @@ export class AgenticApiClient {
     { userId, ...searchParams }: OperationParameters<'updateUser'>
   ): Promise<OperationResponse<'updateUser'>> {
     return this.ky
-      .post(`/v1/users/${userId}`, { json: user, searchParams })
+      .post(`v1/users/${userId}`, { json: user, searchParams })
+      .json()
+  }
+
+  async listTeams({
+    ...searchParams
+  }: OperationParameters<'listTeams'>): Promise<
+    OperationResponse<'listTeams'>
+  > {
+    return this.ky.get('v1/teams', { searchParams }).json()
+  }
+
+  async createTeam(
+    team: OperationBody<'createTeam'>,
+    { ...searchParams }: OperationParameters<'createTeam'>
+  ): Promise<OperationResponse<'createTeam'>> {
+    return this.ky.post('v1/teams', { json: team, searchParams }).json()
+  }
+
+  async getTeam({
+    teamId,
+    ...searchParams
+  }: OperationParameters<'getTeam'>): Promise<OperationResponse<'getTeam'>> {
+    return this.ky.get(`v1/teams/${teamId}`, { searchParams }).json()
+  }
+
+  async updateTeam(
+    team: OperationBody<'updateTeam'>,
+    { teamId, ...searchParams }: OperationParameters<'updateTeam'>
+  ): Promise<OperationResponse<'updateTeam'>> {
+    return this.ky
+      .post(`v1/teams/${teamId}`, { json: team, searchParams })
+      .json()
+  }
+
+  async deleteTeam({
+    teamId,
+    ...searchParams
+  }: OperationParameters<'deleteTeam'>): Promise<
+    OperationResponse<'deleteTeam'>
+  > {
+    return this.ky.delete(`v1/teams/${teamId}`, { searchParams }).json()
+  }
+
+  async createTeamMember(
+    member: OperationBody<'createTeamMember'>,
+    { teamId, ...searchParams }: OperationParameters<'createTeamMember'>
+  ): Promise<OperationResponse<'createTeamMember'>> {
+    return this.ky
+      .post(`v1/teams/${teamId}/members`, { json: member, searchParams })
+      .json()
+  }
+
+  async updateTeamMember(
+    member: OperationBody<'updateTeamMember'>,
+    { teamId, userId, ...searchParams }: OperationParameters<'updateTeamMember'>
+  ): Promise<OperationResponse<'updateTeamMember'>> {
+    return this.ky
+      .post(`v1/teams/${teamId}/members/${userId}`, {
+        json: member,
+        searchParams
+      })
+      .json()
+  }
+
+  async deleteTeamMember({
+    teamId,
+    userId,
+    ...searchParams
+  }: OperationParameters<'deleteTeamMember'>): Promise<
+    OperationResponse<'deleteTeamMember'>
+  > {
+    return this.ky
+      .delete(`v1/teams/${teamId}/members/${userId}`, { searchParams })
+      .json()
+  }
+
+  async listProjects({
+    ...searchParams
+  }: OperationParameters<'listProjects'>): Promise<
+    OperationResponse<'listProjects'>
+  > {
+    return this.ky.get('v1/projects', { searchParams }).json()
+  }
+
+  async createProject(
+    project: OperationBody<'createProject'>,
+    { ...searchParams }: OperationParameters<'createProject'>
+  ): Promise<OperationResponse<'createProject'>> {
+    return this.ky.post('v1/projects', { json: project, searchParams }).json()
+  }
+
+  async getProject({
+    projectId,
+    ...searchParams
+  }: OperationParameters<'getProject'>): Promise<
+    OperationResponse<'getProject'>
+  > {
+    return this.ky.get(`v1/projects/${projectId}`, { searchParams }).json()
+  }
+
+  async updateProject(
+    project: OperationBody<'updateProject'>,
+    { projectId, ...searchParams }: OperationParameters<'updateProject'>
+  ): Promise<OperationResponse<'updateProject'>> {
+    return this.ky
+      .post(`v1/projects/${projectId}`, { json: project, searchParams })
+      .json()
+  }
+
+  async getConsumer({
+    consumerId,
+    ...searchParams
+  }: OperationParameters<'getConsumer'>): Promise<
+    OperationResponse<'getConsumer'>
+  > {
+    return this.ky.get(`v1/consumers/${consumerId}`, { searchParams }).json()
+  }
+
+  async updateConsumer(
+    consumer: OperationBody<'updateConsumer'>,
+    { consumerId, ...searchParams }: OperationParameters<'updateConsumer'>
+  ): Promise<OperationResponse<'updateConsumer'>> {
+    return this.ky
+      .post(`v1/consumers/${consumerId}`, { json: consumer, searchParams })
+      .json()
+  }
+
+  async createConsumer(
+    consumer: OperationBody<'createConsumer'>,
+    { ...searchParams }: OperationParameters<'createConsumer'>
+  ): Promise<OperationResponse<'createConsumer'>> {
+    return this.ky.post('v1/consumers', { json: consumer, searchParams }).json()
+  }
+
+  async refreshConsumerToken({
+    consumerId,
+    ...searchParams
+  }: OperationParameters<'refreshConsumerToken'>): Promise<
+    OperationResponse<'refreshConsumerToken'>
+  > {
+    return this.ky
+      .post(`v1/consumers/${consumerId}/refresh-token`, { searchParams })
+      .json()
+  }
+
+  async listConsumers({
+    projectId,
+    ...searchParams
+  }: OperationParameters<'listConsumers'>): Promise<
+    OperationResponse<'listConsumers'>
+  > {
+    return this.ky
+      .get(`v1/projects/${projectId}/consumers`, { searchParams })
+      .json()
+  }
+
+  async getdeployment({
+    deploymentId,
+    ...searchParams
+  }: OperationParameters<'getdeployment'>): Promise<
+    OperationResponse<'getdeployment'>
+  > {
+    return this.ky
+      .get(`v1/deployments/${deploymentId}`, { searchParams })
+      .json()
+  }
+
+  async updateDeployment(
+    deployment: OperationBody<'updateDeployment'>,
+    { deploymentId, ...searchParams }: OperationParameters<'updateDeployment'>
+  ): Promise<OperationResponse<'updateDeployment'>> {
+    return this.ky
+      .post(`v1/deployments/${deploymentId}`, {
+        json: deployment,
+        searchParams
+      })
+      .json()
+  }
+
+  async listDeployments({
+    ...searchParams
+  }: OperationParameters<'listDeployments'>): Promise<
+    OperationResponse<'listDeployments'>
+  > {
+    return this.ky.get('v1/deployments', { searchParams }).json()
+  }
+
+  async createDeployment(
+    deployment: OperationBody<'createDeployment'>,
+    { ...searchParams }: OperationParameters<'createDeployment'>
+  ): Promise<OperationResponse<'createDeployment'>> {
+    return this.ky
+      .post('v1/deployments', { json: deployment, searchParams })
+      .json()
+  }
+
+  async publishDeployment(
+    deployment: OperationBody<'publishDeployment'>,
+    { deploymentId, ...searchParams }: OperationParameters<'publishDeployment'>
+  ): Promise<OperationResponse<'publishDeployment'>> {
+    return this.ky
+      .post(`v1/deployments/${deploymentId}/publish`, {
+        json: deployment,
+        searchParams
+      })
+      .json()
+  }
+
+  async adminGetConsumerByToken({
+    token,
+    ...searchParams
+  }: OperationParameters<'adminGetConsumerByToken'>): Promise<
+    OperationResponse<'adminGetConsumerByToken'>
+  > {
+    return this.ky
+      .get(`v1/admin/consumers/tokens/${token}`, { searchParams })
       .json()
   }
 }

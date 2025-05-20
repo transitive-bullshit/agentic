@@ -10,17 +10,17 @@ import {
   openapiErrorResponses
 } from '@/lib/openapi-utils'
 
-import { teamSlugParamsSchema } from './schemas'
+import { teamIdParamsSchema } from './schemas'
 
 const route = createRoute({
   description: 'Updates a team.',
   tags: ['teams'],
   operationId: 'updateTeam',
   method: 'post',
-  path: 'teams/{team}',
+  path: 'teams/{teamId}',
   security: openapiAuthenticatedSecuritySchemas,
   request: {
-    params: teamSlugParamsSchema,
+    params: teamIdParamsSchema,
     body: {
       required: true,
       content: {
@@ -46,16 +46,16 @@ const route = createRoute({
 
 export function registerV1TeamsUpdateTeam(app: OpenAPIHono<AuthenticatedEnv>) {
   return app.openapi(route, async (c) => {
-    const { team: teamSlug } = c.req.valid('param')
+    const { teamId } = c.req.valid('param')
     const body = c.req.valid('json')
-    await aclTeamAdmin(c, { teamSlug })
+    await aclTeamAdmin(c, { teamId })
 
     const [team] = await db
       .update(schema.teams)
       .set(body)
-      .where(eq(schema.teams.slug, teamSlug))
+      .where(eq(schema.teams.id, teamId))
       .returning()
-    assert(team, 404, `Team not found "${teamSlug}"`)
+    assert(team, 404, `Team not found "${teamId}"`)
 
     return c.json(parseZodSchema(schema.teamSelectSchema, team))
   })
