@@ -7,14 +7,15 @@ import {
   uniqueIndex
 } from '@fisch0920/drizzle-orm/pg-core'
 
+import { userIdSchema } from '../schemas'
 import {
   createInsertSchema,
   createSelectSchema,
   createUpdateSchema,
-  cuid,
-  id,
+  teamPrimaryId,
   teamSlug,
-  timestamps
+  timestamps,
+  userId
 } from './common'
 import { teamMembers } from './team-member'
 import { users } from './user'
@@ -22,13 +23,13 @@ import { users } from './user'
 export const teams = pgTable(
   'teams',
   {
-    id,
+    id: teamPrimaryId,
     ...timestamps,
 
-    slug: teamSlug().notNull().unique(),
+    slug: teamSlug().unique().notNull(),
     name: text().notNull(),
 
-    ownerId: cuid().notNull()
+    ownerId: userId().notNull()
   },
   (table) => [
     uniqueIndex('team_slug_idx').on(table.slug),
@@ -65,7 +66,9 @@ export const teamInsertSchema = createInsertSchema(teams, {
   .omit({ id: true, createdAt: true, updatedAt: true, ownerId: true })
   .strict()
 
-export const teamUpdateSchema = createUpdateSchema(teams)
+export const teamUpdateSchema = createUpdateSchema(teams, {
+  ownerId: userIdSchema
+})
   .pick({
     name: true,
     ownerId: true

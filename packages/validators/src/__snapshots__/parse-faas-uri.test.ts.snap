@@ -2,7 +2,7 @@
 
 exports[`username/projectName success 1`] = `
 {
-  "projectId": "abc/hello-world",
+  "projectIdentifier": "abc/hello-world",
   "servicePath": "/",
   "version": "latest",
 }
@@ -10,7 +10,7 @@ exports[`username/projectName success 1`] = `
 
 exports[`username/projectName success 2`] = `
 {
-  "projectId": "a16z/foo-bar",
+  "projectIdentifier": "a16z/foo-bar",
   "servicePath": "/",
   "version": "latest",
 }
@@ -18,7 +18,7 @@ exports[`username/projectName success 2`] = `
 
 exports[`username/projectName success 3`] = `
 {
-  "projectId": "foodoo/foo-bar",
+  "projectIdentifier": "foodoo/foo-bar",
   "servicePath": "/",
   "version": "latest",
 }
@@ -26,7 +26,7 @@ exports[`username/projectName success 3`] = `
 
 exports[`username/projectName success 4`] = `
 {
-  "projectId": "u/foobar123-yo",
+  "projectIdentifier": "u/foobar123-yo",
   "servicePath": "/",
   "version": "latest",
 }
@@ -34,7 +34,7 @@ exports[`username/projectName success 4`] = `
 
 exports[`username/projectName success 5`] = `
 {
-  "projectId": "abc/hello-world",
+  "projectIdentifier": "abc/hello-world",
   "servicePath": "/",
   "version": "latest",
 }
@@ -42,7 +42,7 @@ exports[`username/projectName success 5`] = `
 
 exports[`username/projectName/servicePath success 1`] = `
 {
-  "projectId": "u/foo-bar",
+  "projectIdentifier": "u/foo-bar",
   "servicePath": "/foo",
   "version": "latest",
 }
@@ -50,7 +50,7 @@ exports[`username/projectName/servicePath success 1`] = `
 
 exports[`username/projectName/servicePath success 2`] = `
 {
-  "projectId": "a/foo-bar",
+  "projectIdentifier": "a/foo-bar",
   "servicePath": "/foo_123",
   "version": "latest",
 }
@@ -58,7 +58,7 @@ exports[`username/projectName/servicePath success 2`] = `
 
 exports[`username/projectName/servicePath success 3`] = `
 {
-  "projectId": "foo/foobar123-yo",
+  "projectIdentifier": "foo/foobar123-yo",
   "servicePath": "/foo_bar_BAR_901",
   "version": "latest",
 }
@@ -66,7 +66,7 @@ exports[`username/projectName/servicePath success 3`] = `
 
 exports[`username/projectName/servicePath success 4`] = `
 {
-  "projectId": "foo/foobar123-yo",
+  "projectIdentifier": "foo/foobar123-yo",
   "servicePath": "/foo/bar/123/456",
   "version": "latest",
 }
@@ -75,15 +75,15 @@ exports[`username/projectName/servicePath success 4`] = `
 exports[`username/projectName@deployment success 1`] = `
 {
   "deploymentHash": "3d2e0fd5",
-  "deploymentId": "abc/hello-world@3d2e0fd5",
-  "projectId": "abc/hello-world",
+  "deploymentIdentifier": "abc/hello-world@3d2e0fd5",
+  "projectIdentifier": "abc/hello-world",
   "servicePath": "/",
 }
 `;
 
 exports[`username/projectName@deployment success 2`] = `
 {
-  "projectId": "a16z/foo-bar",
+  "projectIdentifier": "a16z/foo-bar",
   "servicePath": "/",
   "version": "f673db32c",
 }
@@ -91,7 +91,7 @@ exports[`username/projectName@deployment success 2`] = `
 
 exports[`username/projectName@deployment success 3`] = `
 {
-  "projectId": "foodoo/foo-bar",
+  "projectIdentifier": "foodoo/foo-bar",
   "servicePath": "/",
   "version": "f673db32c",
 }
@@ -100,8 +100,8 @@ exports[`username/projectName@deployment success 3`] = `
 exports[`username/projectName@deployment success 4`] = `
 {
   "deploymentHash": "673db32c",
-  "deploymentId": "u/foobar123-yo@673db32c",
-  "projectId": "u/foobar123-yo",
+  "deploymentIdentifier": "u/foobar123-yo@673db32c",
+  "projectIdentifier": "u/foobar123-yo",
   "servicePath": "/",
 }
 `;
@@ -109,8 +109,8 @@ exports[`username/projectName@deployment success 4`] = `
 exports[`username/projectName@deployment success 5`] = `
 {
   "deploymentHash": "01234567",
-  "deploymentId": "username/foo-bar@01234567",
-  "projectId": "username/foo-bar",
+  "deploymentIdentifier": "username/foo-bar@01234567",
+  "projectIdentifier": "username/foo-bar",
   "servicePath": "/",
 }
 `;
@@ -118,8 +118,8 @@ exports[`username/projectName@deployment success 5`] = `
 exports[`username/projectName@deployment/servicePath success 1`] = `
 {
   "deploymentHash": "01234567",
-  "deploymentId": "username/foo-bar@01234567",
-  "projectId": "username/foo-bar",
+  "deploymentIdentifier": "username/foo-bar@01234567",
+  "projectIdentifier": "username/foo-bar",
   "servicePath": "/foo",
 }
 `;
@@ -127,8 +127,8 @@ exports[`username/projectName@deployment/servicePath success 1`] = `
 exports[`username/projectName@deployment/servicePath success 2`] = `
 {
   "deploymentHash": "abc123lz",
-  "deploymentId": "username/foo-bar@abc123lz",
-  "projectId": "username/foo-bar",
+  "deploymentIdentifier": "username/foo-bar@abc123lz",
+  "projectIdentifier": "username/foo-bar",
   "servicePath": "/foo",
 }
 `;
@@ -136,8 +136,8 @@ exports[`username/projectName@deployment/servicePath success 2`] = `
 exports[`username/projectName@deployment/servicePath success 3`] = `
 {
   "deploymentHash": "01234567",
-  "deploymentId": "username/foobar123-yo@01234567",
-  "projectId": "username/foobar123-yo",
+  "deploymentIdentifier": "username/foobar123-yo@01234567",
+  "projectIdentifier": "username/foobar123-yo",
   "servicePath": "/foo_bar_BAR_901",
 }
 `;
@@ -145,15 +145,15 @@ exports[`username/projectName@deployment/servicePath success 3`] = `
 exports[`username/projectName@deployment/servicePath success 4`] = `
 {
   "deploymentHash": "01234567",
-  "deploymentId": "username/foobar@01234567",
-  "projectId": "username/foobar",
+  "deploymentIdentifier": "username/foobar@01234567",
+  "projectIdentifier": "username/foobar",
   "servicePath": "/foo/bar/123/456",
 }
 `;
 
 exports[`username/projectName@version success 1`] = `
 {
-  "projectId": "abc/hello-world",
+  "projectIdentifier": "abc/hello-world",
   "servicePath": "/",
   "version": "1.0.3",
 }
@@ -161,7 +161,7 @@ exports[`username/projectName@version success 1`] = `
 
 exports[`username/projectName@version success 2`] = `
 {
-  "projectId": "a16z/foo-bar",
+  "projectIdentifier": "a16z/foo-bar",
   "servicePath": "/",
   "version": "latest",
 }
@@ -169,7 +169,7 @@ exports[`username/projectName@version success 2`] = `
 
 exports[`username/projectName@version success 3`] = `
 {
-  "projectId": "a16z/foo-bar",
+  "projectIdentifier": "a16z/foo-bar",
   "servicePath": "/",
   "version": "dev",
 }
@@ -177,7 +177,7 @@ exports[`username/projectName@version success 3`] = `
 
 exports[`username/projectName@version success 4`] = `
 {
-  "projectId": "foodoo/foo-bar",
+  "projectIdentifier": "foodoo/foo-bar",
   "servicePath": "/",
   "version": "1.0.1",
 }
@@ -185,7 +185,7 @@ exports[`username/projectName@version success 4`] = `
 
 exports[`username/projectName@version success 5`] = `
 {
-  "projectId": "u/foobar123-yo",
+  "projectIdentifier": "u/foobar123-yo",
   "servicePath": "/",
   "version": "3.2.2234",
 }
@@ -193,7 +193,7 @@ exports[`username/projectName@version success 5`] = `
 
 exports[`username/projectName@version success 6`] = `
 {
-  "projectId": "username/foo-bar",
+  "projectIdentifier": "username/foo-bar",
   "servicePath": "/",
   "version": "1.0.3",
 }
@@ -201,7 +201,7 @@ exports[`username/projectName@version success 6`] = `
 
 exports[`username/projectName@version/servicePath success 1`] = `
 {
-  "projectId": "username/foo-bar",
+  "projectIdentifier": "username/foo-bar",
   "servicePath": "/foo",
   "version": "latest",
 }
@@ -209,7 +209,7 @@ exports[`username/projectName@version/servicePath success 1`] = `
 
 exports[`username/projectName@version/servicePath success 2`] = `
 {
-  "projectId": "username/foo-bar",
+  "projectIdentifier": "username/foo-bar",
   "servicePath": "/foo",
   "version": "dev",
 }
@@ -217,7 +217,7 @@ exports[`username/projectName@version/servicePath success 2`] = `
 
 exports[`username/projectName@version/servicePath success 3`] = `
 {
-  "projectId": "username/foo-bar",
+  "projectIdentifier": "username/foo-bar",
   "servicePath": "/foo",
   "version": "1.0.0",
 }
@@ -225,7 +225,7 @@ exports[`username/projectName@version/servicePath success 3`] = `
 
 exports[`username/projectName@version/servicePath success 4`] = `
 {
-  "projectId": "username/foobar123-yo",
+  "projectIdentifier": "username/foobar123-yo",
   "servicePath": "/foo_bar_BAR_901",
   "version": "0.0.1",
 }
@@ -233,7 +233,7 @@ exports[`username/projectName@version/servicePath success 4`] = `
 
 exports[`username/projectName@version/servicePath success 5`] = `
 {
-  "projectId": "username/foobar123-yo",
+  "projectIdentifier": "username/foobar123-yo",
   "servicePath": "/foo/bar/123-456",
   "version": "0.0.1",
 }

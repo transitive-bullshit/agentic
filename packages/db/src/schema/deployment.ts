@@ -10,15 +10,23 @@ import {
 } from '@fisch0920/drizzle-orm/pg-core'
 import { z } from '@hono/zod-openapi'
 
-import { deploymentIdentifierSchema, projectIdSchema } from '../schemas'
+import {
+  deploymentIdentifierSchema,
+  deploymentIdSchema,
+  projectIdSchema,
+  teamIdSchema,
+  userIdSchema
+} from '../schemas'
 import {
   createInsertSchema,
   createSelectSchema,
   createUpdateSchema,
-  cuid,
   deploymentIdentifier,
-  id,
-  timestamps
+  deploymentPrimaryId,
+  projectId,
+  teamId,
+  timestamps,
+  userId
 } from './common'
 import { projects } from './project'
 import {
@@ -33,7 +41,7 @@ import { users } from './user'
 export const deployments = pgTable(
   'deployments',
   {
-    id,
+    id: deploymentPrimaryId,
     ...timestamps,
 
     identifier: deploymentIdentifier().unique().notNull(),
@@ -46,11 +54,11 @@ export const deployments = pgTable(
     readme: text().default('').notNull(),
     iconUrl: text(),
 
-    userId: cuid()
+    userId: userId()
       .notNull()
       .references(() => users.id),
-    teamId: cuid().references(() => teams.id),
-    projectId: cuid()
+    teamId: teamId().references(() => teams.id),
+    projectId: projectId()
       .notNull()
       .references(() => projects.id, {
         onDelete: 'cascade'
@@ -115,6 +123,10 @@ export const deploymentsRelations = relations(deployments, ({ one }) => ({
 // TODO: virtual openapi spec? (hide openapi.servers)
 
 export const deploymentSelectSchema = createSelectSchema(deployments, {
+  id: deploymentIdSchema,
+  userId: userIdSchema,
+  teamId: teamIdSchema.optional(),
+  projectId: projectIdSchema,
   identifier: deploymentIdentifierSchema,
 
   hash: (schema) =>

@@ -1,3 +1,4 @@
+import { assert } from '@agentic/platform-core'
 import { type Equal, sql, type Writable } from '@fisch0920/drizzle-orm'
 import {
   pgEnum,
@@ -11,18 +12,67 @@ import {
 } from '@fisch0920/drizzle-orm/pg-core'
 import { createSchemaFactory } from '@fisch0920/drizzle-zod'
 import { z } from '@hono/zod-openapi'
-import { createId } from '@paralleldrive/cuid2'
+import { createId as createCuid2 } from '@paralleldrive/cuid2'
 
 const usernameAndTeamSlugLength = 64 as const
 
-/**
- * `cuid2`
- */
-export function cuid<U extends string, T extends Readonly<[U, ...U[]]>>(
-  config?: PgVarcharConfig<T | Writable<T>, never>
-): PgVarcharBuilderInitial<'', Writable<T>, 24> {
-  return varchar({ length: 24, ...config })
+// prefix is max 4 characters
+// separator is 1 character
+// cuid2 is max 24 characters
+// so use 32 characters to be safe for storing ids
+export const idMaxLength = 32 as const
+
+export const idPrefixMap = {
+  user: 'user',
+  team: 'team',
+  project: 'proj',
+  deployment: 'depl',
+  consumer: 'csmr',
+  logEntry: 'log'
+} as const
+
+export type ModelType = keyof typeof idPrefixMap
+
+export function createId(modelType: ModelType): string {
+  const prefix = idPrefixMap[modelType]
+  assert(prefix, 500, `Invalid model type: ${modelType}`)
+
+  return `${prefix}_${createCuid2()}`
 }
+
+/**
+ * All of our model primary ids have the following format:
+ *
+ * `${modelPrefix}_${cuid2}`
+ */
+export function id<U extends string, T extends Readonly<[U, ...U[]]>>(
+  config?: PgVarcharConfig<T | Writable<T>, never>
+): PgVarcharBuilderInitial<'', Writable<T>, typeof idMaxLength> {
+  return varchar({ length: idMaxLength, ...config })
+}
+
+/**
+ * Returns the `id` primary key to use for a given model type.
+ */
+function getPrimaryId(modelType: ModelType) {
+  return id()
+    .primaryKey()
+    .$defaultFn(() => createId(modelType))
+}
+
+export const projectPrimaryId = getPrimaryId('project')
+export const deploymentPrimaryId = getPrimaryId('deployment')
+export const consumerPrimaryId = getPrimaryId('consumer')
+export const logEntryPrimaryId = getPrimaryId('logEntry')
+export const teamPrimaryId = getPrimaryId('team')
+export const userPrimaryId = getPrimaryId('user')
+
+export const projectId = id
+export const deploymentId = id
+export const consumerId = id
+export const logEntryId = id
+export const teamId = id
+export const userId = id
 
 export function stripeId<U extends string, T extends Readonly<[U, ...U[]]>>(
   config?: PgVarcharConfig<T | Writable<T>, never>
@@ -65,13 +115,6 @@ export function teamSlug<U extends string, T extends Readonly<[U, ...U[]]>>(
 ): PgVarcharBuilderInitial<'', Writable<T>, typeof usernameAndTeamSlugLength> {
   return varchar({ length: usernameAndTeamSlugLength, ...config })
 }
-
-/**
- * Default `id` primary key as a cuid2
- */
-export const id = varchar('id', { length: 24 })
-  .primaryKey()
-  .$defaultFn(createId)
 
 /**
  * Timestamp with mode `string`

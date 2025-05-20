@@ -6,15 +6,17 @@ import {
   primaryKey
 } from '@fisch0920/drizzle-orm/pg-core'
 
+import { userIdSchema } from '../schemas'
 import {
   createInsertSchema,
   createSelectSchema,
   createUpdateSchema,
-  cuid,
+  teamId,
   teamMemberRoleEnum,
   teamSlug,
   timestamp,
-  timestamps
+  timestamps,
+  userId
 } from './common'
 import { teams } from './team'
 import { users } from './user'
@@ -24,13 +26,13 @@ export const teamMembers = pgTable(
   {
     ...timestamps,
 
-    userId: cuid()
+    userId: userId()
       .notNull()
       .references(() => users.id, { onDelete: 'cascade' }),
     teamSlug: teamSlug()
       .notNull()
       .references(() => teams.slug, { onDelete: 'cascade' }),
-    teamId: cuid()
+    teamId: teamId()
       .notNull()
       .references(() => teams.id, { onDelete: 'cascade' }),
     role: teamMemberRoleEnum().default('user').notNull(),
@@ -75,7 +77,9 @@ export const teamMemberSelectSchema = createSelectSchema(teamMembers)
   .strip()
   .openapi('TeamMember')
 
-export const teamMemberInsertSchema = createInsertSchema(teamMembers)
+export const teamMemberInsertSchema = createInsertSchema(teamMembers, {
+  userId: userIdSchema
+})
   .pick({
     userId: true,
     role: true

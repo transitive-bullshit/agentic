@@ -15,11 +15,11 @@ import {
   createInsertSchema,
   createSelectSchema,
   createUpdateSchema,
-  id,
   stripeId,
   timestamp,
   timestamps,
   username,
+  userPrimaryId,
   userRoleEnum
 } from './common'
 import { type AuthProviders, publicAuthProvidersSchema } from './schemas'
@@ -28,7 +28,7 @@ import { teams } from './team'
 export const users = pgTable(
   'users',
   {
-    id,
+    id: userPrimaryId,
     ...timestamps,
 
     username: username().notNull().unique(),
@@ -52,7 +52,7 @@ export const users = pgTable(
     // third-party auth providers
     authProviders: jsonb().$type<AuthProviders>().default({}).notNull(),
 
-    stripeCustomerId: stripeId().unique()
+    stripeCustomerId: stripeId()
   },
   (table) => [
     uniqueIndex('user_email_idx').on(table.email),

@@ -11,18 +11,26 @@ import {
 } from '@fisch0920/drizzle-orm/pg-core'
 import { z } from '@hono/zod-openapi'
 
-import { projectIdentifierSchema } from '../schemas'
+import {
+  deploymentIdSchema,
+  projectIdentifierSchema,
+  projectIdSchema,
+  teamIdSchema,
+  userIdSchema
+} from '../schemas'
 import {
   createInsertSchema,
   createSelectSchema,
   createUpdateSchema,
-  cuid,
-  id,
+  deploymentId,
   pricingCurrencyEnum,
   pricingIntervalEnum,
   projectIdentifier,
+  projectPrimaryId,
   stripeId,
-  timestamps
+  teamId,
+  timestamps,
+  userId
 } from './common'
 import { deployments } from './deployment'
 import {
@@ -40,23 +48,23 @@ import { users } from './user'
 export const projects = pgTable(
   'projects',
   {
-    id,
+    id: projectPrimaryId,
     ...timestamps,
 
     identifier: projectIdentifier().unique().notNull(),
     name: text().notNull(),
     alias: text(),
 
-    userId: cuid()
+    userId: userId()
       .notNull()
       .references(() => users.id),
-    teamId: cuid(),
+    teamId: teamId(),
 
     // Most recently published Deployment if one exists
-    lastPublishedDeploymentId: cuid(),
+    lastPublishedDeploymentId: deploymentId(),
 
     // Most recent Deployment if one exists
-    lastDeploymentId: cuid(),
+    lastDeploymentId: deploymentId(),
 
     applicationFeePercent: integer().default(20).notNull(),
 
@@ -162,16 +170,21 @@ export const projectsRelations = relations(projects, ({ one }) => ({
 }))
 
 export const projectSelectSchema = createSelectSchema(projects, {
+  id: projectIdSchema,
+  userId: userIdSchema,
+  teamId: teamIdSchema.optional(),
   identifier: projectIdentifierSchema,
+  lastPublishedDeploymentId: deploymentIdSchema.optional(),
+  lastDeploymentId: deploymentIdSchema.optional(),
 
   applicationFeePercent: (schema) => schema.nonnegative(),
 
+  pricingIntervals: z.array(pricingIntervalSchema).nonempty(),
+  defaultPricingInterval: pricingIntervalSchema,
+
   _stripeProductIdMap: stripeProductIdMapSchema,
   _stripePriceIdMap: stripePriceIdMapSchema,
-  _stripeMeterIdMap: stripeMeterIdMapSchema,
-
-  pricingIntervals: z.array(pricingIntervalSchema).nonempty(),
-  defaultPricingInterval: pricingIntervalSchema
+  _stripeMeterIdMap: stripeMeterIdMapSchema
 })
   .omit({
     _secret: true,

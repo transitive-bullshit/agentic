@@ -9,13 +9,21 @@ import {
 import { z } from '@hono/zod-openapi'
 
 import {
+  consumerIdSchema,
+  deploymentIdSchema,
+  projectIdSchema,
+  userIdSchema
+} from '../schemas'
+import {
+  consumerPrimaryId,
   createInsertSchema,
   createSelectSchema,
   createUpdateSchema,
-  cuid,
-  id,
+  deploymentId,
+  projectId,
   stripeId,
-  timestamps
+  timestamps,
+  userId
 } from './common'
 import { deployments } from './deployment'
 import { projects } from './project'
@@ -42,7 +50,7 @@ import { users } from './user'
 export const consumers = pgTable(
   'consumers',
   {
-    id,
+    id: consumerPrimaryId,
     ...timestamps,
 
     // API token for this consumer
@@ -62,12 +70,12 @@ export const consumers = pgTable(
     // only used during initial creation
     source: text(),
 
-    userId: cuid()
+    userId: userId()
       .notNull()
       .references(() => users.id),
 
     // The project this user is subscribed to
-    projectId: cuid()
+    projectId: projectId()
       .notNull()
       .references(() => projects.id, {
         onDelete: 'cascade'
@@ -75,7 +83,7 @@ export const consumers = pgTable(
 
     // The specific deployment this user is subscribed to, since pricing can
     // change across deployment versions)
-    deploymentId: cuid()
+    deploymentId: deploymentId()
       .notNull()
       .references(() => deployments.id, {
         onDelete: 'cascade'
@@ -131,6 +139,11 @@ export const consumersRelations = relations(consumers, ({ one }) => ({
 }))
 
 export const consumerSelectSchema = createSelectSchema(consumers, {
+  id: consumerIdSchema,
+  userId: userIdSchema,
+  projectId: projectIdSchema,
+  deploymentId: deploymentIdSchema,
+
   _stripeSubscriptionItemIdMap: stripeSubscriptionItemIdMapSchema
 })
   .omit({
@@ -158,7 +171,7 @@ export const consumerSelectSchema = createSelectSchema(consumers, {
   .openapi('Consumer')
 
 export const consumerInsertSchema = createInsertSchema(consumers, {
-  deploymentId: (schema) => schema.cuid2().optional(),
+  deploymentId: deploymentIdSchema.optional(),
 
   plan: z.string().nonempty()
 })
@@ -170,7 +183,7 @@ export const consumerInsertSchema = createInsertSchema(consumers, {
   .strict()
 
 export const consumerUpdateSchema = createUpdateSchema(consumers, {
-  deploymentId: (schema) => schema.cuid2().optional()
+  deploymentId: deploymentIdSchema.optional()
 })
   .pick({
     plan: true,

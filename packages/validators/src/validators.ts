@@ -20,42 +20,42 @@ export function email(value: string): boolean {
   return emailValidator.validate(value)
 }
 
-export function username(value: string): boolean {
+export function username(value?: string): boolean {
   return !!value && usernameRe.test(value)
 }
 
-export function team(value: string): boolean {
+export function team(value?: string): boolean {
   return username(value)
 }
 
-export function password(value: string): boolean {
+export function password(value?: string): boolean {
   return !!value && passwordRe.test(value)
 }
 
-export function projectName(value: string): boolean {
+export function projectName(value?: string): boolean {
   return !!value && projectNameRe.test(value)
 }
 
-export function deploymentHash(value: string): boolean {
+export function deploymentHash(value?: string): boolean {
   return !!value && deploymentHashRe.test(value)
 }
 
-export function projectIdentifier(value: string): boolean {
+export function projectIdentifier(value?: string): boolean {
   return !!value && projectRe.test(value)
 }
 
-export function deploymentIdentifier(value: string): boolean {
+export function deploymentIdentifier(value?: string): boolean {
   return !!value && deploymentRe.test(value)
 }
 
-export function serviceName(value: string): boolean {
+export function serviceName(value?: string): boolean {
   return !!value && serviceNameRe.test(value)
 }
 
-export function servicePath(value: string): boolean {
+export function servicePath(value?: string): boolean {
   return !!value && servicePathRe.test(value) && isRelativeUrl(value)
 }
 
-export function cuid(value: string): boolean {
+export function cuid(value?: string): boolean {
   return !!value && isCuid(value)
 }
