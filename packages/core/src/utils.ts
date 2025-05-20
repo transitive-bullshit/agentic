@@ -202,7 +202,11 @@ export function sanitizeSearchParams(
   {
     csv = false
   }: {
-    /** Whether or not to use comma-separated-values for arrays or multiple entries (the default) */
+    /**
+     * Whether to use comma-separated-values for arrays or multiple entries.
+     *
+     * Defaults to `false` and will use multiple entries.
+     */
     csv?: boolean
   } = {}
 ): URLSearchParams {
