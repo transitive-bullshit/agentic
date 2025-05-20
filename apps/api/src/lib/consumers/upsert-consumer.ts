@@ -4,12 +4,11 @@ import { parseFaasIdentifier } from '@agentic/platform-validators'
 import type { AuthenticatedContext } from '@/lib/types'
 import { and, db, eq, schema } from '@/db'
 import { acl } from '@/lib/acl'
+import { upsertStripeConnectCustomer } from '@/lib/billing/upsert-stripe-connect-customer'
+import { upsertStripeCustomer } from '@/lib/billing/upsert-stripe-customer'
+import { upsertStripePricing } from '@/lib/billing/upsert-stripe-pricing'
+import { upsertStripeSubscription } from '@/lib/billing/upsert-stripe-subscription'
 import { createConsumerToken } from '@/lib/create-consumer-token'
-
-import { upsertStripeConnectCustomer } from './upsert-stripe-connect-customer'
-import { upsertStripeCustomer } from './upsert-stripe-customer'
-import { upsertStripePricing } from './upsert-stripe-pricing'
-import { upsertStripeSubscription } from './upsert-stripe-subscription'
 
 export async function upsertConsumer(
   c: AuthenticatedContext,
@@ -80,7 +79,7 @@ export async function upsertConsumer(
 
   assert(
     !existingConsumer ||
-      !existingConsumer.enabled ||
+      !existingConsumer.isStripeSubscriptionActive ||
       existingConsumer.plan !== plan ||
       existingConsumer.deploymentId !== deploymentId,
     409,
@@ -102,9 +101,9 @@ export async function upsertConsumer(
     `Project not found "${projectId}" for deployment "${deploymentId}"`
   )
   assert(
-    deployment.enabled,
+    !deployment.deletedAt,
     410,
-    `Deployment has been disabled by its owner "${deployment.id}"`
+    `Deployment has been deleted by its owner "${deployment.id}"`
   )
 
   if (plan) {

@@ -60,7 +60,8 @@ export const users = pgTable(
     uniqueIndex('user_emailConfirmToken_idx').on(table.emailConfirmToken),
     uniqueIndex('user_passwordResetToken_idx').on(table.passwordResetToken),
     index('user_createdAt_idx').on(table.createdAt),
-    index('user_updatedAt_idx').on(table.updatedAt)
+    index('user_updatedAt_idx').on(table.updatedAt),
+    index('user_deletedAt_idx').on(table.deletedAt)
   ]
 )
 

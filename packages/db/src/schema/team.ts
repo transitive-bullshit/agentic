@@ -33,7 +33,8 @@ export const teams = pgTable(
   (table) => [
     uniqueIndex('team_slug_idx').on(table.slug),
     index('team_createdAt_idx').on(table.createdAt),
-    index('team_updatedAt_idx').on(table.updatedAt)
+    index('team_updatedAt_idx').on(table.updatedAt),
+    index('team_deletedAt_idx').on(table.deletedAt)
   ]
 )
 

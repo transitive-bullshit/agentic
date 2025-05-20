@@ -3,7 +3,7 @@ import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 
 import type { AuthenticatedEnv } from '@/lib/types'
 import { schema } from '@/db'
-import { upsertConsumer } from '@/lib/billing/upsert-consumer'
+import { upsertConsumer } from '@/lib/consumers/upsert-consumer'
 import {
   openapiAuthenticatedSecuritySchemas,
   openapiErrorResponse404,

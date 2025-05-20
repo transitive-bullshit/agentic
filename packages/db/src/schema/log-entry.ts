@@ -58,7 +58,8 @@ export const logEntries = pgTable(
     index('log_entry_deploymentId_idx').on(table.deploymentId),
     index('log_entry_consumerId_idx').on(table.consumerId),
     index('log_entry_createdAt_idx').on(table.createdAt),
-    index('log_entry_updatedAt_idx').on(table.updatedAt)
+    index('log_entry_updatedAt_idx').on(table.updatedAt),
+    index('log_entry_deletedAt_idx').on(table.deletedAt)
   ]
 )
 

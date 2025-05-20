@@ -3,18 +3,12 @@ import type Stripe from 'stripe'
 import { assert, HttpError } from '@agentic/platform-core'
 
 import { and, db, eq, schema } from '@/db'
+import { setConsumerStripeSubscriptionStatus } from '@/lib/consumers/utils'
 import { env, isStripeLive } from '@/lib/env'
 import { stripe } from '@/lib/stripe'
 
 const relevantStripeEvents = new Set<Stripe.Event.Type>([
   'customer.subscription.updated'
-])
-
-const stripeValidSubscriptionStatuses = new Set([
-  'active',
-  'trialing',
-  'incomplete',
-  'past_due'
 ])
 
 export function registerV1StripeWebhook(app: OpenAPIHono) {
@@ -81,15 +75,13 @@ export function registerV1StripeWebhook(app: OpenAPIHono) {
 
           if (consumer.stripeStatus !== subscription.status) {
             consumer.stripeStatus = subscription.status
-            consumer.enabled =
-              consumer.plan === 'free' ||
-              stripeValidSubscriptionStatuses.has(consumer.stripeStatus)
+            setConsumerStripeSubscriptionStatus(consumer)
 
             await db
               .update(schema.consumers)
               .set({
                 stripeStatus: consumer.stripeStatus,
-                enabled: consumer.enabled
+                isStripeSubscriptionActive: consumer.isStripeSubscriptionActive
               })
               .where(eq(schema.consumers.id, consumer.id))
 

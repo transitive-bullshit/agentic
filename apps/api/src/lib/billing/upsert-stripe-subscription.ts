@@ -3,17 +3,19 @@ import { assert } from '@agentic/platform-core'
 
 import type { AuthenticatedContext } from '@/lib/types'
 import {
-  type ConsumerUpdate,
   db,
   eq,
   getStripePriceIdForPricingPlanLineItem,
   type RawConsumer,
+  type RawConsumerUpdate,
   type RawDeployment,
   type RawProject,
   type RawUser,
   schema
 } from '@/db'
 import { stripe } from '@/lib/stripe'
+
+import { setConsumerStripeSubscriptionStatus } from '../consumers/utils'
 
 export async function upsertStripeSubscription(
   ctx: AuthenticatedContext,
@@ -292,8 +294,9 @@ export async function upsertStripeSubscription(
   assert(subscription, 500, 'Missing stripe subscription')
   logger.debug('subscription', subscription)
 
-  const consumerUpdate: ConsumerUpdate = consumer
+  const consumerUpdate: RawConsumerUpdate = consumer
   consumerUpdate.stripeStatus = subscription.status
+  setConsumerStripeSubscriptionStatus(consumerUpdate)
 
   // if (!plan) {
   // TODO: we cancel at the end of the billing interval, so we shouldn't

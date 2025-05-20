@@ -59,9 +59,6 @@ export const consumers = pgTable(
     // initializing their subscription.
     activated: boolean().default(false).notNull(),
 
-    // Whether the consumer's subscription is currently active
-    enabled: boolean().default(true).notNull(),
-
     // TODO: Re-add coupon support
     // coupon: text(),
 
@@ -90,6 +87,10 @@ export const consumers = pgTable(
     // Stripe subscription status (synced via webhooks)
     stripeStatus: text(),
 
+    // Whether the consumer's subscription is currently active, depending on
+    // `stripeStatus`.
+    isStripeSubscriptionActive: boolean().default(true).notNull(),
+
     // Main Stripe Subscription id
     _stripeSubscriptionId: stripeId(),
 
@@ -108,8 +109,12 @@ export const consumers = pgTable(
     index('consumer_userId_idx').on(table.userId),
     index('consumer_projectId_idx').on(table.projectId),
     index('consumer_deploymentId_idx').on(table.deploymentId),
+    index('consumer_isStripeSubscriptionActive_idx').on(
+      table.isStripeSubscriptionActive
+    ),
     index('consumer_createdAt_idx').on(table.createdAt),
-    index('consumer_updatedAt_idx').on(table.updatedAt)
+    index('consumer_updatedAt_idx').on(table.updatedAt),
+    index('consumer_deletedAt_idx').on(table.deletedAt)
   ]
 )
 

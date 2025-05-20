@@ -44,7 +44,8 @@ export const teamMembers = pgTable(
     index('team_member_team_idx').on(table.teamId),
     index('team_member_slug_idx').on(table.teamSlug),
     index('team_member_createdAt_idx').on(table.createdAt),
-    index('team_member_updatedAt_idx').on(table.updatedAt)
+    index('team_member_updatedAt_idx').on(table.updatedAt),
+    index('team_member_deletedAt_idx').on(table.deletedAt)
   ]
 )
 

@@ -126,7 +126,8 @@ export const projects = pgTable(
     index('project_teamId_idx').on(table.teamId),
     index('project_alias_idx').on(table.alias),
     index('project_createdAt_idx').on(table.createdAt),
-    index('project_updatedAt_idx').on(table.updatedAt)
+    index('project_updatedAt_idx').on(table.updatedAt),
+    index('project_deletedAt_idx').on(table.deletedAt)
   ]
 )
 

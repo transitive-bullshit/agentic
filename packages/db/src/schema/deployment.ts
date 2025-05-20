@@ -38,7 +38,6 @@ export const deployments = pgTable(
     hash: text().notNull(),
     version: text(),
 
-    enabled: boolean().default(true).notNull(),
     published: boolean().default(false).notNull(),
 
     description: text().default('').notNull(),
@@ -82,11 +81,11 @@ export const deployments = pgTable(
     index('deployment_userId_idx').on(table.userId),
     index('deployment_teamId_idx').on(table.teamId),
     index('deployment_projectId_idx').on(table.projectId),
-    index('deployment_enabled_idx').on(table.enabled),
     index('deployment_published_idx').on(table.published),
     index('deployment_version_idx').on(table.version),
     index('deployment_createdAt_idx').on(table.createdAt),
-    index('deployment_updatedAt_idx').on(table.updatedAt)
+    index('deployment_updatedAt_idx').on(table.updatedAt),
+    index('deployment_deletedAt_idx').on(table.deletedAt)
   ]
 )
 
@@ -190,7 +189,7 @@ NOTE: Agentic currently only supports \`external\` API servers. If you'd like to
 
 export const deploymentUpdateSchema = createUpdateSchema(deployments)
   .pick({
-    enabled: true,
+    deletedAt: true,
     description: true
   })
   .strict()

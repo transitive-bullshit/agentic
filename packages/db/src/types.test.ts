@@ -1,9 +1,18 @@
 import { expectTypeOf, test } from 'vitest'
 
-import type { LogEntry, RawLogEntry, RawUser, User } from './types'
+import type {
+  Consumer,
+  LogEntry,
+  RawConsumer,
+  RawConsumerUpdate,
+  RawLogEntry,
+  RawUser,
+  User
+} from './types'
 
 type UserKeys = Exclude<keyof User & keyof RawUser, 'authProviders'>
 type LogEntryKeys = keyof RawLogEntry & keyof LogEntry
+type ConsumerKeys = keyof RawConsumer & keyof Consumer
 
 test('User types are compatible', () => {
   expectTypeOf<RawUser>().toExtend<User>()
@@ -17,4 +26,18 @@ test('LogEntry types are compatible', () => {
   expectTypeOf<LogEntry[LogEntryKeys]>().toEqualTypeOf<
     RawLogEntry[LogEntryKeys]
   >()
+})
+
+test('Consumer types are compatible', () => {
+  expectTypeOf<RawConsumer>().toExtend<Consumer>()
+
+  expectTypeOf<Consumer[ConsumerKeys]>().toEqualTypeOf<
+    RawConsumer[ConsumerKeys]
+  >()
+
+  // Ensure that we can pass any Consumer as a RawConsumerUpdate
+  expectTypeOf<Consumer>().toExtend<RawConsumerUpdate>()
+
+  // Ensure that we can pass any RawConsumer as a RawConsumerUpdate
+  expectTypeOf<RawConsumer>().toExtend<RawConsumerUpdate>()
 })

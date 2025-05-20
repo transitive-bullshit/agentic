@@ -68,7 +68,7 @@ export type RawConsumer = Simplify<
     deployment?: RawDeployment | null // TODO: remove null (requires drizzle-orm changes)
   }
 >
-export type ConsumerUpdate = Partial<
+export type RawConsumerUpdate = Partial<
   Omit<
     InferInsertModel<typeof schema.consumers>,
     'id' | 'projectId' | 'userId' | 'deploymentId'

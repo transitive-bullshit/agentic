@@ -1,6 +1,6 @@
+ 
 // The only place we allow `@agentic/platform-db` imports is in this directory.
 
- 
 import {
   drizzle,
   postgres,
@@ -16,5 +16,4 @@ const postgresClient =
 
 export const db = drizzle({ client: postgresClient, schema })
 
- 
 export * from '@agentic/platform-db'

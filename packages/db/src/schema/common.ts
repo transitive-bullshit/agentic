@@ -87,7 +87,8 @@ export const timestamps = {
   createdAt: timestamp().notNull().defaultNow(),
   updatedAt: timestamp()
     .notNull()
-    .default(sql`now()`)
+    .default(sql`now()`),
+  deletedAt: timestamp()
 }
 
 export const userRoleEnum = pgEnum('UserRole', ['user', 'admin'])

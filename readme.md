@@ -10,6 +10,7 @@
 - **replace Project.id and Deployment.id with cuids**
   - move others to `alias` or `publicIdentifier`?
   - won't work with hono routing? test this
+- add prefixes to model ids
 
 ---
 
@@ -27,8 +28,6 @@
     - https://github.com/NangoHQ/nango
     - https://github.com/transitive-bullshit?submit=Search&q=oauth&tab=stars&type=&sort=&direction=&submit=Search
     - clerk / workos / auth0
-- db
-  - replace `enabled` with soft `deletedAt` timestamp
 - consider switching to [consola](https://github.com/unjs/consola) for logging?
 
 ## License
