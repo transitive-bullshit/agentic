@@ -2,7 +2,7 @@ import type { Simplify } from 'type-fest'
 import defaultKy, { type KyInstance } from 'ky'
 
 import type { operations } from './openapi'
-import { getEnv } from './utils'
+import { getEnv, sanitizeSearchParams } from './utils'
 
 export class AgenticApiClient {
   static readonly DEFAULT_API_BASE_URL = 'https://api.agentic.so'
@@ -121,7 +121,9 @@ export class AgenticApiClient {
   }: OperationParameters<'listProjects'>): Promise<
     OperationResponse<'listProjects'>
   > {
-    return this.ky.get('v1/projects', { searchParams }).json()
+    return this.ky
+      .get('v1/projects', { searchParams: sanitizeSearchParams(searchParams) })
+      .json()
   }
 
   async createProject(
@@ -137,7 +139,11 @@ export class AgenticApiClient {
   }: OperationParameters<'getProject'>): Promise<
     OperationResponse<'getProject'>
   > {
-    return this.ky.get(`v1/projects/${projectId}`, { searchParams }).json()
+    return this.ky
+      .get(`v1/projects/${projectId}`, {
+        searchParams: sanitizeSearchParams(searchParams)
+      })
+      .json()
   }
 
   async updateProject(
@@ -155,7 +161,11 @@ export class AgenticApiClient {
   }: OperationParameters<'getConsumer'>): Promise<
     OperationResponse<'getConsumer'>
   > {
-    return this.ky.get(`v1/consumers/${consumerId}`, { searchParams }).json()
+    return this.ky
+      .get(`v1/consumers/${consumerId}`, {
+        searchParams: sanitizeSearchParams(searchParams)
+      })
+      .json()
   }
 
   async updateConsumer(
@@ -192,7 +202,9 @@ export class AgenticApiClient {
     OperationResponse<'listConsumers'>
   > {
     return this.ky
-      .get(`v1/projects/${projectId}/consumers`, { searchParams })
+      .get(`v1/projects/${projectId}/consumers`, {
+        searchParams: sanitizeSearchParams(searchParams)
+      })
       .json()
   }
 
@@ -203,7 +215,9 @@ export class AgenticApiClient {
     OperationResponse<'getDeployment'>
   > {
     return this.ky
-      .get(`v1/deployments/${deploymentId}`, { searchParams })
+      .get(`v1/deployments/${deploymentId}`, {
+        searchParams: sanitizeSearchParams(searchParams)
+      })
       .json()
   }
 
@@ -219,12 +233,14 @@ export class AgenticApiClient {
       .json()
   }
 
-  async listDeployments({
-    ...searchParams
-  }: OperationParameters<'listDeployments'>): Promise<
-    OperationResponse<'listDeployments'>
-  > {
-    return this.ky.get('v1/deployments', { searchParams }).json()
+  async listDeployments(
+    searchParams: OperationParameters<'listDeployments'>
+  ): Promise<OperationResponse<'listDeployments'>> {
+    return this.ky
+      .get('v1/deployments', {
+        searchParams: sanitizeSearchParams(searchParams)
+      })
+      .json()
   }
 
   async createDeployment(
@@ -255,18 +271,19 @@ export class AgenticApiClient {
     OperationResponse<'adminGetConsumerByToken'>
   > {
     return this.ky
-      .get(`v1/admin/consumers/tokens/${token}`, { searchParams })
+      .get(`v1/admin/consumers/tokens/${token}`, {
+        searchParams: sanitizeSearchParams(searchParams)
+      })
       .json()
   }
 }
 
 type OperationParameters<
   T extends keyof operations,
-  Q extends object | undefined = operations[T]['parameters']['query'],
-  P extends object | undefined = operations[T]['parameters']['path']
+  Q = NonNullable<operations[T]['parameters']['query']>,
+  P = NonNullable<operations[T]['parameters']['path']>
 > = Simplify<
-  (Q extends never | undefined ? unknown : Q) &
-    (P extends never | undefined ? unknown : P)
+  ([Q] extends [never] ? unknown : Q) & ([P] extends [never] ? unknown : P)
 >
 
 type OperationResponse<T extends keyof operations> =
