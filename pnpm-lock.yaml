@@ -220,6 +220,9 @@ importers:
 
   packages/cli:
     dependencies:
+      '@agentic/platform-api-client':
+        specifier: workspace:*
+        version: link:../api-client
       '@agentic/platform-core':
         specifier: workspace:*
         version: link:../core

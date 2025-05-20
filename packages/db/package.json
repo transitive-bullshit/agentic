@@ -1,5 +1,6 @@
 {
   "name": "@agentic/platform-db",
+  "private": true,
   "version": "0.0.1",
   "description": "Postgres database schemas and types for the Agentic platform using Drizzle as the ORM.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
@@ -36,8 +37,5 @@
     "postgres": "^3.4.5",
     "type-fest": "catalog:",
     "zod": "catalog:"
-  },
-  "publishConfig": {
-    "access": "public"
   }
 }

@@ -1,7 +1,7 @@
 {
   "name": "@agentic/platform-api-client",
   "version": "0.0.1",
-  "description": "Core utilities for the Agentic platform.",
+  "description": "TS API client for the Agentic platform.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "UNLICENSED",
   "repository": {
@@ -20,8 +20,7 @@
     "generate": "openapi-typescript http://localhost:3000/docs --output ./src/openapi.d.ts",
     "test": "run-s test:*",
     "test:lint": "eslint .",
-    "test:typecheck": "tsc --noEmit",
-    "test:unit": "vitest run"
+    "test:typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@agentic/platform-core": "workspace:*",

@@ -1,4 +1,4 @@
-import type { User } from '@agentic/platform-db'
+import type { User } from '@agentic/platform-api-client'
 import { assert } from '@agentic/platform-core'
 import Conf from 'conf'
 

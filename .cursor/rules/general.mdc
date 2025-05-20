@@ -1,6 +1,6 @@
 ---
-description: 
-globs: 
+description:
+globs:
 alwaysApply: false
 ---
 ---
@@ -38,23 +38,14 @@ All packages must follow these `package.json` rules:
 
 - `type` must be set to `module`
 
-#### Directory Structure
-
-This project has the following structure:
-
-- A `src/` directory containing the core source code.
-- A single entrypoint in index.ts that exports the package's public API.
-- Place test helpers, utilities, or mocks in `src/test/` with a single entrypoint in `src/test/index.ts`.
-- Tests should be placed beside source code like `src/my-file.ts` and `src/my-file.test.ts` (NOT `src/test/my-file.test.ts` or `test/my-file.test.ts`).
-
 ## TypeScript
 
 - Avoid semicolons at the end of lines
 - Use TypeScript's utility types (e.g., `Partial`, `Pick`, `Omit`) to manipulate existing types
 - Create custom types for complex data structures used throughout the application
-- If possible, avoid using `any`/`unknown` or casting values like `(value as any)` or `value!` in TypeScript outside of test files e.g. `*.test.ts` or test fixtures e.g. `**/test-data.ts`.
+- If possible, avoid using `any`/`unknown` or casting values like `(value as any)` in TypeScript outside of test files e.g. `*.test.ts` or test fixtures e.g. `**/test-data.ts`.
 - Don't rely on `typeof`, `ReturnType<>`, `Awaited<>`, etc for complex type inference (it's ok for simple types)
-- Use `as const` for better type inference
+- You can use `as const` as needed for better type inference
 - Functions should accept an object parameter instead of multiple parameters
   - Good examples:
     ```ts
@@ -77,8 +68,8 @@ This project has the following structure:
     }
     ```
 - Zod should be used to parse untrusted data, but not for data that is trusted like function arguments
-- Zod unions should always be used instead of enums
-  - For example, this union `z.union([z.literal('youtube'), z.literal('spotify')])` is better than this enum `z.enum(['youtube', 'spotify'])`
+- Prefer Zod unions over Zod enums
+  - For example, this union `z.union([ z.literal('youtube'), z.literal('spotify') ])` is better than this enum `z.enum([ 'youtube', 'spotify' ])`
 - Promises (and `async` functions which implicitly create Promises) must always be properly handled, either via:
   - Using `await` to wait for the Promise to resolve successfully
   - Using `.then` or `.catch` to handle Promise resolution

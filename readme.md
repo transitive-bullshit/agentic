@@ -7,13 +7,6 @@
 
 ## TODO
 
-- **replace Project.id and Deployment.id with cuids**
-  - move others to `alias` or `publicIdentifier`?
-  - won't work with hono routing? test this
-- add prefixes to model ids
-
----
-
 - stripe
   - re-add coupons
   - declarative json-based pricing
