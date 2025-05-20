@@ -23,6 +23,7 @@
 - auth
   - decide on approach for auth
     - built-in, first-party, tight coupling
+    - https://www.better-auth.com
     - https://github.com/toolbeam/openauth
     - https://github.com/aipotheosis-labs/aci/tree/main/backend/apps
     - https://github.com/NangoHQ/nango

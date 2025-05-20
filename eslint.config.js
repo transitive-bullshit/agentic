@@ -4,10 +4,12 @@ export default [
   ...config,
   {
     files: ['**/*.ts', '**/*.tsx'],
-    ignores: ['**/out/**'],
     rules: {
       'no-console': 'error',
       'unicorn/no-array-reduce': 'off'
     }
+  },
+  {
+    ignores: ['**/out/**', 'packages/api-client/src/openapi.d.ts']
   }
 ]

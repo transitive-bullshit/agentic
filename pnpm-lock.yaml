@@ -24,6 +24,9 @@ catalogs:
     exit-hook:
       specifier: ^4.0.0
       version: 4.0.0
+    ky:
+      specifier: ^1.8.1
+      version: 1.8.1
     lint-staged:
       specifier: ^16.0.0
       version: 16.0.0
@@ -199,6 +202,22 @@ importers:
         specifier: ^7.8.0
         version: 7.8.0(typescript@5.8.3)
 
+  packages/api-client:
+    dependencies:
+      '@agentic/platform-core':
+        specifier: workspace:*
+        version: link:../core
+      ky:
+        specifier: 'catalog:'
+        version: 1.8.1
+      type-fest:
+        specifier: 'catalog:'
+        version: 4.41.0
+    devDependencies:
+      openapi-typescript:
+        specifier: ^7.8.0
+        version: 7.8.0(typescript@5.8.3)
+
   packages/cli:
     dependencies:
       '@agentic/platform-core':
@@ -220,9 +239,6 @@ importers:
         specifier: 'catalog:'
         version: 3.24.4
     devDependencies:
-      '@agentic/platform-api':
-        specifier: workspace:*
-        version: link:../../apps/api
       '@agentic/platform-db':
         specifier: workspace:*
         version: link:../db
@@ -2566,6 +2582,10 @@ packages:
 
   keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}
+
+  ky@1.8.1:
+    resolution: {integrity: sha512-7Bp3TpsE+L+TARSnnDpk3xg8Idi8RwSLdj6CMbNWoOARIrGrbuLGusV0dYwbZOm4bB3jHNxSw8Wk/ByDqJEnDw==}
+    engines: {node: '>=18'}
 
   language-subtag-registry@0.3.23:
     resolution: {integrity: sha512-0K65Lea881pHotoGEa5gDlMxt3pctLi2RplBb7Ezh4rRdLEOtgi7n4EwK9lamnUCkKBqaeKRVebTq6BAxSkpXQ==}
@@ -6019,6 +6039,8 @@ snapshots:
   keyv@4.5.4:
     dependencies:
       json-buffer: 3.0.1
+
+  ky@1.8.1: {}
 
   language-subtag-registry@0.3.23: {}
 

@@ -1,5 +1,5 @@
 {
-  "name": "@agentic/platform-core",
+  "name": "@agentic/platform-api-client",
   "version": "0.0.1",
   "description": "Core utilities for the Agentic platform.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
@@ -7,7 +7,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/transitive-bullshit/agentic-platform.git",
-    "directory": "packages/core"
+    "directory": "packages/api-client"
   },
   "type": "module",
   "source": "./src/index.ts",
@@ -17,18 +17,19 @@
     ".": "./src/index.ts"
   },
   "scripts": {
+    "generate": "openapi-typescript http://localhost:3000/docs --output ./src/openapi.d.ts",
     "test": "run-s test:*",
     "test:lint": "eslint .",
     "test:typecheck": "tsc --noEmit",
     "test:unit": "vitest run"
   },
   "dependencies": {
-    "hash-object": "^5.0.1",
-    "zod": "catalog:",
-    "zod-validation-error": "^3.4.1"
+    "@agentic/platform-core": "workspace:*",
+    "ky": "catalog:",
+    "type-fest": "catalog:"
   },
   "devDependencies": {
-    "hono": "^4.7.9"
+    "openapi-typescript": "^7.8.0"
   },
   "publishConfig": {
     "access": "public"

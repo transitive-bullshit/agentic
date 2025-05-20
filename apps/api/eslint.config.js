@@ -5,7 +5,6 @@ export default [
   ...config,
   {
     files: ['**/*.ts', '**/*.tsx'],
-    ignores: ['**/out/**'],
     plugins: {
       drizzle
     },
@@ -15,5 +14,8 @@ export default [
       'unicorn/no-array-reduce': 'off'
       // 'no-restricted-imports': ['error', '@agentic/platform-db']
     }
+  },
+  {
+    ignores: ['**/out/**']
   }
 ]
