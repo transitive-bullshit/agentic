@@ -33,7 +33,7 @@ export const idPrefixMap = {
 
 export type ModelType = keyof typeof idPrefixMap
 
-function createIdForModel(modelType: ModelType): string {
+export function createIdForModel(modelType: ModelType): string {
   const prefix = idPrefixMap[modelType]
   assert(prefix, 500, `Invalid model type: ${modelType}`)
 

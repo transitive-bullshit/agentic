@@ -5,6 +5,12 @@ export { drizzle } from '@fisch0920/drizzle-orm/postgres-js'
 export type PostgresClient = ReturnType<typeof postgres>
 
 export * as schema from './schema'
+export {
+  createIdForModel,
+  idMaxLength,
+  idPrefixMap,
+  type ModelType
+} from './schema/common'
 export * from './schema/schemas'
 export * from './schemas'
 export type * from './types'
