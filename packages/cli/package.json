@@ -31,13 +31,14 @@
     "@agentic/platform-api-client": "workspace:*",
     "commander": "^14.0.0",
     "conf": "^13.1.0",
+    "inquirer": "^9.2.15",
     "ora": "^8.2.0",
     "restore-cursor": "catalog:",
     "zod": "catalog:"
   },
   "devDependencies": {
-    "@agentic/platform-db": "workspace:*",
-    "@commander-js/extra-typings": "^14.0.0"
+    "@commander-js/extra-typings": "^14.0.0",
+    "@types/inquirer": "^9.0.7"
   },
   "publishConfig": {
     "access": "public"
