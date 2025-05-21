@@ -1,8 +1,8 @@
 import type { Simplify } from 'type-fest'
+import { getEnv, sanitizeSearchParams } from '@agentic/platform-core'
 import defaultKy, { type KyInstance } from 'ky'
 
 import type { operations } from './openapi'
-import { getEnv, sanitizeSearchParams } from './utils'
 
 export class AgenticApiClient {
   static readonly DEFAULT_API_BASE_URL = 'https://api.agentic.so'

@@ -12,7 +12,7 @@ const relevantStripeEvents = new Set<Stripe.Event.Type>([
 ])
 
 export function registerV1StripeWebhook(app: OpenAPIHono) {
-  return app.post('/webhooks/stripe', async (ctx) => {
+  return app.post('webhooks/stripe', async (ctx) => {
     const body = await ctx.req.text()
     const signature = ctx.req.header('Stripe-Signature')
     assert(signature, 400, 'missing signature')

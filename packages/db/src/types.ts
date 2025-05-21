@@ -77,3 +77,5 @@ export type RawConsumerUpdate = Partial<
 
 export type LogEntry = z.infer<typeof schema.logEntrySelectSchema>
 export type RawLogEntry = InferSelectModel<typeof schema.logEntries>
+
+export type RawSession = InferSelectModel<typeof schema.sessions>

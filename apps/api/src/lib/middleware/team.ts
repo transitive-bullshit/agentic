@@ -12,13 +12,13 @@ import { aclTeamMember } from '@/lib/acl-team-member'
 export const team = createMiddleware<AuthenticatedEnv>(
   async function teamMiddleware(ctx, next) {
     const teamId = ctx.req.query('teamId')
-    const user = ctx.get('user')
+    const userId = ctx.get('userId')
 
-    if (teamId && user) {
+    if (teamId && userId) {
       const teamMember = await db.query.teamMembers.findFirst({
         where: and(
           eq(schema.teamMembers.teamId, teamId),
-          eq(schema.teamMembers.userId, user.id)
+          eq(schema.teamMembers.userId, userId)
         )
       })
       assert(teamMember, 403, 'Unauthorized')

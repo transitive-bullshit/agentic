@@ -2,6 +2,7 @@ import { OpenAPIHono } from '@hono/zod-openapi'
 import { fromError } from 'zod-validation-error'
 
 import type { AuthenticatedEnv } from '@/lib/types'
+import { auth } from '@/lib/auth'
 import * as middleware from '@/lib/middleware'
 import { registerOpenAPIErrorResponses } from '@/lib/openapi-utils'
 
@@ -17,6 +18,7 @@ import { registerV1DeploymentsListDeployments } from './deployments/list-deploym
 import { registerV1DeploymentsPublishDeployment } from './deployments/publish-deployment'
 import { registerV1DeploymentsUpdateDeployment } from './deployments/update-deployment'
 import { registerHealthCheck } from './health-check'
+// import { registerV1OAuthRedirect } from './oauth-redirect'
 import { registerV1ProjectsCreateProject } from './projects/create-project'
 import { registerV1ProjectsGetProject } from './projects/get-project'
 import { registerV1ProjectsListProjects } from './projects/list-projects'
@@ -98,11 +100,16 @@ registerV1DeploymentsUpdateDeployment(privateRouter)
 registerV1DeploymentsListDeployments(privateRouter)
 registerV1DeploymentsPublishDeployment(privateRouter)
 
+// Internal admin routes
+registerV1AdminConsumersGetConsumerByToken(privateRouter)
+
 // Webhook event handlers
 registerV1StripeWebhook(publicRouter)
 
-// Admin routes
-registerV1AdminConsumersGetConsumerByToken(privateRouter)
+// OAuth redirect
+// registerV1OAuthRedirect(publicRouter)
+
+publicRouter.on(['POST', 'GET'], 'auth/**', (c) => auth.handler(c.req.raw))
 
 // Setup routes and middleware
 apiV1.route('/', publicRouter)

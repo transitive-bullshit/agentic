@@ -1,0 +1,158 @@
+import ky from 'ky'
+
+import { env } from './env'
+
+const USER_AGENT = 'agentic-platform'
+
+/**
+ * GitHub (user-level) OAuth token response.
+ *
+ * @see https://docs.github.com/apps/oauth
+ */
+export interface GitHubUserTokenResponse {
+  /**
+   * The user access token (always starts with `ghu_`).
+   * Example: `ghu_xxx…`
+   */
+  access_token: string
+
+  /**
+   * Seconds until `access_token` expires.
+   * Omitted (`undefined`) if you’ve disabled token expiration.
+   * Constant `28800` (8 hours) when present.
+   */
+  expires_in?: number
+
+  /**
+   * Refresh token for renewing the user access token (starts with `ghr_`).
+   * Omitted (`undefined`) if you’ve disabled token expiration.
+   */
+  refresh_token?: string
+
+  /**
+   * Seconds until `refresh_token` expires.
+   * Omitted (`undefined`) if you’ve disabled token expiration.
+   * Constant `15897600` (6 months) when present.
+   */
+  refresh_token_expires_in?: number
+
+  /**
+   * Scopes granted to the token.
+   * Always an empty string because the token is limited to
+   * the intersection of app-level and user-level permissions.
+   */
+  scope: ''
+
+  /**
+   * Token type – always `'bearer'`.
+   */
+  token_type: 'bearer'
+}
+
+export interface GitHubUser {
+  login: string
+  id: number
+  user_view_type?: string
+  node_id: string
+  avatar_url: string
+  gravatar_id: string | null
+  url: string
+  html_url: string
+  followers_url: string
+  following_url: string
+  gists_url: string
+  starred_url: string
+  subscriptions_url: string
+  organizations_url: string
+  repos_url: string
+  events_url: string
+  received_events_url: string
+  type: string
+  site_admin: boolean
+  name: string | null
+  company: string | null
+  blog: string | null
+  location: string | null
+  email: string | null
+  notification_email?: string | null
+  hireable: boolean | null
+  bio: string | null
+  twitter_username?: string | null
+  public_repos: number
+  public_gists: number
+  followers: number
+  following: number
+  created_at: string
+  updated_at: string
+  plan?: {
+    collaborators: number
+    name: string
+    space: number
+    private_repos: number
+    [k: string]: unknown
+  }
+  private_gists?: number
+  total_private_repos?: number
+  owned_private_repos?: number
+  disk_usage?: number
+  collaborators?: number
+}
+
+export interface GitHubUserEmail {
+  email: string
+  primary: boolean
+  verified: boolean
+  visibility?: string | null
+}
+
+export async function exchangeOAuthCodeForAccessToken({
+  code,
+  clientId = env.GITHUB_CLIENT_ID,
+  clientSecret = env.GITHUB_CLIENT_SECRET,
+  redirectUri
+}: {
+  code: string
+  clientId?: string
+  clientSecret?: string
+  redirectUri?: string
+}): Promise<GitHubUserTokenResponse> {
+  return ky
+    .post('https://github.com/login/oauth/access_token', {
+      json: {
+        code,
+        client_id: clientId,
+        client_secret: clientSecret,
+        redirect_uri: redirectUri
+      },
+      headers: {
+        'user-agent': USER_AGENT
+      }
+    })
+    .json<GitHubUserTokenResponse>()
+}
+
+export async function getMe({ token }: { token: string }): Promise<GitHubUser> {
+  return ky
+    .get('https://api.github.com/user', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'user-agent': USER_AGENT
+      }
+    })
+    .json<GitHubUser>()
+}
+
+export async function getUserEmails({
+  token
+}: {
+  token: string
+}): Promise<GitHubUserEmail[]> {
+  return ky
+    .get('https://api.github.com/user/emails', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'user-agent': USER_AGENT
+      }
+    })
+    .json<GitHubUserEmail[]>()
+}
