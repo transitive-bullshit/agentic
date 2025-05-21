@@ -131,12 +131,15 @@ importers:
       '@agentic/platform-core':
         specifier: workspace:*
         version: link:../../packages/core
-      '@agentic/platform-db':
-        specifier: workspace:*
-        version: link:../../packages/db
       '@agentic/platform-validators':
         specifier: workspace:*
         version: link:../../packages/validators
+      '@fisch0920/drizzle-orm':
+        specifier: ^0.43.7
+        version: 0.43.7(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(kysely@0.28.2)(postgres@3.4.5)
+      '@fisch0920/drizzle-zod':
+        specifier: ^0.7.9
+        version: 0.7.9(@fisch0920/drizzle-orm@0.43.7(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(kysely@0.28.2)(postgres@3.4.5))(zod@3.24.4)
       '@hono/node-server':
         specifier: ^1.14.1
         version: 1.14.1(hono@4.7.9)
@@ -146,6 +149,9 @@ importers:
       '@hono/zod-openapi':
         specifier: ^0.19.6
         version: 0.19.6(hono@4.7.9)(zod@3.24.4)
+      '@paralleldrive/cuid2':
+        specifier: ^2.2.2
+        version: 2.2.2
       '@redocly/openapi-core':
         specifier: ^1.34.3
         version: 1.34.3(supports-color@10.0.0)
@@ -173,6 +179,9 @@ importers:
       parse-json:
         specifier: ^8.3.0
         version: 8.3.0
+      postgres:
+        specifier: ^3.4.5
+        version: 3.4.5
       restore-cursor:
         specifier: 'catalog:'
         version: 5.1.0
@@ -229,6 +238,9 @@ importers:
       '@agentic/platform-core':
         specifier: workspace:*
         version: link:../core
+      better-auth:
+        specifier: ^1.2.8
+        version: 1.2.8
       commander:
         specifier: ^14.0.0
         version: 14.0.0
@@ -270,45 +282,6 @@ importers:
       hono:
         specifier: ^4.7.9
         version: 4.7.9
-
-  packages/db:
-    dependencies:
-      '@agentic/platform-core':
-        specifier: workspace:*
-        version: link:../core
-      '@agentic/platform-validators':
-        specifier: workspace:*
-        version: link:../validators
-      '@fisch0920/drizzle-orm':
-        specifier: ^0.43.7
-        version: 0.43.7(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(kysely@0.28.2)(postgres@3.4.5)
-      '@fisch0920/drizzle-zod':
-        specifier: ^0.7.9
-        version: 0.7.9(@fisch0920/drizzle-orm@0.43.7(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(kysely@0.28.2)(postgres@3.4.5))(zod@3.24.4)
-      '@hono/zod-openapi':
-        specifier: ^0.19.6
-        version: 0.19.6(hono@4.7.9)(zod@3.24.4)
-      '@paralleldrive/cuid2':
-        specifier: ^2.2.2
-        version: 2.2.2
-      bcryptjs:
-        specifier: ^3.0.2
-        version: 3.0.2
-      hono:
-        specifier: ^4.7.9
-        version: 4.7.9
-      parse-json:
-        specifier: ^8.3.0
-        version: 8.3.0
-      postgres:
-        specifier: ^3.4.5
-        version: 3.4.5
-      type-fest:
-        specifier: 'catalog:'
-        version: 4.41.0
-      zod:
-        specifier: 'catalog:'
-        version: 3.24.4
 
   packages/validators:
     dependencies:
@@ -1543,10 +1516,6 @@ packages:
 
   base64-js@1.5.1:
     resolution: {integrity: sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==}
-
-  bcryptjs@3.0.2:
-    resolution: {integrity: sha512-k38b3XOZKv60C4E2hVsXTolJWfkGRMbILBIe2IBITXciy5bOsTKot5kDrf3ZfufQtQOUN5mXceUEpU1rTl9Uog==}
-    hasBin: true
 
   better-auth@1.2.8:
     resolution: {integrity: sha512-y8ry7ZW3/3ZIr82Eo1zUDtMzdoQlFnwNuZ0+b0RxoNZgqmvgTIc/0tCDC7NDJerqSu4UCzer0dvYxBsv3WMIGg==}
@@ -5134,8 +5103,6 @@ snapshots:
   balanced-match@1.0.2: {}
 
   base64-js@1.5.1: {}
-
-  bcryptjs@3.0.2: {}
 
   better-auth@1.2.8:
     dependencies:

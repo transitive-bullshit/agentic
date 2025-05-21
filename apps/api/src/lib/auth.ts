@@ -1,6 +1,7 @@
-// import { validators } from '@agentic/platform-validators'
+import { validators } from '@agentic/platform-validators'
 import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
+import { username } from 'better-auth/plugins'
 
 import { createIdForModel, db } from '@/db'
 
@@ -51,11 +52,10 @@ export const auth = betterAuth({
     database: {
       generateId: ({ model }) => createIdForModel(model as any)
     }
-  }
-  // TODO
-  // plugins: [
-  //   username({
-  //     usernameValidator: validators.username
-  //   })
-  // ]
+  },
+  plugins: [
+    username({
+      usernameValidator: validators.username
+    })
+  ]
 })

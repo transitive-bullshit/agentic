@@ -31,8 +31,8 @@ import { registerV1TeamsMembersCreateTeamMember } from './teams/members/create-t
 import { registerV1TeamsMembersDeleteTeamMember } from './teams/members/delete-team-member'
 import { registerV1TeamsMembersUpdateTeamMember } from './teams/members/update-team-member'
 import { registerV1TeamsUpdateTeam } from './teams/update-team'
-import { registerV1UsersGetUser } from './users/get-user'
-import { registerV1UsersUpdateUser } from './users/update-user'
+// import { registerV1UsersGetUser } from './users/get-user'
+// import { registerV1UsersUpdateUser } from './users/update-user'
 import { registerV1StripeWebhook } from './webhooks/stripe-webhook'
 
 export const apiV1 = new OpenAPIHono({
@@ -65,8 +65,8 @@ const privateRouter = new OpenAPIHono<AuthenticatedEnv>()
 registerHealthCheck(publicRouter)
 
 // Users
-registerV1UsersGetUser(privateRouter)
-registerV1UsersUpdateUser(privateRouter)
+// registerV1UsersGetUser(privateRouter)
+// registerV1UsersUpdateUser(privateRouter)
 
 // Teams
 registerV1TeamsCreateTeam(privateRouter)

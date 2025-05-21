@@ -1,6 +1,6 @@
 import type { Context } from 'hono'
 
-import type { RawTeamMember } from '@/db'
+import type { RawTeamMember, RawUser } from '@/db'
 
 import type { auth } from './auth'
 import type { Env } from './env'
@@ -11,7 +11,7 @@ export type { OpenAPI3 as LooseOpenAPI3Spec } from 'openapi-typescript'
 export type Environment = Env['NODE_ENV']
 export type Service = 'api'
 
-export type AuthUser = typeof auth.$Infer.Session.user
+// export type AuthUser = typeof auth.$Infer.Session.user
 export type AuthSession = typeof auth.$Infer.Session.session
 
 export type DefaultEnvVariables = {
@@ -21,7 +21,7 @@ export type DefaultEnvVariables = {
 
 export type AuthenticatedEnvVariables = DefaultEnvVariables & {
   userId: string
-  user?: AuthUser
+  user?: RawUser
   session?: AuthSession
   teamMember?: RawTeamMember
 }

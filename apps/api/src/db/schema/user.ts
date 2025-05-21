@@ -11,6 +11,7 @@ import {
   createSelectSchema,
   stripeId,
   timestamps,
+  username,
   // username,
   userPrimaryId,
   userRoleEnum
@@ -31,7 +32,7 @@ export const users = pgTable(
     image: text('image'),
 
     // TODO: re-add username
-    // username: username().notNull().unique(),
+    username: username(),
     role: userRoleEnum().default('user').notNull(),
 
     isStripeConnectEnabledByDefault: boolean().default(true).notNull(),

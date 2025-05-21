@@ -16,7 +16,7 @@ export const authenticate = createMiddleware<AuthenticatedEnv>(
     assert(session.session, 401, 'Unauthorized')
 
     ctx.set('userId', session.user.id)
-    ctx.set('user', session.user)
+    ctx.set('user', session.user as any) // TODO: resolve AuthUser and RawUser types
     ctx.set('session', session.session)
 
     await next()

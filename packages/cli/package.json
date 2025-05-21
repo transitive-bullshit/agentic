@@ -27,8 +27,9 @@
     "test:typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@agentic/platform-core": "workspace:*",
     "@agentic/platform-api-client": "workspace:*",
+    "@agentic/platform-core": "workspace:*",
+    "better-auth": "^1.2.8",
     "commander": "^14.0.0",
     "conf": "^13.1.0",
     "inquirer": "^9.2.15",

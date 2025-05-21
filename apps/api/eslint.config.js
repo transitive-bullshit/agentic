@@ -12,7 +12,6 @@ export default [
       ...drizzle.configs.recommended.rules,
       'no-console': 'error',
       'unicorn/no-array-reduce': 'off'
-      // 'no-restricted-imports': ['error', '@agentic/platform-db']
     }
   },
   {

@@ -38,7 +38,8 @@ export async function upsertStripeCustomer(ctx: AuthenticatedContext): Promise<{
   // TODO: add more metadata referencing signup LogEntry
   const metadata = {
     userId: user.id,
-    username: user.username
+    email: user.email,
+    username: user.username ?? null
   }
 
   const stripeCustomer = await stripe.customers.create({
