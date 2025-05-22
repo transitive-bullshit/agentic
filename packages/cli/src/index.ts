@@ -5,6 +5,7 @@ import { Command } from 'commander'
 import restoreCursor from 'restore-cursor'
 
 import { registerSigninCommand } from './commands/signin'
+import { registerSignoutCommand } from './commands/signout'
 import { registerWhoAmICommand } from './commands/whoami'
 import { AuthStore } from './store'
 
@@ -41,6 +42,7 @@ async function main() {
   // Register all commands
   registerSigninCommand(ctx)
   registerWhoAmICommand(ctx)
+  registerSignoutCommand(ctx)
 
   program.parse()
 }

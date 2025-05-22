@@ -52,6 +52,12 @@ export class AgenticApiClient {
     return this.getAuthSession()
   }
 
+  async clearAuthSession(): Promise<void> {
+    this.ky = this.ky.extend({
+      headers: {}
+    })
+  }
+
   async getUser({
     userId,
     ...searchParams
