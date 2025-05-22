@@ -7,10 +7,6 @@ export type User = components['schemas']['User']
 export type Team = components['schemas']['Team']
 export type TeamMember = components['schemas']['TeamMember']
 
-export type AuthProviderType = components['schemas']['AuthProviderType']
-export type AuthProvider = components['schemas']['AuthProvider']
-export type AuthProviders = components['schemas']['AuthProviders']
-
 export type ProjectIdentifier = components['schemas']['ProjectIdentifier']
 export type DeploymentIdentifier = components['schemas']['DeploymentIdentifier']
 
