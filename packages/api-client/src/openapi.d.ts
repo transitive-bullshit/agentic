@@ -310,32 +310,18 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
-        AuthProviderType: "github" | "google" | "spotify" | "twitter" | "linkedin" | "stripe";
-        AuthProvider: {
-            provider: components["schemas"]["AuthProviderType"];
-            id: string;
-            username?: string;
-            scope?: string;
-        };
-        AuthProviders: {
-            [key: string]: components["schemas"]["AuthProvider"];
-        };
         User: {
             id: string;
-            createdAt: string;
-            updatedAt: string;
-            deletedAt?: string;
-            username: string;
+            createdAt: string | null;
+            updatedAt: string | null;
+            name: string;
+            email: string;
+            emailVerified: boolean;
+            image?: string;
+            username?: string;
             /** @enum {string} */
             role: "user" | "admin";
-            email?: string;
-            firstName?: string;
-            lastName?: string;
-            image?: string;
-            emailConfirmed: boolean;
-            emailConfirmedAt?: string;
             isStripeConnectEnabledByDefault: boolean;
-            authProviders: components["schemas"]["AuthProviders"];
             stripeCustomerId?: string;
         };
         Team: {
@@ -618,10 +604,8 @@ export interface operations {
         requestBody: {
             content: {
                 "application/json": {
-                    firstName?: string;
-                    lastName?: string;
+                    name?: string;
                     image?: string;
-                    password?: string;
                     isStripeConnectEnabledByDefault?: boolean;
                 };
             };
