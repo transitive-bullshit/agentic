@@ -296,7 +296,7 @@ export const pricingPlanSchema = z
     interval: pricingIntervalSchema.optional(),
 
     desc: z.string().optional(),
-    features: z.array(z.string()),
+    features: z.array(z.string()).optional(),
 
     // TODO?
     trialPeriodDays: z.number().nonnegative().optional(),
