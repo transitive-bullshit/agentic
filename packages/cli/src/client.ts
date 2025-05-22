@@ -1,6 +1,9 @@
 import { AgenticApiClient } from '@agentic/platform-api-client'
 
+import { AuthStore } from './store'
+
 // Create a singleton instance of the API client
 export const client = new AgenticApiClient({
-  apiKey: process.env.AGENTIC_API_KEY
+  apiCookie: AuthStore.tryGetAuth()?.cookie,
+  apiBaseUrl: 'http://localhost:3000'
 })

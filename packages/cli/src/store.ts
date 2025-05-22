@@ -1,63 +1,70 @@
-import type { User } from '@agentic/platform-api-client'
+import type { AuthSession } from '@agentic/platform-api-client'
 import { assert } from '@agentic/platform-core'
 import Conf from 'conf'
 
-export const store = new Conf({ projectName: 'agentic' })
-
-export type Auth = {
-  token: string
-  user: User
+export type AuthState = {
+  cookie: string
+  session: AuthSession
   teamId?: string
   teamSlug?: string
 }
 
 const keyTeamId = 'teamId'
 const keyTeamSlug = 'teamSlug'
-const keyToken = 'token'
-const keyUser = 'user'
+const keyCookie = 'cookie'
+const keySession = 'session'
 
-export function isAuthenticated() {
-  return store.has(keyToken) && store.has(keyUser)
-}
+export const AuthStore = {
+  store: new Conf({ projectName: 'agentic' }),
 
-export function requireAuth() {
-  assert(
-    isAuthenticated(),
-    'Command requires authentication. Please login first.'
-  )
-}
+  isAuthenticated() {
+    return this.store.has(keyCookie) && this.store.has(keySession)
+  },
 
-export function getAuth(): Auth {
-  requireAuth()
+  requireAuth() {
+    assert(
+      this.isAuthenticated(),
+      'Command requires authentication. Please login first.'
+    )
+  },
 
-  return {
-    token: store.get(keyToken),
-    user: store.get(keyUser),
-    teamId: store.get(keyTeamId),
-    teamSlug: store.get(keyTeamSlug)
-  } as Auth
-}
+  tryGetAuth(): AuthState | undefined {
+    if (!this.isAuthenticated()) {
+      return undefined
+    }
 
-export function signinUser({ token, user }: { token: string; user: string }) {
-  store.set(keyToken, token)
-  store.set(keyUser, user)
-  store.delete(keyTeamId)
-  store.delete(keyTeamSlug)
-}
+    return {
+      cookie: this.store.get(keyCookie),
+      session: this.store.get(keySession),
+      teamId: this.store.get(keyTeamId),
+      teamSlug: this.store.get(keyTeamSlug)
+    } as AuthState
+  },
 
-export function signout() {
-  store.delete(keyToken)
-  store.delete(keyUser)
-  store.delete(keyTeamId)
-  store.delete(keyTeamSlug)
-}
+  getAuth(): AuthState {
+    this.requireAuth()
+    return this.tryGetAuth()!
+  },
 
-export function switchTeam(team?: { id: string; slug: string }) {
-  if (team?.id) {
-    store.set(keyTeamId, team.id)
-    store.set(keyTeamSlug, team.slug)
-  } else {
-    store.delete(keyTeamId)
-    store.delete(keyTeamSlug)
+  setAuth({ cookie, session }: { cookie: string; session: AuthSession }) {
+    this.store.set(keyCookie, cookie)
+    this.store.set(keySession, session)
+  },
+
+  clearAuth() {
+    this.store.delete(keyCookie)
+    this.store.delete(keySession)
+    this.store.delete(keyTeamId)
+    this.store.delete(keyTeamSlug)
+  },
+
+  switchTeam(team?: { id: string; slug: string }) {
+    if (team?.id) {
+      this.store.set(keyTeamId, team.id)
+      this.store.set(keyTeamSlug, team.slug)
+    } else {
+      this.store.delete(keyTeamId)
+      this.store.delete(keyTeamSlug)
+    }
   }
 }

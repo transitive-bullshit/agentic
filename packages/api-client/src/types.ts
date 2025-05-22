@@ -26,3 +26,31 @@ export type PricingPlan = components['schemas']['PricingPlan']
 export type PricingPlanName = components['schemas']['name']
 export type PricingPlanSlug = components['schemas']['slug']
 export type PricingPlanLabel = components['schemas']['label']
+
+export type AuthSession = {
+  session: Session
+  user: AuthUser
+}
+
+export interface Session {
+  id: string
+  token: string
+  userId: string
+  ipAddress?: string | null
+  userAgent?: string | null
+  expiresAt: string
+  createdAt: string
+  updatedAt: string
+}
+
+export interface AuthUser {
+  id: string
+  name: string
+  role: string
+  username?: string
+  email: string
+  emailVerified: boolean
+  image?: string
+  createdAt: string
+  updatedAt: string
+}

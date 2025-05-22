@@ -2,8 +2,8 @@ import { pgTable, text, timestamp } from '@fisch0920/drizzle-orm/pg-core'
 
 import {
   accountPrimaryId,
+  authTimestamps,
   sessionPrimaryId,
-  timestamps,
   userId,
   verificationPrimaryId
 } from './common'
@@ -13,38 +13,41 @@ import { users } from './user'
 
 export const sessions = pgTable('sessions', {
   ...sessionPrimaryId,
-  ...timestamps,
+  ...authTimestamps,
 
-  expiresAt: timestamp('expiresAt').notNull(),
-  ipAddress: text('ipAddress'),
-  userAgent: text('userAgent'),
+  token: text().notNull().unique(),
+  expiresAt: timestamp({ mode: 'date' }).notNull(),
+  ipAddress: text(),
+  userAgent: text(),
   userId: userId()
     .notNull()
-    .references(() => users.id)
+    .references(() => users.id, { onDelete: 'cascade' })
 })
 
 export const accounts = pgTable('accounts', {
   ...accountPrimaryId,
-  ...timestamps,
+  ...authTimestamps,
 
-  accountId: text('accountId').notNull(),
-  providerId: text('providerId').notNull(),
+  accountId: text().notNull(),
+  providerId: text().notNull(),
   userId: userId()
     .notNull()
-    .references(() => users.id),
-  accessToken: text('accessToken'),
-  refreshToken: text('refreshToken'),
-  idToken: text('idToken'),
-  expiresAt: timestamp('expiresAt').notNull(),
-  password: text('password')
+    .references(() => users.id, { onDelete: 'cascade' }),
+  accessToken: text(),
+  refreshToken: text(),
+  accessTokenExpiresAt: timestamp({ mode: 'date' }),
+  refreshTokenExpiresAt: timestamp({ mode: 'date' }),
+  scope: text(),
+  idToken: text(),
+  password: text()
 })
 
 export const verifications = pgTable('verifications', {
   ...verificationPrimaryId,
-  ...timestamps,
+  ...authTimestamps,
 
-  identifier: text('identifier').notNull(),
-  value: text('value').notNull(),
+  identifier: text().notNull(),
+  value: text().notNull(),
 
-  expiresAt: timestamp('expiresAt').notNull()
+  expiresAt: timestamp({ mode: 'date' }).notNull()
 })

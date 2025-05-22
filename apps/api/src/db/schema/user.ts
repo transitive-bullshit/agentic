@@ -1,4 +1,3 @@
-import { relations } from '@fisch0920/drizzle-orm'
 import {
   boolean,
   index,
@@ -8,15 +7,15 @@ import {
 } from '@fisch0920/drizzle-orm/pg-core'
 
 import {
+  authTimestamps,
   createSelectSchema,
+  createUpdateSchema,
   stripeId,
-  timestamps,
   username,
   // username,
   userPrimaryId,
   userRoleEnum
 } from './common'
-import { teams } from './team'
 
 // This table is mostly managed by better-auth.
 
@@ -24,15 +23,15 @@ export const users = pgTable(
   'users',
   {
     ...userPrimaryId,
-    ...timestamps,
+    ...authTimestamps,
 
-    name: text('name').notNull(),
-    email: text('email').notNull().unique(),
-    emailVerified: boolean('emailVerified').default(false).notNull(),
-    image: text('image'),
+    name: text().notNull(),
+    email: text().notNull().unique(),
+    emailVerified: boolean().default(false).notNull(),
+    image: text(),
 
     // TODO: re-add username
-    username: username(),
+    username: username().unique(),
     role: userRoleEnum().default('user').notNull(),
 
     isStripeConnectEnabledByDefault: boolean().default(true).notNull(),
@@ -41,61 +40,21 @@ export const users = pgTable(
   },
   (table) => [
     uniqueIndex('user_email_idx').on(table.email),
-    // uniqueIndex('user_username_idx').on(table.username),
+    uniqueIndex('user_username_idx').on(table.username),
     index('user_createdAt_idx').on(table.createdAt),
-    index('user_updatedAt_idx').on(table.updatedAt),
-    index('user_deletedAt_idx').on(table.deletedAt)
+    index('user_updatedAt_idx').on(table.updatedAt)
+    // index('user_deletedAt_idx').on(table.deletedAt)
   ]
 )
 
-export const usersRelations = relations(users, ({ many }) => ({
-  teamsOwned: many(teams)
-}))
-
-export const userSelectSchema = createSelectSchema(users, {
-  // authProviders: publicAuthProvidersSchema
-})
-  // .omit({ password: true, emailConfirmToken: true, passwordResetToken: true })
+export const userSelectSchema = createSelectSchema(users)
   .strip()
   .openapi('User')
 
-// export const userInsertSchema = createInsertSchema(users, {
-//   username: (schema) =>
-//     schema.refine((username) => validators.username(username), {
-//       message: 'Invalid username'
-//     }),
-
-//   email: (schema) => schema.email().optional()
-// })
-//   .pick({
-//     username: true,
-//     email: true,
-//     password: true,
-//     firstName: true,
-//     lastName: true,
-//     image: true
-//   })
-//   .strict()
-//   .transform((user) => {
-//     return {
-//       ...user,
-//       emailConfirmToken: sha256(),
-//       password: user.password ? hashSync(user.password) : undefined
-//     }
-//   })
-
-// export const userUpdateSchema = createUpdateSchema(users)
-//   .pick({
-//     firstName: true,
-//     lastName: true,
-//     image: true,
-//     password: true,
-//     isStripeConnectEnabledByDefault: true
-//   })
-//   .strict()
-//   .transform((user) => {
-//     return {
-//       ...user,
-//       password: user.password ? hashSync(user.password) : undefined
-//     }
-//   })
+export const userUpdateSchema = createUpdateSchema(users)
+  .pick({
+    name: true,
+    image: true,
+    isStripeConnectEnabledByDefault: true
+  })
+  .strict()

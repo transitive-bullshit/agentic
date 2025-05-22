@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@agentic/platform-core": "workspace:*",
+    "better-auth": "^1.2.8",
     "ky": "catalog:",
     "type-fest": "catalog:"
   },

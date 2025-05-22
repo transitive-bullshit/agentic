@@ -1,30 +1,55 @@
 import type { Simplify } from 'type-fest'
-import { getEnv, sanitizeSearchParams } from '@agentic/platform-core'
+import { assert, getEnv, sanitizeSearchParams } from '@agentic/platform-core'
+import { createAuthClient } from 'better-auth/client'
+import { username } from 'better-auth/plugins'
 import defaultKy, { type KyInstance } from 'ky'
 
 import type { operations } from './openapi'
+import type { AuthSession } from './types'
 
 export class AgenticApiClient {
   static readonly DEFAULT_API_BASE_URL = 'https://api.agentic.so'
 
-  public readonly ky: KyInstance
   public readonly apiBaseUrl: string
+  public readonly authClient: ReturnType<typeof createAuthClient>
+  public ky: KyInstance
 
   constructor({
-    apiKey = getEnv('AGENTIC_API_KEY'),
+    apiCookie = getEnv('AGENTIC_API_COOKIE'),
     apiBaseUrl = AgenticApiClient.DEFAULT_API_BASE_URL,
     ky = defaultKy
   }: {
-    apiKey?: string
+    apiCookie?: string
     apiBaseUrl?: string
     ky?: KyInstance
   }) {
+    assert(apiBaseUrl, 'AgenticApiClient missing required "apiBaseUrl"')
     this.apiBaseUrl = apiBaseUrl
 
     this.ky = ky.extend({
       prefixUrl: apiBaseUrl,
-      headers: { Authorization: `Bearer ${apiKey}` }
+      // headers: { Authorization: `Bearer ${apiKey}` }
+      headers: { cookie: apiCookie }
     })
+
+    this.authClient = createAuthClient({
+      baseURL: `${apiBaseUrl}/v1/auth`,
+      plugins: [username()]
+    })
+  }
+
+  async getAuthSession(cookie?: string): Promise<AuthSession> {
+    return this.ky
+      .get('v1/auth/get-session', cookie ? { headers: { cookie } } : {})
+      .json<AuthSession>()
+  }
+
+  async setAuthSession(cookie: string): Promise<AuthSession> {
+    this.ky = this.ky.extend({
+      headers: { cookie }
+    })
+
+    return this.getAuthSession()
   }
 
   async getUser({

@@ -8,9 +8,12 @@ import { createIdForModel, db } from '@/db'
 import { env } from './env'
 
 export const auth = betterAuth({
-  adapter: drizzleAdapter(db, {
+  appName: 'Agentic',
+  basePath: '/v1/auth',
+  database: drizzleAdapter(db, {
     provider: 'pg'
   }),
+  trustedOrigins: ['http://localhost:6013'],
   emailAndPassword: {
     enabled: true
   },
@@ -40,10 +43,18 @@ export const auth = betterAuth({
     }
   },
   session: {
-    modelName: 'sessions'
+    modelName: 'sessions',
+    cookieCache: {
+      enabled: true,
+      maxAge: 10 * 60 // 10 minutes in seconds
+    }
   },
   account: {
-    modelName: 'accounts'
+    modelName: 'accounts',
+    accountLinking: {
+      enabled: true,
+      trustedProviders: ['github']
+    }
   },
   verification: {
     modelName: 'verifications'

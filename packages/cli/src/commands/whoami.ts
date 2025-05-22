@@ -1,15 +1,20 @@
 import { Command } from 'commander'
 
-import { getAuth } from '../store'
+import type { Context } from '../types'
+import { AuthStore } from '../store'
 
-export const whoami = new Command('whoami')
-  .description('Displays info about the current user')
-  .action(async () => {
-    const auth = getAuth()
+export function registerWhoAmICommand({ client, program }: Context) {
+  const command = new Command('whoami')
+    .description('Displays info about the current user')
+    .action(async () => {
+      if (!AuthStore.isAuthenticated()) {
+        console.log('Not signed in')
+        return
+      }
 
-    // TODO
-    // eslint-disable-next-line no-console
-    console.log(
-      JSON.stringify({ user: auth.user, team: auth.teamSlug }, null, 2)
-    )
-  })
+      const res = await client.getAuthSession()
+      console.log(res)
+    })
+
+  program.addCommand(command)
+}

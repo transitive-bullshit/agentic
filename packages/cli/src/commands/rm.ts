@@ -2,8 +2,6 @@ import { Command } from 'commander'
 import inquirer from 'inquirer'
 import ora from 'ora'
 
-import { client } from '../client'
-
 export const rm = new Command('rm')
   .description('Removes deployments')
   .argument('[deploymentIds...]', 'deployment IDs to remove')

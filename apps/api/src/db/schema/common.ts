@@ -157,6 +157,15 @@ export const timestamps = {
   deletedAt: timestamp()
 }
 
+export const authTimestamps = {
+  createdAt: timestamp({ mode: 'date' })
+    .notNull()
+    .$defaultFn(() => /* @__PURE__ */ new Date()),
+  updatedAt: timestamp({ mode: 'date' })
+    .notNull()
+    .$defaultFn(() => /* @__PURE__ */ new Date())
+}
+
 export const userRoleEnum = pgEnum('UserRole', ['user', 'admin'])
 export const teamMemberRoleEnum = pgEnum('TeamMemberRole', ['user', 'admin'])
 export const logEntryTypeEnum = pgEnum('LogEntryType', ['log'])

@@ -1,7 +1,7 @@
 import { OpenAPIHono } from '@hono/zod-openapi'
 import { fromError } from 'zod-validation-error'
 
-import type { AuthenticatedEnv } from '@/lib/types'
+import type { AuthenticatedEnv, DefaultContext } from '@/lib/types'
 import { auth } from '@/lib/auth'
 import * as middleware from '@/lib/middleware'
 import { registerOpenAPIErrorResponses } from '@/lib/openapi-utils'
@@ -18,7 +18,6 @@ import { registerV1DeploymentsListDeployments } from './deployments/list-deploym
 import { registerV1DeploymentsPublishDeployment } from './deployments/publish-deployment'
 import { registerV1DeploymentsUpdateDeployment } from './deployments/update-deployment'
 import { registerHealthCheck } from './health-check'
-// import { registerV1OAuthRedirect } from './oauth-redirect'
 import { registerV1ProjectsCreateProject } from './projects/create-project'
 import { registerV1ProjectsGetProject } from './projects/get-project'
 import { registerV1ProjectsListProjects } from './projects/list-projects'
@@ -31,8 +30,8 @@ import { registerV1TeamsMembersCreateTeamMember } from './teams/members/create-t
 import { registerV1TeamsMembersDeleteTeamMember } from './teams/members/delete-team-member'
 import { registerV1TeamsMembersUpdateTeamMember } from './teams/members/update-team-member'
 import { registerV1TeamsUpdateTeam } from './teams/update-team'
-// import { registerV1UsersGetUser } from './users/get-user'
-// import { registerV1UsersUpdateUser } from './users/update-user'
+import { registerV1UsersGetUser } from './users/get-user'
+import { registerV1UsersUpdateUser } from './users/update-user'
 import { registerV1StripeWebhook } from './webhooks/stripe-webhook'
 
 export const apiV1 = new OpenAPIHono({
@@ -65,8 +64,8 @@ const privateRouter = new OpenAPIHono<AuthenticatedEnv>()
 registerHealthCheck(publicRouter)
 
 // Users
-// registerV1UsersGetUser(privateRouter)
-// registerV1UsersUpdateUser(privateRouter)
+registerV1UsersGetUser(privateRouter)
+registerV1UsersUpdateUser(privateRouter)
 
 // Teams
 registerV1TeamsCreateTeam(privateRouter)
@@ -106,10 +105,15 @@ registerV1AdminConsumersGetConsumerByToken(privateRouter)
 // Webhook event handlers
 registerV1StripeWebhook(publicRouter)
 
-// OAuth redirect
-// registerV1OAuthRedirect(publicRouter)
+// Better-Auth Handler for all auth-related routes
+apiV1.on(['POST', 'GET'], 'auth/**', async (c: DefaultContext) => {
+  const logger = c.get('logger')
+  logger.info(c.req.method, c.req.url, c.req.header())
 
-publicRouter.on(['POST', 'GET'], 'auth/**', (c) => auth.handler(c.req.raw))
+  const res = await auth.handler(c.req.raw)
+  logger.info('auth result', res)
+  return res
+})
 
 // Setup routes and middleware
 apiV1.route('/', publicRouter)

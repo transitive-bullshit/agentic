@@ -16,7 +16,16 @@ export const app = new OpenAPIHono()
 
 app.use(sentry())
 app.use(compress())
-app.use(cors())
+app.use(
+  cors({
+    origin: '*',
+    allowHeaders: ['Content-Type', 'Authorization'],
+    allowMethods: ['POST', 'GET', 'OPTIONS'],
+    exposeHeaders: ['Content-Length'],
+    maxAge: 600,
+    credentials: true
+  })
+)
 app.use(middleware.init)
 app.use(middleware.accessLogger)
 app.use(middleware.responseTime)

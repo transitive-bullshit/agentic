@@ -1,34 +1,46 @@
-import { createAuthClient } from 'better-auth/client'
+import 'dotenv/config'
+
+import { AgenticApiClient } from '@agentic/platform-api-client'
 import { Command } from 'commander'
 import restoreCursor from 'restore-cursor'
 
-import { deploy } from './commands/deploy'
-import { get } from './commands/get'
-import { ls } from './commands/ls'
-import { publish } from './commands/publish'
-import { rm } from './commands/rm'
-import { signin } from './commands/signin'
-
-const authClient = createAuthClient({
-  baseURL: 'http://localhost:3000/v1/auth'
-})
+import { registerSigninCommand } from './commands/signin'
+import { registerWhoAmICommand } from './commands/whoami'
+import { AuthStore } from './store'
 
 async function main() {
   restoreCursor()
 
-  const res = await authClient.signIn.social({
-    provider: 'github'
+  const client = new AgenticApiClient({
+    apiCookie: AuthStore.tryGetAuth()?.cookie,
+    apiBaseUrl: process.env.AGENTIC_API_BASE_URL
   })
-  console.log(res)
-  return
 
-  const program = new Command()
-  program.addCommand(signin)
-  program.addCommand(get)
-  program.addCommand(ls)
-  program.addCommand(publish)
-  program.addCommand(rm)
-  program.addCommand(deploy)
+  const program = new Command('agentic')
+    .option('-j, --json', 'Print output in JSON format')
+    .showHelpAfterError()
+
+  const logger = {
+    log: (...args: any[]) => {
+      if (program.opts().json) {
+        console.log(
+          args.length === 1 ? JSON.stringify(args[0]) : JSON.stringify(args)
+        )
+      } else {
+        console.log(...args)
+      }
+    }
+  }
+
+  const ctx = {
+    client,
+    program,
+    logger
+  }
+
+  // Register all commands
+  registerSigninCommand(ctx)
+  registerWhoAmICommand(ctx)
 
   program.parse()
 }
