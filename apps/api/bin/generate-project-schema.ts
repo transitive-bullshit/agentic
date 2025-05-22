@@ -32,13 +32,13 @@ const publicSchema = z.object({
     .string()
     .url()
     .optional()
-    .describe('Optional URL to the source code for this project.'),
+    .describe('Optional URL to the source code for the project.'),
   iconUrl: z
     .string()
     .url()
     .optional()
     .describe(
-      'Optional logo image URL to use for this project. Logos should have a square aspect ratio.'
+      'Optional logo image URL to use for the project. Logos should have a square aspect ratio.'
     ),
 
   // Required origin API config
@@ -58,7 +58,7 @@ NOTE: Agentic currently only supports \`external\` API servers. If you'd like to
   // Optional subscription pricing config
   pricingPlans: pricingPlanListSchema
     .describe(
-      'List of PricingPlans to enable subscriptions for this project. Defaults to a single free tier.'
+      'List of PricingPlans to enable subscriptions for the project. Defaults to a single free tier.'
     )
     .default([
       {
