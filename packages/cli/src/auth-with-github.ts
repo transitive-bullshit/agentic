@@ -21,6 +21,12 @@ export async function authWithGitHub({
   const port = await getPort({ port: preferredPort })
   const app = new Hono()
 
+  if (port !== preferredPort) {
+    throw new Error(
+      `Port ${preferredPort} is required to authenticate with GitHub, but it is already in use.`
+    )
+  }
+
   let _resolveAuth: any
   let _rejectAuth: any
 
@@ -66,6 +72,7 @@ export async function authWithGitHub({
 
   const res = await client.authClient.signIn.social({
     provider: 'github',
+    // TODO: add error url as well
     callbackURL: `http://localhost:${port}/callback/github/success`
   })
   assert(

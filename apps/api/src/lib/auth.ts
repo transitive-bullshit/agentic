@@ -3,7 +3,7 @@ import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 import { username } from 'better-auth/plugins'
 
-import { createIdForModel, db } from '@/db'
+import { createIdForModel, db, type ModelType } from '@/db'
 
 import { env } from './env'
 
@@ -13,7 +13,10 @@ export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: 'pg'
   }),
-  trustedOrigins: ['http://localhost:6013'],
+  trustedOrigins: [
+    // Used for an oauth redirect when authenticating via the CLI
+    'http://localhost:6013'
+  ],
   emailAndPassword: {
     enabled: true
   },
@@ -61,7 +64,7 @@ export const auth = betterAuth({
   },
   advanced: {
     database: {
-      generateId: ({ model }) => createIdForModel(model as any)
+      generateId: ({ model }) => createIdForModel(model as ModelType)
     }
   },
   plugins: [

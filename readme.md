@@ -17,6 +17,13 @@
   - decide on approach for auth
     - built-in, first-party, tight coupling
     - https://www.better-auth.com
+      - issues
+        - doesn't allow dynamic social provider config
+        - awkward schema cli generation and constraints
+        - awkward cookie-only session support (need JWTs for CLI and SDK)
+        - client uses dynamic proxy for methods which makes DX awkward
+        - should be able to use custom `ky`-based client
+        - drizzle pg adapter requires `Date` timestamps instead of default strings
     - https://github.com/toolbeam/openauth
     - https://github.com/aipotheosis-labs/aci/tree/main/backend/apps
     - https://github.com/NangoHQ/nango
