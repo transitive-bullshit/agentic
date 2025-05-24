@@ -1,6 +1,6 @@
 export type Logger = Pick<Console, 'debug' | 'info' | 'warn' | 'error'>
 
-// OpenAPI types are taken from https://github.com/openapi-ts/openapi-typescript/blob/main/packages/openapi-typescript/src/types.ts
+// These loose OpenAPI types are taken from https://github.com/openapi-ts/openapi-typescript/blob/main/packages/openapi-typescript/src/types.ts
 
 // Note: these OpenAPI types are meant only for internal use, not external
 // consumption. Some formatting may be better in other libraries meant for

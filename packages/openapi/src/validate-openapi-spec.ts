@@ -3,7 +3,6 @@ import {
   BaseResolver,
   bundle,
   type Config as RedoclyConfig,
-  createConfig,
   type Document,
   lintDocument,
   type NormalizedProblem,
@@ -11,6 +10,7 @@ import {
 } from '@redocly/openapi-core'
 
 import type { Logger, LooseOpenAPI3Spec } from './types'
+import { getDefaultRedoclyConfig } from './redocly-config'
 
 /**
  * Validates an OpenAPI spec and bundles it into a single, normalized schema.
@@ -32,15 +32,7 @@ export async function validateOpenAPISpec(
   } = {}
 ): Promise<LooseOpenAPI3Spec> {
   if (!redoclyConfig) {
-    redoclyConfig = await createConfig(
-      {
-        rules: {
-          // throw error on duplicate operationIds
-          'operation-operationId-unique': { severity: 'error' }
-        }
-      },
-      { extends: ['minimal'] }
-    )
+    redoclyConfig = await getDefaultRedoclyConfig()
   }
 
   const resolver = new BaseResolver(redoclyConfig.resolve)
