@@ -124,15 +124,15 @@ export const authRouter = issuer({
     } else {
       assert(
         user,
-        404,
+        400,
         `Authentication error: unsupported provider "${provider}"`
       )
     }
 
     assert(
       user,
-      404,
-      `Authentication error for provider "${provider}": User not found`
+      500,
+      `Authentication error for provider "${provider}": Unexpected error initializing user`
     )
     return ctx.subject('user', pick(user, 'id'))
   }
