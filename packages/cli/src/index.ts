@@ -31,11 +31,8 @@ async function main() {
   if (authSession) {
     try {
       await client.setRefreshAuthToken(authSession.refreshToken)
-    } catch (err: any) {
-      console.warn(
-        'Existing auth session is invalid; logging out...',
-        err.message
-      )
+    } catch {
+      console.warn('Existing auth session is invalid; logging out.\n')
       AuthStore.clearAuth()
     }
   }

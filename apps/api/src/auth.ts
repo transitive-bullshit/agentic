@@ -2,20 +2,19 @@ import { assert, pick } from '@agentic/platform-core'
 import { issuer } from '@openauthjs/openauth'
 import { GithubProvider } from '@openauthjs/openauth/provider/github'
 import { PasswordProvider } from '@openauthjs/openauth/provider/password'
-import { MemoryStorage } from '@openauthjs/openauth/storage/memory'
 import { PasswordUI } from '@openauthjs/openauth/ui/password'
 
 import { type RawUser } from '@/db'
 import { subjects } from '@/lib/auth/subjects'
 import { upsertOrLinkUserAccount } from '@/lib/auth/upsert-or-link-user-account'
+import { DrizzleAuthStorage } from '@/lib/drizzle-auth-storage'
 import { env } from '@/lib/env'
 import { getGitHubClient } from '@/lib/external/github'
 
+// Initialize OpenAuth issuer which is a Hono app for all auth routes.
 export const authRouter = issuer({
   subjects,
-  storage: MemoryStorage({
-    persist: './auth-db-temp.json'
-  }),
+  storage: DrizzleAuthStorage(),
   providers: {
     github: GithubProvider({
       clientID: env.GITHUB_CLIENT_ID,
@@ -25,6 +24,7 @@ export const authRouter = issuer({
     password: PasswordProvider(
       PasswordUI({
         sendCode: async (email, code) => {
+          // TODO: Send email code to user
           // eslint-disable-next-line no-console
           console.log({ email, code })
         }
@@ -97,7 +97,8 @@ export const authRouter = issuer({
           accountId: value.email
         },
         partialUser: {
-          email: value.email
+          email: value.email,
+          emailVerified: true
         }
       })
     } else {

@@ -32,8 +32,10 @@ app.use(middleware.accessLogger)
 app.use(middleware.responseTime)
 app.use(middleware.errorHandler)
 
+// Mount all auth routes which are handled by OpenAuth
 app.route('', authRouter)
 
+// Mount all v1 API routes
 app.route('/v1', apiV1)
 
 app.doc31('/docs', {
