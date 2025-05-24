@@ -1,11 +1,11 @@
-import { hashObject } from '@agentic/platform-core'
-
 import type {
   PricingInterval,
   PricingPlan,
   PricingPlanLineItem,
   PricingPlanList
-} from './schema/schemas'
+} from '@agentic/platform-schemas'
+import { hashObject } from '@agentic/platform-core'
+
 import type { RawProject } from './types'
 
 /**

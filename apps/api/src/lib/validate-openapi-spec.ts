@@ -1,3 +1,4 @@
+import { parseJson } from '@agentic/platform-core'
 import {
   BaseResolver,
   bundle,
@@ -8,7 +9,6 @@ import {
   type NormalizedProblem,
   Source
 } from '@redocly/openapi-core'
-import parseJson from 'parse-json'
 
 import type { Logger } from './logger'
 import type { LooseOpenAPI3Spec } from './types'

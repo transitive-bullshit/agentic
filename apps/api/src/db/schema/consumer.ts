@@ -1,3 +1,7 @@
+import {
+  type StripeSubscriptionItemIdMap,
+  stripeSubscriptionItemIdMapSchema
+} from '@agentic/platform-schemas'
 import { relations } from '@fisch0920/drizzle-orm'
 import {
   boolean,
@@ -27,10 +31,6 @@ import {
 } from './common'
 import { deployments } from './deployment'
 import { projects } from './project'
-import {
-  type StripeSubscriptionItemIdMap,
-  stripeSubscriptionItemIdMapSchema
-} from './schemas'
 import { users } from './user'
 
 // TODO: Consumers should be valid for any enabled project like in RapidAPI and GCP.

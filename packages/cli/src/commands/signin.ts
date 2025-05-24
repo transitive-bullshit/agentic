@@ -1,7 +1,7 @@
 import { Command } from 'commander'
 
 import type { Context } from '../types'
-import { auth } from '../auth'
+import { auth } from '../lib/auth'
 
 export function registerSigninCommand({ client, program, logger }: Context) {
   const command = new Command('login')

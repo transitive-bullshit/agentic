@@ -1,3 +1,9 @@
+import {
+  type DeploymentOriginAdapter,
+  deploymentOriginAdapterSchema,
+  type PricingPlanList,
+  pricingPlanListSchema
+} from '@agentic/platform-schemas'
 import { validators } from '@agentic/platform-validators'
 import { relations } from '@fisch0920/drizzle-orm'
 import {
@@ -29,12 +35,6 @@ import {
   userId
 } from './common'
 import { projects } from './project'
-import {
-  type DeploymentOriginAdapter,
-  deploymentOriginAdapterSchema,
-  type PricingPlanList,
-  pricingPlanListSchema
-} from './schemas'
 import { teams } from './team'
 import { users } from './user'
 

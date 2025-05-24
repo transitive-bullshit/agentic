@@ -7,7 +7,7 @@ import restoreCursor from 'restore-cursor'
 import { registerSigninCommand } from './commands/signin'
 import { registerSignoutCommand } from './commands/signout'
 import { registerWhoAmICommand } from './commands/whoami'
-import { AuthStore } from './store'
+import { AuthStore } from './lib/store'
 
 async function main() {
   restoreCursor()

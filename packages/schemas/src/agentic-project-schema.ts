@@ -1,10 +1,6 @@
-import 'dotenv/config'
-
 import { z } from '@hono/zod-openapi'
-import restoreCursor from 'restore-cursor'
-import { zodToJsonSchema } from 'zod-to-json-schema'
 
-import { deploymentOriginAdapterSchema, pricingPlanListSchema } from '@/db'
+import { deploymentOriginAdapterSchema, pricingPlanListSchema } from './schemas'
 
 // TODO:
 // - **service / tool definitions**
@@ -13,9 +9,11 @@ import { deploymentOriginAdapterSchema, pricingPlanListSchema } from '@/db'
 // - origin adapter openapi schema path, url, or in-place definition
 // - optional stripe webhooks
 // - optional response header config (custom headers, immutability for caching, etc)
+// - optional version
+// - optional agentic version
 
-const publicSchema = z.object({
-  name: z.string().describe('The name of the project.'),
+export const agenticProjectSchema = z.object({
+  name: z.string().describe('Name of the project.'),
 
   // Metadata
   description: z
@@ -74,14 +72,4 @@ NOTE: Agentic currently only supports \`external\` API servers. If you'd like to
       }
     ])
 })
-
-async function main() {
-  restoreCursor()
-
-  const publicJsonSchema = zodToJsonSchema(publicSchema)
-
-  // eslint-disable-next-line no-console
-  console.log(JSON.stringify(publicJsonSchema, null, 2))
-}
-
-await main()
+export type AgenticProject = z.infer<typeof agenticProjectSchema>

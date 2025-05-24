@@ -1,7 +1,7 @@
 import { Command } from 'commander'
 
 import type { Context } from '../types'
-import { AuthStore } from '../store'
+import { AuthStore } from '../lib/store'
 
 export function registerSignoutCommand({ client, program, logger }: Context) {
   const command = new Command('logout')

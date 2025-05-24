@@ -6,7 +6,7 @@ import { Hono } from 'hono'
 import open from 'open'
 import { oraPromise } from 'ora'
 
-import type { AuthSession } from './types'
+import type { AuthSession } from '../types'
 import { AuthStore } from './store'
 
 const providerToLabel = {
@@ -23,7 +23,9 @@ export async function auth({
   provider: 'github' | 'password'
   preferredPort?: number
 }): Promise<AuthSession> {
-  const providerLabel = providerToLabel[provider]!
+  const providerLabel = providerToLabel[provider]
+  assert(providerLabel, `Missing required provider: ${provider}`)
+
   const port = await getPort({ port: preferredPort })
   const app = new Hono()
 

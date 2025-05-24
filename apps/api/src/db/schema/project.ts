@@ -1,3 +1,12 @@
+import {
+  pricingIntervalSchema,
+  type StripeMeterIdMap,
+  stripeMeterIdMapSchema,
+  type StripePriceIdMap,
+  stripePriceIdMapSchema,
+  type StripeProductIdMap,
+  stripeProductIdMapSchema
+} from '@agentic/platform-schemas'
 import { validators } from '@agentic/platform-validators'
 import { relations } from '@fisch0920/drizzle-orm'
 import {
@@ -33,15 +42,6 @@ import {
   userId
 } from './common'
 import { deployments } from './deployment'
-import {
-  pricingIntervalSchema,
-  type StripeMeterIdMap,
-  stripeMeterIdMapSchema,
-  type StripePriceIdMap,
-  stripePriceIdMapSchema,
-  type StripeProductIdMap,
-  stripeProductIdMapSchema
-} from './schemas'
 import { teams } from './team'
 import { users } from './user'
 

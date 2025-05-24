@@ -29,6 +29,7 @@
   "dependencies": {
     "@agentic/platform-api-client": "workspace:*",
     "@agentic/platform-core": "workspace:*",
+    "@agentic/platform-schemas": "workspace:*",
     "@hono/node-server": "^1.14.1",
     "commander": "^14.0.0",
     "conf": "^13.1.0",
@@ -39,6 +40,7 @@
     "open": "^10.1.2",
     "ora": "^8.2.0",
     "restore-cursor": "catalog:",
+    "unconfig": "^7.3.2",
     "zod": "catalog:"
   },
   "devDependencies": {

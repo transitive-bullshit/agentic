@@ -31,8 +31,7 @@ export const idPrefixMap = {
 
   // auth
   user: 'user',
-  account: 'acct',
-  session: 'sess'
+  account: 'acct'
 } as const
 
 export type ModelType = keyof typeof idPrefixMap

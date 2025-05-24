@@ -20,7 +20,6 @@ export {
   idPrefixMap,
   type ModelType
 } from './schema/common'
-export * from './schema/schemas'
 export * from './schemas'
 export type * from './types'
 export * from './utils'

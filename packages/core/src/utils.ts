@@ -6,6 +6,8 @@ import hashObjectImpl, { type Options as HashObjectOptions } from 'hash-object'
 
 import { HttpError, ZodValidationError } from './errors'
 
+export { default as parseJson } from 'parse-json'
+
 /**
  * From `inputObj`, create a new object that does not include `keys`.
  *

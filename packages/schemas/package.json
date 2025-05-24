@@ -1,13 +1,13 @@
 {
-  "name": "@agentic/platform-core",
+  "name": "@agentic/platform-schemas",
   "version": "0.0.1",
-  "description": "Core utilities for the Agentic platform.",
+  "description": "Core schemas shared across the Agentic platform.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "UNLICENSED",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/transitive-bullshit/agentic-platform.git",
-    "directory": "packages/core"
+    "directory": "packages/schemas"
   },
   "type": "module",
   "source": "./src/index.ts",
@@ -19,17 +19,16 @@
   "scripts": {
     "test": "run-s test:*",
     "test:lint": "eslint .",
-    "test:typecheck": "tsc --noEmit",
-    "test:unit": "vitest run"
+    "test:typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "hash-object": "^5.0.1",
-    "parse-json": "^8.3.0",
-    "zod": "catalog:",
-    "zod-validation-error": "^3.4.1"
+    "@agentic/platform-core": "workspace:*",
+    "@hono/zod-openapi": "^0.19.6",
+    "zod": "catalog:"
   },
   "devDependencies": {
-    "hono": "^4.7.9"
+    "restore-cursor": "catalog:",
+    "zod-to-json-schema": "^3.24.5"
   },
   "publishConfig": {
     "access": "public"

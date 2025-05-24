@@ -1,3 +1,7 @@
+import type {
+  PricingPlan,
+  PricingPlanLineItem
+} from '@agentic/platform-schemas'
 import type Stripe from 'stripe'
 import { assert } from '@agentic/platform-core'
 import pAll from 'p-all'
@@ -8,8 +12,6 @@ import {
   getLabelForPricingInterval,
   getPricingPlanLineItemHashForStripePrice,
   getPricingPlansByInterval,
-  type PricingPlan,
-  type PricingPlanLineItem,
   type RawDeployment,
   type RawProject,
   schema
