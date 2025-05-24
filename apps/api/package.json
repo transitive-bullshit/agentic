@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "@agentic/platform-core": "workspace:*",
+    "@agentic/platform-openapi": "workspace:*",
     "@agentic/platform-schemas": "workspace:*",
     "@agentic/platform-validators": "workspace:*",
     "@fisch0920/drizzle-orm": "^0.43.7",
@@ -36,7 +37,6 @@
     "@hono/zod-openapi": "^0.19.6",
     "@openauthjs/openauth": "^0.4.3",
     "@paralleldrive/cuid2": "^2.2.2",
-    "@redocly/openapi-core": "^1.34.3",
     "@sentry/node": "^9.19.0",
     "eventid": "^2.0.1",
     "exit-hook": "catalog:",
@@ -53,7 +53,6 @@
   "devDependencies": {
     "@types/semver": "^7.7.0",
     "drizzle-kit": "^0.31.1",
-    "drizzle-orm": "^0.43.1",
-    "openapi-typescript": "^7.8.0"
+    "drizzle-orm": "^0.43.1"
   }
 }

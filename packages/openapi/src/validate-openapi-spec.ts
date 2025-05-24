@@ -10,8 +10,7 @@ import {
   Source
 } from '@redocly/openapi-core'
 
-import type { Logger } from './logger'
-import type { LooseOpenAPI3Spec } from './types'
+import type { Logger, LooseOpenAPI3Spec } from './types'
 
 /**
  * Validates an OpenAPI spec and bundles it into a single, normalized schema.
@@ -23,14 +22,14 @@ import type { LooseOpenAPI3Spec } from './types'
 export async function validateOpenAPISpec(
   source: string,
   {
-    logger,
     redoclyConfig,
+    logger = console,
     silent = false
   }: {
-    logger: Logger
     redoclyConfig?: RedoclyConfig
+    logger?: Logger
     silent?: boolean
-  }
+  } = {}
 ): Promise<LooseOpenAPI3Spec> {
   if (!redoclyConfig) {
     redoclyConfig = await createConfig(
@@ -44,7 +43,6 @@ export async function validateOpenAPISpec(
     )
   }
 
-  logger.debug('Parsing openapi spec')
   const resolver = new BaseResolver(redoclyConfig.resolve)
 
   let parsed: any
@@ -58,7 +56,6 @@ export async function validateOpenAPISpec(
     source: new Source('', source, 'application/json'),
     parsed
   }
-  logger.debug('Parsed openapi spec')
 
   // Check for OpenAPI 3 or greater
   const openapiVersion = Number.parseFloat(document.parsed.openapi)
@@ -82,23 +79,19 @@ export async function validateOpenAPISpec(
     throw new Error('Unsupported schema format, expected `openapi: 3.x`')
   }
 
-  logger.debug('>>> Linting openapi spec')
   const problems = await lintDocument({
     document,
     config: redoclyConfig.styleguide,
     externalRefResolver: resolver
   })
   _processProblems(problems, { silent, logger })
-  logger.debug('<<< Linting openapi spec')
 
-  logger.debug('>>> Bundling openapi spec')
   const bundled = await bundle({
     config: redoclyConfig,
     dereference: false,
     doc: document
   })
   _processProblems(bundled.problems, { silent, logger })
-  logger.debug('<<< Bundling openapi spec')
 
   return bundled.bundle.parsed
 }

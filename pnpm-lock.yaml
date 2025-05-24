@@ -131,6 +131,9 @@ importers:
       '@agentic/platform-core':
         specifier: workspace:*
         version: link:../../packages/core
+      '@agentic/platform-openapi':
+        specifier: workspace:*
+        version: link:../../packages/openapi
       '@agentic/platform-schemas':
         specifier: workspace:*
         version: link:../../packages/schemas
@@ -158,9 +161,6 @@ importers:
       '@paralleldrive/cuid2':
         specifier: ^2.2.2
         version: 2.2.2
-      '@redocly/openapi-core':
-        specifier: ^1.34.3
-        version: 1.34.3(supports-color@10.0.0)
       '@sentry/node':
         specifier: ^9.19.0
         version: 9.19.0
@@ -207,9 +207,6 @@ importers:
       drizzle-orm:
         specifier: ^0.43.1
         version: 0.43.1(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(kysely@0.28.2)(postgres@3.4.5)
-      openapi-typescript:
-        specifier: ^7.8.0
-        version: 7.8.0(typescript@5.8.3)
 
   packages/api-client:
     dependencies:
@@ -306,6 +303,15 @@ importers:
       hono:
         specifier: ^4.7.9
         version: 4.7.9
+
+  packages/openapi:
+    dependencies:
+      '@agentic/platform-core':
+        specifier: workspace:*
+        version: link:../core
+      '@redocly/openapi-core':
+        specifier: ^1.34.3
+        version: 1.34.3(supports-color@10.0.0)
 
   packages/schemas:
     dependencies:

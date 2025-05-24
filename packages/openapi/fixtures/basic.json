@@ -1,0 +1,41 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "OpenAPI Basic Test Fixture",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/": {
+      "get": {
+        "summary": "Echo",
+        "operationId": "echo",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "name",
+              "type": "string"
+            },
+            "name": "name",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://test-openapi-basic.now.sh"
+    }
+  ]
+}
