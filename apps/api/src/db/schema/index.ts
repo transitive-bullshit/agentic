@@ -1,3 +1,5 @@
+export * from './account'
+export * from './auth-data'
 export * from './common'
 export * from './consumer'
 export * from './deployment'

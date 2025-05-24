@@ -65,7 +65,11 @@ export class ConsoleLogger implements Logger {
       return
     }
 
-    this.console.trace(this._marshal('trace', message, ...detail))
+    if (this.environment === 'development') {
+      this.console.trace(message, ...detail)
+    } else {
+      this.console.trace(this._marshal('trace', message, ...detail))
+    }
   }
 
   debug(message?: any, ...detail: any[]) {
@@ -73,7 +77,11 @@ export class ConsoleLogger implements Logger {
       return
     }
 
-    this.console.debug(this._marshal('debug', message, ...detail))
+    if (this.environment === 'development') {
+      this.console.debug(message, ...detail)
+    } else {
+      this.console.debug(this._marshal('debug', message, ...detail))
+    }
   }
 
   info(message?: any, ...detail: any[]) {
@@ -81,7 +89,11 @@ export class ConsoleLogger implements Logger {
       return
     }
 
-    this.console.info(this._marshal('info', message, ...detail))
+    if (this.environment === 'development') {
+      this.console.info(message, ...detail)
+    } else {
+      this.console.info(this._marshal('info', message, ...detail))
+    }
   }
 
   warn(message?: any, ...detail: any[]) {
@@ -89,7 +101,11 @@ export class ConsoleLogger implements Logger {
       return
     }
 
-    this.console.warn(this._marshal('warn', message, ...detail))
+    if (this.environment === 'development') {
+      this.console.warn(message, ...detail)
+    } else {
+      this.console.warn(this._marshal('warn', message, ...detail))
+    }
   }
 
   error(message?: any, ...detail: any[]) {
@@ -97,7 +113,11 @@ export class ConsoleLogger implements Logger {
       return
     }
 
-    this.console.error(this._marshal('error', message, ...detail))
+    if (this.environment === 'development') {
+      this.console.error(message, ...detail)
+    } else {
+      this.console.error(this._marshal('error', message, ...detail))
+    }
   }
 
   protected _marshal(level: LogLevel, message?: any, ...detail: any[]): string {

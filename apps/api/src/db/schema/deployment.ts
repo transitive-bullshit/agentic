@@ -53,6 +53,7 @@ export const deployments = pgTable(
     description: text().default('').notNull(),
     readme: text().default('').notNull(),
     iconUrl: text(),
+    sourceUrl: text(),
 
     userId: userId()
       .notNull()
@@ -164,8 +165,10 @@ export const deploymentInsertSchema = createInsertSchema(deployments, {
     schema
       .url()
       .describe(
-        'Logo image URL to use for this delpoyment. Logos should have a square aspect ratio.'
+        'Logo image URL to use for this deployment. Logos should have a square aspect ratio.'
       ),
+
+  sourceUrl: (schema) => schema.url(),
 
   originUrl: (schema) =>
     schema.url().describe(`Base URL of the externally hosted origin API server.

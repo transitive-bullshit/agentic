@@ -1,7 +1,11 @@
 import { config } from '@fisch0920/config/eslint'
+import drizzle from 'eslint-plugin-drizzle'
 
 export default [
   ...config,
+  {
+    ignores: ['**/out/**', 'packages/api-client/src/openapi.d.ts']
+  },
   {
     files: ['**/*.ts', '**/*.tsx'],
     rules: {
@@ -10,6 +14,20 @@ export default [
     }
   },
   {
-    ignores: ['**/out/**', 'packages/api-client/src/openapi.d.ts']
+    files: ['packages/cli/src/**/*.ts'],
+    rules: {
+      'no-console': 'off',
+      'no-process-env': 'off',
+      'unicorn/no-process-exit': 'off'
+    }
+  },
+  {
+    files: ['apps/api/src/**/*.ts'],
+    plugins: {
+      drizzle
+    },
+    rules: {
+      ...drizzle.configs.recommended.rules
+    }
   }
 ]

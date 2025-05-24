@@ -1,4 +1,4 @@
-import '@/lib/sentry'
+import '@/lib/external/sentry'
 
 import { serve } from '@hono/node-server'
 import { sentry } from '@hono/sentry'
@@ -10,18 +10,32 @@ import { apiV1 } from '@/api-v1'
 import { env } from '@/lib/env'
 import * as middleware from '@/lib/middleware'
 
+import { authRouter } from './auth'
 import { initExitHooks } from './lib/exit-hooks'
 
 export const app = new OpenAPIHono()
 
 app.use(sentry())
 app.use(compress())
-app.use(cors())
+app.use(
+  cors({
+    origin: '*',
+    allowHeaders: ['Content-Type', 'Authorization'],
+    allowMethods: ['POST', 'GET', 'OPTIONS'],
+    exposeHeaders: ['Content-Length'],
+    maxAge: 600,
+    credentials: true
+  })
+)
 app.use(middleware.init)
 app.use(middleware.accessLogger)
 app.use(middleware.responseTime)
 app.use(middleware.errorHandler)
 
+// Mount all auth routes which are handled by OpenAuth
+app.route('', authRouter)
+
+// Mount all v1 API routes
 app.route('/v1', apiV1)
 
 app.doc31('/docs', {

@@ -1,0 +1,37 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug API",
+      "type": "node",
+      "request": "launch",
+
+      // Debug server in VSCode
+      "cwd": "${workspaceFolder}/apps/api",
+      "program": "src/server.ts",
+      // "program": "${file}",
+
+      /*
+       * Path to tsx binary
+       * Assuming locally installed
+       */
+      "runtimeExecutable": "tsx",
+
+      /*
+       * Open terminal when debugging starts (Optional)
+       * Useful to see console.logs
+       */
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "openOnFirstSessionStart",
+
+      // Files to exclude from debugger (e.g. call stack)
+      "skipFiles": [
+        // Node.js internal core modules
+        "<node_internals>/**"
+
+        // Ignore all dependencies (optional)
+        // "${workspaceFolder}/node_modules/**"
+      ]
+    }
+  ]
+}

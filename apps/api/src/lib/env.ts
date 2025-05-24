@@ -12,14 +12,19 @@ export const envSchema = z.object({
 
   DATABASE_URL: z.string().url(),
 
+  BETTER_AUTH_SECRET: z.string().nonempty(),
+  BETTER_AUTH_URL: z.string().url(),
+
   JWT_SECRET: z.string().nonempty(),
   SENTRY_DSN: z.string().url(),
   PORT: z.number().default(3000),
   LOG_LEVEL: logLevelsSchema.default('info'),
 
   STRIPE_SECRET_KEY: z.string().nonempty(),
-  STRIPE_PUBLISHABLE_KEY: z.string().nonempty(),
-  STRIPE_WEBHOOK_SECRET: z.string().nonempty()
+  STRIPE_WEBHOOK_SECRET: z.string().nonempty(),
+
+  GITHUB_CLIENT_ID: z.string().nonempty(),
+  GITHUB_CLIENT_SECRET: z.string().nonempty()
 })
 export type Env = z.infer<typeof envSchema>
 
@@ -32,4 +37,4 @@ export const isDev = env.NODE_ENV === 'development'
 export const isProd = env.NODE_ENV === 'production'
 export const isBrowser = (globalThis as any).window !== undefined
 
-export const isStripeLive = env.STRIPE_PUBLISHABLE_KEY.startsWith('pk_live_')
+export const isStripeLive = env.STRIPE_SECRET_KEY.startsWith('sk_live_')

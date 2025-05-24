@@ -13,7 +13,7 @@ import {
   type RawUser,
   schema
 } from '@/db'
-import { stripe } from '@/lib/stripe'
+import { stripe } from '@/lib/external/stripe'
 
 import { setConsumerStripeSubscriptionStatus } from '../consumers/utils'
 

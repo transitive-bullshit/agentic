@@ -310,16 +310,6 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
-        AuthProviderType: "github" | "google" | "spotify" | "twitter" | "linkedin" | "stripe";
-        AuthProvider: {
-            provider: components["schemas"]["AuthProviderType"];
-            id: string;
-            username?: string;
-            scope?: string;
-        };
-        AuthProviders: {
-            [key: string]: components["schemas"]["AuthProvider"];
-        };
         User: {
             id: string;
             createdAt: string;
@@ -328,14 +318,11 @@ export interface components {
             username: string;
             /** @enum {string} */
             role: "user" | "admin";
-            email?: string;
-            firstName?: string;
-            lastName?: string;
+            name?: string;
+            email: string;
+            emailVerified: boolean;
             image?: string;
-            emailConfirmed: boolean;
-            emailConfirmedAt?: string;
             isStripeConnectEnabledByDefault: boolean;
-            authProviders: components["schemas"]["AuthProviders"];
             stripeCustomerId?: string;
         };
         Team: {
@@ -475,7 +462,7 @@ export interface components {
             slug: components["schemas"]["slug"];
             interval?: components["schemas"]["PricingInterval"];
             desc?: string;
-            features: string[];
+            features?: string[];
             trialPeriodDays?: number;
             lineItems: components["schemas"]["PricingPlanLineItem"][];
         };
@@ -492,6 +479,7 @@ export interface components {
             description: string;
             readme: string;
             iconUrl?: string;
+            sourceUrl?: string;
             /** @description User id (e.g. "user_tz4a98xxat96iws9zmbrgj3a") */
             userId: string;
             /** @description Team id (e.g. "team_tz4a98xxat96iws9zmbrgj3a") */
@@ -618,10 +606,8 @@ export interface operations {
         requestBody: {
             content: {
                 "application/json": {
-                    firstName?: string;
-                    lastName?: string;
+                    name?: string;
                     image?: string;
-                    password?: string;
                     isStripeConnectEnabledByDefault?: boolean;
                 };
             };
@@ -1288,9 +1274,11 @@ export interface operations {
                     readme?: string;
                     /**
                      * Format: uri
-                     * @description Logo image URL to use for this delpoyment. Logos should have a square aspect ratio.
+                     * @description Logo image URL to use for this deployment. Logos should have a square aspect ratio.
                      */
                     iconUrl?: string;
+                    /** Format: uri */
+                    sourceUrl?: string;
                     /** @description Project id (e.g. "proj_tz4a98xxat96iws9zmbrgj3a") */
                     projectId: string;
                     /**

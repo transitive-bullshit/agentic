@@ -27,11 +27,16 @@
     "test:typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@agentic/platform-core": "workspace:*",
     "@agentic/platform-api-client": "workspace:*",
+    "@agentic/platform-core": "workspace:*",
+    "@hono/node-server": "^1.14.1",
     "commander": "^14.0.0",
     "conf": "^13.1.0",
+    "dotenv": "catalog:",
+    "get-port": "^7.1.0",
+    "hono": "^4.7.9",
     "inquirer": "^9.2.15",
+    "open": "^10.1.2",
     "ora": "^8.2.0",
     "restore-cursor": "catalog:",
     "zod": "catalog:"

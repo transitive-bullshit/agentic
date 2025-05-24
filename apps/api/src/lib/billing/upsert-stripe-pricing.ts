@@ -14,7 +14,7 @@ import {
   type RawProject,
   schema
 } from '@/db'
-import { stripe } from '@/lib/stripe'
+import { stripe } from '@/lib/external/stripe'
 
 /**
  * Upserts all the Stripe resources corresponding to a Deployment's pricing

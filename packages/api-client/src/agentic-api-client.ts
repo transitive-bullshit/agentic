@@ -1,30 +1,153 @@
 import type { Simplify } from 'type-fest'
+import { assert, sanitizeSearchParams } from '@agentic/platform-core'
+import {
+  type Client as AuthClient,
+  createClient as createAuthClient
+} from '@openauthjs/openauth/client'
 import defaultKy, { type KyInstance } from 'ky'
 
 import type { operations } from './openapi'
-import { getEnv, sanitizeSearchParams } from './utils'
+import type {
+  AuthorizeResult,
+  AuthTokens,
+  AuthUser,
+  OnUpdateAuthSessionFunction
+} from './types'
+import { subjects } from './subjects'
 
 export class AgenticApiClient {
   static readonly DEFAULT_API_BASE_URL = 'https://api.agentic.so'
 
-  public readonly ky: KyInstance
   public readonly apiBaseUrl: string
+  public readonly ky: KyInstance
+  public readonly onUpdateAuth?: OnUpdateAuthSessionFunction
+
+  protected _authTokens?: Readonly<AuthTokens>
+  protected _authClient: AuthClient
 
   constructor({
-    apiKey = getEnv('AGENTIC_API_KEY'),
     apiBaseUrl = AgenticApiClient.DEFAULT_API_BASE_URL,
-    ky = defaultKy
+    ky = defaultKy,
+    onUpdateAuth
   }: {
-    apiKey?: string
     apiBaseUrl?: string
     ky?: KyInstance
+    onUpdateAuth?: OnUpdateAuthSessionFunction
   }) {
+    assert(apiBaseUrl, 'AgenticApiClient missing required "apiBaseUrl"')
+
     this.apiBaseUrl = apiBaseUrl
+    this.onUpdateAuth = onUpdateAuth
+
+    this._authClient = createAuthClient({
+      issuer: apiBaseUrl,
+      clientID: 'agentic-api-client'
+    })
 
     this.ky = ky.extend({
       prefixUrl: apiBaseUrl,
-      headers: { Authorization: `Bearer ${apiKey}` }
+      hooks: {
+        beforeRequest: [
+          async (request) => {
+            // Always verify freshness of auth tokens before making a request
+            await this.verifyAuthAndRefreshIfNecessary()
+            assert(this._authTokens, 'Not authenticated')
+            request.headers.set(
+              'Authorization',
+              `Bearer ${this._authTokens.access}`
+            )
+          }
+        ]
+      }
     })
+  }
+
+  get isAuthenticated(): boolean {
+    return !!this._authTokens
+  }
+
+  get authTokens(): Readonly<AuthTokens> | undefined {
+    return this._authTokens
+  }
+
+  async setRefreshAuthToken(refreshToken: string): Promise<void> {
+    const result = await this._authClient.refresh(refreshToken)
+    if (result.err) {
+      throw result.err
+    }
+
+    this._authTokens = result.tokens
+  }
+
+  async verifyAuthAndRefreshIfNecessary(): Promise<AuthUser> {
+    if (!this._authTokens) {
+      throw new Error('This method requires authentication.')
+    }
+
+    const verified = await this._authClient.verify(
+      subjects,
+      this._authTokens.access,
+      {
+        refresh: this._authTokens.refresh
+      }
+    )
+
+    if (verified.err) {
+      throw verified.err
+    }
+
+    if (verified.tokens) {
+      this._authTokens = verified.tokens
+    }
+
+    this.onUpdateAuth?.({
+      session: this._authTokens,
+      user: verified.subject.properties
+    })
+
+    return verified.subject.properties
+  }
+
+  async exchangeAuthCode({
+    code,
+    redirectUri,
+    verifier
+  }: {
+    code: string
+    redirectUri: string
+    verifier?: string
+  }): Promise<AuthUser> {
+    const result = await this._authClient.exchange(code, redirectUri, verifier)
+
+    if (result.err) {
+      throw result.err
+    }
+
+    this._authTokens = result.tokens
+    return this.verifyAuthAndRefreshIfNecessary()
+  }
+
+  async initAuthFlow({
+    redirectUri,
+    provider
+  }: {
+    redirectUri: string
+    provider: 'github' | 'password'
+  }): Promise<AuthorizeResult> {
+    return this._authClient.authorize(redirectUri, 'code', {
+      provider
+    })
+  }
+
+  async logout(): Promise<void> {
+    this._authTokens = undefined
+    this.onUpdateAuth?.()
+  }
+
+  async getMe(): Promise<OperationResponse<'getUser'>> {
+    const user = await this.verifyAuthAndRefreshIfNecessary()
+
+    return this.ky.get(`v1/users/${user.id}`).json()
   }
 
   async getUser({

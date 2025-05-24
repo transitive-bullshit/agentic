@@ -98,11 +98,11 @@ registerV1DeploymentsUpdateDeployment(privateRouter)
 registerV1DeploymentsListDeployments(privateRouter)
 registerV1DeploymentsPublishDeployment(privateRouter)
 
+// Internal admin routes
+registerV1AdminConsumersGetConsumerByToken(privateRouter)
+
 // Webhook event handlers
 registerV1StripeWebhook(publicRouter)
-
-// Admin routes
-registerV1AdminConsumersGetConsumerByToken(privateRouter)
 
 // Setup routes and middleware
 apiV1.route('/', publicRouter)

@@ -1,10 +1,9 @@
 import { assert } from '@agentic/platform-core'
 import { createMiddleware } from 'hono/factory'
-import * as jwt from 'hono/jwt'
 
 import type { AuthenticatedEnv } from '@/lib/types'
-import { db, eq, schema } from '@/db'
-import { env } from '@/lib/env'
+import { authClient } from '@/lib/auth/client'
+import { subjects } from '@/lib/auth/subjects'
 
 export const authenticate = createMiddleware<AuthenticatedEnv>(
   async function authenticateMiddleware(ctx, next) {
@@ -21,21 +20,12 @@ export const authenticate = createMiddleware<AuthenticatedEnv>(
     const token = parts.at(-1)
     assert(token, 401, 'Unauthorized')
 
-    const payload = await jwt.verify(token, env.JWT_SECRET)
-    assert(payload, 401, 'Unauthorized')
-    assert(payload.type === 'user', 401, 'Unauthorized')
-    assert(
-      payload.userId && typeof payload.userId === 'string',
-      401,
-      'Unauthorized'
-    )
-    ctx.set('userId', payload.userId)
+    const verified = await authClient.verify(subjects, token)
+    assert(!verified.err, 401, 'Unauthorized')
 
-    const user = await db.query.users.findFirst({
-      where: eq(schema.users.id, payload.userId)
-    })
-    assert(user, 401, 'Unauthorized')
-    ctx.set('user', user as any)
+    const userId = verified.subject.properties.id
+    assert(userId, 401, 'Unauthorized')
+    ctx.set('userId', userId)
 
     await next()
   }
