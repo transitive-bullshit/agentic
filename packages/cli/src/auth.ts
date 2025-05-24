@@ -27,16 +27,11 @@ export async function auth({
   const port = await getPort({ port: preferredPort })
   const app = new Hono()
 
-  if (port !== preferredPort) {
-    throw new Error(
-      `Port ${preferredPort} is required to sign in with ${providerLabel}, but it is already in use.`
-    )
-  }
-
   const redirectUri = `http://localhost:${port}/callback/${provider}/success`
   let _resolveAuth: any
   let _rejectAuth: any
 
+  // NOTE: Promise.withResolvers requires Node.js 22+
   const authP = new Promise<AuthSession>((resolve, reject) => {
     _resolveAuth = resolve
     _rejectAuth = reject
