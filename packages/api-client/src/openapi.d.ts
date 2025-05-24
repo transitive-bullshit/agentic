@@ -312,15 +312,16 @@ export interface components {
     schemas: {
         User: {
             id: string;
-            createdAt: string | null;
-            updatedAt: string | null;
-            name: string;
+            createdAt: string;
+            updatedAt: string;
+            deletedAt?: string;
+            username: string;
+            /** @enum {string} */
+            role: "user" | "admin";
+            name?: string;
             email: string;
             emailVerified: boolean;
             image?: string;
-            username?: string;
-            /** @enum {string} */
-            role: "user" | "admin";
             isStripeConnectEnabledByDefault: boolean;
             stripeCustomerId?: string;
         };
@@ -461,7 +462,7 @@ export interface components {
             slug: components["schemas"]["slug"];
             interval?: components["schemas"]["PricingInterval"];
             desc?: string;
-            features: string[];
+            features?: string[];
             trialPeriodDays?: number;
             lineItems: components["schemas"]["PricingPlanLineItem"][];
         };
@@ -478,6 +479,7 @@ export interface components {
             description: string;
             readme: string;
             iconUrl?: string;
+            sourceUrl?: string;
             /** @description User id (e.g. "user_tz4a98xxat96iws9zmbrgj3a") */
             userId: string;
             /** @description Team id (e.g. "team_tz4a98xxat96iws9zmbrgj3a") */
@@ -1272,9 +1274,11 @@ export interface operations {
                     readme?: string;
                     /**
                      * Format: uri
-                     * @description Logo image URL to use for this delpoyment. Logos should have a square aspect ratio.
+                     * @description Logo image URL to use for this deployment. Logos should have a square aspect ratio.
                      */
                     iconUrl?: string;
+                    /** Format: uri */
+                    sourceUrl?: string;
                     /** @description Project id (e.g. "proj_tz4a98xxat96iws9zmbrgj3a") */
                     projectId: string;
                     /**
