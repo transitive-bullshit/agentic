@@ -14,7 +14,7 @@ import { createSchemaFactory } from '@fisch0920/drizzle-zod'
 import { z } from '@hono/zod-openapi'
 import { createId as createCuid2 } from '@paralleldrive/cuid2'
 
-const usernameAndTeamSlugLength = 64 as const
+export const namespaceMaxLength = 64 as const
 
 // prefix is max 5 characters
 // separator is 1 character
@@ -29,18 +29,10 @@ export const idPrefixMap = {
   consumer: 'csmr',
   logEntry: 'log',
 
-  // better-auth
+  // auth
   user: 'user',
   account: 'acct',
-  session: 'sess',
-  verification: 'veri',
-  'rate-limit': 'ratel',
-  organization: 'org',
-  member: 'mem',
-  invitation: 'inv',
-  jwks: 'jwks',
-  passkey: 'passk',
-  'two-factor': '2fa'
+  session: 'sess'
 } as const
 
 export type ModelType = keyof typeof idPrefixMap
@@ -69,9 +61,7 @@ export const consumerPrimaryId = getPrimaryId('consumer')
 export const logEntryPrimaryId = getPrimaryId('logEntry')
 export const teamPrimaryId = getPrimaryId('team')
 export const userPrimaryId = getPrimaryId('user')
-export const sessionPrimaryId = getPrimaryId('session')
 export const accountPrimaryId = getPrimaryId('account')
-export const verificationPrimaryId = getPrimaryId('verification')
 
 /**
  * All of our model primary ids have the following format:
@@ -123,14 +113,14 @@ export function deploymentIdentifier<
 
 export function username<U extends string, T extends Readonly<[U, ...U[]]>>(
   config?: PgVarcharConfig<T | Writable<T>, never>
-): PgVarcharBuilderInitial<'', Writable<T>, typeof usernameAndTeamSlugLength> {
-  return varchar({ length: usernameAndTeamSlugLength, ...config })
+): PgVarcharBuilderInitial<'', Writable<T>, typeof namespaceMaxLength> {
+  return varchar({ length: namespaceMaxLength, ...config })
 }
 
 export function teamSlug<U extends string, T extends Readonly<[U, ...U[]]>>(
   config?: PgVarcharConfig<T | Writable<T>, never>
-): PgVarcharBuilderInitial<'', Writable<T>, typeof usernameAndTeamSlugLength> {
-  return varchar({ length: usernameAndTeamSlugLength, ...config })
+): PgVarcharBuilderInitial<'', Writable<T>, typeof namespaceMaxLength> {
+  return varchar({ length: namespaceMaxLength, ...config })
 }
 
 /**
@@ -157,15 +147,6 @@ export const timestamps = {
   deletedAt: timestamp()
 }
 
-export const authTimestamps = {
-  createdAt: timestamp({ mode: 'date' })
-    .notNull()
-    .$defaultFn(() => /* @__PURE__ */ new Date()),
-  updatedAt: timestamp({ mode: 'date' })
-    .notNull()
-    .$defaultFn(() => /* @__PURE__ */ new Date())
-}
-
 export const userRoleEnum = pgEnum('UserRole', ['user', 'admin'])
 export const teamMemberRoleEnum = pgEnum('TeamMemberRole', ['user', 'admin'])
 export const logEntryTypeEnum = pgEnum('LogEntryType', ['log'])
@@ -183,6 +164,10 @@ export const pricingIntervalEnum = pgEnum('PricingInterval', [
   'year'
 ])
 export const pricingCurrencyEnum = pgEnum('PricingCurrency', ['usd'])
+export const authProviderTypeEnum = pgEnum('AuthProviderType', [
+  'github',
+  'password'
+])
 
 export const { createInsertSchema, createSelectSchema, createUpdateSchema } =
   createSchemaFactory({

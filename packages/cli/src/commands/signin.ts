@@ -1,9 +1,7 @@
-import type { AuthSession } from '@agentic/platform-api-client'
-import { Command, InvalidArgumentError } from 'commander'
+import { Command } from 'commander'
 
 import type { Context } from '../types'
-import { authWithEmailPassword } from '../auth-with-email-password'
-import { authWithGitHub } from '../auth-with-github'
+import { auth } from '../auth'
 
 export function registerSigninCommand({ client, program, logger }: Context) {
   const command = new Command('login')
@@ -11,29 +9,21 @@ export function registerSigninCommand({ client, program, logger }: Context) {
     .description(
       'Signs in to Agentic. If no credentials are provided, uses GitHub auth.'
     )
-    // TODO
-    // .option('-u, --username <username>', 'account username')
-    .option('-e, --email <email>', 'account email')
-    .option('-p, --password <password>', 'account password')
+    .option('-e, --email', 'Log in using email and password')
     .action(async (opts) => {
-      let session: AuthSession | undefined
       if (opts.email) {
-        if (!opts.password) {
-          throw new InvalidArgumentError(
-            'Password is required when using email'
-          )
-        }
-
-        session = await authWithEmailPassword({
+        await auth({
           client,
-          email: opts.email,
-          password: opts.password
+          provider: 'password'
+          // email: opts.email,
+          // password: opts.password
         })
       } else {
-        session = await authWithGitHub({ client })
+        await auth({ client, provider: 'github' })
       }
 
-      logger.log(session)
+      const user = await client.getMe()
+      logger.log(user)
     })
 
   program.addCommand(command)

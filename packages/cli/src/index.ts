@@ -13,9 +13,32 @@ async function main() {
   restoreCursor()
 
   const client = new AgenticApiClient({
-    apiCookie: AuthStore.tryGetAuth()?.cookie,
-    apiBaseUrl: process.env.AGENTIC_API_BASE_URL
+    apiBaseUrl: process.env.AGENTIC_API_BASE_URL,
+    onUpdateAuth: (update) => {
+      if (update) {
+        AuthStore.setAuth({
+          refreshToken: update.session.refresh,
+          user: update.user
+        })
+      } else {
+        AuthStore.clearAuth()
+      }
+    }
   })
+
+  // Try to initialize the existing auth session if one exists
+  const authSession = AuthStore.tryGetAuth()
+  if (authSession) {
+    try {
+      await client.setRefreshAuthToken(authSession.refreshToken)
+    } catch (err: any) {
+      console.warn(
+        'Existing auth session is invalid; logging out...',
+        err.message
+      )
+      AuthStore.clearAuth()
+    }
+  }
 
   const program = new Command('agentic')
     .option('-j, --json', 'Print output in JSON format')

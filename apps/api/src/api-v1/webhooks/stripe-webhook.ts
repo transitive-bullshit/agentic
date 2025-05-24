@@ -5,7 +5,7 @@ import { assert, HttpError } from '@agentic/platform-core'
 import { and, db, eq, schema } from '@/db'
 import { setConsumerStripeSubscriptionStatus } from '@/lib/consumers/utils'
 import { env, isStripeLive } from '@/lib/env'
-import { stripe } from '@/lib/stripe'
+import { stripe } from '@/lib/external/stripe'
 
 const relevantStripeEvents = new Set<Stripe.Event.Type>([
   'customer.subscription.updated'

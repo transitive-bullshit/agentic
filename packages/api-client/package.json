@@ -24,9 +24,10 @@
   },
   "dependencies": {
     "@agentic/platform-core": "workspace:*",
-    "better-auth": "^1.2.8",
+    "@openauthjs/openauth": "^0.4.3",
     "ky": "catalog:",
-    "type-fest": "catalog:"
+    "type-fest": "catalog:",
+    "zod": "catalog:"
   },
   "devDependencies": {
     "openapi-typescript": "^7.8.0"

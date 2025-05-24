@@ -1,4 +1,4 @@
-export * from './auth'
+export * from './account'
 export * from './common'
 export * from './consumer'
 export * from './deployment'

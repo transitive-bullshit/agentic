@@ -30,6 +30,7 @@
     - https://github.com/transitive-bullshit?submit=Search&q=oauth&tab=stars&type=&sort=&direction=&submit=Search
     - clerk / workos / auth0
 - consider switching to [consola](https://github.com/unjs/consola) for logging?
+- consider switching to `bun` (for `--hot` reloading!!)
 
 ## License
 

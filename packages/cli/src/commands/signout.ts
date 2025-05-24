@@ -8,11 +8,11 @@ export function registerSignoutCommand({ client, program, logger }: Context) {
     .alias('signout')
     .description('Signs the current user out')
     .action(async () => {
-      if (!AuthStore.isAuthenticated()) {
+      if (!client.isAuthenticated) {
         return
       }
 
-      await client.clearAuthSession()
+      await client.logout()
       AuthStore.clearAuth()
 
       logger.log('Signed out')

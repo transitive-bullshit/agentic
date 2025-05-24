@@ -1,8 +1,7 @@
 import { OpenAPIHono } from '@hono/zod-openapi'
 import { fromError } from 'zod-validation-error'
 
-import type { AuthenticatedEnv, DefaultContext } from '@/lib/types'
-import { auth } from '@/lib/auth'
+import type { AuthenticatedEnv } from '@/lib/types'
 import * as middleware from '@/lib/middleware'
 import { registerOpenAPIErrorResponses } from '@/lib/openapi-utils'
 
@@ -104,16 +103,6 @@ registerV1AdminConsumersGetConsumerByToken(privateRouter)
 
 // Webhook event handlers
 registerV1StripeWebhook(publicRouter)
-
-// Better-Auth Handler for all auth-related routes
-apiV1.on(['POST', 'GET'], 'auth/**', async (c: DefaultContext) => {
-  const logger = c.get('logger')
-  logger.info(c.req.method, c.req.url, c.req.header())
-
-  const res = await auth.handler(c.req.raw)
-  logger.info('auth result', res)
-  return res
-})
 
 // Setup routes and middleware
 apiV1.route('/', publicRouter)

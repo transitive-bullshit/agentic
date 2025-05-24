@@ -1,61 +1,153 @@
 import type { Simplify } from 'type-fest'
-import { assert, getEnv, sanitizeSearchParams } from '@agentic/platform-core'
-import { createAuthClient } from 'better-auth/client'
-import { username } from 'better-auth/plugins'
+import { assert, sanitizeSearchParams } from '@agentic/platform-core'
+import {
+  type Client as AuthClient,
+  createClient as createAuthClient
+} from '@openauthjs/openauth/client'
 import defaultKy, { type KyInstance } from 'ky'
 
 import type { operations } from './openapi'
-import type { AuthSession } from './types'
+import type {
+  AuthorizeResult,
+  AuthTokens,
+  AuthUser,
+  OnUpdateAuthSessionFunction
+} from './types'
+import { subjects } from './subjects'
 
 export class AgenticApiClient {
   static readonly DEFAULT_API_BASE_URL = 'https://api.agentic.so'
 
   public readonly apiBaseUrl: string
-  public readonly authClient: ReturnType<typeof createAuthClient>
-  public ky: KyInstance
+  public readonly ky: KyInstance
+  public readonly onUpdateAuth?: OnUpdateAuthSessionFunction
+
+  protected _authTokens?: Readonly<AuthTokens>
+  protected _authClient: AuthClient
 
   constructor({
-    apiCookie = getEnv('AGENTIC_API_COOKIE'),
     apiBaseUrl = AgenticApiClient.DEFAULT_API_BASE_URL,
-    ky = defaultKy
+    ky = defaultKy,
+    onUpdateAuth
   }: {
-    apiCookie?: string
     apiBaseUrl?: string
     ky?: KyInstance
+    onUpdateAuth?: OnUpdateAuthSessionFunction
   }) {
     assert(apiBaseUrl, 'AgenticApiClient missing required "apiBaseUrl"')
+
     this.apiBaseUrl = apiBaseUrl
+    this.onUpdateAuth = onUpdateAuth
+
+    this._authClient = createAuthClient({
+      issuer: apiBaseUrl,
+      clientID: 'agentic-api-client'
+    })
 
     this.ky = ky.extend({
       prefixUrl: apiBaseUrl,
-      // headers: { Authorization: `Bearer ${apiKey}` }
-      headers: { cookie: apiCookie }
-    })
-
-    this.authClient = createAuthClient({
-      baseURL: `${apiBaseUrl}/v1/auth`,
-      plugins: [username()]
+      hooks: {
+        beforeRequest: [
+          async (request) => {
+            // Always verify freshness of auth tokens before making a request
+            await this.verifyAuthAndRefreshIfNecessary()
+            assert(this._authTokens, 'Not authenticated')
+            request.headers.set(
+              'Authorization',
+              `Bearer ${this._authTokens.access}`
+            )
+          }
+        ]
+      }
     })
   }
 
-  async getAuthSession(cookie?: string): Promise<AuthSession> {
-    return this.ky
-      .get('v1/auth/get-session', cookie ? { headers: { cookie } } : {})
-      .json<AuthSession>()
+  get isAuthenticated(): boolean {
+    return !!this._authTokens
   }
 
-  async setAuthSession(cookie: string): Promise<AuthSession> {
-    this.ky = this.ky.extend({
-      headers: { cookie }
-    })
-
-    return this.getAuthSession()
+  get authTokens(): Readonly<AuthTokens> | undefined {
+    return this._authTokens
   }
 
-  async clearAuthSession(): Promise<void> {
-    this.ky = this.ky.extend({
-      headers: {}
+  async setRefreshAuthToken(refreshToken: string): Promise<void> {
+    const result = await this._authClient.refresh(refreshToken)
+    if (result.err) {
+      throw result.err
+    }
+
+    this._authTokens = result.tokens
+  }
+
+  async verifyAuthAndRefreshIfNecessary(): Promise<AuthUser> {
+    if (!this._authTokens) {
+      throw new Error('This method requires authentication.')
+    }
+
+    const verified = await this._authClient.verify(
+      subjects,
+      this._authTokens.access,
+      {
+        refresh: this._authTokens.refresh
+      }
+    )
+
+    if (verified.err) {
+      throw verified.err
+    }
+
+    if (verified.tokens) {
+      this._authTokens = verified.tokens
+    }
+
+    this.onUpdateAuth?.({
+      session: this._authTokens,
+      user: verified.subject.properties
     })
+
+    return verified.subject.properties
+  }
+
+  async exchangeAuthCode({
+    code,
+    redirectUri,
+    verifier
+  }: {
+    code: string
+    redirectUri: string
+    verifier?: string
+  }): Promise<AuthUser> {
+    const result = await this._authClient.exchange(code, redirectUri, verifier)
+
+    if (result.err) {
+      throw result.err
+    }
+
+    this._authTokens = result.tokens
+    return this.verifyAuthAndRefreshIfNecessary()
+  }
+
+  async initAuthFlow({
+    redirectUri,
+    provider
+  }: {
+    redirectUri: string
+    provider: 'github' | 'password'
+  }): Promise<AuthorizeResult> {
+    return this._authClient.authorize(redirectUri, 'code', {
+      provider
+    })
+  }
+
+  async logout(): Promise<void> {
+    this._authTokens = undefined
+    this.onUpdateAuth?.()
+  }
+
+  async getMe(): Promise<OperationResponse<'getUser'>> {
+    const user = await this.verifyAuthAndRefreshIfNecessary()
+
+    return this.ky.get(`v1/users/${user.id}`).json()
   }
 
   async getUser({

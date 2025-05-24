@@ -1,4 +1,7 @@
+import type { Tokens as AuthTokens } from '@openauthjs/openauth/client'
+
 import type { components } from './openapi'
+import type { AuthUser } from './subjects'
 
 export type Consumer = components['schemas']['Consumer']
 export type Project = components['schemas']['Project']
@@ -23,30 +26,13 @@ export type PricingPlanName = components['schemas']['name']
 export type PricingPlanSlug = components['schemas']['slug']
 export type PricingPlanLabel = components['schemas']['label']
 
-export type AuthSession = {
-  session: Session
+export type { AuthUser } from './subjects'
+export type {
+  AuthorizeResult,
+  Tokens as AuthTokens
+} from '@openauthjs/openauth/client'
+
+export type OnUpdateAuthSessionFunction = (update?: {
+  session: AuthTokens
   user: AuthUser
-}
-
-export interface Session {
-  id: string
-  token: string
-  userId: string
-  ipAddress?: string | null
-  userAgent?: string | null
-  expiresAt: string
-  createdAt: string
-  updatedAt: string
-}
-
-export interface AuthUser {
-  id: string
-  name: string
-  role: string
-  username?: string
-  email: string
-  emailVerified: boolean
-  image?: string
-  createdAt: string
-  updatedAt: string
-}
+}) => unknown
