@@ -1,4 +1,5 @@
 import { assert, pick } from '@agentic/platform-core'
+import { validators } from '@agentic/platform-validators'
 import { issuer } from '@openauthjs/openauth'
 import { GithubProvider } from '@openauthjs/openauth/provider/github'
 import { PasswordProvider } from '@openauthjs/openauth/provider/password'
@@ -23,10 +24,29 @@ export const authRouter = issuer({
     }),
     password: PasswordProvider(
       PasswordUI({
+        copy: {
+          register_title: 'Welcome to Agentic',
+          login_title: 'Welcome to Agentic'
+        },
         sendCode: async (email, code) => {
           // TODO: Send email code to user
           // eslint-disable-next-line no-console
           console.log({ email, code })
+        },
+        validatePassword: (password) => {
+          if (password.length < 3) {
+            return 'Password must be at least 3 characters'
+          }
+
+          if (password.length > 1024) {
+            return 'Password must be less than 1024 characters'
+          }
+
+          if (!validators.password(password)) {
+            return 'Invalid password'
+          }
+
+          return undefined
         }
       })
     )
