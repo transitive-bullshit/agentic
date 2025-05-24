@@ -188,7 +188,6 @@ export const projectSelectSchema = createSelectSchema(projects, {
 })
   .omit({
     _secret: true,
-    _providerToken: true,
     // _text: true,
     _stripeProductIdMap: true,
     _stripePriceIdMap: true,

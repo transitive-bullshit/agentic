@@ -17,6 +17,7 @@
 - consider switching to `bun` (for `--hot` reloading!!)
 - transactional emails
   - openauth password emails and `sendCode`
+- re-add support for teams / organizations
 
 ## License
 
