@@ -87,7 +87,7 @@ export const projects = pgTable(
     _secret: text().notNull(),
 
     // Auth token used to access the platform API on behalf of this project
-    _providerToken: text().notNull(),
+    // _providerToken: text().notNull(),
 
     // TODO: Full-text search
     // _text: text().default('').notNull(),

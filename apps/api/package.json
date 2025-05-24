@@ -40,7 +40,6 @@
     "eventid": "^2.0.1",
     "exit-hook": "catalog:",
     "hono": "^4.7.9",
-    "jsonwebtoken": "^9.0.2",
     "octokit": "^5.0.2",
     "p-all": "^5.0.0",
     "parse-json": "^8.3.0",
@@ -52,7 +51,6 @@
     "zod-validation-error": "^3.4.1"
   },
   "devDependencies": {
-    "@types/jsonwebtoken": "^9.0.9",
     "@types/semver": "^7.7.0",
     "drizzle-kit": "^0.31.1",
     "drizzle-orm": "^0.43.1",

@@ -26,7 +26,7 @@ async function main() {
     }
   })
 
-  // Try to initialize the existing auth session if one exists
+  // Initialize the existing auth session if one exists
   const authSession = AuthStore.tryGetAuth()
   if (authSession) {
     try {
