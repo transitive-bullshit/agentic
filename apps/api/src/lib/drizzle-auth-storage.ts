@@ -4,7 +4,7 @@ import {
   type StorageAdapter
 } from '@openauthjs/openauth/storage/storage'
 
-import { and, db, eq, isNull, like, lt, or, schema } from '@/db'
+import { and, db, eq, gt, isNull, like, or, schema } from '@/db'
 
 export function DrizzleAuthStorage(): StorageAdapter {
   return {
@@ -54,7 +54,7 @@ export function DrizzleAuthStorage(): StorageAdapter {
       const entries = await db.query.authData.findMany({
         where: and(
           like(schema.authData.id, `${idPrefix}%`),
-          or(isNull(schema.authData.expiry), lt(schema.authData.expiry, now))
+          or(isNull(schema.authData.expiry), gt(schema.authData.expiry, now))
         )
       })
 
