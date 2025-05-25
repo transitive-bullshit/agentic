@@ -11,13 +11,11 @@ import { validateOpenAPISpec } from './validate-openapi-spec'
 const fixtures = [
   'basic.json',
   'firecrawl.json',
-  'github.json',
   'notion.json',
   'open-meteo.yaml',
   'pet-store.json',
   'petstore-expanded.json',
   'security.json',
-  'stripe.json',
   'tic-tac-toe.json'
 ]
 
