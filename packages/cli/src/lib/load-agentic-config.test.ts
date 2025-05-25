@@ -10,12 +10,18 @@ const fixtures = [
   'basic-raw-free-json',
   'pricing-freemium',
   'pricing-pay-as-you-go',
-  'pricing-3-plans'
+  'pricing-3-plans',
+  'pricing-monthly-annual'
 ]
 
 const invalidFixtures = [
   'pricing-base-inconsistent',
-  'pricing-custom-inconsistent'
+  'pricing-custom-inconsistent',
+  'pricing-empty-0',
+  'pricing-empty-1',
+  'pricing-empty-2',
+  'pricing-duplicate-0',
+  'pricing-duplicate-1'
 ]
 
 const fixturesDir = path.join(

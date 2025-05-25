@@ -58,6 +58,16 @@ exports[`loadAgenticConfig > invalid: pricing-base-inconsistent 1`] = `[ZodValid
 
 exports[`loadAgenticConfig > invalid: pricing-custom-inconsistent 1`] = `[Error: Invalid pricingPlans: all PricingPlans which contain the same LineItems (by slug "custom") must have the same usage type ("licensed" or "metered").]`;
 
+exports[`loadAgenticConfig > invalid: pricing-duplicate-0 1`] = `[Error: Invalid pricingPlans: duplicate PricingPlan slugs. All PricingPlan slugs must be unique (e.g. "free", "starter-monthly", "pro-annual", etc).]`;
+
+exports[`loadAgenticConfig > invalid: pricing-duplicate-1 1`] = `[Error: Invalid pricingPlan "basic": duplicate line-item slugs]`;
+
+exports[`loadAgenticConfig > invalid: pricing-empty-0 1`] = `[ZodValidationError: Validation error: Must contain at least one pricing interval at "pricingIntervals"]`;
+
+exports[`loadAgenticConfig > invalid: pricing-empty-1 1`] = `[ZodValidationError: Validation error: Array must contain at least 1 element(s) at "pricingPlans[0].lineItems"]`;
+
+exports[`loadAgenticConfig > invalid: pricing-empty-2 1`] = `[ZodValidationError: Validation error: Must contain at least one PricingPlan at "pricingPlans"]`;
+
 exports[`loadAgenticConfig > pricing-3-plans 1`] = `
 {
   "name": "test-pricing-3-plans",
@@ -162,6 +172,60 @@ exports[`loadAgenticConfig > pricing-freemium 1`] = `
       "name": "Basic",
       "slug": "basic",
       "trialPeriodDays": 7,
+    },
+  ],
+}
+`;
+
+exports[`loadAgenticConfig > pricing-monthly-annual 1`] = `
+{
+  "name": "test-pricing-monthly-annual",
+  "originAdapter": {
+    "location": "external",
+    "type": "raw",
+  },
+  "originUrl": "https://httpbin.org",
+  "pricingIntervals": [
+    "month",
+    "year",
+  ],
+  "pricingPlans": [
+    {
+      "lineItems": [
+        {
+          "amount": 0,
+          "slug": "custom",
+          "usageType": "licensed",
+        },
+      ],
+      "name": "Free",
+      "slug": "free",
+    },
+    {
+      "interval": "month",
+      "lineItems": [
+        {
+          "amount": 100,
+          "interval": "month",
+          "slug": "custom",
+          "usageType": "licensed",
+        },
+      ],
+      "name": "Basic Monthly",
+      "slug": "basic-monthly",
+    },
+    {
+      "interval": "year",
+      "lineItems": [
+        {
+          "amount": 70,
+          "interval": "year",
+          "slug": "custom",
+          "usageType": "licensed",
+        },
+      ],
+      "name": "Basic Annual",
+      "slug": "basic-annual",
     },
   ],
 }

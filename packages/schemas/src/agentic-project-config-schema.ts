@@ -115,7 +115,13 @@ NOTE: Agentic currently only supports \`external\` API servers. If you'd like to
    * LineItems must specify their `interval` property to differentiate between
    * different pricing intervals.
    */
-  pricingIntervals: z.array(pricingIntervalSchema).optional().default(['month'])
+  pricingIntervals: z
+    .array(pricingIntervalSchema)
+    .nonempty({
+      message: 'Must contain at least one pricing interval'
+    })
+    .optional()
+    .default(['month'])
 })
 
 export type AgenticProjectConfigInput = z.input<
