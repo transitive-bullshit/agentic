@@ -3,21 +3,68 @@
 exports[`loadAgenticConfig > basic-raw-free-json 1`] = `
 {
   "name": "My Project",
+  "originAdapter": {
+    "location": "external",
+    "type": "raw",
+  },
   "originUrl": "https://jsonplaceholder.typicode.com",
+  "pricingIntervals": [
+    "month",
+  ],
+  "pricingPlans": [
+    {
+      "lineItems": [
+        {
+          "amount": 0,
+          "slug": "base",
+          "usageType": "licensed",
+        },
+      ],
+      "name": "Free",
+      "slug": "free",
+    },
+  ],
 }
 `;
 
 exports[`loadAgenticConfig > basic-raw-free-ts 1`] = `
 {
   "name": "My Project",
+  "originAdapter": {
+    "location": "external",
+    "type": "raw",
+  },
   "originUrl": "https://jsonplaceholder.typicode.com",
+  "pricingIntervals": [
+    "month",
+  ],
+  "pricingPlans": [
+    {
+      "lineItems": [
+        {
+          "amount": 0,
+          "slug": "base",
+          "usageType": "licensed",
+        },
+      ],
+      "name": "Free",
+      "slug": "free",
+    },
+  ],
 }
 `;
 
 exports[`loadAgenticConfig > pricing-freemium 1`] = `
 {
   "name": "My Project",
+  "originAdapter": {
+    "location": "external",
+    "type": "raw",
+  },
   "originUrl": "https://httpbin.org",
+  "pricingIntervals": [
+    "month",
+  ],
   "pricingPlans": [
     {
       "lineItems": [
@@ -34,7 +81,7 @@ exports[`loadAgenticConfig > pricing-freemium 1`] = `
       "interval": "month",
       "lineItems": [
         {
-          "amount": 490,
+          "amount": 499,
           "interval": "month",
           "slug": "base",
           "usageType": "licensed",

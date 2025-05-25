@@ -1,9 +1,7 @@
-import { parseZodSchema } from '@agentic/platform-core'
-import {
-  type AgenticProjectConfigOutput,
-  agenticProjectConfigSchema
-} from '@agentic/platform-schemas'
+import type { AgenticProjectConfigOutput } from '@agentic/platform-schemas'
 import { loadConfig } from 'unconfig'
+
+import { validateAgenticConfig } from './validate-agentic-config'
 
 export async function loadAgenticConfig({
   cwd
@@ -20,5 +18,5 @@ export async function loadAgenticConfig({
     ]
   })
 
-  return parseZodSchema(agenticProjectConfigSchema, config)
+  return validateAgenticConfig(config)
 }

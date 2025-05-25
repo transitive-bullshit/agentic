@@ -17,7 +17,7 @@ import {
 // - optional version
 // - optional agentic version
 
-export const freePricingPlan = {
+export const defaultFreePricingPlan = {
   name: 'Free',
   slug: 'free',
   lineItems: [
@@ -70,30 +70,36 @@ export const agenticProjectConfigSchema = z.object({
 NOTE: Agentic currently only supports \`external\` API servers. If you'd like to host your API or MCP server on Agentic's infrastructure, please reach out to support@agentic.so.`),
 
   /** Optional origin API config */
-  originAdapter: deploymentOriginAdapterSchema
-    .default({
-      location: 'external',
-      type: 'raw'
-    })
-    .optional(),
+  originAdapter: deploymentOriginAdapterSchema.optional().default({
+    location: 'external',
+    type: 'raw'
+  }),
 
   /** Optional subscription pricing config */
   pricingPlans: pricingPlanListSchema
     .describe(
       'List of PricingPlans configuring which Stripe subscriptions should be available for the project. Defaults to a single free plan which is useful for developing and testing.your project.'
     )
-    .default([freePricingPlan])
-    .optional(),
+    .optional()
+    .default([defaultFreePricingPlan]),
 
   /**
    * Optional list of billing intervals to enable in the pricingPlans.
    *
    * Defaults to a single monthly interval `['month']`.
    *
-   * To add an annual plan, you can use `['month', 'year']`.
+   * To add support for annual pricing plans, you can use `['month', 'year']`.
+   *
+   * Note that for every pricing interval, you must define a corresponding set
+   * of PricingPlans in the `pricingPlans` array. If you only have one pricing
+   * interval (like the default `month` interval), `pricingPlans` don't need to
+   * specify their `interval` property. Otherwise, all PricingPlans and
+   * LineItems must specify their `interval` property to differentiate between
+   * different pricing intervals.
    */
-  pricingIntervals: z.array(pricingIntervalSchema).default(['month']).optional()
+  pricingIntervals: z.array(pricingIntervalSchema).optional().default(['month'])
 })
+
 export type AgenticProjectConfigInput = z.input<
   typeof agenticProjectConfigSchema
 >

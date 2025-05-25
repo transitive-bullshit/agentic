@@ -187,7 +187,7 @@ export async function upsertStripePricing({
           )
 
           priceParams.tiers_mode = pricingPlanLineItem.tiersMode
-          priceParams.tiers = pricingPlanLineItem.tiers!.map((tierData) => {
+          priceParams.tiers = pricingPlanLineItem.tiers.map((tierData) => {
             const tier: Stripe.PriceCreateParams.Tier = {
               up_to: tierData.upTo
             }

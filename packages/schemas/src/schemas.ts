@@ -1,4 +1,3 @@
-import { parseJson } from '@agentic/platform-core'
 import { z } from '@hono/zod-openapi'
 
 export const webhookSchema = z
@@ -10,7 +9,7 @@ export const webhookSchema = z
 export type Webhook = z.infer<typeof webhookSchema>
 
 /**
- * Rate limit config for metered line-items.
+ * Rate limit config for metered LineItems.
  */
 export const rateLimitSchema = z
   .object({
@@ -64,7 +63,9 @@ export const pricingPlanLineItemHashSchema = z
   .describe('Internal PricingPlanLineItem hash')
 
 /**
- * PricingPlanLineItem slug which acts as a unique lookup key for LineItems across deployments. They must be lower and kebab-cased ("base", "requests", "image-transformations").
+ * PricingPlanLineItem slug which acts as a unique lookup key for LineItems
+ * across deployments. They must be lower and kebab-cased ("base", "requests",
+ * "image-transformations", etc).
  */
 export const pricingPlanLineItemSlugSchema = z
   .string()
@@ -111,7 +112,7 @@ const commonPricingPlanLineItemSchema = z.object({
    * The `requests` slug is reserved for charging using `metered billing based
    * on the number of request made during a given billing interval.
    *
-   * All other PricingPlanLineItem `slugs` are considered custom line-items.
+   * All other PricingPlanLineItem `slugs` are considered custom LineItems.
    */
   slug: z.union([z.string(), z.literal('base'), z.literal('requests')]),
 
@@ -123,6 +124,11 @@ const commonPricingPlanLineItemSchema = z.object({
    */
   interval: pricingIntervalSchema.optional(),
 
+  /**
+   * Optional label for the line-item which will be displayed on customer bills.
+   *
+   * If unset, the line-item's `slug` will be used as the label.
+   */
   label: z.string().optional().openapi('label', { example: 'API calls' })
 })
 
@@ -136,6 +142,9 @@ export const pricingPlanLineItemSchema = z
   .discriminatedUnion('usageType', [
     commonPricingPlanLineItemSchema.merge(
       z.object({
+        /**
+         * Licensed LineItems are used to charge for fixed-price services.
+         */
         usageType: z.literal('licensed'),
 
         /**
@@ -151,11 +160,21 @@ export const pricingPlanLineItemSchema = z
 
     commonPricingPlanLineItemSchema.merge(
       z.object({
+        /**
+         * Metered LineItems are used to charge for usage-based services.
+         */
         usageType: z.literal('metered'),
+
+        /**
+         * Optional label for the line-item which will be displayed on customer
+         * bills.
+         *
+         * If unset, the line-item's `slug` will be used as the unit label.
+         */
         unitLabel: z.string().optional(),
 
         /**
-         * Optional rate limit to enforce for this metered LineItem.
+         * Optional rate limit to enforce for this metered line-item.
          *
          * You can use this, for example, to limit the number of API calls that
          * can be made during a given interval.
@@ -175,7 +194,6 @@ export const pricingPlanLineItemSchema = z
          */
         billingScheme: z.union([z.literal('per_unit'), z.literal('tiered')]),
 
-        //
         /**
          * The fixed amount to charge per unit of usage.
          *
@@ -225,6 +243,8 @@ export const pricingPlanLineItemSchema = z
           .object({
             /**
              * Divide usage by this number.
+             *
+             * Must be a positive number.
              */
             divideBy: z.number().positive(),
 
@@ -246,7 +266,7 @@ export const pricingPlanLineItemSchema = z
       return true
     },
     (data) => ({
-      message: `Invalid PricingPlanLineItem "${data.slug}": reserved "base" line-items must have "licensed" usage type.`
+      message: `Invalid PricingPlanLineItem "${data.slug}": reserved "base" LineItems must have "licensed" usage type.`
     })
   )
   .refine(
@@ -258,18 +278,18 @@ export const pricingPlanLineItemSchema = z
       return true
     },
     (data) => ({
-      message: `Invalid PricingPlanLineItem "${data.slug}": reserved "requests" line-items must have "metered" usage type.`
+      message: `Invalid PricingPlanLineItem "${data.slug}": reserved "requests" LineItems must have "metered" usage type.`
     })
   )
   .describe(
-    'PricingPlanLineItems represent a single line-item in a Stripe Subscription. They map to a Stripe billing `Price` and possibly a corresponding Stripe `Meter` for metered usage.'
+    'PricingPlanLineItems represent a single line-item in a Stripe Subscription. They map to a Stripe billing `Price` and possibly a corresponding Stripe `Meter` for usage-based line-items.'
   )
   .openapi('PricingPlanLineItem')
 export type PricingPlanLineItem = z.infer<typeof pricingPlanLineItemSchema>
 
 /**
- * Represents the config for a Stripe subscription with one or more
- * PricingPlanLineItems.
+ * Represents the config for a single Stripe subscription plan with one or more
+ * LineItems.
  */
 export const pricingPlanSchema = z
   .object({
@@ -287,53 +307,32 @@ export const pricingPlanSchema = z
      */
     interval: pricingIntervalSchema.optional(),
 
-    desc: z.string().optional(),
+    /**
+     * Optional description of the PricingPlan which is used for UI-only.
+     */
+    description: z.string().optional(),
+
+    /**
+     * Optional list of features of the PricingPlan which is used for UI-only.
+     */
     features: z.array(z.string()).optional(),
 
-    // TODO?
+    /**
+     * Optional number of days for a free trial period when a customer signs up
+     * for a new subscription.
+     */
     trialPeriodDays: z.number().nonnegative().optional(),
 
+    /**
+     * List of LineItems which are included in the PricingPlan.
+     *
+     * Note: we currently support a max of 20 LineItems per plan.
+     */
     lineItems: z.array(pricingPlanLineItemSchema).nonempty().max(20, {
       message:
-        'Stripe Checkout currently supports a max of 20 line-items per subscription.'
+        'Stripe Checkout currently supports a max of 20 LineItems per subscription.'
     })
   })
-  .refine(
-    (data) => {
-      if (data.interval === undefined) {
-        return data.slug === 'free'
-      }
-
-      return true
-    },
-    (data) => ({
-      message: `Invalid PricingPlan "${data.slug}": non-free pricing plans must have a valid interval`
-    })
-  )
-  .refine(
-    (data) => {
-      if (data.slug === 'free') {
-        return data.interval === undefined
-      }
-
-      return true
-    },
-    (data) => ({
-      message: `Invalid PricingPlan "${data.slug}": free pricing plans must not have an interval`
-    })
-  )
-  .refine(
-    (data) => {
-      const lineItemSlugs = new Set(
-        data.lineItems.map((lineItem) => lineItem.slug)
-      )
-
-      return lineItemSlugs.size === data.lineItems.length
-    },
-    (data) => ({
-      message: `Invalid PricingPlan "${data.slug}": duplicate line-item slugs`
-    })
-  )
   .describe(
     'Represents the config for a Stripe subscription with one or more PricingPlanLineItems.'
   )
@@ -360,49 +359,6 @@ export const pricingPlanListSchema = z
   .nonempty({
     message: 'Must contain at least one PricingPlan'
   })
-  .refine(
-    (pricingPlans) => {
-      const slugs = new Set(pricingPlans.map((p) => p.slug))
-      return slugs.size === pricingPlans.length
-    },
-    {
-      message: `Invalid PricingPlanList: duplicate PricingPlan slugs`
-    }
-  )
-  .refine(
-    (pricingPlans) => {
-      const pricingPlanLineItemSlugMap: Record<string, PricingPlanLineItem[]> =
-        {}
-      for (const pricingPlan of pricingPlans) {
-        for (const lineItem of pricingPlan.lineItems) {
-          if (!pricingPlanLineItemSlugMap[lineItem.slug]) {
-            pricingPlanLineItemSlugMap[lineItem.slug] = []
-          }
-
-          pricingPlanLineItemSlugMap[lineItem.slug]!.push(lineItem)
-        }
-      }
-
-      for (const lineItems of Object.values(pricingPlanLineItemSlugMap)) {
-        if (lineItems.length <= 1) continue
-
-        const lineItem0 = lineItems[0]!
-
-        for (let i = 1; i < lineItems.length; ++i) {
-          const lineItem = lineItems[i]!
-
-          if (lineItem.usageType !== lineItem0.usageType) {
-            return false
-          }
-        }
-      }
-
-      return true
-    },
-    {
-      message: `Invalid PricingPlanList: all pricing plans which contain the same LineItems (by slug) must have the same usage type (licensed or metered).`
-    }
-  )
   .describe('List of PricingPlans')
 export type PricingPlanList = z.infer<typeof pricingPlanListSchema>
 
@@ -487,34 +443,20 @@ export const deploymentOriginAdapterSchema = z
   .discriminatedUnion('type', [
     z
       .object({
+        /**
+         * OpenAPI 3.x spec describing the origin API server.
+         */
         type: z.literal('openapi'),
-        // NOTE: The origin API servers should be hidden in the embedded
-        // OpenAPI spec, because clients should only be aware of the upstream
-        // Agentic API gateway.
+
+        /**
+         * JSON stringified OpenAPI spec describing the origin API server.
+         *
+         * The origin API servers are be hidden in the embedded OpenAPI spec,
+         * because clients should only be aware of the upstream Agentic API
+         * gateway.
+         */
         spec: z
           .string()
-          .refine(
-            (spec) => {
-              try {
-                parseJson(spec)
-              } catch {
-                return false
-              }
-            },
-            (data) => {
-              try {
-                parseJson(data)
-              } catch (err: any) {
-                return {
-                  message: `Invalid OpenAPI spec: ${err.message}`
-                }
-              }
-
-              return {
-                message: 'Invalid OpenAPI spec'
-              }
-            }
-          )
           .describe(
             'JSON stringified OpenAPI spec describing the origin API server.'
           )
@@ -523,6 +465,13 @@ export const deploymentOriginAdapterSchema = z
 
     z
       .object({
+        /**
+         * Marks the origin server as a raw HTTP REST API without any additional
+         * tool or service definitions.
+         *
+         * In this mode, Agentic's API gateway acts as a simple reverse-proxy
+         * to the origin server, without validating tools or services.
+         */
         type: z.literal('raw')
       })
       .merge(commonDeploymentOriginAdapterSchema)
