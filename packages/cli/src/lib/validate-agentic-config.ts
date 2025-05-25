@@ -32,6 +32,8 @@ export async function validateAgenticConfig(
       parsedOriginUrl.protocol === 'https:',
       'Invalid originUrl: must be a valid https URL'
     )
+
+    assert(parsedOriginUrl.hostname, 'Invalid originUrl: must be a valid URL')
   } catch (err) {
     throw new Error('Invalid originUrl: must be a valid https URL', {
       cause: err

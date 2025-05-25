@@ -54,6 +54,24 @@ exports[`loadAgenticConfig > basic-raw-free-ts 1`] = `
 }
 `;
 
+exports[`loadAgenticConfig > invalid: invalid-name-0 1`] = `[ZodValidationError: Validation error: Invalid project name "Test Invalid Name 0". Must be lower kebab-case with no spaces between 2 and 64 characters. at "name"]`;
+
+exports[`loadAgenticConfig > invalid: invalid-name-1 1`] = `[ZodValidationError: Validation error: Invalid project name "Test-Invalid-Name-1". Must be lower kebab-case with no spaces between 2 and 64 characters. at "name"]`;
+
+exports[`loadAgenticConfig > invalid: invalid-name-2 1`] = `[ZodValidationError: Validation error: Invalid project name "test_invalid_name_2". Must be lower kebab-case with no spaces between 2 and 64 characters. at "name"]`;
+
+exports[`loadAgenticConfig > invalid: invalid-name-3 1`] = `[ZodValidationError: Validation error: Required at "name"]`;
+
+exports[`loadAgenticConfig > invalid: invalid-name-4 1`] = `[ZodValidationError: Validation error: Invalid project name "@foo/bar". Must be lower kebab-case with no spaces between 2 and 64 characters. at "name"]`;
+
+exports[`loadAgenticConfig > invalid: invalid-origin-url-0 1`] = `[Error: Invalid originUrl: must be a valid https URL]`;
+
+exports[`loadAgenticConfig > invalid: invalid-origin-url-1 1`] = `[ZodValidationError: Validation error: Invalid url at "originUrl"]`;
+
+exports[`loadAgenticConfig > invalid: invalid-origin-url-2 1`] = `[ZodValidationError: Validation error: Required at "originUrl"]`;
+
+exports[`loadAgenticConfig > invalid: invalid-origin-url-3 1`] = `[ZodValidationError: Validation error: Invalid url at "originUrl"]`;
+
 exports[`loadAgenticConfig > invalid: pricing-base-inconsistent 1`] = `[ZodValidationError: Validation error: Invalid PricingPlanLineItem "base": reserved "base" LineItems must have "licensed" usage type. at "pricingPlans[1].lineItems[0]"]`;
 
 exports[`loadAgenticConfig > invalid: pricing-custom-inconsistent 1`] = `[Error: Invalid pricingPlans: all PricingPlans which contain the same LineItems (by slug "custom") must have the same usage type ("licensed" or "metered").]`;
@@ -131,6 +149,82 @@ exports[`loadAgenticConfig > pricing-3-plans 1`] = `
       ],
       "name": "Pro",
       "slug": "pro",
+    },
+  ],
+}
+`;
+
+exports[`loadAgenticConfig > pricing-custom-0 1`] = `
+{
+  "name": "test-pricing-custom-0",
+  "originAdapter": {
+    "location": "external",
+    "type": "raw",
+  },
+  "originUrl": "https://httpbin.org",
+  "pricingIntervals": [
+    "month",
+    "year",
+  ],
+  "pricingPlans": [
+    {
+      "lineItems": [
+        {
+          "amount": 0,
+          "slug": "base",
+          "usageType": "licensed",
+        },
+      ],
+      "name": "Free",
+      "slug": "free",
+    },
+    {
+      "interval": "month",
+      "lineItems": [
+        {
+          "amount": 500,
+          "interval": "month",
+          "slug": "base",
+          "usageType": "licensed",
+        },
+        {
+          "billingScheme": "per_unit",
+          "interval": "month",
+          "rateLimit": {
+            "interval": 2592000,
+            "maxPerInterval": 1000,
+          },
+          "slug": "custom",
+          "unitAmount": 100,
+          "usageType": "metered",
+        },
+      ],
+      "name": "Basic Monthly",
+      "slug": "basic-monthly",
+    },
+    {
+      "interval": "year",
+      "lineItems": [
+        {
+          "amount": 4800,
+          "interval": "year",
+          "slug": "base",
+          "usageType": "licensed",
+        },
+        {
+          "billingScheme": "per_unit",
+          "interval": "year",
+          "rateLimit": {
+            "interval": 2592000,
+            "maxPerInterval": 1500,
+          },
+          "slug": "custom",
+          "unitAmount": 80,
+          "usageType": "metered",
+        },
+      ],
+      "name": "Basic Annual",
+      "slug": "basic-annual",
     },
   ],
 }

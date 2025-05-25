@@ -11,7 +11,8 @@ const fixtures = [
   'pricing-freemium',
   'pricing-pay-as-you-go',
   'pricing-3-plans',
-  'pricing-monthly-annual'
+  'pricing-monthly-annual',
+  'pricing-custom-0'
 ]
 
 const invalidFixtures = [
@@ -21,7 +22,16 @@ const invalidFixtures = [
   'pricing-empty-1',
   'pricing-empty-2',
   'pricing-duplicate-0',
-  'pricing-duplicate-1'
+  'pricing-duplicate-1',
+  'invalid-origin-url-0',
+  'invalid-origin-url-1',
+  'invalid-origin-url-2',
+  'invalid-origin-url-3',
+  'invalid-name-0',
+  'invalid-name-1',
+  'invalid-name-2',
+  'invalid-name-3',
+  'invalid-name-4'
 ]
 
 const fixturesDir = path.join(

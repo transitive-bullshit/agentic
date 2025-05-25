@@ -30,7 +30,7 @@ export default defineConfig({
     },
     {
       name: 'Basic Annual',
-      slug: 'basic-annual', // invalid duplicate slug
+      slug: 'basic-annual',
       interval: 'year',
       lineItems: [
         {
