@@ -13,6 +13,11 @@ const fixtures = [
   'pricing-3-plans'
 ]
 
+const invalidFixtures = [
+  'pricing-base-inconsistent',
+  'pricing-custom-inconsistent'
+]
+
 const fixturesDir = path.join(
   fileURLToPath(import.meta.url),
   '..',
@@ -20,6 +25,8 @@ const fixturesDir = path.join(
   '..',
   'fixtures'
 )
+
+const invalidFixturesDir = path.join(fixturesDir, 'invalid')
 
 describe('loadAgenticConfig', () => {
   for (const fixture of fixtures) {
@@ -33,6 +40,22 @@ describe('loadAgenticConfig', () => {
 
         const config = await loadAgenticConfig({ cwd: fixtureDir })
         expect(config).toMatchSnapshot()
+      }
+    )
+  }
+
+  for (const fixture of invalidFixtures) {
+    test(
+      `invalid: ${fixture}`,
+      {
+        timeout: 60_000
+      },
+      async () => {
+        const fixtureDir = path.join(invalidFixturesDir, fixture)
+
+        await expect(
+          loadAgenticConfig({ cwd: fixtureDir })
+        ).rejects.toThrowErrorMatchingSnapshot()
       }
     )
   }

@@ -1,5 +1,5 @@
 import type { ZodTypeDef } from 'zod'
-import { assert, HttpError, parseZodSchema } from '@agentic/platform-core'
+import { assert, parseZodSchema } from '@agentic/platform-core'
 import {
   type AgenticProjectConfigInput,
   type AgenticProjectConfigOutput,
@@ -19,12 +19,10 @@ export async function validateAgenticConfig(
   const { pricingIntervals, pricingPlans, originUrl } = config
   assert(
     pricingPlans?.length,
-    400,
     'Invalid pricingPlans: must be a non-empty array'
   )
   assert(
     pricingIntervals?.length,
-    400,
     'Invalid pricingIntervals: must be a non-empty array'
   )
 
@@ -32,13 +30,10 @@ export async function validateAgenticConfig(
     const parsedOriginUrl = new URL(originUrl)
     assert(
       parsedOriginUrl.protocol === 'https:',
-      400,
       'Invalid originUrl: must be a valid https URL'
     )
   } catch (err) {
-    throw new HttpError({
-      message: 'Invalid originUrl: must be a valid https URL',
-      statusCode: 400,
+    throw new Error('Invalid originUrl: must be a valid https URL', {
       cause: err
     })
   }
@@ -48,12 +43,10 @@ export async function validateAgenticConfig(
     const pricingIntervalsSet = new Set(pricingIntervals)
     assert(
       pricingIntervalsSet.size === pricingIntervals.length,
-      400,
       'Invalid pricingIntervals: duplicate pricing intervals'
     )
     assert(
       pricingIntervals.length >= 1,
-      400,
       'Invalid pricingIntervals: must contain at least one pricing interval'
     )
 
@@ -62,7 +55,6 @@ export async function validateAgenticConfig(
         if (pricingPlan.interval) {
           assert(
             pricingIntervalsSet.has(pricingPlan.interval),
-            400,
             `Invalid pricingPlan "${pricingPlan.slug}": PricingPlan "${pricingPlan.slug}" has invalid interval "${pricingPlan.interval}" which is not included in the "pricingIntervals" array.`
           )
         }
@@ -71,7 +63,6 @@ export async function validateAgenticConfig(
 
         assert(
           pricingPlan.interval !== undefined,
-          400,
           `Invalid pricingPlan "${pricingPlan.slug}": non-free PricingPlan "${pricingPlan.slug}" must specify an "interval" because the project supports multiple pricing intervals.`
         )
 
@@ -80,13 +71,11 @@ export async function validateAgenticConfig(
 
           assert(
             lineItem.interval === pricingPlan.interval,
-            400,
             `Invalid pricingPlan "${pricingPlan.slug}": non-free PricingPlan "${pricingPlan.slug}" LineItem "${lineItem.slug}" "interval" must match the PricingPlan interval "${pricingPlan.interval}" because the project supports multiple pricing intervals.`
           )
 
           assert(
             pricingIntervalsSet.has(lineItem.interval),
-            400,
             `Invalid pricingPlan "${pricingPlan.slug}": PricingPlan "${pricingPlan.slug}" LineItem "${lineItem.slug}" has invalid interval "${pricingPlan.interval}" which is not included in the "pricingIntervals" array.`
           )
         }
@@ -97,7 +86,6 @@ export async function validateAgenticConfig(
       const defaultPricingInterval = pricingIntervals[0]!
       assert(
         defaultPricingInterval,
-        400,
         'Invalid pricingIntervals: must contain at least one valid pricing interval'
       )
 
@@ -105,7 +93,6 @@ export async function validateAgenticConfig(
         if (pricingPlan.interval) {
           assert(
             pricingIntervalsSet.has(pricingPlan.interval),
-            400,
             `Invalid pricingPlan "${pricingPlan.slug}": PricingPlan "${pricingPlan.slug}" has invalid interval "${pricingPlan.interval}" which is not included in the "pricingIntervals" array.`
           )
         }
@@ -119,7 +106,6 @@ export async function validateAgenticConfig(
 
           assert(
             pricingIntervalsSet.has(lineItem.interval),
-            400,
             `Invalid pricingPlan "${pricingPlan.slug}": PricingPlan "${pricingPlan.slug}" LineItem "${lineItem.slug}" has invalid interval "${pricingPlan.interval}" which is not included in the "pricingIntervals" array.`
           )
         }
@@ -132,7 +118,6 @@ export async function validateAgenticConfig(
     const pricingPlanSlugsSet = new Set(pricingPlans.map((p) => p.slug))
     assert(
       pricingPlanSlugsSet.size === pricingPlans.length,
-      400,
       'Invalid pricingPlans: duplicate PricingPlan slugs. All PricingPlan slugs must be unique (e.g. "free", "starter-monthly", "pro-annual", etc).'
     )
 
@@ -145,7 +130,6 @@ export async function validateAgenticConfig(
 
       assert(
         lineItemSlugsSet.size === pricingPlan.lineItems.length,
-        400,
         `Invalid pricingPlan "${pricingPlan.slug}": duplicate line-item slugs`
       )
 
@@ -168,7 +152,6 @@ export async function validateAgenticConfig(
 
         assert(
           lineItem.usageType === lineItem0.usageType,
-          400,
           `Invalid pricingPlans: all PricingPlans which contain the same LineItems (by slug "${lineItem.slug}") must have the same usage type ("licensed" or "metered").`
         )
       }
@@ -183,19 +166,16 @@ export async function validateAgenticConfig(
           case 'per_unit':
             assert(
               lineItem.unitAmount !== undefined,
-              400,
               `Invalid pricingPlan "${pricingPlan.slug}": metered LineItem "${lineItem.slug}" must specify a non-negative "unitAmount" when using "per_unit" billing scheme.`
             )
 
             assert(
               lineItem.tiersMode === undefined,
-              400,
               `Invalid pricingPlan "${pricingPlan.slug}": metered LineItem "${lineItem.slug}" must not specify "tiersMode" when using "per_unit" billing scheme.`
             )
 
             assert(
               lineItem.tiers === undefined,
-              400,
               `Invalid pricingPlan "${pricingPlan.slug}": metered LineItem "${lineItem.slug}" must not specify "tiers" when using "per_unit" billing scheme.`
             )
             break
@@ -203,25 +183,21 @@ export async function validateAgenticConfig(
           case 'tiered':
             assert(
               lineItem.unitAmount === undefined,
-              400,
               `Invalid pricingPlan "${pricingPlan.slug}": metered LineItem "${lineItem.slug}" must not specify "unitAmount" when using "tiered" billing scheme.`
             )
 
             assert(
               lineItem.tiers?.length,
-              400,
               `Invalid pricingPlan "${pricingPlan.slug}": metered LineItem "${lineItem.slug}" must specify a non-empty "tiers" array when using "tiered" billing scheme.`
             )
 
             assert(
               lineItem.tiersMode !== undefined,
-              400,
               `Invalid pricingPlan "${pricingPlan.slug}": metered LineItem "${lineItem.slug}" must specify a valid "tiersMode" when using "tiered" billing scheme.`
             )
 
             assert(
               lineItem.transformQuantity === undefined,
-              400,
               `Invalid pricingPlan "${pricingPlan.slug}": metered LineItem "${lineItem.slug}" must not specify "transformQuantity" when using "tiered" billing scheme.`
             )
             break
@@ -229,7 +205,6 @@ export async function validateAgenticConfig(
           default:
             assert(
               false,
-              400,
               `Invalid pricingPlan "${pricingPlan.slug}": metered LineItem "${lineItem.slug}" must specify a valid "billingScheme".`
             )
         }

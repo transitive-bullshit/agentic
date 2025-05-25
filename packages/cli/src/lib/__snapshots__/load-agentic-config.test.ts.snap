@@ -54,6 +54,10 @@ exports[`loadAgenticConfig > basic-raw-free-ts 1`] = `
 }
 `;
 
+exports[`loadAgenticConfig > invalid: pricing-base-inconsistent 1`] = `[ZodValidationError: Validation error: Invalid PricingPlanLineItem "base": reserved "base" LineItems must have "licensed" usage type. at "pricingPlans[1].lineItems[0]"]`;
+
+exports[`loadAgenticConfig > invalid: pricing-custom-inconsistent 1`] = `[Error: Invalid pricingPlans: all PricingPlans which contain the same LineItems (by slug "custom") must have the same usage type ("licensed" or "metered").]`;
+
 exports[`loadAgenticConfig > pricing-3-plans 1`] = `
 {
   "name": "test-pricing-3-plans",
