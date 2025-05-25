@@ -13,9 +13,9 @@ async function main() {
     $schema: 'https://json-schema.org/draft-07/schema',
     // TODO
     // $id: 'https://agentic.so/docs/schema.json',
-    title: 'Agentic project schema',
+    title: 'Agentic Project Config Schema',
     description:
-      "Schema used by 'agentic.json' files to configure Agentic projects."
+      'JSON Schema used by `agentic.config.{ts,js,json}` files to configure Agentic projects.'
   }
 
   // eslint-disable-next-line no-console

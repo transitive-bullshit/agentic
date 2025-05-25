@@ -5,7 +5,11 @@ import { describe, expect, test } from 'vitest'
 
 import { loadAgenticConfig } from './load-agentic-config'
 
-const fixtures = ['basic-raw-free-ts', 'basic-raw-free-json']
+const fixtures = [
+  'basic-raw-free-ts',
+  'basic-raw-free-json',
+  'pricing-freemium'
+]
 
 const fixturesDir = path.join(
   fileURLToPath(import.meta.url),

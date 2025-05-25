@@ -80,15 +80,20 @@ const commonPricingPlanLineItemSchema = z.object({
    * Slugs act as the primary key for LineItems. They should be lower and
    * kebab-cased ("base", "requests", "image-transformations").
    *
-   * TODO: ensure user-provided custom LineItems don't use reserved 'base'
-   * and 'requests' slugs.
+   * The `base` slug is reserved for a plan's default `licensed` line-item.
+   *
+   * The `requests` slug is reserved for charging using `metered billing based
+   * on the number of request made during a given billing interval.
+   *
+   * All other PricingPlanLineItem `slugs` are considered custom line-items.
    */
   slug: z.union([z.string(), z.literal('base'), z.literal('requests')]),
 
   /**
    * The frequency at which a subscription is billed.
    *
-   * Only optional when `PricingPlan.slug` is `free`.
+   * Only optional on free plans (when `PricingPlan.slug` is `free`), since
+   * free plans don't depend on a billing interval.
    */
   interval: pricingIntervalSchema.optional(),
 
@@ -106,6 +111,14 @@ export const pricingPlanLineItemSchema = z
     commonPricingPlanLineItemSchema.merge(
       z.object({
         usageType: z.literal('licensed'),
+
+        /**
+         * The fixed amount to charge per billing interval.
+         *
+         * Specified in the smallest currency unit (e.g. cents for USD).
+         *
+         * So 100 = $1.00 USD, 1000 = $10.00 USD, etc.
+         */
         amount: z.number().nonnegative()
       })
     ),
@@ -136,7 +149,16 @@ export const pricingPlanLineItemSchema = z
          */
         billingScheme: z.union([z.literal('per_unit'), z.literal('tiered')]),
 
-        // Only applicable for `per_unit` billing schemes
+        //
+        /**
+         * The fixed amount to charge per unit of usage.
+         *
+         * Only applicable for `per_unit` billing schemes.
+         *
+         * Specified in the smallest currency unit (e.g. cents for USD).
+         *
+         * So 100 = $1.00 USD, 1000 = $10.00 USD, etc.
+         */
         unitAmount: z.number().nonnegative().optional(),
 
         // Only applicable for `tiered` billing schemes
