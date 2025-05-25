@@ -9,14 +9,14 @@ export default defineConfig({
     {
       name: 'Basic',
       slug: 'basic',
-      interval: 'month',
+      // interval: 'month',
       trialPeriodDays: 7,
       lineItems: [
         {
           slug: 'base',
           usageType: 'licensed',
-          amount: 490,
-          interval: 'month'
+          amount: 490
+          // interval: 'month'
         }
       ]
     }

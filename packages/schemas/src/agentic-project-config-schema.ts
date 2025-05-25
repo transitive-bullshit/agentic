@@ -2,6 +2,7 @@ import { z } from '@hono/zod-openapi'
 
 import {
   deploymentOriginAdapterSchema,
+  pricingIntervalSchema,
   type PricingPlan,
   pricingPlanListSchema
 } from './schemas'
@@ -29,24 +30,31 @@ export const freePricingPlan = {
 } as const satisfies PricingPlan
 
 export const agenticProjectConfigSchema = z.object({
+  /** Required name of the project. */
   name: z.string().describe('Name of the project.'),
 
-  // Metadata
+  /** Optional one-sentence description of the project. */
   description: z
     .string()
     .describe('A one-sentence description of the project.')
     .optional(),
+
+  /** Optional readme documenting the project (supports GitHub-flavored markdown). */
   readme: z
     .string()
     .describe(
       'A readme documenting the project (supports GitHub-flavored markdown).'
     )
     .optional(),
+
+  /** Optional URL to the source code for the project. */
   sourceUrl: z
     .string()
     .url()
     .optional()
     .describe('Optional URL to the source code for the project.'),
+
+  /** Optional logo image URL to use for the project. Logos should have a square aspect ratio. */
   iconUrl: z
     .string()
     .url()
@@ -55,13 +63,13 @@ export const agenticProjectConfigSchema = z.object({
       'Optional logo image URL to use for the project. Logos should have a square aspect ratio.'
     ),
 
-  // Required origin API config
+  /** Required origin API HTTPS base URL */
   originUrl: z.string().url()
     .describe(`Required base URL of the externally hosted origin API server. Must be a valid \`https\` URL.
 
 NOTE: Agentic currently only supports \`external\` API servers. If you'd like to host your API or MCP server on Agentic's infrastructure, please reach out to support@agentic.so.`),
 
-  // Optional origin API config
+  /** Optional origin API config */
   originAdapter: deploymentOriginAdapterSchema
     .default({
       location: 'external',
@@ -69,13 +77,22 @@ NOTE: Agentic currently only supports \`external\` API servers. If you'd like to
     })
     .optional(),
 
-  // Optional subscription pricing config
+  /** Optional subscription pricing config */
   pricingPlans: pricingPlanListSchema
     .describe(
       'List of PricingPlans configuring which Stripe subscriptions should be available for the project. Defaults to a single free plan which is useful for developing and testing.your project.'
     )
     .default([freePricingPlan])
-    .optional()
+    .optional(),
+
+  /**
+   * Optional list of billing intervals to enable in the pricingPlans.
+   *
+   * Defaults to a single monthly interval `['month']`.
+   *
+   * To add an annual plan, you can use `['month', 'year']`.
+   */
+  pricingIntervals: z.array(pricingIntervalSchema).default(['month']).optional()
 })
 export type AgenticProjectConfigInput = z.input<
   typeof agenticProjectConfigSchema

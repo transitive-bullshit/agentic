@@ -9,6 +9,9 @@ export const webhookSchema = z
   .openapi('Webhook')
 export type Webhook = z.infer<typeof webhookSchema>
 
+/**
+ * Rate limit config for metered line-items.
+ */
 export const rateLimitSchema = z
   .object({
     interval: z.number(), // seconds
@@ -17,6 +20,9 @@ export const rateLimitSchema = z
   .openapi('RateLimit')
 export type RateLimit = z.infer<typeof rateLimitSchema>
 
+/**
+ * PricingPlanTier is a single tier in a tiered pricing plan.
+ */
 export const pricingPlanTierSchema = z
   .object({
     unitAmount: z.number().optional(),
@@ -33,6 +39,9 @@ export const pricingPlanTierSchema = z
   .openapi('PricingPlanTier')
 export type PricingPlanTier = z.infer<typeof pricingPlanTierSchema>
 
+/**
+ * The frequency at which a subscription is billed.
+ */
 export const pricingIntervalSchema = z
   .union([
     z.literal('day'),
@@ -44,11 +53,19 @@ export const pricingIntervalSchema = z
   .openapi('PricingInterval')
 export type PricingInterval = z.infer<typeof pricingIntervalSchema>
 
+/**
+ * Internal PricingPlanLineItem hash
+ *
+ * @internal
+ */
 export const pricingPlanLineItemHashSchema = z
   .string()
   .nonempty()
   .describe('Internal PricingPlanLineItem hash')
 
+/**
+ * PricingPlanLineItem slug which acts as a unique lookup key for LineItems across deployments. They must be lower and kebab-cased ("base", "requests", "image-transformations").
+ */
 export const pricingPlanLineItemSlugSchema = z
   .string()
   .nonempty()
@@ -56,6 +73,9 @@ export const pricingPlanLineItemSlugSchema = z
     'PricingPlanLineItem slug which acts as a unique lookup key for LineItems across deployments. They must be lower and kebab-cased ("base", "requests", "image-transformations").'
   )
 
+/**
+ * PricingPlan slug which acts as a unique lookup key for PricingPlans across deployments. They must be lower and kebab-cased and should have the interval as a suffix ("free", "starter-monthly", "pro-annual").
+ */
 export const pricingPlanSlugSchema = z
   .string()
   .nonempty()
@@ -63,12 +83,18 @@ export const pricingPlanSlugSchema = z
     'PricingPlan slug which acts as a unique lookup key for PricingPlans across deployments. They must be lower and kebab-cased and should have the interval as a suffix ("free", "starter-monthly", "pro-annual").'
   )
 
+/**
+ * Map from internal PricingPlanLineItem **hash** to Stripe Price id
+ */
 export const stripePriceIdMapSchema = z
   .record(pricingPlanLineItemHashSchema, z.string().describe('Stripe Price id'))
   .describe('Map from internal PricingPlanLineItem **hash** to Stripe Price id')
   .openapi('StripePriceIdMap')
 export type StripePriceIdMap = z.infer<typeof stripePriceIdMapSchema>
 
+/**
+ * Map from internal PricingPlanLineItem **slug** to Stripe Meter id
+ */
 export const stripeMeterIdMapSchema = z
   .record(pricingPlanLineItemHashSchema, z.string().describe('Stripe Meter id'))
   .describe('Map from internal PricingPlanLineItem **slug** to Stripe Meter id')
@@ -314,6 +340,9 @@ export const pricingPlanSchema = z
   .openapi('PricingPlan')
 export type PricingPlan = z.infer<typeof pricingPlanSchema>
 
+/**
+ * Map from PricingPlanLineItem **slug** to Stripe Product id
+ */
 export const stripeProductIdMapSchema = z
   .record(
     pricingPlanLineItemSlugSchema,
@@ -323,6 +352,9 @@ export const stripeProductIdMapSchema = z
   .openapi('StripeProductIdMap')
 export type StripeProductIdMap = z.infer<typeof stripeProductIdMapSchema>
 
+/**
+ * List of PricingPlans
+ */
 export const pricingPlanListSchema = z
   .array(pricingPlanSchema)
   .nonempty({
@@ -374,6 +406,9 @@ export const pricingPlanListSchema = z
   .describe('List of PricingPlans')
 export type PricingPlanList = z.infer<typeof pricingPlanListSchema>
 
+/**
+ * Map from internal PricingPlanLineItem **slug** to Stripe Subscription Item id
+ */
 export const stripeSubscriptionItemIdMapSchema = z
   .record(
     pricingPlanLineItemSlugSchema,
@@ -442,6 +477,12 @@ export const commonDeploymentOriginAdapterSchema = z.object({
 // - internal mcp
 // - internal http
 // - etc
+
+/**
+ * Deployment origin API adapter is used to configure the origin API server downstream from Agentic's API gateway. It specifies whether the origin API server denoted by `originUrl` is hosted externally or deployed internally to Agentic's infrastructure. It also specifies the format for how origin tools / services are defined: either as an OpenAPI spec, an MCP server, or as a raw HTTP REST API.
+
+  NOTE: Agentic currently only supports `external` API servers. If you'd like to host your API or MCP server on Agentic's infrastructure, please reach out to support@agentic.so.
+ */
 export const deploymentOriginAdapterSchema = z
   .discriminatedUnion('type', [
     z
