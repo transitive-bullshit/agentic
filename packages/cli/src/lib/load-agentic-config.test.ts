@@ -9,7 +9,8 @@ const fixtures = [
   'basic-raw-free-ts',
   'basic-raw-free-json',
   'pricing-freemium',
-  'pricing-pay-as-you-go'
+  'pricing-pay-as-you-go',
+  'pricing-3-plans'
 ]
 
 const fixturesDir = path.join(

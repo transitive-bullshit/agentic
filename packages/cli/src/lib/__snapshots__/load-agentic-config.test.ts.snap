@@ -54,6 +54,74 @@ exports[`loadAgenticConfig > basic-raw-free-ts 1`] = `
 }
 `;
 
+exports[`loadAgenticConfig > pricing-3-plans 1`] = `
+{
+  "name": "test-pricing-3-plans",
+  "originAdapter": {
+    "location": "external",
+    "type": "raw",
+  },
+  "originUrl": "https://httpbin.org",
+  "pricingIntervals": [
+    "month",
+  ],
+  "pricingPlans": [
+    {
+      "features": [
+        "Unlimited images **with watermark**",
+        "No backend generation",
+        "No custom templates\`",
+      ],
+      "lineItems": [
+        {
+          "amount": 0,
+          "slug": "base",
+          "usageType": "licensed",
+        },
+      ],
+      "name": "Free",
+      "slug": "free",
+    },
+    {
+      "features": [
+        "Unlimited images **without watermark**",
+        "Unlimited backend generation",
+        "No custom templates",
+      ],
+      "interval": "month",
+      "lineItems": [
+        {
+          "amount": 999,
+          "interval": "month",
+          "slug": "base",
+          "usageType": "licensed",
+        },
+      ],
+      "name": "Starter",
+      "slug": "starter",
+    },
+    {
+      "features": [
+        "Unlimited images **without watermark**",
+        "Unlimited backend generation",
+        "Unlimited custom templates",
+      ],
+      "interval": "month",
+      "lineItems": [
+        {
+          "amount": 2999,
+          "interval": "month",
+          "slug": "base",
+          "usageType": "licensed",
+        },
+      ],
+      "name": "Pro",
+      "slug": "pro",
+    },
+  ],
+}
+`;
+
 exports[`loadAgenticConfig > pricing-freemium 1`] = `
 {
   "name": "test-pricing-freemium",
