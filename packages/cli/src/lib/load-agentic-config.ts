@@ -1,13 +1,14 @@
-import type { AgenticProjectConfigOutput } from '@agentic/platform-schemas'
+import {
+  type AgenticProjectConfig,
+  validateAgenticProjectConfig
+} from '@agentic/platform-schemas'
 import { loadConfig } from 'unconfig'
-
-import { validateAgenticConfig } from './validate-agentic-config'
 
 export async function loadAgenticConfig({
   cwd
 }: {
   cwd?: string
-}): Promise<AgenticProjectConfigOutput> {
+}): Promise<AgenticProjectConfig> {
   const { config } = await loadConfig({
     cwd,
     sources: [
@@ -18,5 +19,5 @@ export async function loadAgenticConfig({
     ]
   })
 
-  return validateAgenticConfig(config)
+  return validateAgenticProjectConfig(config)
 }

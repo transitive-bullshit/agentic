@@ -1,13 +1,13 @@
 import { parseZodSchema } from '@agentic/platform-core'
 
 import {
+  type AgenticProjectConfig,
   type AgenticProjectConfigInput,
-  type AgenticProjectConfigOutput,
   agenticProjectConfigSchema
 } from './agentic-project-config-schema'
 
 export function defineConfig(
   config: AgenticProjectConfigInput
-): AgenticProjectConfigOutput {
+): AgenticProjectConfig {
   return parseZodSchema(agenticProjectConfigSchema, config)
 }

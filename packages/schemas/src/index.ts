@@ -1,3 +1,5 @@
 export * from './agentic-project-config-schema'
 export * from './define-config'
 export * from './schemas'
+export * from './validate-agentic-project-config'
+export * from './validate-origin-adapter'

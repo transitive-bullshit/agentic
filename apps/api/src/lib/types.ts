@@ -1,9 +1,9 @@
+import type { Logger } from '@agentic/platform-core'
 import type { Context } from 'hono'
 
 import type { RawTeamMember, RawUser } from '@/db'
 
 import type { Env } from './env'
-import type { Logger } from './logger'
 
 export type Environment = Env['NODE_ENV']
 export type Service = 'api'

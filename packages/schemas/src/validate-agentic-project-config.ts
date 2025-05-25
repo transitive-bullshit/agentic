@@ -1,22 +1,30 @@
 import type { ZodTypeDef } from 'zod'
-import { assert, parseZodSchema } from '@agentic/platform-core'
-import {
-  type AgenticProjectConfigInput,
-  type AgenticProjectConfigOutput,
-  agenticProjectConfigSchema,
-  type PricingPlanLineItem
-} from '@agentic/platform-schemas'
+import { assert, type Logger, parseZodSchema } from '@agentic/platform-core'
+import { validators } from '@agentic/platform-validators'
 
-export async function validateAgenticConfig(
-  inputConfig: unknown
-): Promise<AgenticProjectConfigOutput> {
+import type { PricingPlanLineItem } from './schemas'
+import {
+  type AgenticProjectConfig,
+  type AgenticProjectConfigInput,
+  agenticProjectConfigSchema
+} from './agentic-project-config-schema'
+import { validateOriginAdapter } from './validate-origin-adapter'
+
+export async function validateAgenticProjectConfig(
+  inputConfig: unknown,
+  opts: { logger?: Logger; cwd?: URL } = {}
+): Promise<AgenticProjectConfig> {
   const config = parseZodSchema<
-    AgenticProjectConfigOutput,
+    AgenticProjectConfig,
     ZodTypeDef,
     AgenticProjectConfigInput
   >(agenticProjectConfigSchema, inputConfig)
 
-  const { pricingIntervals, pricingPlans, originUrl } = config
+  const { name, pricingIntervals, pricingPlans, originUrl } = config
+  assert(
+    validators.projectName(name),
+    `Invalid project name "${name}". Must be lower kebab-case with no spaces between 2 and 64 characters. Example: "my-project" or "linkedin-resolver-23"`
+  )
   assert(
     pricingPlans?.length,
     'Invalid pricingPlans: must be a non-empty array'
@@ -67,20 +75,6 @@ export async function validateAgenticConfig(
           pricingPlan.interval !== undefined,
           `Invalid pricingPlan "${pricingPlan.slug}": non-free PricingPlan "${pricingPlan.slug}" must specify an "interval" because the project supports multiple pricing intervals.`
         )
-
-        for (const lineItem of pricingPlan.lineItems) {
-          lineItem.interval ??= pricingPlan.interval
-
-          assert(
-            lineItem.interval === pricingPlan.interval,
-            `Invalid pricingPlan "${pricingPlan.slug}": non-free PricingPlan "${pricingPlan.slug}" LineItem "${lineItem.slug}" "interval" must match the PricingPlan interval "${pricingPlan.interval}" because the project supports multiple pricing intervals.`
-          )
-
-          assert(
-            pricingIntervalsSet.has(lineItem.interval),
-            `Invalid pricingPlan "${pricingPlan.slug}": PricingPlan "${pricingPlan.slug}" LineItem "${lineItem.slug}" has invalid interval "${pricingPlan.interval}" which is not included in the "pricingIntervals" array.`
-          )
-        }
       }
     } else {
       // Only a single pricing interval is supported, so default all pricing
@@ -102,15 +96,6 @@ export async function validateAgenticConfig(
         if (pricingPlan.slug === 'free') continue
 
         pricingPlan.interval ??= defaultPricingInterval
-
-        for (const lineItem of pricingPlan.lineItems) {
-          lineItem.interval ??= defaultPricingInterval
-
-          assert(
-            pricingIntervalsSet.has(lineItem.interval),
-            `Invalid pricingPlan "${pricingPlan.slug}": PricingPlan "${pricingPlan.slug}" LineItem "${lineItem.slug}" has invalid interval "${pricingPlan.interval}" which is not included in the "pricingIntervals" array.`
-          )
-        }
       }
     }
   }
@@ -213,6 +198,13 @@ export async function validateAgenticConfig(
       }
     }
   }
+
+  await validateOriginAdapter({
+    ...opts,
+    label: `project "${name}"`,
+    originUrl,
+    originAdapter: config.originAdapter
+  })
 
   return config
 }

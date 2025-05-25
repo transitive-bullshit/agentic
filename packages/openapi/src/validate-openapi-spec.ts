@@ -1,6 +1,6 @@
 import { fileURLToPath } from 'node:url'
 
-import { assert, parseJson } from '@agentic/platform-core'
+import { assert, type Logger, parseJson } from '@agentic/platform-core'
 import {
   BaseResolver,
   bundle,
@@ -12,7 +12,7 @@ import {
   Source
 } from '@redocly/openapi-core'
 
-import type { Logger, LooseOpenAPI3Spec } from './types'
+import type { LooseOpenAPI3Spec } from './types'
 import { getDefaultRedoclyConfig } from './redocly-config'
 
 interface ParseSchemaOptions {

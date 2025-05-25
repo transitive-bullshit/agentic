@@ -1,4 +1,5 @@
 import { z } from '@hono/zod-openapi'
+import parseIntervalAsMs from 'ms'
 
 export const webhookSchema = z
   .object({
@@ -13,10 +14,55 @@ export type Webhook = z.infer<typeof webhookSchema>
  */
 export const rateLimitSchema = z
   .object({
-    interval: z.number(), // seconds
-    maxPerInterval: z.number() // unitless
+    /**
+     * The interval at which the rate limit is applied.
+     *
+     * Either a number in seconds or a valid [ms](https://github.com/vercel/ms)
+     * string (eg, `10s`, `1m`, `1h`, `1d`, `1w`, `1y`, etc).
+     */
+    interval: z.union([
+      z.number().nonnegative(), // seconds
+      z
+        .string()
+        .nonempty()
+        .transform((value, ctx) => {
+          try {
+            // TODO: `ms` module has broken types
+            const ms = parseIntervalAsMs(value as any) as unknown as number
+
+            if (typeof ms !== 'number' || ms < 0) {
+              ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: `Invalid interval "${value}"`,
+                path: ctx.path
+              })
+
+              return z.NEVER
+            }
+
+            const seconds = Math.floor(ms / 1000)
+            return seconds
+          } catch {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: `Invalid interval "${value}"`,
+              path: ctx.path
+            })
+
+            return z.NEVER
+          }
+        })
+    ]),
+
+    /**
+     * Maximum number of operations per interval (unitless).
+     */
+    maxPerInterval: z
+      .number()
+      .describe('Maximum number of operations per interval (unitless).')
   })
   .openapi('RateLimit')
+export type RateLimitInput = z.input<typeof rateLimitSchema>
 export type RateLimit = z.infer<typeof rateLimitSchema>
 
 /**
@@ -109,20 +155,12 @@ const commonPricingPlanLineItemSchema = z.object({
    *
    * The `base` slug is reserved for a plan's default `licensed` line-item.
    *
-   * The `requests` slug is reserved for charging using `metered billing based
+   * The `requests` slug is reserved for charging using `metered` billing based
    * on the number of request made during a given billing interval.
    *
    * All other PricingPlanLineItem `slugs` are considered custom LineItems.
    */
   slug: z.union([z.string(), z.literal('base'), z.literal('requests')]),
-
-  /**
-   * The frequency at which a subscription is billed.
-   *
-   * Only optional on free plans (when `PricingPlan.slug` is `free`), since
-   * free plans don't depend on a billing interval.
-   */
-  interval: pricingIntervalSchema.optional(),
 
   /**
    * Optional label for the line-item which will be displayed on customer bills.
@@ -317,7 +355,7 @@ export const pricingPlanSchema = z
       .openapi('slug', { example: 'starter-monthly' }),
 
     /**
-     * The frequency at which a subscription is billed.
+     * The frequency at which this subscription is billed.
      */
     interval: pricingIntervalSchema.optional(),
 

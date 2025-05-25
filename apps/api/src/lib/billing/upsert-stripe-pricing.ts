@@ -137,8 +137,7 @@ export async function upsertStripePricing({
 
     // Upsert the Stripe Price
     if (!project._stripePriceIdMap[pricingPlanLineItemHashForStripePrice]) {
-      const interval =
-        pricingPlanLineItem.interval ?? project.defaultPricingInterval
+      const interval = pricingPlan.interval ?? project.defaultPricingInterval
 
       const nickname = [
         'price',

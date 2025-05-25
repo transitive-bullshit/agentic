@@ -1,4 +1,3 @@
-import { validators } from '@agentic/platform-validators'
 import { z } from '@hono/zod-openapi'
 
 import {
@@ -39,15 +38,7 @@ export const agenticProjectConfigSchema = z.object({
    * @example "my-project"
    * @example "linkedin-resolver-23"
    */
-  name: z
-    .string()
-    .describe('Name of the project.')
-    .refine(
-      (name) => validators.projectName(name),
-      (name) => ({
-        message: `Invalid project name "${name}". Must be lower kebab-case with no spaces between 2 and 64 characters.`
-      })
-    ),
+  name: z.string().nonempty().describe('Name of the project.'),
 
   /** Optional short description of the project. */
   description: z
@@ -111,9 +102,9 @@ NOTE: Agentic currently only supports \`external\` API servers. If you'd like to
    * Note that for every pricing interval, you must define a corresponding set
    * of PricingPlans in the `pricingPlans` array. If you only have one pricing
    * interval (like the default `month` interval), `pricingPlans` don't need to
-   * specify their `interval` property. Otherwise, all PricingPlans and
-   * LineItems must specify their `interval` property to differentiate between
-   * different pricing intervals.
+   * specify their `interval` property. Otherwise, all PricingPlans must
+   * specify their `interval` property to differentiate between different
+   * pricing intervals.
    */
   pricingIntervals: z
     .array(pricingIntervalSchema)
@@ -127,6 +118,4 @@ NOTE: Agentic currently only supports \`external\` API servers. If you'd like to
 export type AgenticProjectConfigInput = z.input<
   typeof agenticProjectConfigSchema
 >
-export type AgenticProjectConfigOutput = z.output<
-  typeof agenticProjectConfigSchema
->
+export type AgenticProjectConfig = z.output<typeof agenticProjectConfigSchema>

@@ -1,4 +1,4 @@
-import { assert } from '@agentic/platform-core'
+import { assert, type Logger } from '@agentic/platform-core'
 import * as Sentry from '@sentry/node'
 import { z } from 'zod'
 
@@ -6,14 +6,6 @@ import type { Environment, Service } from '@/lib/types'
 import { env } from '@/lib/env'
 
 import { getTraceId } from './utils'
-
-export interface Logger {
-  trace(message?: any, ...detail: any[]): void
-  debug(message?: any, ...detail: any[]): void
-  info(message?: any, ...detail: any[]): void
-  warn(message?: any, ...detail: any[]): void
-  error(message?: any, ...detail: any[]): void
-}
 
 const rawLogLevels = ['trace', 'debug', 'info', 'warn', 'error'] as const
 export const logLevelsSchema = z.enum(rawLogLevels)

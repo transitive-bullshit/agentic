@@ -1,4 +1,5 @@
 import { assert, parseZodSchema, pick, sha256 } from '@agentic/platform-core'
+import { validateOriginAdapter } from '@agentic/platform-schemas'
 import { validators } from '@agentic/platform-validators'
 import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 
@@ -7,7 +8,6 @@ import { db, eq, schema } from '@/db'
 import { acl } from '@/lib/acl'
 import { normalizeDeploymentVersion } from '@/lib/deployments/normalize-deployment-version'
 import { publishDeployment } from '@/lib/deployments/publish-deployment'
-import { validateDeploymentOriginAdapter } from '@/lib/deployments/validate-deployment-origin-adapter'
 import { ensureAuthUser } from '@/lib/ensure-auth-user'
 import {
   openapiAuthenticatedSecuritySchemas,
@@ -99,10 +99,10 @@ export function registerV1DeploymentsCreateDeployment(
       })
     }
 
-    // Validate OpenAPI originUrl and originAdapter
-    await validateDeploymentOriginAdapter({
+    // Validate origin config, including any OpenAPI or MCP specs
+    await validateOriginAdapter({
       ...pick(body, 'originUrl', 'originAdapter'),
-      deploymentIdentifier,
+      label: `deployment "${deploymentIdentifier}"`,
       logger
     })
 

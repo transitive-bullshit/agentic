@@ -1,6 +1,5 @@
+import type { Logger } from '@agentic/platform-core'
 import { vi } from 'vitest'
-
-import type { Logger } from '@/lib/logger'
 
 export function setupMockLogger() {
   return {

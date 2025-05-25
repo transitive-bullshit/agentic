@@ -1,3 +1,5 @@
+import { z } from '@hono/zod-openapi'
+
 export const authProviderTypeSchema = z
   .union([
     z.literal('github'),

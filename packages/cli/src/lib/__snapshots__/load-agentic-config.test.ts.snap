@@ -54,15 +54,15 @@ exports[`loadAgenticConfig > basic-raw-free-ts 1`] = `
 }
 `;
 
-exports[`loadAgenticConfig > invalid: invalid-name-0 1`] = `[ZodValidationError: Validation error: Invalid project name "Test Invalid Name 0". Must be lower kebab-case with no spaces between 2 and 64 characters. at "name"]`;
+exports[`loadAgenticConfig > invalid: invalid-name-0 1`] = `[Error: Invalid project name "Test Invalid Name 0". Must be lower kebab-case with no spaces between 2 and 64 characters. Example: "my-project" or "linkedin-resolver-23"]`;
 
-exports[`loadAgenticConfig > invalid: invalid-name-1 1`] = `[ZodValidationError: Validation error: Invalid project name "Test-Invalid-Name-1". Must be lower kebab-case with no spaces between 2 and 64 characters. at "name"]`;
+exports[`loadAgenticConfig > invalid: invalid-name-1 1`] = `[Error: Invalid project name "Test-Invalid-Name-1". Must be lower kebab-case with no spaces between 2 and 64 characters. Example: "my-project" or "linkedin-resolver-23"]`;
 
-exports[`loadAgenticConfig > invalid: invalid-name-2 1`] = `[ZodValidationError: Validation error: Invalid project name "test_invalid_name_2". Must be lower kebab-case with no spaces between 2 and 64 characters. at "name"]`;
+exports[`loadAgenticConfig > invalid: invalid-name-2 1`] = `[Error: Invalid project name "test_invalid_name_2". Must be lower kebab-case with no spaces between 2 and 64 characters. Example: "my-project" or "linkedin-resolver-23"]`;
 
 exports[`loadAgenticConfig > invalid: invalid-name-3 1`] = `[ZodValidationError: Validation error: Required at "name"]`;
 
-exports[`loadAgenticConfig > invalid: invalid-name-4 1`] = `[ZodValidationError: Validation error: Invalid project name "@foo/bar". Must be lower kebab-case with no spaces between 2 and 64 characters. at "name"]`;
+exports[`loadAgenticConfig > invalid: invalid-name-4 1`] = `[Error: Invalid project name "@foo/bar". Must be lower kebab-case with no spaces between 2 and 64 characters. Example: "my-project" or "linkedin-resolver-23"]`;
 
 exports[`loadAgenticConfig > invalid: invalid-origin-url-0 1`] = `[Error: Invalid originUrl: must be a valid https URL]`;
 
@@ -124,7 +124,6 @@ exports[`loadAgenticConfig > pricing-3-plans 1`] = `
       "lineItems": [
         {
           "amount": 999,
-          "interval": "month",
           "slug": "base",
           "usageType": "licensed",
         },
@@ -142,7 +141,6 @@ exports[`loadAgenticConfig > pricing-3-plans 1`] = `
       "lineItems": [
         {
           "amount": 2999,
-          "interval": "month",
           "slug": "base",
           "usageType": "licensed",
         },
@@ -183,13 +181,11 @@ exports[`loadAgenticConfig > pricing-custom-0 1`] = `
       "lineItems": [
         {
           "amount": 500,
-          "interval": "month",
           "slug": "base",
           "usageType": "licensed",
         },
         {
           "billingScheme": "per_unit",
-          "interval": "month",
           "rateLimit": {
             "interval": 2592000,
             "maxPerInterval": 1000,
@@ -207,13 +203,11 @@ exports[`loadAgenticConfig > pricing-custom-0 1`] = `
       "lineItems": [
         {
           "amount": 4800,
-          "interval": "year",
           "slug": "base",
           "usageType": "licensed",
         },
         {
           "billingScheme": "per_unit",
-          "interval": "year",
           "rateLimit": {
             "interval": 2592000,
             "maxPerInterval": 1500,
@@ -258,7 +252,6 @@ exports[`loadAgenticConfig > pricing-freemium 1`] = `
       "lineItems": [
         {
           "amount": 499,
-          "interval": "month",
           "slug": "base",
           "usageType": "licensed",
         },
@@ -300,7 +293,6 @@ exports[`loadAgenticConfig > pricing-monthly-annual 1`] = `
       "lineItems": [
         {
           "amount": 100,
-          "interval": "month",
           "slug": "custom",
           "usageType": "licensed",
         },
@@ -313,7 +305,6 @@ exports[`loadAgenticConfig > pricing-monthly-annual 1`] = `
       "lineItems": [
         {
           "amount": 70,
-          "interval": "year",
           "slug": "custom",
           "usageType": "licensed",
         },
@@ -363,7 +354,6 @@ exports[`loadAgenticConfig > pricing-pay-as-you-go 1`] = `
       "lineItems": [
         {
           "billingScheme": "tiered",
-          "interval": "month",
           "slug": "requests",
           "tiers": [
             {
