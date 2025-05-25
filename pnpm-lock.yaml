@@ -312,6 +312,13 @@ importers:
       '@redocly/openapi-core':
         specifier: ^1.34.3
         version: 1.34.3(supports-color@10.0.0)
+    devDependencies:
+      '@hono/node-server':
+        specifier: ^1.14.1
+        version: 1.14.1(hono@4.7.9)
+      hono:
+        specifier: ^4.7.9
+        version: 4.7.9
 
   packages/schemas:
     dependencies:
