@@ -1,5 +1,5 @@
 import type { ZodTypeDef } from 'zod'
-import { assert, parseZodSchema } from '@agentic/platform-core'
+import { assert, HttpError, parseZodSchema } from '@agentic/platform-core'
 import {
   type AgenticProjectConfigInput,
   type AgenticProjectConfigOutput,
@@ -16,9 +16,7 @@ export async function validateAgenticConfig(
     AgenticProjectConfigInput
   >(agenticProjectConfigSchema, inputConfig)
 
-  console.log('config', config)
-
-  const { pricingIntervals, pricingPlans } = config
+  const { pricingIntervals, pricingPlans, originUrl } = config
   assert(
     pricingPlans?.length,
     400,
@@ -29,6 +27,21 @@ export async function validateAgenticConfig(
     400,
     'Invalid pricingIntervals: must be a non-empty array'
   )
+
+  try {
+    const parsedOriginUrl = new URL(originUrl)
+    assert(
+      parsedOriginUrl.protocol === 'https:',
+      400,
+      'Invalid originUrl: must be a valid https URL'
+    )
+  } catch (err) {
+    throw new HttpError({
+      message: 'Invalid originUrl: must be a valid https URL',
+      statusCode: 400,
+      cause: err
+    })
+  }
 
   {
     // Validate pricing interval

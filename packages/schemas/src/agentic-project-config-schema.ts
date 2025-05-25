@@ -1,3 +1,4 @@
+import { validators } from '@agentic/platform-validators'
 import { z } from '@hono/zod-openapi'
 
 import {
@@ -14,8 +15,8 @@ import {
 // - origin adapter openapi schema path, url, or in-place definition
 // - optional stripe webhooks
 // - optional response header config (custom headers, immutability for caching, etc)
-// - optional version
 // - optional agentic version
+// - optional version
 
 export const defaultFreePricingPlan = {
   name: 'Free',
@@ -27,16 +28,31 @@ export const defaultFreePricingPlan = {
       amount: 0
     }
   ]
-} as const satisfies PricingPlan
+} as const satisfies Readonly<PricingPlan>
 
 export const agenticProjectConfigSchema = z.object({
-  /** Required name of the project. */
-  name: z.string().describe('Name of the project.'),
+  /**
+   * Required name of the project.
+   *
+   * Must be lower kebab-case with no spaces and between 2 and 64 characters.
+   *
+   * @example "my-project"
+   * @example "linkedin-resolver-23"
+   */
+  name: z
+    .string()
+    .describe('Name of the project.')
+    .refine(
+      (name) => validators.projectName(name),
+      (name) => ({
+        message: `Invalid project name "${name}". Must be lower kebab-case with no spaces between 2 and 64 characters.`
+      })
+    ),
 
-  /** Optional one-sentence description of the project. */
+  /** Optional short description of the project. */
   description: z
     .string()
-    .describe('A one-sentence description of the project.')
+    .describe('A short description of the project.')
     .optional(),
 
   /** Optional readme documenting the project (supports GitHub-flavored markdown). */
@@ -47,14 +63,16 @@ export const agenticProjectConfigSchema = z.object({
     )
     .optional(),
 
-  /** Optional URL to the source code for the project. */
+  /** Optional URL to the source code of the project. */
   sourceUrl: z
     .string()
     .url()
     .optional()
-    .describe('Optional URL to the source code for the project.'),
+    .describe('Optional URL to the source code of the project.'),
 
-  /** Optional logo image URL to use for the project. Logos should have a square aspect ratio. */
+  /**
+   * Optional logo image URL to use for the project. Logos should have a square aspect ratio.
+   */
   iconUrl: z
     .string()
     .url()

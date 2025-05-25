@@ -325,6 +325,9 @@ importers:
       '@agentic/platform-core':
         specifier: workspace:*
         version: link:../core
+      '@agentic/platform-validators':
+        specifier: workspace:*
+        version: link:../validators
       '@hono/zod-openapi':
         specifier: ^0.19.6
         version: 0.19.6(hono@4.7.9)(zod@3.24.4)

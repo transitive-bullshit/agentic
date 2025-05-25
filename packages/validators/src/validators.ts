@@ -5,7 +5,7 @@ import isRelativeUrl from 'is-relative-url'
 export const usernameRe = /^[a-zA-Z0-9-]{1,64}$/
 export const passwordRe = /^.{3,1024}$/
 
-export const projectNameRe = /^[a-z0-9-]{3,64}$/
+export const projectNameRe = /^[a-z0-9-]{2,64}$/
 export const deploymentHashRe = /^[a-z0-9]{8}$/
 
 export const projectRe = /^[a-zA-Z0-9-]{1,64}\/[a-z0-9-]{3,64}$/

@@ -43,13 +43,14 @@ test('password failure', () => {
 })
 
 test('projectName success', () => {
+  expect(validators.projectName('ai')).toBe(true)
   expect(validators.projectName('aaa')).toBe(true)
   expect(validators.projectName('hello-world')).toBe(true)
   expect(validators.projectName('123-abc')).toBe(true)
 })
 
 test('projectName failure', () => {
-  expect(validators.projectName('aa')).toBe(false)
+  expect(validators.projectName('a')).toBe(false)
   expect(validators.projectName('hello_world')).toBe(false)
   expect(validators.projectName('a_bc')).toBe(false)
   expect(validators.projectName('abc.'))
