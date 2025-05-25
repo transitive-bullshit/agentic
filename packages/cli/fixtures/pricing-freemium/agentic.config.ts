@@ -2,7 +2,7 @@ import { defaultFreePricingPlan, defineConfig } from '@agentic/platform-schemas'
 
 export default defineConfig({
   // TODO: resolve name / slug conflicts
-  name: 'My Project',
+  name: 'test-pricing-freemium',
   originUrl: 'https://httpbin.org',
   pricingPlans: [
     defaultFreePricingPlan,

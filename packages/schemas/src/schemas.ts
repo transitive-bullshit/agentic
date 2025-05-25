@@ -189,8 +189,7 @@ export const pricingPlanLineItemSchema = z
          * `unitAmount`) will be charged per unit of total usage.
          *
          * `tiered` indicates that the unit pricing will be computed using a
-         * tiering strategy as defined using the `tiers` and `tiersMode`
-         * attributes.
+         * tiering strategy as defined using `tiers` and `tiersMode`.
          */
         billingScheme: z.union([z.literal('per_unit'), z.literal('tiered')]),
 
@@ -206,9 +205,24 @@ export const pricingPlanLineItemSchema = z
         unitAmount: z.number().nonnegative().optional(),
 
         // Only applicable for `tiered` billing schemes
+
+        /**
+         * Defines if the tiering price should be `graduated` or `volume` based.
+         * In `volume`-based tiering, the maximum quantity within a period
+         * determines the per unit price, in `graduated` tiering pricing can
+         * successively change as the quantity grows.
+         *
+         * This field requires `billingScheme` to be set to `tiered`.
+         */
         tiersMode: z
           .union([z.literal('graduated'), z.literal('volume')])
           .optional(),
+
+        /**
+         * Pricing tiers for `tiered` billing schemes.
+         *
+         * This field requires `billingScheme` to be set to `tiered`.
+         */
         tiers: z.array(pricingPlanTierSchema).optional(),
 
         // TODO: add support for tiered rate limits?

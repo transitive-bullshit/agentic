@@ -1,6 +1,6 @@
 import { defineConfig } from '@agentic/platform-schemas'
 
 export default defineConfig({
-  name: 'My Project',
+  name: 'test-basic-raw-free-ts',
   originUrl: 'https://jsonplaceholder.typicode.com'
 })

@@ -2,7 +2,7 @@
 
 exports[`loadAgenticConfig > basic-raw-free-json 1`] = `
 {
-  "name": "My Project",
+  "name": "test-basic-raw-free-json",
   "originAdapter": {
     "location": "external",
     "type": "raw",
@@ -29,7 +29,7 @@ exports[`loadAgenticConfig > basic-raw-free-json 1`] = `
 
 exports[`loadAgenticConfig > basic-raw-free-ts 1`] = `
 {
-  "name": "My Project",
+  "name": "test-basic-raw-free-ts",
   "originAdapter": {
     "location": "external",
     "type": "raw",
@@ -56,7 +56,7 @@ exports[`loadAgenticConfig > basic-raw-free-ts 1`] = `
 
 exports[`loadAgenticConfig > pricing-freemium 1`] = `
 {
-  "name": "My Project",
+  "name": "test-pricing-freemium",
   "originAdapter": {
     "location": "external",
     "type": "raw",
@@ -90,6 +90,67 @@ exports[`loadAgenticConfig > pricing-freemium 1`] = `
       "name": "Basic",
       "slug": "basic",
       "trialPeriodDays": 7,
+    },
+  ],
+}
+`;
+
+exports[`loadAgenticConfig > pricing-pay-as-you-go 1`] = `
+{
+  "name": "test-pricing-pay-as-you-go",
+  "originAdapter": {
+    "location": "external",
+    "type": "raw",
+  },
+  "originUrl": "https://httpbin.org",
+  "pricingIntervals": [
+    "month",
+  ],
+  "pricingPlans": [
+    {
+      "lineItems": [
+        {
+          "amount": 0,
+          "slug": "base",
+          "usageType": "licensed",
+        },
+        {
+          "billingScheme": "per_unit",
+          "rateLimit": {
+            "interval": 86400,
+            "maxPerInterval": 20,
+          },
+          "slug": "requests",
+          "unitAmount": 0,
+          "usageType": "metered",
+        },
+      ],
+      "name": "Free",
+      "slug": "free",
+    },
+    {
+      "interval": "month",
+      "lineItems": [
+        {
+          "billingScheme": "tiered",
+          "interval": "month",
+          "slug": "requests",
+          "tiers": [
+            {
+              "unitAmount": 0.467,
+              "upTo": 999,
+            },
+            {
+              "unitAmount": 0.053,
+              "upTo": "inf",
+            },
+          ],
+          "tiersMode": "volume",
+          "usageType": "metered",
+        },
+      ],
+      "name": "Pay-As-You-Go",
+      "slug": "pay-as-you-go",
     },
   ],
 }

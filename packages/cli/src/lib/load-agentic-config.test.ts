@@ -8,7 +8,8 @@ import { loadAgenticConfig } from './load-agentic-config'
 const fixtures = [
   'basic-raw-free-ts',
   'basic-raw-free-json',
-  'pricing-freemium'
+  'pricing-freemium',
+  'pricing-pay-as-you-go'
 ]
 
 const fixturesDir = path.join(

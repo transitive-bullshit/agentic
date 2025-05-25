@@ -198,7 +198,6 @@ export async function validateAgenticConfig(
               400,
               `Invalid pricingPlan "${pricingPlan.slug}": metered LineItem "${lineItem.slug}" must not specify "tiers" when using "per_unit" billing scheme.`
             )
-
             break
 
           case 'tiered':
@@ -215,11 +214,16 @@ export async function validateAgenticConfig(
             )
 
             assert(
+              lineItem.tiersMode !== undefined,
+              400,
+              `Invalid pricingPlan "${pricingPlan.slug}": metered LineItem "${lineItem.slug}" must specify a valid "tiersMode" when using "tiered" billing scheme.`
+            )
+
+            assert(
               lineItem.transformQuantity === undefined,
               400,
               `Invalid pricingPlan "${pricingPlan.slug}": metered LineItem "${lineItem.slug}" must not specify "transformQuantity" when using "tiered" billing scheme.`
             )
-
             break
 
           default:
