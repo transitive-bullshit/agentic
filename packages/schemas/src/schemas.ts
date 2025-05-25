@@ -59,6 +59,7 @@ export const rateLimitSchema = z
      */
     maxPerInterval: z
       .number()
+      .nonnegative()
       .describe('Maximum number of operations per interval (unitless).')
   })
   .openapi('RateLimit')
