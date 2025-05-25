@@ -1,8 +1,15 @@
 import { parseZodSchema } from '@agentic/platform-core'
-import { agenticProjectSchema } from '@agentic/platform-schemas'
+import {
+  type AgenticProjectConfigOutput,
+  agenticProjectConfigSchema
+} from '@agentic/platform-schemas'
 import { loadConfig } from 'unconfig'
 
-export async function loadAgenticConfig({ cwd }: { cwd?: string }) {
+export async function loadAgenticConfig({
+  cwd
+}: {
+  cwd?: string
+}): Promise<AgenticProjectConfigOutput> {
   const { config } = await loadConfig({
     cwd,
     sources: [
@@ -13,5 +20,5 @@ export async function loadAgenticConfig({ cwd }: { cwd?: string }) {
     ]
   })
 
-  return parseZodSchema(agenticProjectSchema, config)
+  return parseZodSchema(agenticProjectConfigSchema, config)
 }

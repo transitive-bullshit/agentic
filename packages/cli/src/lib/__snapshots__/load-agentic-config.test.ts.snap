@@ -1,0 +1,49 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`loadAgenticConfig > basic-raw-free-json 1`] = `
+{
+  "name": "My Project",
+  "originAdapter": {
+    "location": "external",
+    "type": "raw",
+  },
+  "originUrl": "https://jsonplaceholder.typicode.com",
+  "pricingPlans": [
+    {
+      "lineItems": [
+        {
+          "amount": 0,
+          "slug": "base",
+          "usageType": "licensed",
+        },
+      ],
+      "name": "Free",
+      "slug": "free",
+    },
+  ],
+}
+`;
+
+exports[`loadAgenticConfig > basic-raw-free-ts 1`] = `
+{
+  "name": "My Project",
+  "originAdapter": {
+    "location": "external",
+    "type": "raw",
+  },
+  "originUrl": "https://jsonplaceholder.typicode.com",
+  "pricingPlans": [
+    {
+      "lineItems": [
+        {
+          "amount": 0,
+          "slug": "base",
+          "usageType": "licensed",
+        },
+      ],
+      "name": "Free",
+      "slug": "free",
+    },
+  ],
+}
+`;

@@ -23,7 +23,7 @@ interface ParseSchemaOptions {
 /**
  * Validates an OpenAPI spec and bundles it into a single, normalized schema.
  *
- * The input `source` should be a JSON stringified OpenAPI spec (3.0 or 3.1).
+ * The input `source` should point to a valid OpenAPI spec (3.0 or 3.1).
  *
  * Adapted from https://github.com/openapi-ts/openapi-typescript/blob/main/packages/openapi-typescript/src/lib/redoc.ts
  */

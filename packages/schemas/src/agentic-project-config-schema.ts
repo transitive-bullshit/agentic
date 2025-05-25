@@ -12,7 +12,7 @@ import { deploymentOriginAdapterSchema, pricingPlanListSchema } from './schemas'
 // - optional version
 // - optional agentic version
 
-export const agenticProjectSchema = z.object({
+export const agenticProjectConfigSchema = z.object({
   name: z.string().describe('Name of the project.'),
 
   // Metadata
@@ -46,12 +46,10 @@ export const agenticProjectSchema = z.object({
 NOTE: Agentic currently only supports \`external\` API servers. If you'd like to host your API or MCP server on Agentic's infrastructure, please reach out to support@agentic.so.`),
 
   // Optional origin API config
-  originAdapter: deploymentOriginAdapterSchema
-    .default({
-      location: 'external',
-      type: 'raw'
-    })
-    .optional(),
+  originAdapter: deploymentOriginAdapterSchema.default({
+    location: 'external',
+    type: 'raw'
+  }),
 
   // Optional subscription pricing config
   pricingPlans: pricingPlanListSchema
@@ -72,4 +70,9 @@ NOTE: Agentic currently only supports \`external\` API servers. If you'd like to
       }
     ])
 })
-export type AgenticProject = z.infer<typeof agenticProjectSchema>
+export type AgenticProjectConfigInput = z.input<
+  typeof agenticProjectConfigSchema
+>
+export type AgenticProjectConfigOutput = z.output<
+  typeof agenticProjectConfigSchema
+>

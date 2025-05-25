@@ -1,12 +1,12 @@
 import restoreCursor from 'restore-cursor'
 import { zodToJsonSchema } from 'zod-to-json-schema'
 
-import { agenticProjectSchema } from '../src'
+import { agenticProjectConfigSchema } from '../src'
 
 async function main() {
   restoreCursor()
 
-  const tempJsonSchema = zodToJsonSchema(agenticProjectSchema)
+  const tempJsonSchema = zodToJsonSchema(agenticProjectConfigSchema)
 
   const publicJsonSchema = {
     ...tempJsonSchema,
