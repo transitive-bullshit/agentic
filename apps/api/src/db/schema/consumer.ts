@@ -38,14 +38,13 @@ import { users } from './user'
 // https://docs.rapidapi.com/docs/keys#section-different-api-keys-per-application
 
 /**
- * A `Consumer` is a user who has subscribed to a `Project`.
- *
- * Consumers are used to track usage and billing for a project.
+ * A `Consumer` represents a user who has subscribed to a `Project` and is used
+ * to track usage and billing.
  *
  * Consumers are linked to a corresponding Stripe Customer and Subscription.
- * The Stripe customer will either be the user's default Stripe Customer for
- * the platform account, or a customer on the project's connected Stripe
- * account if the project has Stripe Connect enabled.
+ * The Stripe customer will either be the user's default Stripe Customer if the
+ * project uses the default Agentic platform account, or a customer on the project
+ * owner's connected Stripe account if the project has Stripe Connect enabled.
  */
 export const consumers = pgTable(
   'consumers',
@@ -168,6 +167,15 @@ export const consumerSelectSchema = createSelectSchema(consumers, {
   //     .openapi('Deployment', { type: 'object' })
   // })
   .strip()
+  .describe(
+    `A Consumer represents a user who has subscribed to a Project and is used
+to track usage and billing.
+
+Consumers are linked to a corresponding Stripe Customer and Subscription.
+The Stripe customer will either be the user's default Stripe Customer if the
+project uses the default Agentic platform account, or a customer on the project
+owner's connected Stripe account if the project has Stripe Connect enabled.`
+  )
   .openapi('Consumer')
 
 export const consumerInsertSchema = createInsertSchema(consumers, {

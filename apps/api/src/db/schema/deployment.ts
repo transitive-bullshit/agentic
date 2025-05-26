@@ -41,6 +41,15 @@ import { projects } from './project'
 import { teams } from './team'
 import { users } from './user'
 
+/**
+ * A Deployment is a single, immutable instance of a Project. Each deployment
+ * contains pricing plans, origin server config (OpenAPI or MCP server), tool
+ * definitions, and metadata.
+ *
+ * Deployments are private to a developer or team until they are published, at
+ * which point they are accessible to any customers with access to the parent
+ * Project.
+ */
 export const deployments = pgTable(
   'deployments',
   {
@@ -162,6 +171,11 @@ export const deploymentSelectSchema = createSelectSchema(deployments, {
   //   project: z.object({}).optional().openapi('Project', { type: 'object' })
   // })
   .strip()
+  .describe(
+    `A Deployment is a single, immutable instance of a Project. Each deployment contains pricing plans, origin server config (OpenAPI or MCP server), tool definitions, and metadata.
+
+Deployments are private to a developer or team until they are published, at which point they are accessible to any customers with access to the parent Project.`
+  )
   .openapi('Deployment')
 
 export const deploymentInsertSchema = createInsertSchema(deployments, {

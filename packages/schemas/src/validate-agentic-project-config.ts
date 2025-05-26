@@ -13,13 +13,21 @@ import { validateOriginAdapter } from './validate-origin-adapter'
 
 export async function validateAgenticProjectConfig(
   inputConfig: unknown,
-  opts: { logger?: Logger; cwd?: URL } = {}
+  {
+    strip = false,
+    ...opts
+  }: { logger?: Logger; cwd?: URL; strip?: boolean; label?: string } = {}
 ): Promise<AgenticProjectConfig> {
   const config = parseZodSchema<
     AgenticProjectConfig,
     ZodTypeDef,
     AgenticProjectConfigInput
-  >(agenticProjectConfigSchema, inputConfig)
+  >(
+    strip
+      ? agenticProjectConfigSchema.strip()
+      : agenticProjectConfigSchema.strict(),
+    inputConfig
+  )
 
   const { name, pricingIntervals, pricingPlans, originUrl } = config
   assert(
@@ -216,8 +224,8 @@ export async function validateAgenticProjectConfig(
   }
 
   await validateOriginAdapter({
-    ...opts,
     label: `project "${name}"`,
+    ...opts,
     originUrl,
     originAdapter: config.originAdapter
   })

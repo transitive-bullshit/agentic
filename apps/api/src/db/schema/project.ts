@@ -43,6 +43,18 @@ import { deployments } from './deployment'
 import { teams } from './team'
 import { users } from './user'
 
+/**
+ * A Project represents a single Agentic API product. A Project is comprised of
+ * a series of immutable Deployments, each of which contains pricing data, origin
+ * API config, OpenAPI or MCP specs, tool definitions, and various metadata.
+ *
+ * You can think of Agentic Projects as similar to Vercel projects. They both
+ * hold some common configuration and are comprised of a series of immutable
+ * Deployments.
+ *
+ * Internally, Projects manage all of the Stripe billing resources across
+ * Deployments (Stripe Products, Prices, and Meters for usage-based billing).
+ */
 export const projects = pgTable(
   'projects',
   {
@@ -210,6 +222,13 @@ export const projectSelectSchema = createSelectSchema(projects, {
   //     .openapi('Deployment', { type: 'object' })
   // })
   .strip()
+  .describe(
+    `A Project represents a single Agentic API product. A Project is comprised of a series of immutable Deployments, each of which contains pricing data, origin API config, OpenAPI or MCP specs, tool definitions, and various metadata.
+
+You can think of Agentic Projects as similar to Vercel projects. They both hold some common configuration and are comprised of a series of immutable Deployments.
+
+Internally, Projects manage all of the Stripe billing resources across Deployments (Stripe Products, Prices, and Meters for usage-based billing).`
+  )
   .openapi('Project')
 
 export const projectInsertSchema = createInsertSchema(projects, {

@@ -1,5 +1,5 @@
-import { assert, parseZodSchema, pick, sha256 } from '@agentic/platform-core'
-import { validateOriginAdapter } from '@agentic/platform-schemas'
+import { assert, parseZodSchema, sha256 } from '@agentic/platform-core'
+import { validateAgenticProjectConfig } from '@agentic/platform-schemas'
 import { validators } from '@agentic/platform-validators'
 import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 
@@ -99,10 +99,15 @@ export function registerV1DeploymentsCreateDeployment(
       })
     }
 
-    // Validate origin config, including any OpenAPI or MCP specs
-    await validateOriginAdapter({
-      ...pick(body, 'originUrl', 'originAdapter'),
+    // Validate project config, including:
+    // - pricing plans
+    // - origin adapter config
+    // - origin API base UrL
+    // - origin adapter OpenAPI or MCP specs
+    // - tool definitions
+    const agenticProjectConfig = await validateAgenticProjectConfig(body, {
       label: `deployment "${deploymentIdentifier}"`,
+      strip: true,
       logger
     })
 
@@ -111,6 +116,7 @@ export function registerV1DeploymentsCreateDeployment(
       .insert(schema.deployments)
       .values({
         ...body,
+        ...agenticProjectConfig,
         identifier: deploymentIdentifier,
         hash,
         userId: user.id,
@@ -139,8 +145,6 @@ export function registerV1DeploymentsCreateDeployment(
         version: deployment.version!
       })
     }
-    // TODO: validate deployment originUrl, originAdapter, originSchema, and
-    // originSchemaVersion
 
     return c.json(parseZodSchema(schema.deploymentSelectSchema, deployment))
   })
