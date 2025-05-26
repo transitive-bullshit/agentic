@@ -12,15 +12,15 @@ description: Agentic adapter for the LlamaIndex TS SDK.
 
 <CodeGroup>
 ```bash npm
-npm install @agentic/llamaindex llamaindex
+npm install @agentic/llamaindex llamaindex @llamaindex/openai @llamaindex/workflow
 ```
 
 ```bash yarn
-yarn add @agentic/llamaindex llamaindex
+yarn add @agentic/llamaindex llamaindex @llamaindex/openai @llamaindex/workflow
 ```
 
 ```bash pnpm
-pnpm add @agentic/llamaindex llamaindex
+pnpm add @agentic/llamaindex llamaindex @llamaindex/openai @llamaindex/workflow
 ```
 
 </CodeGroup>
@@ -32,23 +32,25 @@ import 'dotenv/config'
 
 import { createLlamaIndexTools } from '@agentic/llamaindex'
 import { WeatherClient } from '@agentic/stdlib'
-import { OpenAI, OpenAIAgent } from 'llamaindex'
+import { openai } from '@llamaindex/openai'
+import { agent } from '@llamaindex/workflow'
 
 async function main() {
   const weather = new WeatherClient()
 
   const tools = createLlamaIndexTools(weather)
-  const agent = new OpenAIAgent({
-    llm: new OpenAI({ model: 'gpt-4o-mini', temperature: 0 }),
+  const weatherAgent = agent({
+    name: 'Weather Agent',
+    llm: openai({ model: 'gpt-4o-mini', temperature: 0 }),
     systemPrompt: 'You are a helpful assistant. Be as concise as possible.',
     tools
   })
 
-  const response = await agent.chat({
-    message: 'What is the weather in San Francisco?'
-  })
+  const response = await weatherAgent.run(
+    'What is the weather in San Francisco?'
+  )
 
-  console.log(response.message.content)
+  console.log(response.data.result)
 }
 
 await main()
