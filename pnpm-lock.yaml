@@ -278,6 +278,9 @@ importers:
         specifier: 'catalog:'
         version: 3.24.4
     devDependencies:
+      '@agentic/platform-fixtures':
+        specifier: workspace:*
+        version: link:../fixtures
       '@commander-js/extra-typings':
         specifier: ^14.0.0
         version: 14.0.0(commander@14.0.0)
@@ -303,6 +306,12 @@ importers:
       hono:
         specifier: ^4.7.9
         version: 4.7.9
+
+  packages/fixtures:
+    dependencies:
+      '@agentic/platform-schemas':
+        specifier: workspace:*
+        version: link:../schemas
 
   packages/openapi:
     dependencies:

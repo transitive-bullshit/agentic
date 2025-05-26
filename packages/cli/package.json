@@ -45,6 +45,7 @@
     "zod": "catalog:"
   },
   "devDependencies": {
+    "@agentic/platform-fixtures": "workspace:*",
     "@commander-js/extra-typings": "^14.0.0",
     "@types/inquirer": "^9.0.7"
   },

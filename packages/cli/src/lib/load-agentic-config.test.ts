@@ -39,9 +39,11 @@ const fixturesDir = path.join(
   '..',
   '..',
   '..',
+  '..',
   'fixtures'
 )
 
+const validFixturesDir = path.join(fixturesDir, 'valid')
 const invalidFixturesDir = path.join(fixturesDir, 'invalid')
 
 describe('loadAgenticConfig', () => {
@@ -52,7 +54,7 @@ describe('loadAgenticConfig', () => {
         timeout: 60_000
       },
       async () => {
-        const fixtureDir = path.join(fixturesDir, fixture)
+        const fixtureDir = path.join(validFixturesDir, fixture)
 
         const config = await loadAgenticConfig({ cwd: fixtureDir })
         expect(config).toMatchSnapshot()
