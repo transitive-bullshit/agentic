@@ -53,7 +53,8 @@ export async function publishDeployment(
       tx
         .update(schema.projects)
         .set({
-          lastPublishedDeploymentId: deployment.id
+          lastPublishedDeploymentId: deployment.id,
+          lastPublishedDeploymentVersion: version
         })
         .where(eq(schema.projects.id, project.id))
 

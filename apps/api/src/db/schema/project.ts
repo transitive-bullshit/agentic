@@ -76,6 +76,10 @@ export const projects = pgTable(
     // Most recent Deployment if one exists
     lastDeploymentId: deploymentId(),
 
+    // Semver version of the most recently published Deployment (if one exists)
+    // (denormalized for convenience)
+    lastPublishedDeploymentVersion: text(),
+
     applicationFeePercent: integer().default(20).notNull(),
 
     // TODO: This is going to need to vary from dev to prod

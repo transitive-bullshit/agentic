@@ -2,7 +2,7 @@ import { Command } from 'commander'
 import inquirer from 'inquirer'
 import ora from 'ora'
 
-import { AuthStore } from '../lib/store'
+import { AuthStore } from '../lib/auth-store'
 
 export const rm = new Command('rm')
   .description('Removes deployments')

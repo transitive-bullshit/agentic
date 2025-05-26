@@ -269,6 +269,16 @@ export class AgenticApiClient {
       .json()
   }
 
+  async getProjectByIdentifier(
+    searchParams: OperationParameters<'getProjectByIdentifier'>
+  ): Promise<OperationResponse<'getProjectByIdentifier'>> {
+    return this.ky
+      .get(`v1/projects/by-identifier`, {
+        searchParams: sanitizeSearchParams(searchParams)
+      })
+      .json()
+  }
+
   async updateProject(
     project: OperationBody<'updateProject'>,
     { projectId, ...searchParams }: OperationParameters<'updateProject'>

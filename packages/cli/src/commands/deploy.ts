@@ -2,8 +2,8 @@ import { Command } from 'commander'
 import { oraPromise } from 'ora'
 
 import type { Context } from '../types'
+import { AuthStore } from '../lib/auth-store'
 import { loadAgenticConfig } from '../lib/load-agentic-config'
-import { AuthStore } from '../lib/store'
 
 export function registerDeployCommand({ client, program, logger }: Context) {
   const command = new Command('deploy')
@@ -47,8 +47,8 @@ export function registerDeployCommand({ client, program, logger }: Context) {
         }),
         {
           text: `Creating deployment for project "${config.name}"`,
-          successText: `Deployment created successfully.`,
-          failText: 'Failed to create deployment.'
+          successText: `Deployment created successfully`,
+          failText: 'Failed to create deployment'
         }
       )
 

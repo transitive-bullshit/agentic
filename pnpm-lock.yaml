@@ -134,9 +134,6 @@ importers:
       '@agentic/platform-core':
         specifier: workspace:*
         version: link:../../packages/core
-      '@agentic/platform-openapi':
-        specifier: workspace:*
-        version: link:../../packages/openapi
       '@agentic/platform-schemas':
         specifier: workspace:*
         version: link:../../packages/schemas
@@ -228,9 +225,6 @@ importers:
       type-fest:
         specifier: 'catalog:'
         version: 4.41.0
-      zod:
-        specifier: 'catalog:'
-        version: 3.24.4
     devDependencies:
       openapi-typescript:
         specifier: ^7.8.0
@@ -280,12 +274,12 @@ importers:
       restore-cursor:
         specifier: 'catalog:'
         version: 5.1.0
+      semver:
+        specifier: ^7.7.2
+        version: 7.7.2
       unconfig:
         specifier: ^7.3.2
         version: 7.3.2
-      zod:
-        specifier: 'catalog:'
-        version: 3.24.4
     devDependencies:
       '@agentic/platform-fixtures':
         specifier: workspace:*
@@ -296,6 +290,9 @@ importers:
       '@types/inquirer':
         specifier: ^9.0.7
         version: 9.0.8
+      '@types/semver':
+        specifier: ^7.7.0
+        version: 7.7.0
 
   packages/core:
     dependencies:

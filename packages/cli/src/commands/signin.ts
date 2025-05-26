@@ -11,16 +11,7 @@ export function registerSigninCommand({ client, program, logger }: Context) {
     )
     .option('-e, --email', 'Log in using email and password')
     .action(async (opts) => {
-      if (opts.email) {
-        await auth({
-          client,
-          provider: 'password'
-          // email: opts.email,
-          // password: opts.password
-        })
-      } else {
-        await auth({ client, provider: 'github' })
-      }
+      await auth({ client, provider: opts.email ? 'password' : 'github' })
 
       const user = await client.getMe()
       logger.log(user)

@@ -6,6 +6,7 @@ export type Context = {
   program: Command
   logger: {
     log: (...args: any[]) => void
+    info: (...args: any[]) => void
     error: (...args: any[]) => void
   }
 }

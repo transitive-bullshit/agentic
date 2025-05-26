@@ -42,12 +42,14 @@
     "open": "^10.1.2",
     "ora": "^8.2.0",
     "restore-cursor": "catalog:",
+    "semver": "^7.7.2",
     "unconfig": "^7.3.2"
   },
   "devDependencies": {
     "@agentic/platform-fixtures": "workspace:*",
     "@commander-js/extra-typings": "^14.0.0",
-    "@types/inquirer": "^9.0.7"
+    "@types/inquirer": "^9.0.7",
+    "@types/semver": "^7.7.0"
   },
   "publishConfig": {
     "access": "public"

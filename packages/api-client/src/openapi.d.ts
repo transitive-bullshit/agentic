@@ -149,6 +149,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/projects/by-identifier": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Gets a project by public identifier */
+        get: operations["getProjectByIdentifier"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/projects/{projectId}": {
         parameters: {
             query?: never;
@@ -156,7 +173,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Gets a project */
+        /** @description Gets a project by ID */
         get: operations["getProject"];
         put?: never;
         /** @description Updates a project. */
@@ -388,6 +405,7 @@ export interface components {
             lastPublishedDeploymentId?: string;
             /** @description Deployment id (e.g. "depl_tz4a98xxat96iws9zmbrgj3a") */
             lastDeploymentId?: string;
+            lastPublishedDeploymentVersion?: string;
             applicationFeePercent: number;
             defaultPricingInterval: components["schemas"]["PricingInterval"];
             /** @enum {string} */
@@ -1008,6 +1026,34 @@ export interface operations {
             400: components["responses"]["400"];
             401: components["responses"]["401"];
             403: components["responses"]["403"];
+        };
+    };
+    getProjectByIdentifier: {
+        parameters: {
+            query: {
+                populate?: ("user" | "team" | "lastPublishedDeployment" | "lastDeployment")[];
+                /** @description Public project identifier (e.g. "namespace/project-name") */
+                projectIdentifier: components["schemas"]["ProjectIdentifier"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description A project */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Project"];
+                };
+            };
+            400: components["responses"]["400"];
+            401: components["responses"]["401"];
+            403: components["responses"]["403"];
+            404: components["responses"]["404"];
         };
     };
     getProject: {

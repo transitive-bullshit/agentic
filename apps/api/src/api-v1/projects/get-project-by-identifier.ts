@@ -10,18 +10,17 @@ import {
   openapiErrorResponses
 } from '@/lib/openapi-utils'
 
-import { populateProjectSchema, projectIdParamsSchema } from './schemas'
+import { projectIdentifierAndPopulateSchema } from './schemas'
 
 const route = createRoute({
-  description: 'Gets a project by ID',
+  description: 'Gets a project by public identifier',
   tags: ['projects'],
-  operationId: 'getProject',
+  operationId: 'getProjectByIdentifier',
   method: 'get',
-  path: 'projects/{projectId}',
+  path: 'projects/by-identifier',
   security: openapiAuthenticatedSecuritySchemas,
   request: {
-    params: projectIdParamsSchema,
-    query: populateProjectSchema
+    query: projectIdentifierAndPopulateSchema
   },
   responses: {
     200: {
@@ -37,21 +36,20 @@ const route = createRoute({
   }
 })
 
-export function registerV1ProjectsGetProject(
+export function registerV1ProjectsGetProjectByIdentifier(
   app: OpenAPIHono<AuthenticatedEnv>
 ) {
   return app.openapi(route, async (c) => {
-    const { projectId } = c.req.valid('param')
-    const { populate = [] } = c.req.valid('query')
+    const { projectIdentifier, populate = [] } = c.req.valid('query')
 
     const project = await db.query.projects.findFirst({
-      where: eq(schema.projects.id, projectId),
+      where: eq(schema.projects.identifier, projectIdentifier),
       with: {
         lastPublishedDeployment: true,
         ...Object.fromEntries(populate.map((field) => [field, true]))
       }
     })
-    assert(project, 404, `Project not found "${projectId}"`)
+    assert(project, 404, `Project not found "${projectIdentifier}"`)
     await acl(c, project, { label: 'Project' })
 
     return c.json(parseZodSchema(schema.projectSelectSchema, project))

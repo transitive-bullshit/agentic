@@ -1,7 +1,7 @@
 import type { AgenticApiClient, Deployment } from '@agentic/platform-api-client'
 
+import { AuthStore } from './auth-store'
 import { loadAgenticConfig } from './load-agentic-config'
-import { AuthStore } from './store'
 
 export async function resolveDeployment({
   client,

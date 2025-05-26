@@ -5,10 +5,11 @@ import { Command } from 'commander'
 import restoreCursor from 'restore-cursor'
 
 import { registerDeployCommand } from './commands/deploy'
+import { registerPublishCommand } from './commands/publish'
 import { registerSigninCommand } from './commands/signin'
 import { registerSignoutCommand } from './commands/signout'
 import { registerWhoAmICommand } from './commands/whoami'
-import { AuthStore } from './lib/store'
+import { AuthStore } from './lib/auth-store'
 
 async function main() {
   restoreCursor()
@@ -52,6 +53,9 @@ async function main() {
         console.log(...args)
       }
     },
+    info: (...args: any[]) => {
+      console.info(...args)
+    },
     error: (...args: any[]) => {
       console.error(...args)
     }
@@ -68,6 +72,7 @@ async function main() {
   registerWhoAmICommand(ctx)
   registerSignoutCommand(ctx)
   registerDeployCommand(ctx)
+  registerPublishCommand(ctx)
 
   program.parse()
 }

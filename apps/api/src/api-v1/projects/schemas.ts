@@ -1,6 +1,11 @@
 import { z } from '@hono/zod-openapi'
 
-import { paginationSchema, projectIdSchema, projectRelationsSchema } from '@/db'
+import {
+  paginationSchema,
+  projectIdentifierSchema,
+  projectIdSchema,
+  projectRelationsSchema
+} from '@/db'
 
 export const projectIdParamsSchema = z.object({
   projectId: projectIdSchema.openapi({
@@ -12,8 +17,17 @@ export const projectIdParamsSchema = z.object({
   })
 })
 
+export const projectIdentifierQuerySchema = z.object({
+  projectIdentifier: projectIdentifierSchema
+})
+
 export const populateProjectSchema = z.object({
   populate: z.array(projectRelationsSchema).default([]).optional()
+})
+
+export const projectIdentifierAndPopulateSchema = z.object({
+  ...populateProjectSchema.shape,
+  ...projectIdentifierQuerySchema.shape
 })
 
 export const paginationAndPopulateProjectSchema = z.object({

@@ -7,7 +7,7 @@ import open from 'open'
 import { oraPromise } from 'ora'
 
 import type { AuthSession } from '../types'
-import { AuthStore } from './store'
+import { AuthStore } from './auth-store'
 
 const providerToLabel = {
   github: 'GitHub',
