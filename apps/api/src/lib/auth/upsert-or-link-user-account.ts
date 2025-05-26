@@ -38,7 +38,10 @@ export async function upsertOrLinkUserAccount({
   partialUser: Simplify<
     SetRequired<
       Partial<
-        Pick<RawUser, 'email' | 'name' | 'username' | 'image' | 'emailVerified'>
+        Pick<
+          RawUser,
+          'email' | 'name' | 'username' | 'image' | 'isEmailVerified'
+        >
       >,
       'email'
     >

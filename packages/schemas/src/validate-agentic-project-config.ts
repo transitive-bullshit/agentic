@@ -8,6 +8,7 @@ import {
   type AgenticProjectConfigInput,
   agenticProjectConfigSchema
 } from './agentic-project-config-schema'
+import { getPricingPlansByInterval } from './utils'
 import { validateOriginAdapter } from './validate-origin-adapter'
 
 export async function validateAgenticProjectConfig(
@@ -197,6 +198,21 @@ export async function validateAgenticProjectConfig(
         }
       }
     }
+  }
+
+  // Validate deployment pricing plans to ensure they contain at least one valid
+  // plan per pricing interval configured on the project.
+  for (const pricingInterval of config.pricingIntervals) {
+    const pricingPlansForInterval = getPricingPlansByInterval({
+      pricingInterval,
+      pricingPlans
+    })
+
+    assert(
+      pricingPlansForInterval.length > 0,
+      400,
+      `Invalid pricing config: no pricing plans for pricing interval "${pricingInterval}"`
+    )
   }
 
   await validateOriginAdapter({

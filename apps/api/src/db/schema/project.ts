@@ -10,7 +10,6 @@ import {
 import { validators } from '@agentic/platform-validators'
 import { relations } from '@fisch0920/drizzle-orm'
 import {
-  boolean,
   index,
   integer,
   jsonb,
@@ -18,7 +17,6 @@ import {
   text,
   uniqueIndex
 } from '@fisch0920/drizzle-orm/pg-core'
-import { z } from '@hono/zod-openapi'
 
 import {
   deploymentIdSchema,
@@ -69,21 +67,18 @@ export const projects = pgTable(
     applicationFeePercent: integer().default(20).notNull(),
 
     // TODO: This is going to need to vary from dev to prod
-    isStripeConnectEnabled: boolean().default(false).notNull(),
-
-    // Which pricing intervals are supported for subscriptions to this project
-    pricingIntervals: pricingIntervalEnum()
-      .array()
-      .default(['month'])
-      .notNull(),
+    //isStripeConnectEnabled: boolean().default(false).notNull(),
 
     // Default pricing interval for subscriptions to this project
+    // Note: This is essentially hard-coded and not configurable by users for now.
     defaultPricingInterval: pricingIntervalEnum().default('month').notNull(),
 
     // Pricing currency used across all prices and subscriptions to this project
     pricingCurrency: pricingCurrencyEnum().default('usd').notNull(),
 
-    // All deployments share the same underlying proxy secret
+    // All deployments share the same underlying proxy secret, which allows
+    // origin servers to verify that requests are coming from Agentic's API
+    // gateway.
     _secret: text().notNull(),
 
     // Auth token used to access the platform API on behalf of this project
@@ -179,7 +174,6 @@ export const projectSelectSchema = createSelectSchema(projects, {
 
   applicationFeePercent: (schema) => schema.nonnegative(),
 
-  pricingIntervals: z.array(pricingIntervalSchema).nonempty(),
   defaultPricingInterval: pricingIntervalSchema,
 
   _stripeProductIdMap: stripeProductIdMapSchema,

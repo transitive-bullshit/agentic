@@ -1,6 +1,8 @@
 import {
+  agenticProjectConfigSchema,
   type DeploymentOriginAdapter,
   deploymentOriginAdapterSchema,
+  pricingIntervalListSchema,
   type PricingPlanList,
   pricingPlanListSchema
 } from '@agentic/platform-schemas'
@@ -29,6 +31,7 @@ import {
   createUpdateSchema,
   deploymentIdentifier,
   deploymentPrimaryId,
+  pricingIntervalEnum,
   projectId,
   teamId,
   timestamps,
@@ -65,11 +68,10 @@ export const deployments = pgTable(
         onDelete: 'cascade'
       }),
 
-    // TODO: Tool definitions or OpenAPI spec
-    // services: jsonb().$type<Service[]>().default([]),
+    // TODO: Tool definitions
+    // tools: jsonb().$type<Tool[]>().default([]),
 
     // TODO: metadata config (logo, keywords, examples, etc)
-    // TODO: openapi spec or tool definitions or mcp adapter
     // TODO: webhooks
     // TODO: third-party auth provider config
     // NOTE: will need consumer.authProviders as well as user.authProviders for
@@ -84,7 +86,10 @@ export const deployments = pgTable(
     originAdapter: jsonb().$type<DeploymentOriginAdapter>().notNull(),
 
     // Array<PricingPlan>
-    pricingPlans: jsonb().$type<PricingPlanList>().notNull()
+    pricingPlans: jsonb().$type<PricingPlanList>().notNull(),
+
+    // Which pricing intervals are supported for subscriptions to this project
+    pricingIntervals: pricingIntervalEnum().array().default(['month']).notNull()
 
     // coupons: jsonb().$type<Coupon[]>().default([]).notNull()
   },
@@ -135,8 +140,9 @@ export const deploymentSelectSchema = createSelectSchema(deployments, {
       message: 'Invalid deployment hash'
     }),
 
+  originAdapter: deploymentOriginAdapterSchema,
   pricingPlans: pricingPlanListSchema,
-  originAdapter: deploymentOriginAdapterSchema
+  pricingIntervals: pricingIntervalListSchema
 })
   .omit({
     originUrl: true
@@ -159,33 +165,7 @@ export const deploymentSelectSchema = createSelectSchema(deployments, {
   .openapi('Deployment')
 
 export const deploymentInsertSchema = createInsertSchema(deployments, {
-  projectId: projectIdSchema,
-
-  iconUrl: (schema) =>
-    schema
-      .url()
-      .describe(
-        'Logo image URL to use for this deployment. Logos should have a square aspect ratio.'
-      ),
-
-  sourceUrl: (schema) => schema.url(),
-
-  originUrl: (schema) =>
-    schema.url().describe(`Base URL of the externally hosted origin API server.
-
-NOTE: Agentic currently only supports \`external\` API servers. If you'd like to host your API or MCP server on Agentic's infrastructure, please reach out to support@agentic.so.`),
-
-  pricingPlans: pricingPlanListSchema.describe(
-    'List of PricingPlans should be available as subscriptions for this deployment.'
-  ),
-  originAdapter: deploymentOriginAdapterSchema.default({
-    location: 'external',
-    type: 'raw'
-  })
-  // .optional()
-
-  // TODO
-  // coupons: z.array(couponSchema).optional()
+  projectId: projectIdSchema
 })
   .omit({
     id: true,
@@ -195,8 +175,15 @@ NOTE: Agentic currently only supports \`external\` API servers. If you'd like to
     userId: true,
     teamId: true
   })
+  .extend({
+    ...agenticProjectConfigSchema.shape
+  })
   .strict()
 
+// TODO: Deployments should be immutable, so we should not allow updates aside
+// from publishing. But editing a project's description should be possible from
+// the admin UI, so maybe we allow only updates to some properties? Or we
+// denormalize these fields in `project`?
 export const deploymentUpdateSchema = createUpdateSchema(deployments)
   .pick({
     deletedAt: true,

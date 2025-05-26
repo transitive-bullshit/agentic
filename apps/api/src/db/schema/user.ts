@@ -19,8 +19,6 @@ import {
   userRoleEnum
 } from './common'
 
-// This table is mostly managed by better-auth.
-
 export const users = pgTable(
   'users',
   {
@@ -32,10 +30,10 @@ export const users = pgTable(
 
     name: text(),
     email: text().notNull().unique(),
-    emailVerified: boolean().default(false).notNull(),
+    isEmailVerified: boolean().default(false).notNull(),
     image: text(),
 
-    isStripeConnectEnabledByDefault: boolean().default(true).notNull(),
+    //isStripeConnectEnabledByDefault: boolean().default(true).notNull(),
 
     stripeCustomerId: stripeId()
   },
@@ -59,7 +57,7 @@ export const userSelectSchema = createSelectSchema(users)
 export const userUpdateSchema = createUpdateSchema(users)
   .pick({
     name: true,
-    image: true,
-    isStripeConnectEnabledByDefault: true
+    image: true
+    //isStripeConnectEnabledByDefault: true
   })
   .strict()

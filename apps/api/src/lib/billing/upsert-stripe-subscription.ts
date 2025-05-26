@@ -119,7 +119,7 @@ export async function upsertStripeSubscription(
           assert(
             priceId,
             500,
-            `Error updating stripe subscription: missing expected Stripe Price for plan "${pricingPlan.slug}" line item "${lineItem.slug}"`
+            `Error updating stripe subscription: missing expected Stripe Price for plan "${pricingPlan.slug}" line-item "${lineItem.slug}"`
           )
 
           // An existing Stripe Subscription Item may or may not exist for this
@@ -199,9 +199,10 @@ export async function upsertStripeSubscription(
       updateParams.cancel_at_period_end = true
     }
 
-    if (project.isStripeConnectEnabled && project.applicationFeePercent > 0) {
-      updateParams.application_fee_percent = project.applicationFeePercent
-    }
+    // TODO: Stripe Connect
+    // if (project.isStripeConnectEnabled && project.applicationFeePercent > 0) {
+    //   updateParams.application_fee_percent = project.applicationFeePercent
+    // }
 
     subscription = await stripe.subscriptions.update(
       consumer._stripeSubscriptionId,
@@ -274,9 +275,10 @@ export async function upsertStripeSubscription(
       createParams.trial_period_days = pricingPlan.trialPeriodDays
     }
 
-    if (project.isStripeConnectEnabled && project.applicationFeePercent > 0) {
-      createParams.application_fee_percent = project.applicationFeePercent
-    }
+    // TODO: Stripe Connect
+    // if (project.isStripeConnectEnabled && project.applicationFeePercent > 0) {
+    //   createParams.application_fee_percent = project.applicationFeePercent
+    // }
 
     logger.debug('subscription', action, { items })
     subscription = await stripe.subscriptions.create(
@@ -321,7 +323,7 @@ export async function upsertStripeSubscription(
       assert(
         stripeSubscriptionItem,
         500,
-        `Error post-processing stripe subscription for line item "${lineItem.slug}" on plan "${pricingPlan.slug}"`
+        `Error post-processing stripe subscription for line-item "${lineItem.slug}" on plan "${pricingPlan.slug}"`
       )
 
       consumerUpdate._stripeSubscriptionItemIdMap![lineItem.slug] =
@@ -329,7 +331,7 @@ export async function upsertStripeSubscription(
       assert(
         consumerUpdate._stripeSubscriptionItemIdMap![lineItem.slug],
         500,
-        `Error post-processing stripe subscription for line item "${lineItem.slug}" on plan "${pricingPlan.slug}"`
+        `Error post-processing stripe subscription for line-item "${lineItem.slug}" on plan "${pricingPlan.slug}"`
       )
     }
   }

@@ -1,17 +1,16 @@
-import type {
-  PricingPlan,
-  PricingPlanLineItem
-} from '@agentic/platform-schemas'
 import type Stripe from 'stripe'
 import { assert } from '@agentic/platform-core'
+import {
+  getLabelForPricingInterval,
+  type PricingPlan,
+  type PricingPlanLineItem
+} from '@agentic/platform-schemas'
 import pAll from 'p-all'
 
 import {
   db,
   eq,
-  getLabelForPricingInterval,
   getPricingPlanLineItemHashForStripePrice,
-  getPricingPlansByInterval,
   type RawDeployment,
   type RawProject,
   schema
@@ -28,8 +27,12 @@ import { stripe } from '@/lib/external/stripe'
  * `_stripeMeterIdMap`, and `_stripePriceIdMap` fields of the given `project`.
  *
  * The `project` will be updated in the DB with any changes.
+ *
  * The `deployment` is readonly and will not be updated, since all Stripe
  * resources persist on its Project in case they're the same across deployments.
+ *
+ * @note This function assumes that the deployment's pricing config has already
+ * been validated.
  */
 export async function upsertStripePricing({
   deployment,
@@ -244,25 +247,6 @@ export async function upsertStripePricing({
   }
 
   const upserts: Array<() => Promise<void>> = []
-
-  // Validate deployment pricing plans to ensure they contain at least one valid
-  // plan per pricing interval configured on the project.
-  // TODO: move some of this `pricingPlans` validation to a separate function?
-  // We really wouldn't want to create some resources and then fail partway when
-  // this validation or some of the validation above fails.
-  for (const pricingInterval of project.pricingIntervals) {
-    const pricingPlans = getPricingPlansByInterval({
-      pricingInterval,
-      pricingPlans: deployment.pricingPlans
-    })
-
-    assert(
-      pricingPlans.length > 0,
-      400,
-      `Invalid pricing config for deployment "${deployment.id}": no pricing plans for interval "${pricingInterval}"`
-    )
-  }
-
   for (const pricingPlan of deployment.pricingPlans) {
     for (const pricingPlanLineItem of pricingPlan.lineItems) {
       upserts.push(() =>

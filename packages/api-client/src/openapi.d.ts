@@ -320,9 +320,8 @@ export interface components {
             role: "user" | "admin";
             name?: string;
             email: string;
-            emailVerified: boolean;
+            isEmailVerified: boolean;
             image?: string;
-            isStripeConnectEnabledByDefault: boolean;
             stripeCustomerId?: string;
         };
         Team: {
@@ -367,8 +366,6 @@ export interface components {
             /** @description Deployment id (e.g. "depl_tz4a98xxat96iws9zmbrgj3a") */
             lastDeploymentId?: string;
             applicationFeePercent: number;
-            isStripeConnectEnabled: boolean;
-            pricingIntervals: components["schemas"]["PricingInterval"][];
             defaultPricingInterval: components["schemas"]["PricingInterval"];
             /** @enum {string} */
             pricingCurrency: "usd";
@@ -419,7 +416,9 @@ export interface components {
         /** @example API calls */
         label: string;
         RateLimit: {
-            interval: number;
+            /** @description The interval at which the rate limit is applied. Either a number in seconds or a valid [ms](https://github.com/vercel/ms) string (eg, "10s", "1m", "1h", "1d", "1w", "1y", etc). */
+            interval: number | string;
+            /** @description Maximum number of operations per interval (unitless). */
             maxPerInterval: number;
         };
         PricingPlanTier: {
@@ -427,17 +426,15 @@ export interface components {
             flatAmount?: number;
             upTo: number | "inf";
         };
-        /** @description PricingPlanLineItems represent a single line-item in a Stripe Subscription. They map to a Stripe billing `Price` and possibly a corresponding Stripe `Meter` for metered usage. */
+        /** @description PricingPlanLineItems represent a single line-item in a Stripe Subscription. They map to a Stripe billing `Price` and possibly a corresponding Stripe `Meter` for usage-based line-items. */
         PricingPlanLineItem: {
             slug: string | "base" | "requests";
-            interval?: components["schemas"]["PricingInterval"];
             label?: components["schemas"]["label"];
             /** @enum {string} */
             usageType: "licensed";
             amount: number;
         } | {
             slug: string | "base" | "requests";
-            interval?: components["schemas"]["PricingInterval"];
             label?: components["schemas"]["label"];
             /** @enum {string} */
             usageType: "metered";
@@ -461,11 +458,13 @@ export interface components {
             name: components["schemas"]["name"];
             slug: components["schemas"]["slug"];
             interval?: components["schemas"]["PricingInterval"];
-            desc?: string;
+            description?: string;
             features?: string[];
             trialPeriodDays?: number;
             lineItems: components["schemas"]["PricingPlanLineItem"][];
         };
+        /** @description List of billing intervals for subscriptions. */
+        PricingIntervalList: components["schemas"]["PricingInterval"][];
         Deployment: {
             /** @description Deployment id (e.g. "depl_tz4a98xxat96iws9zmbrgj3a") */
             id: string;
@@ -489,6 +488,7 @@ export interface components {
             originAdapter: components["schemas"]["DeploymentOriginAdapter"];
             /** @description List of PricingPlans */
             pricingPlans: components["schemas"]["PricingPlan"][];
+            pricingIntervals: components["schemas"]["PricingIntervalList"];
         };
     };
     responses: {
@@ -608,7 +608,6 @@ export interface operations {
                 "application/json": {
                     name?: string;
                     image?: string;
-                    isStripeConnectEnabledByDefault?: boolean;
                 };
             };
         };
@@ -1270,27 +1269,50 @@ export interface operations {
                     identifier: string;
                     version?: string;
                     published?: boolean;
+                    /** @description A short description of the project. */
                     description?: string;
+                    /** @description A readme documenting the project (supports GitHub-flavored markdown). */
                     readme?: string;
                     /**
                      * Format: uri
-                     * @description Logo image URL to use for this deployment. Logos should have a square aspect ratio.
+                     * @description Optional logo image URL to use for the project. Logos should have a square aspect ratio.
                      */
                     iconUrl?: string;
-                    /** Format: uri */
+                    /**
+                     * Format: uri
+                     * @description Optional URL to the source code of the project (eg, GitHub repo).
+                     */
                     sourceUrl?: string;
                     /** @description Project id (e.g. "proj_tz4a98xxat96iws9zmbrgj3a") */
                     projectId: string;
                     /**
                      * Format: uri
-                     * @description Base URL of the externally hosted origin API server.
+                     * @description Required base URL of the externally hosted origin API server. Must be a valid `https` URL.
                      *
                      *     NOTE: Agentic currently only supports `external` API servers. If you'd like to host your API or MCP server on Agentic's infrastructure, please reach out to support@agentic.so.
                      */
                     originUrl: string;
                     originAdapter?: components["schemas"]["DeploymentOriginAdapter"] & unknown;
-                    /** @description List of PricingPlans should be available as subscriptions for this deployment. */
-                    pricingPlans: components["schemas"]["PricingPlan"][];
+                    /**
+                     * @description List of PricingPlans configuring which Stripe subscriptions should be available for the project. Defaults to a single free plan which is useful for developing and testing.your project.
+                     * @default [
+                     *       {
+                     *         "name": "Free",
+                     *         "slug": "free",
+                     *         "lineItems": [
+                     *           {
+                     *             "slug": "base",
+                     *             "usageType": "licensed",
+                     *             "amount": 0
+                     *           }
+                     *         ]
+                     *       }
+                     *     ]
+                     */
+                    pricingPlans?: components["schemas"]["PricingPlan"][];
+                    pricingIntervals?: components["schemas"]["PricingIntervalList"] & unknown;
+                    /** @description Name of the project. */
+                    name: string;
                 };
             };
         };

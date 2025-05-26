@@ -104,7 +104,7 @@ export const authRouter = issuer({
         },
         partialUser: {
           email: ghUser.email,
-          emailVerified: true,
+          isEmailVerified: true,
           name: ghUser.name || undefined,
           username: ghUser.login.toLowerCase(),
           image: ghUser.avatar_url
@@ -118,7 +118,7 @@ export const authRouter = issuer({
         },
         partialUser: {
           email: value.email,
-          emailVerified: true
+          isEmailVerified: true
         }
       })
     } else {

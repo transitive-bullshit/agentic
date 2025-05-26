@@ -2,7 +2,7 @@ import { z } from '@hono/zod-openapi'
 
 import {
   deploymentOriginAdapterSchema,
-  pricingIntervalSchema,
+  pricingIntervalListSchema,
   type PricingPlan,
   pricingPlanListSchema
 } from './schemas'
@@ -54,13 +54,6 @@ export const agenticProjectConfigSchema = z.object({
     )
     .optional(),
 
-  /** Optional URL to the source code of the project. */
-  sourceUrl: z
-    .string()
-    .url()
-    .optional()
-    .describe('Optional URL to the source code of the project.'),
-
   /**
    * Optional logo image URL to use for the project. Logos should have a square aspect ratio.
    */
@@ -70,6 +63,15 @@ export const agenticProjectConfigSchema = z.object({
     .optional()
     .describe(
       'Optional logo image URL to use for the project. Logos should have a square aspect ratio.'
+    ),
+
+  /** Optional URL to the source code of the project. */
+  sourceUrl: z
+    .string()
+    .url()
+    .optional()
+    .describe(
+      'Optional URL to the source code of the project (eg, GitHub repo).'
     ),
 
   /** Required origin API HTTPS base URL */
@@ -97,7 +99,8 @@ NOTE: Agentic currently only supports \`external\` API servers. If you'd like to
    *
    * Defaults to a single monthly interval `['month']`.
    *
-   * To add support for annual pricing plans, you can use `['month', 'year']`.
+   * To add support for annual pricing plans, for example, you can use:
+   * `['month', 'year']`.
    *
    * Note that for every pricing interval, you must define a corresponding set
    * of PricingPlans in the `pricingPlans` array. If you only have one pricing
@@ -106,11 +109,14 @@ NOTE: Agentic currently only supports \`external\` API servers. If you'd like to
    * specify their `interval` property to differentiate between different
    * pricing intervals.
    */
-  pricingIntervals: z
-    .array(pricingIntervalSchema)
-    .nonempty({
-      message: 'Must contain at least one pricing interval'
-    })
+  pricingIntervals: pricingIntervalListSchema
+    .describe(
+      `Optional list of billing intervals to enable in the pricingPlans.
+
+Defaults to a single monthly interval \`['month']\`.
+
+To add support for annual pricing plans, for example, you can use: \`['month', 'year']\`.`
+    )
     .optional()
     .default(['month'])
 })

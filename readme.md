@@ -7,17 +7,24 @@
 
 ## TODO
 
+- end-to-end working examples
+  - raw
+  - openapi
+  - mcp
 - stripe
   - re-add coupons
   - declarative json-based pricing
     - like https://github.com/tierrun/tier and Saasify
     - https://github.com/tierrun/tier/blob/main/pricing/schema.json
     - https://blog.tier.run/tier-hello-world-demo
+  - stripe connect
 - consider switching to [consola](https://github.com/unjs/consola) for logging?
 - consider switching to `bun` (for `--hot` reloading!!)
 - transactional emails
   - openauth password emails and `sendCode`
 - re-add support for teams / organizations
+- api gateway
+  - signed requests
 
 ## License
 

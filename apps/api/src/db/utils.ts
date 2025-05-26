@@ -1,8 +1,6 @@
 import type {
-  PricingInterval,
   PricingPlan,
-  PricingPlanLineItem,
-  PricingPlanList
+  PricingPlanLineItem
 } from '@agentic/platform-schemas'
 import { hashObject } from '@agentic/platform-core'
 
@@ -61,31 +59,4 @@ export function getStripePriceIdForPricingPlanLineItem({
   })
 
   return project._stripePriceIdMap[pricingPlanLineItemHash]
-}
-
-export function getPricingPlansByInterval({
-  pricingInterval,
-  pricingPlans
-}: {
-  pricingInterval: PricingInterval
-  pricingPlans: PricingPlanList
-}): PricingPlan[] {
-  return pricingPlans.filter(
-    (pricingPlan) =>
-      pricingPlan.interval === undefined ||
-      pricingPlan.interval === pricingInterval
-  )
-}
-
-const pricingIntervalToLabelMap: Record<PricingInterval, string> = {
-  day: 'daily',
-  week: 'weekly',
-  month: 'monthly',
-  year: 'yearly'
-}
-
-export function getLabelForPricingInterval(
-  pricingInterval: PricingInterval
-): string {
-  return pricingIntervalToLabelMap[pricingInterval]
 }

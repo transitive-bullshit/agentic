@@ -18,19 +18,33 @@ export const rateLimitSchema = z
      * The interval at which the rate limit is applied.
      *
      * Either a number in seconds or a valid [ms](https://github.com/vercel/ms)
-     * string (eg, `10s`, `1m`, `1h`, `1d`, `1w`, `1y`, etc).
+     * string (eg, "10s", "1m", "1h", "1d", "1w", "1y", etc).
      */
-    interval: z.union([
-      z.number().nonnegative(), // seconds
-      z
-        .string()
-        .nonempty()
-        .transform((value, ctx) => {
-          try {
-            // TODO: `ms` module has broken types
-            const ms = parseIntervalAsMs(value as any) as unknown as number
+    interval: z
+      .union([
+        z.number().nonnegative(), // seconds
 
-            if (typeof ms !== 'number' || ms < 0) {
+        z
+          .string()
+          .nonempty()
+          .transform((value, ctx) => {
+            try {
+              // TODO: `ms` module has broken types
+              const ms = parseIntervalAsMs(value as any) as unknown as number
+
+              if (typeof ms !== 'number' || ms < 0) {
+                ctx.addIssue({
+                  code: z.ZodIssueCode.custom,
+                  message: `Invalid interval "${value}"`,
+                  path: ctx.path
+                })
+
+                return z.NEVER
+              }
+
+              const seconds = Math.floor(ms / 1000)
+              return seconds
+            } catch {
               ctx.addIssue({
                 code: z.ZodIssueCode.custom,
                 message: `Invalid interval "${value}"`,
@@ -39,20 +53,11 @@ export const rateLimitSchema = z
 
               return z.NEVER
             }
-
-            const seconds = Math.floor(ms / 1000)
-            return seconds
-          } catch {
-            ctx.addIssue({
-              code: z.ZodIssueCode.custom,
-              message: `Invalid interval "${value}"`,
-              path: ctx.path
-            })
-
-            return z.NEVER
-          }
-        })
-    ]),
+          })
+      ])
+      .describe(
+        `The interval at which the rate limit is applied. Either a number in seconds or a valid [ms](https://github.com/vercel/ms) string (eg, "10s", "1m", "1h", "1d", "1w", "1y", etc).`
+      ),
 
     /**
      * Maximum number of operations per interval (unitless).
@@ -98,6 +103,17 @@ export const pricingIntervalSchema = z
   .describe('The frequency at which a subscription is billed.')
   .openapi('PricingInterval')
 export type PricingInterval = z.infer<typeof pricingIntervalSchema>
+
+/**
+ * List of billing intervals for subscriptions.
+ */
+export const pricingIntervalListSchema = z
+  .array(pricingIntervalSchema)
+  .nonempty({
+    message: 'Must contain at least one pricing interval'
+  })
+  .describe('List of billing intervals for subscriptions.')
+  .openapi('PricingIntervalList')
 
 /**
  * Internal PricingPlanLineItem hash
