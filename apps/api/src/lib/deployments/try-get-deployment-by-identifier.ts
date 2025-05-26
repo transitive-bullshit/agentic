@@ -2,7 +2,7 @@ import { assert } from '@agentic/platform-core'
 import { parseFaasIdentifier } from '@agentic/platform-validators'
 
 import type { AuthenticatedContext } from '@/lib/types'
-import { db, eq, type RawDeployment, schema } from '@/db'
+import { db, deploymentIdSchema, eq, type RawDeployment, schema } from '@/db'
 import { ensureAuthUser } from '@/lib/ensure-auth-user'
 
 /**
@@ -27,6 +27,16 @@ export async function tryGetDeploymentByIdentifier(
   }
 ): Promise<RawDeployment> {
   const user = await ensureAuthUser(ctx)
+
+  // First check if the identifier is a deployment ID
+  if (deploymentIdSchema.safeParse(deploymentIdentifier).success) {
+    const deployment = await db.query.deployments.findFirst({
+      ...dbQueryOpts,
+      where: eq(schema.deployments.id, deploymentIdentifier)
+    })
+    assert(deployment, 404, `Deployment not found "${deploymentIdentifier}"`)
+    return deployment
+  }
 
   const teamMember = ctx.get('teamMember')
   const namespace = teamMember ? teamMember.teamSlug : user.username

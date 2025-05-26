@@ -1379,8 +1379,10 @@ export interface operations {
                 sort?: "asc" | "desc";
                 sortBy?: "createdAt" | "updatedAt";
                 populate?: ("user" | "team" | "project")[];
-                /** @description Project id (e.g. "proj_tz4a98xxat96iws9zmbrgj3a") */
-                projectId?: string;
+                /** @description Public project identifier (e.g. "namespace/project-name") */
+                projectIdentifier?: components["schemas"]["ProjectIdentifier"];
+                /** @description Public deployment identifier (e.g. "namespace/project-name@{hash|version|latest}") */
+                deploymentIdentifier?: components["schemas"]["DeploymentIdentifier"];
             };
             header?: never;
             path?: never;

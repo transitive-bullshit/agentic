@@ -3,10 +3,12 @@ import { createRoute, type OpenAPIHono, z } from '@hono/zod-openapi'
 
 import type { AuthenticatedEnv } from '@/lib/types'
 import { and, db, eq, schema } from '@/db'
+import { acl } from '@/lib/acl'
 import {
   openapiAuthenticatedSecuritySchemas,
   openapiErrorResponses
 } from '@/lib/openapi-utils'
+import { tryGetProjectByIdentifier } from '@/lib/projects/try-get-project-by-identifier'
 
 import { paginationAndPopulateAndFilterDeploymentSchema } from './schemas'
 
@@ -43,18 +45,31 @@ export function registerV1DeploymentsListDeployments(
       sort = 'desc',
       sortBy = 'createdAt',
       populate = [],
-      projectId
+      projectIdentifier,
+      deploymentIdentifier
     } = c.req.valid('query')
 
     const userId = c.get('userId')
     const teamMember = c.get('teamMember')
+    let projectId: string | undefined
+
+    if (projectIdentifier) {
+      const project = await tryGetProjectByIdentifier(c, {
+        projectIdentifier
+      })
+      await acl(c, project, { label: 'Project' })
+      projectId = project.id
+    }
 
     const deployments = await db.query.deployments.findMany({
       where: and(
         teamMember
           ? eq(schema.deployments.teamId, teamMember.teamId)
           : eq(schema.deployments.userId, userId),
-        projectId ? eq(schema.deployments.projectId, projectId) : undefined
+        projectId ? eq(schema.deployments.projectId, projectId) : undefined,
+        deploymentIdentifier
+          ? eq(schema.deployments.identifier, deploymentIdentifier)
+          : undefined
       ),
       with: {
         ...Object.fromEntries(populate.map((field) => [field, true]))

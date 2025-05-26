@@ -5,7 +5,7 @@ import {
   deploymentIdSchema,
   deploymentRelationsSchema,
   paginationSchema,
-  projectIdSchema
+  projectIdentifierSchema
 } from '@/db'
 
 export const deploymentIdParamsSchema = z.object({
@@ -23,7 +23,8 @@ export const createDeploymentQuerySchema = z.object({
 })
 
 export const filterDeploymentSchema = z.object({
-  projectId: projectIdSchema.optional()
+  projectIdentifier: projectIdentifierSchema.optional(),
+  deploymentIdentifier: deploymentIdentifierSchema.optional()
 })
 
 export const populateDeploymentSchema = z.object({

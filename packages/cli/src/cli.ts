@@ -5,6 +5,8 @@ import { Command } from 'commander'
 import restoreCursor from 'restore-cursor'
 
 import { registerDeployCommand } from './commands/deploy'
+import { registerGetDeploymentCommand } from './commands/get'
+import { registerListDeploymentsCommand } from './commands/list'
 import { registerPublishCommand } from './commands/publish'
 import { registerSigninCommand } from './commands/signin'
 import { registerSignoutCommand } from './commands/signout'
@@ -75,6 +77,8 @@ async function main() {
   registerSignoutCommand(ctx)
   registerDeployCommand(ctx)
   registerPublishCommand(ctx)
+  registerGetDeploymentCommand(ctx)
+  registerListDeploymentsCommand(ctx)
 
   program.parse()
 }

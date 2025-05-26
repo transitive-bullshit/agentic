@@ -27,6 +27,7 @@
     "@agentic/platform-api-client": "workspace:*",
     "@agentic/platform-core": "workspace:*",
     "@agentic/platform-schemas": "workspace:*",
+    "@agentic/platform-validators": "workspace:*",
     "@clack/prompts": "^0.11.0",
     "@hono/node-server": "^1.14.1",
     "commander": "^14.0.0",

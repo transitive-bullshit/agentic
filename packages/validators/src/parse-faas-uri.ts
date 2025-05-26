@@ -6,17 +6,17 @@ import type { ParsedFaasIdentifier } from './types'
 // namespace/project-name@deploymentHash/servicePath
 // project@deploymentHash/servicePath
 const projectDeploymentServiceRe =
-  /^([a-zA-Z0-9-]{1,64}\/[a-z0-9-]{3,64})@([a-z0-9]{8})(\/[a-zA-Z0-9\-._~%!$&'()*+,;=:/]*)?$/
+  /^([a-zA-Z0-9-]{1,64}\/[a-z0-9-]{2,64})@([a-z0-9]{8})(\/[a-zA-Z0-9\-._~%!$&'()*+,;=:/]*)?$/
 
 // namespace/project-name@version/servicePath
 // project@version/servicePath
 const projectVersionServiceRe =
-  /^([a-zA-Z0-9-]{1,64}\/[a-z0-9-]{3,64})@([^/?@]+)(\/[a-zA-Z0-9\-._~%!$&'()*+,;=:/]*)?$/
+  /^([a-zA-Z0-9-]{1,64}\/[a-z0-9-]{2,64})@([^/?@]+)(\/[a-zA-Z0-9\-._~%!$&'()*+,;=:/]*)?$/
 
 // namespace/project-name/servicePath
 // project/servicePath (latest version)
 const projectServiceRe =
-  /^([a-zA-Z0-9-]{1,64}\/[a-z0-9-]{3,64})(\/[a-zA-Z0-9\-._~%!$&'()*+,;=:/]*)?$/
+  /^([a-zA-Z0-9-]{1,64}\/[a-z0-9-]{2,64})(\/[a-zA-Z0-9\-._~%!$&'()*+,;=:/]*)?$/
 
 export function parseFaasUri(uri: string): ParsedFaasIdentifier | undefined {
   const pdsMatch = uri.match(projectDeploymentServiceRe)

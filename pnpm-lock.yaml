@@ -241,6 +241,9 @@ importers:
       '@agentic/platform-schemas':
         specifier: workspace:*
         version: link:../schemas
+      '@agentic/platform-validators':
+        specifier: workspace:*
+        version: link:../validators
       '@clack/prompts':
         specifier: ^0.11.0
         version: 0.11.0
