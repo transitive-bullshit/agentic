@@ -1,6 +1,6 @@
 {
   "name": "@agentic/twilio",
-  "version": "7.6.4",
+  "version": "7.6.5",
   "description": "Agentic SDK for Twilio.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",

@@ -1,6 +1,6 @@
 {
   "name": "@agentic/ai-sdk",
-  "version": "7.6.4",
+  "version": "7.6.5",
   "description": "Agentic adapter for the Vercel AI SDK.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",
