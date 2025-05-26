@@ -1,10 +1,4 @@
+import { subjectSchemas } from '@agentic/platform-schemas'
 import { createSubjects } from '@openauthjs/openauth/subject'
-import { z } from 'zod'
 
-import { userIdSchema } from '@/db'
-
-export const subjects = createSubjects({
-  user: z.object({
-    id: userIdSchema
-  })
-})
+export const subjects = createSubjects(subjectSchemas)

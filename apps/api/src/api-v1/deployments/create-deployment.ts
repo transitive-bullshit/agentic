@@ -60,18 +60,24 @@ export function registerV1DeploymentsCreateDeployment(
     const body = c.req.valid('json')
     const teamMember = c.get('teamMember')
     const logger = c.get('logger')
-    const { projectId } = body
 
-    // validatePricingPlans(ctx, pricingPlans)
+    const namespace = teamMember ? teamMember.teamSlug : user.username
+    const projectIdentifier = `${namespace}/${body.name}`
+    assert(
+      validators.projectIdentifier(projectIdentifier),
+      400,
+      `Invalid project identifier "${projectIdentifier}"`
+    )
 
     const project = await db.query.projects.findFirst({
-      where: eq(schema.projects.id, projectId),
+      where: eq(schema.projects.identifier, projectIdentifier),
       with: {
         lastPublishedDeployment: true
       }
     })
-    assert(project, 404, `Project not found "${projectId}"`)
+    assert(project, 404, `Project not found "${projectIdentifier}"`)
     await acl(c, project, { label: 'Project' })
+    const projectId = project.id
 
     // TODO: investigate better short hash generation
     const hash = sha256().slice(0, 8)

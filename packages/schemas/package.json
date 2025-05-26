@@ -28,10 +28,12 @@
     "@agentic/platform-validators": "workspace:*",
     "@hono/zod-openapi": "^0.19.6",
     "ms": "^2.1.3",
+    "semver": "^7.7.2",
     "zod": "catalog:"
   },
   "devDependencies": {
     "@types/ms": "^2.1.0",
+    "@types/semver": "^7.7.0",
     "restore-cursor": "catalog:",
     "zod-to-json-schema": "^3.24.5"
   },

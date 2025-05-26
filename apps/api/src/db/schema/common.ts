@@ -87,7 +87,7 @@ export function stripeId<U extends string, T extends Readonly<[U, ...U[]]>>(
 }
 
 /**
- * `namespace/projectName`
+ * `namespace/project-name`
  */
 export function projectIdentifier<
   U extends string,
@@ -99,7 +99,7 @@ export function projectIdentifier<
 }
 
 /**
- * `namespace/projectName@hash`
+ * `namespace/project-name@hash`
  */
 export function deploymentIdentifier<
   U extends string,

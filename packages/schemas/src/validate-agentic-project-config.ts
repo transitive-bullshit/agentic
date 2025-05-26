@@ -1,6 +1,7 @@
 import type { ZodTypeDef } from 'zod'
 import { assert, type Logger, parseZodSchema } from '@agentic/platform-core'
 import { validators } from '@agentic/platform-validators'
+import { clean as cleanSemver, valid as isValidSemver } from 'semver'
 
 import type { PricingPlanLineItem } from './schemas'
 import {
@@ -55,6 +56,22 @@ export async function validateAgenticProjectConfig(
     throw new Error('Invalid originUrl: must be a valid https URL', {
       cause: err
     })
+  }
+
+  if (config.version) {
+    const version = cleanSemver(config.version)
+    assert(
+      version,
+      `Invalid semver version "${config.version}" for project "${name}"`
+    )
+
+    assert(
+      isValidSemver(version),
+      `Invalid semver version "${version}" for project "${name}"`
+    )
+
+    // Update the config with the normalized semver version
+    config.version = version
   }
 
   {

@@ -48,6 +48,7 @@ export const projectIdentifierSchema = z
   .refine((id) => validators.projectIdentifier(id), {
     message: 'Invalid project identifier'
   })
+  .describe('Public project identifier (e.g. "namespace/project-name")')
   .openapi('ProjectIdentifier')
 
 export const deploymentIdentifierSchema = z
@@ -55,6 +56,9 @@ export const deploymentIdentifierSchema = z
   .refine((id) => validators.deploymentIdentifier(id), {
     message: 'Invalid deployment identifier'
   })
+  .describe(
+    'Public deployment identifier (e.g. "namespace/project-name@{hash|version|latest}")'
+  )
   .openapi('DeploymentIdentifier')
 
 export const usernameSchema = z

@@ -4,6 +4,7 @@ import { AgenticApiClient } from '@agentic/platform-api-client'
 import { Command } from 'commander'
 import restoreCursor from 'restore-cursor'
 
+import { registerDeployCommand } from './commands/deploy'
 import { registerSigninCommand } from './commands/signin'
 import { registerSignoutCommand } from './commands/signout'
 import { registerWhoAmICommand } from './commands/whoami'
@@ -50,6 +51,9 @@ async function main() {
       } else {
         console.log(...args)
       }
+    },
+    error: (...args: any[]) => {
+      console.error(...args)
     }
   }
 
@@ -63,6 +67,7 @@ async function main() {
   registerSigninCommand(ctx)
   registerWhoAmICommand(ctx)
   registerSignoutCommand(ctx)
+  registerDeployCommand(ctx)
 
   program.parse()
 }

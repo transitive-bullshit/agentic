@@ -2,7 +2,7 @@
   "name": "@agentic/platform-api",
   "private": true,
   "version": "0.1.0",
-  "description": "Agentic platform API.",
+  "description": "Internal Agentic platform API service.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "UNLICENSED",
   "repository": {

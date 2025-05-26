@@ -41,6 +41,17 @@ export const agenticProjectConfigSchema = z
      */
     name: z.string().nonempty().describe('Name of the project.'),
 
+    /**
+     * Optional semantic version of the project as a semver string.
+     */
+    version: z
+      .string()
+      .nonempty()
+      .describe(
+        'Optional semantic version of the project as a semver string. Ex: 1.0.0, 0.0.1, 5.0.1, etc.'
+      )
+      .optional(),
+
     /** Optional short description of the project. */
     description: z
       .string()
@@ -70,10 +81,10 @@ export const agenticProjectConfigSchema = z
     sourceUrl: z
       .string()
       .url()
-      .optional()
       .describe(
         'Optional URL to the source code of the project (eg, GitHub repo).'
-      ),
+      )
+      .optional(),
 
     /** Required origin API HTTPS base URL */
     originUrl: z.string().url()
@@ -81,7 +92,14 @@ export const agenticProjectConfigSchema = z
 
 NOTE: Agentic currently only supports \`external\` API servers. If you'd like to host your API or MCP server on Agentic's infrastructure, please reach out to support@agentic.so.`),
 
-    /** Optional origin API config */
+    /**
+     * Optional deployment origin API adapter used to configure the origin API
+     * server downstream from Agentic's API gateway. It specifies whether the
+     * origin API server denoted by \`originUrl\` is hosted externally or deployed
+     * internally to Agentic's infrastructure. It also specifies the format
+     * for how origin tools / services are defined: either as an OpenAPI spec,
+     * an MCP server, or as a raw HTTP REST API.
+     */
     originAdapter: deploymentOriginAdapterSchema.optional().default({
       location: 'external',
       type: 'raw'
@@ -90,7 +108,7 @@ NOTE: Agentic currently only supports \`external\` API servers. If you'd like to
     /** Optional subscription pricing config */
     pricingPlans: pricingPlanListSchema
       .describe(
-        'List of PricingPlans configuring which Stripe subscriptions should be available for the project. Defaults to a single free plan which is useful for developing and testing.your project.'
+        'List of PricingPlans configuring which Stripe subscriptions should be available for the project. Defaults to a single free plan which is useful for developing and testing your project.'
       )
       .optional()
       .default([defaultFreePricingPlan]),

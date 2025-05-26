@@ -134,6 +134,6 @@ export const authRouter = issuer({
       500,
       `Authentication error for provider "${provider}": Unexpected error initializing user`
     )
-    return ctx.subject('user', pick(user, 'id'))
+    return ctx.subject('user', pick(user, 'id', 'username'))
   }
 })

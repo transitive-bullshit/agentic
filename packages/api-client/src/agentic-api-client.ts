@@ -176,7 +176,7 @@ export class AgenticApiClient {
 
   async createTeam(
     team: OperationBody<'createTeam'>,
-    { ...searchParams }: OperationParameters<'createTeam'>
+    { ...searchParams }: OperationParameters<'createTeam'> = {}
   ): Promise<OperationResponse<'createTeam'>> {
     return this.ky.post('v1/teams', { json: team, searchParams }).json()
   }
@@ -251,7 +251,7 @@ export class AgenticApiClient {
 
   async createProject(
     project: OperationBody<'createProject'>,
-    { ...searchParams }: OperationParameters<'createProject'>
+    { ...searchParams }: OperationParameters<'createProject'> = {}
   ): Promise<OperationResponse<'createProject'>> {
     return this.ky.post('v1/projects', { json: project, searchParams }).json()
   }
@@ -302,7 +302,7 @@ export class AgenticApiClient {
 
   async createConsumer(
     consumer: OperationBody<'createConsumer'>,
-    { ...searchParams }: OperationParameters<'createConsumer'>
+    { ...searchParams }: OperationParameters<'createConsumer'> = {}
   ): Promise<OperationResponse<'createConsumer'>> {
     return this.ky.post('v1/consumers', { json: consumer, searchParams }).json()
   }
@@ -344,6 +344,16 @@ export class AgenticApiClient {
       .json()
   }
 
+  async getDeploymentByIdentifier(
+    searchParams: OperationParameters<'getDeploymentByIdentifier'>
+  ): Promise<OperationResponse<'getDeploymentByIdentifier'>> {
+    return this.ky
+      .get(`v1/deployments/by-identifier`, {
+        searchParams: sanitizeSearchParams(searchParams)
+      })
+      .json()
+  }
+
   async updateDeployment(
     deployment: OperationBody<'updateDeployment'>,
     { deploymentId, ...searchParams }: OperationParameters<'updateDeployment'>
@@ -368,7 +378,7 @@ export class AgenticApiClient {
 
   async createDeployment(
     deployment: OperationBody<'createDeployment'>,
-    { ...searchParams }: OperationParameters<'createDeployment'>
+    { ...searchParams }: OperationParameters<'createDeployment'> = {}
   ): Promise<OperationResponse<'createDeployment'>> {
     return this.ky
       .post('v1/deployments', { json: deployment, searchParams })

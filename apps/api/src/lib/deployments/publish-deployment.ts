@@ -31,7 +31,7 @@ export async function publishDeployment(
     version: rawVersion
   })
 
-  // TODO: enforce certain semver constraints
+  // TODO: enforce additional semver constraints
   // - pricing changes require major version update
   // - deployment shouldn't already be published?
   // - any others?

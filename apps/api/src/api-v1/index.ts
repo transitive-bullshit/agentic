@@ -13,6 +13,7 @@ import { registerV1ConsumersRefreshConsumerToken } from './consumers/refresh-con
 import { registerV1ConsumersUpdateConsumer } from './consumers/update-consumer'
 import { registerV1DeploymentsCreateDeployment } from './deployments/create-deployment'
 import { registerV1DeploymentsGetDeployment } from './deployments/get-deployment'
+import { registerV1DeploymentsGetDeploymentByIdentifier } from './deployments/get-deployment-by-identifier'
 import { registerV1DeploymentsListDeployments } from './deployments/list-deployments'
 import { registerV1DeploymentsPublishDeployment } from './deployments/publish-deployment'
 import { registerV1DeploymentsUpdateDeployment } from './deployments/update-deployment'
@@ -32,6 +33,9 @@ import { registerV1TeamsUpdateTeam } from './teams/update-team'
 import { registerV1UsersGetUser } from './users/get-user'
 import { registerV1UsersUpdateUser } from './users/update-user'
 import { registerV1StripeWebhook } from './webhooks/stripe-webhook'
+
+// Note that the order of some of these routes is important because of
+// wildcards, so be careful when updating them or adding new routes.
 
 export const apiV1 = new OpenAPIHono({
   defaultHook: (result, ctx) => {
@@ -92,6 +96,7 @@ registerV1ConsumersRefreshConsumerToken(privateRouter)
 registerV1ProjectsListConsumers(privateRouter)
 
 // Deployments
+registerV1DeploymentsGetDeploymentByIdentifier(privateRouter) // must be before `registerV1DeploymentsGetDeployment`
 registerV1DeploymentsGetDeployment(privateRouter)
 registerV1DeploymentsCreateDeployment(privateRouter)
 registerV1DeploymentsUpdateDeployment(privateRouter)

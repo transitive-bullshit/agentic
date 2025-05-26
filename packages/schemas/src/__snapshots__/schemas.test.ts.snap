@@ -19,6 +19,22 @@ exports[`rateLimitSchema invalid 1`] = `
 exports[`rateLimitSchema invalid 2`] = `
 [ZodError: [
   {
+    "code": "too_small",
+    "minimum": 0,
+    "type": "number",
+    "inclusive": false,
+    "exact": false,
+    "message": "Number must be greater than 0",
+    "path": [
+      "interval"
+    ]
+  }
+]]
+`;
+
+exports[`rateLimitSchema invalid 3`] = `
+[ZodError: [
+  {
     "code": "custom",
     "message": "Invalid interval \\"--\\"",
     "path": [
@@ -29,7 +45,7 @@ exports[`rateLimitSchema invalid 2`] = `
 ]]
 `;
 
-exports[`rateLimitSchema invalid 3`] = `
+exports[`rateLimitSchema invalid 4`] = `
 [ZodError: [
   {
     "code": "too_small",

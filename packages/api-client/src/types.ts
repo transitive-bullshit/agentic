@@ -1,7 +1,7 @@
+import type { AuthUser } from '@agentic/platform-schemas'
 import type { Tokens as AuthTokens } from '@openauthjs/openauth/client'
 
 import type { components } from './openapi'
-import type { AuthUser } from './subjects'
 
 export type Consumer = components['schemas']['Consumer']
 export type Project = components['schemas']['Project']
@@ -26,7 +26,7 @@ export type PricingPlanName = components['schemas']['name']
 export type PricingPlanSlug = components['schemas']['slug']
 export type PricingPlanLabel = components['schemas']['label']
 
-export type { AuthUser } from './subjects'
+export type { AuthUser } from '@agentic/platform-schemas'
 export type {
   AuthorizeResult,
   Tokens as AuthTokens

@@ -1,6 +1,7 @@
 import { z } from '@hono/zod-openapi'
 
 import {
+  deploymentIdentifierSchema,
   deploymentIdSchema,
   deploymentRelationsSchema,
   paginationSchema,
@@ -27,6 +28,15 @@ export const filterDeploymentSchema = z.object({
 
 export const populateDeploymentSchema = z.object({
   populate: z.array(deploymentRelationsSchema).default([]).optional()
+})
+
+export const deploymentIdentifierQuerySchema = z.object({
+  deploymentIdentifier: deploymentIdentifierSchema
+})
+
+export const deploymentIdentifierAndPopulateSchema = z.object({
+  ...populateDeploymentSchema.shape,
+  ...deploymentIdentifierQuerySchema.shape
 })
 
 export const paginationAndPopulateAndFilterDeploymentSchema = z.object({

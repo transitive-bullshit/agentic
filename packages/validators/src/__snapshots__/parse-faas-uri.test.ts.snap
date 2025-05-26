@@ -1,5 +1,244 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`username/project-name success 1`] = `
+{
+  "projectIdentifier": "abc/hello-world",
+  "servicePath": "/",
+  "version": "latest",
+}
+`;
+
+exports[`username/project-name success 2`] = `
+{
+  "projectIdentifier": "a16z/foo-bar",
+  "servicePath": "/",
+  "version": "latest",
+}
+`;
+
+exports[`username/project-name success 3`] = `
+{
+  "projectIdentifier": "foodoo/foo-bar",
+  "servicePath": "/",
+  "version": "latest",
+}
+`;
+
+exports[`username/project-name success 4`] = `
+{
+  "projectIdentifier": "u/foobar123-yo",
+  "servicePath": "/",
+  "version": "latest",
+}
+`;
+
+exports[`username/project-name success 5`] = `
+{
+  "projectIdentifier": "abc/hello-world",
+  "servicePath": "/",
+  "version": "latest",
+}
+`;
+
+exports[`username/project-name/servicePath success 1`] = `
+{
+  "projectIdentifier": "u/foo-bar",
+  "servicePath": "/foo",
+  "version": "latest",
+}
+`;
+
+exports[`username/project-name/servicePath success 2`] = `
+{
+  "projectIdentifier": "a/foo-bar",
+  "servicePath": "/foo_123",
+  "version": "latest",
+}
+`;
+
+exports[`username/project-name/servicePath success 3`] = `
+{
+  "projectIdentifier": "foo/foobar123-yo",
+  "servicePath": "/foo_bar_BAR_901",
+  "version": "latest",
+}
+`;
+
+exports[`username/project-name/servicePath success 4`] = `
+{
+  "projectIdentifier": "foo/foobar123-yo",
+  "servicePath": "/foo/bar/123/456",
+  "version": "latest",
+}
+`;
+
+exports[`username/project-name@deployment success 1`] = `
+{
+  "deploymentHash": "3d2e0fd5",
+  "deploymentIdentifier": "abc/hello-world@3d2e0fd5",
+  "projectIdentifier": "abc/hello-world",
+  "servicePath": "/",
+}
+`;
+
+exports[`username/project-name@deployment success 2`] = `
+{
+  "projectIdentifier": "a16z/foo-bar",
+  "servicePath": "/",
+  "version": "f673db32c",
+}
+`;
+
+exports[`username/project-name@deployment success 3`] = `
+{
+  "projectIdentifier": "foodoo/foo-bar",
+  "servicePath": "/",
+  "version": "f673db32c",
+}
+`;
+
+exports[`username/project-name@deployment success 4`] = `
+{
+  "deploymentHash": "673db32c",
+  "deploymentIdentifier": "u/foobar123-yo@673db32c",
+  "projectIdentifier": "u/foobar123-yo",
+  "servicePath": "/",
+}
+`;
+
+exports[`username/project-name@deployment success 5`] = `
+{
+  "deploymentHash": "01234567",
+  "deploymentIdentifier": "username/foo-bar@01234567",
+  "projectIdentifier": "username/foo-bar",
+  "servicePath": "/",
+}
+`;
+
+exports[`username/project-name@deployment/servicePath success 1`] = `
+{
+  "deploymentHash": "01234567",
+  "deploymentIdentifier": "username/foo-bar@01234567",
+  "projectIdentifier": "username/foo-bar",
+  "servicePath": "/foo",
+}
+`;
+
+exports[`username/project-name@deployment/servicePath success 2`] = `
+{
+  "deploymentHash": "abc123lz",
+  "deploymentIdentifier": "username/foo-bar@abc123lz",
+  "projectIdentifier": "username/foo-bar",
+  "servicePath": "/foo",
+}
+`;
+
+exports[`username/project-name@deployment/servicePath success 3`] = `
+{
+  "deploymentHash": "01234567",
+  "deploymentIdentifier": "username/foobar123-yo@01234567",
+  "projectIdentifier": "username/foobar123-yo",
+  "servicePath": "/foo_bar_BAR_901",
+}
+`;
+
+exports[`username/project-name@deployment/servicePath success 4`] = `
+{
+  "deploymentHash": "01234567",
+  "deploymentIdentifier": "username/foobar@01234567",
+  "projectIdentifier": "username/foobar",
+  "servicePath": "/foo/bar/123/456",
+}
+`;
+
+exports[`username/project-name@version success 1`] = `
+{
+  "projectIdentifier": "abc/hello-world",
+  "servicePath": "/",
+  "version": "1.0.3",
+}
+`;
+
+exports[`username/project-name@version success 2`] = `
+{
+  "projectIdentifier": "a16z/foo-bar",
+  "servicePath": "/",
+  "version": "latest",
+}
+`;
+
+exports[`username/project-name@version success 3`] = `
+{
+  "projectIdentifier": "a16z/foo-bar",
+  "servicePath": "/",
+  "version": "dev",
+}
+`;
+
+exports[`username/project-name@version success 4`] = `
+{
+  "projectIdentifier": "foodoo/foo-bar",
+  "servicePath": "/",
+  "version": "1.0.1",
+}
+`;
+
+exports[`username/project-name@version success 5`] = `
+{
+  "projectIdentifier": "u/foobar123-yo",
+  "servicePath": "/",
+  "version": "3.2.2234",
+}
+`;
+
+exports[`username/project-name@version success 6`] = `
+{
+  "projectIdentifier": "username/foo-bar",
+  "servicePath": "/",
+  "version": "1.0.3",
+}
+`;
+
+exports[`username/project-name@version/servicePath success 1`] = `
+{
+  "projectIdentifier": "username/foo-bar",
+  "servicePath": "/foo",
+  "version": "latest",
+}
+`;
+
+exports[`username/project-name@version/servicePath success 2`] = `
+{
+  "projectIdentifier": "username/foo-bar",
+  "servicePath": "/foo",
+  "version": "dev",
+}
+`;
+
+exports[`username/project-name@version/servicePath success 3`] = `
+{
+  "projectIdentifier": "username/foo-bar",
+  "servicePath": "/foo",
+  "version": "1.0.0",
+}
+`;
+
+exports[`username/project-name@version/servicePath success 4`] = `
+{
+  "projectIdentifier": "username/foobar123-yo",
+  "servicePath": "/foo_bar_BAR_901",
+  "version": "0.0.1",
+}
+`;
+
+exports[`username/project-name@version/servicePath success 5`] = `
+{
+  "projectIdentifier": "username/foobar123-yo",
+  "servicePath": "/foo/bar/123-456",
+  "version": "0.0.1",
+}
+`;
+
 exports[`username/projectName success 1`] = `
 {
   "projectIdentifier": "abc/hello-world",

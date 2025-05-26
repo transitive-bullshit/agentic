@@ -2,11 +2,15 @@ import { Command } from 'commander'
 import inquirer from 'inquirer'
 import ora from 'ora'
 
+import { AuthStore } from '../lib/store'
+
 export const rm = new Command('rm')
   .description('Removes deployments')
   .argument('[deploymentIds...]', 'deployment IDs to remove')
   .option('-y, --yes', 'Skip confirmation')
   .action(async (deploymentIds: string[], options: { yes?: boolean }) => {
+    AuthStore.requireAuth()
+
     if (!deploymentIds.length) {
       console.error('Please provide at least one deployment ID')
       process.exit(1)

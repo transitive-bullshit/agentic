@@ -8,7 +8,7 @@ export async function loadAgenticConfig({
   cwd
 }: {
   cwd?: string
-}): Promise<AgenticProjectConfig> {
+} = {}): Promise<AgenticProjectConfig> {
   const { config } = await loadConfig({
     cwd,
     sources: [

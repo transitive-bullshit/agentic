@@ -1,0 +1,59 @@
+import { Command } from 'commander'
+import { oraPromise } from 'ora'
+
+import type { Context } from '../types'
+import { loadAgenticConfig } from '../lib/load-agentic-config'
+import { AuthStore } from '../lib/store'
+
+export function registerDeployCommand({ client, program, logger }: Context) {
+  const command = new Command('deploy')
+    .description('Creates a new deployment.')
+    .option(
+      '-c, --cwd <dir>',
+      'The directory to load the Agentic project config from (defaults to cwd). This directory must contain an "agentic.config.{ts,js,json}" project file.'
+    )
+    .option('-d, --debug', 'Print out the parsed agentic config and return.')
+    .option('-p, --publish', 'Publishes the deployment after creating it.')
+    .action(async (opts) => {
+      AuthStore.requireAuth()
+
+      // Load the Agentic project config, parse, and validate it. This will also
+      // validate any origin adapter config such as OpenAPI or MCP specs and
+      // embed them if they point to local files or URLs. Note that the server
+      // also performs validation; this is just a client-side convenience for
+      // failing fast and sharing 99% of the validation code between server and
+      // client.
+      const config = await oraPromise(
+        loadAgenticConfig({
+          cwd: opts.cwd
+        }),
+        {
+          text: `Loading Agentic config from ${opts.cwd}`,
+          successText: `Agentic config loaded successfully.`,
+          failText: 'Failed to load Agentic config.'
+        }
+      )
+
+      if (opts.debug) {
+        logger.log(config)
+        return
+      }
+
+      // Create the deployment on the backend, validate it, and optionally
+      // publish it.
+      const deployment = await oraPromise(
+        client.createDeployment(config, {
+          publish: !!opts.publish
+        }),
+        {
+          text: `Creating deployment for project "${config.name}"`,
+          successText: `Deployment created successfully.`,
+          failText: 'Failed to create deployment.'
+        }
+      )
+
+      logger.log(deployment)
+    })
+
+  program.addCommand(command)
+}

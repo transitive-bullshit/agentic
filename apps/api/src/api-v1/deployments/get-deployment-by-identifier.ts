@@ -4,25 +4,24 @@ import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 import type { AuthenticatedEnv } from '@/lib/types'
 import { schema } from '@/db'
 import { acl } from '@/lib/acl'
-import { getDeploymentById } from '@/lib/deployments/get-deployment-by-id'
+import { tryGetDeploymentByIdentifier } from '@/lib/deployments/try-get-deployment-by-identifier'
 import {
   openapiAuthenticatedSecuritySchemas,
   openapiErrorResponse404,
   openapiErrorResponses
 } from '@/lib/openapi-utils'
 
-import { deploymentIdParamsSchema, populateDeploymentSchema } from './schemas'
+import { deploymentIdentifierAndPopulateSchema } from './schemas'
 
 const route = createRoute({
-  description: 'Gets a deployment by its ID',
+  description: 'Gets a deployment by its public identifier',
   tags: ['deployments'],
-  operationId: 'getDeployment',
+  operationId: 'getDeploymentByIdentifier',
   method: 'get',
-  path: 'deployments/{deploymentId}',
+  path: 'deployments/by-identifier',
   security: openapiAuthenticatedSecuritySchemas,
   request: {
-    params: deploymentIdParamsSchema,
-    query: populateDeploymentSchema
+    query: deploymentIdentifierAndPopulateSchema
   },
   responses: {
     200: {
@@ -38,20 +37,19 @@ const route = createRoute({
   }
 })
 
-export function registerV1DeploymentsGetDeployment(
+export function registerV1DeploymentsGetDeploymentByIdentifier(
   app: OpenAPIHono<AuthenticatedEnv>
 ) {
   return app.openapi(route, async (c) => {
-    const { deploymentId } = c.req.valid('param')
-    const { populate = [] } = c.req.valid('query')
+    const { deploymentIdentifier, populate = [] } = c.req.valid('query')
 
-    const deployment = await getDeploymentById({
-      deploymentId,
+    const deployment = await tryGetDeploymentByIdentifier(c, {
+      deploymentIdentifier,
       with: {
         ...Object.fromEntries(populate.map((field) => [field, true]))
       }
     })
-    assert(deployment, 404, `Deployment not found "${deploymentId}"`)
+    assert(deployment, 404, `Deployment not found "${deploymentIdentifier}"`)
     await acl(c, deployment, { label: 'Deployment' })
 
     return c.json(parseZodSchema(schema.deploymentSelectSchema, deployment))

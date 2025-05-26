@@ -17,7 +17,7 @@ export const AuthStore = {
   requireAuth() {
     assert(
       this.isAuthenticated(),
-      'Command requires authentication. Please login first.'
+      'This command requires authentication. Please login first.'
     )
   },
 

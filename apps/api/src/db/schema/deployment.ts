@@ -1,10 +1,7 @@
 import {
   agenticProjectConfigSchema,
   type DeploymentOriginAdapter,
-  deploymentOriginAdapterSchema,
-  pricingIntervalListSchema,
-  type PricingPlanList,
-  pricingPlanListSchema
+  type PricingPlanList
 } from '@agentic/platform-schemas'
 import { validators } from '@agentic/platform-validators'
 import { relations } from '@fisch0920/drizzle-orm'
@@ -26,7 +23,6 @@ import {
   userIdSchema
 } from '../schemas'
 import {
-  createInsertSchema,
   createSelectSchema,
   createUpdateSchema,
   deploymentIdentifier,
@@ -37,7 +33,7 @@ import {
   timestamps,
   userId
 } from './common'
-import { projects } from './project'
+import { projects, projectSelectSchema } from './project'
 import { teams } from './team'
 import { users } from './user'
 
@@ -149,27 +145,37 @@ export const deploymentSelectSchema = createSelectSchema(deployments, {
       message: 'Invalid deployment hash'
     }),
 
-  originAdapter: deploymentOriginAdapterSchema,
-  pricingPlans: pricingPlanListSchema,
-  pricingIntervals: pricingIntervalListSchema
+  version: agenticProjectConfigSchema.shape.version,
+  description: agenticProjectConfigSchema.shape.description,
+  readme: agenticProjectConfigSchema.shape.readme,
+  iconUrl: agenticProjectConfigSchema.shape.iconUrl,
+  sourceUrl: agenticProjectConfigSchema.shape.sourceUrl,
+  originAdapter: agenticProjectConfigSchema.shape.originAdapter,
+  pricingPlans: agenticProjectConfigSchema.shape.pricingPlans,
+  pricingIntervals: agenticProjectConfigSchema.shape.pricingIntervals
 })
   .omit({
     originUrl: true
   })
-  // .extend({
-  //   user: z
-  //     .lazy(() => userSelectSchema)
-  //     .optional()
-  //     .openapi('User', { type: 'object' }),
+  .extend({
+    // user: z
+    //   .lazy(() => userSelectSchema)
+    //   .optional()
+    //   .openapi('User', { type: 'object' }),
 
-  //   team: z
-  //     .lazy(() => teamSelectSchema)
-  //     .optional()
-  //     .openapi('Team', { type: 'object' }),
+    // team: z
+    //   .lazy(() => teamSelectSchema)
+    //   .optional()
+    //   .openapi('Team', { type: 'object' }),
 
-  //   // TODO: Circular references make this schema less than ideal
-  //   project: z.object({}).optional().openapi('Project', { type: 'object' })
-  // })
+    project: z
+      .lazy(() => projectSelectSchema)
+      .optional()
+      .openapi('Project', { type: 'object' })
+
+    // TODO: Circular references make this schema less than ideal
+    // project: z.object({}).optional().openapi('Project', { type: 'object' })
+  })
   .strip()
   .describe(
     `A Deployment is a single, immutable instance of a Project. Each deployment contains pricing plans, origin server config (OpenAPI or MCP server), tool definitions, and metadata.
@@ -178,21 +184,7 @@ Deployments are private to a developer or team until they are published, at whic
   )
   .openapi('Deployment')
 
-export const deploymentInsertSchema = createInsertSchema(deployments, {
-  projectId: projectIdSchema
-})
-  .omit({
-    id: true,
-    createdAt: true,
-    updatedAt: true,
-    hash: true,
-    userId: true,
-    teamId: true
-  })
-  .extend({
-    ...agenticProjectConfigSchema.shape
-  })
-  .strict()
+export const deploymentInsertSchema = agenticProjectConfigSchema.strict()
 
 // TODO: Deployments should be immutable, so we should not allow updates aside
 // from publishing. But editing a project's description should be possible from

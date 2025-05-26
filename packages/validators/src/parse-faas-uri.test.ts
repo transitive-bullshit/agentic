@@ -15,14 +15,14 @@ function error(value: string) {
   expect(result).toBeUndefined()
 }
 
-test('username/projectName@deployment/servicePath success', () => {
+test('username/project-name@deployment/servicePath success', () => {
   success('username/foo-bar@01234567/foo')
   success('username/foo-bar@abc123lz/foo')
   success('username/foobar123-yo@01234567/foo_bar_BAR_901')
   success('username/foobar@01234567/foo/bar/123/456')
 })
 
-test('username/projectName@deployment/servicePath error', () => {
+test('username/project-name@deployment/servicePath error', () => {
   error('foo-bar@01234567/foo')
   error('%/foo-bar@01234567/foo')
   error('user/foo^bar@01234567/foo')
@@ -30,7 +30,7 @@ test('username/projectName@deployment/servicePath error', () => {
   error('username/Foo-Bar@01234567/foo')
 })
 
-test('username/projectName@version/servicePath success', () => {
+test('username/project-name@version/servicePath success', () => {
   success('username/foo-bar@latest/foo')
   success('username/foo-bar@dev/foo')
   success('username/foo-bar@1.0.0/foo')
@@ -38,7 +38,7 @@ test('username/projectName@version/servicePath success', () => {
   success('username/foobar123-yo@0.0.1/foo/bar/123-456')
 })
 
-test('username/projectName@version/servicePath error', () => {
+test('username/project-name@version/servicePath error', () => {
   error('foo_bar@latest/foo')
   error('username/foo-bar@1.0.0/foo@')
   error('username/foo-bar@/foo')
@@ -46,14 +46,14 @@ test('username/projectName@version/servicePath error', () => {
   error('username/fooBar123-yo@0.0.1/foo/bar/123-456')
 })
 
-test('username/projectName/servicePath success', () => {
+test('username/project-name/servicePath success', () => {
   success('u/foo-bar/foo')
   success('a/foo-bar/foo_123')
   success('foo/foobar123-yo/foo_bar_BAR_901')
   success('foo/foobar123-yo/foo/bar/123/456')
 })
 
-test('username/projectName/servicePath error', () => {
+test('username/project-name/servicePath error', () => {
   error('@/foo_bar/foo')
   error('foo-bar/foo\\/')
   error('user/_/foo')
@@ -61,7 +61,7 @@ test('username/projectName/servicePath error', () => {
   error('u/FOO-bar/foo')
 })
 
-test('username/projectName@deployment success', () => {
+test('username/project-name@deployment success', () => {
   success('abc/hello-world@3d2e0fd5')
   success('a16z/foo-bar@f673db32c')
   success('foodoo/foo-bar@f673db32c')
@@ -69,7 +69,7 @@ test('username/projectName@deployment success', () => {
   success('username/foo-bar@01234567/')
 })
 
-test('username/projectName@deployment error', () => {
+test('username/project-name@deployment error', () => {
   error('/hello-world@3d2e0fd5')
   error('foo-bar@f673db32c')
   error('foodoo/foo@bar@f673db32c')
@@ -77,7 +77,7 @@ test('username/projectName@deployment error', () => {
   error('abc/Hello-World@3d2e0fd5')
 })
 
-test('username/projectName@version success', () => {
+test('username/project-name@version success', () => {
   success('abc/hello-world@1.0.3')
   success('a16z/foo-bar@latest')
   success('a16z/foo-bar@dev')
@@ -86,7 +86,7 @@ test('username/projectName@version success', () => {
   success('username/foo-bar@1.0.3/')
 })
 
-test('username/projectName@version error', () => {
+test('username/project-name@version error', () => {
   error('/hello-world@3d2e0fd5')
   error('foo-bar@f673db32c')
   error('foodoo/foo@bar@f673db32c@')
@@ -94,7 +94,7 @@ test('username/projectName@version error', () => {
   error('abc/hello-World@1.0.3')
 })
 
-test('username/projectName success', () => {
+test('username/project-name success', () => {
   success('abc/hello-world')
   success('a16z/foo-bar')
   success('foodoo/foo-bar')
@@ -102,7 +102,7 @@ test('username/projectName success', () => {
   success('abc/hello-world/')
 })
 
-test('username/projectName error', () => {
+test('username/project-name error', () => {
   error('/hello-world')
   error('foo-barc')
   error('foodoo/foo@bar@')

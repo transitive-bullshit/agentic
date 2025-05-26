@@ -119,7 +119,6 @@ export const pricingIntervalListSchema = z
     message: 'Must contain at least one pricing interval'
   })
   .describe('List of billing intervals for subscriptions.')
-  .openapi('PricingIntervalList')
 
 /**
  * Internal PricingPlanLineItem hash

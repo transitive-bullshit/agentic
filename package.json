@@ -25,7 +25,8 @@
     "test:unit": "turbo test:unit",
     "pretest": "run-s build",
     "preinstall": "npx only-allow pnpm",
-    "prepare": "simple-git-hooks"
+    "prepare": "simple-git-hooks",
+    "knip": "knip"
   },
   "devDependencies": {
     "@fisch0920/config": "catalog:",
@@ -34,6 +35,7 @@
     "dotenv": "catalog:",
     "eslint": "catalog:",
     "eslint-plugin-drizzle": "^0.2.3",
+    "knip": "^5.58.1",
     "lint-staged": "catalog:",
     "npm-run-all2": "catalog:",
     "only-allow": "catalog:",
