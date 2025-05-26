@@ -27,8 +27,7 @@
     "@agentic/platform-schemas": "workspace:*",
     "@openauthjs/openauth": "^0.4.3",
     "ky": "catalog:",
-    "type-fest": "catalog:",
-    "zod": "catalog:"
+    "type-fest": "catalog:"
   },
   "devDependencies": {
     "openapi-typescript": "^7.8.0"

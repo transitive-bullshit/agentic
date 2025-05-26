@@ -42,8 +42,7 @@
     "open": "^10.1.2",
     "ora": "^8.2.0",
     "restore-cursor": "catalog:",
-    "unconfig": "^7.3.2",
-    "zod": "catalog:"
+    "unconfig": "^7.3.2"
   },
   "devDependencies": {
     "@agentic/platform-fixtures": "workspace:*",
