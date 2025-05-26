@@ -35,6 +35,13 @@ test('rateLimitSchema invalid', () => {
 
   expect(() =>
     rateLimitSchema.parse({
+      interval: 0,
+      maxPerInterval: 5
+    })
+  ).toThrowErrorMatchingSnapshot()
+
+  expect(() =>
+    rateLimitSchema.parse({
       interval: '--',
       maxPerInterval: 10
     })
