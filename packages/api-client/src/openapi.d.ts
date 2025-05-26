@@ -348,6 +348,11 @@ export interface components {
         ProjectIdentifier: string;
         /** @description The frequency at which a subscription is billed. */
         PricingInterval: "day" | "week" | "month" | "year";
+        /** @description A Project represents a single Agentic API product. A Project is comprised of a series of immutable Deployments, each of which contains pricing data, origin API config, OpenAPI or MCP specs, tool definitions, and various metadata.
+         *
+         *     You can think of Agentic Projects as similar to Vercel projects. They both hold some common configuration and are comprised of a series of immutable Deployments.
+         *
+         *     Internally, Projects manage all of the Stripe billing resources across Deployments (Stripe Products, Prices, and Meters for usage-based billing). */
         Project: {
             /** @description Project id (e.g. "proj_tz4a98xxat96iws9zmbrgj3a") */
             id: string;
@@ -370,6 +375,13 @@ export interface components {
             /** @enum {string} */
             pricingCurrency: "usd";
         };
+        /** @description A Consumer represents a user who has subscribed to a Project and is used
+         *     to track usage and billing.
+         *
+         *     Consumers are linked to a corresponding Stripe Customer and Subscription.
+         *     The Stripe customer will either be the user's default Stripe Customer if the
+         *     project uses the default Agentic platform account, or a customer on the project
+         *     owner's connected Stripe account if the project has Stripe Connect enabled. */
         Consumer: {
             /** @description Consumer id (e.g. "csmr_tz4a98xxat96iws9zmbrgj3a") */
             id: string;
@@ -416,7 +428,7 @@ export interface components {
         /** @example API calls */
         label: string;
         RateLimit: {
-            /** @description The interval at which the rate limit is applied. Either a number in seconds or a valid [ms](https://github.com/vercel/ms) string (eg, "10s", "1m", "1h", "1d", "1w", "1y", etc). */
+            /** @description The interval at which the rate limit is applied. Either a positive number in seconds or a valid positive [ms](https://github.com/vercel/ms) string (eg, "10s", "1m", "8h", "2d", "1w", "1y", etc). */
             interval: number | string;
             /** @description Maximum number of operations per interval (unitless). */
             maxPerInterval: number;
@@ -465,6 +477,9 @@ export interface components {
         };
         /** @description List of billing intervals for subscriptions. */
         PricingIntervalList: components["schemas"]["PricingInterval"][];
+        /** @description A Deployment is a single, immutable instance of a Project. Each deployment contains pricing plans, origin server config (OpenAPI or MCP server), tool definitions, and metadata.
+         *
+         *     Deployments are private to a developer or team until they are published, at which point they are accessible to any customers with access to the parent Project. */
         Deployment: {
             /** @description Deployment id (e.g. "depl_tz4a98xxat96iws9zmbrgj3a") */
             id: string;
