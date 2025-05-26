@@ -14,6 +14,7 @@ import { AuthStore } from './lib/auth-store'
 async function main() {
   restoreCursor()
 
+  // Initialize the API client
   const client = new AgenticApiClient({
     apiBaseUrl: process.env.AGENTIC_API_BASE_URL,
     onUpdateAuth: (update) => {
@@ -39,6 +40,7 @@ async function main() {
     }
   }
 
+  // Initialize the CLI program
   const program = new Command('agentic')
     .option('-j, --json', 'Print output in JSON format')
     .showHelpAfterError()

@@ -10,13 +10,9 @@
     "directory": "packages/cli"
   },
   "type": "module",
-  "source": "./src/index.ts",
-  "types": "./src/index.ts",
-  "exports": {
-    ".": "./src/index.ts"
-  },
+  "source": "./src/cli.ts",
   "bin": {
-    "agentic": "./dist/index.js"
+    "agentic": "./dist/cli.js"
   },
   "files": [
     "dist"
@@ -38,7 +34,6 @@
     "dotenv": "catalog:",
     "get-port": "^7.1.0",
     "hono": "^4.7.9",
-    "inquirer": "^9.2.15",
     "open": "^10.1.2",
     "ora": "^8.2.0",
     "restore-cursor": "catalog:",
@@ -48,7 +43,6 @@
   "devDependencies": {
     "@agentic/platform-fixtures": "workspace:*",
     "@commander-js/extra-typings": "^14.0.0",
-    "@types/inquirer": "^9.0.7",
     "@types/semver": "^7.7.0"
   },
   "publishConfig": {
