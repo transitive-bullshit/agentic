@@ -10,7 +10,7 @@ export function registerGetDeploymentCommand({
   logger
 }: Context) {
   const command = new Command('get')
-    .description('Gets details for a specific deployment')
+    .description('Gets details for a specific deployment.')
     .argument('<deploymentIdentifier>', 'Deployment ID or identifier')
     .action(async (deploymentIdentifier) => {
       AuthStore.requireAuth()

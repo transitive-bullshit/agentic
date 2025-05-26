@@ -4,6 +4,7 @@ import { AgenticApiClient } from '@agentic/platform-api-client'
 import { Command } from 'commander'
 import restoreCursor from 'restore-cursor'
 
+import { registerDebugCommand } from './commands/debug'
 import { registerDeployCommand } from './commands/deploy'
 import { registerGetDeploymentCommand } from './commands/get'
 import { registerListDeploymentsCommand } from './commands/list'
@@ -79,6 +80,7 @@ async function main() {
   registerPublishCommand(ctx)
   registerGetDeploymentCommand(ctx)
   registerListDeploymentsCommand(ctx)
+  registerDebugCommand(ctx)
 
   program.parse()
 }

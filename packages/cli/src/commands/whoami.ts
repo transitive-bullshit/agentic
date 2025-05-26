@@ -5,7 +5,7 @@ import { AuthStore } from '../lib/auth-store'
 
 export function registerWhoAmICommand({ client, program, logger }: Context) {
   const command = new Command('whoami')
-    .description('Displays info about the current user')
+    .description('Displays info about the current user.')
     .action(async () => {
       AuthStore.requireAuth()
 

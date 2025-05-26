@@ -14,7 +14,7 @@ export function registerListDeploymentsCommand({
 }: Context) {
   const command = new Command('list')
     .alias('ls')
-    .description('Lists deployments')
+    .description('Lists deployments.')
     .argument('[projectIdentifier]', 'Optional project identifier')
     .option('-v, --verbose', 'Display full deployments', false)
     .action(async (projectIdentifier, opts) => {
