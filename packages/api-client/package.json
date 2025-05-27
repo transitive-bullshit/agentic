@@ -25,12 +25,12 @@
   "dependencies": {
     "@agentic/platform-core": "workspace:*",
     "@agentic/platform-schemas": "workspace:*",
-    "@openauthjs/openauth": "^0.4.3",
+    "@openauthjs/openauth": "catalog:",
     "ky": "catalog:",
     "type-fest": "catalog:"
   },
   "devDependencies": {
-    "openapi-typescript": "^7.8.0"
+    "openapi-typescript": "catalog:"
   },
   "publishConfig": {
     "access": "public"

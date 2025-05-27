@@ -23,8 +23,8 @@
     "test:unit": "vitest run"
   },
   "dependencies": {
-    "@paralleldrive/cuid2": "^2.2.2",
-    "email-validator": "^2.0.4",
-    "is-relative-url": "^4.0.0"
+    "@paralleldrive/cuid2": "catalog:",
+    "email-validator": "catalog:",
+    "is-relative-url": "catalog:"
   }
 }

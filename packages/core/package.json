@@ -23,13 +23,13 @@
     "test:unit": "vitest run"
   },
   "dependencies": {
-    "hash-object": "^5.0.1",
-    "parse-json": "^8.3.0",
+    "hash-object": "catalog:",
+    "parse-json": "catalog:",
     "zod": "catalog:",
-    "zod-validation-error": "^3.4.1"
+    "zod-validation-error": "catalog:"
   },
   "devDependencies": {
-    "hono": "^4.7.9"
+    "hono": "catalog:"
   },
   "publishConfig": {
     "access": "public"

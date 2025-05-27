@@ -28,23 +28,23 @@
     "@agentic/platform-core": "workspace:*",
     "@agentic/platform-schemas": "workspace:*",
     "@agentic/platform-validators": "workspace:*",
-    "@clack/prompts": "^0.11.0",
-    "@hono/node-server": "^1.14.1",
-    "commander": "^14.0.0",
-    "conf": "^13.1.0",
+    "@clack/prompts": "catalog:",
+    "@hono/node-server": "catalog:",
+    "commander": "catalog:",
+    "conf": "catalog:",
     "dotenv": "catalog:",
-    "get-port": "^7.1.0",
-    "hono": "^4.7.9",
-    "open": "^10.1.2",
-    "ora": "^8.2.0",
+    "get-port": "catalog:",
+    "hono": "catalog:",
+    "open": "catalog:",
+    "ora": "catalog:",
     "restore-cursor": "catalog:",
-    "semver": "^7.7.2",
-    "unconfig": "^7.3.2"
+    "semver": "catalog:",
+    "unconfig": "catalog:"
   },
   "devDependencies": {
     "@agentic/platform-fixtures": "workspace:*",
-    "@commander-js/extra-typings": "^14.0.0",
-    "@types/semver": "^7.7.0"
+    "@commander-js/extra-typings": "catalog:",
+    "@types/semver": "catalog:"
   },
   "publishConfig": {
     "access": "public"
