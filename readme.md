@@ -7,6 +7,9 @@
 
 ## TODO
 
+- **api gateway**
+  - signed requests
+- **webapp**
 - end-to-end working examples
   - raw
   - openapi
@@ -18,13 +21,14 @@
     - https://github.com/tierrun/tier/blob/main/pricing/schema.json
     - https://blog.tier.run/tier-hello-world-demo
   - stripe connect
+- transactional emails
+  - (openauth password emails and `sendCode`)
+  - stripe-related billing emails
+- auth
+  - custom auth pages
+- re-add support for teams / organizations
 - consider switching to [consola](https://github.com/unjs/consola) for logging?
 - consider switching to `bun` (for `--hot` reloading!!)
-- transactional emails
-  - openauth password emails and `sendCode`
-- re-add support for teams / organizations
-- api gateway
-  - signed requests
 
 ## License
 
