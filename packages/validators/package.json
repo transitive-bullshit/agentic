@@ -1,6 +1,5 @@
 {
   "name": "@agentic/platform-validators",
-  "private": true,
   "version": "0.1.0",
   "description": "Validation utils for the Agentic platform.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",

@@ -13,7 +13,8 @@ import { tryGetProjectByIdentifier } from '@/lib/projects/try-get-project-by-ide
 import { paginationAndPopulateAndFilterDeploymentSchema } from './schemas'
 
 const route = createRoute({
-  description: 'Lists deployments the user or team has access to.',
+  description:
+    'Lists deployments the user or team has access to, optionally filtering by project.',
   tags: ['deployments'],
   operationId: 'listDeployments',
   method: 'get',
