@@ -31,7 +31,7 @@ catalog:
   dotenv: ^16.5.0
   duck-duck-scrape: ^2.2.7
   eslint: ^9.27.0
-  execa: ^9.5.3
+  execa: ^9.6.0
   exit-hook: ^4.0.0
   fast-xml-parser: ^5.2.3
   genkit: ^1.10.0
@@ -69,6 +69,6 @@ catalog:
   vitest: ^3.1.4
   wikibase-sdk: ^10.2.3
   xsai: ^0.3.0-beta.2
-  zod: ^3.25.28
+  zod: ^3.25.30
   zod-validation-error: ^3.4.1
   zoominfo-api-auth-client: ^1.0.1
