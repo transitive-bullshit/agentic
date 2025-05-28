@@ -1,5 +1,8 @@
 import { z } from '@hono/zod-openapi'
 
+import { pricingPlanSlugSchema } from './pricing'
+import { rateLimitSchema } from './rate-limit'
+
 export const toolNameSchema = z
   .string()
   // TODO: validate this regex constraint
@@ -69,7 +72,8 @@ export const toolAnnotationsSchema = z
 export const toolSchema = z
   .object({
     /**
-     * The name of the tool.
+     * The name of the tool, which acts as a unique, stable identifier for the
+     * tool across deployments.
      *
      * @example `"get_weather"`
      * @example `"google_search"`
@@ -114,6 +118,132 @@ export const toolSchema = z
   .passthrough()
   .openapi('Tool')
 export type Tool = z.infer<typeof toolSchema>
+
+/**
+ * Customizes a tool's behavior for a given pricing plan.
+ */
+export const pricingPlanToolConfigSchema = z
+  .object({
+    /**
+     * Whether this tool should be enabled for customers on a given pricing plan.
+     *
+     * @default true
+     */
+    enabled: z.boolean().default(true).optional(),
+
+    /**
+     * Overrides whether to report default `requests` usage for metered billing
+     * for customers a given pricing plan.
+     *
+     * Note: This is only relevant if the pricing plan includes a `requests`
+     * line-item.
+     *
+     * @default undefined
+     */
+    reportUsage: z.boolean().optional(),
+
+    /**
+     * Customize or disable rate limits for this tool for customers on a given
+     * pricing plan.
+     *
+     * Set to `null` to disable the default request-based rate-limiting for
+     * this tool on a given pricing plan.
+     *
+     * @default undefined
+     */
+    rateLimit: z.union([rateLimitSchema, z.null()]).optional()
+  })
+  .openapi('PricingPlanToolConfig')
+export type PricingPlanToolConfig = z.infer<typeof pricingPlanToolConfigSchema>
+
+/**
+ * Customizes a tool's default behavior across all pricing plans.
+ */
+export const toolConfigSchema = z
+  .object({
+    /**
+     * The name of the tool, which acts as a unique, stable identifier for the
+     * tool across deployments.
+     */
+    name: toolNameSchema,
+
+    /**
+     * Whether this tool should be enabled for all customers (default).
+     *
+     * If you want to hide a tool from customers but still have it present on
+     * your origin server, set this to `false` for the given tool.
+     *
+     * @default true
+     */
+    enabled: z.boolean().default(true).optional(),
+
+    /**
+     * Whether this tool's output is deterministic and idempotent given the
+     * same input.
+     *
+     * If `true`, tool outputs will be cached aggressively for identical
+     * requests, though origin server response headers can still override this
+     * behavior on a per-request basis.
+     *
+     * If `false`, tool outputs will be cached according to the origin server's
+     * response headers on a per-request basis.
+     *
+     * @default false
+     */
+    immutable: z.boolean().default(false).optional(),
+
+    /**
+     * Whether calls to this tool should be reported as usage for the default
+     * `requests` line-item's metered billing.
+     *
+     * Note: This is only relevant if the customer's active pricing plan
+     * includes a `requests` line-item.
+     *
+     * @default true
+     */
+    reportUsage: z.boolean().default(true).optional(),
+
+    /**
+     * Customize the default `requests`-based rate-limiting for this tool.
+     *
+     * Set to `null` to disable the built-in rate-limiting.
+     *
+     * If not set, the default rate-limiting for the active pricing plan will be
+     * used.
+     *
+     * @default undefined
+     */
+    rateLimit: z.union([rateLimitSchema, z.null()]).optional(),
+
+    /**
+     * Allows you to customize this tool's behavior or disable it entirely for
+     * different pricing plans.
+     *
+     * This is a map from PricingPlan slug to PricingPlanToolConfig.
+     *
+     * @example
+     * {
+     *   "free": {
+     *     "disabled": true
+     *   }
+     * }
+     */
+    pricingPlanConfig: z
+      .record(pricingPlanSlugSchema, pricingPlanToolConfigSchema)
+      .optional()
+      .describe(
+        'Map of PricingPlan slug to tool config overrides for a given plan. This is useful to customize tool behavior or disable tools completely on different pricing plans.'
+      )
+
+    // TODO: mapping from OpenAPI operationId to tools
+    // TODO?
+    // name
+    // path, httpMethod
+    // examples
+    // headers
+  })
+  .openapi('ToolConfig')
+export type ToolConfig = z.infer<typeof toolConfigSchema>
 
 export const toolMapSchema = z.record(toolNameSchema, toolSchema)
 export type ToolMap = z.infer<typeof toolMapSchema>

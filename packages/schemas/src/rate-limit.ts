@@ -9,7 +9,7 @@ export const rateLimitSchema = z
     /**
      * The interval at which the rate limit is applied.
      *
-     * Either a positive number expressed in seconds or a valid positive
+     * Either a positive integer expressed in seconds or a valid positive
      * [ms](https://github.com/vercel/ms) string (eg, "10s", "1m", "8h", "2d",
      * "1w", "1y", etc).
      */
@@ -54,7 +54,7 @@ export const rateLimitSchema = z
           })
       ])
       .describe(
-        `The interval at which the rate limit is applied. Either a positive number in seconds or a valid positive [ms](https://github.com/vercel/ms) string (eg, "10s", "1m", "8h", "2d", "1w", "1y", etc).`
+        `The interval at which the rate limit is applied. Either a positive integer expressed in seconds or a valid positive [ms](https://github.com/vercel/ms) string (eg, "10s", "1m", "8h", "2d", "1w", "1y", etc).`
       ),
 
     /**

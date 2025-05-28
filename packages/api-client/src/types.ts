@@ -13,8 +13,7 @@ export type TeamMember = components['schemas']['TeamMember']
 export type ProjectIdentifier = components['schemas']['ProjectIdentifier']
 export type DeploymentIdentifier = components['schemas']['DeploymentIdentifier']
 
-export type DeploymentOriginAdapter =
-  components['schemas']['DeploymentOriginAdapter']
+export type OriginAdapter = components['schemas']['OriginAdapter']
 
 export type RateLimit = components['schemas']['RateLimit']
 export type PricingInterval = components['schemas']['PricingInterval']

@@ -1,11 +1,12 @@
 import { z } from '@hono/zod-openapi'
 
+import { originAdapterSchema } from './origin-adapter'
 import {
-  deploymentOriginAdapterSchema,
   pricingIntervalListSchema,
   type PricingPlan,
   pricingPlanListSchema
-} from './schemas'
+} from './pricing'
+import { toolConfigSchema } from './tools'
 
 // TODO:
 // - **service / tool definitions**
@@ -93,19 +94,19 @@ export const agenticProjectConfigSchema = z
 NOTE: Agentic currently only supports \`external\` API servers. If you'd like to host your API or MCP server on Agentic's infrastructure, please reach out to support@agentic.so.`),
 
     /**
-     * Optional deployment origin API adapter used to configure the origin API
-     * server downstream from Agentic's API gateway. It specifies whether the
-     * origin API server denoted by \`originUrl\` is hosted externally or deployed
+     * Optional origin API adapter used to configure the origin API server
+     * downstream from Agentic's API gateway. It specifies whether the origin
+     * API server denoted by \`originUrl\` is hosted externally or deployed
      * internally to Agentic's infrastructure. It also specifies the format
      * for how origin tools / services are defined: either as an OpenAPI spec,
      * an MCP server, or as a raw HTTP REST API.
      */
-    originAdapter: deploymentOriginAdapterSchema.optional().default({
+    originAdapter: originAdapterSchema.optional().default({
       location: 'external',
       type: 'raw'
     }),
 
-    /** Optional subscription pricing config */
+    /** Optional subscription pricing config for this project. */
     pricingPlans: pricingPlanListSchema
       .describe(
         'List of PricingPlans configuring which Stripe subscriptions should be available for the project. Defaults to a single free plan which is useful for developing and testing your project.'
@@ -137,7 +138,32 @@ Defaults to a single monthly interval \`['month']\`.
 To add support for annual pricing plans, for example, you can use: \`['month', 'year']\`.`
       )
       .optional()
-      .default(['month'])
+      .default(['month']),
+
+    /**
+     * Optional list of tool configs to customize the behavior of tools.
+     *
+     * Make sure the tool `name` matches the origin server's tool names, either
+     * via its MCP server or OpenAPI operationIds.
+     *
+     * Tool names are expected to be unique and stable across deployments.
+     *
+     * With `toolConfigs`, tools can be disabled, set custom rate-limits,
+     * customize reporting usage for metered billing, and they can also
+     * override behavior for different pricing plans.
+     *
+     * For example, you may want to disable certain tools on a `free` pricing
+     * plan or remove the rate-limit for a specific tool on a `pro` pricing
+     * plan while keeping the defualt rate-limit in place for other tools.
+     *
+     * Note that tool-specific configs override the defaults defined in
+     * pricing plans.
+     *
+     * If a tool is defined on the origin server but not specified in
+     * `toolConfigs`, it will use the default behavior of the Agentic API
+     * gateway.
+     */
+    toolConfigs: z.array(toolConfigSchema).optional()
   })
   .strip()
 

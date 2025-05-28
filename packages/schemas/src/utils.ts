@@ -1,4 +1,4 @@
-import type { PricingInterval, PricingPlan, PricingPlanList } from './schemas'
+import type { PricingInterval, PricingPlan, PricingPlanList } from './pricing'
 
 export function getPricingPlansByInterval({
   pricingInterval,

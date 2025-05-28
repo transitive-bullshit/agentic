@@ -1,6 +1,6 @@
 import {
   agenticProjectConfigSchema,
-  type DeploymentOriginAdapter,
+  type OriginAdapter,
   type PricingPlanList
 } from '@agentic/platform-schemas'
 import { validators } from '@agentic/platform-validators'
@@ -88,7 +88,7 @@ export const deployments = pgTable(
     originUrl: text().notNull(),
 
     // Origin API adapter config (openapi, mcp, hosted externally or internally, etc)
-    originAdapter: jsonb().$type<DeploymentOriginAdapter>().notNull(),
+    originAdapter: jsonb().$type<OriginAdapter>().notNull(),
 
     // Array<PricingPlan>
     pricingPlans: jsonb().$type<PricingPlanList>().notNull(),

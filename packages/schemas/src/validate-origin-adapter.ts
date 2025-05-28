@@ -1,4 +1,4 @@
-import type { DeploymentOriginAdapter } from '@agentic/platform-schemas'
+import type { OriginAdapter } from '@agentic/platform-schemas'
 import { assert, type Logger } from '@agentic/platform-core'
 import { validateOpenAPISpec } from '@agentic/platform-openapi'
 
@@ -15,7 +15,7 @@ export async function validateOriginAdapter({
   logger
 }: {
   originUrl: string
-  originAdapter: DeploymentOriginAdapter
+  originAdapter: OriginAdapter
   label: string
   cwd?: URL
   logger?: Logger

@@ -1,29 +1,27 @@
 import { z } from '@hono/zod-openapi'
 
-export const deploymentOriginAdapterLocationSchema = z.literal('external')
+export const originAdapterLocationSchema = z.literal('external')
 // z.union([
 //   z.literal('external'),
 //   z.literal('internal')
 // ])
-export type DeploymentOriginAdapterLocation = z.infer<
-  typeof deploymentOriginAdapterLocationSchema
->
+export type OriginAdapterLocation = z.infer<typeof originAdapterLocationSchema>
 
-// export const deploymentOriginAdapterInternalTypeSchema = z.union([
+// export const originAdapterInternalTypeSchema = z.union([
 //   z.literal('docker'),
 //   z.literal('mcp'),
 //   z.literal('python-fastapi'),
 //   // etc
 // ])
-// export type DeploymentOriginAdapterInternalType = z.infer<
-//   typeof deploymentOriginAdapterInternalTypeSchema
+// export type OriginAdapterInternalType = z.infer<
+//   typeof originAdapterInternalTypeSchema
 // >
 
-export const commonDeploymentOriginAdapterSchema = z.object({
-  location: deploymentOriginAdapterLocationSchema
+export const commonOriginAdapterSchema = z.object({
+  location: originAdapterLocationSchema
 
   // TODO: Add support for `internal` hosted API servers
-  // internalType: deploymentOriginAdapterInternalTypeSchema.optional()
+  // internalType: originAdapterInternalTypeSchema.optional()
 })
 
 // TODO: add future support for:
@@ -34,11 +32,18 @@ export const commonDeploymentOriginAdapterSchema = z.object({
 // - etc
 
 /**
- * Deployment origin API adapter is used to configure the origin API server downstream from Agentic's API gateway. It specifies whether the origin API server denoted by `originUrl` is hosted externally or deployed internally to Agentic's infrastructure. It also specifies the format for how origin tools / services are defined: either as an OpenAPI spec, an MCP server, or as a raw HTTP REST API.
-
-  NOTE: Agentic currently only supports `external` API servers. If you'd like to host your API or MCP server on Agentic's infrastructure, please reach out to support@agentic.so.
+ * Origin API adapter is used to configure the origin API server downstream
+ * from Agentic's API gateway. It specifies whether the origin API server
+ * denoted by `originUrl` is hosted externally or deployed internally to
+ * Agentic's infrastructure. It also specifies the format for how origin tools
+ * are defined: either as an OpenAPI spec, an MCP server, or as a raw HTTP
+ * REST API.
+ *
+ * NOTE: Agentic currently only supports `external` API servers. If you'd like
+ * to host your API or MCP server on Agentic's infrastructure, please reach out
+ * to support@agentic.so.
  */
-export const deploymentOriginAdapterSchema = z
+export const originAdapterSchema = z
   .discriminatedUnion('type', [
     z
       .object({
@@ -60,7 +65,7 @@ export const deploymentOriginAdapterSchema = z
             'JSON stringified OpenAPI spec describing the origin API server.'
           )
       })
-      .merge(commonDeploymentOriginAdapterSchema),
+      .merge(commonOriginAdapterSchema),
 
     z
       .object({
@@ -73,14 +78,12 @@ export const deploymentOriginAdapterSchema = z
          */
         type: z.literal('raw')
       })
-      .merge(commonDeploymentOriginAdapterSchema)
+      .merge(commonOriginAdapterSchema)
   ])
   .describe(
     `Deployment origin API adapter is used to configure the origin API server downstream from Agentic's API gateway. It specifies whether the origin API server denoted by \`originUrl\` is hosted externally or deployed internally to Agentic's infrastructure. It also specifies the format for how origin tools / services are defined: either as an OpenAPI spec, an MCP server, or as a raw HTTP REST API.
 
 NOTE: Agentic currently only supports \`external\` API servers. If you'd like to host your API or MCP server on Agentic's infrastructure, please reach out to support@agentic.so.`
   )
-  .openapi('DeploymentOriginAdapter')
-export type DeploymentOriginAdapter = z.infer<
-  typeof deploymentOriginAdapterSchema
->
+  .openapi('OriginAdapter')
+export type OriginAdapter = z.infer<typeof originAdapterSchema>

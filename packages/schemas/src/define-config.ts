@@ -4,7 +4,7 @@ import {
   type AgenticProjectConfig,
   type AgenticProjectConfigInput,
   agenticProjectConfigSchema
-} from './agentic-project-config-schema'
+} from './agentic-project-config'
 
 /**
  * This method allows Agentic projects to define their configs in a type-safe

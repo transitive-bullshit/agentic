@@ -117,6 +117,139 @@ const commonPricingPlanLineItemSchema = z.object({
   label: z.string().optional().openapi('label', { example: 'API calls' })
 })
 
+export const pricingPlanLicensedLineItemSchema =
+  commonPricingPlanLineItemSchema.merge(
+    z.object({
+      /**
+       * Licensed LineItems are used to charge for fixed-price services.
+       */
+      usageType: z.literal('licensed'),
+
+      /**
+       * The fixed amount to charge per billing interval.
+       *
+       * Specified in the smallest currency unit (e.g. cents for USD).
+       *
+       * So 100 = $1.00 USD, 1000 = $10.00 USD, etc.
+       */
+      amount: z.number().nonnegative()
+    })
+  )
+
+export const pricingPlanMeteredLineItemSchema =
+  commonPricingPlanLineItemSchema.merge(
+    z.object({
+      /**
+       * Metered LineItems are used to charge for usage-based services.
+       */
+      usageType: z.literal('metered'),
+
+      /**
+       * Optional label for the line-item which will be displayed on customer
+       * bills.
+       *
+       * If unset, the line-item's `slug` will be used as the unit label.
+       */
+      unitLabel: z.string().optional(),
+
+      /**
+       * Optional rate limit to enforce for this metered line-item.
+       *
+       * You can use this, for example, to limit the number of API calls that
+       * can be made during a given interval.
+       */
+      rateLimit: rateLimitSchema.optional(),
+
+      /**
+       * Describes how to compute the price per period. Either `per_unit` or
+       * `tiered`.
+       *
+       * `per_unit` indicates that the fixed amount (specified in
+       * `unitAmount`) will be charged per unit of total usage.
+       *
+       * `tiered` indicates that the unit pricing will be computed using a
+       * tiering strategy as defined using `tiers` and `tiersMode`.
+       */
+      billingScheme: z.union([z.literal('per_unit'), z.literal('tiered')]),
+
+      /**
+       * The fixed amount to charge per unit of usage.
+       *
+       * Only applicable for `per_unit` billing schemes.
+       *
+       * Specified in the smallest currency unit (e.g. cents for USD).
+       *
+       * So 100 = $1.00 USD, 1000 = $10.00 USD, etc.
+       */
+      unitAmount: z.number().nonnegative().optional(),
+
+      // Only applicable for `tiered` billing schemes
+
+      /**
+       * Defines if the tiering price should be `graduated` or `volume` based.
+       * In `volume`-based tiering, the maximum quantity within a period
+       * determines the per unit price, in `graduated` tiering pricing can
+       * successively change as the quantity grows.
+       *
+       * This field requires `billingScheme` to be set to `tiered`.
+       */
+      tiersMode: z
+        .union([z.literal('graduated'), z.literal('volume')])
+        .optional(),
+
+      /**
+       * Pricing tiers for `tiered` billing schemes.
+       *
+       * This field requires `billingScheme` to be set to `tiered`.
+       */
+      tiers: z.array(pricingPlanTierSchema).optional(),
+
+      // TODO: add support for tiered rate limits?
+
+      /**
+       * The default settings to aggregate the Stripe Meter's events with.
+       *
+       * Deafults to `{ formula: 'sum' }`.
+       */
+      defaultAggregation: z
+        .object({
+          /**
+           * Specifies how events are aggregated for a Stripe Meter.
+           * Allowed values are `count` to count the number of events, `sum`
+           * to sum each event's value and `last` to take the last event's
+           * value in the window.
+           *
+           * Defaults to `sum`.
+           */
+          formula: z
+            .union([z.literal('sum'), z.literal('count'), z.literal('last')])
+            .default('sum')
+        })
+        .optional(),
+
+      /**
+       * Optionally apply a transformation to the reported usage or set
+       * quantity before computing the amount billed. Cannot be combined
+       * with `tiers`.
+       */
+      transformQuantity: z
+        .object({
+          /**
+           * Divide usage by this number.
+           *
+           * Must be a positive number.
+           */
+          divideBy: z.number().positive(),
+
+          /**
+           * After division, either round the result `up` or `down`.
+           */
+          round: z.union([z.literal('down'), z.literal('up')])
+        })
+        .optional()
+    })
+  )
+
 /**
  * PricingPlanLineItems represent a single line-item in a Stripe Subscription.
  *
@@ -125,136 +258,8 @@ const commonPricingPlanLineItemSchema = z.object({
  */
 export const pricingPlanLineItemSchema = z
   .discriminatedUnion('usageType', [
-    commonPricingPlanLineItemSchema.merge(
-      z.object({
-        /**
-         * Licensed LineItems are used to charge for fixed-price services.
-         */
-        usageType: z.literal('licensed'),
-
-        /**
-         * The fixed amount to charge per billing interval.
-         *
-         * Specified in the smallest currency unit (e.g. cents for USD).
-         *
-         * So 100 = $1.00 USD, 1000 = $10.00 USD, etc.
-         */
-        amount: z.number().nonnegative()
-      })
-    ),
-
-    commonPricingPlanLineItemSchema.merge(
-      z.object({
-        /**
-         * Metered LineItems are used to charge for usage-based services.
-         */
-        usageType: z.literal('metered'),
-
-        /**
-         * Optional label for the line-item which will be displayed on customer
-         * bills.
-         *
-         * If unset, the line-item's `slug` will be used as the unit label.
-         */
-        unitLabel: z.string().optional(),
-
-        /**
-         * Optional rate limit to enforce for this metered line-item.
-         *
-         * You can use this, for example, to limit the number of API calls that
-         * can be made during a given interval.
-         */
-        rateLimit: rateLimitSchema.optional(),
-
-        /**
-         * Describes how to compute the price per period. Either `per_unit` or
-         * `tiered`.
-         *
-         * `per_unit` indicates that the fixed amount (specified in
-         * `unitAmount`) will be charged per unit of total usage.
-         *
-         * `tiered` indicates that the unit pricing will be computed using a
-         * tiering strategy as defined using `tiers` and `tiersMode`.
-         */
-        billingScheme: z.union([z.literal('per_unit'), z.literal('tiered')]),
-
-        /**
-         * The fixed amount to charge per unit of usage.
-         *
-         * Only applicable for `per_unit` billing schemes.
-         *
-         * Specified in the smallest currency unit (e.g. cents for USD).
-         *
-         * So 100 = $1.00 USD, 1000 = $10.00 USD, etc.
-         */
-        unitAmount: z.number().nonnegative().optional(),
-
-        // Only applicable for `tiered` billing schemes
-
-        /**
-         * Defines if the tiering price should be `graduated` or `volume` based.
-         * In `volume`-based tiering, the maximum quantity within a period
-         * determines the per unit price, in `graduated` tiering pricing can
-         * successively change as the quantity grows.
-         *
-         * This field requires `billingScheme` to be set to `tiered`.
-         */
-        tiersMode: z
-          .union([z.literal('graduated'), z.literal('volume')])
-          .optional(),
-
-        /**
-         * Pricing tiers for `tiered` billing schemes.
-         *
-         * This field requires `billingScheme` to be set to `tiered`.
-         */
-        tiers: z.array(pricingPlanTierSchema).optional(),
-
-        // TODO: add support for tiered rate limits?
-
-        /**
-         * The default settings to aggregate the Stripe Meter's events with.
-         *
-         * Deafults to `{ formula: 'sum' }`.
-         */
-        defaultAggregation: z
-          .object({
-            /**
-             * Specifies how events are aggregated for a Stripe Meter.
-             * Allowed values are `count` to count the number of events, `sum`
-             * to sum each event's value and `last` to take the last event's
-             * value in the window.
-             *
-             * Defaults to `sum`.
-             */
-            formula: z
-              .union([z.literal('sum'), z.literal('count'), z.literal('last')])
-              .default('sum')
-          })
-          .optional(),
-
-        /**
-         * Optionally apply a transformation to the reported usage or set
-         * quantity before computing the amount billed. Cannot be combined
-         * with `tiers`.
-         */
-        transformQuantity: z
-          .object({
-            /**
-             * Divide usage by this number.
-             *
-             * Must be a positive number.
-             */
-            divideBy: z.number().positive(),
-
-            /**
-             * After division, either round the result `up` or `down`.
-             */
-            round: z.union([z.literal('down'), z.literal('up')])
-          })
-          .optional()
-      })
-    )
+    pricingPlanLicensedLineItemSchema,
+    pricingPlanMeteredLineItemSchema
   ])
   .refine(
     (data) => {

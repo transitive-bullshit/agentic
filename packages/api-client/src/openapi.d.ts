@@ -448,7 +448,7 @@ export interface components {
          *       "type": "raw"
          *     }
          */
-        DeploymentOriginAdapter: {
+        OriginAdapter: {
             /** @enum {string} */
             type: "openapi";
             /** @description JSON stringified OpenAPI spec describing the origin API server. */
@@ -552,7 +552,7 @@ export interface components {
             teamId?: string;
             /** @description Project id (e.g. "proj_tz4a98xxat96iws9zmbrgj3a") */
             projectId: string;
-            originAdapter?: components["schemas"]["DeploymentOriginAdapter"];
+            originAdapter?: components["schemas"]["OriginAdapter"];
             /**
              * @description List of PricingPlans configuring which Stripe subscriptions should be available for the project. Defaults to a single free plan which is useful for developing and testing your project.
              * @default [
@@ -1441,7 +1441,7 @@ export interface operations {
                      *     NOTE: Agentic currently only supports `external` API servers. If you'd like to host your API or MCP server on Agentic's infrastructure, please reach out to support@agentic.so.
                      */
                     originUrl: string;
-                    originAdapter?: components["schemas"]["DeploymentOriginAdapter"];
+                    originAdapter?: components["schemas"]["OriginAdapter"];
                     /**
                      * @description List of PricingPlans configuring which Stripe subscriptions should be available for the project. Defaults to a single free plan which is useful for developing and testing your project.
                      * @default [

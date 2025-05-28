@@ -3,12 +3,12 @@ import { assert, type Logger, parseZodSchema } from '@agentic/platform-core'
 import { validators } from '@agentic/platform-validators'
 import { clean as cleanSemver, valid as isValidSemver } from 'semver'
 
-import type { PricingPlanLineItem } from './schemas'
+import type { PricingPlanLineItem } from './pricing'
 import {
   type AgenticProjectConfig,
   type AgenticProjectConfigInput,
   agenticProjectConfigSchema
-} from './agentic-project-config-schema'
+} from './agentic-project-config'
 import { getPricingPlansByInterval } from './utils'
 import { validateOriginAdapter } from './validate-origin-adapter'
 
