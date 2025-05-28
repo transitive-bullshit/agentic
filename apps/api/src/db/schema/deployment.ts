@@ -1,7 +1,8 @@
 import {
   agenticProjectConfigSchema,
   type OriginAdapter,
-  type PricingPlanList
+  type PricingPlanList,
+  type Tool
 } from '@agentic/platform-schemas'
 import { validators } from '@agentic/platform-validators'
 import { relations } from '@fisch0920/drizzle-orm'
@@ -83,6 +84,8 @@ export const deployments = pgTable(
     // this because custom oauth credentials that are deployment-specific. will
     // prolly also need to hash the individual AuthProviders in
     // deployment.authProviders to compare across deployments.
+
+    tools: jsonb().$type<Tool[]>().notNull(),
 
     // Origin API URL
     originUrl: text().notNull(),

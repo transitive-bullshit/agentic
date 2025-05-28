@@ -11,7 +11,11 @@ import type {
   AuthorizeResult,
   AuthTokens,
   AuthUser,
-  OnUpdateAuthSessionFunction
+  Deployment,
+  OnUpdateAuthSessionFunction,
+  Project,
+  Team,
+  User
 } from './types'
 import { subjects } from './subjects'
 
@@ -190,17 +194,15 @@ export class AgenticApiClient {
       .json()
   }
 
-  async listTeams({
-    ...searchParams
-  }: OperationParameters<'listTeams'>): Promise<
-    OperationResponse<'listTeams'>
-  > {
+  async listTeams(
+    searchParams: OperationParameters<'listTeams'>
+  ): Promise<OperationResponse<'listTeams'>> {
     return this.ky.get('v1/teams', { searchParams }).json()
   }
 
   async createTeam(
     team: OperationBody<'createTeam'>,
-    { ...searchParams }: OperationParameters<'createTeam'> = {}
+    searchParams: OperationParameters<'createTeam'> = {}
   ): Promise<OperationResponse<'createTeam'>> {
     return this.ky.post('v1/teams', { json: team, searchParams }).json()
   }
@@ -263,10 +265,16 @@ export class AgenticApiClient {
       .json()
   }
 
-  async listProjects({
-    ...searchParams
-  }: OperationParameters<'listProjects'>): Promise<
-    OperationResponse<'listProjects'>
+  async listProjects<
+    TPopulate extends NonNullable<
+      OperationParameters<'listProjects'>['populate']
+    >[number] = never
+  >(
+    searchParams: OperationParameters<'listProjects'> & {
+      populate?: TPopulate[]
+    }
+  ): Promise<
+    Simplify<OperationResponse<'listProjects'> & PopulateProject<TPopulate>>
   > {
     return this.ky
       .get('v1/projects', { searchParams: sanitizeSearchParams(searchParams) })
@@ -275,16 +283,22 @@ export class AgenticApiClient {
 
   async createProject(
     project: OperationBody<'createProject'>,
-    { ...searchParams }: OperationParameters<'createProject'> = {}
+    searchParams: OperationParameters<'createProject'> = {}
   ): Promise<OperationResponse<'createProject'>> {
     return this.ky.post('v1/projects', { json: project, searchParams }).json()
   }
 
-  async getProject({
+  async getProject<
+    TPopulate extends NonNullable<
+      OperationParameters<'getProject'>['populate']
+    >[number] = never
+  >({
     projectId,
     ...searchParams
-  }: OperationParameters<'getProject'>): Promise<
-    OperationResponse<'getProject'>
+  }: OperationParameters<'getProject'> & {
+    populate?: TPopulate[]
+  }): Promise<
+    Simplify<OperationResponse<'getProject'> & PopulateProject<TPopulate>>
   > {
     return this.ky
       .get(`v1/projects/${projectId}`, {
@@ -293,9 +307,19 @@ export class AgenticApiClient {
       .json()
   }
 
-  async getProjectByIdentifier(
-    searchParams: OperationParameters<'getProjectByIdentifier'>
-  ): Promise<OperationResponse<'getProjectByIdentifier'>> {
+  async getProjectByIdentifier<
+    TPopulate extends NonNullable<
+      OperationParameters<'getProjectByIdentifier'>['populate']
+    >[number] = never
+  >(
+    searchParams: OperationParameters<'getProjectByIdentifier'> & {
+      populate?: TPopulate[]
+    }
+  ): Promise<
+    Simplify<
+      OperationResponse<'getProjectByIdentifier'> & PopulateProject<TPopulate>
+    >
+  > {
     return this.ky
       .get(`v1/projects/by-identifier`, {
         searchParams: sanitizeSearchParams(searchParams)
@@ -336,7 +360,7 @@ export class AgenticApiClient {
 
   async createConsumer(
     consumer: OperationBody<'createConsumer'>,
-    { ...searchParams }: OperationParameters<'createConsumer'> = {}
+    searchParams: OperationParameters<'createConsumer'> = {}
   ): Promise<OperationResponse<'createConsumer'>> {
     return this.ky.post('v1/consumers', { json: consumer, searchParams }).json()
   }
@@ -365,11 +389,17 @@ export class AgenticApiClient {
       .json()
   }
 
-  async getDeployment({
+  async getDeployment<
+    TPopulate extends NonNullable<
+      OperationParameters<'getDeployment'>['populate']
+    >[number] = never
+  >({
     deploymentId,
     ...searchParams
-  }: OperationParameters<'getDeployment'>): Promise<
-    OperationResponse<'getDeployment'>
+  }: OperationParameters<'getDeployment'> & {
+    populate?: TPopulate[]
+  }): Promise<
+    Simplify<OperationResponse<'getDeployment'> & PopulateDeployment<TPopulate>>
   > {
     return this.ky
       .get(`v1/deployments/${deploymentId}`, {
@@ -378,9 +408,20 @@ export class AgenticApiClient {
       .json()
   }
 
-  async getDeploymentByIdentifier(
-    searchParams: OperationParameters<'getDeploymentByIdentifier'>
-  ): Promise<OperationResponse<'getDeploymentByIdentifier'>> {
+  async getDeploymentByIdentifier<
+    TPopulate extends NonNullable<
+      OperationParameters<'getDeploymentByIdentifier'>['populate']
+    >[number] = never
+  >(
+    searchParams: OperationParameters<'getDeploymentByIdentifier'> & {
+      populate?: TPopulate[]
+    }
+  ): Promise<
+    Simplify<
+      OperationResponse<'getDeploymentByIdentifier'> &
+        PopulateDeployment<TPopulate>
+    >
+  > {
     return this.ky
       .get(`v1/deployments/by-identifier`, {
         searchParams: sanitizeSearchParams(searchParams)
@@ -400,9 +441,19 @@ export class AgenticApiClient {
       .json()
   }
 
-  async listDeployments(
-    searchParams: OperationParameters<'listDeployments'>
-  ): Promise<OperationResponse<'listDeployments'>> {
+  async listDeployments<
+    TPopulate extends NonNullable<
+      OperationParameters<'listDeployments'>['populate']
+    >[number] = never
+  >(
+    searchParams: OperationParameters<'listDeployments'> & {
+      populate?: TPopulate[]
+    }
+  ): Promise<
+    Simplify<
+      OperationResponse<'listDeployments'> & PopulateDeployment<TPopulate>
+    >
+  > {
     return this.ky
       .get('v1/deployments', {
         searchParams: sanitizeSearchParams(searchParams)
@@ -412,7 +463,7 @@ export class AgenticApiClient {
 
   async createDeployment(
     deployment: OperationBody<'createDeployment'>,
-    { ...searchParams }: OperationParameters<'createDeployment'> = {}
+    searchParams: OperationParameters<'createDeployment'> = {}
   ): Promise<OperationResponse<'createDeployment'>> {
     return this.ky
       .post('v1/deployments', { json: deployment, searchParams })
@@ -472,3 +523,40 @@ type OperationBody<
     | object
     | undefined = operations[T]['requestBody']['content']['application/json']
 > = B
+
+type PopulateProject<TPopulate> = (TPopulate extends 'user'
+  ? {
+      user: User
+    }
+  : unknown) &
+  (TPopulate extends 'team'
+    ? {
+        team: Team
+      }
+    : unknown) &
+  (TPopulate extends 'lastPublishedDeployment'
+    ? {
+        lastPublishedDeployment?: Deployment
+      }
+    : unknown) &
+  (TPopulate extends 'lastDeployment'
+    ? {
+        lastDeployment?: Deployment
+      }
+    : unknown)
+
+type PopulateDeployment<TPopulate> = (TPopulate extends 'user'
+  ? {
+      user: User
+    }
+  : unknown) &
+  (TPopulate extends 'team'
+    ? {
+        team: Team
+      }
+    : unknown) &
+  (TPopulate extends 'project'
+    ? {
+        project: Project
+      }
+    : unknown)
