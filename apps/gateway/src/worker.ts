@@ -1,0 +1,175 @@
+import { AgenticApiClient } from '@agentic/platform-api-client'
+import { parseZodSchema } from '@agentic/platform-core'
+
+import type { Context } from './lib/types'
+import { type AgenticEnv, envSchema } from './lib/env'
+import { handleOptions } from './lib/handle-options'
+
+// Export Durable Objects for cloudflare
+export { DurableObjectRateLimiter } from './durable-object'
+
+export default {
+  async fetch(
+    inputReq: Request,
+    inputEnv: Env,
+    inputCtx: ExecutionContext
+  ): Promise<Response> {
+    const gatewayStartTime = Date.now()
+    let originStartTime: number
+    let originTimespan: number
+    let gatewayTimespan: number
+    let res: Response
+    let env: AgenticEnv
+
+    try {
+      env = parseZodSchema(envSchema, inputEnv)
+    } catch (err: any) {
+      // TODO: Better error handling
+      return new Response(
+        JSON.stringify({
+          error: err.message,
+          type: err.type,
+          code: err.code
+        }),
+        { status: 500 }
+      )
+    }
+
+    function recordTimespans() {
+      const now = Date.now()
+      originTimespan = now - originStartTime!
+      gatewayTimespan = now - gatewayStartTime!
+    }
+
+    const client = new AgenticApiClient({
+      apiBaseUrl: env.AGENTIC_API_BASE_URL,
+      apiKey: env.AGENTIC_API_KEY
+    })
+
+    const ctx: Context = {
+      ...inputCtx,
+      req: inputReq,
+      env,
+      client
+    }
+
+    try {
+      const { method } = req
+
+      if (method === 'OPTIONS') {
+        return handleOptions(req)
+      }
+
+      const { originReq, ...call } = await resolveOriginRequest(ctx)
+
+      try {
+        const originReqCacheKey = await getOriginRequestCacheKey(originReq)
+        originStartTime = Date.now()
+
+        const originRes = await fetchCache({
+          event,
+          cacheKey: originReqCacheKey,
+          fetch: () => fetchOriginRequest(event, { originReq, call })
+        })
+
+        res = new Response(originRes.body, originRes)
+        recordTimespans()
+
+        // Record the time it took for both the origin and gateway proxy to respond
+        res.headers.set('x-response-time', `${originTimespan!}ms`)
+        res.headers.set('x-proxy-response-time', `${gatewayTimespan!}ms`)
+
+        // Upsert Vary header so browser will cache response correctly
+        // TODO: why is this necessary according to cloudflare? it's actually incorrect
+        // in that the responses explicitly do not vary by request origin...
+        // res.headers.append('vary', 'Origin')
+
+        // Reset server to saasify because Cloudflare likes to override things
+        res.headers.set('server', 'saasify')
+
+        // const id: DurableObjectId = env.DO_RATE_LIMITER.idFromName('foo')
+        // const stub = env.DO_RATE_LIMITER.get(id)
+        // const greeting = await stub.sayHello('world')
+
+        // return new Response(greeting)
+
+        return res
+      } catch (err: any) {
+        console.error(err)
+        recordTimespans()
+
+        res = new Response(
+          JSON.stringify({
+            error: err.message,
+            type: err.type,
+            code: err.code
+          }),
+          { status: 500, headers: globalResHeaders }
+        )
+
+        return res
+      } finally {
+        const now = Date.now()
+
+        // Report usage.
+        // Note that we are not awaiting the results of this on purpose so we can
+        // return the response to the client immediately.
+        ctx.waitUntil(
+          reportUsage(ctx, {
+            ...call,
+            cache: res!.headers.get('cf-cache-status'),
+            status: res!.status,
+            timestamp: Math.ceil(now / 1000),
+            computeTime: originTimespan!,
+            gatewayTime: gatewayTimespan!,
+            // TODO: record correct bandwidth of request + response content-length
+            bandwidth: 0
+          })
+        )
+      }
+    } catch (err: any) {
+      console.error(err)
+
+      if (err.response) {
+        return err.response
+      } else {
+        return new Response(
+          JSON.stringify({
+            error: err.message,
+            // TODO: hide internal error message details?
+            // error: 'internal',
+            type: err.type,
+            code: err.code
+          }),
+          {
+            status: 500,
+            headers: globalResHeaders
+          }
+        )
+      }
+    }
+  }
+} satisfies ExportedHandler<Env>
+
+// const handler = {
+//   fetch: (req: Request, env: Env, executionCtx: ExecutionContext) => {
+//     const parsedEnv = zEnv.safeParse(env)
+//     if (!parsedEnv.success) {
+//       new ConsoleLogger({
+//         requestId: '',
+//         environment: env.ENVIRONMENT,
+//         application: 'api'
+//       }).fatal(`BAD_ENVIRONMENT: ${parsedEnv.error.message}`)
+//       return Response.json(
+//         {
+//           code: 'BAD_ENVIRONMENT',
+//           message: 'Some environment variables are missing or are invalid',
+//           errors: parsedEnv.error
+//         },
+//         { status: 500 }
+//       )
+//     }
+
+//     return app.fetch(req, parsedEnv.data, executionCtx)
+//   }
+// }

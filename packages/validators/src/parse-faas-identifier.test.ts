@@ -9,7 +9,7 @@ function success(...args: Parameters<typeof parseFaasIdentifier>) {
   expect(result!.projectIdentifier).toBeTruthy()
   expect(result!.version || result!.deploymentHash).toBeTruthy()
   expect(validators.projectIdentifier(result!.projectIdentifier)).toBe(true)
-  expect(validators.servicePath(result!.servicePath)).toBe(true)
+  expect(validators.toolPath(result!.toolPath)).toBe(true)
 
   if (result!.deploymentHash) {
     expect(validators.deploymentHash(result!.deploymentHash)).toBe(true)

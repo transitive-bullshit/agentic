@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest'
 
-import { rateLimitSchema } from './schemas'
+import { rateLimitSchema } from './rate-limit'
 
 test('rateLimitSchema valid', () => {
   expect(

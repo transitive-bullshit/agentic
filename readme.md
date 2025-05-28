@@ -29,6 +29,7 @@
 - re-add support for teams / organizations
 - consider switching to [consola](https://github.com/unjs/consola) for logging?
 - consider switching to `bun` (for `--hot` reloading!!)
+- consider `projectName` and `projectSlug` or `projectIdentifier`?
 
 ## License
 

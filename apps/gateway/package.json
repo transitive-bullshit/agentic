@@ -1,0 +1,43 @@
+{
+  "name": "@agentic/platform-api-gateway",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Internal Agentic platform API gateway service.",
+  "author": "Travis Fischer <travis@transitivebullsh.it>",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/transitive-bullshit/agentic-platform.git",
+    "directory": "apps/gateway"
+  },
+  "type": "module",
+  "source": "./src/worker.ts",
+  "exports": {
+    ".": {
+      "import": "./src/worker.ts"
+    }
+  },
+  "scripts": {
+    "deploy": "wrangler deploy",
+    "dev": "wrangler dev",
+    "start": "wrangler dev",
+    "cf-typegen": "wrangler types ./src/worker.d.ts",
+    "clean": "del dist",
+    "test": "run-s test:*",
+    "test:lint": "eslint .",
+    "test:typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@agentic/platform-api-client": "workspace:*",
+    "@agentic/platform-core": "workspace:*",
+    "@agentic/platform-schemas": "workspace:*",
+    "@agentic/platform-validators": "workspace:*",
+    "@hono/zod-validator": "^0.6.0",
+    "eventid": "catalog:",
+    "hono": "catalog:",
+    "type-fest": "catalog:"
+  },
+  "devDependencies": {
+    "wrangler": "^4.16.1"
+  }
+}

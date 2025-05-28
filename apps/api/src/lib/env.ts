@@ -12,10 +12,6 @@ export const envSchema = z.object({
 
   DATABASE_URL: z.string().url(),
 
-  BETTER_AUTH_SECRET: z.string().nonempty(),
-  BETTER_AUTH_URL: z.string().url(),
-
-  JWT_SECRET: z.string().nonempty(),
   SENTRY_DSN: z.string().url(),
   PORT: z.number().default(3000),
   LOG_LEVEL: logLevelsSchema.default('info'),

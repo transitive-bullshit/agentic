@@ -44,3 +44,6 @@ old/
 out/
 
 apps/api/auth-db-temp.json
+
+.dev.vars
+.dev.vars.*

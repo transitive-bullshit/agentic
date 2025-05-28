@@ -1,6 +1,6 @@
 export type ParsedFaasIdentifier = {
   projectIdentifier: string
-  servicePath: string
+  toolPath: string
   deploymentHash?: string
   deploymentIdentifier?: string
   version?: string

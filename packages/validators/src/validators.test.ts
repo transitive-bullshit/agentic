@@ -119,30 +119,30 @@ test('deploymentIdentifier failure', () => {
   expect(validators.deploymentIdentifier('012345678/123@1.0.1')).toBe(false)
 })
 
-test('serviceName success', () => {
-  expect(validators.serviceName('serviceName')).toBe(true)
-  expect(validators.serviceName('_identIFIER0123')).toBe(true)
-  expect(validators.serviceName('abc_123_foo')).toBe(true)
+test('toolName success', () => {
+  expect(validators.toolName('toolName')).toBe(true)
+  expect(validators.toolName('_identIFIER0123')).toBe(true)
+  expect(validators.toolName('abc_123_foo')).toBe(true)
 })
 
-test('serviceName failure', () => {
-  expect(validators.serviceName('ab1.2')).toBe(false)
-  expect(validators.serviceName('foo-bar')).toBe(false)
-  expect(validators.serviceName('abc/123')).toBe(false)
+test('toolName failure', () => {
+  expect(validators.toolName('ab1.2')).toBe(false)
+  expect(validators.toolName('foo-bar')).toBe(false)
+  expect(validators.toolName('abc/123')).toBe(false)
 })
 
-test('servicePath success', () => {
-  expect(validators.servicePath('/foo')).toBe(true)
-  expect(validators.servicePath('/')).toBe(true)
-  expect(validators.servicePath('/foo/bar/123%20-_abc')).toBe(true)
-  expect(validators.servicePath('/foo/BAR/..')).toBe(true)
-  expect(validators.servicePath('/api/iconsets/v3/categories')).toBe(true)
+test('toolPath success', () => {
+  expect(validators.toolPath('/foo')).toBe(true)
+  expect(validators.toolPath('/')).toBe(true)
+  expect(validators.toolPath('/foo/bar/123%20-_abc')).toBe(true)
+  expect(validators.toolPath('/foo/BAR/..')).toBe(true)
+  expect(validators.toolPath('/api/iconsets/v3/categories')).toBe(true)
 })
 
-test('servicePath failure', () => {
-  expect(validators.servicePath('')).toBe(false)
-  expect(validators.servicePath('foo/bar')).toBe(false)
-  expect(validators.servicePath('/foo/bar\\')).toBe(false)
-  expect(validators.servicePath('/foo/bar@')).toBe(false)
-  expect(validators.servicePath('/foo/bar@abc')).toBe(false)
+test('toolPath failure', () => {
+  expect(validators.toolPath('')).toBe(false)
+  expect(validators.toolPath('foo/bar')).toBe(false)
+  expect(validators.toolPath('/foo/bar\\')).toBe(false)
+  expect(validators.toolPath('/foo/bar@')).toBe(false)
+  expect(validators.toolPath('/foo/bar@abc')).toBe(false)
 })

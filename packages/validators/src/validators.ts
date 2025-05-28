@@ -11,10 +11,10 @@ export const deploymentHashRe = /^[a-z0-9]{8}$/
 export const projectRe = /^[a-zA-Z0-9-]{1,64}\/[a-z0-9-]{3,64}$/
 export const deploymentRe = /^[a-zA-Z0-9-]{1,64}\/[a-z0-9-]{3,64}@[a-z0-9]{8}$/
 
-// service names may be any valid JavaScript identifier
-// TODO: should service names be any label?
-export const serviceNameRe = /^[a-zA-Z_][a-zA-Z0-9_]*$/
-export const servicePathRe = /^\/[a-zA-Z0-9\-._~%!$&'()*+,;=:/]*$/
+// tool names may be any valid JavaScript identifier
+// TODO: should tool names be any label?
+export const toolNameRe = /^[a-zA-Z_][a-zA-Z0-9_]*$/
+export const toolPathRe = /^\/[a-zA-Z0-9\-._~%!$&'()*+,;=:/]*$/
 
 export function email(value: string): boolean {
   return emailValidator.validate(value)
@@ -48,12 +48,12 @@ export function deploymentIdentifier(value?: string): boolean {
   return !!value && deploymentRe.test(value)
 }
 
-export function serviceName(value?: string): boolean {
-  return !!value && serviceNameRe.test(value)
+export function toolName(value?: string): boolean {
+  return !!value && toolNameRe.test(value)
 }
 
-export function servicePath(value?: string): boolean {
-  return !!value && servicePathRe.test(value) && isRelativeUrl(value)
+export function toolPath(value?: string): boolean {
+  return !!value && toolPathRe.test(value) && isRelativeUrl(value)
 }
 
 export function cuid(value?: string): boolean {

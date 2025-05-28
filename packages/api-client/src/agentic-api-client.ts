@@ -19,6 +19,7 @@ export class AgenticApiClient {
   static readonly DEFAULT_API_BASE_URL = 'https://api.agentic.so'
 
   public readonly apiBaseUrl: string
+  public readonly apiKey?: string
   public readonly ky: KyInstance
   public readonly onUpdateAuth?: OnUpdateAuthSessionFunction
 
@@ -27,16 +28,19 @@ export class AgenticApiClient {
 
   constructor({
     apiBaseUrl = AgenticApiClient.DEFAULT_API_BASE_URL,
+    apiKey,
     ky = defaultKy,
     onUpdateAuth
   }: {
     apiBaseUrl?: string
+    apiKey?: string
     ky?: KyInstance
     onUpdateAuth?: OnUpdateAuthSessionFunction
   }) {
     assert(apiBaseUrl, 'AgenticApiClient missing required "apiBaseUrl"')
 
     this.apiBaseUrl = apiBaseUrl
+    this.apiKey = apiKey
     this.onUpdateAuth = onUpdateAuth
 
     this._authClient = createAuthClient({
@@ -46,6 +50,12 @@ export class AgenticApiClient {
 
     this.ky = ky.extend({
       prefixUrl: apiBaseUrl,
+      headers: apiKey
+        ? {
+            Authorization: `Bearer ${apiKey}`
+          }
+        : undefined,
+
       hooks: {
         beforeRequest: [
           async (request) => {
@@ -71,6 +81,8 @@ export class AgenticApiClient {
   }
 
   async setRefreshAuthToken(refreshToken: string): Promise<void> {
+    this._ensureNoApiKey()
+
     const result = await this._authClient.refresh(refreshToken)
     if (result.err) {
       throw result.err
@@ -80,6 +92,8 @@ export class AgenticApiClient {
   }
 
   async verifyAuthAndRefreshIfNecessary(): Promise<AuthUser> {
+    this._ensureNoApiKey()
+
     if (!this._authTokens) {
       throw new Error('This method requires authentication.')
     }
@@ -117,6 +131,7 @@ export class AgenticApiClient {
     redirectUri: string
     verifier?: string
   }): Promise<AuthUser> {
+    this._ensureNoApiKey()
     const result = await this._authClient.exchange(code, redirectUri, verifier)
 
     if (result.err) {
@@ -134,6 +149,8 @@ export class AgenticApiClient {
     redirectUri: string
     provider: 'github' | 'password'
   }): Promise<AuthorizeResult> {
+    this._ensureNoApiKey()
+
     return this._authClient.authorize(redirectUri, 'code', {
       provider
     })
@@ -142,6 +159,13 @@ export class AgenticApiClient {
   async logout(): Promise<void> {
     this._authTokens = undefined
     this.onUpdateAuth?.()
+  }
+
+  protected _ensureNoApiKey() {
+    assert(
+      !this.apiKey,
+      'AgenticApiClient was initialized with an API key. This method is only supported with wnon-API-key-based authentication.'
+    )
   }
 
   async getMe(): Promise<OperationResponse<'getUser'>> {

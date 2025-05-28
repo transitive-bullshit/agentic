@@ -4,7 +4,11 @@ import drizzle from 'eslint-plugin-drizzle'
 export default [
   ...config,
   {
-    ignores: ['**/out/**', 'packages/api-client/src/openapi.d.ts']
+    ignores: [
+      '**/out/**',
+      'packages/api-client/src/openapi.d.ts',
+      'apps/gateway/src/worker.d.ts'
+    ]
   },
   {
     files: ['**/*.ts', '**/*.tsx'],

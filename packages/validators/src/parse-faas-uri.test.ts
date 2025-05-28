@@ -15,14 +15,14 @@ function error(value: string) {
   expect(result).toBeUndefined()
 }
 
-test('username/project-name@deployment/servicePath success', () => {
+test('username/project-name@deployment/toolPath success', () => {
   success('username/foo-bar@01234567/foo')
   success('username/foo-bar@abc123lz/foo')
   success('username/foobar123-yo@01234567/foo_bar_BAR_901')
   success('username/foobar@01234567/foo/bar/123/456')
 })
 
-test('username/project-name@deployment/servicePath error', () => {
+test('username/project-name@deployment/toolPath error', () => {
   error('foo-bar@01234567/foo')
   error('%/foo-bar@01234567/foo')
   error('user/foo^bar@01234567/foo')
@@ -30,7 +30,7 @@ test('username/project-name@deployment/servicePath error', () => {
   error('username/Foo-Bar@01234567/foo')
 })
 
-test('username/project-name@version/servicePath success', () => {
+test('username/project-name@version/toolPath success', () => {
   success('username/foo-bar@latest/foo')
   success('username/foo-bar@dev/foo')
   success('username/foo-bar@1.0.0/foo')
@@ -38,7 +38,7 @@ test('username/project-name@version/servicePath success', () => {
   success('username/foobar123-yo@0.0.1/foo/bar/123-456')
 })
 
-test('username/project-name@version/servicePath error', () => {
+test('username/project-name@version/toolPath error', () => {
   error('foo_bar@latest/foo')
   error('username/foo-bar@1.0.0/foo@')
   error('username/foo-bar@/foo')
@@ -46,14 +46,14 @@ test('username/project-name@version/servicePath error', () => {
   error('username/fooBar123-yo@0.0.1/foo/bar/123-456')
 })
 
-test('username/project-name/servicePath success', () => {
+test('username/project-name/toolPath success', () => {
   success('u/foo-bar/foo')
   success('a/foo-bar/foo_123')
   success('foo/foobar123-yo/foo_bar_BAR_901')
   success('foo/foobar123-yo/foo/bar/123/456')
 })
 
-test('username/project-name/servicePath error', () => {
+test('username/project-name/toolPath error', () => {
   error('@/foo_bar/foo')
   error('foo-bar/foo\\/')
   error('user/_/foo')
