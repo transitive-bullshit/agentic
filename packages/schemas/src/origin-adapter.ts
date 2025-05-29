@@ -54,6 +54,9 @@ export const openapiOriginAdapterConfigSchema = commonOriginAdapterSchema.merge(
       )
   })
 )
+export type OpenAPIOriginAdapterConfig = z.infer<
+  typeof openapiOriginAdapterConfigSchema
+>
 
 export const mcpOriginAdapterConfigSchema = commonOriginAdapterSchema.merge(
   z.object({
@@ -63,6 +66,9 @@ export const mcpOriginAdapterConfigSchema = commonOriginAdapterSchema.merge(
     type: z.literal('mcp')
   })
 )
+export type MCPOriginAdapterConfig = z.infer<
+  typeof mcpOriginAdapterConfigSchema
+>
 
 export const rawOriginAdapterConfigSchema = commonOriginAdapterSchema.merge(
   z.object({
@@ -76,6 +82,9 @@ export const rawOriginAdapterConfigSchema = commonOriginAdapterSchema.merge(
     type: z.literal('raw')
   })
 )
+export type RawOriginAdapterConfig = z.infer<
+  typeof rawOriginAdapterConfigSchema
+>
 
 /**
  * Origin adapter is used to configure the origin API server downstream from
@@ -176,6 +185,7 @@ export const openapiOriginAdapterSchema = commonOriginAdapterSchema.merge(
       )
   })
 )
+export type OpenAPIOriginAdapter = z.infer<typeof openapiOriginAdapterSchema>
 
 export const mcpOriginAdapterSchema = commonOriginAdapterSchema.merge(
   z.object({
@@ -190,6 +200,7 @@ export const mcpOriginAdapterSchema = commonOriginAdapterSchema.merge(
     serverInfo: mcpServerInfoSchema
   })
 )
+export type MCPOriginAdapter = z.infer<typeof mcpOriginAdapterSchema>
 
 export const rawOriginAdapterSchema = commonOriginAdapterSchema.merge(
   z.object({
@@ -203,6 +214,7 @@ export const rawOriginAdapterSchema = commonOriginAdapterSchema.merge(
     type: z.literal('raw')
   })
 )
+export type RawOriginAdapter = z.infer<typeof rawOriginAdapterSchema>
 
 /**
  * Origin adapter is used to configure the origin API server downstream from

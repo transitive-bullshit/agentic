@@ -32,6 +32,9 @@ export function registerDebugCommand({ program, logger }: Context) {
         }
       )
 
+      // TODO: we may want to resolve the resulting agentic config so we see
+      // the inferred `tools` (and `toolToOperationMap` for mcp servers)
+
       logger.log(config)
     })
 

@@ -2,6 +2,7 @@ import {
   agenticProjectConfigSchema,
   type OriginAdapter,
   type PricingPlanList,
+  resolvedAgenticProjectConfigSchema,
   type Tool,
   type ToolConfig
 } from '@agentic/platform-schemas'
@@ -149,16 +150,16 @@ export const deploymentSelectSchema = createSelectSchema(deployments, {
       message: 'Invalid deployment hash'
     }),
 
-  version: agenticProjectConfigSchema.shape.version,
-  description: agenticProjectConfigSchema.shape.description,
-  readme: agenticProjectConfigSchema.shape.readme,
-  iconUrl: agenticProjectConfigSchema.shape.iconUrl,
-  sourceUrl: agenticProjectConfigSchema.shape.sourceUrl,
-  originAdapter: agenticProjectConfigSchema.shape.originAdapter,
-  pricingPlans: agenticProjectConfigSchema.shape.pricingPlans,
-  pricingIntervals: agenticProjectConfigSchema.shape.pricingIntervals,
-  tools: agenticProjectConfigSchema.shape.toolConfigs,
-  toolConfigs: agenticProjectConfigSchema.shape.toolConfigs
+  version: resolvedAgenticProjectConfigSchema.shape.version,
+  description: resolvedAgenticProjectConfigSchema.shape.description,
+  readme: resolvedAgenticProjectConfigSchema.shape.readme,
+  iconUrl: resolvedAgenticProjectConfigSchema.shape.iconUrl,
+  sourceUrl: resolvedAgenticProjectConfigSchema.shape.sourceUrl,
+  originAdapter: resolvedAgenticProjectConfigSchema.shape.originAdapter,
+  pricingPlans: resolvedAgenticProjectConfigSchema.shape.pricingPlans,
+  pricingIntervals: resolvedAgenticProjectConfigSchema.shape.pricingIntervals,
+  tools: resolvedAgenticProjectConfigSchema.shape.tools,
+  toolConfigs: resolvedAgenticProjectConfigSchema.shape.toolConfigs
 })
   .omit({
     originUrl: true

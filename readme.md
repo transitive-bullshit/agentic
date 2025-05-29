@@ -30,6 +30,7 @@
 - consider switching to [consola](https://github.com/unjs/consola) for logging?
 - consider switching to `bun` (for `--hot` reloading!!)
 - consider `projectName` and `projectSlug` or `projectIdentifier`?
+- not sure I like the duplication between client and server AgenticProjectConfig and ResolvedAgenticProjectConfig, especially for openapi and mcp processing
 
 ## License
 

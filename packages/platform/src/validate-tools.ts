@@ -2,9 +2,9 @@ import type { OriginAdapter, Tool, ToolConfig } from '@agentic/platform-schemas'
 import { assert } from '@agentic/platform-core'
 
 /**
- * Validates and normalizes the origin adapter config for a project.
+ * Validates the origin server's tools for a project.
  */
-export async function validateTools({
+export function validateTools({
   originAdapter,
   tools,
   toolConfigs,
@@ -14,8 +14,13 @@ export async function validateTools({
   tools: Tool[]
   toolConfigs: ToolConfig[]
   label: string
-}): Promise<void> {
-  assert(tools.length > 0, 400, `No tools defined for ${label}`)
+}) {
+  if (!tools.length) {
+    assert(
+      originAdapter.type === 'raw',
+      `No tools defined for ${label} with origin adapter type "${originAdapter.type}"`
+    )
+  }
 
   const toolsMap: Record<string, Tool> = {}
   for (const tool of tools) {
@@ -34,9 +39,5 @@ export async function validateTools({
       400,
       `Tool "${toolConfig.name}" from \`toolConfigs\` not found in \`tools\` for ${label}`
     )
-  }
-
-  if (originAdapter.type === 'openapi') {
-    // TODO
   }
 }

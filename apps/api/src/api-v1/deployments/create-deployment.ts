@@ -1,4 +1,4 @@
-import { validateAgenticProjectConfig } from '@agentic/platform'
+import { resolveAgenticProjectConfig } from '@agentic/platform'
 import { assert, parseZodSchema, sha256 } from '@agentic/platform-core'
 import { validators } from '@agentic/platform-validators'
 import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
@@ -111,9 +111,8 @@ export function registerV1DeploymentsCreateDeployment(
     // - origin API base URL
     // - origin adapter OpenAPI or MCP specs
     // - tool definitions
-    const agenticProjectConfig = await validateAgenticProjectConfig(body, {
+    const agenticProjectConfig = await resolveAgenticProjectConfig(body, {
       label: `deployment "${deploymentIdentifier}"`,
-      strip: true,
       logger
     })
 
