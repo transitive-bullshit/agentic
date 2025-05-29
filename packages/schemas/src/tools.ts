@@ -123,7 +123,7 @@ export const toolConfigSchema = z
      * @example
      * {
      *   "free": {
-     *     "disabled": true
+     *     "enabled": false
      *   }
      * }
      */
