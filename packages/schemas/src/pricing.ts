@@ -404,3 +404,15 @@ export type StripeSubscriptionItemIdMap = z.infer<
 //   })
 //   .openapi('Coupon')
 // export type Coupon = z.infer<typeof couponSchema>
+
+export const defaultFreePricingPlan = {
+  name: 'Free',
+  slug: 'free',
+  lineItems: [
+    {
+      slug: 'base',
+      usageType: 'licensed',
+      amount: 0
+    }
+  ]
+} as const satisfies Readonly<PricingPlan>

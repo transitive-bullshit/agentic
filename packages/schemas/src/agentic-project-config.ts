@@ -5,33 +5,18 @@ import {
   originAdapterSchema
 } from './origin-adapter'
 import {
+  defaultFreePricingPlan,
   pricingIntervalListSchema,
-  type PricingPlan,
   pricingPlanListSchema
 } from './pricing'
 import { toolConfigSchema, toolSchema } from './tools'
 
 // TODO:
-// - **service / tool definitions**
-//   - optional per-service config (PricingPlanServiceConfigMap)
 // - optional external auth provider config (google, github, twitter, etc)
-// - origin adapter openapi schema path, url, or in-place definition
 // - optional stripe webhooks
 // - optional response header config (custom headers, immutability for caching, etc)
 // - optional agentic version
 // - optional version
-
-export const defaultFreePricingPlan = {
-  name: 'Free',
-  slug: 'free',
-  lineItems: [
-    {
-      slug: 'base',
-      usageType: 'licensed',
-      amount: 0
-    }
-  ]
-} as const satisfies Readonly<PricingPlan>
 
 export const agenticProjectConfigSchema = z
   .object({

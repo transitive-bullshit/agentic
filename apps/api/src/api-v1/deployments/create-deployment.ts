@@ -108,7 +108,7 @@ export function registerV1DeploymentsCreateDeployment(
     // Validate project config, including:
     // - pricing plans
     // - origin adapter config
-    // - origin API base UrL
+    // - origin API base URL
     // - origin adapter OpenAPI or MCP specs
     // - tool definitions
     const agenticProjectConfig = await validateAgenticProjectConfig(body, {
@@ -121,7 +121,6 @@ export function registerV1DeploymentsCreateDeployment(
     let [deployment] = await db
       .insert(schema.deployments)
       .values({
-        ...body,
         ...agenticProjectConfig,
         identifier: deploymentIdentifier,
         hash,
