@@ -3,15 +3,43 @@
 exports[`rateLimitSchema invalid 1`] = `
 [ZodError: [
   {
-    "code": "too_small",
-    "minimum": 1,
-    "type": "string",
-    "inclusive": true,
-    "exact": false,
-    "message": "String must contain at least 1 character(s)",
+    "code": "invalid_union",
+    "unionErrors": [
+      {
+        "issues": [
+          {
+            "code": "invalid_type",
+            "expected": "number",
+            "received": "string",
+            "path": [
+              "interval"
+            ],
+            "message": "Expected number, received string"
+          }
+        ],
+        "name": "ZodError"
+      },
+      {
+        "issues": [
+          {
+            "code": "too_small",
+            "minimum": 1,
+            "type": "string",
+            "inclusive": true,
+            "exact": false,
+            "message": "String must contain at least 1 character(s)",
+            "path": [
+              "interval"
+            ]
+          }
+        ],
+        "name": "ZodError"
+      }
+    ],
     "path": [
       "interval"
-    ]
+    ],
+    "message": "Invalid input"
   }
 ]]
 `;
