@@ -19,9 +19,12 @@ export async function resolveDeployment({
   if (!deploymentIdentifier) {
     const config = await loadAgenticConfig({ cwd })
 
-    // TODO: team support
+    // TODO: re-add team support
     const auth = AuthStore.getAuth()
     const namespace = auth.user.username
+
+    // TODO: resolve deploymentIdentifier; config name may include namespace?
+    // TODO: rename parseFaasIdentifier; movingn away from FaaS terminology
 
     deploymentIdentifier = `${namespace}/${config.name}@${fuzzyDeploymentIdentifierVersion}`
   }

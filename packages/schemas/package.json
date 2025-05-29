@@ -27,6 +27,7 @@
     "@agentic/platform-openapi": "workspace:*",
     "@agentic/platform-validators": "workspace:*",
     "@hono/zod-openapi": "catalog:",
+    "@modelcontextprotocol/sdk": "catalog:",
     "ms": "catalog:",
     "semver": "catalog:",
     "zod": "catalog:"

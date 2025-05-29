@@ -2,7 +2,8 @@ import {
   agenticProjectConfigSchema,
   type OriginAdapter,
   type PricingPlanList,
-  type Tool
+  type Tool,
+  type ToolConfig
 } from '@agentic/platform-schemas'
 import { validators } from '@agentic/platform-validators'
 import { relations } from '@fisch0920/drizzle-orm'
@@ -74,23 +75,16 @@ export const deployments = pgTable(
         onDelete: 'cascade'
       }),
 
-    // TODO: Tool definitions
-    // tools: jsonb().$type<Tool[]>().default([]),
-
-    // TODO: metadata config (logo, keywords, examples, etc)
-    // TODO: webhooks
-    // TODO: third-party auth provider config
-    // NOTE: will need consumer.authProviders as well as user.authProviders for
-    // this because custom oauth credentials that are deployment-specific. will
-    // prolly also need to hash the individual AuthProviders in
-    // deployment.authProviders to compare across deployments.
-
+    // Tool definitions exposed by the origin server
     tools: jsonb().$type<Tool[]>().notNull(),
+
+    // Tool configs customize the behavior of tools for different pricing plans
+    toolConfigs: jsonb().$type<ToolConfig[]>().default([]).notNull(),
 
     // Origin API URL
     originUrl: text().notNull(),
 
-    // Origin API adapter config (openapi, mcp, hosted externally or internally, etc)
+    // Origin API adapter config (openapi, mcp, raw, hosting considerations, etc)
     originAdapter: jsonb().$type<OriginAdapter>().notNull(),
 
     // Array<PricingPlan>
@@ -99,7 +93,14 @@ export const deployments = pgTable(
     // Which pricing intervals are supported for subscriptions to this project
     pricingIntervals: pricingIntervalEnum().array().default(['month']).notNull()
 
-    // coupons: jsonb().$type<Coupon[]>().default([]).notNull()
+    // TODO: metadata config (logo, keywords, examples, etc)
+    // TODO: webhooks
+    // TODO: coupons
+    // TODO: third-party auth provider config
+    // NOTE: will need consumer.authProviders as well as user.authProviders for
+    // this because custom oauth credentials that are deployment-specific. will
+    // prolly also need to hash the individual AuthProviders in
+    // deployment.authProviders to compare across deployments.
   },
   (table) => [
     uniqueIndex('deployment_identifier_idx').on(table.identifier),
@@ -155,7 +156,9 @@ export const deploymentSelectSchema = createSelectSchema(deployments, {
   sourceUrl: agenticProjectConfigSchema.shape.sourceUrl,
   originAdapter: agenticProjectConfigSchema.shape.originAdapter,
   pricingPlans: agenticProjectConfigSchema.shape.pricingPlans,
-  pricingIntervals: agenticProjectConfigSchema.shape.pricingIntervals
+  pricingIntervals: agenticProjectConfigSchema.shape.pricingIntervals,
+  tools: agenticProjectConfigSchema.shape.toolConfigs,
+  toolConfigs: agenticProjectConfigSchema.shape.toolConfigs
 })
   .omit({
     originUrl: true

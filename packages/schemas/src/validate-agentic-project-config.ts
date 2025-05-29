@@ -7,7 +7,9 @@ import type { PricingPlanLineItem } from './pricing'
 import {
   type AgenticProjectConfig,
   type AgenticProjectConfigInput,
-  agenticProjectConfigSchema
+  agenticProjectConfigSchema,
+  type ResolvedAgenticProjectConfig,
+  resolvedAgenticProjectConfigSchema
 } from './agentic-project-config'
 import { getPricingPlansByInterval } from './utils'
 import { validateOriginAdapter } from './validate-origin-adapter'
@@ -18,7 +20,7 @@ export async function validateAgenticProjectConfig(
     strip = false,
     ...opts
   }: { logger?: Logger; cwd?: URL; strip?: boolean; label?: string } = {}
-): Promise<AgenticProjectConfig> {
+): Promise<ResolvedAgenticProjectConfig> {
   const config = parseZodSchema<
     AgenticProjectConfig,
     ZodTypeDef,
@@ -240,12 +242,18 @@ export async function validateAgenticProjectConfig(
     )
   }
 
-  await validateOriginAdapter({
+  const { originAdapter, tools } = await validateOriginAdapter({
+    name,
+    version: config.version,
     label: `project "${name}"`,
     ...opts,
     originUrl,
     originAdapter: config.originAdapter
   })
 
-  return config
+  return parseZodSchema(resolvedAgenticProjectConfigSchema, {
+    ...config,
+    originAdapter,
+    tools
+  })
 }

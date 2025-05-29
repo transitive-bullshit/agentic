@@ -1,5 +1,6 @@
 export * from './agentic-project-config'
 export * from './define-config'
+export * from './mcp'
 export * from './origin-adapter'
 export * from './pricing'
 export * from './rate-limit'

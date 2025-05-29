@@ -1,12 +1,15 @@
 import { z } from '@hono/zod-openapi'
 
-import { originAdapterSchema } from './origin-adapter'
+import {
+  originAdapterConfigSchema,
+  originAdapterSchema
+} from './origin-adapter'
 import {
   pricingIntervalListSchema,
   type PricingPlan,
   pricingPlanListSchema
 } from './pricing'
-import { toolConfigSchema } from './tools'
+import { toolConfigSchema, toolSchema } from './tools'
 
 // TODO:
 // - **service / tool definitions**
@@ -101,7 +104,7 @@ NOTE: Agentic currently only supports \`external\` API servers. If you'd like to
      * for how origin tools / services are defined: either as an OpenAPI spec,
      * an MCP server, or as a raw HTTP REST API.
      */
-    originAdapter: originAdapterSchema.optional().default({
+    originAdapter: originAdapterConfigSchema.optional().default({
       location: 'external',
       type: 'raw'
     }),
@@ -115,7 +118,7 @@ NOTE: Agentic currently only supports \`external\` API servers. If you'd like to
       .default([defaultFreePricingPlan]),
 
     /**
-     * Optional list of billing intervals to enable in the pricingPlans.
+     * Optional list of billing intervals to enable in pricing plans.
      *
      * Defaults to a single monthly interval `['month']`.
      *
@@ -163,7 +166,7 @@ To add support for annual pricing plans, for example, you can use: \`['month', '
      * `toolConfigs`, it will use the default behavior of the Agentic API
      * gateway.
      */
-    toolConfigs: z.array(toolConfigSchema).optional()
+    toolConfigs: z.array(toolConfigSchema).default([]).optional()
   })
   .strip()
 
@@ -171,3 +174,12 @@ export type AgenticProjectConfigInput = z.input<
   typeof agenticProjectConfigSchema
 >
 export type AgenticProjectConfig = z.output<typeof agenticProjectConfigSchema>
+
+export const resolvedAgenticProjectConfigSchema =
+  agenticProjectConfigSchema.extend({
+    originAdapter: originAdapterSchema,
+    tools: z.array(toolSchema).default([])
+  })
+export type ResolvedAgenticProjectConfig = z.output<
+  typeof resolvedAgenticProjectConfigSchema
+>
