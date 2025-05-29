@@ -30,6 +30,9 @@ catalogs:
     '@hono/zod-openapi':
       specifier: ^0.19.6
       version: 0.19.6
+    '@hono/zod-validator':
+      specifier: ^0.6.0
+      version: 0.6.0
     '@modelcontextprotocol/sdk':
       specifier: ^1.11.2
       version: 1.12.0
@@ -54,12 +57,18 @@ catalogs:
     '@types/semver':
       specifier: ^7.7.0
       version: 7.7.0
+    camelcase:
+      specifier: ^8.0.0
+      version: 8.0.0
     commander:
       specifier: ^14.0.0
       version: 14.0.0
     conf:
       specifier: ^13.1.0
       version: 13.1.0
+    decamelize:
+      specifier: ^6.0.0
+      version: 6.0.0
     del-cli:
       specifier: ^6.0.0
       version: 6.0.0
@@ -177,6 +186,9 @@ catalogs:
     vitest:
       specifier: ^3.1.4
       version: 3.1.4
+    wrangler:
+      specifier: ^4.16.1
+      version: 4.16.1
     zod:
       specifier: ^3.25.30
       version: 3.25.30
@@ -349,7 +361,7 @@ importers:
         specifier: workspace:*
         version: link:../../packages/validators
       '@hono/zod-validator':
-        specifier: ^0.6.0
+        specifier: 'catalog:'
         version: 0.6.0(hono@4.7.10)(zod@3.25.30)
       eventid:
         specifier: 'catalog:'
@@ -362,7 +374,7 @@ importers:
         version: 4.41.0
     devDependencies:
       wrangler:
-        specifier: ^4.16.1
+        specifier: 'catalog:'
         version: 4.16.1
 
   packages/api-client:
@@ -488,10 +500,10 @@ importers:
         specifier: 'catalog:'
         version: 1.34.3(supports-color@10.0.0)
       camelcase:
-        specifier: ^8.0.0
+        specifier: 'catalog:'
         version: 8.0.0
       decamelize:
-        specifier: ^6.0.0
+        specifier: 'catalog:'
         version: 6.0.0
     devDependencies:
       '@hono/node-server':

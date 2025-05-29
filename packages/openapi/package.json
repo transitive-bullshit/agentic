@@ -26,8 +26,8 @@
     "@agentic/platform-core": "workspace:*",
     "@agentic/platform-schemas": "workspace:*",
     "@redocly/openapi-core": "catalog:",
-    "camelcase": "^8.0.0",
-    "decamelize": "^6.0.0"
+    "camelcase": "catalog:",
+    "decamelize": "catalog:"
   },
   "publishConfig": {
     "access": "public"
