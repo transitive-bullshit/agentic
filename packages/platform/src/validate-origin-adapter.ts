@@ -4,7 +4,10 @@ import type {
   Tool
 } from '@agentic/platform-schemas'
 import { assert, type Logger } from '@agentic/platform-core'
-import { validateOpenAPISpec } from '@agentic/platform-openapi'
+import {
+  getToolsFromOpenAPISpec,
+  validateOpenAPISpec
+} from '@agentic/platform-openapi'
 import { Client as McpClient } from '@modelcontextprotocol/sdk/client/index.js'
 
 /**
@@ -57,11 +60,25 @@ export async function validateOriginAdapter({
 
     // TODO: Extract tool definitions from OpenAPI operationIds
 
+    const dereferencedOpenAPISpec = await validateOpenAPISpec(
+      originAdapter.spec,
+      {
+        cwd,
+        dereference: true
+      }
+    )
+
+    const { tools, toolToOperationMap } = await getToolsFromOpenAPISpec(
+      dereferencedOpenAPISpec
+    )
+
     return {
+      tools,
       originAdapter: {
         ...originAdapter,
         // Update the openapi spec with the normalized version
-        spec: JSON.stringify(openapiSpec)
+        spec: JSON.stringify(openapiSpec),
+        toolToOperationMap
       }
     }
   } else if (originAdapter.type === 'mcp') {

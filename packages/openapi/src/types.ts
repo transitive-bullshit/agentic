@@ -624,3 +624,19 @@ export type SecurityRequirementObject = {
 }
 
 export type $defs = Record<string, SchemaObject>
+
+type Deref<T> =
+  // 1. Remove any direct ReferenceObject
+  T extends ReferenceObject
+    ? never
+    : // 2. Recurse into arrays/tuples
+      T extends readonly (infer U)[]
+      ? readonly Deref<U>[]
+      : // 3. Recurse into object properties
+        T extends object
+        ? { [K in keyof T]: Deref<T[K]> }
+        : // 4. Primitives, functions, etc. stay unchanged
+          T
+
+/** LooseOpenAPI3Spec with every `$ref` wiped out */
+export type DereferencedLooseOpenAPI3Spec = Deref<LooseOpenAPI3Spec>

@@ -1,17 +1,17 @@
 import type { ZodTypeDef } from 'zod'
 import { assert, type Logger, parseZodSchema } from '@agentic/platform-core'
-import { validators } from '@agentic/platform-validators'
-import { clean as cleanSemver, valid as isValidSemver } from 'semver'
-
-import type { PricingPlanLineItem } from './pricing'
 import {
   type AgenticProjectConfig,
   type AgenticProjectConfigInput,
   agenticProjectConfigSchema,
+  getPricingPlansByInterval,
+  type PricingPlanLineItem,
   type ResolvedAgenticProjectConfig,
   resolvedAgenticProjectConfigSchema
-} from './agentic-project-config'
-import { getPricingPlansByInterval } from './utils'
+} from '@agentic/platform-schemas'
+import { validators } from '@agentic/platform-validators'
+import { clean as cleanSemver, valid as isValidSemver } from 'semver'
+
 import { validateOriginAdapter } from './validate-origin-adapter'
 
 export async function validateAgenticProjectConfig(

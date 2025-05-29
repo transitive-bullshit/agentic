@@ -1,7 +1,5 @@
-import {
-  type AgenticProjectConfig,
-  validateAgenticProjectConfig
-} from '@agentic/platform-schemas'
+import type { AgenticProjectConfig } from '@agentic/platform-schemas'
+import { validateAgenticProjectConfig } from '@agentic/platform'
 import { loadConfig } from 'unconfig'
 
 export async function loadAgenticConfig({

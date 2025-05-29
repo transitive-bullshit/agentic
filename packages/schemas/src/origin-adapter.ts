@@ -1,6 +1,7 @@
 import { z } from '@hono/zod-openapi'
 
 import { mcpServerInfoSchema } from './mcp'
+import { toolNameSchema } from './tools'
 
 export const originAdapterLocationSchema = z.literal('external')
 // z.union([
@@ -103,6 +104,43 @@ NOTE: Agentic currently only supports \`external\` API servers. If you'd like to
   .openapi('OriginAdapterConfig')
 export type OriginAdapterConfig = z.infer<typeof originAdapterConfigSchema>
 
+export const openapiOperationParameterSourceSchema = z.union([
+  z.literal('query'),
+  z.literal('header'),
+  z.literal('path'),
+  z.literal('cookie'),
+  z.literal('body'),
+  z.literal('formData')
+])
+export type OpenAPIOperationParameterSource = z.infer<
+  typeof openapiOperationParameterSourceSchema
+>
+
+export const openapiOperationHttpMethodSchema = z.union([
+  z.literal('get'),
+  z.literal('put'),
+  z.literal('post'),
+  z.literal('delete'),
+  z.literal('patch'),
+  z.literal('trace')
+])
+export type OpenAPIOperationHttpMethod = z.infer<
+  typeof openapiOperationHttpMethodSchema
+>
+
+export const openapiToolOperationSchema = z.object({
+  operationId: z.string().describe('OpenAPI operationId for the tool'),
+  method: openapiOperationHttpMethodSchema.describe('HTTP method'),
+  path: z.string().describe('HTTP path template'),
+  parameterSources: z
+    .record(z.string(), openapiOperationParameterSourceSchema)
+    .describe(
+      'Mapping from parameter name to HTTP source (query, path, JSON body, etc).'
+    ),
+  tags: z.array(z.string()).optional()
+})
+export type OpenAPIToolOperation = z.infer<typeof openapiToolOperationSchema>
+
 export const openapiOriginAdapterSchema = commonOriginAdapterSchema.merge(
   z.object({
     /**
@@ -121,11 +159,21 @@ export const openapiOriginAdapterSchema = commonOriginAdapterSchema.merge(
       .string()
       .describe(
         'JSON stringified OpenAPI spec describing the origin API server.'
-      )
+      ),
 
-    // TODO: Mapping from tool names to OpenAPI operations, with all the info
-    // the Agentic API gateway needs to know at runtime (HTTP method, path,
-    // params, etc).
+    /**
+     * Mapping from tool name to OpenAPI Operation info.
+     *
+     * This is used by the Agentic API gateway to route tools to the correct
+     * origin API operation, along with the HTTP method, path, params, etc.
+     *
+     * @internal
+     */
+    toolToOperationMap: z
+      .record(toolNameSchema, openapiToolOperationSchema)
+      .describe(
+        'Mapping from tool name to OpenAPI Operation info. This is used by the Agentic API gateway to route tools to the correct origin API operation, along with the HTTP method, path, params, etc.'
+      )
   })
 )
 

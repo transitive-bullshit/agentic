@@ -28,6 +28,7 @@
     "test:typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@agentic/platform": "workspace:*",
     "@agentic/platform-api-client": "workspace:*",
     "@agentic/platform-core": "workspace:*",
     "@agentic/platform-schemas": "workspace:*",

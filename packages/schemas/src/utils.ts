@@ -1,4 +1,8 @@
-import type { PricingInterval, PricingPlan, PricingPlanList } from './pricing'
+import type {
+  PricingInterval,
+  PricingPlan,
+  PricingPlanList
+} from '@agentic/platform-schemas'
 
 export function getPricingPlansByInterval({
   pricingInterval,

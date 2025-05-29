@@ -2,7 +2,6 @@
 
 exports[`validateOpenAPISpec > basic.json (file url) 1`] = `
 {
-  "components": {},
   "info": {
     "title": "OpenAPI Basic Test Fixture",
     "version": "0.1.0",
@@ -47,7 +46,6 @@ exports[`validateOpenAPISpec > basic.json (file url) 1`] = `
 
 exports[`validateOpenAPISpec > basic.json (http url) 1`] = `
 {
-  "components": {},
   "info": {
     "title": "OpenAPI Basic Test Fixture",
     "version": "0.1.0",
@@ -92,7 +90,6 @@ exports[`validateOpenAPISpec > basic.json (http url) 1`] = `
 
 exports[`validateOpenAPISpec > basic.json (string) 1`] = `
 {
-  "components": {},
   "info": {
     "title": "OpenAPI Basic Test Fixture",
     "version": "0.1.0",

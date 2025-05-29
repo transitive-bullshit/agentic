@@ -12,7 +12,7 @@ import {
   Source
 } from '@redocly/openapi-core'
 
-import type { LooseOpenAPI3Spec } from './types'
+import type { DereferencedLooseOpenAPI3Spec, LooseOpenAPI3Spec } from './types'
 import { getDefaultRedoclyConfig } from './redocly-config'
 
 interface ParseSchemaOptions {
@@ -27,20 +27,26 @@ interface ParseSchemaOptions {
  *
  * Adapted from https://github.com/openapi-ts/openapi-typescript/blob/main/packages/openapi-typescript/src/lib/redoc.ts
  */
-export async function validateOpenAPISpec(
+export async function validateOpenAPISpec<
+  TDereference extends boolean | undefined
+>(
   source: string | URL | Buffer | Record<string, unknown>,
   {
     cwd,
     redoclyConfig,
-    logger = console,
-    silent = false
+    logger,
+    silent = false,
+    dereference = false
   }: {
     cwd?: URL
     redoclyConfig?: RedoclyConfig
     logger?: Logger
     silent?: boolean
+    dereference?: TDereference
   } = {}
-): Promise<LooseOpenAPI3Spec> {
+): Promise<
+  TDereference extends true ? DereferencedLooseOpenAPI3Spec : LooseOpenAPI3Spec
+> {
   if (!redoclyConfig) {
     redoclyConfig = await getDefaultRedoclyConfig()
   }
@@ -95,9 +101,11 @@ export async function validateOpenAPISpec(
   _processProblems(problems, { silent, logger })
 
   const bundled = await bundle({
+    doc: document,
     config: redoclyConfig,
-    dereference: false,
-    doc: document
+    dereference,
+    removeUnusedComponents: true,
+    externalRefResolver: resolver
   })
   _processProblems(bundled.problems, { silent, logger })
 
@@ -195,7 +203,7 @@ function _processProblems(
     logger,
     silent
   }: {
-    logger: Logger
+    logger?: Logger
     silent: boolean
   }
 ) {
@@ -210,9 +218,9 @@ function _processProblems(
 
       if (problem.severity === 'error') {
         errorMessage = problemMessage
-        logger.error('openapi spec error', problemMessage)
+        logger?.error('openapi spec error', problemMessage)
       } else if (!silent) {
-        logger.warn('openapi spec warning', problemMessage)
+        logger?.warn('openapi spec warning', problemMessage)
       }
     }
 

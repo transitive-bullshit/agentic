@@ -24,6 +24,7 @@
     "test:unit": "vitest run"
   },
   "dependencies": {
+    "@agentic/platform": "workspace:*",
     "@agentic/platform-api-client": "workspace:*",
     "@agentic/platform-core": "workspace:*",
     "@agentic/platform-schemas": "workspace:*",

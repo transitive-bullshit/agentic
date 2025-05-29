@@ -134,10 +134,7 @@ export const toolConfigSchema = z
         'Map of PricingPlan slug to tool config overrides for a given plan. This is useful to customize tool behavior or disable tools completely on different pricing plans.'
       )
 
-    // TODO: mapping from OpenAPI operationId to tools
     // TODO?
-    // name
-    // path, httpMethod
     // examples
     // headers
   })

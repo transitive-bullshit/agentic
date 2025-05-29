@@ -1,10 +1,9 @@
 import { parseZodSchema } from '@agentic/platform-core'
-
 import {
   type AgenticProjectConfig,
   type AgenticProjectConfigInput,
   agenticProjectConfigSchema
-} from './agentic-project-config'
+} from '@agentic/platform-schemas'
 
 /**
  * This method allows Agentic projects to define their configs in a type-safe

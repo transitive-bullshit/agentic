@@ -25,6 +25,6 @@
     "test:typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@agentic/platform-schemas": "workspace:*"
+    "@agentic/platform": "workspace:*"
   }
 }

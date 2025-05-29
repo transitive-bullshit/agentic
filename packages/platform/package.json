@@ -1,13 +1,13 @@
 {
-  "name": "@agentic/platform-openapi",
+  "name": "@agentic/platform",
   "version": "0.0.1",
-  "description": "OpenAPI utilities used by the Agentic platform.",
+  "description": "Public SDK for developers building on top of the Agentic platform.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "UNLICENSED",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/transitive-bullshit/agentic-platform.git",
-    "directory": "packages/schemas"
+    "directory": "packages/platform"
   },
   "type": "module",
   "source": "./src/index.ts",
@@ -24,16 +24,20 @@
   },
   "dependencies": {
     "@agentic/platform-core": "workspace:*",
+    "@agentic/platform-openapi": "workspace:*",
     "@agentic/platform-schemas": "workspace:*",
-    "@redocly/openapi-core": "catalog:",
-    "camelcase": "^8.0.0",
-    "decamelize": "^6.0.0"
+    "@agentic/platform-validators": "workspace:*",
+    "@hono/zod-openapi": "catalog:",
+    "@modelcontextprotocol/sdk": "catalog:",
+    "semver": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@types/semver": "catalog:",
+    "restore-cursor": "catalog:",
+    "zod-to-json-schema": "catalog:"
   },
   "publishConfig": {
     "access": "public"
-  },
-  "devDependencies": {
-    "@hono/node-server": "catalog:",
-    "hono": "catalog:"
   }
 }

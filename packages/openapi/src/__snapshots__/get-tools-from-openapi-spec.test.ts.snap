@@ -1,0 +1,1937 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`getToolsFromOpenAPISpec > basic.json 1`] = `
+{
+  "toolToOperationMap": {
+    "echo": {
+      "method": "get",
+      "operationId": "echo",
+      "parameterSources": {
+        "name": "query",
+      },
+      "path": "/",
+      "tags": undefined,
+    },
+  },
+  "tools": [
+    {
+      "description": "Echo",
+      "inputSchema": {
+        "properties": {},
+        "required": [],
+        "type": "object",
+      },
+      "name": "echo",
+      "outputSchema": undefined,
+    },
+  ],
+}
+`;
+
+exports[`getToolsFromOpenAPISpec > firecrawl.json 1`] = `
+{
+  "toolToOperationMap": {
+    "cancel_crawl_job": {
+      "method": "delete",
+      "operationId": "cancelCrawlJob",
+      "parameterSources": {
+        "jobId": "path",
+      },
+      "path": "/crawl/cancel/{jobId}",
+      "tags": [
+        "Crawl",
+      ],
+    },
+    "crawl_urls": {
+      "method": "post",
+      "operationId": "crawlUrls",
+      "parameterSources": {
+        "crawlerOptions": "body",
+        "pageOptions": "body",
+        "url": "body",
+      },
+      "path": "/crawl",
+      "tags": [
+        "Crawling",
+      ],
+    },
+    "get_crawl_status": {
+      "method": "get",
+      "operationId": "getCrawlStatus",
+      "parameterSources": {
+        "jobId": "path",
+      },
+      "path": "/crawl/status/{jobId}",
+      "tags": [
+        "Crawl",
+      ],
+    },
+    "scrape": {
+      "method": "post",
+      "operationId": "scrape",
+      "parameterSources": {
+        "excludeTags": "body",
+        "formats": "body",
+        "headers": "body",
+        "includeTags": "body",
+        "onlyMainContent": "body",
+        "timeout": "body",
+        "url": "body",
+        "waitFor": "body",
+      },
+      "path": "/scrape",
+      "tags": [
+        "Scraping",
+      ],
+    },
+    "search_google": {
+      "method": "post",
+      "operationId": "searchGoogle",
+      "parameterSources": {
+        "pageOptions": "body",
+        "query": "body",
+        "searchOptions": "body",
+      },
+      "path": "/search",
+      "tags": [
+        "Search",
+      ],
+    },
+  },
+  "tools": [
+    {
+      "description": "Scrape a single URL",
+      "inputSchema": {
+        "properties": {
+          "excludeTags": {
+            "description": "Tags, classes and ids to remove from the page. Use comma separated values. Example: 'script, .ad, #footer'",
+            "items": {
+              "type": "string",
+            },
+            "type": "array",
+          },
+          "formats": {
+            "default": [
+              "markdown",
+            ],
+            "description": "Specific formats to return.
+
+ - markdown: The page in Markdown format.
+ - html: The page's HTML, trimmed to include only meaningful content.
+ - rawHtml: The page's original HTML.
+ - links: The links on the page.
+ - screenshot: A screenshot of the top of the page.
+ - screenshot@fullPage: A screenshot of the full page. (overridden by screenshot if present)",
+            "items": {
+              "enum": [
+                "markdown",
+                "html",
+                "rawHtml",
+                "links",
+                "screenshot",
+                "screenshot@fullPage",
+              ],
+              "type": "string",
+            },
+            "type": "array",
+          },
+          "headers": {
+            "description": "Headers to send with the request. Can be used to send cookies, user-agent, etc.",
+            "type": "object",
+          },
+          "includeTags": {
+            "description": "Only include tags, classes and ids from the page in the final output. Use comma separated values. Example: 'script, .ad, #footer'",
+            "items": {
+              "type": "string",
+            },
+            "type": "array",
+          },
+          "onlyMainContent": {
+            "default": true,
+            "description": "Only return the main content of the page excluding headers, navs, footers, etc.",
+            "type": "boolean",
+          },
+          "timeout": {
+            "default": 30000,
+            "description": "Timeout in milliseconds for the request",
+            "type": "integer",
+          },
+          "url": {
+            "description": "The URL to scrape",
+            "format": "uri",
+            "type": "string",
+          },
+          "waitFor": {
+            "default": 0,
+            "description": "Wait x amount of milliseconds for the page to load to fetch content",
+            "type": "integer",
+          },
+        },
+        "required": [
+          "url",
+        ],
+        "type": "object",
+      },
+      "name": "scrape",
+      "outputSchema": {
+        "properties": {
+          "data": {
+            "properties": {
+              "html": {
+                "description": "HTML version of the content on page if the \`html\` format was specified",
+                "nullable": true,
+                "type": "string",
+              },
+              "links": {
+                "description": "Links on the page if the \`links\` format was specified",
+                "items": {
+                  "format": "uri",
+                  "type": "string",
+                },
+                "nullable": true,
+                "type": "array",
+              },
+              "markdown": {
+                "description": "Markdown content of the page if the \`markdown\` format was specified (default)",
+                "nullable": true,
+                "type": "string",
+              },
+              "metadata": {
+                "properties": {
+                  "<any other metadata> ": {
+                    "type": "string",
+                  },
+                  "description": {
+                    "type": "string",
+                  },
+                  "error": {
+                    "description": "The error message of the page",
+                    "nullable": true,
+                    "type": "string",
+                  },
+                  "language": {
+                    "nullable": true,
+                    "type": "string",
+                  },
+                  "sourceURL": {
+                    "format": "uri",
+                    "type": "string",
+                  },
+                  "statusCode": {
+                    "description": "The status code of the page",
+                    "type": "integer",
+                  },
+                  "title": {
+                    "type": "string",
+                  },
+                },
+                "type": "object",
+              },
+              "rawHtml": {
+                "description": "Raw HTML content of the page if the \`rawHtml\` format was specified",
+                "nullable": true,
+                "type": "string",
+              },
+              "screenshot": {
+                "description": "URL of the screenshot of the page if the \`screenshot\` or \`screenshot@fullSize\` format was specified",
+                "nullable": true,
+                "type": "string",
+              },
+            },
+            "type": "object",
+          },
+          "success": {
+            "type": "boolean",
+          },
+          "warning": {
+            "description": "Warning message to let you know of any issues.",
+            "nullable": true,
+            "type": "string",
+          },
+        },
+        "type": "object",
+      },
+    },
+    {
+      "description": "Crawl multiple URLs based on options",
+      "inputSchema": {
+        "properties": {
+          "crawlerOptions": {
+            "properties": {
+              "allowBackwardCrawling": {
+                "default": false,
+                "description": "Enables the crawler to navigate from a specific URL to previously linked pages. For instance, from 'example.com/product/123' back to 'example.com/product'",
+                "type": "boolean",
+              },
+              "allowExternalContentLinks": {
+                "default": false,
+                "description": "Allows the crawler to follow links to external websites.",
+                "type": "boolean",
+              },
+              "excludes": {
+                "description": "URL patterns to exclude",
+                "items": {
+                  "type": "string",
+                },
+                "type": "array",
+              },
+              "generateImgAltText": {
+                "default": false,
+                "description": "Generate alt text for images using LLMs (must have a paid plan)",
+                "type": "boolean",
+              },
+              "ignoreSitemap": {
+                "default": false,
+                "description": "Ignore the website sitemap when crawling",
+                "type": "boolean",
+              },
+              "includes": {
+                "description": "URL patterns to include",
+                "items": {
+                  "type": "string",
+                },
+                "type": "array",
+              },
+              "limit": {
+                "default": 10000,
+                "description": "Maximum number of pages to crawl",
+                "type": "integer",
+              },
+              "maxDepth": {
+                "description": "Maximum depth to crawl relative to the entered URL. A maxDepth of 0 scrapes only the entered URL. A maxDepth of 1 scrapes the entered URL and all pages one level deep. A maxDepth of 2 scrapes the entered URL and all pages up to two levels deep. Higher values follow the same pattern.",
+                "type": "integer",
+              },
+              "mode": {
+                "default": "default",
+                "description": "The crawling mode to use. Fast mode crawls 4x faster websites without sitemap, but may not be as accurate and shouldn't be used in heavy js-rendered websites.",
+                "enum": [
+                  "default",
+                  "fast",
+                ],
+                "type": "string",
+              },
+              "returnOnlyUrls": {
+                "default": false,
+                "description": "If true, returns only the URLs as a list on the crawl status. Attention: the return response will be a list of URLs inside the data, not a list of documents.",
+                "type": "boolean",
+              },
+            },
+            "type": "object",
+          },
+          "pageOptions": {
+            "properties": {
+              "fullPageScreenshot": {
+                "default": false,
+                "description": "Include a full page screenshot of the page that you are scraping.",
+                "type": "boolean",
+              },
+              "headers": {
+                "description": "Headers to send with the request. Can be used to send cookies, user-agent, etc.",
+                "type": "object",
+              },
+              "includeHtml": {
+                "default": false,
+                "description": "Include the HTML version of the content on page. Will output a html key in the response.",
+                "type": "boolean",
+              },
+              "includeRawHtml": {
+                "default": false,
+                "description": "Include the raw HTML content of the page. Will output a rawHtml key in the response.",
+                "type": "boolean",
+              },
+              "onlyIncludeTags": {
+                "description": "Only include tags, classes and ids from the page in the final output. Use comma separated values. Example: 'script, .ad, #footer'",
+                "items": {
+                  "type": "string",
+                },
+                "type": "array",
+              },
+              "onlyMainContent": {
+                "default": false,
+                "description": "Only return the main content of the page excluding headers, navs, footers, etc.",
+                "type": "boolean",
+              },
+              "removeTags": {
+                "description": "Tags, classes and ids to remove from the page. Use comma separated values. Example: 'script, .ad, #footer'",
+                "items": {
+                  "type": "string",
+                },
+                "type": "array",
+              },
+              "replaceAllPathsWithAbsolutePaths": {
+                "default": false,
+                "description": "Replace all relative paths with absolute paths for images and links",
+                "type": "boolean",
+              },
+              "screenshot": {
+                "default": false,
+                "description": "Include a screenshot of the top of the page that you are scraping.",
+                "type": "boolean",
+              },
+              "waitFor": {
+                "default": 0,
+                "description": "Wait x amount of milliseconds for the page to load to fetch content",
+                "type": "integer",
+              },
+            },
+            "type": "object",
+          },
+          "url": {
+            "description": "The base URL to start crawling from",
+            "format": "uri",
+            "type": "string",
+          },
+        },
+        "required": [
+          "url",
+        ],
+        "type": "object",
+      },
+      "name": "crawl_urls",
+      "outputSchema": {
+        "properties": {
+          "id": {
+            "type": "string",
+          },
+          "success": {
+            "type": "boolean",
+          },
+          "url": {
+            "format": "uri",
+            "type": "string",
+          },
+        },
+        "type": "object",
+      },
+    },
+    {
+      "description": "Search for a keyword in Google, returns top page results with markdown content for each page",
+      "inputSchema": {
+        "properties": {
+          "pageOptions": {
+            "properties": {
+              "fetchPageContent": {
+                "default": true,
+                "description": "Fetch the content of each page. If false, defaults to a basic fast serp API.",
+                "type": "boolean",
+              },
+              "includeHtml": {
+                "default": false,
+                "description": "Include the HTML version of the content on page. Will output a html key in the response.",
+                "type": "boolean",
+              },
+              "includeRawHtml": {
+                "default": false,
+                "description": "Include the raw HTML content of the page. Will output a rawHtml key in the response.",
+                "type": "boolean",
+              },
+              "onlyMainContent": {
+                "default": false,
+                "description": "Only return the main content of the page excluding headers, navs, footers, etc.",
+                "type": "boolean",
+              },
+            },
+            "type": "object",
+          },
+          "query": {
+            "description": "The query to search for",
+            "format": "uri",
+            "type": "string",
+          },
+          "searchOptions": {
+            "properties": {
+              "limit": {
+                "description": "Maximum number of results. Max is 20 during beta.",
+                "type": "integer",
+              },
+            },
+            "type": "object",
+          },
+        },
+        "required": [
+          "query",
+        ],
+        "type": "object",
+      },
+      "name": "search_google",
+      "outputSchema": {
+        "properties": {
+          "data": {
+            "items": {
+              "html": {
+                "description": "HTML version of the content on page if the \`html\` format was specified",
+                "nullable": true,
+                "type": "string",
+              },
+              "links": {
+                "description": "Links on the page if the \`links\` format was specified",
+                "items": {
+                  "format": "uri",
+                  "type": "string",
+                },
+                "nullable": true,
+                "type": "array",
+              },
+              "markdown": {
+                "description": "Markdown content of the page if the \`markdown\` format was specified (default)",
+                "nullable": true,
+                "type": "string",
+              },
+              "metadata": {
+                "properties": {
+                  "<any other metadata> ": {
+                    "type": "string",
+                  },
+                  "description": {
+                    "type": "string",
+                  },
+                  "error": {
+                    "description": "The error message of the page",
+                    "nullable": true,
+                    "type": "string",
+                  },
+                  "language": {
+                    "nullable": true,
+                    "type": "string",
+                  },
+                  "sourceURL": {
+                    "format": "uri",
+                    "type": "string",
+                  },
+                  "statusCode": {
+                    "description": "The status code of the page",
+                    "type": "integer",
+                  },
+                  "title": {
+                    "type": "string",
+                  },
+                },
+                "type": "object",
+              },
+              "rawHtml": {
+                "description": "Raw HTML content of the page if the \`rawHtml\` format was specified",
+                "nullable": true,
+                "type": "string",
+              },
+              "screenshot": {
+                "description": "URL of the screenshot of the page if the \`screenshot\` or \`screenshot@fullSize\` format was specified",
+                "nullable": true,
+                "type": "string",
+              },
+            },
+            "type": "array",
+          },
+          "success": {
+            "type": "boolean",
+          },
+        },
+        "type": "object",
+      },
+    },
+    {
+      "description": "Get the status of a crawl job",
+      "inputSchema": {
+        "properties": {},
+        "required": [],
+        "type": "object",
+      },
+      "name": "get_crawl_status",
+      "outputSchema": {
+        "properties": {
+          "current": {
+            "description": "Current page number",
+            "type": "integer",
+          },
+          "data": {
+            "description": "Data returned from the job (null when it is in progress)",
+            "items": {
+              "properties": {
+                "html": {
+                  "description": "HTML version of the content on page if the \`html\` format was specified",
+                  "nullable": true,
+                  "type": "string",
+                },
+                "links": {
+                  "description": "Links on the page if the \`links\` format was specified",
+                  "items": {
+                    "format": "uri",
+                    "type": "string",
+                  },
+                  "nullable": true,
+                  "type": "array",
+                },
+                "markdown": {
+                  "description": "Markdown content of the page if the \`markdown\` format was specified (default)",
+                  "nullable": true,
+                  "type": "string",
+                },
+                "metadata": {
+                  "properties": {
+                    "<any other metadata> ": {
+                      "type": "string",
+                    },
+                    "description": {
+                      "type": "string",
+                    },
+                    "error": {
+                      "description": "The error message of the page",
+                      "nullable": true,
+                      "type": "string",
+                    },
+                    "language": {
+                      "nullable": true,
+                      "type": "string",
+                    },
+                    "sourceURL": {
+                      "format": "uri",
+                      "type": "string",
+                    },
+                    "statusCode": {
+                      "description": "The status code of the page",
+                      "type": "integer",
+                    },
+                    "title": {
+                      "type": "string",
+                    },
+                  },
+                  "type": "object",
+                },
+                "rawHtml": {
+                  "description": "Raw HTML content of the page if the \`rawHtml\` format was specified",
+                  "nullable": true,
+                  "type": "string",
+                },
+                "screenshot": {
+                  "description": "URL of the screenshot of the page if the \`screenshot\` or \`screenshot@fullSize\` format was specified",
+                  "nullable": true,
+                  "type": "string",
+                },
+              },
+              "type": "object",
+            },
+            "type": "array",
+          },
+          "partial_data": {
+            "description": "Partial documents returned as it is being crawled (streaming). **This feature is currently in alpha - expect breaking changes** When a page is ready, it will append to the partial_data array, so there is no need to wait for the entire website to be crawled. When the crawl is done, partial_data will become empty and the result will be available in \`data\`. There is a max of 50 items in the array response. The oldest item (top of the array) will be removed when the new item is added to the array.",
+            "items": {
+              "properties": {
+                "html": {
+                  "description": "HTML version of the content on page if the \`html\` format was specified",
+                  "nullable": true,
+                  "type": "string",
+                },
+                "links": {
+                  "description": "Links on the page if the \`links\` format was specified",
+                  "items": {
+                    "format": "uri",
+                    "type": "string",
+                  },
+                  "nullable": true,
+                  "type": "array",
+                },
+                "markdown": {
+                  "description": "Markdown content of the page if the \`markdown\` format was specified (default)",
+                  "nullable": true,
+                  "type": "string",
+                },
+                "metadata": {
+                  "properties": {
+                    "<any other metadata> ": {
+                      "type": "string",
+                    },
+                    "description": {
+                      "type": "string",
+                    },
+                    "error": {
+                      "description": "The error message of the page",
+                      "nullable": true,
+                      "type": "string",
+                    },
+                    "language": {
+                      "nullable": true,
+                      "type": "string",
+                    },
+                    "sourceURL": {
+                      "format": "uri",
+                      "type": "string",
+                    },
+                    "statusCode": {
+                      "description": "The status code of the page",
+                      "type": "integer",
+                    },
+                    "title": {
+                      "type": "string",
+                    },
+                  },
+                  "type": "object",
+                },
+                "rawHtml": {
+                  "description": "Raw HTML content of the page if the \`rawHtml\` format was specified",
+                  "nullable": true,
+                  "type": "string",
+                },
+                "screenshot": {
+                  "description": "URL of the screenshot of the page if the \`screenshot\` or \`screenshot@fullSize\` format was specified",
+                  "nullable": true,
+                  "type": "string",
+                },
+              },
+              "type": "object",
+            },
+            "type": "array",
+          },
+          "status": {
+            "description": "Status of the job (completed, active, failed, paused)",
+            "type": "string",
+          },
+          "total": {
+            "description": "Total number of pages",
+            "type": "integer",
+          },
+        },
+        "type": "object",
+      },
+    },
+    {
+      "description": "Cancel a crawl job",
+      "inputSchema": {
+        "properties": {},
+        "required": [],
+        "type": "object",
+      },
+      "name": "cancel_crawl_job",
+      "outputSchema": {
+        "properties": {
+          "status": {
+            "description": "Returns cancelled.",
+            "type": "string",
+          },
+        },
+        "type": "object",
+      },
+    },
+  ],
+}
+`;
+
+exports[`getToolsFromOpenAPISpec > mixed.json 1`] = `
+{
+  "toolToOperationMap": {
+    "echo": {
+      "method": "get",
+      "operationId": "echo",
+      "parameterSources": {
+        "id": "path",
+        "name": "query",
+        "x-custom-header": "header",
+      },
+      "path": "/echo/{id}",
+      "tags": undefined,
+    },
+  },
+  "tools": [
+    {
+      "description": "Echo",
+      "inputSchema": {
+        "properties": {
+          "id": {
+            "title": "id",
+            "type": "string",
+          },
+        },
+        "required": [
+          "id",
+        ],
+        "type": "object",
+      },
+      "name": "echo",
+      "outputSchema": undefined,
+    },
+  ],
+}
+`;
+
+exports[`getToolsFromOpenAPISpec > open-meteo.yaml 1`] = `
+{
+  "toolToOperationMap": {
+    "get_v1_forecast": {
+      "method": "get",
+      "operationId": "get_v1_forecast",
+      "parameterSources": {
+        "current_weather": "query",
+        "daily": "query",
+        "hourly": "query",
+        "latitude": "query",
+        "longitude": "query",
+        "past_days": "query",
+        "temperature_unit": "query",
+        "timeformat": "query",
+        "timezone": "query",
+        "wind_speed_unit": "query",
+      },
+      "path": "/v1/forecast",
+      "tags": [
+        "Weather Forecast APIs",
+      ],
+    },
+  },
+  "tools": [
+    {
+      "description": "7 day weather variables in hourly and daily resolution for given WGS84 latitude and longitude coordinates. Available worldwide.",
+      "inputSchema": {
+        "properties": {},
+        "required": [],
+        "type": "object",
+      },
+      "name": "get_v1_forecast",
+      "outputSchema": {
+        "properties": {
+          "current_weather": {
+            "description": "Current weather conditions with the attributes: time, temperature, wind_speed, wind_direction and weather_code",
+            "properties": {
+              "temperature": {
+                "type": "number",
+              },
+              "time": {
+                "type": "string",
+              },
+              "weather_code": {
+                "type": "integer",
+              },
+              "wind_direction": {
+                "type": "number",
+              },
+              "wind_speed": {
+                "type": "number",
+              },
+            },
+            "required": [
+              "time",
+              "temperature",
+              "wind_speed",
+              "wind_direction",
+              "weather_code",
+            ],
+            "type": "object",
+          },
+          "daily": {
+            "description": "For each selected daily weather variable, data will be returned as a floating point array. Additionally a \`time\` array will be returned with ISO8601 timestamps.",
+            "properties": {
+              "apparent_temperature_max": {
+                "items": {
+                  "type": "number",
+                },
+                "type": "array",
+              },
+              "apparent_temperature_min": {
+                "items": {
+                  "type": "number",
+                },
+                "type": "array",
+              },
+              "et0_fao_evapotranspiration": {
+                "items": {
+                  "type": "number",
+                },
+                "type": "array",
+              },
+              "precipitation_hours": {
+                "items": {
+                  "type": "number",
+                },
+                "type": "array",
+              },
+              "precipitation_sum": {
+                "items": {
+                  "type": "number",
+                },
+                "type": "array",
+              },
+              "shortwave_radiation_sum": {
+                "items": {
+                  "type": "number",
+                },
+                "type": "array",
+              },
+              "sunrise": {
+                "items": {
+                  "type": "number",
+                },
+                "type": "array",
+              },
+              "sunset": {
+                "items": {
+                  "type": "number",
+                },
+                "type": "array",
+              },
+              "temperature_2m_max": {
+                "items": {
+                  "type": "number",
+                },
+                "type": "array",
+              },
+              "temperature_2m_min": {
+                "items": {
+                  "type": "number",
+                },
+                "type": "array",
+              },
+              "time": {
+                "items": {
+                  "type": "string",
+                },
+                "type": "array",
+              },
+              "uv_index_clear_sky_max": {
+                "items": {
+                  "type": "number",
+                },
+                "type": "array",
+              },
+              "uv_index_max": {
+                "items": {
+                  "type": "number",
+                },
+                "type": "array",
+              },
+              "weather_code": {
+                "items": {
+                  "type": "number",
+                },
+                "type": "array",
+              },
+              "wind_direction_10m_dominant": {
+                "items": {
+                  "type": "number",
+                },
+                "type": "array",
+              },
+              "wind_gusts_10m_max": {
+                "items": {
+                  "type": "number",
+                },
+                "type": "array",
+              },
+              "wind_speed_10m_max": {
+                "items": {
+                  "type": "number",
+                },
+                "type": "array",
+              },
+            },
+            "required": [
+              "time",
+            ],
+            "type": "object",
+          },
+          "daily_units": {
+            "additionalProperties": {
+              "type": "string",
+            },
+            "description": "For each selected daily weather variable, the unit will be listed here.",
+            "type": "object",
+          },
+          "elevation": {
+            "description": "The elevation in meters of the selected weather grid-cell. In mountain terrain it might differ from the location you would expect.",
+            "example": 44.812,
+            "type": "number",
+          },
+          "generationtime_ms": {
+            "description": "Generation time of the weather forecast in milli seconds. This is mainly used for performance monitoring and improvements.",
+            "example": 2.2119,
+            "type": "number",
+          },
+          "hourly": {
+            "description": "For each selected weather variable, data will be returned as a floating point array. Additionally a \`time\` array will be returned with ISO8601 timestamps.",
+            "properties": {
+              "apparent_temperature": {
+                "items": {
+                  "type": "number",
+                },
+                "type": "array",
+              },
+              "cloud_cover": {
+                "items": {
+                  "type": "number",
+                },
+                "type": "array",
+              },
+              "cloud_cover_high": {
+                "items": {
+                  "type": "number",
+                },
+                "type": "array",
+              },
+              "cloud_cover_low": {
+                "items": {
+                  "type": "number",
+                },
+                "type": "array",
+              },
+              "cloud_cover_mid": {
+                "items": {
+                  "type": "number",
+                },
+                "type": "array",
+              },
+              "dew_point_2m": {
+                "items": {
+                  "type": "number",
+                },
+                "type": "array",
+              },
+              "diffuse_radiation": {
+                "items": {
+                  "type": "number",
+                },
+                "type": "array",
+              },
+              "direct_normal_irradiance": {
+                "items": {
+                  "type": "number",
+                },
+                "type": "array",
+              },
+              "direct_radiation": {
+                "items": {
+                  "type": "number",
+                },
+                "type": "array",
+              },
+              "evapotranspiration": {
+                "items": {
+                  "type": "number",
+                },
+                "type": "array",
+              },
+              "freezing_level_height": {
+                "items": {
+                  "type": "number",
+                },
+                "type": "array",
+              },
+              "precipitation": {
+                "items": {
+                  "type": "number",
+                },
+                "type": "array",
+              },
+              "pressure_msl": {
+                "items": {
+                  "type": "number",
+                },
+                "type": "array",
+              },
+              "relative_humidity_2m": {
+                "items": {
+                  "type": "number",
+                },
+                "type": "array",
+              },
+              "shortwave_radiation": {
+                "items": {
+                  "type": "number",
+                },
+                "type": "array",
+              },
+              "snow_height": {
+                "items": {
+                  "type": "number",
+                },
+                "type": "array",
+              },
+              "soil_moisture_0_1cm": {
+                "items": {
+                  "type": "number",
+                },
+                "type": "array",
+              },
+              "soil_moisture_1_3cm": {
+                "items": {
+                  "type": "number",
+                },
+                "type": "array",
+              },
+              "soil_moisture_27_81cm": {
+                "items": {
+                  "type": "number",
+                },
+                "type": "array",
+              },
+              "soil_moisture_3_9cm": {
+                "items": {
+                  "type": "number",
+                },
+                "type": "array",
+              },
+              "soil_moisture_9_27cm": {
+                "items": {
+                  "type": "number",
+                },
+                "type": "array",
+              },
+              "soil_temperature_0cm": {
+                "items": {
+                  "type": "number",
+                },
+                "type": "array",
+              },
+              "soil_temperature_18cm": {
+                "items": {
+                  "type": "number",
+                },
+                "type": "array",
+              },
+              "soil_temperature_54cm": {
+                "items": {
+                  "type": "number",
+                },
+                "type": "array",
+              },
+              "soil_temperature_6cm": {
+                "items": {
+                  "type": "number",
+                },
+                "type": "array",
+              },
+              "temperature_2m": {
+                "items": {
+                  "type": "number",
+                },
+                "type": "array",
+              },
+              "time": {
+                "items": {
+                  "type": "string",
+                },
+                "type": "array",
+              },
+              "vapour_pressure_deficit": {
+                "items": {
+                  "type": "number",
+                },
+                "type": "array",
+              },
+              "weather_code": {
+                "items": {
+                  "type": "number",
+                },
+                "type": "array",
+              },
+              "wind_direction_10m": {
+                "items": {
+                  "type": "number",
+                },
+                "type": "array",
+              },
+              "wind_direction_120m": {
+                "items": {
+                  "type": "number",
+                },
+                "type": "array",
+              },
+              "wind_direction_180m": {
+                "items": {
+                  "type": "number",
+                },
+                "type": "array",
+              },
+              "wind_direction_80m": {
+                "items": {
+                  "type": "number",
+                },
+                "type": "array",
+              },
+              "wind_gusts_10m": {
+                "items": {
+                  "type": "number",
+                },
+                "type": "array",
+              },
+              "wind_speed_10m": {
+                "items": {
+                  "type": "number",
+                },
+                "type": "array",
+              },
+              "wind_speed_120m": {
+                "items": {
+                  "type": "number",
+                },
+                "type": "array",
+              },
+              "wind_speed_180m": {
+                "items": {
+                  "type": "number",
+                },
+                "type": "array",
+              },
+              "wind_speed_80m": {
+                "items": {
+                  "type": "number",
+                },
+                "type": "array",
+              },
+            },
+            "required": [
+              "time",
+            ],
+            "type": "object",
+          },
+          "hourly_units": {
+            "additionalProperties": {
+              "type": "string",
+            },
+            "description": "For each selected weather variable, the unit will be listed here.",
+            "type": "object",
+          },
+          "latitude": {
+            "description": "WGS84 of the center of the weather grid-cell which was used to generate this forecast. This coordinate might be up to 5 km away.",
+            "example": 52.52,
+            "type": "number",
+          },
+          "longitude": {
+            "description": "WGS84 of the center of the weather grid-cell which was used to generate this forecast. This coordinate might be up to 5 km away.",
+            "example": "13.419.52",
+            "type": "number",
+          },
+          "utc_offset_seconds": {
+            "description": "Applied timezone offset from the &timezone= parameter.",
+            "example": 3600,
+            "type": "integer",
+          },
+        },
+        "type": "object",
+      },
+    },
+  ],
+}
+`;
+
+exports[`getToolsFromOpenAPISpec > pet-store.json 1`] = `
+{
+  "toolToOperationMap": {
+    "create_pets": {
+      "method": "post",
+      "operationId": "createPets",
+      "parameterSources": {
+        "id": "body",
+        "name": "body",
+        "tag": "body",
+      },
+      "path": "/pets",
+      "tags": [
+        "pets",
+      ],
+    },
+    "list_pets": {
+      "method": "get",
+      "operationId": "listPets",
+      "parameterSources": {
+        "limit": "query",
+      },
+      "path": "/pets",
+      "tags": [
+        "pets",
+      ],
+    },
+    "show_pet_by_id": {
+      "method": "get",
+      "operationId": "showPetById",
+      "parameterSources": {
+        "petId": "path",
+      },
+      "path": "/pets/{petId}",
+      "tags": [
+        "pets",
+      ],
+    },
+  },
+  "tools": [
+    {
+      "description": "List all pets",
+      "inputSchema": {
+        "properties": {},
+        "required": [],
+        "type": "object",
+      },
+      "name": "list_pets",
+      "outputSchema": undefined,
+    },
+    {
+      "description": "Create a pet",
+      "inputSchema": {
+        "properties": {
+          "id": {
+            "format": "int64",
+            "type": "integer",
+          },
+          "limit": {
+            "description": "How many items to return at one time (max 100)",
+            "format": "int32",
+            "maximum": 100,
+            "type": "integer",
+          },
+          "name": {
+            "type": "string",
+          },
+          "tag": {
+            "type": "string",
+          },
+        },
+        "required": [
+          "id",
+          "name",
+        ],
+        "type": "object",
+      },
+      "name": "create_pets",
+      "outputSchema": undefined,
+    },
+    {
+      "description": "Info for a specific pet",
+      "inputSchema": {
+        "properties": {},
+        "required": [],
+        "type": "object",
+      },
+      "name": "show_pet_by_id",
+      "outputSchema": {
+        "properties": {
+          "id": {
+            "format": "int64",
+            "type": "integer",
+          },
+          "name": {
+            "type": "string",
+          },
+          "tag": {
+            "type": "string",
+          },
+        },
+        "required": [
+          "id",
+          "name",
+        ],
+        "type": "object",
+      },
+    },
+  ],
+}
+`;
+
+exports[`getToolsFromOpenAPISpec > petstore-expanded.json 1`] = `
+{
+  "toolToOperationMap": {
+    "add_pet": {
+      "method": "post",
+      "operationId": "addPet",
+      "parameterSources": {
+        "name": "body",
+        "tag": "body",
+      },
+      "path": "/pets",
+      "tags": undefined,
+    },
+    "delete_pet": {
+      "method": "delete",
+      "operationId": "deletePet",
+      "parameterSources": {
+        "id": "path",
+      },
+      "path": "/pets/{id}",
+      "tags": undefined,
+    },
+    "find_pet_by_id": {
+      "method": "get",
+      "operationId": "find pet by id",
+      "parameterSources": {
+        "id": "path",
+      },
+      "path": "/pets/{id}",
+      "tags": undefined,
+    },
+    "find_pets": {
+      "method": "get",
+      "operationId": "findPets",
+      "parameterSources": {
+        "limit": "query",
+        "tags": "query",
+      },
+      "path": "/pets",
+      "tags": undefined,
+    },
+  },
+  "tools": [
+    {
+      "description": "Returns all pets from the system that the user has access to
+Nam sed condimentum est. Maecenas tempor sagittis sapien, nec rhoncus sem sagittis sit amet. Aenean at gravida augue, ac iaculis sem. Curabitur odio lorem, ornare eget elementum nec, cursus id lectus. Duis mi turpis, pulvinar ac eros ac, tincidunt varius justo. In hac habitasse platea dictumst. Integer at adipiscing ante, a sagittis ligula. Aenean pharetra tempor ante molestie imperdiet. Vivamus id aliquam diam. Cras quis velit non tortor eleifend sagittis. Praesent at enim pharetra urna volutpat venenatis eget eget mauris. In eleifend fermentum facilisis. Praesent enim enim, gravida ac sodales sed, placerat id erat. Suspendisse lacus dolor, consectetur non augue vel, vehicula interdum libero. Morbi euismod sagittis libero sed lacinia.
+
+Sed tempus felis lobortis leo pulvinar rutrum. Nam mattis velit nisl, eu condimentum ligula luctus nec. Phasellus semper velit eget aliquet faucibus. In a mattis elit. Phasellus vel urna viverra, condimentum lorem id, rhoncus nibh. Ut pellentesque posuere elementum. Sed a varius odio. Morbi rhoncus ligula libero, vel eleifend nunc tristique vitae. Fusce et sem dui. Aenean nec scelerisque tortor. Fusce malesuada accumsan magna vel tempus. Quisque mollis felis eu dolor tristique, sit amet auctor felis gravida. Sed libero lorem, molestie sed nisl in, accumsan tempor nisi. Fusce sollicitudin massa ut lacinia mattis. Sed vel eleifend lorem. Pellentesque vitae felis pretium, pulvinar elit eu, euismod sapien.",
+      "inputSchema": {
+        "properties": {},
+        "required": [],
+        "type": "object",
+      },
+      "name": "find_pets",
+      "outputSchema": undefined,
+    },
+    {
+      "description": "Creates a new pet in the store. Duplicates are allowed",
+      "inputSchema": {
+        "properties": {
+          "limit": {
+            "description": "maximum number of results to return",
+            "format": "int32",
+            "type": "integer",
+          },
+          "name": {
+            "type": "string",
+          },
+          "tag": {
+            "type": "string",
+          },
+          "tags": {
+            "description": "tags to filter by",
+            "items": {
+              "type": "string",
+            },
+            "type": "array",
+          },
+        },
+        "required": [
+          "name",
+        ],
+        "type": "object",
+      },
+      "name": "add_pet",
+      "outputSchema": undefined,
+    },
+    {
+      "description": "Returns a user based on a single ID, if the user does not have access to the pet",
+      "inputSchema": {
+        "properties": {},
+        "required": [],
+        "type": "object",
+      },
+      "name": "find_pet_by_id",
+      "outputSchema": undefined,
+    },
+    {
+      "description": "deletes a single pet based on the ID supplied",
+      "inputSchema": {
+        "properties": {
+          "id": {
+            "description": "ID of pet to fetch",
+            "format": "int64",
+            "type": "integer",
+          },
+        },
+        "required": [
+          "id",
+        ],
+        "type": "object",
+      },
+      "name": "delete_pet",
+      "outputSchema": undefined,
+    },
+  ],
+}
+`;
+
+exports[`getToolsFromOpenAPISpec > security.json 1`] = `
+{
+  "toolToOperationMap": {
+    "delete_anything_oauth2": {
+      "method": "delete",
+      "operationId": "delete_anything_oauth2",
+      "parameterSources": {},
+      "path": "/anything/oauth2",
+      "tags": [
+        "OAuth 2",
+      ],
+    },
+    "get_anything_api_key": {
+      "method": "get",
+      "operationId": "get_anything_apiKey",
+      "parameterSources": {},
+      "path": "/anything/apiKey",
+      "tags": [
+        "API Key",
+      ],
+    },
+    "get_anything_oauth2": {
+      "method": "get",
+      "operationId": "get_anything_oauth2",
+      "parameterSources": {},
+      "path": "/anything/oauth2",
+      "tags": [
+        "OAuth 2",
+      ],
+    },
+    "get_anything_optional_auth": {
+      "method": "get",
+      "operationId": "get_anything_optional_auth",
+      "parameterSources": {},
+      "path": "/anything/optional-auth",
+      "tags": [
+        "Other",
+      ],
+    },
+    "patch_anything_oauth2": {
+      "method": "patch",
+      "operationId": "patch_anything_oauth2",
+      "parameterSources": {},
+      "path": "/anything/oauth2",
+      "tags": [
+        "OAuth 2",
+      ],
+    },
+    "post_anything_api_key": {
+      "method": "post",
+      "operationId": "post_anything_apiKey",
+      "parameterSources": {},
+      "path": "/anything/apiKey",
+      "tags": [
+        "API Key",
+      ],
+    },
+    "post_anything_basic": {
+      "method": "post",
+      "operationId": "post_anything_basic",
+      "parameterSources": {},
+      "path": "/anything/basic",
+      "tags": [
+        "HTTP",
+      ],
+    },
+    "post_anything_bearer": {
+      "method": "post",
+      "operationId": "post_anything_bearer",
+      "parameterSources": {},
+      "path": "/anything/bearer",
+      "tags": [
+        "HTTP",
+      ],
+    },
+    "post_anything_no_auth": {
+      "method": "post",
+      "operationId": "post_anything_no_auth",
+      "parameterSources": {},
+      "path": "/anything/no-auth",
+      "tags": [
+        "Other",
+      ],
+    },
+    "post_anything_oauth2": {
+      "method": "post",
+      "operationId": "post_anything_oauth2",
+      "parameterSources": {},
+      "path": "/anything/oauth2",
+      "tags": [
+        "OAuth 2",
+      ],
+    },
+    "post_anything_open_id_connect": {
+      "method": "post",
+      "operationId": "post_anything_openIdConnect",
+      "parameterSources": {},
+      "path": "/anything/openIdConnect",
+      "tags": [
+        "OpenID Connect",
+      ],
+    },
+    "post_status401": {
+      "method": "post",
+      "operationId": "post_status_401",
+      "parameterSources": {},
+      "path": "/status/401",
+      "tags": [
+        "Other",
+      ],
+    },
+    "put_anything_api_key": {
+      "method": "put",
+      "operationId": "put_anything_apiKey",
+      "parameterSources": {},
+      "path": "/anything/apiKey",
+      "tags": [
+        "API Key",
+      ],
+    },
+    "put_anything_bearer": {
+      "method": "put",
+      "operationId": "put_anything_bearer",
+      "parameterSources": {},
+      "path": "/anything/bearer",
+      "tags": [
+        "HTTP",
+      ],
+    },
+    "put_anything_oauth2": {
+      "method": "put",
+      "operationId": "put_anything_oauth2",
+      "parameterSources": {},
+      "path": "/anything/oauth2",
+      "tags": [
+        "OAuth 2",
+      ],
+    },
+  },
+  "tools": [
+    {
+      "description": "\`apiKey\` auth will be supplied within an \`apiKey\` query parameter.",
+      "inputSchema": {
+        "properties": {},
+        "required": [],
+        "type": "object",
+      },
+      "name": "get_anything_api_key",
+      "outputSchema": undefined,
+    },
+    {
+      "description": "\`apiKey\` auth will be supplied within an \`api_key\` cookie.",
+      "inputSchema": {
+        "properties": {},
+        "required": [],
+        "type": "object",
+      },
+      "name": "post_anything_api_key",
+      "outputSchema": undefined,
+    },
+    {
+      "description": "\`apiKey\` auth will be supplied within an \`X-API-KEY\` header.",
+      "inputSchema": {
+        "properties": {},
+        "required": [],
+        "type": "object",
+      },
+      "name": "put_anything_api_key",
+      "outputSchema": undefined,
+    },
+    {
+      "description": "Authentication credentials will be supplied within a \`Basic\` \`Authorization\` header.
+
+https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#basic-authentication-sample",
+      "inputSchema": {
+        "properties": {},
+        "required": [],
+        "type": "object",
+      },
+      "name": "post_anything_basic",
+      "outputSchema": undefined,
+    },
+    {
+      "description": "Authentication credentials will be supplied within a \`Bearer\` \`Authorization\` header.
+
+https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#basic-authentication-sample",
+      "inputSchema": {
+        "properties": {},
+        "required": [],
+        "type": "object",
+      },
+      "name": "post_anything_bearer",
+      "outputSchema": undefined,
+    },
+    {
+      "description": "Authentication credentials will be supplied within a \`Bearer\` \`Authorization\` header, but its data should be controlled as a JWT.
+
+https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#basic-authentication-sample
+
+> ℹ️
+> We currently do not support any special handling for this so they're handled as a standard \`Bearer\` authentication token.",
+      "inputSchema": {
+        "properties": {},
+        "required": [],
+        "type": "object",
+      },
+      "name": "put_anything_bearer",
+      "outputSchema": undefined,
+    },
+    {
+      "description": "> ℹ️
+> We currently do not handle OAuth 2 authentication flows so if an operation has an \`oauth2\` requirement we assume that the user, or the projects JWT, has a qualified \`bearer\` token and will use that.
+
+https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-fields-23",
+      "inputSchema": {
+        "properties": {},
+        "required": [],
+        "type": "object",
+      },
+      "name": "get_anything_oauth2",
+      "outputSchema": undefined,
+    },
+    {
+      "description": "> ℹ️
+> We currently do not handle OAuth 2 authentication flows so if an operation has an \`oauth2\` requirement we assume that the user, or the projects JWT, has a qualified \`bearer\` token and will use that.
+
+https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-fields-23",
+      "inputSchema": {
+        "properties": {},
+        "required": [],
+        "type": "object",
+      },
+      "name": "post_anything_oauth2",
+      "outputSchema": undefined,
+    },
+    {
+      "description": "> ℹ️
+> We currently do not handle OAuth 2 authentication flows so if an operation has an \`oauth2\` requirement we assume that the user, or the projects JWT, has a qualified \`bearer\` token and will use that.
+
+https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-fields-23",
+      "inputSchema": {
+        "properties": {},
+        "required": [],
+        "type": "object",
+      },
+      "name": "put_anything_oauth2",
+      "outputSchema": undefined,
+    },
+    {
+      "description": "> ℹ️
+> We currently do not handle OAuth 2 authentication flows so if an operation has an \`oauth2\` requirement we assume that the user, or the projects JWT, has a qualified \`bearer\` token and will use that.
+
+https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-fields-23",
+      "inputSchema": {
+        "properties": {},
+        "required": [],
+        "type": "object",
+      },
+      "name": "delete_anything_oauth2",
+      "outputSchema": undefined,
+    },
+    {
+      "description": "> ℹ️
+> We currently do not handle OAuth 2 authentication flows so if an operation has an \`oauth2\` requirement we assume that the user, or the projects JWT, has a qualified \`bearer\` token and will use that.
+
+https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-fields-23",
+      "inputSchema": {
+        "properties": {},
+        "required": [],
+        "type": "object",
+      },
+      "name": "patch_anything_oauth2",
+      "outputSchema": undefined,
+    },
+    {
+      "description": "🚧 This is not supported.",
+      "inputSchema": {
+        "properties": {},
+        "required": [],
+        "type": "object",
+      },
+      "name": "post_anything_open_id_connect",
+      "outputSchema": undefined,
+    },
+    {
+      "description": "This operation does not have any authentication requirements.",
+      "inputSchema": {
+        "properties": {},
+        "required": [],
+        "type": "object",
+      },
+      "name": "post_anything_no_auth",
+      "outputSchema": undefined,
+    },
+    {
+      "description": "The \`apiKey\` query parameter auth on this operation is optional.
+
+https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#security-requirement-object",
+      "inputSchema": {
+        "properties": {},
+        "required": [],
+        "type": "object",
+      },
+      "name": "get_anything_optional_auth",
+      "outputSchema": undefined,
+    },
+    {
+      "description": "This endpoint requires an authentication header but making any request to it will forcefully return a 401 status code for invalid auth.",
+      "inputSchema": {
+        "properties": {},
+        "required": [],
+        "type": "object",
+      },
+      "name": "post_status401",
+      "outputSchema": undefined,
+    },
+  ],
+}
+`;
+
+exports[`getToolsFromOpenAPISpec > tic-tac-toe.json 1`] = `
+{
+  "toolToOperationMap": {
+    "get_board": {
+      "method": "get",
+      "operationId": "get-board",
+      "parameterSources": {},
+      "path": "/board",
+      "tags": [
+        "Gameplay",
+      ],
+    },
+    "get_square": {
+      "method": "get",
+      "operationId": "get-square",
+      "parameterSources": {
+        "column": "path",
+        "row": "path",
+      },
+      "path": "/board/{row}/{column}",
+      "tags": [
+        "Gameplay",
+      ],
+    },
+    "put_square": {
+      "method": "put",
+      "operationId": "put-square",
+      "parameterSources": {
+        "column": "path",
+        "row": "path",
+      },
+      "path": "/board/{row}/{column}",
+      "tags": [
+        "Gameplay",
+      ],
+    },
+  },
+  "tools": [
+    {
+      "description": "Retrieves the current state of the board and the winner.",
+      "inputSchema": {
+        "properties": {},
+        "required": [],
+        "type": "object",
+      },
+      "name": "get_board",
+      "outputSchema": {
+        "properties": {
+          "board": {
+            "items": {
+              "items": {
+                "description": "Possible values for a board square. \`.\` means empty square.",
+                "enum": [
+                  ".",
+                  "X",
+                  "O",
+                ],
+                "example": ".",
+                "type": "string",
+              },
+              "maxItems": 3,
+              "minItems": 3,
+              "type": "array",
+            },
+            "maxItems": 3,
+            "minItems": 3,
+            "type": "array",
+          },
+          "winner": {
+            "description": "Winner of the game. \`.\` means nobody has won yet.",
+            "enum": [
+              ".",
+              "X",
+              "O",
+            ],
+            "example": ".",
+            "type": "string",
+          },
+        },
+        "type": "object",
+      },
+    },
+    {
+      "description": "Retrieves the requested square.",
+      "inputSchema": {
+        "properties": {
+          "column": {
+            "description": "Board column (horizontal coordinate)",
+            "example": 1,
+            "maximum": 3,
+            "minimum": 1,
+            "type": "integer",
+          },
+          "row": {
+            "description": "Board row (vertical coordinate)",
+            "example": 1,
+            "maximum": 3,
+            "minimum": 1,
+            "type": "integer",
+          },
+        },
+        "required": [
+          "row",
+          "column",
+        ],
+        "type": "object",
+      },
+      "name": "get_square",
+      "outputSchema": undefined,
+    },
+    {
+      "description": "Places a mark on the board and retrieves the whole board and the winner (if any).",
+      "inputSchema": {
+        "properties": {
+          "column": {
+            "description": "Board column (horizontal coordinate)",
+            "example": 1,
+            "maximum": 3,
+            "minimum": 1,
+            "type": "integer",
+          },
+          "row": {
+            "description": "Board row (vertical coordinate)",
+            "example": 1,
+            "maximum": 3,
+            "minimum": 1,
+            "type": "integer",
+          },
+        },
+        "required": [
+          "row",
+          "column",
+        ],
+        "type": "object",
+      },
+      "name": "put_square",
+      "outputSchema": {
+        "properties": {
+          "board": {
+            "items": {
+              "items": {
+                "description": "Possible values for a board square. \`.\` means empty square.",
+                "enum": [
+                  ".",
+                  "X",
+                  "O",
+                ],
+                "example": ".",
+                "type": "string",
+              },
+              "maxItems": 3,
+              "minItems": 3,
+              "type": "array",
+            },
+            "maxItems": 3,
+            "minItems": 3,
+            "type": "array",
+          },
+          "winner": {
+            "description": "Winner of the game. \`.\` means nobody has won yet.",
+            "enum": [
+              ".",
+              "X",
+              "O",
+            ],
+            "example": ".",
+            "type": "string",
+          },
+        },
+        "type": "object",
+      },
+    },
+  ],
+}
+`;
