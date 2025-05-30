@@ -25,6 +25,7 @@
   "dependencies": {
     "@hono/zod-openapi": "catalog:",
     "ms": "catalog:",
+    "type-fest": "catalog:",
     "zod": "catalog:"
   },
   "devDependencies": {

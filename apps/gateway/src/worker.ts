@@ -4,6 +4,7 @@ import { parseZodSchema } from '@agentic/platform-core'
 import type { Context } from './lib/types'
 import { type AgenticEnv, envSchema } from './lib/env'
 import { handleOptions } from './lib/handle-options'
+import { resolveOriginRequest } from './lib/resolve-origin-request'
 
 // Export Durable Objects for cloudflare
 export { DurableObjectRateLimiter } from './durable-object'

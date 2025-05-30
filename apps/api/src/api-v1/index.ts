@@ -11,6 +11,7 @@ import { registerV1ConsumersGetConsumer } from './consumers/get-consumer'
 import { registerV1ProjectsListConsumers } from './consumers/list-consumers'
 import { registerV1ConsumersRefreshConsumerToken } from './consumers/refresh-consumer-token'
 import { registerV1ConsumersUpdateConsumer } from './consumers/update-consumer'
+import { registerV1AdminDeploymentsGetDeploymentByIdentifier } from './deployments/admin-get-deployment-by-identifier copy'
 import { registerV1DeploymentsCreateDeployment } from './deployments/create-deployment'
 import { registerV1DeploymentsGetDeployment } from './deployments/get-deployment'
 import { registerV1DeploymentsGetDeploymentByIdentifier } from './deployments/get-deployment-by-identifier'
@@ -107,6 +108,7 @@ registerV1DeploymentsPublishDeployment(privateRouter)
 
 // Internal admin routes
 registerV1AdminConsumersGetConsumerByToken(privateRouter)
+registerV1AdminDeploymentsGetDeploymentByIdentifier(privateRouter)
 
 // Webhook event handlers
 registerV1StripeWebhook(publicRouter)

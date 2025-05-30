@@ -118,51 +118,70 @@ export function validatePricing({
   // Validate PricingPlanLineItems
   for (const pricingPlan of pricingPlans) {
     for (const lineItem of pricingPlan.lineItems) {
+      if (lineItem.slug === 'base') {
+        assert(
+          lineItem.usageType === 'licensed',
+          `Invalid PricingPlan "${pricingPlan.slug}": reserved LineItem "base" must have "licensed" usage type.`
+        )
+      } else if (lineItem.slug === 'requests') {
+        assert(
+          lineItem.usageType === 'metered',
+          `Invalid PricingPlan "${pricingPlan.slug}": reserved "requests" LineItem "${lineItem.slug}" must have "metered" usage type.`
+        )
+      } else {
+        assert(
+          lineItem.slug.startsWith('custom-'),
+          `Invalid PricingPlan "${pricingPlan.slug}": custom LineItem "${lineItem.slug}" must have a slug that starts with "custom-". This is required so that TypeScript can discriminate between custom and reserved line-items.`
+        )
+      }
+
       if (lineItem.usageType === 'metered') {
         switch (lineItem.billingScheme) {
           case 'per_unit':
             assert(
-              lineItem.unitAmount !== undefined,
-              `Invalid pricingPlan "${pricingPlan.slug}": metered LineItem "${lineItem.slug}" must specify a non-negative "unitAmount" when using "per_unit" billing scheme.`
+              (lineItem as any).unitAmount !== undefined,
+              `Invalid PricingPlan "${pricingPlan.slug}": metered LineItem "${lineItem.slug}" must specify a non-negative "unitAmount" when using "per_unit" billing scheme.`
             )
 
             assert(
-              lineItem.tiersMode === undefined,
-              `Invalid pricingPlan "${pricingPlan.slug}": metered LineItem "${lineItem.slug}" must not specify "tiersMode" when using "per_unit" billing scheme.`
+              (lineItem as any).tiersMode === undefined,
+              `Invalid PricingPlan "${pricingPlan.slug}": metered LineItem "${lineItem.slug}" must not specify "tiersMode" when using "per_unit" billing scheme.`
             )
 
             assert(
-              lineItem.tiers === undefined,
-              `Invalid pricingPlan "${pricingPlan.slug}": metered LineItem "${lineItem.slug}" must not specify "tiers" when using "per_unit" billing scheme.`
+              (lineItem as any).tiers === undefined,
+              `Invalid PricingPlan "${pricingPlan.slug}": metered LineItem "${lineItem.slug}" must not specify "tiers" when using "per_unit" billing scheme.`
             )
             break
 
           case 'tiered':
             assert(
-              lineItem.unitAmount === undefined,
-              `Invalid pricingPlan "${pricingPlan.slug}": metered LineItem "${lineItem.slug}" must not specify "unitAmount" when using "tiered" billing scheme.`
+              (lineItem as any).unitAmount === undefined,
+              `Invalid PricingPlan "${pricingPlan.slug}": metered LineItem "${lineItem.slug}" must not specify "unitAmount" when using "tiered" billing scheme.`
             )
 
             assert(
-              lineItem.tiers?.length,
-              `Invalid pricingPlan "${pricingPlan.slug}": metered LineItem "${lineItem.slug}" must specify a non-empty "tiers" array when using "tiered" billing scheme.`
+              (lineItem as any).tiers?.length,
+              `Invalid PricingPlan "${pricingPlan.slug}": metered LineItem "${lineItem.slug}" must specify a non-empty "tiers" array when using "tiered" billing scheme.`
             )
 
             assert(
-              lineItem.tiersMode !== undefined,
-              `Invalid pricingPlan "${pricingPlan.slug}": metered LineItem "${lineItem.slug}" must specify a valid "tiersMode" when using "tiered" billing scheme.`
+              (lineItem as any).tiersMode !== undefined,
+              `Invalid PricingPlan "${pricingPlan.slug}": metered LineItem "${lineItem.slug}" must specify a valid "tiersMode" when using "tiered" billing scheme.`
             )
 
-            assert(
-              lineItem.transformQuantity === undefined,
-              `Invalid pricingPlan "${pricingPlan.slug}": metered LineItem "${lineItem.slug}" must not specify "transformQuantity" when using "tiered" billing scheme.`
-            )
+            // TODO: Not sure if this is a valid requirement or not. If it is, update
+            // the corresponding type in the schemas package.
+            // assert(
+            //   lineItem.transformQuantity === undefined,
+            //   `Invalid pricingPlan "${pricingPlan.slug}": metered LineItem "${lineItem.slug}" must not specify "transformQuantity" when using "tiered" billing scheme.`
+            // )
             break
 
           default:
             assert(
               false,
-              `Invalid pricingPlan "${pricingPlan.slug}": metered LineItem "${lineItem.slug}" must specify a valid "billingScheme".`
+              `Invalid PricingPlan "${pricingPlan.slug}": metered LineItem "${(lineItem as any).slug}" must specify a valid "billingScheme".`
             )
         }
       }

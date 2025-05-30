@@ -295,7 +295,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Lists deployments the user or team has access to. */
+        /** @description Lists deployments the user or team has access to, optionally filtering by project. */
         get: operations["listDeployments"];
         put?: never;
         /** @description Creates a new deployment within a project. */
@@ -332,6 +332,23 @@ export interface paths {
         };
         /** @description Gets a consumer by API token */
         get: operations["adminGetConsumerByToken"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/admin/deployments/by-identifier": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Gets a deployment by its public identifier (admin-only) */
+        get: operations["adminGetDeploymentByIdentifier"];
         put?: never;
         post?: never;
         delete?: never;
@@ -439,43 +456,118 @@ export interface components {
         };
         /** @description Public deployment identifier (e.g. "namespace/project-name@{hash|version|latest}") */
         DeploymentIdentifier: string;
-        /**
-         * @description Deployment origin API adapter is used to configure the origin API server downstream from Agentic's API gateway. It specifies whether the origin API server denoted by `originUrl` is hosted externally or deployed internally to Agentic's infrastructure. It also specifies the format for how origin tools / services are defined: either as an OpenAPI spec, an MCP server, or as a raw HTTP REST API.
-         *
-         *     NOTE: Agentic currently only supports `external` API servers. If you'd like to host your API or MCP server on Agentic's infrastructure, please reach out to support@agentic.so.
-         * @default {
-         *       "location": "external",
-         *       "type": "raw"
-         *     }
-         */
+        JsonSchemaObject: {
+            /** @enum {string} */
+            type: "object";
+            properties?: Record<string, never>;
+            required?: string[];
+        };
+        Tool: {
+            name: string;
+            description?: string;
+            inputSchema: components["schemas"]["JsonSchemaObject"];
+            outputSchema?: components["schemas"]["JsonSchemaObject"];
+            annotations?: {
+                title?: string;
+                readOnlyHint?: boolean;
+                destructiveHint?: boolean;
+                idempotentHint?: boolean;
+                openWorldHint?: boolean;
+            };
+        };
+        RateLimit: {
+            /** @description The interval at which the rate limit is applied. Either a positive integer expressed in seconds or a valid positive [ms](https://github.com/vercel/ms) string (eg, "10s", "1m", "8h", "2d", "1w", "1y", etc). */
+            interval: number | string;
+            /** @description Maximum number of operations per interval (unitless). */
+            maxPerInterval: number;
+        };
+        PricingPlanToolConfig: {
+            /** @default true */
+            enabled: boolean;
+            reportUsage?: boolean;
+            rateLimit?: components["schemas"]["RateLimit"] | null;
+        };
+        ToolConfig: {
+            name: string;
+            /** @default true */
+            enabled: boolean;
+            /** @default false */
+            immutable: boolean;
+            /** @default true */
+            reportUsage: boolean;
+            rateLimit?: components["schemas"]["RateLimit"] | null;
+            /** @description Map of PricingPlan slug to tool config overrides for a given plan. This is useful to customize tool behavior or disable tools completely on different pricing plans. */
+            pricingPlanConfig?: {
+                [key: string]: components["schemas"]["PricingPlanToolConfig"];
+            };
+        };
+        /** @description Origin adapter is used to configure the origin API server downstream from Agentic's API gateway. It specifies whether the origin API server denoted by `originUrl` is hosted externally or deployed internally to Agentic's infrastructure. It also specifies the format for how origin tools are defined: either an OpenAPI spec, an MCP server, or a raw HTTP REST API. */
         OriginAdapter: {
+            /** @enum {string} */
+            location: "external";
             /** @enum {string} */
             type: "openapi";
             /** @description JSON stringified OpenAPI spec describing the origin API server. */
             spec: string;
-            /** @enum {string} */
-            location: "external";
+            /** @description Mapping from tool name to OpenAPI Operation info. This is used by the Agentic API gateway to route tools to the correct origin API operation, along with the HTTP method, path, params, etc. */
+            toolToOperationMap: {
+                [key: string]: {
+                    /** @description OpenAPI operationId for the tool */
+                    operationId: string;
+                    /** @description HTTP method */
+                    method: "get" | "put" | "post" | "delete" | "patch" | "trace";
+                    /** @description HTTP path template */
+                    path: string;
+                    /** @description Mapping from parameter name to HTTP source (query, path, JSON body, etc). */
+                    parameterSources: {
+                        [key: string]: "query" | "header" | "path" | "cookie" | "body" | "formData";
+                    };
+                    tags?: string[];
+                };
+            };
         } | {
             /** @enum {string} */
-            type: "raw";
+            location: "external";
+            /** @enum {string} */
+            type: "mcp";
+            serverInfo: {
+                name: string;
+                version: string;
+                capabilities?: {
+                    experimental?: Record<string, never>;
+                    logging?: Record<string, never>;
+                    completions?: Record<string, never>;
+                    prompts?: {
+                        listChanged?: boolean;
+                    };
+                    resources?: {
+                        subscribe?: boolean;
+                        listChanged?: boolean;
+                    };
+                    tools?: {
+                        listChanged?: boolean;
+                    };
+                };
+                instructions?: string;
+            };
+        } | {
             /** @enum {string} */
             location: "external";
+            /** @enum {string} */
+            type: "raw";
         };
-        /** @example Starter Monthly */
+        /**
+         * @description Human-readable name for the pricing plan
+         * @example Starter Monthly
+         */
         name: string;
         /**
-         * @description PricingPlan slug ("free", "starter-monthly", "pro-annual", etc)
+         * @description PricingPlan slug ("free", "starter-monthly", "pro-annual", etc). Should be lower-cased and kebab-cased. Should be stable across deployments.
          * @example starter-monthly
          */
         slug: string;
         /** @example API calls */
         label: string;
-        RateLimit: {
-            /** @description The interval at which the rate limit is applied. Either a positive number in seconds or a valid positive [ms](https://github.com/vercel/ms) string (eg, "10s", "1m", "8h", "2d", "1w", "1y", etc). */
-            interval: number | string;
-            /** @description Maximum number of operations per interval (unitless). */
-            maxPerInterval: number;
-        };
         PricingPlanTier: {
             unitAmount?: number;
             flatAmount?: number;
@@ -483,13 +575,13 @@ export interface components {
         };
         /** @description PricingPlanLineItems represent a single line-item in a Stripe Subscription. They map to a Stripe billing `Price` and possibly a corresponding Stripe `Meter` for usage-based line-items. */
         PricingPlanLineItem: {
-            slug: string | "base" | "requests";
+            slug: string;
             label?: components["schemas"]["label"];
             /** @enum {string} */
             usageType: "licensed";
             amount: number;
         } | {
-            slug: string | "base" | "requests";
+            slug: string;
             label?: components["schemas"]["label"];
             /** @enum {string} */
             usageType: "metered";
@@ -552,7 +644,11 @@ export interface components {
             teamId?: string;
             /** @description Project id (e.g. "proj_tz4a98xxat96iws9zmbrgj3a") */
             projectId: string;
-            originAdapter?: components["schemas"]["OriginAdapter"];
+            /** @default [] */
+            tools: components["schemas"]["Tool"][];
+            /** @default [] */
+            toolConfigs: components["schemas"]["ToolConfig"][];
+            originAdapter: components["schemas"]["OriginAdapter"];
             /**
              * @description List of PricingPlans configuring which Stripe subscriptions should be available for the project. Defaults to a single free plan which is useful for developing and testing your project.
              * @default [
@@ -582,6 +678,45 @@ export interface components {
              */
             pricingIntervals: components["schemas"]["PricingInterval"][];
             project?: components["schemas"]["Project"];
+        };
+        /**
+         * @description Origin adapter is used to configure the origin API server downstream from Agentic's API gateway. It specifies whether the origin API server denoted by `originUrl` is hosted externally or deployed internally to Agentic's infrastructure. It also specifies the format for how origin tools are defined: either an OpenAPI spec, an MCP server, or a raw HTTP REST API.
+         *
+         *     NOTE: Agentic currently only supports `external` API servers. If you'd like to host your API or MCP server on Agentic's infrastructure, please reach out to support@agentic.so.
+         * @default {
+         *       "location": "external",
+         *       "type": "raw"
+         *     }
+         */
+        OriginAdapterConfig: {
+            /** @enum {string} */
+            location: "external";
+            /** @enum {string} */
+            type: "openapi";
+            /** @description Local file path, URL, or JSON stringified OpenAPI spec describing the origin API server. */
+            spec: string;
+        } | {
+            /** @enum {string} */
+            location: "external";
+            /** @enum {string} */
+            type: "mcp";
+        } | {
+            /** @enum {string} */
+            location: "external";
+            /** @enum {string} */
+            type: "raw";
+        };
+        /** @description A Deployment is a single, immutable instance of a Project. Each deployment contains pricing plans, origin server config (OpenAPI or MCP server), tool definitions, and metadata.
+         *
+         *     Deployments are private to a developer or team until they are published, at which point they are accessible to any customers with access to the parent Project. */
+        AdminDeployment: components["schemas"]["Deployment"] & {
+            /**
+             * Format: uri
+             * @description Required base URL of the externally hosted origin API server. Must be a valid `https` URL.
+             *
+             *     NOTE: Agentic currently only supports `external` API servers. If you'd like to host your API or MCP server on Agentic's infrastructure, please reach out to support@agentic.so.
+             */
+            originUrl: string;
         };
     };
     responses: {
@@ -1441,7 +1576,7 @@ export interface operations {
                      *     NOTE: Agentic currently only supports `external` API servers. If you'd like to host your API or MCP server on Agentic's infrastructure, please reach out to support@agentic.so.
                      */
                     originUrl: string;
-                    originAdapter?: components["schemas"]["OriginAdapter"];
+                    originAdapter?: components["schemas"]["OriginAdapterConfig"];
                     /**
                      * @description List of PricingPlans configuring which Stripe subscriptions should be available for the project. Defaults to a single free plan which is useful for developing and testing your project.
                      * @default [
@@ -1470,6 +1605,8 @@ export interface operations {
                      *     ]
                      */
                     pricingIntervals?: components["schemas"]["PricingInterval"][];
+                    /** @default [] */
+                    toolConfigs?: components["schemas"]["ToolConfig"][];
                 };
             };
         };
@@ -1544,6 +1681,34 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["Consumer"];
+                };
+            };
+            400: components["responses"]["400"];
+            401: components["responses"]["401"];
+            403: components["responses"]["403"];
+            404: components["responses"]["404"];
+        };
+    };
+    adminGetDeploymentByIdentifier: {
+        parameters: {
+            query: {
+                populate?: ("user" | "team" | "project")[];
+                /** @description Public deployment identifier (e.g. "namespace/project-name@{hash|version|latest}") */
+                deploymentIdentifier: components["schemas"]["DeploymentIdentifier"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description An admin deployment object */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminDeployment"];
                 };
             };
             400: components["responses"]["400"];

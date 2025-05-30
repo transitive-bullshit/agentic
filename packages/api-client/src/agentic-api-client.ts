@@ -336,11 +336,17 @@ export class AgenticApiClient {
       .json()
   }
 
-  async getConsumer({
+  async getConsumer<
+    TPopulate extends NonNullable<
+      OperationParameters<'getConsumer'>['populate']
+    >[number] = never
+  >({
     consumerId,
     ...searchParams
-  }: OperationParameters<'getConsumer'>): Promise<
-    OperationResponse<'getConsumer'>
+  }: OperationParameters<'getConsumer'> & {
+    populate?: TPopulate[]
+  }): Promise<
+    Simplify<OperationResponse<'getConsumer'> & PopulateConsumer<TPopulate>>
   > {
     return this.ky
       .get(`v1/consumers/${consumerId}`, {
@@ -376,11 +382,17 @@ export class AgenticApiClient {
       .json()
   }
 
-  async listConsumers({
+  async listConsumers<
+    TPopulate extends NonNullable<
+      OperationParameters<'listConsumers'>['populate']
+    >[number] = never
+  >({
     projectId,
     ...searchParams
-  }: OperationParameters<'listConsumers'>): Promise<
-    OperationResponse<'listConsumers'>
+  }: OperationParameters<'listConsumers'> & {
+    populate?: TPopulate[]
+  }): Promise<
+    Simplify<OperationResponse<'listConsumers'> & PopulateConsumer<TPopulate>>
   > {
     return this.ky
       .get(`v1/projects/${projectId}/consumers`, {
@@ -482,14 +494,43 @@ export class AgenticApiClient {
       .json()
   }
 
-  async adminGetConsumerByToken({
+  async adminGetConsumerByToken<
+    TPopulate extends NonNullable<
+      OperationParameters<'adminGetConsumerByToken'>['populate']
+    >[number] = never
+  >({
     token,
     ...searchParams
-  }: OperationParameters<'adminGetConsumerByToken'>): Promise<
-    OperationResponse<'adminGetConsumerByToken'>
+  }: OperationParameters<'adminGetConsumerByToken'> & {
+    populate?: TPopulate[]
+  }): Promise<
+    Simplify<
+      OperationResponse<'adminGetConsumerByToken'> & PopulateConsumer<TPopulate>
+    >
   > {
     return this.ky
       .get(`v1/admin/consumers/tokens/${token}`, {
+        searchParams: sanitizeSearchParams(searchParams)
+      })
+      .json()
+  }
+
+  async adminGetDeploymentByIdentifier<
+    TPopulate extends NonNullable<
+      OperationParameters<'adminGetDeploymentByIdentifier'>['populate']
+    >[number] = never
+  >(
+    searchParams: OperationParameters<'adminGetDeploymentByIdentifier'> & {
+      populate?: TPopulate[]
+    }
+  ): Promise<
+    Simplify<
+      OperationResponse<'adminGetDeploymentByIdentifier'> &
+        PopulateDeployment<TPopulate>
+    >
+  > {
+    return this.ky
+      .get(`v1/admin/deployments/by-identifier`, {
         searchParams: sanitizeSearchParams(searchParams)
       })
       .json()
@@ -558,5 +599,21 @@ type PopulateDeployment<TPopulate> = (TPopulate extends 'user'
   (TPopulate extends 'project'
     ? {
         project: Project
+      }
+    : unknown)
+
+type PopulateConsumer<TPopulate> = (TPopulate extends 'user'
+  ? {
+      user: User
+    }
+  : unknown) &
+  (TPopulate extends 'project'
+    ? {
+        project: Project
+      }
+    : unknown) &
+  (TPopulate extends 'deployment'
+    ? {
+        deployment: Deployment
       }
     : unknown)

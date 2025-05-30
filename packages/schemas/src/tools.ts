@@ -3,11 +3,19 @@ import { z } from '@hono/zod-openapi'
 import { pricingPlanSlugSchema } from './pricing'
 import { rateLimitSchema } from './rate-limit'
 
+const toolNameBlacklist = new Set(['mcp'])
+
 export const toolNameSchema = z
   .string()
   // TODO: validate this regex constraint
   .regex(/^[a-zA-Z0-9_]+$/)
   .nonempty()
+  .refine(
+    (name) => !toolNameBlacklist.has(name),
+    (name) => ({
+      message: `Tool name is reserved: "${name}"`
+    })
+  )
 
 export const jsonSchemaObjectSchema = z
   .object({
@@ -28,7 +36,7 @@ export const pricingPlanToolConfigSchema = z
      *
      * @default true
      */
-    enabled: z.boolean().default(true).optional(),
+    enabled: z.boolean().optional().default(true),
 
     /**
      * Overrides whether to report default `requests` usage for metered billing
@@ -74,7 +82,7 @@ export const toolConfigSchema = z
      *
      * @default true
      */
-    enabled: z.boolean().default(true).optional(),
+    enabled: z.boolean().optional().default(true),
 
     /**
      * Whether this tool's output is deterministic and idempotent given the
@@ -89,7 +97,7 @@ export const toolConfigSchema = z
      *
      * @default false
      */
-    immutable: z.boolean().default(false).optional(),
+    immutable: z.boolean().optional().default(false),
 
     /**
      * Whether calls to this tool should be reported as usage for the default
@@ -100,7 +108,7 @@ export const toolConfigSchema = z
      *
      * @default true
      */
-    reportUsage: z.boolean().default(true).optional(),
+    reportUsage: z.boolean().optional().default(true),
 
     /**
      * Customize the default `requests`-based rate-limiting for this tool.

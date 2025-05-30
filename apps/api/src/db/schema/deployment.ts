@@ -191,6 +191,12 @@ Deployments are private to a developer or team until they are published, at whic
   )
   .openapi('Deployment')
 
+export const deploymentAdminSelectSchema = deploymentSelectSchema
+  .extend({
+    originUrl: resolvedAgenticProjectConfigSchema.shape.originUrl
+  })
+  .openapi('AdminDeployment')
+
 export const deploymentInsertSchema = agenticProjectConfigSchema.strict()
 
 // TODO: Deployments should be immutable, so we should not allow updates aside

@@ -1,16 +1,12 @@
 import type { Consumer } from '@agentic/platform-api-client'
-import type { PricingPlan } from '@agentic/platform-schemas'
+import type { PricingPlan, RateLimit } from '@agentic/platform-schemas'
+import { assert } from '@agentic/platform-core'
 
 import type { Context } from './types'
-import * as config from './config'
-import { ctxAssert } from './ctx-assert'
 import { getConsumer } from './get-consumer'
 import { getDeployment } from './get-deployment'
-import { getService } from './get-service'
-import { rateLimit } from './rate-limit'
+import { getTool } from './get-tool'
 import { updateOriginRequest } from './update-origin-request'
-
-const isProd = config.get('isProd')
 
 /**
  * Resolves an input HTTP request to a specific deployment, tool call, and
@@ -33,7 +29,7 @@ export async function resolveOriginRequest(ctx: Context) {
   const { deployment, toolPath } = await getDeployment(ctx, pathname)
   console.log('deployment', { deployment: deployment.id, toolPath })
 
-  const service = getService({
+  const tool = getTool({
     method,
     deployment,
     toolPath
@@ -48,89 +44,118 @@ export async function resolveOriginRequest(ctx: Context) {
     .trim()
 
   if (token) {
-    consumer = await getConsumer(event, token)
-    ctxAssert(consumer, 401, `Invalid auth token "${token}"`)
-    ctxAssert(
-      consumer.enabled || deployment.proxyMode !== 'active',
+    consumer = await getConsumer(ctx, token)
+    assert(consumer, 401, `Invalid auth token "${token}"`)
+    assert(
+      consumer.isStripeSubscriptionActive,
       402,
       `Auth token "${token}" does not have an active subscription`
     )
-    ctxAssert(
-      consumer.project === deployment.project,
+    assert(
+      consumer.projectId === deployment.projectId,
       403,
-      `Auth token "${token}" is not authorized for project "${deployment.project}"`
+      `Auth token "${token}" is not authorized for project "${deployment.projectId}"`
     )
 
-    // TODO: ensure that consumer.plan is compatible with the target deployment
-    // TODO: this could definitely cause issues when changing pricing plans...
+    // TODO: Ensure that consumer.plan is compatible with the target deployment
+    // TODO: This could definitely cause issues when changing pricing plans.
 
     pricingPlan = deployment.pricingPlans.find(
-      (plan) => consumer.plan === plan.slug
+      (pricingPlan) => consumer!.plan === pricingPlan.slug
     )
 
-    // ctxAssert(
+    // assert(
     //   pricingPlan,
     //   403,
     //   `Auth token "${token}" unable to find matching pricing plan for project "${deployment.project}"`
     // )
   } else {
+    // For unauthenticated requests, default to a free pricing plan if available.
     pricingPlan = deployment.pricingPlans.find((plan) => plan.slug === 'free')
 
-    // ctxAssert(
+    // assert(
     //   pricingPlan,
     //   403,
     //   `Auth error, unable to find matching pricing plan for project "${deployment.project}"`
     // )
 
-    // ctxAssert(
+    // assert(
     //   !pricingPlan.auth,
     //   403,
     //   `Auth error, encountered invalid pricing plan "${pricingPlan.slug}" for project "${deployment.project}"`
     // )
   }
 
+  let rateLimit: RateLimit | undefined | null
+
   if (pricingPlan) {
-    let serviceRateLimit = pricingPlan.rateLimit
+    const requestsLineItem = pricingPlan.lineItems.find(
+      (lineItem) => lineItem.slug === 'requests'
+    )
 
-    if (service.rateLimit !== undefined) {
-      serviceRateLimit = service.rateLimit
+    if (requestsLineItem) {
+      assert(
+        requestsLineItem?.slug === 'requests',
+        403,
+        `Invalid pricing plan "${pricingPlan.slug}" for project "${deployment.project}"`
+      )
+
+      rateLimit = requestsLineItem?.rateLimit
+    } else {
+      // No `requests` line-item, so we don't report usage for this tool.
+      reportUsage = false
+    }
+  }
+
+  const toolConfig = deployment.toolConfigs.find(
+    (toolConfig) => toolConfig.name === tool.name
+  )
+
+  if (toolConfig) {
+    if (toolConfig.reportUsage !== undefined) {
+      reportUsage &&= !!toolConfig.reportUsage
     }
 
-    if (service.reportUsage !== undefined) {
-      reportUsage = !!service.reportUsage
+    if (toolConfig.rateLimit !== undefined) {
+      // TODO: Improve RateLimitInput vs RateLimit types
+      rateLimit = toolConfig.rateLimit as RateLimit
     }
 
-    if (service.pricingPlanConfig) {
-      const servicePricingPlanConfig =
-        service.pricingPlanConfig[pricingPlan.slug]
+    const pricingPlanToolConfig = pricingPlan
+      ? toolConfig.pricingPlanConfig?.[pricingPlan.slug]
+      : undefined
 
-      if (servicePricingPlanConfig) {
-        ctxAssert(
-          servicePricingPlanConfig.enabled !== false,
-          403,
-          `Auth error, service "${service.name}" is disabled for pricing plan "${pricingPlan.slug}"`
-        )
+    if (pricingPlan && pricingPlanToolConfig) {
+      assert(
+        pricingPlanToolConfig.enabled &&
+          pricingPlanToolConfig.enabled === undefined &&
+          toolConfig.enabled,
+        403,
+        `Tool "${tool.name}" is not enabled for pricing plan "${pricingPlan.slug}"`
+      )
 
-        if (servicePricingPlanConfig.rateLimit !== undefined) {
-          serviceRateLimit = servicePricingPlanConfig.rateLimit
-        }
-
-        if (servicePricingPlanConfig.reportUsage !== undefined) {
-          reportUsage = !!servicePricingPlanConfig.reportUsage
-        }
+      if (pricingPlanToolConfig.reportUsage !== undefined) {
+        reportUsage &&= !!pricingPlanToolConfig.reportUsage
       }
-    }
 
-    // enforce rate limits
-    if (serviceRateLimit && serviceRateLimit.enabled) {
-      await rateLimit(event, {
-        id: consumer ? consumer.id : ip,
-        duration: serviceRateLimit.requestsInterval * 1000,
-        max: serviceRateLimit.requestsMaxPerInterval,
-        method,
-        pathname
-      })
+      if (pricingPlanToolConfig.rateLimit !== undefined) {
+        // TODO: Improve RateLimitInput vs RateLimit types
+        rateLimit = pricingPlanToolConfig.rateLimit as RateLimit
+      }
+    } else {
+      assert(toolConfig.enabled, 403, `Tool "${tool.name}" is not enabled`)
     }
+  }
+
+  // enforce requests rate limit
+  if (rateLimit) {
+    await enforceRateLimit(ctx, {
+      id: consumer ? consumer.id : ip,
+      duration: rateLimit.interval * 1000,
+      max: rateLimit.maxPerInterval,
+      method,
+      pathname
+    })
   }
 
   // TODO: decide whether or not this is something we actually want to support
@@ -147,7 +172,7 @@ export async function resolveOriginRequest(ctx: Context) {
     originReq,
     deployment: deployment.id,
     project: deployment.project,
-    service,
+    tool,
     consumer,
     date,
     ip,

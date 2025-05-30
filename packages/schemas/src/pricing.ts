@@ -1,3 +1,4 @@
+import type { Simplify } from 'type-fest'
 import { z } from '@hono/zod-openapi'
 
 import { rateLimitSchema } from './rate-limit'
@@ -95,9 +96,19 @@ export const stripeMeterIdMapSchema = z
   .openapi('StripeMeterIdMap')
 export type StripeMeterIdMap = z.infer<typeof stripeMeterIdMapSchema>
 
+// export const pricingPlanLineItemTypeSchema = z.union([
+//   z.literal('base'),
+//   z.literal('requests'),
+//   z.literal('custom')
+// ])
+// export type PricingPlanLineItemType = z.infer<
+//   typeof pricingPlanLineItemTypeSchema
+// >
+export type CustomPricingPlanLineItemSlug = `custom-${string}`
+
 const commonPricingPlanLineItemSchema = z.object({
   /**
-   * Slugs act as the primary key for LineItems. They should be lower and
+   * Slugs act as the primary key for LineItems. They should be lower-cased and
    * kebab-cased ("base", "requests", "image-transformations").
    *
    * The `base` slug is reserved for a plan's default `licensed` line-item.
@@ -106,8 +117,14 @@ const commonPricingPlanLineItemSchema = z.object({
    * on the number of request made during a given billing interval.
    *
    * All other PricingPlanLineItem `slugs` are considered custom LineItems.
+   *
+   * Should be stable across deployments, so if a slug refers to one type of
+   * product / line-item / metric in one deployment, it should refer to the same
+   * product / line-item / metric in future deployments, even if they are
+   * configured differently. If you are switching between a licensed and metered
+   * line-item across deployments, they must use different slugs.
    */
-  slug: z.union([z.string(), z.literal('base'), z.literal('requests')]),
+  slug: z.string(),
 
   /**
    * Optional label for the line-item which will be displayed on customer bills.
@@ -117,6 +134,9 @@ const commonPricingPlanLineItemSchema = z.object({
   label: z.string().optional().openapi('label', { example: 'API calls' })
 })
 
+/**
+ * Licensed LineItems are used to charge for fixed-price services.
+ */
 export const pricingPlanLicensedLineItemSchema =
   commonPricingPlanLineItemSchema.merge(
     z.object({
@@ -135,7 +155,13 @@ export const pricingPlanLicensedLineItemSchema =
       amount: z.number().nonnegative()
     })
   )
+export type PricingPlanLicensedLineItem = z.infer<
+  typeof pricingPlanLicensedLineItemSchema
+>
 
+/**
+ * Metered LineItems are used to charge for usage-based services.
+ */
 export const pricingPlanMeteredLineItemSchema =
   commonPricingPlanLineItemSchema.merge(
     z.object({
@@ -249,6 +275,55 @@ export const pricingPlanMeteredLineItemSchema =
         .optional()
     })
   )
+export type PricingPlanMeteredLineItem = Simplify<
+  | (Omit<
+      z.infer<typeof pricingPlanMeteredLineItemSchema>,
+      'billingScheme' | 'tiers' | 'tiersMode'
+    > & {
+      billingScheme: 'per_unit'
+    })
+  | (Omit<
+      z.infer<typeof pricingPlanMeteredLineItemSchema>,
+      'billingScheme' | 'unitAmount'
+    > & {
+      billingScheme: 'tiered'
+    })
+>
+
+/**
+ * The `base` LineItem is used to charge a fixed amount for a service using
+ * `licensed` usage type.
+ */
+export const basePricingPlanLineItemSchema =
+  pricingPlanLicensedLineItemSchema.extend({
+    slug: z.literal('base')
+  })
+export type BasePricingPlanLineItem = z.infer<
+  typeof basePricingPlanLineItemSchema
+>
+
+/**
+ * The `requests` LineItem is used to charge for usage-based services using the
+ * `metered` usage type.
+ *
+ * It corresponds to the total number of API calls made by a customer during a
+ * given billing interval.
+ */
+export const requestsPricingPlanLineItemSchema =
+  pricingPlanMeteredLineItemSchema.extend({
+    slug: z.literal('requests'),
+
+    /**
+     * Optional label for the line-item which will be displayed on customer
+     * bills.
+     *
+     * If unset, the line-item's `slug` will be used as the unit label.
+     */
+    unitLabel: z.string().default('API calls').optional()
+  })
+export type RequestsPricingPlanLineItem = PricingPlanMeteredLineItem & {
+  slug: 'requests'
+}
 
 /**
  * PricingPlanLineItems represent a single line-item in a Stripe Subscription.
@@ -285,11 +360,37 @@ export const pricingPlanLineItemSchema = z
       message: `Invalid PricingPlanLineItem "${data.slug}": reserved "requests" LineItems must have "metered" usage type.`
     })
   )
+  .refine(
+    (data) => {
+      if (data.slug !== 'base' && data.slug !== 'requests') {
+        return data.slug.startsWith('custom-')
+      }
+
+      return true
+    },
+    (data) => ({
+      message: `Invalid PricingPlanLineItem "${data.slug}": custom line-item slugs must start with "custom-". This is required so that TypeScript can discriminate between custom and reserved line-items.`
+    })
+  )
   .describe(
     'PricingPlanLineItems represent a single line-item in a Stripe Subscription. They map to a Stripe billing `Price` and possibly a corresponding Stripe `Meter` for usage-based line-items.'
   )
   .openapi('PricingPlanLineItem')
-export type PricingPlanLineItem = z.infer<typeof pricingPlanLineItemSchema>
+// export type PricingPlanLineItem = z.infer<typeof pricingPlanLineItemSchema>
+
+// This is a more complex discriminated union based on both `slug` and `usageType`
+export type PricingPlanLineItem = Simplify<
+  | BasePricingPlanLineItem
+  | RequestsPricingPlanLineItem
+  | (
+      | (Omit<PricingPlanLicensedLineItem, 'slug'> & {
+          slug: CustomPricingPlanLineItemSlug
+        })
+      | (Omit<PricingPlanMeteredLineItem, 'slug'> & {
+          slug: CustomPricingPlanLineItemSlug
+        })
+    )
+>
 
 /**
  * Represents the config for a single Stripe subscription plan with one or more
@@ -297,12 +398,17 @@ export type PricingPlanLineItem = z.infer<typeof pricingPlanLineItemSchema>
  */
 export const pricingPlanSchema = z
   .object({
-    name: z.string().nonempty().openapi('name', { example: 'Starter Monthly' }),
+    name: z
+      .string()
+      .nonempty()
+      .describe('Human-readable name for the pricing plan')
+      .openapi('name', { example: 'Starter Monthly' }),
+
     slug: z
       .string()
       .nonempty()
       .describe(
-        'PricingPlan slug ("free", "starter-monthly", "pro-annual", etc)'
+        'PricingPlan slug ("free", "starter-monthly", "pro-annual", etc). Should be lower-cased and kebab-cased. Should be stable across deployments.'
       )
       .openapi('slug', { example: 'starter-monthly' }),
 
@@ -328,7 +434,7 @@ export const pricingPlanSchema = z
     trialPeriodDays: z.number().nonnegative().optional(),
 
     /**
-     * List of LineItems which are included in the PricingPlan.
+     * List of custom LineItems which are included in the PricingPlan.
      *
      * Note: we currently support a max of 20 LineItems per plan.
      */
@@ -341,7 +447,12 @@ export const pricingPlanSchema = z
     'Represents the config for a Stripe subscription with one or more PricingPlanLineItems.'
   )
   .openapi('PricingPlan')
-export type PricingPlan = z.infer<typeof pricingPlanSchema>
+// export type PricingPlan = z.infer<typeof pricingPlanSchema>
+export type PricingPlan = Simplify<
+  Omit<z.infer<typeof pricingPlanSchema>, 'lineItems'> & {
+    lineItems: PricingPlanLineItem[]
+  }
+>
 
 /**
  * Map from PricingPlanLineItem **slug** to Stripe Product id
@@ -364,7 +475,7 @@ export const pricingPlanListSchema = z
     message: 'Must contain at least one PricingPlan'
   })
   .describe('List of PricingPlans')
-export type PricingPlanList = z.infer<typeof pricingPlanListSchema>
+export type PricingPlanList = PricingPlan[]
 
 /**
  * Map from internal PricingPlanLineItem **slug** to Stripe Subscription Item id

@@ -1,3 +1,4 @@
+import type { Simplify } from 'type-fest'
 import { z } from '@hono/zod-openapi'
 
 import {
@@ -7,6 +8,7 @@ import {
 import {
   defaultFreePricingPlan,
   pricingIntervalListSchema,
+  type PricingPlanList,
   pricingPlanListSchema
 } from './pricing'
 import { toolConfigSchema, toolSchema } from './tools'
@@ -151,20 +153,28 @@ To add support for annual pricing plans, for example, you can use: \`['month', '
      * `toolConfigs`, it will use the default behavior of the Agentic API
      * gateway.
      */
-    toolConfigs: z.array(toolConfigSchema).default([]).optional()
+    toolConfigs: z.array(toolConfigSchema).optional().default([])
   })
   .strip()
 
-export type AgenticProjectConfigInput = z.input<
-  typeof agenticProjectConfigSchema
+export type AgenticProjectConfigInput = Simplify<
+  Omit<z.input<typeof agenticProjectConfigSchema>, 'pricingPlans'> & {
+    pricingPlans?: PricingPlanList
+  }
 >
-export type AgenticProjectConfig = z.output<typeof agenticProjectConfigSchema>
+export type AgenticProjectConfig = Simplify<
+  Omit<z.output<typeof agenticProjectConfigSchema>, 'pricingPlans'> & {
+    pricingPlans: PricingPlanList
+  }
+>
 
 export const resolvedAgenticProjectConfigSchema =
   agenticProjectConfigSchema.extend({
     originAdapter: originAdapterSchema,
     tools: z.array(toolSchema).default([])
   })
-export type ResolvedAgenticProjectConfig = z.output<
-  typeof resolvedAgenticProjectConfigSchema
+export type ResolvedAgenticProjectConfig = Simplify<
+  Omit<z.output<typeof resolvedAgenticProjectConfigSchema>, 'pricingPlans'> & {
+    pricingPlans: PricingPlanList
+  }
 >
