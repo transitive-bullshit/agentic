@@ -15,7 +15,7 @@ import { deploymentIdentifierAndPopulateSchema } from './schemas'
 
 const route = createRoute({
   description: 'Gets a deployment by its public identifier (admin-only)',
-  tags: ['deployments'],
+  tags: ['admin', 'deployments'],
   operationId: 'adminGetDeploymentByIdentifier',
   method: 'get',
   path: 'admin/deployments/by-identifier',
@@ -51,6 +51,20 @@ export function registerV1AdminDeploymentsGetDeploymentByIdentifier(
     })
     assert(deployment, 404, `Deployment not found "${deploymentIdentifier}"`)
     await acl(c, deployment, { label: 'Deployment' })
+
+    // TODO
+    // TODO: switch from published to publishedAt?
+    // if (deployment.published) {
+    //   c.res.headers.set(
+    //     'cache-control',
+    //     'public, max-age=1, s-maxage=1 stale-while-revalidate=1'
+    //   )
+    // } else {
+    //   c.res.headers.set(
+    //     'cache-control',
+    //     'public, max-age=120, s-maxage=120, stale-while-revalidate=10'
+    //   )
+    // }
 
     return c.json(
       parseZodSchema(schema.deploymentAdminSelectSchema, deployment)

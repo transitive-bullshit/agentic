@@ -13,7 +13,7 @@ import {
 import { consumerTokenParamsSchema, populateConsumerSchema } from './schemas'
 
 const route = createRoute({
-  description: 'Gets a consumer by API token',
+  description: 'Gets a consumer by API token (admin-only)',
   tags: ['admin', 'consumers'],
   operationId: 'adminGetConsumerByToken',
   method: 'get',
@@ -25,7 +25,7 @@ const route = createRoute({
   },
   responses: {
     200: {
-      description: 'A consumer object',
+      description: 'An admin consumer object',
       content: {
         'application/json': {
           schema: schema.consumerSelectSchema
