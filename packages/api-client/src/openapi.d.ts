@@ -330,7 +330,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Gets a consumer by API token */
+        /** @description Gets a consumer by API token (admin-only) */
         get: operations["adminGetConsumerByToken"];
         put?: never;
         post?: never;
@@ -1674,7 +1674,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description A consumer object */
+            /** @description An admin consumer object */
             200: {
                 headers: {
                     [name: string]: unknown;

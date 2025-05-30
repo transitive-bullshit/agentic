@@ -4,6 +4,7 @@ import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 import type { AuthenticatedEnv } from '@/lib/types'
 import { schema } from '@/db'
 import { acl } from '@/lib/acl'
+import { aclAdmin } from '@/lib/acl-admin'
 import { tryGetDeploymentByIdentifier } from '@/lib/deployments/try-get-deployment-by-identifier'
 import {
   openapiAuthenticatedSecuritySchemas,
@@ -42,6 +43,7 @@ export function registerV1AdminDeploymentsGetDeploymentByIdentifier(
 ) {
   return app.openapi(route, async (c) => {
     const { deploymentIdentifier, populate = [] } = c.req.valid('query')
+    await aclAdmin(c)
 
     const deployment = await tryGetDeploymentByIdentifier(c, {
       deploymentIdentifier,

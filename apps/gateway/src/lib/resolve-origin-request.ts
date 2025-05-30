@@ -147,7 +147,7 @@ export async function resolveOriginRequest(ctx: Context) {
     }
   }
 
-  // enforce requests rate limit
+  // enforce requests rate limits
   if (rateLimit) {
     await enforceRateLimit(ctx, {
       id: consumer ? consumer.id : ip,
@@ -158,10 +158,11 @@ export async function resolveOriginRequest(ctx: Context) {
     })
   }
 
-  // TODO: decide whether or not this is something we actually want to support
-  // for long-term DX
-  const targetUrlOverride = isProd ? null : req.headers.get('x-saasify-target')
-  const baseUrl = (targetUrlOverride || deployment._url).replaceAll(/\/$/g, '')
+  const baseUrl = deployment.originUrl.replaceAll(/\/$/g, '')
+  // TODO: Everything from here on depends on the origin adapter type.
+  // For MCP, we need(?) to use an McpClient and SSEClientTransport?
+  // For OpenAPI and raw, we need to make an origin HTTP request.
+
   const originUrl = `${baseUrl}${toolPath}${search}`
   console.log('originUrl', originUrl)
 

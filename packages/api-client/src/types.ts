@@ -16,6 +16,12 @@ export type Deployment = Simplify<
   }
 >
 
+export type AdminDeployment = Simplify<
+  Omit<components['schemas']['AdminDeployment'], 'pricingPlans'> & {
+    pricingPlans: PricingPlan[]
+  }
+>
+
 export type ProjectIdentifier = components['schemas']['ProjectIdentifier']
 export type DeploymentIdentifier = components['schemas']['DeploymentIdentifier']
 
