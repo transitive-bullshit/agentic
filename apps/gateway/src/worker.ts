@@ -1,5 +1,5 @@
 import { AgenticApiClient } from '@agentic/platform-api-client'
-import { parseZodSchema } from '@agentic/platform-core'
+import { assert, parseZodSchema } from '@agentic/platform-core'
 
 import type { Context } from './lib/types'
 import { type AgenticEnv, envSchema } from './lib/env'
@@ -67,21 +67,32 @@ export default {
 
         switch (resolvedOriginRequest.deployment.originAdapter.type) {
           case 'openapi':
-            originResponse = await fetch(resolvedOriginRequest.originRequest!)
+            assert(
+              resolvedOriginRequest.originRequest,
+              500,
+              'Origin request is required'
+            )
+            originResponse = await fetch(resolvedOriginRequest.originRequest)
             break
 
           case 'raw':
-            originResponse = await fetch(resolvedOriginRequest.originRequest!)
+            assert(
+              resolvedOriginRequest.originRequest,
+              500,
+              'Origin request is required'
+            )
+            originResponse = await fetch(resolvedOriginRequest.originRequest)
             break
 
           case 'mcp':
             throw new Error('MCP not yet supported')
         }
 
+        assert(originResponse, 500, 'Origin response is required')
         const res = new Response(originResponse.body, originResponse)
-        recordTimespans()
 
         // Record the time it took for both the origin and gateway proxy to respond
+        recordTimespans()
         res.headers.set('x-response-time', `${originTimespan!}ms`)
         res.headers.set('x-proxy-response-time', `${gatewayTimespan!}ms`)
 

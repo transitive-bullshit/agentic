@@ -1,8 +1,17 @@
+import type { Context } from './types'
+
 const cache = caches.default
 
-export async function fetchCache(opts) {
-  const { event, cacheKey, fetch: fetchResponse } = opts
-
+export async function fetchCache(
+  ctx: Context,
+  {
+    cacheKey,
+    fetchResponse
+  }: {
+    cacheKey?: string
+    fetchResponse: () => Promise<Response>
+  }
+) {
   let response
 
   if (cacheKey) {
@@ -16,7 +25,7 @@ export async function fetchCache(opts) {
     if (cacheKey) {
       if (response.headers.has('Cache-Control')) {
         // cache will respect response headers
-        event.waitUntil(
+        ctx.waitUntil(
           cache.put(cacheKey, response.clone()).catch((err) => {
             console.warn('cache put error', cacheKey, err)
           })

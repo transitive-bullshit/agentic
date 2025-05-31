@@ -26,6 +26,8 @@ export async function resolveOriginRequest(
   const { search, pathname } = requestUrl
   const method = req.method.toLowerCase()
   const requestPathParts = pathname.split('/')
+
+  // TODO: the isMCPRequest logic needs to be completely redone.
   const isMCPRequest = requestPathParts[0] === 'mcp'
   const requestPath = isMCPRequest
     ? requestPathParts.slice(1).join('/')
@@ -70,7 +72,7 @@ export async function resolveOriginRequest(
       `Auth token "${token}" is not authorized for project "${deployment.projectId}"`
     )
 
-    // TODO: Ensure that consumer.plan is compatible with the target deployment
+    // TODO: Ensure that consumer.plan is compatible with the target deployment?
     // TODO: This could definitely cause issues when changing pricing plans.
 
     pricingPlan = deployment.pricingPlans.find(
