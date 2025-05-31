@@ -1,13 +1,13 @@
 {
-  "name": "@agentic/platform-schemas",
+  "name": "@agentic/platform-types",
   "version": "0.0.1",
-  "description": "Core schemas shared across the Agentic platform.",
+  "description": "Core zod schemas and types shared across the Agentic platform.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "UNLICENSED",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/transitive-bullshit/agentic-platform.git",
-    "directory": "packages/schemas"
+    "directory": "packages/types"
   },
   "type": "module",
   "source": "./src/index.ts",
@@ -17,6 +17,7 @@
     ".": "./src/index.ts"
   },
   "scripts": {
+    "generate": "openapi-typescript http://localhost:3000/docs --output ./src/openapi.d.ts",
     "test": "run-s test:*",
     "test:lint": "eslint .",
     "test:typecheck": "tsc --noEmit",
@@ -30,6 +31,7 @@
   },
   "devDependencies": {
     "@types/ms": "catalog:",
+    "openapi-typescript": "catalog:",
     "restore-cursor": "catalog:",
     "zod-to-json-schema": "catalog:"
   },

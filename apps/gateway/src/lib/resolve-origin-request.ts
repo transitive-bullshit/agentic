@@ -1,5 +1,10 @@
-import type { Consumer } from '@agentic/platform-api-client'
-import type { PricingPlan, RateLimit } from '@agentic/platform-schemas'
+import type {
+  AdminDeployment,
+  Consumer,
+  PricingPlan,
+  RateLimit,
+  Tool
+} from '@agentic/platform-types'
 import { assert } from '@agentic/platform-core'
 
 import type { Context } from './types'
@@ -22,17 +27,22 @@ export async function resolveOriginRequest(ctx: Context) {
   const date = Date.now()
 
   const { search, pathname } = requestUrl
-  let { method } = req
-  console.log('request', method, { search, pathname })
-  method = method.toLowerCase()
+  const method = req.method.toLowerCase()
 
   const { deployment, toolPath } = await getDeployment(ctx, pathname)
-  console.log('deployment', { deployment: deployment.id, toolPath })
 
   const tool = getTool({
     method,
     deployment,
     toolPath
+  })
+  console.log('rqeuest', {
+    method,
+    pathname,
+    search,
+    deployment: deployment.identifier,
+    toolPath,
+    tool
   })
 
   let reportUsage = true
@@ -88,6 +98,8 @@ export async function resolveOriginRequest(ctx: Context) {
 
   let rateLimit: RateLimit | undefined | null
 
+  // Resolve rate limit and whether to report `requests` usage based on the
+  // customer's pricing plan and deployment config.
   if (pricingPlan) {
     const requestsLineItem = pricingPlan.lineItems.find(
       (lineItem) => lineItem.slug === 'requests'
@@ -158,12 +170,14 @@ export async function resolveOriginRequest(ctx: Context) {
     })
   }
 
-  const baseUrl = deployment.originUrl.replaceAll(/\/$/g, '')
   // TODO: Everything from here on depends on the origin adapter type.
   // For MCP, we need(?) to use an McpClient and SSEClientTransport?
   // For OpenAPI and raw, we need to make an origin HTTP request.
 
-  const originUrl = `${baseUrl}${toolPath}${search}`
+  // TODO: what do we want the API gateway's interface to be?
+  //   - support both MCP and OpenAPI / raw?
+
+  const originUrl = `${deployment.originUrl}${toolPath}${search}`
   console.log('originUrl', originUrl)
 
   const originReq = new Request(originUrl, req)
@@ -181,4 +195,14 @@ export async function resolveOriginRequest(ctx: Context) {
     plan: pricingPlan ? pricingPlan.slug : null,
     reportUsage
   }
+}
+
+export interface ResolvedOriginRequest {
+  originRequest?: Request
+  deployment: AdminDeployment
+  tool: Tool
+  consumer: Consumer | undefined
+  date: number
+  ip: string
+  method: string
 }

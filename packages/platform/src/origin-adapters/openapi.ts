@@ -2,12 +2,12 @@ import type {
   OpenAPIOriginAdapter,
   OpenAPIOriginAdapterConfig,
   Tool
-} from '@agentic/platform-schemas'
+} from '@agentic/platform-types'
 import { assert, type Logger } from '@agentic/platform-core'
 import {
   getToolsFromOpenAPISpec,
   validateOpenAPISpec
-} from '@agentic/platform-openapi'
+} from '@agentic/platform-openapi-utils'
 
 export async function resolveOpenAPIOriginAdapter({
   originAdapter,

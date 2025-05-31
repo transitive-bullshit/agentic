@@ -6,7 +6,7 @@ export default [
   {
     ignores: [
       '**/out/**',
-      'packages/api-client/src/openapi.d.ts',
+      'packages/types/src/openapi.d.ts',
       'apps/gateway/src/worker.d.ts'
     ]
   },

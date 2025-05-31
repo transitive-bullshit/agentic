@@ -17,20 +17,16 @@
     ".": "./src/index.ts"
   },
   "scripts": {
-    "generate": "openapi-typescript http://localhost:3000/docs --output ./src/openapi.d.ts",
     "test": "run-s test:*",
     "test:lint": "eslint .",
     "test:typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@agentic/platform-core": "workspace:*",
-    "@agentic/platform-schemas": "workspace:*",
+    "@agentic/platform-types": "workspace:*",
     "@openauthjs/openauth": "catalog:",
     "ky": "catalog:",
     "type-fest": "catalog:"
-  },
-  "devDependencies": {
-    "openapi-typescript": "catalog:"
   },
   "publishConfig": {
     "access": "public"

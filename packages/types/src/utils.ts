@@ -2,7 +2,7 @@ import type {
   PricingInterval,
   PricingPlan,
   PricingPlanList
-} from '@agentic/platform-schemas'
+} from '@agentic/platform-types'
 
 export function getPricingPlansByInterval({
   pricingInterval,

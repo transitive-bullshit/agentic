@@ -6,7 +6,7 @@ import {
   openapiToolOperationSchema,
   type Tool,
   toolSchema
-} from '@agentic/platform-schemas'
+} from '@agentic/platform-types'
 import decamelize from 'decamelize'
 
 import type {

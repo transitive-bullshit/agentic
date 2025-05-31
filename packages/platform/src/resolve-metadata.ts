@@ -1,4 +1,4 @@
-import type { AgenticProjectConfig } from '@agentic/platform-schemas'
+import type { AgenticProjectConfig } from '@agentic/platform-types'
 import { assert } from '@agentic/platform-core'
 import { validators } from '@agentic/platform-validators'
 import { clean as cleanSemver, valid as isValidSemver } from 'semver'

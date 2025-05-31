@@ -1,5 +1,4 @@
-import type { Deployment } from '@agentic/platform-api-client'
-import type { Tool } from '@agentic/platform-schemas'
+import type { Deployment, Tool } from '@agentic/platform-types'
 import { assert } from '@agentic/platform-core'
 
 export function getTool({

@@ -1,7 +1,7 @@
 import {
   type StripeSubscriptionItemIdMap,
   stripeSubscriptionItemIdMapSchema
-} from '@agentic/platform-schemas'
+} from '@agentic/platform-types'
 import { relations } from '@fisch0920/drizzle-orm'
 import {
   boolean,

@@ -1,7 +1,4 @@
-import type {
-  PricingPlan,
-  PricingPlanLineItem
-} from '@agentic/platform-schemas'
+import type { PricingPlan, PricingPlanLineItem } from '@agentic/platform-types'
 import { hashObject } from '@agentic/platform-core'
 
 import type { RawProject } from './types'

@@ -1,5 +1,5 @@
 {
-  "name": "@agentic/platform-openapi",
+  "name": "@agentic/platform-openapi-utils",
   "version": "0.0.1",
   "description": "OpenAPI utilities used by the Agentic platform.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
@@ -7,7 +7,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/transitive-bullshit/agentic-platform.git",
-    "directory": "packages/schemas"
+    "directory": "packages/openapi-utils"
   },
   "type": "module",
   "source": "./src/index.ts",
@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@agentic/platform-core": "workspace:*",
-    "@agentic/platform-schemas": "workspace:*",
+    "@agentic/platform-types": "workspace:*",
     "@redocly/openapi-core": "catalog:",
     "camelcase": "catalog:",
     "decamelize": "catalog:"

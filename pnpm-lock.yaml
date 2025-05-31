@@ -269,9 +269,9 @@ importers:
       '@agentic/platform-core':
         specifier: workspace:*
         version: link:../../packages/core
-      '@agentic/platform-schemas':
+      '@agentic/platform-types':
         specifier: workspace:*
-        version: link:../../packages/schemas
+        version: link:../../packages/types
       '@agentic/platform-validators':
         specifier: workspace:*
         version: link:../../packages/validators
@@ -354,15 +354,18 @@ importers:
       '@agentic/platform-core':
         specifier: workspace:*
         version: link:../../packages/core
-      '@agentic/platform-schemas':
+      '@agentic/platform-types':
         specifier: workspace:*
-        version: link:../../packages/schemas
+        version: link:../../packages/types
       '@agentic/platform-validators':
         specifier: workspace:*
         version: link:../../packages/validators
       '@hono/zod-validator':
         specifier: 'catalog:'
         version: 0.6.0(hono@4.7.10)(zod@3.25.36)
+      '@modelcontextprotocol/sdk':
+        specifier: 'catalog:'
+        version: 1.12.1
       eventid:
         specifier: 'catalog:'
         version: 2.0.1
@@ -382,9 +385,9 @@ importers:
       '@agentic/platform-core':
         specifier: workspace:*
         version: link:../core
-      '@agentic/platform-schemas':
+      '@agentic/platform-types':
         specifier: workspace:*
-        version: link:../schemas
+        version: link:../types
       '@openauthjs/openauth':
         specifier: 'catalog:'
         version: 0.4.3(arctic@2.3.4)(hono@4.7.10)
@@ -394,10 +397,6 @@ importers:
       type-fest:
         specifier: 'catalog:'
         version: 4.41.0
-    devDependencies:
-      openapi-typescript:
-        specifier: 'catalog:'
-        version: 7.8.0(typescript@5.8.3)
 
   packages/cli:
     dependencies:
@@ -410,9 +409,9 @@ importers:
       '@agentic/platform-core':
         specifier: workspace:*
         version: link:../core
-      '@agentic/platform-schemas':
+      '@agentic/platform-types':
         specifier: workspace:*
-        version: link:../schemas
+        version: link:../types
       '@agentic/platform-validators':
         specifier: workspace:*
         version: link:../validators
@@ -488,14 +487,14 @@ importers:
         specifier: workspace:*
         version: link:../platform
 
-  packages/openapi:
+  packages/openapi-utils:
     dependencies:
       '@agentic/platform-core':
         specifier: workspace:*
         version: link:../core
-      '@agentic/platform-schemas':
+      '@agentic/platform-types':
         specifier: workspace:*
-        version: link:../schemas
+        version: link:../types
       '@redocly/openapi-core':
         specifier: 'catalog:'
         version: 1.34.3(supports-color@10.0.0)
@@ -518,12 +517,12 @@ importers:
       '@agentic/platform-core':
         specifier: workspace:*
         version: link:../core
-      '@agentic/platform-openapi':
+      '@agentic/platform-openapi-utils':
         specifier: workspace:*
-        version: link:../openapi
-      '@agentic/platform-schemas':
+        version: link:../openapi-utils
+      '@agentic/platform-types':
         specifier: workspace:*
-        version: link:../schemas
+        version: link:../types
       '@agentic/platform-validators':
         specifier: workspace:*
         version: link:../validators
@@ -550,7 +549,7 @@ importers:
         specifier: 'catalog:'
         version: 3.24.5(zod@3.25.36)
 
-  packages/schemas:
+  packages/types:
     dependencies:
       '@hono/zod-openapi':
         specifier: 'catalog:'
@@ -568,6 +567,9 @@ importers:
       '@types/ms':
         specifier: 'catalog:'
         version: 2.1.0
+      openapi-typescript:
+        specifier: 'catalog:'
+        version: 7.8.0(typescript@5.8.3)
       restore-cursor:
         specifier: 'catalog:'
         version: 5.1.0
@@ -4607,11 +4609,6 @@ packages:
   yaml-ast-parser@0.0.43:
     resolution: {integrity: sha512-2PTINUwsRqSd+s8XxKaJWQlUuEMHJQyEuh2edBbW8KNJz0SJPwUSD2zRWqezFEdN7IzAgeuYHFUCF7o8zRdZ0A==}
 
-  yaml@2.7.1:
-    resolution: {integrity: sha512-10ULxpnOCQXxJvBgxsn9ptjq6uviG/htZKk9veJGhlqn3w/DxQ631zFF+nlQXLwmImeS5amR2dl2U8sg6U9jsQ==}
-    engines: {node: '>= 14'}
-    hasBin: true
-
   yaml@2.8.0:
     resolution: {integrity: sha512-4lLa/EcQCB0cJkyts+FpIRx5G/llPxfP6VQU5KByHEhLxY3IJCH0f0Hy1MHI8sClTvsIb8qwRJ6R/ZdlDJ/leQ==}
     engines: {node: '>= 14.6'}
@@ -7678,7 +7675,7 @@ snapshots:
 
   openapi3-ts@4.4.0:
     dependencies:
-      yaml: 2.7.1
+      yaml: 2.8.0
 
   optionator@0.9.4:
     dependencies:
@@ -8783,8 +8780,6 @@ snapshots:
   xtend@4.0.2: {}
 
   yaml-ast-parser@0.0.43: {}
-
-  yaml@2.7.1: {}
 
   yaml@2.8.0: {}
 

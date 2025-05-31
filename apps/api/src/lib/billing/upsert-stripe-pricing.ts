@@ -4,7 +4,7 @@ import {
   getLabelForPricingInterval,
   type PricingPlan,
   type PricingPlanLineItem
-} from '@agentic/platform-schemas'
+} from '@agentic/platform-types'
 import pAll from 'p-all'
 
 import {

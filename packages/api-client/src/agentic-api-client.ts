@@ -1,3 +1,13 @@
+import type {
+  AdminDeployment,
+  Consumer,
+  Deployment,
+  openapi,
+  Project,
+  Team,
+  TeamMember,
+  User
+} from '@agentic/platform-types'
 import type { Simplify } from 'type-fest'
 import { assert, sanitizeSearchParams } from '@agentic/platform-core'
 import {
@@ -6,21 +16,13 @@ import {
 } from '@openauthjs/openauth/client'
 import defaultKy, { type KyInstance } from 'ky'
 
-import type { operations } from './openapi'
 import type {
-  AdminDeployment,
   AuthorizeResult,
   AuthTokens,
   AuthUser,
-  Consumer,
-  Deployment,
-  OnUpdateAuthSessionFunction,
-  Project,
-  Team,
-  TeamMember,
-  User
+  OnUpdateAuthSessionFunction
 } from './types'
-import { subjects } from './subjects'
+import { authSubjects } from './auth-subjects'
 
 export class AgenticApiClient {
   static readonly DEFAULT_API_BASE_URL = 'https://api.agentic.so'
@@ -106,7 +108,7 @@ export class AgenticApiClient {
     }
 
     const verified = await this._authClient.verify(
-      subjects,
+      authSubjects,
       this._authTokens.access,
       {
         refresh: this._authTokens.refresh
@@ -502,34 +504,36 @@ export class AgenticApiClient {
   }
 }
 
+type Operations = openapi.operations
+
 type OperationParameters<
-  T extends keyof operations,
-  Q = NonNullable<operations[T]['parameters']['query']>,
-  P = NonNullable<operations[T]['parameters']['path']>
+  T extends keyof Operations,
+  Q = NonNullable<Operations[T]['parameters']['query']>,
+  P = NonNullable<Operations[T]['parameters']['path']>
 > = Simplify<
   ([Q] extends [never] ? unknown : Q) & ([P] extends [never] ? unknown : P)
 >
 
 // Currently unused because some types need customization (e.g. Deployment) over
 // the default OpenAPI types.
-// type OperationResponse<T extends keyof operations> =
-//   operations[T]['responses'][200]['content']['application/json']
+// type OperationResponse<T extends keyof Operations> =
+//   Operations[T]['responses'][200]['content']['application/json']
 
 type OperationKeysWithRequestBody = {
-  [K in keyof operations]: operations[K]['requestBody'] extends {
+  [K in keyof Operations]: Operations[K]['requestBody'] extends {
     content: {
       'application/json': unknown
     }
   }
     ? K
     : never
-}[keyof operations]
+}[keyof Operations]
 
 type OperationBody<
   T extends OperationKeysWithRequestBody,
   B extends
     | object
-    | undefined = operations[T]['requestBody']['content']['application/json']
+    | undefined = Operations[T]['requestBody']['content']['application/json']
 > = B
 
 type PopulateProject<TPopulate> = Simplify<

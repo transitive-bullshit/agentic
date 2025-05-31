@@ -2,7 +2,7 @@ import type {
   OriginAdapter,
   OriginAdapterConfig,
   Tool
-} from '@agentic/platform-schemas'
+} from '@agentic/platform-types'
 import { assert, type Logger } from '@agentic/platform-core'
 
 import { resolveMCPOriginAdapter } from './origin-adapters/mcp'

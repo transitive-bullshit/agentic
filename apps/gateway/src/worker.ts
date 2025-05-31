@@ -55,10 +55,8 @@ export default {
     }
 
     try {
-      const { method } = req
-
-      if (method === 'OPTIONS') {
-        return handleOptions(req)
+      if (inputReq.method === 'OPTIONS') {
+        return handleOptions(inputReq)
       }
 
       const { originReq, ...call } = await resolveOriginRequest(ctx)

@@ -3,7 +3,7 @@ import {
   type AgenticProjectConfig,
   getPricingPlansByInterval,
   type PricingPlanLineItem
-} from '@agentic/platform-schemas'
+} from '@agentic/platform-types'
 
 export function validatePricing({
   pricingIntervals,

@@ -27,7 +27,7 @@
     "@agentic/platform": "workspace:*",
     "@agentic/platform-api-client": "workspace:*",
     "@agentic/platform-core": "workspace:*",
-    "@agentic/platform-schemas": "workspace:*",
+    "@agentic/platform-types": "workspace:*",
     "@agentic/platform-validators": "workspace:*",
     "@clack/prompts": "catalog:",
     "@hono/node-server": "catalog:",

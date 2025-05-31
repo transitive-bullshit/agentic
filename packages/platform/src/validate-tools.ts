@@ -1,4 +1,4 @@
-import type { OriginAdapter, Tool, ToolConfig } from '@agentic/platform-schemas'
+import type { OriginAdapter, Tool, ToolConfig } from '@agentic/platform-types'
 import { assert } from '@agentic/platform-core'
 
 /**

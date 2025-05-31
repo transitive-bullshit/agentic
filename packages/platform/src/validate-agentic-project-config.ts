@@ -1,11 +1,7 @@
-import type { ZodTypeDef } from 'zod'
-import { type Logger, parseZodSchema } from '@agentic/platform-core'
-import {
-  type AgenticProjectConfig,
-  type AgenticProjectConfigInput,
-  agenticProjectConfigSchema
-} from '@agentic/platform-schemas'
+import type { AgenticProjectConfig } from '@agentic/platform-types'
+import { type Logger } from '@agentic/platform-core'
 
+import { parseAgenticProjectConfig } from './parse-agentic-project-config'
 import { resolveMetadata } from './resolve-metadata'
 import { validateOriginAdapter } from './validate-origin-adapter'
 import { validatePricing } from './validate-pricing'
@@ -17,16 +13,21 @@ export async function validateAgenticProjectConfig(
     ...opts
   }: { logger?: Logger; cwd?: URL; strip?: boolean; label?: string } = {}
 ): Promise<AgenticProjectConfig> {
-  const config = parseZodSchema<
-    AgenticProjectConfig,
-    ZodTypeDef,
-    AgenticProjectConfigInput
-  >(
-    strip
-      ? agenticProjectConfigSchema.strip()
-      : agenticProjectConfigSchema.strict(),
-    inputConfig
-  )
+  const config = parseAgenticProjectConfig(inputConfig, {
+    strip,
+    strict: !strip
+  })
+
+  // const config = parseZodSchema<
+  //   AgenticProjectConfig,
+  //   ZodTypeDef,
+  //   AgenticProjectConfigInput
+  // >(
+  //   strip
+  //     ? agenticProjectConfigSchema.strip()
+  //     : agenticProjectConfigSchema.strict(),
+  //   inputConfig
+  // )
 
   const { name, version } = resolveMetadata(config)
   validatePricing(config)
@@ -40,19 +41,13 @@ export async function validateAgenticProjectConfig(
     originAdapter: config.originAdapter
   })
 
-  return parseZodSchema<
-    AgenticProjectConfig,
-    ZodTypeDef,
-    AgenticProjectConfigInput
-  >(
-    strip
-      ? agenticProjectConfigSchema.strip()
-      : agenticProjectConfigSchema.strict(),
+  return parseAgenticProjectConfig(
     {
       ...config,
       name,
       version,
       originAdapter
-    }
+    },
+    { strip, strict: !strip }
   )
 }

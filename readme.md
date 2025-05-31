@@ -30,11 +30,13 @@
 - consider switching to [consola](https://github.com/unjs/consola) for logging?
 - consider switching to `bun` (for `--hot` reloading!!)
 - consider `projectName` and `projectSlug` or `projectIdentifier`?
-- for clients and internal packages, importing some types from platform-schemas and some types from platform-api-client is confusing
+- for clients and internal packages, importing some types from platform-types and some types from platform-api-client is confusing
   - this actually causes problems because some types from the openapi version aren't compatible with the schema types like `PricingPlan`
+  - solved for now; revisit this to clean up in the future
 - validate stability of pricing plan slugs across deployments
   - same for pricing plan line-items
 - replace `ms` package
+- API gateway MCP server vs OpenAPI API gateway
 
 ## License
 

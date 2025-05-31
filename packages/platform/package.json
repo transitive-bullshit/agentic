@@ -23,8 +23,8 @@
   },
   "dependencies": {
     "@agentic/platform-core": "workspace:*",
-    "@agentic/platform-openapi": "workspace:*",
-    "@agentic/platform-schemas": "workspace:*",
+    "@agentic/platform-openapi-utils": "workspace:*",
+    "@agentic/platform-types": "workspace:*",
     "@agentic/platform-validators": "workspace:*",
     "@hono/zod-openapi": "catalog:",
     "@modelcontextprotocol/sdk": "catalog:",

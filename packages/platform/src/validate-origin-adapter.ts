@@ -1,4 +1,4 @@
-import type { OriginAdapterConfig } from '@agentic/platform-schemas'
+import type { OriginAdapterConfig } from '@agentic/platform-types'
 import { assert, type Logger } from '@agentic/platform-core'
 
 import { resolveMCPOriginAdapter } from './origin-adapters/mcp'

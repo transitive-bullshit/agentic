@@ -1,5 +1,5 @@
 {
   "extends": "@fisch0920/config/tsconfig-node",
-  "include": ["src", "*.config.ts", "bin/*", "../schemas/src/utils.ts"],
+  "include": ["src", "*.config.ts", "bin/*"],
   "exclude": ["node_modules"]
 }

@@ -4,7 +4,7 @@ import {
   agenticProjectConfigSchema,
   type ResolvedAgenticProjectConfig,
   resolvedAgenticProjectConfigSchema
-} from '@agentic/platform-schemas'
+} from '@agentic/platform-types'
 
 import { resolveMetadata } from './resolve-metadata'
 import { resolveOriginAdapter } from './resolve-origin-adapter'

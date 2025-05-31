@@ -2,7 +2,7 @@ import type {
   MCPOriginAdapter,
   MCPOriginAdapterConfig,
   Tool
-} from '@agentic/platform-schemas'
+} from '@agentic/platform-types'
 import { assert } from '@agentic/platform-core'
 import { Client as McpClient } from '@modelcontextprotocol/sdk/client/index.js'
 import { SSEClientTransport } from '@modelcontextprotocol/sdk/client/sse.js'

@@ -1,4 +1,4 @@
-import type { OpenAPIOperationParameterSource } from '@agentic/platform-schemas'
+import type { OpenAPIOperationParameterSource } from '@agentic/platform-types'
 import { assert } from '@agentic/platform-core'
 import camelCaseImpl from 'camelcase'
 
