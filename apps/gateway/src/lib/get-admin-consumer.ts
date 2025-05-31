@@ -2,7 +2,7 @@ import { assert } from '@agentic/platform-core'
 
 import type { AdminConsumer, Context } from './types'
 
-export async function getConsumer(
+export async function getAdminConsumer(
   ctx: Context,
   token: string
 ): Promise<AdminConsumer> {

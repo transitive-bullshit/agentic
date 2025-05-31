@@ -7,8 +7,6 @@
 
 ## TODO
 
-- **api gateway**
-  - signed requests
 - **webapp**
 - end-to-end working examples
   - raw
@@ -25,7 +23,7 @@
   - (openauth password emails and `sendCode`)
   - stripe-related billing emails
 - auth
-  - custom auth pages
+  - custom auth pages for `openauth`
 - re-add support for teams / organizations
 - consider switching to [consola](https://github.com/unjs/consola) for logging?
 - consider switching to `bun` (for `--hot` reloading!!)
@@ -36,11 +34,23 @@
 - validate stability of pricing plan slugs across deployments
   - same for pricing plan line-items
 - replace `ms` package
-- API gateway MCP server vs OpenAPI API gateway
-- share hono middleware and utils across apps/api and apps/gateway
-  - or combine these together? ehhhh
 - add username / team name blacklist
-  - admin, internal, mcp, etc
+  - admin, internal, mcp, sse, etc
+- **API gateway**
+  - share hono middleware and utils across apps/api and apps/gateway
+    - or combine these together? ehhhh
+  - MCP server vs REST gateway on public and internal sides
+    - RAW: `METHOD gateway.agentic.so/deploymentIdentifier/<pathname>`
+      - => Raw HTTP: `METHOD originUrl/<pathname>` simple HTTP proxy request
+    - REST: `POST gateway.agentic.so/deploymentIdentifier/toolName`
+      - => MCP: `MCPClient.callTool` with JSON body parameters
+      - => OpenAPI: `GET/POST/ETC originUrl/toolName` operation with transformed JSON body params
+    - MCP: `mcp.agentic.so/deploymentIdentifier/sse` MCP server
+      - => MCP: `MCPClient.callTool` just proxying tool call
+      - => OpenAPI: `GET/POST/ETC originUrl/toolName` operation with transformed tool params
+  - add support for caching
+  - add support for custom headers on response
+  - signed requests
 
 ## License
 

@@ -2,8 +2,9 @@ import type { PricingPlan, RateLimit } from '@agentic/platform-types'
 import { assert } from '@agentic/platform-core'
 
 import type { AdminConsumer, Context, ResolvedOriginRequest } from './types'
-import { getConsumer } from './get-consumer'
-import { getDeployment } from './get-deployment'
+import { enforceRateLimit } from './enforce-rate-limit'
+import { getAdminConsumer } from './get-admin-consumer'
+import { getAdminDeployment } from './get-admin-deployment'
 import { getTool } from './get-tool'
 import { updateOriginRequest } from './update-origin-request'
 
@@ -23,8 +24,13 @@ export async function resolveOriginRequest(
 
   const { search, pathname } = requestUrl
   const method = req.method.toLowerCase()
+  const requestPathParts = pathname.split('/')
+  const requestPath =
+    requestPathParts[0] === 'mcp'
+      ? requestPathParts.slice(1).join('/')
+      : pathname
 
-  const { deployment, toolPath } = await getDeployment(ctx, pathname)
+  const { deployment, toolPath } = await getAdminDeployment(ctx, requestPath)
 
   const tool = getTool({
     method,
@@ -50,7 +56,7 @@ export async function resolveOriginRequest(
     .trim()
 
   if (token) {
-    consumer = await getConsumer(ctx, token)
+    consumer = await getAdminConsumer(ctx, token)
     assert(consumer, 401, `Invalid auth token "${token}"`)
     assert(
       consumer.isStripeSubscriptionActive,
@@ -155,12 +161,11 @@ export async function resolveOriginRequest(
     }
   }
 
-  // enforce requests rate limits
   if (rateLimit) {
     await enforceRateLimit(ctx, {
-      id: consumer ? consumer.id : ip,
-      duration: rateLimit.interval * 1000,
-      max: rateLimit.maxPerInterval,
+      id: consumer?.id ?? ip,
+      interval: rateLimit.interval * 1000,
+      maxPerInterval: rateLimit.maxPerInterval,
       method,
       pathname
     })

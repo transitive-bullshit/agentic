@@ -62,6 +62,17 @@ export default {
       const resolvedOriginRequest = await resolveOriginRequest(ctx)
 
       try {
+        switch (resolvedOriginRequest.deployment.originAdapter.type) {
+          case 'openapi':
+            break
+
+          case 'raw':
+            break
+
+          case 'mcp':
+            break
+        }
+
         const originReqCacheKey = await getOriginRequestCacheKey(originReq)
         originStartTime = Date.now()
 

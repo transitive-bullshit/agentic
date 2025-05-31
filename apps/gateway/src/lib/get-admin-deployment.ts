@@ -4,7 +4,7 @@ import { parseFaasIdentifier } from '@agentic/platform-validators'
 
 import type { Context } from './types'
 
-export async function getDeployment(
+export async function getAdminDeployment(
   ctx: Context,
   identifier: string
 ): Promise<{ deployment: AdminDeployment; toolPath: string }> {
