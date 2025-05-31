@@ -62,40 +62,27 @@ export default {
       const resolvedOriginRequest = await resolveOriginRequest(ctx)
 
       try {
+        originStartTime = Date.now()
+
         switch (resolvedOriginRequest.deployment.originAdapter.type) {
           case 'openapi':
-            break
+            return fetch(resolvedOriginRequest.originRequest!)
 
           case 'raw':
-            break
+            return fetch(resolvedOriginRequest.originRequest!)
 
           case 'mcp':
             break
         }
 
-        const originReqCacheKey = await getOriginRequestCacheKey(originReq)
-        originStartTime = Date.now()
-
-        const originRes = await fetchCache({
-          event,
-          cacheKey: originReqCacheKey,
-          fetch: () => fetchOriginRequest(event, { originReq, call })
-        })
-
-        res = new Response(originRes.body, originRes)
         recordTimespans()
 
         // Record the time it took for both the origin and gateway proxy to respond
         res.headers.set('x-response-time', `${originTimespan!}ms`)
         res.headers.set('x-proxy-response-time', `${gatewayTimespan!}ms`)
 
-        // Upsert Vary header so browser will cache response correctly
-        // TODO: why is this necessary according to cloudflare? it's actually incorrect
-        // in that the responses explicitly do not vary by request origin...
-        // res.headers.append('vary', 'Origin')
-
-        // Reset server to saasify because Cloudflare likes to override things
-        res.headers.set('server', 'saasify')
+        // Reset server to agentic because Cloudflare likes to override things
+        res.headers.set('server', 'agentic')
 
         // const id: DurableObjectId = env.DO_RATE_LIMITER.idFromName('foo')
         // const stub = env.DO_RATE_LIMITER.get(id)

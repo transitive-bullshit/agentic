@@ -24,8 +24,8 @@ export function getTool({
 
     return false
   })
-
   assert(tool, 404, `Tool not found "${toolPath}"`)
+
   if (deployment.originAdapter.type === 'openapi') {
     const operation = deployment.originAdapter.toolToOperationMap[tool.name]
     assert(

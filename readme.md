@@ -45,11 +45,11 @@
     - REST: `POST gateway.agentic.so/deploymentIdentifier/toolName`
       - => MCP: `MCPClient.callTool` with JSON body parameters
       - => OpenAPI: `GET/POST/ETC originUrl/toolName` operation with transformed JSON body params
-    - MCP: `mcp.agentic.so/deploymentIdentifier/sse` MCP server
+    - MCP: `mcp.agentic.so/deploymentIdentifier/sse` MCP server?
       - => MCP: `MCPClient.callTool` just proxying tool call
       - => OpenAPI: `GET/POST/ETC originUrl/toolName` operation with transformed tool params
   - add support for caching
-  - add support for custom headers on response
+  - add support for custom headers on responses
   - signed requests
 
 ## License

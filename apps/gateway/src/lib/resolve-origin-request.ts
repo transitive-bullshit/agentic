@@ -25,10 +25,10 @@ export async function resolveOriginRequest(
   const { search, pathname } = requestUrl
   const method = req.method.toLowerCase()
   const requestPathParts = pathname.split('/')
-  const requestPath =
-    requestPathParts[0] === 'mcp'
-      ? requestPathParts.slice(1).join('/')
-      : pathname
+  const isMCPRequest = requestPathParts[0] === 'mcp'
+  const requestPath = isMCPRequest
+    ? requestPathParts.slice(1).join('/')
+    : pathname
 
   const { deployment, toolPath } = await getAdminDeployment(ctx, requestPath)
 
@@ -171,23 +171,30 @@ export async function resolveOriginRequest(
     })
   }
 
-  // TODO: Everything from here on depends on the origin adapter type.
-  // For MCP, we need(?) to use an McpClient and SSEClientTransport?
-  // For OpenAPI and raw, we need to make an origin HTTP request.
-
   // TODO: what do we want the API gateway's interface to be?
   //   - support both MCP and OpenAPI / raw?
 
+  const { originAdapter } = deployment
   let originRequest: Request | undefined
-  if (
-    deployment.originAdapter.type === 'openapi' ||
-    deployment.originAdapter.type === 'raw'
-  ) {
+
+  if (originAdapter.type === 'openapi' || originAdapter.type === 'raw') {
     const originRequestUrl = `${deployment.originUrl}${toolPath}${search}`
     console.log('originRequestUrl', originRequestUrl)
 
     originRequest = new Request(originRequestUrl, req)
-    updateOriginRequest(originRequest, { consumer, deployment, ip })
+
+    // TODO: For OpenAPI, we need to convert from POST to the correct operation?
+    // Or, do we only support a single public MCP interface?
+    if (originAdapter.type === 'openapi') {
+      const operation = originAdapter.toolToOperationMap[tool.name]
+      assert(operation, 404, `Tool "${tool.name}" not found in OpenAPI spec`)
+
+      // req.method = operation.method
+    } else {
+      originRequest = new Request(originRequestUrl, req)
+    }
+
+    updateOriginRequest(originRequest, { consumer, deployment })
   }
 
   return {
