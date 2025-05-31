@@ -1,7 +1,7 @@
 export * from './agentic-project-config'
 export * from './auth-subjects'
 export * from './mcp'
-export type * as openapi from './openapi'
+export type * as openapi from './openapi.d.ts'
 export * from './origin-adapter'
 export * from './pricing'
 export * from './rate-limit'

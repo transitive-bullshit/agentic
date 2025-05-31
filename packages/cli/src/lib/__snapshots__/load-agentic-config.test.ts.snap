@@ -24,6 +24,8 @@ exports[`loadAgenticConfig > basic-raw-free-json 1`] = `
       "slug": "free",
     },
   ],
+  "toolConfigs": [],
+  "version": undefined,
 }
 `;
 
@@ -51,6 +53,8 @@ exports[`loadAgenticConfig > basic-raw-free-ts 1`] = `
       "slug": "free",
     },
   ],
+  "toolConfigs": [],
+  "version": undefined,
 }
 `;
 
@@ -74,7 +78,7 @@ exports[`loadAgenticConfig > invalid: invalid-origin-url-3 1`] = `[ZodValidation
 
 exports[`loadAgenticConfig > invalid: pricing-base-inconsistent 1`] = `[ZodValidationError: Validation error: Invalid PricingPlanLineItem "base": reserved "base" LineItems must have "licensed" usage type. at "pricingPlans[1].lineItems[0]"]`;
 
-exports[`loadAgenticConfig > invalid: pricing-custom-inconsistent 1`] = `[Error: Invalid pricingPlans: all PricingPlans which contain the same LineItems (by slug "custom") must have the same usage type ("licensed" or "metered").]`;
+exports[`loadAgenticConfig > invalid: pricing-custom-inconsistent 1`] = `[Error: Invalid pricingPlans: all PricingPlans which contain the same LineItems (by slug "custom-test") must have the same usage type ("licensed" or "metered").]`;
 
 exports[`loadAgenticConfig > invalid: pricing-duplicate-0 1`] = `[Error: Invalid pricingPlans: duplicate PricingPlan slugs. All PricingPlan slugs must be unique (e.g. "free", "starter-monthly", "pro-annual", etc).]`;
 
@@ -149,6 +153,8 @@ exports[`loadAgenticConfig > pricing-3-plans 1`] = `
       "slug": "pro",
     },
   ],
+  "toolConfigs": [],
+  "version": undefined,
 }
 `;
 
@@ -190,7 +196,7 @@ exports[`loadAgenticConfig > pricing-custom-0 1`] = `
             "interval": 2592000,
             "maxPerInterval": 1000,
           },
-          "slug": "custom",
+          "slug": "custom-test",
           "unitAmount": 100,
           "usageType": "metered",
         },
@@ -212,7 +218,7 @@ exports[`loadAgenticConfig > pricing-custom-0 1`] = `
             "interval": 2592000,
             "maxPerInterval": 1500,
           },
-          "slug": "custom",
+          "slug": "custom-test",
           "unitAmount": 80,
           "usageType": "metered",
         },
@@ -221,6 +227,8 @@ exports[`loadAgenticConfig > pricing-custom-0 1`] = `
       "slug": "basic-annual",
     },
   ],
+  "toolConfigs": [],
+  "version": undefined,
 }
 `;
 
@@ -261,6 +269,8 @@ exports[`loadAgenticConfig > pricing-freemium 1`] = `
       "trialPeriodDays": 7,
     },
   ],
+  "toolConfigs": [],
+  "version": undefined,
 }
 `;
 
@@ -281,7 +291,7 @@ exports[`loadAgenticConfig > pricing-monthly-annual 1`] = `
       "lineItems": [
         {
           "amount": 0,
-          "slug": "custom",
+          "slug": "custom-base",
           "usageType": "licensed",
         },
       ],
@@ -293,7 +303,7 @@ exports[`loadAgenticConfig > pricing-monthly-annual 1`] = `
       "lineItems": [
         {
           "amount": 100,
-          "slug": "custom",
+          "slug": "custom-base",
           "usageType": "licensed",
         },
       ],
@@ -305,7 +315,7 @@ exports[`loadAgenticConfig > pricing-monthly-annual 1`] = `
       "lineItems": [
         {
           "amount": 70,
-          "slug": "custom",
+          "slug": "custom-base",
           "usageType": "licensed",
         },
       ],
@@ -313,6 +323,8 @@ exports[`loadAgenticConfig > pricing-monthly-annual 1`] = `
       "slug": "basic-annual",
     },
   ],
+  "toolConfigs": [],
+  "version": undefined,
 }
 `;
 
@@ -373,5 +385,7 @@ exports[`loadAgenticConfig > pricing-pay-as-you-go 1`] = `
       "slug": "pay-as-you-go",
     },
   ],
+  "toolConfigs": [],
+  "version": undefined,
 }
 `;

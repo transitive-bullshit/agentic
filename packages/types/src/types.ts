@@ -7,7 +7,7 @@
 import type { PricingPlan } from '@agentic/platform-types'
 import type { Simplify } from 'type-fest'
 
-import type { components } from './openapi'
+import type { components } from './openapi.d.ts'
 
 export type Consumer = components['schemas']['Consumer']
 export type Project = components['schemas']['Project']

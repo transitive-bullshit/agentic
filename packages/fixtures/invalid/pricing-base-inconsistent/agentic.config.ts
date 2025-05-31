@@ -24,7 +24,7 @@ export default defineConfig({
           usageType: 'metered',
           billingScheme: 'per_unit',
           unitAmount: 0.467
-        }
+        } as any
       ]
     }
   ]

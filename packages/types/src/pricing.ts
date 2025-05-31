@@ -275,20 +275,44 @@ export const pricingPlanMeteredLineItemSchema =
         .optional()
     })
   )
-export type PricingPlanMeteredLineItem = Simplify<
-  | (Omit<
-      z.infer<typeof pricingPlanMeteredLineItemSchema>,
-      'billingScheme' | 'tiers' | 'tiersMode'
-    > & {
+export type PricingPlanMeteredLineItem =
+  | {
+      usageType: 'metered'
       billingScheme: 'per_unit'
-    })
-  | (Omit<
-      z.infer<typeof pricingPlanMeteredLineItemSchema>,
-      'billingScheme' | 'unitAmount'
-    > & {
+      unitAmount: number
+      label?: string
+      unitLabel?: string
+      rateLimit?: {
+        interval: number
+        maxPerInterval: number
+      }
+      defaultAggregation?: {
+        formula: 'sum' | 'count' | 'last'
+      }
+      transformQuantity?: {
+        divideBy: number
+        round: 'down' | 'up'
+      }
+    }
+  | {
+      usageType: 'metered'
       billingScheme: 'tiered'
-    })
->
+      tiers: PricingPlanTier[]
+      tiersMode: 'graduated' | 'volume'
+      label?: string
+      unitLabel?: string
+      rateLimit?: {
+        interval: number
+        maxPerInterval: number
+      }
+      defaultAggregation?: {
+        formula: 'sum' | 'count' | 'last'
+      }
+      transformQuantity?: {
+        divideBy: number
+        round: 'down' | 'up'
+      }
+    }
 
 /**
  * The `base` LineItem is used to charge a fixed amount for a service using
@@ -321,9 +345,11 @@ export const requestsPricingPlanLineItemSchema =
      */
     unitLabel: z.string().default('API calls').optional()
   })
-export type RequestsPricingPlanLineItem = PricingPlanMeteredLineItem & {
-  slug: 'requests'
-}
+export type RequestsPricingPlanLineItem = Simplify<
+  PricingPlanMeteredLineItem & {
+    slug: 'requests'
+  }
+>
 
 /**
  * PricingPlanLineItems represent a single line-item in a Stripe Subscription.
@@ -378,19 +404,35 @@ export const pricingPlanLineItemSchema = z
   .openapi('PricingPlanLineItem')
 // export type PricingPlanLineItem = z.infer<typeof pricingPlanLineItemSchema>
 
-// This is a more complex discriminated union based on both `slug` and `usageType`
-export type PricingPlanLineItem = Simplify<
+// This is a more complex discriminated union based on:
+// `slug`, `usageType`, and `billingScheme`
+export type PricingPlanLineItem =
   | BasePricingPlanLineItem
   | RequestsPricingPlanLineItem
-  | (
-      | (Omit<PricingPlanLicensedLineItem, 'slug'> & {
-          slug: CustomPricingPlanLineItemSlug
-        })
-      | (Omit<PricingPlanMeteredLineItem, 'slug'> & {
-          slug: CustomPricingPlanLineItemSlug
-        })
-    )
->
+  | ({
+      slug: CustomPricingPlanLineItemSlug
+      usageType: 'licensed'
+    } & Omit<PricingPlanLicensedLineItem, 'slug' | 'usageType'>)
+  | ({
+      slug: CustomPricingPlanLineItemSlug
+      usageType: 'metered'
+      billingScheme: 'per_unit'
+    } & Omit<
+      PricingPlanMeteredLineItem & {
+        billingScheme: 'per_unit'
+      },
+      'slug' | 'usageType' | 'billingScheme' | 'tiers' | 'tiersMode'
+    >)
+  | ({
+      slug: CustomPricingPlanLineItemSlug
+      usageType: 'metered'
+      billingScheme: 'tiered'
+    } & Omit<
+      PricingPlanMeteredLineItem & {
+        billingScheme: 'tiered'
+      },
+      'slug' | 'usageType' | 'billingScheme' | 'unitAmount'
+    >)
 
 /**
  * Represents the config for a single Stripe subscription plan with one or more

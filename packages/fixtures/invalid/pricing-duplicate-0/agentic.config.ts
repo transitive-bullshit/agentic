@@ -11,7 +11,7 @@ export default defineConfig({
       interval: 'month',
       lineItems: [
         {
-          slug: 'custom',
+          slug: 'custom-test',
           usageType: 'licensed',
           amount: 100
         }
@@ -23,7 +23,7 @@ export default defineConfig({
       interval: 'year',
       lineItems: [
         {
-          slug: 'custom',
+          slug: 'custom-test',
           usageType: 'licensed',
           amount: 70
         }

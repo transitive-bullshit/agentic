@@ -9,12 +9,12 @@ export default defineConfig({
       slug: 'basic',
       lineItems: [
         {
-          slug: 'custom',
+          slug: 'custom-test',
           usageType: 'licensed',
           amount: 100
         },
         {
-          slug: 'custom',
+          slug: 'custom-test',
           usageType: 'licensed',
           amount: 200
         }
