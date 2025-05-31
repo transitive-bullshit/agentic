@@ -40,14 +40,14 @@
   - share hono middleware and utils across apps/api and apps/gateway
     - or combine these together? ehhhh
   - MCP server vs REST gateway on public and internal sides
-    - RAW: `METHOD gateway.agentic.so/deploymentIdentifier/<pathname>`
-      - => Raw HTTP: `METHOD originUrl/<pathname>` simple HTTP proxy request
-    - REST: `POST gateway.agentic.so/deploymentIdentifier/toolName`
+    - **REST**: `POST gateway.agentic.so/deploymentIdentifier/toolName`
       - => MCP: `MCPClient.callTool` with JSON body parameters
       - => OpenAPI: `GET/POST/ETC originUrl/toolName` operation with transformed JSON body params
-    - MCP: `mcp.agentic.so/deploymentIdentifier/sse` MCP server?
+    - **MCP**: `mcp.agentic.so/deploymentIdentifier/sse` MCP server?
       - => MCP: `MCPClient.callTool` just proxying tool call
       - => OpenAPI: `GET/POST/ETC originUrl/toolName` operation with transformed tool params
+    - RAW: `METHOD gateway.agentic.so/deploymentIdentifier/<pathname>`
+      - => Raw HTTP: `METHOD originUrl/<pathname>` simple HTTP proxy request
   - add support for caching
   - add support for custom headers on responses
   - signed requests

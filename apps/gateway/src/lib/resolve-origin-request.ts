@@ -171,29 +171,108 @@ export async function resolveOriginRequest(
     })
   }
 
-  // TODO: what do we want the API gateway's interface to be?
-  //   - support both MCP and OpenAPI / raw?
-
   const { originAdapter } = deployment
   let originRequest: Request | undefined
 
   if (originAdapter.type === 'openapi' || originAdapter.type === 'raw') {
-    const originRequestUrl = `${deployment.originUrl}${toolPath}${search}`
-    console.log('originRequestUrl', originRequestUrl)
-
-    originRequest = new Request(originRequestUrl, req)
-
     // TODO: For OpenAPI, we need to convert from POST to the correct operation?
     // Or, do we only support a single public MCP interface?
     if (originAdapter.type === 'openapi') {
       const operation = originAdapter.toolToOperationMap[tool.name]
       assert(operation, 404, `Tool "${tool.name}" not found in OpenAPI spec`)
 
-      // req.method = operation.method
+      const tempInitialRequest = ctx.req.clone()
+      const tempInitialRequestBody: any = await tempInitialRequest.json()
+
+      const params = Object.entries(operation.parameterSources)
+      const bodyParams = params.filter(([_key, source]) => source === 'body')
+      const formDataParams = params.filter(
+        ([_key, source]) => source === 'formData'
+      )
+      const headerParams = params.filter(
+        ([_key, source]) => source === 'header'
+      )
+      const pathParams = params.filter(([_key, source]) => source === 'path')
+      const queryParams = params.filter(([_key, source]) => source === 'query')
+      const cookieParams = params.filter(
+        ([_key, source]) => source === 'cookie'
+      )
+
+      const headers: Record<string, string> = {}
+      if (headerParams.length > 0) {
+        for (const [key] of headerParams) {
+          headers[key] = tempInitialRequest.headers.get(key) as string
+        }
+      }
+
+      let body: string | undefined
+      if (bodyParams.length > 0) {
+        body = JSON.stringify(
+          Object.fromEntries(
+            bodyParams.map(([key]) => [key, tempInitialRequestBody[key] as any])
+          )
+        )
+
+        headers['content-type'] ??= 'application/json'
+      } else if (formDataParams.length > 0) {
+        body = JSON.stringify(
+          Object.fromEntries(
+            formDataParams.map(([key]) => [
+              key,
+              tempInitialRequestBody[key] as any
+            ])
+          )
+        )
+
+        headers['content-type'] ??= 'application/x-www-form-urlencoded'
+      }
+
+      let path = operation.path
+      if (pathParams.length > 0) {
+        for (const [key] of pathParams) {
+          const value: string = tempInitialRequestBody[key]
+          assert(value, 400, `Missing required parameter "${key}"`)
+
+          const pathParamPlaceholder = `{${key}}`
+          assert(
+            path.includes(pathParamPlaceholder),
+            500,
+            `Misconfigured OpenAPI deployment "${deployment.id}": invalid path "${operation.path}" missing required path parameter "${key}"`
+          )
+
+          path = path.replaceAll(pathParamPlaceholder, value)
+        }
+      }
+      assert(
+        !/\{\w+\}/.test(path),
+        500,
+        `Misconfigured OpenAPI deployment "${deployment.id}": invalid path "${operation.path}"`
+      )
+
+      const query = new URLSearchParams()
+      for (const [key] of queryParams) {
+        query.set(key, tempInitialRequestBody[key] as string)
+      }
+
+      for (const [key] of cookieParams) {
+        headers[key] = tempInitialRequestBody[key] as string
+      }
+
+      const queryString = query.toString()
+      const originRequestUrl = `${deployment.originUrl}${path}${
+        queryString ? `?${queryString}` : ''
+      }`
+      originRequest = new Request(originRequestUrl, {
+        method: operation.method,
+        body,
+        headers
+      })
     } else {
+      const originRequestUrl = `${deployment.originUrl}${toolPath}${search}`
       originRequest = new Request(originRequestUrl, req)
     }
 
+    console.log('originRequestUrl', originRequest.url)
     updateOriginRequest(originRequest, { consumer, deployment })
   }
 
