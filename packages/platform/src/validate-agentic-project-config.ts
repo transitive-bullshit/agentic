@@ -18,17 +18,6 @@ export async function validateAgenticProjectConfig(
     strict: !strip
   })
 
-  // const config = parseZodSchema<
-  //   AgenticProjectConfig,
-  //   ZodTypeDef,
-  //   AgenticProjectConfigInput
-  // >(
-  //   strip
-  //     ? agenticProjectConfigSchema.strip()
-  //     : agenticProjectConfigSchema.strict(),
-  //   inputConfig
-  // )
-
   const { name, version } = resolveMetadata(config)
   validatePricing(config)
 
