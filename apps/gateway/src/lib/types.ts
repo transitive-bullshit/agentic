@@ -8,6 +8,10 @@ import type {
 
 import type { AgenticEnv } from './env'
 
+export type AdminConsumer = Consumer & {
+  user: User
+}
+
 export type Context = ExecutionContext & {
   req: Request
   env: AgenticEnv
@@ -23,8 +27,4 @@ export interface ResolvedOriginRequest {
   reportUsage: boolean
   ip?: string
   pricingPlanSlug?: string
-}
-
-export type AdminConsumer = Consumer & {
-  user: User
 }

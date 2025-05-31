@@ -6,7 +6,8 @@ import { db, deploymentIdSchema, eq, type RawDeployment, schema } from '@/db'
 import { ensureAuthUser } from '@/lib/ensure-auth-user'
 
 /**
- * Attempts to find the Deployment matching the given deployment identifier.
+ * Attempts to find the Deployment matching the given deployment ID or
+ * identifier.
  *
  * Throws a HTTP 404 error if not found.
  *
@@ -26,6 +27,7 @@ export async function tryGetDeploymentByIdentifier(
     }
   }
 ): Promise<RawDeployment> {
+  assert(deploymentIdentifier, 400, 'Missing required deployment identifier')
   const user = await ensureAuthUser(ctx)
 
   // First check if the identifier is a deployment ID

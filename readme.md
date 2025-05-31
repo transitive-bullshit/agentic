@@ -39,6 +39,8 @@
 - API gateway MCP server vs OpenAPI API gateway
 - share hono middleware and utils across apps/api and apps/gateway
   - or combine these together? ehhhh
+- add username / team name blacklist
+  - admin, internal, mcp, etc
 
 ## License
 

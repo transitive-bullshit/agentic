@@ -39,7 +39,7 @@ export default {
     function recordTimespans() {
       const now = Date.now()
       originTimespan = now - originStartTime!
-      gatewayTimespan = now - gatewayStartTime!
+      gatewayTimespan = now - gatewayStartTime
     }
 
     const client = new AgenticApiClient({
@@ -59,7 +59,7 @@ export default {
         return handleOptions(inputReq)
       }
 
-      const { originReq, ...call } = await resolveOriginRequest(ctx)
+      const resolvedOriginRequest = await resolveOriginRequest(ctx)
 
       try {
         const originReqCacheKey = await getOriginRequestCacheKey(originReq)
@@ -149,26 +149,3 @@ export default {
     }
   }
 } satisfies ExportedHandler<Env>
-
-// const handler = {
-//   fetch: (req: Request, env: Env, executionCtx: ExecutionContext) => {
-//     const parsedEnv = zEnv.safeParse(env)
-//     if (!parsedEnv.success) {
-//       new ConsoleLogger({
-//         requestId: '',
-//         environment: env.ENVIRONMENT,
-//         application: 'api'
-//       }).fatal(`BAD_ENVIRONMENT: ${parsedEnv.error.message}`)
-//       return Response.json(
-//         {
-//           code: 'BAD_ENVIRONMENT',
-//           message: 'Some environment variables are missing or are invalid',
-//           errors: parsedEnv.error
-//         },
-//         { status: 500 }
-//       )
-//     }
-
-//     return app.fetch(req, parsedEnv.data, executionCtx)
-//   }
-// }

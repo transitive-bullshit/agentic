@@ -6,7 +6,7 @@ import { db, eq, projectIdSchema, type RawProject, schema } from '@/db'
 import { ensureAuthUser } from '@/lib/ensure-auth-user'
 
 /**
- * Attempts to find the Project matching the given identifier.
+ * Attempts to find the Project matching the given ID or identifier.
  *
  * Throws a HTTP 404 error if not found.
  *
@@ -27,6 +27,7 @@ export async function tryGetProjectByIdentifier(
     }
   }
 ): Promise<RawProject> {
+  assert(projectIdentifier, 400, 'Missing required project identifier')
   const user = await ensureAuthUser(ctx)
 
   // First check if the identifier is a project ID
@@ -35,7 +36,7 @@ export async function tryGetProjectByIdentifier(
       ...dbQueryOpts,
       where: eq(schema.projects.id, projectIdentifier)
     })
-    assert(project, 404, `project not found "${projectIdentifier}"`)
+    assert(project, 404, `Project not found "${projectIdentifier}"`)
     return project
   }
 

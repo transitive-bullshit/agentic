@@ -4,7 +4,7 @@ import { createMiddleware } from 'hono/factory'
 import type { DefaultEnv } from '@/lib/types'
 import { ConsoleLogger } from '@/lib/logger'
 
-/** Monotonically increasing ID for insertId. */
+/** Monotonically increasing request IDs for logging / tracing. */
 const eventId = new EventId()
 
 export const init = createMiddleware<DefaultEnv>(
