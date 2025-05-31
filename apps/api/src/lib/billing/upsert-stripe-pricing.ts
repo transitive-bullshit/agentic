@@ -216,7 +216,7 @@ export async function upsertStripePricing({
             `Invalid pricing plan metric "${pricingPlanLineItemSlug}" for pricing plan "${pricingPlanSlug}": unitAmount is required for per_unit billing schemes.`
           )
           assert(
-            !pricingPlanLineItem.tiers,
+            !(pricingPlanLineItem as any).tiers,
             400,
             `Invalid pricing plan metric "${pricingPlanLineItemSlug}" for pricing plan "${pricingPlanSlug}": per_unit billing schemes cannot have tiers.`
           )

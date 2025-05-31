@@ -162,11 +162,13 @@ export type AgenticProjectConfigInput = Simplify<
     pricingPlans?: PricingPlanList
   }
 >
-export type AgenticProjectConfig = Simplify<
-  Omit<z.output<typeof agenticProjectConfigSchema>, 'pricingPlans'> & {
-    pricingPlans: PricingPlanList
-  }
->
+export type AgenticProjectConfig =
+  | Simplify<
+      Omit<z.output<typeof agenticProjectConfigSchema>, 'pricingPlans'> & {
+        pricingPlans: PricingPlanList
+      }
+    >
+  | z.output<typeof agenticProjectConfigSchema>
 
 export const resolvedAgenticProjectConfigSchema =
   agenticProjectConfigSchema.extend({

@@ -111,8 +111,6 @@ export function registerV1DeploymentsCreateDeployment(
     // - origin API base URL
     // - origin adapter OpenAPI or MCP specs
     // - tool definitions
-
-    // TODO: fix types
     const agenticProjectConfig = await resolveAgenticProjectConfig(body, {
       label: `deployment "${deploymentIdentifier}"`,
       logger

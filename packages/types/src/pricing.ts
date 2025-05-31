@@ -404,8 +404,10 @@ export const pricingPlanLineItemSchema = z
   .openapi('PricingPlanLineItem')
 // export type PricingPlanLineItem = z.infer<typeof pricingPlanLineItemSchema>
 
-// This is a more complex discriminated union based on:
-// `slug`, `usageType`, and `billingScheme`
+// This is a more complex discriminated union based on: `slug`, `usageType`,
+// and `billingScheme`.
+// TODO: clean up this type
+// TODO: add `Input` version to support `string` rateLimit.interval
 export type PricingPlanLineItem =
   | BasePricingPlanLineItem
   | RequestsPricingPlanLineItem
