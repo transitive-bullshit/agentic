@@ -1,4 +1,4 @@
-import type { AdminDeployment } from '@agentic/platform-api-client'
+import type { AdminDeployment } from '@agentic/platform-types'
 import { assert } from '@agentic/platform-core'
 import { parseFaasIdentifier } from '@agentic/platform-validators'
 

@@ -88,8 +88,9 @@ export const consumers = pgTable(
         onDelete: 'cascade'
       }),
 
-    // Stripe subscription status (synced via webhooks)
-    stripeStatus: text(),
+    // Stripe subscription status (synced via webhooks). Should move from
+    // `incomplete` to `active` after the first successful payment.
+    stripeStatus: text().default('incomplete').notNull(),
 
     // Whether the consumer's subscription is currently active, depending on
     // `stripeStatus`.

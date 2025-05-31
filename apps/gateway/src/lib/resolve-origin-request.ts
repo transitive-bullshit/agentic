@@ -1,13 +1,7 @@
-import type {
-  AdminDeployment,
-  Consumer,
-  PricingPlan,
-  RateLimit,
-  Tool
-} from '@agentic/platform-types'
+import type { PricingPlan, RateLimit } from '@agentic/platform-types'
 import { assert } from '@agentic/platform-core'
 
-import type { Context } from './types'
+import type { AdminConsumer, Context, ResolvedOriginRequest } from './types'
 import { getConsumer } from './get-consumer'
 import { getDeployment } from './get-deployment'
 import { getTool } from './get-tool'
@@ -20,11 +14,12 @@ import { updateOriginRequest } from './update-origin-request'
  * Also ensures that the request is valid, enforces rate limits, and adds proxy-
  * specific headers to the origin request.
  */
-export async function resolveOriginRequest(ctx: Context) {
+export async function resolveOriginRequest(
+  ctx: Context
+): Promise<ResolvedOriginRequest> {
   const { req } = ctx
-  const ip = req.headers.get('cf-connecting-ip')
+  const ip = req.headers.get('cf-connecting-ip') || undefined
   const requestUrl = new URL(req.url)
-  const date = Date.now()
 
   const { search, pathname } = requestUrl
   const method = req.method.toLowerCase()
@@ -36,18 +31,19 @@ export async function resolveOriginRequest(ctx: Context) {
     deployment,
     toolPath
   })
-  console.log('rqeuest', {
+
+  console.log('request', {
     method,
     pathname,
     search,
-    deployment: deployment.identifier,
+    deploymentIdentifier: deployment.identifier,
     toolPath,
     tool
   })
 
-  let reportUsage = true
   let pricingPlan: PricingPlan | undefined
-  let consumer: Consumer | undefined
+  let consumer: AdminConsumer | undefined
+  let reportUsage = true
 
   const token = (req.headers.get('authorization') || '')
     .replace(/^Bearer /i, '')
@@ -177,32 +173,26 @@ export async function resolveOriginRequest(ctx: Context) {
   // TODO: what do we want the API gateway's interface to be?
   //   - support both MCP and OpenAPI / raw?
 
-  const originUrl = `${deployment.originUrl}${toolPath}${search}`
-  console.log('originUrl', originUrl)
+  let originRequest: Request | undefined
+  if (
+    deployment.originAdapter.type === 'openapi' ||
+    deployment.originAdapter.type === 'raw'
+  ) {
+    const originRequestUrl = `${deployment.originUrl}${toolPath}${search}`
+    console.log('originRequestUrl', originRequestUrl)
 
-  const originReq = new Request(originUrl, req)
-  updateOriginRequest(originReq, { consumer, deployment, ip })
+    originRequest = new Request(originRequestUrl, req)
+    updateOriginRequest(originRequest, { consumer, deployment, ip })
+  }
 
   return {
-    originReq,
-    deployment: deployment.id,
-    project: deployment.project,
-    tool,
+    originRequest,
+    deployment,
     consumer,
-    date,
+    tool,
     ip,
     method,
-    plan: pricingPlan ? pricingPlan.slug : null,
+    pricingPlanSlug: pricingPlan?.slug,
     reportUsage
   }
-}
-
-export interface ResolvedOriginRequest {
-  originRequest?: Request
-  deployment: AdminDeployment
-  tool: Tool
-  consumer: Consumer | undefined
-  date: number
-  ip: string
-  method: string
 }

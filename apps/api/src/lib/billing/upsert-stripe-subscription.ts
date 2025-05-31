@@ -94,6 +94,7 @@ export async function upsertStripeSubscription(
     )
 
     const updateParams: Stripe.SubscriptionUpdateParams = {
+      collection_method: 'charge_automatically',
       metadata: {
         userId: consumer.userId,
         consumerId: consumer.id,
@@ -259,10 +260,11 @@ export async function upsertStripeSubscription(
 
     const createParams: Stripe.SubscriptionCreateParams = {
       customer: stripeCustomerId,
-      description: `Agentic subscription to project "${project.id}"`,
+      description: `Agentic subscription to project "${project.identifier}"`,
       // TODO: coupons
       // coupon: filterConsumerCoupon(ctx, consumer, deployment),
       items,
+      collection_method: 'charge_automatically',
       metadata: {
         userId: consumer.userId,
         consumerId: consumer.id,

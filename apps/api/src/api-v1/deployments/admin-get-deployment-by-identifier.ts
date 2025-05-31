@@ -45,14 +45,22 @@ export function registerV1AdminDeploymentsGetDeploymentByIdentifier(
     const { deploymentIdentifier, populate = [] } = c.req.valid('query')
     await aclAdmin(c)
 
-    const deployment = await tryGetDeploymentByIdentifier(c, {
+    const { project, ...deployment } = await tryGetDeploymentByIdentifier(c, {
       deploymentIdentifier,
       with: {
-        ...Object.fromEntries(populate.map((field) => [field, true]))
+        ...Object.fromEntries(populate.map((field) => [field, true])),
+        project: true
       }
     })
     assert(deployment, 404, `Deployment not found "${deploymentIdentifier}"`)
+    assert(
+      project,
+      404,
+      `Project not found for deployment "${deploymentIdentifier}"`
+    )
     await acl(c, deployment, { label: 'Deployment' })
+
+    const hasPopulateProject = populate.includes('project')
 
     // TODO
     // TODO: switch from published to publishedAt?
@@ -69,7 +77,11 @@ export function registerV1AdminDeploymentsGetDeploymentByIdentifier(
     // }
 
     return c.json(
-      parseZodSchema(schema.deploymentAdminSelectSchema, deployment)
+      parseZodSchema(schema.deploymentAdminSelectSchema, {
+        ...deployment,
+        ...(hasPopulateProject ? { project } : {}),
+        _secret: project._secret
+      })
     )
   })
 }

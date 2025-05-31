@@ -37,6 +37,8 @@
   - same for pricing plan line-items
 - replace `ms` package
 - API gateway MCP server vs OpenAPI API gateway
+- share hono middleware and utils across apps/api and apps/gateway
+  - or combine these together? ehhhh
 
 ## License
 

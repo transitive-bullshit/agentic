@@ -1,14 +1,14 @@
-import type { Consumer } from '@agentic/platform-api-client'
 import { assert } from '@agentic/platform-core'
 
-import type { Context } from './types'
+import type { AdminConsumer, Context } from './types'
 
 export async function getConsumer(
   ctx: Context,
   token: string
-): Promise<Consumer> {
+): Promise<AdminConsumer> {
   const consumer = await ctx.client.adminGetConsumerByToken({
-    token
+    token,
+    populate: ['user']
   })
   assert(consumer, 404, `API token not found "${token}"`)
 

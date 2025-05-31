@@ -193,7 +193,8 @@ Deployments are private to a developer or team until they are published, at whic
 
 export const deploymentAdminSelectSchema = deploymentSelectSchema
   .extend({
-    originUrl: resolvedAgenticProjectConfigSchema.shape.originUrl
+    originUrl: resolvedAgenticProjectConfigSchema.shape.originUrl,
+    _secret: z.string().nonempty()
   })
   .openapi('AdminDeployment')
 

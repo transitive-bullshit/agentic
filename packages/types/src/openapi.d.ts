@@ -451,7 +451,7 @@ export interface components {
             projectId: string;
             /** @description Deployment id (e.g. "depl_tz4a98xxat96iws9zmbrgj3a") */
             deploymentId: string;
-            stripeStatus?: string;
+            stripeStatus: string;
             isStripeSubscriptionActive: boolean;
         };
         /** @description Public deployment identifier (e.g. "namespace/project-name@{hash|version|latest}") */
@@ -717,6 +717,7 @@ export interface components {
              *     NOTE: Agentic currently only supports `external` API servers. If you'd like to host your API or MCP server on Agentic's infrastructure, please reach out to support@agentic.so.
              */
             originUrl: string;
+            _secret: string;
         };
     };
     responses: {
