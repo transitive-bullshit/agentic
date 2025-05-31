@@ -29,7 +29,7 @@ export async function getUniqueNamespace(
   namespace?: string,
   { label = 'Namespace' }: { label?: string } = {}
 ) {
-  namespace ??= `${label}_${sha256().slice(0, 24)}`
+  namespace ??= `${label}_${(await sha256()).slice(0, 24)}`
   namespace = namespace
     .replaceAll(/[^a-zA-Z0-9_-]/g, '')
     .toLowerCase()
@@ -48,7 +48,7 @@ export async function getUniqueNamespace(
         throw err
       }
 
-      const suffix = sha256().slice(0, 8)
+      const suffix = (await sha256()).slice(0, 8)
       currentNamespace = `${namespace.slice(0, schema.namespaceMaxLength - 1 - suffix.length)}${suffix}`
     }
   } while (true)

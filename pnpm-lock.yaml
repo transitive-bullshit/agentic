@@ -369,6 +369,9 @@ importers:
       eventid:
         specifier: 'catalog:'
         version: 2.0.1
+      fast-content-type-parse:
+        specifier: ^3.0.0
+        version: 3.0.0
       hono:
         specifier: 'catalog:'
         version: 4.7.10

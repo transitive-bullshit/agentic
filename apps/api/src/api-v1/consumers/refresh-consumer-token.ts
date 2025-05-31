@@ -53,7 +53,7 @@ export function registerV1ConsumersRefreshConsumerToken(
     ;[consumer] = await db
       .update(schema.consumers)
       .set({
-        token: createConsumerToken()
+        token: await createConsumerToken()
       })
       .where(eq(schema.consumers.id, consumer.id))
       .returning()

@@ -148,7 +148,7 @@ export async function upsertConsumer(
       userId,
       projectId,
       deploymentId,
-      token: createConsumerToken(),
+      token: await createConsumerToken(),
       _stripeCustomerId: stripeCustomer.id
     })
   }

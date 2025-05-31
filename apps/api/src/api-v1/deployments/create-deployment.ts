@@ -80,7 +80,7 @@ export function registerV1DeploymentsCreateDeployment(
     const projectId = project.id
 
     // TODO: investigate better short hash generation
-    const hash = sha256().slice(0, 8)
+    const hash = (await sha256()).slice(0, 8)
     const deploymentIdentifier = `${project.identifier}@${hash}`
     assert(
       validators.deploymentIdentifier(deploymentIdentifier),
@@ -111,6 +111,8 @@ export function registerV1DeploymentsCreateDeployment(
     // - origin API base URL
     // - origin adapter OpenAPI or MCP specs
     // - tool definitions
+
+    // TODO: fix types
     const agenticProjectConfig = await resolveAgenticProjectConfig(body, {
       label: `deployment "${deploymentIdentifier}"`,
       logger

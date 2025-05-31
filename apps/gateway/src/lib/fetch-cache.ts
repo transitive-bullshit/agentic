@@ -8,7 +8,7 @@ export async function fetchCache(
     cacheKey,
     fetchResponse
   }: {
-    cacheKey?: string
+    cacheKey?: Request
     fetchResponse: () => Promise<Response>
   }
 ): Promise<Response> {

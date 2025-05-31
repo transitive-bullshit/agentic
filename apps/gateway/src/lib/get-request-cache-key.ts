@@ -1,10 +1,11 @@
-import contentType from 'content-type'
-import stableJsonStringify from 'fast-json-stable-stringify'
+import { hashObject, sha256 } from '@agentic/platform-core'
+import contentType from 'fast-content-type-parse'
 
 import { normalizeUrl } from './normalize-url'
-import * as sha256 from './sha256'
 
-export async function getFaasRequestCacheKey(request) {
+export async function getRequestCacheKey(
+  request: Request
+): Promise<Request | null> {
   try {
     const pragma = request.headers.get('pragma')
     if (pragma === 'no-cache') {
@@ -23,34 +24,35 @@ export async function getFaasRequestCacheKey(request) {
       // useful for debugging since getting all the headers is awkward
       // console.log(Object.fromEntries(request.headers.entries()))
 
-      const contentLength = parseInt(request.headers.get('content-length'))
+      const contentLength = Number.parseInt(
+        request.headers.get('content-length') ?? '0'
+      )
 
       // TODO: what is a reasonable upper bound for hashing the POST body size?
-      if (contentLength && contentLength < 10000) {
-        const ct = contentType.parse(
+      if (contentLength && contentLength < 10_000) {
+        const { type } = contentType.safeParse(
           request.headers.get('content-type') || 'application/octet-stream'
         )
-        const type = ct && ct.type
         let hash
 
         // TODO: gracefully handle content-encoding compression
         // TODO: more robust content-type detection
 
-        if (type && type.indexOf('json') >= 0) {
-          const bodyJson = await request.clone().json()
-          const bodyString = stableJsonStringify(bodyJson)
-          hash = await sha256.fromString(bodyString)
-        } else if (type && type.indexOf('text/') >= 0) {
+        if (type?.includes('json')) {
+          const bodyJson: any = await request.clone().json()
+          hash = hashObject(bodyJson)
+        } else if (type?.includes('text/')) {
           const bodyString = await request.clone().text()
-          hash = await sha256.fromString(bodyString)
+          hash = await sha256(bodyString)
         } else {
-          const bodyBuffer = await request.clone().arrayBuffer()
-          hash = await sha256.fromBuffer(bodyBuffer)
+          // TODO
+          // const bodyBuffer = await request.clone().arrayBuffer()
+          // hash = await sha256.fromBuffer(bodyBuffer)
+          return null
         }
 
         const cacheUrl = new URL(request.url)
-        cacheUrl.pathname = cacheUrl.pathname + '/' + hash
-
+        cacheUrl.searchParams.set('x-agentic-cache-key', hash)
         const normalizedUrl = normalizeUrl(cacheUrl.toString())
 
         const newReq = normalizeRequestHeaders(
@@ -86,7 +88,7 @@ export async function getFaasRequestCacheKey(request) {
 
 const requestHeaderWhitelist = new Set(['cache-control'])
 
-function normalizeRequestHeaders(request) {
+function normalizeRequestHeaders(request: Request) {
   const headers = Object.fromEntries(request.headers.entries())
   const keys = Object.keys(headers)
 

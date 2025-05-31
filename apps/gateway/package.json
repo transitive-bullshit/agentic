@@ -36,6 +36,7 @@
     "@hono/zod-validator": "catalog:",
     "@modelcontextprotocol/sdk": "catalog:",
     "eventid": "catalog:",
+    "fast-content-type-parse": "^3.0.0",
     "hono": "catalog:",
     "type-fest": "catalog:"
   },

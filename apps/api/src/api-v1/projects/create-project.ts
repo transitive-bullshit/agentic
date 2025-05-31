@@ -61,7 +61,7 @@ export function registerV1ProjectsCreateProject(
         identifier,
         teamId: teamMember?.teamId,
         userId: user.id,
-        _secret: sha256()
+        _secret: await sha256()
       })
       .returning()
     assert(project, 500, `Failed to create project "${body.name}"`)
