@@ -1,4 +1,4 @@
-import type { Deployment } from '@agentic/platform-api-client'
+import type { Deployment } from '@agentic/platform-types'
 import { parseFaasIdentifier } from '@agentic/platform-validators'
 import { Command } from 'commander'
 import { oraPromise } from 'ora'
