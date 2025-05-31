@@ -63,18 +63,22 @@ export default {
 
       try {
         originStartTime = Date.now()
+        let originResponse: Response | undefined
 
         switch (resolvedOriginRequest.deployment.originAdapter.type) {
           case 'openapi':
-            return fetch(resolvedOriginRequest.originRequest!)
+            originResponse = await fetch(resolvedOriginRequest.originRequest!)
+            break
 
           case 'raw':
-            return fetch(resolvedOriginRequest.originRequest!)
+            originResponse = await fetch(resolvedOriginRequest.originRequest!)
+            break
 
           case 'mcp':
-            break
+            throw new Error('MCP not yet supported')
         }
 
+        const res = new Response(originResponse.body, originResponse)
         recordTimespans()
 
         // Record the time it took for both the origin and gateway proxy to respond
@@ -101,28 +105,28 @@ export default {
             type: err.type,
             code: err.code
           }),
-          { status: 500, headers: globalResHeaders }
+          { status: 500 }
         )
 
         return res
       } finally {
-        const now = Date.now()
-
+        // const now = Date.now()
         // Report usage.
         // Note that we are not awaiting the results of this on purpose so we can
         // return the response to the client immediately.
-        ctx.waitUntil(
-          reportUsage(ctx, {
-            ...call,
-            cache: res!.headers.get('cf-cache-status'),
-            status: res!.status,
-            timestamp: Math.ceil(now / 1000),
-            computeTime: originTimespan!,
-            gatewayTime: gatewayTimespan!,
-            // TODO: record correct bandwidth of request + response content-length
-            bandwidth: 0
-          })
-        )
+        // TODO
+        // ctx.waitUntil(
+        //   reportUsage(ctx, {
+        //     ...call,
+        //     cache: res!.headers.get('cf-cache-status'),
+        //     status: res!.status,
+        //     timestamp: Math.ceil(now / 1000),
+        //     computeTime: originTimespan!,
+        //     gatewayTime: gatewayTimespan!,
+        //     // TODO: record correct bandwidth of request + response content-length
+        //     bandwidth: 0
+        //   })
+        // )
       }
     } catch (err: any) {
       console.error(err)
@@ -139,8 +143,7 @@ export default {
             code: err.code
           }),
           {
-            status: 500,
-            headers: globalResHeaders
+            status: 500
           }
         )
       }

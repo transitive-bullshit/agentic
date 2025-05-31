@@ -52,7 +52,7 @@
     "prod": {
       "vars": {
         "ENVIRONMENT": "production",
-        "AGENTIC_API_BASE_URL": "https://api.agentic.ai"
+        "AGENTIC_API_BASE_URL": "https://api.agentic.so"
       }
     }
   }

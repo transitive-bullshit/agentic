@@ -4,7 +4,7 @@
 declare namespace Cloudflare {
   interface Env {
     ENVIRONMENT: 'development' | 'production'
-    AGENTIC_API_BASE_URL: 'http://localhost:3000' | 'https://api.agentic.ai'
+    AGENTIC_API_BASE_URL: 'http://localhost:3000' | 'https://api.agentic.so'
     DO_RATE_LIMITER: DurableObjectNamespace<
       import('./worker').DurableObjectRateLimiter
     >

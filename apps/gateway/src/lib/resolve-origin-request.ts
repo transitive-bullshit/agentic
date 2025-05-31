@@ -2,6 +2,7 @@ import type { PricingPlan, RateLimit } from '@agentic/platform-types'
 import { assert } from '@agentic/platform-core'
 
 import type { AdminConsumer, Context, ResolvedOriginRequest } from './types'
+import { createRequestForOpenAPIOperation } from './create-request-for-openapi-operation'
 import { enforceRateLimit } from './enforce-rate-limit'
 import { getAdminConsumer } from './get-admin-consumer'
 import { getAdminDeployment } from './get-admin-deployment'
@@ -84,18 +85,6 @@ export async function resolveOriginRequest(
   } else {
     // For unauthenticated requests, default to a free pricing plan if available.
     pricingPlan = deployment.pricingPlans.find((plan) => plan.slug === 'free')
-
-    // assert(
-    //   pricingPlan,
-    //   403,
-    //   `Auth error, unable to find matching pricing plan for project "${deployment.project}"`
-    // )
-
-    // assert(
-    //   !pricingPlan.auth,
-    //   403,
-    //   `Auth error, encountered invalid pricing plan "${pricingPlan.slug}" for project "${deployment.project}"`
-    // )
   }
 
   let rateLimit: RateLimit | undefined | null
@@ -175,97 +164,14 @@ export async function resolveOriginRequest(
   let originRequest: Request | undefined
 
   if (originAdapter.type === 'openapi' || originAdapter.type === 'raw') {
-    // TODO: For OpenAPI, we need to convert from POST to the correct operation?
-    // Or, do we only support a single public MCP interface?
     if (originAdapter.type === 'openapi') {
       const operation = originAdapter.toolToOperationMap[tool.name]
       assert(operation, 404, `Tool "${tool.name}" not found in OpenAPI spec`)
 
-      const tempInitialRequest = ctx.req.clone()
-      const tempInitialRequestBody: any = await tempInitialRequest.json()
-
-      const params = Object.entries(operation.parameterSources)
-      const bodyParams = params.filter(([_key, source]) => source === 'body')
-      const formDataParams = params.filter(
-        ([_key, source]) => source === 'formData'
-      )
-      const headerParams = params.filter(
-        ([_key, source]) => source === 'header'
-      )
-      const pathParams = params.filter(([_key, source]) => source === 'path')
-      const queryParams = params.filter(([_key, source]) => source === 'query')
-      const cookieParams = params.filter(
-        ([_key, source]) => source === 'cookie'
-      )
-
-      const headers: Record<string, string> = {}
-      if (headerParams.length > 0) {
-        for (const [key] of headerParams) {
-          headers[key] = tempInitialRequest.headers.get(key) as string
-        }
-      }
-
-      let body: string | undefined
-      if (bodyParams.length > 0) {
-        body = JSON.stringify(
-          Object.fromEntries(
-            bodyParams.map(([key]) => [key, tempInitialRequestBody[key] as any])
-          )
-        )
-
-        headers['content-type'] ??= 'application/json'
-      } else if (formDataParams.length > 0) {
-        body = JSON.stringify(
-          Object.fromEntries(
-            formDataParams.map(([key]) => [
-              key,
-              tempInitialRequestBody[key] as any
-            ])
-          )
-        )
-
-        headers['content-type'] ??= 'application/x-www-form-urlencoded'
-      }
-
-      let path = operation.path
-      if (pathParams.length > 0) {
-        for (const [key] of pathParams) {
-          const value: string = tempInitialRequestBody[key]
-          assert(value, 400, `Missing required parameter "${key}"`)
-
-          const pathParamPlaceholder = `{${key}}`
-          assert(
-            path.includes(pathParamPlaceholder),
-            500,
-            `Misconfigured OpenAPI deployment "${deployment.id}": invalid path "${operation.path}" missing required path parameter "${key}"`
-          )
-
-          path = path.replaceAll(pathParamPlaceholder, value)
-        }
-      }
-      assert(
-        !/\{\w+\}/.test(path),
-        500,
-        `Misconfigured OpenAPI deployment "${deployment.id}": invalid path "${operation.path}"`
-      )
-
-      const query = new URLSearchParams()
-      for (const [key] of queryParams) {
-        query.set(key, tempInitialRequestBody[key] as string)
-      }
-
-      for (const [key] of cookieParams) {
-        headers[key] = tempInitialRequestBody[key] as string
-      }
-
-      const queryString = query.toString()
-      const originRequestUrl = `${deployment.originUrl}${path}${
-        queryString ? `?${queryString}` : ''
-      }`
-      originRequest = new Request(originRequestUrl, {
-        method: operation.method,
-        body,
-        headers
+      originRequest = await createRequestForOpenAPIOperation({
+        request: req,
+        operation,
+        deployment
       })
     } else {
       const originRequestUrl = `${deployment.originUrl}${toolPath}${search}`

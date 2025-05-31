@@ -21,6 +21,11 @@ export function mergeJsonSchemaObjects(
     label: string
   }
 ) {
+  assert(
+    source !== 'cookie',
+    'Cookie parameters for OpenAPI operations are not yet supported. If you need cookie parameter support, please contact support@agentic.so.'
+  )
+
   if (schema1.type === 'object' && schema1.properties) {
     schema0.properties = {
       ...schema0.properties,
