@@ -11,8 +11,8 @@ export async function fetchCache(
     cacheKey?: string
     fetchResponse: () => Promise<Response>
   }
-) {
-  let response
+): Promise<Response> {
+  let response: Response | undefined
 
   if (cacheKey) {
     response = await cache.match(cacheKey)
