@@ -346,7 +346,7 @@ export async function generateTSFromOpenAPI({
         }
 
         if (params.headers) {
-          addJSONSchemaParams(params.headers, 'formData')
+          addJSONSchemaParams(params.headers, 'headers')
         }
 
         if (params.path) {
