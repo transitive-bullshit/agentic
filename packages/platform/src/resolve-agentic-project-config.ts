@@ -1,6 +1,7 @@
 import type { Logger } from '@agentic/platform-core'
 import type {
   AgenticProjectConfig,
+  AgenticProjectConfigRaw,
   ResolvedAgenticProjectConfig
 } from '@agentic/platform-types'
 
@@ -14,7 +15,7 @@ import { validatePricing } from './validate-pricing'
 import { validateTools } from './validate-tools'
 
 export async function resolveAgenticProjectConfig(
-  inputConfig: AgenticProjectConfig,
+  inputConfig: AgenticProjectConfig | AgenticProjectConfigRaw,
   opts: { logger?: Logger; cwd?: URL; label?: string } = {}
 ): Promise<ResolvedAgenticProjectConfig> {
   const config = parseAgenticProjectConfig(inputConfig)
