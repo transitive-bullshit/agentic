@@ -26,10 +26,3 @@ export type AdminDeployment = Simplify<
     pricingPlans: PricingPlan[]
   }
 >
-
-export type ProjectIdentifier = components['schemas']['ProjectIdentifier']
-export type DeploymentIdentifier = components['schemas']['DeploymentIdentifier']
-
-// export type PricingPlanName = components['schemas']['name']
-// export type PricingPlanSlug = components['schemas']['slug']
-// export type PricingPlanLabel = components['schemas']['label']

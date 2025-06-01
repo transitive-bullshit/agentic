@@ -59,7 +59,8 @@ export const authRouter = issuer({
     console.log('Auth success', provider, ctx, JSON.stringify(value, null, 2))
 
     function getPartialOAuthAccount() {
-      assert(provider === 'github', `Unsupported provider "${provider}"`)
+      assert(provider === 'github', `Unsupported OAuth provider "${provider}"`)
+      const now = Date.now()
 
       return {
         provider,
@@ -67,19 +68,17 @@ export const authRouter = issuer({
         refreshToken: value.tokenset.refresh,
         // `expires_in` and `refresh_token_expires_in` are given in seconds
         accessTokenExpiresAt: new Date(
-          Date.now() + value.tokenset.raw.expires_in * 1000
+          now + value.tokenset.raw.expires_in * 1000
         ),
         refreshTokenExpiresAt: new Date(
-          Date.now() + value.tokenset.raw.refresh_token_expires_in * 1000
+          now + value.tokenset.raw.refresh_token_expires_in * 1000
         ),
         scope: (value.tokenset.raw.scope as string) || undefined
       }
     }
 
     if (provider === 'github') {
-      const client = getGitHubClient({
-        accessToken: value.tokenset.access
-      })
+      const client = getGitHubClient({ accessToken: value.tokenset.access })
       const { data: ghUser } = await client.rest.users.getAuthenticated()
 
       if (!ghUser.email) {
@@ -125,14 +124,14 @@ export const authRouter = issuer({
       assert(
         user,
         400,
-        `Authentication error: unsupported provider "${provider}"`
+        `Authentication error: unsupported auth provider "${provider}"`
       )
     }
 
     assert(
       user,
       500,
-      `Authentication error for provider "${provider}": Unexpected error initializing user`
+      `Authentication error for auth provider "${provider}": Unexpected error initializing user`
     )
     return ctx.subject('user', pick(user, 'id', 'username'))
   }

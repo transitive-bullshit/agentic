@@ -1,7 +1,7 @@
 {
   "name": "@agentic/platform-types",
   "version": "0.0.1",
-  "description": "Core zod schemas and types shared across the Agentic platform.",
+  "description": "Core schemas and types shared across the Agentic platform.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "UNLICENSED",
   "repository": {
