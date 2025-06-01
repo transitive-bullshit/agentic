@@ -38,10 +38,10 @@ export async function getRequestCacheKey(
         // TODO: gracefully handle content-encoding compression
         // TODO: more robust content-type detection
 
-        if (type?.includes('json')) {
+        if (type.includes('json')) {
           const bodyJson: any = await request.clone().json()
           hash = hashObject(bodyJson)
-        } else if (type?.includes('text/')) {
+        } else if (type.includes('text/')) {
           const bodyString = await request.clone().text()
           hash = await sha256(bodyString)
         } else {

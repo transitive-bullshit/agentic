@@ -39,7 +39,6 @@ const fixturesDir = path.join(
   '..',
   '..',
   '..',
-  '..',
   'fixtures'
 )
 

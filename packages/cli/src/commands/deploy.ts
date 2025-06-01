@@ -1,9 +1,9 @@
+import { loadAgenticConfig } from '@agentic/platform'
 import { Command } from 'commander'
 import { oraPromise } from 'ora'
 
 import type { Context } from '../types'
 import { AuthStore } from '../lib/auth-store'
-import { loadAgenticConfig } from '../lib/load-agentic-config'
 
 export function registerDeployCommand({ client, program, logger }: Context) {
   const command = new Command('deploy')

@@ -1,6 +1,7 @@
 import type { AgenticProjectConfig } from '@agentic/platform-types'
-import { validateAgenticProjectConfig } from '@agentic/platform'
 import { loadConfig } from 'unconfig'
+
+import { validateAgenticProjectConfig } from './validate-agentic-project-config'
 
 export async function loadAgenticConfig({
   cwd

@@ -51,6 +51,8 @@
   - add support for caching
   - add support for custom headers on responses
   - signed requests
+- revisit deployment identifiers so possibly be URL-friendly?
+- rename parseFaasIdentifier and move validators package into platform-types
 
 ## License
 
