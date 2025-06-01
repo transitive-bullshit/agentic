@@ -155,9 +155,6 @@ export const pricingPlanLicensedLineItemSchema =
       amount: z.number().nonnegative()
     })
   )
-export type PricingPlanLicensedLineItem = z.infer<
-  typeof pricingPlanLicensedLineItemSchema
->
 
 /**
  * Metered LineItems are used to charge for usage-based services.
@@ -275,81 +272,6 @@ export const pricingPlanMeteredLineItemSchema =
         .optional()
     })
   )
-export type PricingPlanMeteredLineItem =
-  | {
-      usageType: 'metered'
-      billingScheme: 'per_unit'
-      unitAmount: number
-      label?: string
-      unitLabel?: string
-      rateLimit?: {
-        interval: number
-        maxPerInterval: number
-      }
-      defaultAggregation?: {
-        formula: 'sum' | 'count' | 'last'
-      }
-      transformQuantity?: {
-        divideBy: number
-        round: 'down' | 'up'
-      }
-    }
-  | {
-      usageType: 'metered'
-      billingScheme: 'tiered'
-      tiers: PricingPlanTier[]
-      tiersMode: 'graduated' | 'volume'
-      label?: string
-      unitLabel?: string
-      rateLimit?: {
-        interval: number
-        maxPerInterval: number
-      }
-      defaultAggregation?: {
-        formula: 'sum' | 'count' | 'last'
-      }
-      transformQuantity?: {
-        divideBy: number
-        round: 'down' | 'up'
-      }
-    }
-
-/**
- * The `base` LineItem is used to charge a fixed amount for a service using
- * `licensed` usage type.
- */
-export const basePricingPlanLineItemSchema =
-  pricingPlanLicensedLineItemSchema.extend({
-    slug: z.literal('base')
-  })
-export type BasePricingPlanLineItem = z.infer<
-  typeof basePricingPlanLineItemSchema
->
-
-/**
- * The `requests` LineItem is used to charge for usage-based services using the
- * `metered` usage type.
- *
- * It corresponds to the total number of API calls made by a customer during a
- * given billing interval.
- */
-export const requestsPricingPlanLineItemSchema =
-  pricingPlanMeteredLineItemSchema.extend({
-    slug: z.literal('requests'),
-
-    /**
-     * Optional label for the line-item which will be displayed on customer
-     * bills.
-     *
-     * If unset, the line-item's `slug` will be used as the unit label.
-     */
-    unitLabel: z.string().default('API calls').optional()
-  })
-export type RequestsPricingPlanLineItem = Simplify<
-  PricingPlanMeteredLineItem & {
-    slug: 'requests'
-  }
->
 
 /**
  * PricingPlanLineItems represent a single line-item in a Stripe Subscription.
@@ -404,37 +326,146 @@ export const pricingPlanLineItemSchema = z
   .openapi('PricingPlanLineItem')
 // export type PricingPlanLineItem = z.infer<typeof pricingPlanLineItemSchema>
 
-// This is a more complex discriminated union based on: `slug`, `usageType`,
-// and `billingScheme`.
-// TODO: clean up this type
-// TODO: add `Input` version to support `string` rateLimit.interval
-export type PricingPlanLineItem =
-  | BasePricingPlanLineItem
-  | RequestsPricingPlanLineItem
-  | ({
-      slug: CustomPricingPlanLineItemSlug
-      usageType: 'licensed'
-    } & Omit<PricingPlanLicensedLineItem, 'slug' | 'usageType'>)
-  | ({
-      slug: CustomPricingPlanLineItemSlug
-      usageType: 'metered'
-      billingScheme: 'per_unit'
-    } & Omit<
-      PricingPlanMeteredLineItem & {
+// These are more complex discriminated unions based on: `slug`, `usageType`,
+// and `billingScheme`. That's why we're not using zod's inference directly
+// for these types. See `./pricing.test.ts` for examples.
+export type PricingPlanLineItemInput =
+  // "base" licensed line-item
+  | Simplify<
+      {
+        slug: 'base'
+      } & z.input<typeof pricingPlanLicensedLineItemSchema>
+    >
+  // "custom" licensed line-item
+  | Simplify<
+      {
+        slug: CustomPricingPlanLineItemSlug
+        usageType: 'licensed'
+      } & z.input<typeof pricingPlanLicensedLineItemSchema>
+    >
+  // "requests" metered per-unit line-item
+  | Simplify<
+      {
+        slug: 'requests'
+        usageType: 'metered'
         billingScheme: 'per_unit'
-      },
-      'slug' | 'usageType' | 'billingScheme' | 'tiers' | 'tiersMode'
-    >)
-  | ({
-      slug: CustomPricingPlanLineItemSlug
-      usageType: 'metered'
-      billingScheme: 'tiered'
-    } & Omit<
-      PricingPlanMeteredLineItem & {
+        unitAmount: number
+      } & Omit<
+        z.input<typeof pricingPlanMeteredLineItemSchema> & {
+          billingScheme: 'per_unit'
+        },
+        'tiers' | 'tiersMode'
+      >
+    >
+  // "requests" metered tiered line-item
+  | Simplify<
+      {
+        slug: 'requests'
+        usageType: 'metered'
         billingScheme: 'tiered'
-      },
-      'slug' | 'usageType' | 'billingScheme' | 'unitAmount'
-    >)
+      } & Omit<
+        z.input<typeof pricingPlanMeteredLineItemSchema> & {
+          billingScheme: 'tiered'
+        },
+        'unitAmount' | 'transformQuantity'
+      >
+    >
+  // "custom" metered per-unit line-item
+  | Simplify<
+      {
+        slug: CustomPricingPlanLineItemSlug
+        usageType: 'metered'
+        billingScheme: 'per_unit'
+        unitAmount: number
+      } & Omit<
+        z.input<typeof pricingPlanMeteredLineItemSchema> & {
+          billingScheme: 'per_unit'
+        },
+        'tiers' | 'tiersMode'
+      >
+    >
+  // "custom" metered tiered line-item
+  | Simplify<
+      {
+        slug: CustomPricingPlanLineItemSlug
+        usageType: 'metered'
+        billingScheme: 'tiered'
+      } & Omit<
+        z.input<typeof pricingPlanMeteredLineItemSchema> & {
+          billingScheme: 'tiered'
+        },
+        'unitAmount' | 'transformQuantity'
+      >
+    >
+
+export type PricingPlanLineItem =
+  // "base" licensed line-item
+  | Simplify<
+      {
+        slug: 'base'
+      } & z.infer<typeof pricingPlanLicensedLineItemSchema>
+    >
+  // "custom" licensed line-item
+  | Simplify<
+      {
+        slug: CustomPricingPlanLineItemSlug
+        usageType: 'licensed'
+      } & z.infer<typeof pricingPlanLicensedLineItemSchema>
+    >
+  // "requests" metered per-unit line-item
+  | Simplify<
+      {
+        slug: 'requests'
+        usageType: 'metered'
+        billingScheme: 'per_unit'
+        unitAmount: number
+      } & Omit<
+        z.infer<typeof pricingPlanMeteredLineItemSchema> & {
+          billingScheme: 'per_unit'
+        },
+        'tiers' | 'tiersMode'
+      >
+    >
+  // "requests" metered tiered line-item
+  | Simplify<
+      {
+        slug: 'requests'
+        usageType: 'metered'
+        billingScheme: 'tiered'
+      } & Omit<
+        z.infer<typeof pricingPlanMeteredLineItemSchema> & {
+          billingScheme: 'tiered'
+        },
+        'unitAmount' | 'transformQuantity'
+      >
+    >
+  // "custom" metered per-unit line-item
+  | Simplify<
+      {
+        slug: CustomPricingPlanLineItemSlug
+        usageType: 'metered'
+        billingScheme: 'per_unit'
+        unitAmount: number
+      } & Omit<
+        z.infer<typeof pricingPlanMeteredLineItemSchema> & {
+          billingScheme: 'per_unit'
+        },
+        'tiers' | 'tiersMode'
+      >
+    >
+  // "custom" metered tiered line-item
+  | Simplify<
+      {
+        slug: CustomPricingPlanLineItemSlug
+        usageType: 'metered'
+        billingScheme: 'tiered'
+      } & Omit<
+        z.infer<typeof pricingPlanMeteredLineItemSchema> & {
+          billingScheme: 'tiered'
+        },
+        'unitAmount' | 'transformQuantity'
+      >
+    >
 
 /**
  * Represents the config for a single Stripe subscription plan with one or more
@@ -492,9 +523,16 @@ export const pricingPlanSchema = z
   )
   .openapi('PricingPlan')
 // export type PricingPlan = z.infer<typeof pricingPlanSchema>
+
+export type PricingPlanInput = Simplify<
+  Omit<z.input<typeof pricingPlanSchema>, 'lineItems'> & {
+    lineItems: [PricingPlanLineItemInput, ...PricingPlanLineItemInput[]]
+  }
+>
+
 export type PricingPlan = Simplify<
   Omit<z.infer<typeof pricingPlanSchema>, 'lineItems'> & {
-    lineItems: PricingPlanLineItem[]
+    lineItems: [PricingPlanLineItem, ...PricingPlanLineItem[]]
   }
 >
 
@@ -519,7 +557,8 @@ export const pricingPlanListSchema = z
     message: 'Must contain at least one PricingPlan'
   })
   .describe('List of PricingPlans')
-export type PricingPlanList = PricingPlan[]
+export type PricingPlanListInput = [PricingPlanInput, ...PricingPlanInput[]]
+export type PricingPlanList = [PricingPlan, ...PricingPlan[]]
 
 /**
  * Map from internal PricingPlanLineItem **slug** to Stripe Subscription Item id

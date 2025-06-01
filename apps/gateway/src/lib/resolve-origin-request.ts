@@ -100,12 +100,12 @@ export async function resolveOriginRequest(
 
     if (requestsLineItem) {
       assert(
-        requestsLineItem?.slug === 'requests',
+        requestsLineItem.slug === 'requests',
         403,
         `Invalid pricing plan "${pricingPlan.slug}" for project "${deployment.project}"`
       )
 
-      rateLimit = requestsLineItem?.rateLimit
+      rateLimit = requestsLineItem.rateLimit
     } else {
       // No `requests` line-item, so we don't report usage for this tool.
       reportUsage = false

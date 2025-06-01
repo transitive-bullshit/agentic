@@ -9,6 +9,7 @@ import {
   defaultFreePricingPlan,
   pricingIntervalListSchema,
   type PricingPlanList,
+  type PricingPlanListInput,
   pricingPlanListSchema
 } from './pricing'
 import { toolConfigSchema, toolSchema } from './tools'
@@ -159,7 +160,7 @@ To add support for annual pricing plans, for example, you can use: \`['month', '
 
 export type AgenticProjectConfigInput = Simplify<
   Omit<z.input<typeof agenticProjectConfigSchema>, 'pricingPlans'> & {
-    pricingPlans?: PricingPlanList
+    pricingPlans?: PricingPlanListInput
   }
 >
 export type AgenticProjectConfigRaw = z.output<
