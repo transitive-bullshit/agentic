@@ -170,12 +170,11 @@ export function validatePricing({
               `Invalid PricingPlan "${pricingPlan.slug}": metered LineItem "${lineItem.slug}" must specify a valid "tiersMode" when using "tiered" billing scheme.`
             )
 
-            // TODO: Not sure if this is a valid requirement or not. If it is, update
-            // the corresponding type in the schemas package.
-            // assert(
-            //   lineItem.transformQuantity === undefined,
-            //   `Invalid pricingPlan "${pricingPlan.slug}": metered LineItem "${lineItem.slug}" must not specify "transformQuantity" when using "tiered" billing scheme.`
-            // )
+            // TODO: Not sure if this is a valid requirement or not.
+            assert(
+              (lineItem as any).transformQuantity === undefined,
+              `Invalid pricingPlan "${pricingPlan.slug}": metered LineItem "${lineItem.slug}" must not specify "transformQuantity" when using "tiered" billing scheme.`
+            )
             break
 
           default:

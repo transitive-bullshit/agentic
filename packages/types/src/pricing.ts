@@ -225,7 +225,7 @@ export const pricingPlanMeteredLineItemSchema =
        *
        * This field requires `billingScheme` to be set to `tiered`.
        */
-      tiers: z.array(pricingPlanTierSchema).optional(),
+      tiers: z.array(pricingPlanTierSchema).nonempty().optional(),
 
       // TODO: add support for tiered rate limits?
 

@@ -182,11 +182,6 @@ export async function upsertStripePricing({
             400,
             `Invalid pricing plan metric "${pricingPlanLineItemSlug}" for pricing plan "${pricingPlanSlug}": tiered billing schemes must have at least one tier.`
           )
-          assert(
-            !pricingPlanLineItem.transformQuantity,
-            400,
-            `Invalid pricing plan metric "${pricingPlanLineItemSlug}" for pricing plan "${pricingPlanSlug}": tiered billing schemes cannot have transformQuantity.`
-          )
 
           priceParams.tiers_mode = pricingPlanLineItem.tiersMode
           priceParams.tiers = pricingPlanLineItem.tiers.map((tierData) => {
@@ -214,11 +209,6 @@ export async function upsertStripePricing({
             pricingPlanLineItem.unitAmount !== undefined,
             400,
             `Invalid pricing plan metric "${pricingPlanLineItemSlug}" for pricing plan "${pricingPlanSlug}": unitAmount is required for per_unit billing schemes.`
-          )
-          assert(
-            !(pricingPlanLineItem as any).tiers,
-            400,
-            `Invalid pricing plan metric "${pricingPlanLineItemSlug}" for pricing plan "${pricingPlanSlug}": per_unit billing schemes cannot have tiers.`
           )
 
           priceParams.unit_amount_decimal =
