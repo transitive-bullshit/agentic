@@ -2,7 +2,14 @@ import { assert } from '@agentic/platform-core'
 import { parseFaasIdentifier } from '@agentic/platform-validators'
 
 import type { AuthenticatedContext } from '@/lib/types'
-import { db, deploymentIdSchema, eq, type RawDeployment, schema } from '@/db'
+import {
+  and,
+  db,
+  deploymentIdSchema,
+  eq,
+  type RawDeployment,
+  schema
+} from '@/db'
 import { ensureAuthUser } from '@/lib/ensure-auth-user'
 
 /**
@@ -63,52 +70,65 @@ export async function tryGetDeploymentByIdentifier(
     assert(deployment, 404, `Deployment not found "${deploymentIdentifier}"`)
 
     return deployment
-  } else if (version === 'latest') {
+  } else if (version) {
     const project = await db.query.projects.findFirst({
       ...dbQueryOpts,
       where: eq(schema.projects.identifier, projectIdentifier)
     })
     assert(project, 404, `Project not found "${projectIdentifier}"`)
-    assert(
-      project.lastPublishedDeploymentId,
-      404,
-      'Project has no published deployments'
-    )
 
-    const deployment = await db.query.deployments.findFirst({
-      ...dbQueryOpts,
-      where: eq(schema.deployments.id, project.lastPublishedDeploymentId)
-    })
-    assert(
-      deployment,
-      404,
-      `Deployment not found "${project.lastPublishedDeploymentId}"`
-    )
+    if (version === 'latest') {
+      assert(
+        project.lastPublishedDeploymentId,
+        404,
+        'Project has no published deployments'
+      )
 
-    return deployment
-  } else if (version === 'dev') {
-    const project = await db.query.projects.findFirst({
-      ...dbQueryOpts,
-      where: eq(schema.projects.id, projectIdentifier)
-    })
-    assert(project, 404, `Project not found "${projectIdentifier}"`)
-    assert(
-      project.lastDeploymentId,
-      404,
-      'Project has no published deployments'
-    )
+      const deployment = await db.query.deployments.findFirst({
+        ...dbQueryOpts,
+        where: eq(schema.deployments.id, project.lastPublishedDeploymentId)
+      })
+      assert(
+        deployment,
+        404,
+        `Deployment not found "${project.lastPublishedDeploymentId}"`
+      )
 
-    const deployment = await db.query.deployments.findFirst({
-      ...dbQueryOpts,
-      where: eq(schema.deployments.id, project.lastDeploymentId)
-    })
-    assert(
-      deployment,
-      404,
-      `Deployment not found "${project.lastDeploymentId}"`
-    )
+      return deployment
+    } else if (version === 'dev') {
+      assert(
+        project.lastDeploymentId,
+        404,
+        'Project has no published deployments'
+      )
 
-    return deployment
+      const deployment = await db.query.deployments.findFirst({
+        ...dbQueryOpts,
+        where: eq(schema.deployments.id, project.lastDeploymentId)
+      })
+      assert(
+        deployment,
+        404,
+        `Deployment not found "${project.lastDeploymentId}"`
+      )
+
+      return deployment
+    } else {
+      const deployment = await db.query.deployments.findFirst({
+        ...dbQueryOpts,
+        where: and(
+          eq(schema.deployments.projectId, project.id),
+          eq(schema.deployments.version, version)
+        )
+      })
+      assert(
+        deployment,
+        404,
+        `Deployment not found "${projectIdentifier}@${version}"`
+      )
+
+      return deployment
+    }
   }
 
   assert(false, 400, `Invalid Deployment identifier "${deploymentIdentifier}"`)
