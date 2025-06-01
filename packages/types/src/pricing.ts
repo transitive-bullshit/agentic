@@ -476,14 +476,16 @@ export const pricingPlanSchema = z
     name: z
       .string()
       .nonempty()
-      .describe('Human-readable name for the pricing plan')
+      .describe(
+        'Human-readable name for the pricing plan (eg, "Free", "Starter Monthly", "Pro Annual", etc)'
+      )
       .openapi('name', { example: 'Starter Monthly' }),
 
     slug: z
       .string()
       .nonempty()
       .describe(
-        'PricingPlan slug ("free", "starter-monthly", "pro-annual", etc). Should be lower-cased and kebab-cased. Should be stable across deployments.'
+        'PricingPlan slug (eg, "free", "starter-monthly", "pro-annual", etc). Should be lower-cased and kebab-cased. Should be stable across deployments.'
       )
       .openapi('slug', { example: 'starter-monthly' }),
 

@@ -29,7 +29,8 @@ import { stripe } from '@/lib/external/stripe'
  * The `project` will be updated in the DB with any changes.
  *
  * The `deployment` is readonly and will not be updated, since all Stripe
- * resources persist on its Project in case they're the same across deployments.
+ * resources persist on its Project so they can be reused if possible across
+ * deployments.
  *
  * @note This function assumes that the deployment's pricing config has already
  * been validated.
