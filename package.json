@@ -51,7 +51,7 @@
   },
   "prettier": "@fisch0920/config/prettier",
   "simple-git-hooks": {
-    "pre-commit": "npx lint-staged"
+    "pre-commit": "pnpx lint-staged"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
