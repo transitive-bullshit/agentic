@@ -69,12 +69,32 @@ export function registerV1DeploymentsCreateDeployment(
       `Invalid project identifier "${projectIdentifier}"`
     )
 
-    const project = await db.query.projects.findFirst({
+    let project = await db.query.projects.findFirst({
       where: eq(schema.projects.identifier, projectIdentifier),
       with: {
         lastPublishedDeployment: true
       }
     })
+
+    if (!project) {
+      // Upsert the project if it doesn't already exist
+      // The typecast doesn't match exactly here because we're not populating
+      // the lastPublishedDeployment, but that's fine because it's a new project
+      // so it will be empty anyway.
+      project = (
+        await db
+          .insert(schema.projects)
+          .values({
+            name: body.name,
+            identifier: projectIdentifier,
+            userId: user.id,
+            teamId: teamMember?.teamId,
+            _secret: await sha256()
+          })
+          .returning()
+      )[0] as typeof project
+    }
+
     assert(project, 404, `Project not found "${projectIdentifier}"`)
     await acl(c, project, { label: 'Project' })
     const projectId = project.id

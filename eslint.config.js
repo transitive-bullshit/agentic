@@ -18,7 +18,7 @@ export default [
     }
   },
   {
-    files: ['packages/cli/src/**/*.ts'],
+    files: ['packages/cli/src/**/*.ts', '**/*.test.ts'],
     rules: {
       'no-console': 'off',
       'no-process-env': 'off',

@@ -14,7 +14,8 @@ const fixtures = [
   'pricing-pay-as-you-go',
   'pricing-3-plans',
   'pricing-monthly-annual',
-  'pricing-custom-0'
+  'pricing-custom-0',
+  'basic-openapi'
 ]
 
 const fixturesDir = path.join(
@@ -27,37 +28,23 @@ const fixturesDir = path.join(
   'fixtures'
 )
 const validFixturesDir = path.join(fixturesDir, 'valid')
-console.log(validFixturesDir)
 
-describe('loadAgenticConfig', () => {
-  for (const fixture of fixtures) {
-    test(
-      `${fixture}`,
-      {
-        timeout: 60_000
-      },
-      async () => {
-        const fixtureDir = path.join(validFixturesDir, fixture)
-
-        const config = await loadAgenticConfig({ cwd: fixtureDir })
-        expect(config).toMatchSnapshot()
-      }
-    )
-  }
-
-  for (const fixture of invalidFixtures) {
-    test(
-      `invalid: ${fixture}`,
-      {
-        timeout: 60_000
-      },
-      async () => {
-        const fixtureDir = path.join(invalidFixturesDir, fixture)
-
-        await expect(
-          loadAgenticConfig({ cwd: fixtureDir })
-        ).rejects.toThrowErrorMatchingSnapshot()
-      }
-    )
-  }
+const client = new AgenticApiClient({
+  apiBaseUrl: process.env.AGENTIC_API_BASE_URL
 })
+await client.setRefreshAuthToken(process.env.AGENTIC_API_REFRESH_TOKEN!)
+
+for (const fixture of fixtures) {
+  test(
+    `${fixture}`,
+    {
+      timeout: 60_000
+    },
+    async () => {
+      const fixtureDir = path.join(validFixturesDir, fixture)
+
+      const config = await loadAgenticConfig({ cwd: fixtureDir })
+      expect(config).toMatchSnapshot()
+    }
+  )
+}
