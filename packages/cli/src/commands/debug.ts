@@ -3,7 +3,6 @@ import { Command } from 'commander'
 import { oraPromise } from 'ora'
 
 import type { Context } from '../types'
-import { AuthStore } from '../lib/auth-store'
 
 export function registerDebugCommand({ program, logger }: Context) {
   const command = new Command('debug')
@@ -13,8 +12,6 @@ export function registerDebugCommand({ program, logger }: Context) {
       'The directory to load the Agentic project config from (defaults to cwd). This directory must contain an "agentic.config.{ts,js,json}" project file.'
     )
     .action(async (opts) => {
-      AuthStore.requireAuth()
-
       // Load the Agentic project config, parse, and validate it. This will also
       // validate any origin adapter config such as OpenAPI or MCP specs and
       // embed them if they point to local files or URLs. Note that the server
