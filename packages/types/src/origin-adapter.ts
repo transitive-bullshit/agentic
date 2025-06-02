@@ -21,7 +21,7 @@ export type OriginAdapterLocation = z.infer<typeof originAdapterLocationSchema>
 // >
 
 export const commonOriginAdapterSchema = z.object({
-  location: originAdapterLocationSchema
+  location: originAdapterLocationSchema.optional().default('external')
 
   // TODO: Add support for `internal` hosted API servers
   // internalType: originAdapterInternalTypeSchema.optional()

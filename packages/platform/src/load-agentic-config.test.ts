@@ -12,7 +12,8 @@ const fixtures = [
   'pricing-pay-as-you-go',
   'pricing-3-plans',
   'pricing-monthly-annual',
-  'pricing-custom-0'
+  'pricing-custom-0',
+  'basic-openapi'
 ]
 
 const invalidFixtures = [

@@ -11,7 +11,7 @@ export async function validateAgenticProjectConfig(
   {
     strip = false,
     ...opts
-  }: { logger?: Logger; cwd?: URL; strip?: boolean; label?: string } = {}
+  }: { logger?: Logger; cwd?: string; strip?: boolean; label?: string } = {}
 ): Promise<AgenticProjectConfig> {
   const config = parseAgenticProjectConfig(inputConfig, {
     strip,

@@ -17,7 +17,7 @@ export async function resolveOpenAPIOriginAdapter({
 }: {
   originAdapter: OpenAPIOriginAdapterConfig
   label: string
-  cwd?: URL
+  cwd?: string
   logger?: Logger
 }): Promise<{
   originAdapter: OpenAPIOriginAdapter

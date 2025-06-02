@@ -1,3 +1,5 @@
+import fs from 'node:fs/promises'
+import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import { assert, type Logger, parseJson } from '@agentic/platform-core'
@@ -38,7 +40,7 @@ export async function validateOpenAPISpec<
     silent = false,
     dereference = false
   }: {
-    cwd?: URL
+    cwd?: string
     redoclyConfig?: RedoclyConfig
     logger?: Logger
     silent?: boolean
@@ -56,7 +58,7 @@ export async function validateOpenAPISpec<
     absoluteRef =
       source.protocol === 'file:' ? fileURLToPath(source) : source.href
   } else {
-    absoluteRef = fileURLToPath(new URL(cwd ?? `file://${process.cwd()}/`))
+    absoluteRef = cwd ?? process.cwd()
   }
 
   const resolver = new BaseResolver(redoclyConfig.resolve)
@@ -165,6 +167,19 @@ async function parseSchema(
       return {
         source: new Source(absoluteRef, schema, 'application/json'),
         parsed: parseJson(schema)
+      }
+    }
+
+    // Path to local file
+    // TODO: support raw local files (no ./ prefix)
+    if (schema.startsWith('/') || schema.startsWith('.')) {
+      const schemaPath = path.join(absoluteRef, schema)
+      const schemaContent = await fs.readFile(schemaPath, 'utf8')
+
+      // TODO: support local YAML files
+      return {
+        source: new Source(schemaPath, schemaContent, 'application/json'),
+        parsed: parseJson(schemaContent)
       }
     }
 

@@ -1,5 +1,35 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`loadAgenticConfig > basic-openapi 1`] = `
+{
+  "name": "test-basic-openapi",
+  "originAdapter": {
+    "location": "external",
+    "spec": "{"openapi":"3.1.0","info":{"title":"JSONPlaceholder","version":"1.0.0"},"paths":{"/posts":{"get":{"summary":"Get posts","operationId":"getPosts","responses":{"200":{"description":"Success","content":{"application/json":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/Post"}}}}}}},"post":{"summary":"Create post","operationId":"createPost","requestBody":{"required":true,"content":{"application/json":{"schema":{"type":"object","required":["userId","title","body"],"properties":{"userId":{"type":"integer"},"title":{"type":"string"},"body":{"type":"string"}}}}}},"responses":{"200":{"description":"Success","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Post"}}}}}}},"/posts/{postId}":{"get":{"summary":"Get post","operationId":"getPost","parameters":[{"required":true,"schema":{"title":"postId","type":"string"},"name":"postId","in":"path"}],"responses":{"200":{"description":"Success","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Post"}}}}}}}},"components":{"schemas":{"Post":{"type":"object","required":["id","userId","title","body"],"properties":{"id":{"type":"integer"},"userId":{"type":"integer"},"title":{"type":"string"},"body":{"type":"string"}}}}}}",
+    "type": "openapi",
+  },
+  "originUrl": "https://jsonplaceholder.typicode.com",
+  "pricingIntervals": [
+    "month",
+  ],
+  "pricingPlans": [
+    {
+      "lineItems": [
+        {
+          "amount": 0,
+          "slug": "base",
+          "usageType": "licensed",
+        },
+      ],
+      "name": "Free",
+      "slug": "free",
+    },
+  ],
+  "toolConfigs": [],
+  "version": undefined,
+}
+`;
+
 exports[`loadAgenticConfig > basic-raw-free-json 1`] = `
 {
   "name": "test-basic-raw-free-json",

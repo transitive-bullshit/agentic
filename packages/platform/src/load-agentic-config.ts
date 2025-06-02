@@ -18,5 +18,5 @@ export async function loadAgenticConfig({
     ]
   })
 
-  return validateAgenticProjectConfig(config)
+  return validateAgenticProjectConfig(config, { cwd })
 }

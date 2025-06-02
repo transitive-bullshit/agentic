@@ -22,7 +22,7 @@ export async function validateOriginAdapter({
   originAdapter: Readonly<OriginAdapterConfig>
   label: string
   version?: string
-  cwd?: URL
+  cwd?: string
   logger?: Logger
 }): Promise<OriginAdapterConfig> {
   validateOriginUrl({ originUrl, label })
