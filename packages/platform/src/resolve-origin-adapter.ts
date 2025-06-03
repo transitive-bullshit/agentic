@@ -26,7 +26,7 @@ export async function resolveOriginAdapter({
   originAdapter: OriginAdapterConfig
   label: string
   version?: string
-  cwd?: URL
+  cwd?: string
   logger?: Logger
 }): Promise<{
   originAdapter: OriginAdapter

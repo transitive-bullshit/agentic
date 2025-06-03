@@ -16,7 +16,7 @@ import { validateTools } from './validate-tools'
 
 export async function resolveAgenticProjectConfig(
   inputConfig: AgenticProjectConfig | AgenticProjectConfigRaw,
-  opts: { logger?: Logger; cwd?: URL; label?: string } = {}
+  opts: { logger?: Logger; cwd?: string; label?: string } = {}
 ): Promise<ResolvedAgenticProjectConfig> {
   const config = parseAgenticProjectConfig(inputConfig)
 
