@@ -1,8 +1,7 @@
-import { AgenticApiClient } from '@agentic/platform-api-client'
 import { assert, parseZodSchema } from '@agentic/platform-core'
-import defaultKy from 'ky'
 
 import type { Context } from './lib/types'
+import { createAgenticClient } from './lib/agentic-client'
 import { type AgenticEnv, envSchema } from './lib/env'
 import { fetchCache } from './lib/fetch-cache'
 import { getRequestCacheKey } from './lib/get-request-cache-key'
@@ -45,49 +44,13 @@ export default {
       gatewayTimespan = now - gatewayStartTime
     }
 
-    const cache = caches.default
-    const client = new AgenticApiClient({
-      apiBaseUrl: env.AGENTIC_API_BASE_URL,
-      apiKey: env.AGENTIC_API_KEY,
-      ky: defaultKy.extend({
-        hooks: {
-          // NOTE: The order of the `beforeRequest` hook matters, and it only
-          // works alongside the one in AgenticApiClient because that one's body
-          // should never be run. This only works because we're using `apiKey`
-          // authentication, which is a lil hacky since it's actually a long-
-          // lived access token.
-          beforeRequest: [
-            async (request) => {
-              // Check the cache first before making a request to Agentic's
-              // backend API.
-              return cache.match(request)
-            }
-          ],
-
-          afterResponse: [
-            async (request, _options, response) => {
-              if (response.headers.has('Cache-Control')) {
-                // Asynchronously update the cache with the response from
-                // Agentic's backend API.
-                inputCtx.waitUntil(
-                  cache.put(request, response.clone()).catch((err) => {
-                    console.warn('cache put error', request, err)
-                  })
-                )
-              }
-            }
-          ]
-        }
-      })
-    })
-
     // NOTE: We have to mutate the given ExecutionContext because spreading it
     // into a new object causes its methods to be `undefined`.
     const ctx = inputCtx as Context
     ctx.req = inputReq
     ctx.env = env
-    ctx.client = client
-    ctx.cache = cache
+    ctx.cache = caches.default
+    ctx.client = createAgenticClient(ctx)
 
     try {
       if (inputReq.method === 'OPTIONS') {
