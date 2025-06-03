@@ -20,6 +20,10 @@
   "devDependencies": {
     "@agentic/platform": "workspace:*",
     "@agentic/platform-api-client": "workspace:*",
+    "@agentic/platform-core": "workspace:*",
     "@agentic/platform-fixtures": "workspace:*"
+  },
+  "dependencies": {
+    "p-map": "catalog:"
   }
 }

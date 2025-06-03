@@ -141,6 +141,9 @@ catalogs:
     p-all:
       specifier: ^5.0.0
       version: 5.0.0
+    p-map:
+      specifier: ^7.0.3
+      version: 7.0.3
     parse-json:
       specifier: ^8.3.0
       version: 8.3.0
@@ -344,6 +347,10 @@ importers:
         version: 0.43.1(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(kysely@0.28.2)(postgres@3.4.7)
 
   apps/e2e:
+    dependencies:
+      p-map:
+        specifier: 'catalog:'
+        version: 7.0.3
     devDependencies:
       '@agentic/platform':
         specifier: workspace:*
@@ -351,6 +358,9 @@ importers:
       '@agentic/platform-api-client':
         specifier: workspace:*
         version: link:../../packages/api-client
+      '@agentic/platform-core':
+        specifier: workspace:*
+        version: link:../../packages/core
       '@agentic/platform-fixtures':
         specifier: workspace:*
         version: link:../../packages/fixtures

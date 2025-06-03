@@ -175,7 +175,7 @@ export async function getToolsFromOpenAPISpec(
 
         for (const source of paramSources) {
           if (params[source]) {
-            mergeJsonSchemaObjects(pathParamsJsonSchema, params[source], {
+            mergeJsonSchemaObjects(operationParamsJsonSchema, params[source], {
               source,
               sources: operationParamsSources,
               label: `operation "${operationId}"`

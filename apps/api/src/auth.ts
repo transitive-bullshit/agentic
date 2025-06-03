@@ -16,6 +16,13 @@ import { getGitHubClient } from '@/lib/external/github'
 export const authRouter = issuer({
   subjects,
   storage: DrizzleAuthStorage(),
+  ttl: {
+    access: 60 * 60 * 24 * 30, // 30 days
+    refresh: 60 * 60 * 24 * 365 // 1 year
+    // Used for creating longer-lived testing tokens
+    // access: 60 * 60 * 24 * 366, // 1 year
+    // refresh: 60 * 60 * 24 * 365 * 5 // 5 years
+  },
   providers: {
     github: GithubProvider({
       clientID: env.GITHUB_CLIENT_ID,

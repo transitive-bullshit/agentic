@@ -68,13 +68,15 @@ export class AgenticApiClient {
       hooks: {
         beforeRequest: [
           async (request) => {
-            // Always verify freshness of auth tokens before making a request
-            await this.verifyAuthAndRefreshIfNecessary()
-            assert(this._authTokens, 'Not authenticated')
-            request.headers.set(
-              'Authorization',
-              `Bearer ${this._authTokens.access}`
-            )
+            if (!this.apiKey && this._authTokens) {
+              // Always verify freshness of auth tokens before making a request
+              await this.verifyAuthAndRefreshIfNecessary()
+              assert(this._authTokens, 'Not authenticated')
+              request.headers.set(
+                'Authorization',
+                `Bearer ${this._authTokens.access}`
+              )
+            }
           }
         ]
       }
@@ -89,15 +91,11 @@ export class AgenticApiClient {
     return this._authTokens
   }
 
-  async setRefreshAuthToken(refreshToken: string): Promise<void> {
+  async setAuth(tokens: AuthTokens): Promise<AuthUser> {
     this._ensureNoApiKey()
 
-    const result = await this._authClient.refresh(refreshToken)
-    if (result.err) {
-      throw result.err
-    }
-
-    this._authTokens = result.tokens
+    this._authTokens = tokens
+    return this.verifyAuthAndRefreshIfNecessary()
   }
 
   async verifyAuthAndRefreshIfNecessary(): Promise<AuthUser> {

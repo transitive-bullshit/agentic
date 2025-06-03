@@ -72,7 +72,6 @@
           {
             "required": true,
             "schema": {
-              "title": "postId",
               "type": "string"
             },
             "name": "postId",

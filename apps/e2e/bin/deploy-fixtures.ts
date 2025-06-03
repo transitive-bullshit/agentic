@@ -2,9 +2,9 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import { loadAgenticConfig } from '@agentic/platform'
-import { describe, expect, test } from 'vitest'
+import pMap from 'p-map'
 
-import { client } from './client'
+import { client } from '../src'
 
 const fixtures = [
   // 'basic-raw-free-ts',
@@ -28,17 +28,24 @@ const fixturesDir = path.join(
 )
 const validFixturesDir = path.join(fixturesDir, 'valid')
 
-for (const fixture of fixtures) {
-  test(
-    `${fixture}`,
-    {
-      timeout: 60_000
-    },
-    async () => {
+async function main() {
+  const deployments = await pMap(
+    fixtures,
+    async (fixture) => {
       const fixtureDir = path.join(validFixturesDir, fixture)
 
       const config = await loadAgenticConfig({ cwd: fixtureDir })
+      console.log(config)
+
       const deployment = await client.createDeployment(config)
+      return deployment
+    },
+    {
+      concurrency: 1
     }
   )
+
+  console.log(JSON.stringify(deployments, null, 2))
 }
+
+await main()

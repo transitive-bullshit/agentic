@@ -1,4 +1,8 @@
-import type { AgenticApiClient, AuthUser } from '@agentic/platform-api-client'
+import type {
+  AgenticApiClient,
+  AuthTokens,
+  AuthUser
+} from '@agentic/platform-api-client'
 import type { Command } from 'commander'
 
 export type Context = {
@@ -12,6 +16,6 @@ export type Context = {
 }
 
 export type AuthSession = {
-  refreshToken: string
+  session: AuthTokens
   user: AuthUser
 }

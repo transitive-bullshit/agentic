@@ -17,7 +17,12 @@ exports[`getToolsFromOpenAPISpec > basic.json 1`] = `
     {
       "description": "Echo",
       "inputSchema": {
-        "properties": {},
+        "properties": {
+          "name": {
+            "title": "name",
+            "type": "string",
+          },
+        },
         "required": [],
         "type": "object",
       },
@@ -531,8 +536,15 @@ exports[`getToolsFromOpenAPISpec > firecrawl.json 1`] = `
     {
       "description": "Get the status of a crawl job",
       "inputSchema": {
-        "properties": {},
-        "required": [],
+        "properties": {
+          "jobId": {
+            "description": "ID of the crawl job",
+            "type": "string",
+          },
+        },
+        "required": [
+          "jobId",
+        ],
         "type": "object",
       },
       "name": "get_crawl_status",
@@ -695,8 +707,15 @@ exports[`getToolsFromOpenAPISpec > firecrawl.json 1`] = `
     {
       "description": "Cancel a crawl job",
       "inputSchema": {
-        "properties": {},
-        "required": [],
+        "properties": {
+          "jobId": {
+            "description": "ID of the crawl job",
+            "type": "string",
+          },
+        },
+        "required": [
+          "jobId",
+        ],
         "type": "object",
       },
       "name": "cancel_crawl_job",
@@ -736,6 +755,14 @@ exports[`getToolsFromOpenAPISpec > mixed.json 1`] = `
         "properties": {
           "id": {
             "title": "id",
+            "type": "string",
+          },
+          "name": {
+            "title": "name",
+            "type": "string",
+          },
+          "x-custom-header": {
+            "title": "x-custom-header",
             "type": "string",
           },
         },
@@ -779,8 +806,133 @@ exports[`getToolsFromOpenAPISpec > open-meteo.yaml 1`] = `
     {
       "description": "7 day weather variables in hourly and daily resolution for given WGS84 latitude and longitude coordinates. Available worldwide.",
       "inputSchema": {
-        "properties": {},
-        "required": [],
+        "properties": {
+          "current_weather": {
+            "type": "boolean",
+          },
+          "daily": {
+            "items": {
+              "enum": [
+                "temperature_2m_max",
+                "temperature_2m_min",
+                "apparent_temperature_max",
+                "apparent_temperature_min",
+                "precipitation_sum",
+                "precipitation_hours",
+                "weather_code",
+                "sunrise",
+                "sunset",
+                "wind_speed_10m_max",
+                "wind_gusts_10m_max",
+                "wind_direction_10m_dominant",
+                "shortwave_radiation_sum",
+                "uv_index_max",
+                "uv_index_clear_sky_max",
+                "et0_fao_evapotranspiration",
+              ],
+              "type": "string",
+            },
+            "type": "array",
+          },
+          "hourly": {
+            "items": {
+              "enum": [
+                "temperature_2m",
+                "relative_humidity_2m",
+                "dew_point_2m",
+                "apparent_temperature",
+                "pressure_msl",
+                "cloud_cover",
+                "cloud_cover_low",
+                "cloud_cover_mid",
+                "cloud_cover_high",
+                "wind_speed_10m",
+                "wind_speed_80m",
+                "wind_speed_120m",
+                "wind_speed_180m",
+                "wind_direction_10m",
+                "wind_direction_80m",
+                "wind_direction_120m",
+                "wind_direction_180m",
+                "wind_gusts_10m",
+                "shortwave_radiation",
+                "direct_radiation",
+                "direct_normal_irradiance",
+                "diffuse_radiation",
+                "vapour_pressure_deficit",
+                "evapotranspiration",
+                "precipitation",
+                "weather_code",
+                "snow_height",
+                "freezing_level_height",
+                "soil_temperature_0cm",
+                "soil_temperature_6cm",
+                "soil_temperature_18cm",
+                "soil_temperature_54cm",
+                "soil_moisture_0_1cm",
+                "soil_moisture_1_3cm",
+                "soil_moisture_3_9cm",
+                "soil_moisture_9_27cm",
+                "soil_moisture_27_81cm",
+              ],
+              "type": "string",
+            },
+            "type": "array",
+          },
+          "latitude": {
+            "description": "WGS84 coordinate",
+            "format": "double",
+            "type": "number",
+          },
+          "longitude": {
+            "description": "WGS84 coordinate",
+            "format": "double",
+            "type": "number",
+          },
+          "past_days": {
+            "description": "If \`past_days\` is set, yesterdays or the day before yesterdays data are also returned.",
+            "enum": [
+              1,
+              2,
+            ],
+            "type": "integer",
+          },
+          "temperature_unit": {
+            "default": "celsius",
+            "enum": [
+              "celsius",
+              "fahrenheit",
+            ],
+            "type": "string",
+          },
+          "timeformat": {
+            "default": "iso8601",
+            "description": "If format \`unixtime\` is selected, all time values are returned in UNIX epoch time in seconds. Please not that all time is then in GMT+0! For daily values with unix timestamp, please apply \`utc_offset_seconds\` again to get the correct date.",
+            "enum": [
+              "iso8601",
+              "unixtime",
+            ],
+            "type": "string",
+          },
+          "timezone": {
+            "description": "If \`timezone\` is set, all timestamps are returned as local-time and data is returned starting at 0:00 local-time. Any time zone name from the [time zone database](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) is supported.",
+            "type": "string",
+          },
+          "wind_speed_unit": {
+            "default": "kmh",
+            "enum": [
+              "kmh",
+              "ms",
+              "mph",
+              "kn",
+            ],
+            "type": "string",
+          },
+        },
+        "required": [
+          "latitude",
+          "longitude",
+        ],
         "type": "object",
       },
       "name": "get_v1_forecast",
@@ -1252,7 +1404,14 @@ exports[`getToolsFromOpenAPISpec > pet-store.json 1`] = `
     {
       "description": "List all pets",
       "inputSchema": {
-        "properties": {},
+        "properties": {
+          "limit": {
+            "description": "How many items to return at one time (max 100)",
+            "format": "int32",
+            "maximum": 100,
+            "type": "integer",
+          },
+        },
         "required": [],
         "type": "object",
       },
@@ -1265,12 +1424,6 @@ exports[`getToolsFromOpenAPISpec > pet-store.json 1`] = `
         "properties": {
           "id": {
             "format": "int64",
-            "type": "integer",
-          },
-          "limit": {
-            "description": "How many items to return at one time (max 100)",
-            "format": "int32",
-            "maximum": 100,
             "type": "integer",
           },
           "name": {
@@ -1292,8 +1445,15 @@ exports[`getToolsFromOpenAPISpec > pet-store.json 1`] = `
     {
       "description": "Info for a specific pet",
       "inputSchema": {
-        "properties": {},
-        "required": [],
+        "properties": {
+          "petId": {
+            "description": "The id of the pet to retrieve",
+            "type": "string",
+          },
+        },
+        "required": [
+          "petId",
+        ],
         "type": "object",
       },
       "name": "show_pet_by_id",
@@ -1370,7 +1530,20 @@ Nam sed condimentum est. Maecenas tempor sagittis sapien, nec rhoncus sem sagitt
 
 Sed tempus felis lobortis leo pulvinar rutrum. Nam mattis velit nisl, eu condimentum ligula luctus nec. Phasellus semper velit eget aliquet faucibus. In a mattis elit. Phasellus vel urna viverra, condimentum lorem id, rhoncus nibh. Ut pellentesque posuere elementum. Sed a varius odio. Morbi rhoncus ligula libero, vel eleifend nunc tristique vitae. Fusce et sem dui. Aenean nec scelerisque tortor. Fusce malesuada accumsan magna vel tempus. Quisque mollis felis eu dolor tristique, sit amet auctor felis gravida. Sed libero lorem, molestie sed nisl in, accumsan tempor nisi. Fusce sollicitudin massa ut lacinia mattis. Sed vel eleifend lorem. Pellentesque vitae felis pretium, pulvinar elit eu, euismod sapien.",
       "inputSchema": {
-        "properties": {},
+        "properties": {
+          "limit": {
+            "description": "maximum number of results to return",
+            "format": "int32",
+            "type": "integer",
+          },
+          "tags": {
+            "description": "tags to filter by",
+            "items": {
+              "type": "string",
+            },
+            "type": "array",
+          },
+        },
         "required": [],
         "type": "object",
       },
@@ -1381,23 +1554,11 @@ Sed tempus felis lobortis leo pulvinar rutrum. Nam mattis velit nisl, eu condime
       "description": "Creates a new pet in the store. Duplicates are allowed",
       "inputSchema": {
         "properties": {
-          "limit": {
-            "description": "maximum number of results to return",
-            "format": "int32",
-            "type": "integer",
-          },
           "name": {
             "type": "string",
           },
           "tag": {
             "type": "string",
-          },
-          "tags": {
-            "description": "tags to filter by",
-            "items": {
-              "type": "string",
-            },
-            "type": "array",
           },
         },
         "required": [
@@ -1411,8 +1572,16 @@ Sed tempus felis lobortis leo pulvinar rutrum. Nam mattis velit nisl, eu condime
     {
       "description": "Returns a user based on a single ID, if the user does not have access to the pet",
       "inputSchema": {
-        "properties": {},
-        "required": [],
+        "properties": {
+          "id": {
+            "description": "ID of pet to fetch",
+            "format": "int64",
+            "type": "integer",
+          },
+        },
+        "required": [
+          "id",
+        ],
         "type": "object",
       },
       "name": "find_pet_by_id",
@@ -1423,7 +1592,7 @@ Sed tempus felis lobortis leo pulvinar rutrum. Nam mattis velit nisl, eu condime
       "inputSchema": {
         "properties": {
           "id": {
-            "description": "ID of pet to fetch",
+            "description": "ID of pet to delete",
             "format": "int64",
             "type": "integer",
           },

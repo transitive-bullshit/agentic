@@ -7,7 +7,7 @@
     "type": "git",
     "url": "git+https://github.com/transitive-bullshit/agentic-platform.git"
   },
-  "packageManager": "pnpm@10.11.0",
+  "packageManager": "pnpm@10.11.1",
   "engines": {
     "node": ">=22"
   },
