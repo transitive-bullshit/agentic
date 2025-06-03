@@ -49,7 +49,9 @@ async function main() {
     log: (...args: any[]) => {
       if (program.opts().json) {
         console.log(
-          args.length === 1 ? JSON.stringify(args[0]) : JSON.stringify(args)
+          args.length === 1
+            ? JSON.stringify(args[0], null, 2)
+            : JSON.stringify(args, null, 2)
         )
       } else {
         console.log(...args)

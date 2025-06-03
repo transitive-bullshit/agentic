@@ -1,9 +1,9 @@
 import { expect, test } from 'vitest'
 
-import { parseFaasUri } from './parse-faas-uri'
+import { parseToolUri } from './parse-tool-uri'
 
 function success(value: string) {
-  const result = parseFaasUri(value)
+  const result = parseToolUri(value)
   expect(result).toBeTruthy()
   expect(result?.projectIdentifier).toBeTruthy()
   expect(result?.version || result?.deploymentHash).toBeTruthy()
@@ -11,7 +11,7 @@ function success(value: string) {
 }
 
 function error(value: string) {
-  const result = parseFaasUri(value)
+  const result = parseToolUri(value)
   expect(result).toBeUndefined()
 }
 

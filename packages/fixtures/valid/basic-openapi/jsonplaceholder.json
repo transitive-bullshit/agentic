@@ -72,7 +72,7 @@
           {
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "integer"
             },
             "name": "postId",
             "in": "path"

@@ -30,7 +30,11 @@ export const consumerTokenParamsSchema = z.object({
 })
 
 export const populateConsumerSchema = z.object({
-  populate: z.array(consumerRelationsSchema).default([]).optional()
+  populate: z
+    .union([consumerRelationsSchema, z.array(consumerRelationsSchema)])
+    .default([])
+    .transform((p) => (Array.isArray(p) ? p : [p]))
+    .optional()
 })
 
 export const paginationAndPopulateConsumerSchema = z.object({

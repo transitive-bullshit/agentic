@@ -1,10 +1,10 @@
 import { expect, test } from 'vitest'
 
-import { parseFaasIdentifier } from './parse-faas-identifier'
+import { parseToolIdentifier } from './parse-tool-identifier'
 import * as validators from './validators'
 
-function success(...args: Parameters<typeof parseFaasIdentifier>) {
-  const result = parseFaasIdentifier(...args)
+function success(...args: Parameters<typeof parseToolIdentifier>) {
+  const result = parseToolIdentifier(...args)
   expect(result).toBeTruthy()
   expect(result!.projectIdentifier).toBeTruthy()
   expect(result!.version || result!.deploymentHash).toBeTruthy()
@@ -21,8 +21,8 @@ function success(...args: Parameters<typeof parseFaasIdentifier>) {
   expect(result).toMatchSnapshot()
 }
 
-function error(...args: Parameters<typeof parseFaasIdentifier>) {
-  const result = parseFaasIdentifier(...args)
+function error(...args: Parameters<typeof parseToolIdentifier>) {
+  const result = parseToolIdentifier(...args)
   expect(result).toBeUndefined()
 }
 
@@ -61,19 +61,15 @@ test('URL prefix and suffix success', () => {
 })
 
 test('namespace success', () => {
-  success('https://api.saasify.sh/foo-bar@01234567/foo', {
-    namespace: 'username'
-  })
-  success('/foo-bar@01234567/foo', { namespace: 'username' })
-  success('/foo-bar@01234567/foo', { namespace: 'username' })
-  success('/foo-bar@01234567/foo/', { namespace: 'username' })
-  success('https://api.saasify.sh/foo-bar@01234567/foo/bar/123', {
-    namespace: 'username'
-  })
-  success('/foo-bar@01234567/foo/bar/123', { namespace: 'username' })
-  success('/foo-bar@latest/foo/bar/123', { namespace: 'username' })
-  success('/foo-bar@dev/foo/bar/123', { namespace: 'username' })
-  success('/foo-bar@1.2.3/foo/bar/123', { namespace: 'username' })
+  success('https://api.saasify.sh/username/foo-bar@01234567/foo')
+  success('/username/foo-bar@01234567/foo')
+  success('/username/foo-bar@01234567/foo')
+  success('/username/foo-bar@01234567/foo/')
+  success('username/https://api.saasify.sh/foo-bar@01234567/foo/bar/123')
+  success('/username/foo-bar@01234567/foo/bar/123')
+  success('/username/foo-bar@latest/foo/bar/123')
+  success('/username/foo-bar@dev/foo/bar/123')
+  success('/username/foo-bar@1.2.3/foo/bar/123')
 })
 
 test('namespace error', () => {
@@ -82,6 +78,7 @@ test('namespace error', () => {
   error('/foo-bar@01234567/foo')
   error('/foo-bar@dev/foo')
   error('/foo-bar@01234567/foo')
+  error('foo-bar/tool')
   error('/foo-bar@01234567/foo/')
   error('/foo-bar@01234567/foo/bar/123')
   error('/foo-bar@0latest/foo/bar/123')

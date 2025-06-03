@@ -1,4 +1,4 @@
-export type ParsedFaasIdentifier = {
+export type ParsedToolIdentifier = {
   projectIdentifier: string
   deploymentHash?: string
   deploymentIdentifier?: string

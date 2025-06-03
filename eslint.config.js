@@ -7,7 +7,8 @@ export default [
     ignores: [
       '**/out/**',
       'packages/types/src/openapi.d.ts',
-      'apps/gateway/src/worker.d.ts'
+      'apps/gateway/src/worker.d.ts',
+      'packages/json-schema/test/json-schema-test-suite.ts'
     ]
   },
   {

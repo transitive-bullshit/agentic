@@ -521,6 +521,12 @@ importers:
         specifier: workspace:*
         version: link:../platform
 
+  packages/json-schema:
+    devDependencies:
+      json-schema-test-suite:
+        specifier: git+https://github.com/json-schema-org/JSON-Schema-Test-Suite#76b529f
+        version: https://codeload.github.com/json-schema-org/JSON-Schema-Test-Suite/tar.gz/76b529f
+
   packages/openapi-utils:
     dependencies:
       '@agentic/platform-core':
@@ -3378,6 +3384,10 @@ packages:
   json-parse-even-better-errors@4.0.0:
     resolution: {integrity: sha512-lR4MXjGNgkJc7tkQ97kb2nuEMnNCyU//XYVH0MKTGcXEiSudQ5MKGKen3C5QubYy0vmq+JGitUg92uuywGEwIA==}
     engines: {node: ^18.17.0 || >=20.5.0}
+
+  json-schema-test-suite@https://codeload.github.com/json-schema-org/JSON-Schema-Test-Suite/tar.gz/76b529f:
+    resolution: {tarball: https://codeload.github.com/json-schema-org/JSON-Schema-Test-Suite/tar.gz/76b529f}
+    version: 0.1.0
 
   json-schema-traverse@0.4.1:
     resolution: {integrity: sha512-xbbCH5dCYU5T8LcEhhuh7HJ88HXuW3qsI3Y0zOZFKfZEHcpWiHU/Jxzk629Brsab/mMiHQti9wMP+845RPe3Vg==}
@@ -7416,6 +7426,8 @@ snapshots:
   json-buffer@3.0.1: {}
 
   json-parse-even-better-errors@4.0.0: {}
+
+  json-schema-test-suite@https://codeload.github.com/json-schema-org/JSON-Schema-Test-Suite/tar.gz/76b529f: {}
 
   json-schema-traverse@0.4.1: {}
 

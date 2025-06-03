@@ -28,7 +28,11 @@ export const filterDeploymentSchema = z.object({
 })
 
 export const populateDeploymentSchema = z.object({
-  populate: z.array(deploymentRelationsSchema).default([]).optional()
+  populate: z
+    .union([deploymentRelationsSchema, z.array(deploymentRelationsSchema)])
+    .default([])
+    .transform((p) => (Array.isArray(p) ? p : [p]))
+    .optional()
 })
 
 export const deploymentIdentifierQuerySchema = z.object({

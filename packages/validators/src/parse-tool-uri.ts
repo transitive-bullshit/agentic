@@ -51,6 +51,6 @@ export function parseToolUri(uri: string): ParsedToolIdentifier | undefined {
     }
   }
 
-  // Invalid FaaS uri, so return undefined
+  // Invalid tool uri
   return
 }

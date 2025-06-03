@@ -53,7 +53,7 @@
   - how to handle binary bodies and responses?
   - signed requests
 - revisit deployment identifiers so possibly be URL-friendly?
-- rename parseFaasIdentifier to `parseToolIdentifier` and move validators package into platform-types?
+- rename parseToolIdentifier to `parseToolIdentifier` and move validators package into platform-types?
 
 ## License
 

@@ -1,5 +1,5 @@
 import { assert } from '@agentic/platform-core'
-import { parseFaasIdentifier } from '@agentic/platform-validators'
+import { parseToolIdentifier } from '@agentic/platform-validators'
 
 import type { AuthenticatedContext } from '@/lib/types'
 import {
@@ -11,7 +11,6 @@ import {
   schema
 } from '@/db'
 import { setPublicCacheControl } from '@/lib/cache-control'
-import { ensureAuthUser } from '@/lib/ensure-auth-user'
 
 /**
  * Attempts to find the Deployment matching the given deployment ID or
@@ -36,7 +35,6 @@ export async function tryGetDeploymentByIdentifier(
   }
 ): Promise<RawDeployment> {
   assert(deploymentIdentifier, 400, 'Missing required deployment identifier')
-  const user = await ensureAuthUser(ctx)
 
   // First check if the identifier is a deployment ID
   if (deploymentIdSchema.safeParse(deploymentIdentifier).success) {
@@ -49,11 +47,7 @@ export async function tryGetDeploymentByIdentifier(
     return deployment
   }
 
-  const teamMember = ctx.get('teamMember')
-  const namespace = teamMember ? teamMember.teamSlug : user.username
-  const parsedFaas = parseFaasIdentifier(deploymentIdentifier, {
-    namespace
-  })
+  const parsedFaas = parseToolIdentifier(deploymentIdentifier)
   assert(
     parsedFaas,
     400,
@@ -75,21 +69,18 @@ export async function tryGetDeploymentByIdentifier(
     return deployment
   } else if (version) {
     const project = await db.query.projects.findFirst({
-      ...dbQueryOpts,
       where: eq(schema.projects.identifier, projectIdentifier)
     })
     assert(project, 404, `Project not found "${projectIdentifier}"`)
 
     if (version === 'latest') {
-      assert(
-        project.lastPublishedDeploymentId,
-        404,
-        'Project has no published deployments'
-      )
+      const deploymentId =
+        project.lastPublishedDeploymentId || project.lastDeploymentId
+      assert(deploymentId, 404, 'Project has no published deployments')
 
       const deployment = await db.query.deployments.findFirst({
         ...dbQueryOpts,
-        where: eq(schema.deployments.id, project.lastPublishedDeploymentId)
+        where: eq(schema.deployments.id, deploymentId)
       })
       assert(
         deployment,

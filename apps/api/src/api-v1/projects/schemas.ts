@@ -22,7 +22,11 @@ export const projectIdentifierQuerySchema = z.object({
 })
 
 export const populateProjectSchema = z.object({
-  populate: z.array(projectRelationsSchema).default([]).optional()
+  populate: z
+    .union([projectRelationsSchema, z.array(projectRelationsSchema)])
+    .default([])
+    .transform((p) => (Array.isArray(p) ? p : [p]))
+    .optional()
 })
 
 export const projectIdentifierAndPopulateSchema = z.object({

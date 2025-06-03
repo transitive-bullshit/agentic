@@ -1,5 +1,5 @@
 import type { ParsedToolIdentifier } from './types'
-import { parseToolUri } from './parse-faas-uri'
+import { parseToolUri } from './parse-tool-uri'
 
 export function parseToolIdentifier(
   identifier: string

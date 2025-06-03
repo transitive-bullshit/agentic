@@ -90,13 +90,20 @@ export default {
         assert(originResponse, 500, 'Origin response is required')
         const res = new Response(originResponse.body, originResponse)
 
-        // Record the time it took for both the origin and gateway proxy to respond
+        // Record the time it took for both the origin and gateway to respond
         recordTimespans()
-        res.headers.set('x-response-time', `${originTimespan!}ms`)
-        res.headers.set('x-proxy-response-time', `${gatewayTimespan!}ms`)
+        res.headers.set('x-origin-response-time', `${originTimespan!}ms`)
+        res.headers.set('x-response-time', `${gatewayTimespan!}ms`)
 
         // Reset server to agentic because Cloudflare likes to override things
         res.headers.set('server', 'agentic')
+
+        res.headers.delete('x-powered-by')
+        res.headers.delete('via')
+        res.headers.delete('nel')
+        res.headers.delete('report-to')
+        res.headers.delete('server-timing')
+        res.headers.delete('reporting-endpoints')
 
         // const id: DurableObjectId = env.DO_RATE_LIMITER.idFromName('foo')
         // const stub = env.DO_RATE_LIMITER.get(id)

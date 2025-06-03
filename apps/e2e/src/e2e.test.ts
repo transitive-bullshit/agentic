@@ -22,7 +22,7 @@ for (const [i, fixture] of fixtures.entries()) {
     body: expectedBody
   } = fixture.response ?? {}
 
-  test(
+  test.sequential(
     `${i}) ${method} ${fixture.path}`,
     {
       timeout: fixture.timeout ?? 60_000
@@ -45,7 +45,12 @@ for (const [i, fixture] of fixtures.entries()) {
       let body: any
 
       if (type.includes('json')) {
-        body = await res.json()
+        try {
+          body = await res.json()
+        } catch (err) {
+          console.error('json error', err)
+          throw err
+        }
       } else if (type.includes('text')) {
         body = await res.text()
       } else {
@@ -59,6 +64,12 @@ for (const [i, fixture] of fixtures.entries()) {
       if (snapshot) {
         expect(body).toMatchSnapshot()
       }
+
+      console.log(`${i}) ${method} ${fixture.path}`, {
+        status,
+        body,
+        headers: Object.fromEntries(res.headers.entries())
+      })
     }
   )
 }

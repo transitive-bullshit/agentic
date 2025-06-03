@@ -1,9 +1,8 @@
 import { assert } from '@agentic/platform-core'
-import { parseFaasIdentifier } from '@agentic/platform-validators'
+import { parseToolIdentifier } from '@agentic/platform-validators'
 
 import type { AuthenticatedContext } from '@/lib/types'
 import { db, eq, projectIdSchema, type RawProject, schema } from '@/db'
-import { ensureAuthUser } from '@/lib/ensure-auth-user'
 
 /**
  * Attempts to find the Project matching the given ID or identifier.
@@ -28,7 +27,6 @@ export async function tryGetProjectByIdentifier(
   }
 ): Promise<RawProject> {
   assert(projectIdentifier, 400, 'Missing required project identifier')
-  const user = await ensureAuthUser(ctx)
 
   // First check if the identifier is a project ID
   if (projectIdSchema.safeParse(projectIdentifier).success) {
@@ -40,11 +38,7 @@ export async function tryGetProjectByIdentifier(
     return project
   }
 
-  const teamMember = ctx.get('teamMember')
-  const namespace = teamMember ? teamMember.teamSlug : user.username
-  const parsedFaas = parseFaasIdentifier(projectIdentifier, {
-    namespace
-  })
+  const parsedFaas = parseToolIdentifier(projectIdentifier)
   assert(
     parsedFaas?.projectIdentifier,
     400,

@@ -1,6 +1,6 @@
 import type { AdminDeployment } from '@agentic/platform-types'
 import { assert } from '@agentic/platform-core'
-import { parseFaasIdentifier } from '@agentic/platform-validators'
+import { parseToolIdentifier } from '@agentic/platform-validators'
 
 import type { Context } from './types'
 
@@ -8,7 +8,7 @@ export async function getAdminDeployment(
   ctx: Context,
   identifier: string
 ): Promise<{ deployment: AdminDeployment; toolPath: string }> {
-  const parsedFaas = parseFaasIdentifier(identifier)
+  const parsedFaas = parseToolIdentifier(identifier)
   assert(parsedFaas, 404, `Invalid deployment identifier "${identifier}"`)
 
   const deployment = await ctx.client.adminGetDeploymentByIdentifier({

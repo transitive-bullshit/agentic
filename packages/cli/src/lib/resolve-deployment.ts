@@ -25,7 +25,7 @@ export async function resolveDeployment({
     const namespace = auth.user.username
 
     // TODO: resolve deploymentIdentifier; config name may include namespace?
-    // TODO: rename parseFaasIdentifier; movingn away from FaaS terminology
+    // TODO: this needs work...
 
     deploymentIdentifier = `${namespace}/${config.name}@${fuzzyDeploymentIdentifierVersion}`
   }

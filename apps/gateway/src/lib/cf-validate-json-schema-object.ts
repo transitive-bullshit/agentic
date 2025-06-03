@@ -18,11 +18,13 @@ export function cfValidateJsonSchemaObject<
 >({
   schema,
   data,
-  errorMessage
+  errorMessage,
+  coerce = true
 }: {
   schema: any
   data: Record<string, unknown>
   errorMessage?: string
+  coerce?: boolean
 }): T {
   // Special-case check for required fields to give better error messages
   if (Array.isArray(schema.required)) {
@@ -38,8 +40,7 @@ export function cfValidateJsonSchemaObject<
     }
   }
 
-  const validator = new Validator(schema)
-
+  const validator = new Validator({ schema, coerce })
   const result = validator.validate(data)
   if (result.valid) {
     return data as T
