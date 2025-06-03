@@ -21,7 +21,7 @@ export function cfValidateJsonSchemaObject<
   errorMessage
 }: {
   schema: any
-  data: unknown
+  data: Record<string, unknown>
   errorMessage?: string
 }): T {
   // Special-case check for required fields to give better error messages

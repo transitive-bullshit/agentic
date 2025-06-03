@@ -17,13 +17,15 @@
     "test:typecheck": "tsc --noEmit",
     "test:e2e": "vitest run"
   },
+  "dependencies": {
+    "ky": "catalog:",
+    "p-map": "catalog:"
+  },
   "devDependencies": {
     "@agentic/platform": "workspace:*",
     "@agentic/platform-api-client": "workspace:*",
     "@agentic/platform-core": "workspace:*",
-    "@agentic/platform-fixtures": "workspace:*"
-  },
-  "dependencies": {
-    "p-map": "catalog:"
+    "@agentic/platform-fixtures": "workspace:*",
+    "fast-content-type-parse": "^3.0.0"
   }
 }

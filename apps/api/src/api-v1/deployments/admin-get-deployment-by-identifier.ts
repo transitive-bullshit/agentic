@@ -62,20 +62,6 @@ export function registerV1AdminDeploymentsGetDeploymentByIdentifier(
 
     const hasPopulateProject = populate.includes('project')
 
-    // TODO
-    // TODO: switch from published to publishedAt?
-    // if (deployment.published) {
-    //   c.res.headers.set(
-    //     'cache-control',
-    //     'public, max-age=1, s-maxage=1 stale-while-revalidate=1'
-    //   )
-    // } else {
-    //   c.res.headers.set(
-    //     'cache-control',
-    //     'public, max-age=120, s-maxage=120, stale-while-revalidate=10'
-    //   )
-    // }
-
     return c.json(
       parseZodSchema(schema.deploymentAdminSelectSchema, {
         ...deployment,

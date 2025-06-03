@@ -10,6 +10,7 @@ import {
   type RawDeployment,
   schema
 } from '@/db'
+import { setPublicCacheControl } from '@/lib/cache-control'
 import { ensureAuthUser } from '@/lib/ensure-auth-user'
 
 /**
@@ -44,6 +45,7 @@ export async function tryGetDeploymentByIdentifier(
       where: eq(schema.deployments.id, deploymentIdentifier)
     })
     assert(deployment, 404, `Deployment not found "${deploymentIdentifier}"`)
+    setPublicCacheControl(ctx.res, '1h')
     return deployment
   }
 
@@ -68,6 +70,7 @@ export async function tryGetDeploymentByIdentifier(
       where: eq(schema.deployments.identifier, deploymentIdentifier)
     })
     assert(deployment, 404, `Deployment not found "${deploymentIdentifier}"`)
+    setPublicCacheControl(ctx.res, '1h')
 
     return deployment
   } else if (version) {
@@ -93,6 +96,7 @@ export async function tryGetDeploymentByIdentifier(
         404,
         `Deployment not found "${project.lastPublishedDeploymentId}"`
       )
+      setPublicCacheControl(ctx.res, '10s')
 
       return deployment
     } else if (version === 'dev') {
@@ -111,6 +115,7 @@ export async function tryGetDeploymentByIdentifier(
         404,
         `Deployment not found "${project.lastDeploymentId}"`
       )
+      setPublicCacheControl(ctx.res, '10s')
 
       return deployment
     } else {
@@ -126,6 +131,7 @@ export async function tryGetDeploymentByIdentifier(
         404,
         `Deployment not found "${projectIdentifier}@${version}"`
       )
+      setPublicCacheControl(ctx.res, '1h')
 
       return deployment
     }

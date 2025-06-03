@@ -348,6 +348,9 @@ importers:
 
   apps/e2e:
     dependencies:
+      ky:
+        specifier: 'catalog:'
+        version: 1.8.1
       p-map:
         specifier: 'catalog:'
         version: 7.0.3
@@ -364,6 +367,9 @@ importers:
       '@agentic/platform-fixtures':
         specifier: workspace:*
         version: link:../../packages/fixtures
+      fast-content-type-parse:
+        specifier: ^3.0.0
+        version: 3.0.0
 
   apps/gateway:
     dependencies:
@@ -400,6 +406,9 @@ importers:
       hono:
         specifier: 'catalog:'
         version: 4.7.10
+      ky:
+        specifier: 'catalog:'
+        version: 1.8.1
       plur:
         specifier: ^5.1.0
         version: 5.1.0

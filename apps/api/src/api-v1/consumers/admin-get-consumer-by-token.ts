@@ -4,6 +4,7 @@ import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 import type { AuthenticatedEnv } from '@/lib/types'
 import { db, eq, schema } from '@/db'
 import { aclAdmin } from '@/lib/acl-admin'
+import { setPublicCacheControl } from '@/lib/cache-control'
 import {
   openapiAuthenticatedSecuritySchemas,
   openapiErrorResponse404,
@@ -58,15 +59,9 @@ export function registerV1AdminConsumersGetConsumerByToken(
       !consumer.activated ||
       !consumer.isStripeSubscriptionActive
     ) {
-      c.res.headers.set(
-        'cache-control',
-        'public, max-age=1, s-maxage=1 stale-while-revalidate=1'
-      )
+      setPublicCacheControl(c.res, '1s')
     } else {
-      c.res.headers.set(
-        'cache-control',
-        'public, max-age=120, s-maxage=120, stale-while-revalidate=10'
-      )
+      setPublicCacheControl(c.res, '1m')
     }
 
     return c.json(parseZodSchema(schema.consumerSelectSchema, consumer))

@@ -16,6 +16,7 @@ export type Context = ExecutionContext & {
   req: Request
   env: AgenticEnv
   client: AgenticApiClient
+  cache: Cache
 }
 
 export interface ResolvedOriginRequest {

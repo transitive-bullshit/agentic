@@ -1,7 +1,5 @@
 import type { Context } from './types'
 
-const cache = caches.default
-
 export async function fetchCache(
   ctx: Context,
   {
@@ -15,7 +13,7 @@ export async function fetchCache(
   let response: Response | undefined
 
   if (cacheKey) {
-    response = await cache.match(cacheKey)
+    response = await ctx.cache.match(cacheKey)
   }
 
   if (!response) {
@@ -26,7 +24,7 @@ export async function fetchCache(
       if (response.headers.has('Cache-Control')) {
         // Note that cloudflare's `cache` should respect response headers.
         ctx.waitUntil(
-          cache.put(cacheKey, response.clone()).catch((err) => {
+          ctx.cache.put(cacheKey, response.clone()).catch((err) => {
             console.warn('cache put error', cacheKey, err)
           })
         )

@@ -26,6 +26,7 @@ export async function createRequestForOpenAPIOperation({
 
   let incomingRequestParams: Record<string, any> = {}
   if (request.method === 'GET') {
+    // TODO: coerce data types to match input schema since all values will be strings
     incomingRequestParams = Object.fromEntries(
       new URL(request.url).searchParams.entries()
     )
@@ -43,6 +44,8 @@ export async function createRequestForOpenAPIOperation({
   }
 
   // TODO: Validate incoming request params against the tool's input JSON schema
+  // TODO: we want to coerce data types to match the schema for booleans, dates, etc
+  // Currently, these will fail if given as body params, for instance, on the origin server.
   cfValidateJsonSchemaObject({
     schema: tool.inputSchema,
     data: incomingRequestParams,
