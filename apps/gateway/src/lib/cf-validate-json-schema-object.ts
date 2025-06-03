@@ -2,7 +2,18 @@ import { HttpError } from '@agentic/platform-core'
 import { Validator } from '@cfworker/json-schema'
 import plur from 'plur'
 
-export function validateJsonSchemaObject<
+/**
+ * Validates `data` against the provided JSON schema object.
+ *
+ * This method uses `@cfworker/json-schema` and does not use `ajv` because CF
+ * workers does not support `ajv` due to its dynamic code generation and
+ * evaluation.
+ *
+ * If you want a stricter version of this method which uses `ajv` and you're
+ * not running on CF workers, consider using `validateJsonSchemaObject` from
+ * `@agentic/platform-openapi-utils`.
+ */
+export function cfValidateJsonSchemaObject<
   T extends Record<string, unknown> = Record<string, unknown>
 >({
   schema,

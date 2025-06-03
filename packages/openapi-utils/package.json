@@ -31,7 +31,8 @@
     "ajv-formats": "^3.0.1",
     "camelcase": "catalog:",
     "decamelize": "catalog:",
-    "fast-uri": "^3.0.6"
+    "fast-uri": "^3.0.6",
+    "plur": "^5.1.0"
   },
   "publishConfig": {
     "access": "public"

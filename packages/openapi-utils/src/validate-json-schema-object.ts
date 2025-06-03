@@ -3,6 +3,7 @@ import { betterAjvErrors } from '@apideck/better-ajv-errors'
 import Ajv, { type ValidateFunction } from 'ajv'
 import addFormats from 'ajv-formats'
 import fastUri from 'fast-uri'
+import plur from 'plur'
 
 const globalAjv = new Ajv({
   coerceTypes: true,
@@ -17,10 +18,18 @@ const globalAjv = new Ajv({
 // https://github.com/ajv-validator/ajv-formats
 addFormats(globalAjv)
 
-// NOTE: Ajv is not compatible with Cloudflare Workers.
-// @see https://github.com/ajv-validator/ajv/issues/2318
-
-export function validateJsonSchema<
+/**
+ * Validates `data` against the provided JSON schema object.
+ *
+ * This method uses `ajv` and is therefore not compatible with CF workers due
+ * to its use of code generation and evaluation.
+ *
+ * The API gateway uses `cfValidateJsonSchemaObject`, which is looser but
+ * special-cased for CF workers.
+ *
+ * @see https://github.com/ajv-validator/ajv/issues/2318
+ */
+export function validateJsonSchemaObject<
   T extends Record<string, unknown> = Record<string, unknown>
 >({
   schema,
@@ -33,6 +42,20 @@ export function validateJsonSchema<
   ajv?: Ajv
   errorMessage?: string
 }): T {
+  // Special-case check for required fields to give better error messages
+  if (Array.isArray(schema.required)) {
+    const missingRequiredFields: string[] = schema.required.filter(
+      (field: string) => (data as T)[field] === undefined
+    )
+
+    if (missingRequiredFields.length > 0) {
+      throw new HttpError({
+        statusCode: 400,
+        message: `${errorMessage ? errorMessage + ': ' : ''}Missing required ${plur('field', missingRequiredFields.length)}: ${missingRequiredFields.map((field) => `"${field}"`).join(', ')}`
+      })
+    }
+  }
+
   const schemaHashKey = hashObject(schema)
   let validate = ajv.getSchema(schemaHashKey) as ValidateFunction<T>
   if (!validate) {
@@ -40,14 +63,14 @@ export function validateJsonSchema<
     ajv.addSchema(schema, schemaHashKey)
   }
 
-  // TODO: Add better error messages
   if (ajv.validate(schema, data)) {
     return data as T
   }
 
+  // TODO: Add better error messages
   const errors = betterAjvErrors({ schema, data, errors: ajv.errors })
   const finalErrorMessage = [
-    errorMessage,
+    errorMessage ? `${errorMessage}: ` : undefined,
     ...errors.map((error) => JSON.stringify(error, null, 2))
   ]
     .filter(Boolean)

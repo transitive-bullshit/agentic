@@ -5,7 +5,7 @@ import type {
 } from '@agentic/platform-types'
 import { assert } from '@agentic/platform-core'
 
-import { validateJsonSchemaObject } from './validate-json-schema-object'
+import { cfValidateJsonSchemaObject } from './cf-validate-json-schema-object'
 
 export async function createRequestForOpenAPIOperation({
   request,
@@ -39,7 +39,7 @@ export async function createRequestForOpenAPIOperation({
   }
 
   // TODO: Validate incoming request params against the tool's input JSON schema
-  validateJsonSchemaObject({
+  cfValidateJsonSchemaObject({
     schema: tool.inputSchema,
     data: incomingRequestParams,
     errorMessage: `Invalid request parameters for tool "${tool.name}"`

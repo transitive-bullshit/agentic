@@ -541,6 +541,9 @@ importers:
       fast-uri:
         specifier: ^3.0.6
         version: 3.0.6
+      plur:
+        specifier: ^5.1.0
+        version: 5.1.0
     devDependencies:
       '@hono/node-server':
         specifier: 'catalog:'
