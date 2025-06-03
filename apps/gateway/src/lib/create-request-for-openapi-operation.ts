@@ -5,7 +5,7 @@ import type {
 } from '@agentic/platform-types'
 import { assert } from '@agentic/platform-core'
 
-import { validateJsonSchema } from './validate-json-schema'
+import { validateJsonSchemaObject } from './validate-json-schema-object'
 
 export async function createRequestForOpenAPIOperation({
   request,
@@ -29,7 +29,7 @@ export async function createRequestForOpenAPIOperation({
   let incomingRequestParams: Record<string, any> = {}
   if (request.method === 'GET') {
     incomingRequestParams = Object.fromEntries(
-      new URLSearchParams(tempInitialRequest.url).entries()
+      new URL(tempInitialRequest.url).searchParams.entries()
     )
   } else if (request.method === 'POST') {
     incomingRequestParams = (await tempInitialRequest.json()) as Record<
@@ -39,7 +39,7 @@ export async function createRequestForOpenAPIOperation({
   }
 
   // TODO: Validate incoming request params against the tool's input JSON schema
-  validateJsonSchema({
+  validateJsonSchemaObject({
     schema: tool.inputSchema,
     data: incomingRequestParams,
     errorMessage: `Invalid request parameters for tool "${tool.name}"`

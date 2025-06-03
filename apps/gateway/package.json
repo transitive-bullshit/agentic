@@ -39,6 +39,7 @@
     "eventid": "catalog:",
     "fast-content-type-parse": "^3.0.0",
     "hono": "catalog:",
+    "plur": "^5.1.0",
     "type-fest": "catalog:"
   },
   "devDependencies": {
