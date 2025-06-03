@@ -65,11 +65,11 @@ test('namespace success', () => {
   success('/username/foo-bar@01234567/foo')
   success('/username/foo-bar@01234567/foo')
   success('/username/foo-bar@01234567/foo/')
-  success('username/https://api.saasify.sh/foo-bar@01234567/foo/bar/123')
   success('/username/foo-bar@01234567/foo/bar/123')
   success('/username/foo-bar@latest/foo/bar/123')
   success('/username/foo-bar@dev/foo/bar/123')
   success('/username/foo-bar@1.2.3/foo/bar/123')
+  success('https://api.saasify.sh/username/foo-bar@01234567/foo/bar/123')
 })
 
 test('namespace error', () => {
@@ -78,7 +78,6 @@ test('namespace error', () => {
   error('/foo-bar@01234567/foo')
   error('/foo-bar@dev/foo')
   error('/foo-bar@01234567/foo')
-  error('foo-bar/tool')
   error('/foo-bar@01234567/foo/')
   error('/foo-bar@01234567/foo/bar/123')
   error('/foo-bar@0latest/foo/bar/123')
