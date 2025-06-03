@@ -33,6 +33,7 @@
     "@agentic/platform-core": "workspace:*",
     "@agentic/platform-types": "workspace:*",
     "@agentic/platform-validators": "workspace:*",
+    "@cfworker/json-schema": "^4.1.1",
     "@hono/zod-validator": "catalog:",
     "@modelcontextprotocol/sdk": "catalog:",
     "eventid": "catalog:",

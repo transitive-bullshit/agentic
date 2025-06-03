@@ -15,13 +15,8 @@ export function parseFaasIdentifier(
     uri = pathname
   } catch {}
 
-  if (uri.startsWith('/')) {
-    uri = uri.slice(1)
-  }
-
-  if (uri.endsWith('/')) {
-    uri = uri.slice(0, -1)
-  }
+  uri = uri.replaceAll(/^\//g, '')
+  uri = uri.replaceAll(/\/$/g, '')
 
   if (!uri.length) {
     return

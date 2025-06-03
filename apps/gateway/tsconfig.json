@@ -7,6 +7,10 @@
     },
     "types": ["./src/worker.d.ts"]
   },
-  "include": ["src", "*.config.ts"],
+  "include": [
+    "src",
+    "*.config.ts",
+    "../../packages/openapi-utils/src/validate-json-schema.ts"
+  ],
   "exclude": ["node_modules", "dist"]
 }

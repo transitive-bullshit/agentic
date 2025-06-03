@@ -23,8 +23,8 @@ export async function resolveOriginRequest(
   const ip = req.headers.get('cf-connecting-ip') || undefined
   const requestUrl = new URL(req.url)
 
-  const { search, pathname } = requestUrl
-  const method = req.method.toLowerCase()
+  const { pathname } = requestUrl
+  const { method } = req
   const requestPathParts = pathname.split('/')
 
   // TODO: the isMCPRequest logic needs to be completely redone.
@@ -44,7 +44,6 @@ export async function resolveOriginRequest(
   console.log('request', {
     method,
     pathname,
-    search,
     deploymentIdentifier: deployment.identifier,
     toolPath,
     tool
@@ -172,11 +171,12 @@ export async function resolveOriginRequest(
 
       originRequest = await createRequestForOpenAPIOperation({
         request: req,
+        tool,
         operation,
         deployment
       })
     } else {
-      const originRequestUrl = `${deployment.originUrl}${toolPath}${search}`
+      const originRequestUrl = `${deployment.originUrl}${toolPath}${requestUrl.search}`
       originRequest = new Request(originRequestUrl, req)
     }
 

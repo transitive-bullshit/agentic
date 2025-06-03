@@ -59,6 +59,10 @@ export class AgenticApiClient {
 
     this.ky = ky.extend({
       prefixUrl: apiBaseUrl,
+
+      // Set a longer timeout on localhost to account for backend debugging / breakpoints.
+      timeout: apiBaseUrl.startsWith('http://localhost') ? 120_000 : undefined,
+
       headers: apiKey
         ? {
             Authorization: `Bearer ${apiKey}`

@@ -17,14 +17,36 @@ export function getTool({
     .at(-1)
   assert(toolName, 404, `Invalid tool path "${toolPath}"`)
 
-  const tool = deployment.tools.find((tool) => {
-    if (tool.name === toolName) {
-      return true
-    }
+  let tool = deployment.tools.find((tool) => tool.name === toolName)
 
-    return false
-  })
-  assert(tool, 404, `Tool not found "${toolPath}"`)
+  if (!tool) {
+    if (deployment.originAdapter.type === 'openapi') {
+      const operationToolName = Object.entries(
+        deployment.originAdapter.toolToOperationMap
+      ).find(([_, operation]) => {
+        if (operation.operationId === toolName) {
+          return true
+        }
+
+        return false
+      })?.[0]
+
+      if (operationToolName) {
+        tool = deployment.tools.find((tool) => tool.name === operationToolName)
+      }
+      assert(
+        tool,
+        404,
+        `Tool not found "${toolName}" for deployment "${deployment.identifier}": did you mean "${operationToolName}"?`
+      )
+    }
+  }
+
+  assert(
+    tool,
+    404,
+    `Tool not found "${toolName}" for deployment "${deployment.identifier}"`
+  )
 
   if (deployment.originAdapter.type === 'openapi') {
     const operation = deployment.originAdapter.toolToOperationMap[tool.name]
@@ -34,9 +56,9 @@ export function getTool({
       `OpenAPI operation not found for tool "${tool.name}"`
     )
     assert(
-      operation.method.toUpperCase() === method.toUpperCase(),
+      method === 'GET' || method === 'POST',
       405,
-      `Invalid HTTP method "${method.toUpperCase()}" for tool "${tool.name}"`
+      `Invalid HTTP method "${method}" for tool "${tool.name}"`
     )
 
     return {

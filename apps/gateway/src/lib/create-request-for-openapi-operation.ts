@@ -1,24 +1,52 @@
 import type {
   AdminDeployment,
-  OpenAPIToolOperation
+  OpenAPIToolOperation,
+  Tool
 } from '@agentic/platform-types'
 import { assert } from '@agentic/platform-core'
 
+import { validateJsonSchema } from './validate-json-schema'
+
 export async function createRequestForOpenAPIOperation({
   request,
+  tool,
   operation,
   deployment
 }: {
   request: Request
+  tool: Tool
   operation: OpenAPIToolOperation
   deployment: AdminDeployment
 }): Promise<Request> {
-  const tempInitialRequest = request.clone()
-  const tempInitialRequestBody: any = await tempInitialRequest.json()
+  assert(
+    deployment.originAdapter.type === 'openapi',
+    500,
+    `Unexpected origin adapter type: "${deployment.originAdapter.type}"`
+  )
 
-  const params = Object.entries(operation.parameterSources)
+  const tempInitialRequest = request.clone()
+
+  let incomingRequestParams: Record<string, any> = {}
+  if (request.method === 'GET') {
+    incomingRequestParams = Object.fromEntries(
+      new URLSearchParams(tempInitialRequest.url).entries()
+    )
+  } else if (request.method === 'POST') {
+    incomingRequestParams = (await tempInitialRequest.json()) as Record<
+      string,
+      any
+    >
+  }
+
+  // TODO: Validate incoming request params against the tool's input JSON schema
+  validateJsonSchema({
+    schema: tool.inputSchema,
+    data: incomingRequestParams,
+    errorMessage: `Invalid request parameters for tool "${tool.name}"`
+  })
 
   // TODO: Make this more efficient by changing the `parameterSources` data structure
+  const params = Object.entries(operation.parameterSources)
   const bodyParams = params.filter(([_key, source]) => source === 'body')
   const formDataParams = params.filter(
     ([_key, source]) => source === 'formData'
@@ -36,19 +64,21 @@ export async function createRequestForOpenAPIOperation({
   const headers: Record<string, string> = {}
   if (headerParams.length > 0) {
     for (const [key] of headerParams) {
-      headers[key] = tempInitialRequest.headers.get(key) as string
+      headers[key] =
+        (tempInitialRequest.headers.get(key) as string) ??
+        incomingRequestParams[key]
     }
   }
 
   for (const [key] of cookieParams) {
-    headers[key] = tempInitialRequestBody[key] as string
+    headers[key] = String(incomingRequestParams[key])
   }
 
   let body: string | undefined
   if (bodyParams.length > 0) {
     body = JSON.stringify(
       Object.fromEntries(
-        bodyParams.map(([key]) => [key, tempInitialRequestBody[key] as any])
+        bodyParams.map(([key]) => [key, incomingRequestParams[key]])
       )
     )
 
@@ -56,7 +86,7 @@ export async function createRequestForOpenAPIOperation({
   } else if (formDataParams.length > 0) {
     body = JSON.stringify(
       Object.fromEntries(
-        formDataParams.map(([key]) => [key, tempInitialRequestBody[key] as any])
+        formDataParams.map(([key]) => [key, incomingRequestParams[key]])
       )
     )
 
@@ -66,7 +96,7 @@ export async function createRequestForOpenAPIOperation({
   let path = operation.path
   if (pathParams.length > 0) {
     for (const [key] of pathParams) {
-      const value: string = tempInitialRequestBody[key]
+      const value: string = incomingRequestParams[key]
       assert(value, 400, `Missing required parameter "${key}"`)
 
       const pathParamPlaceholder = `{${key}}`
@@ -87,9 +117,8 @@ export async function createRequestForOpenAPIOperation({
 
   const query = new URLSearchParams()
   for (const [key] of queryParams) {
-    query.set(key, tempInitialRequestBody[key] as string)
+    query.set(key, incomingRequestParams[key] as string)
   }
-
   const queryString = query.toString()
   const originRequestUrl = `${deployment.originUrl}${path}${
     queryString ? `?${queryString}` : ''

@@ -19,7 +19,7 @@
   },
   "scripts": {
     "build": "tsup",
-    "dev": "tsup --watch",
+    "dev": "tsx src/server.ts",
     "clean": "del dist",
     "test": "run-s test:*",
     "test:lint": "eslint .",

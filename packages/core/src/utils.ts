@@ -64,9 +64,13 @@ export function assert(
   }
 
   if (typeof statusCodeOrMessage === 'number') {
-    throw new HttpError({ statusCode: statusCodeOrMessage, message })
+    const error = new HttpError({ statusCode: statusCodeOrMessage, message })
+    Error.captureStackTrace(error, assert)
+    throw error
   } else {
-    throw new Error(statusCodeOrMessage ?? message)
+    const error = new Error(statusCodeOrMessage ?? message)
+    Error.captureStackTrace(error, assert)
+    throw error
   }
 }
 

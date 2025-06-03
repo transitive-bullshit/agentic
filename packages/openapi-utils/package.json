@@ -25,9 +25,13 @@
   "dependencies": {
     "@agentic/platform-core": "workspace:*",
     "@agentic/platform-types": "workspace:*",
+    "@apideck/better-ajv-errors": "^0.3.6",
     "@redocly/openapi-core": "catalog:",
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
     "camelcase": "catalog:",
-    "decamelize": "catalog:"
+    "decamelize": "catalog:",
+    "fast-uri": "^3.0.6"
   },
   "publishConfig": {
     "access": "public"

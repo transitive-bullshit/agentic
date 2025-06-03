@@ -23,6 +23,28 @@ export const authRouter = issuer({
     // access: 60 * 60 * 24 * 366, // 1 year
     // refresh: 60 * 60 * 24 * 365 * 5 // 5 years
   },
+  theme: {
+    title: 'Agentic',
+    logo: {
+      dark: 'https://vercel.com/mktng/_next/static/media/vercel-logotype-dark.e8c0a742.svg',
+      light:
+        'https://vercel.com/mktng/_next/static/media/vercel-logotype-light.700a8d26.svg'
+    },
+    background: {
+      dark: 'black',
+      light: 'white'
+    },
+    primary: {
+      dark: 'white',
+      light: 'black'
+    },
+    font: {
+      family: 'Geist, sans-serif'
+    },
+    css: `
+    @import url('https://fonts.googleapis.com/css2?family=Geist:wght@100;200;300;400;500;600;700;800;900&display=swap');
+  `
+  },
   providers: {
     github: GithubProvider({
       clientID: env.GITHUB_CLIENT_ID,

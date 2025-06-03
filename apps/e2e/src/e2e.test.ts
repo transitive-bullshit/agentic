@@ -1,44 +1,11 @@
-import path from 'node:path'
-import { fileURLToPath } from 'node:url'
+import { expect, test } from 'vitest'
 
-import { loadAgenticConfig } from '@agentic/platform'
-import { describe, expect, test } from 'vitest'
-
-import { client } from './client'
-
-const fixtures = [
-  // 'basic-raw-free-ts',
-  // 'basic-raw-free-json',
-  // 'pricing-freemium',
-  // 'pricing-pay-as-you-go',
-  // 'pricing-3-plans',
-  // 'pricing-monthly-annual',
-  // 'pricing-custom-0',
-  'basic-openapi'
-]
-
-const fixturesDir = path.join(
-  fileURLToPath(import.meta.url),
-  '..',
-  '..',
-  '..',
-  '..',
-  'packages',
-  'fixtures'
+test(
+  `${fixture}`,
+  {
+    timeout: 60_000
+  },
+  async () => {
+    'dev/test-basic-openapi@8d1a4900'
+  }
 )
-const validFixturesDir = path.join(fixturesDir, 'valid')
-
-for (const fixture of fixtures) {
-  test(
-    `${fixture}`,
-    {
-      timeout: 60_000
-    },
-    async () => {
-      const fixtureDir = path.join(validFixturesDir, fixture)
-
-      const config = await loadAgenticConfig({ cwd: fixtureDir })
-      const deployment = await client.createDeployment(config)
-    }
-  )
-}

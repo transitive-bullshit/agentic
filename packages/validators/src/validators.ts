@@ -8,8 +8,9 @@ export const passwordRe = /^.{3,1024}$/
 export const projectNameRe = /^[a-z0-9-]{2,64}$/
 export const deploymentHashRe = /^[a-z0-9]{8}$/
 
-export const projectRe = /^[a-zA-Z0-9-]{1,64}\/[a-z0-9-]{3,64}$/
-export const deploymentRe = /^[a-zA-Z0-9-]{1,64}\/[a-z0-9-]{3,64}@[a-z0-9]{8}$/
+export const projectIdentifierRe = /^[a-zA-Z0-9-]{1,64}\/[a-z0-9-]{3,64}$/
+export const deploymentIdentifierRe =
+  /^[a-zA-Z0-9-]{1,64}\/[a-z0-9-]{3,64}@[a-z0-9]{8}$/
 
 // tool names may be any valid JavaScript identifier
 // TODO: should tool names be any label?
@@ -41,11 +42,11 @@ export function deploymentHash(value?: string): boolean {
 }
 
 export function projectIdentifier(value?: string): boolean {
-  return !!value && projectRe.test(value)
+  return !!value && projectIdentifierRe.test(value)
 }
 
 export function deploymentIdentifier(value?: string): boolean {
-  return !!value && deploymentRe.test(value)
+  return !!value && deploymentIdentifierRe.test(value)
 }
 
 export function toolName(value?: string): boolean {

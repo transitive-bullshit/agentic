@@ -47,3 +47,5 @@ apps/api/auth-db-temp.json
 
 .dev.vars
 .dev.vars.*
+
+.wrangler

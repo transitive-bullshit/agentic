@@ -1,5 +1,5 @@
 import { assert } from '@agentic/platform-core'
-import { validators } from '@agentic/platform-validators'
+import { parseFaasIdentifier, validators } from '@agentic/platform-validators'
 import { z } from '@hono/zod-openapi'
 
 import type { consumersRelations } from './schema/consumer'
@@ -53,7 +53,7 @@ export const projectIdentifierSchema = z
 
 export const deploymentIdentifierSchema = z
   .string()
-  .refine((id) => validators.deploymentIdentifier(id), {
+  .refine((id) => !!parseFaasIdentifier(id), {
     message: 'Invalid deployment identifier'
   })
   .describe(
