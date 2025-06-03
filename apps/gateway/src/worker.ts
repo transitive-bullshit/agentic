@@ -3,6 +3,8 @@ import { assert, parseZodSchema } from '@agentic/platform-core'
 
 import type { Context } from './lib/types'
 import { type AgenticEnv, envSchema } from './lib/env'
+import { fetchCache } from './lib/fetch-cache'
+import { getRequestCacheKey } from './lib/get-request-cache-key'
 import { handleOptions } from './lib/handle-options'
 import { resolveOriginRequest } from './lib/resolve-origin-request'
 
@@ -47,12 +49,12 @@ export default {
       apiKey: env.AGENTIC_API_KEY
     })
 
-    const ctx: Context = {
-      ...inputCtx,
-      req: inputReq,
-      env,
-      client
-    }
+    // NOTE: We have to mutate the given ExecutionContext because spreading it
+    // into a new object causes its methods to be `undefined`.
+    const ctx = inputCtx as Context
+    ctx.req = inputReq
+    ctx.env = env
+    ctx.client = client
 
     try {
       if (inputReq.method === 'OPTIONS') {
@@ -67,22 +69,23 @@ export default {
 
         switch (resolvedOriginRequest.deployment.originAdapter.type) {
           case 'openapi':
+          case 'raw': {
             assert(
               resolvedOriginRequest.originRequest,
               500,
               'Origin request is required'
             )
-            originResponse = await fetch(resolvedOriginRequest.originRequest)
-            break
 
-          case 'raw':
-            assert(
-              resolvedOriginRequest.originRequest,
-              500,
-              'Origin request is required'
+            const cacheKey = await getRequestCacheKey(
+              resolvedOriginRequest.originRequest
             )
-            originResponse = await fetch(resolvedOriginRequest.originRequest)
+
+            originResponse = await fetchCache(ctx, {
+              cacheKey,
+              fetchResponse: () => fetch(resolvedOriginRequest.originRequest!)
+            })
             break
+          }
 
           case 'mcp':
             throw new Error('MCP not yet supported')

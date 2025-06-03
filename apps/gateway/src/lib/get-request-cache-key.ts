@@ -3,20 +3,23 @@ import contentType from 'fast-content-type-parse'
 
 import { normalizeUrl } from './normalize-url'
 
+// TODO: what is a reasonable upper bound for hashing the POST body size?
+const MAX_POST_BODY_SIZE_BYTES = 10_000
+
 export async function getRequestCacheKey(
   request: Request
-): Promise<Request | null> {
+): Promise<Request | undefined> {
   try {
     const pragma = request.headers.get('pragma')
     if (pragma === 'no-cache') {
-      return null
+      return
     }
 
     const cacheControl = request.headers.get('cache-control')
     if (cacheControl) {
       const directives = new Set(cacheControl.split(',').map((s) => s.trim()))
       if (directives.has('no-store') || directives.has('no-cache')) {
-        return null
+        return
       }
     }
 
@@ -28,8 +31,7 @@ export async function getRequestCacheKey(
         request.headers.get('content-length') ?? '0'
       )
 
-      // TODO: what is a reasonable upper bound for hashing the POST body size?
-      if (contentLength && contentLength < 10_000) {
+      if (contentLength && contentLength < MAX_POST_BODY_SIZE_BYTES) {
         const { type } = contentType.safeParse(
           request.headers.get('content-type') || 'application/octet-stream'
         )
@@ -48,7 +50,7 @@ export async function getRequestCacheKey(
           // TODO
           // const bodyBuffer = await request.clone().arrayBuffer()
           // hash = await sha256.fromBuffer(bodyBuffer)
-          return null
+          return
         }
 
         const cacheUrl = new URL(request.url)
@@ -65,7 +67,7 @@ export async function getRequestCacheKey(
         return newReq
       }
 
-      return null
+      return
     } else if (request.method === 'GET' || request.method === 'HEAD') {
       const url = request.url
       const normalizedUrl = normalizeUrl(url)
@@ -82,7 +84,7 @@ export async function getRequestCacheKey(
     return normalizeRequestHeaders(new Request(request))
   } catch (err) {
     console.error('error computing cache key', request.method, request.url, err)
-    return null
+    return
   }
 }
 

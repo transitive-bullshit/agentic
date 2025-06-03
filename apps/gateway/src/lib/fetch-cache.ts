@@ -24,7 +24,7 @@ export async function fetchCache(
 
     if (cacheKey) {
       if (response.headers.has('Cache-Control')) {
-        // cache will respect response headers
+        // Note that cloudflare's `cache` should respect response headers.
         ctx.waitUntil(
           cache.put(cacheKey, response.clone()).catch((err) => {
             console.warn('cache put error', cacheKey, err)

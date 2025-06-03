@@ -24,15 +24,19 @@ export async function createRequestForOpenAPIOperation({
     `Unexpected origin adapter type: "${deployment.originAdapter.type}"`
   )
 
-  const tempInitialRequest = request.clone()
-
   let incomingRequestParams: Record<string, any> = {}
   if (request.method === 'GET') {
     incomingRequestParams = Object.fromEntries(
-      new URL(tempInitialRequest.url).searchParams.entries()
+      new URL(request.url).searchParams.entries()
     )
+
+    // console.log('debug', {
+    //   url: request.url,
+    //   incomingRequestParams,
+    //   searchParams: new URL(request.url).searchParams
+    // })
   } else if (request.method === 'POST') {
-    incomingRequestParams = (await tempInitialRequest.json()) as Record<
+    incomingRequestParams = (await request.clone().json()) as Record<
       string,
       any
     >
@@ -62,11 +66,14 @@ export async function createRequestForOpenAPIOperation({
   )
 
   const headers: Record<string, string> = {}
+  for (const [key, value] of request.headers.entries()) {
+    headers[key] = value
+  }
+
   if (headerParams.length > 0) {
     for (const [key] of headerParams) {
       headers[key] =
-        (tempInitialRequest.headers.get(key) as string) ??
-        incomingRequestParams[key]
+        (request.headers.get(key) as string) ?? incomingRequestParams[key]
     }
   }
 
