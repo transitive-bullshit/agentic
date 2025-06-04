@@ -8,7 +8,8 @@ export default [
       '**/out/**',
       'packages/types/src/openapi.d.ts',
       'apps/gateway/src/worker.d.ts',
-      'packages/json-schema/test/json-schema-test-suite.ts'
+      'packages/json-schema/test/json-schema-test-suite.ts',
+      'apps/gateway/.wrangler'
     ]
   },
   {

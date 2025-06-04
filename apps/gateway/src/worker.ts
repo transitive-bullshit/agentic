@@ -64,6 +64,7 @@ app.all(async (ctx) => {
       )
 
       const cacheKey = await getRequestCacheKey(
+        ctx,
         resolvedOriginRequest.originRequest
       )
 
