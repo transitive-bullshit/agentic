@@ -33,7 +33,11 @@ for (const [i, fixtureSuite] of fixtureSuites.entries()) {
       const { snapshot = status >= 200 && status < 300 } =
         fixture.response ?? {}
 
-      const testFn = fixture.only ? test.only.sequential : test.sequential
+      let testFn = fixture.only ? test.only : test
+      if (fixtureSuite.sequential !== false) {
+        testFn = testFn.sequential
+      }
+
       testFn(
         `${i}.${j}: ${method} ${fixture.path}`,
         {
