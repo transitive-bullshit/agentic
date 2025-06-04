@@ -9,9 +9,9 @@
 
 - **webapp**
 - end-to-end working examples
-  - raw
   - openapi
   - mcp
+  - raw
 - stripe
   - re-add coupons
   - declarative json-based pricing
@@ -37,8 +37,6 @@
 - add username / team name blacklist
   - admin, internal, mcp, sse, etc
 - **API gateway**
-  - share hono middleware and utils across apps/api and apps/gateway
-    - or combine these together? ehhhh
   - MCP server vs REST gateway on public and internal sides
     - **REST**: `GET/POST gateway.agentic.so/deploymentIdentifier/toolName`
       - => MCP: `MCPClient.callTool` with JSON body parameters
@@ -52,8 +50,9 @@
   - add support for custom headers on responses
   - how to handle binary bodies and responses?
   - signed requests
-- revisit deployment identifiers so possibly be URL-friendly?
-- move validators package into platform-types?
+- public identifiers and validators
+  - revisit deployment identifiers so possibly be URL-friendly?
+  - move validators package into platform-types?
   - force toolPath to be non-empty except for `raw`?
     - will remove ambiguity from `username/`
   - make namespace optional? and require `@` prefix if so? like npm packages

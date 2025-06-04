@@ -11,7 +11,7 @@ const ky = defaultKy.extend({
   // Disable automatic retries for testing.
   retry: 0,
 
-  // Some tests expect HTTP errors, so handle them manually.
+  // Some tests expect HTTP errors, so handle them manually instead of throwing.
   throwHttpErrors: false
 })
 

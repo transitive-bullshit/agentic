@@ -5,12 +5,9 @@ import { z } from 'zod'
 
 // TODO: derive AGENTIC_API_BASE_URL and AGENTIC_GATEWAY_BASE_URL based on
 // environment.
+// TODO: use `@agentic/platform-hono` base env like other services
 
 export const envSchema = z.object({
-  ENVIRONMENT: z
-    .enum(['development', 'test', 'production'])
-    .default('development'),
-
   AGENTIC_API_BASE_URL: z.string().url().optional(),
   AGENTIC_API_ACCESS_TOKEN: z.string().nonempty(),
 
@@ -25,6 +22,3 @@ export const envSchema = z.object({
 export const env = parseZodSchema(envSchema, process.env, {
   error: 'Invalid environment variables'
 })
-
-export const isDev = env.ENVIRONMENT === 'development'
-export const isProd = env.ENVIRONMENT === 'production'
