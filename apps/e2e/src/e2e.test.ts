@@ -18,7 +18,8 @@ const ky = defaultKy.extend({
 for (const [i, fixtureSuite] of fixtureSuites.entries()) {
   const { title, fixtures } = fixtureSuite
 
-  describe(title, () => {
+  const describeFn = fixtureSuite.only ? describe.only : describe
+  describeFn(title, () => {
     let responseBody: any | undefined
 
     for (const [j, fixture] of fixtures.entries()) {
@@ -32,7 +33,8 @@ for (const [i, fixtureSuite] of fixtureSuites.entries()) {
       const { snapshot = status >= 200 && status < 300 } =
         fixture.response ?? {}
 
-      test(
+      const testFn = fixture.only ? test.only.sequential : test.sequential
+      testFn(
         `${i}.${j}: ${method} ${fixture.path}`,
         {
           timeout: fixture.timeout ?? 60_000

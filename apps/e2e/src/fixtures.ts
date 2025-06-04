@@ -5,7 +5,7 @@ export type E2ETestFixture = {
   timeout?: number
 
   /** @default false */
-  // only?: boolean
+  only?: boolean
 
   request?: {
     /** @default 'GET' */
@@ -34,7 +34,7 @@ export type E2ETestFixtureSuite = {
   fixtures: E2ETestFixture[]
 
   /** @default false */
-  // only?: boolean
+  only?: boolean
 }
 
 export const fixtureSuites: E2ETestFixtureSuite[] = [

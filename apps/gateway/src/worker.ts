@@ -43,6 +43,7 @@ app.use(init)
 
 // Wrangler does this for us. TODO: Does this happen on prod?
 // app.use(accessLogger)
+
 app.use(responseTime)
 
 app.all(async (ctx) => {
