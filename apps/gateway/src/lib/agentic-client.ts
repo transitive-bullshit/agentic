@@ -5,6 +5,7 @@ import type { GatewayHonoContext } from './types'
 
 export function createAgenticClient(ctx: GatewayHonoContext) {
   const cache = ctx.get('cache')
+  const logger = ctx.get('logger')
 
   const client = new AgenticApiClient({
     apiBaseUrl: ctx.env.AGENTIC_API_BASE_URL,
@@ -31,7 +32,7 @@ export function createAgenticClient(ctx: GatewayHonoContext) {
               // Agentic's backend API.
               ctx.executionCtx.waitUntil(
                 cache.put(request, response.clone()).catch((err) => {
-                  console.warn('cache put error', request, err)
+                  logger.warn('cache put error', request, err)
                 })
               )
             }

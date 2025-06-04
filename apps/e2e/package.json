@@ -26,6 +26,6 @@
     "@agentic/platform-api-client": "workspace:*",
     "@agentic/platform-core": "workspace:*",
     "@agentic/platform-fixtures": "workspace:*",
-    "fast-content-type-parse": "^3.0.0"
+    "fast-content-type-parse": "catalog:"
   }
 }

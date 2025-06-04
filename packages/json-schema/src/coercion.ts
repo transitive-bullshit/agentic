@@ -63,6 +63,7 @@ export function coerceValue({
   }
 
   switch ($type) {
+    case 'integer':
     case 'number':
       switch (instanceType) {
         case 'string':

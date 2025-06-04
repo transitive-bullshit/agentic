@@ -1,7 +1,5 @@
 import { assert } from '@agentic/platform-core'
 import {
-  accessLogger,
-  compress,
   cors,
   errorHandler,
   init,
@@ -22,8 +20,15 @@ export { DurableObjectRateLimiter } from './durable-object'
 
 export const app = new Hono<GatewayHonoEnv>()
 
+app.onError(errorHandler)
 app.use(sentry())
-app.use(compress())
+
+// TODO: Compression is causing a weird bug on dev even for simple responses.
+// I think it's because wrangler is changing the response to be streamed
+// with `transfer-encoding: chunked`, which is not compatible with
+// `hono/compress`.
+// app.use(compress())
+
 app.use(
   cors({
     origin: '*',
@@ -35,9 +40,10 @@ app.use(
   })
 )
 app.use(init)
-app.use(accessLogger)
+
+// Wrangler does this for us. TODO: Does this happen on prod?
+// app.use(accessLogger)
 app.use(responseTime)
-app.onError(errorHandler)
 
 app.all(async (ctx) => {
   ctx.set('cache', caches.default)
@@ -120,14 +126,14 @@ app.all(async (ctx) => {
 
 export default {
   async fetch(
-    inputReq: Request,
-    inputEnv: Env,
-    executionCtx: ExecutionContext
+    request: Request,
+    env: Env,
+    ctx: ExecutionContext
   ): Promise<Response> {
     let parsedEnv: Env
 
     try {
-      parsedEnv = parseEnv(inputEnv)
+      parsedEnv = parseEnv(env)
     } catch (err: any) {
       // TODO: Better error handling
       return new Response(
@@ -140,6 +146,6 @@ export default {
       )
     }
 
-    return app.fetch(inputReq, parsedEnv, executionCtx)
+    return app.fetch(request, parsedEnv, ctx)
   }
 } satisfies ExportedHandler<Env>

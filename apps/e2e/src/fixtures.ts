@@ -4,6 +4,9 @@ export type E2ETestFixture = {
   /** @default 60_000 milliseconds */
   timeout?: number
 
+  /** @default false */
+  // only?: boolean
+
   request?: {
     /** @default 'GET' */
     method?: 'GET' | 'POST' | 'PUT' | 'DELETE'
@@ -29,6 +32,9 @@ export type E2ETestFixture = {
 export type E2ETestFixtureSuite = {
   title: string
   fixtures: E2ETestFixture[]
+
+  /** @default false */
+  // only?: boolean
 }
 
 export const fixtureSuites: E2ETestFixtureSuite[] = [
@@ -84,8 +90,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
         path: 'dev/test-basic-openapi/getPost',
 
         response: {
-          // TODO: need to instrument worker.ts to handle HTTP errors like `hono` middleware from `apps/api` does
-
+          // Missing `postId` parameter.
           status: 400
         }
       },

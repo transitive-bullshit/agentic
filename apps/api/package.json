@@ -1,5 +1,5 @@
 {
-  "name": "@agentic/platform-api",
+  "name": "api",
   "private": true,
   "version": "0.1.0",
   "description": "Internal Agentic platform API service.",

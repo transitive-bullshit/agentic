@@ -9,12 +9,21 @@ catalogs:
     '@agentic/openauth':
       specifier: ^0.4.3
       version: 0.4.3
+    '@apideck/better-ajv-errors':
+      specifier: ^0.3.6
+      version: 0.3.6
     '@clack/prompts':
       specifier: ^0.11.0
       version: 0.11.0
+    '@cloudflare/workers-types':
+      specifier: ^4.20250604.0
+      version: 4.20250604.0
     '@commander-js/extra-typings':
       specifier: ^14.0.0
       version: 14.0.0
+    '@edge-runtime/vm':
+      specifier: ^5.0.0
+      version: 5.0.0
     '@fisch0920/config':
       specifier: ^1.1.0
       version: 1.1.0
@@ -31,11 +40,11 @@ catalogs:
       specifier: ^1.2.1
       version: 1.2.1
     '@hono/zod-openapi':
-      specifier: ^0.19.7
-      version: 0.19.7
+      specifier: ^0.19.8
+      version: 0.19.8
     '@hono/zod-validator':
-      specifier: ^0.6.0
-      version: 0.6.0
+      specifier: ^0.7.0
+      version: 0.7.0
     '@modelcontextprotocol/sdk':
       specifier: ^1.12.1
       version: 1.12.1
@@ -45,9 +54,15 @@ catalogs:
     '@redocly/openapi-core':
       specifier: ^1.34.3
       version: 1.34.3
+    '@sentry/cloudflare':
+      specifier: ^9.26.0
+      version: 9.26.0
+    '@sentry/core':
+      specifier: ^9.26.0
+      version: 9.26.0
     '@sentry/node':
-      specifier: ^9.23.0
-      version: 9.23.0
+      specifier: ^9.26.0
+      version: 9.26.0
     '@types/ms':
       specifier: ^2.1.0
       version: 2.1.0
@@ -57,6 +72,12 @@ catalogs:
     '@types/semver':
       specifier: ^7.7.0
       version: 7.7.0
+    ajv:
+      specifier: ^8.17.1
+      version: 8.17.1
+    ajv-formats:
+      specifier: ^3.0.1
+      version: 3.0.1
     camelcase:
       specifier: ^8.0.0
       version: 8.0.0
@@ -79,8 +100,8 @@ catalogs:
       specifier: ^0.31.1
       version: 0.31.1
     drizzle-orm:
-      specifier: ^0.43.1
-      version: 0.43.1
+      specifier: ^0.44.2
+      version: 0.44.2
     email-validator:
       specifier: ^2.0.4
       version: 2.0.4
@@ -96,6 +117,12 @@ catalogs:
     exit-hook:
       specifier: ^4.0.0
       version: 4.0.0
+    fast-content-type-parse:
+      specifier: ^3.0.0
+      version: 3.0.0
+    fast-uri:
+      specifier: ^3.0.6
+      version: 3.0.6
     get-port:
       specifier: ^7.1.0
       version: 7.1.0
@@ -103,8 +130,8 @@ catalogs:
       specifier: ^5.0.1
       version: 5.0.1
     hono:
-      specifier: ^4.7.10
-      version: 4.7.10
+      specifier: ^4.7.11
+      version: 4.7.11
     is-relative-url:
       specifier: ^4.0.0
       version: 4.0.0
@@ -147,6 +174,9 @@ catalogs:
     parse-json:
       specifier: ^8.3.0
       version: 8.3.0
+    plur:
+      specifier: ^5.1.0
+      version: 5.1.0
     postgres:
       specifier: ^3.4.7
       version: 3.4.7
@@ -163,8 +193,8 @@ catalogs:
       specifier: ^2.13.0
       version: 2.13.0
     stripe:
-      specifier: ^18.2.0
-      version: 18.2.0
+      specifier: ^18.2.1
+      version: 18.2.1
     tsup:
       specifier: ^8.5.0
       version: 8.5.0
@@ -190,8 +220,8 @@ catalogs:
       specifier: ^3.2.1
       version: 3.2.1
     wrangler:
-      specifier: ^4.18.0
-      version: 4.18.0
+      specifier: ^4.19.1
+      version: 4.19.1
     zod:
       specifier: ^3.25.51
       version: 3.25.51
@@ -268,7 +298,7 @@ importers:
     dependencies:
       '@agentic/openauth':
         specifier: 'catalog:'
-        version: 0.4.3(arctic@2.3.4)(hono@4.7.10)
+        version: 0.4.3(arctic@2.3.4)(hono@4.7.11)
       '@agentic/platform':
         specifier: workspace:*
         version: link:../../packages/platform
@@ -292,16 +322,16 @@ importers:
         version: 0.7.9(@fisch0920/drizzle-orm@0.43.7(@cloudflare/workers-types@4.20250604.0)(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(kysely@0.28.2)(postgres@3.4.7))(zod@3.25.51)
       '@hono/node-server':
         specifier: 'catalog:'
-        version: 1.14.3(hono@4.7.10)
+        version: 1.14.3(hono@4.7.11)
       '@hono/zod-openapi':
         specifier: 'catalog:'
-        version: 0.19.7(hono@4.7.10)(zod@3.25.51)
+        version: 0.19.8(hono@4.7.11)(zod@3.25.51)
       '@paralleldrive/cuid2':
         specifier: 'catalog:'
         version: 2.2.2
       '@sentry/node':
         specifier: 'catalog:'
-        version: 9.23.0
+        version: 9.26.0
       dotenv:
         specifier: 'catalog:'
         version: 16.5.0
@@ -310,7 +340,7 @@ importers:
         version: 4.0.0
       hono:
         specifier: 'catalog:'
-        version: 4.7.10
+        version: 4.7.11
       octokit:
         specifier: 'catalog:'
         version: 5.0.3
@@ -328,7 +358,7 @@ importers:
         version: 7.7.2
       stripe:
         specifier: 'catalog:'
-        version: 18.2.0(@types/node@22.15.29)
+        version: 18.2.1(@types/node@22.15.29)
       type-fest:
         specifier: 'catalog:'
         version: 4.41.0
@@ -344,7 +374,7 @@ importers:
         version: 0.31.1
       drizzle-orm:
         specifier: 'catalog:'
-        version: 0.43.1(@cloudflare/workers-types@4.20250604.0)(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(kysely@0.28.2)(postgres@3.4.7)
+        version: 0.44.2(@cloudflare/workers-types@4.20250604.0)(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(kysely@0.28.2)(postgres@3.4.7)
 
   apps/e2e:
     dependencies:
@@ -368,7 +398,7 @@ importers:
         specifier: workspace:*
         version: link:../../packages/fixtures
       fast-content-type-parse:
-        specifier: ^3.0.0
+        specifier: 'catalog:'
         version: 3.0.0
 
   apps/gateway:
@@ -396,41 +426,41 @@ importers:
         version: link:../../packages/validators
       '@hono/zod-validator':
         specifier: 'catalog:'
-        version: 0.6.0(hono@4.7.10)(zod@3.25.51)
+        version: 0.7.0(hono@4.7.11)(zod@3.25.36)
       '@modelcontextprotocol/sdk':
         specifier: 'catalog:'
         version: 1.12.1
       fast-content-type-parse:
-        specifier: ^3.0.0
+        specifier: 'catalog:'
         version: 3.0.0
       hono:
         specifier: 'catalog:'
-        version: 4.7.10
+        version: 4.7.11
       ky:
         specifier: 'catalog:'
         version: 1.8.1
       plur:
-        specifier: ^5.1.0
+        specifier: 'catalog:'
         version: 5.1.0
       type-fest:
         specifier: 'catalog:'
         version: 4.41.0
     devDependencies:
       '@cloudflare/workers-types':
-        specifier: ^4.20250604.0
+        specifier: 'catalog:'
         version: 4.20250604.0
       '@edge-runtime/vm':
-        specifier: ^5.0.0
+        specifier: 'catalog:'
         version: 5.0.0
       wrangler:
         specifier: 'catalog:'
-        version: 4.18.0(@cloudflare/workers-types@4.20250604.0)
+        version: 4.19.1(@cloudflare/workers-types@4.20250604.0)
 
   packages/api-client:
     dependencies:
       '@agentic/openauth':
         specifier: 'catalog:'
-        version: 0.4.3(arctic@2.3.4)(hono@4.7.10)
+        version: 0.4.3(arctic@2.3.4)(hono@4.7.11)
       '@agentic/platform-core':
         specifier: workspace:*
         version: link:../core
@@ -466,7 +496,7 @@ importers:
         version: 0.11.0
       '@hono/node-server':
         specifier: 'catalog:'
-        version: 1.14.3(hono@4.7.10)
+        version: 1.14.3(hono@4.7.11)
       commander:
         specifier: 'catalog:'
         version: 14.0.0
@@ -481,7 +511,7 @@ importers:
         version: 7.1.0
       hono:
         specifier: 'catalog:'
-        version: 4.7.10
+        version: 4.7.11
       open:
         specifier: 'catalog:'
         version: 10.1.2
@@ -519,7 +549,7 @@ importers:
     devDependencies:
       hono:
         specifier: 'catalog:'
-        version: 4.7.10
+        version: 4.7.11
 
   packages/fixtures:
     dependencies:
@@ -534,9 +564,9 @@ importers:
         version: link:../core
       '@hono/sentry':
         specifier: 'catalog:'
-        version: 1.2.1(hono@4.7.10)
+        version: 1.2.1(hono@4.7.11)
       '@sentry/core':
-        specifier: ^9.26.0
+        specifier: 'catalog:'
         version: 9.26.0
       dotenv:
         specifier: 'catalog:'
@@ -546,17 +576,20 @@ importers:
         version: 2.0.1
       hono:
         specifier: 'catalog:'
-        version: 4.7.10
+        version: 4.7.11
+      ky:
+        specifier: 'catalog:'
+        version: 1.8.1
       type-fest:
         specifier: 'catalog:'
         version: 4.41.0
     devDependencies:
       '@sentry/cloudflare':
-        specifier: ^9.26.0
+        specifier: 'catalog:'
         version: 9.26.0(@cloudflare/workers-types@4.20250604.0)
       '@sentry/node':
         specifier: 'catalog:'
-        version: 9.23.0
+        version: 9.26.0
 
   packages/json-schema:
     devDependencies:
@@ -573,16 +606,16 @@ importers:
         specifier: workspace:*
         version: link:../types
       '@apideck/better-ajv-errors':
-        specifier: ^0.3.6
+        specifier: 'catalog:'
         version: 0.3.6(ajv@8.17.1)
       '@redocly/openapi-core':
         specifier: 'catalog:'
         version: 1.34.3(supports-color@10.0.0)
       ajv:
-        specifier: ^8.17.1
+        specifier: 'catalog:'
         version: 8.17.1
       ajv-formats:
-        specifier: ^3.0.1
+        specifier: 'catalog:'
         version: 3.0.1(ajv@8.17.1)
       camelcase:
         specifier: 'catalog:'
@@ -591,18 +624,18 @@ importers:
         specifier: 'catalog:'
         version: 6.0.0
       fast-uri:
-        specifier: ^3.0.6
+        specifier: 'catalog:'
         version: 3.0.6
       plur:
-        specifier: ^5.1.0
+        specifier: 'catalog:'
         version: 5.1.0
     devDependencies:
       '@hono/node-server':
         specifier: 'catalog:'
-        version: 1.14.3(hono@4.7.10)
+        version: 1.14.3(hono@4.7.11)
       hono:
         specifier: 'catalog:'
-        version: 4.7.10
+        version: 4.7.11
 
   packages/platform:
     dependencies:
@@ -620,7 +653,7 @@ importers:
         version: link:../validators
       '@hono/zod-openapi':
         specifier: 'catalog:'
-        version: 0.19.7(hono@4.7.10)(zod@3.25.51)
+        version: 0.19.8(hono@4.7.11)(zod@3.25.51)
       '@modelcontextprotocol/sdk':
         specifier: 'catalog:'
         version: 1.12.1
@@ -648,7 +681,7 @@ importers:
     dependencies:
       '@hono/zod-openapi':
         specifier: 'catalog:'
-        version: 0.19.7(hono@4.7.10)(zod@3.25.51)
+        version: 0.19.8(hono@4.7.11)(zod@3.25.51)
       ms:
         specifier: 'catalog:'
         version: 2.1.3
@@ -1254,18 +1287,18 @@ packages:
     peerDependencies:
       hono: '>=3.*'
 
-  '@hono/zod-openapi@0.19.7':
-    resolution: {integrity: sha512-S1IgblPPwx6yLYbrvLS0MJlvtmZpD6mDn0NqN+hYndoPUtDNqjNW/J7EmFAQu1Od8fYdIrwogcRL2rMANcULvA==}
+  '@hono/zod-openapi@0.19.8':
+    resolution: {integrity: sha512-CHUSW0K+bDGUYXovxQSbVjZffzoPeTsGu6wevPoGSmBdPuUw5yZqDeomnvyAAAAvEjhLQPlAsUyASc1Zi35exQ==}
     engines: {node: '>=16.0.0'}
     peerDependencies:
       hono: '>=4.3.6'
       zod: 3.*
 
-  '@hono/zod-validator@0.6.0':
-    resolution: {integrity: sha512-3aVk+cvuOE/9D6H2ugaG1kt14NT9rFyZzwRW6+aaPhMufMSiyKNvb/7pscZ/U302F8cTPD2TSTJiOUmx6TPqGg==}
+  '@hono/zod-validator@0.7.0':
+    resolution: {integrity: sha512-qe2ZE6sHFE98dcUrbYMtS3bAV8hqcCOflykvZga2S7XhmNSZzT+dIz4OuMILsjLHkJw9JMn912/dB7dQOmuPvg==}
     peerDependencies:
       hono: '>=3.9.0'
-      zod: ^3.19.1
+      zod: ^3.25.0
 
   '@humanfs/core@0.19.1':
     resolution: {integrity: sha512-5DyQ4+1JEUzejeK1JGICcideyfUbGixgS9jNgex5nqkW+cY7WZhxBigmieN5Qnw9ZosSNVC9KQKyb+GUaGyKUA==}
@@ -1960,20 +1993,16 @@ packages:
     resolution: {integrity: sha512-ixm8NISFlPlEo3FjSaqmq4nnd13BRHoafwJ5MG+okCz6BKGZ1SexEggP42/QpGvDprUUHnfncG6WUMgcarr1zA==}
     engines: {node: '>=14.18'}
 
-  '@sentry/core@9.23.0':
-    resolution: {integrity: sha512-9846pn/BvASGgl7WsnKY4xry98WreP9ToeLfCQTQOf+pNfD/qNPn1/0xPInGni3LVMAXRtfHHMPm2Ghz255N7A==}
-    engines: {node: '>=18'}
-
   '@sentry/core@9.26.0':
     resolution: {integrity: sha512-XTFSqOPn6wsZgF3NLRVY/FjYCkFahZoR46BtLVmBliD60QZLChpya81slD3M8BgLQpjsA2q6N1xrQor1Rc29gg==}
     engines: {node: '>=18'}
 
-  '@sentry/node@9.23.0':
-    resolution: {integrity: sha512-s+s8vjeXg4hNRiEAfLvABI2UOnW84UC/VScXqA9J4eceQsHwKxUb/BKT5vqDKoYTs99YxEGZq9TeC+lchd0ZHw==}
+  '@sentry/node@9.26.0':
+    resolution: {integrity: sha512-B7VdUtXlg1Y8DeZMWc9gOIoSmGT9hkKepits+kmkZgjYlyPhZtT8a0fwUNBLYFYq1Ti/JzKWw3ZNIlg00BY40w==}
     engines: {node: '>=18'}
 
-  '@sentry/opentelemetry@9.23.0':
-    resolution: {integrity: sha512-+wliK4kkBiCEcgzsU/SQBWK0Lteny4fZjeNpz1AMGnWdWA1UlvD+rabkl25L6pRrGHBtj2xiZ55xL0ZCkRlhVA==}
+  '@sentry/opentelemetry@9.26.0':
+    resolution: {integrity: sha512-yVxRv6GtrtKFfNKpfb+b/focF4cKslInIN+HPzllQBoVebrq+KeCjUYzDEj9b6OwZGbUZDbQdxGRgXrrxcZUMg==}
     engines: {node: '>=18'}
     peerDependencies:
       '@opentelemetry/api': ^1.9.0
@@ -2030,9 +2059,6 @@ packages:
 
   '@types/mysql@2.15.26':
     resolution: {integrity: sha512-DSLCOXhkvfS5WNNPbfn2KdICAmk8lLc+/PNvnPnF7gOdMZCxopXduqv0OQ13y/yA/zXTSikZZqVgybUxOEg6YQ==}
-
-  '@types/node@22.15.24':
-    resolution: {integrity: sha512-w9CZGm9RDjzTh/D+hFwlBJ3ziUaVw7oufKA3vOFSOZlzmW9AkZnfjPb+DLnrV6qtgL/LNmP0/2zBNCFHL3F0ng==}
 
   '@types/node@22.15.29':
     resolution: {integrity: sha512-LNdjOkUDlU1RZb8e1kOIUpN1qQUlzGkEtbVNo53vbrwDg5om6oduhm4SiUaPW5ASTXhAiP0jInWG8Qx9fVlOeQ==}
@@ -2595,8 +2621,8 @@ packages:
     resolution: {integrity: sha512-PUjYKWtzOzPtdtQlTHQG3qfv4Y0XT8+Eas6UbxCmxTj7qgMf+39dDujf1BP1I+qqZtw9uzwTh8jYtkMuCq+B0Q==}
     hasBin: true
 
-  drizzle-orm@0.43.1:
-    resolution: {integrity: sha512-dUcDaZtE/zN4RV/xqGrVSMpnEczxd5cIaoDeor7Zst9wOe/HzC/7eAaulywWGYXdDEc9oBPMjayVEDg0ziTLJA==}
+  drizzle-orm@0.44.2:
+    resolution: {integrity: sha512-zGAqBzWWkVSFjZpwPOrmCrgO++1kZ5H/rZ4qTGeGOe18iXGVJWf3WPfHOVwFIbmi8kHjfJstC6rJomzGx8g/dQ==}
     peerDependencies:
       '@aws-sdk/client-rds-data': '>=3'
       '@cloudflare/workers-types': '>=4'
@@ -2612,6 +2638,7 @@ packages:
       '@types/better-sqlite3': '*'
       '@types/pg': '*'
       '@types/sql.js': '*'
+      '@upstash/redis': '>=1.34.7'
       '@vercel/postgres': '>=0.8.0'
       '@xata.io/client': '*'
       better-sqlite3: '>=7'
@@ -2654,6 +2681,8 @@ packages:
       '@types/pg':
         optional: true
       '@types/sql.js':
+        optional: true
+      '@upstash/redis':
         optional: true
       '@vercel/postgres':
         optional: true
@@ -3170,8 +3199,8 @@ packages:
     resolution: {integrity: sha512-0hJU9SCPvmMzIBdZFqNPXWa6dqh7WdH0cII9y+CyS8rG3nL48Bclra9HmKhVVUHyPWNH5Y7xDwAB7bfgSjkUMQ==}
     engines: {node: '>= 0.4'}
 
-  hono@4.7.10:
-    resolution: {integrity: sha512-QkACju9MiN59CKSY5JsGZCYmPZkA6sIW6OFCUp7qDjZu6S6KHtJHhAc9Uy9mV9F8PJ1/HQ3ybZF2yjCa/73fvQ==}
+  hono@4.7.11:
+    resolution: {integrity: sha512-rv0JMwC0KALbbmwJDEnxvQCeJh+xbS3KEWW5PC9cMJ08Ur9xgatI0HmtgYZfOdOSOeYsp5LO2cOhdI8cLEbDEQ==}
     engines: {node: '>=16.9.0'}
 
   hosted-git-info@7.0.2:
@@ -3621,8 +3650,8 @@ packages:
     resolution: {integrity: sha512-I9jwMn07Sy/IwOj3zVkVik2JTvgpaykDZEigL6Rx6N9LbMywwUSMtxET+7lVoDLLd3O3IXwJwvuuns8UB/HeAg==}
     engines: {node: '>=4'}
 
-  miniflare@4.20250525.0:
-    resolution: {integrity: sha512-F5XRDn9WqxUaHphUT8qwy5WXC/3UwbBRJTdjjP5uwHX82vypxIlHNyHziZnplPLhQa1kbSdIY7wfuP1XJyyYZw==}
+  miniflare@4.20250525.1:
+    resolution: {integrity: sha512-4PJlT5WA+hfclFU5Q7xnpG1G1VGYTXaf/3iu6iKQ8IsbSi9QvPTA2bSZ5goCFxmJXDjV4cxttVxB0Wl1CLuQ0w==}
     engines: {node: '>=18.0.0'}
     hasBin: true
 
@@ -4308,8 +4337,8 @@ packages:
     resolution: {integrity: sha512-4X2FR3UwhNUE9G49aIsJW5hRRR3GXGTBTZRMfv568O60ojM8HcWjV/VxAxCDW3SUND33O6ZY66ZuRcdkj73q2g==}
     engines: {node: '>=14.16'}
 
-  stripe@18.2.0:
-    resolution: {integrity: sha512-RpOaGh5CLs3SYeVXw1CIQZNwPVADBJtgNyUgu+ZkIvu3u4pkZvNrlKr+WaLoNjSPQWef0dikxDS2AKHBl/l3bg==}
+  stripe@18.2.1:
+    resolution: {integrity: sha512-GwB1B7WSwEBzW4dilgyJruUYhbGMscrwuyHsPUmSRKrGHZ5poSh2oU9XKdii5BFVJzXHn35geRvGJ6R8bYcp8w==}
     engines: {node: '>=12.*'}
     peerDependencies:
       '@types/node': '>=12.x.x'
@@ -4718,8 +4747,8 @@ packages:
     engines: {node: '>=16'}
     hasBin: true
 
-  wrangler@4.18.0:
-    resolution: {integrity: sha512-/ng0KI9io97SNsBU1rheADBLLTE5Djybgsi4gXuvH1RBKJGpyj1xWvZ2fuWu8vAonit3EiZkwtERTm6kESHP3A==}
+  wrangler@4.19.1:
+    resolution: {integrity: sha512-b+ed2SJKauHgndl4Im1wHE+FeSSlrdlEZNuvpc8q/94k4EmRxRkXnwBAsVWuicBxG3HStFLQPGGlvL8wGKTtHw==}
     engines: {node: '>=18.0.0'}
     hasBin: true
     peerDependencies:
@@ -4800,12 +4829,12 @@ packages:
 
 snapshots:
 
-  '@agentic/openauth@0.4.3(arctic@2.3.4)(hono@4.7.10)':
+  '@agentic/openauth@0.4.3(arctic@2.3.4)(hono@4.7.11)':
     dependencies:
       '@standard-schema/spec': 1.0.0-beta.3
       arctic: 2.3.4
       aws4fetch: 1.0.20
-      hono: 4.7.10
+      hono: 4.7.11
       jose: 5.9.6
 
   '@apideck/better-ajv-errors@0.3.6(ajv@8.17.1)':
@@ -5152,25 +5181,30 @@ snapshots:
       '@fisch0920/drizzle-orm': 0.43.7(@cloudflare/workers-types@4.20250604.0)(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(kysely@0.28.2)(postgres@3.4.7)
       zod: 3.25.51
 
-  '@hono/node-server@1.14.3(hono@4.7.10)':
+  '@hono/node-server@1.14.3(hono@4.7.11)':
     dependencies:
-      hono: 4.7.10
+      hono: 4.7.11
 
-  '@hono/sentry@1.2.1(hono@4.7.10)':
+  '@hono/sentry@1.2.1(hono@4.7.11)':
     dependencies:
-      hono: 4.7.10
+      hono: 4.7.11
       toucan-js: 4.1.1
 
-  '@hono/zod-openapi@0.19.7(hono@4.7.10)(zod@3.25.51)':
+  '@hono/zod-openapi@0.19.8(hono@4.7.11)(zod@3.25.51)':
     dependencies:
       '@asteasolutions/zod-to-openapi': 7.3.0(zod@3.25.51)
-      '@hono/zod-validator': 0.6.0(hono@4.7.10)(zod@3.25.51)
-      hono: 4.7.10
+      '@hono/zod-validator': 0.7.0(hono@4.7.11)(zod@3.25.51)
+      hono: 4.7.11
       zod: 3.25.51
 
-  '@hono/zod-validator@0.6.0(hono@4.7.10)(zod@3.25.51)':
+  '@hono/zod-validator@0.7.0(hono@4.7.11)(zod@3.25.36)':
     dependencies:
-      hono: 4.7.10
+      hono: 4.7.11
+      zod: 3.25.36
+
+  '@hono/zod-validator@0.7.0(hono@4.7.11)(zod@3.25.51)':
+    dependencies:
+      hono: 4.7.11
       zod: 3.25.51
 
   '@humanfs/core@0.19.1': {}
@@ -5892,11 +5926,9 @@ snapshots:
       '@sentry/types': 8.9.2
       '@sentry/utils': 8.9.2
 
-  '@sentry/core@9.23.0': {}
-
   '@sentry/core@9.26.0': {}
 
-  '@sentry/node@9.23.0':
+  '@sentry/node@9.26.0':
     dependencies:
       '@opentelemetry/api': 1.9.0
       '@opentelemetry/context-async-hooks': 1.30.1(@opentelemetry/api@1.9.0)
@@ -5928,14 +5960,14 @@ snapshots:
       '@opentelemetry/sdk-trace-base': 1.30.1(@opentelemetry/api@1.9.0)
       '@opentelemetry/semantic-conventions': 1.34.0
       '@prisma/instrumentation': 6.8.2(@opentelemetry/api@1.9.0)
-      '@sentry/core': 9.23.0
-      '@sentry/opentelemetry': 9.23.0(@opentelemetry/api@1.9.0)(@opentelemetry/context-async-hooks@1.30.1(@opentelemetry/api@1.9.0))(@opentelemetry/core@1.30.1(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.57.2(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.30.1(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.34.0)
+      '@sentry/core': 9.26.0
+      '@sentry/opentelemetry': 9.26.0(@opentelemetry/api@1.9.0)(@opentelemetry/context-async-hooks@1.30.1(@opentelemetry/api@1.9.0))(@opentelemetry/core@1.30.1(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.57.2(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.30.1(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.34.0)
       import-in-the-middle: 1.13.2
       minimatch: 9.0.5
     transitivePeerDependencies:
       - supports-color
 
-  '@sentry/opentelemetry@9.23.0(@opentelemetry/api@1.9.0)(@opentelemetry/context-async-hooks@1.30.1(@opentelemetry/api@1.9.0))(@opentelemetry/core@1.30.1(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.57.2(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.30.1(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.34.0)':
+  '@sentry/opentelemetry@9.26.0(@opentelemetry/api@1.9.0)(@opentelemetry/context-async-hooks@1.30.1(@opentelemetry/api@1.9.0))(@opentelemetry/core@1.30.1(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.57.2(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.30.1(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.34.0)':
     dependencies:
       '@opentelemetry/api': 1.9.0
       '@opentelemetry/context-async-hooks': 1.30.1(@opentelemetry/api@1.9.0)
@@ -5943,7 +5975,7 @@ snapshots:
       '@opentelemetry/instrumentation': 0.57.2(@opentelemetry/api@1.9.0)
       '@opentelemetry/sdk-trace-base': 1.30.1(@opentelemetry/api@1.9.0)
       '@opentelemetry/semantic-conventions': 1.34.0
-      '@sentry/core': 9.23.0
+      '@sentry/core': 9.26.0
 
   '@sentry/types@8.9.2': {}
 
@@ -5970,7 +6002,7 @@ snapshots:
 
   '@types/connect@3.4.38':
     dependencies:
-      '@types/node': 22.15.24
+      '@types/node': 22.15.29
 
   '@types/deep-eql@4.0.2': {}
 
@@ -5984,11 +6016,7 @@ snapshots:
 
   '@types/mysql@2.15.26':
     dependencies:
-      '@types/node': 22.15.24
-
-  '@types/node@22.15.24':
-    dependencies:
-      undici-types: 6.21.0
+      '@types/node': 22.15.29
 
   '@types/node@22.15.29':
     dependencies:
@@ -6002,7 +6030,7 @@ snapshots:
 
   '@types/pg@8.6.1':
     dependencies:
-      '@types/node': 22.15.24
+      '@types/node': 22.15.29
       pg-protocol: 1.10.0
       pg-types: 2.2.0
 
@@ -6012,7 +6040,7 @@ snapshots:
 
   '@types/tedious@4.0.14':
     dependencies:
-      '@types/node': 22.15.24
+      '@types/node': 22.15.29
 
   '@typescript-eslint/eslint-plugin@8.31.0(@typescript-eslint/parser@8.31.0(eslint@9.28.0(jiti@2.4.2))(typescript@5.8.3))(eslint@9.28.0(jiti@2.4.2))(typescript@5.8.3)':
     dependencies:
@@ -6592,7 +6620,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  drizzle-orm@0.43.1(@cloudflare/workers-types@4.20250604.0)(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(kysely@0.28.2)(postgres@3.4.7):
+  drizzle-orm@0.44.2(@cloudflare/workers-types@4.20250604.0)(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(kysely@0.28.2)(postgres@3.4.7):
     optionalDependencies:
       '@cloudflare/workers-types': 4.20250604.0
       '@opentelemetry/api': 1.9.0
@@ -7282,7 +7310,7 @@ snapshots:
     dependencies:
       function-bind: 1.1.2
 
-  hono@4.7.10: {}
+  hono@4.7.11: {}
 
   hosted-git-info@7.0.2:
     dependencies:
@@ -7692,7 +7720,7 @@ snapshots:
 
   min-indent@1.0.1: {}
 
-  miniflare@4.20250525.0:
+  miniflare@4.20250525.1:
     dependencies:
       '@cspotcode/source-map-support': 0.8.1
       acorn: 8.14.0
@@ -8500,7 +8528,7 @@ snapshots:
 
   strip-json-comments@5.0.2: {}
 
-  stripe@18.2.0(@types/node@22.15.29):
+  stripe@18.2.1(@types/node@22.15.29):
     dependencies:
       qs: 6.14.0
     optionalDependencies:
@@ -8943,13 +8971,13 @@ snapshots:
       '@cloudflare/workerd-linux-arm64': 1.20250525.0
       '@cloudflare/workerd-windows-64': 1.20250525.0
 
-  wrangler@4.18.0(@cloudflare/workers-types@4.20250604.0):
+  wrangler@4.19.1(@cloudflare/workers-types@4.20250604.0):
     dependencies:
       '@cloudflare/kv-asset-handler': 0.4.0
       '@cloudflare/unenv-preset': 2.3.2(unenv@2.0.0-rc.17)(workerd@1.20250525.0)
       blake3-wasm: 2.1.5
       esbuild: 0.25.4
-      miniflare: 4.20250525.0
+      miniflare: 4.20250525.1
       path-to-regexp: 6.3.0
       unenv: 2.0.0-rc.17
       workerd: 1.20250525.0

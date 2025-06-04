@@ -6,8 +6,8 @@ export class Validator {
   private readonly lookup: ReturnType<typeof dereference>
   private readonly schema: Schema | boolean
   private readonly draft: SchemaDraft
-  private readonly shortCircuit
-  private readonly coerce
+  private readonly shortCircuit: boolean
+  private readonly coerce: boolean
 
   constructor({
     schema,
@@ -33,8 +33,8 @@ export class Validator {
       this.schema,
       this.draft,
       this.lookup,
-      this.shortCircuit,
-      this.coerce
+      this.coerce,
+      this.shortCircuit
     )
   }
 

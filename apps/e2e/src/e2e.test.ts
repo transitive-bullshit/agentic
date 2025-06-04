@@ -9,7 +9,10 @@ const ky = defaultKy.extend({
   prefixUrl: env.AGENTIC_GATEWAY_BASE_URL,
 
   // Disable automatic retries for testing.
-  retry: 0
+  retry: 0,
+
+  // Some tests expect HTTP errors, so handle them manually.
+  throwHttpErrors: false
 })
 
 for (const [i, fixtureSuite] of fixtureSuites.entries()) {
@@ -29,7 +32,7 @@ for (const [i, fixtureSuite] of fixtureSuites.entries()) {
       const { snapshot = status >= 200 && status < 300 } =
         fixture.response ?? {}
 
-      test.sequential(
+      test(
         `${i}.${j}: ${method} ${fixture.path}`,
         {
           timeout: fixture.timeout ?? 60_000
@@ -49,6 +52,10 @@ for (const [i, fixtureSuite] of fixtureSuites.entries()) {
               expect(res.headers.get(key)).toBe(value)
             }
           }
+
+          // console.log(`${i}.${j}: ${method} ${fixture.path} => ${status}`, {
+          //   headers: Object.fromEntries(res.headers.entries())
+          // })
 
           let body: any
 
@@ -81,11 +88,10 @@ for (const [i, fixtureSuite] of fixtureSuites.entries()) {
             }
           }
 
-          console.log(`${i}.${j}: ${method} ${fixture.path}`, {
-            status,
-            body,
-            headers: Object.fromEntries(res.headers.entries())
-          })
+          // console.log(`${i}.${j}: ${method} ${fixture.path} => ${status}`, {
+          //   body,
+          //   headers: Object.fromEntries(res.headers.entries())
+          // })
         }
       )
     }

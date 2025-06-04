@@ -23,6 +23,7 @@ import { updateOriginRequest } from './update-origin-request'
 export async function resolveOriginRequest(
   ctx: GatewayHonoContext
 ): Promise<ResolvedOriginRequest> {
+  const logger = ctx.get('logger')
   // cf-connecting-ip should always be present, but if not we can fallback to XFF.
   const ip =
     ctx.req.header('cf-connecting-ip') ||
@@ -47,7 +48,7 @@ export async function resolveOriginRequest(
     toolPath
   })
 
-  console.log('request', {
+  logger.debug('request', {
     method,
     pathname,
     deploymentIdentifier: deployment.identifier,
@@ -185,7 +186,7 @@ export async function resolveOriginRequest(
       originRequest = new Request(originRequestUrl, ctx.req.raw)
     }
 
-    console.log('originRequestUrl', originRequest.url)
+    logger.info('originRequestUrl', originRequest.url)
     updateOriginRequest(originRequest, { consumer, deployment })
   }
 

@@ -4,6 +4,7 @@ import type { ContentfulStatusCode } from 'hono/utils/http-status'
 import { HttpError } from '@agentic/platform-core'
 import { captureException } from '@sentry/core'
 import { HTTPException } from 'hono/http-exception'
+import { HTTPError } from 'ky'
 
 export function errorHandler(
   err: Error | HTTPResponseError,
@@ -21,20 +22,17 @@ export function errorHandler(
   } else if (err instanceof HttpError) {
     message = err.message
     status = err.statusCode
+  } else if (err instanceof HTTPError) {
+    message = err.message
+    status = err.response.status as ContentfulStatusCode
   } else if (!isProd) {
     message = err.message ?? message
   }
 
-  // console.warn('ERROR', err, {
-  //   isHttpException: err instanceof HTTPException,
-  //   isHttpError: err instanceof HttpError,
-  //   isProd
-  // })
-
   if (status >= 500) {
     logger.error(status, err)
     captureException(err)
-  } else {
+  } else if (isProd) {
     logger.warn(status, err)
   }
 

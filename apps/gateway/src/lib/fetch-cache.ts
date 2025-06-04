@@ -11,6 +11,7 @@ export async function fetchCache(
   }
 ): Promise<Response> {
   const cache = ctx.get('cache')
+  const logger = ctx.get('logger')
   let response: Response | undefined
 
   if (cacheKey) {
@@ -26,7 +27,7 @@ export async function fetchCache(
         // Note that cloudflare's `cache` should respect response headers.
         ctx.executionCtx.waitUntil(
           cache.put(cacheKey, response.clone()).catch((err) => {
-            console.warn('cache put error', cacheKey, err)
+            logger.warn('cache put error', cacheKey, err)
           })
         )
       }

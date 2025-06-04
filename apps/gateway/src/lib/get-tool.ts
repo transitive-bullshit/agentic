@@ -33,12 +33,13 @@ export function getTool({
 
       if (operationToolName) {
         tool = deployment.tools.find((tool) => tool.name === operationToolName)
+
+        assert(
+          tool,
+          404,
+          `Tool not found "${toolName}" for deployment "${deployment.identifier}": did you mean "${operationToolName}"?`
+        )
       }
-      assert(
-        tool,
-        404,
-        `Tool not found "${toolName}" for deployment "${deployment.identifier}": did you mean "${operationToolName}"?`
-      )
     }
   }
 

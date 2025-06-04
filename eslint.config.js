@@ -27,12 +27,6 @@ export default [
     }
   },
   {
-    files: ['apps/gateway/src/**/*.ts'],
-    rules: {
-      'no-console': 'off'
-    }
-  },
-  {
     files: ['apps/api/src/**/*.ts'],
     plugins: {
       drizzle

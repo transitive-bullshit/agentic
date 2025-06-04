@@ -5,9 +5,9 @@ import plur from 'plur'
 /**
  * Validates `data` against the provided JSON schema object.
  *
- * This method uses `@cfworker/json-schema` and does not use `ajv` because CF
- * workers does not support `ajv` due to its dynamic code generation and
- * evaluation.
+ * This method uses a fork of `@cfworker/json-schema`. It does not use `ajv`
+ * because `ajv` is not supported on CF workers due to its dynamic code
+ * generation and evaluation.
  *
  * If you want a stricter version of this method which uses `ajv` and you're
  * not running on CF workers, consider using `validateJsonSchemaObject` from

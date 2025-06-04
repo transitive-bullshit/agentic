@@ -14,6 +14,7 @@ import { initExitHooks } from './lib/exit-hooks'
 
 export const app = new OpenAPIHono<DefaultHonoEnv>()
 
+app.onError(errorHandler)
 app.use(middleware.sentry())
 app.use(middleware.compress())
 app.use(
@@ -29,7 +30,6 @@ app.use(
 app.use(middleware.init)
 app.use(middleware.accessLogger)
 app.use(middleware.responseTime)
-app.onError(errorHandler)
 
 // Mount all auth routes which are handled by OpenAuth
 app.route('', authRouter)

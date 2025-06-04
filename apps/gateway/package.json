@@ -1,5 +1,5 @@
 {
-  "name": "@agentic/platform-api-gateway",
+  "name": "gateway",
   "private": true,
   "version": "0.1.0",
   "description": "Internal Agentic platform API gateway service.",
@@ -38,15 +38,15 @@
     "@agentic/platform-validators": "workspace:*",
     "@hono/zod-validator": "catalog:",
     "@modelcontextprotocol/sdk": "catalog:",
-    "fast-content-type-parse": "^3.0.0",
+    "fast-content-type-parse": "catalog:",
     "hono": "catalog:",
     "ky": "catalog:",
-    "plur": "^5.1.0",
+    "plur": "catalog:",
     "type-fest": "catalog:"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20250604.0",
-    "@edge-runtime/vm": "^5.0.0",
+    "@cloudflare/workers-types": "catalog:",
+    "@edge-runtime/vm": "catalog:",
     "wrangler": "catalog:"
   }
 }

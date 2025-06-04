@@ -25,14 +25,15 @@
   "dependencies": {
     "@agentic/platform-core": "workspace:*",
     "@hono/sentry": "catalog:",
-    "@sentry/core": "^9.26.0",
+    "@sentry/core": "catalog:",
     "dotenv": "catalog:",
     "eventid": "catalog:",
     "hono": "catalog:",
+    "ky": "catalog:",
     "type-fest": "catalog:"
   },
   "devDependencies": {
-    "@sentry/cloudflare": "^9.26.0",
+    "@sentry/cloudflare": "catalog:",
     "@sentry/node": "catalog:"
   }
 }
