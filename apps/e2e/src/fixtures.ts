@@ -36,14 +36,13 @@ export type E2ETestFixtureSuite = {
   /** @default false */
   only?: boolean
 
-  /** @default true */
+  /** @default false */
   sequential?: boolean
 }
 
 export const fixtureSuites: E2ETestFixtureSuite[] = [
   {
     title: 'Basic OpenAPI getPost(1)',
-    sequential: false,
     fixtures: [
       {
         path: 'dev/test-basic-openapi/getPost',
@@ -89,7 +88,6 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
   },
   {
     title: 'Basic OpenAPI getPost errors',
-    sequential: false,
     fixtures: [
       {
         path: 'dev/test-basic-openapi/getPost',
@@ -133,7 +131,6 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
   },
   {
     title: 'Bypass caching',
-    sequential: false,
     fixtures: [
       {
         path: 'dev/test-basic-openapi@b6e21206/getPost',
@@ -194,6 +191,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
   },
   {
     title: 'Basic GET caching',
+    sequential: true,
     fixtures: [
       {
         path: 'dev/test-basic-openapi@b6e21206/getPost',

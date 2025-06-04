@@ -34,7 +34,7 @@ for (const [i, fixtureSuite] of fixtureSuites.entries()) {
         fixture.response ?? {}
 
       let testFn = fixture.only ? test.only : test
-      if (fixtureSuite.sequential !== false) {
+      if (fixtureSuite.sequential) {
         testFn = testFn.sequential
       }
 
