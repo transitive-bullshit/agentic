@@ -125,5 +125,94 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
         }
       }
     ]
+  },
+  {
+    title: 'Bypass caching',
+    fixtures: [
+      {
+        path: 'dev/test-basic-openapi@b6e21206/getPost',
+        request: {
+          headers: {
+            pragma: 'no-cache'
+          },
+          searchParams: {
+            postId: 9
+          }
+        },
+        response: {
+          headers: {
+            'cf-cache-status': 'BYPASS'
+          }
+        }
+      },
+      {
+        path: 'dev/test-basic-openapi@b6e21206/getPost?postId=9',
+        request: {
+          headers: {
+            'cache-control': 'no-cache'
+          }
+        },
+        response: {
+          headers: {
+            'cf-cache-status': 'BYPASS'
+          }
+        }
+      },
+      {
+        path: 'dev/test-basic-openapi@b6e21206/get_post?postId=9',
+        request: {
+          headers: {
+            'cache-control': 'no-store'
+          }
+        },
+        response: {
+          headers: {
+            'cf-cache-status': 'BYPASS'
+          }
+        }
+      },
+      {
+        path: 'dev/test-basic-openapi@b6e21206/get_post?postId=9',
+        request: {
+          headers: {
+            'cache-control': 'max-age=0, must-revalidate, no-cache'
+          }
+        },
+        response: {
+          headers: {
+            'cf-cache-status': 'BYPASS'
+          }
+        }
+      }
+    ]
+  },
+  {
+    title: 'Basic GET caching',
+    fixtures: [
+      {
+        path: 'dev/test-basic-openapi@b6e21206/getPost',
+        request: {
+          searchParams: {
+            postId: 9
+          }
+        }
+      },
+      {
+        path: 'dev/test-basic-openapi@b6e21206/getPost?postId=9',
+        response: {
+          headers: {
+            'cf-cache-status': 'HIT'
+          }
+        }
+      },
+      {
+        path: 'dev/test-basic-openapi@b6e21206/get_post?postId=9',
+        response: {
+          headers: {
+            'cf-cache-status': 'HIT'
+          }
+        }
+      }
+    ]
   }
 ]

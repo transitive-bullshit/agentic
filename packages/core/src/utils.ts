@@ -82,9 +82,11 @@ export function parseZodSchema<TSchema extends ZodType<any, any, any>>(
   schema: TSchema,
   input: unknown,
   {
-    error
+    error,
+    statusCode = 500
   }: {
     error?: string
+    statusCode?: ContentfulStatusCode
   } = {}
 ): z.infer<TSchema> {
   try {
@@ -92,7 +94,8 @@ export function parseZodSchema<TSchema extends ZodType<any, any, any>>(
   } catch (err) {
     throw new ZodValidationError({
       prefix: error,
-      cause: err
+      cause: err,
+      statusCode
     })
   }
 }

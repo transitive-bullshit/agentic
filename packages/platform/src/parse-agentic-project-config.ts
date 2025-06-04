@@ -24,7 +24,10 @@ export function parseAgenticProjectConfig(
       : strict
         ? agenticProjectConfigSchema.strict()
         : agenticProjectConfigSchema,
-    inputConfig
+    inputConfig,
+    {
+      statusCode: 400
+    }
   ) as AgenticProjectConfig
 }
 
@@ -41,6 +44,9 @@ export function parseResolvedAgenticProjectConfig(
       : strict
         ? resolvedAgenticProjectConfigSchema.strict()
         : resolvedAgenticProjectConfigSchema,
-    inputConfig
+    inputConfig,
+    {
+      statusCode: 400
+    }
   ) as ResolvedAgenticProjectConfig
 }

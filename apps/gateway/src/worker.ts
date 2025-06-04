@@ -137,15 +137,12 @@ export default {
     try {
       parsedEnv = parseEnv(env)
     } catch (err: any) {
-      // TODO: Better error handling
-      return new Response(
-        JSON.stringify({
-          error: err.message,
-          type: err.type,
-          code: err.code
-        }),
-        { status: 500 }
-      )
+      return new Response(JSON.stringify({ error: err.message }), {
+        status: 500,
+        headers: {
+          'content-type': 'application/json'
+        }
+      })
     }
 
     return app.fetch(request, parsedEnv, ctx)

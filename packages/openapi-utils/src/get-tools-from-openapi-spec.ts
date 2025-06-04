@@ -191,12 +191,18 @@ export async function getToolsFromOpenAPISpec(
       const { tags } = operation
 
       tools.push(
-        parseZodSchema(toolSchema, {
-          name: operationNameSnakeCase,
-          description,
-          inputSchema: operationParamsJsonSchema,
-          outputSchema: operationResponseJsonSchema
-        })
+        parseZodSchema(
+          toolSchema,
+          {
+            name: operationNameSnakeCase,
+            description,
+            inputSchema: operationParamsJsonSchema,
+            outputSchema: operationResponseJsonSchema
+          },
+          {
+            statusCode: 400
+          }
+        )
       )
 
       toolToOperationMap[operationNameSnakeCase] = parseZodSchema(
@@ -207,6 +213,9 @@ export async function getToolsFromOpenAPISpec(
           path,
           parameterSources: operationParamsSources,
           tags
+        },
+        {
+          statusCode: 400
         }
       )
     }
