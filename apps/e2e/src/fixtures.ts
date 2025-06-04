@@ -38,11 +38,15 @@ export type E2ETestFixtureSuite = {
 
   /** @default false */
   sequential?: boolean
+
+  /** @default false */
+  compareResponseBodies?: boolean
 }
 
 export const fixtureSuites: E2ETestFixtureSuite[] = [
   {
     title: 'Basic OpenAPI getPost(1)',
+    compareResponseBodies: true,
     fixtures: [
       {
         path: 'dev/test-basic-openapi/getPost',

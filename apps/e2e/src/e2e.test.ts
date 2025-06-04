@@ -16,11 +16,11 @@ const ky = defaultKy.extend({
 })
 
 for (const [i, fixtureSuite] of fixtureSuites.entries()) {
-  const { title, fixtures } = fixtureSuite
+  const { title, fixtures, compareResponseBodies = false } = fixtureSuite
 
   const describeFn = fixtureSuite.only ? describe.only : describe
   describeFn(title, () => {
-    let responseBody: any | undefined
+    let fixtureResponseBody: any | undefined
 
     for (const [j, fixture] of fixtures.entries()) {
       const method = fixture.request?.method ?? 'GET'
@@ -86,11 +86,11 @@ for (const [i, fixtureSuite] of fixtureSuites.entries()) {
             expect(body).toMatchSnapshot()
           }
 
-          if (status >= 200 && status < 300) {
-            if (!responseBody) {
-              responseBody = body
+          if (compareResponseBodies && status >= 200 && status < 300) {
+            if (!fixtureResponseBody) {
+              fixtureResponseBody = body
             } else {
-              expect(body).toEqual(responseBody)
+              expect(body).toEqual(fixtureResponseBody)
             }
           }
 

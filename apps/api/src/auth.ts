@@ -21,7 +21,7 @@ export const authRouter = issuer({
   ttl: {
     access: 60 * 60 * 24 * 30, // 30 days
     refresh: 60 * 60 * 24 * 365 // 1 year
-    // Used for creating longer-lived testing tokens
+    // Used for creating longer-lived tokens for testing
     // access: 60 * 60 * 24 * 366, // 1 year
     // refresh: 60 * 60 * 24 * 365 * 5 // 5 years
   },
@@ -60,7 +60,6 @@ export const authRouter = issuer({
           login_title: 'Welcome to Agentic'
         },
         sendCode: async (email, code) => {
-          // TODO: Send email code to user
           // eslint-disable-next-line no-console
           console.log('sending verify code email', { email, code })
 
