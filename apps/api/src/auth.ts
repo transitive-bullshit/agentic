@@ -12,6 +12,8 @@ import { DrizzleAuthStorage } from '@/lib/drizzle-auth-storage'
 import { env } from '@/lib/env'
 import { getGitHubClient } from '@/lib/external/github'
 
+import { resend } from './lib/external/resend'
+
 // Initialize OpenAuth issuer which is a Hono app for all auth routes.
 export const authRouter = issuer({
   subjects,
@@ -60,7 +62,9 @@ export const authRouter = issuer({
         sendCode: async (email, code) => {
           // TODO: Send email code to user
           // eslint-disable-next-line no-console
-          console.log({ email, code })
+          console.log('sending verify code email', { email, code })
+
+          await resend.sendVerifyCodeEmail({ code, to: email })
         },
         validatePassword: (password) => {
           if (password.length < 3) {

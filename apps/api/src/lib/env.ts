@@ -20,7 +20,9 @@ export const envSchema = baseEnvSchema
     GITHUB_CLIENT_ID: z.string().nonempty(),
     GITHUB_CLIENT_SECRET: z.string().nonempty(),
 
-    AGENTIC_ADMIN_API_KEY: z.string().nonempty()
+    AGENTIC_ADMIN_API_KEY: z.string().nonempty(),
+
+    RESEND_API_KEY: z.string().nonempty()
   })
   .strip()
 export type Env = Simplify<ReturnType<typeof parseEnv>>

@@ -29,6 +29,7 @@
     "@agentic/openauth": "catalog:",
     "@agentic/platform": "workspace:*",
     "@agentic/platform-core": "workspace:*",
+    "@agentic/platform-emails": "workspace:*",
     "@agentic/platform-hono": "workspace:*",
     "@agentic/platform-types": "workspace:*",
     "@agentic/platform-validators": "workspace:*",
