@@ -1,5 +1,5 @@
+import { Validator } from '@agentic/json-schema'
 import { HttpError } from '@agentic/platform-core'
-import { Validator } from '@cfworker/json-schema'
 import plur from 'plur'
 
 /**

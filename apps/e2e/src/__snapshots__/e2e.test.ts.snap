@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`0) GET dev/test-basic-openapi/getPost 1`] = `
+exports[`Basic OpenAPI getPost(1) > 0.0: GET dev/test-basic-openapi/getPost 1`] = `
 {
   "body": "quia et suscipit
 suscipit recusandae consequuntur expedita et cum
@@ -12,7 +12,7 @@ nostrum rerum est autem sunt rem eveniet architecto",
 }
 `;
 
-exports[`1) GET dev/test-basic-openapi@b6e21206/getPost?postId=1 1`] = `
+exports[`Basic OpenAPI getPost(1) > 0.1: GET dev/test-basic-openapi@b6e21206/getPost?postId=1 1`] = `
 {
   "body": "quia et suscipit
 suscipit recusandae consequuntur expedita et cum
@@ -24,7 +24,7 @@ nostrum rerum est autem sunt rem eveniet architecto",
 }
 `;
 
-exports[`2) GET dev/test-basic-openapi@b6e21206/getPost 1`] = `
+exports[`Basic OpenAPI getPost(1) > 0.2: GET dev/test-basic-openapi@b6e21206/get_post?postId=1 1`] = `
 {
   "body": "quia et suscipit
 suscipit recusandae consequuntur expedita et cum
@@ -36,7 +36,7 @@ nostrum rerum est autem sunt rem eveniet architecto",
 }
 `;
 
-exports[`3) POST dev/test-basic-openapi/getPost 1`] = `
+exports[`Basic OpenAPI getPost(1) > 0.2: GET dev/test-basic-openapi@b6e21206/getPost 1`] = `
 {
   "body": "quia et suscipit
 suscipit recusandae consequuntur expedita et cum
@@ -48,7 +48,55 @@ nostrum rerum est autem sunt rem eveniet architecto",
 }
 `;
 
-exports[`4) POST dev/test-basic-openapi@latest/getPost 1`] = `
+exports[`Basic OpenAPI getPost(1) > 0.3: GET dev/test-basic-openapi@b6e21206/getPost 1`] = `
+{
+  "body": "quia et suscipit
+suscipit recusandae consequuntur expedita et cum
+reprehenderit molestiae ut ut quas totam
+nostrum rerum est autem sunt rem eveniet architecto",
+  "id": 1,
+  "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
+  "userId": 1,
+}
+`;
+
+exports[`Basic OpenAPI getPost(1) > 0.3: POST dev/test-basic-openapi/getPost 1`] = `
+{
+  "body": "quia et suscipit
+suscipit recusandae consequuntur expedita et cum
+reprehenderit molestiae ut ut quas totam
+nostrum rerum est autem sunt rem eveniet architecto",
+  "id": 1,
+  "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
+  "userId": 1,
+}
+`;
+
+exports[`Basic OpenAPI getPost(1) > 0.4: POST dev/test-basic-openapi/getPost 1`] = `
+{
+  "body": "quia et suscipit
+suscipit recusandae consequuntur expedita et cum
+reprehenderit molestiae ut ut quas totam
+nostrum rerum est autem sunt rem eveniet architecto",
+  "id": 1,
+  "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
+  "userId": 1,
+}
+`;
+
+exports[`Basic OpenAPI getPost(1) > 0.4: POST dev/test-basic-openapi@latest/getPost 1`] = `
+{
+  "body": "quia et suscipit
+suscipit recusandae consequuntur expedita et cum
+reprehenderit molestiae ut ut quas totam
+nostrum rerum est autem sunt rem eveniet architecto",
+  "id": 1,
+  "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
+  "userId": 1,
+}
+`;
+
+exports[`Basic OpenAPI getPost(1) > 0.5: POST dev/test-basic-openapi@latest/getPost 1`] = `
 {
   "body": "quia et suscipit
 suscipit recusandae consequuntur expedita et cum

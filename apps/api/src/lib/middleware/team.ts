@@ -1,7 +1,7 @@
 import { assert } from '@agentic/platform-core'
 import { createMiddleware } from 'hono/factory'
 
-import type { AuthenticatedEnv } from '@/lib/types'
+import type { AuthenticatedHonoEnv } from '@/lib/types'
 import { and, db, eq, schema } from '@/db'
 import { aclTeamMember } from '@/lib/acl-team-member'
 
@@ -9,7 +9,7 @@ import { aclTeamMember } from '@/lib/acl-team-member'
 // middleware to accept a different JWT payload and then use that to
 // determine the intended user and/or team.
 
-export const team = createMiddleware<AuthenticatedEnv>(
+export const team = createMiddleware<AuthenticatedHonoEnv>(
   async function teamMiddleware(ctx, next) {
     const teamId = ctx.req.query('teamId')
     const userId = ctx.get('userId')

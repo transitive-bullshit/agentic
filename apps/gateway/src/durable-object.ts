@@ -1,7 +1,9 @@
 import { DurableObject } from 'cloudflare:workers'
 
+import type { RawEnv } from './lib/env'
+
 /** A Durable Object's behavior is defined in an exported Javascript class */
-export class DurableObjectRateLimiter extends DurableObject<Env> {
+export class DurableObjectRateLimiter extends DurableObject<RawEnv> {
   /**
    * The constructor is invoked once upon creation of the Durable Object, i.e. the first call to
    * 	`DurableObjectStub::get` for a given identifier (no-op constructors can be omitted)
@@ -9,7 +11,7 @@ export class DurableObjectRateLimiter extends DurableObject<Env> {
    * @param ctx - The interface for interacting with Durable Object state
    * @param env - The interface to reference bindings declared in wrangler.jsonc
    */
-  constructor(ctx: DurableObjectState, env: Env) {
+  constructor(ctx: DurableObjectState, env: RawEnv) {
     super(ctx, env)
   }
 

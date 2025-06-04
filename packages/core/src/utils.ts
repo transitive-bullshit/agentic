@@ -1,5 +1,5 @@
 import type { ContentfulStatusCode } from 'hono/utils/http-status'
-import type { ZodSchema, ZodTypeDef } from 'zod'
+import type { z, ZodType } from 'zod'
 import hashObjectImpl, { type Options as HashObjectOptions } from 'hash-object'
 
 import { HttpError, ZodValidationError } from './errors'
@@ -78,19 +78,15 @@ export function assert(
  * Parses the given input against the given Zod schema, throwing a
  * `ZodValidationError` if the input is invalid.
  */
-export function parseZodSchema<
-  Output,
-  Def extends ZodTypeDef = ZodTypeDef,
-  Input = Output
->(
-  schema: ZodSchema<Output, Def, Input>,
+export function parseZodSchema<TSchema extends ZodType<any, any, any>>(
+  schema: TSchema,
   input: unknown,
   {
     error
   }: {
     error?: string
   } = {}
-): Output {
+): z.infer<TSchema> {
   try {
     return schema.parse(input)
   } catch (err) {

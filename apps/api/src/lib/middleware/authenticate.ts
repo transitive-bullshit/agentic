@@ -2,13 +2,13 @@ import { assert } from '@agentic/platform-core'
 import { createMiddleware } from 'hono/factory'
 
 import type { RawUser } from '@/db'
-import type { AuthenticatedEnv } from '@/lib/types'
+import type { AuthenticatedHonoEnv } from '@/lib/types'
 import { authClient } from '@/lib/auth/client'
 import { subjects } from '@/lib/auth/subjects'
 
 import { env } from '../env'
 
-export const authenticate = createMiddleware<AuthenticatedEnv>(
+export const authenticate = createMiddleware<AuthenticatedHonoEnv>(
   async function authenticateMiddleware(ctx, next) {
     const credentials = ctx.req.raw.headers.get('Authorization')
     assert(credentials, 401, 'Unauthorized')

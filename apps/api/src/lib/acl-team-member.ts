@@ -2,11 +2,11 @@ import { assert } from '@agentic/platform-core'
 
 import { and, db, eq, type RawTeamMember, schema } from '@/db'
 
-import type { AuthenticatedContext } from './types'
+import type { AuthenticatedHonoContext } from './types'
 import { ensureAuthUser } from './ensure-auth-user'
 
 export async function aclTeamMember(
-  ctx: AuthenticatedContext,
+  ctx: AuthenticatedHonoContext,
   {
     teamId,
     teamSlug,

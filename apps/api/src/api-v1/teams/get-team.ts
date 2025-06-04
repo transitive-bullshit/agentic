@@ -1,7 +1,7 @@
 import { assert, parseZodSchema } from '@agentic/platform-core'
 import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 
-import type { AuthenticatedEnv } from '@/lib/types'
+import type { AuthenticatedHonoEnv } from '@/lib/types'
 import { db, eq, schema } from '@/db'
 import { aclTeamMember } from '@/lib/acl-team-member'
 import {
@@ -36,7 +36,7 @@ const route = createRoute({
   }
 })
 
-export function registerV1TeamsGetTeam(app: OpenAPIHono<AuthenticatedEnv>) {
+export function registerV1TeamsGetTeam(app: OpenAPIHono<AuthenticatedHonoEnv>) {
   return app.openapi(route, async (c) => {
     const { teamId } = c.req.valid('param')
     await aclTeamMember(c, { teamId })

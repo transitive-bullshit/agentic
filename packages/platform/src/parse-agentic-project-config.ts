@@ -1,4 +1,3 @@
-import type { z, ZodTypeDef } from 'zod'
 import { parseZodSchema } from '@agentic/platform-core'
 import {
   type AgenticProjectConfig,
@@ -19,11 +18,7 @@ export function parseAgenticProjectConfig(
   inputConfig: unknown,
   { strip = false, strict = false }: { strip?: boolean; strict?: boolean } = {}
 ): AgenticProjectConfig {
-  return parseZodSchema<
-    z.output<typeof agenticProjectConfigSchema>,
-    ZodTypeDef,
-    z.input<typeof agenticProjectConfigSchema>
-  >(
+  return parseZodSchema(
     strip
       ? agenticProjectConfigSchema.strip()
       : strict
@@ -40,11 +35,7 @@ export function parseResolvedAgenticProjectConfig(
   inputConfig: unknown,
   { strip = false, strict = false }: { strip?: boolean; strict?: boolean } = {}
 ): ResolvedAgenticProjectConfig {
-  return parseZodSchema<
-    z.output<typeof resolvedAgenticProjectConfigSchema>,
-    ZodTypeDef,
-    z.input<typeof resolvedAgenticProjectConfigSchema>
-  >(
+  return parseZodSchema(
     strip
       ? resolvedAgenticProjectConfigSchema.strip()
       : strict

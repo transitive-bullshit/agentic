@@ -1,7 +1,7 @@
 import { OpenAPIHono } from '@hono/zod-openapi'
 import { fromError } from 'zod-validation-error'
 
-import type { AuthenticatedEnv } from '@/lib/types'
+import type { AuthenticatedHonoEnv } from '@/lib/types'
 import * as middleware from '@/lib/middleware'
 import { registerOpenAPIErrorResponses } from '@/lib/openapi-utils'
 
@@ -64,7 +64,7 @@ registerOpenAPIErrorResponses(apiV1)
 const publicRouter = new OpenAPIHono()
 
 // Private, authenticated routes
-const privateRouter = new OpenAPIHono<AuthenticatedEnv>()
+const privateRouter = new OpenAPIHono<AuthenticatedHonoEnv>()
 
 registerHealthCheck(publicRouter)
 

@@ -1,7 +1,7 @@
 import { assert, parseZodSchema } from '@agentic/platform-core'
 import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 
-import type { AuthenticatedEnv } from '@/lib/types'
+import type { AuthenticatedHonoEnv } from '@/lib/types'
 import { db, eq, schema } from '@/db'
 import { acl } from '@/lib/acl'
 import {
@@ -37,7 +37,7 @@ const route = createRoute({
 })
 
 export function registerV1ProjectsGetProjectByIdentifier(
-  app: OpenAPIHono<AuthenticatedEnv>
+  app: OpenAPIHono<AuthenticatedHonoEnv>
 ) {
   return app.openapi(route, async (c) => {
     const { projectIdentifier, populate = [] } = c.req.valid('query')

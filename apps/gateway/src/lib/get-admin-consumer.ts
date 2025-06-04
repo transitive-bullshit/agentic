@@ -1,12 +1,13 @@
 import { assert } from '@agentic/platform-core'
 
-import type { AdminConsumer, Context } from './types'
+import type { AdminConsumer, GatewayHonoContext } from './types'
 
 export async function getAdminConsumer(
-  ctx: Context,
+  ctx: GatewayHonoContext,
   token: string
 ): Promise<AdminConsumer> {
-  const consumer = await ctx.client.adminGetConsumerByToken({
+  const client = ctx.get('client')
+  const consumer = await client.adminGetConsumerByToken({
     token,
     populate: ['user']
   })

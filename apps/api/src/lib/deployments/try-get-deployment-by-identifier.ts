@@ -1,7 +1,7 @@
 import { assert } from '@agentic/platform-core'
 import { parseToolIdentifier } from '@agentic/platform-validators'
 
-import type { AuthenticatedContext } from '@/lib/types'
+import type { AuthenticatedHonoContext } from '@/lib/types'
 import {
   and,
   db,
@@ -21,7 +21,7 @@ import { setPublicCacheControl } from '@/lib/cache-control'
  * Does not take care of ACLs.
  */
 export async function tryGetDeploymentByIdentifier(
-  ctx: AuthenticatedContext,
+  ctx: AuthenticatedHonoContext,
   {
     deploymentIdentifier,
     ...dbQueryOpts

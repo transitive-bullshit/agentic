@@ -1,13 +1,13 @@
 import { assert } from '@agentic/platform-core'
 
-import type { AuthenticatedContext } from '@/lib/types'
+import type { AuthenticatedHonoContext } from '@/lib/types'
 import { db, eq, type RawDeployment, schema } from '@/db'
 import { acl } from '@/lib/acl'
 
 import { normalizeDeploymentVersion } from './normalize-deployment-version'
 
 export async function publishDeployment(
-  ctx: AuthenticatedContext,
+  ctx: AuthenticatedHonoContext,
   {
     deployment,
     version: rawVersion

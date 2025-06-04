@@ -4,7 +4,7 @@ import { assert, HttpError } from '@agentic/platform-core'
 
 import { and, db, eq, schema } from '@/db'
 import { setConsumerStripeSubscriptionStatus } from '@/lib/consumers/utils'
-import { env, isStripeLive } from '@/lib/env'
+import { env } from '@/lib/env'
 import { stripe } from '@/lib/external/stripe'
 
 const relevantStripeEvents = new Set<Stripe.Event.Type>([
@@ -36,7 +36,7 @@ export function registerV1StripeWebhook(app: OpenAPIHono) {
     // Shouldn't ever happen because the signatures _should_ be different, but
     // it's a useful sanity check just in case.
     assert(
-      event.livemode === isStripeLive,
+      event.livemode === env.isStripeLive,
       400,
       'invalid stripe event: livemode mismatch'
     )

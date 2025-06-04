@@ -1,12 +1,12 @@
 import { createMiddleware } from 'hono/factory'
 
-import type { DefaultEnv } from '@/lib/types'
+import type { DefaultHonoEnv } from '../types'
 
-export const responseTime = createMiddleware<DefaultEnv>(
+export const responseTime = createMiddleware<DefaultHonoEnv>(
   async function responseTimeMiddleware(ctx, next) {
     const start = Date.now()
     await next()
     const duration = Date.now() - start
-    ctx.res.headers.set('X-Response-Time', `${duration}ms`)
+    ctx.res.headers.set('x-response-time', `${duration}ms`)
   }
 )

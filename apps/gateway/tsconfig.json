@@ -1,16 +1,8 @@
 {
   "extends": "@fisch0920/config/tsconfig-node",
   "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["src/*"]
-    },
-    "types": ["./src/worker.d.ts"]
+    "types": ["@cloudflare/workers-types/experimental"]
   },
-  "include": [
-    "src",
-    "*.config.ts",
-    "../../packages/openapi-utils/src/validate-json-schema.ts"
-  ],
+  "include": ["src", "*.config.ts"],
   "exclude": ["node_modules", "dist"]
 }

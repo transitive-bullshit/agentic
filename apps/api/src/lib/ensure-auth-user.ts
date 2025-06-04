@@ -1,10 +1,10 @@
 import { assert } from '@agentic/platform-core'
 
-import type { AuthenticatedContext } from '@/lib/types'
+import type { AuthenticatedHonoContext } from '@/lib/types'
 import { db, eq, type RawUser, schema } from '@/db'
 
 export async function ensureAuthUser(
-  ctx: AuthenticatedContext
+  ctx: AuthenticatedHonoContext
 ): Promise<RawUser> {
   let user = ctx.get('user')
   if (user) return user

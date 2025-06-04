@@ -1,7 +1,7 @@
 import type Stripe from 'stripe'
 import { assert } from '@agentic/platform-core'
 
-import type { AuthenticatedContext } from '@/lib/types'
+import type { AuthenticatedHonoContext } from '@/lib/types'
 import {
   db,
   eq,
@@ -18,7 +18,7 @@ import { stripe } from '@/lib/external/stripe'
 import { setConsumerStripeSubscriptionStatus } from '../consumers/utils'
 
 export async function upsertStripeSubscription(
-  ctx: AuthenticatedContext,
+  ctx: AuthenticatedHonoContext,
   {
     consumer,
     user,

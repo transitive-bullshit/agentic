@@ -9,11 +9,11 @@ import type {
   User
 } from '@agentic/platform-types'
 import type { Simplify } from 'type-fest'
-import { assert, sanitizeSearchParams } from '@agentic/platform-core'
 import {
   type Client as AuthClient,
   createClient as createAuthClient
-} from '@openauthjs/openauth/client'
+} from '@agentic/openauth/client'
+import { assert, sanitizeSearchParams } from '@agentic/platform-core'
 import defaultKy, { type KyInstance } from 'ky'
 
 import type {

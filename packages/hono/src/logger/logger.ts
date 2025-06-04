@@ -1,10 +1,8 @@
 import { assert, type Logger } from '@agentic/platform-core'
-import * as Sentry from '@sentry/node'
+import { captureException } from '@sentry/core'
 import { z } from 'zod'
 
-import type { Environment, Service } from '@/lib/types'
-import { env } from '@/lib/env'
-
+import type { Env, Environment, Service } from '../types'
 import { getTraceId } from './utils'
 
 const rawLogLevels = ['trace', 'debug', 'info', 'warn', 'error'] as const
@@ -19,7 +17,10 @@ export const logLevelsMap = rawLogLevels.reduce(
   {} as Record<LogLevel, number>
 )
 
+const globalConsole = console
+
 export class ConsoleLogger implements Logger {
+  protected readonly env: Env
   protected readonly environment: Environment
   protected readonly service: Service
   protected readonly requestId: string
@@ -27,23 +28,28 @@ export class ConsoleLogger implements Logger {
   protected readonly console: Console
   protected readonly logLevel: LogLevel
 
-  constructor({
-    requestId,
-    service,
-    environment = env.NODE_ENV,
-    metadata = {},
-    console = globalThis.console,
-    logLevel = env.LOG_LEVEL
-  }: {
-    requestId: string
-    service: Service
-    environment?: Environment
-    metadata?: Record<string, unknown>
-    console?: Console
-    logLevel?: LogLevel
-  }) {
-    assert(console, 500, '`console` is required for Logger')
+  constructor(
+    env: Env,
+    {
+      requestId,
+      service = env.SERVICE,
+      environment = env.ENVIRONMENT,
+      logLevel = env.LOG_LEVEL,
+      metadata = {},
+      console = globalConsole
+    }: {
+      requestId: string
+      service?: Service
+      environment?: Environment
+      logLevel?: LogLevel
+      metadata?: Record<string, unknown>
+      console?: Console
+    }
+  ) {
+    assert(env, 500, '`env` is required for ConsoleLogger')
+    assert(console, 500, '`console` is required for ConsoleLogger')
 
+    this.env = env
     this.requestId = requestId
     this.service = service
     this.environment = environment
@@ -154,7 +160,7 @@ export class ConsoleLogger implements Logger {
       }
 
       if (foundError) {
-        Sentry.captureException(foundError)
+        captureException(foundError)
       }
     }
 

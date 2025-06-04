@@ -1,7 +1,11 @@
 import type { PricingPlan, RateLimit } from '@agentic/platform-types'
 import { assert } from '@agentic/platform-core'
 
-import type { AdminConsumer, Context, ResolvedOriginRequest } from './types'
+import type {
+  AdminConsumer,
+  GatewayHonoContext,
+  ResolvedOriginRequest
+} from './types'
 import { createRequestForOpenAPIOperation } from './create-request-for-openapi-operation'
 import { enforceRateLimit } from './enforce-rate-limit'
 import { getAdminConsumer } from './get-admin-consumer'
@@ -17,14 +21,16 @@ import { updateOriginRequest } from './update-origin-request'
  * specific headers to the origin request.
  */
 export async function resolveOriginRequest(
-  ctx: Context
+  ctx: GatewayHonoContext
 ): Promise<ResolvedOriginRequest> {
-  const { req } = ctx
-  const ip = req.headers.get('cf-connecting-ip') || undefined
-  const requestUrl = new URL(req.url)
-
+  // cf-connecting-ip should always be present, but if not we can fallback to XFF.
+  const ip =
+    ctx.req.header('cf-connecting-ip') ||
+    ctx.req.header('x-forwarded-for') ||
+    undefined
+  const { method } = ctx.req
+  const requestUrl = new URL(ctx.req.url)
   const { pathname } = requestUrl
-  const { method } = req
   const requestPathParts = pathname.split('/')
 
   // TODO: the isMCPRequest logic needs to be completely redone.
@@ -53,7 +59,7 @@ export async function resolveOriginRequest(
   let consumer: AdminConsumer | undefined
   let reportUsage = true
 
-  const token = (req.headers.get('authorization') || '')
+  const token = (ctx.req.header('authorization') || '')
     .replace(/^Bearer /i, '')
     .trim()
 
@@ -169,15 +175,14 @@ export async function resolveOriginRequest(
       const operation = originAdapter.toolToOperationMap[tool.name]
       assert(operation, 404, `Tool "${tool.name}" not found in OpenAPI spec`)
 
-      originRequest = await createRequestForOpenAPIOperation({
-        request: req,
+      originRequest = await createRequestForOpenAPIOperation(ctx, {
         tool,
         operation,
         deployment
       })
     } else {
       const originRequestUrl = `${deployment.originUrl}${toolPath}${requestUrl.search}`
-      originRequest = new Request(originRequestUrl, req)
+      originRequest = new Request(originRequestUrl, ctx.req.raw)
     }
 
     console.log('originRequestUrl', originRequest.url)

@@ -53,7 +53,16 @@
   - how to handle binary bodies and responses?
   - signed requests
 - revisit deployment identifiers so possibly be URL-friendly?
-- rename parseToolIdentifier to `parseToolIdentifier` and move validators package into platform-types?
+- move validators package into platform-types?
+  - force toolPath to be non-empty except for `raw`?
+    - will remove ambiguity from `username/`
+  - make namespace optional? and require `@` prefix if so? like npm packages
+  - separate `parseToolIdentifier` from `parseDeploymentIdentifier` and `parseProjectIdentifier`?
+- `@agentic/platform-hono`
+  - fix sentry middleware
+    - https://github.com/honojs/middleware/blob/main/packages/sentry/src/index.ts
+    - https://github.com/honojs/middleware/issues/943
+    - https://github.com/getsentry/sentry-javascript/tree/master/packages/cloudflare
 
 ## License
 

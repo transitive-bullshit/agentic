@@ -1,6 +1,6 @@
 import { assert } from '@agentic/platform-core'
 
-import type { AuthenticatedContext } from './types'
+import type { AuthenticatedHonoContext } from './types'
 import { ensureAuthUser } from './ensure-auth-user'
 
 export async function acl<
@@ -8,7 +8,7 @@ export async function acl<
   TUserField extends keyof TModel = 'userId',
   TTeamField extends keyof TModel = 'teamId'
 >(
-  ctx: AuthenticatedContext,
+  ctx: AuthenticatedHonoContext,
   model: TModel,
   {
     label,

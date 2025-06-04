@@ -6,7 +6,7 @@ export type E2ETestFixture = {
 
   request?: {
     /** @default 'GET' */
-    method?: 'GET' | 'POST'
+    method?: 'GET' | 'POST' | 'PUT' | 'DELETE'
     searchParams?: Record<string, string | number | boolean>
     headers?: Record<string, string>
     json?: Record<string, unknown>
@@ -26,42 +26,99 @@ export type E2ETestFixture = {
   }
 }
 
-export const fixtures: E2ETestFixture[] = [
+export type E2ETestFixtureSuite = {
+  title: string
+  fixtures: E2ETestFixture[]
+}
+
+export const fixtureSuites: E2ETestFixtureSuite[] = [
   {
-    path: 'dev/test-basic-openapi/getPost',
-    request: {
-      searchParams: {
-        postId: 1
+    title: 'Basic OpenAPI getPost(1)',
+    fixtures: [
+      {
+        path: 'dev/test-basic-openapi/getPost',
+        request: {
+          searchParams: {
+            postId: 1
+          }
+        }
+      },
+      {
+        path: 'dev/test-basic-openapi@b6e21206/getPost?postId=1'
+      },
+      {
+        path: 'dev/test-basic-openapi@b6e21206/get_post?postId=1'
+      },
+      {
+        path: 'dev/test-basic-openapi@b6e21206/getPost',
+        request: {
+          searchParams: {
+            postId: 1
+          }
+        }
+      },
+      {
+        path: 'dev/test-basic-openapi/getPost',
+        request: {
+          method: 'POST',
+          json: {
+            postId: 1
+          }
+        }
+      },
+      {
+        path: 'dev/test-basic-openapi@latest/getPost',
+        request: {
+          method: 'POST',
+          json: {
+            postId: 1
+          }
+        }
       }
-    }
+    ]
   },
   {
-    path: 'dev/test-basic-openapi@b6e21206/getPost?postId=1'
-  },
-  {
-    path: 'dev/test-basic-openapi@b6e21206/getPost',
-    request: {
-      searchParams: {
-        postId: 1
+    title: 'Basic OpenAPI getPost errors',
+    fixtures: [
+      {
+        path: 'dev/test-basic-openapi/getPost',
+
+        response: {
+          // TODO: need to instrument worker.ts to handle HTTP errors like `hono` middleware from `apps/api` does
+
+          status: 400
+        }
+      },
+      {
+        path: 'dev/test-basic-openapi@b6e21206/getPost?postId=foo',
+        response: {
+          status: 400
+        }
+      },
+      {
+        path: 'dev/test-basic-openapi@000000/getPost',
+        response: {
+          status: 404
+        }
+      },
+      {
+        path: 'dev/test-basic-openapi/getPost',
+        request: {
+          method: 'PUT',
+          json: {
+            postId: 1
+          }
+        },
+        response: {
+          status: 405
+        }
+      },
+      {
+        path: 'dev/test-basic-openapi@latest/get_kittens?postId=1',
+        response: {
+          status: 404
+        }
       }
-    }
-  },
-  {
-    path: 'dev/test-basic-openapi/getPost',
-    request: {
-      method: 'POST',
-      json: {
-        postId: 1
-      }
-    }
-  },
-  {
-    path: 'dev/test-basic-openapi@latest/getPost',
-    request: {
-      method: 'POST',
-      json: {
-        postId: 1
-      }
-    }
+    ]
   }
 ]

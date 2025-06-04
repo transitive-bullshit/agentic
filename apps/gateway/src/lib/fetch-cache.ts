@@ -1,7 +1,7 @@
-import type { Context } from './types'
+import type { GatewayHonoContext } from './types'
 
 export async function fetchCache(
-  ctx: Context,
+  ctx: GatewayHonoContext,
   {
     cacheKey,
     fetchResponse
@@ -10,11 +10,11 @@ export async function fetchCache(
     fetchResponse: () => Promise<Response>
   }
 ): Promise<Response> {
-  console.log('cacheKey', cacheKey?.url)
+  const cache = ctx.get('cache')
   let response: Response | undefined
 
   if (cacheKey) {
-    response = await ctx.cache.match(cacheKey)
+    response = await cache.match(cacheKey)
   }
 
   if (!response) {
@@ -24,11 +24,11 @@ export async function fetchCache(
     if (cacheKey) {
       if (response.headers.has('Cache-Control')) {
         // Note that cloudflare's `cache` should respect response headers.
-        // ctx.waitUntil(
-        //   ctx.cache.put(cacheKey, response.clone()).catch((err) => {
-        //     console.warn('cache put error', cacheKey, err)
-        //   })
-        // )
+        ctx.executionCtx.waitUntil(
+          cache.put(cacheKey, response.clone()).catch((err) => {
+            console.warn('cache put error', cacheKey, err)
+          })
+        )
       }
 
       response.headers.set('cf-cache-status', 'MISS')

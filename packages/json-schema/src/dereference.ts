@@ -66,12 +66,13 @@ export const ignoredKeyword: Record<string, boolean> = {
  * https://json-schema.org/draft/2019-09/json-schema-core.html#initial-base
  * https://tools.ietf.org/html/rfc3986#section-5.1
  */
-export const initialBaseURI: URL =
-  globalThis.self !== undefined &&
-  self.location &&
-  self.location.origin !== 'null'
-    ? new URL(self.location.origin + self.location.pathname + location.search)
-    : new URL('https://github.com/cfworker')
+export const initialBaseURI: URL = (globalThis as any)?.self?.location?.origin
+  ? new URL(
+      (globalThis as any).self.location.origin +
+        (globalThis as any).self.location.pathname +
+        (globalThis as any).self.location.search
+    )
+  : new URL('https://github.com/transitive-bullshit/agentic')
 
 export function dereference(
   schema: Schema | boolean,
@@ -157,13 +158,13 @@ export function dereference(
       if (schemaArrayKeyword[key]) {
         const length = subSchema.length
         for (let i = 0; i < length; i++) {
-          dereference(subSchema[i], lookup, baseURI, `${keyBase}/${i}`)
+          dereference(subSchema[i]!, lookup, baseURI, `${keyBase}/${i}`)
         }
       }
     } else if (schemaMapKeyword[key]) {
       for (const subKey in subSchema) {
         dereference(
-          subSchema[subKey],
+          subSchema[subKey]!,
           lookup,
           baseURI,
           `${keyBase}/${encodePointer(subKey)}`

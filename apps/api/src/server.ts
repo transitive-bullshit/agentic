@@ -1,10 +1,9 @@
 import '@/lib/external/sentry'
 
+import { type DefaultHonoEnv, errorHandler } from '@agentic/platform-hono'
 import { serve } from '@hono/node-server'
-import { sentry } from '@hono/sentry'
 import { OpenAPIHono } from '@hono/zod-openapi'
-import { compress } from 'hono/compress'
-import { cors } from 'hono/cors'
+import * as Sentry from '@sentry/node'
 
 import { apiV1 } from '@/api-v1'
 import { env } from '@/lib/env'
@@ -13,12 +12,12 @@ import * as middleware from '@/lib/middleware'
 import { authRouter } from './auth'
 import { initExitHooks } from './lib/exit-hooks'
 
-export const app = new OpenAPIHono()
+export const app = new OpenAPIHono<DefaultHonoEnv>()
 
-app.use(sentry())
-app.use(compress())
+app.use(middleware.sentry())
+app.use(middleware.compress())
 app.use(
-  cors({
+  middleware.cors({
     origin: '*',
     allowHeaders: ['Content-Type', 'Authorization'],
     allowMethods: ['POST', 'GET', 'OPTIONS'],
@@ -30,7 +29,7 @@ app.use(
 app.use(middleware.init)
 app.use(middleware.accessLogger)
 app.use(middleware.responseTime)
-app.use(middleware.errorHandler)
+app.onError(errorHandler)
 
 // Mount all auth routes which are handled by OpenAuth
 app.route('', authRouter)
@@ -44,7 +43,8 @@ app.doc31('/docs', {
 })
 
 const server = serve({
-  fetch: app.fetch,
+  fetch: (req, bindings) =>
+    app.fetch(req, { ...bindings, ...env, sentry: Sentry }),
   port: env.PORT
 })
 

@@ -1,7 +1,7 @@
 import { assert } from '@agentic/platform-core'
 import { parseToolIdentifier } from '@agentic/platform-validators'
 
-import type { AuthenticatedContext } from '@/lib/types'
+import type { AuthenticatedHonoContext } from '@/lib/types'
 import { db, eq, projectIdSchema, type RawProject, schema } from '@/db'
 
 /**
@@ -12,7 +12,7 @@ import { db, eq, projectIdSchema, type RawProject, schema } from '@/db'
  * Does not take care of ACLs.
  */
 export async function tryGetProjectByIdentifier(
-  ctx: AuthenticatedContext,
+  ctx: AuthenticatedHonoContext,
   {
     projectIdentifier,
     ...dbQueryOpts

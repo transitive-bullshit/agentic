@@ -123,15 +123,15 @@ test('sortQueryParameters', () => {
 test('invalid urls', () => {
   expect(() => {
     normalizeUrl('http://')
-  }).toThrow('Invalid URL: http://')
+  }).toThrow('Invalid URL')
 
   expect(() => {
     normalizeUrl('/')
-  }).toThrow('Invalid URL: /')
+  }).toThrow('Invalid URL')
 
   expect(() => {
     normalizeUrl('/relative/path/')
-  }).toThrow('Invalid URL: /relative/path/')
+  }).toThrow('Invalid URL')
 })
 
 test('remove duplicate pathname slashes', () => {

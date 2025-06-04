@@ -1,12 +1,13 @@
 const allowedMethods = 'GET, HEAD, POST, PUT, DELETE, TRACE, PATCH, OPTIONS'
 
+// TODO: Remove; currently unused in favor of hono/cors
 export function handleOptions(req: Request) {
   // Make sure the necessary headers are present for this to be a valid pre-
   // flight request
   if (
-    req.headers.get('Origin') !== null &&
-    req.headers.get('Access-Control-req-Method') !== null &&
-    req.headers.get('Access-Control-Request-Headers') !== null
+    req.headers.get('Origin') &&
+    req.headers.get('Access-Control-req-Method') &&
+    req.headers.get('Access-Control-Request-Headers')
   ) {
     // Handle CORS pre-flight request.
     return new Response(null, {

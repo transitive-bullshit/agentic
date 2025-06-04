@@ -1,7 +1,7 @@
 import { assert, parseZodSchema } from '@agentic/platform-core'
 import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 
-import type { AuthenticatedEnv } from '@/lib/types'
+import type { AuthenticatedHonoEnv } from '@/lib/types'
 import { db, eq, schema } from '@/db'
 import { aclAdmin } from '@/lib/acl-admin'
 import { setPublicCacheControl } from '@/lib/cache-control'
@@ -39,7 +39,7 @@ const route = createRoute({
 })
 
 export function registerV1AdminConsumersGetConsumerByToken(
-  app: OpenAPIHono<AuthenticatedEnv>
+  app: OpenAPIHono<AuthenticatedHonoEnv>
 ) {
   return app.openapi(route, async (c) => {
     const { token } = c.req.valid('param')

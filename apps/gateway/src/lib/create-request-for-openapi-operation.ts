@@ -5,19 +5,22 @@ import type {
 } from '@agentic/platform-types'
 import { assert } from '@agentic/platform-core'
 
+import type { GatewayHonoContext } from './types'
 import { cfValidateJsonSchemaObject } from './cf-validate-json-schema-object'
 
-export async function createRequestForOpenAPIOperation({
-  request,
-  tool,
-  operation,
-  deployment
-}: {
-  request: Request
-  tool: Tool
-  operation: OpenAPIToolOperation
-  deployment: AdminDeployment
-}): Promise<Request> {
+export async function createRequestForOpenAPIOperation(
+  ctx: GatewayHonoContext,
+  {
+    tool,
+    operation,
+    deployment
+  }: {
+    tool: Tool
+    operation: OpenAPIToolOperation
+    deployment: AdminDeployment
+  }
+): Promise<Request> {
+  const request = ctx.req.raw
   assert(
     deployment.originAdapter.type === 'openapi',
     500,

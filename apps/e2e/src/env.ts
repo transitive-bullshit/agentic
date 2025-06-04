@@ -7,7 +7,7 @@ import { z } from 'zod'
 // environment.
 
 export const envSchema = z.object({
-  NODE_ENV: z
+  ENVIRONMENT: z
     .enum(['development', 'test', 'production'])
     .default('development'),
 
@@ -26,5 +26,5 @@ export const env = parseZodSchema(envSchema, process.env, {
   error: 'Invalid environment variables'
 })
 
-export const isDev = env.NODE_ENV === 'development'
-export const isProd = env.NODE_ENV === 'production'
+export const isDev = env.ENVIRONMENT === 'development'
+export const isProd = env.ENVIRONMENT === 'production'

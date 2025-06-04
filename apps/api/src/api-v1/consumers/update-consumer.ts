@@ -1,7 +1,7 @@
 import { parseZodSchema } from '@agentic/platform-core'
 import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 
-import type { AuthenticatedEnv } from '@/lib/types'
+import type { AuthenticatedHonoEnv } from '@/lib/types'
 import { schema } from '@/db'
 import { upsertConsumer } from '@/lib/consumers/upsert-consumer'
 import {
@@ -50,7 +50,7 @@ const route = createRoute({
 })
 
 export function registerV1ConsumersUpdateConsumer(
-  app: OpenAPIHono<AuthenticatedEnv>
+  app: OpenAPIHono<AuthenticatedHonoEnv>
 ) {
   return app.openapi(route, async (c) => {
     const { consumerId } = c.req.valid('param')

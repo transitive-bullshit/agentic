@@ -1,17 +1,17 @@
-import * as Sentry from '@sentry/node'
+import { captureException, getActiveSpan, getRootSpan } from '@sentry/core'
 
 /** Get the ID of the trace from the root span of the current span. */
 export function getTraceId(): string | undefined {
   try {
-    const activeSpan = Sentry.getActiveSpan()
-    const rootSpan = activeSpan ? Sentry.getRootSpan(activeSpan) : undefined
+    const activeSpan = getActiveSpan()
+    const rootSpan = activeSpan ? getRootSpan(activeSpan) : undefined
     if (rootSpan) {
       const { traceId } = rootSpan.spanContext()
       return traceId
     }
     return undefined
   } catch (err) {
-    Sentry.captureException(err)
+    captureException(err)
     return undefined
   }
 }

@@ -1,9 +1,9 @@
 import { assert } from '@agentic/platform-core'
 
-import type { Context } from './types'
+import type { GatewayHonoContext } from './types'
 
 export async function enforceRateLimit(
-  ctx: Context,
+  ctx: GatewayHonoContext,
   {
     id,
     interval,

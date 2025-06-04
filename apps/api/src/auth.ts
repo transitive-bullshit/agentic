@@ -1,9 +1,9 @@
+import { issuer } from '@agentic/openauth'
+import { GithubProvider } from '@agentic/openauth/provider/github'
+import { PasswordProvider } from '@agentic/openauth/provider/password'
+import { PasswordUI } from '@agentic/openauth/ui/password'
 import { assert, pick } from '@agentic/platform-core'
 import { validators } from '@agentic/platform-validators'
-import { issuer } from '@openauthjs/openauth'
-import { GithubProvider } from '@openauthjs/openauth/provider/github'
-import { PasswordProvider } from '@openauthjs/openauth/provider/password'
-import { PasswordUI } from '@openauthjs/openauth/ui/password'
 
 import { type RawUser } from '@/db'
 import { subjects } from '@/lib/auth/subjects'

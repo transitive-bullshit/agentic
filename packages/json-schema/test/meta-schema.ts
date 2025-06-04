@@ -30,7 +30,7 @@ export async function loadMeta() {
   await Promise.all(
     ids.map(async (id) => {
       const response = await fetch(id)
-      const schema = await response.json()
+      const schema: any = await response.json()
       dereference(schema, lookup)
     })
   )

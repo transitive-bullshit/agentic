@@ -1,9 +1,11 @@
 import { AgenticApiClient } from '@agentic/platform-api-client'
 import defaultKy from 'ky'
 
-import type { Context } from './types'
+import type { GatewayHonoContext } from './types'
 
-export function createAgenticClient(ctx: Omit<Context, 'client'>) {
+export function createAgenticClient(ctx: GatewayHonoContext) {
+  const cache = ctx.get('cache')
+
   const client = new AgenticApiClient({
     apiBaseUrl: ctx.env.AGENTIC_API_BASE_URL,
     apiKey: ctx.env.AGENTIC_API_KEY,
@@ -18,7 +20,7 @@ export function createAgenticClient(ctx: Omit<Context, 'client'>) {
           async (request) => {
             // Check the cache first before making a request to Agentic's
             // backend API.
-            return ctx.cache.match(request)
+            return cache.match(request)
           }
         ],
 
@@ -27,8 +29,8 @@ export function createAgenticClient(ctx: Omit<Context, 'client'>) {
             if (response.headers.has('Cache-Control')) {
               // Asynchronously update the cache with the response from
               // Agentic's backend API.
-              ctx.waitUntil(
-                ctx.cache.put(request, response.clone()).catch((err) => {
+              ctx.executionCtx.waitUntil(
+                cache.put(request, response.clone()).catch((err) => {
                   console.warn('cache put error', request, err)
                 })
               )
