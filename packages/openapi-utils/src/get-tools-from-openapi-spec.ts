@@ -20,6 +20,7 @@ import { camelCase, mergeJsonSchemaObjects } from './utils'
 
 const jsonContentType = 'application/json'
 const multipartFormData = 'multipart/form-data'
+// const applicationFormUrlEncoded = 'application/x-www-form-urlencoded'
 
 const httpMethods = ['get', 'post', 'put', 'delete', 'patch', 'trace'] as const
 const paramSources = ['body', 'formData', 'header', 'path', 'query'] as const
@@ -41,20 +42,6 @@ export async function getToolsFromOpenAPISpec(
   const tools: Tool[] = []
   const toolToOperationMap: Record<string, OpenAPIToolOperation> = {}
 
-  const requestBodyJsonSchemaPaths = [
-    'requestBody',
-    'content',
-    jsonContentType,
-    'schema'
-  ]
-
-  const requestBodyFormDataJsonSchemaPaths = [
-    'requestBody',
-    'content',
-    multipartFormData,
-    'schema'
-  ]
-
   const operationResponsePaths = [
     ['responses', '200', 'content', jsonContentType, 'schema'],
     ['responses', '201', 'content', jsonContentType, 'schema']
@@ -62,8 +49,10 @@ export async function getToolsFromOpenAPISpec(
   ]
 
   const operationRequestPaths = [
-    requestBodyJsonSchemaPaths,
-    requestBodyFormDataJsonSchemaPaths
+    ['requestBody', 'content', jsonContentType, 'schema'],
+    ['requestBody', 'content', multipartFormData, 'schema']
+    // TODO: Support application/x-www-form-urlencoded bodies
+    // ['requestBody', 'content', applicationFormUrlEncoded, 'schema']
   ]
 
   const operationNames = new Set<string>()

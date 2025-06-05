@@ -50,9 +50,7 @@ export async function createRequestForOpenAPIOperation(
     assert(incomingRequestParamsRaw, 400, 'Invalid empty request body')
   }
 
-  // TODO: Validate incoming request params against the tool's input JSON schema
-  // TODO: we want to coerce data types to match the schema for booleans, dates, etc
-  // Currently, these will fail if given as body params, for instance, on the origin server.
+  // Validate incoming request params against the tool's input JSON schema.
   const incomingRequestParams = cfValidateJsonSchemaObject({
     schema: tool.inputSchema,
     data: incomingRequestParamsRaw,
@@ -95,18 +93,27 @@ export async function createRequestForOpenAPIOperation(
   if (bodyParams.length > 0) {
     body = JSON.stringify(
       Object.fromEntries(
-        bodyParams.map(([key]) => [key, incomingRequestParams[key]])
+        bodyParams
+          .map(([key]) => [key, incomingRequestParams[key]])
+          // Prune undefined values. We know these aren't required fields,
+          // because the incoming request params have already been validated
+          // against the tool's input schema.
+          .filter(([, value]) => value !== undefined)
       )
     )
 
     headers['content-type'] ??= 'application/json'
   } else if (formDataParams.length > 0) {
-    body = JSON.stringify(
-      Object.fromEntries(
-        formDataParams.map(([key]) => [key, incomingRequestParams[key]])
-      )
-    )
+    // TODO: Double-check FormData usage.
+    const formData = new FormData()
+    for (const [key] of formDataParams) {
+      const value = incomingRequestParams[key]
+      if (value !== undefined) {
+        formData.append(key, value)
+      }
+    }
 
+    body = formData.toString()
     headers['content-type'] ??= 'application/x-www-form-urlencoded'
   }
 
