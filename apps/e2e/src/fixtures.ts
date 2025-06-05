@@ -135,6 +135,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
   },
   {
     title: 'Bypass caching',
+    compareResponseBodies: true,
     fixtures: [
       {
         path: 'dev/test-basic-openapi@b6e21206/getPost',
@@ -195,6 +196,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
   },
   {
     title: 'Basic GET caching',
+    compareResponseBodies: true,
     sequential: true,
     fixtures: [
       {
