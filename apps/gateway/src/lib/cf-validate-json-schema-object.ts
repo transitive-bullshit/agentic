@@ -19,14 +19,16 @@ export function cfValidateJsonSchemaObject<
   schema,
   data,
   errorMessage,
-  coerce = true
+  coerce = true,
+  strictAdditionalProperties = true
 }: {
   schema: any
   data: Record<string, unknown>
   errorMessage?: string
   coerce?: boolean
+  strictAdditionalProperties?: boolean
 }): T {
-  // Special-case check for required fields to give better error messages
+  // Special-case check for required fields to give better error messages.
   if (schema.required && Array.isArray(schema.required)) {
     const missingRequiredFields: string[] = schema.required.filter(
       (field: string) => (data as T)[field] === undefined
@@ -40,11 +42,13 @@ export function cfValidateJsonSchemaObject<
     }
   }
 
-  // Special-case check for additional top-level properties, which is not
-  // currently handled by `@agentic/json-schema`.
-  // TODO: In the future, the underlying JSON schema validation should handle
-  // this for any sub-schema, not just the top-level one.
-  if (schema.properties && !schema.additionalProperties) {
+  // Special-case check for additional top-level fields to give better error
+  // messages.
+  if (
+    schema.properties &&
+    (schema.additionalProperties === false ||
+      (schema.additionalProperties === undefined && strictAdditionalProperties))
+  ) {
     const extraProperties = Object.keys(data).filter(
       (key) => !schema.properties[key]
     )
@@ -57,7 +61,11 @@ export function cfValidateJsonSchemaObject<
     }
   }
 
-  const validator = new Validator({ schema, coerce })
+  const validator = new Validator({
+    schema,
+    coerce,
+    strictAdditionalProperties
+  })
   const result = validator.validate(data)
   if (result.valid) {
     // console.log('validate', {

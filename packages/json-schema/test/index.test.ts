@@ -60,7 +60,7 @@ describe('json-schema', () => {
               }
               let result: ValidationResult | undefined
               try {
-                result = validate(data, schema, draft, lookup)
+                result = validate(data, schema, { draft, lookup })
               } catch {}
               if (result?.valid !== valid) {
                 failures[name] = failures[name] ?? {}

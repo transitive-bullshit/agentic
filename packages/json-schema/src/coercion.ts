@@ -84,6 +84,10 @@ export function coerceValue({
           }
           break
       }
+
+      if ($type === 'integer' && typeof instance === 'number') {
+        instance = Math.floor(instance)
+      }
       break
 
     case 'string':

@@ -12,15 +12,30 @@ export type Evaluated = Record<string | number, boolean>
 export function validate(
   instance: any,
   schema: Schema | boolean,
-  draft: SchemaDraft = '2019-09',
-  lookup: Record<string, Schema | boolean> = dereference(schema),
-  coerce = false,
-  shortCircuit = true,
-  recursiveAnchor: Schema | null = null,
-  instanceLocation = '#',
-  schemaLocation = '#',
-  evaluated: Evaluated = Object.create(null)
+  opts: {
+    draft?: SchemaDraft
+    lookup?: Record<string, Schema | boolean>
+    coerce?: boolean
+    shortCircuit?: boolean
+    recursiveAnchor?: Schema | null
+    instanceLocation?: string
+    schemaLocation?: string
+    evaluated?: Evaluated
+    strictAdditionalProperties?: boolean
+  } = {}
 ): ValidationResult {
+  const {
+    draft = '2019-09',
+    lookup = dereference(schema),
+    coerce = false,
+    shortCircuit = true,
+    instanceLocation = '#',
+    schemaLocation = '#',
+    evaluated = Object.create(null),
+    strictAdditionalProperties = false
+  } = opts
+  let { recursiveAnchor = null } = opts
+
   if (schema === true) {
     return { valid: true, errors: [], instance }
   }
@@ -114,14 +129,14 @@ export function validate(
     const result = validate(
       instance,
       recursiveAnchor === null ? schema : recursiveAnchor,
-      draft,
-      lookup,
-      coerce,
-      shortCircuit,
-      refSchema,
-      instanceLocation,
-      keywordLocation,
-      evaluated
+      {
+        ...opts,
+        lookup,
+        recursiveAnchor: refSchema,
+        instanceLocation,
+        schemaLocation: keywordLocation,
+        evaluated
+      }
     )
     if (result.valid) {
       instance = result.instance
@@ -150,18 +165,14 @@ export function validate(
       throw new Error(message)
     }
     const keywordLocation = `${schemaLocation}/$ref`
-    const result = validate(
-      instance,
-      refSchema,
-      draft,
+    const result = validate(instance, refSchema, {
+      ...opts,
       lookup,
-      coerce,
-      shortCircuit,
       recursiveAnchor,
       instanceLocation,
-      keywordLocation,
+      schemaLocation: keywordLocation,
       evaluated
-    )
+    })
     if (result.valid) {
       instance = result.instance
     } else {
@@ -292,18 +303,14 @@ export function validate(
   // TODO: type coercion
   if ($not !== undefined) {
     const keywordLocation = `${schemaLocation}/not`
-    const result = validate(
-      instance,
-      $not,
-      draft,
+    const result = validate(instance, $not, {
+      ...opts,
       lookup,
-      coerce,
-      shortCircuit,
       recursiveAnchor,
       instanceLocation,
-      keywordLocation /*,
-      evaluated*/
-    )
+      schemaLocation: keywordLocation
+      // evaluated
+    })
     if (result.valid) {
       errors.push({
         instanceLocation,
@@ -323,18 +330,14 @@ export function validate(
     let anyValid = false
     for (const [i, subSchema] of $anyOf.entries()) {
       const subEvaluated: Evaluated = Object.create(evaluated)
-      const result = validate(
-        instance,
-        subSchema,
-        draft,
+      const result = validate(instance, subSchema, {
+        ...opts,
         lookup,
-        coerce,
-        shortCircuit,
-        $recursiveAnchor === true ? recursiveAnchor : null,
+        recursiveAnchor: $recursiveAnchor === true ? recursiveAnchor : null,
         instanceLocation,
-        `${keywordLocation}/${i}`,
-        subEvaluated
-      )
+        schemaLocation: `${keywordLocation}/${i}`,
+        evaluated: subEvaluated
+      })
       errors.push(...result.errors)
       anyValid = anyValid || result.valid
       if (result.valid) {
@@ -360,18 +363,14 @@ export function validate(
     let allValid = true
     for (const [i, subSchema] of $allOf.entries()) {
       const subEvaluated: Evaluated = Object.create(evaluated)
-      const result = validate(
-        instance,
-        subSchema,
-        draft,
+      const result = validate(instance, subSchema, {
+        ...opts,
         lookup,
-        coerce,
-        shortCircuit,
-        $recursiveAnchor === true ? recursiveAnchor : null,
+        recursiveAnchor: $recursiveAnchor === true ? recursiveAnchor : null,
         instanceLocation,
-        `${keywordLocation}/${i}`,
-        subEvaluated
-      )
+        schemaLocation: `${keywordLocation}/${i}`,
+        evaluated: subEvaluated
+      })
       errors.push(...result.errors)
       allValid = allValid && result.valid
       if (result.valid) {
@@ -396,18 +395,14 @@ export function validate(
     const errorsLength = errors.length
     const matches = $oneOf.filter((subSchema, i) => {
       const subEvaluated: Evaluated = Object.create(evaluated)
-      const result = validate(
-        instance,
-        subSchema,
-        draft,
+      const result = validate(instance, subSchema, {
+        ...opts,
         lookup,
-        coerce,
-        shortCircuit,
-        $recursiveAnchor === true ? recursiveAnchor : null,
+        recursiveAnchor: $recursiveAnchor === true ? recursiveAnchor : null,
         instanceLocation,
-        `${keywordLocation}/${i}`,
-        subEvaluated
-      )
+        schemaLocation: `${keywordLocation}/${i}`,
+        evaluated: subEvaluated
+      })
       errors.push(...result.errors)
       if (result.valid) {
         subEvaluateds.push(subEvaluated)
@@ -432,32 +427,24 @@ export function validate(
 
   if ($if !== undefined) {
     const keywordLocation = `${schemaLocation}/if`
-    const conditionResult = validate(
-      instance,
-      $if,
-      draft,
+    const conditionResult = validate(instance, $if, {
+      ...opts,
       lookup,
-      coerce,
-      shortCircuit,
       recursiveAnchor,
       instanceLocation,
-      keywordLocation,
+      schemaLocation: keywordLocation,
       evaluated
-    ).valid
+    }).valid
     if (conditionResult) {
       if ($then !== undefined) {
-        const thenResult = validate(
-          instance,
-          $then,
-          draft,
+        const thenResult = validate(instance, $then, {
+          ...opts,
           lookup,
-          coerce,
-          shortCircuit,
           recursiveAnchor,
           instanceLocation,
-          `${schemaLocation}/then`,
+          schemaLocation: `${schemaLocation}/then`,
           evaluated
-        )
+        })
         if (thenResult.valid) {
           instance = thenResult.instance
         } else {
@@ -473,18 +460,14 @@ export function validate(
         }
       }
     } else if ($else !== undefined) {
-      const elseResult = validate(
-        instance,
-        $else,
-        draft,
+      const elseResult = validate(instance, $else, {
+        ...opts,
         lookup,
-        coerce,
-        shortCircuit,
         recursiveAnchor,
         instanceLocation,
-        `${schemaLocation}/else`,
+        schemaLocation: `${schemaLocation}/else`,
         evaluated
-      )
+      })
       if (elseResult.valid) {
         instance = elseResult.instance
       } else {
@@ -539,17 +522,13 @@ export function validate(
       const keywordLocation = `${schemaLocation}/propertyNames`
       for (const key in instance) {
         const subInstancePointer = `${instanceLocation}/${encodePointer(key)}`
-        const result = validate(
-          key,
-          $propertyNames,
-          draft,
+        const result = validate(key, $propertyNames, {
+          ...opts,
           lookup,
-          coerce,
-          shortCircuit,
           recursiveAnchor,
-          subInstancePointer,
-          keywordLocation
-        )
+          instanceLocation: subInstancePointer,
+          schemaLocation: keywordLocation
+        })
         if (!result.valid) {
           errors.push(
             {
@@ -587,18 +566,14 @@ export function validate(
       for (const key in $dependentSchemas) {
         const keywordLocation = `${schemaLocation}/dependentSchemas`
         if (key in instance) {
-          const result = validate(
-            instance,
-            $dependentSchemas[key]!,
-            draft,
+          const result = validate(instance, $dependentSchemas[key]!, {
+            ...opts,
             lookup,
-            coerce,
-            shortCircuit,
             recursiveAnchor,
             instanceLocation,
-            `${keywordLocation}/${encodePointer(key)}`,
+            schemaLocation: `${keywordLocation}/${encodePointer(key)}`,
             evaluated
-          )
+          })
           if (!result.valid) {
             errors.push(
               {
@@ -631,17 +606,13 @@ export function validate(
               }
             }
           } else {
-            const result = validate(
-              instance,
-              propsOrSchema,
-              draft,
+            const result = validate(instance, propsOrSchema, {
+              ...opts,
               lookup,
-              coerce,
-              shortCircuit,
               recursiveAnchor,
               instanceLocation,
-              `${keywordLocation}/${encodePointer(key)}`
-            )
+              schemaLocation: `${keywordLocation}/${encodePointer(key)}`
+            })
             if (!result.valid) {
               errors.push(
                 {
@@ -669,17 +640,13 @@ export function validate(
           continue
         }
         const subInstancePointer = `${instanceLocation}/${encodePointer(key)}`
-        const result = validate(
-          instance[key],
-          $properties[key]!,
-          draft,
+        const result = validate(instance[key], $properties[key]!, {
+          ...opts,
           lookup,
-          coerce,
-          shortCircuit,
           recursiveAnchor,
-          subInstancePointer,
-          `${keywordLocation}/${encodePointer(key)}`
-        )
+          instanceLocation: subInstancePointer,
+          schemaLocation: `${keywordLocation}/${encodePointer(key)}`
+        })
         if (result.valid) {
           evaluated[key] = thisEvaluated[key] = true
           instance[key] = result.instance
@@ -709,17 +676,13 @@ export function validate(
             continue
           }
           const subInstancePointer = `${instanceLocation}/${encodePointer(key)}`
-          const result = validate(
-            instance[key],
-            subSchema!,
-            draft,
+          const result = validate(instance[key], subSchema!, {
+            ...opts,
             lookup,
-            coerce,
-            shortCircuit,
             recursiveAnchor,
-            subInstancePointer,
-            `${keywordLocation}/${encodePointer(pattern)}`
-          )
+            instanceLocation: subInstancePointer,
+            schemaLocation: `${keywordLocation}/${encodePointer(pattern)}`
+          })
           if (result.valid) {
             evaluated[key] = thisEvaluated[key] = true
             instance[key] = result.instance
@@ -739,7 +702,10 @@ export function validate(
       }
     }
 
-    if (!stop && $additionalProperties !== undefined) {
+    if (
+      !stop &&
+      ($additionalProperties !== undefined || strictAdditionalProperties)
+    ) {
       const keywordLocation = `${schemaLocation}/additionalProperties`
       for (const key in instance) {
         if (thisEvaluated[key]) {
@@ -748,14 +714,14 @@ export function validate(
         const subInstancePointer = `${instanceLocation}/${encodePointer(key)}`
         const result = validate(
           instance[key],
-          $additionalProperties,
-          draft,
-          lookup,
-          coerce,
-          shortCircuit,
-          recursiveAnchor,
-          subInstancePointer,
-          keywordLocation
+          $additionalProperties ?? !strictAdditionalProperties,
+          {
+            ...opts,
+            lookup,
+            recursiveAnchor,
+            instanceLocation: subInstancePointer,
+            schemaLocation: keywordLocation
+          }
         )
         if (result.valid) {
           evaluated[key] = true
@@ -778,17 +744,13 @@ export function validate(
       for (const key in instance) {
         if (!evaluated[key]) {
           const subInstancePointer = `${instanceLocation}/${encodePointer(key)}`
-          const result = validate(
-            instance[key],
-            $unevaluatedProperties,
-            draft,
+          const result = validate(instance[key], $unevaluatedProperties, {
+            ...opts,
             lookup,
-            coerce,
-            shortCircuit,
             recursiveAnchor,
-            subInstancePointer,
-            keywordLocation
-          )
+            instanceLocation: subInstancePointer,
+            schemaLocation: keywordLocation
+          })
           if (result.valid) {
             evaluated[key] = true
             instance[key] = result.instance
@@ -833,17 +795,13 @@ export function validate(
       const keywordLocation = `${schemaLocation}/prefixItems`
       const length2 = Math.min($prefixItems.length, length)
       for (; i < length2; i++) {
-        const result = validate(
-          instance[i],
-          $prefixItems[i]!,
-          draft,
+        const result = validate(instance[i], $prefixItems[i]!, {
+          ...opts,
           lookup,
-          coerce,
-          shortCircuit,
           recursiveAnchor,
-          `${instanceLocation}/${i}`,
-          `${keywordLocation}/${i}`
-        )
+          instanceLocation: `${instanceLocation}/${i}`,
+          schemaLocation: `${keywordLocation}/${i}`
+        })
         evaluated[i] = true
         if (!result.valid) {
           stop = shortCircuit
@@ -866,17 +824,13 @@ export function validate(
       if (Array.isArray($items)) {
         const length2 = Math.min($items.length, length)
         for (; i < length2; i++) {
-          const result = validate(
-            instance[i],
-            $items[i]!,
-            draft,
+          const result = validate(instance[i], $items[i]!, {
+            ...opts,
             lookup,
-            coerce,
-            shortCircuit,
             recursiveAnchor,
-            `${instanceLocation}/${i}`,
-            `${keywordLocation}/${i}`
-          )
+            instanceLocation: `${instanceLocation}/${i}`,
+            schemaLocation: `${keywordLocation}/${i}`
+          })
           evaluated[i] = true
           if (result.valid) {
             instance[i] = result.instance
@@ -896,17 +850,13 @@ export function validate(
         }
       } else {
         for (; i < length; i++) {
-          const result = validate(
-            instance[i],
-            $items,
-            draft,
+          const result = validate(instance[i], $items, {
+            ...opts,
             lookup,
-            coerce,
-            shortCircuit,
             recursiveAnchor,
-            `${instanceLocation}/${i}`,
-            keywordLocation
-          )
+            instanceLocation: `${instanceLocation}/${i}`,
+            schemaLocation: keywordLocation
+          })
           evaluated[i] = true
           if (result.valid) {
             instance[i] = result.instance
@@ -929,17 +879,13 @@ export function validate(
       if (!stop && $additionalItems !== undefined) {
         const keywordLocation = `${schemaLocation}/additionalItems`
         for (; i < length; i++) {
-          const result = validate(
-            instance[i],
-            $additionalItems,
-            draft,
+          const result = validate(instance[i], $additionalItems, {
+            ...opts,
             lookup,
-            coerce,
-            shortCircuit,
             recursiveAnchor,
-            `${instanceLocation}/${i}`,
-            keywordLocation
-          )
+            instanceLocation: `${instanceLocation}/${i}`,
+            schemaLocation: keywordLocation
+          })
           evaluated[i] = true
           if (result.valid) {
             instance[i] = result.instance
@@ -979,17 +925,13 @@ export function validate(
         const errorsLength = errors.length
         let contained = 0
         for (let j = 0; j < length; j++) {
-          const result = validate(
-            instance[j],
-            $contains,
-            draft,
+          const result = validate(instance[j], $contains, {
+            ...opts,
             lookup,
-            coerce,
-            shortCircuit,
             recursiveAnchor,
-            `${instanceLocation}/${j}`,
-            keywordLocation
-          )
+            instanceLocation: `${instanceLocation}/${j}`,
+            schemaLocation: keywordLocation
+          })
           if (result.valid) {
             evaluated[j] = true
             contained++
@@ -1037,17 +979,13 @@ export function validate(
         if (evaluated[i]) {
           continue
         }
-        const result = validate(
-          instance[i],
-          $unevaluatedItems,
-          draft,
+        const result = validate(instance[i], $unevaluatedItems, {
+          ...opts,
           lookup,
-          coerce,
-          shortCircuit,
           recursiveAnchor,
-          `${instanceLocation}/${i}`,
-          keywordLocation
-        )
+          instanceLocation: `${instanceLocation}/${i}`,
+          schemaLocation: keywordLocation
+        })
         evaluated[i] = true
         if (result.valid) {
           instance[i] = result.instance
