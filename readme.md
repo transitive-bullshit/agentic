@@ -35,6 +35,7 @@
   - MCP origin server support
   - add support for custom headers on responses
   - how to handle binary bodies and responses?
+- add requestId to all JSON error responses
 
 ## TODO Post-MVP
 

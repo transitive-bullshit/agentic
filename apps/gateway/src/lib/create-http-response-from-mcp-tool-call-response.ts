@@ -5,7 +5,7 @@ import type { GatewayHonoContext, McpToolCallResponse } from './types'
 import { cfValidateJsonSchemaObject } from './cf-validate-json-schema-object'
 
 export async function createHttpResponseFromMcpToolCallResponse(
-  ctx: GatewayHonoContext,
+  _ctx: GatewayHonoContext,
   {
     tool,
     deployment,
@@ -20,6 +20,11 @@ export async function createHttpResponseFromMcpToolCallResponse(
     deployment.originAdapter.type === 'mcp',
     500,
     `Internal logic error for origin adapter type "${deployment.originAdapter.type}"`
+  )
+  assert(
+    !toolCallResponse.isError,
+    502,
+    `MCP tool "${tool.name}" returned an error.`
   )
 
   if (tool.outputSchema) {
