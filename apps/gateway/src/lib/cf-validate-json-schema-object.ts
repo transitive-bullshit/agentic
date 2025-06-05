@@ -40,6 +40,10 @@ export function cfValidateJsonSchemaObject<
     }
   }
 
+  // Special-case check for additional top-level properties, which is not
+  // currently handled by `@agentic/json-schema`.
+  // TODO: In the future, the underlying JSON schema validation should handle
+  // this for any sub-schema, not just the top-level one.
   if (schema.properties && !schema.additionalProperties) {
     const extraProperties = Object.keys(data).filter(
       (key) => !schema.properties[key]
@@ -56,6 +60,12 @@ export function cfValidateJsonSchemaObject<
   const validator = new Validator({ schema, coerce })
   const result = validator.validate(data)
   if (result.valid) {
+    // console.log('validate', {
+    //   schema,
+    //   data,
+    //   result: result.instance
+    // })
+
     // Return the (possibly) coerced data
     return result.instance as T
   }

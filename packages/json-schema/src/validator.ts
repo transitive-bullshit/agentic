@@ -29,7 +29,7 @@ export class Validator {
 
   public validate(instance: any): ValidationResult {
     return validate(
-      instance,
+      structuredClone(instance),
       this.schema,
       this.draft,
       this.lookup,

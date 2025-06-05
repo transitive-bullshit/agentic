@@ -123,7 +123,9 @@ export function validate(
       keywordLocation,
       evaluated
     )
-    if (!result.valid) {
+    if (result.valid) {
+      instance = result.instance
+    } else {
       errors.push(
         {
           instanceLocation,
@@ -160,7 +162,9 @@ export function validate(
       keywordLocation,
       evaluated
     )
-    if (!result.valid) {
+    if (result.valid) {
+      instance = result.instance
+    } else {
       errors.push(
         {
           instanceLocation,
@@ -285,6 +289,7 @@ export function validate(
     }
   }
 
+  // TODO: type coercion
   if ($not !== undefined) {
     const keywordLocation = `${schemaLocation}/not`
     const result = validate(
@@ -311,6 +316,7 @@ export function validate(
 
   const subEvaluateds: Array<Evaluated> = []
 
+  // TODO: type coercion
   if ($anyOf !== undefined) {
     const keywordLocation = `${schemaLocation}/anyOf`
     const errorsLength = errors.length
@@ -347,6 +353,7 @@ export function validate(
     }
   }
 
+  // TODO: type coercion
   if ($allOf !== undefined) {
     const keywordLocation = `${schemaLocation}/allOf`
     const errorsLength = errors.length
@@ -383,6 +390,7 @@ export function validate(
     }
   }
 
+  // TODO: type coercion
   if ($oneOf !== undefined) {
     const keywordLocation = `${schemaLocation}/oneOf`
     const errorsLength = errors.length
@@ -450,7 +458,9 @@ export function validate(
           `${schemaLocation}/then`,
           evaluated
         )
-        if (!thenResult.valid) {
+        if (thenResult.valid) {
+          instance = thenResult.instance
+        } else {
           errors.push(
             {
               instanceLocation,
@@ -475,7 +485,9 @@ export function validate(
         `${schemaLocation}/else`,
         evaluated
       )
-      if (!elseResult.valid) {
+      if (elseResult.valid) {
+        instance = elseResult.instance
+      } else {
         errors.push(
           {
             instanceLocation,
@@ -670,6 +682,7 @@ export function validate(
         )
         if (result.valid) {
           evaluated[key] = thisEvaluated[key] = true
+          instance[key] = result.instance
         } else {
           stop = shortCircuit
           errors.push(
@@ -709,6 +722,7 @@ export function validate(
           )
           if (result.valid) {
             evaluated[key] = thisEvaluated[key] = true
+            instance[key] = result.instance
           } else {
             stop = shortCircuit
             errors.push(
@@ -745,6 +759,7 @@ export function validate(
         )
         if (result.valid) {
           evaluated[key] = true
+          instance[key] = result.instance
         } else {
           stop = shortCircuit
           errors.push(
@@ -776,6 +791,7 @@ export function validate(
           )
           if (result.valid) {
             evaluated[key] = true
+            instance[key] = result.instance
           } else {
             errors.push(
               {
@@ -862,7 +878,9 @@ export function validate(
             `${keywordLocation}/${i}`
           )
           evaluated[i] = true
-          if (!result.valid) {
+          if (result.valid) {
+            instance[i] = result.instance
+          } else {
             stop = shortCircuit
             errors.push(
               {
@@ -890,7 +908,9 @@ export function validate(
             keywordLocation
           )
           evaluated[i] = true
-          if (!result.valid) {
+          if (result.valid) {
+            instance[i] = result.instance
+          } else {
             stop = shortCircuit
             errors.push(
               {
@@ -921,7 +941,9 @@ export function validate(
             keywordLocation
           )
           evaluated[i] = true
-          if (!result.valid) {
+          if (result.valid) {
+            instance[i] = result.instance
+          } else if (!result.valid) {
             stop = shortCircuit
             errors.push(
               {
@@ -1027,7 +1049,9 @@ export function validate(
           keywordLocation
         )
         evaluated[i] = true
-        if (!result.valid) {
+        if (result.valid) {
+          instance[i] = result.instance
+        } else {
           errors.push(
             {
               instanceLocation,

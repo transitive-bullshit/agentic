@@ -51,7 +51,28 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
       {
         path: 'dev/test-basic-openapi/getPost',
         request: {
+          method: 'POST',
+          json: {
+            postId: 1
+          }
+        }
+      },
+      {
+        path: 'dev/test-basic-openapi@latest/getPost',
+        request: {
+          method: 'POST',
+          json: {
+            postId: 1
+          }
+        }
+      },
+      {
+        path: 'dev/test-basic-openapi/getPost',
+        request: {
           searchParams: {
+            // all of these GET requests implicitly test type coercion since
+            // `postId` as a query param will be a string, but the tool expects
+            // an integer.
             postId: 1
           }
         }
@@ -66,24 +87,6 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
         path: 'dev/test-basic-openapi@b6e21206/getPost',
         request: {
           searchParams: {
-            postId: 1
-          }
-        }
-      },
-      {
-        path: 'dev/test-basic-openapi/getPost',
-        request: {
-          method: 'POST',
-          json: {
-            postId: 1
-          }
-        }
-      },
-      {
-        path: 'dev/test-basic-openapi@latest/getPost',
-        request: {
-          method: 'POST',
-          json: {
             postId: 1
           }
         }
