@@ -426,7 +426,7 @@ importers:
         version: link:../../packages/validators
       '@hono/zod-validator':
         specifier: 'catalog:'
-        version: 0.7.0(hono@4.7.11)(zod@3.25.36)
+        version: 0.7.0(hono@4.7.11)(zod@3.25.51)
       '@modelcontextprotocol/sdk':
         specifier: 'catalog:'
         version: 1.12.1
@@ -584,6 +584,13 @@ importers:
       '@agentic/platform':
         specifier: workspace:*
         version: link:../platform
+    devDependencies:
+      '@modelcontextprotocol/sdk':
+        specifier: 'catalog:'
+        version: 1.12.1
+      zod:
+        specifier: 'catalog:'
+        version: 3.25.51
 
   packages/hono:
     dependencies:
@@ -5438,9 +5445,6 @@ packages:
   zod@3.22.3:
     resolution: {integrity: sha512-EjIevzuJRiRPbVH4mGc8nApb/lVLKVpmUhAaR5R5doKGfAnGJ6Gr3CViAVjP+4FWSxCsybeWQdcgCtbX+7oZug==}
 
-  zod@3.25.36:
-    resolution: {integrity: sha512-eRFS3i8T0IrpGdL8HQyqFAugGOn7jOjyGgGdtv5NY4Wkhi7lJDk732bNZ609YMIGFbLoaj6J69O1Mura23gfIw==}
-
   zod@3.25.51:
     resolution: {integrity: sha512-TQSnBldh+XSGL+opiSIq0575wvDPqu09AqWe1F7JhUMKY+M91/aGlK4MhpVNO7MgYfHcVCB1ffwAUTJzllKJqg==}
 
@@ -5859,11 +5863,6 @@ snapshots:
       hono: 4.7.11
       zod: 3.25.51
 
-  '@hono/zod-validator@0.7.0(hono@4.7.11)(zod@3.25.36)':
-    dependencies:
-      hono: 4.7.11
-      zod: 3.25.36
-
   '@hono/zod-validator@0.7.0(hono@4.7.11)(zod@3.25.51)':
     dependencies:
       hono: 4.7.11
@@ -6080,8 +6079,8 @@ snapshots:
       express-rate-limit: 7.5.0(express@5.1.0)
       pkce-challenge: 5.0.0
       raw-body: 3.0.0
-      zod: 3.25.36
-      zod-to-json-schema: 3.24.5(zod@3.25.36)
+      zod: 3.25.51
+      zod-to-json-schema: 3.24.5(zod@3.25.51)
     transitivePeerDependencies:
       - supports-color
 
@@ -10227,10 +10226,6 @@ snapshots:
       mustache: 4.2.0
       stacktracey: 2.1.8
 
-  zod-to-json-schema@3.24.5(zod@3.25.36):
-    dependencies:
-      zod: 3.25.36
-
   zod-to-json-schema@3.24.5(zod@3.25.51):
     dependencies:
       zod: 3.25.51
@@ -10240,7 +10235,5 @@ snapshots:
       zod: 3.25.51
 
   zod@3.22.3: {}
-
-  zod@3.25.36: {}
 
   zod@3.25.51: {}

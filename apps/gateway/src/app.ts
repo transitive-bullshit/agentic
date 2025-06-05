@@ -117,9 +117,10 @@ app.all(async (ctx) => {
   const originTimespan = now - originStartTime
   res.headers.set('x-origin-response-time', `${originTimespan}ms`)
 
-  // Reset server to agentic because Cloudflare likes to override things
+  // Reset server to Agentic because Cloudflare likes to override things
   res.headers.set('server', 'agentic')
 
+  // Remove extra Cloudflare headers
   res.headers.delete('x-powered-by')
   res.headers.delete('via')
   res.headers.delete('nel')
@@ -135,7 +136,7 @@ app.all(async (ctx) => {
 
   return res
 
-  // TODO: move this `finally` blockto a middleware handler
+  // TODO: move this `finally` block to a middleware handler
   // const now = Date.now()
   // Report usage.
   // Note that we are not awaiting the results of this on purpose so we can

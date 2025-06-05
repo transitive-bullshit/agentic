@@ -1,4 +1,4 @@
-import type { OpenAPIHono } from '@hono/zod-openapi'
+import type { HonoApp } from './types'
 
 export const openapiErrorResponses = {
   400: {
@@ -44,14 +44,17 @@ const openapiErrorContent = {
       properties: {
         error: {
           type: 'string' as const
+        },
+        requestId: {
+          type: 'string' as const
         }
       },
-      required: ['error' as const]
+      required: ['error', 'requestId']
     }
   }
 }
 
-export function registerOpenAPIErrorResponses(app: OpenAPIHono) {
+export function registerOpenAPIErrorResponses(app: HonoApp) {
   app.openAPIRegistry.registerComponent('responses', '400', {
     description: 'Bad Request',
     content: openapiErrorContent

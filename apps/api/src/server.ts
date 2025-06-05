@@ -39,7 +39,7 @@ app.route('/v1', apiV1)
 
 app.doc31('/docs', {
   openapi: '3.1.0',
-  info: { title: 'Agentic', version: '1.0.0' }
+  info: { title: 'Agentic', version: '0.1.0' }
 })
 
 const server = serve({

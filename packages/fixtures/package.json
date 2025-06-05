@@ -26,5 +26,9 @@
   },
   "dependencies": {
     "@agentic/platform": "workspace:*"
+  },
+  "devDependencies": {
+    "@modelcontextprotocol/sdk": "catalog:",
+    "zod": "catalog:"
   }
 }

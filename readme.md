@@ -36,6 +36,7 @@
   - add support for custom headers on responses
   - how to handle binary bodies and responses?
 - add requestId to all JSON error responses
+- add support for `immutable` in `toolConfigs`
 
 ## TODO Post-MVP
 
