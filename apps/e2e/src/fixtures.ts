@@ -224,5 +224,35 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
         }
       }
     ]
+  },
+  {
+    title: 'Basic POST caching',
+    compareResponseBodies: true,
+    sequential: true,
+    fixtures: [
+      {
+        path: 'dev/test-basic-openapi@b6e21206/get_post',
+        request: {
+          method: 'POST',
+          json: {
+            postId: 13
+          }
+        }
+      },
+      {
+        path: 'dev/test-basic-openapi@b6e21206/get_post',
+        request: {
+          method: 'POST',
+          json: {
+            postId: 13
+          }
+        },
+        response: {
+          headers: {
+            'cf-cache-status': 'HIT'
+          }
+        }
+      }
+    ]
   }
 ]

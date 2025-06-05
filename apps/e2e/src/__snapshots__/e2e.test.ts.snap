@@ -108,6 +108,30 @@ nostrum rerum est autem sunt rem eveniet architecto",
 }
 `;
 
+exports[`Basic POST caching > 4.0: POST dev/test-basic-openapi@b6e21206/get_post 1`] = `
+{
+  "body": "aut dicta possimus sint mollitia voluptas commodi quo doloremque
+iste corrupti reiciendis voluptatem eius rerum
+sit cumque quod eligendi laborum minima
+perferendis recusandae assumenda consectetur porro architecto ipsum ipsam",
+  "id": 13,
+  "title": "dolorum ut in voluptas mollitia et saepe quo animi",
+  "userId": 2,
+}
+`;
+
+exports[`Basic POST caching > 4.1: POST dev/test-basic-openapi@b6e21206/get_post 1`] = `
+{
+  "body": "aut dicta possimus sint mollitia voluptas commodi quo doloremque
+iste corrupti reiciendis voluptatem eius rerum
+sit cumque quod eligendi laborum minima
+perferendis recusandae assumenda consectetur porro architecto ipsum ipsam",
+  "id": 13,
+  "title": "dolorum ut in voluptas mollitia et saepe quo animi",
+  "userId": 2,
+}
+`;
+
 exports[`Bypass caching > 2.0: GET dev/test-basic-openapi@b6e21206/getPost 1`] = `
 {
   "body": "consectetur animi nesciunt iure dolore
