@@ -36,7 +36,7 @@ et est aut quod aut provident voluptas autem voluptas",
 }
 `;
 
-exports[`Basic OpenAPI getPost(1) > 0.0: GET dev/test-basic-openapi/getPost 1`] = `
+exports[`Basic OpenAPI getPost success > 0.0: GET dev/test-basic-openapi/getPost 1`] = `
 {
   "body": "quia et suscipit
 suscipit recusandae consequuntur expedita et cum
@@ -48,7 +48,7 @@ nostrum rerum est autem sunt rem eveniet architecto",
 }
 `;
 
-exports[`Basic OpenAPI getPost(1) > 0.1: GET dev/test-basic-openapi@b6e21206/getPost?postId=1 1`] = `
+exports[`Basic OpenAPI getPost success > 0.1: GET dev/test-basic-openapi@b6e21206/getPost?postId=1 1`] = `
 {
   "body": "quia et suscipit
 suscipit recusandae consequuntur expedita et cum
@@ -60,7 +60,7 @@ nostrum rerum est autem sunt rem eveniet architecto",
 }
 `;
 
-exports[`Basic OpenAPI getPost(1) > 0.2: GET dev/test-basic-openapi@b6e21206/get_post?postId=1 1`] = `
+exports[`Basic OpenAPI getPost success > 0.2: GET dev/test-basic-openapi@b6e21206/get_post?postId=1 1`] = `
 {
   "body": "quia et suscipit
 suscipit recusandae consequuntur expedita et cum
@@ -72,7 +72,7 @@ nostrum rerum est autem sunt rem eveniet architecto",
 }
 `;
 
-exports[`Basic OpenAPI getPost(1) > 0.3: GET dev/test-basic-openapi@b6e21206/getPost 1`] = `
+exports[`Basic OpenAPI getPost success > 0.3: GET dev/test-basic-openapi@b6e21206/getPost 1`] = `
 {
   "body": "quia et suscipit
 suscipit recusandae consequuntur expedita et cum
@@ -84,7 +84,7 @@ nostrum rerum est autem sunt rem eveniet architecto",
 }
 `;
 
-exports[`Basic OpenAPI getPost(1) > 0.4: POST dev/test-basic-openapi/getPost 1`] = `
+exports[`Basic OpenAPI getPost success > 0.4: POST dev/test-basic-openapi/getPost 1`] = `
 {
   "body": "quia et suscipit
 suscipit recusandae consequuntur expedita et cum
@@ -96,7 +96,7 @@ nostrum rerum est autem sunt rem eveniet architecto",
 }
 `;
 
-exports[`Basic OpenAPI getPost(1) > 0.5: POST dev/test-basic-openapi@latest/getPost 1`] = `
+exports[`Basic OpenAPI getPost success > 0.5: POST dev/test-basic-openapi@latest/getPost 1`] = `
 {
   "body": "quia et suscipit
 suscipit recusandae consequuntur expedita et cum

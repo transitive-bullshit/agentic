@@ -27,10 +27,11 @@ export async function createRequestForOpenAPIOperation(
     `Unexpected origin adapter type: "${deployment.originAdapter.type}"`
   )
 
-  let incomingRequestParams: Record<string, any> = {}
+  let incomingRequestParamsRaw: Record<string, any> = {}
   if (request.method === 'GET') {
-    // TODO: coerce data types to match input schema since all values will be strings
-    incomingRequestParams = Object.fromEntries(
+    // Params will be coerced to match their expected types via
+    // `cfValidateJsonSchemaObject` since all values will be strings.
+    incomingRequestParamsRaw = Object.fromEntries(
       new URL(request.url).searchParams.entries()
     )
 
@@ -40,18 +41,21 @@ export async function createRequestForOpenAPIOperation(
     //   searchParams: new URL(request.url).searchParams
     // })
   } else if (request.method === 'POST') {
-    incomingRequestParams = (await request.clone().json()) as Record<
+    incomingRequestParamsRaw = (await request.clone().json()) as Record<
       string,
       any
     >
+
+    // TODO: Support empty params for POST requests
+    assert(incomingRequestParamsRaw, 400, 'Invalid empty request body')
   }
 
   // TODO: Validate incoming request params against the tool's input JSON schema
   // TODO: we want to coerce data types to match the schema for booleans, dates, etc
   // Currently, these will fail if given as body params, for instance, on the origin server.
-  cfValidateJsonSchemaObject({
+  const incomingRequestParams = cfValidateJsonSchemaObject({
     schema: tool.inputSchema,
-    data: incomingRequestParams,
+    data: incomingRequestParamsRaw,
     errorMessage: `Invalid request parameters for tool "${tool.name}"`
   })
 

@@ -45,7 +45,7 @@ export type E2ETestFixtureSuite = {
 
 export const fixtureSuites: E2ETestFixtureSuite[] = [
   {
-    title: 'Basic OpenAPI getPost(1)',
+    title: 'Basic OpenAPI getPost success',
     compareResponseBodies: true,
     fixtures: [
       {
@@ -130,7 +130,75 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
         response: {
           status: 404
         }
+      },
+      {
+        path: 'dev/test-basic-openapi/getPost',
+        request: {
+          searchParams: {
+            // invalid `postId` field type
+            postId: 'not-a-number'
+          }
+        },
+        response: {
+          status: 400
+        }
+      },
+      {
+        path: 'dev/test-basic-openapi/getPost',
+        request: {
+          method: 'POST',
+          json: {
+            // missing required `postId` field
+          }
+        },
+        response: {
+          status: 400
+        }
+      },
+      {
+        path: 'dev/test-basic-openapi/getPost',
+        request: {
+          method: 'POST',
+          json: {
+            // invalid `postId` field type
+            postId: 'foo'
+          }
+        },
+        response: {
+          status: 400
+        }
+      },
+      {
+        path: 'dev/test-basic-openapi/getPost',
+        request: {
+          method: 'POST',
+          json: {
+            // invalid `postId` field type
+            postId: 'foo'
+          }
+        },
+        response: {
+          status: 400
+        }
       }
+      // TODO: This should throw an error, but `cfValidateJsonSchemaObject`
+      // currently does not validate additional properties.
+      // TODO: also add a similar test for extra searchParams.
+      // {
+      //   path: 'dev/test-basic-openapi/getPost',
+      //   only: true,
+      //   request: {
+      //     method: 'POST',
+      //     json: {
+      //       postId: 1,
+      //       // additional properties should throw an error
+      //       foo: 'bar'
+      //     }
+      //   },
+      //   response: {
+      //     status: 400
+      //   }
+      // }
     ]
   },
   {
@@ -138,6 +206,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
     compareResponseBodies: true,
     fixtures: [
       {
+        // ensure we bypass the cache for requests with `pragma: no-cache`
         path: 'dev/test-basic-openapi@b6e21206/getPost',
         request: {
           headers: {
@@ -154,6 +223,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
         }
       },
       {
+        // ensure we bypass the cache for requests with `pragma: no-cache`
         path: 'dev/test-basic-openapi@b6e21206/getPost?postId=9',
         request: {
           headers: {
@@ -167,6 +237,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
         }
       },
       {
+        // ensure we bypass the cache for requests with `cache-control: no-store`
         path: 'dev/test-basic-openapi@b6e21206/get_post?postId=9',
         request: {
           headers: {
@@ -200,6 +271,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
     sequential: true,
     fixtures: [
       {
+        // first request to ensure the cache is populated
         path: 'dev/test-basic-openapi@b6e21206/getPost',
         request: {
           searchParams: {
@@ -208,6 +280,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
         }
       },
       {
+        // second request should hit the cache
         path: 'dev/test-basic-openapi@b6e21206/getPost?postId=9',
         response: {
           headers: {
@@ -216,6 +289,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
         }
       },
       {
+        // normalized request should also hit the cache
         path: 'dev/test-basic-openapi@b6e21206/get_post?postId=9',
         response: {
           headers: {
@@ -231,6 +305,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
     sequential: true,
     fixtures: [
       {
+        // first request to ensure the cache is populated
         path: 'dev/test-basic-openapi@b6e21206/get_post',
         request: {
           method: 'POST',
@@ -240,6 +315,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
         }
       },
       {
+        // second request should hit the cache
         path: 'dev/test-basic-openapi@b6e21206/get_post',
         request: {
           method: 'POST',

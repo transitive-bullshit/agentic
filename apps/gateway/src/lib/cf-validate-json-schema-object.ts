@@ -14,7 +14,7 @@ import plur from 'plur'
  * `@agentic/platform-openapi-utils`.
  */
 export function cfValidateJsonSchemaObject<
-  T extends Record<string, unknown> = Record<string, unknown>
+  T extends Record<string, any> = Record<string, any>
 >({
   schema,
   data,
@@ -27,7 +27,7 @@ export function cfValidateJsonSchemaObject<
   coerce?: boolean
 }): T {
   // Special-case check for required fields to give better error messages
-  if (Array.isArray(schema.required)) {
+  if (schema.required && Array.isArray(schema.required)) {
     const missingRequiredFields: string[] = schema.required.filter(
       (field: string) => (data as T)[field] === undefined
     )
@@ -43,7 +43,8 @@ export function cfValidateJsonSchemaObject<
   const validator = new Validator({ schema, coerce })
   const result = validator.validate(data)
   if (result.valid) {
-    return data as T
+    // Return the (possibly) coerced data
+    return result.instance as T
   }
 
   const finalErrorMessage = `${
