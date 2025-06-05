@@ -33,9 +33,17 @@ export class HttpError extends BaseError {
   }
 }
 
-export class ZodValidationError extends BaseError {
-  constructor({ prefix, cause }: { prefix?: string; cause: unknown }) {
+export class ZodValidationError extends HttpError {
+  constructor({
+    statusCode,
+    prefix,
+    cause
+  }: {
+    statusCode?: ContentfulStatusCode
+    prefix?: string
+    cause: unknown
+  }) {
     const error = fromError(cause, { prefix })
-    super({ message: error.message, cause })
+    super({ message: error.message, cause, statusCode })
   }
 }

@@ -1,5 +1,5 @@
-import type { Deployment } from '@agentic/platform-api-client'
-import { parseFaasIdentifier } from '@agentic/platform-validators'
+import type { Deployment } from '@agentic/platform-types'
+import { parseToolIdentifier } from '@agentic/platform-validators'
 import { Command } from 'commander'
 import { oraPromise } from 'ora'
 
@@ -24,11 +24,7 @@ export function registerListDeploymentsCommand({
       let label = 'Fetching all projects and deployments'
 
       if (projectIdentifier) {
-        const auth = AuthStore.getAuth()
-        const parsedFaas = parseFaasIdentifier(projectIdentifier, {
-          // TODO: use team slug if available
-          namespace: auth.user.username
-        })
+        const parsedFaas = parseToolIdentifier(projectIdentifier)
 
         if (!parsedFaas) {
           throw new Error(`Invalid project identifier "${projectIdentifier}"`)

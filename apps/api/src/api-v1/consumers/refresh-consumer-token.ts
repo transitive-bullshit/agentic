@@ -1,7 +1,7 @@
 import { assert, parseZodSchema } from '@agentic/platform-core'
 import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 
-import type { AuthenticatedEnv } from '@/lib/types'
+import type { AuthenticatedHonoEnv } from '@/lib/types'
 import { db, eq, schema } from '@/db'
 import { acl } from '@/lib/acl'
 import { createConsumerToken } from '@/lib/create-consumer-token'
@@ -38,7 +38,7 @@ const route = createRoute({
 })
 
 export function registerV1ConsumersRefreshConsumerToken(
-  app: OpenAPIHono<AuthenticatedEnv>
+  app: OpenAPIHono<AuthenticatedHonoEnv>
 ) {
   return app.openapi(route, async (c) => {
     const { consumerId } = c.req.valid('param')
@@ -53,7 +53,7 @@ export function registerV1ConsumersRefreshConsumerToken(
     ;[consumer] = await db
       .update(schema.consumers)
       .set({
-        token: createConsumerToken()
+        token: await createConsumerToken()
       })
       .where(eq(schema.consumers.id, consumer.id))
       .returning()

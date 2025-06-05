@@ -1,4 +1,4 @@
-import { defineConfig } from '@agentic/platform-schemas'
+import { defineConfig } from '@agentic/platform'
 
 export default defineConfig({
   name: 'test-pricing-custom-inconsistent',
@@ -9,7 +9,7 @@ export default defineConfig({
       slug: 'free',
       lineItems: [
         {
-          slug: 'custom',
+          slug: 'custom-test',
           usageType: 'licensed',
           amount: 0
         }
@@ -20,7 +20,7 @@ export default defineConfig({
       slug: 'starter',
       lineItems: [
         {
-          slug: 'custom',
+          slug: 'custom-test',
           usageType: 'metered',
           billingScheme: 'per_unit',
           unitAmount: 100

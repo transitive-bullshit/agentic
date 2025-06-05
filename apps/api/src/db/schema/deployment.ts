@@ -1,8 +1,11 @@
 import {
   agenticProjectConfigSchema,
-  type DeploymentOriginAdapter,
-  type PricingPlanList
-} from '@agentic/platform-schemas'
+  type OriginAdapter,
+  type PricingPlanList,
+  resolvedAgenticProjectConfigSchema,
+  type Tool,
+  type ToolConfig
+} from '@agentic/platform-types'
 import { validators } from '@agentic/platform-validators'
 import { relations } from '@fisch0920/drizzle-orm'
 import {
@@ -73,22 +76,17 @@ export const deployments = pgTable(
         onDelete: 'cascade'
       }),
 
-    // TODO: Tool definitions
-    // tools: jsonb().$type<Tool[]>().default([]),
+    // Tool definitions exposed by the origin server
+    tools: jsonb().$type<Tool[]>().notNull(),
 
-    // TODO: metadata config (logo, keywords, examples, etc)
-    // TODO: webhooks
-    // TODO: third-party auth provider config
-    // NOTE: will need consumer.authProviders as well as user.authProviders for
-    // this because custom oauth credentials that are deployment-specific. will
-    // prolly also need to hash the individual AuthProviders in
-    // deployment.authProviders to compare across deployments.
+    // Tool configs customize the behavior of tools for different pricing plans
+    toolConfigs: jsonb().$type<ToolConfig[]>().default([]).notNull(),
 
     // Origin API URL
     originUrl: text().notNull(),
 
-    // Origin API adapter config (openapi, mcp, hosted externally or internally, etc)
-    originAdapter: jsonb().$type<DeploymentOriginAdapter>().notNull(),
+    // Origin API adapter config (openapi, mcp, raw, hosting considerations, etc)
+    originAdapter: jsonb().$type<OriginAdapter>().notNull(),
 
     // Array<PricingPlan>
     pricingPlans: jsonb().$type<PricingPlanList>().notNull(),
@@ -96,7 +94,14 @@ export const deployments = pgTable(
     // Which pricing intervals are supported for subscriptions to this project
     pricingIntervals: pricingIntervalEnum().array().default(['month']).notNull()
 
-    // coupons: jsonb().$type<Coupon[]>().default([]).notNull()
+    // TODO: metadata config (logo, keywords, examples, etc)
+    // TODO: webhooks
+    // TODO: coupons
+    // TODO: third-party auth provider config
+    // NOTE: will need consumer.authProviders as well as user.authProviders for
+    // this because custom oauth credentials that are deployment-specific. will
+    // prolly also need to hash the individual AuthProviders in
+    // deployment.authProviders to compare across deployments.
   },
   (table) => [
     uniqueIndex('deployment_identifier_idx').on(table.identifier),
@@ -145,14 +150,16 @@ export const deploymentSelectSchema = createSelectSchema(deployments, {
       message: 'Invalid deployment hash'
     }),
 
-  version: agenticProjectConfigSchema.shape.version,
-  description: agenticProjectConfigSchema.shape.description,
-  readme: agenticProjectConfigSchema.shape.readme,
-  iconUrl: agenticProjectConfigSchema.shape.iconUrl,
-  sourceUrl: agenticProjectConfigSchema.shape.sourceUrl,
-  originAdapter: agenticProjectConfigSchema.shape.originAdapter,
-  pricingPlans: agenticProjectConfigSchema.shape.pricingPlans,
-  pricingIntervals: agenticProjectConfigSchema.shape.pricingIntervals
+  version: resolvedAgenticProjectConfigSchema.shape.version,
+  description: resolvedAgenticProjectConfigSchema.shape.description,
+  readme: resolvedAgenticProjectConfigSchema.shape.readme,
+  iconUrl: resolvedAgenticProjectConfigSchema.shape.iconUrl,
+  sourceUrl: resolvedAgenticProjectConfigSchema.shape.sourceUrl,
+  originAdapter: resolvedAgenticProjectConfigSchema.shape.originAdapter,
+  pricingPlans: resolvedAgenticProjectConfigSchema.shape.pricingPlans,
+  pricingIntervals: resolvedAgenticProjectConfigSchema.shape.pricingIntervals,
+  tools: resolvedAgenticProjectConfigSchema.shape.tools,
+  toolConfigs: resolvedAgenticProjectConfigSchema.shape.toolConfigs
 })
   .omit({
     originUrl: true
@@ -183,6 +190,13 @@ export const deploymentSelectSchema = createSelectSchema(deployments, {
 Deployments are private to a developer or team until they are published, at which point they are accessible to any customers with access to the parent Project.`
   )
   .openapi('Deployment')
+
+export const deploymentAdminSelectSchema = deploymentSelectSchema
+  .extend({
+    originUrl: resolvedAgenticProjectConfigSchema.shape.originUrl,
+    _secret: z.string().nonempty()
+  })
+  .openapi('AdminDeployment')
 
 export const deploymentInsertSchema = agenticProjectConfigSchema.strict()
 

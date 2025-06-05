@@ -1,4 +1,4 @@
-import { subjectSchemas } from '@agentic/platform-schemas'
-import { createSubjects } from '@openauthjs/openauth/subject'
+import { createSubjects } from '@agentic/openauth/subject'
+import { authSubjectSchemas } from '@agentic/platform-types'
 
-export const subjects = createSubjects(subjectSchemas)
+export const subjects = createSubjects(authSubjectSchemas)

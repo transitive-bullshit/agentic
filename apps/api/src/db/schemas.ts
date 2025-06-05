@@ -1,5 +1,5 @@
 import { assert } from '@agentic/platform-core'
-import { validators } from '@agentic/platform-validators'
+import { parseToolIdentifier, validators } from '@agentic/platform-validators'
 import { z } from '@hono/zod-openapi'
 
 import type { consumersRelations } from './schema/consumer'
@@ -45,17 +45,27 @@ export const logEntryIdSchema = getIdSchemaForModelType('logEntry')
 
 export const projectIdentifierSchema = z
   .string()
-  .refine((id) => validators.projectIdentifier(id), {
-    message: 'Invalid project identifier'
-  })
+  .refine(
+    (id) =>
+      validators.projectIdentifier(id) || projectIdSchema.safeParse(id).success,
+    {
+      message: 'Invalid project identifier'
+    }
+  )
   .describe('Public project identifier (e.g. "namespace/project-name")')
   .openapi('ProjectIdentifier')
 
 export const deploymentIdentifierSchema = z
   .string()
-  .refine((id) => validators.deploymentIdentifier(id), {
-    message: 'Invalid deployment identifier'
-  })
+  .refine(
+    (id) =>
+      !!parseToolIdentifier(id) ||
+      validators.deploymentIdentifier(id) ||
+      deploymentIdSchema.safeParse(id).success,
+    {
+      message: 'Invalid deployment identifier'
+    }
+  )
   .describe(
     'Public deployment identifier (e.g. "namespace/project-name@{hash|version|latest}")'
   )

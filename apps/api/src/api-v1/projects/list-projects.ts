@@ -1,7 +1,7 @@
 import { parseZodSchema } from '@agentic/platform-core'
 import { createRoute, type OpenAPIHono, z } from '@hono/zod-openapi'
 
-import type { AuthenticatedEnv } from '@/lib/types'
+import type { AuthenticatedHonoEnv } from '@/lib/types'
 import { db, eq, schema } from '@/db'
 import { ensureAuthUser } from '@/lib/ensure-auth-user'
 import {
@@ -35,7 +35,7 @@ const route = createRoute({
 })
 
 export function registerV1ProjectsListProjects(
-  app: OpenAPIHono<AuthenticatedEnv>
+  app: OpenAPIHono<AuthenticatedHonoEnv>
 ) {
   return app.openapi(route, async (c) => {
     const {

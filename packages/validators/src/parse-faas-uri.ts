@@ -1,55 +1,52 @@
 // TODO: investigate this
 /* eslint-disable security/detect-unsafe-regex */
 
-import type { ParsedFaasIdentifier } from './types'
+import type { ParsedToolIdentifier } from './types'
 
-// namespace/project-name@deploymentHash/servicePath
-// project@deploymentHash/servicePath
-const projectDeploymentServiceRe =
+// namespace/project-name@deploymentHash/toolPath
+const projectDeploymentToolRe =
   /^([a-zA-Z0-9-]{1,64}\/[a-z0-9-]{2,64})@([a-z0-9]{8})(\/[a-zA-Z0-9\-._~%!$&'()*+,;=:/]*)?$/
 
-// namespace/project-name@version/servicePath
-// project@version/servicePath
-const projectVersionServiceRe =
+// namespace/project-name@version/toolPath
+const projectVersionToolRe =
   /^([a-zA-Z0-9-]{1,64}\/[a-z0-9-]{2,64})@([^/?@]+)(\/[a-zA-Z0-9\-._~%!$&'()*+,;=:/]*)?$/
 
-// namespace/project-name/servicePath
-// project/servicePath (latest version)
-const projectServiceRe =
+// namespace/project-name/toolPath (latest version)
+const projectToolRe =
   /^([a-zA-Z0-9-]{1,64}\/[a-z0-9-]{2,64})(\/[a-zA-Z0-9\-._~%!$&'()*+,;=:/]*)?$/
 
-export function parseFaasUri(uri: string): ParsedFaasIdentifier | undefined {
-  const pdsMatch = uri.match(projectDeploymentServiceRe)
+export function parseToolUri(uri: string): ParsedToolIdentifier | undefined {
+  const pdtMatch = uri.match(projectDeploymentToolRe)
 
-  if (pdsMatch) {
-    const projectIdentifier = pdsMatch[1]!
-    const deploymentHash = pdsMatch[2]!
-    const servicePath = pdsMatch[3] || '/'
+  if (pdtMatch) {
+    const projectIdentifier = pdtMatch[1]!
+    const deploymentHash = pdtMatch[2]!
+    const toolPath = pdtMatch[3] || '/'
 
     return {
       projectIdentifier,
       deploymentHash,
-      servicePath,
+      toolPath,
       deploymentIdentifier: `${projectIdentifier}@${deploymentHash}`
     }
   }
 
-  const pvsMatch = uri.match(projectVersionServiceRe)
+  const pvtMatch = uri.match(projectVersionToolRe)
 
-  if (pvsMatch) {
+  if (pvtMatch) {
     return {
-      projectIdentifier: pvsMatch[1]!,
-      version: pvsMatch[2]!,
-      servicePath: pvsMatch[3] || '/'
+      projectIdentifier: pvtMatch[1]!,
+      version: pvtMatch[2]!,
+      toolPath: pvtMatch[3] || '/'
     }
   }
 
-  const psMatch = uri.match(projectServiceRe)
+  const ptMatch = uri.match(projectToolRe)
 
-  if (psMatch) {
+  if (ptMatch) {
     return {
-      projectIdentifier: psMatch[1]!,
-      servicePath: psMatch[2] || '/',
+      projectIdentifier: ptMatch[1]!,
+      toolPath: ptMatch[2] || '/',
       version: 'latest'
     }
   }

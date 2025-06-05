@@ -2,7 +2,7 @@ import {
   joinKey,
   splitKey,
   type StorageAdapter
-} from '@openauthjs/openauth/storage/storage'
+} from '@agentic/openauth/storage/storage'
 
 import { and, db, eq, gt, isNull, like, or, schema } from '@/db'
 

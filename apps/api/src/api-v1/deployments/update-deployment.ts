@@ -1,7 +1,7 @@
 import { assert, parseZodSchema } from '@agentic/platform-core'
 import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 
-import type { AuthenticatedEnv } from '@/lib/types'
+import type { AuthenticatedHonoEnv } from '@/lib/types'
 import { db, eq, schema } from '@/db'
 import { acl } from '@/lib/acl'
 import { getDeploymentById } from '@/lib/deployments/get-deployment-by-id'
@@ -46,7 +46,7 @@ const route = createRoute({
 })
 
 export function registerV1DeploymentsUpdateDeployment(
-  app: OpenAPIHono<AuthenticatedEnv>
+  app: OpenAPIHono<AuthenticatedHonoEnv>
 ) {
   return app.openapi(route, async (c) => {
     const { deploymentId } = c.req.valid('param')

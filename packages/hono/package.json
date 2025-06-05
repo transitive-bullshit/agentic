@@ -1,0 +1,39 @@
+{
+  "name": "@agentic/platform-hono",
+  "version": "0.1.0",
+  "description": "Shared Hono utilities for the Agentic platform.",
+  "author": "Travis Fischer <travis@transitivebullsh.it>",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/transitive-bullshit/agentic-platform.git",
+    "directory": "packages/hono"
+  },
+  "type": "module",
+  "source": "./src/index.ts",
+  "types": "./src/index.ts",
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "run-s test:*",
+    "test:lint": "eslint .",
+    "test:typecheck": "tsc --noEmit",
+    "test:unit": "vitest run"
+  },
+  "dependencies": {
+    "@agentic/platform-core": "workspace:*",
+    "@hono/sentry": "catalog:",
+    "@sentry/core": "catalog:",
+    "dotenv": "catalog:",
+    "eventid": "catalog:",
+    "hono": "catalog:",
+    "ky": "catalog:",
+    "type-fest": "catalog:"
+  },
+  "devDependencies": {
+    "@sentry/cloudflare": "catalog:",
+    "@sentry/node": "catalog:"
+  }
+}

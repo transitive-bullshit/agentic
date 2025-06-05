@@ -1,24 +1,34 @@
+import type {
+  AdminDeployment,
+  Consumer,
+  Deployment,
+  openapi,
+  Project,
+  Team,
+  TeamMember,
+  User
+} from '@agentic/platform-types'
 import type { Simplify } from 'type-fest'
-import { assert, sanitizeSearchParams } from '@agentic/platform-core'
 import {
   type Client as AuthClient,
   createClient as createAuthClient
-} from '@openauthjs/openauth/client'
+} from '@agentic/openauth/client'
+import { assert, sanitizeSearchParams } from '@agentic/platform-core'
 import defaultKy, { type KyInstance } from 'ky'
 
-import type { operations } from './openapi'
 import type {
   AuthorizeResult,
   AuthTokens,
   AuthUser,
   OnUpdateAuthSessionFunction
 } from './types'
-import { subjects } from './subjects'
+import { authSubjects } from './auth-subjects'
 
 export class AgenticApiClient {
   static readonly DEFAULT_API_BASE_URL = 'https://api.agentic.so'
 
   public readonly apiBaseUrl: string
+  public readonly apiKey?: string
   public readonly ky: KyInstance
   public readonly onUpdateAuth?: OnUpdateAuthSessionFunction
 
@@ -27,16 +37,19 @@ export class AgenticApiClient {
 
   constructor({
     apiBaseUrl = AgenticApiClient.DEFAULT_API_BASE_URL,
+    apiKey,
     ky = defaultKy,
     onUpdateAuth
   }: {
     apiBaseUrl?: string
+    apiKey?: string
     ky?: KyInstance
     onUpdateAuth?: OnUpdateAuthSessionFunction
   }) {
     assert(apiBaseUrl, 'AgenticApiClient missing required "apiBaseUrl"')
 
     this.apiBaseUrl = apiBaseUrl
+    this.apiKey = apiKey
     this.onUpdateAuth = onUpdateAuth
 
     this._authClient = createAuthClient({
@@ -46,16 +59,28 @@ export class AgenticApiClient {
 
     this.ky = ky.extend({
       prefixUrl: apiBaseUrl,
+
+      // Set a longer timeout on localhost to account for backend debugging / breakpoints.
+      timeout: apiBaseUrl.startsWith('http://localhost') ? 120_000 : undefined,
+
+      headers: apiKey
+        ? {
+            Authorization: `Bearer ${apiKey}`
+          }
+        : undefined,
+
       hooks: {
         beforeRequest: [
           async (request) => {
-            // Always verify freshness of auth tokens before making a request
-            await this.verifyAuthAndRefreshIfNecessary()
-            assert(this._authTokens, 'Not authenticated')
-            request.headers.set(
-              'Authorization',
-              `Bearer ${this._authTokens.access}`
-            )
+            if (!this.apiKey && this._authTokens) {
+              // Always verify freshness of auth tokens before making a request
+              await this.verifyAuthAndRefreshIfNecessary()
+              assert(this._authTokens, 'Not authenticated')
+              request.headers.set(
+                'Authorization',
+                `Bearer ${this._authTokens.access}`
+              )
+            }
           }
         ]
       }
@@ -70,22 +95,22 @@ export class AgenticApiClient {
     return this._authTokens
   }
 
-  async setRefreshAuthToken(refreshToken: string): Promise<void> {
-    const result = await this._authClient.refresh(refreshToken)
-    if (result.err) {
-      throw result.err
-    }
+  async setAuth(tokens: AuthTokens): Promise<AuthUser> {
+    this._ensureNoApiKey()
 
-    this._authTokens = result.tokens
+    this._authTokens = tokens
+    return this.verifyAuthAndRefreshIfNecessary()
   }
 
   async verifyAuthAndRefreshIfNecessary(): Promise<AuthUser> {
+    this._ensureNoApiKey()
+
     if (!this._authTokens) {
       throw new Error('This method requires authentication.')
     }
 
     const verified = await this._authClient.verify(
-      subjects,
+      authSubjects,
       this._authTokens.access,
       {
         refresh: this._authTokens.refresh
@@ -117,6 +142,7 @@ export class AgenticApiClient {
     redirectUri: string
     verifier?: string
   }): Promise<AuthUser> {
+    this._ensureNoApiKey()
     const result = await this._authClient.exchange(code, redirectUri, verifier)
 
     if (result.err) {
@@ -134,6 +160,8 @@ export class AgenticApiClient {
     redirectUri: string
     provider: 'github' | 'password'
   }): Promise<AuthorizeResult> {
+    this._ensureNoApiKey()
+
     return this._authClient.authorize(redirectUri, 'code', {
       provider
     })
@@ -144,7 +172,14 @@ export class AgenticApiClient {
     this.onUpdateAuth?.()
   }
 
-  async getMe(): Promise<OperationResponse<'getUser'>> {
+  protected _ensureNoApiKey() {
+    assert(
+      !this.apiKey,
+      'AgenticApiClient was initialized with an API key. This method is only supported with wnon-API-key-based authentication.'
+    )
+  }
+
+  async getMe(): Promise<User> {
     const user = await this.verifyAuthAndRefreshIfNecessary()
 
     return this.ky.get(`v1/users/${user.id}`).json()
@@ -153,45 +188,43 @@ export class AgenticApiClient {
   async getUser({
     userId,
     ...searchParams
-  }: OperationParameters<'getUser'>): Promise<OperationResponse<'getUser'>> {
+  }: OperationParameters<'getUser'>): Promise<User> {
     return this.ky.get(`v1/users/${userId}`, { searchParams }).json()
   }
 
   async updateUser(
     user: OperationBody<'updateUser'>,
     { userId, ...searchParams }: OperationParameters<'updateUser'>
-  ): Promise<OperationResponse<'updateUser'>> {
+  ): Promise<User> {
     return this.ky
       .post(`v1/users/${userId}`, { json: user, searchParams })
       .json()
   }
 
-  async listTeams({
-    ...searchParams
-  }: OperationParameters<'listTeams'>): Promise<
-    OperationResponse<'listTeams'>
-  > {
+  async listTeams(
+    searchParams: OperationParameters<'listTeams'>
+  ): Promise<Array<Team>> {
     return this.ky.get('v1/teams', { searchParams }).json()
   }
 
   async createTeam(
     team: OperationBody<'createTeam'>,
-    { ...searchParams }: OperationParameters<'createTeam'> = {}
-  ): Promise<OperationResponse<'createTeam'>> {
+    searchParams: OperationParameters<'createTeam'> = {}
+  ): Promise<Team> {
     return this.ky.post('v1/teams', { json: team, searchParams }).json()
   }
 
   async getTeam({
     teamId,
     ...searchParams
-  }: OperationParameters<'getTeam'>): Promise<OperationResponse<'getTeam'>> {
+  }: OperationParameters<'getTeam'>): Promise<Team> {
     return this.ky.get(`v1/teams/${teamId}`, { searchParams }).json()
   }
 
   async updateTeam(
     team: OperationBody<'updateTeam'>,
     { teamId, ...searchParams }: OperationParameters<'updateTeam'>
-  ): Promise<OperationResponse<'updateTeam'>> {
+  ): Promise<Team> {
     return this.ky
       .post(`v1/teams/${teamId}`, { json: team, searchParams })
       .json()
@@ -200,16 +233,14 @@ export class AgenticApiClient {
   async deleteTeam({
     teamId,
     ...searchParams
-  }: OperationParameters<'deleteTeam'>): Promise<
-    OperationResponse<'deleteTeam'>
-  > {
+  }: OperationParameters<'deleteTeam'>): Promise<Team> {
     return this.ky.delete(`v1/teams/${teamId}`, { searchParams }).json()
   }
 
   async createTeamMember(
     member: OperationBody<'createTeamMember'>,
     { teamId, ...searchParams }: OperationParameters<'createTeamMember'>
-  ): Promise<OperationResponse<'createTeamMember'>> {
+  ): Promise<TeamMember> {
     return this.ky
       .post(`v1/teams/${teamId}/members`, { json: member, searchParams })
       .json()
@@ -218,7 +249,7 @@ export class AgenticApiClient {
   async updateTeamMember(
     member: OperationBody<'updateTeamMember'>,
     { teamId, userId, ...searchParams }: OperationParameters<'updateTeamMember'>
-  ): Promise<OperationResponse<'updateTeamMember'>> {
+  ): Promise<TeamMember> {
     return this.ky
       .post(`v1/teams/${teamId}/members/${userId}`, {
         json: member,
@@ -231,19 +262,21 @@ export class AgenticApiClient {
     teamId,
     userId,
     ...searchParams
-  }: OperationParameters<'deleteTeamMember'>): Promise<
-    OperationResponse<'deleteTeamMember'>
-  > {
+  }: OperationParameters<'deleteTeamMember'>): Promise<TeamMember> {
     return this.ky
       .delete(`v1/teams/${teamId}/members/${userId}`, { searchParams })
       .json()
   }
 
-  async listProjects({
-    ...searchParams
-  }: OperationParameters<'listProjects'>): Promise<
-    OperationResponse<'listProjects'>
-  > {
+  async listProjects<
+    TPopulate extends NonNullable<
+      OperationParameters<'listProjects'>['populate']
+    >[number]
+  >(
+    searchParams: OperationParameters<'listProjects'> & {
+      populate?: TPopulate[]
+    }
+  ): Promise<Array<PopulateProject<TPopulate>>> {
     return this.ky
       .get('v1/projects', { searchParams: sanitizeSearchParams(searchParams) })
       .json()
@@ -251,17 +284,21 @@ export class AgenticApiClient {
 
   async createProject(
     project: OperationBody<'createProject'>,
-    { ...searchParams }: OperationParameters<'createProject'> = {}
-  ): Promise<OperationResponse<'createProject'>> {
+    searchParams: OperationParameters<'createProject'> = {}
+  ): Promise<Project> {
     return this.ky.post('v1/projects', { json: project, searchParams }).json()
   }
 
-  async getProject({
+  async getProject<
+    TPopulate extends NonNullable<
+      OperationParameters<'getProject'>['populate']
+    >[number]
+  >({
     projectId,
     ...searchParams
-  }: OperationParameters<'getProject'>): Promise<
-    OperationResponse<'getProject'>
-  > {
+  }: OperationParameters<'getProject'> & {
+    populate?: TPopulate[]
+  }): Promise<PopulateProject<TPopulate>> {
     return this.ky
       .get(`v1/projects/${projectId}`, {
         searchParams: sanitizeSearchParams(searchParams)
@@ -269,9 +306,15 @@ export class AgenticApiClient {
       .json()
   }
 
-  async getProjectByIdentifier(
-    searchParams: OperationParameters<'getProjectByIdentifier'>
-  ): Promise<OperationResponse<'getProjectByIdentifier'>> {
+  async getProjectByIdentifier<
+    TPopulate extends NonNullable<
+      OperationParameters<'getProjectByIdentifier'>['populate']
+    >[number]
+  >(
+    searchParams: OperationParameters<'getProjectByIdentifier'> & {
+      populate?: TPopulate[]
+    }
+  ): Promise<PopulateProject<TPopulate>> {
     return this.ky
       .get(`v1/projects/by-identifier`, {
         searchParams: sanitizeSearchParams(searchParams)
@@ -282,18 +325,22 @@ export class AgenticApiClient {
   async updateProject(
     project: OperationBody<'updateProject'>,
     { projectId, ...searchParams }: OperationParameters<'updateProject'>
-  ): Promise<OperationResponse<'updateProject'>> {
+  ): Promise<Project> {
     return this.ky
       .post(`v1/projects/${projectId}`, { json: project, searchParams })
       .json()
   }
 
-  async getConsumer({
+  async getConsumer<
+    TPopulate extends NonNullable<
+      OperationParameters<'getConsumer'>['populate']
+    >[number]
+  >({
     consumerId,
     ...searchParams
-  }: OperationParameters<'getConsumer'>): Promise<
-    OperationResponse<'getConsumer'>
-  > {
+  }: OperationParameters<'getConsumer'> & {
+    populate?: TPopulate[]
+  }): Promise<PopulateConsumer<TPopulate>> {
     return this.ky
       .get(`v1/consumers/${consumerId}`, {
         searchParams: sanitizeSearchParams(searchParams)
@@ -304,7 +351,7 @@ export class AgenticApiClient {
   async updateConsumer(
     consumer: OperationBody<'updateConsumer'>,
     { consumerId, ...searchParams }: OperationParameters<'updateConsumer'>
-  ): Promise<OperationResponse<'updateConsumer'>> {
+  ): Promise<Consumer> {
     return this.ky
       .post(`v1/consumers/${consumerId}`, { json: consumer, searchParams })
       .json()
@@ -312,28 +359,30 @@ export class AgenticApiClient {
 
   async createConsumer(
     consumer: OperationBody<'createConsumer'>,
-    { ...searchParams }: OperationParameters<'createConsumer'> = {}
-  ): Promise<OperationResponse<'createConsumer'>> {
+    searchParams: OperationParameters<'createConsumer'> = {}
+  ): Promise<Consumer> {
     return this.ky.post('v1/consumers', { json: consumer, searchParams }).json()
   }
 
   async refreshConsumerToken({
     consumerId,
     ...searchParams
-  }: OperationParameters<'refreshConsumerToken'>): Promise<
-    OperationResponse<'refreshConsumerToken'>
-  > {
+  }: OperationParameters<'refreshConsumerToken'>): Promise<Consumer> {
     return this.ky
       .post(`v1/consumers/${consumerId}/refresh-token`, { searchParams })
       .json()
   }
 
-  async listConsumers({
+  async listConsumers<
+    TPopulate extends NonNullable<
+      OperationParameters<'listConsumers'>['populate']
+    >[number]
+  >({
     projectId,
     ...searchParams
-  }: OperationParameters<'listConsumers'>): Promise<
-    OperationResponse<'listConsumers'>
-  > {
+  }: OperationParameters<'listConsumers'> & {
+    populate?: TPopulate[]
+  }): Promise<Array<PopulateConsumer<TPopulate>>> {
     return this.ky
       .get(`v1/projects/${projectId}/consumers`, {
         searchParams: sanitizeSearchParams(searchParams)
@@ -341,12 +390,16 @@ export class AgenticApiClient {
       .json()
   }
 
-  async getDeployment({
+  async getDeployment<
+    TPopulate extends NonNullable<
+      OperationParameters<'getDeployment'>['populate']
+    >[number]
+  >({
     deploymentId,
     ...searchParams
-  }: OperationParameters<'getDeployment'>): Promise<
-    OperationResponse<'getDeployment'>
-  > {
+  }: OperationParameters<'getDeployment'> & {
+    populate?: TPopulate[]
+  }): Promise<PopulateDeployment<TPopulate>> {
     return this.ky
       .get(`v1/deployments/${deploymentId}`, {
         searchParams: sanitizeSearchParams(searchParams)
@@ -354,9 +407,15 @@ export class AgenticApiClient {
       .json()
   }
 
-  async getDeploymentByIdentifier(
-    searchParams: OperationParameters<'getDeploymentByIdentifier'>
-  ): Promise<OperationResponse<'getDeploymentByIdentifier'>> {
+  async getDeploymentByIdentifier<
+    TPopulate extends NonNullable<
+      OperationParameters<'getDeploymentByIdentifier'>['populate']
+    >[number]
+  >(
+    searchParams: OperationParameters<'getDeploymentByIdentifier'> & {
+      populate?: TPopulate[]
+    }
+  ): Promise<PopulateDeployment<TPopulate>> {
     return this.ky
       .get(`v1/deployments/by-identifier`, {
         searchParams: sanitizeSearchParams(searchParams)
@@ -367,7 +426,7 @@ export class AgenticApiClient {
   async updateDeployment(
     deployment: OperationBody<'updateDeployment'>,
     { deploymentId, ...searchParams }: OperationParameters<'updateDeployment'>
-  ): Promise<OperationResponse<'updateDeployment'>> {
+  ): Promise<Deployment> {
     return this.ky
       .post(`v1/deployments/${deploymentId}`, {
         json: deployment,
@@ -376,9 +435,15 @@ export class AgenticApiClient {
       .json()
   }
 
-  async listDeployments(
-    searchParams: OperationParameters<'listDeployments'>
-  ): Promise<OperationResponse<'listDeployments'>> {
+  async listDeployments<
+    TPopulate extends NonNullable<
+      OperationParameters<'listDeployments'>['populate']
+    >[number]
+  >(
+    searchParams: OperationParameters<'listDeployments'> & {
+      populate?: TPopulate[]
+    }
+  ): Promise<Array<PopulateDeployment<TPopulate>>> {
     return this.ky
       .get('v1/deployments', {
         searchParams: sanitizeSearchParams(searchParams)
@@ -388,8 +453,8 @@ export class AgenticApiClient {
 
   async createDeployment(
     deployment: OperationBody<'createDeployment'>,
-    { ...searchParams }: OperationParameters<'createDeployment'> = {}
-  ): Promise<OperationResponse<'createDeployment'>> {
+    searchParams: OperationParameters<'createDeployment'> = {}
+  ): Promise<Deployment> {
     return this.ky
       .post('v1/deployments', { json: deployment, searchParams })
       .json()
@@ -398,7 +463,7 @@ export class AgenticApiClient {
   async publishDeployment(
     deployment: OperationBody<'publishDeployment'>,
     { deploymentId, ...searchParams }: OperationParameters<'publishDeployment'>
-  ): Promise<OperationResponse<'publishDeployment'>> {
+  ): Promise<Deployment> {
     return this.ky
       .post(`v1/deployments/${deploymentId}/publish`, {
         json: deployment,
@@ -407,44 +472,133 @@ export class AgenticApiClient {
       .json()
   }
 
-  async adminGetConsumerByToken({
+  async adminGetConsumerByToken<
+    TPopulate extends NonNullable<
+      OperationParameters<'adminGetConsumerByToken'>['populate']
+    >[number]
+  >({
     token,
     ...searchParams
-  }: OperationParameters<'adminGetConsumerByToken'>): Promise<
-    OperationResponse<'adminGetConsumerByToken'>
-  > {
+  }: OperationParameters<'adminGetConsumerByToken'> & {
+    populate?: TPopulate[]
+  }): Promise<PopulateConsumer<TPopulate>> {
     return this.ky
       .get(`v1/admin/consumers/tokens/${token}`, {
         searchParams: sanitizeSearchParams(searchParams)
       })
       .json()
   }
+
+  async adminGetDeploymentByIdentifier<
+    TPopulate extends NonNullable<
+      OperationParameters<'adminGetDeploymentByIdentifier'>['populate']
+    >[number]
+  >(
+    searchParams: OperationParameters<'adminGetDeploymentByIdentifier'> & {
+      populate?: TPopulate[]
+    }
+  ): Promise<PopulateDeployment<TPopulate, AdminDeployment>> {
+    return this.ky
+      .get(`v1/admin/deployments/by-identifier`, {
+        searchParams: sanitizeSearchParams(searchParams)
+      })
+      .json()
+  }
 }
 
+type Operations = openapi.operations
+
 type OperationParameters<
-  T extends keyof operations,
-  Q = NonNullable<operations[T]['parameters']['query']>,
-  P = NonNullable<operations[T]['parameters']['path']>
+  T extends keyof Operations,
+  Q = NonNullable<Operations[T]['parameters']['query']>,
+  P = NonNullable<Operations[T]['parameters']['path']>
 > = Simplify<
   ([Q] extends [never] ? unknown : Q) & ([P] extends [never] ? unknown : P)
 >
 
-type OperationResponse<T extends keyof operations> =
-  operations[T]['responses'][200]['content']['application/json']
+// Currently unused because some types need customization (e.g. Deployment) over
+// the default OpenAPI types.
+// type OperationResponse<T extends keyof Operations> =
+//   Operations[T]['responses'][200]['content']['application/json']
 
 type OperationKeysWithRequestBody = {
-  [K in keyof operations]: operations[K]['requestBody'] extends {
+  [K in keyof Operations]: Operations[K]['requestBody'] extends {
     content: {
       'application/json': unknown
     }
   }
     ? K
     : never
-}[keyof operations]
+}[keyof Operations]
 
 type OperationBody<
   T extends OperationKeysWithRequestBody,
   B extends
     | object
-    | undefined = operations[T]['requestBody']['content']['application/json']
+    | undefined = Operations[T]['requestBody']['content']['application/json']
 > = B
+
+type PopulateProject<TPopulate> = Simplify<
+  Project &
+    (TPopulate extends 'user'
+      ? {
+          user: User
+        }
+      : unknown) &
+    (TPopulate extends 'team'
+      ? {
+          team: Team
+        }
+      : unknown) &
+    (TPopulate extends 'lastPublishedDeployment'
+      ? {
+          lastPublishedDeployment?: Deployment
+        }
+      : unknown) &
+    (TPopulate extends 'lastDeployment'
+      ? {
+          lastDeployment?: Deployment
+        }
+      : unknown)
+>
+
+type PopulateDeployment<
+  TPopulate,
+  TDeployment extends Deployment = Deployment
+> = Simplify<
+  TDeployment &
+    (TPopulate extends 'user'
+      ? {
+          user: User
+        }
+      : unknown) &
+    (TPopulate extends 'team'
+      ? {
+          team: Team
+        }
+      : unknown) &
+    (TPopulate extends 'project'
+      ? {
+          project: Project
+        }
+      : unknown)
+>
+
+type PopulateConsumer<TPopulate> = Simplify<
+  Consumer &
+    (TPopulate extends 'user'
+      ? {
+          user: User
+        }
+      : unknown) &
+    (TPopulate extends 'project'
+      ? {
+          project: Project
+        }
+      : unknown) &
+    (TPopulate extends 'deployment'
+      ? {
+          deployment: Deployment
+        }
+      : unknown)
+>

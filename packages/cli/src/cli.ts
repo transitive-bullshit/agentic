@@ -22,10 +22,7 @@ async function main() {
     apiBaseUrl: process.env.AGENTIC_API_BASE_URL,
     onUpdateAuth: (update) => {
       if (update) {
-        AuthStore.setAuth({
-          refreshToken: update.session.refresh,
-          user: update.user
-        })
+        AuthStore.setAuth(update)
       } else {
         AuthStore.clearAuth()
       }
@@ -36,7 +33,7 @@ async function main() {
   const authSession = AuthStore.tryGetAuth()
   if (authSession) {
     try {
-      await client.setRefreshAuthToken(authSession.refreshToken)
+      await client.setAuth(authSession.session)
     } catch {
       console.warn('Existing auth session is invalid; logging out.\n')
       AuthStore.clearAuth()
@@ -45,14 +42,16 @@ async function main() {
 
   // Initialize the CLI program
   const program = new Command('agentic')
-    .option('-j, --json', 'Print output in JSON format')
+    .option('-j, --json', 'Print output as JSON')
     .showHelpAfterError()
 
   const logger = {
     log: (...args: any[]) => {
       if (program.opts().json) {
         console.log(
-          args.length === 1 ? JSON.stringify(args[0]) : JSON.stringify(args)
+          args.length === 1
+            ? JSON.stringify(args[0], null, 2)
+            : JSON.stringify(args, null, 2)
         )
       } else {
         console.log(...args)

@@ -1,4 +1,4 @@
-import { createClient as createAuthClient } from '@openauthjs/openauth/client'
+import { createClient as createAuthClient } from '@agentic/openauth/client'
 
 export const authClient = createAuthClient({
   issuer: 'http://localhost:3000',

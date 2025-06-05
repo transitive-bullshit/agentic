@@ -1,4 +1,4 @@
-import { defaultFreePricingPlan, defineConfig } from '@agentic/platform-schemas'
+import { defaultFreePricingPlan, defineConfig } from '@agentic/platform'
 
 export default defineConfig({
   // TODO: resolve name / slug conflicts

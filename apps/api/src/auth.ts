@@ -1,9 +1,9 @@
+import { issuer } from '@agentic/openauth'
+import { GithubProvider } from '@agentic/openauth/provider/github'
+import { PasswordProvider } from '@agentic/openauth/provider/password'
+import { PasswordUI } from '@agentic/openauth/ui/password'
 import { assert, pick } from '@agentic/platform-core'
 import { validators } from '@agentic/platform-validators'
-import { issuer } from '@openauthjs/openauth'
-import { GithubProvider } from '@openauthjs/openauth/provider/github'
-import { PasswordProvider } from '@openauthjs/openauth/provider/password'
-import { PasswordUI } from '@openauthjs/openauth/ui/password'
 
 import { type RawUser } from '@/db'
 import { subjects } from '@/lib/auth/subjects'
@@ -12,10 +12,41 @@ import { DrizzleAuthStorage } from '@/lib/drizzle-auth-storage'
 import { env } from '@/lib/env'
 import { getGitHubClient } from '@/lib/external/github'
 
+import { resend } from './lib/external/resend'
+
 // Initialize OpenAuth issuer which is a Hono app for all auth routes.
 export const authRouter = issuer({
   subjects,
   storage: DrizzleAuthStorage(),
+  ttl: {
+    access: 60 * 60 * 24 * 30, // 30 days
+    refresh: 60 * 60 * 24 * 365 // 1 year
+    // Used for creating longer-lived tokens for testing
+    // access: 60 * 60 * 24 * 366, // 1 year
+    // refresh: 60 * 60 * 24 * 365 * 5 // 5 years
+  },
+  theme: {
+    title: 'Agentic',
+    logo: {
+      dark: 'https://vercel.com/mktng/_next/static/media/vercel-logotype-dark.e8c0a742.svg',
+      light:
+        'https://vercel.com/mktng/_next/static/media/vercel-logotype-light.700a8d26.svg'
+    },
+    background: {
+      dark: 'black',
+      light: 'white'
+    },
+    primary: {
+      dark: 'white',
+      light: 'black'
+    },
+    font: {
+      family: 'Geist, sans-serif'
+    },
+    css: `
+    @import url('https://fonts.googleapis.com/css2?family=Geist:wght@100;200;300;400;500;600;700;800;900&display=swap');
+  `
+  },
   providers: {
     github: GithubProvider({
       clientID: env.GITHUB_CLIENT_ID,
@@ -29,9 +60,10 @@ export const authRouter = issuer({
           login_title: 'Welcome to Agentic'
         },
         sendCode: async (email, code) => {
-          // TODO: Send email code to user
           // eslint-disable-next-line no-console
-          console.log({ email, code })
+          console.log('sending verify code email', { email, code })
+
+          await resend.sendVerifyCodeEmail({ code, to: email })
         },
         validatePassword: (password) => {
           if (password.length < 3) {
@@ -59,7 +91,8 @@ export const authRouter = issuer({
     console.log('Auth success', provider, ctx, JSON.stringify(value, null, 2))
 
     function getPartialOAuthAccount() {
-      assert(provider === 'github', `Unsupported provider "${provider}"`)
+      assert(provider === 'github', `Unsupported OAuth provider "${provider}"`)
+      const now = Date.now()
 
       return {
         provider,
@@ -67,19 +100,17 @@ export const authRouter = issuer({
         refreshToken: value.tokenset.refresh,
         // `expires_in` and `refresh_token_expires_in` are given in seconds
         accessTokenExpiresAt: new Date(
-          Date.now() + value.tokenset.raw.expires_in * 1000
+          now + value.tokenset.raw.expires_in * 1000
         ),
         refreshTokenExpiresAt: new Date(
-          Date.now() + value.tokenset.raw.refresh_token_expires_in * 1000
+          now + value.tokenset.raw.refresh_token_expires_in * 1000
         ),
         scope: (value.tokenset.raw.scope as string) || undefined
       }
     }
 
     if (provider === 'github') {
-      const client = getGitHubClient({
-        accessToken: value.tokenset.access
-      })
+      const client = getGitHubClient({ accessToken: value.tokenset.access })
       const { data: ghUser } = await client.rest.users.getAuthenticated()
 
       if (!ghUser.email) {
@@ -125,14 +156,14 @@ export const authRouter = issuer({
       assert(
         user,
         400,
-        `Authentication error: unsupported provider "${provider}"`
+        `Authentication error: unsupported auth provider "${provider}"`
       )
     }
 
     assert(
       user,
       500,
-      `Authentication error for provider "${provider}": Unexpected error initializing user`
+      `Authentication error for auth provider "${provider}": Unexpected error initializing user`
     )
     return ctx.subject('user', pick(user, 'id', 'username'))
   }

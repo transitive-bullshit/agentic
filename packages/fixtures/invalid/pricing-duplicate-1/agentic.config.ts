@@ -1,4 +1,4 @@
-import { defineConfig } from '@agentic/platform-schemas'
+import { defineConfig } from '@agentic/platform'
 
 export default defineConfig({
   name: 'test-pricing-duplicate-1',
@@ -9,12 +9,12 @@ export default defineConfig({
       slug: 'basic',
       lineItems: [
         {
-          slug: 'custom',
+          slug: 'custom-test',
           usageType: 'licensed',
           amount: 100
         },
         {
-          slug: 'custom',
+          slug: 'custom-test',
           usageType: 'licensed',
           amount: 200
         }

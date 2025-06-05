@@ -1,0 +1,61 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "OpenAPI Mixed Test Fixture",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/echo/{id}": {
+      "parameters": [
+        {
+          "required": true,
+          "schema": {
+            "title": "id",
+            "type": "string"
+          },
+          "name": "id",
+          "in": "path"
+        }
+      ],
+      "get": {
+        "summary": "Echo",
+        "operationId": "echo",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "x-custom-header",
+              "type": "string"
+            },
+            "name": "x-custom-header",
+            "in": "header"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "name",
+              "type": "string"
+            },
+            "name": "name",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://test-openapi-basic.now.sh"
+    }
+  ]
+}

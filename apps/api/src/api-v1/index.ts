@@ -1,7 +1,7 @@
 import { OpenAPIHono } from '@hono/zod-openapi'
 import { fromError } from 'zod-validation-error'
 
-import type { AuthenticatedEnv } from '@/lib/types'
+import type { AuthenticatedHonoEnv } from '@/lib/types'
 import * as middleware from '@/lib/middleware'
 import { registerOpenAPIErrorResponses } from '@/lib/openapi-utils'
 
@@ -11,6 +11,7 @@ import { registerV1ConsumersGetConsumer } from './consumers/get-consumer'
 import { registerV1ProjectsListConsumers } from './consumers/list-consumers'
 import { registerV1ConsumersRefreshConsumerToken } from './consumers/refresh-consumer-token'
 import { registerV1ConsumersUpdateConsumer } from './consumers/update-consumer'
+import { registerV1AdminDeploymentsGetDeploymentByIdentifier } from './deployments/admin-get-deployment-by-identifier'
 import { registerV1DeploymentsCreateDeployment } from './deployments/create-deployment'
 import { registerV1DeploymentsGetDeployment } from './deployments/get-deployment'
 import { registerV1DeploymentsGetDeploymentByIdentifier } from './deployments/get-deployment-by-identifier'
@@ -63,7 +64,7 @@ registerOpenAPIErrorResponses(apiV1)
 const publicRouter = new OpenAPIHono()
 
 // Private, authenticated routes
-const privateRouter = new OpenAPIHono<AuthenticatedEnv>()
+const privateRouter = new OpenAPIHono<AuthenticatedHonoEnv>()
 
 registerHealthCheck(publicRouter)
 
@@ -107,6 +108,7 @@ registerV1DeploymentsPublishDeployment(privateRouter)
 
 // Internal admin routes
 registerV1AdminConsumersGetConsumerByToken(privateRouter)
+registerV1AdminDeploymentsGetDeploymentByIdentifier(privateRouter)
 
 // Webhook event handlers
 registerV1StripeWebhook(publicRouter)

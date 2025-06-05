@@ -1,7 +1,5 @@
-import { createHash, randomUUID } from 'node:crypto'
-
 import type { ContentfulStatusCode } from 'hono/utils/http-status'
-import type { ZodSchema, ZodTypeDef } from 'zod'
+import type { z, ZodType } from 'zod'
 import hashObjectImpl, { type Options as HashObjectOptions } from 'hash-object'
 
 import { HttpError, ZodValidationError } from './errors'
@@ -66,9 +64,13 @@ export function assert(
   }
 
   if (typeof statusCodeOrMessage === 'number') {
-    throw new HttpError({ statusCode: statusCodeOrMessage, message })
+    const error = new HttpError({ statusCode: statusCodeOrMessage, message })
+    Error.captureStackTrace(error, assert)
+    throw error
   } else {
-    throw new Error(statusCodeOrMessage ?? message)
+    const error = new Error(statusCodeOrMessage ?? message)
+    Error.captureStackTrace(error, assert)
+    throw error
   }
 }
 
@@ -76,31 +78,41 @@ export function assert(
  * Parses the given input against the given Zod schema, throwing a
  * `ZodValidationError` if the input is invalid.
  */
-export function parseZodSchema<
-  Output,
-  Def extends ZodTypeDef = ZodTypeDef,
-  Input = Output
->(
-  schema: ZodSchema<Output, Def, Input>,
+export function parseZodSchema<TSchema extends ZodType<any, any, any>>(
+  schema: TSchema,
   input: unknown,
   {
-    error
+    error,
+    statusCode = 500
   }: {
     error?: string
+    statusCode?: ContentfulStatusCode
   } = {}
-): Output {
+): z.infer<TSchema> {
   try {
     return schema.parse(input)
   } catch (err) {
     throw new ZodValidationError({
       prefix: error,
-      cause: err
+      cause: err,
+      statusCode
     })
   }
 }
 
-export function sha256(input: string = randomUUID()) {
-  return createHash('sha256').update(input).digest('hex')
+// import { createHash, randomUUID } from 'node:crypto'
+// export function sha256Node(input: string = randomUUID()) {
+//   return createHash('sha256').update(input).digest('hex')
+// }
+
+export async function sha256(input: string = crypto.randomUUID()) {
+  const textBuffer = new TextEncoder().encode(input)
+  const hashBuffer = await crypto.subtle.digest('SHA-256', textBuffer)
+  const hashArray = Array.from(new Uint8Array(hashBuffer))
+  const hashHex = hashArray
+    .map((b) => ('00' + b.toString(16)).slice(-2))
+    .join('')
+  return hashHex
 }
 
 /**

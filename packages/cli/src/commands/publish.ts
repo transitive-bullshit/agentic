@@ -21,7 +21,7 @@ export function registerPublishCommand({ client, program, logger }: Context) {
       AuthStore.requireAuth()
 
       if (deploymentIdentifier) {
-        // TODO: parseFaasIdentifier
+        // TODO: parseToolIdentifier
       }
 
       const deployment = await oraPromise(

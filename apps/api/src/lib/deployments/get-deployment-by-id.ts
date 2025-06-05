@@ -1,3 +1,5 @@
+import { assert } from '@agentic/platform-core'
+
 import { db, eq, type RawDeployment, schema } from '@/db'
 
 /**
@@ -18,6 +20,8 @@ export async function getDeploymentById({
     project?: true
   }
 }): Promise<RawDeployment | undefined> {
+  assert(deploymentId, 400, 'Missing required deployment id')
+
   const deployment = await db.query.deployments.findFirst({
     ...dbQueryOpts,
     where: eq(schema.deployments.id, deploymentId)

@@ -1,11 +1,14 @@
 import { assert } from '@agentic/platform-core'
 import { createMiddleware } from 'hono/factory'
 
-import type { AuthenticatedEnv } from '@/lib/types'
+import type { RawUser } from '@/db'
+import type { AuthenticatedHonoEnv } from '@/lib/types'
 import { authClient } from '@/lib/auth/client'
 import { subjects } from '@/lib/auth/subjects'
 
-export const authenticate = createMiddleware<AuthenticatedEnv>(
+import { env } from '../env'
+
+export const authenticate = createMiddleware<AuthenticatedHonoEnv>(
   async function authenticateMiddleware(ctx, next) {
     const credentials = ctx.req.raw.headers.get('Authorization')
     assert(credentials, 401, 'Unauthorized')
@@ -20,12 +23,32 @@ export const authenticate = createMiddleware<AuthenticatedEnv>(
     const token = parts.at(-1)
     assert(token, 401, 'Unauthorized')
 
-    const verified = await authClient.verify(subjects, token)
-    assert(!verified.err, 401, 'Unauthorized')
+    // TODO: Use a more secure way to authenticate admin requests that doesn't
+    // use a single API key and isn't vulnerable to timing attacks.
+    // eslint-disable-next-line security/detect-possible-timing-attacks
+    if (token === env.AGENTIC_ADMIN_API_KEY) {
+      ctx.set('userId', 'admin')
+      ctx.set('user', {
+        id: 'admin',
+        name: 'Admin',
+        username: 'admin',
+        role: 'admin',
+        email: 'admin@agentic.so',
+        isEmailVerified: true,
+        image: undefined,
+        stripeCustomerId: undefined,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        deletedAt: undefined
+      } as RawUser)
+    } else {
+      const verified = await authClient.verify(subjects, token)
+      assert(!verified.err, 401, 'Unauthorized')
 
-    const userId = verified.subject.properties.id
-    assert(userId, 401, 'Unauthorized')
-    ctx.set('userId', userId)
+      const userId = verified.subject.properties.id
+      assert(userId, 401, 'Unauthorized')
+      ctx.set('userId', userId)
+    }
 
     await next()
   }

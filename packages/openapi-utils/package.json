@@ -1,0 +1,44 @@
+{
+  "name": "@agentic/platform-openapi-utils",
+  "version": "0.0.1",
+  "description": "OpenAPI utilities used by the Agentic platform.",
+  "author": "Travis Fischer <travis@transitivebullsh.it>",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/transitive-bullshit/agentic-platform.git",
+    "directory": "packages/openapi-utils"
+  },
+  "type": "module",
+  "source": "./src/index.ts",
+  "types": "./src/index.ts",
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "run-s test:*",
+    "test:lint": "eslint .",
+    "test:typecheck": "tsc --noEmit",
+    "test:unit": "vitest run"
+  },
+  "dependencies": {
+    "@agentic/platform-core": "workspace:*",
+    "@agentic/platform-types": "workspace:*",
+    "@apideck/better-ajv-errors": "catalog:",
+    "@redocly/openapi-core": "catalog:",
+    "ajv": "catalog:",
+    "ajv-formats": "catalog:",
+    "camelcase": "catalog:",
+    "decamelize": "catalog:",
+    "fast-uri": "catalog:",
+    "plur": "catalog:"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@hono/node-server": "catalog:",
+    "hono": "catalog:"
+  }
+}

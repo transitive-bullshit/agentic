@@ -1,4 +1,4 @@
-import { defineConfig } from '@agentic/platform-schemas'
+import { defineConfig } from '@agentic/platform'
 
 export default defineConfig({
   name: 'test-pricing-base-inconsistent',
@@ -24,7 +24,7 @@ export default defineConfig({
           usageType: 'metered',
           billingScheme: 'per_unit',
           unitAmount: 0.467
-        }
+        } as any
       ]
     }
   ]

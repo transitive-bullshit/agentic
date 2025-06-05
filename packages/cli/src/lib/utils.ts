@@ -1,4 +1,4 @@
-import type { Deployment } from '@agentic/platform-api-client'
+import type { Deployment } from '@agentic/platform-types'
 
 export function pruneDeployment(
   deployment: Deployment,
@@ -13,6 +13,7 @@ export function pruneDeployment(
 
     if (d.originAdapter?.type === 'openapi') {
       d.originAdapter.spec = '<omitted>'
+      d.originAdapter.toolToOperationMap = '<omitted>' as any
     }
 
     return d

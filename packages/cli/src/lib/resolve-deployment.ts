@@ -1,7 +1,8 @@
-import type { AgenticApiClient, Deployment } from '@agentic/platform-api-client'
+import type { AgenticApiClient } from '@agentic/platform-api-client'
+import type { Deployment } from '@agentic/platform-types'
+import { loadAgenticConfig } from '@agentic/platform'
 
 import { AuthStore } from './auth-store'
-import { loadAgenticConfig } from './load-agentic-config'
 
 export async function resolveDeployment({
   client,
@@ -19,9 +20,12 @@ export async function resolveDeployment({
   if (!deploymentIdentifier) {
     const config = await loadAgenticConfig({ cwd })
 
-    // TODO: team support
+    // TODO: re-add team support
     const auth = AuthStore.getAuth()
     const namespace = auth.user.username
+
+    // TODO: resolve deploymentIdentifier; config name may include namespace?
+    // TODO: this needs work...
 
     deploymentIdentifier = `${namespace}/${config.name}@${fuzzyDeploymentIdentifierVersion}`
   }

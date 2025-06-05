@@ -1,40 +1,54 @@
 import 'dotenv/config'
 
+import type { Simplify } from 'type-fest'
 import { parseZodSchema } from '@agentic/platform-core'
+import {
+  envSchema as baseEnvSchema,
+  parseEnv as parseBaseEnv
+} from '@agentic/platform-hono'
 import { z } from 'zod'
 
-import { logLevelsSchema } from './logger'
+export const envSchema = baseEnvSchema
+  .extend({
+    DATABASE_URL: z.string().url(),
 
-export const envSchema = z.object({
-  NODE_ENV: z
-    .enum(['development', 'test', 'production'])
-    .default('development'),
+    PORT: z.number().default(3000),
 
-  DATABASE_URL: z.string().url(),
+    STRIPE_SECRET_KEY: z.string().nonempty(),
+    STRIPE_WEBHOOK_SECRET: z.string().nonempty(),
 
-  BETTER_AUTH_SECRET: z.string().nonempty(),
-  BETTER_AUTH_URL: z.string().url(),
+    GITHUB_CLIENT_ID: z.string().nonempty(),
+    GITHUB_CLIENT_SECRET: z.string().nonempty(),
 
-  JWT_SECRET: z.string().nonempty(),
-  SENTRY_DSN: z.string().url(),
-  PORT: z.number().default(3000),
-  LOG_LEVEL: logLevelsSchema.default('info'),
+    AGENTIC_ADMIN_API_KEY: z.string().nonempty(),
 
-  STRIPE_SECRET_KEY: z.string().nonempty(),
-  STRIPE_WEBHOOK_SECRET: z.string().nonempty(),
+    RESEND_API_KEY: z.string().nonempty()
+  })
+  .strip()
+export type Env = Simplify<ReturnType<typeof parseEnv>>
 
-  GITHUB_CLIENT_ID: z.string().nonempty(),
-  GITHUB_CLIENT_SECRET: z.string().nonempty()
-})
-export type Env = z.infer<typeof envSchema>
+export function parseEnv(inputEnv: Record<string, unknown>) {
+  const baseEnv = parseBaseEnv({
+    SERVICE: 'api',
+    ...inputEnv
+  })
+
+  const env = parseZodSchema(
+    envSchema,
+    { ...inputEnv, ...baseEnv },
+    {
+      error: 'Invalid environment variables'
+    }
+  )
+
+  const isStripeLive = env.STRIPE_SECRET_KEY.startsWith('sk_live_')
+
+  return {
+    ...baseEnv,
+    ...env,
+    isStripeLive
+  }
+}
 
 // eslint-disable-next-line no-process-env
-export const env = parseZodSchema(envSchema, process.env, {
-  error: 'Invalid environment variables'
-})
-
-export const isDev = env.NODE_ENV === 'development'
-export const isProd = env.NODE_ENV === 'production'
-export const isBrowser = (globalThis as any).window !== undefined
-
-export const isStripeLive = env.STRIPE_SECRET_KEY.startsWith('sk_live_')
+export const env = parseEnv(process.env)

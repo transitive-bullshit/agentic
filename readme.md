@@ -7,13 +7,42 @@
 
 ## TODO
 
-- **api gateway**
-  - signed requests
 - **webapp**
+- stripe
+  - stripe checkout
+  - stripe billing portal
 - end-to-end working examples
-  - raw
   - openapi
   - mcp
+  - raw
+- auth
+  - custom auth pages for `openauth`
+- consider `projectName` and `projectSlug` or `projectIdentifier`?
+- add username / team name blacklist
+  - admin, internal, mcp, sse, etc
+- **API gateway**
+  - MCP server vs REST gateway on public and internal sides
+    - **REST**: `GET/POST gateway.agentic.so/deploymentIdentifier/toolName`
+      - => MCP: `MCPClient.callTool` with JSON body parameters
+      - => OpenAPI: `GET/POST/ETC originUrl/toolName` operation with transformed JSON body params
+    - **MCP**: `mcp.agentic.so/deploymentIdentifier/sse` MCP server?
+      - => MCP: `MCPClient.callTool` just proxying tool call
+      - => OpenAPI: `GET/POST/ETC originUrl/toolName` operation with transformed tool params
+    - RAW: `METHOD gateway.agentic.so/deploymentIdentifier/<pathname>`
+      - => Raw HTTP: `METHOD originUrl/<pathname>` simple HTTP proxy request
+  - add support for custom headers on responses
+  - how to handle binary bodies and responses?
+- public identifiers and validators
+  - revisit deployment identifiers so possibly be URL-friendly?
+  - move validators package into platform-types?
+  - force toolPath to be non-empty except for `raw`?
+    - will remove ambiguity from `username/`
+  - make namespace optional? and require `@` prefix if so? like npm packages
+  - separate `parseToolIdentifier` from `parseDeploymentIdentifier` and `parseProjectIdentifier`?
+  - **KISS**
+
+## TODO Post-MVP
+
 - stripe
   - re-add coupons
   - declarative json-based pricing
@@ -21,14 +50,21 @@
     - https://github.com/tierrun/tier/blob/main/pricing/schema.json
     - https://blog.tier.run/tier-hello-world-demo
   - stripe connect
-- transactional emails
-  - (openauth password emails and `sendCode`)
   - stripe-related billing emails
-- auth
-  - custom auth pages
 - re-add support for teams / organizations
 - consider switching to [consola](https://github.com/unjs/consola) for logging?
 - consider switching to `bun` (for `--hot` reloading!!)
+- validate stability of pricing plan slugs across deployments
+  - same for pricing plan line-items
+- replace `ms` package
+- API gateway
+  - signed requests
+- `@agentic/platform-hono`
+  - fix sentry middleware
+    - https://github.com/honojs/middleware/blob/main/packages/sentry/src/index.ts
+    - https://github.com/honojs/middleware/issues/943
+    - https://github.com/getsentry/sentry-javascript/tree/master/packages/cloudflare
+- additional transactional emails
 
 ## License
 

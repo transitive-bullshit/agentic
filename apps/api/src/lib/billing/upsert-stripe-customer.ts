@@ -1,12 +1,14 @@
 import type Stripe from 'stripe'
 import { assert } from '@agentic/platform-core'
 
-import type { AuthenticatedContext } from '@/lib/types'
+import type { AuthenticatedHonoContext } from '@/lib/types'
 import { db, eq, type RawUser, schema } from '@/db'
 import { ensureAuthUser } from '@/lib/ensure-auth-user'
 import { stripe } from '@/lib/external/stripe'
 
-export async function upsertStripeCustomer(ctx: AuthenticatedContext): Promise<{
+export async function upsertStripeCustomer(
+  ctx: AuthenticatedHonoContext
+): Promise<{
   user: RawUser
   stripeCustomer: Stripe.Customer
 }> {

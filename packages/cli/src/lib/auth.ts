@@ -59,7 +59,7 @@ export async function auth({
 
     // AuthStore should be updated via the onUpdateAuth callback
     const session = AuthStore.tryGetAuth()
-    assert(session && session.refreshToken === client.authTokens.refresh)
+    assert(session && session.session.access === client.authTokens.access)
     _resolveAuth(session)
 
     return c.text(

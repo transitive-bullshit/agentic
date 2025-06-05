@@ -1,19 +1,18 @@
 import { assert } from '@agentic/platform-core'
-import { parseFaasIdentifier } from '@agentic/platform-validators'
+import { parseToolIdentifier } from '@agentic/platform-validators'
 
-import type { AuthenticatedContext } from '@/lib/types'
+import type { AuthenticatedHonoContext } from '@/lib/types'
 import { db, eq, projectIdSchema, type RawProject, schema } from '@/db'
-import { ensureAuthUser } from '@/lib/ensure-auth-user'
 
 /**
- * Attempts to find the Project matching the given identifier.
+ * Attempts to find the Project matching the given ID or identifier.
  *
  * Throws a HTTP 404 error if not found.
  *
  * Does not take care of ACLs.
  */
 export async function tryGetProjectByIdentifier(
-  ctx: AuthenticatedContext,
+  ctx: AuthenticatedHonoContext,
   {
     projectIdentifier,
     ...dbQueryOpts
@@ -27,7 +26,7 @@ export async function tryGetProjectByIdentifier(
     }
   }
 ): Promise<RawProject> {
-  const user = await ensureAuthUser(ctx)
+  assert(projectIdentifier, 400, 'Missing required project identifier')
 
   // First check if the identifier is a project ID
   if (projectIdSchema.safeParse(projectIdentifier).success) {
@@ -35,15 +34,11 @@ export async function tryGetProjectByIdentifier(
       ...dbQueryOpts,
       where: eq(schema.projects.id, projectIdentifier)
     })
-    assert(project, 404, `project not found "${projectIdentifier}"`)
+    assert(project, 404, `Project not found "${projectIdentifier}"`)
     return project
   }
 
-  const teamMember = ctx.get('teamMember')
-  const namespace = teamMember ? teamMember.teamSlug : user.username
-  const parsedFaas = parseFaasIdentifier(projectIdentifier, {
-    namespace
-  })
+  const parsedFaas = parseToolIdentifier(projectIdentifier)
   assert(
     parsedFaas?.projectIdentifier,
     400,

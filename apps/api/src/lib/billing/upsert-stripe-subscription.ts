@@ -1,7 +1,7 @@
 import type Stripe from 'stripe'
 import { assert } from '@agentic/platform-core'
 
-import type { AuthenticatedContext } from '@/lib/types'
+import type { AuthenticatedHonoContext } from '@/lib/types'
 import {
   db,
   eq,
@@ -18,7 +18,7 @@ import { stripe } from '@/lib/external/stripe'
 import { setConsumerStripeSubscriptionStatus } from '../consumers/utils'
 
 export async function upsertStripeSubscription(
-  ctx: AuthenticatedContext,
+  ctx: AuthenticatedHonoContext,
   {
     consumer,
     user,
@@ -94,6 +94,7 @@ export async function upsertStripeSubscription(
     )
 
     const updateParams: Stripe.SubscriptionUpdateParams = {
+      collection_method: 'charge_automatically',
       metadata: {
         userId: consumer.userId,
         consumerId: consumer.id,
@@ -259,10 +260,11 @@ export async function upsertStripeSubscription(
 
     const createParams: Stripe.SubscriptionCreateParams = {
       customer: stripeCustomerId,
-      description: `Agentic subscription to project "${project.id}"`,
+      description: `Agentic subscription to project "${project.identifier}"`,
       // TODO: coupons
       // coupon: filterConsumerCoupon(ctx, consumer, deployment),
       items,
+      collection_method: 'charge_automatically',
       metadata: {
         userId: consumer.userId,
         consumerId: consumer.id,

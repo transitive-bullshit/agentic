@@ -1,4 +1,4 @@
-import { defineConfig } from '@agentic/platform-schemas'
+import { defineConfig } from '@agentic/platform'
 
 export default defineConfig({
   originUrl: 'https://jsonplaceholder.typicode.com'

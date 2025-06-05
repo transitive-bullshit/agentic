@@ -1,5 +1,6 @@
 import type { RawConsumerUpdate } from '@/db'
 
+// https://docs.stripe.com/api/subscriptions/object#subscription_object-status
 const stripeValidSubscriptionStatuses = new Set([
   'active',
   'trialing',

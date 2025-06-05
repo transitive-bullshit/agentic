@@ -1,9 +1,9 @@
+import { resolveAgenticProjectConfig } from '@agentic/platform'
 import { assert, parseZodSchema, sha256 } from '@agentic/platform-core'
-import { validateAgenticProjectConfig } from '@agentic/platform-schemas'
 import { validators } from '@agentic/platform-validators'
 import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 
-import type { AuthenticatedEnv } from '@/lib/types'
+import type { AuthenticatedHonoEnv } from '@/lib/types'
 import { db, eq, schema } from '@/db'
 import { acl } from '@/lib/acl'
 import { normalizeDeploymentVersion } from '@/lib/deployments/normalize-deployment-version'
@@ -52,7 +52,7 @@ const route = createRoute({
 })
 
 export function registerV1DeploymentsCreateDeployment(
-  app: OpenAPIHono<AuthenticatedEnv>
+  app: OpenAPIHono<AuthenticatedHonoEnv>
 ) {
   return app.openapi(route, async (c) => {
     const user = await ensureAuthUser(c)
@@ -69,18 +69,38 @@ export function registerV1DeploymentsCreateDeployment(
       `Invalid project identifier "${projectIdentifier}"`
     )
 
-    const project = await db.query.projects.findFirst({
+    let project = await db.query.projects.findFirst({
       where: eq(schema.projects.identifier, projectIdentifier),
       with: {
         lastPublishedDeployment: true
       }
     })
+
+    if (!project) {
+      // Upsert the project if it doesn't already exist
+      // The typecast doesn't match exactly here because we're not populating
+      // the lastPublishedDeployment, but that's fine because it's a new project
+      // so it will be empty anyway.
+      project = (
+        await db
+          .insert(schema.projects)
+          .values({
+            name: body.name,
+            identifier: projectIdentifier,
+            userId: user.id,
+            teamId: teamMember?.teamId,
+            _secret: await sha256()
+          })
+          .returning()
+      )[0] as typeof project
+    }
+
     assert(project, 404, `Project not found "${projectIdentifier}"`)
     await acl(c, project, { label: 'Project' })
     const projectId = project.id
 
     // TODO: investigate better short hash generation
-    const hash = sha256().slice(0, 8)
+    const hash = (await sha256()).slice(0, 8)
     const deploymentIdentifier = `${project.identifier}@${hash}`
     assert(
       validators.deploymentIdentifier(deploymentIdentifier),
@@ -108,12 +128,11 @@ export function registerV1DeploymentsCreateDeployment(
     // Validate project config, including:
     // - pricing plans
     // - origin adapter config
-    // - origin API base UrL
+    // - origin API base URL
     // - origin adapter OpenAPI or MCP specs
     // - tool definitions
-    const agenticProjectConfig = await validateAgenticProjectConfig(body, {
+    const agenticProjectConfig = await resolveAgenticProjectConfig(body, {
       label: `deployment "${deploymentIdentifier}"`,
-      strip: true,
       logger
     })
 
@@ -121,7 +140,6 @@ export function registerV1DeploymentsCreateDeployment(
     let [deployment] = await db
       .insert(schema.deployments)
       .values({
-        ...body,
         ...agenticProjectConfig,
         identifier: deploymentIdentifier,
         hash,

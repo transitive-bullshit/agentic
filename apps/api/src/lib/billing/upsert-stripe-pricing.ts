@@ -4,7 +4,7 @@ import {
   getLabelForPricingInterval,
   type PricingPlan,
   type PricingPlanLineItem
-} from '@agentic/platform-schemas'
+} from '@agentic/platform-types'
 import pAll from 'p-all'
 
 import {
@@ -29,7 +29,8 @@ import { stripe } from '@/lib/external/stripe'
  * The `project` will be updated in the DB with any changes.
  *
  * The `deployment` is readonly and will not be updated, since all Stripe
- * resources persist on its Project in case they're the same across deployments.
+ * resources persist on its Project so they can be reused if possible across
+ * deployments.
  *
  * @note This function assumes that the deployment's pricing config has already
  * been validated.
@@ -182,11 +183,6 @@ export async function upsertStripePricing({
             400,
             `Invalid pricing plan metric "${pricingPlanLineItemSlug}" for pricing plan "${pricingPlanSlug}": tiered billing schemes must have at least one tier.`
           )
-          assert(
-            !pricingPlanLineItem.transformQuantity,
-            400,
-            `Invalid pricing plan metric "${pricingPlanLineItemSlug}" for pricing plan "${pricingPlanSlug}": tiered billing schemes cannot have transformQuantity.`
-          )
 
           priceParams.tiers_mode = pricingPlanLineItem.tiersMode
           priceParams.tiers = pricingPlanLineItem.tiers.map((tierData) => {
@@ -214,11 +210,6 @@ export async function upsertStripePricing({
             pricingPlanLineItem.unitAmount !== undefined,
             400,
             `Invalid pricing plan metric "${pricingPlanLineItemSlug}" for pricing plan "${pricingPlanSlug}": unitAmount is required for per_unit billing schemes.`
-          )
-          assert(
-            !pricingPlanLineItem.tiers,
-            400,
-            `Invalid pricing plan metric "${pricingPlanLineItemSlug}" for pricing plan "${pricingPlanSlug}": per_unit billing schemes cannot have tiers.`
           )
 
           priceParams.unit_amount_decimal =

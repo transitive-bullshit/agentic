@@ -1,6 +1,6 @@
 import { assert } from '@agentic/platform-core'
 
-import type { AuthenticatedContext } from '@/lib/types'
+import type { AuthenticatedHonoContext } from '@/lib/types'
 import { and, db, eq, type RawDeployment, type RawProject, schema } from '@/db'
 import { acl } from '@/lib/acl'
 import { upsertStripeConnectCustomer } from '@/lib/billing/upsert-stripe-connect-customer'
@@ -10,7 +10,7 @@ import { upsertStripeSubscription } from '@/lib/billing/upsert-stripe-subscripti
 import { createConsumerToken } from '@/lib/create-consumer-token'
 
 export async function upsertConsumer(
-  c: AuthenticatedContext,
+  c: AuthenticatedHonoContext,
   {
     plan,
     deploymentId,
@@ -148,7 +148,7 @@ export async function upsertConsumer(
       userId,
       projectId,
       deploymentId,
-      token: createConsumerToken(),
+      token: await createConsumerToken(),
       _stripeCustomerId: stripeCustomer.id
     })
   }

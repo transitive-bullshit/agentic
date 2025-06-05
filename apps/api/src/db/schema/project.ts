@@ -6,7 +6,7 @@ import {
   stripePriceIdMapSchema,
   type StripeProductIdMap,
   stripeProductIdMapSchema
-} from '@agentic/platform-schemas'
+} from '@agentic/platform-types'
 import { validators } from '@agentic/platform-validators'
 import { relations } from '@fisch0920/drizzle-orm'
 import {

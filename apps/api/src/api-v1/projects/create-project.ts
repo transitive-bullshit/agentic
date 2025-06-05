@@ -1,7 +1,7 @@
 import { assert, parseZodSchema, sha256 } from '@agentic/platform-core'
 import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 
-import type { AuthenticatedEnv } from '@/lib/types'
+import type { AuthenticatedHonoEnv } from '@/lib/types'
 import { db, schema } from '@/db'
 import { ensureAuthUser } from '@/lib/ensure-auth-user'
 import {
@@ -40,7 +40,7 @@ const route = createRoute({
 })
 
 export function registerV1ProjectsCreateProject(
-  app: OpenAPIHono<AuthenticatedEnv>
+  app: OpenAPIHono<AuthenticatedHonoEnv>
 ) {
   return app.openapi(route, async (c) => {
     const body = c.req.valid('json')
@@ -61,7 +61,7 @@ export function registerV1ProjectsCreateProject(
         identifier,
         teamId: teamMember?.teamId,
         userId: user.id,
-        _secret: sha256()
+        _secret: await sha256()
       })
       .returning()
     assert(project, 500, `Failed to create project "${body.name}"`)

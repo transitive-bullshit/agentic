@@ -5,7 +5,7 @@ exports[`URL prefix and suffix success 1`] = `
   "deploymentHash": "01234567",
   "deploymentIdentifier": "username/foo-bar@01234567",
   "projectIdentifier": "username/foo-bar",
-  "servicePath": "/foo",
+  "toolPath": "/foo",
 }
 `;
 
@@ -14,7 +14,7 @@ exports[`URL prefix and suffix success 2`] = `
   "deploymentHash": "01234567",
   "deploymentIdentifier": "username/foo-bar@01234567",
   "projectIdentifier": "username/foo-bar",
-  "servicePath": "/foo/bar/123",
+  "toolPath": "/foo/bar/123",
 }
 `;
 
@@ -23,7 +23,7 @@ exports[`URL prefix success 1`] = `
   "deploymentHash": "01234567",
   "deploymentIdentifier": "username/foo-bar@01234567",
   "projectIdentifier": "username/foo-bar",
-  "servicePath": "/foo",
+  "toolPath": "/foo",
 }
 `;
 
@@ -32,7 +32,7 @@ exports[`URL prefix success 2`] = `
   "deploymentHash": "01234567",
   "deploymentIdentifier": "username/foo-bar@01234567",
   "projectIdentifier": "username/foo-bar",
-  "servicePath": "/foo",
+  "toolPath": "/foo",
 }
 `;
 
@@ -41,7 +41,7 @@ exports[`URL prefix success 3`] = `
   "deploymentHash": "01234567",
   "deploymentIdentifier": "username/foo-bar@01234567",
   "projectIdentifier": "username/foo-bar",
-  "servicePath": "/foo/bar/456/123",
+  "toolPath": "/foo/bar/456/123",
 }
 `;
 
@@ -50,7 +50,7 @@ exports[`URL prefix success 4`] = `
   "deploymentHash": "01234567",
   "deploymentIdentifier": "username/foo-bar@01234567",
   "projectIdentifier": "username/foo-bar",
-  "servicePath": "/foo/bar/456/123",
+  "toolPath": "/foo/bar/456/123",
 }
 `;
 
@@ -59,14 +59,14 @@ exports[`URL prefix success 5`] = `
   "deploymentHash": "01234567",
   "deploymentIdentifier": "username/foo-bar@01234567",
   "projectIdentifier": "username/foo-bar",
-  "servicePath": "/foo/bar/456/123",
+  "toolPath": "/foo/bar/456/123",
 }
 `;
 
 exports[`URL prefix success 6`] = `
 {
   "projectIdentifier": "username/foo-bar",
-  "servicePath": "/foo/bar/456/123",
+  "toolPath": "/foo/bar/456/123",
   "version": "latest",
 }
 `;
@@ -74,7 +74,7 @@ exports[`URL prefix success 6`] = `
 exports[`URL prefix success 7`] = `
 {
   "projectIdentifier": "username/foo-bar",
-  "servicePath": "/foo/bar/456/123",
+  "toolPath": "/foo/bar/456/123",
   "version": "dev",
 }
 `;
@@ -82,7 +82,7 @@ exports[`URL prefix success 7`] = `
 exports[`URL prefix success 8`] = `
 {
   "projectIdentifier": "username/foo-bar",
-  "servicePath": "/foo/bar/456/123",
+  "toolPath": "/foo/bar/456/123",
   "version": "2.1.0",
 }
 `;
@@ -92,14 +92,14 @@ exports[`URL suffix success 1`] = `
   "deploymentHash": "01234567",
   "deploymentIdentifier": "username/foo-bar@01234567",
   "projectIdentifier": "username/foo-bar",
-  "servicePath": "/foo",
+  "toolPath": "/foo",
 }
 `;
 
 exports[`URL suffix success 2`] = `
 {
   "projectIdentifier": "username/foo-bar",
-  "servicePath": "/foo",
+  "toolPath": "/foo",
   "version": "latest",
 }
 `;
@@ -107,7 +107,7 @@ exports[`URL suffix success 2`] = `
 exports[`URL suffix success 3`] = `
 {
   "projectIdentifier": "username/foo-bar",
-  "servicePath": "/foo",
+  "toolPath": "/foo",
   "version": "dev",
 }
 `;
@@ -115,7 +115,7 @@ exports[`URL suffix success 3`] = `
 exports[`URL suffix success 4`] = `
 {
   "projectIdentifier": "username/foo-bar",
-  "servicePath": "/foo",
+  "toolPath": "/foo",
   "version": "2.1.0",
 }
 `;
@@ -125,7 +125,7 @@ exports[`namespace success 1`] = `
   "deploymentHash": "01234567",
   "deploymentIdentifier": "username/foo-bar@01234567",
   "projectIdentifier": "username/foo-bar",
-  "servicePath": "/foo",
+  "toolPath": "/foo",
 }
 `;
 
@@ -134,7 +134,7 @@ exports[`namespace success 2`] = `
   "deploymentHash": "01234567",
   "deploymentIdentifier": "username/foo-bar@01234567",
   "projectIdentifier": "username/foo-bar",
-  "servicePath": "/foo",
+  "toolPath": "/foo",
 }
 `;
 
@@ -143,7 +143,7 @@ exports[`namespace success 3`] = `
   "deploymentHash": "01234567",
   "deploymentIdentifier": "username/foo-bar@01234567",
   "projectIdentifier": "username/foo-bar",
-  "servicePath": "/foo",
+  "toolPath": "/foo",
 }
 `;
 
@@ -152,7 +152,7 @@ exports[`namespace success 4`] = `
   "deploymentHash": "01234567",
   "deploymentIdentifier": "username/foo-bar@01234567",
   "projectIdentifier": "username/foo-bar",
-  "servicePath": "/foo",
+  "toolPath": "/foo",
 }
 `;
 
@@ -161,7 +161,7 @@ exports[`namespace success 5`] = `
   "deploymentHash": "01234567",
   "deploymentIdentifier": "username/foo-bar@01234567",
   "projectIdentifier": "username/foo-bar",
-  "servicePath": "/foo/bar/123",
+  "toolPath": "/foo/bar/123",
 }
 `;
 
@@ -170,14 +170,14 @@ exports[`namespace success 6`] = `
   "deploymentHash": "01234567",
   "deploymentIdentifier": "username/foo-bar@01234567",
   "projectIdentifier": "username/foo-bar",
-  "servicePath": "/foo/bar/123",
+  "toolPath": "/foo/bar/123",
 }
 `;
 
 exports[`namespace success 7`] = `
 {
   "projectIdentifier": "username/foo-bar",
-  "servicePath": "/foo/bar/123",
+  "toolPath": "/foo/bar/123",
   "version": "latest",
 }
 `;
@@ -185,7 +185,7 @@ exports[`namespace success 7`] = `
 exports[`namespace success 8`] = `
 {
   "projectIdentifier": "username/foo-bar",
-  "servicePath": "/foo/bar/123",
+  "toolPath": "/foo/bar/123",
   "version": "dev",
 }
 `;
@@ -193,7 +193,7 @@ exports[`namespace success 8`] = `
 exports[`namespace success 9`] = `
 {
   "projectIdentifier": "username/foo-bar",
-  "servicePath": "/foo/bar/123",
+  "toolPath": "/foo/bar/123",
   "version": "1.2.3",
 }
 `;

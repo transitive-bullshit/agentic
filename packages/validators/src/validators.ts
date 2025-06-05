@@ -8,13 +8,14 @@ export const passwordRe = /^.{3,1024}$/
 export const projectNameRe = /^[a-z0-9-]{2,64}$/
 export const deploymentHashRe = /^[a-z0-9]{8}$/
 
-export const projectRe = /^[a-zA-Z0-9-]{1,64}\/[a-z0-9-]{3,64}$/
-export const deploymentRe = /^[a-zA-Z0-9-]{1,64}\/[a-z0-9-]{3,64}@[a-z0-9]{8}$/
+export const projectIdentifierRe = /^[a-zA-Z0-9-]{1,64}\/[a-z0-9-]{3,64}$/
+export const deploymentIdentifierRe =
+  /^[a-zA-Z0-9-]{1,64}\/[a-z0-9-]{3,64}@[a-z0-9]{8}$/
 
-// service names may be any valid JavaScript identifier
-// TODO: should service names be any label?
-export const serviceNameRe = /^[a-zA-Z_][a-zA-Z0-9_]*$/
-export const servicePathRe = /^\/[a-zA-Z0-9\-._~%!$&'()*+,;=:/]*$/
+// tool names may be any valid JavaScript identifier
+// TODO: should tool names be any label?
+export const toolNameRe = /^[a-zA-Z_][a-zA-Z0-9_]*$/
+export const toolPathRe = /^\/[a-zA-Z0-9\-._~%!$&'()*+,;=:/]*$/
 
 export function email(value: string): boolean {
   return emailValidator.validate(value)
@@ -41,19 +42,19 @@ export function deploymentHash(value?: string): boolean {
 }
 
 export function projectIdentifier(value?: string): boolean {
-  return !!value && projectRe.test(value)
+  return !!value && projectIdentifierRe.test(value)
 }
 
 export function deploymentIdentifier(value?: string): boolean {
-  return !!value && deploymentRe.test(value)
+  return !!value && deploymentIdentifierRe.test(value)
 }
 
-export function serviceName(value?: string): boolean {
-  return !!value && serviceNameRe.test(value)
+export function toolName(value?: string): boolean {
+  return !!value && toolNameRe.test(value)
 }
 
-export function servicePath(value?: string): boolean {
-  return !!value && servicePathRe.test(value) && isRelativeUrl(value)
+export function toolPath(value?: string): boolean {
+  return !!value && toolPathRe.test(value) && isRelativeUrl(value)
 }
 
 export function cuid(value?: string): boolean {

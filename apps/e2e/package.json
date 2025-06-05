@@ -1,0 +1,31 @@
+{
+  "name": "@agentic/platform-e2e-tests",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Internal Agentic platform E2E tests.",
+  "author": "Travis Fischer <travis@transitivebullsh.it>",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/transitive-bullshit/agentic-platform.git",
+    "directory": "apps/e2e"
+  },
+  "type": "module",
+  "scripts": {
+    "test": "run-s test:*",
+    "test:lint": "eslint .",
+    "test:typecheck": "tsc --noEmit",
+    "test-e2e": "vitest run"
+  },
+  "dependencies": {
+    "ky": "catalog:",
+    "p-map": "catalog:"
+  },
+  "devDependencies": {
+    "@agentic/platform": "workspace:*",
+    "@agentic/platform-api-client": "workspace:*",
+    "@agentic/platform-core": "workspace:*",
+    "@agentic/platform-fixtures": "workspace:*",
+    "fast-content-type-parse": "catalog:"
+  }
+}

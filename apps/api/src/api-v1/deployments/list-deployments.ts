@@ -1,9 +1,10 @@
 import { parseZodSchema } from '@agentic/platform-core'
 import { createRoute, type OpenAPIHono, z } from '@hono/zod-openapi'
 
-import type { AuthenticatedEnv } from '@/lib/types'
+import type { AuthenticatedHonoEnv } from '@/lib/types'
 import { and, db, eq, schema } from '@/db'
 import { acl } from '@/lib/acl'
+import { ensureAuthUser } from '@/lib/ensure-auth-user'
 import {
   openapiAuthenticatedSecuritySchemas,
   openapiErrorResponses
@@ -37,7 +38,7 @@ const route = createRoute({
 })
 
 export function registerV1DeploymentsListDeployments(
-  app: OpenAPIHono<AuthenticatedEnv>
+  app: OpenAPIHono<AuthenticatedHonoEnv>
 ) {
   return app.openapi(route, async (c) => {
     const {
@@ -52,6 +53,9 @@ export function registerV1DeploymentsListDeployments(
 
     const userId = c.get('userId')
     const teamMember = c.get('teamMember')
+    const user = await ensureAuthUser(c)
+    const isAdmin = user.role === 'admin'
+
     let projectId: string | undefined
 
     if (projectIdentifier) {
@@ -64,9 +68,11 @@ export function registerV1DeploymentsListDeployments(
 
     const deployments = await db.query.deployments.findMany({
       where: and(
-        teamMember
-          ? eq(schema.deployments.teamId, teamMember.teamId)
-          : eq(schema.deployments.userId, userId),
+        isAdmin
+          ? undefined
+          : teamMember
+            ? eq(schema.deployments.teamId, teamMember.teamId)
+            : eq(schema.deployments.userId, userId),
         projectId ? eq(schema.deployments.projectId, projectId) : undefined,
         deploymentIdentifier
           ? eq(schema.deployments.identifier, deploymentIdentifier)

@@ -1,7 +1,12 @@
-export * from './access-logger'
 export * from './authenticate'
-export * from './error-handler'
-export * from './init'
 export * from './me'
-export * from './response-time'
 export * from './team'
+export {
+  accessLogger,
+  compress,
+  cors,
+  init,
+  responseTime,
+  sentry,
+  unless
+} from '@agentic/platform-hono'

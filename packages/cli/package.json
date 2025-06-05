@@ -20,13 +20,13 @@
   "scripts": {
     "test": "run-s test:*",
     "test:lint": "eslint .",
-    "test:typecheck": "tsc --noEmit",
-    "test:unit": "vitest run"
+    "test:typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@agentic/platform": "workspace:*",
     "@agentic/platform-api-client": "workspace:*",
     "@agentic/platform-core": "workspace:*",
-    "@agentic/platform-schemas": "workspace:*",
+    "@agentic/platform-types": "workspace:*",
     "@agentic/platform-validators": "workspace:*",
     "@clack/prompts": "catalog:",
     "@hono/node-server": "catalog:",
@@ -38,11 +38,9 @@
     "open": "catalog:",
     "ora": "catalog:",
     "restore-cursor": "catalog:",
-    "semver": "catalog:",
-    "unconfig": "catalog:"
+    "semver": "catalog:"
   },
   "devDependencies": {
-    "@agentic/platform-fixtures": "workspace:*",
     "@commander-js/extra-typings": "catalog:",
     "@types/semver": "catalog:"
   },
