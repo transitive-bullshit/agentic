@@ -28,10 +28,11 @@
   - raw
 - auth
   - custom auth pages for `openauth`
-- consider `projectName` and `projectSlug` or `projectIdentifier`?
 - add username / team name blacklist
   - admin, internal, mcp, sse, etc
 - API gateway
+  - public MCP interface
+  - MCP origin server support
   - add support for custom headers on responses
   - how to handle binary bodies and responses?
 
@@ -60,6 +61,7 @@
     - https://github.com/honojs/middleware/issues/943
     - https://github.com/getsentry/sentry-javascript/tree/master/packages/cloudflare
 - additional transactional emails
+- consider `projectName` and `projectSlug` or `projectIdentifier`?
 
 ## License
 

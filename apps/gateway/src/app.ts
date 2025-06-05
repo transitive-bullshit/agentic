@@ -6,10 +6,13 @@ import {
   responseTime,
   sentry
 } from '@agentic/platform-hono'
+import { Client as McpClient } from '@modelcontextprotocol/sdk/client/index.js'
+import { SSEClientTransport } from '@modelcontextprotocol/sdk/client/sse.js'
 import { Hono } from 'hono'
 
 import type { GatewayHonoEnv } from './lib/types'
 import { createAgenticClient } from './lib/agentic-client'
+import { createHttpResponseFromMcpToolCallResponse } from './lib/create-http-response-from-mcp-tool-call-response'
 import { fetchCache } from './lib/fetch-cache'
 import { getRequestCacheKey } from './lib/get-request-cache-key'
 import { resolveOriginRequest } from './lib/resolve-origin-request'
@@ -72,8 +75,38 @@ app.all(async (ctx) => {
       break
     }
 
-    case 'mcp':
-      throw new Error('MCP not yet supported')
+    case 'mcp': {
+      assert(
+        resolvedOriginRequest.toolArgs,
+        500,
+        'Tool args are required for MCP origin requests'
+      )
+
+      const transport = new SSEClientTransport(
+        new URL(resolvedOriginRequest.deployment.originUrl)
+      )
+      const client = new McpClient({
+        name: resolvedOriginRequest.deployment.originAdapter.serverInfo.name,
+        version:
+          resolvedOriginRequest.deployment.originAdapter.serverInfo.version
+      })
+
+      // TODO: re-use client connection across requests
+      await client.connect(transport)
+
+      // TODO: add timeout support to the origin tool call?
+      // TODO: add response caching for MCP tool calls
+      const toolCallResponse = await client.callTool({
+        name: resolvedOriginRequest.tool.name,
+        arguments: resolvedOriginRequest.toolArgs
+      })
+
+      originResponse = await createHttpResponseFromMcpToolCallResponse(ctx, {
+        tool: resolvedOriginRequest.tool,
+        deployment: resolvedOriginRequest.deployment,
+        toolCallResponse
+      })
+    }
   }
 
   assert(originResponse, 500, 'Origin response is required')

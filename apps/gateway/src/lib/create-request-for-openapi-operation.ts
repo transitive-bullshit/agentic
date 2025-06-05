@@ -1,65 +1,30 @@
 import type {
   AdminDeployment,
-  OpenAPIToolOperation,
-  Tool
+  OpenAPIToolOperation
 } from '@agentic/platform-types'
 import { assert } from '@agentic/platform-core'
 
-import type { GatewayHonoContext } from './types'
-import { cfValidateJsonSchemaObject } from './cf-validate-json-schema-object'
+import type { GatewayHonoContext, ToolArgs } from './types'
 
 export async function createRequestForOpenAPIOperation(
   ctx: GatewayHonoContext,
   {
-    tool,
+    toolArgs,
     operation,
     deployment
   }: {
-    tool: Tool
+    toolArgs: ToolArgs
     operation: OpenAPIToolOperation
     deployment: AdminDeployment
   }
 ): Promise<Request> {
   const request = ctx.req.raw
+  assert(toolArgs, 500, 'Tool args are required')
   assert(
     deployment.originAdapter.type === 'openapi',
     500,
-    `Unexpected origin adapter type: "${deployment.originAdapter.type}"`
+    `Internal logic error for origin adapter type "${deployment.originAdapter.type}"`
   )
-
-  let incomingRequestParamsRaw: Record<string, any> = {}
-  if (request.method === 'GET') {
-    // Params will be coerced to match their expected types via
-    // `cfValidateJsonSchemaObject` since all values will be strings.
-    incomingRequestParamsRaw = Object.fromEntries(
-      new URL(request.url).searchParams.entries()
-    )
-  } else if (request.method === 'POST') {
-    incomingRequestParamsRaw = (await request.clone().json()) as Record<
-      string,
-      any
-    >
-
-    // TODO: Support empty params for POST requests
-    assert(incomingRequestParamsRaw, 400, 'Invalid empty request body')
-    assert(
-      typeof incomingRequestParamsRaw === 'object',
-      400,
-      'Invalid request body'
-    )
-    assert(
-      !Array.isArray(incomingRequestParamsRaw),
-      400,
-      'Invalid request body'
-    )
-  }
-
-  // Validate incoming request params against the tool's input JSON schema.
-  const incomingRequestParams = cfValidateJsonSchemaObject({
-    schema: tool.inputSchema,
-    data: incomingRequestParamsRaw,
-    errorMessage: `Invalid request parameters for tool "${tool.name}"`
-  })
 
   // TODO: Make this more efficient by changing the `parameterSources` data structure
   const params = Object.entries(operation.parameterSources)
@@ -84,13 +49,12 @@ export async function createRequestForOpenAPIOperation(
 
   if (headerParams.length > 0) {
     for (const [key] of headerParams) {
-      headers[key] =
-        (request.headers.get(key) as string) ?? incomingRequestParams[key]
+      headers[key] = (request.headers.get(key) as string) ?? toolArgs[key]
     }
   }
 
   for (const [key] of cookieParams) {
-    headers[key] = String(incomingRequestParams[key])
+    headers[key] = String(toolArgs[key])
   }
 
   let body: string | undefined
@@ -98,7 +62,7 @@ export async function createRequestForOpenAPIOperation(
     body = JSON.stringify(
       Object.fromEntries(
         bodyParams
-          .map(([key]) => [key, incomingRequestParams[key]])
+          .map(([key]) => [key, toolArgs[key]])
           // Prune undefined values. We know these aren't required fields,
           // because the incoming request params have already been validated
           // against the tool's input schema.
@@ -111,7 +75,7 @@ export async function createRequestForOpenAPIOperation(
     // TODO: Double-check FormData usage.
     const formData = new FormData()
     for (const [key] of formDataParams) {
-      const value = incomingRequestParams[key]
+      const value = toolArgs[key]
       if (value !== undefined) {
         formData.append(key, value)
       }
@@ -124,7 +88,7 @@ export async function createRequestForOpenAPIOperation(
   let path = operation.path
   if (pathParams.length > 0) {
     for (const [key] of pathParams) {
-      const value: string = incomingRequestParams[key]
+      const value: string = toolArgs[key]
       assert(value, 400, `Missing required parameter "${key}"`)
 
       const pathParamPlaceholder = `{${key}}`
@@ -145,7 +109,7 @@ export async function createRequestForOpenAPIOperation(
 
   const query = new URLSearchParams()
   for (const [key] of queryParams) {
-    query.set(key, incomingRequestParams[key] as string)
+    query.set(key, toolArgs[key] as string)
   }
   const queryString = query.toString()
   const originRequestUrl = `${deployment.originUrl}${path}${

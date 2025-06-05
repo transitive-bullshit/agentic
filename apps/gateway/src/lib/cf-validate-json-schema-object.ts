@@ -1,3 +1,4 @@
+import type { ContentfulStatusCode } from 'hono/utils/http-status'
 import { Validator } from '@agentic/json-schema'
 import { HttpError } from '@agentic/platform-core'
 import plur from 'plur'
@@ -18,15 +19,17 @@ export function cfValidateJsonSchemaObject<
 >({
   schema,
   data,
+  coerce = false,
+  strictAdditionalProperties = false,
   errorMessage,
-  coerce = true,
-  strictAdditionalProperties = true
+  errorStatusCode = 400
 }: {
   schema: any
   data: Record<string, unknown>
-  errorMessage?: string
   coerce?: boolean
   strictAdditionalProperties?: boolean
+  errorMessage?: string
+  errorStatusCode?: ContentfulStatusCode
 }): T {
   // Special-case check for required fields to give better error messages.
   if (schema.required && Array.isArray(schema.required)) {
@@ -36,7 +39,7 @@ export function cfValidateJsonSchemaObject<
 
     if (missingRequiredFields.length > 0) {
       throw new HttpError({
-        statusCode: 400,
+        statusCode: errorStatusCode,
         message: `${errorMessage ? errorMessage + ': ' : ''}Missing required ${plur('parameter', missingRequiredFields.length)}: ${missingRequiredFields.map((field) => `"${field}"`).join(', ')}`
       })
     }
@@ -55,7 +58,7 @@ export function cfValidateJsonSchemaObject<
 
     if (extraProperties.length > 0) {
       throw new HttpError({
-        statusCode: 400,
+        statusCode: errorStatusCode,
         message: `${errorMessage ? errorMessage + ': ' : ''}Unexpected additional ${plur('parameter', extraProperties.length)}: ${extraProperties.map((property) => `"${property}"`).join(', ')}`
       })
     }
@@ -85,7 +88,7 @@ export function cfValidateJsonSchemaObject<
     .join(' ')}`
 
   throw new HttpError({
-    statusCode: 400,
+    statusCode: errorStatusCode,
     message: finalErrorMessage
   })
 }
