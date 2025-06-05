@@ -5,6 +5,17 @@
 
 # Agentic <!-- omit from toc -->
 
+## API Gateway
+
+- **REST**: `GET/POST gateway.agentic.so/deploymentIdentifier/toolName`
+  - => MCP: `MCPClient.callTool` with JSON body parameters
+  - => OpenAPI: `GET/POST/ETC originUrl/toolName` operation with transformed JSON body params
+- **MCP**: `mcp.agentic.so/deploymentIdentifier` MCP server?
+  - => MCP: `MCPClient.callTool` just proxying tool call
+  - => OpenAPI: `GET/POST/ETC originUrl/toolName` operation with transformed tool params
+- RAW: `METHOD gateway.agentic.so/deploymentIdentifier/<pathname>`
+  - => Raw HTTP: `METHOD originUrl/<pathname>` simple HTTP proxy request
+
 ## TODO
 
 - **webapp**
@@ -20,21 +31,13 @@
 - consider `projectName` and `projectSlug` or `projectIdentifier`?
 - add username / team name blacklist
   - admin, internal, mcp, sse, etc
-- **API gateway**
-  - MCP server vs REST gateway on public and internal sides
-    - **REST**: `GET/POST gateway.agentic.so/deploymentIdentifier/toolName`
-      - => MCP: `MCPClient.callTool` with JSON body parameters
-      - => OpenAPI: `GET/POST/ETC originUrl/toolName` operation with transformed JSON body params
-    - **MCP**: `mcp.agentic.so/deploymentIdentifier/sse` MCP server?
-      - => MCP: `MCPClient.callTool` just proxying tool call
-      - => OpenAPI: `GET/POST/ETC originUrl/toolName` operation with transformed tool params
-    - RAW: `METHOD gateway.agentic.so/deploymentIdentifier/<pathname>`
-      - => Raw HTTP: `METHOD originUrl/<pathname>` simple HTTP proxy request
+- API gateway
   - add support for custom headers on responses
   - how to handle binary bodies and responses?
 
 ## TODO Post-MVP
 
+- first-party deployment hosting
 - stripe
   - re-add coupons
   - declarative json-based pricing

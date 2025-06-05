@@ -14,7 +14,7 @@ import { createSchemaFactory } from '@fisch0920/drizzle-zod'
 import { z } from '@hono/zod-openapi'
 import { createId as createCuid2 } from '@paralleldrive/cuid2'
 
-export const namespaceMaxLength = 64 as const
+export const namespaceMaxLength = 256 as const
 
 // prefix is max 5 characters
 // separator is 1 character
@@ -94,8 +94,8 @@ export function projectIdentifier<
   T extends Readonly<[U, ...U[]]>
 >(
   config?: PgVarcharConfig<T | Writable<T>, never>
-): PgVarcharBuilderInitial<'', Writable<T>, 130> {
-  return varchar({ length: 130, ...config })
+): PgVarcharBuilderInitial<'', Writable<T>, 514> {
+  return varchar({ length: 514, ...config })
 }
 
 /**
@@ -106,8 +106,8 @@ export function deploymentIdentifier<
   T extends Readonly<[U, ...U[]]>
 >(
   config?: PgVarcharConfig<T | Writable<T>, never>
-): PgVarcharBuilderInitial<'', Writable<T>, 160> {
-  return varchar({ length: 160, ...config })
+): PgVarcharBuilderInitial<'', Writable<T>, 530> {
+  return varchar({ length: 530, ...config })
 }
 
 export function username<U extends string, T extends Readonly<[U, ...U[]]>>(
