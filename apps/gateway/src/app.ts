@@ -7,7 +7,7 @@ import {
   sentry
 } from '@agentic/platform-hono'
 import { Client as McpClient } from '@modelcontextprotocol/sdk/client/index.js'
-import { SSEClientTransport } from '@modelcontextprotocol/sdk/client/sse.js'
+import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js'
 import { Hono } from 'hono'
 
 import type { GatewayHonoEnv } from './lib/types'
@@ -68,6 +68,7 @@ app.all(async (ctx) => {
         resolvedOriginRequest.originRequest
       )
 
+      // TODO: transform origin 5XX errors to 502 errors...
       originResponse = await fetchCache(ctx, {
         cacheKey,
         fetchResponse: () => fetch(resolvedOriginRequest.originRequest!)
@@ -82,7 +83,7 @@ app.all(async (ctx) => {
         'Tool args are required for MCP origin requests'
       )
 
-      const transport = new SSEClientTransport(
+      const transport = new StreamableHTTPClientTransport(
         new URL(resolvedOriginRequest.deployment.originUrl)
       )
       const client = new McpClient({

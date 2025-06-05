@@ -5,7 +5,7 @@ import type {
 } from '@agentic/platform-types'
 import { assert } from '@agentic/platform-core'
 import { Client as McpClient } from '@modelcontextprotocol/sdk/client/index.js'
-import { SSEClientTransport } from '@modelcontextprotocol/sdk/client/sse.js'
+import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js'
 
 export async function resolveMCPOriginAdapter({
   name,
@@ -28,7 +28,7 @@ export async function resolveMCPOriginAdapter({
     400,
     `Invalid origin adapter type "${originAdapter.type}" for ${label}`
   )
-  const transport = new SSEClientTransport(new URL(originUrl))
+  const transport = new StreamableHTTPClientTransport(new URL(originUrl))
   const client = new McpClient({ name, version })
   await client.connect(transport)
 
