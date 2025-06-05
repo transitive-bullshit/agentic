@@ -35,7 +35,20 @@ export function cfValidateJsonSchemaObject<
     if (missingRequiredFields.length > 0) {
       throw new HttpError({
         statusCode: 400,
-        message: `${errorMessage ? errorMessage + ': ' : ''}Missing required ${plur('field', missingRequiredFields.length)}: ${missingRequiredFields.map((field) => `"${field}"`).join(', ')}`
+        message: `${errorMessage ? errorMessage + ': ' : ''}Missing required ${plur('parameter', missingRequiredFields.length)}: ${missingRequiredFields.map((field) => `"${field}"`).join(', ')}`
+      })
+    }
+  }
+
+  if (schema.properties && !schema.additionalProperties) {
+    const extraProperties = Object.keys(data).filter(
+      (key) => !schema.properties[key]
+    )
+
+    if (extraProperties.length > 0) {
+      throw new HttpError({
+        statusCode: 400,
+        message: `${errorMessage ? errorMessage + ': ' : ''}Unexpected additional ${plur('parameter', extraProperties.length)}: ${extraProperties.map((property) => `"${property}"`).join(', ')}`
       })
     }
   }

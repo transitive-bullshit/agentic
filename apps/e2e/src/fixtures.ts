@@ -180,25 +180,34 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
         response: {
           status: 400
         }
+      },
+      {
+        path: 'dev/test-basic-openapi/getPost',
+        request: {
+          method: 'POST',
+          json: {
+            postId: 1,
+            // additional json body params should throw an error
+            foo: 'bar'
+          }
+        },
+        response: {
+          status: 400
+        }
+      },
+      {
+        path: 'dev/test-basic-openapi/getPost',
+        request: {
+          searchParams: {
+            postId: 1,
+            // additional search params should throw an error
+            foo: 'bar'
+          }
+        },
+        response: {
+          status: 400
+        }
       }
-      // TODO: This should throw an error, but `cfValidateJsonSchemaObject`
-      // currently does not validate additional properties.
-      // TODO: also add a similar test for extra searchParams.
-      // {
-      //   path: 'dev/test-basic-openapi/getPost',
-      //   only: true,
-      //   request: {
-      //     method: 'POST',
-      //     json: {
-      //       postId: 1,
-      //       // additional properties should throw an error
-      //       foo: 'bar'
-      //     }
-      //   },
-      //   response: {
-      //     status: 400
-      //   }
-      // }
     ]
   },
   {
