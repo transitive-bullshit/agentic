@@ -10,6 +10,7 @@
   },
   "type": "module",
   "scripts": {
+    "start": "tsx src/index.ts",
     "test": "run-s test:*",
     "test:lint": "eslint .",
     "test:typecheck": "tsc --noEmit"
