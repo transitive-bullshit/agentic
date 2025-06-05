@@ -3,7 +3,7 @@ import 'dotenv/config'
 import { z } from 'zod'
 
 export const envSchema = z.object({
-  PORT: z.number().default(8080)
+  PORT: z.string().default('8080').transform(Number)
 })
 
 export type Env = z.infer<typeof envSchema>
