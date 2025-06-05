@@ -1,6 +1,6 @@
 import type { AgenticProjectConfig } from '@agentic/platform-types'
 import { assert } from '@agentic/platform-core'
-import { validators } from '@agentic/platform-validators'
+import { isValidProjectName } from '@agentic/platform-validators'
 import { clean as cleanSemver, valid as isValidSemver } from 'semver'
 
 export function resolveMetadata({
@@ -11,7 +11,7 @@ export function resolveMetadata({
   'name' | 'version'
 > {
   assert(
-    validators.projectName(name),
+    isValidProjectName(name),
     `Invalid project name "${name}". Must be lower kebab-case with no spaces between 2 and 64 characters. Example: "my-project" or "linkedin-resolver-23"`
   )
 

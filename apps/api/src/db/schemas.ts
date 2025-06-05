@@ -1,5 +1,11 @@
 import { assert } from '@agentic/platform-core'
-import { parseToolIdentifier, validators } from '@agentic/platform-validators'
+import {
+  isValidCuid,
+  isValidDeploymentIdentifier,
+  isValidProjectIdentifier,
+  isValidTeamSlug,
+  isValidUsername
+} from '@agentic/platform-validators'
 import { z } from '@hono/zod-openapi'
 
 import type { consumersRelations } from './schema/consumer'
@@ -23,7 +29,7 @@ export function getIdSchemaForModelType(modelType: ModelType) {
         const parts = id.split('_')
         if (parts.length !== 2) return false
         if (parts[0] !== idPrefix) return false
-        if (!validators.cuid(parts[1])) return false
+        if (!isValidCuid(parts[1])) return false
 
         return true
       },
@@ -47,39 +53,39 @@ export const projectIdentifierSchema = z
   .string()
   .refine(
     (id) =>
-      validators.projectIdentifier(id) || projectIdSchema.safeParse(id).success,
+      isValidProjectIdentifier(id, { strict: false }) ||
+      projectIdSchema.safeParse(id).success,
     {
       message: 'Invalid project identifier'
     }
   )
-  .describe('Public project identifier (e.g. "namespace/project-name")')
+  .describe('Public project identifier (e.g. "@namespace/project-name")')
   .openapi('ProjectIdentifier')
 
 export const deploymentIdentifierSchema = z
   .string()
   .refine(
     (id) =>
-      !!parseToolIdentifier(id) ||
-      validators.deploymentIdentifier(id) ||
+      isValidDeploymentIdentifier(id, { strict: false }) ||
       deploymentIdSchema.safeParse(id).success,
     {
       message: 'Invalid deployment identifier'
     }
   )
   .describe(
-    'Public deployment identifier (e.g. "namespace/project-name@{hash|version|latest}")'
+    'Public deployment identifier (e.g. "@namespace/project-name@{hash|version|latest}")'
   )
   .openapi('DeploymentIdentifier')
 
 export const usernameSchema = z
   .string()
-  .refine((username) => validators.username(username), {
+  .refine((username) => isValidUsername(username), {
     message: 'Invalid username'
   })
 
 export const teamSlugSchema = z
   .string()
-  .refine((slug) => validators.team(slug), {
+  .refine((slug) => isValidTeamSlug(slug), {
     message: 'Invalid team slug'
   })
 

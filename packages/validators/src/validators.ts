@@ -1,62 +1,64 @@
 import { isCuid } from '@paralleldrive/cuid2'
 import emailValidator from 'email-validator'
-import isRelativeUrl from 'is-relative-url'
 
-export const usernameRe = /^[a-zA-Z0-9-]{1,64}$/
+import type { ParseIdentifierOptions } from './types'
+import { parseDeploymentIdentifier } from './parse-deployment-identifier'
+import { parseProjectIdentifier } from './parse-project-identifier'
+
+export const namespaceRe = /^[a-z0-9-]{1,256}$/
 export const passwordRe = /^.{3,1024}$/
 
-export const projectNameRe = /^[a-z0-9-]{2,64}$/
+export const projectNameRe = /^[a-z0-9-]{1,256}$/
 export const deploymentHashRe = /^[a-z0-9]{8}$/
 
-export const projectIdentifierRe = /^[a-zA-Z0-9-]{1,64}\/[a-z0-9-]{3,64}$/
-export const deploymentIdentifierRe =
-  /^[a-zA-Z0-9-]{1,64}\/[a-z0-9-]{3,64}@[a-z0-9]{8}$/
+export const toolNameRe = /^[a-zA-Z_][a-zA-Z0-9_]{0,63}$/
 
-// tool names may be any valid JavaScript identifier
-// TODO: should tool names be any label?
-export const toolNameRe = /^[a-zA-Z_][a-zA-Z0-9_]*$/
-export const toolPathRe = /^\/[a-zA-Z0-9\-._~%!$&'()*+,;=:/]*$/
-
-export function email(value: string): boolean {
+export function isValidEmail(value: string): boolean {
   return emailValidator.validate(value)
 }
 
-export function username(value?: string): boolean {
-  return !!value && usernameRe.test(value)
+export function isValidNamespace(value?: string): boolean {
+  return !!value && namespaceRe.test(value)
 }
 
-export function team(value?: string): boolean {
-  return username(value)
+export function isValidUsername(value?: string): boolean {
+  return isValidNamespace(value)
 }
 
-export function password(value?: string): boolean {
+export function isValidTeamSlug(value?: string): boolean {
+  return isValidNamespace(value)
+}
+
+export function isValidPassword(value?: string): boolean {
   return !!value && passwordRe.test(value)
 }
 
-export function projectName(value?: string): boolean {
+export function isValidProjectName(value?: string): boolean {
   return !!value && projectNameRe.test(value)
 }
 
-export function deploymentHash(value?: string): boolean {
+export function isValidDeploymentHash(value?: string): boolean {
   return !!value && deploymentHashRe.test(value)
 }
 
-export function projectIdentifier(value?: string): boolean {
-  return !!value && projectIdentifierRe.test(value)
+export function isValidProjectIdentifier(
+  value?: string,
+  opts?: ParseIdentifierOptions
+): boolean {
+  return !!parseProjectIdentifier(value, opts)
 }
 
-export function deploymentIdentifier(value?: string): boolean {
-  return !!value && deploymentIdentifierRe.test(value)
+export function isValidDeploymentIdentifier(
+  value?: string,
+  opts?: ParseIdentifierOptions
+): boolean {
+  return !!parseDeploymentIdentifier(value, opts)
 }
 
-export function toolName(value?: string): boolean {
+export function isValidToolName(value?: string): boolean {
   return !!value && toolNameRe.test(value)
 }
 
-export function toolPath(value?: string): boolean {
-  return !!value && toolPathRe.test(value) && isRelativeUrl(value)
-}
-
-export function cuid(value?: string): boolean {
+export function isValidCuid(value?: string): boolean {
   return !!value && isCuid(value)
 }

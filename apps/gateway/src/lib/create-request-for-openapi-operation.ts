@@ -34,12 +34,6 @@ export async function createRequestForOpenAPIOperation(
     incomingRequestParamsRaw = Object.fromEntries(
       new URL(request.url).searchParams.entries()
     )
-
-    // console.log('debug', {
-    //   url: request.url,
-    //   incomingRequestParams,
-    //   searchParams: new URL(request.url).searchParams
-    // })
   } else if (request.method === 'POST') {
     incomingRequestParamsRaw = (await request.clone().json()) as Record<
       string,
@@ -48,6 +42,16 @@ export async function createRequestForOpenAPIOperation(
 
     // TODO: Support empty params for POST requests
     assert(incomingRequestParamsRaw, 400, 'Invalid empty request body')
+    assert(
+      typeof incomingRequestParamsRaw === 'object',
+      400,
+      'Invalid request body'
+    )
+    assert(
+      !Array.isArray(incomingRequestParamsRaw),
+      400,
+      'Invalid request body'
+    )
   }
 
   // Validate incoming request params against the tool's input JSON schema.

@@ -3,7 +3,7 @@ import { GithubProvider } from '@agentic/openauth/provider/github'
 import { PasswordProvider } from '@agentic/openauth/provider/password'
 import { PasswordUI } from '@agentic/openauth/ui/password'
 import { assert, pick } from '@agentic/platform-core'
-import { validators } from '@agentic/platform-validators'
+import { isValidPassword } from '@agentic/platform-validators'
 
 import { type RawUser } from '@/db'
 import { subjects } from '@/lib/auth/subjects'
@@ -74,7 +74,7 @@ export const authRouter = issuer({
             return 'Password must be less than 1024 characters'
           }
 
-          if (!validators.password(password)) {
+          if (!isValidPassword(password)) {
             return 'Invalid password'
           }
 

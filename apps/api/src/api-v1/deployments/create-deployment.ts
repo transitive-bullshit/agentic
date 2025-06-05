@@ -1,6 +1,9 @@
 import { resolveAgenticProjectConfig } from '@agentic/platform'
 import { assert, parseZodSchema, sha256 } from '@agentic/platform-core'
-import { validators } from '@agentic/platform-validators'
+import {
+  isValidDeploymentIdentifier,
+  isValidProjectIdentifier
+} from '@agentic/platform-validators'
 import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 
 import type { AuthenticatedHonoEnv } from '@/lib/types'
@@ -64,7 +67,7 @@ export function registerV1DeploymentsCreateDeployment(
     const namespace = teamMember ? teamMember.teamSlug : user.username
     const projectIdentifier = `${namespace}/${body.name}`
     assert(
-      validators.projectIdentifier(projectIdentifier),
+      isValidProjectIdentifier(projectIdentifier),
       400,
       `Invalid project identifier "${projectIdentifier}"`
     )
@@ -103,7 +106,7 @@ export function registerV1DeploymentsCreateDeployment(
     const hash = (await sha256()).slice(0, 8)
     const deploymentIdentifier = `${project.identifier}@${hash}`
     assert(
-      validators.deploymentIdentifier(deploymentIdentifier),
+      isValidDeploymentIdentifier(deploymentIdentifier),
       400,
       `Invalid deployment identifier "${deploymentIdentifier}"`
     )

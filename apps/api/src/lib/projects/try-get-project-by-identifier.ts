@@ -1,5 +1,5 @@
 import { assert } from '@agentic/platform-core'
-import { parseToolIdentifier } from '@agentic/platform-validators'
+import { parseProjectIdentifier } from '@agentic/platform-validators'
 
 import type { AuthenticatedHonoContext } from '@/lib/types'
 import { db, eq, projectIdSchema, type RawProject, schema } from '@/db'
@@ -15,9 +15,11 @@ export async function tryGetProjectByIdentifier(
   ctx: AuthenticatedHonoContext,
   {
     projectIdentifier,
+    strict = false,
     ...dbQueryOpts
   }: {
     projectIdentifier: string
+    strict?: boolean
     with?: {
       user?: true
       team?: true
@@ -38,16 +40,19 @@ export async function tryGetProjectByIdentifier(
     return project
   }
 
-  const parsedFaas = parseToolIdentifier(projectIdentifier)
+  const parsedProjectIdentifier = parseProjectIdentifier(projectIdentifier, {
+    strict
+  })
   assert(
-    parsedFaas?.projectIdentifier,
+    parsedProjectIdentifier?.projectIdentifier,
     400,
     `Invalid project identifier "${projectIdentifier}"`
   )
+  projectIdentifier = parsedProjectIdentifier.projectIdentifier
 
   const project = await db.query.projects.findFirst({
     ...dbQueryOpts,
-    where: eq(schema.projects.identifier, parsedFaas.projectIdentifier)
+    where: eq(schema.projects.identifier, projectIdentifier)
   })
   assert(project, 404, `Project not found "${projectIdentifier}"`)
 

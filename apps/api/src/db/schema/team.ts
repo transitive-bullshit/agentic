@@ -1,4 +1,4 @@
-import { validators } from '@agentic/platform-validators'
+import { isValidTeamSlug } from '@agentic/platform-validators'
 import { relations } from '@fisch0920/drizzle-orm'
 import {
   index,
@@ -59,7 +59,7 @@ export const teamSelectSchema = createSelectSchema(teams)
 
 export const teamInsertSchema = createInsertSchema(teams, {
   slug: (schema) =>
-    schema.refine((slug) => validators.team(slug), {
+    schema.refine((slug) => isValidTeamSlug(slug), {
       message: 'Invalid team slug'
     })
 })

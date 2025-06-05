@@ -32,14 +32,6 @@
       - => Raw HTTP: `METHOD originUrl/<pathname>` simple HTTP proxy request
   - add support for custom headers on responses
   - how to handle binary bodies and responses?
-- public identifiers and validators
-  - revisit deployment identifiers so possibly be URL-friendly?
-  - move validators package into platform-types?
-  - force toolPath to be non-empty except for `raw`?
-    - will remove ambiguity from `username/`
-  - make namespace optional? and require `@` prefix if so? like npm packages
-  - separate `parseToolIdentifier` from `parseDeploymentIdentifier` and `parseProjectIdentifier`?
-  - **KISS**
 
 ## TODO Post-MVP
 

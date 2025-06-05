@@ -1,5 +1,6 @@
 import type { PricingPlan, RateLimit } from '@agentic/platform-types'
 import { assert } from '@agentic/platform-core'
+import { parseToolIdentifier } from '@agentic/platform-validators'
 
 import type {
   AdminConsumer,
@@ -40,19 +41,26 @@ export async function resolveOriginRequest(
     ? requestPathParts.slice(1).join('/')
     : pathname
 
-  const { deployment, toolPath } = await getAdminDeployment(ctx, requestPath)
+  const parsedToolIdentifier = parseToolIdentifier(requestPath)
+  assert(parsedToolIdentifier, 404, `Invalid tool identifier "${requestPath}"`)
+  const { toolName } = parsedToolIdentifier
+
+  const deployment = await getAdminDeployment(
+    ctx,
+    parsedToolIdentifier.deploymentIdentifier
+  )
 
   const tool = getTool({
     method,
     deployment,
-    toolPath
+    toolName
   })
 
   logger.debug('request', {
     method,
     pathname,
     deploymentIdentifier: deployment.identifier,
-    toolPath,
+    toolName,
     tool
   })
 
@@ -182,7 +190,7 @@ export async function resolveOriginRequest(
         deployment
       })
     } else {
-      const originRequestUrl = `${deployment.originUrl}${toolPath}${requestUrl.search}`
+      const originRequestUrl = `${deployment.originUrl}/${toolName}${requestUrl.search}`
       originRequest = new Request(originRequestUrl, ctx.req.raw)
     }
 

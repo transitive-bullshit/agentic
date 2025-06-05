@@ -132,9 +132,6 @@ catalogs:
     hono:
       specifier: ^4.7.11
       version: 4.7.11
-    is-relative-url:
-      specifier: ^4.0.0
-      version: 4.0.0
     knip:
       specifier: ^5.60.0
       version: 5.60.0
@@ -429,7 +426,7 @@ importers:
         version: link:../../packages/validators
       '@hono/zod-validator':
         specifier: 'catalog:'
-        version: 0.7.0(hono@4.7.11)(zod@3.25.51)
+        version: 0.7.0(hono@4.7.11)(zod@3.25.36)
       '@modelcontextprotocol/sdk':
         specifier: 'catalog:'
         version: 1.12.1
@@ -744,9 +741,9 @@ importers:
       email-validator:
         specifier: 'catalog:'
         version: 2.0.4
-      is-relative-url:
+      type-fest:
         specifier: 'catalog:'
-        version: 4.0.0
+        version: 4.41.0
 
 packages:
 
@@ -3730,10 +3727,6 @@ packages:
     resolution: {integrity: sha512-1ANGLZ+Nkv1ptFb2pa8oG8Lem4krflKuX/gINiHJHjJUKaJHk/SXk5x6K3J+39/p0h1RQ2saROclJJ+QLvETCQ==}
     engines: {node: '>=8'}
 
-  is-absolute-url@4.0.1:
-    resolution: {integrity: sha512-/51/TKE88Lmm7Gc4/8btclNXWS+g50wXhYJq8HWIBAGUBnoAdRu1aXeh364t/O7wXDAcTJDP8PNuNKWUDWie+A==}
-    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
-
   is-array-buffer@3.0.5:
     resolution: {integrity: sha512-DDfANUiiG2wC1qawP66qlTugJeL5HyzMpfr8lLK+jMQirGzNod0B12cFB/9q838Ru27sBwfw78/rdoU7RERz6A==}
     engines: {node: '>= 0.4'}
@@ -3849,10 +3842,6 @@ packages:
   is-regex@1.2.1:
     resolution: {integrity: sha512-MjYsKHO5O7mCsmRGxWcLWheFqN9DJ/2TmngvjKXihe6efViPqc274+Fx/4fYj/r03+ESvBdTXK0V6tA3rgez1g==}
     engines: {node: '>= 0.4'}
-
-  is-relative-url@4.0.0:
-    resolution: {integrity: sha512-PkzoL1qKAYXNFct5IKdKRH/iBQou/oCC85QhXj6WKtUQBliZ4Yfd3Zk27RHu9KQG8r6zgvAA2AQKC9p+rqTszg==}
-    engines: {node: '>=14.16'}
 
   is-set@2.0.3:
     resolution: {integrity: sha512-iPAjerrse27/ygGLxw+EBR9agv9Y6uLeYVJMu+QNCoouJ1/1ri0mGrcWpfCqFZuzzx3WjtwxG098X+n4OuRkPg==}
@@ -5869,6 +5858,11 @@ snapshots:
       '@hono/zod-validator': 0.7.0(hono@4.7.11)(zod@3.25.51)
       hono: 4.7.11
       zod: 3.25.51
+
+  '@hono/zod-validator@0.7.0(hono@4.7.11)(zod@3.25.36)':
+    dependencies:
+      hono: 4.7.11
+      zod: 3.25.36
 
   '@hono/zod-validator@0.7.0(hono@4.7.11)(zod@3.25.51)':
     dependencies:
@@ -8380,8 +8374,6 @@ snapshots:
 
   irregular-plurals@3.5.0: {}
 
-  is-absolute-url@4.0.1: {}
-
   is-array-buffer@3.0.5:
     dependencies:
       call-bind: 1.0.8
@@ -8486,10 +8478,6 @@ snapshots:
       gopd: 1.2.0
       has-tostringtag: 1.0.2
       hasown: 2.0.2
-
-  is-relative-url@4.0.0:
-    dependencies:
-      is-absolute-url: 4.0.1
 
   is-set@2.0.3: {}
 
