@@ -36,6 +36,15 @@ et est aut quod aut provident voluptas autem voluptas",
 }
 `;
 
+exports[`Basic MCP origin tool call success > 5.0: POST @dev/test-basic-mcp/add 1`] = `
+[
+  {
+    "text": "42",
+    "type": "text",
+  },
+]
+`;
+
 exports[`Basic OpenAPI getPost success > 0.0: POST @dev/test-basic-openapi/getPost 1`] = `
 {
   "body": "quia et suscipit

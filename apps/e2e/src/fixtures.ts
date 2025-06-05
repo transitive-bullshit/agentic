@@ -7,6 +7,9 @@ export type E2ETestFixture = {
   /** @default false */
   only?: boolean
 
+  /** @default false */
+  debug?: boolean
+
   request?: {
     /** @default 'GET' */
     method?: 'GET' | 'POST' | 'PUT' | 'DELETE'
@@ -41,6 +44,9 @@ export type E2ETestFixtureSuite = {
 
   /** @default false */
   compareResponseBodies?: boolean
+
+  /** @default false */
+  debug?: boolean
 }
 
 export const fixtureSuites: E2ETestFixtureSuite[] = [
@@ -342,20 +348,26 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
         }
       }
     ]
+  },
+  {
+    title: 'Basic MCP origin tool call success',
+    compareResponseBodies: true,
+    only: true,
+    debug: true,
+    fixtures: [
+      {
+        path: '@dev/test-basic-mcp/add',
+        request: {
+          method: 'POST',
+          json: {
+            a: 22,
+            b: 20
+          }
+        },
+        response: {
+          body: [{ type: 'text', text: '42' }]
+        }
+      }
+    ]
   }
-  // {
-  //   title: 'Basic MCP origin tool call success',
-  //   compareResponseBodies: true,
-  //   fixtures: [
-  //     {
-  //       path: '@dev/test-basic-openapi@fc856666/get_post',
-  //       request: {
-  //         method: 'POST',
-  //         json: {
-  //           postId: 13
-  //         }
-  //       }
-  //     },
-  //   ]
-  // }
 ]

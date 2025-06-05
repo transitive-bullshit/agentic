@@ -32,6 +32,7 @@ for (const [i, fixtureSuite] of fixtureSuites.entries()) {
       } = fixture.response ?? {}
       const { snapshot = status >= 200 && status < 300 } =
         fixture.response ?? {}
+      const debugFixture = !!(fixture.debug ?? fixtureSuite.debug)
 
       let testFn = fixture.only ? test.only : test
       if (fixtureSuite.sequential) {
@@ -94,10 +95,12 @@ for (const [i, fixtureSuite] of fixtureSuites.entries()) {
             }
           }
 
-          // console.log(`${i}.${j}: ${method} ${fixture.path} => ${status}`, {
-          //   body,
-          //   headers: Object.fromEntries(res.headers.entries())
-          // })
+          if (debugFixture) {
+            console.log(`${i}.${j}: ${method} ${fixture.path} => ${status}`, {
+              body,
+              headers: Object.fromEntries(res.headers.entries())
+            })
+          }
         }
       )
     }

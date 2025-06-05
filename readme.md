@@ -31,6 +31,9 @@
 - add username / team name blacklist
   - admin, internal, mcp, sse, etc
 - API gateway
+  - `cfValidateJsonSchemaObject` relax object constraint for output validation
+    - tool call outputs might not be objects
+    - keep the object validation for tool input params
   - public MCP interface
   - MCP origin server support
   - add support for custom headers on responses
