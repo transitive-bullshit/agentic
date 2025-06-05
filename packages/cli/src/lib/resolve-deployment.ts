@@ -7,7 +7,7 @@ import { AuthStore } from './auth-store'
 export async function resolveDeployment({
   client,
   deploymentIdentifier,
-  fuzzyDeploymentIdentifierVersion = 'latest',
+  fuzzyDeploymentIdentifierVersion,
   cwd,
   populate
 }: {
@@ -27,7 +27,7 @@ export async function resolveDeployment({
     // TODO: resolve deploymentIdentifier; config name may include namespace?
     // TODO: this needs work...
 
-    deploymentIdentifier = `${namespace}/${config.name}@${fuzzyDeploymentIdentifierVersion}`
+    deploymentIdentifier = `@${namespace}/${config.name}${fuzzyDeploymentIdentifierVersion ? `@${fuzzyDeploymentIdentifierVersion}` : ''}`
   }
 
   const deployment = await client.getDeploymentByIdentifier({

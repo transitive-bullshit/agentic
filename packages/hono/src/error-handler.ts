@@ -33,7 +33,7 @@ export function errorHandler(
   if (status >= 500) {
     logger.error(status, err)
     captureException(err)
-  } else if (isProd) {
+  } else {
     logger.warn(status, err)
   }
 

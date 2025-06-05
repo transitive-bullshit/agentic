@@ -12,7 +12,7 @@ export function resolveMetadata({
 > {
   assert(
     isValidProjectName(name),
-    `Invalid project name "${name}". Must be lower kebab-case with no spaces between 2 and 64 characters. Example: "my-project" or "linkedin-resolver-23"`
+    `Invalid project name "${name}". Must be ascii-only lower kebab-case with no spaces between 1 and 256 characters. For example: "my-project" or "linkedin-resolver-23"`
   )
 
   if (version) {

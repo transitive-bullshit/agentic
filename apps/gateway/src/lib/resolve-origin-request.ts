@@ -35,16 +35,13 @@ export async function resolveOriginRequest(
   const { method } = ctx.req
   const requestUrl = new URL(ctx.req.url)
   const { pathname } = requestUrl
-  const requestPathParts = pathname.split('/')
-
-  // TODO: the isMCPRequest logic needs to be completely redone.
-  const isMCPRequest = requestPathParts[0] === 'mcp'
-  const requestPath = isMCPRequest
-    ? requestPathParts.slice(1).join('/')
-    : pathname
-
-  const parsedToolIdentifier = parseToolIdentifier(requestPath)
-  assert(parsedToolIdentifier, 404, `Invalid tool identifier "${requestPath}"`)
+  const requestedToolIdentifier = pathname.replace(/^\//, '')
+  const parsedToolIdentifier = parseToolIdentifier(requestedToolIdentifier)
+  assert(
+    parsedToolIdentifier,
+    404,
+    `Invalid tool identifier "${requestedToolIdentifier}"`
+  )
   const { toolName } = parsedToolIdentifier
 
   const deployment = await getAdminDeployment(

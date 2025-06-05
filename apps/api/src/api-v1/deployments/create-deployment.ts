@@ -65,7 +65,7 @@ export function registerV1DeploymentsCreateDeployment(
     const logger = c.get('logger')
 
     const namespace = teamMember ? teamMember.teamSlug : user.username
-    const projectIdentifier = `${namespace}/${body.name}`
+    const projectIdentifier = `@${namespace}/${body.name}`
     assert(
       isValidProjectIdentifier(projectIdentifier),
       400,

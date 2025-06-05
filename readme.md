@@ -37,6 +37,9 @@
   - how to handle binary bodies and responses?
 - add requestId to all JSON error responses
 - add support for `immutable` in `toolConfigs`
+- mcp origin servers
+  - ignore sse for now
+  - only support [streamable http](https://modelcontextprotocol.io/specification/2025-03-26/basic/transports#streamable-http) like smithery does
 
 ## TODO Post-MVP
 
