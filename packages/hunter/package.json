@@ -1,6 +1,6 @@
 {
   "name": "@agentic/hunter",
-  "version": "7.6.6",
+  "version": "7.6.7",
   "description": "Agentic SDK for hunter.io email lookup.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",

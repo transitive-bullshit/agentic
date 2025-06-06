@@ -1,6 +1,6 @@
 {
   "name": "@agentic/llamaindex",
-  "version": "7.6.6",
+  "version": "7.6.7",
   "description": "Agentic adapter for the LlamaIndex AI SDK.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",

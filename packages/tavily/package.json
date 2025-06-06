@@ -1,6 +1,6 @@
 {
   "name": "@agentic/tavily",
-  "version": "7.6.6",
+  "version": "7.6.7",
   "description": "Agentic SDK for Tavily.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",
