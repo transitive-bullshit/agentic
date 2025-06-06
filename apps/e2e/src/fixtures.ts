@@ -49,6 +49,8 @@ export type E2ETestFixtureSuite = {
   debug?: boolean
 }
 
+// const now = Date.now()
+
 export const fixtureSuites: E2ETestFixtureSuite[] = [
   {
     title: 'Basic OpenAPI getPost success',
@@ -350,10 +352,9 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
     ]
   },
   {
-    title: 'Basic MCP origin tool call success',
+    title: 'Basic MCP origin "add" tool call success',
     compareResponseBodies: true,
-    only: true,
-    debug: true,
+    // debug: true,
     fixtures: [
       {
         path: '@dev/test-basic-mcp/add',
@@ -367,7 +368,41 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
         response: {
           body: [{ type: 'text', text: '42' }]
         }
+      },
+      {
+        path: '@dev/test-basic-mcp/add',
+        request: {
+          searchParams: {
+            a: 22,
+            b: 20
+          }
+        },
+        response: {
+          body: [{ type: 'text', text: '42' }]
+        }
       }
     ]
   }
+  // {
+  //   title: 'Basic MCP origin "echo" tool call success',
+  //   only: true,
+  //   // debug: true,
+  //   fixtures: [
+  //     {
+  //       path: '@dev/test-basic-mcp/echo',
+  //       request: {
+  //         method: 'POST',
+  //         json: {
+  //           nala: 'kitten',
+  //           now
+  //         }
+  //       },
+  //       response: {
+  //         body: [
+  //           { type: 'text', text: JSON.stringify({ nala: 'kitten', now }) }
+  //         ]
+  //       }
+  //     }
+  //   ]
+  // }
 ]

@@ -12,7 +12,7 @@ const server = new FastMCP({
 
 server.addTool({
   name: 'add',
-  description: 'Add two numbers',
+  description: 'Add two numbers.',
   parameters: z.object({
     a: z.number(),
     b: z.number()
@@ -23,14 +23,11 @@ server.addTool({
 })
 
 server.addTool({
-  name: 'add2',
-  description: 'TODO',
-  parameters: z.object({
-    a: z.number(),
-    b: z.number()
-  }),
+  name: 'echo',
+  description: 'Echos back the input parameters.',
+  parameters: z.any(),
   execute: async (args) => {
-    return String(args.a + args.b)
+    return JSON.stringify(args)
   }
 })
 

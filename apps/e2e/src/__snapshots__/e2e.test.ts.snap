@@ -36,7 +36,16 @@ et est aut quod aut provident voluptas autem voluptas",
 }
 `;
 
-exports[`Basic MCP origin tool call success > 5.0: POST @dev/test-basic-mcp/add 1`] = `
+exports[`Basic MCP origin "add" tool call success > 5.0: POST @dev/test-basic-mcp/add 1`] = `
+[
+  {
+    "text": "42",
+    "type": "text",
+  },
+]
+`;
+
+exports[`Basic MCP origin "add" tool call success > 5.1: GET @dev/test-basic-mcp/add 1`] = `
 [
   {
     "text": "42",
