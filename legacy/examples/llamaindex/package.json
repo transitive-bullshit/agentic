@@ -11,8 +11,8 @@
     "@agentic/core": "workspace:*",
     "@agentic/llamaindex": "workspace:*",
     "@agentic/stdlib": "workspace:*",
-    "@llamaindex/openai": "^0.4.1",
-    "@llamaindex/workflow": "^1.1.4",
+    "@llamaindex/openai": "catalog:",
+    "@llamaindex/workflow": "catalog:",
     "llamaindex": "catalog:",
     "zod": "catalog:"
   }
