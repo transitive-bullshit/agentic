@@ -1,10 +1,10 @@
 import type { ContentfulStatusCode } from 'hono/utils/http-status'
 import { Validator } from '@agentic/json-schema'
-import { HttpError } from '@agentic/platform-core'
+import { assert, HttpError } from '@agentic/platform-core'
 import plur from 'plur'
 
 /**
- * Validates `data` against the provided JSON schema object.
+ * Validates `data` against the provided JSON schema.
  *
  * This method uses a fork of `@cfworker/json-schema`. It does not use `ajv`
  * because `ajv` is not supported on CF workers due to its dynamic code
@@ -14,9 +14,7 @@ import plur from 'plur'
  * not running on CF workers, consider using `validateJsonSchemaObject` from
  * `@agentic/platform-openapi-utils`.
  */
-export function cfValidateJsonSchemaObject<
-  T extends Record<string, any> = Record<string, any>
->({
+export function cfValidateJsonSchema<T = unknown>({
   schema,
   data,
   coerce = false,
@@ -25,16 +23,29 @@ export function cfValidateJsonSchemaObject<
   errorStatusCode = 400
 }: {
   schema: any
-  data: Record<string, unknown>
+  data: unknown
   coerce?: boolean
   strictAdditionalProperties?: boolean
   errorMessage?: string
   errorStatusCode?: ContentfulStatusCode
 }): T {
-  // Special-case check for required fields to give better error messages.
-  if (schema.required && Array.isArray(schema.required)) {
+  assert(schema, 400, '`schema` is required')
+  const isSchemaObject =
+    typeof schema === 'object' &&
+    !Array.isArray(schema) &&
+    schema.type === 'object'
+  const isDataObject = typeof data === 'object' && !Array.isArray(data)
+  if (isSchemaObject && !isDataObject) {
+    throw new HttpError({
+      statusCode: 400,
+      message: `${errorMessage ? errorMessage + ': ' : ''}Data must be an object according to its schema.`
+    })
+  }
+
+  // Special-case check for required fields to give better error messages
+  if (isSchemaObject && Array.isArray(schema.required)) {
     const missingRequiredFields: string[] = schema.required.filter(
-      (field: string) => (data as T)[field] === undefined
+      (field: string) => (data as Record<string, unknown>)[field] === undefined
     )
 
     if (missingRequiredFields.length > 0) {
@@ -48,11 +59,12 @@ export function cfValidateJsonSchemaObject<
   // Special-case check for additional top-level fields to give better error
   // messages.
   if (
+    isSchemaObject &&
     schema.properties &&
     (schema.additionalProperties === false ||
       (schema.additionalProperties === undefined && strictAdditionalProperties))
   ) {
-    const extraProperties = Object.keys(data).filter(
+    const extraProperties = Object.keys(data as Record<string, unknown>).filter(
       (key) => !schema.properties[key]
     )
 

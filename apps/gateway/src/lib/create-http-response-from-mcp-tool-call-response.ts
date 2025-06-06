@@ -2,7 +2,7 @@ import type { AdminDeployment, Tool } from '@agentic/platform-types'
 import { assert } from '@agentic/platform-core'
 
 import type { GatewayHonoContext, McpToolCallResponse } from './types'
-import { cfValidateJsonSchemaObject } from './cf-validate-json-schema-object'
+import { cfValidateJsonSchema } from './cf-validate-json-schema'
 
 export async function createHttpResponseFromMcpToolCallResponse(
   _ctx: GatewayHonoContext,
@@ -35,7 +35,7 @@ export async function createHttpResponseFromMcpToolCallResponse(
     )
 
     // Validate tool response against the tool's output schema.
-    const toolCallResponseContent = cfValidateJsonSchemaObject({
+    const toolCallResponseContent = cfValidateJsonSchema({
       schema: tool.outputSchema,
       data: toolCallResponse.structuredContent as Record<string, unknown>,
       coerce: false,

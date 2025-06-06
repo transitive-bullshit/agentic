@@ -22,6 +22,18 @@ server.addTool({
   }
 })
 
+server.addTool({
+  name: 'add2',
+  description: 'TODO',
+  parameters: z.object({
+    a: z.number(),
+    b: z.number()
+  }),
+  execute: async (args) => {
+    return String(args.a + args.b)
+  }
+})
+
 await server.start({
   transportType: 'httpStream',
   httpStream: {

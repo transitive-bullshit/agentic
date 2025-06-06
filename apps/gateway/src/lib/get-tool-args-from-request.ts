@@ -2,7 +2,7 @@ import type { AdminDeployment, Tool } from '@agentic/platform-types'
 import { assert } from '@agentic/platform-core'
 
 import type { GatewayHonoContext } from './types'
-import { cfValidateJsonSchemaObject } from './cf-validate-json-schema-object'
+import { cfValidateJsonSchema } from './cf-validate-json-schema'
 
 export async function getToolArgsFromRequest(
   ctx: GatewayHonoContext,
@@ -48,7 +48,7 @@ export async function getToolArgsFromRequest(
   }
 
   // Validate incoming request params against the tool's input schema.
-  const incomingRequestArgs = cfValidateJsonSchemaObject({
+  const incomingRequestArgs = cfValidateJsonSchema<Record<string, any>>({
     schema: tool.inputSchema,
     data: incomingRequestArgsRaw,
     errorMessage: `Invalid request parameters for tool "${tool.name}"`,
