@@ -1,6 +1,6 @@
 {
   "name": "@agentic/airtable",
-  "version": "7.6.5",
+  "version": "7.6.6",
   "description": "Agentic SDK for Airtable.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",

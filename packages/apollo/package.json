@@ -1,6 +1,6 @@
 {
   "name": "@agentic/apollo",
-  "version": "7.6.5",
+  "version": "7.6.6",
   "description": "Agentic SDK for Apollo.io.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",

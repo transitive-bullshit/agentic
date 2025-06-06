@@ -1,6 +1,6 @@
 {
   "name": "@agentic/dexter",
-  "version": "7.6.5",
+  "version": "7.6.6",
   "description": "Agentic adapter for the Dexter AI SDK by Dexa.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",
