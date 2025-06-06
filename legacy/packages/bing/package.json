@@ -1,6 +1,6 @@
 {
   "name": "@agentic/bing",
-  "version": "7.6.6",
+  "version": "7.6.7",
   "description": "Agentic SDK for Bing search.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",
