@@ -43,6 +43,7 @@
 - mcp origin servers
   - ignore sse for now
   - only support [streamable http](https://modelcontextprotocol.io/specification/2025-03-26/basic/transports#streamable-http) like smithery does
+- allow config name to be `project-name` or `@namespace/project-name`?
 
 ## TODO Post-MVP
 
