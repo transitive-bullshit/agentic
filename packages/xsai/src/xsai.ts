@@ -1,5 +1,7 @@
 import { type AIFunctionLike, AIFunctionSet, isZodSchema } from '@agentic/core'
-import { tool, type ToolResult } from '@xsai/tool'
+import { tool } from '@xsai/tool'
+
+export type Tool = Awaited<ReturnType<typeof tool>>
 
 /**
  * Converts a set of Agentic stdlib AI functions to an object compatible with
@@ -7,7 +9,7 @@ import { tool, type ToolResult } from '@xsai/tool'
  */
 export function createXSAITools(
   ...aiFunctionLikeTools: AIFunctionLike[]
-): Promise<ToolResult[]> {
+): Promise<Tool[]> {
   const fns = new AIFunctionSet(aiFunctionLikeTools)
 
   return Promise.all(
