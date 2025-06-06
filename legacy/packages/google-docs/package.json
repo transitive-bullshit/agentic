@@ -1,6 +1,6 @@
 {
   "name": "@agentic/google-docs",
-  "version": "7.6.5",
+  "version": "7.6.6",
   "description": "Agentic SDK for Google Docs.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",
