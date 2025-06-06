@@ -24,7 +24,7 @@ server.addTool({
 
 server.addTool({
   name: 'echo',
-  description: 'Echos back the input parameters.',
+  description: 'Echoes back the input parameters.',
   parameters: z.record(z.string(), z.any()),
   execute: async (args) => {
     return JSON.stringify(args)

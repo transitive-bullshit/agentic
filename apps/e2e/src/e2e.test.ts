@@ -30,8 +30,10 @@ for (const [i, fixtureSuite] of fixtureSuites.entries()) {
         headers: expectedHeaders,
         body: expectedBody
       } = fixture.response ?? {}
-      const { snapshot = status >= 200 && status < 300 } =
-        fixture.response ?? {}
+      const snapshot =
+        fixture.response?.snapshot ??
+        fixtureSuite.snapshot ??
+        (status >= 200 && status < 300)
       const debugFixture = !!(fixture.debug ?? fixtureSuite.debug)
 
       let testFn = fixture.only ? test.only : test

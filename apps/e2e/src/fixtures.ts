@@ -47,6 +47,9 @@ export type E2ETestFixtureSuite = {
 
   /** @default false */
   debug?: boolean
+
+  /** @default undefined */
+  snapshot?: boolean
 }
 
 const now = Date.now()
@@ -354,7 +357,6 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
   {
     title: 'Basic MCP origin "add" tool call success',
     compareResponseBodies: true,
-    // debug: true,
     fixtures: [
       {
         path: '@dev/test-basic-mcp/add',
@@ -385,8 +387,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
   },
   {
     title: 'Basic MCP origin "echo" tool call success',
-    only: true,
-    debug: true,
+    snapshot: false,
     fixtures: [
       {
         path: '@dev/test-basic-mcp/echo',
@@ -394,12 +395,38 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
           method: 'POST',
           json: {
             nala: 'kitten',
+            num: 123,
             now
           }
         },
         response: {
           body: [
-            { type: 'text', text: JSON.stringify({ nala: 'kitten', now }) }
+            {
+              type: 'text',
+              text: JSON.stringify({ nala: 'kitten', num: 123, now })
+            }
+          ]
+        }
+      },
+      {
+        path: '@dev/test-basic-mcp/echo',
+        request: {
+          searchParams: {
+            nala: 'kitten',
+            num: 123,
+            now
+          }
+        },
+        response: {
+          body: [
+            {
+              type: 'text',
+              text: JSON.stringify({
+                nala: 'kitten',
+                num: '123',
+                now: `${now}`
+              })
+            }
           ]
         }
       }
