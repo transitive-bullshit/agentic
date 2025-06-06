@@ -49,7 +49,7 @@ export type E2ETestFixtureSuite = {
   debug?: boolean
 }
 
-// const now = Date.now()
+const now = Date.now()
 
 export const fixtureSuites: E2ETestFixtureSuite[] = [
   {
@@ -382,27 +382,27 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
         }
       }
     ]
+  },
+  {
+    title: 'Basic MCP origin "echo" tool call success',
+    only: true,
+    debug: true,
+    fixtures: [
+      {
+        path: '@dev/test-basic-mcp/echo',
+        request: {
+          method: 'POST',
+          json: {
+            nala: 'kitten',
+            now
+          }
+        },
+        response: {
+          body: [
+            { type: 'text', text: JSON.stringify({ nala: 'kitten', now }) }
+          ]
+        }
+      }
+    ]
   }
-  // {
-  //   title: 'Basic MCP origin "echo" tool call success',
-  //   only: true,
-  //   // debug: true,
-  //   fixtures: [
-  //     {
-  //       path: '@dev/test-basic-mcp/echo',
-  //       request: {
-  //         method: 'POST',
-  //         json: {
-  //           nala: 'kitten',
-  //           now
-  //         }
-  //       },
-  //       response: {
-  //         body: [
-  //           { type: 'text', text: JSON.stringify({ nala: 'kitten', now }) }
-  //         ]
-  //       }
-  //     }
-  //   ]
-  // }
 ]
