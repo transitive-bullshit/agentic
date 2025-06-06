@@ -10,7 +10,7 @@ catalog:
   '@cloudflare/workers-types': ^4.20250604.0
   '@commander-js/extra-typings': ^14.0.0
   '@edge-runtime/vm': ^5.0.0
-  '@fisch0920/config': ^1.1.0
+  '@fisch0920/config': ^1.1.1
   '@fisch0920/drizzle-orm': ^0.43.7
   '@fisch0920/drizzle-zod': ^0.7.9
   '@hono/node-server': ^1.14.3
