@@ -31,13 +31,11 @@
 - add username / team name blacklist
   - admin, internal, mcp, sse, etc
 - API gateway
-  - `cfValidateJsonSchemaObject` relax object constraint for output validation
-    - tool call outputs might not be objects
-    - keep the object validation for tool input params
   - public MCP interface
   - MCP origin server support
   - add support for custom headers on responses
   - how to handle binary bodies and responses?
+  - caching for MCP tool call responses
 - add requestId to all JSON error responses
 - add support for `immutable` in `toolConfigs`
 - mcp origin servers
@@ -71,6 +69,7 @@
     - https://github.com/getsentry/sentry-javascript/tree/master/packages/cloudflare
 - additional transactional emails
 - consider `projectName` and `projectSlug` or `projectIdentifier`?
+- handle or validate against dynamic MCP origin tools
 
 ## License
 

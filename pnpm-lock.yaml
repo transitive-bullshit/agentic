@@ -726,6 +726,9 @@ importers:
 
   packages/types:
     dependencies:
+      '@agentic/platform-validators':
+        specifier: workspace:*
+        version: link:../validators
       '@hono/zod-openapi':
         specifier: 'catalog:'
         version: 0.19.8(hono@4.7.11)(zod@3.25.51)
