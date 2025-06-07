@@ -28,8 +28,6 @@
   - raw
 - auth
   - custom auth pages for `openauth`
-- add username / team name blacklist
-  - admin, internal, mcp, sse, etc
 - API gateway
   - how to handle binary bodies and responses?
   - add support for `immutable` in `toolConfigs`

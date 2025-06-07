@@ -1,3 +1,4 @@
+export * from './namespace-blacklist'
 export * from './parse-deployment-identifier'
 export * from './parse-project-identifier'
 export * from './parse-tool-identifier'

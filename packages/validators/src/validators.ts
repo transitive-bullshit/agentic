@@ -2,6 +2,7 @@ import { isCuid } from '@paralleldrive/cuid2'
 import emailValidator from 'email-validator'
 
 import type { ParseIdentifierOptions } from './types'
+import { namespaceBlacklist } from './namespace-blacklist'
 import { parseDeploymentIdentifier } from './parse-deployment-identifier'
 import { parseProjectIdentifier } from './parse-project-identifier'
 
@@ -19,6 +20,10 @@ export function isValidEmail(value: string): boolean {
 
 export function isValidNamespace(value?: string): boolean {
   return !!value && namespaceRe.test(value)
+}
+
+export function isNamespaceAllowed(value?: string): boolean {
+  return !!value && isValidNamespace(value) && !namespaceBlacklist.has(value)
 }
 
 export function isValidUsername(value?: string): boolean {
