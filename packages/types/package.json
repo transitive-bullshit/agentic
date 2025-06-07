@@ -24,6 +24,7 @@
     "test:unit": "vitest run"
   },
   "dependencies": {
+    "@agentic/platform-validators": "workspace:*",
     "@hono/zod-openapi": "catalog:",
     "ms": "catalog:",
     "type-fest": "catalog:",

@@ -1,64 +1,38 @@
 import { describe, expect, test } from 'vitest'
 
-import { parseToolIdentifier } from './parse-tool-identifier'
+import { parseProjectIdentifier } from './parse-project-identifier'
 import {
-  isValidDeploymentHash,
-  isValidDeploymentIdentifier,
   isValidNamespace,
   isValidProjectIdentifier,
-  isValidProjectName,
-  isValidToolName
+  isValidProjectName
 } from './validators'
 
-function success(...args: Parameters<typeof parseToolIdentifier>) {
-  const result = parseToolIdentifier(...args)
+function success(...args: Parameters<typeof parseProjectIdentifier>) {
+  const result = parseProjectIdentifier(...args)
   expect(result).toBeTruthy()
   expect(result!.projectIdentifier).toBeTruthy()
   expect(result!.projectNamespace).toBeTruthy()
   expect(result!.projectName).toBeTruthy()
-  expect(result!.deploymentIdentifier).toBeTruthy()
-  expect(result!.deploymentVersion || result!.deploymentHash).toBeTruthy()
   expect(isValidProjectIdentifier(result!.projectIdentifier)).toBe(true)
   expect(isValidProjectName(result!.projectName)).toBe(true)
   expect(isValidNamespace(result!.projectNamespace)).toBe(true)
-  expect(isValidDeploymentIdentifier(result!.deploymentIdentifier)).toBe(true)
-  expect(isValidToolName(result!.toolName)).toBe(true)
-
-  if (result!.deploymentHash) {
-    expect(isValidDeploymentHash(result!.deploymentHash)).toBe(true)
-  }
-
   expect(result).toMatchSnapshot()
 }
 
-function error(...args: Parameters<typeof parseToolIdentifier>) {
-  const result = parseToolIdentifier(...args)
+function error(...args: Parameters<typeof parseProjectIdentifier>) {
+  const result = parseProjectIdentifier(...args)
   expect(result).toBeUndefined()
 }
 
-describe('parseToolIdentifier', () => {
+describe('parseProjectIdentifier', () => {
   test('strict mode valid', () => {
-    success('@username/foo-bar@01234567/foo')
-    success('@username/foo-bar@01234567/foo')
-    success('@username/foo-bar@abc123lz/foo')
-    success('@username/foo-bar/foo')
-    success('@username/foobar123-yo@01234567/foo_bar_BAR_901')
-    success('@username/foobar@01234567/get_weather01')
-    success('@username/foobar@latest/foo')
-    success('@username/foobar@dev/foo')
-    success('@username/foobar@1.0.0/foo')
-
-    success('@username/foo-bar@latest/foo')
-    success('@username/foo-bar@dev/foo')
-    success('@username/foo-bar@1.0.0/foo')
-    success('@username/foobar123-yo@0.0.1/foo_bar_BAR_901')
-    success('@username/foobar123-yo@0.0.1/foo')
-
-    success('@u/foo-bar/foo')
-    success('@a/foo-bar/foo_123')
-    success('@foo/foobar123-yo/foo_bar_BAR_901')
-    success('@foo/foobar123-yo/foo')
-    success('@foo/bar/baz')
+    success('@username/foo')
+    success('@username/foo-bar')
+    success('@username/foobar123-yo')
+    success('@u/foo-bar')
+    success('@a/foo-bar')
+    success('@foo/foobar123-yo')
+    success('@foo/bar')
   })
 
   test('strict mode invalid', () => {
@@ -75,32 +49,55 @@ describe('parseToolIdentifier', () => {
     error('@foo/bar/baz/qux/quux/corge/grault/garply')
     error('@foo/bar/baz/')
     error('@foo')
-    error('@foo/bar')
     error('@foo/bar/')
 
-    error('@foo-bar@01234567/foo')
-    error('@%/foo-bar@01234567/foo')
-    error('@user/foo^bar@01234567/foo')
-    error('@user@foo^bar@01234567/foo')
-    error('@username/Foo-Bar@01234567/foo')
+    error('@foo-bar')
+    error('@%/foo-bar')
+    error('@user/foo^bar')
+    error('@user@foo^bar')
+    error('@username/Foo-Bar')
     error('username/foo-bar/foo')
     error('@Username/foo-bar/foo')
     error('@username/Foo-bar/foo')
     error('@username/foo-bar/')
-    error('@username/foo-bar')
+    error('username/foo-bar')
 
-    error('@foo_bar@latest/foo')
-    error('@username/foo-bar@1.0.0/foo@')
-    error('@username/foo-bar@/foo')
-    error('@username/foo-bar@/foo/')
-    error('@username/fooBar123-yo@0.0.1/foo/bar/123-456')
+    error('@foo_bar')
+    error('@Username/foo-bar')
+    error('@username/Foo-bar')
+    error('@username/foo_bar')
+    error('@username_/foo-bar')
+    error('@username/fooBar123-yo/')
 
     error('//@username/foo-bar@01234567/foo')
-    error('https://@username/foo-bar@01234567/foo')
-    error('https://example.com/@username/foo-bar/foo')
+    error('https://@username/foo-bar')
+    error('https://example.com/@username/foo-bar')
   })
 
   test('non-strict mode valid', () => {
+    success('https://gateway.agentic.so/@username/foo-bar', {
+      strict: false
+    })
+    success('/@username/foo-bar', { strict: false })
+    success('@username/foo-bar', { strict: false })
+    success('https://gateway.agentic.so/@username/foo-bar', {
+      strict: false
+    })
+
+    success('/@username/foo-bar', { strict: false })
+    success('/@username/foo-bar', { strict: false })
+    success('/@username/foo-bar', { strict: false })
+
+    success('https://gateway.agentic.so/@username/foo-bar', {
+      strict: false
+    })
+    success('https://gateway.agentic.so/@username/foo-bar@01234567/', {
+      strict: false
+    })
+    success('https://gateway.agentic.so/@username/foo-bar@latest', {
+      strict: false
+    })
+
     success('https://gateway.agentic.so/@username/foo-bar@01234567/foo', {
       strict: false
     })
@@ -133,7 +130,6 @@ describe('parseToolIdentifier', () => {
     error('https://gateway.agentic.so', { strict: false })
     error('//gateway.agentic.so', { strict: false })
     error('https://gateway.agentic.so/@username', { strict: false })
-    error('https://gateway.agentic.so/@username/foo-bar', { strict: false })
     error('https://gateway.agentic.so/call/@username/foo-bar@latest/tool', {
       strict: false
     })
@@ -143,5 +139,7 @@ describe('parseToolIdentifier', () => {
 
     error('@username/foo-bar/foo😀', { strict: false })
     error('@username/Foo-Bar@dev/foo/', { strict: false })
+    error('@username/Foo-Bar', { strict: false })
+    error('@username/foo😀', { strict: false })
   })
 })

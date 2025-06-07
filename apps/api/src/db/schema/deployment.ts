@@ -6,7 +6,7 @@ import {
   type Tool,
   type ToolConfig
 } from '@agentic/platform-types'
-import { validators } from '@agentic/platform-validators'
+import { isValidDeploymentHash } from '@agentic/platform-validators'
 import { relations } from '@fisch0920/drizzle-orm'
 import {
   boolean,
@@ -146,7 +146,7 @@ export const deploymentSelectSchema = createSelectSchema(deployments, {
   identifier: deploymentIdentifierSchema,
 
   hash: (schema) =>
-    schema.refine((hash) => validators.deploymentHash(hash), {
+    schema.refine((hash) => isValidDeploymentHash(hash), {
       message: 'Invalid deployment hash'
     }),
 

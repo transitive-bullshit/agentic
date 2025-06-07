@@ -1,16 +1,19 @@
 import type { PricingPlan, RateLimit } from '@agentic/platform-types'
 import { assert } from '@agentic/platform-core'
+import { parseToolIdentifier } from '@agentic/platform-validators'
 
 import type {
   AdminConsumer,
   GatewayHonoContext,
-  ResolvedOriginRequest
+  ResolvedOriginRequest,
+  ToolArgs
 } from './types'
 import { createRequestForOpenAPIOperation } from './create-request-for-openapi-operation'
 import { enforceRateLimit } from './enforce-rate-limit'
 import { getAdminConsumer } from './get-admin-consumer'
 import { getAdminDeployment } from './get-admin-deployment'
 import { getTool } from './get-tool'
+import { getToolArgsFromRequest } from './get-tool-args-from-request'
 import { updateOriginRequest } from './update-origin-request'
 
 /**
@@ -32,27 +35,31 @@ export async function resolveOriginRequest(
   const { method } = ctx.req
   const requestUrl = new URL(ctx.req.url)
   const { pathname } = requestUrl
-  const requestPathParts = pathname.split('/')
+  const requestedToolIdentifier = pathname.replace(/^\//, '')
+  const parsedToolIdentifier = parseToolIdentifier(requestedToolIdentifier)
+  assert(
+    parsedToolIdentifier,
+    404,
+    `Invalid tool identifier "${requestedToolIdentifier}"`
+  )
+  const { toolName } = parsedToolIdentifier
 
-  // TODO: the isMCPRequest logic needs to be completely redone.
-  const isMCPRequest = requestPathParts[0] === 'mcp'
-  const requestPath = isMCPRequest
-    ? requestPathParts.slice(1).join('/')
-    : pathname
-
-  const { deployment, toolPath } = await getAdminDeployment(ctx, requestPath)
+  const deployment = await getAdminDeployment(
+    ctx,
+    parsedToolIdentifier.deploymentIdentifier
+  )
 
   const tool = getTool({
     method,
     deployment,
-    toolPath
+    toolName
   })
 
   logger.debug('request', {
     method,
     pathname,
     deploymentIdentifier: deployment.identifier,
-    toolPath,
+    toolName,
     tool
   })
 
@@ -170,28 +177,37 @@ export async function resolveOriginRequest(
 
   const { originAdapter } = deployment
   let originRequest: Request | undefined
+  let toolArgs: ToolArgs | undefined
 
-  if (originAdapter.type === 'openapi' || originAdapter.type === 'raw') {
-    if (originAdapter.type === 'openapi') {
-      const operation = originAdapter.toolToOperationMap[tool.name]
-      assert(operation, 404, `Tool "${tool.name}" not found in OpenAPI spec`)
+  if (originAdapter.type === 'raw') {
+    const originRequestUrl = `${deployment.originUrl}/${toolName}${requestUrl.search}`
+    originRequest = new Request(originRequestUrl, ctx.req.raw)
+  } else {
+    toolArgs = await getToolArgsFromRequest(ctx, {
+      tool,
+      deployment
+    })
+  }
 
-      originRequest = await createRequestForOpenAPIOperation(ctx, {
-        tool,
-        operation,
-        deployment
-      })
-    } else {
-      const originRequestUrl = `${deployment.originUrl}${toolPath}${requestUrl.search}`
-      originRequest = new Request(originRequestUrl, ctx.req.raw)
-    }
+  if (originAdapter.type === 'openapi') {
+    const operation = originAdapter.toolToOperationMap[tool.name]
+    assert(operation, 404, `Tool "${tool.name}" not found in OpenAPI spec`)
 
+    originRequest = await createRequestForOpenAPIOperation(ctx, {
+      toolArgs: toolArgs!,
+      operation,
+      deployment
+    })
+  }
+
+  if (originRequest) {
     logger.info('originRequestUrl', originRequest.url)
     updateOriginRequest(originRequest, { consumer, deployment })
   }
 
   return {
     originRequest,
+    toolArgs,
     deployment,
     consumer,
     tool,

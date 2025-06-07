@@ -7,7 +7,7 @@ import {
   type StripeProductIdMap,
   stripeProductIdMapSchema
 } from '@agentic/platform-types'
-import { validators } from '@agentic/platform-validators'
+import { isValidProjectName } from '@agentic/platform-validators'
 import { relations } from '@fisch0920/drizzle-orm'
 import {
   index,
@@ -239,7 +239,7 @@ export const projectInsertSchema = createInsertSchema(projects, {
   identifier: projectIdentifierSchema,
 
   name: (schema) =>
-    schema.refine((name) => validators.projectName(name), {
+    schema.refine((name) => isValidProjectName(name), {
       message: 'Invalid project name'
     })
 })

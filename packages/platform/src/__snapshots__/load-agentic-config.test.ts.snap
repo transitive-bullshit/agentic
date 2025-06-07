@@ -1,5 +1,34 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`loadAgenticConfig > basic-mcp 1`] = `
+{
+  "name": "test-basic-mcp",
+  "originAdapter": {
+    "location": "external",
+    "type": "mcp",
+  },
+  "originUrl": "https://agentic-basic-mcp-test.onrender.com/stream",
+  "pricingIntervals": [
+    "month",
+  ],
+  "pricingPlans": [
+    {
+      "lineItems": [
+        {
+          "amount": 0,
+          "slug": "base",
+          "usageType": "licensed",
+        },
+      ],
+      "name": "Free",
+      "slug": "free",
+    },
+  ],
+  "toolConfigs": [],
+  "version": undefined,
+}
+`;
+
 exports[`loadAgenticConfig > basic-openapi 1`] = `
 {
   "name": "test-basic-openapi",
@@ -88,15 +117,15 @@ exports[`loadAgenticConfig > basic-raw-free-ts 1`] = `
 }
 `;
 
-exports[`loadAgenticConfig > invalid: invalid-name-0 1`] = `[Error: Invalid project name "Test Invalid Name 0". Must be lower kebab-case with no spaces between 2 and 64 characters. Example: "my-project" or "linkedin-resolver-23"]`;
+exports[`loadAgenticConfig > invalid: invalid-name-0 1`] = `[Error: Invalid project name "Test Invalid Name 0". Must be ascii-only lower kebab-case with no spaces between 1 and 256 characters. For example: "my-project" or "linkedin-resolver-23"]`;
 
-exports[`loadAgenticConfig > invalid: invalid-name-1 1`] = `[Error: Invalid project name "Test-Invalid-Name-1". Must be lower kebab-case with no spaces between 2 and 64 characters. Example: "my-project" or "linkedin-resolver-23"]`;
+exports[`loadAgenticConfig > invalid: invalid-name-1 1`] = `[Error: Invalid project name "Test-Invalid-Name-1". Must be ascii-only lower kebab-case with no spaces between 1 and 256 characters. For example: "my-project" or "linkedin-resolver-23"]`;
 
-exports[`loadAgenticConfig > invalid: invalid-name-2 1`] = `[Error: Invalid project name "test_invalid_name_2". Must be lower kebab-case with no spaces between 2 and 64 characters. Example: "my-project" or "linkedin-resolver-23"]`;
+exports[`loadAgenticConfig > invalid: invalid-name-2 1`] = `[Error: Invalid project name "test_invalid_name_2". Must be ascii-only lower kebab-case with no spaces between 1 and 256 characters. For example: "my-project" or "linkedin-resolver-23"]`;
 
 exports[`loadAgenticConfig > invalid: invalid-name-3 1`] = `[ZodValidationError: Validation error: Required at "name"]`;
 
-exports[`loadAgenticConfig > invalid: invalid-name-4 1`] = `[Error: Invalid project name "@foo/bar". Must be lower kebab-case with no spaces between 2 and 64 characters. Example: "my-project" or "linkedin-resolver-23"]`;
+exports[`loadAgenticConfig > invalid: invalid-name-4 1`] = `[Error: Invalid project name "@foo/bar". Must be ascii-only lower kebab-case with no spaces between 1 and 256 characters. For example: "my-project" or "linkedin-resolver-23"]`;
 
 exports[`loadAgenticConfig > invalid: invalid-origin-url-0 1`] = `[Error: Invalid originUrl: must be a valid https URL]`;
 

@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Basic GET caching > 3.0: GET dev/test-basic-openapi@b6e21206/getPost 1`] = `
+exports[`Basic GET caching > 3.0: GET @dev/test-basic-openapi@fc856666/getPost 1`] = `
 {
   "body": "consectetur animi nesciunt iure dolore
 enim quia ad
@@ -12,7 +12,7 @@ et est aut quod aut provident voluptas autem voluptas",
 }
 `;
 
-exports[`Basic GET caching > 3.1: GET dev/test-basic-openapi@b6e21206/getPost?postId=9 1`] = `
+exports[`Basic GET caching > 3.1: GET @dev/test-basic-openapi@fc856666/getPost?postId=9 1`] = `
 {
   "body": "consectetur animi nesciunt iure dolore
 enim quia ad
@@ -24,7 +24,7 @@ et est aut quod aut provident voluptas autem voluptas",
 }
 `;
 
-exports[`Basic GET caching > 3.2: GET dev/test-basic-openapi@b6e21206/get_post?postId=9 1`] = `
+exports[`Basic GET caching > 3.2: GET @dev/test-basic-openapi@fc856666/get_post?postId=9 1`] = `
 {
   "body": "consectetur animi nesciunt iure dolore
 enim quia ad
@@ -36,7 +36,25 @@ et est aut quod aut provident voluptas autem voluptas",
 }
 `;
 
-exports[`Basic OpenAPI getPost success > 0.0: POST dev/test-basic-openapi/getPost 1`] = `
+exports[`Basic MCP origin "add" tool call success > 5.0: POST @dev/test-basic-mcp/add 1`] = `
+[
+  {
+    "text": "42",
+    "type": "text",
+  },
+]
+`;
+
+exports[`Basic MCP origin "add" tool call success > 5.1: GET @dev/test-basic-mcp/add 1`] = `
+[
+  {
+    "text": "42",
+    "type": "text",
+  },
+]
+`;
+
+exports[`Basic OpenAPI getPost success > 0.0: POST @dev/test-basic-openapi/getPost 1`] = `
 {
   "body": "quia et suscipit
 suscipit recusandae consequuntur expedita et cum
@@ -48,7 +66,7 @@ nostrum rerum est autem sunt rem eveniet architecto",
 }
 `;
 
-exports[`Basic OpenAPI getPost success > 0.1: POST dev/test-basic-openapi@latest/getPost 1`] = `
+exports[`Basic OpenAPI getPost success > 0.1: POST @dev/test-basic-openapi@latest/getPost 1`] = `
 {
   "body": "quia et suscipit
 suscipit recusandae consequuntur expedita et cum
@@ -60,7 +78,7 @@ nostrum rerum est autem sunt rem eveniet architecto",
 }
 `;
 
-exports[`Basic OpenAPI getPost success > 0.2: GET dev/test-basic-openapi/getPost 1`] = `
+exports[`Basic OpenAPI getPost success > 0.2: GET @dev/test-basic-openapi/getPost 1`] = `
 {
   "body": "quia et suscipit
 suscipit recusandae consequuntur expedita et cum
@@ -72,7 +90,7 @@ nostrum rerum est autem sunt rem eveniet architecto",
 }
 `;
 
-exports[`Basic OpenAPI getPost success > 0.3: GET dev/test-basic-openapi@b6e21206/getPost?postId=1 1`] = `
+exports[`Basic OpenAPI getPost success > 0.3: GET @dev/test-basic-openapi@fc856666/getPost?postId=1 1`] = `
 {
   "body": "quia et suscipit
 suscipit recusandae consequuntur expedita et cum
@@ -84,7 +102,7 @@ nostrum rerum est autem sunt rem eveniet architecto",
 }
 `;
 
-exports[`Basic OpenAPI getPost success > 0.4: GET dev/test-basic-openapi@b6e21206/get_post?postId=1 1`] = `
+exports[`Basic OpenAPI getPost success > 0.4: GET @dev/test-basic-openapi@fc856666/get_post?postId=1 1`] = `
 {
   "body": "quia et suscipit
 suscipit recusandae consequuntur expedita et cum
@@ -96,7 +114,7 @@ nostrum rerum est autem sunt rem eveniet architecto",
 }
 `;
 
-exports[`Basic OpenAPI getPost success > 0.5: GET dev/test-basic-openapi@b6e21206/getPost 1`] = `
+exports[`Basic OpenAPI getPost success > 0.5: GET @dev/test-basic-openapi@fc856666/getPost 1`] = `
 {
   "body": "quia et suscipit
 suscipit recusandae consequuntur expedita et cum
@@ -108,7 +126,7 @@ nostrum rerum est autem sunt rem eveniet architecto",
 }
 `;
 
-exports[`Basic POST caching > 4.0: POST dev/test-basic-openapi@b6e21206/get_post 1`] = `
+exports[`Basic POST caching > 4.0: POST @dev/test-basic-openapi@fc856666/get_post 1`] = `
 {
   "body": "aut dicta possimus sint mollitia voluptas commodi quo doloremque
 iste corrupti reiciendis voluptatem eius rerum
@@ -120,7 +138,7 @@ perferendis recusandae assumenda consectetur porro architecto ipsum ipsam",
 }
 `;
 
-exports[`Basic POST caching > 4.1: POST dev/test-basic-openapi@b6e21206/get_post 1`] = `
+exports[`Basic POST caching > 4.1: POST @dev/test-basic-openapi@fc856666/get_post 1`] = `
 {
   "body": "aut dicta possimus sint mollitia voluptas commodi quo doloremque
 iste corrupti reiciendis voluptatem eius rerum
@@ -132,7 +150,7 @@ perferendis recusandae assumenda consectetur porro architecto ipsum ipsam",
 }
 `;
 
-exports[`Bypass caching > 2.0: GET dev/test-basic-openapi@b6e21206/getPost 1`] = `
+exports[`Bypass caching > 2.0: GET @dev/test-basic-openapi@fc856666/getPost 1`] = `
 {
   "body": "consectetur animi nesciunt iure dolore
 enim quia ad
@@ -144,7 +162,7 @@ et est aut quod aut provident voluptas autem voluptas",
 }
 `;
 
-exports[`Bypass caching > 2.1: GET dev/test-basic-openapi@b6e21206/getPost?postId=9 1`] = `
+exports[`Bypass caching > 2.1: GET @dev/test-basic-openapi@fc856666/getPost?postId=9 1`] = `
 {
   "body": "consectetur animi nesciunt iure dolore
 enim quia ad
@@ -156,7 +174,7 @@ et est aut quod aut provident voluptas autem voluptas",
 }
 `;
 
-exports[`Bypass caching > 2.2: GET dev/test-basic-openapi@b6e21206/get_post?postId=9 1`] = `
+exports[`Bypass caching > 2.2: GET @dev/test-basic-openapi@fc856666/get_post?postId=9 1`] = `
 {
   "body": "consectetur animi nesciunt iure dolore
 enim quia ad
@@ -168,7 +186,7 @@ et est aut quod aut provident voluptas autem voluptas",
 }
 `;
 
-exports[`Bypass caching > 2.3: GET dev/test-basic-openapi@b6e21206/get_post?postId=9 1`] = `
+exports[`Bypass caching > 2.3: GET @dev/test-basic-openapi@fc856666/get_post?postId=9 1`] = `
 {
   "body": "consectetur animi nesciunt iure dolore
 enim quia ad

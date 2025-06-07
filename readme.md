@@ -5,6 +5,17 @@
 
 # Agentic <!-- omit from toc -->
 
+## API Gateway
+
+- **REST**: `GET/POST gateway.agentic.so/deploymentIdentifier/toolName`
+  - => MCP: `MCPClient.callTool` with JSON body parameters
+  - => OpenAPI: `GET/POST/ETC originUrl/toolName` operation with transformed JSON body params
+- **MCP**: `mcp.agentic.so/deploymentIdentifier` MCP server?
+  - => MCP: `MCPClient.callTool` just proxying tool call
+  - => OpenAPI: `GET/POST/ETC originUrl/toolName` operation with transformed tool params
+- RAW: `METHOD gateway.agentic.so/deploymentIdentifier/<pathname>`
+  - => Raw HTTP: `METHOD originUrl/<pathname>` simple HTTP proxy request
+
 ## TODO
 
 - **webapp**
@@ -17,32 +28,33 @@
   - raw
 - auth
   - custom auth pages for `openauth`
-- consider `projectName` and `projectSlug` or `projectIdentifier`?
 - add username / team name blacklist
   - admin, internal, mcp, sse, etc
-- **API gateway**
-  - MCP server vs REST gateway on public and internal sides
-    - **REST**: `GET/POST gateway.agentic.so/deploymentIdentifier/toolName`
-      - => MCP: `MCPClient.callTool` with JSON body parameters
-      - => OpenAPI: `GET/POST/ETC originUrl/toolName` operation with transformed JSON body params
-    - **MCP**: `mcp.agentic.so/deploymentIdentifier/sse` MCP server?
-      - => MCP: `MCPClient.callTool` just proxying tool call
-      - => OpenAPI: `GET/POST/ETC originUrl/toolName` operation with transformed tool params
-    - RAW: `METHOD gateway.agentic.so/deploymentIdentifier/<pathname>`
-      - => Raw HTTP: `METHOD originUrl/<pathname>` simple HTTP proxy request
-  - add support for custom headers on responses
+- API gateway
   - how to handle binary bodies and responses?
-- public identifiers and validators
-  - revisit deployment identifiers so possibly be URL-friendly?
-  - move validators package into platform-types?
-  - force toolPath to be non-empty except for `raw`?
-    - will remove ambiguity from `username/`
-  - make namespace optional? and require `@` prefix if so? like npm packages
-  - separate `parseToolIdentifier` from `parseDeploymentIdentifier` and `parseProjectIdentifier`?
-  - **KISS**
+  - add support for `immutable` in `toolConfigs`
+- **Public MCP server interface**
+  - TODO
+- **Origin MCP servers**
+  - CF durable object stability across requests
+  - how to guarantee that the request is coming from agentic?
+    - like `x-agentic-proxy-secret` or signed requests but for MCP servers
+    - or do this once at the connection level?
+  - how to pass agentic gateway context to origin server?
+    - instead of headers, maybe optional `agenticContext` param?
+    - how does this work with mcp auth?
+  - mcp auth provider support
+  - SSE support? (no; post-mvp if at all; only support [streamable http](https://modelcontextprotocol.io/specification/2025-03-26/basic/transports#streamable-http) like smithery does, or maybe support both?)
+  - caching for MCP tool call responses
+  - binary bodies / responses?
+  - resources
+  - prompts
+  - other MCP features?
+- allow config name to be `project-name` or `@namespace/project-name`?
 
 ## TODO Post-MVP
 
+- first-party deployment hosting
 - stripe
   - re-add coupons
   - declarative json-based pricing
@@ -59,12 +71,15 @@
 - replace `ms` package
 - API gateway
   - signed requests
+  - add support for custom headers on responses
 - `@agentic/platform-hono`
   - fix sentry middleware
     - https://github.com/honojs/middleware/blob/main/packages/sentry/src/index.ts
     - https://github.com/honojs/middleware/issues/943
     - https://github.com/getsentry/sentry-javascript/tree/master/packages/cloudflare
 - additional transactional emails
+- consider `projectName` and `projectSlug` or `projectIdentifier`?
+- handle or validate against dynamic MCP origin tools
 
 ## License
 

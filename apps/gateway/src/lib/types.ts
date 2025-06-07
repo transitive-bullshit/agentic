@@ -9,10 +9,15 @@ import type {
   Tool,
   User
 } from '@agentic/platform-types'
+import type { Client as McpClient } from '@modelcontextprotocol/sdk/client/index.js'
 import type { Context } from 'hono'
 import type { Simplify } from 'type-fest'
 
 import type { Env } from './env'
+
+export type McpToolCallResponse = Simplify<
+  Awaited<ReturnType<McpClient['callTool']>>
+>
 
 export type AdminConsumer = Simplify<
   Consumer & {
@@ -36,13 +41,19 @@ export type GatewayHonoEnv = {
 
 export type GatewayHonoContext = Context<GatewayHonoEnv>
 
-export interface ResolvedOriginRequest {
-  originRequest?: Request
+// TODO: better type here
+export type ToolArgs = Record<string, any>
+
+export type ResolvedOriginRequest = {
   deployment: AdminDeployment
-  consumer?: AdminConsumer
   tool: Tool
   method: string
   reportUsage: boolean
+
+  consumer?: AdminConsumer
   ip?: string
   pricingPlanSlug?: string
+
+  originRequest?: Request
+  toolArgs?: ToolArgs
 }

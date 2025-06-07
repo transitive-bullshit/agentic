@@ -1,5 +1,5 @@
 import type { Deployment } from '@agentic/platform-types'
-import { parseToolIdentifier } from '@agentic/platform-validators'
+import { parseDeploymentIdentifier } from '@agentic/platform-validators'
 import { Command } from 'commander'
 import { oraPromise } from 'ora'
 
@@ -15,27 +15,42 @@ export function registerListDeploymentsCommand({
   const command = new Command('list')
     .alias('ls')
     .description('Lists deployments.')
-    .argument('[projectIdentifier]', 'Optional project identifier')
+    .argument(
+      '[identifier]',
+      'Optional project or deployment identifier to filter by.'
+    )
     .option('-v, --verbose', 'Display full deployments', false)
-    .action(async (projectIdentifier, opts) => {
+    .action(async (identifier, opts) => {
       AuthStore.requireAuth()
 
       const query: Parameters<typeof client.listDeployments>[0] = {}
       let label = 'Fetching all projects and deployments'
 
-      if (projectIdentifier) {
-        const parsedFaas = parseToolIdentifier(projectIdentifier)
+      if (identifier) {
+        const parsedDeploymentIdentifier = parseDeploymentIdentifier(
+          identifier,
+          {
+            strict: false
+          }
+        )
 
-        if (!parsedFaas) {
-          throw new Error(`Invalid project identifier "${projectIdentifier}"`)
+        if (!parsedDeploymentIdentifier) {
+          throw new Error(
+            `Invalid project or deployment identifier "${identifier}"`
+          )
         }
 
-        if (parsedFaas.deploymentIdentifier) {
-          query.deploymentIdentifier = parsedFaas.deploymentIdentifier
+        query.projectIdentifier = parsedDeploymentIdentifier.projectIdentifier
+        label = `Fetching deployments for project "${query.projectIdentifier}"`
+
+        // TODO: this logic needs tweaking.
+        if (
+          parsedDeploymentIdentifier.deploymentVersion !== 'latest' ||
+          identifier.includes('@latest')
+        ) {
+          query.deploymentIdentifier =
+            parsedDeploymentIdentifier.deploymentIdentifier
           label = `Fetching deployment "${query.deploymentIdentifier}"`
-        } else {
-          query.projectIdentifier = parsedFaas.projectIdentifier
-          label = `Fetching deployments for project "${query.projectIdentifier}"`
         }
       }
 

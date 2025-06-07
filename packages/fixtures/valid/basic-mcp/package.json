@@ -1,34 +1,23 @@
 {
-  "name": "@agentic/platform-fixtures",
+  "name": "@agentic/platform-fixtures-basic-mcp",
   "private": true,
-  "version": "0.0.1",
-  "description": "Test fixtures for the Agentic platform.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "UNLICENSED",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/transitive-bullshit/agentic-platform.git",
-    "directory": "packages/fixtures"
+    "directory": "packages/fixtures/valid/basic-mcp"
   },
   "type": "module",
-  "exports": {
-    "./valid/**": "./valid/*",
-    "./invalid/**": "./invalid/*"
-  },
-  "files": [
-    "valid",
-    "invalid"
-  ],
   "scripts": {
+    "start": "tsx src/index.ts",
     "test": "run-s test:*",
     "test:lint": "eslint .",
     "test:typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@agentic/platform": "workspace:*"
-  },
-  "devDependencies": {
     "@modelcontextprotocol/sdk": "catalog:",
+    "fastmcp": "^2.2.2",
     "zod": "catalog:"
   }
 }

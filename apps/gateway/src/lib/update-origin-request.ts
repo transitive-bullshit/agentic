@@ -32,7 +32,7 @@ export function updateOriginRequest(
   // }
 
   // Delete all Cloudflare headers since we want origin requests to be agnostic
-  // to Agentic's choice of API gateway hosting provider.
+  // to Agentic's choice of hosting provider.
   for (const headerKey of Object.keys(
     Object.fromEntries(originRequest.headers.entries())
   )) {

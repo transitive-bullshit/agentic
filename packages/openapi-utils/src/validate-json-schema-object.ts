@@ -1,4 +1,4 @@
-import { hashObject, HttpError } from '@agentic/platform-core'
+import { assert, hashObject, HttpError } from '@agentic/platform-core'
 import { betterAjvErrors } from '@apideck/better-ajv-errors'
 import Ajv, { type ValidateFunction } from 'ajv'
 import addFormats from 'ajv-formats'
@@ -19,7 +19,7 @@ const globalAjv = new Ajv({
 addFormats(globalAjv)
 
 /**
- * Validates `data` against the provided JSON schema object.
+ * Validates `data` against the provided JSON schema.
  *
  * This method uses `ajv` and is therefore not compatible with CF workers due
  * to its use of code generation and evaluation.
@@ -29,9 +29,7 @@ addFormats(globalAjv)
  *
  * @see https://github.com/ajv-validator/ajv/issues/2318
  */
-export function validateJsonSchemaObject<
-  T extends Record<string, unknown> = Record<string, unknown>
->({
+export function validateJsonSchema<T = unknown>({
   schema,
   data,
   ajv = globalAjv,
@@ -42,10 +40,23 @@ export function validateJsonSchemaObject<
   ajv?: Ajv
   errorMessage?: string
 }): T {
+  assert(schema, 400, '`schema` is required')
+  const isSchemaObject =
+    typeof schema === 'object' &&
+    !Array.isArray(schema) &&
+    schema.type === 'object'
+  const isDataObject = typeof data === 'object' && !Array.isArray(data)
+  if (isSchemaObject && !isDataObject) {
+    throw new HttpError({
+      statusCode: 400,
+      message: `${errorMessage ? errorMessage + ': ' : ''}Data must be an object according to its schema.`
+    })
+  }
+
   // Special-case check for required fields to give better error messages
-  if (Array.isArray(schema.required)) {
+  if (isSchemaObject && Array.isArray(schema.required)) {
     const missingRequiredFields: string[] = schema.required.filter(
-      (field: string) => (data as T)[field] === undefined
+      (field: string) => (data as Record<string, unknown>)[field] === undefined
     )
 
     if (missingRequiredFields.length > 0) {

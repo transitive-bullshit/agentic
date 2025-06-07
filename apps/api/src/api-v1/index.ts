@@ -1,3 +1,4 @@
+import type { DefaultHonoEnv } from '@agentic/platform-hono'
 import { OpenAPIHono } from '@hono/zod-openapi'
 import { fromError } from 'zod-validation-error'
 
@@ -39,12 +40,14 @@ import { registerV1StripeWebhook } from './webhooks/stripe-webhook'
 // Note that the order of some of these routes is important because of
 // wildcards, so be careful when updating them or adding new routes.
 
-export const apiV1 = new OpenAPIHono({
+export const apiV1 = new OpenAPIHono<DefaultHonoEnv>({
   defaultHook: (result, ctx) => {
     if (!result.success) {
+      const requestId = ctx.get('requestId')
       return ctx.json(
         {
-          error: fromError(result.error).toString()
+          error: fromError(result.error).toString(),
+          requestId
         },
         400
       )
@@ -61,7 +64,7 @@ apiV1.openAPIRegistry.registerComponent('securitySchemes', 'Bearer', {
 registerOpenAPIErrorResponses(apiV1)
 
 // Public routes
-const publicRouter = new OpenAPIHono()
+const publicRouter = new OpenAPIHono<DefaultHonoEnv>()
 
 // Private, authenticated routes
 const privateRouter = new OpenAPIHono<AuthenticatedHonoEnv>()

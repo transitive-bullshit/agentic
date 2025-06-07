@@ -1,5 +1,5 @@
 import { assert } from '@agentic/platform-core'
-import { parseToolIdentifier } from '@agentic/platform-validators'
+import { parseDeploymentIdentifier } from '@agentic/platform-validators'
 
 import type { AuthenticatedHonoContext } from '@/lib/types'
 import {
@@ -24,9 +24,11 @@ export async function tryGetDeploymentByIdentifier(
   ctx: AuthenticatedHonoContext,
   {
     deploymentIdentifier,
+    strict = false,
     ...dbQueryOpts
   }: {
     deploymentIdentifier: string
+    strict?: boolean
     with?: {
       user?: true
       team?: true
@@ -47,18 +49,21 @@ export async function tryGetDeploymentByIdentifier(
     return deployment
   }
 
-  const parsedFaas = parseToolIdentifier(deploymentIdentifier)
+  const parsedDeploymentIdentifier = parseDeploymentIdentifier(
+    deploymentIdentifier,
+    { strict }
+  )
   assert(
-    parsedFaas,
+    parsedDeploymentIdentifier,
     400,
     `Invalid deployment identifier "${deploymentIdentifier}"`
   )
 
-  const { projectIdentifier, deploymentHash, version } = parsedFaas
+  const { projectIdentifier, deploymentHash, deploymentVersion } =
+    parsedDeploymentIdentifier
+  deploymentIdentifier = parsedDeploymentIdentifier.deploymentIdentifier
 
   if (deploymentHash) {
-    const deploymentIdentifier = `${projectIdentifier}@${deploymentHash}`
-
     const deployment = await db.query.deployments.findFirst({
       ...dbQueryOpts,
       where: eq(schema.deployments.identifier, deploymentIdentifier)
@@ -67,16 +72,20 @@ export async function tryGetDeploymentByIdentifier(
     setPublicCacheControl(ctx.res, '1h')
 
     return deployment
-  } else if (version) {
+  } else if (deploymentVersion) {
     const project = await db.query.projects.findFirst({
       where: eq(schema.projects.identifier, projectIdentifier)
     })
     assert(project, 404, `Project not found "${projectIdentifier}"`)
 
-    if (version === 'latest') {
+    if (deploymentVersion === 'latest') {
       const deploymentId =
         project.lastPublishedDeploymentId || project.lastDeploymentId
-      assert(deploymentId, 404, 'Project has no published deployments')
+      assert(
+        deploymentId,
+        404,
+        `Project has no published deployments (referenced by "${deploymentIdentifier}")`
+      )
 
       const deployment = await db.query.deployments.findFirst({
         ...dbQueryOpts,
@@ -85,16 +94,16 @@ export async function tryGetDeploymentByIdentifier(
       assert(
         deployment,
         404,
-        `Deployment not found "${project.lastPublishedDeploymentId}"`
+        `Deployment not found "${project.lastPublishedDeploymentId}" (referenced by "${deploymentIdentifier}")`
       )
       setPublicCacheControl(ctx.res, '10s')
 
       return deployment
-    } else if (version === 'dev') {
+    } else if (deploymentVersion === 'dev') {
       assert(
         project.lastDeploymentId,
         404,
-        'Project has no published deployments'
+        `Project has no published deployments (referenced by "${deploymentIdentifier}")`
       )
 
       const deployment = await db.query.deployments.findFirst({
@@ -104,7 +113,7 @@ export async function tryGetDeploymentByIdentifier(
       assert(
         deployment,
         404,
-        `Deployment not found "${project.lastDeploymentId}"`
+        `Deployment not found "${project.lastDeploymentId}" (referenced by "${deploymentIdentifier}")`
       )
       setPublicCacheControl(ctx.res, '10s')
 
@@ -114,14 +123,10 @@ export async function tryGetDeploymentByIdentifier(
         ...dbQueryOpts,
         where: and(
           eq(schema.deployments.projectId, project.id),
-          eq(schema.deployments.version, version)
+          eq(schema.deployments.version, deploymentVersion)
         )
       })
-      assert(
-        deployment,
-        404,
-        `Deployment not found "${projectIdentifier}@${version}"`
-      )
+      assert(deployment, 404, `Deployment not found "${deploymentIdentifier}"`)
       setPublicCacheControl(ctx.res, '1h')
 
       return deployment

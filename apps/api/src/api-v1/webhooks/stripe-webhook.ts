@@ -1,7 +1,7 @@
-import type { OpenAPIHono } from '@hono/zod-openapi'
 import type Stripe from 'stripe'
 import { assert, HttpError } from '@agentic/platform-core'
 
+import type { HonoApp } from '@/lib/types'
 import { and, db, eq, schema } from '@/db'
 import { setConsumerStripeSubscriptionStatus } from '@/lib/consumers/utils'
 import { env } from '@/lib/env'
@@ -11,7 +11,7 @@ const relevantStripeEvents = new Set<Stripe.Event.Type>([
   'customer.subscription.updated'
 ])
 
-export function registerV1StripeWebhook(app: OpenAPIHono) {
+export function registerV1StripeWebhook(app: HonoApp) {
   return app.post('webhooks/stripe', async (ctx) => {
     const body = await ctx.req.text()
     const signature = ctx.req.header('Stripe-Signature')

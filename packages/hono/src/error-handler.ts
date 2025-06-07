@@ -12,6 +12,7 @@ export function errorHandler(
 ): Response {
   const isProd = ctx.env?.isProd ?? true
   const logger = ctx.get('logger') ?? console
+  const requestId = ctx.get('requestId')
 
   let message = 'Internal Server Error'
   let status: ContentfulStatusCode = 500
@@ -32,9 +33,9 @@ export function errorHandler(
   if (status >= 500) {
     logger.error(status, err)
     captureException(err)
-  } else if (isProd) {
+  } else {
     logger.warn(status, err)
   }
 
-  return ctx.json({ error: message }, status)
+  return ctx.json({ error: message, requestId }, status)
 }

@@ -1,22 +1,36 @@
+import { toolNameRe } from '@agentic/platform-validators'
 import { z } from '@hono/zod-openapi'
 
 import { pricingPlanSlugSchema } from './pricing'
 import { rateLimitSchema } from './rate-limit'
 
+// TODO: add more reserved tool names?
+// TODO: if we separate mcp endpoint from REST endpoint, we may be able to have
+// tools named `mcp`. would be nice not to impose a blacklist.
 const toolNameBlacklist = new Set(['mcp'])
 
+/**
+ * Agentic tool name.
+ *
+ * @example `"get_weather"`
+ * @example `"searchGoogle"`
+ * @example `"get_user_info2"`
+ */
 export const toolNameSchema = z
   .string()
-  // TODO: validate this regex constraint
-  .regex(/^[a-zA-Z0-9_]+$/)
   .nonempty()
+  .regex(toolNameRe)
   .refine(
     (name) => !toolNameBlacklist.has(name),
     (name) => ({
       message: `Tool name is reserved: "${name}"`
     })
   )
+  .describe('Agentic tool name')
 
+/**
+ * A zod schema representing any JSON Schema `object` schema.
+ */
 export const jsonSchemaObjectSchema = z
   .object({
     type: z.literal('object'),
@@ -152,6 +166,8 @@ export type ToolConfig = z.infer<typeof toolConfigSchema>
 /**
  * Additional properties describing a Tool to clients.
  *
+ * This matches MCP tool annotations 1:1.
+ *
  * NOTE: All properties in ToolAnnotations are **hints**.
  *
  * They are not guaranteed to provide a faithful description of tool behavior
@@ -208,6 +224,8 @@ export const toolAnnotationsSchema = z
 
 /**
  * Definition for an Agentic tool.
+ *
+ * This matches MCP tool scehemas 1:1.
  */
 export const toolSchema = z
   .object({

@@ -7,6 +7,9 @@ export type E2ETestFixture = {
   /** @default false */
   only?: boolean
 
+  /** @default false */
+  debug?: boolean
+
   request?: {
     /** @default 'GET' */
     method?: 'GET' | 'POST' | 'PUT' | 'DELETE'
@@ -41,7 +44,15 @@ export type E2ETestFixtureSuite = {
 
   /** @default false */
   compareResponseBodies?: boolean
+
+  /** @default false */
+  debug?: boolean
+
+  /** @default undefined */
+  snapshot?: boolean
 }
+
+const now = Date.now()
 
 export const fixtureSuites: E2ETestFixtureSuite[] = [
   {
@@ -49,7 +60,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
     compareResponseBodies: true,
     fixtures: [
       {
-        path: 'dev/test-basic-openapi/getPost',
+        path: '@dev/test-basic-openapi/getPost',
         request: {
           method: 'POST',
           json: {
@@ -58,7 +69,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
         }
       },
       {
-        path: 'dev/test-basic-openapi@latest/getPost',
+        path: '@dev/test-basic-openapi@latest/getPost',
         request: {
           method: 'POST',
           json: {
@@ -67,7 +78,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
         }
       },
       {
-        path: 'dev/test-basic-openapi/getPost',
+        path: '@dev/test-basic-openapi/getPost',
         request: {
           searchParams: {
             // all of these GET requests implicitly test type coercion since
@@ -78,13 +89,13 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
         }
       },
       {
-        path: 'dev/test-basic-openapi@b6e21206/getPost?postId=1'
+        path: '@dev/test-basic-openapi@fc856666/getPost?postId=1'
       },
       {
-        path: 'dev/test-basic-openapi@b6e21206/get_post?postId=1'
+        path: '@dev/test-basic-openapi@fc856666/get_post?postId=1'
       },
       {
-        path: 'dev/test-basic-openapi@b6e21206/getPost',
+        path: '@dev/test-basic-openapi@fc856666/getPost',
         request: {
           searchParams: {
             postId: 1
@@ -97,7 +108,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
     title: 'Basic OpenAPI getPost errors',
     fixtures: [
       {
-        path: 'dev/test-basic-openapi/getPost',
+        path: '@dev/test-basic-openapi/getPost',
 
         response: {
           // Missing `postId` parameter.
@@ -105,19 +116,19 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
         }
       },
       {
-        path: 'dev/test-basic-openapi@b6e21206/getPost?postId=foo',
+        path: '@dev/test-basic-openapi@fc856666/getPost?postId=foo',
         response: {
           status: 400
         }
       },
       {
-        path: 'dev/test-basic-openapi@000000/getPost',
+        path: '@dev/test-basic-openapi@00000000/getPost',
         response: {
           status: 404
         }
       },
       {
-        path: 'dev/test-basic-openapi/getPost',
+        path: '@dev/test-basic-openapi/getPost',
         request: {
           method: 'PUT',
           json: {
@@ -129,13 +140,13 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
         }
       },
       {
-        path: 'dev/test-basic-openapi@latest/get_kittens?postId=1',
+        path: '@dev/test-basic-openapi@latest/get_kittens?postId=1',
         response: {
           status: 404
         }
       },
       {
-        path: 'dev/test-basic-openapi/getPost',
+        path: '@dev/test-basic-openapi/getPost',
         request: {
           searchParams: {
             // invalid `postId` field type
@@ -147,7 +158,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
         }
       },
       {
-        path: 'dev/test-basic-openapi/getPost',
+        path: '@dev/test-basic-openapi/getPost',
         request: {
           method: 'POST',
           json: {
@@ -159,7 +170,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
         }
       },
       {
-        path: 'dev/test-basic-openapi/getPost',
+        path: '@dev/test-basic-openapi/getPost',
         request: {
           method: 'POST',
           json: {
@@ -172,7 +183,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
         }
       },
       {
-        path: 'dev/test-basic-openapi/getPost',
+        path: '@dev/test-basic-openapi/getPost',
         request: {
           method: 'POST',
           json: {
@@ -185,7 +196,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
         }
       },
       {
-        path: 'dev/test-basic-openapi/getPost',
+        path: '@dev/test-basic-openapi/getPost',
         request: {
           method: 'POST',
           json: {
@@ -199,7 +210,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
         }
       },
       {
-        path: 'dev/test-basic-openapi/getPost',
+        path: '@dev/test-basic-openapi/getPost',
         request: {
           searchParams: {
             postId: 1,
@@ -219,7 +230,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
     fixtures: [
       {
         // ensure we bypass the cache for requests with `pragma: no-cache`
-        path: 'dev/test-basic-openapi@b6e21206/getPost',
+        path: '@dev/test-basic-openapi@fc856666/getPost',
         request: {
           headers: {
             pragma: 'no-cache'
@@ -236,7 +247,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
       },
       {
         // ensure we bypass the cache for requests with `pragma: no-cache`
-        path: 'dev/test-basic-openapi@b6e21206/getPost?postId=9',
+        path: '@dev/test-basic-openapi@fc856666/getPost?postId=9',
         request: {
           headers: {
             'cache-control': 'no-cache'
@@ -250,7 +261,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
       },
       {
         // ensure we bypass the cache for requests with `cache-control: no-store`
-        path: 'dev/test-basic-openapi@b6e21206/get_post?postId=9',
+        path: '@dev/test-basic-openapi@fc856666/get_post?postId=9',
         request: {
           headers: {
             'cache-control': 'no-store'
@@ -263,7 +274,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
         }
       },
       {
-        path: 'dev/test-basic-openapi@b6e21206/get_post?postId=9',
+        path: '@dev/test-basic-openapi@fc856666/get_post?postId=9',
         request: {
           headers: {
             'cache-control': 'max-age=0, must-revalidate, no-cache'
@@ -284,7 +295,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
     fixtures: [
       {
         // first request to ensure the cache is populated
-        path: 'dev/test-basic-openapi@b6e21206/getPost',
+        path: '@dev/test-basic-openapi@fc856666/getPost',
         request: {
           searchParams: {
             postId: 9
@@ -293,7 +304,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
       },
       {
         // second request should hit the cache
-        path: 'dev/test-basic-openapi@b6e21206/getPost?postId=9',
+        path: '@dev/test-basic-openapi@fc856666/getPost?postId=9',
         response: {
           headers: {
             'cf-cache-status': 'HIT'
@@ -302,7 +313,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
       },
       {
         // normalized request should also hit the cache
-        path: 'dev/test-basic-openapi@b6e21206/get_post?postId=9',
+        path: '@dev/test-basic-openapi@fc856666/get_post?postId=9',
         response: {
           headers: {
             'cf-cache-status': 'HIT'
@@ -318,7 +329,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
     fixtures: [
       {
         // first request to ensure the cache is populated
-        path: 'dev/test-basic-openapi@b6e21206/get_post',
+        path: '@dev/test-basic-openapi@fc856666/get_post',
         request: {
           method: 'POST',
           json: {
@@ -328,7 +339,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
       },
       {
         // second request should hit the cache
-        path: 'dev/test-basic-openapi@b6e21206/get_post',
+        path: '@dev/test-basic-openapi@fc856666/get_post',
         request: {
           method: 'POST',
           json: {
@@ -339,6 +350,84 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
           headers: {
             'cf-cache-status': 'HIT'
           }
+        }
+      }
+    ]
+  },
+  {
+    title: 'Basic MCP origin "add" tool call success',
+    compareResponseBodies: true,
+    fixtures: [
+      {
+        path: '@dev/test-basic-mcp/add',
+        request: {
+          method: 'POST',
+          json: {
+            a: 22,
+            b: 20
+          }
+        },
+        response: {
+          body: [{ type: 'text', text: '42' }]
+        }
+      },
+      {
+        path: '@dev/test-basic-mcp/add',
+        request: {
+          searchParams: {
+            a: 22,
+            b: 20
+          }
+        },
+        response: {
+          body: [{ type: 'text', text: '42' }]
+        }
+      }
+    ]
+  },
+  {
+    title: 'Basic MCP origin "echo" tool call success',
+    snapshot: false,
+    fixtures: [
+      {
+        path: '@dev/test-basic-mcp/echo',
+        request: {
+          method: 'POST',
+          json: {
+            nala: 'kitten',
+            num: 123,
+            now
+          }
+        },
+        response: {
+          body: [
+            {
+              type: 'text',
+              text: JSON.stringify({ nala: 'kitten', num: 123, now })
+            }
+          ]
+        }
+      },
+      {
+        path: '@dev/test-basic-mcp/echo',
+        request: {
+          searchParams: {
+            nala: 'kitten',
+            num: 123,
+            now
+          }
+        },
+        response: {
+          body: [
+            {
+              type: 'text',
+              text: JSON.stringify({
+                nala: 'kitten',
+                num: '123',
+                now: `${now}`
+              })
+            }
+          ]
         }
       }
     ]

@@ -1,7 +1,9 @@
 import type {
   DefaultHonoBindings,
+  DefaultHonoEnv,
   DefaultHonoVariables
 } from '@agentic/platform-hono'
+import type { OpenAPIHono } from '@hono/zod-openapi'
 import type { Context } from 'hono'
 import type { Simplify } from 'type-fest'
 
@@ -25,3 +27,6 @@ export type AuthenticatedHonoEnv = {
 }
 
 export type AuthenticatedHonoContext = Context<AuthenticatedHonoEnv>
+
+export type HonoApp = OpenAPIHono<DefaultHonoEnv>
+export type AuthenticatedHonoApp = OpenAPIHono<AuthenticatedHonoEnv>

@@ -25,6 +25,6 @@
   "dependencies": {
     "@paralleldrive/cuid2": "catalog:",
     "email-validator": "catalog:",
-    "is-relative-url": "catalog:"
+    "type-fest": "catalog:"
   }
 }
