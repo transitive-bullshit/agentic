@@ -78,7 +78,7 @@ app.all(async (ctx) => {
 
     case 'mcp': {
       assert(
-        resolvedOriginRequest.toolArgs,
+        resolvedOriginRequest.toolCallArgs,
         500,
         'Tool args are required for MCP origin requests'
       )
@@ -99,7 +99,7 @@ app.all(async (ctx) => {
       // TODO: add response caching for MCP tool calls
       const toolCallResponse = await client.callTool({
         name: resolvedOriginRequest.tool.name,
-        arguments: resolvedOriginRequest.toolArgs
+        arguments: resolvedOriginRequest.toolCallArgs
       })
 
       originResponse = await createHttpResponseFromMcpToolCallResponse(ctx, {

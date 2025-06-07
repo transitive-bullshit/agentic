@@ -42,7 +42,7 @@ export type GatewayHonoEnv = {
 export type GatewayHonoContext = Context<GatewayHonoEnv>
 
 // TODO: better type here
-export type ToolArgs = Record<string, any>
+export type ToolCallArgs = Record<string, any>
 
 export type ResolvedOriginRequest = {
   deployment: AdminDeployment
@@ -55,5 +55,5 @@ export type ResolvedOriginRequest = {
   pricingPlanSlug?: string
 
   originRequest?: Request
-  toolArgs?: ToolArgs
+  toolCallArgs?: ToolCallArgs
 }

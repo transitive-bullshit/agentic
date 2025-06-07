@@ -6,7 +6,7 @@ import type {
   AdminConsumer,
   GatewayHonoContext,
   ResolvedOriginRequest,
-  ToolArgs
+  ToolCallArgs
 } from './types'
 import { createRequestForOpenAPIOperation } from './create-request-for-openapi-operation'
 import { enforceRateLimit } from './enforce-rate-limit'
@@ -168,7 +168,7 @@ export async function resolveOriginRequest(
   if (rateLimit) {
     await enforceRateLimit(ctx, {
       id: consumer?.id ?? ip,
-      interval: rateLimit.interval * 1000,
+      interval: rateLimit.interval,
       maxPerInterval: rateLimit.maxPerInterval,
       method,
       pathname
@@ -177,7 +177,7 @@ export async function resolveOriginRequest(
 
   const { originAdapter } = deployment
   let originRequest: Request | undefined
-  let toolArgs: ToolArgs | undefined
+  let toolArgs: ToolCallArgs | undefined
 
   if (originAdapter.type === 'raw') {
     const originRequestUrl = `${deployment.originUrl}/${toolName}${requestUrl.search}`
@@ -207,7 +207,7 @@ export async function resolveOriginRequest(
 
   return {
     originRequest,
-    toolArgs,
+    toolCallArgs: toolArgs,
     deployment,
     consumer,
     tool,

@@ -4,7 +4,7 @@ import type {
 } from '@agentic/platform-types'
 import { assert } from '@agentic/platform-core'
 
-import type { GatewayHonoContext, ToolArgs } from './types'
+import type { GatewayHonoContext, ToolCallArgs } from './types'
 
 export async function createRequestForOpenAPIOperation(
   ctx: GatewayHonoContext,
@@ -13,7 +13,7 @@ export async function createRequestForOpenAPIOperation(
     operation,
     deployment
   }: {
-    toolArgs: ToolArgs
+    toolArgs: ToolCallArgs
     operation: OpenAPIToolOperation
     deployment: AdminDeployment
   }

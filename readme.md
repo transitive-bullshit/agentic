@@ -29,6 +29,7 @@
 - auth
   - custom auth pages for `openauth`
 - API gateway
+  - enforce rate limits
   - how to handle binary bodies and responses?
   - add support for `immutable` in `toolConfigs`
 - **Public MCP server interface**
