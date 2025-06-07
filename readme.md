@@ -16,6 +16,8 @@
 - RAW: `METHOD gateway.agentic.so/deploymentIdentifier/<pathname>`
   - => Raw HTTP: `METHOD originUrl/<pathname>` simple HTTP proxy request
 
+**do I just ditch public REST interface and focus on MCP?**
+
 ## TODO
 
 - **webapp**
@@ -33,13 +35,18 @@
   - how to handle binary bodies and responses?
   - add support for `immutable` in `toolConfigs`
 - **Public MCP server interface**
-  - TODO
+  - _McpAgent.serve_
+  - how do I use consumer auth tokens with this flow?
+  - how does oauth work with this flow?
 - **Origin MCP servers**
   - CF durable object stability across requests
+    - REST => MCP: getDurableObject(`consumer auth token or deployment + IP`) containing MCP client connection
+    - MCP => MCP: getDurableObject(`mcp-session-id`)
+    - **do I just ditch the public REST interface and focus on MCP?**
   - how to guarantee that the request is coming from agentic?
     - like `x-agentic-proxy-secret` or signed requests but for MCP servers
     - or do this once at the connection level?
-  - how to pass agentic gateway context to origin server?
+  - how to pass agentic gateway context to the origin server?
     - instead of headers, maybe optional `agenticContext` param?
     - how does this work with mcp auth?
   - mcp auth provider support

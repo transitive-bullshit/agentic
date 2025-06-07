@@ -2,6 +2,10 @@ import { assert } from '@agentic/platform-core'
 
 import type { GatewayHonoContext } from './types'
 
+// https://developers.cloudflare.com/durable-objects/examples/build-a-rate-limiter/
+// https://github.com/rhinobase/hono-rate-limiter/blob/main/packages/cloudflare/src/stores/DurableObjectStore.ts
+// https://github.com/rhinobase/hono-rate-limiter/blob/main/packages/core/src/core.ts
+
 export async function enforceRateLimit(
   ctx: GatewayHonoContext,
   {
