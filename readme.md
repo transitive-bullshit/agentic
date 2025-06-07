@@ -54,6 +54,8 @@
 ## TODO Post-MVP
 
 - first-party deployment hosting
+- auth
+  - custom auth provider configs for projects/deployments
 - stripe
   - re-add coupons
   - declarative json-based pricing

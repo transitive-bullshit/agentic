@@ -177,13 +177,15 @@ export async function resolveOriginRequest(
 
   const { originAdapter } = deployment
   let originRequest: Request | undefined
-  let toolArgs: ToolCallArgs | undefined
+  let toolCallArgs: ToolCallArgs | undefined
 
   if (originAdapter.type === 'raw') {
     const originRequestUrl = `${deployment.originUrl}/${toolName}${requestUrl.search}`
     originRequest = new Request(originRequestUrl, ctx.req.raw)
   } else {
-    toolArgs = await getToolArgsFromRequest(ctx, {
+    // Parse tool call args from the request body for both OpenAPI and MCP
+    // origin adapters.
+    toolCallArgs = await getToolArgsFromRequest(ctx, {
       tool,
       deployment
     })
@@ -192,9 +194,10 @@ export async function resolveOriginRequest(
   if (originAdapter.type === 'openapi') {
     const operation = originAdapter.toolToOperationMap[tool.name]
     assert(operation, 404, `Tool "${tool.name}" not found in OpenAPI spec`)
+    assert(toolCallArgs, 500)
 
     originRequest = await createRequestForOpenAPIOperation(ctx, {
-      toolArgs: toolArgs!,
+      toolCallArgs,
       operation,
       deployment
     })
@@ -207,7 +210,7 @@ export async function resolveOriginRequest(
 
   return {
     originRequest,
-    toolCallArgs: toolArgs,
+    toolCallArgs,
     deployment,
     consumer,
     tool,
