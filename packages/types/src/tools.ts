@@ -10,7 +10,11 @@ import { rateLimitSchema } from './rate-limit'
 const toolNameBlacklist = new Set(['mcp'])
 
 /**
- * A zod schema representing a valid
+ * Agentic tool name.
+ *
+ * @example `"get_weather"`
+ * @example `"searchGoogle"`
+ * @example `"get_user_info2"`
  */
 export const toolNameSchema = z
   .string()
@@ -22,6 +26,7 @@ export const toolNameSchema = z
       message: `Tool name is reserved: "${name}"`
     })
   )
+  .describe('Agentic tool name')
 
 /**
  * A zod schema representing any JSON Schema `object` schema.

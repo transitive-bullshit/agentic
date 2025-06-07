@@ -31,16 +31,25 @@
 - add username / team name blacklist
   - admin, internal, mcp, sse, etc
 - API gateway
-  - public MCP interface
-  - MCP origin server support
-  - add support for custom headers on responses
   - how to handle binary bodies and responses?
+  - add support for `immutable` in `toolConfigs`
+- **Public MCP server interface**
+  - TODO
+- **Origin MCP servers**
+  - CF durable object stability across requests
+  - how to guarantee that the request is coming from agentic?
+    - like `x-agentic-proxy-secret` or signed requests but for MCP servers
+    - or do this once at the connection level?
+  - how to pass agentic gateway context to origin server?
+    - instead of headers, maybe optional `agenticContext` param?
+    - how does this work with mcp auth?
+  - mcp auth provider support
+  - SSE support? (no; post-mvp if at all; only support [streamable http](https://modelcontextprotocol.io/specification/2025-03-26/basic/transports#streamable-http) like smithery does, or maybe support both?)
   - caching for MCP tool call responses
-- add requestId to all JSON error responses
-- add support for `immutable` in `toolConfigs`
-- mcp origin servers
-  - ignore sse for now
-  - only support [streamable http](https://modelcontextprotocol.io/specification/2025-03-26/basic/transports#streamable-http) like smithery does
+  - binary bodies / responses?
+  - resources
+  - prompts
+  - other MCP features?
 - allow config name to be `project-name` or `@namespace/project-name`?
 
 ## TODO Post-MVP
@@ -62,6 +71,7 @@
 - replace `ms` package
 - API gateway
   - signed requests
+  - add support for custom headers on responses
 - `@agentic/platform-hono`
   - fix sentry middleware
     - https://github.com/honojs/middleware/blob/main/packages/sentry/src/index.ts
