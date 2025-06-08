@@ -53,17 +53,18 @@ export function updateOriginRequest(
   originRequest.headers.delete('x-forwarded-for')
 
   if (consumer) {
-    originRequest.headers.set('x-agentic-consumer', consumer.id)
-    originRequest.headers.set('x-agentic-user', consumer.user.id)
+    originRequest.headers.set('x-agentic-customer-id', consumer.id)
 
     originRequest.headers.set(
-      'x-agentic-is-subscription-active',
+      'x-agentic-is-customer-subscription-active',
       consumer.isStripeSubscriptionActive.toString()
     )
     originRequest.headers.set(
-      'x-agentic-subscription-status',
+      'x-agentic-customer-subscription-status',
       consumer.stripeStatus
     )
+
+    originRequest.headers.set('x-agentic-user', consumer.user.id)
     originRequest.headers.set('x-agentic-user-email', consumer.user.email)
     originRequest.headers.set('x-agentic-user-username', consumer.user.username)
     originRequest.headers.set(

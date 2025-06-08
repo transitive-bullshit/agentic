@@ -4,6 +4,7 @@ import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/
 import { DurableObject } from 'cloudflare:workers'
 
 import type { RawEnv } from './env'
+import type { AgenticMcpRequestMetadata } from './types'
 
 export type DurableMcpClientInfo = {
   url: string
@@ -12,23 +13,25 @@ export type DurableMcpClientInfo = {
 }
 
 // TODO: not sure if there's a better way to handle re-using client connections
-// across requests. Maybe we use one DurableObject per customer<>originUrl connection?
+// across requests. Maybe we use one DurableObject per unique
+// customer<>DurableMcpClientInfo connection?
+// Currently using `sessionId`
 
 export class DurableMcpClient extends DurableObject<RawEnv> {
   protected client?: McpClient
   protected clientConnectionP?: Promise<void>
 
   async init(mcpClientInfo: DurableMcpClientInfo) {
-    const durableMcpClientInfo =
+    const existingMcpClientInfo =
       await this.ctx.storage.get<DurableMcpClientInfo>('mcp-client-info')
 
-    if (!durableMcpClientInfo) {
+    if (!existingMcpClientInfo) {
       await this.ctx.storage.put('mcp-client-info', mcpClientInfo)
     } else {
       assert(
-        mcpClientInfo.url === durableMcpClientInfo.url,
+        mcpClientInfo.url === existingMcpClientInfo.url,
         500,
-        `DurableMcpClientInfo url mismatch: "${mcpClientInfo.url}" vs "${durableMcpClientInfo.url}"`
+        `DurableMcpClientInfo url mismatch: "${mcpClientInfo.url}" vs "${existingMcpClientInfo.url}"`
       )
     }
 
@@ -39,17 +42,13 @@ export class DurableMcpClient extends DurableObject<RawEnv> {
     return !!(await this.ctx.storage.get('mcp-client-info'))
   }
 
-  async ensureClientConnection(durableMcpClientInfo?: DurableMcpClientInfo) {
+  async ensureClientConnection(mcpClientInfo?: DurableMcpClientInfo) {
     if (this.clientConnectionP) return this.clientConnectionP
 
-    durableMcpClientInfo ??=
+    mcpClientInfo ??=
       await this.ctx.storage.get<DurableMcpClientInfo>('mcp-client-info')
-    assert(
-      durableMcpClientInfo,
-      500,
-      'DurableMcpClient has not been initialized'
-    )
-    const { name, version, url } = durableMcpClientInfo
+    assert(mcpClientInfo, 500, 'DurableMcpClient has not been initialized')
+    const { name, version, url } = mcpClientInfo
 
     this.client = new McpClient({
       name,
@@ -63,16 +62,19 @@ export class DurableMcpClient extends DurableObject<RawEnv> {
 
   async callTool({
     name,
-    args
+    args,
+    metadata
   }: {
     name: string
     args: Record<string, unknown>
+    metadata: AgenticMcpRequestMetadata
   }): Promise<string> {
     await this.ensureClientConnection()
 
     const toolCallResponse = await this.client!.callTool({
       name,
-      arguments: args
+      arguments: args,
+      _meta: { agentic: metadata }
     })
 
     // TODO: The `McpToolCallResponse` type is seemingly too complex for the CF

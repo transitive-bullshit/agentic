@@ -81,7 +81,7 @@ app.all(async (ctx) => {
         'Tool args are required for MCP origin requests'
       )
       assert(
-        resolvedOriginRequest.mcpClient,
+        resolvedOriginRequest.originMcpClient,
         500,
         'MCP client is required for MCP origin requests'
       )
@@ -89,9 +89,10 @@ app.all(async (ctx) => {
       // TODO: add timeout support to the origin tool call?
       // TODO: add response caching for MCP tool calls
       const toolCallResponseString =
-        await resolvedOriginRequest.mcpClient.callTool({
+        await resolvedOriginRequest.originMcpClient.callTool({
           name: resolvedOriginRequest.tool.name,
-          args: resolvedOriginRequest.toolCallArgs
+          args: resolvedOriginRequest.toolCallArgs,
+          metadata: resolvedOriginRequest.originMcpRequestMetadata!
         })
       const toolCallResponse = JSON.parse(
         toolCallResponseString
@@ -123,12 +124,6 @@ app.all(async (ctx) => {
   res.headers.delete('report-to')
   res.headers.delete('server-timing')
   res.headers.delete('reporting-endpoints')
-
-  // const id: DurableObjectId = env.DO_RATE_LIMITER.idFromName('foo')
-  // const stub = env.DO_RATE_LIMITER.get(id)
-  // const greeting = await stub.sayHello('world')
-
-  // return new Response(greeting)
 
   return res
 

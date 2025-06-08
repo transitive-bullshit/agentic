@@ -1,10 +1,14 @@
 import type { PricingPlan, RateLimit } from '@agentic/platform-types'
 import { assert } from '@agentic/platform-core'
-import { parseToolIdentifier } from '@agentic/platform-validators'
+import {
+  parseDeploymentIdentifier,
+  parseToolIdentifier
+} from '@agentic/platform-validators'
 
 import type { DurableMcpClient } from './durable-mcp-client'
 import type {
   AdminConsumer,
+  AgenticMcpRequestMetadata,
   GatewayHonoContext,
   ResolvedOriginRequest,
   ToolCallArgs
@@ -183,8 +187,10 @@ export async function resolveOriginRequest(
   }
 
   const { originAdapter } = deployment
-  let originRequest: Request | undefined
   let toolCallArgs: ToolCallArgs | undefined
+  let originRequest: Request | undefined
+  let originMcpClient: DurableObjectStub<DurableMcpClient> | undefined
+  let originMcpRequestMetadata: AgenticMcpRequestMetadata | undefined
 
   if (originAdapter.type === 'raw') {
     const originRequestUrl = `${deployment.originUrl}/${toolName}${requestUrl.search}`
@@ -198,7 +204,6 @@ export async function resolveOriginRequest(
     })
   }
 
-  let mcpClient: DurableObjectStub<DurableMcpClient> | undefined
   if (originAdapter.type === 'openapi') {
     const operation = originAdapter.toolToOperationMap[tool.name]
     assert(operation, 404, `Tool "${tool.name}" not found in OpenAPI spec`)
@@ -214,13 +219,43 @@ export async function resolveOriginRequest(
     assert(sessionId, 500, 'Session ID is required for MCP origin requests')
 
     const id: DurableObjectId = ctx.env.DO_MCP_CLIENT.idFromName(sessionId)
-    mcpClient = ctx.env.DO_MCP_CLIENT.get(id)
+    originMcpClient = ctx.env.DO_MCP_CLIENT.get(id)
 
-    await mcpClient.init({
+    await originMcpClient.init({
       url: deployment.originUrl,
       name: originAdapter.serverInfo.name,
       version: originAdapter.serverInfo.version
     })
+
+    const parsedDeploymentIdentifier = parseDeploymentIdentifier(
+      deployment.identifier
+    )
+    assert(
+      parsedDeploymentIdentifier,
+      500,
+      `Internal error: deployment identifier "${deployment.identifier}" is invalid`
+    )
+    const { projectIdentifier } = parsedDeploymentIdentifier
+
+    originMcpRequestMetadata = {
+      agenticProxySecret: deployment._secret,
+      sessionId,
+      ip,
+      isCustomerSubscriptionActive: !!consumer?.isStripeSubscriptionActive,
+      customerId: consumer?.id,
+      customerSubscriptionPlan: consumer?.plan,
+      customerSubscriptionStatus: consumer?.stripeStatus,
+      userId: consumer?.user.id,
+      userEmail: consumer?.user.email,
+      userUsername: consumer?.user.username,
+      userName: consumer?.user.name,
+      userCreatedAt: consumer?.user.createdAt,
+      userUpdatedAt: consumer?.user.updatedAt,
+      deploymentId: deployment.id,
+      deploymentIdentifier: deployment.identifier,
+      projectId: deployment.projectId,
+      projectIdentifier
+    } as AgenticMcpRequestMetadata
   }
 
   if (originRequest) {
@@ -237,6 +272,7 @@ export async function resolveOriginRequest(
     pricingPlan,
     toolCallArgs,
     originRequest,
-    mcpClient
+    originMcpClient,
+    originMcpRequestMetadata
   }
 }

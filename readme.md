@@ -31,6 +31,7 @@
 - auth
   - custom auth pages for `openauth`
 - API gateway
+  - **do I just ditch the public REST interface and focus on MCP?**
   - enforce rate limits
   - how to handle binary bodies and responses?
   - add support for `immutable` in `toolConfigs`
@@ -39,16 +40,9 @@
   - how do I use consumer auth tokens with this flow?
   - how does oauth work with this flow?
 - **Origin MCP servers**
-  - CF durable object stability across requests
-    - REST => MCP: getDurableObject(`consumer auth token or deployment + IP`) containing MCP client connection
-    - MCP => MCP: getDurableObject(`mcp-session-id`)
-    - **do I just ditch the public REST interface and focus on MCP?**
   - how to guarantee that the request is coming from agentic?
-    - like `x-agentic-proxy-secret` or signed requests but for MCP servers
-    - or do this once at the connection level?
-  - how to pass agentic gateway context to the origin server?
-    - instead of headers, maybe optional `agenticContext` param?
-    - how does this work with mcp auth?
+    - `_meta` for tool calls
+    - _still need a way of doing this for initial connection requests_
   - mcp auth provider support
   - SSE support? (no; post-mvp if at all; only support [streamable http](https://modelcontextprotocol.io/specification/2025-03-26/basic/transports#streamable-http) like smithery does, or maybe support both?)
   - caching for MCP tool call responses
