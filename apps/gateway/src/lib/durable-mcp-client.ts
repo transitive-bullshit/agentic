@@ -12,7 +12,7 @@ export type DurableMcpClientInfo = {
 }
 
 // TODO: not sure if there's a better way to handle re-using client connections
-// across requests.
+// across requests. Maybe we use one DurableObject per customer<>originUrl connection?
 
 export class DurableMcpClient extends DurableObject<RawEnv> {
   protected client?: McpClient
@@ -75,9 +75,9 @@ export class DurableMcpClient extends DurableObject<RawEnv> {
       arguments: args
     })
 
-    // TODO: The `McpToolCallResponse` type is too complex for the CF
+    // TODO: The `McpToolCallResponse` type is seemingly too complex for the CF
     // serialization type inference to handle, so bypass it by serializing to
-    // a string and parse on the other end.
+    // a string and parsing it on the other end.
     return JSON.stringify(toolCallResponse)
   }
 }

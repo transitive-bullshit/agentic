@@ -228,6 +228,8 @@ export async function resolveOriginRequest(
     updateOriginRequest(originRequest, { consumer, deployment })
   }
 
+  assert(ctx.get('sessionId'), 500, 'Internal error: sessionId should be set')
+
   return {
     deployment,
     consumer,
