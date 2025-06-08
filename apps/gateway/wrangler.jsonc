@@ -11,14 +11,26 @@
   "migrations": [
     {
       "tag": "v1",
-      "new_sqlite_classes": ["DurableObjectRateLimiter"]
+      "new_sqlite_classes": [
+        "DurableRateLimiter",
+        "DurableMcpServer",
+        "DurableMcpClient"
+      ]
     }
   ],
   "durable_objects": {
     "bindings": [
       {
-        "class_name": "DurableObjectRateLimiter",
+        "class_name": "DurableRateLimiter",
         "name": "DO_RATE_LIMITER"
+      },
+      {
+        "class_name": "DurableMcpServer",
+        "name": "DO_MCP_SERVER"
+      },
+      {
+        "class_name": "DurableMcpClient",
+        "name": "DO_MCP_CLIENT"
       }
     ]
   },

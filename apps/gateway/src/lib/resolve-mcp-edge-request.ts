@@ -1,0 +1,73 @@
+import type { AdminDeployment, PricingPlan } from '@agentic/platform-types'
+import { assert } from '@agentic/platform-core'
+import { parseDeploymentIdentifier } from '@agentic/platform-validators'
+
+import type { AdminConsumer, GatewayHonoContext } from './types'
+import { getAdminConsumer } from './get-admin-consumer'
+import { getAdminDeployment } from './get-admin-deployment'
+
+export async function resolveMcpEdgeRequest(ctx: GatewayHonoContext): Promise<{
+  deployment: AdminDeployment
+  consumer?: AdminConsumer
+  pricingPlan?: PricingPlan
+}> {
+  const requestUrl = new URL(ctx.req.url)
+  const { pathname } = requestUrl
+  const requestedDeploymentIdentifier = pathname
+    .replace(/^\//, '')
+    .replace(/\/$/, '')
+  const parsedDeploymentIdentifier = parseDeploymentIdentifier(
+    requestedDeploymentIdentifier
+  )
+  assert(
+    parsedDeploymentIdentifier,
+    404,
+    `Invalid deployment identifier "${requestedDeploymentIdentifier}"`
+  )
+
+  const deployment = await getAdminDeployment(
+    ctx,
+    parsedDeploymentIdentifier.deploymentIdentifier
+  )
+
+  const apiKey = ctx.req.query('apiKey')?.trim()
+  let consumer: AdminConsumer | undefined
+  let pricingPlan: PricingPlan | undefined
+
+  if (apiKey) {
+    consumer = await getAdminConsumer(ctx, apiKey)
+    assert(consumer, 401, `Invalid api key "${apiKey}"`)
+    assert(
+      consumer.isStripeSubscriptionActive,
+      402,
+      `API key "${apiKey}" subscription is not active`
+    )
+    assert(
+      consumer.projectId === deployment.projectId,
+      403,
+      `API key "${apiKey}" is not authorized for project "${deployment.projectId}"`
+    )
+
+    // TODO: Ensure that consumer.plan is compatible with the target deployment?
+    // TODO: This could definitely cause issues when changing pricing plans.
+
+    pricingPlan = deployment.pricingPlans.find(
+      (pricingPlan) => consumer!.plan === pricingPlan.slug
+    )
+
+    // assert(
+    //   pricingPlan,
+    //   403,
+    //   `API key "${apiKey}" unable to find matching pricing plan for project "${deployment.project}"`
+    // )
+  } else {
+    // For unauthenticated requests, default to a free pricing plan if available.
+    pricingPlan = deployment.pricingPlans.find((plan) => plan.slug === 'free')
+  }
+
+  return {
+    deployment,
+    consumer,
+    pricingPlan
+  }
+}

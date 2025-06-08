@@ -19,17 +19,41 @@ export class HttpError extends BaseError {
   readonly statusCode: ContentfulStatusCode
 
   constructor({
-    statusCode = 500,
     message,
+    statusCode = 500,
     cause
   }: {
-    statusCode?: ContentfulStatusCode
     message: string
+    statusCode?: ContentfulStatusCode
     cause?: unknown
   }) {
     super({ message, cause })
 
     this.statusCode = statusCode
+  }
+}
+
+export class JsonRpcError extends HttpError {
+  readonly jsonRpcErrorCode: number
+  readonly jsonRpcId: string | number | null
+
+  constructor({
+    message,
+    jsonRpcErrorCode,
+    jsonRpcId = null,
+    statusCode,
+    cause
+  }: {
+    message: string
+    jsonRpcErrorCode: number
+    jsonRpcId?: string | number | null
+    statusCode?: ContentfulStatusCode
+    cause?: unknown
+  }) {
+    super({ message, cause, statusCode })
+
+    this.jsonRpcErrorCode = jsonRpcErrorCode
+    this.jsonRpcId = jsonRpcId
   }
 }
 

@@ -2,6 +2,7 @@ import type { PricingPlan, RateLimit } from '@agentic/platform-types'
 import { assert } from '@agentic/platform-core'
 import { parseToolIdentifier } from '@agentic/platform-validators'
 
+import type { DurableMcpClient } from './durable-mcp-client'
 import type {
   AdminConsumer,
   GatewayHonoContext,
@@ -27,15 +28,12 @@ export async function resolveOriginRequest(
   ctx: GatewayHonoContext
 ): Promise<ResolvedOriginRequest> {
   const logger = ctx.get('logger')
-  // cf-connecting-ip should always be present, but if not we can fallback to XFF.
-  const ip =
-    ctx.req.header('cf-connecting-ip') ||
-    ctx.req.header('x-forwarded-for') ||
-    undefined
+  const ip = ctx.get('ip')
+
   const { method } = ctx.req
   const requestUrl = new URL(ctx.req.url)
   const { pathname } = requestUrl
-  const requestedToolIdentifier = pathname.replace(/^\//, '')
+  const requestedToolIdentifier = pathname.replace(/^\//, '').replace(/\/$/, '')
   const parsedToolIdentifier = parseToolIdentifier(requestedToolIdentifier)
   assert(
     parsedToolIdentifier,
@@ -65,7 +63,7 @@ export async function resolveOriginRequest(
 
   let pricingPlan: PricingPlan | undefined
   let consumer: AdminConsumer | undefined
-  let reportUsage = true
+  let reportUsage = ctx.get('reportUsage') ?? true
 
   const token = (ctx.req.header('authorization') || '')
     .replace(/^Bearer /i, '')
@@ -97,9 +95,18 @@ export async function resolveOriginRequest(
     //   403,
     //   `Auth token "${token}" unable to find matching pricing plan for project "${deployment.project}"`
     // )
+
+    if (!ctx.get('sessionId')) {
+      ctx.set('sessionId', `${consumer.id}:${deployment.id}`)
+    }
   } else {
     // For unauthenticated requests, default to a free pricing plan if available.
     pricingPlan = deployment.pricingPlans.find((plan) => plan.slug === 'free')
+
+    if (!ctx.get('sessionId')) {
+      assert(ip, 500, 'IP address is required for unauthenticated requests')
+      ctx.set('sessionId', `${ip}:${deployment.projectId}`)
+    }
   }
 
   let rateLimit: RateLimit | undefined | null
@@ -165,13 +172,13 @@ export async function resolveOriginRequest(
     }
   }
 
+  ctx.set('reportUsage', reportUsage)
+
   if (rateLimit) {
     await enforceRateLimit(ctx, {
       id: consumer?.id ?? ip,
       interval: rateLimit.interval,
-      maxPerInterval: rateLimit.maxPerInterval,
-      method,
-      pathname
+      maxPerInterval: rateLimit.maxPerInterval
     })
   }
 
@@ -191,6 +198,7 @@ export async function resolveOriginRequest(
     })
   }
 
+  let mcpClient: DurableObjectStub<DurableMcpClient> | undefined
   if (originAdapter.type === 'openapi') {
     const operation = originAdapter.toolToOperationMap[tool.name]
     assert(operation, 404, `Tool "${tool.name}" not found in OpenAPI spec`)
@@ -201,6 +209,18 @@ export async function resolveOriginRequest(
       operation,
       deployment
     })
+  } else if (originAdapter.type === 'mcp') {
+    const sessionId = ctx.get('sessionId')
+    assert(sessionId, 500, 'Session ID is required for MCP origin requests')
+
+    const id: DurableObjectId = ctx.env.DO_MCP_CLIENT.idFromName(sessionId)
+    mcpClient = ctx.env.DO_MCP_CLIENT.get(id)
+
+    await mcpClient.init({
+      url: deployment.originUrl,
+      name: originAdapter.serverInfo.name,
+      version: originAdapter.serverInfo.version
+    })
   }
 
   if (originRequest) {
@@ -209,14 +229,12 @@ export async function resolveOriginRequest(
   }
 
   return {
-    originRequest,
-    toolCallArgs,
     deployment,
     consumer,
     tool,
-    ip,
-    method,
-    pricingPlanSlug: pricingPlan?.slug,
-    reportUsage
+    pricingPlan,
+    toolCallArgs,
+    originRequest,
+    mcpClient
   }
 }

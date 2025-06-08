@@ -23,6 +23,12 @@ export const init = createMiddleware<DefaultHonoEnv>(
     const logger = new ConsoleLogger(ctx.env, { requestId })
     ctx.set('logger', logger)
 
+    ctx.set('isJsonRpcRequest', false)
+
+    const ip =
+      ctx.req.header('cf-connecting-ip') || ctx.req.header('x-forwarded-for')
+    ctx.set('ip', ip)
+
     await next()
   }
 )

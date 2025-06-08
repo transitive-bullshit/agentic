@@ -6,11 +6,9 @@ import {
   responseTime,
   sentry
 } from '@agentic/platform-hono'
-import { Client as McpClient } from '@modelcontextprotocol/sdk/client/index.js'
-import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js'
 import { Hono } from 'hono'
 
-import type { GatewayHonoEnv } from './lib/types'
+import type { GatewayHonoEnv, McpToolCallResponse } from './lib/types'
 import { createAgenticClient } from './lib/agentic-client'
 import { createHttpResponseFromMcpToolCallResponse } from './lib/create-http-response-from-mcp-tool-call-response'
 import { fetchCache } from './lib/fetch-cache'
@@ -31,10 +29,10 @@ app.use(sentry())
 app.use(
   cors({
     origin: '*',
-    allowHeaders: ['Content-Type', 'Authorization'],
-    allowMethods: ['POST', 'GET', 'OPTIONS'],
-    exposeHeaders: ['Content-Length'],
-    maxAge: 600,
+    allowHeaders: ['Content-Type', 'Authorization', 'mcp-session-id'],
+    allowMethods: ['GET', 'POST', 'DELETE', 'OPTIONS'],
+    exposeHeaders: ['Content-Length', 'mcp-session-id'],
+    maxAge: 86_400,
     credentials: true
   })
 )
@@ -82,25 +80,22 @@ app.all(async (ctx) => {
         500,
         'Tool args are required for MCP origin requests'
       )
-
-      const transport = new StreamableHTTPClientTransport(
-        new URL(resolvedOriginRequest.deployment.originUrl)
+      assert(
+        resolvedOriginRequest.mcpClient,
+        500,
+        'MCP client is required for MCP origin requests'
       )
-      const client = new McpClient({
-        name: resolvedOriginRequest.deployment.originAdapter.serverInfo.name,
-        version:
-          resolvedOriginRequest.deployment.originAdapter.serverInfo.version
-      })
-
-      // TODO: re-use client connection across requests
-      await client.connect(transport)
 
       // TODO: add timeout support to the origin tool call?
       // TODO: add response caching for MCP tool calls
-      const toolCallResponse = await client.callTool({
-        name: resolvedOriginRequest.tool.name,
-        arguments: resolvedOriginRequest.toolCallArgs
-      })
+      const toolCallResponseString =
+        await resolvedOriginRequest.mcpClient.callTool({
+          name: resolvedOriginRequest.tool.name,
+          args: resolvedOriginRequest.toolCallArgs
+        })
+      const toolCallResponse = JSON.parse(
+        toolCallResponseString
+      ) as McpToolCallResponse
 
       originResponse = await createHttpResponseFromMcpToolCallResponse(ctx, {
         tool: resolvedOriginRequest.tool,

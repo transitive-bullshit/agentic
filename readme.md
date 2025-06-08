@@ -56,7 +56,6 @@
   - resources
   - prompts
   - other MCP features?
-- allow config name to be `project-name` or `@namespace/project-name`?
 
 ## TODO Post-MVP
 
@@ -88,6 +87,7 @@
 - additional transactional emails
 - consider `projectName` and `projectSlug` or `projectIdentifier`?
 - handle or validate against dynamic MCP origin tools
+- allow config name to be `project-name` or `@namespace/project-name`?
 
 ## License
 

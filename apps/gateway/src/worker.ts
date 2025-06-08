@@ -2,8 +2,11 @@ import { app } from './app'
 import { type Env, parseEnv } from './lib/env'
 
 // Export Durable Objects for cloudflare
-export { DurableObjectRateLimiter } from './durable-object'
+export { DurableMcpClient } from './lib/durable-mcp-client'
+export { DurableMcpServer } from './lib/durable-mcp-server'
+export { DurableRateLimiter } from './lib/durable-rate-limiter'
 
+// Main worker entrypoint
 export default {
   async fetch(
     request: Request,
@@ -12,6 +15,7 @@ export default {
   ): Promise<Response> {
     let parsedEnv: Env
 
+    // Validate the environment
     try {
       parsedEnv = parseEnv(env)
     } catch (err: any) {
@@ -23,6 +27,7 @@ export default {
       })
     }
 
+    // Handle the request with `hono`
     return app.fetch(request, parsedEnv, ctx)
   }
 } satisfies ExportedHandler<Env>

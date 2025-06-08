@@ -11,15 +11,11 @@ export async function enforceRateLimit(
   {
     id,
     interval,
-    maxPerInterval,
-    method,
-    pathname
+    maxPerInterval
   }: {
     id?: string
     interval: number
     maxPerInterval: number
-    method: string
-    pathname: string
   }
 ) {
   assert(id, 400, 'Unauthenticated requests must have a valid IP address')
@@ -29,6 +25,4 @@ export async function enforceRateLimit(
   assert(id, 500, 'not implemented')
   assert(interval > 0, 500, 'not implemented')
   assert(maxPerInterval >= 0, 500, 'not implemented')
-  assert(method, 500, 'not implemented')
-  assert(pathname, 500, 'not implemented')
 }

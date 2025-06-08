@@ -1,9 +1,9 @@
 import { DurableObject } from 'cloudflare:workers'
 
-import type { RawEnv } from './lib/env'
+import type { RawEnv } from './env'
 
 /** A Durable Object's behavior is defined in an exported Javascript class */
-export class DurableObjectRateLimiter extends DurableObject<RawEnv> {
+export class DurableRateLimiter extends DurableObject<RawEnv> {
   /**
    * The constructor is invoked once upon creation of the Durable Object, i.e. the first call to
    * 	`DurableObjectStub::get` for a given identifier (no-op constructors can be omitted)

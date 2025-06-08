@@ -6,6 +6,7 @@ import type {
 import type {
   AdminDeployment,
   Consumer,
+  PricingPlan,
   Tool,
   User
 } from '@agentic/platform-types'
@@ -13,6 +14,7 @@ import type { Client as McpClient } from '@modelcontextprotocol/sdk/client/index
 import type { Context } from 'hono'
 import type { Simplify } from 'type-fest'
 
+import type { DurableMcpClient } from './durable-mcp-client'
 import type { Env } from './env'
 
 export type McpToolCallResponse = Simplify<
@@ -29,6 +31,8 @@ export type GatewayHonoVariables = Simplify<
   DefaultHonoVariables & {
     client: AgenticApiClient
     cache: Cache
+    sessionId?: string
+    reportUsage?: boolean
   }
 >
 
@@ -47,13 +51,11 @@ export type ToolCallArgs = Record<string, any>
 export type ResolvedOriginRequest = {
   deployment: AdminDeployment
   tool: Tool
-  method: string
-  reportUsage: boolean
 
   consumer?: AdminConsumer
-  ip?: string
-  pricingPlanSlug?: string
+  pricingPlan?: PricingPlan
 
-  originRequest?: Request
   toolCallArgs?: ToolCallArgs
+  originRequest?: Request
+  mcpClient?: DurableObjectStub<DurableMcpClient>
 }
