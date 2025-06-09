@@ -1,5 +1,5 @@
 import type { AdminDeployment, PricingPlan } from '@agentic/platform-types'
-import { assert, HttpError } from '@agentic/platform-core'
+import { assert } from '@agentic/platform-core'
 import { parseDeploymentIdentifier } from '@agentic/platform-validators'
 // import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
 import { Server } from '@modelcontextprotocol/sdk/server/index.js'
@@ -8,7 +8,6 @@ import {
   ListToolsRequestSchema
 } from '@modelcontextprotocol/sdk/types.js'
 import { McpAgent } from 'agents/mcp'
-import contentType from 'fast-content-type-parse'
 
 import type { RawEnv } from './env'
 import type {
@@ -18,15 +17,16 @@ import type {
 } from './types'
 import { cfValidateJsonSchema } from './cf-validate-json-schema'
 import { createRequestForOpenAPIOperation } from './create-request-for-openapi-operation'
+import { transformHttpResponseToMcpToolCallResponse } from './transform-http-response-to-mcp-tool-call-response'
 // import { fetchCache } from './fetch-cache'
 // import { getRequestCacheKey } from './get-request-cache-key'
 import { updateOriginRequest } from './update-origin-request'
 
-type State = { counter: number }
+// type State = { counter: number }
 
 export class DurableMcpServer extends McpAgent<
   RawEnv,
-  State,
+  never, // TODO: do we need local state?
   {
     deployment: AdminDeployment
     consumer?: AdminConsumer
@@ -36,9 +36,9 @@ export class DurableMcpServer extends McpAgent<
   protected _serverP = Promise.withResolvers<Server>()
   override server = this._serverP.promise
 
-  override initialState: State = {
-    counter: 1
-  }
+  // override initialState: State = {
+  //   counter: 1
+  // }
 
   override async init() {
     const { consumer, deployment, pricingPlan } = this.props
@@ -131,54 +131,7 @@ export class DurableMcpServer extends McpAgent<
 
           updateOriginRequest(originRequest, { consumer, deployment })
 
-          const originResponse = await fetch(originRequest)
-
-          const { type: mimeType } = contentType.safeParse(
-            originResponse.headers.get('content-type') ||
-              'application/octet-stream'
-          )
-
-          // eslint-disable-next-line no-console
-          console.log('httpOriginResponse', {
-            tool: tool.name,
-            toolCallArgs,
-            url: originRequest.url,
-            method: originRequest.method,
-            originResponse: {
-              mimeType,
-              status: originResponse.status
-              // headers: Object.fromEntries(originResponse.headers.entries())
-            }
-          })
-
-          if (originResponse.status >= 400) {
-            let message = originResponse.statusText
-            try {
-              message = await originResponse.text()
-            } catch {}
-
-            // eslint-disable-next-line no-console
-            console.error('httpOriginResponse ERROR', {
-              tool: tool.name,
-              toolCallArgs,
-              url: originRequest.url,
-              method: originRequest.method,
-              originResponse: {
-                mimeType,
-                status: originResponse.status,
-                // headers: Object.fromEntries(originResponse.headers.entries()),
-                message
-              }
-            })
-
-            throw new HttpError({
-              statusCode: originResponse.status,
-              message,
-              cause: originResponse
-            })
-          }
-
-          // TODO
+          // TODO: re-add caching support
           // const cacheKey = await getRequestCacheKey(ctx, originRequest)
 
           // // TODO: transform origin 5XX errors to 502 errors...
@@ -188,69 +141,14 @@ export class DurableMcpServer extends McpAgent<
           //   fetchResponse: () => fetch(originRequest)
           // })
 
-          if (tool.outputSchema) {
-            assert(
-              mimeType.includes('json'),
-              502,
-              `Tool "${tool.name}" requires a JSON response, but the origin returned content type "${mimeType}"`
-            )
-            const res: any = await originResponse.json()
+          const originResponse = await fetch(originRequest)
 
-            const toolCallResponseContent = cfValidateJsonSchema({
-              schema: tool.outputSchema,
-              data: res as Record<string, unknown>,
-              coerce: false,
-              // TODO: double-check MCP schema on whether additional properties are allowed
-              strictAdditionalProperties: true,
-              errorMessage: `Invalid tool response for tool "${tool.name}"`,
-              errorStatusCode: 502
-            })
-
-            return {
-              structuredContent: toolCallResponseContent,
-              isError: originResponse.status >= 400
-            }
-          } else {
-            const result: McpToolCallResponse = {
-              isError: originResponse.status >= 400
-            }
-
-            if (mimeType.includes('json')) {
-              result.structuredContent = await originResponse.json()
-            } else if (mimeType.includes('text')) {
-              result.content = [
-                {
-                  type: 'text',
-                  text: await originResponse.text()
-                }
-              ]
-            } else {
-              const resBody = await originResponse.arrayBuffer()
-              const resBodyBase64 = Buffer.from(resBody).toString('base64')
-              const type = mimeType.includes('image')
-                ? 'image'
-                : mimeType.includes('audio')
-                  ? 'audio'
-                  : 'resource'
-
-              // TODO: this needs work
-              result.content = [
-                {
-                  type,
-                  mimeType,
-                  ...(type === 'resource'
-                    ? {
-                        blob: resBodyBase64
-                      }
-                    : {
-                        data: resBodyBase64
-                      })
-                }
-              ]
-            }
-
-            return result
-          }
+          return transformHttpResponseToMcpToolCallResponse({
+            originRequest,
+            originResponse,
+            tool,
+            toolCallArgs
+          })
         } else if (originAdapter.type === 'mcp') {
           const sessionId = this.ctx.id.toString()
           const id: DurableObjectId =
@@ -308,8 +206,8 @@ export class DurableMcpServer extends McpAgent<
     })
   }
 
-  override onStateUpdate(state: State) {
-    // eslint-disable-next-line no-console
-    console.log({ stateUpdate: state })
-  }
+  // override onStateUpdate(state: State) {
+  //   // eslint-disable-next-line no-console
+  //   console.log({ stateUpdate: state })
+  // }
 }
