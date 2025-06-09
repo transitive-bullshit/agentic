@@ -56,6 +56,7 @@ app.all(async (ctx) => {
   const { toolName } = parseToolIdentifier(requestedToolIdentifier)
 
   if (toolName === 'mcp') {
+    ctx.set('isJsonRpcRequest', true)
     const executionCtx = ctx.executionCtx as any
     const mcpInfo = await resolveMcpEdgeRequest(ctx)
     executionCtx.props = mcpInfo
