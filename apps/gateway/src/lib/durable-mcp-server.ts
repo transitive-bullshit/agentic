@@ -146,8 +146,8 @@ export class DurableMcpServer extends McpAgent<
             method: originRequest.method,
             originResponse: {
               mimeType,
-              status: originResponse.status,
-              headers: Object.fromEntries(originResponse.headers.entries())
+              status: originResponse.status
+              // headers: Object.fromEntries(originResponse.headers.entries())
             }
           })
 
@@ -166,7 +166,7 @@ export class DurableMcpServer extends McpAgent<
               originResponse: {
                 mimeType,
                 status: originResponse.status,
-                headers: Object.fromEntries(originResponse.headers.entries()),
+                // headers: Object.fromEntries(originResponse.headers.entries()),
                 message
               }
             })

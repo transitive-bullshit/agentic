@@ -87,7 +87,7 @@ for (const [i, fixtureSuite] of fixtureSuites.entries()) {
           }
 
           if (debugFixture) {
-            console.log(fixtureName, '=>', fixtureResult)
+            console.log(fixtureName, '=>', result)
           }
         }
       )
