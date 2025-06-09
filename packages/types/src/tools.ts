@@ -48,9 +48,11 @@ export const pricingPlanToolConfigSchema = z
     /**
      * Whether this tool should be enabled for customers on a given pricing plan.
      *
-     * @default true
+     * If `undefined`, will use the tool's default enabled state.
+     *
+     * @default undefined
      */
-    enabled: z.boolean().optional().default(true),
+    enabled: z.boolean().optional(),
 
     /**
      * Overrides whether to report default `requests` usage for metered billing

@@ -1,11 +1,10 @@
 // import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
 // import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js'
 import { assert, JsonRpcError } from '@agentic/platform-core'
-import { parseDeploymentIdentifier } from '@agentic/platform-validators'
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
+import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js'
 import {
   InitializeRequestSchema,
-  // isJSONRPCError,
+  isJSONRPCError,
   isJSONRPCNotification,
   isJSONRPCRequest,
   isJSONRPCResponse,
@@ -14,6 +13,7 @@ import {
 } from '@modelcontextprotocol/sdk/types.js'
 
 import type { GatewayHonoContext } from './lib/types'
+import { createConsumerMcpServer } from './lib/consumer-mcp-server'
 import { resolveMcpEdgeRequest } from './lib/resolve-mcp-edge-request'
 // import { DurableMcpServer } from './lib/durable-mcp-server'
 
@@ -177,23 +177,35 @@ export async function handleMcpRequest(ctx: GatewayHonoContext) {
   // const durableMcpServer = ctx.env.DO_MCP_SERVER.get(id)
   // const isInitialized = await durableMcpServer.isInitialized()
 
-  if (!isInitializationRequest && !isInitialized) {
-    // A session id that was never initialized was provided
-    throw new JsonRpcError({
-      message: 'Session not found',
-      statusCode: 404,
-      jsonRpcErrorCode: -32_001,
-      jsonRpcId: null
-    })
-  }
+  // if (!isInitializationRequest && !isInitialized) {
+  //   // A session id that was never initialized was provided
+  //   throw new JsonRpcError({
+  //     message: 'Session not found',
+  //     statusCode: 404,
+  //     jsonRpcErrorCode: -32_001,
+  //     jsonRpcId: null
+  //   })
+  // }
 
   const { deployment, consumer, pricingPlan } = await resolveMcpEdgeRequest(ctx)
-  const { projectIdentifier } = parseDeploymentIdentifier(deployment.identifier)
-
-  const server = new McpServer({
-    name: projectIdentifier,
-    version: deployment.version ?? '0.0.0'
+  const server = createConsumerMcpServer(ctx, {
+    sessionId,
+    deployment,
+    consumer,
+    pricingPlan
   })
+
+  const transport = new StreamableHTTPServerTransport({
+    sessionIdGenerator: () => {
+      return ctx.env.DO_MCP_SERVER.newUniqueId().toString()
+    },
+    onsessioninitialized: (sessionId) => {
+      // TODO: improve this
+      // eslint-disable-next-line no-console
+      console.log(`Session initialized: ${sessionId}`)
+    }
+  })
+  await server.connect(transport)
 
   // if (isInitializationRequest) {
   //   await durableMcpServer.init({
@@ -212,6 +224,36 @@ export async function handleMcpRequest(ctx: GatewayHonoContext) {
   const writer = writable.getWriter()
   const encoder = new TextEncoder()
 
+  // Keep track of the request ids that we have sent to the server
+  // so that we can close the connection once we have received
+  // all the responses
+  const requestIds = new Set<string | number>()
+
+  // eslint-disable-next-line unicorn/prefer-add-event-listener
+  transport.onmessage = async (message) => {
+    // validate that the message is a valid JSONRPC message
+    const result = JSONRPCMessageSchema.safeParse(message)
+    if (!result.success) {
+      // TODO: add a warning here
+      return
+    }
+
+    // If the message is a response or an error, remove the id from the set of
+    // request ids
+    if (isJSONRPCResponse(result.data) || isJSONRPCError(result.data)) {
+      requestIds.delete(result.data.id)
+    }
+
+    // Send the message as an SSE event
+    const messageText = `event: message\ndata: ${JSON.stringify(result.data)}\n\n`
+    await writer.write(encoder.encode(messageText))
+
+    // If we have received all the responses, close the connection
+    if (!requestIds.size) {
+      ctx.executionCtx.waitUntil(transport.close())
+    }
+  }
+
   // If there are no requests, we send the messages downstream and
   // acknowledge the request with a 202 since we don't expect any responses
   // back through this connection.
@@ -219,10 +261,7 @@ export async function handleMcpRequest(ctx: GatewayHonoContext) {
     (msg) => isJSONRPCNotification(msg) || isJSONRPCResponse(msg)
   )
   if (hasOnlyNotificationsOrResponses) {
-    // TODO
-    // for (const message of messages) {
-    //   ws.send(JSON.stringify(message))
-    // }
+    await Promise.all(messages.map((message) => transport.send(message)))
 
     return new Response(null, {
       status: 202
@@ -233,9 +272,10 @@ export async function handleMcpRequest(ctx: GatewayHonoContext) {
     if (isJSONRPCRequest(message)) {
       // Add each request id that we send off to a set so that we can keep
       // track of which requests we still need a response for.
-      // requestIds.add(message.id)
+      requestIds.add(message.id)
     }
-    // ws.send(JSON.stringify(message))
+
+    await transport.send(message)
   }
 
   // Return the streamable http response.

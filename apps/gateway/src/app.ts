@@ -6,6 +6,7 @@ import {
   responseTime,
   sentry
 } from '@agentic/platform-hono'
+import { parseToolIdentifier } from '@agentic/platform-validators'
 import { Hono } from 'hono'
 
 import type { GatewayHonoEnv, McpToolCallResponse } from './lib/types'
@@ -14,6 +15,7 @@ import { createHttpResponseFromMcpToolCallResponse } from './lib/create-http-res
 import { fetchCache } from './lib/fetch-cache'
 import { getRequestCacheKey } from './lib/get-request-cache-key'
 import { resolveOriginRequest } from './lib/resolve-origin-request'
+import { handleMcpRequest } from './mcp'
 
 export const app = new Hono<GatewayHonoEnv>()
 
@@ -46,6 +48,15 @@ app.use(responseTime)
 app.all(async (ctx) => {
   ctx.set('cache', caches.default)
   ctx.set('client', createAgenticClient(ctx))
+
+  const requestUrl = new URL(ctx.req.url)
+  const { pathname } = requestUrl
+  const requestedToolIdentifier = pathname.replace(/^\//, '').replace(/\/$/, '')
+  const { toolName } = parseToolIdentifier(requestedToolIdentifier)
+
+  if (toolName === 'mcp') {
+    return handleMcpRequest(ctx)
+  }
 
   const resolvedOriginRequest = await resolveOriginRequest(ctx)
 

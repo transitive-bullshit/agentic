@@ -4,21 +4,19 @@ import type {
 } from '@agentic/platform-types'
 import { assert } from '@agentic/platform-core'
 
-import type { GatewayHonoContext, ToolCallArgs } from './types'
+import type { ToolCallArgs } from './types'
 
-export async function createRequestForOpenAPIOperation(
-  ctx: GatewayHonoContext,
-  {
-    toolCallArgs,
-    operation,
-    deployment
-  }: {
-    toolCallArgs: ToolCallArgs
-    operation: OpenAPIToolOperation
-    deployment: AdminDeployment
-  }
-): Promise<Request> {
-  const request = ctx.req.raw
+export async function createRequestForOpenAPIOperation({
+  toolCallArgs,
+  operation,
+  deployment,
+  request
+}: {
+  toolCallArgs: ToolCallArgs
+  operation: OpenAPIToolOperation
+  deployment: AdminDeployment
+  request?: Request
+}): Promise<Request> {
   assert(toolCallArgs, 500, 'Tool args are required')
   assert(
     deployment.originAdapter.type === 'openapi',
@@ -43,13 +41,16 @@ export async function createRequestForOpenAPIOperation(
   )
 
   const headers: Record<string, string> = {}
-  for (const [key, value] of request.headers.entries()) {
-    headers[key] = value
+  if (request) {
+    // TODO: do we want to expose these? especially authorization?
+    for (const [key, value] of request.headers.entries()) {
+      headers[key] = value
+    }
   }
 
   if (headerParams.length > 0) {
     for (const [key] of headerParams) {
-      headers[key] = (request.headers.get(key) as string) ?? toolCallArgs[key]
+      headers[key] = (request?.headers.get(key) as string) ?? toolCallArgs[key]
     }
   }
 

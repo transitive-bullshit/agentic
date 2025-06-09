@@ -149,9 +149,8 @@ export async function resolveOriginRequest(
 
     if (pricingPlan && pricingPlanToolConfig) {
       assert(
-        pricingPlanToolConfig.enabled &&
-          pricingPlanToolConfig.enabled === undefined &&
-          toolConfig.enabled,
+        pricingPlanToolConfig.enabled ||
+          (pricingPlanToolConfig.enabled === undefined && toolConfig.enabled),
         403,
         `Tool "${tool.name}" is not enabled for pricing plan "${pricingPlan.slug}"`
       )
@@ -202,7 +201,8 @@ export async function resolveOriginRequest(
     assert(operation, 404, `Tool "${tool.name}" not found in OpenAPI spec`)
     assert(toolCallArgs, 500)
 
-    originRequest = await createRequestForOpenAPIOperation(ctx, {
+    originRequest = await createRequestForOpenAPIOperation({
+      request: ctx.req.raw,
       toolCallArgs,
       operation,
       deployment
