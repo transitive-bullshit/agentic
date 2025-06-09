@@ -98,6 +98,10 @@ export class DurableMcpServer extends McpAgent<
       //   (toolConfig) => toolConfig.name === tool.name
       // )
 
+      // TODO: rate-limiting
+      // TODO: caching
+      // TODO: usage tracking / reporting
+
       if (originAdapter.type === 'raw') {
         // TODO
         assert(false, 500, 'Raw origin adapter not implemented')
