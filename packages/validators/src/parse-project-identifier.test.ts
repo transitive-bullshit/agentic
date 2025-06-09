@@ -20,8 +20,7 @@ function success(...args: Parameters<typeof parseProjectIdentifier>) {
 }
 
 function error(...args: Parameters<typeof parseProjectIdentifier>) {
-  const result = parseProjectIdentifier(...args)
-  expect(result).toBeUndefined()
+  expect(() => parseProjectIdentifier(...args)).throws()
 }
 
 describe('parseProjectIdentifier', () => {

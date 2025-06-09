@@ -7,7 +7,6 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js'
 import { DurableObject } from 'cloudflare:workers'
 
-import type { RawEnv } from './env'
 import type { AdminConsumer } from './types'
 
 export type DurableMcpServerInfo = {
@@ -16,7 +15,7 @@ export type DurableMcpServerInfo = {
   pricingPlan?: PricingPlan
 }
 
-export class DurableMcpServer extends DurableObject<RawEnv> {
+export class DurableMcpServer extends DurableObject {
   protected server?: McpServer
   protected serverTransport?: StreamableHTTPServerTransport
   protected serverConnectionP?: Promise<void>
@@ -50,15 +49,9 @@ export class DurableMcpServer extends DurableObject<RawEnv> {
     assert(mcpServerInfo, 500, 'DurableMcpServer has not been initialized')
     const { deployment } = mcpServerInfo
 
-    const parsedDeploymentIdentifier = parseDeploymentIdentifier(
+    const { projectIdentifier } = parseDeploymentIdentifier(
       deployment.identifier
     )
-    assert(
-      parsedDeploymentIdentifier,
-      500,
-      `Invalid deployment identifier "${deployment.identifier}"`
-    )
-    const { projectIdentifier } = parsedDeploymentIdentifier
 
     this.server = new McpServer({
       name: projectIdentifier,

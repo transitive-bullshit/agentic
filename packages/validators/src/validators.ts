@@ -50,14 +50,22 @@ export function isValidProjectIdentifier(
   value?: string,
   opts?: ParseIdentifierOptions
 ): boolean {
-  return !!parseProjectIdentifier(value, opts)
+  try {
+    return !!parseProjectIdentifier(value, opts)
+  } catch {
+    return false
+  }
 }
 
 export function isValidDeploymentIdentifier(
   value?: string,
   opts?: ParseIdentifierOptions
 ): boolean {
-  return !!parseDeploymentIdentifier(value, opts)
+  try {
+    return !!parseDeploymentIdentifier(value, opts)
+  } catch {
+    return false
+  }
 }
 
 export function isValidToolName(value?: string): boolean {

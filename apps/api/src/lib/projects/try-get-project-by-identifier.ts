@@ -43,11 +43,6 @@ export async function tryGetProjectByIdentifier(
   const parsedProjectIdentifier = parseProjectIdentifier(projectIdentifier, {
     strict
   })
-  assert(
-    parsedProjectIdentifier?.projectIdentifier,
-    400,
-    `Invalid project identifier "${projectIdentifier}"`
-  )
   projectIdentifier = parsedProjectIdentifier.projectIdentifier
 
   const project = await db.query.projects.findFirst({

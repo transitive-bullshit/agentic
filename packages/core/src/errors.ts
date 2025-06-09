@@ -1,4 +1,3 @@
-import type { ContentfulStatusCode } from 'hono/utils/http-status'
 import { fromError } from 'zod-validation-error'
 
 export class BaseError extends Error {
@@ -16,7 +15,7 @@ export class BaseError extends Error {
 }
 
 export class HttpError extends BaseError {
-  readonly statusCode: ContentfulStatusCode
+  readonly statusCode: number
 
   constructor({
     message,
@@ -24,7 +23,7 @@ export class HttpError extends BaseError {
     cause
   }: {
     message: string
-    statusCode?: ContentfulStatusCode
+    statusCode?: number
     cause?: unknown
   }) {
     super({ message, cause })
@@ -47,7 +46,7 @@ export class JsonRpcError extends HttpError {
     message: string
     jsonRpcErrorCode: number
     jsonRpcId?: string | number | null
-    statusCode?: ContentfulStatusCode
+    statusCode?: number
     cause?: unknown
   }) {
     super({ message, cause, statusCode })
@@ -63,7 +62,7 @@ export class ZodValidationError extends HttpError {
     prefix,
     cause
   }: {
-    statusCode?: ContentfulStatusCode
+    statusCode?: number
     prefix?: string
     cause: unknown
   }) {

@@ -38,18 +38,11 @@ export async function resolveOriginRequest(
   const requestUrl = new URL(ctx.req.url)
   const { pathname } = requestUrl
   const requestedToolIdentifier = pathname.replace(/^\//, '').replace(/\/$/, '')
-  const parsedToolIdentifier = parseToolIdentifier(requestedToolIdentifier)
-  assert(
-    parsedToolIdentifier,
-    404,
-    `Invalid tool identifier "${requestedToolIdentifier}"`
+  const { toolName, deploymentIdentifier } = parseToolIdentifier(
+    requestedToolIdentifier
   )
-  const { toolName } = parsedToolIdentifier
 
-  const deployment = await getAdminDeployment(
-    ctx,
-    parsedToolIdentifier.deploymentIdentifier
-  )
+  const deployment = await getAdminDeployment(ctx, deploymentIdentifier)
 
   const tool = getTool({
     method,
@@ -227,15 +220,10 @@ export async function resolveOriginRequest(
       version: originAdapter.serverInfo.version
     })
 
-    const parsedDeploymentIdentifier = parseDeploymentIdentifier(
-      deployment.identifier
+    const { projectIdentifier } = parseDeploymentIdentifier(
+      deployment.identifier,
+      { errorStatusCode: 500 }
     )
-    assert(
-      parsedDeploymentIdentifier,
-      500,
-      `Internal error: deployment identifier "${deployment.identifier}" is invalid`
-    )
-    const { projectIdentifier } = parsedDeploymentIdentifier
 
     originMcpRequestMetadata = {
       agenticProxySecret: deployment._secret,

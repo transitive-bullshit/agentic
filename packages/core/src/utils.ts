@@ -1,4 +1,3 @@
-import type { ContentfulStatusCode } from 'hono/utils/http-status'
 import type { z, ZodType } from 'zod'
 import hashObjectImpl, { type Options as HashObjectOptions } from 'hash-object'
 
@@ -51,12 +50,12 @@ export const pick = <
 export function assert(expr: unknown, message?: string): asserts expr
 export function assert(
   expr: unknown,
-  statusCode?: ContentfulStatusCode,
+  statusCode?: number,
   message?: string
 ): asserts expr
 export function assert(
   expr: unknown,
-  statusCodeOrMessage?: ContentfulStatusCode | string,
+  statusCodeOrMessage?: number | string,
   message = 'Internal assertion failed'
 ): asserts expr {
   if (expr) {
@@ -86,7 +85,7 @@ export function parseZodSchema<TSchema extends ZodType<any, any, any>>(
     statusCode = 500
   }: {
     error?: string
-    statusCode?: ContentfulStatusCode
+    statusCode?: number
   } = {}
 ): z.infer<TSchema> {
   try {

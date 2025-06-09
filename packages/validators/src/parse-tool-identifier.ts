@@ -1,3 +1,5 @@
+import { HttpError } from '@agentic/platform-core'
+
 import type { ParsedToolIdentifier, ParseIdentifierOptions } from './types'
 import { coerceIdentifier } from './utils'
 
@@ -12,14 +14,19 @@ const toolIdentifierVersionRe =
 
 export function parseToolIdentifier(
   identifier?: string,
-  { strict = true }: ParseIdentifierOptions = {}
-): ParsedToolIdentifier | undefined {
+  { strict = true, errorStatusCode = 400 }: ParseIdentifierOptions = {}
+): ParsedToolIdentifier {
+  const inputIdentifier = identifier
+
   if (!strict) {
     identifier = coerceIdentifier(identifier)
   }
 
   if (!identifier?.length) {
-    return
+    throw new HttpError({
+      statusCode: errorStatusCode,
+      message: `Invalid tool identifier "${inputIdentifier}"`
+    })
   }
 
   const iMatch = identifier.match(toolIdentifierImplicitRe)
@@ -60,4 +67,9 @@ export function parseToolIdentifier(
       toolName: vMatch[4]!
     }
   }
+
+  throw new HttpError({
+    statusCode: errorStatusCode,
+    message: `Invalid tool identifier "${inputIdentifier}"`
+  })
 }

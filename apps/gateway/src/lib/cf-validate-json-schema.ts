@@ -1,4 +1,3 @@
-import type { ContentfulStatusCode } from 'hono/utils/http-status'
 import { Validator } from '@agentic/json-schema'
 import { assert, HttpError } from '@agentic/platform-core'
 import plur from 'plur'
@@ -27,7 +26,7 @@ export function cfValidateJsonSchema<T = unknown>({
   coerce?: boolean
   strictAdditionalProperties?: boolean
   errorMessage?: string
-  errorStatusCode?: ContentfulStatusCode
+  errorStatusCode?: number
 }): T {
   assert(schema, 400, '`schema` is required')
   const isSchemaObject =

@@ -16,19 +16,11 @@ export async function resolveMcpEdgeRequest(ctx: GatewayHonoContext): Promise<{
   const requestedDeploymentIdentifier = pathname
     .replace(/^\//, '')
     .replace(/\/$/, '')
-  const parsedDeploymentIdentifier = parseDeploymentIdentifier(
+  const { deploymentIdentifier } = parseDeploymentIdentifier(
     requestedDeploymentIdentifier
   )
-  assert(
-    parsedDeploymentIdentifier,
-    404,
-    `Invalid deployment identifier "${requestedDeploymentIdentifier}"`
-  )
 
-  const deployment = await getAdminDeployment(
-    ctx,
-    parsedDeploymentIdentifier.deploymentIdentifier
-  )
+  const deployment = await getAdminDeployment(ctx, deploymentIdentifier)
 
   const apiKey = ctx.req.query('apiKey')?.trim()
   let consumer: AdminConsumer | undefined

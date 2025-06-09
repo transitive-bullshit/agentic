@@ -546,10 +546,6 @@ importers:
       zod-validation-error:
         specifier: 'catalog:'
         version: 3.4.1(zod@3.25.51)
-    devDependencies:
-      hono:
-        specifier: 'catalog:'
-        version: 4.7.11
 
   packages/emails:
     dependencies:
@@ -757,6 +753,9 @@ importers:
 
   packages/validators:
     dependencies:
+      '@agentic/platform-core':
+        specifier: workspace:*
+        version: link:../core
       '@paralleldrive/cuid2':
         specifier: 'catalog:'
         version: 2.2.2

@@ -3,7 +3,6 @@ import { Client as McpClient } from '@modelcontextprotocol/sdk/client/index.js'
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js'
 import { DurableObject } from 'cloudflare:workers'
 
-import type { RawEnv } from './env'
 import type { AgenticMcpRequestMetadata } from './types'
 
 export type DurableMcpClientInfo = {
@@ -17,7 +16,7 @@ export type DurableMcpClientInfo = {
 // customer<>DurableMcpClientInfo connection?
 // Currently using `sessionId`
 
-export class DurableMcpClient extends DurableObject<RawEnv> {
+export class DurableMcpClient extends DurableObject {
   protected client?: McpClient
   protected clientConnectionP?: Promise<void>
 

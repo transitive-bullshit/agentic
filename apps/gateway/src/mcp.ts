@@ -1,9 +1,11 @@
 // import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
 // import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js'
 import { assert, JsonRpcError } from '@agentic/platform-core'
+import { parseDeploymentIdentifier } from '@agentic/platform-validators'
+import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
 import {
   InitializeRequestSchema,
-  isJSONRPCError,
+  // isJSONRPCError,
   isJSONRPCNotification,
   isJSONRPCRequest,
   isJSONRPCResponse,
@@ -13,6 +15,7 @@ import {
 
 import type { GatewayHonoContext } from './lib/types'
 import { resolveMcpEdgeRequest } from './lib/resolve-mcp-edge-request'
+// import { DurableMcpServer } from './lib/durable-mcp-server'
 
 // TODO: https://github.com/modelcontextprotocol/servers/blob/8fb7bbdab73eddb42aba72e8eab81102efe1d544/src/everything/sse.ts
 // TODO: https://github.com/cloudflare/agents
@@ -168,10 +171,11 @@ export async function handleMcpRequest(ctx: GatewayHonoContext) {
   )
   ctx.set('sessionId', sessionId)
 
+  // TODO: first version using the McpServer locally instead of a DurableMcpServer
   // Fetch the durable mcp server for this session
-  const id = ctx.env.DO_MCP_SERVER.idFromName(`streamable-http:${sessionId}`)
-  const durableMcpServer = ctx.env.DO_MCP_SERVER.get(id)
-  const isInitialized = await durableMcpServer.isInitialized()
+  // const id = ctx.env.DO_MCP_SERVER.idFromName(`streamable-http:${sessionId}`)
+  // const durableMcpServer = ctx.env.DO_MCP_SERVER.get(id)
+  // const isInitialized = await durableMcpServer.isInitialized()
 
   if (!isInitializationRequest && !isInitialized) {
     // A session id that was never initialized was provided
@@ -183,16 +187,21 @@ export async function handleMcpRequest(ctx: GatewayHonoContext) {
     })
   }
 
-  if (isInitializationRequest) {
-    const { deployment, consumer, pricingPlan } =
-      await resolveMcpEdgeRequest(ctx)
+  const { deployment, consumer, pricingPlan } = await resolveMcpEdgeRequest(ctx)
+  const { projectIdentifier } = parseDeploymentIdentifier(deployment.identifier)
 
-    await durableMcpServer.init({
-      deployment,
-      consumer,
-      pricingPlan
-    })
-  }
+  const server = new McpServer({
+    name: projectIdentifier,
+    version: deployment.version ?? '0.0.0'
+  })
+
+  // if (isInitializationRequest) {
+  //   await durableMcpServer.init({
+  //     deployment,
+  //     consumer,
+  //     pricingPlan
+  //   })
+  // }
 
   // We've validated and initialized the request! Now it's time to actually
   // handle the JSON RPC messages in the request and respond with an SSE

@@ -25,13 +25,13 @@ export function errorHandler(
     status = err.status
   } else if (err instanceof HttpError) {
     message = err.message
-    status = err.statusCode
+    status = err.statusCode as ContentfulStatusCode
   } else if (err instanceof HTTPError) {
     message = err.message
     status = err.response.status as ContentfulStatusCode
   } else if (err instanceof JsonRpcError) {
     message = err.message
-    status = err.statusCode
+    status = err.statusCode as ContentfulStatusCode
     jsonRpcId = err.jsonRpcId
     jsonRpcErrorCode = err.jsonRpcErrorCode
     isJsonRpcRequest = true

@@ -1,3 +1,5 @@
+import { HttpError } from '@agentic/platform-core'
+
 import type {
   ParsedDeploymentIdentifier,
   ParseIdentifierOptions
@@ -16,15 +18,18 @@ const deploymentIdentifierVersionRe =
 
 export function parseDeploymentIdentifier(
   identifier?: string,
-  { strict = true }: ParseIdentifierOptions = {}
-): ParsedDeploymentIdentifier | undefined {
-  if (!strict) {
-    const parsedToolIdentifier = parseToolIdentifier(identifier, {
-      strict
-    })
+  { strict = true, errorStatusCode = 400 }: ParseIdentifierOptions = {}
+): ParsedDeploymentIdentifier {
+  const inputIdentifier = identifier
 
-    if (parsedToolIdentifier) {
-      return parsedToolIdentifier
+  if (!strict) {
+    try {
+      return parseToolIdentifier(identifier, {
+        strict,
+        errorStatusCode
+      })
+    } catch {
+      // ignore
     }
   }
 
@@ -33,7 +38,10 @@ export function parseDeploymentIdentifier(
   }
 
   if (!identifier?.length) {
-    return
+    throw new HttpError({
+      statusCode: errorStatusCode,
+      message: `Invalid deployment identifier "${inputIdentifier}"`
+    })
   }
 
   const iMatch = identifier.match(deploymentIdentifierImplicitRe)
@@ -71,4 +79,9 @@ export function parseDeploymentIdentifier(
       deploymentVersion: 'latest'
     }
   }
+
+  throw new HttpError({
+    statusCode: errorStatusCode,
+    message: `Invalid deployment identifier "${inputIdentifier}"`
+  })
 }
