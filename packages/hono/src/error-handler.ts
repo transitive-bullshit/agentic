@@ -68,7 +68,7 @@ export function errorHandler(
 }
 
 /** Error codes defined by the JSON-RPC specification. */
-export declare enum JsonRpcErrorCodes {
+export enum JsonRpcErrorCodes {
   ConnectionClosed = -32_000,
   RequestTimeout = -32_001,
   ParseError = -32_700,

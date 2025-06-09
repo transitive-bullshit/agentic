@@ -43,6 +43,8 @@
    */
   "placement": { "mode": "smart" },
 
+  "upload_source_maps": true,
+
   /**
    * Bindings
    * Bindings allow your Worker to interact with resources on the Cloudflare Developer Platform, including

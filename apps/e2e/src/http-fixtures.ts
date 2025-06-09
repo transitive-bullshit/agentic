@@ -26,7 +26,7 @@ export type E2ETestFixture = {
     contentType?: string
     headers?: Record<string, string>
     body?: any
-    validate?: (body: any) => void
+    validate?: (body: any) => void | Promise<void>
     /** @default true */
     snapshot?: boolean
   }

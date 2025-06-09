@@ -20,7 +20,6 @@
   "scripts": {
     "deploy": "wrangler deploy",
     "dev": "wrangler dev",
-    "start": "wrangler dev",
     "cf-clear-cache": "del .wrangler",
     "clean": "del dist",
     "test": "run-s test:*",

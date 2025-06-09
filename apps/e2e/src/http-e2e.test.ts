@@ -3,7 +3,7 @@ import defaultKy from 'ky'
 import { describe, expect, test } from 'vitest'
 
 import { env } from './env'
-import { fixtureSuites } from './fixtures'
+import { fixtureSuites } from './http-fixtures'
 
 const ky = defaultKy.extend({
   prefixUrl: env.AGENTIC_GATEWAY_BASE_URL,
@@ -28,7 +28,8 @@ for (const [i, fixtureSuite] of fixtureSuites.entries()) {
         status = 200,
         contentType: expectedContentType = 'application/json',
         headers: expectedHeaders,
-        body: expectedBody
+        body: expectedBody,
+        validate
       } = fixture.response ?? {}
       const snapshot =
         fixture.response?.snapshot ??
@@ -83,6 +84,10 @@ for (const [i, fixtureSuite] of fixtureSuites.entries()) {
 
           if (expectedBody) {
             expect(body).toEqual(expectedBody)
+          }
+
+          if (validate) {
+            await Promise.resolve(validate(body))
           }
 
           if (snapshot) {

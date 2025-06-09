@@ -1,7 +1,7 @@
 {
   "extends": "@fisch0920/config/tsconfig-node",
   "compilerOptions": {
-    "types": ["@cloudflare/workers-types/experimental"]
+    "types": ["@cloudflare/workers-types"]
   },
   "include": ["src", "*.config.ts"],
   "exclude": ["node_modules", "dist"]

@@ -1,6 +1,6 @@
 import type { AdminDeployment, PricingPlan } from '@agentic/platform-types'
 import { assert } from '@agentic/platform-core'
-import { parseDeploymentIdentifier } from '@agentic/platform-validators'
+import { parseToolIdentifier } from '@agentic/platform-validators'
 
 import type { AdminConsumer, GatewayHonoContext } from './types'
 import { getAdminConsumer } from './get-admin-consumer'
@@ -16,7 +16,7 @@ export async function resolveMcpEdgeRequest(ctx: GatewayHonoContext): Promise<{
   const requestedDeploymentIdentifier = pathname
     .replace(/^\//, '')
     .replace(/\/$/, '')
-  const { deploymentIdentifier } = parseDeploymentIdentifier(
+  const { deploymentIdentifier } = parseToolIdentifier(
     requestedDeploymentIdentifier
   )
 

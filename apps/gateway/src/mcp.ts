@@ -231,6 +231,9 @@ export async function handleMcpRequest(ctx: GatewayHonoContext) {
 
   // eslint-disable-next-line unicorn/prefer-add-event-listener
   transport.onmessage = async (message) => {
+    // eslint-disable-next-line no-console
+    console.log('onmessage', message)
+
     // validate that the message is a valid JSONRPC message
     const result = JSONRPCMessageSchema.safeParse(message)
     if (!result.success) {
@@ -251,6 +254,7 @@ export async function handleMcpRequest(ctx: GatewayHonoContext) {
     // If we have received all the responses, close the connection
     if (!requestIds.size) {
       ctx.executionCtx.waitUntil(transport.close())
+      await writer.close()
     }
   }
 

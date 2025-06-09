@@ -397,6 +397,9 @@ importers:
       '@agentic/platform-fixtures':
         specifier: workspace:*
         version: link:../../packages/fixtures
+      '@modelcontextprotocol/sdk':
+        specifier: 'catalog:'
+        version: 1.12.1
       fast-content-type-parse:
         specifier: 'catalog:'
         version: 3.0.0
