@@ -9,13 +9,12 @@ import {
 import { parseToolIdentifier } from '@agentic/platform-validators'
 import { Hono } from 'hono'
 
-import type { GatewayHonoEnv, McpToolCallResponse } from './lib/types'
+import type { GatewayHonoEnv } from './lib/types'
 import { createAgenticClient } from './lib/agentic-client'
 import { createHttpResponseFromMcpToolCallResponse } from './lib/create-http-response-from-mcp-tool-call-response'
-import { fetchCache } from './lib/fetch-cache'
-import { getRequestCacheKey } from './lib/get-request-cache-key'
+import { resolveHttpEdgeRequest } from './lib/resolve-http-edge-request'
 import { resolveMcpEdgeRequest } from './lib/resolve-mcp-edge-request'
-import { resolveOriginRequest } from './lib/resolve-origin-request'
+import { resolveOriginToolCall } from './lib/resolve-origin-tool-call'
 import { DurableMcpServer } from './worker'
 
 export const app = new Hono<GatewayHonoEnv>()
@@ -67,69 +66,37 @@ app.all(async (ctx) => {
     }).fetch(ctx.req.raw, ctx.env, executionCtx)
   }
 
-  const resolvedOriginRequest = await resolveOriginRequest(ctx)
+  const resolvedEdgeRequest = await resolveHttpEdgeRequest(ctx)
 
   const originStartTime = Date.now()
+
+  const resolvedOriginToolCallResult = await resolveOriginToolCall({
+    tool: resolvedEdgeRequest.tool,
+    args: resolvedEdgeRequest.toolCallArgs,
+    deployment: resolvedEdgeRequest.deployment,
+    consumer: resolvedEdgeRequest.consumer,
+    pricingPlan: resolvedEdgeRequest.pricingPlan,
+    sessionId: ctx.get('sessionId')!,
+    ip: ctx.get('ip'),
+    env: ctx.env,
+    waitUntil: ctx.executionCtx.waitUntil
+  })
+
   let originResponse: Response | undefined
-
-  switch (resolvedOriginRequest.deployment.originAdapter.type) {
-    case 'openapi':
-    case 'raw': {
-      assert(
-        resolvedOriginRequest.originRequest,
-        500,
-        'Origin request is required'
-      )
-
-      const cacheKey = await getRequestCacheKey(
-        ctx,
-        resolvedOriginRequest.originRequest
-      )
-
-      // TODO: transform origin 5XX errors to 502 errors...
-      originResponse = await fetchCache(ctx, {
-        cacheKey,
-        fetchResponse: () => fetch(resolvedOriginRequest.originRequest!)
-      })
-      break
-    }
-
-    case 'mcp': {
-      assert(
-        resolvedOriginRequest.toolCallArgs,
-        500,
-        'Tool args are required for MCP origin requests'
-      )
-      assert(
-        resolvedOriginRequest.originMcpClient,
-        500,
-        'MCP client is required for MCP origin requests'
-      )
-
-      // TODO: add timeout support to the origin tool call?
-      // TODO: add response caching for MCP tool calls
-      const toolCallResponseString =
-        await resolvedOriginRequest.originMcpClient.callTool({
-          name: resolvedOriginRequest.tool.name,
-          args: resolvedOriginRequest.toolCallArgs,
-          metadata: resolvedOriginRequest.originMcpRequestMetadata!
-        })
-      const toolCallResponse = JSON.parse(
-        toolCallResponseString
-      ) as McpToolCallResponse
-
-      originResponse = await createHttpResponseFromMcpToolCallResponse(ctx, {
-        tool: resolvedOriginRequest.tool,
-        deployment: resolvedOriginRequest.deployment,
-        toolCallResponse
-      })
-    }
+  if (resolvedOriginToolCallResult.originResponse) {
+    originResponse = resolvedOriginToolCallResult.originResponse
+  } else {
+    originResponse = await createHttpResponseFromMcpToolCallResponse(ctx, {
+      tool: resolvedEdgeRequest.tool,
+      deployment: resolvedEdgeRequest.deployment,
+      toolCallResponse: resolvedOriginToolCallResult.toolCallResponse
+    })
   }
 
   assert(originResponse, 500, 'Origin response is required')
   const res = new Response(originResponse.body, originResponse)
 
-  // Record the time it took for both the origin and gateway to respond
+  // Record the time it took for the origin to respond.
   const now = Date.now()
   const originTimespan = now - originStartTime
   res.headers.set('x-origin-response-time', `${originTimespan}ms`)

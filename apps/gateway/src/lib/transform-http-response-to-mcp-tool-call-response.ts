@@ -74,7 +74,7 @@ export async function transformHttpResponseToMcpToolCallResponse({
       coerce: false,
       // TODO: double-check MCP schema on whether additional properties are allowed
       strictAdditionalProperties: true,
-      errorMessage: `Invalid tool response for tool "${tool.name}"`,
+      errorPrefix: `Invalid tool response for tool "${tool.name}"`,
       errorStatusCode: 502
     })
 

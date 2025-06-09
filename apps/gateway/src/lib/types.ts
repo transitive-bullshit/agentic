@@ -3,18 +3,11 @@ import type {
   DefaultHonoBindings,
   DefaultHonoVariables
 } from '@agentic/platform-hono'
-import type {
-  AdminDeployment,
-  Consumer,
-  PricingPlan,
-  Tool,
-  User
-} from '@agentic/platform-types'
+import type { Consumer, User } from '@agentic/platform-types'
 import type { Client as McpClient } from '@modelcontextprotocol/sdk/client/index.js'
 import type { Context } from 'hono'
 import type { Simplify } from 'type-fest'
 
-import type { DurableMcpClient } from './durable-mcp-client'
 import type { Env } from './env'
 
 export type McpToolCallResponse = Simplify<
@@ -47,19 +40,6 @@ export type GatewayHonoContext = Context<GatewayHonoEnv>
 
 // TODO: better type here
 export type ToolCallArgs = Record<string, any>
-
-export type ResolvedOriginRequest = {
-  deployment: AdminDeployment
-  tool: Tool
-
-  consumer?: AdminConsumer
-  pricingPlan?: PricingPlan
-
-  toolCallArgs?: ToolCallArgs
-  originRequest?: Request
-  originMcpClient?: DurableObjectStub<DurableMcpClient>
-  originMcpRequestMetadata?: AgenticMcpRequestMetadata
-}
 
 export type AgenticMcpRequestMetadata = {
   agenticProxySecret: string

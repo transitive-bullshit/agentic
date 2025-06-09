@@ -1,14 +1,12 @@
 import { hashObject, sha256 } from '@agentic/platform-core'
 import contentType from 'fast-content-type-parse'
 
-import type { GatewayHonoContext } from './types'
 import { normalizeUrl } from './normalize-url'
 
 // TODO: what is a reasonable upper bound for hashing the POST body size?
 const MAX_POST_BODY_SIZE_BYTES = 10_000
 
 export async function getRequestCacheKey(
-  ctx: GatewayHonoContext,
   request: Request
 ): Promise<Request | undefined> {
   try {
@@ -85,8 +83,13 @@ export async function getRequestCacheKey(
 
     return normalizeRequestHeaders(new Request(request))
   } catch (err) {
-    const logger = ctx.get('logger')
-    logger.error('error computing cache key', request.method, request.url, err)
+    // eslint-disable-next-line no-console
+    console.warn(
+      'warning: failed to compute cache key',
+      request.method,
+      request.url,
+      err
+    )
     return
   }
 }

@@ -6,11 +6,16 @@ import type { AdminConsumer, GatewayHonoContext } from './types'
 import { getAdminConsumer } from './get-admin-consumer'
 import { getAdminDeployment } from './get-admin-deployment'
 
-export async function resolveMcpEdgeRequest(ctx: GatewayHonoContext): Promise<{
+export type ResolvedMcpEdgeRequest = {
   deployment: AdminDeployment
   consumer?: AdminConsumer
   pricingPlan?: PricingPlan
-}> {
+  ip?: string
+}
+
+export async function resolveMcpEdgeRequest(
+  ctx: GatewayHonoContext
+): Promise<ResolvedMcpEdgeRequest> {
   const requestUrl = new URL(ctx.req.url)
   const { pathname } = requestUrl
   const requestedDeploymentIdentifier = pathname
@@ -60,6 +65,7 @@ export async function resolveMcpEdgeRequest(ctx: GatewayHonoContext): Promise<{
   return {
     deployment,
     consumer,
-    pricingPlan
+    pricingPlan,
+    ip: ctx.get('ip')
   }
 }
