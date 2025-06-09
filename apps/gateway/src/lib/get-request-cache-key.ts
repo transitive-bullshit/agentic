@@ -24,9 +24,6 @@ export async function getRequestCacheKey(
     }
 
     if (request.method === 'POST' || request.method === 'PUT') {
-      // useful for debugging since getting all the headers is awkward
-      // console.log(Object.fromEntries(request.headers.entries()))
-
       const contentLength = Number.parseInt(
         request.headers.get('content-length') ?? '0'
       )
@@ -35,10 +32,7 @@ export async function getRequestCacheKey(
         const { type } = contentType.safeParse(
           request.headers.get('content-type') || 'application/octet-stream'
         )
-        let hash
-
-        // TODO: gracefully handle content-encoding compression
-        // TODO: more robust content-type detection
+        let hash: string
 
         if (type.includes('json')) {
           const bodyJson: any = await request.clone().json()
@@ -47,16 +41,20 @@ export async function getRequestCacheKey(
           const bodyString = await request.clone().text()
           hash = await sha256(bodyString)
         } else {
-          // TODO
-          // const bodyBuffer = await request.clone().arrayBuffer()
-          // hash = await sha256.fromBuffer(bodyBuffer)
-          return
+          const bodyBuffer = await request.clone().arrayBuffer()
+          hash = await sha256(bodyBuffer)
         }
 
         const cacheUrl = new URL(request.url)
         cacheUrl.searchParams.set('x-agentic-cache-key', hash)
         const normalizedUrl = normalizeUrl(cacheUrl.toString())
 
+        // Convert POST and PUT requests to GET with a query param containing
+        // a hash of the request body. This enables us to cache these requests
+        // more easily, since we want to move the the "cacheability" logic to a
+        // higher-level, config-based approach. E.g., individual tools can
+        // opt-in to aggressive caching by declaring themselves `pure` or
+        // `immutable` regardless of the HTTP method used to call the tool.
         const newReq = normalizeRequestHeaders(
           new Request(normalizedUrl, {
             headers: request.headers,
@@ -94,7 +92,7 @@ export async function getRequestCacheKey(
   }
 }
 
-const requestHeaderWhitelist = new Set(['cache-control'])
+const requestHeaderWhitelist = new Set(['cache-control', 'mcp-session-id'])
 
 function normalizeRequestHeaders(request: Request) {
   const headers = Object.fromEntries(request.headers.entries())

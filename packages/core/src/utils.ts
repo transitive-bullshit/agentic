@@ -104,9 +104,18 @@ export function parseZodSchema<TSchema extends ZodType<any, any, any>>(
 //   return createHash('sha256').update(input).digest('hex')
 // }
 
-export async function sha256(input: string = crypto.randomUUID()) {
-  const textBuffer = new TextEncoder().encode(input)
-  const hashBuffer = await crypto.subtle.digest('SHA-256', textBuffer)
+export async function sha256(
+  input: string | ArrayBuffer = crypto.randomUUID()
+) {
+  let dataBuffer: ArrayBuffer
+
+  if (typeof input === 'string') {
+    dataBuffer = new TextEncoder().encode(input).buffer
+  } else {
+    dataBuffer = input
+  }
+
+  const hashBuffer = await crypto.subtle.digest('SHA-256', dataBuffer)
   const hashArray = Array.from(new Uint8Array(hashBuffer))
   const hashHex = hashArray
     .map((b) => ('00' + b.toString(16)).slice(-2))
