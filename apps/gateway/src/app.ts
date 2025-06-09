@@ -14,8 +14,9 @@ import { createAgenticClient } from './lib/agentic-client'
 import { createHttpResponseFromMcpToolCallResponse } from './lib/create-http-response-from-mcp-tool-call-response'
 import { fetchCache } from './lib/fetch-cache'
 import { getRequestCacheKey } from './lib/get-request-cache-key'
+import { resolveMcpEdgeRequest } from './lib/resolve-mcp-edge-request'
 import { resolveOriginRequest } from './lib/resolve-origin-request'
-import { handleMcpRequest } from './mcp'
+import { DurableMcpServer } from './worker'
 
 export const app = new Hono<GatewayHonoEnv>()
 
@@ -55,7 +56,14 @@ app.all(async (ctx) => {
   const { toolName } = parseToolIdentifier(requestedToolIdentifier)
 
   if (toolName === 'mcp') {
-    return handleMcpRequest(ctx)
+    const executionCtx = ctx.executionCtx as any
+    const mcpInfo = await resolveMcpEdgeRequest(ctx)
+    executionCtx.props = mcpInfo
+
+    // Handle MCP requests
+    return DurableMcpServer.serve(pathname, {
+      binding: 'DO_MCP_SERVER'
+    }).fetch(ctx.req.raw, ctx.env, executionCtx)
   }
 
   const resolvedOriginRequest = await resolveOriginRequest(ctx)

@@ -24,6 +24,7 @@ for (const [i, fixtureSuite] of fixtureSuites.entries()) {
 
     for (const [j, fixture] of fixtures.entries()) {
       const method = fixture.request?.method ?? 'GET'
+      const timeout = fixture.timeout ?? 30_000
       const {
         status = 200,
         contentType: expectedContentType = 'application/json',
@@ -45,11 +46,14 @@ for (const [i, fixtureSuite] of fixtureSuites.entries()) {
       testFn(
         `${i}.${j}: ${method} ${fixture.path}`,
         {
-          timeout: fixture.timeout ?? 60_000
+          timeout
         },
         // eslint-disable-next-line no-loop-func
         async () => {
-          const res = await ky(fixture.path, fixture.request)
+          const res = await ky(fixture.path, {
+            timeout,
+            ...fixture.request
+          })
           expect(res.status).toBe(status)
 
           const { type } = contentType.safeParse(

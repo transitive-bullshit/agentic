@@ -15,7 +15,7 @@ export type MCPE2ETestFixture = {
 
   response?: {
     isError?: boolean
-    body?: any
+    result?: any
     validate?: (result: any) => void | Promise<void>
     /** @default true */
     snapshot?: boolean
@@ -49,6 +49,7 @@ export const fixtureSuites: MCPE2ETestFixtureSuite[] = [
   {
     title: 'Basic MCP => OpenAPI get_post success',
     path: '@dev/test-basic-openapi/mcp',
+    debug: true,
     fixtures: [
       {
         request: {
@@ -59,52 +60,56 @@ export const fixtureSuites: MCPE2ETestFixtureSuite[] = [
         }
       }
     ]
+  },
+  {
+    title: 'Basic MCP => MCP "echo" tool call success',
+    path: '@dev/test-basic-mcp/mcp',
+    snapshot: false,
+    fixtures: [
+      {
+        request: {
+          name: 'echo',
+          args: {
+            nala: 'kitten',
+            num: 123,
+            now
+          }
+        },
+        response: {
+          result: {
+            content: [
+              {
+                type: 'text',
+                text: JSON.stringify({ nala: 'kitten', num: 123, now })
+              }
+            ]
+          }
+        }
+      },
+      {
+        request: {
+          name: 'echo',
+          args: {
+            nala: 'kitten',
+            num: 123,
+            now: `${now}`
+          }
+        },
+        response: {
+          result: {
+            content: [
+              {
+                type: 'text',
+                text: JSON.stringify({
+                  nala: 'kitten',
+                  num: 123,
+                  now: `${now}`
+                })
+              }
+            ]
+          }
+        }
+      }
+    ]
   }
-  // {
-  //   title: 'Basic MCP => MCP "echo" tool call success',
-  //   path: '@dev/test-basic-mcp/mcp',
-  //   snapshot: false,
-  //   fixtures: [
-  //     {
-  //       request: {
-  //         name: 'echo',
-  //         args: {
-  //           nala: 'kitten',
-  //           num: 123,
-  //           now
-  //         }
-  //       },
-  //       response: {
-  //         body: [
-  //           {
-  //             type: 'text',
-  //             text: JSON.stringify({ nala: 'kitten', num: 123, now })
-  //           }
-  //         ]
-  //       }
-  //     },
-  //     {
-  //       request: {
-  //         name: 'echo',
-  //         args: {
-  //           nala: 'kitten',
-  //           num: 123,
-  //           now: `${now}`
-  //         }
-  //       },
-  //       response: {
-  //         body: [
-  //           {
-  //             type: 'text',
-  //             text: JSON.stringify({
-  //               nala: 'kitten',
-  //               num: '123',
-  //               now: `${now}`
-  //             })
-  //           }
-  //         ]
-  //       }
-  //     }
-  //   ]
-  // }
 ]

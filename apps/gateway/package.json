@@ -37,6 +37,7 @@
     "@agentic/platform-validators": "workspace:*",
     "@hono/zod-validator": "catalog:",
     "@modelcontextprotocol/sdk": "catalog:",
+    "agents": "^0.0.95",
     "fast-content-type-parse": "catalog:",
     "hono": "catalog:",
     "ky": "catalog:",

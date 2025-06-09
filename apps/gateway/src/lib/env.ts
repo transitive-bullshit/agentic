@@ -7,7 +7,6 @@ import {
 import { z } from 'zod'
 
 import type { DurableMcpClient } from './durable-mcp-client'
-import type { DurableMcpServer } from './durable-mcp-server'
 import type { DurableRateLimiter } from './durable-rate-limiter'
 
 export const envSchema = baseEnvSchema
@@ -19,7 +18,7 @@ export const envSchema = baseEnvSchema
       (ns) => isDurableObjectNamespace(ns)
     ),
 
-    DO_MCP_SERVER: z.custom<DurableObjectNamespace<DurableMcpServer>>((ns) =>
+    DO_MCP_SERVER: z.custom<DurableObjectNamespace>((ns) =>
       isDurableObjectNamespace(ns)
     ),
 

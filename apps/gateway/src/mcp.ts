@@ -1,5 +1,6 @@
 // import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
 // import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js'
+// import type { Transport } from '@modelcontextprotocol/sdk/shared/transport.js'
 import { assert, JsonRpcError } from '@agentic/platform-core'
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js'
 import {
@@ -32,6 +33,86 @@ import { resolveMcpEdgeRequest } from './lib/resolve-mcp-edge-request'
 //     tools: {}
 //   }
 // })
+
+// class McpStreamableHttpTransport implements Transport {
+//   onclose?: () => void
+//   onerror?: (error: Error) => void
+//   onmessage?: (message: JSONRPCMessage) => void
+//   sessionId?: string
+
+//   // TODO: If there is an open connection to send server-initiated messages
+//   // back, we should use that connection
+//   private _getWebSocketForGetRequest: () => WebSocket | null
+
+//   // Get the appropriate websocket connection for a given message id
+//   private _getWebSocketForMessageID: (id: string) => WebSocket | null
+
+//   // Notify the server that a response has been sent for a given message id
+//   // so that it may clean up it's mapping of message ids to connections
+//   // once they are no longer needed
+//   private _notifyResponseIdSent: (id: string) => void
+
+//   private _started = false
+//   constructor(
+//     getWebSocketForMessageID: (id: string) => WebSocket | null,
+//     notifyResponseIdSent: (id: string | number) => void
+//   ) {
+//     this._getWebSocketForMessageID = getWebSocketForMessageID
+//     this._notifyResponseIdSent = notifyResponseIdSent
+//     // TODO
+//     this._getWebSocketForGetRequest = () => null
+//   }
+
+//   async start() {
+//     // The transport does not manage the WebSocket connection since it's terminated
+//     // by the Durable Object in order to allow hibernation. There's nothing to initialize.
+//     if (this._started) {
+//       throw new Error('Transport already started')
+//     }
+//     this._started = true
+//   }
+
+//   async send(message: JSONRPCMessage) {
+//     if (!this._started) {
+//       throw new Error('Transport not started')
+//     }
+
+//     let websocket: WebSocket | null = null
+
+//     if (isJSONRPCResponse(message) || isJSONRPCError(message)) {
+//       websocket = this._getWebSocketForMessageID(message.id.toString())
+//       if (!websocket) {
+//         throw new Error(
+//           `Could not find WebSocket for message id: ${message.id}`
+//         )
+//       }
+//     } else if (isJSONRPCRequest(message)) {
+//       // requests originating from the server must be sent over the
+//       // the connection created by a GET request
+//       websocket = this._getWebSocketForGetRequest()
+//     } else if (isJSONRPCNotification(message)) {
+//       // notifications do not have an id
+//       // but do have a relatedRequestId field
+//       // so that they can be sent to the correct connection
+//       websocket = null
+//     }
+
+//     try {
+//       websocket?.send(JSON.stringify(message))
+//       if (isJSONRPCResponse(message)) {
+//         this._notifyResponseIdSent(message.id.toString())
+//       }
+//     } catch (err) {
+//       this.onerror?.(err as Error)
+//       throw err
+//     }
+//   }
+
+//   async close() {
+//     // Similar to start, the only thing to do is to pass the event on to the server
+//     this.onclose?.()
+//   }
+// }
 
 const MAXIMUM_MESSAGE_SIZE_BYTES = 4 * 1024 * 1024 // 4MB
 
@@ -281,6 +362,10 @@ export async function handleMcpRequest(ctx: GatewayHonoContext) {
 
     await transport.send(message)
   }
+
+  // console.log('>>> waiting...')
+  // await new Promise((resolve) => setTimeout(resolve, 2000))
+  // console.log('<<< waiting...')
 
   // Return the streamable http response.
   return new Response(readable, {

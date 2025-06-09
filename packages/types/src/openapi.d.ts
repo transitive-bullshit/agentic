@@ -459,7 +459,7 @@ export interface components {
         JsonSchemaObject: {
             /** @enum {string} */
             type: "object";
-            properties?: Record<string, never>;
+            properties?: Record<string, unknown>;
             required?: string[];
         };
         Tool: {

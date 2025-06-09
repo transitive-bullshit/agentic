@@ -30,7 +30,11 @@ for (const [i, fixtureSuite] of fixtureSuites.entries()) {
     })
 
     for (const [j, fixture] of fixtures.entries()) {
-      const { isError, body: expectedBody, validate } = fixture.response ?? {}
+      const {
+        isError,
+        result: expectedResult,
+        validate
+      } = fixture.response ?? {}
       const snapshot =
         fixture.response?.snapshot ?? fixtureSuite.snapshot ?? !isError
       const debugFixture = !!(fixture.debug ?? fixtureSuite.debug)
@@ -52,15 +56,18 @@ for (const [i, fixtureSuite] of fixtureSuites.entries()) {
           console.log('tools', tools)
           expect(tools.map((t) => t.name)).toContain(fixture.request.name)
 
-          const result = await client.callTool(fixture.request)
+          const result = await client.callTool({
+            name: fixture.request.name,
+            arguments: fixture.request.args
+          })
           if (isError) {
             expect(result.isError).toBeTruthy()
           } else {
             expect(result.isError).toBeFalsy()
           }
 
-          if (expectedBody) {
-            expect(result).toEqual(expectedBody)
+          if (expectedResult) {
+            expect(result).toEqual(expectedResult)
           }
 
           if (snapshot) {

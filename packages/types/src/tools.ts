@@ -34,7 +34,8 @@ export const toolNameSchema = z
 export const jsonSchemaObjectSchema = z
   .object({
     type: z.literal('object'),
-    properties: z.object({}).passthrough().optional(),
+    // TODO: improve this schema
+    properties: z.record(z.string(), z.any()).optional(),
     required: z.array(z.string()).optional()
   })
   .passthrough()
