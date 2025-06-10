@@ -165,7 +165,7 @@ export const toolConfigSchema = z
      *   }
      * }
      */
-    pricingPlanConfig: z
+    pricingPlanConfigMap: z
       .record(pricingPlanSlugSchema, pricingPlanToolConfigSchema)
       .optional()
       .describe(

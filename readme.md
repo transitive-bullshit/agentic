@@ -30,8 +30,10 @@
 - auth
   - custom auth pages for `openauth`
 - API gateway
-  - **do I just ditch the public REST interface and focus on MCP?**
-  - enforce rate limits
+  - **enforce rate limits**
+  - oauth flow
+  - openapi-kitchen-sink
+  - mcp-kitchen-sink
   - how to handle binary bodies and responses?
   - add support for `immutable` in `toolConfigs`
 - **Public MCP server interface**
@@ -41,8 +43,6 @@
     - `_meta` for tool calls
     - _still need a way of doing this for initial connection requests_
   - mcp auth provider support
-  - SSE support? (no; post-mvp if at all; only support [streamable http](https://modelcontextprotocol.io/specification/2025-03-26/basic/transports#streamable-http) like smithery does, or maybe support both?)
-  - caching for MCP tool call responses
   - binary bodies / responses?
   - resources
   - prompts
@@ -68,6 +68,8 @@
   - same for pricing plan line-items
 - replace `ms` package
 - API gateway
+  - **do I just ditch the public REST interface and focus on MCP?**
+  - SSE support? (no; post-mvp if at all; only support [streamable http](https://modelcontextprotocol.io/specification/2025-03-26/basic/transports#streamable-http) like smithery does, or maybe support both?)
   - signed requests
   - add support for custom headers on responses
 - `@agentic/platform-hono`

@@ -1,0 +1,25 @@
+{
+  "name": "@agentic/platform-fixtures-everything-openapi",
+  "private": true,
+  "author": "Travis Fischer <travis@transitivebullsh.it>",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/transitive-bullshit/agentic-platform.git",
+    "directory": "packages/fixtures/valid/everything-openapi"
+  },
+  "type": "module",
+  "scripts": {
+    "start": "tsx src/server.ts",
+    "test": "run-s test:*",
+    "test:lint": "eslint .",
+    "test:typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@hono/node-server": "catalog:",
+    "@hono/zod-openapi": "catalog:",
+    "hono": "catalog:",
+    "restore-cursor": "catalog:",
+    "zod": "catalog:"
+  }
+}
