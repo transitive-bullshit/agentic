@@ -73,7 +73,10 @@ export function updateOriginRequest(
     )
 
     if (consumer.plan) {
-      originRequest.headers.set('x-agentic-plan', consumer.plan)
+      originRequest.headers.set(
+        'x-agentic-customer-subscription-plan',
+        consumer.plan
+      )
     }
 
     if (consumer.user.name) {

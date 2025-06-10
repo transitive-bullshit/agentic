@@ -85,11 +85,6 @@ export class DurableMcpServer extends McpAgent<
       const tool = tools.find((tool) => tool.name === name)
       assert(tool, 404, `Unknown tool: ${name}`)
 
-      // TODO: Implement tool config logic
-      // const toolConfig = deployment.toolConfigs.find(
-      //   (toolConfig) => toolConfig.name === tool.name
-      // )
-
       // TODO: rate-limiting
       // TODO: caching
       // TODO: usage tracking / reporting
@@ -122,9 +117,4 @@ export class DurableMcpServer extends McpAgent<
       }
     })
   }
-
-  // override onStateUpdate(state: State) {
-  //   // eslint-disable-next-line no-console
-  //   console.log({ stateUpdate: state })
-  // }
 }

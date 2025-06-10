@@ -6,7 +6,7 @@ import { assert } from '@agentic/platform-core'
 
 import type { ToolCallArgs } from './types'
 
-export async function createRequestForOpenAPIOperation({
+export async function createHttpRequestForOpenAPIOperation({
   toolCallArgs,
   operation,
   deployment,

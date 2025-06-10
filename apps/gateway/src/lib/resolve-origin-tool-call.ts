@@ -15,13 +15,11 @@ import type {
   ToolCallArgs
 } from './types'
 import { cfValidateJsonSchema } from './cf-validate-json-schema'
-import { createRequestForOpenAPIOperation } from './create-request-for-openapi-operation'
+import { createHttpRequestForOpenAPIOperation } from './create-http-request-for-openapi-operation'
 import { enforceRateLimit } from './enforce-rate-limit'
 import { fetchCache } from './fetch-cache'
 import { getRequestCacheKey } from './get-request-cache-key'
 import { updateOriginRequest } from './update-origin-request'
-
-// type State = { counter: number }
 
 export type ResolvedOriginToolCallResult = {
   toolCallArgs: ToolCallArgs
@@ -158,7 +156,7 @@ export async function resolveOriginToolCall({
       assert(operation, 404, `Tool "${tool.name}" not found in OpenAPI spec`)
       assert(toolCallArgs, 500)
 
-      const originRequest = await createRequestForOpenAPIOperation({
+      const originRequest = await createHttpRequestForOpenAPIOperation({
         toolCallArgs,
         operation,
         deployment
@@ -184,7 +182,7 @@ export async function resolveOriginToolCall({
         originResponse
       }
     } else if (originAdapter.type === 'mcp') {
-      const id: DurableObjectId = env.DO_MCP_CLIENT.idFromName(sessionId)
+      const id = env.DO_MCP_CLIENT.idFromName(sessionId)
       const originMcpClient = env.DO_MCP_CLIENT.get(id)
 
       await originMcpClient.init({
@@ -201,7 +199,7 @@ export async function resolveOriginToolCall({
       const originMcpRequestMetadata = {
         agenticProxySecret: deployment._secret,
         sessionId,
-        // ip,
+        ip,
         isCustomerSubscriptionActive: !!consumer?.isStripeSubscriptionActive,
         customerId: consumer?.id,
         customerSubscriptionPlan: consumer?.plan,
