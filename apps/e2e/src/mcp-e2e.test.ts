@@ -53,7 +53,7 @@ for (const [i, fixtureSuite] of fixtureSuites.entries()) {
         // eslint-disable-next-line no-loop-func
         async () => {
           const { tools } = await client.listTools()
-          console.log('tools', tools)
+          // console.log('tools', tools)
           expect(tools.map((t) => t.name)).toContain(fixture.request.name)
 
           const result = await client.callTool({

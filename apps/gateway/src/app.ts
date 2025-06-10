@@ -76,6 +76,7 @@ app.all(async (ctx) => {
     deployment: resolvedEdgeRequest.deployment,
     consumer: resolvedEdgeRequest.consumer,
     pricingPlan: resolvedEdgeRequest.pricingPlan,
+    cacheControl: resolvedEdgeRequest.cacheControl,
     sessionId: ctx.get('sessionId')!,
     ip: ctx.get('ip'),
     env: ctx.env,

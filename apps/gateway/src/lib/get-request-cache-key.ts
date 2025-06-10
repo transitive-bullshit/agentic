@@ -1,6 +1,7 @@
 import { hashObject, sha256 } from '@agentic/platform-core'
 import contentType from 'fast-content-type-parse'
 
+import { isCacheControlPubliclyCacheable } from './is-cache-control-publicly-cacheable'
 import { normalizeUrl } from './normalize-url'
 
 // TODO: what is a reasonable upper bound for hashing the POST body size?
@@ -16,11 +17,8 @@ export async function getRequestCacheKey(
     }
 
     const cacheControl = request.headers.get('cache-control')
-    if (cacheControl) {
-      const directives = new Set(cacheControl.split(',').map((s) => s.trim()))
-      if (directives.has('no-store') || directives.has('no-cache')) {
-        return
-      }
+    if (!isCacheControlPubliclyCacheable(cacheControl)) {
+      return
     }
 
     if (request.method === 'POST' || request.method === 'PUT') {

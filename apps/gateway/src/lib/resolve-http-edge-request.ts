@@ -19,6 +19,7 @@ export type ResolvedHttpEdgeRequest = {
 
   tool: Tool
   toolCallArgs: ToolCallArgs
+  cacheControl?: string
 }
 
 /**
@@ -34,6 +35,7 @@ export async function resolveHttpEdgeRequest(
   const logger = ctx.get('logger')
   const ip = ctx.get('ip')
 
+  const cacheControl = ctx.req.header('cache-control')
   const { method } = ctx.req
   const requestUrl = new URL(ctx.req.url)
   const { pathname } = requestUrl
@@ -115,6 +117,7 @@ export async function resolveHttpEdgeRequest(
     consumer,
     pricingPlan,
     tool,
-    toolCallArgs
+    toolCallArgs,
+    cacheControl
   }
 }

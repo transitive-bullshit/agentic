@@ -495,7 +495,8 @@ export interface components {
             /** @default true */
             enabled: boolean;
             /** @default false */
-            immutable: boolean;
+            pure: boolean;
+            cacheControl?: string;
             /** @default true */
             reportUsage: boolean;
             rateLimit?: components["schemas"]["RateLimit"] | null;

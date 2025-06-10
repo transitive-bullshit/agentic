@@ -197,3 +197,15 @@ et est aut quod aut provident voluptas autem voluptas",
   "userId": 1,
 }
 `;
+
+exports[`Bypass caching > 2.4: GET @dev/test-basic-openapi@fc856666/get_post?postId=9 1`] = `
+{
+  "body": "consectetur animi nesciunt iure dolore
+enim quia ad
+veniam autem ut quam aut nobis
+et est aut quod aut provident voluptas autem voluptas",
+  "id": 9,
+  "title": "nesciunt iure omnis dolorem tempora et accusantium",
+  "userId": 1,
+}
+`;

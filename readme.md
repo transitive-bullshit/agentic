@@ -15,8 +15,7 @@
   - => OpenAPI: `GET/POST/ETC originUrl/toolName` operation with transformed tool params
 - RAW: `METHOD gateway.agentic.so/deploymentIdentifier/<pathname>`
   - => Raw HTTP: `METHOD originUrl/<pathname>` simple HTTP proxy request
-
-**do I just ditch public REST interface and focus on MCP?**
+  - TODO: remove / disable `raw` support for now
 
 ## TODO
 
@@ -36,8 +35,6 @@
   - how to handle binary bodies and responses?
   - add support for `immutable` in `toolConfigs`
 - **Public MCP server interface**
-  - _McpAgent.serve_
-  - how do I use consumer auth tokens with this flow?
   - how does oauth work with this flow?
 - **Origin MCP servers**
   - how to guarantee that the request is coming from agentic?

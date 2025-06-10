@@ -9,10 +9,12 @@ export function updateOriginRequest(
   originRequest: Request,
   {
     deployment,
-    consumer
+    consumer,
+    cacheControl
   }: {
     deployment: AdminDeployment
     consumer?: AdminConsumer
+    cacheControl?: string
   }
 ) {
   // originRequest.headers.delete('authorization')
@@ -87,6 +89,10 @@ export function updateOriginRequest(
   // TODO: this header is causing some random upstream cloudflare errors
   // https://support.cloudflare.com/hc/en-us/articles/360029779472-Troubleshooting-Cloudflare-1XXX-errors#error1000
   // originRequest.headers.set('x-forwarded-for', ip)
+
+  if (cacheControl) {
+    originRequest.headers.set('cache-control', cacheControl)
+  }
 
   originRequest.headers.set('x-agentic-proxy-secret', deployment._secret)
 }

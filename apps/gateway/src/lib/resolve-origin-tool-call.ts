@@ -19,6 +19,7 @@ import { createHttpRequestForOpenAPIOperation } from './create-http-request-for-
 import { enforceRateLimit } from './enforce-rate-limit'
 import { fetchCache } from './fetch-cache'
 import { getRequestCacheKey } from './get-request-cache-key'
+import { isCacheControlPubliclyCacheable } from './is-cache-control-publicly-cacheable'
 import { updateOriginRequest } from './update-origin-request'
 
 export type ResolvedOriginToolCallResult = {
@@ -48,6 +49,7 @@ export async function resolveOriginToolCall({
   sessionId,
   env,
   ip,
+  cacheControl,
   waitUntil
 }: {
   tool: Tool
@@ -58,6 +60,7 @@ export async function resolveOriginToolCall({
   sessionId: string
   env: RawEnv
   ip?: string
+  cacheControl?: string
   waitUntil: (promise: Promise<any>) => void
 }): Promise<ResolvedOriginToolCallResult> {
   // TODO: rate-limiting
@@ -104,6 +107,17 @@ export async function resolveOriginToolCall({
     if (toolConfig.rateLimit !== undefined) {
       // TODO: Improve RateLimitInput vs RateLimit types
       rateLimit = toolConfig.rateLimit as RateLimit
+    }
+
+    if (!cacheControl) {
+      if (toolConfig.cacheControl !== undefined) {
+        cacheControl = toolConfig.cacheControl
+      } else if (toolConfig.pure) {
+        cacheControl =
+          'public, max-age=31560000, s-maxage=31560000, stale-while-revalidate=3600'
+      } else {
+        cacheControl = 'no-store'
+      }
     }
 
     const pricingPlanToolConfig = pricingPlan
@@ -162,7 +176,7 @@ export async function resolveOriginToolCall({
         deployment
       })
 
-      updateOriginRequest(originRequest, { consumer, deployment })
+      updateOriginRequest(originRequest, { consumer, deployment, cacheControl })
 
       const cacheKey = await getRequestCacheKey(originRequest)
 
@@ -173,15 +187,17 @@ export async function resolveOriginToolCall({
         waitUntil
       })
 
-      // non-cached version
-      // const originResponse = await fetch(originRequest)
-
       return {
         toolCallArgs,
         originRequest,
         originResponse
       }
     } else if (originAdapter.type === 'mcp') {
+      const { projectIdentifier } = parseDeploymentIdentifier(
+        deployment.identifier,
+        { errorStatusCode: 500 }
+      )
+
       const id = env.DO_MCP_CLIENT.idFromName(sessionId)
       const originMcpClient = env.DO_MCP_CLIENT.get(id)
 
@@ -190,11 +206,6 @@ export async function resolveOriginToolCall({
         name: originAdapter.serverInfo.name,
         version: originAdapter.serverInfo.version
       })
-
-      const { projectIdentifier } = parseDeploymentIdentifier(
-        deployment.identifier,
-        { errorStatusCode: 500 }
-      )
 
       const originMcpRequestMetadata = {
         agenticProxySecret: deployment._secret,
@@ -216,8 +227,35 @@ export async function resolveOriginToolCall({
         projectIdentifier
       } as AgenticMcpRequestMetadata
 
+      let cacheKey: Request | undefined
+
+      if (cacheControl && isCacheControlPubliclyCacheable(cacheControl)) {
+        const fakeOriginRequest = new Request(deployment.originUrl, {
+          method: 'POST',
+          headers: {
+            'content-type': 'application/json',
+            'cache-control': cacheControl
+          },
+          body: JSON.stringify({
+            name: tool.name,
+            args: toolCallArgs,
+            metadata: originMcpRequestMetadata!
+          })
+        })
+
+        cacheKey = await getRequestCacheKey(fakeOriginRequest)
+        if (cacheKey) {
+          const response = await caches.default.match(cacheKey)
+          if (response) {
+            return {
+              toolCallArgs,
+              toolCallResponse: (await response.json()) as McpToolCallResponse
+            }
+          }
+        }
+      }
+
       // TODO: add timeout support to the origin tool call?
-      // TODO: add response caching for origin MCP tool calls
       const toolCallResponseString = await originMcpClient.callTool({
         name: tool.name,
         args: toolCallArgs,
@@ -226,6 +264,16 @@ export async function resolveOriginToolCall({
       const toolCallResponse = JSON.parse(
         toolCallResponseString
       ) as McpToolCallResponse
+
+      if (cacheKey && cacheControl) {
+        const fakeHttpResponse = new Response(toolCallResponseString, {
+          headers: {
+            'content-type': 'application/json',
+            'cache-control': cacheControl
+          }
+        })
+        waitUntil(caches.default.put(cacheKey, fakeHttpResponse))
+      }
 
       return {
         toolCallArgs,
