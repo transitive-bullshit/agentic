@@ -1,5 +1,8 @@
 import { fromError } from 'zod-validation-error'
 
+import type { RateLimitResult } from './types'
+import { getRateLimitHeaders } from './rate-limit-headers'
+
 export class BaseError extends Error {
   constructor({ message, cause }: { message: string; cause?: unknown }) {
     super(message, { cause })
@@ -16,19 +19,51 @@ export class BaseError extends Error {
 
 export class HttpError extends BaseError {
   readonly statusCode: number
+  readonly headers?: Record<string, string>
 
   constructor({
     message,
     statusCode = 500,
+    headers,
     cause
   }: {
     message: string
     statusCode?: number
+    headers?: Record<string, string>
     cause?: unknown
   }) {
     super({ message, cause })
 
     this.statusCode = statusCode
+    this.headers = headers
+  }
+}
+
+export class RateLimitError extends HttpError {
+  readonly rateLimitResult: RateLimitResult
+
+  constructor({
+    rateLimitResult,
+    message = 'Rate limit exceeded; please try again later.',
+    headers,
+    cause
+  }: {
+    rateLimitResult: RateLimitResult
+    message?: string
+    headers?: Record<string, string>
+    cause?: unknown
+  }) {
+    super({
+      message,
+      cause,
+      statusCode: 429,
+      headers: {
+        ...getRateLimitHeaders(rateLimitResult),
+        ...headers
+      }
+    })
+
+    this.rateLimitResult = rateLimitResult
   }
 }
 

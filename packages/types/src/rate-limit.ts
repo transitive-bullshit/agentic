@@ -63,7 +63,28 @@ export const rateLimitSchema = z
     maxPerInterval: z
       .number()
       .nonnegative()
-      .describe('Maximum number of operations per interval (unitless).')
+      .describe('Maximum number of operations per interval (unitless).'),
+
+    /**
+     * Whether to enforce the rate limit synchronously or asynchronously.
+     *
+     * The default rate-limiting mode is asynchronous, which means that requests
+     * are allowed to proceed immediately, with the limit being enforced in the
+     * background. This is much faster than synchronous mode, but it is less
+     * consistent if precise adherence to rate-limits is required.
+     *
+     * With synchronous mode, requests will be blocked until the current limit
+     * has been confirmed. The downside with this approach is that it can
+     * introduce more latency to every request by default. The advantage is that
+     * it is more accurate and consistent.
+     */
+    async: z
+      .boolean()
+      .optional()
+      .default(true)
+      .describe(
+        'Whether to enforce the rate limit synchronously or asynchronously.'
+      )
   })
   .openapi('RateLimit')
 export type RateLimitInput = z.input<typeof rateLimitSchema>

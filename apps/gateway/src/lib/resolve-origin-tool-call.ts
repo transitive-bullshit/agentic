@@ -4,7 +4,7 @@ import type {
   RateLimit,
   Tool
 } from '@agentic/platform-types'
-import { assert } from '@agentic/platform-core'
+import { assert, RateLimitError } from '@agentic/platform-core'
 import { parseDeploymentIdentifier } from '@agentic/platform-validators'
 
 import type { RawEnv } from './env'
@@ -12,33 +12,17 @@ import type {
   AdminConsumer,
   AgenticMcpRequestMetadata,
   McpToolCallResponse,
+  RateLimitResult,
+  ResolvedOriginToolCallResult,
   ToolCallArgs
 } from './types'
 import { cfValidateJsonSchema } from './cf-validate-json-schema'
 import { createHttpRequestForOpenAPIOperation } from './create-http-request-for-openapi-operation'
-import { enforceRateLimit } from './enforce-rate-limit'
 import { fetchCache } from './fetch-cache'
 import { getRequestCacheKey } from './get-request-cache-key'
 import { isCacheControlPubliclyCacheable } from './is-cache-control-publicly-cacheable'
+import { enforceRateLimit } from './rate-limits/enforce-rate-limit'
 import { updateOriginRequest } from './update-origin-request'
-
-export type ResolvedOriginToolCallResult = {
-  toolCallArgs: ToolCallArgs
-  originRequest?: Request
-  originResponse?: Response
-  toolCallResponse?: McpToolCallResponse
-} & (
-  | {
-      originRequest: Request
-      originResponse: Response
-      toolCallResponse?: never
-    }
-  | {
-      originRequest?: never
-      originResponse?: never
-      toolCallResponse: McpToolCallResponse
-    }
-)
 
 export async function resolveOriginToolCall({
   tool,
@@ -71,6 +55,7 @@ export async function resolveOriginToolCall({
   // need to be rate-limited / cached / tracked / etc.
 
   const { originAdapter } = deployment
+  let rateLimitResult: RateLimitResult | undefined
   let rateLimit: RateLimit | undefined | null
   let reportUsage = true
 
@@ -110,12 +95,17 @@ export async function resolveOriginToolCall({
     }
 
     if (!cacheControl) {
+      // If the incoming request doesn't specify a desired `cache-control`,
+      // then use a default based on the tool's configured settings.
       if (toolConfig.cacheControl !== undefined) {
         cacheControl = toolConfig.cacheControl
       } else if (toolConfig.pure) {
+        // If the tool is marked as `pure`, then we can cache responses in our
+        // public, shared cache indefinitely.
         cacheControl =
           'public, max-age=31560000, s-maxage=31560000, stale-while-revalidate=3600'
       } else {
+        // Default to not caching any responses.
         cacheControl = 'no-store'
       }
     }
@@ -146,11 +136,18 @@ export async function resolveOriginToolCall({
   }
 
   if (rateLimit) {
-    await enforceRateLimit({
-      id: consumer?.id ?? ip,
+    rateLimitResult = await enforceRateLimit({
+      id: consumer?.id ?? ip ?? sessionId,
       interval: rateLimit.interval,
-      maxPerInterval: rateLimit.maxPerInterval
+      maxPerInterval: rateLimit.maxPerInterval,
+      async: rateLimit.async,
+      env,
+      waitUntil
     })
+
+    if (!rateLimitResult.passed) {
+      throw new RateLimitError({ rateLimitResult })
+    }
   }
 
   if (originAdapter.type === 'raw') {
@@ -188,6 +185,7 @@ export async function resolveOriginToolCall({
       })
 
       return {
+        rateLimitResult,
         toolCallArgs,
         originRequest,
         originResponse
@@ -248,6 +246,7 @@ export async function resolveOriginToolCall({
           const response = await caches.default.match(cacheKey)
           if (response) {
             return {
+              rateLimitResult,
               toolCallArgs,
               toolCallResponse: (await response.json()) as McpToolCallResponse
             }
@@ -276,6 +275,7 @@ export async function resolveOriginToolCall({
       }
 
       return {
+        rateLimitResult,
         toolCallArgs,
         toolCallResponse
       }

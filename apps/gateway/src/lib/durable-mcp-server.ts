@@ -1,5 +1,5 @@
 import type { AdminDeployment, PricingPlan } from '@agentic/platform-types'
-import { assert } from '@agentic/platform-core'
+import { assert, getRateLimitHeaders } from '@agentic/platform-core'
 import { parseDeploymentIdentifier } from '@agentic/platform-validators'
 // import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
 import { Server } from '@modelcontextprotocol/sdk/server/index.js'
@@ -14,8 +14,6 @@ import type { AdminConsumer } from './types'
 import { resolveOriginToolCall } from './resolve-origin-tool-call'
 import { transformHttpResponseToMcpToolCallResponse } from './transform-http-response-to-mcp-tool-call-response'
 
-// type State = { counter: number }
-
 export class DurableMcpServer extends McpAgent<
   RawEnv,
   never, // TODO: do we need local state?
@@ -28,10 +26,6 @@ export class DurableMcpServer extends McpAgent<
 > {
   protected _serverP = Promise.withResolvers<Server>()
   override server = this._serverP.promise
-
-  // override initialState: State = {
-  //   counter: 1
-  // }
 
   override async init() {
     const { consumer, deployment, pricingPlan, ip } = this.props
@@ -85,33 +79,49 @@ export class DurableMcpServer extends McpAgent<
       const tool = tools.find((tool) => tool.name === name)
       assert(tool, 404, `Unknown tool: ${name}`)
 
-      // TODO: rate-limiting
-      // TODO: caching
       // TODO: usage tracking / reporting
 
       const sessionId = this.ctx.id.toString()
-      const { toolCallArgs, originRequest, originResponse, toolCallResponse } =
-        await resolveOriginToolCall({
-          tool,
-          args,
-          deployment,
-          consumer,
-          pricingPlan,
-          sessionId,
-          env: this.env,
-          ip,
-          waitUntil: this.ctx.waitUntil
-        })
+      const {
+        toolCallArgs,
+        originRequest,
+        originResponse,
+        toolCallResponse,
+        rateLimitResult
+      } = await resolveOriginToolCall({
+        tool,
+        args,
+        deployment,
+        consumer,
+        pricingPlan,
+        sessionId,
+        env: this.env,
+        ip,
+        waitUntil: this.ctx.waitUntil
+      })
 
       if (originResponse) {
         return transformHttpResponseToMcpToolCallResponse({
           originRequest,
           originResponse,
           tool,
-          toolCallArgs
+          toolCallArgs,
+          rateLimitResult
         })
       } else if (toolCallResponse) {
-        return toolCallResponse
+        if (toolCallResponse._meta || rateLimitResult) {
+          return {
+            ...toolCallResponse,
+            _meta: {
+              ...toolCallResponse._meta,
+              ...(rateLimitResult
+                ? getRateLimitHeaders(rateLimitResult)
+                : undefined)
+            }
+          }
+        } else {
+          return toolCallResponse
+        }
       } else {
         assert(false, 500)
       }

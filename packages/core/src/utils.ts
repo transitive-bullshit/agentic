@@ -195,3 +195,109 @@ export function sanitizeSearchParams(
 
   return new URLSearchParams(csvEntries)
 }
+
+export function pruneUndefined<T extends Record<string, any>>(
+  obj: T
+): NonNullable<{ [K in keyof T]: Exclude<T[K], undefined> }> {
+  return Object.fromEntries(
+    Object.entries(obj).filter(([, value]) => value !== undefined)
+  ) as NonNullable<T>
+}
+
+export function pruneNullOrUndefined<T extends Record<string, any>>(
+  obj: T
+): NonNullable<{ [K in keyof T]: Exclude<T[K], undefined | null> }> {
+  return Object.fromEntries(
+    Object.entries(obj).filter(
+      ([, value]) => value !== undefined && value !== null
+    )
+  ) as NonNullable<T>
+}
+
+export function pruneNullOrUndefinedDeep<T extends Record<string, any>>(
+  obj: T
+): NonNullable<{ [K in keyof T]: Exclude<T[K], undefined | null> }> {
+  if (!obj || Array.isArray(obj) || typeof obj !== 'object') return obj
+
+  return Object.fromEntries(
+    Object.entries(obj)
+      .filter(([, value]) => value !== undefined && value !== null)
+      .map(([key, value]) =>
+        Array.isArray(value)
+          ? [
+              key,
+              value
+                .filter((v) => v !== undefined && v !== null)
+                .map(pruneNullOrUndefinedDeep as any)
+            ]
+          : typeof value === 'object'
+            ? [key, pruneNullOrUndefinedDeep(value)]
+            : [key, value]
+      )
+  ) as NonNullable<T>
+}
+
+export function pruneEmpty<T extends Record<string, any>>(
+  obj: T
+): NonNullable<{ [K in keyof T]: Exclude<T[K], undefined | null> }> {
+  return Object.fromEntries(
+    Object.entries(obj).filter(([, value]) => {
+      if (value === undefined || value === null) return false
+      if (typeof value === 'string' && !value) return false
+      if (Array.isArray(value) && !value.length) return false
+      if (
+        typeof value === 'object' &&
+        !Array.isArray(value) &&
+        !Object.keys(value).length
+      ) {
+        return false
+      }
+
+      return true
+    })
+  ) as NonNullable<T>
+}
+
+export function pruneEmptyDeep<T>(
+  value?: T
+):
+  | undefined
+  | (T extends Record<string, any>
+      ? { [K in keyof T]: Exclude<T[K], undefined | null> }
+      : T extends Array<infer U>
+        ? Array<Exclude<U, undefined | null>>
+        : Exclude<T, null>) {
+  if (value === undefined || value === null) return undefined
+
+  if (typeof value === 'string') {
+    if (!value) return undefined
+
+    return value as any
+  }
+
+  if (Array.isArray(value)) {
+    if (!value.length) return undefined
+
+    value = value
+      .map((v) => pruneEmptyDeep(v))
+      .filter((v) => v !== undefined) as any
+
+    if (!value || !Array.isArray(value) || !value.length) return undefined
+    return value as any
+  }
+
+  if (typeof value === 'object') {
+    if (!Object.keys(value).length) return undefined
+
+    value = Object.fromEntries(
+      Object.entries(value)
+        .map(([k, v]) => [k, pruneEmptyDeep(v)])
+        .filter(([, v]) => v !== undefined)
+    )
+
+    if (!value || !Object.keys(value).length) return undefined
+    return value as any
+  }
+
+  return value as any
+}

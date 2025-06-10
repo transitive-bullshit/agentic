@@ -6,6 +6,16 @@ import { captureException } from '@sentry/core'
 import { HTTPException } from 'hono/http-exception'
 import { HTTPError } from 'ky'
 
+import { applyHeaders } from './header-utils'
+import {
+  httpStatusCodeToJsonRpcErrorCode,
+  JsonRpcErrorCodes
+} from './json-rpc-errors'
+
+/**
+ * Hono error handler that sanitizes all types of internal, http, json-rpc, and
+ * unexpected errors and responds with an appropate HTTP Response.
+ */
 export function errorHandler(
   err: Error | HTTPResponseError,
   ctx: Context
@@ -20,12 +30,16 @@ export function errorHandler(
   let message = 'Internal Server Error'
   let status: ContentfulStatusCode = 500
 
-  if (err instanceof HTTPException) {
-    message = err.message
-    status = err.status
-  } else if (err instanceof HttpError) {
+  if (err instanceof HttpError) {
     message = err.message
     status = err.statusCode as ContentfulStatusCode
+
+    // This is where rate-limit headers will be set, since `RateLimitError`
+    // is a subclass of `HttpError`.
+    applyHeaders({ res: ctx.res, headers: err.headers })
+  } else if (err instanceof HTTPException) {
+    message = err.message
+    status = err.status
   } else if (err instanceof HTTPError) {
     message = err.message
     status = err.response.status as ContentfulStatusCode
@@ -35,13 +49,20 @@ export function errorHandler(
     jsonRpcId = err.jsonRpcId
     jsonRpcErrorCode = err.jsonRpcErrorCode
     isJsonRpcRequest = true
-  } else if (!isProd) {
-    message = err.message ?? message
+  } else if (!isProd && err.message) {
+    message = err.message
+  }
+
+  if (!Number.isSafeInteger(status)) {
+    status = 500
   }
 
   if (status >= 500) {
     logger.error(status, err)
-    captureException(err)
+
+    if (isProd) {
+      captureException(err)
+    }
   } else {
     logger.warn(status, err)
   }
@@ -49,6 +70,10 @@ export function errorHandler(
   if (isJsonRpcRequest) {
     if (jsonRpcErrorCode === undefined) {
       jsonRpcErrorCode = httpStatusCodeToJsonRpcErrorCode(status)
+    }
+
+    if (!Number.isSafeInteger(jsonRpcErrorCode)) {
+      jsonRpcErrorCode = JsonRpcErrorCodes.InternalError
     }
 
     return ctx.json(
@@ -65,25 +90,4 @@ export function errorHandler(
   } else {
     return ctx.json({ error: message, requestId }, status)
   }
-}
-
-/** Error codes defined by the JSON-RPC specification. */
-export enum JsonRpcErrorCodes {
-  ConnectionClosed = -32_000,
-  RequestTimeout = -32_001,
-  ParseError = -32_700,
-  InvalidRequest = -32_600,
-  MethodNotFound = -32_601,
-  InvalidParams = -32_602,
-  InternalError = -32_603
-}
-
-export function httpStatusCodeToJsonRpcErrorCode(
-  statusCode: ContentfulStatusCode
-): number {
-  if (statusCode >= 400 && statusCode < 500) {
-    return JsonRpcErrorCodes.InvalidRequest
-  }
-
-  return JsonRpcErrorCodes.InternalError
 }

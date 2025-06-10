@@ -22,7 +22,6 @@ export const init = createMiddleware<DefaultHonoEnv>(
 
     const logger = new ConsoleLogger(ctx.env, { requestId })
     ctx.set('logger', logger)
-
     ctx.set('isJsonRpcRequest', false)
 
     const ip =

@@ -7,7 +7,7 @@ import { type Env, parseEnv } from './lib/env'
 // Export Durable Objects for cloudflare
 export { DurableMcpClient } from './lib/durable-mcp-client'
 export { DurableMcpServer } from './lib/durable-mcp-server'
-export { DurableRateLimiter } from './lib/durable-rate-limiter'
+export { DurableRateLimiter } from './lib/rate-limits/durable-rate-limiter'
 
 // Main worker entrypoint
 export default {

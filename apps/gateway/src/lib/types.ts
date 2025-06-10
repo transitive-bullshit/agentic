@@ -1,4 +1,5 @@
 import type { AgenticApiClient } from '@agentic/platform-api-client'
+import type { RateLimitResult } from '@agentic/platform-core'
 import type {
   DefaultHonoBindings,
   DefaultHonoVariables
@@ -9,6 +10,8 @@ import type { Context } from 'hono'
 import type { Simplify } from 'type-fest'
 
 import type { Env } from './env'
+
+export type { RateLimitResult } from '@agentic/platform-core'
 
 export type McpToolCallResponse = Simplify<
   Awaited<ReturnType<McpClient['callTool']>>
@@ -40,6 +43,32 @@ export type GatewayHonoContext = Context<GatewayHonoEnv>
 
 // TODO: better type here
 export type ToolCallArgs = Record<string, any>
+
+export type RateLimitState = {
+  current: number
+  resetTimeMs: number
+}
+
+export type RateLimitCache = Map<string, RateLimitState>
+
+export type ResolvedOriginToolCallResult = {
+  rateLimitResult?: RateLimitResult
+  toolCallArgs: ToolCallArgs
+  originRequest?: Request
+  originResponse?: Response
+  toolCallResponse?: McpToolCallResponse
+} & (
+  | {
+      originRequest: Request
+      originResponse: Response
+      toolCallResponse?: never
+    }
+  | {
+      originRequest?: never
+      originResponse?: never
+      toolCallResponse: McpToolCallResponse
+    }
+)
 
 export type AgenticMcpRequestMetadata = {
   agenticProxySecret: string

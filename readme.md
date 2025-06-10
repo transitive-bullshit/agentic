@@ -32,12 +32,14 @@
 - API gateway
   - **enforce rate limits**
   - oauth flow
+    - https://docs.scalekit.com/guides/mcp/oauth
   - openapi-kitchen-sink
   - mcp-kitchen-sink
   - how to handle binary bodies and responses?
   - add support for `immutable` in `toolConfigs`
 - **Public MCP server interface**
   - how does oauth work with this flow?
+  - proper error handling support within this flow
 - **Origin MCP servers**
   - how to guarantee that the request is coming from agentic?
     - `_meta` for tool calls

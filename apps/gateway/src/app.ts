@@ -1,5 +1,6 @@
 import { assert } from '@agentic/platform-core'
 import {
+  applyRateLimitHeaders,
   cors,
   errorHandler,
   init,
@@ -96,6 +97,13 @@ app.all(async (ctx) => {
 
   assert(originResponse, 500, 'Origin response is required')
   const res = new Response(originResponse.body, originResponse)
+
+  if (resolvedOriginToolCallResult.rateLimitResult) {
+    applyRateLimitHeaders({
+      res,
+      rateLimitResult: resolvedOriginToolCallResult.rateLimitResult
+    })
+  }
 
   // Record the time it took for the origin to respond.
   const now = Date.now()

@@ -1,20 +1,31 @@
 import type { Tool } from '@agentic/platform-types'
-import { assert, HttpError } from '@agentic/platform-core'
+import {
+  assert,
+  getRateLimitHeaders,
+  HttpError,
+  pruneEmpty
+} from '@agentic/platform-core'
 import contentType from 'fast-content-type-parse'
 
-import type { McpToolCallResponse, ToolCallArgs } from './types'
+import type {
+  McpToolCallResponse,
+  RateLimitResult,
+  ToolCallArgs
+} from './types'
 import { cfValidateJsonSchema } from './cf-validate-json-schema'
 
 export async function transformHttpResponseToMcpToolCallResponse({
   originRequest,
   originResponse,
   tool,
-  toolCallArgs
+  toolCallArgs,
+  rateLimitResult
 }: {
   originRequest: Request
   originResponse: Response
   tool: Tool
   toolCallArgs: ToolCallArgs
+  rateLimitResult?: RateLimitResult
 }) {
   const { type: mimeType } = contentType.safeParse(
     originResponse.headers.get('content-type') || 'application/octet-stream'
@@ -30,7 +41,8 @@ export async function transformHttpResponseToMcpToolCallResponse({
       mimeType,
       status: originResponse.status
       // headers: Object.fromEntries(originResponse.headers.entries())
-    }
+    },
+    rateLimitResult
   })
 
   if (originResponse.status >= 400) {
@@ -50,15 +62,22 @@ export async function transformHttpResponseToMcpToolCallResponse({
         status: originResponse.status,
         // headers: Object.fromEntries(originResponse.headers.entries()),
         message
-      }
+      },
+      rateLimitResult
     })
 
     throw new HttpError({
       statusCode: originResponse.status,
       message,
-      cause: originResponse
+      cause: originResponse,
+      headers: getRateLimitHeaders(rateLimitResult)
     })
   }
+
+  const result: McpToolCallResponse = pruneEmpty({
+    isError: originResponse.status >= 400,
+    _meta: getRateLimitHeaders(rateLimitResult)
+  })
 
   if (tool.outputSchema) {
     assert(
@@ -66,11 +85,11 @@ export async function transformHttpResponseToMcpToolCallResponse({
       502,
       `Tool "${tool.name}" requires a JSON response, but the origin returned content type "${mimeType}"`
     )
-    const res: any = await originResponse.json()
+    const data = (await originResponse.json()) as Record<string, unknown>
 
     const toolCallResponseContent = cfValidateJsonSchema({
+      data,
       schema: tool.outputSchema,
-      data: res as Record<string, unknown>,
       coerce: false,
       // TODO: double-check MCP schema on whether additional properties are allowed
       strictAdditionalProperties: true,
@@ -78,15 +97,8 @@ export async function transformHttpResponseToMcpToolCallResponse({
       errorStatusCode: 502
     })
 
-    return {
-      structuredContent: toolCallResponseContent,
-      isError: originResponse.status >= 400
-    }
+    result.structuredContent = toolCallResponseContent
   } else {
-    const result: McpToolCallResponse = {
-      isError: originResponse.status >= 400
-    }
-
     if (mimeType.includes('json')) {
       result.structuredContent = await originResponse.json()
     } else if (mimeType.includes('text')) {
@@ -120,7 +132,7 @@ export async function transformHttpResponseToMcpToolCallResponse({
         }
       ]
     }
-
-    return result
   }
+
+  return result
 }
