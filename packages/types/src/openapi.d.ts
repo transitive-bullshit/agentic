@@ -396,7 +396,7 @@ export interface components {
             confirmed: boolean;
             confirmedAt?: string;
         };
-        /** @description Public project identifier (e.g. "namespace/project-name") */
+        /** @description Public project identifier (e.g. "@namespace/project-name") */
         ProjectIdentifier: string;
         /** @description The frequency at which a subscription is billed. */
         PricingInterval: "day" | "week" | "month" | "year";
@@ -454,15 +454,18 @@ export interface components {
             stripeStatus: string;
             isStripeSubscriptionActive: boolean;
         };
-        /** @description Public deployment identifier (e.g. "namespace/project-name@{hash|version|latest}") */
+        /** @description Public deployment identifier (e.g. "@namespace/project-name@{hash|version|latest}") */
         DeploymentIdentifier: string;
         JsonSchemaObject: {
             /** @enum {string} */
             type: "object";
-            properties?: Record<string, unknown>;
+            properties?: {
+                [key: string]: unknown;
+            };
             required?: string[];
         };
         Tool: {
+            /** @description Agentic tool name */
             name: string;
             description?: string;
             inputSchema: components["schemas"]["JsonSchemaObject"];
@@ -482,12 +485,12 @@ export interface components {
             maxPerInterval: number;
         };
         PricingPlanToolConfig: {
-            /** @default true */
-            enabled: boolean;
+            enabled?: boolean;
             reportUsage?: boolean;
             rateLimit?: components["schemas"]["RateLimit"] | null;
         };
         ToolConfig: {
+            /** @description Agentic tool name */
             name: string;
             /** @default true */
             enabled: boolean;
@@ -503,7 +506,10 @@ export interface components {
         };
         /** @description Origin adapter is used to configure the origin API server downstream from Agentic's API gateway. It specifies whether the origin API server denoted by `originUrl` is hosted externally or deployed internally to Agentic's infrastructure. It also specifies the format for how origin tools are defined: either an OpenAPI spec, an MCP server, or a raw HTTP REST API. */
         OriginAdapter: {
-            /** @enum {string} */
+            /**
+             * @default external
+             * @enum {string}
+             */
             location: "external";
             /** @enum {string} */
             type: "openapi";
@@ -526,7 +532,10 @@ export interface components {
                 };
             };
         } | {
-            /** @enum {string} */
+            /**
+             * @default external
+             * @enum {string}
+             */
             location: "external";
             /** @enum {string} */
             type: "mcp";
@@ -551,18 +560,21 @@ export interface components {
                 instructions?: string;
             };
         } | {
-            /** @enum {string} */
+            /**
+             * @default external
+             * @enum {string}
+             */
             location: "external";
             /** @enum {string} */
             type: "raw";
         };
         /**
-         * @description Human-readable name for the pricing plan
+         * @description Human-readable name for the pricing plan (eg, "Free", "Starter Monthly", "Pro Annual", etc)
          * @example Starter Monthly
          */
         name: string;
         /**
-         * @description PricingPlan slug ("free", "starter-monthly", "pro-annual", etc). Should be lower-cased and kebab-cased. Should be stable across deployments.
+         * @description PricingPlan slug (eg, "free", "starter-monthly", "pro-annual", etc). Should be lower-cased and kebab-cased. Should be stable across deployments.
          * @example starter-monthly
          */
         slug: string;
@@ -689,19 +701,28 @@ export interface components {
          *     }
          */
         OriginAdapterConfig: {
-            /** @enum {string} */
+            /**
+             * @default external
+             * @enum {string}
+             */
             location: "external";
             /** @enum {string} */
             type: "openapi";
             /** @description Local file path, URL, or JSON stringified OpenAPI spec describing the origin API server. */
             spec: string;
         } | {
-            /** @enum {string} */
+            /**
+             * @default external
+             * @enum {string}
+             */
             location: "external";
             /** @enum {string} */
             type: "mcp";
         } | {
-            /** @enum {string} */
+            /**
+             * @default external
+             * @enum {string}
+             */
             location: "external";
             /** @enum {string} */
             type: "raw";
@@ -729,6 +750,7 @@ export interface components {
             content: {
                 "application/json": {
                     error: string;
+                    requestId: string;
                 };
             };
         };
@@ -740,6 +762,7 @@ export interface components {
             content: {
                 "application/json": {
                     error: string;
+                    requestId: string;
                 };
             };
         };
@@ -751,6 +774,7 @@ export interface components {
             content: {
                 "application/json": {
                     error: string;
+                    requestId: string;
                 };
             };
         };
@@ -762,6 +786,7 @@ export interface components {
             content: {
                 "application/json": {
                     error: string;
+                    requestId: string;
                 };
             };
         };
@@ -773,6 +798,7 @@ export interface components {
             content: {
                 "application/json": {
                     error: string;
+                    requestId: string;
                 };
             };
         };
@@ -784,6 +810,7 @@ export interface components {
             content: {
                 "application/json": {
                     error: string;
+                    requestId: string;
                 };
             };
         };
@@ -1113,7 +1140,7 @@ export interface operations {
                 limit?: number;
                 sort?: "asc" | "desc";
                 sortBy?: "createdAt" | "updatedAt";
-                populate?: ("user" | "team" | "lastPublishedDeployment" | "lastDeployment")[];
+                populate?: ("user" | "team" | "lastPublishedDeployment" | "lastDeployment") | ("user" | "team" | "lastPublishedDeployment" | "lastDeployment")[];
             };
             header?: never;
             path?: never;
@@ -1167,8 +1194,8 @@ export interface operations {
     getProjectByIdentifier: {
         parameters: {
             query: {
-                populate?: ("user" | "team" | "lastPublishedDeployment" | "lastDeployment")[];
-                /** @description Public project identifier (e.g. "namespace/project-name") */
+                populate?: ("user" | "team" | "lastPublishedDeployment" | "lastDeployment") | ("user" | "team" | "lastPublishedDeployment" | "lastDeployment")[];
+                /** @description Public project identifier (e.g. "@namespace/project-name") */
                 projectIdentifier: components["schemas"]["ProjectIdentifier"];
             };
             header?: never;
@@ -1195,7 +1222,7 @@ export interface operations {
     getProject: {
         parameters: {
             query?: {
-                populate?: ("user" | "team" | "lastPublishedDeployment" | "lastDeployment")[];
+                populate?: ("user" | "team" | "lastPublishedDeployment" | "lastDeployment") | ("user" | "team" | "lastPublishedDeployment" | "lastDeployment")[];
             };
             header?: never;
             path: {
@@ -1258,7 +1285,7 @@ export interface operations {
     getConsumer: {
         parameters: {
             query?: {
-                populate?: ("user" | "project" | "deployment")[];
+                populate?: ("user" | "project" | "deployment") | ("user" | "project" | "deployment")[];
             };
             header?: never;
             path: {
@@ -1390,7 +1417,7 @@ export interface operations {
                 limit?: number;
                 sort?: "asc" | "desc";
                 sortBy?: "createdAt" | "updatedAt";
-                populate?: ("user" | "project" | "deployment")[];
+                populate?: ("user" | "project" | "deployment") | ("user" | "project" | "deployment")[];
             };
             header?: never;
             path: {
@@ -1419,8 +1446,8 @@ export interface operations {
     getDeploymentByIdentifier: {
         parameters: {
             query: {
-                populate?: ("user" | "team" | "project")[];
-                /** @description Public deployment identifier (e.g. "namespace/project-name@{hash|version|latest}") */
+                populate?: ("user" | "team" | "project") | ("user" | "team" | "project")[];
+                /** @description Public deployment identifier (e.g. "@namespace/project-name@{hash|version|latest}") */
                 deploymentIdentifier: components["schemas"]["DeploymentIdentifier"];
             };
             header?: never;
@@ -1447,7 +1474,7 @@ export interface operations {
     getDeployment: {
         parameters: {
             query?: {
-                populate?: ("user" | "team" | "project")[];
+                populate?: ("user" | "team" | "project") | ("user" | "team" | "project")[];
             };
             header?: never;
             path: {
@@ -1514,10 +1541,10 @@ export interface operations {
                 limit?: number;
                 sort?: "asc" | "desc";
                 sortBy?: "createdAt" | "updatedAt";
-                populate?: ("user" | "team" | "project")[];
-                /** @description Public project identifier (e.g. "namespace/project-name") */
+                populate?: ("user" | "team" | "project") | ("user" | "team" | "project")[];
+                /** @description Public project identifier (e.g. "@namespace/project-name") */
                 projectIdentifier?: components["schemas"]["ProjectIdentifier"];
-                /** @description Public deployment identifier (e.g. "namespace/project-name@{hash|version|latest}") */
+                /** @description Public deployment identifier (e.g. "@namespace/project-name@{hash|version|latest}") */
                 deploymentIdentifier?: components["schemas"]["DeploymentIdentifier"];
             };
             header?: never;
@@ -1664,7 +1691,7 @@ export interface operations {
     adminGetConsumerByToken: {
         parameters: {
             query?: {
-                populate?: ("user" | "project" | "deployment")[];
+                populate?: ("user" | "project" | "deployment") | ("user" | "project" | "deployment")[];
             };
             header?: never;
             path: {
@@ -1693,8 +1720,8 @@ export interface operations {
     adminGetDeploymentByIdentifier: {
         parameters: {
             query: {
-                populate?: ("user" | "team" | "project")[];
-                /** @description Public deployment identifier (e.g. "namespace/project-name@{hash|version|latest}") */
+                populate?: ("user" | "team" | "project") | ("user" | "team" | "project")[];
+                /** @description Public deployment identifier (e.g. "@namespace/project-name@{hash|version|latest}") */
                 deploymentIdentifier: components["schemas"]["DeploymentIdentifier"];
             };
             header?: never;

@@ -105,12 +105,12 @@ export function parseZodSchema<TSchema extends ZodType<any, any, any>>(
 // }
 
 export async function sha256(
-  input: string | ArrayBuffer = crypto.randomUUID()
+  input: string | ArrayBuffer | ArrayBufferView = crypto.randomUUID()
 ) {
-  let dataBuffer: ArrayBuffer
+  let dataBuffer: ArrayBuffer | ArrayBufferView
 
   if (typeof input === 'string') {
-    dataBuffer = new TextEncoder().encode(input).buffer
+    dataBuffer = new TextEncoder().encode(input)
   } else {
     dataBuffer = input
   }
