@@ -63,6 +63,7 @@ export async function resolveOriginToolCall({
   const numRequestsCost = 1
   let rateLimitResult: RateLimitResult | undefined
   let rateLimit: RateLimit | undefined | null
+  let cacheStatus: CacheStatus | undefined
   let reportUsage = true
 
   // Resolve rate limit and whether to report `requests` usage based on the
@@ -100,7 +101,15 @@ export async function resolveOriginToolCall({
       rateLimit = toolConfig.rateLimit as RateLimit
     }
 
-    if (!cacheControl) {
+    if (cacheControl) {
+      if (!isCacheControlPubliclyCacheable(cacheControl)) {
+        // Incoming request explicitly requests to bypass the gateway's cache.
+        cacheStatus = 'BYPASS'
+      } else {
+        // TODO: Should we allow incoming cache-control headers to override the
+        // gateway's cache behavior?
+      }
+    } else {
       // If the incoming request doesn't specify a desired `cache-control`,
       // then use a default based on the tool's configured settings.
       if (toolConfig.cacheControl !== undefined) {
@@ -113,6 +122,7 @@ export async function resolveOriginToolCall({
       } else {
         // Default to not caching any responses.
         cacheControl = 'no-store'
+        cacheStatus = 'DYNAMIC'
       }
     }
 
@@ -145,8 +155,19 @@ export async function resolveOriginToolCall({
       assert(toolConfig.enabled, 404, `Tool "${tool.name}" is disabled`)
     }
   } else {
-    // Default to not caching any responses.
-    cacheControl ??= 'no-store'
+    if (cacheControl) {
+      if (!isCacheControlPubliclyCacheable(cacheControl)) {
+        // Incoming request explicitly requests to bypass the gateway's cache.
+        cacheStatus = 'BYPASS'
+      } else {
+        // TODO: Should we allow incoming cache-control headers to override the
+        // gateway's cache behavior?
+      }
+    } else {
+      // Default to not caching any responses.
+      cacheControl = 'no-store'
+      cacheStatus = 'DYNAMIC'
+    }
   }
 
   if (rateLimit) {
@@ -176,7 +197,8 @@ export async function resolveOriginToolCall({
       schema: tool.inputSchema,
       data: args,
       errorPrefix: `Invalid request parameters for tool "${tool.name}"`,
-      strictAdditionalProperties: toolConfig?.additionalProperties === false
+      strictAdditionalProperties:
+        toolConfig?.inputSchemaAdditionalProperties === false
     })
 
     const originStartTimeMs = Date.now()
@@ -213,8 +235,9 @@ export async function resolveOriginToolCall({
       // Fetch the origin response without caching (useful for debugging)
       // const originResponse = await fetch(originRequest)
 
-      const cacheStatus =
+      cacheStatus =
         (originResponse.headers.get('cf-cache-status') as CacheStatus) ??
+        cacheStatus ??
         (cacheKey ? 'MISS' : 'BYPASS')
 
       return {
@@ -225,7 +248,8 @@ export async function resolveOriginToolCall({
         originRequest,
         originResponse,
         originTimespanMs: Date.now() - originStartTimeMs,
-        numRequestsCost
+        numRequestsCost,
+        toolConfig
       }
     } else if (originAdapter.type === 'mcp') {
       const { projectIdentifier } = parseDeploymentIdentifier(
@@ -276,7 +300,7 @@ export async function resolveOriginToolCall({
           body: JSON.stringify({
             name: tool.name,
             args: toolCallArgs,
-            metadata: originMcpRequestMetadata!
+            metadata: originMcpRequestMetadata
           })
         })
 
@@ -291,7 +315,8 @@ export async function resolveOriginToolCall({
               toolCallArgs,
               toolCallResponse: (await response.json()) as McpToolCallResponse,
               originTimespanMs: Date.now() - originStartTimeMs,
-              numRequestsCost
+              numRequestsCost,
+              toolConfig
             }
           }
         }
@@ -301,7 +326,7 @@ export async function resolveOriginToolCall({
       const toolCallResponseString = await originMcpClient.callTool({
         name: tool.name,
         args: toolCallArgs,
-        metadata: originMcpRequestMetadata!
+        metadata: originMcpRequestMetadata
       })
       const toolCallResponse = JSON.parse(
         toolCallResponseString
@@ -318,13 +343,14 @@ export async function resolveOriginToolCall({
       }
 
       return {
-        cacheStatus: cacheKey ? 'MISS' : 'BYPASS',
+        cacheStatus: cacheStatus ?? (cacheKey ? 'MISS' : 'BYPASS'),
         reportUsage,
         rateLimitResult,
         toolCallArgs,
         toolCallResponse,
         originTimespanMs: Date.now() - originStartTimeMs,
-        numRequestsCost
+        numRequestsCost,
+        toolConfig
       }
     } else {
       assert(

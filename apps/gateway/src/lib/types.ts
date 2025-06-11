@@ -6,6 +6,7 @@ import type {
 } from '@agentic/platform-hono'
 import type {
   AdminConsumer as AdminConsumerImpl,
+  ToolConfig,
   User
 } from '@agentic/platform-types'
 import type { Client as McpClient } from '@modelcontextprotocol/sdk/client/index.js'
@@ -54,7 +55,7 @@ export type RateLimitState = {
 
 export type RateLimitCache = Map<string, RateLimitState>
 
-export type CacheStatus = 'HIT' | 'MISS' | 'BYPASS'
+export type CacheStatus = 'HIT' | 'MISS' | 'BYPASS' | 'DYNAMIC'
 export type RequestMode = 'mcp' | 'http'
 
 export type WaitUntil = (promise: Promise<any>) => void
@@ -67,6 +68,7 @@ export type ResolvedOriginToolCallResult = {
   rateLimitResult?: RateLimitResult
   cacheStatus: CacheStatus
   reportUsage: boolean
+  toolConfig?: ToolConfig
   originTimespanMs: number
   numRequestsCost: number
 } & (

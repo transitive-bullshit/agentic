@@ -1,44 +1,25 @@
-import type { AdminDeployment } from '@agentic/platform-types'
 import type { ContentfulStatusCode } from 'hono/utils/http-status'
-import {
-  getRateLimitHeaders,
-  HttpError,
-  pruneEmpty
-} from '@agentic/platform-core'
+import { HttpError } from '@agentic/platform-core'
 import * as Sentry from '@sentry/cloudflare'
 import { HTTPException } from 'hono/http-exception'
 import { HTTPError } from 'ky'
 
 import type { RawEnv } from './env'
-import type {
-  AdminConsumer,
-  McpToolCallResponse,
-  RateLimitResult
-} from './types'
+import type { McpToolCallResponse } from './types'
 
 /**
  * Turns a thrown error into an MCP error tool call response, and attempts to
  * capture as much context as possible for potential debugging.
  *
- * @note This function is synchronous and must never throw.
+ * @note This function is synchronous and should never throw.
  */
 export function handleMcpToolCallError(
   err: any,
   {
-    deployment,
-    consumer,
     toolName,
-    sessionId,
-    requestId,
-    rateLimitResult,
     env
   }: {
-    deployment: AdminDeployment
-    consumer?: AdminConsumer
     toolName: string
-    sessionId: string
-    requestId?: string
-    rateLimitResult?: RateLimitResult
     env: RawEnv
   }
 ): McpToolCallResponse {
@@ -47,16 +28,12 @@ export function handleMcpToolCallError(
   let status: ContentfulStatusCode = 500
 
   const res: McpToolCallResponse = {
-    _meta: pruneEmpty({
-      deploymentId: deployment.id,
-      consumerId: consumer?.id,
-      toolName,
-      sessionId,
-      requestId,
-      headers: rateLimitResult
-        ? getRateLimitHeaders(rateLimitResult)
-        : undefined
-    }),
+    _meta: {
+      agentic: {
+        toolName,
+        headers: {}
+      }
+    },
     isError: true,
     content: [
       {
@@ -74,7 +51,7 @@ export function handleMcpToolCallError(
     // is a subclass of `HttpError`.
     if (err.headers) {
       for (const [key, value] of Object.entries(err.headers)) {
-        res._meta![key] = value
+        ;(res._meta!.agentic as any).headers[key] = value
       }
     }
   } else if (err instanceof HTTPException) {
@@ -105,10 +82,10 @@ export function handleMcpToolCallError(
     }
   } else {
     // eslint-disable-next-line no-console
-    console.warn(`mcp tool call "${toolName}" warning`, status, message, err)
+    console.warn(`mcp tool call "${toolName}" warning`, status, err)
   }
 
-  res._meta!.status = status
+  ;(res._meta!.agentic as any).status = status
   res.content = [
     {
       type: 'text',

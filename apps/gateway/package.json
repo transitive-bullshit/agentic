@@ -45,6 +45,7 @@
     "hono": "catalog:",
     "ky": "catalog:",
     "plur": "catalog:",
+    "sort-keys": "^5.1.0",
     "stripe": "catalog:",
     "type-fest": "catalog:"
   },

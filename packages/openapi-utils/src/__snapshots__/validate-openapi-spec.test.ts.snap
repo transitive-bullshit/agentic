@@ -22820,6 +22820,49 @@ exports[`validateOpenAPISpec > remote spec https://agentic-platform-fixtures-eve
         },
       },
     },
+    "/strict-additional-properties": {
+      "post": {
+        "description": "Echoes the request body only allowing a single "foo" field.",
+        "operationId": "strictAdditionalProperties",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "foo": {
+                    "type": "string",
+                  },
+                },
+                "required": [
+                  "foo",
+                ],
+                "type": "object",
+              },
+            },
+          },
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "foo": {
+                      "type": "string",
+                    },
+                  },
+                  "required": [
+                    "foo",
+                  ],
+                  "type": "object",
+                },
+              },
+            },
+            "description": "Echoed request body",
+          },
+        },
+      },
+    },
     "/unpure-marked-pure": {
       "post": {
         "description": "Unpure tool marked pure",

@@ -1693,6 +1693,15 @@ exports[`getToolsFromOpenAPISpec > remote spec https://agentic-platform-fixtures
       "path": "/pure",
       "tags": undefined,
     },
+    "strict_additional_properties": {
+      "method": "post",
+      "operationId": "strictAdditionalProperties",
+      "parameterSources": {
+        "foo": "body",
+      },
+      "path": "/strict-additional-properties",
+      "tags": undefined,
+    },
     "unpure_marked_pure": {
       "method": "post",
       "operationId": "unpure_marked_pure",
@@ -1905,6 +1914,32 @@ exports[`getToolsFromOpenAPISpec > remote spec https://agentic-platform-fixtures
       "name": "disabled_rate_limit_tool",
       "outputSchema": {
         "properties": {},
+        "type": "object",
+      },
+    },
+    {
+      "description": "Echoes the request body only allowing a single "foo" field.",
+      "inputSchema": {
+        "properties": {
+          "foo": {
+            "type": "string",
+          },
+        },
+        "required": [
+          "foo",
+        ],
+        "type": "object",
+      },
+      "name": "strict_additional_properties",
+      "outputSchema": {
+        "properties": {
+          "foo": {
+            "type": "string",
+          },
+        },
+        "required": [
+          "foo",
+        ],
         "type": "object",
       },
     },

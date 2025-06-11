@@ -15,9 +15,9 @@
     "test": "run-s test:*",
     "test:lint": "eslint .",
     "test:typecheck": "tsc --noEmit",
-    "test-e2e": "vitest run",
-    "test-http-e2e": "vitest run src/http-e2e.test.ts",
-    "test-mcp-e2e": "vitest run src/mcp-e2e.test.ts"
+    "e2e": "vitest run",
+    "e2e-http": "vitest run src/http-e2e.test.ts",
+    "e2e-mcp": "vitest run src/mcp-e2e.test.ts"
   },
   "dependencies": {
     "ky": "catalog:",

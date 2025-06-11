@@ -1,42 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Basic GET caching > 3.0: GET @dev/test-basic-openapi@010332cf/getPost 1`] = `
-{
-  "body": "aut dicta possimus sint mollitia voluptas commodi quo doloremque
-iste corrupti reiciendis voluptatem eius rerum
-sit cumque quod eligendi laborum minima
-perferendis recusandae assumenda consectetur porro architecto ipsum ipsam",
-  "id": 13,
-  "title": "dolorum ut in voluptas mollitia et saepe quo animi",
-  "userId": 2,
-}
-`;
-
-exports[`Basic GET caching > 3.1: GET @dev/test-basic-openapi@010332cf/getPost?postId=13 1`] = `
-{
-  "body": "aut dicta possimus sint mollitia voluptas commodi quo doloremque
-iste corrupti reiciendis voluptatem eius rerum
-sit cumque quod eligendi laborum minima
-perferendis recusandae assumenda consectetur porro architecto ipsum ipsam",
-  "id": 13,
-  "title": "dolorum ut in voluptas mollitia et saepe quo animi",
-  "userId": 2,
-}
-`;
-
-exports[`Basic GET caching > 3.2: GET @dev/test-basic-openapi@010332cf/get_post?postId=13 1`] = `
-{
-  "body": "aut dicta possimus sint mollitia voluptas commodi quo doloremque
-iste corrupti reiciendis voluptatem eius rerum
-sit cumque quod eligendi laborum minima
-perferendis recusandae assumenda consectetur porro architecto ipsum ipsam",
-  "id": 13,
-  "title": "dolorum ut in voluptas mollitia et saepe quo animi",
-  "userId": 2,
-}
-`;
-
-exports[`Basic MCP origin "add" tool call success > 5.0: POST @dev/test-basic-mcp/add 1`] = `
+exports[`HTTP => MCP origin basic "add" tool call success > 5.0: POST @dev/test-basic-mcp/add 1`] = `
 [
   {
     "text": "42",
@@ -45,7 +9,7 @@ exports[`Basic MCP origin "add" tool call success > 5.0: POST @dev/test-basic-mc
 ]
 `;
 
-exports[`Basic MCP origin "add" tool call success > 5.1: GET @dev/test-basic-mcp/add 1`] = `
+exports[`HTTP => MCP origin basic "add" tool call success > 5.1: GET @dev/test-basic-mcp/add 1`] = `
 [
   {
     "text": "42",
@@ -54,103 +18,7 @@ exports[`Basic MCP origin "add" tool call success > 5.1: GET @dev/test-basic-mcp
 ]
 `;
 
-exports[`Basic OpenAPI getPost errors > 1.9: POST @dev/test-basic-openapi/getPost 1`] = `
-{
-  "body": "quia et suscipit
-suscipit recusandae consequuntur expedita et cum
-reprehenderit molestiae ut ut quas totam
-nostrum rerum est autem sunt rem eveniet architecto",
-  "id": 1,
-  "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
-  "userId": 1,
-}
-`;
-
-exports[`Basic OpenAPI getPost errors > 1.10: GET @dev/test-basic-openapi/getPost 1`] = `
-{
-  "body": "quia et suscipit
-suscipit recusandae consequuntur expedita et cum
-reprehenderit molestiae ut ut quas totam
-nostrum rerum est autem sunt rem eveniet architecto",
-  "id": 1,
-  "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
-  "userId": 1,
-}
-`;
-
-exports[`Basic OpenAPI getPost success > 0.0: POST @dev/test-basic-openapi/getPost 1`] = `
-{
-  "body": "quia et suscipit
-suscipit recusandae consequuntur expedita et cum
-reprehenderit molestiae ut ut quas totam
-nostrum rerum est autem sunt rem eveniet architecto",
-  "id": 1,
-  "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
-  "userId": 1,
-}
-`;
-
-exports[`Basic OpenAPI getPost success > 0.1: POST @dev/test-basic-openapi@latest/getPost 1`] = `
-{
-  "body": "quia et suscipit
-suscipit recusandae consequuntur expedita et cum
-reprehenderit molestiae ut ut quas totam
-nostrum rerum est autem sunt rem eveniet architecto",
-  "id": 1,
-  "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
-  "userId": 1,
-}
-`;
-
-exports[`Basic OpenAPI getPost success > 0.2: GET @dev/test-basic-openapi/getPost 1`] = `
-{
-  "body": "quia et suscipit
-suscipit recusandae consequuntur expedita et cum
-reprehenderit molestiae ut ut quas totam
-nostrum rerum est autem sunt rem eveniet architecto",
-  "id": 1,
-  "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
-  "userId": 1,
-}
-`;
-
-exports[`Basic OpenAPI getPost success > 0.3: GET @dev/test-basic-openapi@010332cf/getPost?postId=1 1`] = `
-{
-  "body": "quia et suscipit
-suscipit recusandae consequuntur expedita et cum
-reprehenderit molestiae ut ut quas totam
-nostrum rerum est autem sunt rem eveniet architecto",
-  "id": 1,
-  "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
-  "userId": 1,
-}
-`;
-
-exports[`Basic OpenAPI getPost success > 0.4: GET @dev/test-basic-openapi@010332cf/get_post?postId=1 1`] = `
-{
-  "body": "quia et suscipit
-suscipit recusandae consequuntur expedita et cum
-reprehenderit molestiae ut ut quas totam
-nostrum rerum est autem sunt rem eveniet architecto",
-  "id": 1,
-  "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
-  "userId": 1,
-}
-`;
-
-exports[`Basic OpenAPI getPost success > 0.5: GET @dev/test-basic-openapi@010332cf/getPost 1`] = `
-{
-  "body": "quia et suscipit
-suscipit recusandae consequuntur expedita et cum
-reprehenderit molestiae ut ut quas totam
-nostrum rerum est autem sunt rem eveniet architecto",
-  "id": 1,
-  "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
-  "userId": 1,
-}
-`;
-
-exports[`Basic POST caching > 4.0: POST @dev/test-basic-openapi@010332cf/get_post 1`] = `
+exports[`HTTP => OpenAPI origin basic GET caching > 3.0: GET @dev/test-basic-openapi@010332cf/getPost 1`] = `
 {
   "body": "aut dicta possimus sint mollitia voluptas commodi quo doloremque
 iste corrupti reiciendis voluptatem eius rerum
@@ -162,7 +30,7 @@ perferendis recusandae assumenda consectetur porro architecto ipsum ipsam",
 }
 `;
 
-exports[`Basic POST caching > 4.1: POST @dev/test-basic-openapi@010332cf/get_post 1`] = `
+exports[`HTTP => OpenAPI origin basic GET caching > 3.1: GET @dev/test-basic-openapi@010332cf/getPost?postId=13 1`] = `
 {
   "body": "aut dicta possimus sint mollitia voluptas commodi quo doloremque
 iste corrupti reiciendis voluptatem eius rerum
@@ -174,7 +42,43 @@ perferendis recusandae assumenda consectetur porro architecto ipsum ipsam",
 }
 `;
 
-exports[`Bypass caching > 2.0: GET @dev/test-basic-openapi@fc856666/getPost 1`] = `
+exports[`HTTP => OpenAPI origin basic GET caching > 3.2: GET @dev/test-basic-openapi@010332cf/get_post?postId=13 1`] = `
+{
+  "body": "aut dicta possimus sint mollitia voluptas commodi quo doloremque
+iste corrupti reiciendis voluptatem eius rerum
+sit cumque quod eligendi laborum minima
+perferendis recusandae assumenda consectetur porro architecto ipsum ipsam",
+  "id": 13,
+  "title": "dolorum ut in voluptas mollitia et saepe quo animi",
+  "userId": 2,
+}
+`;
+
+exports[`HTTP => OpenAPI origin basic POST caching > 4.0: POST @dev/test-basic-openapi@010332cf/get_post 1`] = `
+{
+  "body": "aut dicta possimus sint mollitia voluptas commodi quo doloremque
+iste corrupti reiciendis voluptatem eius rerum
+sit cumque quod eligendi laborum minima
+perferendis recusandae assumenda consectetur porro architecto ipsum ipsam",
+  "id": 13,
+  "title": "dolorum ut in voluptas mollitia et saepe quo animi",
+  "userId": 2,
+}
+`;
+
+exports[`HTTP => OpenAPI origin basic POST caching > 4.1: POST @dev/test-basic-openapi@010332cf/get_post 1`] = `
+{
+  "body": "aut dicta possimus sint mollitia voluptas commodi quo doloremque
+iste corrupti reiciendis voluptatem eius rerum
+sit cumque quod eligendi laborum minima
+perferendis recusandae assumenda consectetur porro architecto ipsum ipsam",
+  "id": 13,
+  "title": "dolorum ut in voluptas mollitia et saepe quo animi",
+  "userId": 2,
+}
+`;
+
+exports[`HTTP => OpenAPI origin basic bypass caching > 2.0: GET @dev/test-basic-openapi@fc856666/getPost 1`] = `
 {
   "body": "consectetur animi nesciunt iure dolore
 enim quia ad
@@ -186,7 +90,7 @@ et est aut quod aut provident voluptas autem voluptas",
 }
 `;
 
-exports[`Bypass caching > 2.1: GET @dev/test-basic-openapi@010332cf/getPost 1`] = `
+exports[`HTTP => OpenAPI origin basic bypass caching > 2.1: GET @dev/test-basic-openapi@010332cf/getPost 1`] = `
 {
   "body": "consectetur animi nesciunt iure dolore
 enim quia ad
@@ -198,7 +102,7 @@ et est aut quod aut provident voluptas autem voluptas",
 }
 `;
 
-exports[`Bypass caching > 2.2: GET @dev/test-basic-openapi@010332cf/getPost?postId=9 1`] = `
+exports[`HTTP => OpenAPI origin basic bypass caching > 2.2: GET @dev/test-basic-openapi@010332cf/getPost?postId=9 1`] = `
 {
   "body": "consectetur animi nesciunt iure dolore
 enim quia ad
@@ -210,7 +114,7 @@ et est aut quod aut provident voluptas autem voluptas",
 }
 `;
 
-exports[`Bypass caching > 2.3: GET @dev/test-basic-openapi@010332cf/get_post?postId=9 1`] = `
+exports[`HTTP => OpenAPI origin basic bypass caching > 2.3: GET @dev/test-basic-openapi@010332cf/get_post?postId=9 1`] = `
 {
   "body": "consectetur animi nesciunt iure dolore
 enim quia ad
@@ -222,7 +126,7 @@ et est aut quod aut provident voluptas autem voluptas",
 }
 `;
 
-exports[`Bypass caching > 2.4: GET @dev/test-basic-openapi@010332cf/get_post?postId=9 1`] = `
+exports[`HTTP => OpenAPI origin basic bypass caching > 2.4: GET @dev/test-basic-openapi@010332cf/get_post?postId=9 1`] = `
 {
   "body": "consectetur animi nesciunt iure dolore
 enim quia ad
@@ -234,7 +138,7 @@ et est aut quod aut provident voluptas autem voluptas",
 }
 `;
 
-exports[`Bypass caching > 2.5: GET @dev/test-basic-openapi@010332cf/get_post?postId=9 1`] = `
+exports[`HTTP => OpenAPI origin basic bypass caching > 2.5: GET @dev/test-basic-openapi@010332cf/get_post?postId=9 1`] = `
 {
   "body": "consectetur animi nesciunt iure dolore
 enim quia ad
@@ -246,34 +150,116 @@ et est aut quod aut provident voluptas autem voluptas",
 }
 `;
 
-exports[`OpenAPI kitchen echo tool with empty body > 9.0: POST @dev/test-everything-openapi/echo 1`] = `{}`;
+exports[`HTTP => OpenAPI origin basic getPost errors > 1.8: POST @dev/test-basic-openapi/getPost 1`] = `
+{
+  "body": "quia et suscipit
+suscipit recusandae consequuntur expedita et cum
+reprehenderit molestiae ut ut quas totam
+nostrum rerum est autem sunt rem eveniet architecto",
+  "id": 1,
+  "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
+  "userId": 1,
+}
+`;
 
-exports[`OpenAPI kitchen echo tool with empty body > 9.1: POST @dev/test-everything-openapi/echo 1`] = `{}`;
+exports[`HTTP => OpenAPI origin basic getPost errors > 1.9: GET @dev/test-basic-openapi/getPost 1`] = `
+{
+  "body": "quia et suscipit
+suscipit recusandae consequuntur expedita et cum
+reprehenderit molestiae ut ut quas totam
+nostrum rerum est autem sunt rem eveniet architecto",
+  "id": 1,
+  "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
+  "userId": 1,
+}
+`;
 
-exports[`OpenAPI kitchen sink pure tool > 7.0: POST @dev/test-everything-openapi/pure 1`] = `
+exports[`HTTP => OpenAPI origin basic getPost success > 0.0: POST @dev/test-basic-openapi/getPost 1`] = `
+{
+  "body": "quia et suscipit
+suscipit recusandae consequuntur expedita et cum
+reprehenderit molestiae ut ut quas totam
+nostrum rerum est autem sunt rem eveniet architecto",
+  "id": 1,
+  "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
+  "userId": 1,
+}
+`;
+
+exports[`HTTP => OpenAPI origin basic getPost success > 0.1: POST @dev/test-basic-openapi@latest/getPost 1`] = `
+{
+  "body": "quia et suscipit
+suscipit recusandae consequuntur expedita et cum
+reprehenderit molestiae ut ut quas totam
+nostrum rerum est autem sunt rem eveniet architecto",
+  "id": 1,
+  "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
+  "userId": 1,
+}
+`;
+
+exports[`HTTP => OpenAPI origin basic getPost success > 0.2: GET @dev/test-basic-openapi/getPost 1`] = `
+{
+  "body": "quia et suscipit
+suscipit recusandae consequuntur expedita et cum
+reprehenderit molestiae ut ut quas totam
+nostrum rerum est autem sunt rem eveniet architecto",
+  "id": 1,
+  "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
+  "userId": 1,
+}
+`;
+
+exports[`HTTP => OpenAPI origin basic getPost success > 0.3: GET @dev/test-basic-openapi@010332cf/getPost?postId=1 1`] = `
+{
+  "body": "quia et suscipit
+suscipit recusandae consequuntur expedita et cum
+reprehenderit molestiae ut ut quas totam
+nostrum rerum est autem sunt rem eveniet architecto",
+  "id": 1,
+  "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
+  "userId": 1,
+}
+`;
+
+exports[`HTTP => OpenAPI origin basic getPost success > 0.4: GET @dev/test-basic-openapi@010332cf/get_post?postId=1 1`] = `
+{
+  "body": "quia et suscipit
+suscipit recusandae consequuntur expedita et cum
+reprehenderit molestiae ut ut quas totam
+nostrum rerum est autem sunt rem eveniet architecto",
+  "id": 1,
+  "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
+  "userId": 1,
+}
+`;
+
+exports[`HTTP => OpenAPI origin basic getPost success > 0.5: GET @dev/test-basic-openapi@010332cf/getPost 1`] = `
+{
+  "body": "quia et suscipit
+suscipit recusandae consequuntur expedita et cum
+reprehenderit molestiae ut ut quas totam
+nostrum rerum est autem sunt rem eveniet architecto",
+  "id": 1,
+  "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
+  "userId": 1,
+}
+`;
+
+exports[`HTTP => OpenAPI origin everything "echo" tool with empty body > 9.0: POST @dev/test-everything-openapi/echo 1`] = `{}`;
+
+exports[`HTTP => OpenAPI origin everything "echo" tool with empty body > 9.1: POST @dev/test-everything-openapi/echo 1`] = `{}`;
+
+exports[`HTTP => OpenAPI origin everything "pure" tool > 7.0: POST @dev/test-everything-openapi/pure 1`] = `
 {
   "foo": "bar",
   "nala": "kitten",
 }
 `;
 
-exports[`OpenAPI kitchen sink pure tool > 7.1: POST @dev/test-everything-openapi/pure 1`] = `
+exports[`HTTP => OpenAPI origin everything "pure" tool > 7.1: POST @dev/test-everything-openapi/pure 1`] = `
 {
   "foo": "bar",
   "nala": "kitten",
-}
-`;
-
-exports[`OpenAPI kitchen sink unpure_marked_pure tool > 10.0: POST @dev/test-everything-openapi/unpure_marked_pure 1`] = `
-{
-  "nala": "cat",
-  "now": 1749631781793,
-}
-`;
-
-exports[`OpenAPI kitchen sink unpure_marked_pure tool > 10.1: POST @dev/test-everything-openapi/unpure_marked_pure 1`] = `
-{
-  "nala": "cat",
-  "now": 1749631781793,
 }
 `;

@@ -1,3 +1,5 @@
+import { expect } from 'vitest'
+
 export type MCPE2ETestFixture = {
   /** @default 60_000 milliseconds */
   timeout?: number
@@ -11,14 +13,23 @@ export type MCPE2ETestFixture = {
   request: {
     name: string
     args: Record<string, unknown>
+    _meta?: Record<string, unknown>
   }
 
   response?: {
-    isError?: boolean
     result?: any
+    /** @default false */
+    isError?: boolean
+    content?: Array<Record<string, unknown>>
+    structuredContent?: any
+    _meta?: Record<string, unknown>
+    _agenticMeta?: Record<string, unknown>
+    _agenticMetaHeaders?: Record<string, unknown>
     validate?: (result: any) => void | Promise<void>
-    /** @default true */
+    /** @default undefined */
     snapshot?: boolean
+    /** @default true */
+    stableSnapshot?: boolean
   }
 }
 
@@ -39,15 +50,24 @@ export type MCPE2ETestFixtureSuite = {
   /** @default false */
   debug?: boolean
 
-  /** @default undefined */
+  /**
+   * Not used by default because the result `_meta.agentic` contains some
+   * metadata which may not be stable across test runs such as `cacheStatus`
+   * and `headers`.
+   *
+   * @default false
+   */
   snapshot?: boolean
+
+  /** @default undefined */
+  stableSnapshot?: boolean
 }
 
 const now = Date.now()
 
 export const fixtureSuites: MCPE2ETestFixtureSuite[] = [
   {
-    title: 'Basic MCP => OpenAPI get_post success',
+    title: 'MCP => OpenAPI origin basic get_post success',
     path: '@dev/test-basic-openapi/mcp',
     fixtures: [
       {
@@ -61,9 +81,37 @@ export const fixtureSuites: MCPE2ETestFixtureSuite[] = [
     ]
   },
   {
-    title: 'Basic MCP => MCP "echo" tool call success',
+    title: 'MCP => OpenAPI origin basic @ latest get_post success ',
+    path: '@dev/test-basic-openapi@latest/mcp',
+    fixtures: [
+      {
+        request: {
+          name: 'get_post',
+          args: {
+            postId: 3
+          }
+        }
+      }
+    ]
+  },
+  {
+    title: 'MCP => OpenAPI origin basic @ 010332cf get_post success ',
+    path: '@dev/test-basic-openapi@010332cf/mcp',
+    fixtures: [
+      {
+        request: {
+          name: 'get_post',
+          args: {
+            postId: 8
+          }
+        }
+      }
+    ]
+  },
+  {
+    title: 'MCP => MCP origin basic "echo" tool call success',
     path: '@dev/test-basic-mcp/mcp',
-    snapshot: false,
+    stableSnapshot: false,
     fixtures: [
       {
         request: {
@@ -75,14 +123,12 @@ export const fixtureSuites: MCPE2ETestFixtureSuite[] = [
           }
         },
         response: {
-          result: {
-            content: [
-              {
-                type: 'text',
-                text: JSON.stringify({ nala: 'kitten', num: 123, now })
-              }
-            ]
-          }
+          content: [
+            {
+              type: 'text',
+              text: JSON.stringify({ nala: 'kitten', num: 123, now })
+            }
+          ]
         }
       },
       {
@@ -95,17 +141,421 @@ export const fixtureSuites: MCPE2ETestFixtureSuite[] = [
           }
         },
         response: {
-          result: {
-            content: [
-              {
-                type: 'text',
-                text: JSON.stringify({
-                  nala: 'kitten',
-                  num: 123,
-                  now: `${now}`
-                })
+          content: [
+            {
+              type: 'text',
+              text: JSON.stringify({
+                nala: 'kitten',
+                num: 123,
+                now: `${now}`
+              })
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    title: 'MCP => OpenAPI origin basic get_post errors',
+    path: '@dev/test-basic-openapi/mcp',
+    fixtures: [
+      {
+        request: {
+          name: 'get_post',
+          args: {
+            // Missing required `postId` parameter
+            nala: 'kitten',
+            num: 123,
+            now
+          }
+        },
+        response: {
+          isError: true,
+          _agenticMeta: {
+            status: 400
+          }
+        }
+      },
+      {
+        request: {
+          name: 'get_post',
+          args: {
+            // invalid `postId` parameter
+            postId: 'not-a-number'
+          }
+        },
+        response: {
+          isError: true,
+          _agenticMeta: {
+            status: 400
+          }
+        }
+      },
+      {
+        request: {
+          name: 'get_kittens',
+          args: {
+            postId: 7
+          }
+        },
+        response: {
+          isError: true,
+          _agenticMeta: {
+            // 'get_kittens' tool doesn't exist
+            status: 404,
+            toolName: 'get_kittens'
+          }
+        }
+      },
+      {
+        request: {
+          name: 'get_post',
+          args: {
+            postId: 7,
+            // additional json body params are allowed by default
+            foo: 'bar'
+          }
+        },
+        response: {
+          isError: false
+        }
+      }
+    ]
+  },
+  {
+    title: 'MCP => OpenAPI origin everything errors',
+    path: '@dev/test-everything-openapi/mcp',
+    fixtures: [
+      {
+        request: {
+          name: 'strict_additional_properties',
+          args: {
+            foo: 'bar'
+          }
+        },
+        response: {
+          isError: false
+        }
+      },
+      {
+        request: {
+          name: 'strict_additional_properties',
+          args: {
+            foo: 'bar',
+            // additional params should throw an error if the tool
+            // config has `additionalProperties: false`
+            extra: 'nala'
+          }
+        },
+        response: {
+          isError: true,
+          _agenticMeta: {
+            status: 400
+          }
+        }
+      }
+    ]
+  },
+  {
+    title: 'MCP => OpenAPI origin basic bypass caching',
+    path: '@dev/test-basic-openapi@fc856666/mcp',
+    fixtures: [
+      {
+        // ensure we bypass the cache for requests for tools which do not have
+        // a custom `pure` or `cacheControl` set in their tool config.
+        request: {
+          name: 'get_post',
+          args: {
+            postId: 1
+          }
+        },
+        response: {
+          isError: false,
+          _agenticMeta: {
+            cacheStatus: 'BYPASS'
+          }
+        }
+      }
+    ]
+  },
+  {
+    title: 'MCP => OpenAPI origin basic caching',
+    path: '@dev/test-basic-openapi@010332cf/mcp',
+    fixtures: [
+      {
+        request: {
+          name: 'get_post',
+          args: {
+            postId: 1
+          }
+        },
+        response: {
+          isError: false
+        }
+      },
+      {
+        request: {
+          name: 'get_post',
+          args: {
+            postId: 1
+          }
+        },
+        response: {
+          isError: false,
+          _agenticMeta: {
+            // second request should hit the cache
+            cacheStatus: 'HIT'
+          }
+        }
+      },
+      {
+        request: {
+          name: 'get_post',
+          args: {
+            postId: 1
+          },
+          // disable caching via a custom metadata cache-control header
+          _meta: {
+            agentic: {
+              headers: {
+                'cache-control': 'no-store'
               }
-            ]
+            }
+          }
+        },
+        response: {
+          isError: false,
+          _agenticMeta: {
+            cacheStatus: 'BYPASS'
+          }
+        }
+      }
+    ]
+  },
+  {
+    title: 'MCP => OpenAPI origin basic normalized caching',
+    path: '@dev/test-basic-openapi@010332cf/mcp',
+    fixtures: [
+      {
+        request: {
+          name: 'get_post',
+          args: {
+            postId: 1,
+            foo: true,
+            nala: 'kitten'
+          }
+        },
+        response: {
+          isError: false
+        }
+      },
+      {
+        request: {
+          name: 'get_post',
+          args: {
+            foo: true,
+            postId: 1,
+            nala: 'kitten'
+          }
+        },
+        response: {
+          isError: false,
+          _agenticMeta: {
+            // second request should hit the cache even though the args are in a
+            // different order
+            cacheStatus: 'HIT'
+          }
+        }
+      }
+    ]
+  },
+  {
+    title: 'MCP => MCP origin basic "add" tool call success',
+    path: '@dev/test-basic-mcp/mcp',
+    stableSnapshot: false,
+    fixtures: [
+      {
+        request: {
+          name: 'add',
+          args: {
+            a: 13,
+            b: 49
+          }
+        },
+        response: {
+          isError: false,
+          content: [{ type: 'text', text: '62' }]
+        }
+      }
+    ]
+  },
+  {
+    title: 'MCP => MCP origin basic "echo" tool',
+    path: '@dev/test-basic-mcp/mcp',
+    fixtures: [
+      {
+        request: {
+          name: 'echo',
+          args: {
+            nala: 'kitten',
+            num: 123,
+            now
+          }
+        },
+        response: {
+          isError: false,
+          content: [
+            {
+              type: 'text',
+              text: JSON.stringify({ nala: 'kitten', num: 123, now })
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    title: 'MCP => OpenAPI origin everything "pure" tool',
+    path: '@dev/test-everything-openapi/mcp',
+    fixtures: [
+      {
+        request: {
+          name: 'echo',
+          args: {
+            nala: 'kitten',
+            foo: 'bar'
+          },
+          _meta: {
+            agentic: {
+              headers: {
+                'cache-control':
+                  'public, max-age=31560000, s-maxage=31560000, stale-while-revalidate=3600'
+              }
+            }
+          }
+        },
+        response: {
+          isError: false,
+          content: [
+            {
+              type: 'text',
+              text: JSON.stringify({
+                nala: 'kitten',
+                foo: 'bar'
+              })
+            }
+          ]
+        }
+      },
+      {
+        // second request should hit the cache
+        request: {
+          name: 'echo',
+          args: {
+            nala: 'kitten',
+            foo: 'bar'
+          },
+          _meta: {
+            agentic: {
+              headers: {
+                'cache-control':
+                  'public, max-age=31560000, s-maxage=31560000, stale-while-revalidate=3600'
+              }
+            }
+          }
+        },
+        response: {
+          isError: false,
+          content: [
+            {
+              type: 'text',
+              text: JSON.stringify({
+                nala: 'kitten',
+                foo: 'bar'
+              })
+            }
+          ],
+          _agenticMeta: {
+            cacheStatus: 'HIT'
+          }
+        }
+      }
+    ]
+  },
+  {
+    title: 'MCP => OpenAPI origin everything "disabled_tool" tool',
+    path: '@dev/test-everything-openapi/mcp',
+    fixtures: [
+      {
+        request: {
+          name: 'disabled_tool',
+          args: {
+            foo: 'bar'
+          }
+        },
+        response: {
+          isError: true,
+          _agenticMeta: {
+            status: 404,
+            toolName: 'disabled_tool'
+          }
+        }
+      }
+    ]
+  },
+  {
+    title: 'MCP => OpenAPI origin everything "echo" tool with empty body',
+    path: '@dev/test-everything-openapi/mcp',
+    fixtures: [
+      {
+        request: {
+          name: 'echo',
+          args: {}
+        },
+        response: {
+          isError: false,
+          content: [{ type: 'text', text: JSON.stringify({}) }]
+        }
+      }
+    ]
+  },
+  {
+    title: 'MCP => OpenAPI origin everything "unpure_marked_pure" tool',
+    path: '@dev/test-everything-openapi/mcp',
+    compareResponseBodies: true,
+    only: true,
+    fixtures: [
+      {
+        request: {
+          name: 'unpure_marked_pure',
+          args: {
+            nala: 'cat'
+          }
+        },
+        response: {
+          isError: false,
+          validate: (result) => {
+            const body = JSON.parse(result.content[0].text)
+            expect(body?.nala).toEqual('cat')
+            expect(typeof body.now).toBe('number')
+            expect(body.now).toBeGreaterThan(0)
+          }
+        }
+      },
+      {
+        // compareResponseBodies should result in the same cached response body,
+        // even though the origin would return a different `now` value if it
+        // weren't marked `pure`.
+        request: {
+          name: 'unpure_marked_pure',
+          args: {
+            nala: 'cat'
+          }
+        },
+        response: {
+          isError: false,
+          _agenticMeta: {
+            cacheStatus: 'HIT'
           }
         }
       }

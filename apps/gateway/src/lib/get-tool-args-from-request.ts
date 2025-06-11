@@ -38,7 +38,8 @@ export async function getToolArgsFromRequest(
       data: incomingRequestArgsRaw,
       errorPrefix: `Invalid request parameters for tool "${tool.name}"`,
       coerce: true,
-      strictAdditionalProperties: toolConfig?.additionalProperties === false
+      strictAdditionalProperties:
+        toolConfig?.inputSchemaAdditionalProperties === false
     })
 
     return incomingRequestArgs

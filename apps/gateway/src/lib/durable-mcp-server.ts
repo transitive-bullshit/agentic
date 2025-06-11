@@ -1,5 +1,5 @@
 import type { AdminDeployment, PricingPlan } from '@agentic/platform-types'
-import { assert, getRateLimitHeaders, pruneEmpty } from '@agentic/platform-core'
+import { assert, getRateLimitHeaders } from '@agentic/platform-core'
 import { parseDeploymentIdentifier } from '@agentic/platform-validators'
 import { Server } from '@modelcontextprotocol/sdk/server/index.js'
 import {
@@ -19,6 +19,7 @@ import { handleMcpToolCallError } from './handle-mcp-tool-call-error'
 import { recordToolCallUsage } from './record-tool-call-usage'
 import { resolveOriginToolCall } from './resolve-origin-tool-call'
 import { transformHttpResponseToMcpToolCallResponse } from './transform-http-response-to-mcp-tool-call-response'
+import { createAgenticMcpMetadata } from './utils'
 
 export class DurableMcpServerBase extends McpAgent<
   RawEnv,
@@ -85,10 +86,11 @@ export class DurableMcpServerBase extends McpAgent<
     }))
 
     server.setRequestHandler(CallToolRequestSchema, async (request) => {
-      const { name: toolName, arguments: args } = request.params
+      const { name: toolName, arguments: args, _meta } = request.params
       const sessionId = this.ctx.id.toString()
       const tool = tools.find((tool) => tool.name === toolName)
 
+      const cacheControl = (_meta?.agentic as any)?.headers?.['cache-control']
       let resolvedOriginToolCallResult: ResolvedOriginToolCallResult | undefined
       let toolCallResponse: McpToolCallResponse | undefined
 
@@ -101,58 +103,52 @@ export class DurableMcpServerBase extends McpAgent<
           deployment,
           consumer,
           pricingPlan,
+          cacheControl,
           sessionId,
           env: this.env,
           ip,
           waitUntil: this.ctx.waitUntil.bind(this.ctx)
         })
 
-        const {
-          originResponse,
-          toolCallResponse: resolvedToolCallResponse,
-          rateLimitResult
-        } = resolvedOriginToolCallResult
-
-        if (originResponse) {
+        if (resolvedOriginToolCallResult.originResponse) {
           toolCallResponse = await transformHttpResponseToMcpToolCallResponse({
-            tool,
-            ...resolvedOriginToolCallResult
+            ...resolvedOriginToolCallResult,
+            tool
           })
-        } else if (resolvedToolCallResponse) {
-          if (resolvedToolCallResponse._meta || rateLimitResult) {
-            toolCallResponse = {
-              ...resolvedToolCallResponse,
-              _meta: {
-                ...resolvedToolCallResponse._meta,
-                ...pruneEmpty({
-                  headers: rateLimitResult
-                    ? getRateLimitHeaders(rateLimitResult)
-                    : undefined
-                })
-              }
-            }
-          } else {
-            toolCallResponse = resolvedToolCallResponse
-          }
         } else {
-          assert(false, 500)
+          toolCallResponse = resolvedOriginToolCallResult.toolCallResponse
+          assert(toolCallResponse, 500, 'Missing tool call response')
         }
 
-        assert(toolCallResponse, 500, 'Missing tool call response')
         return toolCallResponse
       } catch (err: unknown) {
-        // Gracefully handle tool call exceptions, whether they're thrown by the
-        // origin or internally by the gateway.
+        // Gracefully handle tool call exceptions, whether they were thrown by
+        // the origin server or internally by the gateway.
         toolCallResponse = handleMcpToolCallError(err, {
-          deployment,
-          consumer,
           toolName,
-          sessionId,
           env: this.env
         })
 
         return toolCallResponse
       } finally {
+        assert(toolCallResponse, 500, 'Missing tool call response')
+
+        // Augment the MCP tool call response with agentic metadata, which
+        // makes it easier to debug tool calls and adds some much-needed HTTP
+        // header-like functionality to tool call responses.
+        toolCallResponse._meta = createAgenticMcpMetadata(
+          {
+            deploymentId: deployment.id,
+            consumerId: consumer?.id,
+            toolName,
+            cacheStatus: resolvedOriginToolCallResult?.cacheStatus,
+            headers: getRateLimitHeaders(
+              resolvedOriginToolCallResult?.rateLimitResult
+            )
+          },
+          toolCallResponse._meta
+        )
+
         // Record tool call usage, whether the call was successful or not.
         recordToolCallUsage({
           ...this.props,

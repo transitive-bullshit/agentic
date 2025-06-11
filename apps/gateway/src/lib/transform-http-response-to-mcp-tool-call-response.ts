@@ -1,17 +1,8 @@
-import type { Tool } from '@agentic/platform-types'
-import {
-  assert,
-  getRateLimitHeaders,
-  HttpError,
-  pruneEmpty
-} from '@agentic/platform-core'
+import type { Tool, ToolConfig } from '@agentic/platform-types'
+import { assert, HttpError } from '@agentic/platform-core'
 import contentType from 'fast-content-type-parse'
 
-import type {
-  McpToolCallResponse,
-  RateLimitResult,
-  ToolCallArgs
-} from './types'
+import type { McpToolCallResponse, ToolCallArgs } from './types'
 import { cfValidateJsonSchema } from './cf-validate-json-schema'
 
 export async function transformHttpResponseToMcpToolCallResponse({
@@ -19,18 +10,19 @@ export async function transformHttpResponseToMcpToolCallResponse({
   originResponse,
   tool,
   toolCallArgs,
-  rateLimitResult
+  toolConfig
 }: {
   originRequest: Request
   originResponse: Response
   tool: Tool
   toolCallArgs: ToolCallArgs
-  rateLimitResult?: RateLimitResult
+  toolConfig?: ToolConfig
 }) {
   const { type: mimeType } = contentType.safeParse(
     originResponse.headers.get('content-type') || 'application/octet-stream'
   )
 
+  // TODO: move these logs should be higher up
   // eslint-disable-next-line no-console
   console.log('httpOriginResponse', {
     tool: tool.name,
@@ -41,8 +33,7 @@ export async function transformHttpResponseToMcpToolCallResponse({
       mimeType,
       status: originResponse.status
       // headers: Object.fromEntries(originResponse.headers.entries())
-    },
-    rateLimitResult
+    }
   })
 
   if (originResponse.status >= 400) {
@@ -62,22 +53,19 @@ export async function transformHttpResponseToMcpToolCallResponse({
         status: originResponse.status,
         // headers: Object.fromEntries(originResponse.headers.entries()),
         message
-      },
-      rateLimitResult
+      }
     })
 
     throw new HttpError({
       statusCode: originResponse.status,
       message,
-      cause: originResponse,
-      headers: getRateLimitHeaders(rateLimitResult)
+      cause: originResponse
     })
   }
 
-  const result: McpToolCallResponse = pruneEmpty({
-    isError: originResponse.status >= 400,
-    _meta: getRateLimitHeaders(rateLimitResult)
-  })
+  const result: McpToolCallResponse = {
+    isError: originResponse.status >= 400
+  }
 
   if (tool.outputSchema) {
     assert(
@@ -91,8 +79,8 @@ export async function transformHttpResponseToMcpToolCallResponse({
       data,
       schema: tool.outputSchema,
       coerce: false,
-      // TODO: double-check MCP schema on whether additional properties are allowed
-      strictAdditionalProperties: true,
+      strictAdditionalProperties:
+        toolConfig?.outputSchemaAdditionalProperties === false,
       errorPrefix: `Invalid tool response for tool "${tool.name}"`,
       errorStatusCode: 502
     })

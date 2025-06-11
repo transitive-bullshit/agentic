@@ -16,7 +16,7 @@ import {
  * Hono error handler that sanitizes all types of internal, http, json-rpc, and
  * unexpected errors and responds with an appropate HTTP Response.
  *
- * @note This function is synchronous and must never throw.
+ * @note This function is synchronous and should never throw.
  */
 export function errorHandler(
   err: Error | HTTPResponseError,

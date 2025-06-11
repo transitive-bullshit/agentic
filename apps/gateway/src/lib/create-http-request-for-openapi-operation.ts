@@ -48,7 +48,7 @@ export async function createHttpRequestForOpenAPIOperation({
   )
 
   const extraArgs =
-    toolConfig?.additionalProperties === false
+    toolConfig?.inputSchemaAdditionalProperties === false
       ? []
       : // TODO: Make this more efficient...
         Object.keys(toolCallArgs).filter((key) => {

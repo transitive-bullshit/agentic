@@ -1,6 +1,7 @@
 import { expect, test } from 'vitest'
 
 import {
+  createAgenticMcpMetadata,
   isCacheControlPubliclyCacheable,
   isRequestPubliclyCacheable
 } from './utils'
@@ -76,4 +77,19 @@ test('isCacheControlPubliclyCacheable false', () => {
   expect(
     isCacheControlPubliclyCacheable('private, max-age=3600, must-revalidate')
   ).toBe(false)
+})
+
+test('createAgenticMcpMetadata', () => {
+  expect(
+    // Test the stringified version because we want to test the order of the
+    // keys.
+    JSON.stringify(
+      createAgenticMcpMetadata({
+        deploymentId: '123',
+        consumerId: '456',
+        toolName: 'test',
+        cacheStatus: 'HIT'
+      })
+    )
+  ).toMatchSnapshot()
 })

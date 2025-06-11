@@ -12,7 +12,12 @@ import {
   type PricingPlanListInput,
   pricingPlanListSchema
 } from './pricing'
-import { toolConfigSchema, toolSchema } from './tools'
+import {
+  type ToolConfig,
+  type ToolConfigInput,
+  toolConfigSchema,
+  toolSchema
+} from './tools'
 
 // TODO:
 // - optional external auth provider config (google, github, twitter, etc)
@@ -159,16 +164,21 @@ To add support for annual pricing plans, for example, you can use: \`['month', '
   .strip()
 
 export type AgenticProjectConfigInput = Simplify<
-  Omit<z.input<typeof agenticProjectConfigSchema>, 'pricingPlans'> & {
+  Omit<
+    z.input<typeof agenticProjectConfigSchema>,
+    'pricingPlans' | 'toolConfigs'
+  > & {
     pricingPlans?: PricingPlanListInput
+    toolConfigs?: ToolConfigInput[]
   }
 >
 export type AgenticProjectConfigRaw = z.output<
   typeof agenticProjectConfigSchema
 >
 export type AgenticProjectConfig = Simplify<
-  Omit<AgenticProjectConfigRaw, 'pricingPlans'> & {
+  Omit<AgenticProjectConfigRaw, 'pricingPlans' | 'toolConfigs'> & {
     pricingPlans: PricingPlanList
+    toolConfigs: ToolConfig[]
   }
 >
 
@@ -178,7 +188,11 @@ export const resolvedAgenticProjectConfigSchema =
     tools: z.array(toolSchema).default([])
   })
 export type ResolvedAgenticProjectConfig = Simplify<
-  Omit<z.output<typeof resolvedAgenticProjectConfigSchema>, 'pricingPlans'> & {
+  Omit<
+    z.output<typeof resolvedAgenticProjectConfigSchema>,
+    'pricingPlans' | 'toolConfigs'
+  > & {
     pricingPlans: PricingPlanList
+    toolConfigs: ToolConfig[]
   }
 >
