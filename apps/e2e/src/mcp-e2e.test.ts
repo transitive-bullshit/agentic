@@ -24,6 +24,18 @@ for (const [i, fixtureSuite] of fixtureSuites.entries()) {
         new URL(fixtureSuite.path, env.AGENTIC_GATEWAY_BASE_URL)
       )
       await client.connect(transport)
+
+      const { tools } = await client.listTools()
+
+      // Ensure all tools used by the test fixtures in this suite are available.
+      // Ignore test fixtures which are expected to error.
+      for (const [_, fixture] of fixtures.entries()) {
+        const { isError } = fixture.response ?? {}
+        if (!isError) {
+          const toolName = fixture.request.name
+          expect(tools.map((t) => t.name)).toContain(toolName)
+        }
+      }
     }, 120_000)
 
     afterAll(async () => {
@@ -41,6 +53,7 @@ for (const [i, fixtureSuite] of fixtureSuites.entries()) {
         _agenticMetaHeaders: expectedAgenticMetaHeaders,
         validate
       } = fixture.response ?? {}
+      const toolName = fixture.request.name
       const expectedSnapshot =
         fixture.response?.snapshot ?? fixtureSuite.snapshot ?? false
       const expectedStableSnapshot =
@@ -53,7 +66,7 @@ for (const [i, fixtureSuite] of fixtureSuites.entries()) {
         fixture.only ??
         fixtureSuite.only
       )
-      const fixtureName = `${i}.${j}: ${fixtureSuite.path} ${fixture.request.name}`
+      const fixtureName = `${i}.${j}: ${fixtureSuite.path} ${toolName}`
 
       let testFn = (fixture.only ?? fixture.debug) ? test.only : test
       if (fixtureSuite.sequential) {
@@ -67,12 +80,8 @@ for (const [i, fixtureSuite] of fixtureSuites.entries()) {
         },
         // eslint-disable-next-line no-loop-func
         async () => {
-          const { tools } = await client.listTools()
-          // console.log('tools', tools)
-          expect(tools.map((t) => t.name)).toContain(fixture.request.name)
-
           const result = await client.callTool({
-            name: fixture.request.name,
+            name: toolName,
             arguments: fixture.request.args
           })
 

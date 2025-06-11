@@ -111,6 +111,9 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
     fixtures: [
       {
         path: '@dev/test-basic-openapi/getPost',
+        request: {
+          method: 'GET'
+        },
         response: {
           // Missing `postId` parameter.
           status: 400
@@ -125,6 +128,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
       {
         path: '@dev/test-basic-openapi@00000000/getPost',
         response: {
+          // deployment hash 00000000 doesn't exist
           status: 404
         }
       },
@@ -137,6 +141,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
           }
         },
         response: {
+          // PUT is not a valid method (must be POST)
           status: 405
         }
       },
@@ -163,33 +168,20 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
         request: {
           method: 'POST',
           json: {
+            // invalid `postId` field type
+            postId: 'not-a-number'
+          }
+        },
+        response: {
+          status: 400
+        }
+      },
+      {
+        path: '@dev/test-basic-openapi/getPost',
+        request: {
+          method: 'POST',
+          json: {
             // missing required `postId` field
-          }
-        },
-        response: {
-          status: 400
-        }
-      },
-      {
-        path: '@dev/test-basic-openapi/getPost',
-        request: {
-          method: 'POST',
-          json: {
-            // invalid `postId` field type
-            postId: 'foo'
-          }
-        },
-        response: {
-          status: 400
-        }
-      },
-      {
-        path: '@dev/test-basic-openapi/getPost',
-        request: {
-          method: 'POST',
-          json: {
-            // invalid `postId` field type
-            postId: 'foo'
           }
         },
         response: {
@@ -598,6 +590,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
   {
     title: 'OpenAPI kitchen sink unpure_marked_pure tool',
     compareResponseBodies: true,
+    snapshot: false,
     fixtures: [
       {
         path: '@dev/test-everything-openapi/unpure_marked_pure',

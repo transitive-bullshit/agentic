@@ -32,6 +32,32 @@ molestiae porro eius odio et labore et velit aut",
 }
 `;
 
+exports[`Basic MCP => OpenAPI everything errors > 5.0: @dev/test-everything-openapi/mcp strict_additional_properties 1`] = `
+{
+  "content": [],
+  "isError": false,
+  "structuredContent": {
+    "foo": "bar",
+  },
+}
+`;
+
+exports[`Basic MCP => OpenAPI get_post errors > 4.3: @dev/test-basic-openapi/mcp get_post 1`] = `
+{
+  "content": [],
+  "isError": false,
+  "structuredContent": {
+    "body": "dolore placeat quibusdam ea quo vitae
+magni quis enim qui quis quo nemo aut saepe
+quidem repellat excepturi ut quia
+sunt ut sequi eos ea sed quas",
+    "id": 7,
+    "title": "magnam facilis autem",
+    "userId": 1,
+  },
+}
+`;
+
 exports[`Basic MCP => OpenAPI get_post success > 0.0: @dev/test-basic-openapi/mcp get_post 1`] = `
 {
   "content": [],

@@ -152,16 +152,95 @@ export const fixtureSuites: MCPE2ETestFixtureSuite[] = [
     ]
   },
   {
-    title: 'Basic MCP => MCP "echo" tool call errors',
+    title: 'Basic MCP => OpenAPI get_post errors',
     path: '@dev/test-basic-openapi/mcp',
     fixtures: [
       {
         request: {
           name: 'get_post',
           args: {
+            // Missing required `postId` parameter
             nala: 'kitten',
             num: 123,
             now
+          }
+        },
+        response: {
+          isError: true,
+          _agenticMeta: {
+            status: 400
+          }
+        }
+      },
+      {
+        request: {
+          name: 'get_post',
+          args: {
+            // invalid `postId` parameter
+            postId: 'not-a-number'
+          }
+        },
+        response: {
+          isError: true,
+          _agenticMeta: {
+            status: 400
+          }
+        }
+      },
+      {
+        request: {
+          name: 'get_kittens',
+          args: {
+            postId: 7
+          }
+        },
+        response: {
+          isError: true,
+          _agenticMeta: {
+            // 'get_kittens' tool doesn't exist
+            status: 404,
+            toolName: 'get_kittens'
+          }
+        }
+      },
+      {
+        request: {
+          name: 'get_post',
+          args: {
+            postId: 7,
+            // additional json body params are allowed by default
+            foo: 'bar'
+          }
+        },
+        response: {
+          isError: false
+        }
+      }
+    ]
+  },
+  {
+    title: 'Basic MCP => OpenAPI everything errors',
+    path: '@dev/test-everything-openapi/mcp',
+    fixtures: [
+      {
+        request: {
+          name: 'strict_additional_properties',
+          args: {
+            foo: 'bar'
+          }
+        },
+        response: {
+          isError: false
+        }
+      },
+      {
+        request: {
+          name: 'strict_additional_properties',
+          args: {
+            foo: 'bar',
+            // additional params should throw an error if the tool
+            // config has `additionalProperties: false`
+            extra: 'nala'
           }
         },
         response: {

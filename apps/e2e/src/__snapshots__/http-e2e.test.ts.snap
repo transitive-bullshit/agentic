@@ -54,7 +54,7 @@ exports[`Basic MCP origin "add" tool call success > 5.1: GET @dev/test-basic-mcp
 ]
 `;
 
-exports[`Basic OpenAPI getPost errors > 1.9: POST @dev/test-basic-openapi/getPost 1`] = `
+exports[`Basic OpenAPI getPost errors > 1.8: POST @dev/test-basic-openapi/getPost 1`] = `
 {
   "body": "quia et suscipit
 suscipit recusandae consequuntur expedita et cum
@@ -66,7 +66,7 @@ nostrum rerum est autem sunt rem eveniet architecto",
 }
 `;
 
-exports[`Basic OpenAPI getPost errors > 1.10: GET @dev/test-basic-openapi/getPost 1`] = `
+exports[`Basic OpenAPI getPost errors > 1.9: GET @dev/test-basic-openapi/getPost 1`] = `
 {
   "body": "quia et suscipit
 suscipit recusandae consequuntur expedita et cum
@@ -261,19 +261,5 @@ exports[`OpenAPI kitchen sink pure tool > 7.1: POST @dev/test-everything-openapi
 {
   "foo": "bar",
   "nala": "kitten",
-}
-`;
-
-exports[`OpenAPI kitchen sink unpure_marked_pure tool > 10.0: POST @dev/test-everything-openapi/unpure_marked_pure 1`] = `
-{
-  "nala": "cat",
-  "now": 1749631781793,
-}
-`;
-
-exports[`OpenAPI kitchen sink unpure_marked_pure tool > 10.1: POST @dev/test-everything-openapi/unpure_marked_pure 1`] = `
-{
-  "nala": "cat",
-  "now": 1749631781793,
 }
 `;
