@@ -34,7 +34,7 @@ app.doc31('/docs', {
   info: { title: 'OpenAPI server to test everything', version: '0.1.0' }
 })
 
-const port = 3081
+const port = process.env.PORT ? Number.parseInt(process.env.PORT) : 3081
 export const server = serve({
   fetch: app.fetch,
   port

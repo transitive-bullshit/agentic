@@ -2,11 +2,10 @@ import { defineConfig } from '@agentic/platform'
 
 export default defineConfig({
   name: 'test-everything-openapi',
-  // TODO: deployed url
-  originUrl: 'TODO',
+  originUrl: 'https://agentic-platform-fixtures-everything.onrender.com',
   originAdapter: {
     type: 'openapi',
-    spec: 'TODO/docs'
+    spec: 'https://agentic-platform-fixtures-everything.onrender.com/docs'
   },
   toolConfigs: [
     {

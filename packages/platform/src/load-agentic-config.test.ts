@@ -14,7 +14,8 @@ const fixtures = [
   'pricing-monthly-annual',
   'pricing-custom-0',
   'basic-openapi',
-  'basic-mcp'
+  'basic-mcp',
+  'everything-openapi'
 ]
 
 const invalidFixtures = [
