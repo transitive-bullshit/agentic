@@ -1,3 +1,5 @@
+import type { WaitUntil } from './types'
+
 export async function fetchCache({
   cacheKey,
   fetchResponse,
@@ -5,7 +7,7 @@ export async function fetchCache({
 }: {
   cacheKey?: Request
   fetchResponse: () => Promise<Response>
-  waitUntil: (promise: Promise<any>) => void
+  waitUntil: WaitUntil
 }): Promise<Response> {
   const cache = caches.default
   let response: Response | undefined

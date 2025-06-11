@@ -22,12 +22,18 @@ export default {
     try {
       parsedEnv = parseEnv(env)
     } catch (err: any) {
-      return new Response(JSON.stringify({ error: err.message }), {
-        status: 500,
-        headers: {
-          'content-type': 'application/json'
+      // eslint-disable-next-line no-console
+      console.error('error api gateway invalid env:', err.message)
+
+      return new Response(
+        JSON.stringify({ error: 'Invalid api gateway environment' }),
+        {
+          status: 500,
+          headers: {
+            'content-type': 'application/json'
+          }
         }
-      })
+      )
     }
 
     // Handle the request with `hono`

@@ -37,6 +37,7 @@ for (const [i, fixtureSuite] of fixtureSuites.entries()) {
         fixtureSuite.snapshot ??
         (status >= 200 && status < 300)
       const debugFixture = !!(fixture.debug ?? fixtureSuite.debug)
+      const fixtureName = `${i}.${j}: ${method} ${fixture.path}`
 
       let testFn = fixture.only ? test.only : test
       if (fixtureSuite.sequential) {
@@ -44,7 +45,7 @@ for (const [i, fixtureSuite] of fixtureSuites.entries()) {
       }
 
       testFn(
-        `${i}.${j}: ${method} ${fixture.path}`,
+        fixtureName,
         {
           timeout
         },
@@ -54,6 +55,18 @@ for (const [i, fixtureSuite] of fixtureSuites.entries()) {
             timeout,
             ...fixture.request
           })
+
+          if (res.status !== status && res.status >= 500) {
+            let body: any
+            try {
+              body = await res.json()
+            } catch {}
+
+            console.error(`${fixtureName} => UNEXPECTED ERROR ${res.status}`, {
+              body
+            })
+          }
+
           expect(res.status).toBe(status)
 
           const { type } = contentType.safeParse(
@@ -66,10 +79,6 @@ for (const [i, fixtureSuite] of fixtureSuites.entries()) {
               expect(res.headers.get(key)).toBe(value)
             }
           }
-
-          // console.log(`${i}.${j}: ${method} ${fixture.path} => ${status}`, {
-          //   headers: Object.fromEntries(res.headers.entries())
-          // })
 
           let body: any
 
@@ -107,7 +116,7 @@ for (const [i, fixtureSuite] of fixtureSuites.entries()) {
           }
 
           if (debugFixture) {
-            console.log(`${i}.${j}: ${method} ${fixture.path} => ${status}`, {
+            console.log(`${fixtureName} => ${res.status}`, {
               body,
               headers: Object.fromEntries(res.headers.entries())
             })

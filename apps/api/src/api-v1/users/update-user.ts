@@ -13,7 +13,7 @@ import {
 import { userIdParamsSchema } from './schemas'
 
 const route = createRoute({
-  description: 'Updates a user',
+  description: 'Updates a user by ID.',
   tags: ['users'],
   operationId: 'updateUser',
   method: 'post',

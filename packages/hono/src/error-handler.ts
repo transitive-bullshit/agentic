@@ -64,7 +64,7 @@ export function errorHandler(
       captureException(err)
     }
   } else {
-    logger.warn(status, err)
+    logger.warn(status, message, err)
   }
 
   if (isJsonRpcRequest) {

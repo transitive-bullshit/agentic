@@ -91,6 +91,7 @@ exports[`rateLimitSchema invalid 4`] = `
 
 exports[`rateLimitSchema valid 1`] = `
 {
+  "async": true,
   "interval": 10,
   "maxPerInterval": 100,
 }
@@ -98,6 +99,7 @@ exports[`rateLimitSchema valid 1`] = `
 
 exports[`rateLimitSchema valid 2`] = `
 {
+  "async": true,
   "interval": 10,
   "maxPerInterval": 100,
 }
@@ -105,6 +107,7 @@ exports[`rateLimitSchema valid 2`] = `
 
 exports[`rateLimitSchema valid 3`] = `
 {
+  "async": false,
   "interval": 86400,
   "maxPerInterval": 1000,
 }

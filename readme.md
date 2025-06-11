@@ -30,16 +30,17 @@
 - auth
   - custom auth pages for `openauth`
 - API gateway
-  - **enforce rate limits**
+  - **usage tracking and reporting**
   - oauth flow
     - https://docs.scalekit.com/guides/mcp/oauth
   - openapi-kitchen-sink
   - mcp-kitchen-sink
   - how to handle binary bodies and responses?
   - add support for `immutable` in `toolConfigs`
+  - improve logger vs console for non-hono path and util methods
 - **Public MCP server interface**
   - how does oauth work with this flow?
-  - proper error handling support within this flow
+  - proper error handling support within this flow; will currently get generic errors
 - **Origin MCP servers**
   - how to guarantee that the request is coming from agentic?
     - `_meta` for tool calls
@@ -74,6 +75,7 @@
   - SSE support? (no; post-mvp if at all; only support [streamable http](https://modelcontextprotocol.io/specification/2025-03-26/basic/transports#streamable-http) like smithery does, or maybe support both?)
   - signed requests
   - add support for custom headers on responses
+  - add ability to only report stripe usage on non-cached requests
 - `@agentic/platform-hono`
   - fix sentry middleware
     - https://github.com/honojs/middleware/blob/main/packages/sentry/src/index.ts
@@ -83,6 +85,7 @@
 - consider `projectName` and `projectSlug` or `projectIdentifier`?
 - handle or validate against dynamic MCP origin tools
 - allow config name to be `project-name` or `@namespace/project-name`?
+- upgrade to zod v4
 
 ## License
 

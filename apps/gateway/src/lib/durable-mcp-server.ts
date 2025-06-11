@@ -1,7 +1,6 @@
 import type { AdminDeployment, PricingPlan } from '@agentic/platform-types'
 import { assert, getRateLimitHeaders } from '@agentic/platform-core'
 import { parseDeploymentIdentifier } from '@agentic/platform-validators'
-// import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
 import { Server } from '@modelcontextprotocol/sdk/server/index.js'
 import {
   CallToolRequestSchema,
@@ -51,7 +50,7 @@ export class DurableMcpServer extends McpAgent<
 
         if (toolConfig) {
           const pricingPlanToolConfig = pricingPlan
-            ? toolConfig.pricingPlanConfig?.[pricingPlan.slug]
+            ? toolConfig.pricingPlanOverridesMap?.[pricingPlan.slug]
             : undefined
 
           if (pricingPlanToolConfig?.enabled === false) {
@@ -75,55 +74,64 @@ export class DurableMcpServer extends McpAgent<
 
     server.setRequestHandler(CallToolRequestSchema, async (request) => {
       const { name, arguments: args } = request.params
-
       const tool = tools.find((tool) => tool.name === name)
-      assert(tool, 404, `Unknown tool: ${name}`)
 
-      // TODO: usage tracking / reporting
+      try {
+        assert(tool, 404, `Unknown tool "${name}"`)
 
-      const sessionId = this.ctx.id.toString()
-      const {
-        toolCallArgs,
-        originRequest,
-        originResponse,
-        toolCallResponse,
-        rateLimitResult
-      } = await resolveOriginToolCall({
-        tool,
-        args,
-        deployment,
-        consumer,
-        pricingPlan,
-        sessionId,
-        env: this.env,
-        ip,
-        waitUntil: this.ctx.waitUntil
-      })
+        // TODO: usage tracking / reporting
 
-      if (originResponse) {
-        return transformHttpResponseToMcpToolCallResponse({
+        const sessionId = this.ctx.id.toString()
+        const {
+          toolCallArgs,
           originRequest,
           originResponse,
-          tool,
-          toolCallArgs,
+          toolCallResponse,
           rateLimitResult
+        } = await resolveOriginToolCall({
+          tool,
+          args,
+          deployment,
+          consumer,
+          pricingPlan,
+          sessionId,
+          env: this.env,
+          ip,
+          waitUntil: this.ctx.waitUntil.bind(this.ctx)
         })
-      } else if (toolCallResponse) {
-        if (toolCallResponse._meta || rateLimitResult) {
-          return {
-            ...toolCallResponse,
-            _meta: {
-              ...toolCallResponse._meta,
-              ...(rateLimitResult
-                ? getRateLimitHeaders(rateLimitResult)
-                : undefined)
+
+        if (originResponse) {
+          return transformHttpResponseToMcpToolCallResponse({
+            originRequest,
+            originResponse,
+            tool,
+            toolCallArgs,
+            rateLimitResult
+          })
+        } else if (toolCallResponse) {
+          if (toolCallResponse._meta || rateLimitResult) {
+            return {
+              ...toolCallResponse,
+              _meta: {
+                ...toolCallResponse._meta,
+                ...(rateLimitResult
+                  ? getRateLimitHeaders(rateLimitResult)
+                  : undefined)
+              }
             }
+          } else {
+            return toolCallResponse
           }
         } else {
-          return toolCallResponse
+          assert(false, 500)
         }
-      } else {
-        assert(false, 500)
+      } catch (err: unknown) {
+        // TODO: handle errors
+        // eslint-disable-next-line no-console
+        console.error(err)
+        throw err
+      } finally {
+        // TODO: report usage
       }
     })
   }

@@ -11,6 +11,7 @@ import { getAdminConsumer } from './get-admin-consumer'
 import { getAdminDeployment } from './get-admin-deployment'
 import { getTool } from './get-tool'
 import { getToolArgsFromRequest } from './get-tool-args-from-request'
+import { isRequestPubliclyCacheable } from './utils'
 
 export type ResolvedHttpEdgeRequest = {
   deployment: AdminDeployment
@@ -35,7 +36,10 @@ export async function resolveHttpEdgeRequest(
   const logger = ctx.get('logger')
   const ip = ctx.get('ip')
 
-  const cacheControl = ctx.req.header('cache-control')
+  const cacheControl = isRequestPubliclyCacheable(ctx.req.raw)
+    ? ctx.req.header('cache-control')
+    : 'no-cache'
+
   const { method } = ctx.req
   const requestUrl = new URL(ctx.req.url)
   const { pathname } = requestUrl

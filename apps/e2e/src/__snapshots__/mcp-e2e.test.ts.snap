@@ -2,7 +2,6 @@
 
 exports[`Basic MCP => OpenAPI get_post success > 0.0: @dev/test-basic-openapi/mcp get_post 1`] = `
 {
-  "_meta": {},
   "content": [],
   "isError": false,
   "structuredContent": {

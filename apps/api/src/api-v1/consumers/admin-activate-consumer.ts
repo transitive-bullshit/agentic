@@ -7,22 +7,24 @@ import { aclAdmin } from '@/lib/acl-admin'
 import {
   openapiAuthenticatedSecuritySchemas,
   openapiErrorResponse404,
+  openapiErrorResponse409,
+  openapiErrorResponse410,
   openapiErrorResponses
 } from '@/lib/openapi-utils'
 
-import { consumerTokenParamsSchema, populateConsumerSchema } from './schemas'
+import { consumerIdParamsSchema } from './schemas'
 import { setAdminCacheControlForConsumer } from './utils'
 
 const route = createRoute({
-  description: 'Gets a consumer by API token. This route is admin-only.',
+  description:
+    "Activates a consumer signifying that at least one API call has been made using the consumer's API token. This method is idempotent and admin-only.",
   tags: ['admin', 'consumers'],
-  operationId: 'adminGetConsumerByToken',
-  method: 'get',
-  path: 'admin/consumers/tokens/{token}',
+  operationId: 'adminActivateConsumer',
+  method: 'put',
+  path: 'admin/consumers/{consumerId}/activate',
   security: openapiAuthenticatedSecuritySchemas,
   request: {
-    params: consumerTokenParamsSchema,
-    query: populateConsumerSchema
+    params: consumerIdParamsSchema
   },
   responses: {
     200: {
@@ -34,25 +36,25 @@ const route = createRoute({
       }
     },
     ...openapiErrorResponses,
-    ...openapiErrorResponse404
+    ...openapiErrorResponse404,
+    ...openapiErrorResponse409,
+    ...openapiErrorResponse410
   }
 })
 
-export function registerV1AdminConsumersGetConsumerByToken(
+export function registerV1AdminConsumersActivateConsumer(
   app: OpenAPIHono<AuthenticatedHonoEnv>
 ) {
   return app.openapi(route, async (c) => {
-    const { token } = c.req.valid('param')
-    const { populate = [] } = c.req.valid('query')
+    const { consumerId } = c.req.valid('param')
     await aclAdmin(c)
 
-    const consumer = await db.query.consumers.findFirst({
-      where: eq(schema.consumers.token, token),
-      with: {
-        ...Object.fromEntries(populate.map((field) => [field, true]))
-      }
-    })
-    assert(consumer, 404, `API token not found "${token}"`)
+    const [consumer] = await db
+      .update(schema.consumers)
+      .set({ activated: true })
+      .where(eq(schema.consumers.id, consumerId))
+      .returning()
+    assert(consumer, 404, `Consumer not found "${consumerId}"`)
 
     setAdminCacheControlForConsumer(c, consumer)
     return c.json(parseZodSchema(schema.consumerAdminSelectSchema, consumer))

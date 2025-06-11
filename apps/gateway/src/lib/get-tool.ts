@@ -2,19 +2,21 @@ import type { Deployment, Tool } from '@agentic/platform-types'
 import { assert } from '@agentic/platform-core'
 
 export function getTool({
-  method,
+  toolName,
   deployment,
-  toolName
+  method,
+  strict = false
 }: {
-  method: string
-  deployment: Deployment
   toolName: string
+  deployment: Deployment
+  method?: string
+  strict?: boolean
 }): Tool {
   assert(toolName, 404, `Invalid input empty tool name`)
 
   let tool = deployment.tools.find((tool) => tool.name === toolName)
 
-  if (!tool) {
+  if (!tool && !strict) {
     if (deployment.originAdapter.type === 'openapi') {
       // Check if the tool name is an operation ID since it's easy to forget
       // and mistake the two (`getPost` vs `get_post`).
@@ -57,15 +59,12 @@ export function getTool({
       404,
       `OpenAPI operation not found for tool "${tool.name}"`
     )
-    assert(
-      method === 'GET' || method === 'POST',
-      405,
-      `Invalid HTTP method "${method}" for tool "${tool.name}"`
-    )
-
-    return {
-      ...tool,
-      operation
+    if (method) {
+      assert(
+        method === 'GET' || method === 'POST',
+        405,
+        `Invalid HTTP method "${method}" for tool "${tool.name}"`
+      )
     }
   }
 

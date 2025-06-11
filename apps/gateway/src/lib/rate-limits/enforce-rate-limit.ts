@@ -1,12 +1,17 @@
 import { assert } from '@agentic/platform-core'
 
 import type { RawEnv } from '../env'
-import type { RateLimitCache, RateLimitResult, RateLimitState } from '../types'
+import type {
+  RateLimitCache,
+  RateLimitResult,
+  RateLimitState,
+  WaitUntil
+} from '../types'
 
 /**
  * This maps persists across worker executions and is used for caching active
- * rate limits. It's purely a performance optimization for `async` rate limits
- * and is not used as a source of truth.
+ * rate limits. It's purely a performance optimization and is not used as a
+ * source of truth.
  */
 const globalRateLimitCache: RateLimitCache = new Map()
 
@@ -51,7 +56,7 @@ export async function enforceRateLimit({
 
   env: RawEnv
   cache?: RateLimitCache
-  waitUntil: (promise: Promise<any>) => void
+  waitUntil: WaitUntil
 }): Promise<RateLimitResult> {
   assert(id, 400, 'Unauthenticated requests must have a valid IP address')
 

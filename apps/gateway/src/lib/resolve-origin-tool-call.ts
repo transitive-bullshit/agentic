@@ -11,18 +11,20 @@ import type { RawEnv } from './env'
 import type {
   AdminConsumer,
   AgenticMcpRequestMetadata,
+  CacheStatus,
   McpToolCallResponse,
   RateLimitResult,
   ResolvedOriginToolCallResult,
-  ToolCallArgs
+  ToolCallArgs,
+  WaitUntil
 } from './types'
 import { cfValidateJsonSchema } from './cf-validate-json-schema'
 import { createHttpRequestForOpenAPIOperation } from './create-http-request-for-openapi-operation'
 import { fetchCache } from './fetch-cache'
 import { getRequestCacheKey } from './get-request-cache-key'
-import { isCacheControlPubliclyCacheable } from './is-cache-control-publicly-cacheable'
 import { enforceRateLimit } from './rate-limits/enforce-rate-limit'
 import { updateOriginRequest } from './update-origin-request'
+import { isCacheControlPubliclyCacheable } from './utils'
 
 export async function resolveOriginToolCall({
   tool,
@@ -30,9 +32,9 @@ export async function resolveOriginToolCall({
   deployment,
   consumer,
   pricingPlan,
+  ip,
   sessionId,
   env,
-  ip,
   cacheControl,
   waitUntil
 }: {
@@ -41,18 +43,15 @@ export async function resolveOriginToolCall({
   deployment: AdminDeployment
   consumer?: AdminConsumer
   pricingPlan?: PricingPlan
+  ip?: string
   sessionId: string
   env: RawEnv
-  ip?: string
   cacheControl?: string
-  waitUntil: (promise: Promise<any>) => void
+  waitUntil: WaitUntil
 }): Promise<ResolvedOriginToolCallResult> {
-  // TODO: rate-limiting
-  // TODO: caching
-  // TODO: usage tracking / reporting
-  // TODO: all of this per-request logic should maybe be moved to a diff method
-  // since it's not specific to tool calls. eg, other MCP requests may still
-  // need to be rate-limited / cached / tracked / etc.
+  // TODO: consider moving all of this per-request logic to a diff method since
+  // it's not specific to tool calls. eg, other MCP requests may still need to
+  // be rate-limited / cached / tracked / etc.
 
   const { originAdapter } = deployment
   let rateLimitResult: RateLimitResult | undefined
@@ -110,29 +109,37 @@ export async function resolveOriginToolCall({
       }
     }
 
-    const pricingPlanToolConfig = pricingPlan
-      ? toolConfig.pricingPlanConfig?.[pricingPlan.slug]
+    const pricingPlanToolOverride = pricingPlan
+      ? toolConfig.pricingPlanOverridesMap?.[pricingPlan.slug]
       : undefined
 
-    if (pricingPlan && pricingPlanToolConfig) {
-      assert(
-        pricingPlanToolConfig.enabled ||
-          (pricingPlanToolConfig.enabled === undefined && toolConfig.enabled),
-        403,
-        `Tool "${tool.name}" is not enabled for pricing plan "${pricingPlan.slug}"`
-      )
-
-      if (pricingPlanToolConfig.reportUsage !== undefined) {
-        reportUsage &&= !!pricingPlanToolConfig.reportUsage
+    // Check if this tool is configured for pricing-plan-specific overrides
+    // which take precedence over the tool's default behavior.
+    if (pricingPlan && pricingPlanToolOverride) {
+      if (pricingPlanToolOverride.enabled !== undefined) {
+        assert(
+          pricingPlanToolOverride.enabled,
+          403,
+          `Tool "${tool.name}" is disabled for pricing plan "${pricingPlan.slug}"`
+        )
+      } else {
+        assert(toolConfig.enabled, 403, `Tool "${tool.name}" is disabled`)
       }
 
-      if (pricingPlanToolConfig.rateLimit !== undefined) {
+      if (pricingPlanToolOverride.reportUsage !== undefined) {
+        reportUsage &&= !!pricingPlanToolOverride.reportUsage
+      }
+
+      if (pricingPlanToolOverride.rateLimit !== undefined) {
         // TODO: Improve RateLimitInput vs RateLimit types
-        rateLimit = pricingPlanToolConfig.rateLimit as RateLimit
+        rateLimit = pricingPlanToolOverride.rateLimit as RateLimit
       }
     } else {
-      assert(toolConfig.enabled, 403, `Tool "${tool.name}" is not enabled`)
+      assert(toolConfig.enabled, 403, `Tool "${tool.name}" is disabled`)
     }
+  } else {
+    // Default to not caching any responses.
+    cacheControl ??= 'no-store'
   }
 
   if (rateLimit) {
@@ -184,7 +191,13 @@ export async function resolveOriginToolCall({
         waitUntil
       })
 
+      const cacheStatus =
+        (originResponse.headers.get('cf-cache-status') as CacheStatus) ??
+        (cacheKey ? 'MISS' : 'BYPASS')
+
       return {
+        cacheStatus,
+        reportUsage,
         rateLimitResult,
         toolCallArgs,
         originRequest,
@@ -246,6 +259,8 @@ export async function resolveOriginToolCall({
           const response = await caches.default.match(cacheKey)
           if (response) {
             return {
+              cacheStatus: 'HIT',
+              reportUsage,
               rateLimitResult,
               toolCallArgs,
               toolCallResponse: (await response.json()) as McpToolCallResponse
@@ -264,7 +279,7 @@ export async function resolveOriginToolCall({
         toolCallResponseString
       ) as McpToolCallResponse
 
-      if (cacheKey && cacheControl) {
+      if (cacheControl && cacheKey) {
         const fakeHttpResponse = new Response(toolCallResponseString, {
           headers: {
             'content-type': 'application/json',
@@ -275,6 +290,8 @@ export async function resolveOriginToolCall({
       }
 
       return {
+        cacheStatus: cacheKey ? 'MISS' : 'BYPASS',
+        reportUsage,
         rateLimitResult,
         toolCallArgs,
         toolCallResponse

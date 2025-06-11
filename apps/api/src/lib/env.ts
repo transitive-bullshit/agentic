@@ -25,7 +25,7 @@ export const envSchema = baseEnvSchema
     RESEND_API_KEY: z.string().nonempty()
   })
   .strip()
-export type Env = Simplify<ReturnType<typeof parseEnv>>
+export type RawEnv = z.infer<typeof envSchema>
 
 export function parseEnv(inputEnv: Record<string, unknown>) {
   const baseEnv = parseBaseEnv({
@@ -49,6 +49,8 @@ export function parseEnv(inputEnv: Record<string, unknown>) {
     isStripeLive
   }
 }
+
+export type Env = Simplify<ReturnType<typeof parseEnv>>
 
 // eslint-disable-next-line no-process-env
 export const env = parseEnv(process.env)

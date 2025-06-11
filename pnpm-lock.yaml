@@ -448,6 +448,9 @@ importers:
       plur:
         specifier: 'catalog:'
         version: 5.1.0
+      stripe:
+        specifier: 'catalog:'
+        version: 18.2.1(@types/node@22.15.29)
       type-fest:
         specifier: 'catalog:'
         version: 4.41.0

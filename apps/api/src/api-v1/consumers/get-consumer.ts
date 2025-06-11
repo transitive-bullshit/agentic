@@ -13,7 +13,7 @@ import {
 import { consumerIdParamsSchema, populateConsumerSchema } from './schemas'
 
 const route = createRoute({
-  description: 'Gets a consumer',
+  description: 'Gets a consumer by ID.',
   tags: ['consumers'],
   operationId: 'getConsumer',
   method: 'get',

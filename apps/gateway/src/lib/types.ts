@@ -4,7 +4,10 @@ import type {
   DefaultHonoBindings,
   DefaultHonoVariables
 } from '@agentic/platform-hono'
-import type { Consumer, User } from '@agentic/platform-types'
+import type {
+  AdminConsumer as AdminConsumerImpl,
+  User
+} from '@agentic/platform-types'
 import type { Client as McpClient } from '@modelcontextprotocol/sdk/client/index.js'
 import type { Context } from 'hono'
 import type { Simplify } from 'type-fest'
@@ -18,7 +21,7 @@ export type McpToolCallResponse = Simplify<
 >
 
 export type AdminConsumer = Simplify<
-  Consumer & {
+  AdminConsumerImpl & {
     user: User
   }
 >
@@ -51,12 +54,19 @@ export type RateLimitState = {
 
 export type RateLimitCache = Map<string, RateLimitState>
 
+export type CacheStatus = 'HIT' | 'MISS' | 'BYPASS'
+export type RequestMode = 'mcp' | 'http'
+
+export type WaitUntil = (promise: Promise<any>) => void
+
 export type ResolvedOriginToolCallResult = {
-  rateLimitResult?: RateLimitResult
   toolCallArgs: ToolCallArgs
   originRequest?: Request
   originResponse?: Response
   toolCallResponse?: McpToolCallResponse
+  rateLimitResult?: RateLimitResult
+  cacheStatus: CacheStatus
+  reportUsage: boolean
 } & (
   | {
       originRequest: Request

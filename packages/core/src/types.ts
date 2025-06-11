@@ -10,7 +10,7 @@ export type RateLimitResult = {
   /**
    * The identifier used to uniquely track this rate limit.
    *
-   * This will generally be the customer's ID or IP address.
+   * This will typically be the customer's ID or IP address.
    */
   id: string
 
@@ -20,14 +20,19 @@ export type RateLimitResult = {
   passed: boolean
 
   /**
-   * The current number of requests that have been made against the rate limit.
+   * The interval in milliseconds over which the rate limit is enforced.
    */
-  current: number
+  intervalMs: number
 
   /**
    * The maximum number of requests that can be made per interval.
    */
   limit: number
+
+  /**
+   * The current number of requests that have been made against the rate limit.
+   */
+  current: number
 
   /**
    * The number of requests that can be made before the rate limit resets.
@@ -37,13 +42,8 @@ export type RateLimitResult = {
   remaining: number
 
   /**
-   * The time in milliseconds since the Unix epoch at which the rate limit
+   * The time in milliseconds since the Unix epoch UTC at which the rate limit
    * will reset.
    */
   resetTimeMs: number
-
-  /**
-   * The interval in milliseconds over which the rate limit is enforced.
-   */
-  intervalMs: number
 }

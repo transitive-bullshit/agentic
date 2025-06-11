@@ -42,9 +42,12 @@ export const jsonSchemaObjectSchema = z
   .openapi('JsonSchemaObject')
 
 /**
- * Customizes a tool's behavior for a given pricing plan.
+ * Overrides a tool's default behavior for a given pricing plan.
+ *
+ * You can use this, for instance, to disable tools on certain pricing plans
+ * or to customize the rate-limits for specific tools on a given pricing plan.
  */
-export const pricingPlanToolConfigSchema = z
+export const pricingPlanToolOverrideSchema = z
   .object({
     /**
      * Whether this tool should be enabled for customers on a given pricing plan.
@@ -77,8 +80,10 @@ export const pricingPlanToolConfigSchema = z
      */
     rateLimit: z.union([rateLimitSchema, z.null()]).optional()
   })
-  .openapi('PricingPlanToolConfig')
-export type PricingPlanToolConfig = z.infer<typeof pricingPlanToolConfigSchema>
+  .openapi('PricingPlanToolOverride')
+export type PricingPlanToolOverride = z.infer<
+  typeof pricingPlanToolOverrideSchema
+>
 
 /**
  * Customizes a tool's default behavior across all pricing plans.
@@ -153,10 +158,10 @@ export const toolConfigSchema = z
     rateLimit: z.union([rateLimitSchema, z.null()]).optional(),
 
     /**
-     * Allows you to customize this tool's behavior or disable it entirely for
+     * Allows you to override this tool's behavior or disable it entirely for
      * different pricing plans.
      *
-     * This is a map from PricingPlan slug to PricingPlanToolConfig.
+     * This is a map from PricingPlan slug to PricingPlanToolOverride.
      *
      * @example
      * {
@@ -165,11 +170,11 @@ export const toolConfigSchema = z
      *   }
      * }
      */
-    pricingPlanConfigMap: z
-      .record(pricingPlanSlugSchema, pricingPlanToolConfigSchema)
+    pricingPlanOverridesMap: z
+      .record(pricingPlanSlugSchema, pricingPlanToolOverrideSchema)
       .optional()
       .describe(
-        'Map of PricingPlan slug to tool config overrides for a given plan. This is useful to customize tool behavior or disable tools completely on different pricing plans.'
+        "Allows you to override this tool's behavior or disable it entirely for different pricing plans. This is a map of PricingPlan slug to PricingPlanToolOverrides for that plan."
       )
 
     // TODO?

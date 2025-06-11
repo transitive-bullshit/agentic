@@ -3,6 +3,8 @@ import { createRoute, z } from '@hono/zod-openapi'
 import type { HonoApp } from '@/lib/types'
 
 const route = createRoute({
+  description: 'Health check endpoint.',
+  operationId: 'healthCheck',
   method: 'get',
   path: 'health',
   responses: {

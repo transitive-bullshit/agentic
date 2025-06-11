@@ -13,7 +13,7 @@ import {
 import { userIdParamsSchema } from './schemas'
 
 const route = createRoute({
-  description: 'Gets a user',
+  description: 'Gets a user by ID.',
   tags: ['users'],
   operationId: 'getUser',
   method: 'get',

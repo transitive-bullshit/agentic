@@ -13,9 +13,11 @@ import { Hono } from 'hono'
 import type { GatewayHonoEnv } from './lib/types'
 import { createAgenticClient } from './lib/agentic-client'
 import { createHttpResponseFromMcpToolCallResponse } from './lib/create-http-response-from-mcp-tool-call-response'
+// import { reportToolCallUsage } from './lib/report-tool-call-usage'
 import { resolveHttpEdgeRequest } from './lib/resolve-http-edge-request'
 import { resolveMcpEdgeRequest } from './lib/resolve-mcp-edge-request'
 import { resolveOriginToolCall } from './lib/resolve-origin-tool-call'
+import { isRequestPubliclyCacheable } from './lib/utils'
 import { DurableMcpServer } from './worker'
 
 export const app = new Hono<GatewayHonoEnv>()
@@ -47,8 +49,17 @@ app.use(init)
 app.use(responseTime)
 
 app.all(async (ctx) => {
+  const gatewayStartTimeMs = Date.now()
   ctx.set('cache', caches.default)
-  ctx.set('client', createAgenticClient(ctx))
+  ctx.set(
+    'client',
+    createAgenticClient({
+      env: ctx.env,
+      cache: caches.default,
+      waitUntil: ctx.executionCtx.waitUntil.bind(ctx.executionCtx),
+      isCachingEnabled: isRequestPubliclyCacheable(ctx.req.raw)
+    })
+  )
 
   const requestUrl = new URL(ctx.req.url)
   const { pathname } = requestUrl
@@ -67,21 +78,21 @@ app.all(async (ctx) => {
     }).fetch(ctx.req.raw, ctx.env, executionCtx)
   }
 
-  const resolvedEdgeRequest = await resolveHttpEdgeRequest(ctx)
+  const resolvedHttpEdgeRequest = await resolveHttpEdgeRequest(ctx)
 
-  const originStartTime = Date.now()
+  const originStartTimeMs = Date.now()
 
   const resolvedOriginToolCallResult = await resolveOriginToolCall({
-    tool: resolvedEdgeRequest.tool,
-    args: resolvedEdgeRequest.toolCallArgs,
-    deployment: resolvedEdgeRequest.deployment,
-    consumer: resolvedEdgeRequest.consumer,
-    pricingPlan: resolvedEdgeRequest.pricingPlan,
-    cacheControl: resolvedEdgeRequest.cacheControl,
+    tool: resolvedHttpEdgeRequest.tool,
+    args: resolvedHttpEdgeRequest.toolCallArgs,
+    deployment: resolvedHttpEdgeRequest.deployment,
+    consumer: resolvedHttpEdgeRequest.consumer,
+    pricingPlan: resolvedHttpEdgeRequest.pricingPlan,
+    cacheControl: resolvedHttpEdgeRequest.cacheControl,
     sessionId: ctx.get('sessionId')!,
     ip: ctx.get('ip'),
     env: ctx.env,
-    waitUntil: ctx.executionCtx.waitUntil
+    waitUntil: ctx.executionCtx.waitUntil.bind(ctx.executionCtx)
   })
 
   let originResponse: Response | undefined
@@ -89,8 +100,8 @@ app.all(async (ctx) => {
     originResponse = resolvedOriginToolCallResult.originResponse
   } else {
     originResponse = await createHttpResponseFromMcpToolCallResponse(ctx, {
-      tool: resolvedEdgeRequest.tool,
-      deployment: resolvedEdgeRequest.deployment,
+      tool: resolvedHttpEdgeRequest.tool,
+      deployment: resolvedHttpEdgeRequest.deployment,
       toolCallResponse: resolvedOriginToolCallResult.toolCallResponse
     })
   }
@@ -107,8 +118,24 @@ app.all(async (ctx) => {
 
   // Record the time it took for the origin to respond.
   const now = Date.now()
-  const originTimespan = now - originStartTime
-  res.headers.set('x-origin-response-time', `${originTimespan}ms`)
+  const originTimespanMs = now - originStartTimeMs
+  res.headers.set('x-origin-response-time', `${originTimespanMs}ms`)
+
+  const gatewayTimespanMs = now - gatewayStartTimeMs
+  res.headers.set('x-response-time', `${gatewayTimespanMs}ms`)
+
+  // reportToolCallUsage({
+  //   ...resolvedHttpEdgeRequest,
+  //   requestMode: 'http',
+  //   resolvedOriginToolCallResult,
+  //   sessionId: ctx.get('sessionId')!,
+  //   requestId: ctx.get('requestId')!,
+  //   ip: ctx.get('ip'),
+  //   originTimespanMs,
+  //   gatewayTimespanMs,
+  //   env: ctx.env,
+  //   waitUntil: ctx.executionCtx.waitUntil.bind(ctx.executionCtx)
+  // })
 
   // Reset server to Agentic because Cloudflare likes to override things
   res.headers.set('server', 'agentic')
@@ -122,23 +149,4 @@ app.all(async (ctx) => {
   res.headers.delete('reporting-endpoints')
 
   return res
-
-  // TODO: move this `finally` block to a middleware handler
-  // const now = Date.now()
-  // Report usage.
-  // Note that we are not awaiting the results of this on purpose so we can
-  // return the response to the client immediately.
-  // TODO
-  // ctx.waitUntil(
-  //   reportUsage(ctx, {
-  //     ...call,
-  //     cache: res!.headers.get('cf-cache-status'),
-  //     status: res!.status,
-  //     timestamp: Math.ceil(now / 1000),
-  //     computeTime: originTimespan!,
-  //     gatewayTime: gatewayTimespan!,
-  //     // TODO: record correct bandwidth of request + response content-length
-  //     bandwidth: 0
-  //   })
-  // )
 })

@@ -14,7 +14,7 @@ import {
 import { teamIdParamsSchema } from '../schemas'
 
 const route = createRoute({
-  description: 'Creates a team member.',
+  description: 'Creates a new team member.',
   tags: ['teams'],
   operationId: 'createTeamMember',
   method: 'post',

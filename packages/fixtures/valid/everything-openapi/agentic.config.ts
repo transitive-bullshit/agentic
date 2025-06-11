@@ -16,7 +16,7 @@ export default defineConfig({
       // cacheControl: 'no-cache',
       reportUsage: true,
       rateLimit: null,
-      pricingPlanConfigMap: {
+      pricingPlanOverridesMap: {
         free: {
           enabled: true,
           reportUsage: true
@@ -29,7 +29,7 @@ export default defineConfig({
     },
     {
       name: 'disabledForFreePlanTool',
-      pricingPlanConfigMap: {
+      pricingPlanOverridesMap: {
         free: {
           enabled: false
         }

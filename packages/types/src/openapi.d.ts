@@ -11,28 +11,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description OK */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            status: string;
-                        };
-                    };
-                };
-            };
-        };
+        /** @description Health check endpoint. */
+        get: operations["healthCheck"];
         put?: never;
         post?: never;
         delete?: never;
@@ -48,10 +28,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Gets a user */
+        /** @description Gets a user by ID. */
         get: operations["getUser"];
         put?: never;
-        /** @description Updates a user */
+        /** @description Updates a user by ID. */
         post: operations["updateUser"];
         delete?: never;
         options?: never;
@@ -69,7 +49,7 @@ export interface paths {
         /** @description Lists all teams the authenticated user belongs to. */
         get: operations["listTeams"];
         put?: never;
-        /** @description Creates a team. */
+        /** @description Creates a new team. */
         post: operations["createTeam"];
         delete?: never;
         options?: never;
@@ -84,12 +64,12 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Gets a team by slug. */
+        /** @description Gets a team by ID. */
         get: operations["getTeam"];
         put?: never;
         /** @description Updates a team. */
         post: operations["updateTeam"];
-        /** @description Deletes a team by slug. */
+        /** @description Deletes a team by ID. */
         delete: operations["deleteTeam"];
         options?: never;
         head?: never;
@@ -105,7 +85,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** @description Creates a team member. */
+        /** @description Creates a new team member. */
         post: operations["createTeamMember"];
         delete?: never;
         options?: never;
@@ -156,7 +136,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Gets a project by public identifier */
+        /** @description Gets a project by its public identifier (eg, "@username/project-name"). */
         get: operations["getProjectByIdentifier"];
         put?: never;
         post?: never;
@@ -173,7 +153,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Gets a project by ID */
+        /** @description Gets a project by ID. */
         get: operations["getProject"];
         put?: never;
         /** @description Updates a project. */
@@ -191,7 +171,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Gets a consumer */
+        /** @description Gets a consumer by ID. */
         get: operations["getConsumer"];
         put?: never;
         /** @description Updates a consumer's subscription to a different deployment or pricing plan. Set `plan` to undefined to cancel the subscription. */
@@ -330,9 +310,26 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Gets a consumer by API token (admin-only) */
+        /** @description Gets a consumer by API token. This route is admin-only. */
         get: operations["adminGetConsumerByToken"];
         put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/admin/consumers/{consumerId}/activate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** @description Activates a consumer signifying that at least one API call has been made using the consumer's API token. This method is idempotent and admin-only. */
+        put: operations["adminActivateConsumer"];
         post?: never;
         delete?: never;
         options?: never;
@@ -347,7 +344,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Gets a deployment by its public identifier (admin-only) */
+        /** @description Gets a deployment by its public identifier. This route is admin-only. */
         get: operations["adminGetDeploymentByIdentifier"];
         put?: never;
         post?: never;
@@ -483,8 +480,13 @@ export interface components {
             interval: number | string;
             /** @description Maximum number of operations per interval (unitless). */
             maxPerInterval: number;
+            /**
+             * @description Whether to enforce the rate limit synchronously or asynchronously.
+             * @default true
+             */
+            async: boolean;
         };
-        PricingPlanToolConfig: {
+        PricingPlanToolOverride: {
             enabled?: boolean;
             reportUsage?: boolean;
             rateLimit?: components["schemas"]["RateLimit"] | null;
@@ -500,9 +502,9 @@ export interface components {
             /** @default true */
             reportUsage: boolean;
             rateLimit?: components["schemas"]["RateLimit"] | null;
-            /** @description Map of PricingPlan slug to tool config overrides for a given plan. This is useful to customize tool behavior or disable tools completely on different pricing plans. */
-            pricingPlanConfig?: {
-                [key: string]: components["schemas"]["PricingPlanToolConfig"];
+            /** @description Allows you to override this tool's behavior or disable it entirely for different pricing plans. This is a map of PricingPlan slug to PricingPlanToolOverrides for that plan. */
+            pricingPlanOverridesMap?: {
+                [key: string]: components["schemas"]["PricingPlanToolOverride"];
             };
         };
         /** @description Origin adapter is used to configure the origin API server downstream from Agentic's API gateway. It specifies whether the origin API server denoted by `originUrl` is hosted externally or deployed internally to Agentic's infrastructure. It also specifies the format for how origin tools are defined: either an OpenAPI spec, an MCP server, or a raw HTTP REST API. */
@@ -728,6 +730,16 @@ export interface components {
             /** @enum {string} */
             type: "raw";
         };
+        /** @description A Consumer represents a user who has subscribed to a Project and is used
+         *     to track usage and billing.
+         *
+         *     Consumers are linked to a corresponding Stripe Customer and Subscription.
+         *     The Stripe customer will either be the user's default Stripe Customer if the
+         *     project uses the default Agentic platform account, or a customer on the project
+         *     owner's connected Stripe account if the project has Stripe Connect enabled. */
+        AdminConsumer: components["schemas"]["Consumer"] & {
+            _stripeCustomerId: string;
+        };
         /** @description A Deployment is a single, immutable instance of a Project. Each deployment contains pricing plans, origin server config (OpenAPI or MCP server), tool definitions, and metadata.
          *
          *     Deployments are private to a developer or team until they are published, at which point they are accessible to any customers with access to the parent Project. */
@@ -823,6 +835,28 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+    healthCheck: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        status: string;
+                    };
+                };
+            };
+        };
+    };
     getUser: {
         parameters: {
             query?: never;
@@ -1709,13 +1743,42 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["Consumer"];
+                    "application/json": components["schemas"]["AdminConsumer"];
                 };
             };
             400: components["responses"]["400"];
             401: components["responses"]["401"];
             403: components["responses"]["403"];
             404: components["responses"]["404"];
+        };
+    };
+    adminActivateConsumer: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Consumer ID */
+                consumerId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description An admin consumer object */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminConsumer"];
+                };
+            };
+            400: components["responses"]["400"];
+            401: components["responses"]["401"];
+            403: components["responses"]["403"];
+            404: components["responses"]["404"];
+            409: components["responses"]["409"];
+            410: components["responses"]["410"];
         };
     };
     adminGetDeploymentByIdentifier: {

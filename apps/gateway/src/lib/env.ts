@@ -1,3 +1,7 @@
+import type {
+  AnalyticsEngineDataset,
+  DurableObjectNamespace
+} from '@cloudflare/workers-types'
 import type { Simplify } from 'type-fest'
 import { parseZodSchema } from '@agentic/platform-core'
 import {
@@ -7,12 +11,14 @@ import {
 import { z } from 'zod'
 
 import type { DurableMcpClient } from './durable-mcp-client'
-import type { DurableRateLimiter } from './durable-rate-limiter'
+import type { DurableRateLimiter } from './rate-limits/durable-rate-limiter'
 
 export const envSchema = baseEnvSchema
   .extend({
     AGENTIC_API_BASE_URL: z.string().url(),
     AGENTIC_API_KEY: z.string().nonempty(),
+
+    STRIPE_SECRET_KEY: z.string().nonempty(),
 
     DO_RATE_LIMITER: z.custom<DurableObjectNamespace<DurableRateLimiter>>(
       (ns) => isDurableObjectNamespace(ns)
@@ -24,23 +30,30 @@ export const envSchema = baseEnvSchema
 
     DO_MCP_CLIENT: z.custom<DurableObjectNamespace<DurableMcpClient>>((ns) =>
       isDurableObjectNamespace(ns)
+    ),
+
+    AE_USAGE_DATASET: z.custom<AnalyticsEngineDataset>((ae) =>
+      isAnalyticsEngineDataset(ae)
     )
   })
   .strip()
 export type RawEnv = z.infer<typeof envSchema>
-export type Env = Simplify<ReturnType<typeof parseEnv>>
 
 export function isDurableObjectNamespace(
   namespace: unknown
 ): namespace is DurableObjectNamespace {
   return (
+    !!namespace &&
     typeof namespace === 'object' &&
-    namespace !== null &&
     'newUniqueId' in namespace &&
     typeof namespace.newUniqueId === 'function' &&
     'idFromName' in namespace &&
     typeof namespace.idFromName === 'function'
   )
+}
+
+function isAnalyticsEngineDataset(ae: unknown): ae is AnalyticsEngineDataset {
+  return !!ae && typeof ae === 'object' && 'writeDataPoint' in ae
 }
 
 export function parseEnv(inputEnv: Record<string, unknown>) {
@@ -57,8 +70,13 @@ export function parseEnv(inputEnv: Record<string, unknown>) {
     }
   )
 
+  const isStripeLive = env.STRIPE_SECRET_KEY.startsWith('sk_live_')
+
   return {
     ...baseEnv,
-    ...env
+    ...env,
+    isStripeLive
   }
 }
+
+export type Env = Simplify<ReturnType<typeof parseEnv>>

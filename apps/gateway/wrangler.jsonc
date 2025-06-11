@@ -45,12 +45,12 @@
 
   "upload_source_maps": true,
 
-  /**
-   * Bindings
-   * Bindings allow your Worker to interact with resources on the Cloudflare Developer Platform, including
-   * databases, object storage, AI inference, real-time communication and more.
-   * https://developers.cloudflare.com/workers/runtime-apis/bindings/
-   */
+  "analytics_engine_datasets": [
+    {
+      "binding": "AE_USAGE_DATASET",
+      "dataset": "agentic_api_gateway_usage"
+    }
+  ],
 
   /**
    * Environment Variables
