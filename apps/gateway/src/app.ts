@@ -13,7 +13,7 @@ import { Hono } from 'hono'
 import type { GatewayHonoEnv } from './lib/types'
 import { createAgenticClient } from './lib/agentic-client'
 import { createHttpResponseFromMcpToolCallResponse } from './lib/create-http-response-from-mcp-tool-call-response'
-// import { reportToolCallUsage } from './lib/report-tool-call-usage'
+import { reportToolCallUsage } from './lib/report-tool-call-usage'
 import { resolveHttpEdgeRequest } from './lib/resolve-http-edge-request'
 import { resolveMcpEdgeRequest } from './lib/resolve-mcp-edge-request'
 import { resolveOriginToolCall } from './lib/resolve-origin-tool-call'
@@ -124,18 +124,18 @@ app.all(async (ctx) => {
   const gatewayTimespanMs = now - gatewayStartTimeMs
   res.headers.set('x-response-time', `${gatewayTimespanMs}ms`)
 
-  // reportToolCallUsage({
-  //   ...resolvedHttpEdgeRequest,
-  //   requestMode: 'http',
-  //   resolvedOriginToolCallResult,
-  //   sessionId: ctx.get('sessionId')!,
-  //   requestId: ctx.get('requestId')!,
-  //   ip: ctx.get('ip'),
-  //   originTimespanMs,
-  //   gatewayTimespanMs,
-  //   env: ctx.env,
-  //   waitUntil: ctx.executionCtx.waitUntil.bind(ctx.executionCtx)
-  // })
+  reportToolCallUsage({
+    ...resolvedHttpEdgeRequest,
+    requestMode: 'http',
+    resolvedOriginToolCallResult,
+    sessionId: ctx.get('sessionId')!,
+    requestId: ctx.get('requestId')!,
+    ip: ctx.get('ip'),
+    originTimespanMs,
+    gatewayTimespanMs,
+    env: ctx.env,
+    waitUntil: ctx.executionCtx.waitUntil.bind(ctx.executionCtx)
+  })
 
   // Reset server to Agentic because Cloudflare likes to override things
   res.headers.set('server', 'agentic')
