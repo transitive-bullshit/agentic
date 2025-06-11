@@ -422,7 +422,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
     ]
   },
   {
-    title: 'HTTP => MCP origin basic "add" tool call success',
+    title: 'HTTP => MCP origin basic "add" tool',
     compareResponseBodies: true,
     fixtures: [
       {
@@ -549,7 +549,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
     ]
   },
   {
-    title: 'HTTP => OpenAPI origin everything "disabled_tool"',
+    title: 'HTTP => OpenAPI origin everything "disabled_tool" tool',
     fixtures: [
       {
         path: '@dev/test-everything-openapi/disabled_tool',

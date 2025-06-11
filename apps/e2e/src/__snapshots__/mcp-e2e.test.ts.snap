@@ -1,21 +1,21 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`MCP => MCP origin basic "add" tool call success > 9.0: @dev/test-basic-mcp/mcp add 1`] = `
+exports[`MCP => MCP origin basic "echo" tool > 10.0: @dev/test-basic-mcp/mcp echo 1`] = `
 {
   "content": [
     {
-      "text": "62",
+      "text": "{"nala":"kitten","num":123,"now":1749678890348}",
       "type": "text",
     },
   ],
 }
 `;
 
-exports[`MCP => MCP origin basic "echo" tool > 10.0: @dev/test-basic-mcp/mcp echo 1`] = `
+exports[`MCP => MCP origin basic "echo" tool with empty body > 13.0: @dev/test-basic-mcp/mcp echo 1`] = `
 {
   "content": [
     {
-      "text": "{"nala":"kitten","num":123,"now":1749678633338}",
+      "text": "{}",
       "type": "text",
     },
   ],

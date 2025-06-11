@@ -68,7 +68,8 @@ export default defineConfig({
     },
     {
       name: 'strict_additional_properties',
-      additionalProperties: false
+      inputSchemaAdditionalProperties: false,
+      outputSchemaAdditionalProperties: false
     }
   ]
 })

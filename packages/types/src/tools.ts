@@ -173,9 +173,23 @@ export const toolConfigSchema = z
      * The default MCP spec allows additional properties. Set this to `false` if
      * you want your tool to be more strict.
      *
+     * @note This is only relevant if the tool has defined an `outputSchema`.
+     *
      * @default true
      */
-    additionalProperties: z.boolean().optional().default(true),
+    inputSchemaAdditionalProperties: z.boolean().optional().default(true),
+
+    /**
+     * Whether to allow additional properties in the tool's output schema.
+     *
+     * The default MCP spec allows additional properties. Set this to `false` if
+     * you want your tool to be more strict.
+     *
+     * @note This is only relevant if the tool has defined an `outputSchema`.
+     *
+     * @default true
+     */
+    outputSchemaAdditionalProperties: z.boolean().optional().default(true),
 
     /**
      * Allows you to override this tool's behavior or disable it entirely for
@@ -202,6 +216,7 @@ export const toolConfigSchema = z
     // headers
   })
   .openapi('ToolConfig')
+export type ToolConfigInput = z.input<typeof toolConfigSchema>
 export type ToolConfig = z.infer<typeof toolConfigSchema>
 
 /**

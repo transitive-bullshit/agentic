@@ -1,4 +1,4 @@
-import type { Tool } from '@agentic/platform-types'
+import type { Tool, ToolConfig } from '@agentic/platform-types'
 import { assert, HttpError } from '@agentic/platform-core'
 import contentType from 'fast-content-type-parse'
 
@@ -9,12 +9,14 @@ export async function transformHttpResponseToMcpToolCallResponse({
   originRequest,
   originResponse,
   tool,
-  toolCallArgs
+  toolCallArgs,
+  toolConfig
 }: {
   originRequest: Request
   originResponse: Response
   tool: Tool
   toolCallArgs: ToolCallArgs
+  toolConfig?: ToolConfig
 }) {
   const { type: mimeType } = contentType.safeParse(
     originResponse.headers.get('content-type') || 'application/octet-stream'
@@ -77,8 +79,8 @@ export async function transformHttpResponseToMcpToolCallResponse({
       data,
       schema: tool.outputSchema,
       coerce: false,
-      // TODO: double-check MCP schema on whether additional properties are allowed
-      strictAdditionalProperties: true,
+      strictAdditionalProperties:
+        toolConfig?.outputSchemaAdditionalProperties === false,
       errorPrefix: `Invalid tool response for tool "${tool.name}"`,
       errorStatusCode: 502
     })

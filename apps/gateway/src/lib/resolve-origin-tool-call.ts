@@ -197,7 +197,8 @@ export async function resolveOriginToolCall({
       schema: tool.inputSchema,
       data: args,
       errorPrefix: `Invalid request parameters for tool "${tool.name}"`,
-      strictAdditionalProperties: toolConfig?.additionalProperties === false
+      strictAdditionalProperties:
+        toolConfig?.inputSchemaAdditionalProperties === false
     })
 
     const originStartTimeMs = Date.now()
@@ -247,7 +248,8 @@ export async function resolveOriginToolCall({
         originRequest,
         originResponse,
         originTimespanMs: Date.now() - originStartTimeMs,
-        numRequestsCost
+        numRequestsCost,
+        toolConfig
       }
     } else if (originAdapter.type === 'mcp') {
       const { projectIdentifier } = parseDeploymentIdentifier(
@@ -313,7 +315,8 @@ export async function resolveOriginToolCall({
               toolCallArgs,
               toolCallResponse: (await response.json()) as McpToolCallResponse,
               originTimespanMs: Date.now() - originStartTimeMs,
-              numRequestsCost
+              numRequestsCost,
+              toolConfig
             }
           }
         }
@@ -346,7 +349,8 @@ export async function resolveOriginToolCall({
         toolCallArgs,
         toolCallResponse,
         originTimespanMs: Date.now() - originStartTimeMs,
-        numRequestsCost
+        numRequestsCost,
+        toolConfig
       }
     } else {
       assert(

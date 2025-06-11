@@ -1,3 +1,5 @@
+import { expect } from 'vitest'
+
 export type MCPE2ETestFixture = {
   /** @default 60_000 milliseconds */
   timeout?: number
@@ -16,6 +18,7 @@ export type MCPE2ETestFixture = {
 
   response?: {
     result?: any
+    /** @default false */
     isError?: boolean
     content?: Array<Record<string, unknown>>
     structuredContent?: any
@@ -369,6 +372,7 @@ export const fixtureSuites: MCPE2ETestFixtureSuite[] = [
   {
     title: 'MCP => MCP origin basic "add" tool call success',
     path: '@dev/test-basic-mcp/mcp',
+    stableSnapshot: false,
     fixtures: [
       {
         request: {
@@ -411,8 +415,8 @@ export const fixtureSuites: MCPE2ETestFixtureSuite[] = [
     ]
   },
   {
-    title: 'MCP => MCP origin basic "pure" tool',
-    path: '@dev/test-basic-mcp/mcp',
+    title: 'MCP => OpenAPI origin everything "pure" tool',
+    path: '@dev/test-everything-openapi/mcp',
     fixtures: [
       {
         request: {
@@ -471,6 +475,85 @@ export const fixtureSuites: MCPE2ETestFixtureSuite[] = [
               })
             }
           ],
+          _agenticMeta: {
+            cacheStatus: 'HIT'
+          }
+        }
+      }
+    ]
+  },
+  {
+    title: 'MCP => OpenAPI origin everything "disabled_tool" tool',
+    path: '@dev/test-everything-openapi/mcp',
+    fixtures: [
+      {
+        request: {
+          name: 'disabled_tool',
+          args: {
+            foo: 'bar'
+          }
+        },
+        response: {
+          isError: true,
+          _agenticMeta: {
+            status: 404,
+            toolName: 'disabled_tool'
+          }
+        }
+      }
+    ]
+  },
+  {
+    title: 'MCP => OpenAPI origin everything "echo" tool with empty body',
+    path: '@dev/test-everything-openapi/mcp',
+    fixtures: [
+      {
+        request: {
+          name: 'echo',
+          args: {}
+        },
+        response: {
+          isError: false,
+          content: [{ type: 'text', text: JSON.stringify({}) }]
+        }
+      }
+    ]
+  },
+  {
+    title: 'MCP => OpenAPI origin everything "unpure_marked_pure" tool',
+    path: '@dev/test-everything-openapi/mcp',
+    compareResponseBodies: true,
+    only: true,
+    fixtures: [
+      {
+        request: {
+          name: 'unpure_marked_pure',
+          args: {
+            nala: 'cat'
+          }
+        },
+        response: {
+          isError: false,
+          validate: (result) => {
+            const body = JSON.parse(result.content[0].text)
+            expect(body?.nala).toEqual('cat')
+            expect(typeof body.now).toBe('number')
+            expect(body.now).toBeGreaterThan(0)
+          }
+        }
+      },
+      {
+        // compareResponseBodies should result in the same cached response body,
+        // even though the origin would return a different `now` value if it
+        // weren't marked `pure`.
+        request: {
+          name: 'unpure_marked_pure',
+          args: {
+            nala: 'cat'
+          }
+        },
+        response: {
+          isError: false,
           _agenticMeta: {
             cacheStatus: 'HIT'
           }

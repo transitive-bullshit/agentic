@@ -58,7 +58,9 @@ for (const [i, fixtureSuite] of fixtureSuites.entries()) {
         fixture.response?.snapshot ?? fixtureSuite.snapshot ?? false
       const expectedStableSnapshot =
         fixture.response?.stableSnapshot ??
+        fixture.response?.snapshot ??
         fixtureSuite.stableSnapshot ??
+        fixtureSuite.snapshot ??
         !isError
       const debugFixture = !!(
         fixture.debug ??
@@ -148,10 +150,15 @@ for (const [i, fixtureSuite] of fixtureSuites.entries()) {
             expect(result).toMatchSnapshot()
           }
 
+          const stableResult = pick(
+            result,
+            'content',
+            'structuredContent',
+            'isError'
+          )
+
           if (expectedStableSnapshot) {
-            expect(
-              pick(result, 'content', 'structuredContent', 'isError')
-            ).toMatchSnapshot()
+            expect(stableResult).toMatchSnapshot()
           }
 
           if (validate) {
@@ -160,9 +167,9 @@ for (const [i, fixtureSuite] of fixtureSuites.entries()) {
 
           if (compareResponseBodies && !isError) {
             if (!fixtureResult) {
-              fixtureResult = result
+              fixtureResult = stableResult
             } else {
-              expect(result).toEqual(fixtureResult)
+              expect(stableResult).toEqual(fixtureResult)
             }
           }
         }
