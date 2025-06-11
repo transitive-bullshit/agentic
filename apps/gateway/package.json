@@ -40,19 +40,19 @@
     "@hono/zod-validator": "catalog:",
     "@modelcontextprotocol/sdk": "catalog:",
     "@sentry/cloudflare": "catalog:",
-    "agents": "^0.0.95",
+    "agents": "catalog:",
     "fast-content-type-parse": "catalog:",
     "hono": "catalog:",
     "ky": "catalog:",
     "plur": "catalog:",
-    "sort-keys": "^5.1.0",
+    "sort-keys": "catalog:",
     "stripe": "catalog:",
     "type-fest": "catalog:"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "catalog:",
     "@edge-runtime/vm": "catalog:",
-    "@sentry/cli": "^2.46.0",
+    "@sentry/cli": "catalog:",
     "wrangler": "catalog:"
   }
 }

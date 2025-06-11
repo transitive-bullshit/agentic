@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "catalog:",
-    "fastmcp": "^2.2.2",
+    "fastmcp": "catalog:",
     "zod": "catalog:"
   }
 }
