@@ -176,7 +176,7 @@ export async function resolveOriginToolCall({
       schema: tool.inputSchema,
       data: args,
       errorPrefix: `Invalid request parameters for tool "${tool.name}"`,
-      strictAdditionalProperties: false
+      strictAdditionalProperties: toolConfig?.additionalProperties === false
     })
 
     const originStartTimeMs = Date.now()
@@ -209,6 +209,8 @@ export async function resolveOriginToolCall({
         },
         waitUntil
       })
+
+      // Fetch the origin response without caching (useful for debugging)
       // const originResponse = await fetch(originRequest)
 
       const cacheStatus =

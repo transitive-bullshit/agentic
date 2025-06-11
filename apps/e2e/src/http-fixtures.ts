@@ -201,12 +201,12 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
           method: 'POST',
           json: {
             postId: 1,
-            // additional json body params should throw an error
+            // additional json body params are allowed by default
             foo: 'bar'
           }
         },
         response: {
-          status: 400
+          status: 200
         }
       },
       {
@@ -214,8 +214,38 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
         request: {
           searchParams: {
             postId: 1,
-            // additional search params should throw an error
+            // additional search params should allowed by default
             foo: 'bar'
+          }
+        },
+        response: {
+          status: 200
+        }
+      },
+      {
+        path: '@dev/test-everything-openapi/strict_additional_properties',
+        request: {
+          method: 'POST',
+          json: {
+            foo: 'bar',
+            // additional json body params should throw an error if the tool
+            // config has `additionalProperties: false`
+            extra: 'nala'
+          }
+        },
+        response: {
+          status: 400
+        }
+      },
+      {
+        path: '@dev/test-everything-openapi/strict_additional_properties',
+        request: {
+          method: 'GET',
+          searchParams: {
+            foo: 'bar',
+            // additional search params should throw an error if the tool
+            // config has `additionalProperties: false`
+            extra: 'nala'
           }
         },
         response: {
@@ -482,7 +512,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
     compareResponseBodies: true,
     fixtures: [
       {
-        path: '@dev/test-everything-openapi@390e70bf/pure',
+        path: '@dev/test-everything-openapi/pure',
         request: {
           method: 'POST',
           json: {
@@ -503,7 +533,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
       },
       {
         // second request should hit the cache
-        path: '@dev/test-everything-openapi@390e70bf/pure',
+        path: '@dev/test-everything-openapi/pure',
         request: {
           method: 'POST',
           json: {

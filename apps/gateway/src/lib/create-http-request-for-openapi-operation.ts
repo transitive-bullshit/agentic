@@ -1,6 +1,7 @@
 import type {
   AdminDeployment,
-  OpenAPIToolOperation
+  OpenAPIToolOperation,
+  ToolConfig
 } from '@agentic/platform-types'
 import { assert } from '@agentic/platform-core'
 
@@ -10,12 +11,14 @@ export async function createHttpRequestForOpenAPIOperation({
   toolCallArgs,
   operation,
   deployment,
-  request
+  request,
+  toolConfig
 }: {
   toolCallArgs: ToolCallArgs
   operation: OpenAPIToolOperation
   deployment: AdminDeployment
   request?: Request
+  toolConfig?: ToolConfig
 }): Promise<Request> {
   assert(toolCallArgs, 500, 'Tool args are required')
   assert(
@@ -44,16 +47,20 @@ export async function createHttpRequestForOpenAPIOperation({
     'Cookie parameters for OpenAPI operations are not yet supported. If you need cookie parameter support, please contact support@agentic.so.'
   )
 
-  // TODO: Make this more efficient...
-  const extraArgs = Object.keys(toolCallArgs).filter((key) => {
-    if (bodyParams.some(([paramKey]) => paramKey === key)) return false
-    if (formDataParams.some(([paramKey]) => paramKey === key)) return false
-    if (headerParams.some(([paramKey]) => paramKey === key)) return false
-    if (queryParams.some(([paramKey]) => paramKey === key)) return false
-    if (pathParams.some(([paramKey]) => paramKey === key)) return false
-    if (cookieParams.some(([paramKey]) => paramKey === key)) return false
-    return true
-  })
+  const extraArgs =
+    toolConfig?.additionalProperties === false
+      ? []
+      : // TODO: Make this more efficient...
+        Object.keys(toolCallArgs).filter((key) => {
+          if (bodyParams.some(([paramKey]) => paramKey === key)) return false
+          if (formDataParams.some(([paramKey]) => paramKey === key))
+            return false
+          if (headerParams.some(([paramKey]) => paramKey === key)) return false
+          if (queryParams.some(([paramKey]) => paramKey === key)) return false
+          if (pathParams.some(([paramKey]) => paramKey === key)) return false
+          if (cookieParams.some(([paramKey]) => paramKey === key)) return false
+          return true
+        })
   const extraArgsEntries = extraArgs
     .map((key) => [key, toolCallArgs[key]])
     .filter(([, value]) => value !== undefined)

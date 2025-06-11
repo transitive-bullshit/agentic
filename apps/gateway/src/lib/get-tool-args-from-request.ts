@@ -28,13 +28,17 @@ export async function getToolArgsFromRequest(
       new URL(request.url).searchParams.entries()
     )
 
+    const toolConfig = deployment.toolConfigs.find(
+      (toolConfig) => toolConfig.name === tool.name
+    )
+
     // Validate incoming request params against the tool's input schema.
     const incomingRequestArgs = cfValidateJsonSchema<Record<string, any>>({
       schema: tool.inputSchema,
       data: incomingRequestArgsRaw,
       errorPrefix: `Invalid request parameters for tool "${tool.name}"`,
       coerce: true,
-      strictAdditionalProperties: false
+      strictAdditionalProperties: toolConfig?.additionalProperties === false
     })
 
     return incomingRequestArgs
