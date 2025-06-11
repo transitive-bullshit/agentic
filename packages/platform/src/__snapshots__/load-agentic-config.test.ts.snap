@@ -54,7 +54,20 @@ exports[`loadAgenticConfig > basic-openapi 1`] = `
       "slug": "free",
     },
   ],
-  "toolConfigs": [],
+  "toolConfigs": [
+    {
+      "enabled": true,
+      "name": "get_posts",
+      "pure": true,
+      "reportUsage": true,
+    },
+    {
+      "enabled": true,
+      "name": "get_post",
+      "pure": true,
+      "reportUsage": true,
+    },
+  ],
   "version": undefined,
 }
 `;
@@ -252,6 +265,7 @@ exports[`loadAgenticConfig > pricing-custom-0 1`] = `
         {
           "billingScheme": "per_unit",
           "rateLimit": {
+            "async": true,
             "interval": 2592000,
             "maxPerInterval": 1000,
           },
@@ -274,6 +288,7 @@ exports[`loadAgenticConfig > pricing-custom-0 1`] = `
         {
           "billingScheme": "per_unit",
           "rateLimit": {
+            "async": true,
             "interval": 2592000,
             "maxPerInterval": 1500,
           },
@@ -409,6 +424,7 @@ exports[`loadAgenticConfig > pricing-pay-as-you-go 1`] = `
         {
           "billingScheme": "per_unit",
           "rateLimit": {
+            "async": true,
             "interval": 86400,
             "maxPerInterval": 20,
           },

@@ -8,5 +8,4 @@ export const envSchema = z.object({
 
 export type Env = z.infer<typeof envSchema>
 
-// eslint-disable-next-line no-process-env
 export const env = envSchema.parse(process.env)
