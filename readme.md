@@ -36,7 +36,7 @@
   - openapi-kitchen-sink
   - mcp-kitchen-sink
   - how to handle binary bodies and responses?
-  - add support for `immutable` in `toolConfigs`
+  - `recordToolCallUsage` in `finally` block of http flow
   - improve logger vs console for non-hono path and util methods
 - **Public MCP server interface**
   - how does oauth work with this flow?
