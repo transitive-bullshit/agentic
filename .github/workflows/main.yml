@@ -25,6 +25,8 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'pnpm'
 
+      - run: pnpm install --frozen-lockfile --strict-peer-dependencies
+
       - name: Cache turbo build setup
         uses: actions/cache@v4
         with:
@@ -33,6 +35,5 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-${{ matrix.node-version }}-turbo-
 
-      - run: pnpm install --frozen-lockfile --strict-peer-dependencies
       - run: pnpm build
       - run: pnpm test
