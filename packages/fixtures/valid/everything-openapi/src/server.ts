@@ -3,8 +3,16 @@ import { OpenAPIHono } from '@hono/zod-openapi'
 import { logger as honoLogger } from 'hono/logger'
 
 import { initExitHooks } from './exit-hooks'
+import { registerCustomCacheControlTool } from './routes/custom-cache-control-tool'
+import { registerCustomRateLimitTool } from './routes/custom-rate-limit-tool'
+import { registerDisabledForFreePlanTool } from './routes/disabled-for-free-plan-tool'
+import { registerDisabledRateLimitTool } from './routes/disabled-rate-limit-tool'
+import { registerDisabledTool } from './routes/disabled-tool'
+import { registerEcho } from './routes/echo'
 import { registerGetUser } from './routes/get-user'
 import { registerHealthCheck } from './routes/health-check'
+import { registerNoStoreCacheControlTool } from './routes/no-store-cache-control-tool'
+import { registerPure } from './routes/pure'
 
 export const app = new OpenAPIHono()
 
@@ -12,6 +20,14 @@ app.use(honoLogger())
 
 registerHealthCheck(app)
 registerGetUser(app)
+registerDisabledTool(app)
+registerDisabledForFreePlanTool(app)
+registerEcho(app)
+registerPure(app)
+registerCustomCacheControlTool(app)
+registerNoStoreCacheControlTool(app)
+registerCustomRateLimitTool(app)
+registerDisabledRateLimitTool(app)
 
 app.doc31('/docs', {
   openapi: '3.1.0',
