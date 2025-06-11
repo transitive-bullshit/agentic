@@ -9,7 +9,7 @@ export default defineConfig({
   },
   toolConfigs: [
     {
-      name: 'getUser',
+      name: 'get_user',
       enabled: true,
       pure: true,
       // cacheControl: 'no-cache',
@@ -23,11 +23,11 @@ export default defineConfig({
       }
     },
     {
-      name: 'disabledTool',
+      name: 'disabled_tool',
       enabled: false
     },
     {
-      name: 'disabledForFreePlanTool',
+      name: 'disabled_for_free_plan_tool',
       pricingPlanOverridesMap: {
         free: {
           enabled: false
@@ -35,35 +35,35 @@ export default defineConfig({
       }
     },
     {
-      name: 'pureTool',
+      name: 'pure',
       pure: true
     },
     {
-      name: 'unpureToolMarkedPure',
+      name: 'unpure_marked_pure',
       pure: true
     },
     {
-      name: 'customCacheControlTool',
+      name: 'custom_cache_control_tool',
       cacheControl:
         'public, max-age=7200, s-maxage=7200, stale-while-revalidate=3600'
     },
     {
-      name: 'noCacheCacheControlTool',
+      name: 'no_cache_cache_control_tool',
       cacheControl: 'no-cache'
     },
     {
-      name: 'noStoreCacheControlTool',
+      name: 'no_store_cache_control_tool',
       cacheControl: 'no-store'
     },
     {
-      name: 'customRateLimitTool',
+      name: 'custom_rate_limit_tool',
       rateLimit: {
         interval: '30s',
         maxPerInterval: 10
       }
     },
     {
-      name: 'disabledRateLimitTool',
+      name: 'disabled_rate_limit_tool',
       rateLimit: null
     }
   ]

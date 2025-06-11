@@ -53,6 +53,19 @@ export async function validateOpenAPISpec<
     redoclyConfig = await getDefaultRedoclyConfig()
   }
 
+  if (
+    typeof source === 'string' &&
+    (source.startsWith('https://') ||
+      source.startsWith('http://') ||
+      source.startsWith('//'))
+  ) {
+    try {
+      source = new URL(source)
+    } catch {
+      // Not a URL, continue
+    }
+  }
+
   let absoluteRef: string
   if (source instanceof URL) {
     absoluteRef =

@@ -22506,6 +22506,327 @@ Sed tempus felis lobortis leo pulvinar rutrum. Nam mattis velit nisl, eu condime
 }
 `;
 
+exports[`validateOpenAPISpec > remote spec https://agentic-platform-fixtures-everything.onrender.com/docs 1`] = `
+{
+  "components": {
+    "parameters": {},
+    "schemas": {
+      "User": {
+        "properties": {
+          "email": {
+            "type": "string",
+          },
+          "id": {
+            "type": "string",
+          },
+          "name": {
+            "type": "string",
+          },
+        },
+        "required": [
+          "id",
+          "name",
+          "email",
+        ],
+        "type": "object",
+      },
+    },
+  },
+  "info": {
+    "title": "OpenAPI server to test everything",
+    "version": "0.1.0",
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/custom-cache-control-tool": {
+      "post": {
+        "description": "Custom cache control tool",
+        "operationId": "customCacheControlTool",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {},
+                "type": "object",
+              },
+            },
+          },
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {},
+                  "type": "object",
+                },
+              },
+            },
+            "description": "Echoed request body",
+          },
+        },
+      },
+    },
+    "/custom-rate-limit-tool": {
+      "post": {
+        "description": "Custom rate limit tool",
+        "operationId": "customRateLimitTool",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {},
+                "type": "object",
+              },
+            },
+          },
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {},
+                  "type": "object",
+                },
+              },
+            },
+            "description": "Echoed request body",
+          },
+        },
+      },
+    },
+    "/disabled-for-free-plan-tool": {
+      "get": {
+        "description": "Disabled for free plan tool",
+        "operationId": "disabledForFreePlanTool",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                    },
+                  },
+                  "required": [
+                    "status",
+                  ],
+                  "type": "object",
+                },
+              },
+            },
+            "description": "OK",
+          },
+        },
+      },
+    },
+    "/disabled-rate-limit-tool": {
+      "post": {
+        "description": "Disabled rate limit tool",
+        "operationId": "disabledRateLimitTool",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {},
+                "type": "object",
+              },
+            },
+          },
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {},
+                  "type": "object",
+                },
+              },
+            },
+            "description": "Echoed request body",
+          },
+        },
+      },
+    },
+    "/disabled-tool": {
+      "get": {
+        "description": "Disabled tool",
+        "operationId": "disabledTool",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                    },
+                  },
+                  "required": [
+                    "status",
+                  ],
+                  "type": "object",
+                },
+              },
+            },
+            "description": "OK",
+          },
+        },
+      },
+    },
+    "/echo": {
+      "post": {
+        "description": "Echoes the request body",
+        "operationId": "echo",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {},
+                "type": "object",
+              },
+            },
+          },
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {},
+                  "type": "object",
+                },
+              },
+            },
+            "description": "Echoed request body",
+          },
+        },
+      },
+    },
+    "/health": {
+      "get": {
+        "description": "Check if the server is healthy",
+        "operationId": "healthCheck",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                    },
+                  },
+                  "required": [
+                    "status",
+                  ],
+                  "type": "object",
+                },
+              },
+            },
+            "description": "OK",
+          },
+        },
+      },
+    },
+    "/no-store-cache-control-tool": {
+      "post": {
+        "description": "No store cache control tool",
+        "operationId": "noStoreCacheControlTool",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {},
+                "type": "object",
+              },
+            },
+          },
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {},
+                  "type": "object",
+                },
+              },
+            },
+            "description": "Echoed request body",
+          },
+        },
+      },
+    },
+    "/pure": {
+      "post": {
+        "description": "Pure tool",
+        "operationId": "pure",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {},
+                "type": "object",
+              },
+            },
+          },
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {},
+                  "type": "object",
+                },
+              },
+            },
+            "description": "Echoed request body",
+          },
+        },
+      },
+    },
+    "/users/{userId}": {
+      "get": {
+        "description": "Gets a user",
+        "operationId": "getUser",
+        "parameters": [
+          {
+            "description": "User ID",
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "schema": {
+              "type": "string",
+            },
+          },
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User",
+                },
+              },
+            },
+            "description": "A user object",
+          },
+        },
+        "tags": [
+          "users",
+        ],
+      },
+    },
+  },
+  "webhooks": {},
+}
+`;
+
 exports[`validateOpenAPISpec > security.json (file url) 1`] = `
 {
   "components": {

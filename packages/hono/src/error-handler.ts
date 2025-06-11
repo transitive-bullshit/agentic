@@ -71,7 +71,7 @@ export function errorHandler(
       }
     }
   } else {
-    logger.warn(status, message, err)
+    logger.warn(status, err)
   }
 
   if (isJsonRpcRequest) {

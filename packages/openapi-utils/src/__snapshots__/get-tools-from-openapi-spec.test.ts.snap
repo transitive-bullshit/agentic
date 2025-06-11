@@ -1609,6 +1609,262 @@ Sed tempus felis lobortis leo pulvinar rutrum. Nam mattis velit nisl, eu condime
 }
 `;
 
+exports[`getToolsFromOpenAPISpec > remote spec https://agentic-platform-fixtures-everything.onrender.com/docs 1`] = `
+{
+  "toolToOperationMap": {
+    "custom_cache_control_tool": {
+      "method": "post",
+      "operationId": "customCacheControlTool",
+      "parameterSources": {},
+      "path": "/custom-cache-control-tool",
+      "tags": undefined,
+    },
+    "custom_rate_limit_tool": {
+      "method": "post",
+      "operationId": "customRateLimitTool",
+      "parameterSources": {},
+      "path": "/custom-rate-limit-tool",
+      "tags": undefined,
+    },
+    "disabled_for_free_plan_tool": {
+      "method": "get",
+      "operationId": "disabledForFreePlanTool",
+      "parameterSources": {},
+      "path": "/disabled-for-free-plan-tool",
+      "tags": undefined,
+    },
+    "disabled_rate_limit_tool": {
+      "method": "post",
+      "operationId": "disabledRateLimitTool",
+      "parameterSources": {},
+      "path": "/disabled-rate-limit-tool",
+      "tags": undefined,
+    },
+    "disabled_tool": {
+      "method": "get",
+      "operationId": "disabledTool",
+      "parameterSources": {},
+      "path": "/disabled-tool",
+      "tags": undefined,
+    },
+    "echo": {
+      "method": "post",
+      "operationId": "echo",
+      "parameterSources": {},
+      "path": "/echo",
+      "tags": undefined,
+    },
+    "get_user": {
+      "method": "get",
+      "operationId": "getUser",
+      "parameterSources": {
+        "userId": "path",
+      },
+      "path": "/users/{userId}",
+      "tags": [
+        "users",
+      ],
+    },
+    "health_check": {
+      "method": "get",
+      "operationId": "healthCheck",
+      "parameterSources": {},
+      "path": "/health",
+      "tags": undefined,
+    },
+    "no_store_cache_control_tool": {
+      "method": "post",
+      "operationId": "noStoreCacheControlTool",
+      "parameterSources": {},
+      "path": "/no-store-cache-control-tool",
+      "tags": undefined,
+    },
+    "pure": {
+      "method": "post",
+      "operationId": "pure",
+      "parameterSources": {},
+      "path": "/pure",
+      "tags": undefined,
+    },
+  },
+  "tools": [
+    {
+      "description": "Check if the server is healthy",
+      "inputSchema": {
+        "properties": {},
+        "required": [],
+        "type": "object",
+      },
+      "name": "health_check",
+      "outputSchema": {
+        "properties": {
+          "status": {
+            "type": "string",
+          },
+        },
+        "required": [
+          "status",
+        ],
+        "type": "object",
+      },
+    },
+    {
+      "description": "Gets a user",
+      "inputSchema": {
+        "properties": {
+          "userId": {
+            "description": "User ID",
+            "type": "string",
+          },
+        },
+        "required": [
+          "userId",
+        ],
+        "type": "object",
+      },
+      "name": "get_user",
+      "outputSchema": {
+        "properties": {
+          "email": {
+            "type": "string",
+          },
+          "id": {
+            "type": "string",
+          },
+          "name": {
+            "type": "string",
+          },
+        },
+        "required": [
+          "id",
+          "name",
+          "email",
+        ],
+        "type": "object",
+      },
+    },
+    {
+      "description": "Disabled tool",
+      "inputSchema": {
+        "properties": {},
+        "required": [],
+        "type": "object",
+      },
+      "name": "disabled_tool",
+      "outputSchema": {
+        "properties": {
+          "status": {
+            "type": "string",
+          },
+        },
+        "required": [
+          "status",
+        ],
+        "type": "object",
+      },
+    },
+    {
+      "description": "Disabled for free plan tool",
+      "inputSchema": {
+        "properties": {},
+        "required": [],
+        "type": "object",
+      },
+      "name": "disabled_for_free_plan_tool",
+      "outputSchema": {
+        "properties": {
+          "status": {
+            "type": "string",
+          },
+        },
+        "required": [
+          "status",
+        ],
+        "type": "object",
+      },
+    },
+    {
+      "description": "Echoes the request body",
+      "inputSchema": {
+        "properties": {},
+        "required": [],
+        "type": "object",
+      },
+      "name": "echo",
+      "outputSchema": {
+        "properties": {},
+        "type": "object",
+      },
+    },
+    {
+      "description": "Pure tool",
+      "inputSchema": {
+        "properties": {},
+        "required": [],
+        "type": "object",
+      },
+      "name": "pure",
+      "outputSchema": {
+        "properties": {},
+        "type": "object",
+      },
+    },
+    {
+      "description": "Custom cache control tool",
+      "inputSchema": {
+        "properties": {},
+        "required": [],
+        "type": "object",
+      },
+      "name": "custom_cache_control_tool",
+      "outputSchema": {
+        "properties": {},
+        "type": "object",
+      },
+    },
+    {
+      "description": "No store cache control tool",
+      "inputSchema": {
+        "properties": {},
+        "required": [],
+        "type": "object",
+      },
+      "name": "no_store_cache_control_tool",
+      "outputSchema": {
+        "properties": {},
+        "type": "object",
+      },
+    },
+    {
+      "description": "Custom rate limit tool",
+      "inputSchema": {
+        "properties": {},
+        "required": [],
+        "type": "object",
+      },
+      "name": "custom_rate_limit_tool",
+      "outputSchema": {
+        "properties": {},
+        "type": "object",
+      },
+    },
+    {
+      "description": "Disabled rate limit tool",
+      "inputSchema": {
+        "properties": {},
+        "required": [],
+        "type": "object",
+      },
+      "name": "disabled_rate_limit_tool",
+      "outputSchema": {
+        "properties": {},
+        "type": "object",
+      },
+    },
+  ],
+}
+`;
+
 exports[`getToolsFromOpenAPISpec > security.json 1`] = `
 {
   "toolToOperationMap": {

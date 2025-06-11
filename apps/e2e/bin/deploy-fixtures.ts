@@ -8,6 +8,7 @@ import pMap from 'p-map'
 import { client } from '../src'
 
 const fixtures = [
+  // TODO: re-add these
   // 'basic-raw-free-ts',
   // 'basic-raw-free-json',
   // 'pricing-freemium',
@@ -15,8 +16,9 @@ const fixtures = [
   // 'pricing-3-plans',
   // 'pricing-monthly-annual',
   // 'pricing-custom-0',
-  'basic-openapi',
-  'basic-mcp'
+  // 'basic-openapi',
+  // 'basic-mcp',
+  'everything-openapi'
 ]
 
 const fixturesDir = path.join(

@@ -28,6 +28,16 @@ const fixturesDir = path.join(
 )
 
 describe('getToolsFromOpenAPISpec', () => {
+  test('remote spec https://agentic-platform-fixtures-everything.onrender.com/docs', async () => {
+    const source =
+      'https://agentic-platform-fixtures-everything.onrender.com/docs'
+    const spec = await validateOpenAPISpec(source, {
+      dereference: true
+    })
+    const result = await getToolsFromOpenAPISpec(spec)
+    expect(result).toMatchSnapshot()
+  })
+
   for (const fixture of validFixtures) {
     test(
       fixture,

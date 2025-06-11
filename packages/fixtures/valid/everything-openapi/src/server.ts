@@ -11,8 +11,10 @@ import { registerDisabledTool } from './routes/disabled-tool'
 import { registerEcho } from './routes/echo'
 import { registerGetUser } from './routes/get-user'
 import { registerHealthCheck } from './routes/health-check'
+import { registerNoCacheCacheControlTool } from './routes/no-cache-cache-control-tool'
 import { registerNoStoreCacheControlTool } from './routes/no-store-cache-control-tool'
 import { registerPure } from './routes/pure'
+import { registerUnpureMarkedPure } from './routes/unpure-marked-pure'
 
 export const app = new OpenAPIHono()
 
@@ -24,14 +26,21 @@ registerDisabledTool(app)
 registerDisabledForFreePlanTool(app)
 registerEcho(app)
 registerPure(app)
+registerUnpureMarkedPure(app)
 registerCustomCacheControlTool(app)
 registerNoStoreCacheControlTool(app)
+registerNoCacheCacheControlTool(app)
 registerCustomRateLimitTool(app)
 registerDisabledRateLimitTool(app)
 
 app.doc31('/docs', {
   openapi: '3.1.0',
-  info: { title: 'OpenAPI server to test everything', version: '0.1.0' }
+  info: {
+    title: 'OpenAPI server everything',
+    description:
+      "OpenAPI kitchen sink server meant for testing Agentic's origin OpenAPI adapter and ToolConfig features.",
+    version: '0.1.0'
+  }
 })
 
 const port = process.env.PORT ? Number.parseInt(process.env.PORT) : 3081

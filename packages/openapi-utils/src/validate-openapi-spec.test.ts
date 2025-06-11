@@ -67,6 +67,13 @@ afterAll(async () => {
 })
 
 describe('validateOpenAPISpec', () => {
+  test('remote spec https://agentic-platform-fixtures-everything.onrender.com/docs', async () => {
+    const source =
+      'https://agentic-platform-fixtures-everything.onrender.com/docs'
+    const result = await validateOpenAPISpec(source)
+    expect(result).toMatchSnapshot()
+  })
+
   for (const fixture of fixtures) {
     test(
       `${fixture} (string)`,
