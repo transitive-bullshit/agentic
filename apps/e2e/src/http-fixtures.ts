@@ -617,6 +617,9 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
         }
       },
       {
+        // compareResponseBodies should result in the same cached response body,
+        // even though the origin would return a different `now` value if it
+        // weren't marked `pure`.
         path: '@dev/test-everything-openapi/unpure_marked_pure',
         request: {
           method: 'POST',
@@ -629,9 +632,6 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
             'cf-cache-status': 'HIT'
           }
         }
-        // compareResponseBodies should result in the same cached response body,
-        // even though the origin would return a different `now` value if it
-        // weren't marked `pure`.
       }
     ]
   }
