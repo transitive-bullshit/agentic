@@ -453,7 +453,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
     ]
   },
   {
-    title: 'HTTP => MCP origin basic "echo" tool call success',
+    title: 'HTTP => MCP origin basic "echo" tool',
     snapshot: false,
     fixtures: [
       {

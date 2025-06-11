@@ -384,5 +384,98 @@ export const fixtureSuites: MCPE2ETestFixtureSuite[] = [
         }
       }
     ]
+  },
+  {
+    title: 'MCP => MCP origin basic "echo" tool',
+    path: '@dev/test-basic-mcp/mcp',
+    fixtures: [
+      {
+        request: {
+          name: 'echo',
+          args: {
+            nala: 'kitten',
+            num: 123,
+            now
+          }
+        },
+        response: {
+          isError: false,
+          content: [
+            {
+              type: 'text',
+              text: JSON.stringify({ nala: 'kitten', num: 123, now })
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    title: 'MCP => MCP origin basic "pure" tool',
+    path: '@dev/test-basic-mcp/mcp',
+    fixtures: [
+      {
+        request: {
+          name: 'echo',
+          args: {
+            nala: 'kitten',
+            foo: 'bar'
+          },
+          _meta: {
+            agentic: {
+              headers: {
+                'cache-control':
+                  'public, max-age=31560000, s-maxage=31560000, stale-while-revalidate=3600'
+              }
+            }
+          }
+        },
+        response: {
+          isError: false,
+          content: [
+            {
+              type: 'text',
+              text: JSON.stringify({
+                nala: 'kitten',
+                foo: 'bar'
+              })
+            }
+          ]
+        }
+      },
+      {
+        // second request should hit the cache
+        request: {
+          name: 'echo',
+          args: {
+            nala: 'kitten',
+            foo: 'bar'
+          },
+          _meta: {
+            agentic: {
+              headers: {
+                'cache-control':
+                  'public, max-age=31560000, s-maxage=31560000, stale-while-revalidate=3600'
+              }
+            }
+          }
+        },
+        response: {
+          isError: false,
+          content: [
+            {
+              type: 'text',
+              text: JSON.stringify({
+                nala: 'kitten',
+                foo: 'bar'
+              })
+            }
+          ],
+          _agenticMeta: {
+            cacheStatus: 'HIT'
+          }
+        }
+      }
+    ]
   }
 ]
