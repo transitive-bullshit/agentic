@@ -107,7 +107,7 @@ export const toolConfigSchema = z
      *
      * @default true
      */
-    enabled: z.boolean().optional().default(true),
+    enabled: z.boolean().optional(),
 
     /**
      * Whether this tool's output is deterministic and idempotent given the
@@ -122,7 +122,7 @@ export const toolConfigSchema = z
      *
      * @default false
      */
-    pure: z.boolean().optional().default(false),
+    pure: z.boolean().optional(),
 
     /**
      * A custom `Cache-Control` header to use for caching this tool's responses.
@@ -153,7 +153,7 @@ export const toolConfigSchema = z
      *
      * @default true
      */
-    reportUsage: z.boolean().optional().default(true),
+    reportUsage: z.boolean().optional(),
 
     /**
      * Customize the default `requests`-based rate-limiting for this tool.
@@ -177,7 +177,7 @@ export const toolConfigSchema = z
      *
      * @default true
      */
-    inputSchemaAdditionalProperties: z.boolean().optional().default(true),
+    inputSchemaAdditionalProperties: z.boolean().optional(),
 
     /**
      * Whether to allow additional properties in the tool's output schema.
@@ -189,7 +189,7 @@ export const toolConfigSchema = z
      *
      * @default true
      */
-    outputSchemaAdditionalProperties: z.boolean().optional().default(true),
+    outputSchemaAdditionalProperties: z.boolean().optional(),
 
     /**
      * Allows you to override this tool's behavior or disable it entirely for

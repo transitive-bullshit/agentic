@@ -128,7 +128,10 @@ export const fixtureSuites: MCPE2ETestFixtureSuite[] = [
               type: 'text',
               text: JSON.stringify({ nala: 'kitten', num: 123, now })
             }
-          ]
+          ],
+          _agenticMeta: {
+            cacheStatus: 'DYNAMIC'
+          }
         }
       },
       {
@@ -150,7 +153,10 @@ export const fixtureSuites: MCPE2ETestFixtureSuite[] = [
                 now: `${now}`
               })
             }
-          ]
+          ],
+          _agenticMeta: {
+            cacheStatus: 'DYNAMIC'
+          }
         }
       }
     ]
@@ -392,6 +398,7 @@ export const fixtureSuites: MCPE2ETestFixtureSuite[] = [
   {
     title: 'MCP => MCP origin basic "echo" tool',
     path: '@dev/test-basic-mcp/mcp',
+    stableSnapshot: false,
     fixtures: [
       {
         request: {
@@ -417,6 +424,7 @@ export const fixtureSuites: MCPE2ETestFixtureSuite[] = [
   {
     title: 'MCP => OpenAPI origin everything "pure" tool',
     path: '@dev/test-everything-openapi/mcp',
+    compareResponseBodies: true,
     fixtures: [
       {
         request: {
@@ -436,15 +444,10 @@ export const fixtureSuites: MCPE2ETestFixtureSuite[] = [
         },
         response: {
           isError: false,
-          content: [
-            {
-              type: 'text',
-              text: JSON.stringify({
-                nala: 'kitten',
-                foo: 'bar'
-              })
-            }
-          ]
+          structuredContent: {
+            nala: 'kitten',
+            foo: 'bar'
+          }
         }
       },
       {
@@ -466,15 +469,10 @@ export const fixtureSuites: MCPE2ETestFixtureSuite[] = [
         },
         response: {
           isError: false,
-          content: [
-            {
-              type: 'text',
-              text: JSON.stringify({
-                nala: 'kitten',
-                foo: 'bar'
-              })
-            }
-          ],
+          structuredContent: {
+            nala: 'kitten',
+            foo: 'bar'
+          },
           _agenticMeta: {
             cacheStatus: 'HIT'
           }
@@ -514,7 +512,7 @@ export const fixtureSuites: MCPE2ETestFixtureSuite[] = [
         },
         response: {
           isError: false,
-          content: [{ type: 'text', text: JSON.stringify({}) }]
+          structuredContent: {}
         }
       }
     ]
@@ -523,7 +521,6 @@ export const fixtureSuites: MCPE2ETestFixtureSuite[] = [
     title: 'MCP => OpenAPI origin everything "unpure_marked_pure" tool',
     path: '@dev/test-everything-openapi/mcp',
     compareResponseBodies: true,
-    only: true,
     fixtures: [
       {
         request: {
@@ -535,7 +532,7 @@ export const fixtureSuites: MCPE2ETestFixtureSuite[] = [
         response: {
           isError: false,
           validate: (result) => {
-            const body = JSON.parse(result.content[0].text)
+            const body = result.structuredContent
             expect(body?.nala).toEqual('cat')
             expect(typeof body.now).toBe('number')
             expect(body.now).toBeGreaterThan(0)

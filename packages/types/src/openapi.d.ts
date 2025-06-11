@@ -497,18 +497,13 @@ export interface components {
         ToolConfig: {
             /** @description Agentic tool name */
             name: string;
-            /** @default true */
-            enabled: boolean;
-            /** @default false */
-            pure: boolean;
+            enabled?: boolean;
+            pure?: boolean;
             cacheControl?: string;
-            /** @default true */
-            reportUsage: boolean;
+            reportUsage?: boolean;
             rateLimit?: components["schemas"]["RateLimit"] | null;
-            /** @default true */
-            inputSchemaAdditionalProperties: boolean;
-            /** @default true */
-            outputSchemaAdditionalProperties: boolean;
+            inputSchemaAdditionalProperties?: boolean;
+            outputSchemaAdditionalProperties?: boolean;
             /** @description Allows you to override this tool's behavior or disable it entirely for different pricing plans. This is a map of PricingPlan slug to PricingPlanToolOverrides for that plan. */
             pricingPlanOverridesMap?: {
                 [key: string]: components["schemas"]["PricingPlanToolOverride"];

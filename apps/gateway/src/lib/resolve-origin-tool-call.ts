@@ -129,6 +129,7 @@ export async function resolveOriginToolCall({
     const pricingPlanToolOverride = pricingPlan
       ? toolConfig.pricingPlanOverridesMap?.[pricingPlan.slug]
       : undefined
+    const isToolConfigEnabled = toolConfig.enabled ?? true
 
     // Check if this tool is configured for pricing-plan-specific overrides
     // which take precedence over the tool's default behavior.
@@ -136,11 +137,11 @@ export async function resolveOriginToolCall({
       if (pricingPlanToolOverride.enabled !== undefined) {
         assert(
           pricingPlanToolOverride.enabled,
-          toolConfig.enabled ? 403 : 404,
+          isToolConfigEnabled ? 403 : 404,
           `Tool "${tool.name}" is disabled for pricing plan "${pricingPlan.slug}"`
         )
       } else {
-        assert(toolConfig.enabled, 404, `Tool "${tool.name}" is disabled`)
+        assert(isToolConfigEnabled, 404, `Tool "${tool.name}" is disabled`)
       }
 
       if (pricingPlanToolOverride.reportUsage !== undefined) {
@@ -152,7 +153,7 @@ export async function resolveOriginToolCall({
         rateLimit = pricingPlanToolOverride.rateLimit as RateLimit
       }
     } else {
-      assert(toolConfig.enabled, 404, `Tool "${tool.name}" is disabled`)
+      assert(isToolConfigEnabled, 404, `Tool "${tool.name}" is disabled`)
     }
   } else {
     if (cacheControl) {

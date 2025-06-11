@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`HTTP => MCP origin basic "add" tool call success > 5.0: POST @dev/test-basic-mcp/add 1`] = `
+exports[`HTTP => MCP origin basic "add" tool > 5.0: POST @dev/test-basic-mcp/add 1`] = `
 [
   {
     "text": "42",
@@ -9,7 +9,7 @@ exports[`HTTP => MCP origin basic "add" tool call success > 5.0: POST @dev/test-
 ]
 `;
 
-exports[`HTTP => MCP origin basic "add" tool call success > 5.1: GET @dev/test-basic-mcp/add 1`] = `
+exports[`HTTP => MCP origin basic "add" tool > 5.1: GET @dev/test-basic-mcp/add 1`] = `
 [
   {
     "text": "42",

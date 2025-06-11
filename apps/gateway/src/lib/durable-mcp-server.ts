@@ -71,7 +71,10 @@ export class DurableMcpServerBase extends McpAgent<
             return undefined
           }
 
-          if (!pricingPlanToolConfig?.enabled && !toolConfig.enabled) {
+          if (
+            pricingPlanToolConfig?.enabled !== true &&
+            toolConfig.enabled === false
+          ) {
             // Tool is disabled / hidden for all pricing plans
             return undefined
           }

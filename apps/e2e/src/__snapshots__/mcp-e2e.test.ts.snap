@@ -1,49 +1,5 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`MCP => MCP origin basic "echo" tool > 10.0: @dev/test-basic-mcp/mcp echo 1`] = `
-{
-  "content": [
-    {
-      "text": "{"nala":"kitten","num":123,"now":1749678890348}",
-      "type": "text",
-    },
-  ],
-}
-`;
-
-exports[`MCP => MCP origin basic "echo" tool with empty body > 13.0: @dev/test-basic-mcp/mcp echo 1`] = `
-{
-  "content": [
-    {
-      "text": "{}",
-      "type": "text",
-    },
-  ],
-}
-`;
-
-exports[`MCP => MCP origin basic "pure" tool > 11.0: @dev/test-basic-mcp/mcp echo 1`] = `
-{
-  "content": [
-    {
-      "text": "{"nala":"kitten","foo":"bar"}",
-      "type": "text",
-    },
-  ],
-}
-`;
-
-exports[`MCP => MCP origin basic "pure" tool > 11.1: @dev/test-basic-mcp/mcp echo 1`] = `
-{
-  "content": [
-    {
-      "text": "{"nala":"kitten","foo":"bar"}",
-      "type": "text",
-    },
-  ],
-}
-`;
-
 exports[`MCP => OpenAPI origin basic @ 010332cf get_post success  > 2.0: @dev/test-basic-openapi@010332cf/mcp get_post 1`] = `
 {
   "content": [],
@@ -200,6 +156,58 @@ nostrum rerum est autem sunt rem eveniet architecto",
     "id": 1,
     "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
     "userId": 1,
+  },
+}
+`;
+
+exports[`MCP => OpenAPI origin everything "echo" tool with empty body > 13.0: @dev/test-everything-openapi/mcp echo 1`] = `
+{
+  "content": [],
+  "isError": false,
+  "structuredContent": {},
+}
+`;
+
+exports[`MCP => OpenAPI origin everything "pure" tool > 11.0: @dev/test-everything-openapi/mcp echo 1`] = `
+{
+  "content": [],
+  "isError": false,
+  "structuredContent": {
+    "foo": "bar",
+    "nala": "kitten",
+  },
+}
+`;
+
+exports[`MCP => OpenAPI origin everything "pure" tool > 11.1: @dev/test-everything-openapi/mcp echo 1`] = `
+{
+  "content": [],
+  "isError": false,
+  "structuredContent": {
+    "foo": "bar",
+    "nala": "kitten",
+  },
+}
+`;
+
+exports[`MCP => OpenAPI origin everything "unpure_marked_pure" tool > 14.0: @dev/test-everything-openapi/mcp unpure_marked_pure 1`] = `
+{
+  "content": [],
+  "isError": false,
+  "structuredContent": {
+    "nala": "cat",
+    "now": 1749674829923,
+  },
+}
+`;
+
+exports[`MCP => OpenAPI origin everything "unpure_marked_pure" tool > 14.1: @dev/test-everything-openapi/mcp unpure_marked_pure 1`] = `
+{
+  "content": [],
+  "isError": false,
+  "structuredContent": {
+    "nala": "cat",
+    "now": 1749674829923,
   },
 }
 `;
