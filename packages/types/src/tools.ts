@@ -36,7 +36,10 @@ export const jsonSchemaObjectSchema = z
     type: z.literal('object'),
     // TODO: improve this schema
     properties: z.record(z.string(), z.any()).optional(),
-    required: z.array(z.string()).optional()
+    required: z.array(z.string()).optional(),
+    additionalProperties: z
+      .union([z.boolean(), z.record(z.string(), z.any())])
+      .optional()
   })
   .passthrough()
   .openapi('JsonSchemaObject')
@@ -156,6 +159,16 @@ export const toolConfigSchema = z
      * @default undefined
      */
     rateLimit: z.union([rateLimitSchema, z.null()]).optional(),
+
+    /**
+     * Whether to allow additional properties in the tool's input schema.
+     *
+     * The default MCP spec allows additional properties. Set this to `false` if
+     * you want your tool to be more strict.
+     *
+     * @default true
+     */
+    additionalProperties: z.boolean().optional().default(true),
 
     /**
      * Allows you to override this tool's behavior or disable it entirely for

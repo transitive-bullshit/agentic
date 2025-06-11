@@ -64,6 +64,7 @@ test('isCacheControlPubliclyCacheable false', () => {
   expect(isCacheControlPubliclyCacheable('no-store')).toBe(false)
   expect(isCacheControlPubliclyCacheable('no-cache')).toBe(false)
   expect(isCacheControlPubliclyCacheable('private')).toBe(false)
+  expect(isCacheControlPubliclyCacheable('max-age=0')).toBe(false)
   expect(isCacheControlPubliclyCacheable('private, max-age=3600')).toBe(false)
   expect(isCacheControlPubliclyCacheable('private, s-maxage=3600')).toBe(false)
   expect(

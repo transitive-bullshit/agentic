@@ -53,13 +53,14 @@ app.use(responseTime)
 
 app.all(async (ctx) => {
   const waitUntil = ctx.executionCtx.waitUntil.bind(ctx.executionCtx)
+  const isCachingEnabled = isRequestPubliclyCacheable(ctx.req.raw)
   ctx.set('cache', caches.default)
   ctx.set(
     'client',
     createAgenticClient({
       env: ctx.env,
       cache: caches.default,
-      isCachingEnabled: isRequestPubliclyCacheable(ctx.req.raw),
+      isCachingEnabled,
       waitUntil
     })
   )

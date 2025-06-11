@@ -475,5 +475,54 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
         }
       }
     ]
+  },
+  {
+    title: 'OpenAPI kitchen sink pure tool',
+    sequential: true,
+    compareResponseBodies: true,
+    fixtures: [
+      {
+        path: '@dev/test-everything-openapi@390e70bf/pure',
+        request: {
+          method: 'POST',
+          json: {
+            nala: 'kitten',
+            foo: 'bar'
+          }
+        },
+        response: {
+          headers: {
+            'cache-control':
+              'public, max-age=31560000, s-maxage=31560000, stale-while-revalidate=3600'
+          },
+          body: {
+            nala: 'kitten',
+            foo: 'bar'
+          }
+        }
+      },
+      {
+        // second request should hit the cache
+        path: '@dev/test-everything-openapi@390e70bf/pure',
+        request: {
+          method: 'POST',
+          json: {
+            nala: 'kitten',
+            foo: 'bar'
+          }
+        },
+        response: {
+          headers: {
+            'cf-cache-status': 'HIT',
+            'cache-control':
+              'public, max-age=31560000, s-maxage=31560000, stale-while-revalidate=3600'
+          },
+          body: {
+            nala: 'kitten',
+            foo: 'bar'
+          }
+        }
+      }
+    ]
   }
 ]

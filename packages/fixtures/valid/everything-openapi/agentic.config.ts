@@ -65,6 +65,10 @@ export default defineConfig({
     {
       name: 'disabled_rate_limit_tool',
       rateLimit: null
+    },
+    {
+      name: 'strict_additional_properties',
+      additionalProperties: false
     }
   ]
 })

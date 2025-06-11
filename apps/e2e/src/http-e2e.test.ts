@@ -74,12 +74,6 @@ for (const [i, fixtureSuite] of fixtureSuites.entries()) {
           )
           expect(type).toBe(expectedContentType)
 
-          if (expectedHeaders) {
-            for (const [key, value] of Object.entries(expectedHeaders)) {
-              expect(res.headers.get(key)).toBe(value)
-            }
-          }
-
           let body: any
 
           if (type.includes('json')) {
@@ -105,6 +99,12 @@ for (const [i, fixtureSuite] of fixtureSuites.entries()) {
 
           if (snapshot) {
             expect(body).toMatchSnapshot()
+          }
+
+          if (expectedHeaders) {
+            for (const [key, value] of Object.entries(expectedHeaders)) {
+              expect(res.headers.get(key)).toBe(value)
+            }
           }
 
           if (compareResponseBodies && status >= 200 && status < 300) {

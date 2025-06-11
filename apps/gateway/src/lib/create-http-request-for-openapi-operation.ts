@@ -24,6 +24,10 @@ export async function createHttpRequestForOpenAPIOperation({
     `Internal logic error for origin adapter type "${deployment.originAdapter.type}"`
   )
 
+  const { method } = operation
+  const methodHasBody =
+    method === 'post' || method === 'put' || method === 'patch'
+
   // TODO: Make this more efficient by changing the `parameterSources` data structure
   const params = Object.entries(operation.parameterSources)
   const bodyParams = params.filter(([_key, source]) => source === 'body')
@@ -39,6 +43,20 @@ export async function createHttpRequestForOpenAPIOperation({
     500,
     'Cookie parameters for OpenAPI operations are not yet supported. If you need cookie parameter support, please contact support@agentic.so.'
   )
+
+  // TODO: Make this more efficient...
+  const extraArgs = Object.keys(toolCallArgs).filter((key) => {
+    if (bodyParams.some(([paramKey]) => paramKey === key)) return false
+    if (formDataParams.some(([paramKey]) => paramKey === key)) return false
+    if (headerParams.some(([paramKey]) => paramKey === key)) return false
+    if (queryParams.some(([paramKey]) => paramKey === key)) return false
+    if (pathParams.some(([paramKey]) => paramKey === key)) return false
+    if (cookieParams.some(([paramKey]) => paramKey === key)) return false
+    return true
+  })
+  const extraArgsEntries = extraArgs
+    .map((key) => [key, toolCallArgs[key]])
+    .filter(([, value]) => value !== undefined)
 
   const headers: Record<string, string> = {}
   if (request) {
@@ -59,31 +77,40 @@ export async function createHttpRequestForOpenAPIOperation({
   }
 
   let body: string | undefined
-  if (bodyParams.length > 0) {
-    body = JSON.stringify(
-      Object.fromEntries(
+  if (methodHasBody) {
+    if (bodyParams.length > 0 || !formDataParams.length) {
+      const bodyJson = Object.fromEntries(
         bodyParams
           .map(([key]) => [key, toolCallArgs[key]])
+          .concat(extraArgsEntries)
           // Prune undefined values. We know these aren't required fields,
           // because the incoming request params have already been validated
           // against the tool's input schema.
           .filter(([, value]) => value !== undefined)
       )
-    )
 
-    headers['content-type'] ??= 'application/json'
-  } else if (formDataParams.length > 0) {
-    // TODO: Double-check FormData usage.
-    const formData = new FormData()
-    for (const [key] of formDataParams) {
-      const value = toolCallArgs[key]
-      if (value !== undefined) {
-        formData.append(key, value)
+      body = JSON.stringify(bodyJson)
+      headers['content-type'] = 'application/json'
+      headers['content-length'] = body.length.toString()
+    } else if (formDataParams.length > 0) {
+      // TODO: Double-check FormData usage.
+      const bodyFormData = new FormData()
+
+      for (const [key] of formDataParams) {
+        const value = toolCallArgs[key]
+        if (value !== undefined) {
+          bodyFormData.append(key, value)
+        }
       }
-    }
 
-    body = formData.toString()
-    headers['content-type'] ??= 'application/x-www-form-urlencoded'
+      for (const [key, value] of extraArgsEntries) {
+        bodyFormData.append(key, value)
+      }
+
+      body = bodyFormData.toString()
+      headers['content-type'] = 'application/x-www-form-urlencoded'
+      headers['content-length'] = body.length.toString()
+    }
   }
 
   let path = operation.path
@@ -112,13 +139,20 @@ export async function createHttpRequestForOpenAPIOperation({
   for (const [key] of queryParams) {
     query.set(key, toolCallArgs[key] as string)
   }
+
+  if (!methodHasBody) {
+    for (const [key, value] of extraArgsEntries) {
+      query.set(key, value)
+    }
+  }
+
   const queryString = query.toString()
   const originRequestUrl = `${deployment.originUrl}${path}${
     queryString ? `?${queryString}` : ''
   }`
 
   return new Request(originRequestUrl, {
-    method: operation.method,
+    method: method.toUpperCase(),
     body,
     headers
   })

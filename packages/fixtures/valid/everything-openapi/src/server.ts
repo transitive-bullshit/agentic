@@ -14,6 +14,7 @@ import { registerHealthCheck } from './routes/health-check'
 import { registerNoCacheCacheControlTool } from './routes/no-cache-cache-control-tool'
 import { registerNoStoreCacheControlTool } from './routes/no-store-cache-control-tool'
 import { registerPure } from './routes/pure'
+import { registerStrictAdditionalProperties } from './routes/strict-additional-properties'
 import { registerUnpureMarkedPure } from './routes/unpure-marked-pure'
 
 export const app = new OpenAPIHono()
@@ -32,6 +33,7 @@ registerNoStoreCacheControlTool(app)
 registerNoCacheCacheControlTool(app)
 registerCustomRateLimitTool(app)
 registerDisabledRateLimitTool(app)
+registerStrictAdditionalProperties(app)
 
 app.doc31('/docs', {
   openapi: '3.1.0',

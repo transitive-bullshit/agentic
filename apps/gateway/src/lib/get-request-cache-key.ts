@@ -15,26 +15,32 @@ export async function getRequestCacheKey(
       return
     }
 
-    if (request.method === 'POST' || request.method === 'PUT') {
+    if (
+      request.method === 'POST' ||
+      request.method === 'PUT' ||
+      request.method === 'PATCH'
+    ) {
       const contentLength = Number.parseInt(
         request.headers.get('content-length') ?? '0'
       )
 
-      if (contentLength && contentLength < MAX_POST_BODY_SIZE_BYTES) {
+      if (contentLength < MAX_POST_BODY_SIZE_BYTES) {
         const { type } = contentType.safeParse(
           request.headers.get('content-type') || 'application/octet-stream'
         )
-        let hash: string
+        let hash = '___AGENTIC_CACHE_KEY_EMPTY_BODY___'
 
-        if (type.includes('json')) {
-          const bodyJson: any = await request.clone().json()
-          hash = hashObject(bodyJson)
-        } else if (type.includes('text/')) {
-          const bodyString = await request.clone().text()
-          hash = await sha256(bodyString)
-        } else {
-          const bodyBuffer = await request.clone().arrayBuffer()
-          hash = await sha256(bodyBuffer)
+        if (contentLength > 0) {
+          if (type.includes('json')) {
+            const bodyJson: any = await request.clone().json()
+            hash = hashObject(bodyJson)
+          } else if (type.includes('text/')) {
+            const bodyString = await request.clone().text()
+            hash = await sha256(bodyString)
+          } else {
+            const bodyBuffer = await request.clone().arrayBuffer()
+            hash = await sha256(bodyBuffer)
+          }
         }
 
         const cacheUrl = new URL(request.url)
@@ -56,8 +62,6 @@ export async function getRequestCacheKey(
 
         return newReq
       }
-
-      return
     } else if (request.method === 'GET' || request.method === 'HEAD') {
       const url = request.url
       const normalizedUrl = normalizeUrl(url)
@@ -80,11 +84,14 @@ export async function getRequestCacheKey(
       request.url,
       err
     )
-    return
   }
 }
 
-const requestHeaderWhitelist = new Set(['cache-control', 'mcp-session-id'])
+const requestHeaderWhitelist = new Set([
+  'cache-control',
+  'content-type',
+  'mcp-session-id'
+])
 
 function normalizeRequestHeaders(request: Request) {
   const headers = Object.fromEntries(request.headers.entries())

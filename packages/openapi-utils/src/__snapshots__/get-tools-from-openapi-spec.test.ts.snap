@@ -1672,6 +1672,13 @@ exports[`getToolsFromOpenAPISpec > remote spec https://agentic-platform-fixtures
       "path": "/health",
       "tags": undefined,
     },
+    "no_cache_cache_control_tool": {
+      "method": "post",
+      "operationId": "noCacheCacheControlTool",
+      "parameterSources": {},
+      "path": "/no-cache-cache-control-tool",
+      "tags": undefined,
+    },
     "no_store_cache_control_tool": {
       "method": "post",
       "operationId": "noStoreCacheControlTool",
@@ -1684,6 +1691,13 @@ exports[`getToolsFromOpenAPISpec > remote spec https://agentic-platform-fixtures
       "operationId": "pure",
       "parameterSources": {},
       "path": "/pure",
+      "tags": undefined,
+    },
+    "unpure_marked_pure": {
+      "method": "post",
+      "operationId": "unpure_marked_pure",
+      "parameterSources": {},
+      "path": "/unpure-marked-pure",
       "tags": undefined,
     },
   },
@@ -1810,6 +1824,26 @@ exports[`getToolsFromOpenAPISpec > remote spec https://agentic-platform-fixtures
       },
     },
     {
+      "description": "Unpure tool marked pure",
+      "inputSchema": {
+        "properties": {},
+        "required": [],
+        "type": "object",
+      },
+      "name": "unpure_marked_pure",
+      "outputSchema": {
+        "properties": {
+          "now": {
+            "type": "number",
+          },
+        },
+        "required": [
+          "now",
+        ],
+        "type": "object",
+      },
+    },
+    {
       "description": "Custom cache control tool",
       "inputSchema": {
         "properties": {},
@@ -1830,6 +1864,19 @@ exports[`getToolsFromOpenAPISpec > remote spec https://agentic-platform-fixtures
         "type": "object",
       },
       "name": "no_store_cache_control_tool",
+      "outputSchema": {
+        "properties": {},
+        "type": "object",
+      },
+    },
+    {
+      "description": "No cache cache control tool",
+      "inputSchema": {
+        "properties": {},
+        "required": [],
+        "type": "object",
+      },
+      "name": "no_cache_cache_control_tool",
       "outputSchema": {
         "properties": {},
         "type": "object",

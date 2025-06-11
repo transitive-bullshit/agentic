@@ -221,3 +221,17 @@ et est aut quod aut provident voluptas autem voluptas",
   "userId": 1,
 }
 `;
+
+exports[`OpenAPI kitchen sink pure tool > 7.0: POST @dev/test-everything-openapi@390e70bf/pure 1`] = `
+{
+  "foo": "bar",
+  "nala": "kitten",
+}
+`;
+
+exports[`OpenAPI kitchen sink pure tool > 7.1: POST @dev/test-everything-openapi@390e70bf/pure 1`] = `
+{
+  "foo": "bar",
+  "nala": "kitten",
+}
+`;

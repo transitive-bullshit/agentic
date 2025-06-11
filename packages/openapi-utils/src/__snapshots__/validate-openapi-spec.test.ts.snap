@@ -22533,7 +22533,8 @@ exports[`validateOpenAPISpec > remote spec https://agentic-platform-fixtures-eve
     },
   },
   "info": {
-    "title": "OpenAPI server to test everything",
+    "description": "OpenAPI kitchen sink server meant for testing Agentic's origin OpenAPI adapter and ToolConfig features.",
+    "title": "OpenAPI server everything",
     "version": "0.1.0",
   },
   "openapi": "3.1.0",
@@ -22732,6 +22733,35 @@ exports[`validateOpenAPISpec > remote spec https://agentic-platform-fixtures-eve
         },
       },
     },
+    "/no-cache-cache-control-tool": {
+      "post": {
+        "description": "No cache cache control tool",
+        "operationId": "noCacheCacheControlTool",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {},
+                "type": "object",
+              },
+            },
+          },
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {},
+                  "type": "object",
+                },
+              },
+            },
+            "description": "Echoed request body",
+          },
+        },
+      },
+    },
     "/no-store-cache-control-tool": {
       "post": {
         "description": "No store cache control tool",
@@ -22786,6 +22816,42 @@ exports[`validateOpenAPISpec > remote spec https://agentic-platform-fixtures-eve
               },
             },
             "description": "Echoed request body",
+          },
+        },
+      },
+    },
+    "/unpure-marked-pure": {
+      "post": {
+        "description": "Unpure tool marked pure",
+        "operationId": "unpure_marked_pure",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {},
+                "type": "object",
+              },
+            },
+          },
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "now": {
+                      "type": "number",
+                    },
+                  },
+                  "required": [
+                    "now",
+                  ],
+                  "type": "object",
+                },
+              },
+            },
+            "description": "Echoed request body with current timestamp to not be pure",
           },
         },
       },

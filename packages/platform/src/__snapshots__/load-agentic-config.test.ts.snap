@@ -135,7 +135,7 @@ exports[`loadAgenticConfig > everything-openapi 1`] = `
   "name": "test-everything-openapi",
   "originAdapter": {
     "location": "external",
-    "spec": "{"openapi":"3.1.0","info":{"title":"OpenAPI server to test everything","version":"0.1.0"},"components":{"schemas":{"User":{"type":"object","properties":{"id":{"type":"string"},"name":{"type":"string"},"email":{"type":"string"}},"required":["id","name","email"]}},"parameters":{}},"paths":{"/health":{"get":{"description":"Check if the server is healthy","operationId":"healthCheck","responses":{"200":{"description":"OK","content":{"application/json":{"schema":{"type":"object","properties":{"status":{"type":"string"}},"required":["status"]}}}}}}},"/users/{userId}":{"get":{"description":"Gets a user","tags":["users"],"operationId":"getUser","parameters":[{"schema":{"type":"string"},"required":true,"description":"User ID","name":"userId","in":"path"}],"responses":{"200":{"description":"A user object","content":{"application/json":{"schema":{"$ref":"#/components/schemas/User"}}}}}}},"/disabled-tool":{"get":{"description":"Disabled tool","operationId":"disabledTool","responses":{"200":{"description":"OK","content":{"application/json":{"schema":{"type":"object","properties":{"status":{"type":"string"}},"required":["status"]}}}}}}},"/disabled-for-free-plan-tool":{"get":{"description":"Disabled for free plan tool","operationId":"disabledForFreePlanTool","responses":{"200":{"description":"OK","content":{"application/json":{"schema":{"type":"object","properties":{"status":{"type":"string"}},"required":["status"]}}}}}}},"/echo":{"post":{"description":"Echoes the request body","operationId":"echo","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{}}}}},"responses":{"200":{"description":"Echoed request body","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}},"/pure":{"post":{"description":"Pure tool","operationId":"pure","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{}}}}},"responses":{"200":{"description":"Echoed request body","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}},"/custom-cache-control-tool":{"post":{"description":"Custom cache control tool","operationId":"customCacheControlTool","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{}}}}},"responses":{"200":{"description":"Echoed request body","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}},"/no-store-cache-control-tool":{"post":{"description":"No store cache control tool","operationId":"noStoreCacheControlTool","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{}}}}},"responses":{"200":{"description":"Echoed request body","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}},"/custom-rate-limit-tool":{"post":{"description":"Custom rate limit tool","operationId":"customRateLimitTool","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{}}}}},"responses":{"200":{"description":"Echoed request body","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}},"/disabled-rate-limit-tool":{"post":{"description":"Disabled rate limit tool","operationId":"disabledRateLimitTool","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{}}}}},"responses":{"200":{"description":"Echoed request body","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}}},"webhooks":{}}",
+    "spec": "{"openapi":"3.1.0","info":{"title":"OpenAPI server everything","description":"OpenAPI kitchen sink server meant for testing Agentic's origin OpenAPI adapter and ToolConfig features.","version":"0.1.0"},"components":{"schemas":{"User":{"type":"object","properties":{"id":{"type":"string"},"name":{"type":"string"},"email":{"type":"string"}},"required":["id","name","email"]}},"parameters":{}},"paths":{"/health":{"get":{"description":"Check if the server is healthy","operationId":"healthCheck","responses":{"200":{"description":"OK","content":{"application/json":{"schema":{"type":"object","properties":{"status":{"type":"string"}},"required":["status"]}}}}}}},"/users/{userId}":{"get":{"description":"Gets a user","tags":["users"],"operationId":"getUser","parameters":[{"schema":{"type":"string"},"required":true,"description":"User ID","name":"userId","in":"path"}],"responses":{"200":{"description":"A user object","content":{"application/json":{"schema":{"$ref":"#/components/schemas/User"}}}}}}},"/disabled-tool":{"get":{"description":"Disabled tool","operationId":"disabledTool","responses":{"200":{"description":"OK","content":{"application/json":{"schema":{"type":"object","properties":{"status":{"type":"string"}},"required":["status"]}}}}}}},"/disabled-for-free-plan-tool":{"get":{"description":"Disabled for free plan tool","operationId":"disabledForFreePlanTool","responses":{"200":{"description":"OK","content":{"application/json":{"schema":{"type":"object","properties":{"status":{"type":"string"}},"required":["status"]}}}}}}},"/echo":{"post":{"description":"Echoes the request body","operationId":"echo","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{}}}}},"responses":{"200":{"description":"Echoed request body","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}},"/pure":{"post":{"description":"Pure tool","operationId":"pure","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{}}}}},"responses":{"200":{"description":"Echoed request body","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}},"/unpure-marked-pure":{"post":{"description":"Unpure tool marked pure","operationId":"unpure_marked_pure","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{}}}}},"responses":{"200":{"description":"Echoed request body with current timestamp to not be pure","content":{"application/json":{"schema":{"type":"object","properties":{"now":{"type":"number"}},"required":["now"]}}}}}}},"/custom-cache-control-tool":{"post":{"description":"Custom cache control tool","operationId":"customCacheControlTool","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{}}}}},"responses":{"200":{"description":"Echoed request body","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}},"/no-store-cache-control-tool":{"post":{"description":"No store cache control tool","operationId":"noStoreCacheControlTool","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{}}}}},"responses":{"200":{"description":"Echoed request body","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}},"/no-cache-cache-control-tool":{"post":{"description":"No cache cache control tool","operationId":"noCacheCacheControlTool","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{}}}}},"responses":{"200":{"description":"Echoed request body","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}},"/custom-rate-limit-tool":{"post":{"description":"Custom rate limit tool","operationId":"customRateLimitTool","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{}}}}},"responses":{"200":{"description":"Echoed request body","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}},"/disabled-rate-limit-tool":{"post":{"description":"Disabled rate limit tool","operationId":"disabledRateLimitTool","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{}}}}},"responses":{"200":{"description":"Echoed request body","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}}},"webhooks":{}}",
     "type": "openapi",
   },
   "originUrl": "https://agentic-platform-fixtures-everything.onrender.com",
@@ -158,7 +158,7 @@ exports[`loadAgenticConfig > everything-openapi 1`] = `
   "toolConfigs": [
     {
       "enabled": true,
-      "name": "getUser",
+      "name": "get_user",
       "pricingPlanOverridesMap": {
         "free": {
           "enabled": true,
@@ -171,13 +171,13 @@ exports[`loadAgenticConfig > everything-openapi 1`] = `
     },
     {
       "enabled": false,
-      "name": "disabledTool",
+      "name": "disabled_tool",
       "pure": false,
       "reportUsage": true,
     },
     {
       "enabled": true,
-      "name": "disabledForFreePlanTool",
+      "name": "disabled_for_free_plan_tool",
       "pricingPlanOverridesMap": {
         "free": {
           "enabled": false,
@@ -188,40 +188,40 @@ exports[`loadAgenticConfig > everything-openapi 1`] = `
     },
     {
       "enabled": true,
-      "name": "pureTool",
+      "name": "pure",
       "pure": true,
       "reportUsage": true,
     },
     {
       "enabled": true,
-      "name": "unpureToolMarkedPure",
+      "name": "unpure_marked_pure",
       "pure": true,
       "reportUsage": true,
     },
     {
       "cacheControl": "public, max-age=7200, s-maxage=7200, stale-while-revalidate=3600",
       "enabled": true,
-      "name": "customCacheControlTool",
+      "name": "custom_cache_control_tool",
       "pure": false,
       "reportUsage": true,
     },
     {
       "cacheControl": "no-cache",
       "enabled": true,
-      "name": "noCacheCacheControlTool",
+      "name": "no_cache_cache_control_tool",
       "pure": false,
       "reportUsage": true,
     },
     {
       "cacheControl": "no-store",
       "enabled": true,
-      "name": "noStoreCacheControlTool",
+      "name": "no_store_cache_control_tool",
       "pure": false,
       "reportUsage": true,
     },
     {
       "enabled": true,
-      "name": "customRateLimitTool",
+      "name": "custom_rate_limit_tool",
       "pure": false,
       "rateLimit": {
         "async": true,
@@ -232,7 +232,7 @@ exports[`loadAgenticConfig > everything-openapi 1`] = `
     },
     {
       "enabled": true,
-      "name": "disabledRateLimitTool",
+      "name": "disabled_rate_limit_tool",
       "pure": false,
       "rateLimit": null,
       "reportUsage": true,

@@ -26,7 +26,10 @@ import { fetchCache } from './fetch-cache'
 import { getRequestCacheKey } from './get-request-cache-key'
 import { enforceRateLimit } from './rate-limits/enforce-rate-limit'
 import { updateOriginRequest } from './update-origin-request'
-import { isCacheControlPubliclyCacheable } from './utils'
+import {
+  isCacheControlPubliclyCacheable,
+  isResponsePubliclyCacheable
+} from './utils'
 
 export async function resolveOriginToolCall({
   tool,
@@ -173,7 +176,7 @@ export async function resolveOriginToolCall({
       schema: tool.inputSchema,
       data: args,
       errorPrefix: `Invalid request parameters for tool "${tool.name}"`,
-      strictAdditionalProperties: true
+      strictAdditionalProperties: false
     })
 
     const originStartTimeMs = Date.now()
@@ -196,9 +199,17 @@ export async function resolveOriginToolCall({
       // TODO: transform origin 5XX errors to 502 errors...
       const originResponse = await fetchCache({
         cacheKey,
-        fetchResponse: () => fetch(originRequest),
+        fetchResponse: async () => {
+          let response = await fetch(originRequest)
+          if (cacheControl && isResponsePubliclyCacheable(response)) {
+            response = new Response(response.body, response)
+            response.headers.set('cache-control', cacheControl)
+          }
+          return response
+        },
         waitUntil
       })
+      // const originResponse = await fetch(originRequest)
 
       const cacheStatus =
         (originResponse.headers.get('cf-cache-status') as CacheStatus) ??
