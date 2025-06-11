@@ -54,6 +54,7 @@
 ## TODO Post-MVP
 
 - first-party deployment hosting
+- api gateway stress tests
 - auth
   - custom auth provider configs for projects/deployments
 - stripe

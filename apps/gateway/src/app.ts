@@ -59,23 +59,25 @@ app.all(async (ctx) => {
     createAgenticClient({
       env: ctx.env,
       cache: caches.default,
-      waitUntil,
-      isCachingEnabled: isRequestPubliclyCacheable(ctx.req.raw)
+      isCachingEnabled: isRequestPubliclyCacheable(ctx.req.raw),
+      waitUntil
     })
   )
 
+  // TODO: Clean up the duplication between this block,
+  // `resolveMcpEdgeRequest`, and `resolveHttpEdgeRequest`.
   const requestUrl = new URL(ctx.req.url)
   const { pathname } = requestUrl
   const requestedToolIdentifier = pathname.replace(/^\//, '').replace(/\/$/, '')
   const { toolName } = parseToolIdentifier(requestedToolIdentifier)
 
+  // Handle MCP requests
   if (toolName === 'mcp') {
     ctx.set('isJsonRpcRequest', true)
     const executionCtx = ctx.executionCtx as any
     const mcpInfo = await resolveMcpEdgeRequest(ctx)
     executionCtx.props = mcpInfo
 
-    // Handle MCP requests
     return DurableMcpServer.serve(pathname, {
       binding: 'DO_MCP_SERVER'
     }).fetch(ctx.req.raw, ctx.env, executionCtx)
@@ -86,41 +88,12 @@ app.all(async (ctx) => {
   let originResponse: Response | undefined
   let res: Response | undefined
 
-  function updateResponse(response: Response) {
-    const res = new Response(response.body, response)
-
-    if (resolvedOriginToolCallResult) {
-      if (resolvedOriginToolCallResult.rateLimitResult) {
-        applyRateLimitHeaders({
-          res,
-          rateLimitResult: resolvedOriginToolCallResult.rateLimitResult
-        })
-      }
-
-      // Record the time it took for the origin to respond.
-      res.headers.set(
-        'x-origin-response-time',
-        `${resolvedOriginToolCallResult.originTimespanMs}ms`
-      )
-    }
-
-    // Reset server to Agentic because Cloudflare likes to override things
-    res.headers.set('server', 'agentic')
-
-    // Remove extra Cloudflare headers
-    res.headers.delete('x-powered-by')
-    res.headers.delete('via')
-    res.headers.delete('nel')
-    res.headers.delete('report-to')
-    res.headers.delete('server-timing')
-    res.headers.delete('reporting-endpoints')
-
-    return res
-  }
-
   try {
+    // Resolve the http edge request to a specific deployment, consumer, and
+    // tool call.
     resolvedHttpEdgeRequest = await resolveHttpEdgeRequest(ctx)
 
+    // Invoke the origin tool call.
     resolvedOriginToolCallResult = await resolveOriginToolCall({
       ...resolvedHttpEdgeRequest,
       args: resolvedHttpEdgeRequest.toolCallArgs,
@@ -130,6 +103,7 @@ app.all(async (ctx) => {
       waitUntil
     })
 
+    // Transform the origin tool call response into an http response.
     if (resolvedOriginToolCallResult.originResponse) {
       originResponse = resolvedOriginToolCallResult.originResponse
     } else {
@@ -140,12 +114,17 @@ app.all(async (ctx) => {
     }
 
     assert(originResponse, 500, 'Origin response is required')
-    res = updateResponse(originResponse)
+
+    // Post-process the origin response.
+    res = updateResponse(originResponse, resolvedOriginToolCallResult)
     return res
   } catch (err: any) {
-    res = updateResponse(errorHandler(err, ctx))
+    // Convert the error into an http response and post-process it.
+    res = errorHandler(err, ctx)
+    res = updateResponse(res, resolvedOriginToolCallResult)
     return res
   } finally {
+    // Record the tool call usage.
     if (resolvedHttpEdgeRequest && res) {
       recordToolCallUsage({
         ...resolvedHttpEdgeRequest,
@@ -161,3 +140,38 @@ app.all(async (ctx) => {
     }
   }
 })
+
+function updateResponse(
+  response: Response,
+  resolvedOriginToolCallResult?: ResolvedOriginToolCallResult
+) {
+  const res = new Response(response.body, response)
+
+  if (resolvedOriginToolCallResult) {
+    if (resolvedOriginToolCallResult.rateLimitResult) {
+      applyRateLimitHeaders({
+        res,
+        rateLimitResult: resolvedOriginToolCallResult.rateLimitResult
+      })
+    }
+
+    // Record the time it took for the origin to respond.
+    res.headers.set(
+      'x-origin-response-time',
+      `${resolvedOriginToolCallResult.originTimespanMs}ms`
+    )
+  }
+
+  // Reset server to Agentic because Cloudflare likes to override things
+  res.headers.set('server', 'agentic')
+
+  // Remove extra Cloudflare headers
+  res.headers.delete('x-powered-by')
+  res.headers.delete('via')
+  res.headers.delete('nel')
+  res.headers.delete('report-to')
+  res.headers.delete('server-timing')
+  res.headers.delete('reporting-endpoints')
+
+  return res
+}

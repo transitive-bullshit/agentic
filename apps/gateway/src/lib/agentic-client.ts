@@ -19,9 +19,8 @@ export function createAgenticClient({
   const client = new AgenticApiClient({
     apiBaseUrl: env.AGENTIC_API_BASE_URL,
     apiKey: env.AGENTIC_API_KEY,
-    ky: !isCachingEnabled
-      ? defaultKy
-      : defaultKy.extend({
+    ky: isCachingEnabled
+      ? defaultKy.extend({
           hooks: {
             // NOTE: The order of the `beforeRequest` hook matters, and it only
             // works alongside the one in AgenticApiClient because that one's body
@@ -39,23 +38,26 @@ export function createAgenticClient({
             afterResponse: [
               async (request, _options, response) => {
                 if (
-                  isCacheControlPubliclyCacheable(
+                  !isCacheControlPubliclyCacheable(
                     response.headers.get('cache-control')
                   )
                 ) {
-                  // Asynchronously update the cache with the response from
-                  // Agentic's backend API.
-                  waitUntil(
-                    cache.put(request, response.clone()).catch((err) => {
-                      // eslint-disable-next-line no-console
-                      console.warn('cache put error', request, err)
-                    })
-                  )
+                  return
                 }
+
+                // Asynchronously update the cache with the response from
+                // Agentic's backend API.
+                waitUntil(
+                  cache.put(request, response.clone()).catch((err) => {
+                    // eslint-disable-next-line no-console
+                    console.warn('cache put error', request, err)
+                  })
+                )
               }
             ]
           }
         })
+      : defaultKy
   })
 
   return client

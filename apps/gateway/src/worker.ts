@@ -28,7 +28,7 @@ export default Sentry.withSentry(
         parsedEnv = parseEnv(env)
       } catch (err: any) {
         // eslint-disable-next-line no-console
-        console.error('error api gateway invalid env:', err.message)
+        console.error('api gateway error invalid env:', err.message)
 
         return new Response(
           JSON.stringify({ error: 'Invalid api gateway environment' }),
