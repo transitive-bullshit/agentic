@@ -9,6 +9,7 @@ import { registerDisabledForFreePlanTool } from './routes/disabled-for-free-plan
 import { registerDisabledRateLimitTool } from './routes/disabled-rate-limit-tool'
 import { registerDisabledTool } from './routes/disabled-tool'
 import { registerEcho } from './routes/echo'
+import { registerEchoHeaders } from './routes/echo-headers'
 import { registerGetUser } from './routes/get-user'
 import { registerHealthCheck } from './routes/health-check'
 import { registerNoCacheCacheControlTool } from './routes/no-cache-cache-control-tool'
@@ -26,6 +27,7 @@ registerGetUser(app)
 registerDisabledTool(app)
 registerDisabledForFreePlanTool(app)
 registerEcho(app)
+registerEchoHeaders(app)
 registerPure(app)
 registerUnpureMarkedPure(app)
 registerCustomCacheControlTool(app)

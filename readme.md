@@ -30,7 +30,6 @@
 - auth
   - custom auth pages for `openauth`
 - **API gateway**
-  - **usage tracking and reporting**
   - oauth flow
     - https://docs.scalekit.com/guides/mcp/oauth
   - openapi-kitchen-sink
@@ -38,6 +37,7 @@
   - mcp-kitchen-sink
   - how to handle binary bodies and responses?
   - improve logger vs console for non-hono path and util methods
+  - test usage tracking and reporting
   - extra `Sentry` instrumentation (`setUser`, `captureMessage`, etc)
 - **Public MCP server interface**
   - how does oauth work with this flow?
@@ -74,7 +74,7 @@
   - same for pricing plan line-items
 - replace `ms` package
 - API gateway
-  - **do I just ditch the public REST interface and focus on MCP?**
+  - **do we just ditch the public REST interface and focus on MCP?**
   - SSE support? (no; post-mvp if at all; only support [streamable http](https://modelcontextprotocol.io/specification/2025-03-26/basic/transports#streamable-http) like smithery does, or maybe support both?)
   - signed requests
   - add support for custom headers on responses
