@@ -94,6 +94,13 @@ for (const [i, fixtureSuite] of fixtureSuites.entries()) {
             body = await res.arrayBuffer()
           }
 
+          if (debugFixture) {
+            console.log(`${fixtureName} => ${res.status}`, {
+              body,
+              headers: Object.fromEntries(res.headers.entries())
+            })
+          }
+
           if (expectedBody) {
             expect(body).toEqual(expectedBody)
           }
@@ -118,13 +125,6 @@ for (const [i, fixtureSuite] of fixtureSuites.entries()) {
             } else {
               expect(body).toEqual(fixtureResponseBody)
             }
-          }
-
-          if (debugFixture) {
-            console.log(`${fixtureName} => ${res.status}`, {
-              body,
-              headers: Object.fromEntries(res.headers.entries())
-            })
           }
         }
       )

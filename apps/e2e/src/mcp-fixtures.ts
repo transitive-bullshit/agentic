@@ -557,5 +557,25 @@ export const fixtureSuites: MCPE2ETestFixtureSuite[] = [
         }
       }
     ]
+  },
+  {
+    title: 'MCP => OpenAPI origin everything "echo_headers" tool',
+    path: '@dev/test-everything-openapi/mcp',
+    stableSnapshot: false,
+    fixtures: [
+      {
+        request: {
+          name: 'echo_headers',
+          args: {}
+        },
+        response: {
+          validate: (result) => {
+            expect(result.structuredContent['x-agentic-proxy-secret']).toEqual(
+              'f279280a67a15df6e0245511bdeb11854fc8f6f702c49d028431bb1dbc03bfdc'
+            )
+          }
+        }
+      }
+    ]
   }
 ]

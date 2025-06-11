@@ -26,14 +26,18 @@ export class DurableMcpClientBase extends DurableObject<RawEnv> {
     const existingMcpClientInfo =
       await this.ctx.storage.get<DurableMcpClientInfo>('mcp-client-info')
 
-    if (!existingMcpClientInfo) {
-      await this.ctx.storage.put('mcp-client-info', mcpClientInfo)
-    } else {
-      assert(
-        mcpClientInfo.url === existingMcpClientInfo.url,
-        500,
-        `DurableMcpClientInfo url mismatch: "${mcpClientInfo.url}" vs "${existingMcpClientInfo.url}"`
-      )
+    await this.ctx.storage.put('mcp-client-info', mcpClientInfo)
+    if (existingMcpClientInfo) {
+      if (mcpClientInfo.url !== existingMcpClientInfo.url) {
+        // eslint-disable-next-line no-console
+        console.warn(
+          `DurableMcpClientInfo url changed from "${existingMcpClientInfo.url}" to "${mcpClientInfo.url}"`
+        )
+      }
+
+      await this.client?.close()
+      this.clientConnectionP = undefined
+      this.client = undefined
     }
 
     return this.ensureClientConnection(mcpClientInfo)
