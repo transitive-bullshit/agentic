@@ -29,48 +29,52 @@ import { createStripe } from './external/stripe'
  *
  * @see https://developers.cloudflare.com/analytics/analytics-engine/limits/
  */
-export function reportToolCallUsage({
+export function recordToolCallUsage({
   requestMode,
-  tool,
   deployment,
   consumer,
+  tool,
   resolvedOriginToolCallResult,
   ip,
   sessionId,
-  originTimespanMs,
-  gatewayTimespanMs,
   requestId,
   env,
   waitUntil
 }: {
   requestMode: RequestMode
-  tool: Tool
   deployment: AdminDeployment
   consumer?: AdminConsumer
   pricingPlan?: PricingPlan
-  resolvedOriginToolCallResult: ResolvedOriginToolCallResult
+  tool?: Tool
+  resolvedOriginToolCallResult?: ResolvedOriginToolCallResult
   ip?: string
   sessionId: string
-  requestId: string
-  originTimespanMs: number
-  gatewayTimespanMs: number
+  requestId?: string
   env: RawEnv
   waitUntil: WaitUntil
 }): void {
+  const { projectId } = deployment
   const {
     rateLimitResult,
     cacheStatus,
     originResponse,
+    originTimespanMs,
     toolCallResponse,
     toolCallArgs,
+    numRequestsCost,
     reportUsage
-  } = resolvedOriginToolCallResult
-  const { projectId } = deployment
+  } = resolvedOriginToolCallResult ?? {
+    numRequestsCost: 0,
+    reportUsage: false
+  }
 
-  const requestSize = JSON.stringify(toolCallArgs).length
-  const responseSize =
-    Number.parseInt(originResponse?.headers.get('content-length') ?? '0') ||
-    JSON.stringify(toolCallResponse).length
+  const requestSize = resolvedOriginToolCallResult
+    ? JSON.stringify(toolCallArgs).length
+    : 0
+  const responseSize = resolvedOriginToolCallResult
+    ? Number.parseInt(originResponse?.headers.get('content-length') ?? '0') ||
+      JSON.stringify(toolCallResponse).length
+    : 0
 
   // The string dimensions used for grouping and filtering (sometimes called
   // labels in other metrics systems).
@@ -84,7 +88,7 @@ export function reportToolCallUsage({
     deployment.id,
 
     // Name of the tool that was called
-    tool.name,
+    tool?.name ?? null,
 
     // Whether this request was made via MCP or HTTP
     requestMode,
@@ -102,24 +106,27 @@ export function reportToolCallUsage({
     consumer?.stripeStatus ?? null,
 
     // Whether the request was rate-limited
-    rateLimitResult?.passed ? 'rl-passed' : 'rl-exceeded',
+    resolvedOriginToolCallResult
+      ? rateLimitResult?.passed
+        ? 'rl-passed'
+        : 'rl-exceeded'
+      : null,
 
     // Whether the request hit the cache
-    cacheStatus,
+    cacheStatus ?? null,
 
     // Response status
-    originResponse?.status?.toString() ||
-      (toolCallResponse ? (toolCallResponse.isError ? 'error' : '200') : null)
+    resolvedOriginToolCallResult
+      ? originResponse?.status?.toString() ||
+        (toolCallResponse ? (toolCallResponse.isError ? 'error' : '200') : null)
+      : 'error'
   ]
 
   // Numberic values to record in this data point.
   // NOTE: It is important that the ordering of these fields remains consistent!
   const doubles = [
     // Origin timespan in milliseconds
-    originTimespanMs,
-
-    // Gateway timespan in milliseconds
-    gatewayTimespanMs,
+    originTimespanMs ?? 0,
 
     // Request bandwidth in bytes
     requestSize,
@@ -129,7 +136,10 @@ export function reportToolCallUsage({
 
     // Total bandwidth in bytes
     // TODO: Correctly calculate total bandwidth using `content-length`
-    requestSize + responseSize
+    requestSize + responseSize,
+
+    // Number of requests cost
+    numRequestsCost ?? 0
   ]
 
   // Cloudflare Analytics Engine only supports writing a single index at a time,
@@ -162,7 +172,9 @@ export function reportToolCallUsage({
 
     const pricingPlanLineItemSlug = 'requests'
     const eventName = `meter-${projectId}-${pricingPlanLineItemSlug}`
-    const identifier = `${requestId}:${consumer.id}:${tool.name}`
+    const identifier = requestId
+      ? `${requestId}:${consumer.id}:${tool?.name || 'unknown-tool'}`
+      : undefined
 
     // Report usage to Stripe asynchronously.
     waitUntil(
@@ -170,7 +182,7 @@ export function reportToolCallUsage({
         event_name: eventName,
         identifier,
         payload: {
-          value: '1',
+          value: numRequestsCost.toString(),
           stripe_customer_id: consumer._stripeCustomerId
         }
       })

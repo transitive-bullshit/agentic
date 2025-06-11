@@ -10,9 +10,6 @@ import {
 } from '@agentic/platform-hono'
 import { z } from 'zod'
 
-import type { DurableMcpClient } from './durable-mcp-client'
-import type { DurableRateLimiter } from './rate-limits/durable-rate-limiter'
-
 export const envSchema = baseEnvSchema
   .extend({
     AGENTIC_API_BASE_URL: z.string().url(),
@@ -20,15 +17,15 @@ export const envSchema = baseEnvSchema
 
     STRIPE_SECRET_KEY: z.string().nonempty(),
 
-    DO_RATE_LIMITER: z.custom<DurableObjectNamespace<DurableRateLimiter>>(
-      (ns) => isDurableObjectNamespace(ns)
+    DO_RATE_LIMITER: z.custom<DurableObjectNamespace>((ns) =>
+      isDurableObjectNamespace(ns)
     ),
 
     DO_MCP_SERVER: z.custom<DurableObjectNamespace>((ns) =>
       isDurableObjectNamespace(ns)
     ),
 
-    DO_MCP_CLIENT: z.custom<DurableObjectNamespace<DurableMcpClient>>((ns) =>
+    DO_MCP_CLIENT: z.custom<DurableObjectNamespace>((ns) =>
       isDurableObjectNamespace(ns)
     ),
 

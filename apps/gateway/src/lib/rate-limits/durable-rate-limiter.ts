@@ -1,13 +1,15 @@
 import type { SetOptional } from 'type-fest'
+import * as Sentry from '@sentry/cloudflare'
 import { DurableObject } from 'cloudflare:workers'
 
+import type { RawEnv } from '../env'
 import type { RateLimitState } from '../types'
 
 const initialState: SetOptional<RateLimitState, 'resetTimeMs'> = {
   current: 0
 }
 
-export class DurableRateLimiter extends DurableObject {
+export class DurableRateLimiterBase extends DurableObject<RawEnv> {
   async update({
     intervalMs,
     cost = 1
@@ -44,3 +46,12 @@ export class DurableRateLimiter extends DurableObject {
     await this.reset()
   }
 }
+
+export const DurableRateLimiter = Sentry.instrumentDurableObjectWithSentry(
+  (env: RawEnv) => ({
+    dsn: env.SENTRY_DSN,
+    environment: env.ENVIRONMENT,
+    integrations: [Sentry.extraErrorDataIntegration()]
+  }),
+  DurableRateLimiterBase
+)

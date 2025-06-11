@@ -7,6 +7,7 @@ import type {
   RateLimitState,
   WaitUntil
 } from '../types'
+import type { DurableRateLimiterBase } from './durable-rate-limiter'
 
 /**
  * This maps persists across worker executions and is used for caching active
@@ -98,10 +99,12 @@ export async function enforceRateLimit({
     }
   }
 
-  const did = env.DO_RATE_LIMITER.idFromName(id)
-  const obj = env.DO_RATE_LIMITER.get(did)
+  const durableRateLimiterId = env.DO_RATE_LIMITER.idFromName(id)
+  const durableRateLimiter = env.DO_RATE_LIMITER.get(
+    durableRateLimiterId
+  ) as DurableObjectStub<DurableRateLimiterBase>
 
-  const updatedRateLimitStateP = obj.update({ cost, intervalMs })
+  const updatedRateLimitStateP = durableRateLimiter.update({ cost, intervalMs })
 
   if (async) {
     waitUntil(

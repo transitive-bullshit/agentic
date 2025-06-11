@@ -4,7 +4,6 @@ import {
   cors,
   errorHandler,
   init,
-  responseTime,
   sentry
 } from '@agentic/platform-hono'
 import { parseToolIdentifier } from '@agentic/platform-validators'
@@ -13,7 +12,7 @@ import { Hono } from 'hono'
 import type { GatewayHonoEnv } from './lib/types'
 import { createAgenticClient } from './lib/agentic-client'
 import { createHttpResponseFromMcpToolCallResponse } from './lib/create-http-response-from-mcp-tool-call-response'
-import { reportToolCallUsage } from './lib/report-tool-call-usage'
+import { recordToolCallUsage } from './lib/record-tool-call-usage'
 import { resolveHttpEdgeRequest } from './lib/resolve-http-edge-request'
 import { resolveMcpEdgeRequest } from './lib/resolve-mcp-edge-request'
 import { resolveOriginToolCall } from './lib/resolve-origin-tool-call'
@@ -46,8 +45,6 @@ app.use(init)
 // Wrangler does this for us. TODO: Does this happen on prod?
 // app.use(accessLogger)
 
-app.use(responseTime)
-
 app.all(async (ctx) => {
   const gatewayStartTimeMs = Date.now()
   ctx.set('cache', caches.default)
@@ -79,8 +76,6 @@ app.all(async (ctx) => {
   }
 
   const resolvedHttpEdgeRequest = await resolveHttpEdgeRequest(ctx)
-
-  const originStartTimeMs = Date.now()
 
   const resolvedOriginToolCallResult = await resolveOriginToolCall({
     tool: resolvedHttpEdgeRequest.tool,
@@ -117,22 +112,22 @@ app.all(async (ctx) => {
   }
 
   // Record the time it took for the origin to respond.
-  const now = Date.now()
-  const originTimespanMs = now - originStartTimeMs
-  res.headers.set('x-origin-response-time', `${originTimespanMs}ms`)
+  res.headers.set(
+    'x-origin-response-time',
+    `${resolvedOriginToolCallResult.originTimespanMs}ms`
+  )
 
-  const gatewayTimespanMs = now - gatewayStartTimeMs
+  // Record the time it took for the gateway to respond.
+  const gatewayTimespanMs = Date.now() - gatewayStartTimeMs
   res.headers.set('x-response-time', `${gatewayTimespanMs}ms`)
 
-  reportToolCallUsage({
+  recordToolCallUsage({
     ...resolvedHttpEdgeRequest,
     requestMode: 'http',
     resolvedOriginToolCallResult,
     sessionId: ctx.get('sessionId')!,
     requestId: ctx.get('requestId')!,
     ip: ctx.get('ip'),
-    originTimespanMs,
-    gatewayTimespanMs,
     env: ctx.env,
     waitUntil: ctx.executionCtx.waitUntil.bind(ctx.executionCtx)
   })

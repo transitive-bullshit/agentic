@@ -433,6 +433,9 @@ importers:
       '@modelcontextprotocol/sdk':
         specifier: 'catalog:'
         version: 1.12.1
+      '@sentry/cloudflare':
+        specifier: 'catalog:'
+        version: 9.26.0(@cloudflare/workers-types@4.20250604.0)
       agents:
         specifier: ^0.0.95
         version: 0.0.95(@cloudflare/workers-types@4.20250604.0)(react@19.1.0)

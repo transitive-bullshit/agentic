@@ -76,6 +76,7 @@
   - signed requests
   - add support for custom headers on responses
   - add ability to only report stripe usage on non-cached requests
+  - add support for ToolConfig.cost defaulting to 1, to easily support tools which cost multiple "credits"
 - `@agentic/platform-hono`
   - fix sentry middleware
     - https://github.com/honojs/middleware/blob/main/packages/sentry/src/index.ts

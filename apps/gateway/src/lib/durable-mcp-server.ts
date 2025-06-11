@@ -6,14 +6,21 @@ import {
   CallToolRequestSchema,
   ListToolsRequestSchema
 } from '@modelcontextprotocol/sdk/types.js'
+import * as Sentry from '@sentry/cloudflare'
 import { McpAgent } from 'agents/mcp'
 
 import type { RawEnv } from './env'
-import type { AdminConsumer } from './types'
+import type {
+  AdminConsumer,
+  McpToolCallResponse,
+  ResolvedOriginToolCallResult
+} from './types'
+import { handleMcpToolCallError } from './handle-mcp-tool-call-error'
+import { recordToolCallUsage } from './record-tool-call-usage'
 import { resolveOriginToolCall } from './resolve-origin-tool-call'
 import { transformHttpResponseToMcpToolCallResponse } from './transform-http-response-to-mcp-tool-call-response'
 
-export class DurableMcpServer extends McpAgent<
+export class DurableMcpServerBase extends McpAgent<
   RawEnv,
   never, // TODO: do we need local state?
   {
@@ -25,6 +32,11 @@ export class DurableMcpServer extends McpAgent<
 > {
   protected _serverP = Promise.withResolvers<Server>()
   override server = this._serverP.promise
+
+  // NOTE: This empty constructor is required for the Sentry wrapper to work.
+  public constructor(state: DurableObjectState, env: RawEnv) {
+    super(state, env)
+  }
 
   override async init() {
     const { consumer, deployment, pricingPlan, ip } = this.props
@@ -73,22 +85,17 @@ export class DurableMcpServer extends McpAgent<
     }))
 
     server.setRequestHandler(CallToolRequestSchema, async (request) => {
-      const { name, arguments: args } = request.params
-      const tool = tools.find((tool) => tool.name === name)
+      const { name: toolName, arguments: args } = request.params
+      const sessionId = this.ctx.id.toString()
+      const tool = tools.find((tool) => tool.name === toolName)
+
+      let resolvedOriginToolCallResult: ResolvedOriginToolCallResult | undefined
+      let toolCallResponse: McpToolCallResponse | undefined
 
       try {
-        assert(tool, 404, `Unknown tool "${name}"`)
+        assert(tool, 404, `Unknown tool "${toolName}"`)
 
-        // TODO: usage tracking / reporting
-
-        const sessionId = this.ctx.id.toString()
-        const {
-          toolCallArgs,
-          originRequest,
-          originResponse,
-          toolCallResponse,
-          rateLimitResult
-        } = await resolveOriginToolCall({
+        resolvedOriginToolCallResult = await resolveOriginToolCall({
           tool,
           args,
           deployment,
@@ -100,39 +107,72 @@ export class DurableMcpServer extends McpAgent<
           waitUntil: this.ctx.waitUntil.bind(this.ctx)
         })
 
+        const {
+          originResponse,
+          toolCallResponse: resolvedToolCallResponse,
+          rateLimitResult
+        } = resolvedOriginToolCallResult
+
         if (originResponse) {
-          return transformHttpResponseToMcpToolCallResponse({
-            originRequest,
-            originResponse,
+          toolCallResponse = await transformHttpResponseToMcpToolCallResponse({
             tool,
-            toolCallArgs,
-            rateLimitResult
+            ...resolvedOriginToolCallResult
           })
-        } else if (toolCallResponse) {
-          if (toolCallResponse._meta || rateLimitResult) {
-            return {
-              ...toolCallResponse,
+        } else if (resolvedToolCallResponse) {
+          if (resolvedToolCallResponse._meta || rateLimitResult) {
+            toolCallResponse = {
+              ...resolvedToolCallResponse,
               _meta: {
-                ...toolCallResponse._meta,
+                ...resolvedToolCallResponse._meta,
                 ...(rateLimitResult
                   ? getRateLimitHeaders(rateLimitResult)
                   : undefined)
               }
             }
           } else {
-            return toolCallResponse
+            toolCallResponse = resolvedToolCallResponse
           }
         } else {
           assert(false, 500)
         }
+
+        assert(toolCallResponse, 500, 'Missing tool call response')
+        return toolCallResponse
       } catch (err: unknown) {
-        // TODO: handle errors
-        // eslint-disable-next-line no-console
-        console.error(err)
-        throw err
+        // Gracefully handle tool call exceptions, whether they're thrown by the
+        // origin or internally by the gateway.
+        toolCallResponse = handleMcpToolCallError(err, {
+          deployment,
+          consumer,
+          toolName,
+          sessionId,
+          env: this.env
+        })
+
+        return toolCallResponse
       } finally {
-        // TODO: report usage
+        // Record tool call usage, whether the call was successful or not.
+        recordToolCallUsage({
+          ...this.props,
+          requestMode: 'mcp',
+          tool,
+          resolvedOriginToolCallResult,
+          sessionId,
+          // TODO: requestId
+          ip,
+          env: this.env,
+          waitUntil: this.ctx.waitUntil.bind(this.ctx)
+        })
       }
     })
   }
 }
+
+export const DurableMcpServer = Sentry.instrumentDurableObjectWithSentry(
+  (env: RawEnv) => ({
+    dsn: env.SENTRY_DSN,
+    environment: env.ENVIRONMENT,
+    integrations: [Sentry.extraErrorDataIntegration()]
+  }),
+  DurableMcpServerBase
+)

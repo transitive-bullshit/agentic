@@ -67,6 +67,8 @@ export type ResolvedOriginToolCallResult = {
   rateLimitResult?: RateLimitResult
   cacheStatus: CacheStatus
   reportUsage: boolean
+  originTimespanMs: number
+  numRequestsCost: number
 } & (
   | {
       originRequest: Request

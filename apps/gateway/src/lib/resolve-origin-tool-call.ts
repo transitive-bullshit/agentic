@@ -4,9 +4,11 @@ import type {
   RateLimit,
   Tool
 } from '@agentic/platform-types'
+import type { DurableObjectStub } from '@cloudflare/workers-types'
 import { assert, RateLimitError } from '@agentic/platform-core'
 import { parseDeploymentIdentifier } from '@agentic/platform-validators'
 
+import type { DurableMcpClientBase } from './durable-mcp-client'
 import type { RawEnv } from './env'
 import type {
   AdminConsumer,
@@ -54,6 +56,8 @@ export async function resolveOriginToolCall({
   // be rate-limited / cached / tracked / etc.
 
   const { originAdapter } = deployment
+  // TODO: make this configurable via `ToolConfig.cost`
+  const numRequestsCost = 1
   let rateLimitResult: RateLimitResult | undefined
   let rateLimit: RateLimit | undefined | null
   let reportUsage = true
@@ -143,11 +147,14 @@ export async function resolveOriginToolCall({
   }
 
   if (rateLimit) {
+    // TODO: Consider decrementing rate limit if the response is cached or
+    // errors? this doesn't seem too important, so will leave as-is for now.
     rateLimitResult = await enforceRateLimit({
       id: consumer?.id ?? ip ?? sessionId,
       interval: rateLimit.interval,
       maxPerInterval: rateLimit.maxPerInterval,
       async: rateLimit.async,
+      cost: numRequestsCost,
       env,
       waitUntil
     })
@@ -168,6 +175,8 @@ export async function resolveOriginToolCall({
       errorPrefix: `Invalid request parameters for tool "${tool.name}"`,
       strictAdditionalProperties: true
     })
+
+    const originStartTimeMs = Date.now()
 
     if (originAdapter.type === 'openapi') {
       const operation = originAdapter.toolToOperationMap[tool.name]
@@ -201,7 +210,9 @@ export async function resolveOriginToolCall({
         rateLimitResult,
         toolCallArgs,
         originRequest,
-        originResponse
+        originResponse,
+        originTimespanMs: Date.now() - originStartTimeMs,
+        numRequestsCost
       }
     } else if (originAdapter.type === 'mcp') {
       const { projectIdentifier } = parseDeploymentIdentifier(
@@ -210,7 +221,9 @@ export async function resolveOriginToolCall({
       )
 
       const id = env.DO_MCP_CLIENT.idFromName(sessionId)
-      const originMcpClient = env.DO_MCP_CLIENT.get(id)
+      const originMcpClient = env.DO_MCP_CLIENT.get(
+        id
+      ) as DurableObjectStub<DurableMcpClientBase>
 
       await originMcpClient.init({
         url: deployment.originUrl,
@@ -263,7 +276,9 @@ export async function resolveOriginToolCall({
               reportUsage,
               rateLimitResult,
               toolCallArgs,
-              toolCallResponse: (await response.json()) as McpToolCallResponse
+              toolCallResponse: (await response.json()) as McpToolCallResponse,
+              originTimespanMs: Date.now() - originStartTimeMs,
+              numRequestsCost
             }
           }
         }
@@ -294,10 +309,16 @@ export async function resolveOriginToolCall({
         reportUsage,
         rateLimitResult,
         toolCallArgs,
-        toolCallResponse
+        toolCallResponse,
+        originTimespanMs: Date.now() - originStartTimeMs,
+        numRequestsCost
       }
     } else {
-      assert(false, 500)
+      assert(
+        false,
+        500,
+        `Internal error: origin adapter type "${(originAdapter as any).type}"`
+      )
     }
   }
 }
