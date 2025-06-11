@@ -12,8 +12,10 @@ jobs:
       matrix:
         node-version:
           - 22
-          - 23
-          - 24
+
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ vars.TURBO_TEAM }}
 
     steps:
       - uses: actions/checkout@v4
@@ -22,6 +24,14 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'pnpm'
+
+      - name: Cache turbo build setup
+        uses: actions/cache@v4
+        with:
+          path: .turbo
+          key: ${{ runner.os }}-${{ matrix.node-version }}-turbo-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-${{ matrix.node-version }}-turbo-
 
       - run: pnpm install --frozen-lockfile --strict-peer-dependencies
       - run: pnpm build
