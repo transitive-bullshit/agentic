@@ -1,5 +1,5 @@
 import type { AdminDeployment, PricingPlan } from '@agentic/platform-types'
-import { assert, getRateLimitHeaders } from '@agentic/platform-core'
+import { assert, getRateLimitHeaders, pruneEmpty } from '@agentic/platform-core'
 import { parseDeploymentIdentifier } from '@agentic/platform-validators'
 import { Server } from '@modelcontextprotocol/sdk/server/index.js'
 import {
@@ -124,9 +124,11 @@ export class DurableMcpServerBase extends McpAgent<
               ...resolvedToolCallResponse,
               _meta: {
                 ...resolvedToolCallResponse._meta,
-                ...(rateLimitResult
-                  ? getRateLimitHeaders(rateLimitResult)
-                  : undefined)
+                ...pruneEmpty({
+                  headers: rateLimitResult
+                    ? getRateLimitHeaders(rateLimitResult)
+                    : undefined
+                })
               }
             }
           } else {
@@ -156,6 +158,7 @@ export class DurableMcpServerBase extends McpAgent<
           ...this.props,
           requestMode: 'mcp',
           tool,
+          mcpToolCallResponse: toolCallResponse!,
           resolvedOriginToolCallResult,
           sessionId,
           // TODO: requestId

@@ -1,13 +1,27 @@
 import type { AdminDeployment } from '@agentic/platform-types'
 import type { ContentfulStatusCode } from 'hono/utils/http-status'
-import { HttpError, pruneEmpty } from '@agentic/platform-core'
+import {
+  getRateLimitHeaders,
+  HttpError,
+  pruneEmpty
+} from '@agentic/platform-core'
 import * as Sentry from '@sentry/cloudflare'
 import { HTTPException } from 'hono/http-exception'
 import { HTTPError } from 'ky'
 
 import type { RawEnv } from './env'
-import type { AdminConsumer, McpToolCallResponse } from './types'
+import type {
+  AdminConsumer,
+  McpToolCallResponse,
+  RateLimitResult
+} from './types'
 
+/**
+ * Turns a thrown error into an MCP error tool call response, and attempts to
+ * capture as much context as possible for potential debugging.
+ *
+ * @note This function is synchronous and must never throw.
+ */
 export function handleMcpToolCallError(
   err: any,
   {
@@ -16,6 +30,7 @@ export function handleMcpToolCallError(
     toolName,
     sessionId,
     requestId,
+    rateLimitResult,
     env
   }: {
     deployment: AdminDeployment
@@ -23,9 +38,11 @@ export function handleMcpToolCallError(
     toolName: string
     sessionId: string
     requestId?: string
+    rateLimitResult?: RateLimitResult
     env: RawEnv
   }
 ): McpToolCallResponse {
+  const isProd = env.ENVIRONMENT === 'production'
   let message = 'Internal Server Error'
   let status: ContentfulStatusCode = 500
 
@@ -35,7 +52,10 @@ export function handleMcpToolCallError(
       consumerId: consumer?.id,
       toolName,
       sessionId,
-      requestId
+      requestId,
+      headers: rateLimitResult
+        ? getRateLimitHeaders(rateLimitResult)
+        : undefined
     }),
     isError: true,
     content: [
@@ -45,8 +65,6 @@ export function handleMcpToolCallError(
       }
     ]
   }
-
-  const isProd = env.ENVIRONMENT === 'production'
 
   if (err instanceof HttpError) {
     message = err.message
@@ -78,7 +96,12 @@ export function handleMcpToolCallError(
     console.error(`mcp tool call "${toolName}" error`, status, err)
 
     if (isProd) {
-      Sentry.captureException(err)
+      try {
+        Sentry.captureException(err)
+      } catch (err_) {
+        // eslint-disable-next-line no-console
+        console.error('Error Sentry.captureException failed', err, err_)
+      }
     }
   } else {
     // eslint-disable-next-line no-console

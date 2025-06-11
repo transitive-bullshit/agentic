@@ -15,6 +15,8 @@ import {
 /**
  * Hono error handler that sanitizes all types of internal, http, json-rpc, and
  * unexpected errors and responds with an appropate HTTP Response.
+ *
+ * @note This function is synchronous and must never throw.
  */
 export function errorHandler(
   err: Error | HTTPResponseError,
@@ -61,7 +63,12 @@ export function errorHandler(
     logger.error(status, err)
 
     if (isProd) {
-      captureException(err)
+      try {
+        captureException(err)
+      } catch (err_) {
+        // eslint-disable-next-line no-console
+        console.error('Error Sentry.captureException failed', err, err_)
+      }
     }
   } else {
     logger.warn(status, message, err)

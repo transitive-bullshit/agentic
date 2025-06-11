@@ -7,6 +7,7 @@ import type {
 import type { RawEnv } from './env'
 import type {
   AdminConsumer,
+  McpToolCallResponse,
   RequestMode,
   ResolvedOriginToolCallResult,
   WaitUntil
@@ -35,6 +36,8 @@ export function recordToolCallUsage({
   consumer,
   tool,
   resolvedOriginToolCallResult,
+  httpResponse,
+  mcpToolCallResponse,
   ip,
   sessionId,
   requestId,
@@ -47,19 +50,32 @@ export function recordToolCallUsage({
   pricingPlan?: PricingPlan
   tool?: Tool
   resolvedOriginToolCallResult?: ResolvedOriginToolCallResult
+  httpResponse?: Response
+  mcpToolCallResponse?: McpToolCallResponse
   ip?: string
   sessionId: string
   requestId?: string
   env: RawEnv
   waitUntil: WaitUntil
-}): void {
+} & (
+  | {
+      // For http requests, an http response is required.
+      requestMode: 'http'
+      httpResponse: Response
+      mcpToolCallResponse?: never
+    }
+  | {
+      // For mcp cool call requests, an mcp tool call response is required.
+      requestMode: 'mcp'
+      httpResponse?: never
+      mcpToolCallResponse: McpToolCallResponse
+    }
+)): void {
   const { projectId } = deployment
   const {
     rateLimitResult,
     cacheStatus,
-    originResponse,
     originTimespanMs,
-    toolCallResponse,
     toolCallArgs,
     numRequestsCost,
     reportUsage
@@ -67,18 +83,16 @@ export function recordToolCallUsage({
     numRequestsCost: 0,
     reportUsage: false
   }
+  mcpToolCallResponse ??= resolvedOriginToolCallResult?.toolCallResponse
 
-  const requestSize = resolvedOriginToolCallResult
-    ? JSON.stringify(toolCallArgs).length
-    : 0
-  const responseSize = resolvedOriginToolCallResult
-    ? Number.parseInt(originResponse?.headers.get('content-length') ?? '0') ||
-      JSON.stringify(toolCallResponse).length
-    : 0
+  const requestSize = toolCallArgs ? JSON.stringify(toolCallArgs).length : 0
+  const responseSize =
+    Number.parseInt(httpResponse?.headers.get('content-length') ?? '0') ||
+    (mcpToolCallResponse ? JSON.stringify(mcpToolCallResponse).length : 0)
 
   // The string dimensions used for grouping and filtering (sometimes called
   // labels in other metrics systems).
-  // NOTE: It is important that the ordering of these fields remains consistent!
+  // NOTE: The ordering of these fields is important and must remain consistent!
   // Max of 20 blobs with total size <= 5120 bytes.
   const blobs = [
     // Project ID of the request
@@ -106,24 +120,27 @@ export function recordToolCallUsage({
     consumer?.stripeStatus ?? null,
 
     // Whether the request was rate-limited
-    resolvedOriginToolCallResult
-      ? rateLimitResult?.passed
+    rateLimitResult
+      ? rateLimitResult.passed
         ? 'rl-passed'
         : 'rl-exceeded'
-      : null,
+      : mcpToolCallResponse?._meta?.status === 429
+        ? 'rl-exceeded'
+        : null,
 
     // Whether the request hit the cache
     cacheStatus ?? null,
 
-    // Response status
-    resolvedOriginToolCallResult
-      ? originResponse?.status?.toString() ||
-        (toolCallResponse ? (toolCallResponse.isError ? 'error' : '200') : null)
-      : 'error'
+    // HTTP response status
+    httpResponse?.status?.toString() ||
+      (mcpToolCallResponse
+        ? mcpToolCallResponse._meta?.status?.toString() ||
+          (mcpToolCallResponse?.isError ? 'error' : '200')
+        : 'error')
   ]
 
   // Numberic values to record in this data point.
-  // NOTE: It is important that the ordering of these fields remains consistent!
+  // NOTE: The ordering of these fields is important and must remain consistent!
   const doubles = [
     // Origin timespan in milliseconds
     originTimespanMs ?? 0,

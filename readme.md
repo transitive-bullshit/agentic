@@ -29,15 +29,15 @@
   - raw
 - auth
   - custom auth pages for `openauth`
-- API gateway
+- **API gateway**
   - **usage tracking and reporting**
   - oauth flow
     - https://docs.scalekit.com/guides/mcp/oauth
   - openapi-kitchen-sink
   - mcp-kitchen-sink
   - how to handle binary bodies and responses?
-  - `recordToolCallUsage` in `finally` block of http flow
   - improve logger vs console for non-hono path and util methods
+  - extra `Sentry` instrumentation (`setUser`, `captureMessage`, etc)
 - **Public MCP server interface**
   - how does oauth work with this flow?
   - proper error handling support within this flow; will currently get generic errors

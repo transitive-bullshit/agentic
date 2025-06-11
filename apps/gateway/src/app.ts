@@ -4,16 +4,20 @@ import {
   cors,
   errorHandler,
   init,
+  responseTime,
   sentry
 } from '@agentic/platform-hono'
 import { parseToolIdentifier } from '@agentic/platform-validators'
 import { Hono } from 'hono'
 
-import type { GatewayHonoEnv } from './lib/types'
+import type { GatewayHonoEnv, ResolvedOriginToolCallResult } from './lib/types'
 import { createAgenticClient } from './lib/agentic-client'
 import { createHttpResponseFromMcpToolCallResponse } from './lib/create-http-response-from-mcp-tool-call-response'
 import { recordToolCallUsage } from './lib/record-tool-call-usage'
-import { resolveHttpEdgeRequest } from './lib/resolve-http-edge-request'
+import {
+  type ResolvedHttpEdgeRequest,
+  resolveHttpEdgeRequest
+} from './lib/resolve-http-edge-request'
 import { resolveMcpEdgeRequest } from './lib/resolve-mcp-edge-request'
 import { resolveOriginToolCall } from './lib/resolve-origin-tool-call'
 import { isRequestPubliclyCacheable } from './lib/utils'
@@ -45,15 +49,17 @@ app.use(init)
 // Wrangler does this for us. TODO: Does this happen on prod?
 // app.use(accessLogger)
 
+app.use(responseTime)
+
 app.all(async (ctx) => {
-  const gatewayStartTimeMs = Date.now()
+  const waitUntil = ctx.executionCtx.waitUntil.bind(ctx.executionCtx)
   ctx.set('cache', caches.default)
   ctx.set(
     'client',
     createAgenticClient({
       env: ctx.env,
       cache: caches.default,
-      waitUntil: ctx.executionCtx.waitUntil.bind(ctx.executionCtx),
+      waitUntil,
       isCachingEnabled: isRequestPubliclyCacheable(ctx.req.raw)
     })
   )
@@ -75,73 +81,83 @@ app.all(async (ctx) => {
     }).fetch(ctx.req.raw, ctx.env, executionCtx)
   }
 
-  const resolvedHttpEdgeRequest = await resolveHttpEdgeRequest(ctx)
-
-  const resolvedOriginToolCallResult = await resolveOriginToolCall({
-    tool: resolvedHttpEdgeRequest.tool,
-    args: resolvedHttpEdgeRequest.toolCallArgs,
-    deployment: resolvedHttpEdgeRequest.deployment,
-    consumer: resolvedHttpEdgeRequest.consumer,
-    pricingPlan: resolvedHttpEdgeRequest.pricingPlan,
-    cacheControl: resolvedHttpEdgeRequest.cacheControl,
-    sessionId: ctx.get('sessionId')!,
-    ip: ctx.get('ip'),
-    env: ctx.env,
-    waitUntil: ctx.executionCtx.waitUntil.bind(ctx.executionCtx)
-  })
-
+  let resolvedHttpEdgeRequest: ResolvedHttpEdgeRequest | undefined
+  let resolvedOriginToolCallResult: ResolvedOriginToolCallResult | undefined
   let originResponse: Response | undefined
-  if (resolvedOriginToolCallResult.originResponse) {
-    originResponse = resolvedOriginToolCallResult.originResponse
-  } else {
-    originResponse = await createHttpResponseFromMcpToolCallResponse(ctx, {
-      tool: resolvedHttpEdgeRequest.tool,
-      deployment: resolvedHttpEdgeRequest.deployment,
-      toolCallResponse: resolvedOriginToolCallResult.toolCallResponse
-    })
+  let res: Response | undefined
+
+  function updateResponse(response: Response) {
+    const res = new Response(response.body, response)
+
+    if (resolvedOriginToolCallResult) {
+      if (resolvedOriginToolCallResult.rateLimitResult) {
+        applyRateLimitHeaders({
+          res,
+          rateLimitResult: resolvedOriginToolCallResult.rateLimitResult
+        })
+      }
+
+      // Record the time it took for the origin to respond.
+      res.headers.set(
+        'x-origin-response-time',
+        `${resolvedOriginToolCallResult.originTimespanMs}ms`
+      )
+    }
+
+    // Reset server to Agentic because Cloudflare likes to override things
+    res.headers.set('server', 'agentic')
+
+    // Remove extra Cloudflare headers
+    res.headers.delete('x-powered-by')
+    res.headers.delete('via')
+    res.headers.delete('nel')
+    res.headers.delete('report-to')
+    res.headers.delete('server-timing')
+    res.headers.delete('reporting-endpoints')
+
+    return res
   }
 
-  assert(originResponse, 500, 'Origin response is required')
-  const res = new Response(originResponse.body, originResponse)
+  try {
+    resolvedHttpEdgeRequest = await resolveHttpEdgeRequest(ctx)
 
-  if (resolvedOriginToolCallResult.rateLimitResult) {
-    applyRateLimitHeaders({
-      res,
-      rateLimitResult: resolvedOriginToolCallResult.rateLimitResult
+    resolvedOriginToolCallResult = await resolveOriginToolCall({
+      ...resolvedHttpEdgeRequest,
+      args: resolvedHttpEdgeRequest.toolCallArgs,
+      sessionId: ctx.get('sessionId')!,
+      ip: ctx.get('ip'),
+      env: ctx.env,
+      waitUntil
     })
+
+    if (resolvedOriginToolCallResult.originResponse) {
+      originResponse = resolvedOriginToolCallResult.originResponse
+    } else {
+      originResponse = await createHttpResponseFromMcpToolCallResponse(ctx, {
+        ...resolvedHttpEdgeRequest,
+        toolCallResponse: resolvedOriginToolCallResult.toolCallResponse
+      })
+    }
+
+    assert(originResponse, 500, 'Origin response is required')
+    res = updateResponse(originResponse)
+    return res
+  } catch (err: any) {
+    res = updateResponse(errorHandler(err, ctx))
+    return res
+  } finally {
+    if (resolvedHttpEdgeRequest && res) {
+      recordToolCallUsage({
+        ...resolvedHttpEdgeRequest,
+        requestMode: 'http',
+        httpResponse: res,
+        resolvedOriginToolCallResult,
+        sessionId: ctx.get('sessionId')!,
+        requestId: ctx.get('requestId')!,
+        ip: ctx.get('ip'),
+        env: ctx.env,
+        waitUntil
+      })
+    }
   }
-
-  // Record the time it took for the origin to respond.
-  res.headers.set(
-    'x-origin-response-time',
-    `${resolvedOriginToolCallResult.originTimespanMs}ms`
-  )
-
-  // Record the time it took for the gateway to respond.
-  const gatewayTimespanMs = Date.now() - gatewayStartTimeMs
-  res.headers.set('x-response-time', `${gatewayTimespanMs}ms`)
-
-  recordToolCallUsage({
-    ...resolvedHttpEdgeRequest,
-    requestMode: 'http',
-    resolvedOriginToolCallResult,
-    sessionId: ctx.get('sessionId')!,
-    requestId: ctx.get('requestId')!,
-    ip: ctx.get('ip'),
-    env: ctx.env,
-    waitUntil: ctx.executionCtx.waitUntil.bind(ctx.executionCtx)
-  })
-
-  // Reset server to Agentic because Cloudflare likes to override things
-  res.headers.set('server', 'agentic')
-
-  // Remove extra Cloudflare headers
-  res.headers.delete('x-powered-by')
-  res.headers.delete('via')
-  res.headers.delete('nel')
-  res.headers.delete('report-to')
-  res.headers.delete('server-timing')
-  res.headers.delete('reporting-endpoints')
-
-  return res
 })
