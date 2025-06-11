@@ -26,15 +26,3 @@ export function getRateLimitHeaders(
 
   return headers
 }
-
-export function applyRateLimitHeaders(
-  rateLimitResult: RateLimitResult,
-  res: Response
-) {
-  const rateLimitHeaders = getRateLimitHeaders(rateLimitResult)
-  if (!rateLimitHeaders) return
-
-  for (const [key, value] of Object.entries(rateLimitHeaders)) {
-    res.headers.set(key, value)
-  }
-}

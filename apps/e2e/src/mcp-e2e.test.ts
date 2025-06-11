@@ -33,14 +33,22 @@ for (const [i, fixtureSuite] of fixtureSuites.entries()) {
       const {
         isError,
         result: expectedResult,
+        content: expectedContent,
+        structuredContent: expectedStructuredContent,
+        _meta: expectedMeta,
         validate
       } = fixture.response ?? {}
       const snapshot =
         fixture.response?.snapshot ?? fixtureSuite.snapshot ?? !isError
-      const debugFixture = !!(fixture.debug ?? fixtureSuite.debug)
+      const debugFixture = !!(
+        fixture.debug ??
+        fixtureSuite.debug ??
+        fixture.only ??
+        fixtureSuite.only
+      )
       const fixtureName = `${i}.${j}: ${fixtureSuite.path} ${fixture.request.name}`
 
-      let testFn = fixture.only ? test.only : test
+      let testFn = (fixture.only ?? fixture.debug) ? test.only : test
       if (fixtureSuite.sequential) {
         testFn = testFn.sequential
       }
@@ -60,6 +68,11 @@ for (const [i, fixtureSuite] of fixtureSuites.entries()) {
             name: fixture.request.name,
             arguments: fixture.request.args
           })
+
+          if (debugFixture) {
+            console.log(fixtureName, '=>', result)
+          }
+
           if (isError) {
             expect(result.isError).toBeTruthy()
           } else {
@@ -68,6 +81,21 @@ for (const [i, fixtureSuite] of fixtureSuites.entries()) {
 
           if (expectedResult) {
             expect(result).toEqual(expectedResult)
+          }
+
+          if (expectedContent) {
+            expect(result.content).toEqual(expectedContent)
+          }
+
+          if (expectedStructuredContent) {
+            expect(result.structuredContent).toEqual(expectedStructuredContent)
+          }
+
+          if (expectedMeta) {
+            expect(result._meta).toBeDefined()
+            for (const [key, value] of Object.entries(expectedMeta)) {
+              expect(result._meta![key]).toEqual(value)
+            }
           }
 
           if (snapshot) {
@@ -84,10 +112,6 @@ for (const [i, fixtureSuite] of fixtureSuites.entries()) {
             } else {
               expect(result).toEqual(fixtureResult)
             }
-          }
-
-          if (debugFixture) {
-            console.log(fixtureName, '=>', result)
           }
         }
       )

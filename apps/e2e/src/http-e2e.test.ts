@@ -36,10 +36,15 @@ for (const [i, fixtureSuite] of fixtureSuites.entries()) {
         fixture.response?.snapshot ??
         fixtureSuite.snapshot ??
         (status >= 200 && status < 300)
-      const debugFixture = !!(fixture.debug ?? fixtureSuite.debug)
+      const debugFixture = !!(
+        fixture.debug ??
+        fixtureSuite.debug ??
+        fixture.only ??
+        fixtureSuite.only
+      )
       const fixtureName = `${i}.${j}: ${method} ${fixture.path}`
 
-      let testFn = fixture.only ? test.only : test
+      let testFn = (fixture.only ?? fixture.debug) ? test.only : test
       if (fixtureSuite.sequential) {
         testFn = testFn.sequential
       }

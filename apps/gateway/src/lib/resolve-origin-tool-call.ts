@@ -276,7 +276,7 @@ export async function resolveOriginToolCall({
           body: JSON.stringify({
             name: tool.name,
             args: toolCallArgs,
-            metadata: originMcpRequestMetadata!
+            metadata: originMcpRequestMetadata
           })
         })
 
@@ -301,7 +301,7 @@ export async function resolveOriginToolCall({
       const toolCallResponseString = await originMcpClient.callTool({
         name: tool.name,
         args: toolCallArgs,
-        metadata: originMcpRequestMetadata!
+        metadata: originMcpRequestMetadata
       })
       const toolCallResponse = JSON.parse(
         toolCallResponseString

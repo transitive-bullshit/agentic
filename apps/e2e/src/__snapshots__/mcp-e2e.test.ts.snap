@@ -1,5 +1,37 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`Basic MCP => OpenAPI @ 010332cf get_post success  > 2.0: @dev/test-basic-openapi@010332cf/mcp get_post 1`] = `
+{
+  "content": [],
+  "isError": false,
+  "structuredContent": {
+    "body": "dignissimos aperiam dolorem qui eum
+facilis quibusdam animi sint suscipit qui sint possimus cum
+quaerat magni maiores excepturi
+ipsam ut commodi dolor voluptatum modi aut vitae",
+    "id": 8,
+    "title": "dolorem dolore est ipsam",
+    "userId": 1,
+  },
+}
+`;
+
+exports[`Basic MCP => OpenAPI @ latest get_post success  > 1.0: @dev/test-basic-openapi@latest/mcp get_post 1`] = `
+{
+  "content": [],
+  "isError": false,
+  "structuredContent": {
+    "body": "et iusto sed quo iure
+voluptatem occaecati omnis eligendi aut ad
+voluptatem doloribus vel accusantium quis pariatur
+molestiae porro eius odio et labore et velit aut",
+    "id": 3,
+    "title": "ea molestias quasi exercitationem repellat qui ipsa sit aut",
+    "userId": 1,
+  },
+}
+`;
+
 exports[`Basic MCP => OpenAPI get_post success > 0.0: @dev/test-basic-openapi/mcp get_post 1`] = `
 {
   "content": [],

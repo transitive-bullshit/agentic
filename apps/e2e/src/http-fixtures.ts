@@ -111,7 +111,6 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
     fixtures: [
       {
         path: '@dev/test-basic-openapi/getPost',
-
         response: {
           // Missing `postId` parameter.
           status: 400

@@ -42,6 +42,7 @@
 - **Public MCP server interface**
   - how does oauth work with this flow?
   - proper error handling support within this flow; will currently get generic errors
+  - pass requestId to DurableMcpServer somehow on a per-request basis
 - **Origin MCP servers**
   - how to guarantee that the request is coming from agentic?
     - `_meta` for tool calls
