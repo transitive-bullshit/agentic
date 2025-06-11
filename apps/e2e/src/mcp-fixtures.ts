@@ -49,7 +49,6 @@ export const fixtureSuites: MCPE2ETestFixtureSuite[] = [
   {
     title: 'Basic MCP => OpenAPI get_post success',
     path: '@dev/test-basic-openapi/mcp',
-    // debug: true,
     fixtures: [
       {
         request: {

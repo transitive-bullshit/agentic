@@ -34,6 +34,7 @@
   - oauth flow
     - https://docs.scalekit.com/guides/mcp/oauth
   - openapi-kitchen-sink
+    - add more test cases to e2e tests
   - mcp-kitchen-sink
   - how to handle binary bodies and responses?
   - improve logger vs console for non-hono path and util methods

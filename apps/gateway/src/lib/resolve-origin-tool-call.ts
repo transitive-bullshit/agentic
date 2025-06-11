@@ -126,11 +126,11 @@ export async function resolveOriginToolCall({
       if (pricingPlanToolOverride.enabled !== undefined) {
         assert(
           pricingPlanToolOverride.enabled,
-          403,
+          toolConfig.enabled ? 403 : 404,
           `Tool "${tool.name}" is disabled for pricing plan "${pricingPlan.slug}"`
         )
       } else {
-        assert(toolConfig.enabled, 403, `Tool "${tool.name}" is disabled`)
+        assert(toolConfig.enabled, 404, `Tool "${tool.name}" is disabled`)
       }
 
       if (pricingPlanToolOverride.reportUsage !== undefined) {
@@ -142,7 +142,7 @@ export async function resolveOriginToolCall({
         rateLimit = pricingPlanToolOverride.rateLimit as RateLimit
       }
     } else {
-      assert(toolConfig.enabled, 403, `Tool "${tool.name}" is disabled`)
+      assert(toolConfig.enabled, 404, `Tool "${tool.name}" is disabled`)
     }
   } else {
     // Default to not caching any responses.

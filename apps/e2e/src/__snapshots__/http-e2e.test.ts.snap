@@ -246,6 +246,10 @@ et est aut quod aut provident voluptas autem voluptas",
 }
 `;
 
+exports[`OpenAPI kitchen echo tool with empty body > 9.0: POST @dev/test-everything-openapi/echo 1`] = `{}`;
+
+exports[`OpenAPI kitchen echo tool with empty body > 9.1: POST @dev/test-everything-openapi/echo 1`] = `{}`;
+
 exports[`OpenAPI kitchen sink pure tool > 7.0: POST @dev/test-everything-openapi/pure 1`] = `
 {
   "foo": "bar",
@@ -257,5 +261,19 @@ exports[`OpenAPI kitchen sink pure tool > 7.1: POST @dev/test-everything-openapi
 {
   "foo": "bar",
   "nala": "kitten",
+}
+`;
+
+exports[`OpenAPI kitchen sink unpure_marked_pure tool > 10.0: POST @dev/test-everything-openapi/unpure_marked_pure 1`] = `
+{
+  "nala": "cat",
+  "now": 1749631781793,
+}
+`;
+
+exports[`OpenAPI kitchen sink unpure_marked_pure tool > 10.1: POST @dev/test-everything-openapi/unpure_marked_pure 1`] = `
+{
+  "nala": "cat",
+  "now": 1749631781793,
 }
 `;

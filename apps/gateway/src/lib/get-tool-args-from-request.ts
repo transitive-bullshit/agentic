@@ -43,10 +43,16 @@ export async function getToolArgsFromRequest(
 
     return incomingRequestArgs
   } else if (request.method === 'POST') {
-    const incomingRequestArgsRaw = (await request.clone().json()) as Record<
-      string,
-      any
-    >
+    let incomingRequestArgsRaw: unknown = {}
+
+    // TODO: verify content-type of request is application/json
+
+    try {
+      incomingRequestArgsRaw = (await request.json()) as Record<string, any>
+    } catch {
+      // If the request body is not JSON or malformed, ignore it for now.
+      // TODO: need to improve on this logic.
+    }
 
     // TODO: Proper support for empty params with POST requests
     assert(incomingRequestArgsRaw, 400, 'Invalid empty request body')

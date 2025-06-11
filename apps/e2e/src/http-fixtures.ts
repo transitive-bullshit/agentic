@@ -1,3 +1,5 @@
+import { expect } from 'vitest'
+
 export type E2ETestFixture = {
   path: string
 
@@ -552,6 +554,84 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
             foo: 'bar'
           }
         }
+      }
+    ]
+  },
+  {
+    title: 'OpenAPI kitchen sink disabled tool',
+    fixtures: [
+      {
+        path: '@dev/test-everything-openapi/disabled_tool',
+        request: {
+          method: 'POST'
+        },
+        response: {
+          status: 404
+        }
+      }
+    ]
+  },
+  {
+    title: 'OpenAPI kitchen echo tool with empty body',
+    compareResponseBodies: true,
+    fixtures: [
+      {
+        path: '@dev/test-everything-openapi/echo',
+        request: {
+          method: 'POST'
+        },
+        response: {
+          body: {}
+        }
+      },
+      {
+        path: '@dev/test-everything-openapi/echo',
+        request: {
+          method: 'POST',
+          json: {}
+        },
+        response: {
+          body: {}
+        }
+      }
+    ]
+  },
+  {
+    title: 'OpenAPI kitchen sink unpure_marked_pure tool',
+    compareResponseBodies: true,
+    fixtures: [
+      {
+        path: '@dev/test-everything-openapi/unpure_marked_pure',
+        request: {
+          method: 'POST',
+          json: {
+            nala: 'cat'
+          }
+        },
+        response: {
+          validate: (body) => {
+            expect(body?.nala).toEqual('cat')
+            expect(typeof body.now).toBe('number')
+            expect(body.now).toBeGreaterThan(0)
+          }
+        }
+      },
+      {
+        path: '@dev/test-everything-openapi/unpure_marked_pure',
+        request: {
+          method: 'POST',
+          json: {
+            nala: 'cat'
+          }
+        },
+        response: {
+          headers: {
+            'cf-cache-status': 'HIT'
+          }
+        }
+        // compareResponseBodies should result in the same cached response body,
+        // even though the origin would return a different `now` value if it
+        // weren't marked `pure`.
       }
     ]
   }
