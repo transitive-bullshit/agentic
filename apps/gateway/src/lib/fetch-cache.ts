@@ -1,17 +1,15 @@
-import type { GatewayHonoContext } from './types'
+import type { WaitUntil } from './types'
 
-export async function fetchCache(
-  ctx: GatewayHonoContext,
-  {
-    cacheKey,
-    fetchResponse
-  }: {
-    cacheKey?: Request
-    fetchResponse: () => Promise<Response>
-  }
-): Promise<Response> {
-  const cache = ctx.get('cache')
-  const logger = ctx.get('logger')
+export async function fetchCache({
+  cacheKey,
+  fetchResponse,
+  waitUntil
+}: {
+  cacheKey?: Request
+  fetchResponse: () => Promise<Response>
+  waitUntil: WaitUntil
+}): Promise<Response> {
+  const cache = caches.default
   let response: Response | undefined
 
   if (cacheKey) {
@@ -25,9 +23,10 @@ export async function fetchCache(
     if (cacheKey) {
       if (response.headers.has('Cache-Control')) {
         // Note that cloudflare's `cache` should respect response headers.
-        ctx.executionCtx.waitUntil(
+        waitUntil(
           cache.put(cacheKey, response.clone()).catch((err) => {
-            logger.warn('cache put error', cacheKey, err)
+            // eslint-disable-next-line no-console
+            console.warn('cache put error', cacheKey, err)
           })
         )
       }

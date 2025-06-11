@@ -1,34 +1,21 @@
 import { hashObject, sha256 } from '@agentic/platform-core'
 import contentType from 'fast-content-type-parse'
 
-import type { GatewayHonoContext } from './types'
 import { normalizeUrl } from './normalize-url'
+import { isRequestPubliclyCacheable } from './utils'
 
 // TODO: what is a reasonable upper bound for hashing the POST body size?
 const MAX_POST_BODY_SIZE_BYTES = 10_000
 
 export async function getRequestCacheKey(
-  ctx: GatewayHonoContext,
   request: Request
 ): Promise<Request | undefined> {
   try {
-    const pragma = request.headers.get('pragma')
-    if (pragma === 'no-cache') {
+    if (!isRequestPubliclyCacheable(request)) {
       return
     }
 
-    const cacheControl = request.headers.get('cache-control')
-    if (cacheControl) {
-      const directives = new Set(cacheControl.split(',').map((s) => s.trim()))
-      if (directives.has('no-store') || directives.has('no-cache')) {
-        return
-      }
-    }
-
     if (request.method === 'POST' || request.method === 'PUT') {
-      // useful for debugging since getting all the headers is awkward
-      // console.log(Object.fromEntries(request.headers.entries()))
-
       const contentLength = Number.parseInt(
         request.headers.get('content-length') ?? '0'
       )
@@ -37,10 +24,7 @@ export async function getRequestCacheKey(
         const { type } = contentType.safeParse(
           request.headers.get('content-type') || 'application/octet-stream'
         )
-        let hash
-
-        // TODO: gracefully handle content-encoding compression
-        // TODO: more robust content-type detection
+        let hash: string
 
         if (type.includes('json')) {
           const bodyJson: any = await request.clone().json()
@@ -49,16 +33,20 @@ export async function getRequestCacheKey(
           const bodyString = await request.clone().text()
           hash = await sha256(bodyString)
         } else {
-          // TODO
-          // const bodyBuffer = await request.clone().arrayBuffer()
-          // hash = await sha256.fromBuffer(bodyBuffer)
-          return
+          const bodyBuffer = await request.clone().arrayBuffer()
+          hash = await sha256(bodyBuffer)
         }
 
         const cacheUrl = new URL(request.url)
         cacheUrl.searchParams.set('x-agentic-cache-key', hash)
         const normalizedUrl = normalizeUrl(cacheUrl.toString())
 
+        // Convert POST and PUT requests to GET with a query param containing
+        // a hash of the request body. This enables us to cache these requests
+        // more easily, since we want to move the the "cacheability" logic to a
+        // higher-level, config-based approach. E.g., individual tools can
+        // opt-in to aggressive caching by declaring themselves `pure` or
+        // `immutable` regardless of the HTTP method used to call the tool.
         const newReq = normalizeRequestHeaders(
           new Request(normalizedUrl, {
             headers: request.headers,
@@ -85,13 +73,18 @@ export async function getRequestCacheKey(
 
     return normalizeRequestHeaders(new Request(request))
   } catch (err) {
-    const logger = ctx.get('logger')
-    logger.error('error computing cache key', request.method, request.url, err)
+    // eslint-disable-next-line no-console
+    console.warn(
+      'warning: failed to compute cache key',
+      request.method,
+      request.url,
+      err
+    )
     return
   }
 }
 
-const requestHeaderWhitelist = new Set(['cache-control'])
+const requestHeaderWhitelist = new Set(['cache-control', 'mcp-session-id'])
 
 function normalizeRequestHeaders(request: Request) {
   const headers = Object.fromEntries(request.headers.entries())

@@ -3,7 +3,7 @@ import defaultKy from 'ky'
 import { describe, expect, test } from 'vitest'
 
 import { env } from './env'
-import { fixtureSuites } from './fixtures'
+import { fixtureSuites } from './http-fixtures'
 
 const ky = defaultKy.extend({
   prefixUrl: env.AGENTIC_GATEWAY_BASE_URL,
@@ -24,17 +24,20 @@ for (const [i, fixtureSuite] of fixtureSuites.entries()) {
 
     for (const [j, fixture] of fixtures.entries()) {
       const method = fixture.request?.method ?? 'GET'
+      const timeout = fixture.timeout ?? 30_000
       const {
         status = 200,
         contentType: expectedContentType = 'application/json',
         headers: expectedHeaders,
-        body: expectedBody
+        body: expectedBody,
+        validate
       } = fixture.response ?? {}
       const snapshot =
         fixture.response?.snapshot ??
         fixtureSuite.snapshot ??
         (status >= 200 && status < 300)
       const debugFixture = !!(fixture.debug ?? fixtureSuite.debug)
+      const fixtureName = `${i}.${j}: ${method} ${fixture.path}`
 
       let testFn = fixture.only ? test.only : test
       if (fixtureSuite.sequential) {
@@ -42,13 +45,28 @@ for (const [i, fixtureSuite] of fixtureSuites.entries()) {
       }
 
       testFn(
-        `${i}.${j}: ${method} ${fixture.path}`,
+        fixtureName,
         {
-          timeout: fixture.timeout ?? 60_000
+          timeout
         },
         // eslint-disable-next-line no-loop-func
         async () => {
-          const res = await ky(fixture.path, fixture.request)
+          const res = await ky(fixture.path, {
+            timeout,
+            ...fixture.request
+          })
+
+          if (res.status !== status && res.status >= 500) {
+            let body: any
+            try {
+              body = await res.json()
+            } catch {}
+
+            console.error(`${fixtureName} => UNEXPECTED ERROR ${res.status}`, {
+              body
+            })
+          }
+
           expect(res.status).toBe(status)
 
           const { type } = contentType.safeParse(
@@ -61,10 +79,6 @@ for (const [i, fixtureSuite] of fixtureSuites.entries()) {
               expect(res.headers.get(key)).toBe(value)
             }
           }
-
-          // console.log(`${i}.${j}: ${method} ${fixture.path} => ${status}`, {
-          //   headers: Object.fromEntries(res.headers.entries())
-          // })
 
           let body: any
 
@@ -85,6 +99,10 @@ for (const [i, fixtureSuite] of fixtureSuites.entries()) {
             expect(body).toEqual(expectedBody)
           }
 
+          if (validate) {
+            await Promise.resolve(validate(body))
+          }
+
           if (snapshot) {
             expect(body).toMatchSnapshot()
           }
@@ -98,7 +116,7 @@ for (const [i, fixtureSuite] of fixtureSuites.entries()) {
           }
 
           if (debugFixture) {
-            console.log(`${i}.${j}: ${method} ${fixture.path} => ${status}`, {
+            console.log(`${fixtureName} => ${res.status}`, {
               body,
               headers: Object.fromEntries(res.headers.entries())
             })

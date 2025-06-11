@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest'
 
-import { omit, pick, sha256 } from './utils'
+import { omit, pick, pruneEmpty, pruneEmptyDeep, sha256 } from './utils'
 
 test('pick', () => {
   expect(pick({ a: 1, b: 2, c: 3 }, 'a', 'c')).toEqual({ a: 1, c: 3 })
@@ -37,4 +37,67 @@ test('sha256', async () => {
   expect(hash4).not.toBe(hash5)
 
   expect(await sha256('test')).toMatchSnapshot()
+})
+
+test('pruneEmpty', () => {
+  expect(
+    pruneEmpty({
+      a: 1,
+      b: { foo: true },
+      c: [true],
+      d: 'foo',
+      e: null,
+      f: undefined
+    })
+  ).toEqual({
+    a: 1,
+    b: { foo: true },
+    c: [true],
+    d: 'foo'
+  })
+
+  expect(pruneEmpty({ a: 0, b: {}, c: [], d: '' })).toEqual({
+    a: 0
+  })
+  expect(pruneEmpty({ b: {}, c: [], d: '' })).toEqual({})
+
+  expect(
+    pruneEmpty({
+      a: null,
+      b: { foo: [{}], bar: [null, undefined, ''] },
+      c: ['', '', ''],
+      d: '',
+      e: undefined,
+      f: [],
+      g: {}
+    })
+  ).toEqual({
+    b: { foo: [{}], bar: [null, undefined, ''] },
+    c: ['', '', '']
+  })
+})
+
+test('pruneEmptyDeep', () => {
+  expect(
+    pruneEmptyDeep({ a: 1, b: { foo: true }, c: [true], d: 'foo' })
+  ).toEqual({
+    a: 1,
+    b: { foo: true },
+    c: [true],
+    d: 'foo'
+  })
+
+  expect(pruneEmptyDeep({ a: 0, b: {}, c: [], d: '' })).toEqual({
+    a: 0
+  })
+
+  expect(
+    pruneEmptyDeep({
+      a: null,
+      b: { foo: [{}], bar: [null, undefined, ''] },
+      c: ['', '', ''],
+      d: '',
+      e: undefined
+    })
+  ).toEqual(undefined)
 })

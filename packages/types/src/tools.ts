@@ -34,23 +34,29 @@ export const toolNameSchema = z
 export const jsonSchemaObjectSchema = z
   .object({
     type: z.literal('object'),
-    properties: z.object({}).passthrough().optional(),
+    // TODO: improve this schema
+    properties: z.record(z.string(), z.any()).optional(),
     required: z.array(z.string()).optional()
   })
   .passthrough()
   .openapi('JsonSchemaObject')
 
 /**
- * Customizes a tool's behavior for a given pricing plan.
+ * Overrides a tool's default behavior for a given pricing plan.
+ *
+ * You can use this, for instance, to disable tools on certain pricing plans
+ * or to customize the rate-limits for specific tools on a given pricing plan.
  */
-export const pricingPlanToolConfigSchema = z
+export const pricingPlanToolOverrideSchema = z
   .object({
     /**
      * Whether this tool should be enabled for customers on a given pricing plan.
      *
-     * @default true
+     * If `undefined`, will use the tool's default enabled state.
+     *
+     * @default undefined
      */
-    enabled: z.boolean().optional().default(true),
+    enabled: z.boolean().optional(),
 
     /**
      * Overrides whether to report default `requests` usage for metered billing
@@ -74,8 +80,10 @@ export const pricingPlanToolConfigSchema = z
      */
     rateLimit: z.union([rateLimitSchema, z.null()]).optional()
   })
-  .openapi('PricingPlanToolConfig')
-export type PricingPlanToolConfig = z.infer<typeof pricingPlanToolConfigSchema>
+  .openapi('PricingPlanToolOverride')
+export type PricingPlanToolOverride = z.infer<
+  typeof pricingPlanToolOverrideSchema
+>
 
 /**
  * Customizes a tool's default behavior across all pricing plans.
@@ -111,7 +119,20 @@ export const toolConfigSchema = z
      *
      * @default false
      */
-    immutable: z.boolean().optional().default(false),
+    pure: z.boolean().optional().default(false),
+
+    /**
+     * A `Cache-Control` header value to use for caching this tool's responses.
+     *
+     * If `pure` is `true`, this defaults to: `public, max-age=31560000, s-maxage=31560000, stale-while-revalidate=3600` (cache publicly for up to 1 year).
+     *
+     * If `pure` is `false`, this defaults to the origin server's
+     * `cache-control` header value. If the origin server does not set a
+     * `cache-control` header, it defaults to `no-store`.
+     *
+     * @default undefined
+     */
+    cacheControl: z.string().optional(),
 
     /**
      * Whether calls to this tool should be reported as usage for the default
@@ -137,10 +158,10 @@ export const toolConfigSchema = z
     rateLimit: z.union([rateLimitSchema, z.null()]).optional(),
 
     /**
-     * Allows you to customize this tool's behavior or disable it entirely for
+     * Allows you to override this tool's behavior or disable it entirely for
      * different pricing plans.
      *
-     * This is a map from PricingPlan slug to PricingPlanToolConfig.
+     * This is a map from PricingPlan slug to PricingPlanToolOverride.
      *
      * @example
      * {
@@ -149,11 +170,11 @@ export const toolConfigSchema = z
      *   }
      * }
      */
-    pricingPlanConfig: z
-      .record(pricingPlanSlugSchema, pricingPlanToolConfigSchema)
+    pricingPlanOverridesMap: z
+      .record(pricingPlanSlugSchema, pricingPlanToolOverrideSchema)
       .optional()
       .describe(
-        'Map of PricingPlan slug to tool config overrides for a given plan. This is useful to customize tool behavior or disable tools completely on different pricing plans.'
+        "Allows you to override this tool's behavior or disable it entirely for different pricing plans. This is a map of PricingPlan slug to PricingPlanToolOverrides for that plan."
       )
 
     // TODO?

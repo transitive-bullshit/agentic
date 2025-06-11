@@ -34,12 +34,6 @@ export function registerListDeploymentsCommand({
           }
         )
 
-        if (!parsedDeploymentIdentifier) {
-          throw new Error(
-            `Invalid project or deployment identifier "${identifier}"`
-          )
-        }
-
         query.projectIdentifier = parsedDeploymentIdentifier.projectIdentifier
         label = `Fetching deployments for project "${query.projectIdentifier}"`
 

@@ -13,7 +13,7 @@ import {
 import { populateProjectSchema, projectIdParamsSchema } from './schemas'
 
 const route = createRoute({
-  description: 'Gets a project by ID',
+  description: 'Gets a project by ID.',
   tags: ['projects'],
   operationId: 'getProject',
   method: 'get',

@@ -30,8 +30,7 @@ function success(...args: Parameters<typeof parseDeploymentIdentifier>) {
 }
 
 function error(...args: Parameters<typeof parseDeploymentIdentifier>) {
-  const result = parseDeploymentIdentifier(...args)
-  expect(result).toBeUndefined()
+  expect(() => parseDeploymentIdentifier(...args)).throws()
 }
 
 describe('parseDeploymentIdentifier', () => {

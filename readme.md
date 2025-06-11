@@ -15,6 +15,7 @@
   - => OpenAPI: `GET/POST/ETC originUrl/toolName` operation with transformed tool params
 - RAW: `METHOD gateway.agentic.so/deploymentIdentifier/<pathname>`
   - => Raw HTTP: `METHOD originUrl/<pathname>` simple HTTP proxy request
+  - TODO: remove / disable `raw` support for now
 
 ## TODO
 
@@ -28,33 +29,34 @@
   - raw
 - auth
   - custom auth pages for `openauth`
-- add username / team name blacklist
-  - admin, internal, mcp, sse, etc
-- API gateway
+- **API gateway**
+  - **usage tracking and reporting**
+  - oauth flow
+    - https://docs.scalekit.com/guides/mcp/oauth
+  - openapi-kitchen-sink
+  - mcp-kitchen-sink
   - how to handle binary bodies and responses?
-  - add support for `immutable` in `toolConfigs`
+  - improve logger vs console for non-hono path and util methods
+  - extra `Sentry` instrumentation (`setUser`, `captureMessage`, etc)
 - **Public MCP server interface**
-  - TODO
+  - how does oauth work with this flow?
+  - proper error handling support within this flow; will currently get generic errors
 - **Origin MCP servers**
-  - CF durable object stability across requests
   - how to guarantee that the request is coming from agentic?
-    - like `x-agentic-proxy-secret` or signed requests but for MCP servers
-    - or do this once at the connection level?
-  - how to pass agentic gateway context to origin server?
-    - instead of headers, maybe optional `agenticContext` param?
-    - how does this work with mcp auth?
+    - `_meta` for tool calls
+    - _still need a way of doing this for initial connection requests_
   - mcp auth provider support
-  - SSE support? (no; post-mvp if at all; only support [streamable http](https://modelcontextprotocol.io/specification/2025-03-26/basic/transports#streamable-http) like smithery does, or maybe support both?)
-  - caching for MCP tool call responses
   - binary bodies / responses?
   - resources
   - prompts
   - other MCP features?
-- allow config name to be `project-name` or `@namespace/project-name`?
 
 ## TODO Post-MVP
 
 - first-party deployment hosting
+- api gateway stress tests
+- auth
+  - custom auth provider configs for projects/deployments
 - stripe
   - re-add coupons
   - declarative json-based pricing
@@ -70,8 +72,12 @@
   - same for pricing plan line-items
 - replace `ms` package
 - API gateway
+  - **do I just ditch the public REST interface and focus on MCP?**
+  - SSE support? (no; post-mvp if at all; only support [streamable http](https://modelcontextprotocol.io/specification/2025-03-26/basic/transports#streamable-http) like smithery does, or maybe support both?)
   - signed requests
   - add support for custom headers on responses
+  - add ability to only report stripe usage on non-cached requests
+  - add support for ToolConfig.cost defaulting to 1, to easily support tools which cost multiple "credits"
 - `@agentic/platform-hono`
   - fix sentry middleware
     - https://github.com/honojs/middleware/blob/main/packages/sentry/src/index.ts
@@ -80,6 +86,8 @@
 - additional transactional emails
 - consider `projectName` and `projectSlug` or `projectIdentifier`?
 - handle or validate against dynamic MCP origin tools
+- allow config name to be `project-name` or `@namespace/project-name`?
+- upgrade to zod v4
 
 ## License
 

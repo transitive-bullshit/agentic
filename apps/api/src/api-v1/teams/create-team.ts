@@ -11,7 +11,7 @@ import {
 } from '@/lib/openapi-utils'
 
 const route = createRoute({
-  description: 'Creates a team.',
+  description: 'Creates a new team.',
   tags: ['teams'],
   operationId: 'createTeam',
   method: 'post',

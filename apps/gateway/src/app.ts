@@ -1,21 +1,27 @@
 import { assert } from '@agentic/platform-core'
 import {
+  applyRateLimitHeaders,
   cors,
   errorHandler,
   init,
   responseTime,
   sentry
 } from '@agentic/platform-hono'
-import { Client as McpClient } from '@modelcontextprotocol/sdk/client/index.js'
-import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js'
+import { parseToolIdentifier } from '@agentic/platform-validators'
 import { Hono } from 'hono'
 
-import type { GatewayHonoEnv } from './lib/types'
+import type { GatewayHonoEnv, ResolvedOriginToolCallResult } from './lib/types'
 import { createAgenticClient } from './lib/agentic-client'
 import { createHttpResponseFromMcpToolCallResponse } from './lib/create-http-response-from-mcp-tool-call-response'
-import { fetchCache } from './lib/fetch-cache'
-import { getRequestCacheKey } from './lib/get-request-cache-key'
-import { resolveOriginRequest } from './lib/resolve-origin-request'
+import { recordToolCallUsage } from './lib/record-tool-call-usage'
+import {
+  type ResolvedHttpEdgeRequest,
+  resolveHttpEdgeRequest
+} from './lib/resolve-http-edge-request'
+import { resolveMcpEdgeRequest } from './lib/resolve-mcp-edge-request'
+import { resolveOriginToolCall } from './lib/resolve-origin-tool-call'
+import { isRequestPubliclyCacheable } from './lib/utils'
+import { DurableMcpServer } from './worker'
 
 export const app = new Hono<GatewayHonoEnv>()
 
@@ -31,10 +37,10 @@ app.use(sentry())
 app.use(
   cors({
     origin: '*',
-    allowHeaders: ['Content-Type', 'Authorization'],
-    allowMethods: ['POST', 'GET', 'OPTIONS'],
-    exposeHeaders: ['Content-Length'],
-    maxAge: 600,
+    allowHeaders: ['Content-Type', 'Authorization', 'mcp-session-id'],
+    allowMethods: ['GET', 'POST', 'DELETE', 'OPTIONS'],
+    exposeHeaders: ['Content-Length', 'mcp-session-id'],
+    maxAge: 86_400,
     credentials: true
   })
 )
@@ -46,77 +52,115 @@ app.use(init)
 app.use(responseTime)
 
 app.all(async (ctx) => {
+  const waitUntil = ctx.executionCtx.waitUntil.bind(ctx.executionCtx)
   ctx.set('cache', caches.default)
-  ctx.set('client', createAgenticClient(ctx))
+  ctx.set(
+    'client',
+    createAgenticClient({
+      env: ctx.env,
+      cache: caches.default,
+      isCachingEnabled: isRequestPubliclyCacheable(ctx.req.raw),
+      waitUntil
+    })
+  )
 
-  const resolvedOriginRequest = await resolveOriginRequest(ctx)
+  // TODO: Clean up the duplication between this block,
+  // `resolveMcpEdgeRequest`, and `resolveHttpEdgeRequest`.
+  const requestUrl = new URL(ctx.req.url)
+  const { pathname } = requestUrl
+  const requestedToolIdentifier = pathname.replace(/^\//, '').replace(/\/$/, '')
+  const { toolName } = parseToolIdentifier(requestedToolIdentifier)
 
-  const originStartTime = Date.now()
+  // Handle MCP requests
+  if (toolName === 'mcp') {
+    ctx.set('isJsonRpcRequest', true)
+    const executionCtx = ctx.executionCtx as any
+    const mcpInfo = await resolveMcpEdgeRequest(ctx)
+    executionCtx.props = mcpInfo
+
+    return DurableMcpServer.serve(pathname, {
+      binding: 'DO_MCP_SERVER'
+    }).fetch(ctx.req.raw, ctx.env, executionCtx)
+  }
+
+  let resolvedHttpEdgeRequest: ResolvedHttpEdgeRequest | undefined
+  let resolvedOriginToolCallResult: ResolvedOriginToolCallResult | undefined
   let originResponse: Response | undefined
+  let res: Response | undefined
 
-  switch (resolvedOriginRequest.deployment.originAdapter.type) {
-    case 'openapi':
-    case 'raw': {
-      assert(
-        resolvedOriginRequest.originRequest,
-        500,
-        'Origin request is required'
-      )
+  try {
+    // Resolve the http edge request to a specific deployment, consumer, and
+    // tool call.
+    resolvedHttpEdgeRequest = await resolveHttpEdgeRequest(ctx)
 
-      const cacheKey = await getRequestCacheKey(
-        ctx,
-        resolvedOriginRequest.originRequest
-      )
+    // Invoke the origin tool call.
+    resolvedOriginToolCallResult = await resolveOriginToolCall({
+      ...resolvedHttpEdgeRequest,
+      args: resolvedHttpEdgeRequest.toolCallArgs,
+      sessionId: ctx.get('sessionId')!,
+      ip: ctx.get('ip'),
+      env: ctx.env,
+      waitUntil
+    })
 
-      // TODO: transform origin 5XX errors to 502 errors...
-      originResponse = await fetchCache(ctx, {
-        cacheKey,
-        fetchResponse: () => fetch(resolvedOriginRequest.originRequest!)
+    // Transform the origin tool call response into an http response.
+    if (resolvedOriginToolCallResult.originResponse) {
+      originResponse = resolvedOriginToolCallResult.originResponse
+    } else {
+      originResponse = await createHttpResponseFromMcpToolCallResponse(ctx, {
+        ...resolvedHttpEdgeRequest,
+        toolCallResponse: resolvedOriginToolCallResult.toolCallResponse
       })
-      break
     }
 
-    case 'mcp': {
-      assert(
-        resolvedOriginRequest.toolArgs,
-        500,
-        'Tool args are required for MCP origin requests'
-      )
+    assert(originResponse, 500, 'Origin response is required')
 
-      const transport = new StreamableHTTPClientTransport(
-        new URL(resolvedOriginRequest.deployment.originUrl)
-      )
-      const client = new McpClient({
-        name: resolvedOriginRequest.deployment.originAdapter.serverInfo.name,
-        version:
-          resolvedOriginRequest.deployment.originAdapter.serverInfo.version
-      })
-
-      // TODO: re-use client connection across requests
-      await client.connect(transport)
-
-      // TODO: add timeout support to the origin tool call?
-      // TODO: add response caching for MCP tool calls
-      const toolCallResponse = await client.callTool({
-        name: resolvedOriginRequest.tool.name,
-        arguments: resolvedOriginRequest.toolArgs
-      })
-
-      originResponse = await createHttpResponseFromMcpToolCallResponse(ctx, {
-        tool: resolvedOriginRequest.tool,
-        deployment: resolvedOriginRequest.deployment,
-        toolCallResponse
+    // Post-process the origin response.
+    res = updateResponse(originResponse, resolvedOriginToolCallResult)
+    return res
+  } catch (err: any) {
+    // Convert the error into an http response and post-process it.
+    res = errorHandler(err, ctx)
+    res = updateResponse(res, resolvedOriginToolCallResult)
+    return res
+  } finally {
+    // Record the tool call usage.
+    if (resolvedHttpEdgeRequest && res) {
+      recordToolCallUsage({
+        ...resolvedHttpEdgeRequest,
+        requestMode: 'http',
+        httpResponse: res,
+        resolvedOriginToolCallResult,
+        sessionId: ctx.get('sessionId')!,
+        requestId: ctx.get('requestId')!,
+        ip: ctx.get('ip'),
+        env: ctx.env,
+        waitUntil
       })
     }
   }
+})
 
-  assert(originResponse, 500, 'Origin response is required')
-  const res = new Response(originResponse.body, originResponse)
+function updateResponse(
+  response: Response,
+  resolvedOriginToolCallResult?: ResolvedOriginToolCallResult
+) {
+  const res = new Response(response.body, response)
 
-  // Record the time it took for both the origin and gateway to respond
-  const now = Date.now()
-  const originTimespan = now - originStartTime
-  res.headers.set('x-origin-response-time', `${originTimespan}ms`)
+  if (resolvedOriginToolCallResult) {
+    if (resolvedOriginToolCallResult.rateLimitResult) {
+      applyRateLimitHeaders({
+        res,
+        rateLimitResult: resolvedOriginToolCallResult.rateLimitResult
+      })
+    }
+
+    // Record the time it took for the origin to respond.
+    res.headers.set(
+      'x-origin-response-time',
+      `${resolvedOriginToolCallResult.originTimespanMs}ms`
+    )
+  }
 
   // Reset server to Agentic because Cloudflare likes to override things
   res.headers.set('server', 'agentic')
@@ -129,30 +173,5 @@ app.all(async (ctx) => {
   res.headers.delete('server-timing')
   res.headers.delete('reporting-endpoints')
 
-  // const id: DurableObjectId = env.DO_RATE_LIMITER.idFromName('foo')
-  // const stub = env.DO_RATE_LIMITER.get(id)
-  // const greeting = await stub.sayHello('world')
-
-  // return new Response(greeting)
-
   return res
-
-  // TODO: move this `finally` block to a middleware handler
-  // const now = Date.now()
-  // Report usage.
-  // Note that we are not awaiting the results of this on purpose so we can
-  // return the response to the client immediately.
-  // TODO
-  // ctx.waitUntil(
-  //   reportUsage(ctx, {
-  //     ...call,
-  //     cache: res!.headers.get('cf-cache-status'),
-  //     status: res!.status,
-  //     timestamp: Math.ceil(now / 1000),
-  //     computeTime: originTimespan!,
-  //     gatewayTime: gatewayTimespan!,
-  //     // TODO: record correct bandwidth of request + response content-length
-  //     bandwidth: 0
-  //   })
-  // )
-})
+}

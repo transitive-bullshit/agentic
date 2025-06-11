@@ -32,8 +32,7 @@ function success(...args: Parameters<typeof parseToolIdentifier>) {
 }
 
 function error(...args: Parameters<typeof parseToolIdentifier>) {
-  const result = parseToolIdentifier(...args)
-  expect(result).toBeUndefined()
+  expect(() => parseToolIdentifier(...args)).throws()
 }
 
 describe('parseToolIdentifier', () => {

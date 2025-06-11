@@ -26,3 +26,5 @@ export type AdminDeployment = Simplify<
     pricingPlans: PricingPlan[]
   }
 >
+
+export type AdminConsumer = Simplify<components['schemas']['AdminConsumer']>

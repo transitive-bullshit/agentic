@@ -26,7 +26,7 @@ export type E2ETestFixture = {
     contentType?: string
     headers?: Record<string, string>
     body?: any
-    validate?: (body: any) => void
+    validate?: (body: any) => void | Promise<void>
     /** @default true */
     snapshot?: boolean
   }
@@ -89,13 +89,13 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
         }
       },
       {
-        path: '@dev/test-basic-openapi@fc856666/getPost?postId=1'
+        path: '@dev/test-basic-openapi@010332cf/getPost?postId=1'
       },
       {
-        path: '@dev/test-basic-openapi@fc856666/get_post?postId=1'
+        path: '@dev/test-basic-openapi@010332cf/get_post?postId=1'
       },
       {
-        path: '@dev/test-basic-openapi@fc856666/getPost',
+        path: '@dev/test-basic-openapi@010332cf/getPost',
         request: {
           searchParams: {
             postId: 1
@@ -116,7 +116,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
         }
       },
       {
-        path: '@dev/test-basic-openapi@fc856666/getPost?postId=foo',
+        path: '@dev/test-basic-openapi@010332cf/getPost?postId=foo',
         response: {
           status: 400
         }
@@ -229,8 +229,23 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
     compareResponseBodies: true,
     fixtures: [
       {
-        // ensure we bypass the cache for requests with `pragma: no-cache`
+        // ensure we bypass the cache for requests for tools which do not have
+        // a custom `pure` or `cacheControl` set in their tool config.
         path: '@dev/test-basic-openapi@fc856666/getPost',
+        request: {
+          searchParams: {
+            postId: 9
+          }
+        },
+        response: {
+          headers: {
+            'cf-cache-status': 'BYPASS'
+          }
+        }
+      },
+      {
+        // ensure we bypass the cache for requests with `pragma: no-cache`
+        path: '@dev/test-basic-openapi@010332cf/getPost',
         request: {
           headers: {
             pragma: 'no-cache'
@@ -246,8 +261,8 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
         }
       },
       {
-        // ensure we bypass the cache for requests with `pragma: no-cache`
-        path: '@dev/test-basic-openapi@fc856666/getPost?postId=9',
+        // ensure we bypass the cache for requests with `cache-control: no-cache`
+        path: '@dev/test-basic-openapi@010332cf/getPost?postId=9',
         request: {
           headers: {
             'cache-control': 'no-cache'
@@ -261,7 +276,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
       },
       {
         // ensure we bypass the cache for requests with `cache-control: no-store`
-        path: '@dev/test-basic-openapi@fc856666/get_post?postId=9',
+        path: '@dev/test-basic-openapi@010332cf/get_post?postId=9',
         request: {
           headers: {
             'cache-control': 'no-store'
@@ -274,10 +289,23 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
         }
       },
       {
-        path: '@dev/test-basic-openapi@fc856666/get_post?postId=9',
+        path: '@dev/test-basic-openapi@010332cf/get_post?postId=9',
         request: {
           headers: {
             'cache-control': 'max-age=0, must-revalidate, no-cache'
+          }
+        },
+        response: {
+          headers: {
+            'cf-cache-status': 'BYPASS'
+          }
+        }
+      },
+      {
+        path: '@dev/test-basic-openapi@010332cf/get_post?postId=9',
+        request: {
+          headers: {
+            'cache-control': 'private, max-age=3600, must-revalidate'
           }
         },
         response: {
@@ -295,16 +323,26 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
     fixtures: [
       {
         // first request to ensure the cache is populated
-        path: '@dev/test-basic-openapi@fc856666/getPost',
+        path: '@dev/test-basic-openapi@010332cf/getPost',
         request: {
+          headers: {
+            'cache-control':
+              'public, max-age=3600, s-maxage=3600, stale-while-revalidate=3600'
+          },
           searchParams: {
-            postId: 9
+            postId: 13
           }
         }
       },
       {
         // second request should hit the cache
-        path: '@dev/test-basic-openapi@fc856666/getPost?postId=9',
+        path: '@dev/test-basic-openapi@010332cf/getPost?postId=13',
+        request: {
+          headers: {
+            'cache-control':
+              'public, max-age=3600, s-maxage=3600, stale-while-revalidate=3600'
+          }
+        },
         response: {
           headers: {
             'cf-cache-status': 'HIT'
@@ -312,8 +350,14 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
         }
       },
       {
-        // normalized request should also hit the cache
-        path: '@dev/test-basic-openapi@fc856666/get_post?postId=9',
+        // normalized request with different path should also hit the cache
+        path: '@dev/test-basic-openapi@010332cf/get_post?postId=13',
+        request: {
+          headers: {
+            'cache-control':
+              'public, max-age=3600, s-maxage=3600, stale-while-revalidate=3600'
+          }
+        },
         response: {
           headers: {
             'cf-cache-status': 'HIT'
@@ -329,7 +373,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
     fixtures: [
       {
         // first request to ensure the cache is populated
-        path: '@dev/test-basic-openapi@fc856666/get_post',
+        path: '@dev/test-basic-openapi@010332cf/get_post',
         request: {
           method: 'POST',
           json: {
@@ -339,7 +383,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
       },
       {
         // second request should hit the cache
-        path: '@dev/test-basic-openapi@fc856666/get_post',
+        path: '@dev/test-basic-openapi@010332cf/get_post',
         request: {
           method: 'POST',
           json: {

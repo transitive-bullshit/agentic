@@ -1,4 +1,3 @@
-import type { ContentfulStatusCode } from 'hono/utils/http-status'
 import type { z, ZodType } from 'zod'
 import hashObjectImpl, { type Options as HashObjectOptions } from 'hash-object'
 
@@ -51,12 +50,12 @@ export const pick = <
 export function assert(expr: unknown, message?: string): asserts expr
 export function assert(
   expr: unknown,
-  statusCode?: ContentfulStatusCode,
+  statusCode?: number,
   message?: string
 ): asserts expr
 export function assert(
   expr: unknown,
-  statusCodeOrMessage?: ContentfulStatusCode | string,
+  statusCodeOrMessage?: number | string,
   message = 'Internal assertion failed'
 ): asserts expr {
   if (expr) {
@@ -86,7 +85,7 @@ export function parseZodSchema<TSchema extends ZodType<any, any, any>>(
     statusCode = 500
   }: {
     error?: string
-    statusCode?: ContentfulStatusCode
+    statusCode?: number
   } = {}
 ): z.infer<TSchema> {
   try {
@@ -105,9 +104,18 @@ export function parseZodSchema<TSchema extends ZodType<any, any, any>>(
 //   return createHash('sha256').update(input).digest('hex')
 // }
 
-export async function sha256(input: string = crypto.randomUUID()) {
-  const textBuffer = new TextEncoder().encode(input)
-  const hashBuffer = await crypto.subtle.digest('SHA-256', textBuffer)
+export async function sha256(
+  input: string | ArrayBuffer | ArrayBufferView = crypto.randomUUID()
+) {
+  let dataBuffer: ArrayBuffer | ArrayBufferView
+
+  if (typeof input === 'string') {
+    dataBuffer = new TextEncoder().encode(input)
+  } else {
+    dataBuffer = input
+  }
+
+  const hashBuffer = await crypto.subtle.digest('SHA-256', dataBuffer)
   const hashArray = Array.from(new Uint8Array(hashBuffer))
   const hashHex = hashArray
     .map((b) => ('00' + b.toString(16)).slice(-2))
@@ -186,4 +194,110 @@ export function sanitizeSearchParams(
   }
 
   return new URLSearchParams(csvEntries)
+}
+
+export function pruneUndefined<T extends Record<string, any>>(
+  obj: T
+): NonNullable<{ [K in keyof T]: Exclude<T[K], undefined> }> {
+  return Object.fromEntries(
+    Object.entries(obj).filter(([, value]) => value !== undefined)
+  ) as NonNullable<T>
+}
+
+export function pruneNullOrUndefined<T extends Record<string, any>>(
+  obj: T
+): NonNullable<{ [K in keyof T]: Exclude<T[K], undefined | null> }> {
+  return Object.fromEntries(
+    Object.entries(obj).filter(
+      ([, value]) => value !== undefined && value !== null
+    )
+  ) as NonNullable<T>
+}
+
+export function pruneNullOrUndefinedDeep<T extends Record<string, any>>(
+  obj: T
+): NonNullable<{ [K in keyof T]: Exclude<T[K], undefined | null> }> {
+  if (!obj || Array.isArray(obj) || typeof obj !== 'object') return obj
+
+  return Object.fromEntries(
+    Object.entries(obj)
+      .filter(([, value]) => value !== undefined && value !== null)
+      .map(([key, value]) =>
+        Array.isArray(value)
+          ? [
+              key,
+              value
+                .filter((v) => v !== undefined && v !== null)
+                .map(pruneNullOrUndefinedDeep as any)
+            ]
+          : typeof value === 'object'
+            ? [key, pruneNullOrUndefinedDeep(value)]
+            : [key, value]
+      )
+  ) as NonNullable<T>
+}
+
+export function pruneEmpty<T extends Record<string, any>>(
+  obj: T
+): NonNullable<{ [K in keyof T]: Exclude<T[K], undefined | null> }> {
+  return Object.fromEntries(
+    Object.entries(obj).filter(([, value]) => {
+      if (value === undefined || value === null) return false
+      if (typeof value === 'string' && !value) return false
+      if (Array.isArray(value) && !value.length) return false
+      if (
+        typeof value === 'object' &&
+        !Array.isArray(value) &&
+        !Object.keys(value).length
+      ) {
+        return false
+      }
+
+      return true
+    })
+  ) as NonNullable<T>
+}
+
+export function pruneEmptyDeep<T>(
+  value?: T
+):
+  | undefined
+  | (T extends Record<string, any>
+      ? { [K in keyof T]: Exclude<T[K], undefined | null> }
+      : T extends Array<infer U>
+        ? Array<Exclude<U, undefined | null>>
+        : Exclude<T, null>) {
+  if (value === undefined || value === null) return undefined
+
+  if (typeof value === 'string') {
+    if (!value) return undefined
+
+    return value as any
+  }
+
+  if (Array.isArray(value)) {
+    if (!value.length) return undefined
+
+    value = value
+      .map((v) => pruneEmptyDeep(v))
+      .filter((v) => v !== undefined) as any
+
+    if (!value || !Array.isArray(value) || !value.length) return undefined
+    return value as any
+  }
+
+  if (typeof value === 'object') {
+    if (!Object.keys(value).length) return undefined
+
+    value = Object.fromEntries(
+      Object.entries(value)
+        .map(([k, v]) => [k, pruneEmptyDeep(v)])
+        .filter(([, v]) => v !== undefined)
+    )
+
+    if (!value || !Object.keys(value).length) return undefined
+    return value as any
+  }
+
+  return value as any
 }

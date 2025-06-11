@@ -1,0 +1,380 @@
+// import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
+// import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js'
+// import type { Transport } from '@modelcontextprotocol/sdk/shared/transport.js'
+import { assert, JsonRpcError } from '@agentic/platform-core'
+import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js'
+import {
+  InitializeRequestSchema,
+  isJSONRPCError,
+  isJSONRPCNotification,
+  isJSONRPCRequest,
+  isJSONRPCResponse,
+  type JSONRPCMessage,
+  JSONRPCMessageSchema
+} from '@modelcontextprotocol/sdk/types.js'
+
+import type { GatewayHonoContext } from './lib/types'
+import { createConsumerMcpServer } from './lib/consumer-mcp-server'
+import { resolveMcpEdgeRequest } from './lib/resolve-mcp-edge-request'
+// import { DurableMcpServer } from './lib/durable-mcp-server'
+
+// TODO: https://github.com/modelcontextprotocol/servers/blob/8fb7bbdab73eddb42aba72e8eab81102efe1d544/src/everything/sse.ts
+// TODO: https://github.com/cloudflare/agents
+
+// const transports: Map<string, StreamableHTTPClientTransport> = new Map<
+//   string,
+//   StreamableHTTPClientTransport
+// >()
+// const server = new McpServer({
+//   name: 'weather',
+//   version: '1.0.0',
+//   capabilities: {
+//     resources: {},
+//     tools: {}
+//   }
+// })
+
+// class McpStreamableHttpTransport implements Transport {
+//   onclose?: () => void
+//   onerror?: (error: Error) => void
+//   onmessage?: (message: JSONRPCMessage) => void
+//   sessionId?: string
+
+//   // TODO: If there is an open connection to send server-initiated messages
+//   // back, we should use that connection
+//   private _getWebSocketForGetRequest: () => WebSocket | null
+
+//   // Get the appropriate websocket connection for a given message id
+//   private _getWebSocketForMessageID: (id: string) => WebSocket | null
+
+//   // Notify the server that a response has been sent for a given message id
+//   // so that it may clean up it's mapping of message ids to connections
+//   // once they are no longer needed
+//   private _notifyResponseIdSent: (id: string) => void
+
+//   private _started = false
+//   constructor(
+//     getWebSocketForMessageID: (id: string) => WebSocket | null,
+//     notifyResponseIdSent: (id: string | number) => void
+//   ) {
+//     this._getWebSocketForMessageID = getWebSocketForMessageID
+//     this._notifyResponseIdSent = notifyResponseIdSent
+//     // TODO
+//     this._getWebSocketForGetRequest = () => null
+//   }
+
+//   async start() {
+//     // The transport does not manage the WebSocket connection since it's terminated
+//     // by the Durable Object in order to allow hibernation. There's nothing to initialize.
+//     if (this._started) {
+//       throw new Error('Transport already started')
+//     }
+//     this._started = true
+//   }
+
+//   async send(message: JSONRPCMessage) {
+//     if (!this._started) {
+//       throw new Error('Transport not started')
+//     }
+
+//     let websocket: WebSocket | null = null
+
+//     if (isJSONRPCResponse(message) || isJSONRPCError(message)) {
+//       websocket = this._getWebSocketForMessageID(message.id.toString())
+//       if (!websocket) {
+//         throw new Error(
+//           `Could not find WebSocket for message id: ${message.id}`
+//         )
+//       }
+//     } else if (isJSONRPCRequest(message)) {
+//       // requests originating from the server must be sent over the
+//       // the connection created by a GET request
+//       websocket = this._getWebSocketForGetRequest()
+//     } else if (isJSONRPCNotification(message)) {
+//       // notifications do not have an id
+//       // but do have a relatedRequestId field
+//       // so that they can be sent to the correct connection
+//       websocket = null
+//     }
+
+//     try {
+//       websocket?.send(JSON.stringify(message))
+//       if (isJSONRPCResponse(message)) {
+//         this._notifyResponseIdSent(message.id.toString())
+//       }
+//     } catch (err) {
+//       this.onerror?.(err as Error)
+//       throw err
+//     }
+//   }
+
+//   async close() {
+//     // Similar to start, the only thing to do is to pass the event on to the server
+//     this.onclose?.()
+//   }
+// }
+
+const MAXIMUM_MESSAGE_SIZE_BYTES = 4 * 1024 * 1024 // 4MB
+
+export async function handleMcpRequest(ctx: GatewayHonoContext) {
+  const request = ctx.req.raw
+  ctx.set('isJsonRpcRequest', true)
+
+  if (request.method !== 'POST') {
+    // We don't yet support GET or DELETE requests
+    throw new JsonRpcError({
+      message: 'Method not allowed',
+      statusCode: 405,
+      jsonRpcErrorCode: -32_000,
+      jsonRpcId: null
+    })
+  }
+
+  // validate the Accept header
+  const acceptHeader = request.headers.get('accept')
+
+  // The client MUST include an Accept header, listing both application/json and text/event-stream as supported content types.
+  if (
+    !acceptHeader?.includes('application/json') ||
+    !acceptHeader.includes('text/event-stream')
+  ) {
+    throw new JsonRpcError({
+      message:
+        'Not Acceptable: Client must accept both "application/json" and "text/event-stream"',
+      statusCode: 406,
+      jsonRpcErrorCode: -32_000,
+      jsonRpcId: null
+    })
+  }
+
+  const ct = request.headers.get('content-type')
+  if (!ct?.includes('application/json')) {
+    throw new JsonRpcError({
+      message:
+        'Unsupported Media Type: Content-Type must be "application/json"',
+      statusCode: 415,
+      jsonRpcErrorCode: -32_000,
+      jsonRpcId: null
+    })
+  }
+
+  // Check content length against maximum allowed size
+  const contentLength = Number.parseInt(
+    request.headers.get('content-length') ?? '0',
+    10
+  )
+  if (contentLength > MAXIMUM_MESSAGE_SIZE_BYTES) {
+    throw new JsonRpcError({
+      message: `Request body too large. Maximum size is ${MAXIMUM_MESSAGE_SIZE_BYTES} bytes`,
+      statusCode: 413,
+      jsonRpcErrorCode: -32_000,
+      jsonRpcId: null
+    })
+  }
+
+  let sessionId = request.headers.get('mcp-session-id')
+  let rawMessage: unknown
+
+  try {
+    rawMessage = await request.json()
+  } catch {
+    throw new JsonRpcError({
+      message: 'Parse error: Invalid JSON',
+      statusCode: 400,
+      jsonRpcErrorCode: -32_700,
+      jsonRpcId: null
+    })
+  }
+
+  // Make sure the message is an array to simplify logic
+  const rawMessages = Array.isArray(rawMessage) ? rawMessage : [rawMessage]
+
+  // Try to parse each message as JSON RPC. Fail if any message is invalid
+  const messages: JSONRPCMessage[] = rawMessages.map((msg) => {
+    const parsed = JSONRPCMessageSchema.safeParse(msg)
+    if (!parsed.success) {
+      throw new JsonRpcError({
+        message: 'Parse error: Invalid JSON-RPC message',
+        statusCode: 400,
+        jsonRpcErrorCode: -32_700,
+        jsonRpcId: null
+      })
+    }
+    return parsed.data
+  })
+
+  // Before we pass the messages to the agent, there's another error condition
+  // we need to enforce. Check if this is an initialization request
+  // https://spec.modelcontextprotocol.io/specification/2025-03-26/basic/lifecycle/
+  const isInitializationRequest = messages.some(
+    (msg) => InitializeRequestSchema.safeParse(msg).success
+  )
+
+  if (isInitializationRequest && sessionId) {
+    throw new JsonRpcError({
+      message:
+        'Invalid Request: Initialization requests must not include a sessionId',
+      statusCode: 400,
+      jsonRpcErrorCode: -32_600,
+      jsonRpcId: null
+    })
+  }
+
+  // The initialization request must be the only request in the batch
+  if (isInitializationRequest && messages.length > 1) {
+    throw new JsonRpcError({
+      message: 'Invalid Request: Only one initialization request is allowed',
+      statusCode: 400,
+      jsonRpcErrorCode: -32_600,
+      jsonRpcId: null
+    })
+  }
+
+  // If an Mcp-Session-Id is returned by the server during initialization,
+  // clients using the Streamable HTTP transport MUST include it
+  // in the Mcp-Session-Id header on all of their subsequent HTTP requests.
+  if (!isInitializationRequest && !sessionId) {
+    throw new JsonRpcError({
+      message: 'Bad Request: Mcp-Session-Id header is required',
+      statusCode: 400,
+      jsonRpcErrorCode: -32_000,
+      jsonRpcId: null
+    })
+  }
+
+  // If we don't have a sessionId, we are serving an initialization request
+  // and need to generate a new sessionId
+  sessionId = sessionId ?? ctx.env.DO_MCP_SERVER.newUniqueId().toString()
+  assert(
+    !ctx.get('sessionId'),
+    500,
+    'Session ID should be set by MCP handler for MCP edge requests'
+  )
+  ctx.set('sessionId', sessionId)
+
+  // TODO: first version using the McpServer locally instead of a DurableMcpServer
+  // Fetch the durable mcp server for this session
+  // const id = ctx.env.DO_MCP_SERVER.idFromName(`streamable-http:${sessionId}`)
+  // const durableMcpServer = ctx.env.DO_MCP_SERVER.get(id)
+  // const isInitialized = await durableMcpServer.isInitialized()
+
+  // if (!isInitializationRequest && !isInitialized) {
+  //   // A session id that was never initialized was provided
+  //   throw new JsonRpcError({
+  //     message: 'Session not found',
+  //     statusCode: 404,
+  //     jsonRpcErrorCode: -32_001,
+  //     jsonRpcId: null
+  //   })
+  // }
+
+  const { deployment, consumer, pricingPlan } = await resolveMcpEdgeRequest(ctx)
+  const server = createConsumerMcpServer(ctx, {
+    sessionId,
+    deployment,
+    consumer,
+    pricingPlan
+  })
+
+  const transport = new StreamableHTTPServerTransport({
+    sessionIdGenerator: () => {
+      return ctx.env.DO_MCP_SERVER.newUniqueId().toString()
+    },
+    onsessioninitialized: (sessionId) => {
+      // TODO: improve this
+      // eslint-disable-next-line no-console
+      console.log(`Session initialized: ${sessionId}`)
+    }
+  })
+  await server.connect(transport)
+
+  // if (isInitializationRequest) {
+  //   await durableMcpServer.init({
+  //     deployment,
+  //     consumer,
+  //     pricingPlan
+  //   })
+  // }
+
+  // We've validated and initialized the request! Now it's time to actually
+  // handle the JSON RPC messages in the request and respond with an SSE
+  // stream.
+
+  // Create a Transform Stream for SSE
+  const { readable, writable } = new TransformStream()
+  const writer = writable.getWriter()
+  const encoder = new TextEncoder()
+
+  // Keep track of the request ids that we have sent to the server
+  // so that we can close the connection once we have received
+  // all the responses
+  const requestIds = new Set<string | number>()
+
+  // eslint-disable-next-line unicorn/prefer-add-event-listener
+  transport.onmessage = async (message) => {
+    // eslint-disable-next-line no-console
+    console.log('onmessage', message)
+
+    // validate that the message is a valid JSONRPC message
+    const result = JSONRPCMessageSchema.safeParse(message)
+    if (!result.success) {
+      // TODO: add a warning here
+      return
+    }
+
+    // If the message is a response or an error, remove the id from the set of
+    // request ids
+    if (isJSONRPCResponse(result.data) || isJSONRPCError(result.data)) {
+      requestIds.delete(result.data.id)
+    }
+
+    // Send the message as an SSE event
+    const messageText = `event: message\ndata: ${JSON.stringify(result.data)}\n\n`
+    await writer.write(encoder.encode(messageText))
+
+    // If we have received all the responses, close the connection
+    if (!requestIds.size) {
+      ctx.executionCtx.waitUntil(transport.close())
+      await writer.close()
+    }
+  }
+
+  // If there are no requests, we send the messages downstream and
+  // acknowledge the request with a 202 since we don't expect any responses
+  // back through this connection.
+  const hasOnlyNotificationsOrResponses = messages.every(
+    (msg) => isJSONRPCNotification(msg) || isJSONRPCResponse(msg)
+  )
+  if (hasOnlyNotificationsOrResponses) {
+    await Promise.all(messages.map((message) => transport.send(message)))
+
+    return new Response(null, {
+      status: 202
+    })
+  }
+
+  for (const message of messages) {
+    if (isJSONRPCRequest(message)) {
+      // Add each request id that we send off to a set so that we can keep
+      // track of which requests we still need a response for.
+      requestIds.add(message.id)
+    }
+
+    await transport.send(message)
+  }
+
+  // console.log('>>> waiting...')
+  // await new Promise((resolve) => setTimeout(resolve, 2000))
+  // console.log('<<< waiting...')
+
+  // Return the streamable http response.
+  return new Response(readable, {
+    headers: {
+      'Content-Type': 'text/event-stream',
+      'Cache-Control': 'no-cache',
+      Connection: 'keep-alive',
+      'mcp-session-id': sessionId
+    },
+    status: 200
+  })
+}

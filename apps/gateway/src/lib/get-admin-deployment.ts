@@ -9,13 +9,9 @@ export async function getAdminDeployment(
   identifier: string
 ): Promise<AdminDeployment> {
   const parsedDeploymentIdentifier = parseDeploymentIdentifier(identifier, {
-    strict: false
+    strict: true,
+    errorStatusCode: 404
   })
-  assert(
-    parsedDeploymentIdentifier,
-    404,
-    `Invalid deployment identifier "${identifier}"`
-  )
 
   const client = ctx.get('client')
   const deployment = await client.adminGetDeploymentByIdentifier({

@@ -4,7 +4,6 @@ import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 import type { AuthenticatedHonoEnv } from '@/lib/types'
 import { db, eq, schema } from '@/db'
 import { aclAdmin } from '@/lib/acl-admin'
-import { setPublicCacheControl } from '@/lib/cache-control'
 import {
   openapiAuthenticatedSecuritySchemas,
   openapiErrorResponse404,
@@ -12,9 +11,10 @@ import {
 } from '@/lib/openapi-utils'
 
 import { consumerTokenParamsSchema, populateConsumerSchema } from './schemas'
+import { setAdminCacheControlForConsumer } from './utils'
 
 const route = createRoute({
-  description: 'Gets a consumer by API token (admin-only)',
+  description: 'Gets a consumer by API token. This route is admin-only.',
   tags: ['admin', 'consumers'],
   operationId: 'adminGetConsumerByToken',
   method: 'get',
@@ -29,7 +29,7 @@ const route = createRoute({
       description: 'An admin consumer object',
       content: {
         'application/json': {
-          schema: schema.consumerSelectSchema
+          schema: schema.consumerAdminSelectSchema
         }
       }
     },
@@ -54,16 +54,7 @@ export function registerV1AdminConsumersGetConsumerByToken(
     })
     assert(consumer, 404, `API token not found "${token}"`)
 
-    if (
-      consumer.plan === 'free' ||
-      !consumer.activated ||
-      !consumer.isStripeSubscriptionActive
-    ) {
-      setPublicCacheControl(c.res, '1s')
-    } else {
-      setPublicCacheControl(c.res, '1m')
-    }
-
-    return c.json(parseZodSchema(schema.consumerSelectSchema, consumer))
+    setAdminCacheControlForConsumer(c, consumer)
+    return c.json(parseZodSchema(schema.consumerAdminSelectSchema, consumer))
   })
 }

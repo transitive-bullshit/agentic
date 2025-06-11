@@ -1,3 +1,5 @@
+import { HttpError } from '@agentic/platform-core'
+
 import type { ParsedProjectIdentifier, ParseIdentifierOptions } from './types'
 import { parseDeploymentIdentifier } from './parse-deployment-identifier'
 import { coerceIdentifier } from './utils'
@@ -6,15 +8,18 @@ const projectIdentifierRe = /^@([a-z0-9-]{1,256})\/([a-z0-9-]{1,256})$/
 
 export function parseProjectIdentifier(
   identifier?: string,
-  { strict = true }: ParseIdentifierOptions = {}
-): ParsedProjectIdentifier | undefined {
-  if (!strict) {
-    const parsedToolIdentifier = parseDeploymentIdentifier(identifier, {
-      strict
-    })
+  { strict = true, errorStatusCode = 400 }: ParseIdentifierOptions = {}
+): ParsedProjectIdentifier {
+  const inputIdentifier = identifier
 
-    if (parsedToolIdentifier) {
-      return parsedToolIdentifier
+  if (!strict) {
+    try {
+      return parseDeploymentIdentifier(identifier, {
+        strict,
+        errorStatusCode
+      })
+    } catch {
+      // ignore
     }
   }
 
@@ -23,7 +28,10 @@ export function parseProjectIdentifier(
   }
 
   if (!identifier?.length) {
-    return
+    throw new HttpError({
+      statusCode: errorStatusCode,
+      message: `Invalid project identifier "${inputIdentifier}"`
+    })
   }
 
   const match = identifier.match(projectIdentifierRe)
@@ -35,4 +43,9 @@ export function parseProjectIdentifier(
       projectName: match[2]!
     }
   }
+
+  throw new HttpError({
+    statusCode: errorStatusCode,
+    message: `Invalid project identifier "${inputIdentifier}"`
+  })
 }

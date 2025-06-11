@@ -15,6 +15,8 @@ export type DefaultHonoVariables = {
   sentry: Sentry
   requestId: string
   logger: Logger
+  isJsonRpcRequest?: boolean
+  ip?: string
 }
 
 export type DefaultHonoBindings = Simplify<

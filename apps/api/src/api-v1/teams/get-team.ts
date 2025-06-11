@@ -13,7 +13,7 @@ import {
 import { teamIdParamsSchema } from './schemas'
 
 const route = createRoute({
-  description: 'Gets a team by slug.',
+  description: 'Gets a team by ID.',
   tags: ['teams'],
   operationId: 'getTeam',
   method: 'get',

@@ -1,5 +1,6 @@
 import { assert } from '@agentic/platform-core'
 import {
+  isNamespaceAllowed,
   isValidCuid,
   isValidDeploymentIdentifier,
   isValidProjectIdentifier,
@@ -82,11 +83,19 @@ export const usernameSchema = z
   .refine((username) => isValidUsername(username), {
     message: 'Invalid username'
   })
+  .refine((username) => isNamespaceAllowed(username), {
+    message:
+      'Username is not allowed (reserved, offensive, or otherwise confusing)'
+  })
 
 export const teamSlugSchema = z
   .string()
   .refine((slug) => isValidTeamSlug(slug), {
     message: 'Invalid team slug'
+  })
+  .refine((slug) => isNamespaceAllowed(slug), {
+    message:
+      'Team slug is not allowed (reserved, offensive, or otherwise confusing)'
   })
 
 export const paginationSchema = z.object({

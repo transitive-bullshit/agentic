@@ -1,5 +1,4 @@
 /**
- * For more details on how to configure Wrangler, refer to:
  * https://developers.cloudflare.com/workers/wrangler/configuration/
  */
 {
@@ -11,14 +10,26 @@
   "migrations": [
     {
       "tag": "v1",
-      "new_sqlite_classes": ["DurableObjectRateLimiter"]
+      "new_sqlite_classes": [
+        "DurableRateLimiter",
+        "DurableMcpServer",
+        "DurableMcpClient"
+      ]
     }
   ],
   "durable_objects": {
     "bindings": [
       {
-        "class_name": "DurableObjectRateLimiter",
+        "class_name": "DurableRateLimiter",
         "name": "DO_RATE_LIMITER"
+      },
+      {
+        "class_name": "DurableMcpServer",
+        "name": "DO_MCP_SERVER"
+      },
+      {
+        "class_name": "DurableMcpClient",
+        "name": "DO_MCP_CLIENT"
       }
     ]
   },
@@ -32,12 +43,14 @@
    */
   "placement": { "mode": "smart" },
 
-  /**
-   * Bindings
-   * Bindings allow your Worker to interact with resources on the Cloudflare Developer Platform, including
-   * databases, object storage, AI inference, real-time communication and more.
-   * https://developers.cloudflare.com/workers/runtime-apis/bindings/
-   */
+  "upload_source_maps": true,
+
+  "analytics_engine_datasets": [
+    {
+      "binding": "AE_USAGE_DATASET",
+      "dataset": "agentic_api_gateway_usage"
+    }
+  ],
 
   /**
    * Environment Variables

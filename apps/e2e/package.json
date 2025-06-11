@@ -15,7 +15,9 @@
     "test": "run-s test:*",
     "test:lint": "eslint .",
     "test:typecheck": "tsc --noEmit",
-    "test-e2e": "vitest run"
+    "test-e2e": "vitest run",
+    "test-http-e2e": "vitest run src/http-e2e.test.ts",
+    "test-mcp-e2e": "vitest run src/mcp-e2e.test.ts"
   },
   "dependencies": {
     "ky": "catalog:",
@@ -26,6 +28,7 @@
     "@agentic/platform-api-client": "workspace:*",
     "@agentic/platform-core": "workspace:*",
     "@agentic/platform-fixtures": "workspace:*",
-    "fast-content-type-parse": "catalog:"
+    "fast-content-type-parse": "catalog:",
+    "@modelcontextprotocol/sdk": "catalog:"
   }
 }

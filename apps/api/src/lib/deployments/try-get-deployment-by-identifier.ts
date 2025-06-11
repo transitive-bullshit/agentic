@@ -53,11 +53,6 @@ export async function tryGetDeploymentByIdentifier(
     deploymentIdentifier,
     { strict }
   )
-  assert(
-    parsedDeploymentIdentifier,
-    400,
-    `Invalid deployment identifier "${deploymentIdentifier}"`
-  )
 
   const { projectIdentifier, deploymentHash, deploymentVersion } =
     parsedDeploymentIdentifier

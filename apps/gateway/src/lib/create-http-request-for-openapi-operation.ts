@@ -4,22 +4,20 @@ import type {
 } from '@agentic/platform-types'
 import { assert } from '@agentic/platform-core'
 
-import type { GatewayHonoContext, ToolArgs } from './types'
+import type { ToolCallArgs } from './types'
 
-export async function createRequestForOpenAPIOperation(
-  ctx: GatewayHonoContext,
-  {
-    toolArgs,
-    operation,
-    deployment
-  }: {
-    toolArgs: ToolArgs
-    operation: OpenAPIToolOperation
-    deployment: AdminDeployment
-  }
-): Promise<Request> {
-  const request = ctx.req.raw
-  assert(toolArgs, 500, 'Tool args are required')
+export async function createHttpRequestForOpenAPIOperation({
+  toolCallArgs,
+  operation,
+  deployment,
+  request
+}: {
+  toolCallArgs: ToolCallArgs
+  operation: OpenAPIToolOperation
+  deployment: AdminDeployment
+  request?: Request
+}): Promise<Request> {
+  assert(toolCallArgs, 500, 'Tool args are required')
   assert(
     deployment.originAdapter.type === 'openapi',
     500,
@@ -43,18 +41,21 @@ export async function createRequestForOpenAPIOperation(
   )
 
   const headers: Record<string, string> = {}
-  for (const [key, value] of request.headers.entries()) {
-    headers[key] = value
+  if (request) {
+    // TODO: do we want to expose these? especially authorization?
+    for (const [key, value] of request.headers.entries()) {
+      headers[key] = value
+    }
   }
 
   if (headerParams.length > 0) {
     for (const [key] of headerParams) {
-      headers[key] = (request.headers.get(key) as string) ?? toolArgs[key]
+      headers[key] = (request?.headers.get(key) as string) ?? toolCallArgs[key]
     }
   }
 
   for (const [key] of cookieParams) {
-    headers[key] = String(toolArgs[key])
+    headers[key] = String(toolCallArgs[key])
   }
 
   let body: string | undefined
@@ -62,7 +63,7 @@ export async function createRequestForOpenAPIOperation(
     body = JSON.stringify(
       Object.fromEntries(
         bodyParams
-          .map(([key]) => [key, toolArgs[key]])
+          .map(([key]) => [key, toolCallArgs[key]])
           // Prune undefined values. We know these aren't required fields,
           // because the incoming request params have already been validated
           // against the tool's input schema.
@@ -75,7 +76,7 @@ export async function createRequestForOpenAPIOperation(
     // TODO: Double-check FormData usage.
     const formData = new FormData()
     for (const [key] of formDataParams) {
-      const value = toolArgs[key]
+      const value = toolCallArgs[key]
       if (value !== undefined) {
         formData.append(key, value)
       }
@@ -88,7 +89,7 @@ export async function createRequestForOpenAPIOperation(
   let path = operation.path
   if (pathParams.length > 0) {
     for (const [key] of pathParams) {
-      const value: string = toolArgs[key]
+      const value: string = toolCallArgs[key]
       assert(value, 400, `Missing required parameter "${key}"`)
 
       const pathParamPlaceholder = `{${key}}`
@@ -109,7 +110,7 @@ export async function createRequestForOpenAPIOperation(
 
   const query = new URLSearchParams()
   for (const [key] of queryParams) {
-    query.set(key, toolArgs[key] as string)
+    query.set(key, toolCallArgs[key] as string)
   }
   const queryString = query.toString()
   const originRequestUrl = `${deployment.originUrl}${path}${

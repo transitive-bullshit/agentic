@@ -2,6 +2,7 @@ import type { Simplify } from 'type-fest'
 
 export type ParseIdentifierOptions = {
   strict?: boolean
+  errorStatusCode?: number
 }
 
 export type ParsedProjectIdentifier = {

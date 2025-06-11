@@ -6,5 +6,15 @@ export default defineConfig({
   originAdapter: {
     type: 'openapi',
     spec: './jsonplaceholder.json'
-  }
+  },
+  toolConfigs: [
+    {
+      name: 'get_posts',
+      pure: true
+    },
+    {
+      name: 'get_post',
+      pure: true
+    }
+  ]
 })

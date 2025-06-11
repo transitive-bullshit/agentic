@@ -1,4 +1,3 @@
-import type { ContentfulStatusCode } from 'hono/utils/http-status'
 import { Validator } from '@agentic/json-schema'
 import { assert, HttpError } from '@agentic/platform-core'
 import plur from 'plur'
@@ -19,15 +18,15 @@ export function cfValidateJsonSchema<T = unknown>({
   data,
   coerce = false,
   strictAdditionalProperties = false,
-  errorMessage,
+  errorPrefix,
   errorStatusCode = 400
 }: {
   schema: any
   data: unknown
   coerce?: boolean
   strictAdditionalProperties?: boolean
-  errorMessage?: string
-  errorStatusCode?: ContentfulStatusCode
+  errorPrefix?: string
+  errorStatusCode?: number
 }): T {
   assert(schema, 400, '`schema` is required')
   const isSchemaObject =
@@ -38,7 +37,7 @@ export function cfValidateJsonSchema<T = unknown>({
   if (isSchemaObject && !isDataObject) {
     throw new HttpError({
       statusCode: 400,
-      message: `${errorMessage ? errorMessage + ': ' : ''}Data must be an object according to its schema.`
+      message: `${errorPrefix ? errorPrefix + ': ' : ''}Data must be an object according to its schema.`
     })
   }
 
@@ -51,7 +50,7 @@ export function cfValidateJsonSchema<T = unknown>({
     if (missingRequiredFields.length > 0) {
       throw new HttpError({
         statusCode: errorStatusCode,
-        message: `${errorMessage ? errorMessage + ': ' : ''}Missing required ${plur('parameter', missingRequiredFields.length)}: ${missingRequiredFields.map((field) => `"${field}"`).join(', ')}`
+        message: `${errorPrefix ? errorPrefix + ': ' : ''}Missing required ${plur('parameter', missingRequiredFields.length)}: ${missingRequiredFields.map((field) => `"${field}"`).join(', ')}`
       })
     }
   }
@@ -71,7 +70,7 @@ export function cfValidateJsonSchema<T = unknown>({
     if (extraProperties.length > 0) {
       throw new HttpError({
         statusCode: errorStatusCode,
-        message: `${errorMessage ? errorMessage + ': ' : ''}Unexpected additional ${plur('parameter', extraProperties.length)}: ${extraProperties.map((property) => `"${property}"`).join(', ')}`
+        message: `${errorPrefix ? errorPrefix + ': ' : ''}Unexpected additional ${plur('parameter', extraProperties.length)}: ${extraProperties.map((property) => `"${property}"`).join(', ')}`
       })
     }
   }
@@ -94,7 +93,7 @@ export function cfValidateJsonSchema<T = unknown>({
   }
 
   const finalErrorMessage = `${
-    errorMessage ? errorMessage + ': ' : ''
+    errorPrefix ? errorPrefix + ': ' : ''
   }${result.errors
     .map(({ keyword, error }) => `keyword "${keyword}" error ${error}`)
     .join(' ')}`

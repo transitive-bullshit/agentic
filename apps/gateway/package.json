@@ -18,15 +18,16 @@
     }
   },
   "scripts": {
-    "deploy": "wrangler deploy",
+    "deploy": "wrangler deploy --outdir dist --upload-source-maps --var SENTRY_RELEASE:$(sentry-cli releases propose-version)",
     "dev": "wrangler dev",
-    "start": "wrangler dev",
     "cf-clear-cache": "del .wrangler",
     "clean": "del dist",
     "test": "run-s test:*",
     "test:lint": "eslint .",
     "test:typecheck": "tsc --noEmit",
-    "test:unit": "vitest run"
+    "test:unit": "vitest run",
+    "sentry:sourcemaps": "_SENTRY_RELEASE=$(sentry-cli releases propose-version) && sentry-cli releases new $_SENTRY_RELEASE --org=agentic-kj --project=node && sentry-cli sourcemaps upload --org=agentic-kj --project=node --release=$_SENTRY_RELEASE --strip-prefix 'dist/..' dist",
+    "postdeploy": "pnpm sentry:sourcemaps"
   },
   "dependencies": {
     "@agentic/json-schema": "workspace:*",
@@ -38,15 +39,19 @@
     "@agentic/platform-validators": "workspace:*",
     "@hono/zod-validator": "catalog:",
     "@modelcontextprotocol/sdk": "catalog:",
+    "@sentry/cloudflare": "catalog:",
+    "agents": "^0.0.95",
     "fast-content-type-parse": "catalog:",
     "hono": "catalog:",
     "ky": "catalog:",
     "plur": "catalog:",
+    "stripe": "catalog:",
     "type-fest": "catalog:"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "catalog:",
     "@edge-runtime/vm": "catalog:",
+    "@sentry/cli": "^2.46.0",
     "wrangler": "catalog:"
   }
 }

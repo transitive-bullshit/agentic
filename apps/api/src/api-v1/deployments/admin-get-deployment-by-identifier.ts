@@ -15,7 +15,8 @@ import {
 import { deploymentIdentifierAndPopulateSchema } from './schemas'
 
 const route = createRoute({
-  description: 'Gets a deployment by its public identifier (admin-only)',
+  description:
+    'Gets a deployment by its public identifier. This route is admin-only.',
   tags: ['admin', 'deployments'],
   operationId: 'adminGetDeploymentByIdentifier',
   method: 'get',

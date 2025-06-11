@@ -20,7 +20,11 @@ export default [
     }
   },
   {
-    files: ['packages/cli/src/**/*.ts', '**/*.test.ts'],
+    files: [
+      'packages/cli/src/**/*.ts',
+      '**/*.test.ts',
+      'packages/fixtures/valid/**/*.ts'
+    ],
     rules: {
       'no-console': 'off',
       'no-process-env': 'off',

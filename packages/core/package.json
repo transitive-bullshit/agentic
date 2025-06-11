@@ -28,9 +28,6 @@
     "zod": "catalog:",
     "zod-validation-error": "catalog:"
   },
-  "devDependencies": {
-    "hono": "catalog:"
-  },
   "publishConfig": {
     "access": "public"
   }

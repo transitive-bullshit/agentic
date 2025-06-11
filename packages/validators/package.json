@@ -23,6 +23,7 @@
     "test:unit": "vitest run"
   },
   "dependencies": {
+    "@agentic/platform-core": "workspace:*",
     "@paralleldrive/cuid2": "catalog:",
     "email-validator": "catalog:",
     "type-fest": "catalog:"

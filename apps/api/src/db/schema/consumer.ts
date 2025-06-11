@@ -179,6 +179,12 @@ owner's connected Stripe account if the project has Stripe Connect enabled.`
   )
   .openapi('Consumer')
 
+export const consumerAdminSelectSchema = consumerSelectSchema
+  .extend({
+    _stripeCustomerId: z.string().nonempty()
+  })
+  .openapi('AdminConsumer')
+
 export const consumerInsertSchema = createInsertSchema(consumers, {
   deploymentId: deploymentIdSchema.optional(),
 

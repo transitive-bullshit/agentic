@@ -1,4 +1,5 @@
 import type {
+  AdminConsumer,
   AdminDeployment,
   Consumer,
   Deployment,
@@ -185,6 +186,7 @@ export class AgenticApiClient {
     return this.ky.get(`v1/users/${user.id}`).json()
   }
 
+  /** Gets a user by ID. */
   async getUser({
     userId,
     ...searchParams
@@ -192,6 +194,7 @@ export class AgenticApiClient {
     return this.ky.get(`v1/users/${userId}`, { searchParams }).json()
   }
 
+  /** Updates a user. */
   async updateUser(
     user: OperationBody<'updateUser'>,
     { userId, ...searchParams }: OperationParameters<'updateUser'>
@@ -201,12 +204,14 @@ export class AgenticApiClient {
       .json()
   }
 
+  /** Lists all teams the authenticated user belongs to. */
   async listTeams(
     searchParams: OperationParameters<'listTeams'>
   ): Promise<Array<Team>> {
     return this.ky.get('v1/teams', { searchParams }).json()
   }
 
+  /** Creates a team. */
   async createTeam(
     team: OperationBody<'createTeam'>,
     searchParams: OperationParameters<'createTeam'> = {}
@@ -214,6 +219,7 @@ export class AgenticApiClient {
     return this.ky.post('v1/teams', { json: team, searchParams }).json()
   }
 
+  /** Gets a team by ID. */
   async getTeam({
     teamId,
     ...searchParams
@@ -221,6 +227,7 @@ export class AgenticApiClient {
     return this.ky.get(`v1/teams/${teamId}`, { searchParams }).json()
   }
 
+  /** Updates a team. */
   async updateTeam(
     team: OperationBody<'updateTeam'>,
     { teamId, ...searchParams }: OperationParameters<'updateTeam'>
@@ -230,6 +237,7 @@ export class AgenticApiClient {
       .json()
   }
 
+  /** Deletes a team by ID. */
   async deleteTeam({
     teamId,
     ...searchParams
@@ -237,6 +245,7 @@ export class AgenticApiClient {
     return this.ky.delete(`v1/teams/${teamId}`, { searchParams }).json()
   }
 
+  /** Creates a new team member. */
   async createTeamMember(
     member: OperationBody<'createTeamMember'>,
     { teamId, ...searchParams }: OperationParameters<'createTeamMember'>
@@ -246,6 +255,7 @@ export class AgenticApiClient {
       .json()
   }
 
+  /** Updates a team member. */
   async updateTeamMember(
     member: OperationBody<'updateTeamMember'>,
     { teamId, userId, ...searchParams }: OperationParameters<'updateTeamMember'>
@@ -258,6 +268,7 @@ export class AgenticApiClient {
       .json()
   }
 
+  /** Deletes a team member. */
   async deleteTeamMember({
     teamId,
     userId,
@@ -268,6 +279,7 @@ export class AgenticApiClient {
       .json()
   }
 
+  /** Lists projects the authenticated user has access to. */
   async listProjects<
     TPopulate extends NonNullable<
       OperationParameters<'listProjects'>['populate']
@@ -282,6 +294,7 @@ export class AgenticApiClient {
       .json()
   }
 
+  /** Creates a new project. */
   async createProject(
     project: OperationBody<'createProject'>,
     searchParams: OperationParameters<'createProject'> = {}
@@ -289,6 +302,7 @@ export class AgenticApiClient {
     return this.ky.post('v1/projects', { json: project, searchParams }).json()
   }
 
+  /** Gets a project by ID. */
   async getProject<
     TPopulate extends NonNullable<
       OperationParameters<'getProject'>['populate']
@@ -306,6 +320,7 @@ export class AgenticApiClient {
       .json()
   }
 
+  /** Gets a project by its public identifier. */
   async getProjectByIdentifier<
     TPopulate extends NonNullable<
       OperationParameters<'getProjectByIdentifier'>['populate']
@@ -322,6 +337,7 @@ export class AgenticApiClient {
       .json()
   }
 
+  /** Updates a project. */
   async updateProject(
     project: OperationBody<'updateProject'>,
     { projectId, ...searchParams }: OperationParameters<'updateProject'>
@@ -331,6 +347,7 @@ export class AgenticApiClient {
       .json()
   }
 
+  /** Gets a consumer by ID. */
   async getConsumer<
     TPopulate extends NonNullable<
       OperationParameters<'getConsumer'>['populate']
@@ -348,6 +365,10 @@ export class AgenticApiClient {
       .json()
   }
 
+  /**
+   * Updates a consumer's subscription to a different deployment or pricing
+   * plan. Set `plan` to undefined to cancel the subscription.
+   */
   async updateConsumer(
     consumer: OperationBody<'updateConsumer'>,
     { consumerId, ...searchParams }: OperationParameters<'updateConsumer'>
@@ -357,6 +378,7 @@ export class AgenticApiClient {
       .json()
   }
 
+  /** Creates a new consumer by subscribing a customer to a project. */
   async createConsumer(
     consumer: OperationBody<'createConsumer'>,
     searchParams: OperationParameters<'createConsumer'> = {}
@@ -364,6 +386,7 @@ export class AgenticApiClient {
     return this.ky.post('v1/consumers', { json: consumer, searchParams }).json()
   }
 
+  /** Refreshes a consumer's API token. */
   async refreshConsumerToken({
     consumerId,
     ...searchParams
@@ -373,6 +396,7 @@ export class AgenticApiClient {
       .json()
   }
 
+  /** Lists all of the customers for a project. */
   async listConsumers<
     TPopulate extends NonNullable<
       OperationParameters<'listConsumers'>['populate']
@@ -390,6 +414,7 @@ export class AgenticApiClient {
       .json()
   }
 
+  /** Gets a deployment by its ID. */
   async getDeployment<
     TPopulate extends NonNullable<
       OperationParameters<'getDeployment'>['populate']
@@ -407,6 +432,7 @@ export class AgenticApiClient {
       .json()
   }
 
+  /** Gets a deployment by its public identifier. */
   async getDeploymentByIdentifier<
     TPopulate extends NonNullable<
       OperationParameters<'getDeploymentByIdentifier'>['populate']
@@ -423,6 +449,7 @@ export class AgenticApiClient {
       .json()
   }
 
+  /** Updates a deployment. */
   async updateDeployment(
     deployment: OperationBody<'updateDeployment'>,
     { deploymentId, ...searchParams }: OperationParameters<'updateDeployment'>
@@ -435,6 +462,10 @@ export class AgenticApiClient {
       .json()
   }
 
+  /**
+   * Lists deployments the user or team has access to, optionally filtering by
+   * project.
+   */
   async listDeployments<
     TPopulate extends NonNullable<
       OperationParameters<'listDeployments'>['populate']
@@ -451,6 +482,7 @@ export class AgenticApiClient {
       .json()
   }
 
+  /** Creates a new deployment within a project. */
   async createDeployment(
     deployment: OperationBody<'createDeployment'>,
     searchParams: OperationParameters<'createDeployment'> = {}
@@ -460,6 +492,7 @@ export class AgenticApiClient {
       .json()
   }
 
+  /** Publishes a deployment. */
   async publishDeployment(
     deployment: OperationBody<'publishDeployment'>,
     { deploymentId, ...searchParams }: OperationParameters<'publishDeployment'>
@@ -472,6 +505,11 @@ export class AgenticApiClient {
       .json()
   }
 
+  /**
+   * Gets a consumer by API token. This method is admin-only.
+   *
+   * @internal
+   */
   async adminGetConsumerByToken<
     TPopulate extends NonNullable<
       OperationParameters<'adminGetConsumerByToken'>['populate']
@@ -481,7 +519,7 @@ export class AgenticApiClient {
     ...searchParams
   }: OperationParameters<'adminGetConsumerByToken'> & {
     populate?: TPopulate[]
-  }): Promise<PopulateConsumer<TPopulate>> {
+  }): Promise<PopulateConsumer<TPopulate, AdminConsumer>> {
     return this.ky
       .get(`v1/admin/consumers/tokens/${token}`, {
         searchParams: sanitizeSearchParams(searchParams)
@@ -489,6 +527,28 @@ export class AgenticApiClient {
       .json()
   }
 
+  /**
+   * Activates a consumer signifying that at least one API call has been made
+   * using the consumer's API token. This method is idempotent and admin-only.
+   *
+   * @internal
+   */
+  async adminActivateConsumer({
+    consumerId,
+    ...searchParams
+  }: OperationParameters<'adminActivateConsumer'>): Promise<AdminConsumer> {
+    return this.ky
+      .put(`v1/admin/consumers/${consumerId}/activate`, {
+        searchParams: sanitizeSearchParams(searchParams)
+      })
+      .json()
+  }
+
+  /**
+   * Gets a deployment by its public identifier. This method is admin-only.
+   *
+   * @internal
+   */
   async adminGetDeploymentByIdentifier<
     TPopulate extends NonNullable<
       OperationParameters<'adminGetDeploymentByIdentifier'>['populate']
@@ -584,8 +644,11 @@ type PopulateDeployment<
       : unknown)
 >
 
-type PopulateConsumer<TPopulate> = Simplify<
-  Consumer &
+type PopulateConsumer<
+  TPopulate,
+  TConsumer extends Consumer = Consumer
+> = Simplify<
+  TConsumer &
     (TPopulate extends 'user'
       ? {
           user: User

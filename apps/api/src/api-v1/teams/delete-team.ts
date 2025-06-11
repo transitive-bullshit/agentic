@@ -13,7 +13,7 @@ import {
 import { teamIdParamsSchema } from './schemas'
 
 const route = createRoute({
-  description: 'Deletes a team by slug.',
+  description: 'Deletes a team by ID.',
   tags: ['teams'],
   operationId: 'deleteTeam',
   method: 'delete',

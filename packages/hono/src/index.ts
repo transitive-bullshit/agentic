@@ -1,5 +1,7 @@
 export * from './env'
 export * from './error-handler'
+export * from './header-utils'
+export * from './json-rpc-errors'
 export * from './logger'
 export * from './middleware'
 export type * from './types'

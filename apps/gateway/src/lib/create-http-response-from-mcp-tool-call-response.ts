@@ -24,6 +24,7 @@ export async function createHttpResponseFromMcpToolCallResponse(
   assert(
     !toolCallResponse.isError,
     502,
+    // TODO: add content or structuredContent to the error message
     `MCP tool "${tool.name}" returned an error.`
   )
 
@@ -41,7 +42,7 @@ export async function createHttpResponseFromMcpToolCallResponse(
       coerce: false,
       // TODO: double-check MCP schema on whether additional properties are allowed
       strictAdditionalProperties: true,
-      errorMessage: `Invalid tool response for tool "${tool.name}"`,
+      errorPrefix: `Invalid tool response for tool "${tool.name}"`,
       errorStatusCode: 502
     })
 
