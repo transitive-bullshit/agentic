@@ -45,7 +45,7 @@ export async function resolveAgenticProjectConfig(
     ...opts,
     originAdapter: resolvedConfig.originAdapter,
     tools: resolvedConfig.tools,
-    toolConfigs: resolvedConfig.toolConfigs || []
+    toolConfigs: resolvedConfig.toolConfigs
   })
 
   return resolvedConfig
