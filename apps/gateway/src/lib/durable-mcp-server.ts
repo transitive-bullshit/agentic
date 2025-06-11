@@ -1,5 +1,5 @@
 import type { AdminDeployment, PricingPlan } from '@agentic/platform-types'
-import { assert, getRateLimitHeaders, pruneEmpty } from '@agentic/platform-core'
+import { assert, getRateLimitHeaders } from '@agentic/platform-core'
 import { parseDeploymentIdentifier } from '@agentic/platform-validators'
 import { Server } from '@modelcontextprotocol/sdk/server/index.js'
 import {
@@ -19,6 +19,7 @@ import { handleMcpToolCallError } from './handle-mcp-tool-call-error'
 import { recordToolCallUsage } from './record-tool-call-usage'
 import { resolveOriginToolCall } from './resolve-origin-tool-call'
 import { transformHttpResponseToMcpToolCallResponse } from './transform-http-response-to-mcp-tool-call-response'
+import { createAgenticMcpMetadata } from './utils'
 
 export class DurableMcpServerBase extends McpAgent<
   RawEnv,
@@ -119,8 +120,8 @@ export class DurableMcpServerBase extends McpAgent<
 
         return toolCallResponse
       } catch (err: unknown) {
-        // Gracefully handle tool call exceptions, whether they're thrown by the
-        // origin or internally by the gateway.
+        // Gracefully handle tool call exceptions, whether they were thrown by
+        // the origin server or internally by the gateway.
         toolCallResponse = handleMcpToolCallError(err, {
           toolName,
           env: this.env
@@ -133,22 +134,18 @@ export class DurableMcpServerBase extends McpAgent<
         // Augment the MCP tool call response with agentic metadata, which
         // makes it easier to debug tool calls and adds some much-needed HTTP
         // header-like functionality to tool call responses.
-        toolCallResponse._meta = {
-          ...toolCallResponse._meta,
-          agentic: pruneEmpty({
-            ...(toolCallResponse._meta?.agentic as any),
+        toolCallResponse._meta = createAgenticMcpMetadata(
+          {
             deploymentId: deployment.id,
             consumerId: consumer?.id,
-            cacheStatus: resolvedOriginToolCallResult?.cacheStatus,
             toolName,
-            headers: {
-              ...(toolCallResponse._meta?.agentic as any)?.headers,
-              ...getRateLimitHeaders(
-                resolvedOriginToolCallResult?.rateLimitResult
-              )
-            }
-          })
-        }
+            cacheStatus: resolvedOriginToolCallResult?.cacheStatus,
+            headers: getRateLimitHeaders(
+              resolvedOriginToolCallResult?.rateLimitResult
+            )
+          },
+          toolCallResponse._meta
+        )
 
         // Record tool call usage, whether the call was successful or not.
         recordToolCallUsage({

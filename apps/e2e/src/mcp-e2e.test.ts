@@ -1,3 +1,4 @@
+import { pick } from '@agentic/platform-core'
 import { Client as McpClient } from '@modelcontextprotocol/sdk/client/index.js'
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js'
 import { afterAll, beforeAll, describe, expect, test } from 'vitest'
@@ -36,10 +37,16 @@ for (const [i, fixtureSuite] of fixtureSuites.entries()) {
         content: expectedContent,
         structuredContent: expectedStructuredContent,
         _meta: expectedMeta,
+        _agenticMeta: expectedAgenticMeta,
+        _agenticMetaHeaders: expectedAgenticMetaHeaders,
         validate
       } = fixture.response ?? {}
-      const snapshot =
-        fixture.response?.snapshot ?? fixtureSuite.snapshot ?? !isError
+      const expectedSnapshot =
+        fixture.response?.snapshot ?? fixtureSuite.snapshot ?? false
+      const expectedStableSnapshot =
+        fixture.response?.stableSnapshot ??
+        fixtureSuite.stableSnapshot ??
+        !isError
       const debugFixture = !!(
         fixture.debug ??
         fixtureSuite.debug ??
@@ -93,13 +100,48 @@ for (const [i, fixtureSuite] of fixtureSuites.entries()) {
 
           if (expectedMeta) {
             expect(result._meta).toBeDefined()
+            expect(typeof result._meta).toEqual('object')
+            expect(!Array.isArray(result._meta)).toBeTruthy()
             for (const [key, value] of Object.entries(expectedMeta)) {
               expect(result._meta![key]).toEqual(value)
             }
           }
+          if (expectedAgenticMeta) {
+            expect(result._meta).toBeDefined()
+            expect(result._meta?.agentic).toBeDefined()
+            expect(typeof result._meta?.agentic).toEqual('object')
+            expect(!Array.isArray(result._meta?.agentic)).toBeTruthy()
+            for (const [key, value] of Object.entries(expectedAgenticMeta)) {
+              expect((result._meta!.agentic as any)[key]).toEqual(value)
+            }
+          }
 
-          if (snapshot) {
+          if (expectedAgenticMetaHeaders) {
+            expect(result._meta).toBeDefined()
+            expect(result._meta?.agentic).toBeDefined()
+            expect(typeof result._meta?.agentic).toEqual('object')
+            expect(!Array.isArray(result._meta?.agentic)).toBeTruthy()
+            expect(typeof (result._meta?.agentic as any)?.headers).toEqual(
+              'object'
+            )
+            expect(
+              !Array.isArray((result._meta?.agentic as any)?.headers)
+            ).toBeTruthy()
+            for (const [key, value] of Object.entries(
+              expectedAgenticMetaHeaders
+            )) {
+              expect((result._meta!.agentic as any).headers[key]).toEqual(value)
+            }
+          }
+
+          if (expectedSnapshot) {
             expect(result).toMatchSnapshot()
+          }
+
+          if (expectedStableSnapshot) {
+            expect(
+              pick(result, 'content', 'structuredContent', 'isError')
+            ).toMatchSnapshot()
           }
 
           if (validate) {

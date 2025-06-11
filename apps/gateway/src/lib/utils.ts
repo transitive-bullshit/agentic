@@ -1,3 +1,6 @@
+import { pruneEmpty } from '@agentic/platform-core'
+import sortKeys from 'sort-keys'
+
 export function isRequestPubliclyCacheable(request: Request): boolean {
   const pragma = request.headers.get('pragma')
   if (pragma === 'no-cache') {
@@ -35,4 +38,57 @@ export function isCacheControlPubliclyCacheable(
   }
 
   return true
+}
+
+const agenticMcpMetadataFieldOrder: string[] = [
+  'deploymentId',
+  'consumerId',
+  'toolName',
+  'status',
+  'cacheStatus',
+  'headers'
+]
+
+const agenticMcpMetadataFieldsOrderMap = Object.fromEntries(
+  agenticMcpMetadataFieldOrder.map((f, i) => [f, i])
+)
+
+function agenticMcpMetadataFieldComparator(a: string, b: string): number {
+  const aIndex = agenticMcpMetadataFieldsOrderMap[a] ?? Infinity
+  const bIndex = agenticMcpMetadataFieldsOrderMap[b] ?? Infinity
+
+  return aIndex - bIndex
+}
+
+/**
+ * Sanitizes agentic MCP metadata by sorting the keys and pruning empty values.
+ */
+export function createAgenticMcpMetadata(
+  metadata: {
+    deploymentId: string
+    consumerId?: string
+    toolName?: string
+    status?: number
+    cacheStatus?: string
+    headers?: Record<string, any>
+  },
+  existingMetadata?: Record<string, any>
+): Record<string, any> {
+  const rawAgenticMcpMetadata = pruneEmpty({
+    ...existingMetadata?.agentic,
+    ...metadata,
+    headers: {
+      ...existingMetadata?.agentic?.headers,
+      ...metadata.headers
+    }
+  })
+
+  const agentic = sortKeys(rawAgenticMcpMetadata, {
+    compare: agenticMcpMetadataFieldComparator
+  })
+
+  return {
+    ...existingMetadata,
+    agentic
+  }
 }

@@ -19,9 +19,13 @@ export type MCPE2ETestFixture = {
     content?: Array<Record<string, unknown>>
     structuredContent?: any
     _meta?: Record<string, unknown>
+    _agenticMeta?: Record<string, unknown>
+    _agenticMetaHeaders?: Record<string, unknown>
     validate?: (result: any) => void | Promise<void>
-    /** @default true */
+    /** @default undefined */
     snapshot?: boolean
+    /** @default true */
+    stableSnapshot?: boolean
   }
 }
 
@@ -42,8 +46,17 @@ export type MCPE2ETestFixtureSuite = {
   /** @default false */
   debug?: boolean
 
-  /** @default undefined */
+  /**
+   * Not used by default because the result `_meta.agentic` contains some
+   * metadata which may not be stable across test runs such as `cacheStatus`
+   * and `headers`.
+   *
+   * @default false
+   */
   snapshot?: boolean
+
+  /** @default undefined */
+  stableSnapshot?: boolean
 }
 
 const now = Date.now()
@@ -94,7 +107,7 @@ export const fixtureSuites: MCPE2ETestFixtureSuite[] = [
   {
     title: 'Basic MCP => MCP "echo" tool call success',
     path: '@dev/test-basic-mcp/mcp',
-    snapshot: false,
+    stableSnapshot: false,
     fixtures: [
       {
         request: {
@@ -141,8 +154,6 @@ export const fixtureSuites: MCPE2ETestFixtureSuite[] = [
   {
     title: 'Basic MCP => MCP "echo" tool call errors',
     path: '@dev/test-basic-openapi/mcp',
-    snapshot: false,
-    only: true,
     fixtures: [
       {
         request: {
@@ -154,7 +165,10 @@ export const fixtureSuites: MCPE2ETestFixtureSuite[] = [
           }
         },
         response: {
-          isError: true
+          isError: true,
+          _agenticMeta: {
+            status: 400
+          }
         }
       }
     ]

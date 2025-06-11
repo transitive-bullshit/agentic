@@ -28,6 +28,12 @@ export function handleMcpToolCallError(
   let status: ContentfulStatusCode = 500
 
   const res: McpToolCallResponse = {
+    _meta: {
+      agentic: {
+        toolName,
+        headers: {}
+      }
+    },
     isError: true,
     content: [
       {
@@ -45,7 +51,7 @@ export function handleMcpToolCallError(
     // is a subclass of `HttpError`.
     if (err.headers) {
       for (const [key, value] of Object.entries(err.headers)) {
-        res._meta![key] = value
+        ;(res._meta!.agentic as any).headers[key] = value
       }
     }
   } else if (err instanceof HTTPException) {
@@ -76,10 +82,10 @@ export function handleMcpToolCallError(
     }
   } else {
     // eslint-disable-next-line no-console
-    console.warn(`mcp tool call "${toolName}" warning`, status, message, err)
+    console.warn(`mcp tool call "${toolName}" warning`, status, err)
   }
 
-  res._meta!.status = status
+  ;(res._meta!.agentic as any).status = status
   res.content = [
     {
       type: 'text',
