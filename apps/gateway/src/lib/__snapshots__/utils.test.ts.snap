@@ -1,0 +1,3 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`createAgenticMcpMetadata 1`] = `"{"agentic":{"deploymentId":"123","consumerId":"456","toolName":"test","cacheStatus":"HIT"}}"`;
