@@ -125,13 +125,20 @@ export const toolConfigSchema = z
     pure: z.boolean().optional().default(false),
 
     /**
-     * A `Cache-Control` header value to use for caching this tool's responses.
+     * A custom `Cache-Control` header to use for caching this tool's responses.
      *
-     * If `pure` is `true`, this defaults to: `public, max-age=31560000, s-maxage=31560000, stale-while-revalidate=3600` (cache publicly for up to 1 year).
+     * If set, this field overrides `pure`.
      *
-     * If `pure` is `false`, this defaults to the origin server's
-     * `cache-control` header value. If the origin server does not set a
-     * `cache-control` header, it defaults to `no-store`.
+     * If not set and `pure` is `true`, the gateway will default to:
+     * `public, max-age=31560000, s-maxage=31560000, stale-while-revalidate=3600`
+     * (cache publicly for up to 1 year).
+     *
+     * If not set and `pure` is `false`, the gateway will default to `no-store`
+     * which will disable caching. This is the default gateway behavior for
+     * tools (no caching).
+     *
+     * Note that origin server response headers may also choose to disable
+     * caching on a per-request basis.
      *
      * @default undefined
      */

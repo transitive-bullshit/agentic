@@ -58,7 +58,7 @@ const now = Date.now()
 
 export const fixtureSuites: E2ETestFixtureSuite[] = [
   {
-    title: 'Basic OpenAPI getPost success',
+    title: 'HTTP => OpenAPI origin basic getPost success',
     compareResponseBodies: true,
     fixtures: [
       {
@@ -107,7 +107,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
     ]
   },
   {
-    title: 'Basic OpenAPI getPost errors',
+    title: 'HTTP => OpenAPI origin basic getPost errors',
     fixtures: [
       {
         path: '@dev/test-basic-openapi/getPost',
@@ -248,7 +248,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
     ]
   },
   {
-    title: 'Bypass caching',
+    title: 'HTTP => OpenAPI origin basic bypass caching',
     compareResponseBodies: true,
     fixtures: [
       {
@@ -340,7 +340,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
     ]
   },
   {
-    title: 'Basic GET caching',
+    title: 'HTTP => OpenAPI origin basic GET caching',
     compareResponseBodies: true,
     sequential: true,
     fixtures: [
@@ -390,7 +390,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
     ]
   },
   {
-    title: 'Basic POST caching',
+    title: 'HTTP => OpenAPI origin basic POST caching',
     compareResponseBodies: true,
     sequential: true,
     fixtures: [
@@ -422,7 +422,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
     ]
   },
   {
-    title: 'Basic MCP origin "add" tool call success',
+    title: 'HTTP => MCP origin basic "add" tool call success',
     compareResponseBodies: true,
     fixtures: [
       {
@@ -453,7 +453,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
     ]
   },
   {
-    title: 'Basic MCP origin "echo" tool call success',
+    title: 'HTTP => MCP origin basic "echo" tool call success',
     snapshot: false,
     fixtures: [
       {
@@ -500,7 +500,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
     ]
   },
   {
-    title: 'OpenAPI kitchen sink pure tool',
+    title: 'HTTP => OpenAPI origin everything "pure" tool',
     sequential: true,
     compareResponseBodies: true,
     fixtures: [
@@ -549,7 +549,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
     ]
   },
   {
-    title: 'OpenAPI kitchen sink disabled tool',
+    title: 'HTTP => OpenAPI origin everything "disabled_tool"',
     fixtures: [
       {
         path: '@dev/test-everything-openapi/disabled_tool',
@@ -563,7 +563,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
     ]
   },
   {
-    title: 'OpenAPI kitchen echo tool with empty body',
+    title: 'HTTP => OpenAPI origin everything "echo" tool with empty body',
     compareResponseBodies: true,
     fixtures: [
       {
@@ -588,7 +588,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
     ]
   },
   {
-    title: 'OpenAPI kitchen sink unpure_marked_pure tool',
+    title: 'HTTP => OpenAPI origin everything "unpure_marked_pure" tool',
     compareResponseBodies: true,
     snapshot: false,
     fixtures: [

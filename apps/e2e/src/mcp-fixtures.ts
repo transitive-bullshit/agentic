@@ -11,6 +11,7 @@ export type MCPE2ETestFixture = {
   request: {
     name: string
     args: Record<string, unknown>
+    _meta?: Record<string, unknown>
   }
 
   response?: {
@@ -63,7 +64,7 @@ const now = Date.now()
 
 export const fixtureSuites: MCPE2ETestFixtureSuite[] = [
   {
-    title: 'Basic MCP => OpenAPI get_post success',
+    title: 'MCP => OpenAPI origin basic get_post success',
     path: '@dev/test-basic-openapi/mcp',
     fixtures: [
       {
@@ -77,7 +78,7 @@ export const fixtureSuites: MCPE2ETestFixtureSuite[] = [
     ]
   },
   {
-    title: 'Basic MCP => OpenAPI @ latest get_post success ',
+    title: 'MCP => OpenAPI origin basic @ latest get_post success ',
     path: '@dev/test-basic-openapi@latest/mcp',
     fixtures: [
       {
@@ -91,7 +92,7 @@ export const fixtureSuites: MCPE2ETestFixtureSuite[] = [
     ]
   },
   {
-    title: 'Basic MCP => OpenAPI @ 010332cf get_post success ',
+    title: 'MCP => OpenAPI origin basic @ 010332cf get_post success ',
     path: '@dev/test-basic-openapi@010332cf/mcp',
     fixtures: [
       {
@@ -105,7 +106,7 @@ export const fixtureSuites: MCPE2ETestFixtureSuite[] = [
     ]
   },
   {
-    title: 'Basic MCP => MCP "echo" tool call success',
+    title: 'MCP => MCP origin basic "echo" tool call success',
     path: '@dev/test-basic-mcp/mcp',
     stableSnapshot: false,
     fixtures: [
@@ -152,7 +153,7 @@ export const fixtureSuites: MCPE2ETestFixtureSuite[] = [
     ]
   },
   {
-    title: 'Basic MCP => OpenAPI get_post errors',
+    title: 'MCP => OpenAPI origin basic get_post errors',
     path: '@dev/test-basic-openapi/mcp',
     fixtures: [
       {
@@ -219,7 +220,7 @@ export const fixtureSuites: MCPE2ETestFixtureSuite[] = [
     ]
   },
   {
-    title: 'Basic MCP => OpenAPI everything errors',
+    title: 'MCP => OpenAPI origin everything errors',
     path: '@dev/test-everything-openapi/mcp',
     fixtures: [
       {
@@ -248,6 +249,138 @@ export const fixtureSuites: MCPE2ETestFixtureSuite[] = [
           _agenticMeta: {
             status: 400
           }
+        }
+      }
+    ]
+  },
+  {
+    title: 'MCP => OpenAPI origin basic bypass caching',
+    path: '@dev/test-basic-openapi@fc856666/mcp',
+    fixtures: [
+      {
+        // ensure we bypass the cache for requests for tools which do not have
+        // a custom `pure` or `cacheControl` set in their tool config.
+        request: {
+          name: 'get_post',
+          args: {
+            postId: 1
+          }
+        },
+        response: {
+          isError: false,
+          _agenticMeta: {
+            cacheStatus: 'BYPASS'
+          }
+        }
+      }
+    ]
+  },
+  {
+    title: 'MCP => OpenAPI origin basic caching',
+    path: '@dev/test-basic-openapi@010332cf/mcp',
+    fixtures: [
+      {
+        request: {
+          name: 'get_post',
+          args: {
+            postId: 1
+          }
+        },
+        response: {
+          isError: false
+        }
+      },
+      {
+        request: {
+          name: 'get_post',
+          args: {
+            postId: 1
+          }
+        },
+        response: {
+          isError: false,
+          _agenticMeta: {
+            // second request should hit the cache
+            cacheStatus: 'HIT'
+          }
+        }
+      },
+      {
+        request: {
+          name: 'get_post',
+          args: {
+            postId: 1
+          },
+          // disable caching via a custom metadata cache-control header
+          _meta: {
+            agentic: {
+              headers: {
+                'cache-control': 'no-store'
+              }
+            }
+          }
+        },
+        response: {
+          isError: false,
+          _agenticMeta: {
+            cacheStatus: 'BYPASS'
+          }
+        }
+      }
+    ]
+  },
+  {
+    title: 'MCP => OpenAPI origin basic normalized caching',
+    path: '@dev/test-basic-openapi@010332cf/mcp',
+    fixtures: [
+      {
+        request: {
+          name: 'get_post',
+          args: {
+            postId: 1,
+            foo: true,
+            nala: 'kitten'
+          }
+        },
+        response: {
+          isError: false
+        }
+      },
+      {
+        request: {
+          name: 'get_post',
+          args: {
+            foo: true,
+            postId: 1,
+            nala: 'kitten'
+          }
+        },
+        response: {
+          isError: false,
+          _agenticMeta: {
+            // second request should hit the cache even though the args are in a
+            // different order
+            cacheStatus: 'HIT'
+          }
+        }
+      }
+    ]
+  },
+  {
+    title: 'MCP => MCP origin basic "add" tool call success',
+    path: '@dev/test-basic-mcp/mcp',
+    fixtures: [
+      {
+        request: {
+          name: 'add',
+          args: {
+            a: 13,
+            b: 49
+          }
+        },
+        response: {
+          isError: false,
+          content: [{ type: 'text', text: '62' }]
         }
       }
     ]

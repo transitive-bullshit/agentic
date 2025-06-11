@@ -38,7 +38,7 @@ export async function resolveHttpEdgeRequest(
 
   const cacheControl = isRequestPubliclyCacheable(ctx.req.raw)
     ? ctx.req.header('cache-control')
-    : 'no-cache'
+    : 'no-store'
 
   const { method } = ctx.req
   const requestUrl = new URL(ctx.req.url)

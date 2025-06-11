@@ -54,7 +54,7 @@ export type RateLimitState = {
 
 export type RateLimitCache = Map<string, RateLimitState>
 
-export type CacheStatus = 'HIT' | 'MISS' | 'BYPASS'
+export type CacheStatus = 'HIT' | 'MISS' | 'BYPASS' | 'DYNAMIC'
 export type RequestMode = 'mcp' | 'http'
 
 export type WaitUntil = (promise: Promise<any>) => void

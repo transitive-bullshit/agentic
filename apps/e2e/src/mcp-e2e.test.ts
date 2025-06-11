@@ -82,7 +82,8 @@ for (const [i, fixtureSuite] of fixtureSuites.entries()) {
         async () => {
           const result = await client.callTool({
             name: toolName,
-            arguments: fixture.request.args
+            arguments: fixture.request.args,
+            _meta: fixture.request._meta
           })
 
           if (debugFixture) {

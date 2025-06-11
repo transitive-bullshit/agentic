@@ -1,6 +1,17 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Basic MCP => OpenAPI @ 010332cf get_post success  > 2.0: @dev/test-basic-openapi@010332cf/mcp get_post 1`] = `
+exports[`MCP => MCP origin basic "add" tool call success > 9.0: @dev/test-basic-mcp/mcp add 1`] = `
+{
+  "content": [
+    {
+      "text": "62",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`MCP => OpenAPI origin basic @ 010332cf get_post success  > 2.0: @dev/test-basic-openapi@010332cf/mcp get_post 1`] = `
 {
   "content": [],
   "isError": false,
@@ -16,7 +27,7 @@ ipsam ut commodi dolor voluptatum modi aut vitae",
 }
 `;
 
-exports[`Basic MCP => OpenAPI @ latest get_post success  > 1.0: @dev/test-basic-openapi@latest/mcp get_post 1`] = `
+exports[`MCP => OpenAPI origin basic @ latest get_post success  > 1.0: @dev/test-basic-openapi@latest/mcp get_post 1`] = `
 {
   "content": [],
   "isError": false,
@@ -32,17 +43,71 @@ molestiae porro eius odio et labore et velit aut",
 }
 `;
 
-exports[`Basic MCP => OpenAPI everything errors > 5.0: @dev/test-everything-openapi/mcp strict_additional_properties 1`] = `
+exports[`MCP => OpenAPI origin basic bypass caching > 6.0: @dev/test-basic-openapi@fc856666/mcp get_post 1`] = `
 {
   "content": [],
   "isError": false,
   "structuredContent": {
-    "foo": "bar",
+    "body": "quia et suscipit
+suscipit recusandae consequuntur expedita et cum
+reprehenderit molestiae ut ut quas totam
+nostrum rerum est autem sunt rem eveniet architecto",
+    "id": 1,
+    "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
+    "userId": 1,
   },
 }
 `;
 
-exports[`Basic MCP => OpenAPI get_post errors > 4.3: @dev/test-basic-openapi/mcp get_post 1`] = `
+exports[`MCP => OpenAPI origin basic caching > 7.0: @dev/test-basic-openapi@010332cf/mcp get_post 1`] = `
+{
+  "content": [],
+  "isError": false,
+  "structuredContent": {
+    "body": "quia et suscipit
+suscipit recusandae consequuntur expedita et cum
+reprehenderit molestiae ut ut quas totam
+nostrum rerum est autem sunt rem eveniet architecto",
+    "id": 1,
+    "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
+    "userId": 1,
+  },
+}
+`;
+
+exports[`MCP => OpenAPI origin basic caching > 7.1: @dev/test-basic-openapi@010332cf/mcp get_post 1`] = `
+{
+  "content": [],
+  "isError": false,
+  "structuredContent": {
+    "body": "quia et suscipit
+suscipit recusandae consequuntur expedita et cum
+reprehenderit molestiae ut ut quas totam
+nostrum rerum est autem sunt rem eveniet architecto",
+    "id": 1,
+    "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
+    "userId": 1,
+  },
+}
+`;
+
+exports[`MCP => OpenAPI origin basic caching > 7.2: @dev/test-basic-openapi@010332cf/mcp get_post 1`] = `
+{
+  "content": [],
+  "isError": false,
+  "structuredContent": {
+    "body": "quia et suscipit
+suscipit recusandae consequuntur expedita et cum
+reprehenderit molestiae ut ut quas totam
+nostrum rerum est autem sunt rem eveniet architecto",
+    "id": 1,
+    "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
+    "userId": 1,
+  },
+}
+`;
+
+exports[`MCP => OpenAPI origin basic get_post errors > 4.3: @dev/test-basic-openapi/mcp get_post 1`] = `
 {
   "content": [],
   "isError": false,
@@ -58,7 +123,7 @@ sunt ut sequi eos ea sed quas",
 }
 `;
 
-exports[`Basic MCP => OpenAPI get_post success > 0.0: @dev/test-basic-openapi/mcp get_post 1`] = `
+exports[`MCP => OpenAPI origin basic get_post success > 0.0: @dev/test-basic-openapi/mcp get_post 1`] = `
 {
   "content": [],
   "isError": false,
@@ -70,6 +135,48 @@ nostrum rerum est autem sunt rem eveniet architecto",
     "id": 1,
     "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
     "userId": 1,
+  },
+}
+`;
+
+exports[`MCP => OpenAPI origin basic normalized caching > 8.0: @dev/test-basic-openapi@010332cf/mcp get_post 1`] = `
+{
+  "content": [],
+  "isError": false,
+  "structuredContent": {
+    "body": "quia et suscipit
+suscipit recusandae consequuntur expedita et cum
+reprehenderit molestiae ut ut quas totam
+nostrum rerum est autem sunt rem eveniet architecto",
+    "id": 1,
+    "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
+    "userId": 1,
+  },
+}
+`;
+
+exports[`MCP => OpenAPI origin basic normalized caching > 8.1: @dev/test-basic-openapi@010332cf/mcp get_post 1`] = `
+{
+  "content": [],
+  "isError": false,
+  "structuredContent": {
+    "body": "quia et suscipit
+suscipit recusandae consequuntur expedita et cum
+reprehenderit molestiae ut ut quas totam
+nostrum rerum est autem sunt rem eveniet architecto",
+    "id": 1,
+    "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
+    "userId": 1,
+  },
+}
+`;
+
+exports[`MCP => OpenAPI origin everything errors > 5.0: @dev/test-everything-openapi/mcp strict_additional_properties 1`] = `
+{
+  "content": [],
+  "isError": false,
+  "structuredContent": {
+    "foo": "bar",
   },
 }
 `;

@@ -86,10 +86,11 @@ export class DurableMcpServerBase extends McpAgent<
     }))
 
     server.setRequestHandler(CallToolRequestSchema, async (request) => {
-      const { name: toolName, arguments: args } = request.params
+      const { name: toolName, arguments: args, _meta } = request.params
       const sessionId = this.ctx.id.toString()
       const tool = tools.find((tool) => tool.name === toolName)
 
+      const cacheControl = (_meta?.agentic as any)?.headers?.['cache-control']
       let resolvedOriginToolCallResult: ResolvedOriginToolCallResult | undefined
       let toolCallResponse: McpToolCallResponse | undefined
 
@@ -102,6 +103,7 @@ export class DurableMcpServerBase extends McpAgent<
           deployment,
           consumer,
           pricingPlan,
+          cacheControl,
           sessionId,
           env: this.env,
           ip,
