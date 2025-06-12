@@ -63,7 +63,6 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
     fixtures: [
       {
         path: '@dev/test-basic-openapi/getPost',
-        only: true,
         request: {
           method: 'POST',
           json: {
@@ -633,17 +632,17 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
     snapshot: false,
     fixtures: [
       {
-        path: '@dev/test-everything-openapi@ee3b9fdc/echo_headers',
+        path: '@dev/test-everything-openapi@c8c25547/echo_headers',
         response: {
           validate: (body) => {
             expect(body['x-agentic-proxy-secret']).toEqual(
               'f279280a67a15df6e0245511bdeb11854fc8f6f702c49d028431bb1dbc03bfdc'
             )
             expect(body['x-agentic-deployment-id']).toEqual(
-              'depl_yhc7f8gubcqycagjp68c4ozr'
+              'depl_kb0jszdetahn52ospawj3reu'
             )
             expect(body['x-agentic-deployment-identifier']).toEqual(
-              '@dev/test-everything-openapi@ee3b9fdc'
+              '@dev/test-everything-openapi@c8c25547'
             )
             expect(body['x-agentic-is-customer-subscription-active']).toEqual(
               'false'
