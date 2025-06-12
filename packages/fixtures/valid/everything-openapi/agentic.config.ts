@@ -59,7 +59,7 @@ export default defineConfig({
       name: 'custom_rate_limit_tool',
       rateLimit: {
         interval: '30s',
-        limit: 10
+        limit: 2
       }
     },
     {
