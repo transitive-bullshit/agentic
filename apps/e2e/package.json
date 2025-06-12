@@ -21,14 +21,15 @@
   },
   "dependencies": {
     "ky": "catalog:",
-    "p-map": "catalog:"
+    "p-map": "catalog:",
+    "p-times": "^4.0.0"
   },
   "devDependencies": {
     "@agentic/platform": "workspace:*",
     "@agentic/platform-api-client": "workspace:*",
     "@agentic/platform-core": "workspace:*",
     "@agentic/platform-fixtures": "workspace:*",
-    "fast-content-type-parse": "catalog:",
-    "@modelcontextprotocol/sdk": "catalog:"
+    "@modelcontextprotocol/sdk": "catalog:",
+    "fast-content-type-parse": "catalog:"
   }
 }

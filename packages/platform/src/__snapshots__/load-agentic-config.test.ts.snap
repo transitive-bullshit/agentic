@@ -3,10 +3,10 @@
 exports[`loadAgenticConfig > basic-mcp 1`] = `
 {
   "defaultRateLimit": {
-    "async": true,
     "enabled": true,
     "interval": 60,
     "limit": 1000,
+    "mode": "approximate",
   },
   "name": "test-basic-mcp",
   "originAdapter": {
@@ -28,10 +28,10 @@ exports[`loadAgenticConfig > basic-mcp 1`] = `
       ],
       "name": "Free",
       "rateLimit": {
-        "async": true,
         "enabled": true,
         "interval": 60,
         "limit": 1000,
+        "mode": "approximate",
       },
       "slug": "free",
     },
@@ -44,10 +44,10 @@ exports[`loadAgenticConfig > basic-mcp 1`] = `
 exports[`loadAgenticConfig > basic-openapi 1`] = `
 {
   "defaultRateLimit": {
-    "async": true,
     "enabled": true,
     "interval": 60,
     "limit": 1000,
+    "mode": "approximate",
   },
   "name": "test-basic-openapi",
   "originAdapter": {
@@ -70,10 +70,10 @@ exports[`loadAgenticConfig > basic-openapi 1`] = `
       ],
       "name": "Free",
       "rateLimit": {
-        "async": true,
         "enabled": true,
         "interval": 60,
         "limit": 1000,
+        "mode": "approximate",
       },
       "slug": "free",
     },
@@ -95,10 +95,10 @@ exports[`loadAgenticConfig > basic-openapi 1`] = `
 exports[`loadAgenticConfig > basic-raw-free-json 1`] = `
 {
   "defaultRateLimit": {
-    "async": true,
     "enabled": true,
     "interval": 60,
     "limit": 1000,
+    "mode": "approximate",
   },
   "name": "test-basic-raw-free-json",
   "originAdapter": {
@@ -120,10 +120,10 @@ exports[`loadAgenticConfig > basic-raw-free-json 1`] = `
       ],
       "name": "Free",
       "rateLimit": {
-        "async": true,
         "enabled": true,
         "interval": 60,
         "limit": 1000,
+        "mode": "approximate",
       },
       "slug": "free",
     },
@@ -136,10 +136,10 @@ exports[`loadAgenticConfig > basic-raw-free-json 1`] = `
 exports[`loadAgenticConfig > basic-raw-free-ts 1`] = `
 {
   "defaultRateLimit": {
-    "async": true,
     "enabled": true,
     "interval": 60,
     "limit": 1000,
+    "mode": "approximate",
   },
   "name": "test-basic-raw-free-ts",
   "originAdapter": {
@@ -161,10 +161,10 @@ exports[`loadAgenticConfig > basic-raw-free-ts 1`] = `
       ],
       "name": "Free",
       "rateLimit": {
-        "async": true,
         "enabled": true,
         "interval": 60,
         "limit": 1000,
+        "mode": "approximate",
       },
       "slug": "free",
     },
@@ -177,15 +177,15 @@ exports[`loadAgenticConfig > basic-raw-free-ts 1`] = `
 exports[`loadAgenticConfig > everything-openapi 1`] = `
 {
   "defaultRateLimit": {
-    "async": true,
     "enabled": true,
     "interval": 60,
     "limit": 1000,
+    "mode": "approximate",
   },
   "name": "test-everything-openapi",
   "originAdapter": {
     "location": "external",
-    "spec": "{"openapi":"3.1.0","info":{"title":"OpenAPI server everything","description":"OpenAPI kitchen sink server meant for testing Agentic's origin OpenAPI adapter and ToolConfig features.","version":"0.1.0"},"components":{"schemas":{"User":{"type":"object","properties":{"id":{"type":"string"},"name":{"type":"string"},"email":{"type":"string"}},"required":["id","name","email"]}},"parameters":{}},"paths":{"/health":{"get":{"description":"Check if the server is healthy","operationId":"healthCheck","responses":{"200":{"description":"OK","content":{"application/json":{"schema":{"type":"object","properties":{"status":{"type":"string"}},"required":["status"]}}}}}}},"/users/{userId}":{"get":{"description":"Gets a user","tags":["users"],"operationId":"getUser","parameters":[{"schema":{"type":"string"},"required":true,"description":"User ID","name":"userId","in":"path"}],"responses":{"200":{"description":"A user object","content":{"application/json":{"schema":{"$ref":"#/components/schemas/User"}}}}}}},"/disabled-tool":{"get":{"description":"Disabled tool","operationId":"disabledTool","responses":{"200":{"description":"OK","content":{"application/json":{"schema":{"type":"object","properties":{"status":{"type":"string"}},"required":["status"]}}}}}}},"/disabled-for-free-plan-tool":{"get":{"description":"Disabled for free plan tool","operationId":"disabledForFreePlanTool","responses":{"200":{"description":"OK","content":{"application/json":{"schema":{"type":"object","properties":{"status":{"type":"string"}},"required":["status"]}}}}}}},"/echo":{"post":{"description":"Echoes the request body","operationId":"echo","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{}}}}},"responses":{"200":{"description":"Echoed request body","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}},"/echo-headers":{"get":{"description":"Echoes the request headers","operationId":"echoHeaders","responses":{"200":{"description":"Echoed request headers","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}},"/pure":{"post":{"description":"Pure tool","operationId":"pure","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{}}}}},"responses":{"200":{"description":"Echoed request body","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}},"/unpure-marked-pure":{"post":{"description":"Unpure tool marked pure","operationId":"unpure_marked_pure","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{}}}}},"responses":{"200":{"description":"Echoed request body with current timestamp to not be pure","content":{"application/json":{"schema":{"type":"object","properties":{"now":{"type":"number"}},"required":["now"]}}}}}}},"/custom-cache-control-tool":{"post":{"description":"Custom cache control tool","operationId":"customCacheControlTool","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{}}}}},"responses":{"200":{"description":"Echoed request body","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}},"/no-store-cache-control-tool":{"post":{"description":"No store cache control tool","operationId":"noStoreCacheControlTool","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{}}}}},"responses":{"200":{"description":"Echoed request body","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}},"/no-cache-cache-control-tool":{"post":{"description":"No cache cache control tool","operationId":"noCacheCacheControlTool","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{}}}}},"responses":{"200":{"description":"Echoed request body","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}},"/custom-rate-limit-tool":{"post":{"description":"Custom rate limit tool","operationId":"customRateLimitTool","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{}}}}},"responses":{"200":{"description":"Echoed request body","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}},"/disabled-rate-limit-tool":{"post":{"description":"Disabled rate limit tool","operationId":"disabledRateLimitTool","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{}}}}},"responses":{"200":{"description":"Echoed request body","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}},"/strict-additional-properties":{"post":{"description":"Echoes the request body only allowing a single \\"foo\\" field.","operationId":"strictAdditionalProperties","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{"foo":{"type":"string"}},"required":["foo"]}}}},"responses":{"200":{"description":"Echoed request body","content":{"application/json":{"schema":{"type":"object","properties":{"foo":{"type":"string"}},"required":["foo"]}}}}}}}},"webhooks":{}}",
+    "spec": "{"openapi":"3.1.0","info":{"title":"OpenAPI server everything","description":"OpenAPI kitchen sink server meant for testing Agentic's origin OpenAPI adapter and ToolConfig features.","version":"0.1.0"},"components":{"schemas":{"User":{"type":"object","properties":{"id":{"type":"string"},"name":{"type":"string"},"email":{"type":"string"}},"required":["id","name","email"]}},"parameters":{}},"paths":{"/health":{"get":{"description":"Check if the server is healthy","operationId":"healthCheck","responses":{"200":{"description":"OK","content":{"application/json":{"schema":{"type":"object","properties":{"status":{"type":"string"}},"required":["status"]}}}}}}},"/users/{userId}":{"get":{"description":"Gets a user","tags":["users"],"operationId":"getUser","parameters":[{"schema":{"type":"string"},"required":true,"description":"User ID","name":"userId","in":"path"}],"responses":{"200":{"description":"A user object","content":{"application/json":{"schema":{"$ref":"#/components/schemas/User"}}}}}}},"/disabled-tool":{"get":{"description":"Disabled tool","operationId":"disabledTool","responses":{"200":{"description":"OK","content":{"application/json":{"schema":{"type":"object","properties":{"status":{"type":"string"}},"required":["status"]}}}}}}},"/disabled-for-free-plan-tool":{"get":{"description":"Disabled for free plan tool","operationId":"disabledForFreePlanTool","responses":{"200":{"description":"OK","content":{"application/json":{"schema":{"type":"object","properties":{"status":{"type":"string"}},"required":["status"]}}}}}}},"/echo":{"post":{"description":"Echoes the request body","operationId":"echo","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{}}}}},"responses":{"200":{"description":"Echoed request body","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}},"/echo-headers":{"get":{"description":"Echoes the request headers","operationId":"echoHeaders","responses":{"200":{"description":"Echoed request headers","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}},"/pure":{"post":{"description":"Pure tool","operationId":"pure","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{}}}}},"responses":{"200":{"description":"Echoed request body","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}},"/unpure-marked-pure":{"post":{"description":"Unpure tool marked pure","operationId":"unpure_marked_pure","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{}}}}},"responses":{"200":{"description":"Echoed request body with current timestamp to not be pure","content":{"application/json":{"schema":{"type":"object","properties":{"now":{"type":"number"}},"required":["now"]}}}}}}},"/custom-cache-control-tool":{"post":{"description":"Custom cache control tool","operationId":"customCacheControlTool","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{}}}}},"responses":{"200":{"description":"Echoed request body","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}},"/custom-rate-limit-approximate-tool":{"post":{"description":"Custom rate limit tool (approximate mode)","operationId":"customRateLimitApproximateTool","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{}}}}},"responses":{"200":{"description":"Echoed request body","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}},"/no-store-cache-control-tool":{"post":{"description":"No store cache control tool","operationId":"noStoreCacheControlTool","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{}}}}},"responses":{"200":{"description":"Echoed request body","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}},"/no-cache-cache-control-tool":{"post":{"description":"No cache cache control tool","operationId":"noCacheCacheControlTool","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{}}}}},"responses":{"200":{"description":"Echoed request body","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}},"/custom-rate-limit-tool":{"post":{"description":"Custom rate limit tool (strict mode)","operationId":"customRateLimitTool","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{}}}}},"responses":{"200":{"description":"Echoed request body","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}},"/disabled-rate-limit-tool":{"post":{"description":"Disabled rate limit tool","operationId":"disabledRateLimitTool","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{}}}}},"responses":{"200":{"description":"Echoed request body","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}},"/strict-additional-properties":{"post":{"description":"Echoes the request body only allowing a single \\"foo\\" field.","operationId":"strictAdditionalProperties","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{"foo":{"type":"string"}},"required":["foo"]}}}},"responses":{"200":{"description":"Echoed request body","content":{"application/json":{"schema":{"type":"object","properties":{"foo":{"type":"string"}},"required":["foo"]}}}}}}}},"webhooks":{}}",
     "type": "openapi",
   },
   "originUrl": "https://agentic-platform-fixtures-everything.onrender.com",
@@ -203,10 +203,10 @@ exports[`loadAgenticConfig > everything-openapi 1`] = `
       ],
       "name": "Free",
       "rateLimit": {
-        "async": true,
         "enabled": true,
         "interval": 60,
         "limit": 1000,
+        "mode": "approximate",
       },
       "slug": "free",
     },
@@ -262,10 +262,19 @@ exports[`loadAgenticConfig > everything-openapi 1`] = `
     {
       "name": "custom_rate_limit_tool",
       "rateLimit": {
-        "async": true,
         "enabled": true,
         "interval": 30,
-        "limit": 10,
+        "limit": 2,
+        "mode": "strict",
+      },
+    },
+    {
+      "name": "custom_rate_limit_approximate_tool",
+      "rateLimit": {
+        "enabled": true,
+        "interval": 30,
+        "limit": 2,
+        "mode": "approximate",
       },
     },
     {
@@ -319,10 +328,10 @@ exports[`loadAgenticConfig > invalid: pricing-empty-2 1`] = `[ZodValidationError
 exports[`loadAgenticConfig > pricing-3-plans 1`] = `
 {
   "defaultRateLimit": {
-    "async": true,
     "enabled": true,
     "interval": 60,
     "limit": 1000,
+    "mode": "approximate",
   },
   "name": "test-pricing-3-plans",
   "originAdapter": {
@@ -393,10 +402,10 @@ exports[`loadAgenticConfig > pricing-3-plans 1`] = `
 exports[`loadAgenticConfig > pricing-custom-0 1`] = `
 {
   "defaultRateLimit": {
-    "async": true,
     "enabled": true,
     "interval": 60,
     "limit": 1000,
+    "mode": "approximate",
   },
   "name": "test-pricing-custom-0",
   "originAdapter": {
@@ -437,10 +446,10 @@ exports[`loadAgenticConfig > pricing-custom-0 1`] = `
       ],
       "name": "Basic Monthly",
       "rateLimit": {
-        "async": true,
         "enabled": true,
         "interval": 2592000,
         "limit": 1000,
+        "mode": "approximate",
       },
       "slug": "basic-monthly",
     },
@@ -461,10 +470,10 @@ exports[`loadAgenticConfig > pricing-custom-0 1`] = `
       ],
       "name": "Basic Annual",
       "rateLimit": {
-        "async": true,
         "enabled": true,
         "interval": 2592000,
         "limit": 1500,
+        "mode": "approximate",
       },
       "slug": "basic-annual",
     },
@@ -477,10 +486,10 @@ exports[`loadAgenticConfig > pricing-custom-0 1`] = `
 exports[`loadAgenticConfig > pricing-freemium 1`] = `
 {
   "defaultRateLimit": {
-    "async": true,
     "enabled": true,
     "interval": 60,
     "limit": 1000,
+    "mode": "approximate",
   },
   "name": "test-pricing-freemium",
   "originAdapter": {
@@ -502,10 +511,10 @@ exports[`loadAgenticConfig > pricing-freemium 1`] = `
       ],
       "name": "Free",
       "rateLimit": {
-        "async": true,
         "enabled": true,
         "interval": 60,
         "limit": 1000,
+        "mode": "approximate",
       },
       "slug": "free",
     },
@@ -531,10 +540,10 @@ exports[`loadAgenticConfig > pricing-freemium 1`] = `
 exports[`loadAgenticConfig > pricing-monthly-annual 1`] = `
 {
   "defaultRateLimit": {
-    "async": true,
     "enabled": true,
     "interval": 60,
     "limit": 1000,
+    "mode": "approximate",
   },
   "name": "test-pricing-monthly-annual",
   "originAdapter": {
@@ -591,10 +600,10 @@ exports[`loadAgenticConfig > pricing-monthly-annual 1`] = `
 exports[`loadAgenticConfig > pricing-pay-as-you-go 1`] = `
 {
   "defaultRateLimit": {
-    "async": true,
     "enabled": true,
     "interval": 60,
     "limit": 1000,
+    "mode": "approximate",
   },
   "name": "test-pricing-pay-as-you-go",
   "originAdapter": {
@@ -622,10 +631,10 @@ exports[`loadAgenticConfig > pricing-pay-as-you-go 1`] = `
       ],
       "name": "Free",
       "rateLimit": {
-        "async": true,
         "enabled": true,
         "interval": 86400,
         "limit": 20,
+        "mode": "approximate",
       },
       "slug": "free",
     },
@@ -651,10 +660,10 @@ exports[`loadAgenticConfig > pricing-pay-as-you-go 1`] = `
       ],
       "name": "Pay-As-You-Go",
       "rateLimit": {
-        "async": true,
         "enabled": true,
         "interval": 86400,
         "limit": 1000,
+        "mode": "approximate",
       },
       "slug": "pay-as-you-go",
     },

@@ -1,5 +1,6 @@
 import contentType from 'fast-content-type-parse'
 import defaultKy from 'ky'
+import pTimes from 'p-times'
 import { describe, expect, test } from 'vitest'
 
 import { env } from './env'
@@ -20,13 +21,18 @@ for (const [i, fixtureSuite] of fixtureSuites.entries()) {
     title,
     fixtures,
     compareResponseBodies = false,
-    repeat = 1,
+    repeat,
+    repeatConcurrency = 1,
     repeatSuccessCriteria = 'all'
   } = fixtureSuite
 
   const describeFn = fixtureSuite.only ? describe.only : describe
   describeFn(title, () => {
     let fixtureResponseBody: any | undefined
+
+    if (repeat) {
+      expect(repeat).toBeGreaterThan(0)
+    }
 
     for (const [j, fixture] of fixtures.entries()) {
       const method = fixture.request?.method ?? 'GET'
@@ -63,115 +69,117 @@ for (const [i, fixtureSuite] of fixtureSuites.entries()) {
         // eslint-disable-next-line no-loop-func
         async () => {
           const numIterations = repeat ?? 1
-          let numRepeatSuccesses = 0
+          let numSuccessCases = 0
 
-          for (let iteration = 0; iteration < numIterations; ++iteration) {
-            const repeatIterationPrefix = repeat
-              ? `[${iteration}/${numIterations}] `
-              : ''
+          await pTimes(
+            numIterations,
+            async (iteration: number) => {
+              const repeatIterationPrefix = repeat
+                ? `[${iteration}/${numIterations}] `
+                : ''
 
-            const res = await ky(fixture.path, {
-              timeout,
-              ...fixture.request
-            })
+              const res = await ky(fixture.path, {
+                timeout,
+                ...fixture.request
+              })
 
-            if (res.status !== status && res.status >= 500) {
-              let body: any
-              try {
-                body = await res.json()
-              } catch {}
+              if (res.status !== status && res.status >= 500) {
+                let body: any
+                try {
+                  body = await res.json()
+                } catch {}
 
-              console.error(
-                `${repeatIterationPrefix}${fixtureName} => UNEXPECTED ERROR ${res.status}`,
-                {
+                console.error(
+                  `${repeatIterationPrefix}${fixtureName} => UNEXPECTED ERROR ${res.status}`,
                   body
-                }
-              )
-            }
+                )
+              }
 
-            if (repeat) {
-              if (res.status === status) {
-                ++numRepeatSuccesses
+              if (repeat) {
+                if (res.status === status) {
+                  ++numSuccessCases
+                } else {
+                  if (debugFixture) {
+                    console.log(
+                      `${repeatIterationPrefix}${fixtureName} => ${res.status} (invalid sample; expected ${status})`,
+                      {
+                        headers: Object.fromEntries(res.headers.entries())
+                      }
+                    )
+                  }
+
+                  return
+                }
               } else {
-                if (debugFixture) {
-                  console.log(
-                    `${repeatIterationPrefix}${fixtureName} => ${res.status} (invalid; expected ${status})`,
-                    {
-                      headers: Object.fromEntries(res.headers.entries())
-                    }
-                  )
-                }
-
-                continue
+                expect(res.status).toBe(status)
               }
-            } else {
-              expect(res.status).toBe(status)
-            }
 
-            const { type } = contentType.safeParse(
-              res.headers.get('content-type') ?? ''
-            )
-            expect(type).toBe(expectedContentType)
-
-            let body: any
-
-            if (type.includes('json')) {
-              try {
-                body = await res.json()
-              } catch (err) {
-                console.error('json error', err)
-                throw err
-              }
-            } else if (type.includes('text')) {
-              body = await res.text()
-            } else {
-              body = await res.arrayBuffer()
-            }
-
-            if (debugFixture) {
-              console.log(
-                `${repeatIterationPrefix}${fixtureName} => ${res.status}`,
-                {
-                  body,
-                  headers: Object.fromEntries(res.headers.entries())
-                }
+              const { type } = contentType.safeParse(
+                res.headers.get('content-type') ?? ''
               )
-            }
+              expect(type).toBe(expectedContentType)
 
-            if (expectedBody) {
-              expect(body).toEqual(expectedBody)
-            }
+              let body: any
 
-            if (validate) {
-              await Promise.resolve(validate(body))
-            }
-
-            if (snapshot) {
-              expect(body).toMatchSnapshot()
-            }
-
-            if (expectedHeaders) {
-              for (const [key, value] of Object.entries(expectedHeaders)) {
-                expect(res.headers.get(key)).toBe(value)
-              }
-            }
-
-            if (compareResponseBodies && status >= 200 && status < 300) {
-              if (!fixtureResponseBody) {
-                fixtureResponseBody = body
+              if (type.includes('json')) {
+                try {
+                  body = await res.json()
+                } catch (err) {
+                  console.error('json error', err)
+                  throw err
+                }
+              } else if (type.includes('text')) {
+                body = await res.text()
               } else {
-                expect(body).toEqual(fixtureResponseBody)
+                body = await res.arrayBuffer()
               }
-            }
-          }
+
+              if (debugFixture) {
+                console.log(
+                  `${repeatIterationPrefix}${fixtureName} => ${res.status}`,
+                  {
+                    body,
+                    headers: Object.fromEntries(res.headers.entries())
+                  }
+                )
+              }
+
+              if (expectedBody) {
+                expect(body).toEqual(expectedBody)
+              }
+
+              if (validate) {
+                await Promise.resolve(validate(body))
+              }
+
+              if (snapshot) {
+                expect(body).toMatchSnapshot()
+              }
+
+              if (expectedHeaders) {
+                for (const [key, value] of Object.entries(expectedHeaders)) {
+                  expect(res.headers.get(key)).toBe(value)
+                }
+              }
+
+              if (compareResponseBodies && status >= 200 && status < 300) {
+                if (!fixtureResponseBody) {
+                  fixtureResponseBody = body
+                } else {
+                  expect(body).toEqual(fixtureResponseBody)
+                }
+              }
+            },
+            { concurrency: repeatConcurrency, stopOnError: true }
+          )
 
           if (repeat) {
             if (repeatSuccessCriteria === 'all') {
-              expect(numRepeatSuccesses).toBe(numIterations)
+              expect(numSuccessCases).toBe(numIterations)
             } else if (repeatSuccessCriteria === 'some') {
-              expect(numRepeatSuccesses).toBeGreaterThan(0)
+              expect(numSuccessCases).toBeGreaterThan(0)
             } else if (typeof repeatSuccessCriteria === 'function') {
-              expect(repeatSuccessCriteria(numRepeatSuccesses)).toBe(true)
+              await Promise.resolve(repeatSuccessCriteria(numSuccessCases))
             }
           }
         }

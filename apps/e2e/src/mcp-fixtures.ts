@@ -61,6 +61,18 @@ export type MCPE2ETestFixtureSuite = {
 
   /** @default undefined */
   stableSnapshot?: boolean
+
+  /** @default undefined */
+  repeat?: number
+
+  /** @default 1 */
+  repeatConcurrency?: number
+
+  /** @default 'all' */
+  repeatSuccessCriteria?:
+    | 'all'
+    | 'some'
+    | ((numRepeatSuccesses: number) => void | Promise<void>)
 }
 
 const now = Date.now()
@@ -95,8 +107,8 @@ export const fixtureSuites: MCPE2ETestFixtureSuite[] = [
     ]
   },
   {
-    title: 'MCP => OpenAPI origin basic @ 010332cf get_post success ',
-    path: '@dev/test-basic-openapi@010332cf/mcp',
+    title: 'MCP => OpenAPI origin basic @ 726d9f61 get_post success ',
+    path: '@dev/test-basic-openapi@726d9f61/mcp',
     fixtures: [
       {
         request: {
@@ -286,7 +298,7 @@ export const fixtureSuites: MCPE2ETestFixtureSuite[] = [
   },
   {
     title: 'MCP => OpenAPI origin basic caching',
-    path: '@dev/test-basic-openapi@010332cf/mcp',
+    path: '@dev/test-basic-openapi@726d9f61/mcp',
     fixtures: [
       {
         request: {
@@ -340,7 +352,7 @@ export const fixtureSuites: MCPE2ETestFixtureSuite[] = [
   },
   {
     title: 'MCP => OpenAPI origin basic normalized caching',
-    path: '@dev/test-basic-openapi@010332cf/mcp',
+    path: '@dev/test-basic-openapi@726d9f61/mcp',
     fixtures: [
       {
         request: {
@@ -521,6 +533,7 @@ export const fixtureSuites: MCPE2ETestFixtureSuite[] = [
     title: 'MCP => OpenAPI origin everything "unpure_marked_pure" tool',
     path: '@dev/test-everything-openapi/mcp',
     compareResponseBodies: true,
+    stableSnapshot: false,
     fixtures: [
       {
         request: {
@@ -560,7 +573,7 @@ export const fixtureSuites: MCPE2ETestFixtureSuite[] = [
   },
   {
     title: 'MCP => OpenAPI origin everything "echo_headers" tool',
-    path: '@dev/test-everything-openapi/mcp',
+    path: '@dev/test-everything-openapi@707562a9/mcp',
     stableSnapshot: false,
     fixtures: [
       {
@@ -573,6 +586,84 @@ export const fixtureSuites: MCPE2ETestFixtureSuite[] = [
             expect(result.structuredContent['x-agentic-proxy-secret']).toEqual(
               'f279280a67a15df6e0245511bdeb11854fc8f6f702c49d028431bb1dbc03bfdc'
             )
+            expect(result.structuredContent['x-agentic-deployment-id']).toEqual(
+              'depl_tj03dd941xfrcd8cjqhg1b9w'
+            )
+            expect(
+              result.structuredContent['x-agentic-deployment-identifier']
+            ).toEqual('@dev/test-everything-openapi@707562a9')
+            expect(
+              result.structuredContent[
+                'x-agentic-is-customer-subscription-active'
+              ]
+            ).toEqual('false')
+            expect(
+              result.structuredContent['x-agentic-user-id']
+            ).toBeUndefined()
+            expect(
+              result.structuredContent['x-agentic-customer-id']
+            ).toBeUndefined()
+          }
+        }
+      }
+    ]
+  },
+  {
+    title:
+      'MCP => OpenAPI origin everything "custom_rate_limit_tool" (strict mode)',
+    path: '@dev/test-everything-openapi/mcp',
+    repeat: 5,
+    repeatSuccessCriteria: (numRepeatSuccesses) => {
+      expect(
+        numRepeatSuccesses,
+        'should have at least three 429 responses out of 5 requests with a strict rate limit of 2 requests per 30s'
+      ).toBeGreaterThanOrEqual(3)
+    },
+    fixtures: [
+      {
+        request: {
+          name: 'custom_rate_limit_tool',
+          args: {}
+        },
+        response: {
+          isError: true,
+          _agenticMeta: {
+            status: 429
+          },
+          _agenticMetaHeaders: {
+            'ratelimit-policy': '2;w=30',
+            'ratelimit-limit': '2'
+          }
+        }
+      }
+    ]
+  },
+  {
+    title:
+      'MCP => OpenAPI origin everything "custom_rate_limit_approximate_tool" (approximate mode)',
+    path: '@dev/test-everything-openapi/mcp',
+    repeat: 16,
+    repeatConcurrency: 8,
+    repeatSuccessCriteria: (numRepeatSuccesses) => {
+      expect(
+        numRepeatSuccesses,
+        'should have at least one 429 response'
+      ).toBeGreaterThan(0)
+    },
+    fixtures: [
+      {
+        request: {
+          name: 'custom_rate_limit_approximate_tool',
+          args: {}
+        },
+        response: {
+          isError: true,
+          _agenticMeta: {
+            status: 429
+          },
+          _agenticMetaHeaders: {
+            'ratelimit-policy': '2;w=30',
+            'ratelimit-limit': '2'
           }
         }
       }

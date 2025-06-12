@@ -56,11 +56,14 @@ export type E2ETestFixtureSuite = {
   /** @default undefined */
   repeat?: number
 
+  /** @default 1 */
+  repeatConcurrency?: number
+
   /** @default 'all' */
   repeatSuccessCriteria?:
     | 'all'
     | 'some'
-    | ((numRepeatSuccesses: number) => boolean)
+    | ((numRepeatSuccesses: number) => void | Promise<void>)
 }
 
 const now = Date.now()
@@ -641,17 +644,17 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
     snapshot: false,
     fixtures: [
       {
-        path: '@dev/test-everything-openapi@c8c25547/echo_headers',
+        path: '@dev/test-everything-openapi@707562a9/echo_headers',
         response: {
           validate: (body) => {
             expect(body['x-agentic-proxy-secret']).toEqual(
               'f279280a67a15df6e0245511bdeb11854fc8f6f702c49d028431bb1dbc03bfdc'
             )
             expect(body['x-agentic-deployment-id']).toEqual(
-              'depl_kb0jszdetahn52ospawj3reu'
+              'depl_tj03dd941xfrcd8cjqhg1b9w'
             )
             expect(body['x-agentic-deployment-identifier']).toEqual(
-              '@dev/test-everything-openapi@c8c25547'
+              '@dev/test-everything-openapi@707562a9'
             )
             expect(body['x-agentic-is-customer-subscription-active']).toEqual(
               'false'
@@ -664,13 +667,42 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
     ]
   },
   {
-    title: 'HTTP => OpenAPI origin everything "custom_rate_limit_tool"',
-    only: true,
-    repeat: 1,
-    repeatSuccessCriteria: (numRepeatSuccesses) => numRepeatSuccesses <= 2,
+    title:
+      'HTTP => OpenAPI origin everything "custom_rate_limit_tool" (strict mode)',
+    repeat: 5,
+    repeatSuccessCriteria: (numRepeatSuccesses) => {
+      expect(
+        numRepeatSuccesses,
+        'should have at least three 429 responses out of 5 requests with a strict rate limit of 2 requests per 30s'
+      ).toBeGreaterThanOrEqual(3)
+    },
     fixtures: [
       {
         path: '@dev/test-everything-openapi/custom_rate_limit_tool',
+        response: {
+          status: 429,
+          headers: {
+            'ratelimit-policy': '2;w=30',
+            'ratelimit-limit': '2'
+          }
+        }
+      }
+    ]
+  },
+  {
+    title:
+      'HTTP => OpenAPI origin everything "custom_rate_limit_approximate_tool" (approximate mode)',
+    repeat: 16,
+    repeatConcurrency: 8,
+    repeatSuccessCriteria: (numRepeatSuccesses) => {
+      expect(
+        numRepeatSuccesses,
+        'should have at least one 429 response'
+      ).toBeGreaterThan(0)
+    },
+    fixtures: [
+      {
+        path: '@dev/test-everything-openapi/custom_rate_limit_approximate_tool',
         response: {
           status: 429,
           headers: {

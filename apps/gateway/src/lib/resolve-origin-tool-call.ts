@@ -164,20 +164,18 @@ export async function resolveOriginToolCall({
     }
   }
 
-  if (rateLimit && rateLimit.enabled !== false) {
+  if (rateLimit) {
     // TODO: Consider decrementing rate limit if the response is cached or
     // errors? this doesn't seem too important, so will leave as-is for now.
     rateLimitResult = await enforceRateLimit({
+      rateLimit,
       id: consumer?.id ?? ip ?? sessionId,
-      interval: rateLimit.interval,
-      limit: rateLimit.limit,
-      async: rateLimit.async,
       cost: numRequestsCost,
       env,
       waitUntil
     })
 
-    if (!rateLimitResult.passed) {
+    if (rateLimitResult && !rateLimitResult.passed) {
       throw new RateLimitError({ rateLimitResult })
     }
   }

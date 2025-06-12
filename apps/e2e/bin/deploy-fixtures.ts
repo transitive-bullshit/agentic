@@ -16,9 +16,9 @@ const fixtures = [
   // 'pricing-3-plans',
   // 'pricing-monthly-annual',
   // 'pricing-custom-0',
-  'basic-openapi',
-  'basic-mcp',
-  'everything-openapi'
+  'basic-openapi'
+  // 'basic-mcp',
+  // 'everything-openapi'
 ]
 
 const fixturesDir = path.join(

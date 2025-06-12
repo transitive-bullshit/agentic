@@ -1,19 +1,31 @@
 import { pick } from '@agentic/platform-core'
 import { Client as McpClient } from '@modelcontextprotocol/sdk/client/index.js'
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js'
+import pTimes from 'p-times'
 import { afterAll, beforeAll, describe, expect, test } from 'vitest'
 
 import { env } from './env'
 import { fixtureSuites } from './mcp-fixtures'
 
 for (const [i, fixtureSuite] of fixtureSuites.entries()) {
-  const { title, fixtures, compareResponseBodies = false } = fixtureSuite
+  const {
+    title,
+    fixtures,
+    compareResponseBodies = false,
+    repeat,
+    repeatConcurrency = 1,
+    repeatSuccessCriteria = 'all'
+  } = fixtureSuite
 
   const describeFn = fixtureSuite.only ? describe.only : describe
   describeFn(title, () => {
     let fixtureResult: any | undefined
-
     let client: McpClient
+
+    if (repeat) {
+      expect(repeat).toBeGreaterThan(0)
+    }
+
     beforeAll(async () => {
       client = new McpClient({
         name: fixtureSuite.path,
@@ -82,94 +94,141 @@ for (const [i, fixtureSuite] of fixtureSuites.entries()) {
         },
         // eslint-disable-next-line no-loop-func
         async () => {
-          const result = await client.callTool({
-            name: toolName,
-            arguments: fixture.request.args,
-            _meta: fixture.request._meta
-          })
+          const numIterations = repeat ?? 1
+          let numSuccessCases = 0
 
-          if (debugFixture) {
-            console.log(fixtureName, '=>', result)
-          }
+          await pTimes(
+            numIterations,
+            async (iteration: number) => {
+              const repeatIterationPrefix = repeat
+                ? `[${iteration}/${numIterations}] `
+                : ''
 
-          if (isError) {
-            expect(result.isError).toBeTruthy()
-          } else {
-            expect(result.isError).toBeFalsy()
-          }
+              const result = await client.callTool({
+                name: toolName,
+                arguments: fixture.request.args,
+                _meta: fixture.request._meta
+              })
 
-          if (expectedResult) {
-            expect(result).toEqual(expectedResult)
-          }
+              if (repeat) {
+                if (result.isError === isError) {
+                  ++numSuccessCases
+                } else {
+                  if (debugFixture) {
+                    console.log(
+                      `${repeatIterationPrefix}${fixtureName} => (invalid sample; expected ${result.isError ? 'error' : 'no error'})`,
+                      JSON.stringify(result, null, 2)
+                    )
+                  }
 
-          if (expectedContent) {
-            expect(result.content).toEqual(expectedContent)
-          }
+                  return
+                }
+              }
 
-          if (expectedStructuredContent) {
-            expect(result.structuredContent).toEqual(expectedStructuredContent)
-          }
+              if (debugFixture) {
+                console.log(
+                  `${repeatIterationPrefix}${fixtureName} =>`,
+                  JSON.stringify(result, null, 2)
+                )
+              }
 
-          if (expectedMeta) {
-            expect(result._meta).toBeDefined()
-            expect(typeof result._meta).toEqual('object')
-            expect(!Array.isArray(result._meta)).toBeTruthy()
-            for (const [key, value] of Object.entries(expectedMeta)) {
-              expect(result._meta![key]).toEqual(value)
-            }
-          }
-          if (expectedAgenticMeta) {
-            expect(result._meta).toBeDefined()
-            expect(result._meta?.agentic).toBeDefined()
-            expect(typeof result._meta?.agentic).toEqual('object')
-            expect(!Array.isArray(result._meta?.agentic)).toBeTruthy()
-            for (const [key, value] of Object.entries(expectedAgenticMeta)) {
-              expect((result._meta!.agentic as any)[key]).toEqual(value)
-            }
-          }
+              if (isError) {
+                expect(result.isError).toBeTruthy()
+              } else {
+                expect(result.isError).toBeFalsy()
+              }
 
-          if (expectedAgenticMetaHeaders) {
-            expect(result._meta).toBeDefined()
-            expect(result._meta?.agentic).toBeDefined()
-            expect(typeof result._meta?.agentic).toEqual('object')
-            expect(!Array.isArray(result._meta?.agentic)).toBeTruthy()
-            expect(typeof (result._meta?.agentic as any)?.headers).toEqual(
-              'object'
-            )
-            expect(
-              !Array.isArray((result._meta?.agentic as any)?.headers)
-            ).toBeTruthy()
-            for (const [key, value] of Object.entries(
-              expectedAgenticMetaHeaders
-            )) {
-              expect((result._meta!.agentic as any).headers[key]).toEqual(value)
-            }
-          }
+              if (expectedResult) {
+                expect(result).toEqual(expectedResult)
+              }
 
-          if (expectedSnapshot) {
-            expect(result).toMatchSnapshot()
-          }
+              if (expectedContent) {
+                expect(result.content).toEqual(expectedContent)
+              }
 
-          const stableResult = pick(
-            result,
-            'content',
-            'structuredContent',
-            'isError'
+              if (expectedStructuredContent) {
+                expect(result.structuredContent).toEqual(
+                  expectedStructuredContent
+                )
+              }
+
+              if (expectedMeta) {
+                expect(result._meta).toBeDefined()
+                expect(typeof result._meta).toEqual('object')
+                expect(!Array.isArray(result._meta)).toBeTruthy()
+                for (const [key, value] of Object.entries(expectedMeta)) {
+                  expect(result._meta![key]).toEqual(value)
+                }
+              }
+              if (expectedAgenticMeta) {
+                expect(result._meta).toBeDefined()
+                expect(result._meta?.agentic).toBeDefined()
+                expect(typeof result._meta?.agentic).toEqual('object')
+                expect(!Array.isArray(result._meta?.agentic)).toBeTruthy()
+                for (const [key, value] of Object.entries(
+                  expectedAgenticMeta
+                )) {
+                  expect((result._meta!.agentic as any)[key]).toEqual(value)
+                }
+              }
+
+              if (expectedAgenticMetaHeaders) {
+                expect(result._meta).toBeDefined()
+                expect(result._meta?.agentic).toBeDefined()
+                expect(typeof result._meta?.agentic).toEqual('object')
+                expect(!Array.isArray(result._meta?.agentic)).toBeTruthy()
+                expect(typeof (result._meta?.agentic as any)?.headers).toEqual(
+                  'object'
+                )
+                expect(
+                  !Array.isArray((result._meta?.agentic as any)?.headers)
+                ).toBeTruthy()
+                for (const [key, value] of Object.entries(
+                  expectedAgenticMetaHeaders
+                )) {
+                  expect((result._meta!.agentic as any).headers[key]).toEqual(
+                    value
+                  )
+                }
+              }
+
+              if (expectedSnapshot) {
+                expect(result).toMatchSnapshot()
+              }
+
+              const stableResult = pick(
+                result,
+                'content',
+                'structuredContent',
+                'isError'
+              )
+
+              if (expectedStableSnapshot) {
+                expect(stableResult).toMatchSnapshot()
+              }
+
+              if (validate) {
+                await Promise.resolve(validate(result))
+              }
+
+              if (compareResponseBodies && !isError) {
+                if (!fixtureResult) {
+                  fixtureResult = stableResult
+                } else {
+                  expect(stableResult).toEqual(fixtureResult)
+                }
+              }
+            },
+            { concurrency: repeatConcurrency, stopOnError: true }
           )
 
-          if (expectedStableSnapshot) {
-            expect(stableResult).toMatchSnapshot()
-          }
-
-          if (validate) {
-            await Promise.resolve(validate(result))
-          }
-
-          if (compareResponseBodies && !isError) {
-            if (!fixtureResult) {
-              fixtureResult = stableResult
-            } else {
-              expect(stableResult).toEqual(fixtureResult)
+          if (repeat) {
+            if (repeatSuccessCriteria === 'all') {
+              expect(numSuccessCases).toBe(numIterations)
+            } else if (repeatSuccessCriteria === 'some') {
+              expect(numSuccessCases).toBeGreaterThan(0)
+            } else if (typeof repeatSuccessCriteria === 'function') {
+              await Promise.resolve(repeatSuccessCriteria(numSuccessCases))
             }
           }
         }

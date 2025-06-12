@@ -75,6 +75,7 @@ export function createAgenticMcpMetadata(
   existingMetadata?: Record<string, any>
 ): Record<string, any> {
   const rawAgenticMcpMetadata = pruneEmpty({
+    status: 200,
     ...existingMetadata?.agentic,
     ...metadata,
     headers: {

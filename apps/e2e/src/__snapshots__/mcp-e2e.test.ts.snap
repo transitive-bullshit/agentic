@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`MCP => OpenAPI origin basic @ 010332cf get_post success  > 2.0: @dev/test-basic-openapi@010332cf/mcp get_post 1`] = `
+exports[`MCP => OpenAPI origin basic @ 726d9f61 get_post success  > 2.0: @dev/test-basic-openapi@726d9f61/mcp get_post 1`] = `
 {
   "content": [],
   "isError": false,
@@ -48,7 +48,7 @@ nostrum rerum est autem sunt rem eveniet architecto",
 }
 `;
 
-exports[`MCP => OpenAPI origin basic caching > 7.0: @dev/test-basic-openapi@010332cf/mcp get_post 1`] = `
+exports[`MCP => OpenAPI origin basic caching > 7.0: @dev/test-basic-openapi@726d9f61/mcp get_post 1`] = `
 {
   "content": [],
   "isError": false,
@@ -64,7 +64,7 @@ nostrum rerum est autem sunt rem eveniet architecto",
 }
 `;
 
-exports[`MCP => OpenAPI origin basic caching > 7.1: @dev/test-basic-openapi@010332cf/mcp get_post 1`] = `
+exports[`MCP => OpenAPI origin basic caching > 7.1: @dev/test-basic-openapi@726d9f61/mcp get_post 1`] = `
 {
   "content": [],
   "isError": false,
@@ -80,7 +80,7 @@ nostrum rerum est autem sunt rem eveniet architecto",
 }
 `;
 
-exports[`MCP => OpenAPI origin basic caching > 7.2: @dev/test-basic-openapi@010332cf/mcp get_post 1`] = `
+exports[`MCP => OpenAPI origin basic caching > 7.2: @dev/test-basic-openapi@726d9f61/mcp get_post 1`] = `
 {
   "content": [],
   "isError": false,
@@ -128,7 +128,7 @@ nostrum rerum est autem sunt rem eveniet architecto",
 }
 `;
 
-exports[`MCP => OpenAPI origin basic normalized caching > 8.0: @dev/test-basic-openapi@010332cf/mcp get_post 1`] = `
+exports[`MCP => OpenAPI origin basic normalized caching > 8.0: @dev/test-basic-openapi@726d9f61/mcp get_post 1`] = `
 {
   "content": [],
   "isError": false,
@@ -144,7 +144,7 @@ nostrum rerum est autem sunt rem eveniet architecto",
 }
 `;
 
-exports[`MCP => OpenAPI origin basic normalized caching > 8.1: @dev/test-basic-openapi@010332cf/mcp get_post 1`] = `
+exports[`MCP => OpenAPI origin basic normalized caching > 8.1: @dev/test-basic-openapi@726d9f61/mcp get_post 1`] = `
 {
   "content": [],
   "isError": false,
@@ -186,28 +186,6 @@ exports[`MCP => OpenAPI origin everything "pure" tool > 11.1: @dev/test-everythi
   "structuredContent": {
     "foo": "bar",
     "nala": "kitten",
-  },
-}
-`;
-
-exports[`MCP => OpenAPI origin everything "unpure_marked_pure" tool > 14.0: @dev/test-everything-openapi/mcp unpure_marked_pure 1`] = `
-{
-  "content": [],
-  "isError": false,
-  "structuredContent": {
-    "nala": "cat",
-    "now": 1749674829923,
-  },
-}
-`;
-
-exports[`MCP => OpenAPI origin everything "unpure_marked_pure" tool > 14.1: @dev/test-everything-openapi/mcp unpure_marked_pure 1`] = `
-{
-  "content": [],
-  "isError": false,
-  "structuredContent": {
-    "nala": "cat",
-    "now": 1749674829923,
   },
 }
 `;

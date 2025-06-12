@@ -27,9 +27,8 @@
   - how to handle binary bodies and responses?
   - improve logger vs console for non-hono path and util methods
   - default rate limits?
-  - **test rate limiting**
   - **test usage tracking and reporting**
-  - disallow `mcp` as a tool name or figure out another workaround
+  - disallow `mcp` as a tool name or figure out a different workaround
 - **Public MCP server interface**
   - how does oauth work with this flow?
   - pass requestId to DurableMcpServer somehow on a per-request basis

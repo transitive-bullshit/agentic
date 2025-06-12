@@ -64,6 +64,14 @@ export default defineConfig({
       }
     },
     {
+      name: 'custom_rate_limit_approximate_tool',
+      rateLimit: {
+        interval: '30s',
+        limit: 2,
+        mode: 'approximate'
+      }
+    },
+    {
       name: 'disabled_rate_limit_tool',
       rateLimit: { enabled: false }
     },

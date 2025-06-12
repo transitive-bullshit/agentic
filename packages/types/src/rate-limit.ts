@@ -12,6 +12,7 @@ export const rateLimitModeSchema = z.union([
   z.literal('strict'),
   z.literal('approximate')
 ])
+export type RateLimitMode = z.infer<typeof rateLimitModeSchema>
 
 /**
  * Rate limit config for metered LineItems.

@@ -17,30 +17,38 @@ export class DurableRateLimiterBase extends DurableObject<RawEnv> {
     intervalMs: number
     cost?: number
   }): Promise<RateLimitState> {
-    const existingState =
-      (await this.ctx.storage.get<RateLimitState>('value')) || initialState
+    const existingState = await this.ctx.storage.get<RateLimitState>('value')
+    const currentAlarm = await this.ctx.storage.getAlarm()
+
+    const now = Date.now()
+    const updatedResetTimeMs = now + intervalMs
 
     // Update the payload
-    const resetTimeMs = existingState.resetTimeMs ?? Date.now() + intervalMs
-
-    const state: RateLimitState = {
-      current: existingState.current + cost,
-      resetTimeMs
-    }
+    const state =
+      existingState && currentAlarm && currentAlarm > now
+        ? existingState
+        : {
+            current: 0,
+            resetTimeMs: updatedResetTimeMs
+          }
+    state.current += cost
 
     // Update the alarm
-    const currentAlarm = await this.ctx.storage.getAlarm()
-    if (!currentAlarm) {
-      await this.ctx.storage.setAlarm(resetTimeMs)
+    if (!currentAlarm || currentAlarm <= now) {
+      await this.ctx.storage.setAlarm(state.resetTimeMs)
     }
 
     await this.ctx.storage.put('value', state)
 
     // const updatedState = await this.ctx.storage.get<RateLimitState>('value')
-    // console.log('update', this.ctx.id, {
+    // console.log('DurableRateLimiter.update', this.ctx.id.toString(), {
     //   existingState,
     //   state,
-    //   updatedState
+    //   updatedState,
+    //   now,
+    //   intervalMs,
+    //   updatedResetTimeMs,
+    //   currentAlarm
     // })
 
     return state

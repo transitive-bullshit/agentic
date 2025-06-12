@@ -487,10 +487,10 @@ export interface components {
             /** @description Maximum number of operations per interval (unitless). */
             limit: number;
             /**
-             * @description Whether to enforce the rate limit synchronously (strict but slower) or asynchronously (approximate and faster, the default).
-             * @default true
+             * @description How to enforce the rate limit: "strict" (more precise but slower) or "approximate" (the default; faster and asynchronous but less precise).
+             * @default approximate
              */
-            async: boolean;
+            mode: "strict" | "approximate";
             /** @default true */
             enabled: boolean;
         };
@@ -685,10 +685,10 @@ export interface components {
              *           }
              *         ],
              *         "rateLimit": {
+             *           "enabled": true,
              *           "interval": 60,
              *           "limit": 1000,
-             *           "async": true,
-             *           "enabled": true
+             *           "mode": "approximate"
              *         }
              *       }
              *     ]
@@ -1668,10 +1668,10 @@ export interface operations {
                      *           }
                      *         ],
                      *         "rateLimit": {
+                     *           "enabled": true,
                      *           "interval": 60,
                      *           "limit": 1000,
-                     *           "async": true,
-                     *           "enabled": true
+                     *           "mode": "approximate"
                      *         }
                      *       }
                      *     ]

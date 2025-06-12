@@ -1,3 +1,4 @@
+import type { RateLimit } from '@agentic/platform-types'
 import { assert } from '@agentic/platform-core'
 
 import type { RawEnv } from '../env'
@@ -17,29 +18,22 @@ import type { DurableRateLimiterBase } from './durable-rate-limiter'
 const globalRateLimitCache: RateLimitCache = new Map()
 
 export async function enforceRateLimit({
+  rateLimit,
   id,
-  interval,
-  limit,
   cost = 1,
-  async: _async = true,
   env,
   cache = globalRateLimitCache,
   waitUntil
 }: {
   /**
+   * The rate limit to enforce.
+   */
+  rateLimit: RateLimit
+
+  /**
    * The identifier used to uniquely track this rate limit.
    */
   id: string
-
-  /**
-   * Interval in seconds over which the rate limit is enforced.
-   */
-  interval: number
-
-  /**
-   * Maximum number of requests that can be made per interval.
-   */
-  limit: number
 
   /**
    * The cost of the request.
@@ -48,21 +42,17 @@ export async function enforceRateLimit({
    */
   cost?: number
 
-  /**
-   * Whether to enforce the rate limit synchronously or asynchronously.
-   *
-   * @default true (asynchronous)
-   */
-  async?: boolean
-
   env: RawEnv
   cache?: RateLimitCache
   waitUntil: WaitUntil
-}): Promise<RateLimitResult> {
+}): Promise<RateLimitResult | undefined> {
+  if (rateLimit.enabled === false) {
+    return
+  }
+
   assert(id, 400, 'Unauthenticated requests must have a valid IP address')
 
-  const async = false
-
+  const { interval, limit, mode } = rateLimit
   const intervalMs = interval * 1000
   const now = Date.now()
 
@@ -103,7 +93,10 @@ export async function enforceRateLimit({
 
   const updatedRateLimitStateP = durableRateLimiter.update({ cost, intervalMs })
 
-  if (async) {
+  if (mode === 'strict') {
+    const updatedRateLimitState = await updatedRateLimitStateP
+    updateCache(updatedRateLimitState)
+  } else {
     waitUntil(
       updatedRateLimitStateP
         .then((updatedRateLimitState: RateLimitState) => {
@@ -119,25 +112,23 @@ export async function enforceRateLimit({
 
     rateLimitState.current += cost
     updateCache(rateLimitState)
-  } else {
-    const updatedRateLimitState = await updatedRateLimitStateP
-    updateCache(updatedRateLimitState)
   }
 
   // console.log('rateLimit', {
   //   id,
   //   initial: initialRateLimitState,
   //   current: rateLimitState,
+  //   mode,
   //   cost
   // })
 
   return {
     id,
     passed: rateLimitState.current <= limit,
-    current: rateLimitState.current,
     limit,
+    current: rateLimitState.current,
+    remaining: Math.max(0, limit - rateLimitState.current),
     resetTimeMs: rateLimitState.resetTimeMs,
-    intervalMs,
-    remaining: Math.max(0, limit - rateLimitState.current)
+    intervalMs
   }
 }

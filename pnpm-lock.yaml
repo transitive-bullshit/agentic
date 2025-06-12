@@ -417,6 +417,9 @@ importers:
       p-map:
         specifier: 'catalog:'
         version: 7.0.3
+      p-times:
+        specifier: ^4.0.0
+        version: 4.0.0
     devDependencies:
       '@agentic/platform':
         specifier: workspace:*
@@ -462,7 +465,7 @@ importers:
         version: link:../../packages/validators
       '@hono/zod-validator':
         specifier: 'catalog:'
-        version: 0.7.0(hono@4.7.11)(zod@3.25.51)
+        version: 0.7.0(hono@4.7.11)(zod@3.25.62)
       '@modelcontextprotocol/sdk':
         specifier: 'catalog:'
         version: 1.12.1
@@ -880,10 +883,6 @@ packages:
     peerDependencies:
       zod: ^3.20.2
 
-  '@babel/code-frame@7.26.2':
-    resolution: {integrity: sha512-RJlIHRueQgwWitWgF8OdFYGZX328Ax5BCemNGlqHfplnRT9ESi8JkFlvaVYbS+UubVY6dpv87Fs2u5M29iNFVQ==}
-    engines: {node: '>=6.9.0'}
-
   '@babel/code-frame@7.27.1':
     resolution: {integrity: sha512-cjQ7ZlQ0Mv3b47hABuTevyTuYN4i+loJKGeV9flcCgIK37cCXRh+L1bd3iBHlynerhQ7BhCkn2BPbQUL+rGqFg==}
     engines: {node: '>=6.9.0'}
@@ -894,10 +893,6 @@ packages:
 
   '@babel/helper-string-parser@7.27.1':
     resolution: {integrity: sha512-qMlSxKbpRlAridDExk92nSobyDdpPijUq2DW6oDnUqd0iOGxmQjyqhMIihI9+zv4LPyZdRje2cavWPbCbWm3eA==}
-    engines: {node: '>=6.9.0'}
-
-  '@babel/helper-validator-identifier@7.25.9':
-    resolution: {integrity: sha512-Ed61U6XJc3CVRfkERJWDz4dJwKe7iLmmJsbOGu9wSloNSFttHV0I8g6UAgb7qnK5ly5bGLPd4oXZlxCdANBOWQ==}
     engines: {node: '>=6.9.0'}
 
   '@babel/helper-validator-identifier@7.27.1':
@@ -2783,6 +2778,10 @@ packages:
     peerDependencies:
       react: '*'
 
+  aggregate-error@4.0.1:
+    resolution: {integrity: sha512-0poP0T7el6Vq3rstR8Mn4V/IQrpBLO6POkUSrN7RhyY+GF/InCFShQzsQ39T25gkHhLgSLByyAz+Kjb+c2L98w==}
+    engines: {node: '>=12'}
+
   ai@4.3.16:
     resolution: {integrity: sha512-KUDwlThJ5tr2Vw0A1ZkbDKNME3wzWhuVfAOwIvFUzl1TPVDFAXDFTXio3p+jaKneB+dKNCvFFlolYmmgHttG1g==}
     engines: {node: '>=18'}
@@ -3028,6 +3027,10 @@ packages:
   clean-regexp@1.0.0:
     resolution: {integrity: sha512-GfisEZEJvzKrmGWkvfhgzcz/BllN1USeqD2V6tg14OAOgaCD2Z/PUEuxnAZ/nPvmaHRG7a8y77p1T/IRQ4D1Hw==}
     engines: {node: '>=4'}
+
+  clean-stack@4.2.0:
+    resolution: {integrity: sha512-LYv6XPxoyODi36Dp976riBtSY27VmFo+MKqEU9QCCWyTrdEPDog+RWA7xQWHi6Vbp61j5c4cdzzX1NidnwtUWg==}
+    engines: {node: '>=12'}
 
   cli-cursor@5.0.0:
     resolution: {integrity: sha512-aCj4O5wKyszjMmDT4tZj93kxyydN/K5zPWSCe6/0AV/AA1pqe5ZBIw0a2ZfPQV7lL5/yb5HsUreJ6UFAF1tEQw==}
@@ -3485,6 +3488,10 @@ packages:
   escape-string-regexp@4.0.0:
     resolution: {integrity: sha512-TtpcNJ3XAzx3Gq8sWRzJaVajRs0uVxA2YAkdb1jm2YkPz4G6egUFAyA3n5vtEIZefPk5Wa4UXbKuS5fKkJWdgA==}
     engines: {node: '>=10'}
+
+  escape-string-regexp@5.0.0:
+    resolution: {integrity: sha512-/veY75JbMK4j1yjvuUxuVsiS/hr/4iHs9FTT6cgTexxdE0Ly/glccBAkloH/DofkjRbZU3bnoj38mOmhkZ0lHw==}
+    engines: {node: '>=12'}
 
   eslint-config-prettier@10.1.5:
     resolution: {integrity: sha512-zc1UmCpNltmVY34vuLRV61r1K27sWuX39E+uyUnY8xS2Bex88VV9cugG+UZbRSRGtGyFboj+D8JODyme1plMpw==}
@@ -4637,6 +4644,10 @@ packages:
     resolution: {integrity: sha512-LaNjtRWUBY++zB5nE/NwcaoMylSPk+S+ZHNB1TzdbMJMny6dynpAGt7X/tl/QYq3TIeE6nxHppbo2LGymrG5Pw==}
     engines: {node: '>=10'}
 
+  p-map@5.5.0:
+    resolution: {integrity: sha512-VFqfGDHlx87K66yZrNdI4YGtD70IRyd+zSvgks6mzHPRNkoKy+9EKP4SFC77/vTTQYmRmti7dvqC+m5jBrBAcg==}
+    engines: {node: '>=12'}
+
   p-map@6.0.0:
     resolution: {integrity: sha512-T8BatKGY+k5rU+Q/GTYgrEf2r4xRMevAN5mtXc2aPc4rS1j3s+vWTaO2Wag94neXuCAUAs8cxBL9EeB5EA6diw==}
     engines: {node: '>=16'}
@@ -4644,6 +4655,10 @@ packages:
   p-map@7.0.3:
     resolution: {integrity: sha512-VkndIv2fIB99swvQoA65bm+fsmt6UNdGeIB0oxBs+WhAhdh08QA04JXpI7rbB9r08/nkbysKoya9rtDERYOYMA==}
     engines: {node: '>=18'}
+
+  p-times@4.0.0:
+    resolution: {integrity: sha512-KqBkcxIZ2EZHHkt8lbNORmRofFLrLlHQh0ObFO3moOlrdN/v+sbJ2ssZspP5GN7E7zwvcqiqV0xnJydkQuoNyw==}
+    engines: {node: '>=12.20'}
 
   package-json-from-dist@1.0.1:
     resolution: {integrity: sha512-UEZIS3/by4OC8vL3P2dTXRETpebLI2NiI5vIrjaD/5UtrkFX/tNbwjTSRAGC/+7CAo2pIcBaRgWmcBBHcsaCIw==}
@@ -5846,33 +5861,33 @@ snapshots:
       hono: 4.7.11
       jose: 5.9.6
 
-  '@ai-sdk/provider-utils@2.2.8(zod@3.25.51)':
+  '@ai-sdk/provider-utils@2.2.8(zod@3.25.62)':
     dependencies:
       '@ai-sdk/provider': 1.1.3
       nanoid: 3.3.11
       secure-json-parse: 2.7.0
-      zod: 3.25.51
+      zod: 3.25.62
 
   '@ai-sdk/provider@1.1.3':
     dependencies:
       json-schema: 0.4.0
 
-  '@ai-sdk/react@1.2.12(react@19.1.0)(zod@3.25.51)':
+  '@ai-sdk/react@1.2.12(react@19.1.0)(zod@3.25.62)':
     dependencies:
-      '@ai-sdk/provider-utils': 2.2.8(zod@3.25.51)
-      '@ai-sdk/ui-utils': 1.2.11(zod@3.25.51)
+      '@ai-sdk/provider-utils': 2.2.8(zod@3.25.62)
+      '@ai-sdk/ui-utils': 1.2.11(zod@3.25.62)
       react: 19.1.0
       swr: 2.3.3(react@19.1.0)
       throttleit: 2.1.0
     optionalDependencies:
-      zod: 3.25.51
+      zod: 3.25.62
 
-  '@ai-sdk/ui-utils@1.2.11(zod@3.25.51)':
+  '@ai-sdk/ui-utils@1.2.11(zod@3.25.62)':
     dependencies:
       '@ai-sdk/provider': 1.1.3
-      '@ai-sdk/provider-utils': 2.2.8(zod@3.25.51)
-      zod: 3.25.51
-      zod-to-json-schema: 3.24.5(zod@3.25.51)
+      '@ai-sdk/provider-utils': 2.2.8(zod@3.25.62)
+      zod: 3.25.62
+      zod-to-json-schema: 3.24.5(zod@3.25.62)
 
   '@apideck/better-ajv-errors@0.3.6(ajv@8.17.1)':
     dependencies:
@@ -5885,12 +5900,6 @@ snapshots:
     dependencies:
       openapi3-ts: 4.4.0
       zod: 3.25.62
-
-  '@babel/code-frame@7.26.2':
-    dependencies:
-      '@babel/helper-validator-identifier': 7.25.9
-      js-tokens: 4.0.0
-      picocolors: 1.1.1
 
   '@babel/code-frame@7.27.1':
     dependencies:
@@ -5907,8 +5916,6 @@ snapshots:
       jsesc: 3.1.0
 
   '@babel/helper-string-parser@7.27.1': {}
-
-  '@babel/helper-validator-identifier@7.25.9': {}
 
   '@babel/helper-validator-identifier@7.27.1': {}
 
@@ -6275,11 +6282,6 @@ snapshots:
       '@hono/zod-validator': 0.7.0(hono@4.7.11)(zod@3.25.62)
       hono: 4.7.11
       zod: 3.25.62
-
-  '@hono/zod-validator@0.7.0(hono@4.7.11)(zod@3.25.51)':
-    dependencies:
-      hono: 4.7.11
-      zod: 3.25.51
 
   '@hono/zod-validator@0.7.0(hono@4.7.11)(zod@3.25.62)':
     dependencies:
@@ -7604,26 +7606,31 @@ snapshots:
   agents@0.0.95(@cloudflare/workers-types@4.20250610.0)(react@19.1.0):
     dependencies:
       '@modelcontextprotocol/sdk': 1.12.1
-      ai: 4.3.16(react@19.1.0)(zod@3.25.51)
+      ai: 4.3.16(react@19.1.0)(zod@3.25.62)
       cron-schedule: 5.0.4
       nanoid: 5.1.5
       partyserver: 0.0.71(@cloudflare/workers-types@4.20250610.0)
       partysocket: 1.1.4
       react: 19.1.0
-      zod: 3.25.51
+      zod: 3.25.62
     transitivePeerDependencies:
       - '@cloudflare/workers-types'
       - supports-color
 
-  ai@4.3.16(react@19.1.0)(zod@3.25.51):
+  aggregate-error@4.0.1:
+    dependencies:
+      clean-stack: 4.2.0
+      indent-string: 5.0.0
+
+  ai@4.3.16(react@19.1.0)(zod@3.25.62):
     dependencies:
       '@ai-sdk/provider': 1.1.3
-      '@ai-sdk/provider-utils': 2.2.8(zod@3.25.51)
-      '@ai-sdk/react': 1.2.12(react@19.1.0)(zod@3.25.51)
-      '@ai-sdk/ui-utils': 1.2.11(zod@3.25.51)
+      '@ai-sdk/provider-utils': 2.2.8(zod@3.25.62)
+      '@ai-sdk/react': 1.2.12(react@19.1.0)(zod@3.25.62)
+      '@ai-sdk/ui-utils': 1.2.11(zod@3.25.62)
       '@opentelemetry/api': 1.9.0
       jsondiffpatch: 0.6.0
-      zod: 3.25.51
+      zod: 3.25.62
     optionalDependencies:
       react: 19.1.0
 
@@ -7881,6 +7888,10 @@ snapshots:
   clean-regexp@1.0.0:
     dependencies:
       escape-string-regexp: 1.0.5
+
+  clean-stack@4.2.0:
+    dependencies:
+      escape-string-regexp: 5.0.0
 
   cli-cursor@5.0.0:
     dependencies:
@@ -8335,6 +8346,8 @@ snapshots:
   escape-string-regexp@1.0.5: {}
 
   escape-string-regexp@4.0.0: {}
+
+  escape-string-regexp@5.0.0: {}
 
   eslint-config-prettier@10.1.5(eslint@9.28.0(jiti@2.4.2)):
     dependencies:
@@ -9645,9 +9658,17 @@ snapshots:
     dependencies:
       p-limit: 3.1.0
 
+  p-map@5.5.0:
+    dependencies:
+      aggregate-error: 4.0.1
+
   p-map@6.0.0: {}
 
   p-map@7.0.3: {}
+
+  p-times@4.0.0:
+    dependencies:
+      p-map: 5.5.0
 
   package-json-from-dist@1.0.1: {}
 
@@ -9657,7 +9678,7 @@ snapshots:
 
   parse-json@8.3.0:
     dependencies:
-      '@babel/code-frame': 7.26.2
+      '@babel/code-frame': 7.27.1
       index-to-position: 1.1.0
       type-fest: 4.41.0
 
