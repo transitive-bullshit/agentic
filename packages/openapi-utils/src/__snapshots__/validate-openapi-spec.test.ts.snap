@@ -22707,6 +22707,25 @@ exports[`validateOpenAPISpec > remote spec https://agentic-platform-fixtures-eve
         },
       },
     },
+    "/echo-headers": {
+      "get": {
+        "description": "Echoes the request headers",
+        "operationId": "echoHeaders",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {},
+                  "type": "object",
+                },
+              },
+            },
+            "description": "Echoed request headers",
+          },
+        },
+      },
+    },
     "/health": {
       "get": {
         "description": "Check if the server is healthy",

@@ -1654,6 +1654,13 @@ exports[`getToolsFromOpenAPISpec > remote spec https://agentic-platform-fixtures
       "path": "/echo",
       "tags": undefined,
     },
+    "echo_headers": {
+      "method": "get",
+      "operationId": "echoHeaders",
+      "parameterSources": {},
+      "path": "/echo-headers",
+      "tags": undefined,
+    },
     "get_user": {
       "method": "get",
       "operationId": "getUser",
@@ -1814,6 +1821,19 @@ exports[`getToolsFromOpenAPISpec > remote spec https://agentic-platform-fixtures
         "type": "object",
       },
       "name": "echo",
+      "outputSchema": {
+        "properties": {},
+        "type": "object",
+      },
+    },
+    {
+      "description": "Echoes the request headers",
+      "inputSchema": {
+        "properties": {},
+        "required": [],
+        "type": "object",
+      },
+      "name": "echo_headers",
       "outputSchema": {
         "properties": {},
         "type": "object",

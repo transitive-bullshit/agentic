@@ -38,10 +38,8 @@
   - how to handle binary bodies and responses?
   - improve logger vs console for non-hono path and util methods
   - test usage tracking and reporting
-  - extra `Sentry` instrumentation (`setUser`, `captureMessage`, etc)
 - **Public MCP server interface**
   - how does oauth work with this flow?
-  - proper error handling support within this flow; will currently get generic errors
   - pass requestId to DurableMcpServer somehow on a per-request basis
 - **Origin MCP servers**
   - how to guarantee that the request is coming from agentic?
@@ -80,6 +78,7 @@
   - add support for custom headers on responses
   - add ability to only report stripe usage on non-cached requests
   - add support for ToolConfig.cost defaulting to 1, to easily support tools which cost multiple "credits"
+  - extra `Sentry` instrumentation (`setUser`, `captureMessage`, etc)
 - `@agentic/platform-hono`
   - fix sentry middleware
     - https://github.com/honojs/middleware/blob/main/packages/sentry/src/index.ts
