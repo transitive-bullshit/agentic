@@ -22568,9 +22568,38 @@ exports[`validateOpenAPISpec > remote spec https://agentic-platform-fixtures-eve
         },
       },
     },
+    "/custom-rate-limit-approximate-tool": {
+      "post": {
+        "description": "Custom rate limit tool (approximate mode)",
+        "operationId": "customRateLimitApproximateTool",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {},
+                "type": "object",
+              },
+            },
+          },
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {},
+                  "type": "object",
+                },
+              },
+            },
+            "description": "Echoed request body",
+          },
+        },
+      },
+    },
     "/custom-rate-limit-tool": {
       "post": {
-        "description": "Custom rate limit tool",
+        "description": "Custom rate limit tool (strict mode)",
         "operationId": "customRateLimitTool",
         "requestBody": {
           "content": {

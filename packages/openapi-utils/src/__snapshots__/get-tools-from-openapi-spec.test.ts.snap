@@ -1619,6 +1619,13 @@ exports[`getToolsFromOpenAPISpec > remote spec https://agentic-platform-fixtures
       "path": "/custom-cache-control-tool",
       "tags": undefined,
     },
+    "custom_rate_limit_approximate_tool": {
+      "method": "post",
+      "operationId": "customRateLimitApproximateTool",
+      "parameterSources": {},
+      "path": "/custom-rate-limit-approximate-tool",
+      "tags": undefined,
+    },
     "custom_rate_limit_tool": {
       "method": "post",
       "operationId": "customRateLimitTool",
@@ -1886,6 +1893,19 @@ exports[`getToolsFromOpenAPISpec > remote spec https://agentic-platform-fixtures
       },
     },
     {
+      "description": "Custom rate limit tool (approximate mode)",
+      "inputSchema": {
+        "properties": {},
+        "required": [],
+        "type": "object",
+      },
+      "name": "custom_rate_limit_approximate_tool",
+      "outputSchema": {
+        "properties": {},
+        "type": "object",
+      },
+    },
+    {
       "description": "No store cache control tool",
       "inputSchema": {
         "properties": {},
@@ -1912,7 +1932,7 @@ exports[`getToolsFromOpenAPISpec > remote spec https://agentic-platform-fixtures
       },
     },
     {
-      "description": "Custom rate limit tool",
+      "description": "Custom rate limit tool (strict mode)",
       "inputSchema": {
         "properties": {},
         "required": [],
