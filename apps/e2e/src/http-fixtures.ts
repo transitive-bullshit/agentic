@@ -52,6 +52,15 @@ export type E2ETestFixtureSuite = {
 
   /** @default undefined */
   snapshot?: boolean
+
+  /** @default undefined */
+  repeat?: number
+
+  /** @default 'all' */
+  repeatSuccessCriteria?:
+    | 'all'
+    | 'some'
+    | ((numRepeatSuccesses: number) => boolean)
 }
 
 const now = Date.now()
@@ -649,6 +658,24 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
             )
             expect(body['x-agentic-user-id']).toBeUndefined()
             expect(body['x-agentic-customer-id']).toBeUndefined()
+          }
+        }
+      }
+    ]
+  },
+  {
+    title: 'HTTP => OpenAPI origin everything "custom_rate_limit_tool"',
+    only: true,
+    repeat: 1,
+    repeatSuccessCriteria: (numRepeatSuccesses) => numRepeatSuccesses <= 2,
+    fixtures: [
+      {
+        path: '@dev/test-everything-openapi/custom_rate_limit_tool',
+        response: {
+          status: 429,
+          headers: {
+            'ratelimit-policy': '2;w=30',
+            'ratelimit-limit': '2'
           }
         }
       }

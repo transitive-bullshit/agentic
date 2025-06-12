@@ -1,5 +1,6 @@
 import type { ContentfulStatusCode } from 'hono/utils/http-status'
 import { HttpError } from '@agentic/platform-core'
+import { suppressedHttpStatuses } from '@agentic/platform-hono'
 import * as Sentry from '@sentry/cloudflare'
 import { HTTPException } from 'hono/http-exception'
 import { HTTPError } from 'ky'
@@ -68,21 +69,23 @@ export function handleMcpToolCallError(
     status = 500
   }
 
-  if (status === 500) {
-    // eslint-disable-next-line no-console
-    console.error(`mcp tool call "${toolName}" error`, status, err)
+  if (!suppressedHttpStatuses.has(status)) {
+    if (status >= 500) {
+      // eslint-disable-next-line no-console
+      console.error(`mcp tool call "${toolName}" error`, status, err)
 
-    if (isProd) {
-      try {
-        Sentry.captureException(err)
-      } catch (err_) {
-        // eslint-disable-next-line no-console
-        console.error('Error Sentry.captureException failed', err, err_)
+      if (isProd) {
+        try {
+          Sentry.captureException(err)
+        } catch (err_) {
+          // eslint-disable-next-line no-console
+          console.error('Error Sentry.captureException failed', err, err_)
+        }
       }
+    } else {
+      // eslint-disable-next-line no-console
+      console.warn(`mcp tool call "${toolName}" warning`, status, err)
     }
-  } else {
-    // eslint-disable-next-line no-console
-    console.warn(`mcp tool call "${toolName}" warning`, status, err)
   }
 
   ;(res._meta!.agentic as any).status = status

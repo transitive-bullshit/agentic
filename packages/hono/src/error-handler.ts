@@ -12,6 +12,10 @@ import {
   JsonRpcErrorCodes
 } from './json-rpc-errors'
 
+// Don't log 429 errors because they may happen frequently and are just noise.
+// Our access-logger should still log the 429 result, just not the whole error.
+export const suppressedHttpStatuses = new Set([429])
+
 /**
  * Hono error handler that sanitizes all types of internal, http, json-rpc, and
  * unexpected errors and responds with an appropate HTTP Response.
@@ -59,19 +63,21 @@ export function errorHandler(
     status = 500
   }
 
-  if (status >= 500) {
-    logger.error(status, err)
+  if (!suppressedHttpStatuses.has(status)) {
+    if (status >= 500) {
+      logger.error(status, err)
 
-    if (isProd) {
-      try {
-        captureException(err)
-      } catch (err_) {
-        // eslint-disable-next-line no-console
-        console.error('Error Sentry.captureException failed', err, err_)
+      if (isProd) {
+        try {
+          captureException(err)
+        } catch (err_) {
+          // eslint-disable-next-line no-console
+          console.error('Error Sentry.captureException failed', err, err_)
+        }
       }
+    } else {
+      logger.warn(status, err)
     }
-  } else {
-    logger.warn(status, err)
   }
 
   if (isJsonRpcRequest) {

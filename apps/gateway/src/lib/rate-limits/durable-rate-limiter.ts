@@ -30,15 +30,24 @@ export class DurableRateLimiterBase extends DurableObject<RawEnv> {
 
     // Update the alarm
     const currentAlarm = await this.ctx.storage.getAlarm()
-    if (currentAlarm == null) {
+    if (!currentAlarm) {
       await this.ctx.storage.setAlarm(resetTimeMs)
     }
 
     await this.ctx.storage.put('value', state)
+
+    // const updatedState = await this.ctx.storage.get<RateLimitState>('value')
+    // console.log('update', this.ctx.id, {
+    //   existingState,
+    //   state,
+    //   updatedState
+    // })
+
     return state
   }
 
   async reset() {
+    // console.log('reset rate-limit', this.ctx.id)
     await this.ctx.storage.put('value', initialState)
   }
 

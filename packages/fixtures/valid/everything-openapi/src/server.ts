@@ -4,6 +4,7 @@ import { logger as honoLogger } from 'hono/logger'
 
 import { initExitHooks } from './exit-hooks'
 import { registerCustomCacheControlTool } from './routes/custom-cache-control-tool'
+import { registerCustomRateLimitApproximateTool } from './routes/custom-rate-limit-approximate-tool'
 import { registerCustomRateLimitTool } from './routes/custom-rate-limit-tool'
 import { registerDisabledForFreePlanTool } from './routes/disabled-for-free-plan-tool'
 import { registerDisabledRateLimitTool } from './routes/disabled-rate-limit-tool'
@@ -31,6 +32,7 @@ registerEchoHeaders(app)
 registerPure(app)
 registerUnpureMarkedPure(app)
 registerCustomCacheControlTool(app)
+registerCustomRateLimitApproximateTool(app)
 registerNoStoreCacheControlTool(app)
 registerNoCacheCacheControlTool(app)
 registerCustomRateLimitTool(app)

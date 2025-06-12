@@ -250,6 +250,8 @@ exports[`HTTP => OpenAPI origin everything "echo" tool with empty body > 9.0: PO
 
 exports[`HTTP => OpenAPI origin everything "echo" tool with empty body > 9.1: POST @dev/test-everything-openapi/echo 1`] = `{}`;
 
+exports[`HTTP => OpenAPI origin everything "echo_headers" tool > 12.0: GET @dev/test-everything-openapi@e738c8aa/custom_rate_limit_tool 1`] = `{}`;
+
 exports[`HTTP => OpenAPI origin everything "pure" tool > 7.0: POST @dev/test-everything-openapi/pure 1`] = `
 {
   "foo": "bar",

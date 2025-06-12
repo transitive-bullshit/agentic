@@ -8,12 +8,20 @@ import parseIntervalAsMs from 'ms'
 //   z.literal('all')
 // ])
 
+export const rateLimitModeSchema = z.union([
+  z.literal('strict'),
+  z.literal('approximate')
+])
+
 /**
  * Rate limit config for metered LineItems.
  */
 export const rateLimitSchema = z
   .union([
     z.object({
+      /**
+       * Whether or not this rate limit is enabled.
+       */
       enabled: z.literal(false)
     }),
     z.object({
@@ -77,26 +85,29 @@ export const rateLimitSchema = z
         .describe('Maximum number of operations per interval (unitless).'),
 
       /**
-       * Whether to enforce the rate limit synchronously or asynchronously.
+       * How to enforce the rate limit:
        *
-       * The default rate-limiting mode is asynchronous, which means that requests
-       * are allowed to proceed immediately, with the limit being enforced in the
-       * background. This is much faster than synchronous mode, but it is less
-       * consistent if precise adherence to rate-limits is required.
+       * - `strict` (more precise but slower)
+       * - `approximate` (the default; faster and asynchronous but less precise).
        *
-       * With synchronous mode, requests are blocked until the current limit has
+       * The default rate-limiting mode is `approximate`, which means that requests
+       * are allowed to proceed immediately, with the limit being enforced
+       * asynchronously in the background. This is much faster than synchronous
+       * mode, but it is less consistent if precise adherence to rate-limits is
+       * required.
+       *
+       * With `strict` mode, requests are blocked until the current limit has
        * been confirmed. The downside with this approach is that it introduces
        * more latency to every request by default. The advantage is that it is
        * more precise and consistent.
        *
-       * @default true
+       * @default "approximate"
        */
-      async: z
-        .boolean()
+      mode: rateLimitModeSchema
         .optional()
-        .default(true)
+        .default('approximate')
         .describe(
-          'Whether to enforce the rate limit synchronously (strict but slower) or asynchronously (approximate and faster, the default).'
+          'How to enforce the rate limit: "strict" (more precise but slower) or "approximate" (the default; faster and asynchronous but less precise).'
         ),
 
       // TODO: Consider adding support for this in the future
@@ -112,6 +123,11 @@ export const rateLimitSchema = z
       //  */
       // rateLimitBy: rateLimitBySchema.optional().default('customer'),
 
+      /**
+       * Whether or not this rate limit is enabled.
+       *
+       * @default true
+       */
       enabled: z.boolean().optional().default(true)
     })
   ])

@@ -25,7 +25,7 @@ test('rateLimitSchema valid', () => {
     rateLimitSchema.parse({
       interval: '1 day',
       limit: 1000,
-      async: false
+      mode: 'strict'
     })
   ).toMatchSnapshot()
 
@@ -39,7 +39,7 @@ test('rateLimitSchema valid', () => {
     rateLimitSchema.parse({
       interval: '10m',
       limit: 100,
-      async: false,
+      mode: 'strict',
       enabled: false
     })
   ).toMatchSnapshot()
@@ -79,28 +79,28 @@ test('RateLimit types', () => {
   expectTypeOf({
     interval: 10,
     limit: 100,
-    async: false,
+    mode: 'approximate',
     enabled: true
   } as const).toExtend<RateLimit>()
 
   expectTypeOf<{
     interval: 10
     limit: 100
-    async: false
+    mode: 'strict'
     enabled: true
   }>().toExtend<RateLimit>()
 
   expectTypeOf({
     interval: '10s',
     limit: 100,
-    async: true,
+    mode: 'strict',
     enabled: true
   } as const).not.toExtend<RateLimit>()
 
   expectTypeOf<{
     interval: '10s'
     limit: 100
-    async: false
+    mode: 'strict'
   }>().not.toExtend<RateLimit>()
 
   expectTypeOf({
@@ -126,13 +126,13 @@ test('RateLimitInput types', () => {
   expectTypeOf({
     interval: 10,
     limit: 100,
-    async: false
+    mode: 'strict'
   } as const).toExtend<RateLimitInput>()
 
   expectTypeOf<{
     interval: 10
     limit: 100
-    async: boolean
+    mode: 'approximate'
   }>().toExtend<RateLimitInput>()
 
   expectTypeOf({

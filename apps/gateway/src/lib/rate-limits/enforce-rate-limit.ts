@@ -21,7 +21,7 @@ export async function enforceRateLimit({
   interval,
   limit,
   cost = 1,
-  async = true,
+  async: _async = true,
   env,
   cache = globalRateLimitCache,
   waitUntil
@@ -61,20 +61,20 @@ export async function enforceRateLimit({
 }): Promise<RateLimitResult> {
   assert(id, 400, 'Unauthenticated requests must have a valid IP address')
 
+  const async = false
+
   const intervalMs = interval * 1000
   const now = Date.now()
 
-  let rateLimitState: RateLimitState = cache.get(id) ?? {
+  const initialRateLimitState = cache.get(id) ?? {
     current: 0,
     resetTimeMs: now + intervalMs
   }
+  let rateLimitState = initialRateLimitState
 
   function updateCache(info: RateLimitState) {
-    const current = cache.get(id)?.current ?? 0
-    if (current && info.current > current) {
-      cache.set(id, info)
-      rateLimitState = info
-    }
+    cache.set(id, info)
+    rateLimitState = info
   }
 
   /**
@@ -123,6 +123,13 @@ export async function enforceRateLimit({
     const updatedRateLimitState = await updatedRateLimitStateP
     updateCache(updatedRateLimitState)
   }
+
+  // console.log('rateLimit', {
+  //   id,
+  //   initial: initialRateLimitState,
+  //   current: rateLimitState,
+  //   cost
+  // })
 
   return {
     id,

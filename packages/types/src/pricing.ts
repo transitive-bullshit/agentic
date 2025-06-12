@@ -639,10 +639,10 @@ export type StripeSubscriptionItemIdMap = z.infer<
  * per minute per customer.
  */
 export const defaultRequestsRateLimit = {
+  enabled: true,
   interval: 60,
   limit: 1000,
-  async: true,
-  enabled: true
+  mode: 'approximate'
 } as const satisfies Readonly<RateLimit>
 
 /**
