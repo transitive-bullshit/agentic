@@ -66,12 +66,16 @@ export function updateOriginRequest(
       consumer.stripeStatus
     )
 
-    originRequest.headers.set('x-agentic-user', consumer.user.id)
+    originRequest.headers.set('x-agentic-user-id', consumer.user.id)
     originRequest.headers.set('x-agentic-user-email', consumer.user.email)
     originRequest.headers.set('x-agentic-user-username', consumer.user.username)
     originRequest.headers.set(
       'x-agentic-user-created-at',
       consumer.user.createdAt
+    )
+    originRequest.headers.set(
+      'x-agentic-user-updated-at',
+      consumer.user.updatedAt
     )
 
     if (consumer.plan) {
@@ -84,6 +88,11 @@ export function updateOriginRequest(
     if (consumer.user.name) {
       originRequest.headers.set('x-agentic-user-name', consumer.user.name)
     }
+  } else {
+    originRequest.headers.set(
+      'x-agentic-is-customer-subscription-active',
+      'false'
+    )
   }
 
   // TODO: this header is causing some random upstream cloudflare errors
@@ -94,5 +103,10 @@ export function updateOriginRequest(
     originRequest.headers.set('cache-control', cacheControl)
   }
 
+  originRequest.headers.set('x-agentic-deployment-id', deployment.id)
+  originRequest.headers.set(
+    'x-agentic-deployment-identifier',
+    deployment.identifier
+  )
   originRequest.headers.set('x-agentic-proxy-secret', deployment._secret)
 }
