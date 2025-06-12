@@ -116,28 +116,28 @@ exports[`rateLimitSchema invalid 4`] = `
 
 exports[`rateLimitSchema valid 1`] = `
 {
-  "async": true,
   "enabled": true,
   "interval": 10,
   "limit": 100,
+  "mode": "approximate",
 }
 `;
 
 exports[`rateLimitSchema valid 2`] = `
 {
-  "async": true,
   "enabled": true,
   "interval": 10,
   "limit": 100,
+  "mode": "approximate",
 }
 `;
 
 exports[`rateLimitSchema valid 3`] = `
 {
-  "async": false,
   "enabled": true,
   "interval": 86400,
   "limit": 1000,
+  "mode": "strict",
 }
 `;
 
