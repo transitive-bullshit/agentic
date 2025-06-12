@@ -7,15 +7,8 @@
 
 ## API Gateway
 
-- **REST**: `GET/POST gateway.agentic.so/deploymentIdentifier/toolName`
-  - => MCP: `MCPClient.callTool` with JSON body parameters
-  - => OpenAPI: `GET/POST/ETC originUrl/toolName` operation with transformed JSON body params
-- **MCP**: `mcp.agentic.so/deploymentIdentifier` MCP server?
-  - => MCP: `MCPClient.callTool` just proxying tool call
-  - => OpenAPI: `GET/POST/ETC originUrl/toolName` operation with transformed tool params
-- RAW: `METHOD gateway.agentic.so/deploymentIdentifier/<pathname>`
-  - => Raw HTTP: `METHOD originUrl/<pathname>` simple HTTP proxy request
-  - TODO: remove / disable `raw` support for now
+- **REST**: `GET/POST` `https://gateway.agentic.so/deploymentIdentifier/toolName`
+- **MCP**: `https://gateway.agentic.so/deploymentIdentifier/mcp`
 
 ## TODO
 
@@ -23,10 +16,6 @@
 - stripe
   - stripe checkout
   - stripe billing portal
-- end-to-end working examples
-  - openapi
-  - mcp
-  - raw
 - auth
   - custom auth pages for `openauth`
 - **API gateway**
@@ -37,7 +26,9 @@
   - mcp-kitchen-sink
   - how to handle binary bodies and responses?
   - improve logger vs console for non-hono path and util methods
-  - test usage tracking and reporting
+  - **test rate limiting**
+  - **test usage tracking and reporting**
+  - disallow `mcp` as a tool name or figure out another workaround
 - **Public MCP server interface**
   - how does oauth work with this flow?
   - pass requestId to DurableMcpServer somehow on a per-request basis
