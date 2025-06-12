@@ -8,13 +8,12 @@ exports[`rateLimitSchema invalid 1`] = `
       {
         "issues": [
           {
-            "code": "invalid_type",
-            "expected": "number",
-            "received": "string",
+            "code": "invalid_literal",
+            "expected": false,
             "path": [
-              "interval"
+              "enabled"
             ],
-            "message": "Expected number, received string"
+            "message": "Invalid literal value, expected false"
           }
         ],
         "name": "ZodError"
@@ -22,23 +21,49 @@ exports[`rateLimitSchema invalid 1`] = `
       {
         "issues": [
           {
-            "code": "too_small",
-            "minimum": 1,
-            "type": "string",
-            "inclusive": true,
-            "exact": false,
-            "message": "String must contain at least 1 character(s)",
+            "code": "invalid_union",
+            "unionErrors": [
+              {
+                "issues": [
+                  {
+                    "code": "invalid_type",
+                    "expected": "number",
+                    "received": "string",
+                    "path": [
+                      "interval"
+                    ],
+                    "message": "Expected number, received string"
+                  }
+                ],
+                "name": "ZodError"
+              },
+              {
+                "issues": [
+                  {
+                    "code": "too_small",
+                    "minimum": 1,
+                    "type": "string",
+                    "inclusive": true,
+                    "exact": false,
+                    "message": "String must contain at least 1 character(s)",
+                    "path": [
+                      "interval"
+                    ]
+                  }
+                ],
+                "name": "ZodError"
+              }
+            ],
             "path": [
               "interval"
-            ]
+            ],
+            "message": "Invalid input"
           }
         ],
         "name": "ZodError"
       }
     ],
-    "path": [
-      "interval"
-    ],
+    "path": [],
     "message": "Invalid input"
   }
 ]]
@@ -83,7 +108,7 @@ exports[`rateLimitSchema invalid 4`] = `
     "exact": false,
     "message": "Number must be greater than or equal to 0",
     "path": [
-      "maxPerInterval"
+      "limit"
     ]
   }
 ]]
@@ -92,23 +117,38 @@ exports[`rateLimitSchema invalid 4`] = `
 exports[`rateLimitSchema valid 1`] = `
 {
   "async": true,
+  "enabled": true,
   "interval": 10,
-  "maxPerInterval": 100,
+  "limit": 100,
 }
 `;
 
 exports[`rateLimitSchema valid 2`] = `
 {
   "async": true,
+  "enabled": true,
   "interval": 10,
-  "maxPerInterval": 100,
+  "limit": 100,
 }
 `;
 
 exports[`rateLimitSchema valid 3`] = `
 {
   "async": false,
+  "enabled": true,
   "interval": 86400,
-  "maxPerInterval": 1000,
+  "limit": 1000,
+}
+`;
+
+exports[`rateLimitSchema valid 4`] = `
+{
+  "enabled": false,
+}
+`;
+
+exports[`rateLimitSchema valid 5`] = `
+{
+  "enabled": false,
 }
 `;

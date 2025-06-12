@@ -14,7 +14,7 @@ export default defineConfig({
       pure: true,
       // cacheControl: 'no-cache',
       reportUsage: true,
-      rateLimit: null,
+      rateLimit: { enabled: false },
       pricingPlanOverridesMap: {
         free: {
           enabled: true,
@@ -59,12 +59,12 @@ export default defineConfig({
       name: 'custom_rate_limit_tool',
       rateLimit: {
         interval: '30s',
-        maxPerInterval: 10
+        limit: 10
       }
     },
     {
       name: 'disabled_rate_limit_tool',
-      rateLimit: null
+      rateLimit: { enabled: false }
     },
     {
       name: 'strict_additional_properties',

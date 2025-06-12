@@ -76,12 +76,12 @@ export const pricingPlanToolOverrideSchema = z
      * Customize or disable rate limits for this tool for customers on a given
      * pricing plan.
      *
-     * Set to `null` to disable the default request-based rate-limiting for
-     * this tool on a given pricing plan.
+     * To disable rate-limiting for this tool on a given pricing plan, set
+     * `rateLimit.enabled` to `false`.
      *
      * @default undefined
      */
-    rateLimit: z.union([rateLimitSchema, z.null()]).optional()
+    rateLimit: rateLimitSchema.optional()
   })
   .openapi('PricingPlanToolOverride')
 export type PricingPlanToolOverride = z.infer<
@@ -158,14 +158,15 @@ export const toolConfigSchema = z
     /**
      * Customize the default `requests`-based rate-limiting for this tool.
      *
-     * Set to `null` to disable the built-in rate-limiting.
+     * To disable rate-limiting for this tool, set `rateLimit.enabled` to
+     * `false`.
      *
      * If not set, the default rate-limiting for the active pricing plan will be
      * used.
      *
      * @default undefined
      */
-    rateLimit: z.union([rateLimitSchema, z.null()]).optional(),
+    rateLimit: rateLimitSchema.optional(),
 
     /**
      * Whether to allow additional properties in the tool's input schema.
@@ -175,7 +176,7 @@ export const toolConfigSchema = z
      *
      * @note This is only relevant if the tool has defined an `outputSchema`.
      *
-     * @default true
+     * @default undefined
      */
     inputSchemaAdditionalProperties: z.boolean().optional(),
 
@@ -187,7 +188,7 @@ export const toolConfigSchema = z
      *
      * @note This is only relevant if the tool has defined an `outputSchema`.
      *
-     * @default true
+     * @default undefined
      */
     outputSchemaAdditionalProperties: z.boolean().optional(),
 
@@ -216,6 +217,7 @@ export const toolConfigSchema = z
     // headers
   })
   .openapi('ToolConfig')
+
 export type ToolConfigInput = z.input<typeof toolConfigSchema>
 export type ToolConfig = z.infer<typeof toolConfigSchema>
 
@@ -321,6 +323,3 @@ export const toolSchema = z
   .passthrough()
   .openapi('Tool')
 export type Tool = z.infer<typeof toolSchema>
-
-// export const toolMapSchema = z.record(toolNameSchema, toolSchema)
-// export type ToolMap = z.infer<typeof toolMapSchema>

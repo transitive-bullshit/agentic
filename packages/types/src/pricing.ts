@@ -1,7 +1,7 @@
 import type { Simplify } from 'type-fest'
 import { z } from '@hono/zod-openapi'
 
-import { rateLimitSchema } from './rate-limit'
+import { type RateLimit, rateLimitSchema } from './rate-limit'
 
 /**
  * PricingPlanTier is a single tier in a tiered pricing plan.
@@ -174,14 +174,6 @@ export const pricingPlanMeteredLineItemSchema =
        * If unset, the line-item's `slug` will be used as the unit label.
        */
       unitLabel: z.string().optional(),
-
-      /**
-       * Optional rate limit to enforce for this metered line-item.
-       *
-       * You can use this, for example, to limit the number of API calls that
-       * can be made during a given interval.
-       */
-      rateLimit: rateLimitSchema.optional(),
 
       /**
        * Describes how to compute the price per period. Either `per_unit` or
@@ -473,6 +465,15 @@ export type PricingPlanLineItem =
  */
 export const pricingPlanSchema = z
   .object({
+    /**
+     * Human-readable name for the pricing plan.
+     *
+     * Used in UI and billing invoices.
+     *
+     * @example "Free"
+     * @example "Starter Monthly"
+     * @example "Pro Annual"
+     */
     name: z
       .string()
       .nonempty()
@@ -481,6 +482,21 @@ export const pricingPlanSchema = z
       )
       .openapi('name', { example: 'Starter Monthly' }),
 
+    /**
+     * A unique slug for the pricing plan which acts as a stable identifier
+     * across deployments.
+     *
+     * Should be lower-kebab-cased.
+     * Should be stable across deployments.
+     *
+     * For all plans aside from `free`, the `slug` should include the `interval`
+     * as a suffix so pricing plans can be uniquely differentiated from each
+     * other across billing intervals.
+     *
+     * @example "free"
+     * @example "starter-monthly"
+     * @example "pro-annual"
+     */
     slug: z
       .string()
       .nonempty()
@@ -495,12 +511,12 @@ export const pricingPlanSchema = z
     interval: pricingIntervalSchema.optional(),
 
     /**
-     * Optional description of the PricingPlan which is used for UI-only.
+     * Optional description of the pricing plan (UI-only).
      */
     description: z.string().optional(),
 
     /**
-     * Optional list of features of the PricingPlan which is used for UI-only.
+     * Optional list of features of the pricing plan (UI-only).
      */
     features: z.array(z.string()).optional(),
 
@@ -509,6 +525,23 @@ export const pricingPlanSchema = z
      * for a new subscription.
      */
     trialPeriodDays: z.number().nonnegative().optional(),
+
+    /**
+     * Optional rate limit to enforce for this pricing plan.
+     *
+     * You can use this to limit the number of API requests that can be made by
+     * a customer during a given interval.
+     *
+     * If not set, the pricing plan will inherit the default platform rate-limit
+     * set by `defaultRateLimit` in the Agentic project config.
+     *
+     * You can disable rate-limiting for this pricing plan by setting
+     * `rateLimit.enabled` to `false`.
+     *
+     * Note that tool-specific rate limits may override pricing-plan-specific
+     * rate-limits via `toolConfigs` in the Agentic project config.
+     */
+    rateLimit: rateLimitSchema.optional(),
 
     /**
      * List of custom LineItems which are included in the PricingPlan.
@@ -601,6 +634,21 @@ export type StripeSubscriptionItemIdMap = z.infer<
 //   .openapi('Coupon')
 // export type Coupon = z.infer<typeof couponSchema>
 
+/**
+ * The default platform rate limit for `requests` is a limit of 1000 requests
+ * per minute per customer.
+ */
+export const defaultRequestsRateLimit = {
+  interval: 60,
+  limit: 1000,
+  async: true,
+  enabled: true
+} as const satisfies Readonly<RateLimit>
+
+/**
+ * The default free pricing plan which is used for projects that don't specify
+ * custom pricing plans.
+ */
 export const defaultFreePricingPlan = {
   name: 'Free',
   slug: 'free',
@@ -610,5 +658,6 @@ export const defaultFreePricingPlan = {
       usageType: 'licensed',
       amount: 0
     }
-  ]
+  ],
+  rateLimit: defaultRequestsRateLimit
 } as const satisfies Readonly<PricingPlan>

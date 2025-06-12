@@ -30,15 +30,15 @@ export default defineConfig({
           slug: 'custom-test',
           usageType: 'metered',
           billingScheme: 'per_unit',
-          unitAmount: 100,
-          rateLimit: {
-            maxPerInterval: 1000,
-            // TODO
-            // interval: '30d' // 60 * 60 * 24 * 30 // 30 days in seconds
-            interval: 60 * 60 * 24 * 30 // 30 days in seconds
-          }
+          unitAmount: 100
         }
-      ]
+      ],
+      rateLimit: {
+        limit: 1000,
+        // TODO
+        // interval: '30d' // 60 * 60 * 24 * 30 // 30 days in seconds
+        interval: 60 * 60 * 24 * 30 // 30 days in seconds
+      }
     },
     {
       name: 'Basic Annual',
@@ -54,13 +54,13 @@ export default defineConfig({
           slug: 'custom-test',
           usageType: 'metered',
           billingScheme: 'per_unit',
-          unitAmount: 80, // 20% discount
-          rateLimit: {
-            maxPerInterval: 1500,
-            interval: 60 * 60 * 24 * 30 // 30 days in seconds
-          }
+          unitAmount: 80 // 20% discount
         }
-      ]
+      ],
+      rateLimit: {
+        limit: 1500,
+        interval: 60 * 60 * 24 * 30 // 30 days in seconds
+      }
     }
   ]
 })

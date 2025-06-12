@@ -6,6 +6,7 @@ import type {
 } from '@agentic/platform-hono'
 import type {
   AdminConsumer as AdminConsumerImpl,
+  RateLimit,
   ToolConfig,
   User
 } from '@agentic/platform-types'
@@ -65,6 +66,7 @@ export type ResolvedOriginToolCallResult = {
   originRequest?: Request
   originResponse?: Response
   toolCallResponse?: McpToolCallResponse
+  rateLimit?: RateLimit
   rateLimitResult?: RateLimitResult
   cacheStatus: CacheStatus
   reportUsage: boolean

@@ -2,6 +2,12 @@
 
 exports[`loadAgenticConfig > basic-mcp 1`] = `
 {
+  "defaultRateLimit": {
+    "async": true,
+    "enabled": true,
+    "interval": 60,
+    "limit": 1000,
+  },
   "name": "test-basic-mcp",
   "originAdapter": {
     "location": "external",
@@ -21,6 +27,12 @@ exports[`loadAgenticConfig > basic-mcp 1`] = `
         },
       ],
       "name": "Free",
+      "rateLimit": {
+        "async": true,
+        "enabled": true,
+        "interval": 60,
+        "limit": 1000,
+      },
       "slug": "free",
     },
   ],
@@ -31,6 +43,12 @@ exports[`loadAgenticConfig > basic-mcp 1`] = `
 
 exports[`loadAgenticConfig > basic-openapi 1`] = `
 {
+  "defaultRateLimit": {
+    "async": true,
+    "enabled": true,
+    "interval": 60,
+    "limit": 1000,
+  },
   "name": "test-basic-openapi",
   "originAdapter": {
     "location": "external",
@@ -51,6 +69,12 @@ exports[`loadAgenticConfig > basic-openapi 1`] = `
         },
       ],
       "name": "Free",
+      "rateLimit": {
+        "async": true,
+        "enabled": true,
+        "interval": 60,
+        "limit": 1000,
+      },
       "slug": "free",
     },
   ],
@@ -70,6 +94,12 @@ exports[`loadAgenticConfig > basic-openapi 1`] = `
 
 exports[`loadAgenticConfig > basic-raw-free-json 1`] = `
 {
+  "defaultRateLimit": {
+    "async": true,
+    "enabled": true,
+    "interval": 60,
+    "limit": 1000,
+  },
   "name": "test-basic-raw-free-json",
   "originAdapter": {
     "location": "external",
@@ -89,6 +119,12 @@ exports[`loadAgenticConfig > basic-raw-free-json 1`] = `
         },
       ],
       "name": "Free",
+      "rateLimit": {
+        "async": true,
+        "enabled": true,
+        "interval": 60,
+        "limit": 1000,
+      },
       "slug": "free",
     },
   ],
@@ -99,6 +135,12 @@ exports[`loadAgenticConfig > basic-raw-free-json 1`] = `
 
 exports[`loadAgenticConfig > basic-raw-free-ts 1`] = `
 {
+  "defaultRateLimit": {
+    "async": true,
+    "enabled": true,
+    "interval": 60,
+    "limit": 1000,
+  },
   "name": "test-basic-raw-free-ts",
   "originAdapter": {
     "location": "external",
@@ -118,6 +160,12 @@ exports[`loadAgenticConfig > basic-raw-free-ts 1`] = `
         },
       ],
       "name": "Free",
+      "rateLimit": {
+        "async": true,
+        "enabled": true,
+        "interval": 60,
+        "limit": 1000,
+      },
       "slug": "free",
     },
   ],
@@ -128,6 +176,12 @@ exports[`loadAgenticConfig > basic-raw-free-ts 1`] = `
 
 exports[`loadAgenticConfig > everything-openapi 1`] = `
 {
+  "defaultRateLimit": {
+    "async": true,
+    "enabled": true,
+    "interval": 60,
+    "limit": 1000,
+  },
   "name": "test-everything-openapi",
   "originAdapter": {
     "location": "external",
@@ -148,6 +202,12 @@ exports[`loadAgenticConfig > everything-openapi 1`] = `
         },
       ],
       "name": "Free",
+      "rateLimit": {
+        "async": true,
+        "enabled": true,
+        "interval": 60,
+        "limit": 1000,
+      },
       "slug": "free",
     },
   ],
@@ -162,7 +222,9 @@ exports[`loadAgenticConfig > everything-openapi 1`] = `
         },
       },
       "pure": true,
-      "rateLimit": null,
+      "rateLimit": {
+        "enabled": false,
+      },
       "reportUsage": true,
     },
     {
@@ -201,13 +263,16 @@ exports[`loadAgenticConfig > everything-openapi 1`] = `
       "name": "custom_rate_limit_tool",
       "rateLimit": {
         "async": true,
+        "enabled": true,
         "interval": 30,
-        "maxPerInterval": 10,
+        "limit": 10,
       },
     },
     {
       "name": "disabled_rate_limit_tool",
-      "rateLimit": null,
+      "rateLimit": {
+        "enabled": false,
+      },
     },
     {
       "inputSchemaAdditionalProperties": false,
@@ -253,6 +318,12 @@ exports[`loadAgenticConfig > invalid: pricing-empty-2 1`] = `[ZodValidationError
 
 exports[`loadAgenticConfig > pricing-3-plans 1`] = `
 {
+  "defaultRateLimit": {
+    "async": true,
+    "enabled": true,
+    "interval": 60,
+    "limit": 1000,
+  },
   "name": "test-pricing-3-plans",
   "originAdapter": {
     "location": "external",
@@ -321,6 +392,12 @@ exports[`loadAgenticConfig > pricing-3-plans 1`] = `
 
 exports[`loadAgenticConfig > pricing-custom-0 1`] = `
 {
+  "defaultRateLimit": {
+    "async": true,
+    "enabled": true,
+    "interval": 60,
+    "limit": 1000,
+  },
   "name": "test-pricing-custom-0",
   "originAdapter": {
     "location": "external",
@@ -353,17 +430,18 @@ exports[`loadAgenticConfig > pricing-custom-0 1`] = `
         },
         {
           "billingScheme": "per_unit",
-          "rateLimit": {
-            "async": true,
-            "interval": 2592000,
-            "maxPerInterval": 1000,
-          },
           "slug": "custom-test",
           "unitAmount": 100,
           "usageType": "metered",
         },
       ],
       "name": "Basic Monthly",
+      "rateLimit": {
+        "async": true,
+        "enabled": true,
+        "interval": 2592000,
+        "limit": 1000,
+      },
       "slug": "basic-monthly",
     },
     {
@@ -376,17 +454,18 @@ exports[`loadAgenticConfig > pricing-custom-0 1`] = `
         },
         {
           "billingScheme": "per_unit",
-          "rateLimit": {
-            "async": true,
-            "interval": 2592000,
-            "maxPerInterval": 1500,
-          },
           "slug": "custom-test",
           "unitAmount": 80,
           "usageType": "metered",
         },
       ],
       "name": "Basic Annual",
+      "rateLimit": {
+        "async": true,
+        "enabled": true,
+        "interval": 2592000,
+        "limit": 1500,
+      },
       "slug": "basic-annual",
     },
   ],
@@ -397,6 +476,12 @@ exports[`loadAgenticConfig > pricing-custom-0 1`] = `
 
 exports[`loadAgenticConfig > pricing-freemium 1`] = `
 {
+  "defaultRateLimit": {
+    "async": true,
+    "enabled": true,
+    "interval": 60,
+    "limit": 1000,
+  },
   "name": "test-pricing-freemium",
   "originAdapter": {
     "location": "external",
@@ -416,6 +501,12 @@ exports[`loadAgenticConfig > pricing-freemium 1`] = `
         },
       ],
       "name": "Free",
+      "rateLimit": {
+        "async": true,
+        "enabled": true,
+        "interval": 60,
+        "limit": 1000,
+      },
       "slug": "free",
     },
     {
@@ -439,6 +530,12 @@ exports[`loadAgenticConfig > pricing-freemium 1`] = `
 
 exports[`loadAgenticConfig > pricing-monthly-annual 1`] = `
 {
+  "defaultRateLimit": {
+    "async": true,
+    "enabled": true,
+    "interval": 60,
+    "limit": 1000,
+  },
   "name": "test-pricing-monthly-annual",
   "originAdapter": {
     "location": "external",
@@ -493,6 +590,12 @@ exports[`loadAgenticConfig > pricing-monthly-annual 1`] = `
 
 exports[`loadAgenticConfig > pricing-pay-as-you-go 1`] = `
 {
+  "defaultRateLimit": {
+    "async": true,
+    "enabled": true,
+    "interval": 60,
+    "limit": 1000,
+  },
   "name": "test-pricing-pay-as-you-go",
   "originAdapter": {
     "location": "external",
@@ -512,17 +615,18 @@ exports[`loadAgenticConfig > pricing-pay-as-you-go 1`] = `
         },
         {
           "billingScheme": "per_unit",
-          "rateLimit": {
-            "async": true,
-            "interval": 86400,
-            "maxPerInterval": 20,
-          },
           "slug": "requests",
           "unitAmount": 0,
           "usageType": "metered",
         },
       ],
       "name": "Free",
+      "rateLimit": {
+        "async": true,
+        "enabled": true,
+        "interval": 86400,
+        "limit": 20,
+      },
       "slug": "free",
     },
     {
@@ -546,6 +650,12 @@ exports[`loadAgenticConfig > pricing-pay-as-you-go 1`] = `
         },
       ],
       "name": "Pay-As-You-Go",
+      "rateLimit": {
+        "async": true,
+        "enabled": true,
+        "interval": 86400,
+        "limit": 1000,
+      },
       "slug": "pay-as-you-go",
     },
   ],

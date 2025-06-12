@@ -1,7 +1,6 @@
 import type {
   AdminDeployment,
   PricingPlan,
-  RateLimit,
   Tool
 } from '@agentic/platform-types'
 import type { DurableObjectStub } from '@cloudflare/workers-types'
@@ -61,27 +60,23 @@ export async function resolveOriginToolCall({
   const { originAdapter } = deployment
   // TODO: make this configurable via `ToolConfig.cost`
   const numRequestsCost = 1
+  let rateLimit = deployment.defaultRateLimit
   let rateLimitResult: RateLimitResult | undefined
-  let rateLimit: RateLimit | undefined | null
   let cacheStatus: CacheStatus | undefined
   let reportUsage = true
 
   // Resolve rate limit and whether to report `requests` usage based on the
   // customer's pricing plan and deployment config.
   if (pricingPlan) {
+    if (pricingPlan.rateLimit) {
+      rateLimit = pricingPlan.rateLimit
+    }
+
     const requestsLineItem = pricingPlan.lineItems.find(
       (lineItem) => lineItem.slug === 'requests'
     )
 
-    if (requestsLineItem) {
-      assert(
-        requestsLineItem.slug === 'requests',
-        403,
-        `Invalid pricing plan "${pricingPlan.slug}" for project "${deployment.project}"`
-      )
-
-      rateLimit = requestsLineItem.rateLimit
-    } else {
+    if (!requestsLineItem) {
       // No `requests` line-item, so we don't report usage for this tool.
       reportUsage = false
     }
@@ -97,8 +92,7 @@ export async function resolveOriginToolCall({
     }
 
     if (toolConfig.rateLimit !== undefined) {
-      // TODO: Improve RateLimitInput vs RateLimit types
-      rateLimit = toolConfig.rateLimit as RateLimit
+      rateLimit = toolConfig.rateLimit
     }
 
     if (cacheControl) {
@@ -149,8 +143,7 @@ export async function resolveOriginToolCall({
       }
 
       if (pricingPlanToolOverride.rateLimit !== undefined) {
-        // TODO: Improve RateLimitInput vs RateLimit types
-        rateLimit = pricingPlanToolOverride.rateLimit as RateLimit
+        rateLimit = pricingPlanToolOverride.rateLimit
       }
     } else {
       assert(isToolConfigEnabled, 404, `Tool "${tool.name}" is disabled`)
@@ -171,13 +164,13 @@ export async function resolveOriginToolCall({
     }
   }
 
-  if (rateLimit) {
+  if (rateLimit && rateLimit.enabled !== false) {
     // TODO: Consider decrementing rate limit if the response is cached or
     // errors? this doesn't seem too important, so will leave as-is for now.
     rateLimitResult = await enforceRateLimit({
       id: consumer?.id ?? ip ?? sessionId,
       interval: rateLimit.interval,
-      maxPerInterval: rateLimit.maxPerInterval,
+      limit: rateLimit.limit,
       async: rateLimit.async,
       cost: numRequestsCost,
       env,
@@ -224,10 +217,12 @@ export async function resolveOriginToolCall({
         cacheKey,
         fetchResponse: async () => {
           let response = await fetch(originRequest)
+
           if (cacheControl && isResponsePubliclyCacheable(response)) {
             response = new Response(response.body, response)
             response.headers.set('cache-control', cacheControl)
           }
+
           return response
         },
         waitUntil
@@ -244,6 +239,7 @@ export async function resolveOriginToolCall({
       return {
         cacheStatus,
         reportUsage,
+        rateLimit,
         rateLimitResult,
         toolCallArgs,
         originRequest,
@@ -312,6 +308,7 @@ export async function resolveOriginToolCall({
             return {
               cacheStatus: 'HIT',
               reportUsage,
+              rateLimit,
               rateLimitResult,
               toolCallArgs,
               toolCallResponse: (await response.json()) as McpToolCallResponse,
@@ -346,6 +343,7 @@ export async function resolveOriginToolCall({
       return {
         cacheStatus: cacheStatus ?? (cacheKey ? 'MISS' : 'BYPASS'),
         reportUsage,
+        rateLimit,
         rateLimitResult,
         toolCallArgs,
         toolCallResponse,

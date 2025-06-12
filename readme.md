@@ -26,6 +26,7 @@
   - mcp-kitchen-sink
   - how to handle binary bodies and responses?
   - improve logger vs console for non-hono path and util methods
+  - default rate limits?
   - **test rate limiting**
   - **test usage tracking and reporting**
   - disallow `mcp` as a tool name or figure out another workaround
@@ -80,6 +81,11 @@
 - handle or validate against dynamic MCP origin tools
 - allow config name to be `project-name` or `@namespace/project-name`?
 - upgrade to zod v4
+- add seed-db script which creates `dev` user (or team) and test fixtures
+- decide whether deployment fields like `defaultRateLimit` and others should be generated and stored in the db, or should be inferred based on `undefined` values
+- support multiple rate-limits by slug
+  - RateLimit-Policy: "burst";q=100;w=60,"daily";q=1000;w=86400
+  - https://datatracker.ietf.org/doc/draft-ietf-httpapi-ratelimit-headers/
 
 ## License
 

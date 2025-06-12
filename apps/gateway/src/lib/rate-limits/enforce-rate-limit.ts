@@ -19,7 +19,7 @@ const globalRateLimitCache: RateLimitCache = new Map()
 export async function enforceRateLimit({
   id,
   interval,
-  maxPerInterval,
+  limit,
   cost = 1,
   async = true,
   env,
@@ -39,7 +39,7 @@ export async function enforceRateLimit({
   /**
    * Maximum number of requests that can be made per interval.
    */
-  maxPerInterval: number
+  limit: number
 
   /**
    * The cost of the request.
@@ -84,18 +84,15 @@ export async function enforceRateLimit({
    * and we can skip the request to the durable object entirely, which speeds
    * everything up and is cheaper for us.
    */
-  if (
-    rateLimitState.current > maxPerInterval &&
-    now <= rateLimitState.resetTimeMs
-  ) {
+  if (rateLimitState.current > limit && now <= rateLimitState.resetTimeMs) {
     return {
       id,
       passed: false,
       current: rateLimitState.current,
-      limit: maxPerInterval,
+      limit,
       resetTimeMs: rateLimitState.resetTimeMs,
       intervalMs,
-      remaining: Math.max(0, maxPerInterval - rateLimitState.current)
+      remaining: Math.max(0, limit - rateLimitState.current)
     }
   }
 
@@ -129,11 +126,11 @@ export async function enforceRateLimit({
 
   return {
     id,
-    passed: rateLimitState.current <= maxPerInterval,
+    passed: rateLimitState.current <= limit,
     current: rateLimitState.current,
-    limit: maxPerInterval,
+    limit,
     resetTimeMs: rateLimitState.resetTimeMs,
     intervalMs,
-    remaining: Math.max(0, maxPerInterval - rateLimitState.current)
+    remaining: Math.max(0, limit - rateLimitState.current)
   }
 }

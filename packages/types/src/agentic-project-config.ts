@@ -7,11 +7,17 @@ import {
 } from './origin-adapter'
 import {
   defaultFreePricingPlan,
+  defaultRequestsRateLimit,
   pricingIntervalListSchema,
   type PricingPlanList,
   type PricingPlanListInput,
   pricingPlanListSchema
 } from './pricing'
+import {
+  type RateLimit,
+  type RateLimitInput,
+  rateLimitSchema
+} from './rate-limit'
 import {
   type ToolConfig,
   type ToolConfigInput,
@@ -137,6 +143,20 @@ To add support for annual pricing plans, for example, you can use: \`['month', '
       .default(['month']),
 
     /**
+     * Optional default rate limits to enforce for all pricing plans.
+     *
+     * To disable the default rate-limit, set `defaultRateLimit.enabled` to
+     * `false`.
+     *
+     * Note that pricing-plan-specific rate-limits override this default (via
+     * `pricingPlans`), and tool-specific rate-limits may override both default
+     * and pricing-plan-specific rate-limits (via `toolConfigs`).
+     */
+    defaultRateLimit: rateLimitSchema
+      .optional()
+      .default(defaultRequestsRateLimit),
+
+    /**
      * Optional list of tool configs to customize the behavior of tools.
      *
      * Make sure the tool `name` matches the origin server's tool names, either
@@ -170,6 +190,7 @@ export type AgenticProjectConfigInput = Simplify<
   > & {
     pricingPlans?: PricingPlanListInput
     toolConfigs?: ToolConfigInput[]
+    defaultRateLimit?: RateLimitInput
   }
 >
 export type AgenticProjectConfigRaw = z.output<
@@ -179,6 +200,7 @@ export type AgenticProjectConfig = Simplify<
   Omit<AgenticProjectConfigRaw, 'pricingPlans' | 'toolConfigs'> & {
     pricingPlans: PricingPlanList
     toolConfigs: ToolConfig[]
+    defaultRateLimit: RateLimit
   }
 >
 
@@ -194,5 +216,6 @@ export type ResolvedAgenticProjectConfig = Simplify<
   > & {
     pricingPlans: PricingPlanList
     toolConfigs: ToolConfig[]
+    defaultRateLimit: RateLimit
   }
 >

@@ -1,7 +1,9 @@
 import {
   agenticProjectConfigSchema,
+  defaultRequestsRateLimit,
   type OriginAdapter,
   type PricingPlanList,
+  type RateLimit,
   resolvedAgenticProjectConfigSchema,
   type Tool,
   type ToolConfig
@@ -92,7 +94,16 @@ export const deployments = pgTable(
     pricingPlans: jsonb().$type<PricingPlanList>().notNull(),
 
     // Which pricing intervals are supported for subscriptions to this project
-    pricingIntervals: pricingIntervalEnum().array().default(['month']).notNull()
+    pricingIntervals: pricingIntervalEnum()
+      .array()
+      .default(['month'])
+      .notNull(),
+
+    // Default rate limit across all pricing plans
+    defaultRateLimit: jsonb()
+      .$type<RateLimit>()
+      .notNull()
+      .default(defaultRequestsRateLimit)
 
     // TODO: metadata config (logo, keywords, examples, etc)
     // TODO: webhooks
@@ -159,7 +170,8 @@ export const deploymentSelectSchema = createSelectSchema(deployments, {
   pricingPlans: resolvedAgenticProjectConfigSchema.shape.pricingPlans,
   pricingIntervals: resolvedAgenticProjectConfigSchema.shape.pricingIntervals,
   tools: resolvedAgenticProjectConfigSchema.shape.tools,
-  toolConfigs: resolvedAgenticProjectConfigSchema.shape.toolConfigs
+  toolConfigs: resolvedAgenticProjectConfigSchema.shape.toolConfigs,
+  defaultRateLimit: resolvedAgenticProjectConfigSchema.shape.defaultRateLimit
 })
   .omit({
     originUrl: true

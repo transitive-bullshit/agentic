@@ -39,13 +39,13 @@ test('AgenticProjectConfig input types', () => {
             usageType: 'metered'
             billingScheme: 'per_unit'
             unitAmount: 50
-            rateLimit: {
-              // Make sure `interval` can use a string as input
-              interval: '30s'
-              maxPerInterval: 100
-            }
           }
         ]
+        rateLimit: {
+          // Make sure `interval` can use a string as input
+          interval: '30s'
+          limit: 100
+        }
       }
     ]
   }>().toExtend<AgenticProjectConfigInput>()
@@ -63,13 +63,13 @@ test('AgenticProjectConfig input types', () => {
             usageType: 'metered'
             billingScheme: 'per_unit'
             unitAmount: 50
-            rateLimit: {
-              // Make sure `interval` can use a number as input
-              interval: 300
-              maxPerInterval: 100
-            }
           }
         ]
+        rateLimit: {
+          // Make sure `interval` can use a number as input
+          interval: 300
+          limit: 100
+        }
       }
     ]
   }>().toExtend<AgenticProjectConfigInput>()

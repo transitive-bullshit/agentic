@@ -17,14 +17,14 @@ export default defineConfig({
           slug: 'requests',
           usageType: 'metered',
           billingScheme: 'per_unit',
-          unitAmount: 0,
+          unitAmount: 0
           // Free but limited to 20 requests per day
-          rateLimit: {
-            maxPerInterval: 20,
-            interval: 60 * 60 * 24 // 1 day in seconds
-          }
         }
-      ]
+      ],
+      rateLimit: {
+        limit: 20,
+        interval: 60 * 60 * 24 // 1 day in seconds
+      }
     },
     {
       name: 'Pay-As-You-Go',
@@ -48,7 +48,11 @@ export default defineConfig({
             }
           ]
         }
-      ]
+      ],
+      rateLimit: {
+        limit: 1000,
+        interval: '1d'
+      }
     }
   ]
 })

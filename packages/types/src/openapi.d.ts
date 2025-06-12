@@ -479,20 +479,25 @@ export interface components {
             };
         };
         RateLimit: {
+            /** @enum {boolean} */
+            enabled: false;
+        } | {
             /** @description The interval at which the rate limit is applied. Either a positive integer expressed in seconds or a valid positive [ms](https://github.com/vercel/ms) string (eg, "10s", "1m", "8h", "2d", "1w", "1y", etc). */
             interval: number | string;
             /** @description Maximum number of operations per interval (unitless). */
-            maxPerInterval: number;
+            limit: number;
             /**
-             * @description Whether to enforce the rate limit synchronously or asynchronously.
+             * @description Whether to enforce the rate limit synchronously (strict but slower) or asynchronously (approximate and faster, the default).
              * @default true
              */
             async: boolean;
+            /** @default true */
+            enabled: boolean;
         };
         PricingPlanToolOverride: {
             enabled?: boolean;
             reportUsage?: boolean;
-            rateLimit?: components["schemas"]["RateLimit"] | null;
+            rateLimit?: components["schemas"]["RateLimit"];
         };
         ToolConfig: {
             /** @description Agentic tool name */
@@ -501,7 +506,7 @@ export interface components {
             pure?: boolean;
             cacheControl?: string;
             reportUsage?: boolean;
-            rateLimit?: components["schemas"]["RateLimit"] | null;
+            rateLimit?: components["schemas"]["RateLimit"];
             inputSchemaAdditionalProperties?: boolean;
             outputSchemaAdditionalProperties?: boolean;
             /** @description Allows you to override this tool's behavior or disable it entirely for different pricing plans. This is a map of PricingPlan slug to PricingPlanToolOverrides for that plan. */
@@ -603,7 +608,6 @@ export interface components {
             /** @enum {string} */
             usageType: "metered";
             unitLabel?: string;
-            rateLimit?: components["schemas"]["RateLimit"];
             billingScheme: "per_unit" | "tiered";
             unitAmount?: number;
             tiersMode?: "graduated" | "volume";
@@ -625,6 +629,7 @@ export interface components {
             description?: string;
             features?: string[];
             trialPeriodDays?: number;
+            rateLimit?: components["schemas"]["RateLimit"];
             lineItems: components["schemas"]["PricingPlanLineItem"][];
         };
         /** @description A Deployment is a single, immutable instance of a Project. Each deployment contains pricing plans, origin server config (OpenAPI or MCP server), tool definitions, and metadata.
@@ -678,7 +683,13 @@ export interface components {
              *             "usageType": "licensed",
              *             "amount": 0
              *           }
-             *         ]
+             *         ],
+             *         "rateLimit": {
+             *           "interval": 60,
+             *           "limit": 1000,
+             *           "async": true,
+             *           "enabled": true
+             *         }
              *       }
              *     ]
              */
@@ -694,6 +705,7 @@ export interface components {
              *     ]
              */
             pricingIntervals: components["schemas"]["PricingInterval"][];
+            defaultRateLimit?: components["schemas"]["RateLimit"] & unknown;
             project?: components["schemas"]["Project"];
         };
         /**
@@ -1654,7 +1666,13 @@ export interface operations {
                      *             "usageType": "licensed",
                      *             "amount": 0
                      *           }
-                     *         ]
+                     *         ],
+                     *         "rateLimit": {
+                     *           "interval": 60,
+                     *           "limit": 1000,
+                     *           "async": true,
+                     *           "enabled": true
+                     *         }
                      *       }
                      *     ]
                      */
@@ -1670,6 +1688,7 @@ export interface operations {
                      *     ]
                      */
                     pricingIntervals?: components["schemas"]["PricingInterval"][];
+                    defaultRateLimit?: components["schemas"]["RateLimit"] & unknown;
                     /** @default [] */
                     toolConfigs?: components["schemas"]["ToolConfig"][];
                 };
