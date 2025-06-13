@@ -12,7 +12,7 @@ The platform consists of:
 
 - **API Service** (`apps/api/`) - Internal platform API with authentication, billing, and resource management
 - **Gateway Service** (`apps/gateway/`) - Cloudflare Worker that proxies requests to origin MCP/OpenAPI services
-- **E2E Tests** (`apps/e2e/`) - End-to-end test suite for HTTP and MCP interfaces
+- **E2E Tests** (`apps/e2e/`) - End-to-end test suite for HTTP and MCP gateway requests
 - **Shared Packages** (`packages/`) - Common utilities, types, validators, and configuration
 
 The gateway accepts requests at `https://gateway.agentic.so/deploymentIdentifier/toolName` for REST or `https://gateway.agentic.so/deploymentIdentifier/mcp` for MCP.
@@ -119,27 +119,30 @@ All packages must follow these `package.json` rules:
 - Use TypeScript's utility types (e.g., `Partial`, `Pick`, `Omit`) to manipulate existing types
 - Create custom types for complex data structures used throughout the application
 - If possible, avoid using `any`/`unknown` or casting values like `(value as any)` in TypeScript outside of test files e.g. `*.test.ts` or test fixtures e.g. `**/test-data.ts`.
-- Don't rely on `typeof`, `ReturnType<>`, `Awaited<>`, etc for complex type inference (it's ok for simple types)
+- Try not to rely on `typeof`, `ReturnType<>`, `Awaited<>`, etc for complex type inference (it's ok for simple types)
 - You can use `as const` as needed for better type inference
 - Functions should accept an object parameter instead of multiple parameters
-  - Good examples:
+  - GOOD examples:
     ```ts
     function myFunction({ foo, bar }: { foo: boolean; bar: string }) {}
     function VideoPlayer({ sid }: { sid: string }) {}
     ```
-  - Bad examples:
+  - BAD examples:
     ```ts
     function myFunction(foo: boolean, bar: string, baz: number) {}
     ```
 - Arguments should generally be destructured in the function definition, not the function body.
-  - Good example:
+  - GOOD example:
     ```ts
     function myFunction({ foo, bar }: { foo: boolean; bar: string }) {}
+    function exampleWithOptionalParams({
+      foo = 'example'
+    }: { foo?: string } = {}) {}
     ```
-  - Bad example:
+  - BAD example:
     ```ts
-    function myFunction(args: { foo: boolean; bar: string }) {
-      const { foo, bar } = args
+    function myFunction(opts: { foo: boolean; bar: string }) {
+      const { foo, bar } = opts
     }
     ```
 - Zod should be used to parse untrusted data, but not for data that is trusted like function arguments
@@ -192,8 +195,8 @@ Comments should be used to document and explain code. They should complement the
 - **All unit tests should use Vitest**
   - DO NOT attempt to install or use other testing libraries like Jest
 - Test files should be named `[target].test.ts` and placed in the same directory as the code they are testing (NOT a separate directory)
-  - Good example: `src/my-file.ts` and `src/my-file.test.ts`
-  - Bad example: `src/my-file.ts` and `src/test/my-file.test.ts` or `test/my-file.test.ts` or `src/__tests__/my-file.test.ts`
+  - GOOD example: `src/my-file.ts` and `src/my-file.test.ts`
+  - BAD example: `src/my-file.ts` and `src/test/my-file.test.ts` or `test/my-file.test.ts` or `src/__tests__/my-file.test.ts`
 - Tests should be run with `pnpm test:unit`
 - You may use `any`/`unknown` in test files (such as `*.test.ts`) or test fixtures (like `**/test-data.ts`) to facilitate mocking or stubbing external modules or partial function arguments, referencing the usage guidelines in the TypeScript section.
 - Frontend react code does not need unit tests

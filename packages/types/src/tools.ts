@@ -1,16 +1,13 @@
-import { toolNameRe } from '@agentic/platform-validators'
+import { isToolNameAllowed, toolNameRe } from '@agentic/platform-validators'
 import { z } from '@hono/zod-openapi'
 
 import { pricingPlanSlugSchema } from './pricing'
 import { rateLimitSchema } from './rate-limit'
 
-// TODO: add more reserved tool names?
-// TODO: if we separate mcp endpoint from REST endpoint, we may be able to have
-// tools named `mcp`. would be nice not to impose a blacklist.
-const toolNameBlacklist = new Set(['mcp'])
-
 /**
  * Agentic tool name.
+ *
+ * Follows OpenAI/Anthropic/Gemini function calling naming conventions.
  *
  * @example `"get_weather"`
  * @example `"searchGoogle"`
@@ -21,9 +18,9 @@ export const toolNameSchema = z
   .nonempty()
   .regex(toolNameRe)
   .refine(
-    (name) => !toolNameBlacklist.has(name),
+    (name) => isToolNameAllowed(name),
     (name) => ({
-      message: `Tool name is reserved: "${name}"`
+      message: `Tool name "${name}" is reserved; please choose a different name.`
     })
   )
   .describe('Agentic tool name')

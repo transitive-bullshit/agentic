@@ -2,6 +2,7 @@ import { expect, test } from 'vitest'
 
 import {
   isNamespaceAllowed,
+  isToolNameAllowed,
   isValidDeploymentHash,
   isValidDeploymentIdentifier,
   isValidEmail,
@@ -176,4 +177,14 @@ test('isValidToolName failure', () => {
       'too_long_too_long_too_long_too_long_too_long_too_long_too_long_to'
     )
   ).toBe(false)
+})
+
+test('isToolNameAllowed', () => {
+  expect(isToolNameAllowed('foo')).toBe(true)
+  expect(isToolNameAllowed('tool_name')).toBe(true)
+  expect(isToolNameAllowed('searchGoogle')).toBe(true)
+  expect(isToolNameAllowed('mcp')).toBe(false)
+  expect(isToolNameAllowed('sse')).toBe(false)
+  expect(isToolNameAllowed()).toBe(false)
+  expect(isToolNameAllowed('')).toBe(false)
 })

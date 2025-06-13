@@ -7,8 +7,8 @@
 
 ## API Gateway
 
-- **REST**: `GET/POST` `https://gateway.agentic.so/deploymentIdentifier/toolName`
-- **MCP**: `https://gateway.agentic.so/deploymentIdentifier/mcp`
+- **MCP**: `https://gateway.agentic.so/@{username}/{project-name}/mcp`
+- **HTTP**: `GET/POST` `https://gateway.agentic.so/@{username}/{project-name}/{tool-name}`
 
 ## TODO: MVP
 
@@ -24,7 +24,6 @@
   - oauth flow
     - https://docs.scalekit.com/guides/mcp/oauth
   - **test usage tracking and reporting**
-  - disallow `mcp` and `sse` as tool names or figure out a different workaround
 - docs
   - main readme
   - sub readmes
