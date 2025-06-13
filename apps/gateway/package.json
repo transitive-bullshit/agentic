@@ -23,7 +23,6 @@
     "cf-clear-cache": "del .wrangler",
     "clean": "del dist",
     "test": "run-s test:*",
-    "test:lint": "eslint .",
     "test:typecheck": "tsc --noEmit",
     "test:unit": "vitest run",
     "sentry:sourcemaps": "_SENTRY_RELEASE=$(sentry-cli releases propose-version) && sentry-cli releases new $_SENTRY_RELEASE --org=agentic-kj --project=node && sentry-cli sourcemaps upload --org=agentic-kj --project=node --release=$_SENTRY_RELEASE --strip-prefix 'dist/..' dist",

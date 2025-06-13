@@ -20,7 +20,7 @@
     "fix:format": "prettier --write \"**/*.{js,ts,tsx}\"",
     "test": "turbo test",
     "test:format": "prettier --check \"**/*.{js,ts,tsx}\"",
-    "test:lint": "turbo test:lint",
+    "test:lint": "eslint --cache .",
     "test:typecheck": "turbo test:typecheck",
     "test:unit": "turbo test:unit",
     "pretest": "run-s build",

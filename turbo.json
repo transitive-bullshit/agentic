@@ -15,7 +15,7 @@
       "dependsOn": ["test:format", "test:lint", "test:typecheck", "test:unit"]
     },
     "test:lint": {
-      "dependsOn": ["^test:lint"],
+      "dependsOn": ["//#test:lint", "^test:lint"],
       "outputLogs": "errors-only"
     },
     "test:typecheck": {
@@ -30,6 +30,7 @@
       "dependsOn": ["//#test:format", "^test:format"]
     },
     "//#test:format": {},
+    "//#test:lint": {},
     "dev": {
       "cache": false,
       "persistent": true

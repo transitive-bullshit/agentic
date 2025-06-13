@@ -19,7 +19,6 @@
   "scripts": {
     "generate": "openapi-typescript http://localhost:3000/docs --output ./src/openapi.d.ts",
     "test": "run-s test:*",
-    "test:lint": "eslint .",
     "test:typecheck": "tsc --noEmit",
     "test:unit": "vitest run"
   },

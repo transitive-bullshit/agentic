@@ -13,7 +13,6 @@
   "type": "module",
   "scripts": {
     "test": "run-s test:*",
-    "test:lint": "eslint .",
     "test:typecheck": "tsc --noEmit",
     "e2e": "vitest run",
     "e2e-http": "vitest run src/http-e2e.test.ts",

@@ -12,7 +12,6 @@
   "scripts": {
     "start": "tsx src/server.ts",
     "test": "run-s test:*",
-    "test:lint": "eslint .",
     "test:typecheck": "tsc --noEmit"
   },
   "dependencies": {
