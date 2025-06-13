@@ -7,17 +7,18 @@ import {
   responseTime,
   sentry
 } from '@agentic/platform-hono'
-import { parseToolIdentifier } from '@agentic/platform-validators'
 import { Hono } from 'hono'
 
-import type { GatewayHonoEnv, ResolvedOriginToolCallResult } from './lib/types'
+import type {
+  GatewayHonoEnv,
+  ResolvedHttpEdgeRequest,
+  ResolvedOriginToolCallResult
+} from './lib/types'
 import { createAgenticClient } from './lib/agentic-client'
 import { createHttpResponseFromMcpToolCallResponse } from './lib/create-http-response-from-mcp-tool-call-response'
 import { recordToolCallUsage } from './lib/record-tool-call-usage'
-import {
-  type ResolvedHttpEdgeRequest,
-  resolveHttpEdgeRequest
-} from './lib/resolve-http-edge-request'
+import { resolveEdgeRequest } from './lib/resolve-edge-request'
+import { resolveHttpEdgeRequest } from './lib/resolve-http-edge-request'
 import { resolveMcpEdgeRequest } from './lib/resolve-mcp-edge-request'
 import { resolveOriginToolCall } from './lib/resolve-origin-tool-call'
 import { isRequestPubliclyCacheable } from './lib/utils'
@@ -65,21 +66,17 @@ app.all(async (ctx) => {
     })
   )
 
-  // TODO: Clean up the duplication between this block,
-  // `resolveMcpEdgeRequest`, and `resolveHttpEdgeRequest`.
-  const requestUrl = new URL(ctx.req.url)
-  const { pathname } = requestUrl
-  const requestedToolIdentifier = pathname.replace(/^\//, '').replace(/\/$/, '')
-  const { toolName } = parseToolIdentifier(requestedToolIdentifier)
+  const resolvedEdgeRequest = await resolveEdgeRequest(ctx)
+  const { toolName } = resolvedEdgeRequest.parsedToolIdentifier
 
   // Handle MCP requests
   if (toolName === 'mcp') {
     ctx.set('isJsonRpcRequest', true)
     const executionCtx = ctx.executionCtx as any
-    const mcpInfo = await resolveMcpEdgeRequest(ctx)
+    const mcpInfo = await resolveMcpEdgeRequest(ctx, resolvedEdgeRequest)
     executionCtx.props = mcpInfo
 
-    return DurableMcpServer.serve(pathname, {
+    return DurableMcpServer.serve('/*', {
       binding: 'DO_MCP_SERVER'
     }).fetch(ctx.req.raw, ctx.env, executionCtx)
   }
@@ -92,14 +89,16 @@ app.all(async (ctx) => {
   try {
     // Resolve the http edge request to a specific deployment, consumer, and
     // tool call.
-    resolvedHttpEdgeRequest = await resolveHttpEdgeRequest(ctx)
+    resolvedHttpEdgeRequest = await resolveHttpEdgeRequest(
+      ctx,
+      resolvedEdgeRequest
+    )
 
     // Invoke the origin tool call.
     resolvedOriginToolCallResult = await resolveOriginToolCall({
       ...resolvedHttpEdgeRequest,
       args: resolvedHttpEdgeRequest.toolCallArgs,
       sessionId: ctx.get('sessionId')!,
-      ip: ctx.get('ip'),
       env: ctx.env,
       waitUntil
     })
@@ -129,12 +128,10 @@ app.all(async (ctx) => {
     if (resolvedHttpEdgeRequest && res) {
       recordToolCallUsage({
         ...resolvedHttpEdgeRequest,
-        requestMode: 'http',
+        edgeRequestMode: 'http',
         httpResponse: res,
         resolvedOriginToolCallResult,
         sessionId: ctx.get('sessionId')!,
-        requestId: ctx.get('requestId')!,
-        ip: ctx.get('ip'),
         env: ctx.env,
         waitUntil
       })

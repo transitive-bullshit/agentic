@@ -37,6 +37,7 @@
     "@agentic/platform-hono": "workspace:*",
     "@agentic/platform-types": "workspace:*",
     "@agentic/platform-validators": "workspace:*",
+    "@cloudflare/workers-oauth-provider": "^0.0.5",
     "@hono/zod-validator": "catalog:",
     "@modelcontextprotocol/sdk": "catalog:",
     "@sentry/cloudflare": "catalog:",

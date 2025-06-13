@@ -1,4 +1,3 @@
-import type { AdminDeployment, PricingPlan } from '@agentic/platform-types'
 import { assert, getRateLimitHeaders } from '@agentic/platform-core'
 import { parseDeploymentIdentifier } from '@agentic/platform-validators'
 import { Server } from '@modelcontextprotocol/sdk/server/index.js'
@@ -11,8 +10,8 @@ import { McpAgent } from 'agents/mcp'
 
 import type { RawEnv } from './env'
 import type {
-  AdminConsumer,
   McpToolCallResponse,
+  ResolvedMcpEdgeRequest,
   ResolvedOriginToolCallResult
 } from './types'
 import { handleMcpToolCallError } from './handle-mcp-tool-call-error'
@@ -23,13 +22,8 @@ import { createAgenticMcpMetadata } from './utils'
 
 export class DurableMcpServerBase extends McpAgent<
   RawEnv,
-  never, // TODO: do we need local state?
-  {
-    deployment: AdminDeployment
-    consumer?: AdminConsumer
-    pricingPlan?: PricingPlan
-    ip?: string
-  }
+  never, // We aren't currently using local state, so set it to `never`.
+  ResolvedMcpEdgeRequest
 > {
   protected _serverP = Promise.withResolvers<Server>()
   override server = this._serverP.promise
@@ -40,7 +34,7 @@ export class DurableMcpServerBase extends McpAgent<
   }
 
   override async init() {
-    const { consumer, deployment, pricingPlan, ip } = this.props
+    const { consumer, deployment, pricingPlan } = this.props
     const { projectIdentifier } = parseDeploymentIdentifier(
       deployment.identifier
     )
@@ -62,20 +56,17 @@ export class DurableMcpServerBase extends McpAgent<
         )
 
         if (toolConfig) {
-          const pricingPlanToolConfig = pricingPlan
+          const pricingPlanToolOverride = pricingPlan
             ? toolConfig.pricingPlanOverridesMap?.[pricingPlan.slug]
             : undefined
 
-          if (pricingPlanToolConfig?.enabled === false) {
-            // Tool is disabled / hidden for the customer's current pricing plan
+          if (pricingPlanToolOverride?.enabled === true) {
+            // Tool is explicitly enabled for the customer's pricing plan
+          } else if (pricingPlanToolOverride?.enabled === false) {
+            // Tool is disabled for the customer's pricing plan
             return undefined
-          }
-
-          if (
-            pricingPlanToolConfig?.enabled !== true &&
-            toolConfig.enabled === false
-          ) {
-            // Tool is disabled / hidden for all pricing plans
+          } else if (toolConfig.enabled === false) {
+            // Tool is disabled for all pricing plans
             return undefined
           }
         }
@@ -101,15 +92,12 @@ export class DurableMcpServerBase extends McpAgent<
         assert(tool, 404, `Unknown tool "${toolName}"`)
 
         resolvedOriginToolCallResult = await resolveOriginToolCall({
+          ...this.props,
           tool,
           args,
-          deployment,
-          consumer,
-          pricingPlan,
           cacheControl,
           sessionId,
           env: this.env,
-          ip,
           waitUntil: this.ctx.waitUntil.bind(this.ctx)
         })
 
@@ -155,13 +143,11 @@ export class DurableMcpServerBase extends McpAgent<
         // Record tool call usage, whether the call was successful or not.
         recordToolCallUsage({
           ...this.props,
-          requestMode: 'mcp',
+          edgeRequestMode: 'mcp',
           tool,
           mcpToolCallResponse: toolCallResponse!,
           resolvedOriginToolCallResult,
           sessionId,
-          // TODO: requestId
-          ip,
           env: this.env,
           waitUntil: this.ctx.waitUntil.bind(this.ctx)
         })

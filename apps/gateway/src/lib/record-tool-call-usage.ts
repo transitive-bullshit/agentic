@@ -7,8 +7,8 @@ import type {
 import type { RawEnv } from './env'
 import type {
   AdminConsumer,
+  EdgeRequestMode,
   McpToolCallResponse,
-  RequestMode,
   ResolvedOriginToolCallResult,
   WaitUntil
 } from './types'
@@ -31,7 +31,7 @@ import { createStripe } from './external/stripe'
  * @see https://developers.cloudflare.com/analytics/analytics-engine/limits/
  */
 export function recordToolCallUsage({
-  requestMode,
+  edgeRequestMode,
   deployment,
   consumer,
   tool,
@@ -44,7 +44,7 @@ export function recordToolCallUsage({
   env,
   waitUntil
 }: {
-  requestMode: RequestMode
+  edgeRequestMode: EdgeRequestMode
   deployment: AdminDeployment
   consumer?: AdminConsumer
   pricingPlan?: PricingPlan
@@ -60,13 +60,13 @@ export function recordToolCallUsage({
 } & (
   | {
       // For http requests, an http response is required.
-      requestMode: 'http'
+      edgeRequestMode: 'http'
       httpResponse: Response
       mcpToolCallResponse?: never
     }
   | {
       // For mcp cool call requests, an mcp tool call response is required.
-      requestMode: 'mcp'
+      edgeRequestMode: 'mcp'
       httpResponse?: never
       mcpToolCallResponse: McpToolCallResponse
     }
@@ -105,7 +105,7 @@ export function recordToolCallUsage({
     tool?.name ?? null,
 
     // Whether this request was made via MCP or HTTP
-    requestMode,
+    edgeRequestMode,
 
     // IP address or session ID
     ip ?? sessionId,

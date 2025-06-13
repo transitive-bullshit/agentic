@@ -463,6 +463,9 @@ importers:
       '@agentic/platform-validators':
         specifier: workspace:*
         version: link:../../packages/validators
+      '@cloudflare/workers-oauth-provider':
+        specifier: ^0.0.5
+        version: 0.0.5
       '@hono/zod-validator':
         specifier: 'catalog:'
         version: 0.7.0(hono@4.7.11)(zod@3.25.62)
@@ -968,6 +971,9 @@ packages:
     engines: {node: '>=16'}
     cpu: [x64]
     os: [win32]
+
+  '@cloudflare/workers-oauth-provider@0.0.5':
+    resolution: {integrity: sha512-t1x5KAzsubCvb4APnJ93z407X1x7SGj/ga5ziRnwIb/iLy4PMkT/hgd1y5z7Bbsdy5Fy6mywhCP4lym24bX66w==}
 
   '@cloudflare/workers-types@4.20250610.0':
     resolution: {integrity: sha512-HxnUoey3QxCEfy07pUm7J42jBi9YPHq/hA3fw6JmOqYLHdviHI28OA8lup+2RUaHwDzh6q1DSfrBvvDqde645A==}
@@ -5985,6 +5991,10 @@ snapshots:
 
   '@cloudflare/workerd-windows-64@1.20250604.0':
     optional: true
+
+  '@cloudflare/workers-oauth-provider@0.0.5':
+    dependencies:
+      '@cloudflare/workers-types': 4.20250610.0
 
   '@cloudflare/workers-types@4.20250610.0': {}
 

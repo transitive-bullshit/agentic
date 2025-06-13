@@ -6,10 +6,14 @@ import type {
 } from '@agentic/platform-hono'
 import type {
   AdminConsumer as AdminConsumerImpl,
+  AdminDeployment,
+  PricingPlan,
   RateLimit,
+  Tool,
   ToolConfig,
   User
 } from '@agentic/platform-types'
+import type { ParsedToolIdentifier } from '@agentic/platform-validators'
 import type { Client as McpClient } from '@modelcontextprotocol/sdk/client/index.js'
 import type { Context } from 'hono'
 import type { Simplify } from 'type-fest'
@@ -57,9 +61,29 @@ export type RateLimitState = {
 export type RateLimitCache = Map<string, RateLimitState>
 
 export type CacheStatus = 'HIT' | 'MISS' | 'BYPASS' | 'DYNAMIC'
-export type RequestMode = 'mcp' | 'http'
+export type EdgeRequestMode = 'mcp' | 'http'
 
 export type WaitUntil = (promise: Promise<any>) => void
+
+export interface ResolvedEdgeRequest extends Record<string, unknown> {
+  parsedToolIdentifier: ParsedToolIdentifier
+  deployment: AdminDeployment
+  requestId: string
+  ip?: string
+}
+
+export interface ResolvedMcpEdgeRequest extends ResolvedEdgeRequest {
+  consumer?: AdminConsumer
+  pricingPlan?: PricingPlan
+}
+
+export interface ResolvedHttpEdgeRequest extends ResolvedEdgeRequest {
+  consumer?: AdminConsumer
+  pricingPlan?: PricingPlan
+  tool: Tool
+  toolCallArgs: ToolCallArgs
+  cacheControl?: string
+}
 
 export type ResolvedOriginToolCallResult = {
   toolCallArgs: ToolCallArgs
