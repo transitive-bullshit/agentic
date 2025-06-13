@@ -10,9 +10,11 @@
 - **REST**: `GET/POST` `https://gateway.agentic.so/deploymentIdentifier/toolName`
 - **MCP**: `https://gateway.agentic.so/deploymentIdentifier/mcp`
 
-## TODO
+## TODO: MVP
 
-- **webapp**
+- **website**
+  - marketing landing page
+  - webapp
 - stripe
   - stripe checkout
   - stripe billing portal
@@ -21,29 +23,19 @@
 - **API gateway**
   - oauth flow
     - https://docs.scalekit.com/guides/mcp/oauth
-  - openapi-kitchen-sink
-    - add more test cases to e2e tests
-  - mcp-kitchen-sink
-  - how to handle binary bodies and responses?
-  - improve logger vs console for non-hono path and util methods
-  - default rate limits?
   - **test usage tracking and reporting**
-  - disallow `mcp` as a tool name or figure out a different workaround
-- **Public MCP server interface**
-  - how does oauth work with this flow?
-  - pass requestId to DurableMcpServer somehow on a per-request basis
-- **Origin MCP servers**
-  - how to guarantee that the request is coming from agentic?
-    - `_meta` for tool calls
-    - _still need a way of doing this for initial connection requests_
-  - mcp auth provider support
-  - binary bodies / responses?
-  - resources
-  - prompts
-  - other MCP features?
+  - disallow `mcp` and `sse` as tool names or figure out a different workaround
+- docs
+  - main readme
+  - sub readmes
+  - hosted docs
+- merge with current agentic repo
+- publish packages to npm
 
-## TODO Post-MVP
+## TODO: Post-MVP
 
+- **website**
+  - llms.txt and llms.txt for all projects
 - first-party deployment hosting
 - api gateway stress tests
 - auth
@@ -62,7 +54,7 @@
 - validate stability of pricing plan slugs across deployments
   - same for pricing plan line-items
 - replace `ms` package
-- API gateway
+- **API gateway**
   - **do we just ditch the public REST interface and focus on MCP?**
   - SSE support? (no; post-mvp if at all; only support [streamable http](https://modelcontextprotocol.io/specification/2025-03-26/basic/transports#streamable-http) like smithery does, or maybe support both?)
   - signed requests
@@ -70,11 +62,28 @@
   - add ability to only report stripe usage on non-cached requests
   - add support for ToolConfig.cost defaulting to 1, to easily support tools which cost multiple "credits"
   - extra `Sentry` instrumentation (`setUser`, `captureMessage`, etc)
+  - test handling of binary bodies and responses
+  - improve logger vs console for non-hono path and util methods
+  - consider replacing `eventId` with uuids for `requestId`?
+  - openapi origin kitchen sink
+    - add more test cases to e2e tests for diff content types
+  - mcp origin kitchen sink
+  - add support for `/sse`? need to test with claude desktop
+  - test handling of resources
 - `@agentic/platform-hono`
   - fix sentry middleware
     - https://github.com/honojs/middleware/blob/main/packages/sentry/src/index.ts
     - https://github.com/honojs/middleware/issues/943
     - https://github.com/getsentry/sentry-javascript/tree/master/packages/cloudflare
+- **Origin MCP servers**
+  - how to guarantee that the request is coming from agentic?
+    - `_meta` for tool calls
+    - _still need a way of doing this for initial connection requests_
+  - mcp auth provider support
+  - binary bodies / responses?
+  - resources
+  - prompts
+  - other MCP features?
 - additional transactional emails
 - consider `projectName` and `projectSlug` or `projectIdentifier`?
 - handle or validate against dynamic MCP origin tools
