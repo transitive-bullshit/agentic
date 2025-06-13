@@ -1,3 +1,5 @@
+import { assert } from '@agentic/platform-core'
+
 import type {
   GatewayHonoContext,
   ResolvedEdgeRequest,
@@ -9,6 +11,12 @@ export async function resolveMcpEdgeRequest(
   ctx: GatewayHonoContext,
   resolvedEdgeRequest: ResolvedEdgeRequest
 ): Promise<ResolvedMcpEdgeRequest> {
+  assert(
+    resolvedEdgeRequest.edgeRequestMode === 'MCP',
+    500,
+    `Internal error: Invalid edge request mode "${resolvedEdgeRequest.edgeRequestMode}" (expected "MCP")`
+  )
+
   const { deployment } = resolvedEdgeRequest
 
   // TODO: Should MCP edge requests also support Authorization header?
@@ -21,6 +29,7 @@ export async function resolveMcpEdgeRequest(
 
   return {
     ...resolvedEdgeRequest,
+    edgeRequestMode: 'MCP',
     consumer,
     pricingPlan
   }

@@ -60,13 +60,13 @@ export function recordToolCallUsage({
 } & (
   | {
       // For http requests, an http response is required.
-      edgeRequestMode: 'http'
+      edgeRequestMode: 'HTTP'
       httpResponse: Response
       mcpToolCallResponse?: never
     }
   | {
       // For mcp cool call requests, an mcp tool call response is required.
-      edgeRequestMode: 'mcp'
+      edgeRequestMode: 'MCP'
       httpResponse?: never
       mcpToolCallResponse: McpToolCallResponse
     }

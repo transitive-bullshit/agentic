@@ -18,6 +18,11 @@ export async function resolveHttpEdgeRequest(
   ctx: GatewayHonoContext,
   resolvedEdgeRequest: ResolvedEdgeRequest
 ): Promise<ResolvedHttpEdgeRequest> {
+  assert(
+    resolvedEdgeRequest.edgeRequestMode === 'HTTP',
+    500,
+    `Internal error: Invalid edge request mode "${resolvedEdgeRequest.edgeRequestMode}" (expected "HTTP")`
+  )
   const logger = ctx.get('logger')
   const ip = ctx.get('ip')
 
@@ -67,6 +72,7 @@ export async function resolveHttpEdgeRequest(
 
   return {
     ...resolvedEdgeRequest,
+    edgeRequestMode: 'HTTP',
     consumer,
     pricingPlan,
     tool,

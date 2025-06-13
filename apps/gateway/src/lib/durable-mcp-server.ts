@@ -143,7 +143,6 @@ export class DurableMcpServerBase extends McpAgent<
         // Record tool call usage, whether the call was successful or not.
         recordToolCallUsage({
           ...this.props,
-          edgeRequestMode: 'mcp',
           tool,
           mcpToolCallResponse: toolCallResponse!,
           resolvedOriginToolCallResult,

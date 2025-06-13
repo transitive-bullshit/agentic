@@ -61,11 +61,12 @@ export type RateLimitState = {
 export type RateLimitCache = Map<string, RateLimitState>
 
 export type CacheStatus = 'HIT' | 'MISS' | 'BYPASS' | 'DYNAMIC'
-export type EdgeRequestMode = 'mcp' | 'http'
+export type EdgeRequestMode = 'MCP' | 'HTTP'
 
 export type WaitUntil = (promise: Promise<any>) => void
 
 export interface ResolvedEdgeRequest extends Record<string, unknown> {
+  edgeRequestMode: EdgeRequestMode
   parsedToolIdentifier: ParsedToolIdentifier
   deployment: AdminDeployment
   requestId: string
@@ -73,11 +74,13 @@ export interface ResolvedEdgeRequest extends Record<string, unknown> {
 }
 
 export interface ResolvedMcpEdgeRequest extends ResolvedEdgeRequest {
+  edgeRequestMode: 'MCP'
   consumer?: AdminConsumer
   pricingPlan?: PricingPlan
 }
 
 export interface ResolvedHttpEdgeRequest extends ResolvedEdgeRequest {
+  edgeRequestMode: 'HTTP'
   consumer?: AdminConsumer
   pricingPlan?: PricingPlan
   tool: Tool

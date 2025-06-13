@@ -66,11 +66,11 @@ app.all(async (ctx) => {
     })
   )
 
+  // Resolve the edge request to a specific deployment and mode (MCP or HTTP)
   const resolvedEdgeRequest = await resolveEdgeRequest(ctx)
-  const { toolName } = resolvedEdgeRequest.parsedToolIdentifier
 
   // Handle MCP requests
-  if (toolName === 'mcp') {
+  if (resolvedEdgeRequest.edgeRequestMode === 'MCP') {
     ctx.set('isJsonRpcRequest', true)
     const executionCtx = ctx.executionCtx as any
     const mcpInfo = await resolveMcpEdgeRequest(ctx, resolvedEdgeRequest)
@@ -81,14 +81,14 @@ app.all(async (ctx) => {
     }).fetch(ctx.req.raw, ctx.env, executionCtx)
   }
 
+  // Handle HTTP requests
   let resolvedHttpEdgeRequest: ResolvedHttpEdgeRequest | undefined
   let resolvedOriginToolCallResult: ResolvedOriginToolCallResult | undefined
   let originResponse: Response | undefined
   let res: Response | undefined
 
   try {
-    // Resolve the http edge request to a specific deployment, consumer, and
-    // tool call.
+    // Resolve the http edge request to a specific consumer and tool call
     resolvedHttpEdgeRequest = await resolveHttpEdgeRequest(
       ctx,
       resolvedEdgeRequest
@@ -128,7 +128,6 @@ app.all(async (ctx) => {
     if (resolvedHttpEdgeRequest && res) {
       recordToolCallUsage({
         ...resolvedHttpEdgeRequest,
-        edgeRequestMode: 'http',
         httpResponse: res,
         resolvedOriginToolCallResult,
         sessionId: ctx.get('sessionId')!,

@@ -11,7 +11,8 @@ import { getAdminConsumer } from './get-admin-consumer'
 import { getAdminDeployment } from './get-admin-deployment'
 
 /**
- * Resolves an input HTTP request to a specific deployment.
+ * Resolves an input HTTP request to a specific deployment and edge request
+ * mode (MCP or HTTP).
  */
 export async function resolveEdgeRequest(
   ctx: GatewayHonoContext
@@ -26,7 +27,11 @@ export async function resolveEdgeRequest(
     parsedToolIdentifier.deploymentIdentifier
   )
 
+  const edgeRequestMode =
+    parsedToolIdentifier.toolName === 'mcp' ? 'MCP' : 'HTTP'
+
   return {
+    edgeRequestMode,
     parsedToolIdentifier,
     deployment,
     requestId: ctx.get('requestId'),
