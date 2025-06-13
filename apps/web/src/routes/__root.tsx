@@ -7,6 +7,7 @@ import {
 } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 
+import { ThemeProvider } from '@/components/theme-provider'
 import globalStyles from '@/styles/global.css?url'
 
 export const Route = createRootRoute({
@@ -50,7 +51,9 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
       </head>
 
       <body>
-        {children}
+        <ThemeProvider defaultTheme='dark' storageKey='agentic-ui-theme'>
+          {children}
+        </ThemeProvider>
 
         <TanStackRouterDevtools position='bottom-right' />
         <Scripts />
