@@ -16,8 +16,7 @@
     "build": "vite build",
     "clean": "del dist",
     "test": "run-s test:*",
-    "test:typecheck": "tsc --noEmit",
-    "test:unit": "vitest run"
+    "test:typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@agentic/platform": "workspace:*",
