@@ -50,3 +50,4 @@ apps/api/auth-db-temp.json
 .wrangler
 .sentryclirc
 .eslintcache
+.nitro

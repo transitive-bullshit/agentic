@@ -1,0 +1,14 @@
+{
+  "extends": "@fisch0920/config/tsconfig-react",
+  "compilerOptions": {
+    // https://tanstack.com/start/latest/docs/framework/react/build-from-scratch#typescript-configuration
+    "verbatimModuleSyntax": false,
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  },
+  "include": ["src", "*.config.ts"],
+  "exclude": ["node_modules", "dist"]
+}

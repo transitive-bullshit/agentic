@@ -30,7 +30,6 @@
   },
   "dependencies": {
     "@agentic/json-schema": "workspace:*",
-    "@agentic/platform": "workspace:*",
     "@agentic/platform-api-client": "workspace:*",
     "@agentic/platform-core": "workspace:*",
     "@agentic/platform-hono": "workspace:*",

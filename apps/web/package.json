@@ -1,0 +1,51 @@
+{
+  "name": "web",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Agentic platform webapp.",
+  "author": "Travis Fischer <travis@transitivebullsh.it>",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/transitive-bullshit/agentic-platform.git",
+    "directory": "apps/web"
+  },
+  "type": "module",
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build",
+    "clean": "del dist",
+    "test": "run-s test:*",
+    "test:typecheck": "tsc --noEmit",
+    "test:unit": "vitest run"
+  },
+  "dependencies": {
+    "@agentic/platform": "workspace:*",
+    "@agentic/platform-api-client": "workspace:*",
+    "@agentic/platform-core": "workspace:*",
+    "@agentic/platform-types": "workspace:*",
+    "@agentic/platform-validators": "workspace:*",
+    "@tanstack/react-router": "^1.121.2",
+    "@tanstack/react-router-devtools": "^1.121.8",
+    "@tanstack/react-start": "^1.121.10",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.515.0",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "stripe": "catalog:",
+    "tailwind-merge": "^3.3.1",
+    "type-fest": "catalog:",
+    "vite": "^6.3.5"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.10",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.5",
+    "tailwindcss": "^4.1.10",
+    "tw-animate-css": "^1.3.4",
+    "vite-tsconfig-paths": "catalog:"
+  }
+}
