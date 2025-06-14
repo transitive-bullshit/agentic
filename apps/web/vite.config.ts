@@ -11,5 +11,8 @@ export default defineConfig({
     tanstackStart({
       target: 'vercel'
     })
-  ]
+  ],
+  ssr: {
+    noExternal: ['posthog-js', 'posthog-js/react']
+  }
 })

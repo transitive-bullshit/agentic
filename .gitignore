@@ -51,3 +51,4 @@ apps/api/auth-db-temp.json
 .sentryclirc
 .eslintcache
 .nitro
+.tanstack

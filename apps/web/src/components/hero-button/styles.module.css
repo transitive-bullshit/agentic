@@ -1,0 +1,166 @@
+.heroButtonWrapper {
+  position: relative;
+  z-index: 100;
+}
+
+.heroButtonBg1 {
+  --start-color: #00dfd8;
+  --end-color: #007cf0;
+  /* animation: heroBgAnimation1 8s infinite; */
+}
+
+.heroButtonBg2 {
+  --start-color: #ff0080;
+  --end-color: #7928ca;
+  /* animation: heroBgAnimation2 8s infinite; */
+}
+
+.heroButtonBg3 {
+  --start-color: #ff4d4d;
+  --end-color: #f9cb28;
+  /* animation: heroBgAnimation3 8s infinite; */
+}
+
+.heroButtonBg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(
+    165deg,
+    var(--start-color),
+    var(--end-color)
+  );
+  border-radius: 5px;
+  z-index: -2;
+}
+
+.heroButtonBg::before {
+  position: absolute;
+  content: '';
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  border: 12px solid transparent;
+  filter: blur(24px);
+  /* animation: pulse 2s ease-in-out infinite alternate; */
+  background-image: linear-gradient(
+    165deg,
+    var(--start-color),
+    var(--end-color)
+  );
+}
+
+.heroButton {
+  position: relative;
+  cursor: pointer;
+
+  background-color: var(--background);
+  background-clip: padding-box;
+  border: 1px solid transparent;
+  box-shadow: 0 4px 4px 0 #00000010;
+  color: var(--foreground);
+  transition-property: color, background-color, box-shadow;
+  transition-duration: 0.15s;
+  transition-timing-function: ease;
+  padding: 12px 24px;
+  line-height: 1.5em;
+  border-radius: 5px;
+  max-width: 100%;
+  font-weight: 400;
+  font-size: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+  outline: none;
+
+  --lighten-color: hsla(0, 0%, 100%, 0.8);
+  background-image: linear-gradient(
+    to right,
+    var(--lighten-color),
+    var(--lighten-color)
+  );
+}
+
+:global(.dark) .heroButton {
+  --lighten-color: rgba(0, 0, 0, 0.75);
+}
+
+.heroButtonContent {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  display: inline-block;
+}
+
+.heroButton:hover {
+  --lighten-color: transparent;
+  background-color: transparent;
+  color: var(--background);
+}
+
+.heroButton:focus:not(:active):not(:hover) {
+  border-color: var(--foreground);
+}
+
+.heroButton:active {
+  --lighten-color: hsla(0, 0%, 100%, 0.5);
+}
+
+.heroButtonWrapper:has(.heroButton:disabled) {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.heroButtonWrapper:has(.heroButton:disabled) * {
+  pointer-events: none;
+}
+
+/* @keyframes heroBgAnimation1 {
+  0%,
+  16.667%,
+  to {
+    opacity: 1;
+  }
+  33%,
+  83.333% {
+    opacity: 0;
+  }
+}
+
+@keyframes heroBgAnimation2 {
+  0%,
+  16.667%,
+  66.667%,
+  to {
+    opacity: 0;
+  }
+  33.333%,
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes heroBgAnimation3 {
+  0%,
+  50%,
+  to {
+    opacity: 0;
+  }
+  66.667%,
+  83.333% {
+    opacity: 1;
+  }
+} */
+
+/* @keyframes pulse {
+  from {
+    filter: blur(8px);
+  }
+
+  to {
+    filter: blur(32px);
+  }
+} */

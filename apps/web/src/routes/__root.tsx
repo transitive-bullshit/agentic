@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import {
   createRootRoute,
   HeadContent,
@@ -6,8 +7,10 @@ import {
   Scripts
 } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
+import { PostHogProvider } from 'posthog-js/react'
 
 import { ThemeProvider } from '@/components/theme-provider'
+import { posthogHost, posthogKey } from '@/lib/config'
 import globalStyles from '@/styles/global.css?url'
 
 export const Route = createRootRoute({
@@ -43,6 +46,11 @@ function RootComponent() {
   )
 }
 
+const posthogOptions = {
+  api_host: posthogHost,
+  defaults: '2025-05-24'
+} as const
+
 function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang='en'>
@@ -51,11 +59,14 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
       </head>
 
       <body>
-        <ThemeProvider defaultTheme='dark' storageKey='agentic-ui-theme'>
-          {children}
-        </ThemeProvider>
+        <PostHogProvider apiKey={posthogKey} options={posthogOptions}>
+          <ThemeProvider defaultTheme='dark' storageKey='agentic-ui-theme'>
+            {children}
+          </ThemeProvider>
+        </PostHogProvider>
 
         <TanStackRouterDevtools position='bottom-right' />
+        <ReactQueryDevtools buttonPosition='top-right' />
         <Scripts />
       </body>
     </html>
