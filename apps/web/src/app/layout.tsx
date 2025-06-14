@@ -1,0 +1,78 @@
+import './globals.css'
+
+import type { Metadata } from 'next'
+import cs from 'clsx'
+import { Inter } from 'next/font/google'
+import { Toaster } from 'sonner'
+
+import { Bootstrap } from '@/components/bootstrap'
+import { Footer } from '@/components/footer'
+import { Header } from '@/components/header'
+// import { PostHogProvider } from '@/components/posthog-provider'
+import { ThemeProvider } from '@/components/theme-provider'
+import * as config from '@/lib/config'
+
+import styles from './styles.module.css'
+
+const inter = Inter({
+  variable: '--font-inter',
+  subsets: ['latin']
+})
+
+// const josefinSans = Josefin_Sans({
+//   variable: '--font-josefin-sans',
+//   subsets: ['latin']
+// })
+
+export const metadata: Metadata = {
+  title: config.title,
+  description: config.description,
+  authors: [{ name: config.author, url: config.twitterUrl }],
+  metadataBase: new URL(config.prodUrl),
+  keywords: config.keywords,
+  openGraph: {
+    title: config.title,
+    description: config.description,
+    siteName: config.title,
+    locale: 'en_US',
+    type: 'website',
+    url: config.prodUrl
+  },
+  twitter: {
+    card: 'summary_large_image',
+    creator: `@${config.authorTwitterUsername}`,
+    title: config.title,
+    description: config.description
+  }
+}
+
+export default function RootLayout({
+  children
+}: Readonly<{
+  children: React.ReactNode
+}>) {
+  return (
+    <html lang='en' suppressHydrationWarning>
+      <body className={`${inter.variable} antialiased`}>
+        <ThemeProvider
+          attribute='class'
+          defaultTheme='dark'
+          disableTransitionOnChange
+        >
+          <div className={styles.root}>
+            <Header />
+
+            <main className={cs(styles.main, 'pt-8 pb-16 px-4 md:px-0')}>
+              {children}
+            </main>
+
+            <Toaster richColors />
+            <Footer />
+          </div>
+        </ThemeProvider>
+
+        <Bootstrap />
+      </body>
+    </html>
+  )
+}
