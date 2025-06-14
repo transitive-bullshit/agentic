@@ -15,6 +15,18 @@
   <a href="https://prettier.io"><img alt="Prettier Code Formatting" src="https://img.shields.io/badge/code_style-prettier-brightgreen.svg" /></a>
 </p>
 
+<p align="center">
+  <!-- Keep these links. Translations will automatically update with the README. -->
+  <a href="https://www.readme-i18n.com/transitive-bullshit/agentic?lang=de">Deutsch</a> | 
+  <a href="https://www.readme-i18n.com/transitive-bullshit/agentic?lang=es">Español</a> | 
+  <a href="https://www.readme-i18n.com/transitive-bullshit/agentic?lang=fr">français</a> | 
+  <a href="https://www.readme-i18n.com/transitive-bullshit/agentic?lang=ja">日本語</a> | 
+  <a href="https://www.readme-i18n.com/transitive-bullshit/agentic?lang=ko">한국어</a> | 
+  <a href="https://www.readme-i18n.com/transitive-bullshit/agentic?lang=pt">Português</a> | 
+  <a href="https://www.readme-i18n.com/transitive-bullshit/agentic?lang=ru">Русский</a> | 
+  <a href="https://www.readme-i18n.com/transitive-bullshit/agentic?lang=zh">中文</a>
+</p>
+
 # Agentic <!-- omit from toc -->
 
 - [Intro](#intro)
