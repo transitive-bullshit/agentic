@@ -1,5 +1,3 @@
-import 'dotenv/config'
-
 import type { Simplify } from 'type-fest'
 import { parseZodSchema } from '@agentic/platform-core'
 import {

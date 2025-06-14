@@ -1,5 +1,3 @@
-import 'dotenv/config'
-
 import { parseZodSchema } from '@agentic/platform-core'
 import { z } from 'zod'
 

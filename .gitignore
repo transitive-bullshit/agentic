@@ -25,7 +25,11 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# local env files
+# dotenv files
+.env
+.env.production
+.env.staging
+.env.test
 .env*.local
 
 # turbo
@@ -38,14 +42,15 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-.env
-
 old/
 out/
 
 apps/api/auth-db-temp.json
 
 .dev.vars
+.dev.vars.production
+.dev.vars.staging
+.dev.vars.test
 
 .wrangler
 .sentryclirc

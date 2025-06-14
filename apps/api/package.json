@@ -19,7 +19,12 @@
   },
   "scripts": {
     "build": "tsup",
-    "dev": "tsx src/server.ts",
+    "dev": "dotenvx run -- tsx src/server.ts",
+    "dev:prod": "dotenvx run -o -f .env.production -- tsx src/server.ts",
+    "start": "dotenvx run -- node dist/server.js",
+    "start:prod": "dotenvx run -o -f .env.production -- node dist/server.js",
+    "drizzle-kit": "dotenvx run -- drizzle-kit",
+    "drizzle-kit:prod": "dotenvx run -o -f .env.production -- drizzle-kit",
     "clean": "del dist",
     "test": "run-s test:*",
     "test:typecheck": "tsc --noEmit"
@@ -38,7 +43,6 @@
     "@hono/zod-openapi": "catalog:",
     "@paralleldrive/cuid2": "catalog:",
     "@sentry/node": "catalog:",
-    "dotenv": "catalog:",
     "exit-hook": "catalog:",
     "hono": "catalog:",
     "octokit": "catalog:",

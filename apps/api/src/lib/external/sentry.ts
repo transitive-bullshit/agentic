@@ -1,5 +1,3 @@
-import 'dotenv/config'
-
 import * as Sentry from '@sentry/node'
 
 // This MUST be run before anything else (imported first in the root file).

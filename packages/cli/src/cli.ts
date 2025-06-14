@@ -1,5 +1,3 @@
-import 'dotenv/config'
-
 import { AgenticApiClient } from '@agentic/platform-api-client'
 import { Command } from 'commander'
 import restoreCursor from 'restore-cursor'

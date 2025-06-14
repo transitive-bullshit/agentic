@@ -1,13 +1,11 @@
 @import 'tailwindcss';
-
 @plugin '@tailwindcss/typography';
 
 @custom-variant dark (&:is(.dark *));
-/* @custom-variant dark (&:where(.dark, .dark *)); */
 
 @theme {
-  --font-heading: var(--font-josefin-sans);
-  --font-body: var(--font-inter);
+  --font-heading: var(--font-geist);
+  --font-body: var(--font-geist);
 }
 
 :root {

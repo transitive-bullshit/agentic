@@ -1,5 +1,3 @@
-import 'dotenv/config'
-
 import { FastMCP } from 'fastmcp'
 import { z } from 'zod'
 

@@ -2,7 +2,7 @@ import './globals.css'
 
 import type { Metadata } from 'next'
 import cs from 'clsx'
-import { Inter } from 'next/font/google'
+import { Geist } from 'next/font/google'
 import { Toaster } from 'sonner'
 
 import { Bootstrap } from '@/components/bootstrap'
@@ -14,15 +14,10 @@ import * as config from '@/lib/config'
 
 import styles from './styles.module.css'
 
-const inter = Inter({
-  variable: '--font-inter',
+const geist = Geist({
+  variable: '--font-geist',
   subsets: ['latin']
 })
-
-// const josefinSans = Josefin_Sans({
-//   variable: '--font-josefin-sans',
-//   subsets: ['latin']
-// })
 
 export const metadata: Metadata = {
   title: config.title,
@@ -53,7 +48,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en' suppressHydrationWarning>
-      <body className={`${inter.variable} antialiased`}>
+      <body className={`${geist.variable} antialiased`}>
         <ThemeProvider
           attribute='class'
           defaultTheme='dark'
