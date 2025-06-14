@@ -7,6 +7,7 @@ import * as schema from './schema'
 
 type PostgresClient = ReturnType<typeof postgres>
 
+// TODO: consider using [neon serverless driver](https://orm.drizzle.team/docs/connect-neon) for production
 let _postgresClient: PostgresClient | undefined
 const postgresClient =
   _postgresClient ?? (_postgresClient = postgres(env.DATABASE_URL))

@@ -9,24 +9,6 @@ catalogs:
     '@agentic/openauth':
       specifier: ^0.4.3
       version: 0.4.3
-    '@apideck/better-ajv-errors':
-      specifier: ^0.3.6
-      version: 0.3.6
-    '@clack/prompts':
-      specifier: ^0.11.0
-      version: 0.11.0
-    '@cloudflare/workers-types':
-      specifier: ^4.20250610.0
-      version: 4.20250610.0
-    '@commander-js/extra-typings':
-      specifier: ^14.0.0
-      version: 14.0.0
-    '@edge-runtime/vm':
-      specifier: ^5.0.0
-      version: 5.0.0
-    '@fisch0920/config':
-      specifier: ^1.1.2
-      version: 1.1.2
     '@fisch0920/drizzle-orm':
       specifier: ^0.43.7
       version: 0.43.7
@@ -36,225 +18,51 @@ catalogs:
     '@hono/node-server':
       specifier: ^1.14.4
       version: 1.14.4
-    '@hono/sentry':
-      specifier: ^1.2.2
-      version: 1.2.2
     '@hono/zod-openapi':
       specifier: ^0.19.8
       version: 0.19.8
-    '@hono/zod-validator':
-      specifier: ^0.7.0
-      version: 0.7.0
-    '@modelcontextprotocol/sdk':
-      specifier: ^1.12.1
-      version: 1.12.1
     '@paralleldrive/cuid2':
       specifier: ^2.2.2
       version: 2.2.2
-    '@react-email/components':
-      specifier: ^0.0.42
-      version: 0.0.42
-    '@redocly/openapi-core':
-      specifier: ^1.34.3
-      version: 1.34.3
-    '@sentry/cli':
-      specifier: ^2.46.0
-      version: 2.46.0
-    '@sentry/cloudflare':
-      specifier: ^9.28.1
-      version: 9.28.1
-    '@sentry/core':
-      specifier: ^9.28.1
-      version: 9.28.1
     '@sentry/node':
       specifier: ^9.28.1
       version: 9.28.1
-    '@types/ms':
-      specifier: ^2.1.0
-      version: 2.1.0
-    '@types/node':
-      specifier: ^22.15.29
-      version: 22.15.29
-    '@types/react':
-      specifier: ^19.1.8
-      version: 19.1.8
-    '@types/react-dom':
-      specifier: ^19.1.6
-      version: 19.1.6
     '@types/semver':
       specifier: ^7.7.0
       version: 7.7.0
-    agents:
-      specifier: ^0.0.95
-      version: 0.0.95
-    ajv:
-      specifier: ^8.17.1
-      version: 8.17.1
-    ajv-formats:
-      specifier: ^3.0.1
-      version: 3.0.1
-    camelcase:
-      specifier: ^8.0.0
-      version: 8.0.0
-    commander:
-      specifier: ^14.0.0
-      version: 14.0.0
-    conf:
-      specifier: ^14.0.0
-      version: 14.0.0
-    decamelize:
-      specifier: ^6.0.0
-      version: 6.0.0
-    del-cli:
-      specifier: ^6.0.0
-      version: 6.0.0
     drizzle-kit:
       specifier: ^0.31.1
       version: 0.31.1
     drizzle-orm:
       specifier: ^0.44.2
       version: 0.44.2
-    email-validator:
-      specifier: ^2.0.4
-      version: 2.0.4
-    eslint:
-      specifier: ^9.28.0
-      version: 9.28.0
-    eslint-plugin-drizzle:
-      specifier: ^0.2.3
-      version: 0.2.3
-    eventid:
-      specifier: ^2.0.1
-      version: 2.0.1
     exit-hook:
       specifier: ^4.0.0
       version: 4.0.0
-    fast-content-type-parse:
-      specifier: ^3.0.0
-      version: 3.0.0
-    fast-uri:
-      specifier: ^3.0.6
-      version: 3.0.6
-    fastmcp:
-      specifier: ^3.1.1
-      version: 3.1.1
-    get-port:
-      specifier: ^7.1.0
-      version: 7.1.0
-    hash-object:
-      specifier: ^5.0.1
-      version: 5.0.1
     hono:
       specifier: ^4.7.11
       version: 4.7.11
-    knip:
-      specifier: ^5.60.2
-      version: 5.60.2
-    ky:
-      specifier: ^1.8.1
-      version: 1.8.1
-    lint-staged:
-      specifier: ^16.1.0
-      version: 16.1.0
-    ms:
-      specifier: ^2.1.3
-      version: 2.1.3
-    npm-run-all2:
-      specifier: ^8.0.4
-      version: 8.0.4
     octokit:
       specifier: ^5.0.3
       version: 5.0.3
-    only-allow:
-      specifier: ^1.2.1
-      version: 1.2.1
-    open:
-      specifier: ^10.1.2
-      version: 10.1.2
-    openapi-typescript:
-      specifier: ^7.8.0
-      version: 7.8.0
-    ora:
-      specifier: ^8.2.0
-      version: 8.2.0
     p-all:
       specifier: ^5.0.0
       version: 5.0.0
-    p-map:
-      specifier: ^7.0.3
-      version: 7.0.3
-    parse-json:
-      specifier: ^8.3.0
-      version: 8.3.0
-    plur:
-      specifier: ^5.1.0
-      version: 5.1.0
     postgres:
       specifier: ^3.4.7
       version: 3.4.7
-    prettier:
-      specifier: ^3.5.3
-      version: 3.5.3
-    react:
-      specifier: ^19.1.0
-      version: 19.1.0
-    react-dom:
-      specifier: ^19.1.0
-      version: 19.1.0
-    react-email:
-      specifier: ^4.0.16
-      version: 4.0.16
-    resend:
-      specifier: ^4.5.2
-      version: 4.5.2
     restore-cursor:
       specifier: ^5.1.0
       version: 5.1.0
     semver:
       specifier: ^7.7.2
       version: 7.7.2
-    simple-git-hooks:
-      specifier: ^2.13.0
-      version: 2.13.0
-    sort-keys:
-      specifier: ^5.1.0
-      version: 5.1.0
     stripe:
       specifier: ^18.2.1
       version: 18.2.1
-    tsup:
-      specifier: ^8.5.0
-      version: 8.5.0
-    tsx:
-      specifier: ^4.20.1
-      version: 4.20.1
-    turbo:
-      specifier: ^2.5.4
-      version: 2.5.4
     type-fest:
       specifier: ^4.41.0
       version: 4.41.0
-    typescript:
-      specifier: ^5.8.3
-      version: 5.8.3
-    unconfig:
-      specifier: ^7.3.2
-      version: 7.3.2
-    vite-tsconfig-paths:
-      specifier: ^5.1.4
-      version: 5.1.4
-    vitest:
-      specifier: ^3.2.3
-      version: 3.2.3
-    wrangler:
-      specifier: ^4.19.2
-      version: 4.19.2
-    zod:
-      specifier: ^3.25.62
-      version: 3.25.62
-    zod-to-json-schema:
-      specifier: ^3.24.5
-      version: 3.24.5
     zod-validation-error:
       specifier: ^3.4.1
       version: 3.4.1
@@ -346,10 +154,10 @@ importers:
         version: link:../../packages/validators
       '@fisch0920/drizzle-orm':
         specifier: 'catalog:'
-        version: 0.43.7(@cloudflare/workers-types@4.20250610.0)(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(kysely@0.28.2)(postgres@3.4.7)
+        version: 0.43.7(@cloudflare/workers-types@4.20250610.0)(@neondatabase/serverless@1.0.1)(@opentelemetry/api@1.9.0)(@types/pg@8.15.4)(kysely@0.28.2)(postgres@3.4.7)
       '@fisch0920/drizzle-zod':
         specifier: 'catalog:'
-        version: 0.7.9(@fisch0920/drizzle-orm@0.43.7(@cloudflare/workers-types@4.20250610.0)(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(kysely@0.28.2)(postgres@3.4.7))(zod@3.25.62)
+        version: 0.7.9(@fisch0920/drizzle-orm@0.43.7(@cloudflare/workers-types@4.20250610.0)(@neondatabase/serverless@1.0.1)(@opentelemetry/api@1.9.0)(@types/pg@8.15.4)(kysely@0.28.2)(postgres@3.4.7))(zod@3.25.62)
       '@hono/node-server':
         specifier: 'catalog:'
         version: 1.14.4(hono@4.7.11)
@@ -385,7 +193,7 @@ importers:
         version: 7.7.2
       stripe:
         specifier: 'catalog:'
-        version: 18.2.1(@types/node@22.15.29)
+        version: 18.2.1(@types/node@22.15.31)
       type-fest:
         specifier: 'catalog:'
         version: 4.41.0
@@ -401,7 +209,7 @@ importers:
         version: 0.31.1
       drizzle-orm:
         specifier: 'catalog:'
-        version: 0.44.2(@cloudflare/workers-types@4.20250610.0)(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(kysely@0.28.2)(postgres@3.4.7)
+        version: 0.44.2(@cloudflare/workers-types@4.20250610.0)(@neondatabase/serverless@1.0.1)(@opentelemetry/api@1.9.0)(@types/pg@8.15.4)(kysely@0.28.2)(postgres@3.4.7)
 
   apps/e2e:
     dependencies:
@@ -486,7 +294,7 @@ importers:
         version: 5.1.0
       stripe:
         specifier: 'catalog:'
-        version: 18.2.1(@types/node@22.15.29)
+        version: 18.2.1(@types/node@22.15.31)
       type-fest:
         specifier: 'catalog:'
         version: 4.41.0
@@ -568,7 +376,7 @@ importers:
         version: 2.0.5(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       stripe:
         specifier: 'catalog:'
-        version: 18.2.1(@types/node@22.15.29)
+        version: 18.2.1(@types/node@22.15.31)
       tailwind-merge:
         specifier: ^3.3.1
         version: 3.3.1
@@ -2022,6 +1830,10 @@ packages:
   '@napi-rs/wasm-runtime@0.2.10':
     resolution: {integrity: sha512-bCsCyeZEwVErsGmyPNSzwfwFn4OdxBj0mmv6hOFucB/k81Ojdu68RbZdxYsRQUPc9l6SU5F/cG+bXgWs3oUgsQ==}
 
+  '@neondatabase/serverless@1.0.1':
+    resolution: {integrity: sha512-O6yC5TT0jbw86VZVkmnzCZJB0hfxBl0JJz6f+3KHoZabjb/X08r9eFA+vuY06z1/qaovykvdkrXYq3SPUuvogA==}
+    engines: {node: '>=19.0.0'}
+
   '@next/env@15.3.3':
     resolution: {integrity: sha512-OdiMrzCl2Xi0VTjiQQUK0Xh7bJHnOuET2s+3V+Y40WJBAXrJeGA3f+I8MZJ/YQ3mVGi5XGR1L66oFlgqXhQ4Vw==}
 
@@ -3287,8 +3099,14 @@ packages:
   '@types/node@22.15.29':
     resolution: {integrity: sha512-LNdjOkUDlU1RZb8e1kOIUpN1qQUlzGkEtbVNo53vbrwDg5om6oduhm4SiUaPW5ASTXhAiP0jInWG8Qx9fVlOeQ==}
 
+  '@types/node@22.15.31':
+    resolution: {integrity: sha512-jnVe5ULKl6tijxUhvQeNbQG/84fHfg+yMak02cT8QVhBx/F05rAVxCGBYYTh2EKz22D6JF5ktXuNwdx7b9iEGw==}
+
   '@types/pg-pool@2.0.6':
     resolution: {integrity: sha512-TaAUE5rq2VQYxab5Ts7WZhKNmuN78Q6PiFonTDdpbx8a1H0M1vhy3rhiMjl+e2iHmogyMw7jZF4FrE6eJUy5HQ==}
+
+  '@types/pg@8.15.4':
+    resolution: {integrity: sha512-I6UNVBAoYbvuWkkU3oosC8yxqH21f4/Jc4DK71JLG3dT2mdlGe1z+ep/LQGXaKaOgcvUrsQoPRqfgtMcvZiJhg==}
 
   '@types/pg@8.6.1':
     resolution: {integrity: sha512-1Kc4oAGzAl7uqUStZCDvaLFqZrW9qWSjXOmBfdgyBP5La7Us6Mg4GBvRlSoaZMhQF/zSj1C8CtKMBkoiT8eL8w==}
@@ -7484,17 +7302,18 @@ snapshots:
       - supports-color
       - vitest
 
-  '@fisch0920/drizzle-orm@0.43.7(@cloudflare/workers-types@4.20250610.0)(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(kysely@0.28.2)(postgres@3.4.7)':
+  '@fisch0920/drizzle-orm@0.43.7(@cloudflare/workers-types@4.20250610.0)(@neondatabase/serverless@1.0.1)(@opentelemetry/api@1.9.0)(@types/pg@8.15.4)(kysely@0.28.2)(postgres@3.4.7)':
     optionalDependencies:
       '@cloudflare/workers-types': 4.20250610.0
+      '@neondatabase/serverless': 1.0.1
       '@opentelemetry/api': 1.9.0
-      '@types/pg': 8.6.1
+      '@types/pg': 8.15.4
       kysely: 0.28.2
       postgres: 3.4.7
 
-  '@fisch0920/drizzle-zod@0.7.9(@fisch0920/drizzle-orm@0.43.7(@cloudflare/workers-types@4.20250610.0)(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(kysely@0.28.2)(postgres@3.4.7))(zod@3.25.62)':
+  '@fisch0920/drizzle-zod@0.7.9(@fisch0920/drizzle-orm@0.43.7(@cloudflare/workers-types@4.20250610.0)(@neondatabase/serverless@1.0.1)(@opentelemetry/api@1.9.0)(@types/pg@8.15.4)(kysely@0.28.2)(postgres@3.4.7))(zod@3.25.62)':
     dependencies:
-      '@fisch0920/drizzle-orm': 0.43.7(@cloudflare/workers-types@4.20250610.0)(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(kysely@0.28.2)(postgres@3.4.7)
+      '@fisch0920/drizzle-orm': 0.43.7(@cloudflare/workers-types@4.20250610.0)(@neondatabase/serverless@1.0.1)(@opentelemetry/api@1.9.0)(@types/pg@8.15.4)(kysely@0.28.2)(postgres@3.4.7)
       zod: 3.25.62
 
   '@floating-ui/core@1.7.1':
@@ -7766,6 +7585,12 @@ snapshots:
       '@emnapi/core': 1.4.3
       '@emnapi/runtime': 1.4.3
       '@tybys/wasm-util': 0.9.0
+    optional: true
+
+  '@neondatabase/serverless@1.0.1':
+    dependencies:
+      '@types/node': 22.15.31
+      '@types/pg': 8.15.4
     optional: true
 
   '@next/env@15.3.3': {}
@@ -9015,9 +8840,21 @@ snapshots:
     dependencies:
       undici-types: 6.21.0
 
+  '@types/node@22.15.31':
+    dependencies:
+      undici-types: 6.21.0
+    optional: true
+
   '@types/pg-pool@2.0.6':
     dependencies:
       '@types/pg': 8.6.1
+
+  '@types/pg@8.15.4':
+    dependencies:
+      '@types/node': 22.15.31
+      pg-protocol: 1.10.0
+      pg-types: 2.2.0
+    optional: true
 
   '@types/pg@8.6.1':
     dependencies:
@@ -9687,6 +9524,10 @@ snapshots:
     dependencies:
       ms: 2.1.3
 
+  debug@4.4.1:
+    dependencies:
+      ms: 2.1.3
+
   debug@4.4.1(supports-color@10.0.0):
     dependencies:
       ms: 2.1.3
@@ -9787,11 +9628,12 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  drizzle-orm@0.44.2(@cloudflare/workers-types@4.20250610.0)(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(kysely@0.28.2)(postgres@3.4.7):
+  drizzle-orm@0.44.2(@cloudflare/workers-types@4.20250610.0)(@neondatabase/serverless@1.0.1)(@opentelemetry/api@1.9.0)(@types/pg@8.15.4)(kysely@0.28.2)(postgres@3.4.7):
     optionalDependencies:
       '@cloudflare/workers-types': 4.20250610.0
+      '@neondatabase/serverless': 1.0.1
       '@opentelemetry/api': 1.9.0
-      '@types/pg': 8.6.1
+      '@types/pg': 8.15.4
       kysely: 0.28.2
       postgres: 3.4.7
 
@@ -9959,7 +9801,7 @@ snapshots:
 
   esbuild-register@3.6.0(esbuild@0.25.5):
     dependencies:
-      debug: 4.4.1(supports-color@10.0.0)
+      debug: 4.4.1
       esbuild: 0.25.5
     transitivePeerDependencies:
       - supports-color
@@ -11870,7 +11712,7 @@ snapshots:
 
   require-in-the-middle@7.5.2:
     dependencies:
-      debug: 4.4.1(supports-color@10.0.0)
+      debug: 4.4.1
       module-details-from-path: 1.0.4
       resolve: 1.22.10
     transitivePeerDependencies:
@@ -12359,11 +12201,11 @@ snapshots:
     dependencies:
       js-tokens: 9.0.1
 
-  stripe@18.2.1(@types/node@22.15.29):
+  stripe@18.2.1(@types/node@22.15.31):
     dependencies:
       qs: 6.14.0
     optionalDependencies:
-      '@types/node': 22.15.29
+      '@types/node': 22.15.31
 
   strtok3@10.2.2:
     dependencies:
