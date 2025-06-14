@@ -1,4 +1,4 @@
-import { assert } from '@agentic/platform-core'
+import { assert, timingSafeCompare } from '@agentic/platform-core'
 import { createMiddleware } from 'hono/factory'
 
 import type { RawUser } from '@/db'
@@ -23,10 +23,8 @@ export const authenticate = createMiddleware<AuthenticatedHonoEnv>(
     const token = parts.at(-1)
     assert(token, 401, 'Unauthorized')
 
-    // TODO: Use a more secure way to authenticate admin requests that doesn't
-    // use a single API key and isn't vulnerable to timing attacks.
-    // eslint-disable-next-line security/detect-possible-timing-attacks
-    if (token === env.AGENTIC_ADMIN_API_KEY) {
+    // TODO: Use a more secure way to authenticate gateway admin requests.
+    if (timingSafeCompare(token, env.AGENTIC_ADMIN_API_KEY)) {
       ctx.set('userId', 'admin')
       ctx.set('user', {
         id: 'admin',

@@ -1,3 +1,5 @@
+import { timingSafeEqual } from 'node:crypto'
+
 import type { z, ZodType } from 'zod'
 import hashObjectImpl, { type Options as HashObjectOptions } from 'hash-object'
 
@@ -300,4 +302,16 @@ export function pruneEmptyDeep<T>(
   }
 
   return value as any
+}
+
+export function timingSafeCompare(a: string, b: string): boolean {
+  if (typeof a !== 'string' || typeof b !== 'string') {
+    return false
+  }
+
+  if (a.length !== b.length) {
+    return false
+  }
+
+  return timingSafeEqual(Buffer.from(a), Buffer.from(b))
 }
