@@ -8,7 +8,7 @@ import { Toaster } from 'sonner'
 import { Bootstrap } from '@/components/bootstrap'
 import { Footer } from '@/components/footer'
 import { Header } from '@/components/header'
-// import { PostHogProvider } from '@/components/posthog-provider'
+import { PostHogProvider } from '@/components/posthog-provider'
 import { ThemeProvider } from '@/components/theme-provider'
 import * as config from '@/lib/config'
 
@@ -49,22 +49,24 @@ export default function RootLayout({
   return (
     <html lang='en' suppressHydrationWarning>
       <body className={`${geist.variable} antialiased`}>
-        <ThemeProvider
-          attribute='class'
-          defaultTheme='dark'
-          disableTransitionOnChange
-        >
-          <div className={styles.root}>
-            <Header />
+        <PostHogProvider>
+          <ThemeProvider
+            attribute='class'
+            defaultTheme='dark'
+            disableTransitionOnChange
+          >
+            <div className={styles.root}>
+              <Header />
 
-            <main className={cs(styles.main, 'pt-8 pb-16 px-4 md:px-0')}>
-              {children}
-            </main>
+              <main className={cs(styles.main, 'pt-8 pb-16 px-4 md:px-0')}>
+                {children}
+              </main>
 
-            <Toaster richColors />
-            <Footer />
-          </div>
-        </ThemeProvider>
+              <Toaster richColors />
+              <Footer />
+            </div>
+          </ThemeProvider>
+        </PostHogProvider>
 
         <Bootstrap />
       </body>
