@@ -32,7 +32,8 @@
 - publish packages to npm
 - database
   - consider using [neon serverless driver](https://orm.drizzle.team/docs/connect-neon) for production
-  - how will this affect our `drizzle-orm` fork?
+  - can this also be used locally?
+  - may need dto update our `drizzle-orm` fork
 
 ## TODO: Post-MVP
 
