@@ -30,6 +30,10 @@
   - hosted docs
 - merge with current agentic repo
 - publish packages to npm
+- database
+  - consider using [neon serverless driver](https://orm.drizzle.team/docs/connect-neon) for production
+  - can this also be used locally?
+  - may need dto update our `drizzle-orm` fork
 
 ## TODO: Post-MVP
 
@@ -93,6 +97,7 @@
 - support multiple rate-limits by slug
   - RateLimit-Policy: "burst";q=100;w=60,"daily";q=1000;w=86400
   - https://datatracker.ietf.org/doc/draft-ietf-httpapi-ratelimit-headers/
+- make `$schema` public for `agentic.config.json`
 
 ## License
 

@@ -9,7 +9,8 @@ export default [
       'packages/types/src/openapi.d.ts',
       'apps/gateway/src/worker.d.ts',
       'packages/json-schema/test/json-schema-test-suite.ts',
-      'apps/gateway/.wrangler'
+      'apps/gateway/.wrangler',
+      'apps/web/src/*.gen.ts'
     ]
   },
   {
@@ -38,6 +39,12 @@ export default [
     },
     rules: {
       ...drizzle.configs.recommended.rules
+    }
+  },
+  {
+    files: ['apps/web/src/**/*.{tsx,ts}'],
+    rules: {
+      'no-console': 'off'
     }
   }
 ]

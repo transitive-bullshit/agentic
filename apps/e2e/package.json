@@ -14,9 +14,12 @@
   "scripts": {
     "test": "run-s test:*",
     "test:typecheck": "tsc --noEmit",
-    "e2e": "vitest run",
-    "e2e-http": "vitest run src/http-e2e.test.ts",
-    "e2e-mcp": "vitest run src/mcp-e2e.test.ts"
+    "e2e": "dotenvx run -- vitest run",
+    "e2e-http": "dotenvx run -- vitest run src/http-e2e.test.ts",
+    "e2e-mcp": "dotenvx run -- vitest run src/mcp-e2e.test.ts",
+    "e2e:prod": "dotenvx run -o -f .env.production -- vitest run",
+    "e2e-http:prod": "dotenvx run -o -f .env.production -- vitest run src/http-e2e.test.ts",
+    "e2e-mcp:prod": "dotenvx run -o -f .env.production -- vitest run src/mcp-e2e.test.ts"
   },
   "dependencies": {
     "ky": "catalog:",

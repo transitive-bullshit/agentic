@@ -1,5 +1,3 @@
-import 'dotenv/config'
-
 import type { Simplify } from 'type-fest'
 import { parseZodSchema } from '@agentic/platform-core'
 import {
@@ -12,7 +10,7 @@ export const envSchema = baseEnvSchema
   .extend({
     DATABASE_URL: z.string().url(),
 
-    PORT: z.number().default(3000),
+    PORT: z.number().default(3001),
 
     STRIPE_SECRET_KEY: z.string().nonempty(),
     STRIPE_WEBHOOK_SECRET: z.string().nonempty(),

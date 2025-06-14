@@ -17,7 +17,7 @@
     ".": "./src/index.ts"
   },
   "scripts": {
-    "generate": "openapi-typescript http://localhost:3000/docs --output ./src/openapi.d.ts",
+    "generate": "openapi-typescript http://localhost:3001/docs --output ./src/openapi.d.ts",
     "test": "run-s test:*",
     "test:typecheck": "tsc --noEmit",
     "test:unit": "vitest run"

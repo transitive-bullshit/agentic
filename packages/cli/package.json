@@ -31,7 +31,6 @@
     "@hono/node-server": "catalog:",
     "commander": "catalog:",
     "conf": "catalog:",
-    "dotenv": "catalog:",
     "get-port": "catalog:",
     "hono": "catalog:",
     "open": "catalog:",

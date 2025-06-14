@@ -1,6 +1,3 @@
-/* eslint-disable no-process-env */
-import 'dotenv/config'
-
 import { defineConfig } from 'drizzle-kit'
 
 export default defineConfig({
@@ -8,6 +5,7 @@ export default defineConfig({
   schema: './src/db/schema/index.ts',
   dialect: 'postgresql',
   dbCredentials: {
+    // eslint-disable-next-line no-process-env
     url: process.env.DATABASE_URL!
   }
 })
