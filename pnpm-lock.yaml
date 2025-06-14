@@ -6,261 +6,27 @@ settings:
 
 catalogs:
   default:
-    '@agentic/openauth':
-      specifier: ^0.4.3
-      version: 0.4.3
-    '@apideck/better-ajv-errors':
-      specifier: ^0.3.6
-      version: 0.3.6
-    '@clack/prompts':
-      specifier: ^0.11.0
-      version: 0.11.0
-    '@cloudflare/workers-types':
-      specifier: ^4.20250610.0
-      version: 4.20250610.0
-    '@commander-js/extra-typings':
-      specifier: ^14.0.0
-      version: 14.0.0
-    '@edge-runtime/vm':
-      specifier: ^5.0.0
-      version: 5.0.0
-    '@fisch0920/config':
-      specifier: ^1.1.2
-      version: 1.1.2
-    '@fisch0920/drizzle-orm':
-      specifier: ^0.43.7
-      version: 0.43.7
-    '@fisch0920/drizzle-zod':
-      specifier: ^0.7.9
-      version: 0.7.9
-    '@hono/node-server':
-      specifier: ^1.14.4
-      version: 1.14.4
-    '@hono/sentry':
-      specifier: ^1.2.2
-      version: 1.2.2
-    '@hono/zod-openapi':
-      specifier: ^0.19.8
-      version: 0.19.8
-    '@hono/zod-validator':
-      specifier: ^0.7.0
-      version: 0.7.0
-    '@modelcontextprotocol/sdk':
-      specifier: ^1.12.1
-      version: 1.12.1
-    '@paralleldrive/cuid2':
-      specifier: ^2.2.2
-      version: 2.2.2
-    '@react-email/components':
-      specifier: ^0.0.42
-      version: 0.0.42
-    '@redocly/openapi-core':
-      specifier: ^1.34.3
-      version: 1.34.3
-    '@sentry/cli':
-      specifier: ^2.46.0
-      version: 2.46.0
-    '@sentry/cloudflare':
-      specifier: ^9.28.1
-      version: 9.28.1
-    '@sentry/core':
-      specifier: ^9.28.1
-      version: 9.28.1
-    '@sentry/node':
-      specifier: ^9.28.1
-      version: 9.28.1
-    '@types/ms':
-      specifier: ^2.1.0
-      version: 2.1.0
-    '@types/node':
-      specifier: ^22.15.29
-      version: 22.15.29
     '@types/react':
       specifier: ^19.1.8
       version: 19.1.8
     '@types/react-dom':
       specifier: ^19.1.6
       version: 19.1.6
-    '@types/semver':
-      specifier: ^7.7.0
-      version: 7.7.0
-    agents:
-      specifier: ^0.0.95
-      version: 0.0.95
-    ajv:
-      specifier: ^8.17.1
-      version: 8.17.1
-    ajv-formats:
-      specifier: ^3.0.1
-      version: 3.0.1
-    camelcase:
-      specifier: ^8.0.0
-      version: 8.0.0
-    commander:
-      specifier: ^14.0.0
-      version: 14.0.0
-    conf:
-      specifier: ^14.0.0
-      version: 14.0.0
-    decamelize:
-      specifier: ^6.0.0
-      version: 6.0.0
-    del-cli:
-      specifier: ^6.0.0
-      version: 6.0.0
-    dotenv:
-      specifier: ^16.5.0
-      version: 16.5.0
-    drizzle-kit:
-      specifier: ^0.31.1
-      version: 0.31.1
-    drizzle-orm:
-      specifier: ^0.44.2
-      version: 0.44.2
-    email-validator:
-      specifier: ^2.0.4
-      version: 2.0.4
-    eslint:
-      specifier: ^9.28.0
-      version: 9.28.0
-    eslint-plugin-drizzle:
-      specifier: ^0.2.3
-      version: 0.2.3
-    eventid:
-      specifier: ^2.0.1
-      version: 2.0.1
-    exit-hook:
-      specifier: ^4.0.0
-      version: 4.0.0
-    fast-content-type-parse:
-      specifier: ^3.0.0
-      version: 3.0.0
-    fast-uri:
-      specifier: ^3.0.6
-      version: 3.0.6
-    fastmcp:
-      specifier: ^3.1.1
-      version: 3.1.1
-    get-port:
-      specifier: ^7.1.0
-      version: 7.1.0
-    hash-object:
-      specifier: ^5.0.1
-      version: 5.0.1
-    hono:
-      specifier: ^4.7.11
-      version: 4.7.11
-    knip:
-      specifier: ^5.60.2
-      version: 5.60.2
-    ky:
-      specifier: ^1.8.1
-      version: 1.8.1
-    lint-staged:
-      specifier: ^16.1.0
-      version: 16.1.0
-    ms:
-      specifier: ^2.1.3
-      version: 2.1.3
-    npm-run-all2:
-      specifier: ^8.0.4
-      version: 8.0.4
-    octokit:
-      specifier: ^5.0.3
-      version: 5.0.3
-    only-allow:
-      specifier: ^1.2.1
-      version: 1.2.1
-    open:
-      specifier: ^10.1.2
-      version: 10.1.2
-    openapi-typescript:
-      specifier: ^7.8.0
-      version: 7.8.0
-    ora:
-      specifier: ^8.2.0
-      version: 8.2.0
-    p-all:
-      specifier: ^5.0.0
-      version: 5.0.0
-    p-map:
-      specifier: ^7.0.3
-      version: 7.0.3
-    parse-json:
-      specifier: ^8.3.0
-      version: 8.3.0
-    plur:
-      specifier: ^5.1.0
-      version: 5.1.0
-    postgres:
-      specifier: ^3.4.7
-      version: 3.4.7
-    prettier:
-      specifier: ^3.5.3
-      version: 3.5.3
     react:
       specifier: ^19.1.0
       version: 19.1.0
     react-dom:
       specifier: ^19.1.0
       version: 19.1.0
-    react-email:
-      specifier: ^4.0.16
-      version: 4.0.16
-    resend:
-      specifier: ^4.5.2
-      version: 4.5.2
-    restore-cursor:
-      specifier: ^5.1.0
-      version: 5.1.0
-    semver:
-      specifier: ^7.7.2
-      version: 7.7.2
-    simple-git-hooks:
-      specifier: ^2.13.0
-      version: 2.13.0
-    sort-keys:
-      specifier: ^5.1.0
-      version: 5.1.0
     stripe:
       specifier: ^18.2.1
       version: 18.2.1
-    tsup:
-      specifier: ^8.5.0
-      version: 8.5.0
-    tsx:
-      specifier: ^4.20.1
-      version: 4.20.1
-    turbo:
-      specifier: ^2.5.4
-      version: 2.5.4
     type-fest:
       specifier: ^4.41.0
       version: 4.41.0
-    typescript:
-      specifier: ^5.8.3
-      version: 5.8.3
-    unconfig:
-      specifier: ^7.3.2
-      version: 7.3.2
     vite-tsconfig-paths:
       specifier: ^5.1.4
       version: 5.1.4
-    vitest:
-      specifier: ^3.2.3
-      version: 3.2.3
-    wrangler:
-      specifier: ^4.19.2
-      version: 4.19.2
-    zod:
-      specifier: ^3.25.62
-      version: 3.25.62
-    zod-to-json-schema:
-      specifier: ^3.24.5
-      version: 3.24.5
-    zod-validation-error:
-      specifier: ^3.4.1
-      version: 3.4.1
 
 importers:
 
@@ -536,9 +302,6 @@ importers:
       '@radix-ui/react-tooltip':
         specifier: ^1.2.7
         version: 1.2.7(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      '@tanstack/react-query-devtools':
-        specifier: ^5.80.7
-        version: 5.80.7(@tanstack/react-query@5.80.7(react@19.1.0))(react@19.1.0)
       '@tanstack/react-router':
         specifier: ^1.121.2
         version: 1.121.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -3700,23 +3463,6 @@ packages:
   '@tanstack/history@1.120.17':
     resolution: {integrity: sha512-k07LFI4Qo074IIaWzT/XjD0KlkGx2w1V3fnNtclKx0oAl8z4O9kCh6za+FPEIRe98xLgNFEiddDbJeAYGSlPtw==}
     engines: {node: '>=12'}
-
-  '@tanstack/query-core@5.80.7':
-    resolution: {integrity: sha512-s09l5zeUKC8q7DCCCIkVSns8zZrK4ZDT6ryEjxNBFi68G4z2EBobBS7rdOY3r6W1WbUDpc1fe5oY+YO/+2UVUg==}
-
-  '@tanstack/query-devtools@5.80.0':
-    resolution: {integrity: sha512-D6gH4asyjaoXrCOt5vG5Og/YSj0D/TxwNQgtLJIgWbhbWCC/emu2E92EFoVHh4ppVWg1qT2gKHvKyQBEFZhCuA==}
-
-  '@tanstack/react-query-devtools@5.80.7':
-    resolution: {integrity: sha512-7Dz/19fVo0i+jgLVBabV5vfGOlLyN5L1w8w1/ogFhe6ItNNsNA+ZgNTbtiKpbR3CcX2WDRRTInz1uMSmHzTsoQ==}
-    peerDependencies:
-      '@tanstack/react-query': ^5.80.7
-      react: ^18 || ^19
-
-  '@tanstack/react-query@5.80.7':
-    resolution: {integrity: sha512-u2F0VK6+anItoEvB3+rfvTO9GEh2vb00Je05OwlUe/A0lkJBgW1HckiY3f9YZa+jx6IOe4dHPh10dyp9aY3iRQ==}
-    peerDependencies:
-      react: ^18 || ^19
 
   '@tanstack/react-router-devtools@1.121.8':
     resolution: {integrity: sha512-QwFG4kWTNV0jSjJDvMs5LfK7X+GPQz9NZhSDStZMkC6xu+s+n+Wk/Szv/FDZ/wqjcJ3/k0rh4C5DEfZvMtSdOg==}
@@ -8730,7 +8476,7 @@ snapshots:
       '@babel/traverse': 7.27.4
       '@babel/types': 7.27.3
       convert-source-map: 2.0.0
-      debug: 4.4.1(supports-color@10.0.0)
+      debug: 4.4.1
       gensync: 1.0.0-beta.2
       json5: 2.2.3
       semver: 6.3.1
@@ -8897,7 +8643,7 @@ snapshots:
       '@babel/parser': 7.27.5
       '@babel/template': 7.27.2
       '@babel/types': 7.27.3
-      debug: 4.4.1(supports-color@10.0.0)
+      debug: 4.4.1
       globals: 11.12.0
     transitivePeerDependencies:
       - supports-color
@@ -9576,7 +9322,7 @@ snapshots:
     dependencies:
       consola: 3.4.2
       detect-libc: 2.0.4
-      https-proxy-agent: 7.0.6(supports-color@10.0.0)
+      https-proxy-agent: 7.0.6
       node-fetch: 2.7.0
       nopt: 8.1.0
       semver: 7.7.2
@@ -11114,21 +10860,6 @@ snapshots:
 
   '@tanstack/history@1.120.17': {}
 
-  '@tanstack/query-core@5.80.7': {}
-
-  '@tanstack/query-devtools@5.80.0': {}
-
-  '@tanstack/react-query-devtools@5.80.7(@tanstack/react-query@5.80.7(react@19.1.0))(react@19.1.0)':
-    dependencies:
-      '@tanstack/query-devtools': 5.80.0
-      '@tanstack/react-query': 5.80.7(react@19.1.0)
-      react: 19.1.0
-
-  '@tanstack/react-query@5.80.7(react@19.1.0)':
-    dependencies:
-      '@tanstack/query-core': 5.80.7
-      react: 19.1.0
-
   '@tanstack/react-router-devtools@1.121.8(@tanstack/react-router@1.121.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@tanstack/router-core@1.121.2)(csstype@3.1.3)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(solid-js@1.9.7)(tiny-invariant@1.3.3)':
     dependencies:
       '@tanstack/react-router': 1.121.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -11589,7 +11320,7 @@ snapshots:
     dependencies:
       '@typescript-eslint/tsconfig-utils': 8.33.1(typescript@5.8.3)
       '@typescript-eslint/types': 8.33.1
-      debug: 4.4.1(supports-color@10.0.0)
+      debug: 4.4.1
       typescript: 5.8.3
     transitivePeerDependencies:
       - supports-color
@@ -11622,7 +11353,7 @@ snapshots:
       '@typescript-eslint/tsconfig-utils': 8.33.1(typescript@5.8.3)
       '@typescript-eslint/types': 8.33.1
       '@typescript-eslint/visitor-keys': 8.33.1
-      debug: 4.4.1(supports-color@10.0.0)
+      debug: 4.4.1
       fast-glob: 3.3.3
       is-glob: 4.0.3
       minimatch: 9.0.5
@@ -12505,6 +12236,10 @@ snapshots:
     dependencies:
       ms: 2.1.3
 
+  debug@4.4.1:
+    dependencies:
+      ms: 2.1.3
+
   debug@4.4.1(supports-color@10.0.0):
     dependencies:
       ms: 2.1.3
@@ -13275,7 +13010,7 @@ snapshots:
 
   extract-zip@2.0.1:
     dependencies:
-      debug: 4.4.1(supports-color@10.0.0)
+      debug: 4.4.1
       get-stream: 5.2.0
       yauzl: 2.10.0
     optionalDependencies:
@@ -13709,6 +13444,13 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  https-proxy-agent@7.0.6:
+    dependencies:
+      agent-base: 7.1.3
+      debug: 4.4.1
+    transitivePeerDependencies:
+      - supports-color
+
   https-proxy-agent@7.0.6(supports-color@10.0.0):
     dependencies:
       agent-base: 7.1.3
@@ -13762,7 +13504,7 @@ snapshots:
     dependencies:
       '@ioredis/commands': 1.2.0
       cluster-key-slot: 1.1.2
-      debug: 4.4.1(supports-color@10.0.0)
+      debug: 4.4.1
       denque: 2.1.0
       lodash.defaults: 4.2.0
       lodash.isarguments: 3.1.0
@@ -15495,7 +15237,7 @@ snapshots:
 
   send@1.2.0:
     dependencies:
-      debug: 4.4.1(supports-color@10.0.0)
+      debug: 4.4.1
       encodeurl: 2.0.0
       escape-html: 1.0.3
       etag: 1.8.1
@@ -16390,7 +16132,7 @@ snapshots:
 
   vite-tsconfig-paths@5.1.4(typescript@5.8.3)(vite@6.3.5(@types/node@22.15.29)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.42.0)(tsx@4.20.1)(yaml@2.8.0)):
     dependencies:
-      debug: 4.4.1(supports-color@10.0.0)
+      debug: 4.4.1
       globrex: 0.1.2
       tsconfck: 3.1.5(typescript@5.8.3)
     optionalDependencies:

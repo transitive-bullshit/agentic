@@ -1,5 +1,4 @@
 import type { ReactNode } from 'react'
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import {
   createRootRoute,
   HeadContent,
@@ -66,7 +65,6 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
         </PostHogProvider>
 
         <TanStackRouterDevtools position='bottom-right' />
-        <ReactQueryDevtools buttonPosition='top-right' />
         <Scripts />
       </body>
     </html>
