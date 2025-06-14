@@ -32,6 +32,12 @@ yarn-error.log*
 .env.test
 .env*.local
 
+# cloudflare env vars
+.dev.vars
+.dev.vars.production
+.dev.vars.staging
+.dev.vars.test
+
 # turbo
 .turbo
 
@@ -44,13 +50,6 @@ next-env.d.ts
 
 old/
 out/
-
-apps/api/auth-db-temp.json
-
-.dev.vars
-.dev.vars.production
-.dev.vars.staging
-.dev.vars.test
 
 .wrangler
 .sentryclirc
