@@ -1,3 +1,5 @@
+import 'dotenv/config'
+
 import { parseZodSchema } from '@agentic/platform-core'
 import { z } from 'zod'
 
@@ -7,7 +9,10 @@ import { z } from 'zod'
 
 export const envSchema = z.object({
   AGENTIC_API_BASE_URL: z.string().url().optional(),
-  AGENTIC_API_ACCESS_TOKEN: z.string().nonempty(),
+
+  AGENTIC_DEV_ACCESS_TOKEN: z.string().nonempty(),
+  AGENTIC_DEV_EMAIL: z.string().email(),
+  AGENTIC_DEV_PASSWORD: z.string().nonempty(),
 
   AGENTIC_GATEWAY_BASE_URL: z
     .string()

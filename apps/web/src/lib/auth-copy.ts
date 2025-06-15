@@ -1,8 +1,4 @@
-import type {
-  PasswordChangeError,
-  PasswordLoginError,
-  PasswordRegisterError
-} from '@agentic/openauth/provider/password'
+// TODO: probably remove this in favor of a more generalized i18n system later on
 
 export const authCopy = {
   /**
@@ -120,9 +116,4 @@ export const authCopy = {
    * Copy for the continue button.
    */
   button_continue: 'Continue'
-} satisfies {
-  [key in `error_${
-    | PasswordLoginError['type']
-    | PasswordRegisterError['type']
-    | PasswordChangeError['type']}`]: string
-} & Record<string, string>
+}

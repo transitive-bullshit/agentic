@@ -1,10 +1,10 @@
 import { assert } from '@agentic/platform-core'
+import { authUserSchema } from '@agentic/platform-types'
 import { createMiddleware } from 'hono/factory'
+import { verify } from 'hono/jwt'
 
 import type { RawUser } from '@/db'
 import type { AuthenticatedHonoEnv } from '@/lib/types'
-import { authClient } from '@/lib/auth/client'
-import { subjects } from '@/lib/auth/subjects'
 import { env } from '@/lib/env'
 import { timingSafeCompare } from '@/lib/utils'
 
@@ -40,12 +40,12 @@ export const authenticate = createMiddleware<AuthenticatedHonoEnv>(
         deletedAt: undefined
       } as RawUser)
     } else {
-      const verified = await authClient.verify(subjects, token)
-      assert(!verified.err, 401, 'Unauthorized')
+      const payload = await verify(token, env.JWT_SECRET)
+      assert(payload, 401, 'Unauthorized')
 
-      const userId = verified.subject.properties.id
-      assert(userId, 401, 'Unauthorized')
-      ctx.set('userId', userId)
+      const parsedAuthUser = authUserSchema.safeParse(payload)
+      assert(parsedAuthUser.success, 401, 'Unauthorized')
+      ctx.set('userId', parsedAuthUser.data.id)
     }
 
     await next()

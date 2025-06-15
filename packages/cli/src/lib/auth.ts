@@ -1,4 +1,7 @@
-import type { AgenticApiClient } from '@agentic/platform-api-client'
+import type {
+  AgenticApiClient,
+  AuthSession
+} from '@agentic/platform-api-client'
 import { assert } from '@agentic/platform-core'
 import { serve } from '@hono/node-server'
 import getPort from 'get-port'
@@ -6,7 +9,6 @@ import { Hono } from 'hono'
 import open from 'open'
 import { oraPromise } from 'ora'
 
-import type { AuthSession } from '../types'
 import { AuthStore } from './auth-store'
 
 const providerToLabel = {
@@ -59,7 +61,7 @@ export async function auth({
 
     // AuthStore should be updated via the onUpdateAuth callback
     const session = AuthStore.tryGetAuth()
-    assert(session && session.session.access === client.authTokens.access)
+    assert(session && session?.token === client.authSession?.token)
     _resolveAuth(session)
 
     return c.text(
@@ -87,6 +89,7 @@ export async function auth({
     })
   })
 
+  // TODO
   const authorizeResult = await client.initAuthFlow({
     provider,
     redirectUri

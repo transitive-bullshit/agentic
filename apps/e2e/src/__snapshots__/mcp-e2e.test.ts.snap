@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`MCP => OpenAPI origin basic @ 726d9f61 get_post success  > 2.0: @dev/test-basic-openapi@726d9f61/mcp get_post 1`] = `
+exports[`MCP => OpenAPI origin basic @ dev get_post success  > 2.0: @dev/test-basic-openapi@dev/mcp get_post 1`] = `
 {
   "content": [],
   "isError": false,
@@ -32,7 +32,17 @@ molestiae porro eius odio et labore et velit aut",
 }
 `;
 
-exports[`MCP => OpenAPI origin basic bypass caching > 6.0: @dev/test-basic-openapi@fc856666/mcp get_post 1`] = `
+exports[`MCP => OpenAPI origin basic bypass caching > 6.0: @dev/test-everything-openapi/mcp echo 1`] = `
+{
+  "content": [],
+  "isError": false,
+  "structuredContent": {
+    "postId": 1,
+  },
+}
+`;
+
+exports[`MCP => OpenAPI origin basic caching > 7.0: @dev/test-basic-openapi/mcp get_post 1`] = `
 {
   "content": [],
   "isError": false,
@@ -48,7 +58,7 @@ nostrum rerum est autem sunt rem eveniet architecto",
 }
 `;
 
-exports[`MCP => OpenAPI origin basic caching > 7.0: @dev/test-basic-openapi@726d9f61/mcp get_post 1`] = `
+exports[`MCP => OpenAPI origin basic caching > 7.1: @dev/test-basic-openapi/mcp get_post 1`] = `
 {
   "content": [],
   "isError": false,
@@ -64,23 +74,7 @@ nostrum rerum est autem sunt rem eveniet architecto",
 }
 `;
 
-exports[`MCP => OpenAPI origin basic caching > 7.1: @dev/test-basic-openapi@726d9f61/mcp get_post 1`] = `
-{
-  "content": [],
-  "isError": false,
-  "structuredContent": {
-    "body": "quia et suscipit
-suscipit recusandae consequuntur expedita et cum
-reprehenderit molestiae ut ut quas totam
-nostrum rerum est autem sunt rem eveniet architecto",
-    "id": 1,
-    "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
-    "userId": 1,
-  },
-}
-`;
-
-exports[`MCP => OpenAPI origin basic caching > 7.2: @dev/test-basic-openapi@726d9f61/mcp get_post 1`] = `
+exports[`MCP => OpenAPI origin basic caching > 7.2: @dev/test-basic-openapi/mcp get_post 1`] = `
 {
   "content": [],
   "isError": false,
@@ -128,7 +122,7 @@ nostrum rerum est autem sunt rem eveniet architecto",
 }
 `;
 
-exports[`MCP => OpenAPI origin basic normalized caching > 8.0: @dev/test-basic-openapi@726d9f61/mcp get_post 1`] = `
+exports[`MCP => OpenAPI origin basic normalized caching > 8.0: @dev/test-basic-openapi/mcp get_post 1`] = `
 {
   "content": [],
   "isError": false,
@@ -144,7 +138,7 @@ nostrum rerum est autem sunt rem eveniet architecto",
 }
 `;
 
-exports[`MCP => OpenAPI origin basic normalized caching > 8.1: @dev/test-basic-openapi@726d9f61/mcp get_post 1`] = `
+exports[`MCP => OpenAPI origin basic normalized caching > 8.1: @dev/test-basic-openapi/mcp get_post 1`] = `
 {
   "content": [],
   "isError": false,

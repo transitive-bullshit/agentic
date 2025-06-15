@@ -1,6 +1,7 @@
 import type {
   AdminConsumer,
   AdminDeployment,
+  AuthSession,
   Consumer,
   Deployment,
   openapi,
@@ -10,20 +11,10 @@ import type {
   User
 } from '@agentic/platform-types'
 import type { Simplify } from 'type-fest'
-import {
-  type Client as AuthClient,
-  createClient as createAuthClient
-} from '@agentic/openauth/client'
 import { assert, sanitizeSearchParams } from '@agentic/platform-core'
 import defaultKy, { type KyInstance } from 'ky'
 
-import type {
-  AuthorizeResult,
-  AuthTokens,
-  AuthUser,
-  OnUpdateAuthSessionFunction
-} from './types'
-import { authSubjects } from './auth-subjects'
+import type { OnUpdateAuthSessionFunction } from './types'
 
 export class AgenticApiClient {
   static readonly DEFAULT_API_BASE_URL = 'https://api.agentic.so'
@@ -33,8 +24,7 @@ export class AgenticApiClient {
   public readonly ky: KyInstance
   public readonly onUpdateAuth?: OnUpdateAuthSessionFunction
 
-  protected _authTokens?: Readonly<AuthTokens>
-  protected _authClient: AuthClient
+  protected _authSession?: AuthSession
 
   constructor({
     apiBaseUrl = AgenticApiClient.DEFAULT_API_BASE_URL,
@@ -53,11 +43,6 @@ export class AgenticApiClient {
     this.apiKey = apiKey
     this.onUpdateAuth = onUpdateAuth
 
-    this._authClient = createAuthClient({
-      issuer: apiBaseUrl,
-      clientID: 'agentic-api-client'
-    })
-
     this.ky = ky.extend({
       prefixUrl: apiBaseUrl,
 
@@ -73,13 +58,15 @@ export class AgenticApiClient {
       hooks: {
         beforeRequest: [
           async (request) => {
-            if (!this.apiKey && this._authTokens) {
+            if (!this.apiKey && this._authSession) {
               // Always verify freshness of auth tokens before making a request
-              await this.verifyAuthAndRefreshIfNecessary()
-              assert(this._authTokens, 'Not authenticated')
+              // TODO: handle refreshing auth tokens
+              // await this.verifyAuthAndRefreshIfNecessary()
+              // assert(this._authSession, 'Not authenticated')
+
               request.headers.set(
                 'Authorization',
-                `Bearer ${this._authTokens.access}`
+                `Bearer ${this._authSession.token}`
               )
             }
           }
@@ -89,87 +76,20 @@ export class AgenticApiClient {
   }
 
   get isAuthenticated(): boolean {
-    return !!this._authTokens
+    return !!this._authSession
   }
 
-  get authTokens(): Readonly<AuthTokens> | undefined {
-    return this._authTokens
+  get authSession(): AuthSession | undefined {
+    return structuredClone(this._authSession)
   }
 
-  async setAuth(tokens: AuthTokens): Promise<AuthUser> {
-    this._ensureNoApiKey()
-
-    this._authTokens = tokens
-    return this.verifyAuthAndRefreshIfNecessary()
-  }
-
-  async verifyAuthAndRefreshIfNecessary(): Promise<AuthUser> {
-    this._ensureNoApiKey()
-
-    if (!this._authTokens) {
-      throw new Error('This method requires authentication.')
-    }
-
-    const verified = await this._authClient.verify(
-      authSubjects,
-      this._authTokens.access,
-      {
-        refresh: this._authTokens.refresh
-      }
-    )
-
-    if (verified.err) {
-      throw verified.err
-    }
-
-    if (verified.tokens) {
-      this._authTokens = verified.tokens
-    }
-
-    this.onUpdateAuth?.({
-      session: this._authTokens,
-      user: verified.subject.properties
-    })
-
-    return verified.subject.properties
-  }
-
-  async exchangeAuthCode({
-    code,
-    redirectUri,
-    verifier
-  }: {
-    code: string
-    redirectUri: string
-    verifier?: string
-  }): Promise<AuthUser> {
-    this._ensureNoApiKey()
-    const result = await this._authClient.exchange(code, redirectUri, verifier)
-
-    if (result.err) {
-      throw result.err
-    }
-
-    this._authTokens = result.tokens
-    return this.verifyAuthAndRefreshIfNecessary()
-  }
-
-  async initAuthFlow({
-    redirectUri,
-    provider
-  }: {
-    redirectUri: string
-    provider: 'github' | 'password'
-  }): Promise<AuthorizeResult> {
-    this._ensureNoApiKey()
-
-    return this._authClient.authorize(redirectUri, 'code', {
-      provider
-    })
+  set authSession(authSession: AuthSession | undefined) {
+    // TODO: validate auth sessino with zod
+    this._authSession = structuredClone(authSession)
   }
 
   async logout(): Promise<void> {
-    this._authTokens = undefined
+    this._authSession = undefined
     this.onUpdateAuth?.()
   }
 
@@ -180,10 +100,38 @@ export class AgenticApiClient {
     )
   }
 
-  async getMe(): Promise<User> {
-    const user = await this.verifyAuthAndRefreshIfNecessary()
+  /** Signs in with email + password. */
+  async signInWithPassword(
+    json: OperationBody<'signInWithPassword'>
+    // searchParams?: OperationParameters<'signInWithPassword'>
+  ): Promise<AuthSession> {
+    this._authSession = await this.ky
+      .post(`v1/auth/password/signin`, { json })
+      .json<AuthSession>()
 
-    return this.ky.get(`v1/users/${user.id}`).json()
+    this.onUpdateAuth?.(this._authSession)
+    return this._authSession
+  }
+
+  /** Registers a new account with username + email + password. */
+  async signUpWithPassword(
+    json: OperationBody<'signUpWithPassword'>
+    // searchParams?: OperationParameters<'signUpWithPassword'>
+  ): Promise<AuthSession> {
+    this._authSession = await this.ky
+      .post(`v1/auth/password/signup`, { json })
+      .json()
+
+    this.onUpdateAuth?.(this._authSession)
+    return this._authSession
+  }
+
+  /** Gets the currently authenticated user. */
+  async getMe(): Promise<User> {
+    // const user = await this.verifyAuthAndRefreshIfNecessary()
+    assert(this._authSession)
+
+    return this.ky.get(`v1/users/${this._authSession.user.id}`).json()
   }
 
   /** Gets a user by ID. */

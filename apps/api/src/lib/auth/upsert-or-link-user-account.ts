@@ -30,6 +30,7 @@ export async function upsertOrLinkUserAccount({
           | 'accessTokenExpiresAt'
           | 'refreshTokenExpiresAt'
           | 'scope'
+          | 'password'
         >
       >,
       'provider' | 'accountId'
@@ -72,8 +73,9 @@ export async function upsertOrLinkUserAccount({
       existingAccount.userId === existingUser.id,
       `Error authenticating with ${provider}: Account id "${existingAccount.id}" user id "${existingAccount.userId}" does not match expected user id "${existingUser.id}"`
     )
+    assert(provider !== 'password', 500)
 
-    // Udate the account with the up-to-date provider data, including any OAuth
+    // Update the account with the up-to-date provider data, including any OAuth
     // tokens.
     await db
       .update(schema.accounts)

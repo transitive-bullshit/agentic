@@ -12,6 +12,10 @@
   },
   "type": "module",
   "scripts": {
+    "deploy-fixtures": "dotenvx run -- tsx bin/deploy-fixtures.ts",
+    "deploy-fixtures:prod": "dotenvx run -o -f .env.production -- tsx bin/deploy-fixtures.ts",
+    "seed-db": "dotenvx run -- tsx bin/seed-db.ts",
+    "seed-db:prod": "dotenvx run -o -f .env.production -- tsx bin/seed-db.ts",
     "test": "run-s test:*",
     "test:typecheck": "tsc --noEmit",
     "e2e": "dotenvx run -- vitest run",
@@ -22,6 +26,7 @@
     "e2e-mcp:prod": "dotenvx run -o -f .env.production -- vitest run src/mcp-e2e.test.ts"
   },
   "dependencies": {
+    "dotenv": "^16.5.0",
     "ky": "catalog:",
     "p-map": "catalog:",
     "p-times": "^4.0.0"

@@ -1,0 +1,112 @@
+import { assert, parseZodSchema } from '@agentic/platform-core'
+import { isValidPassword } from '@agentic/platform-validators'
+import { createRoute, type OpenAPIHono, z } from '@hono/zod-openapi'
+
+import type { AuthenticatedHonoEnv } from '@/lib/types'
+import { type RawAccount, usernameSchema } from '@/db'
+import { createAuthToken } from '@/lib/auth/create-auth-token'
+import { upsertOrLinkUserAccount } from '@/lib/auth/upsert-or-link-user-account'
+import { getGitHubClient } from '@/lib/external/github'
+import {
+  openapiAuthenticatedSecuritySchemas,
+  openapiErrorResponse404,
+  openapiErrorResponses
+} from '@/lib/openapi-utils'
+
+import { userAuthResponseSchema } from './schemas'
+
+const route = createRoute({
+  description: 'Authenticates with GitHub.',
+  tags: ['auth'],
+  operationId: 'authWithGitHub',
+  method: 'post',
+  path: 'auth/github',
+  security: openapiAuthenticatedSecuritySchemas,
+  request: {
+    body: {
+      required: true,
+      content: {
+        'application/json': {
+          schema: z.object({
+            username: usernameSchema,
+            email: z.string().email(),
+            password: z.string().refine((password) => isValidPassword(password))
+          })
+        }
+      }
+    }
+  },
+  responses: {
+    200: {
+      description: 'A user object',
+      content: {
+        'application/json': {
+          schema: userAuthResponseSchema
+        }
+      }
+    },
+    ...openapiErrorResponses,
+    ...openapiErrorResponse404
+  }
+})
+
+export function registerV1AuthWithGitHub(
+  app: OpenAPIHono<AuthenticatedHonoEnv>
+) {
+  return app.openapi(route, async (c) => {
+    const body = c.req.valid('json')
+
+    const client = getGitHubClient({ accessToken: value.tokenset.access })
+    const { data: ghUser } = await client.rest.users.getAuthenticated()
+
+    if (!ghUser.email) {
+      const { data: emails } = await client.request('GET /user/emails')
+      const primary = emails.find((e) => e.primary)
+      const verified = emails.find((e) => e.verified)
+      const fallback = emails.find((e) => e.email)
+      const email = primary?.email || verified?.email || fallback?.email
+      ghUser.email = email!
+    }
+
+    assert(
+      ghUser.email,
+      'Error authenticating with GitHub: user email is required.'
+    )
+
+    function getPartialOAuthAccount(): Partial<RawAccount> {
+      const now = Date.now()
+
+      return {
+        provider: 'github',
+        accessToken: value.tokenset.access,
+        refreshToken: value.tokenset.refresh,
+        // `expires_in` and `refresh_token_expires_in` are given in seconds
+        accessTokenExpiresAt: new Date(
+          now + value.tokenset.raw.expires_in * 1000
+        ),
+        refreshTokenExpiresAt: new Date(
+          now + value.tokenset.raw.refresh_token_expires_in * 1000
+        ),
+        scope: (value.tokenset.raw.scope as string) || undefined
+      }
+    }
+
+    const user = await upsertOrLinkUserAccount({
+      partialAccount: {
+        accountId: `${ghUser.id}`,
+        accountUsername: ghUser.login.toLowerCase(),
+        ...getPartialOAuthAccount()
+      },
+      partialUser: {
+        email: ghUser.email,
+        isEmailVerified: true,
+        name: ghUser.name || undefined,
+        username: ghUser.login.toLowerCase(),
+        image: ghUser.avatar_url
+      }
+    })
+
+    const token = await createAuthToken(user)
+    return c.json(parseZodSchema(userAuthResponseSchema, { token, user }))
+  })
+}

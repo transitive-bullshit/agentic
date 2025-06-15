@@ -33,18 +33,18 @@ export default [
     }
   },
   {
+    files: ['apps/e2e/**/*.ts', 'apps/web/src/**/*.{tsx,ts}'],
+    rules: {
+      'no-console': 'off'
+    }
+  },
+  {
     files: ['apps/api/src/**/*.ts'],
     plugins: {
       drizzle
     },
     rules: {
       ...drizzle.configs.recommended.rules
-    }
-  },
-  {
-    files: ['apps/web/src/**/*.{tsx,ts}'],
-    rules: {
-      'no-console': 'off'
     }
   }
 ]

@@ -103,13 +103,13 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
         }
       },
       {
-        path: '@dev/test-basic-openapi@010332cf/getPost?postId=1'
+        path: '@dev/test-basic-openapi/getPost?postId=1'
       },
       {
-        path: '@dev/test-basic-openapi@010332cf/get_post?postId=1'
+        path: '@dev/test-basic-openapi/get_post?postId=1'
       },
       {
-        path: '@dev/test-basic-openapi@010332cf/getPost',
+        path: '@dev/test-basic-openapi/getPost',
         request: {
           searchParams: {
             postId: 1
@@ -132,7 +132,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
         }
       },
       {
-        path: '@dev/test-basic-openapi@010332cf/getPost?postId=foo',
+        path: '@dev/test-basic-openapi/getPost?postId=foo',
         response: {
           status: 400
         }
@@ -260,13 +260,13 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
     ]
   },
   {
-    title: 'HTTP => OpenAPI origin basic bypass caching',
+    title: 'HTTP => OpenAPI origin default bypass caching',
     compareResponseBodies: true,
     fixtures: [
       {
         // ensure we bypass the cache for requests for tools which do not have
         // a custom `pure` or `cacheControl` set in their tool config.
-        path: '@dev/test-basic-openapi@fc856666/getPost',
+        path: '@dev/test-everything-openapi/echo',
         request: {
           searchParams: {
             postId: 9
@@ -277,10 +277,16 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
             'cf-cache-status': 'BYPASS'
           }
         }
-      },
+      }
+    ]
+  },
+  {
+    title: 'HTTP => OpenAPI origin basic bypass caching',
+    compareResponseBodies: true,
+    fixtures: [
       {
         // ensure we bypass the cache for requests with `pragma: no-cache`
-        path: '@dev/test-basic-openapi@010332cf/getPost',
+        path: '@dev/test-basic-openapi/getPost',
         request: {
           headers: {
             pragma: 'no-cache'
@@ -297,7 +303,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
       },
       {
         // ensure we bypass the cache for requests with `cache-control: no-cache`
-        path: '@dev/test-basic-openapi@010332cf/getPost?postId=9',
+        path: '@dev/test-basic-openapi/getPost?postId=9',
         request: {
           headers: {
             'cache-control': 'no-cache'
@@ -311,7 +317,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
       },
       {
         // ensure we bypass the cache for requests with `cache-control: no-store`
-        path: '@dev/test-basic-openapi@010332cf/get_post?postId=9',
+        path: '@dev/test-basic-openapi/get_post?postId=9',
         request: {
           headers: {
             'cache-control': 'no-store'
@@ -324,7 +330,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
         }
       },
       {
-        path: '@dev/test-basic-openapi@010332cf/get_post?postId=9',
+        path: '@dev/test-basic-openapi/get_post?postId=9',
         request: {
           headers: {
             'cache-control': 'max-age=0, must-revalidate, no-cache'
@@ -337,7 +343,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
         }
       },
       {
-        path: '@dev/test-basic-openapi@010332cf/get_post?postId=9',
+        path: '@dev/test-basic-openapi/get_post?postId=9',
         request: {
           headers: {
             'cache-control': 'private, max-age=3600, must-revalidate'
@@ -358,7 +364,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
     fixtures: [
       {
         // first request to ensure the cache is populated
-        path: '@dev/test-basic-openapi@010332cf/getPost',
+        path: '@dev/test-basic-openapi/getPost',
         request: {
           headers: {
             'cache-control':
@@ -371,7 +377,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
       },
       {
         // second request should hit the cache
-        path: '@dev/test-basic-openapi@010332cf/getPost?postId=13',
+        path: '@dev/test-basic-openapi/getPost?postId=13',
         request: {
           headers: {
             'cache-control':
@@ -386,7 +392,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
       },
       {
         // normalized request with different path should also hit the cache
-        path: '@dev/test-basic-openapi@010332cf/get_post?postId=13',
+        path: '@dev/test-basic-openapi/get_post?postId=13',
         request: {
           headers: {
             'cache-control':
@@ -408,7 +414,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
     fixtures: [
       {
         // first request to ensure the cache is populated
-        path: '@dev/test-basic-openapi@010332cf/get_post',
+        path: '@dev/test-basic-openapi/get_post',
         request: {
           method: 'POST',
           json: {
@@ -418,7 +424,7 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
       },
       {
         // second request should hit the cache
-        path: '@dev/test-basic-openapi@010332cf/get_post',
+        path: '@dev/test-basic-openapi/get_post',
         request: {
           method: 'POST',
           json: {
@@ -644,18 +650,16 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
     snapshot: false,
     fixtures: [
       {
-        path: '@dev/test-everything-openapi@707562a9/echo_headers',
+        path: '@dev/test-everything-openapi/echo_headers',
         response: {
           validate: (body) => {
-            expect(body['x-agentic-proxy-secret']).toEqual(
-              'f279280a67a15df6e0245511bdeb11854fc8f6f702c49d028431bb1dbc03bfdc'
-            )
-            expect(body['x-agentic-deployment-id']).toEqual(
-              'depl_tj03dd941xfrcd8cjqhg1b9w'
-            )
-            expect(body['x-agentic-deployment-identifier']).toEqual(
-              '@dev/test-everything-openapi@707562a9'
-            )
+            expect(body['x-agentic-proxy-secret']).toBeTruthy()
+            expect(body['x-agentic-proxy-secret']?.length).toBe(64)
+            expect(body['x-agentic-deployment-id']).toBeTruthy()
+            expect(
+              body['x-agentic-deployment-id']?.startsWith('depl_')
+            ).toBeTruthy()
+            expect(body['x-agentic-deployment-identifier']).toBeTruthy()
             expect(body['x-agentic-is-customer-subscription-active']).toEqual(
               'false'
             )

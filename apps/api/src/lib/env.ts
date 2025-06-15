@@ -9,7 +9,8 @@ import { z } from 'zod'
 export const envSchema = baseEnvSchema
   .extend({
     DATABASE_URL: z.string().url(),
-    WEB_AUTH_BASE_URL: z.string().url(),
+
+    JWT_SECRET: z.string().nonempty(),
 
     PORT: z.number().default(3001),
 

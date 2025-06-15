@@ -1,6 +1,6 @@
 import { HeroButton } from '@/components/hero-button'
 
-export default function Page() {
+export default function IndexPage() {
   return (
     <>
       <section>

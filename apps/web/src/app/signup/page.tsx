@@ -8,7 +8,7 @@ import { useState } from 'react'
 
 import { authCopy } from '@/lib/auth-copy'
 
-export default function Page() {
+export default function SignupPage() {
   // TODO
   const [error, setError] = useState<PasswordRegisterError | undefined>(
     undefined

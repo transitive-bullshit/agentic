@@ -1,15 +1,13 @@
 'use client'
 
 import type { PasswordLoginError } from '@agentic/openauth/provider/password'
-import type { AuthorizeResult } from '@agentic/platform-api-client'
 import { isValidEmail, isValidPassword } from '@agentic/platform-validators'
 import { useForm } from '@tanstack/react-form'
-import ky from 'ky'
-import { useEffect, useState } from 'react'
-import { useCookie, useLocalStorage } from 'react-use'
+import { redirect, RedirectType } from 'next/navigation'
+import { useState } from 'react'
 import { z } from 'zod'
 
-import { useAgentic } from '@/components/agentic-provider'
+import { useUnauthenticatedAgentic } from '@/components/agentic-provider'
 import { authCopy } from '@/lib/auth-copy'
 
 // function FieldInfo({ field }: { field: AnyFieldApi }) {
@@ -24,51 +22,9 @@ import { authCopy } from '@/lib/auth-copy'
 //   )
 // }
 
-export default function Page() {
+export default function LoginPage() {
   const [error] = useState<PasswordLoginError | undefined>(undefined)
-  const { api } = useAgentic()
-  const [localAuthResult, setLocalAuthResult] = useState<
-    AuthorizeResult | undefined
-  >(undefined)
-  const [_, setAuthResult] = useLocalStorage<AuthorizeResult | undefined>(
-    'auth-result'
-  )
-  const [authorizationCookie] = useCookie('authorization')
-
-  useEffect(() => {
-    ;(async function () {
-      if (api && !localAuthResult && !authorizationCookie) {
-        const authResult = await api.initAuthFlow({
-          provider: 'password',
-          redirectUri: new URL(
-            `/auth/password/success`,
-            globalThis.window.location.origin
-          ).toString()
-        })
-
-        console.log('authResult', authResult, {
-          provider: 'password',
-          redirectUri: new URL(
-            `/auth/password/success`,
-            globalThis.window.location.origin
-          ).toString()
-        })
-
-        const res2 = await ky.get(authResult.url)
-        console.log('authResult2', res2)
-        console.log('authorizationCookie', res2.headers.get('Set-Cookie'))
-
-        setLocalAuthResult(authResult)
-        setAuthResult(authResult)
-      }
-    })()
-  }, [
-    localAuthResult,
-    setLocalAuthResult,
-    setAuthResult,
-    api,
-    authorizationCookie
-  ])
+  const ctx = useUnauthenticatedAgentic()
 
   const form = useForm({
     defaultValues: {
@@ -86,26 +42,23 @@ export default function Page() {
     },
     onSubmit: async ({ value }) => {
       try {
-        const body = new FormData()
-        body.append('email', value.email)
-        body.append('password', value.password)
+        const res = await ctx!.api.signInWithPassword({
+          email: value.email,
+          password: value.password
+        })
 
-        console.log('authorizationCookie', authorizationCookie)
-
-        const res = await api.ky
-          .post('password/authorize', { body })
-          .json<any>()
-
-        if (res.error) {
-          console.error('login error', res.error)
-        } else {
-          console.log('login success', res)
-        }
+        // TODO
+        console.log('login success', res)
+        redirect('/app', RedirectType.push)
       } catch (err) {
+        // TODO
         console.error('login error', err)
       }
     }
   })
+
+  // TODO:
+  if (!ctx) return null
 
   return (
     <>
@@ -174,7 +127,7 @@ export default function Page() {
           <form.Subscribe
             selector={(state) => [state.canSubmit, state.isSubmitting]}
             children={([canSubmit, isSubmitting]) => (
-              <button type='submit' disabled={!canSubmit}>
+              <button type='submit' disabled={!canSubmit || !ctx}>
                 {isSubmitting ? '...' : authCopy.button_continue}
               </button>
             )}

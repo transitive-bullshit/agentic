@@ -16,6 +16,7 @@ export type Project = components['schemas']['Project']
 export type User = components['schemas']['User']
 export type Team = components['schemas']['Team']
 export type TeamMember = components['schemas']['TeamMember']
+export type AuthSession = components['schemas']['AuthSession']
 
 export type Deployment = Simplify<
   Omit<

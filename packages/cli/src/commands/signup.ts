@@ -3,26 +3,30 @@ import { Command } from 'commander'
 import type { Context } from '../types'
 import { auth } from '../lib/auth'
 
-export function registerSigninCommand({ client, program, logger }: Context) {
-  const command = new Command('login')
-    .alias('signin')
+export function registerSignupCommand({ client, program, logger }: Context) {
+  const command = new Command('signup')
     .description(
-      'Signs in to Agentic. If no credentials are provided, uses GitHub auth.'
+      'Creates a new account for Agentic. If no credentials are provided, uses GitHub auth.'
     )
     .option('-e, --email <email>', 'Account email')
+    .option('-u, --username <username>', 'Account username')
     .option('-p, --password <password>', 'Account password')
     .action(async (opts) => {
-      if (!!opts.email !== !!opts.password) {
+      if (
+        !!opts.email !== !!opts.password ||
+        !!opts.email !== !!opts.username
+      ) {
         logger.error(
-          'either pass email and password or neither (which will use github auth)'
+          'either pass email, username, and password or none of them (which will use github auth)'
         )
         program.outputHelp()
         return
       }
 
-      if (opts.email && opts.password) {
-        await client.signInWithPassword({
+      if (opts.email && opts.username && opts.password) {
+        await client.signUpWithPassword({
           email: opts.email,
+          username: opts.username,
           password: opts.password
         })
       } else {

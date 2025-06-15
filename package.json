@@ -7,7 +7,7 @@
     "type": "git",
     "url": "git+https://github.com/transitive-bullshit/agentic-platform.git"
   },
-  "packageManager": "pnpm@10.11.1",
+  "packageManager": "pnpm@10.12.1",
   "engines": {
     "node": ">=22"
   },
@@ -58,9 +58,5 @@
       "prettier --ignore-unknown --write",
       "eslint --cache --fix"
     ]
-  },
-  "dependencies": {
-    "@agentic/openauth": "link:../../temp/openauth/packages/openauth",
-    "openauthjs": "link:../../temp/openauth"
   }
 }

@@ -4,5 +4,5 @@ import { env } from './env'
 
 export const client = new AgenticApiClient({
   apiBaseUrl: env.AGENTIC_API_BASE_URL,
-  apiKey: env.AGENTIC_API_ACCESS_TOKEN
+  apiKey: env.AGENTIC_DEV_ACCESS_TOKEN
 })

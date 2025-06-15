@@ -6,6 +6,8 @@ import type { AuthenticatedHonoEnv } from '@/lib/types'
 import * as middleware from '@/lib/middleware'
 import { registerOpenAPIErrorResponses } from '@/lib/openapi-utils'
 
+import { registerV1AuthSignInWithPassword } from './auth/sign-in-with-password'
+import { registerV1AuthSignUpWithPassword } from './auth/sign-up-with-password'
 import { registerV1AdminConsumersActivateConsumer } from './consumers/admin-activate-consumer'
 import { registerV1AdminConsumersGetConsumerByToken } from './consumers/admin-get-consumer-by-token'
 import { registerV1ConsumersCreateConsumer } from './consumers/create-consumer'
@@ -71,6 +73,10 @@ const publicRouter = new OpenAPIHono<DefaultHonoEnv>()
 const privateRouter = new OpenAPIHono<AuthenticatedHonoEnv>()
 
 registerHealthCheck(publicRouter)
+
+// Auth
+registerV1AuthSignInWithPassword(publicRouter)
+registerV1AuthSignUpWithPassword(publicRouter)
 
 // Users
 registerV1UsersGetUser(privateRouter)

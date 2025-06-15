@@ -23,7 +23,6 @@
   "dependencies": {
     "@agentic/platform-core": "workspace:*",
     "@agentic/platform-types": "workspace:*",
-    "@agentic/openauth": "catalog:",
     "ky": "catalog:",
     "type-fest": "catalog:"
   },
