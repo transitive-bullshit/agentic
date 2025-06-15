@@ -5,6 +5,7 @@ import cs from 'clsx'
 import { Geist } from 'next/font/google'
 import { Toaster } from 'sonner'
 
+import { AgenticProvider } from '@/components/agentic-provider'
 import { Bootstrap } from '@/components/bootstrap'
 import { Footer } from '@/components/footer'
 import { Header } from '@/components/header'
@@ -50,22 +51,24 @@ export default function RootLayout({
     <html lang='en' suppressHydrationWarning>
       <body className={`${geist.variable} antialiased`}>
         <PostHogProvider>
-          <ThemeProvider
-            attribute='class'
-            defaultTheme='dark'
-            disableTransitionOnChange
-          >
-            <div className={styles.root}>
-              <Header />
+          <AgenticProvider>
+            <ThemeProvider
+              attribute='class'
+              defaultTheme='dark'
+              disableTransitionOnChange
+            >
+              <div className={styles.root}>
+                <Header />
 
-              <main className={cs(styles.main, 'pt-8 pb-16 px-4 md:px-0')}>
-                {children}
-              </main>
+                <main className={cs(styles.main, 'pt-8 pb-16 px-4 md:px-0')}>
+                  {children}
+                </main>
 
-              <Toaster richColors />
-              <Footer />
-            </div>
-          </ThemeProvider>
+                <Toaster richColors />
+                <Footer />
+              </div>
+            </ThemeProvider>
+          </AgenticProvider>
         </PostHogProvider>
 
         <Bootstrap />

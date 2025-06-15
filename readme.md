@@ -20,6 +20,8 @@
   - stripe billing portal
 - auth
   - custom auth pages for `openauth`
+  - **need to ditch openauth**; too opinionated about auth flow and rendering pages
+  - simple email/password login, for example
 - **API gateway**
   - oauth flow
     - https://docs.scalekit.com/guides/mcp/oauth

@@ -2,8 +2,6 @@ packages:
   - packages/*
   - apps/*
   - packages/fixtures/valid/*
-onlyBuiltDependencies:
-  - '@sentry/cli'
 catalog:
   '@agentic/openauth': ^0.4.3
   '@ai-sdk/openai': ^1.3.22
@@ -94,3 +92,8 @@ catalog:
   zod: ^3.25.62
   zod-to-json-schema: ^3.24.5
   zod-validation-error: ^3.4.1
+onlyBuiltDependencies:
+  - '@sentry/cli'
+overrides:
+  openauthjs: link:../../temp/openauth
+  '@agentic/openauth': link:../../temp/openauth/packages/openauth

@@ -18,7 +18,7 @@ export const accessLogger = unless(
   // Ignore health check route
   '/v1/health',
   // Ignore openauth routes
-  '/authorize',
+  // '/authorize',
   '/userinfo',
   '/token',
   '/.well-known/jwks.json',

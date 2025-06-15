@@ -28,8 +28,10 @@
     "@radix-ui/react-dropdown-menu": "^2.1.15",
     "@radix-ui/react-slot": "^1.2.3",
     "@radix-ui/react-tooltip": "^1.2.7",
+    "@tanstack/react-form": "^1.12.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "ky": "catalog:",
     "lucide-react": "^0.515.0",
     "motion": "^12.18.1",
     "next": "^15.3.3",
@@ -45,6 +47,7 @@
     "type-fest": "catalog:"
   },
   "devDependencies": {
+    "@agentic/openauth": "catalog:",
     "@tailwindcss/postcss": "^4.1.10",
     "@tailwindcss/typography": "^0.5.16",
     "@types/react": "catalog:",

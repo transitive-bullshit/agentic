@@ -10,7 +10,7 @@ export function Header() {
     <header className={styles.header}>
       <div className={styles.headerContent}>
         <ActiveLink className={styles.logo} href='/'>
-          Lumon
+          AGENTIC
         </ActiveLink>
 
         <div className='md:hidden'>

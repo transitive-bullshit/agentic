@@ -50,7 +50,8 @@ export const prodUrl = `https://${domain}`
 export const url = isDev ? `http://localhost:${port}` : prodUrl
 export const vercelUrl =
   process.env.VERCEL_URL ?? process.env.NEXT_PUBLIC_VERCEL_URL
-export const apiBaseUrl = isDev || !vercelUrl ? url : `https://${vercelUrl}`
+// export const webBaseUrl = isDev || !vercelUrl ? url : `https://${vercelUrl}`
+export const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL!
 
 export const posthogKey = process.env.NEXT_PUBLIC_POSTHOG_KEY!
 export const posthogHost =

@@ -29,7 +29,7 @@ addFormats(globalAjv)
  *
  * @see https://github.com/ajv-validator/ajv/issues/2318
  */
-export function validateJsonSchema<T = unknown>({
+export async function validateJsonSchema<T = unknown>({
   schema,
   data,
   ajv = globalAjv,
@@ -39,7 +39,7 @@ export function validateJsonSchema<T = unknown>({
   data: unknown
   ajv?: Ajv
   errorMessage?: string
-}): T {
+}): Promise<T> {
   assert(schema, 400, '`schema` is required')
   const isSchemaObject =
     typeof schema === 'object' &&
@@ -67,7 +67,7 @@ export function validateJsonSchema<T = unknown>({
     }
   }
 
-  const schemaHashKey = hashObject(schema)
+  const schemaHashKey = await hashObject(schema)
   let validate = ajv.getSchema(schemaHashKey) as ValidateFunction<T>
   if (!validate) {
     validate = ajv.compile<T>(schema)

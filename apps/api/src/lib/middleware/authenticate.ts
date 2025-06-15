@@ -1,12 +1,12 @@
-import { assert, timingSafeCompare } from '@agentic/platform-core'
+import { assert } from '@agentic/platform-core'
 import { createMiddleware } from 'hono/factory'
 
 import type { RawUser } from '@/db'
 import type { AuthenticatedHonoEnv } from '@/lib/types'
 import { authClient } from '@/lib/auth/client'
 import { subjects } from '@/lib/auth/subjects'
-
-import { env } from '../env'
+import { env } from '@/lib/env'
+import { timingSafeCompare } from '@/lib/utils'
 
 export const authenticate = createMiddleware<AuthenticatedHonoEnv>(
   async function authenticateMiddleware(ctx, next) {
