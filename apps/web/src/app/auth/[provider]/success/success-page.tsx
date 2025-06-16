@@ -4,6 +4,7 @@ import { redirect, RedirectType, useSearchParams } from 'next/navigation'
 import { useEffect } from 'react'
 
 import { useUnauthenticatedAgentic } from '@/components/agentic-provider'
+import { toastError } from '@/lib/notifications'
 
 export function SuccessPage({
   provider:
@@ -29,13 +30,9 @@ export function SuccessPage({
 
       // TODO: make generic using `provider`
       try {
-        const authSession = await ctx.api.exchangeOAuthCodeWithGitHub({
-          code
-        })
-
-        console.log('AUTH SUCCESS', { authSession })
+        await ctx.api.exchangeOAuthCodeWithGitHub({ code })
       } catch (err) {
-        console.error('AUTH ERROR', err)
+        await toastError(err, { label: 'Auth error' })
 
         return redirect('/login', RedirectType.replace)
       }

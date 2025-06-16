@@ -13,7 +13,7 @@
   },
   "type": "module",
   "scripts": {
-    "build": "turbo build",
+    "build": "turbo build --filter=!web",
     "dev": "turbo dev --continue",
     "clean": "turbo clean",
     "fix": "run-s fix:*",

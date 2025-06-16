@@ -6,11 +6,18 @@
         "name": "next"
       }
     ],
+    "rootDir": ".",
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
     }
   },
-  "include": ["src", "*.config.ts", "next-env.d.ts", ".next/types/**/*.ts"],
+  "include": [
+    "src",
+    "*.config.ts",
+    "next-env.d.ts",
+    ".next/types/**/*.ts",
+    "postcss.config.mjs"
+  ],
   "exclude": ["node_modules"]
 }
