@@ -21,7 +21,7 @@ const route = createRoute({
   tags: ['auth'],
   operationId: 'exchangeOAuthCodeWithGitHub',
   method: 'post',
-  path: 'auth/github',
+  path: 'auth/github/exchange',
   security: openapiAuthenticatedSecuritySchemas,
   request: {
     body: {
@@ -51,7 +51,7 @@ const route = createRoute({
   }
 })
 
-export function registerV1AuthExchangeOAuthCodeWithGitHub(
+export function registerV1AuthGitHubOAuthExchange(
   app: OpenAPIHono<DefaultHonoEnv>
 ) {
   return app.openapi(route, async (c) => {

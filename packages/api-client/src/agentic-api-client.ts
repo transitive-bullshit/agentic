@@ -212,12 +212,10 @@ export class AgenticApiClient {
     scope?: string
     clientId?: string
   }): Promise<string> {
-    const publicRedirectUri = `${this.apiBaseUrl}/oauth/callback?${new URLSearchParams({ uri: redirectUri }).toString()}`
-
-    const url = new URL('https://github.com/login/oauth/authorize')
+    const url = new URL(`${this.apiBaseUrl}/v1/auth/github/init`)
     url.searchParams.append('client_id', clientId)
     url.searchParams.append('scope', scope)
-    url.searchParams.append('redirect_uri', publicRedirectUri)
+    url.searchParams.append('redirect_uri', redirectUri)
 
     return url.toString()
   }
@@ -226,7 +224,9 @@ export class AgenticApiClient {
   async exchangeOAuthCodeWithGitHub(
     json: OperationBody<'exchangeOAuthCodeWithGitHub'>
   ): Promise<AuthSession> {
-    this._authSession = await this.ky.post('v1/auth/github', { json }).json()
+    this._authSession = await this.ky
+      .post('v1/auth/github/exchange', { json })
+      .json()
 
     this.onUpdateAuth?.(this._authSession)
     return this._authSession

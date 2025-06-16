@@ -6,7 +6,9 @@ import type { AuthenticatedHonoEnv } from '@/lib/types'
 import * as middleware from '@/lib/middleware'
 import { registerOpenAPIErrorResponses } from '@/lib/openapi-utils'
 
-import { registerV1AuthExchangeOAuthCodeWithGitHub } from './auth/github'
+import { registerV1AuthGitHubOAuthCallback } from './auth/github-callback'
+import { registerV1AuthGitHubOAuthExchange } from './auth/github-exchange'
+import { registerV1AuthGitHubOAuthInitFlow } from './auth/github-init'
 import { registerV1AuthSignInWithPassword } from './auth/sign-in-with-password'
 import { registerV1AuthSignUpWithPassword } from './auth/sign-up-with-password'
 import { registerV1AdminConsumersActivateConsumer } from './consumers/admin-activate-consumer'
@@ -78,7 +80,9 @@ registerHealthCheck(publicRouter)
 // Auth
 registerV1AuthSignInWithPassword(publicRouter)
 registerV1AuthSignUpWithPassword(publicRouter)
-registerV1AuthExchangeOAuthCodeWithGitHub(publicRouter)
+registerV1AuthGitHubOAuthExchange(publicRouter)
+registerV1AuthGitHubOAuthInitFlow(publicRouter)
+registerV1AuthGitHubOAuthCallback(publicRouter)
 
 // Users
 registerV1UsersGetUser(privateRouter)

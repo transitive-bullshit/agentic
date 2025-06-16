@@ -55,7 +55,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/v1/auth/github": {
+    "/v1/auth/github/exchange": {
         parameters: {
             query?: never;
             header?: never;
@@ -64,8 +64,25 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** @description Exchanges GitHub code for auth session. */
+        /** @description Exchanges a GitHub OAuth code for an Agentic auth session. */
         post: operations["exchangeOAuthCodeWithGitHub"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/auth/github/init": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Starts a GitHub OAuth flow. */
+        get: operations["initGitHubOAuthFlow"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -1014,6 +1031,32 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["AuthSession"];
                 };
+            };
+            400: components["responses"]["400"];
+            401: components["responses"]["401"];
+            403: components["responses"]["403"];
+            404: components["responses"]["404"];
+        };
+    };
+    initGitHubOAuthFlow: {
+        parameters: {
+            query: {
+                redirect_uri: string;
+                client_id?: string;
+                scope?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Redirected to GitHub */
+            302: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
             400: components["responses"]["400"];
             401: components["responses"]["401"];
