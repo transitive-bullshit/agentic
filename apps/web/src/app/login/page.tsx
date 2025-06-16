@@ -4,11 +4,14 @@ import type { PasswordLoginError } from '@agentic/openauth/provider/password'
 import { isValidEmail, isValidPassword } from '@agentic/platform-validators'
 import { useForm } from '@tanstack/react-form'
 import { redirect, RedirectType } from 'next/navigation'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { z } from 'zod'
 
 import { useUnauthenticatedAgentic } from '@/components/agentic-provider'
-import { authCopy } from '@/lib/auth-copy'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { cn } from '@/lib/utils'
 
 // function FieldInfo({ field }: { field: AnyFieldApi }) {
 //   return (
@@ -57,6 +60,14 @@ export default function LoginPage() {
     }
   })
 
+  const onAuthWithGitHub = useCallback(async () => {
+    const url = await ctx!.api.initAuthFlowWithGitHub({
+      redirectUri: `${globalThis.location.origin}/auth/github/success`
+    })
+
+    redirect(url, RedirectType.push)
+  }, [ctx])
+
   // TODO:
   if (!ctx) return null
 
@@ -67,85 +78,120 @@ export default function LoginPage() {
           Log In
         </h1>
 
-        <form
-          onSubmit={(e) => {
-            e.preventDefault()
-            void form.handleSubmit()
-          }}
-        >
-          {/* <FormAlert
-            message={error?.type && authCopy?.[`error_${error.type}`]}
-          /> */}
+        <div className='flex flex-1 items-center justify-center'>
+          <div className='w-full max-w-xs'>
+            <form
+              className={cn('flex flex-col gap-6')}
+              onSubmit={(e) => {
+                e.preventDefault()
+                void form.handleSubmit()
+              }}
+            >
+              <div className='flex flex-col items-center gap-2 text-center'>
+                <h1 className='text-2xl font-bold'>Login to your account</h1>
+                <p className='text-muted-foreground text-sm text-balance'>
+                  Enter your email below to login to your account
+                </p>
+              </div>
 
-          <form.Field
-            name='email'
-            children={(field) => (
-              <>
-                {/* <label htmlFor={field.name}>Email:</label> */}
+              <div className='grid gap-6'>
+                <form.Field
+                  name='email'
+                  children={(field) => (
+                    <div className='grid gap-3'>
+                      <Label htmlFor={field.name}>Email</Label>
 
-                <input
-                  id={field.name}
-                  name={field.name}
-                  type='email'
-                  required
-                  placeholder={authCopy.input_email}
-                  autoFocus={!error}
-                  value={field.state.value}
-                  onBlur={field.handleBlur}
-                  onChange={(e) => field.handleChange(e.target.value)}
+                      <Input
+                        id={field.name}
+                        name={field.name}
+                        type='email'
+                        required
+                        placeholder='Email'
+                        autoFocus={!error}
+                        value={field.state.value}
+                        onBlur={field.handleBlur}
+                        onChange={(e: any) =>
+                          field.handleChange(e.target.value)
+                        }
+                      />
+                    </div>
+                  )}
                 />
 
-                {/* <FieldInfo field={field} /> */}
-              </>
-            )}
-          />
+                <form.Field
+                  name='password'
+                  children={(field) => (
+                    <div className='grid gap-3'>
+                      <div className='flex items-center'>
+                        <Label htmlFor={field.name}>Password</Label>
 
-          <form.Field
-            name='password'
-            children={(field) => (
-              <>
-                {/* <label htmlFor={field.name}>Password:</label> */}
+                        <a
+                          href='/forgot-password'
+                          className='ml-auto text-sm underline-offset-4 hover:underline'
+                        >
+                          Forgot your password?
+                        </a>
 
-                <input
-                  id={field.name}
-                  name={field.name}
-                  type='password'
-                  required
-                  placeholder={authCopy.input_password}
-                  autoFocus={error?.type === 'invalid_password'}
-                  autoComplete='current-password'
-                  value={field.state.value}
-                  onBlur={field.handleBlur}
-                  onChange={(e) => field.handleChange(e.target.value)}
+                        <Input
+                          id={field.name}
+                          name={field.name}
+                          type='password'
+                          required
+                          placeholder='Password'
+                          autoFocus={error?.type === 'invalid_password'}
+                          autoComplete='current-password'
+                          value={field.state.value}
+                          onBlur={field.handleBlur}
+                          onChange={(e) => field.handleChange(e.target.value)}
+                        />
+                      </div>
+                    </div>
+                  )}
                 />
 
-                {/* <FieldInfo field={field} /> */}
-              </>
-            )}
-          />
+                <form.Subscribe
+                  selector={(state) => [state.canSubmit, state.isSubmitting]}
+                  children={([canSubmit, isSubmitting]) => (
+                    <Button
+                      type='submit'
+                      disabled={!canSubmit || !ctx}
+                      className='w-full'
+                    >
+                      {isSubmitting ? '...' : 'Login'}
+                    </Button>
+                  )}
+                />
 
-          <form.Subscribe
-            selector={(state) => [state.canSubmit, state.isSubmitting]}
-            children={([canSubmit, isSubmitting]) => (
-              <button type='submit' disabled={!canSubmit || !ctx}>
-                {isSubmitting ? '...' : authCopy.button_continue}
-              </button>
-            )}
-          />
+                <div className='after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t'>
+                  <span className='bg-background text-muted-foreground relative z-10 px-2'>
+                    Or continue with
+                  </span>
+                </div>
 
-          <div data-component='form-footer'>
-            <span>
-              {authCopy.register_prompt}{' '}
-              <a data-component='link' href='/signup'>
-                {authCopy.register}
-              </a>
-            </span>
+                <Button
+                  variant='outline'
+                  className='w-full'
+                  onClick={onAuthWithGitHub}
+                >
+                  <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>
+                    <path
+                      d='M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12'
+                      fill='currentColor'
+                    />
+                  </svg>
+                  Login with GitHub
+                </Button>
+              </div>
 
-            <a data-component='link' href='/forgot-password'>
-              {authCopy.change_prompt}
-            </a>
+              <div className='text-center text-sm'>
+                Don&apos;t have an account?{' '}
+                <a href='/signup' className='underline underline-offset-4'>
+                  Sign up
+                </a>
+              </div>
+            </form>
           </div>
-        </form>
+        </div>
       </section>
     </>
   )

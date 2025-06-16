@@ -1,24 +1,10 @@
 'use client'
 
-import type { AuthorizeResult } from '@agentic/platform-api-client'
 import { assert } from '@agentic/platform-core'
-import { useSearchParams } from 'next/navigation'
+import { redirect, RedirectType, useSearchParams } from 'next/navigation'
 import { useEffect } from 'react'
-import { useLocalStorage } from 'react-use'
 
-import { useAgentic } from '@/components/agentic-provider'
-
-// function FieldInfo({ field }: { field: AnyFieldApi }) {
-//   return (
-//     <>
-//       {field.state.meta.isTouched && !field.state.meta.isValid ? (
-//         <em>{field.state.meta.errors.join(',')}</em>
-//       ) : null}
-
-//       {field.state.meta.isValidating ? 'Validating...' : null}
-//     </>
-//   )
-// }
+import { useUnauthenticatedAgentic } from '@/components/agentic-provider'
 
 export default async function Page({
   params
@@ -31,13 +17,16 @@ export default async function Page({
   return <SuccessPage provider={provider} />
 }
 
-function SuccessPage({ provider }: { provider: string }) {
+function SuccessPage({
+  provider:
+    // TODO
+    _provider
+}: {
+  provider: string
+}) {
   const searchParams = useSearchParams()
   const code = searchParams.get('code')
-  const { api } = useAgentic()
-  const [authResult] = useLocalStorage<AuthorizeResult | undefined>(
-    'auth-result'
-  )
+  const ctx = useUnauthenticatedAgentic()
 
   useEffect(() => {
     ;(async function () {
@@ -46,31 +35,16 @@ function SuccessPage({ provider }: { provider: string }) {
         throw new Error('Missing code or challenge')
       }
 
-      if (!authResult) {
-        // TODO
-        throw new Error('Missing auth-result')
-      }
-
-      if (!authResult.challenge) {
-        // TODO
-        throw new Error('Missing challenge')
-      }
-
-      const authUser = await api.exchangeAuthCode({
-        code,
-        redirectUri: new URL(
-          `/auth/${provider}/success`,
-          globalThis.window.location.origin
-        ).toString(),
-        verifier: authResult.challenge?.verifier
+      // TODO: make generic using `provider`
+      const authSession = await ctx!.api.exchangeOAuthCodeWithGitHub({
+        code
       })
 
-      console.log('AUTH SUCCESS', {
-        authUser,
-        authTokens: api.authTokens
-      })
+      console.log('AUTH SUCCESS', { authSession })
+
+      redirect('/app', RedirectType.replace)
     })()
-  }, [code, api, authResult, provider])
+  }, [code, ctx])
 
   // TODO: show a loading state
   return null
