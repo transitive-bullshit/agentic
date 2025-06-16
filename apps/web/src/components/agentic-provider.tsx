@@ -8,6 +8,7 @@ import { redirect, RedirectType } from 'next/navigation'
 import {
   createContext,
   type ReactNode,
+  useCallback,
   useContext,
   useEffect,
   useRef,
@@ -17,17 +18,22 @@ import { useLocalStorage } from 'react-use'
 
 import * as config from '@/lib/config'
 
-type AgenticContext = {
+type AgenticContextType = {
   api: AgenticApiClient
+  logout: () => void
 }
 
-const AgenticContext = createContext<AgenticContext | undefined>(undefined)
+const AgenticContext = createContext<AgenticContextType | undefined>(undefined)
 
 export function AgenticProvider({ children }: { children: ReactNode }) {
-  const [authSession, setAuthSession] = useLocalStorage<AuthSession>(
+  const [authSession, setAuthSession] = useLocalStorage<AuthSession | null>(
     'agentic-auth-session'
   )
-  const agenticContext = useRef<AgenticContext>({
+  const logout = useCallback(() => {
+    setAuthSession(null)
+  }, [setAuthSession])
+
+  const agenticContext = useRef<AgenticContextType>({
     api: new AgenticApiClient({
       apiBaseUrl: config.apiBaseUrl,
       onUpdateAuth: (updatedAuthSession) => {
@@ -43,12 +49,19 @@ export function AgenticProvider({ children }: { children: ReactNode }) {
           console.log('auth session not updated')
         }
       }
-    })
+    }),
+    logout
   })
 
   useEffect(() => {
-    console.log('setting session from localStorage', authSession?.token)
-    agenticContext.current.api.authSession = authSession
+    console.log('updating session from localStorage', authSession?.token)
+    if (agenticContext.current) {
+      if (authSession) {
+        agenticContext.current.api.authSession = authSession
+      } else {
+        agenticContext.current.api.authSession = undefined
+      }
+    }
   }, [agenticContext, authSession])
 
   return (
@@ -58,7 +71,7 @@ export function AgenticProvider({ children }: { children: ReactNode }) {
   )
 }
 
-export function useAgentic(): AgenticContext {
+export function useAgentic(): AgenticContextType {
   const ctx = useContext(AgenticContext)
 
   if (!ctx) {
@@ -68,7 +81,7 @@ export function useAgentic(): AgenticContext {
   return ctx
 }
 
-export function useUnauthenticatedAgentic(): AgenticContext | undefined {
+export function useUnauthenticatedAgentic(): AgenticContextType | undefined {
   const ctx = useAgentic()
   const [isMounted, setIsMounted] = useState(false)
 
@@ -86,7 +99,7 @@ export function useUnauthenticatedAgentic(): AgenticContext | undefined {
   return isMounted ? ctx : undefined
 }
 
-export function useAuthenticatedAgentic(): AgenticContext | undefined {
+export function useAuthenticatedAgentic(): AgenticContextType | undefined {
   const ctx = useAgentic()
   const [isMounted, setIsMounted] = useState(false)
 
@@ -97,7 +110,7 @@ export function useAuthenticatedAgentic(): AgenticContext | undefined {
     }
 
     if (!ctx.api.isAuthenticated) {
-      redirect('/', RedirectType.replace)
+      redirect('/login', RedirectType.replace)
     }
   }, [isMounted, setIsMounted, ctx])
 

@@ -177,43 +177,6 @@ a:hover .link {
   transition-duration: 300ms;
 }
 
-h1 {
-  font-size: 2.5rem;
-  font-weight: 600;
-  @apply mb-8;
-}
-
-h2 {
-  font-size: 2rem;
-  font-weight: 500;
-  @apply mb-7;
-}
-
-h3 {
-  font-size: 1.5rem;
-  font-weight: 450;
-  margin-bottom: 1em;
-  @apply mb-6;
-}
-
-h4 {
-  font-size: 1.3rem;
-  font-weight: 400;
-  @apply mb-5;
-}
-
-h5 {
-  font-size: 1.2rem;
-  font-weight: 350;
-  @apply mb-4;
-}
-
-h6 {
-  font-size: 1rem;
-  font-weight: 350;
-  @apply mb-2;
-}
-
 main section {
   width: 100%;
   display: flex;

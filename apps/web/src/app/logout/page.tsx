@@ -11,7 +11,7 @@ export default function LogoutPage() {
   useEffect(() => {
     ;(async () => {
       if (ctx) {
-        await ctx.api.logout()
+        ctx.logout()
         redirect('/', RedirectType.replace)
       }
     })()

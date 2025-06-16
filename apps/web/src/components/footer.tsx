@@ -1,8 +1,8 @@
 import Link from 'next/link'
 
 import { ActiveLink } from '@/components/active-link'
-import { GitHub } from '@/icons/github'
-import { Twitter } from '@/icons/twitter'
+import { GitHubIcon } from '@/icons/github'
+import { TwitterIcon } from '@/icons/twitter'
 import { copyright, githubUrl, twitterUrl } from '@/lib/config'
 
 export function Footer() {
@@ -54,7 +54,8 @@ export function Footer() {
                   target='_blank'
                   rel='noopener noreferrer'
                 >
-                  <Twitter className='h-4 w-4' />
+                  <TwitterIcon className='h-4 w-4' />
+
                   <span>Twitter</span>
                 </Link>
 
@@ -64,7 +65,8 @@ export function Footer() {
                   target='_blank'
                   rel='noopener noreferrer'
                 >
-                  <GitHub className='h-4 w-4' />
+                  <GitHubIcon className='h-4 w-4' />
+
                   <span>GitHub</span>
                 </Link>
               </nav>

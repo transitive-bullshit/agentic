@@ -1,4 +1,4 @@
-export function Twitter({ className }: { className?: string }) {
+export function TwitterIcon({ className }: { className?: string }) {
   return (
     <svg
       role='img'

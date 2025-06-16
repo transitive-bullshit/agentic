@@ -35,14 +35,24 @@ function SuccessPage({
         throw new Error('Missing code or challenge')
       }
 
+      if (!ctx) {
+        return
+      }
+
       // TODO: make generic using `provider`
-      const authSession = await ctx!.api.exchangeOAuthCodeWithGitHub({
-        code
-      })
+      try {
+        const authSession = await ctx.api.exchangeOAuthCodeWithGitHub({
+          code
+        })
 
-      console.log('AUTH SUCCESS', { authSession })
+        console.log('AUTH SUCCESS', { authSession })
+      } catch (err) {
+        console.error('AUTH ERROR', err)
 
-      redirect('/app', RedirectType.replace)
+        return redirect('/login', RedirectType.replace)
+      }
+
+      return redirect('/app', RedirectType.replace)
     })()
   }, [code, ctx])
 
