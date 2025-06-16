@@ -10,12 +10,12 @@ import { authCopy } from '@/lib/auth-copy'
 
 export default function ForgotPasswordPage() {
   // TODO
-  const [error, setError] = useState<PasswordChangeError | undefined>(undefined)
-  const [state, setState] = useState<PasswordChangeState>({
+  const [error] = useState<PasswordChangeError | undefined>(undefined)
+  const [state] = useState<PasswordChangeState>({
     type: 'start',
     redirect: '/' // TODO
   })
-  const [form, setForm] = useState<FormData | undefined>(undefined)
+  const [form] = useState<FormData | undefined>(undefined)
 
   const passwordError = [
     'invalid_password',
