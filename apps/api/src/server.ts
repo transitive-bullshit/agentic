@@ -10,6 +10,7 @@ import { env } from '@/lib/env'
 import * as middleware from '@/lib/middleware'
 
 import { initExitHooks } from './lib/exit-hooks'
+import { registerOAuthRedirect } from './oauth-redirect'
 
 export const app = new OpenAPIHono<DefaultHonoEnv>()
 
@@ -31,6 +32,7 @@ app.use(middleware.accessLogger)
 app.use(middleware.responseTime)
 
 // TODO: top-level auth routes
+registerOAuthRedirect(app)
 
 // Mount all v1 API routes
 app.route('/v1', apiV1)

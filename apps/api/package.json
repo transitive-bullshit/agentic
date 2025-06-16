@@ -45,6 +45,7 @@
     "bcryptjs": "^3.0.2",
     "exit-hook": "catalog:",
     "hono": "catalog:",
+    "ky": "catalog:",
     "octokit": "catalog:",
     "p-all": "catalog:",
     "postgres": "catalog:",

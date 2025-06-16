@@ -12,8 +12,8 @@ import { oraPromise } from 'ora'
 import { AuthStore } from './auth-store'
 
 const providerToLabel = {
-  github: 'GitHub',
-  password: 'email and password'
+  github: 'GitHub'
+  // password: 'email and password'
 }
 
 export async function auth({
@@ -22,7 +22,7 @@ export async function auth({
   preferredPort = 6013
 }: {
   client: AgenticApiClient
-  provider: 'github' | 'password'
+  provider: 'github' // | 'password'
   preferredPort?: number
 }): Promise<AuthSession> {
   const providerLabel = providerToLabel[provider]
@@ -49,15 +49,22 @@ export async function auth({
 
     const code = c.req.query('code')
     assert(code, 'Missing required code query parameter')
-    await client.exchangeAuthCode({
-      code,
-      redirectUri,
-      verifier: authorizeResult.challenge?.verifier
-    })
+
+    await client.exchangeOAuthCodeWithGitHub({ code })
     assert(
-      client.authTokens,
+      client.authSession,
       `Error ${providerLabel} auth: failed to exchange auth code for token`
     )
+
+    // await client.exchangeAuthCode({
+    //   code,
+    //   redirectUri,
+    //   verifier: authorizeResult.challenge?.verifier
+    // })
+    // assert(
+    //   client.authSession,
+    //   `Error ${providerLabel} auth: failed to exchange auth code for token`
+    // )
 
     // AuthStore should be updated via the onUpdateAuth callback
     const session = AuthStore.tryGetAuth()
@@ -89,13 +96,18 @@ export async function auth({
     })
   })
 
-  // TODO
-  const authorizeResult = await client.initAuthFlow({
-    provider,
+  const url = await client.initAuthFlowWithGitHub({
     redirectUri
   })
-  assert(authorizeResult.url, `Error signing in with ${providerLabel}`)
-  await open(authorizeResult.url)
+  await open(url.toString())
+
+  // TODO
+  // const authorizeResult = await client.initAuthFlow({
+  //   provider,
+  //   redirectUri
+  // })
+  // assert(authorizeResult.url, `Error signing in with ${providerLabel}`)
+  // await open(authorizeResult.url)
 
   const authSession = await oraPromise(authP, {
     text: `Signing in with ${providerLabel}`,

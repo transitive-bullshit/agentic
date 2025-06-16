@@ -1,24 +1,25 @@
+import type { DefaultHonoEnv } from '@agentic/platform-hono'
 import { assert, parseZodSchema } from '@agentic/platform-core'
-import { isValidPassword } from '@agentic/platform-validators'
 import { createRoute, type OpenAPIHono, z } from '@hono/zod-openapi'
 
-import type { AuthenticatedHonoEnv } from '@/lib/types'
-import { type RawAccount, usernameSchema } from '@/db'
 import { createAuthToken } from '@/lib/auth/create-auth-token'
 import { upsertOrLinkUserAccount } from '@/lib/auth/upsert-or-link-user-account'
-import { getGitHubClient } from '@/lib/external/github'
+import {
+  exchangeGitHubOAuthCodeForAccessToken,
+  getGitHubClient
+} from '@/lib/external/github'
 import {
   openapiAuthenticatedSecuritySchemas,
   openapiErrorResponse404,
   openapiErrorResponses
 } from '@/lib/openapi-utils'
 
-import { userAuthResponseSchema } from './schemas'
+import { authSessionResponseSchema } from './schemas'
 
 const route = createRoute({
-  description: 'Authenticates with GitHub.',
+  description: 'Exchanges a GitHub OAuth code for an Agentic auth session.',
   tags: ['auth'],
-  operationId: 'authWithGitHub',
+  operationId: 'exchangeOAuthCodeWithGitHub',
   method: 'post',
   path: 'auth/github',
   security: openapiAuthenticatedSecuritySchemas,
@@ -27,21 +28,21 @@ const route = createRoute({
       required: true,
       content: {
         'application/json': {
-          schema: z.object({
-            username: usernameSchema,
-            email: z.string().email(),
-            password: z.string().refine((password) => isValidPassword(password))
-          })
+          schema: z
+            .object({
+              code: z.string()
+            })
+            .passthrough()
         }
       }
     }
   },
   responses: {
     200: {
-      description: 'A user object',
+      description: 'An auth session',
       content: {
         'application/json': {
-          schema: userAuthResponseSchema
+          schema: authSessionResponseSchema
         }
       }
     },
@@ -50,14 +51,20 @@ const route = createRoute({
   }
 })
 
-export function registerV1AuthWithGitHub(
-  app: OpenAPIHono<AuthenticatedHonoEnv>
+export function registerV1AuthExchangeOAuthCodeWithGitHub(
+  app: OpenAPIHono<DefaultHonoEnv>
 ) {
   return app.openapi(route, async (c) => {
+    const logger = c.get('logger')
     const body = c.req.valid('json')
 
-    const client = getGitHubClient({ accessToken: value.tokenset.access })
+    const result = await exchangeGitHubOAuthCodeForAccessToken(body)
+    logger.info('github oauth', result)
+
+    const client = getGitHubClient({ accessToken: result.access_token! })
     const { data: ghUser } = await client.rest.users.getAuthenticated()
+
+    logger.info('github user', ghUser)
 
     if (!ghUser.email) {
       const { data: emails } = await client.request('GET /user/emails')
@@ -73,29 +80,22 @@ export function registerV1AuthWithGitHub(
       'Error authenticating with GitHub: user email is required.'
     )
 
-    function getPartialOAuthAccount(): Partial<RawAccount> {
-      const now = Date.now()
-
-      return {
-        provider: 'github',
-        accessToken: value.tokenset.access,
-        refreshToken: value.tokenset.refresh,
-        // `expires_in` and `refresh_token_expires_in` are given in seconds
-        accessTokenExpiresAt: new Date(
-          now + value.tokenset.raw.expires_in * 1000
-        ),
-        refreshTokenExpiresAt: new Date(
-          now + value.tokenset.raw.refresh_token_expires_in * 1000
-        ),
-        scope: (value.tokenset.raw.scope as string) || undefined
-      }
-    }
-
+    const now = Date.now()
     const user = await upsertOrLinkUserAccount({
       partialAccount: {
+        provider: 'github',
         accountId: `${ghUser.id}`,
         accountUsername: ghUser.login.toLowerCase(),
-        ...getPartialOAuthAccount()
+        accessToken: result.access_token,
+        refreshToken: result.refresh_token,
+        // `expires_in` and `refresh_token_expires_in` are given in seconds
+        accessTokenExpiresAt: result.expires_in
+          ? new Date(now + result.expires_in * 1000)
+          : undefined,
+        refreshTokenExpiresAt: result.refresh_token_expires_in
+          ? new Date(now + result.refresh_token_expires_in * 1000)
+          : undefined,
+        scope: result.scope || undefined
       },
       partialUser: {
         email: ghUser.email,
@@ -106,7 +106,9 @@ export function registerV1AuthWithGitHub(
       }
     })
 
+    logger.info('github user result', user)
+
     const token = await createAuthToken(user)
-    return c.json(parseZodSchema(userAuthResponseSchema, { token, user }))
+    return c.json(parseZodSchema(authSessionResponseSchema, { token, user }))
   })
 }

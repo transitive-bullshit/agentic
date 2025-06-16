@@ -1,0 +1,5 @@
+// import { authSubjectSchemas } from '@agentic/platform-types'
+
+// import { createSubjects } from './subject'
+
+// export const authSubjects = createSubjects(authSubjectSchemas)

@@ -1,8 +1,11 @@
+import type { DefaultHonoEnv } from '@agentic/platform-hono'
 import type { OpenAPIHono } from '@hono/zod-openapi'
 import { assert } from '@agentic/platform-core'
 
-export function registerV1OAuthRedirect(app: OpenAPIHono) {
-  return app.all('oauth', async (ctx) => {
+export function registerOAuthRedirect(app: OpenAPIHono<DefaultHonoEnv>) {
+  return app.all('/oauth/callback', async (ctx) => {
+    const logger = ctx.get('logger')
+
     if (ctx.req.query('state')) {
       const { state: state64, ...query } = ctx.req.query()
 
@@ -21,8 +24,17 @@ export function registerV1OAuthRedirect(app: OpenAPIHono) {
         ...state,
         ...query
       })
+      const redirectUri = `${uri}?${searchParams.toString()}`
 
-      ctx.redirect(`${uri}?${searchParams.toString()}`)
+      logger.info(
+        'OAUTH CALLBACK',
+        ctx.req.method,
+        ctx.req.url,
+        ctx.req.query(),
+        '=>',
+        redirectUri
+      )
+      return ctx.redirect(redirectUri)
     } else {
       // github oauth
       // https://developer.github.com/apps/building-oauth-apps/authorizing-oauth-apps/#redirect-urls
@@ -35,7 +47,17 @@ export function registerV1OAuthRedirect(app: OpenAPIHono) {
       )
 
       const searchParams = new URLSearchParams(params)
-      ctx.redirect(`${uri}?${searchParams.toString()}`)
+      const redirectUri = `${uri}?${searchParams.toString()}`
+      logger.info(
+        'OAUTH CALLBACK',
+        ctx.req.method,
+        ctx.req.url,
+        ctx.req.query(),
+        '=>',
+        redirectUri
+      )
+
+      return ctx.redirect(redirectUri)
     }
   })
 }

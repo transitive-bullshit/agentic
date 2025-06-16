@@ -58,7 +58,7 @@ export function getGitHubClient({
   return new Octokit({ auth: accessToken })
 }
 
-export async function exchangeOAuthCodeForAccessToken({
+export async function exchangeGitHubOAuthCodeForAccessToken({
   code,
   clientId = env.GITHUB_CLIENT_ID,
   clientSecret = env.GITHUB_CLIENT_SECRET,

@@ -15,6 +15,11 @@ import { assert, sanitizeSearchParams } from '@agentic/platform-core'
 import defaultKy, { type KyInstance } from 'ky'
 
 import type { OnUpdateAuthSessionFunction } from './types'
+// import {
+//   type AuthClient,
+//   type AuthorizeResult,
+//   createAuthClient
+// } from './auth-client'
 
 export class AgenticApiClient {
   static readonly DEFAULT_API_BASE_URL = 'https://api.agentic.so'
@@ -24,6 +29,7 @@ export class AgenticApiClient {
   public readonly ky: KyInstance
   public readonly onUpdateAuth?: OnUpdateAuthSessionFunction
 
+  // protected _authClient: AuthClient
   protected _authSession?: AuthSession
 
   constructor({
@@ -42,6 +48,11 @@ export class AgenticApiClient {
     this.apiBaseUrl = apiBaseUrl
     this.apiKey = apiKey
     this.onUpdateAuth = onUpdateAuth
+
+    // this._authClient = createAuthClient({
+    //   issuer: apiBaseUrl,
+    //   clientId: 'agentic-api-client'
+    // })
 
     this.ky = ky.extend({
       prefixUrl: apiBaseUrl,
@@ -88,6 +99,71 @@ export class AgenticApiClient {
     this._authSession = structuredClone(authSession)
   }
 
+  // async verifyAuthAndRefreshIfNecessary(): Promise<AuthSession> {
+  //   this._ensureNoApiKey()
+
+  //   if (!this._authTokens) {
+  //     throw new Error('This method requires authentication.')
+  //   }
+
+  //   const verified = await this._authClient.verify(
+  //     authSubjects,
+  //     this._authTokens.access,
+  //     {
+  //       refresh: this._authTokens.refresh
+  //     }
+  //   )
+
+  //   if (verified.err) {
+  //     throw verified.err
+  //   }
+
+  //   if (verified.tokens) {
+  //     this._authTokens = verified.tokens
+  //   }
+
+  //   this.onUpdateAuth?.({
+  //     session: this._authTokens,
+  //     user: verified.subject.properties
+  //   })
+
+  //   return verified.subject.properties
+  // }
+
+  // async exchangeAuthCode({
+  //   code,
+  //   redirectUri,
+  //   verifier
+  // }: {
+  //   code: string
+  //   redirectUri: string
+  //   verifier?: string
+  // }): Promise<AuthSession> {
+  //   this._ensureNoApiKey()
+  //   const result = await this._authClient.exchange(code, redirectUri, verifier)
+
+  //   if (result.err) {
+  //     throw result.err
+  //   }
+
+  //   this._authTokens = result.tokens
+  //   return this.verifyAuthAndRefreshIfNecessary()
+  // }
+
+  // async initAuthFlow({
+  //   redirectUri,
+  //   provider
+  // }: {
+  //   redirectUri: string
+  //   provider: 'github'
+  // }): Promise<AuthorizeResult> {
+  //   this._ensureNoApiKey()
+
+  //   return this._authClient.authorize(redirectUri, 'code', {
+  //     provider
+  //   })
+  // }
+
   async logout(): Promise<void> {
     this._authSession = undefined
     this.onUpdateAuth?.()
@@ -106,7 +182,7 @@ export class AgenticApiClient {
     // searchParams?: OperationParameters<'signInWithPassword'>
   ): Promise<AuthSession> {
     this._authSession = await this.ky
-      .post(`v1/auth/password/signin`, { json })
+      .post('v1/auth/password/signin', { json })
       .json<AuthSession>()
 
     this.onUpdateAuth?.(this._authSession)
@@ -119,8 +195,38 @@ export class AgenticApiClient {
     // searchParams?: OperationParameters<'signUpWithPassword'>
   ): Promise<AuthSession> {
     this._authSession = await this.ky
-      .post(`v1/auth/password/signup`, { json })
+      .post('v1/auth/password/signup', { json })
       .json()
+
+    this.onUpdateAuth?.(this._authSession)
+    return this._authSession
+  }
+
+  // TODO
+  async initAuthFlowWithGitHub({
+    redirectUri,
+    scope = 'user:email',
+    clientId = 'Iv23lizZv3CnggDT7JED'
+  }: {
+    redirectUri: string
+    scope?: string
+    clientId?: string
+  }): Promise<string> {
+    const publicRedirectUri = `${this.apiBaseUrl}/oauth/callback?${new URLSearchParams({ uri: redirectUri }).toString()}`
+
+    const url = new URL('https://github.com/login/oauth/authorize')
+    url.searchParams.append('client_id', clientId)
+    url.searchParams.append('scope', scope)
+    url.searchParams.append('redirect_uri', publicRedirectUri)
+
+    return url.toString()
+  }
+
+  // TODO
+  async exchangeOAuthCodeWithGitHub(
+    json: OperationBody<'exchangeOAuthCodeWithGitHub'>
+  ): Promise<AuthSession> {
+    this._authSession = await this.ky.post('v1/auth/github', { json }).json()
 
     this.onUpdateAuth?.(this._authSession)
     return this._authSession

@@ -6,39 +6,256 @@ settings:
 
 catalogs:
   default:
+    '@apideck/better-ajv-errors':
+      specifier: ^0.3.6
+      version: 0.3.6
+    '@clack/prompts':
+      specifier: ^0.11.0
+      version: 0.11.0
+    '@cloudflare/workers-types':
+      specifier: ^4.20250614.0
+      version: 4.20250614.0
+    '@commander-js/extra-typings':
+      specifier: ^14.0.0
+      version: 14.0.0
+    '@edge-runtime/vm':
+      specifier: ^5.0.0
+      version: 5.0.0
+    '@fisch0920/config':
+      specifier: ^1.1.2
+      version: 1.1.2
+    '@fisch0920/drizzle-orm':
+      specifier: ^0.43.7
+      version: 0.43.7
+    '@fisch0920/drizzle-zod':
+      specifier: ^0.7.9
+      version: 0.7.9
+    '@hono/node-server':
+      specifier: ^1.14.4
+      version: 1.14.4
+    '@hono/sentry':
+      specifier: ^1.2.2
+      version: 1.2.2
+    '@hono/zod-openapi':
+      specifier: ^0.19.8
+      version: 0.19.8
+    '@hono/zod-validator':
+      specifier: ^0.7.0
+      version: 0.7.0
+    '@modelcontextprotocol/sdk':
+      specifier: ^1.12.3
+      version: 1.12.3
+    '@paralleldrive/cuid2':
+      specifier: ^2.2.2
+      version: 2.2.2
+    '@react-email/components':
+      specifier: ^0.0.42
+      version: 0.0.42
+    '@redocly/openapi-core':
+      specifier: ^1.34.3
+      version: 1.34.3
+    '@sentry/cli':
+      specifier: ^2.46.0
+      version: 2.46.0
+    '@sentry/cloudflare':
+      specifier: ^9.29.0
+      version: 9.29.0
+    '@sentry/core':
+      specifier: ^9.29.0
+      version: 9.29.0
+    '@sentry/node':
+      specifier: ^9.29.0
+      version: 9.29.0
+    '@types/ms':
+      specifier: ^2.1.0
+      version: 2.1.0
+    '@types/node':
+      specifier: ^24.0.1
+      version: 24.0.1
     '@types/react':
       specifier: ^19.1.8
       version: 19.1.8
     '@types/react-dom':
       specifier: ^19.1.6
       version: 19.1.6
+    '@types/semver':
+      specifier: ^7.7.0
+      version: 7.7.0
+    agents:
+      specifier: ^0.0.95
+      version: 0.0.95
+    ajv:
+      specifier: ^8.17.1
+      version: 8.17.1
+    ajv-formats:
+      specifier: ^3.0.1
+      version: 3.0.1
+    camelcase:
+      specifier: ^8.0.0
+      version: 8.0.0
+    commander:
+      specifier: ^14.0.0
+      version: 14.0.0
+    conf:
+      specifier: ^14.0.0
+      version: 14.0.0
+    decamelize:
+      specifier: ^6.0.0
+      version: 6.0.0
+    del-cli:
+      specifier: ^6.0.0
+      version: 6.0.0
+    drizzle-kit:
+      specifier: ^0.31.1
+      version: 0.31.1
+    drizzle-orm:
+      specifier: ^0.44.2
+      version: 0.44.2
+    email-validator:
+      specifier: ^2.0.4
+      version: 2.0.4
+    eslint:
+      specifier: ^9.29.0
+      version: 9.29.0
+    eslint-plugin-drizzle:
+      specifier: ^0.2.3
+      version: 0.2.3
+    eventid:
+      specifier: ^2.0.1
+      version: 2.0.1
+    exit-hook:
+      specifier: ^4.0.0
+      version: 4.0.0
+    fast-content-type-parse:
+      specifier: ^3.0.0
+      version: 3.0.0
+    fast-uri:
+      specifier: ^3.0.6
+      version: 3.0.6
+    fastmcp:
+      specifier: ^3.3.0
+      version: 3.3.0
+    get-port:
+      specifier: ^7.1.0
+      version: 7.1.0
+    hono:
+      specifier: ^4.7.11
+      version: 4.7.11
+    knip:
+      specifier: ^5.61.0
+      version: 5.61.0
+    ky:
+      specifier: 1.8.1
+      version: 1.8.1
+    lint-staged:
+      specifier: ^16.1.1
+      version: 16.1.1
+    ms:
+      specifier: ^2.1.3
+      version: 2.1.3
+    npm-run-all2:
+      specifier: ^8.0.4
+      version: 8.0.4
+    octokit:
+      specifier: ^5.0.3
+      version: 5.0.3
+    only-allow:
+      specifier: ^1.2.1
+      version: 1.2.1
+    open:
+      specifier: ^10.1.2
+      version: 10.1.2
+    openapi-typescript:
+      specifier: ^7.8.0
+      version: 7.8.0
+    ora:
+      specifier: ^8.2.0
+      version: 8.2.0
+    p-all:
+      specifier: ^5.0.0
+      version: 5.0.0
+    p-map:
+      specifier: ^7.0.3
+      version: 7.0.3
+    parse-json:
+      specifier: ^8.3.0
+      version: 8.3.0
+    plur:
+      specifier: ^5.1.0
+      version: 5.1.0
+    postgres:
+      specifier: ^3.4.7
+      version: 3.4.7
+    prettier:
+      specifier: ^3.5.3
+      version: 3.5.3
     react:
       specifier: ^19.1.0
       version: 19.1.0
     react-dom:
       specifier: ^19.1.0
       version: 19.1.0
+    react-email:
+      specifier: ^4.0.16
+      version: 4.0.16
+    resend:
+      specifier: ^4.6.0
+      version: 4.6.0
+    restore-cursor:
+      specifier: ^5.1.0
+      version: 5.1.0
+    semver:
+      specifier: ^7.7.2
+      version: 7.7.2
+    simple-git-hooks:
+      specifier: ^2.13.0
+      version: 2.13.0
+    sort-keys:
+      specifier: ^5.1.0
+      version: 5.1.0
     stripe:
       specifier: ^18.2.1
       version: 18.2.1
+    tsup:
+      specifier: ^8.5.0
+      version: 8.5.0
+    tsx:
+      specifier: ^4.20.3
+      version: 4.20.3
+    turbo:
+      specifier: ^2.5.4
+      version: 2.5.4
     type-fest:
       specifier: ^4.41.0
       version: 4.41.0
-
-overrides:
-  openauthjs: link:../../temp/openauth
-  '@agentic/openauth': link:../../temp/openauth/packages/openauth
+    typescript:
+      specifier: ^5.8.3
+      version: 5.8.3
+    unconfig:
+      specifier: ^7.3.2
+      version: 7.3.2
+    vite-tsconfig-paths:
+      specifier: ^5.1.4
+      version: 5.1.4
+    vitest:
+      specifier: ^3.2.3
+      version: 3.2.3
+    wrangler:
+      specifier: ^4.20.0
+      version: 4.20.0
+    zod:
+      specifier: ^3.25.64
+      version: 3.25.64
+    zod-to-json-schema:
+      specifier: ^3.24.5
+      version: 3.24.5
+    zod-validation-error:
+      specifier: ^3.5.0
+      version: 3.5.0
 
 importers:
 
   .:
-    dependencies:
-      '@agentic/openauth':
-        specifier: link:../../temp/openauth/packages/openauth
-        version: link:../../temp/openauth/packages/openauth
-      openauthjs:
-        specifier: link:../../temp/openauth
-        version: link:../../temp/openauth
     devDependencies:
       '@dotenvx/dotenvx':
         specifier: ^1.44.2
@@ -100,9 +317,6 @@ importers:
 
   apps/api:
     dependencies:
-      '@agentic/openauth':
-        specifier: link:../../../../temp/openauth/packages/openauth
-        version: link:../../../../temp/openauth/packages/openauth
       '@agentic/platform':
         specifier: workspace:*
         version: link:../../packages/platform
@@ -148,6 +362,9 @@ importers:
       hono:
         specifier: 'catalog:'
         version: 4.7.11
+      ky:
+        specifier: 'catalog:'
+        version: 1.8.1
       octokit:
         specifier: 'catalog:'
         version: 5.0.3
@@ -362,9 +579,6 @@ importers:
         specifier: 'catalog:'
         version: 4.41.0
     devDependencies:
-      '@agentic/openauth':
-        specifier: link:../../../../temp/openauth/packages/openauth
-        version: link:../../../../temp/openauth/packages/openauth
       '@tailwindcss/postcss':
         specifier: ^4.1.10
         version: 4.1.10
@@ -392,15 +606,18 @@ importers:
 
   packages/api-client:
     dependencies:
-      '@agentic/openauth':
-        specifier: link:../../../../temp/openauth/packages/openauth
-        version: link:../../../../temp/openauth/packages/openauth
       '@agentic/platform-core':
         specifier: workspace:*
         version: link:../core
       '@agentic/platform-types':
         specifier: workspace:*
         version: link:../types
+      '@standard-schema/spec':
+        specifier: ^1.0.0
+        version: 1.0.0
+      jose:
+        specifier: ^6.0.11
+        version: 6.0.11
       ky:
         specifier: 'catalog:'
         version: 1.8.1
@@ -4812,6 +5029,9 @@ packages:
     resolution: {integrity: sha512-rg9zJN+G4n2nfJl5MW3BMygZX56zKPNVEYYqq7adpmMh4Jn2QNEwhvQlFy6jPVdcod7txZtKHWnyZiA3a0zP7A==}
     hasBin: true
 
+  jose@6.0.11:
+    resolution: {integrity: sha512-QxG7EaliDARm1O1S8BGakqncGT9s25bKL1WSf6/oa17Tkqwi8D2ZNglqCF+DsYF88/rV66Q/Q2mFAy697E1DUg==}
+
   joycon@3.1.1:
     resolution: {integrity: sha512-34wB/Y7MW7bzjKRjUKTa46I2Z7eV62Rkhva+KkopW7Qvv/OSWBqvkSY7vusOPrNuZcUG3tApvdVgNB8POj3SPw==}
     engines: {node: '>=10'}
@@ -8846,14 +9066,13 @@ snapshots:
 
   '@types/pg-pool@2.0.6':
     dependencies:
-      '@types/pg': 8.6.1
+      '@types/pg': 8.15.4
 
   '@types/pg@8.15.4':
     dependencies:
       '@types/node': 24.0.1
       pg-protocol: 1.10.0
       pg-types: 2.2.0
-    optional: true
 
   '@types/pg@8.6.1':
     dependencies:
@@ -10751,6 +10970,8 @@ snapshots:
       '@isaacs/cliui': 8.0.2
 
   jiti@2.4.2: {}
+
+  jose@6.0.11: {}
 
   joycon@3.1.1: {}
 
