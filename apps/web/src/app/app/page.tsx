@@ -1,6 +1,7 @@
 'use client'
 
 import { useQuery } from '@tanstack/react-query'
+import Link from 'next/link'
 
 import { useAuthenticatedAgentic } from '@/components/agentic-provider'
 import { LoadingIndicator } from '@/components/loading-indicator'
@@ -19,8 +20,12 @@ export default function AppIndexPage() {
   return (
     <>
       <section>
-        <h1 className='my-0! text-center text-balance leading-snug md:leading-none'>
-          Authenticated Dashboard
+        <h1
+          className='text-center text-balance leading-snug md:leading-none
+        text-4xl font-extrabold tracking-tight
+        '
+        >
+          Dashboard
         </h1>
 
         {!ctx || isLoading ? (
@@ -28,21 +33,25 @@ export default function AppIndexPage() {
         ) : (
           <div className='mt-8'>
             <h2 className='text-xl font-semibold mb-4'>Your Projects</h2>
-            {projects?.length === 0 ? (
+
+            {!projects?.length ? (
               <p>
                 No projects found. Create your first project to get started!
               </p>
             ) : (
               <div className='grid gap-4'>
                 {projects?.map((project) => (
-                  <div
+                  <Link
                     key={project.id}
                     className='p-4 border rounded-lg hover:border-gray-400 transition-colors'
+                    href={`/app/projects/${project.identifier}`}
                   >
                     <h3 className='font-medium'>{project.name}</h3>
+
                     <p className='text-sm text-gray-500'>
                       {project.identifier}
                     </p>
+
                     {project.lastPublishedDeployment && (
                       <p className='text-sm text-gray-500 mt-1'>
                         Last published:{' '}
@@ -50,7 +59,7 @@ export default function AppIndexPage() {
                           project.lastPublishedDeployment.hash}
                       </p>
                     )}
-                  </div>
+                  </Link>
                 ))}
               </div>
             )}
