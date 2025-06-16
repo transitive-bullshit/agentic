@@ -107,13 +107,13 @@ export default function LoginPage() {
                     <div className='flex items-center'>
                       <Label htmlFor={field.name}>Password</Label>
 
-                      <a
+                      {/* <a
                         href='/forgot-password'
                         className='ml-auto text-xs underline-offset-4 hover:underline'
                         tabIndex={-1}
                       >
                         Forgot your password?
-                      </a>
+                      </a> */}
                     </div>
 
                     <Input

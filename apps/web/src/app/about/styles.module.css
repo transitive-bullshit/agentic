@@ -1,0 +1,142 @@
+.markdown {
+  width: 100%;
+  max-width: 100%;
+  line-height: 1.6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.markdown > * {
+  margin-bottom: 1em;
+  width: 100%;
+  max-width: 830px;
+}
+
+.markdown > *:first-child {
+  margin-top: 0 !important;
+}
+
+.markdown img {
+  display: inline-block;
+  max-width: 100%;
+  margin: 0;
+}
+
+.markdown a:not(:has(img)) {
+  display: inline-block;
+  text-decoration: none;
+  font-weight: inherit;
+  line-height: 1.3;
+  position: relative;
+  transition: unset;
+  opacity: 1;
+  color: unset;
+  padding-bottom: 0.1rem;
+  border-color: var(--border);
+  border-bottom-width: 0.135rem;
+  background: transparent;
+  background-origin: border-box;
+  background-repeat: no-repeat;
+  background-position: 50% 100%;
+  background-size: 0 0.135rem;
+}
+
+.markdown a:hover:not(:has(img)),
+.markdown a:focus:not(:has(img)) {
+  color: var(--tw-prose-links);
+  text-decoration: none;
+  border-bottom-color: transparent;
+
+  background-image: linear-gradient(90.68deg, #b439df 0.26%, #e5337e 102.37%);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 100% 0.135rem;
+
+  transition-property: background-position, background-size;
+  transition-duration: 300ms;
+}
+
+.markdown :where(ul):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
+  margin-top: 1em;
+}
+
+.markdown p + ul,
+.markdown p + ol,
+.markdown h1 + ul,
+.markdown h2 + ul,
+.markdown h3 + ul,
+.markdown h4 + ul,
+.markdown h5 + ul,
+.markdown h6 + ul,
+.markdown h1 + ol,
+.markdown h2 + ol,
+.markdown h3 + ol,
+.markdown h4 + ol,
+.markdown h5 + ol,
+.markdown h6 + ol {
+  margin-top: 0;
+}
+
+.markdown p {
+  margin-top: 0;
+  margin-bottom: 1em;
+}
+
+.markdown li a {
+  margin: 0;
+}
+
+.markdown li:first-child {
+  margin-top: 0;
+}
+
+.markdown li:last-child {
+  margin-bottom: 0;
+}
+
+.markdown h1,
+.markdown h2,
+.markdown h3,
+.markdown h4,
+.markdown h5,
+.markdown h6 {
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.markdown h1 {
+  font-size: 2em;
+}
+
+.markdown h2 {
+  font-size: 1.5em;
+}
+
+.markdown h3 {
+  font-size: 1.25em;
+}
+
+.markdown h4 {
+  font-size: 1em;
+}
+
+.markdown h5 {
+  font-size: 1em;
+  font-weight: 700;
+}
+
+.markdown h6 {
+  font-size: 1em;
+  font-weight: 500;
+}
+
+@media (max-width: 800px) {
+  .markdown img {
+    display: block;
+    text-align: center;
+    margin: 0 auto;
+  }
+}
