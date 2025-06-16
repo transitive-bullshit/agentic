@@ -10,7 +10,6 @@ import { useForm } from '@tanstack/react-form'
 import { Loader2Icon } from 'lucide-react'
 import { redirect, RedirectType } from 'next/navigation'
 import { useCallback, useState } from 'react'
-import { toast } from 'sonner'
 import { z } from 'zod'
 
 import { useUnauthenticatedAgentic } from '@/components/agentic-provider'
@@ -18,6 +17,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { GitHubIcon } from '@/icons/github'
+import { toastError } from '@/lib/notifications'
 import { cn } from '@/lib/utils'
 
 export default function LoginPage() {
@@ -45,7 +45,7 @@ export default function LoginPage() {
     onSubmit: async ({ value }) => {
       try {
         if (value.password !== value.repeat) {
-          toast.error('Passwords do not match')
+          void toastError('Passwords do not match', { label: 'signup error' })
           return
         }
 
@@ -57,8 +57,7 @@ export default function LoginPage() {
 
         console.log('signup success', res)
       } catch (err: any) {
-        console.error('Signup error', err.message)
-        toast.error('Signup error', err.message)
+        void toastError(err, { label: 'signup error' })
         return
       }
 
