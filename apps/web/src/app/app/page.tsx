@@ -1,12 +1,20 @@
 'use client'
 
+import { useQuery } from '@tanstack/react-query'
+
 import { useAuthenticatedAgentic } from '@/components/agentic-provider'
+import { LoadingIndicator } from '@/components/loading-indicator'
 
 export default function AppIndexPage() {
   const ctx = useAuthenticatedAgentic()
-
-  // TODO: loading
-  if (!ctx) return null
+  const { data: projects, isLoading } = useQuery({
+    queryKey: ['projects'],
+    queryFn: () =>
+      ctx?.api
+        .listProjects({ populate: ['lastPublishedDeployment'] })
+        .catch(() => []),
+    enabled: !!ctx
+  })
 
   return (
     <>
@@ -15,7 +23,39 @@ export default function AppIndexPage() {
           Authenticated Dashboard
         </h1>
 
-        <pre>Auth Session: {JSON.stringify(ctx.api.authSession, null, 2)}</pre>
+        {!ctx || isLoading ? (
+          <LoadingIndicator />
+        ) : (
+          <div className='mt-8'>
+            <h2 className='text-xl font-semibold mb-4'>Your Projects</h2>
+            {projects?.length === 0 ? (
+              <p>
+                No projects found. Create your first project to get started!
+              </p>
+            ) : (
+              <div className='grid gap-4'>
+                {projects?.map((project) => (
+                  <div
+                    key={project.id}
+                    className='p-4 border rounded-lg hover:border-gray-400 transition-colors'
+                  >
+                    <h3 className='font-medium'>{project.name}</h3>
+                    <p className='text-sm text-gray-500'>
+                      {project.identifier}
+                    </p>
+                    {project.lastPublishedDeployment && (
+                      <p className='text-sm text-gray-500 mt-1'>
+                        Last published:{' '}
+                        {project.lastPublishedDeployment.version ||
+                          project.lastPublishedDeployment.hash}
+                      </p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
       </section>
     </>
   )

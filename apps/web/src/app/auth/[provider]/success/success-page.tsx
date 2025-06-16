@@ -4,6 +4,7 @@ import { redirect, RedirectType, useSearchParams } from 'next/navigation'
 import { useEffect } from 'react'
 
 import { useUnauthenticatedAgentic } from '@/components/agentic-provider'
+import { LoadingIndicator } from '@/components/loading-indicator'
 import { toastError } from '@/lib/notifications'
 
 export function SuccessPage({
@@ -41,6 +42,5 @@ export function SuccessPage({
     })()
   }, [code, ctx])
 
-  // TODO: show a loading state
-  return null
+  return <LoadingIndicator />
 }

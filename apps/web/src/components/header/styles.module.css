@@ -26,13 +26,6 @@
   backdrop-filter: saturate(180%) blur(20px);
 }
 
-/* Workaround for Firefox not supporting backdrop-filter yet */
-@-moz-document url-prefix() {
-  :global(.dark) .header {
-    background: hsla(203, 8%, 20%, 0.8);
-  }
-}
-
 .headerContent {
   align-self: center;
   width: 100%;

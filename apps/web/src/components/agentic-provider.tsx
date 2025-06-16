@@ -37,16 +37,16 @@ export function AgenticProvider({ children }: { children: ReactNode }) {
     api: new AgenticApiClient({
       apiBaseUrl: config.apiBaseUrl,
       onUpdateAuth: (updatedAuthSession) => {
-        console.log('onUpdateAuth', updatedAuthSession)
+        // console.log('onUpdateAuth', updatedAuthSession)
 
         if (
           !!authSession !== !!updatedAuthSession &&
           authSession?.token !== updatedAuthSession?.token
         ) {
-          console.log('setAuthSession', updatedAuthSession)
+          // console.log('setAuthSession', updatedAuthSession)
           setAuthSession(updatedAuthSession)
         } else {
-          console.log('auth session not updated')
+          // console.log('auth session not updated')
         }
       }
     }),
@@ -54,7 +54,7 @@ export function AgenticProvider({ children }: { children: ReactNode }) {
   })
 
   useEffect(() => {
-    console.log('updating session from localStorage', authSession?.token)
+    // console.log('updating session from localStorage', authSession?.token)
     if (agenticContext.current) {
       if (authSession) {
         agenticContext.current.api.authSession = authSession
