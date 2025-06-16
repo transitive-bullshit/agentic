@@ -38,15 +38,6 @@
   min-height: 32px;
 }
 
-.rhs {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  align-items: center;
-  height: 100%;
-  gap: 0.5em;
-}
-
 .logo {
   font-family: 'Josefin Sans';
   font-weight: bold;

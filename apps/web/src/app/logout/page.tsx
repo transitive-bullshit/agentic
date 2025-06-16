@@ -1,6 +1,6 @@
 'use client'
 
-import { redirect, RedirectType } from 'next/navigation'
+// import { redirect, RedirectType } from 'next/navigation'
 import { useEffect } from 'react'
 
 import { useAuthenticatedAgentic } from '@/components/agentic-provider'
@@ -12,7 +12,6 @@ export default function LogoutPage() {
     ;(async () => {
       if (ctx) {
         ctx.logout()
-        redirect('/', RedirectType.replace)
       }
     })()
   }, [ctx])
