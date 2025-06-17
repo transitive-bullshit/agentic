@@ -4,7 +4,7 @@ export default function IndexPage() {
   return (
     <>
       <section>
-        <h1 className='my-0! text-center text-balance leading-snug md:leading-none text-4xl font-extrabold tracking-tight'>
+        <h1 className='my-0! text-center text-balance leading-snug md:leading-none text-4xl font-extrabold'>
           Agentic MCP Gateway
         </h1>
 

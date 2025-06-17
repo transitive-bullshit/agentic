@@ -62,8 +62,7 @@ export function AppConsumersIndex() {
       <section>
         <h1
           className='text-center text-balance leading-snug md:leading-none
-        text-4xl font-extrabold tracking-tight
-        '
+        text-4xl font-extrabold'
         >
           Your Subscriptions
         </h1>

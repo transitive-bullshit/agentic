@@ -41,8 +41,7 @@ export function AppConsumerIndex({ consumerId }: { consumerId: string }) {
         <>
           <h1
             className='text-center text-balance leading-snug md:leading-none
-        text-4xl font-extrabold tracking-tight
-        '
+        text-4xl font-extrabold'
           >
             Subscription to {consumer.project.name}
           </h1>

@@ -45,10 +45,9 @@ export function AppProjectIndex({
         <>
           <h1
             className='text-center text-balance leading-snug md:leading-none
-        text-4xl font-extrabold tracking-tight
-        '
+        text-4xl font-extrabold'
           >
-            {project.name}
+            Project {project.name}
           </h1>
 
           <div className='mt-8'>
