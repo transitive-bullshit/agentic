@@ -14,6 +14,8 @@
   "scripts": {
     "deploy-fixtures": "dotenvx run -- tsx bin/deploy-fixtures.ts",
     "deploy-fixtures:prod": "dotenvx run -o -f .env.production -- tsx bin/deploy-fixtures.ts",
+    "publish-fixtures": "dotenvx run -- tsx bin/publish-fixtures.ts",
+    "publish-fixtures:prod": "dotenvx run -o -f .env.production -- tsx bin/publish-fixtures.ts",
     "seed-db": "dotenvx run -- tsx bin/seed-db.ts",
     "seed-db:prod": "dotenvx run -o -f .env.production -- tsx bin/seed-db.ts",
     "test": "run-s test:*",
@@ -29,14 +31,17 @@
     "dotenv": "^16.5.0",
     "ky": "catalog:",
     "p-map": "catalog:",
-    "p-times": "^4.0.0"
+    "p-times": "^4.0.0",
+    "semver": "catalog:"
   },
   "devDependencies": {
     "@agentic/platform": "workspace:*",
     "@agentic/platform-api-client": "workspace:*",
     "@agentic/platform-core": "workspace:*",
     "@agentic/platform-fixtures": "workspace:*",
+    "@agentic/platform-types": "workspace:*",
     "@modelcontextprotocol/sdk": "catalog:",
+    "@types/semver": "catalog:",
     "fast-content-type-parse": "catalog:"
   }
 }

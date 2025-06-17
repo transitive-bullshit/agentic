@@ -12,6 +12,7 @@ import { acl } from '@/lib/acl'
 import { normalizeDeploymentVersion } from '@/lib/deployments/normalize-deployment-version'
 import { publishDeployment } from '@/lib/deployments/publish-deployment'
 import { ensureAuthUser } from '@/lib/ensure-auth-user'
+import { env } from '@/lib/env'
 import {
   openapiAuthenticatedSecuritySchemas,
   openapiErrorResponse404,
@@ -77,9 +78,12 @@ export function registerV1CreateDeployment(
     })
 
     if (!project) {
+      // Used for testing e2e fixtures in the development marketplace
+      const isPrivate = !(user.username === 'dev' && env.isDev)
+
       // Upsert the project if it doesn't already exist
-      // The typecast doesn't match exactly here because we're not populating
-      // the lastPublishedDeployment, but that's fine because it's a new project
+      // The typecast is necessary here because we're not populating the
+      // lastPublishedDeployment, but that's fine because it's a new project
       // so it will be empty anyway.
       project = (
         await db
@@ -90,6 +94,7 @@ export function registerV1CreateDeployment(
             name: projectName,
             userId: user.id,
             teamId: teamMember?.teamId,
+            private: isPrivate,
             _secret: await sha256()
           })
           .returning()

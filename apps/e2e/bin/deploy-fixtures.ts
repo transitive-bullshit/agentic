@@ -1,9 +1,13 @@
-import { deployFixtures } from '../src/deploy-fixtures'
+import { deployFixtures } from '../src/project-fixtures'
 
 async function main() {
-  const deployments = await deployFixtures()
+  console.log('\n\nDeploying fixtures...\n\n')
 
+  const deployments = await deployFixtures()
   console.log(JSON.stringify(deployments, null, 2))
+
+  // eslint-disable-next-line unicorn/no-process-exit
+  process.exit(0)
 }
 
 await main()

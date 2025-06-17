@@ -5,6 +5,7 @@ import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 import type { AuthenticatedHonoEnv } from '@/lib/types'
 import { db, schema } from '@/db'
 import { ensureAuthUser } from '@/lib/ensure-auth-user'
+import { env } from '@/lib/env'
 import {
   openapiAuthenticatedSecuritySchemas,
   openapiErrorResponses
@@ -61,6 +62,9 @@ export function registerV1CreateProject(
       `Invalid project identifier "${identifier}"`
     )
 
+    // Used for testing e2e fixtures in the development marketplace
+    const isPrivate = !(user.username === 'dev' && env.isDev)
+
     const [project] = await db
       .insert(schema.projects)
       .values({
@@ -70,6 +74,7 @@ export function registerV1CreateProject(
         name: parsedProjectIdentifier.projectName,
         teamId: teamMember?.teamId,
         userId: user.id,
+        private: isPrivate,
         _secret: await sha256()
       })
       .returning()
