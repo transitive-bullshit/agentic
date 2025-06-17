@@ -4,7 +4,6 @@ import { useQuery } from '@tanstack/react-query'
 
 import { useAuthenticatedAgentic } from '@/components/agentic-provider'
 import { LoadingIndicator } from '@/components/loading-indicator'
-import { toastError } from '@/lib/notifications'
 
 export function AppConsumerIndex({ consumerId }: { consumerId: string }) {
   const ctx = useAuthenticatedAgentic()
@@ -15,17 +14,10 @@ export function AppConsumerIndex({ consumerId }: { consumerId: string }) {
   } = useQuery({
     queryKey: ['consumer', consumerId],
     queryFn: () =>
-      ctx!.api
-        .getConsumer({
-          consumerId,
-          populate: ['project']
-        })
-        .catch((err: any) => {
-          void toastError(
-            `Failed to fetch customer subscription "${consumerId}"`
-          )
-          throw err
-        }),
+      ctx!.api.getConsumer({
+        consumerId,
+        populate: ['project']
+      }),
     enabled: !!ctx
   })
 

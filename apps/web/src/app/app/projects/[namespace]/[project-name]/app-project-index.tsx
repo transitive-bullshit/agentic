@@ -4,7 +4,6 @@ import { useQuery } from '@tanstack/react-query'
 
 import { useAuthenticatedAgentic } from '@/components/agentic-provider'
 import { LoadingIndicator } from '@/components/loading-indicator'
-import { toastError } from '@/lib/notifications'
 
 export function AppProjectIndex({
   projectIdentifier
@@ -19,15 +18,10 @@ export function AppProjectIndex({
   } = useQuery({
     queryKey: ['project', projectIdentifier],
     queryFn: () =>
-      ctx!.api
-        .getProjectByIdentifier({
-          projectIdentifier,
-          populate: ['lastPublishedDeployment']
-        })
-        .catch((err: any) => {
-          void toastError(`Failed to fetch project "${projectIdentifier}"`)
-          throw err
-        }),
+      ctx!.api.getProjectByIdentifier({
+        projectIdentifier,
+        populate: ['lastPublishedDeployment']
+      }),
     enabled: !!ctx
   })
 

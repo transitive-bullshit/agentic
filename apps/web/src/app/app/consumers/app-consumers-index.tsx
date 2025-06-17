@@ -6,7 +6,6 @@ import useInfiniteScroll from 'react-infinite-scroll-hook'
 
 import { useAuthenticatedAgentic } from '@/components/agentic-provider'
 import { LoadingIndicator } from '@/components/loading-indicator'
-import { toastError } from '@/lib/notifications'
 
 export function AppConsumersIndex() {
   const ctx = useAuthenticatedAgentic()
@@ -37,10 +36,6 @@ export function AppConsumersIndex() {
                 ? pageParam + consumers.length
                 : undefined
           }
-        })
-        .catch((err: any) => {
-          void toastError('Failed to fetch customer subscriptions')
-          throw err
         }),
     getNextPageParam: (lastGroup) => lastGroup?.nextOffset,
     enabled: !!ctx,

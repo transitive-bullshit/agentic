@@ -49,7 +49,7 @@ export function registerV1GetPublicProject(app: OpenAPIHono<DefaultHonoEnv>) {
       }
     })
     assert(
-      project && project.private && project.lastPublishedDeploymentId,
+      project && !project.private && project.lastPublishedDeploymentId,
       404,
       `Public project not found "${projectId}"`
     )

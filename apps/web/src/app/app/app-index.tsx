@@ -6,7 +6,6 @@ import useInfiniteScroll from 'react-infinite-scroll-hook'
 
 import { useAuthenticatedAgentic } from '@/components/agentic-provider'
 import { LoadingIndicator } from '@/components/loading-indicator'
-import { toastError } from '@/lib/notifications'
 
 export function AppIndex() {
   const ctx = useAuthenticatedAgentic()
@@ -35,10 +34,6 @@ export function AppIndex() {
             nextOffset:
               projects.length >= limit ? pageParam + projects.length : undefined
           }
-        })
-        .catch((err: any) => {
-          void toastError('Failed to fetch projects')
-          throw err
         }),
     getNextPageParam: (lastGroup) => lastGroup?.nextOffset,
     enabled: !!ctx,

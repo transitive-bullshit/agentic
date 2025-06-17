@@ -50,7 +50,7 @@ export function registerV1GetPublicProjectByIdentifier(
       }
     })
     assert(
-      project && project.private && project.lastPublishedDeploymentId,
+      project && !project.private && project.lastPublishedDeploymentId,
       404,
       `Public project not found "${projectIdentifier}"`
     )

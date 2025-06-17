@@ -6,7 +6,6 @@ import useInfiniteScroll from 'react-infinite-scroll-hook'
 
 import { useAgentic } from '@/components/agentic-provider'
 import { LoadingIndicator } from '@/components/loading-indicator'
-import { toastError } from '@/lib/notifications'
 
 export function MarketplaceIndex() {
   const ctx = useAgentic()
@@ -35,10 +34,6 @@ export function MarketplaceIndex() {
             nextOffset:
               projects.length >= limit ? pageParam + projects.length : undefined
           }
-        })
-        .catch((err: any) => {
-          void toastError('Failed to fetch public projects')
-          throw err
         }),
     getNextPageParam: (lastGroup) => lastGroup?.nextOffset,
     enabled: !!ctx,
@@ -62,14 +57,14 @@ export function MarketplaceIndex() {
           className='text-center text-balance leading-snug md:leading-none
         text-4xl font-extrabold'
         >
-          Dashboard
+          Marketplace
         </h1>
 
         {!ctx || isLoading ? (
           <LoadingIndicator />
         ) : (
           <div className='mt-8'>
-            <h2 className='text-xl font-semibold mb-4'>Your Projects</h2>
+            <h2 className='text-xl font-semibold mb-4'>Public Projects</h2>
 
             {isError ? (
               <p>Error fetching projects</p>
@@ -83,7 +78,7 @@ export function MarketplaceIndex() {
                   <Link
                     key={project.id}
                     className='p-4 border rounded-lg hover:border-gray-400 transition-colors'
-                    href={`/app/projects/${project.identifier}`}
+                    href={`/marketplace/projects/${project.identifier}`}
                   >
                     <h3 className='font-medium'>{project.name}</h3>
 

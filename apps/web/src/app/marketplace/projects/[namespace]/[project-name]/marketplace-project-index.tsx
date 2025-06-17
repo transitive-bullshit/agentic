@@ -4,7 +4,6 @@ import { useQuery } from '@tanstack/react-query'
 
 import { useAgentic } from '@/components/agentic-provider'
 import { LoadingIndicator } from '@/components/loading-indicator'
-import { toastError } from '@/lib/notifications'
 
 export function MarketplaceProjectIndex({
   projectIdentifier
@@ -19,17 +18,10 @@ export function MarketplaceProjectIndex({
   } = useQuery({
     queryKey: ['project', projectIdentifier],
     queryFn: () =>
-      ctx!.api
-        .getPublicProjectByIdentifier({
-          projectIdentifier,
-          populate: ['lastPublishedDeployment']
-        })
-        .catch((err: any) => {
-          void toastError(
-            `Failed to fetch public project "${projectIdentifier}"`
-          )
-          throw err
-        }),
+      ctx!.api.getPublicProjectByIdentifier({
+        projectIdentifier,
+        populate: ['lastPublishedDeployment']
+      }),
     enabled: !!ctx
   })
 

@@ -61,6 +61,9 @@ export function registerV1AdminGetDeploymentByIdentifier(
     )
     await acl(c, deployment, { label: 'Deployment' })
 
+    // TODO: ensure that the deployment's project is either public OR the
+    // consumer has access to it?
+
     const hasPopulateProject = populate.includes('project')
 
     return c.json(
