@@ -12,6 +12,7 @@ export const queryClient = new QueryClient()
 
 const retryStatusCodes = new Set([408, 413, 429, 500, 502, 503, 504])
 
+// Inspired by https://github.com/sindresorhus/ky#retry
 function retry(failureCount: number, error: any): boolean {
   if (error instanceof HTTPError) {
     const { status } = error.response
