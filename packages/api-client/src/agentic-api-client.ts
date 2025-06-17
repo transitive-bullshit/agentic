@@ -15,11 +15,6 @@ import { assert, sanitizeSearchParams } from '@agentic/platform-core'
 import defaultKy, { type KyInstance } from 'ky'
 
 import type { OnUpdateAuthSessionFunction } from './types'
-// import {
-//   type AuthClient,
-//   type AuthorizeResult,
-//   createAuthClient
-// } from './auth-client'
 
 export class AgenticApiClient {
   static readonly DEFAULT_API_BASE_URL = 'https://api.agentic.so'
@@ -260,9 +255,11 @@ export class AgenticApiClient {
 
   /** Lists all teams the authenticated user belongs to. */
   async listTeams(
-    searchParams: OperationParameters<'listTeams'>
+    searchParams: OperationParameters<'listTeams'> = {}
   ): Promise<Array<Team>> {
-    return this.ky.get('v1/teams', { searchParams }).json()
+    return this.ky
+      .get('v1/teams', { searchParams: sanitizeSearchParams(searchParams) })
+      .json()
   }
 
   /** Creates a team. */
@@ -270,7 +267,12 @@ export class AgenticApiClient {
     team: OperationBody<'createTeam'>,
     searchParams: OperationParameters<'createTeam'> = {}
   ): Promise<Team> {
-    return this.ky.post('v1/teams', { json: team, searchParams }).json()
+    return this.ky
+      .post('v1/teams', {
+        json: team,
+        searchParams: sanitizeSearchParams(searchParams)
+      })
+      .json()
   }
 
   /** Gets a team by ID. */
@@ -341,7 +343,7 @@ export class AgenticApiClient {
   >(
     searchParams: OperationParameters<'listProjects'> & {
       populate?: TPopulate[]
-    }
+    } = {}
   ): Promise<Array<PopulateProject<TPopulate>>> {
     return this.ky
       .get('v1/projects', { searchParams: sanitizeSearchParams(searchParams) })
@@ -437,7 +439,12 @@ export class AgenticApiClient {
     consumer: OperationBody<'createConsumer'>,
     searchParams: OperationParameters<'createConsumer'> = {}
   ): Promise<Consumer> {
-    return this.ky.post('v1/consumers', { json: consumer, searchParams }).json()
+    return this.ky
+      .post('v1/consumers', {
+        json: consumer,
+        searchParams: sanitizeSearchParams(searchParams)
+      })
+      .json()
   }
 
   /** Refreshes a consumer's API token. */
@@ -450,15 +457,32 @@ export class AgenticApiClient {
       .json()
   }
 
-  /** Lists all of the customers for a project. */
+  /** Lists all of the customers. */
   async listConsumers<
     TPopulate extends NonNullable<
       OperationParameters<'listConsumers'>['populate']
     >[number]
+  >(
+    searchParams: OperationParameters<'listConsumers'> & {
+      populate?: TPopulate[]
+    } = {}
+  ): Promise<Array<PopulateConsumer<TPopulate>>> {
+    return this.ky
+      .get('v1/consumers', {
+        searchParams: sanitizeSearchParams(searchParams)
+      })
+      .json()
+  }
+
+  /** Lists all of the customers for a project. */
+  async listConsumersForProject<
+    TPopulate extends NonNullable<
+      OperationParameters<'listConsumersForProject'>['populate']
+    >[number]
   >({
     projectId,
     ...searchParams
-  }: OperationParameters<'listConsumers'> & {
+  }: OperationParameters<'listConsumersForProject'> & {
     populate?: TPopulate[]
   }): Promise<Array<PopulateConsumer<TPopulate>>> {
     return this.ky
@@ -527,7 +551,7 @@ export class AgenticApiClient {
   >(
     searchParams: OperationParameters<'listDeployments'> & {
       populate?: TPopulate[]
-    }
+    } = {}
   ): Promise<Array<PopulateDeployment<TPopulate>>> {
     return this.ky
       .get('v1/deployments', {

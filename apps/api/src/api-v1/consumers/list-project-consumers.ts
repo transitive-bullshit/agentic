@@ -1,30 +1,32 @@
-import { parseZodSchema } from '@agentic/platform-core'
+import { assert, parseZodSchema } from '@agentic/platform-core'
 import { createRoute, type OpenAPIHono, z } from '@hono/zod-openapi'
 
 import type { AuthenticatedHonoEnv } from '@/lib/types'
 import { db, eq, schema } from '@/db'
-import { ensureAuthUser } from '@/lib/ensure-auth-user'
+import { acl } from '@/lib/acl'
 import {
   openapiAuthenticatedSecuritySchemas,
   openapiErrorResponse404,
   openapiErrorResponses
 } from '@/lib/openapi-utils'
 
+import { projectIdParamsSchema } from '../projects/schemas'
 import { paginationAndPopulateConsumerSchema } from './schemas'
 
 const route = createRoute({
-  description: 'Lists all of the customer subscriptions for the current user.',
+  description: 'Lists all of the customers for a project.',
   tags: ['consumers'],
-  operationId: 'listConsumers',
+  operationId: 'listConsumersForProject',
   method: 'get',
-  path: 'consumers',
+  path: 'projects/{projectId}/consumers',
   security: openapiAuthenticatedSecuritySchemas,
   request: {
+    params: projectIdParamsSchema,
     query: paginationAndPopulateConsumerSchema
   },
   responses: {
     200: {
-      description: 'A list of consumers',
+      description: 'A list of consumers subscribed to the given project',
       content: {
         'application/json': {
           schema: z.array(schema.consumerSelectSchema)
@@ -36,7 +38,7 @@ const route = createRoute({
   }
 })
 
-export function registerV1ConsumersListConsumers(
+export function registerV1ConsumersListForProject(
   app: OpenAPIHono<AuthenticatedHonoEnv>
 ) {
   return app.openapi(route, async (c) => {
@@ -48,10 +50,17 @@ export function registerV1ConsumersListConsumers(
       populate = []
     } = c.req.valid('query')
 
-    const user = await ensureAuthUser(c)
+    const { projectId } = c.req.valid('param')
+    assert(projectId, 400, 'Project ID is required')
+
+    const project = await db.query.projects.findFirst({
+      where: eq(schema.projects.id, projectId)
+    })
+    assert(project, 404, `Project not found "${projectId}"`)
+    await acl(c, project, { label: 'Project' })
 
     const consumers = await db.query.consumers.findMany({
-      where: eq(schema.consumers.userId, user.id),
+      where: eq(schema.consumers.projectId, projectId),
       with: {
         ...Object.fromEntries(populate.map((field) => [field, true]))
       },

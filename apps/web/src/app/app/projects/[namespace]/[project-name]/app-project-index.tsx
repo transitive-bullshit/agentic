@@ -25,14 +25,13 @@ export function AppProjectIndex({
           populate: ['lastPublishedDeployment']
         })
         .catch((err: any) => {
-          void toastError(err, {
-            label: `Error fetching project "${projectIdentifier}"`
-          })
-
+          void toastError(`Failed to fetch project "${projectIdentifier}"`)
           throw err
         }),
     enabled: !!ctx
   })
+
+  // TODO: show deployments
 
   return (
     <section>

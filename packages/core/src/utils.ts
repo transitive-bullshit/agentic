@@ -139,7 +139,7 @@ export function sanitizeSearchParams(
         string,
         string | number | boolean | string[] | number[] | boolean[] | undefined
       >
-    | object,
+    | object = {},
   {
     csv = false
   }: {

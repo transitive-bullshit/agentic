@@ -8,7 +8,7 @@ import { useAuthenticatedAgentic } from '@/components/agentic-provider'
 import { LoadingIndicator } from '@/components/loading-indicator'
 import { toastError } from '@/lib/notifications'
 
-export function AppIndex() {
+export function AppConsumersIndex() {
   const ctx = useAuthenticatedAgentic()
   const limit = 10
   const {
@@ -19,25 +19,27 @@ export function AppIndex() {
     fetchNextPage,
     isFetchingNextPage
   } = useInfiniteQuery({
-    queryKey: ['projects', ctx?.api.authSession?.user?.id],
+    queryKey: ['consumers', ctx?.api.authSession?.user?.id],
     queryFn: ({ pageParam = 0 }) =>
       ctx!.api
-        .listProjects({
-          populate: ['lastPublishedDeployment'],
+        .listConsumers({
+          populate: ['project'],
           offset: pageParam,
           limit
         })
-        .then(async (projects) => {
+        .then(async (consumers) => {
           return {
-            projects,
+            consumers,
             offset: pageParam,
             limit,
             nextOffset:
-              projects.length >= limit ? pageParam + projects.length : undefined
+              consumers.length >= limit
+                ? pageParam + consumers.length
+                : undefined
           }
         })
         .catch((err: any) => {
-          void toastError('Failed to fetch projects')
+          void toastError('Failed to fetch customer subscriptions')
           throw err
         }),
     getNextPageParam: (lastGroup) => lastGroup?.nextOffset,
@@ -53,7 +55,7 @@ export function AppIndex() {
     rootMargin: '0px 0px 200px 0px'
   })
 
-  const projects = data ? data.pages.flatMap((p) => p.projects) : []
+  const consumers = data ? data.pages.flatMap((p) => p.consumers) : []
 
   return (
     <>
@@ -63,42 +65,37 @@ export function AppIndex() {
         text-4xl font-extrabold tracking-tight
         '
         >
-          Dashboard
+          Your Subscriptions
         </h1>
 
         {!ctx || isLoading ? (
           <LoadingIndicator />
         ) : (
           <div className='mt-8'>
-            <h2 className='text-xl font-semibold mb-4'>Your Projects</h2>
-
             {isError ? (
-              <p>Error fetching projects</p>
-            ) : !projects.length ? (
+              <p>Error fetching customer subscriptions</p>
+            ) : !consumers.length ? (
               <p>
-                No projects found. Create your first project to get started!
+                No subscriptions found. Subscribe to your first project to get
+                started!
               </p>
             ) : (
               <div className='grid gap-4'>
-                {projects.map((project) => (
+                {consumers.map((consumer) => (
                   <Link
-                    key={project.id}
+                    key={consumer.id}
                     className='p-4 border rounded-lg hover:border-gray-400 transition-colors'
-                    href={`/app/projects/${project.identifier}`}
+                    href={`/app/consumers/${consumer.id}`}
                   >
-                    <h3 className='font-medium'>{project.name}</h3>
+                    <h3 className='font-medium'>{consumer.project.name}</h3>
 
                     <p className='text-sm text-gray-500'>
-                      {project.identifier}
+                      {consumer.project.identifier}
                     </p>
 
-                    {project.lastPublishedDeployment && (
-                      <p className='text-sm text-gray-500 mt-1'>
-                        Last published:{' '}
-                        {project.lastPublishedDeployment.version ||
-                          project.lastPublishedDeployment.hash}
-                      </p>
-                    )}
+                    <pre className='max-w-lg'>
+                      {JSON.stringify(consumer, null, 2)}
+                    </pre>
                   </Link>
                 ))}
 

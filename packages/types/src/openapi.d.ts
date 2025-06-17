@@ -257,7 +257,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get?: never;
+        /** @description Lists all of the customer subscriptions for the current user. */
+        get: operations["listConsumers"];
         put?: never;
         /** @description Creates a new consumer by subscribing a customer to a project. */
         post: operations["createConsumer"];
@@ -292,7 +293,7 @@ export interface paths {
             cookie?: never;
         };
         /** @description Lists all of the customers for a project. */
-        get: operations["listConsumers"];
+        get: operations["listConsumersForProject"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1128,7 +1129,7 @@ export interface operations {
     listTeams: {
         parameters: {
             query?: {
-                offset?: number;
+                offset?: number | null;
                 limit?: number;
                 sort?: "asc" | "desc";
                 sortBy?: "createdAt" | "updatedAt";
@@ -1378,7 +1379,7 @@ export interface operations {
     listProjects: {
         parameters: {
             query?: {
-                offset?: number;
+                offset?: number | null;
                 limit?: number;
                 sort?: "asc" | "desc";
                 sortBy?: "createdAt" | "updatedAt";
@@ -1590,6 +1591,36 @@ export interface operations {
             410: components["responses"]["410"];
         };
     };
+    listConsumers: {
+        parameters: {
+            query?: {
+                offset?: number | null;
+                limit?: number;
+                sort?: "asc" | "desc";
+                sortBy?: "createdAt" | "updatedAt";
+                populate?: ("user" | "project" | "deployment") | ("user" | "project" | "deployment")[];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description A list of consumers */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Consumer"][];
+                };
+            };
+            400: components["responses"]["400"];
+            401: components["responses"]["401"];
+            403: components["responses"]["403"];
+            404: components["responses"]["404"];
+        };
+    };
     createConsumer: {
         parameters: {
             query?: never;
@@ -1652,10 +1683,10 @@ export interface operations {
             404: components["responses"]["404"];
         };
     };
-    listConsumers: {
+    listConsumersForProject: {
         parameters: {
             query?: {
-                offset?: number;
+                offset?: number | null;
                 limit?: number;
                 sort?: "asc" | "desc";
                 sortBy?: "createdAt" | "updatedAt";
@@ -1670,7 +1701,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description A list of consumers */
+            /** @description A list of consumers subscribed to the given project */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -1779,7 +1810,7 @@ export interface operations {
     listDeployments: {
         parameters: {
             query?: {
-                offset?: number;
+                offset?: number | null;
                 limit?: number;
                 sort?: "asc" | "desc";
                 sortBy?: "createdAt" | "updatedAt";

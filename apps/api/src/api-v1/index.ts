@@ -15,7 +15,8 @@ import { registerV1AdminConsumersActivateConsumer } from './consumers/admin-acti
 import { registerV1AdminConsumersGetConsumerByToken } from './consumers/admin-get-consumer-by-token'
 import { registerV1ConsumersCreateConsumer } from './consumers/create-consumer'
 import { registerV1ConsumersGetConsumer } from './consumers/get-consumer'
-import { registerV1ProjectsListConsumers } from './consumers/list-consumers'
+import { registerV1ConsumersListConsumers } from './consumers/list-consumers'
+import { registerV1ConsumersListForProject } from './consumers/list-project-consumers'
 import { registerV1ConsumersRefreshConsumerToken } from './consumers/refresh-consumer-token'
 import { registerV1ConsumersUpdateConsumer } from './consumers/update-consumer'
 import { registerV1AdminDeploymentsGetDeploymentByIdentifier } from './deployments/admin-get-deployment-by-identifier'
@@ -112,7 +113,8 @@ registerV1ConsumersGetConsumer(privateRouter)
 registerV1ConsumersCreateConsumer(privateRouter)
 registerV1ConsumersUpdateConsumer(privateRouter)
 registerV1ConsumersRefreshConsumerToken(privateRouter)
-registerV1ProjectsListConsumers(privateRouter)
+registerV1ConsumersListConsumers(privateRouter)
+registerV1ConsumersListForProject(privateRouter)
 
 // Deployments
 registerV1DeploymentsGetDeploymentByIdentifier(privateRouter) // must be before `registerV1DeploymentsGetDeployment`
