@@ -1,9 +1,8 @@
+import type { DefaultHonoEnv } from '@agentic/platform-hono'
 import { parseZodSchema } from '@agentic/platform-core'
 import { createRoute, type OpenAPIHono, z } from '@hono/zod-openapi'
 
-import type { AuthenticatedHonoEnv } from '@/lib/types'
-import { db, eq, schema } from '@/db'
-import { ensureAuthUser } from '@/lib/ensure-auth-user'
+import { and, db, eq, isNotNull, schema } from '@/db'
 import {
   openapiAuthenticatedSecuritySchemas,
   openapiErrorResponses
@@ -12,11 +11,12 @@ import {
 import { paginationAndPopulateProjectSchema } from './schemas'
 
 const route = createRoute({
-  description: 'Lists projects owned by the authenticated user or team.',
+  description:
+    'Lists projects that have been published publicly to the marketplace.',
   tags: ['projects'],
-  operationId: 'listProjects',
+  operationId: 'listPublicProjects',
   method: 'get',
-  path: 'projects',
+  path: 'projects/public',
   security: openapiAuthenticatedSecuritySchemas,
   request: {
     query: paginationAndPopulateProjectSchema
@@ -34,7 +34,7 @@ const route = createRoute({
   }
 })
 
-export function registerV1ListProjects(app: OpenAPIHono<AuthenticatedHonoEnv>) {
+export function registerV1ListPublicProjects(app: OpenAPIHono<DefaultHonoEnv>) {
   return app.openapi(route, async (c) => {
     const {
       offset = 0,
@@ -44,16 +44,12 @@ export function registerV1ListProjects(app: OpenAPIHono<AuthenticatedHonoEnv>) {
       populate = []
     } = c.req.valid('query')
 
-    const user = await ensureAuthUser(c)
-    const teamMember = c.get('teamMember')
-    const isAdmin = user.role === 'admin'
-
     const projects = await db.query.projects.findMany({
-      where: isAdmin
-        ? undefined
-        : teamMember
-          ? eq(schema.projects.teamId, teamMember.teamId)
-          : eq(schema.projects.userId, user.id),
+      // List projects that are not private and have at least one published deployment
+      where: and(
+        eq(schema.projects.private, false),
+        isNotNull(schema.projects.lastPublishedDeploymentId)
+      ),
       with: {
         lastPublishedDeployment: true,
         ...Object.fromEntries(populate.map((field) => [field, true]))

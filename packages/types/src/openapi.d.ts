@@ -89,6 +89,57 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/projects/public": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Lists projects that have been published publicly to the marketplace. */
+        get: operations["listPublicProjects"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/projects/public/by-identifier": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Gets a public project by its public identifier (eg, "@username/project-name"). */
+        get: operations["getPublicProjectByIdentifier"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/projects/public/{projectId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Gets a public project by ID. */
+        get: operations["getPublicProject"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/users/{userId}": {
         parameters: {
             query?: never;
@@ -186,7 +237,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Lists projects the authenticated user has access to. */
+        /** @description Lists projects owned by the authenticated user or team. */
         get: operations["listProjects"];
         put?: never;
         /** @description Creates a new project. */
@@ -445,6 +496,39 @@ export interface components {
             token: string;
             user: components["schemas"]["User"];
         };
+        /** @description Public project identifier (e.g. "@namespace/project-name") */
+        ProjectIdentifier: string;
+        /** @description The frequency at which a subscription is billed. */
+        PricingInterval: "day" | "week" | "month" | "year";
+        /** @description A Project represents a single Agentic API product. A Project is comprised of a series of immutable Deployments, each of which contains pricing data, origin API config, OpenAPI or MCP specs, tool definitions, and various metadata.
+         *
+         *     You can think of Agentic Projects as similar to Vercel projects. They both hold some common configuration and are comprised of a series of immutable Deployments.
+         *
+         *     Internally, Projects manage all of the Stripe billing resources across Deployments (Stripe Products, Prices, and Meters for usage-based billing). */
+        Project: {
+            /** @description Project id (e.g. "proj_tz4a98xxat96iws9zmbrgj3a") */
+            id: string;
+            createdAt: string;
+            updatedAt: string;
+            deletedAt?: string;
+            identifier: components["schemas"]["ProjectIdentifier"];
+            namespace: string;
+            name: string;
+            private: boolean;
+            /** @description User id (e.g. "user_tz4a98xxat96iws9zmbrgj3a") */
+            userId: string;
+            /** @description Team id (e.g. "team_tz4a98xxat96iws9zmbrgj3a") */
+            teamId?: string;
+            /** @description Deployment id (e.g. "depl_tz4a98xxat96iws9zmbrgj3a") */
+            lastPublishedDeploymentId?: string;
+            /** @description Deployment id (e.g. "depl_tz4a98xxat96iws9zmbrgj3a") */
+            lastDeploymentId?: string;
+            lastPublishedDeploymentVersion?: string;
+            applicationFeePercent: number;
+            defaultPricingInterval: components["schemas"]["PricingInterval"];
+            /** @enum {string} */
+            pricingCurrency: "usd";
+        };
         Team: {
             id: string;
             createdAt: string;
@@ -465,38 +549,6 @@ export interface components {
             role: "user" | "admin";
             confirmed: boolean;
             confirmedAt?: string;
-        };
-        /** @description Public project identifier (e.g. "@namespace/project-name") */
-        ProjectIdentifier: string;
-        /** @description The frequency at which a subscription is billed. */
-        PricingInterval: "day" | "week" | "month" | "year";
-        /** @description A Project represents a single Agentic API product. A Project is comprised of a series of immutable Deployments, each of which contains pricing data, origin API config, OpenAPI or MCP specs, tool definitions, and various metadata.
-         *
-         *     You can think of Agentic Projects as similar to Vercel projects. They both hold some common configuration and are comprised of a series of immutable Deployments.
-         *
-         *     Internally, Projects manage all of the Stripe billing resources across Deployments (Stripe Products, Prices, and Meters for usage-based billing). */
-        Project: {
-            /** @description Project id (e.g. "proj_tz4a98xxat96iws9zmbrgj3a") */
-            id: string;
-            createdAt: string;
-            updatedAt: string;
-            deletedAt?: string;
-            identifier: components["schemas"]["ProjectIdentifier"];
-            name: string;
-            alias?: string;
-            /** @description User id (e.g. "user_tz4a98xxat96iws9zmbrgj3a") */
-            userId: string;
-            /** @description Team id (e.g. "team_tz4a98xxat96iws9zmbrgj3a") */
-            teamId?: string;
-            /** @description Deployment id (e.g. "depl_tz4a98xxat96iws9zmbrgj3a") */
-            lastPublishedDeploymentId?: string;
-            /** @description Deployment id (e.g. "depl_tz4a98xxat96iws9zmbrgj3a") */
-            lastDeploymentId?: string;
-            lastPublishedDeploymentVersion?: string;
-            applicationFeePercent: number;
-            defaultPricingInterval: components["schemas"]["PricingInterval"];
-            /** @enum {string} */
-            pricingCurrency: "usd";
         };
         /** @description A Consumer represents a user who has subscribed to a Project and is used
          *     to track usage and billing.
@@ -1065,6 +1117,92 @@ export interface operations {
             404: components["responses"]["404"];
         };
     };
+    listPublicProjects: {
+        parameters: {
+            query?: {
+                offset?: number | null;
+                limit?: number;
+                sort?: "asc" | "desc";
+                sortBy?: "createdAt" | "updatedAt";
+                populate?: ("user" | "team" | "lastPublishedDeployment" | "lastDeployment") | ("user" | "team" | "lastPublishedDeployment" | "lastDeployment")[];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description A list of projects */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Project"][];
+                };
+            };
+            400: components["responses"]["400"];
+            401: components["responses"]["401"];
+            403: components["responses"]["403"];
+        };
+    };
+    getPublicProjectByIdentifier: {
+        parameters: {
+            query: {
+                populate?: ("user" | "team" | "lastPublishedDeployment" | "lastDeployment") | ("user" | "team" | "lastPublishedDeployment" | "lastDeployment")[];
+                /** @description Public project identifier (e.g. "@namespace/project-name") */
+                projectIdentifier: components["schemas"]["ProjectIdentifier"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description A project */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Project"];
+                };
+            };
+            400: components["responses"]["400"];
+            401: components["responses"]["401"];
+            403: components["responses"]["403"];
+            404: components["responses"]["404"];
+        };
+    };
+    getPublicProject: {
+        parameters: {
+            query?: {
+                populate?: ("user" | "team" | "lastPublishedDeployment" | "lastDeployment") | ("user" | "team" | "lastPublishedDeployment" | "lastDeployment")[];
+            };
+            header?: never;
+            path: {
+                /** @description Project ID */
+                projectId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description A project */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Project"];
+                };
+            };
+            400: components["responses"]["400"];
+            401: components["responses"]["401"];
+            403: components["responses"]["403"];
+            404: components["responses"]["404"];
+        };
+    };
     getUser: {
         parameters: {
             query?: never;
@@ -1505,7 +1643,6 @@ export interface operations {
             content: {
                 "application/json": {
                     name?: string;
-                    alias?: string;
                 };
             };
         };

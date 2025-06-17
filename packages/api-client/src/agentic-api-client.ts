@@ -230,9 +230,10 @@ export class AgenticApiClient {
   /** Gets the currently authenticated user. */
   async getMe(): Promise<User> {
     // const user = await this.verifyAuthAndRefreshIfNecessary()
-    assert(this._authSession)
+    const userId = this._authSession?.user.id
+    assert(userId, 'This method requires authentication.')
 
-    return this.ky.get(`v1/users/${this._authSession.user.id}`).json()
+    return this.ky.get(`v1/users/${userId}`).json()
   }
 
   /** Gets a user by ID. */
@@ -335,7 +336,65 @@ export class AgenticApiClient {
       .json()
   }
 
-  /** Lists projects the authenticated user has access to. */
+  /** Lists projects that have been published publicly to the marketplace. */
+  async listPublicProjects<
+    TPopulate extends NonNullable<
+      OperationParameters<'listPublicProjects'>['populate']
+    >[number]
+  >(
+    searchParams: OperationParameters<'listPublicProjects'> & {
+      populate?: TPopulate[]
+    } = {}
+  ): Promise<Array<PopulateProject<TPopulate>>> {
+    return this.ky
+      .get('v1/projects', { searchParams: sanitizeSearchParams(searchParams) })
+      .json()
+  }
+
+  /**
+   * Gets a public project by ID. The project must be publicly available on
+   * the marketplace.
+   */
+  async getPublicProject<
+    TPopulate extends NonNullable<
+      OperationParameters<'getPublicProject'>['populate']
+    >[number]
+  >({
+    projectId,
+    ...searchParams
+  }: OperationParameters<'getPublicProject'> & {
+    populate?: TPopulate[]
+  }): Promise<PopulateProject<TPopulate>> {
+    return this.ky
+      .get(`v1/projects/public/${projectId}`, {
+        searchParams: sanitizeSearchParams(searchParams)
+      })
+      .json()
+  }
+
+  /**
+   * Gets a public project by its identifier. The project must be publicly
+   * available on the marketplace.
+   */
+  async getPublicProjectByIdentifier<
+    TPopulate extends NonNullable<
+      OperationParameters<'getPublicProjectByIdentifier'>['populate']
+    >[number]
+  >(
+    searchParams: OperationParameters<'getPublicProjectByIdentifier'> & {
+      populate?: TPopulate[]
+    }
+  ): Promise<PopulateProject<TPopulate>> {
+    return this.ky
+      .get('v1/projects/public/by-identifier', {
+        searchParams: sanitizeSearchParams(searchParams)
+      })
+      .json()
+  }
+
+  /**
+   * Lists projects the authenticated user has access to.
+   */
   async listProjects<
     TPopulate extends NonNullable<
       OperationParameters<'listProjects'>['populate']
@@ -346,7 +405,9 @@ export class AgenticApiClient {
     } = {}
   ): Promise<Array<PopulateProject<TPopulate>>> {
     return this.ky
-      .get('v1/projects', { searchParams: sanitizeSearchParams(searchParams) })
+      .get(`v1/projects`, {
+        searchParams: sanitizeSearchParams(searchParams)
+      })
       .json()
   }
 
@@ -358,7 +419,9 @@ export class AgenticApiClient {
     return this.ky.post('v1/projects', { json: project, searchParams }).json()
   }
 
-  /** Gets a project by ID. */
+  /**
+   * Gets a project by ID. Authenticated user must have access to the project.
+   */
   async getProject<
     TPopulate extends NonNullable<
       OperationParameters<'getProject'>['populate']
@@ -376,7 +439,10 @@ export class AgenticApiClient {
       .json()
   }
 
-  /** Gets a project by its public identifier. */
+  /**
+   * Gets a project by its identifier. Authenticated user must have access to
+   * the project.
+   */
   async getProjectByIdentifier<
     TPopulate extends NonNullable<
       OperationParameters<'getProjectByIdentifier'>['populate']
@@ -393,7 +459,9 @@ export class AgenticApiClient {
       .json()
   }
 
-  /** Updates a project. */
+  /**
+   * Updates a project. Authenticated user must have access to the project.
+   */
   async updateProject(
     project: OperationBody<'updateProject'>,
     { projectId, ...searchParams }: OperationParameters<'updateProject'>

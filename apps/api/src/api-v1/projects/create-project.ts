@@ -1,5 +1,5 @@
 import { assert, parseZodSchema, sha256 } from '@agentic/platform-core'
-import { isValidProjectIdentifier } from '@agentic/platform-validators'
+import { parseProjectIdentifier } from '@agentic/platform-validators'
 import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 
 import type { AuthenticatedHonoEnv } from '@/lib/types'
@@ -40,7 +40,7 @@ const route = createRoute({
   }
 })
 
-export function registerV1ProjectsCreateProject(
+export function registerV1CreateProject(
   app: OpenAPIHono<AuthenticatedHonoEnv>
 ) {
   return app.openapi(route, async (c) => {
@@ -54,8 +54,9 @@ export function registerV1ProjectsCreateProject(
     const teamMember = c.get('teamMember')
     const namespace = teamMember ? teamMember.teamSlug : user.username
     const identifier = `@${namespace}/${body.name}`
+    const parsedProjectIdentifier = parseProjectIdentifier(identifier)
     assert(
-      isValidProjectIdentifier(identifier),
+      parsedProjectIdentifier,
       400,
       `Invalid project identifier "${identifier}"`
     )
@@ -64,7 +65,9 @@ export function registerV1ProjectsCreateProject(
       .insert(schema.projects)
       .values({
         ...body,
-        identifier,
+        identifier: parsedProjectIdentifier.projectIdentifier,
+        namespace: parsedProjectIdentifier.projectNamespace,
+        name: parsedProjectIdentifier.projectName,
         teamId: teamMember?.teamId,
         userId: user.id,
         _secret: await sha256()

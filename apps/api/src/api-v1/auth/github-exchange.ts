@@ -51,7 +51,7 @@ const route = createRoute({
   }
 })
 
-export function registerV1AuthGitHubOAuthExchange(
+export function registerV1GitHubOAuthExchange(
   app: OpenAPIHono<DefaultHonoEnv>
 ) {
   return app.openapi(route, async (c) => {

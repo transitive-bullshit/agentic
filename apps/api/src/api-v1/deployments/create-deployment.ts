@@ -2,7 +2,7 @@ import { resolveAgenticProjectConfig } from '@agentic/platform'
 import { assert, parseZodSchema, sha256 } from '@agentic/platform-core'
 import {
   isValidDeploymentIdentifier,
-  isValidProjectIdentifier
+  parseProjectIdentifier
 } from '@agentic/platform-validators'
 import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 
@@ -54,7 +54,7 @@ const route = createRoute({
   }
 })
 
-export function registerV1DeploymentsCreateDeployment(
+export function registerV1CreateDeployment(
   app: OpenAPIHono<AuthenticatedHonoEnv>
 ) {
   return app.openapi(route, async (c) => {
@@ -64,13 +64,10 @@ export function registerV1DeploymentsCreateDeployment(
     const teamMember = c.get('teamMember')
     const logger = c.get('logger')
 
-    const namespace = teamMember ? teamMember.teamSlug : user.username
-    const projectIdentifier = `@${namespace}/${body.name}`
-    assert(
-      isValidProjectIdentifier(projectIdentifier),
-      400,
-      `Invalid project identifier "${projectIdentifier}"`
-    )
+    const inputNamespace = teamMember ? teamMember.teamSlug : user.username
+    const inputProjectIdentifier = `@${inputNamespace}/${body.name}`
+    const { projectIdentifier, projectNamespace, projectName } =
+      parseProjectIdentifier(inputProjectIdentifier)
 
     let project = await db.query.projects.findFirst({
       where: eq(schema.projects.identifier, projectIdentifier),
@@ -88,8 +85,9 @@ export function registerV1DeploymentsCreateDeployment(
         await db
           .insert(schema.projects)
           .values({
-            name: body.name,
             identifier: projectIdentifier,
+            namespace: projectNamespace,
+            name: projectName,
             userId: user.id,
             teamId: teamMember?.teamId,
             _secret: await sha256()

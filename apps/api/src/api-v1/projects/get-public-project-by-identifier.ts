@@ -1,9 +1,8 @@
+import type { DefaultHonoEnv } from '@agentic/platform-hono'
 import { assert, parseZodSchema } from '@agentic/platform-core'
 import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 
-import type { AuthenticatedHonoEnv } from '@/lib/types'
 import { db, eq, schema } from '@/db'
-import { acl } from '@/lib/acl'
 import {
   openapiAuthenticatedSecuritySchemas,
   openapiErrorResponse404,
@@ -14,11 +13,11 @@ import { projectIdentifierAndPopulateSchema } from './schemas'
 
 const route = createRoute({
   description:
-    'Gets a project by its public identifier (eg, "@username/project-name").',
+    'Gets a public project by its public identifier (eg, "@username/project-name").',
   tags: ['projects'],
-  operationId: 'getProjectByIdentifier',
+  operationId: 'getPublicProjectByIdentifier',
   method: 'get',
-  path: 'projects/by-identifier',
+  path: 'projects/public/by-identifier',
   security: openapiAuthenticatedSecuritySchemas,
   request: {
     query: projectIdentifierAndPopulateSchema
@@ -37,8 +36,8 @@ const route = createRoute({
   }
 })
 
-export function registerV1GetProjectByIdentifier(
-  app: OpenAPIHono<AuthenticatedHonoEnv>
+export function registerV1GetPublicProjectByIdentifier(
+  app: OpenAPIHono<DefaultHonoEnv>
 ) {
   return app.openapi(route, async (c) => {
     const { projectIdentifier, populate = [] } = c.req.valid('query')
@@ -50,8 +49,11 @@ export function registerV1GetProjectByIdentifier(
         ...Object.fromEntries(populate.map((field) => [field, true]))
       }
     })
-    assert(project, 404, `Project not found "${projectIdentifier}"`)
-    await acl(c, project, { label: 'Project' })
+    assert(
+      project && project.private && project.lastPublishedDeploymentId,
+      404,
+      `Public project not found "${projectIdentifier}"`
+    )
 
     return c.json(parseZodSchema(schema.projectSelectSchema, project))
   })

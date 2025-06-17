@@ -36,7 +36,7 @@ const route = createRoute({
   }
 })
 
-export function registerV1UsersGetUser(app: OpenAPIHono<AuthenticatedHonoEnv>) {
+export function registerV1GetUser(app: OpenAPIHono<AuthenticatedHonoEnv>) {
   return app.openapi(route, async (c) => {
     const { userId } = c.req.valid('param')
     await acl(c, { userId }, { label: 'User' })

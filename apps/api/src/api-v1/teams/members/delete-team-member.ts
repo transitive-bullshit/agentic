@@ -37,7 +37,7 @@ const route = createRoute({
   }
 })
 
-export function registerV1TeamsMembersDeleteTeamMember(
+export function registerV1DeleteTeamMember(
   app: OpenAPIHono<AuthenticatedHonoEnv>
 ) {
   return app.openapi(route, async (c) => {

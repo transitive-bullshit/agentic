@@ -4,7 +4,7 @@ import { assert } from '@agentic/platform-core'
 
 import { authStorage } from './utils'
 
-export function registerV1AuthGitHubOAuthCallback(
+export function registerV1GitHubOAuthCallback(
   app: OpenAPIHono<DefaultHonoEnv>
 ) {
   return app.get('auth/github/callback', async (c) => {

@@ -10,6 +10,7 @@ import {
 import { isValidProjectName } from '@agentic/platform-validators'
 import { relations } from '@fisch0920/drizzle-orm'
 import {
+  boolean,
   index,
   integer,
   jsonb,
@@ -62,8 +63,16 @@ export const projects = pgTable(
     ...timestamps,
 
     identifier: projectIdentifier().unique().notNull(),
+    namespace: text().notNull(),
     name: text().notNull(),
-    alias: text(),
+
+    // Defaulting to `true` for now to hide all projects from the marketplace
+    // by default. Will need to manually set to `true` to allow projects to be
+    // visible on the marketplace.
+    private: boolean().default(true).notNull(),
+
+    // TODO: allow for multiple aliases like vercel
+    // alias: text(),
 
     userId: userId()
       .notNull()
@@ -144,9 +153,14 @@ export const projects = pgTable(
   },
   (table) => [
     uniqueIndex('project_identifier_idx').on(table.identifier),
+    index('project_namespace_idx').on(table.namespace),
     index('project_userId_idx').on(table.userId),
     index('project_teamId_idx').on(table.teamId),
-    index('project_alias_idx').on(table.alias),
+    // index('project_alias_idx').on(table.alias),
+    index('project_private_idx').on(table.private),
+    index('project_lastPublishedDeploymentId_idx').on(
+      table.lastPublishedDeploymentId
+    ),
     index('project_createdAt_idx').on(table.createdAt),
     index('project_updatedAt_idx').on(table.updatedAt),
     index('project_deletedAt_idx').on(table.deletedAt)
@@ -250,8 +264,8 @@ export const projectInsertSchema = createInsertSchema(projects, {
 
 export const projectUpdateSchema = createUpdateSchema(projects)
   .pick({
-    name: true,
-    alias: true
+    name: true
+    // alias: true
   })
   .strict()
 

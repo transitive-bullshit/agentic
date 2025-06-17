@@ -38,7 +38,7 @@ const route = createRoute({
   }
 })
 
-export function registerV1AdminConsumersGetConsumerByToken(
+export function registerV1AdminGetConsumerByToken(
   app: OpenAPIHono<AuthenticatedHonoEnv>
 ) {
   return app.openapi(route, async (c) => {

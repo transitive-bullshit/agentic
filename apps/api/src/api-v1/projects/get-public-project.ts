@@ -1,27 +1,26 @@
+import type { DefaultHonoEnv } from '@agentic/platform-hono'
 import { assert, parseZodSchema } from '@agentic/platform-core'
 import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 
-import type { AuthenticatedHonoEnv } from '@/lib/types'
 import { db, eq, schema } from '@/db'
-import { acl } from '@/lib/acl'
 import {
   openapiAuthenticatedSecuritySchemas,
   openapiErrorResponse404,
   openapiErrorResponses
 } from '@/lib/openapi-utils'
 
-import { projectIdentifierAndPopulateSchema } from './schemas'
+import { populateProjectSchema, projectIdParamsSchema } from './schemas'
 
 const route = createRoute({
-  description:
-    'Gets a project by its public identifier (eg, "@username/project-name").',
+  description: 'Gets a public project by ID.',
   tags: ['projects'],
-  operationId: 'getProjectByIdentifier',
+  operationId: 'getPublicProject',
   method: 'get',
-  path: 'projects/by-identifier',
+  path: 'projects/public/{projectId}',
   security: openapiAuthenticatedSecuritySchemas,
   request: {
-    query: projectIdentifierAndPopulateSchema
+    params: projectIdParamsSchema,
+    query: populateProjectSchema
   },
   responses: {
     200: {
@@ -37,21 +36,23 @@ const route = createRoute({
   }
 })
 
-export function registerV1GetProjectByIdentifier(
-  app: OpenAPIHono<AuthenticatedHonoEnv>
-) {
+export function registerV1GetPublicProject(app: OpenAPIHono<DefaultHonoEnv>) {
   return app.openapi(route, async (c) => {
-    const { projectIdentifier, populate = [] } = c.req.valid('query')
+    const { projectId } = c.req.valid('param')
+    const { populate = [] } = c.req.valid('query')
 
     const project = await db.query.projects.findFirst({
-      where: eq(schema.projects.identifier, projectIdentifier),
+      where: eq(schema.projects.id, projectId),
       with: {
         lastPublishedDeployment: true,
         ...Object.fromEntries(populate.map((field) => [field, true]))
       }
     })
-    assert(project, 404, `Project not found "${projectIdentifier}"`)
-    await acl(c, project, { label: 'Project' })
+    assert(
+      project && project.private && project.lastPublishedDeploymentId,
+      404,
+      `Public project not found "${projectId}"`
+    )
 
     return c.json(parseZodSchema(schema.projectSelectSchema, project))
   })

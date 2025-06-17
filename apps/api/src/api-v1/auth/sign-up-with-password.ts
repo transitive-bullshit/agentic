@@ -52,9 +52,7 @@ const route = createRoute({
   }
 })
 
-export function registerV1AuthSignUpWithPassword(
-  app: OpenAPIHono<DefaultHonoEnv>
-) {
+export function registerV1SignUpWithPassword(app: OpenAPIHono<DefaultHonoEnv>) {
   return app.openapi(route, async (c) => {
     try {
       // try signing in to see if the user already exists

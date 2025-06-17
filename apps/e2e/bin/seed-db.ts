@@ -1,7 +1,7 @@
 import { AgenticApiClient } from '@agentic/platform-api-client'
 
-import { env } from '../src/env'
 import { deployFixtures } from '../src/deploy-fixtures'
+import { env } from '../src/env'
 
 export const client = new AgenticApiClient({
   apiBaseUrl: env.AGENTIC_API_BASE_URL

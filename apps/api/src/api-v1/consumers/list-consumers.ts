@@ -36,7 +36,7 @@ const route = createRoute({
   }
 })
 
-export function registerV1ConsumersListConsumers(
+export function registerV1ListConsumers(
   app: OpenAPIHono<AuthenticatedHonoEnv>
 ) {
   return app.openapi(route, async (c) => {

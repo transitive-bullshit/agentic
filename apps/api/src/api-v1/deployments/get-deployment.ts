@@ -38,7 +38,7 @@ const route = createRoute({
   }
 })
 
-export function registerV1DeploymentsGetDeployment(
+export function registerV1GetDeployment(
   app: OpenAPIHono<AuthenticatedHonoEnv>
 ) {
   return app.openapi(route, async (c) => {

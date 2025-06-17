@@ -49,9 +49,7 @@ const route = createRoute({
   }
 })
 
-export function registerV1AuthSignInWithPassword(
-  app: OpenAPIHono<DefaultHonoEnv>
-) {
+export function registerV1SignInWithPassword(app: OpenAPIHono<DefaultHonoEnv>) {
   return app.openapi(route, trySignIn)
 }
 
