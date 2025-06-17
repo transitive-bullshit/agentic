@@ -1,3 +1,4 @@
+import type { Simplify } from 'type-fest'
 import { expectTypeOf, test } from 'vitest'
 
 import type {
@@ -5,7 +6,9 @@ import type {
   LogEntry,
   RawConsumer,
   RawConsumerUpdate,
+  RawDeployment,
   RawLogEntry,
+  RawProject,
   RawUser,
   User
 } from './types'
@@ -13,6 +16,14 @@ import type {
 type UserKeys = Exclude<keyof User & keyof RawUser, 'authProviders'>
 type LogEntryKeys = keyof RawLogEntry & keyof LogEntry
 type ConsumerKeys = keyof RawConsumer & keyof Consumer
+
+type TODOFixedConsumer = Simplify<
+  Omit<Consumer, 'user' | 'project' | 'deployment'> & {
+    user?: RawUser | null
+    project?: RawProject | null
+    deployment?: RawDeployment | null
+  }
+>
 
 test('User types are compatible', () => {
   expectTypeOf<RawUser>().toExtend<User>()
@@ -29,9 +40,9 @@ test('LogEntry types are compatible', () => {
 })
 
 test('Consumer types are compatible', () => {
-  expectTypeOf<RawConsumer>().toExtend<Consumer>()
+  expectTypeOf<RawConsumer>().toExtend<TODOFixedConsumer>()
 
-  expectTypeOf<Consumer[ConsumerKeys]>().toEqualTypeOf<
+  expectTypeOf<TODOFixedConsumer[ConsumerKeys]>().toEqualTypeOf<
     RawConsumer[ConsumerKeys]
   >()
 

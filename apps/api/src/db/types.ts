@@ -63,9 +63,9 @@ export type ConsumerWithProjectAndDeployment = BuildQueryResult<
 >
 export type RawConsumer = Simplify<
   InferSelectModel<typeof schema.consumers> & {
-    user?: RawUser | null // TODO: remove null (requires drizzle-orm changes)
-    project?: RawProject | null // TODO: remove null (requires drizzle-orm changes)
-    deployment?: RawDeployment | null // TODO: remove null (requires drizzle-orm changes)
+    user?: RawUser | undefined | null // TODO: remove null (requires drizzle-orm changes)
+    project?: RawProject | undefined | null // TODO: remove null (requires drizzle-orm changes)
+    deployment?: RawDeployment | undefined | null // TODO: remove null (requires drizzle-orm changes)
   }
 >
 export type RawConsumerUpdate = Partial<
