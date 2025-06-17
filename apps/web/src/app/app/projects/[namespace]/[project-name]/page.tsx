@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation'
 
 import { toastError } from '@/lib/notifications'
 
-import ProjectIndex from './project-index'
+import { AppProjectIndex } from './app-project-index'
 
 export default async function AppProjectIndexPage({
   params
@@ -26,7 +26,7 @@ export default async function AppProjectIndexPage({
       { strict: true }
     )
 
-    return <ProjectIndex projectIdentifier={projectIdentifier} />
+    return <AppProjectIndex projectIdentifier={projectIdentifier} />
   } catch (err: any) {
     void toastError(err, { label: 'Invalid project identifier' })
 

@@ -6,14 +6,18 @@ import { useAuthenticatedAgentic } from '@/components/agentic-provider'
 import { LoadingIndicator } from '@/components/loading-indicator'
 import { toastError } from '@/lib/notifications'
 
-export default function ProjectIndex({
+export function AppProjectIndex({
   projectIdentifier
 }: {
   projectIdentifier: string
 }) {
   const ctx = useAuthenticatedAgentic()
-  const { data: project, isLoading } = useQuery({
-    queryKey: [`project:${projectIdentifier}`],
+  const {
+    data: project,
+    isLoading,
+    isError
+  } = useQuery({
+    queryKey: ['project', projectIdentifier],
     queryFn: () =>
       ctx?.api
         .getProjectByIdentifier({
@@ -32,8 +36,12 @@ export default function ProjectIndex({
 
   return (
     <section>
-      {!ctx || !project || isLoading ? (
+      {!ctx || isLoading ? (
         <LoadingIndicator />
+      ) : isError ? (
+        <p>Error fetching project</p>
+      ) : !project ? (
+        <p>Project "{projectIdentifier}" not found</p>
       ) : (
         <>
           <h1
