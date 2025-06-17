@@ -19,10 +19,9 @@
     - if user is subscribed to a plan, show that plan as selected
     - handle unauthenticated checkout flow => auth and then redirect to create a checkout session
     - will need a `redirect` url for `/login` and `/signup`
-    - `/marketplace/projects/@{projectIdentifier}/checkout?plan={plan}`
-- stripe
-  - stripe checkout
-  - stripe billing portal
+    - `/marketplace/projects/@{projectIdentifier}?checkout=true&plan={plan}`
+    - stripe checkout
+    - stripe billing portal
 - **API gateway**
   - oauth flow
     - https://docs.scalekit.com/guides/mcp/oauth

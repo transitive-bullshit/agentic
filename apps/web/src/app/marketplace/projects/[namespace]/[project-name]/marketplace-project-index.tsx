@@ -1,9 +1,8 @@
 'use client'
 
-import { assert, omit } from '@agentic/platform-core'
-import { redirect } from 'next/navigation'
-import { useCallback, useEffect } from 'react'
-import { useSearchParam } from 'react-use'
+import { assert, omit, sanitizeSearchParams } from '@agentic/platform-core'
+import { redirect, useSearchParams } from 'next/navigation'
+import { useCallback, useEffect, useRef } from 'react'
 
 import { useAgentic } from '@/components/agentic-provider'
 import { LoadingIndicator } from '@/components/loading-indicator'
@@ -17,7 +16,10 @@ export function MarketplaceProjectIndex({
   projectIdentifier: string
 }) {
   const ctx = useAgentic()
-  const checkoutStatus = useSearchParam('checkout')
+  const searchParams = useSearchParams()
+  const checkout = searchParams.get('checkout')
+  const plan = searchParams.get('plan')
+
   const {
     data: project,
     isLoading,
@@ -34,6 +36,7 @@ export function MarketplaceProjectIndex({
 
   const onSubscribe = useCallback(
     async (pricingPlanSlug: string) => {
+      assert(ctx, 500, 'Agentic context is required')
       assert(project, 500, 'Project is required')
       const { lastPublishedDeploymentId } = project
       assert(
@@ -41,6 +44,14 @@ export function MarketplaceProjectIndex({
         500,
         `Public project "${projectIdentifier}" expected to have a last published deployment, but none found.`
       )
+
+      if (!ctx.isAuthenticated) {
+        return redirect(
+          `/signup?${sanitizeSearchParams({
+            next: `/marketplace/projects/${projectIdentifier}?checkout=true&plan=${pricingPlanSlug}`
+          }).toString()}`
+        )
+      }
 
       let checkoutSession: { url: string; id: string } | undefined
 
@@ -61,11 +72,38 @@ export function MarketplaceProjectIndex({
     [ctx, projectIdentifier, project]
   )
 
+  const hasInitializedCheckoutFromSearchParams = useRef(false)
+
   useEffect(() => {
-    if (ctx && checkoutStatus === 'canceled') {
+    if (!ctx) return
+
+    if (checkout === 'canceled') {
       toast('Checkout canceled')
+    } else if (
+      checkout === 'true' &&
+      plan &&
+      project &&
+      !hasInitializedCheckoutFromSearchParams.current
+    ) {
+      hasInitializedCheckoutFromSearchParams.current = true
+
+      // Start checkout flow if search params have `?checkout=true&plan={plan}`
+      // This is to allow unauthenticated users to subscribe to a plan by first
+      // visiting `/login` or `/signup` and then being redirected to this page
+      // with the target checkout search params already pre-filled.
+      // Another use case for this functionality is providing a single link to
+      // subscribe to a specific project and pricing plan – with the checkout
+      // details pre-filled.
+      void onSubscribe(checkout)
     }
-  }, [checkoutStatus, ctx])
+  }, [
+    checkout,
+    plan,
+    ctx,
+    project,
+    onSubscribe,
+    hasInitializedCheckoutFromSearchParams
+  ])
 
   return (
     <section>
