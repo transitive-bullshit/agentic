@@ -1,15 +1,25 @@
+import type Stripe from 'stripe'
 import { assert } from '@agentic/platform-core'
 
 import type { AuthenticatedHonoContext } from '@/lib/types'
-import { and, db, eq, type RawDeployment, type RawProject, schema } from '@/db'
+import {
+  and,
+  db,
+  eq,
+  type RawConsumer,
+  type RawDeployment,
+  type RawProject,
+  schema
+} from '@/db'
 import { acl } from '@/lib/acl'
 import { upsertStripeConnectCustomer } from '@/lib/billing/upsert-stripe-connect-customer'
 import { upsertStripeCustomer } from '@/lib/billing/upsert-stripe-customer'
 import { upsertStripePricing } from '@/lib/billing/upsert-stripe-pricing'
-import { upsertStripeSubscription } from '@/lib/billing/upsert-stripe-subscription'
 import { createConsumerToken } from '@/lib/create-consumer-token'
 
-export async function upsertConsumer(
+import { createStripeCheckoutSession } from '../billing/create-stripe-checkout-session'
+
+export async function upsertConsumerStripeCheckout(
   c: AuthenticatedHonoContext,
   {
     plan,
@@ -20,17 +30,26 @@ export async function upsertConsumer(
     deploymentId?: string
     consumerId?: string
   }
-) {
+): Promise<{
+  checkoutSession: Stripe.Checkout.Session
+  consumer: RawConsumer
+}> {
   assert(
     consumerId || deploymentId,
     400,
-    'Internal error: upsertConsumer missing required "deploymentId" or "consumerId"'
+    'Internal error: upsertConsumerStripeCheckout missing required "deploymentId" or "consumerId"'
   )
   const logger = c.get('logger')
   const userId = c.get('userId')
   let deployment: RawDeployment | undefined
   let project: RawProject | undefined
   let projectId: string | undefined
+
+  logger.info('upsertConsumerStripeCheckout', {
+    plan,
+    deploymentId,
+    consumerId
+  })
 
   async function initDeploymentAndProject() {
     assert(deploymentId, 400, 'Missing required "deploymentId"')
@@ -60,6 +79,7 @@ export async function upsertConsumer(
       `Project not found "${projectId}" for deployment "${deploymentId}"`
     )
     await acl(c, project, { label: 'Project' })
+    projectId = project.id
   }
 
   if (deploymentId) {
@@ -67,7 +87,7 @@ export async function upsertConsumer(
   }
 
   if (!consumerId) {
-    assert(projectId, 400, 'Missing required "deploymentId"')
+    assert(projectId, 400, 'Missing required "projectId"')
   }
 
   const [{ user, stripeCustomer }, existingConsumer] = await Promise.all([
@@ -98,15 +118,8 @@ export async function upsertConsumer(
 
     deploymentId ??= existingConsumer.deploymentId
     projectId ??= existingConsumer.projectId
-  } else {
-    assert(
-      !existingConsumer,
-      409,
-      `User "${user.email}" already has a subscription for project "${projectId ?? ''}"`
-    )
   }
 
-  assert(consumerId)
   assert(deploymentId)
   assert(projectId)
 
@@ -138,26 +151,37 @@ export async function upsertConsumer(
   let consumer = existingConsumer
 
   if (consumer) {
-    ;[consumer] = await db
-      .update(schema.consumers)
-      .set({
-        plan,
-        deploymentId
-      })
-      .where(eq(schema.consumers.id, consumer.id))
-      .returning()
+    // Don't update the consumer until the checkout session is completed
+    // successfully.
+    // ;[consumer] = await db
+    //   .update(schema.consumers)
+    //   .set({
+    //     plan,
+    //     deploymentId
+    //   })
+    //   .where(eq(schema.consumers.id, consumer.id))
+    //   .returning()
   } else {
-    ;[consumer] = await db.insert(schema.consumers).values({
-      plan,
-      userId,
-      projectId,
-      deploymentId,
-      token: await createConsumerToken(),
-      _stripeCustomerId: stripeCustomer.id
-    })
+    // Create a new consumer, but don't set the plan yet until the checkout
+    // session is completed successfully.
+    ;[consumer] = await db
+      .insert(schema.consumers)
+      .values({
+        // plan,
+        userId,
+        projectId,
+        deploymentId,
+        token: await createConsumerToken(),
+        _stripeCustomerId: stripeCustomer.id
+      })
+      .returning()
   }
 
-  assert(consumer, 500, 'Error creating consumer')
+  assert(
+    consumer,
+    500,
+    'Internal error: upsertConsumerStripeCheckout error creating consumer'
+  )
 
   // Ensure that all Stripe pricing resources exist for this deployment
   await upsertStripePricing({ deployment, project })
@@ -165,6 +189,7 @@ export async function upsertConsumer(
   // Ensure that customer and default source are created on the stripe connect account
   // TODO: is this necessary?
   // consumer._stripeAccount = project._stripeAccount
+  // TODO: this function may mutate `consumer`
   await upsertStripeConnectCustomer({ stripeCustomer, consumer, project })
 
   logger.info('SUBSCRIPTION', existingConsumer ? 'UPDATE' : 'CREATE', {
@@ -173,14 +198,17 @@ export async function upsertConsumer(
     consumer
   })
 
-  const { subscription, consumer: updatedConsumer } =
-    await upsertStripeSubscription(c, {
-      consumer,
-      user,
-      project,
-      deployment
-    })
-  logger.info('subscription', subscription)
+  const checkoutSession = await createStripeCheckoutSession(c, {
+    consumer,
+    user,
+    project,
+    deployment,
+    plan
+  })
+  logger.info('checkout session', checkoutSession)
 
-  return updatedConsumer
+  return {
+    checkoutSession,
+    consumer
+  }
 }

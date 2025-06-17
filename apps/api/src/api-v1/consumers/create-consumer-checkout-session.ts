@@ -1,9 +1,9 @@
-import { parseZodSchema } from '@agentic/platform-core'
-import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
+import { parseZodSchema, pick } from '@agentic/platform-core'
+import { createRoute, type OpenAPIHono, z } from '@hono/zod-openapi'
 
 import type { AuthenticatedHonoEnv } from '@/lib/types'
 import { schema } from '@/db'
-import { upsertConsumer } from '@/lib/consumers/upsert-consumer'
+import { upsertConsumerStripeCheckout } from '@/lib/consumers/upsert-consumer-stripe-checkout'
 import {
   openapiAuthenticatedSecuritySchemas,
   openapiErrorResponse404,
@@ -14,11 +14,11 @@ import {
 
 const route = createRoute({
   description:
-    "Upserts a consumer by modifying a customer's subscription to a project.",
+    'Creates a Stripe checkout session for a consumer to modify their subscription to a project.',
   tags: ['consumers'],
-  operationId: 'createConsumer',
+  operationId: 'createConsumerCheckoutSession',
   method: 'post',
-  path: 'consumers',
+  path: 'consumers/checkout',
   security: openapiAuthenticatedSecuritySchemas,
   request: {
     body: {
@@ -35,7 +35,13 @@ const route = createRoute({
       description: 'A consumer object',
       content: {
         'application/json': {
-          schema: schema.consumerSelectSchema
+          schema: z.object({
+            checkoutSession: z.object({
+              id: z.string(),
+              url: z.string().url()
+            }),
+            consumer: schema.consumerSelectSchema
+          })
         }
       }
     },
@@ -46,13 +52,19 @@ const route = createRoute({
   }
 })
 
-export function registerV1CreateConsumer(
+export function registerV1CreateConsumerCheckoutSession(
   app: OpenAPIHono<AuthenticatedHonoEnv>
 ) {
   return app.openapi(route, async (c) => {
     const body = c.req.valid('json')
-    const consumer = await upsertConsumer(c, body)
+    const { checkoutSession, consumer } = await upsertConsumerStripeCheckout(
+      c,
+      body
+    )
 
-    return c.json(parseZodSchema(schema.consumerSelectSchema, consumer))
+    return c.json({
+      checkoutSession: pick(checkoutSession, 'id', 'url'),
+      consumer: parseZodSchema(schema.consumerSelectSchema, consumer)
+    })
   })
 }

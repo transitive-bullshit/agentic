@@ -181,16 +181,30 @@ export const deploymentSelectSchema = createSelectSchema(deployments, {
     //   .lazy(() => userSelectSchema)
     //   .optional()
     //   .openapi('User', { type: 'object' }),
-
     // team: z
     //   .lazy(() => teamSelectSchema)
     //   .optional()
     //   .openapi('Team', { type: 'object' }),
+    // project: z
+    //   .lazy(() => projectSelectSchema)
+    //   .optional()
+    //   .openapi('Project', { type: 'object' })
 
+    // TODO: Improve the self-referential typing here that `@hono/zod-openapi`
+    // trips up on.
     project: z
-      .lazy(() => projectSelectSchema)
+      .any()
+      .refine(
+        (project): boolean => projectSelectSchema.safeParse(project).success,
+        {
+          message: 'Invalid lastDeployment'
+        }
+      )
+      .transform((project): any => {
+        return projectSelectSchema.parse(project)
+      })
       .optional()
-      .openapi('Project', { type: 'object' })
+    // .openapi('Project', { type: 'object' })
 
     // TODO: Circular references make this schema less than ideal
     // project: z.object({}).optional().openapi('Project', { type: 'object' })

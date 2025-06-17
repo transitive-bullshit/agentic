@@ -311,8 +311,25 @@ export interface paths {
         /** @description Lists all of the customer subscriptions for the current user. */
         get: operations["listConsumers"];
         put?: never;
-        /** @description Creates a new consumer by subscribing a customer to a project. */
+        /** @description Upserts a consumer by modifying a customer's subscription to a project. */
         post: operations["createConsumer"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/consumers/checkout": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Creates a Stripe checkout session for a consumer to modify their subscription to a project. */
+        post: operations["createConsumerCheckoutSession"];
         delete?: never;
         options?: never;
         head?: never;
@@ -500,7 +517,8 @@ export interface components {
         ProjectIdentifier: string;
         /** @description The frequency at which a subscription is billed. */
         PricingInterval: "day" | "week" | "month" | "year";
-        /** @description A Project represents a single Agentic API product. A Project is comprised of a series of immutable Deployments, each of which contains pricing data, origin API config, OpenAPI or MCP specs, tool definitions, and various metadata.
+        Team: Record<string, never>;
+        /** @description A Project represents a single Agentic API product. It is comprised of a series of immutable Deployments, each of which contains pricing data, origin API config, OpenAPI or MCP specs, tool definitions, and various metadata.
          *
          *     You can think of Agentic Projects as similar to Vercel projects. They both hold some common configuration and are comprised of a series of immutable Deployments.
          *
@@ -524,19 +542,13 @@ export interface components {
             /** @description Deployment id (e.g. "depl_tz4a98xxat96iws9zmbrgj3a") */
             lastDeploymentId?: string;
             lastPublishedDeploymentVersion?: string;
-            applicationFeePercent: number;
             defaultPricingInterval: components["schemas"]["PricingInterval"];
             /** @enum {string} */
             pricingCurrency: "usd";
-        };
-        Team: {
-            id: string;
-            createdAt: string;
-            updatedAt: string;
-            deletedAt?: string;
-            slug: string;
-            name: string;
-            ownerId: string;
+            user?: components["schemas"]["User"];
+            team?: components["schemas"]["Team"];
+            lastPublishedDeployment?: unknown;
+            lastDeployment?: unknown;
         };
         TeamMember: {
             createdAt: string;
@@ -575,6 +587,9 @@ export interface components {
             deploymentId: string;
             stripeStatus: string;
             isStripeSubscriptionActive: boolean;
+            user?: components["schemas"]["User"];
+            project?: components["schemas"]["Project"];
+            deployment?: unknown;
         };
         /** @description Public deployment identifier (e.g. "@namespace/project-name@{hash|version|latest}") */
         DeploymentIdentifier: string;
@@ -831,7 +846,7 @@ export interface components {
              */
             pricingIntervals: components["schemas"]["PricingInterval"][];
             defaultRateLimit?: components["schemas"]["RateLimit"] & unknown;
-            project?: components["schemas"]["Project"];
+            project?: unknown;
         };
         /**
          * @description Origin adapter is used to configure the origin API server downstream from Agentic's API gateway. It specifies whether the origin API server denoted by `originUrl` is hosted externally or deployed internally to Agentic's infrastructure. It also specifies the format for how origin tools are defined: either an OpenAPI spec, an MCP server, or a raw HTTP REST API.
@@ -1284,7 +1299,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["Team"][];
+                    "application/json": (components["schemas"]["Team"] & {
+                        id: string;
+                        createdAt: string;
+                        updatedAt: string;
+                        deletedAt?: string;
+                        slug: string;
+                        name: string;
+                        ownerId: string;
+                    })[];
                 };
             };
             400: components["responses"]["400"];
@@ -1315,7 +1338,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["Team"];
+                    "application/json": components["schemas"]["Team"] & {
+                        id: string;
+                        createdAt: string;
+                        updatedAt: string;
+                        deletedAt?: string;
+                        slug: string;
+                        name: string;
+                        ownerId: string;
+                    };
                 };
             };
             400: components["responses"]["400"];
@@ -1341,7 +1372,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["Team"];
+                    "application/json": components["schemas"]["Team"] & {
+                        id: string;
+                        createdAt: string;
+                        updatedAt: string;
+                        deletedAt?: string;
+                        slug: string;
+                        name: string;
+                        ownerId: string;
+                    };
                 };
             };
             400: components["responses"]["400"];
@@ -1376,7 +1415,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["Team"];
+                    "application/json": components["schemas"]["Team"] & {
+                        id: string;
+                        createdAt: string;
+                        updatedAt: string;
+                        deletedAt?: string;
+                        slug: string;
+                        name: string;
+                        ownerId: string;
+                    };
                 };
             };
             400: components["responses"]["400"];
@@ -1403,7 +1450,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["Team"];
+                    "application/json": components["schemas"]["Team"] & {
+                        id: string;
+                        createdAt: string;
+                        updatedAt: string;
+                        deletedAt?: string;
+                        slug: string;
+                        name: string;
+                        ownerId: string;
+                    };
                 };
             };
             400: components["responses"]["400"];
@@ -1783,6 +1838,48 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["Consumer"];
+                };
+            };
+            400: components["responses"]["400"];
+            401: components["responses"]["401"];
+            403: components["responses"]["403"];
+            404: components["responses"]["404"];
+            409: components["responses"]["409"];
+            410: components["responses"]["410"];
+        };
+    };
+    createConsumerCheckoutSession: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    plan: string;
+                    source?: string;
+                    /** @description Deployment id (e.g. "depl_tz4a98xxat96iws9zmbrgj3a") */
+                    deploymentId?: string;
+                };
+            };
+        };
+        responses: {
+            /** @description A consumer object */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        checkoutSession: {
+                            id: string;
+                            /** Format: uri */
+                            url: string;
+                        };
+                        consumer: components["schemas"]["Consumer"];
+                    };
                 };
             };
             400: components["responses"]["400"];

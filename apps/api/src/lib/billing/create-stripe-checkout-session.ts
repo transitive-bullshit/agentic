@@ -3,37 +3,32 @@ import { assert } from '@agentic/platform-core'
 
 import type { AuthenticatedHonoContext } from '@/lib/types'
 import {
-  db,
-  eq,
   getStripePriceIdForPricingPlanLineItem,
   type RawConsumer,
-  type RawConsumerUpdate,
   type RawDeployment,
   type RawProject,
-  type RawUser,
-  schema
+  type RawUser
 } from '@/db'
 import { stripe } from '@/lib/external/stripe'
 
-import { setConsumerStripeSubscriptionStatus } from '../consumers/utils'
+import { env } from '../env'
 
-export async function upsertStripeSubscription(
+export async function createStripeCheckoutSession(
   ctx: AuthenticatedHonoContext,
   {
     consumer,
     user,
     deployment,
-    project
+    project,
+    plan
   }: {
     consumer: RawConsumer
     user: RawUser
     deployment: RawDeployment
     project: RawProject
+    plan?: string
   }
-): Promise<{
-  subscription: Stripe.Subscription
-  consumer: RawConsumer
-}> {
+): Promise<Stripe.Checkout.Session> {
   const logger = ctx.get('logger')
   const stripeConnectParams = project._stripeAccountId
     ? [
@@ -50,7 +45,6 @@ export async function upsertStripeSubscription(
     `Missing valid stripe customer. Please contact support for deployment "${deployment.id}" and consumer "${consumer.id}"`
   )
 
-  const { plan } = consumer
   const pricingPlan = plan
     ? deployment.pricingPlans.find((pricingPlan) => pricingPlan.slug === plan)
     : undefined
@@ -60,7 +54,7 @@ export async function upsertStripeSubscription(
       ? 'update'
       : 'cancel'
     : 'create'
-  let subscription: Stripe.Subscription | undefined
+  let checkoutSession: Stripe.Checkout.Session | undefined
 
   if (consumer._stripeSubscriptionId) {
     // customer has an existing subscription
@@ -206,11 +200,13 @@ export async function upsertStripeSubscription(
     //   updateParams.application_fee_percent = project.applicationFeePercent
     // }
 
-    subscription = await stripe.subscriptions.update(
-      consumer._stripeSubscriptionId,
-      updateParams,
-      ...stripeConnectParams
-    )
+    assert(false, 500, 'TODO: update subscription => createCheckoutSession')
+
+    // subscription = await stripe.subscriptions.update(
+    //   consumer._stripeSubscriptionId,
+    //   updateParams,
+    //   ...stripeConnectParams
+    // )
 
     // TODO: this will cancel the subscription without resolving current usage / invoices
     // await stripe.subscriptions.del(consumer.stripeSubscription)
@@ -222,37 +218,40 @@ export async function upsertStripeSubscription(
       `Unable to update stripe subscription for invalid pricing plan "${plan}"`
     )
 
-    const items: Stripe.SubscriptionCreateParams.Item[] = await Promise.all(
-      pricingPlan.lineItems.map(async (lineItem) => {
-        const priceId = await getStripePriceIdForPricingPlanLineItem({
-          pricingPlan,
-          pricingPlanLineItem: lineItem,
-          project
+    const items: Stripe.Checkout.SessionCreateParams.LineItem[] =
+      await Promise.all(
+        pricingPlan.lineItems.map(async (lineItem) => {
+          const priceId = await getStripePriceIdForPricingPlanLineItem({
+            pricingPlan,
+            pricingPlanLineItem: lineItem,
+            project
+          })
+          assert(
+            priceId,
+            500,
+            `Error creating stripe subscription: missing expected Stripe Price for plan "${pricingPlan.slug}" line item "${lineItem.slug}"`
+          )
+
+          // An existing Stripe Subscription Item may or may not exist for this
+          // LineItem. It should exist if this is an update to an existing
+          // LineItem. It won't exist if it's a new LineItem.
+          const id = consumer._stripeSubscriptionItemIdMap[lineItem.slug]
+          assert(
+            !id,
+            500,
+            `Error creating stripe subscription: consumer contains a Stripe Subscription Item for LineItem "${lineItem.slug}" and pricing plan "${pricingPlan.slug}"`
+          )
+
+          return {
+            price: priceId,
+            // TODO: Make this customizable
+            quantity: lineItem.usageType === 'licensed' ? 1 : undefined
+            // metadata: {
+            //   lineItemSlug: lineItem.slug
+            // }
+          } satisfies Stripe.Checkout.SessionCreateParams.LineItem
         })
-        assert(
-          priceId,
-          500,
-          `Error creating stripe subscription: missing expected Stripe Price for plan "${pricingPlan.slug}" line item "${lineItem.slug}"`
-        )
-
-        // An existing Stripe Subscription Item may or may not exist for this
-        // LineItem. It should exist if this is an update to an existing
-        // LineItem. It won't exist if it's a new LineItem.
-        const id = consumer._stripeSubscriptionItemIdMap[lineItem.slug]
-        assert(
-          !id,
-          500,
-          `Error creating stripe subscription: consumer contains a Stripe Subscription Item for LineItem "${lineItem.slug}" and pricing plan "${pricingPlan.slug}"`
-        )
-
-        return {
-          price: priceId,
-          metadata: {
-            lineItemSlug: lineItem.slug
-          }
-        }
-      })
-    )
+      )
 
     assert(
       items.length,
@@ -260,13 +259,28 @@ export async function upsertStripeSubscription(
       `Error creating stripe subscription: invalid plan "${plan}"`
     )
 
-    const createParams: Stripe.SubscriptionCreateParams = {
+    const checkoutSessionParams: Stripe.Checkout.SessionCreateParams = {
       customer: stripeCustomerId,
-      description: `Agentic subscription to project "${project.identifier}"`,
+      mode: 'subscription',
+      line_items: items,
+      success_url: `${env.AGENTIC_WEB_BASE_URL}/app/consumers/${consumer.id}?checkout=success`,
+      cancel_url: `${env.AGENTIC_WEB_BASE_URL}/marketplace/projects/${project.identifier}?checkout=canceled`,
+      submit_type: 'subscribe',
+      subscription_data: {
+        description:
+          pricingPlan.description ??
+          `Subscription to ${project.name} ${pricingPlan.name}`,
+        trial_period_days: pricingPlan.trialPeriodDays
+        // TODO: Stripe Connect
+        // application_fee_percent: project.applicationFeePercent
+      },
       // TODO: coupons
       // coupon: filterConsumerCoupon(ctx, consumer, deployment),
-      items,
+      // TODO: discounts
       // collection_method: 'charge_automatically',
+      // TODO: consider custom_fields
+      // TODO: consider custom_text
+      // TODO: consider optional_items
       metadata: {
         userId: consumer.userId,
         consumerId: consumer.id,
@@ -275,90 +289,24 @@ export async function upsertStripeSubscription(
       }
     }
 
-    if (pricingPlan.trialPeriodDays) {
-      createParams.trial_period_days = pricingPlan.trialPeriodDays
-    }
-
     // TODO: Stripe Connect
     // if (project.isStripeConnectEnabled && project.applicationFeePercent > 0) {
     //   createParams.application_fee_percent = project.applicationFeePercent
     // }
 
-    logger.debug('subscription', action, { items })
-    subscription = await stripe.subscriptions.create(
-      createParams,
+    logger.debug('checkout session line_items', items)
+    checkoutSession = await stripe.checkout.sessions.create(
+      checkoutSessionParams,
       ...stripeConnectParams
     )
-
-    consumer._stripeSubscriptionId = subscription.id
   }
 
   // ----------------------------------------------------
   // Same codepath for updating, creating, and cancelling
   // ----------------------------------------------------
 
-  assert(subscription, 500, 'Missing stripe subscription')
-  logger.debug('subscription', subscription)
+  assert(checkoutSession, 500, 'Missing stripe checkout session')
+  logger.debug('checkout session', checkoutSession)
 
-  const consumerUpdate: RawConsumerUpdate = consumer
-  consumerUpdate.stripeStatus = subscription.status
-  setConsumerStripeSubscriptionStatus(consumerUpdate)
-
-  // if (!plan) {
-  // TODO: we cancel at the end of the billing interval, so we shouldn't
-  // invalidate the stripe subscription just yet. That should happen via
-  // webhook. And we should never set `_stripeSubscriptionId` to `null`.
-  // consumerUpdate._stripeSubscriptionId = null
-  // consumerUpdate.stripeStatus = 'cancelled'
-  // }
-
-  if (pricingPlan) {
-    for (const lineItem of pricingPlan.lineItems) {
-      const stripeSubscriptionItemId =
-        consumer._stripeSubscriptionItemIdMap[lineItem.slug]
-
-      const stripeSubscriptionItem: Stripe.SubscriptionItem | undefined =
-        subscription.items.data.find((item) =>
-          stripeSubscriptionItemId
-            ? item.id === stripeSubscriptionItemId
-            : item.metadata?.lineItemSlug === lineItem.slug
-        )
-
-      assert(
-        stripeSubscriptionItem,
-        500,
-        `Error post-processing stripe subscription for line-item "${lineItem.slug}" on plan "${pricingPlan.slug}"`
-      )
-
-      consumerUpdate._stripeSubscriptionItemIdMap![lineItem.slug] =
-        stripeSubscriptionItem.id
-      assert(
-        consumerUpdate._stripeSubscriptionItemIdMap![lineItem.slug],
-        500,
-        `Error post-processing stripe subscription for line-item "${lineItem.slug}" on plan "${pricingPlan.slug}"`
-      )
-    }
-  }
-
-  logger.debug()
-  logger.debug('consumer update', consumerUpdate)
-
-  const [updatedConsumer] = await db
-    .update(schema.consumers)
-    .set(consumerUpdate)
-    .where(eq(schema.consumers.id, consumer.id))
-    .returning()
-  assert(updatedConsumer, 500, 'Error updating consumer')
-
-  // await auditLog.createStripeSubscriptionLogEntry(ctx, {
-  //   consumer,
-  //   user,
-  //   plan: consumer.plan,
-  //   subtype: action
-  // })
-
-  return {
-    subscription,
-    consumer: updatedConsumer
-  }
+  return checkoutSession
 }

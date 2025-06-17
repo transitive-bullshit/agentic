@@ -502,13 +502,40 @@ export class AgenticApiClient {
       .json()
   }
 
-  /** Creates a new consumer by subscribing a customer to a project. */
+  /**
+   * Creates a new consumer by subscribing a customer to a project.
+   *
+   * @deprecated Use `createConsumerCheckoutSession` instead. This method will
+   * be removed in a future version.
+   */
   async createConsumer(
     consumer: OperationBody<'createConsumer'>,
     searchParams: OperationParameters<'createConsumer'> = {}
   ): Promise<Consumer> {
     return this.ky
       .post('v1/consumers', {
+        json: consumer,
+        searchParams: sanitizeSearchParams(searchParams)
+      })
+      .json()
+  }
+
+  /**
+   * Creates a Stripe Checkout Session for a customer to modify their
+   * subscription to a project.
+   */
+  async createConsumerCheckoutSession(
+    consumer: OperationBody<'createConsumerCheckoutSession'>,
+    searchParams: OperationParameters<'createConsumerCheckoutSession'> = {}
+  ): Promise<{
+    checkoutSession: {
+      id: string
+      url: string
+    }
+    consumer: Consumer
+  }> {
+    return this.ky
+      .post('v1/consumers/checkout', {
         json: consumer,
         searchParams: sanitizeSearchParams(searchParams)
       })

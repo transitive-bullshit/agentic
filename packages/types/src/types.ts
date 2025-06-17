@@ -11,13 +11,31 @@ import type { PricingPlan } from './pricing'
 import type { RateLimit } from './rate-limit.js'
 import type { ToolConfig } from './tools'
 
-export type Consumer = components['schemas']['Consumer']
-export type Project = components['schemas']['Project']
+// TODO: These extra simplify statements for populated references shouldn't be
+// necessary here, but Hono's OpenAPI support is currently failing to generate
+// these self-referential types correctly in some cases, so we're just hard-
+// coding the types here to make them nicer.
+
 export type User = components['schemas']['User']
 export type Team = components['schemas']['Team']
 export type TeamMember = components['schemas']['TeamMember']
 export type AuthSession = components['schemas']['AuthSession']
 
+export type Consumer = Simplify<
+  components['schemas']['Consumer'] & {
+    user?: User
+    project?: Project
+    deployment?: Deployment
+  }
+>
+export type Project = Simplify<
+  components['schemas']['Project'] & {
+    user?: User
+    team?: Team
+    lastPublishedDeployment?: Deployment
+    lastDeployment?: Deployment
+  }
+>
 export type Deployment = Simplify<
   Omit<
     components['schemas']['Deployment'],
@@ -26,6 +44,7 @@ export type Deployment = Simplify<
     pricingPlans: PricingPlan[]
     toolConfigs: ToolConfig[]
     defaultRateLimit: RateLimit
+    project?: components['schemas']['Project']
   }
 >
 
@@ -37,7 +56,14 @@ export type AdminDeployment = Simplify<
     pricingPlans: PricingPlan[]
     toolConfigs: ToolConfig[]
     defaultRateLimit: RateLimit
+    project?: components['schemas']['Project']
   }
 >
 
-export type AdminConsumer = Simplify<components['schemas']['AdminConsumer']>
+export type AdminConsumer = Simplify<
+  components['schemas']['AdminConsumer'] & {
+    user?: User
+    project?: Project
+    deployment?: Deployment
+  }
+>

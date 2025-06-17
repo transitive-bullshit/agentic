@@ -1,10 +1,6 @@
 import { HTTPError } from 'ky'
 import { toast as toastImpl } from 'sonner'
 
-export function toast(message: string) {
-  toastImpl(message)
-}
-
 export async function toastError(
   error: any,
   ctx?: {
@@ -39,3 +35,5 @@ export async function toastError(
   console.error(...[ctx?.label, message, details].filter(Boolean))
   toastImpl.error(message)
 }
+
+export { toast } from 'sonner'

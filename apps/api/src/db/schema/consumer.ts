@@ -29,9 +29,9 @@ import {
   timestamps,
   userId
 } from './common'
-import { deployments } from './deployment'
-import { projects } from './project'
-import { users } from './user'
+import { deployments, deploymentSelectSchema } from './deployment'
+import { projects, projectSelectSchema } from './project'
+import { users, userSelectSchema } from './user'
 
 // TODO: Consumers should be valid for any enabled project like in RapidAPI and GCP.
 // This may require a separate model to aggregate User Applications.
@@ -151,22 +151,38 @@ export const consumerSelectSchema = createSelectSchema(consumers, {
     _stripeSubscriptionItemIdMap: true,
     _stripeCustomerId: true
   })
-  // .extend({
-  //   user: z
-  //     .lazy(() => userSelectSchema)
-  //     .optional()
-  //     .openapi('User', { type: 'object' }),
+  .extend({
+    user: z
+      .lazy(() => userSelectSchema)
+      .optional()
+      .openapi('User', { type: 'object' }),
 
-  //   project: z
-  //     .lazy(() => projectSelectSchema)
-  //     .optional()
-  //     .openapi('Project', { type: 'object' }),
+    project: z
+      .lazy(() => projectSelectSchema)
+      .optional()
+      .openapi('Project', { type: 'object' }),
 
-  //   deployment: z
-  //     .lazy(() => deploymentSelectSchema)
-  //     .optional()
-  //     .openapi('Deployment', { type: 'object' })
-  // })
+    // deployment: z
+    //   .lazy(() => deploymentSelectSchema)
+    //   .optional()
+    //   .openapi('Deployment', { type: 'object' })
+
+    // TODO: Improve the self-referential typing here that `@hono/zod-openapi`
+    // trips up on.
+    deployment: z
+      .any()
+      .refine(
+        (deployment): boolean =>
+          deploymentSelectSchema.safeParse(deployment).success,
+        {
+          message: 'Invalid lastDeployment'
+        }
+      )
+      .transform((deployment): any => {
+        return deploymentSelectSchema.parse(deployment)
+      })
+      .optional()
+  })
   .strip()
   .describe(
     `A Consumer represents a user who has subscribed to a Project and is used

@@ -10,6 +10,9 @@ export const envSchema = baseEnvSchema
   .extend({
     DATABASE_URL: z.string().url(),
 
+    AGENTIC_WEB_BASE_URL: z.string().url(),
+    AGENTIC_GATEWAY_BASE_URL: z.string().url(),
+
     JWT_SECRET: z.string().nonempty(),
 
     PORT: z.number().default(3001),

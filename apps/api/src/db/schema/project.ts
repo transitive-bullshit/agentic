@@ -18,6 +18,7 @@ import {
   text,
   uniqueIndex
 } from '@fisch0920/drizzle-orm/pg-core'
+import { z } from '@hono/zod-openapi'
 
 import {
   deploymentIdSchema,
@@ -40,13 +41,13 @@ import {
   timestamps,
   userId
 } from './common'
-import { deployments } from './deployment'
-import { teams } from './team'
-import { users } from './user'
+import { deployments, deploymentSelectSchema } from './deployment'
+import { teams, teamSelectSchema } from './team'
+import { users, userSelectSchema } from './user'
 
 /**
- * A Project represents a single Agentic API product. A Project is comprised of
- * a series of immutable Deployments, each of which contains pricing data, origin
+ * A Project represents a single Agentic API product. Is is comprised of a
+ * series of immutable Deployments, each of which contains pricing data, origin
  * API config, OpenAPI or MCP specs, tool definitions, and various metadata.
  *
  * You can think of Agentic Projects as similar to Vercel projects. They both
@@ -211,6 +212,7 @@ export const projectSelectSchema = createSelectSchema(projects, {
   _stripeMeterIdMap: stripeMeterIdMapSchema
 })
   .omit({
+    applicationFeePercent: true,
     _secret: true,
     // _text: true,
     _stripeProductIdMap: true,
@@ -218,30 +220,52 @@ export const projectSelectSchema = createSelectSchema(projects, {
     _stripeMeterIdMap: true,
     _stripeAccountId: true
   })
-  // .extend({
-  //   user: z
-  //     .lazy(() => userSelectSchema)
-  //     .optional()
-  //     .openapi('User', { type: 'object' }),
+  .extend({
+    user: z
+      .lazy(() => userSelectSchema)
+      .optional()
+      .openapi('User', { type: 'object' }),
 
-  //   team: z
-  //     .lazy(() => teamSelectSchema)
-  //     .optional()
-  //     .openapi('Team', { type: 'object' }),
+    team: z
+      .lazy(() => teamSelectSchema)
+      .optional()
+      .openapi('Team', { type: 'object' }),
 
-  //   lastPublishedDeployment: z
-  //     .lazy(() => deploymentSelectSchema)
-  //     .optional()
-  //     .openapi('Deployment', { type: 'object' }),
+    // TODO: Improve the self-referential typing here that `@hono/zod-openapi`
+    // trips up on.
+    lastPublishedDeployment: z
+      .any()
+      .refine(
+        (deployment): boolean =>
+          deploymentSelectSchema.safeParse(deployment).success,
+        {
+          message: 'Invalid lastPublishedDeployment'
+        }
+      )
+      .transform((deployment): any => {
+        return deploymentSelectSchema.parse(deployment)
+      })
+      .optional(),
+    // .openapi('Deployment', { type: 'object' }),
 
-  //   lastDeployment: z
-  //     .lazy(() => deploymentSelectSchema)
-  //     .optional()
-  //     .openapi('Deployment', { type: 'object' })
-  // })
+    lastDeployment: z
+      .any()
+      .refine(
+        (deployment): boolean =>
+          deploymentSelectSchema.safeParse(deployment).success,
+        {
+          message: 'Invalid lastDeployment'
+        }
+      )
+      .transform((deployment): any => {
+        return deploymentSelectSchema.parse(deployment)
+      })
+      .optional()
+    // .openapi('Deployment', { type: 'object' })
+  })
   .strip()
   .describe(
-    `A Project represents a single Agentic API product. A Project is comprised of a series of immutable Deployments, each of which contains pricing data, origin API config, OpenAPI or MCP specs, tool definitions, and various metadata.
+    `A Project represents a single Agentic API product. It is comprised of a series of immutable Deployments, each of which contains pricing data, origin API config, OpenAPI or MCP specs, tool definitions, and various metadata.
 
 You can think of Agentic Projects as similar to Vercel projects. They both hold some common configuration and are comprised of a series of immutable Deployments.
 
