@@ -10,7 +10,7 @@ import type { RawProject } from './types'
  *
  * This hash is used as the key for the `Project._stripePriceIdMap`.
  */
-export function getPricingPlanLineItemHashForStripePrice({
+export async function getPricingPlanLineItemHashForStripePrice({
   pricingPlan,
   pricingPlanLineItem,
   project
@@ -18,7 +18,7 @@ export function getPricingPlanLineItemHashForStripePrice({
   pricingPlan: PricingPlan
   pricingPlanLineItem: PricingPlanLineItem
   project: RawProject
-}) {
+}): Promise<string> {
   // TODO: use pricingPlan.slug as well here?
   // TODO: not sure if this is needed or not...
   // With pricing plan slug:
@@ -30,7 +30,7 @@ export function getPricingPlanLineItemHashForStripePrice({
   //   - 'price:base:<hash>'
   //   - 'price:requests:<hash>'
 
-  const hash = hashObject({
+  const hash = await hashObject({
     ...pricingPlanLineItem,
     projectId: project.id,
     stripeAccountId: project._stripeAccountId,
@@ -40,7 +40,7 @@ export function getPricingPlanLineItemHashForStripePrice({
   return `price:${pricingPlan.slug}:${pricingPlanLineItem.slug}:${hash}`
 }
 
-export function getStripePriceIdForPricingPlanLineItem({
+export async function getStripePriceIdForPricingPlanLineItem({
   pricingPlan,
   pricingPlanLineItem,
   project
@@ -48,12 +48,13 @@ export function getStripePriceIdForPricingPlanLineItem({
   pricingPlan: PricingPlan
   pricingPlanLineItem: PricingPlanLineItem
   project: RawProject
-}): string | undefined {
-  const pricingPlanLineItemHash = getPricingPlanLineItemHashForStripePrice({
-    pricingPlan,
-    pricingPlanLineItem,
-    project
-  })
+}): Promise<string | undefined> {
+  const pricingPlanLineItemHash =
+    await getPricingPlanLineItemHashForStripePrice({
+      pricingPlan,
+      pricingPlanLineItem,
+      project
+    })
 
   return project._stripePriceIdMap[pricingPlanLineItemHash]
 }

@@ -11,8 +11,9 @@ import {
   TooltipProvider,
   TooltipTrigger
 } from '@/components/ui/tooltip'
+import { cn } from '@/lib/utils'
 
-export function DarkModeToggle() {
+export function DarkModeToggle({ className }: { className?: string }) {
   const { setTheme, resolvedTheme } = useTheme()
 
   return (
@@ -22,7 +23,7 @@ export function DarkModeToggle() {
           <Button
             variant='outline'
             size='icon'
-            className='cursor-pointer'
+            className={cn('cursor-pointer', className)}
             onClick={() =>
               setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')
             }

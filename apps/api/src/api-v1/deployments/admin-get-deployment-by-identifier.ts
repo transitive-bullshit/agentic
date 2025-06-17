@@ -39,7 +39,7 @@ const route = createRoute({
   }
 })
 
-export function registerV1AdminDeploymentsGetDeploymentByIdentifier(
+export function registerV1AdminGetDeploymentByIdentifier(
   app: OpenAPIHono<AuthenticatedHonoEnv>
 ) {
   return app.openapi(route, async (c) => {
@@ -60,6 +60,9 @@ export function registerV1AdminDeploymentsGetDeploymentByIdentifier(
       `Project not found for deployment "${deploymentIdentifier}"`
     )
     await acl(c, deployment, { label: 'Deployment' })
+
+    // TODO: ensure that the deployment's project is either public OR the
+    // consumer has access to it?
 
     const hasPopulateProject = populate.includes('project')
 

@@ -9,8 +9,8 @@ import { apiV1 } from '@/api-v1'
 import { env } from '@/lib/env'
 import * as middleware from '@/lib/middleware'
 
-import { authRouter } from './auth'
 import { initExitHooks } from './lib/exit-hooks'
+// import { registerOAuthRedirect } from './oauth-redirect'
 
 export const app = new OpenAPIHono<DefaultHonoEnv>()
 
@@ -31,8 +31,8 @@ app.use(middleware.init)
 app.use(middleware.accessLogger)
 app.use(middleware.responseTime)
 
-// Mount all auth routes which are handled by OpenAuth
-app.route('', authRouter)
+// TODO: top-level auth routes
+// registerOAuthRedirect(app)
 
 // Mount all v1 API routes
 app.route('/v1', apiV1)

@@ -42,7 +42,7 @@ const route = createRoute({
   }
 })
 
-export function registerV1AdminConsumersActivateConsumer(
+export function registerV1AdminActivateConsumer(
   app: OpenAPIHono<AuthenticatedHonoEnv>
 ) {
   return app.openapi(route, async (c) => {

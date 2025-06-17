@@ -25,6 +25,8 @@ export const accounts = pgTable(
     /** Provider-specific account ID (or email in the case of `password` provider) */
     accountId: text().notNull(),
 
+    password: text(),
+
     /** Provider-specific username */
     accountUsername: text(),
 
@@ -63,6 +65,7 @@ export const accountSelectSchema = createSelectSchema(accounts, {
   userId: userIdSchema
 })
   .omit({
+    password: true,
     accessToken: true,
     refreshToken: true,
     accessTokenExpiresAt: true,

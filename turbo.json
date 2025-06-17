@@ -4,7 +4,7 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**"],
+      "outputs": ["dist/**", ".next/**", "!.next/cache/**"],
       "outputLogs": "new-only"
     },
     "clean": {

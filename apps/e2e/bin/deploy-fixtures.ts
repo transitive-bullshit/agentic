@@ -1,55 +1,13 @@
-/* eslint-disable no-console */
-import path from 'node:path'
-import { fileURLToPath } from 'node:url'
-
-import { loadAgenticConfig } from '@agentic/platform'
-import pMap from 'p-map'
-
-import { client } from '../src'
-
-const fixtures = [
-  // TODO: re-add these
-  // 'basic-raw-free-ts',
-  // 'basic-raw-free-json',
-  // 'pricing-freemium',
-  // 'pricing-pay-as-you-go',
-  // 'pricing-3-plans',
-  // 'pricing-monthly-annual',
-  // 'pricing-custom-0',
-  'basic-openapi'
-  // 'basic-mcp',
-  // 'everything-openapi'
-]
-
-const fixturesDir = path.join(
-  fileURLToPath(import.meta.url),
-  '..',
-  '..',
-  '..',
-  '..',
-  'packages',
-  'fixtures'
-)
-const validFixturesDir = path.join(fixturesDir, 'valid')
+import { deployFixtures } from '../src/project-fixtures'
 
 async function main() {
-  const deployments = await pMap(
-    fixtures,
-    async (fixture) => {
-      const fixtureDir = path.join(validFixturesDir, fixture)
+  console.log('\n\nDeploying fixtures...\n\n')
 
-      const config = await loadAgenticConfig({ cwd: fixtureDir })
-      console.log(config)
-
-      const deployment = await client.createDeployment(config)
-      return deployment
-    },
-    {
-      concurrency: 1
-    }
-  )
-
+  const deployments = await deployFixtures()
   console.log(JSON.stringify(deployments, null, 2))
+
+  // eslint-disable-next-line unicorn/no-process-exit
+  process.exit(0)
 }
 
 await main()

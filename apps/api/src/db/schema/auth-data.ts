@@ -3,6 +3,7 @@ import { jsonb, pgTable, text, timestamp } from '@fisch0920/drizzle-orm/pg-core'
 import { timestamps } from './common'
 
 // Simple key-value store of JSON data for OpenAuth-related state.
+// TODO: remove this and/or replace this with non-openauth version
 export const authData = pgTable('auth_data', {
   // Example ID keys:
   // "oauth:refresh\u001fuser:f99d3004946f9abb\u001f2cae301e-3fdc-40c4-8cda-83b25a616d06"

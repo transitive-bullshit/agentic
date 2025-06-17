@@ -12,7 +12,7 @@ import {
 import { paginationAndPopulateProjectSchema } from './schemas'
 
 const route = createRoute({
-  description: 'Lists projects the authenticated user has access to.',
+  description: 'Lists projects owned by the authenticated user or team.',
   tags: ['projects'],
   operationId: 'listProjects',
   method: 'get',
@@ -34,9 +34,7 @@ const route = createRoute({
   }
 })
 
-export function registerV1ProjectsListProjects(
-  app: OpenAPIHono<AuthenticatedHonoEnv>
-) {
+export function registerV1ListProjects(app: OpenAPIHono<AuthenticatedHonoEnv>) {
   return app.openapi(route, async (c) => {
     const {
       offset = 0,

@@ -1,10 +1,11 @@
 import { assert, parseZodSchema, sha256 } from '@agentic/platform-core'
-import { isValidProjectIdentifier } from '@agentic/platform-validators'
+import { parseProjectIdentifier } from '@agentic/platform-validators'
 import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 
 import type { AuthenticatedHonoEnv } from '@/lib/types'
 import { db, schema } from '@/db'
 import { ensureAuthUser } from '@/lib/ensure-auth-user'
+import { env } from '@/lib/env'
 import {
   openapiAuthenticatedSecuritySchemas,
   openapiErrorResponses
@@ -40,7 +41,7 @@ const route = createRoute({
   }
 })
 
-export function registerV1ProjectsCreateProject(
+export function registerV1CreateProject(
   app: OpenAPIHono<AuthenticatedHonoEnv>
 ) {
   return app.openapi(route, async (c) => {
@@ -54,19 +55,26 @@ export function registerV1ProjectsCreateProject(
     const teamMember = c.get('teamMember')
     const namespace = teamMember ? teamMember.teamSlug : user.username
     const identifier = `@${namespace}/${body.name}`
+    const parsedProjectIdentifier = parseProjectIdentifier(identifier)
     assert(
-      isValidProjectIdentifier(identifier),
+      parsedProjectIdentifier,
       400,
       `Invalid project identifier "${identifier}"`
     )
+
+    // Used for testing e2e fixtures in the development marketplace
+    const isPrivate = !(user.username === 'dev' && env.isDev)
 
     const [project] = await db
       .insert(schema.projects)
       .values({
         ...body,
-        identifier,
+        identifier: parsedProjectIdentifier.projectIdentifier,
+        namespace: parsedProjectIdentifier.projectNamespace,
+        name: parsedProjectIdentifier.projectName,
         teamId: teamMember?.teamId,
         userId: user.id,
+        private: isPrivate,
         _secret: await sha256()
       })
       .returning()

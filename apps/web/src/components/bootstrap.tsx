@@ -11,5 +11,6 @@ export function Bootstrap() {
     bootstrap()
   }
 
+  // Return `null` so we can use this as a react component
   return null
 }

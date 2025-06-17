@@ -30,7 +30,6 @@
     "test:typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@agentic/openauth": "catalog:",
     "@agentic/platform": "workspace:*",
     "@agentic/platform-core": "workspace:*",
     "@agentic/platform-emails": "workspace:*",
@@ -43,8 +42,10 @@
     "@hono/zod-openapi": "catalog:",
     "@paralleldrive/cuid2": "catalog:",
     "@sentry/node": "catalog:",
+    "bcryptjs": "^3.0.2",
     "exit-hook": "catalog:",
     "hono": "catalog:",
+    "ky": "catalog:",
     "octokit": "catalog:",
     "p-all": "catalog:",
     "postgres": "catalog:",

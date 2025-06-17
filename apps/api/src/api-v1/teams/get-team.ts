@@ -36,7 +36,7 @@ const route = createRoute({
   }
 })
 
-export function registerV1TeamsGetTeam(app: OpenAPIHono<AuthenticatedHonoEnv>) {
+export function registerV1GetTeam(app: OpenAPIHono<AuthenticatedHonoEnv>) {
   return app.openapi(route, async (c) => {
     const { teamId } = c.req.valid('param')
     await aclTeamMember(c, { teamId })

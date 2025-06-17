@@ -1,10 +1,5 @@
-import {
-  joinKey,
-  splitKey,
-  type StorageAdapter
-} from '@agentic/openauth/storage/storage'
-
 import { and, db, eq, gt, isNull, like, or, schema } from '@/db'
+import { joinKey, splitKey, type StorageAdapter } from '@/lib/storage'
 
 export function DrizzleAuthStorage(): StorageAdapter {
   return {

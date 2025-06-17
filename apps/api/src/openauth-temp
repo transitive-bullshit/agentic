@@ -1,7 +1,6 @@
 import { issuer } from '@agentic/openauth'
 import { GithubProvider } from '@agentic/openauth/provider/github'
 import { PasswordProvider } from '@agentic/openauth/provider/password'
-import { PasswordUI } from '@agentic/openauth/ui/password'
 import { assert, pick } from '@agentic/platform-core'
 import { isValidPassword } from '@agentic/platform-validators'
 
@@ -15,7 +14,8 @@ import { getGitHubClient } from '@/lib/external/github'
 import { resend } from './lib/external/resend'
 
 // Initialize OpenAuth issuer which is a Hono app for all auth routes.
-export const authRouter = issuer({
+// TODO: fix this type...
+export const authRouter: any = issuer({
   subjects,
   storage: DrizzleAuthStorage(),
   ttl: {
@@ -25,70 +25,45 @@ export const authRouter = issuer({
     // access: 60 * 60 * 24 * 366, // 1 year
     // refresh: 60 * 60 * 24 * 365 * 5 // 5 years
   },
-  theme: {
-    title: 'Agentic',
-    logo: {
-      dark: 'https://vercel.com/mktng/_next/static/media/vercel-logotype-dark.e8c0a742.svg',
-      light:
-        'https://vercel.com/mktng/_next/static/media/vercel-logotype-light.700a8d26.svg'
-    },
-    background: {
-      dark: 'black',
-      light: 'white'
-    },
-    primary: {
-      dark: 'white',
-      light: 'black'
-    },
-    font: {
-      family: 'Geist, sans-serif'
-    },
-    css: `
-    @import url('https://fonts.googleapis.com/css2?family=Geist:wght@100;200;300;400;500;600;700;800;900&display=swap');
-  `
-  },
   providers: {
     github: GithubProvider({
       clientID: env.GITHUB_CLIENT_ID,
       clientSecret: env.GITHUB_CLIENT_SECRET,
       scopes: ['user:email']
     }),
-    password: PasswordProvider(
-      PasswordUI({
-        copy: {
-          register_title: 'Welcome to Agentic',
-          login_title: 'Welcome to Agentic'
-        },
-        sendCode: async (email, code) => {
-          // eslint-disable-next-line no-console
-          console.log('sending verify code email', { email, code })
+    password: PasswordProvider({
+      loginUrl: async () => `${env.WEB_AUTH_BASE_URL}/login`,
+      registerUrl: async () => `${env.WEB_AUTH_BASE_URL}/signup`,
+      changeUrl: async () => `${env.WEB_AUTH_BASE_URL}/forgot-password`,
+      sendCode: async (email, code) => {
+        // eslint-disable-next-line no-console
+        console.log('sending verify code email', { email, code })
 
-          await resend.sendVerifyCodeEmail({ code, to: email })
-        },
-        validatePassword: (password) => {
-          if (password.length < 3) {
-            return 'Password must be at least 3 characters'
-          }
-
-          if (password.length > 1024) {
-            return 'Password must be less than 1024 characters'
-          }
-
-          if (!isValidPassword(password)) {
-            return 'Invalid password'
-          }
-
-          return undefined
+        await resend.sendVerifyCodeEmail({ code, to: email })
+      },
+      validatePassword: (password) => {
+        if (password.length < 3) {
+          return 'Password must be at least 3 characters'
         }
-      })
-    )
+
+        if (password.length > 1024) {
+          return 'Password must be less than 1024 characters'
+        }
+
+        if (!isValidPassword(password)) {
+          return 'Invalid password'
+        }
+
+        return undefined
+      }
+    })
   },
   success: async (ctx, value) => {
     const { provider } = value
     let user: RawUser | undefined
 
     // eslint-disable-next-line no-console
-    console.log('Auth success', provider, ctx, JSON.stringify(value, null, 2))
+    console.log('Auth success', provider, JSON.stringify(value, null, 2))
 
     function getPartialOAuthAccount() {
       assert(provider === 'github', `Unsupported OAuth provider "${provider}"`)

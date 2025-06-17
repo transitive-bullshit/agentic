@@ -9,6 +9,7 @@ import { registerListDeploymentsCommand } from './commands/list'
 import { registerPublishCommand } from './commands/publish'
 import { registerSigninCommand } from './commands/signin'
 import { registerSignoutCommand } from './commands/signout'
+import { registerSignupCommand } from './commands/signup'
 import { registerWhoAmICommand } from './commands/whoami'
 import { AuthStore } from './lib/auth-store'
 
@@ -31,7 +32,7 @@ async function main() {
   const authSession = AuthStore.tryGetAuth()
   if (authSession) {
     try {
-      await client.setAuth(authSession.session)
+      client.authSession = authSession
     } catch {
       console.warn('Existing auth session is invalid; logging out.\n')
       AuthStore.clearAuth()
@@ -71,6 +72,7 @@ async function main() {
 
   // Register all commands
   registerSigninCommand(ctx)
+  registerSignupCommand(ctx)
   registerWhoAmICommand(ctx)
   registerSignoutCommand(ctx)
   registerDeployCommand(ctx)

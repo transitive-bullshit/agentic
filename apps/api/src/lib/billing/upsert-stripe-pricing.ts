@@ -133,7 +133,7 @@ export async function upsertStripePricing({
     }
 
     const pricingPlanLineItemHashForStripePrice =
-      getPricingPlanLineItemHashForStripePrice({
+      await getPricingPlanLineItemHashForStripePrice({
         pricingPlan,
         pricingPlanLineItem,
         project

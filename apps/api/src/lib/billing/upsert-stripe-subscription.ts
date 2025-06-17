@@ -110,9 +110,9 @@ export async function upsertStripeSubscription(
         `Unable to update stripe subscription for invalid pricing plan "${plan}"`
       )
 
-      const items: Stripe.SubscriptionUpdateParams.Item[] =
-        pricingPlan.lineItems.map((lineItem) => {
-          const priceId = getStripePriceIdForPricingPlanLineItem({
+      const items: Stripe.SubscriptionUpdateParams.Item[] = await Promise.all(
+        pricingPlan.lineItems.map(async (lineItem) => {
+          const priceId = await getStripePriceIdForPricingPlanLineItem({
             pricingPlan,
             pricingPlanLineItem: lineItem,
             project
@@ -136,6 +136,7 @@ export async function upsertStripeSubscription(
             }
           }
         })
+      )
 
       // Sanity check that LineItems we think should exist are all present in
       // the current subscription's items.
@@ -221,9 +222,9 @@ export async function upsertStripeSubscription(
       `Unable to update stripe subscription for invalid pricing plan "${plan}"`
     )
 
-    const items: Stripe.SubscriptionCreateParams.Item[] =
-      pricingPlan.lineItems.map((lineItem) => {
-        const priceId = getStripePriceIdForPricingPlanLineItem({
+    const items: Stripe.SubscriptionCreateParams.Item[] = await Promise.all(
+      pricingPlan.lineItems.map(async (lineItem) => {
+        const priceId = await getStripePriceIdForPricingPlanLineItem({
           pricingPlan,
           pricingPlanLineItem: lineItem,
           project
@@ -251,6 +252,7 @@ export async function upsertStripeSubscription(
           }
         }
       })
+    )
 
     assert(
       items.length,

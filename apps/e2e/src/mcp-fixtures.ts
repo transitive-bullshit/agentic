@@ -107,8 +107,8 @@ export const fixtureSuites: MCPE2ETestFixtureSuite[] = [
     ]
   },
   {
-    title: 'MCP => OpenAPI origin basic @ 726d9f61 get_post success ',
-    path: '@dev/test-basic-openapi@726d9f61/mcp',
+    title: 'MCP => OpenAPI origin basic @ dev get_post success ',
+    path: '@dev/test-basic-openapi@dev/mcp',
     fixtures: [
       {
         request: {
@@ -276,13 +276,13 @@ export const fixtureSuites: MCPE2ETestFixtureSuite[] = [
   },
   {
     title: 'MCP => OpenAPI origin basic bypass caching',
-    path: '@dev/test-basic-openapi@fc856666/mcp',
+    path: '@dev/test-everything-openapi/mcp',
     fixtures: [
       {
         // ensure we bypass the cache for requests for tools which do not have
         // a custom `pure` or `cacheControl` set in their tool config.
         request: {
-          name: 'get_post',
+          name: 'echo',
           args: {
             postId: 1
           }
@@ -298,7 +298,7 @@ export const fixtureSuites: MCPE2ETestFixtureSuite[] = [
   },
   {
     title: 'MCP => OpenAPI origin basic caching',
-    path: '@dev/test-basic-openapi@726d9f61/mcp',
+    path: '@dev/test-basic-openapi/mcp',
     fixtures: [
       {
         request: {
@@ -352,7 +352,7 @@ export const fixtureSuites: MCPE2ETestFixtureSuite[] = [
   },
   {
     title: 'MCP => OpenAPI origin basic normalized caching',
-    path: '@dev/test-basic-openapi@726d9f61/mcp',
+    path: '@dev/test-basic-openapi/mcp',
     fixtures: [
       {
         request: {
@@ -573,7 +573,7 @@ export const fixtureSuites: MCPE2ETestFixtureSuite[] = [
   },
   {
     title: 'MCP => OpenAPI origin everything "echo_headers" tool',
-    path: '@dev/test-everything-openapi@707562a9/mcp',
+    path: '@dev/test-everything-openapi/mcp',
     stableSnapshot: false,
     fixtures: [
       {
@@ -583,15 +583,23 @@ export const fixtureSuites: MCPE2ETestFixtureSuite[] = [
         },
         response: {
           validate: (result) => {
-            expect(result.structuredContent['x-agentic-proxy-secret']).toEqual(
-              'f279280a67a15df6e0245511bdeb11854fc8f6f702c49d028431bb1dbc03bfdc'
-            )
-            expect(result.structuredContent['x-agentic-deployment-id']).toEqual(
-              'depl_tj03dd941xfrcd8cjqhg1b9w'
-            )
+            expect(
+              result.structuredContent['x-agentic-proxy-secret']
+            ).toBeTruthy()
+            expect(
+              result.structuredContent['x-agentic-proxy-secret']?.length
+            ).toBe(64)
+            expect(
+              result.structuredContent['x-agentic-deployment-id']
+            ).toBeTruthy()
+            expect(
+              result.structuredContent['x-agentic-deployment-id']?.startsWith(
+                'depl_'
+              )
+            ).toBeTruthy()
             expect(
               result.structuredContent['x-agentic-deployment-identifier']
-            ).toEqual('@dev/test-everything-openapi@707562a9')
+            ).toBeTruthy()
             expect(
               result.structuredContent[
                 'x-agentic-is-customer-subscription-active'

@@ -15,6 +15,7 @@
 }
 
 .loadingAnimation {
+  pointer-events: none;
   width: 200px;
   height: 200px;
   max-width: 50vw;

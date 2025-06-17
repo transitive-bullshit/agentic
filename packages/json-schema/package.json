@@ -35,7 +35,7 @@
     "test:unit": "vitest run"
   },
   "devDependencies": {
-    "json-schema-test-suite": "git+https://github.com/json-schema-org/JSON-Schema-Test-Suite#76b529f"
+    "json-schema-test-suite": "github:json-schema-org/JSON-Schema-Test-Suite#76b529f"
   },
   "publishConfig": {
     "access": "public"

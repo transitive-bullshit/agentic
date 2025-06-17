@@ -10,6 +10,8 @@ export const envSchema = baseEnvSchema
   .extend({
     DATABASE_URL: z.string().url(),
 
+    JWT_SECRET: z.string().nonempty(),
+
     PORT: z.number().default(3001),
 
     STRIPE_SECRET_KEY: z.string().nonempty(),
@@ -40,11 +42,15 @@ export function parseEnv(inputEnv: Record<string, unknown>) {
   )
 
   const isStripeLive = env.STRIPE_SECRET_KEY.startsWith('sk_live_')
+  const apiBaseUrl = baseEnv.isProd
+    ? 'https://api.agentic.so'
+    : 'http://localhost:3001'
 
   return {
     ...baseEnv,
     ...env,
-    isStripeLive
+    isStripeLive,
+    apiBaseUrl
   }
 }
 

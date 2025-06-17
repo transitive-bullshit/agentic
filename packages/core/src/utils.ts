@@ -1,7 +1,4 @@
-import { timingSafeEqual } from 'node:crypto'
-
 import type { z, ZodType } from 'zod'
-import hashObjectImpl, { type Options as HashObjectOptions } from 'hash-object'
 
 import { HttpError, ZodValidationError } from './errors'
 
@@ -101,11 +98,6 @@ export function parseZodSchema<TSchema extends ZodType<any, any, any>>(
   }
 }
 
-// import { createHash, randomUUID } from 'node:crypto'
-// export function sha256Node(input: string = randomUUID()) {
-//   return createHash('sha256').update(input).digest('hex')
-// }
-
 export async function sha256(
   input: string | ArrayBuffer | ArrayBufferView = crypto.randomUUID()
 ) {
@@ -123,21 +115,6 @@ export async function sha256(
     .map((b) => ('00' + b.toString(16)).slice(-2))
     .join('')
   return hashHex
-}
-
-/**
- * Returns a stable, deterministic hash of the given object, defaulting to
- * using `sha256` as the hashing algorithm and `hex` as the encoding.
- */
-export function hashObject(
-  object: Record<string, any>,
-  options?: HashObjectOptions
-): string {
-  return hashObjectImpl(object, {
-    algorithm: 'sha256',
-    encoding: 'hex',
-    ...options
-  })
 }
 
 export function getEnv(name: string): string | undefined {
@@ -162,7 +139,7 @@ export function sanitizeSearchParams(
         string,
         string | number | boolean | string[] | number[] | boolean[] | undefined
       >
-    | object,
+    | object = {},
   {
     csv = false
   }: {
@@ -302,16 +279,4 @@ export function pruneEmptyDeep<T>(
   }
 
   return value as any
-}
-
-export function timingSafeCompare(a: string, b: string): boolean {
-  if (typeof a !== 'string' || typeof b !== 'string') {
-    return false
-  }
-
-  if (a.length !== b.length) {
-    return false
-  }
-
-  return timingSafeEqual(Buffer.from(a), Buffer.from(b))
 }

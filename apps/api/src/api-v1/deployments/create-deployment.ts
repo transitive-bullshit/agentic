@@ -2,7 +2,7 @@ import { resolveAgenticProjectConfig } from '@agentic/platform'
 import { assert, parseZodSchema, sha256 } from '@agentic/platform-core'
 import {
   isValidDeploymentIdentifier,
-  isValidProjectIdentifier
+  parseProjectIdentifier
 } from '@agentic/platform-validators'
 import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 
@@ -12,6 +12,7 @@ import { acl } from '@/lib/acl'
 import { normalizeDeploymentVersion } from '@/lib/deployments/normalize-deployment-version'
 import { publishDeployment } from '@/lib/deployments/publish-deployment'
 import { ensureAuthUser } from '@/lib/ensure-auth-user'
+import { env } from '@/lib/env'
 import {
   openapiAuthenticatedSecuritySchemas,
   openapiErrorResponse404,
@@ -54,7 +55,7 @@ const route = createRoute({
   }
 })
 
-export function registerV1DeploymentsCreateDeployment(
+export function registerV1CreateDeployment(
   app: OpenAPIHono<AuthenticatedHonoEnv>
 ) {
   return app.openapi(route, async (c) => {
@@ -64,13 +65,10 @@ export function registerV1DeploymentsCreateDeployment(
     const teamMember = c.get('teamMember')
     const logger = c.get('logger')
 
-    const namespace = teamMember ? teamMember.teamSlug : user.username
-    const projectIdentifier = `@${namespace}/${body.name}`
-    assert(
-      isValidProjectIdentifier(projectIdentifier),
-      400,
-      `Invalid project identifier "${projectIdentifier}"`
-    )
+    const inputNamespace = teamMember ? teamMember.teamSlug : user.username
+    const inputProjectIdentifier = `@${inputNamespace}/${body.name}`
+    const { projectIdentifier, projectNamespace, projectName } =
+      parseProjectIdentifier(inputProjectIdentifier)
 
     let project = await db.query.projects.findFirst({
       where: eq(schema.projects.identifier, projectIdentifier),
@@ -80,18 +78,23 @@ export function registerV1DeploymentsCreateDeployment(
     })
 
     if (!project) {
+      // Used for testing e2e fixtures in the development marketplace
+      const isPrivate = !(user.username === 'dev' && env.isDev)
+
       // Upsert the project if it doesn't already exist
-      // The typecast doesn't match exactly here because we're not populating
-      // the lastPublishedDeployment, but that's fine because it's a new project
+      // The typecast is necessary here because we're not populating the
+      // lastPublishedDeployment, but that's fine because it's a new project
       // so it will be empty anyway.
       project = (
         await db
           .insert(schema.projects)
           .values({
-            name: body.name,
             identifier: projectIdentifier,
+            namespace: projectNamespace,
+            name: projectName,
             userId: user.id,
             teamId: teamMember?.teamId,
+            private: isPrivate,
             _secret: await sha256()
           })
           .returning()

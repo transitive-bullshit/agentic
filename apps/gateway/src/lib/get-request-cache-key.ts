@@ -33,7 +33,7 @@ export async function getRequestCacheKey(
         if (contentLength > 0) {
           if (type.includes('json')) {
             const bodyJson: any = await request.clone().json()
-            hash = hashObject(bodyJson)
+            hash = await hashObject(bodyJson)
           } else if (type.includes('text/')) {
             const bodyString = await request.clone().text()
             hash = await sha256(bodyString)

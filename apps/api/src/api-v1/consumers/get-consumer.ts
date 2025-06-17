@@ -37,9 +37,7 @@ const route = createRoute({
   }
 })
 
-export function registerV1ConsumersGetConsumer(
-  app: OpenAPIHono<AuthenticatedHonoEnv>
-) {
+export function registerV1GetConsumer(app: OpenAPIHono<AuthenticatedHonoEnv>) {
   return app.openapi(route, async (c) => {
     const { consumerId } = c.req.valid('param')
     const { populate = [] } = c.req.valid('query')

@@ -1,7 +1,6 @@
+import type { AuthSession } from '@agentic/platform-types'
 import { assert } from '@agentic/platform-core'
 import Conf from 'conf'
-
-import type { AuthSession } from '../types'
 
 const keyAuthSession = 'authSession'
 

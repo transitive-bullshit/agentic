@@ -36,9 +36,7 @@ const route = createRoute({
   }
 })
 
-export function registerV1TeamsDeleteTeam(
-  app: OpenAPIHono<AuthenticatedHonoEnv>
-) {
+export function registerV1DeleteTeam(app: OpenAPIHono<AuthenticatedHonoEnv>) {
   return app.openapi(route, async (c) => {
     const { teamId } = c.req.valid('param')
     await aclTeamAdmin(c, { teamId })

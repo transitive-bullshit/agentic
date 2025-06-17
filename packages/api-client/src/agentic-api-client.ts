@@ -1,6 +1,7 @@
 import type {
   AdminConsumer,
   AdminDeployment,
+  AuthSession,
   Consumer,
   Deployment,
   openapi,
@@ -10,20 +11,10 @@ import type {
   User
 } from '@agentic/platform-types'
 import type { Simplify } from 'type-fest'
-import {
-  type Client as AuthClient,
-  createClient as createAuthClient
-} from '@agentic/openauth/client'
 import { assert, sanitizeSearchParams } from '@agentic/platform-core'
 import defaultKy, { type KyInstance } from 'ky'
 
-import type {
-  AuthorizeResult,
-  AuthTokens,
-  AuthUser,
-  OnUpdateAuthSessionFunction
-} from './types'
-import { authSubjects } from './auth-subjects'
+import type { OnUpdateAuthSessionFunction } from './types'
 
 export class AgenticApiClient {
   static readonly DEFAULT_API_BASE_URL = 'https://api.agentic.so'
@@ -33,8 +24,8 @@ export class AgenticApiClient {
   public readonly ky: KyInstance
   public readonly onUpdateAuth?: OnUpdateAuthSessionFunction
 
-  protected _authTokens?: Readonly<AuthTokens>
-  protected _authClient: AuthClient
+  // protected _authClient: AuthClient
+  protected _authSession?: AuthSession
 
   constructor({
     apiBaseUrl = AgenticApiClient.DEFAULT_API_BASE_URL,
@@ -53,10 +44,10 @@ export class AgenticApiClient {
     this.apiKey = apiKey
     this.onUpdateAuth = onUpdateAuth
 
-    this._authClient = createAuthClient({
-      issuer: apiBaseUrl,
-      clientID: 'agentic-api-client'
-    })
+    // this._authClient = createAuthClient({
+    //   issuer: apiBaseUrl,
+    //   clientId: 'agentic-api-client'
+    // })
 
     this.ky = ky.extend({
       prefixUrl: apiBaseUrl,
@@ -73,13 +64,15 @@ export class AgenticApiClient {
       hooks: {
         beforeRequest: [
           async (request) => {
-            if (!this.apiKey && this._authTokens) {
+            if (!this.apiKey && this._authSession) {
               // Always verify freshness of auth tokens before making a request
-              await this.verifyAuthAndRefreshIfNecessary()
-              assert(this._authTokens, 'Not authenticated')
+              // TODO: handle refreshing auth tokens
+              // await this.verifyAuthAndRefreshIfNecessary()
+              // assert(this._authSession, 'Not authenticated')
+
               request.headers.set(
                 'Authorization',
-                `Bearer ${this._authTokens.access}`
+                `Bearer ${this._authSession.token}`
               )
             }
           }
@@ -89,87 +82,85 @@ export class AgenticApiClient {
   }
 
   get isAuthenticated(): boolean {
-    return !!this._authTokens
+    return !!this._authSession
   }
 
-  get authTokens(): Readonly<AuthTokens> | undefined {
-    return this._authTokens
+  get authSession(): AuthSession | undefined {
+    return structuredClone(this._authSession)
   }
 
-  async setAuth(tokens: AuthTokens): Promise<AuthUser> {
-    this._ensureNoApiKey()
-
-    this._authTokens = tokens
-    return this.verifyAuthAndRefreshIfNecessary()
+  set authSession(authSession: AuthSession | undefined) {
+    // TODO: validate auth sessino with zod
+    this._authSession = structuredClone(authSession)
   }
 
-  async verifyAuthAndRefreshIfNecessary(): Promise<AuthUser> {
-    this._ensureNoApiKey()
+  // async verifyAuthAndRefreshIfNecessary(): Promise<AuthSession> {
+  //   this._ensureNoApiKey()
 
-    if (!this._authTokens) {
-      throw new Error('This method requires authentication.')
-    }
+  //   if (!this._authTokens) {
+  //     throw new Error('This method requires authentication.')
+  //   }
 
-    const verified = await this._authClient.verify(
-      authSubjects,
-      this._authTokens.access,
-      {
-        refresh: this._authTokens.refresh
-      }
-    )
+  //   const verified = await this._authClient.verify(
+  //     authSubjects,
+  //     this._authTokens.access,
+  //     {
+  //       refresh: this._authTokens.refresh
+  //     }
+  //   )
 
-    if (verified.err) {
-      throw verified.err
-    }
+  //   if (verified.err) {
+  //     throw verified.err
+  //   }
 
-    if (verified.tokens) {
-      this._authTokens = verified.tokens
-    }
+  //   if (verified.tokens) {
+  //     this._authTokens = verified.tokens
+  //   }
 
-    this.onUpdateAuth?.({
-      session: this._authTokens,
-      user: verified.subject.properties
-    })
+  //   this.onUpdateAuth?.({
+  //     session: this._authTokens,
+  //     user: verified.subject.properties
+  //   })
 
-    return verified.subject.properties
-  }
+  //   return verified.subject.properties
+  // }
 
-  async exchangeAuthCode({
-    code,
-    redirectUri,
-    verifier
-  }: {
-    code: string
-    redirectUri: string
-    verifier?: string
-  }): Promise<AuthUser> {
-    this._ensureNoApiKey()
-    const result = await this._authClient.exchange(code, redirectUri, verifier)
+  // async exchangeAuthCode({
+  //   code,
+  //   redirectUri,
+  //   verifier
+  // }: {
+  //   code: string
+  //   redirectUri: string
+  //   verifier?: string
+  // }): Promise<AuthSession> {
+  //   this._ensureNoApiKey()
+  //   const result = await this._authClient.exchange(code, redirectUri, verifier)
 
-    if (result.err) {
-      throw result.err
-    }
+  //   if (result.err) {
+  //     throw result.err
+  //   }
 
-    this._authTokens = result.tokens
-    return this.verifyAuthAndRefreshIfNecessary()
-  }
+  //   this._authTokens = result.tokens
+  //   return this.verifyAuthAndRefreshIfNecessary()
+  // }
 
-  async initAuthFlow({
-    redirectUri,
-    provider
-  }: {
-    redirectUri: string
-    provider: 'github' | 'password'
-  }): Promise<AuthorizeResult> {
-    this._ensureNoApiKey()
+  // async initAuthFlow({
+  //   redirectUri,
+  //   provider
+  // }: {
+  //   redirectUri: string
+  //   provider: 'github'
+  // }): Promise<AuthorizeResult> {
+  //   this._ensureNoApiKey()
 
-    return this._authClient.authorize(redirectUri, 'code', {
-      provider
-    })
-  }
+  //   return this._authClient.authorize(redirectUri, 'code', {
+  //     provider
+  //   })
+  // }
 
   async logout(): Promise<void> {
-    this._authTokens = undefined
+    this._authSession = undefined
     this.onUpdateAuth?.()
   }
 
@@ -180,10 +171,69 @@ export class AgenticApiClient {
     )
   }
 
-  async getMe(): Promise<User> {
-    const user = await this.verifyAuthAndRefreshIfNecessary()
+  /** Signs in with email + password. */
+  async signInWithPassword(
+    json: OperationBody<'signInWithPassword'>
+    // searchParams?: OperationParameters<'signInWithPassword'>
+  ): Promise<AuthSession> {
+    this._authSession = await this.ky
+      .post('v1/auth/password/signin', { json })
+      .json<AuthSession>()
 
-    return this.ky.get(`v1/users/${user.id}`).json()
+    this.onUpdateAuth?.(this._authSession)
+    return this._authSession
+  }
+
+  /** Registers a new account with username + email + password. */
+  async signUpWithPassword(
+    json: OperationBody<'signUpWithPassword'>
+    // searchParams?: OperationParameters<'signUpWithPassword'>
+  ): Promise<AuthSession> {
+    this._authSession = await this.ky
+      .post('v1/auth/password/signup', { json })
+      .json()
+
+    this.onUpdateAuth?.(this._authSession)
+    return this._authSession
+  }
+
+  // TODO
+  async initAuthFlowWithGitHub({
+    redirectUri,
+    scope = 'user:email',
+    clientId = 'Iv23lizZv3CnggDT7JED'
+  }: {
+    redirectUri: string
+    scope?: string
+    clientId?: string
+  }): Promise<string> {
+    const url = new URL(`${this.apiBaseUrl}/v1/auth/github/init`)
+    url.searchParams.append('client_id', clientId)
+    url.searchParams.append('scope', scope)
+    url.searchParams.append('redirect_uri', redirectUri)
+
+    return url.toString()
+  }
+
+  // TODO
+  async exchangeOAuthCodeWithGitHub(
+    json: OperationBody<'exchangeOAuthCodeWithGitHub'>
+  ): Promise<AuthSession> {
+    this._authSession = await this.ky
+      .post('v1/auth/github/exchange', { json })
+      .json()
+
+    this.onUpdateAuth?.(this._authSession)
+    return this._authSession
+  }
+
+  /** Gets the currently authenticated user. */
+  async getMe(): Promise<User> {
+    // const user = await this.verifyAuthAndRefreshIfNecessary()
+    const userId = this._authSession?.user.id
+    assert(userId, 'This method requires authentication.')
+
+    return this.ky.get(`v1/users/${userId}`).json()
   }
 
   /** Gets a user by ID. */
@@ -206,9 +256,11 @@ export class AgenticApiClient {
 
   /** Lists all teams the authenticated user belongs to. */
   async listTeams(
-    searchParams: OperationParameters<'listTeams'>
+    searchParams: OperationParameters<'listTeams'> = {}
   ): Promise<Array<Team>> {
-    return this.ky.get('v1/teams', { searchParams }).json()
+    return this.ky
+      .get('v1/teams', { searchParams: sanitizeSearchParams(searchParams) })
+      .json()
   }
 
   /** Creates a team. */
@@ -216,7 +268,12 @@ export class AgenticApiClient {
     team: OperationBody<'createTeam'>,
     searchParams: OperationParameters<'createTeam'> = {}
   ): Promise<Team> {
-    return this.ky.post('v1/teams', { json: team, searchParams }).json()
+    return this.ky
+      .post('v1/teams', {
+        json: team,
+        searchParams: sanitizeSearchParams(searchParams)
+      })
+      .json()
   }
 
   /** Gets a team by ID. */
@@ -279,7 +336,65 @@ export class AgenticApiClient {
       .json()
   }
 
-  /** Lists projects the authenticated user has access to. */
+  /** Lists projects that have been published publicly to the marketplace. */
+  async listPublicProjects<
+    TPopulate extends NonNullable<
+      OperationParameters<'listPublicProjects'>['populate']
+    >[number]
+  >(
+    searchParams: OperationParameters<'listPublicProjects'> & {
+      populate?: TPopulate[]
+    } = {}
+  ): Promise<Array<PopulateProject<TPopulate>>> {
+    return this.ky
+      .get('v1/projects', { searchParams: sanitizeSearchParams(searchParams) })
+      .json()
+  }
+
+  /**
+   * Gets a public project by ID. The project must be publicly available on
+   * the marketplace.
+   */
+  async getPublicProject<
+    TPopulate extends NonNullable<
+      OperationParameters<'getPublicProject'>['populate']
+    >[number]
+  >({
+    projectId,
+    ...searchParams
+  }: OperationParameters<'getPublicProject'> & {
+    populate?: TPopulate[]
+  }): Promise<PopulateProject<TPopulate>> {
+    return this.ky
+      .get(`v1/projects/public/${projectId}`, {
+        searchParams: sanitizeSearchParams(searchParams)
+      })
+      .json()
+  }
+
+  /**
+   * Gets a public project by its identifier. The project must be publicly
+   * available on the marketplace.
+   */
+  async getPublicProjectByIdentifier<
+    TPopulate extends NonNullable<
+      OperationParameters<'getPublicProjectByIdentifier'>['populate']
+    >[number]
+  >(
+    searchParams: OperationParameters<'getPublicProjectByIdentifier'> & {
+      populate?: TPopulate[]
+    }
+  ): Promise<PopulateProject<TPopulate>> {
+    return this.ky
+      .get('v1/projects/public/by-identifier', {
+        searchParams: sanitizeSearchParams(searchParams)
+      })
+      .json()
+  }
+
+  /**
+   * Lists projects the authenticated user has access to.
+   */
   async listProjects<
     TPopulate extends NonNullable<
       OperationParameters<'listProjects'>['populate']
@@ -287,10 +402,12 @@ export class AgenticApiClient {
   >(
     searchParams: OperationParameters<'listProjects'> & {
       populate?: TPopulate[]
-    }
+    } = {}
   ): Promise<Array<PopulateProject<TPopulate>>> {
     return this.ky
-      .get('v1/projects', { searchParams: sanitizeSearchParams(searchParams) })
+      .get(`v1/projects`, {
+        searchParams: sanitizeSearchParams(searchParams)
+      })
       .json()
   }
 
@@ -302,7 +419,9 @@ export class AgenticApiClient {
     return this.ky.post('v1/projects', { json: project, searchParams }).json()
   }
 
-  /** Gets a project by ID. */
+  /**
+   * Gets a project by ID. Authenticated user must have access to the project.
+   */
   async getProject<
     TPopulate extends NonNullable<
       OperationParameters<'getProject'>['populate']
@@ -320,7 +439,10 @@ export class AgenticApiClient {
       .json()
   }
 
-  /** Gets a project by its public identifier. */
+  /**
+   * Gets a project by its identifier. Authenticated user must have access to
+   * the project.
+   */
   async getProjectByIdentifier<
     TPopulate extends NonNullable<
       OperationParameters<'getProjectByIdentifier'>['populate']
@@ -337,7 +459,9 @@ export class AgenticApiClient {
       .json()
   }
 
-  /** Updates a project. */
+  /**
+   * Updates a project. Authenticated user must have access to the project.
+   */
   async updateProject(
     project: OperationBody<'updateProject'>,
     { projectId, ...searchParams }: OperationParameters<'updateProject'>
@@ -383,7 +507,12 @@ export class AgenticApiClient {
     consumer: OperationBody<'createConsumer'>,
     searchParams: OperationParameters<'createConsumer'> = {}
   ): Promise<Consumer> {
-    return this.ky.post('v1/consumers', { json: consumer, searchParams }).json()
+    return this.ky
+      .post('v1/consumers', {
+        json: consumer,
+        searchParams: sanitizeSearchParams(searchParams)
+      })
+      .json()
   }
 
   /** Refreshes a consumer's API token. */
@@ -396,15 +525,32 @@ export class AgenticApiClient {
       .json()
   }
 
-  /** Lists all of the customers for a project. */
+  /** Lists all of the customers. */
   async listConsumers<
     TPopulate extends NonNullable<
       OperationParameters<'listConsumers'>['populate']
     >[number]
+  >(
+    searchParams: OperationParameters<'listConsumers'> & {
+      populate?: TPopulate[]
+    } = {}
+  ): Promise<Array<PopulateConsumer<TPopulate>>> {
+    return this.ky
+      .get('v1/consumers', {
+        searchParams: sanitizeSearchParams(searchParams)
+      })
+      .json()
+  }
+
+  /** Lists all of the customers for a project. */
+  async listConsumersForProject<
+    TPopulate extends NonNullable<
+      OperationParameters<'listConsumersForProject'>['populate']
+    >[number]
   >({
     projectId,
     ...searchParams
-  }: OperationParameters<'listConsumers'> & {
+  }: OperationParameters<'listConsumersForProject'> & {
     populate?: TPopulate[]
   }): Promise<Array<PopulateConsumer<TPopulate>>> {
     return this.ky
@@ -473,7 +619,7 @@ export class AgenticApiClient {
   >(
     searchParams: OperationParameters<'listDeployments'> & {
       populate?: TPopulate[]
-    }
+    } = {}
   ): Promise<Array<PopulateDeployment<TPopulate>>> {
     return this.ky
       .get('v1/deployments', {

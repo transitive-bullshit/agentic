@@ -22,8 +22,11 @@
     "test:unit": "vitest run"
   },
   "dependencies": {
-    "hash-object": "catalog:",
+    "decircular": "^1.0.0",
+    "is-obj": "^3.0.0",
     "parse-json": "catalog:",
+    "sort-keys": "catalog:",
+    "type-fest": "catalog:",
     "zod": "catalog:",
     "zod-validation-error": "catalog:"
   },

@@ -46,7 +46,7 @@ const route = createRoute({
   }
 })
 
-export function registerV1TeamsMembersCreateTeamMember(
+export function registerV1CreateTeamMember(
   app: OpenAPIHono<AuthenticatedHonoEnv>
 ) {
   return app.openapi(route, async (c) => {

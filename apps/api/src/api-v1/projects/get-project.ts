@@ -37,9 +37,7 @@ const route = createRoute({
   }
 })
 
-export function registerV1ProjectsGetProject(
-  app: OpenAPIHono<AuthenticatedHonoEnv>
-) {
+export function registerV1GetProject(app: OpenAPIHono<AuthenticatedHonoEnv>) {
   return app.openapi(route, async (c) => {
     const { projectId } = c.req.valid('param')
     const { populate = [] } = c.req.valid('query')

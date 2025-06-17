@@ -1,3 +1,4 @@
+// import { isValidNamespace } from '@agentic/platform-validators'
 import { z } from '@hono/zod-openapi'
 
 import {
@@ -16,6 +17,21 @@ export const projectIdParamsSchema = z.object({
     }
   })
 })
+
+// export const namespaceParamsSchema = z.object({
+//   namespace: z
+//     .string()
+//     .refine((namespace) => isValidNamespace(namespace), {
+//       message: 'Invalid namespace'
+//     })
+//     .openapi({
+//       param: {
+//         description: 'Namespace',
+//         name: 'namespace',
+//         in: 'path'
+//       }
+//     })
+// })
 
 export const projectIdentifierQuerySchema = z.object({
   projectIdentifier: projectIdentifierSchema

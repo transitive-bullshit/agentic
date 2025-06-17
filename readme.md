@@ -18,11 +18,11 @@
 - stripe
   - stripe checkout
   - stripe billing portal
-- auth
-  - custom auth pages for `openauth`
 - **API gateway**
   - oauth flow
     - https://docs.scalekit.com/guides/mcp/oauth
+    - custom oauth flow might need to use separate domains per project instead of separate pathnames?
+      - since the .well-known routes and standard oauth 2.1 routes are all at the top-level?
   - **test usage tracking and reporting**
 - docs
   - main readme
@@ -30,10 +30,12 @@
   - hosted docs
 - merge with current agentic repo
 - publish packages to npm
+- api
+  - deploy to prod
 - database
   - consider using [neon serverless driver](https://orm.drizzle.team/docs/connect-neon) for production
   - can this also be used locally?
-  - may need dto update our `drizzle-orm` fork
+  - may need to update our `drizzle-orm` fork
 
 ## TODO: Post-MVP
 
@@ -92,7 +94,6 @@
 - handle or validate against dynamic MCP origin tools
 - allow config name to be `project-name` or `@namespace/project-name`?
 - upgrade to zod v4
-- add seed-db script which creates `dev` user (or team) and test fixtures
 - decide whether deployment fields like `defaultRateLimit` and others should be generated and stored in the db, or should be inferred based on `undefined` values
 - support multiple rate-limits by slug
   - RateLimit-Policy: "burst";q=100;w=60,"daily";q=1000;w=86400
