@@ -21,7 +21,7 @@ export function Header() {
             About
           </ActiveLink>
 
-          {ctx?.api.isAuthenticated ? (
+          {ctx?.isAuthenticated ? (
             <>
               <ActiveLink href='/app' className='link'>
                 Dashboard
