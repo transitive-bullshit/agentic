@@ -20,9 +20,6 @@
     - handle unauthenticated checkout flow => auth and then redirect to create a checkout session
     - will need a `redirect` url for `/login` and `/signup`
     - `/marketplace/projects/@{projectIdentifier}/checkout?plan={plan}`
-  - data loading / react-query
-    - don't retry queries on 401/403
-    - mimic logic from `ky` for automatic retries
 - stripe
   - stripe checkout
   - stripe billing portal

@@ -1,7 +1,6 @@
 'use client'
 
 import { assert, omit } from '@agentic/platform-core'
-import { useQuery } from '@tanstack/react-query'
 import { redirect } from 'next/navigation'
 import { useCallback, useEffect } from 'react'
 import { useSearchParam } from 'react-use'
@@ -10,6 +9,7 @@ import { useAgentic } from '@/components/agentic-provider'
 import { LoadingIndicator } from '@/components/loading-indicator'
 import { Button } from '@/components/ui/button'
 import { toast, toastError } from '@/lib/notifications'
+import { useQuery } from '@/lib/query-client'
 
 export function MarketplaceProjectIndex({
   projectIdentifier

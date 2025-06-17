@@ -1,9 +1,8 @@
 'use client'
 
-import { useQuery } from '@tanstack/react-query'
-
 import { useAuthenticatedAgentic } from '@/components/agentic-provider'
 import { LoadingIndicator } from '@/components/loading-indicator'
+import { useQuery } from '@/lib/query-client'
 
 export function AppConsumerIndex({ consumerId }: { consumerId: string }) {
   const ctx = useAuthenticatedAgentic()

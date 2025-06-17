@@ -1,11 +1,11 @@
 'use client'
 
-import { useInfiniteQuery } from '@tanstack/react-query'
 import Link from 'next/link'
 import useInfiniteScroll from 'react-infinite-scroll-hook'
 
 import { useAgentic } from '@/components/agentic-provider'
 import { LoadingIndicator } from '@/components/loading-indicator'
+import { useInfiniteQuery } from '@/lib/query-client'
 
 export function MarketplaceIndex() {
   const ctx = useAgentic()
