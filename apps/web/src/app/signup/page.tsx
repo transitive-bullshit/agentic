@@ -1,6 +1,5 @@
 'use client'
 
-import type { PasswordLoginError } from '@agentic/openauth/provider/password'
 import {
   isValidEmail,
   isValidPassword,
@@ -9,7 +8,7 @@ import {
 import { useForm } from '@tanstack/react-form'
 import { Loader2Icon } from 'lucide-react'
 import { redirect, RedirectType } from 'next/navigation'
-import { useCallback, useState } from 'react'
+import { useCallback } from 'react'
 import { z } from 'zod'
 
 import { useUnauthenticatedAgentic } from '@/components/agentic-provider'
@@ -20,8 +19,8 @@ import { GitHubIcon } from '@/icons/github'
 import { toastError } from '@/lib/notifications'
 import { cn } from '@/lib/utils'
 
-export default function LoginPage() {
-  const [error] = useState<PasswordLoginError | undefined>(undefined)
+export default function SignupPage() {
+  // const [error] = useState<PasswordLoginError | undefined>(undefined)
   const ctx = useUnauthenticatedAgentic()
 
   const form = useForm({
@@ -105,7 +104,7 @@ export default function LoginPage() {
                       required
                       placeholder='Email'
                       autoComplete='email'
-                      autoFocus={!error}
+                      autoFocus={true}
                       value={field.state.value}
                       onBlur={field.handleBlur}
                       onChange={(e: any) => field.handleChange(e.target.value)}
@@ -147,7 +146,7 @@ export default function LoginPage() {
                       type='password'
                       required
                       placeholder='Password'
-                      autoFocus={error?.type === 'invalid_password'}
+                      // autoFocus={error?.type === 'invalid_password'}
                       autoComplete='new-password'
                       value={field.state.value}
                       onBlur={field.handleBlur}

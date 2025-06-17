@@ -4,7 +4,7 @@
  * You can use these errors to check the type of error and handle it. For example.
  *
  * ```ts
- * import { InvalidAuthorizationCodeError } from "@agentic/openauth/error"
+ * import { InvalidAuthorizationCodeError } from "@agentic/api-client/error"
  *
  * if (err instanceof InvalidAuthorizationCodeError) {
  *   // handle invalid code error

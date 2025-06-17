@@ -196,7 +196,7 @@ export interface ExchangeError {
    *
    * @example
    * ```ts
-   * import { InvalidAuthorizationCodeError } from "@agentic/openauth/error"
+   * import { InvalidAuthorizationCodeError } from "@agentic/api-client/error"
    *
    * console.log(err instanceof InvalidAuthorizationCodeError)
    *```
@@ -237,7 +237,7 @@ export interface RefreshError {
    *
    * @example
    * ```ts
-   * import { InvalidRefreshTokenError } from "@agentic/openauth/error"
+   * import { InvalidRefreshTokenError } from "@agentic/api-client/error"
    *
    * console.log(err instanceof InvalidRefreshTokenError)
    *```
@@ -312,7 +312,7 @@ export interface VerifyError {
    *
    * @example
    * ```ts
-   * import { InvalidRefreshTokenError } from "@agentic/openauth/error"
+   * import { InvalidRefreshTokenError } from "@agentic/api-client/error"
    *
    * console.log(err instanceof InvalidRefreshTokenError)
    *```
@@ -399,7 +399,7 @@ export interface AuthClient {
    * you can handle depending on the error.
    *
    * ```ts
-   * import { InvalidAuthorizationCodeError } from "@agentic/openauth/error"
+   * import { InvalidAuthorizationCodeError } from "@agentic/api-client/error"
    *
    * if (exchanged.err) {
    *   if (exchanged.err instanceof InvalidAuthorizationCodeError) {
@@ -448,7 +448,7 @@ export interface AuthClient {
    * Or if it fails, it returns an error that you can handle depending on the error.
    *
    * ```ts
-   * import { InvalidRefreshTokenError } from "@agentic/openauth/error"
+   * import { InvalidRefreshTokenError } from "@agentic/api-client/error"
    *
    * if (next.err) {
    *   if (next.err instanceof InvalidRefreshTokenError) {
@@ -503,7 +503,7 @@ export interface AuthClient {
    * Or if it fails, it returns an error that you can handle depending on the error.
    *
    * ```ts
-   * import { InvalidRefreshTokenError } from "@agentic/openauth/error"
+   * import { InvalidRefreshTokenError } from "@agentic/api-client/error"
    *
    * if (verified.err) {
    *   if (verified.err instanceof InvalidRefreshTokenError) {
