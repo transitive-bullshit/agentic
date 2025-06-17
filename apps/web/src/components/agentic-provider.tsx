@@ -4,7 +4,13 @@ import {
   AgenticApiClient,
   type AuthSession
 } from '@agentic/platform-api-client'
-import { redirect, RedirectType } from 'next/navigation'
+import { sanitizeSearchParams } from '@agentic/platform-core'
+import {
+  redirect,
+  RedirectType,
+  usePathname,
+  useSearchParams
+} from 'next/navigation'
 import {
   createContext,
   type ReactNode,
@@ -124,10 +130,11 @@ export function useAgentic(): AgenticContextType | undefined {
 
 export function useUnauthenticatedAgentic(): AgenticContextType | undefined {
   const ctx = useAgentic()
+  const nextUrl = useNextUrl() || '/app'
 
   if (ctx && ctx.isAuthenticated) {
-    // console.log('REQUIRES UNAUTHENTICATED: redirecting to /app')
-    redirect('/app', RedirectType.replace)
+    console.log('REQUIRES NO AUTHENTICATION: redirecting to', nextUrl)
+    return redirect(nextUrl, RedirectType.replace)
   }
 
   return ctx
@@ -135,11 +142,37 @@ export function useUnauthenticatedAgentic(): AgenticContextType | undefined {
 
 export function useAuthenticatedAgentic(): AgenticContextType | undefined {
   const ctx = useAgentic()
+  const pathname = usePathname()
 
   if (ctx && !ctx.isAuthenticated) {
-    // console.log('REQUIRES AUTHENTICATED: redirecting to /login')
-    redirect('/login', RedirectType.replace)
+    if (pathname === '/logout') {
+      console.log('LOGOUT SUCCESS: redirecting to /')
+      return redirect('/', RedirectType.replace)
+    }
+
+    console.log('REQUIRES AUTHENTICATION: redirecting to /login', {
+      next: pathname
+    })
+
+    return redirect(
+      `/login?${sanitizeSearchParams({ next: pathname }).toString()}`,
+      RedirectType.replace
+    )
   }
 
   return ctx
+}
+
+export function useNextUrl(): string | undefined {
+  const searchParams = useSearchParams()
+  const [isMounted, setIsMounted] = useState(false)
+
+  useEffect(() => {
+    if (!isMounted) {
+      setIsMounted(true)
+      return
+    }
+  }, [isMounted, setIsMounted])
+
+  return isMounted ? (searchParams.get('next') ?? undefined) : undefined
 }

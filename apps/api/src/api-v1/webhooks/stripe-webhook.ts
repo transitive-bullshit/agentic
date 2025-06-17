@@ -13,6 +13,7 @@ const relevantStripeEvents = new Set<Stripe.Event.Type>([
 
 export function registerV1StripeWebhook(app: HonoApp) {
   return app.post('webhooks/stripe', async (ctx) => {
+    const logger = ctx.get('logger')
     const body = await ctx.req.text()
     const signature = ctx.req.header('Stripe-Signature')
     assert(signature, 400, 'missing signature')
@@ -46,6 +47,8 @@ export function registerV1StripeWebhook(app: HonoApp) {
       return ctx.json({ status: 'ok' })
     }
 
+    logger.info('stripe webhook', event.type, event.data?.object)
+
     try {
       switch (event.type) {
         case 'customer.subscription.updated': {
@@ -55,11 +58,11 @@ export function registerV1StripeWebhook(app: HonoApp) {
           assert(userId, 400, 'missing metadata userId')
           assert(projectId, 400, 'missing metadata projectId')
 
-          // logger.info(event.type, {
-          //   userId,
-          //   projectId,
-          //   status: subscription.status
-          // })
+          logger.info('stripe webhook', event.type, {
+            userId,
+            projectId,
+            status: subscription.status
+          })
 
           const consumer = await db.query.consumers.findFirst({
             where: and(
@@ -77,6 +80,7 @@ export function registerV1StripeWebhook(app: HonoApp) {
             consumer.stripeStatus = subscription.status
             setConsumerStripeSubscriptionStatus(consumer)
 
+            // TODO: update plan
             await db
               .update(schema.consumers)
               .set({

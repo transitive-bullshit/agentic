@@ -18,11 +18,15 @@ export function registerV1GitHubOAuthCallback(
     const redirectUri = entry.redirectUri
     assert(entry.redirectUri, 400, 'Redirect URI not found')
 
-    const url = new URL(
-      `${redirectUri}?${new URLSearchParams(query).toString()}`
-    ).toString()
-    logger.info('GitHub auth callback', query, '=>', url)
+    const url = new URL(redirectUri)
+    for (const [key, value] of Object.entries(query)) {
+      url.searchParams.set(key, value)
+    }
 
-    return c.redirect(url)
+    logger.info('GitHub auth callback', query, '=>', url.toString(), {
+      rawUrl: redirectUri,
+      query
+    })
+    return c.redirect(url.toString())
   })
 }

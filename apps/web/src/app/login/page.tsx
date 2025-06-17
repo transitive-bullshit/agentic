@@ -1,5 +1,6 @@
 'use client'
 
+import { sanitizeSearchParams } from '@agentic/platform-core'
 import { isValidEmail, isValidPassword } from '@agentic/platform-validators'
 import { useForm } from '@tanstack/react-form'
 import { Loader2Icon } from 'lucide-react'
@@ -7,7 +8,10 @@ import { redirect, RedirectType } from 'next/navigation'
 import { useCallback } from 'react'
 import { z } from 'zod'
 
-import { useUnauthenticatedAgentic } from '@/components/agentic-provider'
+import {
+  useNextUrl,
+  useUnauthenticatedAgentic
+} from '@/components/agentic-provider'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -17,6 +21,15 @@ import { cn } from '@/lib/utils'
 
 export default function LoginPage() {
   const ctx = useUnauthenticatedAgentic()
+  const nextUrl = useNextUrl()
+
+  const onAuthWithGitHub = useCallback(async () => {
+    const redirectUri = `${globalThis.location.origin}/auth/github/success?${sanitizeSearchParams({ next: nextUrl }).toString()}`
+
+    const url = await ctx!.api.initAuthFlowWithGitHub({ redirectUri })
+
+    redirect(url, RedirectType.push)
+  }, [ctx, nextUrl])
 
   const form = useForm({
     defaultValues: {
@@ -45,17 +58,9 @@ export default function LoginPage() {
         return
       }
 
-      return redirect('/app', RedirectType.push)
+      return redirect(nextUrl || '/app', RedirectType.push)
     }
   })
-
-  const onAuthWithGitHub = useCallback(async () => {
-    const url = await ctx!.api.initAuthFlowWithGitHub({
-      redirectUri: `${globalThis.location.origin}/auth/github/success`
-    })
-
-    redirect(url, RedirectType.push)
-  }, [ctx])
 
   return (
     <>
@@ -168,7 +173,10 @@ export default function LoginPage() {
 
             <div className='text-center text-xs'>
               Don&apos;t have an account?{' '}
-              <a href='/signup' className='underline underline-offset-4'>
+              <a
+                href={`/signup?${sanitizeSearchParams({ next: nextUrl }).toString()}`}
+                className='underline underline-offset-4'
+              >
                 Sign up
               </a>
             </div>
