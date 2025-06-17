@@ -25,7 +25,9 @@ export function MarketplaceProjectIndex({
           populate: ['lastPublishedDeployment']
         })
         .catch((err: any) => {
-          void toastError(`Failed to fetch project "${projectIdentifier}"`)
+          void toastError(
+            `Failed to fetch public project "${projectIdentifier}"`
+          )
           throw err
         }),
     enabled: !!ctx

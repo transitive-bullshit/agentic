@@ -37,7 +37,7 @@ export function MarketplaceIndex() {
           }
         })
         .catch((err: any) => {
-          void toastError('Failed to fetch projects')
+          void toastError('Failed to fetch public projects')
           throw err
         }),
     getNextPageParam: (lastGroup) => lastGroup?.nextOffset,
