@@ -105,22 +105,6 @@ export const paginationSchema = z.object({
   sortBy: z.enum(['createdAt', 'updatedAt']).default('createdAt').optional()
 })
 
-// import type { PgTable, TableConfig } from '@fisch0920/drizzle-orm/pg-core'
-// import type { AnyZodObject } from 'zod'
-//
-// export function createWhereFilterSchema<
-//   TTableConfig extends TableConfig,
-//   TTable extends PgTable<TTableConfig>,
-//   T extends AnyZodObject
-// >(table: TTable, schema: T) {
-//   return z.object({
-//     where: z.record(
-//       z.enum(Object.keys(table._.columns) as [string, ...string[]]),
-//       z.string()
-//     )
-//   })
-// }
-
 export type ProjectRelationFields = keyof ReturnType<
   (typeof projectsRelations)['config']
 >

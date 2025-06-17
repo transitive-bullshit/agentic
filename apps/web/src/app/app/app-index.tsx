@@ -19,7 +19,7 @@ export function AppIndex() {
     fetchNextPage,
     isFetchingNextPage
   } = useInfiniteQuery({
-    queryKey: ['projects'],
+    queryKey: ['projects', ctx?.api.authSession?.user?.id],
     queryFn: ({ pageParam = 0 }) =>
       ctx!.api
         .listProjects({
