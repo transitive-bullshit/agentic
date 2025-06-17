@@ -42,6 +42,7 @@
     "posthog-js": "^1.252.0",
     "react": "catalog:",
     "react-dom": "catalog:",
+    "react-infinite-scroll-hook": "^6.0.0",
     "react-lottie-player": "^2.1.0",
     "react-use": "^17.6.0",
     "sonner": "^2.0.5",

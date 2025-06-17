@@ -6,252 +6,27 @@ settings:
 
 catalogs:
   default:
-    '@apideck/better-ajv-errors':
-      specifier: ^0.3.6
-      version: 0.3.6
-    '@clack/prompts':
-      specifier: ^0.11.0
-      version: 0.11.0
-    '@cloudflare/workers-types':
-      specifier: ^4.20250614.0
-      version: 4.20250614.0
-    '@commander-js/extra-typings':
-      specifier: ^14.0.0
-      version: 14.0.0
-    '@edge-runtime/vm':
-      specifier: ^5.0.0
-      version: 5.0.0
-    '@fisch0920/config':
-      specifier: ^1.1.2
-      version: 1.1.2
-    '@fisch0920/drizzle-orm':
-      specifier: ^0.43.7
-      version: 0.43.7
-    '@fisch0920/drizzle-zod':
-      specifier: ^0.7.9
-      version: 0.7.9
-    '@hono/node-server':
-      specifier: ^1.14.4
-      version: 1.14.4
-    '@hono/sentry':
-      specifier: ^1.2.2
-      version: 1.2.2
-    '@hono/zod-openapi':
-      specifier: ^0.19.8
-      version: 0.19.8
-    '@hono/zod-validator':
-      specifier: ^0.7.0
-      version: 0.7.0
-    '@modelcontextprotocol/sdk':
-      specifier: ^1.12.3
-      version: 1.12.3
-    '@paralleldrive/cuid2':
-      specifier: ^2.2.2
-      version: 2.2.2
-    '@react-email/components':
-      specifier: ^0.0.42
-      version: 0.0.42
-    '@redocly/openapi-core':
-      specifier: ^1.34.3
-      version: 1.34.3
-    '@sentry/cli':
-      specifier: ^2.46.0
-      version: 2.46.0
-    '@sentry/cloudflare':
-      specifier: ^9.29.0
-      version: 9.29.0
-    '@sentry/core':
-      specifier: ^9.29.0
-      version: 9.29.0
-    '@sentry/node':
-      specifier: ^9.29.0
-      version: 9.29.0
-    '@types/ms':
-      specifier: ^2.1.0
-      version: 2.1.0
-    '@types/node':
-      specifier: ^24.0.1
-      version: 24.0.1
     '@types/react':
       specifier: ^19.1.8
       version: 19.1.8
     '@types/react-dom':
       specifier: ^19.1.6
       version: 19.1.6
-    '@types/semver':
-      specifier: ^7.7.0
-      version: 7.7.0
-    agents:
-      specifier: ^0.0.95
-      version: 0.0.95
-    ajv:
-      specifier: ^8.17.1
-      version: 8.17.1
-    ajv-formats:
-      specifier: ^3.0.1
-      version: 3.0.1
-    camelcase:
-      specifier: ^8.0.0
-      version: 8.0.0
-    commander:
-      specifier: ^14.0.0
-      version: 14.0.0
-    conf:
-      specifier: ^14.0.0
-      version: 14.0.0
-    decamelize:
-      specifier: ^6.0.0
-      version: 6.0.0
-    del-cli:
-      specifier: ^6.0.0
-      version: 6.0.0
-    drizzle-kit:
-      specifier: ^0.31.1
-      version: 0.31.1
-    drizzle-orm:
-      specifier: ^0.44.2
-      version: 0.44.2
-    email-validator:
-      specifier: ^2.0.4
-      version: 2.0.4
-    eslint:
-      specifier: ^9.29.0
-      version: 9.29.0
-    eslint-plugin-drizzle:
-      specifier: ^0.2.3
-      version: 0.2.3
-    eventid:
-      specifier: ^2.0.1
-      version: 2.0.1
-    exit-hook:
-      specifier: ^4.0.0
-      version: 4.0.0
-    fast-content-type-parse:
-      specifier: ^3.0.0
-      version: 3.0.0
-    fast-uri:
-      specifier: ^3.0.6
-      version: 3.0.6
-    fastmcp:
-      specifier: ^3.3.0
-      version: 3.3.0
-    get-port:
-      specifier: ^7.1.0
-      version: 7.1.0
-    hono:
-      specifier: ^4.7.11
-      version: 4.7.11
-    knip:
-      specifier: ^5.61.0
-      version: 5.61.0
     ky:
       specifier: 1.8.1
       version: 1.8.1
-    lint-staged:
-      specifier: ^16.1.1
-      version: 16.1.1
-    ms:
-      specifier: ^2.1.3
-      version: 2.1.3
-    npm-run-all2:
-      specifier: ^8.0.4
-      version: 8.0.4
-    octokit:
-      specifier: ^5.0.3
-      version: 5.0.3
-    only-allow:
-      specifier: ^1.2.1
-      version: 1.2.1
-    open:
-      specifier: ^10.1.2
-      version: 10.1.2
-    openapi-typescript:
-      specifier: ^7.8.0
-      version: 7.8.0
-    ora:
-      specifier: ^8.2.0
-      version: 8.2.0
-    p-all:
-      specifier: ^5.0.0
-      version: 5.0.0
-    p-map:
-      specifier: ^7.0.3
-      version: 7.0.3
-    parse-json:
-      specifier: ^8.3.0
-      version: 8.3.0
-    plur:
-      specifier: ^5.1.0
-      version: 5.1.0
-    postgres:
-      specifier: ^3.4.7
-      version: 3.4.7
-    prettier:
-      specifier: ^3.5.3
-      version: 3.5.3
     react:
       specifier: ^19.1.0
       version: 19.1.0
     react-dom:
       specifier: ^19.1.0
       version: 19.1.0
-    react-email:
-      specifier: ^4.0.16
-      version: 4.0.16
-    resend:
-      specifier: ^4.6.0
-      version: 4.6.0
-    restore-cursor:
-      specifier: ^5.1.0
-      version: 5.1.0
-    semver:
-      specifier: ^7.7.2
-      version: 7.7.2
-    simple-git-hooks:
-      specifier: ^2.13.0
-      version: 2.13.0
-    sort-keys:
-      specifier: ^5.1.0
-      version: 5.1.0
     stripe:
       specifier: ^18.2.1
       version: 18.2.1
-    tsup:
-      specifier: ^8.5.0
-      version: 8.5.0
-    tsx:
-      specifier: ^4.20.3
-      version: 4.20.3
-    turbo:
-      specifier: ^2.5.4
-      version: 2.5.4
     type-fest:
       specifier: ^4.41.0
       version: 4.41.0
-    typescript:
-      specifier: ^5.8.3
-      version: 5.8.3
-    unconfig:
-      specifier: ^7.3.2
-      version: 7.3.2
-    vite-tsconfig-paths:
-      specifier: ^5.1.4
-      version: 5.1.4
-    vitest:
-      specifier: ^3.2.3
-      version: 3.2.3
-    wrangler:
-      specifier: ^4.20.0
-      version: 4.20.0
-    zod:
-      specifier: ^3.25.64
-      version: 3.25.64
-    zod-to-json-schema:
-      specifier: ^3.24.5
-      version: 3.24.5
-    zod-validation-error:
-      specifier: ^3.5.0
-      version: 3.5.0
 
 importers:
 
@@ -572,6 +347,9 @@ importers:
       react-dom:
         specifier: 'catalog:'
         version: 19.1.0(react@19.1.0)
+      react-infinite-scroll-hook:
+        specifier: ^6.0.0
+        version: 6.0.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       react-lottie-player:
         specifier: ^2.1.0
         version: 2.1.0(react@19.1.0)
@@ -5944,6 +5722,18 @@ packages:
     resolution: {integrity: sha512-auhFU+nQxAkKkP6lQhPyGsa9exwfUEzp2BwZnjHokCwphZlg30tu4t1LgdKRwGPYsi7XNGy6asbVLAUhOVpzzg==}
     engines: {node: '>=18.0.0'}
     hasBin: true
+
+  react-infinite-scroll-hook@6.0.0:
+    resolution: {integrity: sha512-kg36byj9/YqPS9bv5u3fIUmn800NO6G4cA6d5DcsaBbm7qbMVxT8qy8Po7Xm0dWBJPFEk/g2arcMb9IorQdwsQ==}
+    peerDependencies:
+      react: '>=19'
+      react-dom: '>=19'
+
+  react-intersection-observer-hook@4.0.0:
+    resolution: {integrity: sha512-g9hWp741AA6w0RlGiaTtmIuceRd61q7soZmx2keB1OPstLcZffCKpTxWaYA2LVKNYME3B3ZOGwX3iuYyCBLAag==}
+    peerDependencies:
+      react: '>=19'
+      react-dom: '>=19'
 
   react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
@@ -11874,6 +11664,17 @@ snapshots:
       - sass
       - supports-color
       - utf-8-validate
+
+  react-infinite-scroll-hook@6.0.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
+    dependencies:
+      react: 19.1.0
+      react-dom: 19.1.0(react@19.1.0)
+      react-intersection-observer-hook: 4.0.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+
+  react-intersection-observer-hook@4.0.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
+    dependencies:
+      react: 19.1.0
+      react-dom: 19.1.0(react@19.1.0)
 
   react-is@16.13.1: {}
 

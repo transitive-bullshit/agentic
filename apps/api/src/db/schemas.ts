@@ -99,8 +99,8 @@ export const teamSlugSchema = z
   })
 
 export const paginationSchema = z.object({
-  offset: z.number().int().nonnegative().default(0).optional(),
-  limit: z.number().int().positive().max(100).default(10).optional(),
+  offset: z.coerce.number().int().nonnegative().default(0).optional(),
+  limit: z.coerce.number().int().positive().max(100).default(10).optional(),
   sort: z.enum(['asc', 'desc']).default('desc').optional(),
   sortBy: z.enum(['createdAt', 'updatedAt']).default('createdAt').optional()
 })

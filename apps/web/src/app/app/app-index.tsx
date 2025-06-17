@@ -1,7 +1,8 @@
 'use client'
 
-import { useQuery } from '@tanstack/react-query'
+import { useInfiniteQuery } from '@tanstack/react-query'
 import Link from 'next/link'
+import useInfiniteScroll from 'react-infinite-scroll-hook'
 
 import { useAuthenticatedAgentic } from '@/components/agentic-provider'
 import { LoadingIndicator } from '@/components/loading-indicator'
@@ -9,21 +10,50 @@ import { toastError } from '@/lib/notifications'
 
 export function AppIndex() {
   const ctx = useAuthenticatedAgentic()
+  const limit = 10
   const {
-    data: projects,
+    data,
     isLoading,
-    isError
-  } = useQuery({
+    isError,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage
+  } = useInfiniteQuery({
     queryKey: ['projects'],
-    queryFn: () =>
-      ctx?.api
-        .listProjects({ populate: ['lastPublishedDeployment'] })
+    queryFn: ({ pageParam = 0 }) =>
+      ctx!.api
+        .listProjects({
+          populate: ['lastPublishedDeployment'],
+          offset: pageParam,
+          limit
+        })
+        .then(async (projects) => {
+          return {
+            projects,
+            offset: pageParam,
+            limit,
+            nextOffset:
+              projects.length >= limit ? pageParam + projects.length : undefined
+          }
+        })
         .catch((err: any) => {
           void toastError(err, { label: 'Failed to fetch projects' })
           throw err
         }),
-    enabled: !!ctx
+    getNextPageParam: (lastGroup) => lastGroup?.nextOffset,
+    enabled: !!ctx,
+    initialPageParam: 0
   })
+
+  const [sentryRef] = useInfiniteScroll({
+    loading: isLoading || isFetchingNextPage,
+    hasNextPage,
+    onLoadMore: fetchNextPage,
+    disabled: !ctx || isError,
+    rootMargin: '0px 0px 200px 0px'
+  })
+
+  const projects = data ? data.pages.flatMap((p) => p.projects) : []
 
   return (
     <>
@@ -44,7 +74,7 @@ export function AppIndex() {
 
             {isError ? (
               <p>Error fetching projects</p>
-            ) : !projects?.length ? (
+            ) : !projects.length ? (
               <p>
                 No projects found. Create your first project to get started!
               </p>
@@ -71,6 +101,12 @@ export function AppIndex() {
                     )}
                   </Link>
                 ))}
+
+                {hasNextPage && (
+                  <div ref={sentryRef} className=''>
+                    {isLoading || (isFetchingNextPage && <LoadingIndicator />)}
+                  </div>
+                )}
               </div>
             )}
           </div>

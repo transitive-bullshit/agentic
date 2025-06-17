@@ -20,7 +20,6 @@ export default async function AppProjectIndexPage({
     const namespace = decodeURIComponent(rawNamespace)
     const projectName = decodeURIComponent(rawProjectName)
 
-    console.log('parsing project identifier', { namespace, projectName })
     const { projectIdentifier } = parseProjectIdentifier(
       `${namespace}/${projectName}`,
       { strict: true }

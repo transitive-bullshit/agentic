@@ -19,7 +19,7 @@ export function AppProjectIndex({
   } = useQuery({
     queryKey: ['project', projectIdentifier],
     queryFn: () =>
-      ctx?.api
+      ctx!.api
         .getProjectByIdentifier({
           projectIdentifier,
           populate: ['lastPublishedDeployment']
