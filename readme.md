@@ -21,6 +21,7 @@
     - stripe billing portal
     - should we bypass stripe for `free` plans to increase conversions?
   - handle browser back/forward with `?next=`
+  - add some social proof to signup page
 - **API gateway**
   - oauth flow
     - https://docs.scalekit.com/guides/mcp/oauth
@@ -43,6 +44,7 @@
   - consider using [neon serverless driver](https://orm.drizzle.team/docs/connect-neon) for production
   - can this also be used locally?
   - may need to update our `drizzle-orm` fork
+- figure out the best OSS license for launch
 
 ## TODO: Post-MVP
 

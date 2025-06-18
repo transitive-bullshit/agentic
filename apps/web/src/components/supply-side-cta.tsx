@@ -5,16 +5,22 @@ import Link from 'next/link'
 
 import { HeroButton } from '@/components/hero-button'
 import { Button } from '@/components/ui/button'
-import { calendarBookingUrl, docsQuickStartUrl } from '@/lib/config'
+import { GitHubIcon } from '@/icons/github'
+import { calendarBookingUrl, docsQuickStartUrl, githubUrl } from '@/lib/config'
 
 import { useAgentic } from './agentic-provider'
+import { GitHubStarCounter } from './github-star-counter'
 
-export function SupplySideCTA() {
+export function SupplySideCTA({
+  variant = 'github'
+}: {
+  variant?: 'book-call' | 'github' | 'github-2'
+}) {
   const ctx = useAgentic()
 
   return (
     <div className='flex justify-center items-center gap-8'>
-      <HeroButton asChild className='h-full'>
+      <HeroButton asChild className=''>
         <Link
           href={
             ctx?.isAuthenticated
@@ -26,11 +32,22 @@ export function SupplySideCTA() {
         </Link>
       </HeroButton>
 
-      <Button variant='outline' asChild className='h-full'>
-        <Link href={calendarBookingUrl} target='_blank' rel='noopener'>
-          Book a call with me 👋
-        </Link>
-      </Button>
+      {variant === 'github' ? (
+        <GitHubStarCounter className='h-full py-[9px]' />
+      ) : variant === 'github-2' ? (
+        <Button variant='outline' asChild className='h-full py-[9px]'>
+          <Link href={githubUrl} target='_blank' rel='noopener'>
+            <GitHubIcon />
+            Star Agentic on GitHub
+          </Link>
+        </Button>
+      ) : (
+        <Button variant='outline' asChild className='h-full py-[9px]'>
+          <Link href={calendarBookingUrl} target='_blank' rel='noopener'>
+            Book a call with the founder 👋
+          </Link>
+        </Button>
+      )}
     </div>
   )
 }

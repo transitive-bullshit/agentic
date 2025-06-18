@@ -2,7 +2,7 @@
 
 import NumberFlow from '@number-flow/react'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import { type ReactNode, useEffect, useState } from 'react'
 
 import { GitHubIcon } from '@/icons/github'
 import { githubUrl } from '@/lib/config'
@@ -13,7 +13,13 @@ import { Button } from './ui/button'
 // TODO: fetch this dynamically
 const numGitHubStars = 17_600
 
-export function GitHubStarCounter({ className }: { className?: string }) {
+export function GitHubStarCounter({
+  className,
+  children
+}: {
+  className?: string
+  children?: ReactNode
+}) {
   const [numStars, setNumStars] = useState(0)
 
   useEffect(() => {
@@ -35,9 +41,11 @@ export function GitHubStarCounter({ className }: { className?: string }) {
             notation: 'compact',
             roundingPriority: 'morePrecision'
           }}
-          suffix=' stars'
+          suffix={children ? undefined : ' stars'}
           willChange
         />
+
+        {children}
       </Link>
     </Button>
   )
