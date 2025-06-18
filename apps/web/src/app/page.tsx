@@ -1,19 +1,20 @@
-import { HeroButton } from '@/components/hero-button'
+import { SupplySideCTA } from '@/components/supply-side-cta'
 
 export default function IndexPage() {
   return (
     <>
-      <section>
+      <section className='gap-8'>
         <h1 className='my-0! text-center text-balance leading-snug md:leading-none text-4xl font-extrabold'>
-          MCP tools that actually work
+          Your API → Paid MCP, Instantly
         </h1>
 
-        <h5 className='my-8! text-center text-balance text-lg'>
-          Deploy any MCP server or OpenAPI service to Agentic's MCP gateway, and
-          in minutes have a production-ready, monetizable MCP product.
+        <h5 className='text-center text-lg max-w-2xl'>
+          Run one command to turn any MCP server or OpenAPI service into a paid
+          MCP product,{' '}
+          <em>with built-in distribution to over 20k AI engineers</em>.
         </h5>
 
-        <HeroButton>Get Started</HeroButton>
+        <SupplySideCTA />
       </section>
 
       <section className='flex-1'>

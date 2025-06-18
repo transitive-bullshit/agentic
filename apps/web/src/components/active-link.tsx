@@ -37,9 +37,14 @@ export const ActiveLink = React.forwardRef(function ActiveLink(
   const [disabled, setDisabled] = React.useState(false)
 
   React.useEffect(() => {
-    const linkPathname = new URL(href as string, location.href).pathname
+    const currentUrl = new URL(location.href)
+    const url = new URL(href as string, currentUrl)
+    const linkPathname = url.pathname
+    const linkOrigin = url.origin
 
-    setDisabled(compare(linkPathname, pathname))
+    setDisabled(
+      compare(linkPathname, pathname) && compare(linkOrigin, currentUrl.origin)
+    )
   }, [pathname, href, compare])
 
   const styleOverride = React.useMemo<React.CSSProperties>(

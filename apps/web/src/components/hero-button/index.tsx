@@ -1,56 +1,46 @@
 import type * as React from 'react'
+import type { Simplify } from 'type-fest'
 import cs from 'clsx'
-import Link from 'next/link'
 
-import { Button } from '@/components/ui/button'
+import { Button, type ButtonProps } from '@/components/ui/button'
 
 import styles from './styles.module.css'
 
 export type HeroButtonVariant = 'orange' | 'blue' | 'purple'
 
+export type HeroButtonProps = Simplify<
+  {
+    heroVariant?: HeroButtonVariant
+    className?: string
+    buttonClassName?: string
+  } & ButtonProps
+>
+
 export function HeroButton({
-  variant = 'purple',
+  heroVariant = 'purple',
   className,
   buttonClassName,
-  children,
   ...buttonProps
-}: {
-  variant?: HeroButtonVariant
-  className?: string
-  buttonClassName?: string
-  children: React.ReactNode
-} & React.AnchorHTMLAttributes<HTMLAnchorElement>) {
+}: HeroButtonProps) {
   return (
     <div className={cs(styles.heroButtonWrapper, className)}>
-      {variant === 'blue' && (
+      {heroVariant === 'blue' && (
         <span className={cs(styles.heroButtonBg, styles.heroButtonBg1)} />
       )}
 
-      {variant === 'purple' && (
+      {heroVariant === 'purple' && (
         <span className={cs(styles.heroButtonBg, styles.heroButtonBg2)} />
       )}
 
-      {variant === 'orange' && (
+      {heroVariant === 'orange' && (
         <span className={cs(styles.heroButtonBg, styles.heroButtonBg3)} />
       )}
 
-      {buttonProps.href ? (
-        <Link
-          className={cs(styles.heroButton, buttonClassName)}
-          href={buttonProps.href}
-          {...buttonProps}
-        >
-          <div className={styles.heroButtonContent}>{children}</div>
-        </Link>
-      ) : (
-        <Button
-          className={cs(styles.heroButton, buttonClassName)}
-          {...(buttonProps as any)}
-          type='button'
-        >
-          <div className={styles.heroButtonContent}>{children}</div>
-        </Button>
-      )}
+      <Button
+        className={cs(styles.heroButton, buttonClassName)}
+        type='button'
+        {...(buttonProps as any)}
+      />
     </div>
   )
 }
