@@ -90,8 +90,9 @@ export async function createStripeCheckoutSession(
     // const updateParams: Stripe.SubscriptionUpdateParams = {
     //   collection_method: 'charge_automatically',
     //   metadata: {
-    //     userId: consumer.userId,
+    //     plan: plan ?? null,
     //     consumerId: consumer.id,
+    //     userId: consumer.userId,
     //     projectId: project.id,
     //     deploymentId: deployment.id
     //   }
@@ -282,8 +283,9 @@ export async function createStripeCheckoutSession(
       // TODO: consider custom_text
       // TODO: consider optional_items
       metadata: {
-        userId: consumer.userId,
+        plan: plan ?? null,
         consumerId: consumer.id,
+        userId: consumer.userId,
         projectId: project.id,
         deploymentId: deployment.id
       }

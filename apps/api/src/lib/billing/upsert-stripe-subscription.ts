@@ -96,6 +96,7 @@ export async function upsertStripeSubscription(
     const updateParams: Stripe.SubscriptionUpdateParams = {
       collection_method: 'charge_automatically',
       metadata: {
+        plan: plan ?? null,
         userId: consumer.userId,
         consumerId: consumer.id,
         projectId: project.id,
@@ -268,8 +269,9 @@ export async function upsertStripeSubscription(
       items,
       // collection_method: 'charge_automatically',
       metadata: {
-        userId: consumer.userId,
+        plan: plan ?? null,
         consumerId: consumer.id,
+        userId: consumer.userId,
         projectId: project.id,
         deploymentId: deployment.id
       }
