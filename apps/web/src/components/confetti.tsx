@@ -11,6 +11,7 @@ export type ConfettiOptions = Simplify<
   }
 >
 
+// TODO: make shoot in from the sides
 export function useConfettiFireworks() {
   const fireConfetti = useCallback((options: ConfettiOptions = {}) => {
     const duration = options.duration ?? 4 * 1000
