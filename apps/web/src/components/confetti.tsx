@@ -4,6 +4,8 @@ import type { Simplify } from 'type-fest'
 import confetti, { type Options as ConfettiBaseOptions } from 'canvas-confetti'
 import { useCallback } from 'react'
 
+import { randomInRange } from '@/lib/utils'
+
 export type ConfettiOptions = Simplify<
   ConfettiBaseOptions & {
     duration?: number
@@ -54,8 +56,4 @@ export function useConfettiFireworks() {
   return {
     fireConfetti
   }
-}
-
-function randomInRange(min: number, max: number) {
-  return Math.random() * (max - min) + min
 }

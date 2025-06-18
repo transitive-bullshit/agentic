@@ -21,6 +21,7 @@ export const calendarBookingUrl =
 export const docsUrl = 'https://docs.agentic.so'
 export const docsQuickStartUrl = `${docsUrl}/quick-start`
 export const docsMarketplaceUrl = `${docsUrl}/marketplace`
+export const discordUrl = 'https://discord.agentic.so'
 
 export const keywords = [
   'agentic',

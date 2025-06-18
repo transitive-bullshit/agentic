@@ -6,22 +6,28 @@ import { useEffect, useState } from 'react'
 
 import { GitHubIcon } from '@/icons/github'
 import { githubUrl } from '@/lib/config'
+import { cn } from '@/lib/utils'
 
 import { Button } from './ui/button'
 
 // TODO: fetch this dynamically
 const numGitHubStars = 17_600
 
-export function GitHubStarCounter() {
+export function GitHubStarCounter({ className }: { className?: string }) {
   const [numStars, setNumStars] = useState(0)
+
   useEffect(() => {
     setNumStars(numGitHubStars)
   }, [])
 
   return (
-    <Button variant='outline' className='flex items-center gap-2' asChild>
+    <Button
+      variant='outline'
+      className={cn('flex items-center gap-2', className)}
+      asChild
+    >
       <Link href={githubUrl} target='_blank' rel='noopener'>
-        <GitHubIcon className='' />
+        <GitHubIcon />
 
         <NumberFlow
           value={numStars}
@@ -30,6 +36,7 @@ export function GitHubStarCounter() {
             roundingPriority: 'morePrecision'
           }}
           suffix=' stars'
+          willChange
         />
       </Link>
     </Button>
