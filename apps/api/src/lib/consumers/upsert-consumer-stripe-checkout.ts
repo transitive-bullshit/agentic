@@ -17,6 +17,7 @@ import { upsertStripeCustomer } from '@/lib/billing/upsert-stripe-customer'
 import { upsertStripePricing } from '@/lib/billing/upsert-stripe-pricing'
 import { createConsumerToken } from '@/lib/create-consumer-token'
 
+import { aclPublicProject } from '../acl-public-project'
 import { createStripeCheckoutSession } from '../billing/create-stripe-checkout-session'
 
 export async function upsertConsumerStripeCheckout(
@@ -65,12 +66,6 @@ export async function upsertConsumerStripeCheckout(
       }
     })
     assert(deployment, 404, `Deployment not found "${deploymentId}"`)
-    assert(
-      !deployment.deletedAt,
-      410,
-      `Deployment has been deleted by its owner "${deployment.id}"`
-    )
-    await acl(c, deployment, { label: 'Deployment' })
 
     project = deployment.project!
     assert(
@@ -78,7 +73,16 @@ export async function upsertConsumerStripeCheckout(
       404,
       `Project not found "${projectId}" for deployment "${deploymentId}"`
     )
-    await acl(c, project, { label: 'Project' })
+    await aclPublicProject(project)
+
+    // Validate the deployment only after we're sure the project is publicly
+    // accessible.
+    assert(
+      !deployment.deletedAt,
+      410,
+      `Deployment has been deleted by its owner "${deployment.id}"`
+    )
+
     projectId = project.id
   }
 

@@ -347,7 +347,9 @@ export class AgenticApiClient {
     } = {}
   ): Promise<Array<PopulateProject<TPopulate>>> {
     return this.ky
-      .get('v1/projects', { searchParams: sanitizeSearchParams(searchParams) })
+      .get('v1/projects/public', {
+        searchParams: sanitizeSearchParams(searchParams)
+      })
       .json()
   }
 

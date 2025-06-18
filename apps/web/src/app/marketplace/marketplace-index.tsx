@@ -70,7 +70,8 @@ export function MarketplaceIndex() {
               <p>Error fetching projects</p>
             ) : !projects.length ? (
               <p>
-                No projects found. Create your first project to get started!
+                No projects found. This is likely an error on Agentic's side.
+                Please refresh or contact support.
               </p>
             ) : (
               <div className='grid gap-4'>
