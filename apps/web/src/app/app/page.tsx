@@ -1,5 +1,5 @@
-import { AppIndex } from './app-index'
+import { AppDashboard } from './app-dashboard'
 
 export default function AppIndexPage() {
-  return <AppIndex />
+  return <AppDashboard />
 }
