@@ -25,9 +25,6 @@ export function useConfettiFireworks() {
       ...options
     }
 
-    const randomInRange = (min: number, max: number) =>
-      Math.random() * (max - min) + min
-
     const interval = globalThis.window.setInterval(() => {
       const timeLeft = animationEnd - Date.now()
 
@@ -57,4 +54,8 @@ export function useConfettiFireworks() {
   return {
     fireConfetti
   }
+}
+
+function randomInRange(min: number, max: number) {
+  return Math.random() * (max - min) + min
 }

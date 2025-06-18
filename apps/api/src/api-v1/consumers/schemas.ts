@@ -3,7 +3,8 @@ import { z } from '@hono/zod-openapi'
 import {
   consumerIdSchema,
   consumerRelationsSchema,
-  paginationSchema
+  paginationSchema,
+  projectIdentifierSchema
 } from '@/db'
 
 export const consumerIdParamsSchema = z.object({
@@ -29,6 +30,10 @@ export const consumerTokenParamsSchema = z.object({
     })
 })
 
+export const projectIdentifierQuerySchema = z.object({
+  projectIdentifier: projectIdentifierSchema
+})
+
 export const populateConsumerSchema = z.object({
   populate: z
     .union([consumerRelationsSchema, z.array(consumerRelationsSchema)])
@@ -39,5 +44,10 @@ export const populateConsumerSchema = z.object({
 
 export const paginationAndPopulateConsumerSchema = z.object({
   ...paginationSchema.shape,
+  ...populateConsumerSchema.shape
+})
+
+export const projectIdentifierAndPopulateConsumerSchema = z.object({
+  ...projectIdentifierQuerySchema.shape,
   ...populateConsumerSchema.shape
 })

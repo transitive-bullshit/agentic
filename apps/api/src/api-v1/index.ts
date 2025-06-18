@@ -16,6 +16,7 @@ import { registerV1AdminGetConsumerByToken } from './consumers/admin-get-consume
 import { registerV1CreateConsumer } from './consumers/create-consumer'
 import { registerV1CreateConsumerCheckoutSession } from './consumers/create-consumer-checkout-session'
 import { registerV1GetConsumer } from './consumers/get-consumer'
+import { registerV1GetConsumerByProjectIdentifier } from './consumers/get-consumer-by-project-identifier'
 import { registerV1ListConsumers } from './consumers/list-consumers'
 import { registerV1ListConsumersForProject } from './consumers/list-project-consumers'
 import { registerV1RefreshConsumerToken } from './consumers/refresh-consumer-token'
@@ -118,6 +119,7 @@ registerV1GetProject(privateRouter)
 registerV1UpdateProject(privateRouter)
 
 // Consumers
+registerV1GetConsumerByProjectIdentifier(privateRouter) // msut be before `registerV1GetConsumer`
 registerV1GetConsumer(privateRouter)
 registerV1CreateConsumer(privateRouter)
 registerV1CreateConsumerCheckoutSession(privateRouter)

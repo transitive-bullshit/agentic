@@ -491,6 +491,23 @@ export class AgenticApiClient {
       .json()
   }
 
+  /** Gets a consumer by ID. */
+  async getConsumerByProjectIdentifier<
+    TPopulate extends NonNullable<
+      OperationParameters<'getConsumerByProjectIdentifier'>['populate']
+    >[number]
+  >(
+    searchParams: OperationParameters<'getConsumerByProjectIdentifier'> & {
+      populate?: TPopulate[]
+    }
+  ): Promise<PopulateConsumer<TPopulate>> {
+    return this.ky
+      .get(`v1/consumers/by-project-identifier`, {
+        searchParams: sanitizeSearchParams(searchParams)
+      })
+      .json()
+  }
+
   /**
    * Updates a consumer's subscription to a different deployment or pricing
    * plan. Set `plan` to undefined to cancel the subscription.

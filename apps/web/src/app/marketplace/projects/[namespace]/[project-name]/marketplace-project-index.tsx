@@ -20,6 +20,7 @@ export function MarketplaceProjectIndex({
   const checkout = searchParams.get('checkout')
   const plan = searchParams.get('plan')
 
+  // Load the public project.
   const {
     data: project,
     isLoading,
@@ -32,6 +33,26 @@ export function MarketplaceProjectIndex({
         populate: ['lastPublishedDeployment']
       }),
     enabled: !!ctx
+  })
+
+  // If the user is authenticated, check if they have an active subscription to
+  // this project.
+  const {
+    data: consumer
+    // isLoading: isConsumerLoading,
+    // isError: isConsumerError
+  } = useQuery({
+    queryKey: [
+      'project',
+      projectIdentifier,
+      'user',
+      ctx?.api.authSession?.user.id
+    ],
+    queryFn: () =>
+      ctx!.api.getConsumerByProjectIdentifier({
+        projectIdentifier
+      }),
+    enabled: !!ctx?.isAuthenticated
   })
 
   const onSubscribe = useCallback(
@@ -61,7 +82,7 @@ export function MarketplaceProjectIndex({
           plan: pricingPlanSlug
         })
 
-        console.log('checkoutSession', res)
+        console.log('checkout', res)
         checkoutSession = res.checkoutSession
       } catch (err) {
         return toastError(err, { label: 'Error creating checkout session' })
@@ -146,17 +167,15 @@ export function MarketplaceProjectIndex({
                 <pre className='max-w-lg'>{JSON.stringify(plan, null, 2)}</pre>
 
                 <Button
-                  onClick={() =>
-                    onSubscribe(
-                      project.lastPublishedDeployment?.pricingPlans[0]?.slug ??
-                        'free'
-                    )
-                  }
-                  disabled={
-                    !project.lastPublishedDeployment?.pricingPlans[0]?.slug
-                  }
+                  onClick={() => onSubscribe(plan.slug)}
+                  // TODO: handle free plans correctly
+                  disabled={consumer?.plan === plan.slug}
                 >
-                  Subscribe to "{plan.name}"
+                  {consumer?.plan === plan.slug ? (
+                    <span>Currently subscribed to "{plan.name}"</span>
+                  ) : (
+                    <span>Subscribe to "{plan.name}"</span>
+                  )}
                 </Button>
               </div>
             ))}

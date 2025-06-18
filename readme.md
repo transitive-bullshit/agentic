@@ -15,11 +15,9 @@
 - **website**
   - marketing landing page
   - webapp
+    - consider a PrettyJson component which displays json but links to resources
   - stripe
     - if user is subscribed to a plan, show that plan as selected
-    - handle unauthenticated checkout flow => auth and then redirect to create a checkout session
-    - will need a `redirect` url for `/login` and `/signup`
-    - `/marketplace/projects/@{projectIdentifier}?checkout=true&plan={plan}`
     - stripe checkout
     - stripe billing portal
 - **API gateway**
