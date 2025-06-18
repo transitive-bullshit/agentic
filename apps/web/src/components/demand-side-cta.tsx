@@ -12,7 +12,7 @@ export function DemandSideCTA() {
       </HeroButton>
 
       <Button variant='outline' asChild className='h-full'>
-        <Link href={docsMarketplaceUrl}>Check out the marketplace docs</Link>
+        <Link href={docsMarketplaceUrl}>Check out the docs</Link>
       </Button>
     </div>
   )

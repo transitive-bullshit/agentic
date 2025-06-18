@@ -1,10 +1,11 @@
+import { OpenSourceSection } from '@/components/open-source-section'
 import { SupplySideCTA } from '@/components/supply-side-cta'
 
 export default function IndexPage() {
   return (
     <>
       <section className='gap-8'>
-        <h1 className='my-0! text-center text-balance leading-snug md:leading-none text-4xl font-extrabold'>
+        <h1 className='text-center text-balance leading-snug md:leading-none text-4xl font-extrabold'>
           Your API → Paid MCP, Instantly
         </h1>
 
@@ -22,6 +23,8 @@ export default function IndexPage() {
 
         <div>TODO</div>
       </section>
+
+      <OpenSourceSection />
     </>
   )
 }

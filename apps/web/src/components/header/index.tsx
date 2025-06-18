@@ -26,10 +26,6 @@ export function Header() {
             Docs
           </ActiveLink>
 
-          <ActiveLink href='/about' className='link'>
-            About
-          </ActiveLink>
-
           {ctx?.isAuthenticated ? (
             <>
               <ActiveLink href='/app' className='link'>
