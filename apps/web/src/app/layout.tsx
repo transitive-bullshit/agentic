@@ -56,7 +56,7 @@ export default function RootLayout({
               {children}
             </main>
 
-            <Toaster richColors />
+            <Toaster richColors duration={5000} />
             <Footer />
           </div>
 

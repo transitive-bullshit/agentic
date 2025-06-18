@@ -35,7 +35,7 @@ import { stripe } from '@/lib/external/stripe'
  * @note This function assumes that the deployment's pricing config has already
  * been validated.
  */
-export async function upsertStripePricing({
+export async function upsertStripePricingResources({
   deployment,
   project
 }: {
@@ -69,7 +69,7 @@ export async function upsertStripePricing({
     // Upsert the Stripe Product
     if (!project._stripeProductIdMap[pricingPlanLineItemSlug]) {
       const productParams: Stripe.ProductCreateParams = {
-        name: `${project.id} ${pricingPlanLineItemSlug}`,
+        name: `${project.identifier} ${pricingPlanLineItemSlug}`,
         type: 'service',
         metadata: {
           projectId: project.id,
@@ -99,7 +99,7 @@ export async function upsertStripePricing({
       if (!project._stripeMeterIdMap[pricingPlanLineItemSlug]) {
         const stripeMeter = await stripe.billing.meters.create(
           {
-            display_name: `${project.id} ${pricingPlanLineItem.label || pricingPlanLineItemSlug}`,
+            display_name: `${project.identifier} ${pricingPlanLineItem.label || pricingPlanLineItemSlug}`,
             event_name: `meter-${project.id}-${pricingPlanLineItemSlug}`,
             // TODO: This currently isn't taken into account for the slug, so if it
             // changes across deployments, the meter will not be updated.
@@ -143,6 +143,7 @@ export async function upsertStripePricing({
     if (!project._stripePriceIdMap[pricingPlanLineItemHashForStripePrice]) {
       const interval = pricingPlan.interval ?? project.defaultPricingInterval
 
+      // (nickname is hidden from customers)
       const nickname = [
         'price',
         project.id,
@@ -153,9 +154,9 @@ export async function upsertStripePricing({
         .join('-')
 
       const priceParams: Stripe.PriceCreateParams = {
-        nickname,
         product: project._stripeProductIdMap[pricingPlanLineItemSlug],
         currency: project.pricingCurrency,
+        nickname,
         recurring: {
           interval,
 

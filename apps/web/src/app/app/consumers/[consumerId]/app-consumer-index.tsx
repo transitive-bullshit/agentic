@@ -39,13 +39,22 @@ export function AppConsumerIndex({ consumerId }: { consumerId: string }) {
       if (plan) {
         firstLoadConsumer.current = false
         toast(
-          `Congrats! You are now subscribed to the "${plan}" plan for project "${consumer.project.name}"`
+          `Congrats! You are now subscribed to the "${plan}" plan for project "${consumer.project.name}"`,
+          {
+            duration: 10_000
+          }
         )
-        fireConfetti()
+
+        // Return the confetti cleanup handler, so if this component is
+        // unmounted, the confetti will stop as well.
+        return fireConfetti()
       } else {
         firstLoadConsumer.current = false
         toast(
-          `Your subscription has been cancelled for project "${consumer.project.name}"`
+          `Your subscription has been cancelled for project "${consumer.project.name}"`,
+          {
+            duration: 10_000
+          }
         )
       }
     }

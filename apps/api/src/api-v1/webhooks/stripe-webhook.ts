@@ -8,7 +8,18 @@ import { env } from '@/lib/env'
 import { stripe } from '@/lib/external/stripe'
 
 const relevantStripeEvents = new Set<Stripe.Event.Type>([
-  'customer.subscription.updated'
+  'checkout.session.completed',
+  'checkout.session.expired',
+  'checkout.session.async_payment_failed',
+  'checkout.session.async_payment_succeeded',
+  'customer.subscription.created',
+  'customer.subscription.updated',
+  'customer.subscription.paused',
+  'customer.subscription.resumed',
+  'customer.subscription.deleted',
+  'customer.subscription.pending_update_applied',
+  'customer.subscription.pending_update_expired',
+  'customer.subscription.trial_will_end'
 ])
 
 export function registerV1StripeWebhook(app: HonoApp) {
@@ -16,7 +27,11 @@ export function registerV1StripeWebhook(app: HonoApp) {
     const logger = ctx.get('logger')
     const body = await ctx.req.text()
     const signature = ctx.req.header('Stripe-Signature')
-    assert(signature, 400, 'missing signature')
+    assert(
+      signature,
+      400,
+      'error invalid stripe webhook event: missing signature'
+    )
 
     let event: Stripe.Event
 
@@ -28,7 +43,7 @@ export function registerV1StripeWebhook(app: HonoApp) {
       )
     } catch (err) {
       throw new HttpError({
-        message: 'invalid stripe event',
+        message: 'error invalid stripe webhook event: signature mismatch',
         cause: err,
         statusCode: 400
       })
@@ -39,11 +54,10 @@ export function registerV1StripeWebhook(app: HonoApp) {
     assert(
       event.livemode === env.isStripeLive,
       400,
-      'invalid stripe event: livemode mismatch'
+      'error invalid stripe webhook event: livemode mismatch'
     )
 
     if (!relevantStripeEvents.has(event.type)) {
-      // TODO
       return ctx.json({ status: 'ok' })
     }
 

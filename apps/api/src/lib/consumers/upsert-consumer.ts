@@ -5,9 +5,11 @@ import { and, db, eq, type RawDeployment, type RawProject, schema } from '@/db'
 import { acl } from '@/lib/acl'
 import { upsertStripeConnectCustomer } from '@/lib/billing/upsert-stripe-connect-customer'
 import { upsertStripeCustomer } from '@/lib/billing/upsert-stripe-customer'
-import { upsertStripePricing } from '@/lib/billing/upsert-stripe-pricing'
+import { upsertStripePricingResources } from '@/lib/billing/upsert-stripe-pricing-resources'
 import { upsertStripeSubscription } from '@/lib/billing/upsert-stripe-subscription'
 import { createConsumerToken } from '@/lib/create-consumer-token'
+
+import { aclPublicProject } from '../acl-public-project'
 
 export async function upsertConsumer(
   c: AuthenticatedHonoContext,
@@ -51,7 +53,6 @@ export async function upsertConsumer(
       410,
       `Deployment has been deleted by its owner "${deployment.id}"`
     )
-    await acl(c, deployment, { label: 'Deployment' })
 
     project = deployment.project!
     assert(
@@ -59,7 +60,17 @@ export async function upsertConsumer(
       404,
       `Project not found "${projectId}" for deployment "${deploymentId}"`
     )
-    await acl(c, project, { label: 'Project' })
+    await aclPublicProject(project)
+
+    // Validate the deployment only after we're sure the project is publicly
+    // accessible.
+    assert(
+      !deployment.deletedAt,
+      410,
+      `Deployment has been deleted by its owner "${deployment.id}"`
+    )
+
+    projectId = project.id
   }
 
   if (deploymentId) {
@@ -106,7 +117,6 @@ export async function upsertConsumer(
     )
   }
 
-  assert(consumerId)
   assert(deploymentId)
   assert(projectId)
 
@@ -160,7 +170,7 @@ export async function upsertConsumer(
   assert(consumer, 500, 'Error creating consumer')
 
   // Ensure that all Stripe pricing resources exist for this deployment
-  await upsertStripePricing({ deployment, project })
+  await upsertStripePricingResources({ deployment, project })
 
   // Ensure that customer and default source are created on the stripe connect account
   // TODO: is this necessary?

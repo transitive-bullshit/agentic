@@ -14,7 +14,7 @@ import {
 import { acl } from '@/lib/acl'
 import { upsertStripeConnectCustomer } from '@/lib/billing/upsert-stripe-connect-customer'
 import { upsertStripeCustomer } from '@/lib/billing/upsert-stripe-customer'
-import { upsertStripePricing } from '@/lib/billing/upsert-stripe-pricing'
+import { upsertStripePricingResources } from '@/lib/billing/upsert-stripe-pricing-resources'
 import { createConsumerToken } from '@/lib/create-consumer-token'
 
 import { aclPublicProject } from '../acl-public-project'
@@ -188,7 +188,7 @@ export async function upsertConsumerStripeCheckout(
   )
 
   // Ensure that all Stripe pricing resources exist for this deployment
-  await upsertStripePricing({ deployment, project })
+  await upsertStripePricingResources({ deployment, project })
 
   // Ensure that customer and default source are created on the stripe connect account
   // TODO: is this necessary?
