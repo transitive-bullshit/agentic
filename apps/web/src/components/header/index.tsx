@@ -17,6 +17,10 @@ export function Header() {
         </ActiveLink>
 
         <div className='flex justify-end items-center h-full gap-4'>
+          <ActiveLink href='/marketplace' className='link'>
+            Marketplace
+          </ActiveLink>
+
           <ActiveLink href='/about' className='link'>
             About
           </ActiveLink>

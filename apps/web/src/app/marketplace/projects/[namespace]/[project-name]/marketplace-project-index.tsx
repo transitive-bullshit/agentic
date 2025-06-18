@@ -20,7 +20,7 @@ export function MarketplaceProjectIndex({
   const checkout = searchParams.get('checkout')
   const plan = searchParams.get('plan')
 
-  // Load the public project.
+  // Load the public project
   const {
     data: project,
     isLoading,
@@ -36,10 +36,10 @@ export function MarketplaceProjectIndex({
   })
 
   // If the user is authenticated, check if they have an active subscription to
-  // this project.
+  // this project
   const {
-    data: consumer
-    // isLoading: isConsumerLoading,
+    data: consumer,
+    isLoading: isConsumerLoading
     // isError: isConsumerError
   } = useQuery({
     queryKey: [
@@ -104,24 +104,29 @@ export function MarketplaceProjectIndex({
       checkout === 'true' &&
       plan &&
       project &&
+      !isConsumerLoading &&
       !hasInitializedCheckoutFromSearchParams.current
     ) {
       hasInitializedCheckoutFromSearchParams.current = true
 
-      // Start checkout flow if search params have `?checkout=true&plan={plan}`
-      // This is to allow unauthenticated users to subscribe to a plan by first
-      // visiting `/login` or `/signup` and then being redirected to this page
-      // with the target checkout search params already pre-filled.
-      // Another use case for this functionality is providing a single link to
-      // subscribe to a specific project and pricing plan – with the checkout
-      // details pre-filled.
-      void onSubscribe(checkout)
+      if (consumer?.plan !== plan) {
+        // Start checkout flow if search params have `?checkout=true&plan={plan}`
+        // This is to allow unauthenticated users to subscribe to a plan by first
+        // visiting `/login` or `/signup` and then being redirected to this page
+        // with the target checkout search params already pre-filled.
+        // Another use case for this functionality is providing a single link to
+        // subscribe to a specific project and pricing plan – with the checkout
+        // details pre-filled.
+        void onSubscribe(checkout)
+      }
     }
   }, [
     checkout,
     plan,
     ctx,
     project,
+    isConsumerLoading,
+    consumer,
     onSubscribe,
     hasInitializedCheckoutFromSearchParams
   ])
