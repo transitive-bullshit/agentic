@@ -65,7 +65,7 @@ export function AppConsumersList() {
           ) : !consumers.length ? (
             <p>
               No subscriptions found. Subscribe to your first project to get
-              started!
+              started.
             </p>
           ) : (
             <div className='grid gap-4'>

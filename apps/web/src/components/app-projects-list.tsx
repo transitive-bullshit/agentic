@@ -61,7 +61,7 @@ export function AppProjectsList() {
           {isError ? (
             <p>Error fetching projects</p>
           ) : !projects.length ? (
-            <p>No projects found. Create your first project to get started!</p>
+            <p>No projects found. Create your first project to get started.</p>
           ) : (
             <div className='grid gap-4'>
               {projects.map((project) => (
