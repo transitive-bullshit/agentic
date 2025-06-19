@@ -1,3 +1,7 @@
+import Link from 'next/link'
+
+import { SupplySideCTA } from '@/components/supply-side-cta'
+import { githubUrl, twitterUrl } from '@/lib/config'
 import { cn } from '@/lib/utils'
 
 import styles from './styles.module.css'
@@ -5,79 +9,181 @@ import styles from './styles.module.css'
 export default function AboutPage() {
   return (
     <>
+      <h1 className='text-center text-balance leading-snug md:leading-none text-4xl font-semibold'>
+        About
+      </h1>
+
       <section className={cn('prose dark:prose-invert', styles.markdown)}>
-        <h1>About</h1>
+        <h2>Setting the stage</h2>
 
-        <h2>Our Mission</h2>
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua.
-          <b>Ut enim ad minim veniam</b>, quis nostrud exercitation ullamco
-          laboris nisi ut aliquip ex ea commodo consequat.
+          it's 2025. LLMs are still scaling. AI agents are just starting to take
+          off. MCP is exploding. the singularity looms. shoggoth looks back on
+          us from the near future and gives a sly smile that doesn't quite reach
+          His inhuman eyes.
         </p>
 
-        <h2>Our Story</h2>
         <p>
-          Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-          dolore eu fugiat nulla pariatur.
-          <em>Excepteur sint occaecat cupidatat non proident</em>, sunt in culpa
-          qui officia deserunt mollit anim id est laborum.
+          in this increasingly AI-native world, what's the best way for "normal"
+          software engineers like us to stay relevant and provide value for both
+          our families as well as our future AI edgelords?
         </p>
 
-        <h2>Our Values</h2>
         <p>
-          Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-          accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae
-          ab illo inventore veritatis et quasi architecto beatae vitae dicta
-          sunt explicabo.
+          well, i don't know about you, but contributing to foundation models,
+          AI alignment, and AGI research all seem incredibly sexy but are also a
+          lil outside my areas of expertise.
         </p>
 
-        <h2>Our Team</h2>
         <p>
-          Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut
-          fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem
-          sequi nesciunt.
+          that's why agentic is focused solely on building value at the LLM tool
+          calling layer. MCPs are a great example here.
         </p>
 
-        <h2>Our Technology</h2>
         <p>
-          At vero eos et accusamus et iusto odio dignissimos ducimus qui
-          blanditiis praesentium voluptatum deleniti atque corrupti quos dolores
-          et quas molestias <b>excepturi sint occaecati</b> cupiditate non
-          provident.
+          there's a lot that will change in AI over the next decade, but one
+          thing i believe strongly is that no matter how much the underlying AI
+          systems change,{' '}
+          <span className='font-semibold'>
+            providing access to high quality tools that are specifically
+            designed and optimized for agents will become increasingly important
+            over time
+          </span>
+          .
         </p>
 
-        <h2>Our Impact</h2>
         <p>
-          Similique sunt in culpa qui officia deserunt mollitia animi, id est
-          laborum et dolorum fuga.
-          <em>Et harum quidem rerum facilis est et expedita distinctio</em>. Nam
-          libero tempore, cum soluta nobis est eligendi optio.
+          we call this <span className='font-semibold'>Agentic UX</span>, and
+          it's at the heart of Agentic's mission.
         </p>
 
-        <h2>Our Future</h2>
-        <p>
-          Temporibus autem quibusdam et aut officiis debitis aut rerum
-          necessitatibus saepe eveniet ut et voluptates repudiandae sint et
-          molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente
-          delectus.
+        <h2>Mission</h2>
+        <p className='font-semibold italic'>
+          our mission is to build the world's de facto standard library of tools
+          for AI agents.
         </p>
 
-        <h2>Our Community</h2>
+        {/* <h2>What is Agentic UX?</h2>
         <p>
-          Ut aut reiciendis voluptatibus maiores alias consequatur aut
-          perferendis doloribus asperiores repellat. Sed ut perspiciatis unde
-          omnis iste natus error sit voluptatem accusantium doloremque
-          laudantium.
+          Agentic User Experience measures how optimized a resource is for
+          consumption by LLM-based apps and more autonomous AI agents.
         </p>
 
-        <h2>Our Commitment</h2>
         <p>
-          Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse
-          quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo
-          voluptas nulla pariatur?{' '}
-          <b>Excepteur sint occaecat cupidatat non proident</b>.
+          `llms.txt` is a great example of a readonly format optimized for
+          Agentic UX.
         </p>
+
+        <p>
+          Anthropic's Model Context Protocol (MCP) and Google's Agent to Agent
+          Protocol (A2A) are both examples of protocols purpose-built for
+          Agentic UX. There are dozens of other aspirational protocols with
+          similar aims. [xkcd standards]
+        </p> */}
+
+        <h2>Team</h2>
+        <p>
+          Agentic was founded in 2023 by{' '}
+          <Link
+            href={twitterUrl}
+            target='_blank'
+            rel='noopener'
+            className='link'
+          >
+            Travis Fischer
+          </Link>{' '}
+          (hey hey 👋) . We're backed by{' '}
+          <Link
+            href='https://hf0.com'
+            target='_blank'
+            rel='noopener'
+            className='link'
+          >
+            HF0
+          </Link>
+          ,{' '}
+          <Link
+            href='https://hf0.com'
+            target='_blank'
+            rel='noopener'
+            className='link'
+          >
+            Backend Capital
+          </Link>
+          , and
+          <Link
+            href='https://hf0.com'
+            target='_blank'
+            rel='noopener'
+            className='link'
+          >
+            Transpose Capital
+          </Link>
+          .
+        </p>
+
+        <p>
+          I'm currently running Agentic as a solo founder while traveling around
+          the world, but i'm actively looking to hire a few remote engineers and
+          would consider bringing on a co-founder if they're a really strong
+          fit.
+        </p>
+
+        <p>
+          If you're an expert TypeScript dev who vibes with our mission and
+          loves open source – and if you have an interest in AI engineering, AI
+          agents, API gateways, OpenAPI, MCP, AI codegen, etc, feel free to{' '}
+          <Link
+            href={twitterUrl}
+            target='_blank'
+            rel='noopener'
+            className='link'
+          >
+            DM me on twitter
+          </Link>
+          , and please include a few links to your GitHub + related projects.
+        </p>
+
+        <p className='text-sm italic'>
+          (this page was written with love and an intentional lack of LLM
+          assistance on a very long and sleepy international flight 💕)
+        </p>
+
+        <h2>Tech stack</h2>
+        <ul>
+          <li>TypeScript</li>
+          <li>Node.js</li>
+          <li>Postgres</li>
+          <li>Drizzle ORM</li>
+          <li>Hono</li>
+          <li>Stripe</li>
+          <li>Cloudflare Workers</li>
+          <li>Vercel</li>
+          <li>Sentry</li>
+          <li>Resend</li>
+          <li>Cursor</li>
+        </ul>
+
+        <p>
+          <Link
+            href={githubUrl}
+            target='_blank'
+            rel='noopener'
+            className='link'
+          >
+            Check out the source on GitHub for more details
+          </Link>
+          .
+        </p>
+      </section>
+
+      {/* CTA section */}
+      <section className='flex flex-col gap-12'>
+        <h2 className='text-center text-balance leading-snug md:leading-none text-3xl font-heading'>
+          Don't miss out on this AI wave
+        </h2>
+
+        <SupplySideCTA variant='github-2' />
       </section>
     </>
   )

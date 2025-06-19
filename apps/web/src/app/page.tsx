@@ -13,8 +13,8 @@ export default function TheBestDamnLandingPageEver() {
   return (
     <>
       {/* Hero section */}
-      <section className='gap-8'>
-        <h1 className='text-center text-balance leading-snug md:leading-none text-4xl font-bold'>
+      <section className='gap-8 mb-16'>
+        <h1 className='text-center text-balance leading-snug md:leading-none text-4xl font-semibold'>
           Your API → Paid MCP, Instantly
         </h1>
 
@@ -28,7 +28,7 @@ export default function TheBestDamnLandingPageEver() {
       </section>
 
       {/* How it works section */}
-      <section className='flex flex-col gap-8'>
+      <section className='flex flex-col gap-8 mb-16'>
         <h2 className='text-center text-balance leading-snug md:leading-none text-3xl font-heading'>
           How It Works
         </h2>
@@ -37,7 +37,7 @@ export default function TheBestDamnLandingPageEver() {
       </section>
 
       {/* Features section */}
-      <section className='flex flex-col gap-8'>
+      <section className='flex flex-col gap-8 mb-16'>
         <h2 className='text-center text-balance leading-snug md:leading-none text-3xl font-heading'>
           Production-Ready and Extremely Flexible
         </h2>
@@ -183,7 +183,7 @@ export default function TheBestDamnLandingPageEver() {
       </section>
 
       {/* Marketplace section */}
-      {/* <section className='flex flex-col gap-8'>
+      {/* <section className='flex flex-col gap-8 mb-16'>
         <h2 className='text-center text-balance leading-snug md:leading-none text-3xl font-heading'>
           MCP Marketplace
         </h2>
@@ -194,7 +194,7 @@ export default function TheBestDamnLandingPageEver() {
       </section> */}
 
       {/* Open source section */}
-      <section className='flex flex-col items-center gap-8 max-w-2xl text-center'>
+      <section className='flex flex-col items-center gap-8 max-w-2xl text-center mb-16'>
         <h2 className='text-center text-balance leading-snug md:leading-none text-3xl font-heading'>
           Agentic is 100% Open Source
         </h2>
@@ -202,9 +202,8 @@ export default function TheBestDamnLandingPageEver() {
         <p className=''>
           Open source is very dear to my heart, and I couldn't be happier that
           Agentic is fully OSS. It's written in{' '}
-          <span className='font-semibold'>TypeScript</span>, stands on the
-          shoulders of infra giants (Vercel, Cloudflare, Postgres), and has a
-          small but vibrant developer community.{' '}
+          <span className='font-semibold'>TypeScript</span> and has a small but
+          vibrant developer community.{' '}
           <Link
             href={githubUrl}
             target='_blank'
@@ -220,16 +219,16 @@ export default function TheBestDamnLandingPageEver() {
             rel='noopener'
             className='link'
           >
-            ping me on Twitter
-          </Link>{' '}
-          with questions / feedback.
+            ping me on Twitter with questions / feedback
+          </Link>
+          .
         </p>
 
         <GitHubStarCounter />
       </section>
 
       {/* Social proof section */}
-      <section className='gap-8'>
+      <section className='gap-8 mb-16'>
         <h2 className='text-center text-balance leading-snug md:leading-none text-3xl font-heading'>
           TODO: social proof
         </h2>
@@ -238,12 +237,10 @@ export default function TheBestDamnLandingPageEver() {
       </section>
 
       {/* CTA section */}
-      <section className='flex flex-col gap-12'>
+      <section className='flex flex-col gap-12 mb-16'>
         <h2 className='text-center text-balance leading-snug md:leading-none text-3xl font-heading'>
-          Deploy Your MCP Product Today
+          Deploy Your MCP Today
         </h2>
-
-        <p>Join the AI gold rush && deploy your first MCP product today.</p>
 
         <SupplySideCTA variant='github-2' />
       </section>

@@ -264,6 +264,13 @@ export const projectSelectSchema = createSelectSchema(projects, {
     // .openapi('Deployment', { type: 'object' })
   })
   .strip()
+  // TODO
+  // .refine((project) => ({
+  //   ...project,
+  //   gatewayBaseUrl: `${env.AGENTIC_GATEWAY_BASE_URL}/${project.identifier}`,
+  //   gatewayMcpUrl: `${env.AGENTIC_GATEWAY_BASE_URL}/${project.identifier}/mcp`,
+  //   webBaseUrl: `${env.AGENTIC_WEB_BASE_URL}/marketplace/projects/${project.identifier}`
+  // }))
   .describe(
     `A Project represents a single Agentic API product. It is comprised of a series of immutable Deployments, each of which contains pricing data, origin API config, OpenAPI or MCP specs, tool definitions, and various metadata.
 
