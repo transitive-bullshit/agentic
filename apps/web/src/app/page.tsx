@@ -13,18 +13,24 @@ export default function TheBestDamnLandingPageEver() {
   return (
     <>
       {/* Hero section */}
-      <section className='gap-8 mb-16'>
-        <h1 className='text-center text-balance leading-snug md:leading-none text-4xl font-semibold'>
-          Your API → Paid MCP, Instantly
-        </h1>
+      <section className='mb-16 relative'>
+        <div className='absolute top-0 bottom-0 left-0 right-0 bg-[url(/dots.svg)] bg-repeat bg-center bg-size-[32px_auto] opacity-30 dark:opacity-100' />
 
-        <h5 className='text-center text-lg max-w-2xl'>
-          Run one command to turn any MCP server or OpenAPI service into a paid
-          MCP product,{' '}
-          <em>with built-in distribution to over 20k AI engineers</em>.
-        </h5>
+        <div className='absolute top-0 bottom-0 left-0 right-0 bg-[radial-gradient(39%_50%_at_50%_50%,rgba(255,255,255,.3)_0%,rgb(255,255,255)_100%)] dark:bg-[radial-gradient(39%_50%_at_50%_50%,rgba(10,10,10,0)_0%,rgb(10,10,10)_100%)]' />
 
-        <SupplySideCTA />
+        <div className='flex flex-col gap-8 relative z-10'>
+          <h1 className='text-center text-balance leading-snug md:leading-none text-4xl font-semibold'>
+            Your API → Paid MCP, Instantly
+          </h1>
+
+          <h5 className='text-center text-lg max-w-2xl'>
+            Run one command to turn any MCP server or OpenAPI service into a
+            paid MCP product,{' '}
+            <em>with built-in distribution to over 20k AI engineers</em>.
+          </h5>
+
+          <SupplySideCTA />
+        </div>
       </section>
 
       {/* How it works section */}
