@@ -13,6 +13,7 @@ import { registerV1SignInWithPassword } from './auth/sign-in-with-password'
 import { registerV1SignUpWithPassword } from './auth/sign-up-with-password'
 import { registerV1AdminActivateConsumer } from './consumers/admin-activate-consumer'
 import { registerV1AdminGetConsumerByToken } from './consumers/admin-get-consumer-by-token'
+import { registerV1CreateBillingPortalSession } from './consumers/create-billing-portal-session'
 import { registerV1CreateConsumer } from './consumers/create-consumer'
 import { registerV1CreateConsumerBillingPortalSession } from './consumers/create-consumer-billing-portal-session'
 import { registerV1CreateConsumerCheckoutSession } from './consumers/create-consumer-checkout-session'
@@ -121,6 +122,7 @@ registerV1UpdateProject(privateRouter)
 
 // Consumers
 registerV1GetConsumerByProjectIdentifier(privateRouter) // must be before `registerV1GetConsumer`
+registerV1CreateBillingPortalSession(privateRouter)
 registerV1GetConsumer(privateRouter)
 registerV1CreateConsumer(privateRouter)
 registerV1CreateConsumerCheckoutSession(privateRouter)
