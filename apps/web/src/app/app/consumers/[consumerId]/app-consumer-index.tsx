@@ -1,7 +1,8 @@
 'use client'
 
+import { Loader2Icon } from 'lucide-react'
 import { useSearchParams } from 'next/navigation'
-import { useCallback, useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 
 import { useAuthenticatedAgentic } from '@/components/agentic-provider'
@@ -17,6 +18,8 @@ export function AppConsumerIndex({ consumerId }: { consumerId: string }) {
   const checkout = searchParams.get('checkout')
   const plan = searchParams.get('plan')
   const { fireConfetti } = useConfettiFireworks()
+  const [isLoadingStripeBillingPortal, setIsLoadingStripeBillingPortal] =
+    useState(false)
 
   const {
     data: consumer,
@@ -68,10 +71,22 @@ export function AppConsumerIndex({ consumerId }: { consumerId: string }) {
       return
     }
 
-    const { url } = await ctx!.api.createConsumerBillingPortalSession({
-      consumerId: consumer.id
-    })
-    globalThis.open(url, '_blank')
+    let url: string | undefined
+    try {
+      setIsLoadingStripeBillingPortal(true)
+      const res = await ctx!.api.createConsumerBillingPortalSession({
+        consumerId: consumer.id
+      })
+      url = res.url
+    } catch (err) {
+      void toastError(err, { label: 'Error creating billing portal session' })
+    } finally {
+      setIsLoadingStripeBillingPortal(false)
+    }
+
+    if (url) {
+      globalThis.open(url, '_blank')
+    }
   }, [ctx, consumer])
 
   return (
@@ -95,7 +110,16 @@ export function AppConsumerIndex({ consumerId }: { consumerId: string }) {
             <pre className='max-w-lg'>{JSON.stringify(consumer, null, 2)}</pre>
           </div>
 
-          <Button onClick={onManageSubscription}>Manage Subscription</Button>
+          <Button
+            onClick={onManageSubscription}
+            disabled={isLoadingStripeBillingPortal}
+          >
+            {isLoadingStripeBillingPortal && (
+              <Loader2Icon className='animate-spin mr-2' />
+            )}
+
+            <span>Manage Subscription</span>
+          </Button>
         </>
       )}
     </section>

@@ -47,6 +47,12 @@ export async function upsertStripePricingResources({
     'Deployment and project must match'
   )
 
+  // Keep track of promises for Stripe resources that are created in parallel
+  // to avoid race conditions.
+  const stripeProductIdPromiseMap = new Map<string, Promise<string>>()
+  const stripeMeterIdPromiseMap = new Map<string, Promise<string>>()
+  const stripePriceIdPromiseMap = new Map<string, Promise<string>>()
+
   const stripeConnectParams = project._stripeAccountId
     ? [
         {
@@ -68,28 +74,43 @@ export async function upsertStripePricingResources({
 
     // Upsert the Stripe Product
     if (!project._stripeProductIdMap[pricingPlanLineItemSlug]) {
-      const productParams: Stripe.ProductCreateParams = {
-        name: `${project.identifier} ${pricingPlanLineItemSlug}`,
-        type: 'service',
-        metadata: {
-          projectId: project.id,
+      if (stripeProductIdPromiseMap.has(pricingPlanLineItemSlug)) {
+        const stripeProductId = await stripeProductIdPromiseMap.get(
           pricingPlanLineItemSlug
-        }
-      }
+        )!
 
-      if (pricingPlanLineItem.usageType === 'licensed') {
-        productParams.unit_label = pricingPlanLineItem.label
+        project._stripeProductIdMap[pricingPlanLineItemSlug] = stripeProductId
+        dirty = true
       } else {
-        productParams.unit_label = pricingPlanLineItem.unitLabel
+        const productParams: Stripe.ProductCreateParams = {
+          name: `${project.identifier} ${pricingPlanLineItemSlug}`,
+          type: 'service',
+          metadata: {
+            projectId: project.id,
+            pricingPlanLineItemSlug
+          }
+        }
+
+        if (pricingPlanLineItem.usageType === 'licensed') {
+          productParams.unit_label = pricingPlanLineItem.label
+        } else {
+          productParams.unit_label = pricingPlanLineItem.unitLabel
+        }
+
+        const productP = stripe.products.create(
+          productParams,
+          ...stripeConnectParams
+        )
+        stripeProductIdPromiseMap.set(
+          pricingPlanLineItemSlug,
+          productP.then((p) => p.id)
+        )
+
+        const product = await productP
+
+        project._stripeProductIdMap[pricingPlanLineItemSlug] = product.id
+        dirty = true
       }
-
-      const product = await stripe.products.create(
-        productParams,
-        ...stripeConnectParams
-      )
-
-      project._stripeProductIdMap[pricingPlanLineItemSlug] = product.id
-      dirty = true
     }
 
     assert(project._stripeProductIdMap[pricingPlanLineItemSlug])
@@ -97,28 +118,45 @@ export async function upsertStripePricingResources({
     if (pricingPlanLineItem.usageType === 'metered') {
       // Upsert the Stripe Meter
       if (!project._stripeMeterIdMap[pricingPlanLineItemSlug]) {
-        const stripeMeter = await stripe.billing.meters.create(
-          {
-            display_name: `${project.identifier} ${pricingPlanLineItem.label || pricingPlanLineItemSlug}`,
-            event_name: `meter-${project.id}-${pricingPlanLineItemSlug}`,
-            // TODO: This currently isn't taken into account for the slug, so if it
-            // changes across deployments, the meter will not be updated.
-            default_aggregation: {
-              formula: pricingPlanLineItem.defaultAggregation?.formula ?? 'sum'
-            },
-            customer_mapping: {
-              event_payload_key: 'stripe_customer_id',
-              type: 'by_id'
-            },
-            value_settings: {
-              event_payload_key: 'value'
-            }
-          },
-          ...stripeConnectParams
-        )
+        if (stripeMeterIdPromiseMap.has(pricingPlanLineItemSlug)) {
+          const stripeMeterId = await stripeMeterIdPromiseMap.get(
+            pricingPlanLineItemSlug
+          )!
 
-        project._stripeMeterIdMap[pricingPlanLineItemSlug] = stripeMeter.id
-        dirty = true
+          project._stripeMeterIdMap[pricingPlanLineItemSlug] = stripeMeterId
+          dirty = true
+        } else {
+          const meterP = stripe.billing.meters.create(
+            {
+              display_name: `${project.identifier} ${pricingPlanLineItem.label || pricingPlanLineItemSlug}`,
+              event_name: `meter-${project.id}-${pricingPlanLineItemSlug}`,
+              // TODO: This currently isn't taken into account for the slug, so if it
+              // changes across deployments, the meter will not be updated.
+              default_aggregation: {
+                formula:
+                  pricingPlanLineItem.defaultAggregation?.formula ?? 'sum'
+              },
+              customer_mapping: {
+                event_payload_key: 'stripe_customer_id',
+                type: 'by_id'
+              },
+              value_settings: {
+                event_payload_key: 'value'
+              }
+            },
+            ...stripeConnectParams
+          )
+
+          stripeMeterIdPromiseMap.set(
+            pricingPlanLineItemSlug,
+            meterP.then((m) => m.id)
+          )
+
+          const stripeMeter = await meterP
+
+          project._stripeMeterIdMap[pricingPlanLineItemSlug] = stripeMeter.id
+          dirty = true
+        }
       }
 
       assert(project._stripeMeterIdMap[pricingPlanLineItemSlug])
@@ -141,98 +179,116 @@ export async function upsertStripePricingResources({
 
     // Upsert the Stripe Price
     if (!project._stripePriceIdMap[pricingPlanLineItemHashForStripePrice]) {
-      const interval = pricingPlan.interval ?? project.defaultPricingInterval
+      if (stripePriceIdPromiseMap.has(pricingPlanLineItemHashForStripePrice)) {
+        const stripePriceId = await stripePriceIdPromiseMap.get(
+          pricingPlanLineItemHashForStripePrice
+        )!
 
-      // (nickname is hidden from customers)
-      const nickname = [
-        'price',
-        project.id,
-        pricingPlanLineItemSlug,
-        getLabelForPricingInterval(interval)
-      ]
-        .filter(Boolean)
-        .join('-')
-
-      const priceParams: Stripe.PriceCreateParams = {
-        product: project._stripeProductIdMap[pricingPlanLineItemSlug],
-        currency: project.pricingCurrency,
-        nickname,
-        recurring: {
-          interval,
-
-          // TODO: support this
-          interval_count: 1,
-
-          usage_type: pricingPlanLineItem.usageType,
-
-          meter: project._stripeMeterIdMap[pricingPlanLineItemSlug]
-        },
-        metadata: {
-          projectId: project.id,
-          pricingPlanLineItemSlug
-        }
-      }
-
-      if (pricingPlanLineItem.usageType === 'licensed') {
-        priceParams.unit_amount_decimal = pricingPlanLineItem.amount.toFixed(12)
+        project._stripePriceIdMap[pricingPlanLineItemHashForStripePrice] =
+          stripePriceId
+        dirty = true
       } else {
-        priceParams.billing_scheme = pricingPlanLineItem.billingScheme
+        const interval = pricingPlan.interval ?? project.defaultPricingInterval
 
-        if (pricingPlanLineItem.billingScheme === 'tiered') {
-          assert(
-            pricingPlanLineItem.tiers?.length,
-            400,
-            `Invalid pricing plan metric "${pricingPlanLineItemSlug}" for pricing plan "${pricingPlanSlug}": tiered billing schemes must have at least one tier.`
-          )
+        // (nickname is hidden from customers)
+        const nickname = [
+          'price',
+          project.id,
+          pricingPlanLineItemSlug,
+          getLabelForPricingInterval(interval)
+        ]
+          .filter(Boolean)
+          .join('-')
 
-          priceParams.tiers_mode = pricingPlanLineItem.tiersMode
-          priceParams.tiers = pricingPlanLineItem.tiers.map((tierData) => {
-            const tier: Stripe.PriceCreateParams.Tier = {
-              up_to: tierData.upTo
-            }
+        const priceParams: Stripe.PriceCreateParams = {
+          product: project._stripeProductIdMap[pricingPlanLineItemSlug],
+          currency: project.pricingCurrency,
+          nickname,
+          recurring: {
+            interval,
 
-            if (tierData.unitAmount !== undefined) {
-              tier.unit_amount_decimal = tierData.unitAmount.toFixed(12)
-            }
+            // TODO: support this
+            interval_count: 1,
 
-            if (tierData.flatAmount !== undefined) {
-              tier.flat_amount_decimal = tierData.flatAmount.toFixed(12)
-            }
+            usage_type: pricingPlanLineItem.usageType,
 
-            return tier
-          })
-        } else {
-          assert(
-            pricingPlanLineItem.billingScheme === 'per_unit',
-            400,
-            `Invalid pricing plan metric "${pricingPlanLineItemSlug}" for pricing plan "${pricingPlanSlug}": invalid billing scheme.`
-          )
-          assert(
-            pricingPlanLineItem.unitAmount !== undefined,
-            400,
-            `Invalid pricing plan metric "${pricingPlanLineItemSlug}" for pricing plan "${pricingPlanSlug}": unitAmount is required for per_unit billing schemes.`
-          )
+            meter: project._stripeMeterIdMap[pricingPlanLineItemSlug]
+          },
+          metadata: {
+            projectId: project.id,
+            pricingPlanLineItemSlug
+          }
+        }
 
+        if (pricingPlanLineItem.usageType === 'licensed') {
           priceParams.unit_amount_decimal =
-            pricingPlanLineItem.unitAmount.toFixed(12)
+            pricingPlanLineItem.amount.toFixed(12)
+        } else {
+          priceParams.billing_scheme = pricingPlanLineItem.billingScheme
 
-          if (pricingPlanLineItem.transformQuantity) {
-            priceParams.transform_quantity = {
-              divide_by: pricingPlanLineItem.transformQuantity.divideBy,
-              round: pricingPlanLineItem.transformQuantity.round
+          if (pricingPlanLineItem.billingScheme === 'tiered') {
+            assert(
+              pricingPlanLineItem.tiers?.length,
+              400,
+              `Invalid pricing plan metric "${pricingPlanLineItemSlug}" for pricing plan "${pricingPlanSlug}": tiered billing schemes must have at least one tier.`
+            )
+
+            priceParams.tiers_mode = pricingPlanLineItem.tiersMode
+            priceParams.tiers = pricingPlanLineItem.tiers.map((tierData) => {
+              const tier: Stripe.PriceCreateParams.Tier = {
+                up_to: tierData.upTo
+              }
+
+              if (tierData.unitAmount !== undefined) {
+                tier.unit_amount_decimal = tierData.unitAmount.toFixed(12)
+              }
+
+              if (tierData.flatAmount !== undefined) {
+                tier.flat_amount_decimal = tierData.flatAmount.toFixed(12)
+              }
+
+              return tier
+            })
+          } else {
+            assert(
+              pricingPlanLineItem.billingScheme === 'per_unit',
+              400,
+              `Invalid pricing plan metric "${pricingPlanLineItemSlug}" for pricing plan "${pricingPlanSlug}": invalid billing scheme.`
+            )
+            assert(
+              pricingPlanLineItem.unitAmount !== undefined,
+              400,
+              `Invalid pricing plan metric "${pricingPlanLineItemSlug}" for pricing plan "${pricingPlanSlug}": unitAmount is required for per_unit billing schemes.`
+            )
+
+            priceParams.unit_amount_decimal =
+              pricingPlanLineItem.unitAmount.toFixed(12)
+
+            if (pricingPlanLineItem.transformQuantity) {
+              priceParams.transform_quantity = {
+                divide_by: pricingPlanLineItem.transformQuantity.divideBy,
+                round: pricingPlanLineItem.transformQuantity.round
+              }
             }
           }
         }
+
+        const stripePriceP = stripe.prices.create(
+          priceParams,
+          ...stripeConnectParams
+        )
+
+        stripePriceIdPromiseMap.set(
+          pricingPlanLineItemHashForStripePrice,
+          stripePriceP.then((p) => p.id)
+        )
+
+        const stripePrice = await stripePriceP
+
+        project._stripePriceIdMap[pricingPlanLineItemHashForStripePrice] =
+          stripePrice.id
+        dirty = true
       }
-
-      const stripePrice = await stripe.prices.create(
-        priceParams,
-        ...stripeConnectParams
-      )
-
-      project._stripePriceIdMap[pricingPlanLineItemHashForStripePrice] =
-        stripePrice.id
-      dirty = true
     }
 
     assert(project._stripePriceIdMap[pricingPlanLineItemHashForStripePrice])
@@ -250,7 +306,7 @@ export async function upsertStripePricingResources({
     }
   }
 
-  await pAll(upserts, { concurrency: 4 })
+  await pAll(upserts, { concurrency: 8 })
 
   if (dirty) {
     await db

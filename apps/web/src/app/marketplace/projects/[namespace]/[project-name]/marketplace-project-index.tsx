@@ -1,8 +1,9 @@
 'use client'
 
 import { assert, omit, sanitizeSearchParams } from '@agentic/platform-core'
+import { Loader2Icon } from 'lucide-react'
 import { redirect, useSearchParams } from 'next/navigation'
-import { useCallback, useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { useAgentic } from '@/components/agentic-provider'
 import { LoadingIndicator } from '@/components/loading-indicator'
@@ -19,6 +20,8 @@ export function MarketplaceProjectIndex({
   const searchParams = useSearchParams()
   const checkout = searchParams.get('checkout')
   const plan = searchParams.get('plan')
+  const [isLoadingStripeCheckoutForPlan, setIsLoadingStripeCheckoutForPlan] =
+    useState<string | null>(null)
 
   // Load the public project
   const {
@@ -77,6 +80,7 @@ export function MarketplaceProjectIndex({
       let checkoutSession: { url: string; id: string } | undefined
 
       try {
+        setIsLoadingStripeCheckoutForPlan(pricingPlanSlug)
         const res = await ctx!.api.createConsumerCheckoutSession({
           deploymentId: lastPublishedDeploymentId!,
           plan: pricingPlanSlug
@@ -86,6 +90,8 @@ export function MarketplaceProjectIndex({
         checkoutSession = res.checkoutSession
       } catch (err) {
         return toastError(err, { label: 'Error creating checkout session' })
+      } finally {
+        setIsLoadingStripeCheckoutForPlan(null)
       }
 
       redirect(checkoutSession.url)
@@ -177,8 +183,15 @@ export function MarketplaceProjectIndex({
                   <Button
                     onClick={() => onSubscribe(plan.slug)}
                     // TODO: handle free plans correctly
-                    disabled={consumer?.plan === plan.slug}
+                    disabled={
+                      consumer?.plan === plan.slug ||
+                      !!isLoadingStripeCheckoutForPlan
+                    }
                   >
+                    {isLoadingStripeCheckoutForPlan === plan.slug && (
+                      <Loader2Icon className='animate-spin mr-2' />
+                    )}
+
                     {consumer?.plan === plan.slug ? (
                       <span>Currently subscribed to "{plan.name}"</span>
                     ) : (
