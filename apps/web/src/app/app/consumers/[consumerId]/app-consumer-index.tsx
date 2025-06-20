@@ -1,12 +1,14 @@
 'use client'
 
 import { useSearchParams } from 'next/navigation'
-import { useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import { toast } from 'sonner'
 
 import { useAuthenticatedAgentic } from '@/components/agentic-provider'
 import { useConfettiFireworks } from '@/components/confetti'
 import { LoadingIndicator } from '@/components/loading-indicator'
+import { Button } from '@/components/ui/button'
+import { toastError } from '@/lib/notifications'
 import { useQuery } from '@/lib/query-client'
 
 export function AppConsumerIndex({ consumerId }: { consumerId: string }) {
@@ -60,8 +62,20 @@ export function AppConsumerIndex({ consumerId }: { consumerId: string }) {
     }
   }, [checkout, ctx, plan, consumer, fireConfetti])
 
+  const onManageSubscription = useCallback(async () => {
+    if (!ctx || !consumer) {
+      void toastError('Failed to create billing portal session')
+      return
+    }
+
+    const { url } = await ctx!.api.createConsumerBillingPortalSession({
+      consumerId: consumer.id
+    })
+    globalThis.open(url, '_blank')
+  }, [ctx, consumer])
+
   return (
-    <section>
+    <section className='flex flex-col gap-16'>
       {!ctx || isLoading ? (
         <LoadingIndicator />
       ) : isError ? (
@@ -77,9 +91,11 @@ export function AppConsumerIndex({ consumerId }: { consumerId: string }) {
             Subscription to {consumer.project.name}
           </h1>
 
-          <div className='mt-8'>
+          <div className=''>
             <pre className='max-w-lg'>{JSON.stringify(consumer, null, 2)}</pre>
           </div>
+
+          <Button onClick={onManageSubscription}>Manage Subscription</Button>
         </>
       )}
     </section>
