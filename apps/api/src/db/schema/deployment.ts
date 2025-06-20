@@ -195,12 +195,14 @@ export const deploymentSelectSchema = createSelectSchema(deployments, {
     project: z
       .any()
       .refine(
-        (project): boolean => projectSelectSchema.safeParse(project).success,
+        (project): boolean =>
+          !project || projectSelectSchema.safeParse(project).success,
         {
           message: 'Invalid lastDeployment'
         }
       )
       .transform((project): any => {
+        if (!project) return undefined
         return projectSelectSchema.parse(project)
       })
       .optional()

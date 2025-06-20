@@ -163,27 +163,31 @@ export function MarketplaceProjectIndex({
               Pricing Plans
             </h2>
 
-            {project.lastPublishedDeployment!.pricingPlans.map((plan) => (
-              <div key={plan.slug} className='grid gap-4'>
-                <h3 className='text-center text-balance leading-snug md:leading-none text-xl font-bold'>
-                  {plan.name}
-                </h3>
+            <div className='flex gap-8'>
+              {project.lastPublishedDeployment!.pricingPlans.map((plan) => (
+                <div key={plan.slug} className='flex flex-col gap-4'>
+                  <h3 className='text-center text-balance leading-snug md:leading-none text-xl font-bold'>
+                    {plan.name}
+                  </h3>
 
-                <pre className='max-w-lg'>{JSON.stringify(plan, null, 2)}</pre>
+                  <pre className='max-w-lg'>
+                    {JSON.stringify(plan, null, 2)}
+                  </pre>
 
-                <Button
-                  onClick={() => onSubscribe(plan.slug)}
-                  // TODO: handle free plans correctly
-                  disabled={consumer?.plan === plan.slug}
-                >
-                  {consumer?.plan === plan.slug ? (
-                    <span>Currently subscribed to "{plan.name}"</span>
-                  ) : (
-                    <span>Subscribe to "{plan.name}"</span>
-                  )}
-                </Button>
-              </div>
-            ))}
+                  <Button
+                    onClick={() => onSubscribe(plan.slug)}
+                    // TODO: handle free plans correctly
+                    disabled={consumer?.plan === plan.slug}
+                  >
+                    {consumer?.plan === plan.slug ? (
+                      <span>Currently subscribed to "{plan.name}"</span>
+                    ) : (
+                      <span>Subscribe to "{plan.name}"</span>
+                    )}
+                  </Button>
+                </div>
+              ))}
+            </div>
           </div>
         </>
       )}

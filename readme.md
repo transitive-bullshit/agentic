@@ -18,7 +18,6 @@
     - consider a PrettyJson component which displays json but links to resources
   - stripe
     - stripe checkout for changing plans? (need to at least be able to upgrade)
-    - stripe billing portal
     - should we bypass stripe for `free` plans to increase conversions?
   - handle browser back/forward with `?next=`
   - add some social proof to signup page

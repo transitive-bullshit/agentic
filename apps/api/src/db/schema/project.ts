@@ -237,12 +237,14 @@ export const projectSelectSchema = createSelectSchema(projects, {
       .any()
       .refine(
         (deployment): boolean =>
-          deploymentSelectSchema.safeParse(deployment).success,
+          !deployment || deploymentSelectSchema.safeParse(deployment).success,
         {
           message: 'Invalid lastPublishedDeployment'
         }
       )
       .transform((deployment): any => {
+        if (!deployment) return undefined
+
         return deploymentSelectSchema.parse(deployment)
       })
       .optional(),
@@ -252,12 +254,13 @@ export const projectSelectSchema = createSelectSchema(projects, {
       .any()
       .refine(
         (deployment): boolean =>
-          deploymentSelectSchema.safeParse(deployment).success,
+          !deployment || deploymentSelectSchema.safeParse(deployment).success,
         {
           message: 'Invalid lastDeployment'
         }
       )
       .transform((deployment): any => {
+        if (!deployment) return undefined
         return deploymentSelectSchema.parse(deployment)
       })
       .optional()

@@ -80,5 +80,82 @@ export default defineConfig({
       inputSchemaAdditionalProperties: false,
       outputSchemaAdditionalProperties: false
     }
+  ],
+  pricingPlans: [
+    {
+      name: 'Free',
+      slug: 'free',
+      lineItems: [
+        {
+          slug: 'base',
+          usageType: 'licensed',
+          amount: 0
+        },
+        {
+          slug: 'requests',
+          usageType: 'metered',
+          billingScheme: 'per_unit',
+          unitAmount: 0
+        }
+      ]
+    },
+    {
+      name: 'Starter',
+      slug: 'starter',
+      lineItems: [
+        {
+          slug: 'base',
+          usageType: 'licensed',
+          amount: 999 // $9.99 USD
+        },
+        {
+          slug: 'requests',
+          usageType: 'metered',
+          billingScheme: 'tiered',
+          tiersMode: 'volume',
+          // free for first 1000 requests per month
+          // then $0.00053 USD for unlimited further requests that month
+          tiers: [
+            {
+              upTo: 1000,
+              unitAmount: 0
+            },
+            {
+              upTo: 'inf',
+              unitAmount: 0.053
+            }
+          ]
+        }
+      ]
+    },
+    {
+      name: 'Pro',
+      slug: 'pro',
+      lineItems: [
+        {
+          slug: 'base',
+          usageType: 'licensed',
+          amount: 2999 // $29.99 USD
+        },
+        {
+          slug: 'requests',
+          usageType: 'metered',
+          billingScheme: 'tiered',
+          tiersMode: 'volume',
+          // free for first 10000 requests per month
+          // then $0.00049 USD for unlimited further requests that month
+          tiers: [
+            {
+              upTo: 10_000,
+              unitAmount: 0
+            },
+            {
+              upTo: 'inf',
+              unitAmount: 0.049
+            }
+          ]
+        }
+      ]
+    }
   ]
 })
