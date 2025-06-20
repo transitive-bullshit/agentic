@@ -17,6 +17,7 @@ export namespace serper {
     gl: z.string().default('us').optional(),
     hl: z.string().default('en').optional(),
     page: z.number().int().default(1).optional(),
+    tbs: z.string().optional(),
     num: z
       .number()
       .int()
@@ -127,6 +128,7 @@ export namespace serper {
     q: string
     gl: string
     hl: string
+    tbs: string
     num: number
     autocorrect: boolean
     page: number
