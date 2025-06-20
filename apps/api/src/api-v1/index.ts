@@ -14,6 +14,7 @@ import { registerV1SignUpWithPassword } from './auth/sign-up-with-password'
 import { registerV1AdminActivateConsumer } from './consumers/admin-activate-consumer'
 import { registerV1AdminGetConsumerByToken } from './consumers/admin-get-consumer-by-token'
 import { registerV1CreateConsumer } from './consumers/create-consumer'
+import { registerV1CreateConsumerBillingPortalSession } from './consumers/create-consumer-billing-portal-session'
 import { registerV1CreateConsumerCheckoutSession } from './consumers/create-consumer-checkout-session'
 import { registerV1GetConsumer } from './consumers/get-consumer'
 import { registerV1GetConsumerByProjectIdentifier } from './consumers/get-consumer-by-project-identifier'
@@ -119,10 +120,11 @@ registerV1GetProject(privateRouter)
 registerV1UpdateProject(privateRouter)
 
 // Consumers
-registerV1GetConsumerByProjectIdentifier(privateRouter) // msut be before `registerV1GetConsumer`
+registerV1GetConsumerByProjectIdentifier(privateRouter) // must be before `registerV1GetConsumer`
 registerV1GetConsumer(privateRouter)
 registerV1CreateConsumer(privateRouter)
 registerV1CreateConsumerCheckoutSession(privateRouter)
+registerV1CreateConsumerBillingPortalSession(privateRouter)
 registerV1UpdateConsumer(privateRouter)
 registerV1RefreshConsumerToken(privateRouter)
 registerV1ListConsumers(privateRouter)

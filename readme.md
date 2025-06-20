@@ -44,7 +44,6 @@
   - consider using [neon serverless driver](https://orm.drizzle.team/docs/connect-neon) for production
   - can this also be used locally?
   - may need to update our `drizzle-orm` fork
-- figure out the best OSS license for launch
 
 ## TODO: Post-MVP
 

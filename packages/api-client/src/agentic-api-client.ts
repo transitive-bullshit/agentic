@@ -561,6 +561,22 @@ export class AgenticApiClient {
       .json()
   }
 
+  /**
+   * Creates a Stripe Billing Portal Session for a customer.
+   */
+  async createConsumerBillingPortalSession({
+    consumerId,
+    ...searchParams
+  }: OperationParameters<'createConsumerBillingPortalSession'>): Promise<{
+    url: string
+  }> {
+    return this.ky
+      .post(`v1/consumers/${consumerId}/billing-portal`, {
+        searchParams: sanitizeSearchParams(searchParams)
+      })
+      .json()
+  }
+
   /** Refreshes a consumer's API token. */
   async refreshConsumerToken({
     consumerId,

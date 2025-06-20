@@ -196,11 +196,15 @@ export async function upsertConsumerStripeCheckout(
   // TODO: this function may mutate `consumer`
   await upsertStripeConnectCustomer({ stripeCustomer, consumer, project })
 
-  logger.info('SUBSCRIPTION', existingConsumer ? 'UPDATE' : 'CREATE', {
-    project,
-    deployment,
-    consumer
-  })
+  logger.info(
+    'CONSUMER STRIPE CHECKOUT',
+    existingConsumer ? 'UPDATE' : 'CREATE',
+    {
+      project,
+      deployment,
+      consumer
+    }
+  )
 
   const checkoutSession = await createStripeCheckoutSession(c, {
     consumer,

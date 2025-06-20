@@ -254,6 +254,7 @@ export async function syncConsumerWithStripeSubscription({
   ) {
     consumer._stripeSubscriptionId = subscription.id
     consumer.stripeStatus = subscription.status
+    consumer.plan = plan as any // TODO: types
     setConsumerStripeSubscriptionStatus(consumer)
 
     if (deploymentId) {

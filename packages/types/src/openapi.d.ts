@@ -353,6 +353,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/consumers/{consumerId}/billing-portal": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Creates a Stripe billing portal session for a customer. */
+        post: operations["createConsumerBillingPortalSession"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/consumers/{consumerId}/refresh-token": {
         parameters: {
             query?: never;
@@ -1924,6 +1941,38 @@ export interface operations {
                             url: string;
                         };
                         consumer: components["schemas"]["Consumer"];
+                    };
+                };
+            };
+            400: components["responses"]["400"];
+            401: components["responses"]["401"];
+            403: components["responses"]["403"];
+            404: components["responses"]["404"];
+            409: components["responses"]["409"];
+            410: components["responses"]["410"];
+        };
+    };
+    createConsumerBillingPortalSession: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Consumer ID */
+                consumerId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description A billing portal session URL */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** Format: uri */
+                        url: string;
                     };
                 };
             };
