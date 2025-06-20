@@ -2,7 +2,7 @@
   "name": "@agentic/platform-fixtures-basic-mcp",
   "private": true,
   "author": "Travis Fischer <travis@transitivebullsh.it>",
-  "license": "UNLICENSED",
+  "license": "AGPL-3.0",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/transitive-bullshit/agentic-platform.git",

@@ -7,7 +7,7 @@ catalog:
   '@ai-sdk/openai': ^1.3.22
   '@apideck/better-ajv-errors': ^0.3.6
   '@clack/prompts': ^0.11.0
-  '@cloudflare/workers-types': ^4.20250614.0
+  '@cloudflare/workers-types': ^4.20250620.0
   '@commander-js/extra-typings': ^14.0.0
   '@edge-runtime/vm': ^5.0.0
   '@fisch0920/config': ^1.1.2
@@ -17,16 +17,16 @@ catalog:
   '@hono/sentry': ^1.2.2
   '@hono/zod-openapi': ^0.19.8
   '@hono/zod-validator': ^0.7.0
-  '@modelcontextprotocol/sdk': ^1.12.3
+  '@modelcontextprotocol/sdk': ^1.13.0
   '@paralleldrive/cuid2': ^2.2.2
-  '@react-email/components': ^0.0.42
+  '@react-email/components': ^0.1.0
   '@redocly/openapi-core': ^1.34.3
   '@sentry/cli': ^2.46.0
-  '@sentry/cloudflare': ^9.29.0
-  '@sentry/core': ^9.29.0
-  '@sentry/node': ^9.29.0
+  '@sentry/cloudflare': ^9.30.0
+  '@sentry/core': ^9.30.0
+  '@sentry/node': ^9.30.0
   '@types/ms': ^2.1.0
-  '@types/node': ^24.0.1
+  '@types/node': ^24.0.3
   '@types/react': ^19.1.8
   '@types/react-dom': ^19.1.6
   '@types/semver': ^7.7.0
@@ -49,14 +49,14 @@ catalog:
   exit-hook: ^4.0.0
   fast-content-type-parse: ^3.0.0
   fast-uri: ^3.0.6
-  fastmcp: ^3.3.0
+  fastmcp: ^3.4.0
   get-port: ^7.1.0
   hash-object: ^5.0.1
-  hono: ^4.7.11
+  hono: ^4.8.1
   is-relative-url: ^4.0.0
-  knip: ^5.61.0
+  knip: ^5.61.2
   ky: 1.8.1
-  lint-staged: ^16.1.1
+  lint-staged: ^16.1.2
   ms: ^2.1.3
   npm-run-all2: ^8.0.4
   octokit: ^5.0.3
@@ -87,11 +87,11 @@ catalog:
   typescript: ^5.8.3
   unconfig: ^7.3.2
   vite-tsconfig-paths: ^5.1.4
-  vitest: ^3.2.3
-  wrangler: ^4.20.0
-  zod: ^3.25.64
+  vitest: ^3.2.4
+  wrangler: ^4.20.3
+  zod: ^3.25.67
   zod-to-json-schema: ^3.24.5
-  zod-validation-error: ^3.5.0
+  zod-validation-error: ^3.5.2
 
 onlyBuiltDependencies:
   - '@sentry/cli'

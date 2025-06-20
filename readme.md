@@ -110,8 +110,6 @@
   - https://datatracker.ietf.org/doc/draft-ietf-httpapi-ratelimit-headers/
 - make json `$schema` public for `agentic.config.json`
 
-## License
-
-UNLICENSED PROPRIETARY © [Agentic](https://x.com/transitive_bs)
+## Connect
 
 To stay up to date or learn more, follow [@transitive_bs](https://x.com/transitive_bs) on Twitter.

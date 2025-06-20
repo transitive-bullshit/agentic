@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Validation utils for the Agentic platform.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
-  "license": "UNLICENSED",
+  "license": "AGPL-3.0",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/transitive-bullshit/agentic-platform.git",

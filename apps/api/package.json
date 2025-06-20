@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "description": "Internal Agentic platform API service.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
-  "license": "UNLICENSED",
+  "license": "AGPL-3.0",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/transitive-bullshit/agentic-platform.git",

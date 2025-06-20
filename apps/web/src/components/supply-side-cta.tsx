@@ -38,7 +38,7 @@ export function SupplySideCTA({
         <Button variant='outline' asChild className='h-full py-[9px]'>
           <Link href={githubUrl} target='_blank' rel='noopener'>
             <GitHubIcon />
-            Star Agentic on GitHub
+            Star us on GitHub
           </Link>
         </Button>
       ) : (
