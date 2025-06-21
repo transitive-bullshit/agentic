@@ -2,7 +2,16 @@ import type Stripe from 'stripe'
 import { assert, HttpError } from '@agentic/platform-core'
 
 import type { HonoApp } from '@/lib/types'
-import { and, db, eq, type RawConsumer, schema } from '@/db'
+import {
+  and,
+  db,
+  eq,
+  getStripePriceIdForPricingPlanLineItem,
+  type RawConsumer,
+  type RawDeployment,
+  type RawProject,
+  schema
+} from '@/db'
 import { setConsumerStripeSubscriptionStatus } from '@/lib/consumers/utils'
 import { env } from '@/lib/env'
 import { stripe } from '@/lib/external/stripe'
@@ -88,15 +97,22 @@ export function registerV1StripeWebhook(app: HonoApp) {
               ? subscriptionOrId
               : subscriptionOrId.id
 
-          const [subscription, consumer] = await Promise.all([
+          const [subscription, consumer, deployment] = await Promise.all([
             // Make sure we have the full subscription instead of just the id
             typeof subscriptionOrId === 'string'
               ? stripe.subscriptions.retrieve(subscriptionId)
               : subscriptionOrId,
 
             db.query.consumers.findFirst({
-              where: and(eq(schema.consumers.id, consumerId))
-            })
+              where: and(eq(schema.consumers.id, consumerId)),
+              with: { project: true }
+            }),
+
+            deploymentId
+              ? db.query.deployments.findFirst({
+                  where: and(eq(schema.deployments.id, deploymentId))
+                })
+              : undefined
           ])
           assert(
             subscription,
@@ -104,6 +120,10 @@ export function registerV1StripeWebhook(app: HonoApp) {
             `stripe subscription "${subscriptionId}" not found`
           )
           assert(consumer, 404, `consumer "${consumerId}" not found`)
+          if (deploymentId) {
+            assert(deployment, 404, `deployment "${deploymentId}" not found`)
+          }
+          const { project } = consumer
 
           // TODO: Treat this as a transaction...
           await Promise.all([
@@ -119,6 +139,8 @@ export function registerV1StripeWebhook(app: HonoApp) {
             // Sync our Consumer's state with the Stripe Subscription's state
             syncConsumerWithStripeSubscription({
               consumer,
+              deployment,
+              project,
               subscription,
               plan,
               userId,
@@ -176,14 +198,29 @@ export function registerV1StripeWebhook(app: HonoApp) {
             status: subscription.status
           })
 
-          const consumer = await db.query.consumers.findFirst({
-            where: eq(schema.consumers.id, consumerId)
-          })
+          const [consumer, deployment] = await Promise.all([
+            db.query.consumers.findFirst({
+              where: eq(schema.consumers.id, consumerId),
+              with: { project: true }
+            }),
+
+            deploymentId
+              ? db.query.deployments.findFirst({
+                  where: and(eq(schema.deployments.id, deploymentId))
+                })
+              : undefined
+          ])
           assert(consumer, 404, `consumer "${consumerId}" not found`)
+          if (deploymentId) {
+            assert(deployment, 404, `deployment "${deploymentId}" not found`)
+          }
+          const { project } = consumer
 
           // Sync our Consumer's state with the Stripe Subscription's state
           await syncConsumerWithStripeSubscription({
             consumer,
+            deployment,
+            project,
             subscription,
             plan,
             userId,
@@ -220,6 +257,8 @@ export function registerV1StripeWebhook(app: HonoApp) {
  */
 export async function syncConsumerWithStripeSubscription({
   consumer,
+  project,
+  deployment,
   subscription,
   plan,
   userId,
@@ -227,12 +266,14 @@ export async function syncConsumerWithStripeSubscription({
   deploymentId
 }: {
   consumer: RawConsumer
+  project: RawProject
+  deployment?: RawDeployment
   subscription: Stripe.Subscription
   plan: string | null | undefined
   userId?: string
   projectId?: string
   deploymentId?: string
-}) {
+}): Promise<RawConsumer> {
   // These extra checks aren't really necessary, but they're nice sanity checks
   // to ensure metadata consistency with our consumer
   assert(
@@ -246,28 +287,65 @@ export async function syncConsumerWithStripeSubscription({
     `consumer "${consumer.id}" project "${consumer.projectId}" does not match stripe checkout metadata project "${projectId}"`
   )
 
-  if (
-    consumer._stripeSubscriptionId !== subscription.id ||
-    consumer.stripeStatus !== subscription.status ||
-    consumer.plan !== plan ||
-    consumer.deploymentId !== deploymentId
-  ) {
-    consumer._stripeSubscriptionId = subscription.id
-    consumer.stripeStatus = subscription.status
-    consumer.plan = plan as any // TODO: types
-    setConsumerStripeSubscriptionStatus(consumer)
+  consumer._stripeSubscriptionId = subscription.id
+  consumer.stripeStatus = subscription.status
+  consumer.plan = plan as any // TODO: types
+  setConsumerStripeSubscriptionStatus(consumer)
 
-    if (deploymentId) {
-      consumer.deploymentId = deploymentId
-    }
-
-    await db
-      .update(schema.consumers)
-      .set(consumer)
-      .where(eq(schema.consumers.id, consumer.id))
-
-    // TODO: invoke provider webhooks
-    // event.data.customer = consumer.getPublicDocument()
-    // await invokeWebhooks(consumer.project, event)
+  if (deploymentId) {
+    consumer.deploymentId = deploymentId
   }
+
+  const pricingPlan = plan
+    ? deployment?.pricingPlans.find((p) => p.slug === plan)
+    : undefined
+
+  if (pricingPlan) {
+    for (const lineItem of pricingPlan.lineItems) {
+      const stripeSubscriptionItemId =
+        consumer._stripeSubscriptionItemIdMap[lineItem.slug]
+
+      const stripePriceId: string | undefined = stripeSubscriptionItemId
+        ? undefined
+        : await getStripePriceIdForPricingPlanLineItem({
+            pricingPlan,
+            pricingPlanLineItem: lineItem,
+            project
+          })
+
+      const stripeSubscriptionItem: Stripe.SubscriptionItem | undefined =
+        subscription.items.data.find((item) =>
+          stripeSubscriptionItemId
+            ? item.id === stripeSubscriptionItemId
+            : item.price.id === stripePriceId
+        )
+
+      assert(
+        stripeSubscriptionItem,
+        500,
+        `Error post-processing stripe subscription "${subscription.id}" for line-item "${lineItem.slug}" on plan "${pricingPlan.slug}"`
+      )
+
+      consumer._stripeSubscriptionItemIdMap[lineItem.slug] =
+        stripeSubscriptionItem.id
+      assert(
+        consumer._stripeSubscriptionItemIdMap[lineItem.slug],
+        500,
+        `Error post-processing stripe subscription "${subscription.id}" for line-item "${lineItem.slug}" on plan "${pricingPlan.slug}"`
+      )
+    }
+  }
+
+  const [updatedConsumer] = await db
+    .update(schema.consumers)
+    .set(consumer)
+    .where(eq(schema.consumers.id, consumer.id))
+    .returning()
+  assert(updatedConsumer, 500, `consumer "${consumer.id}" not found`)
+
+  // TODO: invoke provider webhooks
+  // event.data.customer = consumer.getPublicDocument()
+  // await invokeWebhooks(consumer.project, event)
+
+  return updatedConsumer
 }

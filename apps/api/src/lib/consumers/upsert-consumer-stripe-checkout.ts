@@ -1,4 +1,3 @@
-import type Stripe from 'stripe'
 import { assert } from '@agentic/platform-core'
 
 import type { AuthenticatedHonoContext } from '@/lib/types'
@@ -32,7 +31,7 @@ export async function upsertConsumerStripeCheckout(
     consumerId?: string
   }
 ): Promise<{
-  checkoutSession: Stripe.Checkout.Session
+  checkoutSession: { id: string; url: string }
   consumer: RawConsumer
 }> {
   assert(

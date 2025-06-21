@@ -40,7 +40,10 @@ export function AppConsumerIndex({ consumerId }: { consumerId: string }) {
   useEffect(() => {
     if (!ctx || !consumer || !firstLoadConsumer.current) return
 
-    if (checkout === 'success') {
+    if (checkout === 'canceled') {
+      firstLoadConsumer.current = false
+      toast('Subscription canceled')
+    } else if (checkout === 'success') {
       if (plan) {
         firstLoadConsumer.current = false
         toast(
