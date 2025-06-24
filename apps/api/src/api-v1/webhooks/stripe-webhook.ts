@@ -124,6 +124,7 @@ export function registerV1StripeWebhook(app: HonoApp) {
             assert(deployment, 404, `deployment "${deploymentId}" not found`)
           }
           const { project } = consumer
+          assert(project, 404, `project "${projectId}" not found`)
 
           // TODO: Treat this as a transaction...
           await Promise.all([
@@ -158,13 +159,12 @@ export function registerV1StripeWebhook(app: HonoApp) {
           const { consumerId, userId, projectId, deploymentId, plan } =
             subscription.metadata
 
-          // TODO: This should be coming from Stripe Checkout, and a very flow
-          // follow-up webhook event should record the subscription and
-          // initialize the consumer, but it feels wrong to me to just be
-          // logging and ignore this event. In the future, if we support both
-          // Stripe Checkout and non-Stripe Checkout-based subscription flows,
-          // then this codepath should act very similarly to
-          // `customer.subscription.updated`.
+          // TODO: This should be coming from Stripe Checkout, and a subsequent
+          // webhook event should record the subscription and initialize the
+          // consumer, but it feels wrong to me to just be logging and ignore
+          // this event. In the future, if we support both Stripe Checkout and
+          // non-Stripe Checkout-based subscription flows, then this codepath
+          // should act very similarly to `customer.subscription.updated`.
           if (
             !consumerId ||
             !userId ||

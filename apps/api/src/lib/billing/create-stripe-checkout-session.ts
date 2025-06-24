@@ -115,8 +115,17 @@ export async function createStripeCheckoutSession(
       }
     }
 
+    assert(
+      pricingPlan,
+      404,
+      `Unable to update stripe subscription for invalid pricing plan "${plan}"`
+    )
+
     const updateParams: Stripe.SubscriptionUpdateParams = {
       collection_method: 'charge_automatically',
+      description:
+        pricingPlan.description ??
+        `Subscription to ${project.name} ${pricingPlan.name}`,
       metadata: {
         plan: plan ?? null,
         consumerId: consumer.id,
@@ -125,12 +134,6 @@ export async function createStripeCheckoutSession(
         deploymentId: deployment.id
       }
     }
-
-    assert(
-      pricingPlan,
-      404,
-      `Unable to update stripe subscription for invalid pricing plan "${plan}"`
-    )
 
     const items: Stripe.SubscriptionUpdateParams.Item[] = await Promise.all(
       pricingPlan.lineItems.map(async (lineItem) => {

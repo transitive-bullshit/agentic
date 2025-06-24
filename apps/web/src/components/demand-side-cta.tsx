@@ -8,11 +8,15 @@ export function DemandSideCTA() {
   return (
     <div className='flex justify-center items-center gap-8'>
       <HeroButton asChild className='h-full'>
-        <Link href='/marketplace'>MCP Marketplace</Link>
+        <Link href='/marketplace' className='font-mono'>
+          gotoTools();
+        </Link>
       </HeroButton>
 
       <Button variant='outline' asChild className='h-full'>
-        <Link href={docsMarketplaceUrl}>Check out the docs</Link>
+        <Link href={docsMarketplaceUrl} className='font-mono'>
+          readDocs();
+        </Link>
       </Button>
     </div>
   )
