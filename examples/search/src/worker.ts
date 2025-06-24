@@ -6,7 +6,6 @@ import { Hono } from 'hono'
 import { z } from 'zod'
 
 import { type Env, parseEnv } from './env'
-import { timingSafeCompare } from './utils'
 
 let serper: SerperClient
 
@@ -65,10 +64,8 @@ export default {
         async (args, { _meta }) => {
           // Make sure the request is coming from Agentic
           assert(
-            timingSafeCompare(
-              (_meta?.agentic as any)?.agenticProxySecret,
-              parsedEnv.AGENTIC_PROXY_SECRET
-            ),
+            (_meta?.agentic as any)?.agenticProxySecret ===
+              parsedEnv.AGENTIC_PROXY_SECRET,
             400,
             'Invalid request'
           )

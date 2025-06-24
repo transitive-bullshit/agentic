@@ -16,8 +16,7 @@ import defaultKy, { type KyInstance } from 'ky'
  *
  * @example
  * ```ts
- * const client = await AgenticToolClient.fromIdentifier('@agentic/search')
- * const result = await client.functions.get('search').execute('search query')
+ * const searchTool = await AgenticToolClient.fromIdentifier('@agentic/search')
  * ```
  */
 export class AgenticToolClient extends AIFunctionsProvider {
@@ -40,6 +39,8 @@ export class AgenticToolClient extends AIFunctionsProvider {
     ky: KyInstance
   }) {
     super()
+
+    // TODO: add support for optional apiKey
 
     this.project = project
     this.deployment = deployment
@@ -82,9 +83,9 @@ export class AgenticToolClient extends AIFunctionsProvider {
    *
    * @example
    * ```ts
-   * const client1 = await AgenticToolClient.fromIdentifier('@agentic/search')
-   * const client2 = await AgenticToolClient.fromIdentifier('@agentic/search@v1.0.0')
-   * const client3 = await AgenticToolClient.fromIdentifier('@agentic/search@latest')
+   * const searchTool = await AgenticToolClient.fromIdentifier('@agentic/search')
+   * const searchToolV1 = await AgenticToolClient.fromIdentifier('@agentic/search@v1.0.0')
+   * const searchToolLatest = await AgenticToolClient.fromIdentifier('@agentic/search@latest')
    * ```
    */
   static async fromIdentifier(
