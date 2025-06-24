@@ -12,11 +12,6 @@
   },
   "type": "module",
   "source": "./src/worker.ts",
-  "exports": {
-    ".": {
-      "import": "./src/worker.ts"
-    }
-  },
   "scripts": {
     "deploy": "wrangler deploy --outdir dist --upload-source-maps --var SENTRY_RELEASE:$(sentry-cli releases propose-version)",
     "dev": "wrangler dev",
@@ -35,7 +30,6 @@
     "@agentic/platform-hono": "workspace:*",
     "@agentic/platform-types": "workspace:*",
     "@agentic/platform-validators": "workspace:*",
-    "@cloudflare/workers-oauth-provider": "^0.0.5",
     "@hono/zod-validator": "catalog:",
     "@modelcontextprotocol/sdk": "catalog:",
     "@sentry/cloudflare": "catalog:",

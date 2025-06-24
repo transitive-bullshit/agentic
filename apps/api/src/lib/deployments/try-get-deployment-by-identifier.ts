@@ -1,7 +1,7 @@
+import type { DefaultHonoContext } from '@agentic/platform-hono'
 import { assert } from '@agentic/platform-core'
 import { parseDeploymentIdentifier } from '@agentic/platform-validators'
 
-import type { AuthenticatedHonoContext } from '@/lib/types'
 import {
   and,
   db,
@@ -12,6 +12,8 @@ import {
 } from '@/db'
 import { setPublicCacheControl } from '@/lib/cache-control'
 
+import type { AuthenticatedHonoContext } from '../types'
+
 /**
  * Attempts to find the Deployment matching the given deployment ID or
  * identifier.
@@ -21,7 +23,7 @@ import { setPublicCacheControl } from '@/lib/cache-control'
  * Does not take care of ACLs.
  */
 export async function tryGetDeploymentByIdentifier(
-  ctx: AuthenticatedHonoContext,
+  ctx: AuthenticatedHonoContext | DefaultHonoContext,
   {
     deploymentIdentifier,
     strict = false,

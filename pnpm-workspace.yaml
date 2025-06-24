@@ -1,6 +1,7 @@
 packages:
   - packages/*
   - apps/*
+  - examples/*
   - packages/fixtures/valid/*
 
 catalog:
@@ -13,7 +14,7 @@ catalog:
   '@fisch0920/config': ^1.1.2
   '@fisch0920/drizzle-orm': ^0.43.7
   '@fisch0920/drizzle-zod': ^0.7.9
-  '@hono/node-server': ^1.14.4
+  '@hono/node-server': 1.14.4
   '@hono/sentry': ^1.2.2
   '@hono/zod-openapi': ^0.19.8
   '@hono/zod-validator': ^0.7.0
@@ -52,7 +53,7 @@ catalog:
   fastmcp: ^3.4.0
   get-port: ^7.1.0
   hash-object: ^5.0.1
-  hono: ^4.8.1
+  hono: 4.8.1
   is-relative-url: ^4.0.0
   knip: ^5.61.2
   ky: 1.8.1
@@ -88,7 +89,7 @@ catalog:
   unconfig: ^7.3.2
   vite-tsconfig-paths: ^5.1.4
   vitest: ^3.2.4
-  wrangler: ^4.20.3
+  wrangler: ^4.21.0
   zod: ^3.25.67
   zod-to-json-schema: ^3.24.5
   zod-validation-error: ^3.5.2

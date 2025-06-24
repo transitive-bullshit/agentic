@@ -67,3 +67,47 @@ export type AdminConsumer = Simplify<
     deployment?: Deployment
   }
 >
+
+export type AgenticMcpRequestMetadata = {
+  agenticProxySecret: string
+  sessionId: string
+  isCustomerSubscriptionActive: boolean
+
+  customerId?: string
+  customerSubscriptionStatus?: string
+  customerSubscriptionPlan?: string
+
+  userId?: string
+  userEmail?: string
+  userUsername?: string
+  userName?: string
+  userCreatedAt?: string
+  userUpdatedAt?: string
+
+  deploymentId: string
+  deploymentIdentifier: string
+  projectId: string
+  projectIdentifier: string
+
+  ip?: string
+} & (
+  | {
+      // If the customer has an active subscription, these fields are guaranteed
+      // to be present in the metadata.
+      isCustomerSubscriptionActive: true
+
+      customerId: string
+      customerSubscriptionStatus: string
+
+      userId: string
+      userEmail: string
+      userUsername: string
+      userCreatedAt: string
+      userUpdatedAt: string
+    }
+  | {
+      // If the customer does not have an active subscription, then the customer
+      // fields may or may not be present.
+      isCustomerSubscriptionActive: false
+    }
+)

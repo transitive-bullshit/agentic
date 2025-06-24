@@ -1,5 +1,6 @@
 import type {
   AdminDeployment,
+  AgenticMcpRequestMetadata,
   PricingPlan,
   Tool
 } from '@agentic/platform-types'
@@ -11,7 +12,6 @@ import type { DurableMcpClientBase } from './durable-mcp-client'
 import type { RawEnv } from './env'
 import type {
   AdminConsumer,
-  AgenticMcpRequestMetadata,
   CacheStatus,
   McpToolCallResponse,
   RateLimitResult,

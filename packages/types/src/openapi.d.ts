@@ -140,6 +140,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/deployments/public/by-identifier": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Gets a public deployment by its identifier (eg, "@username/project-name@latest"). */
+        get: operations["getPublicDeploymentByIdentifier"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/users/{userId}": {
         parameters: {
             query?: never;
@@ -428,7 +445,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Gets a deployment by its public identifier */
+        /** @description Gets a deployment by its identifier (eg, "@username/project-name@latest"). */
         get: operations["getDeploymentByIdentifier"];
         put?: never;
         post?: never;
@@ -600,46 +617,6 @@ export interface components {
             team?: components["schemas"]["Team"];
             lastPublishedDeployment?: unknown;
             lastDeployment?: unknown;
-        };
-        TeamMember: {
-            createdAt: string;
-            updatedAt: string;
-            deletedAt?: string;
-            userId: string;
-            teamSlug: string;
-            teamId: string;
-            /** @enum {string} */
-            role: "user" | "admin";
-            confirmed: boolean;
-            confirmedAt?: string;
-        };
-        /** @description A Consumer represents a user who has subscribed to a Project and is used
-         *     to track usage and billing.
-         *
-         *     Consumers are linked to a corresponding Stripe Customer and Subscription.
-         *     The Stripe customer will either be the user's default Stripe Customer if the
-         *     project uses the default Agentic platform account, or a customer on the project
-         *     owner's connected Stripe account if the project has Stripe Connect enabled. */
-        Consumer: {
-            /** @description Consumer id (e.g. "csmr_tz4a98xxat96iws9zmbrgj3a") */
-            id: string;
-            createdAt: string;
-            updatedAt: string;
-            deletedAt?: string;
-            token: string;
-            plan?: string;
-            activated: boolean;
-            source?: string;
-            /** @description User id (e.g. "user_tz4a98xxat96iws9zmbrgj3a") */
-            userId: string;
-            /** @description Project id (e.g. "proj_tz4a98xxat96iws9zmbrgj3a") */
-            projectId: string;
-            /** @description Deployment id (e.g. "depl_tz4a98xxat96iws9zmbrgj3a") */
-            deploymentId: string;
-            stripeStatus: string;
-            isStripeSubscriptionActive: boolean;
-            user?: components["schemas"]["User"];
-            project?: components["schemas"]["Project"];
             deployment?: unknown;
         };
         /** @description Public deployment identifier (e.g. "@namespace/project-name@{hash|version|latest}") */
@@ -898,6 +875,47 @@ export interface components {
             pricingIntervals: components["schemas"]["PricingInterval"][];
             defaultRateLimit?: components["schemas"]["RateLimit"] & unknown;
             project?: unknown;
+        };
+        TeamMember: {
+            createdAt: string;
+            updatedAt: string;
+            deletedAt?: string;
+            userId: string;
+            teamSlug: string;
+            teamId: string;
+            /** @enum {string} */
+            role: "user" | "admin";
+            confirmed: boolean;
+            confirmedAt?: string;
+        };
+        /** @description A Consumer represents a user who has subscribed to a Project and is used
+         *     to track usage and billing.
+         *
+         *     Consumers are linked to a corresponding Stripe Customer and Subscription.
+         *     The Stripe customer will either be the user's default Stripe Customer if the
+         *     project uses the default Agentic platform account, or a customer on the project
+         *     owner's connected Stripe account if the project has Stripe Connect enabled. */
+        Consumer: {
+            /** @description Consumer id (e.g. "csmr_tz4a98xxat96iws9zmbrgj3a") */
+            id: string;
+            createdAt: string;
+            updatedAt: string;
+            deletedAt?: string;
+            token: string;
+            plan?: string;
+            activated: boolean;
+            source?: string;
+            /** @description User id (e.g. "user_tz4a98xxat96iws9zmbrgj3a") */
+            userId: string;
+            /** @description Project id (e.g. "proj_tz4a98xxat96iws9zmbrgj3a") */
+            projectId: string;
+            /** @description Deployment id (e.g. "depl_tz4a98xxat96iws9zmbrgj3a") */
+            deploymentId: string;
+            stripeStatus: string;
+            isStripeSubscriptionActive: boolean;
+            user?: components["schemas"]["User"];
+            project?: components["schemas"]["Project"];
+            deployment?: unknown;
         };
         /**
          * @description Origin adapter is used to configure the origin API server downstream from Agentic's API gateway. It specifies whether the origin API server denoted by `originUrl` is hosted externally or deployed internally to Agentic's infrastructure. It also specifies the format for how origin tools are defined: either an OpenAPI spec, an MCP server, or a raw HTTP REST API.
@@ -1261,6 +1279,34 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["Project"];
+                };
+            };
+            400: components["responses"]["400"];
+            401: components["responses"]["401"];
+            403: components["responses"]["403"];
+            404: components["responses"]["404"];
+        };
+    };
+    getPublicDeploymentByIdentifier: {
+        parameters: {
+            query: {
+                populate?: ("user" | "team" | "project") | ("user" | "team" | "project")[];
+                /** @description Public deployment identifier (e.g. "@namespace/project-name@{hash|version|latest}") */
+                deploymentIdentifier: components["schemas"]["DeploymentIdentifier"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description A deployment object */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Deployment"];
                 };
             };
             400: components["responses"]["400"];

@@ -28,9 +28,11 @@ export const users = pgTable(
     username: username().unique().notNull(),
     role: userRoleEnum().default('user').notNull(),
 
-    name: text(),
     email: text().notNull().unique(),
     isEmailVerified: boolean().default(false).notNull(),
+
+    name: text(),
+    bio: text(),
     image: text(),
 
     //isStripeConnectEnabledByDefault: boolean().default(true).notNull(),
@@ -57,6 +59,7 @@ export const userSelectSchema = createSelectSchema(users)
 export const userUpdateSchema = createUpdateSchema(users)
   .pick({
     name: true,
+    bio: true,
     image: true
     //isStripeConnectEnabledByDefault: true
   })

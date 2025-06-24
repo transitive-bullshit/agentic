@@ -37,7 +37,7 @@ export class AgenticApiClient {
     apiKey?: string
     ky?: KyInstance
     onUpdateAuth?: OnUpdateAuthSessionFunction
-  }) {
+  } = {}) {
     assert(apiBaseUrl, 'AgenticApiClient missing required "apiBaseUrl"')
 
     this.apiBaseUrl = apiBaseUrl
@@ -655,7 +655,7 @@ export class AgenticApiClient {
       .json()
   }
 
-  /** Gets a deployment by its public identifier. */
+  /** Gets a deployment by its identifier. */
   async getDeploymentByIdentifier<
     TPopulate extends NonNullable<
       OperationParameters<'getDeploymentByIdentifier'>['populate']
@@ -667,6 +667,23 @@ export class AgenticApiClient {
   ): Promise<PopulateDeployment<TPopulate>> {
     return this.ky
       .get(`v1/deployments/by-identifier`, {
+        searchParams: sanitizeSearchParams(searchParams)
+      })
+      .json()
+  }
+
+  /** Gets a public deployment by its identifier. */
+  async getPublicDeploymentByIdentifier<
+    TPopulate extends NonNullable<
+      OperationParameters<'getPublicDeploymentByIdentifier'>['populate']
+    >[number]
+  >(
+    searchParams: OperationParameters<'getPublicDeploymentByIdentifier'> & {
+      populate?: TPopulate[]
+    }
+  ): Promise<PopulateDeployment<TPopulate>> {
+    return this.ky
+      .get(`v1/deployments/public/by-identifier`, {
         searchParams: sanitizeSearchParams(searchParams)
       })
       .json()

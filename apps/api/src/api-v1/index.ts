@@ -27,6 +27,7 @@ import { registerV1AdminGetDeploymentByIdentifier } from './deployments/admin-ge
 import { registerV1CreateDeployment } from './deployments/create-deployment'
 import { registerV1GetDeployment } from './deployments/get-deployment'
 import { registerV1GetDeploymentByIdentifier } from './deployments/get-deployment-by-identifier'
+import { registerV1GetPublicDeploymentByIdentifier } from './deployments/get-public-deployment-by-identifier'
 import { registerV1ListDeployments } from './deployments/list-deployments'
 import { registerV1PublishDeployment } from './deployments/publish-deployment'
 import { registerV1UpdateDeployment } from './deployments/update-deployment'
@@ -133,6 +134,7 @@ registerV1ListConsumers(privateRouter)
 registerV1ListConsumersForProject(privateRouter)
 
 // Deployments
+registerV1GetPublicDeploymentByIdentifier(publicRouter)
 registerV1GetDeploymentByIdentifier(privateRouter) // must be before `registerV1GetDeployment`
 registerV1GetDeployment(privateRouter)
 registerV1CreateDeployment(privateRouter)

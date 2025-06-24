@@ -15,7 +15,7 @@ export function DemandSideCTA() {
 
       <Button variant='outline' asChild className='h-full'>
         <Link href={docsMarketplaceUrl} className='font-mono'>
-          readDocs();
+          readTheDocs();
         </Link>
       </Button>
     </div>

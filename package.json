@@ -7,14 +7,14 @@
     "type": "git",
     "url": "git+https://github.com/transitive-bullshit/agentic-platform.git"
   },
-  "packageManager": "pnpm@10.12.1",
+  "packageManager": "pnpm@10.12.2",
   "engines": {
     "node": ">=22"
   },
   "type": "module",
   "scripts": {
     "build": "turbo build --filter=!web",
-    "dev": "turbo dev --continue",
+    "dev": "turbo dev --continue --filter=!./examples/*",
     "clean": "turbo clean",
     "fix": "run-s fix:*",
     "fix:format": "prettier --write \"**/*.{js,ts,tsx}\"",

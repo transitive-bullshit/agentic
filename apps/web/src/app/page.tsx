@@ -4,6 +4,8 @@ import { DemandSideCTA } from '@/components/demand-side-cta'
 import { GitHubStarCounter } from '@/components/github-star-counter'
 import { githubUrl, twitterUrl } from '@/lib/config'
 
+import { ExampleUsage } from './example-usage'
+
 export default function TheBestDamnLandingPageEver() {
   return (
     <>
@@ -35,7 +37,7 @@ export default function TheBestDamnLandingPageEver() {
           How It Works
         </h2>
 
-        <div>TODO</div>
+        <ExampleUsage />
       </section>
 
       {/* Marketplace section */}

@@ -1,9 +1,9 @@
+import type { DefaultHonoEnv } from '@agentic/platform-hono'
 import { assert, parseZodSchema } from '@agentic/platform-core'
 import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 
-import type { AuthenticatedHonoEnv } from '@/lib/types'
 import { schema } from '@/db'
-import { acl } from '@/lib/acl'
+import { aclPublicProject } from '@/lib/acl-public-project'
 import { tryGetDeploymentByIdentifier } from '@/lib/deployments/try-get-deployment-by-identifier'
 import {
   openapiAuthenticatedSecuritySchemas,
@@ -15,11 +15,11 @@ import { deploymentIdentifierAndPopulateSchema } from './schemas'
 
 const route = createRoute({
   description:
-    'Gets a deployment by its identifier (eg, "@username/project-name@latest").',
+    'Gets a public deployment by its identifier (eg, "@username/project-name@latest").',
   tags: ['deployments'],
-  operationId: 'getDeploymentByIdentifier',
+  operationId: 'getPublicDeploymentByIdentifier',
   method: 'get',
-  path: 'deployments/by-identifier',
+  path: 'deployments/public/by-identifier',
   security: openapiAuthenticatedSecuritySchemas,
   request: {
     query: deploymentIdentifierAndPopulateSchema
@@ -38,8 +38,8 @@ const route = createRoute({
   }
 })
 
-export function registerV1GetDeploymentByIdentifier(
-  app: OpenAPIHono<AuthenticatedHonoEnv>
+export function registerV1GetPublicDeploymentByIdentifier(
+  app: OpenAPIHono<DefaultHonoEnv>
 ) {
   return app.openapi(route, async (c) => {
     const { deploymentIdentifier, populate = [] } = c.req.valid('query')
@@ -47,11 +47,17 @@ export function registerV1GetDeploymentByIdentifier(
     const deployment = await tryGetDeploymentByIdentifier(c, {
       deploymentIdentifier,
       with: {
+        project: true,
         ...Object.fromEntries(populate.map((field) => [field, true]))
       }
     })
     assert(deployment, 404, `Deployment not found "${deploymentIdentifier}"`)
-    await acl(c, deployment, { label: 'Deployment' })
+    assert(
+      deployment.project,
+      404,
+      `Project not found for deployment "${deploymentIdentifier}"`
+    )
+    await aclPublicProject(deployment.project!)
 
     return c.json(parseZodSchema(schema.deploymentSelectSchema, deployment))
   })

@@ -1,0 +1,32 @@
+{
+  "name": "@agentic/examples-search",
+  "private": true,
+  "author": "Travis Fischer <travis@transitivebullsh.it>",
+  "license": "AGPL-3.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/transitive-bullshit/agentic-platform.git",
+    "directory": "examples/search"
+  },
+  "type": "module",
+  "source": "./src/worker.ts",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy --outdir dist --upload-source-maps",
+    "test": "run-s test:*",
+    "test:typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@agentic/platform": "workspace:*",
+    "@agentic/serper": "^7.6.7",
+    "@hono/mcp": "^0.1.0",
+    "@modelcontextprotocol/sdk": "catalog:",
+    "dotenv": "^16.5.0",
+    "hono": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "catalog:",
+    "wrangler": "catalog:"
+  }
+}

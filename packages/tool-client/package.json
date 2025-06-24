@@ -1,13 +1,13 @@
 {
-  "name": "@agentic/platform",
-  "version": "0.0.1",
-  "description": "Public SDK for developers building on top of the Agentic platform.",
+  "name": "@agentic/platform-tool-client",
+  "version": "0.1.0",
+  "description": "Tool client for the Agentic platform.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "AGPL-3.0",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/transitive-bullshit/agentic-platform.git",
-    "directory": "packages/platform"
+    "directory": "packages/tool-client"
   },
   "type": "module",
   "source": "./src/index.ts",
@@ -23,18 +23,10 @@
   },
   "dependencies": {
     "@agentic/core": "^7.6.7",
+    "@agentic/platform-api-client": "workspace:*",
     "@agentic/platform-core": "workspace:*",
-    "@agentic/platform-openapi-utils": "workspace:*",
     "@agentic/platform-types": "workspace:*",
     "@agentic/platform-validators": "workspace:*",
-    "@modelcontextprotocol/sdk": "catalog:",
-    "semver": "catalog:",
-    "unconfig": "catalog:"
-  },
-  "devDependencies": {
-    "@types/semver": "catalog:"
-  },
-  "publishConfig": {
-    "access": "public"
+    "ky": "catalog:"
   }
 }

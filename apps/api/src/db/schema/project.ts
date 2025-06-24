@@ -248,7 +248,6 @@ export const projectSelectSchema = createSelectSchema(projects, {
         return deploymentSelectSchema.parse(deployment)
       })
       .optional(),
-    // .openapi('Deployment', { type: 'object' }),
 
     lastDeployment: z
       .any()
@@ -263,8 +262,22 @@ export const projectSelectSchema = createSelectSchema(projects, {
         if (!deployment) return undefined
         return deploymentSelectSchema.parse(deployment)
       })
+      .optional(),
+
+    deployment: z
+      .any()
+      .refine(
+        (deployment): boolean =>
+          !deployment || deploymentSelectSchema.safeParse(deployment).success,
+        {
+          message: 'Invalid lastDeployment'
+        }
+      )
+      .transform((deployment): any => {
+        if (!deployment) return undefined
+        return deploymentSelectSchema.parse(deployment)
+      })
       .optional()
-    // .openapi('Deployment', { type: 'object' })
   })
   .strip()
   // TODO
