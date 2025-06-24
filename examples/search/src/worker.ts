@@ -1,3 +1,4 @@
+import { assert } from '@agentic/platform-core'
 import { SerperClient } from '@agentic/serper'
 import { StreamableHTTPTransport } from '@hono/mcp'
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
@@ -5,6 +6,9 @@ import { Hono } from 'hono'
 import { z } from 'zod'
 
 import { type Env, parseEnv } from './env'
+import { timingSafeCompare } from './utils'
+
+let serper: SerperClient
 
 const app = new Hono()
 
@@ -12,50 +16,6 @@ const mcpServer = new McpServer({
   name: 'search',
   version: '1.0.0'
 })
-
-let serper: SerperClient
-
-mcpServer.registerTool(
-  'search',
-  {
-    description:
-      'Uses Google Search to return the most relevant web pages for a given query. Useful for finding up-to-date news and information about any topic.',
-    inputSchema: z.object({
-      query: z.string().describe('Search query'),
-      num: z
-        .number()
-        .int()
-        .default(5)
-        .optional()
-        .describe('Number of results to return'),
-      type: z
-        .enum(['search', 'images', 'videos', 'places', 'news', 'shopping'])
-        .default('search')
-        .optional()
-        .describe('Type of Google search to perform')
-    }).shape,
-    outputSchema: z.object({}).passthrough().shape
-  },
-  async (args, { _meta }) => {
-    // (_meta.agentic as any).agenticProxySecret
-
-    const result: any = await serper!.search({
-      q: args.query,
-      num: args.num,
-      type: args.type
-    })
-
-    delete result.topStories
-    delete result.peopleAlsoAsk
-    delete result.searchParameters
-    delete result.credits
-
-    return {
-      content: [],
-      structuredContent: result
-    }
-  }
-)
 
 app.all('/mcp', async (c) => {
   const transport = new StreamableHTTPTransport()
@@ -73,6 +33,66 @@ export default {
 
     if (!serper) {
       serper = new SerperClient({ apiKey: parsedEnv.SERPER_API_KEY })
+
+      mcpServer.registerTool(
+        'search',
+        {
+          description:
+            'Uses Google Search to return the most relevant web pages for a given query. Useful for finding up-to-date news and information about any topic.',
+          inputSchema: z.object({
+            query: z.string().describe('Search query'),
+            num: z
+              .number()
+              .int()
+              .default(5)
+              .optional()
+              .describe('Number of results to return'),
+            type: z
+              .enum([
+                'search',
+                'images',
+                'videos',
+                'places',
+                'news',
+                'shopping'
+              ])
+              .default('search')
+              .optional()
+              .describe('Type of Google search to perform')
+          }).shape,
+          outputSchema: z.object({}).passthrough().shape
+        },
+        async (args, { _meta }) => {
+          // Make sure the request is coming from Agentic
+          assert(
+            timingSafeCompare(
+              (_meta?.agentic as any)?.agenticProxySecret,
+              parsedEnv.AGENTIC_PROXY_SECRET
+            ),
+            400,
+            'Invalid request'
+          )
+
+          const result: any = await serper!.search({
+            q: args.query,
+            num: args.num,
+            type: args.type
+          })
+
+          // Simplify search results to optimize for LLM usage
+          result.results = result.organic
+          delete result.organic
+          delete result.topStories
+          delete result.peopleAlsoAsk
+          delete result.searchParameters
+          delete result.credits
+
+          return {
+            content: [],
+            structuredContent: result
+          }
+        }
+      )
     }
 
     return app.fetch(request, parsedEnv, ctx)
