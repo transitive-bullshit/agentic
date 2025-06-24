@@ -1,9 +1,15 @@
 import { Command } from 'commander'
+import { gracefulExit } from 'exit-hook'
 
 import type { Context } from '../types'
 import { auth } from '../lib/auth'
 
-export function registerSigninCommand({ client, program, logger }: Context) {
+export function registerSigninCommand({
+  client,
+  program,
+  logger,
+  handleError
+}: Context) {
   const command = new Command('login')
     .alias('signin')
     .description(
@@ -17,20 +23,25 @@ export function registerSigninCommand({ client, program, logger }: Context) {
           'either pass email and password or neither (which will use github auth)'
         )
         program.outputHelp()
-        return
+        return gracefulExit(1)
       }
 
-      if (opts.email && opts.password) {
-        await client.signInWithPassword({
-          email: opts.email,
-          password: opts.password
-        })
-      } else {
-        await auth({ client, provider: 'github' })
-      }
+      try {
+        if (opts.email && opts.password) {
+          await client.signInWithPassword({
+            email: opts.email,
+            password: opts.password
+          })
+        } else {
+          await auth({ client, provider: 'github' })
+        }
 
-      const user = await client.getMe()
-      logger.log(user)
+        const user = await client.getMe()
+        logger.log(user)
+        gracefulExit(0)
+      } catch (err) {
+        handleError(err)
+      }
     })
 
   program.addCommand(command)

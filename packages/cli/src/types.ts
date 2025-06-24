@@ -9,4 +9,5 @@ export type Context = {
     info: (...args: any[]) => void
     error: (...args: any[]) => void
   }
+  handleError: (error: any) => void
 }

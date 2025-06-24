@@ -19,7 +19,10 @@ export const deploymentIdParamsSchema = z.object({
 })
 
 export const createDeploymentQuerySchema = z.object({
-  publish: z.boolean().default(false).optional()
+  publish: z
+    .union([z.literal('true'), z.literal('false')])
+    .default('false')
+    .transform((p) => p === 'true')
 })
 
 export const filterDeploymentSchema = z.object({

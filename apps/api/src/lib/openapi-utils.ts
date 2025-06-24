@@ -1,3 +1,5 @@
+import { fromError } from 'zod-validation-error'
+
 import type { HonoApp } from './types'
 
 export const openapiErrorResponses = {
@@ -84,4 +86,18 @@ export function registerOpenAPIErrorResponses(app: HonoApp) {
     description: 'Gone',
     content: openapiErrorContent
   })
+}
+
+export function defaultHook(result: any, ctx: any) {
+  if (!result.success) {
+    const requestId = ctx.get('requestId')
+
+    return ctx.json(
+      {
+        error: fromError(result.error).toString(),
+        requestId
+      },
+      400
+    )
+  }
 }

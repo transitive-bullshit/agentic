@@ -47,7 +47,7 @@ catalog:
   eslint: ^9.29.0
   eslint-plugin-drizzle: ^0.2.3
   eventid: ^2.0.1
-  exit-hook: ^4.0.0
+  exit-hook: 4.0.0
   fast-content-type-parse: ^3.0.0
   fast-uri: ^3.0.6
   fastmcp: ^3.4.0
