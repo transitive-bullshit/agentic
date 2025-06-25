@@ -11,10 +11,10 @@ export function pruneDeployment(
       d.readme = '<omitted>'
     }
 
-    if (d.originAdapter?.type === 'openapi') {
-      d.originAdapter.spec = '<omitted>'
-      d.originAdapter.toolToOperationMap = '<omitted>' as any
-    }
+    // if (d.origin?.type === 'openapi') {
+    //   d.origin.spec = '<omitted>'
+    //   d.origin.toolToOperationMap = '<omitted>' as any
+    // }
 
     return d
   }

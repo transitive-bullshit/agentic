@@ -10,25 +10,23 @@ import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/
 export async function resolveMCPOriginAdapter({
   name,
   version,
-  originUrl,
-  originAdapter,
+  origin,
   label
 }: {
   name: string
-  originUrl: string
-  originAdapter: MCPOriginAdapterConfig
+  origin: MCPOriginAdapterConfig
   label: string
   version: string
 }): Promise<{
-  originAdapter: MCPOriginAdapter
+  origin: MCPOriginAdapter
   tools?: Tool[]
 }> {
   assert(
-    originAdapter.type === 'mcp',
+    origin.type === 'mcp',
     400,
-    `Invalid origin adapter type "${originAdapter.type}" for ${label}`
+    `Invalid origin adapter type "${origin.type}" for ${label}`
   )
-  const transport = new StreamableHTTPClientTransport(new URL(originUrl))
+  const transport = new StreamableHTTPClientTransport(new URL(origin.url))
   const client = new McpClient({ name, version })
   await client.connect(transport)
 
@@ -47,8 +45,8 @@ export async function resolveMCPOriginAdapter({
 
   return {
     tools,
-    originAdapter: {
-      ...originAdapter,
+    origin: {
+      ...origin,
       serverInfo
     }
   }

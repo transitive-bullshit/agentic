@@ -1,4 +1,4 @@
-import type { Deployment, Tool } from '@agentic/platform-types'
+import type { AdminDeployment, Tool } from '@agentic/platform-types'
 import { assert } from '@agentic/platform-core'
 
 export function getTool({
@@ -8,7 +8,7 @@ export function getTool({
   strict = false
 }: {
   toolName: string
-  deployment: Deployment
+  deployment: AdminDeployment
   method?: string
   strict?: boolean
 }): Tool {
@@ -17,7 +17,7 @@ export function getTool({
   let tool = deployment.tools.find((tool) => tool.name === toolName)
 
   if (!tool && !strict) {
-    if (deployment.originAdapter.type === 'openapi') {
+    if (deployment.origin.type === 'openapi') {
       // Check if the tool name is an operation ID since it's easy to forget
       // and mistake the two (`getPost` vs `get_post`).
       // TODO: In the future, we should be consistent about how we handle tool
@@ -25,7 +25,7 @@ export function getTool({
       // alternates for operationIds? We should also make sure alternates are
       // uniquely defined.
       const operationToolName = Object.entries(
-        deployment.originAdapter.toolToOperationMap
+        deployment.origin.toolToOperationMap
       ).find(([_, operation]) => {
         if (operation.operationId === toolName) {
           return true
@@ -52,8 +52,8 @@ export function getTool({
     `Tool not found "${toolName}" for deployment "${deployment.identifier}"`
   )
 
-  if (deployment.originAdapter.type === 'openapi') {
-    const operation = deployment.originAdapter.toolToOperationMap[tool.name]
+  if (deployment.origin.type === 'openapi') {
+    const operation = deployment.origin.toolToOperationMap[tool.name]
     assert(
       operation,
       404,

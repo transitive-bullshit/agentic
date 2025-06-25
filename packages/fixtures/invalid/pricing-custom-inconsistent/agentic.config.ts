@@ -2,7 +2,10 @@ import { defineConfig } from '@agentic/platform'
 
 export default defineConfig({
   name: 'test-pricing-custom-inconsistent',
-  originUrl: 'https://httpbin.org',
+  origin: {
+    type: 'raw',
+    url: 'https://httpbin.org'
+  },
   pricingPlans: [
     {
       name: 'Free',

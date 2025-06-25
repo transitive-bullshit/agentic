@@ -5,12 +5,20 @@ import type { AgenticProjectConfigInput } from './agentic-project-config'
 test('AgenticProjectConfig input types', () => {
   expectTypeOf<{
     name: 'test'
-    originUrl: 'https://httpbin.org'
+    origin: {
+      type: 'openapi'
+      url: 'https://httpbin.org'
+      spec: './openapi.json'
+    }
   }>().toExtend<AgenticProjectConfigInput>()
 
   expectTypeOf<{
     name: 'test'
-    originUrl: 'https://httpbin.org'
+    origin: {
+      type: 'openapi'
+      url: 'https://httpbin.org'
+      spec: './openapi.json'
+    }
     pricingPlans: [
       {
         name: 'Free'
@@ -28,7 +36,11 @@ test('AgenticProjectConfig input types', () => {
 
   expectTypeOf<{
     name: 'test'
-    originUrl: 'https://httpbin.org'
+    origin: {
+      type: 'openapi'
+      url: 'https://httpbin.org'
+      spec: './openapi.json'
+    }
     pricingPlans: [
       {
         name: 'Basic Monthly'
@@ -52,7 +64,11 @@ test('AgenticProjectConfig input types', () => {
 
   expectTypeOf<{
     name: 'test'
-    originUrl: 'https://httpbin.org'
+    origin: {
+      type: 'openapi'
+      url: 'https://httpbin.org'
+      spec: './openapi.json'
+    }
     pricingPlans: [
       {
         name: 'Basic Monthly'
@@ -76,14 +92,22 @@ test('AgenticProjectConfig input types', () => {
 
   expectTypeOf<{
     name: 'test'
-    originUrl: 'https://httpbin.org'
+    origin: {
+      type: 'openapi'
+      url: 'https://httpbin.org'
+      spec: './openapi.json'
+    }
     // Invalid because `pricingPlans` must be non-empty if defined
     pricingPlans: []
   }>().not.toExtend<AgenticProjectConfigInput>()
 
   expectTypeOf<{
     name: 'test'
-    originUrl: 'https://httpbin.org'
+    origin: {
+      type: 'openapi'
+      url: 'https://httpbin.org'
+      spec: './openapi.json'
+    }
     pricingPlans: [
       {
         name: 'Basic Monthly'

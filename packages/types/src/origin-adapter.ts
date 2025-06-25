@@ -21,7 +21,13 @@ export type OriginAdapterLocation = z.infer<typeof originAdapterLocationSchema>
 // >
 
 export const commonOriginAdapterSchema = z.object({
-  location: originAdapterLocationSchema.optional().default('external')
+  location: originAdapterLocationSchema.optional().default('external'),
+
+  /** Required origin API HTTPS base URL */
+  url: z.string().url()
+    .describe(`Required base URL of the externally hosted origin API server. Must be a valid \`https\` URL.
+
+NOTE: Agentic currently only supports \`external\` API servers. If you'd like to host your API or MCP server on Agentic's infrastructure, please reach out to support@agentic.so.`)
 
   // TODO: Add support for `internal` hosted API servers
   // internalType: originAdapterInternalTypeSchema.optional()
@@ -70,6 +76,7 @@ export type MCPOriginAdapterConfig = z.infer<
   typeof mcpOriginAdapterConfigSchema
 >
 
+// TODO: Decide on whether to support `raw` origin adapters or not.
 export const rawOriginAdapterConfigSchema = commonOriginAdapterSchema.merge(
   z.object({
     /**
@@ -89,9 +96,9 @@ export type RawOriginAdapterConfig = z.infer<
 /**
  * Origin adapter is used to configure the origin API server downstream from
  * Agentic's API gateway. It specifies whether the origin API server denoted
- * by `originUrl` is hosted externally or deployed internally to Agentic's
+ * by `url` is hosted externally or deployed internally to Agentic's
  * infrastructure. It also specifies the format for how origin tools are
- * defined: either an OpenAPI spec, an MCP server, or as a raw HTTP REST API.
+ * defined: either an OpenAPI spec or an MCP server.
  *
  * NOTE: Agentic currently only supports `external` API servers. If you'd like
  * to host your API or MCP server on Agentic's infrastructure, please reach out
@@ -106,7 +113,7 @@ export const originAdapterConfigSchema = z
     rawOriginAdapterConfigSchema
   ])
   .describe(
-    `Origin adapter is used to configure the origin API server downstream from Agentic's API gateway. It specifies whether the origin API server denoted by \`originUrl\` is hosted externally or deployed internally to Agentic's infrastructure. It also specifies the format for how origin tools are defined: either an OpenAPI spec, an MCP server, or a raw HTTP REST API.
+    `Origin adapter is used to configure the origin API server downstream from Agentic's API gateway. It specifies whether the origin API server denoted by \`url\` is hosted externally or deployed internally to Agentic's infrastructure. It also specifies the format for how origin tools are defined: either an OpenAPI spec or an MCP server.
 
 NOTE: Agentic currently only supports \`external\` API servers. If you'd like to host your API or MCP server on Agentic's infrastructure, please reach out to support@agentic.so.`
   )
@@ -210,6 +217,8 @@ export const rawOriginAdapterSchema = commonOriginAdapterSchema.merge(
      *
      * In this mode, Agentic's API gateway acts as a simple reverse-proxy
      * to the origin server, without validating tools.
+     *
+     * @note This mode is currently only for internal testing.
      */
     type: z.literal('raw')
   })
@@ -219,9 +228,15 @@ export type RawOriginAdapter = z.infer<typeof rawOriginAdapterSchema>
 /**
  * Origin adapter is used to configure the origin API server downstream from
  * Agentic's API gateway. It specifies whether the origin API server denoted
- * by `originUrl` is hosted externally or deployed internally to Agentic's
- * infrastructure. It also specifies the format for how origin tools are
- * defined: either an OpenAPI spec, an MCP server, or as a raw HTTP REST API.
+ * by `url` is hosted externally or deployed internally to Agentic's
+ * infrastructure.
+ *
+ * It also specifies the format for how origin tools are defined: either an
+ * OpenAPI spec or an MCP server.
+ *
+ * @note Currently, only external origin servers are supported. If you'd like
+ * to host your API or MCP server on Agentic's infrastructure, please reach
+ * out to support@agentic.so.
  */
 export const originAdapterSchema = z
   .discriminatedUnion('type', [
@@ -232,7 +247,7 @@ export const originAdapterSchema = z
     rawOriginAdapterSchema
   ])
   .describe(
-    `Origin adapter is used to configure the origin API server downstream from Agentic's API gateway. It specifies whether the origin API server denoted by \`originUrl\` is hosted externally or deployed internally to Agentic's infrastructure. It also specifies the format for how origin tools are defined: either an OpenAPI spec, an MCP server, or a raw HTTP REST API.`
+    `Origin adapter is used to configure the origin API server downstream from Agentic's API gateway. It specifies whether the origin API server denoted by \`url\` is hosted externally or deployed internally to Agentic's infrastructure. It also specifies the format for how origin tools are defined: either an OpenAPI spec, an MCP server, or a raw HTTP REST API.`
   )
   .openapi('OriginAdapter')
 export type OriginAdapter = z.infer<typeof originAdapterSchema>

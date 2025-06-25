@@ -10,38 +10,38 @@ import {
 } from '@agentic/platform-openapi-utils'
 
 export async function resolveOpenAPIOriginAdapter({
-  originAdapter,
+  origin,
   label,
   cwd,
   logger
 }: {
-  originAdapter: OpenAPIOriginAdapterConfig
+  origin: OpenAPIOriginAdapterConfig
   label: string
   cwd?: string
   logger?: Logger
 }): Promise<{
-  originAdapter: OpenAPIOriginAdapter
+  origin: OpenAPIOriginAdapter
   tools?: Tool[]
 }> {
   assert(
-    originAdapter.type === 'openapi',
+    origin.type === 'openapi',
     400,
-    `Invalid origin adapter type "${originAdapter.type}" for ${label}`
+    `Invalid origin adapter type "${origin.type}" for ${label}`
   )
   assert(
-    originAdapter.spec,
+    origin.spec,
     400,
     `OpenAPI spec is required for ${label} with origin adapter type set to "openapi"`
   )
 
   // Validate and normalize the OpenAPI spec
-  const openapiSpec = await validateOpenAPISpec(originAdapter.spec, {
+  const openapiSpec = await validateOpenAPISpec(origin.spec, {
     cwd,
     logger
   })
 
   // Remove origin servers from the OpenAPI spec.
-  // TODO: Ensure that `originUrl` matches any origin servers in the openapi spec?
+  // TODO: Ensure that `origin.url` matches any origin servers in the openapi spec?
   delete openapiSpec.servers
 
   // TODO: Additional, agentic-specific validation of the OpenAPI spec's
@@ -52,13 +52,10 @@ export async function resolveOpenAPIOriginAdapter({
 
   // TODO: Extract tool definitions from OpenAPI operationIds
 
-  const dereferencedOpenAPISpec = await validateOpenAPISpec(
-    originAdapter.spec,
-    {
-      cwd,
-      dereference: true
-    }
-  )
+  const dereferencedOpenAPISpec = await validateOpenAPISpec(origin.spec, {
+    cwd,
+    dereference: true
+  })
 
   const { tools, toolToOperationMap } = await getToolsFromOpenAPISpec(
     dereferencedOpenAPISpec
@@ -66,8 +63,8 @@ export async function resolveOpenAPIOriginAdapter({
 
   return {
     tools,
-    originAdapter: {
-      ...originAdapter,
+    origin: {
+      ...origin,
       // Update the openapi spec with the normalized version
       spec: JSON.stringify(openapiSpec),
       toolToOperationMap

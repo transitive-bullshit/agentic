@@ -4,9 +4,9 @@ import { defineConfig } from '@agentic/platform'
 
 export default defineConfig({
   name: 'search',
-  originUrl: process.env.MCP_ORIGIN_URL!,
-  originAdapter: {
-    type: 'mcp'
+  origin: {
+    type: 'mcp',
+    url: process.env.MCP_ORIGIN_URL!
   },
   toolConfigs: [
     {

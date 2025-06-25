@@ -121,9 +121,9 @@ import { defineConfig } from '@agentic/platform'
 
 export default defineConfig({
   name: 'mcp-example',
-  // Your origin MCP server URL supporting the streamable HTTP transport
-  originUrl: '<YOUR_MCP_SERVER_URL>',
-  originAdapter: {
+  origin: {
+    // Your origin MCP server URL supporting the streamable HTTP transport
+    url: '<YOUR_MCP_SERVER_URL>',
     type: 'mcp'
   }
 })`.trim(),
@@ -136,9 +136,11 @@ import { defineConfig } from '@agentic/platform'
 
 export default defineConfig({
   name: 'openapi-example',
-  originUrl: '<YOUR_OPENAPI_SERVER_BASE_URL>',
-  originAdapter: {
+  origin: {
     type: 'openapi',
+    // Your origin OpenAPI server base URL
+    url: '<YOUR_OPENAPI_SERVER_BASE_URL>',
+    // Your origin OpenAPI spec path or URL
     spec: '<YOUR_OPENAPI_SPEC_PATH_OR_URL>'
   }
 })`.trim(),
@@ -151,9 +153,9 @@ export default defineConfig({
         code: `
 {
   "name": "mcp-example",
-  "originUrl": "<YOUR_MCP_SERVER_URL>",
-  "originAdapter": {
-    "type": "mcp"
+  "origin": {
+    "type": "mcp",
+    "url": "<YOUR_MCP_SERVER_URL>"
   }
 }`.trim(),
         lang: 'json'
@@ -163,9 +165,9 @@ export default defineConfig({
         code: `
 {
   "name": "openapi-example",
-  "originUrl": "<YOUR_OPENAPI_SERVER_BASE_URL>",
-  "originAdapter": {
+  "origin": {
     "type": "openapi",
+    "url": "<YOUR_OPENAPI_SERVER_BASE_URL>",
     "spec": "<YOUR_OPENAPI_SPEC_PATH_OR_URL>"
   }
 }`.trim(),

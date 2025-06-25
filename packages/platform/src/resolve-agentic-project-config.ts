@@ -23,27 +23,26 @@ export async function resolveAgenticProjectConfig(
   const { name, version } = resolveMetadata(config)
   validatePricing(config)
 
-  const { originAdapter, tools } = await resolveOriginAdapter({
+  const { origin, tools } = await resolveOriginAdapter({
     name,
     version,
     label: `project "${name}"`,
     ...opts,
-    originUrl: config.originUrl,
-    originAdapter: config.originAdapter
+    origin: config.origin
   })
 
   const resolvedConfig = parseResolvedAgenticProjectConfig({
     ...config,
     name,
     version,
-    originAdapter,
+    origin,
     tools
   })
 
   validateTools({
     label: `project "${name}"`,
     ...opts,
-    originAdapter: resolvedConfig.originAdapter,
+    origin: resolvedConfig.origin,
     tools: resolvedConfig.tools,
     toolConfigs: resolvedConfig.toolConfigs
   })

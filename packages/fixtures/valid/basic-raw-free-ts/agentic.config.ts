@@ -2,5 +2,8 @@ import { defineConfig } from '@agentic/platform'
 
 export default defineConfig({
   name: 'test-basic-raw-free-ts',
-  originUrl: 'https://jsonplaceholder.typicode.com'
+  origin: {
+    type: 'raw',
+    url: 'https://jsonplaceholder.typicode.com'
+  }
 })

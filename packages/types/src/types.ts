@@ -7,6 +7,7 @@
 import type { Simplify } from 'type-fest'
 
 import type { components } from './openapi.d.ts'
+import type { OriginAdapter } from './origin-adapter.js'
 import type { PricingPlan } from './pricing'
 import type { RateLimit } from './rate-limit.js'
 import type { ToolConfig } from './tools'
@@ -51,11 +52,12 @@ export type Deployment = Simplify<
 export type AdminDeployment = Simplify<
   Omit<
     components['schemas']['AdminDeployment'],
-    'pricingPlans' | 'toolConfigs' | 'defaultRateLimit'
+    'pricingPlans' | 'toolConfigs' | 'defaultRateLimit' | 'origin'
   > & {
     pricingPlans: PricingPlan[]
     toolConfigs: ToolConfig[]
     defaultRateLimit: RateLimit
+    origin: OriginAdapter
     project?: components['schemas']['Project']
   }
 >

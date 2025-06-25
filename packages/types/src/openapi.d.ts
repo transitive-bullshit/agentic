@@ -571,9 +571,10 @@ export interface components {
             username: string;
             /** @enum {string} */
             role: "user" | "admin";
-            name?: string;
             email: string;
             isEmailVerified: boolean;
+            name?: string;
+            bio?: string;
             image?: string;
             stripeCustomerId?: string;
         };
@@ -682,70 +683,6 @@ export interface components {
                 [key: string]: components["schemas"]["PricingPlanToolOverride"];
             };
         };
-        /** @description Origin adapter is used to configure the origin API server downstream from Agentic's API gateway. It specifies whether the origin API server denoted by `originUrl` is hosted externally or deployed internally to Agentic's infrastructure. It also specifies the format for how origin tools are defined: either an OpenAPI spec, an MCP server, or a raw HTTP REST API. */
-        OriginAdapter: {
-            /**
-             * @default external
-             * @enum {string}
-             */
-            location: "external";
-            /** @enum {string} */
-            type: "openapi";
-            /** @description JSON stringified OpenAPI spec describing the origin API server. */
-            spec: string;
-            /** @description Mapping from tool name to OpenAPI Operation info. This is used by the Agentic API gateway to route tools to the correct origin API operation, along with the HTTP method, path, params, etc. */
-            toolToOperationMap: {
-                [key: string]: {
-                    /** @description OpenAPI operationId for the tool */
-                    operationId: string;
-                    /** @description HTTP method */
-                    method: "get" | "put" | "post" | "delete" | "patch" | "trace";
-                    /** @description HTTP path template */
-                    path: string;
-                    /** @description Mapping from parameter name to HTTP source (query, path, JSON body, etc). */
-                    parameterSources: {
-                        [key: string]: "query" | "header" | "path" | "cookie" | "body" | "formData";
-                    };
-                    tags?: string[];
-                };
-            };
-        } | {
-            /**
-             * @default external
-             * @enum {string}
-             */
-            location: "external";
-            /** @enum {string} */
-            type: "mcp";
-            serverInfo: {
-                name: string;
-                version: string;
-                capabilities?: {
-                    experimental?: Record<string, never>;
-                    logging?: Record<string, never>;
-                    completions?: Record<string, never>;
-                    prompts?: {
-                        listChanged?: boolean;
-                    };
-                    resources?: {
-                        subscribe?: boolean;
-                        listChanged?: boolean;
-                    };
-                    tools?: {
-                        listChanged?: boolean;
-                    };
-                };
-                instructions?: string;
-            };
-        } | {
-            /**
-             * @default external
-             * @enum {string}
-             */
-            location: "external";
-            /** @enum {string} */
-            type: "raw";
-        };
         /**
          * @description Human-readable name for the pricing plan (eg, "Free", "Starter Monthly", "Pro Annual", etc)
          * @example Starter Monthly
@@ -838,7 +775,6 @@ export interface components {
             tools: components["schemas"]["Tool"][];
             /** @default [] */
             toolConfigs: components["schemas"]["ToolConfig"][];
-            originAdapter: components["schemas"]["OriginAdapter"];
             /**
              * @description List of PricingPlans configuring which Stripe subscriptions should be available for the project. Defaults to a single free plan which is useful for developing and testing your project.
              * @default [
@@ -917,21 +853,22 @@ export interface components {
             project?: components["schemas"]["Project"];
             deployment?: unknown;
         };
-        /**
-         * @description Origin adapter is used to configure the origin API server downstream from Agentic's API gateway. It specifies whether the origin API server denoted by `originUrl` is hosted externally or deployed internally to Agentic's infrastructure. It also specifies the format for how origin tools are defined: either an OpenAPI spec, an MCP server, or a raw HTTP REST API.
+        /** @description Origin adapter is used to configure the origin API server downstream from Agentic's API gateway. It specifies whether the origin API server denoted by `url` is hosted externally or deployed internally to Agentic's infrastructure. It also specifies the format for how origin tools are defined: either an OpenAPI spec or an MCP server.
          *
-         *     NOTE: Agentic currently only supports `external` API servers. If you'd like to host your API or MCP server on Agentic's infrastructure, please reach out to support@agentic.so.
-         * @default {
-         *       "location": "external",
-         *       "type": "raw"
-         *     }
-         */
+         *     NOTE: Agentic currently only supports `external` API servers. If you'd like to host your API or MCP server on Agentic's infrastructure, please reach out to support@agentic.so. */
         OriginAdapterConfig: {
             /**
              * @default external
              * @enum {string}
              */
             location: "external";
+            /**
+             * Format: uri
+             * @description Required base URL of the externally hosted origin API server. Must be a valid `https` URL.
+             *
+             *     NOTE: Agentic currently only supports `external` API servers. If you'd like to host your API or MCP server on Agentic's infrastructure, please reach out to support@agentic.so.
+             */
+            url: string;
             /** @enum {string} */
             type: "openapi";
             /** @description Local file path, URL, or JSON stringified OpenAPI spec describing the origin API server. */
@@ -942,6 +879,13 @@ export interface components {
              * @enum {string}
              */
             location: "external";
+            /**
+             * Format: uri
+             * @description Required base URL of the externally hosted origin API server. Must be a valid `https` URL.
+             *
+             *     NOTE: Agentic currently only supports `external` API servers. If you'd like to host your API or MCP server on Agentic's infrastructure, please reach out to support@agentic.so.
+             */
+            url: string;
             /** @enum {string} */
             type: "mcp";
         } | {
@@ -950,6 +894,13 @@ export interface components {
              * @enum {string}
              */
             location: "external";
+            /**
+             * Format: uri
+             * @description Required base URL of the externally hosted origin API server. Must be a valid `https` URL.
+             *
+             *     NOTE: Agentic currently only supports `external` API servers. If you'd like to host your API or MCP server on Agentic's infrastructure, please reach out to support@agentic.so.
+             */
+            url: string;
             /** @enum {string} */
             type: "raw";
         };
@@ -963,17 +914,96 @@ export interface components {
         AdminConsumer: components["schemas"]["Consumer"] & {
             _stripeCustomerId: string;
         };
-        /** @description A Deployment is a single, immutable instance of a Project. Each deployment contains pricing plans, origin server config (OpenAPI or MCP server), tool definitions, and metadata.
-         *
-         *     Deployments are private to a developer or team until they are published, at which point they are accessible to any customers with access to the parent Project. */
-        AdminDeployment: components["schemas"]["Deployment"] & {
+        /** @description Origin adapter is used to configure the origin API server downstream from Agentic's API gateway. It specifies whether the origin API server denoted by `url` is hosted externally or deployed internally to Agentic's infrastructure. It also specifies the format for how origin tools are defined: either an OpenAPI spec, an MCP server, or a raw HTTP REST API. */
+        OriginAdapter: {
+            /**
+             * @default external
+             * @enum {string}
+             */
+            location: "external";
             /**
              * Format: uri
              * @description Required base URL of the externally hosted origin API server. Must be a valid `https` URL.
              *
              *     NOTE: Agentic currently only supports `external` API servers. If you'd like to host your API or MCP server on Agentic's infrastructure, please reach out to support@agentic.so.
              */
-            originUrl: string;
+            url: string;
+            /** @enum {string} */
+            type: "openapi";
+            /** @description JSON stringified OpenAPI spec describing the origin API server. */
+            spec: string;
+            /** @description Mapping from tool name to OpenAPI Operation info. This is used by the Agentic API gateway to route tools to the correct origin API operation, along with the HTTP method, path, params, etc. */
+            toolToOperationMap: {
+                [key: string]: {
+                    /** @description OpenAPI operationId for the tool */
+                    operationId: string;
+                    /** @description HTTP method */
+                    method: "get" | "put" | "post" | "delete" | "patch" | "trace";
+                    /** @description HTTP path template */
+                    path: string;
+                    /** @description Mapping from parameter name to HTTP source (query, path, JSON body, etc). */
+                    parameterSources: {
+                        [key: string]: "query" | "header" | "path" | "cookie" | "body" | "formData";
+                    };
+                    tags?: string[];
+                };
+            };
+        } | {
+            /**
+             * @default external
+             * @enum {string}
+             */
+            location: "external";
+            /**
+             * Format: uri
+             * @description Required base URL of the externally hosted origin API server. Must be a valid `https` URL.
+             *
+             *     NOTE: Agentic currently only supports `external` API servers. If you'd like to host your API or MCP server on Agentic's infrastructure, please reach out to support@agentic.so.
+             */
+            url: string;
+            /** @enum {string} */
+            type: "mcp";
+            serverInfo: {
+                name: string;
+                version: string;
+                capabilities?: {
+                    experimental?: Record<string, never>;
+                    logging?: Record<string, never>;
+                    completions?: Record<string, never>;
+                    prompts?: {
+                        listChanged?: boolean;
+                    };
+                    resources?: {
+                        subscribe?: boolean;
+                        listChanged?: boolean;
+                    };
+                    tools?: {
+                        listChanged?: boolean;
+                    };
+                };
+                instructions?: string;
+            };
+        } | {
+            /**
+             * @default external
+             * @enum {string}
+             */
+            location: "external";
+            /**
+             * Format: uri
+             * @description Required base URL of the externally hosted origin API server. Must be a valid `https` URL.
+             *
+             *     NOTE: Agentic currently only supports `external` API servers. If you'd like to host your API or MCP server on Agentic's infrastructure, please reach out to support@agentic.so.
+             */
+            url: string;
+            /** @enum {string} */
+            type: "raw";
+        };
+        /** @description A Deployment is a single, immutable instance of a Project. Each deployment contains pricing plans, origin server config (OpenAPI or MCP server), tool definitions, and metadata.
+         *
+         *     Deployments are private to a developer or team until they are published, at which point they are accessible to any customers with access to the parent Project. */
+        AdminDeployment: components["schemas"]["Deployment"] & {
+            origin: components["schemas"]["OriginAdapter"];
             _secret: string;
         };
     };
@@ -1356,6 +1386,7 @@ export interface operations {
             content: {
                 "application/json": {
                     name?: string;
+                    bio?: string;
                     image?: string;
                 };
             };
@@ -2263,7 +2294,7 @@ export interface operations {
     createDeployment: {
         parameters: {
             query?: {
-                publish?: boolean;
+                publish?: "true" | "false";
             };
             header?: never;
             path?: never;
@@ -2290,14 +2321,7 @@ export interface operations {
                      * @description Optional URL to the source code of the project (eg, GitHub repo).
                      */
                     sourceUrl?: string;
-                    /**
-                     * Format: uri
-                     * @description Required base URL of the externally hosted origin API server. Must be a valid `https` URL.
-                     *
-                     *     NOTE: Agentic currently only supports `external` API servers. If you'd like to host your API or MCP server on Agentic's infrastructure, please reach out to support@agentic.so.
-                     */
-                    originUrl: string;
-                    originAdapter?: components["schemas"]["OriginAdapterConfig"];
+                    origin: components["schemas"]["OriginAdapterConfig"];
                     /**
                      * @description List of PricingPlans configuring which Stripe subscriptions should be available for the project. Defaults to a single free plan which is useful for developing and testing your project.
                      * @default [

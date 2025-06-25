@@ -17,9 +17,9 @@ export async function createHttpResponseFromMcpToolCallResponse(
   }
 ): Promise<Response> {
   assert(
-    deployment.originAdapter.type === 'mcp',
+    deployment.origin.type === 'mcp',
     500,
-    `Internal logic error for origin adapter type "${deployment.originAdapter.type}"`
+    `Internal logic error for origin adapter type "${deployment.origin.type}"`
   )
   assert(
     !toolCallResponse.isError,

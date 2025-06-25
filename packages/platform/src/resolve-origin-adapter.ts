@@ -15,49 +15,46 @@ import { validateOriginUrl } from './validate-origin-url'
 export async function resolveOriginAdapter({
   name,
   version = '0.0.0',
-  originUrl,
-  originAdapter,
+  origin,
   label,
   cwd,
   logger
 }: {
   name: string
-  originUrl: string
-  originAdapter: OriginAdapterConfig
+  origin: OriginAdapterConfig
   label: string
   version?: string
   cwd?: string
   logger?: Logger
 }): Promise<{
-  originAdapter: OriginAdapter
+  origin: OriginAdapter
   tools?: Tool[]
 }> {
-  validateOriginUrl({ originUrl, label })
+  validateOriginUrl({ originUrl: origin.url, label })
 
-  if (originAdapter.type === 'openapi') {
+  if (origin.type === 'openapi') {
     return resolveOpenAPIOriginAdapter({
-      originAdapter,
+      origin,
       label,
       cwd,
       logger
     })
-  } else if (originAdapter.type === 'mcp') {
+  } else if (origin.type === 'mcp') {
     return resolveMCPOriginAdapter({
       name,
       version,
-      originUrl,
-      originAdapter,
+      origin,
       label
     })
   } else {
     assert(
-      originAdapter.type === 'raw',
+      origin.type === 'raw',
       400,
-      `Invalid origin adapter type "${originAdapter.type}" for ${label}`
+      `Invalid origin adapter type "${origin.type}" for ${label}`
     )
 
     return {
-      originAdapter
+      origin
     }
   }
 }

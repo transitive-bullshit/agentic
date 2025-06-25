@@ -57,7 +57,7 @@ export async function resolveOriginToolCall({
   // it's not specific to tool calls. eg, other MCP requests may still need to
   // be rate-limited / cached / tracked / etc.
 
-  const { originAdapter } = deployment
+  const { origin } = deployment
   // TODO: make this configurable via `ToolConfig.cost`
   const numRequestsCost = 1
   let rateLimit = deployment.defaultRateLimit
@@ -180,7 +180,7 @@ export async function resolveOriginToolCall({
     }
   }
 
-  if (originAdapter.type === 'raw') {
+  if (origin.type === 'raw') {
     // TODO
     assert(false, 500, 'Raw origin adapter not implemented')
   } else {
@@ -195,8 +195,8 @@ export async function resolveOriginToolCall({
 
     const originStartTimeMs = Date.now()
 
-    if (originAdapter.type === 'openapi') {
-      const operation = originAdapter.toolToOperationMap[tool.name]
+    if (origin.type === 'openapi') {
+      const operation = origin.toolToOperationMap[tool.name]
       assert(operation, 404, `Tool "${tool.name}" not found in OpenAPI spec`)
       assert(toolCallArgs, 500)
 
@@ -246,7 +246,7 @@ export async function resolveOriginToolCall({
         numRequestsCost,
         toolConfig
       }
-    } else if (originAdapter.type === 'mcp') {
+    } else if (origin.type === 'mcp') {
       const { projectIdentifier } = parseDeploymentIdentifier(
         deployment.identifier,
         { errorStatusCode: 500 }
@@ -258,9 +258,9 @@ export async function resolveOriginToolCall({
       ) as DurableObjectStub<DurableMcpClientBase>
 
       await originMcpClient.init({
-        url: deployment.originUrl,
-        name: originAdapter.serverInfo.name,
-        version: originAdapter.serverInfo.version
+        url: deployment.origin.url,
+        name: origin.serverInfo.name,
+        version: origin.serverInfo.version
       })
 
       const originMcpRequestMetadata = {
@@ -286,7 +286,7 @@ export async function resolveOriginToolCall({
       let cacheKey: Request | undefined
 
       if (cacheControl && isCacheControlPubliclyCacheable(cacheControl)) {
-        const fakeOriginRequest = new Request(deployment.originUrl, {
+        const fakeOriginRequest = new Request(deployment.origin.url, {
           method: 'POST',
           headers: {
             'content-type': 'application/json',
@@ -353,7 +353,7 @@ export async function resolveOriginToolCall({
       assert(
         false,
         500,
-        `Internal error: origin adapter type "${(originAdapter as any).type}"`
+        `Internal error: origin adapter type "${(origin as any).type}"`
       )
     }
   }
