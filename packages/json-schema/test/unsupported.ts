@@ -31,8 +31,7 @@ export const unsupportedTests: Record<
       'invalid json-pointer string is only an annotation by default': true
     },
     'relative-json-pointer format': {
-      'invalid relative-json-pointer string is only an annotation by default':
-        true
+      'invalid relative-json-pointer string is only an annotation by default': true
     },
     'uri format': {
       'invalid uri string is only an annotation by default': true
@@ -244,8 +243,7 @@ export const unsupportedTests: Record<
       'recurse to integerNode - floats are not allowed': true
     },
     'after leaving a dynamic scope, it should not be used by a $dynamicRef': {
-      'string matches /$defs/thingy, but the $dynamicRef does not stop here':
-        true,
+      'string matches /$defs/thingy, but the $dynamicRef does not stop here': true,
       'first_scope is not in dynamic scope for the $dynamicRef': true
     }
   },
@@ -278,8 +276,7 @@ export const unsupportedTests: Record<
       'invalid json-pointer string is only an annotation by default': true
     },
     'relative-json-pointer format': {
-      'invalid relative-json-pointer string is only an annotation by default':
-        true
+      'invalid relative-json-pointer string is only an annotation by default': true
     },
     'uri format': {
       'invalid uri string is only an annotation by default': true
