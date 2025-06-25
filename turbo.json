@@ -5,7 +5,8 @@
     "build": {
       "dependsOn": ["^build"],
       "outputs": ["dist/**", ".next/**", "!.next/cache/**"],
-      "outputLogs": "new-only"
+      "outputLogs": "new-only",
+      "inputs": ["$TURBO_DEFAULT$", ".env", ".env.*"]
     },
     "clean": {
       "cache": false,
