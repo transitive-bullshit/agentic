@@ -26,6 +26,7 @@ catalog:
   "@hono/zod-openapi": ^0.19.8
   "@hono/zod-validator": ^0.7.0
   "@modelcontextprotocol/sdk": ^1.13.0
+  "@neondatabase/serverless": ^1.0.1
   "@number-flow/react": ^0.5.10
   "@paralleldrive/cuid2": ^2.2.2
   "@pmndrs/assets": ^1.7.0

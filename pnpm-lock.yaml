@@ -57,6 +57,9 @@ catalogs:
     '@modelcontextprotocol/sdk':
       specifier: ^1.13.0
       version: 1.13.0
+    '@neondatabase/serverless':
+      specifier: ^1.0.1
+      version: 1.0.1
     '@number-flow/react':
       specifier: ^0.5.10
       version: 0.5.10
@@ -506,6 +509,9 @@ importers:
       '@hono/zod-openapi':
         specifier: 'catalog:'
         version: 0.19.8(hono@4.8.1)(zod@3.25.67)
+      '@neondatabase/serverless':
+        specifier: 'catalog:'
+        version: 1.0.1
       '@paralleldrive/cuid2':
         specifier: 'catalog:'
         version: 2.2.2
@@ -8852,7 +8858,6 @@ snapshots:
     dependencies:
       '@types/node': 22.15.33
       '@types/pg': 8.15.4
-    optional: true
 
   '@next/env@15.3.4': {}
 
@@ -10296,7 +10301,6 @@ snapshots:
   '@types/node@22.15.33':
     dependencies:
       undici-types: 6.21.0
-    optional: true
 
   '@types/node@24.0.4':
     dependencies:
@@ -14581,8 +14585,7 @@ snapshots:
       jiti: 2.4.2
       quansync: 0.2.10
 
-  undici-types@6.21.0:
-    optional: true
+  undici-types@6.21.0: {}
 
   undici-types@7.8.0: {}
 
