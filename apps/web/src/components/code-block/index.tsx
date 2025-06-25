@@ -1,16 +1,11 @@
-import { toJsxRuntime } from 'hast-util-to-jsx-runtime'
-import { CheckIcon, CopyIcon } from 'lucide-react'
-import {
-  Fragment,
-  type JSX,
-  useCallback,
-  useEffect,
-  useRef,
-  useState
-} from 'react'
-import { jsx, jsxs } from 'react/jsx-runtime'
-import { type BundledLanguage, codeToHast } from 'shiki/bundle/web'
+'use client'
 
+import { CheckIcon, CopyIcon } from 'lucide-react'
+import { type JSX, useCallback, useEffect, useRef, useState } from 'react'
+import { type BundledLanguage } from 'shiki/bundle/web'
+
+import { LoadingIndicator } from '@/components/loading-indicator'
+import { Button } from '@/components/ui/button'
 import {
   Tooltip,
   TooltipContent,
@@ -19,40 +14,7 @@ import {
 import { toastError } from '@/lib/notifications'
 import { cn } from '@/lib/utils'
 
-import { LoadingIndicator } from './loading-indicator'
-import { Button } from './ui/button'
-
-export async function highlight({
-  code,
-  lang = 'ts',
-  theme = 'github-dark',
-  className
-}: {
-  code: string
-  lang?: BundledLanguage
-  theme?: string
-  className?: string
-}) {
-  const out = await codeToHast(code, {
-    lang,
-    theme,
-    transformers: [
-      {
-        pre(node) {
-          if (className) {
-            this.addClassToHast(node, className)
-          }
-        }
-      }
-    ]
-  })
-
-  return toJsxRuntime(out, {
-    Fragment,
-    jsx,
-    jsxs
-  }) as JSX.Element
-}
+import { highlight } from './highlight'
 
 export function CodeBlock({
   initial,
@@ -75,8 +37,7 @@ export function CodeBlock({
     void highlight({
       code,
       lang,
-      theme,
-      className: 'w-full text-wrap p-4 text-sm rounded-sm'
+      theme
     }).then(setNodes)
   }, [code, lang, theme])
 

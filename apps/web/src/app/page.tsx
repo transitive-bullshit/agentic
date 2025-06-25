@@ -1,12 +1,37 @@
 import Link from 'next/link'
 
+import { highlight } from '@/components/code-block/highlight'
 import { DemandSideCTA } from '@/components/demand-side-cta'
 import { DotsSection } from '@/components/dots-section'
 import { ExampleUsage } from '@/components/example-usage'
 import { GitHubStarCounter } from '@/components/github-star-counter'
 import { githubUrl, twitterUrl } from '@/lib/config'
+import {
+  defaultConfig,
+  getCodeForDeveloperConfig
+} from '@/lib/developer-config'
+import { globalAgenticApiClient } from '@/lib/global-api'
 
-export default function TheBestDamnLandingPageEver() {
+export default async function TheBestDamnLandingPageEver() {
+  const projectIdentifier = '@agentic/search'
+  const prompt = 'What is the latest news about AI?'
+
+  const initialProject =
+    await globalAgenticApiClient.getPublicProjectByIdentifier({
+      projectIdentifier,
+      populate: ['lastPublishedDeployment']
+    })
+
+  // TODO: this should be loaded in `ExampleUsage`
+  const initialCodeSnippet = getCodeForDeveloperConfig({
+    config: defaultConfig,
+    project: initialProject,
+    deployment: initialProject.lastPublishedDeployment!,
+    identifier: projectIdentifier,
+    prompt
+  })
+  const initialCodeBlock = await highlight(initialCodeSnippet)
+
   return (
     <>
       {/* Hero section */}
@@ -31,7 +56,12 @@ export default function TheBestDamnLandingPageEver() {
           How It Works
         </h2>
 
-        <ExampleUsage />
+        <ExampleUsage
+          projectIdentifier={projectIdentifier}
+          prompt={prompt}
+          project={initialProject}
+          initialCodeBlock={initialCodeBlock}
+        />
       </section>
 
       {/* Marketplace section */}

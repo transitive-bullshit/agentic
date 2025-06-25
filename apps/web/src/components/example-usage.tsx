@@ -1,5 +1,7 @@
 'use client'
 
+import type { Project } from '@agentic/platform-types'
+import type { JSX } from 'react'
 import { useLocalStorage } from 'react-use'
 
 import { useAgentic } from '@/components/agentic-provider'
@@ -29,7 +31,17 @@ import { useQuery } from '@/lib/query-client'
 
 import { LoadingIndicator } from './loading-indicator'
 
-export function ExampleUsage() {
+export function ExampleUsage({
+  projectIdentifier,
+  prompt,
+  project: initialProject,
+  initialCodeBlock
+}: {
+  projectIdentifier: string
+  prompt: string
+  project?: Project
+  initialCodeBlock?: JSX.Element
+}) {
   const ctx = useAgentic()
 
   const [config, setConfig] = useLocalStorage<DeveloperConfig>(
@@ -40,8 +52,6 @@ export function ExampleUsage() {
   // TODO: make this configurable
   // TODO: allow to take the project and/or consumer in as props
   // TODO: need a way of fetching a project and target deployment; same as in `AgenticToolClient.fromIdentifier` (currently only supports latest)
-  const projectIdentifier = '@agentic/search'
-  const prompt = 'What is the latest news about AI?'
 
   // Load the public project
   const {
@@ -55,7 +65,8 @@ export function ExampleUsage() {
         projectIdentifier,
         populate: ['lastPublishedDeployment']
       }),
-    enabled: !!ctx
+    enabled: !!ctx,
+    initialData: initialProject
   })
 
   // If the user is authenticated, check if they have an active subscription to
@@ -153,7 +164,11 @@ export function ExampleUsage() {
               value={mcpClientTarget}
               className='w-full'
             >
-              <CodeBlock code={codeSnippet.code} lang={codeSnippet.lang} />
+              <CodeBlock
+                code={codeSnippet.code}
+                lang={codeSnippet.lang}
+                initial={initialCodeBlock}
+              />
             </TabsContent>
           ))}
         </Tabs>
@@ -185,7 +200,11 @@ export function ExampleUsage() {
 
           {tsFrameworkTargets.map((framework) => (
             <TabsContent key={framework} value={framework} className='w-full'>
-              <CodeBlock code={codeSnippet.code} lang={codeSnippet.lang} />
+              <CodeBlock
+                code={codeSnippet.code}
+                lang={codeSnippet.lang}
+                initial={initialCodeBlock}
+              />
             </TabsContent>
           ))}
         </Tabs>
@@ -217,7 +236,11 @@ export function ExampleUsage() {
 
           {pyFrameworkTargets.map((framework) => (
             <TabsContent key={framework} value={framework} className='w-full'>
-              <CodeBlock code={codeSnippet.code} lang={codeSnippet.lang} />
+              <CodeBlock
+                code={codeSnippet.code}
+                lang={codeSnippet.lang}
+                initial={initialCodeBlock}
+              />
             </TabsContent>
           ))}
         </Tabs>
@@ -249,7 +272,11 @@ export function ExampleUsage() {
 
           {httpTargets.map((httpTarget) => (
             <TabsContent key={httpTarget} value={httpTarget} className='w-full'>
-              <CodeBlock code={codeSnippet.code} lang={codeSnippet.lang} />
+              <CodeBlock
+                code={codeSnippet.code}
+                lang={codeSnippet.lang}
+                initial={initialCodeBlock}
+              />
             </TabsContent>
           ))}
         </Tabs>

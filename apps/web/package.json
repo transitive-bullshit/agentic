@@ -56,6 +56,7 @@
     "react-infinite-scroll-hook": "catalog:",
     "react-lottie-player": "catalog:",
     "react-use": "catalog:",
+    "server-only": "^0.0.1",
     "shiki": "catalog:",
     "sonner": "catalog:",
     "stripe": "catalog:",
