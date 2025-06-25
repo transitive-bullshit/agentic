@@ -18,8 +18,7 @@
   },
   "scripts": {
     "test": "run-s test:*",
-    "test:typecheck": "tsc --noEmit",
-    "test:unit": "vitest run"
+    "test:typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@agentic/core": "^7.6.7",
