@@ -57,13 +57,16 @@ export function registerV1CreateTeam(app: OpenAPIHono<AuthenticatedHonoEnv>) {
         .returning()
       assert(team, 500, `Failed to create team "${body.slug}"`)
 
-      const [teamMember] = await tx.insert(schema.teamMembers).values({
-        userId: user.id,
-        teamId: team.id,
-        teamSlug: team.slug,
-        role: 'admin',
-        confirmed: true
-      })
+      const [teamMember] = await tx
+        .insert(schema.teamMembers)
+        .values({
+          userId: user.id,
+          teamId: team.id,
+          teamSlug: team.slug,
+          role: 'admin',
+          confirmed: true
+        })
+        .returning()
       assert(
         teamMember,
         500,
