@@ -5,12 +5,8 @@ import {
   type AuthSession
 } from '@agentic/platform-api-client'
 import { sanitizeSearchParams } from '@agentic/platform-core'
-import {
-  redirect,
-  RedirectType,
-  usePathname,
-  useSearchParams
-} from 'next/navigation'
+import { usePathname, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/router'
 import {
   createContext,
   type ReactNode,
@@ -131,10 +127,12 @@ export function useAgentic(): AgenticContextType | undefined {
 export function useUnauthenticatedAgentic(): AgenticContextType | undefined {
   const ctx = useAgentic()
   const nextUrl = useNextUrl() || '/app'
+  const router = useRouter()
 
   if (ctx && ctx.isAuthenticated) {
     console.log('REQUIRES NO AUTHENTICATION: redirecting to', nextUrl)
-    return redirect(nextUrl, RedirectType.replace)
+    void router.replace(nextUrl)
+    return
   }
 
   return ctx
@@ -143,21 +141,23 @@ export function useUnauthenticatedAgentic(): AgenticContextType | undefined {
 export function useAuthenticatedAgentic(): AgenticContextType | undefined {
   const ctx = useAgentic()
   const pathname = usePathname()
+  const router = useRouter()
 
   if (ctx && !ctx.isAuthenticated) {
     if (pathname === '/logout') {
       console.log('LOGOUT SUCCESS: redirecting to /')
-      return redirect('/', RedirectType.replace)
+      void router.replace('/')
+      return
     }
 
     console.log('REQUIRES AUTHENTICATION: redirecting to /login', {
       next: pathname
     })
 
-    return redirect(
-      `/login?${sanitizeSearchParams({ next: pathname }).toString()}`,
-      RedirectType.replace
+    void router.replace(
+      `/login?${sanitizeSearchParams({ next: pathname }).toString()}`
     )
+    return
   }
 
   return ctx

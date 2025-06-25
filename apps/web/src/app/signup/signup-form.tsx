@@ -8,7 +8,7 @@ import {
 } from '@agentic/platform-validators'
 import { useForm } from '@tanstack/react-form'
 import { Loader2Icon } from 'lucide-react'
-import { redirect, RedirectType } from 'next/navigation'
+import { useRouter } from 'next/router'
 import { useCallback } from 'react'
 import { z } from 'zod'
 
@@ -26,13 +26,14 @@ import { cn } from '@/lib/utils'
 export function SignupForm() {
   const ctx = useUnauthenticatedAgentic()
   const nextUrl = useNextUrl()
+  const router = useRouter()
 
   const onAuthWithGitHub = useCallback(async () => {
     const redirectUri = `${globalThis.location.origin}/auth/github/success?${sanitizeSearchParams({ next: nextUrl }).toString()}`
     const url = await ctx!.api.initAuthFlowWithGitHub({ redirectUri })
 
-    redirect(url, RedirectType.push)
-  }, [ctx, nextUrl])
+    return router.push(url)
+  }, [ctx, nextUrl, router])
 
   const form = useForm({
     defaultValues: {
@@ -71,7 +72,7 @@ export function SignupForm() {
         return
       }
 
-      return redirect(nextUrl || '/app', RedirectType.push)
+      return router.push(nextUrl || '/app')
     }
   })
 

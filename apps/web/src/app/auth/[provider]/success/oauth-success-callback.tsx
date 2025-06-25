@@ -1,7 +1,8 @@
 'use client'
 
 import { sanitizeSearchParams } from '@agentic/platform-core'
-import { redirect, RedirectType, useSearchParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 
 import {
@@ -22,6 +23,7 @@ export function OAuthSuccessCallback({
   const code = searchParams.get('code')
   const ctx = useUnauthenticatedAgentic()
   const nextUrl = useNextUrl()
+  const router = useRouter()
 
   useEffect(() => {
     ;(async function () {
@@ -40,15 +42,14 @@ export function OAuthSuccessCallback({
       } catch (err) {
         await toastError(err, { label: 'Auth error' })
 
-        return redirect(
-          `/login?${sanitizeSearchParams({ next: nextUrl }).toString()}`,
-          RedirectType.replace
+        return router.replace(
+          `/login?${sanitizeSearchParams({ next: nextUrl }).toString()}`
         )
       }
 
-      return redirect(nextUrl || '/app', RedirectType.replace)
+      return router.replace(nextUrl || '/app')
     })()
-  }, [code, ctx, nextUrl])
+  }, [code, ctx, nextUrl, router])
 
   return <LoadingIndicator />
 }

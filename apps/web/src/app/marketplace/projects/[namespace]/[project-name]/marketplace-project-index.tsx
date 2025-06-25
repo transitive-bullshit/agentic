@@ -2,7 +2,8 @@
 
 import { assert, omit, sanitizeSearchParams } from '@agentic/platform-core'
 import { Loader2Icon } from 'lucide-react'
-import { redirect, useSearchParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/router'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { useAgentic } from '@/components/agentic-provider'
@@ -22,6 +23,7 @@ export function MarketplaceProjectIndex({
   const plan = searchParams.get('plan')
   const [isLoadingStripeCheckoutForPlan, setIsLoadingStripeCheckoutForPlan] =
     useState<string | null>(null)
+  const router = useRouter()
 
   // Load the public project
   const {
@@ -70,7 +72,7 @@ export function MarketplaceProjectIndex({
       )
 
       if (!ctx.isAuthenticated) {
-        return redirect(
+        return router.push(
           `/signup?${sanitizeSearchParams({
             next: `/marketplace/projects/${projectIdentifier}?checkout=true&plan=${pricingPlanSlug}`
           }).toString()}`
@@ -94,9 +96,9 @@ export function MarketplaceProjectIndex({
         setIsLoadingStripeCheckoutForPlan(null)
       }
 
-      redirect(checkoutSession.url)
+      return router.push(checkoutSession.url)
     },
-    [ctx, projectIdentifier, project]
+    [ctx, projectIdentifier, project, router]
   )
 
   const hasInitializedCheckoutFromSearchParams = useRef(false)
