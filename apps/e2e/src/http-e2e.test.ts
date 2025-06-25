@@ -137,8 +137,8 @@ for (const [i, fixtureSuite] of fixtureSuites.entries()) {
               if (debugFixture) {
                 console.log(
                   `${repeatIterationPrefix}${fixtureName} => ${res.status}`,
+                  body,
                   {
-                    body,
                     headers: Object.fromEntries(res.headers.entries())
                   }
                 )

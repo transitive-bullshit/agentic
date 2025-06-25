@@ -55,12 +55,8 @@ export function registerV1CreateProject(
     const teamMember = c.get('teamMember')
     const namespace = teamMember ? teamMember.teamSlug : user.username
     const identifier = `@${namespace}/${body.name}`
-    const parsedProjectIdentifier = parseProjectIdentifier(identifier)
-    assert(
-      parsedProjectIdentifier,
-      400,
-      `Invalid project identifier "${identifier}"`
-    )
+    const { projectIdentifier, projectNamespace, projectName } =
+      parseProjectIdentifier(identifier)
 
     // Used for testing e2e fixtures in the development marketplace
     const isPrivate = !(
@@ -68,17 +64,24 @@ export function registerV1CreateProject(
       user.username === 'agentic'
     )
 
+    // Used to simplify recreating the demo `@agentic/search` project during
+    // development while we're frequently resetting the database
+    const secret =
+      projectIdentifier === '@agentic/search'
+        ? env.AGENTIC_SEARCH_PROXY_SECRET
+        : await sha256()
+
     const [project] = await db
       .insert(schema.projects)
       .values({
         ...body,
-        identifier: parsedProjectIdentifier.projectIdentifier,
-        namespace: parsedProjectIdentifier.projectNamespace,
-        name: parsedProjectIdentifier.projectName,
+        identifier: projectIdentifier,
+        namespace: projectNamespace,
+        name: projectName,
         teamId: teamMember?.teamId,
         userId: user.id,
         private: isPrivate,
-        _secret: await sha256()
+        _secret: secret
       })
       .returning()
     assert(project, 500, `Failed to create project "${body.name}"`)

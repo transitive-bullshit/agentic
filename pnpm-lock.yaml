@@ -834,9 +834,6 @@ importers:
       '@agentic/platform':
         specifier: workspace:*
         version: link:../../packages/platform
-      '@agentic/platform-core':
-        specifier: workspace:*
-        version: link:../../packages/core
       '@agentic/serper':
         specifier: 'catalog:'
         version: 7.6.7(zod@3.25.67)

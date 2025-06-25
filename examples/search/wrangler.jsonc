@@ -8,5 +8,9 @@
   "compatibility_date": "2025-05-25",
   "compatibility_flags": ["nodejs_compat"],
   "placement": { "mode": "smart" },
-  "upload_source_maps": true
+  "upload_source_maps": true,
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1
+  }
 }

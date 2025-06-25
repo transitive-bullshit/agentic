@@ -1,4 +1,3 @@
-import { assert } from '@agentic/platform-core'
 import { SerperClient } from '@agentic/serper'
 import { StreamableHTTPTransport } from '@hono/mcp'
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
@@ -59,21 +58,42 @@ export default {
               .optional()
               .describe('Type of Google search to perform')
           }).shape,
-          outputSchema: z.object({}).passthrough().shape
+          outputSchema: z
+            .object({
+              results: z.any(),
+              answerBox: z.any().optional(),
+              knowledgeGraph: z.any().optional(),
+              images: z.any().optional(),
+              videos: z.any().optional(),
+              places: z.any().optional(),
+              news: z.any().optional(),
+              shopping: z.any().optional()
+            })
+            .passthrough().shape
         },
         async (args, { _meta }) => {
+          console.log('search call', {
+            args,
+            _meta
+          })
+
           // Make sure the request is coming from Agentic
-          assert(
-            (_meta?.agentic as any)?.agenticProxySecret ===
-              parsedEnv.AGENTIC_PROXY_SECRET,
-            400,
-            'Invalid request'
-          )
+          if (
+            (_meta?.agentic as any)?.agenticProxySecret !==
+            parsedEnv.AGENTIC_PROXY_SECRET
+          ) {
+            return {
+              content: [],
+              structuredContent: {
+                error: 'Invalid request'
+              }
+            }
+          }
 
           const result: any = await serper!.search({
             q: args.query,
-            num: args.num,
-            type: args.type
+            num: args.num ?? 5,
+            type: args.type ?? 'search'
           })
 
           // Simplify search results to optimize for LLM usage
@@ -83,6 +103,7 @@ export default {
           delete result.peopleAlsoAsk
           delete result.searchParameters
           delete result.credits
+          delete result.relatedSearches
 
           return {
             content: [],

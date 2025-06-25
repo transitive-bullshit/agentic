@@ -38,7 +38,7 @@
 - merge with current agentic repo
 - publish packages to npm
 - api
-  - deploy to prod
+  - **deploy to prod**
 - database
   - consider using [neon serverless driver](https://orm.drizzle.team/docs/connect-neon) for production
   - can this also be used locally?
