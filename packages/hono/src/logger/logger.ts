@@ -63,9 +63,8 @@ export class ConsoleLogger implements Logger {
       return
     }
 
-    if (this.environment === 'development') {
-      this.console.trace(message, ...detail)
-    } else {
+    this.console.trace(message, ...detail)
+    if (this.environment === 'production') {
       this.console.trace(this._marshal('trace', message, ...detail))
     }
   }
@@ -75,9 +74,8 @@ export class ConsoleLogger implements Logger {
       return
     }
 
-    if (this.environment === 'development') {
-      this.console.debug(message, ...detail)
-    } else {
+    this.console.debug(message, ...detail)
+    if (this.environment === 'production') {
       this.console.debug(this._marshal('debug', message, ...detail))
     }
   }
@@ -87,9 +85,8 @@ export class ConsoleLogger implements Logger {
       return
     }
 
-    if (this.environment === 'development') {
-      this.console.info(message, ...detail)
-    } else {
+    this.console.info(message, ...detail)
+    if (this.environment === 'production') {
       this.console.info(this._marshal('info', message, ...detail))
     }
   }
@@ -99,9 +96,8 @@ export class ConsoleLogger implements Logger {
       return
     }
 
-    if (this.environment === 'development') {
-      this.console.warn(message, ...detail)
-    } else {
+    this.console.warn(message, ...detail)
+    if (this.environment === 'production') {
       this.console.warn(this._marshal('warn', message, ...detail))
     }
   }
@@ -111,9 +107,8 @@ export class ConsoleLogger implements Logger {
       return
     }
 
-    if (this.environment === 'development') {
-      this.console.error(message, ...detail)
-    } else {
+    this.console.error(message, ...detail)
+    if (this.environment === 'production') {
       this.console.error(this._marshal('error', message, ...detail))
     }
   }

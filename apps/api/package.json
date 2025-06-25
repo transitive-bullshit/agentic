@@ -12,11 +12,6 @@
   },
   "type": "module",
   "source": "./src/server.ts",
-  "exports": {
-    ".": {
-      "import": "./src/server.ts"
-    }
-  },
   "scripts": {
     "build": "tsup",
     "dev": "run-p dev:*",
@@ -25,7 +20,7 @@
     "prod": "run-p prod:*",
     "prod:server": "dotenvx run -o -f .env.production -- tsx src/server.ts",
     "prod:stripe": "dotenvx run -o -f .env.production -- stripe listen --forward-to http://localhost:3001/v1/webhooks/stripe",
-    "start": "node dist/server.js",
+    "start": "tsx src/server.ts",
     "drizzle-kit": "dotenvx run -- drizzle-kit",
     "drizzle-kit:prod": "dotenvx run -o -f .env.production -- drizzle-kit",
     "clean": "del dist",
