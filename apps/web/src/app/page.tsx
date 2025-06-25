@@ -53,7 +53,7 @@ export default async function TheBestDamnLandingPageEver() {
       {/* How it works section */}
       <section className='flex flex-col gap-8 mb-16'>
         <h2 className='text-center text-balance leading-snug md:leading-none text-3xl font-heading'>
-          How It Works
+          LLM Tools that work everywhere
         </h2>
 
         <ExampleUsage

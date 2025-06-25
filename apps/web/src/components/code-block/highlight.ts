@@ -18,7 +18,7 @@ export async function highlight({
 }): Promise<JSX.Element> {
   className = cn('w-full text-wrap p-4 text-sm rounded-sm', className)
 
-  const out = await codeToHast(code, {
+  const hast = await codeToHast(code, {
     lang,
     theme,
     // TODO: use a custom `pre` element down below instead of this
@@ -33,7 +33,7 @@ export async function highlight({
     ]
   })
 
-  return toJsxRuntime(out, {
+  return toJsxRuntime(hast, {
     Fragment,
     jsx,
     jsxs
