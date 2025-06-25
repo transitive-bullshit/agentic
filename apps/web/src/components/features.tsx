@@ -47,7 +47,7 @@ const FEATURES: Feature[] = [
           rel='noopener'
           className='link'
         >
-          let me know
+          let us know
         </Link>
         .
       </>
@@ -85,12 +85,11 @@ const FEATURES: Feature[] = [
     name: 'Support both MCP and HTTP',
     description: (
       <>
-        All agentic products support being used both as a standard MCP server{' '}
-        <em>and</em> as an extremely simple HTTP API. MCP is important for
-        interop and future-proofing, whereas being able to call your agentic
-        tools via simple <em>HTTP POST</em> requests makes tool use easy to
-        debug and makes integration with existing LLM tool calling patterns a
-        breeze.
+        All Agentic tools are exposed as both{' '}
+        <span className='font-semibold'>MCP servers</span> as well as simple{' '}
+        <span className='font-semibold'>HTTP APIs</span>. MCP is important for
+        interop and future-proofing, whereas simple HTTP POST requests make
+        tools easy to debug and simplifies integrating with LLM SDKs.
       </>
     ),
     icon: CheckCheckIcon,
@@ -126,7 +125,7 @@ const FEATURES: Feature[] = [
         of Cloudflare's global infrastructure. Customize the default
         rate-limits, change them based on a customer's pricing plan, or create
         custom tool-specific overrides. REST assured that your origin API will
-        be safe behind Agentic's API gateway.
+        be safe behind Agentic's MCP gateway.
       </>
     ),
     icon: ShieldCheckIcon,
@@ -175,15 +174,15 @@ const FEATURES: Feature[] = [
     }
   },
   {
-    name: 'Versioning',
+    name: 'Versioning & Instant Rollbacks',
     description: (
       <>
         Just like Vercel, Agentic uses immutable deployments, so every time you
         make a change to your product's config, pricing, or docs, a unique
         preview deployment is created for that change. This enables instant
-        rollbacks if there are problems with a deployment. Publishing
-        deployments publicly uses semantic versioning (<em>semver</em>), so your
-        customers can choose how to handle breaking changes.
+        rollbacks if there are problems with a deployment. Publishing uses{' '}
+        <span className='font-semibold'>semver</span> (semantic versioning), so
+        your customers can choose how to handle breaking changes.
       </>
     ),
     icon: HistoryIcon,
