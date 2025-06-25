@@ -200,15 +200,71 @@ exports[`loadAgenticConfig > everything-openapi 1`] = `
           "slug": "base",
           "usageType": "licensed",
         },
+        {
+          "billingScheme": "per_unit",
+          "slug": "requests",
+          "unitAmount": 0,
+          "usageType": "metered",
+        },
       ],
       "name": "Free",
-      "rateLimit": {
-        "enabled": true,
-        "interval": 60,
-        "limit": 1000,
-        "mode": "approximate",
-      },
       "slug": "free",
+    },
+    {
+      "interval": "month",
+      "lineItems": [
+        {
+          "amount": 999,
+          "slug": "base",
+          "usageType": "licensed",
+        },
+        {
+          "billingScheme": "tiered",
+          "slug": "requests",
+          "tiers": [
+            {
+              "unitAmount": 0,
+              "upTo": 1000,
+            },
+            {
+              "unitAmount": 0.053,
+              "upTo": "inf",
+            },
+          ],
+          "tiersMode": "volume",
+          "usageType": "metered",
+        },
+      ],
+      "name": "Starter",
+      "slug": "starter",
+    },
+    {
+      "interval": "month",
+      "lineItems": [
+        {
+          "amount": 2999,
+          "slug": "base",
+          "usageType": "licensed",
+        },
+        {
+          "billingScheme": "tiered",
+          "slug": "requests",
+          "tiers": [
+            {
+              "unitAmount": 0,
+              "upTo": 10000,
+            },
+            {
+              "unitAmount": 0.049,
+              "upTo": "inf",
+            },
+          ],
+          "tiersMode": "volume",
+          "usageType": "metered",
+        },
+      ],
+      "name": "Pro",
+      "slug": "pro",
     },
   ],
   "toolConfigs": [
