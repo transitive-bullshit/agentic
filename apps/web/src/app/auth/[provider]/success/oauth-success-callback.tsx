@@ -1,8 +1,7 @@
 'use client'
 
 import { sanitizeSearchParams } from '@agentic/platform-core'
-import { useSearchParams } from 'next/navigation'
-import { useRouter } from 'next/router'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect } from 'react'
 
 import {

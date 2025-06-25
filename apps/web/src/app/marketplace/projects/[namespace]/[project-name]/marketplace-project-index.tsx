@@ -2,8 +2,7 @@
 
 import { assert, omit, sanitizeSearchParams } from '@agentic/platform-core'
 import { Loader2Icon } from 'lucide-react'
-import { useSearchParams } from 'next/navigation'
-import { useRouter } from 'next/router'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { useAgentic } from '@/components/agentic-provider'

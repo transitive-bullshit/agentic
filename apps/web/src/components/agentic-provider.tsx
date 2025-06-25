@@ -5,8 +5,7 @@ import {
   type AuthSession
 } from '@agentic/platform-api-client'
 import { sanitizeSearchParams } from '@agentic/platform-core'
-import { usePathname, useSearchParams } from 'next/navigation'
-import { useRouter } from 'next/router'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import {
   createContext,
   type ReactNode,
