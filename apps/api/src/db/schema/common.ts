@@ -134,6 +134,7 @@ export function timestamp<
   : PgTimestampBuilderInitial<''> {
   return timestampImpl<TMode>({
     mode: 'string' as unknown as TMode,
+    withTimezone: true,
     ...config
   })
 }

@@ -156,6 +156,7 @@ export function registerV1CreateDeployment(
     let [deployment] = await db
       .insert(schema.deployments)
       .values({
+        iconUrl: user.image,
         ...agenticProjectConfig,
         identifier: deploymentIdentifier,
         hash,

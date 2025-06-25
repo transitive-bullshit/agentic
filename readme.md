@@ -109,6 +109,7 @@
   - RateLimit-Policy: "burst";q=100;w=60,"daily";q=1000;w=86400
   - https://datatracker.ietf.org/doc/draft-ietf-httpapi-ratelimit-headers/
 - make json `$schema` public for `agentic.config.json`
+- handle hosting of deployment and user images
 
 ## Connect
 

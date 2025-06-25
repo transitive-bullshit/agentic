@@ -11,8 +11,6 @@ export const client = new AgenticApiClient({
 })
 
 async function main() {
-  // TODO: clear existing tables? and include prompt to double check if so...
-
   {
     console.log('\n\nCreating "dev" user...\n\n')
 

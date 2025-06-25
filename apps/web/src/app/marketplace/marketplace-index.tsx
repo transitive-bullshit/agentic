@@ -1,10 +1,10 @@
 'use client'
 
-import Link from 'next/link'
 import useInfiniteScroll from 'react-infinite-scroll-hook'
 
 import { useAgentic } from '@/components/agentic-provider'
 import { LoadingIndicator } from '@/components/loading-indicator'
+import { PublicProject } from '@/components/public-project'
 import { useInfiniteQuery } from '@/lib/query-client'
 
 export function MarketplaceIndex() {
@@ -76,25 +76,7 @@ export function MarketplaceIndex() {
             ) : (
               <div className='grid gap-4'>
                 {projects.map((project) => (
-                  <Link
-                    key={project.id}
-                    className='p-4 border rounded-lg hover:border-gray-400 transition-colors'
-                    href={`/marketplace/projects/${project.identifier}`}
-                  >
-                    <h3 className='font-medium'>{project.name}</h3>
-
-                    <p className='text-sm text-gray-500'>
-                      {project.identifier}
-                    </p>
-
-                    {project.lastPublishedDeployment && (
-                      <p className='text-sm text-gray-500 mt-1'>
-                        Last published:{' '}
-                        {project.lastPublishedDeployment.version ||
-                          project.lastPublishedDeployment.hash}
-                      </p>
-                    )}
-                  </Link>
+                  <PublicProject key={project.id} project={project} />
                 ))}
 
                 {hasNextPage && (
