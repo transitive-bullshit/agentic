@@ -35,9 +35,9 @@ export function initExitHooks({
   asyncExitHook(
     async function shutdownDbExitHook() {
       try {
-        await db.$client.end({
-          timeout: timeoutMs
-        })
+        if ('end' in db.$client) {
+          await db.$client.end({ timeout: timeoutMs })
+        }
       } catch {
         // TODO
       }

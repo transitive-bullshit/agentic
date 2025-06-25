@@ -4,10 +4,10 @@
   "version": "0.0.1",
   "description": "Test fixtures for the Agentic platform.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
-  "license": "UNLICENSED",
+  "license": "AGPL-3.0",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/transitive-bullshit/agentic-platform.git",
+    "url": "git+https://github.com/transitive-bullshit/agentic.git",
     "directory": "packages/fixtures"
   },
   "type": "module",

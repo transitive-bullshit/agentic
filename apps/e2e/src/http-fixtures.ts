@@ -716,5 +716,24 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
         }
       }
     ]
+  },
+  {
+    title: 'HTTP => Production MCP origin "search" tool',
+    // NOTE: this one actually hits a production service and costs a small
+    // amount of $ per request.
+    fixtures: [
+      {
+        path: '@agentic/search/search',
+        request: {
+          method: 'POST',
+          json: {
+            query: 'latest ai news'
+          }
+        },
+        response: {
+          snapshot: false
+        }
+      }
+    ]
   }
 ]

@@ -1,3 +1,4 @@
+import type { AgenticMcpRequestMetadata } from '@agentic/platform-types'
 import { assert } from '@agentic/platform-core'
 import { Client as McpClient } from '@modelcontextprotocol/sdk/client/index.js'
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js'
@@ -5,7 +6,6 @@ import * as Sentry from '@sentry/cloudflare'
 import { DurableObject } from 'cloudflare:workers'
 
 import type { RawEnv } from './env'
-import type { AgenticMcpRequestMetadata } from './types'
 
 export type DurableMcpClientInfo = {
   url: string

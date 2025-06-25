@@ -1,3 +1,6 @@
+import ky from 'ky'
+import pMap from 'p-map'
+
 import { dereference, type Schema } from '../src/index'
 
 let lookup: Record<string, Schema> | undefined
@@ -6,6 +9,7 @@ export async function loadMeta() {
   if (lookup) {
     return lookup
   }
+
   lookup = Object.create({})
   const ids = [
     'http://json-schema.org/draft-04/schema',
@@ -27,15 +31,17 @@ export async function loadMeta() {
     'https://json-schema.org/draft/2020-12/meta/unevaluated'
   ]
 
-  await Promise.all(
-    ids.map(async (id) => {
-      const response = await fetch(id)
-      const schema: any = await response.json()
+  await pMap(
+    ids,
+    async (id) => {
+      const schema = await ky.get(id).json<Schema>()
       dereference(schema, lookup)
-    })
+    },
+    {
+      concurrency: 4
+    }
   )
 
   Object.freeze(lookup)
-
   return lookup
 }

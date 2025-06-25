@@ -1,7 +1,9 @@
+#!/usr/bin/env node
+
 import { AgenticApiClient } from '@agentic/platform-api-client'
 import { Command } from 'commander'
-import restoreCursor from 'restore-cursor'
 
+import type { Context } from './types'
 import { registerDebugCommand } from './commands/debug'
 import { registerDeployCommand } from './commands/deploy'
 import { registerGetDeploymentCommand } from './commands/get'
@@ -12,9 +14,11 @@ import { registerSignoutCommand } from './commands/signout'
 import { registerSignupCommand } from './commands/signup'
 import { registerWhoAmICommand } from './commands/whoami'
 import { AuthStore } from './lib/auth-store'
+import { initExitHooks } from './lib/exit-hooks'
+import { createErrorHandler } from './lib/handle-error'
 
 async function main() {
-  restoreCursor()
+  initExitHooks()
 
   // Initialize the API client
   const client = new AgenticApiClient({
@@ -64,10 +68,16 @@ async function main() {
     }
   }
 
-  const ctx = {
+  const partialCtx = {
     client,
     program,
     logger
+  }
+
+  const errorHandler = createErrorHandler(partialCtx)
+  const ctx: Context = {
+    ...partialCtx,
+    handleError: errorHandler
   }
 
   // Register all commands

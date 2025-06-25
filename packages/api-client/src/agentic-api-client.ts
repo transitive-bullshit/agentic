@@ -37,7 +37,7 @@ export class AgenticApiClient {
     apiKey?: string
     ky?: KyInstance
     onUpdateAuth?: OnUpdateAuthSessionFunction
-  }) {
+  } = {}) {
     assert(apiBaseUrl, 'AgenticApiClient missing required "apiBaseUrl"')
 
     this.apiBaseUrl = apiBaseUrl
@@ -347,7 +347,9 @@ export class AgenticApiClient {
     } = {}
   ): Promise<Array<PopulateProject<TPopulate>>> {
     return this.ky
-      .get('v1/projects', { searchParams: sanitizeSearchParams(searchParams) })
+      .get('v1/projects/public', {
+        searchParams: sanitizeSearchParams(searchParams)
+      })
       .json()
   }
 
@@ -489,6 +491,23 @@ export class AgenticApiClient {
       .json()
   }
 
+  /** Gets a consumer by ID. */
+  async getConsumerByProjectIdentifier<
+    TPopulate extends NonNullable<
+      OperationParameters<'getConsumerByProjectIdentifier'>['populate']
+    >[number]
+  >(
+    searchParams: OperationParameters<'getConsumerByProjectIdentifier'> & {
+      populate?: TPopulate[]
+    }
+  ): Promise<PopulateConsumer<TPopulate>> {
+    return this.ky
+      .get(`v1/consumers/by-project-identifier`, {
+        searchParams: sanitizeSearchParams(searchParams)
+      })
+      .json()
+  }
+
   /**
    * Updates a consumer's subscription to a different deployment or pricing
    * plan. Set `plan` to undefined to cancel the subscription.
@@ -502,7 +521,12 @@ export class AgenticApiClient {
       .json()
   }
 
-  /** Creates a new consumer by subscribing a customer to a project. */
+  /**
+   * Creates a new consumer by subscribing a customer to a project.
+   *
+   * @deprecated Use `createConsumerCheckoutSession` instead. This method will
+   * be removed in a future version.
+   */
   async createConsumer(
     consumer: OperationBody<'createConsumer'>,
     searchParams: OperationParameters<'createConsumer'> = {}
@@ -510,6 +534,59 @@ export class AgenticApiClient {
     return this.ky
       .post('v1/consumers', {
         json: consumer,
+        searchParams: sanitizeSearchParams(searchParams)
+      })
+      .json()
+  }
+
+  /**
+   * Creates a Stripe Checkout Session for a customer to modify their
+   * subscription to a project.
+   */
+  async createConsumerCheckoutSession(
+    consumer: OperationBody<'createConsumerCheckoutSession'>,
+    searchParams: OperationParameters<'createConsumerCheckoutSession'> = {}
+  ): Promise<{
+    checkoutSession: {
+      id: string
+      url: string
+    }
+    consumer: Consumer
+  }> {
+    return this.ky
+      .post('v1/consumers/checkout', {
+        json: consumer,
+        searchParams: sanitizeSearchParams(searchParams)
+      })
+      .json()
+  }
+
+  /**
+   * Creates a Stripe Billing Portal Session for the authenticated user.
+   */
+  async createBillingPortalSession(
+    searchParams: OperationParameters<'createBillingPortalSession'> = {}
+  ): Promise<{
+    url: string
+  }> {
+    return this.ky
+      .post(`v1/consumers/billing-portal`, {
+        searchParams: sanitizeSearchParams(searchParams)
+      })
+      .json()
+  }
+
+  /**
+   * Creates a Stripe Billing Portal Session for a customer.
+   */
+  async createConsumerBillingPortalSession({
+    consumerId,
+    ...searchParams
+  }: OperationParameters<'createConsumerBillingPortalSession'>): Promise<{
+    url: string
+  }> {
+    return this.ky
+      .post(`v1/consumers/${consumerId}/billing-portal`, {
         searchParams: sanitizeSearchParams(searchParams)
       })
       .json()
@@ -578,7 +655,7 @@ export class AgenticApiClient {
       .json()
   }
 
-  /** Gets a deployment by its public identifier. */
+  /** Gets a deployment by its identifier. */
   async getDeploymentByIdentifier<
     TPopulate extends NonNullable<
       OperationParameters<'getDeploymentByIdentifier'>['populate']
@@ -590,6 +667,23 @@ export class AgenticApiClient {
   ): Promise<PopulateDeployment<TPopulate>> {
     return this.ky
       .get(`v1/deployments/by-identifier`, {
+        searchParams: sanitizeSearchParams(searchParams)
+      })
+      .json()
+  }
+
+  /** Gets a public deployment by its identifier. */
+  async getPublicDeploymentByIdentifier<
+    TPopulate extends NonNullable<
+      OperationParameters<'getPublicDeploymentByIdentifier'>['populate']
+    >[number]
+  >(
+    searchParams: OperationParameters<'getPublicDeploymentByIdentifier'> & {
+      populate?: TPopulate[]
+    }
+  ): Promise<PopulateDeployment<TPopulate>> {
+    return this.ky
+      .get(`v1/deployments/public/by-identifier`, {
         searchParams: sanitizeSearchParams(searchParams)
       })
       .json()

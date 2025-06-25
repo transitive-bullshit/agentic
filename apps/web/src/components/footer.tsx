@@ -13,6 +13,7 @@ export function Footer() {
           <div className='flex flex-col md:items-center'>
             <div className='space-y-4'>
               <h3 className='text-lg font-semibold'>Site</h3>
+
               <nav className='flex flex-col space-y-2'>
                 <span>
                   <ActiveLink href='/' className='link'>
@@ -38,16 +39,18 @@ export function Footer() {
           <div className='flex flex-col order-last md:order-none col-span-2'>
             <div className='space-y-4 flex flex-col w-full'>
               <h3 className='text-lg font-semibold'>TODO</h3>
+
               <div className='grid grid-cols-[repeat(auto-fill,_minmax(10em,_1fr))] gap-y-4 gap-x-8 w-full flex-auto'>
                 <div className='link'>TODO</div>
               </div>
             </div>
           </div>
 
-          <div className='flex flex-col md:items-center'>
+          <div className='flex flex-col md:items-center gap-4'>
             <div className='space-y-4'>
               <h3 className='text-lg font-semibold'>Social</h3>
-              <nav className='flex flex-col space-y-2'>
+
+              <nav className='flex flex-col gap-4'>
                 <Link
                   href={twitterUrl}
                   className='flex items-center space-x-2'

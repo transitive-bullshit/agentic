@@ -3,11 +3,14 @@
   "version": "0.0.1",
   "description": "Core schemas and types shared across the Agentic platform.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
-  "license": "UNLICENSED",
+  "license": "AGPL-3.0",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/transitive-bullshit/agentic-platform.git",
+    "url": "git+https://github.com/transitive-bullshit/agentic.git",
     "directory": "packages/types"
+  },
+  "engines": {
+    "node": ">=18"
   },
   "type": "module",
   "source": "./src/index.ts",
@@ -18,6 +21,8 @@
   },
   "scripts": {
     "generate": "openapi-typescript http://localhost:3001/docs --output ./src/openapi.d.ts",
+    "build": "tsup",
+    "clean": "del dist",
     "test": "run-s test:*",
     "test:typecheck": "tsc --noEmit",
     "test:unit": "vitest run"
@@ -36,6 +41,17 @@
     "zod-to-json-schema": "catalog:"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "files": [
+      "dist"
+    ],
+    "exports": {
+      "types": "./dist/index.ts",
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js",
+        "default": "./dist/index.js"
+      }
+    }
   }
 }

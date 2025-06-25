@@ -2,7 +2,10 @@ import { defineConfig } from '@agentic/platform'
 
 export default defineConfig({
   name: 'test-pricing-empty-0',
-  originUrl: 'https://httpbin.org',
+  origin: {
+    type: 'raw',
+    url: 'https://httpbin.org'
+  },
   pricingIntervals: [] as any, // this is invalid
   pricingPlans: [
     {

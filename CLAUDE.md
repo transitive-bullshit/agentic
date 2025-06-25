@@ -10,12 +10,13 @@ This is a monorepo for Agentic - a platform that provides API gateway services f
 
 The platform consists of:
 
-- **API Service** (`apps/api/`) - Internal platform API with authentication, billing, and resource management
+- **API Service** (`apps/api/`) - Platform backend API with authentication, billing, and resource management
 - **Gateway Service** (`apps/gateway/`) - Cloudflare Worker that proxies requests to origin MCP/OpenAPI services
+- **Website** (`apps/web/`) - Next.js site for both the marketing site and authenticated webapp
 - **E2E Tests** (`apps/e2e/`) - End-to-end test suite for HTTP and MCP gateway requests
 - **Shared Packages** (`packages/`) - Common utilities, types, validators, and configuration
 
-The gateway accepts requests at `https://gateway.agentic.so/deploymentIdentifier/toolName` for REST or `https://gateway.agentic.so/deploymentIdentifier/mcp` for MCP.
+The gateway accepts requests at `https://gateway.agentic.so/deploymentIdentifier/toolName` for HTTP requests or `https://gateway.agentic.so/deploymentIdentifier/mcp` for MCP.
 
 ### Development Commands
 
@@ -23,7 +24,7 @@ The gateway accepts requests at `https://gateway.agentic.so/deploymentIdentifier
 
 - `pnpm dev` - Start all services in development mode
 - `pnpm build` - Build all packages and apps
-- `pnpm test` - Run all tests (format, lint, typecheck, unit)
+- `pnpm test` - Run all tests (format, lint, typecheck, unit, but not e2e tests)
 - `pnpm clean` - Clean all build artifacts
 
 **Individual test commands:**
@@ -40,9 +41,10 @@ The gateway accepts requests at `https://gateway.agentic.so/deploymentIdentifier
 
 **E2E testing:**
 
-- `cd apps/e2e && pnpm e2e` - Run all E2E tests
-- `cd apps/e2e && pnpm e2e-http` - Run HTTP edge E2E tests
-- `cd apps/e2e && pnpm e2e-mcp` - Run MCP edge E2E tests
+- (from the `apps/e2e` directory)
+- `pnpm e2e` - Run all E2E tests
+- `pnpm e2e-http` - Run HTTP edge E2E tests
+- `pnpm e2e-mcp` - Run MCP edge E2E tests
 
 ### Key Database Models
 
@@ -51,7 +53,7 @@ The system uses Drizzle ORM with PostgreSQL. Core entities:
 - **User** - Platform users
 - **Team** - Organizations with members and billing
 - **Project** - Namespace API products comprised of immutable Deployments
-- **Deployment** - Immutable instances of MCP/OpenAPI services
+- **Deployment** - Immutable instances of MCP/OpenAPI services, including gateway and pricing config
 - **Consumer** - Customer subscription tracking usage and billing
 
 ### Agentic Configuration
@@ -69,19 +71,23 @@ The platform supports both MCP servers and OpenAPI specifications as origin adap
 ### Gateway Request Flow
 
 1. Request hits gateway with deployment identifier
-2. Gateway validates consumer authentication/rate limits
+2. Gateway validates consumer authentication/rate limits/caching
 3. Request is transformed and forwarded to origin service
 4. Response is processed and returned with appropriate headers
 5. Usage is tracked for billing and analytics
 
 ### Environment Setup
 
-Both `apps/api` and `apps/gateway` require environment variables for:
+All apps require environment variables for:
 
 - Database connections (`DATABASE_URL`)
 - External services (Stripe, GitHub, Resend, Sentry)
+- Internal services (API, gateway, etc)
 - Authentication secrets
+- Stripe secrets
 - Admin API keys
+- Sentry DSN
+- etc
 
 ## Coding Conventions
 
@@ -105,7 +111,7 @@ Both `apps/api` and `apps/gateway` require environment variables for:
     - `import { Foo } from './foo.js'`
     - `import { type Route } from './types/root.js'`
     - `import { Foo } from './foo.ts'`
-- Always prefer named exports over default exports
+- Always prefer named exports over default exports except for when default exports are required (like in Next.js `page.tsx` components)
 
 ### Packages
 

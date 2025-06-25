@@ -1,15 +1,19 @@
 'use client'
 
-import { redirect, RedirectType, useSearchParams } from 'next/navigation'
+import { sanitizeSearchParams } from '@agentic/platform-core'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect } from 'react'
 
-import { useUnauthenticatedAgentic } from '@/components/agentic-provider'
+import {
+  useNextUrl,
+  useUnauthenticatedAgentic
+} from '@/components/agentic-provider'
 import { LoadingIndicator } from '@/components/loading-indicator'
 import { toastError } from '@/lib/notifications'
 
-export function SuccessPage({
+export function OAuthSuccessCallback({
   provider:
-    // TODO
+    // TODO: make generic using this provider instead of hard-coding github
     _provider
 }: {
   provider: string
@@ -17,16 +21,18 @@ export function SuccessPage({
   const searchParams = useSearchParams()
   const code = searchParams.get('code')
   const ctx = useUnauthenticatedAgentic()
+  const nextUrl = useNextUrl()
+  const router = useRouter()
 
   useEffect(() => {
     ;(async function () {
+      if (!ctx) {
+        return
+      }
+
       if (!code) {
         // TODO
         throw new Error('Missing code or challenge')
-      }
-
-      if (!ctx) {
-        return
       }
 
       // TODO: make generic using `provider`
@@ -35,12 +41,14 @@ export function SuccessPage({
       } catch (err) {
         await toastError(err, { label: 'Auth error' })
 
-        return redirect('/login', RedirectType.replace)
+        return router.replace(
+          `/login?${sanitizeSearchParams({ next: nextUrl }).toString()}`
+        )
       }
 
-      return redirect('/app', RedirectType.replace)
+      return router.replace(nextUrl || '/app')
     })()
-  }, [code, ctx])
+  }, [code, ctx, nextUrl, router])
 
   return <LoadingIndicator />
 }

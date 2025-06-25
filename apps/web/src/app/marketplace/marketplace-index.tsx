@@ -1,11 +1,11 @@
 'use client'
 
-import { useInfiniteQuery } from '@tanstack/react-query'
 import Link from 'next/link'
 import useInfiniteScroll from 'react-infinite-scroll-hook'
 
 import { useAgentic } from '@/components/agentic-provider'
 import { LoadingIndicator } from '@/components/loading-indicator'
+import { useInfiniteQuery } from '@/lib/query-client'
 
 export function MarketplaceIndex() {
   const ctx = useAgentic()
@@ -70,7 +70,8 @@ export function MarketplaceIndex() {
               <p>Error fetching projects</p>
             ) : !projects.length ? (
               <p>
-                No projects found. Create your first project to get started!
+                No projects found. This is likely an error on Agentic's side.
+                Please refresh or contact support.
               </p>
             ) : (
               <div className='grid gap-4'>

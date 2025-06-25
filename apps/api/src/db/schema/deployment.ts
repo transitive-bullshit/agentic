@@ -84,11 +84,8 @@ export const deployments = pgTable(
     // Tool configs customize the behavior of tools for different pricing plans
     toolConfigs: jsonb().$type<ToolConfig[]>().default([]).notNull(),
 
-    // Origin API URL
-    originUrl: text().notNull(),
-
-    // Origin API adapter config (openapi, mcp, raw, hosting considerations, etc)
-    originAdapter: jsonb().$type<OriginAdapter>().notNull(),
+    // Origin API adapter config (url, openapi/mcp/raw, internal/external hosting, etc)
+    origin: jsonb().$type<OriginAdapter>().notNull(),
 
     // Array<PricingPlan>
     pricingPlans: jsonb().$type<PricingPlanList>().notNull(),
@@ -166,7 +163,7 @@ export const deploymentSelectSchema = createSelectSchema(deployments, {
   readme: resolvedAgenticProjectConfigSchema.shape.readme,
   iconUrl: resolvedAgenticProjectConfigSchema.shape.iconUrl,
   sourceUrl: resolvedAgenticProjectConfigSchema.shape.sourceUrl,
-  originAdapter: resolvedAgenticProjectConfigSchema.shape.originAdapter,
+  origin: resolvedAgenticProjectConfigSchema.shape.origin,
   pricingPlans: resolvedAgenticProjectConfigSchema.shape.pricingPlans,
   pricingIntervals: resolvedAgenticProjectConfigSchema.shape.pricingIntervals,
   tools: resolvedAgenticProjectConfigSchema.shape.tools,
@@ -174,23 +171,39 @@ export const deploymentSelectSchema = createSelectSchema(deployments, {
   defaultRateLimit: resolvedAgenticProjectConfigSchema.shape.defaultRateLimit
 })
   .omit({
-    originUrl: true
+    origin: true
   })
   .extend({
     // user: z
     //   .lazy(() => userSelectSchema)
     //   .optional()
     //   .openapi('User', { type: 'object' }),
-
     // team: z
     //   .lazy(() => teamSelectSchema)
     //   .optional()
     //   .openapi('Team', { type: 'object' }),
+    // project: z
+    //   .lazy(() => projectSelectSchema)
+    //   .optional()
+    //   .openapi('Project', { type: 'object' })
 
+    // TODO: Improve the self-referential typing here that `@hono/zod-openapi`
+    // trips up on.
     project: z
-      .lazy(() => projectSelectSchema)
+      .any()
+      .refine(
+        (project): boolean =>
+          !project || projectSelectSchema.safeParse(project).success,
+        {
+          message: 'Invalid lastDeployment'
+        }
+      )
+      .transform((project): any => {
+        if (!project) return undefined
+        return projectSelectSchema.parse(project)
+      })
       .optional()
-      .openapi('Project', { type: 'object' })
+    // .openapi('Project', { type: 'object' })
 
     // TODO: Circular references make this schema less than ideal
     // project: z.object({}).optional().openapi('Project', { type: 'object' })
@@ -205,7 +218,7 @@ Deployments are private to a developer or team until they are published, at whic
 
 export const deploymentAdminSelectSchema = deploymentSelectSchema
   .extend({
-    originUrl: resolvedAgenticProjectConfigSchema.shape.originUrl,
+    origin: resolvedAgenticProjectConfigSchema.shape.origin,
     _secret: z.string().nonempty()
   })
   .openapi('AdminDeployment')

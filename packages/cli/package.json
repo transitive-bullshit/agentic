@@ -3,11 +3,14 @@
   "version": "0.0.1",
   "description": "CLI for Agentic.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
-  "license": "UNLICENSED",
+  "license": "AGPL-3.0",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/transitive-bullshit/agentic-platform.git",
+    "url": "git+https://github.com/transitive-bullshit/agentic.git",
     "directory": "packages/cli"
+  },
+  "engines": {
+    "node": ">=18"
   },
   "type": "module",
   "source": "./src/cli.ts",
@@ -18,6 +21,8 @@
     "dist"
   ],
   "scripts": {
+    "build": "tsup",
+    "clean": "del dist",
     "test": "run-s test:*",
     "test:typecheck": "tsc --noEmit"
   },
@@ -31,8 +36,10 @@
     "@hono/node-server": "catalog:",
     "commander": "catalog:",
     "conf": "catalog:",
+    "exit-hook": "catalog:",
     "get-port": "catalog:",
     "hono": "catalog:",
+    "ky": "catalog:",
     "open": "catalog:",
     "ora": "catalog:",
     "restore-cursor": "catalog:",

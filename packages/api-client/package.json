@@ -3,11 +3,14 @@
   "version": "0.0.1",
   "description": "TS API client for the Agentic platform.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
-  "license": "UNLICENSED",
+  "license": "AGPL-3.0",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/transitive-bullshit/agentic-platform.git",
+    "url": "git+https://github.com/transitive-bullshit/agentic.git",
     "directory": "packages/api-client"
+  },
+  "engines": {
+    "node": ">=18"
   },
   "type": "module",
   "source": "./src/index.ts",
@@ -17,18 +20,30 @@
     ".": "./src/index.ts"
   },
   "scripts": {
+    "build": "tsup",
+    "clean": "del dist",
     "test": "run-s test:*",
     "test:typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@agentic/platform-core": "workspace:*",
     "@agentic/platform-types": "workspace:*",
-    "@standard-schema/spec": "^1.0.0",
-    "jose": "^6.0.11",
+    "@standard-schema/spec": "catalog:",
     "ky": "catalog:",
     "type-fest": "catalog:"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "files": [
+      "dist"
+    ],
+    "exports": {
+      "types": "./dist/index.ts",
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js",
+        "default": "./dist/index.js"
+      }
+    }
   }
 }

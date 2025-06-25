@@ -13,6 +13,10 @@
   max-width: 830px;
 }
 
+.markdown > :last-child {
+  margin-bottom: 0;
+}
+
 .markdown > *:first-child {
   margin-top: 0 !important;
 }

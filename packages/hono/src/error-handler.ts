@@ -75,7 +75,7 @@ export function errorHandler(
           console.error('Error Sentry.captureException failed', err, err_)
         }
       }
-    } else {
+    } else if (status !== 404) {
       logger.warn(status, err)
     }
   }

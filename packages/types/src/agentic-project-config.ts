@@ -89,24 +89,21 @@ export const agenticProjectConfigSchema = z
       )
       .optional(),
 
-    /** Required origin API HTTPS base URL */
-    originUrl: z.string().url()
-      .describe(`Required base URL of the externally hosted origin API server. Must be a valid \`https\` URL.
-
-NOTE: Agentic currently only supports \`external\` API servers. If you'd like to host your API or MCP server on Agentic's infrastructure, please reach out to support@agentic.so.`),
-
     /**
-     * Optional origin API adapter used to configure the origin API server
-     * downstream from Agentic's API gateway. It specifies whether the origin
-     * API server denoted by \`originUrl\` is hosted externally or deployed
-     * internally to Agentic's infrastructure. It also specifies the format
-     * for how origin tools / services are defined: either as an OpenAPI spec,
-     * an MCP server, or as a raw HTTP REST API.
+     * Origin API adapter used to configure the origin API server downstream
+     * from Agentic's API gateway. It specifies whether the origin API server's
+     * is hosted externally or deployed internally to Agentic's infrastructure.
+     * If hosted externally, the origin `url` must be a valid \`https\` URL
+     * pointing to the remote origin server.
+     *
+     * It also specifies the format for how origin tools are defined: either as
+     * an OpenAPI spec or an MCP server.
+     *
+     * @note Currently, only external origin servers are supported. If you'd like
+     * to host your API or MCP server on Agentic's infrastructure, please reach
+     * out to support@agentic.so.
      */
-    originAdapter: originAdapterConfigSchema.optional().default({
-      location: 'external',
-      type: 'raw'
-    }),
+    origin: originAdapterConfigSchema,
 
     /** Optional subscription pricing config for this project. */
     pricingPlans: pricingPlanListSchema
@@ -206,7 +203,7 @@ export type AgenticProjectConfig = Simplify<
 
 export const resolvedAgenticProjectConfigSchema =
   agenticProjectConfigSchema.extend({
-    originAdapter: originAdapterSchema,
+    origin: originAdapterSchema,
     tools: z.array(toolSchema).default([])
   })
 export type ResolvedAgenticProjectConfig = Simplify<

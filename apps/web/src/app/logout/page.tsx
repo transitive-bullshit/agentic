@@ -1,6 +1,5 @@
 'use client'
 
-// import { redirect, RedirectType } from 'next/navigation'
 import { useEffect } from 'react'
 
 import { useAuthenticatedAgentic } from '@/components/agentic-provider'

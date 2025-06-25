@@ -16,9 +16,9 @@ export async function getToolArgsFromRequest(
 ): Promise<Record<string, any>> {
   const request = ctx.req.raw
   assert(
-    deployment.originAdapter.type !== 'raw',
+    deployment.origin.type !== 'raw',
     500,
-    `Internal logic error for origin adapter type "${deployment.originAdapter.type}"`
+    `Internal logic error for origin adapter type "${deployment.origin.type}"`
   )
 
   if (request.method === 'GET') {

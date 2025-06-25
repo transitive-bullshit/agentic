@@ -21,13 +21,12 @@ export async function validateAgenticProjectConfig(
   const { name, version } = resolveMetadata(config)
   validatePricing(config)
 
-  const originAdapter = await validateOriginAdapter({
+  const origin = await validateOriginAdapter({
     name,
     version,
     label: `project "${name}"`,
     ...opts,
-    originUrl: config.originUrl,
-    originAdapter: config.originAdapter
+    origin: config.origin
   })
 
   return parseAgenticProjectConfig(
@@ -35,7 +34,7 @@ export async function validateAgenticProjectConfig(
       ...config,
       name,
       version,
-      originAdapter
+      origin
     },
     { strip, strict: !strip }
   )

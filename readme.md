@@ -15,15 +15,22 @@
 - **website**
   - marketing landing page
   - webapp
-- stripe
-  - stripe checkout
-  - stripe billing portal
+    - consider a PrettyJson component which displays json but links to resources
+  - stripe
+    - stripe checkout for changing plans? (need to at least be able to upgrade)
+    - should we bypass stripe for `free` plans to increase conversions?
+  - handle browser back/forward with `?next=`
+  - add some social proof to signup page
 - **API gateway**
   - oauth flow
     - https://docs.scalekit.com/guides/mcp/oauth
     - custom oauth flow might need to use separate domains per project instead of separate pathnames?
       - since the .well-known routes and standard oauth 2.1 routes are all at the top-level?
-  - **test usage tracking and reporting**
+  - **e2e tests for usage tracking and reporting**
+- marketplace
+  - may need a different flag besides `private` for inclusion on the marketplace
+    - projects may be public but not accepted into the marketplace?
+    - => **punt on this for mvp**
 - docs
   - main readme
   - sub readmes
@@ -31,11 +38,13 @@
 - merge with current agentic repo
 - publish packages to npm
 - api
-  - deploy to prod
+  - **deploy to prod**
 - database
   - consider using [neon serverless driver](https://orm.drizzle.team/docs/connect-neon) for production
   - can this also be used locally?
   - may need to update our `drizzle-orm` fork
+- simplify `AgenticToolClient` and only require one package per TS LLM SDK
+  - `createAISDKToolsFromIdentifier(projectIdentifier)`
 
 ## TODO: Post-MVP
 
@@ -84,8 +93,9 @@
   - how to guarantee that the request is coming from agentic?
     - `_meta` for tool calls
     - _still need a way of doing this for initial connection requests_
+    - _=> ask in the official mcp developers discord_
   - mcp auth provider support
-  - binary bodies / responses?
+  - test binary bodies / responses / mcp resources
   - resources
   - prompts
   - other MCP features?
@@ -98,10 +108,8 @@
 - support multiple rate-limits by slug
   - RateLimit-Policy: "burst";q=100;w=60,"daily";q=1000;w=86400
   - https://datatracker.ietf.org/doc/draft-ietf-httpapi-ratelimit-headers/
-- make `$schema` public for `agentic.config.json`
+- make json `$schema` public for `agentic.config.json`
 
-## License
-
-UNLICENSED PROPRIETARY © [Agentic](https://x.com/transitive_bs)
+## Connect
 
 To stay up to date or learn more, follow [@transitive_bs](https://x.com/transitive_bs) on Twitter.

@@ -73,7 +73,7 @@ exports[`parseDeploymentIdentifier > non-strict mode valid 7`] = `
 exports[`parseDeploymentIdentifier > non-strict mode valid 8`] = `
 {
   "deploymentIdentifier": "@username/foo-bar@dev",
-  "deploymentVersion": "latest",
+  "deploymentVersion": "dev",
   "projectIdentifier": "@username/foo-bar",
   "projectName": "foo-bar",
   "projectNamespace": "username",
@@ -83,7 +83,7 @@ exports[`parseDeploymentIdentifier > non-strict mode valid 8`] = `
 exports[`parseDeploymentIdentifier > non-strict mode valid 9`] = `
 {
   "deploymentIdentifier": "@username/foo-bar@1.0.0",
-  "deploymentVersion": "latest",
+  "deploymentVersion": "1.0.0",
   "projectIdentifier": "@username/foo-bar",
   "projectName": "foo-bar",
   "projectNamespace": "username",
@@ -296,7 +296,7 @@ exports[`parseDeploymentIdentifier > strict mode valid 3`] = `
 exports[`parseDeploymentIdentifier > strict mode valid 4`] = `
 {
   "deploymentIdentifier": "@username/foo-bar@dev",
-  "deploymentVersion": "latest",
+  "deploymentVersion": "dev",
   "projectIdentifier": "@username/foo-bar",
   "projectName": "foo-bar",
   "projectNamespace": "username",
@@ -306,7 +306,7 @@ exports[`parseDeploymentIdentifier > strict mode valid 4`] = `
 exports[`parseDeploymentIdentifier > strict mode valid 5`] = `
 {
   "deploymentIdentifier": "@username/foo-bar@1.0.0",
-  "deploymentVersion": "latest",
+  "deploymentVersion": "1.0.0",
   "projectIdentifier": "@username/foo-bar",
   "projectName": "foo-bar",
   "projectNamespace": "username",

@@ -2,9 +2,9 @@ import { defineConfig } from '@agentic/platform'
 
 export default defineConfig({
   name: 'test-basic-openapi',
-  originUrl: 'https://jsonplaceholder.typicode.com',
-  originAdapter: {
+  origin: {
     type: 'openapi',
+    url: 'https://jsonplaceholder.typicode.com',
     spec: './jsonplaceholder.json'
   },
   toolConfigs: [

@@ -1,6 +1,5 @@
 export const namespaceBlacklist = new Set([
   // restricted because they would be confusing
-  'agentic',
   'admin',
   'root',
   'sudo',

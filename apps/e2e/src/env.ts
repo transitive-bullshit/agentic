@@ -14,9 +14,12 @@ export const envSchema = z.object({
 
   AGENTIC_API_BASE_URL: z.string().url().optional(),
 
-  AGENTIC_DEV_ACCESS_TOKEN: z.string().nonempty(),
   AGENTIC_DEV_EMAIL: z.string().email(),
   AGENTIC_DEV_PASSWORD: z.string().nonempty(),
+  AGENTIC_DEV_ACCESS_TOKEN: z.string().nonempty(),
+
+  AGENTIC_AGENTIC_EMAIL: z.string().email(),
+  AGENTIC_AGENTIC_PASSWORD: z.string().nonempty(),
 
   AGENTIC_GATEWAY_BASE_URL: z
     .string()

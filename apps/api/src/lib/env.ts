@@ -10,9 +10,12 @@ export const envSchema = baseEnvSchema
   .extend({
     DATABASE_URL: z.string().url(),
 
+    AGENTIC_WEB_BASE_URL: z.string().url(),
+    AGENTIC_GATEWAY_BASE_URL: z.string().url(),
+
     JWT_SECRET: z.string().nonempty(),
 
-    PORT: z.number().default(3001),
+    PORT: z.coerce.number().default(3001),
 
     STRIPE_SECRET_KEY: z.string().nonempty(),
     STRIPE_WEBHOOK_SECRET: z.string().nonempty(),
@@ -20,9 +23,14 @@ export const envSchema = baseEnvSchema
     GITHUB_CLIENT_ID: z.string().nonempty(),
     GITHUB_CLIENT_SECRET: z.string().nonempty(),
 
+    RESEND_API_KEY: z.string().nonempty(),
+
+    // Used to make admin API calls from the API gateway
     AGENTIC_ADMIN_API_KEY: z.string().nonempty(),
 
-    RESEND_API_KEY: z.string().nonempty()
+    // Used to simplify recreating the demo `@agentic/search` project during
+    // development while we're frequently resetting the database
+    AGENTIC_SEARCH_PROXY_SECRET: z.string().nonempty()
   })
   .strip()
 export type RawEnv = z.infer<typeof envSchema>

@@ -11,58 +11,56 @@ import { validateOriginUrl } from './validate-origin-url'
 export async function validateOriginAdapter({
   name,
   version = '0.0.0',
-  originUrl,
-  originAdapter,
+  origin,
   label,
   cwd,
   logger
 }: {
   name: string
-  originUrl: string
-  originAdapter: Readonly<OriginAdapterConfig>
+  origin: Readonly<OriginAdapterConfig>
   label: string
   version?: string
   cwd?: string
   logger?: Logger
 }): Promise<OriginAdapterConfig> {
-  validateOriginUrl({ originUrl, label })
+  validateOriginUrl({ originUrl: origin.url, label })
 
-  if (originAdapter.type === 'openapi') {
+  if (origin.type === 'openapi') {
     // We intentionally ignore the resolved tools here because the server will
     // need to re-validate the OpenAPI spec and tools anyway. We do, however,
     // override the `spec` field with the parsed, normalized version because
     // that may have been pointing to a local file or remote URL.
-    const { originAdapter: resolvedOriginAdapter } =
-      await resolveOpenAPIOriginAdapter({
-        originAdapter,
+    const { origin: resolvedOriginAdapter } = await resolveOpenAPIOriginAdapter(
+      {
+        origin,
         label,
         cwd,
         logger
-      })
+      }
+    )
 
     return {
-      ...originAdapter,
+      ...origin,
       spec: resolvedOriginAdapter.spec
     }
-  } else if (originAdapter.type === 'mcp') {
+  } else if (origin.type === 'mcp') {
     // We intentionally ignore the resolved version and tools here because the
     // server will need to re-validate the MCP server info and tools anyway.
     await resolveMCPOriginAdapter({
       name,
       version,
-      originUrl,
-      originAdapter,
+      origin,
       label
     })
 
-    return originAdapter
+    return origin
   } else {
     assert(
-      originAdapter.type === 'raw',
+      origin.type === 'raw',
       400,
-      `Invalid origin adapter type "${originAdapter.type}" for ${label}`
+      `Invalid origin adapter type "${origin.type}" for ${label}`
     )
 
-    return originAdapter
+    return origin
   }
 }

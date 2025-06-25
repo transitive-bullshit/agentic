@@ -71,11 +71,14 @@ export function registerV1CreateTeamMember(
       `User "${body.userId}" is already a member of team "${teamId}"`
     )
 
-    const [teamMember] = await db.insert(schema.teamMembers).values({
-      ...body,
-      teamId,
-      teamSlug: team.slug
-    })
+    const [teamMember] = await db
+      .insert(schema.teamMembers)
+      .values({
+        ...body,
+        teamId,
+        teamSlug: team.slug
+      })
+      .returning()
     assert(
       teamMember,
       500,

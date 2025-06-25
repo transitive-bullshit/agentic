@@ -13,7 +13,8 @@ import {
 } from '@/lib/openapi-utils'
 
 const route = createRoute({
-  description: 'Creates a new consumer by subscribing a customer to a project.',
+  description:
+    "Upserts a consumer by modifying a customer's subscription to a project.",
   tags: ['consumers'],
   operationId: 'createConsumer',
   method: 'post',

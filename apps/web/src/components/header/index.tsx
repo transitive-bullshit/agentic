@@ -3,6 +3,7 @@
 import { ActiveLink } from '@/components/active-link'
 import { useAgentic } from '@/components/agentic-provider'
 import { DarkModeToggle } from '@/components/dark-mode-toggle'
+import { docsUrl } from '@/lib/config'
 
 import styles from './styles.module.css'
 
@@ -17,8 +18,12 @@ export function Header() {
         </ActiveLink>
 
         <div className='flex justify-end items-center h-full gap-4'>
-          <ActiveLink href='/about' className='link'>
-            About
+          <ActiveLink href='/marketplace' className='link'>
+            Marketplace
+          </ActiveLink>
+
+          <ActiveLink href={docsUrl} className='link'>
+            Docs
           </ActiveLink>
 
           {ctx?.isAuthenticated ? (

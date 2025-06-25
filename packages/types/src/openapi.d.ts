@@ -140,6 +140,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/deployments/public/by-identifier": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Gets a public deployment by its identifier (eg, "@username/project-name@latest"). */
+        get: operations["getPublicDeploymentByIdentifier"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/users/{userId}": {
         parameters: {
             query?: never;
@@ -283,6 +300,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/consumers/by-project-identifier": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Gets a consumer for the authenticated user and the given project identifier. */
+        get: operations["getConsumerByProjectIdentifier"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/consumers/billing-portal": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Creates a Stripe billing portal session for the authenticated user. */
+        post: operations["createBillingPortalSession"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/consumers/{consumerId}": {
         parameters: {
             query?: never;
@@ -311,8 +362,42 @@ export interface paths {
         /** @description Lists all of the customer subscriptions for the current user. */
         get: operations["listConsumers"];
         put?: never;
-        /** @description Creates a new consumer by subscribing a customer to a project. */
+        /** @description Upserts a consumer by modifying a customer's subscription to a project. */
         post: operations["createConsumer"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/consumers/checkout": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Creates a Stripe checkout session for a consumer to modify their subscription to a project. */
+        post: operations["createConsumerCheckoutSession"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/consumers/{consumerId}/billing-portal": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Creates a Stripe billing portal session for a customer. */
+        post: operations["createConsumerBillingPortalSession"];
         delete?: never;
         options?: never;
         head?: never;
@@ -360,7 +445,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Gets a deployment by its public identifier */
+        /** @description Gets a deployment by its identifier (eg, "@username/project-name@latest"). */
         get: operations["getDeploymentByIdentifier"];
         put?: never;
         post?: never;
@@ -486,9 +571,10 @@ export interface components {
             username: string;
             /** @enum {string} */
             role: "user" | "admin";
-            name?: string;
             email: string;
             isEmailVerified: boolean;
+            name?: string;
+            bio?: string;
             image?: string;
             stripeCustomerId?: string;
         };
@@ -500,7 +586,8 @@ export interface components {
         ProjectIdentifier: string;
         /** @description The frequency at which a subscription is billed. */
         PricingInterval: "day" | "week" | "month" | "year";
-        /** @description A Project represents a single Agentic API product. A Project is comprised of a series of immutable Deployments, each of which contains pricing data, origin API config, OpenAPI or MCP specs, tool definitions, and various metadata.
+        Team: Record<string, never>;
+        /** @description A Project represents a single Agentic API product. It is comprised of a series of immutable Deployments, each of which contains pricing data, origin API config, OpenAPI or MCP specs, tool definitions, and various metadata.
          *
          *     You can think of Agentic Projects as similar to Vercel projects. They both hold some common configuration and are comprised of a series of immutable Deployments.
          *
@@ -524,57 +611,14 @@ export interface components {
             /** @description Deployment id (e.g. "depl_tz4a98xxat96iws9zmbrgj3a") */
             lastDeploymentId?: string;
             lastPublishedDeploymentVersion?: string;
-            applicationFeePercent: number;
             defaultPricingInterval: components["schemas"]["PricingInterval"];
             /** @enum {string} */
             pricingCurrency: "usd";
-        };
-        Team: {
-            id: string;
-            createdAt: string;
-            updatedAt: string;
-            deletedAt?: string;
-            slug: string;
-            name: string;
-            ownerId: string;
-        };
-        TeamMember: {
-            createdAt: string;
-            updatedAt: string;
-            deletedAt?: string;
-            userId: string;
-            teamSlug: string;
-            teamId: string;
-            /** @enum {string} */
-            role: "user" | "admin";
-            confirmed: boolean;
-            confirmedAt?: string;
-        };
-        /** @description A Consumer represents a user who has subscribed to a Project and is used
-         *     to track usage and billing.
-         *
-         *     Consumers are linked to a corresponding Stripe Customer and Subscription.
-         *     The Stripe customer will either be the user's default Stripe Customer if the
-         *     project uses the default Agentic platform account, or a customer on the project
-         *     owner's connected Stripe account if the project has Stripe Connect enabled. */
-        Consumer: {
-            /** @description Consumer id (e.g. "csmr_tz4a98xxat96iws9zmbrgj3a") */
-            id: string;
-            createdAt: string;
-            updatedAt: string;
-            deletedAt?: string;
-            token: string;
-            plan?: string;
-            activated: boolean;
-            source?: string;
-            /** @description User id (e.g. "user_tz4a98xxat96iws9zmbrgj3a") */
-            userId: string;
-            /** @description Project id (e.g. "proj_tz4a98xxat96iws9zmbrgj3a") */
-            projectId: string;
-            /** @description Deployment id (e.g. "depl_tz4a98xxat96iws9zmbrgj3a") */
-            deploymentId: string;
-            stripeStatus: string;
-            isStripeSubscriptionActive: boolean;
+            user?: components["schemas"]["User"];
+            team?: components["schemas"]["Team"];
+            lastPublishedDeployment?: unknown;
+            lastDeployment?: unknown;
+            deployment?: unknown;
         };
         /** @description Public deployment identifier (e.g. "@namespace/project-name@{hash|version|latest}") */
         DeploymentIdentifier: string;
@@ -638,70 +682,6 @@ export interface components {
             pricingPlanOverridesMap?: {
                 [key: string]: components["schemas"]["PricingPlanToolOverride"];
             };
-        };
-        /** @description Origin adapter is used to configure the origin API server downstream from Agentic's API gateway. It specifies whether the origin API server denoted by `originUrl` is hosted externally or deployed internally to Agentic's infrastructure. It also specifies the format for how origin tools are defined: either an OpenAPI spec, an MCP server, or a raw HTTP REST API. */
-        OriginAdapter: {
-            /**
-             * @default external
-             * @enum {string}
-             */
-            location: "external";
-            /** @enum {string} */
-            type: "openapi";
-            /** @description JSON stringified OpenAPI spec describing the origin API server. */
-            spec: string;
-            /** @description Mapping from tool name to OpenAPI Operation info. This is used by the Agentic API gateway to route tools to the correct origin API operation, along with the HTTP method, path, params, etc. */
-            toolToOperationMap: {
-                [key: string]: {
-                    /** @description OpenAPI operationId for the tool */
-                    operationId: string;
-                    /** @description HTTP method */
-                    method: "get" | "put" | "post" | "delete" | "patch" | "trace";
-                    /** @description HTTP path template */
-                    path: string;
-                    /** @description Mapping from parameter name to HTTP source (query, path, JSON body, etc). */
-                    parameterSources: {
-                        [key: string]: "query" | "header" | "path" | "cookie" | "body" | "formData";
-                    };
-                    tags?: string[];
-                };
-            };
-        } | {
-            /**
-             * @default external
-             * @enum {string}
-             */
-            location: "external";
-            /** @enum {string} */
-            type: "mcp";
-            serverInfo: {
-                name: string;
-                version: string;
-                capabilities?: {
-                    experimental?: Record<string, never>;
-                    logging?: Record<string, never>;
-                    completions?: Record<string, never>;
-                    prompts?: {
-                        listChanged?: boolean;
-                    };
-                    resources?: {
-                        subscribe?: boolean;
-                        listChanged?: boolean;
-                    };
-                    tools?: {
-                        listChanged?: boolean;
-                    };
-                };
-                instructions?: string;
-            };
-        } | {
-            /**
-             * @default external
-             * @enum {string}
-             */
-            location: "external";
-            /** @enum {string} */
-            type: "raw";
         };
         /**
          * @description Human-readable name for the pricing plan (eg, "Free", "Starter Monthly", "Pro Annual", etc)
@@ -795,7 +775,6 @@ export interface components {
             tools: components["schemas"]["Tool"][];
             /** @default [] */
             toolConfigs: components["schemas"]["ToolConfig"][];
-            originAdapter: components["schemas"]["OriginAdapter"];
             /**
              * @description List of PricingPlans configuring which Stripe subscriptions should be available for the project. Defaults to a single free plan which is useful for developing and testing your project.
              * @default [
@@ -831,23 +810,65 @@ export interface components {
              */
             pricingIntervals: components["schemas"]["PricingInterval"][];
             defaultRateLimit?: components["schemas"]["RateLimit"] & unknown;
-            project?: components["schemas"]["Project"];
+            project?: unknown;
         };
-        /**
-         * @description Origin adapter is used to configure the origin API server downstream from Agentic's API gateway. It specifies whether the origin API server denoted by `originUrl` is hosted externally or deployed internally to Agentic's infrastructure. It also specifies the format for how origin tools are defined: either an OpenAPI spec, an MCP server, or a raw HTTP REST API.
+        TeamMember: {
+            createdAt: string;
+            updatedAt: string;
+            deletedAt?: string;
+            userId: string;
+            teamSlug: string;
+            teamId: string;
+            /** @enum {string} */
+            role: "user" | "admin";
+            confirmed: boolean;
+            confirmedAt?: string;
+        };
+        /** @description A Consumer represents a user who has subscribed to a Project and is used
+         *     to track usage and billing.
          *
-         *     NOTE: Agentic currently only supports `external` API servers. If you'd like to host your API or MCP server on Agentic's infrastructure, please reach out to support@agentic.so.
-         * @default {
-         *       "location": "external",
-         *       "type": "raw"
-         *     }
-         */
+         *     Consumers are linked to a corresponding Stripe Customer and Subscription.
+         *     The Stripe customer will either be the user's default Stripe Customer if the
+         *     project uses the default Agentic platform account, or a customer on the project
+         *     owner's connected Stripe account if the project has Stripe Connect enabled. */
+        Consumer: {
+            /** @description Consumer id (e.g. "csmr_tz4a98xxat96iws9zmbrgj3a") */
+            id: string;
+            createdAt: string;
+            updatedAt: string;
+            deletedAt?: string;
+            token: string;
+            plan?: string;
+            activated: boolean;
+            source?: string;
+            /** @description User id (e.g. "user_tz4a98xxat96iws9zmbrgj3a") */
+            userId: string;
+            /** @description Project id (e.g. "proj_tz4a98xxat96iws9zmbrgj3a") */
+            projectId: string;
+            /** @description Deployment id (e.g. "depl_tz4a98xxat96iws9zmbrgj3a") */
+            deploymentId: string;
+            stripeStatus: string;
+            isStripeSubscriptionActive: boolean;
+            user?: components["schemas"]["User"];
+            project?: components["schemas"]["Project"];
+            deployment?: unknown;
+        };
+        /** @description Origin adapter is used to configure the origin API server downstream from Agentic's API gateway. It specifies whether the origin API server denoted by `url` is hosted externally or deployed internally to Agentic's infrastructure. It also specifies the format for how origin tools are defined: either an OpenAPI spec or an MCP server.
+         *
+         *     NOTE: Agentic currently only supports `external` API servers. If you'd like to host your API or MCP server on Agentic's infrastructure, please reach out to support@agentic.so. */
         OriginAdapterConfig: {
             /**
              * @default external
              * @enum {string}
              */
             location: "external";
+            /**
+             * Format: uri
+             * @description Required base URL of the externally hosted origin API server. Must be a valid `https` URL.
+             *
+             *     NOTE: Agentic currently only supports `external` API servers. If you'd like to host your API or MCP server on Agentic's infrastructure, please reach out to support@agentic.so.
+             */
+            url: string;
             /** @enum {string} */
             type: "openapi";
             /** @description Local file path, URL, or JSON stringified OpenAPI spec describing the origin API server. */
@@ -858,6 +879,13 @@ export interface components {
              * @enum {string}
              */
             location: "external";
+            /**
+             * Format: uri
+             * @description Required base URL of the externally hosted origin API server. Must be a valid `https` URL.
+             *
+             *     NOTE: Agentic currently only supports `external` API servers. If you'd like to host your API or MCP server on Agentic's infrastructure, please reach out to support@agentic.so.
+             */
+            url: string;
             /** @enum {string} */
             type: "mcp";
         } | {
@@ -866,6 +894,13 @@ export interface components {
              * @enum {string}
              */
             location: "external";
+            /**
+             * Format: uri
+             * @description Required base URL of the externally hosted origin API server. Must be a valid `https` URL.
+             *
+             *     NOTE: Agentic currently only supports `external` API servers. If you'd like to host your API or MCP server on Agentic's infrastructure, please reach out to support@agentic.so.
+             */
+            url: string;
             /** @enum {string} */
             type: "raw";
         };
@@ -879,17 +914,96 @@ export interface components {
         AdminConsumer: components["schemas"]["Consumer"] & {
             _stripeCustomerId: string;
         };
-        /** @description A Deployment is a single, immutable instance of a Project. Each deployment contains pricing plans, origin server config (OpenAPI or MCP server), tool definitions, and metadata.
-         *
-         *     Deployments are private to a developer or team until they are published, at which point they are accessible to any customers with access to the parent Project. */
-        AdminDeployment: components["schemas"]["Deployment"] & {
+        /** @description Origin adapter is used to configure the origin API server downstream from Agentic's API gateway. It specifies whether the origin API server denoted by `url` is hosted externally or deployed internally to Agentic's infrastructure. It also specifies the format for how origin tools are defined: either an OpenAPI spec, an MCP server, or a raw HTTP REST API. */
+        OriginAdapter: {
+            /**
+             * @default external
+             * @enum {string}
+             */
+            location: "external";
             /**
              * Format: uri
              * @description Required base URL of the externally hosted origin API server. Must be a valid `https` URL.
              *
              *     NOTE: Agentic currently only supports `external` API servers. If you'd like to host your API or MCP server on Agentic's infrastructure, please reach out to support@agentic.so.
              */
-            originUrl: string;
+            url: string;
+            /** @enum {string} */
+            type: "openapi";
+            /** @description JSON stringified OpenAPI spec describing the origin API server. */
+            spec: string;
+            /** @description Mapping from tool name to OpenAPI Operation info. This is used by the Agentic API gateway to route tools to the correct origin API operation, along with the HTTP method, path, params, etc. */
+            toolToOperationMap: {
+                [key: string]: {
+                    /** @description OpenAPI operationId for the tool */
+                    operationId: string;
+                    /** @description HTTP method */
+                    method: "get" | "put" | "post" | "delete" | "patch" | "trace";
+                    /** @description HTTP path template */
+                    path: string;
+                    /** @description Mapping from parameter name to HTTP source (query, path, JSON body, etc). */
+                    parameterSources: {
+                        [key: string]: "query" | "header" | "path" | "cookie" | "body" | "formData";
+                    };
+                    tags?: string[];
+                };
+            };
+        } | {
+            /**
+             * @default external
+             * @enum {string}
+             */
+            location: "external";
+            /**
+             * Format: uri
+             * @description Required base URL of the externally hosted origin API server. Must be a valid `https` URL.
+             *
+             *     NOTE: Agentic currently only supports `external` API servers. If you'd like to host your API or MCP server on Agentic's infrastructure, please reach out to support@agentic.so.
+             */
+            url: string;
+            /** @enum {string} */
+            type: "mcp";
+            serverInfo: {
+                name: string;
+                version: string;
+                capabilities?: {
+                    experimental?: Record<string, never>;
+                    logging?: Record<string, never>;
+                    completions?: Record<string, never>;
+                    prompts?: {
+                        listChanged?: boolean;
+                    };
+                    resources?: {
+                        subscribe?: boolean;
+                        listChanged?: boolean;
+                    };
+                    tools?: {
+                        listChanged?: boolean;
+                    };
+                };
+                instructions?: string;
+            };
+        } | {
+            /**
+             * @default external
+             * @enum {string}
+             */
+            location: "external";
+            /**
+             * Format: uri
+             * @description Required base URL of the externally hosted origin API server. Must be a valid `https` URL.
+             *
+             *     NOTE: Agentic currently only supports `external` API servers. If you'd like to host your API or MCP server on Agentic's infrastructure, please reach out to support@agentic.so.
+             */
+            url: string;
+            /** @enum {string} */
+            type: "raw";
+        };
+        /** @description A Deployment is a single, immutable instance of a Project. Each deployment contains pricing plans, origin server config (OpenAPI or MCP server), tool definitions, and metadata.
+         *
+         *     Deployments are private to a developer or team until they are published, at which point they are accessible to any customers with access to the parent Project. */
+        AdminDeployment: components["schemas"]["Deployment"] & {
+            origin: components["schemas"]["OriginAdapter"];
             _secret: string;
         };
     };
@@ -1203,6 +1317,34 @@ export interface operations {
             404: components["responses"]["404"];
         };
     };
+    getPublicDeploymentByIdentifier: {
+        parameters: {
+            query: {
+                populate?: ("user" | "team" | "project") | ("user" | "team" | "project")[];
+                /** @description Public deployment identifier (e.g. "@namespace/project-name@{hash|version|latest}") */
+                deploymentIdentifier: components["schemas"]["DeploymentIdentifier"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description A deployment object */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Deployment"];
+                };
+            };
+            400: components["responses"]["400"];
+            401: components["responses"]["401"];
+            403: components["responses"]["403"];
+            404: components["responses"]["404"];
+        };
+    };
     getUser: {
         parameters: {
             query?: never;
@@ -1244,6 +1386,7 @@ export interface operations {
             content: {
                 "application/json": {
                     name?: string;
+                    bio?: string;
                     image?: string;
                 };
             };
@@ -1284,7 +1427,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["Team"][];
+                    "application/json": (components["schemas"]["Team"] & {
+                        id: string;
+                        createdAt: string;
+                        updatedAt: string;
+                        deletedAt?: string;
+                        slug: string;
+                        name: string;
+                        ownerId: string;
+                    })[];
                 };
             };
             400: components["responses"]["400"];
@@ -1315,7 +1466,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["Team"];
+                    "application/json": components["schemas"]["Team"] & {
+                        id: string;
+                        createdAt: string;
+                        updatedAt: string;
+                        deletedAt?: string;
+                        slug: string;
+                        name: string;
+                        ownerId: string;
+                    };
                 };
             };
             400: components["responses"]["400"];
@@ -1341,7 +1500,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["Team"];
+                    "application/json": components["schemas"]["Team"] & {
+                        id: string;
+                        createdAt: string;
+                        updatedAt: string;
+                        deletedAt?: string;
+                        slug: string;
+                        name: string;
+                        ownerId: string;
+                    };
                 };
             };
             400: components["responses"]["400"];
@@ -1376,7 +1543,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["Team"];
+                    "application/json": components["schemas"]["Team"] & {
+                        id: string;
+                        createdAt: string;
+                        updatedAt: string;
+                        deletedAt?: string;
+                        slug: string;
+                        name: string;
+                        ownerId: string;
+                    };
                 };
             };
             400: components["responses"]["400"];
@@ -1403,7 +1578,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["Team"];
+                    "application/json": components["schemas"]["Team"] & {
+                        id: string;
+                        createdAt: string;
+                        updatedAt: string;
+                        deletedAt?: string;
+                        slug: string;
+                        name: string;
+                        ownerId: string;
+                    };
                 };
             };
             400: components["responses"]["400"];
@@ -1662,6 +1845,63 @@ export interface operations {
             404: components["responses"]["404"];
         };
     };
+    getConsumerByProjectIdentifier: {
+        parameters: {
+            query: {
+                /** @description Public project identifier (e.g. "@namespace/project-name") */
+                projectIdentifier: components["schemas"]["ProjectIdentifier"];
+                populate?: ("user" | "project" | "deployment") | ("user" | "project" | "deployment")[];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description A consumer object */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Consumer"];
+                };
+            };
+            400: components["responses"]["400"];
+            401: components["responses"]["401"];
+            403: components["responses"]["403"];
+            404: components["responses"]["404"];
+        };
+    };
+    createBillingPortalSession: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description A billing portal session URL */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** Format: uri */
+                        url: string;
+                    };
+                };
+            };
+            400: components["responses"]["400"];
+            401: components["responses"]["401"];
+            403: components["responses"]["403"];
+            404: components["responses"]["404"];
+            409: components["responses"]["409"];
+            410: components["responses"]["410"];
+        };
+    };
     getConsumer: {
         parameters: {
             query?: {
@@ -1783,6 +2023,80 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["Consumer"];
+                };
+            };
+            400: components["responses"]["400"];
+            401: components["responses"]["401"];
+            403: components["responses"]["403"];
+            404: components["responses"]["404"];
+            409: components["responses"]["409"];
+            410: components["responses"]["410"];
+        };
+    };
+    createConsumerCheckoutSession: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    plan: string;
+                    source?: string;
+                    /** @description Deployment id (e.g. "depl_tz4a98xxat96iws9zmbrgj3a") */
+                    deploymentId?: string;
+                };
+            };
+        };
+        responses: {
+            /** @description A consumer object */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        checkoutSession: {
+                            id: string;
+                            /** Format: uri */
+                            url: string;
+                        };
+                        consumer: components["schemas"]["Consumer"];
+                    };
+                };
+            };
+            400: components["responses"]["400"];
+            401: components["responses"]["401"];
+            403: components["responses"]["403"];
+            404: components["responses"]["404"];
+            409: components["responses"]["409"];
+            410: components["responses"]["410"];
+        };
+    };
+    createConsumerBillingPortalSession: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Consumer ID */
+                consumerId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description A billing portal session URL */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** Format: uri */
+                        url: string;
+                    };
                 };
             };
             400: components["responses"]["400"];
@@ -1980,7 +2294,7 @@ export interface operations {
     createDeployment: {
         parameters: {
             query?: {
-                publish?: boolean;
+                publish?: "true" | "false";
             };
             header?: never;
             path?: never;
@@ -2007,14 +2321,7 @@ export interface operations {
                      * @description Optional URL to the source code of the project (eg, GitHub repo).
                      */
                     sourceUrl?: string;
-                    /**
-                     * Format: uri
-                     * @description Required base URL of the externally hosted origin API server. Must be a valid `https` URL.
-                     *
-                     *     NOTE: Agentic currently only supports `external` API servers. If you'd like to host your API or MCP server on Agentic's infrastructure, please reach out to support@agentic.so.
-                     */
-                    originUrl: string;
-                    originAdapter?: components["schemas"]["OriginAdapterConfig"];
+                    origin: components["schemas"]["OriginAdapterConfig"];
                     /**
                      * @description List of PricingPlans configuring which Stripe subscriptions should be available for the project. Defaults to a single free plan which is useful for developing and testing your project.
                      * @default [

@@ -1,6 +1,7 @@
 .heroButtonWrapper {
   position: relative;
-  z-index: 100;
+  max-width: 100%;
+  z-index: 99;
 }
 
 .heroButtonBg1 {
@@ -53,7 +54,6 @@
 }
 
 .heroButton {
-  position: relative;
   cursor: pointer;
 
   background-color: var(--background);
@@ -64,17 +64,15 @@
   transition-property: color, background-color, box-shadow;
   transition-duration: 0.15s;
   transition-timing-function: ease;
-  padding: 12px 24px;
-  line-height: 1.5em;
+  padding: 20px 24px;
   border-radius: 5px;
   max-width: 100%;
-  font-weight: 400;
-  font-size: 1rem;
   display: flex;
   justify-content: center;
   align-items: center;
   user-select: none;
   outline: none;
+  white-space: nowrap;
 
   --lighten-color: hsla(0, 0%, 100%, 0.8);
   background-image: linear-gradient(
@@ -86,13 +84,6 @@
 
 :global(.dark) .heroButton {
   --lighten-color: rgba(0, 0, 0, 0.75);
-}
-
-.heroButtonContent {
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  display: inline-block;
 }
 
 .heroButton:hover {

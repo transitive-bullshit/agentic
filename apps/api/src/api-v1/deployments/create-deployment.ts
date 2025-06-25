@@ -79,7 +79,17 @@ export function registerV1CreateDeployment(
 
     if (!project) {
       // Used for testing e2e fixtures in the development marketplace
-      const isPrivate = !(user.username === 'dev' && env.isDev)
+      const isPrivate = !(
+        (user.username === 'dev' && env.isDev) ||
+        user.username === 'agentic'
+      )
+
+      // Used to simplify recreating the demo `@agentic/search` project during
+      // development while we're frequently resetting the database
+      const secret =
+        projectIdentifier === '@agentic/search'
+          ? env.AGENTIC_SEARCH_PROXY_SECRET
+          : await sha256()
 
       // Upsert the project if it doesn't already exist
       // The typecast is necessary here because we're not populating the
@@ -95,7 +105,7 @@ export function registerV1CreateDeployment(
             userId: user.id,
             teamId: teamMember?.teamId,
             private: isPrivate,
-            _secret: await sha256()
+            _secret: secret
           })
           .returning()
       )[0] as typeof project

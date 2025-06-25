@@ -1,10 +1,9 @@
 import type { DefaultHonoEnv } from '@agentic/platform-hono'
 import { OpenAPIHono } from '@hono/zod-openapi'
-import { fromError } from 'zod-validation-error'
 
 import type { AuthenticatedHonoEnv } from '@/lib/types'
 import * as middleware from '@/lib/middleware'
-import { registerOpenAPIErrorResponses } from '@/lib/openapi-utils'
+import { defaultHook, registerOpenAPIErrorResponses } from '@/lib/openapi-utils'
 
 import { registerV1GitHubOAuthCallback } from './auth/github-callback'
 import { registerV1GitHubOAuthExchange } from './auth/github-exchange'
@@ -13,8 +12,12 @@ import { registerV1SignInWithPassword } from './auth/sign-in-with-password'
 import { registerV1SignUpWithPassword } from './auth/sign-up-with-password'
 import { registerV1AdminActivateConsumer } from './consumers/admin-activate-consumer'
 import { registerV1AdminGetConsumerByToken } from './consumers/admin-get-consumer-by-token'
+import { registerV1CreateBillingPortalSession } from './consumers/create-billing-portal-session'
 import { registerV1CreateConsumer } from './consumers/create-consumer'
+import { registerV1CreateConsumerBillingPortalSession } from './consumers/create-consumer-billing-portal-session'
+import { registerV1CreateConsumerCheckoutSession } from './consumers/create-consumer-checkout-session'
 import { registerV1GetConsumer } from './consumers/get-consumer'
+import { registerV1GetConsumerByProjectIdentifier } from './consumers/get-consumer-by-project-identifier'
 import { registerV1ListConsumers } from './consumers/list-consumers'
 import { registerV1ListConsumersForProject } from './consumers/list-project-consumers'
 import { registerV1RefreshConsumerToken } from './consumers/refresh-consumer-token'
@@ -23,6 +26,7 @@ import { registerV1AdminGetDeploymentByIdentifier } from './deployments/admin-ge
 import { registerV1CreateDeployment } from './deployments/create-deployment'
 import { registerV1GetDeployment } from './deployments/get-deployment'
 import { registerV1GetDeploymentByIdentifier } from './deployments/get-deployment-by-identifier'
+import { registerV1GetPublicDeploymentByIdentifier } from './deployments/get-public-deployment-by-identifier'
 import { registerV1ListDeployments } from './deployments/list-deployments'
 import { registerV1PublishDeployment } from './deployments/publish-deployment'
 import { registerV1UpdateDeployment } from './deployments/update-deployment'
@@ -50,20 +54,7 @@ import { registerV1StripeWebhook } from './webhooks/stripe-webhook'
 // Note that the order of some of these routes is important because of
 // wildcards, so be careful when updating them or adding new routes.
 
-export const apiV1 = new OpenAPIHono<DefaultHonoEnv>({
-  defaultHook: (result, ctx) => {
-    if (!result.success) {
-      const requestId = ctx.get('requestId')
-      return ctx.json(
-        {
-          error: fromError(result.error).toString(),
-          requestId
-        },
-        400
-      )
-    }
-  }
-})
+export const apiV1 = new OpenAPIHono<DefaultHonoEnv>({ defaultHook })
 
 apiV1.openAPIRegistry.registerComponent('securitySchemes', 'Bearer', {
   type: 'http',
@@ -74,10 +65,10 @@ apiV1.openAPIRegistry.registerComponent('securitySchemes', 'Bearer', {
 registerOpenAPIErrorResponses(apiV1)
 
 // Public routes
-const publicRouter = new OpenAPIHono<DefaultHonoEnv>()
+const publicRouter = new OpenAPIHono<DefaultHonoEnv>({ defaultHook })
 
 // Private, authenticated routes
-const privateRouter = new OpenAPIHono<AuthenticatedHonoEnv>()
+const privateRouter = new OpenAPIHono<AuthenticatedHonoEnv>({ defaultHook })
 
 registerHealthCheck(publicRouter)
 
@@ -117,14 +108,19 @@ registerV1GetProject(privateRouter)
 registerV1UpdateProject(privateRouter)
 
 // Consumers
+registerV1GetConsumerByProjectIdentifier(privateRouter) // must be before `registerV1GetConsumer`
+registerV1CreateBillingPortalSession(privateRouter)
 registerV1GetConsumer(privateRouter)
 registerV1CreateConsumer(privateRouter)
+registerV1CreateConsumerCheckoutSession(privateRouter)
+registerV1CreateConsumerBillingPortalSession(privateRouter)
 registerV1UpdateConsumer(privateRouter)
 registerV1RefreshConsumerToken(privateRouter)
 registerV1ListConsumers(privateRouter)
 registerV1ListConsumersForProject(privateRouter)
 
 // Deployments
+registerV1GetPublicDeploymentByIdentifier(publicRouter)
 registerV1GetDeploymentByIdentifier(privateRouter) // must be before `registerV1GetDeployment`
 registerV1GetDeployment(privateRouter)
 registerV1CreateDeployment(privateRouter)

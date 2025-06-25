@@ -5,20 +5,20 @@ import { assert } from '@agentic/platform-core'
  * Validates the origin server's tools for a project.
  */
 export function validateTools({
-  originAdapter,
+  origin,
   tools,
   toolConfigs,
   label
 }: {
-  originAdapter: OriginAdapter
+  origin: OriginAdapter
   tools: Tool[]
   toolConfigs: ToolConfig[]
   label: string
 }) {
   if (!tools.length) {
     assert(
-      originAdapter.type === 'raw',
-      `No tools defined for ${label} with origin adapter type "${originAdapter.type}"`
+      origin.type === 'raw',
+      `No tools defined for ${label} with origin adapter type "${origin.type}"`
     )
   }
 

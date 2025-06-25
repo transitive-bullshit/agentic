@@ -1,4 +1,5 @@
 import { Command } from 'commander'
+import { gracefulExit } from 'exit-hook'
 import { oraPromise } from 'ora'
 
 import type { Context } from '../types'
@@ -7,7 +8,8 @@ import { AuthStore } from '../lib/auth-store'
 export function registerGetDeploymentCommand({
   client,
   program,
-  logger
+  logger,
+  handleError
 }: Context) {
   const command = new Command('get')
     .description('Gets details for a specific deployment.')
@@ -15,18 +17,23 @@ export function registerGetDeploymentCommand({
     .action(async (deploymentIdentifier) => {
       AuthStore.requireAuth()
 
-      const deployment = await oraPromise(
-        client.getDeploymentByIdentifier({
-          deploymentIdentifier
-        }),
-        {
-          text: 'Resolving deployment...',
-          successText: 'Resolved deployment',
-          failText: 'Failed to resolve deployment'
-        }
-      )
+      try {
+        const deployment = await oraPromise(
+          client.getDeploymentByIdentifier({
+            deploymentIdentifier
+          }),
+          {
+            text: 'Resolving deployment...',
+            successText: 'Resolved deployment',
+            failText: 'Failed to resolve deployment'
+          }
+        )
 
-      logger.log(deployment)
+        logger.log(deployment)
+        gracefulExit(0)
+      } catch (err) {
+        handleError(err)
+      }
     })
 
   program.addCommand(command)

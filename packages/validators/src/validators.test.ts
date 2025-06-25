@@ -31,7 +31,6 @@ test('isNamespaceAllowed', () => {
   expect(isNamespaceAllowed('vercel')).toBe(false)
   expect(isNamespaceAllowed('ai')).toBe(false)
   expect(isNamespaceAllowed('fuck')).toBe(false)
-  expect(isNamespaceAllowed('agentic')).toBe(false)
 })
 
 test('isValidUsername success', () => {

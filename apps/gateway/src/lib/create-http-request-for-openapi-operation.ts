@@ -22,9 +22,9 @@ export async function createHttpRequestForOpenAPIOperation({
 }): Promise<Request> {
   assert(toolCallArgs, 500, 'Tool args are required')
   assert(
-    deployment.originAdapter.type === 'openapi',
+    deployment.origin.type === 'openapi',
     500,
-    `Internal logic error for origin adapter type "${deployment.originAdapter.type}"`
+    `Internal logic error for origin adapter type "${deployment.origin.type}"`
   )
 
   const { method } = operation
@@ -154,7 +154,7 @@ export async function createHttpRequestForOpenAPIOperation({
   }
 
   const queryString = query.toString()
-  const originRequestUrl = `${deployment.originUrl}${path}${
+  const originRequestUrl = `${deployment.origin.url}${path}${
     queryString ? `?${queryString}` : ''
   }`
 

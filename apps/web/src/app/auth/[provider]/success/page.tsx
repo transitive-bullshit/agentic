@@ -1,6 +1,7 @@
 import { assert } from '@agentic/platform-core'
+import { Suspense } from 'react'
 
-import { SuccessPage } from './success-page'
+import { OAuthSuccessCallback } from './oauth-success-callback'
 
 export default async function Page({
   params
@@ -10,5 +11,9 @@ export default async function Page({
   const { provider } = await params
   assert(provider, 'Missing provider')
 
-  return <SuccessPage provider={provider} />
+  return (
+    <Suspense>
+      <OAuthSuccessCallback provider={provider} />
+    </Suspense>
+  )
 }

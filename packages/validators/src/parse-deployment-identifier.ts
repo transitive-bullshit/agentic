@@ -76,7 +76,7 @@ export function parseDeploymentIdentifier(
       projectNamespace: vMatch[1]!,
       projectName: vMatch[2]!,
       deploymentIdentifier: `@${vMatch[1]!}/${vMatch[2]!}@${vMatch[3]!}`,
-      deploymentVersion: 'latest'
+      deploymentVersion: vMatch[3]!
     }
   }
 

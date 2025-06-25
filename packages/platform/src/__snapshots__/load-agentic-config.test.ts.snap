@@ -9,11 +9,11 @@ exports[`loadAgenticConfig > basic-mcp 1`] = `
     "mode": "approximate",
   },
   "name": "test-basic-mcp",
-  "originAdapter": {
+  "origin": {
     "location": "external",
     "type": "mcp",
+    "url": "https://agentic-basic-mcp-test.onrender.com/mcp",
   },
-  "originUrl": "https://agentic-basic-mcp-test.onrender.com/mcp",
   "pricingIntervals": [
     "month",
   ],
@@ -50,12 +50,12 @@ exports[`loadAgenticConfig > basic-openapi 1`] = `
     "mode": "approximate",
   },
   "name": "test-basic-openapi",
-  "originAdapter": {
+  "origin": {
     "location": "external",
     "spec": "{"openapi":"3.1.0","info":{"title":"JSONPlaceholder","version":"1.0.0"},"paths":{"/posts":{"get":{"summary":"Get posts","operationId":"getPosts","responses":{"200":{"description":"Success","content":{"application/json":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/Post"}}}}}}},"post":{"summary":"Create post","operationId":"createPost","requestBody":{"required":true,"content":{"application/json":{"schema":{"type":"object","required":["userId","title","body"],"properties":{"userId":{"type":"integer"},"title":{"type":"string"},"body":{"type":"string"}}}}}},"responses":{"200":{"description":"Success","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Post"}}}}}}},"/posts/{postId}":{"get":{"summary":"Get post","operationId":"getPost","parameters":[{"required":true,"schema":{"type":"integer"},"name":"postId","in":"path"}],"responses":{"200":{"description":"Success","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Post"}}}}}}}},"components":{"schemas":{"Post":{"type":"object","required":["id","userId","title","body"],"properties":{"id":{"type":"integer"},"userId":{"type":"integer"},"title":{"type":"string"},"body":{"type":"string"}}}}}}",
     "type": "openapi",
+    "url": "https://jsonplaceholder.typicode.com",
   },
-  "originUrl": "https://jsonplaceholder.typicode.com",
   "pricingIntervals": [
     "month",
   ],
@@ -101,11 +101,11 @@ exports[`loadAgenticConfig > basic-raw-free-json 1`] = `
     "mode": "approximate",
   },
   "name": "test-basic-raw-free-json",
-  "originAdapter": {
+  "origin": {
     "location": "external",
     "type": "raw",
+    "url": "https://jsonplaceholder.typicode.com",
   },
-  "originUrl": "https://jsonplaceholder.typicode.com",
   "pricingIntervals": [
     "month",
   ],
@@ -142,11 +142,11 @@ exports[`loadAgenticConfig > basic-raw-free-ts 1`] = `
     "mode": "approximate",
   },
   "name": "test-basic-raw-free-ts",
-  "originAdapter": {
+  "origin": {
     "location": "external",
     "type": "raw",
+    "url": "https://jsonplaceholder.typicode.com",
   },
-  "originUrl": "https://jsonplaceholder.typicode.com",
   "pricingIntervals": [
     "month",
   ],
@@ -183,12 +183,12 @@ exports[`loadAgenticConfig > everything-openapi 1`] = `
     "mode": "approximate",
   },
   "name": "test-everything-openapi",
-  "originAdapter": {
+  "origin": {
     "location": "external",
     "spec": "{"openapi":"3.1.0","info":{"title":"OpenAPI server everything","description":"OpenAPI kitchen sink server meant for testing Agentic's origin OpenAPI adapter and ToolConfig features.","version":"0.1.0"},"components":{"schemas":{"User":{"type":"object","properties":{"id":{"type":"string"},"name":{"type":"string"},"email":{"type":"string"}},"required":["id","name","email"]}},"parameters":{}},"paths":{"/health":{"get":{"description":"Check if the server is healthy","operationId":"healthCheck","responses":{"200":{"description":"OK","content":{"application/json":{"schema":{"type":"object","properties":{"status":{"type":"string"}},"required":["status"]}}}}}}},"/users/{userId}":{"get":{"description":"Gets a user","tags":["users"],"operationId":"getUser","parameters":[{"schema":{"type":"string"},"required":true,"description":"User ID","name":"userId","in":"path"}],"responses":{"200":{"description":"A user object","content":{"application/json":{"schema":{"$ref":"#/components/schemas/User"}}}}}}},"/disabled-tool":{"get":{"description":"Disabled tool","operationId":"disabledTool","responses":{"200":{"description":"OK","content":{"application/json":{"schema":{"type":"object","properties":{"status":{"type":"string"}},"required":["status"]}}}}}}},"/disabled-for-free-plan-tool":{"get":{"description":"Disabled for free plan tool","operationId":"disabledForFreePlanTool","responses":{"200":{"description":"OK","content":{"application/json":{"schema":{"type":"object","properties":{"status":{"type":"string"}},"required":["status"]}}}}}}},"/echo":{"post":{"description":"Echoes the request body","operationId":"echo","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{}}}}},"responses":{"200":{"description":"Echoed request body","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}},"/echo-headers":{"get":{"description":"Echoes the request headers","operationId":"echoHeaders","responses":{"200":{"description":"Echoed request headers","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}},"/pure":{"post":{"description":"Pure tool","operationId":"pure","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{}}}}},"responses":{"200":{"description":"Echoed request body","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}},"/unpure-marked-pure":{"post":{"description":"Unpure tool marked pure","operationId":"unpure_marked_pure","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{}}}}},"responses":{"200":{"description":"Echoed request body with current timestamp to not be pure","content":{"application/json":{"schema":{"type":"object","properties":{"now":{"type":"number"}},"required":["now"]}}}}}}},"/custom-cache-control-tool":{"post":{"description":"Custom cache control tool","operationId":"customCacheControlTool","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{}}}}},"responses":{"200":{"description":"Echoed request body","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}},"/custom-rate-limit-approximate-tool":{"post":{"description":"Custom rate limit tool (approximate mode)","operationId":"customRateLimitApproximateTool","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{}}}}},"responses":{"200":{"description":"Echoed request body","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}},"/no-store-cache-control-tool":{"post":{"description":"No store cache control tool","operationId":"noStoreCacheControlTool","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{}}}}},"responses":{"200":{"description":"Echoed request body","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}},"/no-cache-cache-control-tool":{"post":{"description":"No cache cache control tool","operationId":"noCacheCacheControlTool","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{}}}}},"responses":{"200":{"description":"Echoed request body","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}},"/custom-rate-limit-tool":{"post":{"description":"Custom rate limit tool (strict mode)","operationId":"customRateLimitTool","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{}}}}},"responses":{"200":{"description":"Echoed request body","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}},"/disabled-rate-limit-tool":{"post":{"description":"Disabled rate limit tool","operationId":"disabledRateLimitTool","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{}}}}},"responses":{"200":{"description":"Echoed request body","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}},"/strict-additional-properties":{"post":{"description":"Echoes the request body only allowing a single \\"foo\\" field.","operationId":"strictAdditionalProperties","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{"foo":{"type":"string"}},"required":["foo"]}}}},"responses":{"200":{"description":"Echoed request body","content":{"application/json":{"schema":{"type":"object","properties":{"foo":{"type":"string"}},"required":["foo"]}}}}}}}},"webhooks":{}}",
     "type": "openapi",
+    "url": "https://agentic-platform-fixtures-everything.onrender.com",
   },
-  "originUrl": "https://agentic-platform-fixtures-everything.onrender.com",
   "pricingIntervals": [
     "month",
   ],
@@ -200,15 +200,71 @@ exports[`loadAgenticConfig > everything-openapi 1`] = `
           "slug": "base",
           "usageType": "licensed",
         },
+        {
+          "billingScheme": "per_unit",
+          "slug": "requests",
+          "unitAmount": 0,
+          "usageType": "metered",
+        },
       ],
       "name": "Free",
-      "rateLimit": {
-        "enabled": true,
-        "interval": 60,
-        "limit": 1000,
-        "mode": "approximate",
-      },
       "slug": "free",
+    },
+    {
+      "interval": "month",
+      "lineItems": [
+        {
+          "amount": 999,
+          "slug": "base",
+          "usageType": "licensed",
+        },
+        {
+          "billingScheme": "tiered",
+          "slug": "requests",
+          "tiers": [
+            {
+              "unitAmount": 0,
+              "upTo": 1000,
+            },
+            {
+              "unitAmount": 0.053,
+              "upTo": "inf",
+            },
+          ],
+          "tiersMode": "volume",
+          "usageType": "metered",
+        },
+      ],
+      "name": "Starter",
+      "slug": "starter",
+    },
+    {
+      "interval": "month",
+      "lineItems": [
+        {
+          "amount": 2999,
+          "slug": "base",
+          "usageType": "licensed",
+        },
+        {
+          "billingScheme": "tiered",
+          "slug": "requests",
+          "tiers": [
+            {
+              "unitAmount": 0,
+              "upTo": 10000,
+            },
+            {
+              "unitAmount": 0.049,
+              "upTo": "inf",
+            },
+          ],
+          "tiersMode": "volume",
+          "usageType": "metered",
+        },
+      ],
+      "name": "Pro",
+      "slug": "pro",
     },
   ],
   "toolConfigs": [
@@ -305,11 +361,11 @@ exports[`loadAgenticConfig > invalid: invalid-name-4 1`] = `[Error: Invalid proj
 
 exports[`loadAgenticConfig > invalid: invalid-origin-url-0 1`] = `[Error: Invalid originUrl: must be a valid https URL]`;
 
-exports[`loadAgenticConfig > invalid: invalid-origin-url-1 1`] = `[ZodValidationError: Validation error: Invalid url at "originUrl"]`;
+exports[`loadAgenticConfig > invalid: invalid-origin-url-1 1`] = `[ZodValidationError: Validation error: Invalid url at "origin.url"]`;
 
-exports[`loadAgenticConfig > invalid: invalid-origin-url-2 1`] = `[ZodValidationError: Validation error: Required at "originUrl"]`;
+exports[`loadAgenticConfig > invalid: invalid-origin-url-2 1`] = `[ZodValidationError: Validation error: Required at "origin"]`;
 
-exports[`loadAgenticConfig > invalid: invalid-origin-url-3 1`] = `[ZodValidationError: Validation error: Invalid url at "originUrl"]`;
+exports[`loadAgenticConfig > invalid: invalid-origin-url-3 1`] = `[ZodValidationError: Validation error: Invalid url at "origin.url"]`;
 
 exports[`loadAgenticConfig > invalid: pricing-base-inconsistent 1`] = `[ZodValidationError: Validation error: Invalid PricingPlanLineItem "base": reserved "base" LineItems must have "licensed" usage type. at "pricingPlans[1].lineItems[0]"]`;
 
@@ -334,11 +390,11 @@ exports[`loadAgenticConfig > pricing-3-plans 1`] = `
     "mode": "approximate",
   },
   "name": "test-pricing-3-plans",
-  "originAdapter": {
+  "origin": {
     "location": "external",
     "type": "raw",
+    "url": "https://httpbin.org",
   },
-  "originUrl": "https://httpbin.org",
   "pricingIntervals": [
     "month",
   ],
@@ -408,11 +464,11 @@ exports[`loadAgenticConfig > pricing-custom-0 1`] = `
     "mode": "approximate",
   },
   "name": "test-pricing-custom-0",
-  "originAdapter": {
+  "origin": {
     "location": "external",
     "type": "raw",
+    "url": "https://httpbin.org",
   },
-  "originUrl": "https://httpbin.org",
   "pricingIntervals": [
     "month",
     "year",
@@ -492,11 +548,11 @@ exports[`loadAgenticConfig > pricing-freemium 1`] = `
     "mode": "approximate",
   },
   "name": "test-pricing-freemium",
-  "originAdapter": {
+  "origin": {
     "location": "external",
     "type": "raw",
+    "url": "https://httpbin.org",
   },
-  "originUrl": "https://httpbin.org",
   "pricingIntervals": [
     "month",
   ],
@@ -546,11 +602,11 @@ exports[`loadAgenticConfig > pricing-monthly-annual 1`] = `
     "mode": "approximate",
   },
   "name": "test-pricing-monthly-annual",
-  "originAdapter": {
+  "origin": {
     "location": "external",
     "type": "raw",
+    "url": "https://httpbin.org",
   },
-  "originUrl": "https://httpbin.org",
   "pricingIntervals": [
     "month",
     "year",
@@ -606,11 +662,11 @@ exports[`loadAgenticConfig > pricing-pay-as-you-go 1`] = `
     "mode": "approximate",
   },
   "name": "test-pricing-pay-as-you-go",
-  "originAdapter": {
+  "origin": {
     "location": "external",
     "type": "raw",
+    "url": "https://httpbin.org",
   },
-  "originUrl": "https://httpbin.org",
   "pricingIntervals": [
     "month",
   ],
