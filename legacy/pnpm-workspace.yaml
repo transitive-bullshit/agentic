@@ -1,16 +1,13 @@
 packages:
   - packages/*
   - examples/*
-updateConfig:
-  ignoreDependencies:
-    - p-throttle
-    - '@nangohq/node'
+
 catalog:
   '@ai-sdk/openai': ^1.3.22
   '@apidevtools/swagger-parser': ^10.1.1
   '@dexaai/dexter': ^4.1.1
   '@e2b/code-interpreter': ^1.5.1
-  '@fisch0920/config': ^1.1.2
+  '@fisch0920/config': ^1.1.4
   '@googleapis/customsearch': ^4.0.1
   '@langchain/core': ^0.3.60
   '@langchain/openai': ^0.5.14
@@ -74,3 +71,11 @@ catalog:
   zod: ^3.25.67
   zod-validation-error: ^3.5.2
   zoominfo-api-auth-client: ^1.0.1
+
+ignoredBuiltDependencies:
+  - '@fisch0920/config'
+
+updateConfig:
+  ignoreDependencies:
+    - p-throttle
+    - '@nangohq/node'
