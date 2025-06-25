@@ -28,10 +28,10 @@
     "e2e-mcp:prod": "dotenvx run -o -f .env.production -- vitest run src/mcp-e2e.test.ts"
   },
   "dependencies": {
-    "dotenv": "^16.5.0",
+    "dotenv": "catalog:",
     "ky": "catalog:",
     "p-map": "catalog:",
-    "p-times": "^4.0.0",
+    "p-times": "catalog:",
     "semver": "catalog:"
   },
   "devDependencies": {

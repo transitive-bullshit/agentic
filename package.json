@@ -29,7 +29,7 @@
     "knip": "knip"
   },
   "devDependencies": {
-    "@dotenvx/dotenvx": "^1.44.2",
+    "@dotenvx/dotenvx": "catalog:",
     "@fisch0920/config": "catalog:",
     "@types/node": "catalog:",
     "del-cli": "catalog:",

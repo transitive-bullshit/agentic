@@ -22,8 +22,8 @@
     "test:unit": "vitest run"
   },
   "dependencies": {
-    "decircular": "^1.0.0",
-    "is-obj": "^3.0.0",
+    "decircular": "catalog:",
+    "is-obj": "catalog:",
     "parse-json": "catalog:",
     "sort-keys": "catalog:",
     "type-fest": "catalog:",

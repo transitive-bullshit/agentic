@@ -45,7 +45,7 @@
     "@hono/zod-openapi": "catalog:",
     "@paralleldrive/cuid2": "catalog:",
     "@sentry/node": "catalog:",
-    "bcryptjs": "^3.0.2",
+    "bcryptjs": "catalog:",
     "exit-hook": "catalog:",
     "hono": "catalog:",
     "ky": "catalog:",

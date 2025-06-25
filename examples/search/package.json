@@ -19,10 +19,10 @@
   "dependencies": {
     "@agentic/platform": "workspace:*",
     "@agentic/platform-core": "workspace:*",
-    "@agentic/serper": "^7.6.7",
-    "@hono/mcp": "^0.1.0",
+    "@agentic/serper": "catalog:",
+    "@hono/mcp": "catalog:",
     "@modelcontextprotocol/sdk": "catalog:",
-    "dotenv": "^16.5.0",
+    "dotenv": "catalog:",
     "hono": "catalog:",
     "zod": "catalog:"
   },

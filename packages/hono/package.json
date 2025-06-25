@@ -25,7 +25,7 @@
     "@agentic/platform-core": "workspace:*",
     "@hono/sentry": "catalog:",
     "@sentry/core": "catalog:",
-    "dotenv": "^16.5.0",
+    "dotenv": "catalog:",
     "eventid": "catalog:",
     "hono": "catalog:",
     "ky": "catalog:",
