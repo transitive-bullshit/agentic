@@ -21,6 +21,7 @@
     - should we bypass stripe for `free` plans to increase conversions?
   - handle browser back/forward with `?next=`
   - add some social proof to signup page
+  - empty dashboard; add some CTAs
 - **API gateway**
   - oauth flow
     - https://docs.scalekit.com/guides/mcp/oauth
