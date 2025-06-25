@@ -45,7 +45,7 @@ export function ExampleUsage({
   const ctx = useAgentic()
 
   const [config, setConfig] = useLocalStorage<DeveloperConfig>(
-    'config',
+    'developer-config',
     defaultConfig
   )
 
@@ -176,7 +176,7 @@ export function ExampleUsage({
 
       <TabsContent value='typescript' className='w-full'>
         <Tabs
-          defaultValue={config.tsFrameworkTarget ?? 'ai'}
+          defaultValue={config.tsFrameworkTarget}
           onValueChange={(value) =>
             setConfig({
               ...defaultConfig,

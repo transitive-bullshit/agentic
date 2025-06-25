@@ -36,7 +36,7 @@ export default async function TheBestDamnLandingPageEver() {
     <>
       {/* Hero section */}
       <DotsSection className='mb-16'>
-        <div className='flex flex-col gap-8 relative z-10'>
+        <div className='flex flex-col gap-10 relative z-10'>
           <h1 className='text-center text-balance leading-snug md:leading-none text-4xl font-semibold'>
             The App Store for LLM Tools
           </h1>
@@ -50,10 +50,14 @@ export default async function TheBestDamnLandingPageEver() {
         </div>
       </DotsSection>
 
+      {/* <div className='w-[40%] h-full min-h-full' />
+
+          <HeroSimulation2 className='absolute! top-[-50%]! left-[30%] w-full h-[200%]!' /> */}
+
       {/* How it works section */}
       <section className='flex flex-col gap-8 mb-16'>
         <h2 className='text-center text-balance leading-snug md:leading-none text-3xl font-heading'>
-          LLM Tools that work everywhere
+          Agentic tools work <span className='font-semibold'>everywhere</span>
         </h2>
 
         <ExampleUsage
@@ -62,6 +66,25 @@ export default async function TheBestDamnLandingPageEver() {
           project={initialProject}
           initialCodeBlock={initialCodeBlock}
         />
+
+        <div className='flex flex-col gap-4 text-sm max-w-2xl text-center'>
+          <p>
+            This example uses the{' '}
+            <Link href='/marketplace/projects/@agentic/search' className='link'>
+              @agentic/search
+            </Link>{' '}
+            tool to provide an LLM access to the web.
+          </p>
+
+          <p>
+            All Agentic tools are exposed as both{' '}
+            <span className='font-semibold'>MCP servers</span> as well as simple{' '}
+            <span className='font-semibold'>HTTP APIs</span>. MCP is important
+            for interop and future-proofing, whereas simple HTTP POST requests
+            make tool use easy to debug and simplifies integration with existing
+            LLM tool calling.
+          </p>
+        </div>
       </section>
 
       {/* Marketplace section */}

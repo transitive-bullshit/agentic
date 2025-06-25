@@ -1,7 +1,8 @@
 import Link from 'next/link'
 
+import { DotsSection } from '@/components/dots-section'
+import { ExampleAgenticConfigs } from '@/components/example-agentic-configs'
 import { GitHubStarCounter } from '@/components/github-star-counter'
-import { HeroSimulation2 } from '@/components/hero-simulation-2'
 import { SupplySideCTA } from '@/components/supply-side-cta'
 import {
   calendarBookingUrl,
@@ -10,37 +11,25 @@ import {
   twitterUrl
 } from '@/lib/config'
 
-export default function TheSecondBestDamnLandingPageEver() {
+export default function MCPAuthorsPage() {
   return (
     <>
       {/* Hero section */}
-      <section className='mb-16 relative'>
-        <div className='flex gap-8'>
-          {/* <div className='absolute top-0 bottom-0 left-0 right-0 bg-[url(/dots.svg)] bg-repeat bg-center bg-size-[32px_auto] opacity-30 dark:opacity-100' />
+      <DotsSection className='mb-16'>
+        <div className='flex flex-col gap-8 relative z-10'>
+          <h1 className='text-center text-balance leading-snug md:leading-none text-4xl font-semibold'>
+            Your API → Paid MCP, Instantly
+          </h1>
 
-          <div className='absolute top-0 bottom-0 left-0 right-0 bg-[radial-gradient(39%_50%_at_50%_50%,rgba(255,255,255,.3)_0%,rgb(255,255,255)_100%)] dark:bg-[radial-gradient(39%_50%_at_50%_50%,rgba(10,10,10,0)_0%,rgb(10,10,10)_100%)]' /> */}
+          <h5 className='text-center text-lg max-w-2xl'>
+            Run one command to turn any MCP server or OpenAPI service into a
+            paid MCP product,{' '}
+            <em>with built-in distribution to over 20k AI engineers</em>.
+          </h5>
 
-          <div className='flex flex-col gap-8 relative z-10'>
-            <h1 className='text-center text-balance leading-snug md:leading-none text-4xl font-semibold'>
-              Your API → Paid MCP, Instantly
-            </h1>
-
-            <h5 className='text-center text-lg max-w-2xl'>
-              Run one command to turn any MCP server or OpenAPI service into a
-              paid MCP product,{' '}
-              <em>with built-in distribution to over 20k AI engineers</em>.
-            </h5>
-
-            <SupplySideCTA />
-          </div>
-
-          <div className='w-[40%] h-full min-h-full' />
-
-          <HeroSimulation2 className='absolute! top-[-50%]! left-[30%] w-full h-[200%]!' />
+          <SupplySideCTA />
         </div>
-      </section>
-
-      <section></section>
+      </DotsSection>
 
       {/* How it works section */}
       <section className='flex flex-col gap-8 mb-16'>
@@ -49,6 +38,27 @@ export default function TheSecondBestDamnLandingPageEver() {
         </h2>
 
         <div>TODO</div>
+      </section>
+
+      {/* Config section */}
+      <section className='flex flex-col gap-8 mb-16'>
+        <h2 className='text-center text-balance leading-snug md:leading-none text-3xl font-heading'>
+          Simple, Declarative Configuration
+        </h2>
+
+        <ExampleAgenticConfigs />
+
+        <div className='flex flex-col gap-4 text-sm max-w-2xl text-center'>
+          <p>
+            Configuring your Agentic project is straightforward, regardless of
+            whether your origin is an MCP server or an OpenAPI service. For TS
+            projects, you can use a fully-typed{' '}
+            <span className='font-semibold'>agentic.config.ts</span> file, or
+            fall back to using an{' '}
+            <span className='font-semibold'>agentic.config.json</span> file to
+            configure your project.
+          </p>
+        </div>
       </section>
 
       {/* Features section */}
@@ -197,17 +207,6 @@ export default function TheSecondBestDamnLandingPageEver() {
         </div>
       </section>
 
-      {/* Marketplace section */}
-      {/* <section className='flex flex-col gap-8 mb-16'>
-        <h2 className='text-center text-balance leading-snug md:leading-none text-3xl font-heading'>
-          MCP Marketplace
-        </h2>
-
-        <p>
-          <i>Coming soon...</i>
-        </p>
-      </section> */}
-
       {/* Open source section */}
       <section className='flex flex-col items-center gap-8 max-w-2xl text-center mb-16'>
         <h2 className='text-center text-balance leading-snug md:leading-none text-3xl font-heading'>
@@ -240,15 +239,6 @@ export default function TheSecondBestDamnLandingPageEver() {
         </p>
 
         <GitHubStarCounter />
-      </section>
-
-      {/* Social proof section */}
-      <section className='gap-8 mb-16'>
-        <h2 className='text-center text-balance leading-snug md:leading-none text-3xl font-heading'>
-          TODO: social proof
-        </h2>
-
-        <p className='text-center text-lg max-w-2xl'>TODO</p>
       </section>
 
       {/* CTA section */}

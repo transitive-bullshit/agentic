@@ -77,7 +77,7 @@ export function SignupForm() {
   })
 
   return (
-    <section>
+    <section className='flex-1'>
       <div className='flex-col flex-1 items-center justify-center w-full max-w-xs'>
         <form
           className={cn('flex flex-col gap-6 w-full')}

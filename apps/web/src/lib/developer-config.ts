@@ -10,18 +10,18 @@ export const targetLabels = {
   python: 'Python',
   http: 'HTTP'
 } as const
-export const targets: (keyof typeof targetLabels)[] = Object.keys(
+export const targets = Object.keys(
   targetLabels
-) as any
+) as (keyof typeof targetLabels)[]
 export type Target = (typeof targets)[number]
 
 export const httpTargetLabels = {
   curl: 'cURL',
   httpie: 'HTTPie'
 } as const
-export const httpTargets: (keyof typeof httpTargetLabels)[] = Object.keys(
+export const httpTargets = Object.keys(
   httpTargetLabels
-) as any
+) as (keyof typeof httpTargetLabels)[]
 export type HTTPTarget = (typeof httpTargets)[number]
 
 export const mcpClientTargetLabels = {
@@ -34,8 +34,9 @@ export const mcpClientTargetLabels = {
   cline: 'Cline',
   goose: 'Goose'
 } as const
-export const mcpClientTargets: (keyof typeof mcpClientTargetLabels)[] =
-  Object.keys(mcpClientTargetLabels) as any
+export const mcpClientTargets = Object.keys(
+  mcpClientTargetLabels
+) as (keyof typeof mcpClientTargetLabels)[]
 export type MCPClientTarget = (typeof mcpClientTargets)[number]
 
 export const tsFrameworkTargetLabels = {
@@ -48,8 +49,9 @@ export const tsFrameworkTargetLabels = {
   'firebase-genkit': 'Firebase GenKit',
   xsai: 'xsAI'
 } as const
-export const tsFrameworkTargets: (keyof typeof tsFrameworkTargetLabels)[] =
-  Object.keys(tsFrameworkTargetLabels) as any
+export const tsFrameworkTargets = Object.keys(
+  tsFrameworkTargetLabels
+) as (keyof typeof tsFrameworkTargetLabels)[]
 export type TsFrameworkTarget = (typeof tsFrameworkTargets)[number]
 
 export const pyFrameworkTargetLabels = {
@@ -57,8 +59,9 @@ export const pyFrameworkTargetLabels = {
   langchain: 'LangChain',
   llamaindex: 'LlamaIndex'
 } as const
-export const pyFrameworkTargets: (keyof typeof pyFrameworkTargetLabels)[] =
-  Object.keys(pyFrameworkTargetLabels) as any
+export const pyFrameworkTargets = Object.keys(
+  pyFrameworkTargetLabels
+) as (keyof typeof pyFrameworkTargetLabels)[]
 export type PyFrameworkTarget = (typeof pyFrameworkTargets)[number]
 
 export type DeveloperConfig = {
