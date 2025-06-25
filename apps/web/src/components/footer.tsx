@@ -7,7 +7,7 @@ import { copyright, githubUrl, twitterUrl } from '@/lib/config'
 
 export function Footer() {
   return (
-    <footer className='w-full py-12 border-t flex flex-col items-center'>
+    <footer className='w-full pt-12 pb-4 border-t flex flex-col items-center'>
       <div className='container px-4 md:px-6 max-w-1200px'>
         <div className='flex flex-col md:grid md:grid-cols-4 gap-8'>
           <div className='flex flex-col md:items-center'>
@@ -18,6 +18,12 @@ export function Footer() {
                 <span>
                   <ActiveLink href='/' className='link'>
                     Home
+                  </ActiveLink>
+                </span>
+
+                <span>
+                  <ActiveLink href='/mcp-authors' className='link'>
+                    For MCP Authors
                   </ActiveLink>
                 </span>
 

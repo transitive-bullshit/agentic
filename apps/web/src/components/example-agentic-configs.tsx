@@ -122,9 +122,9 @@ import { defineConfig } from '@agentic/platform'
 export default defineConfig({
   name: 'mcp-example',
   origin: {
+    type: 'mcp',
     // Your origin MCP server URL supporting the streamable HTTP transport
-    url: '<YOUR_MCP_SERVER_URL>',
-    type: 'mcp'
+    url: '<YOUR_REMOTE_MCP_SERVER_URL>'
   }
 })`.trim(),
         lang: 'typescript'
@@ -155,7 +155,7 @@ export default defineConfig({
   "name": "mcp-example",
   "origin": {
     "type": "mcp",
-    "url": "<YOUR_MCP_SERVER_URL>"
+    "url": "<YOUR_REMOTE_MCP_SERVER_URL>"
   }
 }`.trim(),
         lang: 'json'
