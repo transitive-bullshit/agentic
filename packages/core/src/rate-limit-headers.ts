@@ -20,8 +20,8 @@ export function getRateLimitHeaders(
   const remainingString = remaining.toString()
   const resetTimeString = resetTimeSeconds.toString()
 
-  // NOTE: Cloudflare and/or origin servers like to set the x- headers, which
-  // can be pretty confusing since the end user gets both ratelimit headers.
+  // NOTE: Cloudflare and/or origin servers may set the x- headers, which can
+  // be pretty confusing since the end user gets both ratelimit headers.
   // I'm hesitant to remove any extra origin headers, since they're a nice
   // escape hatch for sending extra metadata, and the origin may in fact have
   // its own separate rate-limiting policy, which we don't necessarily want to

@@ -18,6 +18,8 @@
     "dist"
   ],
   "scripts": {
+    "build": "tsup",
+    "clean": "del dist",
     "test": "run-s test:*",
     "test:typecheck": "tsc --noEmit"
   },

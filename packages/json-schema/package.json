@@ -2,16 +2,6 @@
   "name": "@agentic/json-schema",
   "version": "0.0.1",
   "description": "A JSON schema validator that will run on Cloudflare workers. Supports drafts 4, 7, 2019-09, and 2020-12.",
-  "keywords": [
-    "json-schema",
-    "jsonschema",
-    "json",
-    "schema",
-    "cloudflare",
-    "worker",
-    "workers",
-    "service-worker"
-  ],
   "authors": [
     "Jeremy Danyow <jdanyow@gmail.com>",
     "Travis Fischer <travis@transitivebullsh.it>"
@@ -30,6 +20,8 @@
     ".": "./src/index.ts"
   },
   "scripts": {
+    "build": "tsup",
+    "clean": "del dist",
     "test": "run-s test:*",
     "test:typecheck": "tsc --noEmit",
     "test:unit": "vitest run"
@@ -38,6 +30,27 @@
     "json-schema-test-suite": "github:json-schema-org/JSON-Schema-Test-Suite#76b529f"
   },
   "publishConfig": {
-    "access": "public"
-  }
+    "access": "public",
+    "files": [
+      "dist"
+    ],
+    "exports": {
+      "types": "./dist/index.ts",
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js",
+        "default": "./dist/index.js"
+      }
+    }
+  },
+  "keywords": [
+    "json-schema",
+    "jsonschema",
+    "json",
+    "schema",
+    "cloudflare",
+    "worker",
+    "workers",
+    "service-worker"
+  ]
 }

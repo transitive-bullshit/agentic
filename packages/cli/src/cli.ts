@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { AgenticApiClient } from '@agentic/platform-api-client'
 import { Command } from 'commander'
 

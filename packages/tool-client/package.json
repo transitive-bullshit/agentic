@@ -17,6 +17,8 @@
     ".": "./src/index.ts"
   },
   "scripts": {
+    "build": "tsup",
+    "clean": "del dist",
     "test": "run-s test:*",
     "test:typecheck": "tsc --noEmit"
   },
@@ -27,5 +29,19 @@
     "@agentic/platform-types": "workspace:*",
     "@agentic/platform-validators": "workspace:*",
     "ky": "catalog:"
+  },
+  "publishConfig": {
+    "access": "public",
+    "files": [
+      "dist"
+    ],
+    "exports": {
+      "types": "./dist/index.ts",
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js",
+        "default": "./dist/index.js"
+      }
+    }
   }
 }

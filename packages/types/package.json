@@ -18,6 +18,8 @@
   },
   "scripts": {
     "generate": "openapi-typescript http://localhost:3001/docs --output ./src/openapi.d.ts",
+    "build": "tsup",
+    "clean": "del dist",
     "test": "run-s test:*",
     "test:typecheck": "tsc --noEmit",
     "test:unit": "vitest run"
@@ -36,6 +38,17 @@
     "zod-to-json-schema": "catalog:"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "files": [
+      "dist"
+    ],
+    "exports": {
+      "types": "./dist/index.ts",
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js",
+        "default": "./dist/index.js"
+      }
+    }
   }
 }

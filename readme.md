@@ -45,6 +45,8 @@
   - may need to update our `drizzle-orm` fork
 - simplify `AgenticToolClient` and only require one package per TS LLM SDK
   - `createAISDKToolsFromIdentifier(projectIdentifier)`
+- how to have internal packages reference TS source and publish to npm with compiled JS?
+  - also publish to JSR?
 
 ## TODO: Post-MVP
 
