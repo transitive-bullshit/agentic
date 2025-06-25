@@ -5,7 +5,7 @@
   "license": "AGPL-3.0",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/transitive-bullshit/agentic-platform.git"
+    "url": "git+https://github.com/transitive-bullshit/agentic.git"
   },
   "packageManager": "pnpm@10.12.2",
   "engines": {
@@ -25,13 +25,16 @@
     "test:unit": "turbo test:unit",
     "pretest": "run-s build",
     "preinstall": "npx only-allow pnpm",
+    "prerelease": "run-s build",
     "prepare": "simple-git-hooks",
+    "release": "bumpp -r && pnpm publish -r",
     "knip": "knip"
   },
   "devDependencies": {
     "@dotenvx/dotenvx": "catalog:",
     "@fisch0920/config": "catalog:",
     "@types/node": "catalog:",
+    "bumpp": "catalog:",
     "del-cli": "catalog:",
     "eslint": "catalog:",
     "eslint-plugin-drizzle": "catalog:",

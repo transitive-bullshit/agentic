@@ -9,8 +9,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/transitive-bullshit/agentic-platform.git",
+    "url": "git+https://github.com/transitive-bullshit/agentic.git",
     "directory": "packages/json-schema"
+  },
+  "engines": {
+    "node": ">=18"
   },
   "type": "module",
   "source": "./src/index.ts",

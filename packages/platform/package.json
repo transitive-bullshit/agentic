@@ -6,8 +6,11 @@
   "license": "AGPL-3.0",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/transitive-bullshit/agentic-platform.git",
+    "url": "git+https://github.com/transitive-bullshit/agentic.git",
     "directory": "packages/platform"
+  },
+  "engines": {
+    "node": ">=18"
   },
   "type": "module",
   "source": "./src/index.ts",

@@ -28,8 +28,8 @@
       - since the .well-known routes and standard oauth 2.1 routes are all at the top-level?
   - **e2e tests for usage tracking and reporting**
 - marketplace
-  - need a different flag besides `private` for inclusion on the marketplace
-    - projects may be public but not accepted into the marketplace, and that's okay?
+  - may need a different flag besides `private` for inclusion on the marketplace
+    - projects may be public but not accepted into the marketplace?
     - => **punt on this for mvp**
 - docs
   - main readme
@@ -45,8 +45,6 @@
   - may need to update our `drizzle-orm` fork
 - simplify `AgenticToolClient` and only require one package per TS LLM SDK
   - `createAISDKToolsFromIdentifier(projectIdentifier)`
-- how to have internal packages reference TS source and publish to npm with compiled JS?
-  - also publish to JSR?
 
 ## TODO: Post-MVP
 
