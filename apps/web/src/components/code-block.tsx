@@ -11,6 +11,11 @@ import {
 import { jsx, jsxs } from 'react/jsx-runtime'
 import { type BundledLanguage, codeToHast } from 'shiki/bundle/web'
 
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger
+} from '@/components/ui/tooltip'
 import { toastError } from '@/lib/notifications'
 import { cn } from '@/lib/utils'
 
@@ -71,7 +76,7 @@ export function CodeBlock({
       code,
       lang,
       theme,
-      className: 'rounded-sm w-full text-wrap p-4 text-sm'
+      className: 'w-full text-wrap p-4 text-sm'
     }).then(setNodes)
   }, [code, lang, theme])
 
@@ -102,19 +107,34 @@ export function CodeBlock({
     })()
   }, [code, timeoutRef])
 
+  const numNewLines = code.split('\n').length
+
   return (
-    <div className={cn('relative group rounded-sm w-full', className)}>
+    <div
+      className={cn('relative group rounded-sm w-full shadow-sm', className)}
+    >
       {nodes ? (
         <>
           {nodes}
 
-          <Button
-            variant='outline'
-            className='absolute top-4 right-4 px-2.5! opacity-0 group-hover:opacity-100 group-hover:duration-0 transition-opacity duration-150'
-            onClick={onCopy}
-          >
-            {isCopied ? <CheckIcon /> : <CopyIcon />}
-          </Button>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant='outline'
+                className={cn(
+                  'absolute right-4 px-2.5! opacity-0 group-hover:opacity-100 group-hover:duration-0 transition-opacity duration-150',
+                  numNewLines <= 1 ? 'top-[50%] translate-y-[-50%]' : 'top-4'
+                )}
+                onClick={onCopy}
+              >
+                {isCopied ? <CheckIcon /> : <CopyIcon />}
+              </Button>
+            </TooltipTrigger>
+
+            <TooltipContent side='bottom'>
+              {isCopied ? <span>Copied</span> : <span>Copy to clipboard</span>}
+            </TooltipContent>
+          </Tooltip>
         </>
       ) : (
         <LoadingIndicator />

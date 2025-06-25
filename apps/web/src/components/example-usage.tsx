@@ -41,6 +41,7 @@ export function ExampleUsage() {
   // TODO: allow to take the project and/or consumer in as props
   // TODO: need a way of fetching a project and target deployment; same as in `AgenticToolClient.fromIdentifier` (currently only supports latest)
   const projectIdentifier = '@agentic/search'
+  const prompt = 'What is the latest news about AI?'
 
   // Load the public project
   const {
@@ -98,7 +99,8 @@ export function ExampleUsage() {
     config,
     project,
     deployment,
-    identifier: projectIdentifier
+    identifier: projectIdentifier,
+    prompt
   })
 
   return (

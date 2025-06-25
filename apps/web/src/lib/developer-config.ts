@@ -27,6 +27,7 @@ export type HTTPTarget = (typeof httpTargets)[number]
 export const mcpClientTargetLabels = {
   url: 'MCP Server URL',
   'claude-desktop': 'Claude Desktop',
+  chatgpt: 'ChatGPT',
   raycast: 'Raycast',
   cursor: 'Cursor',
   windsurf: 'Windsurf',
@@ -82,22 +83,30 @@ export type CodeSnippet = {
   // install?: string // TODO
 }
 
-export function getCodeForDeveloperConfig(opts: {
+export type GetCodeForDeveloperConfigOpts = {
   config: DeveloperConfig
   project: Project
   deployment: Deployment
   identifier: string
+  prompt: string
   tool?: string
-}): CodeSnippet {
+}
+
+export function getCodeForDeveloperConfig(
+  opts: GetCodeForDeveloperConfigOpts
+): CodeSnippet {
   const { config } = opts
 
   switch (config.target) {
     case 'mcp':
       return getCodeForMCPClientConfig(opts)
+
     case 'typescript':
       return getCodeForTSFrameworkConfig(opts)
+
     case 'python':
       return getCodeForPythonFrameworkConfig(opts)
+
     case 'http':
       return getCodeForHTTPConfig(opts)
   }
@@ -105,11 +114,10 @@ export function getCodeForDeveloperConfig(opts: {
 
 export function getCodeForMCPClientConfig({
   identifier
-}: {
-  identifier: string
-}): CodeSnippet {
+}: GetCodeForDeveloperConfigOpts): CodeSnippet {
+  const mcpUrl = `${gatewayBaseUrl}/${identifier}/mcp`
   return {
-    code: `${gatewayBaseUrl}/${identifier}/mcp`,
+    code: mcpUrl,
     lang: 'bash'
   }
 }
@@ -117,12 +125,8 @@ export function getCodeForMCPClientConfig({
 export function getCodeForTSFrameworkConfig({
   config,
   identifier,
-  prompt = 'What is the latest news about AI?'
-}: {
-  config: DeveloperConfig
-  identifier: string
-  prompt?: string
-}): CodeSnippet {
+  prompt
+}: GetCodeForDeveloperConfigOpts): CodeSnippet {
   switch (config.tsFrameworkTarget) {
     case 'ai':
       return {
@@ -341,16 +345,87 @@ console.log(JSON.stringify(result, null, 2))`.trim(),
   }
 }
 
-export function getCodeForPythonFrameworkConfig(_opts: {
-  config: DeveloperConfig
-  project: Project
-  deployment: Deployment
-  identifier: string
-  tool?: string
-}): CodeSnippet {
-  return {
-    code: 'Python SDK is coming soon. For now, use the MCP or HTTP examples',
-    lang: 'md'
+export function getCodeForPythonFrameworkConfig({
+  config,
+  identifier,
+  prompt
+}: GetCodeForDeveloperConfigOpts): CodeSnippet {
+  const mcpUrl = `${gatewayBaseUrl}/${identifier}/mcp`
+
+  switch (config.pyFrameworkTarget) {
+    case 'openai':
+      return {
+        code: `
+from openai import OpenAI
+
+client = OpenAI()
+
+response = client.responses.create(
+    model="gpt-4.1",
+    tools=[
+        {
+            "type": "mcp",
+            "server_label": "${identifier}",
+            "server_url": "${mcpUrl}",
+            "require_approval": "never",
+        },
+    ],
+    input="${prompt}",
+)
+
+print(response.output_text)
+        `.trim(),
+        lang: 'py'
+      }
+
+    case 'langchain':
+      return {
+        code: `
+from langchain_mcp_adapters.client import MultiServerMCPClient
+from langgraph.prebuilt import create_react_agent
+
+client = MultiServerMCPClient(
+    {
+        "search": {
+            "url": "${mcpUrl}",
+            "transport": "streamable_http",
+        }
+    }
+)
+tools = await client.get_tools()
+agent = create_react_agent(
+    "anthropic:claude-3-7-sonnet-latest",
+    tools
+)
+response = await agent.ainvoke(
+    {"messages": [{"role": "user", "content": "${prompt}"}]}
+)`.trim(),
+        lang: 'py'
+      }
+
+    case 'llamaindex':
+      return {
+        code: `
+from llama_index.llms.openai import OpenAI
+from llama_index.core.agent.workflow import ReActAgent
+from llama_index.core.workflow import Context
+
+from llama_index.tools.mcp import (
+    get_tools_from_mcp_url,
+    aget_tools_from_mcp_url,
+)
+
+tools = await aget_tools_from_mcp_url("${mcpUrl}")
+
+llm = OpenAI(model="gpt-4o-mini")
+agent = ReActAgent(tools=tools, llm=llm)
+ctx = Context(agent)
+response = await agent.run("${prompt}", ctx=ctx)
+
+print(str(response))
+        `.trim(),
+        lang: 'py'
+      }
   }
 }
 
@@ -359,12 +434,7 @@ export function getCodeForHTTPConfig({
   identifier,
   deployment,
   tool
-}: {
-  config: DeveloperConfig
-  deployment: Deployment
-  identifier: string
-  tool?: string
-}): CodeSnippet {
+}: GetCodeForDeveloperConfigOpts): CodeSnippet {
   tool ??= deployment.tools[0]?.name
   assert(tool, 'tool is required')
   // TODO: need a way of getting example tool args
