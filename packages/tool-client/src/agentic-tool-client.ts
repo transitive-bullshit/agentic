@@ -11,8 +11,12 @@ import { parseDeploymentIdentifier } from '@agentic/platform-validators'
 import defaultKy, { type KyInstance } from 'ky'
 
 /**
- * Agentic tool client which makes it easy to use an Agentic tools product with
- * all of the major TypeScript LLM SDKs.
+ * Agentic tool client which makes it easy to use an Agentic tool products with
+ * all of the major TypeScript LLM SDKs, without having to go through any MCP
+ * middleware.
+ *
+ * The resulting tool client will make simple HTTP calls to the Agentic Gateway
+ * to execute tools.
  *
  * @example
  * ```ts
@@ -73,6 +77,9 @@ export class AgenticToolClient extends AIFunctionsProvider {
     return this._functions
   }
 
+  /**
+   * Helper method to call a tool with either raw or stringified JSON arguments.
+   */
   async callTool(toolName: string, args: string | Record<string, any>) {
     const tool = this.functions.get(toolName)
     assert(tool, `Tool "${toolName}" not found`)

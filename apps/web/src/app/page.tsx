@@ -1,6 +1,7 @@
 import Link from 'next/link'
 
 import { DemandSideCTA } from '@/components/demand-side-cta'
+import { DotsSection } from '@/components/dots-section'
 import { ExampleUsage } from '@/components/example-usage'
 import { GitHubStarCounter } from '@/components/github-star-counter'
 import { githubUrl, twitterUrl } from '@/lib/config'
@@ -9,11 +10,7 @@ export default function TheBestDamnLandingPageEver() {
   return (
     <>
       {/* Hero section */}
-      <section className='mb-16 relative'>
-        <div className='absolute top-0 bottom-0 left-0 right-0 bg-[url(/dots.svg)] bg-repeat bg-center bg-size-[32px_auto] opacity-30 dark:opacity-100' />
-
-        <div className='absolute top-0 bottom-0 left-0 right-0 bg-[radial-gradient(39%_50%_at_50%_50%,rgba(255,255,255,.3)_0%,rgb(255,255,255)_100%)] dark:bg-[radial-gradient(39%_50%_at_50%_50%,rgba(10,10,10,0)_0%,rgb(10,10,10)_100%)]' />
-
+      <DotsSection className='mb-16'>
         <div className='flex flex-col gap-8 relative z-10'>
           <h1 className='text-center text-balance leading-snug md:leading-none text-4xl font-semibold'>
             The App Store for LLM Tools
@@ -26,9 +23,7 @@ export default function TheBestDamnLandingPageEver() {
 
           <DemandSideCTA />
         </div>
-      </section>
-
-      <section></section>
+      </DotsSection>
 
       {/* How it works section */}
       <section className='flex flex-col gap-8 mb-16'>
@@ -94,13 +89,16 @@ export default function TheBestDamnLandingPageEver() {
       </section>
 
       {/* CTA section */}
-      <section className='flex flex-col gap-12 mb-16'>
-        <h2 className='text-center text-balance leading-snug md:leading-none text-3xl font-heading'>
-          Level up your AI Agents with the best tools
-        </h2>
 
-        <DemandSideCTA />
-      </section>
+      <DotsSection className='mb-16'>
+        <div className='flex flex-col gap-12 relative z-10'>
+          <h2 className='text-center text-balance leading-snug md:leading-none text-3xl font-heading'>
+            Level up your AI Agents with the best tools
+          </h2>
+
+          <DemandSideCTA />
+        </div>
+      </DotsSection>
     </>
   )
 }
