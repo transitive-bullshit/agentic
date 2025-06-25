@@ -76,7 +76,7 @@ export function CodeBlock({
       code,
       lang,
       theme,
-      className: 'w-full text-wrap p-4 text-sm'
+      className: 'w-full text-wrap p-4 text-sm rounded-sm'
     }).then(setNodes)
   }, [code, lang, theme])
 
@@ -122,8 +122,8 @@ export function CodeBlock({
               <Button
                 variant='outline'
                 className={cn(
-                  'absolute right-4 px-2.5! opacity-0 group-hover:opacity-100 group-hover:duration-0 transition-opacity duration-150',
-                  numNewLines <= 1 ? 'top-[50%] translate-y-[-50%]' : 'top-4'
+                  'absolute right-2 px-2.5! opacity-0 group-hover:opacity-100 group-hover:duration-0 transition-opacity duration-150',
+                  numNewLines <= 1 ? 'top-[50%] translate-y-[-50%]' : 'top-2'
                 )}
                 onClick={onCopy}
               >

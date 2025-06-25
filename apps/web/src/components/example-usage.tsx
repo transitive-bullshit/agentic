@@ -140,7 +140,7 @@ export function ExampleUsage() {
               <TabsTrigger
                 key={mcpClientTarget}
                 value={mcpClientTarget}
-                className='cursor-pointer'
+                className='cursor-pointer text-xs!'
               >
                 {mcpClientTargetLabels[mcpClientTarget]}
               </TabsTrigger>
@@ -208,7 +208,7 @@ export function ExampleUsage() {
               <TabsTrigger
                 key={framework}
                 value={framework}
-                className='cursor-pointer'
+                className='cursor-pointer text-xs!'
               >
                 {pyFrameworkTargetLabels[framework]}
               </TabsTrigger>
@@ -240,7 +240,7 @@ export function ExampleUsage() {
               <TabsTrigger
                 key={httpTarget}
                 value={httpTarget}
-                className='cursor-pointer'
+                className='cursor-pointer text-xs!'
               >
                 {httpTargetLabels[httpTarget]}
               </TabsTrigger>
