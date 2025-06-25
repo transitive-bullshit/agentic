@@ -88,7 +88,6 @@ catalog:
   hono: 4.8.1
   is-obj: ^3.0.0
   is-relative-url: ^4.0.0
-  jose: ^6.0.11
   knip: ^5.61.2
   ky: 1.8.1
   lint-staged: ^16.1.2
