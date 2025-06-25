@@ -5,7 +5,7 @@ export const isSafari =
 
 export const title = 'Agentic'
 export const description =
-  'Agentic is an API gateway built exclusively for AI agents.'
+  'Agentic is the app store for LLM tools. Publish any MCP server or OpenAPI service to a paid MCP gateway and offer your products to an audience of over 20k AI engineers.'
 export const domain =
   process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL ?? 'agentic.so'
 
@@ -25,6 +25,7 @@ export const discordUrl = 'https://discord.agentic.so'
 
 export const keywords = [
   'agentic',
+  'agentic tools',
   'MCP',
   'Model Context Protocol',
   'MCP gateway',
@@ -33,10 +34,14 @@ export const keywords = [
   'MCP API gateway',
   'MCP monetization',
   'production MCPs',
+  'deploy MCPs',
+  'publish MCPs',
   'ai',
   'AI tools',
   'AI agents',
   'LLM tools',
+  'LLM function calling',
+  'LLM tool calling',
   'MCP servers',
   'MCP server provider',
   'MCP server deployment',

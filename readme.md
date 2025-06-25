@@ -38,12 +38,7 @@
   - hosted docs
 - merge with current agentic repo
 - publish packages to npm
-- api
-  - **deploy to prod**
-- database
-  - consider using [neon serverless driver](https://orm.drizzle.team/docs/connect-neon) for production
-  - can this also be used locally?
-  - may need to update our `drizzle-orm` fork
+- social images
 - simplify `AgenticToolClient` and only require one package per TS LLM SDK
   - `createAISDKToolsFromIdentifier(projectIdentifier)`
 
