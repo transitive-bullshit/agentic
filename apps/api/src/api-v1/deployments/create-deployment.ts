@@ -79,7 +79,10 @@ export function registerV1CreateDeployment(
 
     if (!project) {
       // Used for testing e2e fixtures in the development marketplace
-      const isPrivate = !(user.username === 'dev' && env.isDev)
+      const isPrivate = !(
+        (user.username === 'dev' && env.isDev) ||
+        user.username === 'agentic'
+      )
 
       // Upsert the project if it doesn't already exist
       // The typecast is necessary here because we're not populating the

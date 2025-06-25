@@ -1,10 +1,9 @@
 import Link from 'next/link'
 
 import { DemandSideCTA } from '@/components/demand-side-cta'
+import { ExampleUsage } from '@/components/example-usage'
 import { GitHubStarCounter } from '@/components/github-star-counter'
 import { githubUrl, twitterUrl } from '@/lib/config'
-
-import { ExampleUsage } from './example-usage'
 
 export default function TheBestDamnLandingPageEver() {
   return (

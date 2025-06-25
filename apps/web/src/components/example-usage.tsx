@@ -2,11 +2,13 @@
 
 import { useLocalStorage } from 'react-use'
 
+import { useAgentic } from '@/components/agentic-provider'
 import { CodeBlock } from '@/components/code-block'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import {
   defaultConfig,
   type DeveloperConfig,
+  getCodeForDeveloperConfig,
   type HTTPTarget,
   httpTargetLabels,
   httpTargets,
@@ -23,16 +25,85 @@ import {
   tsFrameworkTargetLabels,
   tsFrameworkTargets
 } from '@/lib/developer-config'
+import { useQuery } from '@/lib/query-client'
+
+import { LoadingIndicator } from './loading-indicator'
 
 export function ExampleUsage() {
+  const ctx = useAgentic()
+
   const [config, setConfig] = useLocalStorage<DeveloperConfig>(
     'config',
     defaultConfig
   )
 
+  // TODO: make this configurable
+  // TODO: allow to take the project and/or consumer in as props
+  // TODO: need a way of fetching a project and target deployment; same as in `AgenticToolClient.fromIdentifier` (currently only supports latest)
+  const projectIdentifier = '@agentic/search'
+
+  // Load the public project
+  const {
+    data: project,
+    isLoading,
+    isError
+  } = useQuery({
+    queryKey: ['project', projectIdentifier],
+    queryFn: () =>
+      ctx!.api.getPublicProjectByIdentifier({
+        projectIdentifier,
+        populate: ['lastPublishedDeployment']
+      }),
+    enabled: !!ctx
+  })
+
+  // If the user is authenticated, check if they have an active subscription to
+  // this project
+  // TODO: use consumer for apiKey
+  // const {
+  //   data: consumer,
+  //   isLoading: isConsumerLoading
+  //   // isError: isConsumerError
+  // } = useQuery({
+  //   queryKey: [
+  //     'project',
+  //     projectIdentifier,
+  //     'user',
+  //     ctx?.api.authSession?.user.id
+  //   ],
+  //   queryFn: () =>
+  //     ctx!.api.getConsumerByProjectIdentifier({
+  //       projectIdentifier
+  //     }),
+  //   enabled: !!ctx?.isAuthenticated
+  // })
+
+  if (isLoading || !config) {
+    return <LoadingIndicator className='w-full max-w-3xl' />
+  }
+
+  // TODO: allow to target a specific deployment
+  const deployment = project?.lastPublishedDeployment
+
+  if (isError || !project || !deployment) {
+    return (
+      <div>
+        Error loading project. Please refresh the page or contact{' '}
+        <a href='mailto:support@agentic.so'>support@agentic.so</a>.
+      </div>
+    )
+  }
+
+  const codeSnippet = getCodeForDeveloperConfig({
+    config,
+    project,
+    deployment,
+    identifier: projectIdentifier
+  })
+
   return (
     <Tabs
-      defaultValue={config!.target}
+      defaultValue={config.target}
       onValueChange={(value) =>
         setConfig({
           ...defaultConfig,
@@ -40,7 +111,7 @@ export function ExampleUsage() {
           target: value as Target
         })
       }
-      className='w-full max-w-2xl'
+      className='w-full max-w-3xl'
     >
       <TabsList>
         {targets.map((target) => (
@@ -52,7 +123,7 @@ export function ExampleUsage() {
 
       <TabsContent value='mcp' className='w-full'>
         <Tabs
-          defaultValue={config!.mcpClientTarget}
+          defaultValue={config.mcpClientTarget}
           onValueChange={(value) =>
             setConfig({
               ...defaultConfig,
@@ -80,11 +151,7 @@ export function ExampleUsage() {
               value={mcpClientTarget}
               className='w-full'
             >
-              <CodeBlock
-                code={JSON.stringify(config, null, 2)}
-                lang='json'
-                className='p-4 rounded-sm w-full'
-              />
+              <CodeBlock code={codeSnippet.code} lang={codeSnippet.lang} />
             </TabsContent>
           ))}
         </Tabs>
@@ -92,7 +159,7 @@ export function ExampleUsage() {
 
       <TabsContent value='typescript' className='w-full'>
         <Tabs
-          defaultValue={config!.tsFrameworkTarget ?? 'ai'}
+          defaultValue={config.tsFrameworkTarget ?? 'ai'}
           onValueChange={(value) =>
             setConfig({
               ...defaultConfig,
@@ -102,12 +169,12 @@ export function ExampleUsage() {
           }
           className='w-full'
         >
-          <TabsList className='h-auto flex-wrap'>
+          <TabsList className='w-full h-auto flex-wrap'>
             {tsFrameworkTargets.map((framework) => (
               <TabsTrigger
                 key={framework}
                 value={framework}
-                className='cursor-pointer'
+                className='cursor-pointer text-xs!'
               >
                 {tsFrameworkTargetLabels[framework]}
               </TabsTrigger>
@@ -116,11 +183,7 @@ export function ExampleUsage() {
 
           {tsFrameworkTargets.map((framework) => (
             <TabsContent key={framework} value={framework} className='w-full'>
-              <CodeBlock
-                code={JSON.stringify(config, null, 2)}
-                lang='ts'
-                className='p-4 rounded-sm w-full'
-              />
+              <CodeBlock code={codeSnippet.code} lang={codeSnippet.lang} />
             </TabsContent>
           ))}
         </Tabs>
@@ -128,7 +191,7 @@ export function ExampleUsage() {
 
       <TabsContent value='python' className='w-full'>
         <Tabs
-          defaultValue={config!.pyFrameworkTarget}
+          defaultValue={config.pyFrameworkTarget}
           onValueChange={(value) =>
             setConfig({
               ...defaultConfig,
@@ -152,11 +215,7 @@ export function ExampleUsage() {
 
           {pyFrameworkTargets.map((framework) => (
             <TabsContent key={framework} value={framework} className='w-full'>
-              <CodeBlock
-                code={JSON.stringify(config, null, 2)}
-                lang='py'
-                className='p-4 rounded-sm w-full'
-              />
+              <CodeBlock code={codeSnippet.code} lang={codeSnippet.lang} />
             </TabsContent>
           ))}
         </Tabs>
@@ -164,7 +223,7 @@ export function ExampleUsage() {
 
       <TabsContent value='http' className='w-full'>
         <Tabs
-          defaultValue={config!.httpTarget}
+          defaultValue={config.httpTarget}
           onValueChange={(value) =>
             setConfig({
               ...defaultConfig,
@@ -188,11 +247,7 @@ export function ExampleUsage() {
 
           {httpTargets.map((httpTarget) => (
             <TabsContent key={httpTarget} value={httpTarget} className='w-full'>
-              <CodeBlock
-                code={JSON.stringify(config, null, 2)}
-                lang='bash'
-                className='p-4 rounded-sm w-full'
-              />
+              <CodeBlock code={codeSnippet.code} lang={codeSnippet.lang} />
             </TabsContent>
           ))}
         </Tabs>

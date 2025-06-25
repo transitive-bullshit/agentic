@@ -63,7 +63,10 @@ export function registerV1CreateProject(
     )
 
     // Used for testing e2e fixtures in the development marketplace
-    const isPrivate = !(user.username === 'dev' && env.isDev)
+    const isPrivate = !(
+      (user.username === 'dev' && env.isDev) ||
+      user.username === 'agentic'
+    )
 
     const [project] = await db
       .insert(schema.projects)

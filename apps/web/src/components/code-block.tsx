@@ -1,9 +1,21 @@
 import { toJsxRuntime } from 'hast-util-to-jsx-runtime'
-import { Fragment, type JSX, useEffect, useState } from 'react'
+import { CheckIcon, CopyIcon } from 'lucide-react'
+import {
+  Fragment,
+  type JSX,
+  useCallback,
+  useEffect,
+  useRef,
+  useState
+} from 'react'
 import { jsx, jsxs } from 'react/jsx-runtime'
 import { type BundledLanguage, codeToHast } from 'shiki/bundle/web'
 
+import { toastError } from '@/lib/notifications'
+import { cn } from '@/lib/utils'
+
 import { LoadingIndicator } from './loading-indicator'
+import { Button } from './ui/button'
 
 export async function highlight({
   code,
@@ -51,10 +63,62 @@ export function CodeBlock({
   className?: string
 }) {
   const [nodes, setNodes] = useState(initial)
+  const [isCopied, setIsCopied] = useState(false)
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
-    void highlight({ code, lang, theme, className }).then(setNodes)
-  }, [code, lang, theme, className])
+    void highlight({
+      code,
+      lang,
+      theme,
+      className: 'rounded-sm w-full text-wrap p-4 text-sm'
+    }).then(setNodes)
+  }, [code, lang, theme])
 
-  return nodes ?? <LoadingIndicator />
+  const onCopy = useCallback(() => {
+    ;(async () => {
+      try {
+        await navigator.clipboard.writeText(code)
+        setIsCopied(true)
+
+        if (timeoutRef.current) {
+          clearTimeout(timeoutRef.current)
+          timeoutRef.current = null
+        }
+
+        timeoutRef.current = setTimeout(() => {
+          timeoutRef.current = null
+          setIsCopied(false)
+        }, 2000)
+      } catch {
+        setIsCopied(true)
+
+        if (timeoutRef.current) {
+          clearTimeout(timeoutRef.current)
+          timeoutRef.current = null
+        }
+        void toastError('Error copying code to clipboard')
+      }
+    })()
+  }, [code, timeoutRef])
+
+  return (
+    <div className={cn('relative group rounded-sm w-full', className)}>
+      {nodes ? (
+        <>
+          {nodes}
+
+          <Button
+            variant='outline'
+            className='absolute top-4 right-4 px-2.5! opacity-0 group-hover:opacity-100 group-hover:duration-0 transition-opacity duration-150'
+            onClick={onCopy}
+          >
+            {isCopied ? <CheckIcon /> : <CopyIcon />}
+          </Button>
+        </>
+      ) : (
+        <LoadingIndicator />
+      )}
+    </div>
+  )
 }

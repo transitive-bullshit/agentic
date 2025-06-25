@@ -73,6 +73,12 @@ export class AgenticToolClient extends AIFunctionsProvider {
     return this._functions
   }
 
+  async callTool(toolName: string, args: string | Record<string, any>) {
+    const tool = this.functions.get(toolName)
+    assert(tool, `Tool "${toolName}" not found`)
+    return tool(typeof args === 'string' ? args : JSON.stringify(args))
+  }
+
   /**
    * Creates an Agentic tool client from a project or deployment identifier.
    *
@@ -84,8 +90,6 @@ export class AgenticToolClient extends AIFunctionsProvider {
    * @example
    * ```ts
    * const searchTool = await AgenticToolClient.fromIdentifier('@agentic/search')
-   * const searchToolV1 = await AgenticToolClient.fromIdentifier('@agentic/search@v1.0.0')
-   * const searchToolLatest = await AgenticToolClient.fromIdentifier('@agentic/search@latest')
    * ```
    */
   static async fromIdentifier(
