@@ -14,7 +14,7 @@ catalog:
   '@commander-js/extra-typings': ^14.0.0
   '@dotenvx/dotenvx': ^1.45.1
   '@edge-runtime/vm': ^5.0.0
-  '@fisch0920/config': ^1.1.2
+  '@fisch0920/config': ^1.1.3
   '@fisch0920/drizzle-orm': ^0.43.7
   '@fisch0920/drizzle-zod': ^0.7.9
   '@hono/mcp': ^0.1.0
@@ -147,3 +147,6 @@ catalog:
 
 onlyBuiltDependencies:
   - '@sentry/cli'
+
+ignoredBuiltDependencies:
+  - '@fisch0920/config'
