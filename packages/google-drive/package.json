@@ -1,6 +1,6 @@
 {
   "name": "@agentic/google-drive",
-  "version": "7.6.8",
+  "version": "7.6.9",
   "description": "Agentic SDK for Google Drive.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",
