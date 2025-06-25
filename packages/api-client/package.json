@@ -26,7 +26,6 @@
     "@agentic/platform-core": "workspace:*",
     "@agentic/platform-types": "workspace:*",
     "@standard-schema/spec": "catalog:",
-    "jose": "catalog:",
     "ky": "catalog:",
     "type-fest": "catalog:"
   },

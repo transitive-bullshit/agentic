@@ -240,9 +240,6 @@ catalogs:
     is-obj:
       specifier: ^3.0.0
       version: 3.0.0
-    jose:
-      specifier: ^6.0.11
-      version: 6.0.11
     knip:
       specifier: ^5.61.2
       version: 5.61.2
@@ -868,9 +865,6 @@ importers:
       '@standard-schema/spec':
         specifier: 'catalog:'
         version: 1.0.0
-      jose:
-        specifier: 'catalog:'
-        version: 6.0.11
       ky:
         specifier: 'catalog:'
         version: 1.8.1
@@ -5646,9 +5640,6 @@ packages:
   jiti@2.4.2:
     resolution: {integrity: sha512-rg9zJN+G4n2nfJl5MW3BMygZX56zKPNVEYYqq7adpmMh4Jn2QNEwhvQlFy6jPVdcod7txZtKHWnyZiA3a0zP7A==}
     hasBin: true
-
-  jose@6.0.11:
-    resolution: {integrity: sha512-QxG7EaliDARm1O1S8BGakqncGT9s25bKL1WSf6/oa17Tkqwi8D2ZNglqCF+DsYF88/rV66Q/Q2mFAy697E1DUg==}
 
   joycon@3.1.1:
     resolution: {integrity: sha512-34wB/Y7MW7bzjKRjUKTa46I2Z7eV62Rkhva+KkopW7Qvv/OSWBqvkSY7vusOPrNuZcUG3tApvdVgNB8POj3SPw==}
@@ -12309,8 +12300,6 @@ snapshots:
       '@isaacs/cliui': 8.0.2
 
   jiti@2.4.2: {}
-
-  jose@6.0.11: {}
 
   joycon@3.1.1: {}
 
