@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { ActiveLink } from '@/components/active-link'
 import { GitHubIcon } from '@/icons/github'
 import { TwitterIcon } from '@/icons/twitter'
-import { copyright, githubUrl, twitterUrl } from '@/lib/config'
+import { copyright, docsUrl, githubUrl, twitterUrl } from '@/lib/config'
 
 export function Footer() {
   return (
@@ -22,8 +22,20 @@ export function Footer() {
                 </span>
 
                 <span>
+                  <ActiveLink href='/marketplace' className='link'>
+                    MCP Marketplace
+                  </ActiveLink>
+                </span>
+
+                <span>
                   <ActiveLink href='/mcp-authors' className='link'>
                     For MCP Authors
+                  </ActiveLink>
+                </span>
+
+                <span>
+                  <ActiveLink href={docsUrl} className='link'>
+                    Docs
                   </ActiveLink>
                 </span>
 

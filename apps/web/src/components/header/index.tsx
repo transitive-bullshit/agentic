@@ -19,7 +19,7 @@ export function Header() {
 
         <div className='flex justify-end items-center h-full gap-4'>
           <ActiveLink href='/marketplace' className='link'>
-            Marketplace
+            MCP Marketplace
           </ActiveLink>
 
           <ActiveLink href={docsUrl} className='link'>
