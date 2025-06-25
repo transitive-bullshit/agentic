@@ -289,7 +289,7 @@ catalogs:
       specifier: ^5.0.0
       version: 5.0.0
     p-map:
-      specifier: ^7.0.3
+      specifier: 7.0.3
       version: 7.0.3
     p-times:
       specifier: ^4.0.0
@@ -1073,6 +1073,12 @@ importers:
       json-schema-test-suite:
         specifier: github:json-schema-org/JSON-Schema-Test-Suite#76b529f
         version: https://codeload.github.com/json-schema-org/JSON-Schema-Test-Suite/tar.gz/76b529f
+      ky:
+        specifier: 'catalog:'
+        version: 1.8.1
+      p-map:
+        specifier: 'catalog:'
+        version: 7.0.3
 
   packages/openapi-utils:
     dependencies:

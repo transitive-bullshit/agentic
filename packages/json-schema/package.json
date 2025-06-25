@@ -30,7 +30,9 @@
     "test:unit": "vitest run"
   },
   "devDependencies": {
-    "json-schema-test-suite": "github:json-schema-org/JSON-Schema-Test-Suite#76b529f"
+    "json-schema-test-suite": "github:json-schema-org/JSON-Schema-Test-Suite#76b529f",
+    "ky": "catalog:",
+    "p-map": "catalog:"
   },
   "publishConfig": {
     "access": "public",
