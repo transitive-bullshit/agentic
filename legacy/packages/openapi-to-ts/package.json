@@ -1,6 +1,6 @@
 {
   "name": "@agentic/openapi-to-ts",
-  "version": "7.6.8",
+  "version": "7.6.9",
   "description": "Generate an Agentic TypeScript client from an OpenAPI spec.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",
