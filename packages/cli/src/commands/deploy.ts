@@ -51,7 +51,7 @@ export function registerDeployCommand({
         // publish it.
         const deployment = await oraPromise(
           client.createDeployment(config, {
-            publish: !!opts.publish
+            publish: opts.publish ? 'true' : 'false'
           }),
           {
             text: `Creating deployment for project "${config.name}"`,

@@ -157,14 +157,17 @@ export async function upsertConsumer(
       .where(eq(schema.consumers.id, consumer.id))
       .returning()
   } else {
-    ;[consumer] = await db.insert(schema.consumers).values({
-      plan,
-      userId,
-      projectId,
-      deploymentId,
-      token: await createConsumerToken(),
-      _stripeCustomerId: stripeCustomer.id
-    })
+    ;[consumer] = await db
+      .insert(schema.consumers)
+      .values({
+        plan,
+        userId,
+        projectId,
+        deploymentId,
+        token: await createConsumerToken(),
+        _stripeCustomerId: stripeCustomer.id
+      })
+      .returning()
   }
 
   assert(consumer, 500, 'Error creating consumer')
