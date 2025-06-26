@@ -205,7 +205,7 @@ const FEATURES: Feature[] = [
       y: 13,
       squares: [
         [0, 2],
-        [0, 2]
+        [-1, 4]
       ]
     }
   }
