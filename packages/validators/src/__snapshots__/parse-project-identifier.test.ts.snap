@@ -5,8 +5,8 @@ exports[`parseProjectIdentifier > non-strict mode valid 1`] = `
   "deploymentIdentifier": "@username/foo-bar@latest",
   "deploymentVersion": "latest",
   "projectIdentifier": "@username/foo-bar",
-  "projectName": "foo-bar",
   "projectNamespace": "username",
+  "projectSlug": "foo-bar",
 }
 `;
 
@@ -15,8 +15,8 @@ exports[`parseProjectIdentifier > non-strict mode valid 2`] = `
   "deploymentIdentifier": "@username/foo-bar@latest",
   "deploymentVersion": "latest",
   "projectIdentifier": "@username/foo-bar",
-  "projectName": "foo-bar",
   "projectNamespace": "username",
+  "projectSlug": "foo-bar",
 }
 `;
 
@@ -25,8 +25,8 @@ exports[`parseProjectIdentifier > non-strict mode valid 3`] = `
   "deploymentIdentifier": "@username/foo-bar@latest",
   "deploymentVersion": "latest",
   "projectIdentifier": "@username/foo-bar",
-  "projectName": "foo-bar",
   "projectNamespace": "username",
+  "projectSlug": "foo-bar",
 }
 `;
 
@@ -35,8 +35,8 @@ exports[`parseProjectIdentifier > non-strict mode valid 4`] = `
   "deploymentIdentifier": "@username/foo-bar@latest",
   "deploymentVersion": "latest",
   "projectIdentifier": "@username/foo-bar",
-  "projectName": "foo-bar",
   "projectNamespace": "username",
+  "projectSlug": "foo-bar",
 }
 `;
 
@@ -45,8 +45,8 @@ exports[`parseProjectIdentifier > non-strict mode valid 5`] = `
   "deploymentIdentifier": "@username/foo-bar@latest",
   "deploymentVersion": "latest",
   "projectIdentifier": "@username/foo-bar",
-  "projectName": "foo-bar",
   "projectNamespace": "username",
+  "projectSlug": "foo-bar",
 }
 `;
 
@@ -55,8 +55,8 @@ exports[`parseProjectIdentifier > non-strict mode valid 6`] = `
   "deploymentIdentifier": "@username/foo-bar@latest",
   "deploymentVersion": "latest",
   "projectIdentifier": "@username/foo-bar",
-  "projectName": "foo-bar",
   "projectNamespace": "username",
+  "projectSlug": "foo-bar",
 }
 `;
 
@@ -65,8 +65,8 @@ exports[`parseProjectIdentifier > non-strict mode valid 7`] = `
   "deploymentIdentifier": "@username/foo-bar@latest",
   "deploymentVersion": "latest",
   "projectIdentifier": "@username/foo-bar",
-  "projectName": "foo-bar",
   "projectNamespace": "username",
+  "projectSlug": "foo-bar",
 }
 `;
 
@@ -75,8 +75,8 @@ exports[`parseProjectIdentifier > non-strict mode valid 8`] = `
   "deploymentIdentifier": "@username/foo-bar@latest",
   "deploymentVersion": "latest",
   "projectIdentifier": "@username/foo-bar",
-  "projectName": "foo-bar",
   "projectNamespace": "username",
+  "projectSlug": "foo-bar",
 }
 `;
 
@@ -85,8 +85,8 @@ exports[`parseProjectIdentifier > non-strict mode valid 9`] = `
   "deploymentHash": "01234567",
   "deploymentIdentifier": "@username/foo-bar@01234567",
   "projectIdentifier": "@username/foo-bar",
-  "projectName": "foo-bar",
   "projectNamespace": "username",
+  "projectSlug": "foo-bar",
 }
 `;
 
@@ -95,8 +95,8 @@ exports[`parseProjectIdentifier > non-strict mode valid 10`] = `
   "deploymentIdentifier": "@username/foo-bar@latest",
   "deploymentVersion": "latest",
   "projectIdentifier": "@username/foo-bar",
-  "projectName": "foo-bar",
   "projectNamespace": "username",
+  "projectSlug": "foo-bar",
 }
 `;
 
@@ -105,8 +105,8 @@ exports[`parseProjectIdentifier > non-strict mode valid 11`] = `
   "deploymentHash": "01234567",
   "deploymentIdentifier": "@username/foo-bar@01234567",
   "projectIdentifier": "@username/foo-bar",
-  "projectName": "foo-bar",
   "projectNamespace": "username",
+  "projectSlug": "foo-bar",
   "toolName": "foo",
 }
 `;
@@ -116,8 +116,8 @@ exports[`parseProjectIdentifier > non-strict mode valid 12`] = `
   "deploymentHash": "01234567",
   "deploymentIdentifier": "@username/foo-bar@01234567",
   "projectIdentifier": "@username/foo-bar",
-  "projectName": "foo-bar",
   "projectNamespace": "username",
+  "projectSlug": "foo-bar",
   "toolName": "foo",
 }
 `;
@@ -127,8 +127,8 @@ exports[`parseProjectIdentifier > non-strict mode valid 13`] = `
   "deploymentHash": "01234567",
   "deploymentIdentifier": "@username/foo-bar@01234567",
   "projectIdentifier": "@username/foo-bar",
-  "projectName": "foo-bar",
   "projectNamespace": "username",
+  "projectSlug": "foo-bar",
   "toolName": "foo",
 }
 `;
@@ -138,8 +138,8 @@ exports[`parseProjectIdentifier > non-strict mode valid 14`] = `
   "deploymentHash": "01234567",
   "deploymentIdentifier": "@username/foo-bar@01234567",
   "projectIdentifier": "@username/foo-bar",
-  "projectName": "foo-bar",
   "projectNamespace": "username",
+  "projectSlug": "foo-bar",
   "toolName": "foo",
 }
 `;
@@ -149,8 +149,8 @@ exports[`parseProjectIdentifier > non-strict mode valid 15`] = `
   "deploymentHash": "01234567",
   "deploymentIdentifier": "@username/foo-bar@01234567",
   "projectIdentifier": "@username/foo-bar",
-  "projectName": "foo-bar",
   "projectNamespace": "username",
+  "projectSlug": "foo-bar",
   "toolName": "foo",
 }
 `;
@@ -160,8 +160,8 @@ exports[`parseProjectIdentifier > non-strict mode valid 16`] = `
   "deploymentIdentifier": "@username/foo-bar@latest",
   "deploymentVersion": "latest",
   "projectIdentifier": "@username/foo-bar",
-  "projectName": "foo-bar",
   "projectNamespace": "username",
+  "projectSlug": "foo-bar",
   "toolName": "foo",
 }
 `;
@@ -171,8 +171,8 @@ exports[`parseProjectIdentifier > non-strict mode valid 17`] = `
   "deploymentIdentifier": "@username/foo-bar@dev",
   "deploymentVersion": "latest",
   "projectIdentifier": "@username/foo-bar",
-  "projectName": "foo-bar",
   "projectNamespace": "username",
+  "projectSlug": "foo-bar",
   "toolName": "foo",
 }
 `;
@@ -182,8 +182,8 @@ exports[`parseProjectIdentifier > non-strict mode valid 18`] = `
   "deploymentIdentifier": "@username/foo-bar@1.0.0",
   "deploymentVersion": "latest",
   "projectIdentifier": "@username/foo-bar",
-  "projectName": "foo-bar",
   "projectNamespace": "username",
+  "projectSlug": "foo-bar",
   "toolName": "foo",
 }
 `;
@@ -193,8 +193,8 @@ exports[`parseProjectIdentifier > non-strict mode valid 19`] = `
   "deploymentIdentifier": "@username/foo-bar@latest",
   "deploymentVersion": "latest",
   "projectIdentifier": "@username/foo-bar",
-  "projectName": "foo-bar",
   "projectNamespace": "username",
+  "projectSlug": "foo-bar",
   "toolName": "foo",
 }
 `;
@@ -204,8 +204,8 @@ exports[`parseProjectIdentifier > non-strict mode valid 20`] = `
   "deploymentHash": "01234567",
   "deploymentIdentifier": "@username/foo-bar@01234567",
   "projectIdentifier": "@username/foo-bar",
-  "projectName": "foo-bar",
   "projectNamespace": "username",
+  "projectSlug": "foo-bar",
   "toolName": "foo",
 }
 `;
@@ -215,8 +215,8 @@ exports[`parseProjectIdentifier > non-strict mode valid 21`] = `
   "deploymentIdentifier": "@username/foo-bar@latest",
   "deploymentVersion": "latest",
   "projectIdentifier": "@username/foo-bar",
-  "projectName": "foo-bar",
   "projectNamespace": "username",
+  "projectSlug": "foo-bar",
   "toolName": "foo",
 }
 `;
@@ -226,8 +226,8 @@ exports[`parseProjectIdentifier > non-strict mode valid 22`] = `
   "deploymentIdentifier": "@username/foo-bar@latest",
   "deploymentVersion": "latest",
   "projectIdentifier": "@username/foo-bar",
-  "projectName": "foo-bar",
   "projectNamespace": "username",
+  "projectSlug": "foo-bar",
   "toolName": "foo",
 }
 `;
@@ -235,55 +235,55 @@ exports[`parseProjectIdentifier > non-strict mode valid 22`] = `
 exports[`parseProjectIdentifier > strict mode valid 1`] = `
 {
   "projectIdentifier": "@username/foo",
-  "projectName": "foo",
   "projectNamespace": "username",
+  "projectSlug": "foo",
 }
 `;
 
 exports[`parseProjectIdentifier > strict mode valid 2`] = `
 {
   "projectIdentifier": "@username/foo-bar",
-  "projectName": "foo-bar",
   "projectNamespace": "username",
+  "projectSlug": "foo-bar",
 }
 `;
 
 exports[`parseProjectIdentifier > strict mode valid 3`] = `
 {
   "projectIdentifier": "@username/foobar123-yo",
-  "projectName": "foobar123-yo",
   "projectNamespace": "username",
+  "projectSlug": "foobar123-yo",
 }
 `;
 
 exports[`parseProjectIdentifier > strict mode valid 4`] = `
 {
   "projectIdentifier": "@u/foo-bar",
-  "projectName": "foo-bar",
   "projectNamespace": "u",
+  "projectSlug": "foo-bar",
 }
 `;
 
 exports[`parseProjectIdentifier > strict mode valid 5`] = `
 {
   "projectIdentifier": "@a/foo-bar",
-  "projectName": "foo-bar",
   "projectNamespace": "a",
+  "projectSlug": "foo-bar",
 }
 `;
 
 exports[`parseProjectIdentifier > strict mode valid 6`] = `
 {
   "projectIdentifier": "@foo/foobar123-yo",
-  "projectName": "foobar123-yo",
   "projectNamespace": "foo",
+  "projectSlug": "foobar123-yo",
 }
 `;
 
 exports[`parseProjectIdentifier > strict mode valid 7`] = `
 {
   "projectIdentifier": "@foo/bar",
-  "projectName": "bar",
   "projectNamespace": "foo",
+  "projectSlug": "bar",
 }
 `;

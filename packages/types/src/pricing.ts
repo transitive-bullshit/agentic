@@ -202,9 +202,12 @@ export const pricingPlanMeteredLineItemSchema =
 
       /**
        * Defines if the tiering price should be `graduated` or `volume` based.
+       *
        * In `volume`-based tiering, the maximum quantity within a period
-       * determines the per unit price, in `graduated` tiering pricing can
-       * successively change as the quantity grows.
+       * determines the per unit price.
+       *
+       * In `graduated`-based tiering, the per-unit price changes successively
+       * as the quantity grows.
        *
        * This field requires `billingScheme` to be set to `tiered`.
        */
@@ -466,10 +469,11 @@ export type PricingPlanLineItem =
 export const pricingPlanSchema = z
   .object({
     /**
-     * Human-readable name for the pricing plan.
+     * Display name for the pricing plan.
      *
      * Used in UI and billing invoices.
      *
+     * @required
      * @example "Free"
      * @example "Starter Monthly"
      * @example "Pro Annual"
@@ -493,6 +497,7 @@ export const pricingPlanSchema = z
      * as a suffix so pricing plans can be uniquely differentiated from each
      * other across billing intervals.
      *
+     * @required
      * @example "free"
      * @example "starter-monthly"
      * @example "pro-annual"
@@ -503,6 +508,7 @@ export const pricingPlanSchema = z
       .describe(
         'PricingPlan slug (eg, "free", "starter-monthly", "pro-annual", etc). Should be lower-cased and kebab-cased. Should be stable across deployments.'
       )
+      // TODO: Make `slug` optional and derive it from `name` if not provided.
       .openapi('slug', { example: 'starter-monthly' }),
 
     /**

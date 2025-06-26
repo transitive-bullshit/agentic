@@ -40,7 +40,7 @@ export function parseProjectIdentifier(
     return {
       projectIdentifier: `@${match[1]!}/${match[2]!}`,
       projectNamespace: match[1]!,
-      projectName: match[2]!
+      projectSlug: match[2]!
     }
   }
 

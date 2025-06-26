@@ -1,5 +1,5 @@
 import { resolveAgenticProjectConfig } from '@agentic/platform'
-import { assert, parseZodSchema, sha256 } from '@agentic/platform-core'
+import { assert, parseZodSchema, sha256, slugify } from '@agentic/platform-core'
 import {
   isValidDeploymentIdentifier,
   parseProjectIdentifier
@@ -66,8 +66,9 @@ export function registerV1CreateDeployment(
     const logger = c.get('logger')
 
     const inputNamespace = teamMember ? teamMember.teamSlug : user.username
-    const inputProjectIdentifier = `@${inputNamespace}/${body.name}`
-    const { projectIdentifier, projectNamespace, projectName } =
+    const slug = body.slug ?? slugify(body.name) // TODO: don't duplicate this logic here
+    const inputProjectIdentifier = `@${inputNamespace}/${slug}`
+    const { projectIdentifier, projectNamespace, projectSlug } =
       parseProjectIdentifier(inputProjectIdentifier)
 
     let project = await db.query.projects.findFirst({
@@ -99,9 +100,10 @@ export function registerV1CreateDeployment(
         await db
           .insert(schema.projects)
           .values({
+            name: body.name,
             identifier: projectIdentifier,
             namespace: projectNamespace,
-            name: projectName,
+            slug: projectSlug,
             userId: user.id,
             teamId: teamMember?.teamId,
             private: isPrivate,

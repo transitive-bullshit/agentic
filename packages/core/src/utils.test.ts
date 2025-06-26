@@ -1,6 +1,13 @@
 import { expect, test } from 'vitest'
 
-import { omit, pick, pruneEmpty, pruneEmptyDeep, sha256 } from './utils'
+import {
+  omit,
+  pick,
+  pruneEmpty,
+  pruneEmptyDeep,
+  sha256,
+  slugify
+} from './utils'
 
 test('pick', () => {
   expect(pick({ a: 1, b: 2, c: 3 }, 'a', 'c')).toEqual({ a: 1, c: 3 })
@@ -100,4 +107,23 @@ test('pruneEmptyDeep', () => {
       e: undefined
     })
   ).toEqual(undefined)
+})
+
+test('slugify', () => {
+  expect(slugify('Foo Bar')).toBe('foo-bar')
+  expect(slugify('FooBar')).toBe('foo-bar')
+  expect(slugify('FooBarBaz')).toBe('foo-bar-baz')
+  expect(slugify('FooBarBazQux')).toBe('foo-bar-baz-qux')
+  expect(slugify('FooBarBazQuxQuux')).toBe('foo-bar-baz-qux-quux')
+  expect(slugify('foo-bar')).toBe('foo-bar')
+  expect(slugify('--foo BAR --')).toBe('foo-bar')
+  expect(slugify('я люблю единорогов')).toBe('ya-lyublyu-edinorogov')
+  expect(slugify('fooBar 123 $#%')).toBe('foo-bar-123')
+  expect(slugify('  Déjà Vu!  ')).toBe('deja-vu')
+  expect(slugify('I ♥ Dogs')).toBe('i-love-dogs')
+  expect(slugify('')).toBe('')
+  expect(slugify('    ')).toBe('')
+  expect(slugify('-')).toBe('')
+  expect(slugify('--')).toBe('')
+  expect(slugify('- -')).toBe('')
 })

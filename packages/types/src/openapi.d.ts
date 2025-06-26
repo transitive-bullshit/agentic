@@ -113,7 +113,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Gets a public project by its public identifier (eg, "@username/project-name"). */
+        /** @description Gets a public project by its public identifier (eg, "@username/project-slug"). */
         get: operations["getPublicProjectByIdentifier"];
         put?: never;
         post?: never;
@@ -147,7 +147,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Gets a public deployment by its identifier (eg, "@username/project-name@latest"). */
+        /** @description Gets a public deployment by its identifier (eg, "@username/project-slug@latest"). */
         get: operations["getPublicDeploymentByIdentifier"];
         put?: never;
         post?: never;
@@ -272,7 +272,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Gets a project by its public identifier (eg, "@username/project-name"). */
+        /** @description Gets a project by its public identifier (eg, "@username/project-slug"). */
         get: operations["getProjectByIdentifier"];
         put?: never;
         post?: never;
@@ -445,7 +445,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Gets a deployment by its identifier (eg, "@username/project-name@latest"). */
+        /** @description Gets a deployment by its identifier (eg, "@username/project-slug@latest"). */
         get: operations["getDeploymentByIdentifier"];
         put?: never;
         post?: never;
@@ -582,7 +582,7 @@ export interface components {
             token: string;
             user: components["schemas"]["User"];
         };
-        /** @description Public project identifier (e.g. "@namespace/project-name") */
+        /** @description Public project identifier (e.g. "@namespace/project-slug") */
         ProjectIdentifier: string;
         /** @description The frequency at which a subscription is billed. */
         PricingInterval: "day" | "week" | "month" | "year";
@@ -598,9 +598,12 @@ export interface components {
             createdAt: string;
             updatedAt: string;
             deletedAt?: string;
+            /** @description Display name for the project. Max length 1024 characters. */
+            name: string;
             identifier: components["schemas"]["ProjectIdentifier"];
             namespace: string;
-            name: string;
+            /** @description Unique project slug. Must be ascii-only, lower-case, and kebab-case with no spaces between 1 and 256 characters. If not provided, it will be derived by slugifying `name`. */
+            slug?: string;
             private: boolean;
             /** @description User id (e.g. "user_tz4a98xxat96iws9zmbrgj3a") */
             userId: string;
@@ -620,7 +623,7 @@ export interface components {
             lastDeployment?: unknown;
             deployment?: unknown;
         };
-        /** @description Public deployment identifier (e.g. "@namespace/project-name@{hash|version|latest}") */
+        /** @description Public deployment identifier (e.g. "@namespace/project-slug@{hash|version|latest}") */
         DeploymentIdentifier: string;
         JsonSchemaObject: {
             /** @enum {string} */
@@ -1264,7 +1267,7 @@ export interface operations {
         parameters: {
             query: {
                 populate?: ("user" | "team" | "lastPublishedDeployment" | "lastDeployment") | ("user" | "team" | "lastPublishedDeployment" | "lastDeployment")[];
-                /** @description Public project identifier (e.g. "@namespace/project-name") */
+                /** @description Public project identifier (e.g. "@namespace/project-slug") */
                 projectIdentifier: components["schemas"]["ProjectIdentifier"];
             };
             header?: never;
@@ -1321,7 +1324,7 @@ export interface operations {
         parameters: {
             query: {
                 populate?: ("user" | "team" | "project") | ("user" | "team" | "project")[];
-                /** @description Public deployment identifier (e.g. "@namespace/project-name@{hash|version|latest}") */
+                /** @description Public deployment identifier (e.g. "@namespace/project-slug@{hash|version|latest}") */
                 deploymentIdentifier: components["schemas"]["DeploymentIdentifier"];
             };
             header?: never;
@@ -1736,7 +1739,10 @@ export interface operations {
         requestBody: {
             content: {
                 "application/json": {
+                    /** @description Display name for the project. Max length 1024 characters. */
                     name: string;
+                    /** @description Unique project slug. Must be ascii-only, lower-case, and kebab-case with no spaces between 1 and 256 characters. If not provided, it will be derived by slugifying `name`. */
+                    slug?: string;
                 };
             };
         };
@@ -1759,7 +1765,7 @@ export interface operations {
         parameters: {
             query: {
                 populate?: ("user" | "team" | "lastPublishedDeployment" | "lastDeployment") | ("user" | "team" | "lastPublishedDeployment" | "lastDeployment")[];
-                /** @description Public project identifier (e.g. "@namespace/project-name") */
+                /** @description Public project identifier (e.g. "@namespace/project-slug") */
                 projectIdentifier: components["schemas"]["ProjectIdentifier"];
             };
             header?: never;
@@ -1848,7 +1854,7 @@ export interface operations {
     getConsumerByProjectIdentifier: {
         parameters: {
             query: {
-                /** @description Public project identifier (e.g. "@namespace/project-name") */
+                /** @description Public project identifier (e.g. "@namespace/project-slug") */
                 projectIdentifier: components["schemas"]["ProjectIdentifier"];
                 populate?: ("user" | "project" | "deployment") | ("user" | "project" | "deployment")[];
             };
@@ -2171,7 +2177,7 @@ export interface operations {
         parameters: {
             query: {
                 populate?: ("user" | "team" | "project") | ("user" | "team" | "project")[];
-                /** @description Public deployment identifier (e.g. "@namespace/project-name@{hash|version|latest}") */
+                /** @description Public deployment identifier (e.g. "@namespace/project-slug@{hash|version|latest}") */
                 deploymentIdentifier: components["schemas"]["DeploymentIdentifier"];
             };
             header?: never;
@@ -2266,9 +2272,9 @@ export interface operations {
                 sort?: "asc" | "desc";
                 sortBy?: "createdAt" | "updatedAt";
                 populate?: ("user" | "team" | "project") | ("user" | "team" | "project")[];
-                /** @description Public project identifier (e.g. "@namespace/project-name") */
+                /** @description Public project identifier (e.g. "@namespace/project-slug") */
                 projectIdentifier?: components["schemas"]["ProjectIdentifier"];
-                /** @description Public deployment identifier (e.g. "@namespace/project-name@{hash|version|latest}") */
+                /** @description Public deployment identifier (e.g. "@namespace/project-slug@{hash|version|latest}") */
                 deploymentIdentifier?: components["schemas"]["DeploymentIdentifier"];
             };
             header?: never;
@@ -2303,8 +2309,10 @@ export interface operations {
         requestBody: {
             content: {
                 "application/json": {
-                    /** @description Name of the project. */
+                    /** @description Display name for the project. Max length 1024 characters. */
                     name: string;
+                    /** @description Unique project slug. Must be ascii-only, lower-case, and kebab-case with no spaces between 1 and 256 characters. If not provided, it will be derived by slugifying `name`. */
+                    slug?: string;
                     /** @description Optional semantic version of the project as a semver string. Ex: 1.0.0, 0.0.1, 5.0.1, etc. */
                     version?: string;
                     /** @description A short description of the project. */
@@ -2474,7 +2482,7 @@ export interface operations {
         parameters: {
             query: {
                 populate?: ("user" | "team" | "project") | ("user" | "team" | "project")[];
-                /** @description Public deployment identifier (e.g. "@namespace/project-name@{hash|version|latest}") */
+                /** @description Public deployment identifier (e.g. "@namespace/project-slug@{hash|version|latest}") */
                 deploymentIdentifier: components["schemas"]["DeploymentIdentifier"];
             };
             header?: never;

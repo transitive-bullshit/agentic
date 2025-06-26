@@ -60,7 +60,7 @@ export const projectIdentifierSchema = z
       message: 'Invalid project identifier'
     }
   )
-  .describe('Public project identifier (e.g. "@namespace/project-name")')
+  .describe('Public project identifier (e.g. "@namespace/project-slug")')
   .openapi('ProjectIdentifier')
 
 export const deploymentIdentifierSchema = z
@@ -74,7 +74,7 @@ export const deploymentIdentifierSchema = z
     }
   )
   .describe(
-    'Public deployment identifier (e.g. "@namespace/project-name@{hash|version|latest}")'
+    'Public deployment identifier (e.g. "@namespace/project-slug@{hash|version|latest}")'
   )
   .openapi('DeploymentIdentifier')
 

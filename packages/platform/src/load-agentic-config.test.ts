@@ -33,8 +33,11 @@ const invalidFixtures = [
   'invalid-name-0',
   'invalid-name-1',
   'invalid-name-2',
-  'invalid-name-3',
-  'invalid-name-4'
+  'invalid-slug-0',
+  'invalid-slug-1',
+  'invalid-slug-2',
+  'invalid-slug-3',
+  'invalid-slug-4'
 ]
 
 const fixturesDir = path.join(

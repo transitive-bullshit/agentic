@@ -35,7 +35,7 @@ export const namespaceBlacklist = new Set([
   'public',
   'private',
   '404',
-  '500',
+  '429',
   '403',
   '401',
   '400',
@@ -43,6 +43,7 @@ export const namespaceBlacklist = new Set([
   '408',
   '407',
   '406',
+  '500',
 
   // bad words
   'fuck',

@@ -8,7 +8,7 @@ import {
   isValidEmail,
   isValidPassword,
   isValidProjectIdentifier,
-  isValidProjectName,
+  isValidProjectSlug,
   isValidToolName,
   isValidUsername
 } from './validators'
@@ -63,23 +63,23 @@ test('isValidPassword failure', () => {
   expect(isValidPassword('a'.repeat(1025))).toBe(false)
 })
 
-test('isValidProjectName success', () => {
-  expect(isValidProjectName('a')).toBe(true)
-  expect(isValidProjectName('ai')).toBe(true)
-  expect(isValidProjectName('aaa')).toBe(true)
-  expect(isValidProjectName('hello-world')).toBe(true)
-  expect(isValidProjectName('123-abc')).toBe(true)
-  expect(isValidProjectName('f'.repeat(256))).toBe(true)
+test('isValidProjectSlug success', () => {
+  expect(isValidProjectSlug('a')).toBe(true)
+  expect(isValidProjectSlug('ai')).toBe(true)
+  expect(isValidProjectSlug('aaa')).toBe(true)
+  expect(isValidProjectSlug('hello-world')).toBe(true)
+  expect(isValidProjectSlug('123-abc')).toBe(true)
+  expect(isValidProjectSlug('f'.repeat(256))).toBe(true)
 })
 
-test('isValidProjectName failure', () => {
-  expect(isValidProjectName('hello_world')).toBe(false)
-  expect(isValidProjectName('a_bc')).toBe(false)
-  expect(isValidProjectName('abc.')).toBe(false)
-  expect(isValidProjectName('abc_123')).toBe(false)
-  expect(isValidProjectName('ah^23')).toBe(false)
-  expect(isValidProjectName('Hello-World')).toBe(false)
-  expect(isValidProjectName('f'.repeat(257))).toBe(false)
+test('isValidProjectSlug failure', () => {
+  expect(isValidProjectSlug('hello_world')).toBe(false)
+  expect(isValidProjectSlug('a_bc')).toBe(false)
+  expect(isValidProjectSlug('abc.')).toBe(false)
+  expect(isValidProjectSlug('abc_123')).toBe(false)
+  expect(isValidProjectSlug('ah^23')).toBe(false)
+  expect(isValidProjectSlug('Hello-World')).toBe(false)
+  expect(isValidProjectSlug('f'.repeat(257))).toBe(false)
 })
 
 test('isValidDeploymentHash success', () => {
@@ -96,7 +96,7 @@ test('isValidDeploymentHash failure', () => {
 })
 
 test('isValidProjectIdentifier success', () => {
-  expect(isValidProjectIdentifier('@username/project-name')).toBe(true)
+  expect(isValidProjectIdentifier('@username/project-slug')).toBe(true)
   expect(isValidProjectIdentifier('@a/123')).toBe(true)
 })
 
@@ -114,20 +114,20 @@ test('isValidProjectIdentifier failure', () => {
   expect(isValidProjectIdentifier('@abc/1.23')).toBe(false)
   expect(isValidProjectIdentifier('@012345678/123@latest')).toBe(false)
   expect(isValidProjectIdentifier('@foo@dev')).toBe(false)
-  expect(isValidProjectIdentifier('@username/Project-Name')).toBe(false)
+  expect(isValidProjectIdentifier('@username/Project-Slug')).toBe(false)
   expect(isValidProjectIdentifier('@_/___')).toBe(false)
 })
 
 test('isValidDeploymentIdentifier success', () => {
-  expect(isValidDeploymentIdentifier('@username/project-name@01234567')).toBe(
+  expect(isValidDeploymentIdentifier('@username/project-slug@01234567')).toBe(
     true
   )
-  expect(isValidDeploymentIdentifier('@username/project-name@latest')).toBe(
+  expect(isValidDeploymentIdentifier('@username/project-slug@latest')).toBe(
     true
   )
-  expect(isValidDeploymentIdentifier('@username/project-name@dev')).toBe(true)
-  expect(isValidDeploymentIdentifier('@username/project-name@0.0.1')).toBe(true)
-  expect(isValidDeploymentIdentifier('@username/project-name')).toBe(true)
+  expect(isValidDeploymentIdentifier('@username/project-slug@dev')).toBe(true)
+  expect(isValidDeploymentIdentifier('@username/project-slug@0.0.1')).toBe(true)
+  expect(isValidDeploymentIdentifier('@username/project-slug')).toBe(true)
   expect(isValidDeploymentIdentifier('@a/123@01234567')).toBe(true)
   expect(isValidDeploymentIdentifier('@a/123@0.1.0')).toBe(true)
   expect(isValidDeploymentIdentifier('@a/123@latest')).toBe(true)

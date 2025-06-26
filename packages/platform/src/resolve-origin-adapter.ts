@@ -13,14 +13,14 @@ import { validateOriginUrl } from './validate-origin-url'
  * Validates, normalizes, and resolves the origin adapter config for a project.
  */
 export async function resolveOriginAdapter({
-  name,
+  slug,
   version = '0.0.0',
   origin,
   label,
   cwd,
   logger
 }: {
-  name: string
+  slug: string
   origin: OriginAdapterConfig
   label: string
   version?: string
@@ -41,7 +41,7 @@ export async function resolveOriginAdapter({
     })
   } else if (origin.type === 'mcp') {
     return resolveMCPOriginAdapter({
-      name,
+      name: slug,
       version,
       origin,
       label

@@ -1,4 +1,5 @@
 import type { Simplify } from 'type-fest'
+import { isValidProjectSlug } from '@agentic/platform-validators'
 import { z } from '@hono/zod-openapi'
 
 import {
@@ -35,17 +36,49 @@ import {
 export const agenticProjectConfigSchema = z
   .object({
     /**
-     * Required name of the project.
+     * Display name for the project.
      *
-     * Must be lower kebab-case with no spaces and between 2 and 64 characters.
+     * Max length 1024 characters.
+     *
+     * @required
+     * @example "My Project"
+     * @example "LinkedIn Resolver"
+     */
+    name: z
+      .string()
+      .max(1024)
+      .nonempty()
+      .describe('Display name for the project. Max length 1024 characters.'),
+
+    /**
+     * Slug for the project.
+     *
+     * Must be ascii-only, lower-case, and kebab-case with no spaces between 1
+     * and 256 characters.
+     *
+     * The project's fully qualified identifier will be `@namespace/slug`, where
+     * the `namespace` is determined by the author's `username` or team slug.
+     *
+     * If not provided, the project `slug` will be derived by slugifying `name`.
      *
      * @example "my-project"
      * @example "linkedin-resolver-23"
      */
-    name: z.string().nonempty().describe('Name of the project.'),
+    slug: z
+      .string()
+      .nonempty()
+      .describe(
+        'Unique project slug. Must be ascii-only, lower-case, and kebab-case with no spaces between 1 and 256 characters. If not provided, it will be derived by slugifying `name`.'
+      )
+      .optional()
+      .refine((slug) => (slug ? isValidProjectSlug(slug) : true), {
+        message: 'Invalid project slug'
+      }),
 
     /**
      * Optional semantic version of the project as a semver string.
+     *
+     * @example "1.0.0"
      */
     version: z
       .string()
@@ -55,13 +88,19 @@ export const agenticProjectConfigSchema = z
       )
       .optional(),
 
-    /** Optional short description of the project. */
+    /**
+     * Optional short description of the project.
+     *
+     * Should be no longer than a few lines.
+     */
     description: z
       .string()
       .describe('A short description of the project.')
       .optional(),
 
-    /** Optional readme documenting the project (supports GitHub-flavored markdown). */
+    /**
+     * Optional embedded markdown readme documenting the project (supports GitHub-flavored markdown).
+     */
     readme: z
       .string()
       .describe(
@@ -70,7 +109,10 @@ export const agenticProjectConfigSchema = z
       .optional(),
 
     /**
-     * Optional logo image URL to use for the project. Logos should have a square aspect ratio.
+     * Optional logo image URL to use for the project. Logos should have a
+     * square aspect ratio.
+     *
+     * @example "https://example.com/logo.png"
      */
     iconUrl: z
       .string()
@@ -80,7 +122,11 @@ export const agenticProjectConfigSchema = z
         'Optional logo image URL to use for the project. Logos should have a square aspect ratio.'
       ),
 
-    /** Optional URL to the source code of the project. */
+    /**
+     * Optional URL to the source code of the project (eg, GitHub repo).
+     *
+     * @example "https://github.com/my-org/my-project"
+     */
     sourceUrl: z
       .string()
       .url()
@@ -102,6 +148,8 @@ export const agenticProjectConfigSchema = z
      * @note Currently, only external origin servers are supported. If you'd like
      * to host your API or MCP server on Agentic's infrastructure, please reach
      * out to support@agentic.so.
+     *
+     * @required
      */
     origin: originAdapterConfigSchema,
 
@@ -195,14 +243,18 @@ export type AgenticProjectConfigRaw = z.output<
 >
 export type AgenticProjectConfig = Simplify<
   Omit<AgenticProjectConfigRaw, 'pricingPlans' | 'toolConfigs'> & {
+    slug: string
     pricingPlans: PricingPlanList
     toolConfigs: ToolConfig[]
     defaultRateLimit: RateLimit
   }
 >
 
-export const resolvedAgenticProjectConfigSchema =
-  agenticProjectConfigSchema.extend({
+export const resolvedAgenticProjectConfigSchema = agenticProjectConfigSchema
+  .required({
+    slug: true
+  })
+  .extend({
     origin: originAdapterSchema,
     tools: z.array(toolSchema).default([])
   })
@@ -211,6 +263,7 @@ export type ResolvedAgenticProjectConfig = Simplify<
     z.output<typeof resolvedAgenticProjectConfigSchema>,
     'pricingPlans' | 'toolConfigs'
   > & {
+    slug: string
     pricingPlans: PricingPlanList
     toolConfigs: ToolConfig[]
     defaultRateLimit: RateLimit

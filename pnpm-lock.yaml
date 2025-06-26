@@ -6,9 +6,63 @@ settings:
 
 catalogs:
   default:
+    '@agentic/core':
+      specifier: ^7.6.7
+      version: 7.6.7
+    '@agentic/serper':
+      specifier: ^7.6.7
+      version: 7.6.7
+    '@apideck/better-ajv-errors':
+      specifier: ^0.3.6
+      version: 0.3.6
+    '@clack/prompts':
+      specifier: 0.11.0
+      version: 0.11.0
+    '@cloudflare/workers-types':
+      specifier: ^4.20250620.0
+      version: 4.20250620.0
+    '@commander-js/extra-typings':
+      specifier: ^14.0.0
+      version: 14.0.0
+    '@dotenvx/dotenvx':
+      specifier: ^1.45.1
+      version: 1.45.1
+    '@edge-runtime/vm':
+      specifier: ^5.0.0
+      version: 5.0.0
+    '@fisch0920/config':
+      specifier: ^1.1.3
+      version: 1.1.4
+    '@fisch0920/drizzle-orm':
+      specifier: ^0.43.7
+      version: 0.43.7
+    '@fisch0920/drizzle-zod':
+      specifier: ^0.7.9
+      version: 0.7.9
+    '@hono/mcp':
+      specifier: ^0.1.0
+      version: 0.1.0
+    '@hono/node-server':
+      specifier: 1.14.4
+      version: 1.14.4
+    '@hono/sentry':
+      specifier: ^1.2.2
+      version: 1.2.2
+    '@hono/zod-openapi':
+      specifier: ^0.19.8
+      version: 0.19.8
+    '@hono/zod-validator':
+      specifier: ^0.7.0
+      version: 0.7.0
+    '@modelcontextprotocol/sdk':
+      specifier: ^1.13.0
+      version: 1.13.0
     '@number-flow/react':
       specifier: ^0.5.10
       version: 0.5.10
+    '@paralleldrive/cuid2':
+      specifier: ^2.2.2
+      version: 2.2.2
     '@pmndrs/assets':
       specifier: ^1.7.0
       version: 1.7.0
@@ -27,6 +81,9 @@ catalogs:
     '@radix-ui/react-tooltip':
       specifier: ^1.2.7
       version: 1.2.7
+    '@react-email/components':
+      specifier: ^0.1.0
+      version: 0.1.0
     '@react-three/cannon':
       specifier: ^6.6.0
       version: 6.6.0
@@ -42,6 +99,24 @@ catalogs:
     '@react-three/rapier':
       specifier: ^2.1.0
       version: 2.1.0
+    '@redocly/openapi-core':
+      specifier: ^1.34.3
+      version: 1.34.3
+    '@sentry/cli':
+      specifier: ^2.46.0
+      version: 2.46.0
+    '@sentry/cloudflare':
+      specifier: ^9.30.0
+      version: 9.30.0
+    '@sentry/core':
+      specifier: ^9.30.0
+      version: 9.30.0
+    '@sentry/node':
+      specifier: ^9.30.0
+      version: 9.30.0
+    '@standard-schema/spec':
+      specifier: ^1.0.0
+      version: 1.0.0
     '@tailwindcss/postcss':
       specifier: ^4.1.10
       version: 4.1.10
@@ -60,18 +135,45 @@ catalogs:
     '@types/canvas-confetti':
       specifier: ^1.9.0
       version: 1.9.0
+    '@types/ms':
+      specifier: ^2.1.0
+      version: 2.1.0
+    '@types/node':
+      specifier: ^24.0.4
+      version: 24.0.4
     '@types/react':
       specifier: ^19.1.8
       version: 19.1.8
     '@types/react-dom':
       specifier: ^19.1.6
       version: 19.1.6
+    '@types/semver':
+      specifier: ^7.7.0
+      version: 7.7.0
     '@types/three':
       specifier: ^0.177.0
       version: 0.177.0
+    agents:
+      specifier: ^0.0.95
+      version: 0.0.95
+    ajv:
+      specifier: ^8.17.1
+      version: 8.17.1
+    ajv-formats:
+      specifier: ^3.0.1
+      version: 3.0.1
     autoprefixer:
       specifier: ^10.4.21
       version: 10.4.21
+    bcryptjs:
+      specifier: ^3.0.2
+      version: 3.0.2
+    bumpp:
+      specifier: ^10.2.0
+      version: 10.2.0
+    camelcase:
+      specifier: ^8.0.0
+      version: 8.0.0
     canvas-confetti:
       specifier: ^1.9.3
       version: 1.9.3
@@ -81,36 +183,144 @@ catalogs:
     clsx:
       specifier: ^2.1.1
       version: 2.1.1
+    commander:
+      specifier: ^14.0.0
+      version: 14.0.0
+    conf:
+      specifier: ^14.0.0
+      version: 14.0.0
+    decamelize:
+      specifier: ^6.0.0
+      version: 6.0.0
+    decircular:
+      specifier: ^1.0.0
+      version: 1.0.0
+    del-cli:
+      specifier: ^6.0.0
+      version: 6.0.0
+    dotenv:
+      specifier: ^16.5.0
+      version: 16.5.0
+    drizzle-kit:
+      specifier: ^0.31.1
+      version: 0.31.1
+    drizzle-orm:
+      specifier: ^0.44.2
+      version: 0.44.2
+    email-validator:
+      specifier: ^2.0.4
+      version: 2.0.4
+    eslint:
+      specifier: ^9.29.0
+      version: 9.29.0
+    eslint-plugin-drizzle:
+      specifier: ^0.2.3
+      version: 0.2.3
+    eventid:
+      specifier: ^2.0.1
+      version: 2.0.1
+    exit-hook:
+      specifier: 4.0.0
+      version: 4.0.0
+    fast-content-type-parse:
+      specifier: ^3.0.0
+      version: 3.0.0
+    fast-uri:
+      specifier: ^3.0.6
+      version: 3.0.6
+    fastmcp:
+      specifier: ^3.4.0
+      version: 3.4.0
+    get-port:
+      specifier: ^7.1.0
+      version: 7.1.0
     hast-util-to-jsx-runtime:
       specifier: ^2.3.6
       version: 2.3.6
+    hono:
+      specifier: 4.8.1
+      version: 4.8.1
+    is-obj:
+      specifier: ^3.0.0
+      version: 3.0.0
+    knip:
+      specifier: ^5.61.2
+      version: 5.61.2
     ky:
       specifier: 1.8.1
       version: 1.8.1
+    lint-staged:
+      specifier: ^16.1.2
+      version: 16.1.2
     lucide-react:
       specifier: ^0.518.0
       version: 0.518.0
     motion:
       specifier: ^12.18.1
       version: 12.18.1
+    ms:
+      specifier: ^2.1.3
+      version: 2.1.3
     next:
       specifier: ^15.3.4
       version: 15.3.4
     next-themes:
       specifier: ^0.4.6
       version: 0.4.6
+    npm-run-all2:
+      specifier: ^8.0.4
+      version: 8.0.4
+    octokit:
+      specifier: ^5.0.3
+      version: 5.0.3
+    only-allow:
+      specifier: ^1.2.1
+      version: 1.2.1
+    open:
+      specifier: ^10.1.2
+      version: 10.1.2
+    openapi-typescript:
+      specifier: ^7.8.0
+      version: 7.8.0
+    ora:
+      specifier: ^8.2.0
+      version: 8.2.0
+    p-all:
+      specifier: ^5.0.0
+      version: 5.0.0
+    p-map:
+      specifier: 7.0.3
+      version: 7.0.3
+    p-times:
+      specifier: ^4.0.0
+      version: 4.0.0
+    parse-json:
+      specifier: ^8.3.0
+      version: 8.3.0
+    plur:
+      specifier: ^5.1.0
+      version: 5.1.0
     postcss:
       specifier: ^8.5.6
       version: 8.5.6
+    postgres:
+      specifier: ^3.4.7
+      version: 3.4.7
     posthog-js:
       specifier: ^1.255.0
       version: 1.255.0
+    prettier:
+      specifier: ^3.6.0
+      version: 3.6.0
     react:
       specifier: ^19.1.0
       version: 19.1.0
     react-dom:
       specifier: ^19.1.0
       version: 19.1.0
+    react-email:
+      specifier: ^4.0.16
+      version: 4.0.16
     react-infinite-scroll-hook:
       specifier: ^6.0.1
       version: 6.0.1
@@ -120,15 +330,30 @@ catalogs:
     react-use:
       specifier: ^17.6.0
       version: 17.6.0
+    resend:
+      specifier: ^4.6.0
+      version: 4.6.0
+    restore-cursor:
+      specifier: ^5.1.0
+      version: 5.1.0
+    semver:
+      specifier: ^7.7.2
+      version: 7.7.2
     server-only:
       specifier: ^0.0.1
       version: 0.0.1
     shiki:
       specifier: ^3.7.0
       version: 3.7.0
+    simple-git-hooks:
+      specifier: ^2.13.0
+      version: 2.13.0
     sonner:
       specifier: ^2.0.5
       version: 2.0.5
+    sort-keys:
+      specifier: ^5.1.0
+      version: 5.1.0
     stripe:
       specifier: ^18.2.1
       version: 18.2.1
@@ -144,12 +369,45 @@ catalogs:
     three:
       specifier: ^0.177.0
       version: 0.177.0
+    tsup:
+      specifier: ^8.5.0
+      version: 8.5.0
+    tsx:
+      specifier: ^4.20.3
+      version: 4.20.3
+    turbo:
+      specifier: ^2.5.4
+      version: 2.5.4
     tw-animate-css:
       specifier: ^1.3.4
       version: 1.3.4
     type-fest:
       specifier: ^4.41.0
       version: 4.41.0
+    typescript:
+      specifier: ^5.8.3
+      version: 5.8.3
+    unconfig:
+      specifier: ^7.3.2
+      version: 7.3.2
+    vite-tsconfig-paths:
+      specifier: ^5.1.4
+      version: 5.1.4
+    vitest:
+      specifier: ^3.2.4
+      version: 3.2.4
+    wrangler:
+      specifier: ^4.21.0
+      version: 4.21.0
+    zod:
+      specifier: ^3.25.67
+      version: 3.25.67
+    zod-to-json-schema:
+      specifier: ^3.24.5
+      version: 3.24.5
+    zod-validation-error:
+      specifier: ^3.5.2
+      version: 3.5.2
 
 importers:
 
@@ -236,6 +494,12 @@ importers:
       '@agentic/platform-validators':
         specifier: workspace:*
         version: link:../../packages/validators
+      '@dicebear/collection':
+        specifier: ^9.2.3
+        version: 9.2.3(@dicebear/core@9.2.3)
+      '@dicebear/core':
+        specifier: ^9.2.3
+        version: 9.2.3
       '@fisch0920/drizzle-orm':
         specifier: 'catalog:'
         version: 0.43.7(@cloudflare/workers-types@4.20250620.0)(@neondatabase/serverless@1.0.1)(@opentelemetry/api@1.9.0)(@types/pg@8.15.4)(kysely@0.28.2)(postgres@3.4.7)
@@ -692,6 +956,9 @@ importers:
 
   packages/core:
     dependencies:
+      '@sindresorhus/slugify':
+        specifier: ^2.2.1
+        version: 2.2.1
       decircular:
         specifier: 'catalog:'
         version: 1.0.0
@@ -925,6 +1192,9 @@ importers:
 
   packages/types:
     dependencies:
+      '@agentic/platform-core':
+        specifier: workspace:*
+        version: link:../core
       '@agentic/platform-validators':
         specifier: workspace:*
         version: link:../validators
@@ -1126,6 +1396,196 @@ packages:
 
   '@date-fns/utc@2.1.0':
     resolution: {integrity: sha512-176grgAgU2U303rD2/vcOmNg0kGPbhzckuH1TEP2al7n0AQipZIy9P15usd2TKQCG1g+E1jX/ZVQSzs4sUDwgA==}
+
+  '@dicebear/adventurer-neutral@9.2.3':
+    resolution: {integrity: sha512-yjsflrlGIZolEJDcIhdh5l8R6QoyZ0Fc5ZaRS95Na15GeCA0bcq92fDpyb/87F8QRYR4hcn8wYim+MZKyDnm3A==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      '@dicebear/core': ^9.0.0
+
+  '@dicebear/adventurer@9.2.3':
+    resolution: {integrity: sha512-kF97966JCLbLFkavLKLplhubC4k8G19e1V3vtq+XWKKSBNNLMc0yhiEXnFjS6eVI4rnQ6dUpTff4gUmpREmEnQ==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      '@dicebear/core': ^9.0.0
+
+  '@dicebear/avataaars-neutral@9.2.3':
+    resolution: {integrity: sha512-v9Ga01GVKGchqNBc4Z2Gk5Y4P0c/jzNg6l/r4kX0xCMDXNd/vchi6QI464pHnJpDC/I8BzL1wYbpZrUEmTWJmA==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      '@dicebear/core': ^9.0.0
+
+  '@dicebear/avataaars@9.2.3':
+    resolution: {integrity: sha512-Jh6mGKMA99KCF+S5rnS+QIlrApCy7NJI6SwmCzixJQmlX0GbWrgBuRxPEy2XJo4FWKGI9eFKOQ4QtNFEwGKjWQ==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      '@dicebear/core': ^9.0.0
+
+  '@dicebear/big-ears-neutral@9.2.3':
+    resolution: {integrity: sha512-y4T8ukm+A/ZXBnwyx3CFZxxJlzoTGJ1xmJL2j4/6zXxjlzl3wkc2mZX36t16i6NKiBs9LJwOUNx6IezbmYjDjg==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      '@dicebear/core': ^9.0.0
+
+  '@dicebear/big-ears@9.2.3':
+    resolution: {integrity: sha512-YTZ3QIWlG6HlkDyASAaQoetxYtQgOwq4GTJxDpzzawFbhhtMJabqAU7dzWkPY6IgJfI/MAKVxdeqXK0Aiw4E6w==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      '@dicebear/core': ^9.0.0
+
+  '@dicebear/big-smile@9.2.3':
+    resolution: {integrity: sha512-/QvZlUmNIjnA6GN5VPUiD5g1MYr+qTOun3CfBSrPAav+tFo8RQGszM6ggvkmn4Q1aHwJ0XQNRiIvTJtQisuqKg==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      '@dicebear/core': ^9.0.0
+
+  '@dicebear/bottts-neutral@9.2.3':
+    resolution: {integrity: sha512-6wFfWwXHE3kJKP0DqgN/SmSBDPs/s8o46APst8RfHnmcDLEsQExg0WquGwXfP+3XqGjPhsm/LGaA/yXKlE/84w==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      '@dicebear/core': ^9.0.0
+
+  '@dicebear/bottts@9.2.3':
+    resolution: {integrity: sha512-udHSuK7uDYMFiCPZsHkaqCyo0hoJFMehsTSBtvOUOQqlQGYA2E7+gLgLmfvBQlYuk61lBM4yLyQdbGj0W7Nl1Q==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      '@dicebear/core': ^9.0.0
+
+  '@dicebear/collection@9.2.3':
+    resolution: {integrity: sha512-PWW1x6EnDKw66dtpy3+1/W/UTrxq9jOGaWgRj+PV6Y0Pvc2a7ZMi6tBzfGWpy0r+XdhREUQ3vyFqim+R/iE2Rg==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      '@dicebear/core': ^9.0.0
+
+  '@dicebear/core@9.2.3':
+    resolution: {integrity: sha512-rsWmQO/TxBtnYbQSOrOESmf/XD5TC30cwKw9LBT2+7Q9HwIf5qJKBJT25bmwvn3RPHVe4A6DkTVMtmsoSaErFg==}
+    engines: {node: '>=18.0.0'}
+
+  '@dicebear/croodles-neutral@9.2.3':
+    resolution: {integrity: sha512-peurufAge4ZbzqGVAyFxhZ64qKv+MLBuQK2XvXsXX0uHgtEeAgSjFl6+O0wgJ7KVKtHL56qY68Acdhy3U91BYw==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      '@dicebear/core': ^9.0.0
+
+  '@dicebear/croodles@9.2.3':
+    resolution: {integrity: sha512-dzFhchlmhst+PBMkNbLNVcOyNFWAhaFnxQOMwWluHPzg8ryiFt/LEKWB7bPKMue1jBwta6LfoUv7vDG4LpdXIw==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      '@dicebear/core': ^9.0.0
+
+  '@dicebear/dylan@9.2.3':
+    resolution: {integrity: sha512-gtRhE1jxKwgUE4d2N7KHJ/rSdAg8zxgViALygs8/kcs2y4uinNx5NW3OvJwNPMBAwHRqeM6GbLKycbfiYMKdwA==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      '@dicebear/core': ^9.0.0
+
+  '@dicebear/fun-emoji@9.2.3':
+    resolution: {integrity: sha512-zR+SmA7hWT8FDkJsdvg5uI7fOabilZfheM8RnMkEXXA0NmKgNKuWX9yFjLxeWESbJwBZFJ/SKasKcZSJP88eyw==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      '@dicebear/core': ^9.0.0
+
+  '@dicebear/glass@9.2.3':
+    resolution: {integrity: sha512-ucaM6TrTt/JsDa26ZQbtxevN0JLu2S06Q2+M/kAT2f0OdR6hSNdPnj/hDIVWg/u4XgW9HXrJ4Lt2KG2nZGq1MA==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      '@dicebear/core': ^9.0.0
+
+  '@dicebear/icons@9.2.3':
+    resolution: {integrity: sha512-2IaSmvgxzEvbtXHxhuxaCrBCtTG7HouxbInzPOetWz/YroTe5qj2k81uhl6ctbviO1PgGgkhIJ12nCIey6O/Tw==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      '@dicebear/core': ^9.0.0
+
+  '@dicebear/identicon@9.2.3':
+    resolution: {integrity: sha512-WCMYjOV19ocaJQDgD3E1z2FRgY4Zbnjieb2FSXPwW6zi04l52rhGaywk8YlCbaHilE43Iybyu1v6iDf4I71qKg==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      '@dicebear/core': ^9.0.0
+
+  '@dicebear/initials@9.2.3':
+    resolution: {integrity: sha512-Qz668xB/XHRNsxW3vpZ0q9xq/M6tscbv1FaFvAGbnFO2hzfqiCWSK1cfNrrqlPJbz7Pz5LIlL5xObLZ0UYhFRA==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      '@dicebear/core': ^9.0.0
+
+  '@dicebear/lorelei-neutral@9.2.3':
+    resolution: {integrity: sha512-C0XcfvB1Td9y1jeaBSkuMrQTAv/RiupQ62cE25f18Mw9UuTC3TwnHR6Ms/4SAEhCZxE2xYHZccs3Lvgkn/b3dA==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      '@dicebear/core': ^9.0.0
+
+  '@dicebear/lorelei@9.2.3':
+    resolution: {integrity: sha512-ribIq7I669JyUSZ0s8jDx5N2NqQUhGSoFGK5d82JqI2HYIAury/0WDsMh0fKeuYUJb9KuDEv+e9nO3OJVa8Hog==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      '@dicebear/core': ^9.0.0
+
+  '@dicebear/micah@9.2.3':
+    resolution: {integrity: sha512-CcA/vVqrFEu5oDNAwJRRmLAE1gGJseP6BJTHMOdROkIOMpt1sy7OBqOFmajGnpOxOhvqBmvTZy0bw0G2TnnKSQ==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      '@dicebear/core': ^9.0.0
+
+  '@dicebear/miniavs@9.2.3':
+    resolution: {integrity: sha512-l111IVYtbUXypFQz1U4hTFM5DxGThDmluG7mNi1Uu92I5/3mH7Eltm2mX3T6g1HFW8MDaTeSBKee1xGVaHmmaA==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      '@dicebear/core': ^9.0.0
+
+  '@dicebear/notionists-neutral@9.2.3':
+    resolution: {integrity: sha512-4WXCE9e9xIe1QdxiGXONxWhAzDVT4nMjoZA0rtgX8Sl0lqSIeBrO4RTnyaqFbGG1V1MiPj9CbE5OB8YbwexFBg==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      '@dicebear/core': ^9.0.0
+
+  '@dicebear/notionists@9.2.3':
+    resolution: {integrity: sha512-0bqS1pwAR8aAm6BDShgD5eI+u0f2CtgeFIDsOER6Je3WwFGyIBUTwwVSL7gmiA5qcvQAB9Slohj7vbN0pifTyA==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      '@dicebear/core': ^9.0.0
+
+  '@dicebear/open-peeps@9.2.3':
+    resolution: {integrity: sha512-QcqKF3geA2Aqw1aJo8PO7+mKXz2I882D61I19vm94V1ojWnyw+8ihFmCLPReVcxQatxNjraTXCoKyT37TbgKBg==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      '@dicebear/core': ^9.0.0
+
+  '@dicebear/personas@9.2.3':
+    resolution: {integrity: sha512-YUXyoOwgt9CGhEuWl+dChDLmcVyuoU5UB7GY8PLWyHoy+1K3MzHJI7XFeDXyOYFpfuBiVY2++YjUZg26loqCNw==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      '@dicebear/core': ^9.0.0
+
+  '@dicebear/pixel-art-neutral@9.2.3':
+    resolution: {integrity: sha512-Eblj/m8x0VSsJfN++GRMPdqOXCcTh0TIIf2waLbNlaOEU1xdhkYC9wSdYfjNv3gUIdbButiYWHwPgRZETcx1qQ==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      '@dicebear/core': ^9.0.0
+
+  '@dicebear/pixel-art@9.2.3':
+    resolution: {integrity: sha512-4JZS/zbZZXg99P10sza0yxC2v+ugEWcoNy+c4I98ylWOjs2BrKcupSsU/2R11egT4u7hEknlVqR1zxKBGjuIDA==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      '@dicebear/core': ^9.0.0
+
+  '@dicebear/rings@9.2.3':
+    resolution: {integrity: sha512-L4gZAzMsf9TNS99Um1ElG7Ncs9VSpQugLL0fCfDkMEkGxvwM+Aqu1UfX7iV3qNsEiu/zaR+3qCMBOEfNGUE1vA==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      '@dicebear/core': ^9.0.0
+
+  '@dicebear/shapes@9.2.3':
+    resolution: {integrity: sha512-4MlhZED2ZDfHymNiPtj67UwW79ECoK1gDjRsUS5BPQUBFIQ22cYrKrRhDcs1CxMZCStnVsH26tt3atIkFeIo9Q==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      '@dicebear/core': ^9.0.0
+
+  '@dicebear/thumbs@9.2.3':
+    resolution: {integrity: sha512-C9vFXjYpLWa98tc4n+FcWkpJAWaGSJOqPUeaom+KVU/ibXLkr21RlcDCRc63YJfiULlE8bQhDWw7FaUAFV3gew==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      '@dicebear/core': ^9.0.0
 
   '@dimforge/rapier3d-compat@0.12.0':
     resolution: {integrity: sha512-uekIGetywIgopfD97oDL5PfeezkFpNhwlzlaEYNOA0N6ghdsOvh/HYjSMek5Q2O1PYvRSDFcqFVJl4r4ZBwOow==}
@@ -3309,6 +3769,14 @@ packages:
   '@sindresorhus/merge-streams@4.0.0':
     resolution: {integrity: sha512-tlqY9xq5ukxTUZBmoOp+m61cqwQD5pHJtFY3Mn8CA8ps6yghLH/Hw8UPdqg4OLmFW3IFlcXnQNmo/dh8HzXYIQ==}
     engines: {node: '>=18'}
+
+  '@sindresorhus/slugify@2.2.1':
+    resolution: {integrity: sha512-MkngSCRZ8JdSOCHRaYd+D01XhvU3Hjy6MGl06zhOk614hp9EOAp5gIkBeQg7wtmxpitU6eAL4kdiRMcJa2dlrw==}
+    engines: {node: '>=12'}
+
+  '@sindresorhus/transliterate@1.6.0':
+    resolution: {integrity: sha512-doH1gimEu3A46VX6aVxpHTeHrytJAG6HgdxntYnCFiIFHEM/ZGpG8KiZGBChchjQmG0XFIBL552kBTjVcMZXwQ==}
+    engines: {node: '>=12'}
 
   '@socket.io/component-emitter@3.1.2':
     resolution: {integrity: sha512-9BCxFwvbGg/RsZK9tjXd8s4UcwR0MWeFQ1XEKIQVVvAGJyINdrqKMcTRyLoK8Rse1GjzLV9cwjWV1olXRWEXVA==}
@@ -7944,6 +8412,164 @@ snapshots:
 
   '@date-fns/utc@2.1.0': {}
 
+  '@dicebear/adventurer-neutral@9.2.3(@dicebear/core@9.2.3)':
+    dependencies:
+      '@dicebear/core': 9.2.3
+
+  '@dicebear/adventurer@9.2.3(@dicebear/core@9.2.3)':
+    dependencies:
+      '@dicebear/core': 9.2.3
+
+  '@dicebear/avataaars-neutral@9.2.3(@dicebear/core@9.2.3)':
+    dependencies:
+      '@dicebear/core': 9.2.3
+
+  '@dicebear/avataaars@9.2.3(@dicebear/core@9.2.3)':
+    dependencies:
+      '@dicebear/core': 9.2.3
+
+  '@dicebear/big-ears-neutral@9.2.3(@dicebear/core@9.2.3)':
+    dependencies:
+      '@dicebear/core': 9.2.3
+
+  '@dicebear/big-ears@9.2.3(@dicebear/core@9.2.3)':
+    dependencies:
+      '@dicebear/core': 9.2.3
+
+  '@dicebear/big-smile@9.2.3(@dicebear/core@9.2.3)':
+    dependencies:
+      '@dicebear/core': 9.2.3
+
+  '@dicebear/bottts-neutral@9.2.3(@dicebear/core@9.2.3)':
+    dependencies:
+      '@dicebear/core': 9.2.3
+
+  '@dicebear/bottts@9.2.3(@dicebear/core@9.2.3)':
+    dependencies:
+      '@dicebear/core': 9.2.3
+
+  '@dicebear/collection@9.2.3(@dicebear/core@9.2.3)':
+    dependencies:
+      '@dicebear/adventurer': 9.2.3(@dicebear/core@9.2.3)
+      '@dicebear/adventurer-neutral': 9.2.3(@dicebear/core@9.2.3)
+      '@dicebear/avataaars': 9.2.3(@dicebear/core@9.2.3)
+      '@dicebear/avataaars-neutral': 9.2.3(@dicebear/core@9.2.3)
+      '@dicebear/big-ears': 9.2.3(@dicebear/core@9.2.3)
+      '@dicebear/big-ears-neutral': 9.2.3(@dicebear/core@9.2.3)
+      '@dicebear/big-smile': 9.2.3(@dicebear/core@9.2.3)
+      '@dicebear/bottts': 9.2.3(@dicebear/core@9.2.3)
+      '@dicebear/bottts-neutral': 9.2.3(@dicebear/core@9.2.3)
+      '@dicebear/core': 9.2.3
+      '@dicebear/croodles': 9.2.3(@dicebear/core@9.2.3)
+      '@dicebear/croodles-neutral': 9.2.3(@dicebear/core@9.2.3)
+      '@dicebear/dylan': 9.2.3(@dicebear/core@9.2.3)
+      '@dicebear/fun-emoji': 9.2.3(@dicebear/core@9.2.3)
+      '@dicebear/glass': 9.2.3(@dicebear/core@9.2.3)
+      '@dicebear/icons': 9.2.3(@dicebear/core@9.2.3)
+      '@dicebear/identicon': 9.2.3(@dicebear/core@9.2.3)
+      '@dicebear/initials': 9.2.3(@dicebear/core@9.2.3)
+      '@dicebear/lorelei': 9.2.3(@dicebear/core@9.2.3)
+      '@dicebear/lorelei-neutral': 9.2.3(@dicebear/core@9.2.3)
+      '@dicebear/micah': 9.2.3(@dicebear/core@9.2.3)
+      '@dicebear/miniavs': 9.2.3(@dicebear/core@9.2.3)
+      '@dicebear/notionists': 9.2.3(@dicebear/core@9.2.3)
+      '@dicebear/notionists-neutral': 9.2.3(@dicebear/core@9.2.3)
+      '@dicebear/open-peeps': 9.2.3(@dicebear/core@9.2.3)
+      '@dicebear/personas': 9.2.3(@dicebear/core@9.2.3)
+      '@dicebear/pixel-art': 9.2.3(@dicebear/core@9.2.3)
+      '@dicebear/pixel-art-neutral': 9.2.3(@dicebear/core@9.2.3)
+      '@dicebear/rings': 9.2.3(@dicebear/core@9.2.3)
+      '@dicebear/shapes': 9.2.3(@dicebear/core@9.2.3)
+      '@dicebear/thumbs': 9.2.3(@dicebear/core@9.2.3)
+
+  '@dicebear/core@9.2.3':
+    dependencies:
+      '@types/json-schema': 7.0.15
+
+  '@dicebear/croodles-neutral@9.2.3(@dicebear/core@9.2.3)':
+    dependencies:
+      '@dicebear/core': 9.2.3
+
+  '@dicebear/croodles@9.2.3(@dicebear/core@9.2.3)':
+    dependencies:
+      '@dicebear/core': 9.2.3
+
+  '@dicebear/dylan@9.2.3(@dicebear/core@9.2.3)':
+    dependencies:
+      '@dicebear/core': 9.2.3
+
+  '@dicebear/fun-emoji@9.2.3(@dicebear/core@9.2.3)':
+    dependencies:
+      '@dicebear/core': 9.2.3
+
+  '@dicebear/glass@9.2.3(@dicebear/core@9.2.3)':
+    dependencies:
+      '@dicebear/core': 9.2.3
+
+  '@dicebear/icons@9.2.3(@dicebear/core@9.2.3)':
+    dependencies:
+      '@dicebear/core': 9.2.3
+
+  '@dicebear/identicon@9.2.3(@dicebear/core@9.2.3)':
+    dependencies:
+      '@dicebear/core': 9.2.3
+
+  '@dicebear/initials@9.2.3(@dicebear/core@9.2.3)':
+    dependencies:
+      '@dicebear/core': 9.2.3
+
+  '@dicebear/lorelei-neutral@9.2.3(@dicebear/core@9.2.3)':
+    dependencies:
+      '@dicebear/core': 9.2.3
+
+  '@dicebear/lorelei@9.2.3(@dicebear/core@9.2.3)':
+    dependencies:
+      '@dicebear/core': 9.2.3
+
+  '@dicebear/micah@9.2.3(@dicebear/core@9.2.3)':
+    dependencies:
+      '@dicebear/core': 9.2.3
+
+  '@dicebear/miniavs@9.2.3(@dicebear/core@9.2.3)':
+    dependencies:
+      '@dicebear/core': 9.2.3
+
+  '@dicebear/notionists-neutral@9.2.3(@dicebear/core@9.2.3)':
+    dependencies:
+      '@dicebear/core': 9.2.3
+
+  '@dicebear/notionists@9.2.3(@dicebear/core@9.2.3)':
+    dependencies:
+      '@dicebear/core': 9.2.3
+
+  '@dicebear/open-peeps@9.2.3(@dicebear/core@9.2.3)':
+    dependencies:
+      '@dicebear/core': 9.2.3
+
+  '@dicebear/personas@9.2.3(@dicebear/core@9.2.3)':
+    dependencies:
+      '@dicebear/core': 9.2.3
+
+  '@dicebear/pixel-art-neutral@9.2.3(@dicebear/core@9.2.3)':
+    dependencies:
+      '@dicebear/core': 9.2.3
+
+  '@dicebear/pixel-art@9.2.3(@dicebear/core@9.2.3)':
+    dependencies:
+      '@dicebear/core': 9.2.3
+
+  '@dicebear/rings@9.2.3(@dicebear/core@9.2.3)':
+    dependencies:
+      '@dicebear/core': 9.2.3
+
+  '@dicebear/shapes@9.2.3(@dicebear/core@9.2.3)':
+    dependencies:
+      '@dicebear/core': 9.2.3
+
+  '@dicebear/thumbs@9.2.3(@dicebear/core@9.2.3)':
+    dependencies:
+      '@dicebear/core': 9.2.3
+
   '@dimforge/rapier3d-compat@0.12.0': {}
 
   '@dimforge/rapier3d-compat@0.15.0': {}
@@ -9850,6 +10476,15 @@ snapshots:
 
   '@sindresorhus/merge-streams@4.0.0': {}
 
+  '@sindresorhus/slugify@2.2.1':
+    dependencies:
+      '@sindresorhus/transliterate': 1.6.0
+      escape-string-regexp: 5.0.0
+
+  '@sindresorhus/transliterate@1.6.0':
+    dependencies:
+      escape-string-regexp: 5.0.0
+
   '@socket.io/component-emitter@3.1.2': {}
 
   '@standard-schema/spec@1.0.0': {}
@@ -10843,10 +11478,6 @@ snapshots:
       ms: 2.1.3
 
   debug@4.3.7:
-    dependencies:
-      ms: 2.1.3
-
-  debug@4.4.1:
     dependencies:
       ms: 2.1.3
 
@@ -12672,7 +13303,7 @@ snapshots:
   micromark@4.0.2:
     dependencies:
       '@types/debug': 4.1.12
-      debug: 4.4.1
+      debug: 4.4.1(supports-color@10.0.0)
       decode-named-character-reference: 1.2.0
       devlop: 1.1.0
       micromark-core-commonmark: 2.0.3

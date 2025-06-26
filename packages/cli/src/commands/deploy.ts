@@ -54,7 +54,7 @@ export function registerDeployCommand({
             publish: opts.publish ? 'true' : 'false'
           }),
           {
-            text: `Creating deployment for project "${config.name}"`,
+            text: `Creating deployment for project "${config.slug}"`,
             successText: `Deployment created successfully`,
             failText: 'Failed to create deployment'
           }

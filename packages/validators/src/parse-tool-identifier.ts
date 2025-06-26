@@ -35,7 +35,7 @@ export function parseToolIdentifier(
     return {
       projectIdentifier: `@${iMatch[1]!}/${iMatch[2]!}`,
       projectNamespace: iMatch[1]!,
-      projectName: iMatch[2]!,
+      projectSlug: iMatch[2]!,
       deploymentIdentifier: `@${iMatch[1]!}/${iMatch[2]!}@latest`,
       deploymentVersion: 'latest',
       toolName: iMatch[3]!
@@ -48,7 +48,7 @@ export function parseToolIdentifier(
     return {
       projectIdentifier: `@${hMatch[1]!}/${hMatch[2]!}`,
       projectNamespace: hMatch[1]!,
-      projectName: hMatch[2]!,
+      projectSlug: hMatch[2]!,
       deploymentIdentifier: `@${hMatch[1]!}/${hMatch[2]!}@${hMatch[3]!}`,
       deploymentHash: hMatch[3]!,
       toolName: hMatch[4]!
@@ -61,7 +61,7 @@ export function parseToolIdentifier(
     return {
       projectIdentifier: `@${vMatch[1]!}/${vMatch[2]!}`,
       projectNamespace: vMatch[1]!,
-      projectName: vMatch[2]!,
+      projectSlug: vMatch[2]!,
       deploymentIdentifier: `@${vMatch[1]!}/${vMatch[2]!}@${vMatch[3]!}`,
       deploymentVersion: 'latest',
       toolName: vMatch[4]!

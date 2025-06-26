@@ -24,10 +24,10 @@ export async function resolveDeployment({
     const auth = AuthStore.getAuth()
     const namespace = auth.user.username
 
-    // TODO: resolve deploymentIdentifier; config name may include namespace?
+    // TODO: resolve deploymentIdentifier; config identifier may include namespace?
     // TODO: this needs work...
 
-    deploymentIdentifier = `@${namespace}/${config.name}${fuzzyDeploymentIdentifierVersion ? `@${fuzzyDeploymentIdentifierVersion}` : ''}`
+    deploymentIdentifier = `@${namespace}/${config.slug}${fuzzyDeploymentIdentifierVersion ? `@${fuzzyDeploymentIdentifierVersion}` : ''}`
   }
 
   const deployment = await client.getDeploymentByIdentifier({

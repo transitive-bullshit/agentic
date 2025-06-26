@@ -10,7 +10,7 @@ import { toolNameBlacklist } from './tool-name-blacklist'
 export const namespaceRe = /^[a-z0-9-]{1,256}$/
 export const passwordRe = /^.{3,1024}$/
 
-export const projectNameRe = /^[a-z0-9-]{1,256}$/
+export const projectSlugRe = /^[a-z0-9-]{1,256}$/
 export const deploymentHashRe = /^[a-z0-9]{8}$/
 
 export const toolNameRe = /^[a-zA-Z_][a-zA-Z0-9_]{0,63}$/
@@ -39,8 +39,8 @@ export function isValidPassword(value?: string): boolean {
   return !!value && passwordRe.test(value)
 }
 
-export function isValidProjectName(value?: string): boolean {
-  return !!value && projectNameRe.test(value)
+export function isValidProjectSlug(value?: string): boolean {
+  return !!value && projectSlugRe.test(value)
 }
 
 export function isValidDeploymentHash(value?: string): boolean {

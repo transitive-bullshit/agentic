@@ -54,8 +54,8 @@ export function registerV1CreateProject(
 
     const teamMember = c.get('teamMember')
     const namespace = teamMember ? teamMember.teamSlug : user.username
-    const identifier = `@${namespace}/${body.name}`
-    const { projectIdentifier, projectNamespace, projectName } =
+    const identifier = `@${namespace}/${body.slug}`
+    const { projectIdentifier, projectNamespace, projectSlug } =
       parseProjectIdentifier(identifier)
 
     // Used for testing e2e fixtures in the development marketplace
@@ -77,7 +77,7 @@ export function registerV1CreateProject(
         ...body,
         identifier: projectIdentifier,
         namespace: projectNamespace,
-        name: projectName,
+        slug: projectSlug,
         teamId: teamMember?.teamId,
         userId: user.id,
         private: isPrivate,

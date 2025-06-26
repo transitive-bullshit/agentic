@@ -40,7 +40,7 @@ export function AppProjectIndex({
             className='text-center text-balance leading-snug md:leading-none
         text-4xl font-extrabold'
           >
-            Project {project.name}
+            {project.name}
           </h1>
 
           <div className='mt-8'>

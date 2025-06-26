@@ -8,7 +8,7 @@ export type ParseIdentifierOptions = {
 export type ParsedProjectIdentifier = {
   projectIdentifier: string
   projectNamespace: string
-  projectName: string
+  projectSlug: string
 }
 
 export type ParsedDeploymentIdentifier = Simplify<

@@ -4,7 +4,7 @@ import { parseProjectIdentifier } from './parse-project-identifier'
 import {
   isValidNamespace,
   isValidProjectIdentifier,
-  isValidProjectName
+  isValidProjectSlug
 } from './validators'
 
 function success(...args: Parameters<typeof parseProjectIdentifier>) {
@@ -12,9 +12,9 @@ function success(...args: Parameters<typeof parseProjectIdentifier>) {
   expect(result).toBeTruthy()
   expect(result!.projectIdentifier).toBeTruthy()
   expect(result!.projectNamespace).toBeTruthy()
-  expect(result!.projectName).toBeTruthy()
+  expect(result!.projectSlug).toBeTruthy()
   expect(isValidProjectIdentifier(result!.projectIdentifier)).toBe(true)
-  expect(isValidProjectName(result!.projectName)).toBe(true)
+  expect(isValidProjectSlug(result!.projectSlug)).toBe(true)
   expect(isValidNamespace(result!.projectNamespace)).toBe(true)
   expect(result).toMatchSnapshot()
 }

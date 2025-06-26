@@ -10,18 +10,18 @@ export default async function AppProjectIndexPage({
 }: {
   params: Promise<{
     namespace: string
-    'project-name': string
+    'project-slug': string
   }>
 }) {
-  const { namespace: rawNamespace, 'project-name': rawProjectName } =
+  const { namespace: rawNamespace, 'project-slug': rawProjectSlug } =
     await params
 
   try {
     const namespace = decodeURIComponent(rawNamespace)
-    const projectName = decodeURIComponent(rawProjectName)
+    const projectSlug = decodeURIComponent(rawProjectSlug)
 
     const { projectIdentifier } = parseProjectIdentifier(
-      `${namespace}/${projectName}`,
+      `${namespace}/${projectSlug}`,
       { strict: true }
     )
 

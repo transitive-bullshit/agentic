@@ -3,6 +3,7 @@ import { assert } from '@agentic/platform-core'
 
 import { and, db, eq, type RawAccount, type RawUser, schema } from '@/db'
 
+import { createAvatar } from '../create-avatar'
 import { getUniqueNamespace } from '../ensure-unique-namespace'
 
 /**
@@ -49,6 +50,9 @@ export async function upsertOrLinkUserAccount({
   >
 }): Promise<RawUser> {
   const { provider, accountId } = partialAccount
+
+  // Set a default profile image if one isn't provided
+  partialUser.image ??= createAvatar(partialUser.email)
 
   const [existingAccount, existingUser] = await Promise.all([
     db.query.accounts.findFirst({

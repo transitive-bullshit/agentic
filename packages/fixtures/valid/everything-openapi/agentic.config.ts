@@ -1,7 +1,8 @@
 import { defineConfig } from '@agentic/platform'
 
 export default defineConfig({
-  name: 'test-everything-openapi',
+  name: 'Test Everything OpenAPI',
+  slug: 'test-everything-openapi',
   origin: {
     type: 'openapi',
     url: 'https://agentic-platform-fixtures-everything.onrender.com',

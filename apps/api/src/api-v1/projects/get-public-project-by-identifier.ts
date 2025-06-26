@@ -14,7 +14,7 @@ import { projectIdentifierAndPopulateSchema } from './schemas'
 
 const route = createRoute({
   description:
-    'Gets a public project by its public identifier (eg, "@username/project-name").',
+    'Gets a public project by its public identifier (eg, "@username/project-slug").',
   tags: ['projects'],
   operationId: 'getPublicProjectByIdentifier',
   method: 'get',

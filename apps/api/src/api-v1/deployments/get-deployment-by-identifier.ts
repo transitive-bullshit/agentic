@@ -15,7 +15,7 @@ import { deploymentIdentifierAndPopulateSchema } from './schemas'
 
 const route = createRoute({
   description:
-    'Gets a deployment by its identifier (eg, "@username/project-name@latest").',
+    'Gets a deployment by its identifier (eg, "@username/project-slug@latest").',
   tags: ['deployments'],
   operationId: 'getDeploymentByIdentifier',
   method: 'get',

@@ -8,7 +8,7 @@ exports[`loadAgenticConfig > basic-mcp 1`] = `
     "limit": 1000,
     "mode": "approximate",
   },
-  "name": "test-basic-mcp",
+  "name": "Test Basic MCP",
   "origin": {
     "location": "external",
     "type": "mcp",
@@ -36,6 +36,7 @@ exports[`loadAgenticConfig > basic-mcp 1`] = `
       "slug": "free",
     },
   ],
+  "slug": "test-basic-mcp",
   "toolConfigs": [],
   "version": undefined,
 }
@@ -49,7 +50,7 @@ exports[`loadAgenticConfig > basic-openapi 1`] = `
     "limit": 1000,
     "mode": "approximate",
   },
-  "name": "test-basic-openapi",
+  "name": "Test Basic OpenAPI",
   "origin": {
     "location": "external",
     "spec": "{"openapi":"3.1.0","info":{"title":"JSONPlaceholder","version":"1.0.0"},"paths":{"/posts":{"get":{"summary":"Get posts","operationId":"getPosts","responses":{"200":{"description":"Success","content":{"application/json":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/Post"}}}}}}},"post":{"summary":"Create post","operationId":"createPost","requestBody":{"required":true,"content":{"application/json":{"schema":{"type":"object","required":["userId","title","body"],"properties":{"userId":{"type":"integer"},"title":{"type":"string"},"body":{"type":"string"}}}}}},"responses":{"200":{"description":"Success","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Post"}}}}}}},"/posts/{postId}":{"get":{"summary":"Get post","operationId":"getPost","parameters":[{"required":true,"schema":{"type":"integer"},"name":"postId","in":"path"}],"responses":{"200":{"description":"Success","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Post"}}}}}}}},"components":{"schemas":{"Post":{"type":"object","required":["id","userId","title","body"],"properties":{"id":{"type":"integer"},"userId":{"type":"integer"},"title":{"type":"string"},"body":{"type":"string"}}}}}}",
@@ -78,6 +79,7 @@ exports[`loadAgenticConfig > basic-openapi 1`] = `
       "slug": "free",
     },
   ],
+  "slug": "test-basic-openapi",
   "toolConfigs": [
     {
       "name": "get_posts",
@@ -128,6 +130,7 @@ exports[`loadAgenticConfig > basic-raw-free-json 1`] = `
       "slug": "free",
     },
   ],
+  "slug": "test-basic-raw-free-json",
   "toolConfigs": [],
   "version": undefined,
 }
@@ -169,6 +172,7 @@ exports[`loadAgenticConfig > basic-raw-free-ts 1`] = `
       "slug": "free",
     },
   ],
+  "slug": "test-basic-raw-free-ts",
   "toolConfigs": [],
   "version": undefined,
 }
@@ -182,7 +186,7 @@ exports[`loadAgenticConfig > everything-openapi 1`] = `
     "limit": 1000,
     "mode": "approximate",
   },
-  "name": "test-everything-openapi",
+  "name": "Test Everything OpenAPI",
   "origin": {
     "location": "external",
     "spec": "{"openapi":"3.1.0","info":{"title":"OpenAPI server everything","description":"OpenAPI kitchen sink server meant for testing Agentic's origin OpenAPI adapter and ToolConfig features.","version":"0.1.0"},"components":{"schemas":{"User":{"type":"object","properties":{"id":{"type":"string"},"name":{"type":"string"},"email":{"type":"string"}},"required":["id","name","email"]}},"parameters":{}},"paths":{"/health":{"get":{"description":"Check if the server is healthy","operationId":"healthCheck","responses":{"200":{"description":"OK","content":{"application/json":{"schema":{"type":"object","properties":{"status":{"type":"string"}},"required":["status"]}}}}}}},"/users/{userId}":{"get":{"description":"Gets a user","tags":["users"],"operationId":"getUser","parameters":[{"schema":{"type":"string"},"required":true,"description":"User ID","name":"userId","in":"path"}],"responses":{"200":{"description":"A user object","content":{"application/json":{"schema":{"$ref":"#/components/schemas/User"}}}}}}},"/disabled-tool":{"get":{"description":"Disabled tool","operationId":"disabledTool","responses":{"200":{"description":"OK","content":{"application/json":{"schema":{"type":"object","properties":{"status":{"type":"string"}},"required":["status"]}}}}}}},"/disabled-for-free-plan-tool":{"get":{"description":"Disabled for free plan tool","operationId":"disabledForFreePlanTool","responses":{"200":{"description":"OK","content":{"application/json":{"schema":{"type":"object","properties":{"status":{"type":"string"}},"required":["status"]}}}}}}},"/echo":{"post":{"description":"Echoes the request body","operationId":"echo","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{}}}}},"responses":{"200":{"description":"Echoed request body","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}},"/echo-headers":{"get":{"description":"Echoes the request headers","operationId":"echoHeaders","responses":{"200":{"description":"Echoed request headers","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}},"/pure":{"post":{"description":"Pure tool","operationId":"pure","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{}}}}},"responses":{"200":{"description":"Echoed request body","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}},"/unpure-marked-pure":{"post":{"description":"Unpure tool marked pure","operationId":"unpure_marked_pure","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{}}}}},"responses":{"200":{"description":"Echoed request body with current timestamp to not be pure","content":{"application/json":{"schema":{"type":"object","properties":{"now":{"type":"number"}},"required":["now"]}}}}}}},"/custom-cache-control-tool":{"post":{"description":"Custom cache control tool","operationId":"customCacheControlTool","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{}}}}},"responses":{"200":{"description":"Echoed request body","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}},"/custom-rate-limit-approximate-tool":{"post":{"description":"Custom rate limit tool (approximate mode)","operationId":"customRateLimitApproximateTool","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{}}}}},"responses":{"200":{"description":"Echoed request body","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}},"/no-store-cache-control-tool":{"post":{"description":"No store cache control tool","operationId":"noStoreCacheControlTool","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{}}}}},"responses":{"200":{"description":"Echoed request body","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}},"/no-cache-cache-control-tool":{"post":{"description":"No cache cache control tool","operationId":"noCacheCacheControlTool","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{}}}}},"responses":{"200":{"description":"Echoed request body","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}},"/custom-rate-limit-tool":{"post":{"description":"Custom rate limit tool (strict mode)","operationId":"customRateLimitTool","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{}}}}},"responses":{"200":{"description":"Echoed request body","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}},"/disabled-rate-limit-tool":{"post":{"description":"Disabled rate limit tool","operationId":"disabledRateLimitTool","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{}}}}},"responses":{"200":{"description":"Echoed request body","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}},"/strict-additional-properties":{"post":{"description":"Echoes the request body only allowing a single \\"foo\\" field.","operationId":"strictAdditionalProperties","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{"foo":{"type":"string"}},"required":["foo"]}}}},"responses":{"200":{"description":"Echoed request body","content":{"application/json":{"schema":{"type":"object","properties":{"foo":{"type":"string"}},"required":["foo"]}}}}}}}},"webhooks":{}}",
@@ -267,6 +271,7 @@ exports[`loadAgenticConfig > everything-openapi 1`] = `
       "slug": "pro",
     },
   ],
+  "slug": "test-everything-openapi",
   "toolConfigs": [
     {
       "enabled": true,
@@ -349,15 +354,11 @@ exports[`loadAgenticConfig > everything-openapi 1`] = `
 }
 `;
 
-exports[`loadAgenticConfig > invalid: invalid-name-0 1`] = `[Error: Invalid project name "Test Invalid Name 0". Must be ascii-only lower kebab-case with no spaces between 1 and 256 characters. For example: "my-project" or "linkedin-resolver-23"]`;
+exports[`loadAgenticConfig > invalid: invalid-name-0 1`] = `[ZodValidationError: Validation error: Required at "name"]`;
 
-exports[`loadAgenticConfig > invalid: invalid-name-1 1`] = `[Error: Invalid project name "Test-Invalid-Name-1". Must be ascii-only lower kebab-case with no spaces between 1 and 256 characters. For example: "my-project" or "linkedin-resolver-23"]`;
+exports[`loadAgenticConfig > invalid: invalid-name-1 1`] = `[ZodValidationError: Validation error: String must contain at most 1024 character(s) at "name"]`;
 
-exports[`loadAgenticConfig > invalid: invalid-name-2 1`] = `[Error: Invalid project name "test_invalid_name_2". Must be ascii-only lower kebab-case with no spaces between 1 and 256 characters. For example: "my-project" or "linkedin-resolver-23"]`;
-
-exports[`loadAgenticConfig > invalid: invalid-name-3 1`] = `[ZodValidationError: Validation error: Required at "name"]`;
-
-exports[`loadAgenticConfig > invalid: invalid-name-4 1`] = `[Error: Invalid project name "@foo/bar". Must be ascii-only lower kebab-case with no spaces between 1 and 256 characters. For example: "my-project" or "linkedin-resolver-23"]`;
+exports[`loadAgenticConfig > invalid: invalid-name-2 1`] = `[ZodValidationError: Validation error: String must contain at least 1 character(s) at "name"]`;
 
 exports[`loadAgenticConfig > invalid: invalid-origin-url-0 1`] = `[Error: Invalid originUrl: must be a valid https URL]`;
 
@@ -366,6 +367,16 @@ exports[`loadAgenticConfig > invalid: invalid-origin-url-1 1`] = `[ZodValidation
 exports[`loadAgenticConfig > invalid: invalid-origin-url-2 1`] = `[ZodValidationError: Validation error: Required at "origin"]`;
 
 exports[`loadAgenticConfig > invalid: invalid-origin-url-3 1`] = `[ZodValidationError: Validation error: Invalid url at "origin.url"]`;
+
+exports[`loadAgenticConfig > invalid: invalid-slug-0 1`] = `[ZodValidationError: Validation error: Invalid project slug at "slug"]`;
+
+exports[`loadAgenticConfig > invalid: invalid-slug-1 1`] = `[ZodValidationError: Validation error: Invalid project slug at "slug"]`;
+
+exports[`loadAgenticConfig > invalid: invalid-slug-2 1`] = `[ZodValidationError: Validation error: Invalid project slug at "slug"]`;
+
+exports[`loadAgenticConfig > invalid: invalid-slug-3 1`] = `[Error: Invalid project slug "" for project name " ". Must be ascii-only, lower-case, and kebab-case with no spaces between 1 and 256 characters. For example: "my-project" or "linkedin-resolver-23"]`;
+
+exports[`loadAgenticConfig > invalid: invalid-slug-4 1`] = `[ZodValidationError: Validation error: Invalid project slug at "slug"]`;
 
 exports[`loadAgenticConfig > invalid: pricing-base-inconsistent 1`] = `[ZodValidationError: Validation error: Invalid PricingPlanLineItem "base": reserved "base" LineItems must have "licensed" usage type. at "pricingPlans[1].lineItems[0]"]`;
 
@@ -450,6 +461,7 @@ exports[`loadAgenticConfig > pricing-3-plans 1`] = `
       "slug": "pro",
     },
   ],
+  "slug": "test-pricing-3-plans",
   "toolConfigs": [],
   "version": undefined,
 }
@@ -534,6 +546,7 @@ exports[`loadAgenticConfig > pricing-custom-0 1`] = `
       "slug": "basic-annual",
     },
   ],
+  "slug": "test-pricing-custom-0",
   "toolConfigs": [],
   "version": undefined,
 }
@@ -588,6 +601,7 @@ exports[`loadAgenticConfig > pricing-freemium 1`] = `
       "trialPeriodDays": 7,
     },
   ],
+  "slug": "test-pricing-freemium",
   "toolConfigs": [],
   "version": undefined,
 }
@@ -648,6 +662,7 @@ exports[`loadAgenticConfig > pricing-monthly-annual 1`] = `
       "slug": "basic-annual",
     },
   ],
+  "slug": "test-pricing-monthly-annual",
   "toolConfigs": [],
   "version": undefined,
 }
@@ -724,6 +739,7 @@ exports[`loadAgenticConfig > pricing-pay-as-you-go 1`] = `
       "slug": "pay-as-you-go",
     },
   ],
+  "slug": "test-pricing-pay-as-you-go",
   "toolConfigs": [],
   "version": undefined,
 }

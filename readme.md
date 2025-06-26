@@ -7,8 +7,8 @@
 
 ## API Gateway
 
-- **MCP**: `https://gateway.agentic.so/@{username}/{project-name}/mcp`
-- **HTTP**: `GET/POST` `https://gateway.agentic.so/@{username}/{project-name}/{tool-name}`
+- **MCP**: `https://gateway.agentic.so/@{username}/{project-slug}/mcp`
+- **HTTP**: `GET/POST` `https://gateway.agentic.so/@{username}/{project-slug}/{tool-name}`
 
 ## TODO: MVP
 
@@ -41,6 +41,7 @@
 - social images
 - simplify `AgenticToolClient` and only require one package per TS LLM SDK
   - `createAISDKToolsFromIdentifier(projectIdentifier)`
+- add really strict free rate-limits to `@agentic/search`
 
 ## TODO: Post-MVP
 
@@ -96,9 +97,7 @@
   - prompts
   - other MCP features?
 - additional transactional emails
-- consider `projectName` and `projectSlug` or `projectIdentifier`?
 - handle or validate against dynamic MCP origin tools
-- allow config name to be `project-name` or `@namespace/project-name`?
 - upgrade to zod v4
 - decide whether deployment fields like `defaultRateLimit` and others should be generated and stored in the db, or should be inferred based on `undefined` values
 - support multiple rate-limits by slug

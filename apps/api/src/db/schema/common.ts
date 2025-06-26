@@ -15,6 +15,8 @@ import { z } from '@hono/zod-openapi'
 import { createId as createCuid2 } from '@paralleldrive/cuid2'
 
 export const namespaceMaxLength = 256 as const
+export const projectSlugMaxLength = 256 as const
+export const projectNameMaxLength = 1024 as const
 
 // prefix is max 5 characters
 // separator is 1 character
@@ -87,7 +89,7 @@ export function stripeId<U extends string, T extends Readonly<[U, ...U[]]>>(
 }
 
 /**
- * `namespace/project-name`
+ * `namespace/project-slug`
  */
 export function projectIdentifier<
   U extends string,
@@ -99,7 +101,7 @@ export function projectIdentifier<
 }
 
 /**
- * `namespace/project-name@hash`
+ * `namespace/project-slug@hash`
  */
 export function deploymentIdentifier<
   U extends string,
@@ -120,6 +122,27 @@ export function teamSlug<U extends string, T extends Readonly<[U, ...U[]]>>(
   config?: PgVarcharConfig<T | Writable<T>, never>
 ): PgVarcharBuilderInitial<'', Writable<T>, typeof namespaceMaxLength> {
   return varchar({ length: namespaceMaxLength, ...config })
+}
+
+export function projectNamespace<
+  U extends string,
+  T extends Readonly<[U, ...U[]]>
+>(
+  config?: PgVarcharConfig<T | Writable<T>, never>
+): PgVarcharBuilderInitial<'', Writable<T>, typeof namespaceMaxLength> {
+  return varchar({ length: namespaceMaxLength, ...config })
+}
+
+export function projectSlug<U extends string, T extends Readonly<[U, ...U[]]>>(
+  config?: PgVarcharConfig<T | Writable<T>, never>
+): PgVarcharBuilderInitial<'', Writable<T>, typeof projectSlugMaxLength> {
+  return varchar({ length: projectSlugMaxLength, ...config })
+}
+
+export function projectName<U extends string, T extends Readonly<[U, ...U[]]>>(
+  config?: PgVarcharConfig<T | Writable<T>, never>
+): PgVarcharBuilderInitial<'', Writable<T>, typeof projectNameMaxLength> {
+  return varchar({ length: projectNameMaxLength, ...config })
 }
 
 /**

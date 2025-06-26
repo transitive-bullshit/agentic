@@ -6,7 +6,7 @@ import {
   isValidDeploymentIdentifier,
   isValidNamespace,
   isValidProjectIdentifier,
-  isValidProjectName,
+  isValidProjectSlug,
   isValidToolName
 } from './validators'
 
@@ -15,11 +15,11 @@ function success(...args: Parameters<typeof parseToolIdentifier>) {
   expect(result).toBeTruthy()
   expect(result!.projectIdentifier).toBeTruthy()
   expect(result!.projectNamespace).toBeTruthy()
-  expect(result!.projectName).toBeTruthy()
+  expect(result!.projectSlug).toBeTruthy()
   expect(result!.deploymentIdentifier).toBeTruthy()
   expect(result!.deploymentVersion || result!.deploymentHash).toBeTruthy()
   expect(isValidProjectIdentifier(result!.projectIdentifier)).toBe(true)
-  expect(isValidProjectName(result!.projectName)).toBe(true)
+  expect(isValidProjectSlug(result!.projectSlug)).toBe(true)
   expect(isValidNamespace(result!.projectNamespace)).toBe(true)
   expect(isValidDeploymentIdentifier(result!.deploymentIdentifier)).toBe(true)
   expect(isValidToolName(result!.toolName)).toBe(true)

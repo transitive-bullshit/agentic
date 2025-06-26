@@ -1,6 +1,6 @@
 ## Project Identifier
 
-`@namespace/project-name`
+`@namespace/project-slug`
 
 ## Deployment Identifier
 

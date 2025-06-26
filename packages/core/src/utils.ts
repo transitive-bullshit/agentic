@@ -1,4 +1,5 @@
 import type { z, ZodType } from 'zod'
+import slugifyImpl from '@sindresorhus/slugify'
 
 import { HttpError, ZodValidationError } from './errors'
 
@@ -279,4 +280,22 @@ export function pruneEmptyDeep<T>(
   }
 
   return value as any
+}
+
+/**
+ * Slugifies a string.
+ *
+ * - converts to lowercase
+ * - decamelizes (fooBar -> foo-bar)
+ * - replaces non-latin characters with latin equivalents (transliteration)
+ * - replaces spaces with hyphens
+ * - removes trailing hyphens
+ * - removes leading hyphens
+ * - removes multiple consecutive hyphens
+ * - removes multiple consecutive spaces
+ *
+ * @see https://github.com/sindresorhus/slugify
+ */
+export function slugify(input: string): string {
+  return slugifyImpl(input)
 }

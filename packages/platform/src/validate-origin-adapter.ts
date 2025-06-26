@@ -9,14 +9,14 @@ import { validateOriginUrl } from './validate-origin-url'
  * Validates and normalizes the origin adapter for a project.
  */
 export async function validateOriginAdapter({
-  name,
+  slug,
   version = '0.0.0',
   origin,
   label,
   cwd,
   logger
 }: {
-  name: string
+  slug: string
   origin: Readonly<OriginAdapterConfig>
   label: string
   version?: string
@@ -47,7 +47,7 @@ export async function validateOriginAdapter({
     // We intentionally ignore the resolved version and tools here because the
     // server will need to re-validate the MCP server info and tools anyway.
     await resolveMCPOriginAdapter({
-      name,
+      name: slug,
       version,
       origin,
       label

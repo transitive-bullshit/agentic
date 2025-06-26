@@ -1,4 +1,5 @@
 import {
+  agenticProjectConfigSchema,
   pricingIntervalSchema,
   type StripeMeterIdMap,
   stripeMeterIdMapSchema,
@@ -7,7 +8,6 @@ import {
   type StripeProductIdMap,
   stripeProductIdMapSchema
 } from '@agentic/platform-types'
-import { isValidProjectName } from '@agentic/platform-validators'
 import { relations } from '@fisch0920/drizzle-orm'
 import {
   boolean,
@@ -35,7 +35,10 @@ import {
   pricingCurrencyEnum,
   pricingIntervalEnum,
   projectIdentifier,
+  projectName,
+  projectNamespace,
   projectPrimaryId,
+  projectSlug,
   stripeId,
   teamId,
   timestamps,
@@ -63,9 +66,17 @@ export const projects = pgTable(
     ...projectPrimaryId,
     ...timestamps,
 
+    // display name
+    name: projectName().notNull(),
+
+    // identifier is `@namespace/slug`
     identifier: projectIdentifier().unique().notNull(),
-    namespace: text().notNull(),
-    name: text().notNull(),
+
+    // namespace is either a username or team slug
+    namespace: projectNamespace().notNull(),
+
+    // slug is a unique identifier for the project within its namespace
+    slug: projectSlug().notNull(),
 
     // Defaulting to `true` for now to hide all projects from the marketplace
     // by default. Will need to manually set to `true` to allow projects to be
@@ -200,6 +211,8 @@ export const projectSelectSchema = createSelectSchema(projects, {
   userId: userIdSchema,
   teamId: teamIdSchema.optional(),
   identifier: projectIdentifierSchema,
+  name: agenticProjectConfigSchema.shape.name,
+  slug: agenticProjectConfigSchema.shape.slug,
   lastPublishedDeploymentId: deploymentIdSchema.optional(),
   lastDeploymentId: deploymentIdSchema.optional(),
 
@@ -299,13 +312,12 @@ Internally, Projects manage all of the Stripe billing resources across Deploymen
 export const projectInsertSchema = createInsertSchema(projects, {
   identifier: projectIdentifierSchema,
 
-  name: (schema) =>
-    schema.refine((name) => isValidProjectName(name), {
-      message: 'Invalid project name'
-    })
+  name: agenticProjectConfigSchema.shape.name,
+  slug: agenticProjectConfigSchema.shape.slug
 })
   .pick({
-    name: true
+    name: true,
+    slug: true
   })
   .strict()
 

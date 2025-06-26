@@ -1,7 +1,8 @@
 import { defineConfig } from '@agentic/platform'
 
 export default defineConfig({
-  name: 'test-basic-openapi',
+  name: 'Test Basic OpenAPI',
+  slug: 'test-basic-openapi',
   origin: {
     type: 'openapi',
     url: 'https://jsonplaceholder.typicode.com',
