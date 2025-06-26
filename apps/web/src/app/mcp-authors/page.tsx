@@ -58,7 +58,7 @@ export default function MCPAuthorsPage() {
       </section>
 
       {/* Features section */}
-      <section className='flex flex-col gap-8 mb-16'>
+      <section className='flex flex-col gap-8 md:gap-12 mb-16'>
         <h2 className='text-center text-balance leading-snug md:leading-none text-3xl font-heading'>
           Production-Ready MCP Gateway
         </h2>
@@ -73,9 +73,9 @@ export default function MCPAuthorsPage() {
         </h2>
 
         <p className=''>
-          Agentic is fully OSS. It's written in{' '}
-          <span className='font-semibold'>TypeScript</span> and has a small but
-          vibrant developer community.{' '}
+          Agentic is a fully OSS{' '}
+          <span className='font-semibold'>TypeScript</span> project with a small
+          but vibrant developer community.{' '}
           <Link
             href={githubUrl}
             target='_blank'

@@ -16,7 +16,7 @@ export async function highlight({
   theme?: string
   className?: string
 }): Promise<JSX.Element> {
-  className = cn('w-full text-wrap p-4 text-sm rounded-sm', className)
+  className = cn('w-full text-wrap p-2 md:p-4 text-sm rounded-sm', className)
 
   const hast = await codeToHast(code, {
     lang,

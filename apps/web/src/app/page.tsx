@@ -105,9 +105,9 @@ export default async function TheBestDamnLandingPageEver() {
         </h2>
 
         <p className=''>
-          Agentic is fully OSS. It's written in{' '}
-          <span className='font-semibold'>TypeScript</span> and has a small but
-          vibrant developer community.{' '}
+          Agentic is a fully OSS{' '}
+          <span className='font-semibold'>TypeScript</span> project with a small
+          but vibrant developer community.{' '}
           <Link
             href={githubUrl}
             target='_blank'

@@ -37,7 +37,7 @@ const FEATURES: Feature[] = [
     name: 'Auth',
     description: (
       <>
-        Ship to production fast with Agentic's free, built-in authentication.
+        Ship to production fast with Agentic's free, hosted authentication.
         Email & password, OAuth, GitHub, Google, Twitter, etc – if your origin
         API requires OAuth credentials, Agentic likely already supports it, and
         if not,{' '}
@@ -118,14 +118,14 @@ const FEATURES: Feature[] = [
     }
   },
   {
-    name: 'Rate-limiting',
+    name: 'Rate-Limiting',
     description: (
       <>
-        All agentic products are protected by durable rate-limiting built on top
-        of Cloudflare's global infrastructure. Customize the default
-        rate-limits, change them based on a customer's pricing plan, or create
-        custom tool-specific overrides. REST assured that your origin API will
-        be safe behind Agentic's MCP gateway.
+        Agentic durable rate-limiting is built on top of Cloudflare's global
+        infrastructure. Customize the default rate-limits, change them based on
+        a customer's pricing plan, or create custom tool-specific overrides.
+        REST assured that your origin API will be safe behind Agentic's MCP
+        gateway.
       </>
     ),
     icon: ShieldCheckIcon,
@@ -144,9 +144,8 @@ const FEATURES: Feature[] = [
         Opt-in to caching with familiar <em>cache-control</em> and{' '}
         <em>stale-while-revalidate</em> options. MCP tool calls include caching
         information in their <em>_meta</em> fields, providing parity with
-        standard HTTP headers. All caching takes place in Cloudflare's global
-        edge cache, and caching will only be enabled if you choose to enable it
-        for your product or individual tools.
+        standard HTTP headers. Agentic uses Cloudflare's global edge cache for
+        caching, which guarantees unmatched global performance.
       </>
     ),
     icon: DatabaseZapIcon,
@@ -177,12 +176,12 @@ const FEATURES: Feature[] = [
     name: 'Versioning & Instant Rollbacks',
     description: (
       <>
-        Just like Vercel, Agentic uses immutable deployments, so every time you
-        make a change to your product's config, pricing, or docs, a unique
-        preview deployment is created for that change. This enables instant
-        rollbacks if there are problems with a deployment. Publishing uses{' '}
-        <span className='font-semibold'>semver</span> (semantic versioning), so
-        your customers can choose how to handle breaking changes.
+        Agentic uses immutable deployments, so every time you make a change to
+        your product, a unique preview deployment is created. This enables
+        instant rollbacks if there are problems with a deployment. Publishing
+        uses <span className='font-semibold'>semver</span> (semantic
+        versioning), so your customers can choose how to handle breaking
+        changes.
       </>
     ),
     icon: HistoryIcon,
@@ -231,15 +230,15 @@ function Feature({ name, description, icon, pattern, href }: Feature) {
 
       <div className='ring-gray-900/7.5 group-hover:ring-gray-900/10 absolute inset-0 rounded-2xl ring-1 ring-inset dark:ring-white/10 dark:group-hover:ring-white/20' />
 
-      <div className='relative rounded-2xl px-4 pb-4 pt-16'>
+      <div className='relative rounded-2xl p-4 flex flex-col gap-6 pt-12'>
         <FeatureIcon icon={icon} />
 
-        <h3 className='text-gray-900 mt-4 text-[0.875rem] font-semibold leading-7 dark:text-white'>
+        <h3 className='text-gray-900 text-lg font-semibold leading-0 dark:text-white'>
           {/* <span className='absolute inset-0 rounded-2xl' /> */}
           {name}
         </h3>
 
-        <p className='text-gray-600 dark:text-gray-400 mt-1 text-[0.875rem] leading-[1.5rem]'>
+        <p className='text-gray-600 dark:text-gray-400 text-[0.875rem] leading-[1.5rem]'>
           {description}
         </p>
       </div>

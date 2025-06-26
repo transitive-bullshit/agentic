@@ -49,6 +49,20 @@ export function ExampleAgenticConfigs() {
     return <LoadingIndicator className='w-full max-w-3xl' />
   }
 
+  return (
+    <div className='w-full max-w-3xl flex flex-col items-center border rounded-lg shadow-sm p-2 md:p-4'>
+      <ExampleAgenticConfigsContent config={config} setConfig={setConfig} />
+    </div>
+  )
+}
+
+function ExampleAgenticConfigsContent({
+  config,
+  setConfig
+}: {
+  config: ExampleAgenticConfig
+  setConfig: (config: ExampleAgenticConfig) => void
+}) {
   const codeSnippet = getCodeSnippetForExampleAgenticConfig(config)
 
   return (
@@ -99,8 +113,14 @@ export function ExampleAgenticConfigs() {
             <TabsContent
               key={originAdaptor}
               value={originAdaptor}
-              className='w-full'
+              className='w-full flex flex-col gap-2'
             >
+              <div className='text-sm text-gray-500'>
+                {config.format === 'typescript'
+                  ? 'agentic.config.ts'
+                  : 'agentic.config.json'}
+              </div>
+
               <CodeBlock code={codeSnippet.code} lang={codeSnippet.lang} />
             </TabsContent>
           ))}

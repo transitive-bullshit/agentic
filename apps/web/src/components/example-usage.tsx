@@ -90,8 +90,43 @@ export function ExampleUsage({
   //   enabled: !!ctx?.isAuthenticated
   // })
 
+  return (
+    <div className='w-full max-w-3xl flex flex-col items-center border rounded-lg shadow-sm p-2 md:p-4'>
+      <ExampleUsageContent
+        projectIdentifier={projectIdentifier}
+        prompt={prompt}
+        initialCodeBlock={initialCodeBlock}
+        isLoading={isLoading}
+        isError={isError}
+        project={project}
+        config={config}
+        setConfig={setConfig}
+      />
+    </div>
+  )
+}
+
+function ExampleUsageContent({
+  projectIdentifier,
+  prompt,
+  initialCodeBlock,
+  isLoading,
+  isError,
+  project,
+  config,
+  setConfig
+}: {
+  projectIdentifier: string
+  prompt: string
+  initialCodeBlock?: JSX.Element
+  isLoading: boolean
+  isError: boolean
+  project?: Project
+  config?: DeveloperConfig
+  setConfig: (config: DeveloperConfig) => void
+}) {
   if (isLoading || !config) {
-    return <LoadingIndicator className='w-full max-w-3xl' />
+    return <LoadingIndicator />
   }
 
   // TODO: allow to target a specific deployment
@@ -124,7 +159,7 @@ export function ExampleUsage({
           target: value as Target
         })
       }
-      className='w-full max-w-3xl'
+      className='w-full'
     >
       <TabsList>
         {targets.map((target) => (
