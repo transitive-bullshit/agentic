@@ -14,7 +14,7 @@ export function PublicProject({ project }: { project: Project }) {
       '
       href={`/marketplace/projects/${project.identifier}`}
     >
-      <div className='p-2 flex gap-2 items-center'>
+      <div className='p-2 flex gap-2.5 items-center'>
         <img
           src={
             deployment.iconUrl ||

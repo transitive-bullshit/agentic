@@ -3,10 +3,10 @@ import 'dotenv/config'
 import { defineConfig } from '@agentic/platform'
 
 export default defineConfig({
-  name: 'Search',
+  name: 'Agentic Google Search',
   slug: 'search',
   description:
-    'Google Search tool. Useful for finding up-to-date news and information about any topic.',
+    'Official Google Search tool. Useful for finding up-to-date news and information about any topic.',
   origin: {
     type: 'mcp',
     url: process.env.MCP_ORIGIN_URL!
