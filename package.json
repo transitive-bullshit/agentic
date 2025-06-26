@@ -7,9 +7,9 @@
     "type": "git",
     "url": "git+https://github.com/transitive-bullshit/agentic.git"
   },
-  "packageManager": "pnpm@10.12.2",
+  "packageManager": "pnpm@10.12.3",
   "engines": {
-    "node": ">=22"
+    "node": ">=20"
   },
   "type": "module",
   "scripts": {

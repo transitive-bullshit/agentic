@@ -5,6 +5,8 @@ import { type BundledLanguage, codeToHast } from 'shiki/bundle/web'
 
 import { cn } from '@/lib/utils'
 
+// TODO: consider adding [twoslash](https://shiki.style/packages/twoslash)
+
 export async function highlight({
   code,
   lang = 'ts',
