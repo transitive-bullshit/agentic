@@ -1,0 +1,67 @@
+---
+title: Origin Servers
+description: Configuring your origin MCP server or OpenAPI service with Agentic's MCP Gateway.
+---
+
+## Remote origin servers
+
+**Agentic currently only supports remote origin servers**. If you're
+interested in hosting your origin server with Agentic's infrastructure, please
+[reach out to us](/contact) and we'll be happy to help you get set up.
+
+<Note>
+  Remote origin servers are important because they allow for maximum flexibility
+  with how you author and host your MCP server or OpenAPI service.
+
+By cleanly separating between Agentic's MCP gateway and your remote origin server, Agentic can support origin servers written in any language or frameworka and deployed to any cloud.
+
+</Note>
+
+### Remote Origin MCP Server
+
+Agentic supports remote MCP servers hosted externally on any public network.
+
+Your MCP server must support the Streamable HTTP transport and use a secure `https` URL.
+
+See [Configuring your origin MCP server](/publishing/config#mcp-origin-server) for more details.
+
+```ts agentic.config.ts
+import { defineConfig } from '@agentic/platform'
+
+export default defineConfig({
+  name: 'Example remote MCP server',
+  origin: {
+    type: 'mcp',
+    url: 'https://example.com/mcp'
+  }
+})
+```
+
+### Remote Origin OpenAPI Service
+
+Agentic supports remote OpenAPI services hosted externally on any public network.
+
+Your OpenAPI service must use OpenAPI 3.x and use a secure `https` URL.
+
+See [Configuring your origin OpenAPI service](/publishing/config#open-api-origin-server) for more details.
+
+```ts agentic.config.ts
+import { defineConfig } from '@agentic/platform'
+
+export default defineConfig({
+  name: 'Example remote OpenAPI service',
+  origin: {
+    type: 'openapi',
+    url: 'https://example.com/openapi',
+    spec: 'https://example.com/openapi.json'
+  }
+})
+```
+
+## Deploying your origin server to Agentic
+
+<Note>
+  **Agentic currently only supports remote origin servers**. If you're
+  interested in hosting your origin server with Agentic's infrastructure, please
+  [reach out to us](/contact) and we'll be happy to help you get set up.
+</Note>

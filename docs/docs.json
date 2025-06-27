@@ -52,12 +52,7 @@
         "groups": [
           {
             "group": "Getting Started",
-            "pages": [
-              "publishing/index",
-              "publishing/quickstart",
-              "publishing/origin-metadata",
-              "publishing/origin-security"
-            ]
+            "pages": ["publishing/index", "publishing/quickstart"]
           },
           {
             "group": "Publishing Guides",
@@ -69,6 +64,15 @@
             ]
           },
           {
+            "group": "Origin Servers",
+            "pages": [
+              "publishing/origin/index",
+              "publishing/origin/metadata",
+              "publishing/origin/security"
+            ]
+          },
+
+          {
             "group": "Config",
             "pages": [
               "publishing/config/index",
@@ -76,8 +80,7 @@
               "publishing/config/pricing",
               "publishing/config/rate-limits",
               "publishing/config/caching",
-              "publishing/config/tool-config",
-              "publishing/config/examples"
+              "publishing/config/tool-config"
             ]
           }
         ]
