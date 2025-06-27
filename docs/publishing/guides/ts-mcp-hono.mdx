@@ -3,7 +3,7 @@ title: TS MCP Hono
 description: This guide shows how to publish an MCP server to Agentic using TypeScript and Hono's MCP support.
 ---
 
-[Hono](https://hono.dev) is a popular open source TypeScript framework for building HTTP servers, and [`@hono/mcp`](https://github.com/honojs/middleware/tree/main/packages/mcp) is a Hono middleware for serving MCP servers.
+[Hono](https://hono.dev) is a popular open source TypeScript framework for building HTTP servers, and [`@hono/mcp`](https://github.com/honojs/middleware/tree/main/packages/mcp) is an excellent middleware for exposing MCP servers.
 
 ## 1. Install dependencies
 
@@ -81,7 +81,7 @@ serve({ fetch: app.fetch, port: 8787 })
   docs](https://hono.dev/docs/getting-started/basic).
 </Note>
 
-## 3. Deploy your server
+## 3. Deploy your MCP server remotely
 
 Deploy your server publicly or use a tool like [ngrok](https://ngrok.com) to expose it to the internet.
 
