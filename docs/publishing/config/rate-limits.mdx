@@ -1,6 +1,6 @@
 ---
 title: Rate Limits
-description: Configure rate-limits for your product.
+description: Configure rate-limits for your project.
 ---
 
 Agentic's durable rate-limiting is built on top of Cloudflare's global infrastructure. Customize the default rate-limits, change them based on a customer's pricing plan, or create custom tool-specific overrides.
@@ -47,8 +47,7 @@ The default platform rate limit for `requests` is a limit of 1000 requests per m
 {
   enabled: true,
   interval: '1m',
-  limit: 1000,
-  mode: 'approximate'
+  limit: 1000
 }
 ```
 

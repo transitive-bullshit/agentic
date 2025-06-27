@@ -42,6 +42,7 @@
 - simplify `AgenticToolClient` and only require one package per TS LLM SDK
   - `createAISDKToolsFromIdentifier(projectIdentifier)`
 - add really strict free rate-limits to `@agentic/search`
+- add urls to db models (projects, deployments, consumers) so CLI users can easily debug
 
 ## TODO: Post-MVP
 

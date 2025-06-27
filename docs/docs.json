@@ -75,7 +75,7 @@
           },
 
           {
-            "group": "Config",
+            "group": "Project Config",
             "pages": [
               "publishing/config/index",
               "publishing/config/auth",

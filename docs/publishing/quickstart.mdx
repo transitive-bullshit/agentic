@@ -1,6 +1,67 @@
 ---
 title: Quick Start
-description: Run one command to turn your existing MCP server or OpenAPI service into a paid MCP product.
+description: Deploy your first MCP product to Agentic in minutes.
 ---
 
-**TODO**
+## Do you have an existing API?
+
+<Columns cols={2}>
+  <Card
+    title='Existing MCP Server'
+    href='/publishing/guides/existing-mcp-server'
+    icon='server'
+  >
+    Quick start based on an existing MCP server.
+  </Card>
+
+  <Card
+    title='Existing OpenAPI Service'
+    href='/publishing/guides/existing-openapi-service'
+    icon='cloud'
+  >
+    Quick start based on an existing OpenAPI service.
+  </Card>
+</Columns>
+
+## Create a new project from scratch
+
+<Tabs>
+<Tab title="TypeScript">
+<Columns cols={2}>
+  <Card
+    title='TS FastMCP Server'
+    href='/publishing/guides/ts-fastmcp'
+    icon='bolt'
+  >
+    Create a new MCP server and deploy it to Agentic using the TS `fastmcp` package.
+  </Card>
+
+<Card
+  title='TS MCP Hono'
+  href='/publishing/guides/ts-mcp-hono'
+  icon='fire-flame-curved'
+>
+  Create a new MCP server and deploy it to Agentic using `hono` and `@hono/mcp`.
+</Card>
+
+  <Card
+    title='TS OpenAPI Hono'
+    href='/publishing/guides/ts-openapi-hono'
+    icon='webhook'
+  >
+    Create a new OpenAPI server and deploy it to Agentic (as an MCP product!) using `hono` and `@hono/zod-openapi`.
+  </Card>
+</Columns>
+</Tab>
+
+<Tab title='Python'>
+  <Columns cols={2}>
+    <Card
+      title='Python FastMCP Server'
+      href='/publishing/guides/py-fastmcp'
+      icon='python'
+    />
+  </Columns>
+</Tab>
+
+</Tabs>
