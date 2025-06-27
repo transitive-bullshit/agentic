@@ -59,8 +59,10 @@
             "pages": [
               "publishing/guides/existing-mcp-server",
               "publishing/guides/existing-openapi-service",
+              "publishing/guides/ts-fastmcp",
               "publishing/guides/ts-mcp-hono",
-              "publishing/guides/ts-openapi-hono"
+              "publishing/guides/ts-openapi-hono",
+              "publishing/guides/py-fastmcp"
             ]
           },
           {
