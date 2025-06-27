@@ -1,13 +1,9 @@
 ---
 title: Tool Config
-description: Configure tool-specific settings for your Agentic product.
+description: Configure tool-specific settings for your product.
 ---
 
-Optional list of tool configs to override the default behavior of specific tools.
-
-Make sure the tool `name` matches the origin server's tool names, either via its MCP server or OpenAPI operationIds.
-
-Tool names are expected to be unique and stable across deployments.
+`toolConfigs` is an optional array of tool configs which may be used to override the default gateway behavior for specific tools.
 
 With `toolConfigs`, tools can be disabled, set custom rate-limits, customize reporting usage for metered billing, and they can also override behavior for different pricing plans.
 
@@ -15,13 +11,16 @@ For example, you may want to disable certain tools on a `free` pricing plan or r
 
 Note that tool-specific configs override the defaults defined in pricing plans.
 
-If a tool is defined on the origin server but not specified in `toolConfigs`, it will use the default behavior of the Agentic API gateway.
+If a tool is defined on the origin server but not specified in `toolConfigs`, it will use the default behavior of the Agentic MCP gateway.
 
 ## Tool Config
 
 <ResponseField name='name' type='string' required>
   The name of the tool, which acts as a unique, stable identifier for the tool
   across deployments.
+
+Make sure the tool `name` matches the origin server's tool names, either via its MCP server or OpenAPI operationIds.
+
 </ResponseField>
 
 <ResponseField name='enabled' type='boolean' default='true'>

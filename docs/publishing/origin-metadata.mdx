@@ -3,6 +3,8 @@ title: Origin Metadata
 description: Agentic's MCP Gateway passes metadata to your origin server.
 ---
 
+## Metadata
+
 <Tabs>
   <Tab title='MCP Origin Server'>
 Agentic's MCP Gateway will always include the following metadata in all tool calls within the `_meta.agentic` field.
@@ -151,69 +153,3 @@ Possible values are `incomplete`, `incomplete_expired`, `trialing`, `active`, `p
 If a customer doesn't provide an API key for their MCP or HTTP call, Agentic's MCP Gateway will default them to your project's `free` pricing plan with `isCustomerSubscriptionActive` set to `false`.
 
 This means they'll be subject to your project's `free` pricing plan's [rate limits](/publishing/config/rate-limits), which is important to protect your origin server from abuse.
-
-## Securing your origin server
-
-Agentic's MCP Gateway will always pass a proxy secret when making tool calls to your origin server (either as `_meta.agentic.agenticProxySecret` for MCP origin servers or as an `x-agentic-proxy-secret` header for OpenAPI origin servers).
-
-You can find this secret key in your Agentic project's dashboard settings.
-
-You'll want to set this secret key in your origin server's environment variables and use it to protect against unauthorized requests.
-
-Note that this is only necessary if your origin server is deployed externally to a public network.
-
-### Securing an MCP origin server
-
-```ts
-// This is example pseudocode for how you might protect your origin MCP
-// server to ensure only calls from Agentic's MCP Gateway are allowed.
-if (
-  (_meta?.agentic as any)?.agenticProxySecret !==
-  process.env.AGENTIC_PROXY_SECRET
-) {
-  return {
-    content: [
-      {
-        type: 'text',
-        text: 'Unauthorized'
-      }
-    ]
-  }
-}
-```
-
-### Securing an OpenAPI origin server
-
-```ts
-// This is example pseudocode for how you might protect your origin OpenAPI
-// service to ensure only calls from Agentic's MCP Gateway are allowed.
-if (
-  request.headers.get('x-agentic-proxy-secret') !==
-  process.env.AGENTIC_PROXY_SECRET
-) {
-  return {
-    status: 401,
-    body: {
-      error: 'Unauthorized'
-    }
-  }
-}
-```
-
-### Restricting IP addresses
-
-You can also protecting your origin server by restricting HTTP calls to specific IP addresses used by Agentic's MCP gateway.
-
-This is currently a private beta feature. If you're interested in using it, please [get in touch](/contact).
-
-### Signed HTTP requests
-
-You can also protecting your origin OpenAPI server by requiring all HTTP requests to be signed with your project's proxy secret.
-
-This is currently a private beta feature. If you're interested in using it, please [get in touch](/contact).
-
-### Signed MCP requests
-
-[MCP currently doesn't support signed requests](https://github.com/modelcontextprotocol/modelcontextprotocol/discussions/461).
-
-If you're interested in this feature, please [get in touch](/contact).

@@ -1,9 +1,9 @@
 ---
 title: Pricing Config
-description: Configure pricing for your Agentic product.
+description: Configure pricing for your product.
 ---
 
-Charge for your Agentic product with a flexible, declarative pricing model built on top of [Stripe](https://stripe.com).
+Charge for your Agentic product with a flexible, declarative pricing model built on top of [Stripe](https://stripe.com)'s subscription billing.
 
 Agentic supports almost any combination of **fixed** and **usage-based billing** billing models, both at the MCP level, at the tool-call level, and at the custom metric level (e.g., tokens, image transformations, etc).
 
@@ -13,7 +13,7 @@ Agentic supports almost any combination of **fixed** and **usage-based billing**
   happy to help you set everything up.
 </Note>
 
-## Pricing Plan Config
+## Pricing Plan
 
 <ResponseField name="name" type="string" required>
 Display name for the pricing plan.
@@ -82,11 +82,11 @@ List of LineItems which are included in the PricingPlan.
 
 Note: Agentic currently supports a max of 20 LineItems per pricing plan.
 
-See [PricingPlanLineItem](#pricing-plan-line-item-config) for details.
+See [PricingPlanLineItem](#pricing-plan-line-item) for details.
 
 </ResponseField>
 
-## Pricing Plan Line Item Config
+## Pricing Plan Line Item
 
 Each Pricing Plan Line Item corresponds to one [Stripe Product](https://docs.stripe.com/api/products/object?api-version=2025-05-28.preview), one [Stripe Price](https://docs.stripe.com/api/prices/object?api-version=2025-05-28.preview), and possibly one [Stripe Meter](https://docs.stripe.com/api/billing/meter/object?api-version=2025-05-28.preview) if the line-item is `metered`.
 

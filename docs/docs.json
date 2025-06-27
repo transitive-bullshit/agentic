@@ -55,7 +55,8 @@
             "pages": [
               "publishing/index",
               "publishing/quickstart",
-              "publishing/origin-metadata"
+              "publishing/origin-metadata",
+              "publishing/origin-security"
             ]
           },
           {

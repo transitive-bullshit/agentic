@@ -1,5 +1,5 @@
 ---
-title: Overview
+title: Config Overview
 description: Configuring your Agentic project.
 ---
 
@@ -63,7 +63,7 @@ Examples: `1.0.0`, `0.0.1`, `5.0.1`, etc.
 
 <ResponseField name='origin' type='object' required>
   Origin API adapter used to configure the origin API server downstream from
-  Agentic's API gateway.
+  Agentic's MCP gateway.
 
 <Expandable title="properties" defaultOpen>
 <Tabs>
@@ -76,7 +76,7 @@ Examples: `1.0.0`, `0.0.1`, `5.0.1`, etc.
 
 Required base URL of the externally hosted origin MCP server.
 
-This URL must be accessible from Agentic's API gateway and support the Streamable HTTP transport.
+This URL must be accessible from Agentic's MCP gateway and support the Streamable HTTP transport.
 
 Must be a valid `https` URL.
 
@@ -116,7 +116,7 @@ Note that older OpenAPI versions are not supported.
 
 Defaults to a single free plan which is useful for developing and testing your project.
 
-See [PricingPlan](/publishing/config/pricing#pricing-plan-config) for details.
+See [PricingPlan](/publishing/config/pricing#pricing-plan) for details.
 
 </ResponseField>
 

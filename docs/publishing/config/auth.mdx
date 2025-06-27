@@ -1,6 +1,6 @@
 ---
 title: Auth Config
-description: Configure auth for your Agentic product.
+description: Configure auth for your product.
 ---
 
 Ship to production fast with Agentic's free, hosted authentication. Email & password, OAuth, GitHub, Google, Twitter, etc – if your origin API requires OAuth credentials, Agentic likely already supports it, and if not, [please let us know](/contact).
@@ -16,62 +16,7 @@ Your product's users will sign into Agentic, subscribe to your product using Str
 
 Agentic's MCP gateway will then track all usage of your product based on API keys.
 
-<Tabs>
-  <Tab title='MCP Origin Server'>
-Agentic's MCP Gateway will always include the following metadata in all tool calls within the `_meta.agentic` field.
-
-```ts
-export type AgenticMcpRequestMetadata = {
-  agenticProxySecret: string
-  sessionId: string
-  isCustomerSubscriptionActive: boolean
-
-  customerId?: string
-  customerSubscriptionStatus?: string
-  customerSubscriptionPlan?: string
-
-  userId?: string
-  userEmail?: string
-  userUsername?: string
-  userName?: string
-  userCreatedAt?: string
-  userUpdatedAt?: string
-
-  deploymentId: string
-  deploymentIdentifier: string
-  projectId: string
-  projectIdentifier: string
-
-  ip?: string
-} & (
-  | {
-      // If the customer has an active subscription, these fields are guaranteed
-      // to be present in the metadata.
-      isCustomerSubscriptionActive: true
-
-      customerId: string
-      customerSubscriptionStatus: string
-
-      userId: string
-      userEmail: string
-      userUsername: string
-      userCreatedAt: string
-      userUpdatedAt: string
-    }
-  | {
-      // If the customer does not have an active subscription, then the customer
-      // fields may or may not be present.
-      isCustomerSubscriptionActive: false
-    }
-)
-```
-
-If a customer doesn't provide an API key, they'll default to your `free` pricing plan with `isCustomerSubscriptionActive` set to `false`.
-
-</Tab>
-
-<Tab title='OpenAPI Origin Server'>TODO</Tab>
-</Tabs>
+See [Origin Metadata](/publishing/origin-metadata) for details on how Agentic's MCP gateway passes customer auth and subscription information to your origin server.
 
 ## Alpha Features
 
