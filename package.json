@@ -15,6 +15,7 @@
   "scripts": {
     "build": "turbo build --filter=!web",
     "dev": "turbo dev --continue --filter=!./examples/*",
+    "docs": "cd docs && mint dev",
     "clean": "turbo clean",
     "fix": "run-s fix:*",
     "fix:format": "prettier --write \"**/*.{js,ts,tsx}\"",
@@ -40,6 +41,7 @@
     "eslint-plugin-drizzle": "catalog:",
     "knip": "catalog:",
     "lint-staged": "catalog:",
+    "mint": "^4.1.97",
     "npm-run-all2": "catalog:",
     "only-allow": "catalog:",
     "prettier": "catalog:",

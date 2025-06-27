@@ -1,0 +1,93 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "name": "Agentic",
+  "theme": "maple",
+  "logo": {
+    "dark": "/media/agentic-logo-dark.svg",
+    "light": "/media/agentic-logo-light.svg"
+  },
+  "favicon": "/media/favicon.svg",
+  "background": {
+    "image": "/media/bg.png"
+  },
+  "colors": {
+    "primary": "#0D969D",
+    "light": "#13D3DC",
+    "dark": "#0D969D"
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Support",
+        "href": "mailto:support@agentic.so"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Dashboard",
+      "href": "https://agentic.so/app"
+    }
+  },
+  "banner": {
+    "content": "The new Agentic MCP Marketplace is now in public beta! 🎉",
+    "dismissible": true
+  },
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "MCP Marketplace",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": ["index"]
+          }
+        ]
+      },
+      {
+        "tab": "Publishing MCPs",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": ["publishing/index"]
+          }
+        ]
+      }
+    ],
+    "global": {
+      "anchors": [
+        {
+          "anchor": "Agentic",
+          "href": "https://agentic.so",
+          "icon": "house"
+        },
+        {
+          "anchor": "Marketplace",
+          "href": "https://agentic.so/marketplace",
+          "icon": "store"
+        },
+        {
+          "anchor": "Docs",
+          "href": "https://docs.agentic.so",
+          "icon": "book-open-cover"
+        },
+        {
+          "anchor": "GitHub",
+          "href": "https://github.com/transitive-bullshit/agentic",
+          "icon": "github"
+        }
+      ]
+    }
+  },
+  "footer": {
+    "socials": {
+      "x": "https://x.com/transitive_bs",
+      "github": "https://github.com/transitive-bullshit/agentic"
+    }
+  },
+  "seo": {
+    "metatags": {
+      "keywords": "agentic, agentic tools, MCP, Model Context Protocol, MCP gateway, API gateway, MCP marketplace, MCP API gateway, MCP monetization, production MCPs, deploy MCPs, publish MCPs, ai, AI tools, AI agents, LLM tools, LLM function calling, LLM tool calling, MCP servers, MCP server provider, MCP server deployment, OpenAPI to MCP, OpenAPI to MCP server",
+      "author": "Travis Fischer"
+    }
+  }
+}

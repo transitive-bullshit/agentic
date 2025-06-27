@@ -105,6 +105,7 @@
   - https://datatracker.ietf.org/doc/draft-ietf-httpapi-ratelimit-headers/
 - make json `$schema` public for `agentic.config.json`
 - handle hosting of deployment and user images
+- about page inspiration: https://mastra.ai/about
 
 ## Connect
 
