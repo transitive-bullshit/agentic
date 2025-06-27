@@ -55,7 +55,7 @@
             "pages": ["publishing/index", "publishing/quickstart"]
           },
           {
-            "group": "Publishing Guides",
+            "group": "Quick Start Guides",
             "pages": [
               "publishing/guides/existing-mcp-server",
               "publishing/guides/existing-openapi-service",

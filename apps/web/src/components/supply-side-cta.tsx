@@ -6,7 +6,11 @@ import Link from 'next/link'
 import { HeroButton } from '@/components/hero-button'
 import { Button } from '@/components/ui/button'
 import { GitHubIcon } from '@/icons/github'
-import { calendarBookingUrl, docsQuickStartUrl, githubUrl } from '@/lib/config'
+import {
+  calendarBookingUrl,
+  docsPublishingQuickStartUrl,
+  githubUrl
+} from '@/lib/config'
 
 import { useAgentic } from './agentic-provider'
 import { GitHubStarCounter } from './github-star-counter'
@@ -24,8 +28,8 @@ export function SupplySideCTA({
         <Link
           href={
             ctx?.isAuthenticated
-              ? docsQuickStartUrl
-              : `/signup?${sanitizeSearchParams({ next: docsQuickStartUrl })}`
+              ? docsPublishingQuickStartUrl
+              : `/signup?${sanitizeSearchParams({ next: docsPublishingQuickStartUrl })}`
           }
         >
           Get Started
