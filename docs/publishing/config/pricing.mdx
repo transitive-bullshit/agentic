@@ -419,6 +419,18 @@ export default defineConfig({
 
 </Tabs>
 
+## Declarative Pricing
+
+<Info>
+  Agentic takes care of creating and managing all Stripe resources for you based
+  on your project's simple declarative JSON-based pricing config.
+
+Every time you make a chance to your project's pricing and create a new deployment, Agentic will lazily upsert any related Stripe resources (products, prices, meters, subscriptions, customers, etc).
+
+If a particular Stripe resource hasn't changed between deployments, Agentic will continue using the existing Stripe resources, which is important for customers who may have signed up for subscriptions before you made a change to your pricing.
+
+</Info>
+
 ## Pricing Help
 
 <Note>
