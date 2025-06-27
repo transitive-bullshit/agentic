@@ -1,0 +1,86 @@
+---
+title: Auth Config
+description: Configure auth for your Agentic product.
+---
+
+Ship to production fast with Agentic's free, hosted authentication. Email & password, OAuth, GitHub, Google, Twitter, etc – if your origin API requires OAuth credentials, Agentic likely already supports it, and if not, [please let us know](/contact).
+
+Currently, Agentic supports the following auth providers:
+
+- Email & password
+- GitHub
+
+## How it works
+
+Your product's users will sign into Agentic, subscribe to your product using Stripe, and then be given an API key to use with their tool calls.
+
+Agentic's MCP gateway will then track all usage of your product based on API keys.
+
+<Tabs>
+  <Tab title='MCP Origin Server'>
+Agentic's MCP Gateway will always include the following metadata in all tool calls within the `_meta.agentic` field.
+
+```ts
+export type AgenticMcpRequestMetadata = {
+  agenticProxySecret: string
+  sessionId: string
+  isCustomerSubscriptionActive: boolean
+
+  customerId?: string
+  customerSubscriptionStatus?: string
+  customerSubscriptionPlan?: string
+
+  userId?: string
+  userEmail?: string
+  userUsername?: string
+  userName?: string
+  userCreatedAt?: string
+  userUpdatedAt?: string
+
+  deploymentId: string
+  deploymentIdentifier: string
+  projectId: string
+  projectIdentifier: string
+
+  ip?: string
+} & (
+  | {
+      // If the customer has an active subscription, these fields are guaranteed
+      // to be present in the metadata.
+      isCustomerSubscriptionActive: true
+
+      customerId: string
+      customerSubscriptionStatus: string
+
+      userId: string
+      userEmail: string
+      userUsername: string
+      userCreatedAt: string
+      userUpdatedAt: string
+    }
+  | {
+      // If the customer does not have an active subscription, then the customer
+      // fields may or may not be present.
+      isCustomerSubscriptionActive: false
+    }
+)
+```
+
+If a customer doesn't provide an API key, they'll default to your `free` pricing plan with `isCustomerSubscriptionActive` set to `false`.
+
+</Tab>
+
+<Tab title='OpenAPI Origin Server'>TODO</Tab>
+</Tabs>
+
+## Alpha Features
+
+### MCP OAuth
+
+Agentic's MCP Gateway is designed to interop with MCP's built-in OAuth support, but this functionality is currently in alpha and not enabled publicly by default. If you're interested in using your origin server's MCP authentication support, [please let us know](/contact).
+
+### Custom OAuth Providers
+
+Agentic's MCP Gateway is designed to support any third-party OAuth provider (Google, Twitter / X, Slack, Airtable, Shopify, etc), but this functionality is currently in alpha and not enabled publicly by default.
+
+If you're interested in using a different OAuth provider or want your customers to use your own OAuth client credentials or custom scopes, [please let us know](/contact).

@@ -16,8 +16,7 @@ export const copyright = `© ${new Date().getFullYear()} Agentic. All rights res
 export const githubUrl = 'https://github.com/transitive-bullshit/agentic'
 
 // TODO: make an agentic-specific calendar for this
-export const calendarBookingUrl =
-  'https://cal.com/travis-fischer/15min?overlayCalendar=true'
+export const calendarBookingUrl = 'https://cal.com/travis-fischer/15min'
 export const docsUrl = 'https://docs.agentic.so'
 export const docsQuickStartUrl = `${docsUrl}/quick-start`
 export const docsMarketplaceUrl = `${docsUrl}/marketplace`

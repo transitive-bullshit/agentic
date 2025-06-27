@@ -1,0 +1,428 @@
+---
+title: Pricing Config
+description: Configure pricing for your Agentic product.
+---
+
+Charge for your Agentic product with a flexible, declarative pricing model built on top of [Stripe](https://stripe.com).
+
+Agentic supports almost any combination of **fixed** and **usage-based billing** billing models, both at the MCP level, at the tool-call level, and at the custom metric level (e.g., tokens, image transformations, etc).
+
+<Note>
+  Pricing can feel a little complicated to set up. Feel free to [reach out to
+  us](/contact) once you're ready to start charging for your product, and I'd be
+  happy to help you set everything up.
+</Note>
+
+## Pricing Plan Config
+
+<ResponseField name="name" type="string" required>
+Display name for the pricing plan.
+
+Examples: "Free", "Starter Monthly", "Pro Annual", etc.
+
+</ResponseField>
+
+<ResponseField name='slug' type='string' required>
+A unique slug for the pricing plan which acts as a stable identifier across deployments.
+
+Should be lower-kebab-cased.
+Should be stable across deployments.
+
+For all plans aside from `free`, the `slug` should include the `interval`
+as a suffix so pricing plans can be uniquely differentiated from each
+other across billing intervals.
+
+Examples: `free`, `starter-monthly`, `pro-annual`, etc.
+
+</ResponseField>
+
+<ResponseField name='interval' type='string' default='month'>
+The frequency at which this subscription is billed.
+
+One of `day`, `week`, `month`, or `year`.
+
+[Stripe docs](https://docs.stripe.com/api/prices/object?api-version=2025-02-24.acacia#price_object-recurring-interval)
+
+</ResponseField>
+
+<ResponseField name='description' type='string'>
+  Optional description of the pricing plan (UI-only).
+</ResponseField>
+
+<ResponseField name='features' type='array'>
+  Optional list of features of the pricing plan (UI-only; array of strings).
+</ResponseField>
+
+<ResponseField name='trialPeriodDays' type='number'>
+  Optional number of days for a free trial period when a customer signs up for a
+  new subscription.
+
+[Stripe docs](https://docs.stripe.com/api/subscriptions/create?api-version=2025-05-28.preview#create_subscription-trial_period_days)
+
+</ResponseField>
+
+<ResponseField name='rateLimit' type='object'>
+Optional rate limit to enforce for customers on this pricing plan.
+
+You can use this to limit the number of API requests that can be made by
+a customer during a given interval.
+
+If not set, the pricing plan will inherit the default platform rate-limit
+set by `defaultRateLimit` in the Agentic project config.
+
+You can disable rate-limiting for this pricing plan by setting
+`rateLimit.enabled` to `false`.
+
+See [Rate Limits](/publishing/config/rate-limits) for more details.
+
+</ResponseField>
+
+<ResponseField name='lineItems' type='array' required>
+List of LineItems which are included in the PricingPlan.
+
+Note: Agentic currently supports a max of 20 LineItems per pricing plan.
+
+See [PricingPlanLineItem](#pricing-plan-line-item-config) for details.
+
+</ResponseField>
+
+## Pricing Plan Line Item Config
+
+Each Pricing Plan Line Item corresponds to one [Stripe Product](https://docs.stripe.com/api/products/object?api-version=2025-05-28.preview), one [Stripe Price](https://docs.stripe.com/api/prices/object?api-version=2025-05-28.preview), and possibly one [Stripe Meter](https://docs.stripe.com/api/billing/meter/object?api-version=2025-05-28.preview) if the line-item is `metered`.
+
+<ResponseField name='slug' type='string' required>
+Slugs act as the primary key for LineItems. They should be lower-cased and
+kebab-cased ("base", "requests", "image-transformations").
+
+The `base` slug is reserved for a plan's default `licensed` line-item.
+
+The `requests` slug is reserved for charging using `metered` billing based
+on the number of request made during a given billing interval.
+
+All other PricingPlanLineItem `slugs` are considered custom LineItems.
+
+Should be stable across deployments, so if a slug refers to one type of
+product / line-item / metric in one deployment, it should refer to the same
+product / line-item / metric in future deployments, even if they are
+configured differently. If you are switching between a licensed and metered
+line-item across deployments, they must use different slugs.
+
+</ResponseField>
+
+<ResponseField name='label' type='string'>
+Optional label for the line-item which will be displayed on customer bills.
+
+If unset, the line-item's `slug` will be used as the label.
+
+[Stripe Docs](https://docs.stripe.com/api/products/object?api-version=2025-02-24.acacia#product_object-unit_label)
+
+</ResponseField>
+
+<ResponseField name='usageType' type='string' required>
+  The type of usage to charge for. Either `licensed` or `metered`.
+
+[Stripe docs](https://docs.stripe.com/api/prices/object?api-version=2025-02-24.acacia#price_object-recurring-usage_type)
+
+</ResponseField>
+
+<Tabs>
+<Tab title="Licensed Line Item">
+Licensed line-items are used to charge for **fixed-price services**.
+
+<ResponseField name='usageType' type='string' required>
+  The type of usage to charge for. `licensed` in this case.
+
+[Stripe docs](https://docs.stripe.com/api/prices/object?api-version=2025-02-24.acacia#price_object-recurring-usage_type)
+
+</ResponseField>
+
+<ResponseField name='amount' type='number' required>
+The fixed amount to charge per billing interval.
+
+Specified in the smallest currency unit (e.g. cents for USD).
+
+So 100 = \$1.00 USD, 1000 = \$10.00 USD, etc.
+
+[Stripe docs](https://docs.stripe.com/api/prices/create?api-version=2025-05-28.preview#create_price-unit_amount)
+
+</ResponseField>
+</Tab>
+
+<Tab title="Metered Line Item">
+Metered line-items are used to charge for **usage-based services**.
+
+<ResponseField name='usageType' type='string' required>
+  The type of usage to charge for. `metered` in this case.
+
+[Stripe docs](https://docs.stripe.com/api/prices/object?api-version=2025-02-24.acacia#price_object-recurring-usage_type)
+
+</ResponseField>
+
+<ResponseField name='unitLabel' type='string'>
+Optional label for the line-item which will be displayed on customer bills.
+
+If unset, the line-item's `slug` will be used as the unit label.
+
+[Stripe Docs](https://docs.stripe.com/api/products/object?api-version=2025-02-24.acacia#product_object-unit_label)
+
+</ResponseField>
+
+<ResponseField name='billingScheme' type='string' required>
+Describes how to compute the price per period. Either `per_unit` or `tiered`.
+
+`per_unit` indicates that the fixed amount (specified in `unitAmount`) will be charged per unit of total usage.
+
+`tiered` indicates that the unit pricing will be computed using a tiering strategy as defined using `tiers` and `tiersMode`.
+
+[Stripe docs](https://docs.stripe.com/api/prices/object?api-version=2025-02-24.acacia#price_object-billing_scheme)
+
+</ResponseField>
+
+<ResponseField name='unitAmount' type='number' required>
+The fixed amount to charge per unit of usage.
+
+Only applicable for `per_unit` billing schemes.
+
+Specified in the smallest currency unit (e.g. cents for USD).
+
+So 100 = \$1.00 USD, 1000 = \$10.00 USD, etc.
+
+[Stripe docs](https://docs.stripe.com/api/prices/object?api-version=2025-02-24.acacia#price_object-unit_amount)
+
+</ResponseField>
+
+<ResponseField name='tiersMode' type='string'>
+Defines if the tiering price should be `graduated` or `volume` based.
+
+In `volume`-based tiering, the maximum quantity within a period
+determines the per unit price.
+
+In `graduated`-based tiering, the per-unit price changes successively
+as the quantity grows.
+
+This field requires `billingScheme` to be set to `tiered`.
+
+[Stripe docs](https://docs.stripe.com/api/prices/object?api-version=2025-02-24.acacia#price_object-tiers_mode)
+
+</ResponseField>
+
+<ResponseField name='tiers' type='array'>
+Pricing tiers for `tiered` billing schemes.
+
+This field requires `billingScheme` to be set to `tiered`.
+
+One of `unitAmount` or `flatAmount` must be provided, but not both.
+
+[Stripe docs](https://docs.stripe.com/api/prices/object?api-version=2025-02-24.acacia#price_object-tiers)
+
+<Expandable title="properties">
+<ResponseField name='upTo' type='number' required>
+  The maximum quantity of usage for this tier.
+
+Should be a number or `inf` for the maximum tier.
+
+</ResponseField>
+
+<ResponseField name='unitAmount' type='number'>
+The fixed amount to charge per unit of usage for this pricing tier.
+
+Specified in the smallest currency unit (e.g. cents for USD).
+
+So 100 = \$1.00 USD, 1000 = \$10.00 USD, etc.
+
+</ResponseField>
+
+<ResponseField name='flatAmount' type='number'>
+The fixed amount to charge per billing interval for this pricing tier.
+
+Specified in the smallest currency unit (e.g. cents for USD).
+
+So 100 = \$1.00 USD, 1000 = \$10.00 USD, etc.
+
+</ResponseField>
+
+</Expandable>
+
+</ResponseField>
+
+<ResponseField name='defaultAggregation' type='object' default="{ formula: 'sum' }">
+Specifies how events are aggregated for the Stripe Meter.
+
+[Stripe docs](https://docs.stripe.com/api/billing/meter/create?api-version=2025-02-24.acacia#create_billing_meter-default_aggregation)
+
+<Expandable title="properties">
+<ResponseField name='formula' type='string' default='sum' required>
+Specifies how events are aggregated for a Stripe Meter.
+
+Allowed values:
+
+- `sum` - Sum each event's value during the period.
+- `count` - Count the number of events during the period.
+
+If not set, `sum` will be used.
+
+  </ResponseField>
+
+</Expandable>
+
+</ResponseField>
+
+<ResponseField name='transformQuantity' type='object'>
+Optional transformation to apply to the reported usage or set quantity before computing the amount billed.
+
+Cannot be combined with `tiers`.
+
+[Stripe docs](https://docs.stripe.com/api/prices/object?api-version=2025-02-24.acacia#price_object-transform_quantity)
+
+<Expandable title="properties">
+<ResponseField name='divideBy' type='number' required>
+Divide usage by this number.
+
+Must be a positive number.
+
+[Stripe docs](https://docs.stripe.com/api/prices/object?api-version=2025-02-24.acacia#price_object-transform_quantity-divide_by)
+
+</ResponseField>
+
+<ResponseField name='round' type='string' required>
+After division, either round the result `up` or `down`.
+
+[Stripe docs](https://docs.stripe.com/api/prices/object?api-version=2025-02-24.acacia#price_object-transform_quantity-round)
+
+</ResponseField>
+
+</Expandable>
+
+</ResponseField>
+
+</Tab>
+
+</Tabs>
+
+## Example Pricing Plans
+
+<Tabs>
+<Tab title="Default Free Plan">
+
+This example shows a free monthly pricing plan which is used by default for projects that don't specify any pricing plans.
+
+```ts agentic.config.ts
+import { defineConfig } from '@agentic/platform'
+
+export default defineConfig({
+  // ...
+  pricingPlans: [
+    {
+      name: 'Free',
+      slug: 'free',
+      lineItems: [
+        {
+          slug: 'base',
+          usageType: 'licensed',
+          amount: 0
+        }
+      ]
+    }
+  ]
+})
+```
+
+</Tab>
+
+<Tab title="Freemium + $4.99 Basic Plan">
+
+This example has 2 pricing plans, the default free plan and a fixed-price $4.99 / month basic plan with a 7-day trial.
+
+```ts agentic.config.ts
+import { defaultFreePricingPlan, defineConfig } from '@agentic/platform'
+
+export default defineConfig({
+  // ...
+  pricingPlans: [
+    defaultFreePricingPlan,
+    {
+      name: 'Basic',
+      slug: 'basic',
+      trialPeriodDays: 7,
+      lineItems: [
+        {
+          slug: 'base',
+          usageType: 'licensed',
+          amount: 499 // $4.99 USD
+        }
+      ]
+    }
+  ]
+})
+```
+
+</Tab>
+
+<Tab title="Pay-As-You-Go">
+
+```ts agentic.config.ts
+import { defineConfig } from '@agentic/platform'
+
+export default defineConfig({
+  // ...
+  pricingPlans: [
+    {
+      name: 'Free',
+      slug: 'free',
+      lineItems: [
+        {
+          slug: 'base',
+          usageType: 'licensed',
+          amount: 0
+        }
+      ],
+      // Free but limited to 20 requests per day
+      rateLimit: {
+        limit: 20,
+        interval: '1d'
+      }
+    },
+    {
+      name: 'Pay-As-You-Go',
+      slug: 'pay-as-you-go',
+      lineItems: [
+        {
+          slug: 'requests',
+          usageType: 'metered',
+          billingScheme: 'tiered',
+          tiersMode: 'volume',
+          // $0.00467 USD per request up to 999 requests per month
+          // then $0.00053 USD for unlimited further requests that month
+          tiers: [
+            {
+              upTo: 999,
+              unitAmount: 0.467
+            },
+            {
+              upTo: 'inf',
+              unitAmount: 0.053
+            }
+          ]
+        }
+      ],
+      // Limit to 1000 requests per day
+      rateLimit: {
+        limit: 1000,
+        interval: '1d'
+      }
+    }
+  ]
+})
+```
+
+</Tab>
+
+</Tabs>
+
+## Pricing Help
+
+<Note>
+  Pricing can feel a little complicated to set up. Feel free to [reach out to
+  us](/contact) once you're ready to start charging for your product, and I'd be
+  happy to help you set everything up.
+</Note>

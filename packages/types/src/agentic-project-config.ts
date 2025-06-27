@@ -188,7 +188,7 @@ To add support for annual pricing plans, for example, you can use: \`['month', '
       .default(['month']),
 
     /**
-     * Optional default rate limits to enforce for all pricing plans.
+     * Optional default rate limits to enforce across all pricing plans.
      *
      * To disable the default rate-limit, set `defaultRateLimit.enabled` to
      * `false`.
@@ -202,7 +202,8 @@ To add support for annual pricing plans, for example, you can use: \`['month', '
       .default(defaultRequestsRateLimit),
 
     /**
-     * Optional list of tool configs to customize the behavior of tools.
+     * Optional list of tool configs to override the default behavior of
+     * specific tools.
      *
      * Make sure the tool `name` matches the origin server's tool names, either
      * via its MCP server or OpenAPI operationIds.

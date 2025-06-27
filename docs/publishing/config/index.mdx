@@ -1,0 +1,169 @@
+---
+title: Overview
+description: Configuring your Agentic project.
+---
+
+Every Agentic project needs a config file (`agentic.config.ts`, `agentic.config.js`, or `agentic.config.json`) to define the project's metadata, pricing, rate-limits, and any tool-specific behavior overrides.
+
+<Note>
+  Configuring your project can feel a little overwhelming. Feel free to [reach
+  out to us](/contact) if you're considering using Agentic's MCP Gateway, and
+  I'd be happy to help walk you through getting your product set up for success.
+</Note>
+
+## Config Fields
+
+<ResponseField name='name' type='string' required>
+Display name for your project.
+
+Max length 1024 characters.
+
+</ResponseField>
+
+<ResponseField name='slug' type='string' required>
+Unique project slug.
+
+Must be ascii-only, lower-case, and kebab-case with no spaces between 1 and 256 characters.
+
+The project's fully qualified identifier will be `@namespace/slug`, where
+the `namespace` is determined by the author's `username` or team slug.
+
+If not provided, it will be derived by slugifying `name`.
+
+</ResponseField>
+
+<ResponseField name='description' type='string' required>
+  Short description of the project.
+
+Should be no longer than a few lines.
+
+</ResponseField>
+
+<ResponseField name='version' type='string'>
+Optional semantic version of the project as a [semver](https://semver.org) string.
+
+Examples: `1.0.0`, `0.0.1`, `5.0.1`, etc.
+
+</ResponseField>
+
+<ResponseField name='readme' type='string'>
+  Optional embedded markdown readme documenting the project. Supports
+  GitHub-flavored markdown.
+</ResponseField>
+
+<ResponseField name='iconUrl' type='string'>
+  Optional logo image URL to use for the project. Logos should have a square
+  aspect ratio.
+
+</ResponseField>
+
+<ResponseField name='sourceUrl' type='string'>
+  Optional URL to the source code of the project (eg, GitHub repo).
+</ResponseField>
+
+<ResponseField name='origin' type='object' required>
+  Origin API adapter used to configure the origin API server downstream from
+  Agentic's API gateway.
+
+<Expandable title="properties" defaultOpen>
+<Tabs>
+  <Tab title="MCP origin server">
+    <ResponseField name="type" type="string" required>
+      The type of origin server. `mcp` in this case.
+    </ResponseField>
+
+    <ResponseField name="url" type="string" required>
+
+Required base URL of the externally hosted origin MCP server.
+
+This URL must be accessible from Agentic's API gateway and support the Streamable HTTP transport.
+
+Must be a valid `https` URL.
+
+</ResponseField>
+
+  </Tab>
+
+  <Tab title="OpenAPI origin server">
+    <ResponseField name="type" type="string" required>
+      The type of origin server. `openapi` in this case.
+    </ResponseField>
+
+    <ResponseField name="url" type="string" required>
+
+Required base URL of the externally hosted origin API server.
+
+Must be a valid `https` URL.
+
+</ResponseField>
+
+    <ResponseField name="spec" type="string" required>
+
+Local file path or URL to an OpenAPI 3.x spec describing the origin API server.
+
+May also be an embedded string containing a JSON stringified OpenAPI 3.x spec.
+
+Note that older OpenAPI versions are not supported.
+
+</ResponseField>
+  </Tab>
+</Tabs>
+</Expandable>
+</ResponseField>
+
+<ResponseField name='pricingPlans' type='array'>
+  List of PricingPlans configuring which Stripe subscriptions should be available for the project.
+
+Defaults to a single free plan which is useful for developing and testing your project.
+
+See [PricingPlan](/publishing/config/pricing#pricing-plan-config) for details.
+
+</ResponseField>
+
+<ResponseField name='pricingIntervals' type='array'>
+Optional list of billing intervals to enable in pricing plans.
+
+Defaults to a single monthly interval `['month']`.
+
+To add support for annual pricing plans, for example, you can use:
+`['month', 'year']`.
+
+Note that for every pricing interval, you must define a corresponding set
+of PricingPlans in the `pricingPlans` array. If you only have one pricing
+interval (like the default `month` interval), `pricingPlans` don't need to
+specify their `interval` property. Otherwise, all PricingPlans must
+specify their `interval` property to differentiate between different
+pricing intervals.
+
+</ResponseField>
+
+<ResponseField name='defaultRateLimit' type='object'>
+Optional default rate limits to enforce across all pricing plans.
+
+If not set, a default platform rate-limit of 1000 requests per minute per customer will be used.
+
+To disable the default rate-limit, set `defaultRateLimit.enabled` to
+`false`.
+
+Note that pricing-plan-specific rate-limits override this default (via
+`pricingPlans`), and tool-specific rate-limits may override both default
+and pricing-plan-specific rate-limits (via `toolConfigs`).
+
+See [Rate Limits](/publishing/config/rate-limits) for more details.
+
+</ResponseField>
+
+<ResponseField name='toolConfigs' type='array'>
+Optional list of tool configs to override the default behavior of specific tools.
+
+See [Tool Config](/publishing/config/tool-config) for details.
+
+</ResponseField>
+
+## Config Help
+
+<Note>
+  Configuring your project can feel a little overwhelming. Feel free to [reach
+  out to us](/contact) if you're considering using Agentic's MCP Gateway, and
+  I'd be happy to help walk you through getting your product set up for success.
+</Note>

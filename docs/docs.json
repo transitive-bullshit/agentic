@@ -10,6 +10,10 @@
   "background": {
     "image": "/media/bg.png"
   },
+  "appearance": {
+    "mode": "light",
+    "strict": true
+  },
   "colors": {
     "primary": "#0D969D",
     "light": "#13D3DC",
@@ -39,7 +43,7 @@
         "groups": [
           {
             "group": "Getting Started",
-            "pages": ["index"]
+            "pages": ["index", "marketplace/index"]
           }
         ]
       },
@@ -48,7 +52,32 @@
         "groups": [
           {
             "group": "Getting Started",
-            "pages": ["publishing/index"]
+            "pages": [
+              "publishing/index",
+              "publishing/quickstart",
+              "publishing/origin-metadata"
+            ]
+          },
+          {
+            "group": "Publishing Guides",
+            "pages": [
+              "publishing/guides/existing-mcp-server",
+              "publishing/guides/existing-openapi-service",
+              "publishing/guides/ts-mcp-hono",
+              "publishing/guides/ts-openapi-hono"
+            ]
+          },
+          {
+            "group": "Config",
+            "pages": [
+              "publishing/config/index",
+              "publishing/config/auth",
+              "publishing/config/pricing",
+              "publishing/config/rate-limits",
+              "publishing/config/caching",
+              "publishing/config/tool-config",
+              "publishing/config/examples"
+            ]
           }
         ]
       }
@@ -61,7 +90,7 @@
           "icon": "house"
         },
         {
-          "anchor": "Marketplace",
+          "anchor": "MCP Marketplace",
           "href": "https://agentic.so/marketplace",
           "icon": "store"
         },

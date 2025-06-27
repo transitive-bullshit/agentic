@@ -233,14 +233,13 @@ export const pricingPlanMeteredLineItemSchema =
         .object({
           /**
            * Specifies how events are aggregated for a Stripe Meter.
-           * Allowed values are `count` to count the number of events, `sum`
-           * to sum each event's value and `last` to take the last event's
-           * value in the window.
+           * Allowed values are `count` to count the number of events and `sum`
+           * to sum each event's value .
            *
            * Defaults to `sum`.
            */
           formula: z
-            .union([z.literal('sum'), z.literal('count'), z.literal('last')])
+            .union([z.literal('sum'), z.literal('count')])
             .default('sum')
         })
         .optional(),
@@ -482,7 +481,7 @@ export const pricingPlanSchema = z
       .string()
       .nonempty()
       .describe(
-        'Human-readable name for the pricing plan (eg, "Free", "Starter Monthly", "Pro Annual", etc)'
+        'Display name for the pricing plan (eg, "Free", "Starter Monthly", "Pro Annual", etc)'
       )
       .openapi('name', { example: 'Starter Monthly' }),
 
@@ -550,13 +549,13 @@ export const pricingPlanSchema = z
     rateLimit: rateLimitSchema.optional(),
 
     /**
-     * List of custom LineItems which are included in the PricingPlan.
+     * List of LineItems which are included in the PricingPlan.
      *
-     * Note: we currently support a max of 20 LineItems per plan.
+     * Note: Agentic currently supports a max of 20 LineItems per pricing plan.
      */
     lineItems: z.array(pricingPlanLineItemSchema).nonempty().max(20, {
       message:
-        'Stripe Checkout currently supports a max of 20 LineItems per subscription.'
+        'Agentic currently supports a max of 20 LineItems per pricing plan.'
     })
   })
   .describe(

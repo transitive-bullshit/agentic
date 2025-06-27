@@ -72,11 +72,6 @@ export default {
             .passthrough().shape
         },
         async (args, { _meta }) => {
-          console.log('search call', {
-            args,
-            _meta
-          })
-
           // Make sure the request is coming from Agentic
           if (
             (_meta?.agentic as any)?.agenticProxySecret !==
