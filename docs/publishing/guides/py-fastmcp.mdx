@@ -3,4 +3,54 @@ title: Python FastMCP
 description: This guide shows how to publish an MCP server to Agentic using the Python fastmcp package.
 ---
 
-**TODO**
+[Python's FastMCP](https://gofastmcp.com) is a popular [open source](https://github.com/jlowin/fastmcp) MCP server framework for Python.
+
+## 1. Install the `fastmcp` package
+
+<CodeGroup>
+
+```bash uv
+uv add fastmcp
+```
+
+```bash pip
+pip install fastmcp
+```
+
+</CodeGroup>
+
+## 2. Create a FastMCP server
+
+```py server.py
+from fastmcp import FastMCP
+
+mcp = FastMCP("Demo 🚀")
+
+@mcp.tool
+def add(a: int, b: int) -> int:
+    """Add two numbers"""
+    return a + b
+
+if __name__ == "__main__":
+    mcp.run(transport="http", host="127.0.0.1", port=8000, path="/mcp")
+```
+
+<Note>
+  Make sure to run your server with the `transport="http"` option to use the
+  Streamable HTTP transport.
+</Note>
+
+## 3. Deploy your server
+
+Deploy your server publicly or use a tool like [ngrok](https://ngrok.com) to expose it to the internet.
+
+<Warning>
+  Tools like `ngrok` expose your unauthenticated server to the internet. Only
+  run this command in a safe environment if you understand the risks.
+</Warning>
+
+We recommend deploying your server to a cloud provider like [render](https://render.com/docs/deploy-fastapi), [platform.sh](https://docs.platform.sh/languages/python.html), [porter](https://docs.porter.run/guides/fastapi/deploy-fastapi), or [fly.io](https://fly.io/docs/python/frameworks/fastapi/). Or one of the big boys [AWS](https://aws.amazon.com), [GCP](https://cloud.google.com), or [Azure](https://azure.microsoft.com).
+
+## 4. Deploy your origin MCP server to Agentic
+
+Now that you have a publicly available MCP server, you can follow the [existing MCP server guide](/publishing/guides/existing-mcp-server) to deploy it to Agentic.

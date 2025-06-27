@@ -3,4 +3,95 @@ title: TS MCP Hono
 description: This guide shows how to publish an MCP server to Agentic using TypeScript and Hono's MCP support.
 ---
 
-**TODO**
+[Hono](https://hono.dev) is a popular open source framework for building HTTP servers, and `@hono/mcp`](https://github.com/honojs/middleware/tree/main/packages/mcp) is a Hono middleware for MCP servers.
+
+## 1. Install dependencies
+
+<CodeGroup>
+
+```bash npm
+npm add hono @hono/node-server @hono/mcp @modelcontextprotocol/sdk zod
+```
+
+```bash pnpm
+pnpm add hono @hono/node-server @hono/mcp @modelcontextprotocol/sdk zod
+```
+
+```bash bun
+bun add hono @hono/node-server @hono/mcp @modelcontextprotocol/sdk zod
+```
+
+```bash yarn
+yarn add hono @hono/node-server @hono/mcp @modelcontextprotocol/sdk zod
+```
+
+</CodeGroup>
+
+## 2. Create a Hono MCP Node.js server
+
+```ts server.ts
+import { StreamableHTTPTransport } from '@hono/mcp'
+import { serve } from '@hono/node-server'
+import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
+import { Hono } from 'hono'
+import { logger } from 'hono/logger'
+import { z } from 'zod'
+
+const app = new Hono()
+app.use(logger())
+
+const mcpServer = new McpServer({
+  name: 'Example',
+  version: '0.0.1'
+})
+
+mcpServer.registerTool(
+  'add',
+  {
+    description: 'Add two numbers',
+    inputSchema: z.object({
+      a: z.number(),
+      b: z.number()
+    })
+  },
+  async (args) => {
+    return {
+      content: [
+        {
+          type: 'text',
+          content: String(args.a + args.b)
+        }
+      ]
+    }
+  }
+)
+
+app.all('/mcp', async (c) => {
+  const transport = new StreamableHTTPTransport()
+  await mcpServer.connect(transport)
+  return transport.handleRequest(c)
+})
+
+serve({ fetch: app.fetch, port: 8787 })
+```
+
+<Note>
+  Hono is really flexible, so if you'd rather deploy your server to Cloudflare
+  Workers instead of using Node.js (or any other platform), just follow [Hono's
+  docs](https://hono.dev/docs/getting-started/basic).
+</Note>
+
+## 3. Deploy your server
+
+Deploy your server publicly or use a tool like [ngrok](https://ngrok.com) to expose it to the internet.
+
+<Warning>
+  Tools like `ngrok` expose your unauthenticated server to the internet. Only
+  run this command in a safe environment if you understand the risks.
+</Warning>
+
+We recommend deploying your server to a cloud provider like [cloudflare workers](https://workers.cloudflare.com), [vercel](https://vercel.com/guides/hosting-backend-apis), [render](https://render.com/docs/deploy-fastapi) (for instance, using the [hono](https://vercel.com/templates/hono/hono-on-vercel) API template), [porter](https://docs.porter.run/guides/nodejs/deploy-nodejs), or [fly.io](https://fly.io/docs/python/frameworks/fastapi/). Or one of the big boys [AWS](https://aws.amazon.com), [GCP](https://cloud.google.com), or [Azure](https://azure.microsoft.com).
+
+## 4. Deploy your origin MCP server to Agentic
+
+Now that you have a publicly available MCP server, you can follow the [existing MCP server guide](/publishing/guides/existing-mcp-server) to deploy it to Agentic.
