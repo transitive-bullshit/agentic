@@ -1,0 +1,64 @@
+{
+  "name": "agentic",
+  "private": true,
+  "author": "Travis Fischer <travis@transitivebullsh.it>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/transitive-bullshit/agentic.git"
+  },
+  "packageManager": "pnpm@10.12.2",
+  "engines": {
+    "node": ">=18"
+  },
+  "type": "module",
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo dev --continue",
+    "docs": "cd docs && npx mintlify dev",
+    "clean": "turbo clean",
+    "fix": "run-s fix:*",
+    "fix:format": "prettier --write \"**/*.{js,ts,tsx}\"",
+    "test": "turbo test",
+    "test:format": "prettier --check \"**/*.{js,ts,tsx}\"",
+    "test:lint": "turbo test:lint",
+    "test:typecheck": "turbo test:typecheck",
+    "test:unit": "turbo test:unit",
+    "release": "bumpp -r && pnpm publish -r",
+    "pretest": "run-s build",
+    "prerelease": "run-s build",
+    "precommit": "lint-staged",
+    "preinstall": "npx only-allow pnpm",
+    "prepare": "simple-git-hooks"
+  },
+  "devDependencies": {
+    "@fisch0920/config": "catalog:",
+    "@types/node": "catalog:",
+    "bumpp": "catalog:",
+    "del-cli": "catalog:",
+    "dotenv": "catalog:",
+    "eslint": "catalog:",
+    "lint-staged": "catalog:",
+    "npm-run-all2": "catalog:",
+    "only-allow": "catalog:",
+    "prettier": "catalog:",
+    "simple-git-hooks": "catalog:",
+    "syncpack": "catalog:",
+    "tsup": "catalog:",
+    "tsx": "catalog:",
+    "turbo": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:",
+    "zod": "catalog:"
+  },
+  "prettier": "@fisch0920/config/prettier",
+  "simple-git-hooks": {
+    "pre-commit": "npx lint-staged"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "prettier --ignore-unknown --write",
+      "eslint --fix"
+    ]
+  }
+}

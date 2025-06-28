@@ -1,0 +1,11 @@
+{
+  "extends": "@fisch0920/config/tsconfig-node",
+  "include": ["src", "bin", "fixtures/**/*.ts", "*.config.ts"],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "fixtures/generated/github*.ts",
+    "fixtures/generated/tic-tac-toe*.ts",
+    "fixtures/generated/open-meteo-client.ts"
+  ]
+}

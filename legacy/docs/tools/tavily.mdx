@@ -1,0 +1,36 @@
+---
+title: Tavily
+description: Web search API tailored for LLMs.
+---
+
+- package: `@agentic/tavily`
+- exports: `class TavilyClient`, `namespace tavily`
+- env vars: `TAVILY_API_KEY`
+- [source](https://github.com/transitive-bullshit/agentic/blob/main/packages/tavily/src/tavily-client.ts)
+- [tavily api docs](https://tavily.com)
+
+## Install
+
+<CodeGroup>
+```bash npm
+npm install @agentic/tavily
+```
+
+```bash yarn
+yarn add @agentic/tavily
+```
+
+```bash pnpm
+pnpm add @agentic/tavily
+```
+
+</CodeGroup>
+
+## Usage
+
+```ts
+import { TavilyClient } from '@agentic/tavily'
+
+const tavily = new TavilyClient()
+const res = await tavily.search('latest news')
+```

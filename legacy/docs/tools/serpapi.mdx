@@ -1,0 +1,36 @@
+---
+title: SerpAPI
+description: Lightweight wrapper around SerpAPI for Google search.
+---
+
+- package: `@agentic/serpapi`
+- exports: `class SerpAPIClient`, `namespace serpapi`
+- env vars: `SERPAPI_API_KEY`
+- [source](https://github.com/transitive-bullshit/agentic/blob/main/packages/serpapi/src/serpapi-client.ts)
+- [serpapi api docs](https://serpapi.com/search-api)
+
+## Install
+
+<CodeGroup>
+```bash npm
+npm install @agentic/serpapi
+```
+
+```bash yarn
+yarn add @agentic/serpapi
+```
+
+```bash pnpm
+pnpm add @agentic/serpapi
+```
+
+</CodeGroup>
+
+## Usage
+
+```ts
+import { SerpAPIClient } from '@agentic/serpapi'
+
+const serpapi = new SerpAPIClient()
+const res = await serpapi.search('latest news')
+```

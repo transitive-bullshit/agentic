@@ -1,0 +1,45 @@
+---
+title: Jina
+description: URL scraper and web search
+---
+
+LLM-friendly URL reader and search client by [Jina AI](https://jina.ai/reader) with a basic free tier.
+
+- package: `@agentic/jina`
+- exports: `class JinaClient`, `namespace jina`
+- env vars: `JINA_API_KEY`
+- [source](https://github.com/transitive-bullshit/agentic/blob/main/packages/jina/src/jina-client.ts)
+- [jina api docs](https://jina.ai/reader)
+
+## Install
+
+<CodeGroup>
+```bash npm
+npm install @agentic/jina
+```
+
+```bash yarn
+yarn add @agentic/jina
+```
+
+```bash pnpm
+pnpm add @agentic/jina
+```
+
+</CodeGroup>
+
+## Usage
+
+```ts
+import { JinaClient } from '@agentic/jina'
+
+const jina = new JinaClient()
+const res0 = await jina.readUrl('https://example.com')
+const res1 = await jina.search({ query: 'latest news', json: true })
+```
+
+## Notes
+
+- Does not support "stream mode".
+- Results default to markdown text format.
+- To return JSON (especially useful for `search`), set `json: true` in the options.

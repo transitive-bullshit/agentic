@@ -1,0 +1,3383 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`openapi-to-ts > firecrawl.json 1`] = `
+"/**
+ * This file was auto-generated from an OpenAPI spec.
+ */
+
+import { z } from 'zod'
+
+export namespace firecrawl {
+  export const apiBaseUrl = 'https://api.firecrawl.dev/v0'
+
+  // -----------------------------------------------------------------------------
+  // Component schemas
+  // -----------------------------------------------------------------------------
+
+  export const ScrapeResponseSchema = z.object({
+    success: z.boolean().optional(),
+    /** Warning message to let you know of any issues. */
+    warning: z
+      .string()
+      .describe('Warning message to let you know of any issues.')
+      .optional(),
+    data: z
+      .object({
+        /** Markdown content of the page if the \`markdown\` format was specified (default) */
+        markdown: z
+          .string()
+          .describe(
+            'Markdown content of the page if the \`markdown\` format was specified (default)'
+          )
+          .optional(),
+        /** HTML version of the content on page if the \`html\` format was specified */
+        html: z
+          .string()
+          .describe(
+            'HTML version of the content on page if the \`html\` format was specified'
+          )
+          .optional(),
+        /** Raw HTML content of the page if the \`rawHtml\` format was specified */
+        rawHtml: z
+          .string()
+          .describe(
+            'Raw HTML content of the page if the \`rawHtml\` format was specified'
+          )
+          .optional(),
+        /** Links on the page if the \`links\` format was specified */
+        links: z
+          .array(z.string().url())
+          .describe('Links on the page if the \`links\` format was specified')
+          .optional(),
+        /** URL of the screenshot of the page if the \`screenshot\` or \`screenshot@fullSize\` format was specified */
+        screenshot: z
+          .string()
+          .describe(
+            'URL of the screenshot of the page if the \`screenshot\` or \`screenshot@fullSize\` format was specified'
+          )
+          .optional(),
+        metadata: z
+          .object({
+            title: z.string().optional(),
+            description: z.string().optional(),
+            language: z.string().optional(),
+            sourceURL: z.string().url().optional(),
+            '<any other metadata> ': z.string().optional(),
+            /** The status code of the page */
+            statusCode: z
+              .number()
+              .int()
+              .describe('The status code of the page')
+              .optional(),
+            /** The error message of the page */
+            error: z
+              .string()
+              .describe('The error message of the page')
+              .optional()
+          })
+          .optional()
+      })
+      .optional()
+  })
+  export type ScrapeResponse = z.infer<typeof ScrapeResponseSchema>
+
+  export const CrawlResponseSchema = z.object({
+    success: z.boolean().optional(),
+    id: z.string().optional(),
+    url: z.string().url().optional()
+  })
+  export type CrawlResponse = z.infer<typeof CrawlResponseSchema>
+
+  export const SearchResponseSchema = z.object({
+    success: z.boolean().optional(),
+    data: z.array(z.any()).optional()
+  })
+  export type SearchResponse = z.infer<typeof SearchResponseSchema>
+
+  export const CrawlStatusResponseObjSchema = z.object({
+    /** Markdown content of the page if the \`markdown\` format was specified (default) */
+    markdown: z
+      .string()
+      .describe(
+        'Markdown content of the page if the \`markdown\` format was specified (default)'
+      )
+      .optional(),
+    /** HTML version of the content on page if the \`html\` format was specified */
+    html: z
+      .string()
+      .describe(
+        'HTML version of the content on page if the \`html\` format was specified'
+      )
+      .optional(),
+    /** Raw HTML content of the page if the \`rawHtml\` format was specified */
+    rawHtml: z
+      .string()
+      .describe(
+        'Raw HTML content of the page if the \`rawHtml\` format was specified'
+      )
+      .optional(),
+    /** Links on the page if the \`links\` format was specified */
+    links: z
+      .array(z.string().url())
+      .describe('Links on the page if the \`links\` format was specified')
+      .optional(),
+    /** URL of the screenshot of the page if the \`screenshot\` or \`screenshot@fullSize\` format was specified */
+    screenshot: z
+      .string()
+      .describe(
+        'URL of the screenshot of the page if the \`screenshot\` or \`screenshot@fullSize\` format was specified'
+      )
+      .optional(),
+    metadata: z
+      .object({
+        title: z.string().optional(),
+        description: z.string().optional(),
+        language: z.string().optional(),
+        sourceURL: z.string().url().optional(),
+        '<any other metadata> ': z.string().optional(),
+        /** The status code of the page */
+        statusCode: z
+          .number()
+          .int()
+          .describe('The status code of the page')
+          .optional(),
+        /** The error message of the page */
+        error: z.string().describe('The error message of the page').optional()
+      })
+      .optional()
+  })
+  export type CrawlStatusResponseObj = z.infer<
+    typeof CrawlStatusResponseObjSchema
+  >
+
+  // -----------------------------------------------------------------------------
+  // Operation schemas
+  // -----------------------------------------------------------------------------
+
+  export const ScrapeParamsSchema = z.object({
+    /** The URL to scrape */
+    url: z.string().url().describe('The URL to scrape'),
+    /**
+     * Specific formats to return.
+     *
+     *  - markdown: The page in Markdown format.
+     *  - html: The page's HTML, trimmed to include only meaningful content.
+     *  - rawHtml: The page's original HTML.
+     *  - links: The links on the page.
+     *  - screenshot: A screenshot of the top of the page.
+     *  - screenshot@fullPage: A screenshot of the full page. (overridden by screenshot if present)
+     */
+    formats: z
+      .array(
+        z.enum([
+          'markdown',
+          'html',
+          'rawHtml',
+          'links',
+          'screenshot',
+          'screenshot@fullPage'
+        ])
+      )
+      .describe(
+        "Specific formats to return.\\n\\n - markdown: The page in Markdown format.\\n - html: The page's HTML, trimmed to include only meaningful content.\\n - rawHtml: The page's original HTML.\\n - links: The links on the page.\\n - screenshot: A screenshot of the top of the page.\\n - screenshot@fullPage: A screenshot of the full page. (overridden by screenshot if present)"
+      )
+      .default(['markdown']),
+    /** Headers to send with the request. Can be used to send cookies, user-agent, etc. */
+    headers: z
+      .record(z.any())
+      .describe(
+        'Headers to send with the request. Can be used to send cookies, user-agent, etc.'
+      )
+      .optional(),
+    /** Only include tags, classes and ids from the page in the final output. Use comma separated values. Example: 'script, .ad, #footer' */
+    includeTags: z
+      .array(z.string())
+      .describe(
+        "Only include tags, classes and ids from the page in the final output. Use comma separated values. Example: 'script, .ad, #footer'"
+      )
+      .optional(),
+    /** Tags, classes and ids to remove from the page. Use comma separated values. Example: 'script, .ad, #footer' */
+    excludeTags: z
+      .array(z.string())
+      .describe(
+        "Tags, classes and ids to remove from the page. Use comma separated values. Example: 'script, .ad, #footer'"
+      )
+      .optional(),
+    /** Only return the main content of the page excluding headers, navs, footers, etc. */
+    onlyMainContent: z
+      .boolean()
+      .describe(
+        'Only return the main content of the page excluding headers, navs, footers, etc.'
+      )
+      .default(true),
+    /** Timeout in milliseconds for the request */
+    timeout: z
+      .number()
+      .int()
+      .describe('Timeout in milliseconds for the request')
+      .default(30000),
+    /** Wait x amount of milliseconds for the page to load to fetch content */
+    waitFor: z
+      .number()
+      .int()
+      .describe(
+        'Wait x amount of milliseconds for the page to load to fetch content'
+      )
+      .default(0)
+  })
+  export type ScrapeParams = z.infer<typeof ScrapeParamsSchema>
+
+  export const CrawlUrlsParamsSchema = z.object({
+    /** The base URL to start crawling from */
+    url: z.string().url().describe('The base URL to start crawling from'),
+    crawlerOptions: z
+      .object({
+        /** URL patterns to include */
+        includes: z
+          .array(z.string())
+          .describe('URL patterns to include')
+          .optional(),
+        /** URL patterns to exclude */
+        excludes: z
+          .array(z.string())
+          .describe('URL patterns to exclude')
+          .optional(),
+        /** Generate alt text for images using LLMs (must have a paid plan) */
+        generateImgAltText: z
+          .boolean()
+          .describe(
+            'Generate alt text for images using LLMs (must have a paid plan)'
+          )
+          .default(false),
+        /** If true, returns only the URLs as a list on the crawl status. Attention: the return response will be a list of URLs inside the data, not a list of documents. */
+        returnOnlyUrls: z
+          .boolean()
+          .describe(
+            'If true, returns only the URLs as a list on the crawl status. Attention: the return response will be a list of URLs inside the data, not a list of documents.'
+          )
+          .default(false),
+        /** Maximum depth to crawl relative to the entered URL. A maxDepth of 0 scrapes only the entered URL. A maxDepth of 1 scrapes the entered URL and all pages one level deep. A maxDepth of 2 scrapes the entered URL and all pages up to two levels deep. Higher values follow the same pattern. */
+        maxDepth: z
+          .number()
+          .int()
+          .describe(
+            'Maximum depth to crawl relative to the entered URL. A maxDepth of 0 scrapes only the entered URL. A maxDepth of 1 scrapes the entered URL and all pages one level deep. A maxDepth of 2 scrapes the entered URL and all pages up to two levels deep. Higher values follow the same pattern.'
+          )
+          .optional(),
+        /** The crawling mode to use. Fast mode crawls 4x faster websites without sitemap, but may not be as accurate and shouldn't be used in heavy js-rendered websites. */
+        mode: z
+          .enum(['default', 'fast'])
+          .describe(
+            "The crawling mode to use. Fast mode crawls 4x faster websites without sitemap, but may not be as accurate and shouldn't be used in heavy js-rendered websites."
+          )
+          .default('default'),
+        /** Ignore the website sitemap when crawling */
+        ignoreSitemap: z
+          .boolean()
+          .describe('Ignore the website sitemap when crawling')
+          .default(false),
+        /** Maximum number of pages to crawl */
+        limit: z
+          .number()
+          .int()
+          .describe('Maximum number of pages to crawl')
+          .default(10000),
+        /** Enables the crawler to navigate from a specific URL to previously linked pages. For instance, from 'example.com/product/123' back to 'example.com/product' */
+        allowBackwardCrawling: z
+          .boolean()
+          .describe(
+            "Enables the crawler to navigate from a specific URL to previously linked pages. For instance, from 'example.com/product/123' back to 'example.com/product'"
+          )
+          .default(false),
+        /** Allows the crawler to follow links to external websites. */
+        allowExternalContentLinks: z
+          .boolean()
+          .describe('Allows the crawler to follow links to external websites.')
+          .default(false)
+      })
+      .optional(),
+    pageOptions: z
+      .object({
+        /** Headers to send with the request. Can be used to send cookies, user-agent, etc. */
+        headers: z
+          .record(z.any())
+          .describe(
+            'Headers to send with the request. Can be used to send cookies, user-agent, etc.'
+          )
+          .optional(),
+        /** Include the HTML version of the content on page. Will output a html key in the response. */
+        includeHtml: z
+          .boolean()
+          .describe(
+            'Include the HTML version of the content on page. Will output a html key in the response.'
+          )
+          .default(false),
+        /** Include the raw HTML content of the page. Will output a rawHtml key in the response. */
+        includeRawHtml: z
+          .boolean()
+          .describe(
+            'Include the raw HTML content of the page. Will output a rawHtml key in the response.'
+          )
+          .default(false),
+        /** Only include tags, classes and ids from the page in the final output. Use comma separated values. Example: 'script, .ad, #footer' */
+        onlyIncludeTags: z
+          .array(z.string())
+          .describe(
+            "Only include tags, classes and ids from the page in the final output. Use comma separated values. Example: 'script, .ad, #footer'"
+          )
+          .optional(),
+        /** Only return the main content of the page excluding headers, navs, footers, etc. */
+        onlyMainContent: z
+          .boolean()
+          .describe(
+            'Only return the main content of the page excluding headers, navs, footers, etc.'
+          )
+          .default(false),
+        /** Tags, classes and ids to remove from the page. Use comma separated values. Example: 'script, .ad, #footer' */
+        removeTags: z
+          .array(z.string())
+          .describe(
+            "Tags, classes and ids to remove from the page. Use comma separated values. Example: 'script, .ad, #footer'"
+          )
+          .optional(),
+        /** Replace all relative paths with absolute paths for images and links */
+        replaceAllPathsWithAbsolutePaths: z
+          .boolean()
+          .describe(
+            'Replace all relative paths with absolute paths for images and links'
+          )
+          .default(false),
+        /** Include a screenshot of the top of the page that you are scraping. */
+        screenshot: z
+          .boolean()
+          .describe(
+            'Include a screenshot of the top of the page that you are scraping.'
+          )
+          .default(false),
+        /** Include a full page screenshot of the page that you are scraping. */
+        fullPageScreenshot: z
+          .boolean()
+          .describe(
+            'Include a full page screenshot of the page that you are scraping.'
+          )
+          .default(false),
+        /** Wait x amount of milliseconds for the page to load to fetch content */
+        waitFor: z
+          .number()
+          .int()
+          .describe(
+            'Wait x amount of milliseconds for the page to load to fetch content'
+          )
+          .default(0)
+      })
+      .optional()
+  })
+  export type CrawlUrlsParams = z.infer<typeof CrawlUrlsParamsSchema>
+
+  export const CrawlUrlsResponseSchema = CrawlResponseSchema
+  export type CrawlUrlsResponse = z.infer<typeof CrawlUrlsResponseSchema>
+
+  export const SearchGoogleParamsSchema = z.object({
+    /** The query to search for */
+    query: z.string().url().describe('The query to search for'),
+    pageOptions: z
+      .object({
+        /** Only return the main content of the page excluding headers, navs, footers, etc. */
+        onlyMainContent: z
+          .boolean()
+          .describe(
+            'Only return the main content of the page excluding headers, navs, footers, etc.'
+          )
+          .default(false),
+        /** Fetch the content of each page. If false, defaults to a basic fast serp API. */
+        fetchPageContent: z
+          .boolean()
+          .describe(
+            'Fetch the content of each page. If false, defaults to a basic fast serp API.'
+          )
+          .default(true),
+        /** Include the HTML version of the content on page. Will output a html key in the response. */
+        includeHtml: z
+          .boolean()
+          .describe(
+            'Include the HTML version of the content on page. Will output a html key in the response.'
+          )
+          .default(false),
+        /** Include the raw HTML content of the page. Will output a rawHtml key in the response. */
+        includeRawHtml: z
+          .boolean()
+          .describe(
+            'Include the raw HTML content of the page. Will output a rawHtml key in the response.'
+          )
+          .default(false)
+      })
+      .optional(),
+    searchOptions: z
+      .object({
+        /** Maximum number of results. Max is 20 during beta. */
+        limit: z
+          .number()
+          .int()
+          .describe('Maximum number of results. Max is 20 during beta.')
+          .optional()
+      })
+      .optional()
+  })
+  export type SearchGoogleParams = z.infer<typeof SearchGoogleParamsSchema>
+
+  export const SearchGoogleResponseSchema = SearchResponseSchema
+  export type SearchGoogleResponse = z.infer<typeof SearchGoogleResponseSchema>
+
+  export const GetCrawlStatusParamsSchema = z.object({
+    /** ID of the crawl job */
+    jobId: z.string().describe('ID of the crawl job')
+  })
+  export type GetCrawlStatusParams = z.infer<typeof GetCrawlStatusParamsSchema>
+
+  export const GetCrawlStatusResponseSchema = z.object({
+    /** Status of the job (completed, active, failed, paused) */
+    status: z
+      .string()
+      .describe('Status of the job (completed, active, failed, paused)')
+      .optional(),
+    /** Current page number */
+    current: z.number().int().describe('Current page number').optional(),
+    /** Total number of pages */
+    total: z.number().int().describe('Total number of pages').optional(),
+    /** Data returned from the job (null when it is in progress) */
+    data: z
+      .array(CrawlStatusResponseObjSchema)
+      .describe('Data returned from the job (null when it is in progress)')
+      .optional(),
+    /** Partial documents returned as it is being crawled (streaming). **This feature is currently in alpha - expect breaking changes** When a page is ready, it will append to the partial_data array, so there is no need to wait for the entire website to be crawled. When the crawl is done, partial_data will become empty and the result will be available in \`data\`. There is a max of 50 items in the array response. The oldest item (top of the array) will be removed when the new item is added to the array. */
+    partial_data: z
+      .array(CrawlStatusResponseObjSchema)
+      .describe(
+        'Partial documents returned as it is being crawled (streaming). **This feature is currently in alpha - expect breaking changes** When a page is ready, it will append to the partial_data array, so there is no need to wait for the entire website to be crawled. When the crawl is done, partial_data will become empty and the result will be available in \`data\`. There is a max of 50 items in the array response. The oldest item (top of the array) will be removed when the new item is added to the array.'
+      )
+      .optional()
+  })
+  export type GetCrawlStatusResponse = z.infer<
+    typeof GetCrawlStatusResponseSchema
+  >
+
+  export const CancelCrawlJobParamsSchema = z.object({
+    /** ID of the crawl job */
+    jobId: z.string().describe('ID of the crawl job')
+  })
+  export type CancelCrawlJobParams = z.infer<typeof CancelCrawlJobParamsSchema>
+
+  export const CancelCrawlJobResponseSchema = z.object({
+    /** Returns cancelled. */
+    status: z.string().describe('Returns cancelled.').optional()
+  })
+  export type CancelCrawlJobResponse = z.infer<
+    typeof CancelCrawlJobResponseSchema
+  >
+}
+
+
+/**
+ * This file was auto-generated from an OpenAPI spec.
+ */
+
+import {
+  AIFunctionsProvider,
+  aiFunction,
+  assert,
+  getEnv,
+  pick
+} from '@agentic/core'
+import defaultKy, { type KyInstance } from 'ky'
+import { firecrawl } from './firecrawl'
+
+/**
+ * Agentic Firecrawl client.
+ *
+ * API for interacting with Firecrawl services to perform web scraping and crawling tasks.
+ */
+export class FirecrawlClient extends AIFunctionsProvider {
+  protected readonly ky: KyInstance
+  protected readonly apiKey: string
+  protected readonly apiBaseUrl: string
+
+  constructor({
+    apiKey = getEnv('FIRECRAWL_API_KEY'),
+    apiBaseUrl = firecrawl.apiBaseUrl,
+    ky = defaultKy
+  }: {
+    apiKey?: string
+    apiBaseUrl?: string
+    ky?: KyInstance
+  } = {}) {
+    assert(
+      apiKey,
+      'FirecrawlClient missing required "apiKey" (defaults to "FIRECRAWL_API_KEY")'
+    )
+    super()
+
+    this.apiKey = apiKey
+    this.apiBaseUrl = apiBaseUrl
+
+    this.ky = ky.extend({
+      prefixUrl: apiBaseUrl,
+      headers: {
+        Authorization: apiKey
+      }
+    })
+  }
+
+  /**
+   * Scrape a single URL.
+   */
+  @aiFunction({
+    name: 'firecrawl_scrape',
+    description: \`Scrape a single URL.\`,
+    inputSchema: firecrawl.ScrapeParamsSchema,
+    tags: ['Scraping']
+  })
+  async scrape(
+    params: firecrawl.ScrapeParams
+  ): Promise<firecrawl.ScrapeResponse> {
+    return this.ky
+      .post('/scrape', {
+        json: pick(
+          params,
+          'url',
+          'formats',
+          'headers',
+          'includeTags',
+          'excludeTags',
+          'onlyMainContent',
+          'timeout',
+          'waitFor'
+        )
+      })
+      .json<firecrawl.ScrapeResponse>()
+  }
+
+  /**
+   * Crawl multiple URLs based on options.
+   */
+  @aiFunction({
+    name: 'firecrawl_crawl_urls',
+    description: \`Crawl multiple URLs based on options.\`,
+    inputSchema: firecrawl.CrawlUrlsParamsSchema,
+    tags: ['Crawling']
+  })
+  async crawlUrls(
+    params: firecrawl.CrawlUrlsParams
+  ): Promise<firecrawl.CrawlUrlsResponse> {
+    return this.ky
+      .post('/crawl', {
+        json: pick(params, 'url', 'crawlerOptions', 'pageOptions')
+      })
+      .json<firecrawl.CrawlUrlsResponse>()
+  }
+
+  /**
+   * Search for a keyword in Google, returns top page results with markdown content for each page.
+   */
+  @aiFunction({
+    name: 'firecrawl_search_google',
+    description: \`Search for a keyword in Google, returns top page results with markdown content for each page.\`,
+    inputSchema: firecrawl.SearchGoogleParamsSchema,
+    tags: ['Search']
+  })
+  async searchGoogle(
+    params: firecrawl.SearchGoogleParams
+  ): Promise<firecrawl.SearchGoogleResponse> {
+    return this.ky
+      .post('/search', {
+        json: pick(params, 'query', 'pageOptions', 'searchOptions')
+      })
+      .json<firecrawl.SearchGoogleResponse>()
+  }
+
+  /**
+   * Get the status of a crawl job.
+   */
+  @aiFunction({
+    name: 'firecrawl_get_crawl_status',
+    description: \`Get the status of a crawl job.\`,
+    inputSchema: firecrawl.GetCrawlStatusParamsSchema,
+    tags: ['Crawl']
+  })
+  async getCrawlStatus(
+    params: firecrawl.GetCrawlStatusParams
+  ): Promise<firecrawl.GetCrawlStatusResponse> {
+    return this.ky
+      .get(\`/crawl/status/\${params['jobId']}\`)
+      .json<firecrawl.GetCrawlStatusResponse>()
+  }
+
+  /**
+   * Cancel a crawl job.
+   */
+  @aiFunction({
+    name: 'firecrawl_cancel_crawl_job',
+    description: \`Cancel a crawl job.\`,
+    inputSchema: firecrawl.CancelCrawlJobParamsSchema,
+    tags: ['Crawl']
+  })
+  async cancelCrawlJob(
+    params: firecrawl.CancelCrawlJobParams
+  ): Promise<firecrawl.CancelCrawlJobResponse> {
+    return this.ky
+      .delete(\`/crawl/cancel/\${params['jobId']}\`)
+      .json<firecrawl.CancelCrawlJobResponse>()
+  }
+}
+"
+`;
+
+exports[`openapi-to-ts > notion.json 1`] = `
+"/**
+ * This file was auto-generated from an OpenAPI spec.
+ */
+
+import { z } from 'zod'
+
+export namespace notion {
+  export const apiBaseUrl = 'https://api.notion.so'
+
+  // -----------------------------------------------------------------------------
+  // Component schemas
+  // -----------------------------------------------------------------------------
+
+  export const UserObjectResponseSchema = z.object({
+    object: z.literal('user'),
+    id: z.string(),
+    type: z.enum(['person', 'bot']),
+    name: z.string(),
+    avatar_url: z.string()
+  })
+  export type UserObjectResponse = z.infer<typeof UserObjectResponseSchema>
+
+  export const AnnotationRequestSchema = z.object({
+    bold: z.boolean().optional(),
+    italic: z.boolean().optional(),
+    strikethrough: z.boolean().optional(),
+    underline: z.boolean().optional(),
+    code: z.boolean().optional(),
+    color: z
+      .enum([
+        'default',
+        'gray',
+        'brown',
+        'orange',
+        'yellow',
+        'green',
+        'blue',
+        'purple',
+        'pink',
+        'red',
+        'gray_background',
+        'brown_background',
+        'orange_background',
+        'yellow_background',
+        'green_background',
+        'blue_background',
+        'purple_background',
+        'pink_background',
+        'red_background'
+      ])
+      .optional()
+  })
+  export type AnnotationRequest = z.infer<typeof AnnotationRequestSchema>
+
+  export const DateRequestSchema = z.object({
+    start: z.string(),
+    end: z.union([z.string(), z.null()]).optional(),
+    time_zone: z.union([z.string(), z.null()]).optional()
+  })
+  export type DateRequest = z.infer<typeof DateRequestSchema>
+
+  export const PageObjectResponseSchema = z.object({
+    object: z.literal('page'),
+    id: z.string(),
+    created_time: z.string(),
+    last_edited_time: z.string(),
+    archived: z.boolean(),
+    url: z.string()
+  })
+  export type PageObjectResponse = z.infer<typeof PageObjectResponseSchema>
+
+  export const PartialPageObjectResponseSchema = z.object({
+    object: z.literal('page'),
+    id: z.string()
+  })
+  export type PartialPageObjectResponse = z.infer<
+    typeof PartialPageObjectResponseSchema
+  >
+
+  export const PropertyItemObjectResponseSchema = z.object({
+    type: z.string(),
+    id: z.string()
+  })
+  export type PropertyItemObjectResponse = z.infer<
+    typeof PropertyItemObjectResponseSchema
+  >
+
+  export const PartialBlockObjectResponseSchema = z.object({
+    object: z.literal('block'),
+    id: z.string()
+  })
+  export type PartialBlockObjectResponse = z.infer<
+    typeof PartialBlockObjectResponseSchema
+  >
+
+  export const BlockObjectResponseSchema = z.object({
+    object: z.literal('block'),
+    id: z.string(),
+    type: z.string(),
+    created_time: z.string(),
+    last_edited_time: z.string(),
+    has_children: z.boolean(),
+    archived: z.boolean()
+  })
+  export type BlockObjectResponse = z.infer<typeof BlockObjectResponseSchema>
+
+  export const TitlePropertyResponseSchema = z.object({
+    id: z.string(),
+    type: z.literal('title'),
+    title: z.record(z.any())
+  })
+  export type TitlePropertyResponse = z.infer<
+    typeof TitlePropertyResponseSchema
+  >
+
+  export const RichTextPropertyResponseSchema = z.object({
+    id: z.string(),
+    type: z.literal('rich_text'),
+    rich_text: z.record(z.any())
+  })
+  export type RichTextPropertyResponse = z.infer<
+    typeof RichTextPropertyResponseSchema
+  >
+
+  export const NumberPropertyResponseSchema = z.object({
+    id: z.string(),
+    type: z.literal('number'),
+    number: z.object({ format: z.string() })
+  })
+  export type NumberPropertyResponse = z.infer<
+    typeof NumberPropertyResponseSchema
+  >
+
+  export const SelectOptionSchema = z.object({
+    id: z.string(),
+    name: z.string(),
+    color: z.string()
+  })
+  export type SelectOption = z.infer<typeof SelectOptionSchema>
+
+  export const DatePropertyResponseSchema = z.object({
+    id: z.string(),
+    type: z.literal('date'),
+    date: z.record(z.any())
+  })
+  export type DatePropertyResponse = z.infer<typeof DatePropertyResponseSchema>
+
+  export const PeoplePropertyResponseSchema = z.object({
+    id: z.string(),
+    type: z.literal('people'),
+    people: z.record(z.any())
+  })
+  export type PeoplePropertyResponse = z.infer<
+    typeof PeoplePropertyResponseSchema
+  >
+
+  export const FilePropertyResponseSchema = z.object({
+    id: z.string(),
+    type: z.literal('files'),
+    files: z.record(z.any())
+  })
+  export type FilePropertyResponse = z.infer<typeof FilePropertyResponseSchema>
+
+  export const CheckboxPropertyResponseSchema = z.object({
+    id: z.string(),
+    type: z.literal('checkbox'),
+    checkbox: z.record(z.any())
+  })
+  export type CheckboxPropertyResponse = z.infer<
+    typeof CheckboxPropertyResponseSchema
+  >
+
+  export const UrlPropertyResponseSchema = z.object({
+    id: z.string(),
+    type: z.literal('url'),
+    url: z.record(z.any())
+  })
+  export type UrlPropertyResponse = z.infer<typeof UrlPropertyResponseSchema>
+
+  export const EmailPropertyResponseSchema = z.object({
+    id: z.string(),
+    type: z.literal('email'),
+    email: z.record(z.any())
+  })
+  export type EmailPropertyResponse = z.infer<
+    typeof EmailPropertyResponseSchema
+  >
+
+  export const PhoneNumberPropertyResponseSchema = z.object({
+    id: z.string(),
+    type: z.literal('phone_number'),
+    phone_number: z.record(z.any())
+  })
+  export type PhoneNumberPropertyResponse = z.infer<
+    typeof PhoneNumberPropertyResponseSchema
+  >
+
+  export const FormulaPropertyResponseSchema = z.object({
+    id: z.string(),
+    type: z.literal('formula'),
+    formula: z.object({ expression: z.string() })
+  })
+  export type FormulaPropertyResponse = z.infer<
+    typeof FormulaPropertyResponseSchema
+  >
+
+  export const RelationPropertyResponseSchema = z.object({
+    id: z.string(),
+    type: z.literal('relation'),
+    relation: z.object({
+      database_id: z.string(),
+      synced_property_name: z.string(),
+      synced_property_id: z.string()
+    })
+  })
+  export type RelationPropertyResponse = z.infer<
+    typeof RelationPropertyResponseSchema
+  >
+
+  export const RollupPropertyResponseSchema = z.object({
+    id: z.string(),
+    type: z.literal('rollup'),
+    rollup: z.object({
+      relation_property_name: z.string(),
+      relation_property_id: z.string(),
+      rollup_property_name: z.string(),
+      rollup_property_id: z.string(),
+      function: z.string()
+    })
+  })
+  export type RollupPropertyResponse = z.infer<
+    typeof RollupPropertyResponseSchema
+  >
+
+  export const CreatedTimePropertyResponseSchema = z.object({
+    id: z.string(),
+    type: z.literal('created_time'),
+    created_time: z.record(z.any())
+  })
+  export type CreatedTimePropertyResponse = z.infer<
+    typeof CreatedTimePropertyResponseSchema
+  >
+
+  export const CreatedByPropertyResponseSchema = z.object({
+    id: z.string(),
+    type: z.literal('created_by'),
+    created_by: z.record(z.any())
+  })
+  export type CreatedByPropertyResponse = z.infer<
+    typeof CreatedByPropertyResponseSchema
+  >
+
+  export const LastEditedTimePropertyResponseSchema = z.object({
+    id: z.string(),
+    type: z.literal('last_edited_time'),
+    last_edited_time: z.record(z.any())
+  })
+  export type LastEditedTimePropertyResponse = z.infer<
+    typeof LastEditedTimePropertyResponseSchema
+  >
+
+  export const LastEditedByPropertyResponseSchema = z.object({
+    id: z.string(),
+    type: z.literal('last_edited_by'),
+    last_edited_by: z.record(z.any())
+  })
+  export type LastEditedByPropertyResponse = z.infer<
+    typeof LastEditedByPropertyResponseSchema
+  >
+
+  export const PartialUserObjectResponseSchema = z.object({
+    object: z.literal('user'),
+    id: z.string()
+  })
+  export type PartialUserObjectResponse = z.infer<
+    typeof PartialUserObjectResponseSchema
+  >
+
+  export const AnnotationResponseSchema = z.object({
+    bold: z.boolean(),
+    italic: z.boolean(),
+    strikethrough: z.boolean(),
+    underline: z.boolean(),
+    code: z.boolean(),
+    color: z.enum([
+      'default',
+      'gray',
+      'brown',
+      'orange',
+      'yellow',
+      'green',
+      'blue',
+      'purple',
+      'pink',
+      'red',
+      'gray_background',
+      'brown_background',
+      'orange_background',
+      'yellow_background',
+      'green_background',
+      'blue_background',
+      'purple_background',
+      'pink_background',
+      'red_background'
+    ])
+  })
+  export type AnnotationResponse = z.infer<typeof AnnotationResponseSchema>
+
+  export const DateResponseSchema = z.object({
+    start: z.string(),
+    end: z.union([z.string(), z.null()]),
+    time_zone: z.union([z.string(), z.null()])
+  })
+  export type DateResponse = z.infer<typeof DateResponseSchema>
+
+  export const PropertyUpdateSchemaSchema = z.object({
+    name: z.string().optional(),
+    type: z.string().optional()
+  })
+  export type PropertyUpdateSchema = z.infer<typeof PropertyUpdateSchemaSchema>
+
+  export const TextPropertyFilterSchema = z.object({
+    equals: z.string().optional(),
+    does_not_equal: z.string().optional(),
+    contains: z.string().optional(),
+    does_not_contain: z.string().optional(),
+    starts_with: z.string().optional(),
+    ends_with: z.string().optional(),
+    is_empty: z.boolean().optional(),
+    is_not_empty: z.boolean().optional()
+  })
+  export type TextPropertyFilter = z.infer<typeof TextPropertyFilterSchema>
+
+  export const NumberPropertyFilterSchema = z.object({
+    equals: z.number().optional(),
+    does_not_equal: z.number().optional(),
+    greater_than: z.number().optional(),
+    less_than: z.number().optional(),
+    greater_than_or_equal_to: z.number().optional(),
+    less_than_or_equal_to: z.number().optional(),
+    is_empty: z.boolean().optional(),
+    is_not_empty: z.boolean().optional()
+  })
+  export type NumberPropertyFilter = z.infer<typeof NumberPropertyFilterSchema>
+
+  export const CheckboxPropertyFilterSchema = z.object({
+    equals: z.boolean().optional(),
+    does_not_equal: z.boolean().optional()
+  })
+  export type CheckboxPropertyFilter = z.infer<
+    typeof CheckboxPropertyFilterSchema
+  >
+
+  export const SelectPropertyFilterSchema = z.object({
+    equals: z.string().optional(),
+    does_not_equal: z.string().optional(),
+    is_empty: z.boolean().optional(),
+    is_not_empty: z.boolean().optional()
+  })
+  export type SelectPropertyFilter = z.infer<typeof SelectPropertyFilterSchema>
+
+  export const MultiSelectPropertyFilterSchema = z.object({
+    contains: z.string().optional(),
+    does_not_contain: z.string().optional(),
+    is_empty: z.boolean().optional(),
+    is_not_empty: z.boolean().optional()
+  })
+  export type MultiSelectPropertyFilter = z.infer<
+    typeof MultiSelectPropertyFilterSchema
+  >
+
+  export const DatePropertyFilterSchema = z.object({
+    equals: z.string().optional(),
+    before: z.string().optional(),
+    after: z.string().optional(),
+    on_or_before: z.string().optional(),
+    on_or_after: z.string().optional(),
+    past_week: z.any().optional(),
+    past_month: z.any().optional(),
+    past_year: z.any().optional(),
+    next_week: z.any().optional(),
+    next_month: z.any().optional(),
+    next_year: z.any().optional(),
+    is_empty: z.boolean().optional(),
+    is_not_empty: z.boolean().optional()
+  })
+  export type DatePropertyFilter = z.infer<typeof DatePropertyFilterSchema>
+
+  export const PeoplePropertyFilterSchema = z.object({
+    contains: z.string().optional(),
+    does_not_contain: z.string().optional(),
+    is_empty: z.boolean().optional(),
+    is_not_empty: z.boolean().optional()
+  })
+  export type PeoplePropertyFilter = z.infer<typeof PeoplePropertyFilterSchema>
+
+  export const FilesPropertyFilterSchema = z.object({
+    is_empty: z.boolean().optional(),
+    is_not_empty: z.boolean().optional()
+  })
+  export type FilesPropertyFilter = z.infer<typeof FilesPropertyFilterSchema>
+
+  export const RelationPropertyFilterSchema = z.object({
+    contains: z.string().optional(),
+    does_not_contain: z.string().optional(),
+    is_empty: z.boolean().optional(),
+    is_not_empty: z.boolean().optional()
+  })
+  export type RelationPropertyFilter = z.infer<
+    typeof RelationPropertyFilterSchema
+  >
+
+  export const PropertySchemaSchema = z.object({
+    type: z.string(),
+    name: z.union([z.string(), z.null()]).optional()
+  })
+  export type PropertySchema = z.infer<typeof PropertySchemaSchema>
+
+  export const SearchParametersSchema = z.object({
+    query: z.string().optional(),
+    sort: z
+      .object({
+        direction: z.enum(['ascending', 'descending']),
+        timestamp: z.literal('last_edited_time')
+      })
+      .optional(),
+    filter: z
+      .object({
+        value: z.enum(['page', 'database']),
+        property: z.literal('object')
+      })
+      .optional(),
+    start_cursor: z.string().optional(),
+    page_size: z.number().int().optional()
+  })
+  export type SearchParameters = z.infer<typeof SearchParametersSchema>
+
+  export const PartialCommentObjectResponseSchema = z.object({
+    object: z.literal('comment'),
+    id: z.string()
+  })
+  export type PartialCommentObjectResponse = z.infer<
+    typeof PartialCommentObjectResponseSchema
+  >
+
+  export const OauthTokenParametersSchema = z.object({
+    grant_type: z.string(),
+    code: z.string(),
+    redirect_uri: z.string().optional(),
+    external_account: z.object({ key: z.string(), name: z.string() }).optional()
+  })
+  export type OauthTokenParameters = z.infer<typeof OauthTokenParametersSchema>
+
+  export const ListUsersResponseSchema = z.object({
+    results: z.array(UserObjectResponseSchema),
+    next_cursor: z.union([z.string(), z.null()]),
+    has_more: z.boolean()
+  })
+  export type ListUsersResponse = z.infer<typeof ListUsersResponseSchema>
+
+  export const PropertyItemListResponseSchema = z.object({
+    results: z.array(PropertyItemObjectResponseSchema),
+    next_cursor: z.union([z.string(), z.null()]),
+    has_more: z.boolean()
+  })
+  export type PropertyItemListResponse = z.infer<
+    typeof PropertyItemListResponseSchema
+  >
+
+  export const SelectPropertyResponseSchema = z.object({
+    id: z.string(),
+    type: z.literal('select'),
+    select: z.object({ options: z.array(SelectOptionSchema) })
+  })
+  export type SelectPropertyResponse = z.infer<
+    typeof SelectPropertyResponseSchema
+  >
+
+  export const MultiSelectPropertyResponseSchema = z.object({
+    id: z.string(),
+    type: z.literal('multi_select'),
+    multi_select: z.object({ options: z.array(SelectOptionSchema) })
+  })
+  export type MultiSelectPropertyResponse = z.infer<
+    typeof MultiSelectPropertyResponseSchema
+  >
+
+  export const TextRichTextItemResponseSchema = z.object({
+    type: z.literal('text'),
+    text: z.object({
+      content: z.string(),
+      link: z.union([z.object({ url: z.string() }), z.null()])
+    }),
+    annotations: AnnotationResponseSchema,
+    plain_text: z.string(),
+    href: z.union([z.string(), z.null()])
+  })
+  export type TextRichTextItemResponse = z.infer<
+    typeof TextRichTextItemResponseSchema
+  >
+
+  export const EquationRichTextItemResponseSchema = z.object({
+    type: z.literal('equation'),
+    equation: z.object({ expression: z.string() }),
+    annotations: AnnotationResponseSchema,
+    plain_text: z.string(),
+    href: z.union([z.string(), z.null()])
+  })
+  export type EquationRichTextItemResponse = z.infer<
+    typeof EquationRichTextItemResponseSchema
+  >
+
+  export const ListBlockChildrenResponseSchema = z.object({
+    object: z.literal('list'),
+    results: z.array(
+      z.union([PartialBlockObjectResponseSchema, BlockObjectResponseSchema])
+    ),
+    next_cursor: z.union([z.string(), z.null()]),
+    has_more: z.boolean()
+  })
+  export type ListBlockChildrenResponse = z.infer<
+    typeof ListBlockChildrenResponseSchema
+  >
+
+  export const AppendBlockChildrenResponseSchema = z.object({
+    object: z.literal('list'),
+    results: z.array(
+      z.union([PartialBlockObjectResponseSchema, BlockObjectResponseSchema])
+    ),
+    next_cursor: z.union([z.string(), z.null()]),
+    has_more: z.boolean()
+  })
+  export type AppendBlockChildrenResponse = z.infer<
+    typeof AppendBlockChildrenResponseSchema
+  >
+
+  export const QueryDatabaseResponseSchema = z.object({
+    object: z.literal('list'),
+    results: z.array(
+      z.union([PageObjectResponseSchema, PartialPageObjectResponseSchema])
+    ),
+    next_cursor: z.union([z.string(), z.null()]),
+    has_more: z.boolean()
+  })
+  export type QueryDatabaseResponse = z.infer<
+    typeof QueryDatabaseResponseSchema
+  >
+
+  export const OauthTokenResponseSchema = z.object({
+    access_token: z.string(),
+    token_type: z.literal('bearer'),
+    bot_id: z.string(),
+    workspace_name: z.union([z.string(), z.null()]),
+    workspace_icon: z.union([z.string(), z.null()]),
+    workspace_id: z.string(),
+    owner: z.union([
+      z.object({
+        type: z.literal('user'),
+        user: z.union([
+          UserObjectResponseSchema,
+          PartialUserObjectResponseSchema
+        ])
+      }),
+      z.object({ type: z.literal('workspace'), workspace: z.literal(true) })
+    ]),
+    duplicated_template_id: z.union([z.string(), z.null()])
+  })
+  export type OauthTokenResponse = z.infer<typeof OauthTokenResponseSchema>
+
+  export const RichTextItemRequestSchema = z.union([
+    z.object({
+      text: z.object({
+        content: z.string(),
+        link: z.union([z.object({ url: z.string() }), z.null()]).optional()
+      }),
+      type: z.literal('text').optional(),
+      annotations: AnnotationRequestSchema.optional()
+    }),
+    z.object({
+      mention: z.union([
+        z.object({
+          user: z.union([
+            z.object({ id: z.string() }),
+            UserObjectResponseSchema
+          ])
+        }),
+        z.object({ page: z.object({ id: z.string() }) }),
+        z.object({ database: z.object({ id: z.string() }) }),
+        z.object({ date: DateRequestSchema })
+      ]),
+      type: z.literal('mention').optional(),
+      annotations: AnnotationRequestSchema.optional()
+    }),
+    z.object({
+      equation: z.object({ expression: z.string() }),
+      type: z.literal('equation').optional(),
+      annotations: AnnotationRequestSchema.optional()
+    })
+  ])
+  export type RichTextItemRequest = z.infer<typeof RichTextItemRequestSchema>
+
+  export const CreatePageParametersSchema = z.object({
+    parent: z
+      .record(z.any())
+      .and(
+        z.union([
+          z.object({ type: z.literal('page_id'), page_id: z.string() }),
+          z.object({ type: z.literal('database_id'), database_id: z.string() })
+        ])
+      ),
+    properties: z.record(
+      z.union([
+        z.object({ title: z.array(RichTextItemRequestSchema) }),
+        z.object({ rich_text: z.array(RichTextItemRequestSchema) }),
+        z.object({ number: z.union([z.number(), z.null()]) }),
+        z.object({
+          select: z.union([z.object({ name: z.string() }), z.null()])
+        })
+      ])
+    )
+  })
+  export type CreatePageParameters = z.infer<typeof CreatePageParametersSchema>
+
+  export const UpdatePageParametersSchema = z.object({
+    properties: z
+      .record(
+        z.union([
+          z.object({ title: z.array(RichTextItemRequestSchema) }),
+          z.object({ rich_text: z.array(RichTextItemRequestSchema) }),
+          z.object({ number: z.union([z.number(), z.null()]) }),
+          z.object({
+            select: z.union([z.object({ name: z.string() }), z.null()])
+          })
+        ])
+      )
+      .optional(),
+    archived: z.boolean().optional()
+  })
+  export type UpdatePageParameters = z.infer<typeof UpdatePageParametersSchema>
+
+  export const UpdateBlockParametersSchema = z.object({
+    paragraph: z
+      .object({
+        rich_text: z.array(RichTextItemRequestSchema).optional(),
+        color: z.string().optional()
+      })
+      .optional(),
+    heading_1: z
+      .object({
+        rich_text: z.array(RichTextItemRequestSchema).optional(),
+        color: z.string().optional()
+      })
+      .optional(),
+    heading_2: z
+      .object({
+        rich_text: z.array(RichTextItemRequestSchema).optional(),
+        color: z.string().optional()
+      })
+      .optional(),
+    heading_3: z
+      .object({
+        rich_text: z.array(RichTextItemRequestSchema).optional(),
+        color: z.string().optional()
+      })
+      .optional(),
+    bulleted_list_item: z
+      .object({
+        rich_text: z.array(RichTextItemRequestSchema).optional(),
+        color: z.string().optional()
+      })
+      .optional(),
+    numbered_list_item: z
+      .object({
+        rich_text: z.array(RichTextItemRequestSchema).optional(),
+        color: z.string().optional()
+      })
+      .optional(),
+    quote: z
+      .object({
+        rich_text: z.array(RichTextItemRequestSchema).optional(),
+        color: z.string().optional()
+      })
+      .optional(),
+    to_do: z
+      .object({
+        rich_text: z.array(RichTextItemRequestSchema).optional(),
+        checked: z.boolean().optional(),
+        color: z.string().optional()
+      })
+      .optional(),
+    toggle: z
+      .object({
+        rich_text: z.array(RichTextItemRequestSchema).optional(),
+        color: z.string().optional()
+      })
+      .optional(),
+    code: z
+      .object({
+        rich_text: z.array(RichTextItemRequestSchema).optional(),
+        language: z.string().optional()
+      })
+      .optional(),
+    embed: z.object({ url: z.string().optional() }).optional(),
+    image: z
+      .object({ external: z.object({ url: z.string().optional() }).optional() })
+      .optional(),
+    video: z
+      .object({ external: z.object({ url: z.string().optional() }).optional() })
+      .optional(),
+    file: z
+      .object({ external: z.object({ url: z.string().optional() }).optional() })
+      .optional(),
+    pdf: z
+      .object({ external: z.object({ url: z.string().optional() }).optional() })
+      .optional(),
+    bookmark: z.object({ url: z.string().optional() }).optional(),
+    equation: z.object({ expression: z.string().optional() }).optional(),
+    divider: z.record(z.any()).optional(),
+    table_of_contents: z.object({ color: z.string().optional() }).optional(),
+    breadcrumb: z.record(z.any()).optional(),
+    column_list: z.record(z.any()).optional(),
+    column: z.record(z.any()).optional(),
+    link_to_page: z
+      .object({
+        type: z.enum(['page_id', 'database_id']).optional(),
+        page_id: z.string().optional(),
+        database_id: z.string().optional()
+      })
+      .optional(),
+    table_row: z
+      .object({ cells: z.array(z.array(RichTextItemRequestSchema)).optional() })
+      .optional(),
+    archived: z.boolean().optional()
+  })
+  export type UpdateBlockParameters = z.infer<
+    typeof UpdateBlockParametersSchema
+  >
+
+  export const BlockObjectRequestSchema = z.union([
+    z.object({
+      object: z.literal('block'),
+      type: z.literal('paragraph'),
+      paragraph: z.object({
+        rich_text: z.array(RichTextItemRequestSchema),
+        color: z.string().optional()
+      })
+    }),
+    z.object({
+      object: z.literal('block'),
+      type: z.literal('heading_1'),
+      heading_1: z.object({
+        rich_text: z.array(RichTextItemRequestSchema),
+        color: z.string().optional()
+      })
+    }),
+    z.object({
+      object: z.literal('block'),
+      type: z.literal('heading_2'),
+      heading_2: z.object({
+        rich_text: z.array(RichTextItemRequestSchema),
+        color: z.string().optional()
+      })
+    }),
+    z.object({
+      object: z.literal('block'),
+      type: z.literal('heading_3'),
+      heading_3: z.object({
+        rich_text: z.array(RichTextItemRequestSchema),
+        color: z.string().optional()
+      })
+    }),
+    z.object({
+      object: z.literal('block'),
+      type: z.literal('bulleted_list_item'),
+      bulleted_list_item: z.object({
+        rich_text: z.array(RichTextItemRequestSchema),
+        color: z.string().optional()
+      })
+    }),
+    z.object({
+      object: z.literal('block'),
+      type: z.literal('numbered_list_item'),
+      numbered_list_item: z.object({
+        rich_text: z.array(RichTextItemRequestSchema),
+        color: z.string().optional()
+      })
+    }),
+    z.object({
+      object: z.literal('block'),
+      type: z.literal('to_do'),
+      to_do: z.object({
+        rich_text: z.array(RichTextItemRequestSchema),
+        checked: z.boolean(),
+        color: z.string().optional()
+      })
+    }),
+    z.object({
+      object: z.literal('block'),
+      type: z.literal('toggle'),
+      toggle: z.object({
+        rich_text: z.array(RichTextItemRequestSchema),
+        color: z.string().optional()
+      })
+    }),
+    z.object({
+      object: z.literal('block'),
+      type: z.literal('code'),
+      code: z.object({
+        rich_text: z.array(RichTextItemRequestSchema),
+        language: z.string(),
+        caption: z.array(RichTextItemRequestSchema).optional()
+      })
+    }),
+    z.object({
+      object: z.literal('block'),
+      type: z.literal('child_page'),
+      child_page: z.object({ title: z.string() })
+    }),
+    z.object({
+      object: z.literal('block'),
+      type: z.literal('child_database'),
+      child_database: z.object({ title: z.string() })
+    }),
+    z.object({
+      object: z.literal('block'),
+      type: z.literal('embed'),
+      embed: z.object({
+        url: z.string(),
+        caption: z.array(RichTextItemRequestSchema).optional()
+      })
+    }),
+    z.object({
+      object: z.literal('block'),
+      type: z.literal('image'),
+      image: z.object({
+        external: z.object({ url: z.string() }),
+        caption: z.array(RichTextItemRequestSchema).optional()
+      })
+    }),
+    z.object({
+      object: z.literal('block'),
+      type: z.literal('video'),
+      video: z.object({
+        external: z.object({ url: z.string() }),
+        caption: z.array(RichTextItemRequestSchema).optional()
+      })
+    }),
+    z.object({
+      object: z.literal('block'),
+      type: z.literal('file'),
+      file: z.object({
+        external: z.object({ url: z.string() }),
+        caption: z.array(RichTextItemRequestSchema).optional()
+      })
+    }),
+    z.object({
+      object: z.literal('block'),
+      type: z.literal('pdf'),
+      pdf: z.object({
+        external: z.object({ url: z.string() }),
+        caption: z.array(RichTextItemRequestSchema).optional()
+      })
+    }),
+    z.object({
+      object: z.literal('block'),
+      type: z.literal('bookmark'),
+      bookmark: z.object({
+        url: z.string(),
+        caption: z.array(RichTextItemRequestSchema).optional()
+      })
+    }),
+    z.object({
+      object: z.literal('block'),
+      type: z.literal('equation'),
+      equation: z.object({ expression: z.string() })
+    }),
+    z.object({
+      object: z.literal('block'),
+      type: z.literal('divider'),
+      divider: z.record(z.any())
+    }),
+    z.object({
+      object: z.literal('block'),
+      type: z.literal('table_of_contents'),
+      table_of_contents: z.object({ color: z.string().optional() })
+    }),
+    z.object({
+      object: z.literal('block'),
+      type: z.literal('column_list'),
+      column_list: z.record(z.any())
+    }),
+    z.object({
+      object: z.literal('block'),
+      type: z.literal('column'),
+      column: z.record(z.any())
+    }),
+    z.object({
+      object: z.literal('block'),
+      type: z.literal('link_to_page'),
+      link_to_page: z.union([
+        z.object({ type: z.literal('page_id'), page_id: z.string() }),
+        z.object({ type: z.literal('database_id'), database_id: z.string() })
+      ])
+    }),
+    z.object({
+      object: z.literal('block'),
+      type: z.literal('table'),
+      table: z.object({
+        table_width: z.number().int(),
+        has_column_header: z.boolean().optional(),
+        has_row_header: z.boolean().optional(),
+        children: z.array(
+          // TODO: Support recursive types for \`BlockObjectRequestSchema\`.
+          z.any()
+        )
+      })
+    }),
+    z.object({
+      object: z.literal('block'),
+      type: z.literal('table_row'),
+      table_row: z.object({
+        cells: z.array(z.array(RichTextItemRequestSchema))
+      })
+    }),
+    z.object({
+      object: z.literal('block'),
+      type: z.literal('synced_block'),
+      synced_block: z.object({
+        synced_from: z
+          .union([
+            z.object({ type: z.literal('block_id'), block_id: z.string() }),
+            z.null()
+          ])
+          .optional(),
+        children: z
+          .array(
+            // TODO: Support recursive types for \`BlockObjectRequestSchema\`.
+            z.any()
+          )
+          .optional()
+      })
+    })
+  ])
+  export type BlockObjectRequest = z.infer<typeof BlockObjectRequestSchema>
+
+  export const MentionRichTextItemResponseSchema = z.object({
+    type: z.literal('mention'),
+    mention: z.union([
+      z.object({
+        type: z.literal('user'),
+        user: z.union([
+          PartialUserObjectResponseSchema,
+          UserObjectResponseSchema
+        ])
+      }),
+      z.object({ type: z.literal('date'), date: DateResponseSchema }),
+      z.object({
+        type: z.literal('link_preview'),
+        link_preview: z.object({ url: z.string() })
+      }),
+      z.object({ type: z.literal('page'), page: z.object({ id: z.string() }) }),
+      z.object({
+        type: z.literal('database'),
+        database: z.object({ id: z.string() })
+      })
+    ]),
+    annotations: AnnotationResponseSchema,
+    plain_text: z.string(),
+    href: z.union([z.string(), z.null()])
+  })
+  export type MentionRichTextItemResponse = z.infer<
+    typeof MentionRichTextItemResponseSchema
+  >
+
+  export const CreateCommentParametersSchema = z.union([
+    z.object({
+      parent: z.object({
+        page_id: z.string(),
+        type: z.literal('page_id').optional()
+      }),
+      rich_text: z.array(RichTextItemRequestSchema)
+    }),
+    z.object({
+      discussion_id: z.string(),
+      rich_text: z.array(RichTextItemRequestSchema)
+    })
+  ])
+  export type CreateCommentParameters = z.infer<
+    typeof CreateCommentParametersSchema
+  >
+
+  export const AppendBlockChildrenParametersSchema = z.object({
+    children: z.array(BlockObjectRequestSchema)
+  })
+  export type AppendBlockChildrenParameters = z.infer<
+    typeof AppendBlockChildrenParametersSchema
+  >
+
+  export const UpdateDatabaseParametersSchema = z.object({
+    title: z.array(RichTextItemRequestSchema).optional(),
+    description: z.array(RichTextItemRequestSchema).optional(),
+    icon: z
+      .union([
+        z.object({ emoji: z.string(), type: z.literal('emoji') }),
+        z.object({
+          external: z.object({ url: z.string() }),
+          type: z.literal('external')
+        }),
+        z.null()
+      ])
+      .optional(),
+    cover: z
+      .union([
+        z.object({
+          external: z.object({ url: z.string() }),
+          type: z.literal('external')
+        }),
+        z.null()
+      ])
+      .optional(),
+    properties: z.record(PropertyUpdateSchemaSchema).optional(),
+    is_inline: z.boolean().optional(),
+    archived: z.boolean().optional()
+  })
+  export type UpdateDatabaseParameters = z.infer<
+    typeof UpdateDatabaseParametersSchema
+  >
+
+  export const CreateDatabaseParametersSchema = z.object({
+    parent: z.union([
+      z.object({ type: z.literal('page_id'), page_id: z.string() }),
+      z.object({ type: z.literal('database_id'), database_id: z.string() })
+    ]),
+    properties: z.record(PropertySchemaSchema),
+    icon: z
+      .union([
+        z.object({ type: z.literal('emoji'), emoji: z.string() }),
+        z.object({
+          type: z.literal('external'),
+          external: z.object({ url: z.string() })
+        }),
+        z.null()
+      ])
+      .optional(),
+    cover: z
+      .union([
+        z.object({
+          type: z.literal('external'),
+          external: z.object({ url: z.string() })
+        }),
+        z.null()
+      ])
+      .optional(),
+    title: z.array(RichTextItemRequestSchema),
+    description: z.array(RichTextItemRequestSchema).optional(),
+    is_inline: z.boolean().optional()
+  })
+  export type CreateDatabaseParameters = z.infer<
+    typeof CreateDatabaseParametersSchema
+  >
+
+  export const RichTextItemResponseSchema = z.union([
+    TextRichTextItemResponseSchema,
+    MentionRichTextItemResponseSchema,
+    EquationRichTextItemResponseSchema
+  ])
+  export type RichTextItemResponse = z.infer<typeof RichTextItemResponseSchema>
+
+  export const CommentObjectResponseSchema = z.object({
+    object: z.literal('comment'),
+    id: z.string(),
+    parent: z.union([
+      z.object({ type: z.literal('page_id'), page_id: z.string() }),
+      z.object({ type: z.literal('block_id'), block_id: z.string() })
+    ]),
+    discussion_id: z.string(),
+    rich_text: z.array(RichTextItemResponseSchema),
+    created_by: PartialUserObjectResponseSchema,
+    created_time: z.string(),
+    last_edited_time: z.string()
+  })
+  export type CommentObjectResponse = z.infer<
+    typeof CommentObjectResponseSchema
+  >
+
+  export const PropertyFilterSchema = z.union([
+    z.object({ property: z.string(), title: TextPropertyFilterSchema }),
+    z.object({ property: z.string(), rich_text: TextPropertyFilterSchema }),
+    z.object({ property: z.string(), number: NumberPropertyFilterSchema }),
+    z.object({ property: z.string(), checkbox: CheckboxPropertyFilterSchema }),
+    z.object({ property: z.string(), select: SelectPropertyFilterSchema }),
+    z.object({
+      property: z.string(),
+      multi_select: MultiSelectPropertyFilterSchema
+    }),
+    z.object({ property: z.string(), date: DatePropertyFilterSchema }),
+    z.object({ property: z.string(), people: PeoplePropertyFilterSchema }),
+    z.object({ property: z.string(), files: FilesPropertyFilterSchema }),
+    z.object({ property: z.string(), url: TextPropertyFilterSchema }),
+    z.object({ property: z.string(), email: TextPropertyFilterSchema }),
+    z.object({ property: z.string(), phone_number: TextPropertyFilterSchema }),
+    z.object({ property: z.string(), relation: RelationPropertyFilterSchema }),
+    z.object({ property: z.string(), created_by: PeoplePropertyFilterSchema }),
+    z.object({ property: z.string(), created_time: DatePropertyFilterSchema }),
+    z.object({
+      property: z.string(),
+      last_edited_by: PeoplePropertyFilterSchema
+    }),
+    z.object({
+      property: z.string(),
+      last_edited_time: DatePropertyFilterSchema
+    }),
+    z.object({
+      timestamp: z.enum(['created_time', 'last_edited_time']),
+      created_time: DatePropertyFilterSchema
+    }),
+    z.object({
+      timestamp: z.enum(['created_time', 'last_edited_time']),
+      last_edited_time: DatePropertyFilterSchema
+    })
+  ])
+  export type PropertyFilter = z.infer<typeof PropertyFilterSchema>
+
+  export const ListCommentsResponseSchema = z.object({
+    object: z.literal('list'),
+    results: z.array(CommentObjectResponseSchema),
+    next_cursor: z.union([z.string(), z.null()]),
+    has_more: z.boolean()
+  })
+  export type ListCommentsResponse = z.infer<typeof ListCommentsResponseSchema>
+
+  export const CompoundFilterSchema = z.object({
+    and: z.array(PropertyFilterSchema).optional(),
+    or: z.array(PropertyFilterSchema).optional()
+  })
+  export type CompoundFilter = z.infer<typeof CompoundFilterSchema>
+
+  export const QueryDatabaseParametersSchema = z.object({
+    sorts: z
+      .array(
+        z.union([
+          z.object({
+            property: z.string(),
+            direction: z.enum(['ascending', 'descending'])
+          }),
+          z.object({
+            timestamp: z.enum(['created_time', 'last_edited_time']),
+            direction: z.enum(['ascending', 'descending'])
+          })
+        ])
+      )
+      .optional(),
+    filter: z.union([PropertyFilterSchema, CompoundFilterSchema]).optional(),
+    start_cursor: z.string().optional(),
+    page_size: z.number().int().optional(),
+    archived: z.boolean().optional()
+  })
+  export type QueryDatabaseParameters = z.infer<
+    typeof QueryDatabaseParametersSchema
+  >
+
+  export const DatabasePropertyConfigResponseSchema = z.union([
+    TitlePropertyResponseSchema,
+    RichTextPropertyResponseSchema,
+    NumberPropertyResponseSchema,
+    SelectPropertyResponseSchema,
+    MultiSelectPropertyResponseSchema,
+    DatePropertyResponseSchema,
+    PeoplePropertyResponseSchema,
+    FilePropertyResponseSchema,
+    CheckboxPropertyResponseSchema,
+    UrlPropertyResponseSchema,
+    EmailPropertyResponseSchema,
+    PhoneNumberPropertyResponseSchema,
+    FormulaPropertyResponseSchema,
+    RelationPropertyResponseSchema,
+    RollupPropertyResponseSchema,
+    CreatedTimePropertyResponseSchema,
+    CreatedByPropertyResponseSchema,
+    LastEditedTimePropertyResponseSchema,
+    LastEditedByPropertyResponseSchema
+  ])
+  export type DatabasePropertyConfigResponse = z.infer<
+    typeof DatabasePropertyConfigResponseSchema
+  >
+
+  export const PartialDatabaseObjectResponseSchema = z.object({
+    object: z.literal('database'),
+    id: z.string(),
+    properties: z.record(DatabasePropertyConfigResponseSchema)
+  })
+  export type PartialDatabaseObjectResponse = z.infer<
+    typeof PartialDatabaseObjectResponseSchema
+  >
+
+  export const DatabaseObjectResponseSchema = z.object({
+    object: z.literal('database'),
+    id: z.string(),
+    cover: z
+      .union([
+        z.object({
+          type: z.literal('external'),
+          external: z.object({ url: z.string() })
+        }),
+        z.null()
+      ])
+      .optional(),
+    icon: z
+      .union([
+        z.object({ type: z.literal('emoji'), emoji: z.string() }),
+        z.object({
+          type: z.literal('external'),
+          external: z.object({ url: z.string() })
+        }),
+        z.null()
+      ])
+      .optional(),
+    created_time: z.string(),
+    created_by: PartialUserObjectResponseSchema,
+    last_edited_time: z.string(),
+    last_edited_by: PartialUserObjectResponseSchema,
+    title: z.array(RichTextItemResponseSchema),
+    description: z.array(RichTextItemResponseSchema),
+    is_inline: z.boolean(),
+    properties: z.record(DatabasePropertyConfigResponseSchema),
+    parent: z.union([
+      z.object({ type: z.literal('page_id'), page_id: z.string() }),
+      z.object({ type: z.literal('workspace'), workspace: z.literal(true) })
+    ]),
+    url: z.string(),
+    archived: z.boolean()
+  })
+  export type DatabaseObjectResponse = z.infer<
+    typeof DatabaseObjectResponseSchema
+  >
+
+  export const ListDatabasesResponseSchema = z.object({
+    object: z.literal('list'),
+    results: z.array(
+      z.union([
+        PartialDatabaseObjectResponseSchema,
+        DatabaseObjectResponseSchema
+      ])
+    ),
+    next_cursor: z.union([z.string(), z.null()]),
+    has_more: z.boolean()
+  })
+  export type ListDatabasesResponse = z.infer<
+    typeof ListDatabasesResponseSchema
+  >
+
+  export const SearchResponseSchema = z.object({
+    object: z.literal('list'),
+    results: z.array(
+      z.union([
+        PageObjectResponseSchema,
+        PartialPageObjectResponseSchema,
+        PartialDatabaseObjectResponseSchema,
+        DatabaseObjectResponseSchema
+      ])
+    ),
+    next_cursor: z.union([z.string(), z.null()]),
+    has_more: z.boolean()
+  })
+  export type SearchResponse = z.infer<typeof SearchResponseSchema>
+
+  // -----------------------------------------------------------------------------
+  // Operation schemas
+  // -----------------------------------------------------------------------------
+
+  export const GetSelfParamsSchema = z.object({})
+  export type GetSelfParams = z.infer<typeof GetSelfParamsSchema>
+
+  export const GetSelfResponseSchema = UserObjectResponseSchema
+  export type GetSelfResponse = z.infer<typeof GetSelfResponseSchema>
+
+  export const GetUserParamsSchema = z.object({ user_id: z.string() })
+  export type GetUserParams = z.infer<typeof GetUserParamsSchema>
+
+  export const GetUserResponseSchema = UserObjectResponseSchema
+  export type GetUserResponse = z.infer<typeof GetUserResponseSchema>
+
+  export const ListUsersParamsSchema = z.object({
+    start_cursor: z.string().optional(),
+    page_size: z.number().int().optional()
+  })
+  export type ListUsersParams = z.infer<typeof ListUsersParamsSchema>
+
+  export const CreatePageParamsSchema = CreatePageParametersSchema
+  export type CreatePageParams = z.infer<typeof CreatePageParamsSchema>
+
+  export const CreatePageResponseSchema = z.union([
+    PageObjectResponseSchema,
+    PartialPageObjectResponseSchema
+  ])
+  export type CreatePageResponse = z.infer<typeof CreatePageResponseSchema>
+
+  export const GetPageParamsSchema = z.object({
+    page_id: z.string(),
+    filter_properties: z.array(z.string()).optional()
+  })
+  export type GetPageParams = z.infer<typeof GetPageParamsSchema>
+
+  export const GetPageResponseSchema = z.union([
+    PageObjectResponseSchema,
+    PartialPageObjectResponseSchema
+  ])
+  export type GetPageResponse = z.infer<typeof GetPageResponseSchema>
+
+  export const UpdatePageParamsSchema = z
+    .object({ page_id: z.string() })
+    .merge(UpdatePageParametersSchema)
+  export type UpdatePageParams = z.infer<typeof UpdatePageParamsSchema>
+
+  export const UpdatePageResponseSchema = z.union([
+    PageObjectResponseSchema,
+    PartialPageObjectResponseSchema
+  ])
+  export type UpdatePageResponse = z.infer<typeof UpdatePageResponseSchema>
+
+  export const GetPagePropertyParamsSchema = z.object({
+    page_id: z.string(),
+    property_id: z.string(),
+    start_cursor: z.string().optional(),
+    page_size: z.number().int().optional()
+  })
+  export type GetPagePropertyParams = z.infer<
+    typeof GetPagePropertyParamsSchema
+  >
+
+  export const GetPagePropertyResponseSchema = z.union([
+    PropertyItemObjectResponseSchema,
+    PropertyItemListResponseSchema
+  ])
+  export type GetPagePropertyResponse = z.infer<
+    typeof GetPagePropertyResponseSchema
+  >
+
+  export const GetBlockParamsSchema = z.object({ block_id: z.string() })
+  export type GetBlockParams = z.infer<typeof GetBlockParamsSchema>
+
+  export const GetBlockResponseSchema = z.union([
+    PartialBlockObjectResponseSchema,
+    BlockObjectResponseSchema
+  ])
+  export type GetBlockResponse = z.infer<typeof GetBlockResponseSchema>
+
+  export const DeleteBlockParamsSchema = z.object({ block_id: z.string() })
+  export type DeleteBlockParams = z.infer<typeof DeleteBlockParamsSchema>
+
+  export const DeleteBlockResponseSchema = z.union([
+    PartialBlockObjectResponseSchema,
+    BlockObjectResponseSchema
+  ])
+  export type DeleteBlockResponse = z.infer<typeof DeleteBlockResponseSchema>
+
+  export const UpdateBlockParamsSchema = z
+    .object({ block_id: z.string() })
+    .merge(UpdateBlockParametersSchema)
+  export type UpdateBlockParams = z.infer<typeof UpdateBlockParamsSchema>
+
+  export const UpdateBlockResponseSchema = z.union([
+    PartialBlockObjectResponseSchema,
+    BlockObjectResponseSchema
+  ])
+  export type UpdateBlockResponse = z.infer<typeof UpdateBlockResponseSchema>
+
+  export const ListBlockChildrenParamsSchema = z.object({
+    block_id: z.string(),
+    start_cursor: z.string().optional(),
+    page_size: z.number().int().optional()
+  })
+  export type ListBlockChildrenParams = z.infer<
+    typeof ListBlockChildrenParamsSchema
+  >
+
+  export const AppendBlockChildrenParamsSchema = z
+    .object({ block_id: z.string() })
+    .merge(AppendBlockChildrenParametersSchema)
+  export type AppendBlockChildrenParams = z.infer<
+    typeof AppendBlockChildrenParamsSchema
+  >
+
+  export const GetDatabaseParamsSchema = z.object({ database_id: z.string() })
+  export type GetDatabaseParams = z.infer<typeof GetDatabaseParamsSchema>
+
+  export const GetDatabaseResponseSchema = z.union([
+    PartialDatabaseObjectResponseSchema,
+    DatabaseObjectResponseSchema
+  ])
+  export type GetDatabaseResponse = z.infer<typeof GetDatabaseResponseSchema>
+
+  export const UpdateDatabaseParamsSchema = z
+    .object({ database_id: z.string() })
+    .merge(UpdateDatabaseParametersSchema)
+  export type UpdateDatabaseParams = z.infer<typeof UpdateDatabaseParamsSchema>
+
+  export const UpdateDatabaseResponseSchema = z.union([
+    PartialDatabaseObjectResponseSchema,
+    DatabaseObjectResponseSchema
+  ])
+  export type UpdateDatabaseResponse = z.infer<
+    typeof UpdateDatabaseResponseSchema
+  >
+
+  export const QueryDatabaseParamsSchema = z
+    .object({
+      database_id: z.string(),
+      filter_properties: z.array(z.string()).optional()
+    })
+    .merge(QueryDatabaseParametersSchema)
+  export type QueryDatabaseParams = z.infer<typeof QueryDatabaseParamsSchema>
+
+  export const ListDatabasesParamsSchema = z.object({
+    start_cursor: z.string().optional(),
+    page_size: z.number().int().optional()
+  })
+  export type ListDatabasesParams = z.infer<typeof ListDatabasesParamsSchema>
+
+  export const CreateDatabaseParamsSchema = CreateDatabaseParametersSchema
+  export type CreateDatabaseParams = z.infer<typeof CreateDatabaseParamsSchema>
+
+  export const CreateDatabaseResponseSchema = z.union([
+    PartialDatabaseObjectResponseSchema,
+    DatabaseObjectResponseSchema
+  ])
+  export type CreateDatabaseResponse = z.infer<
+    typeof CreateDatabaseResponseSchema
+  >
+
+  export const SearchParamsSchema = SearchParametersSchema
+  export type SearchParams = z.infer<typeof SearchParamsSchema>
+
+  export const ListCommentsParamsSchema = z.object({
+    block_id: z.string(),
+    start_cursor: z.string().optional(),
+    page_size: z.number().int().optional()
+  })
+  export type ListCommentsParams = z.infer<typeof ListCommentsParamsSchema>
+
+  export const CreateCommentParamsSchema = CreateCommentParametersSchema
+  export type CreateCommentParams = z.infer<typeof CreateCommentParamsSchema>
+
+  export const CreateCommentResponseSchema = z.union([
+    CommentObjectResponseSchema,
+    PartialCommentObjectResponseSchema
+  ])
+  export type CreateCommentResponse = z.infer<
+    typeof CreateCommentResponseSchema
+  >
+
+  export const OauthTokenParamsSchema = OauthTokenParametersSchema
+  export type OauthTokenParams = z.infer<typeof OauthTokenParamsSchema>
+}
+
+
+/**
+ * This file was auto-generated from an OpenAPI spec.
+ */
+
+import {
+  AIFunctionsProvider,
+  aiFunction,
+  assert,
+  getEnv,
+  pick,
+  sanitizeSearchParams
+} from '@agentic/core'
+import defaultKy, { type KyInstance } from 'ky'
+import { notion } from './notion'
+
+/**
+ * Agentic Notion client.
+ *
+ * API specification for Notion.
+ */
+export class NotionClient extends AIFunctionsProvider {
+  protected readonly ky: KyInstance
+  protected readonly apiKey: string
+  protected readonly apiBaseUrl: string
+
+  constructor({
+    apiKey = getEnv('NOTION_API_KEY'),
+    apiBaseUrl = notion.apiBaseUrl,
+    ky = defaultKy
+  }: {
+    apiKey?: string
+    apiBaseUrl?: string
+    ky?: KyInstance
+  } = {}) {
+    assert(
+      apiKey,
+      'NotionClient missing required "apiKey" (defaults to "NOTION_API_KEY")'
+    )
+    super()
+
+    this.apiKey = apiKey
+    this.apiBaseUrl = apiBaseUrl
+
+    this.ky = ky.extend({
+      prefixUrl: apiBaseUrl,
+      headers: {
+        Authorization: \`Bearer \${apiKey}\`
+      }
+    })
+  }
+
+  /**
+   * Get current user.
+   */
+  @aiFunction({
+    name: 'notion_get_self',
+    description: \`Get current user.\`,
+    inputSchema: notion.GetSelfParamsSchema
+  })
+  async getSelf(
+    _params: notion.GetSelfParams
+  ): Promise<notion.GetSelfResponse> {
+    return this.ky.get('/users/me').json<notion.GetSelfResponse>()
+  }
+
+  /**
+   * Get user.
+   */
+  @aiFunction({
+    name: 'notion_get_user',
+    description: \`Get user.\`,
+    inputSchema: notion.GetUserParamsSchema
+  })
+  async getUser(params: notion.GetUserParams): Promise<notion.GetUserResponse> {
+    return this.ky
+      .get(\`/users/\${params['user_id']}\`)
+      .json<notion.GetUserResponse>()
+  }
+
+  /**
+   * List users.
+   */
+  @aiFunction({
+    name: 'notion_list_users',
+    description: \`List users.\`,
+    inputSchema: notion.ListUsersParamsSchema
+  })
+  async listUsers(
+    params: notion.ListUsersParams
+  ): Promise<notion.ListUsersResponse> {
+    return this.ky
+      .get('/users', {
+        searchParams: sanitizeSearchParams(
+          pick(params, 'start_cursor', 'page_size')
+        )
+      })
+      .json<notion.ListUsersResponse>()
+  }
+
+  /**
+   * Create page.
+   */
+  @aiFunction({
+    name: 'notion_create_page',
+    description: \`Create page.\`,
+    inputSchema: notion.CreatePageParamsSchema
+  })
+  async createPage(
+    params: notion.CreatePageParams
+  ): Promise<notion.CreatePageResponse> {
+    return this.ky
+      .post('/pages', {
+        json: pick(params, 'parent', 'properties')
+      })
+      .json<notion.CreatePageResponse>()
+  }
+
+  /**
+   * Get page.
+   */
+  @aiFunction({
+    name: 'notion_get_page',
+    description: \`Get page.\`,
+    inputSchema: notion.GetPageParamsSchema
+  })
+  async getPage(params: notion.GetPageParams): Promise<notion.GetPageResponse> {
+    return this.ky
+      .get(\`/pages/\${params['page_id']}\`, {
+        searchParams: sanitizeSearchParams(pick(params, 'filter_properties'))
+      })
+      .json<notion.GetPageResponse>()
+  }
+
+  /**
+   * Update page.
+   */
+  @aiFunction({
+    name: 'notion_update_page',
+    description: \`Update page.\`,
+    inputSchema: notion.UpdatePageParamsSchema
+  })
+  async updatePage(
+    params: notion.UpdatePageParams
+  ): Promise<notion.UpdatePageResponse> {
+    return this.ky
+      .patch(\`/pages/\${params['page_id']}\`, {
+        json: pick(params, 'properties', 'archived')
+      })
+      .json<notion.UpdatePageResponse>()
+  }
+
+  /**
+   * Get page property.
+   */
+  @aiFunction({
+    name: 'notion_get_page_property',
+    description: \`Get page property.\`,
+    inputSchema: notion.GetPagePropertyParamsSchema
+  })
+  async getPageProperty(
+    params: notion.GetPagePropertyParams
+  ): Promise<notion.GetPagePropertyResponse> {
+    return this.ky
+      .get(\`/pages/\${params['page_id']}/properties/\${params['property_id']}\`, {
+        searchParams: sanitizeSearchParams(
+          pick(params, 'start_cursor', 'page_size')
+        )
+      })
+      .json<notion.GetPagePropertyResponse>()
+  }
+
+  /**
+   * Get block.
+   */
+  @aiFunction({
+    name: 'notion_get_block',
+    description: \`Get block.\`,
+    inputSchema: notion.GetBlockParamsSchema
+  })
+  async getBlock(
+    params: notion.GetBlockParams
+  ): Promise<notion.GetBlockResponse> {
+    return this.ky
+      .get(\`/blocks/\${params['block_id']}\`)
+      .json<notion.GetBlockResponse>()
+  }
+
+  /**
+   * Delete block.
+   */
+  @aiFunction({
+    name: 'notion_delete_block',
+    description: \`Delete block.\`,
+    inputSchema: notion.DeleteBlockParamsSchema
+  })
+  async deleteBlock(
+    params: notion.DeleteBlockParams
+  ): Promise<notion.DeleteBlockResponse> {
+    return this.ky
+      .delete(\`/blocks/\${params['block_id']}\`)
+      .json<notion.DeleteBlockResponse>()
+  }
+
+  /**
+   * Update block.
+   */
+  @aiFunction({
+    name: 'notion_update_block',
+    description: \`Update block.\`,
+    inputSchema: notion.UpdateBlockParamsSchema
+  })
+  async updateBlock(
+    params: notion.UpdateBlockParams
+  ): Promise<notion.UpdateBlockResponse> {
+    return this.ky
+      .patch(\`/blocks/\${params['block_id']}\`, {
+        json: pick(
+          params,
+          'paragraph',
+          'heading_1',
+          'heading_2',
+          'heading_3',
+          'bulleted_list_item',
+          'numbered_list_item',
+          'quote',
+          'to_do',
+          'toggle',
+          'code',
+          'embed',
+          'image',
+          'video',
+          'file',
+          'pdf',
+          'bookmark',
+          'equation',
+          'divider',
+          'table_of_contents',
+          'breadcrumb',
+          'column_list',
+          'column',
+          'link_to_page',
+          'table_row',
+          'archived'
+        )
+      })
+      .json<notion.UpdateBlockResponse>()
+  }
+
+  /**
+   * List block children.
+   */
+  @aiFunction({
+    name: 'notion_list_block_children',
+    description: \`List block children.\`,
+    inputSchema: notion.ListBlockChildrenParamsSchema
+  })
+  async listBlockChildren(
+    params: notion.ListBlockChildrenParams
+  ): Promise<notion.ListBlockChildrenResponse> {
+    return this.ky
+      .get(\`/blocks/\${params['block_id']}/children\`, {
+        searchParams: sanitizeSearchParams(
+          pick(params, 'start_cursor', 'page_size')
+        )
+      })
+      .json<notion.ListBlockChildrenResponse>()
+  }
+
+  /**
+   * Append block children.
+   */
+  @aiFunction({
+    name: 'notion_append_block_children',
+    description: \`Append block children.\`,
+    inputSchema: notion.AppendBlockChildrenParamsSchema
+  })
+  async appendBlockChildren(
+    params: notion.AppendBlockChildrenParams
+  ): Promise<notion.AppendBlockChildrenResponse> {
+    return this.ky
+      .patch(\`/blocks/\${params['block_id']}/children\`, {
+        json: pick(params, 'children')
+      })
+      .json<notion.AppendBlockChildrenResponse>()
+  }
+
+  /**
+   * Get database.
+   */
+  @aiFunction({
+    name: 'notion_get_database',
+    description: \`Get database.\`,
+    inputSchema: notion.GetDatabaseParamsSchema
+  })
+  async getDatabase(
+    params: notion.GetDatabaseParams
+  ): Promise<notion.GetDatabaseResponse> {
+    return this.ky
+      .get(\`/databases/\${params['database_id']}\`)
+      .json<notion.GetDatabaseResponse>()
+  }
+
+  /**
+   * Update database.
+   */
+  @aiFunction({
+    name: 'notion_update_database',
+    description: \`Update database.\`,
+    inputSchema: notion.UpdateDatabaseParamsSchema
+  })
+  async updateDatabase(
+    params: notion.UpdateDatabaseParams
+  ): Promise<notion.UpdateDatabaseResponse> {
+    return this.ky
+      .patch(\`/databases/\${params['database_id']}\`, {
+        json: pick(
+          params,
+          'title',
+          'description',
+          'icon',
+          'cover',
+          'properties',
+          'is_inline',
+          'archived'
+        )
+      })
+      .json<notion.UpdateDatabaseResponse>()
+  }
+
+  /**
+   * Query database.
+   */
+  @aiFunction({
+    name: 'notion_query_database',
+    description: \`Query database.\`,
+    inputSchema: notion.QueryDatabaseParamsSchema
+  })
+  async queryDatabase(
+    params: notion.QueryDatabaseParams
+  ): Promise<notion.QueryDatabaseResponse> {
+    return this.ky
+      .post(\`/databases/\${params['database_id']}/query\`, {
+        searchParams: sanitizeSearchParams(pick(params, 'filter_properties')),
+        json: pick(
+          params,
+          'sorts',
+          'filter',
+          'start_cursor',
+          'page_size',
+          'archived'
+        )
+      })
+      .json<notion.QueryDatabaseResponse>()
+  }
+
+  /**
+   * List databases.
+   */
+  @aiFunction({
+    name: 'notion_list_databases',
+    description: \`List databases.\`,
+    inputSchema: notion.ListDatabasesParamsSchema
+  })
+  async listDatabases(
+    params: notion.ListDatabasesParams
+  ): Promise<notion.ListDatabasesResponse> {
+    return this.ky
+      .get('/databases', {
+        searchParams: sanitizeSearchParams(
+          pick(params, 'start_cursor', 'page_size')
+        )
+      })
+      .json<notion.ListDatabasesResponse>()
+  }
+
+  /**
+   * Create database.
+   */
+  @aiFunction({
+    name: 'notion_create_database',
+    description: \`Create database.\`,
+    inputSchema: notion.CreateDatabaseParamsSchema
+  })
+  async createDatabase(
+    params: notion.CreateDatabaseParams
+  ): Promise<notion.CreateDatabaseResponse> {
+    return this.ky
+      .post('/databases', {
+        json: pick(
+          params,
+          'parent',
+          'properties',
+          'icon',
+          'cover',
+          'title',
+          'description',
+          'is_inline'
+        )
+      })
+      .json<notion.CreateDatabaseResponse>()
+  }
+
+  /**
+   * Search.
+   */
+  @aiFunction({
+    name: 'notion_search',
+    description: \`Search.\`,
+    inputSchema: notion.SearchParamsSchema
+  })
+  async search(params: notion.SearchParams): Promise<notion.SearchResponse> {
+    return this.ky
+      .post('/search', {
+        json: pick(
+          params,
+          'query',
+          'sort',
+          'filter',
+          'start_cursor',
+          'page_size'
+        )
+      })
+      .json<notion.SearchResponse>()
+  }
+
+  /**
+   * List comments.
+   */
+  @aiFunction({
+    name: 'notion_list_comments',
+    description: \`List comments.\`,
+    inputSchema: notion.ListCommentsParamsSchema
+  })
+  async listComments(
+    params: notion.ListCommentsParams
+  ): Promise<notion.ListCommentsResponse> {
+    return this.ky
+      .get('/comments', {
+        searchParams: sanitizeSearchParams(
+          pick(params, 'block_id', 'start_cursor', 'page_size')
+        )
+      })
+      .json<notion.ListCommentsResponse>()
+  }
+
+  /**
+   * Create comment.
+   */
+  @aiFunction({
+    name: 'notion_create_comment',
+    description: \`Create comment.\`,
+    // TODO: Improve handling of union params
+    inputSchema: notion.CreateCommentParamsSchema as any
+  })
+  async createComment(
+    params: notion.CreateCommentParams
+  ): Promise<notion.CreateCommentResponse> {
+    return this.ky
+      .post('/comments', {
+        json: params
+      })
+      .json<notion.CreateCommentResponse>()
+  }
+
+  /**
+   * OAuth token.
+   */
+  @aiFunction({
+    name: 'notion_oauth_token',
+    description: \`OAuth token.\`,
+    inputSchema: notion.OauthTokenParamsSchema
+  })
+  async oauthToken(
+    params: notion.OauthTokenParams
+  ): Promise<notion.OauthTokenResponse> {
+    return this.ky
+      .post('/oauth/token', {
+        json: pick(
+          params,
+          'grant_type',
+          'code',
+          'redirect_uri',
+          'external_account'
+        )
+      })
+      .json<notion.OauthTokenResponse>()
+  }
+}
+"
+`;
+
+exports[`openapi-to-ts > pet-store.json 1`] = `
+"/**
+ * This file was auto-generated from an OpenAPI spec.
+ */
+
+import { z } from 'zod'
+
+export namespace petstore {
+  export const apiBaseUrl = 'http://petstore.swagger.io/v1'
+
+  // -----------------------------------------------------------------------------
+  // Component schemas
+  // -----------------------------------------------------------------------------
+
+  export const PetSchema = z.object({
+    id: z.number().int(),
+    name: z.string(),
+    tag: z.string().optional()
+  })
+  export type Pet = z.infer<typeof PetSchema>
+
+  export const PetsSchema = z.array(PetSchema).max(100)
+  export type Pets = z.infer<typeof PetsSchema>
+
+  // -----------------------------------------------------------------------------
+  // Operation schemas
+  // -----------------------------------------------------------------------------
+
+  export const ListPetsParamsSchema = z.object({
+    /** How many items to return at one time (max 100) */
+    limit: z
+      .number()
+      .int()
+      .lte(100)
+      .describe('How many items to return at one time (max 100)')
+      .optional()
+  })
+  export type ListPetsParams = z.infer<typeof ListPetsParamsSchema>
+
+  export const ListPetsResponseSchema = PetsSchema
+  export type ListPetsResponse = z.infer<typeof ListPetsResponseSchema>
+
+  export const CreatePetsParamsSchema = PetSchema
+  export type CreatePetsParams = z.infer<typeof CreatePetsParamsSchema>
+
+  export type CreatePetsResponse = undefined
+
+  export const ShowPetByIdParamsSchema = z.object({
+    /** The id of the pet to retrieve */
+    petId: z.string().describe('The id of the pet to retrieve')
+  })
+  export type ShowPetByIdParams = z.infer<typeof ShowPetByIdParamsSchema>
+
+  export const ShowPetByIdResponseSchema = PetSchema
+  export type ShowPetByIdResponse = z.infer<typeof ShowPetByIdResponseSchema>
+}
+
+
+/**
+ * This file was auto-generated from an OpenAPI spec.
+ */
+
+import {
+  AIFunctionsProvider,
+  aiFunction,
+  pick,
+  sanitizeSearchParams
+} from '@agentic/core'
+import defaultKy, { type KyInstance } from 'ky'
+import { petstore } from './pet-store'
+
+/**
+ * Agentic PetStore client.
+ */
+export class PetStoreClient extends AIFunctionsProvider {
+  protected readonly ky: KyInstance
+
+  protected readonly apiBaseUrl: string
+
+  constructor({
+    apiBaseUrl = petstore.apiBaseUrl,
+    ky = defaultKy
+  }: {
+    apiKey?: string
+    apiBaseUrl?: string
+    ky?: KyInstance
+  } = {}) {
+    super()
+
+    this.apiBaseUrl = apiBaseUrl
+
+    this.ky = ky.extend({
+      prefixUrl: apiBaseUrl
+    })
+  }
+
+  /**
+   * List all pets.
+   */
+  @aiFunction({
+    name: 'pet_store_list_pets',
+    description: \`List all pets.\`,
+    inputSchema: petstore.ListPetsParamsSchema,
+    tags: ['pets']
+  })
+  async listPets(
+    params: petstore.ListPetsParams
+  ): Promise<petstore.ListPetsResponse> {
+    return this.ky
+      .get('/pets', {
+        searchParams: sanitizeSearchParams(params)
+      })
+      .json<petstore.ListPetsResponse>()
+  }
+
+  /**
+   * Create a pet.
+   */
+  @aiFunction({
+    name: 'pet_store_create_pets',
+    description: \`Create a pet.\`,
+    inputSchema: petstore.CreatePetsParamsSchema,
+    tags: ['pets']
+  })
+  async createPets(
+    params: petstore.CreatePetsParams
+  ): Promise<petstore.CreatePetsResponse> {
+    return this.ky
+      .post('/pets', {
+        json: pick(params, 'id', 'name', 'tag')
+      })
+      .json<petstore.CreatePetsResponse>()
+  }
+
+  /**
+   * Info for a specific pet.
+   */
+  @aiFunction({
+    name: 'pet_store_show_pet_by_id',
+    description: \`Info for a specific pet.\`,
+    inputSchema: petstore.ShowPetByIdParamsSchema,
+    tags: ['pets']
+  })
+  async showPetById(
+    params: petstore.ShowPetByIdParams
+  ): Promise<petstore.ShowPetByIdResponse> {
+    return this.ky
+      .get(\`/pets/\${params['petId']}\`)
+      .json<petstore.ShowPetByIdResponse>()
+  }
+}
+"
+`;
+
+exports[`openapi-to-ts > petstore-expanded.json 1`] = `
+"/**
+ * This file was auto-generated from an OpenAPI spec.
+ */
+
+import { z } from 'zod'
+
+export namespace petstoreexpanded {
+  export const apiBaseUrl = 'http://petstore.swagger.io/api'
+
+  // -----------------------------------------------------------------------------
+  // Component schemas
+  // -----------------------------------------------------------------------------
+
+  export const NewPetSchema = z.object({
+    name: z.string(),
+    tag: z.string().optional()
+  })
+  export type NewPet = z.infer<typeof NewPetSchema>
+
+  export const PetSchema = z.intersection(
+    NewPetSchema,
+    z.object({ id: z.number().int() })
+  )
+  export type Pet = z.infer<typeof PetSchema>
+
+  // -----------------------------------------------------------------------------
+  // Operation schemas
+  // -----------------------------------------------------------------------------
+
+  export const FindPetsParamsSchema = z.object({
+    /** tags to filter by */
+    tags: z.array(z.string()).describe('tags to filter by').optional(),
+    /** maximum number of results to return */
+    limit: z
+      .number()
+      .int()
+      .describe('maximum number of results to return')
+      .optional()
+  })
+  export type FindPetsParams = z.infer<typeof FindPetsParamsSchema>
+
+  export const FindPetsResponseSchema = z.array(PetSchema)
+  export type FindPetsResponse = z.infer<typeof FindPetsResponseSchema>
+
+  export const AddPetParamsSchema = NewPetSchema
+  export type AddPetParams = z.infer<typeof AddPetParamsSchema>
+
+  export const AddPetResponseSchema = PetSchema
+  export type AddPetResponse = z.infer<typeof AddPetResponseSchema>
+
+  export const FindPetByIdParamsSchema = z.object({
+    /** ID of pet to fetch */
+    id: z.number().int().describe('ID of pet to fetch')
+  })
+  export type FindPetByIdParams = z.infer<typeof FindPetByIdParamsSchema>
+
+  export const FindPetByIdResponseSchema = PetSchema
+  export type FindPetByIdResponse = z.infer<typeof FindPetByIdResponseSchema>
+
+  export const DeletePetParamsSchema = z.object({
+    /** ID of pet to delete */
+    id: z.number().int().describe('ID of pet to delete')
+  })
+  export type DeletePetParams = z.infer<typeof DeletePetParamsSchema>
+
+  export type DeletePetResponse = undefined
+}
+
+
+/**
+ * This file was auto-generated from an OpenAPI spec.
+ */
+
+import {
+  AIFunctionsProvider,
+  aiFunction,
+  pick,
+  sanitizeSearchParams
+} from '@agentic/core'
+import defaultKy, { type KyInstance } from 'ky'
+import { petstoreexpanded } from './petstore-expanded'
+
+/**
+ * Agentic PetstoreExpanded client.
+ *
+ * A sample API that uses a petstore as an example to demonstrate features in the OpenAPI 3.0 specification.
+ */
+export class PetstoreExpandedClient extends AIFunctionsProvider {
+  protected readonly ky: KyInstance
+
+  protected readonly apiBaseUrl: string
+
+  constructor({
+    apiBaseUrl = petstoreexpanded.apiBaseUrl,
+    ky = defaultKy
+  }: {
+    apiKey?: string
+    apiBaseUrl?: string
+    ky?: KyInstance
+  } = {}) {
+    super()
+
+    this.apiBaseUrl = apiBaseUrl
+
+    this.ky = ky.extend({
+      prefixUrl: apiBaseUrl
+    })
+  }
+
+  /**
+ * Returns all pets from the system that the user has access to
+Nam sed condimentum est. Maecenas tempor sagittis sapien, nec rhoncus sem sagittis sit amet. Aenean at gravida augue, ac iaculis sem. Curabitur odio lorem, ornare eget elementum nec, cursus id lectus. Duis mi turpis, pulvinar ac eros ac, tincidunt varius justo. In hac habitasse platea dictumst. Integer at adipiscing ante, a sagittis ligula. Aenean pharetra tempor ante molestie imperdiet. Vivamus id aliquam diam. Cras quis velit non tortor eleifend sagittis. Praesent at enim pharetra urna volutpat venenatis eget eget mauris. In eleifend fermentum facilisis. Praesent enim enim, gravida ac sodales sed, placerat id erat. Suspendisse lacus dolor, consectetur non augue vel, vehicula interdum libero. Morbi euismod sagittis libero sed lacinia.
+
+Sed tempus felis lobortis leo pulvinar rutrum. Nam mattis velit nisl, eu condimentum ligula luctus nec. Phasellus semper velit eget aliquet faucibus. In a mattis elit. Phasellus vel urna viverra, condimentum lorem id, rhoncus nibh. Ut pellentesque posuere elementum. Sed a varius odio. Morbi rhoncus ligula libero, vel eleifend nunc tristique vitae. Fusce et sem dui. Aenean nec scelerisque tortor. Fusce malesuada accumsan magna vel tempus. Quisque mollis felis eu dolor tristique, sit amet auctor felis gravida. Sed libero lorem, molestie sed nisl in, accumsan tempor nisi. Fusce sollicitudin massa ut lacinia mattis. Sed vel eleifend lorem. Pellentesque vitae felis pretium, pulvinar elit eu, euismod sapien.
+ */
+  @aiFunction({
+    name: 'petstore_expanded_find_pets',
+    description: \`Returns all pets from the system that the user has access to
+Nam sed condimentum est. Maecenas tempor sagittis sapien, nec rhoncus sem sagittis sit amet. Aenean at gravida augue, ac iaculis sem. Curabitur odio lorem, ornare eget elementum nec, cursus id lectus. Duis mi turpis, pulvinar ac eros ac, tincidunt varius justo. In hac habitasse platea dictumst. Integer at adipiscing ante, a sagittis ligula. Aenean pharetra tempor ante molestie imperdiet. Vivamus id aliquam diam. Cras quis velit non tortor eleifend sagittis. Praesent at enim pharetra urna volutpat venenatis eget eget mauris. In eleifend fermentum facilisis. Praesent enim enim, gravida ac sodales sed, placerat id erat. Suspendisse lacus dolor, consectetur non augue vel, vehicula interdum libero. Morbi euismod sagittis libero sed lacinia.
+
+Sed tempus felis lobortis leo pulvinar rutrum. Nam mattis velit nisl, eu condimentum ligula luctus nec. Phasellus semper velit eget aliquet faucibus. In a mattis elit. Phasellus vel urna viverra, condimentum lorem id, rhoncus nibh. Ut pellentesque posuere elementum. Sed a varius odio. Morbi rhoncus ligula libero, vel eleifend nunc tristique vitae. Fusce et sem dui. Aenean nec scelerisque tortor. Fusce malesuada accumsan magna vel tempus. Quisque mollis felis eu dolor tristique, sit amet auctor felis gravida. Sed libero lorem, molestie sed nisl in, accumsan tempor nisi. Fusce sollicitudin massa ut lacinia mattis. Sed vel eleifend lorem. Pellentesque vitae felis pretium, pulvinar elit eu, euismod sapien.\`,
+    inputSchema: petstoreexpanded.FindPetsParamsSchema
+  })
+  async findPets(
+    params: petstoreexpanded.FindPetsParams
+  ): Promise<petstoreexpanded.FindPetsResponse> {
+    return this.ky
+      .get('/pets', {
+        searchParams: sanitizeSearchParams(pick(params, 'tags', 'limit'))
+      })
+      .json<petstoreexpanded.FindPetsResponse>()
+  }
+
+  /**
+   * Creates a new pet in the store. Duplicates are allowed.
+   */
+  @aiFunction({
+    name: 'petstore_expanded_add_pet',
+    description: \`Creates a new pet in the store. Duplicates are allowed.\`,
+    inputSchema: petstoreexpanded.AddPetParamsSchema
+  })
+  async addPet(
+    params: petstoreexpanded.AddPetParams
+  ): Promise<petstoreexpanded.AddPetResponse> {
+    return this.ky
+      .post('/pets', {
+        json: pick(params, 'name', 'tag')
+      })
+      .json<petstoreexpanded.AddPetResponse>()
+  }
+
+  /**
+   * Returns a user based on a single ID, if the user does not have access to the pet.
+   */
+  @aiFunction({
+    name: 'petstore_expanded_find_pet_by_id',
+    description: \`Returns a user based on a single ID, if the user does not have access to the pet.\`,
+    inputSchema: petstoreexpanded.FindPetByIdParamsSchema
+  })
+  async findPetById(
+    params: petstoreexpanded.FindPetByIdParams
+  ): Promise<petstoreexpanded.FindPetByIdResponse> {
+    return this.ky
+      .get(\`/pets/\${params['id']}\`)
+      .json<petstoreexpanded.FindPetByIdResponse>()
+  }
+
+  /**
+   * deletes a single pet based on the ID supplied.
+   */
+  @aiFunction({
+    name: 'petstore_expanded_delete_pet',
+    description: \`deletes a single pet based on the ID supplied.\`,
+    inputSchema: petstoreexpanded.DeletePetParamsSchema
+  })
+  async deletePet(
+    params: petstoreexpanded.DeletePetParams
+  ): Promise<petstoreexpanded.DeletePetResponse> {
+    return this.ky
+      .delete(\`/pets/\${params['id']}\`)
+      .json<petstoreexpanded.DeletePetResponse>()
+  }
+}
+"
+`;
+
+exports[`openapi-to-ts > security.json 1`] = `
+"/**
+ * This file was auto-generated from an OpenAPI spec.
+ */
+
+import { z } from 'zod'
+
+export namespace security {
+  export const apiBaseUrl = 'https://httpbin.org'
+
+  // -----------------------------------------------------------------------------
+  // Operation schemas
+  // -----------------------------------------------------------------------------
+
+  export const GetAnythingApiKeyParamsSchema = z.object({})
+  export type GetAnythingApiKeyParams = z.infer<
+    typeof GetAnythingApiKeyParamsSchema
+  >
+
+  export type GetAnythingApiKeyResponse = undefined
+
+  export const PostAnythingApiKeyParamsSchema = z.object({})
+  export type PostAnythingApiKeyParams = z.infer<
+    typeof PostAnythingApiKeyParamsSchema
+  >
+
+  export type PostAnythingApiKeyResponse = undefined
+
+  export const PutAnythingApiKeyParamsSchema = z.object({})
+  export type PutAnythingApiKeyParams = z.infer<
+    typeof PutAnythingApiKeyParamsSchema
+  >
+
+  export type PutAnythingApiKeyResponse = undefined
+
+  export const PostAnythingBasicParamsSchema = z.object({})
+  export type PostAnythingBasicParams = z.infer<
+    typeof PostAnythingBasicParamsSchema
+  >
+
+  export type PostAnythingBasicResponse = undefined
+
+  export const PostAnythingBearerParamsSchema = z.object({})
+  export type PostAnythingBearerParams = z.infer<
+    typeof PostAnythingBearerParamsSchema
+  >
+
+  export type PostAnythingBearerResponse = undefined
+
+  export const PutAnythingBearerParamsSchema = z.object({})
+  export type PutAnythingBearerParams = z.infer<
+    typeof PutAnythingBearerParamsSchema
+  >
+
+  export type PutAnythingBearerResponse = undefined
+
+  export const GetAnythingOauth2ParamsSchema = z.object({})
+  export type GetAnythingOauth2Params = z.infer<
+    typeof GetAnythingOauth2ParamsSchema
+  >
+
+  export type GetAnythingOauth2Response = undefined
+
+  export const PostAnythingOauth2ParamsSchema = z.object({})
+  export type PostAnythingOauth2Params = z.infer<
+    typeof PostAnythingOauth2ParamsSchema
+  >
+
+  export type PostAnythingOauth2Response = undefined
+
+  export const PutAnythingOauth2ParamsSchema = z.object({})
+  export type PutAnythingOauth2Params = z.infer<
+    typeof PutAnythingOauth2ParamsSchema
+  >
+
+  export type PutAnythingOauth2Response = undefined
+
+  export const DeleteAnythingOauth2ParamsSchema = z.object({})
+  export type DeleteAnythingOauth2Params = z.infer<
+    typeof DeleteAnythingOauth2ParamsSchema
+  >
+
+  export type DeleteAnythingOauth2Response = undefined
+
+  export const PatchAnythingOauth2ParamsSchema = z.object({})
+  export type PatchAnythingOauth2Params = z.infer<
+    typeof PatchAnythingOauth2ParamsSchema
+  >
+
+  export type PatchAnythingOauth2Response = undefined
+
+  export const PostAnythingOpenIdConnectParamsSchema = z.object({})
+  export type PostAnythingOpenIdConnectParams = z.infer<
+    typeof PostAnythingOpenIdConnectParamsSchema
+  >
+
+  export type PostAnythingOpenIdConnectResponse = undefined
+
+  export const PostAnythingNoAuthParamsSchema = z.object({})
+  export type PostAnythingNoAuthParams = z.infer<
+    typeof PostAnythingNoAuthParamsSchema
+  >
+
+  export type PostAnythingNoAuthResponse = undefined
+
+  export const GetAnythingOptionalAuthParamsSchema = z.object({})
+  export type GetAnythingOptionalAuthParams = z.infer<
+    typeof GetAnythingOptionalAuthParamsSchema
+  >
+
+  export type GetAnythingOptionalAuthResponse = undefined
+
+  export const PostStatus401ParamsSchema = z.object({})
+  export type PostStatus401Params = z.infer<typeof PostStatus401ParamsSchema>
+
+  export type PostStatus401Response = undefined
+}
+
+
+/**
+ * This file was auto-generated from an OpenAPI spec.
+ */
+
+import { AIFunctionsProvider, aiFunction } from '@agentic/core'
+import defaultKy, { type KyInstance } from 'ky'
+import { security } from './security'
+
+/**
+ * Agentic Security client.
+ *
+ * https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#securitySchemeObject.
+ */
+export class SecurityClient extends AIFunctionsProvider {
+  protected readonly ky: KyInstance
+
+  protected readonly apiBaseUrl: string
+
+  constructor({
+    apiBaseUrl = security.apiBaseUrl,
+    ky = defaultKy
+  }: {
+    apiKey?: string
+    apiBaseUrl?: string
+    ky?: KyInstance
+  } = {}) {
+    super()
+
+    this.apiBaseUrl = apiBaseUrl
+
+    this.ky = ky.extend({
+      prefixUrl: apiBaseUrl
+    })
+  }
+
+  /**
+   * \`apiKey\` auth will be supplied within an \`apiKey\` query parameter.
+   */
+  @aiFunction({
+    name: 'security_get_anything_api_key',
+    description: \`\\\`apiKey\\\` auth will be supplied within an \\\`apiKey\\\` query parameter.\`,
+    inputSchema: security.GetAnythingApiKeyParamsSchema,
+    tags: ['API Key']
+  })
+  async getAnythingApiKey(
+    _params: security.GetAnythingApiKeyParams
+  ): Promise<security.GetAnythingApiKeyResponse> {
+    return this.ky
+      .get('/anything/apiKey')
+      .json<security.GetAnythingApiKeyResponse>()
+  }
+
+  /**
+   * \`apiKey\` auth will be supplied within an \`api_key\` cookie.
+   */
+  @aiFunction({
+    name: 'security_post_anything_api_key',
+    description: \`\\\`apiKey\\\` auth will be supplied within an \\\`api_key\\\` cookie.\`,
+    inputSchema: security.PostAnythingApiKeyParamsSchema,
+    tags: ['API Key']
+  })
+  async postAnythingApiKey(
+    _params: security.PostAnythingApiKeyParams
+  ): Promise<security.PostAnythingApiKeyResponse> {
+    return this.ky
+      .post('/anything/apiKey')
+      .json<security.PostAnythingApiKeyResponse>()
+  }
+
+  /**
+   * \`apiKey\` auth will be supplied within an \`X-API-KEY\` header.
+   */
+  @aiFunction({
+    name: 'security_put_anything_api_key',
+    description: \`\\\`apiKey\\\` auth will be supplied within an \\\`X-API-KEY\\\` header.\`,
+    inputSchema: security.PutAnythingApiKeyParamsSchema,
+    tags: ['API Key']
+  })
+  async putAnythingApiKey(
+    _params: security.PutAnythingApiKeyParams
+  ): Promise<security.PutAnythingApiKeyResponse> {
+    return this.ky
+      .put('/anything/apiKey')
+      .json<security.PutAnythingApiKeyResponse>()
+  }
+
+  /**
+ * Authentication credentials will be supplied within a \`Basic\` \`Authorization\` header.
+
+https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#basic-authentication-sample.
+ */
+  @aiFunction({
+    name: 'security_post_anything_basic',
+    description: \`Authentication credentials will be supplied within a \\\`Basic\\\` \\\`Authorization\\\` header.
+
+https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#basic-authentication-sample.\`,
+    inputSchema: security.PostAnythingBasicParamsSchema,
+    tags: ['HTTP']
+  })
+  async postAnythingBasic(
+    _params: security.PostAnythingBasicParams
+  ): Promise<security.PostAnythingBasicResponse> {
+    return this.ky
+      .post('/anything/basic')
+      .json<security.PostAnythingBasicResponse>()
+  }
+
+  /**
+ * Authentication credentials will be supplied within a \`Bearer\` \`Authorization\` header.
+
+https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#basic-authentication-sample.
+ */
+  @aiFunction({
+    name: 'security_post_anything_bearer',
+    description: \`Authentication credentials will be supplied within a \\\`Bearer\\\` \\\`Authorization\\\` header.
+
+https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#basic-authentication-sample.\`,
+    inputSchema: security.PostAnythingBearerParamsSchema,
+    tags: ['HTTP']
+  })
+  async postAnythingBearer(
+    _params: security.PostAnythingBearerParams
+  ): Promise<security.PostAnythingBearerResponse> {
+    return this.ky
+      .post('/anything/bearer')
+      .json<security.PostAnythingBearerResponse>()
+  }
+
+  /**
+ * Authentication credentials will be supplied within a \`Bearer\` \`Authorization\` header, but its data should be controlled as a JWT.
+
+https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#basic-authentication-sample
+
+> ℹ️
+> We currently do not support any special handling for this so they're handled as a standard \`Bearer\` authentication token.
+ */
+  @aiFunction({
+    name: 'security_put_anything_bearer',
+    description: \`Authentication credentials will be supplied within a \\\`Bearer\\\` \\\`Authorization\\\` header, but its data should be controlled as a JWT.
+
+https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#basic-authentication-sample
+
+> ℹ️
+> We currently do not support any special handling for this so they're handled as a standard \\\`Bearer\\\` authentication token.\`,
+    inputSchema: security.PutAnythingBearerParamsSchema,
+    tags: ['HTTP']
+  })
+  async putAnythingBearer(
+    _params: security.PutAnythingBearerParams
+  ): Promise<security.PutAnythingBearerResponse> {
+    return this.ky
+      .put('/anything/bearer')
+      .json<security.PutAnythingBearerResponse>()
+  }
+
+  /**
+ * > ℹ️
+> We currently do not handle OAuth 2 authentication flows so if an operation has an \`oauth2\` requirement we assume that the user, or the projects JWT, has a qualified \`bearer\` token and will use that.
+
+https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-fields-23.
+ */
+  @aiFunction({
+    name: 'security_get_anything_oauth2',
+    description: \`> ℹ️
+> We currently do not handle OAuth 2 authentication flows so if an operation has an \\\`oauth2\\\` requirement we assume that the user, or the projects JWT, has a qualified \\\`bearer\\\` token and will use that.
+
+https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-fields-23.\`,
+    inputSchema: security.GetAnythingOauth2ParamsSchema,
+    tags: ['OAuth 2']
+  })
+  async getAnythingOauth2(
+    _params: security.GetAnythingOauth2Params
+  ): Promise<security.GetAnythingOauth2Response> {
+    return this.ky
+      .get('/anything/oauth2')
+      .json<security.GetAnythingOauth2Response>()
+  }
+
+  /**
+ * > ℹ️
+> We currently do not handle OAuth 2 authentication flows so if an operation has an \`oauth2\` requirement we assume that the user, or the projects JWT, has a qualified \`bearer\` token and will use that.
+
+https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-fields-23.
+ */
+  @aiFunction({
+    name: 'security_post_anything_oauth2',
+    description: \`> ℹ️
+> We currently do not handle OAuth 2 authentication flows so if an operation has an \\\`oauth2\\\` requirement we assume that the user, or the projects JWT, has a qualified \\\`bearer\\\` token and will use that.
+
+https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-fields-23.\`,
+    inputSchema: security.PostAnythingOauth2ParamsSchema,
+    tags: ['OAuth 2']
+  })
+  async postAnythingOauth2(
+    _params: security.PostAnythingOauth2Params
+  ): Promise<security.PostAnythingOauth2Response> {
+    return this.ky
+      .post('/anything/oauth2')
+      .json<security.PostAnythingOauth2Response>()
+  }
+
+  /**
+ * > ℹ️
+> We currently do not handle OAuth 2 authentication flows so if an operation has an \`oauth2\` requirement we assume that the user, or the projects JWT, has a qualified \`bearer\` token and will use that.
+
+https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-fields-23.
+ */
+  @aiFunction({
+    name: 'security_put_anything_oauth2',
+    description: \`> ℹ️
+> We currently do not handle OAuth 2 authentication flows so if an operation has an \\\`oauth2\\\` requirement we assume that the user, or the projects JWT, has a qualified \\\`bearer\\\` token and will use that.
+
+https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-fields-23.\`,
+    inputSchema: security.PutAnythingOauth2ParamsSchema,
+    tags: ['OAuth 2']
+  })
+  async putAnythingOauth2(
+    _params: security.PutAnythingOauth2Params
+  ): Promise<security.PutAnythingOauth2Response> {
+    return this.ky
+      .put('/anything/oauth2')
+      .json<security.PutAnythingOauth2Response>()
+  }
+
+  /**
+ * > ℹ️
+> We currently do not handle OAuth 2 authentication flows so if an operation has an \`oauth2\` requirement we assume that the user, or the projects JWT, has a qualified \`bearer\` token and will use that.
+
+https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-fields-23.
+ */
+  @aiFunction({
+    name: 'security_delete_anything_oauth2',
+    description: \`> ℹ️
+> We currently do not handle OAuth 2 authentication flows so if an operation has an \\\`oauth2\\\` requirement we assume that the user, or the projects JWT, has a qualified \\\`bearer\\\` token and will use that.
+
+https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-fields-23.\`,
+    inputSchema: security.DeleteAnythingOauth2ParamsSchema,
+    tags: ['OAuth 2']
+  })
+  async deleteAnythingOauth2(
+    _params: security.DeleteAnythingOauth2Params
+  ): Promise<security.DeleteAnythingOauth2Response> {
+    return this.ky
+      .delete('/anything/oauth2')
+      .json<security.DeleteAnythingOauth2Response>()
+  }
+
+  /**
+ * > ℹ️
+> We currently do not handle OAuth 2 authentication flows so if an operation has an \`oauth2\` requirement we assume that the user, or the projects JWT, has a qualified \`bearer\` token and will use that.
+
+https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-fields-23.
+ */
+  @aiFunction({
+    name: 'security_patch_anything_oauth2',
+    description: \`> ℹ️
+> We currently do not handle OAuth 2 authentication flows so if an operation has an \\\`oauth2\\\` requirement we assume that the user, or the projects JWT, has a qualified \\\`bearer\\\` token and will use that.
+
+https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-fields-23.\`,
+    inputSchema: security.PatchAnythingOauth2ParamsSchema,
+    tags: ['OAuth 2']
+  })
+  async patchAnythingOauth2(
+    _params: security.PatchAnythingOauth2Params
+  ): Promise<security.PatchAnythingOauth2Response> {
+    return this.ky
+      .patch('/anything/oauth2')
+      .json<security.PatchAnythingOauth2Response>()
+  }
+
+  /**
+   * 🚧 This is not supported.
+   */
+  @aiFunction({
+    name: 'security_post_anything_open_id_connect',
+    description: \`🚧 This is not supported.\`,
+    inputSchema: security.PostAnythingOpenIdConnectParamsSchema,
+    tags: ['OpenID Connect']
+  })
+  async postAnythingOpenIdConnect(
+    _params: security.PostAnythingOpenIdConnectParams
+  ): Promise<security.PostAnythingOpenIdConnectResponse> {
+    return this.ky
+      .post('/anything/openIdConnect')
+      .json<security.PostAnythingOpenIdConnectResponse>()
+  }
+
+  /**
+   * This operation does not have any authentication requirements.
+   */
+  @aiFunction({
+    name: 'security_post_anything_no_auth',
+    description: \`This operation does not have any authentication requirements.\`,
+    inputSchema: security.PostAnythingNoAuthParamsSchema,
+    tags: ['Other']
+  })
+  async postAnythingNoAuth(
+    _params: security.PostAnythingNoAuthParams
+  ): Promise<security.PostAnythingNoAuthResponse> {
+    return this.ky
+      .post('/anything/no-auth')
+      .json<security.PostAnythingNoAuthResponse>()
+  }
+
+  /**
+ * The \`apiKey\` query parameter auth on this operation is optional.
+
+https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#security-requirement-object.
+ */
+  @aiFunction({
+    name: 'security_get_anything_optional_auth',
+    description: \`The \\\`apiKey\\\` query parameter auth on this operation is optional.
+
+https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#security-requirement-object.\`,
+    inputSchema: security.GetAnythingOptionalAuthParamsSchema,
+    tags: ['Other']
+  })
+  async getAnythingOptionalAuth(
+    _params: security.GetAnythingOptionalAuthParams
+  ): Promise<security.GetAnythingOptionalAuthResponse> {
+    return this.ky
+      .get('/anything/optional-auth')
+      .json<security.GetAnythingOptionalAuthResponse>()
+  }
+
+  /**
+   * This endpoint requires an authentication header but making any request to it will forcefully return a 401 status code for invalid auth.
+   */
+  @aiFunction({
+    name: 'security_post_status401',
+    description: \`This endpoint requires an authentication header but making any request to it will forcefully return a 401 status code for invalid auth.\`,
+    inputSchema: security.PostStatus401ParamsSchema,
+    tags: ['Other']
+  })
+  async postStatus401(
+    _params: security.PostStatus401Params
+  ): Promise<security.PostStatus401Response> {
+    return this.ky.post('/status/401').json<security.PostStatus401Response>()
+  }
+}
+"
+`;

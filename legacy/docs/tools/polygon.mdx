@@ -1,0 +1,36 @@
+---
+title: Polygon
+description: Stock market and company financial data.
+---
+
+- package: `@agentic/polygon`
+- exports: `class PolygonClient`, `namespace polygon`
+- env vars: `POLYGON_API_KEY`
+- [source](https://github.com/transitive-bullshit/agentic/blob/main/packages/polygon/src/polygon-client.ts)
+- [polygon api docs](https://polygon.io/docs)
+
+## Install
+
+<CodeGroup>
+```bash npm
+npm install @agentic/polygon
+```
+
+```bash yarn
+yarn add @agentic/polygon
+```
+
+```bash pnpm
+pnpm add @agentic/polygon
+```
+
+</CodeGroup>
+
+## Usage
+
+```ts
+import { PolygonClient } from '@agentic/polygon'
+
+const polygon = new PolygonClient()
+const res = await polygon.tickerDetails({ ticker: 'AAPL' })
+```

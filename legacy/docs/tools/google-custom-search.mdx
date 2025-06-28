@@ -1,0 +1,38 @@
+---
+title: Google Custom Search
+description: Google Custom Search for online trends, news, current events, real-time information, or research topics.
+---
+
+- package: `@agentic/google-custom-search`
+- exports: `class GoogleCustomSearchClient`, `namespace googleCustomSearch`
+- env vars: `GOOGLE_API_KEY`, `GOOGLE_CSE_ID`
+- [source](https://github.com/transitive-bullshit/agentic/blob/main/packages/google-custom-search/src/google-custom-search-client.ts)
+- [google custom search docs](https://developers.google.com/custom-search/v1/overview)
+
+## Install
+
+<CodeGroup>
+```bash npm
+npm install @agentic/google-custom-search
+```
+
+```bash yarn
+yarn add @agentic/google-custom-search
+```
+
+```bash pnpm
+pnpm add @agentic/google-custom-search
+```
+
+</CodeGroup>
+
+## Usage
+
+```ts
+import { GoogleCustomSearchClient } from '@agentic/google-custom-search'
+
+const googleCustomSearch = new GoogleCustomSearchClient()
+const results = await googleCustomSearch.search('latest news about openai')
+```
+
+Make sure to set the `GOOGLE_API_KEY` and `GOOGLE_CSE_ID` environment variables or pass them to the constructor using the `apiKey` and `cseId` options.

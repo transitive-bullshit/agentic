@@ -1,0 +1,31 @@
+---
+title: GenAIScript
+description: Builtin agentic tool support in GenAIScript.
+---
+
+- package: none necessary
+- [GenAIScript docs](https://microsoft.github.io/genaiscript/guides/agentic-tools/)
+
+## Usage
+
+```ts
+import { calculator } from '@agentic/calculator'
+defTool(calculator)
+
+$`Answer the following arithmetic question: How much is 11 + 4? then divide by 3?`
+```
+
+## Running this example
+
+<Info>
+  You'll need an [OpenAI API key](https://platform.openai.com/docs/quickstart)
+  to run this example. Store it in a local `.env` file as `OPENAI_API_KEY`.
+</Info>
+
+```sh
+git clone git@github.com:transitive-bullshit/agentic.git
+cd agentic
+pnpm install
+echo 'OPENAI_API_KEY=your-key' >> .env
+npx genaiscript examples/genaiscript/calculator.genai.mts
+```

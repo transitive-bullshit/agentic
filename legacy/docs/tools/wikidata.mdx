@@ -1,0 +1,36 @@
+---
+title: Wikidata
+description: Basic Wikidata client.
+---
+
+- package: `@agentic/wikidata`
+- exports: `class WikidataClient`, `namespace wikidata`
+- env vars: `WIKIDATA_API_USER_AGENT` _(optional)_
+- [source](https://github.com/transitive-bullshit/agentic/blob/main/packages/wikidata/src/wikidata-client.ts)
+- [wikibase api docs](https://github.com/maxlath/wikibase-sdk)
+
+## Install
+
+<CodeGroup>
+```bash npm
+npm install @agentic/wikidata
+```
+
+```bash yarn
+yarn add @agentic/wikidata
+```
+
+```bash pnpm
+pnpm add @agentic/wikidata
+```
+
+</CodeGroup>
+
+## Usage
+
+```ts
+import { WikidataClient } from '@agentic/wikidata'
+
+const wikidata = new WikidataClient()
+const res = await wikidata.getEntityById('Q317521') // elon musk
+```

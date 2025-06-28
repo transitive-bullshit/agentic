@@ -1,0 +1,126 @@
+---
+title: Usage
+---
+
+## TS Tool Usage
+
+Agentic clients like `WeatherClient` can be used as normal TS classes:
+
+```ts
+import { WeatherClient } from '@agentic/stdlib'
+
+// Requires `process.env.WEATHER_API_KEY` (free from weatherapi.com)
+const weather = new WeatherClient()
+
+const result = await weather.getCurrentWeather({
+  q: 'San Francisco'
+})
+console.log(result)
+```
+
+## LLM Tool Usage
+
+Or you can use these clients as **LLM-based tools**. Here's an example using [Vercel's AI SDK](https://github.com/vercel/ai):
+
+```ts
+// sdk-specific imports
+import { openai } from '@ai-sdk/openai'
+import { generateText } from 'ai'
+import { createAISDKTools } from '@agentic/ai-sdk'
+
+// sdk-agnostic imports
+import { WeatherClient } from '@agentic/stdlib'
+
+const weather = new WeatherClient()
+
+const result = await generateText({
+  model: openai('gpt-4o-mini'),
+  // this is the key line which uses the `@agentic/ai-sdk` adapter
+  tools: createAISDKTools(weather),
+  toolChoice: 'required',
+  prompt: 'What is the weather in San Francisco?'
+})
+
+console.log(result.toolResults[0])
+```
+
+You can use our standard library of thoroughly tested AI functions with your favorite AI SDK – without having to write any glue code!
+
+### Using Multiple Tools
+
+All adapters (like `createAISDKTools`) accept a very flexible var args of `AIFunctionLike` parameters, so you can pass as many tools as you'd like.
+
+They also expose a `.functions` property which is an `AIFunctionSet`. This combination makes it really easy to mix & match different tools together.
+
+```ts
+import { SerperClient, WikipediaClient, FirecrawlClient } from '@agentic/stdlib'
+import { createAIFunction } from '@agentic/core'
+import { z } from 'zod'
+
+const googleSearch = new SerperClient()
+const wikipedia = new WikipediaClient()
+const firecrawl = new FirecrawlClient()
+
+const result = await generateText({
+  model: openai('gpt-4o-mini'),
+  // This example uses tools from 4 different sources. You can pass as many
+  // AIFunctionLike objects as you want.
+  tools: createAISDKTools(
+    googleSearch,
+    wikipedia,
+    // Pick a single function from the firecrawl client's set of AI functions
+    firecrawl.functions.pick('firecrawl_search'),
+    // Create a custom AI function (based off of Anthropic's think tool: https://www.anthropic.com/engineering/claude-think-tool)
+    createAIFunction({
+      name: 'think',
+      description: `Use this tool to think about something. It will not obtain new information or change the database, but just append the thought to the log. Use it when complex reasoning or some cache memory is needed.`,
+      inputSchema: z.object({
+        thought: z.string().describe('A thought to think about.')
+      }),
+      execute: ({ thought }) => thought
+    })
+  ),
+  prompt:
+    'What year did Jurassic Park the movie come out, and what else happened that year?'
+})
+```
+
+An `AIFunctionLike` can be any agentic client instance, a single `AIFunction` selected from the client's `.functions` property (which holds an `AIFunctionSet` of available AI functions), or an AI function created manually via `createAIFunction`.
+
+`AIFunctionLike` and `AIFunctionSet` are implementation details that you likely won't have to touch directly, but they're important because of their flexibility.
+
+## AI SDKs
+
+<CardGroup cols={2}>
+<Card title='Vercel AI SDK' href='/sdks/ai-sdk'>
+  Using Agentic with the Vercel AI SDK.
+</Card>
+
+<Card title='Mastra' href='/sdks/mastra'>
+  Using Agentic with Mastra.
+</Card>
+
+<Card title='LangChain' href='/sdks/langchain'>
+  Using Agentic with LangChain.
+</Card>
+
+<Card title='LlamaIndex' href='/sdks/llamaindex'>
+  Using Agentic with LlamaIndex.
+</Card>
+
+<Card title='Firebase Genkit' href='/sdks/genkit'>
+  Using Agentic with Genkit.
+</Card>
+
+<Card title='Dexa Dexter' href='/sdks/dexter'>
+  Using Agentic with Dexter.
+</Card>
+
+<Card title='OpenAI' href='/sdks/openai'>
+  Using Agentic with OpenAI directly.
+</Card>
+
+<Card title='xsAI SDK' href='/sdks/xsai'>
+  Using Agentic with the xsAI SDK.
+</Card>
+</CardGroup>

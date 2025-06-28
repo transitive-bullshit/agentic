@@ -1,0 +1,8 @@
+{
+  "extends": "@fisch0920/config/tsconfig-node",
+  "compilerOptions": {
+    "noImplicitAny": false
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
+}

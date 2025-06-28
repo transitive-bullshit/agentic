@@ -1,0 +1,103 @@
+---
+title: xsAI SDK
+description: Agentic adapter for the xsAI SDK.
+---
+
+- package: `@agentic/xsai`
+- exports: `function createXSAITools`
+- [source](https://github.com/transitive-bullshit/agentic/blob/main/packages/xsai/src/xsai.ts)
+- [xsAI SDK docs](https://xsai.js.org)
+
+## Install
+
+<CodeGroup>
+```bash npm
+npm install @agentic/xsai xsai @xsai/tool
+```
+
+```bash yarn
+yarn add @agentic/xsai xsai @xsai/tool
+```
+
+```bash pnpm
+pnpm add @agentic/xsai xsai @xsai/tool
+```
+
+</CodeGroup>
+
+## Usage
+
+<Note>
+  Note that `createXSAITools` is `async` because `xsai`'s underlying
+  `xsschema.toJsonSchema` is async.
+</Note>
+
+```ts
+import 'dotenv/config'
+
+import { WeatherClient } from '@agentic/weather'
+import { createXSAITools } from '@agentic/xsai'
+import { generateText } from 'xsai'
+
+async function main() {
+  const weather = new WeatherClient()
+
+  const result = await generateText({
+    apiKey: process.env.OPENAI_API_KEY!,
+    baseURL: 'https://api.openai.com/v1/',
+    model: 'gpt-4o-mini',
+    tools: await createXSAITools(weather),
+    toolChoice: 'required',
+    temperature: 0,
+    messages: [
+      {
+        role: 'system',
+        content: 'You are a helpful assistant. Be as concise as possible.'
+      },
+      { role: 'user', content: 'What is the weather in San Francisco?' }
+    ]
+  })
+
+  console.log(JSON.stringify(result, null, 2))
+}
+
+await main()
+```
+
+Note that this example snippet also requires you to install the Agentic weather tool and `dotenv`.
+
+<CodeGroup>
+```bash npm
+npm install @agentic/weather dotenv
+```
+
+```bash yarn
+yarn add @agentic/weather dotenv
+```
+
+```bash pnpm
+pnpm add @agentic/weather dotenv
+```
+
+</CodeGroup>
+
+## Running this example
+
+<Info>
+  You'll need a free API key from [weatherapi.com](https://www.weatherapi.com)
+  to run this example. Store it in a local `.env` file as `WEATHER_API_KEY`.
+</Info>
+
+<Info>
+  You'll need an [OpenAI API key](https://platform.openai.com/docs/quickstart)
+  to run this example. Store it in a local `.env` file as `OPENAI_API_KEY`.
+</Info>
+
+```sh
+git clone git@github.com:transitive-bullshit/agentic.git
+cd agentic
+pnpm install
+echo 'WEATHER_API_KEY=your-key' >> .env
+echo 'OPENAI_API_KEY=your-key' >> .env
+npx tsx examples/xsai/bin/weather.ts
+```

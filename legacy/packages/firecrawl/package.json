@@ -1,0 +1,48 @@
+{
+  "name": "@agentic/firecrawl",
+  "version": "7.6.9",
+  "description": "Agentic SDK for Firecrawl.",
+  "authors": [
+    "Travis Fischer <travis@transitivebullsh.it>",
+    "Ademílson Tonato <ademilsonft@outlook.com>"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/transitive-bullshit/agentic.git",
+    "directory": "packages/firecrawl"
+  },
+  "type": "module",
+  "source": "./src/index.ts",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "clean": "del dist",
+    "test": "run-s test:*",
+    "test:lint": "eslint .",
+    "test:typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@agentic/core": "workspace:*",
+    "ky": "catalog:",
+    "p-throttle": "catalog:"
+  },
+  "peerDependencies": {
+    "zod": "catalog:"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

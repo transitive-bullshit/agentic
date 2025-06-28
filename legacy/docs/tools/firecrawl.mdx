@@ -1,0 +1,38 @@
+---
+title: Firecrawl
+description: Website scraping and structured data extraction.
+---
+
+Turn websites into LLM-ready data. Crawl and convert any website into clean markdown or structured data.
+
+- package: `@agentic/firecrawl`
+- exports: `class FirecrawlClient`, `namespace firecrawl`
+- env vars: `FIRECRAWL_API_KEY`
+- [source](https://github.com/transitive-bullshit/agentic/blob/main/packages/firecrawl/src/firecrawl-client.ts)
+- [firecrawl api docs](https://www.firecrawl.dev)
+
+## Install
+
+<CodeGroup>
+```bash npm
+npm install @agentic/firecrawl
+```
+
+```bash yarn
+yarn add @agentic/firecrawl
+```
+
+```bash pnpm
+pnpm add @agentic/firecrawl
+```
+
+</CodeGroup>
+
+## Usage
+
+```ts
+import { FirecrawlClient } from '@agentic/firecrawl'
+
+const firecrawl = new FirecrawlClient()
+const res = await firecrawl.scrapeUrl('https://example.com')
+```

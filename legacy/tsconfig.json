@@ -1,0 +1,5 @@
+{
+  "extends": "@fisch0920/config/tsconfig-node",
+  "include": ["*.config.ts"],
+  "exclude": ["node_modules", "dist"]
+}

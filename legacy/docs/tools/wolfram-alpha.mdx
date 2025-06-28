@@ -1,0 +1,36 @@
+---
+title: Wolfram Alpha
+description: Wolfram Alpha LLM API client for answering computational, mathematical, and scientific questions.
+---
+
+- package: `@agentic/wolfram-alpha`
+- exports: `class WolframAlphaClient`, `namespace wolframalpha`
+- env vars: `WOLFRAM_APP_ID`
+- [source](https://github.com/transitive-bullshit/agentic/blob/main/packages/wolfram-alpha/src/wolfram-alpha-client.ts)
+- [wolfram alpha api docs](https://products.wolframalpha.com/llm-api/documentation)
+
+## Install
+
+<CodeGroup>
+```bash npm
+npm install @agentic/wolfram-alpha
+```
+
+```bash yarn
+yarn add @agentic/wolfram-alpha
+```
+
+```bash pnpm
+pnpm add @agentic/wolfram-alpha
+```
+
+</CodeGroup>
+
+## Usage
+
+```ts
+import { WolframAlphaClient } from '@agentic/wolfram-alpha'
+
+const wolframAlpha = new WolframAlphaClient()
+const res = await wolframAlpha.search('latest news')
+```

@@ -1,0 +1,120 @@
+{
+  "$schema": "https://mintlify.com/schema.json",
+  "name": "Agentic",
+  "logo": {
+    "dark": "/media/agentic-logo-dark.svg",
+    "light": "/media/agentic-logo-light.svg"
+  },
+  "favicon": "/media/favicon.svg",
+  "backgroundImage": "/media/bg.png",
+  "colors": {
+    "primary": "#0D969D",
+    "light": "#13D3DC",
+    "dark": "#0D969D",
+    "anchors": {
+      "from": "#0D969D",
+      "to": "#13D3DC"
+    }
+  },
+  "topbarLinks": [
+    {
+      "name": "Twitter",
+      "url": "https://x.com/transitive_bs"
+    }
+  ],
+  "topbarCtaButton": {
+    "name": "GitHub",
+    "url": "https://github.com/transitive-bullshit/agentic"
+  },
+  "anchors": [
+    {
+      "name": "GitHub",
+      "icon": "github",
+      "url": "https://github.com/transitive-bullshit/agentic"
+    }
+  ],
+  "navigation": [
+    {
+      "group": "Getting Started",
+      "pages": ["intro", "quickstart", "usage"]
+    },
+    {
+      "group": "AI SDKs",
+      "pages": [
+        "sdks/ai-sdk",
+        "sdks/mastra",
+        "sdks/langchain",
+        "sdks/llamaindex",
+        "sdks/genkit",
+        "sdks/dexter",
+        "sdks/openai",
+        "sdks/genaiscript",
+        "sdks/xsai"
+      ]
+    },
+    {
+      "group": "Tools",
+      "pages": [
+        "tools/airtable",
+        "tools/apollo",
+        "tools/arxiv",
+        "tools/bing",
+        "tools/brave-search",
+        "tools/calculator",
+        "tools/clearbit",
+        "tools/dexa",
+        "tools/diffbot",
+        "tools/duck-duck-go",
+        "tools/e2b",
+        "tools/exa",
+        "tools/firecrawl",
+        "tools/hacker-news",
+        "tools/gravatar",
+        "tools/google-custom-search",
+        "tools/google-docs",
+        "tools/google-drive",
+        "tools/hunter",
+        "tools/jina",
+        "tools/leadmagic",
+        "tools/midjourney",
+        "tools/mcp",
+        "tools/notion",
+        "tools/novu",
+        "tools/open-meteo",
+        "tools/people-data-labs",
+        "tools/perigon",
+        "tools/polygon",
+        "tools/predict-leads",
+        "tools/proxycurl",
+        "tools/reddit",
+        "tools/rocketreach",
+        "tools/searxng",
+        "tools/serpapi",
+        "tools/serper",
+        "tools/slack",
+        "tools/social-data",
+        "tools/tavily",
+        "tools/twilio",
+        "tools/twitter",
+        "tools/typeform",
+        "tools/weather",
+        "tools/wikidata",
+        "tools/wikipedia",
+        "tools/wolfram-alpha",
+        "tools/youtube",
+        "tools/zoominfo"
+      ]
+    }
+  ],
+  "footerSocials": {
+    "x": "https://x.com/transitive_bs",
+    "github": "https://github.com/transitive-bullshit/agentic"
+  },
+  "seo": {
+    "indexHiddenPages": true
+  },
+  "modeToggle": {
+    "default": "light",
+    "isHidden": true
+  }
+}

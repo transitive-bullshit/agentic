@@ -1,0 +1,45 @@
+---
+title: People Data Labs
+description: People & company data enrichment.
+---
+
+<Warning>
+  People Data Labs tends to be more expensive than other similar data providers.
+  The author recommends you stay away from them.
+</Warning>
+
+- package: `@agentic/people-data-labs`
+- exports: `class PeopleDataLabsClient`, `namespace peopledatalabs`
+- env vars: `PEOPLE_DATA_LABS_API_KEY`
+- [source](https://github.com/transitive-bullshit/agentic/blob/main/packages/people-data-labs/src/people-data-labs-client.ts)
+- [people data labs api docs](https://www.peopledatalabs.com)
+
+## Install
+
+<CodeGroup>
+```bash npm
+npm install @agentic/people-data-labs
+```
+
+```bash yarn
+yarn add @agentic/people-data-labs
+```
+
+```bash pnpm
+pnpm add @agentic/people-data-labs
+```
+
+</CodeGroup>
+
+## Usage
+
+```ts
+import { PeopleDataLabsClient } from '@agentic/people-data-labs'
+
+const pdl = new PeopleDataLabsClient()
+const res = await pdl.companyLookup({
+  query: {
+    website: 'apple.com'
+  }
+})
+```

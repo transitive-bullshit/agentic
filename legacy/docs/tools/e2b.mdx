@@ -1,0 +1,37 @@
+---
+title: E2B
+description: Hosted Python code interpreter sandbox.
+---
+
+Hosted Python code intrepreter sandbox which is really useful for data analysis, flexible code execution, and advanced reasoning on-the-fly.
+
+- package: `@agentic/e2b`
+- exports: `function e2b`
+- env vars: `E2B_API_KEY`
+- [source](https://github.com/transitive-bullshit/agentic/blob/main/packages/e2b/src/e2b.ts)
+- [e2b api docs](https://e2b.dev)
+
+## Install
+
+<CodeGroup>
+```bash npm
+npm install @agentic/e2b @e2b/code-interpreter
+```
+
+```bash yarn
+yarn add @agentic/e2b @e2b/code-interpreter
+```
+
+```bash pnpm
+pnpm add @agentic/e2b @e2b/code-interpreter
+```
+
+</CodeGroup>
+
+## Usage
+
+```ts
+import { e2b } from '@agentic/e2b'
+
+const res = await e2b({ code: 'print("Hello, World")' })
+```
