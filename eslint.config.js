@@ -11,7 +11,8 @@ export default [
       'apps/gateway/src/worker.d.ts',
       'packages/json-schema/test/json-schema-test-suite.ts',
       'apps/gateway/.wrangler',
-      'apps/web/src/*.gen.ts'
+      'apps/web/src/*.gen.ts',
+      'legacy/**'
     ]
   },
   {
