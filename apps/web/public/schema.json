@@ -117,7 +117,7 @@
           "name": {
             "type": "string",
             "minLength": 1,
-            "description": "Human-readable name for the pricing plan (eg, \"Free\", \"Starter Monthly\", \"Pro Annual\", etc)"
+            "description": "Display name for the pricing plan (eg, \"Free\", \"Starter Monthly\", \"Pro Annual\", etc)"
           },
           "slug": {
             "type": "string",
@@ -305,8 +305,7 @@
                           "type": "string",
                           "enum": [
                             "sum",
-                            "count",
-                            "last"
+                            "count"
                           ],
                           "default": "sum"
                         }

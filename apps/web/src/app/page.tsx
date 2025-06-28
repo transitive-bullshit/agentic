@@ -70,8 +70,11 @@ export default async function TheBestDamnLandingPageEver() {
         <div className='flex flex-col gap-4 text-sm max-w-2xl text-center'>
           <p>
             This example uses the{' '}
-            <Link href='/marketplace/projects/@agentic/search' className='link'>
-              @agentic/search
+            <Link
+              href={`/marketplace/projects/${projectIdentifier}`}
+              className='link'
+            >
+              {projectIdentifier}
             </Link>{' '}
             tool to provide an LLM access to the web.
           </p>

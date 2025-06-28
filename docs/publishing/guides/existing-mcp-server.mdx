@@ -145,11 +145,11 @@ Every time you make a change to your project, you can run `agentic deploy` which
 
 ```json
 {
-  "id": "depl_m2yl7dpdpc5xk8b3cwvuzkg3",
-  "createdAt": "2025-06-27 18:14:34.641308+00",
-  "updatedAt": "2025-06-27 18:14:34.641308+00",
-  "identifier": "@dev/search@b57dc301",
-  "hash": "b57dc301",
+  "id": "depl_kf4c3o8efh2y84dp5iwsha95",
+  "createdAt": "2025-06-28 05:38:34.960754+00",
+  "updatedAt": "2025-06-28 05:38:34.960754+00",
+  "identifier": "@dev/search@42ad78bf",
+  "hash": "42ad78bf",
   "published": false,
   "description": "Official Google Search tool. Useful for finding up-to-date news and information about any topic.",
   "readme": "",
@@ -160,6 +160,7 @@ Every time you make a change to your project, you can run `agentic deploy` which
       "name": "search",
       "description": "Uses Google Search to return the most relevant web pages for a given query. Useful for finding up-to-date news and information about any topic.",
       "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
         "type": "object",
         "properties": {
           "num": {
@@ -186,10 +187,10 @@ Every time you make a change to your project, you can run `agentic deploy` which
           }
         },
         "required": ["query"],
-        "additionalProperties": false,
-        "$schema": "http://json-schema.org/draft-07/schema#"
+        "additionalProperties": false
       },
       "outputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
         "type": "object",
         "properties": {
           "news": {},
@@ -201,8 +202,7 @@ Every time you make a change to your project, you can run `agentic deploy` which
           "answerBox": {},
           "knowledgeGraph": {}
         },
-        "additionalProperties": false,
-        "$schema": "http://json-schema.org/draft-07/schema#"
+        "additionalProperties": false
       }
     }
   ],
@@ -284,7 +284,11 @@ Every time you make a change to your project, you can run `agentic deploy` which
     "limit": 1000,
     "mode": "approximate",
     "enabled": true
-  }
+  },
+  "gatewayBaseUrl": "https://gateway.agentic.so/@dev/search@42ad78bf",
+  "gatewayMcpUrl": "https://gateway.agentic.so/@dev/search@42ad78bf/mcp",
+  "marketplaceUrl": "https://agentic.so/marketplace/projects/@dev/search",
+  "adminUrl": "https://agentic.so/app/projects/@dev/search/deployments/42ad78bf"
 }
 ```
 
@@ -292,9 +296,9 @@ Every time you make a change to your project, you can run `agentic deploy` which
 
 ## 5. Test your deployment
 
-The easiest way to test your deployment is to visit it in your Agentic dashboard: `https://agentic.so/app/projects/<your-deployment-identifier>`.
+The easiest way to test your deployment is to visit it in your Agentic admin dashboard. This will be the `adminUrl` in the returned deployment and should look like: `https://agentic.so/app/projects/<your-project-identifier>/deployments/<hash>`.
 
-This page will show all the tools available on your deployment and includes a GUI for how to call them with various MCP clients, TS LLM SDKs, Python LLM SDKs, and raw HTTP.
+This page shows you all the tools available for your deployment and includes a GUI showing how to call them with various MCP clients, TS LLM SDKs, Python LLM SDKs, and simple HTTP.
 
 <Frame caption='Example of calling an Agentic tool'>
   <img

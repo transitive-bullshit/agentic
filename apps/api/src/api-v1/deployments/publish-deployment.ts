@@ -1,8 +1,9 @@
-import { assert, parseZodSchema } from '@agentic/platform-core'
+import { assert } from '@agentic/platform-core'
 import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 
 import type { AuthenticatedHonoEnv } from '@/lib/types'
 import { schema } from '@/db'
+import { parseDeploymentSelectSchema } from '@/db/schema'
 import { acl } from '@/lib/acl'
 import { getDeploymentById } from '@/lib/deployments/get-deployment-by-id'
 import { publishDeployment } from '@/lib/deployments/publish-deployment'
@@ -63,8 +64,6 @@ export function registerV1PublishDeployment(
       version
     })
 
-    return c.json(
-      parseZodSchema(schema.deploymentSelectSchema, publishedDeployment)
-    )
+    return c.json(parseDeploymentSelectSchema(publishedDeployment))
   })
 }

@@ -60,7 +60,7 @@ export async function upsertConsumer(
       404,
       `Project not found "${projectId}" for deployment "${deploymentId}"`
     )
-    await aclPublicProject(project)
+    aclPublicProject(project)
 
     // Validate the deployment only after we're sure the project is publicly
     // accessible.

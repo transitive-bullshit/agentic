@@ -1,8 +1,9 @@
-import { assert, parseZodSchema } from '@agentic/platform-core'
+import { assert } from '@agentic/platform-core'
 import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 
 import type { AuthenticatedHonoEnv } from '@/lib/types'
 import { db, eq, schema } from '@/db'
+import { parseConsumerAdminSelectSchema } from '@/db/schema'
 import { aclAdmin } from '@/lib/acl-admin'
 import {
   openapiAuthenticatedSecuritySchemas,
@@ -55,6 +56,6 @@ export function registerV1AdminGetConsumerByToken(
     assert(consumer, 404, `API token not found "${token}"`)
 
     setAdminCacheControlForConsumer(c, consumer)
-    return c.json(parseZodSchema(schema.consumerAdminSelectSchema, consumer))
+    return c.json(parseConsumerAdminSelectSchema(consumer))
   })
 }

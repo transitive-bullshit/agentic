@@ -1,8 +1,9 @@
-import { assert, parseZodSchema } from '@agentic/platform-core'
+import { assert } from '@agentic/platform-core'
 import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 
 import type { AuthenticatedHonoEnv } from '@/lib/types'
 import { schema } from '@/db'
+import { parseDeploymentAdminSelectSchema } from '@/db/schema'
 import { acl } from '@/lib/acl'
 import { aclAdmin } from '@/lib/acl-admin'
 import { tryGetDeploymentByIdentifier } from '@/lib/deployments/try-get-deployment-by-identifier'
@@ -67,7 +68,7 @@ export function registerV1AdminGetDeploymentByIdentifier(
     const hasPopulateProject = populate.includes('project')
 
     return c.json(
-      parseZodSchema(schema.deploymentAdminSelectSchema, {
+      parseDeploymentAdminSelectSchema({
         ...deployment,
         ...(hasPopulateProject ? { project } : {}),
         _secret: project._secret

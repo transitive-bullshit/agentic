@@ -1,8 +1,8 @@
-import { parseZodSchema } from '@agentic/platform-core'
 import { createRoute, type OpenAPIHono, z } from '@hono/zod-openapi'
 
 import type { AuthenticatedHonoEnv } from '@/lib/types'
 import { and, db, eq, schema } from '@/db'
+import { parseDeploymentSelectArraySchema } from '@/db/schema'
 import { acl } from '@/lib/acl'
 import { ensureAuthUser } from '@/lib/ensure-auth-user'
 import {
@@ -88,8 +88,6 @@ export function registerV1ListDeployments(
       limit
     })
 
-    return c.json(
-      parseZodSchema(z.array(schema.deploymentSelectSchema), deployments)
-    )
+    return c.json(parseDeploymentSelectArraySchema(deployments))
   })
 }

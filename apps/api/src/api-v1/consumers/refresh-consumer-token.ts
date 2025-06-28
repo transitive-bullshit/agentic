@@ -1,8 +1,9 @@
-import { assert, parseZodSchema } from '@agentic/platform-core'
+import { assert } from '@agentic/platform-core'
 import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 
 import type { AuthenticatedHonoEnv } from '@/lib/types'
 import { db, eq, schema } from '@/db'
+import { parseConsumerSelectSchema } from '@/db/schema'
 import { acl } from '@/lib/acl'
 import { createConsumerToken } from '@/lib/create-consumer-token'
 import {
@@ -59,6 +60,6 @@ export function registerV1RefreshConsumerToken(
       .returning()
     assert(consumer, 500, 'Error updating consumer')
 
-    return c.json(parseZodSchema(schema.consumerSelectSchema, consumer))
+    return c.json(parseConsumerSelectSchema(consumer))
   })
 }

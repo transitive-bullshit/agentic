@@ -622,6 +622,26 @@ export interface components {
             lastPublishedDeployment?: unknown;
             lastDeployment?: unknown;
             deployment?: unknown;
+            /**
+             * Format: uri
+             * @description The public base HTTP URL for the project supporting HTTP POST requests for individual tools at `/tool-name` subpaths.
+             */
+            gatewayBaseUrl: string;
+            /**
+             * Format: uri
+             * @description The public MCP URL for the project supporting the Streamable HTTP transport.
+             */
+            gatewayMcpUrl: string;
+            /**
+             * Format: uri
+             * @description The public marketplace URL for the project.
+             */
+            marketplaceUrl: string;
+            /**
+             * Format: uri
+             * @description A private admin URL for managing the project. This URL is only accessible by project owners.
+             */
+            adminUrl: string;
         };
         /** @description Public deployment identifier (e.g. "@namespace/project-slug@{hash|version|latest}") */
         DeploymentIdentifier: string;
@@ -687,7 +707,7 @@ export interface components {
             };
         };
         /**
-         * @description Human-readable name for the pricing plan (eg, "Free", "Starter Monthly", "Pro Annual", etc)
+         * @description Display name for the pricing plan (eg, "Free", "Starter Monthly", "Pro Annual", etc)
          * @example Starter Monthly
          */
         name: string;
@@ -722,7 +742,7 @@ export interface components {
             tiers?: components["schemas"]["PricingPlanTier"][];
             defaultAggregation?: {
                 /** @default sum */
-                formula: "sum" | "count" | "last";
+                formula: "sum" | "count";
             };
             transformQuantity?: {
                 divideBy: number;
@@ -814,6 +834,26 @@ export interface components {
             pricingIntervals: components["schemas"]["PricingInterval"][];
             defaultRateLimit?: components["schemas"]["RateLimit"] & unknown;
             project?: unknown;
+            /**
+             * Format: uri
+             * @description The public base HTTP URL for the deployment supporting HTTP POST requests for individual tools at `/tool-name` subpaths.
+             */
+            gatewayBaseUrl: string;
+            /**
+             * Format: uri
+             * @description The public MCP URL for the deployment supporting the Streamable HTTP transport.
+             */
+            gatewayMcpUrl: string;
+            /**
+             * Format: uri
+             * @description The public marketplace URL for the deployment's project.
+             */
+            marketplaceUrl: string;
+            /**
+             * Format: uri
+             * @description A private admin URL for managing the deployment. This URL is only accessible by project owners.
+             */
+            adminUrl: string;
         };
         TeamMember: {
             createdAt: string;
@@ -855,6 +895,11 @@ export interface components {
             user?: components["schemas"]["User"];
             project?: components["schemas"]["Project"];
             deployment?: unknown;
+            /**
+             * Format: uri
+             * @description A private admin URL for managing the customer's subscription. This URL is only accessible by the customer.
+             */
+            adminUrl: string;
         };
         /** @description Origin adapter is used to configure the origin API server downstream from Agentic's API gateway. It specifies whether the origin API server denoted by `url` is hosted externally or deployed internally to Agentic's infrastructure. It also specifies the format for how origin tools are defined: either an OpenAPI spec or an MCP server.
          *

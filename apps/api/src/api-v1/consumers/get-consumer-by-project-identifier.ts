@@ -1,8 +1,9 @@
-import { assert, parseZodSchema } from '@agentic/platform-core'
+import { assert } from '@agentic/platform-core'
 import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 
 import type { AuthenticatedHonoEnv } from '@/lib/types'
 import { and, db, eq, schema } from '@/db'
+import { parseConsumerSelectSchema } from '@/db/schema'
 import { acl } from '@/lib/acl'
 import { aclPublicProject } from '@/lib/acl-public-project'
 import {
@@ -49,7 +50,7 @@ export function registerV1GetConsumerByProjectIdentifier(
       where: eq(schema.projects.identifier, projectIdentifier)
     })
     assert(project, 404, `Project not found "${projectIdentifier}"`)
-    await aclPublicProject(project)
+    aclPublicProject(project)
 
     const consumer = await db.query.consumers.findFirst({
       where: and(
@@ -67,6 +68,6 @@ export function registerV1GetConsumerByProjectIdentifier(
     )
     await acl(c, consumer, { label: 'Consumer' })
 
-    return c.json(parseZodSchema(schema.consumerSelectSchema, consumer))
+    return c.json(parseConsumerSelectSchema(consumer))
   })
 }

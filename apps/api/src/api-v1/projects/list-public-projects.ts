@@ -1,8 +1,8 @@
 import type { DefaultHonoEnv } from '@agentic/platform-hono'
-import { parseZodSchema } from '@agentic/platform-core'
 import { createRoute, type OpenAPIHono, z } from '@hono/zod-openapi'
 
 import { and, db, eq, isNotNull, schema } from '@/db'
+import { parseProjectSelectArraySchema } from '@/db/schema'
 import {
   openapiAuthenticatedSecuritySchemas,
   openapiErrorResponses
@@ -61,6 +61,6 @@ export function registerV1ListPublicProjects(app: OpenAPIHono<DefaultHonoEnv>) {
       limit
     })
 
-    return c.json(parseZodSchema(z.array(schema.projectSelectSchema), projects))
+    return c.json(parseProjectSelectArraySchema(projects))
   })
 }

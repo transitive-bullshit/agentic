@@ -1,8 +1,9 @@
-import { assert, parseZodSchema } from '@agentic/platform-core'
+import { assert } from '@agentic/platform-core'
 import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 
 import type { AuthenticatedHonoEnv } from '@/lib/types'
 import { db, eq, schema } from '@/db'
+import { parseConsumerSelectSchema } from '@/db/schema'
 import { acl } from '@/lib/acl'
 import {
   openapiAuthenticatedSecuritySchemas,
@@ -51,6 +52,6 @@ export function registerV1GetConsumer(app: OpenAPIHono<AuthenticatedHonoEnv>) {
     assert(consumer, 404, `Consumer not found "${consumerId}"`)
     await acl(c, consumer, { label: 'Consumer' })
 
-    return c.json(parseZodSchema(schema.consumerSelectSchema, consumer))
+    return c.json(parseConsumerSelectSchema(consumer))
   })
 }

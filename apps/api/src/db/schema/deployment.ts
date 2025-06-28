@@ -1,3 +1,4 @@
+import { parseZodSchema } from '@agentic/platform-core'
 import {
   agenticProjectConfigSchema,
   defaultRequestsRateLimit,
@@ -8,7 +9,10 @@ import {
   type Tool,
   type ToolConfig
 } from '@agentic/platform-types'
-import { isValidDeploymentHash } from '@agentic/platform-validators'
+import {
+  isValidDeploymentHash,
+  parseDeploymentIdentifier
+} from '@agentic/platform-validators'
 import { relations } from '@fisch0920/drizzle-orm'
 import {
   boolean,
@@ -20,6 +24,9 @@ import {
 } from '@fisch0920/drizzle-orm/pg-core'
 import { z } from '@hono/zod-openapi'
 
+import { env } from '@/lib/env'
+
+import type { Deployment } from '../types'
 import {
   deploymentIdentifierSchema,
   deploymentIdSchema,
@@ -209,6 +216,59 @@ export const deploymentSelectSchema = createSelectSchema(deployments, {
     // project: z.object({}).optional().openapi('Project', { type: 'object' })
   })
   .strip()
+  // These are all derived virtual URLs that are not stored in the database
+  .extend({
+    /**
+     * The public base HTTP URL for the deployment supporting HTTP POST requests
+     * for individual tools at `/tool-name` subpaths.
+     *
+     * @example https://gateway.agentic.com/@agentic/search@latest
+     */
+    gatewayBaseUrl: z
+      .string()
+      .url()
+      .describe(
+        'The public base HTTP URL for the deployment supporting HTTP POST requests for individual tools at `/tool-name` subpaths.'
+      ),
+
+    /**
+     * The public MCP URL for the deployment supporting the Streamable HTTP
+     * transport.
+     *
+     * @example https://gateway.agentic.com/@agentic/search@latest/mcp
+     */
+    gatewayMcpUrl: z
+      .string()
+      .url()
+      .describe(
+        'The public MCP URL for the deployment supporting the Streamable HTTP transport.'
+      ),
+
+    /**
+     * The public marketplace URL for the deployment's project.
+     *
+     * Note that only published deployments are visible on the marketplace.
+     *
+     * @example https://agentic.so/marketplace/projects/@agentic/search
+     */
+    marketplaceUrl: z
+      .string()
+      .url()
+      .describe("The public marketplace URL for the deployment's project."),
+
+    /**
+     * A private admin URL for managing the deployment. This URL is only accessible
+     * by project owners.
+     *
+     * @example https://agentic.so/app/projects/@agentic/search/deployments/123
+     */
+    adminUrl: z
+      .string()
+      .url()
+      .describe(
+        'A private admin URL for managing the deployment. This URL is only accessible by project owners.'
+      )
+  })
   .describe(
     `A Deployment is a single, immutable instance of a Project. Each deployment contains pricing plans, origin server config (OpenAPI or MCP server), tool definitions, and metadata.
 
@@ -216,12 +276,43 @@ Deployments are private to a developer or team until they are published, at whic
   )
   .openapi('Deployment')
 
+export function parseDeploymentSelectSchema(
+  deployment: Record<string, any>
+): Deployment {
+  const { projectIdentifier, deploymentIdentifier } = parseDeploymentIdentifier(
+    deployment.identifier
+  )
+
+  return parseZodSchema(deploymentSelectSchema, {
+    ...deployment,
+    gatewayBaseUrl: `${env.AGENTIC_GATEWAY_BASE_URL}/${deploymentIdentifier}`,
+    gatewayMcpUrl: `${env.AGENTIC_GATEWAY_BASE_URL}/${deploymentIdentifier}/mcp`,
+    marketplaceUrl: `${env.AGENTIC_WEB_BASE_URL}/marketplace/projects/${projectIdentifier}`,
+    adminUrl: `${env.AGENTIC_WEB_BASE_URL}/app/projects/${projectIdentifier}/deployments/${deployment.hash}`
+  })
+}
+
+export function parseDeploymentSelectArraySchema(
+  deployments: Record<string, any>[]
+): Deployment[] {
+  return deployments.map(parseDeploymentSelectSchema)
+}
+
 export const deploymentAdminSelectSchema = deploymentSelectSchema
   .extend({
     origin: resolvedAgenticProjectConfigSchema.shape.origin,
     _secret: z.string().nonempty()
   })
   .openapi('AdminDeployment')
+
+export function parseDeploymentAdminSelectSchema(
+  deployment: Record<string, any>
+): z.infer<typeof deploymentAdminSelectSchema> {
+  return parseZodSchema(deploymentAdminSelectSchema, {
+    ...parseDeploymentSelectSchema(deployment),
+    ...deployment
+  })
+}
 
 export const deploymentInsertSchema = agenticProjectConfigSchema.strict()
 

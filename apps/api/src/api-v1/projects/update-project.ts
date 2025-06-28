@@ -1,8 +1,9 @@
-import { assert, parseZodSchema } from '@agentic/platform-core'
+import { assert } from '@agentic/platform-core'
 import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 
 import type { AuthenticatedHonoEnv } from '@/lib/types'
 import { db, eq, schema } from '@/db'
+import { parseProjectSelectSchema } from '@/db/schema'
 import { acl } from '@/lib/acl'
 import {
   openapiAuthenticatedSecuritySchemas,
@@ -66,6 +67,6 @@ export function registerV1UpdateProject(
       .returning()
     assert(project, 500, `Failed to update project "${projectId}"`)
 
-    return c.json(parseZodSchema(schema.projectSelectSchema, project))
+    return c.json(parseProjectSelectSchema(project))
   })
 }
