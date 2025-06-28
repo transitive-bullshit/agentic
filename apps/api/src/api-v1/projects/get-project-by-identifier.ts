@@ -1,9 +1,8 @@
-import { assert } from '@agentic/platform-core'
+import { assert, parseZodSchema } from '@agentic/platform-core'
 import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 
 import type { AuthenticatedHonoEnv } from '@/lib/types'
 import { db, eq, schema } from '@/db'
-import { parseProjectSelectSchema } from '@/db/schema'
 import { acl } from '@/lib/acl'
 import {
   openapiAuthenticatedSecuritySchemas,
@@ -54,6 +53,6 @@ export function registerV1GetProjectByIdentifier(
     assert(project, 404, `Project not found "${projectIdentifier}"`)
     await acl(c, project, { label: 'Project' })
 
-    return c.json(parseProjectSelectSchema(project))
+    return c.json(parseZodSchema(schema.projectSelectSchema, project))
   })
 }

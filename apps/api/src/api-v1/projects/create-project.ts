@@ -1,10 +1,9 @@
-import { assert, sha256 } from '@agentic/platform-core'
+import { assert, parseZodSchema, sha256 } from '@agentic/platform-core'
 import { parseProjectIdentifier } from '@agentic/platform-validators'
 import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 
 import type { AuthenticatedHonoEnv } from '@/lib/types'
 import { db, schema } from '@/db'
-import { parseProjectSelectSchema } from '@/db/schema'
 import { ensureAuthUser } from '@/lib/ensure-auth-user'
 import { env } from '@/lib/env'
 import {
@@ -87,6 +86,6 @@ export function registerV1CreateProject(
       .returning()
     assert(project, 500, `Failed to create project "${body.name}"`)
 
-    return c.json(parseProjectSelectSchema(project))
+    return c.json(parseZodSchema(schema.projectSelectSchema, project))
   })
 }

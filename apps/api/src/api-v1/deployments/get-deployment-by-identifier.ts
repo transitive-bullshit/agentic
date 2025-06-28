@@ -1,9 +1,8 @@
-import { assert } from '@agentic/platform-core'
+import { assert, parseZodSchema } from '@agentic/platform-core'
 import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 
 import type { AuthenticatedHonoEnv } from '@/lib/types'
 import { schema } from '@/db'
-import { parseDeploymentSelectSchema } from '@/db/schema'
 import { acl } from '@/lib/acl'
 import { tryGetDeploymentByIdentifier } from '@/lib/deployments/try-get-deployment-by-identifier'
 import {
@@ -54,6 +53,6 @@ export function registerV1GetDeploymentByIdentifier(
     assert(deployment, 404, `Deployment not found "${deploymentIdentifier}"`)
     await acl(c, deployment, { label: 'Deployment' })
 
-    return c.json(parseDeploymentSelectSchema(deployment))
+    return c.json(parseZodSchema(schema.deploymentSelectSchema, deployment))
   })
 }

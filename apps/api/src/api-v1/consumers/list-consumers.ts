@@ -1,8 +1,8 @@
+import { parseZodSchema } from '@agentic/platform-core'
 import { createRoute, type OpenAPIHono, z } from '@hono/zod-openapi'
 
 import type { AuthenticatedHonoEnv } from '@/lib/types'
 import { db, eq, schema } from '@/db'
-import { parseConsumerSelectArraySchema } from '@/db/schema'
 import { ensureAuthUser } from '@/lib/ensure-auth-user'
 import {
   openapiAuthenticatedSecuritySchemas,
@@ -62,6 +62,8 @@ export function registerV1ListConsumers(
       limit
     })
 
-    return c.json(parseConsumerSelectArraySchema(consumers))
+    return c.json(
+      parseZodSchema(z.array(schema.consumerSelectSchema), consumers)
+    )
   })
 }

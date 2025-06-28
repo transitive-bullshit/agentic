@@ -1,9 +1,8 @@
-import { assert } from '@agentic/platform-core'
+import { assert, parseZodSchema } from '@agentic/platform-core'
 import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 
 import type { AuthenticatedHonoEnv } from '@/lib/types'
 import { db, eq, schema } from '@/db'
-import { parseDeploymentSelectSchema } from '@/db/schema'
 import { acl } from '@/lib/acl'
 import { getDeploymentById } from '@/lib/deployments/get-deployment-by-id'
 import {
@@ -66,6 +65,6 @@ export function registerV1UpdateDeployment(
       .returning()
     assert(deployment, 500, `Failed to update deployment "${deploymentId}"`)
 
-    return c.json(parseDeploymentSelectSchema(deployment))
+    return c.json(parseZodSchema(schema.deploymentSelectSchema, deployment))
   })
 }

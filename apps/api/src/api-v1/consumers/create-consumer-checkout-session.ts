@@ -1,9 +1,8 @@
-import { pick } from '@agentic/platform-core'
+import { parseZodSchema, pick } from '@agentic/platform-core'
 import { createRoute, type OpenAPIHono, z } from '@hono/zod-openapi'
 
 import type { AuthenticatedHonoEnv } from '@/lib/types'
 import { schema } from '@/db'
-import { parseConsumerSelectSchema } from '@/db/schema'
 import { upsertConsumerStripeCheckout } from '@/lib/consumers/upsert-consumer-stripe-checkout'
 import {
   openapiAuthenticatedSecuritySchemas,
@@ -65,7 +64,7 @@ export function registerV1CreateConsumerCheckoutSession(
 
     return c.json({
       checkoutSession: pick(checkoutSession, 'id', 'url'),
-      consumer: parseConsumerSelectSchema(consumer)
+      consumer: parseZodSchema(schema.consumerSelectSchema, consumer)
     })
   })
 }

@@ -1,9 +1,8 @@
 import type { DefaultHonoEnv } from '@agentic/platform-hono'
-import { assert } from '@agentic/platform-core'
+import { assert, parseZodSchema } from '@agentic/platform-core'
 import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 
 import { schema } from '@/db'
-import { parseDeploymentSelectSchema } from '@/db/schema'
 import { aclPublicProject } from '@/lib/acl-public-project'
 import { tryGetDeploymentByIdentifier } from '@/lib/deployments/try-get-deployment-by-identifier'
 import {
@@ -60,6 +59,6 @@ export function registerV1GetPublicDeploymentByIdentifier(
     )
     aclPublicProject(deployment.project!)
 
-    return c.json(parseDeploymentSelectSchema(deployment))
+    return c.json(parseZodSchema(schema.deploymentSelectSchema, deployment))
   })
 }

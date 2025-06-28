@@ -622,26 +622,6 @@ export interface components {
             lastPublishedDeployment?: unknown;
             lastDeployment?: unknown;
             deployment?: unknown;
-            /**
-             * Format: uri
-             * @description The public base HTTP URL for the project supporting HTTP POST requests for individual tools at `/tool-name` subpaths.
-             */
-            gatewayBaseUrl: string;
-            /**
-             * Format: uri
-             * @description The public MCP URL for the project supporting the Streamable HTTP transport.
-             */
-            gatewayMcpUrl: string;
-            /**
-             * Format: uri
-             * @description The public marketplace URL for the project.
-             */
-            marketplaceUrl: string;
-            /**
-             * Format: uri
-             * @description A private admin URL for managing the project. This URL is only accessible by project owners.
-             */
-            adminUrl: string;
         };
         /** @description Public deployment identifier (e.g. "@namespace/project-slug@{hash|version|latest}") */
         DeploymentIdentifier: string;
@@ -834,26 +814,6 @@ export interface components {
             pricingIntervals: components["schemas"]["PricingInterval"][];
             defaultRateLimit?: components["schemas"]["RateLimit"] & unknown;
             project?: unknown;
-            /**
-             * Format: uri
-             * @description The public base HTTP URL for the deployment supporting HTTP POST requests for individual tools at `/tool-name` subpaths.
-             */
-            gatewayBaseUrl: string;
-            /**
-             * Format: uri
-             * @description The public MCP URL for the deployment supporting the Streamable HTTP transport.
-             */
-            gatewayMcpUrl: string;
-            /**
-             * Format: uri
-             * @description The public marketplace URL for the deployment's project.
-             */
-            marketplaceUrl: string;
-            /**
-             * Format: uri
-             * @description A private admin URL for managing the deployment. This URL is only accessible by project owners.
-             */
-            adminUrl: string;
         };
         TeamMember: {
             createdAt: string;
@@ -895,11 +855,6 @@ export interface components {
             user?: components["schemas"]["User"];
             project?: components["schemas"]["Project"];
             deployment?: unknown;
-            /**
-             * Format: uri
-             * @description A private admin URL for managing the customer's subscription. This URL is only accessible by the customer.
-             */
-            adminUrl: string;
         };
         /** @description Origin adapter is used to configure the origin API server downstream from Agentic's API gateway. It specifies whether the origin API server denoted by `url` is hosted externally or deployed internally to Agentic's infrastructure. It also specifies the format for how origin tools are defined: either an OpenAPI spec or an MCP server.
          *
@@ -952,14 +907,27 @@ export interface components {
             /** @enum {string} */
             type: "raw";
         };
-        /** @description A Consumer represents a user who has subscribed to a Project and is used
-         *     to track usage and billing.
-         *
-         *     Consumers are linked to a corresponding Stripe Customer and Subscription.
-         *     The Stripe customer will either be the user's default Stripe Customer if the
-         *     project uses the default Agentic platform account, or a customer on the project
-         *     owner's connected Stripe account if the project has Stripe Connect enabled. */
-        AdminConsumer: components["schemas"]["Consumer"] & {
+        AdminConsumer: {
+            /** @description Consumer id (e.g. "csmr_tz4a98xxat96iws9zmbrgj3a") */
+            id: string;
+            createdAt: string;
+            updatedAt: string;
+            deletedAt?: string;
+            token: string;
+            plan?: string;
+            activated: boolean;
+            source?: string;
+            /** @description User id (e.g. "user_tz4a98xxat96iws9zmbrgj3a") */
+            userId: string;
+            /** @description Project id (e.g. "proj_tz4a98xxat96iws9zmbrgj3a") */
+            projectId: string;
+            /** @description Deployment id (e.g. "depl_tz4a98xxat96iws9zmbrgj3a") */
+            deploymentId: string;
+            stripeStatus: string;
+            isStripeSubscriptionActive: boolean;
+            user?: components["schemas"]["User"];
+            project?: components["schemas"]["Project"];
+            deployment?: unknown;
             _stripeCustomerId: string;
         };
         /** @description Origin adapter is used to configure the origin API server downstream from Agentic's API gateway. It specifies whether the origin API server denoted by `url` is hosted externally or deployed internally to Agentic's infrastructure. It also specifies the format for how origin tools are defined: either an OpenAPI spec, an MCP server, or a raw HTTP REST API. */
@@ -1047,10 +1015,77 @@ export interface components {
             /** @enum {string} */
             type: "raw";
         };
-        /** @description A Deployment is a single, immutable instance of a Project. Each deployment contains pricing plans, origin server config (OpenAPI or MCP server), tool definitions, and metadata.
-         *
-         *     Deployments are private to a developer or team until they are published, at which point they are accessible to any customers with access to the parent Project. */
-        AdminDeployment: components["schemas"]["Deployment"] & {
+        AdminDeployment: {
+            /** @description Deployment id (e.g. "depl_tz4a98xxat96iws9zmbrgj3a") */
+            id: string;
+            createdAt: string;
+            updatedAt: string;
+            deletedAt?: string;
+            identifier: components["schemas"]["DeploymentIdentifier"];
+            hash: string;
+            /** @description Optional semantic version of the project as a semver string. Ex: 1.0.0, 0.0.1, 5.0.1, etc. */
+            version?: string;
+            published: boolean;
+            /** @description A short description of the project. */
+            description?: string;
+            /** @description A readme documenting the project (supports GitHub-flavored markdown). */
+            readme?: string;
+            /**
+             * Format: uri
+             * @description Optional logo image URL to use for the project. Logos should have a square aspect ratio.
+             */
+            iconUrl?: string;
+            /**
+             * Format: uri
+             * @description Optional URL to the source code of the project (eg, GitHub repo).
+             */
+            sourceUrl?: string;
+            /** @description User id (e.g. "user_tz4a98xxat96iws9zmbrgj3a") */
+            userId: string;
+            /** @description Team id (e.g. "team_tz4a98xxat96iws9zmbrgj3a") */
+            teamId?: string;
+            /** @description Project id (e.g. "proj_tz4a98xxat96iws9zmbrgj3a") */
+            projectId: string;
+            /** @default [] */
+            tools: components["schemas"]["Tool"][];
+            /** @default [] */
+            toolConfigs: components["schemas"]["ToolConfig"][];
+            /**
+             * @description List of PricingPlans configuring which Stripe subscriptions should be available for the project. Defaults to a single free plan which is useful for developing and testing your project.
+             * @default [
+             *       {
+             *         "name": "Free",
+             *         "slug": "free",
+             *         "lineItems": [
+             *           {
+             *             "slug": "base",
+             *             "usageType": "licensed",
+             *             "amount": 0
+             *           }
+             *         ],
+             *         "rateLimit": {
+             *           "enabled": true,
+             *           "interval": 60,
+             *           "limit": 1000,
+             *           "mode": "approximate"
+             *         }
+             *       }
+             *     ]
+             */
+            pricingPlans: components["schemas"]["PricingPlan"][];
+            /**
+             * @description Optional list of billing intervals to enable in the pricingPlans.
+             *
+             *     Defaults to a single monthly interval `['month']`.
+             *
+             *     To add support for annual pricing plans, for example, you can use: `['month', 'year']`.
+             * @default [
+             *       "month"
+             *     ]
+             */
+            pricingIntervals: components["schemas"]["PricingInterval"][];
+            defaultRateLimit?: components["schemas"]["RateLimit"] & unknown;
+            project?: unknown;
             origin: components["schemas"]["OriginAdapter"];
             _secret: string;
         };

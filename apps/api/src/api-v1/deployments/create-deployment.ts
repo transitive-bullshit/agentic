@@ -1,5 +1,5 @@
 import { resolveAgenticProjectConfig } from '@agentic/platform'
-import { assert, sha256, slugify } from '@agentic/platform-core'
+import { assert, parseZodSchema, sha256, slugify } from '@agentic/platform-core'
 import {
   isValidDeploymentIdentifier,
   parseProjectIdentifier
@@ -8,7 +8,6 @@ import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 
 import type { AuthenticatedHonoEnv } from '@/lib/types'
 import { db, eq, schema } from '@/db'
-import { parseDeploymentSelectSchema } from '@/db/schema'
 import { acl } from '@/lib/acl'
 import { normalizeDeploymentVersion } from '@/lib/deployments/normalize-deployment-version'
 import { publishDeployment } from '@/lib/deployments/publish-deployment'
@@ -190,6 +189,6 @@ export function registerV1CreateDeployment(
       })
     }
 
-    return c.json(parseDeploymentSelectSchema(deployment))
+    return c.json(parseZodSchema(schema.deploymentSelectSchema, deployment))
   })
 }

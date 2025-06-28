@@ -27,6 +27,14 @@ export type Consumer = Simplify<
     user?: User
     project?: Project
     deployment?: Deployment
+
+    /**
+     * A private admin URL for managing the customer's subscription. This URL
+     * is only accessible by the customer.
+     *
+     * @example https://agentic.so/app/consumers/cons_123
+     */
+    adminUrl: string
   }
 >
 export type Project = Simplify<
@@ -35,6 +43,36 @@ export type Project = Simplify<
     team?: Team
     lastPublishedDeployment?: Deployment
     lastDeployment?: Deployment
+
+    /**
+     * The public base HTTP URL for the project supporting HTTP POST requests for
+     * individual tools at `/tool-name` subpaths.
+     *
+     * @example https://gateway.agentic.so/@agentic/search
+     */
+    gatewayBaseUrl: string
+
+    /**
+     * The public MCP URL for the project supporting the Streamable HTTP transport.
+     *
+     * @example https://gateway.agentic.so/@agentic/search/mcp
+     */
+    gatewayMcpUrl: string
+
+    /**
+     * The public marketplace URL for the project.
+     *
+     * @example https://agentic.so/marketplace/projects/@agentic/search
+     */
+    marketplaceUrl: string
+
+    /**
+     * A private admin URL for managing the project. This URL is only accessible
+     * by project owners.
+     *
+     * @example https://agentic.so/app/projects/@agentic/search
+     */
+    adminUrl: string
   }
 >
 export type Deployment = Simplify<
@@ -46,6 +84,39 @@ export type Deployment = Simplify<
     toolConfigs: ToolConfig[]
     defaultRateLimit: RateLimit
     project?: components['schemas']['Project']
+
+    /**
+     * The public base HTTP URL for the deployment supporting HTTP POST requests
+     * for individual tools at `/tool-name` subpaths.
+     *
+     * @example https://gateway.agentic.so/@agentic/search@latest
+     */
+    gatewayBaseUrl: string
+
+    /**
+     * The public MCP URL for the deployment supporting the Streamable HTTP
+     * transport.
+     *
+     * @example https://gateway.agentic.so/@agentic/search@latest/mcp
+     */
+    gatewayMcpUrl: string
+
+    /**
+     * The public marketplace URL for the deployment's project.
+     *
+     * Note that only published deployments are visible on the marketplace.
+     *
+     * @example https://agentic.so/marketplace/projects/@agentic/search
+     */
+    marketplaceUrl: string
+
+    /**
+     * A private admin URL for managing the deployment. This URL is only accessible
+     * by project owners.
+     *
+     * @example https://agentic.so/app/projects/@agentic/search/deployments/123
+     */
+    adminUrl: string
   }
 >
 
@@ -59,7 +130,10 @@ export type AdminDeployment = Simplify<
     defaultRateLimit: RateLimit
     origin: OriginAdapter
     project?: components['schemas']['Project']
-  }
+  } & Pick<
+      Deployment,
+      'gatewayBaseUrl' | 'gatewayMcpUrl' | 'marketplaceUrl' | 'adminUrl'
+    >
 >
 
 export type AdminConsumer = Simplify<
@@ -67,7 +141,7 @@ export type AdminConsumer = Simplify<
     user?: User
     project?: Project
     deployment?: Deployment
-  }
+  } & Pick<Consumer, 'adminUrl'>
 >
 
 export type AgenticMcpRequestMetadata = {

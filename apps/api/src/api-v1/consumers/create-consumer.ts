@@ -1,8 +1,8 @@
+import { parseZodSchema } from '@agentic/platform-core'
 import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 
 import type { AuthenticatedHonoEnv } from '@/lib/types'
 import { schema } from '@/db'
-import { parseConsumerSelectSchema } from '@/db/schema'
 import { upsertConsumer } from '@/lib/consumers/upsert-consumer'
 import {
   openapiAuthenticatedSecuritySchemas,
@@ -53,6 +53,6 @@ export function registerV1CreateConsumer(
     const body = c.req.valid('json')
     const consumer = await upsertConsumer(c, body)
 
-    return c.json(parseConsumerSelectSchema(consumer))
+    return c.json(parseZodSchema(schema.consumerSelectSchema, consumer))
   })
 }

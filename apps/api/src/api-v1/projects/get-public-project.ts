@@ -1,8 +1,8 @@
 import type { DefaultHonoEnv } from '@agentic/platform-hono'
+import { parseZodSchema } from '@agentic/platform-core'
 import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 
 import { db, eq, schema } from '@/db'
-import { parseProjectSelectSchema } from '@/db/schema'
 import { aclPublicProject } from '@/lib/acl-public-project'
 import {
   openapiAuthenticatedSecuritySchemas,
@@ -51,6 +51,6 @@ export function registerV1GetPublicProject(app: OpenAPIHono<DefaultHonoEnv>) {
     })
     aclPublicProject(project, projectId)
 
-    return c.json(parseProjectSelectSchema(project))
+    return c.json(parseZodSchema(schema.projectSelectSchema, project))
   })
 }
