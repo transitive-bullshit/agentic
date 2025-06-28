@@ -9,7 +9,6 @@
     "rootDir": ".",
     "baseUrl": ".",
     "paths": {
-      "@/public/*": ["public/*"],
       "@/*": ["src/*"]
     }
   },
