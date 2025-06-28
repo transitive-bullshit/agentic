@@ -39,11 +39,6 @@
 }
 
 .logo {
-  font-family: 'Josefin Sans';
-  font-weight: bold;
-  text-transform: uppercase;
-  font-size: 2em;
-  letter-spacing: 0.02em;
   user-select: none;
 }
 
@@ -57,12 +52,4 @@
   max-width: var(--max-width);
   height: 100%;
   margin: 0 auto;
-}
-
-.logo a:link,
-.logo a:visited,
-.logo a:hover,
-.logo a:active {
-  text-decoration: none;
-  color: inherit;
 }
