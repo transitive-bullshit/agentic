@@ -103,8 +103,7 @@ export default async function TheBestDamnLandingPageEver() {
 
       <section className='flex flex-col items-center gap-8 text-center mb-16 max-w-2xl'>
         <h2 className='text-center text-balance leading-snug md:leading-none text-3xl font-heading'>
-          Agentic makes managing{' '}
-          <span className='font-semibold'>MCP servers</span> simple
+          Agentic makes <span className='font-semibold'>MCP fun!</span>
         </h2>
 
         <div className='h-96 w-full rounded-lg overflow-hidden shadow-sm'>
