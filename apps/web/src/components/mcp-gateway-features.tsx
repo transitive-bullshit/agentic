@@ -11,9 +11,8 @@ import {
   TextSelectIcon,
   UserIcon
 } from 'lucide-react'
-import Link from 'next/link'
 
-import { calendarBookingUrl, docsPublishingUrl } from '@/lib/config'
+import { docsPublishingUrl } from '@/lib/config'
 
 import { Feature, type FeatureData } from './feature'
 
@@ -25,19 +24,11 @@ const mcpGatewayFeatures: FeatureData[] = [
         Ship to production fast with Agentic's free, hosted authentication.
         Email & password, OAuth, GitHub, Google, Twitter, etc – if your origin
         API requires OAuth credentials, Agentic likely already supports it, and
-        if not,{' '}
-        <Link
-          href={calendarBookingUrl}
-          target='_blank'
-          rel='noopener'
-          className='link'
-        >
-          let us know
-        </Link>
-        .
+        if not, we'd be happy to add it.
       </>
     ),
     icon: UserIcon,
+    href: `${docsPublishingUrl}/config/auth`,
     pattern: {
       y: 16,
       squares: [
@@ -58,6 +49,7 @@ const mcpGatewayFeatures: FeatureData[] = [
       </>
     ),
     icon: CreditCardIcon,
+    href: `${docsPublishingUrl}/config/pricing`,
     pattern: {
       y: -6,
       squares: [
@@ -114,6 +106,7 @@ const mcpGatewayFeatures: FeatureData[] = [
       </>
     ),
     icon: ShieldCheckIcon,
+    href: `${docsPublishingUrl}/config/rate-limits`,
     pattern: {
       y: 2,
       squares: [
@@ -134,6 +127,7 @@ const mcpGatewayFeatures: FeatureData[] = [
       </>
     ),
     icon: DatabaseZapIcon,
+    href: `${docsPublishingUrl}/config/caching`,
     pattern: {
       y: 8,
       squares: [
