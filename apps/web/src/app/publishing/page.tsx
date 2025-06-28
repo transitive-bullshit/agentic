@@ -21,7 +21,8 @@ export default function PublishingMCPsPage() {
 
         <h5 className='text-center text-lg max-w-2xl'>
           Run one command to turn any MCP server or OpenAPI service into a paid
-          MCP product. With built-in support every major LLM SDK and MCP client.
+          MCP product. With built-in support for every major LLM SDK and MCP
+          client.
         </h5>
 
         <SupplySideCTA />

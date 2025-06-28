@@ -6,25 +6,21 @@
 ## TODO: MVP
 
 - **website**
-  - marketing landing page
-  - webapp
-    - consider a PrettyJson component which displays json but links to resources
   - stripe
     - double check stripe upgrade flow and add fireworks
     - should we bypass stripe for `free` plans to increase conversions?
   - handle browser back/forward with `?next=`
   - add some social proof to signup page
-  - empty dashboard; add some CTAs
 - docs
   - main readme
   - sub readmes
   - hosted docs
-- merge with current agentic repo
-- publish packages to npm
 - social images
+- add really strict free rate-limits to `@agentic/search`
 - simplify `AgenticToolClient` and only require one package per TS LLM SDK
   - `createAISDKToolsFromIdentifier(projectIdentifier)`
-- add really strict free rate-limits to `@agentic/search`
+- move legacy over and update examples + docs
+- create agentic products for legacy tools
 
 ## TODO: Post-MVP
 
