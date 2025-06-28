@@ -111,8 +111,8 @@ export default async function TheBestDamnLandingPageEver() {
         </div>
 
         <p className='italic font-semibold'>
-          Agentic's mission is to build the world's best library of tools for AI
-          agents.
+          Agentic's mission is to provide the world's best library of tools for
+          AI agents.
         </p>
 
         <p>

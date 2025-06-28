@@ -60,8 +60,8 @@ export default function AboutPage() {
 
         <h2>Mission</h2>
         <p className='font-semibold italic'>
-          Agentic's mission is to build the world's best library of tools for AI
-          agents.
+          Agentic's mission is to provide the world's best library of tools for
+          AI agents.
         </p>
 
         {/* <h2>What is Agentic UX?</h2>
