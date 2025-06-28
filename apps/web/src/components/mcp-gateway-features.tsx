@@ -13,7 +13,7 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 
-import { calendarBookingUrl, docsUrl } from '@/lib/config'
+import { calendarBookingUrl, docsPublishingUrl } from '@/lib/config'
 
 import { Feature, type FeatureData } from './feature'
 
@@ -183,7 +183,7 @@ const mcpGatewayFeatures: FeatureData[] = [
     description: (
       <>Check out our docs for more details on Agentic's MCP gateway.</>
     ),
-    href: docsUrl,
+    href: docsPublishingUrl,
     icon: TextSelectIcon,
     pattern: {
       y: 13,

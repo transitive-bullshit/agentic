@@ -2,7 +2,7 @@ import Link from 'next/link'
 
 import { HeroButton } from '@/components/hero-button'
 import { Button } from '@/components/ui/button'
-import { docsMarketplaceUrl } from '@/lib/config'
+import { docsUrl } from '@/lib/config'
 
 export function DemandSideCTA() {
   return (
@@ -14,7 +14,7 @@ export function DemandSideCTA() {
       </HeroButton>
 
       <Button variant='outline' asChild className='h-full'>
-        <Link href={docsMarketplaceUrl} className='font-mono'>
+        <Link href={docsUrl} className='font-mono'>
           readTheDocs();
         </Link>
       </Button>

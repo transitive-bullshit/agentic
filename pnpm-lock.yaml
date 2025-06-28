@@ -806,6 +806,9 @@ importers:
       react-lottie-player:
         specifier: 'catalog:'
         version: 2.1.0(react@19.1.0)
+      react-medium-image-zoom:
+        specifier: ^5.2.14
+        version: 5.2.14(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       react-use:
         specifier: 'catalog:'
         version: 17.6.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -8170,6 +8173,12 @@ packages:
     engines: {node: '>=10'}
     peerDependencies:
       react: ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+
+  react-medium-image-zoom@5.2.14:
+    resolution: {integrity: sha512-nfTVYcAUnBzXQpPDcZL+cG/e6UceYUIG+zDcnemL7jtAqbJjVVkA85RgneGtJeni12dTyiRPZVM6Szkmwd/o8w==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
   react-promise-suspense@0.3.4:
     resolution: {integrity: sha512-I42jl7L3Ze6kZaq+7zXWSunBa3b1on5yfvUW6Eo/3fFOj6dZ5Bqmcd264nJbTK/gn1HjjILAjSwnZbV4RpSaNQ==}
@@ -17302,6 +17311,11 @@ snapshots:
       lottie-web: 5.13.0
       react: 19.1.0
       rfdc: 1.4.1
+
+  react-medium-image-zoom@5.2.14(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
+    dependencies:
+      react: 19.1.0
+      react-dom: 19.1.0(react@19.1.0)
 
   react-promise-suspense@0.3.4:
     dependencies:

@@ -57,6 +57,7 @@
     "react-dom": "catalog:",
     "react-infinite-scroll-hook": "catalog:",
     "react-lottie-player": "catalog:",
+    "react-medium-image-zoom": "^5.2.14",
     "react-use": "catalog:",
     "server-only": "catalog:",
     "shiki": "catalog:",

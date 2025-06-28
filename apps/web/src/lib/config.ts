@@ -19,6 +19,7 @@ export const githubUrl = 'https://github.com/transitive-bullshit/agentic'
 export const calendarBookingUrl = 'https://cal.com/travis-fischer/15min'
 export const docsUrl = 'https://docs.agentic.so'
 export const docsPublishingQuickStartUrl = `${docsUrl}/publishing/quickstart`
+export const docsPublishingUrl = `${docsUrl}/publishing`
 export const docsMarketplaceUrl = `${docsUrl}/marketplace`
 export const discordUrl = 'https://discord.agentic.so'
 

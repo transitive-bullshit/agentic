@@ -1,4 +1,6 @@
+import Image from 'next/image'
 import Link from 'next/link'
+import Zoom from 'react-medium-image-zoom'
 
 import { DotsSection } from '@/components/dots-section'
 import { ExampleAgenticConfigs } from '@/components/example-agentic-configs'
@@ -6,7 +8,8 @@ import { GitHubStarCounter } from '@/components/github-star-counter'
 import { MCPGatewayFeatures } from '@/components/mcp-gateway-features'
 import { PageContainer } from '@/components/page-container'
 import { SupplySideCTA } from '@/components/supply-side-cta'
-import { githubUrl, twitterUrl } from '@/lib/config'
+import { docsPublishingUrl, githubUrl, twitterUrl } from '@/lib/config'
+import mcpGatewayDiagramLight from '@/public/agentic-mcp-gateway-mvp-diagram-light.png'
 
 export default function PublishingMCPsPage() {
   return (
@@ -19,8 +22,7 @@ export default function PublishingMCPsPage() {
 
         <h5 className='text-center text-lg max-w-2xl'>
           Run one command to turn any MCP server or OpenAPI service into a paid
-          MCP product,{' '}
-          <em>with built-in distribution to over 20k AI engineers</em>.
+          MCP product. With built-in support every major LLM SDK and MCP client.
         </h5>
 
         <SupplySideCTA />
@@ -32,7 +34,28 @@ export default function PublishingMCPsPage() {
           How It Works
         </h2>
 
-        <div>TODO</div>
+        <div className='w-full max-w-3xl flex flex-col items-center border rounded-lg shadow-sm overflow-hidden p-4 bg-white'>
+          <Zoom>
+            <Image
+              src={mcpGatewayDiagramLight.src}
+              alt='MCP Gateway Demo'
+              width={mcpGatewayDiagramLight.width}
+              height={mcpGatewayDiagramLight.height}
+              className='w-full rounded-lg overflow-hidden'
+            />
+          </Zoom>
+        </div>
+
+        <p className='text-sm max-w-2xl text-center'>
+          Deploy any MCP server or OpenAPI service to Agentic's MCP Gateway,
+          which handles auth, billing, rate-limiting, caching, etc. And
+          instantly turn your API into a paid MCP product that supports every
+          major LLM SDK and MCP client.{' '}
+          <Link href={docsPublishingUrl} className='link'>
+            Learn more
+          </Link>
+          .
+        </p>
       </section>
 
       {/* Config section */}
@@ -43,17 +66,21 @@ export default function PublishingMCPsPage() {
 
         <ExampleAgenticConfigs />
 
-        <div className='flex flex-col gap-4 text-sm max-w-2xl text-center'>
-          <p>
-            Configuring your Agentic project is straightforward, regardless of
-            whether your origin is an MCP server or an OpenAPI service. For TS
-            projects, you can use a fully-typed{' '}
-            <span className='font-semibold'>agentic.config.ts</span> file, or
-            fall back to using an{' '}
-            <span className='font-semibold'>agentic.config.json</span> file to
-            configure your project.
-          </p>
-        </div>
+        <p className='text-sm max-w-2xl text-center'>
+          <Link href={`${docsPublishingUrl}/config`} className='link'>
+            Configuring your Agentic project
+          </Link>{' '}
+          is straightforward , regardless of whether your origin is an MCP
+          server or an OpenAPI service. For TS projects, you can use a
+          fully-typed <span className='font-semibold'>agentic.config.ts</span>{' '}
+          file, or fall back to using an{' '}
+          <span className='font-semibold'>agentic.config.json</span> file to
+          configure your project.{' '}
+          <Link href={docsPublishingUrl} className='link'>
+            Learn more
+          </Link>
+          .
+        </p>
       </section>
 
       {/* Features section */}

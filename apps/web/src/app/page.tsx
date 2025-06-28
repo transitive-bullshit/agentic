@@ -8,6 +8,7 @@ import { GitHubStarCounter } from '@/components/github-star-counter'
 import { HeroSimulation2 } from '@/components/hero-simulation-2'
 import { MCPMarketplaceFeatures } from '@/components/mcp-marketplace-features'
 import { PageContainer } from '@/components/page-container'
+import { SupplySideCTA } from '@/components/supply-side-cta'
 import {
   docsPublishingQuickStartUrl,
   githubUrl,
@@ -58,7 +59,7 @@ export default async function TheBestDamnLandingPageEver() {
       {/* How it works section */}
       <section className='flex flex-col gap-8 mb-16'>
         <h2 className='text-center text-balance leading-snug md:leading-none text-3xl font-heading'>
-          Agentic tools work <span className='font-semibold'>everywhere</span>
+          Agentic tools <span className='font-semibold'>work everywhere</span>
         </h2>
 
         <ExampleUsage
@@ -94,7 +95,7 @@ export default async function TheBestDamnLandingPageEver() {
       <section className='flex flex-col items-center gap-8 text-center mb-16'>
         <h2 className='text-center text-balance leading-snug md:leading-none text-3xl font-heading'>
           Agentic tools are{' '}
-          <span className='font-semibold'>production-ready</span>
+          <span className='font-semibold'>optimized for LLMs</span>
         </h2>
 
         <MCPMarketplaceFeatures />
@@ -125,6 +126,23 @@ export default async function TheBestDamnLandingPageEver() {
           </Link>
         </p>
       </section>
+
+      {/* CTA section */}
+      <DotsSection className='mb-16'>
+        <div className='flex flex-col gap-12 relative z-10'>
+          <h2 className='text-center text-balance leading-snug md:leading-none text-3xl font-heading'>
+            Publish your own MCP products with Agentic
+          </h2>
+
+          <h5 className='text-center max-w-2xl'>
+            Run one command to turn any MCP server or OpenAPI service into a
+            paid MCP product. With built-in support every major LLM SDK and MCP
+            client.
+          </h5>
+
+          <SupplySideCTA variant='book-call' heroVariant='orange' />
+        </div>
+      </DotsSection>
 
       {/* Open source section */}
       <section className='flex flex-col items-center gap-8 max-w-2xl text-center mb-16'>
@@ -168,7 +186,7 @@ export default async function TheBestDamnLandingPageEver() {
         <p className='text-center text-lg max-w-2xl'>TODO</p>
       </section> */}
 
-      {/* CTA section */}
+      {/* Demand-side CTA section */}
       <DotsSection className='mb-16'>
         <div className='flex flex-col gap-12 relative z-10'>
           <h2 className='text-center text-balance leading-snug md:leading-none text-3xl font-heading'>

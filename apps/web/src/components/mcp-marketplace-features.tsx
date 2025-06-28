@@ -19,7 +19,7 @@ const mcpMarketplaceFeatures: FeatureData[] = [
         <span className='font-semibold'>
           All Agentic tools have been hand-crafted specifically for LLM tool
           use.
-        </span>
+        </span>{' '}
         We call this Agentic UX, and it's at the heart of why Agentic tools work
         better for LLM &amp; MCP use cases than legacy APIs.
       </>
@@ -34,11 +34,12 @@ const mcpMarketplaceFeatures: FeatureData[] = [
     }
   },
   {
-    name: 'Battle-Tested',
+    name: 'Production-Ready MCP Support',
     description: (
       <>
-        Forget random GitHub repos and piping MCP servers together. Agentic
-        tools are all battle-tested in production and come with real SLAs.
+        Forget random GitHub repos and gluing local MCP servers together.
+        Agentic tools are all battle-tested in production and come with real
+        SLAs.
       </>
     ),
     icon: ShieldCheckIcon,

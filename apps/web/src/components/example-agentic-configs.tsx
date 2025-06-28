@@ -50,7 +50,7 @@ export function ExampleAgenticConfigs() {
   }
 
   return (
-    <div className='w-full max-w-3xl flex flex-col items-center border rounded-lg shadow-sm p-2 md:p-4'>
+    <div className='w-full max-w-3xl flex flex-col items-center border rounded-lg shadow-sm p-2 md:p-4 bg-background'>
       <ExampleAgenticConfigsContent config={config} setConfig={setConfig} />
     </div>
   )
