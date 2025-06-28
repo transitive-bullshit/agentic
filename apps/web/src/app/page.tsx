@@ -140,7 +140,7 @@ export default async function TheBestDamnLandingPageEver() {
             client.
           </h5>
 
-          <SupplySideCTA variant='book-call' heroVariant='orange' />
+          <SupplySideCTA variant='book-call' />
         </div>
       </DotsSection>
 

@@ -17,7 +17,7 @@ import { GitHubStarCounter } from './github-star-counter'
 
 export function SupplySideCTA({
   variant = 'github',
-  heroVariant = 'purple'
+  heroVariant = 'orange'
 }: {
   variant?: 'book-call' | 'github' | 'github-2'
   heroVariant?: HeroButtonVariant
