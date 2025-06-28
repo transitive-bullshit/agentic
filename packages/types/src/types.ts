@@ -15,7 +15,7 @@ import type { ToolConfig } from './tools'
 // TODO: These extra simplify statements for populated references shouldn't be
 // necessary here, but Hono's OpenAPI support is currently failing to generate
 // these self-referential types correctly in some cases, so we're just hard-
-// coding the types here to make them nicer.
+// coding the types here to make them nicer. Same with derived fields.
 
 export type User = components['schemas']['User']
 export type Team = components['schemas']['Team']
