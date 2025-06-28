@@ -1,112 +1,15 @@
+> [!IMPORTANT]
+> (_June 28, 2025_) As part of an upcoming major Agentic 2.0 release, our site, docs, and readme will be undergoing some breaking changes over the next few days. Please be patient if the site / docs don't load correctly until the transition is complete. Thank you && really excited to share more about Agentic's new direction soon!! 🙏
+
 <p>
-  <a href="https://github.com/transitive-bullshit/agentic-platform/actions/workflows/main.yml"><img alt="Build Status" src="https://github.com/transitive-bullshit/agentic-platform/actions/workflows/main.yml/badge.svg" /></a>
+  <a href="https://github.com/transitive-bullshit/agentic/actions/workflows/main.yml"><img alt="Build Status" src="https://github.com/transitive-bullshit/agentic/actions/workflows/main.yml/badge.svg" /></a>
   <a href="https://prettier.io"><img alt="Prettier Code Formatting" src="https://img.shields.io/badge/code_style-prettier-brightgreen.svg" /></a>
 </p>
 
 # Agentic <!-- omit from toc -->
 
-## API Gateway
-
-- **MCP**: `https://gateway.agentic.so/@{username}/{project-slug}/mcp`
-- **HTTP**: `GET/POST` `https://gateway.agentic.so/@{username}/{project-slug}/{tool-name}`
-
-## TODO: MVP
-
-- **website**
-  - marketing landing page
-  - webapp
-    - consider a PrettyJson component which displays json but links to resources
-  - stripe
-    - double check stripe upgrade flow and add fireworks
-    - should we bypass stripe for `free` plans to increase conversions?
-  - handle browser back/forward with `?next=`
-  - add some social proof to signup page
-  - empty dashboard; add some CTAs
-- docs
-  - main readme
-  - sub readmes
-  - hosted docs
-- merge with current agentic repo
-- publish packages to npm
-- social images
-- simplify `AgenticToolClient` and only require one package per TS LLM SDK
-  - `createAISDKToolsFromIdentifier(projectIdentifier)`
-- add really strict free rate-limits to `@agentic/search`
--
-
-## TODO: Post-MVP
-
-- **API gateway**
-  - oauth flow
-    - https://docs.scalekit.com/guides/mcp/oauth
-    - custom oauth flow might need to use separate domains per project instead of separate pathnames?
-      - since the .well-known routes and standard oauth 2.1 routes are all at the top-level?
-  - **e2e tests for usage tracking and reporting**
-- marketplace
-  - may need a different flag besides `private` for inclusion on the marketplace
-    - projects may be public but not accepted into the marketplace?
-    - => **punt on this for mvp**
-- **website**
-  - llms.txt and llms.txt for all projects
-- first-party deployment hosting
-- api gateway stress tests
-- auth
-  - custom auth provider configs for projects/deployments
-- stripe
-  - re-add coupons
-  - declarative json-based pricing
-    - like https://github.com/tierrun/tier and Saasify
-    - https://github.com/tierrun/tier/blob/main/pricing/schema.json
-    - https://blog.tier.run/tier-hello-world-demo
-  - stripe connect
-  - stripe-related billing emails
-- re-add support for teams / organizations
-- consider switching to [consola](https://github.com/unjs/consola) for logging?
-- consider switching to `bun` (for `--hot` reloading!!)
-- validate stability of pricing plan slugs across deployments
-  - same for pricing plan line-items
-- replace `ms` package
-- **API gateway**
-  - **do we just ditch the public REST interface and focus on MCP?**
-  - SSE support? (no; post-mvp if at all; only support [streamable http](https://modelcontextprotocol.io/specification/2025-03-26/basic/transports#streamable-http) like smithery does, or maybe support both?)
-  - signed requests
-  - add support for custom headers on responses
-  - add ability to only report stripe usage on non-cached requests
-  - add support for ToolConfig.cost defaulting to 1, to easily support tools which cost multiple "credits"
-  - extra `Sentry` instrumentation (`setUser`, `captureMessage`, etc)
-  - test handling of binary bodies and responses
-  - improve logger vs console for non-hono path and util methods
-  - consider replacing `eventId` with uuids for `requestId`?
-  - openapi origin kitchen sink
-    - add more test cases to e2e tests for diff content types
-  - mcp origin kitchen sink
-  - add support for `/sse`? need to test with claude desktop
-  - test handling of resources
-- `@agentic/platform-hono`
-  - fix sentry middleware
-    - https://github.com/honojs/middleware/blob/main/packages/sentry/src/index.ts
-    - https://github.com/honojs/middleware/issues/943
-    - https://github.com/getsentry/sentry-javascript/tree/master/packages/cloudflare
-- **Origin MCP servers**
-  - how to guarantee that the request is coming from agentic?
-    - `_meta` for tool calls
-    - _still need a way of doing this for initial connection requests_
-    - _=> ask in the official mcp developers discord_
-  - mcp auth provider support
-  - test binary bodies / responses / mcp resources
-  - resources
-  - prompts
-  - other MCP features?
-- additional transactional emails
-- handle or validate against dynamic MCP origin tools
-- upgrade to zod v4
-- decide whether deployment fields like `defaultRateLimit` and others should be generated and stored in the db, or should be inferred based on `undefined` values
-- support multiple rate-limits by slug
-  - RateLimit-Policy: "burst";q=100;w=60,"daily";q=1000;w=86400
-  - https://datatracker.ietf.org/doc/draft-ietf-httpapi-ratelimit-headers/
-- make json `$schema` public for `agentic.config.json`
-- handle hosting of deployment and user images
-- about page inspiration: https://mastra.ai/about
+- [website](https://agentic.so)
+- [docs](https://docs.agentic.so)
 
 ## Connect
 
