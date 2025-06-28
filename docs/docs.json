@@ -122,7 +122,7 @@
   },
   "seo": {
     "metatags": {
-      "keywords": "agentic, agentic tools, MCP, Model Context Protocol, MCP gateway, API gateway, MCP marketplace, MCP API gateway, MCP monetization, production MCPs, deploy MCPs, publish MCPs, ai, AI tools, AI agents, LLM tools, LLM function calling, LLM tool calling, MCP servers, MCP server provider, MCP server deployment, OpenAPI to MCP, OpenAPI to MCP server",
+      "keywords": "agentic, agentic tools, MCP, Model Context Protocol, MCP gateway, API gateway, MCP marketplace, MCP API gateway, MCP monetization, production MCPs, deploy MCPs, publish MCPs, ai, AI tools, AI agents, LLM tools, LLM function calling, LLM tool calling, MCP servers, MCP server provider, MCP server deployment, OpenAPI to MCP, OpenAPI to MCP server, vercel ai sdk, ai sdk tools, langchain tools, llamaindex tools, openai tools, anthropic tools, gemini tools",
       "author": "Travis Fischer"
     }
   }

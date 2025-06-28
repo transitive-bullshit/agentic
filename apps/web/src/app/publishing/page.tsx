@@ -3,7 +3,7 @@ import Link from 'next/link'
 import Zoom from 'react-medium-image-zoom'
 
 import { DotsSection } from '@/components/dots-section'
-import { ExampleAgenticConfigs } from '@/components/example-agentic-configs'
+// import { ExampleAgenticConfigs } from '@/components/example-agentic-configs'
 import { GitHubStarCounter } from '@/components/github-star-counter'
 import { MCPGatewayFeatures } from '@/components/mcp-gateway-features'
 import { PageContainer } from '@/components/page-container'
@@ -47,19 +47,17 @@ export default function PublishingMCPsPage() {
         </div>
 
         <p className='text-sm max-w-2xl text-center'>
-          Deploy any MCP server or OpenAPI service to Agentic's MCP Gateway,
-          which handles auth, billing, rate-limiting, caching, etc. And
-          instantly turn your API into a paid MCP product that supports every
-          major LLM SDK and MCP client.{' '}
           <Link href={docsPublishingUrl} className='link'>
-            Learn more
+            Deploy any MCP server or OpenAPI service to Agentic's MCP Gateway,
+            which handles auth, billing, rate-limiting, caching, etc. And
+            instantly turn your API into a paid MCP product that supports every
+            major LLM SDK and MCP client.
           </Link>
-          .
         </p>
       </section>
 
-      {/* Config section */}
-      <section className='flex flex-col gap-8 mb-16'>
+      {/* Config section (TODO) */}
+      {/* <section className='flex flex-col gap-8 mb-16'>
         <h2 className='text-center text-balance leading-snug md:leading-none text-3xl font-heading'>
           Simple, Declarative Configuration
         </h2>
@@ -81,7 +79,7 @@ export default function PublishingMCPsPage() {
           </Link>
           .
         </p>
-      </section>
+      </section> */}
 
       {/* Features section */}
       <section className='flex flex-col gap-8 md:gap-12 mb-16'>
