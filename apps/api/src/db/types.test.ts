@@ -18,7 +18,16 @@ type LogEntryKeys = keyof RawLogEntry & keyof LogEntry
 type ConsumerKeys = keyof RawConsumer & keyof Consumer
 
 type TODOFixedConsumer = Simplify<
-  Omit<Consumer, 'user' | 'project' | 'deployment'> & {
+  Omit<
+    Consumer,
+    | 'user'
+    | 'project'
+    | 'deployment'
+    | 'gatewayBaseUrl'
+    | 'gatewayMcpUrl'
+    | 'marketplaceUrl'
+    | 'adminUrl'
+  > & {
     user?: RawUser | null
     project?: RawProject | null
     deployment?: RawDeployment | null
