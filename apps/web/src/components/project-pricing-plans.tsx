@@ -22,7 +22,7 @@ export function ProjectPricingPlans({
 
   return (
     <div className={cn('mt-8 flex flex-col gap-8', className)}>
-      <h2 className='text-center text-balance leading-snug md:leading-none text-2xl font-extrabold'>
+      <h2 className='text-center text-balance leading-snug md:leading-none text-2xl font-bold'>
         Pricing Plans
       </h2>
 
@@ -37,7 +37,7 @@ export function ProjectPricingPlans({
             key={plan.slug}
             className='flex flex-col gap-4 p-4 border rounded-lg shadow-sm'
           >
-            <h3 className='text-center text-balance leading-snug md:leading-none  text-xl font-bold'>
+            <h3 className='text-center text-balance leading-snug md:leading-none text-xl font-semibold'>
               {plan.name}
             </h3>
 
