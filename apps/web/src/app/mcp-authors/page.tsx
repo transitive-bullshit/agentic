@@ -2,8 +2,8 @@ import Link from 'next/link'
 
 import { DotsSection } from '@/components/dots-section'
 import { ExampleAgenticConfigs } from '@/components/example-agentic-configs'
-import { Features } from '@/components/features'
 import { GitHubStarCounter } from '@/components/github-star-counter'
+import { MCPGatewayFeatures } from '@/components/mcp-gateway-features'
 import { SupplySideCTA } from '@/components/supply-side-cta'
 import { githubUrl, twitterUrl } from '@/lib/config'
 
@@ -63,7 +63,7 @@ export default function MCPAuthorsPage() {
           Production-Ready MCP Gateway
         </h2>
 
-        <Features />
+        <MCPGatewayFeatures />
       </section>
 
       {/* Open source section */}

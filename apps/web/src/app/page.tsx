@@ -5,6 +5,8 @@ import { DemandSideCTA } from '@/components/demand-side-cta'
 import { DotsSection } from '@/components/dots-section'
 import { ExampleUsage } from '@/components/example-usage'
 import { GitHubStarCounter } from '@/components/github-star-counter'
+import { HeroSimulation2 } from '@/components/hero-simulation-2'
+import { MCPMarketplaceFeatures } from '@/components/mcp-marketplace-features'
 import { githubUrl, twitterUrl } from '@/lib/config'
 import {
   defaultConfig,
@@ -50,10 +52,6 @@ export default async function TheBestDamnLandingPageEver() {
         </div>
       </DotsSection>
 
-      {/* <div className='w-[40%] h-full min-h-full' />
-
-          <HeroSimulation2 className='absolute! top-[-50%]! left-[30%] w-full h-[200%]!' /> */}
-
       {/* How it works section */}
       <section className='flex flex-col gap-8 mb-16'>
         <h2 className='text-center text-balance leading-snug md:leading-none text-3xl font-heading'>
@@ -90,15 +88,26 @@ export default async function TheBestDamnLandingPageEver() {
         </div>
       </section>
 
-      {/* Marketplace section */}
-      <section className='flex flex-col gap-8 mb-16'>
+      <section className='flex flex-col items-center gap-8 text-center mb-16'>
         <h2 className='text-center text-balance leading-snug md:leading-none text-3xl font-heading'>
-          MCP Tools that just work
+          Agentic tools are{' '}
+          <span className='font-semibold'>production-ready</span>
         </h2>
 
-        <p>
-          <i>Coming soon...</i>
-        </p>
+        <MCPMarketplaceFeatures />
+      </section>
+
+      <section className='flex flex-col items-center gap-8 text-center mb-16 max-w-2xl'>
+        <h2 className='text-center text-balance leading-snug md:leading-none text-3xl font-heading'>
+          Agentic makes managing{' '}
+          <span className='font-semibold'>MCP servers</span> simple
+        </h2>
+
+        <div className='h-96 w-full rounded-lg overflow-hidden shadow-sm'>
+          <HeroSimulation2 />
+        </div>
+
+        <p className='text-sm'>TODO</p>
       </section>
 
       {/* Open source section */}
