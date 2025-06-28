@@ -1,6 +1,6 @@
 {
   "name": "@agentic/platform-tool-client",
-  "version": "8.0.1",
+  "version": "8.0.2",
   "description": "Tool client for the Agentic platform.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "AGPL-3.0",
