@@ -48,8 +48,8 @@
     "files": [
       "dist"
     ],
+    "types": "./dist/index.ts",
     "exports": {
-      "types": "./dist/index.ts",
       ".": {
         "types": "./dist/index.d.ts",
         "import": "./dist/index.js",
