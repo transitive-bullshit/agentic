@@ -21,7 +21,6 @@
   - `createAISDKToolsFromIdentifier(projectIdentifier)`
 - move legacy over and update examples + docs
 - create agentic products for legacy tools
-- consider changing web header logo to include icon
 
 ## TODO: Post-MVP
 

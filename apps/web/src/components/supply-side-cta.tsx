@@ -25,7 +25,7 @@ export function SupplySideCTA({
   const ctx = useAgentic()
 
   return (
-    <div className='flex justify-center items-center gap-12'>
+    <div className='flex justify-center items-center gap-8 md:gap-12'>
       <HeroButton asChild heroVariant={heroVariant}>
         <Link
           href={

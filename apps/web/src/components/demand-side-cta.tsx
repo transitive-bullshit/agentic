@@ -6,7 +6,7 @@ import { docsUrl } from '@/lib/config'
 
 export function DemandSideCTA() {
   return (
-    <div className='flex justify-center items-center gap-12'>
+    <div className='flex justify-center items-center gap-8 md:gap-12'>
       <HeroButton asChild className='h-full'>
         <Link href='/marketplace' className='font-mono'>
           gotoTools();
