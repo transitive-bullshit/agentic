@@ -17,21 +17,11 @@
   - webapp
     - consider a PrettyJson component which displays json but links to resources
   - stripe
-    - stripe checkout for changing plans? (need to at least be able to upgrade)
+    - double check stripe upgrade flow and add fireworks
     - should we bypass stripe for `free` plans to increase conversions?
   - handle browser back/forward with `?next=`
   - add some social proof to signup page
   - empty dashboard; add some CTAs
-- **API gateway**
-  - oauth flow
-    - https://docs.scalekit.com/guides/mcp/oauth
-    - custom oauth flow might need to use separate domains per project instead of separate pathnames?
-      - since the .well-known routes and standard oauth 2.1 routes are all at the top-level?
-  - **e2e tests for usage tracking and reporting**
-- marketplace
-  - may need a different flag besides `private` for inclusion on the marketplace
-    - projects may be public but not accepted into the marketplace?
-    - => **punt on this for mvp**
 - docs
   - main readme
   - sub readmes
@@ -42,9 +32,20 @@
 - simplify `AgenticToolClient` and only require one package per TS LLM SDK
   - `createAISDKToolsFromIdentifier(projectIdentifier)`
 - add really strict free rate-limits to `@agentic/search`
+-
 
 ## TODO: Post-MVP
 
+- **API gateway**
+  - oauth flow
+    - https://docs.scalekit.com/guides/mcp/oauth
+    - custom oauth flow might need to use separate domains per project instead of separate pathnames?
+      - since the .well-known routes and standard oauth 2.1 routes are all at the top-level?
+  - **e2e tests for usage tracking and reporting**
+- marketplace
+  - may need a different flag besides `private` for inclusion on the marketplace
+    - projects may be public but not accepted into the marketplace?
+    - => **punt on this for mvp**
 - **website**
   - llms.txt and llms.txt for all projects
 - first-party deployment hosting

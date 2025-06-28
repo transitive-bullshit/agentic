@@ -27,7 +27,7 @@
     "test:unit": "vitest run"
   },
   "dependencies": {
-    "@sindresorhus/slugify": "^2.2.1",
+    "@sindresorhus/slugify": "catalog:",
     "decircular": "catalog:",
     "is-obj": "catalog:",
     "parse-json": "catalog:",
