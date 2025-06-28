@@ -51,7 +51,7 @@ export default function RootLayout({
           <div className='relative w-full min-h-[100vh] flex flex-col items-center'>
             <Header />
 
-            <main className='relative w-full flex-1 flex flex-col items-center gap-16 pt-16 pb-24 px-2 overflow-x-hidden'>
+            <main className='relative w-full flex-1 flex flex-col items-center gap-16 pt-16 pb-24 px-2 overflow-hidden'>
               {children}
             </main>
 
