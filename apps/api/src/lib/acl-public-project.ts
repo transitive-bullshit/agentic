@@ -2,10 +2,10 @@ import { assert } from '@agentic/platform-core'
 
 import type { RawProject } from '@/db'
 
-export async function aclPublicProject(
+export function aclPublicProject(
   project: RawProject | undefined,
   projectId?: string
-) {
+): asserts project {
   assert(
     project,
     404,

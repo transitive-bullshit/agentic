@@ -4,6 +4,7 @@ import useInfiniteScroll from 'react-infinite-scroll-hook'
 
 import { useAgentic } from '@/components/agentic-provider'
 import { LoadingIndicator } from '@/components/loading-indicator'
+import { PageContainer } from '@/components/page-container'
 import { PublicProject } from '@/components/public-project'
 import { useInfiniteQuery } from '@/lib/query-client'
 
@@ -51,7 +52,7 @@ export function MarketplaceIndex() {
   const projects = data ? data.pages.flatMap((p) => p.projects) : []
 
   return (
-    <>
+    <PageContainer>
       <section>
         <h1
           className='text-center text-balance leading-snug md:leading-none
@@ -74,7 +75,7 @@ export function MarketplaceIndex() {
                 Please refresh or contact support.
               </p>
             ) : (
-              <div className='grid gap-4'>
+              <div className='grid grid-cols grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3'>
                 {projects.map((project) => (
                   <PublicProject key={project.id} project={project} />
                 ))}
@@ -89,6 +90,6 @@ export function MarketplaceIndex() {
           </div>
         )}
       </section>
-    </>
+    </PageContainer>
   )
 }

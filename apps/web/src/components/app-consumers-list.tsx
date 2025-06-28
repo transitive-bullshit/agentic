@@ -51,6 +51,7 @@ export function AppConsumersList() {
   })
 
   const consumers = data ? data.pages.flatMap((p) => p.consumers) : []
+  const numConsumers = consumers.length
 
   return (
     <>
@@ -68,7 +69,12 @@ export function AppConsumersList() {
               started.
             </p>
           ) : (
-            <div className='grid gap-4'>
+            <div
+              className={`grid grid-cols grid-cols-1 gap-4 sm:grid-cols-${Math.min(
+                2,
+                numConsumers
+              )} xl:grid-cols-${Math.min(3, numConsumers)}`}
+            >
               {consumers.map((consumer) => (
                 <Link
                   key={consumer.id}

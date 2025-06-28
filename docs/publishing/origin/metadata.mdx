@@ -1,0 +1,155 @@
+---
+title: Origin Metadata
+description: Agentic's MCP Gateway passes extra metadata to your origin server.
+---
+
+## Metadata
+
+<Tabs>
+  <Tab title='MCP Origin Server'>
+Agentic's MCP Gateway will always include the following metadata in all tool calls within the `_meta.agentic` field.
+
+```ts
+export type AgenticMcpRequestMetadata = {
+  agenticProxySecret: string
+  sessionId: string
+  isCustomerSubscriptionActive: boolean
+
+  customerId?: string
+  customerSubscriptionStatus?: string
+  customerSubscriptionPlan?: string
+
+  userId?: string
+  userEmail?: string
+  userUsername?: string
+  userName?: string
+  userCreatedAt?: string
+  userUpdatedAt?: string
+
+  deploymentId: string
+  deploymentIdentifier: string
+  projectId: string
+  projectIdentifier: string
+
+  ip?: string
+} & (
+  | {
+      // If the customer has an active subscription, these fields are guaranteed
+      // to be present in the metadata.
+      isCustomerSubscriptionActive: true
+
+      customerId: string
+      customerSubscriptionStatus: string
+
+      userId: string
+      userEmail: string
+      userUsername: string
+      userCreatedAt: string
+      userUpdatedAt: string
+    }
+  | {
+      // If the customer does not have an active subscription, then the customer
+      // fields may or may not be present.
+      isCustomerSubscriptionActive: false
+    }
+)
+```
+
+</Tab>
+
+<Tab title='OpenAPI Origin Server'>
+Agentic's MCP Gateway will always include the following headers for all tool calls to your origin server.
+
+<ResponseField name='x-agentic-proxy-secret' type='string' required>
+  The secret key of your Agentic project. This is used to guarantee that HTTP
+  requests are actually coming from Agentic's MCP Gateway, and not from
+  third-party actors.
+
+You can find this secret key in your Agentic project's dashboard settings.
+
+</ResponseField>
+
+<ResponseField name='x-agentic-customer-id' type='string'>
+  The ID of the customer in Agentic's database.
+</ResponseField>
+
+<ResponseField
+  name='x-agentic-is-customer-subscription-active'
+  type='string'
+  required
+  default='false'
+>
+  Whether the customer has an active subscription. Will be either `true` or
+  `false`.
+</ResponseField>
+
+<ResponseField
+  name='x-agentic-customer-subscription-status'
+  type='string'
+  required
+  default='incomplete'
+>
+  The [Stripe status](https://docs.stripe.com/api/subscriptions/object#subscription_object-status) of the customer's subscription.
+
+Possible values are `incomplete`, `incomplete_expired`, `trialing`, `active`, `past_due`, `canceled`, `unpaid`, or `paused`.
+
+</ResponseField>
+
+<ResponseField
+  name='x-agentic-customer-subscription-plan'
+  type='string'
+  required
+  default='free'
+>
+  The slug of the customer's subscription pricing plan.
+</ResponseField>
+
+<ResponseField name='x-agentic-user-id' type='string'>
+  The ID of the user in Agentic's database.
+</ResponseField>
+
+<ResponseField name='x-agentic-user-email' type='string'>
+  The email of the user in Agentic's database.
+</ResponseField>
+
+<ResponseField name='x-agentic-user-username' type='string'>
+  The username of the user in Agentic's database.
+</ResponseField>
+
+<ResponseField name='x-agentic-user-name' type='string'>
+  The name of the user in Agentic's database.
+</ResponseField>
+
+<ResponseField name='x-agentic-user-created-at' type='string'>
+  The date and time the user was created in Agentic's database.
+</ResponseField>
+
+<ResponseField name='x-agentic-user-updated-at' type='string'>
+  The date and time the user was last updated in Agentic's database.
+</ResponseField>
+
+<ResponseField name='x-agentic-project-id' type='string' required>
+  The ID of the project in Agentic's database. (`proj_...`)
+</ResponseField>
+
+<ResponseField name='x-agentic-project-identifier' type='string' required>
+  The public identifier of the target project in Agentic's database.
+  (`@username/project-name`)
+</ResponseField>
+
+<ResponseField name='x-agentic-deployment-id' type='string' required>
+  The ID of the target deployment in Agentic's database. (`depl_...`)
+</ResponseField>
+
+<ResponseField name='x-agentic-deployment-identifier' type='string' required>
+  The public identifier of the target deployment in Agentic's database.
+  (`@username/project-name@<deployment-hash>`)
+</ResponseField>
+</Tab>
+</Tabs>
+
+## Unauthenticated requests
+
+If a customer doesn't provide an API key for their MCP or HTTP call, Agentic's MCP Gateway will default them to your project's `free` pricing plan with `isCustomerSubscriptionActive` set to `false`.
+
+This means they'll be subject to your project's `free` pricing plan's [rate limits](/publishing/config/rate-limits), which is important to protect your origin server from abuse.

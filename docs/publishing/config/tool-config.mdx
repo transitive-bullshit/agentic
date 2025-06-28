@@ -1,0 +1,152 @@
+---
+title: Tool Config
+description: Configure tool-specific settings for your project.
+---
+
+`toolConfigs` is an optional array of tool configs which may be used to override the default gateway behavior for specific tools.
+
+With `toolConfigs`, tools can be disabled, set custom rate-limits, customize reporting usage for metered billing, and they can also override behavior for different pricing plans.
+
+For example, you may want to disable certain tools on a `free` pricing plan or remove the rate-limit for a specific tool on a `pro` pricing plan while keeping the defualt rate-limit in place for other tools.
+
+Note that tool-specific configs override the defaults defined in pricing plans.
+
+If a tool is defined on the origin server but not specified in `toolConfigs`, it will use the default behavior of the Agentic MCP gateway.
+
+## Tool Config
+
+<ResponseField name='name' type='string' required>
+  The name of the tool, which acts as a unique, stable identifier for the tool
+  across deployments.
+
+Make sure the tool `name` matches the origin server's tool names, either via its MCP server or OpenAPI operationIds.
+
+</ResponseField>
+
+<ResponseField name='enabled' type='boolean' default='true'>
+Whether this tool should be enabled for all customers (default).
+
+If you want to hide a tool from customers but still have it present on your origin server, set this to `false` for the given tool.
+
+</ResponseField>
+
+<ResponseField name='pure' type='boolean' default='false'>
+Whether this tool's output is deterministic and idempotent given the same input.
+
+If `true`, tool outputs will be cached aggressively for identical requests, though origin server response headers can still override this behavior on a per-request basis.
+
+If `false`, tool outputs will be cached according to the origin server's response headers on a per-request basis.
+
+</ResponseField>
+
+<ResponseField name='cacheControl' type='string'>
+A custom `Cache-Control` header to use for caching this tool's responses.
+
+If set, this field overrides `pure`.
+
+If not set and `pure` is `true`, the gateway will default to: `public, max-age=31560000, s-maxage=31560000, stale-while-revalidate=3600` (cache publicly for up to 1 year).
+
+If not set and `pure` is `false`, the gateway will default to `no-store` which will disable caching. This is the default gateway behavior for tools (no caching).
+
+Note that origin server response headers may also choose to disable caching on a per-request basis.
+
+</ResponseField>
+
+<ResponseField name='reportUsage' type='boolean' default='true'>
+Whether calls to this tool should be reported as usage for the default `requests` line-item's metered billing.
+
+Note: This is only relevant if the customer's active pricing plan includes a `requests` line-item.
+
+</ResponseField>
+
+<ResponseField name='rateLimit' type='object'>
+Customize the default `requests`-based rate-limiting for this tool.
+
+To disable rate-limiting for this tool, set `rateLimit.enabled` to `false`.
+
+If not set, the default rate-limiting for the active pricing plan will be used.
+
+See [Rate Limits](/publishing/config/rate-limits) for details.
+
+</ResponseField>
+
+<ResponseField name='inputSchemaAdditionalProperties' type='boolean'>
+Whether to allow additional properties in the tool's input schema.
+
+The default MCP spec allows additional properties. Set this to `false` if you want your tool to be more strict.
+
+Note: This is only relevant if the tool has defined an `inputSchema`.
+
+</ResponseField>
+
+<ResponseField name='outputSchemaAdditionalProperties' type='boolean'>
+Whether to allow additional properties in the tool's output schema.
+
+The default MCP spec allows additional properties. Set this to `false` if you want your tool to be more strict.
+
+Note: This is only relevant if the tool has defined an `outputSchema`.
+
+</ResponseField>
+
+<ResponseField name='pricingPlanOverrides' type='object'>
+Allows you to override this tool's behavior or disable it entirely for different pricing plans.
+
+This is a map from PricingPlan `slug` to PricingPlanToolOverride.
+
+```ts agentic.config.ts
+import { defineConfig } from '@agentic/platform'
+
+// In this example, `my-tool` is disabled for the `free` pricing plan.
+export default defineConfig({
+  // ...
+  toolConfigs: [
+    {
+      name: 'my-tool',
+      pricingPlanOverridesMap: {
+        free: {
+          enabled: false
+        }
+      }
+    }
+  ]
+})
+```
+
+<Expandable title="PricingPlanToolOverride">
+  <ResponseField name='enabled' type='boolean'>
+    Whether this tool should be enabled for the given pricing plan.
+
+    If `undefined`, will use the tool's default enabled state.
+
+  </ResponseField>
+
+  <ResponseField name='reportUsage' type='boolean'>
+    Whether to report default `requests` usage for metered billing for customers on a given pricing plan.
+
+    Note: This is only relevant if the pricing plan includes a `requests` line-item.
+
+    If `undefined`, will use the tool's default reportUsage state.
+
+  </ResponseField>
+
+  <ResponseField name='rateLimit' type='object'>
+Customize or disable rate limits for this tool for customers on a given pricing plan.
+
+To disable rate-limiting for this tool on a given pricing plan, set `rateLimit.enabled` to `false`.
+
+See [Rate Limits](/publishing/config/rate-limits) for details.
+
+  </ResponseField>
+
+</Expandable>
+
+</ResponseField>
+
+## Config Help
+
+<Note>
+  Configuring your project can feel a little overwhelming with the amount of
+  options available. Feel free to [reach out to us](/contact) if you're
+  considering using Agentic's MCP Gateway, and I'd be happy to help walk you
+  through setting your product up for success.
+</Note>

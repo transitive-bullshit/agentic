@@ -1,0 +1,19 @@
+{
+  "name": "docs",
+  "private": true,
+  "author": "Travis Fischer <travis@transitivebullsh.it>",
+  "license": "AGPL-3.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/transitive-bullshit/agentic.git"
+  },
+  "type": "module",
+  "scripts": {
+    "docs": "mint dev",
+    "test": "run-s test:*",
+    "test:broken-links": "mint broken-links"
+  },
+  "devDependencies": {
+    "mint": "catalog:"
+  }
+}

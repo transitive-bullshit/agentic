@@ -1,0 +1,363 @@
+---
+title: Existing OpenAPI Service
+description: This guide shows how to publish an existing OpenAPI service to Agentic.
+---
+
+<Info>
+  **Prerequisite**: Please install [Node.js](https://nodejs.org) before
+  proceeding.
+</Info>
+
+## 1. Install the Agentic CLI
+
+<CodeGroup>
+
+```bash npm
+npm i -g @agentic/platform-cli
+```
+
+```bash pnpm
+pnpm i -g @agentic/platform-cli
+```
+
+```bash bun
+bun install -g @agentic/platform-cli
+```
+
+```bash yarn
+yarn global add @agentic/platform-cli
+```
+
+</CodeGroup>
+
+## 2. Log in or create an account
+
+<Tabs>
+<Tab title="GitHub">
+
+The `agentic` CLI defaults to using GitHub for authentication.
+
+```bash
+agentic login
+```
+
+</Tab>
+
+<Tab title="Username & password">
+```bash
+agentic login -e <email> -p <password>
+# or
+agentic signup -e <email> -p <password> -u <username>
+```
+</Tab>
+
+</Tabs>
+
+## 3. Add an Agentic config to your project
+
+<Info>
+  Make sure your remote OpenAPI service is deployed to a publicly accessible
+  `https` URL, and that your OpenAPI spec is a valid 3.0 or 3.1 spec.
+</Info>
+
+<Tabs>
+<Tab title="TypeScript">
+
+First, install the `@agentic/platform` package as a dev dependency.
+
+<CodeGroup>
+
+```bash npm
+npm i -save-dev @agentic/platform
+```
+
+```bash pnpm
+pnpm add -D @agentic/platform
+```
+
+```bash bun
+bun add -d @agentic/platform
+```
+
+</CodeGroup>
+
+This package exports a `defineConfig` function which makes your config fully-typed and adds nice autocomplete.
+
+Now, create an `agentic.config.ts` file in the root of your project's source.
+
+```ts agentic.config.ts
+import { defineConfig } from '@agentic/platform'
+
+export default defineConfig({
+  name: '<Your Project Name>',
+  description: '<A brief description of your project>',
+  origin: {
+    type: 'openapi',
+    url: '<Your Remote OpenAPI Server Base URL>',
+    spec: '<Local Path or Remote URL to your OpenAPI Spec>'
+  }
+})
+```
+
+</Tab>
+
+<Tab title="JSON">
+
+Create an `agentic.config.json` file in the root of your project's source.
+
+```json agentic.config.json
+{
+  "name": "<Your Project Name>",
+  "description": "<Your Project Description>",
+  "origin": {
+    "type": "openapi",
+    "url": "<Your Remote OpenAPI Server Base URL>",
+    "spec": "<Local Path or Remote URL to your OpenAPI Spec>"
+  }
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## 4. Deploy your project
+
+From the directory where your `agentic.config.ts` or `agentic.config.json` file is located, run:
+
+```bash
+agentic deploy
+```
+
+Every time you make a change to your project, you can run `agentic deploy` which will create a new immutable preview deployment. These deployments will not affect any published products you may have until you publish them by running `agentic publish`.
+
+<Info>
+  You'll soon be able to configure a GitHub repository to automatically deploy
+  your project on changes. Please [let me know](/contact) if you'd like me to
+  prioritize this feature.
+</Info>
+
+<Expandable title="example output">
+
+<Note>
+  The returned deployment will not have any information about the origin server,
+  because your origin server is considered hidden once deployed to Agentic's MCP
+  gateway.
+</Note>
+
+```json
+{
+  "id": "depl_kf4c3o8efh2y84dp5iwsha95",
+  "createdAt": "2025-06-28 05:38:34.960754+00",
+  "updatedAt": "2025-06-28 05:38:34.960754+00",
+  "identifier": "@dev/search@42ad78bf",
+  "hash": "42ad78bf",
+  "published": false,
+  "description": "Official Google Search tool. Useful for finding up-to-date news and information about any topic.",
+  "readme": "",
+  "userId": "user_bhlpuiioipxilpuq7xaoh1ae",
+  "projectId": "proj_rxs9jorlwolc3seq8enqgrgc",
+  "tools": [
+    {
+      "name": "search",
+      "description": "Uses Google Search to return the most relevant web pages for a given query. Useful for finding up-to-date news and information about any topic.",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "num": {
+            "type": "integer",
+            "default": 5,
+            "description": "Number of results to return"
+          },
+          "type": {
+            "enum": [
+              "search",
+              "images",
+              "videos",
+              "places",
+              "news",
+              "shopping"
+            ],
+            "type": "string",
+            "default": "search",
+            "description": "Type of Google search to perform"
+          },
+          "query": {
+            "type": "string",
+            "description": "Search query"
+          }
+        },
+        "required": ["query"],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "news": {},
+          "images": {},
+          "places": {},
+          "videos": {},
+          "results": {},
+          "shopping": {},
+          "answerBox": {},
+          "knowledgeGraph": {}
+        },
+        "additionalProperties": false
+      }
+    }
+  ],
+  "toolConfigs": [
+    {
+      "name": "search",
+      "cacheControl": "public, max-age=60, s-maxage=60 stale-while-revalidate=10"
+    }
+  ],
+  "pricingPlans": [
+    {
+      "name": "Free",
+      "slug": "free",
+      "rateLimit": {
+        "interval": 86400,
+        "limit": 10,
+        "mode": "approximate",
+        "enabled": true
+      },
+      "lineItems": [
+        {
+          "slug": "requests",
+          "usageType": "metered",
+          "billingScheme": "per_unit",
+          "unitAmount": 0
+        }
+      ]
+    },
+    {
+      "name": "Standard",
+      "slug": "standard",
+      "interval": "month",
+      "rateLimit": {
+        "interval": 1,
+        "limit": 100,
+        "mode": "approximate",
+        "enabled": true
+      },
+      "lineItems": [
+        {
+          "slug": "base",
+          "usageType": "licensed",
+          "amount": 1000
+        },
+        {
+          "slug": "requests",
+          "usageType": "metered",
+          "billingScheme": "tiered",
+          "tiersMode": "volume",
+          "tiers": [
+            {
+              "unitAmount": 0,
+              "upTo": 1000
+            },
+            {
+              "unitAmount": 0.01,
+              "upTo": 50000
+            },
+            {
+              "unitAmount": 0.008,
+              "upTo": 500000
+            },
+            {
+              "unitAmount": 0.006,
+              "upTo": 2500000
+            },
+            {
+              "unitAmount": 0.005,
+              "upTo": "inf"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "pricingIntervals": ["month"],
+  "defaultRateLimit": {
+    "interval": 60,
+    "limit": 1000,
+    "mode": "approximate",
+    "enabled": true
+  },
+  "gatewayBaseUrl": "https://gateway.agentic.so/@dev/search@42ad78bf",
+  "gatewayMcpUrl": "https://gateway.agentic.so/@dev/search@42ad78bf/mcp",
+  "marketplaceUrl": "https://agentic.so/marketplace/projects/@dev/search",
+  "adminUrl": "https://agentic.so/app/projects/@dev/search/deployments/42ad78bf"
+}
+```
+
+</Expandable>
+
+## 5. Test your deployment
+
+The easiest way to test your deployment is to visit it in your Agentic admin dashboard. This will be the `adminUrl` in the returned deployment and should look like: `https://agentic.so/app/projects/<your-project-identifier>/deployments/<hash>`.
+
+This page shows you all the tools available for your deployment and includes a GUI showing how to call them with various MCP clients, TS LLM SDKs, Python LLM SDKs, and simple HTTP.
+
+<Frame caption='Example of calling an Agentic tool'>
+  <img
+    src='/media/example-usage.png'
+    alt='Example of calling an Agentic tool'
+  />
+</Frame>
+
+<Expandable title="Example of calling a tool via HTTP">
+
+This example uses the [@agentic/search](https://agentic.so/marketplace/projects/@agentic/search) project's `search` tool. You'll need to replace the project identifier, tool name, and tool arguments with your own, but otherwise, calling your deployment's tools should be pretty straightforward.
+
+<Tabs>
+<Tab title="cURL">
+
+```bash
+curl -X POST -H "Content-Type: application/json" -d '{ "query": "example google search" }' https://gateway.agentic.com/mcp/search/search
+```
+
+</Tab>
+
+<Tab title="HTTPie">
+
+```bash
+http -j https://gateway.agentic.com/mcp/search/search query='example google search'
+```
+
+</Tab>
+</Tabs>
+</Expandable>
+
+## 6. Publish your deployment
+
+Publishing your deployment will make it publicly available to all Agentic users. This will also enable other users to subscribe to your product using Stripe subscriptions.
+
+```bash
+agentic publish
+```
+
+The CLI will prompt you to confirm a `semver` version.
+
+Now, your project will be available at `https://agentic.so/marketplace/projects/<your-project-identifier>`.
+
+**Upon publishing, your project will be a live, publicly available product**.
+
+You can share your product's public URL with customers, and they'll be able to subscribe to your product via Stripe. You can visit your [dashboard](https://agentic.so/app) to track customer usage and revenue.
+
+<Note>Congrats, you now have a live MCP product! 🎉</Note>
+
+## 7. (Optional) Submit your product to the public Agentic Marketplace
+
+<Info>
+**Your published product will be live and publicly accessible, but it will not be discoverable on the Agentic Marketplace's main page or search by default.**
+
+I made this decision during the current beta in order to keep the Agentic Marketplace as high quality and curated as possible.
+
+If you'd like to submit your product to Agentic's public MCP Marketplace, please
+[get in touch](/contact).
+
+</Info>

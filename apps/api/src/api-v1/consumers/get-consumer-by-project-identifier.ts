@@ -49,7 +49,7 @@ export function registerV1GetConsumerByProjectIdentifier(
       where: eq(schema.projects.identifier, projectIdentifier)
     })
     assert(project, 404, `Project not found "${projectIdentifier}"`)
-    await aclPublicProject(project)
+    aclPublicProject(project)
 
     const consumer = await db.query.consumers.findFirst({
       where: and(

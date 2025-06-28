@@ -20,6 +20,8 @@ import {
 } from '@fisch0920/drizzle-orm/pg-core'
 import { z } from '@hono/zod-openapi'
 
+import { env } from '@/lib/env'
+
 import {
   deploymentIdSchema,
   projectIdentifierSchema,
@@ -206,7 +208,7 @@ export const projectsRelations = relations(projects, ({ one }) => ({
   // })
 }))
 
-export const projectSelectSchema = createSelectSchema(projects, {
+export const projectSelectBaseSchema = createSelectSchema(projects, {
   id: projectIdSchema,
   userId: userIdSchema,
   teamId: teamIdSchema.optional(),
@@ -292,14 +294,67 @@ export const projectSelectSchema = createSelectSchema(projects, {
       })
       .optional()
   })
-  .strip()
-  // TODO
-  // .refine((project) => ({
-  //   ...project,
-  //   gatewayBaseUrl: `${env.AGENTIC_GATEWAY_BASE_URL}/${project.identifier}`,
-  //   gatewayMcpUrl: `${env.AGENTIC_GATEWAY_BASE_URL}/${project.identifier}/mcp`,
-  //   webBaseUrl: `${env.AGENTIC_WEB_BASE_URL}/marketplace/projects/${project.identifier}`
-  // }))
+
+// These are all derived virtual URLs that are not stored in the database
+export const derivedProjectFields = {
+  /**
+   * The public base HTTP URL for the project supporting HTTP POST requests for
+   * individual tools at `/tool-name` subpaths.
+   *
+   * @example https://gateway.agentic.so/@agentic/search
+   */
+  gatewayBaseUrl: z
+    .string()
+    .url()
+    .describe(
+      'The public base HTTP URL for the project supporting HTTP POST requests for individual tools at `/tool-name` subpaths.'
+    ),
+
+  /**
+   * The public MCP URL for the project supporting the Streamable HTTP transport.
+   *
+   * @example https://gateway.agentic.so/@agentic/search/mcp
+   */
+  gatewayMcpUrl: z
+    .string()
+    .url()
+    .describe(
+      'The public MCP URL for the project supporting the Streamable HTTP transport.'
+    ),
+
+  /**
+   * The public marketplace URL for the project.
+   *
+   * @example https://agentic.so/marketplace/projects/@agentic/search
+   */
+  marketplaceUrl: z
+    .string()
+    .url()
+    .describe('The public marketplace URL for the project.'),
+
+  /**
+   * A private admin URL for managing the project. This URL is only accessible
+   * by project owners.
+   *
+   * @example https://agentic.so/app/projects/@agentic/search
+   */
+  adminUrl: z
+    .string()
+    .url()
+    .describe(
+      'A private admin URL for managing the project. This URL is only accessible by project owners.'
+    )
+} as const
+
+export const projectSelectSchema = projectSelectBaseSchema
+  .transform((project) => ({
+    ...project,
+    gatewayBaseUrl: `${env.AGENTIC_GATEWAY_BASE_URL}/${project.identifier}`,
+    gatewayMcpUrl: `${env.AGENTIC_GATEWAY_BASE_URL}/${project.identifier}/mcp`,
+    marketplaceUrl: `${env.AGENTIC_WEB_BASE_URL}/marketplace/projects/${project.identifier}`,
+    adminUrl: `${env.AGENTIC_WEB_BASE_URL}/app/projects/${project.identifier}`
+  }))
+  .pipe(projectSelectBaseSchema.extend(derivedProjectFields).strip())
   .describe(
     `A Project represents a single Agentic API product. It is comprised of a series of immutable Deployments, each of which contains pricing data, origin API config, OpenAPI or MCP specs, tool definitions, and various metadata.
 

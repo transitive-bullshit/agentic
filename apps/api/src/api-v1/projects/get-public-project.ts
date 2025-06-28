@@ -49,7 +49,7 @@ export function registerV1GetPublicProject(app: OpenAPIHono<DefaultHonoEnv>) {
         ...Object.fromEntries(populate.map((field) => [field, true]))
       }
     })
-    await aclPublicProject(project, projectId)
+    aclPublicProject(project, projectId)
 
     return c.json(parseZodSchema(schema.projectSelectSchema, project))
   })

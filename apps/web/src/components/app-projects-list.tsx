@@ -63,7 +63,7 @@ export function AppProjectsList() {
           ) : !projects.length ? (
             <p>No projects found. Create your first project to get started.</p>
           ) : (
-            <div className='grid gap-4'>
+            <div className='grid grid-cols grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3'>
               {projects.map((project) => (
                 <Link
                   key={project.id}

@@ -1,0 +1,70 @@
+---
+title: Origin Security
+description: Agentic offers multiple ways to secure your origin server from unauthorized requests.
+---
+
+## Securing your origin server
+
+Agentic's MCP Gateway will always pass a **proxy secret** when making tool calls to your origin server (either as [`_meta.agentic.agenticProxySecret` for MCP origin servers](/publishing/origin/metadata#mcp-origin-server) or as an [`x-agentic-proxy-secret` header for OpenAPI origin servers](/publishing/origin/metadata#open-api-origin-server)).
+
+You can find this secret key in your Agentic project's dashboard settings.
+
+You'll want to set this secret key in your origin server's environment variables and use it to protect against unauthorized requests.
+
+Note that this is only necessary if your origin server is deployed externally to a public network.
+
+### Securing an MCP origin server
+
+This is example pseudocode for how you might protect your origin MCP server to ensure only calls from Agentic's MCP Gateway are allowed.
+
+```ts
+if (
+  (_meta?.agentic as any)?.agenticProxySecret !==
+  process.env.AGENTIC_PROXY_SECRET
+) {
+  return {
+    content: [
+      {
+        type: 'text',
+        text: 'Unauthorized'
+      }
+    ]
+  }
+}
+```
+
+### Securing an OpenAPI origin server
+
+This is example pseudocode for how you might protect your origin OpenAPI service to ensure only calls from Agentic's MCP Gateway are allowed.
+
+```ts
+if (
+  request.headers.get('x-agentic-proxy-secret') !==
+  process.env.AGENTIC_PROXY_SECRET
+) {
+  return {
+    status: 401,
+    body: {
+      error: 'Unauthorized'
+    }
+  }
+}
+```
+
+## Restricting IP addresses
+
+You can also protecting your origin server by restricting HTTP calls to specific IP addresses used by Agentic's MCP gateway.
+
+This is currently a private beta feature. If you're interested in using it, please [get in touch](/contact).
+
+## Signed HTTP requests
+
+You can also protecting your origin OpenAPI server by requiring all HTTP requests to be signed with your project's proxy secret.
+
+This is currently a private beta feature. If you're interested in using it, please [get in touch](/contact).
+
+## Signed MCP requests
+
+[MCP currently doesn't support signed requests](https://github.com/modelcontextprotocol/modelcontextprotocol/discussions/461).
+
+If you're interested in this feature, please [get in touch](/contact).

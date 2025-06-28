@@ -12,6 +12,8 @@ import {
 } from '@fisch0920/drizzle-orm/pg-core'
 import { z } from '@hono/zod-openapi'
 
+import { env } from '@/lib/env'
+
 import {
   consumerIdSchema,
   deploymentIdSchema,
@@ -138,7 +140,7 @@ export const consumersRelations = relations(consumers, ({ one }) => ({
   })
 }))
 
-export const consumerSelectSchema = createSelectSchema(consumers, {
+export const consumerSelectBaseSchema = createSelectSchema(consumers, {
   id: consumerIdSchema,
   userId: userIdSchema,
   projectId: projectIdSchema,
@@ -184,7 +186,29 @@ export const consumerSelectSchema = createSelectSchema(consumers, {
       })
       .optional()
   })
-  .strip()
+
+// These are all derived virtual URLs that are not stored in the database
+export const derivedConsumerFields = {
+  /**
+   * A private admin URL for managing the customer's subscription. This URL
+   * is only accessible by the customer.
+   *
+   * @example https://agentic.so/app/consumers/cons_123
+   */
+  adminUrl: z
+    .string()
+    .url()
+    .describe(
+      "A private admin URL for managing the customer's subscription. This URL is only accessible by the customer."
+    )
+} as const
+
+export const consumerSelectSchema = consumerSelectBaseSchema
+  .transform((consumer) => ({
+    ...consumer,
+    adminUrl: `${env.AGENTIC_WEB_BASE_URL}/app/consumers/${consumer.id}`
+  }))
+  .pipe(consumerSelectBaseSchema.extend(derivedConsumerFields).strip())
   .describe(
     `A Consumer represents a user who has subscribed to a Project and is used
 to track usage and billing.
@@ -196,10 +220,14 @@ owner's connected Stripe account if the project has Stripe Connect enabled.`
   )
   .openapi('Consumer')
 
-export const consumerAdminSelectSchema = consumerSelectSchema
+export const consumerAdminSelectSchema = consumerSelectBaseSchema
   .extend({
     _stripeCustomerId: z.string().nonempty()
   })
+  .transform((consumer) => ({
+    ...consumer,
+    adminUrl: `${env.AGENTIC_WEB_BASE_URL}/app/consumers/${consumer.id}`
+  }))
   .openapi('AdminConsumer')
 
 export const consumerInsertSchema = createInsertSchema(consumers, {

@@ -20,7 +20,9 @@
     ".": "./src/index.ts"
   },
   "scripts": {
-    "generate": "openapi-typescript http://localhost:3001/docs --output ./src/openapi.d.ts",
+    "generate": "run-s generate:*",
+    "generate:openapi": "openapi-typescript http://localhost:3001/docs --output ./src/openapi.d.ts",
+    "generate:json-schema": "tsx bin/generate-project-config-json-schema.ts > ../../apps/web/public/schema.json",
     "build": "tsup",
     "clean": "del dist",
     "test": "run-s test:*",

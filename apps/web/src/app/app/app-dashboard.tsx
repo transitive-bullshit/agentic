@@ -1,9 +1,10 @@
 import { AppConsumersList } from '@/components/app-consumers-list'
 import { AppProjectsList } from '@/components/app-projects-list'
+import { PageContainer } from '@/components/page-container'
 
 export function AppDashboard() {
   return (
-    <>
+    <PageContainer>
       <section>
         <h1
           className='text-center text-balance leading-snug md:leading-none
@@ -12,12 +13,12 @@ export function AppDashboard() {
           Dashboard
         </h1>
 
-        <div className='flex gap-8 space-around'>
+        <div className='flex flex-col lg:flex-row gap-8 space-around'>
           <AppConsumersList />
 
           <AppProjectsList />
         </div>
       </section>
-    </>
+    </PageContainer>
   )
 }

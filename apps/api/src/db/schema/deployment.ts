@@ -8,7 +8,10 @@ import {
   type Tool,
   type ToolConfig
 } from '@agentic/platform-types'
-import { isValidDeploymentHash } from '@agentic/platform-validators'
+import {
+  isValidDeploymentHash,
+  parseDeploymentIdentifier
+} from '@agentic/platform-validators'
 import { relations } from '@fisch0920/drizzle-orm'
 import {
   boolean,
@@ -19,6 +22,8 @@ import {
   uniqueIndex
 } from '@fisch0920/drizzle-orm/pg-core'
 import { z } from '@hono/zod-openapi'
+
+import { env } from '@/lib/env'
 
 import {
   deploymentIdentifierSchema,
@@ -146,7 +151,7 @@ export const deploymentsRelations = relations(deployments, ({ one }) => ({
 // TODO: virtual authProviders?
 // TODO: virtual openapi spec? (hide openapi.servers)
 
-export const deploymentSelectSchema = createSelectSchema(deployments, {
+export const deploymentSelectBaseSchema = createSelectSchema(deployments, {
   id: deploymentIdSchema,
   userId: userIdSchema,
   teamId: teamIdSchema.optional(),
@@ -208,7 +213,75 @@ export const deploymentSelectSchema = createSelectSchema(deployments, {
     // TODO: Circular references make this schema less than ideal
     // project: z.object({}).optional().openapi('Project', { type: 'object' })
   })
-  .strip()
+
+// These are all derived virtual URLs that are not stored in the database
+export const derivedDeploymentFields = {
+  /**
+   * The public base HTTP URL for the deployment supporting HTTP POST requests
+   * for individual tools at `/tool-name` subpaths.
+   *
+   * @example https://gateway.agentic.so/@agentic/search@latest
+   */
+  gatewayBaseUrl: z
+    .string()
+    .url()
+    .describe(
+      'The public base HTTP URL for the deployment supporting HTTP POST requests for individual tools at `/tool-name` subpaths.'
+    ),
+
+  /**
+   * The public MCP URL for the deployment supporting the Streamable HTTP
+   * transport.
+   *
+   * @example https://gateway.agentic.so/@agentic/search@latest/mcp
+   */
+  gatewayMcpUrl: z
+    .string()
+    .url()
+    .describe(
+      'The public MCP URL for the deployment supporting the Streamable HTTP transport.'
+    ),
+
+  /**
+   * The public marketplace URL for the deployment's project.
+   *
+   * Note that only published deployments are visible on the marketplace.
+   *
+   * @example https://agentic.so/marketplace/projects/@agentic/search
+   */
+  marketplaceUrl: z
+    .string()
+    .url()
+    .describe("The public marketplace URL for the deployment's project."),
+
+  /**
+   * A private admin URL for managing the deployment. This URL is only accessible
+   * by project owners.
+   *
+   * @example https://agentic.so/app/projects/@agentic/search/deployments/123
+   */
+  adminUrl: z
+    .string()
+    .url()
+    .describe(
+      'A private admin URL for managing the deployment. This URL is only accessible by project owners.'
+    )
+} as const
+
+export const deploymentSelectSchema = deploymentSelectBaseSchema
+  .transform((deployment) => {
+    const { projectIdentifier, deploymentIdentifier } =
+      parseDeploymentIdentifier(deployment.identifier)
+
+    return {
+      ...deployment,
+      gatewayBaseUrl: `${env.AGENTIC_GATEWAY_BASE_URL}/${deploymentIdentifier}`,
+      gatewayMcpUrl: `${env.AGENTIC_GATEWAY_BASE_URL}/${deploymentIdentifier}/mcp`,
+      marketplaceUrl: `${env.AGENTIC_WEB_BASE_URL}/marketplace/projects/${projectIdentifier}`,
+      adminUrl: `${env.AGENTIC_WEB_BASE_URL}/app/projects/${projectIdentifier}/deployments/${deployment.hash}`
+    }
+  })
+  .pipe(deploymentSelectBaseSchema.extend(derivedDeploymentFields).strip())
   .describe(
     `A Deployment is a single, immutable instance of a Project. Each deployment contains pricing plans, origin server config (OpenAPI or MCP server), tool definitions, and metadata.
 
@@ -216,10 +289,22 @@ Deployments are private to a developer or team until they are published, at whic
   )
   .openapi('Deployment')
 
-export const deploymentAdminSelectSchema = deploymentSelectSchema
+export const deploymentAdminSelectSchema = deploymentSelectBaseSchema
   .extend({
     origin: resolvedAgenticProjectConfigSchema.shape.origin,
     _secret: z.string().nonempty()
+  })
+  .transform((deployment) => {
+    const { projectIdentifier, deploymentIdentifier } =
+      parseDeploymentIdentifier(deployment.identifier)
+
+    return {
+      ...deployment,
+      gatewayBaseUrl: `${env.AGENTIC_GATEWAY_BASE_URL}/${deploymentIdentifier}`,
+      gatewayMcpUrl: `${env.AGENTIC_GATEWAY_BASE_URL}/${deploymentIdentifier}/mcp`,
+      marketplaceUrl: `${env.AGENTIC_WEB_BASE_URL}/marketplace/projects/${projectIdentifier}`,
+      adminUrl: `${env.AGENTIC_WEB_BASE_URL}/app/projects/${projectIdentifier}/deployments/${deployment.hash}`
+    }
   })
   .openapi('AdminDeployment')
 

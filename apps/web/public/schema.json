@@ -1,0 +1,472 @@
+{
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "maxLength": 1024,
+      "minLength": 1,
+      "description": "Display name for the project. Max length 1024 characters."
+    },
+    "slug": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Unique project slug. Must be ascii-only, lower-case, and kebab-case with no spaces between 1 and 256 characters. If not provided, it will be derived by slugifying `name`."
+    },
+    "version": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Optional semantic version of the project as a semver string. Ex: 1.0.0, 0.0.1, 5.0.1, etc."
+    },
+    "description": {
+      "type": "string",
+      "description": "A short description of the project."
+    },
+    "readme": {
+      "type": "string",
+      "description": "A readme documenting the project (supports GitHub-flavored markdown)."
+    },
+    "iconUrl": {
+      "type": "string",
+      "format": "uri",
+      "description": "Optional logo image URL to use for the project. Logos should have a square aspect ratio."
+    },
+    "sourceUrl": {
+      "type": "string",
+      "format": "uri",
+      "description": "Optional URL to the source code of the project (eg, GitHub repo)."
+    },
+    "origin": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "location": {
+              "type": "string",
+              "const": "external",
+              "default": "external"
+            },
+            "url": {
+              "type": "string",
+              "format": "uri",
+              "description": "Required base URL of the externally hosted origin API server. Must be a valid `https` URL.\n\nNOTE: Agentic currently only supports `external` API servers. If you'd like to host your API or MCP server on Agentic's infrastructure, please reach out to support@agentic.so."
+            },
+            "type": {
+              "type": "string",
+              "const": "openapi"
+            },
+            "spec": {
+              "type": "string",
+              "description": "Local file path, URL, or JSON stringified OpenAPI spec describing the origin API server."
+            }
+          },
+          "required": [
+            "url",
+            "type",
+            "spec"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "location": {
+              "$ref": "#/properties/origin/anyOf/0/properties/location"
+            },
+            "url": {
+              "$ref": "#/properties/origin/anyOf/0/properties/url"
+            },
+            "type": {
+              "type": "string",
+              "const": "mcp"
+            }
+          },
+          "required": [
+            "url",
+            "type"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "location": {
+              "$ref": "#/properties/origin/anyOf/0/properties/location"
+            },
+            "url": {
+              "$ref": "#/properties/origin/anyOf/0/properties/url"
+            },
+            "type": {
+              "type": "string",
+              "const": "raw"
+            }
+          },
+          "required": [
+            "url",
+            "type"
+          ],
+          "additionalProperties": false
+        }
+      ],
+      "description": "Origin adapter is used to configure the origin API server downstream from Agentic's API gateway. It specifies whether the origin API server denoted by `url` is hosted externally or deployed internally to Agentic's infrastructure. It also specifies the format for how origin tools are defined: either an OpenAPI spec or an MCP server.\n\nNOTE: Agentic currently only supports `external` API servers. If you'd like to host your API or MCP server on Agentic's infrastructure, please reach out to support@agentic.so."
+    },
+    "pricingPlans": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Display name for the pricing plan (eg, \"Free\", \"Starter Monthly\", \"Pro Annual\", etc)"
+          },
+          "slug": {
+            "type": "string",
+            "minLength": 1,
+            "description": "PricingPlan slug (eg, \"free\", \"starter-monthly\", \"pro-annual\", etc). Should be lower-cased and kebab-cased. Should be stable across deployments."
+          },
+          "interval": {
+            "type": "string",
+            "enum": [
+              "day",
+              "week",
+              "month",
+              "year"
+            ],
+            "description": "The frequency at which a subscription is billed."
+          },
+          "description": {
+            "type": "string"
+          },
+          "features": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "trialPeriodDays": {
+            "type": "number",
+            "minimum": 0
+          },
+          "rateLimit": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "const": false
+                  }
+                },
+                "required": [
+                  "enabled"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "interval": {
+                    "anyOf": [
+                      {
+                        "type": "number",
+                        "exclusiveMinimum": 0
+                      },
+                      {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    ],
+                    "description": "The interval at which the rate limit is applied. Either a positive integer expressed in seconds or a valid positive [ms](https://github.com/vercel/ms) string (eg, \"10s\", \"1m\", \"8h\", \"2d\", \"1w\", \"1y\", etc)."
+                  },
+                  "limit": {
+                    "type": "number",
+                    "minimum": 0,
+                    "description": "Maximum number of operations per interval (unitless)."
+                  },
+                  "mode": {
+                    "type": "string",
+                    "enum": [
+                      "strict",
+                      "approximate"
+                    ],
+                    "default": "approximate",
+                    "description": "How to enforce the rate limit: \"strict\" (more precise but slower) or \"approximate\" (the default; faster and asynchronous but less precise)."
+                  },
+                  "enabled": {
+                    "type": "boolean",
+                    "default": true
+                  }
+                },
+                "required": [
+                  "interval",
+                  "limit"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          },
+          "lineItems": {
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "slug": {
+                      "type": "string"
+                    },
+                    "label": {
+                      "type": "string"
+                    },
+                    "usageType": {
+                      "type": "string",
+                      "const": "licensed"
+                    },
+                    "amount": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "slug",
+                    "usageType",
+                    "amount"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "slug": {
+                      "$ref": "#/properties/pricingPlans/items/properties/lineItems/items/anyOf/0/properties/slug"
+                    },
+                    "label": {
+                      "$ref": "#/properties/pricingPlans/items/properties/lineItems/items/anyOf/0/properties/label"
+                    },
+                    "usageType": {
+                      "type": "string",
+                      "const": "metered"
+                    },
+                    "unitLabel": {
+                      "type": "string"
+                    },
+                    "billingScheme": {
+                      "type": "string",
+                      "enum": [
+                        "per_unit",
+                        "tiered"
+                      ]
+                    },
+                    "unitAmount": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "tiersMode": {
+                      "type": "string",
+                      "enum": [
+                        "graduated",
+                        "volume"
+                      ]
+                    },
+                    "tiers": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "unitAmount": {
+                            "type": "number"
+                          },
+                          "flatAmount": {
+                            "type": "number"
+                          },
+                          "upTo": {
+                            "anyOf": [
+                              {
+                                "type": "number"
+                              },
+                              {
+                                "type": "string",
+                                "const": "inf"
+                              }
+                            ]
+                          }
+                        },
+                        "required": [
+                          "upTo"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "minItems": 1
+                    },
+                    "defaultAggregation": {
+                      "type": "object",
+                      "properties": {
+                        "formula": {
+                          "type": "string",
+                          "enum": [
+                            "sum",
+                            "count"
+                          ],
+                          "default": "sum"
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    "transformQuantity": {
+                      "type": "object",
+                      "properties": {
+                        "divideBy": {
+                          "type": "number",
+                          "exclusiveMinimum": 0
+                        },
+                        "round": {
+                          "type": "string",
+                          "enum": [
+                            "down",
+                            "up"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "divideBy",
+                        "round"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "slug",
+                    "usageType",
+                    "billingScheme"
+                  ],
+                  "additionalProperties": false
+                }
+              ],
+              "description": "PricingPlanLineItems represent a single line-item in a Stripe Subscription. They map to a Stripe billing `Price` and possibly a corresponding Stripe `Meter` for usage-based line-items."
+            },
+            "minItems": 1,
+            "maxItems": 20
+          }
+        },
+        "required": [
+          "name",
+          "slug",
+          "lineItems"
+        ],
+        "additionalProperties": false,
+        "description": "Represents the config for a Stripe subscription with one or more PricingPlanLineItems."
+      },
+      "minItems": 1,
+      "description": "List of PricingPlans configuring which Stripe subscriptions should be available for the project. Defaults to a single free plan which is useful for developing and testing your project.",
+      "default": [
+        {
+          "name": "Free",
+          "slug": "free",
+          "lineItems": [
+            {
+              "slug": "base",
+              "usageType": "licensed",
+              "amount": 0
+            }
+          ],
+          "rateLimit": {
+            "enabled": true,
+            "interval": 60,
+            "limit": 1000,
+            "mode": "approximate"
+          }
+        }
+      ]
+    },
+    "pricingIntervals": {
+      "type": "array",
+      "items": {
+        "$ref": "#/properties/pricingPlans/items/properties/interval"
+      },
+      "minItems": 1,
+      "description": "Optional list of billing intervals to enable in the pricingPlans.\n\nDefaults to a single monthly interval `['month']`.\n\nTo add support for annual pricing plans, for example, you can use: `['month', 'year']`.",
+      "default": [
+        "month"
+      ]
+    },
+    "defaultRateLimit": {
+      "$ref": "#/properties/pricingPlans/items/properties/rateLimit",
+      "default": {
+        "enabled": true,
+        "interval": 60,
+        "limit": 1000,
+        "mode": "approximate"
+      }
+    },
+    "toolConfigs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[a-zA-Z_][a-zA-Z0-9_]{0,63}$",
+            "description": "Agentic tool name"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "pure": {
+            "type": "boolean"
+          },
+          "cacheControl": {
+            "type": "string"
+          },
+          "reportUsage": {
+            "type": "boolean"
+          },
+          "rateLimit": {
+            "$ref": "#/properties/pricingPlans/items/properties/rateLimit"
+          },
+          "inputSchemaAdditionalProperties": {
+            "type": "boolean"
+          },
+          "outputSchemaAdditionalProperties": {
+            "type": "boolean"
+          },
+          "pricingPlanOverridesMap": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean"
+                },
+                "reportUsage": {
+                  "type": "boolean"
+                },
+                "rateLimit": {
+                  "$ref": "#/properties/pricingPlans/items/properties/rateLimit"
+                }
+              },
+              "additionalProperties": false
+            },
+            "propertyNames": {
+              "minLength": 1
+            },
+            "description": "Allows you to override this tool's behavior or disable it entirely for different pricing plans. This is a map of PricingPlan slug to PricingPlanToolOverrides for that plan."
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "additionalProperties": false
+      },
+      "default": []
+    }
+  },
+  "required": [
+    "name",
+    "origin"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft-07/schema",
+  "title": "Agentic Project Config Schema",
+  "description": "JSON Schema used by `agentic.config.{ts,js,json}` files to configure Agentic projects."
+}

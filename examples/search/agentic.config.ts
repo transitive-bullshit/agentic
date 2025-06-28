@@ -39,6 +39,11 @@ export default defineConfig({
       slug: 'standard',
       lineItems: [
         {
+          slug: 'base',
+          usageType: 'licensed',
+          amount: 1000
+        },
+        {
           slug: 'requests',
           usageType: 'metered',
           billingScheme: 'tiered',

@@ -5,7 +5,7 @@ export const isSafari =
 
 export const title = 'Agentic'
 export const description =
-  'Agentic is the app store for LLM tools. Publish any MCP server or OpenAPI service to a paid MCP gateway and offer your products to an audience of over 20k AI engineers.'
+  "Agentic is the App Store for LLM tools. Publish any MCP server or OpenAPI service Agentic's MCP gateway and instantly turn it into a paid MCP product."
 export const domain =
   process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL ?? 'agentic.so'
 
@@ -16,10 +16,10 @@ export const copyright = `© ${new Date().getFullYear()} Agentic. All rights res
 export const githubUrl = 'https://github.com/transitive-bullshit/agentic'
 
 // TODO: make an agentic-specific calendar for this
-export const calendarBookingUrl =
-  'https://cal.com/travis-fischer/15min?overlayCalendar=true'
+export const calendarBookingUrl = 'https://cal.com/travis-fischer/15min'
 export const docsUrl = 'https://docs.agentic.so'
-export const docsQuickStartUrl = `${docsUrl}/quick-start`
+export const docsPublishingQuickStartUrl = `${docsUrl}/publishing/quickstart`
+export const docsPublishingUrl = `${docsUrl}/publishing`
 export const docsMarketplaceUrl = `${docsUrl}/marketplace`
 export const discordUrl = 'https://discord.agentic.so'
 
@@ -46,7 +46,14 @@ export const keywords = [
   'MCP server provider',
   'MCP server deployment',
   'OpenAPI to MCP',
-  'OpenAPI to MCP server'
+  'OpenAPI to MCP server',
+  'vercel ai sdk',
+  'ai sdk tools',
+  'langchain tools',
+  'llamaindex tools',
+  'openai tools',
+  'anthropic tools',
+  'gemini tools'
 ]
 
 export const env =

@@ -4,6 +4,7 @@ import { ActiveLink } from '@/components/active-link'
 import { useAgentic } from '@/components/agentic-provider'
 import { DarkModeToggle } from '@/components/dark-mode-toggle'
 import { docsUrl } from '@/lib/config'
+import { cn } from '@/lib/utils'
 
 import styles from './styles.module.css'
 
@@ -11,7 +12,7 @@ export function Header() {
   const ctx = useAgentic()
 
   return (
-    <header className={styles.header}>
+    <header className={cn(styles.header, 'shadow-sm')}>
       <div className={styles.headerContent}>
         <ActiveLink className={styles.logo} href='/'>
           AGENTIC

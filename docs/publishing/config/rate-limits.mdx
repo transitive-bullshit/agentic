@@ -1,0 +1,83 @@
+---
+title: Rate Limits
+description: Configure rate-limits for your project.
+---
+
+Agentic's durable rate-limiting is built on top of Cloudflare's global infrastructure. Customize the default rate-limits, change them based on a customer's pricing plan, or create custom tool-specific overrides.
+
+## Rate Limit
+
+<ResponseField name='enabled' type='boolean' required>
+  Whether or not this rate limit is enabled.
+</ResponseField>
+
+<ResponseField name="interval" type="string" required>
+  The interval at which the rate limit is applied.
+
+Either a positive integer expressed in seconds or a valid positive [ms](https://github.com/vercel/ms) string (eg, `10s`, `1m`, `8h`, `2d`, `1w`, `1y`, etc).
+
+</ResponseField>
+
+<ResponseField name='limit' type='number' required>
+  The maximum number of API requests per interval (unitless).
+</ResponseField>
+
+<ResponseField name="mode" type="string" default="approximate">
+  How to enforce the rate limit: `strict` (more precise but slower) or `approximate` (the default; faster and asynchronous but less precise).
+
+The default rate-limiting mode is `approximate`, which means that requests
+are allowed to proceed immediately, with the limit being enforced
+asynchronously in the background. This is faster than `strict` mode, but it is less consistent if precise adherence to rate-limits is required.
+
+With `strict` mode, customer requests are blocked until the current limit has
+been confirmed. The downside with this approach is that it introduces
+more latency to every request by default. The advantage is that it is
+more precise and consistent.
+
+</ResponseField>
+
+## Example Rate Limits
+
+<Tabs>
+<Tab title="Default">
+
+The default platform rate limit for `requests` is a limit of 1000 requests per minute per customer.
+
+```ts
+{
+  enabled: true,
+  interval: '1m',
+  limit: 1000
+}
+```
+
+</Tab>
+
+<Tab title="Strict daily">
+
+This example rate limit restricts customers to 100 requests per day. It uses `strict` mode which adds a little extra latency but guarantees that customers will never exceed the limit.
+
+```ts
+{
+  enabled: true,
+  interval: '1d',
+  limit: 100,
+  mode: 'strict'
+}
+```
+
+</Tab>
+
+<Tab title="Disabled">
+
+This is an example of a disabled rate limit.
+
+```ts
+{
+  enabled: false
+}
+```
+
+</Tab>
+
+</Tabs>

@@ -1,10 +1,10 @@
-import type { Consumer } from '@/db'
+import type { RawConsumer } from '@/db'
 import type { AuthenticatedHonoContext } from '@/lib/types'
 import { setPublicCacheControl } from '@/lib/cache-control'
 
 export function setAdminCacheControlForConsumer(
   c: AuthenticatedHonoContext,
-  consumer: Consumer
+  consumer: RawConsumer
 ) {
   if (
     consumer.plan === 'free' ||

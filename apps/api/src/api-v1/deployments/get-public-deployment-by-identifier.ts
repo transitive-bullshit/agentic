@@ -57,7 +57,7 @@ export function registerV1GetPublicDeploymentByIdentifier(
       404,
       `Project not found for deployment "${deploymentIdentifier}"`
     )
-    await aclPublicProject(deployment.project!)
+    aclPublicProject(deployment.project!)
 
     return c.json(parseZodSchema(schema.deploymentSelectSchema, deployment))
   })

@@ -5,7 +5,15 @@ import { DemandSideCTA } from '@/components/demand-side-cta'
 import { DotsSection } from '@/components/dots-section'
 import { ExampleUsage } from '@/components/example-usage'
 import { GitHubStarCounter } from '@/components/github-star-counter'
-import { githubUrl, twitterUrl } from '@/lib/config'
+import { HeroSimulation2 } from '@/components/hero-simulation-2'
+import { MCPMarketplaceFeatures } from '@/components/mcp-marketplace-features'
+import { PageContainer } from '@/components/page-container'
+import { SupplySideCTA } from '@/components/supply-side-cta'
+import {
+  docsPublishingQuickStartUrl,
+  githubUrl,
+  twitterUrl
+} from '@/lib/config'
 import {
   defaultConfig,
   getCodeForDeveloperConfig
@@ -33,31 +41,25 @@ export default async function TheBestDamnLandingPageEver() {
   const initialCodeBlock = await highlight(initialCodeSnippet)
 
   return (
-    <>
+    <PageContainer>
       {/* Hero section */}
-      <DotsSection className='mb-16'>
-        <div className='flex flex-col gap-10 relative z-10'>
-          <h1 className='text-center text-balance leading-snug md:leading-none text-4xl font-semibold'>
-            The App Store for LLM Tools
-          </h1>
+      <section className='flex flex-col gap-10 mb-16'>
+        <h1 className='text-center text-balance leading-snug md:leading-none text-4xl font-semibold'>
+          The App Store for LLM Tools
+        </h1>
 
-          <h5 className='text-center text-lg max-w-2xl'>
-            Agentic is a curated marketplace of production-grade LLM tools. All
-            tools are exposed as both MCP servers as well as simple HTTP APIs.
-          </h5>
+        <h5 className='text-center text-lg max-w-2xl'>
+          Agentic is a curated marketplace of production-grade LLM tools. All
+          tools are exposed as both MCP servers as well as simple HTTP APIs.
+        </h5>
 
-          <DemandSideCTA />
-        </div>
-      </DotsSection>
-
-      {/* <div className='w-[40%] h-full min-h-full' />
-
-          <HeroSimulation2 className='absolute! top-[-50%]! left-[30%] w-full h-[200%]!' /> */}
+        <DemandSideCTA />
+      </section>
 
       {/* How it works section */}
       <section className='flex flex-col gap-8 mb-16'>
         <h2 className='text-center text-balance leading-snug md:leading-none text-3xl font-heading'>
-          Agentic tools work <span className='font-semibold'>everywhere</span>
+          Agentic tools <span className='font-semibold'>work everywhere</span>
         </h2>
 
         <ExampleUsage
@@ -70,8 +72,11 @@ export default async function TheBestDamnLandingPageEver() {
         <div className='flex flex-col gap-4 text-sm max-w-2xl text-center'>
           <p>
             This example uses the{' '}
-            <Link href='/marketplace/projects/@agentic/search' className='link'>
-              @agentic/search
+            <Link
+              href={`/marketplace/projects/${projectIdentifier}`}
+              className='link'
+            >
+              {projectIdentifier}
             </Link>{' '}
             tool to provide an LLM access to the web.
           </p>
@@ -87,16 +92,57 @@ export default async function TheBestDamnLandingPageEver() {
         </div>
       </section>
 
-      {/* Marketplace section */}
-      <section className='flex flex-col gap-8 mb-16'>
+      <section className='flex flex-col items-center gap-8 text-center mb-16'>
         <h2 className='text-center text-balance leading-snug md:leading-none text-3xl font-heading'>
-          MCP Tools that just work
+          Agentic tools are{' '}
+          <span className='font-semibold'>optimized for LLMs</span>
         </h2>
 
+        <MCPMarketplaceFeatures />
+      </section>
+
+      <section className='flex flex-col items-center gap-8 text-center mb-16 max-w-2xl'>
+        <h2 className='text-center text-balance leading-snug md:leading-none text-3xl font-heading'>
+          Agentic makes managing{' '}
+          <span className='font-semibold'>MCP servers</span> simple
+        </h2>
+
+        <div className='h-96 w-full rounded-lg overflow-hidden shadow-sm'>
+          <HeroSimulation2 />
+        </div>
+
+        <p className='italic font-semibold'>
+          Agentic's mission is to provide the world's best library of tools for
+          AI agents.
+        </p>
+
         <p>
-          <i>Coming soon...</i>
+          <Link href={docsPublishingQuickStartUrl} className='link'>
+            And of course, <span className='font-semibold'>MCP</span> is an
+            integral part of that mission. We're working on a bunch of features
+            designed to simplify advanced MCP use cases like bundling multiple
+            tools, shared auth profiles, Vercel-like preview deployments, and a
+            lot more...
+          </Link>
         </p>
       </section>
+
+      {/* CTA section */}
+      <DotsSection className='mb-16'>
+        <div className='flex flex-col gap-12 relative z-10'>
+          <h2 className='text-center text-balance leading-snug md:leading-none text-3xl font-heading'>
+            Publish your own MCP products with Agentic
+          </h2>
+
+          <h5 className='text-center max-w-2xl'>
+            Run one command to turn any MCP server or OpenAPI service into a
+            paid MCP product. With built-in support every major LLM SDK and MCP
+            client.
+          </h5>
+
+          <SupplySideCTA variant='book-call' />
+        </div>
+      </DotsSection>
 
       {/* Open source section */}
       <section className='flex flex-col items-center gap-8 max-w-2xl text-center mb-16'>
@@ -131,17 +177,16 @@ export default async function TheBestDamnLandingPageEver() {
         <GitHubStarCounter />
       </section>
 
-      {/* Social proof section */}
-      <section className='gap-8 mb-16'>
+      {/* Social proof section (TODO) */}
+      {/* <section className='gap-8 mb-16'>
         <h2 className='text-center text-balance leading-snug md:leading-none text-3xl font-heading'>
           TODO: social proof
         </h2>
 
         <p className='text-center text-lg max-w-2xl'>TODO</p>
-      </section>
+      </section> */}
 
-      {/* CTA section */}
-
+      {/* Demand-side CTA section */}
       <DotsSection className='mb-16'>
         <div className='flex flex-col gap-12 relative z-10'>
           <h2 className='text-center text-balance leading-snug md:leading-none text-3xl font-heading'>
@@ -151,6 +196,6 @@ export default async function TheBestDamnLandingPageEver() {
           <DemandSideCTA />
         </div>
       </DotsSection>
-    </>
+    </PageContainer>
   )
 }

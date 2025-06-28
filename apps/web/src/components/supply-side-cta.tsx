@@ -3,32 +3,38 @@
 import { sanitizeSearchParams } from '@agentic/platform-core'
 import Link from 'next/link'
 
-import { HeroButton } from '@/components/hero-button'
+import { HeroButton, type HeroButtonVariant } from '@/components/hero-button'
 import { Button } from '@/components/ui/button'
 import { GitHubIcon } from '@/icons/github'
-import { calendarBookingUrl, docsQuickStartUrl, githubUrl } from '@/lib/config'
+import {
+  calendarBookingUrl,
+  docsPublishingQuickStartUrl,
+  githubUrl
+} from '@/lib/config'
 
 import { useAgentic } from './agentic-provider'
 import { GitHubStarCounter } from './github-star-counter'
 
 export function SupplySideCTA({
-  variant = 'github'
+  variant = 'github',
+  heroVariant = 'orange'
 }: {
   variant?: 'book-call' | 'github' | 'github-2'
+  heroVariant?: HeroButtonVariant
 }) {
   const ctx = useAgentic()
 
   return (
     <div className='flex justify-center items-center gap-12'>
-      <HeroButton asChild className=''>
+      <HeroButton asChild heroVariant={heroVariant}>
         <Link
           href={
             ctx?.isAuthenticated
-              ? docsQuickStartUrl
-              : `/signup?${sanitizeSearchParams({ next: docsQuickStartUrl })}`
+              ? docsPublishingQuickStartUrl
+              : `/signup?${sanitizeSearchParams({ next: docsPublishingQuickStartUrl })}`
           }
         >
-          Get Started
+          Quick Start
         </Link>
       </HeroButton>
 

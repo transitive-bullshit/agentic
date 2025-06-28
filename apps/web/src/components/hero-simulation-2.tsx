@@ -10,6 +10,7 @@ import {
   SMAA,
   SSAO
 } from '@react-three/postprocessing'
+import { useEffect, useState } from 'react'
 import * as THREE from 'three'
 
 const rfs = THREE.MathUtils.randFloatSpread
@@ -21,6 +22,22 @@ const baubleMaterial = new THREE.MeshStandardMaterial({
 })
 
 export function HeroSimulation2({ className }: { className?: string }) {
+  const [hovered, setHovered] = useState(false)
+
+  // Change cursor on hovered state
+  useEffect(() => {
+    if (hovered) {
+      document.body.style.cursor = 'none'
+    } else {
+      document.body.style.cursor = 'auto'
+    }
+    // document.body.style.cursor = hovered
+    //   ? 'none'
+    //   : `url('data:image/svg+xml;base64,${btoa(
+    //       '<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="16" cy="16" r="10" fill="#E8B059"/></svg>'
+    //     )}'), auto`
+  }, [hovered])
+
   return (
     <Canvas
       shadows
@@ -28,6 +45,8 @@ export function HeroSimulation2({ className }: { className?: string }) {
       dpr={[1, 1.5]}
       camera={{ position: [0, 0, 20], fov: 35, near: 1, far: 40 }}
       className={className}
+      onPointerOver={() => setHovered(true)}
+      onPointerOut={() => setHovered(false)}
     >
       <ambientLight intensity={0.5} />
 

@@ -1,0 +1,129 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "name": "Agentic",
+  "theme": "maple",
+  "logo": {
+    "dark": "/media/agentic-logo-dark.svg",
+    "light": "/media/agentic-logo-light.svg"
+  },
+  "favicon": "/media/favicon.svg",
+  "background": {
+    "image": "/media/bg.png"
+  },
+  "appearance": {
+    "mode": "light",
+    "strict": true
+  },
+  "colors": {
+    "primary": "#0D969D",
+    "light": "#13D3DC",
+    "dark": "#0D969D"
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Contact",
+        "href": "https://docs.agentic.so/contact",
+        "icon": "envelope"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Dashboard",
+      "href": "https://agentic.so/app"
+    }
+  },
+  "banner": {
+    "content": "The new Agentic MCP Marketplace is now in public beta! 🎉",
+    "dismissible": true
+  },
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "MCP Marketplace",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": ["index", "marketplace/index"]
+          }
+        ]
+      },
+      {
+        "tab": "Publishing MCPs",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": ["publishing/index", "publishing/quickstart"]
+          },
+          {
+            "group": "Quick Start Guides",
+            "pages": [
+              "publishing/guides/existing-mcp-server",
+              "publishing/guides/existing-openapi-service",
+              "publishing/guides/ts-fastmcp",
+              "publishing/guides/ts-mcp-hono",
+              "publishing/guides/ts-openapi-hono",
+              "publishing/guides/py-fastmcp"
+            ]
+          },
+          {
+            "group": "Origin Servers",
+            "pages": [
+              "publishing/origin/index",
+              "publishing/origin/metadata",
+              "publishing/origin/security"
+            ]
+          },
+
+          {
+            "group": "Project Config",
+            "pages": [
+              "publishing/config/index",
+              "publishing/config/auth",
+              "publishing/config/pricing",
+              "publishing/config/rate-limits",
+              "publishing/config/caching",
+              "publishing/config/tool-config"
+            ]
+          }
+        ]
+      }
+    ],
+    "global": {
+      "anchors": [
+        {
+          "anchor": "Agentic",
+          "href": "https://agentic.so",
+          "icon": "house"
+        },
+        {
+          "anchor": "MCP Marketplace",
+          "href": "https://agentic.so/marketplace",
+          "icon": "store"
+        },
+        {
+          "anchor": "Contact",
+          "href": "https://docs.agentic.so/contact",
+          "icon": "envelope"
+        },
+        {
+          "anchor": "GitHub",
+          "href": "https://github.com/transitive-bullshit/agentic",
+          "icon": "github"
+        }
+      ]
+    }
+  },
+  "footer": {
+    "socials": {
+      "x": "https://x.com/transitive_bs",
+      "github": "https://github.com/transitive-bullshit/agentic"
+    }
+  },
+  "seo": {
+    "metatags": {
+      "keywords": "agentic, agentic tools, MCP, Model Context Protocol, MCP gateway, API gateway, MCP marketplace, MCP API gateway, MCP monetization, production MCPs, deploy MCPs, publish MCPs, ai, AI tools, AI agents, LLM tools, LLM function calling, LLM tool calling, MCP servers, MCP server provider, MCP server deployment, OpenAPI to MCP, OpenAPI to MCP server, vercel ai sdk, ai sdk tools, langchain tools, llamaindex tools, openai tools, anthropic tools, gemini tools",
+      "author": "Travis Fischer"
+    }
+  }
+}
