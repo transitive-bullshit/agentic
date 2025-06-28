@@ -22,8 +22,9 @@
   "navbar": {
     "links": [
       {
-        "label": "Support",
-        "href": "mailto:support@agentic.so"
+        "label": "Contact",
+        "href": "https://docs.agentic.so/contact",
+        "icon": "envelope"
       }
     ],
     "primary": {
@@ -101,9 +102,9 @@
           "icon": "store"
         },
         {
-          "anchor": "Docs",
-          "href": "https://docs.agentic.so",
-          "icon": "book-open-cover"
+          "anchor": "Contact",
+          "href": "https://docs.agentic.so/contact",
+          "icon": "envelope"
         },
         {
           "anchor": "GitHub",
