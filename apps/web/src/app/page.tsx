@@ -8,7 +8,11 @@ import { GitHubStarCounter } from '@/components/github-star-counter'
 import { HeroSimulation2 } from '@/components/hero-simulation-2'
 import { MCPMarketplaceFeatures } from '@/components/mcp-marketplace-features'
 import { PageContainer } from '@/components/page-container'
-import { githubUrl, twitterUrl } from '@/lib/config'
+import {
+  docsPublishingQuickStartUrl,
+  githubUrl,
+  twitterUrl
+} from '@/lib/config'
 import {
   defaultConfig,
   getCodeForDeveloperConfig
@@ -106,7 +110,20 @@ export default async function TheBestDamnLandingPageEver() {
           <HeroSimulation2 />
         </div>
 
-        <p className='text-sm'>TODO</p>
+        <p className='italic font-semibold'>
+          Agentic's mission is to build the world's best library of tools for AI
+          agents.
+        </p>
+
+        <p>
+          <Link href={docsPublishingQuickStartUrl} className='link'>
+            And of course, <span className='font-semibold'>MCP</span> is an
+            integral part of that mission. We're working on a bunch of features
+            designed to simplify advanced MCP use cases like bundling multiple
+            tools, shared auth profiles, Vercel-like preview deployments, and a
+            lot more...
+          </Link>
+        </p>
       </section>
 
       {/* Open source section */}
@@ -142,17 +159,16 @@ export default async function TheBestDamnLandingPageEver() {
         <GitHubStarCounter />
       </section>
 
-      {/* Social proof section */}
-      <section className='gap-8 mb-16'>
+      {/* Social proof section (TODO) */}
+      {/* <section className='gap-8 mb-16'>
         <h2 className='text-center text-balance leading-snug md:leading-none text-3xl font-heading'>
           TODO: social proof
         </h2>
 
         <p className='text-center text-lg max-w-2xl'>TODO</p>
-      </section>
+      </section> */}
 
       {/* CTA section */}
-
       <DotsSection className='mb-16'>
         <div className='flex flex-col gap-12 relative z-10'>
           <h2 className='text-center text-balance leading-snug md:leading-none text-3xl font-heading'>

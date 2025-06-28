@@ -18,32 +18,32 @@ export default function AboutPage() {
         <h2>Setting the stage</h2>
 
         <p>
-          it's 2025. LLMs are still scaling. AI agents are just starting to take
-          off. MCP is exploding. the singularity looms. shoggoth looks back on
+          It's 2025. LLMs are still scaling. AI agents are just starting to take
+          off. MCP is exploding. The singularity looms. Shoggoth looks back on
           us from the near future and gives a sly smile that doesn't quite reach
           His inhuman eyes.
         </p>
 
         <p>
-          in this increasingly AI-native world, what's the best way for "normal"
+          In this increasingly AI-native world, what's the best way for "normal"
           software engineers like us to stay relevant and provide value for both
           our families as well as our future AI edgelords?
         </p>
 
         <p>
-          well, i don't know about you, but contributing to foundation models,
+          Well, I don't know about you, but contributing to foundation models,
           AI alignment, and AGI research all seem incredibly sexy but are also a
           lil outside my areas of expertise.
         </p>
 
         <p>
-          that's why agentic is focused solely on building value at the LLM tool
+          That's why Agentic is focused solely on building value at the LLM tool
           calling layer. MCPs are a great example here.
         </p>
 
         <p>
-          there's a lot that will change in AI over the next decade, but one
-          thing i believe strongly is that no matter how much the underlying AI
+          There's a lot that will change in AI over the next decade, but one
+          thing I believe strongly is that no matter how much the underlying AI
           systems change,{' '}
           <span className='font-semibold'>
             providing access to high quality tools that are specifically
@@ -54,14 +54,14 @@ export default function AboutPage() {
         </p>
 
         <p>
-          we call this <span className='font-semibold'>Agentic UX</span>, and
+          We call this <span className='font-semibold'>Agentic UX</span>, and
           it's at the heart of Agentic's mission.
         </p>
 
         <h2>Mission</h2>
         <p className='font-semibold italic'>
-          our mission is to build the world's best standard library of tools for
-          AI agents.
+          Agentic's mission is to build the world's best library of tools for AI
+          agents.
         </p>
 
         {/* <h2>What is Agentic UX?</h2>

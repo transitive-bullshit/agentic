@@ -1,12 +1,12 @@
 'use client'
 
 import {
-  CheckCheckIcon,
   CreditCardIcon,
   FileJsonIcon,
   HistoryIcon,
   ShieldCheckIcon,
-  StarIcon
+  StarIcon,
+  ZapIcon
 } from 'lucide-react'
 
 import { Feature, type FeatureData } from './feature'
@@ -16,8 +16,11 @@ const mcpMarketplaceFeatures: FeatureData[] = [
     name: 'Highly Curated Tools',
     description: (
       <>
-        All Agentic tools have been hand-crafted specifically for LLM tool use.
-        We call this Agentic DX, and it's at the heart of why Agentic tools work
+        <span className='font-semibold'>
+          All Agentic tools have been hand-crafted specifically for LLM tool
+          use.
+        </span>
+        We call this Agentic UX, and it's at the heart of why Agentic tools work
         better for LLM &amp; MCP use cases than legacy APIs.
       </>
     ),
@@ -50,7 +53,7 @@ const mcpMarketplaceFeatures: FeatureData[] = [
       <>
         Agentic is written in TypeScript and strives for a Vercel-like DX.
         <span className='font-semibold'>One-line tool integrations</span> for
-        all the popular TS LLM SDKs (
+        all of the popular TS LLM SDKs (
         <span className='font-semibold'>Vercel AI SDK</span>,{' '}
         <span className='font-semibold'>OpenAI</span>,{' '}
         <span className='font-semibold'>LangChain</span>, etc).
@@ -84,17 +87,17 @@ const mcpMarketplaceFeatures: FeatureData[] = [
     }
   },
   {
-    name: 'Support both MCP and HTTP',
+    name: 'Blazing Fast MCP Gateway',
     description: (
       <>
-        All Agentic tools are exposed as both{' '}
-        <span className='font-semibold'>MCP servers</span> as well as simple{' '}
-        <span className='font-semibold'>HTTP APIs</span>. MCP is important for
-        interop and future-proofing, whereas simple HTTP POST requests make
-        tools easy to debug and simplifies integrating with LLM SDKs.
+        Agentic's MCP gateway is powered by{' '}
+        <span className='font-semibold'>Cloudflare's global edge network</span>.
+        Tools come with customizable caching and rate-limits, so you can REST
+        assured that your agents will always have a fast and reliable
+        experience.
       </>
     ),
-    icon: CheckCheckIcon,
+    icon: ZapIcon,
     pattern: {
       y: 32,
       squares: [
