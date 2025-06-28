@@ -1,5 +1,6 @@
 import Link from 'next/link'
 
+import { PageContainer } from '@/components/page-container'
 import { SupplySideCTA } from '@/components/supply-side-cta'
 import { githubUrl, twitterUrl } from '@/lib/config'
 import { cn } from '@/lib/utils'
@@ -8,7 +9,7 @@ import styles from './styles.module.css'
 
 export default function AboutPage() {
   return (
-    <>
+    <PageContainer>
       <h1 className='text-center text-balance leading-snug md:leading-none text-4xl font-semibold'>
         About
       </h1>
@@ -185,6 +186,6 @@ export default function AboutPage() {
 
         <SupplySideCTA variant='github-2' />
       </section>
-    </>
+    </PageContainer>
   )
 }

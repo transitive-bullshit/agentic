@@ -4,28 +4,27 @@ import { DotsSection } from '@/components/dots-section'
 import { ExampleAgenticConfigs } from '@/components/example-agentic-configs'
 import { GitHubStarCounter } from '@/components/github-star-counter'
 import { MCPGatewayFeatures } from '@/components/mcp-gateway-features'
+import { PageContainer } from '@/components/page-container'
 import { SupplySideCTA } from '@/components/supply-side-cta'
 import { githubUrl, twitterUrl } from '@/lib/config'
 
-export default function MCPAuthorsPage() {
+export default function PublishingMCPsPage() {
   return (
-    <>
+    <PageContainer>
       {/* Hero section */}
-      <DotsSection className='mb-16'>
-        <div className='flex flex-col gap-8 relative z-10'>
-          <h1 className='text-center text-balance leading-snug md:leading-none text-4xl font-semibold'>
-            Your API → Paid MCP, Instantly
-          </h1>
+      <section className='flex flex-col gap-8 mb-16'>
+        <h1 className='text-center text-balance leading-snug md:leading-none text-4xl font-semibold'>
+          Your API → Paid MCP, Instantly
+        </h1>
 
-          <h5 className='text-center text-lg max-w-2xl'>
-            Run one command to turn any MCP server or OpenAPI service into a
-            paid MCP product,{' '}
-            <em>with built-in distribution to over 20k AI engineers</em>.
-          </h5>
+        <h5 className='text-center text-lg max-w-2xl'>
+          Run one command to turn any MCP server or OpenAPI service into a paid
+          MCP product,{' '}
+          <em>with built-in distribution to over 20k AI engineers</em>.
+        </h5>
 
-          <SupplySideCTA />
-        </div>
-      </DotsSection>
+        <SupplySideCTA />
+      </section>
 
       {/* How it works section */}
       <section className='flex flex-col gap-8 mb-16'>
@@ -109,6 +108,6 @@ export default function MCPAuthorsPage() {
           <SupplySideCTA variant='github-2' />
         </div>
       </DotsSection>
-    </>
+    </PageContainer>
   )
 }

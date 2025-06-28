@@ -1,13 +1,13 @@
 'use client'
 
 import { assert, omit, sanitizeSearchParams } from '@agentic/platform-core'
-import { Loader2Icon } from 'lucide-react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { useAgentic } from '@/components/agentic-provider'
 import { LoadingIndicator } from '@/components/loading-indicator'
-import { Button } from '@/components/ui/button'
+import { PageContainer } from '@/components/page-container'
+import { ProjectPricingPlans } from '@/components/project-pricing-plans'
 import { toast, toastError } from '@/lib/notifications'
 import { useQuery } from '@/lib/query-client'
 
@@ -139,72 +139,42 @@ export function MarketplaceProjectIndex({
   ])
 
   return (
-    <section>
-      {!ctx || isLoading ? (
-        <LoadingIndicator />
-      ) : isError ? (
-        <p>Error fetching project</p>
-      ) : !project ? (
-        <p>Project "{projectIdentifier}" not found</p>
-      ) : (
-        <>
-          <h1
-            className='text-center text-balance leading-snug md:leading-none
+    <PageContainer>
+      <section>
+        {!ctx || isLoading ? (
+          <LoadingIndicator />
+        ) : isError ? (
+          <p>Error fetching project</p>
+        ) : !project ? (
+          <p>Project "{projectIdentifier}" not found</p>
+        ) : (
+          <>
+            <h1
+              className='text-center text-balance leading-snug md:leading-none
         text-4xl font-extrabold'
-          >
-            Project {project.name}
-          </h1>
+            >
+              Project {project.name}
+            </h1>
 
-          <div className='mt-8'>
-            <pre className='max-w-lg'>
-              {JSON.stringify(
-                omit(project, 'lastPublishedDeployment', 'lastDeployment'),
-                null,
-                2
-              )}
-            </pre>
-          </div>
-
-          <div className='mt-8'>
-            <h2 className='text-center text-balance leading-snug md:leading-none text-2xl font-extrabold mb-4'>
-              Pricing Plans
-            </h2>
-
-            <div className='flex gap-8'>
-              {project.lastPublishedDeployment!.pricingPlans.map((plan) => (
-                <div key={plan.slug} className='flex flex-col gap-4'>
-                  <h3 className='text-center text-balance leading-snug md:leading-none text-xl font-bold'>
-                    {plan.name}
-                  </h3>
-
-                  <pre className='max-w-lg'>
-                    {JSON.stringify(plan, null, 2)}
-                  </pre>
-
-                  <Button
-                    onClick={() => onSubscribe(plan.slug)}
-                    // TODO: handle free plans correctly
-                    disabled={
-                      consumer?.plan === plan.slug ||
-                      !!isLoadingStripeCheckoutForPlan
-                    }
-                  >
-                    {isLoadingStripeCheckoutForPlan === plan.slug && (
-                      <Loader2Icon className='animate-spin mr-2' />
-                    )}
-
-                    {consumer?.plan === plan.slug ? (
-                      <span>Currently subscribed to "{plan.name}"</span>
-                    ) : (
-                      <span>Subscribe to "{plan.name}"</span>
-                    )}
-                  </Button>
-                </div>
-              ))}
+            <div className='mt-8'>
+              <pre className='max-w-lg'>
+                {JSON.stringify(
+                  omit(project, 'lastPublishedDeployment', 'lastDeployment'),
+                  null,
+                  2
+                )}
+              </pre>
             </div>
-          </div>
-        </>
-      )}
-    </section>
+
+            <ProjectPricingPlans
+              project={project}
+              consumer={consumer}
+              isLoadingStripeCheckoutForPlan={isLoadingStripeCheckoutForPlan}
+              onSubscribe={onSubscribe}
+            />
+          </>
+        )}
+      </section>
+    </PageContainer>
   )
 }

@@ -47,10 +47,10 @@ export default function RootLayout({
     <html lang='en' suppressHydrationWarning>
       <body className={`${geist.variable} antialiased`}>
         <Providers>
-          <div className='w-full min-h-[100vh] relative flex flex-col items-center'>
+          <div className='relative w-full min-h-[100vh] flex flex-col items-center'>
             <Header />
 
-            <main className='flex-1 w-full flex flex-col items-center max-w-[1200px] gap-16 pt-16 pb-24 px-2 overflow-x-hidden'>
+            <main className='relative w-full flex-1 flex flex-col items-center gap-16 pt-16 pb-24 px-2 overflow-x-hidden'>
               {children}
             </main>
 

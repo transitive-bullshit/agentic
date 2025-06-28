@@ -7,6 +7,7 @@ import { ExampleUsage } from '@/components/example-usage'
 import { GitHubStarCounter } from '@/components/github-star-counter'
 import { HeroSimulation2 } from '@/components/hero-simulation-2'
 import { MCPMarketplaceFeatures } from '@/components/mcp-marketplace-features'
+import { PageContainer } from '@/components/page-container'
 import { githubUrl, twitterUrl } from '@/lib/config'
 import {
   defaultConfig,
@@ -35,22 +36,20 @@ export default async function TheBestDamnLandingPageEver() {
   const initialCodeBlock = await highlight(initialCodeSnippet)
 
   return (
-    <>
+    <PageContainer>
       {/* Hero section */}
-      <DotsSection className='mb-16'>
-        <div className='flex flex-col gap-10 relative z-10'>
-          <h1 className='text-center text-balance leading-snug md:leading-none text-4xl font-semibold'>
-            The App Store for LLM Tools
-          </h1>
+      <section className='flex flex-col gap-10 mb-16'>
+        <h1 className='text-center text-balance leading-snug md:leading-none text-4xl font-semibold'>
+          The App Store for LLM Tools
+        </h1>
 
-          <h5 className='text-center text-lg max-w-2xl'>
-            Agentic is a curated marketplace of production-grade LLM tools. All
-            tools are exposed as both MCP servers as well as simple HTTP APIs.
-          </h5>
+        <h5 className='text-center text-lg max-w-2xl'>
+          Agentic is a curated marketplace of production-grade LLM tools. All
+          tools are exposed as both MCP servers as well as simple HTTP APIs.
+        </h5>
 
-          <DemandSideCTA />
-        </div>
-      </DotsSection>
+        <DemandSideCTA />
+      </section>
 
       {/* How it works section */}
       <section className='flex flex-col gap-8 mb-16'>
@@ -163,6 +162,6 @@ export default async function TheBestDamnLandingPageEver() {
           <DemandSideCTA />
         </div>
       </DotsSection>
-    </>
+    </PageContainer>
   )
 }

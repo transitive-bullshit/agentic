@@ -68,7 +68,7 @@ export function AppConsumersList() {
               started.
             </p>
           ) : (
-            <div className='grid gap-4'>
+            <div className='grid grid-cols grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3'>
               {consumers.map((consumer) => (
                 <Link
                   key={consumer.id}

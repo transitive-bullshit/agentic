@@ -28,8 +28,8 @@ export function Footer() {
                 </span>
 
                 <span>
-                  <ActiveLink href='/mcp-authors' className='link'>
-                    For MCP Authors
+                  <ActiveLink href='/publishing' className='link'>
+                    Publishing MCPs
                   </ActiveLink>
                 </span>
 

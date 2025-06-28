@@ -1,11 +1,15 @@
 import { Suspense } from 'react'
 
+import { PageContainer } from '@/components/page-container'
+
 import { LoginForm } from './login-form'
 
 export default function Page() {
   return (
     <Suspense>
-      <LoginForm />
+      <PageContainer>
+        <LoginForm />
+      </PageContainer>
     </Suspense>
   )
 }
