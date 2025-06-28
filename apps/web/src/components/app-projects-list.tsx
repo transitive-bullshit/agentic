@@ -5,6 +5,7 @@ import useInfiniteScroll from 'react-infinite-scroll-hook'
 
 import { useAuthenticatedAgentic } from '@/components/agentic-provider'
 import { LoadingIndicator } from '@/components/loading-indicator'
+import { docsPublishingQuickStartUrl } from '@/lib/config'
 import { useInfiniteQuery } from '@/lib/query-client'
 
 export function AppProjectsList() {
@@ -61,7 +62,12 @@ export function AppProjectsList() {
           {isError ? (
             <p>Error fetching projects</p>
           ) : !projects.length ? (
-            <p>No projects found. Create your first project to get started.</p>
+            <p>
+              No projects found.{' '}
+              <Link href={docsPublishingQuickStartUrl} className='link'>
+                Create your first project to get started.
+              </Link>
+            </p>
           ) : (
             <div className='grid grid-cols grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3'>
               {projects.map((project) => (

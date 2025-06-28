@@ -65,8 +65,10 @@ export function AppConsumersList() {
             <p>Error fetching customer subscriptions</p>
           ) : !consumers.length ? (
             <p>
-              No subscriptions found. Subscribe to your first project to get
-              started.
+              No subscriptions found.{' '}
+              <Link href='/marketplace' className='link'>
+                Subscribe to your first project to get started.
+              </Link>
             </p>
           ) : (
             <div
