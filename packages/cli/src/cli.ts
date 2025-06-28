@@ -4,6 +4,7 @@ import { AgenticApiClient } from '@agentic/platform-api-client'
 import { Command } from 'commander'
 
 import type { Context } from './types'
+import { version } from '../package.json'
 import { registerDebugCommand } from './commands/debug'
 import { registerDeployCommand } from './commands/deploy'
 import { registerGetDeploymentCommand } from './commands/get'
@@ -46,6 +47,7 @@ async function main() {
   // Initialize the CLI program
   const program = new Command('agentic')
     .option('-j, --json', 'Print output as JSON')
+    .version(version)
     .showHelpAfterError()
 
   const logger = {

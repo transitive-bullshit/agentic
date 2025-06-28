@@ -13,7 +13,7 @@ import { Feature, type FeatureData } from './feature'
 
 const mcpMarketplaceFeatures: FeatureData[] = [
   {
-    name: 'Highly Curated Tools',
+    name: 'Highly Curated',
     description: (
       <>
         <span className='font-semibold'>

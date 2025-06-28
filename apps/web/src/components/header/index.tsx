@@ -21,8 +21,8 @@ export function Header() {
           <img
             src={
               resolvedTheme === 'dark'
-                ? '/agentic-name-flat-dark.svg'
-                : '/agentic-name-flat-light.svg'
+                ? '/agentic-logo-dark.svg'
+                : '/agentic-logo-light.svg'
             }
             alt='AGENTIC'
             className='w-[144px]'
