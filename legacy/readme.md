@@ -1,3 +1,6 @@
+> [!IMPORTANT]
+> (_June 28, 2025_) As part of an upcoming major Agentic 2.0 release, our site and docs will be undergoing breaking changes over the next few days. Please be patient if the site / docs don't load correctly until the transition is complete. Thank you && really excited to share more about Agentic's new direction soon!! 🙏
+
 <p align="center">
   <a href="https://agentic.so">
     <img alt="Agentic" src="/docs/media/agentic-header.jpg" width="308">
