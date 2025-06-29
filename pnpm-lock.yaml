@@ -1396,6 +1396,9 @@ importers:
       ky:
         specifier: 'catalog:'
         version: 1.8.1
+      zod:
+        specifier: 'catalog:'
+        version: 3.25.67
 
   packages/types:
     dependencies:
