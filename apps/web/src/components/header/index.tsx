@@ -11,6 +11,7 @@ import { cn } from '@/lib/utils'
 import styles from './styles.module.css'
 
 export function Header() {
+  // TODO: use CSS for this instead of a hook
   const { resolvedTheme } = useTheme()
   const ctx = useAgentic()
 
