@@ -31,7 +31,8 @@
     "@agentic/platform-core": "workspace:*",
     "@agentic/platform-types": "workspace:*",
     "@agentic/platform-validators": "workspace:*",
-    "ky": "catalog:"
+    "ky": "catalog:",
+    "zod": "catalog:"
   },
   "publishConfig": {
     "access": "public",

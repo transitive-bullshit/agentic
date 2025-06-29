@@ -1,0 +1,112 @@
+---
+title: Mastra
+description: How to use Agentic tools with the Mastra AI Agent framework.
+---
+
+## Install
+
+<CodeGroup>
+```bash npm
+npm install @mastra/core @agentic/mastra @agentic/platform-tool-client
+```
+
+```bash pnpm
+pnpm add @mastra/core @agentic/mastra @agentic/platform-tool-client
+```
+
+```bash bun
+bun add @mastra/core @agentic/mastra @agentic/platform-tool-client
+```
+
+```bash yarn
+yarn add @mastra/core @agentic/mastra @agentic/platform-tool-client
+```
+
+</CodeGroup>
+
+## Usage
+
+This example uses the [`@agentic/search`](https://agentic.so/marketplace/projects/@agentic/search) tool.
+
+```ts
+import 'dotenv/config'
+
+import { createMastraTools } from '@agentic/mastra'
+import { AgenticToolClient } from '@agentic/platform-tool-client'
+import { openai } from '@ai-sdk/openai'
+import { Agent } from '@mastra/core/agent'
+
+async function main() {
+  const searchTool = await AgenticToolClient.fromIdentifier('@agentic/search')
+
+  const weatherAgent = new Agent({
+    name: 'Weather Agent',
+    instructions: 'You are a helpful assistant. Be as concise as possible.',
+    model: openai('gpt-4o-mini'),
+    tools: createMastraTools(searchTool)
+  })
+
+  const res = await weatherAgent.generate(
+    'What is the weather in San Francisco?'
+  )
+  console.log(res.text)
+}
+
+await main()
+```
+
+<Expandable title="Additional dependencies">
+This example also uses the [@ai-sdk/openai](https://ai-sdk.dev/providers/ai-sdk-providers/openai) provider, which adds OpenAI support to Mastra.
+
+_Note that OpenAI is not necessary to use Agentic; this is just an example._
+
+<CodeGroup>
+```bash npm
+npm install @ai-sdk/openai dotenv
+```
+
+```bash pnpm
+pnpm add @ai-sdk/openai dotenv
+```
+
+```bash bun
+bun add @ai-sdk/openai dotenv
+```
+
+```bash yarn
+yarn add @ai-sdk/openai dotenv
+```
+
+</CodeGroup>
+</Expandable>
+
+## Running this example
+
+You can view the full source for this example here:
+https://github.com/transitive-bullshit/agentic/tree/main/examples/ts-sdks/mastra
+
+<Info>
+  You'll need an [OpenAI API key](https://platform.openai.com/docs/quickstart)
+  to run this example. Store it in a local `.env` file as `OPENAI_API_KEY`.
+</Info>
+
+<Info>
+  The
+  [`@agentic/search`](https://agentic.so/marketplace/projects/@agentic/search)
+  tool comes with a generous free tier, but once that runs out, you'll need to
+  sign up for a paid plan and add an `AGENTIC_API_KEY` to your `.env` file.
+</Info>
+
+```sh
+git clone git@github.com:transitive-bullshit/agentic.git
+cd agentic
+pnpm install
+pnpm build
+echo 'OPENAI_API_KEY=your-key' >> .env
+npx tsx examples/ts-sdks/mastra/bin/weather.ts
+```
+
+## Additional resources
+
+- [`@agentic/mastra` source](https://github.com/transitive-bullshit/agentic/blob/main/stdlib/mastra/src/mastra.ts)
+- [Mastra docs](https://mastra.ai)

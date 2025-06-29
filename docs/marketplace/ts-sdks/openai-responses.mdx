@@ -1,0 +1,125 @@
+---
+title: OpenAI Responses
+description: How to use Agentic tools with the OpenAI Responses API.
+---
+
+<Tip>
+  There's no need for an adapter with the OpenAI SDK since all agentic tools are
+  compatible with OpenAI by default.
+</Tip>
+
+## Install
+
+<CodeGroup>
+```bash npm
+npm install openai @agentic/platform-tool-client
+```
+
+```bash pnpm
+pnpm add openai @agentic/platform-tool-client
+```
+
+```bash bun
+bun add openai @agentic/platform-tool-client
+```
+
+```bash yarn
+yarn add openai @agentic/platform-tool-client
+```
+
+</CodeGroup>
+
+## Usage
+
+This example uses the [`@agentic/search`](https://agentic.so/marketplace/projects/@agentic/search) tool.
+
+```ts
+import 'dotenv/config'
+
+import { assert } from '@agentic/core'
+import { AgenticToolClient } from '@agentic/platform-tool-client'
+import OpenAI from 'openai'
+
+async function main() {
+  const searchTool = await AgenticToolClient.fromIdentifier('@agentic/search')
+  const openai = new OpenAI()
+
+  const messages: OpenAI.Responses.ResponseInput = [
+    {
+      role: 'system',
+      content: 'You are a helpful assistant. Be as concise as possible.'
+    },
+    { role: 'user', content: 'What is the weather in San Francisco?' }
+  ]
+
+  {
+    // First call to OpenAI to invoke the tool
+    const res = await openai.responses.create({
+      model: 'gpt-4o-mini',
+      temperature: 0,
+      tools: searchTool.functions.responsesToolSpecs,
+      tool_choice: 'required',
+      input: messages
+    })
+
+    const toolCall = res.output[0]
+    assert(toolCall?.type === 'function_call')
+    const toolResult = await searchTool.callTool(
+      toolCall.name,
+      toolCall.arguments
+    )
+
+    messages.push(toolCall)
+    messages.push({
+      type: 'function_call_output',
+      call_id: toolCall.call_id,
+      output: JSON.stringify(toolResult)
+    })
+  }
+
+  {
+    // Second call to OpenAI to generate a text response
+    const res = await openai.responses.create({
+      model: 'gpt-4o-mini',
+      temperature: 0,
+      tools: searchTool.functions.responsesToolSpecs,
+      input: messages
+    })
+
+    console.log(res.output_text)
+  }
+}
+
+await main()
+```
+
+## Running this example
+
+You can view the full source for this example here: https://github.com/transitive-bullshit/agentic/tree/main/examples/ts-sdks/openai
+
+<Info>
+  You'll need an [OpenAI API key](https://platform.openai.com/docs/quickstart)
+  to run this example. Store it in a local `.env` file as `OPENAI_API_KEY`.
+</Info>
+
+<Info>
+  The
+  [`@agentic/search`](https://agentic.so/marketplace/projects/@agentic/search)
+  tool comes with a generous free tier, but once that runs out, you'll need to
+  sign up for a paid plan and add an `AGENTIC_API_KEY` to your `.env` file.
+</Info>
+
+```sh
+git clone git@github.com:transitive-bullshit/agentic.git
+cd agentic
+pnpm install
+pnpm build
+echo 'OPENAI_API_KEY=your-key' >> .env
+npx tsx examples/ts-sdks/openai/bin/weather-responses.ts
+```
+
+## Additional resources
+
+- [OpenAI Chat Completions API docs](https://platform.openai.com/docs/api-reference/chat/create)
+- [OpenAI Responses vs Chat Completions](https://platform.openai.com/docs/guides/responses-vs-chat-completions)
+- [Using OpenAI's Chat Completion API with Agentic](/marketplace/ts-sdks/openai-chat)

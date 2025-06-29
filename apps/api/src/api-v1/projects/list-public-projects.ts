@@ -1,8 +1,11 @@
+import { env } from 'node:process'
+
 import type { DefaultHonoEnv } from '@agentic/platform-hono'
 import { parseZodSchema } from '@agentic/platform-core'
 import { createRoute, type OpenAPIHono, z } from '@hono/zod-openapi'
 
 import { and, db, eq, isNotNull, schema } from '@/db'
+import { setPublicCacheControl } from '@/lib/cache-control'
 import {
   openapiAuthenticatedSecuritySchemas,
   openapiErrorResponses
@@ -60,6 +63,7 @@ export function registerV1ListPublicProjects(app: OpenAPIHono<DefaultHonoEnv>) {
       offset,
       limit
     })
+    setPublicCacheControl(c.res, env.isProd ? '1m' : '10s')
 
     return c.json(parseZodSchema(z.array(schema.projectSelectSchema), projects))
   })

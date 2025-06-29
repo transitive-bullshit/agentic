@@ -45,6 +45,18 @@
           {
             "group": "Getting Started",
             "pages": ["index", "marketplace/index"]
+          },
+          {
+            "group": "TypeScript AI SDKs",
+            "pages": [
+              "marketplace/ts-sdks/ai-sdk",
+              "marketplace/ts-sdks/openai-chat",
+              "marketplace/ts-sdks/openai-responses",
+              "marketplace/ts-sdks/langchain",
+              "marketplace/ts-sdks/llamaindex",
+              "marketplace/ts-sdks/genkit",
+              "marketplace/ts-sdks/mastra"
+            ]
           }
         ]
       },

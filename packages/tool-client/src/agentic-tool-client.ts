@@ -3,7 +3,8 @@ import {
   AIFunctionSet,
   AIFunctionsProvider,
   createAIFunction,
-  createJsonSchema
+  createJsonSchema,
+  getEnv
 } from '@agentic/core'
 import { AgenticApiClient } from '@agentic/platform-api-client'
 import { assert } from '@agentic/platform-core'
@@ -11,12 +12,35 @@ import { parseDeploymentIdentifier } from '@agentic/platform-validators'
 import defaultKy, { type KyInstance } from 'ky'
 
 export type AgenticToolClientOptions = {
+  /**
+   * Optional API key for your subscription to the Agentic project.
+   *
+   * If not set, will default to the `AGENTIC_API_KEY` environment variable.
+   *
+   * If no `apiKey` is set, the client will make unauthenticated tool calls,
+   * which may or may not be supported by the target Agentic project.
+   */
+  apiKey?: string
+
+  /**
+   * Optional custom Agentic API client.
+   */
   agenticApiClient?: AgenticApiClient
+
+  /**
+   * Optional custom Agentic Gateway base URL.
+   *
+   * @default `https://gateway.agentic.so`
+   */
   agenticGatewayBaseUrl?: string
+
+  /**
+   * Optional custom Ky instance.
+   *
+   * Useful for overriding the default headers, retry logic, etc.
+   */
   ky?: KyInstance
 }
-
-// TODO: add support for optional apiKey
 
 /**
  * Agentic tool client which makes it easy to use an Agentic tool products with
@@ -32,18 +56,21 @@ export type AgenticToolClientOptions = {
  * ```
  */
 export class AgenticToolClient extends AIFunctionsProvider {
+  readonly apiKey: string | undefined
   readonly project: Project
   readonly deployment: Deployment
   readonly agenticGatewayBaseUrl: string
   readonly ky: KyInstance
 
   protected constructor({
+    apiKey,
     project,
     deployment,
     deploymentIdentifier,
     agenticGatewayBaseUrl,
     ky
   }: {
+    apiKey: string | undefined
     project: Project
     deployment: Deployment
     deploymentIdentifier: string
@@ -52,10 +79,13 @@ export class AgenticToolClient extends AIFunctionsProvider {
   }) {
     super()
 
+    this.apiKey = apiKey
     this.project = project
     this.deployment = deployment
     this.agenticGatewayBaseUrl = agenticGatewayBaseUrl
-    this.ky = ky
+    this.ky = apiKey
+      ? ky.extend({ headers: { Authorization: `Bearer ${apiKey}` } })
+      : ky
 
     this._functions = new AIFunctionSet(
       deployment.tools.map((tool) => {
@@ -106,6 +136,7 @@ export class AgenticToolClient extends AIFunctionsProvider {
   static async fromIdentifier(
     projectOrDeploymentIdentifier: string,
     {
+      apiKey = getEnv('AGENTIC_API_KEY'),
       agenticApiClient = new AgenticApiClient(),
       agenticGatewayBaseUrl = 'https://gateway.agentic.so',
       ky = defaultKy
@@ -141,6 +172,7 @@ export class AgenticToolClient extends AIFunctionsProvider {
     assert(deployment, `Deployment "${deploymentIdentifier}" not found`)
 
     return new AgenticToolClient({
+      apiKey,
       project,
       deployment,
       deploymentIdentifier,
