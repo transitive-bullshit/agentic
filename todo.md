@@ -35,6 +35,7 @@
   - also add `@agentic/json-schema` to `createJsonSchema` parsing instead of current no-op
 - add support to `@agentic/platform-tool-client` for
 - double check example usage for all TS sdks
+- add docs on using multiple tools with `AIFunctionSet`
 
 ## TODO: Post-MVP
 
