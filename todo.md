@@ -17,14 +17,13 @@
   - hosted docs
 - social images
 - add really strict free rate-limits to `@agentic/search`
-- **simplify `AgenticToolClient` and only require one package per TS LLM SDK**
-  - `createAISDKToolsFromIdentifier(projectIdentifier)`
 - **move legacy packages, examples, and docs over**
 - replace json project and components with actual designs
 - implement footer
 - finesse header (mobile)
 - create agentic products for legacy tools
 - add basic legal terms and privacy policy (and update links in stripe)
+- add caching to public projects api endpoints
 
 ## TODO: Post-MVP
 
@@ -104,3 +103,5 @@
   - platform AGPL-3.0 private
   - platform AGPL-3.0 public; maybe this should be MIT?
   - stdlib MIT public
+- **simplify `AgenticToolClient` and only require one package per TS LLM SDK**
+  - `createAISDKToolsFromIdentifier(projectIdentifier)`

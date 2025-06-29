@@ -1,5 +1,6 @@
 packages:
   - packages/*
+  - stdlib/*
   - apps/*
   - examples/*
   - packages/fixtures/valid/*
@@ -18,7 +19,7 @@ catalog:
   '@dicebear/core': ^9.2.3
   '@dotenvx/dotenvx': ^1.45.1
   '@edge-runtime/vm': ^5.0.0
-  '@fisch0920/config': ^1.1.3
+  '@fisch0920/config': ^1.1.4
   '@fisch0920/drizzle-orm': ^0.43.7
   '@fisch0920/drizzle-zod': ^0.7.9
   '@hono/mcp': ^0.1.0
@@ -106,7 +107,7 @@ catalog:
   is-obj: ^3.0.0
   is-relative-url: ^4.0.0
   jsonrepair: ^3.12.0
-  knip: ^5.61.2
+  knip: ^5.61.3
   ky: ^1.8.1
   langchain: ^0.3.29
   lint-staged: ^16.1.2
@@ -174,3 +175,5 @@ ignoredBuiltDependencies:
 
 onlyBuiltDependencies:
   - '@sentry/cli'
+  - protobufjs
+  - tree-sitter
