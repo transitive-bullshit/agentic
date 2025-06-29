@@ -1,11 +1,10 @@
 import 'dotenv/config'
 
-import { assert } from '@agentic/core'
-import { WeatherClient } from '@agentic/stdlib'
+import { AgenticToolClient } from '@agentic/platform-tool-client'
 import OpenAI from 'openai'
 
 async function main() {
-  const weather = new WeatherClient()
+  const searchTool = await AgenticToolClient.fromIdentifier('@agentic/search')
   const openai = new OpenAI()
 
   const messages: OpenAI.ChatCompletionMessageParam[] = [
@@ -17,28 +16,26 @@ async function main() {
   ]
 
   {
-    // First call to OpenAI to invoke the weather tool
+    // First call to OpenAI to invoke the tool
     const res = await openai.chat.completions.create({
       messages,
       model: 'gpt-4o-mini',
       temperature: 0,
-      tools: weather.functions.toolSpecs,
+      tools: searchTool.functions.toolSpecs,
       tool_choice: 'required'
     })
+
     const message = res.choices[0]!.message!
-    console.log(JSON.stringify(message, null, 2))
-    assert(message.tool_calls?.[0]?.function?.name === 'get_current_weather')
-
-    const fn = weather.functions.get('get_current_weather')!
-    assert(fn)
-
-    const toolParams = message.tool_calls[0].function.arguments
-    const toolResult = await fn(toolParams)
+    const toolCall = message.tool_calls![0]!.function!
+    const toolResult = await searchTool.callTool(
+      toolCall.name,
+      toolCall.arguments
+    )
 
     messages.push(message)
     messages.push({
       role: 'tool',
-      tool_call_id: message.tool_calls[0].id,
+      tool_call_id: message.tool_calls![0]!.id,
       content: JSON.stringify(toolResult)
     })
   }
@@ -51,10 +48,10 @@ async function main() {
       messages,
       model: 'gpt-4o-mini',
       temperature: 0,
-      tools: weather.functions.toolSpecs
+      tools: searchTool.functions.toolSpecs
     })
     const message = res.choices?.[0]?.message
-    console.log(message?.content)
+    console.log(message)
   }
 }
 

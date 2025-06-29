@@ -1,19 +1,18 @@
 import 'dotenv/config'
 
 import { createMastraTools } from '@agentic/mastra'
-import { WeatherClient } from '@agentic/weather'
+import { AgenticToolClient } from '@agentic/platform-tool-client'
 import { openai } from '@ai-sdk/openai'
 import { Agent } from '@mastra/core/agent'
 
 async function main() {
-  const weather = new WeatherClient()
+  const searchTool = await AgenticToolClient.fromIdentifier('@agentic/search')
 
   const weatherAgent = new Agent({
     name: 'Weather Agent',
     instructions: 'You are a helpful assistant. Be as concise as possible.',
-    // TODO: this appears to be a recent bug in mastra or ai-sdk requiring an `any` here
-    model: openai('gpt-4o-mini') as any,
-    tools: createMastraTools(weather)
+    model: openai('gpt-4o-mini'),
+    tools: createMastraTools(searchTool)
   })
 
   const res = await weatherAgent.generate(

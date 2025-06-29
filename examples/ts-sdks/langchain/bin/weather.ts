@@ -1,15 +1,15 @@
 import 'dotenv/config'
 
 import { createLangChainTools } from '@agentic/langchain'
-import { WeatherClient } from '@agentic/stdlib'
+import { AgenticToolClient } from '@agentic/platform-tool-client'
 import { ChatPromptTemplate } from '@langchain/core/prompts'
 import { ChatOpenAI } from '@langchain/openai'
 import { AgentExecutor, createToolCallingAgent } from 'langchain/agents'
 
 async function main() {
-  const weather = new WeatherClient()
+  const searchTool = await AgenticToolClient.fromIdentifier('@agentic/search')
 
-  const tools = createLangChainTools(weather)
+  const tools = createLangChainTools(searchTool)
   const agent = createToolCallingAgent({
     llm: new ChatOpenAI({ model: 'gpt-4o-mini', temperature: 0 }),
     tools,

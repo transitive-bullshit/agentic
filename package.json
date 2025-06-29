@@ -37,6 +37,7 @@
     "@types/node": "catalog:",
     "bumpp": "catalog:",
     "del-cli": "catalog:",
+    "dotenv": "catalog:",
     "eslint": "catalog:",
     "eslint-plugin-drizzle": "catalog:",
     "knip": "catalog:",

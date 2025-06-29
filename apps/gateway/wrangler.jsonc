@@ -3,10 +3,16 @@
  */
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "agentic-api-gateway",
+  "name": "agentic-gateway",
   "main": "src/worker.ts",
   "compatibility_date": "2025-05-25",
   "compatibility_flags": ["nodejs_compat"],
+  "placement": { "mode": "smart" },
+  "upload_source_maps": true,
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1
+  },
   "migrations": [
     {
       "tag": "v1",
@@ -33,15 +39,10 @@
       }
     ]
   },
-  "observability": {
-    "enabled": true
-  },
-  "placement": { "mode": "smart" },
-  "upload_source_maps": true,
   "analytics_engine_datasets": [
     {
       "binding": "AE_USAGE_DATASET",
-      "dataset": "agentic_api_gateway_usage"
+      "dataset": "agentic_gateway_usage"
     }
   ]
 }

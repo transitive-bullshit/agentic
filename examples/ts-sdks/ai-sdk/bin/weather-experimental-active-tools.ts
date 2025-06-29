@@ -1,17 +1,20 @@
 import 'dotenv/config'
 
 import { createAISDKTools } from '@agentic/ai-sdk'
-import { WeatherClient } from '@agentic/stdlib'
+import { AgenticToolClient } from '@agentic/platform-tool-client'
 import { createOpenAI } from '@ai-sdk/openai'
 import { generateText } from 'ai'
 
 async function main() {
-  const weather = new WeatherClient()
+  const searchTool = await AgenticToolClient.fromIdentifier('@agentic/search')
   const openai = createOpenAI({ compatibility: 'strict' })
 
   const result = await generateText({
     model: openai('gpt-4o-mini'),
-    tools: createAISDKTools(weather),
+    tools: createAISDKTools(searchTool),
+    experimental_activeTools: Array.from(searchTool.functions).map(
+      (fn) => fn.spec.name
+    ),
     toolChoice: 'required',
     temperature: 0,
     system: 'You are a helpful assistant. Be as concise as possible.',

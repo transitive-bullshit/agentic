@@ -1,11 +1,11 @@
 import 'dotenv/config'
 
 import { assert } from '@agentic/core'
-import { WeatherClient } from '@agentic/stdlib'
+import { AgenticToolClient } from '@agentic/platform-tool-client'
 import OpenAI from 'openai'
 
 async function main() {
-  const weather = new WeatherClient()
+  const searchTool = await AgenticToolClient.fromIdentifier('@agentic/search')
   const openai = new OpenAI()
 
   const messages: OpenAI.Responses.ResponseInput = [
@@ -17,28 +17,26 @@ async function main() {
   ]
 
   {
-    // First call to OpenAI to invoke the weather tool
+    // First call to OpenAI to invoke the tool
     const res = await openai.responses.create({
       model: 'gpt-4o-mini',
       temperature: 0,
-      tools: weather.functions.responsesToolSpecs,
+      tools: searchTool.functions.responsesToolSpecs,
       tool_choice: 'required',
       input: messages
     })
 
-    const message = res.output[0]
-    console.log(JSON.stringify(message, null, 2))
-    assert(message?.type === 'function_call')
-    assert(message.name === 'get_current_weather')
+    const toolCall = res.output[0]
+    assert(toolCall?.type === 'function_call')
+    const toolResult = await searchTool.callTool(
+      toolCall.name,
+      toolCall.arguments
+    )
 
-    const fn = weather.functions.get('get_current_weather')!
-    assert(fn)
-    const toolResult = await fn(message.arguments)
-
-    messages.push(message)
+    messages.push(toolCall)
     messages.push({
       type: 'function_call_output',
-      call_id: message.call_id,
+      call_id: toolCall.call_id,
       output: JSON.stringify(toolResult)
     })
   }
@@ -50,7 +48,7 @@ async function main() {
     const res = await openai.responses.create({
       model: 'gpt-4o-mini',
       temperature: 0,
-      tools: weather.functions.responsesToolSpecs,
+      tools: searchTool.functions.responsesToolSpecs,
       input: messages
     })
 

@@ -211,6 +211,7 @@ const res = await openai.responses.create({
 })
 
 const toolCall = res.output[0]
+assert(toolCall?.type === 'function_call')
 const toolResult = await searchTool.callTool(toolCall.name, toolCall.arguments)
 
 console.log(toolResult)

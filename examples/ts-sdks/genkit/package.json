@@ -1,5 +1,5 @@
 {
-  "name": "agentic-examples-mastra",
+  "name": "agentic-examples-genkit",
   "type": "module",
   "private": true,
   "scripts": {
@@ -8,10 +8,10 @@
     "test:typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@agentic/mastra": "workspace:*",
-    "@agentic/weather": "workspace:*",
-    "@ai-sdk/openai": "catalog:",
-    "@mastra/core": "catalog:",
+    "@agentic/genkit": "workspace:*",
+    "@agentic/platform-tool-client": "workspace:*",
+    "genkit": "catalog:",
+    "genkitx-openai": "catalog:",
     "zod": "catalog:"
   }
 }

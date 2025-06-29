@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@agentic/core": "workspace:*",
-    "@agentic/stdlib": "workspace:*",
+    "@agentic/platform-tool-client": "workspace:*",
     "openai": "catalog:",
     "zod": "catalog:"
   }

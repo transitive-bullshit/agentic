@@ -1,14 +1,14 @@
 import 'dotenv/config'
 
 import { createLlamaIndexTools } from '@agentic/llamaindex'
-import { WeatherClient } from '@agentic/stdlib'
+import { AgenticToolClient } from '@agentic/platform-tool-client'
 import { openai } from '@llamaindex/openai'
 import { agent } from '@llamaindex/workflow'
 
 async function main() {
-  const weather = new WeatherClient()
+  const searchTool = await AgenticToolClient.fromIdentifier('@agentic/search')
 
-  const tools = createLlamaIndexTools(weather)
+  const tools = createLlamaIndexTools(searchTool)
   const weatherAgent = agent({
     llm: openai({ model: 'gpt-4o-mini', temperature: 0 }),
     systemPrompt: 'You are a helpful assistant. Be as concise as possible.',

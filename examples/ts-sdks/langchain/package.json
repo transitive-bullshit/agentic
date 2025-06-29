@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@agentic/langchain": "workspace:*",
-    "@agentic/stdlib": "workspace:*",
+    "@agentic/platform-tool-client": "workspace:*",
     "@langchain/core": "catalog:",
     "@langchain/openai": "catalog:",
     "langchain": "catalog:",

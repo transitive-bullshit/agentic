@@ -2,16 +2,11 @@ packages:
   - packages/*
   - stdlib/*
   - apps/*
-  - examples/*
+  - examples/mcp-servers/*
+  - examples/ts-sdks/*
   - packages/fixtures/valid/*
   - docs
-ignoredBuiltDependencies:
-  - '@fisch0920/config'
-  - puppeteer
-onlyBuiltDependencies:
-  - '@sentry/cli'
-  - protobufjs
-  - tree-sitter
+
 catalog:
   '@agentic/core': ^7.6.9
   '@agentic/serper': ^7.6.9
@@ -96,7 +91,7 @@ catalog:
   dedent: ^1.6.0
   del-cli: ^6.0.0
   delay: ^6.0.0
-  dotenv: ^16.5.0
+  dotenv: 16.5.0
   drizzle-kit: ^0.31.4
   drizzle-orm: ^0.44.2
   duck-duck-scrape: ^2.2.7
@@ -137,6 +132,7 @@ catalog:
   octokit: ^5.0.3
   only-allow: ^1.2.1
   open: ^10.1.2
+  openai: ^5.5.1
   openai-fetch: ^3.4.2
   openapi-typescript: ^7.8.0
   ora: ^8.2.0
@@ -188,6 +184,16 @@ catalog:
   zod-to-json-schema: ^3.24.5
   zod-validation-error: ^3.5.2
   zoominfo-api-auth-client: ^1.0.1
+
+ignoredBuiltDependencies:
+  - '@fisch0920/config'
+  - puppeteer
+
+onlyBuiltDependencies:
+  - '@sentry/cli'
+  - protobufjs
+  - tree-sitter
+
 updateConfig:
   ignoreDependencies:
     - p-throttle

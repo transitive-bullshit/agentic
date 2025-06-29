@@ -10,7 +10,7 @@
   "dependencies": {
     "@agentic/core": "workspace:*",
     "@agentic/llamaindex": "workspace:*",
-    "@agentic/stdlib": "workspace:*",
+    "@agentic/platform-tool-client": "workspace:*",
     "@llamaindex/openai": "catalog:",
     "@llamaindex/workflow": "catalog:",
     "llamaindex": "catalog:",
