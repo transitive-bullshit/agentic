@@ -60,6 +60,8 @@ agentic signup -e <email> -p <password> -u <username>
   `https` URL, and that your OpenAPI spec is a valid 3.0 or 3.1 spec.
 </Info>
 
+Your agentic config either be an `agentic.config.ts` file or an `agentic.config.json` file. The advantage of using a `ts` file is that you get full autocomplete and type safety.
+
 <Tabs>
 <Tab title="TypeScript">
 
@@ -140,8 +142,8 @@ Every time you make a change to your project, you can run `agentic deploy` which
 <Expandable title="example output">
 
 <Note>
-  The returned deployment will not have any information about the origin server,
-  because your origin server is considered hidden once deployed to Agentic's MCP
+  The returned deployment will not have any information about your origin
+  server, because the origin is considered hidden once deployed to Agentic's MCP
   gateway.
 </Note>
 
@@ -325,7 +327,7 @@ curl -X POST -H "Content-Type: application/json" -d '{ "query": "example google 
 <Tab title="HTTPie">
 
 ```bash
-http -j https://gateway.agentic.com/mcp/search/search query='example google search'
+http https://gateway.agentic.com/mcp/search/search query='example google search'
 ```
 
 </Tab>
