@@ -1737,18 +1737,6 @@ importers:
         specifier: 'catalog:'
         version: 0.10.8(openapi-types@12.1.3)(react@19.1.0)(zod@3.25.67)
 
-  stdlib/mcp:
-    dependencies:
-      '@agentic/core':
-        specifier: workspace:*
-        version: link:../core
-      '@modelcontextprotocol/sdk':
-        specifier: 'catalog:'
-        version: 1.13.2
-      zod:
-        specifier: 'catalog:'
-        version: 3.25.67
-
   stdlib/midjourney:
     dependencies:
       '@agentic/core':
@@ -2024,9 +2012,6 @@ importers:
       '@agentic/leadmagic':
         specifier: workspace:*
         version: link:../leadmagic
-      '@agentic/mcp':
-        specifier: workspace:*
-        version: link:../mcp
       '@agentic/midjourney':
         specifier: workspace:*
         version: link:../midjourney

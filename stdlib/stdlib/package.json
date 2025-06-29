@@ -12,10 +12,17 @@
   "type": "module",
   "sideEffects": false,
   "source": "./src/index.ts",
-  "types": "./src/index.ts",
+  "types": "./dist/index.ts",
   "exports": {
-    ".": "./src/index.ts"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsup",
     "clean": "del dist",
@@ -45,7 +52,6 @@
     "@agentic/jina": "workspace:*",
     "@agentic/leadmagic": "workspace:*",
     "@agentic/midjourney": "workspace:*",
-    "@agentic/mcp": "workspace:*",
     "@agentic/notion": "workspace:*",
     "@agentic/novu": "workspace:*",
     "@agentic/open-meteo": "workspace:*",
@@ -76,18 +82,7 @@
     "zod": "catalog:"
   },
   "publishConfig": {
-    "access": "public",
-    "files": [
-      "dist"
-    ],
-    "types": "./dist/index.ts",
-    "exports": {
-      ".": {
-        "types": "./dist/index.d.ts",
-        "import": "./dist/index.js",
-        "default": "./dist/index.js"
-      }
-    }
+    "access": "public"
   },
   "keywords": [
     "agentic",

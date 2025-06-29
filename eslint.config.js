@@ -12,7 +12,8 @@ export default [
       'packages/json-schema/test/json-schema-test-suite.ts',
       'apps/gateway/.wrangler',
       'apps/web/src/*.gen.ts',
-      'legacy/**'
+      'legacy/**',
+      'stdlib/stdlib/**'
     ]
   },
   {
