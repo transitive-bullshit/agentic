@@ -375,7 +375,6 @@ export namespace Msg {
       return Msg.refusal(msg.refusal)
     } else {
       // @TODO: probably don't want to error here
-      // eslint-disable-next-line no-console
       console.warn('Invalid message', msg)
       throw new Error('Invalid message')
     }

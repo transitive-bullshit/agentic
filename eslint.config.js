@@ -36,7 +36,7 @@ export default [
     }
   },
   {
-    files: ['apps/e2e/**/*.ts', 'apps/web/src/**/*.{tsx,ts}', 'stdlib'],
+    files: ['apps/e2e/**/*.ts', 'apps/web/src/**/*.{tsx,ts}', 'stdlib/**/*.ts'],
     rules: {
       'no-console': 'off'
     }
