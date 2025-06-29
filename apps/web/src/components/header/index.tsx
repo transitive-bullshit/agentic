@@ -30,31 +30,34 @@ export function Header() {
         </ActiveLink>
 
         <div className='flex justify-end items-center h-full gap-4'>
-          <ActiveLink href='/marketplace' className='link hidden sm:block'>
+          <ActiveLink
+            href='/marketplace'
+            className='link hidden sm:block whitespace-nowrap'
+          >
             MCP Marketplace
           </ActiveLink>
 
-          <ActiveLink href={docsUrl} className='link'>
+          <ActiveLink href={docsUrl} className='link whitespace-nowrap'>
             Docs
           </ActiveLink>
 
           {ctx?.isAuthenticated ? (
             <>
-              <ActiveLink href='/app' className='link'>
+              <ActiveLink href='/app' className='link whitespace-nowrap'>
                 Dashboard
               </ActiveLink>
 
-              <ActiveLink href='/logout' className='link'>
+              <ActiveLink href='/logout' className='link whitespace-nowrap'>
                 Logout
               </ActiveLink>
             </>
           ) : (
             <>
-              <ActiveLink href='/login' className='link'>
+              <ActiveLink href='/login' className='link whitespace-nowrap'>
                 Login
               </ActiveLink>
 
-              <ActiveLink href='/signup' className='link'>
+              <ActiveLink href='/signup' className='link whitespace-nowrap'>
                 Sign up
               </ActiveLink>
             </>
