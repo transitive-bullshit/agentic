@@ -31,10 +31,8 @@
     "@agentic/calculator": "workspace:*",
     "@agentic/clearbit": "workspace:*",
     "@agentic/core": "workspace:*",
-    "@agentic/dexa": "workspace:*",
     "@agentic/diffbot": "workspace:*",
     "@agentic/duck-duck-go": "workspace:*",
-    "@agentic/e2b": "workspace:*",
     "@agentic/exa": "workspace:*",
     "@agentic/firecrawl": "workspace:*",
     "@agentic/github": "workspace:*",
@@ -72,8 +70,7 @@
     "@agentic/wikipedia": "workspace:*",
     "@agentic/wolfram-alpha": "workspace:*",
     "@agentic/youtube": "workspace:*",
-    "@agentic/zoominfo": "workspace:*",
-    "@e2b/code-interpreter": "catalog:"
+    "@agentic/zoominfo": "workspace:*"
   },
   "peerDependencies": {
     "zod": "catalog:"

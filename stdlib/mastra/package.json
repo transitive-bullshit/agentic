@@ -25,7 +25,9 @@
   },
   "dependencies": {
     "@agentic/core": "workspace:*",
-    "@agentic/platform-tool-client": "workspace:*"
+    "@agentic/platform-tool-client": "workspace:*",
+    "@mastra/schema-compat": "^0.10.3",
+    "ai": "catalog:"
   },
   "peerDependencies": {
     "@mastra/core": "catalog:"

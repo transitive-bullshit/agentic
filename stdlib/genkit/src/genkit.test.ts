@@ -13,5 +13,5 @@ test('createGenkitToolsFromIdentifier', async () => {
   const genkit = new Genkit()
   const tools = await createGenkitToolsFromIdentifier(genkit, '@agentic/search')
   expect(tools).toHaveLength(1)
-  expect(tools[0]!.name).toBe('search')
+  expect(tools[0]!.__action.name).toBe('search')
 })

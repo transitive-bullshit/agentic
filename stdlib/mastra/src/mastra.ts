@@ -1,9 +1,16 @@
-import { type AIFunctionLike, AIFunctionSet, isZodSchema } from '@agentic/core'
+import {
+  type AIFunctionLike,
+  AIFunctionSet,
+  asAgenticSchema,
+  isZodSchema
+} from '@agentic/core'
 import {
   AgenticToolClient,
   type AgenticToolClientOptions
 } from '@agentic/platform-tool-client'
 import { createTool } from '@mastra/core/tools'
+import { convertSchemaToZod } from '@mastra/schema-compat'
+import { jsonSchema } from 'ai'
 
 export type MastraTool = ReturnType<typeof createTool>
 
@@ -18,18 +25,18 @@ export function createMastraTools(
 
   return Object.fromEntries(
     fns.map((fn) => {
-      if (!isZodSchema(fn.inputSchema)) {
-        throw new Error(
-          `Mastra tools only support Zod schemas: ${fn.spec.name} tool uses a custom JSON Schema, which is currently not supported.`
-        )
-      }
+      // https://github.com/mastra-ai/mastra/tree/main/packages/schema-compat
+      const aiSchema = isZodSchema(fn.inputSchema)
+        ? fn.inputSchema
+        : jsonSchema(asAgenticSchema(fn.inputSchema).jsonSchema)
+      const inputSchema = convertSchemaToZod(aiSchema)
 
       return [
         fn.spec.name,
         createTool({
           id: fn.spec.name,
           description: fn.spec.description,
-          inputSchema: fn.inputSchema,
+          inputSchema,
           execute: (ctx) => fn.execute(ctx.context)
         })
       ]
