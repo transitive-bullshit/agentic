@@ -28,7 +28,14 @@ export async function resolveMCPOriginAdapter({
   )
   const transport = new StreamableHTTPClientTransport(new URL(origin.url))
   const client = new McpClient({ name, version })
-  await client.connect(transport)
+  try {
+    await client.connect(transport)
+  } catch (err: any) {
+    throw new Error(
+      `Failed to connect to MCP server at ${origin.url} using the Streamable HTTP transport.Make sure your MCP server is running and accessible, and that your URL is using the correct path (/, /mcp, etc): ${err.message}`,
+      { cause: err }
+    )
+  }
 
   const serverInfo = {
     name,
