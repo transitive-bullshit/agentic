@@ -1,0 +1,57 @@
+{
+  "name": "@agentic/openapi-to-ts",
+  "version": "7.6.9",
+  "description": "Generate an Agentic TypeScript client from an OpenAPI spec.",
+  "author": "Travis Fischer <travis@transitivebullsh.it>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/transitive-bullshit/agentic.git",
+    "directory": "stdlib/openapi-to-ts"
+  },
+  "type": "module",
+  "bin": {
+    "openapi-to-ts": "./dist/openapi-to-ts.js"
+  },
+  "source": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "build": "tsup",
+    "clean": "del dist",
+    "test": "run-s test:*",
+    "test:typecheck": "tsc --noEmit",
+    "test:unit": "vitest run"
+  },
+  "dependencies": {
+    "@agentic/core": "workspace:*",
+    "@apidevtools/swagger-parser": "catalog:",
+    "camelcase": "catalog:",
+    "cleye": "catalog:",
+    "decamelize": "catalog:",
+    "execa": "catalog:",
+    "exit-hook": "catalog:",
+    "json-schema-to-zod": "catalog:",
+    "openapi-types": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "ky": "catalog:"
+  },
+  "publishConfig": {
+    "access": "public",
+    "files": [
+      "dist"
+    ],
+    "types": "./dist/index.ts",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js",
+        "default": "./dist/index.js"
+      }
+    }
+  }
+}
