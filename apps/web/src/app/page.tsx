@@ -59,7 +59,8 @@ export default async function TheBestDamnLandingPageEver() {
       {/* How it works section */}
       <section className='flex flex-col gap-8 mb-16'>
         <h2 className='text-center text-balance leading-snug md:leading-none text-3xl font-heading'>
-          Agentic tools <span className='font-semibold'>work everywhere</span>
+          Agentic tools that{' '}
+          <span className='font-semibold'>work everywhere</span>
         </h2>
 
         <ExampleUsage
