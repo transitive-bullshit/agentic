@@ -1,0 +1,115 @@
+---
+title: LlamaIndex
+description: How to use Agentic tools with the LlamaIndex TS SDK.
+---
+
+## Install
+
+<CodeGroup>
+```bash npm
+npm install llamaindex @llamaindex/workflow @agentic/llamaindex @agentic/platform-tool-client
+```
+
+```bash pnpm
+pnpm add llamaindex @llamaindex/workflow @agentic/llamaindex @agentic/platform-tool-client
+```
+
+```bash bun
+bun add llamaindex @llamaindex/workflow @agentic/llamaindex @agentic/platform-tool-client
+```
+
+```bash yarn
+yarn add llamaindex @llamaindex/workflow @agentic/llamaindex @agentic/platform-tool-client
+```
+
+</CodeGroup>
+
+## Usage
+
+This example uses the [`@agentic/search`](https://agentic.so/marketplace/projects/@agentic/search) tool.
+
+```ts
+import 'dotenv/config'
+
+import { createLlamaIndexTools } from '@agentic/llamaindex'
+import { AgenticToolClient } from '@agentic/platform-tool-client'
+import { openai } from '@llamaindex/openai'
+import { agent } from '@llamaindex/workflow'
+
+async function main() {
+  const searchTool = await AgenticToolClient.fromIdentifier('@agentic/search')
+
+  const tools = createLlamaIndexTools(searchTool)
+  const weatherAgent = agent({
+    llm: openai({ model: 'gpt-4o-mini', temperature: 0 }),
+    systemPrompt: 'You are a helpful assistant. Be as concise as possible.',
+    tools
+  })
+
+  const response = await weatherAgent.run(
+    'What is the weather in San Francisco?'
+  )
+
+  console.log(response.data.result)
+}
+
+await main()
+```
+
+<Expandable title="Additional dependencies">
+This example also uses the [@llamaindex/openai](https://ts.llamaindex.ai/docs/llamaindex/modules/models/llms/openai) provider, which adds OpenAI support to LlamaIndex.
+
+_Note that OpenAI is not necessary to use Agentic; this is just an example._
+
+<CodeGroup>
+```bash npm
+npm install @llamaindex/openai dotenv
+```
+
+```bash pnpm
+pnpm add @llamaindex/openai dotenv
+```
+
+```bash bun
+bun add @llamaindex/openai dotenv
+```
+
+```bash yarn
+yarn add @llamaindex/openai dotenv
+```
+
+</CodeGroup>
+</Expandable>
+
+## Running this example
+
+<Note>
+  You can view the full source for this example here:
+  https://github.com/transitive-bullshit/agentic/tree/main/examples/ts-sdks/llamaindex
+</Note>
+
+<Info>
+  You'll need an [OpenAI API key](https://platform.openai.com/docs/quickstart)
+  to run this example. Store it in a local `.env` file as `OPENAI_API_KEY`.
+</Info>
+
+```sh
+git clone git@github.com:transitive-bullshit/agentic.git
+cd agentic
+pnpm install
+pnpm build
+echo 'OPENAI_API_KEY=your-key' >> .env
+npx tsx examples/ts-sdks/llamaindex/bin/weather.ts
+```
+
+<Info>
+  The
+  [`@agentic/search`](https://agentic.so/marketplace/projects/@agentic/search)
+  tool comes with a generous free tier, but once that runs out, you'll need to
+  sign up for a paid plan and add an `AGENTIC_API_KEY` to your `.env` file.
+</Info>
+
+## Additional resources
+
+- [`@agentic/llamaindex` source](https://github.com/transitive-bullshit/agentic/blob/main/stdlib/llamaindex/src/llamaindex.ts)
+- [LlamaIndex TS docs](https://ts.llamaindex.ai)

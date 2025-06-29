@@ -49,12 +49,13 @@
           {
             "group": "TypeScript AI SDKs",
             "pages": [
-              "sdks/ts/ai-sdk",
-              "sdks/ts/openai",
-              "sdks/ts/langchain",
-              "sdks/ts/llamaindex",
-              "sdks/ts/genkit",
-              "sdks/ts/mastra"
+              "marketplace/ts-sdks/ai-sdk",
+              "marketplace/ts-sdks/openai-chat",
+              "marketplace/ts-sdks/openai-responses",
+              "marketplace/ts-sdks/langchain",
+              "marketplace/ts-sdks/llamaindex",
+              "marketplace/ts-sdks/genkit",
+              "marketplace/ts-sdks/mastra"
             ]
           }
         ]

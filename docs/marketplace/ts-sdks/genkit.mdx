@@ -1,0 +1,112 @@
+---
+title: Firebase Genkit
+description: How to use Agentic tools with the Firebase Genkit SDK.
+---
+
+## Install
+
+<CodeGroup>
+```bash npm
+npm install genkit @agentic/genkit @agentic/platform-tool-client
+```
+
+```bash pnpm
+pnpm add genkit @agentic/genkit @agentic/platform-tool-client
+```
+
+```bash bun
+bun add genkit @agentic/genkit @agentic/platform-tool-client
+```
+
+```bash yarn
+yarn add genkit @agentic/genkit @agentic/platform-tool-client
+```
+
+</CodeGroup>
+
+## Usage
+
+This example uses the [`@agentic/search`](https://agentic.so/marketplace/projects/@agentic/search) tool.
+
+```ts
+import 'dotenv/config'
+
+import { createGenkitTools } from '@agentic/genkit'
+import { AgenticToolClient } from '@agentic/platform-tool-client'
+import { genkit } from 'genkit'
+import { gpt4oMini, openAI } from 'genkitx-openai'
+
+async function main() {
+  const searchTool = await AgenticToolClient.fromIdentifier('@agentic/search')
+
+  const ai = genkit({
+    plugins: [openAI()]
+  })
+
+  const result = await ai.generate({
+    model: gpt4oMini,
+    tools: createGenkitTools(ai, searchTool),
+    system: 'You are a helpful assistant. Be as concise as possible.',
+    prompt: 'What is the weather in San Francisco?'
+  })
+
+  console.log(result)
+}
+
+await main()
+```
+
+<Expandable title="Additional dependencies">
+This example also uses the [genkitx-openai](https://github.com/TheFireCo/genkit-plugins/tree/main/plugins/openai) package, which adds OpenAI support to Genkit.
+
+_Note that OpenAI is not necessary to use Agentic; this is just an example._
+
+<CodeGroup>
+```bash npm
+npm install genkitx-openai dotenv
+```
+
+```bash pnpm
+pnpm add genkitx-openai dotenv
+```
+
+```bash bun
+bun add genkitx-openai dotenv
+```
+
+```bash yarn
+yarn add genkitx-openai dotenv
+```
+
+</CodeGroup>
+</Expandable>
+
+## Running this example
+
+You can view the full source for this example here: https://github.com/transitive-bullshit/agentic/tree/main/examples/ts-sdks/genkit
+
+<Info>
+  You'll need an [OpenAI API key](https://platform.openai.com/docs/quickstart)
+  to run this example. Store it in a local `.env` file as `OPENAI_API_KEY`.
+</Info>
+
+<Info>
+  The
+  [`@agentic/search`](https://agentic.so/marketplace/projects/@agentic/search)
+  tool comes with a generous free tier, but once that runs out, you'll need to
+  sign up for a paid plan and add an `AGENTIC_API_KEY` to your `.env` file.
+</Info>
+
+```sh
+git clone git@github.com:transitive-bullshit/agentic.git
+cd agentic
+pnpm install
+pnpm build
+echo 'OPENAI_API_KEY=your-key' >> .env
+npx tsx examples/ts-sdks/genkit/bin/weather.ts
+```
+
+## Additional resources
+
+- [`@agentic/genkit` source](https://github.com/transitive-bullshit/agentic/blob/main/stdlib/genkit/src/genkit.ts)
+- [Firebase Genkit docs](https://firebase.google.com/docs/genkit)

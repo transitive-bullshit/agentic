@@ -33,6 +33,7 @@
   - mcp tool inputSchemas may not support openai strict mode either
   - maybe default `strict` to `false` in `createAIFunction` for now?
   - also add `@agentic/json-schema` to `createJsonSchema` parsing instead of current no-op
+- add support to `@agentic/platform-tool-client` for
 
 ## TODO: Post-MVP
 
