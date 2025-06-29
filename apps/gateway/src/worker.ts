@@ -13,7 +13,9 @@ export default Sentry.withSentry(
   (env: RawEnv) => ({
     dsn: env.SENTRY_DSN,
     environment: env.ENVIRONMENT,
-    integrations: [Sentry.extraErrorDataIntegration()]
+    integrations: [Sentry.extraErrorDataIntegration()],
+    tracesSampleRate: 1.0,
+    sendDefaultPii: true
   }),
   {
     async fetch(

@@ -14,13 +14,13 @@
   "source": "./src/worker.ts",
   "scripts": {
     "dev": "wrangler dev",
-    "deploy": "wrangler deploy --var SENTRY_RELEASE:$(sentry-cli releases propose-version)",
+    "deploy": "wrangler deploy --env production --outdir dist --upload-source-maps --var SENTRY_RELEASE:$(sentry-cli releases propose-version)",
     "cf-clear-cache": "del .wrangler",
     "clean": "del dist",
     "test": "run-s test:*",
     "test:typecheck": "tsc --noEmit",
     "test:unit": "vitest run",
-    "sentry:sourcemaps": "_SENTRY_RELEASE=$(sentry-cli releases propose-version) && sentry-cli releases new $_SENTRY_RELEASE --org=agentic-platform --project=node && sentry-cli sourcemaps upload --org=agentic-platform --project=node --release=$_SENTRY_RELEASE --strip-prefix 'dist/..' dist",
+    "sentry:sourcemaps": "_SENTRY_RELEASE=$(sentry-cli releases propose-version) && sentry-cli releases new $_SENTRY_RELEASE --org=agentic-platform --project=gateway && sentry-cli sourcemaps upload --org=agentic-platform --project=gateway --release=$_SENTRY_RELEASE --strip-prefix 'dist/..' dist",
     "postdeploy": "pnpm sentry:sourcemaps"
   },
   "dependencies": {

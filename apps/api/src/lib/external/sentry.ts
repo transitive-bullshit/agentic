@@ -5,6 +5,7 @@ import * as Sentry from '@sentry/node'
 Sentry.init({
   dsn: process.env.SENTRY_DSN, // eslint-disable-line no-process-env
   environment: process.env.ENVIRONMENT || 'development', // eslint-disable-line no-process-env
+  integrations: [Sentry.extraErrorDataIntegration()],
   tracesSampleRate: 1.0,
-  integrations: [Sentry.extraErrorDataIntegration()]
+  sendDefaultPii: true
 })
