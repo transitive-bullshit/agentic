@@ -139,7 +139,7 @@ export default async function TheBestDamnLandingPageEver() {
             MCP client.
           </h5>
 
-          <SupplySideCTA variant='book-call' />
+          <SupplySideCTA variant='docs' />
         </div>
       </DotsSection>
 

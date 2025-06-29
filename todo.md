@@ -9,18 +9,16 @@
   - stripe
     - double check stripe upgrade flow and add fireworks
     - should we bypass stripe for `free` plans to increase conversions?
-  - handle browser back/forward with `?next=`
-  - add some social proof to signup page
   - example usage
+    - double check example usage for all TS sdks now that real examples are working
     - fix mcp examples
     - add example usage to project detail pages
+    - import react example usage component into docs
 - docs
   - main readme
   - sub readmes (https://www.npmjs.com/package/@agentic/cli)
-  - hosted docs
 - social images
-- add really strict free rate-limits to `@agentic/search`
-- **move legacy packages, examples, and docs over**
+- double-check free-tier rate-limits for `@agentic/search`
 - replace json project and components with actual designs
 - implement footer
 - finesse header (mobile)
@@ -34,8 +32,8 @@
   - maybe default `strict` to `false` in `createAIFunction` for now?
   - also add `@agentic/json-schema` to `createJsonSchema` parsing instead of current no-op
 - add support to `@agentic/platform-tool-client` for
-- double check example usage for all TS sdks
 - add docs on using multiple tools with `AIFunctionSet`
+- add ts sdk examples to e2e tests
 
 ## TODO: Post-MVP
 
@@ -51,6 +49,8 @@
     - => **punt on this for mvp**
 - **website**
   - llms.txt and llms.txt for all projects
+  - handle browser back/forward with `?next=`
+  - add some social proof to signup page
 - first-party deployment hosting
 - api gateway stress tests
 - auth

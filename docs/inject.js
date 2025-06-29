@@ -1,0 +1,44 @@
+const isServer = globalThis.window === undefined
+const isSafari =
+  !isServer && /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
+
+if (!isServer) {
+  // Workaround for nav links not being able to point to relative paths
+  for (const a of document.querySelectorAll(
+    'a[href="https://docs.agentic.so/contact"]'
+  )) {
+    a.removeAttribute('target')
+    a.setAttribute('href', '/contact')
+  }
+
+  // document
+  //   .getElementById('https://docs.agentic.so/contact')
+  //   .querySelector('.lucide-arrow-up-right')
+  //   .classList.add('hidden')
+}
+
+const detail = `
+- https://github.com/transitive-bullshit/agentic
+- https://x.com/transitive_bs
+`
+
+const banner = `
+ █████╗  ██████╗ ███████╗███╗   ██╗████████╗██╗ ██████╗
+██╔══██╗██╔════╝ ██╔════╝████╗  ██║╚══██╔══╝██║██╔════╝
+███████║██║  ███╗█████╗  ██╔██╗ ██║   ██║   ██║██║
+██╔══██║██║   ██║██╔══╝  ██║╚██╗██║   ██║   ██║██║
+██║  ██║╚██████╔╝███████╗██║ ╚████║   ██║   ██║╚██████╗
+╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝  ╚═══╝   ╚═╝   ╚═╝ ╚═════╝
+
+${detail}
+`
+
+function bootstrap() {
+  if (isSafari) {
+    console.log(detail)
+  } else {
+    console.log(banner)
+  }
+}
+
+bootstrap()

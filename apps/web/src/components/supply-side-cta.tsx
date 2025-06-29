@@ -9,6 +9,7 @@ import { GitHubIcon } from '@/icons/github'
 import {
   calendarBookingUrl,
   docsPublishingQuickStartUrl,
+  docsPublishingUrl,
   githubUrl
 } from '@/lib/config'
 
@@ -19,7 +20,7 @@ export function SupplySideCTA({
   variant = 'github',
   heroVariant = 'orange'
 }: {
-  variant?: 'book-call' | 'github' | 'github-2'
+  variant?: 'book-call' | 'docs' | 'github' | 'github-2'
   heroVariant?: HeroButtonVariant
 }) {
   const ctx = useAgentic()
@@ -46,6 +47,10 @@ export function SupplySideCTA({
             <GitHubIcon />
             Star us on GitHub
           </Link>
+        </Button>
+      ) : variant === 'docs' ? (
+        <Button variant='outline' asChild className='h-full py-[9px]'>
+          <Link href={docsPublishingUrl}>Publishing Docs</Link>
         </Button>
       ) : (
         <Button variant='outline' asChild className='h-full py-[9px]'>
