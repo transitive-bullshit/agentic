@@ -109,7 +109,8 @@ app.all(async (ctx) => {
     } else {
       originResponse = await createHttpResponseFromMcpToolCallResponse(ctx, {
         ...resolvedHttpEdgeRequest,
-        toolCallResponse: resolvedOriginToolCallResult.toolCallResponse
+        toolCallResponse: resolvedOriginToolCallResult.toolCallResponse,
+        toolConfig: resolvedOriginToolCallResult.toolConfig
       })
     }
 

@@ -1,4 +1,4 @@
-import type { AdminDeployment, Tool } from '@agentic/platform-types'
+import type { AdminDeployment, Tool, ToolConfig } from '@agentic/platform-types'
 import { assert } from '@agentic/platform-core'
 
 import type { GatewayHonoContext, McpToolCallResponse } from './types'
@@ -9,11 +9,13 @@ export async function createHttpResponseFromMcpToolCallResponse(
   {
     tool,
     deployment,
-    toolCallResponse
+    toolCallResponse,
+    toolConfig
   }: {
     tool: Tool
     deployment: AdminDeployment
     toolCallResponse: McpToolCallResponse
+    toolConfig?: ToolConfig
   }
 ): Promise<Response> {
   assert(
@@ -29,6 +31,12 @@ export async function createHttpResponseFromMcpToolCallResponse(
   )
 
   if (tool.outputSchema) {
+    // eslint-disable-next-line no-console
+    console.log(`tool call "${tool.name}" structured response:`, {
+      outputSchema: tool.outputSchema,
+      toolCallResponse
+    })
+
     assert(
       toolCallResponse.structuredContent,
       502,
@@ -41,7 +49,8 @@ export async function createHttpResponseFromMcpToolCallResponse(
       data: toolCallResponse.structuredContent as Record<string, unknown>,
       coerce: false,
       // TODO: double-check MCP schema on whether additional properties are allowed
-      strictAdditionalProperties: true,
+      strictAdditionalProperties:
+        toolConfig?.outputSchemaAdditionalProperties === false,
       errorPrefix: `Invalid tool response for tool "${tool.name}"`,
       errorStatusCode: 502
     })

@@ -26,6 +26,7 @@
 - add caching to public projects api endpoints
 - add support for [`@google/genai`](https://github.com/googleapis/js-genai) tools adapter and examples
 - fix gateway sentry deployment upload
+- add feature about optimized context to marketing site
 
 ## TODO: Post-MVP
 

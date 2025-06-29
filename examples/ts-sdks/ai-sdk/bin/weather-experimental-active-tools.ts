@@ -21,7 +21,7 @@ async function main() {
     prompt: 'What is the weather in San Francisco?'
   })
 
-  console.log(result.toolResults[0])
+  console.log(JSON.stringify(result.toolResults[0], null, 2))
 }
 
 await main()
