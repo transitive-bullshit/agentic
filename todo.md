@@ -17,10 +17,14 @@
   - hosted docs
 - social images
 - add really strict free rate-limits to `@agentic/search`
-- simplify `AgenticToolClient` and only require one package per TS LLM SDK
+- **simplify `AgenticToolClient` and only require one package per TS LLM SDK**
   - `createAISDKToolsFromIdentifier(projectIdentifier)`
-- move legacy over and update examples + docs
+- **move legacy packages, examples, and docs over**
+- replace json project and components with actual designs
+- implement footer
+- finesse header (mobile)
 - create agentic products for legacy tools
+- add basic legal terms and privacy policy (and update links in stripe)
 
 ## TODO: Post-MVP
 
