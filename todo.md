@@ -13,7 +13,7 @@
   - add some social proof to signup page
 - docs
   - main readme
-  - sub readmes
+  - sub readmes (https://www.npmjs.com/package/@agentic/cli)
   - hosted docs
 - social images
 - add really strict free rate-limits to `@agentic/search`
