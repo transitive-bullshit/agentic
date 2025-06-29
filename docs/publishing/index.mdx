@@ -5,4 +5,40 @@ description: Your API → Paid MCP, Instantly.
 
 Run one command to turn any MCP server or OpenAPI service into a paid MCP product. With built-in support for every major LLM SDK and MCP client.
 
-Visit the [quick start](/publishing/quickstart) to get started.
+Visit the [Quick Start](/publishing/quickstart) to get started or read on for a quick overview.
+
+## How it works
+
+<Frame>
+  <img
+    src='https://agentic.so/agentic-mcp-gateway-mvp-diagram-light.png'
+    alt='MCP Gateway Demo'
+    className='w-full rounded-lg overflow-hidden'
+  />
+</Frame>
+
+<Steps>
+  <Step title='Create your MCP server or OpenAPI service'>
+    Your origin server represents your product's unique value prop.
+
+    It can be any remote MCP server or OpenAPI service. You can host your origin server anywhere, using any language or framework.
+
+  </Step>
+  <Step title="Publish your origin server to Agentic's MCP Gateway">
+    Agentic's MCP Gateway acts as a public proxy between your origin
+    server and your customers.
+
+    It handles everything you'll need to start charging for your tools as a production-ready AI product. That includes auth, billing, rate-limiting, caching, usage tracking, versioning, etc. It also makes your tools instantly compatible with every major LLM SDK and MCP client.
+
+  </Step>
+  <Step title='Share your MCP product with the world! 🎉'>
+    Your MCP product is now live and ready to sell. You can share its public URL
+    with customers, and they'll be able to subscribe to your product via Stripe.
+    We use [Stripe Connect](https://stripe.com/connect) to handle sending
+    payments to your bank.
+  </Step>
+</Steps>
+
+That's all there is to it!
+
+Visit the [Quick Start](/publishing/quickstart) to get started in minutes.
