@@ -40,8 +40,6 @@ async function main() {
     })
   }
 
-  console.log()
-
   {
     // Second call to OpenAI to generate a text response
     const res = await openai.chat.completions.create({
@@ -51,7 +49,7 @@ async function main() {
       tools: searchTool.functions.toolSpecs
     })
     const message = res.choices?.[0]?.message
-    console.log(message)
+    console.log(message?.content)
   }
 }
 

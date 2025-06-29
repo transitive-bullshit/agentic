@@ -1,5 +1,5 @@
 import type { AdminDeployment, Tool } from '@agentic/platform-types'
-import { assert } from '@agentic/platform-core'
+import { assert, HttpError } from '@agentic/platform-core'
 
 import type { GatewayHonoContext } from './types'
 import { cfValidateJsonSchema } from './cf-validate-json-schema'
@@ -14,6 +14,7 @@ export async function getToolArgsFromRequest(
     deployment: AdminDeployment
   }
 ): Promise<Record<string, any>> {
+  const logger = ctx.get('logger')
   const request = ctx.req.raw
   assert(
     deployment.origin.type !== 'raw',
@@ -50,17 +51,29 @@ export async function getToolArgsFromRequest(
 
     try {
       incomingRequestArgsRaw = (await request.json()) as Record<string, any>
-    } catch {
-      // If the request body is not JSON or malformed, ignore it for now.
-      // TODO: need to improve on this logic.
+    } catch (err) {
+      // Error if the request body is not JSON or is malformed.
+      logger.error('Error parsing incoming request body', request, err)
+      throw new HttpError({
+        message: 'Invalid request body json',
+        statusCode: 400,
+        cause: err
+      })
     }
+
+    // console.log(
+    //   'incomingRequestArgsRaw',
+    //   typeof incomingRequestArgsRaw,
+    //   request.headers,
+    //   incomingRequestArgsRaw
+    // )
 
     // TODO: Proper support for empty params with POST requests
     assert(incomingRequestArgsRaw, 400, 'Invalid empty request body')
     assert(
       typeof incomingRequestArgsRaw === 'object',
       400,
-      'Invalid request body'
+      `Invalid request body: expected type "object", received type "${typeof incomingRequestArgsRaw}"`
     )
     assert(!Array.isArray(incomingRequestArgsRaw), 400, 'Invalid request body')
     return incomingRequestArgsRaw

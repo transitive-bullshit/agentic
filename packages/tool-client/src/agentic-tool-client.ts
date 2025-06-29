@@ -63,6 +63,9 @@ export class AgenticToolClient extends AIFunctionsProvider {
           name: tool.name,
           description: tool.description ?? '',
           inputSchema: createJsonSchema(tool.inputSchema),
+          // TODO: we should make sure all agentic tools support OpenAI strict
+          // mode by default.
+          strict: false,
           execute: async (json) => {
             return ky
               .post(

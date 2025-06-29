@@ -41,8 +41,6 @@ async function main() {
     })
   }
 
-  console.log()
-
   {
     // Second call to OpenAI to generate a text response
     const res = await openai.responses.create({

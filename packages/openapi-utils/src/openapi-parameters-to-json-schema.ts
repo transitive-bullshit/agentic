@@ -183,19 +183,25 @@ function getSchema(parameters: any[], type: string) {
           ...paramSchema,
           ...handleNullableSchema(param.schema)
         }
+
         if ('examples' in param) {
           paramSchema.examples = getExamples(param.examples)
         }
+
         schema.properties[param.name] = paramSchema
       } else {
         if ('examples' in paramSchema) {
           paramSchema.examples = getExamples(paramSchema.examples)
         }
+
         schema.properties[param.name] = param.nullable
           ? handleNullable(paramSchema)
           : paramSchema
       }
     }
+
+    // TODO: support openai strict mode by default (all params must be required,
+    // and optional params without defaults must be nullable)
 
     schema.required = getRequiredParams(params)
   }

@@ -1,4 +1,5 @@
 import type { z } from 'zod'
+import { jsonrepair } from 'jsonrepair'
 
 import type * as types from './types'
 import { parseStructuredOutput } from './parse-structured-output'
@@ -102,7 +103,7 @@ export function asZodOrJsonSchema<TData>(
 export function createJsonSchema<TData = unknown>(
   jsonSchema: types.JSONSchema,
   {
-    parse = (value) => value as TData,
+    parse,
     safeParse,
     source
   }: {
@@ -111,6 +112,15 @@ export function createJsonSchema<TData = unknown>(
     source?: any
   } = {}
 ): AgenticSchema<TData> {
+  parse ??= (value: unknown) => {
+    if (typeof value === 'string') {
+      value = JSON.parse(jsonrepair(value))
+    }
+
+    // TODO: use `cfValidateJsonSchema` from `@agentic/json-schema` here.
+    return value as TData
+  }
+
   safeParse ??= (value: unknown) => {
     try {
       const result = parse(value)

@@ -476,7 +476,7 @@ catalogs:
       version: 3.25.67
     zod-to-json-schema:
       specifier: ^3.24.5
-      version: 3.24.5
+      version: 3.24.6
     zod-validation-error:
       specifier: ^3.5.2
       version: 3.5.2
@@ -1429,7 +1429,7 @@ importers:
         version: 5.1.0
       zod-to-json-schema:
         specifier: 'catalog:'
-        version: 3.24.5(zod@3.25.67)
+        version: 3.24.6(zod@3.25.67)
 
   packages/validators:
     dependencies:
@@ -1473,6 +1473,9 @@ importers:
       ky:
         specifier: 'catalog:'
         version: 1.8.1
+      openai-zod-to-json-schema:
+        specifier: ^1.1.1
+        version: 1.1.1(zod@3.25.67)
       p-throttle:
         specifier: 'catalog:'
         version: 6.2.0
@@ -1482,9 +1485,6 @@ importers:
       zod:
         specifier: 'catalog:'
         version: 3.25.67
-      zod-to-json-schema:
-        specifier: 'catalog:'
-        version: 3.24.5(zod@3.25.67)
       zod-validation-error:
         specifier: 'catalog:'
         version: 3.5.2(zod@3.25.67)
@@ -6338,11 +6338,6 @@ packages:
     resolution: {integrity: sha512-yQbXgO/OSZVD2IsiLlro+7Hf6Q18EJrKSEsdoMzKePKXct3gvD8oLcOQdIzGupr5Fj+EDe8gO/lxc1BzfMpxvA==}
     engines: {node: '>=8'}
 
-  browserslist@4.25.0:
-    resolution: {integrity: sha512-PJ8gYKeS5e/whHBh8xrwYK+dAvEj7JXtz6uTucnMRB8OiGTsKccFekoRrjajPBHV8oOY+2tI4uxeceSimKwMFA==}
-    engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
-    hasBin: true
-
   browserslist@4.25.1:
     resolution: {integrity: sha512-KGj0KoOMXLpSNkkEI6Z6mShmQy0bc1I+T7K9N81k4WWMrfz+6fQ6es80B/YLAeRoKvjYE1YSHHOW1qe9xIVzHw==}
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
@@ -6435,9 +6430,6 @@ packages:
     resolution: {integrity: sha512-KnaKdcvkBJ1Irbrzl8XD6WtZltkRjp869Jx8c0ujs9K+9WD+1D7ryBsCiVqJYUqt6i/HR5FxT7RLASieUD+Q5w==}
     peerDependencies:
       three: '>=0.126.1'
-
-  caniuse-lite@1.0.30001723:
-    resolution: {integrity: sha512-1R/elMjtehrFejxwmexeXAtae5UO9iSyFn6G/I806CYC/BLyyBk1EPhrKBkWhy6wM6Xnm47dSJQec+tLJ39WHw==}
 
   caniuse-lite@1.0.30001726:
     resolution: {integrity: sha512-VQAUIUzBiZ/UnlM28fSp2CRF3ivUn1BWEvxMcVTNwpw91Py1pGbPIyIKtd+tzct9C3ouceCVdGAXxZOpZAsgdw==}
@@ -7108,9 +7100,6 @@ packages:
 
   ee-first@1.1.1:
     resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
-
-  electron-to-chromium@1.5.167:
-    resolution: {integrity: sha512-LxcRvnYO5ez2bMOFpbuuVuAI5QNeY1ncVytE/KXaL6ZNfzX1yPlAO0nSOyIHx2fVAuUprMqPs/TdVhUFZy7SIQ==}
 
   electron-to-chromium@1.5.177:
     resolution: {integrity: sha512-7EH2G59nLsEMj97fpDuvVcYi6lwTcM1xuWw3PssD8xzboAW7zj7iB3COEEEATUfjLHrs5uKBLQT03V/8URx06g==}
@@ -9514,8 +9503,8 @@ packages:
     resolution: {integrity: sha512-8EcOGJk/JXFaoGjeFM53Z3zBnwOpKtZeu5X0wts67WqA1PTnsmwRgUw9aGAsQ5V6cuTfJUv282h1ypFgDGPDSA==}
     engines: {node: '>=18'}
 
-  openai-zod-to-json-schema@1.0.3:
-    resolution: {integrity: sha512-CFU+KtOmX1dk2nPCZcGYgbrI3YLJJgMSehx1mLbH1A2fsRmZevHzMau6vFIhtkCpHWkGQ3ossA4a0OzVHlGrkw==}
+  openai-zod-to-json-schema@1.1.1:
+    resolution: {integrity: sha512-WIsQn2aXqqhRKVoDAQ7UG2W7K6q4FuJL7sn6lrj4bIHC6bbTYNFDfIw10yWCW3GX/zP2Psvubcmcb2NOCnSzsA==}
     engines: {node: '>=18'}
     peerDependencies:
       zod: ^3.23.8
@@ -11644,11 +11633,6 @@ packages:
   zod-from-json-schema@0.0.5:
     resolution: {integrity: sha512-zYEoo86M1qpA1Pq6329oSyHLS785z/mTwfr9V1Xf/ZLhuuBGaMlDGu/pDVGVUe4H4oa1EFgWZT53DP0U3oT9CQ==}
 
-  zod-to-json-schema@3.24.5:
-    resolution: {integrity: sha512-/AuWwMP+YqiPbsJx5D6TfgRTc4kTLjsh5SOcd4bLsfUg2RcEXrFMJl1DGgdHy2aCfsIA/cr/1JM0xcB2GZji8g==}
-    peerDependencies:
-      zod: ^3.24.1
-
   zod-to-json-schema@3.24.6:
     resolution: {integrity: sha512-h/z3PKvcTcTetyjl1fkj79MHNEjm+HpD6NXheWjzOekY7kV+lwDYnHw+ivHkijnCSMz1yJaWBD9vu/Fcmk+vEg==}
     peerDependencies:
@@ -11713,7 +11697,7 @@ snapshots:
       delay: 6.0.0
       jsonrepair: 3.12.0
       ky: 1.8.1
-      openai-zod-to-json-schema: 1.0.3(zod@3.25.67)
+      openai-zod-to-json-schema: 1.1.1(zod@3.25.67)
       p-throttle: 6.2.0
       type-fest: 4.41.0
       zod: 3.25.67
@@ -16690,14 +16674,13 @@ snapshots:
 
   '@types/pg-pool@2.0.6':
     dependencies:
-      '@types/pg': 8.6.1
+      '@types/pg': 8.15.4
 
   '@types/pg@8.15.4':
     dependencies:
       '@types/node': 24.0.7
       pg-protocol: 1.10.3
       pg-types: 2.2.0
-    optional: true
 
   '@types/pg@8.6.1':
     dependencies:
@@ -17165,8 +17148,8 @@ snapshots:
 
   autoprefixer@10.4.21(postcss@8.5.6):
     dependencies:
-      browserslist: 4.25.0
-      caniuse-lite: 1.0.30001723
+      browserslist: 4.25.1
+      caniuse-lite: 1.0.30001726
       fraction.js: 4.3.7
       normalize-range: 0.1.2
       picocolors: 1.1.1
@@ -17300,13 +17283,6 @@ snapshots:
     dependencies:
       fill-range: 7.1.1
 
-  browserslist@4.25.0:
-    dependencies:
-      caniuse-lite: 1.0.30001723
-      electron-to-chromium: 1.5.167
-      node-releases: 2.0.19
-      update-browserslist-db: 1.1.3(browserslist@4.25.0)
-
   browserslist@4.25.1:
     dependencies:
       caniuse-lite: 1.0.30001726
@@ -17416,8 +17392,6 @@ snapshots:
   camera-controls@2.10.1(three@0.177.0):
     dependencies:
       three: 0.177.0
-
-  caniuse-lite@1.0.30001723: {}
 
   caniuse-lite@1.0.30001726: {}
 
@@ -17953,8 +17927,6 @@ snapshots:
       '@noble/hashes': 1.8.0
 
   ee-first@1.1.1: {}
-
-  electron-to-chromium@1.5.167: {}
 
   electron-to-chromium@1.5.177: {}
 
@@ -20778,7 +20750,7 @@ snapshots:
       '@swc/counter': 0.1.3
       '@swc/helpers': 0.5.15
       busboy: 1.6.0
-      caniuse-lite: 1.0.30001723
+      caniuse-lite: 1.0.30001726
       postcss: 8.4.31
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
@@ -20983,7 +20955,7 @@ snapshots:
     dependencies:
       ky: 1.8.1
 
-  openai-zod-to-json-schema@1.0.3(zod@3.25.67):
+  openai-zod-to-json-schema@1.1.1(zod@3.25.67):
     dependencies:
       zod: 3.25.67
 
@@ -23074,12 +23046,6 @@ snapshots:
 
   unpipe@1.0.0: {}
 
-  update-browserslist-db@1.1.3(browserslist@4.25.0):
-    dependencies:
-      browserslist: 4.25.0
-      escalade: 3.2.0
-      picocolors: 1.1.1
-
   update-browserslist-db@1.1.3(browserslist@4.25.1):
     dependencies:
       browserslist: 4.25.1
@@ -23470,10 +23436,6 @@ snapshots:
       stacktracey: 2.1.8
 
   zod-from-json-schema@0.0.5:
-    dependencies:
-      zod: 3.25.67
-
-  zod-to-json-schema@3.24.5(zod@3.25.67):
     dependencies:
       zod: 3.25.67
 

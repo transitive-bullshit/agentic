@@ -114,7 +114,7 @@ export function createAIFunction<
       const args = input.function_call?.arguments
       assert(
         args,
-        `Missing required function_call.arguments for function ${name}`
+        `Missing required function_call.arguments for function "${name}"`
       )
       return inputAgenticSchema.parse(args)
     }

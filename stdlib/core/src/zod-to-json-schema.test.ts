@@ -60,4 +60,38 @@ describe('zodToJsonSchema', () => {
       }
     })
   })
+
+  test('handles optional properties in strict mode', () => {
+    const params = zodToJsonSchema(
+      z.object({
+        name: z.string().optional(),
+        age: z.number().optional().default(10)
+      }),
+      {
+        strict: true
+      }
+    )
+
+    expect(params).toEqual({
+      additionalProperties: false,
+      type: 'object',
+      required: ['name', 'age'],
+      properties: {
+        name: {
+          anyOf: [
+            {
+              type: 'string'
+            },
+            {
+              type: 'null'
+            }
+          ]
+        },
+        age: {
+          type: 'number',
+          default: 10
+        }
+      }
+    })
+  })
 })
