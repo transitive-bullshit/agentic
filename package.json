@@ -28,7 +28,7 @@
     "preinstall": "npx only-allow pnpm",
     "prerelease": "run-s build",
     "prepare": "simple-git-hooks",
-    "release": "bumpp -r && pnpm publish -r",
+    "release": "bumpp -r && run-s build && pnpm publish -r",
     "knip": "knip"
   },
   "devDependencies": {
