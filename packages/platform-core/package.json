@@ -1,6 +1,6 @@
 {
   "name": "@agentic/platform-core",
-  "version": "8.0.2",
+  "version": "8.1.0",
   "description": "Core utilities for the Agentic platform.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "AGPL-3.0",

@@ -1,7 +1,7 @@
 {
   "name": "@agentic/platform-e2e-tests",
   "private": true,
-  "version": "8.0.2",
+  "version": "8.1.0",
   "description": "Internal Agentic platform E2E tests.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "AGPL-3.0",
