@@ -2,7 +2,7 @@
   "name": "@agentic/platform-fixtures",
   "private": true,
   "version": "0.0.1",
-  "description": "Test fixtures for the Agentic platform.",
+  "description": "Internal test fixtures for the Agentic platform.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "AGPL-3.0",
   "repository": {
@@ -11,6 +11,7 @@
     "directory": "packages/fixtures"
   },
   "type": "module",
+  "sideEffects": false,
   "exports": {
     "./valid/**": "./valid/*",
     "./invalid/**": "./invalid/*"

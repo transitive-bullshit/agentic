@@ -1,21 +1,18 @@
 {
-  "name": "@agentic/platform-core",
-  "version": "8.0.2",
-  "description": "Core utilities for the Agentic platform.",
+  "name": "@agentic/core",
+  "version": "7.6.9",
+  "description": "Agentic AI utils which work with any LLM and TypeScript AI SDK.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
-  "license": "AGPL-3.0",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/transitive-bullshit/agentic.git",
     "directory": "packages/core"
   },
-  "engines": {
-    "node": ">=18"
-  },
   "type": "module",
+  "sideEffects": false,
   "source": "./src/index.ts",
   "types": "./src/index.ts",
-  "sideEffects": false,
   "exports": {
     ".": "./src/index.ts"
   },
@@ -27,15 +24,36 @@
     "test:unit": "vitest run"
   },
   "dependencies": {
-    "@sindresorhus/slugify": "catalog:",
-    "decircular": "catalog:",
-    "is-obj": "catalog:",
-    "parse-json": "catalog:",
-    "sort-keys": "catalog:",
+    "dedent": "catalog:",
+    "delay": "catalog:",
+    "jsonrepair": "catalog:",
+    "ky": "catalog:",
+    "zod-to-json-schema": "catalog:",
+    "p-throttle": "catalog:",
     "type-fest": "catalog:",
-    "zod": "catalog:",
     "zod-validation-error": "catalog:"
   },
+  "peerDependencies": {
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "openai-fetch": "catalog:"
+  },
+  "keywords": [
+    "agentic",
+    "ai",
+    "sdk",
+    "openai",
+    "llm",
+    "tools",
+    "stdlib",
+    "standard",
+    "library",
+    "functions",
+    "typescript",
+    "agent",
+    "agents"
+  ],
   "publishConfig": {
     "access": "public",
     "files": [

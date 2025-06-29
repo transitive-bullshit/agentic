@@ -1,5 +1,5 @@
 import type { z } from 'zod'
-import { zodToJsonSchema as zodToJsonSchemaImpl } from 'openai-zod-to-json-schema'
+import { zodToJsonSchema as zodToJsonSchemaImpl } from 'zod-to-json-schema'
 
 import type * as types from './types'
 import { omit } from './utils'
@@ -16,7 +16,7 @@ export function zodToJsonSchema(
   return omit(
     zodToJsonSchemaImpl(schema, {
       $refStrategy: 'none',
-      openaiStrictMode: strict
+      target: strict ? 'openAi' : undefined
     }),
     '$schema',
     'default',

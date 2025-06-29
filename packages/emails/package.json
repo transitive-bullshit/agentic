@@ -11,9 +11,9 @@
     "directory": "packages/emails"
   },
   "type": "module",
+  "sideEffects": false,
   "source": "./src/index.ts",
   "types": "./src/index.ts",
-  "sideEffects": false,
   "exports": {
     ".": "./src/index.ts"
   },

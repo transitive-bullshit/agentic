@@ -1,34 +1,25 @@
 {
   "name": "@agentic/tavily",
   "version": "7.6.9",
-  "description": "Agentic SDK for Tavily.",
+  "description": "Agentic SDK and MCP server for Tavily.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
-  "license": "MIT",
+  "license": "AGPL-3.0",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/transitive-bullshit/agentic.git",
-    "directory": "packages/tavily"
+    "directory": "examples/tavily"
   },
   "type": "module",
-  "source": "./src/index.ts",
-  "types": "./dist/index.d.ts",
   "sideEffects": false,
+  "source": "./src/index.ts",
+  "types": "./src/index.ts",
   "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "default": "./dist/index.js"
-    }
+    ".": "./src/index.ts"
   },
-  "files": [
-    "dist"
-  ],
   "scripts": {
     "build": "tsup",
-    "dev": "tsup --watch",
     "clean": "del dist",
     "test": "run-s test:*",
-    "test:lint": "eslint .",
     "test:typecheck": "tsc --noEmit"
   },
   "dependencies": {
@@ -40,6 +31,17 @@
     "zod": "catalog:"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "files": [
+      "dist"
+    ],
+    "types": "./dist/index.ts",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js",
+        "default": "./dist/index.js"
+      }
+    }
   }
 }

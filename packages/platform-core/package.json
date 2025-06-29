@@ -1,13 +1,13 @@
 {
-  "name": "@agentic/platform-validators",
+  "name": "@agentic/platform-core",
   "version": "8.0.2",
-  "description": "Validation utils for core strings and identifiers used across the Agentic platform.",
+  "description": "Core utilities for the Agentic platform.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "AGPL-3.0",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/transitive-bullshit/agentic.git",
-    "directory": "packages/validators"
+    "directory": "packages/core"
   },
   "engines": {
     "node": ">=18"
@@ -27,10 +27,14 @@
     "test:unit": "vitest run"
   },
   "dependencies": {
-    "@agentic/platform-core": "workspace:*",
-    "@paralleldrive/cuid2": "catalog:",
-    "email-validator": "catalog:",
-    "type-fest": "catalog:"
+    "@sindresorhus/slugify": "catalog:",
+    "decircular": "catalog:",
+    "is-obj": "catalog:",
+    "parse-json": "catalog:",
+    "sort-keys": "catalog:",
+    "type-fest": "catalog:",
+    "zod": "catalog:",
+    "zod-validation-error": "catalog:"
   },
   "publishConfig": {
     "access": "public",

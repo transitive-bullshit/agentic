@@ -1,12 +1,16 @@
-import { expect, test } from 'vitest'
+import ky from 'ky'
+import pThrottle from 'p-throttle'
+import { describe, expect, test } from 'vitest'
 
+import { mockKyInstance } from './_utils'
 import {
   omit,
   pick,
   pruneEmpty,
   pruneEmptyDeep,
-  sha256,
-  slugify
+  sanitizeSearchParams,
+  stringifyForModel,
+  throttleKy
 } from './utils'
 
 test('pick', () => {
@@ -25,25 +29,50 @@ test('omit', () => {
   expect(omit({ a: 1, b: 2, c: 3 }, 'foo', 'bar', 'c')).toEqual({ a: 1, b: 2 })
 })
 
-test('sha256', async () => {
-  // Test default behavior (random UUID)
-  const hash1 = await sha256()
-  const hash2 = await sha256()
-  expect(hash1).toHaveLength(64) // SHA-256 produces 64 character hex string
-  expect(hash2).toHaveLength(64)
-  expect(hash1).not.toBe(hash2) // Different UUIDs should produce different hashes
+test('sanitizeSearchParams', () => {
+  expect(
+    sanitizeSearchParams({ a: 1, b: undefined, c: 13 }).toString()
+  ).toMatchSnapshot()
 
-  const hash3 = await sha256('foo')
-  const hash4 = await sha256('foo')
-  expect(hash3).toBe(hash4) // Same input should produce the same hash
+  expect(sanitizeSearchParams({ a: [1, 2, 3] }).toString()).toMatchSnapshot()
 
-  const hash5 = await sha256('foo1')
-  expect(hash1).not.toBe(hash5)
-  expect(hash2).not.toBe(hash5)
-  expect(hash3).not.toBe(hash5)
-  expect(hash4).not.toBe(hash5)
+  expect(
+    sanitizeSearchParams({ b: ['a', 'b'], foo: true }).toString()
+  ).toMatchSnapshot()
 
-  expect(await sha256('test')).toMatchSnapshot()
+  expect(
+    sanitizeSearchParams({ b: [false, true, false] }).toString()
+  ).toMatchSnapshot()
+
+  expect(
+    sanitizeSearchParams({
+      flag: ['foo', 'bar', 'baz'],
+      token: 'test'
+    }).toString()
+  ).toMatchSnapshot()
+
+  expect(sanitizeSearchParams({}).toString()).toMatchSnapshot()
+
+  expect(sanitizeSearchParams({ a: [] }).toString()).toMatchSnapshot()
+})
+
+describe('stringifyForModel', () => {
+  test('handles basic objects', () => {
+    const input = {
+      foo: 'bar',
+      nala: ['is', 'cute'],
+      kittens: null,
+      cats: undefined,
+      paws: 4.3
+    }
+    const result = stringifyForModel(input)
+    expect(result).toEqual(JSON.stringify(input, null))
+  })
+
+  test('handles empty input', () => {
+    const result = stringifyForModel()
+    expect(result).toEqual('')
+  })
 })
 
 test('pruneEmpty', () => {
@@ -109,21 +138,36 @@ test('pruneEmptyDeep', () => {
   ).toEqual(undefined)
 })
 
-test('slugify', () => {
-  expect(slugify('Foo Bar')).toBe('foo-bar')
-  expect(slugify('FooBar')).toBe('foo-bar')
-  expect(slugify('FooBarBaz')).toBe('foo-bar-baz')
-  expect(slugify('FooBarBazQux')).toBe('foo-bar-baz-qux')
-  expect(slugify('FooBarBazQuxQuux')).toBe('foo-bar-baz-qux-quux')
-  expect(slugify('foo-bar')).toBe('foo-bar')
-  expect(slugify('--foo BAR --')).toBe('foo-bar')
-  expect(slugify('я люблю единорогов')).toBe('ya-lyublyu-edinorogov')
-  expect(slugify('fooBar 123 $#%')).toBe('foo-bar-123')
-  expect(slugify('  Déjà Vu!  ')).toBe('deja-vu')
-  expect(slugify('I ♥ Dogs')).toBe('i-love-dogs')
-  expect(slugify('')).toBe('')
-  expect(slugify('    ')).toBe('')
-  expect(slugify('-')).toBe('')
-  expect(slugify('--')).toBe('')
-  expect(slugify('- -')).toBe('')
-})
+test(
+  'throttleKy should rate-limit requests to ky properly',
+  {
+    timeout: 60_000
+  },
+  async () => {
+    const interval = 1000
+    const throttle = pThrottle({
+      limit: 1,
+      interval,
+      strict: true
+    })
+
+    const ky2 = mockKyInstance(throttleKy(ky, throttle))
+
+    const url = 'https://httpbin.org/get'
+
+    for (let i = 0; i < 10; i++) {
+      const before = Date.now()
+      const res = await ky2.get(url)
+      const after = Date.now()
+
+      const duration = after - before
+      // console.log(duration, res.status)
+      expect(res.status).toBe(200)
+
+      // leave a bit of wiggle room for the interval
+      if (i > 0) {
+        expect(duration >= interval - interval / 5).toBeTruthy()
+      }
+    }
+  }
+)
