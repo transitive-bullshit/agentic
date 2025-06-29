@@ -114,6 +114,8 @@ export function createJsonSchema<TData = unknown>(
 ): AgenticSchema<TData> {
   parse ??= (value: unknown) => {
     if (typeof value === 'string') {
+      // TODO: better error messages for invalid JSON so the LLM has a better
+      // feedback loop.
       value = JSON.parse(jsonrepair(value))
     }
 
