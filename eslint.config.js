@@ -12,7 +12,8 @@ export default [
       'packages/json-schema/test/json-schema-test-suite.ts',
       'apps/gateway/.wrangler',
       'apps/web/src/*.gen.ts',
-      'legacy/**'
+      'legacy/**',
+      'stdlib/stdlib/**'
     ]
   },
   {
@@ -36,7 +37,7 @@ export default [
     }
   },
   {
-    files: ['apps/e2e/**/*.ts', 'apps/web/src/**/*.{tsx,ts}'],
+    files: ['apps/e2e/**/*.ts', 'apps/web/src/**/*.{tsx,ts}', 'stdlib/**/*.ts'],
     rules: {
       'no-console': 'off'
     }

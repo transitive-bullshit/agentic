@@ -1,0 +1,46 @@
+{
+  "name": "@agentic/langchain",
+  "version": "7.6.9",
+  "description": "Agentic adapter for the LangChain AI SDK.",
+  "author": "Travis Fischer <travis@transitivebullsh.it>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/transitive-bullshit/agentic.git",
+    "directory": "stdlib/langchain"
+  },
+  "type": "module",
+  "sideEffects": false,
+  "source": "./src/index.ts",
+  "types": "./dist/index.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "clean": "del dist",
+    "test": "run-s test:*",
+    "test:typecheck": "tsc --noEmit",
+    "test:unit": "vitest run"
+  },
+  "dependencies": {
+    "@agentic/core": "workspace:*",
+    "@agentic/platform-tool-client": "workspace:*"
+  },
+  "peerDependencies": {
+    "@langchain/core": "catalog:"
+  },
+  "devDependencies": {
+    "@langchain/core": "catalog:"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

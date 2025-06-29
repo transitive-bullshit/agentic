@@ -46,8 +46,12 @@ export const tsFrameworkTargetLabels = {
   langchain: 'LangChain',
   llamaindex: 'LlamaIndex',
   mastra: 'Mastra',
-  'firebase-genkit': 'Firebase GenKit',
-  xsai: 'xsAI'
+  'firebase-genkit': 'Firebase GenKit'
+
+  // TODO: add https://github.com/googleapis/js-genai
+
+  // TODO: get xsai adapter working with JSON schemas (currently only standard schemas)
+  // xsai: 'xsAI'
 } as const
 export const tsFrameworkTargets = Object.keys(
   tsFrameworkTargetLabels
@@ -207,6 +211,7 @@ const res = await openai.responses.create({
 })
 
 const toolCall = res.output[0]
+assert(toolCall?.type === 'function_call')
 const toolResult = await searchTool.callTool(toolCall.name, toolCall.arguments)
 
 console.log(toolResult)
@@ -319,32 +324,32 @@ console.log(result)`.trim(),
         lang: 'ts'
       }
 
-    case 'xsai':
-      return {
-        code: `
-import { AgenticToolClient } from '@agentic/platform-tool-client'
-import { createXSAITools } from '@agentic/xsai'
-import { generateText } from 'xsai'
+    //     case 'xsai':
+    //       return {
+    //         code: `
+    // import { AgenticToolClient } from '@agentic/platform-tool-client'
+    // import { createXSAITools } from '@agentic/xsai'
+    // import { generateText } from 'xsai'
 
-const searchTool = await AgenticToolClient.fromIdentifier('${identifier}')
+    // const searchTool = await AgenticToolClient.fromIdentifier('${identifier}')
 
-const result = await generateText({
-  apiKey: process.env.OPENAI_API_KEY!,
-  baseURL: 'https://api.openai.com/v1/',
-  model: 'gpt-4o-mini',
-  tools: await createXSAITools(searchTool),
-  toolChoice: 'required',
-  messages: [
-    {
-      role: 'user',
-      content: '${prompt}'
-    }
-  ]
-})
+    // const result = await generateText({
+    //   apiKey: process.env.OPENAI_API_KEY!,
+    //   baseURL: 'https://api.openai.com/v1/',
+    //   model: 'gpt-4o-mini',
+    //   tools: await createXSAITools(searchTool),
+    //   toolChoice: 'required',
+    //   messages: [
+    //     {
+    //       role: 'user',
+    //       content: '${prompt}'
+    //     }
+    //   ]
+    // })
 
-console.log(JSON.stringify(result, null, 2))`.trim(),
-        lang: 'ts'
-      }
+    // console.log(JSON.stringify(result, null, 2))`.trim(),
+    //         lang: 'ts'
+    //       }
   }
 }
 
@@ -453,7 +458,7 @@ export function getCodeForHTTPConfig({
 
     case 'httpie':
       return {
-        code: `http -j ${url} query='example google search'`,
+        code: `http ${url} query='example google search'`,
         lang: 'bash'
       }
   }

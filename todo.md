@@ -17,10 +17,21 @@
   - hosted docs
 - social images
 - add really strict free rate-limits to `@agentic/search`
-- simplify `AgenticToolClient` and only require one package per TS LLM SDK
-  - `createAISDKToolsFromIdentifier(projectIdentifier)`
-- move legacy over and update examples + docs
+- **move legacy packages, examples, and docs over**
+- replace json project and components with actual designs
+- implement footer
+- finesse header (mobile)
 - create agentic products for legacy tools
+- add basic legal terms and privacy policy (and update links in stripe)
+- add caching to public projects api endpoints
+- add support for [`@google/genai`](https://github.com/googleapis/js-genai) tools adapter
+- link github to cloudflare prod gateway deployment
+- add feature about optimized context to marketing site
+- ensure all agentic tool inputSchemas support openai strict mode by default
+  - openapi tool extraction currently supports optional properties
+  - mcp tool inputSchemas may not support openai strict mode either
+  - maybe default `strict` to `false` in `createAIFunction` for now?
+  - also add `@agentic/json-schema` to `createJsonSchema` parsing instead of current no-op
 
 ## TODO: Post-MVP
 
@@ -95,3 +106,10 @@
 - make json `$schema` public for `agentic.config.json`
 - handle hosting of deployment and user images
 - about page inspiration: https://mastra.ai/about
+- simplify overlap between `@agentic/core` and `@agentic/platform-core`
+- consider moving packages to correspond to their licenses and public/private
+  - platform AGPL-3.0 private
+  - platform AGPL-3.0 public; maybe this should be MIT?
+  - stdlib MIT public
+- **simplify `AgenticToolClient` and only require one package per TS LLM SDK**
+  - `createAISDKToolsFromIdentifier(projectIdentifier)`

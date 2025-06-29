@@ -7,33 +7,25 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/transitive-bullshit/agentic.git",
-    "directory": "packages/xsai"
+    "directory": "stdlib/xsai"
   },
   "type": "module",
-  "source": "./src/index.ts",
-  "types": "./dist/index.d.ts",
   "sideEffects": false,
+  "source": "./src/index.ts",
+  "types": "./src/index.ts",
   "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "default": "./dist/index.js"
-    }
+    ".": "./src/index.ts"
   },
-  "files": [
-    "dist"
-  ],
   "scripts": {
     "build": "tsup",
-    "dev": "tsup --watch",
     "clean": "del dist",
     "test": "run-s test:*",
-    "test:lint": "eslint .",
     "test:typecheck": "tsc --noEmit",
     "test:unit": "vitest run"
   },
   "dependencies": {
-    "@agentic/core": "workspace:*"
+    "@agentic/core": "workspace:*",
+    "@agentic/platform-tool-client": "workspace:*"
   },
   "peerDependencies": {
     "@xsai/tool": "catalog:"
@@ -42,6 +34,17 @@
     "@xsai/tool": "catalog:"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "files": [
+      "dist"
+    ],
+    "types": "./dist/index.ts",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js",
+        "default": "./dist/index.js"
+      }
+    }
   }
 }

@@ -7,12 +7,12 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/transitive-bullshit/agentic.git",
-    "directory": "packages/stdlib"
+    "directory": "stdlib/stdlib"
   },
   "type": "module",
-  "source": "./src/index.ts",
-  "types": "./dist/index.d.ts",
   "sideEffects": false,
+  "source": "./src/index.ts",
+  "types": "./dist/index.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -25,10 +25,8 @@
   ],
   "scripts": {
     "build": "tsup",
-    "dev": "tsup --watch",
     "clean": "del dist",
     "test": "run-s test:*",
-    "test:lint": "eslint .",
     "test:typecheck": "tsc --noEmit"
   },
   "dependencies": {
@@ -40,10 +38,8 @@
     "@agentic/calculator": "workspace:*",
     "@agentic/clearbit": "workspace:*",
     "@agentic/core": "workspace:*",
-    "@agentic/dexa": "workspace:*",
     "@agentic/diffbot": "workspace:*",
     "@agentic/duck-duck-go": "workspace:*",
-    "@agentic/e2b": "workspace:*",
     "@agentic/exa": "workspace:*",
     "@agentic/firecrawl": "workspace:*",
     "@agentic/github": "workspace:*",
@@ -56,7 +52,6 @@
     "@agentic/jina": "workspace:*",
     "@agentic/leadmagic": "workspace:*",
     "@agentic/midjourney": "workspace:*",
-    "@agentic/mcp": "workspace:*",
     "@agentic/notion": "workspace:*",
     "@agentic/novu": "workspace:*",
     "@agentic/open-meteo": "workspace:*",
@@ -81,11 +76,13 @@
     "@agentic/wikipedia": "workspace:*",
     "@agentic/wolfram-alpha": "workspace:*",
     "@agentic/youtube": "workspace:*",
-    "@agentic/zoominfo": "workspace:*",
-    "@e2b/code-interpreter": "catalog:"
+    "@agentic/zoominfo": "workspace:*"
   },
   "peerDependencies": {
     "zod": "catalog:"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "keywords": [
     "agentic",
@@ -107,8 +104,5 @@
     "ai function calling",
     "ai tool calling",
     "tool use"
-  ],
-  "publishConfig": {
-    "access": "public"
-  }
+  ]
 }

@@ -1,0 +1,19 @@
+{
+  "name": "agentic-examples-llamaindex",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "test": "run-s test:*",
+    "test:lint": "eslint .",
+    "test:typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@agentic/core": "workspace:*",
+    "@agentic/llamaindex": "workspace:*",
+    "@agentic/platform-tool-client": "workspace:*",
+    "@llamaindex/openai": "catalog:",
+    "@llamaindex/workflow": "catalog:",
+    "llamaindex": "catalog:",
+    "zod": "catalog:"
+  }
+}

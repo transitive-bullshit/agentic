@@ -1,18 +1,18 @@
 {
   "name": "@agentic/tavily",
   "version": "7.6.9",
-  "description": "Agentic SDK for Tavily.",
+  "description": "Agentic SDK for the Tavily search API.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/transitive-bullshit/agentic.git",
-    "directory": "packages/tavily"
+    "directory": "stdlib/tavily"
   },
   "type": "module",
-  "source": "./src/index.ts",
-  "types": "./dist/index.d.ts",
   "sideEffects": false,
+  "source": "./src/index.ts",
+  "types": "./dist/index.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -25,10 +25,8 @@
   ],
   "scripts": {
     "build": "tsup",
-    "dev": "tsup --watch",
     "clean": "del dist",
     "test": "run-s test:*",
-    "test:lint": "eslint .",
     "test:typecheck": "tsc --noEmit"
   },
   "dependencies": {

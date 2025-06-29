@@ -1,12 +1,16 @@
 import { EchoAITool } from '@agentic/core'
-import { describe, expect, test } from 'vitest'
+import { expect, test } from 'vitest'
 
-import { createXSAITools } from './xsai'
+import { createXSAITools, createXSAIToolsFromIdentifier } from './xsai'
 
-describe('xsai', () => {
-  test('createXSAITools', async () => {
-    const tools = await createXSAITools(new EchoAITool())
-    expect(tools).toHaveLength(1)
-    expect(tools[0]!.function.name).toBe('echo')
-  })
+test('createXSAITools', async () => {
+  const tools = await createXSAITools(new EchoAITool())
+  expect(tools).toHaveLength(1)
+  expect(tools[0]!.function.name).toBe('echo')
+})
+
+test('createXSAIToolsFromIdentifier', async () => {
+  const tools = await createXSAIToolsFromIdentifier('@agentic/search')
+  expect(tools).toHaveLength(1)
+  expect(tools[0]!.function.name).toBe('search')
 })

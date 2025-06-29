@@ -3,10 +3,16 @@
  */
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "agentic-api-gateway",
+  "name": "agentic-gateway",
   "main": "src/worker.ts",
   "compatibility_date": "2025-05-25",
   "compatibility_flags": ["nodejs_compat"],
+  "placement": { "mode": "smart" },
+  "upload_source_maps": true,
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1
+  },
   "migrations": [
     {
       "tag": "v1",
@@ -17,31 +23,73 @@
       ]
     }
   ],
-  "durable_objects": {
-    "bindings": [
-      {
-        "class_name": "DurableRateLimiter",
-        "name": "DO_RATE_LIMITER"
-      },
-      {
-        "class_name": "DurableMcpServer",
-        "name": "DO_MCP_SERVER"
-      },
-      {
-        "class_name": "DurableMcpClient",
-        "name": "DO_MCP_CLIENT"
-      }
-    ]
+  "vars": {
+    "ENVIRONMENT": "production",
+    "AGENTIC_API_BASE_URL": "https://api.agentic.so"
   },
-  "observability": {
-    "enabled": true
-  },
-  "placement": { "mode": "smart" },
-  "upload_source_maps": true,
-  "analytics_engine_datasets": [
-    {
-      "binding": "AE_USAGE_DATASET",
-      "dataset": "agentic_api_gateway_usage"
+  "env": {
+    "development": {
+      "vars": {
+        "ENVIRONMENT": "development",
+        "AGENTIC_API_BASE_URL": "http://localhost:3001"
+      },
+      // TODO: double-check whether all of this needs to be duplicated for each environment
+      "durable_objects": {
+        "bindings": [
+          {
+            "class_name": "DurableRateLimiter",
+            "name": "DO_RATE_LIMITER"
+          },
+          {
+            "class_name": "DurableMcpServer",
+            "name": "DO_MCP_SERVER"
+          },
+          {
+            "class_name": "DurableMcpClient",
+            "name": "DO_MCP_CLIENT"
+          }
+        ]
+      },
+      "analytics_engine_datasets": [
+        {
+          "binding": "AE_USAGE_DATASET",
+          "dataset": "agentic_gateway_usage"
+        }
+      ]
+    },
+    "production": {
+      "routes": [
+        {
+          "pattern": "gateway.agentic.so",
+          "custom_domain": true
+        }
+      ],
+      "vars": {
+        "ENVIRONMENT": "production",
+        "AGENTIC_API_BASE_URL": "https://api.agentic.so"
+      },
+      "durable_objects": {
+        "bindings": [
+          {
+            "class_name": "DurableRateLimiter",
+            "name": "DO_RATE_LIMITER"
+          },
+          {
+            "class_name": "DurableMcpServer",
+            "name": "DO_MCP_SERVER"
+          },
+          {
+            "class_name": "DurableMcpClient",
+            "name": "DO_MCP_CLIENT"
+          }
+        ]
+      },
+      "analytics_engine_datasets": [
+        {
+          "binding": "AE_USAGE_DATASET",
+          "dataset": "agentic_gateway_usage"
+        }
+      ]
     }
-  ]
+  }
 }

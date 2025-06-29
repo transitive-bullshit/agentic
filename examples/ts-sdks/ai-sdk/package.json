@@ -1,0 +1,19 @@
+{
+  "name": "agentic-ts-examples-ai-sdk",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "test": "run-s test:*",
+    "test:typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@agentic/ai-sdk": "workspace:*",
+    "@agentic/mcp": "workspace:*",
+    "@agentic/platform-tool-client": "workspace:*",
+    "@ai-sdk/openai": "catalog:",
+    "ai": "catalog:",
+    "exit-hook": "catalog:",
+    "openai": "catalog:",
+    "zod": "catalog:"
+  }
+}

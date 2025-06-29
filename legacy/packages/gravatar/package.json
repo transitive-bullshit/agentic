@@ -7,12 +7,12 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/transitive-bullshit/agentic.git",
-    "directory": "packages/gravatar"
+    "directory": "stdlib/gravatar"
   },
   "type": "module",
-  "source": "./src/index.ts",
-  "types": "./dist/index.d.ts",
   "sideEffects": false,
+  "source": "./src/index.ts",
+  "types": "./dist/index.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -25,10 +25,8 @@
   ],
   "scripts": {
     "build": "tsup",
-    "dev": "tsup --watch",
     "clean": "del dist",
     "test": "run-s test:*",
-    "test:lint": "eslint .",
     "test:typecheck": "tsc --noEmit"
   },
   "dependencies": {

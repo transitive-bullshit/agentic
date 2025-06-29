@@ -10,6 +10,14 @@ import { assert } from '@agentic/platform-core'
 import { parseDeploymentIdentifier } from '@agentic/platform-validators'
 import defaultKy, { type KyInstance } from 'ky'
 
+export type AgenticToolClientOptions = {
+  agenticApiClient?: AgenticApiClient
+  agenticGatewayBaseUrl?: string
+  ky?: KyInstance
+}
+
+// TODO: add support for optional apiKey
+
 /**
  * Agentic tool client which makes it easy to use an Agentic tool products with
  * all of the major TypeScript LLM SDKs, without having to go through any MCP
@@ -44,8 +52,6 @@ export class AgenticToolClient extends AIFunctionsProvider {
   }) {
     super()
 
-    // TODO: add support for optional apiKey
-
     this.project = project
     this.deployment = deployment
     this.agenticGatewayBaseUrl = agenticGatewayBaseUrl
@@ -57,6 +63,9 @@ export class AgenticToolClient extends AIFunctionsProvider {
           name: tool.name,
           description: tool.description ?? '',
           inputSchema: createJsonSchema(tool.inputSchema),
+          // TODO: we should make sure all agentic tools support OpenAI strict
+          // mode by default.
+          strict: false,
           execute: async (json) => {
             return ky
               .post(
@@ -70,11 +79,6 @@ export class AgenticToolClient extends AIFunctionsProvider {
         })
       })
     )
-  }
-
-  override get functions(): AIFunctionSet {
-    assert(this._functions)
-    return this._functions
   }
 
   /**
@@ -105,11 +109,7 @@ export class AgenticToolClient extends AIFunctionsProvider {
       agenticApiClient = new AgenticApiClient(),
       agenticGatewayBaseUrl = 'https://gateway.agentic.so',
       ky = defaultKy
-    }: {
-      agenticApiClient?: AgenticApiClient
-      agenticGatewayBaseUrl?: string
-      ky?: KyInstance
-    } = {}
+    }: AgenticToolClientOptions = {}
   ): Promise<AgenticToolClient> {
     const { projectIdentifier, deploymentIdentifier, deploymentVersion } =
       parseDeploymentIdentifier(projectOrDeploymentIdentifier, {

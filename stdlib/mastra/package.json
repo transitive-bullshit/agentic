@@ -1,0 +1,48 @@
+{
+  "name": "@agentic/mastra",
+  "version": "7.6.9",
+  "description": "Agentic adapter for the Mastra AI Agent SDK.",
+  "author": "Travis Fischer <travis@transitivebullsh.it>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/transitive-bullshit/agentic.git",
+    "directory": "stdlib/mastra"
+  },
+  "type": "module",
+  "sideEffects": false,
+  "source": "./src/index.ts",
+  "types": "./dist/index.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "clean": "del dist",
+    "test": "run-s test:*",
+    "test:typecheck": "tsc --noEmit",
+    "test:unit": "vitest run"
+  },
+  "dependencies": {
+    "@agentic/core": "workspace:*",
+    "@agentic/platform-tool-client": "workspace:*",
+    "@mastra/schema-compat": "^0.10.3",
+    "ai": "catalog:"
+  },
+  "peerDependencies": {
+    "@mastra/core": "catalog:"
+  },
+  "devDependencies": {
+    "@mastra/core": "catalog:"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -1,7 +1,11 @@
 import { type AIFunctionLike, AIFunctionSet, isZodSchema } from '@agentic/core'
+import {
+  AgenticToolClient,
+  type AgenticToolClientOptions
+} from '@agentic/platform-tool-client'
 import { tool } from '@xsai/tool'
 
-export type Tool = Awaited<ReturnType<typeof tool>>
+export type XSAITool = Awaited<ReturnType<typeof tool>>
 
 /**
  * Converts a set of Agentic stdlib AI functions to an object compatible with
@@ -9,7 +13,7 @@ export type Tool = Awaited<ReturnType<typeof tool>>
  */
 export function createXSAITools(
   ...aiFunctionLikeTools: AIFunctionLike[]
-): Promise<Tool[]> {
+): Promise<XSAITool[]> {
   const fns = new AIFunctionSet(aiFunctionLikeTools)
 
   return Promise.all(
@@ -28,4 +32,30 @@ export function createXSAITools(
       })
     })
   )
+}
+
+/**
+ * Creates an array of xsAI tools from a hosted Agentic project or deployment
+ * identifier.
+ *
+ * You'll generally use a project identifier, which will automatically use
+ * that project's `latest` version, but if you want to target a specific
+ * version or preview deployment, you can use a fully-qualified deployment
+ * identifier.
+ *
+ * @example
+ * ```ts
+ * const tools = await createXSAIToolsFromIdentifier('@agentic/search')
+ * ```
+ */
+export async function createXSAIToolsFromIdentifier(
+  projectOrDeploymentIdentifier: string,
+  opts: AgenticToolClientOptions = {}
+): Promise<XSAITool[]> {
+  const agenticToolClient = await AgenticToolClient.fromIdentifier(
+    projectOrDeploymentIdentifier,
+    opts
+  )
+
+  return createXSAITools(agenticToolClient)
 }
