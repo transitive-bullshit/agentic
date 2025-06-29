@@ -25,6 +25,7 @@
 - add basic legal terms and privacy policy (and update links in stripe)
 - add caching to public projects api endpoints
 - add support for [`@google/genai`](https://github.com/googleapis/js-genai) tools adapter and examples
+- fix gateway sentry deployment upload
 
 ## TODO: Post-MVP
 

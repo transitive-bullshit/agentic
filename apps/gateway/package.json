@@ -13,8 +13,8 @@
   "type": "module",
   "source": "./src/worker.ts",
   "scripts": {
-    "deploy": "wrangler deploy --outdir dist --upload-source-maps --var SENTRY_RELEASE:$(sentry-cli releases propose-version)",
     "dev": "wrangler dev",
+    "deploy": "wrangler deploy --var SENTRY_RELEASE:$(sentry-cli releases propose-version)",
     "cf-clear-cache": "del .wrangler",
     "clean": "del dist",
     "test": "run-s test:*",

@@ -458,7 +458,7 @@ export function getCodeForHTTPConfig({
 
     case 'httpie':
       return {
-        code: `http -j ${url} query='example google search'`,
+        code: `http ${url} query='example google search'`,
         lang: 'bash'
       }
   }

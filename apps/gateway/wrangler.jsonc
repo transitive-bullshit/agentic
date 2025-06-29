@@ -13,6 +13,12 @@
     "enabled": true,
     "head_sampling_rate": 1
   },
+  "routes": [
+    {
+      "pattern": "gateway.agentic.so",
+      "custom_domain": true
+    }
+  ],
   "migrations": [
     {
       "tag": "v1",
