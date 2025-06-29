@@ -25,7 +25,6 @@
 - add basic legal terms and privacy policy (and update links in stripe)
 - add caching to public projects api endpoints
 - add support for [`@google/genai`](https://github.com/googleapis/js-genai) tools adapter
-- link github to cloudflare prod gateway deployment
 - add feature about optimized context to marketing site
 - ensure all agentic tool inputSchemas support openai strict mode by default
   - openapi tool extraction currently supports optional properties
