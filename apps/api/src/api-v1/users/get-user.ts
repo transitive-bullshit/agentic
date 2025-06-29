@@ -4,6 +4,8 @@ import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 import type { AuthenticatedHonoEnv } from '@/lib/types'
 import { db, eq, schema } from '@/db'
 import { acl } from '@/lib/acl'
+import { setPublicCacheControl } from '@/lib/cache-control'
+import { env } from '@/lib/env'
 import {
   openapiAuthenticatedSecuritySchemas,
   openapiErrorResponse404,
@@ -45,6 +47,7 @@ export function registerV1GetUser(app: OpenAPIHono<AuthenticatedHonoEnv>) {
       where: eq(schema.users.id, userId)
     })
     assert(user, 404, `User not found "${userId}"`)
+    setPublicCacheControl(c.res, env.isProd ? '30s' : '10s')
 
     return c.json(parseZodSchema(schema.userSelectSchema, user))
   })

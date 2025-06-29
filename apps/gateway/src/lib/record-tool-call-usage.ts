@@ -180,7 +180,7 @@ export function recordToolCallUsage({
     // If there's a consumer and it hasn't been activated yet, make sure it's
     // activated. This may be called multiple times if the consumer is cached,
     // but this method is intentionally idempotent, and we don't cache non-
-    // activated consumers for long, so shouldn't be a problem.
+    // activated consumers for long, so it shouldn't be a problem.
     waitUntil(client.adminActivateConsumer({ consumerId: consumer.id }))
   }
 

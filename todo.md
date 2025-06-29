@@ -11,6 +11,9 @@
     - should we bypass stripe for `free` plans to increase conversions?
   - handle browser back/forward with `?next=`
   - add some social proof to signup page
+  - example usage
+    - fix mcp examples
+    - add example usage to project detail pages
 - docs
   - main readme
   - sub readmes (https://www.npmjs.com/package/@agentic/cli)
@@ -23,7 +26,6 @@
 - finesse header (mobile)
 - create agentic products for legacy tools
 - add basic legal terms and privacy policy (and update links in stripe)
-- add caching to public projects api endpoints
 - add support for [`@google/genai`](https://github.com/googleapis/js-genai) tools adapter
 - add feature about optimized context to marketing site
 - ensure all agentic tool inputSchemas support openai strict mode by default

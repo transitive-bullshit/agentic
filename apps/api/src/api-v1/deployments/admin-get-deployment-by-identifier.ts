@@ -5,7 +5,9 @@ import type { AuthenticatedHonoEnv } from '@/lib/types'
 import { schema } from '@/db'
 import { acl } from '@/lib/acl'
 import { aclAdmin } from '@/lib/acl-admin'
+import { setPublicCacheControl } from '@/lib/cache-control'
 import { tryGetDeploymentByIdentifier } from '@/lib/deployments/try-get-deployment-by-identifier'
+import { env } from '@/lib/env'
 import {
   openapiAuthenticatedSecuritySchemas,
   openapiErrorResponse404,
@@ -65,6 +67,13 @@ export function registerV1AdminGetDeploymentByIdentifier(
     // consumer has access to it?
 
     const hasPopulateProject = populate.includes('project')
+
+    if (env.isProd) {
+      // Published deployments are immutable, so cache them for longer in production
+      setPublicCacheControl(c.res, deployment.published ? '1h' : '5m')
+    } else {
+      setPublicCacheControl(c.res, '10s')
+    }
 
     return c.json(
       parseZodSchema(schema.deploymentAdminSelectSchema, {

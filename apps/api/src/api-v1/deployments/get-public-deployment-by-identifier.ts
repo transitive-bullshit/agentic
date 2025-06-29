@@ -4,6 +4,7 @@ import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 
 import { schema } from '@/db'
 import { aclPublicProject } from '@/lib/acl-public-project'
+import { setPublicCacheControl } from '@/lib/cache-control'
 import { tryGetDeploymentByIdentifier } from '@/lib/deployments/try-get-deployment-by-identifier'
 import {
   openapiAuthenticatedSecuritySchemas,
@@ -58,6 +59,13 @@ export function registerV1GetPublicDeploymentByIdentifier(
       `Project not found for deployment "${deploymentIdentifier}"`
     )
     aclPublicProject(deployment.project!)
+
+    if (deployment.published) {
+      // Note that published deployments should be immutable
+      setPublicCacheControl(c.res, '1m')
+    } else {
+      setPublicCacheControl(c.res, '10s')
+    }
 
     return c.json(parseZodSchema(schema.deploymentSelectSchema, deployment))
   })
