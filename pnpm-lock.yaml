@@ -378,6 +378,9 @@ catalogs:
     react-lottie-player:
       specifier: ^2.1.0
       version: 2.1.0
+    react-medium-image-zoom:
+      specifier: ^5.2.14
+      version: 5.2.14
     react-use:
       specifier: ^17.6.0
       version: 17.6.0
@@ -840,7 +843,7 @@ importers:
         specifier: 'catalog:'
         version: 2.1.0(react@19.1.0)
       react-medium-image-zoom:
-        specifier: ^5.2.14
+        specifier: 'catalog:'
         version: 5.2.14(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       react-use:
         specifier: 'catalog:'
