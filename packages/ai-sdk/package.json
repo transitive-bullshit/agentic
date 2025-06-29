@@ -24,7 +24,8 @@
     "test:unit": "vitest run"
   },
   "dependencies": {
-    "@agentic/core": "workspace:*"
+    "@agentic/core": "workspace:*",
+    "@agentic/platform-tool-client": "workspace:*"
   },
   "peerDependencies": {
     "ai": "catalog:"

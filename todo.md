@@ -99,3 +99,8 @@
 - make json `$schema` public for `agentic.config.json`
 - handle hosting of deployment and user images
 - about page inspiration: https://mastra.ai/about
+- simplify overlap between `@agentic/core` and `@agentic/platform-core`
+- consider moving packages to correspond to their licenses and public/private
+  - platform AGPL-3.0 private
+  - platform AGPL-3.0 public; maybe this should be MIT?
+  - stdlib MIT public

@@ -26,7 +26,7 @@
     "test:typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@agentic/core": "catalog:",
+    "@agentic/core": "workspace:*",
     "@agentic/platform-api-client": "workspace:*",
     "@agentic/platform-core": "workspace:*",
     "@agentic/platform-types": "workspace:*",
