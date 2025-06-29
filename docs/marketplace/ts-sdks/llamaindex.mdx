@@ -83,14 +83,18 @@ yarn add @llamaindex/openai dotenv
 
 ## Running this example
 
-<Note>
-  You can view the full source for this example here:
-  https://github.com/transitive-bullshit/agentic/tree/main/examples/ts-sdks/llamaindex
-</Note>
+You can view the full source for this example here: https://github.com/transitive-bullshit/agentic/tree/main/examples/ts-sdks/llamaindex
 
 <Info>
   You'll need an [OpenAI API key](https://platform.openai.com/docs/quickstart)
   to run this example. Store it in a local `.env` file as `OPENAI_API_KEY`.
+</Info>
+
+<Info>
+  The
+  [`@agentic/search`](https://agentic.so/marketplace/projects/@agentic/search)
+  tool comes with a generous free tier, but once that runs out, you'll need to
+  sign up for a paid plan and add an `AGENTIC_API_KEY` to your `.env` file.
 </Info>
 
 ```sh
@@ -101,13 +105,6 @@ pnpm build
 echo 'OPENAI_API_KEY=your-key' >> .env
 npx tsx examples/ts-sdks/llamaindex/bin/weather.ts
 ```
-
-<Info>
-  The
-  [`@agentic/search`](https://agentic.so/marketplace/projects/@agentic/search)
-  tool comes with a generous free tier, but once that runs out, you'll need to
-  sign up for a paid plan and add an `AGENTIC_API_KEY` to your `.env` file.
-</Info>
 
 ## Additional resources
 
