@@ -172,6 +172,7 @@ export default defineConfig({
       return {
         code: `
 {
+  "$schema": "https://agentic.so/schema.json",
   "name": "mcp-example",
   "origin": {
     "type": "mcp",
@@ -184,6 +185,7 @@ export default defineConfig({
       return {
         code: `
 {
+  "$schema": "https://agentic.so/schema.json",
   "name": "openapi-example",
   "origin": {
     "type": "openapi",
