@@ -35,7 +35,7 @@ export function ProjectPricingPlans({
         {project.lastPublishedDeployment!.pricingPlans.map((plan) => (
           <div
             key={plan.slug}
-            className='flex flex-col gap-4 p-4 border rounded-lg shadow-sm'
+            className='bg-card flex flex-col gap-4 p-4 border rounded-lg shadow-sm color-card-foreground'
           >
             <h3 className='text-center text-balance leading-snug md:leading-none text-xl font-semibold'>
               {plan.name}
