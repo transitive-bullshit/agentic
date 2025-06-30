@@ -1,5 +1,17 @@
+<p align="center">
+  <a href="https://agentic.so/publishing">
+    <img alt="Agentic" src="/apps/web/public/agentic-publishing-social-image-dark-github.jpg" width="640">
+  </a>
+</p>
+
+<p>
+  <a href="https://github.com/transitive-bullshit/agentic/actions/workflows/main.yml"><img alt="Build Status" src="https://github.com/transitive-bullshit/agentic/actions/workflows/main.yml/badge.svg" /></a>
+  <a href="https://www.npmjs.com/package/@agentic/json-schema"><img alt="NPM" src="https://img.shields.io/npm/v/@agentic/platform-api-client.svg" /></a>
+  <a href="https://prettier.io"><img alt="Prettier Code Formatting" src="https://img.shields.io/badge/code_style-prettier-brightgreen.svg" /></a>
+</p>
+
 > [!NOTE]
-> This package is a fork of [@cfworker/json-schema](https://github.com/cfworker/cfworker) which adds [ajv-style coercion](https://ajv.js.org/coercion.html). Coercion can be enabled with a boolean flag.
+> This package is a fork of [@cfworker/json-schema](https://github.com/cfworker/cfworker) which adds support for [ajv-style type coercion](https://ajv.js.org/coercion.html). Coercion is disabled by default, but can be enabled with a boolean flag.
 
 # @agentic/json-schema
 

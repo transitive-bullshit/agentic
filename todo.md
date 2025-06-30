@@ -15,14 +15,10 @@
     - add example usage to project detail pages
     - import react example usage component into docs
   - replace json project and components with actual designs
-- docs
-  - sub readmes (https://www.npmjs.com/package/@agentic/cli)
 - double-check free-tier rate-limits for `@agentic/search`
 - create agentic products for select legacy tools
-- add support for [`@google/genai`](https://github.com/googleapis/js-genai) tools adapter
 - add feature about optimized context to docs
 - add ts sdk examples to e2e tests
-- fix weird git state and github actions marked as failing
 - add scroll appearance motion to hero animation
 - replace how-it-works diagram with better version
 
@@ -115,3 +111,5 @@
   - mcp tool inputSchemas may not support openai strict mode either
   - maybe default `strict` to `false` in `createAIFunction` for now?
   - also add `@agentic/json-schema` to `createJsonSchema` parsing instead of current no-op
+- add support for [`@google/genai`](https://github.com/googleapis/js-genai) tools adapter
+  - currently difficult due to their use of non-standard json schemas

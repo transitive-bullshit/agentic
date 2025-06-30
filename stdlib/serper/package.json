@@ -1,7 +1,7 @@
 {
   "name": "@agentic/serper",
   "version": "8.1.1",
-  "description": "Agentic SDK for Serper Google Search.",
+  "description": "Agentic SDK for the Serper Google Search API.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",
   "repository": {
