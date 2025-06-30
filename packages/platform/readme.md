@@ -27,6 +27,8 @@ npm i @agentic/platform
 
 The main export of `@agentic/platform` is the `defineConfig(...)` function, which enables you to configure your Agentic project with full type safety and autocomplete.
 
+Here's an example `agentic.config.ts`:
+
 ```ts
 import { defineConfig } from '@agentic/platform'
 
