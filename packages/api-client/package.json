@@ -1,6 +1,6 @@
 {
   "name": "@agentic/platform-api-client",
-  "version": "8.2.0",
+  "version": "8.2.1",
   "description": "TypeScript API client for the Agentic platform.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "AGPL-3.0",

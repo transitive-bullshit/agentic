@@ -1,7 +1,7 @@
 {
   "name": "web",
   "private": true,
-  "version": "8.2.0",
+  "version": "8.2.1",
   "description": "Agentic platform webapp.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "AGPL-3.0",
