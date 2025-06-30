@@ -11,13 +11,11 @@
 
 # Agentic <!-- omit from toc -->
 
-You can think of Agentic as **RapidAPI for LLM tools**.
+You can think of Agentic as an **open source RapidAPI for LLM tools**.
 
-Agentic offers a marketplace of highly curated LLM tools which support for every major LLM SDK and MCP client.
+Agentic offers a marketplace of highly curated LLM tools, including support for every major LLM SDK and MCP client.
 
 You can publish your own MCP servers / OpenAPI services to Agentic's MCP Gateway and start charging for agentic tool use.
-
-**Agentic is proudly 100% open source**.
 
 - [Website](https://agentic.so)
 - [Docs](https://docs.agentic.so)
@@ -52,13 +50,13 @@ Agentic has first-class support for every major LLM SDK:
 
 <p align="center">
   <a href="https://agentic.so/publishing">
-    <img alt="Agentic" src="/apps/web/public/agentic-publishing-social-image-dark.jpg" width="640">
+    <img alt="Agentic" src="/apps/web/public/agentic-publishing-social-image-dark-github.jpg" width="640">
   </a>
 </p>
 
-- [Learn more about publishing to Agentic](https://agentic.so/publishing)
-- [Publish an existing MCP server to Agentic](https://docs.agentic.so/publishing/guides/existing-mcp-server)
-- [Publish an existing OpenAPI service to Agentic](https://docs.agentic.so/publishing/guides/existing-openapi-service)
+- [Learn more about publishing with Agentic](https://agentic.so/publishing)
+- [Publish an existing MCP server with Agentic](https://docs.agentic.so/publishing/guides/existing-mcp-server)
+- [Publish an existing OpenAPI service with Agentic](https://docs.agentic.so/publishing/guides/existing-openapi-service)
 
 ## Join the community
 
