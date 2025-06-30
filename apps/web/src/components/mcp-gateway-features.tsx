@@ -177,7 +177,7 @@ const mcpGatewayFeatures: FeatureData[] = [
     description: (
       <>Check out our docs for more details on Agentic's MCP gateway.</>
     ),
-    href: docsPublishingUrl,
+    href: `${docsPublishingUrl}/quickstart`,
     icon: TextSelectIcon,
     pattern: {
       y: 13,
