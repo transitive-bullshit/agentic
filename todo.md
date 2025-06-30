@@ -36,6 +36,7 @@
 - fix weird git state and github actions marked as failing
 - fix marketing dark background
 - page metadata
+- add scroll appearance motion to hero animation
 
 ## TODO: Post-MVP
 

@@ -9,6 +9,7 @@ import { MCPGatewayFeatures } from '@/components/mcp-gateway-features'
 import { PageContainer } from '@/components/page-container'
 import { SupplySideCTA } from '@/components/supply-side-cta'
 import { githubUrl, twitterUrl } from '@/lib/config'
+import mcpGatewayDemo from '@/public/agentic-mcp-gateway-mvp-diagram-light.png'
 
 export default function PublishingMCPsPage() {
   return (
@@ -37,10 +38,12 @@ export default function PublishingMCPsPage() {
         <div className='w-full max-w-3xl flex flex-col items-center border rounded-lg shadow-sm overflow-hidden p-4 bg-white'>
           <Zoom>
             <Image
-              src='/agentic-mcp-gateway-mvp-diagram-light.png'
+              src={mcpGatewayDemo.src}
               alt='MCP Gateway Demo'
-              width={2048}
-              height={1094}
+              width={mcpGatewayDemo.width}
+              height={mcpGatewayDemo.height}
+              blurDataURL={mcpGatewayDemo.blurDataURL}
+              placeholder='blur'
               className='w-full rounded-lg overflow-hidden'
             />
           </Zoom>

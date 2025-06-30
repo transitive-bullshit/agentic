@@ -45,8 +45,8 @@ export default async function TheBestDamnLandingPageEver() {
         </h1>
 
         <h5 className='text-center text-lg max-w-2xl'>
-          Agentic is a curated marketplace of production-grade LLM tools. All
-          tools are exposed as both MCP servers as well as simple HTTP APIs.
+          Agentic is a highly curated marketplace of production-grade LLM tools
+          that work with every major LLM SDK and MCP client.
         </h5>
 
         <DemandSideCTA />
