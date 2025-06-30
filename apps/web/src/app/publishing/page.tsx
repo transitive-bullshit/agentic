@@ -8,7 +8,7 @@ import { GitHubStarCounter } from '@/components/github-star-counter'
 import { MCPGatewayFeatures } from '@/components/mcp-gateway-features'
 import { PageContainer } from '@/components/page-container'
 import { SupplySideCTA } from '@/components/supply-side-cta'
-import { docsPublishingUrl, githubUrl, twitterUrl } from '@/lib/config'
+import { githubUrl, twitterUrl } from '@/lib/config'
 
 export default function PublishingMCPsPage() {
   return (
@@ -47,7 +47,7 @@ export default function PublishingMCPsPage() {
         </div>
 
         <p className='text-sm max-w-2xl text-center'>
-          <Link href={docsPublishingUrl} className='link'>
+          <Link href='https://docs.agentic.so/publishing' className='link'>
             Deploy any MCP server or OpenAPI service to Agentic's MCP Gateway,
             which handles auth, billing, rate-limiting, caching, etc. And
             instantly turn your API into a paid MCP product that supports every
@@ -65,7 +65,7 @@ export default function PublishingMCPsPage() {
         <ExampleAgenticConfigs />
 
         <p className='text-sm max-w-2xl text-center'>
-          <Link href={`${docsPublishingUrl}/config`} className='link'>
+          <Link href='https://docs.agentic.so/publishing/config' className='link'>
             Configuring your Agentic project
           </Link>{' '}
           is straightforward , regardless of whether your origin is an MCP
@@ -74,7 +74,7 @@ export default function PublishingMCPsPage() {
           file, or fall back to using an{' '}
           <span className='font-semibold'>agentic.config.json</span> file to
           configure your project.{' '}
-          <Link href={docsPublishingUrl} className='link'>
+          <Link href='https://docs.agentic.so/publishing' className='link'>
             Learn more
           </Link>
           .

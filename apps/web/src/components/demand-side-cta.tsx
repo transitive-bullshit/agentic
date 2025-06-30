@@ -2,7 +2,6 @@ import Link from 'next/link'
 
 import { HeroButton } from '@/components/hero-button'
 import { Button } from '@/components/ui/button'
-import { docsUrl } from '@/lib/config'
 
 export function DemandSideCTA() {
   return (
@@ -14,7 +13,7 @@ export function DemandSideCTA() {
       </HeroButton>
 
       <Button variant='outline' asChild className='h-full'>
-        <Link href={docsUrl} className='font-mono'>
+        <Link href='https://docs.agentic.so' className='font-mono'>
           readTheDocs();
         </Link>
       </Button>

@@ -6,12 +6,7 @@ import Link from 'next/link'
 import { HeroButton, type HeroButtonVariant } from '@/components/hero-button'
 import { Button } from '@/components/ui/button'
 import { GitHubIcon } from '@/icons/github'
-import {
-  calendarBookingUrl,
-  docsPublishingQuickStartUrl,
-  docsPublishingUrl,
-  githubUrl
-} from '@/lib/config'
+import { calendarBookingUrl, githubUrl } from '@/lib/config'
 
 import { useAgentic } from './agentic-provider'
 import { GitHubStarCounter } from './github-star-counter'
@@ -31,8 +26,10 @@ export function SupplySideCTA({
         <Link
           href={
             ctx?.isAuthenticated
-              ? docsPublishingQuickStartUrl
-              : `/signup?${sanitizeSearchParams({ next: docsPublishingQuickStartUrl })}`
+              ? 'https://docs.agentic.so/publishing/quickstart'
+              : `/signup?${sanitizeSearchParams({
+                  next: 'https://docs.agentic.so/publishing/quickstart'
+                })}`
           }
         >
           Quick Start
@@ -50,7 +47,7 @@ export function SupplySideCTA({
         </Button>
       ) : variant === 'docs' ? (
         <Button variant='outline' asChild className='h-full py-[9px]'>
-          <Link href={docsPublishingUrl}>Publishing Docs</Link>
+          <Link href='https://docs.agentic.so/publishing'>Publishing Docs</Link>
         </Button>
       ) : (
         <Button variant='outline' asChild className='h-full py-[9px]'>

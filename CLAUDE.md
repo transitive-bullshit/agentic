@@ -14,9 +14,10 @@ The platform consists of:
 - **Gateway Service** (`apps/gateway/`) - Cloudflare Worker that proxies requests to origin MCP/OpenAPI services
 - **Website** (`apps/web/`) - Next.js site for both the marketing site and authenticated webapp
 - **E2E Tests** (`apps/e2e/`) - End-to-end test suite for HTTP and MCP gateway requests
-- **Shared Packages** (`packages/`) - Common utilities, types, validators, and configuration
+- **Shared Packages** (`packages/`) - Common utilities, types, validators, and config
+- **StdLib Packages** (`stdlib/`) - TS AI SDK adapters
 
-The gateway accepts requests at `https://gateway.agentic.so/deploymentIdentifier/toolName` for HTTP requests or `https://gateway.agentic.so/deploymentIdentifier/mcp` for MCP.
+The gateway accepts requests at `https://gateway.agentic.so/deploymentIdentifier/tool-ame` for HTTP requests or `https://gateway.agentic.so/deploymentIdentifier/mcp` for MCP.
 
 ### Development Commands
 

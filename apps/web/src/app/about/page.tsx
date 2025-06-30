@@ -1,5 +1,6 @@
 import Link from 'next/link'
 
+import { DotsSection } from '@/components/dots-section'
 import { PageContainer } from '@/components/page-container'
 import { SupplySideCTA } from '@/components/supply-side-cta'
 import { githubUrl, twitterUrl } from '@/lib/config'
@@ -179,13 +180,15 @@ export default function AboutPage() {
       </section>
 
       {/* CTA section */}
-      <section className='flex flex-col gap-12'>
-        <h2 className='text-center text-balance leading-snug md:leading-none text-3xl font-heading'>
-          Don't miss out on this AI wave
-        </h2>
+      <DotsSection>
+        <div className='flex flex-col gap-12 relative z-10'>
+          <h2 className='text-center text-balance leading-snug md:leading-none text-3xl font-heading'>
+            Don't miss out on the AI wave
+          </h2>
 
-        <SupplySideCTA variant='github-2' />
-      </section>
+          <SupplySideCTA variant='github-2' />
+        </div>
+      </DotsSection>
     </PageContainer>
   )
 }

@@ -9,11 +9,7 @@ import { HeroSimulation2 } from '@/components/hero-simulation-2'
 import { MCPMarketplaceFeatures } from '@/components/mcp-marketplace-features'
 import { PageContainer } from '@/components/page-container'
 import { SupplySideCTA } from '@/components/supply-side-cta'
-import {
-  docsPublishingQuickStartUrl,
-  githubUrl,
-  twitterUrl
-} from '@/lib/config'
+import { githubUrl, twitterUrl } from '@/lib/config'
 import {
   defaultConfig,
   getCodeForDeveloperConfig
@@ -117,7 +113,10 @@ export default async function TheBestDamnLandingPageEver() {
         </p>
 
         <p>
-          <Link href={docsPublishingQuickStartUrl} className='link'>
+          <Link
+            href='https://docs.agentic.so/publishing/quickstart'
+            className='link'
+          >
             And of course, <span className='font-semibold'>MCP</span> is an
             integral part of that mission. We're working on a bunch of features
             designed to simplify advanced MCP use cases like bundling multiple

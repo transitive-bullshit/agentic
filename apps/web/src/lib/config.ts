@@ -11,16 +11,13 @@ export const domain =
 
 export const author = 'Travis Fischer'
 export const authorTwitterUsername = 'transitive_bs'
-export const twitterUrl = `https://x.com/${authorTwitterUsername}`
 export const copyright = `© ${new Date().getFullYear()} Agentic. All rights reserved.`
-export const githubUrl = 'https://github.com/transitive-bullshit/agentic'
 
+// external urls
+export const twitterUrl = `https://x.com/${authorTwitterUsername}`
+export const githubUrl = 'https://github.com/transitive-bullshit/agentic'
 // TODO: make an agentic-specific calendar for this
 export const calendarBookingUrl = 'https://cal.com/travis-fischer/15min'
-export const docsUrl = 'https://docs.agentic.so'
-export const docsPublishingQuickStartUrl = `${docsUrl}/publishing/quickstart`
-export const docsPublishingUrl = `${docsUrl}/publishing`
-export const docsMarketplaceUrl = `${docsUrl}/marketplace`
 export const discordUrl = 'https://discord.agentic.so'
 
 export const keywords = [
