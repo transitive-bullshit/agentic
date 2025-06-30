@@ -1,6 +1,7 @@
 import Link from 'next/link'
 
 import { DotsSection } from '@/components/dots-section'
+import { GitHubStarCounter } from '@/components/github-star-counter'
 import { HeroButton } from '@/components/hero-button'
 import { PageContainer } from '@/components/page-container'
 import { Button } from '@/components/ui/button'
@@ -8,7 +9,7 @@ import { calendarBookingUrl, emailUrl, twitterUrl } from '@/lib/config'
 
 export default function AboutPage() {
   return (
-    <PageContainer className='gap-8'>
+    <PageContainer className='gap-12'>
       <h1 className='text-center text-balance leading-snug md:leading-none text-4xl font-semibold'>
         Contact
       </h1>
@@ -35,7 +36,7 @@ export default function AboutPage() {
 
       {/* CTA section */}
       <DotsSection className='max-w-2xl'>
-        <div className='flex flex-row gap-8 relative p-8 z-10'>
+        <div className='relative grid grid-cols-2 gap-8'>
           <HeroButton asChild heroVariant='orange' className=''>
             <Link href={twitterUrl} target='_blank' rel='noopener'>
               DM me on Twitter / X
@@ -51,6 +52,8 @@ export default function AboutPage() {
               Book a call with me
             </Link>
           </Button>
+
+          <GitHubStarCounter className='h-full py-[9px]' />
         </div>
       </DotsSection>
     </PageContainer>

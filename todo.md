@@ -38,6 +38,7 @@
 - fix weird git state and github actions marked as failing
 - fix marketing dark background
 - 404 page
+- page metadata
 
 ## TODO: Post-MVP
 
