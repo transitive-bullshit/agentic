@@ -15,27 +15,15 @@
     - add example usage to project detail pages
     - import react example usage component into docs
 - docs
-  - main readme
   - sub readmes (https://www.npmjs.com/package/@agentic/cli)
-- social images
 - double-check free-tier rate-limits for `@agentic/search`
 - replace json project and components with actual designs
-- finesse header (mobile)
 - create agentic products for legacy tools
 - add support for [`@google/genai`](https://github.com/googleapis/js-genai) tools adapter
-- add feature about optimized context to marketing site
-- ensure all agentic tool inputSchemas support openai strict mode by default
-  - openapi tool extraction currently supports optional properties
-  - mcp tool inputSchemas may not support openai strict mode either
-  - maybe default `strict` to `false` in `createAIFunction` for now?
-  - also add `@agentic/json-schema` to `createJsonSchema` parsing instead of current no-op
-- add support to `@agentic/platform-tool-client` for
-- add docs on using multiple tools with `AIFunctionSet`
+- add feature about optimized context to docs
+- add support to `@agentic/platform-tool-client` for etwas?
 - add ts sdk examples to e2e tests
-- consider allowing deployments to specify their proxy secret instead of a single, per-project proxy secret
 - fix weird git state and github actions marked as failing
-- fix marketing dark background
-- page metadata
 - add scroll appearance motion to hero animation
 
 ## TODO: Post-MVP
@@ -119,3 +107,11 @@
   - stdlib MIT public
 - **simplify `AgenticToolClient` and only require one package per TS LLM SDK**
   - `createAISDKToolsFromIdentifier(projectIdentifier)`
+- project page metadata
+- consider allowing deployments to specify their proxy secret instead of a single, per-project proxy secret
+- add docs on using multiple tools with `AIFunctionSet`
+- ensure all agentic tool inputSchemas support openai strict mode by default
+  - openapi tool extraction currently supports optional properties
+  - mcp tool inputSchemas may not support openai strict mode either
+  - maybe default `strict` to `false` in `createAIFunction` for now?
+  - also add `@agentic/json-schema` to `createJsonSchema` parsing instead of current no-op
