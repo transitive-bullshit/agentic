@@ -34,7 +34,7 @@
 - add support to `@agentic/platform-tool-client` for
 - add docs on using multiple tools with `AIFunctionSet`
 - add ts sdk examples to e2e tests
-- add `$schema` (https://agentic.so/schema.json) to the json docs
+- consider allowing deployments to specify their proxy secret instead of a single, per-project proxy secret
 
 ## TODO: Post-MVP
 

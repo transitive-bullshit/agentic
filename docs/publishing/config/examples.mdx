@@ -1,0 +1,364 @@
+---
+title: Examples
+description: Example starter configs for the Agentic MCP Gateway.
+---
+
+## Minimal Examples
+
+### Basic MCP Example
+
+<Tabs>
+<Tab title="TypeScript Config">
+
+```ts agentic.config.ts
+import { defineConfig } from '@agentic/platform'
+
+export default defineConfig({
+  name: 'Basic MCP Example',
+  description:
+    "This example shows how to configure Agentic's MCP gateway with an origin MCP server using the Streamable HTTP transport.",
+  origin: {
+    type: 'mcp',
+    url: 'https://agentic-basic-mcp-test.onrender.com/mcp'
+  }
+})
+```
+
+</Tab>
+
+<Tab title="JSON Config">
+
+```json agentic.config.json
+{
+  "$schema": "https://agentic.so/schema.json",
+  "name": "Basic MCP Example",
+  "description": "This example shows how to configure Agentic's MCP gateway with an origin MCP server using the Streamable HTTP transport.",
+  "origin": {
+    "type": "mcp",
+    "url": "https://agentic-basic-mcp-test.onrender.com/mcp"
+  }
+}
+```
+
+</Tab>
+</Tabs>
+
+### Basic OpenAPI Example
+
+<Tabs>
+<Tab title="TypeScript Config">
+
+```ts agentic.config.ts
+import { defineConfig } from '@agentic/platform'
+
+export default defineConfig({
+  name: 'Basic OpenAPI Example',
+  description:
+    "This example shows how to configure Agentic's MCP gateway with an origin OpenAPI server.",
+  origin: {
+    type: 'openapi',
+    url: 'https://jsonplaceholder.typicode.com',
+    spec: './jsonplaceholder.json'
+  }
+})
+```
+
+</Tab>
+
+<Tab title="JSON Config">
+
+```json agentic.config.json
+{
+  "$schema": "https://agentic.so/schema.json",
+  "name": "Basic OpenAPI Example",
+  "description": "This example shows how to configure Agentic's MCP gateway with an origin OpenAPI server.",
+  "origin": {
+    "type": "openapi",
+    "url": "https://jsonplaceholder.typicode.com",
+    "spec": "./jsonplaceholder.json"
+  }
+}
+```
+
+</Tab>
+</Tabs>
+
+## Pricing Examples
+
+<Tip>
+  Pricing can feel a little complicated to set up. Feel free to [reach out to
+  us](/contact) once you're ready to start charging for your product, and I'd be
+  happy to help you set everything up.
+</Tip>
+
+### Free Monthly Pricing Example
+
+This example shows the free monthly pricing plan which is used by default for projects that don't specify any pricing plans.
+
+<Tabs>
+<Tab title="TypeScript Config">
+
+```ts agentic.config.ts
+import { defineConfig } from '@agentic/platform'
+
+export default defineConfig({
+  name: 'Free Monthly Pricing Example',
+  description:
+    "This example shows the free monthly pricing plan which is used by default for projects that don't specify any pricing plans.",
+  origin: {
+    type: 'mcp',
+    url: 'https://agentic-basic-mcp-test.onrender.com/mcp'
+  },
+  pricingPlans: [
+    {
+      name: 'Free',
+      slug: 'free',
+      lineItems: [
+        {
+          slug: 'base',
+          usageType: 'licensed',
+          amount: 0
+        }
+      ],
+      rateLimit: {
+        enabled: true,
+        interval: 60,
+        limit: 1000
+      }
+    }
+  ]
+})
+```
+
+</Tab>
+
+<Tab title="JSON Config">
+
+```json agentic.config.json
+{
+  "$schema": "https://agentic.so/schema.json",
+  "name": "Free Monthly Pricing Example",
+  "description": "This example shows the free monthly pricing plan which is used by default for projects that don't specify any pricing plans.",
+  "origin": {
+    "type": "mcp",
+    "url": "https://agentic-basic-mcp-test.onrender.com/mcp"
+  },
+  "pricingPlans": [
+    {
+      "name": "Free",
+      "slug": "free",
+      "lineItems": [
+        {
+          "slug": "base",
+          "usageType": "licensed",
+          "amount": 0
+        }
+      ],
+      "rateLimit": {
+        "enabled": true,
+        "interval": 60,
+        "limit": 1000
+      }
+    }
+  ]
+}
+```
+
+</Tab>
+</Tabs>
+
+### Usage-Based Tiered Pricing Example
+
+This example shows a pricing setup with 2 pricing plans: a free tier with a limit of 10 requests per day, and a usage-based, tiered pricing plan where you charge a different rate per request based on the total volume of requests per month.
+
+<Tabs>
+<Tab title="TypeScript Config">
+
+```ts agentic.config.ts
+import { defineConfig } from '@agentic/platform'
+
+export default defineConfig({
+  name: 'Free Monthly Pricing Example',
+  description:
+    'This example shows a pricing configuration with 2 pricing plans: a free tier with a limit of 10 requests per day, and a usage-based tiered pricing plan with a free tier and a standard tier.',
+  origin: {
+    type: 'mcp',
+    url: 'https://agentic-basic-mcp-test.onrender.com/mcp'
+  },
+  pricingPlans: [
+    {
+      name: 'Free',
+      slug: 'free',
+      lineItems: [
+        {
+          slug: 'requests',
+          usageType: 'metered',
+          billingScheme: 'per_unit',
+          unitAmount: 0
+        }
+      ],
+      // Limit free-tier requests to 10 per day
+      rateLimit: {
+        interval: '1d',
+        limit: 10
+      }
+    },
+    {
+      name: 'Standard',
+      slug: 'standard',
+      lineItems: [
+        {
+          slug: 'base',
+          usageType: 'licensed',
+          // $1 USD base price per month
+          amount: 1000 // in cents
+        },
+        {
+          slug: 'requests',
+          usageType: 'metered',
+          billingScheme: 'tiered',
+          tiersMode: 'volume',
+          tiers: [
+            {
+              // Usage-based pricing is free for the first 1000 requests per
+              // month
+              upTo: 1000,
+              unitAmount: 0 // in cents
+            },
+            {
+              // After 10k request, it costs $0.0001 USD per request up to
+              // 50k requests per month
+              upTo: 50_000,
+              unitAmount: 0.01 // in cents
+            },
+            {
+              // After 50k request, it costs $0.00008 USD per request up to
+              // 500k requests per month
+              upTo: 500_000,
+              unitAmount: 0.008
+            },
+            {
+              // After 500k request, it costs $0.00006 USD per request up to
+              // 2.5M requests per month
+              upTo: 2_500_000,
+              unitAmount: 0.006
+            },
+            {
+              // After 2.5M request, it costs $0.00005 USD per request, with
+              // no upper bound set
+              upTo: 'inf',
+              unitAmount: 0.005
+            }
+          ]
+        }
+      ],
+      // Rate limit set to 100 requests per second
+      rateLimit: {
+        interval: '1s',
+        limit: 100
+      }
+    }
+  ]
+})
+```
+
+</Tab>
+
+<Tab title="JSON Config">
+
+```json agentic.config.json
+{
+  "$schema": "https://agentic.so/schema.json",
+  "name": "Usage-Based Tiered Pricing Example",
+  "description": "This example shows a pricing configuration with 2 pricing plans: a free tier with a limit of 10 requests per day, and a usage-based tiered pricing plan with a free tier and a standard tier.",
+  "origin": {
+    "type": "mcp",
+    "url": "https://agentic-basic-mcp-test.onrender.com/mcp"
+  },
+  "pricingPlans": [
+    {
+      "name": "Free",
+      "slug": "free",
+      "lineItems": [
+        {
+          "slug": "requests",
+          "usageType": "metered",
+          "billingScheme": "per_unit",
+          "unitAmount": 0
+        }
+      ],
+      // Limit free-tier requests to 10 per day
+      "rateLimit": {
+        "interval": "1d",
+        "limit": 10
+      }
+    },
+    {
+      "name": "Standard",
+      "slug": "standard",
+      "lineItems": [
+        {
+          "slug": "base",
+          "usageType": "licensed",
+          // $1 USD base price per month
+          "amount": 1000 // in cents
+        },
+        {
+          "slug": "requests",
+          "usageType": "metered",
+          "billingScheme": "tiered",
+          "tiersMode": "volume",
+          "tiers": [
+            {
+              // Usage-based pricing is free for the first 1000 requests per
+              // month
+              "upTo": 1000,
+              "unitAmount": 0 // in cents
+            },
+            {
+              // After 10k request, it costs $0.0001 USD per request up to
+              // 50k requests per month
+              "upTo": 50000,
+              "unitAmount": 0.01 // in cents
+            },
+            {
+              // After 50k request, it costs $0.00008 USD per request up to
+              // 500k requests per month
+              "upTo": 500000,
+              "unitAmount": 0.008
+            },
+            {
+              // After 500k request, it costs $0.00006 USD per request up to
+              // 2.5M requests per month
+              "upTo": 2500000,
+              "unitAmount": 0.006
+            },
+            {
+              // After 2.5M request, it costs $0.00005 USD per request, with
+              // no upper bound set
+              "upTo": "inf",
+              "unitAmount": 0.005
+            }
+          ]
+        }
+      ],
+      // Rate limit set to 100 requests per second
+      "rateLimit": {
+        "interval": "1s",
+        "limit": 100
+      }
+    }
+  ]
+}
+```
+
+</Tab>
+</Tabs>
+
+## Config Help
+
+<Tip>
+  Configuring your project can feel a little overwhelming. Feel free to [reach
+  out to us](/contact) if you're considering using Agentic's MCP Gateway, and
+  I'd be happy to help walk you through setting your product up for success.
+</Tip>

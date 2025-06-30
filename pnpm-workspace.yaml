@@ -2,10 +2,11 @@ packages:
   - packages/*
   - stdlib/*
   - apps/*
+  - docs
+  - fixtures
+  - fixtures/valid/*
   - examples/mcp-servers/*
   - examples/ts-sdks/*
-  - packages/fixtures/valid/*
-  - docs
 
 catalog:
   '@agentic/core': ^7.6.9

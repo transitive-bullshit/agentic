@@ -1,22 +1,25 @@
 {
-  "name": "@agentic/platform-fixtures-basic-mcp",
+  "name": "@agentic/platform-fixtures-everything-openapi",
   "private": true,
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "AGPL-3.0",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/transitive-bullshit/agentic.git",
-    "directory": "packages/fixtures/valid/basic-mcp"
+    "directory": "packages/fixtures/valid/everything-openapi"
   },
   "type": "module",
   "scripts": {
-    "start": "tsx src/index.ts",
+    "start": "tsx src/server.ts",
     "test": "run-s test:*",
     "test:typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "catalog:",
-    "fastmcp": "catalog:",
+    "@agentic/platform": "workspace:*",
+    "@hono/node-server": "catalog:",
+    "@hono/zod-openapi": "catalog:",
+    "hono": "catalog:",
+    "restore-cursor": "catalog:",
     "zod": "catalog:"
   }
 }

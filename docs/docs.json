@@ -95,7 +95,8 @@
               "publishing/config/pricing",
               "publishing/config/rate-limits",
               "publishing/config/caching",
-              "publishing/config/tool-config"
+              "publishing/config/tool-config",
+              "publishing/config/examples"
             ]
           }
         ]

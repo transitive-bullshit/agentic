@@ -9,7 +9,8 @@ const examplesDir = path.join(
   '..',
   '..',
   '..',
-  'examples'
+  'examples',
+  'mcp-servers'
 )
 
 export const examples = exampleProjectNames.map((name) =>

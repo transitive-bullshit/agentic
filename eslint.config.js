@@ -26,8 +26,8 @@ export default [
   {
     files: [
       'packages/cli/src/**/*.ts',
+      'fixtures/**/*.ts',
       '**/*.test.ts',
-      'packages/fixtures/valid/**/*.ts',
       'examples/**/*.ts'
     ],
     rules: {
