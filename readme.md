@@ -11,9 +11,9 @@
 
 # Agentic <!-- omit from toc -->
 
-You can think of Agentic as **RapidAPI for MCP servers**.
+You can think of Agentic as **RapidAPI for LLM tools**.
 
-Agentic offers a marketplace of highly curated LLM tools that provide one-line integrations with every major LLM SDK and MCP client.
+Agentic offers a marketplace of highly curated LLM tools which support for every major LLM SDK and MCP client.
 
 You can publish your own MCP servers / OpenAPI services to Agentic's MCP Gateway and start charging for agentic tool use.
 
@@ -52,7 +52,7 @@ Agentic has first-class support for every major LLM SDK:
 
 <p align="center">
   <a href="https://agentic.so/publishing">
-    <img alt="Agentic" src="/apps/web/public/agentic-publishing-social-image-light.jpg" width="640">
+    <img alt="Agentic" src="/apps/web/public/agentic-publishing-social-image-dark.jpg" width="640">
   </a>
 </p>
 
