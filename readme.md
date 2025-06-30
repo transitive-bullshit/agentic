@@ -11,11 +11,11 @@
 
 # Agentic <!-- omit from toc -->
 
-You can think of Agentic as a **high curated, open source RapidAPI for LLM tools**.
+You can think of Agentic as an open source **RapidAPI for LLM tools**.
 
-Agentic's marketplace of LLM tools support every major LLM SDK and MCP client out-of-the-box.
+All of the tools listed on Agentic's public marketplace are manually vetted for quality.
 
-You can publish your own MCP servers or OpenAPI services to Agentic's MCP Gateway and start charging for agentic tool use.
+On the flip side, Agentic makes it easy to publish your own MCP servers & OpenAPI services to Agentic's MCP Gateway and start charging for agentic tool use.
 
 - [Website](https://agentic.so)
 - [Docs](https://docs.agentic.so)
@@ -58,6 +58,8 @@ Agentic has first-class support for every major TS LLM SDK, including:
 - [Publish an existing MCP server with Agentic](https://docs.agentic.so/publishing/guides/existing-mcp-server)
 - [Publish an existing OpenAPI service with Agentic](https://docs.agentic.so/publishing/guides/existing-openapi-service)
 
+Anyone can publish their own live MCP products with Agentic, but you'll need to submit your MCP to us before it can be listed on the main Agentic marketplace.
+
 ## Join the community
 
 - Follow us on [Twitter](https://x.com/transitive_bs)
@@ -65,4 +67,6 @@ Agentic has first-class support for every major TS LLM SDK, including:
 
 ## Contributing
 
-Interested in contributing or building agentic from scratch? See [contributing.md](./contributing.md).
+**Agentic is proudly 100% open source.**
+
+Interested in contributing or building Agentic from scratch? See [contributing.md](./contributing.md).

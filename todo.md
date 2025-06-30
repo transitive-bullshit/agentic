@@ -14,17 +14,17 @@
     - fix mcp examples
     - add example usage to project detail pages
     - import react example usage component into docs
+  - replace json project and components with actual designs
 - docs
   - sub readmes (https://www.npmjs.com/package/@agentic/cli)
 - double-check free-tier rate-limits for `@agentic/search`
-- replace json project and components with actual designs
-- create agentic products for legacy tools
+- create agentic products for select legacy tools
 - add support for [`@google/genai`](https://github.com/googleapis/js-genai) tools adapter
 - add feature about optimized context to docs
-- add support to `@agentic/platform-tool-client` for etwas?
 - add ts sdk examples to e2e tests
 - fix weird git state and github actions marked as failing
 - add scroll appearance motion to hero animation
+- replace how-it-works diagram with better version
 
 ## TODO: Post-MVP
 
