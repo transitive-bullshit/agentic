@@ -2,10 +2,11 @@ packages:
   - packages/*
   - stdlib/*
   - apps/*
+  - docs
+  - fixtures
+  - fixtures/valid/*
   - examples/mcp-servers/*
   - examples/ts-sdks/*
-  - packages/fixtures/valid/*
-  - docs
 
 catalog:
   '@agentic/core': ^7.6.9
@@ -41,7 +42,7 @@ catalog:
   '@pmndrs/assets': ^1.7.0
   '@radix-ui/react-dropdown-menu': ^2.1.15
   '@radix-ui/react-label': ^2.1.7
-  '@radix-ui/react-slot': ^1.2.3
+  '@radix-ui/react-slot': 1.2.3
   '@radix-ui/react-tabs': ^1.1.12
   '@radix-ui/react-tooltip': ^1.2.7
   '@react-email/components': ^0.1.1

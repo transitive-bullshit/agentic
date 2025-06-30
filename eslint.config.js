@@ -7,10 +7,10 @@ export default [
     ignores: [
       '**/out/**',
       '**/dist/**',
+      '**/.wrangler/**',
       'packages/types/src/openapi.d.ts',
       'apps/gateway/src/worker.d.ts',
       'packages/json-schema/test/json-schema-test-suite.ts',
-      'apps/gateway/.wrangler',
       'apps/web/src/*.gen.ts',
       'legacy/**',
       'stdlib/stdlib/**'
@@ -26,8 +26,8 @@ export default [
   {
     files: [
       'packages/cli/src/**/*.ts',
+      'fixtures/**/*.ts',
       '**/*.test.ts',
-      'packages/fixtures/valid/**/*.ts',
       'examples/**/*.ts'
     ],
     rules: {

@@ -29,6 +29,7 @@ export default defineConfig({
           unitAmount: 0
         }
       ],
+      // Limit free-tier requests to 10 per day
       rateLimit: {
         interval: '1d',
         limit: 10

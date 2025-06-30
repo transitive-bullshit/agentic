@@ -17,7 +17,7 @@
     "start": "next start",
     "clean": "del .next",
     "test": "run-s test:*",
-    "test:typecheck": "tsc --noEmit"
+    "test:lint": "next lint"
   },
   "dependencies": {
     "@agentic/platform": "workspace:*",

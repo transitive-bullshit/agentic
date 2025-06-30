@@ -5,7 +5,6 @@ import useInfiniteScroll from 'react-infinite-scroll-hook'
 
 import { useAuthenticatedAgentic } from '@/components/agentic-provider'
 import { LoadingIndicator } from '@/components/loading-indicator'
-import { docsPublishingQuickStartUrl } from '@/lib/config'
 import { useInfiniteQuery } from '@/lib/query-client'
 
 export function AppProjectsList() {
@@ -64,7 +63,10 @@ export function AppProjectsList() {
           ) : !projects.length ? (
             <p>
               No projects found.{' '}
-              <Link href={docsPublishingQuickStartUrl} className='link'>
+              <Link
+                href='https://docs.agentic.so/publishing/quickstart'
+                className='link'
+              >
                 Create your first project to get started.
               </Link>
             </p>

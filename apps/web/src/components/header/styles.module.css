@@ -38,10 +38,6 @@
   min-height: 32px;
 }
 
-.logo {
-  user-select: none;
-}
-
 .navHeader {
   display: flex;
   flex-direction: row;

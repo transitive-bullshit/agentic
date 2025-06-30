@@ -12,9 +12,9 @@ import {
   UserIcon
 } from 'lucide-react'
 
-import { docsPublishingUrl } from '@/lib/config'
-
 import { Feature, type FeatureData } from './feature'
+
+const docsPublishingUrl = 'https://docs.agentic.so/publishing'
 
 const mcpGatewayFeatures: FeatureData[] = [
   {
@@ -177,7 +177,7 @@ const mcpGatewayFeatures: FeatureData[] = [
     description: (
       <>Check out our docs for more details on Agentic's MCP gateway.</>
     ),
-    href: docsPublishingUrl,
+    href: `${docsPublishingUrl}/quickstart`,
     icon: TextSelectIcon,
     pattern: {
       y: 13,

@@ -20,10 +20,8 @@
 - social images
 - double-check free-tier rate-limits for `@agentic/search`
 - replace json project and components with actual designs
-- implement footer
 - finesse header (mobile)
 - create agentic products for legacy tools
-- add basic legal terms and privacy policy (and update links in stripe)
 - add support for [`@google/genai`](https://github.com/googleapis/js-genai) tools adapter
 - add feature about optimized context to marketing site
 - ensure all agentic tool inputSchemas support openai strict mode by default
@@ -34,7 +32,11 @@
 - add support to `@agentic/platform-tool-client` for
 - add docs on using multiple tools with `AIFunctionSet`
 - add ts sdk examples to e2e tests
-- add `$schema` (https://agentic.so/schema.json) to the json docs
+- consider allowing deployments to specify their proxy secret instead of a single, per-project proxy secret
+- fix weird git state and github actions marked as failing
+- fix marketing dark background
+- page metadata
+- add scroll appearance motion to hero animation
 
 ## TODO: Post-MVP
 

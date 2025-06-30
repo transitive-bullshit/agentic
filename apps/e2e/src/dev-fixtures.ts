@@ -21,7 +21,6 @@ const fixturesDir = path.join(
   '..',
   '..',
   '..',
-  'packages',
   'fixtures'
 )
 const validFixturesDir = path.join(fixturesDir, 'valid')
