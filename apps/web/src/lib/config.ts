@@ -19,6 +19,7 @@ export const githubUrl = 'https://github.com/transitive-bullshit/agentic'
 // TODO: make an agentic-specific calendar for this
 export const calendarBookingUrl = 'https://cal.com/travis-fischer/15min'
 export const discordUrl = 'https://discord.agentic.so'
+export const emailUrl = 'mailto:travis@agentic.so'
 
 export const keywords = [
   'agentic',

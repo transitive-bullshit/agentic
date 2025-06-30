@@ -36,6 +36,8 @@
 - add ts sdk examples to e2e tests
 - consider allowing deployments to specify their proxy secret instead of a single, per-project proxy secret
 - fix weird git state and github actions marked as failing
+- fix marketing dark background
+- 404 page
 
 ## TODO: Post-MVP
 

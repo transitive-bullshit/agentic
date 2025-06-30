@@ -10,9 +10,9 @@ import { DynamicFooter } from './dynamic'
 export function Footer() {
   return (
     <footer className='w-full pt-12 pb-4 border-t flex flex-col items-center'>
-      <div className='container px-4 md:px-6 max-w-1200px'>
-        <div className='flex flex-col md:grid md:grid-cols-4 gap-8'>
-          <div className='flex flex-col md:items-center'>
+      <div className='container px-4 sm:px-6 max-w-1200px'>
+        <div className='flex flex-col sm:grid sm:grid-cols-2 md:grid-cols-4 gap-8'>
+          <div className='flex flex-col sm:items-center'>
             <div className='space-y-4'>
               <h3 className='text-lg font-semibold'>Platform</h3>
 
@@ -40,7 +40,7 @@ export function Footer() {
             </div>
           </div>
 
-          <div className='flex flex-col md:items-center'>
+          <div className='flex flex-col sm:items-center'>
             <div className='space-y-4'>
               <h3 className='text-lg font-semibold'>Resources</h3>
 
@@ -54,9 +54,9 @@ export function Footer() {
                 <div>
                   <Link
                     href='https://docs.agentic.so/publishing'
-                    className='link inline-block'
+                    className='link'
                   >
-                    Publish your own MCP
+                    Publishing Docs
                   </Link>
                 </div>
 
@@ -66,6 +66,15 @@ export function Footer() {
                     className='link'
                   >
                     OpenAPI to MCP
+                  </Link>
+                </div>
+
+                <div>
+                  <Link
+                    href='https://docs.agentic.so/publishing'
+                    className='link'
+                  >
+                    Agentic MCP Gateway
                   </Link>
                 </div>
 
@@ -126,7 +135,7 @@ export function Footer() {
             </div>
           </div>
 
-          <div className='flex flex-col md:items-center'>
+          <div className='flex flex-col sm:items-center'>
             <div className='space-y-4'>
               <h3 className='text-lg font-semibold'>Company</h3>
 
@@ -158,7 +167,7 @@ export function Footer() {
             </div>
           </div>
 
-          <div className='flex flex-col md:items-center gap-4'>
+          <div className='flex flex-col sm:items-center gap-4'>
             <div className='space-y-4'>
               <h3 className='text-lg font-semibold'>Social</h3>
 

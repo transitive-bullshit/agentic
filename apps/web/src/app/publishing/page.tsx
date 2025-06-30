@@ -125,7 +125,7 @@ export default function PublishingMCPsPage() {
 
       {/* CTA section */}
       <DotsSection className='mb-16'>
-        <div className='flex flex-col gap-12 z-10'>
+        <div className='flex flex-col gap-12 relative z-10'>
           <h2 className='text-center text-balance leading-snug md:leading-none text-3xl font-heading'>
             Deploy Your MCP Today
           </h2>

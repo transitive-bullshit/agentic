@@ -23,7 +23,7 @@
     "links": [
       {
         "label": "Contact",
-        "href": "https://docs.agentic.so/contact",
+        "href": "https://agentic.so/contact",
         "icon": "envelope"
       }
     ],
@@ -116,7 +116,7 @@
         },
         {
           "anchor": "Contact",
-          "href": "https://docs.agentic.so/contact",
+          "href": "https://agentic.so/contact",
           "icon": "envelope"
         },
         {
