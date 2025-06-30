@@ -124,14 +124,12 @@ export default function PublishingMCPsPage() {
       </section>
 
       {/* CTA section */}
-      <DotsSection className='mb-16'>
-        <div className='flex flex-col gap-12 relative z-10'>
-          <h2 className='text-center text-balance leading-snug md:leading-none text-3xl font-heading'>
-            Deploy Your MCP Today
-          </h2>
+      <DotsSection className='flex flex-col gap-12 mb-16'>
+        <h2 className='text-center text-balance leading-snug md:leading-none text-3xl font-heading'>
+          Deploy Your MCP Today
+        </h2>
 
-          <SupplySideCTA variant='github-2' />
-        </div>
+        <SupplySideCTA variant='github-2' />
       </DotsSection>
     </PageContainer>
   )

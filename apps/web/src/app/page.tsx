@@ -127,20 +127,18 @@ export default async function TheBestDamnLandingPageEver() {
       </section>
 
       {/* CTA section */}
-      <DotsSection className='mb-16'>
-        <div className='flex flex-col gap-12 relative z-10'>
-          <h2 className='text-center text-balance leading-snug md:leading-none text-3xl font-heading'>
-            Publish your own MCP products with Agentic
-          </h2>
+      <DotsSection className='flex flex-col gap-12 mb-16'>
+        <h2 className='text-center text-balance leading-snug md:leading-none text-3xl font-heading'>
+          Publish your own MCP products with Agentic
+        </h2>
 
-          <h5 className='text-center max-w-2xl'>
-            Run one command to turn any MCP server or OpenAPI service into a
-            paid MCP product. With built-in support for every major LLM SDK and
-            MCP client.
-          </h5>
+        <h5 className='text-center max-w-2xl'>
+          Run one command to turn any MCP server or OpenAPI service into a paid
+          MCP product. With built-in support for every major LLM SDK and MCP
+          client.
+        </h5>
 
-          <SupplySideCTA variant='docs' />
-        </div>
+        <SupplySideCTA variant='docs' />
       </DotsSection>
 
       {/* Open source section */}
@@ -186,14 +184,12 @@ export default async function TheBestDamnLandingPageEver() {
       </section> */}
 
       {/* Demand-side CTA section */}
-      <DotsSection className='mb-16'>
-        <div className='flex flex-col gap-12 relative z-10'>
-          <h2 className='text-center text-balance leading-snug md:leading-none text-3xl font-heading'>
-            Level up your AI Agents with the best tools
-          </h2>
+      <DotsSection className='flex flex-col gap-12 mb-16'>
+        <h2 className='text-center text-balance leading-snug md:leading-none text-3xl font-heading'>
+          Level up your AI Agents with the best tools
+        </h2>
 
-          <DemandSideCTA />
-        </div>
+        <DemandSideCTA />
       </DotsSection>
     </PageContainer>
   )

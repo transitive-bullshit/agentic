@@ -180,14 +180,12 @@ export default function AboutPage() {
       </section>
 
       {/* CTA section */}
-      <DotsSection>
-        <div className='flex flex-col gap-12 relative z-10'>
-          <h2 className='text-center text-balance leading-snug md:leading-none text-3xl font-heading'>
-            Don't miss out on the AI wave
-          </h2>
+      <DotsSection className='flex flex-col gap-12'>
+        <h2 className='text-center text-balance leading-snug md:leading-none text-3xl font-heading'>
+          Don't miss out on the AI wave
+        </h2>
 
-          <SupplySideCTA variant='github-2' />
-        </div>
+        <SupplySideCTA variant='github-2' />
       </DotsSection>
     </PageContainer>
   )
