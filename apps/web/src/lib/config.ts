@@ -5,7 +5,7 @@ export const isSafari =
 
 export const title = 'Agentic'
 export const description =
-  "Agentic is the App Store for LLM tools. Publish any MCP server or OpenAPI service Agentic's MCP gateway and instantly turn it into a paid MCP product."
+  "Agentic is the App Store for LLM tools. Publish any MCP server or OpenAPI service to Agentic's MCP gateway and instantly turn it into a paid MCP product."
 export const domain =
   process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL ?? 'agentic.so'
 
@@ -65,13 +65,15 @@ export const isTest = env === 'test'
 
 export const port = process.env.PORT || '3000'
 export const prodUrl = `https://${domain}`
-export const url = isDev ? `http://localhost:${port}` : prodUrl
+export const baseUrl = isDev ? `http://localhost:${port}` : prodUrl
 export const vercelUrl =
   process.env.VERCEL_URL ?? process.env.NEXT_PUBLIC_VERCEL_URL
-// export const webBaseUrl = isDev || !vercelUrl ? url : `https://${vercelUrl}`
+// export const webBaseUrl = isDev || !vercelUrl ? baseUrl : `https://${vercelUrl}`
 export const apiBaseUrl = process.env.NEXT_PUBLIC_AGENTIC_API_BASE_URL!
 export const gatewayBaseUrl = process.env.NEXT_PUBLIC_AGENTIC_GATEWAY_BASE_URL!
 
 export const posthogKey = process.env.NEXT_PUBLIC_POSTHOG_KEY!
 export const posthogHost =
   process.env.NEXT_PUBLIC_POSTHOG_HOST || 'https://us.i.posthog.com'
+
+export const socialImageUrl = `${baseUrl}/agentic-social-image-light.jpg`
