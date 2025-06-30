@@ -11,11 +11,11 @@
 
 # Agentic <!-- omit from toc -->
 
-You can think of Agentic as an **open source RapidAPI for LLM tools**.
+You can think of Agentic as a **high curated, open source RapidAPI for LLM tools**.
 
-Agentic offers a marketplace of highly curated LLM tools, including support for every major LLM SDK and MCP client.
+Agentic's marketplace of LLM tools support every major LLM SDK and MCP client out-of-the-box.
 
-You can publish your own MCP servers / OpenAPI services to Agentic's MCP Gateway and start charging for agentic tool use.
+You can publish your own MCP servers or OpenAPI services to Agentic's MCP Gateway and start charging for agentic tool use.
 
 - [Website](https://agentic.so)
 - [Docs](https://docs.agentic.so)
@@ -24,7 +24,7 @@ You can publish your own MCP servers / OpenAPI services to Agentic's MCP Gateway
 
 - **Highly Curated Tools**: All publicly listed Agentic tools are manually vetted to keep an extremely high quality bar.
 - **Agentic UX**: All Agentic tools have been hand-crafted specifically for LLM tool use. We call this Agentic UX, and it's at the heart of why Agentic tools work better for LLM & MCP use cases than legacy APIs.
-- **First-Class MCP Support**: On both the publishing and consumption sides, Agentic supports MCP as a truly first-class primitive.
+- **First-Class MCP Support**: On both the publishing and consumption sides, Agentic supports MCP as a truly first-class primitive – not an afterthought.
 - **World-Class TypeScript DX**: Agentic is written in TS and strives for a Vercel-like DX, including one-line integrations with every major TS LLM SDK.
 - **Stripe Billing**: Agentic uses Stripe for billing, and most tools are _usage-based_, so you'll only pay for what you (and your agents) actually use.
 - **Blazing Fast MCP Gateway**: Agentic's MCP gateway is powered by _Cloudflare's global edge network_. Tools come with customizable caching and rate-limits, so you can REST assured that your agents will always have a fast and reliable experience.
@@ -35,9 +35,9 @@ You can publish your own MCP servers / OpenAPI services to Agentic's MCP Gateway
 - [MCP Marketplace](https://docs.agentic.so/marketplace) - Using tools
 - [MCP Publishing](https://docs.agentic.so/publishing/quickstart) - Publishing your own tools
 
-### TypeScript AI SDKs
+### TypeScript LLM SDKs
 
-Agentic has first-class support for every major LLM SDK:
+Agentic has first-class support for every major TS LLM SDK, including:
 
 - [Vercel AI SDK](https://docs.agentic.so/marketplace/ts-sdks/ai-sdk)
 - [OpenAI](https://docs.agentic.so/marketplace/ts-sdks/openai-chat)
