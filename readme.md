@@ -3,7 +3,7 @@
 
 <p align="center">
   <a href="https://agentic.so">
-    <img alt="Agentic" src="/apps/web/public/agentic-social-image-light.jpg">
+    <img alt="Agentic" src="/apps/web/public/agentic-social-image-light.jpg" width="640">
   </a>
 </p>
 
