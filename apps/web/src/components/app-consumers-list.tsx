@@ -80,7 +80,7 @@ export function AppConsumersList() {
               {consumers.map((consumer) => (
                 <Link
                   key={consumer.id}
-                  className='p-4 border rounded-lg hover:border-gray-400 transition-colors overflow-hidden'
+                  className='bg-card color-card-foreground p-4 border rounded-lg hover:border-gray-400 transition-colors overflow-hidden'
                   href={`/app/consumers/${consumer.id}`}
                 >
                   <h3 className='font-medium'>{consumer.project.name}</h3>
