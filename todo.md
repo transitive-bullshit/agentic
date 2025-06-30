@@ -35,6 +35,7 @@
 - add docs on using multiple tools with `AIFunctionSet`
 - add ts sdk examples to e2e tests
 - consider allowing deployments to specify their proxy secret instead of a single, per-project proxy secret
+- fix weird git state and github actions marked as failing
 
 ## TODO: Post-MVP
 
