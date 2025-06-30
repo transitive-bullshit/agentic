@@ -1,6 +1,6 @@
 {
   "name": "@agentic/cli",
-  "version": "8.2.1",
+  "version": "8.2.2",
   "description": "CLI for the Agentic platform.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "AGPL-3.0",

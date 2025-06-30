@@ -1,6 +1,6 @@
 {
   "name": "@agentic/mcp",
-  "version": "8.2.1",
+  "version": "8.2.2",
   "description": "Agentic SDK for exposing tools from an MCP client in a way that easily interops with all TypeScript AI SDKs.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",

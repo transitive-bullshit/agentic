@@ -1,6 +1,6 @@
 {
   "name": "@agentic/platform-tool-client",
-  "version": "8.2.1",
+  "version": "8.2.2",
   "description": "Main client for working with LLM tools hosted on the Agentic platform.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "AGPL-3.0",

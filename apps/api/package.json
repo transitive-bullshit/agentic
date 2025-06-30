@@ -1,7 +1,7 @@
 {
   "name": "api",
   "private": true,
-  "version": "8.2.1",
+  "version": "8.2.2",
   "description": "Internal Agentic platform API service.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "AGPL-3.0",
