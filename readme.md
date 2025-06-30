@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://agentic.so">
-    <img alt="Agentic" src="/apps/web/public/agentic-social-image-light.jpg" width="640">
+    <img alt="Agentic" src="https://raw.githubusercontent.com/transitive-bullshit/agentic/main/apps/web/public/agentic-social-image-light.jpg" width="640">
   </a>
 </p>
 
@@ -50,7 +50,7 @@ Agentic has first-class support for every major TS LLM SDK, including:
 
 <p align="center">
   <a href="https://agentic.so/publishing">
-    <img alt="Agentic" src="/apps/web/public/agentic-publishing-social-image-dark-github.jpg" width="640">
+    <img alt="Agentic" src="https://raw.githubusercontent.com/transitive-bullshit/agentic/main/apps/web/public/agentic-publishing-social-image-dark-github.jpg" width="640">
   </a>
 </p>
 
