@@ -11,9 +11,9 @@
 
 # Agentic <!-- omit from toc -->
 
-You can think of Agentic as an open source **RapidAPI for LLM tools**.
+You can think of Agentic as **RapidAPI for LLM tools**.
 
-All of the tools listed on Agentic's public marketplace are manually vetted for quality.
+All tools listed on Agentic's marketplace have been carefully hand curated and are regularly tested with a comprehensive set of integration tests and evals. **Agentic aims for quality, not quantity**.
 
 On the flip side, Agentic makes it easy to publish your own MCP servers & OpenAPI services to Agentic's MCP Gateway and start charging for agentic tool use.
 
