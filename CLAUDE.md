@@ -17,14 +17,14 @@ The platform consists of:
 - **Shared Packages** (`packages/`) - Common utilities, types, validators, and config
 - **StdLib Packages** (`stdlib/`) - TS AI SDK adapters
 
-The gateway accepts requests at `https://gateway.agentic.so/deploymentIdentifier/tool-ame` for HTTP requests or `https://gateway.agentic.so/deploymentIdentifier/mcp` for MCP.
+The gateway accepts HTTP requests at `https://gateway.agentic.so/deploymentIdentifier/tool-name` or `https://gateway.agentic.so/deploymentIdentifier/mcp` for MCP.
 
 ### Development Commands
 
 **Main development workflow:**
 
 - `pnpm dev` - Start all services in development mode
-- `pnpm build` - Build all packages and apps
+- `pnpm build` - Build all packages and apps (except for the website)
 - `pnpm test` - Run all tests (format, lint, typecheck, unit, but not e2e tests)
 - `pnpm clean` - Clean all build artifacts
 
