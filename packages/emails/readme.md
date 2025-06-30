@@ -17,7 +17,7 @@
 - [Docs](https://docs.agentic.so)
 
 > [!TIP]
-> You likely don't need this **private** package unless you are contributing to Agentic directly.
+> You likely don't need this private package unless you are contributing to Agentic directly.
 
 ## License
 
