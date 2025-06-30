@@ -153,7 +153,7 @@ export function Footer() {
                 </div>
 
                 <div>
-                  <ActiveLink href='/privacy-policy' className='link'>
+                  <ActiveLink href='/privacy' className='link'>
                     Privacy Policy
                   </ActiveLink>
                 </div>

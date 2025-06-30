@@ -36,7 +36,7 @@ export default function AboutPage() {
 
       {/* CTA section */}
       <DotsSection className='max-w-2xl'>
-        <div className='relative grid grid-cols-2 gap-8'>
+        <div className='relative grid grid-cols-1 sm:grid-cols-2 gap-8'>
           <HeroButton asChild heroVariant='orange' className=''>
             <Link href={twitterUrl} target='_blank' rel='noopener'>
               DM me on Twitter / X
