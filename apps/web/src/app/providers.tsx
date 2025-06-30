@@ -16,7 +16,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
       <AgenticProvider>
         <ThemeProvider
           attribute='class'
-          defaultTheme='light'
+          defaultTheme='dark'
           disableTransitionOnChange
         >
           <QueryClientProvider client={queryClient}>
