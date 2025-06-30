@@ -15,6 +15,7 @@
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy --env production --outdir dist --upload-source-maps --var SENTRY_RELEASE:$(sentry-cli releases propose-version)",
+    "deploy:cf": "wrangler deploy --env production --outdir dist --upload-source-maps",
     "cf-clear-cache": "del .wrangler",
     "clean": "del dist",
     "test": "run-s test:*",
