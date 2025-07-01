@@ -76,7 +76,7 @@ export const ActiveLink = React.forwardRef(function ActiveLink(
   return (
     <Link
       {...props}
-      className={cs(className, disabled && activeClassName)}
+      className={cs('cursor-pointer', className, disabled && activeClassName)}
       href={href}
       prefetch={disabled ? false : prefetch}
       style={styleOverride}

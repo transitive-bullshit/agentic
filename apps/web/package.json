@@ -29,6 +29,7 @@
     "@fisch0920/markdown-to-html": "catalog:",
     "@number-flow/react": "catalog:",
     "@pmndrs/assets": "catalog:",
+    "@radix-ui/react-avatar": "^1.1.10",
     "@radix-ui/react-collapsible": "catalog:",
     "@radix-ui/react-dropdown-menu": "catalog:",
     "@radix-ui/react-label": "catalog:",

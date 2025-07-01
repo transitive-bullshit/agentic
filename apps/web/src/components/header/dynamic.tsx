@@ -1,32 +1,96 @@
 'use client'
 
+import { useState } from 'react'
+
 import { ActiveLink } from '@/components/active-link'
 import { useAgentic } from '@/components/agentic-provider'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu'
+
+import { Button } from '../ui/button'
 
 export function DynamicHeader() {
   const ctx = useAgentic()
+  const [isDropdownMenuOpen, setIsDropdownMenuOpen] = useState(false)
 
   return (
     <>
       {ctx?.isAuthenticated ? (
-        <>
-          <ActiveLink href='/app' className='link'>
-            Dashboard
-          </ActiveLink>
+        <DropdownMenu
+          open={isDropdownMenuOpen}
+          onOpenChange={setIsDropdownMenuOpen}
+        >
+          <DropdownMenuTrigger asChild>
+            <Avatar className='cursor-pointer'>
+              <AvatarImage src={ctx.api.authSession!.user.image} />
+              <AvatarFallback>
+                {ctx.api.authSession!.user.username?.slice(0, 2).toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
+          </DropdownMenuTrigger>
 
-          <ActiveLink href='/logout' className='link'>
-            Logout
-          </ActiveLink>
-        </>
+          <DropdownMenuContent>
+            <DropdownMenuItem asChild>
+              <ActiveLink
+                href='/app'
+                onClick={() => setIsDropdownMenuOpen(false)}
+              >
+                Dashboard
+              </ActiveLink>
+            </DropdownMenuItem>
+
+            <DropdownMenuItem asChild>
+              <ActiveLink
+                href='/app/projects'
+                onClick={() => setIsDropdownMenuOpen(false)}
+              >
+                My Projects
+              </ActiveLink>
+            </DropdownMenuItem>
+
+            <DropdownMenuItem asChild>
+              <ActiveLink
+                href='/app/consumers'
+                onClick={() => setIsDropdownMenuOpen(false)}
+              >
+                My Subscriptions
+              </ActiveLink>
+            </DropdownMenuItem>
+
+            <DropdownMenuSeparator />
+
+            <DropdownMenuItem asChild>
+              <ActiveLink
+                href='/logout'
+                onClick={() => setIsDropdownMenuOpen(false)}
+              >
+                Logout
+              </ActiveLink>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       ) : (
         <>
-          <ActiveLink href='/login' className='link whitespace-nowrap'>
-            Log in
-          </ActiveLink>
+          <Button asChild variant='outline'>
+            <ActiveLink href='/login' className='whitespace-nowrap px-4! py-2!'>
+              Log in
+            </ActiveLink>
+          </Button>
 
-          <ActiveLink href='/signup' className='link whitespace-nowrap'>
-            Sign up
-          </ActiveLink>
+          <Button asChild variant='default'>
+            <ActiveLink
+              href='/signup'
+              className='whitespace-nowrap px-4! py-2!'
+            >
+              Sign up
+            </ActiveLink>
+          </Button>
         </>
       )}
     </>

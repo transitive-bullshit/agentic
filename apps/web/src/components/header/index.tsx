@@ -30,6 +30,10 @@ export function Header() {
             MCP Marketplace
           </ActiveLink>
 
+          <ActiveLink href='/publishing' className='link whitespace-nowrap'>
+            MCP Publishing
+          </ActiveLink>
+
           <ActiveLink
             href='https://docs.agentic.so'
             className='link whitespace-nowrap'
@@ -37,9 +41,9 @@ export function Header() {
             Docs
           </ActiveLink>
 
-          <DynamicHeader />
-
           <DarkModeToggle />
+
+          <DynamicHeader />
         </div>
       </div>
     </header>

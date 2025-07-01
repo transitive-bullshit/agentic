@@ -7,17 +7,7 @@ packages:
   - fixtures/valid/*
   - examples/mcp-servers/*
   - examples/ts-sdks/*
-ignoredBuiltDependencies:
-  - '@fisch0920/config'
-  - puppeteer
-onlyBuiltDependencies:
-  - '@sentry/cli'
-  - protobufjs
-  - tree-sitter
-updateConfig:
-  ignoreDependencies:
-    - p-throttle
-    - '@nangohq/node'
+
 catalog:
   '@agentic/core': ^7.6.9
   '@agentic/serper': ^7.6.9
@@ -53,7 +43,7 @@ catalog:
   '@paralleldrive/cuid2': ^2.2.2
   '@pmndrs/assets': ^1.7.0
   '@radix-ui/react-collapsible': ^1.1.11
-  '@radix-ui/react-dropdown-menu': ^2.1.15
+  '@radix-ui/react-dropdown-menu': 2.1.15
   '@radix-ui/react-label': ^2.1.7
   '@radix-ui/react-slot': ^1.2.3
   '@radix-ui/react-tabs': ^1.1.12
@@ -199,3 +189,17 @@ catalog:
   zod-to-json-schema: ^3.24.5
   zod-validation-error: ^3.5.2
   zoominfo-api-auth-client: ^1.0.1
+
+ignoredBuiltDependencies:
+  - '@fisch0920/config'
+  - puppeteer
+
+onlyBuiltDependencies:
+  - '@sentry/cli'
+  - protobufjs
+  - tree-sitter
+
+updateConfig:
+  ignoreDependencies:
+    - p-throttle
+    - '@nangohq/node'
