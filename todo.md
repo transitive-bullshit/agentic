@@ -32,6 +32,7 @@
   - replace tabs with links
     - too much of a delay on individual pages and makes no sense to have these imports on the other tab pages
   - add last published date to
+  - add breadcrumb nav: marketplace > @agentic > search
 - add a basic page + docs on pricing
 - [react query prefetching for public pages](https://tanstack.com/query/latest/docs/framework/react/guides/advanced-ssr#prefetching-and-dehydrating-data)
 - add [ping](https://modelcontextprotocol.io/specification/2025-03-26/basic/utilities/ping) support to mcp servers
