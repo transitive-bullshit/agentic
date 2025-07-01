@@ -19,8 +19,16 @@
 - create agentic products for select legacy tools
 - add feature about optimized context to docs
 - add ts sdk examples to e2e tests
+- submit to awesome mcp, mcp discord, etc
 - add scroll appearance motion to hero animation
 - replace how-it-works diagram with better version
+- docs: add notes about constraints on mcp origin servers (static tools)
+- improve public project detail page
+  - **include example usage**
+  - list tools
+  - mcp inspector
+  - **add support to example-usage for api keys**
+- **api keys should go beyond 1:1 consumers**
 
 ## TODO: Post-MVP
 

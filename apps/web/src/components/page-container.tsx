@@ -12,7 +12,7 @@ export function PageContainer({
   return (
     <>
       {background && (
-        <div className='absolute top-0 left-0 w-[100vw] h-[100vh] bg-[url(/bg.png)] dark:bg-[url(/bg-dark.jpg)] dark:bg-cover dark:h-auto dark:aspect-[1000/808] bg-top-right bg-no-repeat bg-size-[100vw_50vh] md:bg-auto z-0' />
+        <div className='absolute top-0 left-0 w-[100vw] h-[100vh] bg-top-right bg-no-repeat bg-size-[100vw_50vh] md:bg-auto -z-10 dark:bg-size-[100%_100%] dark:bg-center dark:w-[calc(max(100vw,1500px))] dark:h-[calc(max(100vh,1200px))] dark:left-[calc(min((100vw-1500px)/2,0px))] bg-[url(/bg.png)] dark:bg-[url(/bg-dark.jpg)]' />
       )}
 
       <div
