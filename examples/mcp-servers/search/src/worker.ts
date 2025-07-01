@@ -81,7 +81,7 @@ export default {
               content: [
                 {
                   type: 'text',
-                  text: 'Invalid request: must come from Agentic MCP proxy'
+                  text: 'Unauthorized request: must come from Agentic MCP Gateway'
                 }
               ]
             }
