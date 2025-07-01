@@ -2,9 +2,10 @@
 
 import type { Project } from '@agentic/platform-types'
 import { assert, omit, sanitizeSearchParams } from '@agentic/platform-core'
-import { ExternalLinkIcon } from 'lucide-react'
+import { ChevronsUpDownIcon, ExternalLinkIcon } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
+import plur from 'plur'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { useAgentic } from '@/components/agentic-provider'
@@ -13,10 +14,17 @@ import { LoadingIndicator } from '@/components/loading-indicator'
 import { PageContainer } from '@/components/page-container'
 import { ProjectPricingPlans } from '@/components/project-pricing-plans'
 import { Button } from '@/components/ui/button'
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger
+} from '@/components/ui/collapsible'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { GitHubIcon } from '@/icons/github'
 import { toast, toastError } from '@/lib/notifications'
 import { useQuery } from '@/lib/query-client'
+
+const MAX_TOOLS_TO_SHOW = 5
 
 export function MarketplaceProjectIndex({
   projectIdentifier
@@ -182,11 +190,19 @@ export function MarketplaceProjectIndex({
                   Overview
                 </TabsTrigger>
 
-                <TabsTrigger value='tools' className='cursor-pointer'>
+                <TabsTrigger
+                  value='tools'
+                  className='cursor-pointer'
+                  disabled={!deployment}
+                >
                   Tools
                 </TabsTrigger>
 
-                <TabsTrigger value='pricing' className='cursor-pointer'>
+                <TabsTrigger
+                  value='pricing'
+                  className='cursor-pointer'
+                  disabled={!deployment}
+                >
                   Pricing
                 </TabsTrigger>
 
@@ -202,14 +218,60 @@ export function MarketplaceProjectIndex({
                   </h2>
 
                   <div
-                    className={`grid grid-cols grid-cols-1 gap-8 md:grid-cols-2`}
+                    className={`grid grid-cols grid-cols-1 md:grid-cols-2 gap-8 md:gap-4`}
                   >
-                    <div className='flex flex-col gap-4'>
+                    <div className='flex flex-col gap-8'>
                       {deployment ? (
-                        <p>
-                          {deployment?.description ||
-                            'No description available'}
-                        </p>
+                        <>
+                          <p>
+                            {deployment.description ||
+                              'No description available'}
+                          </p>
+
+                          <div className='flex flex-col gap-4'>
+                            <h3 className='text-balance leading-snug md:leading-none text-lg font-semibold'>
+                              Tools
+                            </h3>
+
+                            <ul className='flex flex-col gap-4'>
+                              {deployment.tools
+                                .slice(0, MAX_TOOLS_TO_SHOW)
+                                .map((tool) => (
+                                  <li
+                                    key={tool.name}
+                                    className='p-4 border rounded-sm w-full flex flex-col gap-4'
+                                  >
+                                    <h3 className='text-balance leading-snug md:leading-none text-md font-semibold'>
+                                      {tool.name}
+                                    </h3>
+
+                                    <p className='text-sm text-gray-500'>
+                                      {tool.description}
+                                    </p>
+                                  </li>
+                                ))}
+
+                              {deployment.tools.length > MAX_TOOLS_TO_SHOW && (
+                                <li>
+                                  <Button
+                                    className='w-full flex flex-col gap-4'
+                                    variant='outline'
+                                  >
+                                    View{' '}
+                                    {deployment.tools.length -
+                                      MAX_TOOLS_TO_SHOW}{' '}
+                                    more{' '}
+                                    {plur(
+                                      'tool',
+                                      deployment.tools.length -
+                                        MAX_TOOLS_TO_SHOW
+                                    )}
+                                  </Button>
+                                </li>
+                              )}
+                            </ul>
+                          </div>
+                        </>
                       ) : (
                         <p>
                           This project doesn't have any published deployments.
@@ -231,6 +293,60 @@ export function MarketplaceProjectIndex({
                   <h2 className='text-balance leading-snug md:leading-none text-xl font-semibold'>
                     Tools
                   </h2>
+
+                  {deployment && (
+                    <ul className='flex flex-col gap-4'>
+                      {deployment.tools.map((tool) => (
+                        <li
+                          key={tool.name}
+                          className='p-4 border rounded-sm w-full flex flex-col gap-4'
+                        >
+                          <h3 className='text-balance leading-snug md:leading-none text-md font-semibold'>
+                            {tool.name}
+                          </h3>
+
+                          <p className='text-sm text-gray-500'>
+                            {tool.description}
+                          </p>
+
+                          <Collapsible className='w-full flex flex-col align-start gap-2'>
+                            <CollapsibleTrigger asChild>
+                              <Button variant='outline' className='self-start'>
+                                Input schema
+                                <ChevronsUpDownIcon />
+                              </Button>
+                            </CollapsibleTrigger>
+
+                            <CollapsibleContent>
+                              <pre className='max-w-full overflow-x-auto border p-4 rounded-sm'>
+                                {JSON.stringify(tool.inputSchema, null, 2)}
+                              </pre>
+                            </CollapsibleContent>
+                          </Collapsible>
+
+                          {tool.outputSchema && (
+                            <Collapsible className='w-full flex flex-col align-start gap-2'>
+                              <CollapsibleTrigger asChild>
+                                <Button
+                                  variant='outline'
+                                  className='self-start'
+                                >
+                                  Output schema
+                                  <ChevronsUpDownIcon />
+                                </Button>
+                              </CollapsibleTrigger>
+
+                              <CollapsibleContent>
+                                <pre className='max-w-full overflow-x-auto border p-4 rounded-sm'>
+                                  {JSON.stringify(tool.outputSchema, null, 2)}
+                                </pre>
+                              </CollapsibleContent>
+                            </Collapsible>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </TabsContent>
 
                 <TabsContent value='pricing' className='flex flex-col gap-4'>

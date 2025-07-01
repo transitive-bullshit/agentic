@@ -142,7 +142,7 @@ catalog:
   p-throttle: 6.2.0
   p-times: ^4.0.0
   parse-json: ^8.3.0
-  plur: ^5.1.0
+  plur: 5.1.0
   postcss: ^8.5.6
   postgres: ^3.4.7
   posthog-js: ^1.255.0
