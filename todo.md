@@ -26,6 +26,9 @@
   - mcp inspector
   - **add support to example-usage for api keys**
 - **api keys should go beyond 1:1 consumers**
+- replace JSON schemas with `json` code blocks
+- improve upgrade flow
+- **currently not obvious how to get api key**
 
 ## TODO: Post-MVP
 
