@@ -242,8 +242,6 @@ exports[`HTTP => OpenAPI origin default bypass caching > 2.0: GET @dev/test-ever
 
 exports[`HTTP => OpenAPI origin everything "echo" tool with empty body > 10.0: POST @dev/test-everything-openapi/echo 1`] = `{}`;
 
-exports[`HTTP => OpenAPI origin everything "echo" tool with empty body > 10.1: POST @dev/test-everything-openapi/echo 1`] = `{}`;
-
 exports[`HTTP => OpenAPI origin everything "pure" tool > 8.0: POST @dev/test-everything-openapi/pure 1`] = `
 {
   "foo": "bar",

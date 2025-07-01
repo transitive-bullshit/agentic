@@ -1,11 +1,10 @@
-import { select } from '@clack/prompts'
 import { Command } from 'commander'
 import { gracefulExit } from 'exit-hook'
 import { oraPromise } from 'ora'
-import semver from 'semver'
 
 import type { Context } from '../types'
 import { AuthStore } from '../lib/auth-store'
+import { promptForDeploymentVersion } from '../lib/prompt-for-deployment-version'
 import { resolveDeployment } from '../lib/resolve-deployment'
 
 export function registerPublishCommand({
@@ -65,39 +64,10 @@ export function registerPublishCommand({
           return gracefulExit(1)
         }
 
-        const initialVersion = deployment.version
-        const baseVersion =
-          initialVersion || project.lastPublishedDeploymentVersion || '0.0.0'
-
-        const options = [
-          initialVersion
-            ? { value: initialVersion, label: initialVersion }
-            : null,
-          {
-            value: semver.inc(baseVersion, 'patch'),
-            label: `${semver.inc(baseVersion, 'patch')} (patch)`
-          },
-          {
-            value: semver.inc(baseVersion, 'minor'),
-            label: `${semver.inc(baseVersion, 'minor')} (minor)`
-          },
-          {
-            value: semver.inc(baseVersion, 'major'),
-            label: `${semver.inc(baseVersion, 'major')} (major)`
-          }
-        ].filter(Boolean)
-
-        if (project.lastPublishedDeploymentVersion) {
-          logger.info(
-            `Project "${project.identifier}" latest published version is "${project.lastPublishedDeploymentVersion}".\n`
-          )
-        } else {
-          logger.info(`Project "${project.identifier}" is not published yet.\n`)
-        }
-
-        const version = await select({
-          message: `Select version of deployment "${deployment.identifier}" to publish:`,
-          options
+        const version = await promptForDeploymentVersion({
+          deployment,
+          project,
+          logger
         })
 
         if (!version || typeof version !== 'string') {

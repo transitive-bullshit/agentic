@@ -76,6 +76,12 @@ export class DurableMcpClientBase extends DurableObject<RawEnv> {
   }): Promise<string> {
     await this.ensureClientConnection()
 
+    // console.log('DurableMcpClient.callTool', {
+    //   name,
+    //   args,
+    //   metadata
+    // })
+
     const toolCallResponse = await this.client!.callTool({
       name,
       arguments: args,

@@ -14,7 +14,7 @@
   "type": "module",
   "scripts": {
     "build": "turbo build --filter=!web --concurrency=32",
-    "dev": "turbo dev --continue --filter=!./examples/*",
+    "dev": "turbo dev --continue --filter=!./examples/**/*",
     "docs": "turbo run docs",
     "clean": "turbo clean",
     "fix": "run-s fix:*",

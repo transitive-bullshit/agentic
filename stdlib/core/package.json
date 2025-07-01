@@ -35,7 +35,7 @@
     "delay": "catalog:",
     "jsonrepair": "catalog:",
     "ky": "catalog:",
-    "openai-zod-to-json-schema": "^1.1.1",
+    "openai-zod-to-json-schema": "catalog:",
     "p-throttle": "catalog:",
     "type-fest": "catalog:",
     "zod-validation-error": "catalog:"

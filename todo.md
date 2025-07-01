@@ -12,9 +12,8 @@
   - example usage
     - double check example usage for all TS sdks now that real examples are working
     - fix mcp examples
-    - add example usage to project detail pages
     - import react example usage component into docs
-  - replace json project and components with actual designs
+  - replace json pricing plans and consumers with actual designs
 - double-check free-tier rate-limits for `@agentic/search`
 - create agentic products for select legacy tools
 - add feature about optimized context to docs
@@ -24,8 +23,6 @@
 - replace how-it-works diagram with better version
 - docs: add notes about constraints on mcp origin servers (static tools)
 - improve public project detail page
-  - **include example usage**
-  - list tools
   - mcp inspector
   - **add support to example-usage for api keys**
 - **api keys should go beyond 1:1 consumers**
@@ -53,7 +50,7 @@
 - stripe
   - re-add coupons
   - declarative json-based pricing
-    - like https://github.com/tierrun/tier and Saasify
+    - like Saasify and https://github.com/tierrun/tier
     - https://github.com/tierrun/tier/blob/main/pricing/schema.json
     - https://blog.tier.run/tier-hello-world-demo
   - stripe connect
@@ -121,3 +118,4 @@
   - also add `@agentic/json-schema` to `createJsonSchema` parsing instead of current no-op
 - add support for [`@google/genai`](https://github.com/googleapis/js-genai) tools adapter
   - currently difficult due to their use of non-standard json schemas
+- validate example args against the tool's input schema during config validation

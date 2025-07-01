@@ -86,6 +86,62 @@ export type PricingPlanToolOverride = z.infer<
 >
 
 /**
+ * Example tool usage.
+ */
+export const toolConfigExampleSchema = z.object({
+  /**
+   * The display name of the example.
+   */
+  name: z.string().describe('The display name of the example.'),
+
+  /**
+   * The input prompt for agents to use when running this example.
+   */
+  prompt: z
+    .string()
+    .describe('The input prompt for agents to use when running this example.'),
+
+  /**
+   * An optional system prompt for agents to use when running this example.
+   *
+   * Defaults to `You are a helpful assistant. Be as concise as possible.`
+   */
+  systemPrompt: z
+    .string()
+    .optional()
+    .describe(
+      'An optional system prompt for agents to use when running this example. Defaults to `You are a helpful assistant. Be as concise as possible.`'
+    ),
+
+  /**
+   * The arguments to pass to the tool for this example.
+   */
+  // TODO: validate example args against the tool's input schema during
+  // config validation
+  args: z
+    .record(z.string(), z.any())
+    .describe('The arguments to pass to the tool for this example.'),
+
+  /**
+   * Whether this example should be featured in the docs for the project.
+   *
+   * The first tool with a `featured` example will be the featured tool for the
+   * project.
+   */
+  featured: z
+    .boolean()
+    .optional()
+    .describe(
+      'Whether this example should be featured in the docs for the project.'
+    ),
+
+  /**
+   * A description of the example.
+   */
+  description: z.string().optional().describe('A description of the example.')
+})
+
+/**
  * Customizes a tool's default behavior across all pricing plans.
  */
 export const toolConfigSchema = z
@@ -207,11 +263,17 @@ export const toolConfigSchema = z
       .optional()
       .describe(
         "Allows you to override this tool's behavior or disable it entirely for different pricing plans. This is a map of PricingPlan slug to PricingPlanToolOverrides for that plan."
-      )
+      ),
 
     // TODO?
-    // examples
     // headers
+
+    examples: z
+      .array(toolConfigExampleSchema)
+      .optional()
+      .describe(
+        "Examples of how to use this tool. Used to generate example usage in the tool's docs."
+      )
   })
   .openapi('ToolConfig')
 

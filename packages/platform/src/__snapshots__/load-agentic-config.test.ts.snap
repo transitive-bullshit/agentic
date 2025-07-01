@@ -271,6 +271,38 @@ exports[`loadAgenticConfig > everything-openapi 1`] = `
       "slug": "pro",
     },
   ],
+  "readme": "
+# Test Everything OpenAPI
+
+This is testing **readme rendering**.
+
+## Misc
+
+- [ ] Item 1
+- [ ] Item 2
+- [x] Item 3
+
+---
+
+- _italic_
+- **bold**
+- [link](https://www.google.com)
+- \`code\`
+
+## Code
+
+\`\`\`ts
+const a = 1
+
+export function foo() {
+  console.log('hello world')
+}
+\`\`\`
+
+## Images
+
+![Image](https://placehold.co/600x400)
+",
   "slug": "test-everything-openapi",
   "toolConfigs": [
     {
@@ -287,6 +319,19 @@ exports[`loadAgenticConfig > everything-openapi 1`] = `
         "enabled": false,
       },
       "reportUsage": true,
+    },
+    {
+      "examples": [
+        {
+          "args": {
+            "message": "Hello, world!",
+          },
+          "featured": true,
+          "name": "Example 1",
+          "prompt": "Use the echo tool to say hello.",
+        },
+      ],
+      "name": "echo",
     },
     {
       "enabled": false,

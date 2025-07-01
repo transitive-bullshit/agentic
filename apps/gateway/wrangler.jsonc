@@ -24,39 +24,32 @@
     }
   ],
   "vars": {
-    "ENVIRONMENT": "production",
-    "AGENTIC_API_BASE_URL": "https://api.agentic.so"
+    "ENVIRONMENT": "development",
+    "AGENTIC_API_BASE_URL": "http://localhost:3001"
   },
+  "durable_objects": {
+    "bindings": [
+      {
+        "class_name": "DurableRateLimiter",
+        "name": "DO_RATE_LIMITER"
+      },
+      {
+        "class_name": "DurableMcpServer",
+        "name": "DO_MCP_SERVER"
+      },
+      {
+        "class_name": "DurableMcpClient",
+        "name": "DO_MCP_CLIENT"
+      }
+    ]
+  },
+  "analytics_engine_datasets": [
+    {
+      "binding": "AE_USAGE_DATASET",
+      "dataset": "agentic_gateway_usage"
+    }
+  ],
   "env": {
-    "development": {
-      "vars": {
-        "ENVIRONMENT": "development",
-        "AGENTIC_API_BASE_URL": "http://localhost:3001"
-      },
-      // TODO: double-check whether all of this needs to be duplicated for each environment
-      "durable_objects": {
-        "bindings": [
-          {
-            "class_name": "DurableRateLimiter",
-            "name": "DO_RATE_LIMITER"
-          },
-          {
-            "class_name": "DurableMcpServer",
-            "name": "DO_MCP_SERVER"
-          },
-          {
-            "class_name": "DurableMcpClient",
-            "name": "DO_MCP_CLIENT"
-          }
-        ]
-      },
-      "analytics_engine_datasets": [
-        {
-          "binding": "AE_USAGE_DATASET",
-          "dataset": "agentic_gateway_usage"
-        }
-      ]
-    },
     "production": {
       "routes": [
         {
@@ -68,6 +61,7 @@
         "ENVIRONMENT": "production",
         "AGENTIC_API_BASE_URL": "https://api.agentic.so"
       },
+      // TODO: double-check whether all of this needs to be duplicated for each environment
       "durable_objects": {
         "bindings": [
           {

@@ -7,7 +7,17 @@ packages:
   - fixtures/valid/*
   - examples/mcp-servers/*
   - examples/ts-sdks/*
-
+ignoredBuiltDependencies:
+  - '@fisch0920/config'
+  - puppeteer
+onlyBuiltDependencies:
+  - '@sentry/cli'
+  - protobufjs
+  - tree-sitter
+updateConfig:
+  ignoreDependencies:
+    - p-throttle
+    - '@nangohq/node'
 catalog:
   '@agentic/core': ^7.6.9
   '@agentic/serper': ^7.6.9
@@ -24,6 +34,7 @@ catalog:
   '@fisch0920/config': ^1.1.4
   '@fisch0920/drizzle-orm': ^0.43.7
   '@fisch0920/drizzle-zod': ^0.7.9
+  '@fisch0920/markdown-to-html': ^1.1.0
   '@googleapis/customsearch': ^4.0.1
   '@hono/mcp': ^0.1.0
   '@hono/node-server': ^1.14.4
@@ -35,14 +46,16 @@ catalog:
   '@llamaindex/openai': ^0.4.4
   '@llamaindex/workflow': ^1.1.9
   '@mastra/core': ^0.10.6
+  '@mastra/schema-compat': ^0.10.3
   '@modelcontextprotocol/sdk': ^1.13.2
   '@nangohq/node': 0.42.22
   '@number-flow/react': ^0.5.10
   '@paralleldrive/cuid2': ^2.2.2
   '@pmndrs/assets': ^1.7.0
+  '@radix-ui/react-collapsible': ^1.1.11
   '@radix-ui/react-dropdown-menu': ^2.1.15
   '@radix-ui/react-label': ^2.1.7
-  '@radix-ui/react-slot': 1.2.3
+  '@radix-ui/react-slot': ^1.2.3
   '@radix-ui/react-tabs': ^1.1.12
   '@radix-ui/react-tooltip': ^1.2.7
   '@react-email/components': ^0.1.1
@@ -92,7 +105,7 @@ catalog:
   dedent: ^1.6.0
   del-cli: ^6.0.0
   delay: ^6.0.0
-  dotenv: 16.5.0
+  dotenv: ^16.5.0
   drizzle-kit: ^0.31.4
   drizzle-orm: ^0.44.2
   duck-duck-scrape: ^2.2.7
@@ -135,6 +148,7 @@ catalog:
   open: ^10.1.2
   openai: ^5.5.1
   openai-fetch: ^3.4.2
+  openai-zod-to-json-schema: ^1.1.1
   openapi-typescript: ^7.8.0
   ora: ^8.2.0
   p-all: ^5.0.0
@@ -185,17 +199,3 @@ catalog:
   zod-to-json-schema: ^3.24.5
   zod-validation-error: ^3.5.2
   zoominfo-api-auth-client: ^1.0.1
-
-ignoredBuiltDependencies:
-  - '@fisch0920/config'
-  - puppeteer
-
-onlyBuiltDependencies:
-  - '@sentry/cli'
-  - protobufjs
-  - tree-sitter
-
-updateConfig:
-  ignoreDependencies:
-    - p-throttle
-    - '@nangohq/node'

@@ -685,6 +685,23 @@ export interface components {
             pricingPlanOverridesMap?: {
                 [key: string]: components["schemas"]["PricingPlanToolOverride"];
             };
+            /** @description Examples of how to use this tool. Used to generate example usage in the tool's docs. */
+            examples?: {
+                /** @description The display name of the example. */
+                name: string;
+                /** @description The input prompt for agents to use when running this example. */
+                prompt: string;
+                /** @description An optional system prompt for agents to use when running this example. Defaults to `You are a helpful assistant. Be as concise as possible.` */
+                systemPrompt?: string;
+                /** @description The arguments to pass to the tool for this example. */
+                args: {
+                    [key: string]: unknown;
+                };
+                /** @description Whether this example should be featured in the docs for the project. */
+                featured?: boolean;
+                /** @description A description of the example. */
+                description?: string;
+            }[];
         };
         /**
          * @description Display name for the pricing plan (eg, "Free", "Starter Monthly", "Pro Annual", etc)
@@ -768,6 +785,11 @@ export interface components {
              * @description Optional URL to the source code of the project (eg, GitHub repo).
              */
             sourceUrl?: string;
+            /**
+             * Format: uri
+             * @description Optional URL to the product's website.
+             */
+            websiteUrl?: string;
             /** @description User id (e.g. "user_tz4a98xxat96iws9zmbrgj3a") */
             userId: string;
             /** @description Team id (e.g. "team_tz4a98xxat96iws9zmbrgj3a") */
@@ -1040,6 +1062,11 @@ export interface components {
              * @description Optional URL to the source code of the project (eg, GitHub repo).
              */
             sourceUrl?: string;
+            /**
+             * Format: uri
+             * @description Optional URL to the product's website.
+             */
+            websiteUrl?: string;
             /** @description User id (e.g. "user_tz4a98xxat96iws9zmbrgj3a") */
             userId: string;
             /** @description Team id (e.g. "team_tz4a98xxat96iws9zmbrgj3a") */
@@ -2409,6 +2436,11 @@ export interface operations {
                      * @description Optional URL to the source code of the project (eg, GitHub repo).
                      */
                     sourceUrl?: string;
+                    /**
+                     * Format: uri
+                     * @description Optional URL to the product's website.
+                     */
+                    websiteUrl?: string;
                     origin: components["schemas"]["OriginAdapterConfig"];
                     /**
                      * @description List of PricingPlans configuring which Stripe subscriptions should be available for the project. Defaults to a single free plan which is useful for developing and testing your project.

@@ -78,10 +78,12 @@ export default {
             parsedEnv.AGENTIC_PROXY_SECRET
           ) {
             return {
-              content: [],
-              structuredContent: {
-                error: 'Invalid request'
-              }
+              content: [
+                {
+                  type: 'text',
+                  text: 'Unauthorized request: must come from Agentic MCP Gateway'
+                }
+              ]
             }
           }
 

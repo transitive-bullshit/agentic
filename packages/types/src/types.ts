@@ -38,11 +38,14 @@ export type Consumer = Simplify<
   }
 >
 export type Project = Simplify<
-  components['schemas']['Project'] & {
+  Omit<
+    components['schemas']['Project'],
+    'lastPublishedDeployment' | 'lastDeployment'
+  > & {
     user?: User
     team?: Team
-    lastPublishedDeployment?: Deployment
-    lastDeployment?: Deployment
+    lastPublishedDeployment?: Simplify<Omit<Deployment, 'project'>>
+    lastDeployment?: Simplify<Omit<Deployment, 'project'>>
 
     /**
      * The public base HTTP URL for the project supporting HTTP POST requests for
@@ -78,12 +81,14 @@ export type Project = Simplify<
 export type Deployment = Simplify<
   Omit<
     components['schemas']['Deployment'],
-    'pricingPlans' | 'toolConfigs' | 'defaultRateLimit'
+    'pricingPlans' | 'toolConfigs' | 'defaultRateLimit' | 'project'
   > & {
     pricingPlans: PricingPlan[]
     toolConfigs: ToolConfig[]
     defaultRateLimit: RateLimit
-    project?: components['schemas']['Project']
+    project?: Simplify<
+      Omit<Project, 'lastPublishedDeployment' | 'lastDeployment'>
+    >
 
     /**
      * The public base HTTP URL for the deployment supporting HTTP POST requests
@@ -123,16 +128,19 @@ export type Deployment = Simplify<
 export type AdminDeployment = Simplify<
   Omit<
     components['schemas']['AdminDeployment'],
-    'pricingPlans' | 'toolConfigs' | 'defaultRateLimit' | 'origin'
+    'pricingPlans' | 'toolConfigs' | 'defaultRateLimit' | 'origin' | 'project'
   > & {
     pricingPlans: PricingPlan[]
     toolConfigs: ToolConfig[]
     defaultRateLimit: RateLimit
     origin: OriginAdapter
-    project?: components['schemas']['Project']
   } & Pick<
       Deployment,
-      'gatewayBaseUrl' | 'gatewayMcpUrl' | 'marketplaceUrl' | 'adminUrl'
+      | 'gatewayBaseUrl'
+      | 'gatewayMcpUrl'
+      | 'marketplaceUrl'
+      | 'adminUrl'
+      | 'project'
     >
 >
 
