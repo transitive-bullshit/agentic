@@ -32,6 +32,7 @@
 - marketplace project page; replace tabs with links
   - too much of a delay on individual pages and makes no sense to have these imports on the other tab pages
 - add a basic page + docs on pricing
+- update social image to have a lil more padding around the agentic logo
 
 ## TODO: Post-MVP
 

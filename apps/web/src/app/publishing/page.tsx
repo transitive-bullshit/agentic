@@ -3,7 +3,7 @@ import Link from 'next/link'
 import Zoom from 'react-medium-image-zoom'
 
 import { DotsSection } from '@/components/dots-section'
-// import { ExampleAgenticConfigs } from '@/components/example-agentic-configs'
+import { ExampleUsageSection } from '@/components/example-usage-section'
 import { GitHubStarCounter } from '@/components/github-star-counter'
 import { MCPGatewayFeatures } from '@/components/mcp-gateway-features'
 import { PageContainer } from '@/components/page-container'
@@ -59,30 +59,8 @@ export default function PublishingMCPsPage() {
         </p>
       </section>
 
-      {/* Config section (TODO) */}
-      {/* <section className='flex flex-col gap-8 mb-16'>
-        <h2 className='text-center text-balance leading-snug md:leading-none text-3xl font-heading'>
-          Simple, Declarative Configuration
-        </h2>
-
-        <ExampleAgenticConfigs />
-
-        <p className='text-sm max-w-2xl text-center'>
-          <Link href='https://docs.agentic.so/publishing/config' className='link'>
-            Configuring your Agentic project
-          </Link>{' '}
-          is straightforward , regardless of whether your origin is an MCP
-          server or an OpenAPI service. For TS projects, you can use a
-          fully-typed <span className='font-semibold'>agentic.config.ts</span>{' '}
-          file, or fall back to using an{' '}
-          <span className='font-semibold'>agentic.config.json</span> file to
-          configure your project.{' '}
-          <Link href='https://docs.agentic.so/publishing' className='link'>
-            Learn more
-          </Link>
-          .
-        </p>
-      </section> */}
+      {/* Example usage section */}
+      <ExampleUsageSection />
 
       {/* Features section */}
       <section className='flex flex-col gap-8 md:gap-12 mb-16'>
