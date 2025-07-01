@@ -15,12 +15,13 @@ export function ProjectPricingPlans({
   onSubscribe: (planSlug: string) => void
   className?: string
 }) {
+  // TODO: add support for different pricing intervals
   const numPricingPlans =
     project.lastPublishedDeployment?.pricingPlans.length || 1
 
   return (
     <div
-      className={`grid grid-cols grid-cols-1 gap-8 sm:grid-cols-${Math.min(
+      className={`grid grid-cols grid-cols-1 gap-4 sm:grid-cols-${Math.min(
         2,
         numPricingPlans
       )} xl:grid-cols-${Math.min(3, numPricingPlans)}`}

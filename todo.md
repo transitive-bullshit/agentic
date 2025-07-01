@@ -12,30 +12,24 @@
   - example usage
     - double check example usage for all TS sdks now that real examples are working
     - fix mcp examples
-    - import react example usage component into docs
-  - replace json pricing plans and consumers with actual designs
+  - **replace json pricing plans and consumers with actual designs**
 - double-check free-tier rate-limits for `@agentic/search`
-- add feature about optimized context to docs
-- add ts sdk examples to e2e tests
 - submit to awesome mcp, mcp discord, etc
-- add scroll appearance motion to hero animation
 - replace how-it-works diagram with better version
 - docs: add notes about constraints on mcp origin servers (static tools)
 - improve public project detail page
   - mcp inspector
   - **add support to example-usage for api keys**
 - **api keys should go beyond 1:1 consumers**
-- replace JSON schemas (tool input/output schemas) with `json` code blocks
-- improve upgrade flow UX
 - **currently not obvious how to get api key**
+- improve upgrade flow UX
 - marketplace project page
-  - replace tabs with links
-    - too much of a delay on individual pages and makes no sense to have these imports on the other tab pages
-  - add last published date to
+  - break out into a few subcomponents; some can be server components
+  - add last published date somewhere
   - add breadcrumb nav: marketplace > @agentic > search
-- add a basic page + docs on pricing
-- [react query prefetching for public pages](https://tanstack.com/query/latest/docs/framework/react/guides/advanced-ssr#prefetching-and-dehydrating-data)
-- add [ping](https://modelcontextprotocol.io/specification/2025-03-26/basic/utilities/ping) support to mcp servers
+  - tool input/output schemas; move `$schema` to top
+- add a basic page + docs on pricing => contact
+- [**react query prefetching for public pages**](https://tanstack.com/query/latest/docs/framework/react/guides/advanced-ssr#prefetching-and-dehydrating-data)
 - add ability to point at remote readmes, icons, files, urls, etc and upload to our own blob storage at deploy time
 - **create agentic products for select legacy tools**
 
@@ -131,3 +125,8 @@
 - add support for [`@google/genai`](https://github.com/googleapis/js-genai) tools adapter
   - currently difficult due to their use of non-standard json schemas
 - validate example args against the tool's input schema during config validation
+- add scroll appearance motion to hero animation
+- add ts sdk examples to e2e tests
+- add feature about optimized context to docs
+- import react example usage component into docs
+- add [ping](https://modelcontextprotocol.io/specification/2025-03-26/basic/utilities/ping) support to mcp servers

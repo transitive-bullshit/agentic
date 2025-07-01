@@ -8,8 +8,8 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import plur from 'plur'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-import { ActiveLink } from '@/components/active-link'
 import { useAgentic } from '@/components/agentic-provider'
+import { CodeBlock } from '@/components/code-block'
 import { ExampleUsage } from '@/components/example-usage'
 import { HeroButton } from '@/components/hero-button'
 import { LoadingIndicator } from '@/components/loading-indicator'
@@ -29,15 +29,14 @@ import { useQuery } from '@/lib/query-client'
 
 import {
   type MarketplacePublicProjectDetailTab,
+  marketplacePublicProjectDetailTabsSet,
   MAX_TOOLS_TO_SHOW
 } from './utils'
 
 export function MarketplacePublicProjectDetail({
-  projectIdentifier,
-  tab = 'overview'
+  projectIdentifier
 }: {
   projectIdentifier: string
-  tab?: MarketplacePublicProjectDetailTab
 }) {
   const ctx = useAgentic()
   const searchParams = useSearchParams()
@@ -177,13 +176,18 @@ export function MarketplacePublicProjectDetail({
     )
   }, [deployment])
 
-  const inferredTab = useMemo(() => {
+  const tab = useMemo<MarketplacePublicProjectDetailTab>(() => {
+    const tab = searchParams.get('tab')?.toLowerCase()
+    if (!tab || !marketplacePublicProjectDetailTabsSet.has(tab)) {
+      return 'overview'
+    }
+
     if (tab === 'readme' && !deployment?.readme?.trim()) {
       return 'overview'
     }
 
-    return tab
-  }, [tab, deployment])
+    return tab as MarketplacePublicProjectDetailTab
+  }, [searchParams, deployment])
 
   return (
     <PageContainer>
@@ -196,16 +200,16 @@ export function MarketplacePublicProjectDetail({
           <p>Project "{projectIdentifier}" not found</p>
         ) : (
           <div className='flex flex-col gap-4 w-full'>
-            <ProjectHeader project={project} tab={inferredTab} />
+            <ProjectHeader project={project} tab={tab} />
 
             <Tabs
-              value={inferredTab}
+              value={tab}
               onValueChange={(value) => {
                 if (value === 'overview') {
                   router.push(`/marketplace/projects/${projectIdentifier}`)
                 } else {
                   router.push(
-                    `/marketplace/projects/${projectIdentifier}/${value}`
+                    `/marketplace/projects/${projectIdentifier}?tab=${value}`
                   )
                 }
               }}
@@ -243,7 +247,7 @@ export function MarketplacePublicProjectDetail({
               </TabsList>
 
               <div className='bg-card p-4 border rounded-lg shadow-sm color-card-foreground'>
-                {inferredTab === 'overview' && (
+                {tab === 'overview' && (
                   <TabsContent value='overview' className='flex flex-col gap-4'>
                     <h2 className='text-balance leading-snug md:leading-none text-xl font-semibold'>
                       Overview
@@ -292,7 +296,7 @@ export function MarketplacePublicProjectDetail({
                                       variant='outline'
                                     >
                                       <Link
-                                        href={`/marketplace/projects/${projectIdentifier}/tools`}
+                                        href={`/marketplace/projects/${projectIdentifier}?tab=tools`}
                                       >
                                         View{' '}
                                         {deployment.tools.length -
@@ -328,7 +332,7 @@ export function MarketplacePublicProjectDetail({
                   </TabsContent>
                 )}
 
-                {deployment?.readme?.trim() && inferredTab === 'readme' && (
+                {deployment?.readme?.trim() && tab === 'readme' && (
                   <TabsContent value='readme' className='flex flex-col gap-4'>
                     <SSRMarkdown
                       markdown={deployment.readme}
@@ -337,7 +341,7 @@ export function MarketplacePublicProjectDetail({
                   </TabsContent>
                 )}
 
-                {inferredTab === 'tools' && (
+                {tab === 'tools' && (
                   <TabsContent value='tools' className='flex flex-col gap-4'>
                     <h2 className='text-balance leading-snug md:leading-none text-xl font-semibold'>
                       Tools
@@ -370,9 +374,15 @@ export function MarketplacePublicProjectDetail({
                               </CollapsibleTrigger>
 
                               <CollapsibleContent>
-                                <pre className='max-w-full overflow-x-auto border p-4 rounded-sm'>
-                                  {JSON.stringify(tool.inputSchema, null, 2)}
-                                </pre>
+                                <CodeBlock
+                                  lang='json'
+                                  code={JSON.stringify(
+                                    tool.inputSchema,
+                                    null,
+                                    2
+                                  )}
+                                  className='border rounded-sm'
+                                />
                               </CollapsibleContent>
                             </Collapsible>
 
@@ -389,9 +399,15 @@ export function MarketplacePublicProjectDetail({
                                 </CollapsibleTrigger>
 
                                 <CollapsibleContent>
-                                  <pre className='max-w-full overflow-x-auto border p-4 rounded-sm'>
-                                    {JSON.stringify(tool.outputSchema, null, 2)}
-                                  </pre>
+                                  <CodeBlock
+                                    lang='json'
+                                    code={JSON.stringify(
+                                      tool.outputSchema,
+                                      null,
+                                      2
+                                    )}
+                                    className='border rounded-sm'
+                                  />
                                 </CollapsibleContent>
                               </Collapsible>
                             )}
@@ -402,7 +418,7 @@ export function MarketplacePublicProjectDetail({
                   </TabsContent>
                 )}
 
-                {inferredTab === 'pricing' && (
+                {tab === 'pricing' && (
                   <TabsContent value='pricing' className='flex flex-col gap-4'>
                     <h2 className='text-balance leading-snug md:leading-none text-xl font-semibold'>
                       Pricing
@@ -419,7 +435,7 @@ export function MarketplacePublicProjectDetail({
                   </TabsContent>
                 )}
 
-                {inferredTab === 'debug' && (
+                {tab === 'debug' && (
                   <TabsContent value='debug' className='flex flex-col gap-4'>
                     <h2 className='text-balance leading-snug md:leading-none text-xl font-semibold'>
                       Debug
@@ -476,11 +492,11 @@ function ProjectHeader({
           className='justify-self-end'
           disabled={tab === 'pricing'}
         >
-          <ActiveLink
-            href={`/marketplace/projects/${project.identifier}/pricing`}
+          <Link
+            href={`/marketplace/projects/${project.identifier}?tab=pricing`}
           >
             Subscribe to {project.identifier}
-          </ActiveLink>
+          </Link>
         </HeroButton>
       </div>
 
