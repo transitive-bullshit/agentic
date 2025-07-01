@@ -1,5 +1,6 @@
 'use client'
 
+import type { Project } from '@agentic/platform-types'
 import { assert, omit, sanitizeSearchParams } from '@agentic/platform-core'
 import { ExternalLinkIcon } from 'lucide-react'
 import Link from 'next/link'
@@ -10,6 +11,8 @@ import { useAgentic } from '@/components/agentic-provider'
 import { LoadingIndicator } from '@/components/loading-indicator'
 import { PageContainer } from '@/components/page-container'
 import { ProjectPricingPlans } from '@/components/project-pricing-plans'
+import { Button } from '@/components/ui/button'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { GitHubIcon } from '@/icons/github'
 import { toast, toastError } from '@/lib/notifications'
 import { useQuery } from '@/lib/query-client'
@@ -151,72 +154,134 @@ export function MarketplaceProjectIndex({
         ) : !project ? (
           <p>Project "{projectIdentifier}" not found</p>
         ) : (
-          <div className='flex flex-col'>
-            <div className='flex flex-col gap-2'>
-              <div className='flex flex-row gap-2.5 items-center'>
-                <img
-                  src={
-                    project.lastPublishedDeployment?.iconUrl ||
-                    project.user?.image ||
-                    '/agentic-icon-circle-light.svg'
-                  }
-                  alt={project.name}
-                  className='aspect-square w-8 h-8'
-                />
+          <div className='flex flex-col gap-4 w-full'>
+            <ProjectHeader project={project} />
 
-                <h1 className='font-semibold text-balance text-lg text-gray-900 leading-tight'>
-                  {project.name}
-                </h1>
+            <Tabs defaultValue='overview'>
+              <TabsList>
+                <TabsTrigger value='overview' className='cursor-pointer'>
+                  Overview
+                </TabsTrigger>
+
+                <TabsTrigger value='tools' className='cursor-pointer'>
+                  Tools
+                </TabsTrigger>
+
+                <TabsTrigger value='pricing' className='cursor-pointer'>
+                  Pricing
+                </TabsTrigger>
+
+                <TabsTrigger value='debug' className='cursor-pointer'>
+                  Debug
+                </TabsTrigger>
+              </TabsList>
+
+              <div className='bg-card p-4 border rounded-lg shadow-sm color-card-foreground'>
+                <TabsContent value='overview' className='flex flex-col gap-4'>
+                  <h2 className='text-balance leading-snug md:leading-none text-xl font-semibold'>
+                    Overview
+                  </h2>
+                </TabsContent>
+
+                <TabsContent value='tools' className='flex flex-col gap-4'>
+                  <h2 className='text-balance leading-snug md:leading-none text-xl font-semibold'>
+                    Tools
+                  </h2>
+                </TabsContent>
+
+                <TabsContent value='pricing' className='flex flex-col gap-4'>
+                  <h2 className='text-balance leading-snug md:leading-none text-xl font-semibold'>
+                    Pricing
+                  </h2>
+
+                  <ProjectPricingPlans
+                    project={project}
+                    consumer={consumer}
+                    isLoadingStripeCheckoutForPlan={
+                      isLoadingStripeCheckoutForPlan
+                    }
+                    onSubscribe={onSubscribe}
+                  />
+                </TabsContent>
+
+                <TabsContent value='debug' className='flex flex-col gap-4'>
+                  <h2 className='text-balance leading-snug md:leading-none text-xl font-semibold'>
+                    Debug
+                  </h2>
+
+                  <pre className='max-w-full overflow-x-auto'>
+                    {JSON.stringify(
+                      omit(
+                        project,
+                        'lastPublishedDeployment',
+                        'lastDeployment'
+                      ),
+                      null,
+                      2
+                    )}
+                  </pre>
+                </TabsContent>
               </div>
-
-              <div className='flex flex-row gap-2.5 items-center'>
-                <div className='text-sm text-gray-500'>
-                  {project.identifier}
-                </div>
-
-                {project.lastPublishedDeployment?.websiteUrl && (
-                  <Link
-                    href={project.lastPublishedDeployment.websiteUrl}
-                    className='text-sm text-gray-500'
-                  >
-                    <ExternalLinkIcon />
-
-                    <span>Homepage</span>
-                  </Link>
-                )}
-
-                {project.lastPublishedDeployment?.sourceUrl && (
-                  <Link
-                    href={project.lastPublishedDeployment.sourceUrl}
-                    className='text-sm text-gray-500'
-                  >
-                    <GitHubIcon />
-
-                    <span>GitHub</span>
-                  </Link>
-                )}
-              </div>
-            </div>
-
-            <div className='mt-8'>
-              <pre className='max-w-lg'>
-                {JSON.stringify(
-                  omit(project, 'lastPublishedDeployment', 'lastDeployment'),
-                  null,
-                  2
-                )}
-              </pre>
-            </div>
-
-            <ProjectPricingPlans
-              project={project}
-              consumer={consumer}
-              isLoadingStripeCheckoutForPlan={isLoadingStripeCheckoutForPlan}
-              onSubscribe={onSubscribe}
-            />
+            </Tabs>
           </div>
         )}
       </section>
     </PageContainer>
+  )
+}
+
+function ProjectHeader({ project }: { project: Project }) {
+  return (
+    <div className='flex flex-col gap-2'>
+      <div className='flex flex-row gap-2.5 items-center'>
+        <img
+          src={
+            project.lastPublishedDeployment?.iconUrl ||
+            project.user?.image ||
+            '/agentic-icon-circle-light.svg'
+          }
+          alt={project.name}
+          className='aspect-square w-10 h-10'
+        />
+
+        <h1 className='font-semibold text-balance text-3xl leading-tight'>
+          {project.name}
+        </h1>
+      </div>
+
+      <div className='flex flex-row items-center'>
+        <div className='text-sm text-gray-500 flex flex-row gap-0.5 items-center hover:no-underline! no-underline!'>
+          <span>{project.identifier}</span>
+
+          {/* TODO: <CopyIcon className='w-4 h-4' /> */}
+        </div>
+
+        {project.lastPublishedDeployment?.websiteUrl && (
+          <Button asChild variant='link'>
+            <Link
+              href={project.lastPublishedDeployment.websiteUrl}
+              className='text-sm flex flex-row gap-1.5! items-center text-gray-500! py-1! px-2!'
+            >
+              <ExternalLinkIcon className='w-4 h-4' />
+
+              <span>Homepage</span>
+            </Link>
+          </Button>
+        )}
+
+        {project.lastPublishedDeployment?.sourceUrl && (
+          <Button asChild variant='link'>
+            <Link
+              href={project.lastPublishedDeployment.sourceUrl}
+              className='text-sm flex flex-row gap-1.5! items-center text-gray-500! py-1! px-2!'
+            >
+              <GitHubIcon className='w-4 h-4' />
+
+              <span>GitHub</span>
+            </Link>
+          </Button>
+        )}
+      </div>
+    </div>
   )
 }
