@@ -5,6 +5,7 @@ import Link from 'next/link'
 
 export function PublicProject({ project }: { project: Project }) {
   const deployment = project.lastPublishedDeployment!
+  if (!deployment) return null
 
   return (
     <Link
