@@ -26,6 +26,7 @@
     "@agentic/platform-types": "workspace:*",
     "@agentic/platform-validators": "workspace:*",
     "@date-fns/utc": "catalog:",
+    "@fisch0920/markdown-to-html": "^1.1.0",
     "@number-flow/react": "catalog:",
     "@pmndrs/assets": "catalog:",
     "@radix-ui/react-collapsible": "^1.1.11",

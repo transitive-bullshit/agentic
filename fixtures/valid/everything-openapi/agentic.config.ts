@@ -8,6 +8,38 @@ export default defineConfig({
     url: 'https://agentic-platform-fixtures-everything.onrender.com',
     spec: 'https://agentic-platform-fixtures-everything.onrender.com/docs'
   },
+  readme: `
+# Test Everything OpenAPI
+
+This is testing **readme rendering**.
+
+## Misc
+
+- [ ] Item 1
+- [ ] Item 2
+- [x] Item 3
+
+---
+
+- _italic_
+- **bold**
+- [link](https://www.google.com)
+- \`code\`
+
+## Code
+
+\`\`\`ts
+const a = 1
+
+export function foo() {
+  console.log('hello world')
+}
+\`\`\`
+
+## Images
+
+![Image](https://placehold.co/600x400)
+`,
   toolConfigs: [
     {
       name: 'get_user',
@@ -22,6 +54,19 @@ export default defineConfig({
           reportUsage: true
         }
       }
+    },
+    {
+      name: 'echo',
+      examples: [
+        {
+          name: 'Example 1',
+          prompt: 'Use the echo tool to say hello.',
+          featured: true,
+          args: {
+            message: 'Hello, world!'
+          }
+        }
+      ]
     },
     {
       name: 'disabled_tool',

@@ -12,6 +12,7 @@ import { useAgentic } from '@/components/agentic-provider'
 import { ExampleUsage } from '@/components/example-usage'
 import { HeroButton } from '@/components/hero-button'
 import { LoadingIndicator } from '@/components/loading-indicator'
+import { SSRMarkdown } from '@/components/markdown/ssr-markdown'
 import { PageContainer } from '@/components/page-container'
 import { ProjectPricingPlans } from '@/components/project-pricing-plans'
 import { Button } from '@/components/ui/button'
@@ -159,8 +160,8 @@ export function MarketplacePublicProjectDetail({
     hasInitializedCheckoutFromSearchParams
   ])
 
+  const deployment = useMemo(() => project?.lastPublishedDeployment, [project])
   const featuredToolName = useMemo(() => {
-    const deployment = project?.lastPublishedDeployment
     const toolConfigs = deployment?.toolConfigs?.filter(
       (toolConfig) => toolConfig?.enabled !== false
     )
@@ -173,9 +174,15 @@ export function MarketplacePublicProjectDetail({
       toolConfigs?.[0]?.name ??
       deployment?.tools[0]?.name
     )
-  }, [project])
+  }, [deployment])
 
-  const deployment = project?.lastPublishedDeployment
+  const inferredTab = useMemo(() => {
+    if (tab === 'readme' && !deployment?.readme?.trim()) {
+      return 'overview'
+    }
+
+    return tab
+  }, [tab, deployment])
 
   return (
     <PageContainer>
@@ -191,7 +198,7 @@ export function MarketplacePublicProjectDetail({
             <ProjectHeader project={project} />
 
             <Tabs
-              value={tab}
+              value={inferredTab}
               onValueChange={(value) => {
                 if (value === 'overview') {
                   router.push(`/marketplace/projects/${projectIdentifier}`)
@@ -206,6 +213,12 @@ export function MarketplacePublicProjectDetail({
                 <TabsTrigger value='overview' className='cursor-pointer'>
                   Overview
                 </TabsTrigger>
+
+                {deployment?.readme?.trim() && (
+                  <TabsTrigger value='readme' className='cursor-pointer'>
+                    Readme
+                  </TabsTrigger>
+                )}
 
                 <TabsTrigger
                   value='tools'
@@ -229,175 +242,201 @@ export function MarketplacePublicProjectDetail({
               </TabsList>
 
               <div className='bg-card p-4 border rounded-lg shadow-sm color-card-foreground'>
-                <TabsContent value='overview' className='flex flex-col gap-4'>
-                  <h2 className='text-balance leading-snug md:leading-none text-xl font-semibold'>
-                    Overview
-                  </h2>
+                {inferredTab === 'overview' && (
+                  <TabsContent value='overview' className='flex flex-col gap-4'>
+                    <h2 className='text-balance leading-snug md:leading-none text-xl font-semibold'>
+                      Overview
+                    </h2>
 
-                  <div
-                    className={`grid grid-cols grid-cols-1 md:grid-cols-2 gap-8 md:gap-4`}
-                  >
-                    <div className='flex flex-col gap-8'>
-                      {deployment ? (
-                        <>
+                    <div
+                      className={`grid grid-cols grid-cols-1 lg:grid-cols-2 gap-8 md:gap-4`}
+                    >
+                      <div className='flex flex-col gap-8'>
+                        {deployment ? (
+                          <>
+                            <p>
+                              {deployment.description ||
+                                'No description available'}
+                            </p>
+
+                            <div className='flex flex-col gap-4'>
+                              <h3 className='text-balance leading-snug md:leading-none text-lg font-semibold'>
+                                Tools
+                              </h3>
+
+                              <ul className='flex flex-col gap-4'>
+                                {deployment.tools
+                                  .slice(0, MAX_TOOLS_TO_SHOW)
+                                  .map((tool) => (
+                                    <li
+                                      key={tool.name}
+                                      className='p-4 border rounded-sm w-full flex flex-col gap-4'
+                                    >
+                                      <h3 className='text-balance leading-snug md:leading-none text-md font-semibold'>
+                                        {tool.name}
+                                      </h3>
+
+                                      <p className='text-sm text-gray-500'>
+                                        {tool.description}
+                                      </p>
+                                    </li>
+                                  ))}
+
+                                {deployment.tools.length >
+                                  MAX_TOOLS_TO_SHOW && (
+                                  <li>
+                                    <Button
+                                      asChild
+                                      className='w-full flex flex-col gap-4'
+                                      variant='outline'
+                                    >
+                                      <Link
+                                        href={`/marketplace/projects/${projectIdentifier}/tools`}
+                                      >
+                                        View{' '}
+                                        {deployment.tools.length -
+                                          MAX_TOOLS_TO_SHOW}{' '}
+                                        more{' '}
+                                        {plur(
+                                          'tool',
+                                          deployment.tools.length -
+                                            MAX_TOOLS_TO_SHOW
+                                        )}
+                                      </Link>
+                                    </Button>
+                                  </li>
+                                )}
+                              </ul>
+                            </div>
+                          </>
+                        ) : (
                           <p>
-                            {deployment.description ||
-                              'No description available'}
+                            This project doesn't have any published deployments.
                           </p>
+                        )}
+                      </div>
 
-                          <div className='flex flex-col gap-4'>
-                            <h3 className='text-balance leading-snug md:leading-none text-lg font-semibold'>
-                              Tools
+                      <div className='flex flex-col gap-4'>
+                        <ExampleUsage
+                          projectIdentifier={projectIdentifier}
+                          project={project}
+                          tool={featuredToolName}
+                        />
+                      </div>
+                    </div>
+                  </TabsContent>
+                )}
+
+                {deployment?.readme?.trim() && inferredTab === 'readme' && (
+                  <TabsContent value='readme' className='flex flex-col gap-4'>
+                    <SSRMarkdown
+                      markdown={deployment.readme}
+                      className='items-start!'
+                    />
+                  </TabsContent>
+                )}
+
+                {inferredTab === 'tools' && (
+                  <TabsContent value='tools' className='flex flex-col gap-4'>
+                    <h2 className='text-balance leading-snug md:leading-none text-xl font-semibold'>
+                      Tools
+                    </h2>
+
+                    {deployment && (
+                      <ul className='flex flex-col gap-4'>
+                        {deployment.tools.map((tool) => (
+                          <li
+                            key={tool.name}
+                            className='p-4 border rounded-sm w-full flex flex-col gap-4'
+                          >
+                            <h3 className='text-balance leading-snug md:leading-none text-md font-semibold'>
+                              {tool.name}
                             </h3>
 
-                            <ul className='flex flex-col gap-4'>
-                              {deployment.tools
-                                .slice(0, MAX_TOOLS_TO_SHOW)
-                                .map((tool) => (
-                                  <li
-                                    key={tool.name}
-                                    className='p-4 border rounded-sm w-full flex flex-col gap-4'
-                                  >
-                                    <h3 className='text-balance leading-snug md:leading-none text-md font-semibold'>
-                                      {tool.name}
-                                    </h3>
+                            <p className='text-sm text-gray-500'>
+                              {tool.description}
+                            </p>
 
-                                    <p className='text-sm text-gray-500'>
-                                      {tool.description}
-                                    </p>
-                                  </li>
-                                ))}
-
-                              {deployment.tools.length > MAX_TOOLS_TO_SHOW && (
-                                <li>
-                                  <Button
-                                    className='w-full flex flex-col gap-4'
-                                    variant='outline'
-                                  >
-                                    View{' '}
-                                    {deployment.tools.length -
-                                      MAX_TOOLS_TO_SHOW}{' '}
-                                    more{' '}
-                                    {plur(
-                                      'tool',
-                                      deployment.tools.length -
-                                        MAX_TOOLS_TO_SHOW
-                                    )}
-                                  </Button>
-                                </li>
-                              )}
-                            </ul>
-                          </div>
-                        </>
-                      ) : (
-                        <p>
-                          This project doesn't have any published deployments.
-                        </p>
-                      )}
-                    </div>
-
-                    <div className='flex flex-col gap-4'>
-                      <ExampleUsage
-                        projectIdentifier={projectIdentifier}
-                        project={project}
-                        tool={featuredToolName}
-                      />
-                    </div>
-                  </div>
-                </TabsContent>
-
-                <TabsContent value='tools' className='flex flex-col gap-4'>
-                  <h2 className='text-balance leading-snug md:leading-none text-xl font-semibold'>
-                    Tools
-                  </h2>
-
-                  {deployment && (
-                    <ul className='flex flex-col gap-4'>
-                      {deployment.tools.map((tool) => (
-                        <li
-                          key={tool.name}
-                          className='p-4 border rounded-sm w-full flex flex-col gap-4'
-                        >
-                          <h3 className='text-balance leading-snug md:leading-none text-md font-semibold'>
-                            {tool.name}
-                          </h3>
-
-                          <p className='text-sm text-gray-500'>
-                            {tool.description}
-                          </p>
-
-                          <Collapsible className='w-full flex flex-col align-start gap-2'>
-                            <CollapsibleTrigger asChild>
-                              <Button variant='outline' className='self-start'>
-                                Input schema
-                                <ChevronsUpDownIcon />
-                              </Button>
-                            </CollapsibleTrigger>
-
-                            <CollapsibleContent>
-                              <pre className='max-w-full overflow-x-auto border p-4 rounded-sm'>
-                                {JSON.stringify(tool.inputSchema, null, 2)}
-                              </pre>
-                            </CollapsibleContent>
-                          </Collapsible>
-
-                          {tool.outputSchema && (
                             <Collapsible className='w-full flex flex-col align-start gap-2'>
                               <CollapsibleTrigger asChild>
                                 <Button
                                   variant='outline'
                                   className='self-start'
                                 >
-                                  Output schema
+                                  Input schema
                                   <ChevronsUpDownIcon />
                                 </Button>
                               </CollapsibleTrigger>
 
                               <CollapsibleContent>
                                 <pre className='max-w-full overflow-x-auto border p-4 rounded-sm'>
-                                  {JSON.stringify(tool.outputSchema, null, 2)}
+                                  {JSON.stringify(tool.inputSchema, null, 2)}
                                 </pre>
                               </CollapsibleContent>
                             </Collapsible>
-                          )}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </TabsContent>
 
-                <TabsContent value='pricing' className='flex flex-col gap-4'>
-                  <h2 className='text-balance leading-snug md:leading-none text-xl font-semibold'>
-                    Pricing
-                  </h2>
+                            {tool.outputSchema && (
+                              <Collapsible className='w-full flex flex-col align-start gap-2'>
+                                <CollapsibleTrigger asChild>
+                                  <Button
+                                    variant='outline'
+                                    className='self-start'
+                                  >
+                                    Output schema
+                                    <ChevronsUpDownIcon />
+                                  </Button>
+                                </CollapsibleTrigger>
 
-                  <ProjectPricingPlans
-                    project={project}
-                    consumer={consumer}
-                    isLoadingStripeCheckoutForPlan={
-                      isLoadingStripeCheckoutForPlan
-                    }
-                    onSubscribe={onSubscribe}
-                  />
-                </TabsContent>
-
-                <TabsContent value='debug' className='flex flex-col gap-4'>
-                  <h2 className='text-balance leading-snug md:leading-none text-xl font-semibold'>
-                    Debug
-                  </h2>
-
-                  <pre className='max-w-full overflow-x-auto'>
-                    {JSON.stringify(
-                      omit(
-                        project,
-                        'lastPublishedDeployment',
-                        'lastDeployment'
-                      ),
-                      null,
-                      2
+                                <CollapsibleContent>
+                                  <pre className='max-w-full overflow-x-auto border p-4 rounded-sm'>
+                                    {JSON.stringify(tool.outputSchema, null, 2)}
+                                  </pre>
+                                </CollapsibleContent>
+                              </Collapsible>
+                            )}
+                          </li>
+                        ))}
+                      </ul>
                     )}
-                  </pre>
-                </TabsContent>
+                  </TabsContent>
+                )}
+
+                {inferredTab === 'pricing' && (
+                  <TabsContent value='pricing' className='flex flex-col gap-4'>
+                    <h2 className='text-balance leading-snug md:leading-none text-xl font-semibold'>
+                      Pricing
+                    </h2>
+
+                    <ProjectPricingPlans
+                      project={project}
+                      consumer={consumer}
+                      isLoadingStripeCheckoutForPlan={
+                        isLoadingStripeCheckoutForPlan
+                      }
+                      onSubscribe={onSubscribe}
+                    />
+                  </TabsContent>
+                )}
+
+                {inferredTab === 'debug' && (
+                  <TabsContent value='debug' className='flex flex-col gap-4'>
+                    <h2 className='text-balance leading-snug md:leading-none text-xl font-semibold'>
+                      Debug
+                    </h2>
+
+                    <pre className='max-w-full overflow-x-auto'>
+                      {JSON.stringify(
+                        omit(
+                          project,
+                          'lastPublishedDeployment',
+                          'lastDeployment'
+                        ),
+                        null,
+                        2
+                      )}
+                    </pre>
+                  </TabsContent>
+                )}
               </div>
             </Tabs>
           </div>

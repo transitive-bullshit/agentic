@@ -12,9 +12,8 @@
   - example usage
     - double check example usage for all TS sdks now that real examples are working
     - fix mcp examples
-    - add example usage to project detail pages
     - import react example usage component into docs
-  - replace json project and components with actual designs
+  - replace json pricing plans and consumers with actual designs
 - double-check free-tier rate-limits for `@agentic/search`
 - create agentic products for select legacy tools
 - add feature about optimized context to docs
@@ -24,8 +23,6 @@
 - replace how-it-works diagram with better version
 - docs: add notes about constraints on mcp origin servers (static tools)
 - improve public project detail page
-  - **include example usage**
-  - list tools
   - mcp inspector
   - **add support to example-usage for api keys**
 - **api keys should go beyond 1:1 consumers**

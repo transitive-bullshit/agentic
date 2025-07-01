@@ -1,6 +1,7 @@
 export const MAX_TOOLS_TO_SHOW = 5
 export const marketplacePublicProjectDetailTabs = [
   'overview',
+  'readme',
   'tools',
   'pricing',
   'debug'

@@ -36,7 +36,7 @@ export function registerDeployCommand({
             cwd: opts.cwd
           }),
           {
-            text: `Loading Agentic config from ${opts.cwd}`,
+            text: `Loading Agentic config from ${opts.cwd ?? process.cwd()}`,
             successText: `Agentic config loaded successfully.`,
             failText: 'Failed to load Agentic config.'
           }

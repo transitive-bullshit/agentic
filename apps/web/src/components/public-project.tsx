@@ -10,7 +10,7 @@ export function PublicProject({ project }: { project: Project }) {
     <Link
       key={project.id}
       className='p-2 border rounded-lg hover:border-gray-400
-      divide-y divide-gray-200 overflow-hidden bg-white shadow-sm max-w-md
+      divide-y divide-gray-200 overflow-hidden bg-white shadow-sm max-w-md flex flex-col gap-2 justify-between
       '
       href={`/marketplace/projects/${project.identifier}`}
     >
