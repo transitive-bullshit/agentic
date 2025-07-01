@@ -206,14 +206,14 @@ const searchTool = await AgenticToolClient.fromIdentifier('${identifier}')
 // This example uses OpenAI's Chat Completions API
 const res = await openai.chat.completions.create({
   model: 'gpt-4o-mini',
+  tools: searchTool.functions.toolSpecs,
+  tool_choice: 'required',
   messages: [
     {
       role: 'user',
       content: '${prompt}'
     }
-  ],
-  tools: searchTool.functions.toolSpecs,
-  tool_choice: 'required'
+  ]
 })
 
 const message = res.choices[0]!.message!
