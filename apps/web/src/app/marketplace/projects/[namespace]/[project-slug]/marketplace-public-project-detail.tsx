@@ -10,6 +10,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { useAgentic } from '@/components/agentic-provider'
 import { ExampleUsage } from '@/components/example-usage'
+import { HeroButton } from '@/components/hero-button'
 import { LoadingIndicator } from '@/components/loading-indicator'
 import { PageContainer } from '@/components/page-container'
 import { ProjectPricingPlans } from '@/components/project-pricing-plans'
@@ -24,12 +25,17 @@ import { GitHubIcon } from '@/icons/github'
 import { toast, toastError } from '@/lib/notifications'
 import { useQuery } from '@/lib/query-client'
 
-const MAX_TOOLS_TO_SHOW = 5
+import {
+  type MarketplacePublicProjectDetailTab,
+  MAX_TOOLS_TO_SHOW
+} from './utils'
 
-export function MarketplaceProjectIndex({
-  projectIdentifier
+export function MarketplacePublicProjectDetail({
+  projectIdentifier,
+  tab = 'overview'
 }: {
   projectIdentifier: string
+  tab?: MarketplacePublicProjectDetailTab
 }) {
   const ctx = useAgentic()
   const searchParams = useSearchParams()
@@ -184,7 +190,18 @@ export function MarketplaceProjectIndex({
           <div className='flex flex-col gap-4 w-full'>
             <ProjectHeader project={project} />
 
-            <Tabs defaultValue='overview'>
+            <Tabs
+              value={tab}
+              onValueChange={(value) => {
+                if (value === 'overview') {
+                  router.push(`/marketplace/projects/${projectIdentifier}`)
+                } else {
+                  router.push(
+                    `/marketplace/projects/${projectIdentifier}/${value}`
+                  )
+                }
+              }}
+            >
               <TabsList>
                 <TabsTrigger value='overview' className='cursor-pointer'>
                   Overview
@@ -393,7 +410,7 @@ export function MarketplaceProjectIndex({
 function ProjectHeader({ project }: { project: Project }) {
   return (
     <div className='flex flex-col gap-2'>
-      <div className='flex flex-row gap-2.5 items-center'>
+      <div className='w-full flex flex-row gap-2.5 items-center'>
         <img
           src={
             project.lastPublishedDeployment?.iconUrl ||
@@ -404,13 +421,19 @@ function ProjectHeader({ project }: { project: Project }) {
           className='aspect-square w-10 h-10'
         />
 
-        <h1 className='font-semibold text-balance text-3xl leading-tight'>
+        <h1 className='flex-1 font-semibold text-balance text-3xl leading-tight'>
           {project.name}
         </h1>
+
+        <HeroButton heroVariant='orange' className='justify-self-end'>
+          <Link href={`/marketplace/projects/${project.identifier}/pricing`}>
+            Subscribe to {project.identifier}
+          </Link>
+        </HeroButton>
       </div>
 
       <div className='flex flex-row items-center'>
-        <div className='text-sm text-gray-500 flex flex-row gap-0.5 items-center hover:no-underline! no-underline!'>
+        <div className='text-sm text-muted-foreground flex flex-row gap-0.5 items-center hover:no-underline! no-underline!'>
           <span>{project.identifier}</span>
 
           {/* TODO: <CopyIcon className='w-4 h-4' /> */}
@@ -420,7 +443,9 @@ function ProjectHeader({ project }: { project: Project }) {
           <Button asChild variant='link'>
             <Link
               href={project.lastPublishedDeployment.websiteUrl}
-              className='text-sm flex flex-row gap-1.5! items-center text-gray-500! py-1! px-2!'
+              className='text-sm flex flex-row gap-1.5! items-center text-muted-foreground! py-1! px-2!'
+              target='_blank'
+              rel='noopener noreferrer'
             >
               <ExternalLinkIcon className='w-4 h-4' />
 
@@ -433,7 +458,9 @@ function ProjectHeader({ project }: { project: Project }) {
           <Button asChild variant='link'>
             <Link
               href={project.lastPublishedDeployment.sourceUrl}
-              className='text-sm flex flex-row gap-1.5! items-center text-gray-500! py-1! px-2!'
+              className='text-sm flex flex-row gap-1.5! items-center text-muted-foreground! py-1! px-2!'
+              target='_blank'
+              rel='noopener noreferrer'
             >
               <GitHubIcon className='w-4 h-4' />
 
