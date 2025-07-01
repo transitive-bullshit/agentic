@@ -220,31 +220,30 @@ export default defineConfig({
           tiersMode: 'volume',
           tiers: [
             {
-              // Usage-based pricing is free for the first 1000 requests per
-              // month
+              // Free for the first 1000 requests per month
               upTo: 1000,
               unitAmount: 0 // in cents
             },
             {
-              // After 10k request, it costs $0.0001 USD per request up to
+              // After 10k requests, it costs $0.0001 USD per request up to
               // 50k requests per month
               upTo: 50_000,
               unitAmount: 0.01 // in cents
             },
             {
-              // After 50k request, it costs $0.00008 USD per request up to
+              // After 50k requests, it costs $0.00008 USD per request up to
               // 500k requests per month
               upTo: 500_000,
               unitAmount: 0.008
             },
             {
-              // After 500k request, it costs $0.00006 USD per request up to
+              // After 500k requests, it costs $0.00006 USD per request up to
               // 2.5M requests per month
               upTo: 2_500_000,
               unitAmount: 0.006
             },
             {
-              // After 2.5M request, it costs $0.00005 USD per request, with
+              // After 2.5M requests, it costs $0.00005 USD per request, with
               // no upper bound set
               upTo: 'inf',
               unitAmount: 0.005
@@ -310,31 +309,30 @@ export default defineConfig({
           "tiersMode": "volume",
           "tiers": [
             {
-              // Usage-based pricing is free for the first 1000 requests per
-              // month
+              // Free for the first 1000 requests per month
               "upTo": 1000,
               "unitAmount": 0 // in cents
             },
             {
-              // After 10k request, it costs $0.0001 USD per request up to
+              // After 10k requests, it costs $0.0001 USD per request up to
               // 50k requests per month
               "upTo": 50000,
               "unitAmount": 0.01 // in cents
             },
             {
-              // After 50k request, it costs $0.00008 USD per request up to
+              // After 50k requests, it costs $0.00008 USD per request up to
               // 500k requests per month
               "upTo": 500000,
               "unitAmount": 0.008
             },
             {
-              // After 500k request, it costs $0.00006 USD per request up to
+              // After requests, it costs $0.00006 USD per request up to
               // 2.5M requests per month
               "upTo": 2500000,
               "unitAmount": 0.006
             },
             {
-              // After 2.5M request, it costs $0.00005 USD per request, with
+              // After 2.5M requests, it costs $0.00005 USD per request, with
               // no upper bound set
               "upTo": "inf",
               "unitAmount": 0.005
