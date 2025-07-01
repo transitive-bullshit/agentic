@@ -67,6 +67,7 @@ export function registerV1CreateProject(
     // Used to simplify recreating the demo `@agentic/search` project during
     // development while we're frequently resetting the database
     const secret =
+      projectIdentifier === '@dev/search' ||
       projectIdentifier === '@agentic/search'
         ? env.AGENTIC_SEARCH_PROXY_SECRET
         : await sha256()
