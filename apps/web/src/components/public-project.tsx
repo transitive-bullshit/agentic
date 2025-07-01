@@ -10,7 +10,7 @@ export function PublicProject({ project }: { project: Project }) {
     <Link
       key={project.id}
       className='p-2 border rounded-lg hover:border-gray-400
-      divide-y divide-gray-200 overflow-hidden bg-white shadow-sm max-w-md flex flex-col gap-2 justify-between
+      divide-y divide-gray-200 overflow-hidden bg-white shadow-sm max-w-md flex flex-col gap-2
       '
       href={`/marketplace/projects/${project.identifier}`}
     >
@@ -34,7 +34,7 @@ export function PublicProject({ project }: { project: Project }) {
         </div>
       </div>
 
-      <div className='p-2 flex flex-col gap-2'>
+      <div className='flex-1 flex flex-col gap-2 justify-between'>
         {deployment.description && (
           <p className='text-sm text-gray-700'>{deployment.description}</p>
         )}
