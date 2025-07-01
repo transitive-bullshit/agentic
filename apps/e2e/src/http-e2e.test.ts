@@ -83,15 +83,18 @@ for (const [i, fixtureSuite] of fixtureSuites.entries()) {
                 ...fixture.request
               })
 
-              if (res.status !== status && res.status >= 500) {
+              if (
+                res.status !== status &&
+                (res.status >= 500 || status === 200)
+              ) {
                 let body: any
                 try {
                   body = await res.json()
                 } catch {}
 
                 console.error(
-                  `${repeatIterationPrefix}${fixtureName} => UNEXPECTED ERROR ${res.status}`,
-                  body
+                  `${repeatIterationPrefix}${fixtureName} => UNEXPECTED ERROR ${res.status} (expected ${status}):`,
+                  JSON.stringify(body, null, 2)
                 )
               }
 

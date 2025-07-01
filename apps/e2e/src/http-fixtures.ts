@@ -575,6 +575,18 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
           method: 'POST'
         },
         response: {
+          // 400 because the request body is missing
+          status: 400
+        }
+      },
+      {
+        path: '@dev/test-everything-openapi/disabled_tool',
+        request: {
+          method: 'POST',
+          json: {}
+        },
+        response: {
+          // 404 because the tool is disabled which means its hidden
           status: 404
         }
       }
@@ -584,15 +596,6 @@ export const fixtureSuites: E2ETestFixtureSuite[] = [
     title: 'HTTP => OpenAPI origin everything "echo" tool with empty body',
     compareResponseBodies: true,
     fixtures: [
-      {
-        path: '@dev/test-everything-openapi/echo',
-        request: {
-          method: 'POST'
-        },
-        response: {
-          body: {}
-        }
-      },
       {
         path: '@dev/test-everything-openapi/echo',
         request: {
