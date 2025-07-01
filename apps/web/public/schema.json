@@ -35,6 +35,11 @@
       "format": "uri",
       "description": "Optional URL to the source code of the project (eg, GitHub repo)."
     },
+    "websiteUrl": {
+      "type": "string",
+      "format": "uri",
+      "description": "Optional URL to the product's website."
+    },
     "origin": {
       "anyOf": [
         {

@@ -53,7 +53,7 @@
 - stripe
   - re-add coupons
   - declarative json-based pricing
-    - like https://github.com/tierrun/tier and Saasify
+    - like Saasify and https://github.com/tierrun/tier
     - https://github.com/tierrun/tier/blob/main/pricing/schema.json
     - https://blog.tier.run/tier-hello-world-demo
   - stripe connect

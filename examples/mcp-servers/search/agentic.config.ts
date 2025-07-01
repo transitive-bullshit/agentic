@@ -11,6 +11,9 @@ export default defineConfig({
     type: 'mcp',
     url: process.env.MCP_ORIGIN_URL!
   },
+  sourceUrl:
+    'https://github.com/transitive-bullshit/agentic/tree/main/examples/mcp-servers/search',
+  websiteUrl: 'https://agentic.so',
   toolConfigs: [
     {
       name: 'search',

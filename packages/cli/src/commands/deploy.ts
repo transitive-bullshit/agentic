@@ -19,7 +19,8 @@ export function registerDeployCommand({
       'The directory to load the Agentic project config from (defaults to cwd). This directory must contain an "agentic.config.{ts,js,json}" project file.'
     )
     .option('-d, --debug', 'Print out the parsed agentic config and return.')
-    .option('-p, --publish', 'Publishes the deployment after creating it.')
+    // TODO
+    //.option('-p, --publish', 'Publishes the deployment after creating it.')
     .action(async (opts) => {
       AuthStore.requireAuth()
 
@@ -47,12 +48,17 @@ export function registerDeployCommand({
           return
         }
 
-        // Create the deployment on the backend, validate it, and optionally
-        // publish it.
+        // Create the deployment on the backend, validating it in the process.
+        // Note that the backend performs more validation than the client does
+        // and is the ultimate source of truth.
         const deployment = await oraPromise(
-          client.createDeployment(config, {
-            publish: opts.publish ? 'true' : 'false'
-          }),
+          client.createDeployment(
+            config
+            // TODO: need to prompt to get or confirm version before publishing
+            // {
+            //   publish: opts.publish ? 'true' : 'false'
+            // }
+          ),
           {
             text: `Creating deployment for project "${config.slug}"`,
             successText: `Deployment created successfully`,

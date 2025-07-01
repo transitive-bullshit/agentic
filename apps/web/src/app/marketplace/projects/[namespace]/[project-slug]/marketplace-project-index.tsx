@@ -1,6 +1,8 @@
 'use client'
 
 import { assert, omit, sanitizeSearchParams } from '@agentic/platform-core'
+import { ExternalLinkIcon } from 'lucide-react'
+import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
@@ -8,6 +10,7 @@ import { useAgentic } from '@/components/agentic-provider'
 import { LoadingIndicator } from '@/components/loading-indicator'
 import { PageContainer } from '@/components/page-container'
 import { ProjectPricingPlans } from '@/components/project-pricing-plans'
+import { GitHubIcon } from '@/icons/github'
 import { toast, toastError } from '@/lib/notifications'
 import { useQuery } from '@/lib/query-client'
 
@@ -148,13 +151,52 @@ export function MarketplaceProjectIndex({
         ) : !project ? (
           <p>Project "{projectIdentifier}" not found</p>
         ) : (
-          <>
-            <h1
-              className='text-center text-balance leading-snug md:leading-none
-        text-4xl font-extrabold'
-            >
-              {project.name}
-            </h1>
+          <div className='flex flex-col'>
+            <div className='flex flex-col gap-2'>
+              <div className='flex flex-row gap-2.5 items-center'>
+                <img
+                  src={
+                    project.lastPublishedDeployment?.iconUrl ||
+                    project.user?.image ||
+                    '/agentic-icon-circle-light.svg'
+                  }
+                  alt={project.name}
+                  className='aspect-square w-8 h-8'
+                />
+
+                <h1 className='font-semibold text-balance text-lg text-gray-900 leading-tight'>
+                  {project.name}
+                </h1>
+              </div>
+
+              <div className='flex flex-row gap-2.5 items-center'>
+                <div className='text-sm text-gray-500'>
+                  {project.identifier}
+                </div>
+
+                {project.lastPublishedDeployment?.websiteUrl && (
+                  <Link
+                    href={project.lastPublishedDeployment.websiteUrl}
+                    className='text-sm text-gray-500'
+                  >
+                    <ExternalLinkIcon />
+
+                    <span>Homepage</span>
+                  </Link>
+                )}
+
+                {project.lastPublishedDeployment?.sourceUrl && (
+                  <Link
+                    href={project.lastPublishedDeployment.sourceUrl}
+                    className='text-sm text-gray-500'
+                  >
+                    <GitHubIcon />
+
+                    <span>GitHub</span>
+                  </Link>
+                )}
+              </div>
+            </div>
 
             <div className='mt-8'>
               <pre className='max-w-lg'>
@@ -172,7 +214,7 @@ export function MarketplaceProjectIndex({
               isLoadingStripeCheckoutForPlan={isLoadingStripeCheckoutForPlan}
               onSubscribe={onSubscribe}
             />
-          </>
+          </div>
         )}
       </section>
     </PageContainer>
