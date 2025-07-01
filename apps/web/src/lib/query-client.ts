@@ -1,14 +1,11 @@
 import {
   type DefaultError,
   type InfiniteData,
-  QueryClient,
   type QueryKey,
   useInfiniteQuery as useInfiniteQueryBase,
   useQuery as useQueryBase
 } from '@tanstack/react-query'
 import { HTTPError } from 'ky'
-
-export const queryClient = new QueryClient()
 
 const retryStatusCodes = new Set([408, 413, 429, 500, 502, 503, 504])
 

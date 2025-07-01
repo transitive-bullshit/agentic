@@ -1,7 +1,7 @@
 'use client'
 
 import type { Project } from '@agentic/platform-types'
-import type { JSX } from 'react'
+import { type JSX, useEffect, useMemo, useState } from 'react'
 import { useLocalStorage } from 'react-use'
 
 import { useAgentic } from '@/components/agentic-provider'
@@ -43,10 +43,20 @@ export function ExampleUsage({
   initialCodeBlock?: JSX.Element
 }) {
   const ctx = useAgentic()
+  const [isMounted, setIsMounted] = useState(false)
 
-  const [config, setConfig] = useLocalStorage<DeveloperConfig>(
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
+
+  const [rawConfig, setConfig] = useLocalStorage<DeveloperConfig>(
     'developer-config',
     defaultConfig
+  )
+
+  const config = useMemo(
+    () => (isMounted && rawConfig ? rawConfig : defaultConfig),
+    [rawConfig, isMounted]
   )
 
   // TODO: make this configurable
@@ -151,7 +161,7 @@ function ExampleUsageContent({
 
   return (
     <Tabs
-      defaultValue={config.target}
+      value={config.target}
       onValueChange={(value) =>
         setConfig({
           ...defaultConfig,
@@ -176,7 +186,7 @@ function ExampleUsageContent({
 
       <TabsContent value='mcp' className='w-full'>
         <Tabs
-          defaultValue={config.mcpClientTarget}
+          value={config.mcpClientTarget}
           onValueChange={(value) =>
             setConfig({
               ...defaultConfig,
@@ -216,7 +226,7 @@ function ExampleUsageContent({
 
       <TabsContent value='typescript' className='w-full'>
         <Tabs
-          defaultValue={config.tsFrameworkTarget}
+          value={config.tsFrameworkTarget}
           onValueChange={(value) =>
             setConfig({
               ...defaultConfig,
@@ -252,7 +262,7 @@ function ExampleUsageContent({
 
       <TabsContent value='python' className='w-full'>
         <Tabs
-          defaultValue={config.pyFrameworkTarget}
+          value={config.pyFrameworkTarget}
           onValueChange={(value) =>
             setConfig({
               ...defaultConfig,
@@ -288,7 +298,7 @@ function ExampleUsageContent({
 
       <TabsContent value='http' className='w-full'>
         <Tabs
-          defaultValue={config.httpTarget}
+          value={config.httpTarget}
           onValueChange={(value) =>
             setConfig({
               ...defaultConfig,
