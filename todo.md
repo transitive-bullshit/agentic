@@ -29,6 +29,9 @@
 - replace JSON schemas with `json` code blocks
 - improve upgrade flow
 - **currently not obvious how to get api key**
+- marketplace project page; replace tabs with links
+  - too much of a delay on individual pages and makes no sense to have these imports on the other tab pages
+- add a basic page + docs on pricing
 
 ## TODO: Post-MVP
 

@@ -4,8 +4,18 @@ const isSafari =
 
 if (!isServer) {
   // Workaround for nav links not being able to point to relative paths
+  for (const a of document.querySelectorAll('a[href="https://agentic.so"]')) {
+    a.removeAttribute('target')
+  }
+
   for (const a of document.querySelectorAll(
     'a[href="https://agentic.so/contact"]'
+  )) {
+    a.removeAttribute('target')
+  }
+
+  for (const a of document.querySelectorAll(
+    'a[href="https://agentic.so/marketplace"]'
   )) {
     a.removeAttribute('target')
   }
