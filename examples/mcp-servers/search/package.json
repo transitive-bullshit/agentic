@@ -1,8 +1,8 @@
 {
-  "name": "@agentic/examples-search",
+  "name": "@agentic/examples-mcps-search",
   "private": true,
   "author": "Travis Fischer <travis@transitivebullsh.it>",
-  "license": "AGPL-3.0",
+  "license": "UNLICENSED",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/transitive-bullshit/agentic.git",
