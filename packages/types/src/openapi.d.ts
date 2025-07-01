@@ -771,6 +771,8 @@ export interface components {
             /** @description Optional semantic version of the project as a semver string. Ex: 1.0.0, 0.0.1, 5.0.1, etc. */
             version?: string;
             published: boolean;
+            /** @description Display name for the project. Max length 1024 characters. */
+            name: string;
             /** @description A short description of the project. */
             description?: string;
             /** @description A readme documenting the project (supports GitHub-flavored markdown). */
@@ -1048,6 +1050,8 @@ export interface components {
             /** @description Optional semantic version of the project as a semver string. Ex: 1.0.0, 0.0.1, 5.0.1, etc. */
             version?: string;
             published: boolean;
+            /** @description Display name for the project. Max length 1024 characters. */
+            name: string;
             /** @description A short description of the project. */
             description?: string;
             /** @description A readme documenting the project (supports GitHub-flavored markdown). */

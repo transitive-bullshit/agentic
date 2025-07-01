@@ -53,6 +53,7 @@ export async function publishDeployment(
       tx
         .update(schema.projects)
         .set({
+          name: deployment.name,
           lastPublishedDeploymentId: deployment.id,
           lastPublishedDeploymentVersion: version
         })

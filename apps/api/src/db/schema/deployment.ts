@@ -39,6 +39,7 @@ import {
   deploymentPrimaryId,
   pricingIntervalEnum,
   projectId,
+  projectName,
   teamId,
   timestamps,
   userId
@@ -67,6 +68,9 @@ export const deployments = pgTable(
     version: text(),
 
     published: boolean().default(false).notNull(),
+
+    // display name
+    name: projectName().notNull(),
 
     description: text().default('').notNull(),
     readme: text().default('').notNull(),
@@ -164,6 +168,7 @@ export const deploymentSelectBaseSchema = createSelectSchema(deployments, {
       message: 'Invalid deployment hash'
     }),
 
+  name: resolvedAgenticProjectConfigSchema.shape.name,
   version: resolvedAgenticProjectConfigSchema.shape.version,
   description: resolvedAgenticProjectConfigSchema.shape.description,
   readme: resolvedAgenticProjectConfigSchema.shape.readme,

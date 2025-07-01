@@ -15,7 +15,6 @@
     - import react example usage component into docs
   - replace json pricing plans and consumers with actual designs
 - double-check free-tier rate-limits for `@agentic/search`
-- create agentic products for select legacy tools
 - add feature about optimized context to docs
 - add ts sdk examples to e2e tests
 - submit to awesome mcp, mcp discord, etc
@@ -27,13 +26,17 @@
   - **add support to example-usage for api keys**
 - **api keys should go beyond 1:1 consumers**
 - replace JSON schemas (tool input/output schemas) with `json` code blocks
-- improve upgrade flow
+- improve upgrade flow UX
 - **currently not obvious how to get api key**
-- marketplace project page; replace tabs with links
-  - too much of a delay on individual pages and makes no sense to have these imports on the other tab pages
+- marketplace project page
+  - replace tabs with links
+    - too much of a delay on individual pages and makes no sense to have these imports on the other tab pages
+  - add last published date to
 - add a basic page + docs on pricing
 - [react query prefetching for public pages](https://tanstack.com/query/latest/docs/framework/react/guides/advanced-ssr#prefetching-and-dehydrating-data)
 - add [ping](https://modelcontextprotocol.io/specification/2025-03-26/basic/utilities/ping) support to mcp servers
+- add ability to point at remote readmes, icons, files, urls, etc and upload to our own blob storage at deploy time
+- **create agentic products for select legacy tools**
 
 ## TODO: Post-MVP
 
