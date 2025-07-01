@@ -20,6 +20,12 @@ if (!isServer) {
     a.removeAttribute('target')
   }
 
+  for (const a of document.querySelectorAll(
+    'a[href="https://agentic.so/app"]'
+  )) {
+    a.removeAttribute('target')
+  }
+
   // document
   //   .getElementById('https://agentic.so/contact')
   //   .querySelector('.lucide-arrow-up-right')
