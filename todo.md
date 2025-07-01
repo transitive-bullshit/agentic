@@ -8,6 +8,7 @@
 - **website**
   - stripe
     - double check stripe upgrade flow and add fireworks
+    - improve upgrade flow UX
     - should we bypass stripe for `free` plans to increase conversions?
   - example usage
     - double check example usage for all TS sdks now that real examples are working
@@ -17,17 +18,18 @@
 - submit to awesome mcp, mcp discord, etc
 - replace how-it-works diagram with better version
 - docs: add notes about constraints on mcp origin servers (static tools)
-- improve public project detail page
-  - mcp inspector
-  - **add support to example-usage for api keys**
 - **api keys should go beyond 1:1 consumers**
 - **currently not obvious how to get api key**
-- improve upgrade flow UX
-- marketplace project page
-  - break out into a few subcomponents; some can be server components
+- marketplace public project page
+  - mcp inspector
+  - **add support to example-usage for api keys**
   - add last published date somewhere
   - add breadcrumb nav: marketplace > @agentic > search
   - tool input/output schemas; move `$schema` to top
+  - break out into a few subcomponents; some can be server components
+- improve private project page
+  - link to public page if published
+  - list deployment versions
 - add a basic page + docs on pricing => contact
 - [**react query prefetching for public pages**](https://tanstack.com/query/latest/docs/framework/react/guides/advanced-ssr#prefetching-and-dehydrating-data)
 - add ability to point at remote readmes, icons, files, urls, etc and upload to our own blob storage at deploy time
@@ -108,13 +110,8 @@
 - handle hosting of deployment and user images
 - about page inspiration: https://mastra.ai/about
 - simplify overlap between `@agentic/core` and `@agentic/platform-core`
-- consider moving packages to correspond to their licenses and public/private
-  - platform AGPL-3.0 private
-  - platform AGPL-3.0 public; maybe this should be MIT?
-  - stdlib MIT public
-- **simplify `AgenticToolClient` and only require one package per TS LLM SDK**
+- consider simplifying `AgenticToolClient` to only require one package per TS LLM SDK
   - `createAISDKToolsFromIdentifier(projectIdentifier)`
-- project page metadata
 - consider allowing deployments to specify their proxy secret instead of a single, per-project proxy secret
 - add docs on using multiple tools with `AIFunctionSet`
 - ensure all agentic tool inputSchemas support openai strict mode by default
@@ -130,3 +127,6 @@
 - add feature about optimized context to docs
 - import react example usage component into docs
 - add [ping](https://modelcontextprotocol.io/specification/2025-03-26/basic/utilities/ping) support to mcp servers
+- basic account page on website
+  - edit name, profile photo, etc
+- **public project detail page metadata**
