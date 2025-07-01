@@ -1,8 +1,8 @@
 import type * as React from 'react'
 import type { Simplify } from 'type-fest'
-import cs from 'clsx'
 
 import { Button, type ButtonProps } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 
 import styles from './styles.module.css'
 
@@ -23,21 +23,21 @@ export function HeroButton({
   ...buttonProps
 }: HeroButtonProps) {
   return (
-    <div className={cs(styles.heroButtonWrapper, className)}>
+    <div className={cn(styles.heroButtonWrapper, className)}>
       {heroVariant === 'blue' && (
-        <span className={cs(styles.heroButtonBg, styles.heroButtonBg1)} />
+        <span className={cn(styles.heroButtonBg, styles.heroButtonBg1)} />
       )}
 
       {heroVariant === 'purple' && (
-        <span className={cs(styles.heroButtonBg, styles.heroButtonBg2)} />
+        <span className={cn(styles.heroButtonBg, styles.heroButtonBg2)} />
       )}
 
       {heroVariant === 'orange' && (
-        <span className={cs(styles.heroButtonBg, styles.heroButtonBg3)} />
+        <span className={cn(styles.heroButtonBg, styles.heroButtonBg3)} />
       )}
 
       <Button
-        className={cs(styles.heroButton, buttonClassName)}
+        className={cn(styles.heroButton, buttonClassName)}
         type='button'
         {...(buttonProps as any)}
       />

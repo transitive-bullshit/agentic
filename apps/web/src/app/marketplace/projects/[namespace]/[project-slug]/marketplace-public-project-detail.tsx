@@ -491,6 +491,7 @@ function ProjectHeader({
           heroVariant='orange'
           className='justify-self-end'
           disabled={tab === 'pricing'}
+          asChild={tab !== 'pricing'}
         >
           <Link
             href={`/marketplace/projects/${project.identifier}?tab=pricing`}
