@@ -5,9 +5,10 @@ import { assert, omit, sanitizeSearchParams } from '@agentic/platform-core'
 import { ExternalLinkIcon } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { useAgentic } from '@/components/agentic-provider'
+import { ExampleUsage } from '@/components/example-usage'
 import { LoadingIndicator } from '@/components/loading-indicator'
 import { PageContainer } from '@/components/page-container'
 import { ProjectPricingPlans } from '@/components/project-pricing-plans'
@@ -144,6 +145,24 @@ export function MarketplaceProjectIndex({
     hasInitializedCheckoutFromSearchParams
   ])
 
+  const featuredToolName = useMemo(() => {
+    const deployment = project?.lastPublishedDeployment
+    const toolConfigs = deployment?.toolConfigs?.filter(
+      (toolConfig) => toolConfig?.enabled !== false
+    )
+
+    return (
+      toolConfigs?.find((toolConfig) =>
+        toolConfig.examples?.find((example) => example.featured)
+      )?.name ??
+      toolConfigs?.find((toolConfig) => toolConfig.examples?.length)?.name ??
+      toolConfigs?.[0]?.name ??
+      deployment?.tools[0]?.name
+    )
+  }, [project])
+
+  const deployment = project?.lastPublishedDeployment
+
   return (
     <PageContainer>
       <section>
@@ -181,6 +200,31 @@ export function MarketplaceProjectIndex({
                   <h2 className='text-balance leading-snug md:leading-none text-xl font-semibold'>
                     Overview
                   </h2>
+
+                  <div
+                    className={`grid grid-cols grid-cols-1 gap-8 md:grid-cols-2`}
+                  >
+                    <div className='flex flex-col gap-4'>
+                      {deployment ? (
+                        <p>
+                          {deployment?.description ||
+                            'No description available'}
+                        </p>
+                      ) : (
+                        <p>
+                          This project doesn't have any published deployments.
+                        </p>
+                      )}
+                    </div>
+
+                    <div className='flex flex-col gap-4'>
+                      <ExampleUsage
+                        projectIdentifier={projectIdentifier}
+                        project={project}
+                        tool={featuredToolName}
+                      />
+                    </div>
+                  </div>
                 </TabsContent>
 
                 <TabsContent value='tools' className='flex flex-col gap-4'>

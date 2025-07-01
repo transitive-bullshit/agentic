@@ -456,6 +456,46 @@
               "minLength": 1
             },
             "description": "Allows you to override this tool's behavior or disable it entirely for different pricing plans. This is a map of PricingPlan slug to PricingPlanToolOverrides for that plan."
+          },
+          "examples": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "The display name of the example."
+                },
+                "prompt": {
+                  "type": "string",
+                  "description": "The input prompt for agents to use when running this example."
+                },
+                "systemPrompt": {
+                  "type": "string",
+                  "description": "An optional system prompt for agents to use when running this example. Defaults to `You are a helpful assistant. Be as concise as possible.`"
+                },
+                "args": {
+                  "type": "object",
+                  "additionalProperties": {},
+                  "description": "The arguments to pass to the tool for this example."
+                },
+                "featured": {
+                  "type": "boolean",
+                  "description": "Whether this example should be featured in the docs for the project."
+                },
+                "description": {
+                  "type": "string",
+                  "description": "A description of the example."
+                }
+              },
+              "required": [
+                "name",
+                "prompt",
+                "args"
+              ],
+              "additionalProperties": false
+            },
+            "description": "Examples of how to use this tool. Used to generate example usage in the tool's docs."
           }
         },
         "required": [

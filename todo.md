@@ -121,3 +121,4 @@
   - also add `@agentic/json-schema` to `createJsonSchema` parsing instead of current no-op
 - add support for [`@google/genai`](https://github.com/googleapis/js-genai) tools adapter
   - currently difficult due to their use of non-standard json schemas
+- validate example args against the tool's input schema during config validation

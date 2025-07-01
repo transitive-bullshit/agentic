@@ -18,7 +18,7 @@ import { globalAgenticApiClient } from '@/lib/global-api'
 
 export default async function TheBestDamnLandingPageEver() {
   const projectIdentifier = '@agentic/search'
-  const prompt = 'What is the latest news about AI?'
+  const tool = 'search'
 
   const initialProject =
     await globalAgenticApiClient.getPublicProjectByIdentifier({
@@ -32,7 +32,7 @@ export default async function TheBestDamnLandingPageEver() {
     project: initialProject,
     deployment: initialProject.lastPublishedDeployment!,
     identifier: projectIdentifier,
-    prompt
+    tool
   })
   const initialCodeBlock = await highlight(initialCodeSnippet)
 
@@ -61,8 +61,8 @@ export default async function TheBestDamnLandingPageEver() {
 
         <ExampleUsage
           projectIdentifier={projectIdentifier}
-          prompt={prompt}
           project={initialProject}
+          tool={tool}
           initialCodeBlock={initialCodeBlock}
         />
 

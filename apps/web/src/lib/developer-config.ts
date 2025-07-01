@@ -1,5 +1,6 @@
 import type { Deployment, Project } from '@agentic/platform-types'
 import type { BundledLanguage } from 'shiki/bundle/web'
+import type { Simplify } from 'type-fest'
 import { assert } from '@agentic/platform-core'
 
 import { gatewayBaseUrl } from './config'
@@ -95,33 +96,68 @@ export type GetCodeForDeveloperConfigOpts = {
   project: Project
   deployment: Deployment
   identifier: string
-  prompt: string
   tool?: string
 }
+
+type GetCodeForDeveloperConfigInnerOpts = Simplify<
+  GetCodeForDeveloperConfigOpts & {
+    systemPrompt: string
+    prompt: string
+    args: Record<string, any>
+  }
+>
 
 export function getCodeForDeveloperConfig(
   opts: GetCodeForDeveloperConfigOpts
 ): CodeSnippet {
-  const { config } = opts
+  const { config, tool } = opts
+
+  const toolConfig = tool
+    ? opts.deployment.toolConfigs.find((toolConfig) => toolConfig.name === tool)
+    : undefined
+  const toolConfigExample =
+    toolConfig?.examples?.find((example) => example.featured) ??
+    toolConfig?.examples?.[0]
+
+  const innerOpts: GetCodeForDeveloperConfigInnerOpts = {
+    ...opts,
+
+    // TODO: incorporate the system message into all of the example TS and
+    // Python code snippets
+    systemPrompt:
+      toolConfigExample?.systemPrompt ??
+      'You are a helpful assistant. Be as concise as possible.',
+
+    // TODO: generate this default on the backend based on the tool's name,
+    // description, inputSchema, and outputSchema
+    prompt: toolConfigExample?.prompt ?? 'What is the latest news about AI?',
+
+    // TODO: generate this default on the backend based on the tool's input
+    // schema
+    // TODO: if no `args` are provided, hide the `HTTP` tab?
+    args: toolConfigExample?.args ?? {
+      query: 'example search query'
+    }
+  }
 
   switch (config.target) {
     case 'mcp':
-      return getCodeForMCPClientConfig(opts)
+      return getCodeForMCPClientConfig(innerOpts)
 
     case 'typescript':
-      return getCodeForTSFrameworkConfig(opts)
+      return getCodeForTSFrameworkConfig(innerOpts)
 
     case 'python':
-      return getCodeForPythonFrameworkConfig(opts)
+      return getCodeForPythonFrameworkConfig(innerOpts)
 
     case 'http':
-      return getCodeForHTTPConfig(opts)
+      return getCodeForHTTPConfig(innerOpts)
   }
 }
 
 export function getCodeForMCPClientConfig({
   identifier
-}: GetCodeForDeveloperConfigOpts): CodeSnippet {
+}: GetCodeForDeveloperConfigInnerOpts): CodeSnippet {
   const mcpUrl = `${gatewayBaseUrl}/${identifier}/mcp`
   return {
     code: mcpUrl,
@@ -132,8 +168,9 @@ export function getCodeForMCPClientConfig({
 export function getCodeForTSFrameworkConfig({
   config,
   identifier,
-  prompt
-}: GetCodeForDeveloperConfigOpts): CodeSnippet {
+  prompt,
+  systemPrompt
+}: GetCodeForDeveloperConfigInnerOpts): CodeSnippet {
   switch (config.tsFrameworkTarget) {
     case 'ai':
       return {
@@ -288,7 +325,7 @@ const searchTool = await AgenticToolClient.fromIdentifier('${identifier}')
 const exampleAgent = new Agent({
   name: 'Example Agent',
   model: openai('gpt-4o-mini') as any,
-  instructions: 'You are a helpful assistant. Be as concise as possible.',
+  instructions: '${systemPrompt}',
   tools: createMastraTools(searchTool)
 })
 
@@ -357,7 +394,7 @@ export function getCodeForPythonFrameworkConfig({
   config,
   identifier,
   prompt
-}: GetCodeForDeveloperConfigOpts): CodeSnippet {
+}: GetCodeForDeveloperConfigInnerOpts): CodeSnippet {
   const mcpUrl = `${gatewayBaseUrl}/${identifier}/mcp`
 
   switch (config.pyFrameworkTarget) {
@@ -441,8 +478,9 @@ export function getCodeForHTTPConfig({
   config,
   identifier,
   deployment,
-  tool
-}: GetCodeForDeveloperConfigOpts): CodeSnippet {
+  tool,
+  args
+}: GetCodeForDeveloperConfigInnerOpts): CodeSnippet {
   tool ??= deployment.tools[0]?.name
   assert(tool, 'tool is required')
   // TODO: need a way of getting example tool args
@@ -450,16 +488,25 @@ export function getCodeForHTTPConfig({
   const url = `${gatewayBaseUrl}/${identifier}/${tool}`
 
   switch (config.httpTarget) {
-    case 'curl':
-      return {
-        code: `curl -X POST -H "Content-Type: application/json" -d '{"query": "example google search"}' ${url}`,
-        lang: 'bash'
-      }
+    case 'curl': {
+      const formattedArgs = JSON.stringify(args).replace("'", "\\'")
 
-    case 'httpie':
+      // TODO: better formatting for the curl command
       return {
-        code: `http ${url} query='example google search'`,
+        code: `curl -X POST -H "Content-Type: application/json" -d '${formattedArgs}' ${url}`,
         lang: 'bash'
       }
+    }
+
+    case 'httpie': {
+      const formattedArgs = Object.entries(args)
+        .map(([key, value]) => `${key}=${JSON.stringify(value)}`)
+        .join(' ')
+
+      return {
+        code: `http ${url} ${formattedArgs}`,
+        lang: 'bash'
+      }
+    }
   }
 }

@@ -33,13 +33,13 @@ import { LoadingIndicator } from './loading-indicator'
 
 export function ExampleUsage({
   projectIdentifier,
-  prompt,
   project: initialProject,
+  tool,
   initialCodeBlock
 }: {
   projectIdentifier: string
-  prompt: string
   project?: Project
+  tool?: string
   initialCodeBlock?: JSX.Element
 }) {
   const ctx = useAgentic()
@@ -94,7 +94,7 @@ export function ExampleUsage({
     <div className='w-full max-w-3xl flex flex-col items-center border rounded-lg shadow-sm p-2 md:p-4 bg-background'>
       <ExampleUsageContent
         projectIdentifier={projectIdentifier}
-        prompt={prompt}
+        tool={tool}
         initialCodeBlock={initialCodeBlock}
         isLoading={isLoading}
         isError={isError}
@@ -108,7 +108,7 @@ export function ExampleUsage({
 
 function ExampleUsageContent({
   projectIdentifier,
-  prompt,
+  tool,
   initialCodeBlock,
   isLoading,
   isError,
@@ -117,7 +117,7 @@ function ExampleUsageContent({
   setConfig
 }: {
   projectIdentifier: string
-  prompt: string
+  tool?: string
   initialCodeBlock?: JSX.Element
   isLoading: boolean
   isError: boolean
@@ -146,7 +146,7 @@ function ExampleUsageContent({
     project,
     deployment,
     identifier: projectIdentifier,
-    prompt
+    tool
   })
 
   return (
@@ -163,7 +163,12 @@ function ExampleUsageContent({
     >
       <TabsList>
         {targets.map((target) => (
-          <TabsTrigger key={target} value={target} className='cursor-pointer'>
+          <TabsTrigger
+            key={target}
+            value={target}
+            className='cursor-pointer'
+            disabled={target === 'http' && !tool}
+          >
             {targetLabels[target]}
           </TabsTrigger>
         ))}
