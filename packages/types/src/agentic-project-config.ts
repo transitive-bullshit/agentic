@@ -136,6 +136,17 @@ export const agenticProjectConfigSchema = z
       .optional(),
 
     /**
+     * Optional URL to the product's website.
+     *
+     * @example "https://my-product.com"
+     */
+    websiteUrl: z
+      .string()
+      .url()
+      .describe("Optional URL to the product's website.")
+      .optional(),
+
+    /**
      * Origin API adapter used to configure the origin API server downstream
      * from Agentic's API gateway. It specifies whether the origin API server's
      * is hosted externally or deployed internally to Agentic's infrastructure.
