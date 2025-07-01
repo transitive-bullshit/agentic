@@ -1,7 +1,7 @@
 {
   "name": "gateway",
   "private": true,
-  "version": "8.2.2",
+  "version": "8.3.0",
   "description": "Internal Agentic platform API gateway.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "AGPL-3.0",
