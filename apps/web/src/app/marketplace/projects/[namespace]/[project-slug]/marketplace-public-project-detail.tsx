@@ -8,6 +8,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import plur from 'plur'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
+import { ActiveLink } from '@/components/active-link'
 import { useAgentic } from '@/components/agentic-provider'
 import { ExampleUsage } from '@/components/example-usage'
 import { HeroButton } from '@/components/hero-button'
@@ -195,7 +196,7 @@ export function MarketplacePublicProjectDetail({
           <p>Project "{projectIdentifier}" not found</p>
         ) : (
           <div className='flex flex-col gap-4 w-full'>
-            <ProjectHeader project={project} />
+            <ProjectHeader project={project} tab={inferredTab} />
 
             <Tabs
               value={inferredTab}
@@ -446,7 +447,13 @@ export function MarketplacePublicProjectDetail({
   )
 }
 
-function ProjectHeader({ project }: { project: Project }) {
+function ProjectHeader({
+  project,
+  tab
+}: {
+  project: Project
+  tab?: MarketplacePublicProjectDetailTab
+}) {
   return (
     <div className='flex flex-col gap-2'>
       <div className='w-full flex flex-row gap-2.5 items-center'>
@@ -464,10 +471,16 @@ function ProjectHeader({ project }: { project: Project }) {
           {project.name}
         </h1>
 
-        <HeroButton heroVariant='orange' className='justify-self-end'>
-          <Link href={`/marketplace/projects/${project.identifier}/pricing`}>
+        <HeroButton
+          heroVariant='orange'
+          className='justify-self-end'
+          disabled={tab === 'pricing'}
+        >
+          <ActiveLink
+            href={`/marketplace/projects/${project.identifier}/pricing`}
+          >
             Subscribe to {project.identifier}
-          </Link>
+          </ActiveLink>
         </HeroButton>
       </div>
 

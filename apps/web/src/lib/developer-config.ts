@@ -324,9 +324,9 @@ const searchTool = await AgenticToolClient.fromIdentifier('${identifier}')
 
 const exampleAgent = new Agent({
   name: 'Example Agent',
-  model: openai('gpt-4o-mini') as any,
-  instructions: '${systemPrompt}',
-  tools: createMastraTools(searchTool)
+  model: openai('gpt-4o-mini'),
+  tools: createMastraTools(searchTool),
+  instructions: '${systemPrompt}'
 })
 
 const res = await exampleAgent.generate(
