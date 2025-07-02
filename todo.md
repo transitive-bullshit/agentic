@@ -34,12 +34,11 @@
 - [**react query prefetching for public pages**](https://tanstack.com/query/latest/docs/framework/react/guides/advanced-ssr#prefetching-and-dehydrating-data)
 - **create agentic products for select legacy tools**
 - marketplace index page
-  - add publishing CTA
   - add disclaimer about public beta
   - add search / sorting
+  - **improve marketplace default sorting**
   - add admin-based tags for main page layout (featured, etc)
 - replace render for api and/or add turbo for caching (too slow to deploy)
-- public-project limit `description` to max 5 lines and show ellipsis
 
 ## TODO: Post-MVP
 
