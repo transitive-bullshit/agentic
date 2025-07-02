@@ -48,7 +48,8 @@ export function registerV1GitHubOAuthInitFlow(
 
     const state = crypto.randomUUID()
 
-    // TODO: unique identifier
+    // TODO: unique identifier!
+    // TODO: THIS IS IMPORTANT!! if multiple users are authenticating with github concurrently, this will currently really mess things up...
     await authStorage.set(['github', state, 'redirectUri'], { redirectUri })
 
     const publicRedirectUri = `${env.apiBaseUrl}/v1/auth/github/callback`

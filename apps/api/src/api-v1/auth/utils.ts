@@ -1,3 +1,3 @@
-import { DrizzleAuthStorage } from '@/lib/drizzle-auth-storage'
+import { DrizzleAuthStorage } from '@/lib/auth/drizzle-auth-storage'
 
 export const authStorage = DrizzleAuthStorage()

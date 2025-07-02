@@ -11,7 +11,8 @@ import type {
   User
 } from '@agentic/platform-types'
 import type { Simplify } from 'type-fest'
-import { assert, sanitizeSearchParams } from '@agentic/platform-core'
+import { assert, sanitizeSearchParams, sha256 } from '@agentic/platform-core'
+import { fileTypeFromBuffer } from 'file-type'
 import defaultKy, { type KyInstance } from 'ky'
 
 import type { OnUpdateAuthSessionFunction } from './types'
@@ -334,6 +335,103 @@ export class AgenticApiClient {
     return this.ky
       .delete(`v1/teams/${teamId}/members/${userId}`, { searchParams })
       .json()
+  }
+
+  /**
+   * Gets a signed URL for uploading a file to Agentic's blob storage.
+   *
+   * Files are namespaced to a given project and are identified by a key that
+   * should be a hash of the file's contents, with the correct file extension.
+   *
+   * @example
+   * ```ts
+   * const { signedUploadUrl, publicObjectUrl } = await client.getSignedStorageUploadUrl({
+   *   projectIdentifier: '@username/my-project',
+   *   key: '9f86d081884c7d659a2feaa0c55ad015a.png'
+   * })
+   * ```
+   */
+  async getSignedStorageUploadUrl(
+    searchParams: OperationParameters<'getSignedStorageUploadUrl'>
+  ): Promise<{
+    /** The signed upload URL. */
+    signedUploadUrl: string
+
+    /** The public URL the object will have once uploaded. */
+    publicObjectUrl: string
+  }> {
+    return this.ky
+      .get(`v1/storage/signed-upload-url`, {
+        searchParams: sanitizeSearchParams(searchParams)
+      })
+      .json()
+  }
+
+  /**
+   * Uploads a file to Agentic's blob storage for a given project.
+   *
+   * @example
+   * ```ts
+   * const publicObjectUrl = await client.uploadFileToStorage(
+   *   new URL('https://example.com/image.png'),
+   *   { projectIdentifier: '@username/my-project' }
+   * )
+   * ```
+   */
+  async uploadFileToStorage(
+    source: string | ArrayBuffer | URL,
+    {
+      projectIdentifier
+    }: {
+      projectIdentifier: string
+    }
+  ): Promise<string> {
+    let sourceBuffer: ArrayBuffer
+
+    if (typeof source === 'string') {
+      try {
+        source = new URL(source)
+      } catch {
+        // Not a URL
+        throw new Error(`Invalid source file URL: ${source}`)
+      }
+    }
+
+    if (source instanceof URL) {
+      sourceBuffer = await defaultKy.get(source).arrayBuffer()
+    } else if (source instanceof ArrayBuffer) {
+      sourceBuffer = source
+    } else {
+      throw new Error(`Invalid source file: ${source}`)
+    }
+
+    const [hash, fileType] = await Promise.all([
+      sha256(sourceBuffer),
+      fileTypeFromBuffer(sourceBuffer)
+    ])
+
+    const key = fileType ? `${hash}.${fileType.ext}` : hash
+
+    const { signedUploadUrl, publicObjectUrl } =
+      await this.getSignedStorageUploadUrl({
+        projectIdentifier,
+        key
+      })
+
+    try {
+      // Check if the object already exists.
+      await defaultKy.head(publicObjectUrl)
+    } catch {
+      // Object doesn't exist yet, so upload it.
+      await defaultKy.post(signedUploadUrl, {
+        body: sourceBuffer,
+        headers: {
+          'Content-Type': fileType?.mime ?? 'application/octet-stream'
+        }
+      })
+    }
+
+    return publicObjectUrl
   }
 
   /** Lists projects that have been published publicly to the marketplace. */

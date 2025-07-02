@@ -29,6 +29,7 @@
     "@agentic/platform-core": "workspace:*",
     "@agentic/platform-types": "workspace:*",
     "@standard-schema/spec": "catalog:",
+    "file-type": "^21.0.0",
     "ky": "catalog:",
     "type-fest": "catalog:"
   },

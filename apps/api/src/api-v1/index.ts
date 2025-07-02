@@ -39,6 +39,7 @@ import { registerV1GetPublicProjectByIdentifier } from './projects/get-public-pr
 import { registerV1ListProjects } from './projects/list-projects'
 import { registerV1ListPublicProjects } from './projects/list-public-projects'
 import { registerV1UpdateProject } from './projects/update-project'
+import { registerV1GetSignedStorageUploadUrl } from './storage/get-signed-storage-upload-url'
 import { registerV1CreateTeam } from './teams/create-team'
 import { registerV1DeleteTeam } from './teams/delete-team'
 import { registerV1GetTeam } from './teams/get-team'
@@ -94,6 +95,9 @@ registerV1UpdateTeam(privateRouter)
 registerV1CreateTeamMember(privateRouter)
 registerV1UpdateTeamMember(privateRouter)
 registerV1DeleteTeamMember(privateRouter)
+
+// Storage
+registerV1GetSignedStorageUploadUrl(privateRouter)
 
 // Public projects
 registerV1ListPublicProjects(publicRouter)
