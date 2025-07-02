@@ -122,10 +122,9 @@ export class ArXivClient extends AIFunctionsProvider {
     apiBaseUrl = arxiv.API_BASE_URL,
     ky = defaultKy
   }: {
-    apiKey?: string
     apiBaseUrl?: string
     ky?: KyInstance
-  }) {
+  } = {}) {
     super()
 
     this.apiBaseUrl = apiBaseUrl
