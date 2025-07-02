@@ -11,7 +11,7 @@ import { registerV1GitHubOAuthInitFlow } from './auth/github-init'
 import { registerV1SignInWithPassword } from './auth/sign-in-with-password'
 import { registerV1SignUpWithPassword } from './auth/sign-up-with-password'
 import { registerV1AdminActivateConsumer } from './consumers/admin-activate-consumer'
-import { registerV1AdminGetConsumerByToken } from './consumers/admin-get-consumer-by-token'
+import { registerV1AdminGetConsumerByApiKey } from './consumers/admin-get-consumer-by-api-key'
 import { registerV1CreateBillingPortalSession } from './consumers/create-billing-portal-session'
 import { registerV1CreateConsumer } from './consumers/create-consumer'
 import { registerV1CreateConsumerBillingPortalSession } from './consumers/create-consumer-billing-portal-session'
@@ -20,7 +20,7 @@ import { registerV1GetConsumer } from './consumers/get-consumer'
 import { registerV1GetConsumerByProjectIdentifier } from './consumers/get-consumer-by-project-identifier'
 import { registerV1ListConsumers } from './consumers/list-consumers'
 import { registerV1ListConsumersForProject } from './consumers/list-project-consumers'
-import { registerV1RefreshConsumerToken } from './consumers/refresh-consumer-token'
+import { registerV1RefreshConsumerApiKey } from './consumers/refresh-consumer-api-key'
 import { registerV1UpdateConsumer } from './consumers/update-consumer'
 import { registerV1AdminGetDeploymentByIdentifier } from './deployments/admin-get-deployment-by-identifier'
 import { registerV1CreateDeployment } from './deployments/create-deployment'
@@ -119,7 +119,7 @@ registerV1CreateConsumer(privateRouter)
 registerV1CreateConsumerCheckoutSession(privateRouter)
 registerV1CreateConsumerBillingPortalSession(privateRouter)
 registerV1UpdateConsumer(privateRouter)
-registerV1RefreshConsumerToken(privateRouter)
+registerV1RefreshConsumerApiKey(privateRouter)
 registerV1ListConsumers(privateRouter)
 registerV1ListConsumersForProject(privateRouter)
 
@@ -133,7 +133,7 @@ registerV1ListDeployments(privateRouter)
 registerV1PublishDeployment(privateRouter)
 
 // Internal admin routes
-registerV1AdminGetConsumerByToken(privateRouter)
+registerV1AdminGetConsumerByApiKey(privateRouter)
 registerV1AdminActivateConsumer(privateRouter)
 registerV1AdminGetDeploymentByIdentifier(privateRouter)
 

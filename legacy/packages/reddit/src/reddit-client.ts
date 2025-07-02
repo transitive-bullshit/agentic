@@ -347,7 +347,7 @@ export class RedditClient extends AIFunctionsProvider {
    * @see https://old.reddit.com/dev/api/#GET_hot
    */
   @aiFunction({
-    name: 'reddit_get_subreddit_posts',
+    name: 'get_subreddit_posts',
     description: 'Fetches posts from a subreddit.',
     inputSchema: z.object({
       subreddit: z.string().describe('The subreddit to fetch posts from.'),

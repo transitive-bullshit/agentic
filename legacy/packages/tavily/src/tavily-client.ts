@@ -146,7 +146,7 @@ export class TavilyClient extends AIFunctionsProvider {
    * Searches the web for pages relevant to the given query and summarizes the results.
    */
   @aiFunction({
-    name: 'tavily_web_search',
+    name: 'search',
     description:
       'Searches the web to find the most relevant pages for a given query and summarizes the results. Very useful for finding up-to-date news and information about any topic.',
     inputSchema: z.object({

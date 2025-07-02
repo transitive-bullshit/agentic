@@ -55,7 +55,8 @@ export class OpenMeteoClient extends AIFunctionsProvider {
   }
 
   /**
-   * Gets the 7-day weather variables in hourly and daily resolution for given WGS84 latitude and longitude coordinates. Available worldwide.
+   * Gets the 7-day weather variables in hourly and daily resolution for given
+   * WGS84 latitude and longitude coordinates. Available worldwide.
    */
   @aiFunction({
     name: 'open_meteo_get_forecast',

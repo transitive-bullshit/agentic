@@ -695,13 +695,13 @@ export class AgenticApiClient {
       .json()
   }
 
-  /** Refreshes a consumer's API token. */
-  async refreshConsumerToken({
+  /** Refreshes a consumer's API key. */
+  async refreshConsumerApiKey({
     consumerId,
     ...searchParams
-  }: OperationParameters<'refreshConsumerToken'>): Promise<Consumer> {
+  }: OperationParameters<'refreshConsumerApiKey'>): Promise<Consumer> {
     return this.ky
-      .post(`v1/consumers/${consumerId}/refresh-token`, { searchParams })
+      .post(`v1/consumers/${consumerId}/refresh-api-key`, { searchParams })
       .json()
   }
 
@@ -849,22 +849,22 @@ export class AgenticApiClient {
   }
 
   /**
-   * Gets a consumer by API token. This method is admin-only.
+   * Gets a consumer by API key. This method is admin-only.
    *
    * @internal
    */
-  async adminGetConsumerByToken<
+  async adminGetConsumerByApiKey<
     TPopulate extends NonNullable<
-      OperationParameters<'adminGetConsumerByToken'>['populate']
+      OperationParameters<'adminGetConsumerByApiKey'>['populate']
     >[number]
   >({
-    token,
+    apiKey,
     ...searchParams
-  }: OperationParameters<'adminGetConsumerByToken'> & {
+  }: OperationParameters<'adminGetConsumerByApiKey'> & {
     populate?: TPopulate[]
   }): Promise<PopulateConsumer<TPopulate, AdminConsumer>> {
     return this.ky
-      .get(`v1/admin/consumers/tokens/${token}`, {
+      .get(`v1/admin/consumers/api-keys/${apiKey}`, {
         searchParams: sanitizeSearchParams(searchParams)
       })
       .json()
@@ -872,7 +872,7 @@ export class AgenticApiClient {
 
   /**
    * Activates a consumer signifying that at least one API call has been made
-   * using the consumer's API token. This method is idempotent and admin-only.
+   * using the consumer's API key. This method is idempotent and admin-only.
    *
    * @internal
    */
