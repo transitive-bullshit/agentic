@@ -1,4 +1,8 @@
-import { isToolNameAllowed, toolNameRe } from '@agentic/platform-validators'
+import {
+  isToolNameAllowed,
+  isValidToolName,
+  toolNameRe
+} from '@agentic/platform-validators'
 import { z } from '@hono/zod-openapi'
 
 import { pricingPlanSlugSchema } from './pricing'
@@ -17,6 +21,12 @@ export const toolNameSchema = z
   .string()
   .nonempty()
   .regex(toolNameRe)
+  .refine(
+    (name) => isValidToolName(name),
+    (name) => ({
+      message: `Tool name "${name}" is invalid; must match /^[a-zA-Z_][a-zA-Z0-9_-]{0,63}$/.`
+    })
+  )
   .refine(
     (name) => isToolNameAllowed(name),
     (name) => ({

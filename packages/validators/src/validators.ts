@@ -13,7 +13,7 @@ export const passwordRe = /^.{3,1024}$/
 export const projectSlugRe = /^[a-z0-9-]{1,256}$/
 export const deploymentHashRe = /^[a-z0-9]{8}$/
 
-export const toolNameRe = /^[a-zA-Z_][a-zA-Z0-9_]{0,63}$/
+export const toolNameRe = /^[a-zA-Z_][a-zA-Z0-9_-]{0,63}$/
 
 export function isValidEmail(value: string): boolean {
   return emailValidator.validate(value)

@@ -4,13 +4,13 @@ import type { ParsedToolIdentifier, ParseIdentifierOptions } from './types'
 import { coerceIdentifier } from './utils'
 
 const toolIdentifierImplicitRe =
-  /^@([a-z0-9-]{1,256})\/([a-z0-9-]{1,256})\/([a-zA-Z_][a-zA-Z0-9_]{0,63})$/
+  /^@([a-z0-9-]{1,256})\/([a-z0-9-]{1,256})\/([a-zA-Z_][a-zA-Z0-9_-]{0,63})$/
 
 const toolIdentifierHashRe =
-  /^@([a-z0-9-]{1,256})\/([a-z0-9-]{1,256})@([a-z0-9]{8})\/([a-zA-Z_][a-zA-Z0-9_]{0,63})$/
+  /^@([a-z0-9-]{1,256})\/([a-z0-9-]{1,256})@([a-z0-9]{8})\/([a-zA-Z_][a-zA-Z0-9_-]{0,63})$/
 
 const toolIdentifierVersionRe =
-  /^@([a-z0-9-]{1,256})\/([a-z0-9-]{1,256})@([\d.a-z-@]+)\/([a-zA-Z_][a-zA-Z0-9_]{0,63})$/
+  /^@([a-z0-9-]{1,256})\/([a-z0-9-]{1,256})@([\d.a-z-@]+)\/([a-zA-Z_][a-zA-Z0-9_-]{0,63})$/
 
 export function parseToolIdentifier(
   identifier?: string,

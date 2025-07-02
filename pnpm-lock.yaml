@@ -964,6 +964,12 @@ importers:
         specifier: 'catalog:'
         version: 4.1.97(@types/node@24.0.7)(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(typescript@5.8.3)
 
+  examples/mcp-servers/context7:
+    dependencies:
+      '@agentic/platform':
+        specifier: workspace:*
+        version: link:../../../packages/platform
+
   examples/mcp-servers/search:
     dependencies:
       '@agentic/platform':

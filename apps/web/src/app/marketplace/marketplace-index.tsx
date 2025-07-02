@@ -3,9 +3,11 @@
 import useInfiniteScroll from 'react-infinite-scroll-hook'
 
 import { useAgentic } from '@/components/agentic-provider'
+import { DotsSection } from '@/components/dots-section'
 import { LoadingIndicator } from '@/components/loading-indicator'
 import { PageContainer } from '@/components/page-container'
 import { PublicProject } from '@/components/public-project'
+import { SupplySideCTA } from '@/components/supply-side-cta'
 import { useInfiniteQuery } from '@/lib/query-client'
 
 export function MarketplaceIndex() {
@@ -90,6 +92,21 @@ export function MarketplaceIndex() {
           </div>
         )}
       </section>
+
+      {/* CTA section */}
+      <DotsSection className='flex flex-col gap-12 mb-16'>
+        <h2 className='text-center text-balance leading-snug md:leading-none text-3xl font-heading'>
+          Your API → Paid MCP, Instantly
+        </h2>
+
+        <h5 className='text-center max-w-2xl'>
+          Run one command to turn any MCP server or OpenAPI service into a paid
+          MCP product. With built-in support for every major LLM SDK and MCP
+          client.
+        </h5>
+
+        <SupplySideCTA variant='docs' />
+      </DotsSection>
     </PageContainer>
   )
 }

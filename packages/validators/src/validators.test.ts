@@ -163,14 +163,15 @@ test('isValidToolName success', () => {
   expect(isValidToolName('searchGoogle')).toBe(true)
   expect(isValidToolName('searchGoogle2')).toBe(true)
   expect(isValidToolName('_searchGoogle')).toBe(true)
+  expect(isValidToolName('tool-name')).toBe(true)
 })
 
 test('isValidToolName failure', () => {
   expect(isValidToolName('ab1.2')).toBe(false)
-  expect(isValidToolName('foo-bar')).toBe(false)
+  expect(isValidToolName('-foo-bar')).toBe(false)
   expect(isValidToolName('abc/123')).toBe(false)
   expect(isValidToolName('search_google ')).toBe(false)
-  expect(isValidToolName('search-google')).toBe(false)
+  expect(isValidToolName('-search_google')).toBe(false)
   expect(
     isValidToolName(
       'too_long_too_long_too_long_too_long_too_long_too_long_too_long_to'
