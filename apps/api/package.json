@@ -26,7 +26,7 @@
     "clean": "del dist",
     "test": "run-s test:*",
     "test:typecheck": "tsc --noEmit",
-    "test:unit": "dotenvx run -- vitest run"
+    "test:unit": "[ -n \"$CI\" ] || dotenvx run -- vitest run"
   },
   "dependencies": {
     "@agentic/platform": "workspace:*",
