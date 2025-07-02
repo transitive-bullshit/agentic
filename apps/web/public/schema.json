@@ -410,7 +410,7 @@
           "name": {
             "type": "string",
             "minLength": 1,
-            "pattern": "^[a-zA-Z_][a-zA-Z0-9_]{0,63}$",
+            "pattern": "^[a-zA-Z_][a-zA-Z0-9_-]{0,63}$",
             "description": "Agentic tool name"
           },
           "enabled": {
