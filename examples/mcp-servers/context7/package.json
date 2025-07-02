@@ -1,0 +1,20 @@
+{
+  "name": "@agentic/examples-mcps-context7",
+  "private": true,
+  "author": "Travis Fischer <travis@transitivebullsh.it>",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/transitive-bullshit/agentic.git",
+    "directory": "examples/search"
+  },
+  "type": "module",
+  "source": "./src/worker.ts",
+  "scripts": {
+    "test": "run-s test:*",
+    "test:typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@agentic/platform": "workspace:*"
+  }
+}
