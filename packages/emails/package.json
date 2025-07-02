@@ -1,7 +1,7 @@
 {
   "name": "@agentic/platform-emails",
   "private": true,
-  "version": "8.3.1",
+  "version": "8.4.0",
   "description": "Email templates for the Agentic platform.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "AGPL-3.0",
