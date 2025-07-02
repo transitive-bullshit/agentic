@@ -192,12 +192,12 @@ export function MarketplacePublicProjectDetail({
   }, [searchParams, deployment])
 
   const { value: readme } = useAsync(async () => {
-    if (tab === 'readme' && deployment?.readme?.trim()) {
+    if (deployment?.readme?.trim()) {
       return ky.get(deployment.readme).text()
     }
 
     return undefined
-  }, [deployment, tab])
+  }, [deployment])
 
   return (
     <PageContainer>
@@ -344,7 +344,7 @@ export function MarketplacePublicProjectDetail({
 
                 {tab === 'readme' && readme && (
                   <TabsContent value='readme' className='flex flex-col gap-4'>
-                    <SSRMarkdown markdown={readme} className='items-start!' />
+                    <SSRMarkdown markdown={readme} className='' />
                   </TabsContent>
                 )}
 

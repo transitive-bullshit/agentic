@@ -32,13 +32,13 @@
   - list deployment versions
 - add a basic page + docs on pricing => contact
 - [**react query prefetching for public pages**](https://tanstack.com/query/latest/docs/framework/react/guides/advanced-ssr#prefetching-and-dehydrating-data)
-- add ability to point at remote readmes, icons, files, urls, etc and upload to our own blob storage at deploy time
 - **create agentic products for select legacy tools**
 - marketplace index page
   - add publishing CTA
   - add disclaimer about public beta
   - add search / sorting
   - add admin-based tags for main page layout (featured, etc)
+- replace render for api and/or add turbo for caching
 
 ## TODO: Post-MVP
 
@@ -135,4 +135,3 @@
 - basic account page on website
   - edit name, profile photo, etc
 - **public project detail page metadata**
-- upload user images to agentic blob storage
