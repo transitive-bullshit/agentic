@@ -6,11 +6,12 @@ export default defineConfig({
   name: 'Agentic Google Search',
   slug: 'search',
   description:
-    'Official Google Search tool. Useful for finding up-to-date news and information about any topic.',
+    'Google Search API build specifically for LLMs. Agents should use this tool for searching the web in order to find up-to-date news and information about any topic.',
   origin: {
     type: 'mcp',
     url: process.env.MCP_ORIGIN_URL!
   },
+  icon: './google.svg',
   sourceUrl:
     'https://github.com/transitive-bullshit/agentic/tree/main/examples/mcp-servers/search',
   websiteUrl: 'https://agentic.so',
