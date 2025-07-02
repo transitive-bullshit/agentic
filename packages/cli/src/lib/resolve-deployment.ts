@@ -18,7 +18,10 @@ export async function resolveDeployment({
   populate?: ('user' | 'team' | 'project')[]
 }): Promise<Deployment> {
   if (!deploymentIdentifier) {
-    const config = await loadAgenticConfig({ cwd })
+    const config = await loadAgenticConfig({
+      cwd,
+      agenticApiClient: client
+    })
 
     // TODO: re-add team support
     const auth = AuthStore.getAuth()

@@ -99,27 +99,37 @@ export const agenticProjectConfigSchema = z
       .optional(),
 
     /**
-     * Optional embedded markdown readme documenting the project (supports GitHub-flavored markdown).
+     * Optional markdown readme documenting the project (supports GitHub-flavored markdown).
+     *
+     * A string which may be either:
+     * - A URL to a remote markdown file (eg, `https://example.com/readme.md`)
+     * - A local file path (eg, `./readme.md`)
+     * - A data-uri string (eg, `data:text/markdown;base64,SGVsbG8gV29ybGQ=`)
      */
     readme: z
       .string()
       .describe(
-        'A readme documenting the project (supports GitHub-flavored markdown).'
+        'Optional markdown readme documenting the project (supports GitHub-flavored markdown).'
       )
       .optional(),
 
     /**
-     * Optional logo image URL to use for the project. Logos should have a
-     * square aspect ratio.
+     * Optional logo image to use for the project.
+     *
+     * A string which may be either:
+     * - A URL to a remote image (eg, `https://example.com/logo.png`)
+     * - A local file path (eg, `./logo.png`)
+     * - A data-uri string (eg, `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA...`)
+     *
+     * Logos should have a square aspect ratio.
      *
      * @example "https://example.com/logo.png"
      */
-    iconUrl: z
+    icon: z
       .string()
-      .url()
       .optional()
       .describe(
-        'Optional logo image URL to use for the project. Logos should have a square aspect ratio.'
+        'Optional logo image to use for the project. Logos should have a square aspect ratio.'
       ),
 
     /**
@@ -254,7 +264,10 @@ export type AgenticProjectConfigRaw = z.output<
   typeof agenticProjectConfigSchema
 >
 export type AgenticProjectConfig = Simplify<
-  Omit<AgenticProjectConfigRaw, 'pricingPlans' | 'toolConfigs'> & {
+  Omit<
+    AgenticProjectConfigRaw,
+    'pricingPlans' | 'toolConfigs' | 'defaultRateLimit'
+  > & {
     slug: string
     pricingPlans: PricingPlanList
     toolConfigs: ToolConfig[]
@@ -266,14 +279,30 @@ export const resolvedAgenticProjectConfigSchema = agenticProjectConfigSchema
   .required({
     slug: true
   })
+  .omit({
+    icon: true
+  })
   .extend({
+    /**
+     * Optional logo image URL to use for the project. Logos should have a
+     * square aspect ratio.
+     *
+     * @example "https://example.com/logo.png"
+     */
+    iconUrl: z
+      .string()
+      .optional()
+      .describe(
+        'Optional logo image URL to use for the project. Logos should have a square aspect ratio.'
+      ),
+
     origin: originAdapterSchema,
     tools: z.array(toolSchema).default([])
   })
 export type ResolvedAgenticProjectConfig = Simplify<
   Omit<
     z.output<typeof resolvedAgenticProjectConfigSchema>,
-    'pricingPlans' | 'toolConfigs'
+    'pricingPlans' | 'toolConfigs' | 'defaultRateLimit'
   > & {
     slug: string
     pricingPlans: PricingPlanList

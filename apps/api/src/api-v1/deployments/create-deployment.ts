@@ -19,6 +19,7 @@ import {
   openapiErrorResponse409,
   openapiErrorResponses
 } from '@/lib/openapi-utils'
+import { uploadFileToStorage } from '@/lib/storage'
 
 import { createDeploymentQuerySchema } from './schemas'
 
@@ -152,7 +153,12 @@ export function registerV1CreateDeployment(
     // - tool definitions
     const agenticProjectConfig = await resolveAgenticProjectConfig(body, {
       label: `deployment "${deploymentIdentifier}"`,
-      logger
+      logger,
+      uploadFileToStorage: async (source) => {
+        return uploadFileToStorage(source, {
+          projectIdentifier
+        })
+      }
     })
 
     // Create the deployment

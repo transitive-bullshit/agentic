@@ -3,6 +3,7 @@ import { type Logger } from '@agentic/platform-core'
 
 import { parseAgenticProjectConfig } from './parse-agentic-project-config'
 import { resolveMetadata } from './resolve-metadata'
+import { validateMetadataFiles } from './validate-metadata-files'
 import { validateOriginAdapter } from './validate-origin-adapter'
 import { validatePricing } from './validate-pricing'
 
@@ -11,16 +12,22 @@ export async function validateAgenticProjectConfig(
   {
     strip = false,
     ...opts
-  }: { logger?: Logger; cwd?: string; strip?: boolean; label?: string } = {}
+  }: {
+    logger?: Logger
+    cwd?: string
+    strip?: boolean
+    label?: string
+  } = {}
 ): Promise<AgenticProjectConfig> {
   const config = parseAgenticProjectConfig(inputConfig, {
     strip,
     strict: !strip
   })
 
-  const { slug, version } = resolveMetadata(config)
+  const { slug, version } = await resolveMetadata(config)
   validatePricing(config)
 
+  const { readme, icon } = await validateMetadataFiles(config, opts)
   const origin = await validateOriginAdapter({
     slug,
     version,
@@ -34,6 +41,8 @@ export async function validateAgenticProjectConfig(
       ...config,
       slug,
       version,
+      readme,
+      icon,
       origin
     },
     { strip, strict: !strip }

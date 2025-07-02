@@ -1,5 +1,6 @@
 export * from './define-config'
 export * from './load-agentic-config'
 export * from './resolve-agentic-project-config'
+export type * from './types'
 export * from './validate-agentic-project-config'
 export { defaultFreePricingPlan } from '@agentic/platform-types'

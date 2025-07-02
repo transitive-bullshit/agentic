@@ -617,6 +617,9 @@ importers:
       exit-hook:
         specifier: 'catalog:'
         version: 4.0.0
+      file-type:
+        specifier: ^21.0.0
+        version: 21.0.0
       hono:
         specifier: 'catalog:'
         version: 4.8.3

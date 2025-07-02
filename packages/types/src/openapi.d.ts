@@ -792,12 +792,9 @@ export interface components {
             name: string;
             /** @description A short description of the project. */
             description?: string;
-            /** @description A readme documenting the project (supports GitHub-flavored markdown). */
+            /** @description Optional markdown readme documenting the project (supports GitHub-flavored markdown). */
             readme?: string;
-            /**
-             * Format: uri
-             * @description Optional logo image URL to use for the project. Logos should have a square aspect ratio.
-             */
+            /** @description Optional logo image URL to use for the project. Logos should have a square aspect ratio. */
             iconUrl?: string;
             /**
              * Format: uri
@@ -1071,12 +1068,9 @@ export interface components {
             name: string;
             /** @description A short description of the project. */
             description?: string;
-            /** @description A readme documenting the project (supports GitHub-flavored markdown). */
+            /** @description Optional markdown readme documenting the project (supports GitHub-flavored markdown). */
             readme?: string;
-            /**
-             * Format: uri
-             * @description Optional logo image URL to use for the project. Logos should have a square aspect ratio.
-             */
+            /** @description Optional logo image URL to use for the project. Logos should have a square aspect ratio. */
             iconUrl?: string;
             /**
              * Format: uri
@@ -2485,13 +2479,10 @@ export interface operations {
                     version?: string;
                     /** @description A short description of the project. */
                     description?: string;
-                    /** @description A readme documenting the project (supports GitHub-flavored markdown). */
+                    /** @description Optional markdown readme documenting the project (supports GitHub-flavored markdown). */
                     readme?: string;
-                    /**
-                     * Format: uri
-                     * @description Optional logo image URL to use for the project. Logos should have a square aspect ratio.
-                     */
-                    iconUrl?: string;
+                    /** @description Optional logo image to use for the project. Logos should have a square aspect ratio. */
+                    icon?: string;
                     /**
                      * Format: uri
                      * @description Optional URL to the source code of the project (eg, GitHub repo).

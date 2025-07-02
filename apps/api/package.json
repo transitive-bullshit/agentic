@@ -47,6 +47,7 @@
     "@sentry/node": "catalog:",
     "bcryptjs": "catalog:",
     "exit-hook": "catalog:",
+    "file-type": "^21.0.0",
     "hono": "catalog:",
     "ky": "catalog:",
     "octokit": "catalog:",

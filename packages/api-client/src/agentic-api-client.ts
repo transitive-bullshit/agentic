@@ -398,6 +398,11 @@ export class AgenticApiClient {
     }
 
     if (source instanceof URL) {
+      if (source.hostname === 'storage.agentic.so') {
+        // The source is already a public URL hosted on Agentic's blob storage.
+        return source.toString()
+      }
+
       sourceBuffer = await defaultKy.get(source).arrayBuffer()
     } else if (source instanceof ArrayBuffer) {
       sourceBuffer = source

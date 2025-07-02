@@ -6,13 +6,12 @@ import { assert, slugify } from '@agentic/platform-core'
 import { isValidProjectSlug } from '@agentic/platform-validators'
 import { clean as cleanSemver, valid as isValidSemver } from 'semver'
 
-export function resolveMetadata({
+export async function resolveMetadata({
   name,
   slug,
   version
-}: Pick<AgenticProjectConfig, 'name' | 'slug' | 'version'>): Pick<
-  ResolvedAgenticProjectConfig,
-  'slug' | 'version'
+}: Pick<AgenticProjectConfig, 'name' | 'slug' | 'version'>): Promise<
+  Pick<ResolvedAgenticProjectConfig, 'slug' | 'version'>
 > {
   slug ??= slugify(name)
 

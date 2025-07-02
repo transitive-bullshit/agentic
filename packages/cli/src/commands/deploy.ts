@@ -33,7 +33,8 @@ export function registerDeployCommand({
         // client.
         const config = await oraPromise(
           loadAgenticConfig({
-            cwd: opts.cwd
+            cwd: opts.cwd,
+            agenticApiClient: client
           }),
           {
             text: `Loading Agentic config from ${opts.cwd ?? process.cwd()}`,

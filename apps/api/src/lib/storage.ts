@@ -1,3 +1,4 @@
+import { sha256 } from '@agentic/platform-core'
 import {
   DeleteObjectCommand,
   type DeleteObjectCommandInput,
@@ -8,6 +9,8 @@ import {
   S3Client
 } from '@aws-sdk/client-s3'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
+import { fileTypeFromBuffer } from 'file-type'
+import ky from 'ky'
 
 import { env } from './env'
 
@@ -88,4 +91,56 @@ export async function getStorageSignedUploadUrl(
     new PutObjectCommand({ Bucket, Key: key }),
     { expiresIn }
   )
+}
+
+export async function uploadFileToStorage(
+  input: string,
+  {
+    projectIdentifier
+  }: {
+    projectIdentifier: string
+  }
+): Promise<string> {
+  let source: URL
+
+  try {
+    source = new URL(input)
+  } catch {
+    // Not a URL
+    throw new Error(`Invalid source file URL: ${input}`)
+  }
+
+  if (source.hostname === 'storage.agentic.so') {
+    // The source is already a public URL hosted on Agentic's blob storage.
+    return source.toString()
+  }
+
+  const sourceBuffer = await ky.get(source).arrayBuffer()
+
+  const [hash, fileType] = await Promise.all([
+    sha256(sourceBuffer),
+    fileTypeFromBuffer(sourceBuffer)
+  ])
+
+  const filename = fileType ? `${hash}.${fileType.ext}` : hash
+  const key = `${projectIdentifier}/${filename}`
+
+  const publicObjectUrl = getStorageObjectPublicUrl(key)
+
+  try {
+    // Check if the object already exists.
+    await ky.head(publicObjectUrl)
+  } catch {
+    const signedUploadUrl = await getStorageSignedUploadUrl(key)
+
+    // Object doesn't exist yet, so upload it.
+    await ky.post(signedUploadUrl, {
+      body: sourceBuffer,
+      headers: {
+        'Content-Type': fileType?.mime ?? 'application/octet-stream'
+      }
+    })
+  }
+
+  return publicObjectUrl
 }

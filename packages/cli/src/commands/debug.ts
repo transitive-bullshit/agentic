@@ -8,7 +8,8 @@ import type { Context } from '../types'
 export function registerDebugCommand({
   program,
   logger,
-  handleError
+  handleError,
+  client
 }: Context) {
   const command = new Command('debug')
     .description('Prints config for a local project.')
@@ -26,7 +27,8 @@ export function registerDebugCommand({
         // client.
         const config = await oraPromise(
           loadAgenticConfig({
-            cwd: opts.cwd
+            cwd: opts.cwd,
+            agenticApiClient: client
           }),
           {
             text: `Loading Agentic config from ${opts.cwd ?? process.cwd()}`,
