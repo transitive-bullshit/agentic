@@ -10,12 +10,12 @@ export function PublicProject({ project }: { project: Project }) {
   return (
     <Link
       key={project.id}
-      className='p-2 border rounded-lg hover:border-gray-400
-      divide-y divide-gray-200 overflow-hidden bg-white shadow-sm max-w-md flex flex-col gap-2
+      className='p-3 border rounded-lg hover:border-gray-400
+      divide-y divide-gray-200 overflow-hidden bg-white shadow-sm max-w-md flex flex-col gap-3
       '
       href={`/marketplace/projects/${project.identifier}`}
     >
-      <div className='p-2 flex gap-2.5 items-center'>
+      <div className='pb-3 flex gap-2.5 items-center'>
         <img
           src={
             deployment.iconUrl ||
@@ -35,13 +35,15 @@ export function PublicProject({ project }: { project: Project }) {
         </div>
       </div>
 
-      <div className='flex-1 flex flex-col gap-2 justify-between'>
+      <div className='flex-1 flex flex-col gap-3 justify-between'>
         {deployment.description && (
-          <p className='text-sm text-gray-700'>{deployment.description}</p>
+          <p className='text-sm text-gray-700 line-clamp-4'>
+            {deployment.description}
+          </p>
         )}
 
         {project.lastPublishedDeployment && (
-          <div className='text-xs text-gray-500 flex items-center justify-between'>
+          <div className='text-xs text-gray-500 flex gap-3 items-center justify-between'>
             <div>{deployment.version}</div>
 
             <div>
