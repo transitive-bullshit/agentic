@@ -1,13 +1,13 @@
-import type { UploadFileToStorageFn } from './types'
+import type { UploadFileUrlToStorageFn } from './types'
 
 export async function resolveMetadataFile(
   input: string | undefined,
   {
     label,
-    uploadFileToStorage
+    uploadFileUrlToStorage
   }: {
     label: string
-    uploadFileToStorage: UploadFileToStorageFn
+    uploadFileUrlToStorage: UploadFileUrlToStorageFn
   }
 ): Promise<string | undefined> {
   if (!input) return
@@ -15,7 +15,7 @@ export async function resolveMetadataFile(
   try {
     const source = new URL(input)
 
-    return uploadFileToStorage(source.toString())
+    return uploadFileUrlToStorage(source.toString())
   } catch {
     throw new Error(`Invalid "${label}" must be a public URL: "${input}"`)
   }

@@ -8,14 +8,13 @@ import type { Context } from '../types'
 export function registerDebugCommand({
   program,
   logger,
-  handleError,
-  client
+  handleError
 }: Context) {
   const command = new Command('debug')
     .description('Prints config for a local project.')
     .option(
       '-c, --cwd <dir>',
-      'The directory to load the Agentic project config from (defaults to cwd). This directory must contain an "agentic.config.{ts,js,json}" project file.'
+      'The directory to load the Agentic project config from (defaults to the cwd). This directory must contain an "agentic.config.{ts,js,json}" project file.'
     )
     .action(async (opts) => {
       try {
@@ -27,8 +26,7 @@ export function registerDebugCommand({
         // client.
         const config = await oraPromise(
           loadAgenticConfig({
-            cwd: opts.cwd,
-            agenticApiClient: client
+            cwd: opts.cwd
           }),
           {
             text: `Loading Agentic config from ${opts.cwd ?? process.cwd()}`,

@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Storage > uploadFileUrlToStorage data-uri 1`] = `"https://storage.agentic.so/@dev/test/ef4238fba78887e0974cd48809a66e284cdd78ce92d6b2d485c25a552fb39631.svg"`;
+
+exports[`Storage > uploadFileUrlToStorage data-uri 2 1`] = `"https://storage.agentic.so/@dev/test/efbc1f0409b730d93b01c918be9e024bf7777801cfd252221c39e36c08c1b4fb"`;
+
+exports[`Storage > uploadFileUrlToStorage url 1`] = `"https://storage.agentic.so/@dev/test/6da6ef895be2a42606b99e5e3b9c25687c92c81986a9718e07f32e574d41cf7a.svg"`;

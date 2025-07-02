@@ -2,11 +2,13 @@ import type { AuthSession } from '@agentic/platform-types'
 import { assert } from '@agentic/platform-core'
 import Conf from 'conf'
 
-const keyAuthSession = 'authSession'
+import { agenticApiBaseUrl } from './env'
+
+const keyAuthSession = `authSession:${agenticApiBaseUrl}`
 
 export const AuthStore = {
   store: new Conf<{
-    authSession: AuthSession
+    [keyAuthSession]: AuthSession
   }>({ projectName: 'agentic' }),
 
   isAuthenticated() {

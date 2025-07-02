@@ -372,13 +372,13 @@ export class AgenticApiClient {
    *
    * @example
    * ```ts
-   * const publicObjectUrl = await client.uploadFileToStorage(
+   * const publicObjectUrl = await client.uploadFileUrlToStorage(
    *   new URL('https://example.com/image.png'),
    *   { projectIdentifier: '@username/my-project' }
    * )
    * ```
    */
-  async uploadFileToStorage(
+  async uploadFileUrlToStorage(
     source: string | ArrayBuffer | URL,
     {
       projectIdentifier

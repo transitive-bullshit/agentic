@@ -5,7 +5,7 @@ import type {
   ResolvedAgenticProjectConfig
 } from '@agentic/platform-types'
 
-import type { UploadFileToStorageFn } from './types'
+import type { UploadFileUrlToStorageFn } from './types'
 import {
   parseAgenticProjectConfig,
   parseResolvedAgenticProjectConfig
@@ -22,7 +22,7 @@ export async function resolveAgenticProjectConfig(
     logger?: Logger
     cwd?: string
     label?: string
-    uploadFileToStorage: UploadFileToStorageFn
+    uploadFileUrlToStorage: UploadFileUrlToStorageFn
   }
 ): Promise<ResolvedAgenticProjectConfig> {
   const config = parseAgenticProjectConfig(inputConfig)

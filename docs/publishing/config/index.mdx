@@ -47,13 +47,16 @@ Examples: `1.0.0`, `0.0.1`, `5.0.1`, etc.
 </ResponseField>
 
 <ResponseField name='readme' type='string'>
-  Optional embedded markdown readme documenting the project. Supports
-  GitHub-flavored markdown.
+  Optional markdown readme documenting the project (supports GitHub-flavored markdown).
+
+A string which may be either: a URL to a remote markdown file (eg, `https://example.com/readme.md`), a local file path (eg, `./readme.md`), or a data-uri string (eg, `data:text/markdown;base64,SGVsbG8gV29ybGQ=`).
+
 </ResponseField>
 
 <ResponseField name='iconUrl' type='string'>
-  Optional logo image URL to use for the project. Logos should have a square
-  aspect ratio.
+Optional logo image to use for the project. Logos should have a square aspect ratio.
+
+A string which may be either: a URL to a remote image (eg, `https://example.com/logo.png`), a local file path (eg, `./logo.png`), or a data-uri string (eg, `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA...`).
 
 </ResponseField>
 

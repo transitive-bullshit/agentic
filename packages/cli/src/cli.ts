@@ -15,6 +15,7 @@ import { registerSignoutCommand } from './commands/signout'
 import { registerSignupCommand } from './commands/signup'
 import { registerWhoAmICommand } from './commands/whoami'
 import { AuthStore } from './lib/auth-store'
+import { agenticApiBaseUrl } from './lib/env'
 import { initExitHooks } from './lib/exit-hooks'
 import { createErrorHandler } from './lib/handle-error'
 
@@ -23,7 +24,7 @@ async function main() {
 
   // Initialize the API client
   const client = new AgenticApiClient({
-    apiBaseUrl: process.env.AGENTIC_API_BASE_URL,
+    apiBaseUrl: agenticApiBaseUrl,
     onUpdateAuth: (update) => {
       if (update) {
         AuthStore.setAuth(update)

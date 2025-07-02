@@ -1,6 +1,8 @@
 import { readFile } from 'node:fs/promises'
 import path from 'node:path'
 
+import { lookup as lookupMimeType } from 'mrmime'
+
 export async function validateMetadataFile(
   input: string | undefined,
   {
@@ -25,7 +27,10 @@ export async function validateMetadataFile(
       // Not a URL; check if it's a local file path.
       const buffer = await readFile(path.resolve(cwd, input))
 
-      return `data:application/octet-stream;base64,${buffer.toString('base64')}`
+      const mime =
+        lookupMimeType(path.extname(input)) ?? 'application/octet-stream'
+
+      return `data:${mime};base64,${buffer.toString('base64')}`
     } catch {
       throw new Error(
         `Invalid "${label}" (must be a URL or a path to a local file): "${input}"`

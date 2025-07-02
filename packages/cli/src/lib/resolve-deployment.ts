@@ -19,8 +19,7 @@ export async function resolveDeployment({
 }): Promise<Deployment> {
   if (!deploymentIdentifier) {
     const config = await loadAgenticConfig({
-      cwd,
-      agenticApiClient: client
+      cwd
     })
 
     // TODO: re-add team support

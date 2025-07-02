@@ -16,8 +16,7 @@ export async function deployProjects(
     projects,
     async (project) => {
       const config = await loadAgenticConfig({
-        cwd: project,
-        agenticApiClient: client
+        cwd: project
       })
       const deployment = await client.createDeployment(config)
       console.log(`Deployed ${project} => ${deployment.identifier}`)

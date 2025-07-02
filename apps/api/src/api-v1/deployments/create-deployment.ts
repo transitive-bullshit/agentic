@@ -19,7 +19,7 @@ import {
   openapiErrorResponse409,
   openapiErrorResponses
 } from '@/lib/openapi-utils'
-import { uploadFileToStorage } from '@/lib/storage'
+import { uploadFileUrlToStorage } from '@/lib/storage'
 
 import { createDeploymentQuerySchema } from './schemas'
 
@@ -154,9 +154,9 @@ export function registerV1CreateDeployment(
     const agenticProjectConfig = await resolveAgenticProjectConfig(body, {
       label: `deployment "${deploymentIdentifier}"`,
       logger,
-      uploadFileToStorage: async (source) => {
-        return uploadFileToStorage(source, {
-          projectIdentifier
+      uploadFileUrlToStorage: async (source) => {
+        return uploadFileUrlToStorage(source, {
+          prefix: projectIdentifier
         })
       }
     })

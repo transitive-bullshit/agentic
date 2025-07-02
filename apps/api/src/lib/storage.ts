@@ -11,6 +11,7 @@ import {
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 import { fileTypeFromBuffer } from 'file-type'
 import ky from 'ky'
+import { lookup as lookupMimeType } from 'mrmime'
 
 import { env } from './env'
 
@@ -25,7 +26,9 @@ export const storageClient = new S3Client({
   credentials: {
     accessKeyId: env.S3_ACCESS_KEY_ID,
     secretAccessKey: env.S3_ACCESS_KEY_SECRET
-  }
+  },
+  requestChecksumCalculation: 'WHEN_REQUIRED',
+  responseChecksumValidation: 'WHEN_REQUIRED'
 })
 
 // This ensures that buckets are created automatically if they don't exist on
@@ -71,13 +74,17 @@ export async function deleteStorageObject(
 }
 
 export function getStorageObjectInternalUrl(key: string) {
-  return `${env.AGENTIC_STORAGE_BASE_URL}/${Bucket}/${key}`
+  return `${env.S3_ENDPOINT}/${Bucket}/${key}`
 }
 
 export function getStorageObjectPublicUrl(key: string) {
   return `${env.AGENTIC_STORAGE_BASE_URL}/${key}`
 }
 
+// TODO: Signed uploads don't seem to be working; getting a signature mismatch
+// error, and no idea why. Switched to using non-presigned URL uploads for now,
+// but this will be necessary in the future, for instance, for the web client
+// to upload files.
 export async function getStorageSignedUploadUrl(
   key: string,
   {
@@ -93,21 +100,21 @@ export async function getStorageSignedUploadUrl(
   )
 }
 
-export async function uploadFileToStorage(
-  input: string,
+export async function uploadFileUrlToStorage(
+  inputUrl: string,
   {
-    projectIdentifier
+    prefix
   }: {
-    projectIdentifier: string
+    prefix: string
   }
 ): Promise<string> {
   let source: URL
 
   try {
-    source = new URL(input)
+    source = new URL(inputUrl)
   } catch {
     // Not a URL
-    throw new Error(`Invalid source file URL: ${input}`)
+    throw new Error(`Invalid source file URL: ${inputUrl}`)
   }
 
   if (source.hostname === 'storage.agentic.so') {
@@ -117,29 +124,71 @@ export async function uploadFileToStorage(
 
   const sourceBuffer = await ky.get(source).arrayBuffer()
 
-  const [hash, fileType] = await Promise.all([
+  const [hash, inferredFileType] = await Promise.all([
     sha256(sourceBuffer),
     fileTypeFromBuffer(sourceBuffer)
   ])
 
-  const filename = fileType ? `${hash}.${fileType.ext}` : hash
-  const key = `${projectIdentifier}/${filename}`
+  const maybeSourceExt = source.pathname.split('.').at(-1)
+  const maybeSourceExt2 = maybeSourceExt
+    ? /^[a-z]+$/i.test(maybeSourceExt)
+      ? maybeSourceExt
+      : undefined
+    : undefined
+  const maybeSourceMime =
+    source.protocol === 'data:'
+      ? source.pathname.split(',')[0]?.split(';')[0]
+      : undefined
+  const sourceExt0 =
+    maybeSourceExt2 ??
+    (maybeSourceMime && maybeSourceMime !== 'application/octet-stream'
+      ? maybeSourceMime.split('/')[1]?.split('+')[0]
+      : undefined)
+  const sourceExt = sourceExt0 === 'markdown' ? 'md' : sourceExt0
+
+  const fileType =
+    inferredFileType ??
+    (sourceExt
+      ? {
+          ext: sourceExt,
+          mime: lookupMimeType(sourceExt)
+        }
+      : undefined)
+
+  const filename = fileType?.ext ? `${hash}.${fileType.ext}` : hash
+  const key = `${prefix}/${filename}`
 
   const publicObjectUrl = getStorageObjectPublicUrl(key)
+
+  // console.log('uploading to r2', {
+  //   key,
+  //   source,
+  //   sourceExt,
+  //   maybeSourceMime,
+  //   maybeSourceExt,
+  //   maybeSourceExt2,
+  //   inputUrl,
+  //   fileType,
+  //   publicObjectUrl
+  // })
 
   try {
     // Check if the object already exists.
     await ky.head(publicObjectUrl)
   } catch {
-    const signedUploadUrl = await getStorageSignedUploadUrl(key)
+    const body = Buffer.from(sourceBuffer)
 
     // Object doesn't exist yet, so upload it.
-    await ky.post(signedUploadUrl, {
-      body: sourceBuffer,
-      headers: {
-        'Content-Type': fileType?.mime ?? 'application/octet-stream'
-      }
-    })
+    try {
+      await putStorageObject(key, body, {
+        ContentType: fileType?.mime ?? 'application/octet-stream'
+      })
+    } catch (err: any) {
+      const error = await err.response.text()
+      // eslint-disable-next-line no-console
+      console.error('error uploading to r2', err.message, error)
+      throw err
+    }
   }
 
   return publicObjectUrl

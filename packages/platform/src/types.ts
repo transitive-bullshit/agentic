@@ -1,1 +1,1 @@
-export type UploadFileToStorageFn = (source: string) => Promise<string>
+export type UploadFileUrlToStorageFn = (source: string) => Promise<string>

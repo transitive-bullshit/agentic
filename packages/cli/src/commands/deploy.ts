@@ -16,7 +16,7 @@ export function registerDeployCommand({
     .description('Creates a new deployment.')
     .option(
       '-c, --cwd <dir>',
-      'The directory to load the Agentic project config from (defaults to cwd). This directory must contain an "agentic.config.{ts,js,json}" project file.'
+      'The directory to load the Agentic project config from (defaults to the cwd). This directory must contain an "agentic.config.{ts,js,json}" project file.'
     )
     .option('-d, --debug', 'Print out the parsed agentic config and return.')
     // TODO
@@ -33,8 +33,7 @@ export function registerDeployCommand({
         // client.
         const config = await oraPromise(
           loadAgenticConfig({
-            cwd: opts.cwd,
-            agenticApiClient: client
+            cwd: opts.cwd
           }),
           {
             text: `Loading Agentic config from ${opts.cwd ?? process.cwd()}`,
