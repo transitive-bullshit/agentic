@@ -37,6 +37,7 @@
   - add disclaimer about public beta
   - add search / sorting
   - **improve marketplace default sorting**
+    - what's the best way to implement this?
   - add admin-based tags for main page layout (featured, etc)
 - replace render for api and/or add turbo for caching (too slow to deploy)
 

@@ -6,7 +6,7 @@ export default defineConfig({
   name: 'Agentic Google Search',
   slug: 'search',
   description:
-    'Google Search API build specifically for LLMs. Agents should use this tool for searching the web in order to find up-to-date news and information about any topic.',
+    'Google Search API built specifically for LLMs. Agents should use this tool for searching the web in order to find up-to-date news and information about any topic.',
   origin: {
     type: 'mcp',
     url: process.env.MCP_ORIGIN_URL!
