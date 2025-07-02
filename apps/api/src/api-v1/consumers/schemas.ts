@@ -17,14 +17,14 @@ export const consumerIdParamsSchema = z.object({
   })
 })
 
-export const consumerTokenParamsSchema = z.object({
-  token: z
+export const consumerApiKeyParamsSchema = z.object({
+  apiKey: z
     .string()
     .nonempty()
     .openapi({
       param: {
-        description: 'Consumer token',
-        name: 'token',
+        description: 'Consumer API key',
+        name: 'apiKey',
         in: 'path'
       }
     })

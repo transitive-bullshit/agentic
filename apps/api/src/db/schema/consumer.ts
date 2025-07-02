@@ -54,7 +54,8 @@ export const consumers = pgTable(
     ...consumerPrimaryId,
     ...timestamps,
 
-    // API token for this consumer
+    // API key for this consumer
+    // (called "token" for backwards compatibility)
     token: text().notNull(),
 
     // The slug of the PricingPlan in the target deployment that this consumer

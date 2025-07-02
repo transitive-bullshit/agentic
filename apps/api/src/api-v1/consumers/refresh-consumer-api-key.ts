@@ -4,7 +4,7 @@ import { createRoute, type OpenAPIHono } from '@hono/zod-openapi'
 import type { AuthenticatedHonoEnv } from '@/lib/types'
 import { db, eq, schema } from '@/db'
 import { acl } from '@/lib/acl'
-import { createConsumerToken } from '@/lib/create-consumer-token'
+import { createConsumerApiKey } from '@/lib/create-consumer-api-key'
 import {
   openapiAuthenticatedSecuritySchemas,
   openapiErrorResponse404,
@@ -14,11 +14,11 @@ import {
 import { consumerIdParamsSchema } from './schemas'
 
 const route = createRoute({
-  description: "Refreshes a consumer's API token.",
+  description: "Refreshes a consumer's API key.",
   tags: ['consumers'],
-  operationId: 'refreshConsumerToken',
+  operationId: 'refreshConsumerApiKey',
   method: 'post',
-  path: 'consumers/{consumerId}/refresh-token',
+  path: 'consumers/{consumerId}/refresh-api-key',
   security: openapiAuthenticatedSecuritySchemas,
   request: {
     params: consumerIdParamsSchema
@@ -37,7 +37,7 @@ const route = createRoute({
   }
 })
 
-export function registerV1RefreshConsumerToken(
+export function registerV1RefreshConsumerApiKey(
   app: OpenAPIHono<AuthenticatedHonoEnv>
 ) {
   return app.openapi(route, async (c) => {
@@ -53,7 +53,7 @@ export function registerV1RefreshConsumerToken(
     ;[consumer] = await db
       .update(schema.consumers)
       .set({
-        token: await createConsumerToken()
+        token: await createConsumerApiKey()
       })
       .where(eq(schema.consumers.id, consumer.id))
       .returning()

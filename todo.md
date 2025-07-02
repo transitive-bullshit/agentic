@@ -38,7 +38,7 @@
   - add disclaimer about public beta
   - add search / sorting
   - add admin-based tags for main page layout (featured, etc)
-- replace render for api and/or add turbo for caching
+- replace render for api and/or add turbo for caching (too slow to deploy)
 
 ## TODO: Post-MVP
 
@@ -135,3 +135,5 @@
 - basic account page on website
   - edit name, profile photo, etc
 - **public project detail page metadata**
+- fix readme css <img height="..."> not taking effect because of tailwind css preflight which sets `img, video { height: auto }`
+  - we still want this for every other scenario; just want to sandbox the github-style readme markdown css...

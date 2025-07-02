@@ -97,6 +97,7 @@ export type GetCodeForDeveloperConfigOpts = {
   deployment: Deployment
   identifier: string
   tool?: string
+  apiKey?: string
 }
 
 type GetCodeForDeveloperConfigInnerOpts = Simplify<
@@ -169,7 +170,8 @@ export function getCodeForTSFrameworkConfig({
   config,
   identifier,
   prompt,
-  systemPrompt
+  systemPrompt,
+  apiKey
 }: GetCodeForDeveloperConfigInnerOpts): CodeSnippet {
   switch (config.tsFrameworkTarget) {
     case 'ai':
@@ -180,7 +182,13 @@ import { AgenticToolClient } from '@agentic/platform-tool-client'
 import { openai } from '@ai-sdk/openai'
 import { generateText } from 'ai'
 
-const searchTool = await AgenticToolClient.fromIdentifier('${identifier}')
+const searchTool = await AgenticToolClient.fromIdentifier('${identifier}'${
+          apiKey
+            ? `, {
+  apiKey: '${apiKey}'
+}`
+            : ''
+        })
 
 const result = await generateText({
   model: openai('gpt-4o-mini'),
@@ -201,7 +209,13 @@ import { AgenticToolClient } from '@agentic/platform-tool-client'
 import OpenAI from 'openai'
 
 const openai = new OpenAI()
-const searchTool = await AgenticToolClient.fromIdentifier('${identifier}')
+const searchTool = await AgenticToolClient.fromIdentifier('${identifier}'${
+          apiKey
+            ? `, {
+  apiKey: '${apiKey}'
+}`
+            : ''
+        })
 
 // This example uses OpenAI's Chat Completions API
 const res = await openai.chat.completions.create({
@@ -232,7 +246,13 @@ import { AgenticToolClient } from '@agentic/platform-tool-client'
 import OpenAI from 'openai'
 
 const openai = new OpenAI()
-const searchTool = await AgenticToolClient.fromIdentifier('${identifier}')
+const searchTool = await AgenticToolClient.fromIdentifier('${identifier}'${
+          apiKey
+            ? `, {
+  apiKey: '${apiKey}'
+}`
+            : ''
+        })
 
 // This example uses OpenAI's newer Responses API
 const res = await openai.responses.create({
@@ -265,7 +285,13 @@ import { ChatPromptTemplate } from '@langchain/core/prompts'
 import { ChatOpenAI } from '@langchain/openai'
 import { AgentExecutor, createToolCallingAgent } from 'langchain/agents'
 
-const searchTool = await AgenticToolClient.fromIdentifier('${identifier}')
+const searchTool = await AgenticToolClient.fromIdentifier('${identifier}'${
+          apiKey
+            ? `, {
+  apiKey: '${apiKey}'
+}`
+            : ''
+        })
 
 const agent = createToolCallingAgent({
   llm: new ChatOpenAI({ model: 'gpt-4o-mini' }),
@@ -296,7 +322,13 @@ import { AgenticToolClient } from '@agentic/platform-tool-client'
 import { openai } from '@llamaindex/openai'
 import { agent } from '@llamaindex/workflow'
 
-const searchTool = await AgenticToolClient.fromIdentifier('${identifier}')
+const searchTool = await AgenticToolClient.fromIdentifier('${identifier}'${
+          apiKey
+            ? `, {
+  apiKey: '${apiKey}'
+}`
+            : ''
+        })
 
 const exampleAgent = agent({
   llm: openai({ model: 'gpt-4o-mini', temperature: 0 }),
@@ -320,7 +352,13 @@ import { AgenticToolClient } from '@agentic/platform-tool-client'
 import { openai } from '@ai-sdk/openai'
 import { Agent } from '@mastra/core/agent'
 
-const searchTool = await AgenticToolClient.fromIdentifier('${identifier}')
+const searchTool = await AgenticToolClient.fromIdentifier('${identifier}'${
+          apiKey
+            ? `, {
+  apiKey: '${apiKey}'
+}`
+            : ''
+        })
 
 const exampleAgent = new Agent({
   name: 'Example Agent',
@@ -345,7 +383,13 @@ import { AgenticToolClient } from '@agentic/platform-tool-client'
 import { genkit } from 'genkit'
 import { gpt4oMini, openAI } from 'genkitx-openai'
 
-const searchTool = await AgenticToolClient.fromIdentifier('${identifier}')
+const searchTool = await AgenticToolClient.fromIdentifier('${identifier}'${
+          apiKey
+            ? `, {
+  apiKey: '${apiKey}'
+}`
+            : ''
+        })
 
 const ai = genkit({
   plugins: [openAI()]
@@ -360,42 +404,18 @@ const result = await ai.generate({
 console.log(result)`.trim(),
         lang: 'ts'
       }
-
-    //     case 'xsai':
-    //       return {
-    //         code: `
-    // import { AgenticToolClient } from '@agentic/platform-tool-client'
-    // import { createXSAITools } from '@agentic/xsai'
-    // import { generateText } from 'xsai'
-
-    // const searchTool = await AgenticToolClient.fromIdentifier('${identifier}')
-
-    // const result = await generateText({
-    //   apiKey: process.env.OPENAI_API_KEY!,
-    //   baseURL: 'https://api.openai.com/v1/',
-    //   model: 'gpt-4o-mini',
-    //   tools: await createXSAITools(searchTool),
-    //   toolChoice: 'required',
-    //   messages: [
-    //     {
-    //       role: 'user',
-    //       content: '${prompt}'
-    //     }
-    //   ]
-    // })
-
-    // console.log(JSON.stringify(result, null, 2))`.trim(),
-    //         lang: 'ts'
-    //       }
   }
 }
 
 export function getCodeForPythonFrameworkConfig({
   config,
   identifier,
-  prompt
+  prompt,
+  apiKey
 }: GetCodeForDeveloperConfigInnerOpts): CodeSnippet {
-  const mcpUrl = `${gatewayBaseUrl}/${identifier}/mcp`
+  const mcpUrl = `${gatewayBaseUrl}/${identifier}/mcp${
+    apiKey ? `?apiKey=${apiKey}` : ''
+  }`
 
   switch (config.pyFrameworkTarget) {
     case 'openai':
@@ -479,7 +499,8 @@ export function getCodeForHTTPConfig({
   identifier,
   deployment,
   tool,
-  args
+  args,
+  apiKey
 }: GetCodeForDeveloperConfigInnerOpts): CodeSnippet {
   tool ??= deployment.tools[0]?.name
   assert(tool, 'tool is required')
@@ -493,7 +514,9 @@ export function getCodeForHTTPConfig({
 
       // TODO: better formatting for the curl command
       return {
-        code: `curl -X POST -H "Content-Type: application/json" -d '${formattedArgs}' ${url}`,
+        code: `curl -X POST -H "Content-Type: application/json"${
+          apiKey ? ` -H "Authorization: Bearer ${apiKey}"` : ''
+        } -d '${formattedArgs}' ${url}`,
         lang: 'bash'
       }
     }
@@ -504,7 +527,9 @@ export function getCodeForHTTPConfig({
         .join(' ')
 
       return {
-        code: `http ${url} ${formattedArgs}`,
+        code: `http ${url}${apiKey ? ` Authorization:"Bearer ${apiKey}"` : ''}${
+          formattedArgs ? ` ${formattedArgs}` : ''
+        }`,
         lang: 'bash'
       }
     }

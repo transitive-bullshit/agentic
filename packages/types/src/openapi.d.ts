@@ -421,7 +421,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/v1/consumers/{consumerId}/refresh-token": {
+    "/v1/consumers/{consumerId}/refresh-api-key": {
         parameters: {
             query?: never;
             header?: never;
@@ -430,8 +430,8 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** @description Refreshes a consumer's API token. */
-        post: operations["refreshConsumerToken"];
+        /** @description Refreshes a consumer's API key. */
+        post: operations["refreshConsumerApiKey"];
         delete?: never;
         options?: never;
         head?: never;
@@ -525,15 +525,15 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/v1/admin/consumers/tokens/{token}": {
+    "/v1/admin/consumers/api-keys/{apiKey}": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** @description Gets a consumer by API token. This route is admin-only. */
-        get: operations["adminGetConsumerByToken"];
+        /** @description Gets a consumer by API key. This route is admin-only. */
+        get: operations["adminGetConsumerByApiKey"];
         put?: never;
         post?: never;
         delete?: never;
@@ -2275,7 +2275,7 @@ export interface operations {
             410: components["responses"]["410"];
         };
     };
-    refreshConsumerToken: {
+    refreshConsumerApiKey: {
         parameters: {
             query?: never;
             header?: never;
@@ -2584,15 +2584,15 @@ export interface operations {
             404: components["responses"]["404"];
         };
     };
-    adminGetConsumerByToken: {
+    adminGetConsumerByApiKey: {
         parameters: {
             query?: {
                 populate?: ("user" | "project" | "deployment") | ("user" | "project" | "deployment")[];
             };
             header?: never;
             path: {
-                /** @description Consumer token */
-                token: string;
+                /** @description Consumer API key */
+                apiKey: string;
             };
             cookie?: never;
         };

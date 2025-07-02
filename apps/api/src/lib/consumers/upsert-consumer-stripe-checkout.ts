@@ -14,7 +14,7 @@ import { acl } from '@/lib/acl'
 import { upsertStripeConnectCustomer } from '@/lib/billing/upsert-stripe-connect-customer'
 import { upsertStripeCustomer } from '@/lib/billing/upsert-stripe-customer'
 import { upsertStripePricingResources } from '@/lib/billing/upsert-stripe-pricing-resources'
-import { createConsumerToken } from '@/lib/create-consumer-token'
+import { createConsumerApiKey } from '@/lib/create-consumer-api-key'
 
 import { aclPublicProject } from '../acl-public-project'
 import { createStripeCheckoutSession } from '../billing/create-stripe-checkout-session'
@@ -174,7 +174,7 @@ export async function upsertConsumerStripeCheckout(
         userId,
         projectId,
         deploymentId,
-        token: await createConsumerToken(),
+        token: await createConsumerApiKey(),
         _stripeCustomerId: stripeCustomer.id
       })
       .returning()

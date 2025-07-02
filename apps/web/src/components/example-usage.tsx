@@ -35,11 +35,13 @@ export function ExampleUsage({
   projectIdentifier,
   project: initialProject,
   tool,
+  apiKey,
   initialCodeBlock
 }: {
   projectIdentifier: string
   project?: Project
   tool?: string
+  apiKey?: string
   initialCodeBlock?: JSX.Element
 }) {
   const ctx = useAgentic()
@@ -105,6 +107,7 @@ export function ExampleUsage({
       <ExampleUsageContent
         projectIdentifier={projectIdentifier}
         tool={tool}
+        apiKey={apiKey}
         initialCodeBlock={initialCodeBlock}
         isLoading={isLoading}
         isError={isError}
@@ -119,6 +122,7 @@ export function ExampleUsage({
 function ExampleUsageContent({
   projectIdentifier,
   tool,
+  apiKey,
   initialCodeBlock,
   isLoading,
   isError,
@@ -128,6 +132,7 @@ function ExampleUsageContent({
 }: {
   projectIdentifier: string
   tool?: string
+  apiKey?: string
   initialCodeBlock?: JSX.Element
   isLoading: boolean
   isError: boolean
@@ -156,7 +161,8 @@ function ExampleUsageContent({
     project,
     deployment,
     identifier: projectIdentifier,
-    tool
+    tool,
+    apiKey
   })
 
   return (
