@@ -15,7 +15,9 @@ export async function deployProjects(
   const deployments = await pMap(
     projects,
     async (project) => {
-      const config = await loadAgenticConfig({ cwd: project })
+      const config = await loadAgenticConfig({
+        cwd: project
+      })
       const deployment = await client.createDeployment(config)
       console.log(`Deployed ${project} => ${deployment.identifier}`)
 

@@ -1,7 +1,8 @@
 import { and, db, eq, gt, isNull, like, or, schema } from '@/db'
-import { joinKey, splitKey, type StorageAdapter } from '@/lib/storage'
 
-export function DrizzleAuthStorage(): StorageAdapter {
+import { type AuthStorageAdapter, joinKey, splitKey } from './auth-storage'
+
+export function DrizzleAuthStorage(): AuthStorageAdapter {
   return {
     async get(key: string[]) {
       const id = joinKey(key)

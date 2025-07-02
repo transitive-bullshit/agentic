@@ -247,6 +247,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/storage/signed-upload-url": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Gets a signed URL for uploading a file to Agentic's blob storage. Files are namespaced to a given project and are identified by a key that should be a hash of the file's contents, with the correct file extension. */
+        get: operations["getSignedStorageUploadUrl"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/projects": {
         parameters: {
             query?: never;
@@ -775,12 +792,9 @@ export interface components {
             name: string;
             /** @description A short description of the project. */
             description?: string;
-            /** @description A readme documenting the project (supports GitHub-flavored markdown). */
+            /** @description Optional markdown readme documenting the project (supports GitHub-flavored markdown). */
             readme?: string;
-            /**
-             * Format: uri
-             * @description Optional logo image URL to use for the project. Logos should have a square aspect ratio.
-             */
+            /** @description Optional logo image URL to use for the project. Logos should have a square aspect ratio. */
             iconUrl?: string;
             /**
              * Format: uri
@@ -1054,12 +1068,9 @@ export interface components {
             name: string;
             /** @description A short description of the project. */
             description?: string;
-            /** @description A readme documenting the project (supports GitHub-flavored markdown). */
+            /** @description Optional markdown readme documenting the project (supports GitHub-flavored markdown). */
             readme?: string;
-            /**
-             * Format: uri
-             * @description Optional logo image URL to use for the project. Logos should have a square aspect ratio.
-             */
+            /** @description Optional logo image URL to use for the project. Logos should have a square aspect ratio. */
             iconUrl?: string;
             /**
              * Format: uri
@@ -1811,6 +1822,46 @@ export interface operations {
             404: components["responses"]["404"];
         };
     };
+    getSignedStorageUploadUrl: {
+        parameters: {
+            query: {
+                /** @description Public project identifier (e.g. "@namespace/project-slug") */
+                projectIdentifier: components["schemas"]["ProjectIdentifier"];
+                /** @description Should be a hash of the contents of the file to upload with the correct file extension (eg, "9f86d081884c7d659a2feaa0c55ad015a.png"). */
+                key: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description A signed upload URL */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /**
+                         * Format: uri
+                         * @description The signed upload URL.
+                         */
+                        signedUploadUrl: string;
+                        /**
+                         * Format: uri
+                         * @description The public URL the object will have once uploaded.
+                         */
+                        publicObjectUrl: string;
+                    };
+                };
+            };
+            400: components["responses"]["400"];
+            401: components["responses"]["401"];
+            403: components["responses"]["403"];
+            404: components["responses"]["404"];
+        };
+    };
     listProjects: {
         parameters: {
             query?: {
@@ -2428,13 +2479,10 @@ export interface operations {
                     version?: string;
                     /** @description A short description of the project. */
                     description?: string;
-                    /** @description A readme documenting the project (supports GitHub-flavored markdown). */
+                    /** @description Optional markdown readme documenting the project (supports GitHub-flavored markdown). */
                     readme?: string;
-                    /**
-                     * Format: uri
-                     * @description Optional logo image URL to use for the project. Logos should have a square aspect ratio.
-                     */
-                    iconUrl?: string;
+                    /** @description Optional logo image to use for the project. Logos should have a square aspect ratio. */
+                    icon?: string;
                     /**
                      * Format: uri
                      * @description Optional URL to the source code of the project (eg, GitHub repo).

@@ -14,7 +14,7 @@ export function registerDebugCommand({
     .description('Prints config for a local project.')
     .option(
       '-c, --cwd <dir>',
-      'The directory to load the Agentic project config from (defaults to cwd). This directory must contain an "agentic.config.{ts,js,json}" project file.'
+      'The directory to load the Agentic project config from (defaults to the cwd). This directory must contain an "agentic.config.{ts,js,json}" project file.'
     )
     .action(async (opts) => {
       try {

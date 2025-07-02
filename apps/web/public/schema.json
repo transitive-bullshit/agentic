@@ -23,12 +23,11 @@
     },
     "readme": {
       "type": "string",
-      "description": "A readme documenting the project (supports GitHub-flavored markdown)."
+      "description": "Optional markdown readme documenting the project (supports GitHub-flavored markdown)."
     },
-    "iconUrl": {
+    "icon": {
       "type": "string",
-      "format": "uri",
-      "description": "Optional logo image URL to use for the project. Logos should have a square aspect ratio."
+      "description": "Optional logo image to use for the project. Logos should have a square aspect ratio."
     },
     "sourceUrl": {
       "type": "string",

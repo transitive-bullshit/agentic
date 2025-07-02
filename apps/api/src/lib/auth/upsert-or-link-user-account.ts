@@ -5,6 +5,7 @@ import { and, db, eq, type RawAccount, type RawUser, schema } from '@/db'
 
 import { createAvatar } from '../create-avatar'
 import { getUniqueNamespace } from '../ensure-unique-namespace'
+import { uploadFileUrlToStorage } from '../storage'
 
 /**
  * After a user completes an authentication flow, we'll have partial account info
@@ -51,9 +52,6 @@ export async function upsertOrLinkUserAccount({
 }): Promise<RawUser> {
   const { provider, accountId } = partialAccount
 
-  // Set a default profile image if one isn't provided
-  partialUser.image ??= createAvatar(partialUser.email)
-
   const [existingAccount, existingUser] = await Promise.all([
     db.query.accounts.findFirst({
       where: and(
@@ -69,6 +67,16 @@ export async function upsertOrLinkUserAccount({
       where: eq(schema.users.email, partialUser.email)
     })
   ])
+
+  async function resolveUserProfileImage({ prefix }: { prefix: string }) {
+    // Set a default profile image if one isn't provided
+    partialUser.image = await uploadFileUrlToStorage(
+      partialUser.image ?? createAvatar(partialUser.email),
+      {
+        prefix
+      }
+    )
+  }
 
   if (existingAccount && existingUser) {
     // Happy path case: the user is just logging in with an existing account
@@ -98,10 +106,19 @@ export async function upsertOrLinkUserAccount({
     // the one in the account we're linking, we should throw an error unless it's
     // a "trusted" provider.
     if (provider === 'password' && existingUser.email !== partialUser.email) {
-      await db
+      await resolveUserProfileImage({ prefix: existingUser.username })
+
+      const [user] = await db
         .update(schema.users)
         .set(partialUser)
         .where(eq(schema.users.id, existingUser.id))
+        .returning()
+      assert(
+        user,
+        500,
+        `Error updating existing user during ${provider} authentication`
+      )
+      return user
     }
 
     return existingUser
@@ -123,6 +140,8 @@ export async function upsertOrLinkUserAccount({
       partialUser.username || partialUser.email.split('@')[0]!.toLowerCase(),
       { label: 'Username' }
     )
+
+    await resolveUserProfileImage({ prefix: username })
 
     // This is a user's first time signing up with the platform, so create both
     // a new user and linked account.

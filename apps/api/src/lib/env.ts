@@ -12,6 +12,11 @@ export const envSchema = baseEnvSchema
 
     AGENTIC_WEB_BASE_URL: z.string().url(),
     AGENTIC_GATEWAY_BASE_URL: z.string().url(),
+    AGENTIC_STORAGE_BASE_URL: z
+      .string()
+      .url()
+      .optional()
+      .default('https://storage.agentic.so'),
 
     JWT_SECRET: z.string().nonempty(),
 
@@ -30,7 +35,13 @@ export const envSchema = baseEnvSchema
 
     // Used to simplify recreating the demo `@agentic/search` project during
     // development while we're frequently resetting the database
-    AGENTIC_SEARCH_PROXY_SECRET: z.string().nonempty()
+    AGENTIC_SEARCH_PROXY_SECRET: z.string().nonempty(),
+
+    S3_BUCKET: z.string().nonempty().optional().default('agentic'),
+    S3_REGION: z.string().nonempty().optional().default('auto'),
+    S3_ENDPOINT: z.string().nonempty().url(),
+    S3_ACCESS_KEY_ID: z.string().nonempty(),
+    S3_ACCESS_KEY_SECRET: z.string().nonempty()
   })
   .strip()
 export type RawEnv = z.infer<typeof envSchema>

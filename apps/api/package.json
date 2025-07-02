@@ -25,7 +25,8 @@
     "drizzle-kit:prod": "dotenvx run -o -f .env.production -- drizzle-kit",
     "clean": "del dist",
     "test": "run-s test:*",
-    "test:typecheck": "tsc --noEmit"
+    "test:typecheck": "tsc --noEmit",
+    "test:unit": "[ -n \"$CI\" ] || dotenvx run -- vitest run"
   },
   "dependencies": {
     "@agentic/platform": "workspace:*",
@@ -34,6 +35,8 @@
     "@agentic/platform-hono": "workspace:*",
     "@agentic/platform-types": "workspace:*",
     "@agentic/platform-validators": "workspace:*",
+    "@aws-sdk/client-s3": "^3.726.1",
+    "@aws-sdk/s3-request-presigner": "^3.726.1",
     "@dicebear/collection": "catalog:",
     "@dicebear/core": "catalog:",
     "@fisch0920/drizzle-orm": "catalog:",
@@ -44,8 +47,10 @@
     "@sentry/node": "catalog:",
     "bcryptjs": "catalog:",
     "exit-hook": "catalog:",
+    "file-type": "^21.0.0",
     "hono": "catalog:",
     "ky": "catalog:",
+    "mrmime": "^2.0.1",
     "octokit": "catalog:",
     "p-all": "catalog:",
     "postgres": "catalog:",

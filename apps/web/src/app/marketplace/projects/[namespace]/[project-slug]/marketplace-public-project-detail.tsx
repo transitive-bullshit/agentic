@@ -2,11 +2,13 @@
 
 import type { Project } from '@agentic/platform-types'
 import { assert, omit, sanitizeSearchParams } from '@agentic/platform-core'
+import ky from 'ky'
 import { ChevronsUpDownIcon, ExternalLinkIcon } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import plur from 'plur'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useAsync } from 'react-use'
 
 import { useAgentic } from '@/components/agentic-provider'
 import { CodeBlock } from '@/components/code-block'
@@ -189,6 +191,14 @@ export function MarketplacePublicProjectDetail({
     return tab as MarketplacePublicProjectDetailTab
   }, [searchParams, deployment])
 
+  const { value: readme } = useAsync(async () => {
+    if (tab === 'readme' && deployment?.readme?.trim()) {
+      return ky.get(deployment.readme).text()
+    }
+
+    return undefined
+  }, [deployment, tab])
+
   return (
     <PageContainer>
       <section>
@@ -332,12 +342,9 @@ export function MarketplacePublicProjectDetail({
                   </TabsContent>
                 )}
 
-                {deployment?.readme?.trim() && tab === 'readme' && (
+                {tab === 'readme' && readme && (
                   <TabsContent value='readme' className='flex flex-col gap-4'>
-                    <SSRMarkdown
-                      markdown={deployment.readme}
-                      className='items-start!'
-                    />
+                    <SSRMarkdown markdown={readme} className='items-start!' />
                   </TabsContent>
                 )}
 

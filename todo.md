@@ -135,3 +135,4 @@
 - basic account page on website
   - edit name, profile photo, etc
 - **public project detail page metadata**
+- upload user images to agentic blob storage

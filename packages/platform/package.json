@@ -33,6 +33,7 @@
     "@agentic/platform-types": "workspace:*",
     "@agentic/platform-validators": "workspace:*",
     "@modelcontextprotocol/sdk": "catalog:",
+    "mrmime": "^2.0.1",
     "semver": "catalog:",
     "unconfig": "catalog:"
   },

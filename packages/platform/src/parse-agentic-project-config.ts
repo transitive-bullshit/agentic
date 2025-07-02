@@ -1,4 +1,4 @@
-import { parseZodSchema } from '@agentic/platform-core'
+import { parseZodSchema, pruneUndefined } from '@agentic/platform-core'
 import {
   type AgenticProjectConfig,
   agenticProjectConfigSchema,
@@ -18,16 +18,18 @@ export function parseAgenticProjectConfig(
   inputConfig: unknown,
   { strip = false, strict = false }: { strip?: boolean; strict?: boolean } = {}
 ): AgenticProjectConfig {
-  return parseZodSchema(
-    strip
-      ? agenticProjectConfigSchema.strip()
-      : strict
-        ? agenticProjectConfigSchema.strict()
-        : agenticProjectConfigSchema,
-    inputConfig,
-    {
-      statusCode: 400
-    }
+  return pruneUndefined(
+    parseZodSchema(
+      strip
+        ? agenticProjectConfigSchema.strip()
+        : strict
+          ? agenticProjectConfigSchema.strict()
+          : agenticProjectConfigSchema,
+      inputConfig,
+      {
+        statusCode: 400
+      }
+    )
   ) as AgenticProjectConfig
 }
 
@@ -38,15 +40,17 @@ export function parseResolvedAgenticProjectConfig(
   inputConfig: unknown,
   { strip = false, strict = false }: { strip?: boolean; strict?: boolean } = {}
 ): ResolvedAgenticProjectConfig {
-  return parseZodSchema(
-    strip
-      ? resolvedAgenticProjectConfigSchema.strip()
-      : strict
-        ? resolvedAgenticProjectConfigSchema.strict()
-        : resolvedAgenticProjectConfigSchema,
-    inputConfig,
-    {
-      statusCode: 400
-    }
+  return pruneUndefined(
+    parseZodSchema(
+      strip
+        ? resolvedAgenticProjectConfigSchema.strip()
+        : strict
+          ? resolvedAgenticProjectConfigSchema.strict()
+          : resolvedAgenticProjectConfigSchema,
+      inputConfig,
+      {
+        statusCode: 400
+      }
+    )
   ) as ResolvedAgenticProjectConfig
 }

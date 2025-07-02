@@ -15,7 +15,10 @@ const fixtures = [
   'pricing-custom-0',
   'basic-openapi',
   'basic-mcp',
-  'everything-openapi'
+  'everything-openapi',
+  'metadata-0',
+  'metadata-1',
+  'metadata-2'
 ]
 
 const invalidFixtures = [
@@ -37,7 +40,9 @@ const invalidFixtures = [
   'invalid-slug-1',
   'invalid-slug-2',
   'invalid-slug-3',
-  'invalid-slug-4'
+  'invalid-slug-4',
+  'invalid-metadata-0',
+  'invalid-metadata-1'
 ]
 
 const fixturesDir = path.join(
