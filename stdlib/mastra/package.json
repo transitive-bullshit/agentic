@@ -1,6 +1,6 @@
 {
   "name": "@agentic/mastra",
-  "version": "8.4.0",
+  "version": "8.4.1",
   "description": "Agentic adapter for the Mastra AI Agent SDK.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",

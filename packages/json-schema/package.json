@@ -1,6 +1,6 @@
 {
   "name": "@agentic/json-schema",
-  "version": "8.4.0",
+  "version": "8.4.1",
   "description": "A JSON schema validator that will run on Cloudflare workers. Supports drafts 4, 7, 2019-09, and 2020-12.",
   "authors": [
     "Jeremy Danyow <jdanyow@gmail.com>",
