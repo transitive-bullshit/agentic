@@ -66,7 +66,7 @@ const mcpGatewayFeatures: FeatureData[] = [
         <span className='font-semibold'>MCP servers</span> as well as simple{' '}
         <span className='font-semibold'>HTTP APIs</span>. MCP is important for
         interop and future-proofing, whereas simple HTTP POST requests make
-        tools easy to debug and simplifies integrating with LLM SDKs.
+        tools easy to debug and simplifies usage with LLM tool calling.
       </>
     ),
     icon: CheckCheckIcon,

@@ -17,28 +17,25 @@ export default function AboutPage() {
         <Markdown>
           <h2>Setting the stage</h2>
 
+          <p>Building reliable agents is hard.</p>
+
+          <p>But building them without the right tools is even harder.</p>
+
           <p>
-            It's 2025. LLMs are still scaling. AI agents are just starting to
-            take off. MCP is exploding. The singularity looms. Shoggoth looks
-            back on us from the near future and gives a sly smile that doesn't
-            quite reach His inhuman eyes.
+            MCP is really promising, but it's still early and the ecosystem's a
+            bit of a mess.
           </p>
 
           <p>
-            In this increasingly AI-native world, what's the best way for
-            "normal" software engineers like us to stay relevant and provide
-            value for both our families as well as our future AI edgelords?
+            Add to that the fact that most MCPs are just thin wrappers around
+            REST APIs – which works, but is far from ideal in terms of context
+            efficiency and instruction following.
           </p>
 
           <p>
-            Well, I don't know about you, but contributing to foundation models,
-            AI alignment, and AGI research all seem incredibly sexy but are also
-            a lil outside my areas of expertise.
-          </p>
-
-          <p>
-            That's why Agentic is focused solely on building value at the LLM
-            tool calling layer. MCPs are a great example here.
+            The best LLM tools require a fundamentally different UX than REST
+            The best agents require their tools to be optimized for LLM usage
+            with a fundamentally different UX than REST APIs.
           </p>
 
           <p>
@@ -48,7 +45,7 @@ export default function AboutPage() {
             <span className='font-semibold'>
               providing access to high quality tools that are specifically
               designed and optimized for agents will become increasingly
-              important over time
+              important
             </span>
             .
           </p>

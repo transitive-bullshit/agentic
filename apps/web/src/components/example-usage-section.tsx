@@ -59,8 +59,7 @@ export async function ExampleUsageSection() {
           <span className='font-semibold'>MCP servers</span> as well as simple{' '}
           <span className='font-semibold'>HTTP APIs</span>. MCP is important for
           interop and future-proofing, whereas simple HTTP POST requests make
-          tool use easy to debug and simplifies integration with existing LLM
-          tool calling.
+          tool use easy to debug and simplifies usage with LLM tool calling.
         </p>
       </div>
     </section>
