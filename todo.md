@@ -5,7 +5,6 @@
 
 ## TODO: P0
 
-- **fix mcp usage**
 - consider changing homepage hero CTA to include publishing
 
 ## TODO: MVP
