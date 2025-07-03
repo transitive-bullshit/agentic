@@ -14,7 +14,7 @@ export default defineConfig({
   icon: './google.svg',
   sourceUrl:
     'https://github.com/transitive-bullshit/agentic/tree/main/examples/mcp-servers/search',
-  websiteUrl: 'https://agentic.so',
+  homepageUrl: 'https://agentic.so',
   toolConfigs: [
     {
       name: 'search',

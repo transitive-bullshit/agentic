@@ -76,7 +76,7 @@ export const deployments = pgTable(
     readme: text().default('').notNull(),
     iconUrl: text(),
     sourceUrl: text(),
-    websiteUrl: text(),
+    homepageUrl: text(),
 
     userId: userId()
       .notNull()
@@ -174,7 +174,7 @@ export const deploymentSelectBaseSchema = createSelectSchema(deployments, {
   readme: resolvedAgenticProjectConfigSchema.shape.readme,
   iconUrl: resolvedAgenticProjectConfigSchema.shape.iconUrl,
   sourceUrl: resolvedAgenticProjectConfigSchema.shape.sourceUrl,
-  websiteUrl: resolvedAgenticProjectConfigSchema.shape.websiteUrl,
+  homepageUrl: resolvedAgenticProjectConfigSchema.shape.homepageUrl,
   origin: resolvedAgenticProjectConfigSchema.shape.origin,
   pricingPlans: resolvedAgenticProjectConfigSchema.shape.pricingPlans,
   pricingIntervals: resolvedAgenticProjectConfigSchema.shape.pricingIntervals,

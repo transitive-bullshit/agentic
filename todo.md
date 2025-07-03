@@ -3,6 +3,13 @@
 - **MCP**: `https://gateway.agentic.so/@{username}/{project-slug}/mcp`
 - **HTTP**: `GET/POST` `https://gateway.agentic.so/@{username}/{project-slug}/{tool-name}`
 
+## TODO: P0
+
+- **fix mcp usage**
+- consider changing homepage hero CTA to include publishing
+- launch post
+- replace how-it-works diagram with better version
+
 ## TODO: MVP
 
 - **website**
@@ -16,7 +23,6 @@
   - **replace json pricing plans and consumers with actual designs**
 - double-check free-tier rate-limits for `@agentic/search`
 - submit to awesome mcp, mcp discord, etc
-- replace how-it-works diagram with better version
 - docs: add notes about constraints on mcp origin servers (static tools)
 - **api keys should go beyond 1:1 consumers**
 - **currently not obvious how to get api key**
@@ -40,6 +46,7 @@
     - what's the best way to implement this?
   - add admin-based tags for main page layout (featured, etc)
 - replace render for api and/or add turbo for caching (too slow to deploy)
+- create slack + notifications
 
 ## TODO: Post-MVP
 
@@ -138,3 +145,4 @@
 - **public project detail page metadata**
 - fix readme css <img height="..."> not taking effect because of tailwind css preflight which sets `img, video { height: auto }`
   - we still want this for every other scenario; just want to sandbox the github-style readme markdown css...
+- add `--llm` flag to cli (https://x.com/badlogicgames/status/1940370344990441726)

@@ -150,7 +150,7 @@ export const agenticProjectConfigSchema = z
      *
      * @example "https://my-product.com"
      */
-    websiteUrl: z
+    homepageUrl: z
       .string()
       .url()
       .describe("Optional URL to the product's website.")

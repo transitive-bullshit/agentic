@@ -13,7 +13,7 @@ export default defineConfig({
   readme:
     'https://raw.githubusercontent.com/upstash/context7/refs/heads/master/README.md',
   sourceUrl: 'https://github.com/upstash/context7',
-  websiteUrl: 'https://context7.com',
+  homepageUrl: 'https://context7.com',
   toolConfigs: [
     {
       name: 'resolve-library-id',

@@ -805,7 +805,7 @@ export interface components {
              * Format: uri
              * @description Optional URL to the product's website.
              */
-            websiteUrl?: string;
+            homepageUrl?: string;
             /** @description User id (e.g. "user_tz4a98xxat96iws9zmbrgj3a") */
             userId: string;
             /** @description Team id (e.g. "team_tz4a98xxat96iws9zmbrgj3a") */
@@ -1081,7 +1081,7 @@ export interface components {
              * Format: uri
              * @description Optional URL to the product's website.
              */
-            websiteUrl?: string;
+            homepageUrl?: string;
             /** @description User id (e.g. "user_tz4a98xxat96iws9zmbrgj3a") */
             userId: string;
             /** @description Team id (e.g. "team_tz4a98xxat96iws9zmbrgj3a") */
@@ -2492,7 +2492,7 @@ export interface operations {
                      * Format: uri
                      * @description Optional URL to the product's website.
                      */
-                    websiteUrl?: string;
+                    homepageUrl?: string;
                     origin: components["schemas"]["OriginAdapterConfig"];
                     /**
                      * @description List of PricingPlans configuring which Stripe subscriptions should be available for the project. Defaults to a single free plan which is useful for developing and testing your project.

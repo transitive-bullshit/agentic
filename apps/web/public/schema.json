@@ -63,7 +63,11 @@
               "description": "Local file path, URL, or JSON stringified OpenAPI spec describing the origin API server."
             }
           },
-          "required": ["url", "type", "spec"],
+          "required": [
+            "url",
+            "type",
+            "spec"
+          ],
           "additionalProperties": false
         },
         {
@@ -80,7 +84,10 @@
               "const": "mcp"
             }
           },
-          "required": ["url", "type"],
+          "required": [
+            "url",
+            "type"
+          ],
           "additionalProperties": false
         },
         {
@@ -97,7 +104,10 @@
               "const": "raw"
             }
           },
-          "required": ["url", "type"],
+          "required": [
+            "url",
+            "type"
+          ],
           "additionalProperties": false
         }
       ],
@@ -120,7 +130,12 @@
           },
           "interval": {
             "type": "string",
-            "enum": ["day", "week", "month", "year"],
+            "enum": [
+              "day",
+              "week",
+              "month",
+              "year"
+            ],
             "description": "The frequency at which a subscription is billed."
           },
           "description": {
@@ -146,7 +161,9 @@
                     "const": false
                   }
                 },
-                "required": ["enabled"],
+                "required": [
+                  "enabled"
+                ],
                 "additionalProperties": false
               },
               {
@@ -172,7 +189,10 @@
                   },
                   "mode": {
                     "type": "string",
-                    "enum": ["strict", "approximate"],
+                    "enum": [
+                      "strict",
+                      "approximate"
+                    ],
                     "default": "approximate",
                     "description": "How to enforce the rate limit: \"strict\" (more precise but slower) or \"approximate\" (the default; faster and asynchronous but less precise)."
                   },
@@ -181,7 +201,10 @@
                     "default": true
                   }
                 },
-                "required": ["interval", "limit"],
+                "required": [
+                  "interval",
+                  "limit"
+                ],
                 "additionalProperties": false
               }
             ]
@@ -208,7 +231,11 @@
                       "minimum": 0
                     }
                   },
-                  "required": ["slug", "usageType", "amount"],
+                  "required": [
+                    "slug",
+                    "usageType",
+                    "amount"
+                  ],
                   "additionalProperties": false
                 },
                 {
@@ -229,7 +256,10 @@
                     },
                     "billingScheme": {
                       "type": "string",
-                      "enum": ["per_unit", "tiered"]
+                      "enum": [
+                        "per_unit",
+                        "tiered"
+                      ]
                     },
                     "unitAmount": {
                       "type": "number",
@@ -237,7 +267,10 @@
                     },
                     "tiersMode": {
                       "type": "string",
-                      "enum": ["graduated", "volume"]
+                      "enum": [
+                        "graduated",
+                        "volume"
+                      ]
                     },
                     "tiers": {
                       "type": "array",
@@ -262,7 +295,9 @@
                             ]
                           }
                         },
-                        "required": ["upTo"],
+                        "required": [
+                          "upTo"
+                        ],
                         "additionalProperties": false
                       },
                       "minItems": 1
@@ -272,7 +307,10 @@
                       "properties": {
                         "formula": {
                           "type": "string",
-                          "enum": ["sum", "count"],
+                          "enum": [
+                            "sum",
+                            "count"
+                          ],
                           "default": "sum"
                         }
                       },
@@ -287,14 +325,24 @@
                         },
                         "round": {
                           "type": "string",
-                          "enum": ["down", "up"]
+                          "enum": [
+                            "down",
+                            "up"
+                          ]
                         }
                       },
-                      "required": ["divideBy", "round"],
+                      "required": [
+                        "divideBy",
+                        "round"
+                      ],
                       "additionalProperties": false
                     }
                   },
-                  "required": ["slug", "usageType", "billingScheme"],
+                  "required": [
+                    "slug",
+                    "usageType",
+                    "billingScheme"
+                  ],
                   "additionalProperties": false
                 }
               ],
@@ -304,7 +352,11 @@
             "maxItems": 20
           }
         },
-        "required": ["name", "slug", "lineItems"],
+        "required": [
+          "name",
+          "slug",
+          "lineItems"
+        ],
         "additionalProperties": false,
         "description": "Represents the config for a Stripe subscription with one or more PricingPlanLineItems."
       },
@@ -337,7 +389,9 @@
       },
       "minItems": 1,
       "description": "Optional list of billing intervals to enable in the pricingPlans.\n\nDefaults to a single monthly interval `['month']`.\n\nTo add support for annual pricing plans, for example, you can use: `['month', 'year']`.",
-      "default": ["month"]
+      "default": [
+        "month"
+      ]
     },
     "defaultRateLimit": {
       "$ref": "#/properties/pricingPlans/items/properties/rateLimit",
@@ -433,19 +487,28 @@
                   "description": "A description of the example."
                 }
               },
-              "required": ["name", "prompt", "args"],
+              "required": [
+                "name",
+                "prompt",
+                "args"
+              ],
               "additionalProperties": false
             },
             "description": "Examples of how to use this tool. Used to generate example usage in the tool's docs."
           }
         },
-        "required": ["name"],
+        "required": [
+          "name"
+        ],
         "additionalProperties": false
       },
       "default": []
     }
   },
-  "required": ["name", "origin"],
+  "required": [
+    "name",
+    "origin"
+  ],
   "additionalProperties": false,
   "$schema": "https://json-schema.org/draft-07/schema",
   "title": "Agentic Project Config Schema",
