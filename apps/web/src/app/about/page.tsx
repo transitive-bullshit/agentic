@@ -33,7 +33,6 @@ export default function AboutPage() {
           </p>
 
           <p>
-            The best LLM tools require a fundamentally different UX than REST
             The best agents require their tools to be optimized for LLM usage
             with a fundamentally different UX than REST APIs.
           </p>

@@ -8,13 +8,6 @@
 - **fix mcp usage**
 - consider changing homepage hero CTA to include publishing
 
-### TODO: Launch
-
-- twitter post
-- send to friends
-- submit to awesome mcp, mcp discord, etc
-- PH launch
-
 ## TODO: MVP
 
 - **website**
