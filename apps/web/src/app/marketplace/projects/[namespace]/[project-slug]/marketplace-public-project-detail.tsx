@@ -515,10 +515,10 @@ function ProjectHeader({
           {/* TODO: <CopyIcon className='w-4 h-4' /> */}
         </div>
 
-        {project.lastPublishedDeployment?.websiteUrl && (
+        {project.lastPublishedDeployment?.homepageUrl && (
           <Button asChild variant='link'>
             <Link
-              href={project.lastPublishedDeployment.websiteUrl}
+              href={project.lastPublishedDeployment.homepageUrl}
               className='text-sm flex flex-row gap-1.5! items-center text-muted-foreground! py-1! px-2!'
               target='_blank'
               rel='noopener noreferrer'
