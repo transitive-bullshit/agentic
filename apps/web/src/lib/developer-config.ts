@@ -1,7 +1,7 @@
 import type { Deployment, Project } from '@agentic/platform-types'
 import type { BundledLanguage } from 'shiki/bundle/web'
 import type { Simplify } from 'type-fest'
-import { assert } from '@agentic/platform-core'
+import { assert, pruneUndefined } from '@agentic/platform-core'
 
 import { gatewayBaseUrl } from './config'
 
@@ -27,13 +27,17 @@ export type HTTPTarget = (typeof httpTargets)[number]
 
 export const mcpClientTargetLabels = {
   url: 'MCP Server URL',
-  'claude-desktop': 'Claude Desktop',
-  chatgpt: 'ChatGPT',
-  raycast: 'Raycast',
+  'mcp-json': 'mcp.json',
   cursor: 'Cursor',
+  'claude-code': 'Claude Code',
+  'claude-desktop': 'Claude Desktop',
+  // chatgpt: 'ChatGPT', // TODO
+  raycast: 'Raycast',
+  trae: 'Trae',
   windsurf: 'Windsurf',
+  vscode: 'VSCode',
   cline: 'Cline',
-  goose: 'Goose'
+  warp: 'Warp'
 } as const
 export const mcpClientTargets = Object.keys(
   mcpClientTargetLabels
@@ -88,7 +92,13 @@ export const defaultConfig: DeveloperConfig = {
 export type CodeSnippet = {
   code: string
   lang: BundledLanguage
-  // install?: string // TODO
+  action?: {
+    href: string
+    label: string
+    logoImageUrl?: string
+    logoImageUrlDark?: string
+    logoImageUrlLight?: string
+  }
 }
 
 export type GetCodeForDeveloperConfigOpts = {
@@ -157,12 +167,123 @@ export function getCodeForDeveloperConfig(
 }
 
 export function getCodeForMCPClientConfig({
-  identifier
+  config,
+  identifier,
+  project,
+  apiKey
 }: GetCodeForDeveloperConfigInnerOpts): CodeSnippet {
-  const mcpUrl = `${gatewayBaseUrl}/${identifier}/mcp`
-  return {
-    code: mcpUrl,
-    lang: 'bash'
+  const mcpUrl = `${gatewayBaseUrl}/${identifier}/mcp${
+    apiKey ? `?apiKey=${apiKey}` : ''
+  }`
+
+  const mcpConfig = {
+    mcpServers: {
+      [identifier]: {
+        url: mcpUrl
+      }
+    }
+  }
+  const mcpConfigCode = JSON.stringify(mcpConfig, null, 2)
+
+  const mcpRemoteConfig = {
+    mcpServers: {
+      [identifier]: {
+        command: 'npx',
+        args: ['mcp-remote', '-y', mcpUrl]
+      }
+    }
+  }
+  const mcpRemoteConfigCode = JSON.stringify(mcpRemoteConfig, null, 2)
+
+  switch (config.mcpClientTarget) {
+    case 'url':
+      return {
+        code: mcpUrl,
+        lang: 'bash'
+      }
+
+    case 'mcp-json':
+      return {
+        code: mcpConfigCode,
+        lang: 'json'
+      }
+
+    case 'claude-code':
+      return {
+        code: `claude mcp add --transport http "${identifier}" "${mcpUrl}"`,
+        lang: 'bash'
+      }
+
+    case 'cursor': {
+      const config = Buffer.from(JSON.stringify(mcpConfig)).toString('base64')
+      const href = `cursor://anysphere.cursor-deeplink/mcp/install?name=${identifier}&config=${config}`
+
+      return {
+        code: mcpConfigCode,
+        lang: 'json',
+        action: {
+          href,
+          label: `Add the ${identifier} MCP server to Cursor`,
+          logoImageUrlLight: '/assets/mcp-clients/cursor-icon-light.svg',
+          logoImageUrlDark: '/assets/mcp-clients/cursor-icon-dark.webp'
+        }
+      }
+    }
+
+    case 'windsurf':
+      return {
+        code: mcpRemoteConfigCode,
+        lang: 'json'
+      }
+
+    case 'claude-desktop':
+      return {
+        code: mcpRemoteConfigCode,
+        lang: 'json'
+      }
+
+    case 'raycast': {
+      // https://manual.raycast.com/model-context-protocol
+      const customMcpConfig = pruneUndefined({
+        name: identifier,
+        type: 'http',
+        url: mcpUrl,
+        description: project.lastPublishedDeployment?.description
+      })
+      const customMcpConfigCode = JSON.stringify(customMcpConfig)
+      const href = `raycast://mcp/install?${encodeURIComponent(customMcpConfigCode)}`
+
+      return {
+        code: mcpConfigCode,
+        lang: 'json',
+        action: {
+          href,
+          label: `Add the ${identifier} MCP server to Raycast`,
+          logoImageUrlLight: '/assets/mcp-clients/raycast-icon-light.svg',
+          logoImageUrlDark: '/assets/mcp-clients/raycast-icon-dark.svg'
+        }
+      }
+    }
+
+    case 'vscode':
+      return {
+        code: `
+"mcp": {
+  "servers": {
+    "${identifier}": {
+      "type": "http",
+      "url": "${mcpUrl}"
+    }
+  }
+}`.trim(),
+        lang: 'json'
+      }
+
+    default:
+      return {
+        code: mcpConfigCode,
+        lang: 'json'
+      }
   }
 }
 

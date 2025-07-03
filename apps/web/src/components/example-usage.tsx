@@ -1,6 +1,7 @@
 'use client'
 
 import type { Project } from '@agentic/platform-types'
+import Link from 'next/link'
 import { type JSX, useEffect, useMemo, useState } from 'react'
 import { useLocalStorage } from 'react-use'
 
@@ -8,6 +9,7 @@ import { useAgentic } from '@/components/agentic-provider'
 import { CodeBlock } from '@/components/code-block'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import {
+  type CodeSnippet,
   defaultConfig,
   type DeveloperConfig,
   getCodeForDeveloperConfig,
@@ -30,6 +32,7 @@ import {
 import { useQuery } from '@/lib/query-client'
 
 import { LoadingIndicator } from './loading-indicator'
+import { Button } from './ui/button'
 
 export function ExampleUsage({
   projectIdentifier,
@@ -218,12 +221,11 @@ function ExampleUsageContent({
             <TabsContent
               key={mcpClientTarget}
               value={mcpClientTarget}
-              className='w-full'
+              className='w-full flex flex-col gap-4'
             >
-              <CodeBlock
-                code={codeSnippet.code}
-                lang={codeSnippet.lang}
-                initial={initialCodeBlock}
+              <CodeSnippetBlock
+                codeSnippet={codeSnippet}
+                initialCodeBlock={initialCodeBlock}
               />
             </TabsContent>
           ))}
@@ -255,11 +257,14 @@ function ExampleUsageContent({
           </TabsList>
 
           {tsFrameworkTargets.map((framework) => (
-            <TabsContent key={framework} value={framework} className='w-full'>
-              <CodeBlock
-                code={codeSnippet.code}
-                lang={codeSnippet.lang}
-                initial={initialCodeBlock}
+            <TabsContent
+              key={framework}
+              value={framework}
+              className='w-full flex flex-col gap-4'
+            >
+              <CodeSnippetBlock
+                codeSnippet={codeSnippet}
+                initialCodeBlock={initialCodeBlock}
               />
             </TabsContent>
           ))}
@@ -291,11 +296,14 @@ function ExampleUsageContent({
           </TabsList>
 
           {pyFrameworkTargets.map((framework) => (
-            <TabsContent key={framework} value={framework} className='w-full'>
-              <CodeBlock
-                code={codeSnippet.code}
-                lang={codeSnippet.lang}
-                initial={initialCodeBlock}
+            <TabsContent
+              key={framework}
+              value={framework}
+              className='w-full flex flex-col gap-4'
+            >
+              <CodeSnippetBlock
+                codeSnippet={codeSnippet}
+                initialCodeBlock={initialCodeBlock}
               />
             </TabsContent>
           ))}
@@ -327,16 +335,76 @@ function ExampleUsageContent({
           </TabsList>
 
           {httpTargets.map((httpTarget) => (
-            <TabsContent key={httpTarget} value={httpTarget} className='w-full'>
-              <CodeBlock
-                code={codeSnippet.code}
-                lang={codeSnippet.lang}
-                initial={initialCodeBlock}
+            <TabsContent
+              key={httpTarget}
+              value={httpTarget}
+              className='w-full flex flex-col gap-4'
+            >
+              <CodeSnippetBlock
+                codeSnippet={codeSnippet}
+                initialCodeBlock={initialCodeBlock}
               />
             </TabsContent>
           ))}
         </Tabs>
       </TabsContent>
     </Tabs>
+  )
+}
+
+function CodeSnippetBlock({
+  codeSnippet,
+  initialCodeBlock
+}: {
+  codeSnippet: CodeSnippet
+  initialCodeBlock?: JSX.Element
+}) {
+  return (
+    <>
+      <CodeBlock
+        code={codeSnippet.code}
+        lang={codeSnippet.lang}
+        initial={initialCodeBlock}
+      />
+
+      {codeSnippet.action && (
+        <Button
+          asChild
+          className='group flex flex-row gap-1.5 items-center'
+          variant='outline'
+        >
+          <Link
+            href={codeSnippet.action.href}
+            target='_blank'
+            rel='noopener noreferrer'
+          >
+            {codeSnippet.action.logoImageUrl ? (
+              <>
+                <img
+                  src={codeSnippet.action.logoImageUrl}
+                  alt={codeSnippet.action.label}
+                  className=''
+                />
+              </>
+            ) : (
+              <>
+                <img
+                  src={codeSnippet.action.logoImageUrlDark}
+                  alt={codeSnippet.action.label}
+                  className='w-4 h-4 hidden group-dark:block'
+                />
+                <img
+                  src={codeSnippet.action.logoImageUrlLight}
+                  alt={codeSnippet.action.label}
+                  className='w-4 h-4 block group-dark:hidden'
+                />
+              </>
+            )}
+
+            <span>{codeSnippet.action.label}</span>
+          </Link>
+        </Button>
+      )}
+    </>
   )
 }
