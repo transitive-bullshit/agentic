@@ -8,7 +8,7 @@
 - **fix mcp usage**
 - consider changing homepage hero CTA to include publishing
 
-## Launch
+### TODO: Launch
 
 - twitter post
 - send to friends

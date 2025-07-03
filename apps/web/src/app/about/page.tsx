@@ -154,6 +154,7 @@ export default function AboutPage() {
             <li>Postgres</li>
             <li>Drizzle ORM</li>
             <li>Hono</li>
+            <li>Next.js</li>
             <li>Stripe</li>
             <li>Cloudflare Workers</li>
             <li>Vercel</li>
