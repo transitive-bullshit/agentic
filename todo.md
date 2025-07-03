@@ -7,8 +7,13 @@
 
 - **fix mcp usage**
 - consider changing homepage hero CTA to include publishing
-- launch post
-- replace how-it-works diagram with better version
+
+## Launch
+
+- twitter post
+- send to friends
+- submit to awesome mcp, mcp discord, etc
+- PH launch
 
 ## TODO: MVP
 
@@ -22,7 +27,6 @@
     - fix mcp examples
   - **replace json pricing plans and consumers with actual designs**
 - double-check free-tier rate-limits for `@agentic/search`
-- submit to awesome mcp, mcp discord, etc
 - docs: add notes about constraints on mcp origin servers (static tools)
 - **api keys should go beyond 1:1 consumers**
 - **currently not obvious how to get api key**
