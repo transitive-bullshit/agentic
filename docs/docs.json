@@ -57,6 +57,20 @@
               "marketplace/ts-sdks/genkit",
               "marketplace/ts-sdks/mastra"
             ]
+          },
+          {
+            "group": "MCP Clients",
+            "pages": [
+              "marketplace/mcp-clients/claude-code",
+              "marketplace/mcp-clients/claude-desktop",
+              "marketplace/mcp-clients/cline",
+              "marketplace/mcp-clients/cursor",
+              "marketplace/mcp-clients/raycast",
+              "marketplace/mcp-clients/trae",
+              "marketplace/mcp-clients/vscode",
+              "marketplace/mcp-clients/warp",
+              "marketplace/mcp-clients/windsurf"
+            ]
           }
         ]
       },

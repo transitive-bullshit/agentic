@@ -143,3 +143,6 @@
 - fix readme css <img height="..."> not taking effect because of tailwind css preflight which sets `img, video { height: auto }`
   - we still want this for every other scenario; just want to sandbox the github-style readme markdown css...
 - add `--llm` flag to cli (https://x.com/badlogicgames/status/1940370344990441726)
+- support claude Desktop Extensions ([DXT](https://github.com/anthropics/dxt)) ([post](https://www.anthropic.com/engineering/desktop-extensions))
+- add mcp-remote to support stdio-only mcp clients like claude desktop
+- add docs on how to use with [chatgpt's mcp custom connectors](https://platform.openai.com/docs/mcp) ([requires pro account or team/enterprise/edu workspace](https://help.openai.com/en/articles/11487775-connectors-in-chatgpt#h_d2a53d4230))

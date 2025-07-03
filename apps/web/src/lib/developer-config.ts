@@ -215,7 +215,9 @@ export function getCodeForMCPClientConfig({
       }
 
     case 'cursor': {
-      const config = Buffer.from(JSON.stringify(mcpConfig)).toString('base64')
+      const config = Buffer.from(JSON.stringify({ url: mcpUrl })).toString(
+        'base64'
+      )
       const href = `cursor://anysphere.cursor-deeplink/mcp/install?name=${identifier}&config=${config}`
 
       return {

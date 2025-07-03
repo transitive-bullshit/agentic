@@ -1,0 +1,23 @@
+---
+title: Windsurf
+description: How to use Agentic tools with Windsurf as an MCP client.
+---
+
+Windsurf requires you to use [mcp-remote](https://github.com/geelen/mcp-remote) because [they do not support the Streamable HTTP Transport](https://docs.windsurf.com/windsurf/cascade/mcp).
+
+## Example
+
+```json
+{
+  "mcpServers": {
+    "@agentic/search": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote",
+        "https://gateway.agentic.so/@agentic/search/mcp"
+      ]
+    }
+  }
+}
+```

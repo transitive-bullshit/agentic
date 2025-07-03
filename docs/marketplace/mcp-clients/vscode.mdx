@@ -1,0 +1,19 @@
+---
+title: VS Code
+description: How to use Agentic tools with VS Code as an MCP client.
+---
+
+Add the given JSON to your VS Code MCP config file. See [VS Code MCP docs](https://code.visualstudio.com/docs/copilot/chat/mcp-servers) for more info.
+
+## Example
+
+```json
+"mcp": {
+  "servers": {
+    "@agentic/search": {
+      "type": "http",
+      "url": "https://gateway.agentic.so/@agentic/search/mcp"
+    }
+  }
+}
+```

@@ -1,0 +1,27 @@
+---
+title: Claude Desktop
+description: How to use Agentic tools with Claude Desktop as an MCP client.
+---
+
+Claude Desktop requires you to use [mcp-remote](https://github.com/geelen/mcp-remote) because it currently only supports local `stdio` MCP servers.
+
+## Example
+
+```json
+{
+  "mcpServers": {
+    "@agentic/search": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote",
+        "https://gateway.agentic.so/@agentic/search/mcp"
+      ]
+    }
+  }
+}
+```
+
+## DXT
+
+Agentic tools don't currently support Anthropic's [Desktop Extensions (DXT)](https://www.anthropic.com/engineering/desktop-extensions) format.
