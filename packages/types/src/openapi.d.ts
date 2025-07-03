@@ -803,7 +803,7 @@ export interface components {
             sourceUrl?: string;
             /**
              * Format: uri
-             * @description Optional URL to the product's website.
+             * @description Optional URL to the product's homepage.
              */
             homepageUrl?: string;
             /** @description User id (e.g. "user_tz4a98xxat96iws9zmbrgj3a") */
@@ -1079,7 +1079,7 @@ export interface components {
             sourceUrl?: string;
             /**
              * Format: uri
-             * @description Optional URL to the product's website.
+             * @description Optional URL to the product's homepage.
              */
             homepageUrl?: string;
             /** @description User id (e.g. "user_tz4a98xxat96iws9zmbrgj3a") */
@@ -2490,7 +2490,7 @@ export interface operations {
                     sourceUrl?: string;
                     /**
                      * Format: uri
-                     * @description Optional URL to the product's website.
+                     * @description Optional URL to the product's homepage.
                      */
                     homepageUrl?: string;
                     origin: components["schemas"]["OriginAdapterConfig"];
