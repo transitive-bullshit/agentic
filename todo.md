@@ -3,10 +3,6 @@
 - **MCP**: `https://gateway.agentic.so/@{username}/{project-slug}/mcp`
 - **HTTP**: `GET/POST` `https://gateway.agentic.so/@{username}/{project-slug}/{tool-name}`
 
-## TODO: P0
-
-- consider changing homepage hero CTA to include publishing
-
 ## TODO: MVP
 
 - **website**
@@ -43,6 +39,7 @@
   - add admin-based tags for main page layout (featured, etc)
 - replace render for api and/or add turbo for caching (too slow to deploy)
 - create slack + notifications
+- consider changing homepage hero CTA to include publishing
 
 ## TODO: Post-MVP
 

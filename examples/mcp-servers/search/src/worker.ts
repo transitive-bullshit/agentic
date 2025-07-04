@@ -83,7 +83,8 @@ export default {
                   type: 'text',
                   text: 'Unauthorized request: must come from Agentic MCP Gateway'
                 }
-              ]
+              ],
+              isError: true
             }
           }
 
