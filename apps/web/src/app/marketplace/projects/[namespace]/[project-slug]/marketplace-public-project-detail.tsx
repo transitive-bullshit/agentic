@@ -455,17 +455,79 @@ export function MarketplacePublicProjectDetail({
                       Debug
                     </h2>
 
-                    <pre className='max-w-full overflow-x-auto'>
-                      {JSON.stringify(
-                        omit(
-                          project,
-                          'lastPublishedDeployment',
-                          'lastDeployment'
-                        ),
-                        null,
-                        2
-                      )}
-                    </pre>
+                    <Collapsible
+                      defaultOpen
+                      className='w-full flex flex-col align-start gap-2'
+                    >
+                      <CollapsibleTrigger asChild>
+                        <Button variant='outline' className='self-start'>
+                          Project
+                          <ChevronsUpDownIcon />
+                        </Button>
+                      </CollapsibleTrigger>
+
+                      <CollapsibleContent>
+                        <CodeBlock
+                          lang='json'
+                          code={JSON.stringify(
+                            omit(
+                              project,
+                              'lastPublishedDeployment',
+                              'lastDeployment'
+                            ),
+                            null,
+                            2
+                          )}
+                          className='border rounded-sm max-w-full overflow-x-auto'
+                        />
+                      </CollapsibleContent>
+                    </Collapsible>
+
+                    {deployment && (
+                      <Collapsible className='w-full flex flex-col align-start gap-2'>
+                        <CollapsibleTrigger asChild>
+                          <Button variant='outline' className='self-start'>
+                            Last Published Deployment
+                            <ChevronsUpDownIcon />
+                          </Button>
+                        </CollapsibleTrigger>
+
+                        <CollapsibleContent>
+                          <CodeBlock
+                            lang='json'
+                            code={JSON.stringify(
+                              omit(deployment, 'project'),
+                              null,
+                              2
+                            )}
+                            className='border rounded-sm max-w-full overflow-x-auto'
+                          />
+                        </CollapsibleContent>
+                      </Collapsible>
+                    )}
+
+                    {consumer && (
+                      <Collapsible className='w-full flex flex-col align-start gap-2'>
+                        <CollapsibleTrigger asChild>
+                          <Button variant='outline' className='self-start'>
+                            Consumer
+                            <ChevronsUpDownIcon />
+                          </Button>
+                        </CollapsibleTrigger>
+
+                        <CollapsibleContent>
+                          <CodeBlock
+                            lang='json'
+                            code={JSON.stringify(
+                              omit(consumer, 'project', 'deployment'),
+                              null,
+                              2
+                            )}
+                            className='border rounded-sm max-w-full overflow-x-auto'
+                          />
+                        </CollapsibleContent>
+                      </Collapsible>
+                    )}
                   </TabsContent>
                 )}
               </div>

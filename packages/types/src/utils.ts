@@ -1,15 +1,11 @@
-import type {
-  PricingInterval,
-  PricingPlan,
-  PricingPlanList
-} from '@agentic/platform-types'
+import type { PricingInterval, PricingPlan } from '@agentic/platform-types'
 
 export function getPricingPlansByInterval({
   pricingInterval,
   pricingPlans
 }: {
   pricingInterval: PricingInterval
-  pricingPlans: PricingPlanList
+  pricingPlans: PricingPlan[]
 }): PricingPlan[] {
   return pricingPlans.filter(
     (pricingPlan) =>
