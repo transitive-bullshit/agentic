@@ -74,7 +74,7 @@ export function ExampleUsage({
     isLoading,
     isError
   } = useQuery({
-    queryKey: ['project', projectIdentifier],
+    queryKey: ['public-project', projectIdentifier],
     queryFn: () =>
       ctx!.api.getPublicProjectByIdentifier({
         projectIdentifier,

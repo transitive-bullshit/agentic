@@ -2,18 +2,15 @@
 
 import useInfiniteScroll from 'react-infinite-scroll-hook'
 
-import { useAgentic } from '@/components/agentic-provider'
 import { DotsSection } from '@/components/dots-section'
 import { LoadingIndicator } from '@/components/loading-indicator'
 import { PageContainer } from '@/components/page-container'
 import { PublicProject } from '@/components/public-project'
 import { SupplySideCTA } from '@/components/supply-side-cta'
+import { defaultAgenticApiClient } from '@/lib/default-agentic-api-client'
 import { useInfiniteQuery, useQuery } from '@/lib/query-client'
 
-export function MarketplaceIndex() {
-  const ctx = useAgentic()
-  const limit = 10
-
+export function MarketplaceIndex({ limit }: { limit: number }) {
   const {
     data: featuredProjects,
     isLoading: isFeaturedProjectsLoading,
@@ -21,14 +18,13 @@ export function MarketplaceIndex() {
   } = useQuery({
     queryKey: ['featured-public-projects'],
     queryFn: () =>
-      ctx!.api.listPublicProjects({
+      defaultAgenticApiClient.listPublicProjects({
         populate: ['lastPublishedDeployment'],
         limit: 3,
         tag: 'featured',
         sortBy: 'createdAt',
         sort: 'asc'
-      }),
-    enabled: !!ctx
+      })
   })
 
   const {
@@ -41,7 +37,7 @@ export function MarketplaceIndex() {
   } = useInfiniteQuery({
     queryKey: ['public-projects'],
     queryFn: ({ pageParam = 0 }) =>
-      ctx!.api
+      defaultAgenticApiClient
         .listPublicProjects({
           populate: ['lastPublishedDeployment'],
           offset: pageParam,
@@ -58,7 +54,6 @@ export function MarketplaceIndex() {
           }
         }),
     getNextPageParam: (lastGroup) => lastGroup?.nextOffset,
-    enabled: !!ctx,
     initialPageParam: 0
   })
 
@@ -66,7 +61,7 @@ export function MarketplaceIndex() {
     loading: isLoading || isFetchingNextPage,
     hasNextPage,
     onLoadMore: fetchNextPage,
-    disabled: !ctx || isError,
+    disabled: isError,
     rootMargin: '0px 0px 200px 0px'
   })
 

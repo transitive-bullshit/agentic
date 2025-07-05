@@ -12,6 +12,7 @@ export async function ExampleUsageSection() {
   const projectIdentifier = '@agentic/search'
   const tool = 'search'
 
+  // TODO: use prefetching here
   const initialProject =
     await globalAgenticApiClient.getPublicProjectByIdentifier({
       projectIdentifier,

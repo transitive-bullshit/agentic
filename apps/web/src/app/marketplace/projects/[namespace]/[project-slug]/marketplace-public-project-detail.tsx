@@ -26,6 +26,7 @@ import {
 } from '@/components/ui/collapsible'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { GitHubIcon } from '@/icons/github'
+import { defaultAgenticApiClient } from '@/lib/default-agentic-api-client'
 import { toast, toastError } from '@/lib/notifications'
 import { useQuery } from '@/lib/query-client'
 
@@ -54,13 +55,12 @@ export function MarketplacePublicProjectDetail({
     isLoading,
     isError
   } = useQuery({
-    queryKey: ['project', projectIdentifier],
+    queryKey: ['public-project', projectIdentifier],
     queryFn: () =>
-      ctx!.api.getPublicProjectByIdentifier({
+      defaultAgenticApiClient.getPublicProjectByIdentifier({
         projectIdentifier,
         populate: ['lastPublishedDeployment']
-      }),
-    enabled: !!ctx
+      })
   })
 
   // If the user is authenticated, check if they have an active subscription to
@@ -191,7 +191,7 @@ export function MarketplacePublicProjectDetail({
     return tab as MarketplacePublicProjectDetailTab
   }, [searchParams, deployment])
 
-  const { value: readme } = useAsync(async () => {
+  const { value: readme, loading: isReadmeLoading } = useAsync(async () => {
     if (deployment?.readme?.trim()) {
       return ky.get(deployment.readme).text()
     }
@@ -202,7 +202,7 @@ export function MarketplacePublicProjectDetail({
   return (
     <PageContainer>
       <section>
-        {!ctx || isLoading ? (
+        {isLoading ? (
           <LoadingIndicator />
         ) : isError ? (
           <p>Error fetching project</p>
@@ -342,9 +342,15 @@ export function MarketplacePublicProjectDetail({
                   </TabsContent>
                 )}
 
-                {tab === 'readme' && readme && (
+                {tab === 'readme' && (
                   <TabsContent value='readme' className='flex flex-col gap-4'>
-                    <SSRMarkdown markdown={readme} className='' />
+                    {isReadmeLoading ? (
+                      <LoadingIndicator />
+                    ) : readme ? (
+                      <SSRMarkdown markdown={readme} className='' />
+                    ) : (
+                      <p>Readme not found</p>
+                    )}
                   </TabsContent>
                 )}
 

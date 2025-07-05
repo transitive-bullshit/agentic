@@ -24,10 +24,10 @@
   - tool input/output schemas; move `$schema` to the top
   - break out into a few subcomponents; some can be server components
   - mcp inspector
+  - subscribe button should link to sign up if not logged in with next to pricing tab
 - improve private project page
   - link to public page if published
   - list deployment versions
-- [**react query prefetching for public pages**](https://tanstack.com/query/latest/docs/framework/react/guides/advanced-ssr#prefetching-and-dehydrating-data)
 - **create agentic products for select legacy tools**
 - marketplace index page
   - add disclaimer about public beta
