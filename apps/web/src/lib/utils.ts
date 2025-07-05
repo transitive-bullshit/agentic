@@ -1,6 +1,8 @@
 import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 
+export { default as humanNumber } from 'human-number'
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
