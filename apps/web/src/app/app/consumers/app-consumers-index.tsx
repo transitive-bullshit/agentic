@@ -5,6 +5,7 @@ import { useCallback, useState } from 'react'
 
 import { useAuthenticatedAgentic } from '@/components/agentic-provider'
 import { AppConsumersList } from '@/components/app-consumers-list'
+import { PageContainer } from '@/components/page-container'
 import { Button } from '@/components/ui/button'
 import { toastError } from '@/lib/notifications'
 
@@ -31,7 +32,7 @@ export function AppConsumersIndex() {
   }, [ctx])
 
   return (
-    <>
+    <PageContainer>
       <h1
         className='text-center text-balance leading-snug md:leading-none
         text-4xl font-extrabold'
@@ -48,6 +49,6 @@ export function AppConsumersIndex() {
       </Button>
 
       <AppConsumersList />
-    </>
+    </PageContainer>
   )
 }

@@ -30,6 +30,7 @@ import { defaultAgenticApiClient } from '@/lib/default-agentic-api-client'
 import { toast, toastError } from '@/lib/notifications'
 import { useQuery } from '@/lib/query-client'
 
+// import { MarketplacePublicProjectDetailNav } from './marketplace-nav'
 import {
   type MarketplacePublicProjectDetailTab,
   marketplacePublicProjectDetailTabsSet,
@@ -200,7 +201,7 @@ export function MarketplacePublicProjectDetail({
   }, [deployment])
 
   return (
-    <PageContainer>
+    <PageContainer compact>
       <section>
         {isLoading ? (
           <LoadingIndicator />
@@ -484,73 +485,79 @@ function ProjectHeader({
   tab?: MarketplacePublicProjectDetailTab
 }) {
   return (
-    <div className='flex flex-col gap-2'>
-      <div className='w-full flex flex-row gap-2.5 items-center'>
-        <img
-          src={
-            project.lastPublishedDeployment?.iconUrl ||
-            project.user?.image ||
-            '/agentic-icon-circle-light.svg'
-          }
-          alt={project.name}
-          className='aspect-square w-10 h-10'
-        />
+    <>
+      {/* <MarketplacePublicProjectDetailNav
+        projectIdentifier={project.identifier}
+      /> */}
 
-        <h1 className='flex-1 font-semibold text-balance text-3xl leading-tight'>
-          {project.name}
-        </h1>
+      <div className='flex flex-col gap-2'>
+        <div className='w-full flex flex-row gap-2.5 items-center'>
+          <img
+            src={
+              project.lastPublishedDeployment?.iconUrl ||
+              project.user?.image ||
+              '/agentic-icon-circle-light.svg'
+            }
+            alt={project.name}
+            className='aspect-square w-10 h-10'
+          />
 
-        <HeroButton
-          heroVariant='orange'
-          className='justify-self-end'
-          disabled={tab === 'pricing'}
-          asChild={tab !== 'pricing'}
-        >
-          <Link
-            href={`/marketplace/projects/${project.identifier}?tab=pricing`}
+          <h1 className='flex-1 font-semibold text-balance text-3xl leading-tight'>
+            {project.name}
+          </h1>
+
+          <HeroButton
+            heroVariant='orange'
+            className='justify-self-end'
+            disabled={tab === 'pricing'}
+            asChild={tab !== 'pricing'}
           >
-            Subscribe to {project.identifier}
-          </Link>
-        </HeroButton>
-      </div>
-
-      <div className='flex flex-row items-center'>
-        <div className='text-sm text-muted-foreground flex flex-row gap-0.5 items-center hover:no-underline! no-underline!'>
-          <span>{project.identifier}</span>
-
-          {/* TODO: <CopyIcon className='w-4 h-4' /> */}
+            <Link
+              href={`/marketplace/projects/${project.identifier}?tab=pricing`}
+            >
+              Subscribe to {project.identifier}
+            </Link>
+          </HeroButton>
         </div>
 
-        {project.lastPublishedDeployment?.homepageUrl && (
-          <Button asChild variant='link'>
-            <Link
-              href={project.lastPublishedDeployment.homepageUrl}
-              className='text-sm flex flex-row gap-1.5! items-center text-muted-foreground! py-1! px-2!'
-              target='_blank'
-              rel='noopener noreferrer'
-            >
-              <ExternalLinkIcon className='w-4 h-4' />
+        <div className='flex flex-row items-center'>
+          <div className='text-sm text-muted-foreground flex flex-row gap-0.5 items-center hover:no-underline! no-underline!'>
+            <span>{project.identifier}</span>
 
-              <span>Homepage</span>
-            </Link>
-          </Button>
-        )}
+            {/* TODO: <CopyIcon className='w-4 h-4' /> */}
+          </div>
 
-        {project.lastPublishedDeployment?.sourceUrl && (
-          <Button asChild variant='link'>
-            <Link
-              href={project.lastPublishedDeployment.sourceUrl}
-              className='text-sm flex flex-row gap-1.5! items-center text-muted-foreground! py-1! px-2!'
-              target='_blank'
-              rel='noopener noreferrer'
-            >
-              <GitHubIcon className='w-4 h-4' />
+          {project.lastPublishedDeployment?.homepageUrl && (
+            <Button asChild variant='link'>
+              <Link
+                href={project.lastPublishedDeployment.homepageUrl}
+                className='text-sm flex flex-row gap-1.5! items-center text-muted-foreground! py-1! px-2!'
+                target='_blank'
+                rel='noopener noreferrer'
+              >
+                <ExternalLinkIcon className='w-4 h-4' />
 
-              <span>GitHub</span>
-            </Link>
-          </Button>
-        )}
+                <span>Homepage</span>
+              </Link>
+            </Button>
+          )}
+
+          {project.lastPublishedDeployment?.sourceUrl && (
+            <Button asChild variant='link'>
+              <Link
+                href={project.lastPublishedDeployment.sourceUrl}
+                className='text-sm flex flex-row gap-1.5! items-center text-muted-foreground! py-1! px-2!'
+                target='_blank'
+                rel='noopener noreferrer'
+              >
+                <GitHubIcon className='w-4 h-4' />
+
+                <span>GitHub</span>
+              </Link>
+            </Button>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   )
 }

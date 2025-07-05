@@ -109,7 +109,7 @@ catalogs:
       specifier: ^2.1.7
       version: 2.1.7
     '@radix-ui/react-slot':
-      specifier: ^1.2.3
+      specifier: 1.2.3
       version: 1.2.3
     '@radix-ui/react-tabs':
       specifier: ^1.1.12
