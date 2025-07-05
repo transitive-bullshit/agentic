@@ -17,7 +17,8 @@
     "start": "next start",
     "clean": "del .next",
     "test": "run-s test:*",
-    "test:lint": "next lint"
+    "test:lint": "next lint",
+    "test:unit": "vitest run"
   },
   "dependencies": {
     "@agentic/platform": "workspace:*",
