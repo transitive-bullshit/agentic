@@ -35,6 +35,12 @@ export function Footer() {
                   </ActiveLink>
                 </div>
 
+                <div>
+                  <ActiveLink href='/pricing' className='link'>
+                    Pricing
+                  </ActiveLink>
+                </div>
+
                 <DynamicFooter />
               </nav>
             </div>

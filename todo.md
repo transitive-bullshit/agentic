@@ -27,7 +27,6 @@
 - improve private project page
   - link to public page if published
   - list deployment versions
-- add a basic page + docs on pricing => contact
 - [**react query prefetching for public pages**](https://tanstack.com/query/latest/docs/framework/react/guides/advanced-ssr#prefetching-and-dehydrating-data)
 - **create agentic products for select legacy tools**
 - marketplace index page
