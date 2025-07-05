@@ -21,7 +21,6 @@
   - tool input/output schemas; move `$schema` to the top
   - break out into a few subcomponents; some can be server components
   - mcp inspector
-  - subscribe button should link to sign up if not logged in with next to pricing tab
 - improve private project page
   - link to public page if published
   - list deployment versions

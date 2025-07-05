@@ -484,6 +484,10 @@ function ProjectHeader({
   project: Project
   tab?: MarketplacePublicProjectDetailTab
 }) {
+  const ctx = useAgentic()
+
+  const pricingTabHref = `/marketplace/projects/${project.identifier}?tab=pricing`
+
   return (
     <>
       {/* <MarketplacePublicProjectDetailNav
@@ -513,7 +517,11 @@ function ProjectHeader({
             asChild={tab !== 'pricing'}
           >
             <Link
-              href={`/marketplace/projects/${project.identifier}?tab=pricing`}
+              href={
+                ctx?.isAuthenticated
+                  ? pricingTabHref
+                  : `/signup?${sanitizeSearchParams({ next: pricingTabHref })}`
+              }
             >
               Subscribe to {project.identifier}
             </Link>
