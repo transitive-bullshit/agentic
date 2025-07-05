@@ -36,11 +36,9 @@ export function PublicProject({ project }: { project: Project }) {
       </div>
 
       <div className='flex-1 flex flex-col gap-3 justify-between'>
-        {deployment.description && (
-          <p className='text-sm text-gray-700 line-clamp-4'>
-            {deployment.description}
-          </p>
-        )}
+        <p className='text-sm text-gray-700 line-clamp-4'>
+          {deployment.description}
+        </p>
 
         {project.lastPublishedDeployment && (
           <div className='text-xs text-gray-500 flex gap-3 items-center justify-between'>

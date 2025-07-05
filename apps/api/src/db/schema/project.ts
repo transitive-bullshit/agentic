@@ -85,6 +85,9 @@ export const projects = pgTable(
     // visible on the marketplace.
     private: boolean().default(true).notNull(),
 
+    // Admin-controlled tags for organizing and featuring on the marketplace
+    tags: text().array(),
+
     // TODO: allow for multiple aliases like vercel
     // alias: text(),
 
@@ -172,6 +175,7 @@ export const projects = pgTable(
     index('project_teamId_idx').on(table.teamId),
     // index('project_alias_idx').on(table.alias),
     index('project_private_idx').on(table.private),
+    index('project_tags_idx').on(table.tags),
     index('project_lastPublishedDeploymentId_idx').on(
       table.lastPublishedDeploymentId
     ),
@@ -215,6 +219,7 @@ export const projectSelectBaseSchema = createSelectSchema(projects, {
   identifier: projectIdentifierSchema,
   name: agenticProjectConfigSchema.shape.name,
   slug: agenticProjectConfigSchema.shape.slug,
+  tags: z.array(z.string()).optional(),
   lastPublishedDeploymentId: deploymentIdSchema.optional(),
   lastDeploymentId: deploymentIdSchema.optional(),
 

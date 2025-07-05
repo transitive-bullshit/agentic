@@ -18,13 +18,12 @@
 - docs: add notes about constraints on mcp origin servers (static tools)
 - **api keys should go beyond 1:1 consumers**
 - **currently not obvious how to get api key**
-- marketplace public project page
-  - mcp inspector
-  - **add support to example-usage for api keys**
-  - add last published date somewhere
+- marketplace public project detail page
   - add breadcrumb nav: marketplace > @agentic > search
-  - tool input/output schemas; move `$schema` to top
+  - add last published date somewhere
+  - tool input/output schemas; move `$schema` to the top
   - break out into a few subcomponents; some can be server components
+  - mcp inspector
 - improve private project page
   - link to public page if published
   - list deployment versions
@@ -34,9 +33,6 @@
 - marketplace index page
   - add disclaimer about public beta
   - add search / sorting
-  - **improve marketplace default sorting**
-    - what's the best way to implement this?
-  - add admin-based tags for main page layout (featured, etc)
 - replace render for api and/or add turbo for caching (too slow to deploy)
 - create slack + notifications
 - consider changing homepage hero CTA to include publishing

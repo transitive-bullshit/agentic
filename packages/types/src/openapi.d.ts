@@ -622,6 +622,7 @@ export interface components {
             /** @description Unique project slug. Must be ascii-only, lower-case, and kebab-case with no spaces between 1 and 256 characters. If not provided, it will be derived by slugifying `name`. */
             slug?: string;
             private: boolean;
+            tags?: string[];
             /** @description User id (e.g. "user_tz4a98xxat96iws9zmbrgj3a") */
             userId: string;
             /** @description Team id (e.g. "team_tz4a98xxat96iws9zmbrgj3a") */
@@ -1364,6 +1365,8 @@ export interface operations {
                 sort?: "asc" | "desc";
                 sortBy?: "createdAt" | "updatedAt";
                 populate?: ("user" | "team" | "lastPublishedDeployment" | "lastDeployment") | ("user" | "team" | "lastPublishedDeployment" | "lastDeployment")[];
+                tag?: string;
+                notTag?: string;
             };
             header?: never;
             path?: never;

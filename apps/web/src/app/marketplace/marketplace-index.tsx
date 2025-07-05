@@ -8,11 +8,29 @@ import { LoadingIndicator } from '@/components/loading-indicator'
 import { PageContainer } from '@/components/page-container'
 import { PublicProject } from '@/components/public-project'
 import { SupplySideCTA } from '@/components/supply-side-cta'
-import { useInfiniteQuery } from '@/lib/query-client'
+import { useInfiniteQuery, useQuery } from '@/lib/query-client'
 
 export function MarketplaceIndex() {
   const ctx = useAgentic()
   const limit = 10
+
+  const {
+    data: featuredProjects,
+    isLoading: isFeaturedProjectsLoading,
+    isError: isFeaturedProjectsError
+  } = useQuery({
+    queryKey: ['featured-public-projects'],
+    queryFn: () =>
+      ctx!.api.listPublicProjects({
+        populate: ['lastPublishedDeployment'],
+        limit: 3,
+        tag: 'featured',
+        sortBy: 'createdAt',
+        sort: 'asc'
+      }),
+    enabled: !!ctx
+  })
+
   const {
     data,
     isLoading,
@@ -21,13 +39,14 @@ export function MarketplaceIndex() {
     fetchNextPage,
     isFetchingNextPage
   } = useInfiniteQuery({
-    queryKey: ['projects'],
+    queryKey: ['public-projects'],
     queryFn: ({ pageParam = 0 }) =>
       ctx!.api
         .listPublicProjects({
           populate: ['lastPublishedDeployment'],
           offset: pageParam,
-          limit
+          limit,
+          notTag: 'featured'
         })
         .then(async (projects) => {
           return {
@@ -55,7 +74,7 @@ export function MarketplaceIndex() {
 
   return (
     <PageContainer>
-      <section>
+      <section className='flex flex-col gap-8'>
         <h1
           className='text-center text-balance leading-snug md:leading-none
         text-4xl font-extrabold'
@@ -63,17 +82,38 @@ export function MarketplaceIndex() {
           Marketplace
         </h1>
 
-        {!ctx || isLoading ? (
-          <LoadingIndicator />
-        ) : (
-          <div className='mt-8'>
-            <h2 className='text-xl font-semibold mb-4'>Public Projects</h2>
+        <div className='flex flex-col gap-16'>
+          <div className=''>
+            <h2 className='text-xl font-semibold mb-4'>Featured</h2>
+
+            {isFeaturedProjectsError ? (
+              <p>Error fetching featured projects</p>
+            ) : isFeaturedProjectsLoading ? (
+              <LoadingIndicator />
+            ) : !featuredProjects?.length ? (
+              <p>
+                No projects found. This is likely an issue on Agentic's side.
+                Please refresh or contact support.
+              </p>
+            ) : (
+              <div className='grid grid-cols grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3'>
+                {featuredProjects.map((project) => (
+                  <PublicProject key={project.id} project={project} />
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className=''>
+            <h2 className='text-xl font-semibold mb-4'>General</h2>
 
             {isError ? (
               <p>Error fetching projects</p>
+            ) : isLoading ? (
+              <LoadingIndicator />
             ) : !projects.length ? (
               <p>
-                No projects found. This is likely an error on Agentic's side.
+                No projects found. This is likely an issue on Agentic's side.
                 Please refresh or contact support.
               </p>
             ) : (
@@ -90,7 +130,7 @@ export function MarketplaceIndex() {
               </div>
             )}
           </div>
-        )}
+        </div>
       </section>
 
       {/* CTA section */}
@@ -99,7 +139,7 @@ export function MarketplaceIndex() {
           Your API → Paid MCP, Instantly
         </h2>
 
-        <h5 className='text-center max-w-2xl'>
+        <h5 className='text-center max-w-2xl bg-background/50 rounded-xl'>
           Run one command to turn any MCP server or OpenAPI service into a paid
           MCP product. With built-in support for every major LLM SDK and MCP
           client.

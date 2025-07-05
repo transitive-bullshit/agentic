@@ -73,7 +73,7 @@ export const deployments = pgTable(
     name: projectName().notNull(),
 
     description: text().default('').notNull(),
-    readme: text().default('').notNull(),
+    readme: text(), // URL to uploaded markdown document
     iconUrl: text(),
     sourceUrl: text(),
     homepageUrl: text(),

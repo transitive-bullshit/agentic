@@ -4,14 +4,24 @@ import type { DefaultHonoEnv } from '@agentic/platform-hono'
 import { parseZodSchema } from '@agentic/platform-core'
 import { createRoute, type OpenAPIHono, z } from '@hono/zod-openapi'
 
-import { and, db, eq, isNotNull, schema } from '@/db'
+import {
+  and,
+  arrayContains,
+  db,
+  eq,
+  isNotNull,
+  isNull,
+  not,
+  or,
+  schema
+} from '@/db'
 import { setPublicCacheControl } from '@/lib/cache-control'
 import {
   openapiAuthenticatedSecuritySchemas,
   openapiErrorResponses
 } from '@/lib/openapi-utils'
 
-import { paginationAndPopulateProjectSchema } from './schemas'
+import { listPublicProjectsQuerySchema } from './schemas'
 
 const route = createRoute({
   description:
@@ -22,7 +32,7 @@ const route = createRoute({
   path: 'projects/public',
   security: openapiAuthenticatedSecuritySchemas,
   request: {
-    query: paginationAndPopulateProjectSchema
+    query: listPublicProjectsQuerySchema
   },
   responses: {
     200: {
@@ -44,14 +54,24 @@ export function registerV1ListPublicProjects(app: OpenAPIHono<DefaultHonoEnv>) {
       limit = 10,
       sort = 'desc',
       sortBy = 'createdAt',
-      populate = []
+      populate = [],
+      tag,
+      notTag
     } = c.req.valid('query')
 
     const projects = await db.query.projects.findMany({
       // List projects that are not private and have at least one published deployment
+      // And optionally match a given tag
       where: and(
         eq(schema.projects.private, false),
-        isNotNull(schema.projects.lastPublishedDeploymentId)
+        isNotNull(schema.projects.lastPublishedDeploymentId),
+        tag ? arrayContains(schema.projects.tags, [tag]) : undefined,
+        notTag
+          ? or(
+              not(arrayContains(schema.projects.tags, [notTag])),
+              isNull(schema.projects.tags)
+            )
+          : undefined
       ),
       with: {
         lastPublishedDeployment: true,

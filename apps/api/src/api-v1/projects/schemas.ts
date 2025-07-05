@@ -37,6 +37,11 @@ export const projectIdentifierQuerySchema = z.object({
   projectIdentifier: projectIdentifierSchema
 })
 
+export const filterPublicProjectSchema = z.object({
+  tag: z.string().optional(),
+  notTag: z.string().optional()
+})
+
 export const populateProjectSchema = z.object({
   populate: z
     .union([projectRelationsSchema, z.array(projectRelationsSchema)])
@@ -53,4 +58,10 @@ export const projectIdentifierAndPopulateSchema = z.object({
 export const paginationAndPopulateProjectSchema = z.object({
   ...paginationSchema.shape,
   ...populateProjectSchema.shape
+})
+
+export const listPublicProjectsQuerySchema = z.object({
+  ...paginationSchema.shape,
+  ...populateProjectSchema.shape,
+  ...filterPublicProjectSchema.shape
 })
