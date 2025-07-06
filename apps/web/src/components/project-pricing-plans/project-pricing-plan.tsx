@@ -41,14 +41,20 @@ export function ProjectPricingPlan({
   const requestsLineItem = lineItems.find(
     (lineItem) => lineItem.slug === 'requests'
   )
+
+  // TODO: rate-limits
+  // const deployment = project.lastPublishedDeployment
+  // const requestsRateLimit = plan.rateLimit ?? deployment?.defaultRateLimit
+
   // TODO: support custom line-items
   // const customLineItems = lineItems.find(
   //   (lineItem) => lineItem.slug !== 'base' && lineItem.slug !== 'requests'
   // )
 
   // TODO: support defaultAggregation
+  // TODO: support trialPeriodDays
 
-  // TODO: add rate-limits and finesse free tier to not be so basic
+  // TODO: add rate-limits and finesse free tier to not be so bare-bones
 
   return (
     <div className='justify-self-center w-full grid grid-cols-1 rounded-[2rem] shadow-[inset_0_0_2px_1px_#ffffff4d] ring-1 ring-black/5 max-lg:mx-auto max-lg:w-full max-lg:max-w-md max-w-lg'>
@@ -79,7 +85,7 @@ export function ProjectPricingPlan({
                 </h4>
 
                 {requestsLineItem.billingScheme === 'per_unit' ? (
-                  <div className='flex flex-row items-center gap-2'>
+                  <div className='ml-2 flex flex-row items-center gap-2'>
                     <div className='text-xl font-semibold text-gray-950 leading-none py-2'>
                       ${pricingAmountToFixedString(requestsLineItem.unitAmount)}
                     </div>
@@ -92,7 +98,7 @@ export function ProjectPricingPlan({
                     </div>
                   </div>
                 ) : requestsLineItem.billingScheme === 'tiered' ? (
-                  <div>
+                  <div className='ml-2 flex flex-col gap-2'>
                     {requestsLineItem.tiers?.map((tier, index) => {
                       const isFirst = index === 0
                       // const isLast = index >= requestsLineItem.tiers!.length - 1
@@ -174,6 +180,12 @@ export function ProjectPricingPlan({
                   ))}
                 </ul>
               </div>
+            )}
+
+            {plan.slug === 'free' && (
+              <p className='text-pretty text-xs/5 text-gray-400'>
+                Try before you buy. 100% free!
+              </p>
             )}
 
             {requestsLineItem?.billingScheme === 'tiered' && (
