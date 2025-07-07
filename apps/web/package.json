@@ -59,6 +59,7 @@
     "next-themes": "catalog:",
     "plur": "catalog:",
     "posthog-js": "catalog:",
+    "pretty-ms": "^9.2.0",
     "react": "catalog:",
     "react-dom": "catalog:",
     "react-infinite-scroll-hook": "catalog:",

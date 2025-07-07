@@ -890,6 +890,9 @@ importers:
       posthog-js:
         specifier: 'catalog:'
         version: 1.255.0
+      pretty-ms:
+        specifier: ^9.2.0
+        version: 9.2.0
       react:
         specifier: 'catalog:'
         version: 19.1.0

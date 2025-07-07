@@ -47,7 +47,7 @@ export function ProjectPricingPlans({
   const currentPricingIntervalPlans =
     pricingPlansByInterval[pricingInterval] ?? []
 
-  // TODO: add support for different pricing intervals
+  // TODO: add support for different pricing intervals and switching between them
   const numPricingPlans = currentPricingIntervalPlans.length || 1
 
   return (

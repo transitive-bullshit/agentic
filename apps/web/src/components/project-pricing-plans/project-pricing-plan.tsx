@@ -5,12 +5,21 @@ import type {
   Project
 } from '@agentic/platform-types'
 import humanNumber from 'human-number'
-import { Loader2Icon, PlusIcon } from 'lucide-react'
+import {
+  CornerDownRightIcon,
+  Loader2Icon,
+  PlusIcon,
+  ShieldCheckIcon,
+  ShieldMinusIcon
+} from 'lucide-react'
 import Link from 'next/link'
 import plur from 'plur'
 
 import { Button } from '@/components/ui/button'
-import { pricingAmountToFixedString } from '@/lib/utils'
+import {
+  getRateLimitIntervalLabel,
+  pricingAmountToFixedString
+} from '@/lib/utils'
 
 // const intervalToLabelMap: Record<PricingInterval, string> = {
 //   day: 'daily',
@@ -41,10 +50,10 @@ export function ProjectPricingPlan({
   const requestsLineItem = lineItems.find(
     (lineItem) => lineItem.slug === 'requests'
   )
+  const isFreePlan = plan.slug === 'free'
 
-  // TODO: rate-limits
-  // const deployment = project.lastPublishedDeployment
-  // const requestsRateLimit = plan.rateLimit ?? deployment?.defaultRateLimit
+  const deployment = project.lastPublishedDeployment
+  const requestsRateLimit = plan.rateLimit ?? deployment?.defaultRateLimit
 
   // TODO: support custom line-items
   // const customLineItems = lineItems.find(
@@ -53,8 +62,7 @@ export function ProjectPricingPlan({
 
   // TODO: support defaultAggregation
   // TODO: support trialPeriodDays
-
-  // TODO: add rate-limits and finesse free tier to not be so bare-bones
+  // TODO: highlight if any tools are disabled on this pricing plan
 
   return (
     <div className='justify-self-center w-full grid grid-cols-1 rounded-[2rem] shadow-[inset_0_0_2px_1px_#ffffff4d] ring-1 ring-black/5 max-lg:mx-auto max-lg:w-full max-lg:max-w-md max-w-lg'>
@@ -78,72 +86,66 @@ export function ProjectPricingPlan({
               <div className='text-sm'>/ {interval}</div>
             </div>
 
-            {requestsLineItem && plan.slug !== 'free' && (
+            {requestsLineItem && !isFreePlan && (
               <div className='flex flex-col gap-2'>
                 <h4 className='text-sm/6 font-medium'>Requests:</h4>
 
                 {requestsLineItem.billingScheme === 'per_unit' ? (
-                  <div className='ml-2 flex flex-row items-center gap-2'>
+                  <div className='ml-4 flex flex-row items-center gap-2'>
                     <div className='text-xl font-semibold leading-none py-2'>
                       ${pricingAmountToFixedString(requestsLineItem.unitAmount)}
                     </div>
 
                     <div className='text-sm'>
-                      /{' '}
+                      / per{' '}
                       {requestsLineItem.transformQuantity
                         ? `${requestsLineItem.transformQuantity.divideBy} ${plur('request', requestsLineItem.transformQuantity.divideBy)}`
                         : 'request'}
                     </div>
                   </div>
                 ) : requestsLineItem.billingScheme === 'tiered' ? (
-                  <div className='ml-2 flex flex-col gap-2'>
+                  <div className='ml-4 flex flex-col gap-2'>
                     {requestsLineItem.tiers?.map((tier, index) => {
                       const isFirst = index === 0
-                      // const isLast = index >= requestsLineItem.tiers!.length - 1
                       const hasUnitAmount = tier.unitAmount !== undefined
-                      // const hasFlatAmount = tier.flatAmount !== undefined
                       const isFree = hasUnitAmount
                         ? // TODO: are these two mutually exclusive? check in stripe
                           tier.unitAmount === 0
                         : tier.flatAmount === 0
 
-                      // TODO: improve `inf` label
+                      const isTierInfinite = tier.upTo === 'inf'
                       const numLabel =
                         tier.upTo === 'inf'
                           ? 'infinite requests'
                           : `${humanNumber(tier.upTo)} ${plur('request', tier.upTo)}`
+                      const price = `$${pricingAmountToFixedString(
+                        hasUnitAmount ? tier.unitAmount! : tier.flatAmount!
+                      )}${hasUnitAmount ? ' per request' : ''}`
+
+                      const numDesc = isFree
+                        ? isFirst
+                          ? isTierInfinite
+                            ? `FREE for all requests per ${interval}`
+                            : `FREE for the first ${numLabel} per ${interval}`
+                          : isTierInfinite
+                            ? `FREE for all requests after that per ${interval}`
+                            : `FREE for requests up to ${numLabel} per ${interval}`
+                        : isFirst
+                          ? isTierInfinite
+                            ? `${price} per ${interval}`
+                            : `${price} for the first ${numLabel} per ${interval}`
+                          : isTierInfinite
+                            ? `${price} after that per ${interval}`
+                            : `${price} up to ${numLabel} per ${interval}`
 
                       return (
-                        <div key={index} className=''>
-                          {isFree ? (
-                            isFirst ? (
-                              <div>
-                                FREE for the first {numLabel} per {interval}
-                              </div>
-                            ) : (
-                              <div>
-                                $
-                                {pricingAmountToFixedString(
-                                  hasUnitAmount
-                                    ? tier.unitAmount!
-                                    : tier.flatAmount!
-                                )}{' '}
-                                {hasUnitAmount ? `per request ` : ''}up to{' '}
-                                {numLabel}
-                              </div>
-                            )
-                          ) : (
-                            <div>
-                              $
-                              {pricingAmountToFixedString(
-                                hasUnitAmount
-                                  ? tier.unitAmount!
-                                  : tier.flatAmount!
-                              )}{' '}
-                              {hasUnitAmount ? `per request ` : ''}up to{' '}
-                              {numLabel}
-                            </div>
-                          )}
+                        <div
+                          key={index}
+                          className='flex flex-row items-center gap-2 text-sm text-secondary-foreground/80'
+                        >
+                          <CornerDownRightIcon className='size-4' />
+
+                          <span>{numDesc}</span>
                         </div>
                       )
                     })}
@@ -154,38 +156,49 @@ export function ProjectPricingPlan({
               </div>
             )}
 
+            {isFreePlan && (
+              <p className='text-pretty text-sm text-secondary-foreground/80'>
+                Try before you buy. 100% free!
+              </p>
+            )}
+
+            {requestsRateLimit?.enabled && (
+              <div className='flex flex-row items-center gap-2 text-sm text-secondary-foreground/80'>
+                {isFreePlan ? (
+                  <ShieldMinusIcon aria-hidden className='size-4' />
+                ) : (
+                  <ShieldCheckIcon aria-hidden className='size-4' />
+                )}
+
+                <span>
+                  {isFreePlan ? 'Limited' : 'Rate-limited'} to{' '}
+                  {requestsRateLimit.limit} requests per{' '}
+                  {getRateLimitIntervalLabel(requestsRateLimit.interval)}
+                </span>
+              </div>
+            )}
+
             {plan.features && (
               <div className='flex flex-col gap-2'>
                 <h4 className='text-sm/6 font-medium'>Features:</h4>
 
-                <ul className='space-y-1'>
+                <ul className='ml-4 flex flex-col gap-2 list-disc'>
                   {plan.features.map((feature, index) => (
                     <li
                       key={index}
-                      className='group flex flex-row items-start gap-2 text-sm/6 data-[disabled]:text-gray-400'
+                      className='flex flex-row items-center gap-2 text-sm text-secondary-foreground/80'
                     >
-                      <span className='inline-flex h-6 items-center'>
-                        <PlusIcon
-                          aria-hidden='true'
-                          className='size-4 fill-gray-400 group-data-[disabled]:fill-gray-300'
-                        />
-                      </span>
+                      <PlusIcon aria-hidden className='size-4' />
 
-                      {feature}
+                      <span>{feature}</span>
                     </li>
                   ))}
                 </ul>
               </div>
             )}
 
-            {plan.slug === 'free' && (
-              <p className='text-pretty text-xs/5 text-gray-400'>
-                Try before you buy. 100% free!
-              </p>
-            )}
-
             {requestsLineItem?.billingScheme === 'tiered' && (
-              <p className='text-pretty text-xs/5 text-gray-400'>
+              <p className='text-pretty text-xs/5 text-muted-foreground'>
                 {requestsLineItem.tiersMode === 'graduated' ? (
                   <>
                     Requests pricing tiers use{' '}

@@ -1,4 +1,5 @@
 import { type ClassValue, clsx } from 'clsx'
+import prettyMs from 'pretty-ms'
 import { twMerge } from 'tailwind-merge'
 
 export { default as humanNumber } from 'human-number'
@@ -27,4 +28,40 @@ export function pricingAmountToFixedString(amount: number): string {
   }
 
   return output
+}
+
+export function getRateLimitIntervalLabel(rateLimitInterval: number): string {
+  const label = prettyMs(rateLimitInterval * 1000, {
+    verbose: true
+  })
+
+  if (label === '1 second') {
+    return 'second'
+  }
+
+  if (label === '1 minute') {
+    return 'minute'
+  }
+
+  if (label === '1 hour') {
+    return 'hour'
+  }
+
+  if (label === '1 day') {
+    return 'day'
+  }
+
+  if (label === '1 week') {
+    return 'week'
+  }
+
+  if (label === '1 month') {
+    return 'month'
+  }
+
+  if (label === '1 year') {
+    return 'year'
+  }
+
+  return label
 }

@@ -575,7 +575,7 @@ function ProjectHeader({
           <HeroButton
             heroVariant='orange'
             className='justify-self-end'
-            disabled={tab === 'pricing'}
+            disabled={tab === 'pricing' && !!ctx?.isAuthenticated}
             asChild={tab !== 'pricing'}
           >
             <Link
