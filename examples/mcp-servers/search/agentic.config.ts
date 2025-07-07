@@ -60,19 +60,19 @@ export default defineConfig({
             },
             {
               upTo: 50_000,
-              unitAmount: 0.01
+              unitAmount: 0.1
             },
             {
               upTo: 500_000,
-              unitAmount: 0.008
+              unitAmount: 0.08
             },
             {
               upTo: 2_500_000,
-              unitAmount: 0.006
+              unitAmount: 0.06
             },
             {
               upTo: 'inf',
-              unitAmount: 0.005
+              unitAmount: 0.05
             }
           ]
         }

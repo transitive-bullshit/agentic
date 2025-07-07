@@ -210,7 +210,7 @@ export default defineConfig({
         {
           slug: 'base',
           usageType: 'licensed',
-          // $1 USD base price per month
+          // $10.00 USD base price per month
           amount: 1000 // in cents
         },
         {
@@ -225,28 +225,28 @@ export default defineConfig({
               unitAmount: 0 // in cents
             },
             {
-              // After 10k requests, it costs $0.0001 USD per request up to
+              // After 10k requests, it costs $0.001 USD per request up to
               // 50k requests per month
               upTo: 50_000,
-              unitAmount: 0.01 // in cents
+              unitAmount: 0.1 // in cents
             },
             {
-              // After 50k requests, it costs $0.00008 USD per request up to
+              // After 50k requests, it costs $0.0008 USD per request up to
               // 500k requests per month
               upTo: 500_000,
-              unitAmount: 0.008
+              unitAmount: 0.08
             },
             {
-              // After 500k requests, it costs $0.00006 USD per request up to
+              // After 500k requests, it costs $0.0006 USD per request up to
               // 2.5M requests per month
               upTo: 2_500_000,
-              unitAmount: 0.006
+              unitAmount: 0.06
             },
             {
-              // After 2.5M requests, it costs $0.00005 USD per request, with
+              // After 2.5M requests, it costs $0.0005 USD per request, with
               // no upper bound set
               upTo: 'inf',
-              unitAmount: 0.005
+              unitAmount: 0.05
             }
           ]
         }
@@ -299,7 +299,7 @@ export default defineConfig({
         {
           "slug": "base",
           "usageType": "licensed",
-          // $1 USD base price per month
+          // $10.00 USD base price per month
           "amount": 1000 // in cents
         },
         {
@@ -314,28 +314,28 @@ export default defineConfig({
               "unitAmount": 0 // in cents
             },
             {
-              // After 10k requests, it costs $0.0001 USD per request up to
+              // After 10k requests, it costs $0.001 USD per request up to
               // 50k requests per month
               "upTo": 50000,
-              "unitAmount": 0.01 // in cents
+              "unitAmount": 0.1 // in cents
             },
             {
-              // After 50k requests, it costs $0.00008 USD per request up to
+              // After 50k requests, it costs $0.0008 USD per request up to
               // 500k requests per month
               "upTo": 500000,
-              "unitAmount": 0.008
+              "unitAmount": 0.08
             },
             {
-              // After requests, it costs $0.00006 USD per request up to
+              // After requests, it costs $0.0006 USD per request up to
               // 2.5M requests per month
               "upTo": 2500000,
-              "unitAmount": 0.006
+              "unitAmount": 0.06
             },
             {
-              // After 2.5M requests, it costs $0.00005 USD per request, with
+              // After 2.5M requests, it costs $0.0005 USD per request, with
               // no upper bound set
               "upTo": "inf",
-              "unitAmount": 0.005
+              "unitAmount": 0.05
             }
           ]
         }
