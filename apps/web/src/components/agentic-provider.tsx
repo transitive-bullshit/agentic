@@ -18,7 +18,7 @@ import { useLocalStorage } from 'react-use'
 
 import * as config from '@/lib/config'
 
-type AgenticContextType = {
+export type AgenticContextType = {
   api: AgenticApiClient
   isAuthenticated: boolean
   logout: () => void

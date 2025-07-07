@@ -2,12 +2,11 @@ import 'dotenv/config'
 
 import { createAISDKTools } from '@agentic/ai-sdk'
 import { AgenticToolClient } from '@agentic/platform-tool-client'
-import { createOpenAI } from '@ai-sdk/openai'
+import { openai } from '@ai-sdk/openai'
 import { generateText } from 'ai'
 
 async function main() {
   const searchTool = await AgenticToolClient.fromIdentifier('@agentic/search')
-  const openai = createOpenAI({ compatibility: 'strict' })
 
   const result = await generateText({
     model: openai('gpt-4o-mini'),

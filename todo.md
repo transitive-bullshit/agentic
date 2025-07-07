@@ -10,9 +10,6 @@
     - double check stripe upgrade flow and add fireworks
     - improve upgrade flow UX
     - should we bypass stripe for `free` plans to increase conversions?
-  - example usage
-    - double check example usage for all TS sdks now that real examples are working
-    - fix mcp examples
   - **replace json pricing plans and consumers with actual designs**
 - double-check free-tier rate-limits for `@agentic/search`
 - docs: add notes about constraints on mcp origin servers (static tools)
@@ -24,7 +21,6 @@
   - tool input/output schemas; move `$schema` to the top
   - break out into a few subcomponents; some can be server components
   - mcp inspector
-  - subscribe button should link to sign up if not logged in with next to pricing tab
 - improve private project page
   - link to public page if published
   - list deployment versions

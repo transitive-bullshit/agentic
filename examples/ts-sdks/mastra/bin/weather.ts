@@ -10,9 +10,9 @@ async function main() {
 
   const weatherAgent = new Agent({
     name: 'Weather Agent',
-    instructions: 'You are a helpful assistant. Be as concise as possible.',
     model: openai('gpt-4o-mini'),
-    tools: createMastraTools(searchTool)
+    tools: createMastraTools(searchTool),
+    instructions: 'You are a helpful assistant. Be as concise as possible.'
   })
 
   const res = await weatherAgent.generate(

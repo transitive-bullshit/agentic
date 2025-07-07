@@ -109,7 +109,7 @@ catalogs:
       specifier: ^2.1.7
       version: 2.1.7
     '@radix-ui/react-slot':
-      specifier: ^1.2.3
+      specifier: 1.2.3
       version: 1.2.3
     '@radix-ui/react-tabs':
       specifier: ^1.1.12
@@ -866,6 +866,9 @@ importers:
       hast-util-to-jsx-runtime:
         specifier: 'catalog:'
         version: 2.3.6
+      human-number:
+        specifier: ^2.0.4
+        version: 2.0.4
       ky:
         specifier: 'catalog:'
         version: 1.8.1
@@ -887,6 +890,9 @@ importers:
       posthog-js:
         specifier: 'catalog:'
         version: 1.255.0
+      pretty-ms:
+        specifier: ^9.2.0
+        version: 9.2.0
       react:
         specifier: 'catalog:'
         version: 19.1.0
@@ -936,6 +942,9 @@ importers:
       '@tailwindcss/typography':
         specifier: 'catalog:'
         version: 0.5.16(tailwindcss@4.1.11)
+      '@types/human-number':
+        specifier: ^1.0.2
+        version: 1.0.2
       '@types/react':
         specifier: 'catalog:'
         version: 19.1.8
@@ -6031,6 +6040,9 @@ packages:
   '@types/http-cache-semantics@4.0.4':
     resolution: {integrity: sha512-1m0bIFVc7eJWyve9S0RnuRgcQqF/Xd5QsUZAZeQFr1Q3/p9JWoQQEqmVy+DPTNpGXwhgIetAoYF8JSc33q29QA==}
 
+  '@types/human-number@1.0.2':
+    resolution: {integrity: sha512-Xm2hW0MXOjX/IOrRv8IRLycwVz23cU51b3fUn3Km5q8+4oM88uJaZ36dD1S0qINg92jhfQm7iEuAxZefIIffYg==}
+
   '@types/js-cookie@2.2.7':
     resolution: {integrity: sha512-aLkWa0C0vO5b4Sr798E26QgOkss68Un0bLjs7u9qxzPT5CG+8DuNTffWES58YzJs3hrVAOs1wonycqEBqNJubA==}
 
@@ -8381,6 +8393,10 @@ packages:
     resolution: {integrity: sha512-vK9P5/iUfdl95AI+JVyUuIcVtd4ofvtrOr3HNtM2yxC9bnMbEdp3x01OhQNnjb8IJYi38VlTE3mBXwcfvywuSw==}
     engines: {node: '>= 14'}
 
+  human-number@2.0.4:
+    resolution: {integrity: sha512-OENvA941poJU1VGR6s5Nf/GpYNPE+81lmHkIVLO9FgiyHxB+BSlVOJV3lnItk5tfHzcEbZv3kTQrzpZK0+ExRA==}
+    engines: {node: '>= 8'}
+
   human-signals@2.1.0:
     resolution: {integrity: sha512-B4FFZ6q/T2jhhksgkbEW3HBvWIfDW85snkQgawt07S7J5QXTk6BkNV+0yAeZrM5QpMAdYlocGoljn0sJ/WQkFw==}
     engines: {node: '>=10.17.0'}
@@ -10624,6 +10640,10 @@ packages:
     resolution: {integrity: sha512-x8H8aPvD+xbl0Do8oez5f5o8eMS3trfCghc4HhLAnCkj7Vl0d1JWGs0UF/D886zLW2rOj2QymV/JcSSsw+XDNg==}
     engines: {node: '>=18.0.0', npm: '>=8.0.0'}
     hasBin: true
+
+  round-to@5.0.0:
+    resolution: {integrity: sha512-i4+Ntwmo5kY7UWWFSDEVN3RjT2PX1FqkZ9iCcAO3sKML3Ady9NgsjM/HLdYKUAnrxK4IlSvXzpBMDvMHZQALRQ==}
+    engines: {node: '>=10'}
 
   router@2.2.0:
     resolution: {integrity: sha512-nLTrUKm2UyiL7rlhapu/Zl45FwNgkZGaCpZbIHajDYgwlJCOzLSk+cIPAnsEqV955GjILJnKbdQC1nVPz+gAYQ==}
@@ -17539,6 +17559,8 @@ snapshots:
 
   '@types/http-cache-semantics@4.0.4': {}
 
+  '@types/human-number@1.0.2': {}
+
   '@types/js-cookie@2.2.7': {}
 
   '@types/json-schema@7.0.15': {}
@@ -20304,6 +20326,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  human-number@2.0.4:
+    dependencies:
+      round-to: 5.0.0
+
   human-signals@2.1.0: {}
 
   human-signals@8.0.1: {}
@@ -22947,6 +22973,8 @@ snapshots:
       '@rollup/rollup-win32-ia32-msvc': 4.44.1
       '@rollup/rollup-win32-x64-msvc': 4.44.1
       fsevents: 2.3.3
+
+  round-to@5.0.0: {}
 
   router@2.2.0:
     dependencies:

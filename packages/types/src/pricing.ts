@@ -246,8 +246,9 @@ export const pricingPlanMeteredLineItemSchema =
 
       /**
        * Optionally apply a transformation to the reported usage or set
-       * quantity before computing the amount billed. Cannot be combined
-       * with `tiers`.
+       * quantity before computing the amount billed.
+       *
+       * Cannot be combined with `tiers`.
        */
       transformQuantity: z
         .object({

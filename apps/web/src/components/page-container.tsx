@@ -2,10 +2,12 @@ import { cn } from '@/lib/utils'
 
 export function PageContainer({
   background = true,
+  compact = false,
   className,
   children
 }: {
   background?: boolean
+  compact?: boolean
   className?: string
   children: React.ReactNode
 }) {
@@ -18,6 +20,7 @@ export function PageContainer({
       <div
         className={cn(
           'relative w-full flex-1 flex flex-col items-center max-w-[1200px] gap-16 z-10',
+          compact ? 'pt-4' : 'pt-8',
           className
         )}
       >

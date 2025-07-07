@@ -101,8 +101,15 @@ export type PricingPlanToolOverride = z.infer<
 export const toolConfigExampleSchema = z.object({
   /**
    * The display name of the example.
+   *
+   * If not given, defaults to `Example 1`, `Example 2`, etc.
    */
-  name: z.string().describe('The display name of the example.'),
+  name: z
+    .string()
+    .optional()
+    .describe(
+      'The display name of the example. If not given, defaults to `Example 1`, `Example 2`, etc.'
+    ),
 
   /**
    * The input prompt for agents to use when running this example.

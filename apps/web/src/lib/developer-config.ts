@@ -317,6 +317,7 @@ const result = await generateText({
   model: openai('gpt-4o-mini'),
   tools: createAISDKTools(searchTool),
   toolChoice: 'required',
+  system: '${systemPrompt}',
   prompt: '${prompt}'
 })
 
@@ -416,9 +417,10 @@ const searchTool = await AgenticToolClient.fromIdentifier('${identifier}'${
             : ''
         })
 
+const tools = createLangChainTools(searchTool)
 const agent = createToolCallingAgent({
   llm: new ChatOpenAI({ model: 'gpt-4o-mini' }),
-  tools: createLangChainTools(searchTool),
+  tools,
   prompt: ChatPromptTemplate.fromMessages([
     ['placeholder', '{chat_history}'],
     ['human', '{input}'],

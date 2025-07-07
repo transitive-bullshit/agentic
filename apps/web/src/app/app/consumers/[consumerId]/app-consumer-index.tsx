@@ -8,6 +8,7 @@ import { toast } from 'sonner'
 import { useAuthenticatedAgentic } from '@/components/agentic-provider'
 import { useConfettiFireworks } from '@/components/confetti'
 import { LoadingIndicator } from '@/components/loading-indicator'
+import { PageContainer } from '@/components/page-container'
 import { Button } from '@/components/ui/button'
 import { toastError } from '@/lib/notifications'
 import { useQuery } from '@/lib/query-client'
@@ -93,38 +94,42 @@ export function AppConsumerIndex({ consumerId }: { consumerId: string }) {
   }, [ctx, consumer])
 
   return (
-    <section className='flex flex-col gap-16'>
-      {!ctx || isLoading ? (
-        <LoadingIndicator />
-      ) : isError ? (
-        <p>Error fetching customer subscription "{consumerId}"</p>
-      ) : !consumer ? (
-        <p>Customer subscription "{consumerId}" not found</p>
-      ) : (
-        <>
-          <h1
-            className='text-center text-balance leading-snug md:leading-none
+    <PageContainer>
+      <section className='flex flex-col gap-16'>
+        {!ctx || isLoading ? (
+          <LoadingIndicator />
+        ) : isError ? (
+          <p>Error fetching customer subscription "{consumerId}"</p>
+        ) : !consumer ? (
+          <p>Customer subscription "{consumerId}" not found</p>
+        ) : (
+          <>
+            <h1
+              className='text-center text-balance leading-snug md:leading-none
         text-4xl font-extrabold'
-          >
-            Subscription to {consumer.project.name}
-          </h1>
+            >
+              Subscription to {consumer.project.name}
+            </h1>
 
-          <div className=''>
-            <pre className='max-w-lg'>{JSON.stringify(consumer, null, 2)}</pre>
-          </div>
+            <div className=''>
+              <pre className='max-w-lg'>
+                {JSON.stringify(consumer, null, 2)}
+              </pre>
+            </div>
 
-          <Button
-            onClick={onManageSubscription}
-            disabled={isLoadingStripeBillingPortal}
-          >
-            {isLoadingStripeBillingPortal && (
-              <Loader2Icon className='animate-spin mr-2' />
-            )}
+            <Button
+              onClick={onManageSubscription}
+              disabled={isLoadingStripeBillingPortal}
+            >
+              {isLoadingStripeBillingPortal && (
+                <Loader2Icon className='animate-spin mr-2' />
+              )}
 
-            <span>Manage Subscription</span>
-          </Button>
-        </>
-      )}
-    </section>
+              <span>Manage Subscription</span>
+            </Button>
+          </>
+        )}
+      </section>
+    </PageContainer>
   )
 }

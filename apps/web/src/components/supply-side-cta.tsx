@@ -11,6 +11,9 @@ import { calendarBookingUrl, githubUrl } from '@/lib/config'
 import { useAgentic } from './agentic-provider'
 import { GitHubStarCounter } from './github-star-counter'
 
+const docsPublishingQuickStartUrl =
+  'https://docs.agentic.so/publishing/quickstart'
+
 export function SupplySideCTA({
   variant = 'github',
   heroVariant = 'orange'
@@ -26,9 +29,9 @@ export function SupplySideCTA({
         <Link
           href={
             ctx?.isAuthenticated
-              ? 'https://docs.agentic.so/publishing/quickstart'
+              ? docsPublishingQuickStartUrl
               : `/signup?${sanitizeSearchParams({
-                  next: 'https://docs.agentic.so/publishing/quickstart'
+                  next: docsPublishingQuickStartUrl
                 })}`
           }
         >

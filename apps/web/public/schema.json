@@ -463,7 +463,7 @@
               "properties": {
                 "name": {
                   "type": "string",
-                  "description": "The display name of the example."
+                  "description": "The display name of the example. If not given, defaults to `Example 1`, `Example 2`, etc."
                 },
                 "prompt": {
                   "type": "string",
@@ -488,7 +488,6 @@
                 }
               },
               "required": [
-                "name",
                 "prompt",
                 "args"
               ],
