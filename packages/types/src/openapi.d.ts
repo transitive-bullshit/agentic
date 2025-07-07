@@ -705,8 +705,8 @@ export interface components {
             };
             /** @description Examples of how to use this tool. Used to generate example usage in the tool's docs. */
             examples?: {
-                /** @description The display name of the example. */
-                name: string;
+                /** @description The display name of the example. If not given, defaults to `Example 1`, `Example 2`, etc. */
+                name?: string;
                 /** @description The input prompt for agents to use when running this example. */
                 prompt: string;
                 /** @description An optional system prompt for agents to use when running this example. Defaults to `You are a helpful assistant. Be as concise as possible.` */
