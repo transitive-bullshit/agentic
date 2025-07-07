@@ -133,3 +133,4 @@
 - support claude Desktop Extensions ([DXT](https://github.com/anthropics/dxt)) ([post](https://www.anthropic.com/engineering/desktop-extensions))
 - add mcp-remote to support stdio-only mcp clients like claude desktop
 - add docs on how to use with [chatgpt's mcp custom connectors](https://platform.openai.com/docs/mcp) ([requires pro account or team/enterprise/edu workspace](https://help.openai.com/en/articles/11487775-connectors-in-chatgpt#h_d2a53d4230))
+- add support for enterprise / custom / contact us pricing
