@@ -68,29 +68,27 @@ export function ProjectPricingPlan({
             {plan.description && <p>{plan.description}</p>}
 
             <div className='flex flex-row items-center gap-2'>
-              <div className='text-4xl font-semibold text-gray-950 leading-none py-2'>
+              <div className='text-4xl font-semibold leading-none py-2'>
                 $
                 {baseLineItem
                   ? pricingAmountToFixedString(baseLineItem.amount)
                   : 0}
               </div>
 
-              <div className='text-sm text-gray-600'>/ {interval}</div>
+              <div className='text-sm'>/ {interval}</div>
             </div>
 
             {requestsLineItem && plan.slug !== 'free' && (
               <div className='flex flex-col gap-2'>
-                <h4 className='text-sm/6 font-medium text-gray-950'>
-                  Requests:
-                </h4>
+                <h4 className='text-sm/6 font-medium'>Requests:</h4>
 
                 {requestsLineItem.billingScheme === 'per_unit' ? (
                   <div className='ml-2 flex flex-row items-center gap-2'>
-                    <div className='text-xl font-semibold text-gray-950 leading-none py-2'>
+                    <div className='text-xl font-semibold leading-none py-2'>
                       ${pricingAmountToFixedString(requestsLineItem.unitAmount)}
                     </div>
 
-                    <div className='text-sm text-gray-600'>
+                    <div className='text-sm'>
                       /{' '}
                       {requestsLineItem.transformQuantity
                         ? `${requestsLineItem.transformQuantity.divideBy} ${plur('request', requestsLineItem.transformQuantity.divideBy)}`
@@ -158,15 +156,13 @@ export function ProjectPricingPlan({
 
             {plan.features && (
               <div className='flex flex-col gap-2'>
-                <h4 className='text-sm/6 font-medium text-gray-950'>
-                  Features:
-                </h4>
+                <h4 className='text-sm/6 font-medium'>Features:</h4>
 
                 <ul className='space-y-1'>
                   {plan.features.map((feature, index) => (
                     <li
                       key={index}
-                      className='group flex flex-row items-start gap-2 text-sm/6 text-gray-600 data-[disabled]:text-gray-400'
+                      className='group flex flex-row items-start gap-2 text-sm/6 data-[disabled]:text-gray-400'
                     >
                       <span className='inline-flex h-6 items-center'>
                         <PlusIcon

@@ -5,5 +5,12 @@ export default defineConfig({
   origin: {
     type: 'mcp',
     url: 'https://agentic-basic-mcp-test.onrender.com/mcp'
-  }
+  },
+
+  toolConfigs: [
+    {
+      name: 'add',
+      pure: true
+    }
+  ]
 })
