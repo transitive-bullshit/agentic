@@ -1,0 +1,86 @@
+---
+title: TypeScript ModelFetch
+description: This guide will show you how to publish an MCP server to Agentic using ModelFetch.
+---
+
+[ModelFetch](https://www.modelfetch.com) is a TypeScript/JavaScript SDK designed for building and deploying MCP servers across multiple runtime environments.
+
+## 1. Create a ModelFetch MCP server
+
+<Info>
+  **Prerequisite**: Please install [Node.js](https://nodejs.org) before
+  proceeding.
+</Info>
+
+```bash
+npx -y create-modelfetch@latest
+```
+
+Follow the interactive prompts to:
+1. **Choosing a runtime** - Node.js, Bun, Deno, Cloudflare Workers, or Vercel Functions
+2. **Selecting a language** - TypeScript or JavaScript
+3. **Picking a package manager** - npm, pnpm, bun, or yarn
+
+Then navigate to your project:
+
+```bash
+cd my-mcp-server
+```
+
+## 2. Implement your MCP server
+
+Edit the server file to add your MCP tools, resources, and prompts:
+
+```ts server.ts
+import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
+import { z } from 'zod'
+
+const server = new McpServer({
+  title: 'My MCP Server',
+  name: 'my-mcp-server',
+  version: '1.0.0',
+})
+
+server.registerTool(
+  'add',
+  {
+    title: 'Add Numbers',
+    description: 'Add two numbers together',
+    inputSchema: {
+      a: z.number(),
+      b: z.number(),
+    },
+  },
+  ({ a, b }) => ({
+    content: [{
+      type: 'text',
+      text: `${a} + ${b} = ${a + b}`,
+    }],
+  })
+)
+
+export default server
+```
+
+<Note>
+  [ModelFetch](https://www.modelfetch.com) uses the [official MCP TypeScript SDK](https://github.com/modelcontextprotocol/typescript-sdk) and provides runtime-specific handlers for different platforms.
+</Note>
+
+## 3. Deploy your MCP server remotely
+
+ModelFetch supports multiple deployment targets. Deploy your server to any platforms that support these runtimes:
+
+- [Node.js](https://www.modelfetch.com/docs/runtimes/node)
+- [Bun](https://www.modelfetch.com/docs/runtimes/bun)
+- [Deno](https://www.modelfetch.com/docs/runtimes/deno)
+- [Cloudflare](https://www.modelfetch.com/docs/runtimes/cloudflare)
+- [Vercel](https://www.modelfetch.com/docs/runtimes/vercel)
+
+<Warning>
+  For development, you can use [ngrok](https://ngrok.com) to temporarily expose your local server. Only
+  use this in a safe environment as it exposes your server to the internet.
+</Warning>
+
+## 4. Deploy your origin MCP server to Agentic
+
+Now that you have a publicly available MCP server, you can follow the [existing MCP server guide](/publishing/guides/existing-mcp-server) to deploy it to Agentic.
