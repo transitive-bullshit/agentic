@@ -30,7 +30,6 @@ import { defaultAgenticApiClient } from '@/lib/default-agentic-api-client'
 import { toast, toastError } from '@/lib/notifications'
 import { useQuery } from '@/lib/query-client'
 
-// import { MarketplacePublicProjectDetailNav } from './marketplace-nav'
 import {
   type MarketplacePublicProjectDetailTab,
   marketplacePublicProjectDetailTabsSet,
@@ -98,7 +97,7 @@ export function MarketplacePublicProjectDetail({
       if (!ctx.isAuthenticated) {
         return router.push(
           `/signup?${sanitizeSearchParams({
-            next: `/marketplace/projects/${projectIdentifier}?checkout=true&plan=${pricingPlanSlug}`
+            next: `/marketplace/projects/${projectIdentifier}?tab=pricing&checkout=true&plan=${pricingPlanSlug}`
           }).toString()}`
         )
       }
@@ -200,6 +199,23 @@ export function MarketplacePublicProjectDetail({
     return undefined
   }, [deployment])
 
+  const tools = useMemo(() => {
+    if (!deployment) return []
+    const toolConfigsMap = new Map(
+      deployment.toolConfigs.map((toolConfig) => [toolConfig.name, toolConfig])
+    )
+
+    return deployment.tools
+      .map((tool) => {
+        const toolConfig = toolConfigsMap.get(tool.name)
+        if (toolConfig?.enabled === false) return null
+
+        // TODO: add to tool if disabled on current pricing plan
+        return tool
+      })
+      .filter(Boolean)
+  }, [deployment])
+
   return (
     <PageContainer compact>
       <section>
@@ -298,8 +314,7 @@ export function MarketplacePublicProjectDetail({
                                     </li>
                                   ))}
 
-                                {deployment.tools.length >
-                                  MAX_TOOLS_TO_SHOW && (
+                                {tools.length > MAX_TOOLS_TO_SHOW && (
                                   <li>
                                     <Button
                                       asChild
@@ -363,7 +378,7 @@ export function MarketplacePublicProjectDetail({
 
                     {deployment && (
                       <ul className='flex flex-col gap-4'>
-                        {deployment.tools.map((tool) => (
+                        {tools.map((tool) => (
                           <li
                             key={tool.name}
                             className='p-4 border rounded-sm w-full flex flex-col gap-4'

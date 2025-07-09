@@ -22,5 +22,19 @@ export default defineConfig({
   readme:
     'https://raw.githubusercontent.com/github/github-mcp-server/refs/heads/main/README.md',
   sourceUrl: 'https://github.com/github/github-mcp-server',
-  homepageUrl: 'https://github.com'
+  homepageUrl: 'https://github.com',
+  toolConfigs: [
+    {
+      name: 'get_me',
+      examples: [
+        {
+          featured: true,
+          prompt: 'Get my github user information',
+          args: {
+            reason: 'github hack night!'
+          }
+        }
+      ]
+    }
+  ]
 })
