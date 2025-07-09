@@ -11,6 +11,7 @@ export type DurableMcpClientInfo = {
   url: string
   name: string
   version: string
+  headers?: Record<string, string>
 }
 
 // TODO: not sure if there's a better way to handle re-using client connections
@@ -60,7 +61,15 @@ export class DurableMcpClientBase extends DurableObject<RawEnv> {
       version
     })
 
-    const transport = new StreamableHTTPClientTransport(new URL(url))
+    // console.log('DurableMcpClient.ensureClientConnection', {
+    //   url,
+    //   headers: mcpClientInfo.headers
+    // })
+    const transport = new StreamableHTTPClientTransport(new URL(url), {
+      requestInit: {
+        headers: mcpClientInfo.headers
+      }
+    })
     this.clientConnectionP = this.client.connect(transport)
     await this.clientConnectionP
   }

@@ -32,6 +32,7 @@ for (const [i, fixtureSuite] of fixtureSuites.entries()) {
         version: '0.0.0'
       })
 
+      // TODO: add origin requestInit headers
       const transport = new StreamableHTTPClientTransport(
         new URL(fixtureSuite.path, env.AGENTIC_GATEWAY_BASE_URL)
       )

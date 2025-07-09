@@ -6,7 +6,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/transitive-bullshit/agentic.git",
-    "directory": "examples/search"
+    "directory": "examples/mcp-servers/search"
   },
   "type": "module",
   "source": "./src/worker.ts",

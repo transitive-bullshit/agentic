@@ -244,7 +244,7 @@ catalogs:
       specifier: ^6.0.0
       version: 6.0.0
     dotenv:
-      specifier: ^17.0.1
+      specifier: 17.0.1
       version: 17.0.1
     drizzle-kit:
       specifier: ^0.31.4
@@ -972,6 +972,15 @@ importers:
       '@agentic/platform':
         specifier: workspace:*
         version: link:../../../packages/platform
+
+  examples/mcp-servers/github:
+    dependencies:
+      '@agentic/platform':
+        specifier: workspace:*
+        version: link:../../../packages/platform
+      dotenv:
+        specifier: 'catalog:'
+        version: 17.0.1
 
   examples/mcp-servers/search:
     dependencies:

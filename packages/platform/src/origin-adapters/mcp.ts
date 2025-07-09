@@ -26,8 +26,13 @@ export async function resolveMCPOriginAdapter({
     400,
     `Invalid origin adapter type "${origin.type}" for ${label}`
   )
-  const transport = new StreamableHTTPClientTransport(new URL(origin.url))
+  const transport = new StreamableHTTPClientTransport(new URL(origin.url), {
+    requestInit: {
+      headers: origin.headers
+    }
+  })
   const client = new McpClient({ name, version })
+
   try {
     await client.connect(transport)
   } catch (err: any) {

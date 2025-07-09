@@ -1,12 +1,12 @@
 {
-  "name": "@agentic/examples-mcps-context7",
+  "name": "@agentic/examples-mcps-github",
   "private": true,
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "UNLICENSED",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/transitive-bullshit/agentic.git",
-    "directory": "examples/mcp-servers/context7"
+    "directory": "examples/mcp-servers/github"
   },
   "type": "module",
   "source": "./src/worker.ts",
@@ -15,6 +15,7 @@
     "test:typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@agentic/platform": "workspace:*"
+    "@agentic/platform": "workspace:*",
+    "dotenv": "catalog:"
   }
 }

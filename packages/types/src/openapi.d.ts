@@ -930,6 +930,9 @@ export interface components {
             url: string;
             /** @enum {string} */
             type: "mcp";
+            headers?: {
+                [key: string]: string;
+            };
         } | {
             /**
              * @default external
@@ -1018,6 +1021,9 @@ export interface components {
             url: string;
             /** @enum {string} */
             type: "mcp";
+            headers?: {
+                [key: string]: string;
+            };
             serverInfo: {
                 name: string;
                 version: string;

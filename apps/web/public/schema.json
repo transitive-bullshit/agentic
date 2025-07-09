@@ -82,6 +82,12 @@
             "type": {
               "type": "string",
               "const": "mcp"
+            },
+            "headers": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
             }
           },
           "required": [
