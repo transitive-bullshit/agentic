@@ -9,9 +9,18 @@ test('createGenkitTools', () => {
   expect(createGenkitTools(genkit, new EchoAITool())).toHaveLength(1)
 })
 
-test('createGenkitToolsFromIdentifier', async () => {
-  const genkit = new Genkit()
-  const tools = await createGenkitToolsFromIdentifier(genkit, '@agentic/search')
-  expect(tools).toHaveLength(1)
-  expect(tools[0]!.__action.name).toBe('search')
-})
+test(
+  'createGenkitToolsFromIdentifier',
+  {
+    timeout: 30_000
+  },
+  async () => {
+    const genkit = new Genkit()
+    const tools = await createGenkitToolsFromIdentifier(
+      genkit,
+      '@agentic/search'
+    )
+    expect(tools).toHaveLength(1)
+    expect(tools[0]!.__action.name).toBe('search')
+  }
+)

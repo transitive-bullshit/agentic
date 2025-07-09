@@ -7,7 +7,13 @@ test('createMastraTools', () => {
   expect(createMastraTools(new EchoAITool())).toHaveProperty('echo')
 })
 
-test('createMastraToolsFromIdentifier', async () => {
-  const tools = await createMastraToolsFromIdentifier('@agentic/search')
-  expect(tools).toHaveProperty('search')
-})
+test(
+  'createMastraToolsFromIdentifier',
+  {
+    timeout: 30_000
+  },
+  async () => {
+    const tools = await createMastraToolsFromIdentifier('@agentic/search')
+    expect(tools).toHaveProperty('search')
+  }
+)

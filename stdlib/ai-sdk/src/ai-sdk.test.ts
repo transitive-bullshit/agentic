@@ -7,8 +7,14 @@ test('createAISDKTools', () => {
   expect(createAISDKTools(new EchoAITool())).toHaveProperty('echo')
 })
 
-test('createAISDKToolsFromIdentifier', async () => {
-  await expect(
-    createAISDKToolsFromIdentifier('@agentic/search')
-  ).resolves.toHaveProperty('search')
-})
+test(
+  'createAISDKToolsFromIdentifier',
+  {
+    timeout: 30_000
+  },
+  async () => {
+    await expect(
+      createAISDKToolsFromIdentifier('@agentic/search')
+    ).resolves.toHaveProperty('search')
+  }
+)

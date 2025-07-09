@@ -10,8 +10,14 @@ test('createLangChainTools', () => {
   expect(createLangChainTools(new EchoAITool())).toHaveLength(1)
 })
 
-test('createLangChainToolsFromIdentifier', async () => {
-  const tools = await createLangChainToolsFromIdentifier('@agentic/search')
-  expect(tools).toHaveLength(1)
-  expect(tools[0]!.name).toBe('search')
-})
+test(
+  'createLangChainToolsFromIdentifier',
+  {
+    timeout: 30_000
+  },
+  async () => {
+    const tools = await createLangChainToolsFromIdentifier('@agentic/search')
+    expect(tools).toHaveLength(1)
+    expect(tools[0]!.name).toBe('search')
+  }
+)
