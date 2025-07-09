@@ -364,35 +364,35 @@ exports[`loadAgenticConfig > everything-openapi 1`] = `
 }
 `;
 
-exports[`loadAgenticConfig > invalid: invalid-metadata-0 1`] = `[ZodValidationError: Validation error: Expected string, received boolean at "icon"]`;
+exports[`loadAgenticConfig > invalid: invalid-metadata-0 1`] = `[ZodValidationError: Expected string at "icon"]`;
 
 exports[`loadAgenticConfig > invalid: invalid-metadata-1 1`] = `[Error: Invalid "readme" (must be a URL or a path to a local file): "./not-found.md"]`;
 
-exports[`loadAgenticConfig > invalid: invalid-name-0 1`] = `[ZodValidationError: Validation error: Required at "name"]`;
+exports[`loadAgenticConfig > invalid: invalid-name-0 1`] = `[ZodValidationError: Expected string at "name"]`;
 
-exports[`loadAgenticConfig > invalid: invalid-name-1 1`] = `[ZodValidationError: Validation error: String must contain at most 1024 character(s) at "name"]`;
+exports[`loadAgenticConfig > invalid: invalid-name-1 1`] = `[ZodValidationError: Value must be less or equal to 1,024 at "name"]`;
 
-exports[`loadAgenticConfig > invalid: invalid-name-2 1`] = `[ZodValidationError: Validation error: String must contain at least 1 character(s) at "name"]`;
+exports[`loadAgenticConfig > invalid: invalid-name-2 1`] = `[ZodValidationError: Value must be greater or equal to 1 at "name"]`;
 
 exports[`loadAgenticConfig > invalid: invalid-origin-url-0 1`] = `[Error: Invalid originUrl: must be a valid https URL]`;
 
-exports[`loadAgenticConfig > invalid: invalid-origin-url-1 1`] = `[ZodValidationError: Validation error: Invalid url at "origin.url"]`;
+exports[`loadAgenticConfig > invalid: invalid-origin-url-1 1`] = `[TypeError: parseFunc is not a function]`;
 
-exports[`loadAgenticConfig > invalid: invalid-origin-url-2 1`] = `[ZodValidationError: Validation error: Required at "origin"]`;
+exports[`loadAgenticConfig > invalid: invalid-origin-url-2 1`] = `[ZodValidationError: Expected object at "origin"]`;
 
-exports[`loadAgenticConfig > invalid: invalid-origin-url-3 1`] = `[ZodValidationError: Validation error: Invalid url at "origin.url"]`;
+exports[`loadAgenticConfig > invalid: invalid-origin-url-3 1`] = `[TypeError: parseFunc is not a function]`;
 
-exports[`loadAgenticConfig > invalid: invalid-slug-0 1`] = `[ZodValidationError: Validation error: Invalid project slug at "slug"]`;
+exports[`loadAgenticConfig > invalid: invalid-slug-0 1`] = `[ZodValidationError: Invalid project slug at "slug"]`;
 
-exports[`loadAgenticConfig > invalid: invalid-slug-1 1`] = `[ZodValidationError: Validation error: Invalid project slug at "slug"]`;
+exports[`loadAgenticConfig > invalid: invalid-slug-1 1`] = `[ZodValidationError: Invalid project slug at "slug"]`;
 
-exports[`loadAgenticConfig > invalid: invalid-slug-2 1`] = `[ZodValidationError: Validation error: Invalid project slug at "slug"]`;
+exports[`loadAgenticConfig > invalid: invalid-slug-2 1`] = `[ZodValidationError: Invalid project slug at "slug"]`;
 
 exports[`loadAgenticConfig > invalid: invalid-slug-3 1`] = `[Error: Invalid project slug "" for project name " ". Must be ascii-only, lower-case, and kebab-case with no spaces between 1 and 256 characters. For example: "my-project" or "linkedin-resolver-23"]`;
 
-exports[`loadAgenticConfig > invalid: invalid-slug-4 1`] = `[ZodValidationError: Validation error: Invalid project slug at "slug"]`;
+exports[`loadAgenticConfig > invalid: invalid-slug-4 1`] = `[ZodValidationError: Invalid project slug at "slug"]`;
 
-exports[`loadAgenticConfig > invalid: pricing-base-inconsistent 1`] = `[ZodValidationError: Validation error: Invalid PricingPlanLineItem "base": reserved "base" LineItems must have "licensed" usage type. at "pricingPlans[1].lineItems[0]"]`;
+exports[`loadAgenticConfig > invalid: pricing-base-inconsistent 1`] = `[ZodValidationError: Invalid PricingPlanLineItem "base": reserved "base" LineItems must have "licensed" usage type. at "pricingPlans[1].lineItems[0]"]`;
 
 exports[`loadAgenticConfig > invalid: pricing-custom-inconsistent 1`] = `[Error: Invalid pricingPlans: all PricingPlans which contain the same LineItems (by slug "custom-test") must have the same usage type ("licensed" or "metered").]`;
 
@@ -400,11 +400,11 @@ exports[`loadAgenticConfig > invalid: pricing-duplicate-0 1`] = `[Error: Invalid
 
 exports[`loadAgenticConfig > invalid: pricing-duplicate-1 1`] = `[Error: Invalid pricingPlan "basic": duplicate line-item slugs]`;
 
-exports[`loadAgenticConfig > invalid: pricing-empty-0 1`] = `[ZodValidationError: Validation error: Must contain at least one pricing interval at "pricingIntervals"]`;
+exports[`loadAgenticConfig > invalid: pricing-empty-0 1`] = `[ZodValidationError: Value must be greater or equal to 1 at "pricingIntervals"]`;
 
-exports[`loadAgenticConfig > invalid: pricing-empty-1 1`] = `[ZodValidationError: Validation error: Array must contain at least 1 element(s) at "pricingPlans[0].lineItems"]`;
+exports[`loadAgenticConfig > invalid: pricing-empty-1 1`] = `[ZodValidationError: Value must be greater or equal to 1 at "pricingPlans[0].lineItems"]`;
 
-exports[`loadAgenticConfig > invalid: pricing-empty-2 1`] = `[ZodValidationError: Validation error: Must contain at least one PricingPlan at "pricingPlans"]`;
+exports[`loadAgenticConfig > invalid: pricing-empty-2 1`] = `[ZodValidationError: Value must be greater or equal to 1 at "pricingPlans"]`;
 
 exports[`loadAgenticConfig > metadata-0 1`] = `
 {

@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@agentic/platform": "workspace:*",
-    "@agentic/serper": "catalog:",
+    "@agentic/serper": "workspace:*",
     "@hono/mcp": "catalog:",
     "@modelcontextprotocol/sdk": "catalog:",
     "dotenv": "catalog:",

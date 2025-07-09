@@ -9,9 +9,7 @@ packages:
   - examples/ts-sdks/*
 
 catalog:
-  '@agentic/core': ^7.6.9
-  '@agentic/serper': ^7.6.9
-  '@ai-sdk/openai': ^1.3.22
+  '@ai-sdk/openai': ^1.3.23
   '@apideck/better-ajv-errors': ^0.3.6
   '@clack/prompts': ^0.11.0
   '@cloudflare/workers-types': ^4.20250620.0
@@ -19,7 +17,7 @@ catalog:
   '@date-fns/utc': ^2.1.0
   '@dicebear/collection': ^9.2.3
   '@dicebear/core': ^9.2.3
-  '@dotenvx/dotenvx': ^1.45.1
+  '@dotenvx/dotenvx': ^1.46.0
   '@edge-runtime/vm': ^5.0.0
   '@fisch0920/config': ^1.1.4
   '@fisch0920/drizzle-orm': ^0.43.7
@@ -27,7 +25,7 @@ catalog:
   '@fisch0920/markdown-to-html': ^1.1.0
   '@googleapis/customsearch': ^4.0.1
   '@hono/mcp': ^0.1.0
-  '@hono/node-server': ^1.14.4
+  '@hono/node-server': ^1.15.0
   '@hono/sentry': ^1.2.2
   '@hono/zod-openapi': ^0.19.9
   '@hono/zod-validator': ^0.7.0
@@ -37,7 +35,7 @@ catalog:
   '@llamaindex/workflow': ^1.1.9
   '@mastra/core': ^0.10.6
   '@mastra/schema-compat': ^0.10.3
-  '@modelcontextprotocol/sdk': ^1.13.2
+  '@modelcontextprotocol/sdk': ^1.15.0
   '@nangohq/node': 0.42.22
   '@number-flow/react': ^0.5.10
   '@paralleldrive/cuid2': ^2.2.2
@@ -50,33 +48,33 @@ catalog:
   '@radix-ui/react-tooltip': ^1.2.7
   '@react-email/components': ^0.1.1
   '@react-three/cannon': ^6.6.0
-  '@react-three/drei': ^10.2.0
-  '@react-three/fiber': ^9.1.2
+  '@react-three/drei': ^10.4.4
+  '@react-three/fiber': ^9.2.0
   '@react-three/postprocessing': ^3.0.4
   '@react-three/rapier': ^2.1.0
   '@redocly/openapi-core': ^1.34.3
   '@sentry/cli': ^2.46.0
-  '@sentry/cloudflare': ^9.33.0
-  '@sentry/core': ^9.33.0
-  '@sentry/node': ^9.33.0
+  '@sentry/cloudflare': ^9.35.0
+  '@sentry/core': ^9.35.0
+  '@sentry/node': ^9.35.0
   '@sindresorhus/slugify': ^2.2.1
   '@standard-schema/spec': ^1.0.0
   '@tailwindcss/postcss': ^4.1.11
   '@tailwindcss/typography': ^0.5.16
-  '@tanstack/react-form': ^1.12.3
+  '@tanstack/react-form': ^1.14.1
   '@tanstack/react-query': ^5.81.5
   '@tanstack/react-query-devtools': ^5.81.5
   '@types/canvas-confetti': ^1.9.0
   '@types/jsrsasign': ^10.5.15
   '@types/ms': ^2.1.0
-  '@types/node': ^24.0.7
+  '@types/node': ^24.0.10
   '@types/react': ^19.1.8
   '@types/react-dom': ^19.1.6
   '@types/semver': ^7.7.0
-  '@types/three': ^0.177.0
+  '@types/three': ^0.178.0
   '@xsai/tool': ^0.3.0-beta.4
-  agents: ^0.0.99
-  ai: ^4.3.15
+  agents: ^0.0.101
+  ai: ^4.3.17
   ajv: ^8.17.1
   ajv-formats: ^3.0.1
   autoprefixer: ^10.4.21
@@ -95,19 +93,19 @@ catalog:
   dedent: ^1.6.0
   del-cli: ^6.0.0
   delay: ^6.0.0
-  dotenv: ^16.5.0
+  dotenv: ^17.0.1
   drizzle-kit: ^0.31.4
   drizzle-orm: ^0.44.2
   duck-duck-scrape: ^2.2.7
   email-validator: ^2.0.4
-  eslint: ^9.30.0
+  eslint: ^9.30.1
   eslint-plugin-drizzle: ^0.2.3
   eventid: ^2.0.1
   exit-hook: ^4.0.0
   fast-content-type-parse: ^3.0.0
   fast-uri: ^3.0.6
   fast-xml-parser: ^5.2.5
-  fastmcp: ^3.6.2
+  fastmcp: ^3.8.2
   genkit: ^1.13.0
   genkitx-openai: ^0.22.3
   get-port: ^7.1.0
@@ -115,7 +113,7 @@ catalog:
   googleapis: ^150.0.1
   hash-object: ^5.0.1
   hast-util-to-jsx-runtime: ^2.3.6
-  hono: ^4.8.3
+  hono: ^4.8.4
   is-obj: ^3.0.0
   is-relative-url: ^4.0.0
   jsonrepair: ^3.12.0
@@ -127,10 +125,10 @@ catalog:
   llamaindex: ^0.11.8
   lucide-react: ^0.525.0
   mathjs: ^13.2.3
-  mint: ^4.1.97
+  mint: ^4.2.4
   motion: ^12.19.2
   ms: ^2.1.3
-  next: ^15.3.4
+  next: ^15.3.5
   next-themes: ^0.4.6
   npm-run-all2: ^8.0.4
   octokit: ^5.0.3
@@ -149,7 +147,7 @@ catalog:
   plur: ^5.1.0
   postcss: ^8.5.6
   postgres: ^3.4.7
-  posthog-js: ^1.255.0
+  posthog-js: ^1.256.2
   prettier: ^3.6.2
   react: ^19.1.0
   react-dom: ^19.1.0
@@ -164,14 +162,14 @@ catalog:
   server-only: ^0.0.1
   shiki: ^3.7.0
   simple-git-hooks: ^2.13.0
-  sonner: ^2.0.5
+  sonner: ^2.0.6
   sort-keys: ^5.1.0
   string-strip-html: ^13.4.12
   stripe: ^18.2.1
   suspend-react: ^0.1.3
   tailwind-merge: ^3.3.1
   tailwindcss: ^4.1.11
-  three: ^0.177.0
+  three: ^0.178.0
   tsup: ^8.5.0
   tsx: ^4.20.3
   turbo: ^2.5.4
@@ -183,11 +181,11 @@ catalog:
   vite-tsconfig-paths: ^5.1.4
   vitest: ^3.2.4
   wikibase-sdk: ^10.2.3
-  wrangler: ^4.22.0
+  wrangler: ^4.23.0
   xsai: ^0.3.0-beta.4
   zod: ^3.25.67
   zod-to-json-schema: ^3.24.5
-  zod-validation-error: ^3.5.2
+  zod-validation-error: 4.0.0-beta.1
   zoominfo-api-auth-client: ^1.0.1
 
 ignoredBuiltDependencies:

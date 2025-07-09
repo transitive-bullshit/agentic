@@ -5,14 +5,6 @@
 
 ## TODO: MVP
 
-- **website**
-  - stripe
-    - double check stripe upgrade flow and add fireworks
-    - improve upgrade flow UX
-    - should we bypass stripe for `free` plans to increase conversions?
-  - **replace json pricing plans and consumers with actual designs**
-- double-check free-tier rate-limits for `@agentic/search`
-- docs: add notes about constraints on mcp origin servers (static tools)
 - **api keys should go beyond 1:1 consumers**
 - **currently not obvious how to get api key**
 - marketplace public project detail page
@@ -23,14 +15,12 @@
   - mcp inspector
 - improve private project page
   - link to public page if published
-  - list deployment versions
+  - list deployments
 - **create agentic products for select legacy tools**
 - marketplace index page
-  - add disclaimer about public beta
   - add search / sorting
 - replace render for api and/or add turbo for caching (too slow to deploy)
 - create slack + notifications
-- consider changing homepage hero CTA to include publishing
 
 ## TODO: Post-MVP
 
@@ -45,6 +35,11 @@
     - projects may be public but not accepted into the marketplace?
     - => **punt on this for mvp**
 - **website**
+  - **replace consumers with actual designs**
+  - stripe
+    - double check stripe upgrade flow and add fireworks
+    - improve upgrade flow UX
+    - should we bypass stripe for `free` plans to increase conversions?
   - llms.txt and llms.txt for all projects
   - handle browser back/forward with `?next=`
   - add some social proof to signup page
@@ -134,3 +129,5 @@
 - add mcp-remote to support stdio-only mcp clients like claude desktop
 - add docs on how to use with [chatgpt's mcp custom connectors](https://platform.openai.com/docs/mcp) ([requires pro account or team/enterprise/edu workspace](https://help.openai.com/en/articles/11487775-connectors-in-chatgpt#h_d2a53d4230))
 - add support for enterprise / custom / contact us pricing
+- consider changing homepage hero CTA to include publishing
+- docs: add notes about constraints on mcp origin servers (static tools)

@@ -57,7 +57,7 @@ One of `day`, `week`, `month`, or `year`.
   Optional number of days for a free trial period when a customer signs up for a
   new subscription.
 
-[Stripe docs](https://docs.stripe.com/api/subscriptions/create?api-version=2025-05-28.preview#create_subscription-trial_period_days)
+[Stripe docs](https://docs.stripe.com/api/subscriptions/create?api-version=2025-06-30#create_subscription-trial_period_days)
 
 </ResponseField>
 
@@ -88,7 +88,7 @@ See [PricingPlanLineItem](#pricing-plan-line-item) for details.
 
 ## Pricing Plan Line Item
 
-Each Pricing Plan Line Item corresponds to one [Stripe Product](https://docs.stripe.com/api/products/object?api-version=2025-05-28.preview), one [Stripe Price](https://docs.stripe.com/api/prices/object?api-version=2025-05-28.preview), and possibly one [Stripe Meter](https://docs.stripe.com/api/billing/meter/object?api-version=2025-05-28.preview) if the line-item is `metered`.
+Each Pricing Plan Line Item corresponds to one [Stripe Product](https://docs.stripe.com/api/products/object?api-version=2025-06-30), one [Stripe Price](https://docs.stripe.com/api/prices/object?api-version=2025-06-30), and possibly one [Stripe Meter](https://docs.stripe.com/api/billing/meter/object?api-version=2025-06-30) if the line-item is `metered`.
 
 <ResponseField name='slug' type='string' required>
 Slugs act as the primary key for LineItems. They should be lower-cased and
@@ -143,7 +143,7 @@ Specified in the smallest currency unit (e.g. cents for USD).
 
 So 100 = \$1.00 USD, 1000 = \$10.00 USD, etc.
 
-[Stripe docs](https://docs.stripe.com/api/prices/create?api-version=2025-05-28.preview#create_price-unit_amount)
+[Stripe docs](https://docs.stripe.com/api/prices/create?api-version=2025-06-30#create_price-unit_amount)
 
 </ResponseField>
 </Tab>
