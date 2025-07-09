@@ -280,9 +280,7 @@ export function MarketplacePublicProjectDetail({
                       Overview
                     </h2>
 
-                    <div
-                      className={`grid grid-cols grid-cols-1 lg:grid-cols-2 gap-8 md:gap-4`}
-                    >
+                    <div className='grid grid-cols grid-cols-1 lg:grid-cols-2 gap-8 md:gap-4'>
                       <div className='flex flex-col gap-8'>
                         {deployment ? (
                           <>
