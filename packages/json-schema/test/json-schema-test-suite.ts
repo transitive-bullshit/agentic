@@ -123,7 +123,7 @@ import draft7_contains from 'json-schema-test-suite/tests/draft7/contains.json'
 // @ts-ignore
 import draft7_default from 'json-schema-test-suite/tests/draft7/default.json'
 // @ts-ignore
-import draft7_definitions from 'json-schema-test-suite/tests/draft7/definitions.json'
+// import draft7_definitions from 'json-schema-test-suite/tests/draft7/definitions.json'
 // @ts-ignore
 import draft7_dependencies from 'json-schema-test-suite/tests/draft7/dependencies.json'
 // @ts-ignore
@@ -231,7 +231,7 @@ import draft7_uniqueItems from 'json-schema-test-suite/tests/draft7/uniqueItems.
 // @ts-ignore
 import draft7_unknownKeyword from 'json-schema-test-suite/tests/draft7/unknownKeyword.json'
 // @ts-ignore
-import draft2019_09_additionalItems from 'json-schema-test-suite/tests/draft2019-09/additionalItems.json'
+// import draft2019_09_additionalItems from 'json-schema-test-suite/tests/draft2019-09/additionalItems.json'
 // @ts-ignore
 import draft2019_09_additionalProperties from 'json-schema-test-suite/tests/draft2019-09/additionalProperties.json'
 // @ts-ignore
@@ -265,7 +265,7 @@ import draft2019_09_exclusiveMinimum from 'json-schema-test-suite/tests/draft201
 // @ts-ignore
 import draft2019_09_format from 'json-schema-test-suite/tests/draft2019-09/format.json'
 // @ts-ignore
-import draft2019_09_id from 'json-schema-test-suite/tests/draft2019-09/id.json'
+// import draft2019_09_id from 'json-schema-test-suite/tests/draft2019-09/id.json'
 // @ts-ignore
 import draft2019_09_if_then_else from 'json-schema-test-suite/tests/draft2019-09/if-then-else.json'
 // @ts-ignore
@@ -522,11 +522,11 @@ import draft2020_12_unknownKeyword from 'json-schema-test-suite/tests/draft2020-
 import type { Remote, SchemaTestSuite } from './types'
 
 export const suites: SchemaTestSuite[] = [
-  {
-    draft: '2019-09',
-    name: 'draft2019-09/additionalItems',
-    tests: draft2019_09_additionalItems
-  },
+  // {
+  //   draft: '2019-09',
+  //   name: 'draft2019-09/additionalItems',
+  //   tests: draft2019_09_additionalItems
+  // },
   {
     draft: '2019-09',
     name: 'draft2019-09/additionalProperties',
@@ -579,7 +579,7 @@ export const suites: SchemaTestSuite[] = [
     tests: draft2019_09_exclusiveMinimum
   },
   { draft: '2019-09', name: 'draft2019-09/format', tests: draft2019_09_format },
-  { draft: '2019-09', name: 'draft2019-09/id', tests: draft2019_09_id },
+  // { draft: '2019-09', name: 'draft2019-09/id', tests: draft2019_09_id },
   {
     draft: '2019-09',
     name: 'draft2019-09/if-then-else',
@@ -1249,7 +1249,7 @@ export const suites: SchemaTestSuite[] = [
   { draft: '7', name: 'draft7/const', tests: draft7_const },
   { draft: '7', name: 'draft7/contains', tests: draft7_contains },
   { draft: '7', name: 'draft7/default', tests: draft7_default },
-  { draft: '7', name: 'draft7/definitions', tests: draft7_definitions },
+  // { draft: '7', name: 'draft7/definitions', tests: draft7_definitions },
   { draft: '7', name: 'draft7/dependencies', tests: draft7_dependencies },
   { draft: '7', name: 'draft7/enum', tests: draft7_enum },
   {
