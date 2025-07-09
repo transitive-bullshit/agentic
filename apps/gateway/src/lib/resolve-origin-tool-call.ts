@@ -260,7 +260,8 @@ export async function resolveOriginToolCall({
       await originMcpClient.init({
         url: deployment.origin.url,
         name: origin.serverInfo.name,
-        version: origin.serverInfo.version
+        version: origin.serverInfo.version,
+        headers: origin.headers
       })
 
       const originMcpRequestMetadata = {

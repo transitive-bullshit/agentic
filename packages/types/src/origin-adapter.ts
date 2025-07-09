@@ -69,7 +69,10 @@ export const mcpOriginAdapterConfigSchema = commonOriginAdapterSchema.merge(
     /**
      * MCP server.
      */
-    type: z.literal('mcp')
+    type: z.literal('mcp'),
+
+    // Optional headers to pass to the origin API server
+    headers: z.record(z.string(), z.string()).optional()
   })
 )
 export type MCPOriginAdapterConfig = z.infer<
@@ -200,6 +203,9 @@ export const mcpOriginAdapterSchema = commonOriginAdapterSchema.merge(
      * MCP server.
      */
     type: z.literal('mcp'),
+
+    // Optional headers to pass to the origin API server
+    headers: z.record(z.string(), z.string()).optional(),
 
     /**
      * MCP server info: name, version, capabilities, instructions, etc.
