@@ -1,6 +1,6 @@
 {
   "name": "@agentic/platform",
-  "version": "8.4.2",
+  "version": "8.4.3",
   "description": "Public SDK for developers building on top of the Agentic platform.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "AGPL-3.0",

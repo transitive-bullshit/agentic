@@ -1,6 +1,6 @@
 {
   "name": "@agentic/platform-validators",
-  "version": "8.4.2",
+  "version": "8.4.3",
   "description": "Validation utils for core strings and identifiers used across the Agentic platform.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "AGPL-3.0",
