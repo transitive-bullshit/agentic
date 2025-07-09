@@ -17,6 +17,7 @@ npx -y create-modelfetch@latest
 ```
 
 Follow the interactive prompts to:
+
 1. **Choosing a runtime** - Node.js, Bun, Deno, Cloudflare Workers, or Vercel Functions
 2. **Selecting a language** - TypeScript or JavaScript
 3. **Picking a package manager** - npm, pnpm, bun, or yarn
@@ -38,7 +39,7 @@ import { z } from 'zod'
 const server = new McpServer({
   title: 'My MCP Server',
   name: 'my-mcp-server',
-  version: '1.0.0',
+  version: '1.0.0'
 })
 
 server.registerTool(
@@ -48,14 +49,16 @@ server.registerTool(
     description: 'Add two numbers together',
     inputSchema: {
       a: z.number(),
-      b: z.number(),
-    },
+      b: z.number()
+    }
   },
   ({ a, b }) => ({
-    content: [{
-      type: 'text',
-      text: `${a} + ${b} = ${a + b}`,
-    }],
+    content: [
+      {
+        type: 'text',
+        text: `${a} + ${b} = ${a + b}`
+      }
+    ]
   })
 )
 
@@ -63,7 +66,9 @@ export default server
 ```
 
 <Note>
-  [ModelFetch](https://www.modelfetch.com) uses the [official MCP TypeScript SDK](https://github.com/modelcontextprotocol/typescript-sdk) and provides runtime-specific handlers for different platforms.
+  [ModelFetch](https://www.modelfetch.com) uses the [official MCP TypeScript
+  SDK](https://github.com/modelcontextprotocol/typescript-sdk) and provides
+  runtime-specific handlers for different platforms.
 </Note>
 
 ## 3. Deploy your MCP server remotely
@@ -77,8 +82,9 @@ ModelFetch supports multiple deployment targets. Deploy your server to any platf
 - [Vercel](https://www.modelfetch.com/docs/runtimes/vercel)
 
 <Warning>
-  For development, you can use [ngrok](https://ngrok.com) to temporarily expose your local server. Only
-  use this in a safe environment as it exposes your server to the internet.
+  For development, you can use [ngrok](https://ngrok.com) to temporarily expose
+  your local server. Only use this in a safe environment as it exposes your
+  server to the internet.
 </Warning>
 
 ## 4. Deploy your origin MCP server to Agentic
