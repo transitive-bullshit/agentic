@@ -1,5 +1,7 @@
 import { sha256 } from '@agentic/platform-core'
 
 export async function createConsumerApiKey(): Promise<string> {
-  return `sk-${await sha256()}`
+  const hash = await sha256()
+
+  return `sk-${hash}`
 }
