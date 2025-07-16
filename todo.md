@@ -7,12 +7,6 @@
 
 - **api keys should go beyond 1:1 consumers**
 - **currently not obvious how to get api key**
-- marketplace public project detail page
-  - add breadcrumb nav: marketplace > @agentic > search
-  - add last published date somewhere
-  - tool input/output schemas; move `$schema` to the top
-  - break out into a few subcomponents; some can be server components
-  - mcp inspector
 - improve private project page
   - link to public page if published
   - list deployments
@@ -20,7 +14,7 @@
 - marketplace index page
   - add search / sorting
 - replace render for api and/or add turbo for caching (too slow to deploy)
-- create slack + notifications
+- create slack or discord + notifications
 
 ## TODO: Post-MVP
 
@@ -113,6 +107,7 @@
   - also add `@agentic/json-schema` to `createJsonSchema` parsing instead of current no-op
 - add support for [`@google/genai`](https://github.com/googleapis/js-genai) tools adapter
   - currently difficult due to their use of non-standard json schemas
+- add support for `crewai`
 - validate example args against the tool's input schema during config validation
 - add scroll appearance motion to hero animation
 - add ts sdk examples to e2e tests
@@ -131,3 +126,12 @@
 - add support for enterprise / custom / contact us pricing
 - consider changing homepage hero CTA to include publishing
 - docs: add notes about constraints on mcp origin servers (static tools)
+- analytics dashboard
+- UX onboarding
+- visual pricing plan config + previews
+- marketplace public project detail page
+  - add breadcrumb nav: marketplace > @agentic > search
+  - add last published date somewhere
+  - tool input/output schemas; move `$schema` to the top
+  - break out into a few subcomponents; some can be server components
+  - mcp inspector

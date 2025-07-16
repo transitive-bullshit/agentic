@@ -1,9 +1,15 @@
+import Link from 'next/link'
+
 import { ActiveLink } from '@/components/active-link'
 import { DarkModeToggle } from '@/components/dark-mode-toggle'
+import { Button } from '@/components/ui/button'
+import { GitHubIcon } from '@/icons/github'
+import { githubUrl } from '@/lib/config'
 import { cn } from '@/lib/utils'
 
-import { DynamicHeader } from './dynamic'
+import { AuthenticatedHeader } from './authenticated-header'
 import styles from './styles.module.css'
+import { UnauthenticatedHeader } from './unauthenticated-header'
 
 export function Header() {
   return (
@@ -41,9 +47,19 @@ export function Header() {
             Docs
           </ActiveLink>
 
-          <DarkModeToggle />
+          <div className='flex items-center h-full gap-2'>
+            <UnauthenticatedHeader />
 
-          <DynamicHeader />
+            <DarkModeToggle />
+
+            <Button variant='outline' size='icon' asChild>
+              <Link href={githubUrl} target='_blank' rel='noopener noreferrer'>
+                <GitHubIcon className='w-4 h-4' />
+              </Link>
+            </Button>
+
+            <AuthenticatedHeader />
+          </div>
         </div>
       </div>
     </header>

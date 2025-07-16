@@ -30,6 +30,7 @@
     "@sindresorhus/slugify": "catalog:",
     "decircular": "catalog:",
     "is-obj": "catalog:",
+    "ohash": "^2.0.11",
     "parse-json": "catalog:",
     "sort-keys": "catalog:",
     "type-fest": "catalog:",
