@@ -56,3 +56,5 @@ out/
 .eslintcache
 .nitro
 .tanstack
+
+.xmcp

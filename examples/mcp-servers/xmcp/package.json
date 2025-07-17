@@ -1,0 +1,25 @@
+{
+  "name": "@agentic/examples-mcps-xmcp",
+  "private": true,
+  "author": "Travis Fischer <travis@transitivebullsh.it>",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/transitive-bullshit/agentic.git",
+    "directory": "examples/mcp-servers/xmcp"
+  },
+  "scripts": {
+    "dev": "xmcp dev",
+    "build": "xmcp build --vercel",
+    "deploy": "vercel deploy --prod --prebuilt",
+    "test": "run-s test:*",
+    "test:typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@agentic/platform": "workspace:*",
+    "xmcp": "^0.1.6"
+  },
+  "devDependencies": {
+    "swc-loader": "^0.2.6"
+  }
+}
