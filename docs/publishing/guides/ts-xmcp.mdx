@@ -1,0 +1,43 @@
+---
+title: TypeScript xmcp
+description: This guide will show you how to publish an MCP server to Agentic using the TypeScript xmcp package with Vercel hosting.
+---
+
+[xmcp](https://github.com/basementstudio/xmcp) is an excellent OSS TS framework for deploying MCP servers, with a familiar DX to Next.js and deployed to [Vercel](https://vercel.com).
+
+## 1. Create an xmcp server
+
+<Info>
+  **Prerequisite**: Please install [Node.js](https://nodejs.org) before
+  proceeding.
+</Info>
+
+```bash
+npx create-xmcp-app@latest
+```
+
+Follow [xmcp's quickstart guide](https://xmcp.dev/docs#getting-started) for more details.
+
+<Note>
+  Make sure that the MCP server has the Streamable HTTP transport enabled (it's
+  enabled by default).
+</Note>
+
+You should be able to run your MCP server locally with `xmcp dev` and see the
+MCP server running at `http://localhost:3002/mcp`.
+
+## 2. Deploy your MCP server remotely
+
+Deploy your MCP server publicly (we recommend Vercel for xmcp):
+
+```bash
+xmcp build --vercel
+```
+
+```bash
+vercel deploy --prod --prebuilt
+```
+
+## 4. Deploy your origin MCP server to Agentic
+
+Now that you have a publicly available MCP server, you can follow the [existing MCP server guide](/publishing/guides/existing-mcp-server) to deploy it to Agentic.
