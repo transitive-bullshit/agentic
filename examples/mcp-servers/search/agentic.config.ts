@@ -46,7 +46,7 @@ export default defineConfig({
         {
           slug: 'base',
           usageType: 'licensed',
-          amount: 10_000_000
+          amount: 1000
         },
         {
           slug: 'requests',
