@@ -17,7 +17,7 @@ catalog:
   '@date-fns/utc': ^2.1.0
   '@dicebear/collection': ^9.2.3
   '@dicebear/core': ^9.2.3
-  '@dotenvx/dotenvx': ^1.46.0
+  '@dotenvx/dotenvx': ^1.47.7
   '@edge-runtime/vm': ^5.0.0
   '@fisch0920/config': ^1.1.4
   '@fisch0920/drizzle-orm': ^0.43.7
@@ -67,7 +67,7 @@ catalog:
   '@types/canvas-confetti': ^1.9.0
   '@types/jsrsasign': ^10.5.15
   '@types/ms': ^2.1.0
-  '@types/node': ^24.0.10
+  '@types/node': ^24.0.14
   '@types/react': ^19.1.8
   '@types/react-dom': ^19.1.6
   '@types/semver': ^7.7.0
@@ -93,12 +93,12 @@ catalog:
   dedent: ^1.6.0
   del-cli: ^6.0.0
   delay: ^6.0.0
-  dotenv: 17.0.1
+  dotenv: 17.2.0
   drizzle-kit: ^0.31.4
   drizzle-orm: ^0.44.2
   duck-duck-scrape: ^2.2.7
   email-validator: ^2.0.4
-  eslint: ^9.30.1
+  eslint: ^9.31.0
   eslint-plugin-drizzle: ^0.2.3
   eventid: ^2.0.1
   exit-hook: ^4.0.0
@@ -172,7 +172,7 @@ catalog:
   three: ^0.178.0
   tsup: ^8.5.0
   tsx: ^4.20.3
-  turbo: ^2.5.4
+  turbo: ^2.5.5
   tw-animate-css: ^1.3.4
   twitter-api-sdk: ^1.2.1
   type-fest: ^4.41.0
