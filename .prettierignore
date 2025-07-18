@@ -2,3 +2,4 @@
 packages/types/src/openapi.d.ts
 apps/web/src/routeTree.gen.ts
 legacy/packages/openapi-to-ts/fixtures/generated
+examples/mcp-servers/xmcp/xmcp-env.d.ts
