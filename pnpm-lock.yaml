@@ -245,7 +245,7 @@ catalogs:
       version: 6.0.0
     dotenv:
       specifier: 17.2.0
-      version: 17.0.1
+      version: 17.2.0
     drizzle-kit:
       specifier: ^0.31.4
       version: 0.31.4
