@@ -8,6 +8,7 @@ export default [
       '**/out/**',
       '**/dist/**',
       '**/.wrangler/**',
+      '**/.xmcp/**',
       'packages/types/src/openapi.d.ts',
       'apps/gateway/src/worker.d.ts',
       'packages/json-schema/test/json-schema-test-suite.ts',
