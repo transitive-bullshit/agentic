@@ -1,6 +1,6 @@
 {
   "name": "@agentic/platform-openapi-utils",
-  "version": "8.4.3",
+  "version": "8.4.4",
   "description": "OpenAPI utilities used by the Agentic platform.",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "AGPL-3.0",
