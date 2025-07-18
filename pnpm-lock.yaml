@@ -1396,9 +1396,6 @@ importers:
 
   packages/platform:
     dependencies:
-      '@agentic/core':
-        specifier: workspace:*
-        version: link:../../stdlib/core
       '@agentic/platform-core':
         specifier: workspace:*
         version: link:../platform-core

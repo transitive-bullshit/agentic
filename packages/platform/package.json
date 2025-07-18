@@ -27,7 +27,6 @@
     "test:unit": "vitest run"
   },
   "dependencies": {
-    "@agentic/core": "workspace:*",
     "@agentic/platform-core": "workspace:*",
     "@agentic/platform-openapi-utils": "workspace:*",
     "@agentic/platform-types": "workspace:*",
