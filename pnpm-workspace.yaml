@@ -118,7 +118,7 @@ catalog:
   is-relative-url: ^4.0.0
   jsonrepair: ^3.12.0
   jsrsasign: ^10.9.0
-  knip: ^5.61.3
+  knip: ^5.62.0
   ky: ^1.8.1
   langchain: ^0.3.29
   lint-staged: ^16.1.2
