@@ -3,7 +3,7 @@ title: TypeScript ModelFetch
 description: This guide will show you how to publish an MCP server to Agentic using ModelFetch.
 ---
 
-[ModelFetch](https://www.modelfetch.com) is a TypeScript/JavaScript SDK designed for building and deploying MCP servers across multiple runtime environments.
+[ModelFetch](https://www.modelfetch.com) is a delightful TypeScript/JavaScript SDK for building and deploying MCP servers anywhere TypeScript/JavaScript runs - Write your MCP server once and run it anywhere without vendor lock-in.
 
 ## 1. Create a ModelFetch MCP server
 
@@ -18,9 +18,9 @@ npx -y create-modelfetch@latest
 
 Follow the interactive prompts to:
 
-1. **Choosing a runtime** - Node.js, Bun, Deno, Cloudflare Workers, or Vercel Functions
-2. **Selecting a language** - TypeScript or JavaScript
-3. **Picking a package manager** - npm, pnpm, bun, or yarn
+1. **Choose a runtime** - Node.js, Next.js, Bun, Deno, Vercel, Cloudflare, Netlify, Fastly, Supabase, Gcore, AWS Lambda, or Azure Functions
+2. **Select a language** - TypeScript or JavaScript
+3. **Pick a package manager** - npm, pnpm, bun, or yarn
 
 Then navigate to your project:
 
@@ -75,11 +75,21 @@ export default server
 
 ModelFetch supports multiple deployment targets. Deploy your server to any platforms that support these runtimes:
 
-- [Node.js](https://www.modelfetch.com/docs/runtimes/node)
-- [Bun](https://www.modelfetch.com/docs/runtimes/bun)
-- [Deno](https://www.modelfetch.com/docs/runtimes/deno)
-- [Cloudflare](https://www.modelfetch.com/docs/runtimes/cloudflare)
-- [Vercel](https://www.modelfetch.com/docs/runtimes/vercel)
+- Node.js
+- Next.js
+- Bun
+- Deno
+- Vercel
+- Cloudflare
+- Netlify
+- Fastly
+- Supabase
+- Gcore
+- AWS Lambda
+- Azure Functions
+- etc.
+
+See the [ModelFetch documentation](https://www.modelfetch.com/docs) for more details.
 
 <Warning>
   For development, you can use [ngrok](https://ngrok.com) to temporarily expose
