@@ -246,7 +246,18 @@ To add support for annual pricing plans, for example, you can use: \`['month', '
      * `toolConfigs`, it will use the default behavior of the Agentic API
      * gateway.
      */
-    toolConfigs: z.array(toolConfigSchema).optional().default([])
+    toolConfigs: z.array(toolConfigSchema).optional().default([]),
+
+    /**
+     * Whether the project's auth and billing is managed by Agentic or by the
+     * origin server.
+     *
+     * If `true`, Agentic will manage the project's auth and billing.
+     * If `false`, the origin server is responsible.
+     *
+     * @default true
+     */
+    managed: z.boolean().optional().default(true)
   })
   .strip()
 

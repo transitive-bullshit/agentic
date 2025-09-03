@@ -1,19 +1,8 @@
-import type { LiteralUnion } from 'type-fest'
 import decircular from 'decircular'
 import isObject from 'is-obj'
 import sortKeys from 'sort-keys'
 
 import { sha256 } from './utils'
-
-export type Algorithm = LiteralUnion<
-  'SHA-1' | 'SHA-256' | 'SHA-384' | 'SHA-512',
-  string
->
-
-export type HashObjectOptions = {
-  /** @default 'SHA-256' */
-  readonly algorithm?: Algorithm
-}
 
 function normalizeObject(object: any): any {
   if (typeof object === 'string') {

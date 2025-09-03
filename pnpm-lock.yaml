@@ -6,486 +6,48 @@ settings:
 
 catalogs:
   default:
-    '@ai-sdk/openai':
-      specifier: ^1.3.23
-      version: 1.3.23
-    '@apideck/better-ajv-errors':
-      specifier: ^0.3.6
-      version: 0.3.6
     '@clack/prompts':
       specifier: ^0.11.0
       version: 0.11.0
-    '@cloudflare/workers-types':
-      specifier: ^4.20250620.0
-      version: 4.20250620.0
     '@commander-js/extra-typings':
       specifier: ^14.0.0
       version: 14.0.0
-    '@date-fns/utc':
-      specifier: ^2.1.0
-      version: 2.1.0
-    '@dicebear/collection':
-      specifier: ^9.2.3
-      version: 9.2.3
-    '@dicebear/core':
-      specifier: ^9.2.3
-      version: 9.2.3
-    '@dotenvx/dotenvx':
-      specifier: ^1.47.7
-      version: 1.47.7
-    '@edge-runtime/vm':
-      specifier: ^5.0.0
-      version: 5.0.0
-    '@fisch0920/config':
-      specifier: ^1.1.4
-      version: 1.1.4
-    '@fisch0920/drizzle-orm':
-      specifier: ^0.43.7
-      version: 0.43.7
-    '@fisch0920/drizzle-zod':
-      specifier: ^0.7.9
-      version: 0.7.9
-    '@fisch0920/markdown-to-html':
-      specifier: ^1.1.0
-      version: 1.1.0
-    '@hono/mcp':
-      specifier: ^0.1.0
-      version: 0.1.0
     '@hono/node-server':
       specifier: ^1.15.0
       version: 1.15.0
-    '@hono/sentry':
-      specifier: ^1.2.2
-      version: 1.2.2
-    '@hono/zod-openapi':
-      specifier: ^0.19.9
-      version: 0.19.9
-    '@hono/zod-validator':
-      specifier: ^0.7.0
-      version: 0.7.0
-    '@langchain/core':
-      specifier: ^0.3.60
-      version: 0.3.61
-    '@langchain/openai':
-      specifier: ^0.5.14
-      version: 0.5.16
-    '@llamaindex/openai':
-      specifier: ^0.4.4
-      version: 0.4.6
-    '@llamaindex/workflow':
-      specifier: ^1.1.9
-      version: 1.1.12
-    '@mastra/core':
-      specifier: ^0.10.6
-      version: 0.10.8
-    '@mastra/schema-compat':
-      specifier: ^0.10.3
-      version: 0.10.3
-    '@modelcontextprotocol/sdk':
-      specifier: ^1.15.0
-      version: 1.15.0
-    '@number-flow/react':
-      specifier: ^0.5.10
-      version: 0.5.10
-    '@paralleldrive/cuid2':
-      specifier: ^2.2.2
-      version: 2.2.2
-    '@pmndrs/assets':
-      specifier: ^1.7.0
-      version: 1.7.0
-    '@radix-ui/react-collapsible':
-      specifier: ^1.1.11
-      version: 1.1.11
-    '@radix-ui/react-dropdown-menu':
-      specifier: 2.1.15
-      version: 2.1.15
-    '@radix-ui/react-label':
-      specifier: ^2.1.7
-      version: 2.1.7
-    '@radix-ui/react-slot':
-      specifier: 1.2.3
-      version: 1.2.3
-    '@radix-ui/react-tabs':
-      specifier: ^1.1.12
-      version: 1.1.12
-    '@radix-ui/react-tooltip':
-      specifier: ^1.2.7
-      version: 1.2.7
-    '@react-email/components':
-      specifier: ^0.1.1
-      version: 0.1.1
-    '@react-three/cannon':
-      specifier: ^6.6.0
-      version: 6.6.0
-    '@react-three/drei':
-      specifier: ^10.4.4
-      version: 10.4.4
-    '@react-three/fiber':
-      specifier: ^9.2.0
-      version: 9.2.0
-    '@react-three/postprocessing':
-      specifier: ^3.0.4
-      version: 3.0.4
-    '@react-three/rapier':
-      specifier: ^2.1.0
-      version: 2.1.0
-    '@redocly/openapi-core':
-      specifier: ^1.34.3
-      version: 1.34.3
-    '@sentry/cli':
-      specifier: ^2.46.0
-      version: 2.46.0
-    '@sentry/cloudflare':
-      specifier: ^9.35.0
-      version: 9.35.0
-    '@sentry/core':
-      specifier: ^9.35.0
-      version: 9.35.0
-    '@sentry/node':
-      specifier: ^9.35.0
-      version: 9.35.0
-    '@sindresorhus/slugify':
-      specifier: ^2.2.1
-      version: 2.2.1
-    '@standard-schema/spec':
-      specifier: ^1.0.0
-      version: 1.0.0
-    '@tailwindcss/postcss':
-      specifier: ^4.1.11
-      version: 4.1.11
-    '@tailwindcss/typography':
-      specifier: ^0.5.16
-      version: 0.5.16
-    '@tanstack/react-form':
-      specifier: ^1.14.1
-      version: 1.14.1
-    '@tanstack/react-query':
-      specifier: ^5.81.5
-      version: 5.81.5
-    '@tanstack/react-query-devtools':
-      specifier: ^5.81.5
-      version: 5.81.5
-    '@types/canvas-confetti':
-      specifier: ^1.9.0
-      version: 1.9.0
-    '@types/ms':
-      specifier: ^2.1.0
-      version: 2.1.0
-    '@types/node':
-      specifier: ^24.0.14
-      version: 24.0.14
-    '@types/react':
-      specifier: ^19.1.8
-      version: 19.1.8
-    '@types/react-dom':
-      specifier: ^19.1.6
-      version: 19.1.6
     '@types/semver':
       specifier: ^7.7.0
       version: 7.7.0
-    '@types/three':
-      specifier: ^0.178.0
-      version: 0.178.0
-    agents:
-      specifier: ^0.0.101
-      version: 0.0.101
-    ai:
-      specifier: ^4.3.17
-      version: 4.3.17
-    ajv:
-      specifier: ^8.17.1
-      version: 8.17.1
-    ajv-formats:
-      specifier: ^3.0.1
-      version: 3.0.1
-    autoprefixer:
-      specifier: ^10.4.21
-      version: 10.4.21
-    bcryptjs:
-      specifier: ^3.0.2
-      version: 3.0.2
-    bumpp:
-      specifier: ^10.2.0
-      version: 10.2.0
-    camelcase:
-      specifier: ^8.0.0
-      version: 8.0.0
-    canvas-confetti:
-      specifier: ^1.9.3
-      version: 1.9.3
-    class-variance-authority:
-      specifier: ^0.7.1
-      version: 0.7.1
-    clsx:
-      specifier: ^2.1.1
-      version: 2.1.1
     commander:
       specifier: ^14.0.0
       version: 14.0.0
     conf:
       specifier: ^14.0.0
       version: 14.0.0
-    date-fns:
-      specifier: ^4.1.0
-      version: 4.1.0
-    decamelize:
-      specifier: ^6.0.0
-      version: 6.0.0
-    decircular:
-      specifier: ^1.0.0
-      version: 1.0.0
-    dedent:
-      specifier: ^1.6.0
-      version: 1.6.0
-    del-cli:
-      specifier: ^6.0.0
-      version: 6.0.0
-    delay:
-      specifier: ^6.0.0
-      version: 6.0.0
-    dotenv:
-      specifier: 17.2.0
-      version: 17.2.0
-    drizzle-kit:
-      specifier: ^0.31.4
-      version: 0.31.4
-    drizzle-orm:
-      specifier: ^0.44.2
-      version: 0.44.2
-    email-validator:
-      specifier: ^2.0.4
-      version: 2.0.4
-    eslint:
-      specifier: ^9.31.0
-      version: 9.31.0
-    eslint-plugin-drizzle:
-      specifier: ^0.2.3
-      version: 0.2.3
-    eventid:
-      specifier: ^2.0.1
-      version: 2.0.1
     exit-hook:
       specifier: ^4.0.0
       version: 4.0.0
-    fast-content-type-parse:
-      specifier: ^3.0.0
-      version: 3.0.0
-    fast-uri:
-      specifier: ^3.0.6
-      version: 3.0.6
-    fastmcp:
-      specifier: ^3.8.2
-      version: 3.8.2
-    genkit:
-      specifier: ^1.13.0
-      version: 1.14.0
-    genkitx-openai:
-      specifier: ^0.22.3
-      version: 0.22.3
     get-port:
       specifier: ^7.1.0
       version: 7.1.0
-    hast-util-to-jsx-runtime:
-      specifier: ^2.3.6
-      version: 2.3.6
     hono:
       specifier: ^4.8.4
       version: 4.8.4
-    is-obj:
-      specifier: ^3.0.0
-      version: 3.0.0
-    jsonrepair:
-      specifier: ^3.12.0
-      version: 3.12.0
-    knip:
-      specifier: ^5.62.0
-      version: 5.62.0
     ky:
       specifier: ^1.8.1
       version: 1.8.1
-    langchain:
-      specifier: ^0.3.29
-      version: 0.3.29
-    lint-staged:
-      specifier: ^16.1.2
-      version: 16.1.2
-    llamaindex:
-      specifier: ^0.11.8
-      version: 0.11.11
-    lucide-react:
-      specifier: ^0.525.0
-      version: 0.525.0
-    mint:
-      specifier: ^4.2.4
-      version: 4.2.4
-    motion:
-      specifier: ^12.19.2
-      version: 12.19.2
-    ms:
-      specifier: ^2.1.3
-      version: 2.1.3
-    next:
-      specifier: ^15.3.5
-      version: 15.3.5
-    next-themes:
-      specifier: ^0.4.6
-      version: 0.4.6
-    npm-run-all2:
-      specifier: ^8.0.4
-      version: 8.0.4
-    octokit:
-      specifier: ^5.0.3
-      version: 5.0.3
-    only-allow:
-      specifier: ^1.2.1
-      version: 1.2.1
     open:
       specifier: ^10.1.2
       version: 10.1.2
-    openai:
-      specifier: ^5.5.1
-      version: 5.8.2
-    openai-fetch:
-      specifier: ^3.4.2
-      version: 3.4.2
-    openai-zod-to-json-schema:
-      specifier: ^1.1.1
-      version: 1.1.1
-    openapi-typescript:
-      specifier: ^7.8.0
-      version: 7.8.0
     ora:
       specifier: ^8.2.0
       version: 8.2.0
-    p-all:
-      specifier: ^5.0.0
-      version: 5.0.0
-    p-map:
-      specifier: ^7.0.3
-      version: 7.0.3
-    p-throttle:
-      specifier: 6.2.0
-      version: 6.2.0
-    p-times:
-      specifier: ^4.0.0
-      version: 4.0.0
-    parse-json:
-      specifier: ^8.3.0
-      version: 8.3.0
-    plur:
-      specifier: ^5.1.0
-      version: 5.1.0
-    postcss:
-      specifier: ^8.5.6
-      version: 8.5.6
-    postgres:
-      specifier: ^3.4.7
-      version: 3.4.7
-    posthog-js:
-      specifier: ^1.256.2
-      version: 1.256.2
-    prettier:
-      specifier: ^3.6.2
-      version: 3.6.2
-    react:
-      specifier: ^19.1.0
-      version: 19.1.0
-    react-dom:
-      specifier: ^19.1.0
-      version: 19.1.0
-    react-email:
-      specifier: ^4.0.17
-      version: 4.0.17
-    react-infinite-scroll-hook:
-      specifier: ^6.0.1
-      version: 6.0.1
-    react-lottie-player:
-      specifier: ^2.1.0
-      version: 2.1.0
-    react-medium-image-zoom:
-      specifier: ^5.2.14
-      version: 5.2.14
-    react-use:
-      specifier: ^17.6.0
-      version: 17.6.0
-    resend:
-      specifier: ^4.6.0
-      version: 4.6.0
     restore-cursor:
       specifier: ^5.1.0
       version: 5.1.0
     semver:
       specifier: ^7.7.2
       version: 7.7.2
-    server-only:
-      specifier: ^0.0.1
-      version: 0.0.1
-    shiki:
-      specifier: ^3.7.0
-      version: 3.7.0
-    simple-git-hooks:
-      specifier: ^2.13.0
-      version: 2.13.0
-    sonner:
-      specifier: ^2.0.6
-      version: 2.0.6
-    sort-keys:
-      specifier: ^5.1.0
-      version: 5.1.0
-    stripe:
-      specifier: ^18.2.1
-      version: 18.3.0
-    suspend-react:
-      specifier: ^0.1.3
-      version: 0.1.3
-    tailwind-merge:
-      specifier: ^3.3.1
-      version: 3.3.1
-    tailwindcss:
-      specifier: ^4.1.11
-      version: 4.1.11
-    three:
-      specifier: ^0.178.0
-      version: 0.178.0
-    tsup:
-      specifier: ^8.5.0
-      version: 8.5.0
-    tsx:
-      specifier: ^4.20.3
-      version: 4.20.3
-    turbo:
-      specifier: ^2.5.5
-      version: 2.5.5
-    tw-animate-css:
-      specifier: ^1.3.4
-      version: 1.3.4
-    type-fest:
-      specifier: ^4.41.0
-      version: 4.41.0
-    typescript:
-      specifier: ^5.8.3
-      version: 5.8.3
-    unconfig:
-      specifier: ^7.3.2
-      version: 7.3.2
-    vite-tsconfig-paths:
-      specifier: ^5.1.4
-      version: 5.1.4
-    vitest:
-      specifier: ^3.2.4
-      version: 3.2.4
-    wrangler:
-      specifier: ^4.23.0
-      version: 4.23.0
-    zod:
-      specifier: ^3.25.67
-      version: 3.25.75
-    zod-to-json-schema:
-      specifier: ^3.24.5
-      version: 3.24.6
-    zod-validation-error:
-      specifier: 4.0.0-beta.1
-      version: 4.0.0-beta.1
 
 importers:
 

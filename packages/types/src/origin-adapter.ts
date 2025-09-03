@@ -3,42 +3,13 @@ import { z } from '@hono/zod-openapi'
 import { mcpServerInfoSchema } from './mcp'
 import { toolNameSchema } from './tools'
 
-export const originAdapterLocationSchema = z.literal('external')
-// z.union([
-//   z.literal('external'),
-//   z.literal('internal')
-// ])
-export type OriginAdapterLocation = z.infer<typeof originAdapterLocationSchema>
-
-// export const originAdapterInternalTypeSchema = z.union([
-//   z.literal('docker'),
-//   z.literal('mcp'),
-//   z.literal('python-fastapi'),
-//   // etc
-// ])
-// export type OriginAdapterInternalType = z.infer<
-//   typeof originAdapterInternalTypeSchema
-// >
-
 export const commonOriginAdapterSchema = z.object({
-  location: originAdapterLocationSchema.optional().default('external'),
-
-  /** Required origin API HTTPS base URL */
+  /** Required URL of the remote origin server. Must be a valid \`https\` URL. */
   url: z.string().url()
-    .describe(`Required base URL of the externally hosted origin API server. Must be a valid \`https\` URL.
+    .describe(`Required URL of the externally hosted origin server. Must be a valid \`https\` URL.
 
 NOTE: Agentic currently only supports \`external\` API servers. If you'd like to host your API or MCP server on Agentic's infrastructure, please reach out to support@agentic.so.`)
-
-  // TODO: Add support for `internal` hosted API servers
-  // internalType: originAdapterInternalTypeSchema.optional()
 })
-
-// TODO: add future support for:
-// - external mcp
-// - internal docker
-// - internal mcp
-// - internal http
-// - etc
 
 export const openapiOriginAdapterConfigSchema = commonOriginAdapterSchema.merge(
   z.object({
@@ -79,7 +50,8 @@ export type MCPOriginAdapterConfig = z.infer<
   typeof mcpOriginAdapterConfigSchema
 >
 
-// TODO: Decide on whether to support `raw` origin adapters or not.
+// TODO: Decide on whether to support `raw` origin adapters or not. It's useful for
+// internal testing.
 export const rawOriginAdapterConfigSchema = commonOriginAdapterSchema.merge(
   z.object({
     /**
@@ -204,7 +176,9 @@ export const mcpOriginAdapterSchema = commonOriginAdapterSchema.merge(
      */
     type: z.literal('mcp'),
 
-    // Optional headers to pass to the origin API server
+    /**
+     * Optional headers to pass to the origin API server.
+     */
     headers: z.record(z.string(), z.string()).optional(),
 
     /**
