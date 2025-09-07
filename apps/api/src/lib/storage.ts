@@ -18,6 +18,7 @@ import { env } from './env'
 // This storage client is designed to work with any S3-compatible storage provider.
 // For Cloudflare R2, see https://developers.cloudflare.com/r2/examples/aws/aws-sdk-js-v3/
 
+const STORAGE_DOMAIN = 'storage.agentic.so'
 const Bucket = env.S3_BUCKET
 
 export const storageClient = new S3Client({
@@ -117,7 +118,7 @@ export async function uploadFileUrlToStorage(
     throw new Error(`Invalid source file URL: ${inputUrl}`)
   }
 
-  if (source.hostname === 'storage.agentic.so') {
+  if (source.hostname === STORAGE_DOMAIN) {
     // The source is already a public URL hosted on Agentic's blob storage.
     return source.toString()
   }
