@@ -207,761 +207,78 @@ export namespace proxycurl {
     typeof PersonSearchEndpointParamsQueryClassSchema
   >
 
-  export const PurpleCourseSchema = z.object({
+  export const CourseSchema = z.object({
     name: z.string().optional(),
     number: z.string().optional()
   })
-  export type PurpleCourse = z.infer<typeof PurpleCourseSchema>
+  export type Course = z.infer<typeof CourseSchema>
 
-  export const PurpleDateSchema = z.object({
+  export const Date0Schema = z.object({
     day: z.number().optional(),
     month: z.number().optional(),
     year: z.number().optional()
   })
-  export type PurpleDate = z.infer<typeof PurpleDateSchema>
+  export type Date0 = z.infer<typeof Date0Schema>
 
-  export const FluffyDateSchema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type FluffyDate = z.infer<typeof FluffyDateSchema>
-
-  export const TentacledDateSchema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type TentacledDate = z.infer<typeof TentacledDateSchema>
-
-  export const StickyDateSchema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type StickyDate = z.infer<typeof StickyDateSchema>
-
-  export const IndigoDateSchema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type IndigoDate = z.infer<typeof IndigoDateSchema>
-
-  export const IndecentDateSchema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type IndecentDate = z.infer<typeof IndecentDateSchema>
-
-  export const HilariousDateSchema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type HilariousDate = z.infer<typeof HilariousDateSchema>
-
-  export const AmbitiousDateSchema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type AmbitiousDate = z.infer<typeof AmbitiousDateSchema>
-
-  export const PurpleActivitySchema = z.object({
-    activity_status: z.string().optional(),
-    link: z.string().optional(),
-    title: z.string().optional()
-  })
-  export type PurpleActivity = z.infer<typeof PurpleActivitySchema>
-
-  export const CunningDateSchema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type CunningDate = z.infer<typeof CunningDateSchema>
-
-  export const MagentaDateSchema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type MagentaDate = z.infer<typeof MagentaDateSchema>
-
-  export const FriskyDateSchema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type FriskyDate = z.infer<typeof FriskyDateSchema>
-
-  export const MischievousDateSchema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type MischievousDate = z.infer<typeof MischievousDateSchema>
-
-  export const BraggadociousDateSchema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type BraggadociousDate = z.infer<typeof BraggadociousDateSchema>
-
-  export const Date1Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date1 = z.infer<typeof Date1Schema>
-
-  export const Date2Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date2 = z.infer<typeof Date2Schema>
-
-  export const Date3Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date3 = z.infer<typeof Date3Schema>
-
-  export const PurplePersonExtraSchema = z.object({
+  export const PersonExtraSchema = z.object({
     facebook_profile_id: z.string().optional(),
     github_profile_id: z.string().optional(),
     twitter_profile_id: z.string().optional(),
     website: z.string().optional()
   })
-  export type PurplePersonExtra = z.infer<typeof PurplePersonExtraSchema>
+  export type PersonExtra = z.infer<typeof PersonExtraSchema>
 
-  export const PurplePersonGroupSchema = z.object({
-    name: z.string().optional(),
-    profile_pic_url: z.string().optional(),
-    url: z.string().optional()
-  })
-  export type PurplePersonGroup = z.infer<typeof PurplePersonGroupSchema>
-
-  export const PurpleInferredSalarySchema = z.object({
-    max: z.number().optional(),
-    min: z.number().optional()
-  })
-  export type PurpleInferredSalary = z.infer<typeof PurpleInferredSalarySchema>
-
-  export const PurplePeopleAlsoViewedSchema = z.object({
+  export const PeopleAlsoViewedSchema = z.object({
     link: z.string().optional(),
     location: z.string().optional(),
     name: z.string().optional(),
     summary: z.string().optional()
   })
-  export type PurplePeopleAlsoViewed = z.infer<
-    typeof PurplePeopleAlsoViewedSchema
-  >
+  export type PeopleAlsoViewed = z.infer<typeof PeopleAlsoViewedSchema>
 
-  export const PurpleSimilarProfileSchema = z.object({
-    link: z.string().optional(),
-    location: z.string().optional(),
-    name: z.string().optional(),
-    summary: z.string().optional()
-  })
-  export type PurpleSimilarProfile = z.infer<typeof PurpleSimilarProfileSchema>
-
-  export const Date4Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date4 = z.infer<typeof Date4Schema>
-
-  export const Date5Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date5 = z.infer<typeof Date5Schema>
-
-  export const FluffyCourseSchema = z.object({
-    name: z.string().optional(),
-    number: z.string().optional()
-  })
-  export type FluffyCourse = z.infer<typeof FluffyCourseSchema>
-
-  export const Date6Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date6 = z.infer<typeof Date6Schema>
-
-  export const Date7Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date7 = z.infer<typeof Date7Schema>
-
-  export const Date8Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date8 = z.infer<typeof Date8Schema>
-
-  export const Date9Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date9 = z.infer<typeof Date9Schema>
-
-  export const Date10Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date10 = z.infer<typeof Date10Schema>
-
-  export const Date11Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date11 = z.infer<typeof Date11Schema>
-
-  export const Date12Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date12 = z.infer<typeof Date12Schema>
-
-  export const Date13Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date13 = z.infer<typeof Date13Schema>
-
-  export const FluffyActivitySchema = z.object({
+  export const ActivitySchema = z.object({
     activity_status: z.string().optional(),
     link: z.string().optional(),
     title: z.string().optional()
   })
-  export type FluffyActivity = z.infer<typeof FluffyActivitySchema>
+  export type Activity = z.infer<typeof ActivitySchema>
 
-  export const Date14Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date14 = z.infer<typeof Date14Schema>
-
-  export const Date15Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date15 = z.infer<typeof Date15Schema>
-
-  export const Date16Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date16 = z.infer<typeof Date16Schema>
-
-  export const Date17Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date17 = z.infer<typeof Date17Schema>
-
-  export const Date18Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date18 = z.infer<typeof Date18Schema>
-
-  export const Date19Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date19 = z.infer<typeof Date19Schema>
-
-  export const Date20Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date20 = z.infer<typeof Date20Schema>
-
-  export const Date21Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date21 = z.infer<typeof Date21Schema>
-
-  export const FluffyPersonExtraSchema = z.object({
-    facebook_profile_id: z.string().optional(),
-    github_profile_id: z.string().optional(),
-    twitter_profile_id: z.string().optional(),
-    website: z.string().optional()
-  })
-  export type FluffyPersonExtra = z.infer<typeof FluffyPersonExtraSchema>
-
-  export const FluffyPersonGroupSchema = z.object({
+  export const PersonGroupSchema = z.object({
     name: z.string().optional(),
     profile_pic_url: z.string().optional(),
     url: z.string().optional()
   })
-  export type FluffyPersonGroup = z.infer<typeof FluffyPersonGroupSchema>
+  export type PersonGroup = z.infer<typeof PersonGroupSchema>
 
-  export const FluffyInferredSalarySchema = z.object({
+  export const InferredSalarySchema = z.object({
     max: z.number().optional(),
     min: z.number().optional()
   })
-  export type FluffyInferredSalary = z.infer<typeof FluffyInferredSalarySchema>
+  export type InferredSalary = z.infer<typeof InferredSalarySchema>
 
-  export const FluffyPeopleAlsoViewedSchema = z.object({
-    link: z.string().optional(),
-    location: z.string().optional(),
-    name: z.string().optional(),
-    summary: z.string().optional()
-  })
-  export type FluffyPeopleAlsoViewed = z.infer<
-    typeof FluffyPeopleAlsoViewedSchema
-  >
-
-  export const FluffySimilarProfileSchema = z.object({
-    link: z.string().optional(),
-    location: z.string().optional(),
-    name: z.string().optional(),
-    summary: z.string().optional()
-  })
-  export type FluffySimilarProfile = z.infer<typeof FluffySimilarProfileSchema>
-
-  export const Date22Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date22 = z.infer<typeof Date22Schema>
-
-  export const Date23Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date23 = z.infer<typeof Date23Schema>
-
-  export const TentacledCourseSchema = z.object({
-    name: z.string().optional(),
-    number: z.string().optional()
-  })
-  export type TentacledCourse = z.infer<typeof TentacledCourseSchema>
-
-  export const Date24Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date24 = z.infer<typeof Date24Schema>
-
-  export const Date25Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date25 = z.infer<typeof Date25Schema>
-
-  export const Date26Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date26 = z.infer<typeof Date26Schema>
-
-  export const Date27Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date27 = z.infer<typeof Date27Schema>
-
-  export const Date28Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date28 = z.infer<typeof Date28Schema>
-
-  export const Date29Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date29 = z.infer<typeof Date29Schema>
-
-  export const Date30Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date30 = z.infer<typeof Date30Schema>
-
-  export const Date31Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date31 = z.infer<typeof Date31Schema>
-
-  export const TentacledActivitySchema = z.object({
-    activity_status: z.string().optional(),
-    link: z.string().optional(),
-    title: z.string().optional()
-  })
-  export type TentacledActivity = z.infer<typeof TentacledActivitySchema>
-
-  export const Date32Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date32 = z.infer<typeof Date32Schema>
-
-  export const Date33Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date33 = z.infer<typeof Date33Schema>
-
-  export const Date34Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date34 = z.infer<typeof Date34Schema>
-
-  export const Date35Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date35 = z.infer<typeof Date35Schema>
-
-  export const Date36Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date36 = z.infer<typeof Date36Schema>
-
-  export const Date37Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date37 = z.infer<typeof Date37Schema>
-
-  export const Date38Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date38 = z.infer<typeof Date38Schema>
-
-  export const Date39Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date39 = z.infer<typeof Date39Schema>
-
-  export const TentacledPersonExtraSchema = z.object({
-    facebook_profile_id: z.string().optional(),
-    github_profile_id: z.string().optional(),
-    twitter_profile_id: z.string().optional(),
-    website: z.string().optional()
-  })
-  export type TentacledPersonExtra = z.infer<typeof TentacledPersonExtraSchema>
-
-  export const TentacledPersonGroupSchema = z.object({
-    name: z.string().optional(),
-    profile_pic_url: z.string().optional(),
-    url: z.string().optional()
-  })
-  export type TentacledPersonGroup = z.infer<typeof TentacledPersonGroupSchema>
-
-  export const TentacledInferredSalarySchema = z.object({
-    max: z.number().optional(),
-    min: z.number().optional()
-  })
-  export type TentacledInferredSalary = z.infer<
-    typeof TentacledInferredSalarySchema
-  >
-
-  export const TentacledPeopleAlsoViewedSchema = z.object({
-    link: z.string().optional(),
-    location: z.string().optional(),
-    name: z.string().optional(),
-    summary: z.string().optional()
-  })
-  export type TentacledPeopleAlsoViewed = z.infer<
-    typeof TentacledPeopleAlsoViewedSchema
-  >
-
-  export const TentacledSimilarProfileSchema = z.object({
-    link: z.string().optional(),
-    location: z.string().optional(),
-    name: z.string().optional(),
-    summary: z.string().optional()
-  })
-  export type TentacledSimilarProfile = z.infer<
-    typeof TentacledSimilarProfileSchema
-  >
-
-  export const Date40Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date40 = z.infer<typeof Date40Schema>
-
-  export const Date41Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date41 = z.infer<typeof Date41Schema>
-
-  export const StickyCourseSchema = z.object({
-    name: z.string().optional(),
-    number: z.string().optional()
-  })
-  export type StickyCourse = z.infer<typeof StickyCourseSchema>
-
-  export const Date42Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date42 = z.infer<typeof Date42Schema>
-
-  export const Date43Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date43 = z.infer<typeof Date43Schema>
-
-  export const Date44Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date44 = z.infer<typeof Date44Schema>
-
-  export const Date45Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date45 = z.infer<typeof Date45Schema>
-
-  export const Date46Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date46 = z.infer<typeof Date46Schema>
-
-  export const Date47Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date47 = z.infer<typeof Date47Schema>
-
-  export const Date48Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date48 = z.infer<typeof Date48Schema>
-
-  export const Date49Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date49 = z.infer<typeof Date49Schema>
-
-  export const StickyActivitySchema = z.object({
-    activity_status: z.string().optional(),
-    link: z.string().optional(),
-    title: z.string().optional()
-  })
-  export type StickyActivity = z.infer<typeof StickyActivitySchema>
-
-  export const Date50Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date50 = z.infer<typeof Date50Schema>
-
-  export const Date51Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date51 = z.infer<typeof Date51Schema>
-
-  export const Date52Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date52 = z.infer<typeof Date52Schema>
-
-  export const Date53Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date53 = z.infer<typeof Date53Schema>
-
-  export const Date54Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date54 = z.infer<typeof Date54Schema>
-
-  export const Date55Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date55 = z.infer<typeof Date55Schema>
-
-  export const Date56Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date56 = z.infer<typeof Date56Schema>
-
-  export const StickyPersonGroupSchema = z.object({
-    name: z.string().optional(),
-    profile_pic_url: z.string().optional(),
-    url: z.string().optional()
-  })
-  export type StickyPersonGroup = z.infer<typeof StickyPersonGroupSchema>
-
-  export const StickyPeopleAlsoViewedSchema = z.object({
-    link: z.string().optional(),
-    location: z.string().optional(),
-    name: z.string().optional(),
-    summary: z.string().optional()
-  })
-  export type StickyPeopleAlsoViewed = z.infer<
-    typeof StickyPeopleAlsoViewedSchema
-  >
-
-  export const StickySimilarProfileSchema = z.object({
-    link: z.string().optional(),
-    location: z.string().optional(),
-    name: z.string().optional(),
-    summary: z.string().optional()
-  })
-  export type StickySimilarProfile = z.infer<typeof StickySimilarProfileSchema>
-
-  export const Date57Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date57 = z.infer<typeof Date57Schema>
-
-  export const Date58Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date58 = z.infer<typeof Date58Schema>
-
-  export const Date59Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date59 = z.infer<typeof Date59Schema>
-
-  export const Date60Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date60 = z.infer<typeof Date60Schema>
-
-  export const PurpleAffiliatedCompanySchema = z.object({
+  export const AffiliatedCompanySchema = z.object({
     industry: z.string().optional(),
     link: z.string().optional(),
     location: z.string().optional(),
     name: z.string().optional()
   })
-  export type PurpleAffiliatedCompany = z.infer<
-    typeof PurpleAffiliatedCompanySchema
-  >
+  export type AffiliatedCompany = z.infer<typeof AffiliatedCompanySchema>
 
-  export const PurpleExitSchema = z.object({
+  export const ExitSchema = z.object({
     crunchbase_profile_url: z.string().optional(),
     linkedin_profile_url: z.string().optional(),
     name: z.string().optional()
   })
-  export type PurpleExit = z.infer<typeof PurpleExitSchema>
+  export type Exit = z.infer<typeof ExitSchema>
 
-  export const Date61Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date61 = z.infer<typeof Date61Schema>
-
-  export const Date62Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date62 = z.infer<typeof Date62Schema>
-
-  export const Date63Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date63 = z.infer<typeof Date63Schema>
-
-  export const PurpleInvestorSchema = z.object({
+  export const InvestorSchema = z.object({
     linkedin_profile_url: z.string().optional(),
     name: z.string().optional(),
     type: z.string().optional()
   })
-  export type PurpleInvestor = z.infer<typeof PurpleInvestorSchema>
+  export type Investor = z.infer<typeof InvestorSchema>
 
-  export const PurpleCompanyLocationSchema = z.object({
+  export const CompanyLocationSchema = z.object({
     city: z.string().optional(),
     country: z.string().optional(),
     is_hq: z.boolean().optional(),
@@ -969,635 +286,156 @@ export namespace proxycurl {
     postal_code: z.string().optional(),
     state: z.string().optional()
   })
-  export type PurpleCompanyLocation = z.infer<
-    typeof PurpleCompanyLocationSchema
-  >
+  export type CompanyLocation = z.infer<typeof CompanyLocationSchema>
 
-  export const FluffyCompanyLocationSchema = z.object({
-    city: z.string().optional(),
-    country: z.string().optional(),
-    is_hq: z.boolean().optional(),
-    line_1: z.string().optional(),
-    postal_code: z.string().optional(),
-    state: z.string().optional()
-  })
-  export type FluffyCompanyLocation = z.infer<
-    typeof FluffyCompanyLocationSchema
-  >
-
-  export const PurpleSimilarCompanySchema = z.object({
+  export const SimilarCompanySchema = z.object({
     industry: z.string().optional(),
     link: z.string().optional(),
     location: z.string().optional(),
     name: z.string().optional()
   })
-  export type PurpleSimilarCompany = z.infer<typeof PurpleSimilarCompanySchema>
+  export type SimilarCompany = z.infer<typeof SimilarCompanySchema>
 
-  export const Date64Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date64 = z.infer<typeof Date64Schema>
-
-  export const Date65Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date65 = z.infer<typeof Date65Schema>
-
-  export const Date66Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date66 = z.infer<typeof Date66Schema>
-
-  export const FluffyAffiliatedCompanySchema = z.object({
-    industry: z.string().optional(),
-    link: z.string().optional(),
-    location: z.string().optional(),
-    name: z.string().optional()
-  })
-  export type FluffyAffiliatedCompany = z.infer<
-    typeof FluffyAffiliatedCompanySchema
-  >
-
-  export const FluffyExitSchema = z.object({
-    crunchbase_profile_url: z.string().optional(),
-    linkedin_profile_url: z.string().optional(),
-    name: z.string().optional()
-  })
-  export type FluffyExit = z.infer<typeof FluffyExitSchema>
-
-  export const Date67Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date67 = z.infer<typeof Date67Schema>
-
-  export const Date68Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date68 = z.infer<typeof Date68Schema>
-
-  export const Date69Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date69 = z.infer<typeof Date69Schema>
-
-  export const FluffyInvestorSchema = z.object({
-    linkedin_profile_url: z.string().optional(),
-    name: z.string().optional(),
-    type: z.string().optional()
-  })
-  export type FluffyInvestor = z.infer<typeof FluffyInvestorSchema>
-
-  export const TentacledCompanyLocationSchema = z.object({
-    city: z.string().optional(),
-    country: z.string().optional(),
-    is_hq: z.boolean().optional(),
-    line_1: z.string().optional(),
-    postal_code: z.string().optional(),
-    state: z.string().optional()
-  })
-  export type TentacledCompanyLocation = z.infer<
-    typeof TentacledCompanyLocationSchema
-  >
-
-  export const StickyCompanyLocationSchema = z.object({
-    city: z.string().optional(),
-    country: z.string().optional(),
-    is_hq: z.boolean().optional(),
-    line_1: z.string().optional(),
-    postal_code: z.string().optional(),
-    state: z.string().optional()
-  })
-  export type StickyCompanyLocation = z.infer<
-    typeof StickyCompanyLocationSchema
-  >
-
-  export const FluffySimilarCompanySchema = z.object({
-    industry: z.string().optional(),
-    link: z.string().optional(),
-    location: z.string().optional(),
-    name: z.string().optional()
-  })
-  export type FluffySimilarCompany = z.infer<typeof FluffySimilarCompanySchema>
-
-  export const Date70Schema = z.object({
-    day: z.number().optional(),
-    month: z.number().optional(),
-    year: z.number().optional()
-  })
-  export type Date70 = z.infer<typeof Date70Schema>
-
-  export const PurpleHonourAwardSchema = z.object({
+  export const HonourAwardSchema = z.object({
     description: z.string().optional(),
-    issued_on: PurpleDateSchema.optional(),
+    issued_on: Date0Schema.optional(),
     issuer: z.string().optional(),
     title: z.string().optional()
   })
-  export type PurpleHonourAward = z.infer<typeof PurpleHonourAwardSchema>
+  export type HonourAward = z.infer<typeof HonourAwardSchema>
 
-  export const PurpleAccomplishmentOrgSchema = z.object({
+  export const AccomplishmentOrgSchema = z.object({
     description: z.string().optional(),
-    ends_at: FluffyDateSchema.optional(),
+    ends_at: Date0Schema.optional(),
     org_name: z.string().optional(),
-    starts_at: TentacledDateSchema.optional(),
+    starts_at: Date0Schema.optional(),
     title: z.string().optional()
   })
-  export type PurpleAccomplishmentOrg = z.infer<
-    typeof PurpleAccomplishmentOrgSchema
-  >
+  export type AccomplishmentOrg = z.infer<typeof AccomplishmentOrgSchema>
 
-  export const PurplePatentSchema = z.object({
+  export const PatentSchema = z.object({
     application_number: z.string().optional(),
     description: z.string().optional(),
-    issued_on: StickyDateSchema.optional(),
+    issued_on: Date0Schema.optional(),
     issuer: z.string().optional(),
     patent_number: z.string().optional(),
     title: z.string().optional(),
     url: z.string().optional()
   })
-  export type PurplePatent = z.infer<typeof PurplePatentSchema>
+  export type Patent = z.infer<typeof PatentSchema>
 
-  export const PurpleProjectSchema = z.object({
+  export const ProjectSchema = z.object({
     description: z.string().optional(),
-    ends_at: IndigoDateSchema.optional(),
-    starts_at: IndecentDateSchema.optional(),
+    ends_at: Date0Schema.optional(),
+    starts_at: Date0Schema.optional(),
     title: z.string().optional(),
     url: z.string().optional()
   })
-  export type PurpleProject = z.infer<typeof PurpleProjectSchema>
+  export type Project = z.infer<typeof ProjectSchema>
 
-  export const PurplePublicationSchema = z.object({
+  export const PublicationSchema = z.object({
     description: z.string().optional(),
     name: z.string().optional(),
-    published_on: HilariousDateSchema.optional(),
+    published_on: Date0Schema.optional(),
     publisher: z.string().optional(),
     url: z.string().optional()
   })
-  export type PurplePublication = z.infer<typeof PurplePublicationSchema>
+  export type Publication = z.infer<typeof PublicationSchema>
 
-  export const PurpleTestScoreSchema = z.object({
-    date_on: AmbitiousDateSchema.optional(),
+  export const TestScoreSchema = z.object({
+    date_on: Date0Schema.optional(),
     description: z.string().optional(),
     name: z.string().optional(),
     score: z.string().optional()
   })
-  export type PurpleTestScore = z.infer<typeof PurpleTestScoreSchema>
+  export type TestScore = z.infer<typeof TestScoreSchema>
 
-  export const PurpleArticleSchema = z.object({
+  export const ArticleSchema = z.object({
     author: z.string().optional(),
     image_url: z.string().optional(),
     link: z.string().optional(),
-    published_date: CunningDateSchema.optional(),
+    published_date: Date0Schema.optional(),
     title: z.string().optional()
   })
-  export type PurpleArticle = z.infer<typeof PurpleArticleSchema>
+  export type Article = z.infer<typeof ArticleSchema>
 
-  export const PurpleCertificationSchema = z.object({
+  export const CertificationSchema = z.object({
     authority: z.string().optional(),
     display_source: z.string().optional(),
-    ends_at: FriskyDateSchema.optional(),
+    ends_at: Date0Schema.optional(),
     license_number: z.string().optional(),
     name: z.string().optional(),
-    starts_at: MischievousDateSchema.optional(),
+    starts_at: Date0Schema.optional(),
     url: z.string().optional()
   })
-  export type PurpleCertification = z.infer<typeof PurpleCertificationSchema>
+  export type Certification = z.infer<typeof CertificationSchema>
 
-  export const PurpleEducationSchema = z.object({
+  export const EducationSchema = z.object({
     activities_and_societies: z.string().optional(),
     degree_name: z.string().optional(),
     description: z.string().optional(),
-    ends_at: BraggadociousDateSchema.optional(),
+    ends_at: Date0Schema.optional(),
     field_of_study: z.string().optional(),
     grade: z.string().optional(),
     logo_url: z.string().optional(),
     school: z.string().optional(),
     school_facebook_profile_url: z.string().optional(),
     school_linkedin_profile_url: z.string().optional(),
-    starts_at: Date1Schema.optional()
+    starts_at: Date0Schema.optional()
   })
-  export type PurpleEducation = z.infer<typeof PurpleEducationSchema>
+  export type Education = z.infer<typeof EducationSchema>
 
-  export const PurpleExperienceSchema = z.object({
+  export const ExperienceSchema = z.object({
     company: z.string().optional(),
     company_facebook_profile_url: z.string().optional(),
     company_linkedin_profile_url: z.string().optional(),
     description: z.string().optional(),
-    ends_at: Date2Schema.optional(),
+    ends_at: Date0Schema.optional(),
     location: z.string().optional(),
     logo_url: z.string().optional(),
-    starts_at: Date3Schema.optional(),
+    starts_at: Date0Schema.optional(),
     title: z.string().optional()
   })
-  export type PurpleExperience = z.infer<typeof PurpleExperienceSchema>
+  export type Experience = z.infer<typeof ExperienceSchema>
 
-  export const PurpleVolunteeringExperienceSchema = z.object({
+  export const VolunteeringExperienceSchema = z.object({
     cause: z.string().optional(),
     company: z.string().optional(),
     company_linkedin_profile_url: z.string().optional(),
     description: z.string().optional(),
-    ends_at: Date4Schema.optional(),
+    ends_at: Date0Schema.optional(),
     logo_url: z.string().optional(),
-    starts_at: Date5Schema.optional(),
+    starts_at: Date0Schema.optional(),
     title: z.string().optional()
   })
-  export type PurpleVolunteeringExperience = z.infer<
-    typeof PurpleVolunteeringExperienceSchema
+  export type VolunteeringExperience = z.infer<
+    typeof VolunteeringExperienceSchema
   >
 
-  export const FluffyHonourAwardSchema = z.object({
-    description: z.string().optional(),
-    issued_on: Date6Schema.optional(),
-    issuer: z.string().optional(),
-    title: z.string().optional()
-  })
-  export type FluffyHonourAward = z.infer<typeof FluffyHonourAwardSchema>
-
-  export const FluffyAccomplishmentOrgSchema = z.object({
-    description: z.string().optional(),
-    ends_at: Date7Schema.optional(),
-    org_name: z.string().optional(),
-    starts_at: Date8Schema.optional(),
-    title: z.string().optional()
-  })
-  export type FluffyAccomplishmentOrg = z.infer<
-    typeof FluffyAccomplishmentOrgSchema
-  >
-
-  export const FluffyPatentSchema = z.object({
-    application_number: z.string().optional(),
-    description: z.string().optional(),
-    issued_on: Date9Schema.optional(),
-    issuer: z.string().optional(),
-    patent_number: z.string().optional(),
-    title: z.string().optional(),
-    url: z.string().optional()
-  })
-  export type FluffyPatent = z.infer<typeof FluffyPatentSchema>
-
-  export const FluffyProjectSchema = z.object({
-    description: z.string().optional(),
-    ends_at: Date10Schema.optional(),
-    starts_at: Date11Schema.optional(),
-    title: z.string().optional(),
-    url: z.string().optional()
-  })
-  export type FluffyProject = z.infer<typeof FluffyProjectSchema>
-
-  export const FluffyPublicationSchema = z.object({
-    description: z.string().optional(),
-    name: z.string().optional(),
-    published_on: Date12Schema.optional(),
-    publisher: z.string().optional(),
-    url: z.string().optional()
-  })
-  export type FluffyPublication = z.infer<typeof FluffyPublicationSchema>
-
-  export const FluffyTestScoreSchema = z.object({
-    date_on: Date13Schema.optional(),
-    description: z.string().optional(),
-    name: z.string().optional(),
-    score: z.string().optional()
-  })
-  export type FluffyTestScore = z.infer<typeof FluffyTestScoreSchema>
-
-  export const FluffyArticleSchema = z.object({
-    author: z.string().optional(),
-    image_url: z.string().optional(),
-    link: z.string().optional(),
-    published_date: Date14Schema.optional(),
-    title: z.string().optional()
-  })
-  export type FluffyArticle = z.infer<typeof FluffyArticleSchema>
-
-  export const FluffyCertificationSchema = z.object({
-    authority: z.string().optional(),
-    display_source: z.string().optional(),
-    ends_at: Date16Schema.optional(),
-    license_number: z.string().optional(),
-    name: z.string().optional(),
-    starts_at: Date17Schema.optional(),
-    url: z.string().optional()
-  })
-  export type FluffyCertification = z.infer<typeof FluffyCertificationSchema>
-
-  export const FluffyEducationSchema = z.object({
-    activities_and_societies: z.string().optional(),
-    degree_name: z.string().optional(),
-    description: z.string().optional(),
-    ends_at: Date18Schema.optional(),
-    field_of_study: z.string().optional(),
-    grade: z.string().optional(),
-    logo_url: z.string().optional(),
-    school: z.string().optional(),
-    school_facebook_profile_url: z.string().optional(),
-    school_linkedin_profile_url: z.string().optional(),
-    starts_at: Date19Schema.optional()
-  })
-  export type FluffyEducation = z.infer<typeof FluffyEducationSchema>
-
-  export const FluffyExperienceSchema = z.object({
-    company: z.string().optional(),
-    company_facebook_profile_url: z.string().optional(),
-    company_linkedin_profile_url: z.string().optional(),
-    description: z.string().optional(),
-    ends_at: Date20Schema.optional(),
-    location: z.string().optional(),
-    logo_url: z.string().optional(),
-    starts_at: Date21Schema.optional(),
-    title: z.string().optional()
-  })
-  export type FluffyExperience = z.infer<typeof FluffyExperienceSchema>
-
-  export const FluffyVolunteeringExperienceSchema = z.object({
-    cause: z.string().optional(),
-    company: z.string().optional(),
-    company_linkedin_profile_url: z.string().optional(),
-    description: z.string().optional(),
-    ends_at: Date22Schema.optional(),
-    logo_url: z.string().optional(),
-    starts_at: Date23Schema.optional(),
-    title: z.string().optional()
-  })
-  export type FluffyVolunteeringExperience = z.infer<
-    typeof FluffyVolunteeringExperienceSchema
-  >
-
-  export const TentacledHonourAwardSchema = z.object({
-    description: z.string().optional(),
-    issued_on: Date24Schema.optional(),
-    issuer: z.string().optional(),
-    title: z.string().optional()
-  })
-  export type TentacledHonourAward = z.infer<typeof TentacledHonourAwardSchema>
-
-  export const TentacledAccomplishmentOrgSchema = z.object({
-    description: z.string().optional(),
-    ends_at: Date25Schema.optional(),
-    org_name: z.string().optional(),
-    starts_at: Date26Schema.optional(),
-    title: z.string().optional()
-  })
-  export type TentacledAccomplishmentOrg = z.infer<
-    typeof TentacledAccomplishmentOrgSchema
-  >
-
-  export const TentacledPatentSchema = z.object({
-    application_number: z.string().optional(),
-    description: z.string().optional(),
-    issued_on: Date27Schema.optional(),
-    issuer: z.string().optional(),
-    patent_number: z.string().optional(),
-    title: z.string().optional(),
-    url: z.string().optional()
-  })
-  export type TentacledPatent = z.infer<typeof TentacledPatentSchema>
-
-  export const TentacledProjectSchema = z.object({
-    description: z.string().optional(),
-    ends_at: Date28Schema.optional(),
-    starts_at: Date29Schema.optional(),
-    title: z.string().optional(),
-    url: z.string().optional()
-  })
-  export type TentacledProject = z.infer<typeof TentacledProjectSchema>
-
-  export const TentacledPublicationSchema = z.object({
-    description: z.string().optional(),
-    name: z.string().optional(),
-    published_on: Date30Schema.optional(),
-    publisher: z.string().optional(),
-    url: z.string().optional()
-  })
-  export type TentacledPublication = z.infer<typeof TentacledPublicationSchema>
-
-  export const TentacledTestScoreSchema = z.object({
-    date_on: Date31Schema.optional(),
-    description: z.string().optional(),
-    name: z.string().optional(),
-    score: z.string().optional()
-  })
-  export type TentacledTestScore = z.infer<typeof TentacledTestScoreSchema>
-
-  export const TentacledArticleSchema = z.object({
-    author: z.string().optional(),
-    image_url: z.string().optional(),
-    link: z.string().optional(),
-    published_date: Date32Schema.optional(),
-    title: z.string().optional()
-  })
-  export type TentacledArticle = z.infer<typeof TentacledArticleSchema>
-
-  export const TentacledCertificationSchema = z.object({
-    authority: z.string().optional(),
-    display_source: z.string().optional(),
-    ends_at: Date34Schema.optional(),
-    license_number: z.string().optional(),
-    name: z.string().optional(),
-    starts_at: Date35Schema.optional(),
-    url: z.string().optional()
-  })
-  export type TentacledCertification = z.infer<
-    typeof TentacledCertificationSchema
-  >
-
-  export const TentacledEducationSchema = z.object({
-    activities_and_societies: z.string().optional(),
-    degree_name: z.string().optional(),
-    description: z.string().optional(),
-    ends_at: Date36Schema.optional(),
-    field_of_study: z.string().optional(),
-    grade: z.string().optional(),
-    logo_url: z.string().optional(),
-    school: z.string().optional(),
-    school_facebook_profile_url: z.string().optional(),
-    school_linkedin_profile_url: z.string().optional(),
-    starts_at: Date37Schema.optional()
-  })
-  export type TentacledEducation = z.infer<typeof TentacledEducationSchema>
-
-  export const TentacledExperienceSchema = z.object({
-    company: z.string().optional(),
-    company_facebook_profile_url: z.string().optional(),
-    company_linkedin_profile_url: z.string().optional(),
-    description: z.string().optional(),
-    ends_at: Date38Schema.optional(),
-    location: z.string().optional(),
-    logo_url: z.string().optional(),
-    starts_at: Date39Schema.optional(),
-    title: z.string().optional()
-  })
-  export type TentacledExperience = z.infer<typeof TentacledExperienceSchema>
-
-  export const TentacledVolunteeringExperienceSchema = z.object({
-    cause: z.string().optional(),
-    company: z.string().optional(),
-    company_linkedin_profile_url: z.string().optional(),
-    description: z.string().optional(),
-    ends_at: Date40Schema.optional(),
-    logo_url: z.string().optional(),
-    starts_at: Date41Schema.optional(),
-    title: z.string().optional()
-  })
-  export type TentacledVolunteeringExperience = z.infer<
-    typeof TentacledVolunteeringExperienceSchema
-  >
-
-  export const StickyHonourAwardSchema = z.object({
-    description: z.string().optional(),
-    issued_on: Date42Schema.optional(),
-    issuer: z.string().optional(),
-    title: z.string().optional()
-  })
-  export type StickyHonourAward = z.infer<typeof StickyHonourAwardSchema>
-
-  export const StickyAccomplishmentOrgSchema = z.object({
-    description: z.string().optional(),
-    ends_at: Date43Schema.optional(),
-    org_name: z.string().optional(),
-    starts_at: Date44Schema.optional(),
-    title: z.string().optional()
-  })
-  export type StickyAccomplishmentOrg = z.infer<
-    typeof StickyAccomplishmentOrgSchema
-  >
-
-  export const StickyPatentSchema = z.object({
-    application_number: z.string().optional(),
-    description: z.string().optional(),
-    issued_on: Date45Schema.optional(),
-    issuer: z.string().optional(),
-    patent_number: z.string().optional(),
-    title: z.string().optional(),
-    url: z.string().optional()
-  })
-  export type StickyPatent = z.infer<typeof StickyPatentSchema>
-
-  export const StickyProjectSchema = z.object({
-    description: z.string().optional(),
-    ends_at: Date46Schema.optional(),
-    starts_at: Date47Schema.optional(),
-    title: z.string().optional(),
-    url: z.string().optional()
-  })
-  export type StickyProject = z.infer<typeof StickyProjectSchema>
-
-  export const StickyPublicationSchema = z.object({
-    description: z.string().optional(),
-    name: z.string().optional(),
-    published_on: Date48Schema.optional(),
-    publisher: z.string().optional(),
-    url: z.string().optional()
-  })
-  export type StickyPublication = z.infer<typeof StickyPublicationSchema>
-
-  export const StickyTestScoreSchema = z.object({
-    date_on: Date49Schema.optional(),
-    description: z.string().optional(),
-    name: z.string().optional(),
-    score: z.string().optional()
-  })
-  export type StickyTestScore = z.infer<typeof StickyTestScoreSchema>
-
-  export const StickyArticleSchema = z.object({
-    author: z.string().optional(),
-    image_url: z.string().optional(),
-    link: z.string().optional(),
-    published_date: Date50Schema.optional(),
-    title: z.string().optional()
-  })
-  export type StickyArticle = z.infer<typeof StickyArticleSchema>
-
-  export const StickyCertificationSchema = z.object({
-    authority: z.string().optional(),
-    display_source: z.string().optional(),
-    ends_at: Date51Schema.optional(),
-    license_number: z.string().optional(),
-    name: z.string().optional(),
-    starts_at: Date52Schema.optional(),
-    url: z.string().optional()
-  })
-  export type StickyCertification = z.infer<typeof StickyCertificationSchema>
-
-  export const StickyEducationSchema = z.object({
-    activities_and_societies: z.string().optional(),
-    degree_name: z.string().optional(),
-    description: z.string().optional(),
-    ends_at: Date53Schema.optional(),
-    field_of_study: z.string().optional(),
-    grade: z.string().optional(),
-    logo_url: z.string().optional(),
-    school: z.string().optional(),
-    school_facebook_profile_url: z.string().optional(),
-    school_linkedin_profile_url: z.string().optional(),
-    starts_at: Date54Schema.optional()
-  })
-  export type StickyEducation = z.infer<typeof StickyEducationSchema>
-
-  export const StickyExperienceSchema = z.object({
-    company: z.string().optional(),
-    company_facebook_profile_url: z.string().optional(),
-    company_linkedin_profile_url: z.string().optional(),
-    description: z.string().optional(),
-    ends_at: Date55Schema.optional(),
-    location: z.string().optional(),
-    logo_url: z.string().optional(),
-    starts_at: Date56Schema.optional(),
-    title: z.string().optional()
-  })
-  export type StickyExperience = z.infer<typeof StickyExperienceSchema>
-
-  export const StickyVolunteeringExperienceSchema = z.object({
-    cause: z.string().optional(),
-    company: z.string().optional(),
-    company_linkedin_profile_url: z.string().optional(),
-    description: z.string().optional(),
-    ends_at: Date57Schema.optional(),
-    logo_url: z.string().optional(),
-    starts_at: Date58Schema.optional(),
-    title: z.string().optional()
-  })
-  export type StickyVolunteeringExperience = z.infer<
-    typeof StickyVolunteeringExperienceSchema
-  >
-
-  export const PurpleAcquiredCompanySchema = z.object({
-    announced_date: Date59Schema.optional(),
+  export const AcquiredCompanySchema = z.object({
+    announced_date: Date0Schema.optional(),
     crunchbase_profile_url: z.string().optional(),
     linkedin_profile_url: z.string().optional(),
     price: z.number().optional()
   })
-  export type PurpleAcquiredCompany = z.infer<
-    typeof PurpleAcquiredCompanySchema
-  >
+  export type AcquiredCompany = z.infer<typeof AcquiredCompanySchema>
 
-  export const PurpleAcquisitorSchema = z.object({
-    announced_date: Date60Schema.optional(),
+  export const AcquisitorSchema = z.object({
+    announced_date: Date0Schema.optional(),
     crunchbase_profile_url: z.string().optional(),
     linkedin_profile_url: z.string().optional(),
     price: z.number().optional()
   })
-  export type PurpleAcquisitor = z.infer<typeof PurpleAcquisitorSchema>
+  export type Acquisitor = z.infer<typeof AcquisitorSchema>
 
-  export const PurpleCompanyDetailsSchema = z.object({
+  export const CompanyDetailsSchema = z.object({
     company_type: z.string().optional(),
     contact_email: z.string().optional(),
     crunchbase_profile_url: z.string().optional(),
     crunchbase_rank: z.number().optional(),
     facebook_id: z.string().optional(),
-    founding_date: Date61Schema.optional(),
-    ipo_date: Date62Schema.optional(),
+    founding_date: Date0Schema.optional(),
+    ipo_date: Date0Schema.optional(),
     ipo_status: z.string().optional(),
     number_of_acquisitions: z.number().optional(),
     number_of_exits: z.number().optional(),
@@ -1613,282 +451,211 @@ export namespace proxycurl {
     total_funding_amount: z.number().optional(),
     twitter_id: z.string().optional()
   })
-  export type PurpleCompanyDetails = z.infer<typeof PurpleCompanyDetailsSchema>
+  export type CompanyDetails = z.infer<typeof CompanyDetailsSchema>
 
-  export const PurpleFundingSchema = z.object({
-    announced_date: Date63Schema.optional(),
+  export const FundingSchema = z.object({
+    announced_date: Date0Schema.optional(),
     funding_type: z.string().optional(),
-    investor_list: z.array(PurpleInvestorSchema).optional(),
+    investor_list: z.array(InvestorSchema).optional(),
     money_raised: z.number().optional(),
     number_of_investor: z.number().optional()
   })
-  export type PurpleFunding = z.infer<typeof PurpleFundingSchema>
+  export type Funding = z.infer<typeof FundingSchema>
 
-  export const PurpleCompanyUpdateSchema = z.object({
+  export const CompanyUpdateSchema = z.object({
     article_link: z.string().optional(),
     image: z.string().optional(),
-    posted_on: Date64Schema.optional(),
+    posted_on: Date0Schema.optional(),
     text: z.string().optional(),
     total_likes: z.number().optional()
   })
-  export type PurpleCompanyUpdate = z.infer<typeof PurpleCompanyUpdateSchema>
-
-  export const FluffyAcquiredCompanySchema = z.object({
-    announced_date: Date65Schema.optional(),
-    crunchbase_profile_url: z.string().optional(),
-    linkedin_profile_url: z.string().optional(),
-    price: z.number().optional()
-  })
-  export type FluffyAcquiredCompany = z.infer<
-    typeof FluffyAcquiredCompanySchema
-  >
-
-  export const FluffyAcquisitorSchema = z.object({
-    announced_date: Date66Schema.optional(),
-    crunchbase_profile_url: z.string().optional(),
-    linkedin_profile_url: z.string().optional(),
-    price: z.number().optional()
-  })
-  export type FluffyAcquisitor = z.infer<typeof FluffyAcquisitorSchema>
-
-  export const FluffyCompanyDetailsSchema = z.object({
-    company_type: z.string().optional(),
-    contact_email: z.string().optional(),
-    crunchbase_profile_url: z.string().optional(),
-    crunchbase_rank: z.number().optional(),
-    facebook_id: z.string().optional(),
-    founding_date: Date67Schema.optional(),
-    ipo_date: Date68Schema.optional(),
-    ipo_status: z.string().optional(),
-    number_of_acquisitions: z.number().optional(),
-    number_of_exits: z.number().optional(),
-    number_of_funding_rounds: z.number().optional(),
-    number_of_investments: z.number().optional(),
-    number_of_investors: z.number().optional(),
-    number_of_lead_investments: z.number().optional(),
-    number_of_lead_investors: z.number().optional(),
-    operating_status: z.string().optional(),
-    phone_number: z.string().optional(),
-    stock_symbol: z.string().optional(),
-    total_fund_raised: z.number().optional(),
-    total_funding_amount: z.number().optional(),
-    twitter_id: z.string().optional()
-  })
-  export type FluffyCompanyDetails = z.infer<typeof FluffyCompanyDetailsSchema>
-
-  export const FluffyFundingSchema = z.object({
-    announced_date: Date69Schema.optional(),
-    funding_type: z.string().optional(),
-    investor_list: z.array(FluffyInvestorSchema).optional(),
-    money_raised: z.number().optional(),
-    number_of_investor: z.number().optional()
-  })
-  export type FluffyFunding = z.infer<typeof FluffyFundingSchema>
-
-  export const FluffyCompanyUpdateSchema = z.object({
-    article_link: z.string().optional(),
-    image: z.string().optional(),
-    posted_on: Date70Schema.optional(),
-    text: z.string().optional(),
-    total_likes: z.number().optional()
-  })
-  export type FluffyCompanyUpdate = z.infer<typeof FluffyCompanyUpdateSchema>
+  export type CompanyUpdate = z.infer<typeof CompanyUpdateSchema>
 
   export const PersonLookupUrlEnrichResultProfileSchema = z.object({
-    accomplishment_courses: z.array(PurpleCourseSchema).optional(),
-    accomplishment_honors_awards: z.array(PurpleHonourAwardSchema).optional(),
-    accomplishment_organisations: z
-      .array(PurpleAccomplishmentOrgSchema)
-      .optional(),
-    accomplishment_patents: z.array(PurplePatentSchema).optional(),
-    accomplishment_projects: z.array(PurpleProjectSchema).optional(),
-    accomplishment_publications: z.array(PurplePublicationSchema).optional(),
-    accomplishment_test_scores: z.array(PurpleTestScoreSchema).optional(),
-    activities: z.array(PurpleActivitySchema).optional(),
-    articles: z.array(PurpleArticleSchema).optional(),
+    accomplishment_courses: z.array(CourseSchema).optional(),
+    accomplishment_honors_awards: z.array(HonourAwardSchema).optional(),
+    accomplishment_organisations: z.array(AccomplishmentOrgSchema).optional(),
+    accomplishment_patents: z.array(PatentSchema).optional(),
+    accomplishment_projects: z.array(ProjectSchema).optional(),
+    accomplishment_publications: z.array(PublicationSchema).optional(),
+    accomplishment_test_scores: z.array(TestScoreSchema).optional(),
+    activities: z.array(ActivitySchema).optional(),
+    articles: z.array(ArticleSchema).optional(),
     background_cover_image_url: z.string().optional(),
-    birth_date: MagentaDateSchema.optional(),
-    certifications: z.array(PurpleCertificationSchema).optional(),
+    birth_date: Date0Schema.optional(),
+    certifications: z.array(CertificationSchema).optional(),
     city: z.string().optional(),
     connections: z.number().optional(),
     country: z.string().optional(),
     country_full_name: z.string().optional(),
-    education: z.array(PurpleEducationSchema).optional(),
-    experiences: z.array(PurpleExperienceSchema).optional(),
-    extra: PurplePersonExtraSchema.optional(),
+    education: z.array(EducationSchema).optional(),
+    experiences: z.array(ExperienceSchema).optional(),
+    extra: PersonExtraSchema.optional(),
     first_name: z.string().optional(),
     follower_count: z.number().optional(),
     full_name: z.string().optional(),
     gender: z.string().optional(),
-    groups: z.array(PurplePersonGroupSchema).optional(),
+    groups: z.array(PersonGroupSchema).optional(),
     headline: z.string().optional(),
     industry: z.string().optional(),
-    inferred_salary: PurpleInferredSalarySchema.optional(),
+    inferred_salary: InferredSalarySchema.optional(),
     interests: z.array(z.string()).optional(),
     languages: z.array(z.string()).optional(),
     last_name: z.string().optional(),
     occupation: z.string().optional(),
-    people_also_viewed: z.array(PurplePeopleAlsoViewedSchema).optional(),
+    people_also_viewed: z.array(PeopleAlsoViewedSchema).optional(),
     personal_emails: z.array(z.string()).optional(),
     personal_numbers: z.array(z.string()).optional(),
     profile_pic_url: z.string().optional(),
     public_identifier: z.string().optional(),
     recommendations: z.array(z.string()).optional(),
-    similarly_named_profiles: z.array(PurpleSimilarProfileSchema).optional(),
+    similarly_named_profiles: z.array(PeopleAlsoViewedSchema).optional(),
     skills: z.array(z.string()).optional(),
     state: z.string().optional(),
     summary: z.string().optional(),
-    volunteer_work: z.array(PurpleVolunteeringExperienceSchema).optional()
+    volunteer_work: z.array(VolunteeringExperienceSchema).optional()
   })
   export type PersonLookupUrlEnrichResultProfile = z.infer<
     typeof PersonLookupUrlEnrichResultProfileSchema
   >
 
   export const RoleSearchEnrichedResultProfileSchema = z.object({
-    accomplishment_courses: z.array(FluffyCourseSchema).optional(),
-    accomplishment_honors_awards: z.array(FluffyHonourAwardSchema).optional(),
-    accomplishment_organisations: z
-      .array(FluffyAccomplishmentOrgSchema)
-      .optional(),
-    accomplishment_patents: z.array(FluffyPatentSchema).optional(),
-    accomplishment_projects: z.array(FluffyProjectSchema).optional(),
-    accomplishment_publications: z.array(FluffyPublicationSchema).optional(),
-    accomplishment_test_scores: z.array(FluffyTestScoreSchema).optional(),
-    activities: z.array(FluffyActivitySchema).optional(),
-    articles: z.array(FluffyArticleSchema).optional(),
+    accomplishment_courses: z.array(CourseSchema).optional(),
+    accomplishment_honors_awards: z.array(HonourAwardSchema).optional(),
+    accomplishment_organisations: z.array(AccomplishmentOrgSchema).optional(),
+    accomplishment_patents: z.array(PatentSchema).optional(),
+    accomplishment_projects: z.array(ProjectSchema).optional(),
+    accomplishment_publications: z.array(PublicationSchema).optional(),
+    accomplishment_test_scores: z.array(TestScoreSchema).optional(),
+    activities: z.array(ActivitySchema).optional(),
+    articles: z.array(ArticleSchema).optional(),
     background_cover_image_url: z.string().optional(),
-    birth_date: Date15Schema.optional(),
-    certifications: z.array(FluffyCertificationSchema).optional(),
+    birth_date: Date0Schema.optional(),
+    certifications: z.array(CertificationSchema).optional(),
     city: z.string().optional(),
     connections: z.number().optional(),
     country: z.string().optional(),
     country_full_name: z.string().optional(),
-    education: z.array(FluffyEducationSchema).optional(),
-    experiences: z.array(FluffyExperienceSchema).optional(),
-    extra: FluffyPersonExtraSchema.optional(),
+    education: z.array(EducationSchema).optional(),
+    experiences: z.array(ExperienceSchema).optional(),
+    extra: PersonExtraSchema.optional(),
     first_name: z.string().optional(),
     follower_count: z.number().optional(),
     full_name: z.string().optional(),
     gender: z.string().optional(),
-    groups: z.array(FluffyPersonGroupSchema).optional(),
+    groups: z.array(PersonGroupSchema).optional(),
     headline: z.string().optional(),
     industry: z.string().optional(),
-    inferred_salary: FluffyInferredSalarySchema.optional(),
+    inferred_salary: InferredSalarySchema.optional(),
     interests: z.array(z.string()).optional(),
     languages: z.array(z.string()).optional(),
     last_name: z.string().optional(),
     occupation: z.string().optional(),
-    people_also_viewed: z.array(FluffyPeopleAlsoViewedSchema).optional(),
+    people_also_viewed: z.array(PeopleAlsoViewedSchema).optional(),
     personal_emails: z.array(z.string()).optional(),
     personal_numbers: z.array(z.string()).optional(),
     profile_pic_url: z.string().optional(),
     public_identifier: z.string().optional(),
     recommendations: z.array(z.string()).optional(),
-    similarly_named_profiles: z.array(FluffySimilarProfileSchema).optional(),
+    similarly_named_profiles: z.array(PeopleAlsoViewedSchema).optional(),
     skills: z.array(z.string()).optional(),
     state: z.string().optional(),
     summary: z.string().optional(),
-    volunteer_work: z.array(FluffyVolunteeringExperienceSchema).optional()
+    volunteer_work: z.array(VolunteeringExperienceSchema).optional()
   })
   export type RoleSearchEnrichedResultProfile = z.infer<
     typeof RoleSearchEnrichedResultProfileSchema
   >
 
   export const ReverseEmailUrlEnrichResultProfileSchema = z.object({
-    accomplishment_courses: z.array(TentacledCourseSchema).optional(),
-    accomplishment_honors_awards: z
-      .array(TentacledHonourAwardSchema)
-      .optional(),
-    accomplishment_organisations: z
-      .array(TentacledAccomplishmentOrgSchema)
-      .optional(),
-    accomplishment_patents: z.array(TentacledPatentSchema).optional(),
-    accomplishment_projects: z.array(TentacledProjectSchema).optional(),
-    accomplishment_publications: z.array(TentacledPublicationSchema).optional(),
-    accomplishment_test_scores: z.array(TentacledTestScoreSchema).optional(),
-    activities: z.array(TentacledActivitySchema).optional(),
-    articles: z.array(TentacledArticleSchema).optional(),
+    accomplishment_courses: z.array(CourseSchema).optional(),
+    accomplishment_honors_awards: z.array(HonourAwardSchema).optional(),
+    accomplishment_organisations: z.array(AccomplishmentOrgSchema).optional(),
+    accomplishment_patents: z.array(PatentSchema).optional(),
+    accomplishment_projects: z.array(ProjectSchema).optional(),
+    accomplishment_publications: z.array(PublicationSchema).optional(),
+    accomplishment_test_scores: z.array(TestScoreSchema).optional(),
+    activities: z.array(ActivitySchema).optional(),
+    articles: z.array(ArticleSchema).optional(),
     background_cover_image_url: z.string().optional(),
-    birth_date: Date33Schema.optional(),
-    certifications: z.array(TentacledCertificationSchema).optional(),
+    birth_date: Date0Schema.optional(),
+    certifications: z.array(CertificationSchema).optional(),
     city: z.string().optional(),
     connections: z.number().optional(),
     country: z.string().optional(),
     country_full_name: z.string().optional(),
-    education: z.array(TentacledEducationSchema).optional(),
-    experiences: z.array(TentacledExperienceSchema).optional(),
-    extra: TentacledPersonExtraSchema.optional(),
+    education: z.array(EducationSchema).optional(),
+    experiences: z.array(ExperienceSchema).optional(),
+    extra: PersonExtraSchema.optional(),
     first_name: z.string().optional(),
     follower_count: z.number().optional(),
     full_name: z.string().optional(),
     gender: z.string().optional(),
-    groups: z.array(TentacledPersonGroupSchema).optional(),
+    groups: z.array(PersonGroupSchema).optional(),
     headline: z.string().optional(),
     industry: z.string().optional(),
-    inferred_salary: TentacledInferredSalarySchema.optional(),
+    inferred_salary: InferredSalarySchema.optional(),
     interests: z.array(z.string()).optional(),
     languages: z.array(z.string()).optional(),
     last_name: z.string().optional(),
     occupation: z.string().optional(),
-    people_also_viewed: z.array(TentacledPeopleAlsoViewedSchema).optional(),
+    people_also_viewed: z.array(PeopleAlsoViewedSchema).optional(),
     personal_emails: z.array(z.string()).optional(),
     personal_numbers: z.array(z.string()).optional(),
     profile_pic_url: z.string().optional(),
     public_identifier: z.string().optional(),
     recommendations: z.array(z.string()).optional(),
-    similarly_named_profiles: z.array(TentacledSimilarProfileSchema).optional(),
+    similarly_named_profiles: z.array(PeopleAlsoViewedSchema).optional(),
     skills: z.array(z.string()).optional(),
     state: z.string().optional(),
     summary: z.string().optional(),
-    volunteer_work: z.array(TentacledVolunteeringExperienceSchema).optional()
+    volunteer_work: z.array(VolunteeringExperienceSchema).optional()
   })
   export type ReverseEmailUrlEnrichResultProfile = z.infer<
     typeof ReverseEmailUrlEnrichResultProfileSchema
   >
 
   export const PersonProfileSchema = z.object({
-    accomplishment_courses: z.array(StickyCourseSchema).optional(),
-    accomplishment_honors_awards: z.array(StickyHonourAwardSchema).optional(),
-    accomplishment_organisations: z
-      .array(StickyAccomplishmentOrgSchema)
-      .optional(),
-    accomplishment_patents: z.array(StickyPatentSchema).optional(),
-    accomplishment_projects: z.array(StickyProjectSchema).optional(),
-    accomplishment_publications: z.array(StickyPublicationSchema).optional(),
-    accomplishment_test_scores: z.array(StickyTestScoreSchema).optional(),
-    activities: z.array(StickyActivitySchema).optional(),
-    articles: z.array(StickyArticleSchema).optional(),
+    accomplishment_courses: z.array(CourseSchema).optional(),
+    accomplishment_honors_awards: z.array(HonourAwardSchema).optional(),
+    accomplishment_organisations: z.array(AccomplishmentOrgSchema).optional(),
+    accomplishment_patents: z.array(PatentSchema).optional(),
+    accomplishment_projects: z.array(ProjectSchema).optional(),
+    accomplishment_publications: z.array(PublicationSchema).optional(),
+    accomplishment_test_scores: z.array(TestScoreSchema).optional(),
+    activities: z.array(ActivitySchema).optional(),
+    articles: z.array(ArticleSchema).optional(),
     background_cover_image_url: z.string().optional(),
-    birth_date: MagentaDateSchema.optional(),
-    certifications: z.array(StickyCertificationSchema).optional(),
+    birth_date: Date0Schema.optional(),
+    certifications: z.array(CertificationSchema).optional(),
     city: z.string().optional(),
     connections: z.number().optional(),
     country: z.string().optional(),
     country_full_name: z.string().optional(),
-    education: z.array(StickyEducationSchema).optional(),
-    experiences: z.array(StickyExperienceSchema).optional(),
+    education: z.array(EducationSchema).optional(),
+    experiences: z.array(ExperienceSchema).optional(),
     first_name: z.string().optional(),
     follower_count: z.number().optional(),
     full_name: z.string().optional(),
     gender: z.string().optional(),
-    groups: z.array(StickyPersonGroupSchema).optional(),
+    groups: z.array(PersonGroupSchema).optional(),
     headline: z.string().optional(),
     industry: z.string().optional(),
-    inferred_salary: PurpleInferredSalarySchema.optional(),
+    inferred_salary: InferredSalarySchema.optional(),
     languages: z.array(z.string()).optional(),
     last_name: z.string().optional(),
     occupation: z.string().optional(),
-    people_also_viewed: z.array(StickyPeopleAlsoViewedSchema).optional(),
+    people_also_viewed: z.array(PeopleAlsoViewedSchema).optional(),
     personal_emails: z.array(z.string()).optional(),
     personal_numbers: z.array(z.string()).optional(),
     profile_pic_url: z.string().optional(),
     public_identifier: z.string().optional(),
     recommendations: z.array(z.string()).optional(),
-    similarly_named_profiles: z.array(StickySimilarProfileSchema).optional(),
+    similarly_named_profiles: z.array(PeopleAlsoViewedSchema).optional(),
     skills: z.array(z.string()).optional(),
     state: z.string().optional(),
     summary: z.string().optional(),
-    volunteer_work: z.array(StickyVolunteeringExperienceSchema).optional()
+    volunteer_work: z.array(VolunteeringExperienceSchema).optional()
   })
   export type PersonProfile = z.infer<typeof PersonProfileSchema>
 
@@ -1902,17 +669,11 @@ export namespace proxycurl {
     last_updated?: string
   }
 
-  export const PurpleAcquisitionSchema = z.object({
-    acquired: z.array(PurpleAcquiredCompanySchema).optional(),
-    acquired_by: PurpleAcquisitorSchema.optional()
+  export const AcquisitionSchema = z.object({
+    acquired: z.array(AcquiredCompanySchema).optional(),
+    acquired_by: AcquisitorSchema.optional()
   })
-  export type PurpleAcquisition = z.infer<typeof PurpleAcquisitionSchema>
-
-  export const FluffyAcquisitionSchema = z.object({
-    acquired: z.array(FluffyAcquiredCompanySchema).optional(),
-    acquired_by: FluffyAcquisitorSchema.optional()
-  })
-  export type FluffyAcquisition = z.infer<typeof FluffyAcquisitionSchema>
+  export type Acquisition = z.infer<typeof AcquisitionSchema>
 
   export const PersonLookupUrlEnrichResultSchema = z.object({
     company_similarity_score: z.number().optional(),
@@ -1959,8 +720,8 @@ export namespace proxycurl {
 
   export const ResultProfileSchema = z.object({
     linkedin_url: z.string().optional(),
-    acquisitions: PurpleAcquisitionSchema.optional(),
-    affiliated_companies: z.array(PurpleAffiliatedCompanySchema).optional(),
+    acquisitions: AcquisitionSchema.optional(),
+    affiliated_companies: z.array(AffiliatedCompanySchema).optional(),
     background_cover_image_url: z.string().optional(),
     categories: z.array(z.string()).optional(),
     company_size: z.array(z.number()).optional(),
@@ -1968,23 +729,23 @@ export namespace proxycurl {
     company_type: CompanyTypeSchema.optional(),
     customer_list: z.array(z.string()).optional(),
     description: z.string().optional(),
-    exit_data: z.array(PurpleExitSchema).optional(),
-    extra: PurpleCompanyDetailsSchema.optional(),
+    exit_data: z.array(ExitSchema).optional(),
+    extra: CompanyDetailsSchema.optional(),
     follower_count: z.number().optional(),
     founded_year: z.number().optional(),
-    funding_data: z.array(PurpleFundingSchema).optional(),
-    hq: PurpleCompanyLocationSchema.optional(),
+    funding_data: z.array(FundingSchema).optional(),
+    hq: CompanyLocationSchema.optional(),
     industry: z.string().optional(),
     linkedin_internal_id: z.string().optional(),
-    locations: z.array(FluffyCompanyLocationSchema).optional(),
+    locations: z.array(CompanyLocationSchema).optional(),
     name: z.string().optional(),
     profile_pic_url: z.string().optional(),
     search_id: z.string().optional(),
-    similar_companies: z.array(PurpleSimilarCompanySchema).optional(),
+    similar_companies: z.array(SimilarCompanySchema).optional(),
     specialities: z.array(z.string()).optional(),
     tagline: z.string().optional(),
     universal_name_id: z.string().optional(),
-    updates: z.array(PurpleCompanyUpdateSchema).optional(),
+    updates: z.array(CompanyUpdateSchema).optional(),
     website: z.string().optional()
   })
   export type CompanyProfile = z.infer<typeof ResultProfileSchema>
@@ -1995,8 +756,8 @@ export namespace proxycurl {
   }
 
   export const CompanyUrlEnrichResultProfileSchema = z.object({
-    acquisitions: FluffyAcquisitionSchema.optional(),
-    affiliated_companies: z.array(FluffyAffiliatedCompanySchema).optional(),
+    acquisitions: AcquisitionSchema.optional(),
+    affiliated_companies: z.array(AffiliatedCompanySchema).optional(),
     background_cover_image_url: z.string().optional(),
     categories: z.array(z.string()).optional(),
     company_size: z.array(z.number()).optional(),
@@ -2004,23 +765,23 @@ export namespace proxycurl {
     company_type: CompanyTypeSchema.optional(),
     customer_list: z.array(z.string()).optional(),
     description: z.string().optional(),
-    exit_data: z.array(FluffyExitSchema).optional(),
-    extra: FluffyCompanyDetailsSchema.optional(),
+    exit_data: z.array(ExitSchema).optional(),
+    extra: CompanyDetailsSchema.optional(),
     follower_count: z.number().optional(),
     founded_year: z.number().optional(),
-    funding_data: z.array(FluffyFundingSchema).optional(),
-    hq: TentacledCompanyLocationSchema.optional(),
+    funding_data: z.array(FundingSchema).optional(),
+    hq: CompanyLocationSchema.optional(),
     industry: z.string().optional(),
     linkedin_internal_id: z.string().optional(),
-    locations: z.array(StickyCompanyLocationSchema).optional(),
+    locations: z.array(CompanyLocationSchema).optional(),
     name: z.string().optional(),
     profile_pic_url: z.string().optional(),
     search_id: z.string().optional(),
-    similar_companies: z.array(FluffySimilarCompanySchema).optional(),
+    similar_companies: z.array(SimilarCompanySchema).optional(),
     specialities: z.array(z.string()).optional(),
     tagline: z.string().optional(),
     universal_name_id: z.string().optional(),
-    updates: z.array(FluffyCompanyUpdateSchema).optional(),
+    updates: z.array(CompanyUpdateSchema).optional(),
     website: z.string().optional()
   })
   export type CompanyUrlEnrichResultProfile = z.infer<

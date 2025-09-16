@@ -1,5 +1,4 @@
 import './globals.css'
-import 'react-medium-image-zoom/dist/styles.css'
 
 import type { Metadata } from 'next'
 import { Geist } from 'next/font/google'
