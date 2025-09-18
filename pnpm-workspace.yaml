@@ -188,14 +188,20 @@ catalog:
   zod-validation-error: 4.0.0-beta.1
   zoominfo-api-auth-client: ^1.0.1
 
+enablePrePostScripts: true
+
 ignoredBuiltDependencies:
   - '@fisch0920/config'
   - puppeteer
+
+minimumReleaseAge: 1440
 
 onlyBuiltDependencies:
   - '@sentry/cli'
   - protobufjs
   - tree-sitter
+
+packageManagerStrict: false
 
 updateConfig:
   ignoreDependencies:
