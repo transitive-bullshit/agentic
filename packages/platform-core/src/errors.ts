@@ -10,10 +10,11 @@ export class BaseError extends Error {
     // Ensure the name of this error is the same as the class name
     this.name = this.constructor.name
 
+    // Disabling due to https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/no-useless-error-capture-stack-trace.md
     // Set stack trace to caller
-    if (Error.captureStackTrace) {
-      Error.captureStackTrace(this, this.constructor)
-    }
+    // if (Error.captureStackTrace) {
+    //   Error.captureStackTrace(this, this.constructor)
+    // }
   }
 }
 

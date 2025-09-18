@@ -19,7 +19,7 @@ catalog:
   '@dicebear/core': ^9.2.3
   '@dotenvx/dotenvx': ^1.47.7
   '@edge-runtime/vm': ^5.0.0
-  '@fisch0920/config': ^1.1.4
+  '@fisch0920/config': ^1.2.0
   '@fisch0920/drizzle-orm': ^0.43.7
   '@fisch0920/drizzle-zod': ^0.7.9
   '@fisch0920/markdown-to-html': ^1.1.0
@@ -98,7 +98,7 @@ catalog:
   drizzle-orm: ^0.44.2
   duck-duck-scrape: ^2.2.7
   email-validator: ^2.0.4
-  eslint: ^9.31.0
+  eslint: ^9.35.0
   eslint-plugin-drizzle: ^0.2.3
   eventid: ^2.0.1
   exit-hook: ^4.0.0
@@ -171,12 +171,12 @@ catalog:
   tailwindcss: ^4.1.11
   three: ^0.178.0
   tsup: ^8.5.0
-  tsx: ^4.20.3
+  tsx: ^4.20.5
   turbo: ^2.5.5
   tw-animate-css: ^1.3.4
   twitter-api-sdk: ^1.2.1
   type-fest: ^4.41.0
-  typescript: ^5.8.3
+  typescript: ^5.9.2
   unconfig: ^7.3.2
   vite-tsconfig-paths: ^5.1.4
   vitest: ^3.2.4
