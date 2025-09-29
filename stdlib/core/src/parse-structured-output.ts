@@ -1,6 +1,6 @@
 import type { JsonObject, JsonValue } from 'type-fest'
 import { jsonrepair, JSONRepairError } from 'jsonrepair'
-import { z, type ZodType } from 'zod'
+import { z, type ZodType } from 'zod/v3'
 import { fromZodError } from 'zod-validation-error'
 
 import { ParseError } from './errors'

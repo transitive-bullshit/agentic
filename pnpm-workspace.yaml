@@ -183,9 +183,9 @@ catalog:
   wikibase-sdk: ^10.2.3
   wrangler: ^4.23.0
   xsai: ^0.3.0-beta.4
-  zod: ^3.25.67
+  zod: ^4.1.9
   zod-to-json-schema: ^3.24.5
-  zod-validation-error: 4.0.0-beta.1
+  zod-validation-error: 4.0.1
   zoominfo-api-auth-client: ^1.0.1
 
 enablePrePostScripts: true

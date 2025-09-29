@@ -1,5 +1,6 @@
 import type { Jsonifiable } from 'type-fest'
-import type { z } from 'zod'
+import type * as z3 from 'zod/v3'
+import type * as z4 from 'zod/v4/core'
 
 import type { AIFunctionSet } from './ai-function-set'
 import type { AIFunctionsProvider } from './fns'
@@ -56,15 +57,20 @@ export interface AIToolSpec {
  * A Zod object schema or a custom schema created from a JSON schema via
  * `createSchema()`.
  */
-export type AIFunctionInputSchema = z.ZodObject<any> | AgenticSchema<any>
+export type AIFunctionInputSchema =
+  | z3.ZodObject<any>
+  | z4.$ZodObject
+  | AgenticSchema<any>
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export type inferInput<InputSchema extends AIFunctionInputSchema> =
   InputSchema extends AgenticSchema<any>
     ? InputSchema['_type']
-    : InputSchema extends z.ZodTypeAny
-      ? z.infer<InputSchema>
-      : never
+    : InputSchema extends z3.ZodTypeAny
+      ? z3.infer<InputSchema>
+      : InputSchema extends z4.$ZodType
+        ? z4.infer<InputSchema>
+        : never
 
 /** The implementation of the function, with arg parsing and validation. */
 export type AIFunctionImpl<Return> = Omit<
@@ -88,8 +94,6 @@ export type AIFunctionLike =
  * A function meant to be used with LLM function calling.
  */
 export interface AIFunction<
-  // TODO
-  // InputSchema extends AIFunctionInputSchema = z.ZodObject<any>,
   InputSchema extends AIFunctionInputSchema = AIFunctionInputSchema,
   Output = any
 > {

@@ -478,14 +478,14 @@ catalogs:
       specifier: ^4.23.0
       version: 4.23.0
     zod:
-      specifier: ^3.25.67
-      version: 3.25.75
+      specifier: ^4.1.9
+      version: 4.1.9
     zod-to-json-schema:
       specifier: ^3.24.5
       version: 3.24.6
     zod-validation-error:
-      specifier: 4.0.0-beta.1
-      version: 4.0.0-beta.1
+      specifier: 4.0.1
+      version: 4.0.1
 
 importers:
 
@@ -553,7 +553,7 @@ importers:
         version: 3.2.4(@edge-runtime/vm@5.0.0)(@types/debug@4.1.12)(@types/node@24.0.14)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.42.0)(tsx@4.20.5)(yaml@2.8.0)
       zod:
         specifier: 'catalog:'
-        version: 3.25.75
+        version: 4.1.9
 
   apps/api:
     dependencies:
@@ -592,13 +592,13 @@ importers:
         version: 0.43.7(@cloudflare/workers-types@4.20250620.0)(@neondatabase/serverless@1.0.1)(@opentelemetry/api@1.9.0)(@types/pg@8.15.4)(kysely@0.28.2)(postgres@3.4.7)
       '@fisch0920/drizzle-zod':
         specifier: 'catalog:'
-        version: 0.7.9(@fisch0920/drizzle-orm@0.43.7(@cloudflare/workers-types@4.20250620.0)(@neondatabase/serverless@1.0.1)(@opentelemetry/api@1.9.0)(@types/pg@8.15.4)(kysely@0.28.2)(postgres@3.4.7))(zod@3.25.75)
+        version: 0.7.9(@fisch0920/drizzle-orm@0.43.7(@cloudflare/workers-types@4.20250620.0)(@neondatabase/serverless@1.0.1)(@opentelemetry/api@1.9.0)(@types/pg@8.15.4)(kysely@0.28.2)(postgres@3.4.7))(zod@4.1.9)
       '@hono/node-server':
         specifier: 'catalog:'
         version: 1.15.0(hono@4.8.4)
       '@hono/zod-openapi':
         specifier: 'catalog:'
-        version: 0.19.9(hono@4.8.4)(zod@3.25.75)
+        version: 0.19.9(hono@4.8.4)(zod@4.1.9)
       '@paralleldrive/cuid2':
         specifier: 'catalog:'
         version: 2.2.2
@@ -646,7 +646,7 @@ importers:
         version: 4.41.0
       zod-validation-error:
         specifier: 'catalog:'
-        version: 4.0.0-beta.1(zod@3.25.75)
+        version: 4.0.1(zod@4.1.9)
     devDependencies:
       '@types/semver':
         specifier: 'catalog:'
@@ -723,7 +723,7 @@ importers:
         version: link:../../packages/validators
       '@hono/zod-validator':
         specifier: 'catalog:'
-        version: 0.7.0(hono@4.8.4)(zod@3.25.75)
+        version: 0.7.0(hono@4.8.4)(zod@4.1.9)
       '@modelcontextprotocol/sdk':
         specifier: 'catalog:'
         version: 1.15.0
@@ -1020,7 +1020,7 @@ importers:
         version: link:../../../packages/platform
       xmcp:
         specifier: ^0.1.6
-        version: 0.1.6(@types/node@24.0.14)(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(esbuild@0.25.5)(next@15.3.5(@opentelemetry/api@1.9.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(swc-loader@0.2.6(@swc/core@1.12.14)(webpack@5.100.2(@swc/core@1.12.14)(esbuild@0.25.5)))(typescript@5.9.2)(zod@3.25.75)
+        version: 0.1.6(@types/node@24.0.14)(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(esbuild@0.25.5)(next@15.3.5(@opentelemetry/api@1.9.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(swc-loader@0.2.6(@swc/core@1.12.14)(webpack@5.100.2(@swc/core@1.12.14)(esbuild@0.25.5)))(typescript@5.9.2)(zod@4.1.9)
     devDependencies:
       swc-loader:
         specifier: ^0.2.6
@@ -1453,7 +1453,7 @@ importers:
         version: 3.25.75
       zod-validation-error:
         specifier: 'catalog:'
-        version: 4.0.0-beta.1(zod@3.25.75)
+        version: 4.0.1(zod@3.25.75)
 
   packages/tool-client:
     dependencies:
@@ -1539,7 +1539,7 @@ importers:
     devDependencies:
       ai:
         specifier: 'catalog:'
-        version: 4.3.17(react@19.1.0)(zod@3.25.75)
+        version: 4.3.17(react@19.1.0)(zod@4.1.9)
 
   stdlib/core:
     dependencies:
@@ -1557,7 +1557,7 @@ importers:
         version: 1.8.1
       openai-zod-to-json-schema:
         specifier: 'catalog:'
-        version: 1.1.1(zod@3.25.75)
+        version: 1.1.1(zod@4.1.9)
       p-throttle:
         specifier: 'catalog:'
         version: 6.2.0
@@ -1565,11 +1565,11 @@ importers:
         specifier: 'catalog:'
         version: 4.41.0
       zod:
-        specifier: 'catalog:'
-        version: 3.25.75
+        specifier: ^3.25.0 || ^4.0.0
+        version: 4.1.9
       zod-validation-error:
         specifier: 'catalog:'
-        version: 4.0.0-beta.1(zod@3.25.75)
+        version: 4.0.1(zod@4.1.9)
     devDependencies:
       openai-fetch:
         specifier: 'catalog:'
@@ -1599,7 +1599,7 @@ importers:
     devDependencies:
       '@langchain/core':
         specifier: 'catalog:'
-        version: 0.3.61(openai@5.8.2(ws@8.18.3)(zod@3.25.75))
+        version: 0.3.61(openai@5.8.2(ws@8.18.3)(zod@3.25.76))
 
   stdlib/llamaindex:
     dependencies:
@@ -1612,7 +1612,7 @@ importers:
     devDependencies:
       llamaindex:
         specifier: 'catalog:'
-        version: 0.11.11(@llama-flow/core@0.4.4(@modelcontextprotocol/sdk@1.15.0)(hono@4.8.4)(next@15.3.5(@opentelemetry/api@1.9.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(p-retry@6.2.1)(rxjs@7.8.2)(zod@3.25.75))(@modelcontextprotocol/sdk@1.15.0)(hono@4.8.4)(next@15.3.5(@opentelemetry/api@1.9.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(p-retry@6.2.1)(rxjs@7.8.2)(tree-sitter@0.22.4)(web-tree-sitter@0.24.7)(zod-to-json-schema@3.24.6(zod@3.25.75))(zod@3.25.75)
+        version: 0.11.11(@llama-flow/core@0.4.4(@modelcontextprotocol/sdk@1.15.0)(hono@4.8.4)(next@15.3.5(@opentelemetry/api@1.9.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(p-retry@6.2.1)(rxjs@7.8.2)(zod@4.1.9))(@modelcontextprotocol/sdk@1.15.0)(hono@4.8.4)(next@15.3.5(@opentelemetry/api@1.9.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(p-retry@6.2.1)(rxjs@7.8.2)(tree-sitter@0.22.4)(web-tree-sitter@0.24.7)(zod-to-json-schema@3.24.6(zod@4.1.9))(zod@4.1.9)
 
   stdlib/mastra:
     dependencies:
@@ -1624,14 +1624,14 @@ importers:
         version: link:../../packages/tool-client
       '@mastra/schema-compat':
         specifier: 'catalog:'
-        version: 0.10.3(ai@4.3.17(react@19.1.0)(zod@3.25.75))(zod@3.25.75)
+        version: 0.10.3(ai@4.3.17(react@19.1.0)(zod@4.1.9))(zod@4.1.9)
       ai:
         specifier: 'catalog:'
-        version: 4.3.17(react@19.1.0)(zod@3.25.75)
+        version: 4.3.17(react@19.1.0)(zod@4.1.9)
     devDependencies:
       '@mastra/core':
         specifier: 'catalog:'
-        version: 0.10.8(openapi-types@12.1.3)(react@19.1.0)(zod@3.25.75)
+        version: 0.10.8(openapi-types@12.1.3)(react@19.1.0)(zod@4.1.9)
 
   stdlib/mcp:
     dependencies:
@@ -13145,12 +13145,11 @@ packages:
     peerDependencies:
       zod: ^3.25.0 || ^4.0.0
 
-  zod-validation-error@4.0.0-beta.1:
-    resolution: {integrity: sha512-42DSXwZyDKeLHrug+luXt6RMaoYsgMXc68bCz9kOyk66k7XBG35cAxsu2Lg42uVrJ1kEem2RyHxMBAv25SeZzQ==}
+  zod-validation-error@4.0.1:
+    resolution: {integrity: sha512-F3rdaCOHs5ViJ5YTz5zzRtfkQdMdIeKudJAoxy7yB/2ZMEHw73lmCAcQw11r7++20MyGl4WV59EVh7A9rNAyog==}
     engines: {node: '>=18.0.0'}
-    deprecated: please use v.4.0.0 instead
     peerDependencies:
-      zod: ^3.25.0
+      zod: ^3.25.0 || ^4.0.0
 
   zod@3.22.3:
     resolution: {integrity: sha512-EjIevzuJRiRPbVH4mGc8nApb/lVLKVpmUhAaR5R5doKGfAnGJ6Gr3CViAVjP+4FWSxCsybeWQdcgCtbX+7oZug==}
@@ -13160,6 +13159,12 @@ packages:
 
   zod@3.25.75:
     resolution: {integrity: sha512-OhpzAmVzabPOL6C3A3gpAifqr9MqihV/Msx3gor2b2kviCgcb+HM9SEOpMWwwNp9MRunWnhtAKUoo0AHhjyPPg==}
+
+  zod@3.25.76:
+    resolution: {integrity: sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==}
+
+  zod@4.1.9:
+    resolution: {integrity: sha512-HI32jTq0AUAC125z30E8bQNz0RQ+9Uc+4J7V97gLYjZVKRjeydPgGt6dvQzFrav7MYOUGFqqOGiHpA/fdbd0cQ==}
 
   zustand@4.5.7:
     resolution: {integrity: sha512-CHOUy7mu3lbD6o6LJLfllpjkzhHXSBlX8B9+qPddUsIfeF5S/UZ5q0kmCsnRqT1UHFQZchNFDDzMbQsuesHWlw==}
@@ -13212,6 +13217,20 @@ snapshots:
       secure-json-parse: 2.7.0
       zod: 3.25.75
 
+  '@ai-sdk/provider-utils@2.2.8(zod@3.25.76)':
+    dependencies:
+      '@ai-sdk/provider': 1.1.3
+      nanoid: 3.3.11
+      secure-json-parse: 2.7.0
+      zod: 3.25.76
+
+  '@ai-sdk/provider-utils@2.2.8(zod@4.1.9)':
+    dependencies:
+      '@ai-sdk/provider': 1.1.3
+      nanoid: 3.3.11
+      secure-json-parse: 2.7.0
+      zod: 4.1.9
+
   '@ai-sdk/provider@1.1.3':
     dependencies:
       json-schema: 0.4.0
@@ -13226,12 +13245,46 @@ snapshots:
     optionalDependencies:
       zod: 3.25.75
 
+  '@ai-sdk/react@1.2.12(react@19.1.0)(zod@3.25.76)':
+    dependencies:
+      '@ai-sdk/provider-utils': 2.2.8(zod@3.25.76)
+      '@ai-sdk/ui-utils': 1.2.11(zod@3.25.76)
+      react: 19.1.0
+      swr: 2.3.4(react@19.1.0)
+      throttleit: 2.1.0
+    optionalDependencies:
+      zod: 3.25.76
+
+  '@ai-sdk/react@1.2.12(react@19.1.0)(zod@4.1.9)':
+    dependencies:
+      '@ai-sdk/provider-utils': 2.2.8(zod@4.1.9)
+      '@ai-sdk/ui-utils': 1.2.11(zod@4.1.9)
+      react: 19.1.0
+      swr: 2.3.4(react@19.1.0)
+      throttleit: 2.1.0
+    optionalDependencies:
+      zod: 4.1.9
+
   '@ai-sdk/ui-utils@1.2.11(zod@3.25.75)':
     dependencies:
       '@ai-sdk/provider': 1.1.3
       '@ai-sdk/provider-utils': 2.2.8(zod@3.25.75)
       zod: 3.25.75
       zod-to-json-schema: 3.24.6(zod@3.25.75)
+
+  '@ai-sdk/ui-utils@1.2.11(zod@3.25.76)':
+    dependencies:
+      '@ai-sdk/provider': 1.1.3
+      '@ai-sdk/provider-utils': 2.2.8(zod@3.25.76)
+      zod: 3.25.76
+      zod-to-json-schema: 3.24.6(zod@3.25.76)
+
+  '@ai-sdk/ui-utils@1.2.11(zod@4.1.9)':
+    dependencies:
+      '@ai-sdk/provider': 1.1.3
+      '@ai-sdk/provider-utils': 2.2.8(zod@4.1.9)
+      zod: 4.1.9
+      zod-to-json-schema: 3.24.6(zod@4.1.9)
 
   '@alcalzone/ansi-tokenize@0.1.3':
     dependencies:
@@ -13262,6 +13315,11 @@ snapshots:
     dependencies:
       openapi3-ts: 4.5.0
       zod: 3.25.75
+
+  '@asteasolutions/zod-to-openapi@7.3.4(zod@4.1.9)':
+    dependencies:
+      openapi3-ts: 4.5.0
+      zod: 4.1.9
 
   '@asyncapi/parser@3.4.0':
     dependencies:
@@ -14941,10 +14999,10 @@ snapshots:
       kysely: 0.28.2
       postgres: 3.4.7
 
-  '@fisch0920/drizzle-zod@0.7.9(@fisch0920/drizzle-orm@0.43.7(@cloudflare/workers-types@4.20250620.0)(@neondatabase/serverless@1.0.1)(@opentelemetry/api@1.9.0)(@types/pg@8.15.4)(kysely@0.28.2)(postgres@3.4.7))(zod@3.25.75)':
+  '@fisch0920/drizzle-zod@0.7.9(@fisch0920/drizzle-orm@0.43.7(@cloudflare/workers-types@4.20250620.0)(@neondatabase/serverless@1.0.1)(@opentelemetry/api@1.9.0)(@types/pg@8.15.4)(kysely@0.28.2)(postgres@3.4.7))(zod@4.1.9)':
     dependencies:
       '@fisch0920/drizzle-orm': 0.43.7(@cloudflare/workers-types@4.20250620.0)(@neondatabase/serverless@1.0.1)(@opentelemetry/api@1.9.0)(@types/pg@8.15.4)(kysely@0.28.2)(postgres@3.4.7)
-      zod: 3.25.75
+      zod: 4.1.9
 
   '@fisch0920/markdown-to-html@1.1.0':
     dependencies:
@@ -15014,8 +15072,8 @@ snapshots:
       express: 4.21.2
       get-port: 5.1.1
       json-schema: 0.4.0
-      zod: 3.25.75
-      zod-to-json-schema: 3.24.6(zod@3.25.75)
+      zod: 3.25.76
+      zod-to-json-schema: 3.24.6(zod@3.25.76)
     transitivePeerDependencies:
       - supports-color
 
@@ -15053,10 +15111,23 @@ snapshots:
       openapi3-ts: 4.5.0
       zod: 3.25.75
 
+  '@hono/zod-openapi@0.19.9(hono@4.8.4)(zod@4.1.9)':
+    dependencies:
+      '@asteasolutions/zod-to-openapi': 7.3.4(zod@4.1.9)
+      '@hono/zod-validator': 0.7.0(hono@4.8.4)(zod@4.1.9)
+      hono: 4.8.4
+      openapi3-ts: 4.5.0
+      zod: 4.1.9
+
   '@hono/zod-validator@0.7.0(hono@4.8.4)(zod@3.25.75)':
     dependencies:
       hono: 4.8.4
       zod: 3.25.75
+
+  '@hono/zod-validator@0.7.0(hono@4.8.4)(zod@4.1.9)':
+    dependencies:
+      hono: 4.8.4
+      zod: 4.1.9
 
   '@humanfs/core@0.19.1': {}
 
@@ -15443,8 +15514,25 @@ snapshots:
       p-queue: 6.6.2
       p-retry: 4.6.2
       uuid: 10.0.0
-      zod: 3.25.75
-      zod-to-json-schema: 3.24.6(zod@3.25.75)
+      zod: 3.25.76
+      zod-to-json-schema: 3.24.6(zod@3.25.76)
+    transitivePeerDependencies:
+      - openai
+
+  '@langchain/core@0.3.61(openai@5.8.2(ws@8.18.3)(zod@3.25.76))':
+    dependencies:
+      '@cfworker/json-schema': 4.1.1
+      ansi-styles: 5.2.0
+      camelcase: 6.3.0
+      decamelize: 1.2.0
+      js-tiktoken: 1.0.20
+      langsmith: 0.3.34(openai@5.8.2(ws@8.18.3)(zod@3.25.76))
+      mustache: 4.2.0
+      p-queue: 6.6.2
+      p-retry: 4.6.2
+      uuid: 10.0.0
+      zod: 3.25.76
+      zod-to-json-schema: 3.24.6(zod@3.25.76)
     transitivePeerDependencies:
       - openai
 
@@ -15473,21 +15561,38 @@ snapshots:
       rxjs: 7.8.2
       zod: 3.25.75
 
+  '@llama-flow/core@0.4.4(@modelcontextprotocol/sdk@1.15.0)(hono@4.8.4)(next@15.3.5(@opentelemetry/api@1.9.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(p-retry@6.2.1)(rxjs@7.8.2)(zod@4.1.9)':
+    optionalDependencies:
+      '@modelcontextprotocol/sdk': 1.15.0
+      hono: 4.8.4
+      next: 15.3.5(@opentelemetry/api@1.9.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      p-retry: 6.2.1
+      rxjs: 7.8.2
+      zod: 4.1.9
+
   '@llamaindex/cloud@4.0.16(@llama-flow/core@0.4.4(@modelcontextprotocol/sdk@1.15.0)(hono@4.8.4)(next@15.3.5(@opentelemetry/api@1.9.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(p-retry@6.2.1)(rxjs@7.8.2)(zod@3.25.75))(@llamaindex/core@0.6.12)(@llamaindex/env@0.1.30)':
     dependencies:
       '@llama-flow/core': 0.4.4(@modelcontextprotocol/sdk@1.15.0)(hono@4.8.4)(next@15.3.5(@opentelemetry/api@1.9.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(p-retry@6.2.1)(rxjs@7.8.2)(zod@3.25.75)
       '@llamaindex/core': 0.6.12
       '@llamaindex/env': 0.1.30
       p-retry: 6.2.1
-      zod: 3.25.75
+      zod: 3.25.76
+
+  '@llamaindex/cloud@4.0.16(@llama-flow/core@0.4.4(@modelcontextprotocol/sdk@1.15.0)(hono@4.8.4)(next@15.3.5(@opentelemetry/api@1.9.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(p-retry@6.2.1)(rxjs@7.8.2)(zod@4.1.9))(@llamaindex/core@0.6.12)(@llamaindex/env@0.1.30)':
+    dependencies:
+      '@llama-flow/core': 0.4.4(@modelcontextprotocol/sdk@1.15.0)(hono@4.8.4)(next@15.3.5(@opentelemetry/api@1.9.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(p-retry@6.2.1)(rxjs@7.8.2)(zod@4.1.9)
+      '@llamaindex/core': 0.6.12
+      '@llamaindex/env': 0.1.30
+      p-retry: 6.2.1
+      zod: 3.25.76
 
   '@llamaindex/core@0.6.12':
     dependencies:
       '@llamaindex/env': 0.1.30
       '@types/node': 22.16.4
       magic-bytes.js: 1.12.1
-      zod: 3.25.75
-      zod-to-json-schema: 3.24.6(zod@3.25.75)
+      zod: 3.25.76
+      zod-to-json-schema: 3.24.6(zod@3.25.76)
     transitivePeerDependencies:
       - '@huggingface/transformers'
       - gpt-tokenizer
@@ -15525,6 +15630,15 @@ snapshots:
       rxjs: 7.8.2
       zod: 3.25.75
 
+  '@llamaindex/workflow-core@1.0.0(@modelcontextprotocol/sdk@1.15.0)(hono@4.8.4)(next@15.3.5(@opentelemetry/api@1.9.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(p-retry@6.2.1)(rxjs@7.8.2)(zod@4.1.9)':
+    optionalDependencies:
+      '@modelcontextprotocol/sdk': 1.15.0
+      hono: 4.8.4
+      next: 15.3.5(@opentelemetry/api@1.9.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      p-retry: 6.2.1
+      rxjs: 7.8.2
+      zod: 4.1.9
+
   '@llamaindex/workflow@1.1.12(@llamaindex/core@0.6.12)(@llamaindex/env@0.1.30)(@modelcontextprotocol/sdk@1.15.0)(hono@4.8.4)(next@15.3.5(@opentelemetry/api@1.9.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(p-retry@6.2.1)(rxjs@7.8.2)(zod-to-json-schema@3.24.6(zod@3.25.75))(zod@3.25.75)':
     dependencies:
       '@llamaindex/core': 0.6.12
@@ -15532,6 +15646,20 @@ snapshots:
       '@llamaindex/workflow-core': 1.0.0(@modelcontextprotocol/sdk@1.15.0)(hono@4.8.4)(next@15.3.5(@opentelemetry/api@1.9.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(p-retry@6.2.1)(rxjs@7.8.2)(zod@3.25.75)
       zod: 3.25.75
       zod-to-json-schema: 3.24.6(zod@3.25.75)
+    transitivePeerDependencies:
+      - '@modelcontextprotocol/sdk'
+      - hono
+      - next
+      - p-retry
+      - rxjs
+
+  '@llamaindex/workflow@1.1.12(@llamaindex/core@0.6.12)(@llamaindex/env@0.1.30)(@modelcontextprotocol/sdk@1.15.0)(hono@4.8.4)(next@15.3.5(@opentelemetry/api@1.9.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(p-retry@6.2.1)(rxjs@7.8.2)(zod-to-json-schema@3.24.6(zod@4.1.9))(zod@4.1.9)':
+    dependencies:
+      '@llamaindex/core': 0.6.12
+      '@llamaindex/env': 0.1.30
+      '@llamaindex/workflow-core': 1.0.0(@modelcontextprotocol/sdk@1.15.0)(hono@4.8.4)(next@15.3.5(@opentelemetry/api@1.9.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(p-retry@6.2.1)(rxjs@7.8.2)(zod@4.1.9)
+      zod: 4.1.9
+      zod-to-json-schema: 3.24.6(zod@4.1.9)
     transitivePeerDependencies:
       - '@modelcontextprotocol/sdk'
       - hono
@@ -15592,6 +15720,59 @@ snapshots:
       - valibot
       - zod-openapi
 
+  '@mastra/core@0.10.8(openapi-types@12.1.3)(react@19.1.0)(zod@4.1.9)':
+    dependencies:
+      '@ai-sdk/provider': 1.1.3
+      '@ai-sdk/provider-utils': 2.2.8(zod@4.1.9)
+      '@ai-sdk/ui-utils': 1.2.11(zod@4.1.9)
+      '@mastra/schema-compat': 0.10.3(ai@4.3.17(react@19.1.0)(zod@4.1.9))(zod@4.1.9)
+      '@opentelemetry/api': 1.9.0
+      '@opentelemetry/auto-instrumentations-node': 0.59.0(@opentelemetry/api@1.9.0)(@opentelemetry/core@2.0.1(@opentelemetry/api@1.9.0))
+      '@opentelemetry/core': 2.0.1(@opentelemetry/api@1.9.0)
+      '@opentelemetry/exporter-trace-otlp-grpc': 0.201.1(@opentelemetry/api@1.9.0)
+      '@opentelemetry/exporter-trace-otlp-http': 0.201.1(@opentelemetry/api@1.9.0)
+      '@opentelemetry/otlp-exporter-base': 0.201.1(@opentelemetry/api@1.9.0)
+      '@opentelemetry/otlp-transformer': 0.201.1(@opentelemetry/api@1.9.0)
+      '@opentelemetry/resources': 2.0.1(@opentelemetry/api@1.9.0)
+      '@opentelemetry/sdk-metrics': 2.0.1(@opentelemetry/api@1.9.0)
+      '@opentelemetry/sdk-node': 0.201.1(@opentelemetry/api@1.9.0)
+      '@opentelemetry/sdk-trace-base': 2.0.1(@opentelemetry/api@1.9.0)
+      '@opentelemetry/sdk-trace-node': 2.0.1(@opentelemetry/api@1.9.0)
+      '@opentelemetry/semantic-conventions': 1.34.0
+      '@sindresorhus/slugify': 2.2.1
+      ai: 4.3.17(react@19.1.0)(zod@4.1.9)
+      cohere-ai: 7.17.1
+      date-fns: 3.6.0
+      dotenv: 16.6.1
+      hono: 4.8.4
+      hono-openapi: 0.4.8(hono@4.8.4)(openapi-types@12.1.3)(zod@4.1.9)
+      json-schema: 0.4.0
+      json-schema-to-zod: 2.6.1
+      pino: 9.7.0
+      pino-pretty: 13.0.0
+      radash: 12.1.1
+      sift: 17.1.3
+      xstate: 5.20.0
+      zod: 4.1.9
+      zod-to-json-schema: 3.24.6(zod@4.1.9)
+    transitivePeerDependencies:
+      - '@hono/arktype-validator'
+      - '@hono/effect-validator'
+      - '@hono/typebox-validator'
+      - '@hono/valibot-validator'
+      - '@hono/zod-validator'
+      - '@sinclair/typebox'
+      - '@valibot/to-json-schema'
+      - arktype
+      - aws-crt
+      - effect
+      - encoding
+      - openapi-types
+      - react
+      - supports-color
+      - valibot
+      - zod-openapi
+
   '@mastra/schema-compat@0.10.3(ai@4.3.17(react@19.1.0)(zod@3.25.75))(zod@3.25.75)':
     dependencies:
       ai: 4.3.17(react@19.1.0)(zod@3.25.75)
@@ -15599,6 +15780,14 @@ snapshots:
       zod: 3.25.75
       zod-from-json-schema: 0.0.5
       zod-to-json-schema: 3.24.6(zod@3.25.75)
+
+  '@mastra/schema-compat@0.10.3(ai@4.3.17(react@19.1.0)(zod@4.1.9))(zod@4.1.9)':
+    dependencies:
+      ai: 4.3.17(react@19.1.0)(zod@4.1.9)
+      json-schema: 0.4.0
+      zod: 4.1.9
+      zod-from-json-schema: 0.0.5
+      zod-to-json-schema: 3.24.6(zod@4.1.9)
 
   '@mdx-js/mdx@3.1.0(acorn@8.15.0)':
     dependencies:
@@ -15849,7 +16038,7 @@ snapshots:
       unified: 11.0.5
       unist-util-visit: 5.0.0
       yargs: 17.7.2
-      zod: 3.25.75
+      zod: 3.25.76
     transitivePeerDependencies:
       - '@types/react'
       - bare-buffer
@@ -15868,8 +16057,8 @@ snapshots:
       lcm: 0.0.3
       lodash: 4.17.21
       openapi-types: 12.1.3
-      zod: 3.25.75
-      zod-to-json-schema: 3.24.6(zod@3.25.75)
+      zod: 3.25.76
+      zod-to-json-schema: 3.24.6(zod@3.25.76)
     transitivePeerDependencies:
       - debug
 
@@ -15907,7 +16096,7 @@ snapshots:
       serve-handler: 6.1.6
       tailwind-merge: 2.6.0
       tailwindcss-animate: 1.0.7
-      zod: 3.25.75
+      zod: 3.25.76
     transitivePeerDependencies:
       - '@types/react'
       - '@types/react-dom'
@@ -15920,7 +16109,7 @@ snapshots:
       cors: 2.8.5
       express: 5.1.0
       ws: 8.18.3
-      zod: 3.25.75
+      zod: 3.25.76
     transitivePeerDependencies:
       - bufferutil
       - supports-color
@@ -15937,7 +16126,7 @@ snapshots:
       shell-quote: 1.8.3
       spawn-rx: 5.1.2
       ts-node: 10.9.2(@swc/core@1.12.14)(@types/node@24.0.14)(typescript@5.9.2)
-      zod: 3.25.75
+      zod: 3.25.76
     transitivePeerDependencies:
       - '@swc/core'
       - '@swc/wasm'
@@ -19894,13 +20083,13 @@ snapshots:
   agents@0.0.101(@cloudflare/workers-types@4.20250620.0)(react@19.1.0):
     dependencies:
       '@modelcontextprotocol/sdk': 1.15.0
-      ai: 4.3.17(react@19.1.0)(zod@3.25.75)
+      ai: 4.3.17(react@19.1.0)(zod@3.25.76)
       cron-schedule: 5.0.4
       nanoid: 5.1.5
       partyserver: 0.0.72(@cloudflare/workers-types@4.20250620.0)
       partysocket: 1.1.4
       react: 19.1.0
-      zod: 3.25.75
+      zod: 3.25.76
     transitivePeerDependencies:
       - '@cloudflare/workers-types'
       - supports-color
@@ -19919,6 +20108,30 @@ snapshots:
       '@opentelemetry/api': 1.9.0
       jsondiffpatch: 0.6.0
       zod: 3.25.75
+    optionalDependencies:
+      react: 19.1.0
+
+  ai@4.3.17(react@19.1.0)(zod@3.25.76):
+    dependencies:
+      '@ai-sdk/provider': 1.1.3
+      '@ai-sdk/provider-utils': 2.2.8(zod@3.25.76)
+      '@ai-sdk/react': 1.2.12(react@19.1.0)(zod@3.25.76)
+      '@ai-sdk/ui-utils': 1.2.11(zod@3.25.76)
+      '@opentelemetry/api': 1.9.0
+      jsondiffpatch: 0.6.0
+      zod: 3.25.76
+    optionalDependencies:
+      react: 19.1.0
+
+  ai@4.3.17(react@19.1.0)(zod@4.1.9):
+    dependencies:
+      '@ai-sdk/provider': 1.1.3
+      '@ai-sdk/provider-utils': 2.2.8(zod@4.1.9)
+      '@ai-sdk/react': 1.2.12(react@19.1.0)(zod@4.1.9)
+      '@ai-sdk/ui-utils': 1.2.11(zod@4.1.9)
+      '@opentelemetry/api': 1.9.0
+      jsondiffpatch: 0.6.0
+      zod: 4.1.9
     optionalDependencies:
       react: 19.1.0
 
@@ -22489,6 +22702,14 @@ snapshots:
       hono: 4.8.4
       zod: 3.25.75
 
+  hono-openapi@0.4.8(hono@4.8.4)(openapi-types@12.1.3)(zod@4.1.9):
+    dependencies:
+      json-schema-walker: 2.0.0
+      openapi-types: 12.1.3
+    optionalDependencies:
+      hono: 4.8.4
+      zod: 4.1.9
+
   hono@4.8.4: {}
 
   html-to-text@9.0.5:
@@ -23072,8 +23293,8 @@ snapshots:
       smol-toml: 1.4.1
       strip-json-comments: 5.0.2
       typescript: 5.9.2
-      zod: 3.25.75
-      zod-validation-error: 3.5.3(zod@3.25.75)
+      zod: 3.25.76
+      zod-validation-error: 3.5.3(zod@3.25.76)
 
   ky@1.8.1: {}
 
@@ -23112,6 +23333,18 @@ snapshots:
       uuid: 10.0.0
     optionalDependencies:
       openai: 5.8.2(ws@8.18.3)(zod@3.25.75)
+
+  langsmith@0.3.34(openai@5.8.2(ws@8.18.3)(zod@3.25.76)):
+    dependencies:
+      '@types/uuid': 10.0.0
+      chalk: 4.1.2
+      console-table-printer: 2.14.6
+      p-queue: 6.6.2
+      p-retry: 4.6.2
+      semver: 7.7.2
+      uuid: 10.0.0
+    optionalDependencies:
+      openai: 5.8.2(ws@8.18.3)(zod@3.25.76)
 
   language-subtag-registry@0.3.23: {}
 
@@ -23218,6 +23451,31 @@ snapshots:
       '@llamaindex/env': 0.1.30
       '@llamaindex/node-parser': 2.0.12(@llamaindex/core@0.6.12)(@llamaindex/env@0.1.30)(tree-sitter@0.22.4)(web-tree-sitter@0.24.7)
       '@llamaindex/workflow': 1.1.12(@llamaindex/core@0.6.12)(@llamaindex/env@0.1.30)(@modelcontextprotocol/sdk@1.15.0)(hono@4.8.4)(next@15.3.5(@opentelemetry/api@1.9.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(p-retry@6.2.1)(rxjs@7.8.2)(zod-to-json-schema@3.24.6(zod@3.25.75))(zod@3.25.75)
+      '@types/lodash': 4.17.19
+      '@types/node': 22.16.4
+      lodash: 4.17.21
+      magic-bytes.js: 1.12.1
+    transitivePeerDependencies:
+      - '@huggingface/transformers'
+      - '@llama-flow/core'
+      - '@modelcontextprotocol/sdk'
+      - gpt-tokenizer
+      - hono
+      - next
+      - p-retry
+      - rxjs
+      - tree-sitter
+      - web-tree-sitter
+      - zod
+      - zod-to-json-schema
+
+  llamaindex@0.11.11(@llama-flow/core@0.4.4(@modelcontextprotocol/sdk@1.15.0)(hono@4.8.4)(next@15.3.5(@opentelemetry/api@1.9.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(p-retry@6.2.1)(rxjs@7.8.2)(zod@4.1.9))(@modelcontextprotocol/sdk@1.15.0)(hono@4.8.4)(next@15.3.5(@opentelemetry/api@1.9.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(p-retry@6.2.1)(rxjs@7.8.2)(tree-sitter@0.22.4)(web-tree-sitter@0.24.7)(zod-to-json-schema@3.24.6(zod@4.1.9))(zod@4.1.9):
+    dependencies:
+      '@llamaindex/cloud': 4.0.16(@llama-flow/core@0.4.4(@modelcontextprotocol/sdk@1.15.0)(hono@4.8.4)(next@15.3.5(@opentelemetry/api@1.9.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(p-retry@6.2.1)(rxjs@7.8.2)(zod@4.1.9))(@llamaindex/core@0.6.12)(@llamaindex/env@0.1.30)
+      '@llamaindex/core': 0.6.12
+      '@llamaindex/env': 0.1.30
+      '@llamaindex/node-parser': 2.0.12(@llamaindex/core@0.6.12)(@llamaindex/env@0.1.30)(tree-sitter@0.22.4)(web-tree-sitter@0.24.7)
+      '@llamaindex/workflow': 1.1.12(@llamaindex/core@0.6.12)(@llamaindex/env@0.1.30)(@modelcontextprotocol/sdk@1.15.0)(hono@4.8.4)(next@15.3.5(@opentelemetry/api@1.9.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(p-retry@6.2.1)(rxjs@7.8.2)(zod-to-json-schema@3.24.6(zod@4.1.9))(zod@4.1.9)
       '@types/lodash': 4.17.19
       '@types/node': 22.16.4
       lodash: 4.17.21
@@ -24287,9 +24545,9 @@ snapshots:
     dependencies:
       ky: 1.8.1
 
-  openai-zod-to-json-schema@1.1.1(zod@3.25.75):
+  openai-zod-to-json-schema@1.1.1(zod@4.1.9):
     dependencies:
-      zod: 3.25.75
+      zod: 4.1.9
 
   openai@4.104.0(ws@8.18.3)(zod@3.25.75):
     dependencies:
@@ -24310,6 +24568,12 @@ snapshots:
     optionalDependencies:
       ws: 8.18.3
       zod: 3.25.75
+
+  openai@5.8.2(ws@8.18.3)(zod@3.25.76):
+    optionalDependencies:
+      ws: 8.18.3
+      zod: 3.25.76
+    optional: true
 
   openapi-types@12.1.3: {}
 
@@ -26981,7 +27245,7 @@ snapshots:
 
   ws@8.18.3: {}
 
-  xmcp@0.1.6(@types/node@24.0.14)(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(esbuild@0.25.5)(next@15.3.5(@opentelemetry/api@1.9.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(swc-loader@0.2.6(@swc/core@1.12.14)(webpack@5.100.2(@swc/core@1.12.14)(esbuild@0.25.5)))(typescript@5.9.2)(zod@3.25.75):
+  xmcp@0.1.6(@types/node@24.0.14)(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(esbuild@0.25.5)(next@15.3.5(@opentelemetry/api@1.9.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(swc-loader@0.2.6(@swc/core@1.12.14)(webpack@5.100.2(@swc/core@1.12.14)(esbuild@0.25.5)))(typescript@5.9.2)(zod@4.1.9):
     dependencies:
       '@modelcontextprotocol/inspector': 0.14.3(@swc/core@1.12.14)(@types/node@24.0.14)(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(typescript@5.9.2)
       '@modelcontextprotocol/sdk': 1.15.0
@@ -27012,7 +27276,7 @@ snapshots:
       webpack: 5.100.2(@swc/core@1.12.14)(esbuild@0.25.5)
       webpack-node-externals: 3.0.0
       webpack-virtual-modules: 0.5.0
-      zod: 3.25.75
+      zod: 4.1.9
     transitivePeerDependencies:
       - '@swc/helpers'
       - '@swc/wasm'
@@ -27105,25 +27369,41 @@ snapshots:
 
   zod-from-json-schema@0.0.5:
     dependencies:
-      zod: 3.25.75
+      zod: 3.25.76
 
   zod-to-json-schema@3.24.6(zod@3.25.75):
     dependencies:
       zod: 3.25.75
 
-  zod-validation-error@3.5.3(zod@3.25.75):
+  zod-to-json-schema@3.24.6(zod@3.25.76):
+    dependencies:
+      zod: 3.25.76
+
+  zod-to-json-schema@3.24.6(zod@4.1.9):
+    dependencies:
+      zod: 4.1.9
+
+  zod-validation-error@3.5.3(zod@3.25.76):
+    dependencies:
+      zod: 3.25.76
+
+  zod-validation-error@4.0.1(zod@3.25.75):
     dependencies:
       zod: 3.25.75
 
-  zod-validation-error@4.0.0-beta.1(zod@3.25.75):
+  zod-validation-error@4.0.1(zod@4.1.9):
     dependencies:
-      zod: 3.25.75
+      zod: 4.1.9
 
   zod@3.22.3: {}
 
   zod@3.23.8: {}
 
   zod@3.25.75: {}
+
+  zod@3.25.76: {}
+
+  zod@4.1.9: {}
 
   zustand@4.5.7(@types/react@19.1.8)(immer@9.0.21)(react@19.1.0):
     dependencies:
