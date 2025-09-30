@@ -37,6 +37,7 @@ export type Consumer = Simplify<
     adminUrl: string
   }
 >
+
 export type Project = Simplify<
   Omit<
     components['schemas']['Project'],
