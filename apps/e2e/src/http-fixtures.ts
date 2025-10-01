@@ -38,7 +38,14 @@ export type E2ETestFixtureSuite = {
   title: string
   fixtures: E2ETestFixture[]
 
-  /** @default false */
+  /**
+   * Development-only flag that runs exclusively this test suite, ignoring all others.
+   * Uses Vitest's `describe.only()` to focus on a single test suite.
+   *
+   * ⚠️ WARNING: Never commit this as `true` - it will cause CI to skip all other tests.
+   *
+   * @default false
+   */
   only?: boolean
 
   /** @default false */
