@@ -18,6 +18,7 @@
     "docs": "turbo run docs",
     "clean": "turbo clean",
     "fix": "run-s fix:*",
+    "cli": "cd ./packages/cli && pnpm run cli",
     "fix:format": "prettier --write \"**/*.{js,ts,tsx}\"",
     "test": "turbo test --concurrency=32",
     "test:format": "prettier --check \"**/*.{js,ts,tsx}\"",
