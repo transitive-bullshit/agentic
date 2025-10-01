@@ -4,7 +4,7 @@ const route = createRoute({
   description: 'Check if the server is healthy',
   operationId: 'healthCheck',
   method: 'get',
-  path: '/health',
+  path: '/health', // Hint: at GET /v1/health
   responses: {
     200: {
       description: 'OK',
