@@ -5,7 +5,7 @@ import { isValidEmail, isValidPassword } from '@agentic/platform-validators'
 import { useForm } from '@tanstack/react-form'
 import { Loader2Icon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import { z } from 'zod'
 
 import {
@@ -23,13 +23,20 @@ export function LoginForm() {
   const ctx = useUnauthenticatedAgentic()
   const nextUrl = useNextUrl()
   const router = useRouter()
+  const [isGitHubLoading, setIsGitHubLoading] = useState(false)
 
   const onAuthWithGitHub = useCallback(async () => {
-    const redirectUri = `${globalThis.location.origin}/auth/github/success?${sanitizeSearchParams({ next: nextUrl }).toString()}`
+    setIsGitHubLoading(true)
+    try {
+      const redirectUri = `${globalThis.location.origin}/auth/github/success?${sanitizeSearchParams({ next: nextUrl }).toString()}`
 
-    const url = await ctx!.api.initAuthFlowWithGitHub({ redirectUri })
+      const url = await ctx!.api.initAuthFlowWithGitHub({ redirectUri })
 
-    void router.push(url)
+      void router.push(url)
+    } catch (err: any) {
+      setIsGitHubLoading(false)
+      void toastError(err, { label: 'GitHub auth error' })
+    }
   }, [ctx, nextUrl, router])
 
   const form = useForm({
@@ -65,7 +72,7 @@ export function LoginForm() {
 
   return (
     <section>
-      <div className='flex-col flex-1 items-center justify-center w-full max-w-xs'>
+      <div className='flex flex-col flex-1 items-center justify-center w-full max-w-xs gap-6'>
         <form
           className={cn('flex flex-col gap-6 w-full')}
           onSubmit={(e) => {
@@ -150,34 +157,44 @@ export function LoginForm() {
                 </Button>
               )}
             />
-
-            <div className='flex items-center gap-2 text-center text-sm'>
-              <div className='border-border border-t inset-0 flex-1' />
-              <div className='text-muted-foreground'>Or continue with</div>
-              <div className='border-border border-t inset-0 flex-1' />
-            </div>
-
-            <Button
-              variant='outline'
-              className='w-full'
-              onClick={onAuthWithGitHub}
-            >
-              <GitHubIcon />
-
-              <span>Login with GitHub</span>
-            </Button>
-          </div>
-
-          <div className='text-center text-xs'>
-            Don&apos;t have an account?{' '}
-            <a
-              href={`/signup?${sanitizeSearchParams({ next: nextUrl }).toString()}`}
-              className='underline underline-offset-4'
-            >
-              Sign up
-            </a>
           </div>
         </form>
+
+        <div className='flex items-center gap-2 text-center text-sm w-full'>
+          <div className='border-border border-t inset-0 flex-1' />
+          <div className='text-muted-foreground'>Or continue with</div>
+          <div className='border-border border-t inset-0 flex-1' />
+        </div>
+
+        <form
+          className='w-full'
+          onSubmit={(e) => {
+            e.preventDefault()
+            void onAuthWithGitHub()
+          }}
+        >
+          <Button
+            type='submit'
+            variant='outline'
+            className='w-full'
+            disabled={isGitHubLoading || !ctx}
+          >
+            {isGitHubLoading && <Loader2Icon className='animate-spin' />}
+            <GitHubIcon />
+
+            <span>Login with GitHub</span>
+          </Button>
+        </form>
+
+        <div className='text-center text-xs'>
+          Don&apos;t have an account?{' '}
+          <a
+            href={`/signup?${sanitizeSearchParams({ next: nextUrl }).toString()}`}
+            className='underline underline-offset-4'
+          >
+            Sign up
+          </a>
+        </div>
       </div>
     </section>
   )
