@@ -24,7 +24,8 @@
     "build": "tsup",
     "clean": "del dist",
     "test": "run-s test:*",
-    "test:typecheck": "tsc --noEmit"
+    "test:typecheck": "tsc --noEmit",
+    "cli": "AGENTIC_API_BASE_URL=\"http://localhost:3001\" tsx ./src/cli.ts"
   },
   "dependencies": {
     "@agentic/platform": "workspace:*",
