@@ -128,9 +128,22 @@ export class AgenticToolClient extends AIFunctionsProvider {
    * version or preview deployment, you can use a fully-qualified deployment
    * identifier.
    *
+   * @param projectOrDeploymentIdentifier - The project or deployment identifier to use
+   * @param options.apiKey - Optional API key for authentication. If not provided,
+   *   automatically derived from the `AGENTIC_API_KEY` environment variable.
+   *   The key will start with `sk-...` and is found at https://agentic.so/app
+   *
    * @example
    * ```ts
    * const searchTool = await AgenticToolClient.fromIdentifier('@agentic/search')
+   * ```
+   *
+   * @example
+   * ```ts
+   * // With explicit API key
+   * const searchTool = await AgenticToolClient.fromIdentifier('@agentic/search', {
+   *   apiKey: 'sk-...'
+   * })
    * ```
    */
   static async fromIdentifier(
