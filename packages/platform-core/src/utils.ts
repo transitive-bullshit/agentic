@@ -110,7 +110,7 @@ export async function sha256(
     dataBuffer = input
   }
 
-  const hashBuffer = await crypto.subtle.digest('SHA-256', dataBuffer)
+  const hashBuffer = await crypto.subtle.digest('SHA-256', dataBuffer as any)
   const hashArray = Array.from(new Uint8Array(hashBuffer))
   const hashHex = hashArray
     .map((b) => ('00' + b.toString(16)).slice(-2))
