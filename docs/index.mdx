@@ -1,16 +1,60 @@
 ---
-title: Agentic Docs
-description: Agentic is the App Store for LLM Tools.
+title: Introduction
 ---
 
-## Choose your adventure
+**Agentic is a marketplace for AI agents and tools.**
+Our mission is to provide developers with plug-and-play tools for your AI workflows.
 
-<Columns cols={2}>
-  <Card title='MCP Marketplace Docs' href='/marketplace' icon='store'>
-    For developers interested in using Agentic tools in their apps.
-  </Card>
-  <Card title='Publishing MCP Docs' href='/publishing' icon='upload'>
-    For developers interested in publishing their own MCP server or OpenAPI
-    service to Agentic.
-  </Card>
-</Columns>
+### 🔑 Key Use Cases
+
+1. 🛠️ **Tools as a service**, for example:
+   - _Web Search_ so your AI can research and have up-to-date knowledge.
+   - _Entity Resolution_ to enrich people, companies, and more.
+   - _Code gen/review_ to create your own coding agent or review tool.
+   - _Gmail Search_ can be used to build personal assistants and automations.
+
+2. 🙇 **Agents as a service** (coming soon), for example:
+   - _Organize your Gmail Inbox_ by auto-labeling.
+   - _Document management_ agent that uploads, stores, and retrieves files.
+   - _Personal Assistants_ that you fully control.
+
+### 🔌 Plug-and-play
+
+Agentic, being both open-source and developer-first, is designed
+specifically for ease of integration from startup to enterprise usage.
+
+```diff
+  import 'dotenv/config'
+
++ import { createAISDKTools } from '@agentic/ai-sdk'
++ import { AgenticToolClient } from '@agentic/platform-tool-client'
+  import { createOpenAI } from '@ai-sdk/openai'
+  import { generateText } from 'ai'
+
+  async function main() {
++   const searchTool = await AgenticToolClient.fromIdentifier('@agentic/search')
+    const openai = createOpenAI({ compatibility: 'strict' })
+
+    const result = await generateText({
+      model: openai('gpt-4o-mini'),
++     tools: createAISDKTools(searchTool),
+      toolChoice: 'required',
+      temperature: 0,
+      system: 'You are a helpful assistant. Be as concise as possible.',
+      prompt: 'What is the weather in San Francisco?'
+    })
+  }
+```
+
+### 🚀 Mission
+
+Founders Travis Fischer and Steve Peak are dedicated to build
+an ecosystem of tools and agents that are simple to connect into your
+existing AI pipelines. With a combined experience of over 40 years in
+developer tools, Agentic's founders and community are excited to become
+the premier AI tool and agent marketplace.
+
+For publishers, we aim to provide packaging, payments, security, and distribution of your APIs both MCP and RESTful
+in a marketplace that developers can quickly shop, playground, and combine tools.
+
+[Let’s get started →](/marketplace)

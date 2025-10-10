@@ -29,6 +29,15 @@ local_resource(
 )
 
 local_resource(
+    '📚 Docs',
+    serve_dir='docs',
+    serve_cmd='mint dev --port 3333',
+    links=[ link('http://localhost:3333', 'Docs'), ],
+    labels=['Agentic'],
+    auto_init=False
+)
+
+local_resource(
     '🧪 E2E Tests',
     cmd='echo 0',
     labels=['Testing'],
