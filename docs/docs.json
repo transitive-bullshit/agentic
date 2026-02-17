@@ -33,14 +33,10 @@
       "href": "https://agentic.so/app"
     }
   },
-  "banner": {
-    "content": "The new Agentic MCP Marketplace is now in public beta! 🎉",
-    "dismissible": true
-  },
   "navigation": {
     "tabs": [
       {
-        "tab": "MCP Marketplace",
+        "tab": "Tools and Agents",
         "groups": [
           {
             "group": "Getting Started",
@@ -73,49 +69,6 @@
             ]
           }
         ]
-      },
-      {
-        "tab": "Publishing MCPs",
-        "groups": [
-          {
-            "group": "Getting Started",
-            "pages": ["publishing/index", "publishing/quickstart"]
-          },
-          {
-            "group": "Quick Start Guides",
-            "pages": [
-              "publishing/guides/existing-mcp-server",
-              "publishing/guides/existing-openapi-service",
-              "publishing/guides/ts-xmcp",
-              "publishing/guides/ts-fastmcp",
-              "publishing/guides/ts-modelfetch",
-              "publishing/guides/ts-mcp-hono",
-              "publishing/guides/ts-openapi-hono",
-              "publishing/guides/py-fastmcp"
-            ]
-          },
-          {
-            "group": "Origin Servers",
-            "pages": [
-              "publishing/origin/index",
-              "publishing/origin/metadata",
-              "publishing/origin/security"
-            ]
-          },
-
-          {
-            "group": "Project Config",
-            "pages": [
-              "publishing/config/index",
-              "publishing/config/auth",
-              "publishing/config/pricing",
-              "publishing/config/rate-limits",
-              "publishing/config/caching",
-              "publishing/config/tool-config",
-              "publishing/config/examples"
-            ]
-          }
-        ]
       }
     ],
     "global": {
@@ -126,7 +79,7 @@
           "icon": "house"
         },
         {
-          "anchor": "MCP Marketplace",
+          "anchor": "Tools and Agents",
           "href": "https://agentic.so/marketplace",
           "icon": "store"
         },
@@ -136,7 +89,7 @@
           "icon": "envelope"
         },
         {
-          "anchor": "GitHub",
+          "anchor": "GitHub (OSS)",
           "href": "https://github.com/transitive-bullshit/agentic",
           "icon": "github"
         }
