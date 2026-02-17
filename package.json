@@ -30,7 +30,10 @@
     "prerelease": "run-s build",
     "prepare": "simple-git-hooks",
     "release": "bumpp -r && run-s build && pnpm publish -r",
-    "knip": "knip"
+    "knip": "knip",
+        "quality": "pnpm run typecheck && pnpm run eslint && pnpm run knip"
+      }
+}
   },
   "devDependencies": {
     "@dotenvx/dotenvx": "catalog:",

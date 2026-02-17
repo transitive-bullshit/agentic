@@ -2,4 +2,14 @@
   "extends": "@fisch0920/config/tsconfig-node",
   "include": ["*.config.ts"],
   "exclude": ["node_modules"]
+    ,"compilerOptions": {
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "useDefineForClassFields": true,
+    "incremental": true,
+    "isolatedModules": true
+  }
 }
